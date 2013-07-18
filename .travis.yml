@@ -5,4 +5,4 @@ jdk:
 notifications:
   email: false
 
-script: "cd Tiralabra && ant test"
+script: "./run_tests.sh"
