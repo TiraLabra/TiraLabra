@@ -1,6 +1,6 @@
 ### Tässä pohjassa on mukana kaksi NetBeans-projektikansiota: Tiralabra, joka on Ant-pohjainen, ja Tiralabra_maven, joka käyttää Mavenia:
 
-##### ant
+##### Ant
 Pohjassa on valmiina Tiralabra-niminen NetBeans-projektipohja, joka käyttää Ant:ia (http://ant.apache.org/)[http://ant.apache.org/]
 Tämän tyyppisiä pohjia käytettiin ohjelmoinnin perusteissa ja jatkokurssilla. Mikäli et käytä työssäsi ulkopuolisia kirjastoja, voit käyttää tätä pohjaa.
 
