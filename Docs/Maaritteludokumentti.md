@@ -11,7 +11,7 @@ joten näistä on varmaan hyvä alottaa.
 
 *****************************************
 
-Mitä syötteitä ohjelma saa ja miten näitä käytetään
+Mitä syötteitä ohjelma saa ja miten näitä käytetään:
 Perusidea on että käyttäjä valitsee millä algoritmilla
 verkko käydään läpi. Ohjelma siis suorittaa haun/läpikäynnin
 käyttäjän valitsemalla algoritmilla ja tulostaa lyhyimmän reitin 
@@ -19,9 +19,9 @@ ja kenties jotain muuta tietoa reiteistä.
 
 *****************************************
 
-Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysi)
+Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysi):
 Bellman-Ford: O(nm), Dijkstra O((n+m)log n)
 
 *****************************************
-Lähteet
+Lähteet:
 Tiran materiaali
