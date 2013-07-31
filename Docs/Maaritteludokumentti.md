@@ -1,14 +1,17 @@
 Aihe: Labyrintissa suunnistaminen
+
 	Tarkoituksena on luoda ohjelma, joka navigoi siihen syötetyssä labyrintissa
 	pisteestä A pisteeseen B. Alustavasti on päätetty, että Labyrintti on
 	piirretty kuva.
 
 Käytettävät algoritmit:
+
 	- A*
 	- Jos jää aikaa, toteutetaan vertailun vuoksi ohjelmasta myös Dijkstraa
 	käyttävä versio.
 
 Tavoitteena olevat aika- ja tilavaativuudet:
+
 	- A*:n aikavaativuus voi parhaimmillaan olla heuristiikasta riippuen
 	O(log h*(x)), missä x on lähtöpiste ja h* on optimaalinen heuristiikka.
 	Tähän tuskin päästään, mutta lähelle pyritään. Pahimmassa tapauksessa
@@ -17,5 +20,6 @@ Tavoitteena olevat aika- ja tilavaativuudet:
 	mutta se on parannettavissa valitsemalla tehokkaampi heuristiikkafunktio.
 
 Lähteet:
+
 	- http://en.wikipedia.org/wiki/A*_search_algorithm
 	- http://symbolaris.com/orbital/Orbital-doc/api/orbital/algorithm/template/AStar.html

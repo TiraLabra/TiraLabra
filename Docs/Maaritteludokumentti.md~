@@ -15,3 +15,7 @@ Tavoitteena olevat aika- ja tilavaativuudet:
 	akavaativuus voi olla jopa eksponentiaalinen.
 	- Algoritmin tilavaativuus on myös pahimmassa tapauksessa eksponentiaalinen,
 	mutta se on parannettavissa valitsemalla tehokkaampi heuristiikkafunktio.
+
+Lähteet:
+	- http://en.wikipedia.org/wiki/A*_search_algorithm
+	- http://symbolaris.com/orbital/Orbital-doc/api/orbital/algorithm/template/AStar.html
