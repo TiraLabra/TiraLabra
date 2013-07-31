@@ -1,13 +1,13 @@
 package com.mycompany.tiralabra_maven;
 
-/**
- * Hello world!
- *
- */
+import com.mycompany.tiralabra_maven.ui.Ui;
+
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Ui ui = new Ui();
+        ui.run();
     }
 }
