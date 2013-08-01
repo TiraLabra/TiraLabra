@@ -45,6 +45,10 @@ Wikipedian mukaan Huffmanin aikavaativuus on  O(n log n) ja tilavaativuus O(n), 
 sisaltona on pelkastaan uniikkeja symboleita, jolloin suuri osa Huffman-koodeista on 8-bittisia ja saastoa 
 ei juuri tule. Pahimmassa tapauksessa tosiaan ei voida menna O(n) yli koska alkup. materiaali on 8-bittisia merkkeja.
 
+Steganografian aikavaativuus on O(n) Huffman-koodatun tekstin suhteen. Tilavaativuus on O(m) missa m on kuvan koko, koska
+siita pitaa tehda kopio jotta variarvoja voidaan muokata.
+
+
 ## Lähteet
 
 * http://en.wikipedia.org/wiki/Huffman_coding
