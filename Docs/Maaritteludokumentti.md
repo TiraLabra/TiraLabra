@@ -21,6 +21,11 @@ Syntyneistä hajautustauluista ja tulosteista poistetaan vain kerran esiintyvät
 Tupleen lisääminen hajautustauluun on keskimäärin vakioaikainen operaatio. Tästä seuraa, että hajautustaulun muodostaminen on lineaarinen operaatio suhteessa syötteen kokoon. Vain kerran esiintyvien literaalien korvaus tulosteeseen on pahimmassa tapauksessa kaikki hajautustaulun tupleet ja täten lineaarinen syötteen kokoon verrattuna. Kukin N:n koko jolla syöte analysoidaan on aina em. operaatiot toistettuna, eli jos N:n kokoja on 3, on (jos hajautustaulujen muodostamista eri N:llä ei yhdistetä) em. prosessi tehtävä kolmasti ja prosessin aikavaativuus on lineaarinen N:n kokojen lukumäärään.
 Kaikenkaikkiaan prosessin aikavaativuuden tulisi kuitenkin olla lineaarinen syötteen kokoon nähden.
 
+Jos menetelmä ei ole tehokas pakattavalle tiedolle hajautustaulun avaimia on enintään N:n permutaatioiden verran. Tästä seuraa, että kukin avain vie yhtä paljon tilaa kuin sen osoittama arvo. Tilavaativuus menetelmällä on siis pahimmassa tapauksessa:
+
+p + (2N)
+
+jossa p on pakattavan tiedon alkuperäinen koko ja N arvon koko (4-16 bit ?).
 
 Purkaminen:
 1. Syötteestä puretaan hajautustaulu.
@@ -29,6 +34,11 @@ Purkaminen:
 
 Em. prosessin aikavaativuus riippuu täysin siitä, kuinka hyvä pakkaussuhde on alunperin saavutettu. Jos siis alkuperäisessä syötteessä on ollut paljon toistoa on hajautustaulu pieni, mutta viittauksia samoihin arvoihin on monta. Jos taas alkuperäinen syöte on lähes satunnaista tietoa, on hajautustaulussa joko paljon avaimia (joihin viitataan vähän), tai hyvin vähän avaimia sekä pakatussa tiedossa paljon literaaleja. Pakkauksen purku on jokatapauksessa aikavaativuudeltaan lineaarinen alkuperäisen tiedoston kokoon nähden, sillä arvon noutaminen hajautustaulusta avaimen perusteella on keskimäärin vakioaikainen operaatio.
 
+Tilavaativuus on purussa irrelevantti tieto, mutta algoritmi vienee tilaa
+
+p + l
+
+jossa p on pakatun tiedon koko ja l pakkaamattoman tiedon koko.
 
 Muuta:
 Tarkoituksena on myös toteuttaa ohjelmalle yksinkertainen graafinen käyttöliittymä (1-2 ikkunaa).
