@@ -1,0 +1,10 @@
+Harjoitustyö: tietorakenteet ja algoritmit
+Harjoitustyön aihe: image compression, eli kuvapakkaus
+
+Todennäköisesti tehtävä muuntuu yleisen häviöttömän pakkaajan toteutukseen.
+
+RAW-kuvaformaatti ORF, jolle alunperin ajattelin tehdä pakkaajan osoittautui suljetuksi, Olympus Raw Format:ksi, joten sille en tee pakkaajaa. Toinen ilmeisen suosittu formaatti on DNG, joka on käsittääkseni kattavasti documentoitu, mutta bittitason esitystä on ollut vaikeaa löytää, lisää tietoa tarvitaan.
+
+Harjoitustyön periaatteellinen idea on lähteä toteuttamaan Lempel-Ziw-kaltaista algoritmiä tilastollisella analyysillä. Lempel-Ziw algortmit käyttävät pääasiassa kirjastoa joka muodostetaan suoraan pakattavasta materiaalista. Suorittamalla tilastollinen analyysi pakattavaan materiaaliin on mahdollista löytää siitä "palasia" jotka toistuvat useimmiten, ja täten saada aikaan todennäköisesti suurempia pakkaussuhteita.
+
+Jos em. osoittautuu hankalaksi ja lähdemateriaalia löytyy, on madollista, että toteutan Lempel-Ziw-Markov-ketjutus algortitmin.

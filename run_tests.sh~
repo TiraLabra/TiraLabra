@@ -6,7 +6,7 @@ PROJECT_DIR=Tiralabra
 #
 # Mikäli käytät pohjassa mukana tullutta ant projektia poista
 # kommentit
-PROJECT_DIR=Tiralabra
+# PROJECT_DIR=Tiralabra
 
 # Mikäli käytät pohjassa mukana tullutta ant projektia poista
 # kommentit
