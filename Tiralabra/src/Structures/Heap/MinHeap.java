@@ -86,13 +86,6 @@ public class MinHeap<T> {
             return;
         }
         int i = this.location.get(node);
-        /*int i=0;
-        for(int n=1; n<=this.heapsize; n++){
-            if(this.heap[n].getData()==node){
-                i=n;
-                break;
-            }
-        }*/
         if(key<this.heap[i].getKey()){
             this.heap[i].setKey(key);
             while(i>1 && this.heap[parent(i)].getKey()>this.heap[i].getKey()){
