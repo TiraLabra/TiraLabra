@@ -3,7 +3,7 @@ Määrittelydokumentti
 
 ## Yleiskuvaus
 
-Rakennan ohjelmen, joka pystyy tallentamaan annetun tekstin annettuun kuvaan kayttaen steganografiaa.
+Rakennan ohjelman, joka pystyy tallentamaan annetun tekstin annettuun kuvaan kayttaen steganografiaa.
 Jotta paastaan mahdollisimman pienella maaralla stegano-koodattavia bitteja, pakkaan tekstin ensin 
 Huffman-koodauksella.
 
