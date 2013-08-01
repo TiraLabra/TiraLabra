@@ -17,3 +17,4 @@ Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi oll
 
 Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
 
+test
