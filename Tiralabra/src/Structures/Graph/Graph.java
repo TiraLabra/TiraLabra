@@ -11,7 +11,7 @@ import Structures.Hashtable.Hashtable;
 import Utils.Iterator;
 
 /**
-* Graph structure, which is difined by a set vertices and the edges between them
+* Graph structure, which is defined by a set of vertices and the edges between them
 */
 
 public class Graph {
