@@ -1,4 +1,4 @@
-Testi
+Testikakkonen
 
 Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
 
