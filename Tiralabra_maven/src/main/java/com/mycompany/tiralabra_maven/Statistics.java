@@ -59,32 +59,32 @@ public class Statistics {
         sessionDraws++;
     }
     
-    public float getTotalWinPerCent(){
+    public double getTotalWinPerCent(){
         if (totalWins == 0 && totalLosses == 0){
             return 0;
         }
-        return 100 * (totalWins / (totalWins + totalLosses + totalDraws));
+        return 100 * (1.0 * totalWins / (totalWins + totalLosses + totalDraws));
     }
     
-    public float getSessionWinPerCent(){
+    public double getSessionWinPerCent(){
         if (sessionWins == 0 && sessionLosses == 0){
             return 0;
         }
-        return 100 * (sessionWins / (sessionWins + sessionLosses + sessionDraws));
+        return 100 * (1.0 * sessionWins / (sessionWins + sessionLosses + sessionDraws));
     }
     
-    public float getTotalDrawPerCent(){
+    public double getTotalDrawPerCent(){
         if (totalDraws == 0){
             return 0;
         }
-        return 100 * (totalDraws / (totalDraws + totalLosses + totalWins));
+        return 100 * (1.0 * totalDraws / (totalDraws + totalLosses + totalWins));
     }
     
-    public float getSessionDrawPerCent(){
-        if (totalDraws == 0){
+    public double getSessionDrawPerCent(){
+        if (sessionDraws == 0){
             return 0;
         }
-        return 100 * (sessionDraws / (sessionDraws + sessionLosses + sessionWins));
+        return 100 * (1.0 * sessionDraws / (sessionDraws + sessionLosses + sessionWins));
     }
     
 }

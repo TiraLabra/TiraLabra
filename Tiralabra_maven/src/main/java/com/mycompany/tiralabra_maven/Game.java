@@ -112,11 +112,13 @@ public class Game {
             primaryBot.upDateAi(results[primary][secondary]);
             secondaryBot.upDateAi(results[secondary][primary]);
             lastRound = results[primary][secondary];
+            updateStatistics(lastRound);
             return lastRound;
         }
         int primary = primaryBot.makeAMove();
         lastRound = results[primary][rockPaperScissors];
         primaryBot.upDateAi(lastRound);
+        updateStatistics(lastRound);
         return results[primary][rockPaperScissors];
     }
 
@@ -139,6 +141,16 @@ public class Game {
 
     public Statistics getStatistics() {
         return statistics;
+    }
+
+    private void updateStatistics(int result) {
+        if (result == 0){
+            statistics.draw();
+        } else if (result == 1){
+            statistics.win();
+        } else if (result == -1){
+            statistics.lose();
+        }
     }
     
     

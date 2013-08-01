@@ -53,30 +53,17 @@ public class Controls implements ActionListener {
 
     private void report(int result) {
         String text = "";
-        if (game.getGameMode() == GameMode.BOT_VS_BOT) {
-            if (result == 0) {
-                text += "Draw \nTotal draw percent: " + game.getStatistics().getTotalDrawPerCent()
-                        + " \nSession draw percent: " + game.getStatistics().getSessionDrawPerCent() + "\n";
-            } else if (result == 1) {
-                text += "bot1 won \nTotal bot1 win percent: " + game.getStatistics().getTotalWinPerCent()
-                        + " \nSession bot1 win percent: " + game.getStatistics().getTotalWinPerCent() + "\n";
-            } else if (result == -1) {
-                text += "bot1 lost \nTotal bot1 win percent: " + game.getStatistics().getTotalWinPerCent()
-                        + " \nSession bot1 win percent: " + game.getStatistics().getTotalWinPerCent() + "\n";
-            }
-        } else {
-            if (result == 0) {
-                text += "Draw \nTotal draw percent: " + game.getStatistics().getTotalDrawPerCent()
-                        + " \nSession draw percent: " + game.getStatistics().getSessionDrawPerCent();
-            } else if (result == 1) {
-                text += "Player lost \nTotal bot win percent: " + game.getStatistics().getTotalWinPerCent()
-                        + " \nSession bot win percent: " + game.getStatistics().getTotalWinPerCent() + "\n";
-            } else if (result == -1) {
-                text += "Player won \nTotal bot win percent: " + game.getStatistics().getTotalWinPerCent()
-                        + " \nSession bot win percent: " + game.getStatistics().getTotalWinPerCent() + "\n";
-            }
+        if (result == 0){
+            text += "Draw \nTotal draw percent: " + game.getStatistics().getTotalDrawPerCent()
+                    + " \nSession draw percent: " + game.getStatistics().getSessionDrawPerCent();
+        } else if (result == 1){
+            text += "Bot1 won \nTotal bot1 win percent: " + game.getStatistics().getTotalWinPerCent()
+                    + " \nSession win percent: " + game.getStatistics().getSessionWinPerCent();
+        } else if (result == -1){
+            text += "Bot1 lost \nTotal bot1 lose percent: " + (100.0 - (game.getStatistics().getTotalDrawPerCent() + game.getStatistics().getTotalWinPerCent()))
+                    + " \nSession lose percent: " + (100.0 - (game.getStatistics().getSessionDrawPerCent() + game.getStatistics().getSessionWinPerCent()));
         }
-        text += "\n";
+        text += "\n\n";
         textArea.insert(text, 0);
     }
 }
