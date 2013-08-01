@@ -28,7 +28,7 @@ public class Graph {
         this.vertices=new LinkedList<Vertex>();
     }
     /**
-    * Connects to vertices in the graph with an edge having a weight of one
+    * Connects two vertices in the graph with an edge having a weight of one
     * @param Two vertices to be connected
     */
     public void connect(Vertex a, Vertex b){
@@ -46,7 +46,7 @@ public class Graph {
         }
     }
     /**
-    * Connects to vertices in the graph with an edge having a certain weight
+    * Connects two vertices in the graph with an edge having a certain weight
     * @param Two vertices to be connected and the weight of the edge
     */
     public void connect(Vertex a, Vertex b, int weight){
