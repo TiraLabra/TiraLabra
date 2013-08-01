@@ -20,7 +20,6 @@ public class GLExamples {
         //p.breakPipe();
         
         // Adventurer
-        //Adventurer a = new Adventurer();
-        //a.startTheAdventure();
+        Adventurer a = new Adventurer();
     }
 }
