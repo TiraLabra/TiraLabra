@@ -7,5 +7,5 @@ vaikutusta puun solmujen hakuun, lisäykseen ja poistoon.
 Tutkin ainakin seuraavia neljää puuta:
 * Binääripuu 
 * Punamustapuu
-* ALV-puu 
+* AVL-puu 
 * Splay-puu (never heard :P)
