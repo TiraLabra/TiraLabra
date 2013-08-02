@@ -9,7 +9,9 @@ import java.util.Comparator;
 public class Node {
     private char character;
     private int weight;
-    private Node parent, left, right;
+    private final Node parent;
+    private final Node left;
+    private final Node right;
 
 
     public Node(char character, int weight) {
@@ -58,7 +60,7 @@ public class Node {
         return new NodeWeightComparator();
     }
 
-    static class NodeWeightComparator implements Comparator<Node> {
+    private static class NodeWeightComparator implements Comparator<Node> {
 
         @Override
         public int compare(Node o1, Node o2) {

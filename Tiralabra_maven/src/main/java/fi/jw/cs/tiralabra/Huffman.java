@@ -22,10 +22,10 @@ public class Huffman {
 
     public Huffman(String message) {
         this.message = message;
-        this.map = new HashMap<Character, List<Boolean>>();
-        this.frequencies = new int[256]; // accepting 8-bit chars
-        this.sortedNodes = new PriorityQueue<Node>();
-        this.encoded = new boolean[0];
+        map = new HashMap<Character, List<Boolean>>();
+        frequencies = new int[256]; // accepting 8-bit chars
+        sortedNodes = new PriorityQueue<Node>();
+        encoded = new boolean[0];
     }
 
     public void encode() {
@@ -36,8 +36,8 @@ public class Huffman {
     }
 
     protected void calculateFrequencies() {
-        char[] chars = this.message.toCharArray();
-        if (chars.length > 0) {
+        char[] chars = message.toCharArray();
+        if (0 < chars.length) {
             SortedSet<Character> uniques = new TreeSet<Character>();
 
             for (Character c : chars) {
@@ -50,7 +50,7 @@ public class Huffman {
             sortedNodes = new PriorityQueue<Node>(uniques.size(), Node.getComparator());
             for (Character c : uniques) {
                 int weight = frequencies[(int) c];
-                if (weight > 0) {
+                if (0 < weight) {
                     Node s = new Node(c, weight);
                     sortedNodes.add(s);
                 }
@@ -82,11 +82,11 @@ public class Huffman {
     }
 
     public boolean[] getEncoded() {
-        return encoded;
+        return Arrays.copyOf(encoded, encoded.length);
     }
 
     public Map<Character, List<Boolean>> getMap() {
-        return map;
+        return new HashMap<Character, List<Boolean>>(map);
     }
 
     public void setMap(Map<Character, List<Boolean>> map) {
@@ -94,6 +94,6 @@ public class Huffman {
     }
 
     public PriorityQueue<Node> getSortedNodes() {
-        return sortedNodes;
+        return new PriorityQueue<Node>(sortedNodes);
     }
 }
