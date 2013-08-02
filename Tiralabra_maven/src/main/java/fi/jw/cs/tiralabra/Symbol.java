@@ -1,12 +1,13 @@
 package fi.jw.cs.tiralabra;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
  */
-public class Symbol implements Comparable<Symbol> {
+public class Symbol {
     private char character;
     private int weight;
     private List<Boolean> code;
@@ -16,11 +17,6 @@ public class Symbol implements Comparable<Symbol> {
         this.weight = weight;
     }
 
-
-    @Override
-    public int compareTo(Symbol o) {
-        return this.weight - o.getWeight();
-    }
 
     public void increaseWeight() {
         this.weight++;
@@ -50,4 +46,17 @@ public class Symbol implements Comparable<Symbol> {
         this.code = code;
     }
 
+    public static Comparator<Symbol> getComparator() {
+        return new SymbolWeightComparator();
+    }
+
+    private static class SymbolWeightComparator implements Comparator<Symbol> {
+
+        @Override
+        public int compare(Symbol o1, Symbol o2) {
+            return o1.getWeight() - o2.getWeight();
+        }
+    }
+
 }
+

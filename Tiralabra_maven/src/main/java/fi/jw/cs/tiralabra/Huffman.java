@@ -11,8 +11,9 @@ public class Huffman {
 
     private String message;
     private boolean[] encoded;
-    Map<Character, List<Boolean>> map;
-    SortedMap<Character, Symbol> frequency;
+    private Map<Character, List<Boolean>> map;
+    private int[] frequencies;
+    private SortedSet<Symbol> sortedSymbols;
 
 
     public Huffman() {
@@ -22,7 +23,7 @@ public class Huffman {
     public Huffman(String message) {
         this.message = message;
         this.map = new HashMap<Character, List<Boolean>>();
-        this.frequency = new TreeMap<Character, Symbol>();
+        this.frequencies = new int[256]; // accepting 8-bit chars
         this.encoded = new boolean[0];
     }
 
@@ -34,17 +35,21 @@ public class Huffman {
 
     protected void calculateFrequencies() {
         char[] chars = this.message.toCharArray();
+        SortedSet<Character> uniques = new TreeSet<Character>();
+
         for (Character c : chars) {
-            Symbol s;
-            if (frequency.containsKey(c)) {
-                s = frequency.get(c);
-            } else {
-                s = new Symbol(c, 0);
+            frequencies[(int) c.charValue()]++;
+
+            uniques.add(c);
+        }
+
+        sortedSymbols = new TreeSet<Symbol>(Symbol.getComparator());
+        for (Character c : uniques) {
+            int weight = frequencies[(int) c];
+            if (weight > 0) {
+                Symbol s = new Symbol(c, weight);
+                sortedSymbols.add(s);
             }
-
-            s.increaseWeight();
-
-            frequency.put(c, s);
         }
     }
 
@@ -77,5 +82,9 @@ public class Huffman {
 
     public void setMap(Map<Character, List<Boolean>> map) {
         this.map = map;
+    }
+
+    public SortedSet<Symbol> getSortedSymbols() {
+        return sortedSymbols;
     }
 }
