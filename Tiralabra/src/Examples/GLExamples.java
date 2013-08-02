@@ -4,6 +4,7 @@ import Examples.Adventurer.Adventurer;
 import Examples.Pipes.Pipes;
 import Examples.PrisonBreak.PrisonBreak;
 import Examples.SimpleGraph.SimpleGraph;
+import Structures.Heap.MinHeap;
 
 public class GLExamples {
 

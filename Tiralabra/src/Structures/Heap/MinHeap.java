@@ -49,7 +49,7 @@ public class MinHeap<T> {
         }else if(l==this.heapsize && this.heap[i].getKey()>this.heap[l].getKey()){
             Node temp = this.heap[i];
             this.location.put((T)(temp.getData()), l);
-            this.location.put((T)(this.heap[l]), i);
+            this.location.put((T)(this.heap[l].getData()), i);
             this.heap[i]=this.heap[l];
             this.heap[l]=temp;
         }

@@ -27,8 +27,8 @@ public class Pipes {
         initializeMap();
     }
     private void generateHouse(){
-        int width=(int)Math.round(Math.random()*70)+50;
-        int height=(int)Math.round(Math.random()*70)+50;
+        int width=(int)Math.round(Math.random()*30)+20;
+        int height=(int)Math.round(Math.random()*30)+20;
         this.gMap=new Vertex[height][width];
         char[][] generatedHouse = new char[height][width];
         for(int y=0; y<height; y++){
