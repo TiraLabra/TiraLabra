@@ -9,6 +9,9 @@ import java.util.*;
 
 public class Huffman {
 
+    static final char LEFT = '0';
+    static final char RIGHT = '1';
+
     private String message;
     private boolean[] encoded;
     private String encodedMessage;
@@ -35,6 +38,11 @@ public class Huffman {
         buildTree();
         assignCodes();
         encodeMessage();
+    }
+
+    public void decode() {
+        buildReverseTree();
+        decodeMessage();
     }
 
     protected void calculateFrequencies() {
@@ -89,6 +97,40 @@ public class Huffman {
 
     }
 
+    protected void buildReverseTree() {
+        Node root = new Node("root", 0);
+        Node current = root;
+        for (String key : map.keySet()) {
+            String value = map.get(key);
+            for (char c : value.toCharArray()) {
+                if (c == LEFT) {
+                    Node left = current.getLeft();
+                    if (left != null) {
+                        current = left;
+                    } else {
+                        left = new Node("", 0, current, null, null);
+                        current.setLeft(left);
+                        current = left;
+                    }
+                } else if (c == RIGHT) {
+                    Node right = current.getRight();
+                    if (right != null) {
+                        current = right;
+                    } else {
+                        right = new Node("", 0, current, null, null);
+                        current.setRight(right);
+                        current = right;
+                    }
+                } else {
+                    throw new IllegalArgumentException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
+                }
+            }
+            current.setLabel(key);
+            current = root;
+        }
+        tree = new BinaryTree(root);
+    }
+
     protected void assignCodes() {
         if (tree != null && tree.getRoot() != null) {
             assignRecursive(tree.getRoot(), "");
@@ -108,10 +150,10 @@ public class Huffman {
         } else {
 
             if (left != null)
-                assignRecursive(left, currentCode + "0");
+                assignRecursive(left, currentCode + LEFT);
 
             if (right != null)
-                assignRecursive(right, currentCode + "1");
+                assignRecursive(right, currentCode + RIGHT);
         }
 
 
@@ -124,10 +166,49 @@ public class Huffman {
         }
     }
 
+    protected void decodeMessage() {
+        message = "";
+        Node root = tree.getRoot();
+        Node current = root;
+        Node next;
+        String currentPath = "";
+        for (char c : encodedMessage.toCharArray()) {
+
+            if (c == LEFT) {
+                next = current.getLeft();
+            } else if (c == RIGHT) {
+                next = current.getRight();
+            } else {
+                throw new IllegalArgumentException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
+            }
+
+            if (next != null) {
+                current = next;
+                if (current.isLeaf()) {
+                    message += current.getLabel();
+                    current = root;
+                    currentPath = "";
+                } else {
+                    currentPath += c;
+                    current.setLabel(currentPath);
+                }
+            } else {
+                throw new NoSuchElementException();
+            }
+
+        }
+    }
+
+
+    ///////////// GET & SET ///////////////////
+
     public String getEncodedMessage() {
         return encodedMessage;
     }
-///////////// GET & SET ///////////////////
+
+    public void setEncodedMessage(String encodedMessage) {
+        this.encodedMessage = encodedMessage;
+    }
 
     public String getMessage() {
         return message;

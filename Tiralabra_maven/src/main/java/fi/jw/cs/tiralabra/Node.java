@@ -11,8 +11,8 @@ public class Node {
     private String code;
     private int weight;
     private Node parent;
-    private final Node left;
-    private final Node right;
+    private Node left;
+    private Node right;
 
 
     public Node(String label, int weight) {
@@ -25,6 +25,11 @@ public class Node {
         this.parent = parent;
         this.left = left;
         this.right = right;
+    }
+
+
+    public boolean isLeaf() {
+        return left == null && right == null;
     }
 
 
@@ -57,8 +62,16 @@ public class Node {
         return left;
     }
 
+    public void setLeft(Node left) {
+        this.left = left;
+    }
+
     public Node getRight() {
         return right;
+    }
+
+    public void setRight(Node right) {
+        this.right = right;
     }
 
     public String getCode() {

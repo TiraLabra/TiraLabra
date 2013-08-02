@@ -129,13 +129,30 @@ public class HuffmanTest extends TestCase {
     }
 
     public void testEncodeMessage() {
-        Huffman h = new Huffman("hello world.");
+        Huffman h = new Huffman("abc.");
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("l", "0");
-        map.put(".", "1");
+        map.put("a", "0");
+        map.put("b", "10");
+        map.put("c", "110");
+        map.put(".", "111");
         h.setMap(map);
         h.encodeMessage();
-        assertEquals("he00o wor0d1", h.getEncodedMessage());
+        assertEquals("010110111", h.getEncodedMessage());
+
+    }
+
+    public void testEncodeDecode() {
+        final String message = "Hello world!";
+        Huffman encoder = new Huffman(message);
+        encoder.encode();
+
+        Huffman decoder = new Huffman();
+        decoder.setMap(encoder.getMap());
+        decoder.setEncodedMessage(encoder.getEncodedMessage());
+        decoder.decode();
+
+        assertEquals(decoder.getMessage(), message);
+
 
     }
 
