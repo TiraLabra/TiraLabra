@@ -8,6 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Luokka joka kirjoittaa tietoa annettuun tiedostosta. Tarkempi dokumentaatio
+ * tulee kun olen varma etten muokkaa luokkaa hirveästi enää
+ */
 public class TiedostoKirjoittaja {
 
     private BufferedOutputStream kirjoitusStream;
@@ -19,21 +23,23 @@ public class TiedostoKirjoittaja {
 
     }
 
-    public void kirjoitaTiedosto(OmaList<OmaList<Byte>> tieto) throws IOException {
+    public void kirjoitaTiedosto(OmaList<Byte> tieto) throws IOException {
 
         avaaStream();
 
+        byte[] taulu = new byte[4];
+        for (int i = 0, j = 0; i < tieto.size(); ++i) {
 
-        for (int i = 0; i < tieto.size(); ++i) {
-            OmaList<Byte> tavut = tieto.get(i);
-            byte [] taulu = new byte[tavut.size()];
-            
-            for (int j = 0; j < tavut.size(); ++j) {
-                taulu[j] = tavut.get(j);
+
+            taulu[j] = tieto.get(i);
+            ++j;
+            if (j == 4) {
+                j = 0;
+                kirjoitusStream.write(taulu);
             }
+
             
-            kirjoitusStream.write(taulu);
-                    
+
         }
 
 

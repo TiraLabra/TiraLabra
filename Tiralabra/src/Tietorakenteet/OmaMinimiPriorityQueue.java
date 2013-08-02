@@ -2,14 +2,21 @@ package Tietorakenteet;
 
 import java.util.Comparator;
 
-// toteuttaa minimiprioriteettijonon. Koska en tarvitse muuta, en ala rakentamaan yleisempää jonoa
-// joka toteuttaisi myös maksimiprioriteettijonon. 
-// lisäksi add-operaatio olettaa aina että keko toteuttaa kekoehdon
+/**
+ * Luokka joka toteuttaa minimiprioriteettijonon. Koska en tarvitse muuta, en
+ * ala rakentamaan yleisempää jonoa joka toteuttaisi myös
+ * maksimiprioriteettijonon. Lisäksi add-operaatio olettaa aina että keko
+ * toteuttaa kekoehdon
+ */
 public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
     OmaList<T> keko;
     Comparator<T> vertaaja;
-
+    /**
+     * Konstruktori. Ottaa parametrina Comparator<T> - rajapinnan toteuttavan objektin
+     * joka vastaa objektien vertailusta
+     * @param vertaaja Objekti joka toteuttaa Comparator-rajapinnan ja joka vastaa objektien vertailusta
+     */
     public OmaMinimiPriorityQueue(Comparator<T> vertaaja) {
         keko = new OmaArrayList<T>();
         this.vertaaja = vertaaja;
@@ -92,7 +99,7 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
     private void heapify(int paikka) {
         T vasen = haeVasenLapsi(paikka);
         T oikea = haeOikeaLapsi(paikka);
-        
+
         int pieninPaikka;
         T pienin;
         if (oikea != null) {
@@ -104,16 +111,15 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
                 pieninPaikka = haeOikeanLapsenIndeksi(paikka);
                 pienin = oikea;
             }
-            
+
             if (vertaaja.compare(keko.get(paikka), pienin) > 0) {
                 vaihda(paikka, pieninPaikka);
                 heapify(pieninPaikka);
             }
 
-        }
-        else if (vasen != null && vertaaja.compare(keko.get(paikka), vasen) > 0) {
-            assert(oikea == null);
-            vaihda(paikka, haeVasemmanLapsenIndeksi(paikka));            
+        } else if (vasen != null && vertaaja.compare(keko.get(paikka), vasen) > 0) {
+            assert (oikea == null);
+            vaihda(paikka, haeVasemmanLapsenIndeksi(paikka));
         }
 
     }

@@ -1,3 +1,3 @@
 1.8.2013
 11:40 - 15:00 Repon kloonaus, ohjelmoinnin aloittelu
-15:30 - 1?:?? Prioriteettijonon rakentelua & testien tekoja
+15:30 - 16:21 Prioriteettijonon rakentelua & testien tekoja

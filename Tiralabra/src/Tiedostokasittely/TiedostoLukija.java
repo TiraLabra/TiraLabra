@@ -10,6 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ Luokka joka lukee tavuja annetusta tiedostosta. Tarkempi dokumentaatio tulee kun olen varma etten muokkaa luokkaa hirveästi enää
+ */
+
 public class TiedostoLukija {
 
     private BufferedInputStream lukuStream;
@@ -18,34 +22,29 @@ public class TiedostoLukija {
     private final int KOKO;
  
 
-    public TiedostoLukija(String nimi, int alkionKokoTavuissa) {
+    public TiedostoLukija(String nimi) {
         TIEDOSTO = new File(nimi);
-        KOKO = alkionKokoTavuissa;        
+        KOKO = 4;        
     }
 
-    public OmaList<OmaList<Byte>> lueTiedosto() throws FileNotFoundException, IOException {
+    public OmaList<Byte> lueTiedosto() throws FileNotFoundException, IOException {
        
             avaaStream();
-            OmaList luetutAlkiot = new OmaArrayList<OmaList<Byte>>();
+            OmaList luettuData = new OmaArrayList<OmaList<Byte>>();
             
             byte [] puskuri = new byte[KOKO];
             int luettu  = lukuStream.read(puskuri);
             
             while (luettu != -1) {
                 
-                OmaList<Byte> luetutList = new OmaArrayList<Byte>();
-                                
                 for (int i = 0; i < luettu; ++i) {
-                    luetutList.add(puskuri[i]);
+                    luettuData.add(puskuri[i]);
                 }
-                
-                luetutAlkiot.add(luetutList);
-                
                 luettu = lukuStream.read(puskuri);
             }
                         
             suljeStream();
-            return luetutAlkiot;
+            return luettuData;
     }
 
     private void avaaStream() throws FileNotFoundException {

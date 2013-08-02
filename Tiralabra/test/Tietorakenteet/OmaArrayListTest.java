@@ -330,4 +330,149 @@ public class OmaArrayListTest {
         assertTrue("Taulukon arvo väärä", (Integer)array[3] == 4);
     } 
     
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void lukuYliKoonHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.get(5);
+    }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void lukuYliKoonJuuriRajallaHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.get(2);
+    }
+    
+        
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void setYliKoonHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.set(5, 1);
+    }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void setYliKoonJuuriRajallaHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.set(2, 1);
+    }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void removeYliKoonHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.remove(5);
+    }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void removeYliKoonJuuriRajallaHeittääPoikkeuksen() {
+        lista.add(1);
+        lista.add(2);
+        
+        lista.remove(2);
+    }
+    
+    @Test
+    public void hashCodeSamaKunArraytSamat() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+        lista.add(15);
+        
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        lista2.add(1);
+        lista2.add(2);
+        lista2.add(3);
+        lista2.add(4);
+        lista2.add(15);
+        
+        assertTrue("Hash codet eivät ole samat", lista.hashCode() == lista2.hashCode());
+    }
+    
+    @Test
+    public void arraytSamaKunSisaltoSama() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+        lista.add(15);
+        
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        lista2.add(1);
+        lista2.add(2);
+        lista2.add(3);
+        lista2.add(4);
+        lista2.add(15);
+        
+        assertTrue("Listat eivät ole samat", lista.equals(lista2));
+    }
+    
+    @Test
+    public void arraytEriKunSisaltoEri() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+        lista.add(15);
+        
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        lista2.add(5);
+        lista2.add(2);
+        lista2.add(3);
+        lista2.add(4);
+        lista2.add(15);
+        
+        assertFalse("Equals antaa virheellisesti true", lista.equals(lista2));
+    }
+    
+    @Test
+    public void hashCodeSamaKunArraytSamatSatunnainen() {
+        Random random = new Random();
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        
+        for (int i = 0; i < 20; ++i) {
+            int luku = random.nextInt();
+            lista.add(luku);
+            lista2.add(luku);
+        }
+        
+        assertEquals("Hash codet eivät ole samat", lista.hashCode(), lista2.hashCode());
+    }
+    
+    @Test
+    public void arraytSamaKunSisaltoSamaSatunnaiset() {
+        
+        Random random = new Random();
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        
+        for (int i = 0; i < 20; ++i) {
+            int luku = random.nextInt();
+            lista.add(luku);
+            lista2.add(luku);
+        }
+        
+        assertTrue("Listat eivät ole samat", lista.equals(lista2));
+    }
+    
+    @Test
+    public void arraytEriKunSisaltoEriSatunnainen() {
+         Random random = new Random();
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        
+        for (int i = 0; i < 20; ++i) {
+            int luku = random.nextInt();
+            lista.add(luku);
+            lista2.add(luku+1);
+        }
+        
+        assertFalse("Equals antaa virheellisesti true", lista.equals(lista2));
+    }
 }
