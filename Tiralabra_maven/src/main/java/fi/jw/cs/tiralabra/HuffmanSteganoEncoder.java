@@ -1,6 +1,6 @@
 package fi.jw.cs.tiralabra;
 
-import java.util.PriorityQueue;
+import java.io.IOException;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -9,25 +9,35 @@ import java.util.PriorityQueue;
 
 public class HuffmanSteganoEncoder {
     public static void main(String... args) {
-        String message = "";
-        for (String s : args) {
-            message += s + " ";
-        }
-        message = message.trim();
-        System.out.println("HuffmanSteganoEncoder called with message: \n" + message);
-        Huffman huff = new Huffman(message);
-        huff.encode();
-        System.out.println("Result of encoding: \n" + huff.getEncodedMessage());
-        System.out.println("Map used:");
-        for (String key : huff.getMap().keySet()) {
-            System.out.println("\t" + key + " => " + huff.getMap().get(key));
-        }
+//        String message = "";
+//        for (String s : args) {
+//            message += s + " ";
+//        }
+//        message = message.trim();
+//        System.out.println("Message \t" + message);
+//        Huffman encoder = new Huffman(message);
+//        encoder.encode();
+//
+//        System.out.print("Encoded \t");
+//        System.out.println(encoder.getEncodedMessage());
+//
+//        Huffman decoder = new Huffman();
+//        decoder.setMap(encoder.getMap());
+//        decoder.setEncodedMessage(encoder.getEncodedMessage());
+//        decoder.decode();
+//        System.out.print("Decoded \t");
+//        System.out.println(decoder.getMessage());
 
-        PriorityQueue<Node> nodes = new PriorityQueue<Node>(huff.getSortedNodes());
-        System.out.println("Weights:");
-        while (!nodes.isEmpty()) {
-            Node n = nodes.poll();
-            System.out.print(n.getLabel() + "," + n.getWeight() + "\0");
+        try {
+            Steganographer s = new Steganographer(args[0], "");
+            System.out.println("Got file open " + args[0]);
+            s.emptyLeastSignificantBits();
+            System.out.println("Cleared out bits");
+            s.saveFile(args[1]);
+            System.out.println("File saved to " + args[1]);
+        } catch (IOException ioe) {
+            System.out.println("Oh poop.");
+            ioe.printStackTrace();
         }
     }
 }
