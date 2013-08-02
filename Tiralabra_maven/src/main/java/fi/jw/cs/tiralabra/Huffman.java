@@ -1,7 +1,6 @@
 package fi.jw.cs.tiralabra;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -12,8 +11,9 @@ public class Huffman {
 
     private String message;
     private boolean[] encoded;
-    Map<Character, Integer> map;
-    Map<Character, Integer> frequency;
+    Map<Character, List<Boolean>> map;
+    SortedMap<Character, Symbol> frequency;
+
 
     public Huffman() {
         this("");
@@ -21,15 +21,43 @@ public class Huffman {
 
     public Huffman(String message) {
         this.message = message;
-        this.map = new HashMap<Character, Integer>();
+        this.map = new HashMap<Character, List<Boolean>>();
+        this.frequency = new TreeMap<Character, Symbol>();
+        this.encoded = new boolean[0];
     }
 
     public void encode() {
-        encoded = new boolean[message.length()];
-        if (encoded.length > 0) {
-            // do processing
+        calculateFrequencies();
+        assignCodes();
+        encodeMessage();
+    }
+
+    protected void calculateFrequencies() {
+        char[] chars = this.message.toCharArray();
+        for (Character c : chars) {
+            Symbol s;
+            if (frequency.containsKey(c)) {
+                s = frequency.get(c);
+            } else {
+                s = new Symbol(c, 0);
+            }
+
+            s.increaseWeight();
+
+            frequency.put(c, s);
         }
     }
+
+    protected void assignCodes() {
+
+    }
+
+    protected void encodeMessage() {
+
+    }
+
+
+    ///////////// GET & SET ///////////////////
 
     public String getMessage() {
         return message;
@@ -43,11 +71,11 @@ public class Huffman {
         return encoded;
     }
 
-    public Map<Character, Integer> getMap() {
+    public Map<Character, List<Boolean>> getMap() {
         return map;
     }
 
-    public void setMap(Map<Character, Integer> map) {
+    public void setMap(Map<Character, List<Boolean>> map) {
         this.map = map;
     }
 }
