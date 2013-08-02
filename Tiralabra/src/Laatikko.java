@@ -8,13 +8,25 @@
  * @author albis
  */
 public class Laatikko {
-    private double pituus;
     private double leveys;
+    private double pituus;
     private double korkeus;
     
     public Laatikko (double pituus, double leveys, double korkeus) {
-        this.pituus = pituus;
         this.leveys = leveys;
+        this.pituus = pituus;
         this.korkeus = korkeus;
+    }
+    
+    public double getLeveys() {
+        return this.leveys;
+    }
+    
+    public double getPituus() {
+        return this.pituus;
+    }
+    
+    public double getKorkeus() {
+        return this.korkeus;
     }
 }

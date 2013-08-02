@@ -8,15 +8,31 @@
  * @author albis
  */
 public class Laskuri {
-    private Kontti kontti;
-    private Laatikko[] laatikot;
+    private Laatikko laatikko;
+    private Lava lava;
     
-    public Laskuri (Kontti kontti, Laatikko[] laatikot) {
-        this.kontti = kontti;
-        this.laatikot = laatikot;
+    public Laskuri () {
+        this.laatikko = new Laatikko(40, 60, 40);
+        this.lava = new Lava(80, 120, 130);
     }
     
-    private void laske () {
+    public void laske (double leveys, double pituus, double korkeus) {
         
+    }
+    
+    private void mahtuuko(double tarvittavaLeveys, double tarvittavaPituus, double tarvittavaKorkeus) {
+        int alkuX = 0;
+        int alkuY = 0;
+        int alkuZ = 0;
+        
+        int tyhjaTila = 0;
+        
+        for (int i = 0; i < alkuX + tarvittavaLeveys; i++) {
+            for (int j = 0; j < alkuY + tarvittavaPituus; j++) {
+                for (int k = 0; k < alkuZ + tarvittavaKorkeus; k++) {
+                    
+                }
+            }
+        }
     }
 }
