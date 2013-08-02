@@ -12,7 +12,7 @@ Ohjelman syötteenä toimii käyttäjän kirjoittamana merkkijono jollekin lasku
 
 - Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysi)
 
-Ohjelman tavoitteellinen aikavaatimus on O(n) ja tilavaativuus O(1).
+Ohjelman tavoitteellinen aikavaatimus on O(n) ja tilavaativuus
 
 - Lähteet
 
