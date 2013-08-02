@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class Huffman {
 
-    public String message;
-    public boolean[] encoded;
+    private String message;
+    private boolean[] encoded;
     Map<Character, Integer> map;
     Map<Character, Integer> frequency;
 
@@ -29,5 +29,25 @@ public class Huffman {
         if (encoded.length > 0) {
             // do processing
         }
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean[] getEncoded() {
+        return encoded;
+    }
+
+    public Map<Character, Integer> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<Character, Integer> map) {
+        this.map = map;
     }
 }

@@ -14,6 +14,6 @@ public class HuffmanTest extends TestCase {
         Huffman h = new Huffman();
         h.encode();
         boolean[] expected = new boolean[0];
-        assertTrue(Arrays.equals(h.encoded, expected));
+        assertTrue(Arrays.equals(h.getEncoded(), expected));
     }
 }
