@@ -12,8 +12,8 @@ public class NodeTest extends TestCase {
 
     public void testComparator() {
         Comparator<Node> comp = Node.getComparator();
-        Node n1 = new Node('a', 0);
-        Node n2 = new Node('a', 2);
+        Node n1 = new Node("a", 0);
+        Node n2 = new Node("a", 2);
         assertTrue(0 > comp.compare(n1, n2));
     }
 

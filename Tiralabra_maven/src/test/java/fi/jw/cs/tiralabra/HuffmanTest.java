@@ -31,7 +31,7 @@ public class HuffmanTest extends TestCase {
         assertEquals(1, freq.size());
 
         Node s = freq.poll();
-        assertEquals('a', s.getCharacter());
+        assertEquals("a", s.getLabel());
         assertEquals(1, s.getWeight());
     }
 
@@ -44,17 +44,27 @@ public class HuffmanTest extends TestCase {
 
         Node head = freq.poll();
 
-        assertEquals('c', head.getCharacter());
+        assertEquals("c", head.getLabel());
         assertEquals(1, head.getWeight());
 
         head = freq.poll();
-        assertEquals('a', head.getCharacter());
+        assertEquals("a", head.getLabel());
         assertEquals(2, head.getWeight());
 
         head = freq.poll();
-        assertEquals('b', head.getCharacter());
+        assertEquals("b", head.getLabel());
         assertEquals(4, head.getWeight());
 
         assertTrue(freq.isEmpty());
+    }
+
+    public void testTreeBuilding() {
+        Huffman h = new Huffman("122");
+        h.calculateFrequencies();
+        h.buildTree();
+        BinaryTree tree = h.getTree();
+        Node root = tree.getRoot();
+        assertEquals("12", root.getLabel());
+        assertEquals(3, root.getWeight());
     }
 }

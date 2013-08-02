@@ -14,6 +14,7 @@ public class Huffman {
     private Map<Character, List<Boolean>> map;
     private int[] frequencies;
     private PriorityQueue<Node> sortedNodes;
+    private BinaryTree tree;
 
 
     public Huffman() {
@@ -37,7 +38,7 @@ public class Huffman {
 
     protected void calculateFrequencies() {
         char[] chars = message.toCharArray();
-        if (0 < chars.length) {
+        if (chars.length > 0) {
             SortedSet<Character> uniques = new TreeSet<Character>();
 
             for (Character c : chars) {
@@ -50,8 +51,8 @@ public class Huffman {
             sortedNodes = new PriorityQueue<Node>(uniques.size(), Node.getComparator());
             for (Character c : uniques) {
                 int weight = frequencies[(int) c];
-                if (0 < weight) {
-                    Node s = new Node(c, weight);
+                if (weight > 0) {
+                    Node s = new Node("" + c, weight);
                     sortedNodes.add(s);
                 }
             }
@@ -59,6 +60,21 @@ public class Huffman {
     }
 
     protected void buildTree() {
+        Node root;
+
+        while (sortedNodes.size() >= 2) {
+            Node left = sortedNodes.poll();
+            Node right = sortedNodes.poll();
+            String label = left.getLabel() + right.getLabel();
+            int weight = left.getWeight() + right.getWeight(); //TODO: possible interger overflow error
+            Node parent = new Node(label, weight, null, left, right);
+            left.setParent(parent);
+            right.setParent(parent);
+            sortedNodes.add(parent);
+        }
+
+        root = sortedNodes.poll();
+        tree = new BinaryTree(root);
 
     }
 
@@ -77,7 +93,7 @@ public class Huffman {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 
@@ -89,11 +105,15 @@ public class Huffman {
         return new HashMap<Character, List<Boolean>>(map);
     }
 
-    public void setMap(Map<Character, List<Boolean>> map) {
+    public void setMap(final Map<Character, List<Boolean>> map) {
         this.map = map;
     }
 
     public PriorityQueue<Node> getSortedNodes() {
         return new PriorityQueue<Node>(sortedNodes);
+    }
+
+    public BinaryTree getTree() {
+        return tree;
     }
 }

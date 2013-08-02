@@ -7,19 +7,19 @@ import java.util.Comparator;
  * @since 2013-08-02
  */
 public class Node {
-    private char character;
+    private String label;
     private int weight;
-    private final Node parent;
+    private Node parent;
     private final Node left;
     private final Node right;
 
 
-    public Node(char character, int weight) {
-        this(character, weight, null, null, null);
+    public Node(String label, int weight) {
+        this(label, weight, null, null, null);
     }
 
-    public Node(char character, int weight, Node parent, Node left, Node right) {
-        this.character = character;
+    public Node(String label, int weight, Node parent, Node left, Node right) {
+        this.label = label;
         this.weight = weight;
         this.parent = parent;
         this.left = left;
@@ -27,12 +27,12 @@ public class Node {
     }
 
 
-    public char getCharacter() {
-        return character;
+    public String getLabel() {
+        return label;
     }
 
-    public void setCharacter(char character) {
-        this.character = character;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public int getWeight() {
@@ -46,6 +46,10 @@ public class Node {
 
     public Node getParent() {
         return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
     }
 
     public Node getLeft() {
