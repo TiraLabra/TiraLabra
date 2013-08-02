@@ -62,15 +62,16 @@ public class Huffman {
 
     protected void buildTree() {
         Node root;
+        PriorityQueue<Node> nodes = new PriorityQueue<Node>(sortedNodes);
 
-        if (sortedNodes.size() == 1) {
-            Node onlyChild = sortedNodes.poll();
+        if (nodes.size() == 1) {
+            Node onlyChild = nodes.poll();
             root = new Node(onlyChild.getLabel(), onlyChild.getWeight(), null, onlyChild, null);
             onlyChild.setParent(root);
         } else {
-            while (sortedNodes.size() >= 2) {
-                Node n1 = sortedNodes.poll();
-                Node n2 = sortedNodes.poll();
+            while (nodes.size() >= 2) {
+                Node n1 = nodes.poll();
+                Node n2 = nodes.poll();
                 boolean firstIsBigger = (n1.getWeight() >= n2.getWeight());
                 Node left = firstIsBigger ? n1 : n2;
                 Node right = firstIsBigger ? n2 : n1;
@@ -79,10 +80,10 @@ public class Huffman {
                 Node parent = new Node(label, weight, null, left, right);
                 left.setParent(parent);
                 right.setParent(parent);
-                sortedNodes.add(parent);
+                nodes.add(parent);
             }
 
-            root = sortedNodes.poll();
+            root = nodes.poll();
         }
         tree = new BinaryTree(root);
 
@@ -117,9 +118,9 @@ public class Huffman {
     }
 
     protected void encodeMessage() {
-        encodedMessage = message + "";
-        for (String key : map.keySet()) {
-            encodedMessage = encodedMessage.replace(key.charAt(0), map.get(key).charAt(0));
+        encodedMessage = "";
+        for (char c : message.toCharArray()) {
+            encodedMessage += getCodeFor("" + c);
         }
     }
 
