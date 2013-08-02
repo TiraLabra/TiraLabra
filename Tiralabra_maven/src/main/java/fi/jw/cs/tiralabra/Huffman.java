@@ -11,6 +11,7 @@ public class Huffman {
 
     private String message;
     private boolean[] encoded;
+    private String encodedMessage;
     private Map<String, String> map;
     private int[] frequencies;
     private PriorityQueue<Node> sortedNodes;
@@ -116,11 +117,16 @@ public class Huffman {
     }
 
     protected void encodeMessage() {
-
+        encodedMessage = message + "";
+        for (String key : map.keySet()) {
+            encodedMessage = encodedMessage.replace(key.charAt(0), map.get(key).charAt(0));
+        }
     }
 
-
-    ///////////// GET & SET ///////////////////
+    public String getEncodedMessage() {
+        return encodedMessage;
+    }
+///////////// GET & SET ///////////////////
 
     public String getMessage() {
         return message;

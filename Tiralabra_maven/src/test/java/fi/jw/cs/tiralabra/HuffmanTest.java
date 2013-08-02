@@ -3,6 +3,7 @@ package fi.jw.cs.tiralabra;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
@@ -126,4 +127,17 @@ public class HuffmanTest extends TestCase {
 
         assertEquals("0", h.getCodeFor("a"));
     }
+
+    public void testEncodeMessage() {
+        Huffman h = new Huffman("hello world.");
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("l", "0");
+        map.put(".", "1");
+        h.setMap(map);
+        h.encodeMessage();
+        assertEquals("he00o wor0d1", h.getEncodedMessage());
+
+    }
+
+
 }
