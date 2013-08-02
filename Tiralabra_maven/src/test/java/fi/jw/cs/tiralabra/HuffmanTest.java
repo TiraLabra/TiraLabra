@@ -3,7 +3,7 @@ package fi.jw.cs.tiralabra;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.SortedSet;
+import java.util.PriorityQueue;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -21,15 +21,16 @@ public class HuffmanTest extends TestCase {
     public void testSimpleFrequencies() {
         Huffman h = new Huffman("");
         h.calculateFrequencies();
-        SortedSet<Symbol> freq = h.getSortedSymbols();
+        PriorityQueue<Node> freq = h.getSortedNodes();
         assertEquals(freq.size(), 0);
 
         h.setMessage("a");
         h.calculateFrequencies();
-        freq = h.getSortedSymbols();
-        assertEquals(1, freq.size());
-        Symbol s = freq.first();
+        freq = h.getSortedNodes();
 
+        assertEquals(1, freq.size());
+
+        Node s = freq.poll();
         assertEquals('a', s.getCharacter());
         assertEquals(1, s.getWeight());
     }
@@ -37,12 +38,23 @@ public class HuffmanTest extends TestCase {
     public void testMultipleFrequencies() {
         Huffman h = new Huffman("abbcbba");
         h.calculateFrequencies();
-        SortedSet<Symbol> freq = h.getSortedSymbols();
+        PriorityQueue<Node> freq = h.getSortedNodes();
 
-        assertEquals('c', freq.first().getCharacter());
-        assertEquals(1, freq.first().getWeight());
+        assertEquals(3, freq.size());
 
-        assertEquals('b', freq.last().getCharacter());
-        assertEquals(4, freq.last().getWeight());
+        Node head = freq.poll();
+
+        assertEquals('c', head.getCharacter());
+        assertEquals(1, head.getWeight());
+
+        head = freq.poll();
+        assertEquals('a', head.getCharacter());
+        assertEquals(2, head.getWeight());
+
+        head = freq.poll();
+        assertEquals('b', head.getCharacter());
+        assertEquals(4, head.getWeight());
+
+        assertTrue(freq.isEmpty());
     }
 }

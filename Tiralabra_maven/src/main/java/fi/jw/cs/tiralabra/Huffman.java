@@ -13,7 +13,7 @@ public class Huffman {
     private boolean[] encoded;
     private Map<Character, List<Boolean>> map;
     private int[] frequencies;
-    private SortedSet<Symbol> sortedSymbols;
+    private PriorityQueue<Node> sortedNodes;
 
 
     public Huffman() {
@@ -24,33 +24,42 @@ public class Huffman {
         this.message = message;
         this.map = new HashMap<Character, List<Boolean>>();
         this.frequencies = new int[256]; // accepting 8-bit chars
+        this.sortedNodes = new PriorityQueue<Node>();
         this.encoded = new boolean[0];
     }
 
     public void encode() {
         calculateFrequencies();
+        buildTree();
         assignCodes();
         encodeMessage();
     }
 
     protected void calculateFrequencies() {
         char[] chars = this.message.toCharArray();
-        SortedSet<Character> uniques = new TreeSet<Character>();
+        if (chars.length > 0) {
+            SortedSet<Character> uniques = new TreeSet<Character>();
 
-        for (Character c : chars) {
-            frequencies[(int) c.charValue()]++;
+            for (Character c : chars) {
+                frequencies[(int) c.charValue()]++;
 
-            uniques.add(c);
-        }
+                uniques.add(c);
+            }
 
-        sortedSymbols = new TreeSet<Symbol>(Symbol.getComparator());
-        for (Character c : uniques) {
-            int weight = frequencies[(int) c];
-            if (weight > 0) {
-                Symbol s = new Symbol(c, weight);
-                sortedSymbols.add(s);
+
+            sortedNodes = new PriorityQueue<Node>(uniques.size(), Node.getComparator());
+            for (Character c : uniques) {
+                int weight = frequencies[(int) c];
+                if (weight > 0) {
+                    Node s = new Node(c, weight);
+                    sortedNodes.add(s);
+                }
             }
         }
+    }
+
+    protected void buildTree() {
+
     }
 
     protected void assignCodes() {
@@ -84,7 +93,7 @@ public class Huffman {
         this.map = map;
     }
 
-    public SortedSet<Symbol> getSortedSymbols() {
-        return sortedSymbols;
+    public PriorityQueue<Node> getSortedNodes() {
+        return sortedNodes;
     }
 }
