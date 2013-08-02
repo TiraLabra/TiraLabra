@@ -8,6 +8,7 @@ import java.util.Comparator;
  */
 public class Node {
     private String label;
+    private String code;
     private int weight;
     private Node parent;
     private final Node left;
@@ -58,6 +59,14 @@ public class Node {
 
     public Node getRight() {
         return right;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public static Comparator<Node> getComparator() {

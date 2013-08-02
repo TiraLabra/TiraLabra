@@ -11,7 +11,7 @@ public class Huffman {
 
     private String message;
     private boolean[] encoded;
-    private Map<Character, List<Boolean>> map;
+    private Map<String, String> map;
     private int[] frequencies;
     private PriorityQueue<Node> sortedNodes;
     private BinaryTree tree;
@@ -23,7 +23,7 @@ public class Huffman {
 
     public Huffman(String message) {
         this.message = message;
-        map = new HashMap<Character, List<Boolean>>();
+        map = new HashMap<String, String>();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new PriorityQueue<Node>();
         encoded = new boolean[0];
@@ -62,23 +62,56 @@ public class Huffman {
     protected void buildTree() {
         Node root;
 
-        while (sortedNodes.size() >= 2) {
-            Node left = sortedNodes.poll();
-            Node right = sortedNodes.poll();
-            String label = left.getLabel() + right.getLabel();
-            int weight = left.getWeight() + right.getWeight(); //TODO: possible interger overflow error
-            Node parent = new Node(label, weight, null, left, right);
-            left.setParent(parent);
-            right.setParent(parent);
-            sortedNodes.add(parent);
-        }
+        if (sortedNodes.size() == 1) {
+            Node onlyChild = sortedNodes.poll();
+            root = new Node(onlyChild.getLabel(), onlyChild.getWeight(), null, onlyChild, null);
+            onlyChild.setParent(root);
+        } else {
+            while (sortedNodes.size() >= 2) {
+                Node n1 = sortedNodes.poll();
+                Node n2 = sortedNodes.poll();
+                boolean firstIsBigger = (n1.getWeight() >= n2.getWeight());
+                Node left = firstIsBigger ? n1 : n2;
+                Node right = firstIsBigger ? n2 : n1;
+                String label = left.getLabel() + right.getLabel();
+                int weight = left.getWeight() + right.getWeight(); //TODO: possible interger overflow error
+                Node parent = new Node(label, weight, null, left, right);
+                left.setParent(parent);
+                right.setParent(parent);
+                sortedNodes.add(parent);
+            }
 
-        root = sortedNodes.poll();
+            root = sortedNodes.poll();
+        }
         tree = new BinaryTree(root);
 
     }
 
     protected void assignCodes() {
+        if (tree != null && tree.getRoot() != null) {
+            assignRecursive(tree.getRoot(), "");
+        }
+    }
+
+    protected String getCodeFor(String symbol) {
+        return map.get(symbol);
+    }
+
+    private void assignRecursive(Node node, String currentCode) {
+        Node left = node.getLeft();
+        Node right = node.getRight();
+
+        if (left == null && right == null) {
+            map.put(node.getLabel(), currentCode);
+        } else {
+
+            if (left != null)
+                assignRecursive(left, currentCode + "0");
+
+            if (right != null)
+                assignRecursive(right, currentCode + "1");
+        }
+
 
     }
 
@@ -101,11 +134,11 @@ public class Huffman {
         return Arrays.copyOf(encoded, encoded.length);
     }
 
-    public Map<Character, List<Boolean>> getMap() {
-        return new HashMap<Character, List<Boolean>>(map);
+    public Map<String, String> getMap() {
+        return new HashMap<String, String>(map);
     }
 
-    public void setMap(final Map<Character, List<Boolean>> map) {
+    public void setMap(final Map<String, String> map) {
         this.map = map;
     }
 

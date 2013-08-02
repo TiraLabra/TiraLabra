@@ -64,7 +64,66 @@ public class HuffmanTest extends TestCase {
         h.buildTree();
         BinaryTree tree = h.getTree();
         Node root = tree.getRoot();
-        assertEquals("12", root.getLabel());
+        assertEquals("21", root.getLabel());
         assertEquals(3, root.getWeight());
+    }
+
+    public void testCodeAssignment() {
+        Huffman h = new Huffman("122");
+        h.calculateFrequencies();
+        h.buildTree();
+        h.assignCodes();
+
+        /*
+                21
+           0  /    \ 1
+            2       1
+         */
+        assertEquals("0", h.getCodeFor("2"));
+        assertEquals("1", h.getCodeFor("1"));
+
+        /*
+                421
+           0  /     \ 1
+            4        21
+                10 /    \ 11
+                2       1
+
+         */
+        h = new Huffman("1224444");
+        h.calculateFrequencies();
+        h.buildTree();
+        h.assignCodes();
+
+        assertEquals("0", h.getCodeFor("4"));
+        assertEquals("10", h.getCodeFor("2"));
+        assertEquals("11", h.getCodeFor("1"));
+
+
+        /*
+                   5421
+                0/     \1
+               421      5
+            00/   \01
+            4      21
+               010/  \011
+                2     1
+         */
+        h = new Huffman("122444455555");
+        h.calculateFrequencies();
+        h.buildTree();
+        h.assignCodes();
+
+        assertEquals("1", h.getCodeFor("5"));
+        assertEquals("00", h.getCodeFor("4"));
+        assertEquals("010", h.getCodeFor("2"));
+        assertEquals("011", h.getCodeFor("1"));
+
+        h = new Huffman("a");
+        h.calculateFrequencies();
+        h.buildTree();
+        h.assignCodes();
+
+        assertEquals("0", h.getCodeFor("a"));
     }
 }
