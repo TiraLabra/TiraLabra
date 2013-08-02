@@ -10,3 +10,8 @@ Toteutan myös pinorakenteen, jota pidän helpoimpana tapana hakea tieto edellis
 Itse siirron päättämiseen teen algoritmin, joka käyttää painotettua todennäköisyyttä puusta saatujen tietojen perusteella. Mikäli pelattuja kierroksia on vähän, joudun kuitenkin käyttämään enemmän satunnaisuutta tai laskea pienemmällä syvyydellä. 
 
 Tulen kokeilemaan tekoälyn toimivuutta erikokoisilla puun korkeuksilla, sekä lisäämällä erilaisia painotuksia peluisiin. 
+
+* * * 
+
+Ohjelmaan teen oman käyttöliittymän, jonka avulla pystyy pelaamaan tekoälyä vastaan tai laittaa tekoälyn pelaamaan toista tekoälyä vastaan. 
+Pelitilanteessa tärkein syöte on Game-luokan playRound(int i), jolla ihminen pelaa kierroksen tekoälyä vastaan (0=kivi, 1=paperi, 2=sakset) ja tekoäly tekoälyä vastaan i kierrosta. 
