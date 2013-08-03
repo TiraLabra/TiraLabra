@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- * Hello world!
- *
+ * Pia Kumpulainen 
+ * Lyhyin reitti
  */
 public class App 
 {
