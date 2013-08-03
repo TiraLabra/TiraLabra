@@ -1,11 +1,14 @@
 package chess.gui;
 
+import chess.ai.AI;
+import chess.ai.RandomAI;
 import chess.domain.GameState;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -24,6 +27,8 @@ public class UserInterface implements Runnable, MouseListener
 	private int selectedSquare = -1;
 
 	private int player = 0;
+
+	private AI ai = new RandomAI();
 
 	@Override
 	public void run()
@@ -68,6 +73,7 @@ public class UserInterface implements Runnable, MouseListener
 		if (selectedSquare >= 0) {
 			if (state.getAllowedMoves(selectedSquare).contains(sqr)) {
 				state.move(selectedSquare, sqr);
+				ai.move(state, 1 - player);
 				board.setBoard(state.getBoard());
 			}
 		}
@@ -77,6 +83,9 @@ public class UserInterface implements Runnable, MouseListener
 			List<Integer> moves = state.getAllowedMoves(sqr);
 			board.setAllowedMoves(moves);
 			board.setSelected(selectedSquare);
+		} else {
+			board.setAllowedMoves(new ArrayList<Integer>());
+			board.setSelected(-1);
 		}
 	}
 
