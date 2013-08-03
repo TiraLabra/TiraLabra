@@ -1,23 +1,27 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Algorithms;
 
 import Structures.Graph.Graph;
 import Structures.Graph.Vertex;
-import Structures.LinkedList.LinkedList;
 import Structures.Hashtable.Hashtable;
-import Structures.Queue.Queue;
-import Structures.Stack.Stack;
+import Structures.LinkedList.LinkedList;
 import Utils.Color;
 import Utils.Iterator;
 
 /**
-* Contains graph related algorithms
-*/
-
-public class Algorithm {
+ * Detects cycles in a graph
+ */
+public class CycleDetector {
     private Graph graph;
-    public Algorithm(Graph graph){
+    public CycleDetector(Graph graph){
         this.graph=graph;
     }
+    /**
+    * Checks if the given graph has a cycle in it
+    */
     public boolean hasCycle(){
         Hashtable<Vertex,Color> color=new Hashtable<Vertex,Color>();
         LinkedList<Vertex> vertices=graph.getVertices();
@@ -36,37 +40,6 @@ public class Algorithm {
             }
         }
         return false;
-    }
-    public LinkedList<Vertex> floodFill(Vertex a){
-        return BFSFloodFill(a);
-    }
-    private LinkedList<Vertex> BFSFloodFill(Vertex a){
-        Hashtable<Vertex,Color> color=new Hashtable<Vertex,Color>();
-        LinkedList<Vertex> reached = new LinkedList<Vertex>();
-        LinkedList<Vertex> vertices = graph.getVertices();
-        Iterator<Vertex> j = new Iterator<Vertex>(vertices);
-        while(j.hasNext()){
-            Vertex v = j.getNext();
-            color.put(v,Color.WHITE);
-        }
-        Queue<Vertex> queue = new Queue<Vertex>();
-        color.put(a,Color.GREY);
-        queue.enqueue(a);
-        while(!queue.isEmpty()){
-            Vertex u=queue.dequeue();
-            LinkedList<Vertex> adjacencyVertices=graph.getAdjacencyVertices(u);
-            Iterator<Vertex> r = new Iterator<Vertex>(adjacencyVertices);
-            while(r.hasNext()){
-                Vertex h = r.getNext();
-                if(color.get(h)==Color.WHITE){
-                    color.put(h, Color.GREY);
-                    queue.enqueue(h);
-                }
-            }
-            color.put(u, Color.BLACK);
-            reached.add(u);
-        }
-        return reached;
     }
     private boolean DFSCycle(Vertex a, Hashtable<Vertex,Color> color){       
         color.put(a,Color.GREY);

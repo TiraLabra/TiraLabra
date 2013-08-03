@@ -1,9 +1,10 @@
 package Structures.Graph;
 
-import Algorithms.Algorithm;
 import Algorithms.BFS;
 import Algorithms.BellmanFord;
+import Algorithms.CycleDetector;
 import Algorithms.Dijkstra;
+import Algorithms.FloodFill;
 import Algorithms.Path;
 import Algorithms.PathFinder;
 import Structures.LinkedList.LinkedList;
@@ -234,15 +235,15 @@ public class Graph {
     * Checks if the graph contains a cycle
     */
     public boolean hasCycle(){
-        Algorithm algo=new Algorithm(this);
-        return algo.hasCycle();
+        CycleDetector cd=new CycleDetector(this);
+        return cd.hasCycle();
     }
     /**
     * Fills all vertices reached from vertex a using flood fill
     * @return List of vertices reached from vertex a
     */
     public LinkedList<Vertex> floodFill(Vertex a){
-        Algorithm algo = new Algorithm(this);
-        return algo.floodFill(a);
+        FloodFill ff = new FloodFill(this);
+        return ff.fill(a);
     }
 }
