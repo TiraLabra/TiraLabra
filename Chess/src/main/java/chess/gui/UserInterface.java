@@ -4,19 +4,26 @@ import chess.domain.GameState;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
  * Käyttöliittymän pääikkuna.
  */
-public class UserInterface implements Runnable
+public class UserInterface implements Runnable, MouseListener
 {
 	private JFrame frame;
 
 	private BoardPanel board;
 
 	private GameState state;
+
+	private int selectedSquare = -1;
+
+	private int player = 0;
 
 	@Override
 	public void run()
@@ -46,7 +53,49 @@ public class UserInterface implements Runnable
 		board = new BoardPanel();
 		container.add(board);
 		board.setPreferredSize(new Dimension(600, 600));
+		board.addMouseListener(this);
 
 		container.add(board);
+	}
+
+	public void mouseClicked(MouseEvent me)
+	{
+	}
+
+	public void mousePressed(MouseEvent me)
+	{
+		int sqr = getSquareFromCoordinates(me.getX(), me.getY());
+		if (selectedSquare >= 0) {
+			if (state.getAllowedMoves(selectedSquare).contains(sqr)) {
+				state.move(selectedSquare, sqr);
+				board.setBoard(state.getBoard());
+			}
+		}
+
+		if (state.getBoard()[sqr][0] == player) {
+			selectedSquare = sqr;
+			List<Integer> moves = state.getAllowedMoves(sqr);
+			board.setAllowedMoves(moves);
+			board.setSelected(selectedSquare);
+		}
+	}
+
+	public void mouseReleased(MouseEvent me)
+	{
+	}
+
+	public void mouseEntered(MouseEvent me)
+	{
+	}
+
+	public void mouseExited(MouseEvent me)
+	{
+	}
+
+	private int getSquareFromCoordinates(int x, int y)
+	{
+		int row = 8 * y / board.getHeight();
+		int col = 8 * x / board.getWidth();
+		return row * 8 + col;
 	}
 }

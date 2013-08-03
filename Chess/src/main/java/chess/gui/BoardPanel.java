@@ -1,9 +1,13 @@
 package chess.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -14,7 +18,11 @@ public class BoardPanel extends JPanel
 {
 	private BufferedImage image;
 
-	private int[][][] board = new int[8][8][2];
+	private int[][] board = new int[64][2];
+
+	private boolean[] allowedMoves = new boolean[64];
+
+	private int selected = -1;
 
 	public BoardPanel()
 	{
@@ -29,14 +37,30 @@ public class BoardPanel extends JPanel
 	{
 		drawBoard(g);
 		drawPieces(g);
+		drawMoveIndicators(g);
+		drawSelection(g);
 	}
 
-	public void setBoard(int board[][][])
+	public void setBoard(int board[][])
 	{
-		for (int i = 0; i < 8; ++i)
-			for (int j = 0; j < 8; ++j)
-				for (int k = 0; k < 2; ++k)
-					this.board[i][j][k] = board[i][j][k];
+		for (int i = 0; i < 64; ++i)
+			for (int j = 0; j < 2; ++j)
+				this.board[i][j] = board[i][j];
+		repaint();
+	}
+
+	public void setAllowedMoves(List<Integer> moves)
+	{
+		Arrays.fill(allowedMoves, false);
+		for (int square: moves)
+			allowedMoves[square] = true;
+		repaint();
+	}
+
+	public void setSelected(int selected)
+	{
+		this.selected = selected;
+		repaint();
 	}
 
 	private void drawBoard(Graphics g)
@@ -57,18 +81,16 @@ public class BoardPanel extends JPanel
 
 	private void drawPieces(Graphics g)
 	{
-		for (int row = 0; row < 8; ++row) {
-			for (int col = 0; col < 8; ++col) {
-				if (board[row][col][0] >= 0)
-					drawPiece(row, col, board[row][col][0], board[row][col][1], g);
-			}
+		for (int sqr = 0; sqr < 64; ++sqr) {
+			if (board[sqr][0] >= 0)
+				drawPiece(sqr / 8, sqr % 8, board[sqr][0], board[sqr][1], g);
 		}
 	}
 
 	private void drawPiece(int row, int col, int player, int piece, Graphics g)
 	{
 		int[] dst = getCoordinates(row, col, 8, 8, getWidth(), getHeight());
-		int[] src = getCoordinates(player, piece, 2, 6, image.getWidth(), image.getHeight());
+		int[] src = getCoordinates(1 - player, piece, 2, 6, image.getWidth(), image.getHeight());
 		g.drawImage(image, dst[0], dst[1], dst[2], dst[3], src[0], src[1], src[2], src[3], null);
 	}
 
@@ -80,5 +102,27 @@ public class BoardPanel extends JPanel
 		ret[2] = (int) (((float) (col + 1) / columns) * width); // right
 		ret[3] = (int) (((float) (row + 1) / rows) * height); // bottom
 		return ret;
+	}
+
+	private void drawMoveIndicators(Graphics g)
+	{
+		((Graphics2D) g).setStroke(new BasicStroke(4));
+		g.setColor(Color.GREEN);
+		for (int sqr = 0; sqr < 64; ++sqr) {
+			if (allowedMoves[sqr]) {
+				int[] c = getCoordinates(sqr / 8, sqr % 8, 8, 8, getWidth(), getHeight());
+				g.drawRect(c[0] + 5, c[1] + 5, c[2] - c[0] - 10, c[3] - c[1] - 10);
+			}
+		}
+	}
+
+	private void drawSelection(Graphics g)
+	{
+		if (selected >= 0) {
+			((Graphics2D) g).setStroke(new BasicStroke(4));
+			g.setColor(Color.BLUE);
+			int[] c = getCoordinates(selected / 8, selected % 8, 8, 8, getWidth(), getHeight());
+			g.drawRect(c[0] + 5, c[1] + 5, c[2] - c[0] - 10, c[3] - c[1] - 10);
+		}
 	}
 }
