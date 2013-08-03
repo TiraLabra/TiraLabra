@@ -29,12 +29,18 @@ public class HuffmanSteganoEncoder {
 //        System.out.println(decoder.getMessage());
 
         try {
-            Steganographer s = new Steganographer(args[0], "");
-            System.out.println("Got file open " + args[0]);
-            s.emptyLeastSignificantBits();
-            System.out.println("Cleared out bits");
+            String message = "111000111";
+            System.out.println("Open source file " + args[0]);
+            System.out.println("Encode: \t" + message);
+            Steganographer s = new Steganographer(args[0], message);
+            s.encode();
             s.saveFile(args[1]);
+            s = null;
             System.out.println("File saved to " + args[1]);
+            Steganographer dec = new Steganographer(args[1]);
+            System.out.println("Decoding bits from " + args[1]);
+            dec.decodeBits();
+            System.out.println("Decode: \t" + dec.getMessage());
         } catch (IOException ioe) {
             System.out.println("Oh poop.");
             ioe.printStackTrace();
