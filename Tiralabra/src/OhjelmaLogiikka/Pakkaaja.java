@@ -23,14 +23,13 @@ public class Pakkaaja {
     }
 
     public void pakkaa(String tiedosto, String ulosTiedosto) {
-        TiedostoLukija lukija = new TiedostoLukija(tiedosto);
-        TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
+        
         try {
-
-            OmaList<Byte> luetutTavut = lukija.lueTiedosto();
-
-            OmaList<Byte> pakattu = huffmanKoodaa(luetutTavut, ulosTiedosto + ".header");
+            TiedostoLukija lukija = new TiedostoLukija(tiedosto);
+            TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);    
             
+            OmaList<Byte> luetutTavut = lukija.lueTiedosto();
+            OmaList<Byte> pakattu = huffmanKoodaa(luetutTavut, ulosTiedosto + ".header");            
             kirjoittaja.kirjoitaTiedosto(pakattu);
 
         } catch (FileNotFoundException ex) {
@@ -54,8 +53,6 @@ public class Pakkaaja {
 
         // hash map: alkio tiedostosta - pari joka sisältää korvaavan alkion ja siinä olevien bittien määrän
         OmaMap<OmaList<Byte>, String> koodit = muodostaKoodit(blokit);
-
-        // tulostetaan koodit
 
         // muodostetaan header
         OmaList<Byte> ulos;
@@ -230,7 +227,7 @@ public class Pakkaaja {
             assert (pakkausKoodi != null);
 
             for (int j = 0; j < pakkausKoodi.length(); ++j) {
-
+                
                 byte arvo = 1;
                 
                 if (pakkausKoodi.charAt(j) == '0') {

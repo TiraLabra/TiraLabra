@@ -7,11 +7,11 @@ public class Main {
 
     // testailua
     public static void main(String[] args) {
-        int blokinKoko = 1;
+        int blokinKoko = 8;
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
         Purkaaja purkaaja = new Purkaaja(blokinKoko); 
-        pakkaaja.pakkaa("Testitiedostot/suuri.xml", "Testitiedostot/ulos.txt");
-        purkaaja.pura("Testitiedostot/ulos.txt", "Testitiedostot/purettu.txt");
+        pakkaaja.pakkaa("Testitiedostot/suuri.xml", "Testitiedostot/ulos.dat");
+        purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
         
     }
 }
