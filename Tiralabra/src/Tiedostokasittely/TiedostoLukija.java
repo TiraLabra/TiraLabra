@@ -3,57 +3,74 @@ package Tiedostokasittely;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaList;
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
- Luokka joka lukee tavuja annetusta tiedostosta. Tarkempi dokumentaatio tulee kun olen varma etten muokkaa luokkaa hirveästi enää
+ * Luokka joka lukee tavuja annetusta tiedostosta. Tarkempi dokumentaatio tulee
+ * kun olen varma etten muokkaa luokkaa hirveästi enää
  */
-
 public class TiedostoLukija {
 
-    private BufferedInputStream lukuStream;
-    private InputStream inputStream;
     private final File TIEDOSTO;
-    private final int KOKO;
- 
 
     public TiedostoLukija(String nimi) {
         TIEDOSTO = new File(nimi);
-        KOKO = 4;        
     }
 
     public OmaList<Byte> lueTiedosto() throws FileNotFoundException, IOException {
-       
-            avaaStream();
-            OmaList luettuData = new OmaArrayList<OmaList<Byte>>();
-            
-            byte [] puskuri = new byte[KOKO];
-            int luettu  = lukuStream.read(puskuri);
-            
-            while (luettu != -1) {
-                
-                for (int i = 0; i < luettu; ++i) {
-                    luettuData.add(puskuri[i]);
-                }
-                luettu = lukuStream.read(puskuri);
-            }
-                        
-            suljeStream();
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(TIEDOSTO));
+        try {
+            OmaList<Byte> luettuData = lue(stream);
             return luettuData;
+        } finally {
+            stream.close();
+        }
+
     }
 
-    private void avaaStream() throws FileNotFoundException {
-        inputStream = new FileInputStream(TIEDOSTO);
-        lukuStream = new BufferedInputStream(inputStream);
+    public OmaList<String> lueTiedostoRiveittain() throws FileNotFoundException, IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(TIEDOSTO));
+        try {
+            OmaList<String> luettu = lueRiveittain(reader);
+            return luettu;
+        } finally {
+            reader.close();
+        }
+
     }
 
-    private void suljeStream() throws IOException {
-        lukuStream.close();
-        inputStream.close();
+    private OmaList<Byte> lue(BufferedInputStream stream) throws IOException {
+
+        OmaList luettuData = new OmaArrayList<Byte>();
+        byte[] puskuri = new byte[1];
+
+        int luettu = stream.read(puskuri);
+
+        while (luettu != -1) {
+            luettuData.add(puskuri[0]);
+            luettu = stream.read(puskuri);
+        }
+
+        return luettuData;
+    }
+
+    private OmaList<String> lueRiveittain(BufferedReader reader) throws IOException {
+        OmaList<String> rivit = new OmaArrayList<String>();
+        while (true) {
+            String rivi = reader.readLine();
+            if (rivi == null) {
+                break;
+            }
+            if (rivi.length() != 0) {
+                rivit.add(rivi);
+            }      
+        }
+        return rivit;
     }
 }

@@ -37,6 +37,12 @@ public interface OmaList<T> {
      * @return Palauttaa aina true
      */
     public boolean add(T e);
+    /**
+     * Metodi joka liittää annetun listan tähän listaan.
+     * @param e Lista joka halutaan liittää
+     * @return Palauttaa true jos listaa muokattiin
+     */
+    public boolean addAll(OmaList<T> e);
 
     /**
      * Poistaa annetun objetkin listalta jos se löytyy. Palauttaa booleanin joka kertoo muokattiinko listaa

@@ -26,28 +26,11 @@ public class TiedostoKirjoittaja {
     public void kirjoitaTiedosto(OmaList<Byte> tieto) throws IOException {
 
         avaaStream();
-
-        byte[] taulu = new byte[4];
-        for (int i = 0, j = 0; i < tieto.size(); ++i) {
-
-
-            taulu[j] = tieto.get(i);
-            ++j;
-            if (j == 4) {
-                j = 0;
-                kirjoitusStream.write(taulu);
-            }
-
-            
-
-        }
-
-
+        kirjoita(tieto);
         suljeStream();
-
     }
 
-    private void avaaStream() throws FileNotFoundException {
+    private void avaaStream() throws FileNotFoundException  {
         inputStream = new FileOutputStream(TIEDOSTO);
         kirjoitusStream = new BufferedOutputStream(inputStream);
     }
@@ -55,5 +38,14 @@ public class TiedostoKirjoittaja {
     private void suljeStream() throws IOException {
         kirjoitusStream.close();
         inputStream.close();
+    }
+
+    private void kirjoita(OmaList<Byte> tieto) throws IOException {
+        byte[] taulu = new byte[1];
+        
+        for (int i = 0, j = 0; i < tieto.size(); ++i) {
+            taulu[j] = tieto.get(i);
+            kirjoitusStream.write(taulu);
+        }
     }
 }

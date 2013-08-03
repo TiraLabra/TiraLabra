@@ -80,10 +80,10 @@ public class OmaMinimiPriorityQueueTest {
 
         assertTrue("Jono palautti väärän alkion", jono.pop() == 2);
         assertTrue("Jono palautti väärän alkion", jono.pop() == 4);
-       // assertTrue("Jono palautti väärän alkion", jono.pop() == 5);
-       // assertTrue("Jono palautti väärän alkion", jono.pop() == 19);
-       // assertTrue("Jono palautti väärän alkion", jono.pop() == 24);
-       // assertTrue("Jono palautti väärän alkion", jono.pop() == 123);
+        assertTrue("Jono palautti väärän alkion", jono.pop() == 5);
+        assertTrue("Jono palautti väärän alkion", jono.pop() == 19);
+        assertTrue("Jono palautti väärän alkion", jono.pop() == 24);
+        assertTrue("Jono palautti väärän alkion", jono.pop() == 123);
     }
 
     @Test
