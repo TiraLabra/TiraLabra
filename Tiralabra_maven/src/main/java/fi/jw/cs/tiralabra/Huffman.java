@@ -13,7 +13,6 @@ public class Huffman {
     static final char RIGHT = '1';
 
     private String message;
-    private boolean[] encoded;
     private String encodedMessage;
     private Map<String, String> map;
     private int[] frequencies;
@@ -30,7 +29,6 @@ public class Huffman {
         map = new HashMap<String, String>();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new PriorityQueue<Node>();
-        encoded = new boolean[0];
     }
 
     public void encode() {
@@ -48,26 +46,31 @@ public class Huffman {
     protected void calculateFrequencies() {
         char[] chars = message.toCharArray();
         if (chars.length > 0) {
-            SortedSet<Character> uniques = new TreeSet<Character>();
 
+            int uniques = 0;
             for (Character c : chars) {
-                frequencies[(int) c.charValue()]++;
+                int key = (int) c.charValue();
+                if (frequencies[key] == 0)
+                    uniques++;
 
-                uniques.add(c);
+                frequencies[key]++;
             }
 
 
-            sortedNodes = new PriorityQueue<Node>(uniques.size(), Node.getComparator());
-            for (Character c : uniques) {
-                int weight = frequencies[(int) c];
+            sortedNodes = new PriorityQueue<Node>(uniques, Node.getComparator());
+            for (int i = 0; i < frequencies.length; i++) {
+                int weight = frequencies[i];
                 if (weight > 0) {
-                    Node s = new Node("" + c, weight);
+                    Node s = new Node("" + (char) i, weight);
                     sortedNodes.add(s);
                 }
             }
         }
     }
 
+    /**
+     * Building a Huffman tree where each node has a unique path and the least probable data is at the bottom
+     */
     protected void buildTree() {
         Node root;
         PriorityQueue<Node> nodes = new PriorityQueue<Node>(sortedNodes);
@@ -97,6 +100,9 @@ public class Huffman {
 
     }
 
+    /**
+     * Given a map of key=>code pairs it will generate the Huffman tree that corresponds to it
+     */
     protected void buildReverseTree() {
         Node root = new Node("root", 0);
         Node current = root;
@@ -137,9 +143,6 @@ public class Huffman {
         }
     }
 
-    protected String getCodeFor(String symbol) {
-        return map.get(symbol);
-    }
 
     private void assignRecursive(Node node, String currentCode) {
         Node left = node.getLeft();
@@ -155,8 +158,10 @@ public class Huffman {
             if (right != null)
                 assignRecursive(right, currentCode + RIGHT);
         }
+    }
 
-
+    protected String getCodeFor(String symbol) {
+        return map.get(symbol);
     }
 
     protected void encodeMessage() {
@@ -199,6 +204,30 @@ public class Huffman {
         }
     }
 
+    public Map<String, String> parseMap(String serial) {
+        String[] parts = serial.split("\\.");
+
+        Map<String, String> m = new HashMap<String, String>();
+        for (int i = 0; i < parts.length; i += 2) {
+            String key = parts[i];
+            String value = parts[i + 1];
+            m.put(key, value);
+        }
+
+        return m;
+    }
+
+    public String encodeMap() {
+        String encodedMap = "";
+        String sep = ".";
+        for (String key : map.keySet()) {
+            String value = map.get(key);
+            encodedMap += String.format("%03d", (int) (key.charAt(0))) + sep;
+            encodedMap += value + sep;
+        }
+
+        return encodedMap;
+    }
 
     ///////////// GET & SET ///////////////////
 
@@ -218,9 +247,6 @@ public class Huffman {
         this.message = message;
     }
 
-    public boolean[] getEncoded() {
-        return Arrays.copyOf(encoded, encoded.length);
-    }
 
     public Map<String, String> getMap() {
         return new HashMap<String, String>(map);
