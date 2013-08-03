@@ -40,7 +40,7 @@ public class Steganographer {
         encodeBits();
     }
 
-    public void checkMessageSize() throws IllegalArgumentException {
+    protected void checkMessageSize() throws IllegalArgumentException {
 
         int maxBits = width * height * BITS_PER_PIXEL;
 
@@ -50,7 +50,11 @@ public class Steganographer {
 
     }
 
-    protected void encodeMessageLength(int x, int y) {
+    public int getMaximumMessageLength() {
+        return (width * height * BITS_PER_PIXEL) / 8; // in bytes.
+    }
+
+    protected void writeMessageLength(int x, int y) {
         Color msgLen = new Color(messageLength);
         int len = removeAlphaChannel(msgLen.getRGB());
         image.setRGB(0, 0, len);
@@ -58,7 +62,6 @@ public class Steganographer {
 
     protected int readMessageLength(int x, int y) {
         return removeAlphaChannel(image.getRGB(x, y)); // has alpha channel again;
-
     }
 
     protected int removeAlphaChannel(int color) {
@@ -74,6 +77,7 @@ public class Steganographer {
 
     protected void decodeBits() {
         messageLength = readMessageLength(0, 0);
+        System.out.println("decoding message lenght is " + messageLength);
         message = "";
         int bitsRead = 0;
         for (int w = 1; w < width; w++) {
@@ -104,7 +108,7 @@ public class Steganographer {
 
     protected void encodeBits() {
 
-        encodeMessageLength(0, 0);
+        writeMessageLength(0, 0);
 
         char[] chars = message.toCharArray();
         int charsWritten = 0;
