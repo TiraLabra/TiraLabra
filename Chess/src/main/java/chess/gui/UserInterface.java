@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -71,7 +70,7 @@ public class UserInterface implements Runnable, MouseListener
 	{
 		int sqr = getSquareFromCoordinates(me.getX(), me.getY());
 		if (selectedSquare >= 0) {
-			if (state.getAllowedMoves(selectedSquare).contains(sqr)) {
+			if ((state.getAllowedMoves(selectedSquare) & (1L << sqr)) != 0) {
 				state.move(selectedSquare, sqr);
 				ai.move(state, 1 - player);
 				board.setBoard(state.getBoard());
@@ -80,11 +79,11 @@ public class UserInterface implements Runnable, MouseListener
 
 		if (state.getBoard()[sqr][0] == player) {
 			selectedSquare = sqr;
-			List<Integer> moves = state.getAllowedMoves(sqr);
+			long moves = state.getAllowedMoves(sqr);
 			board.setAllowedMoves(moves);
 			board.setSelected(selectedSquare);
 		} else {
-			board.setAllowedMoves(new ArrayList<Integer>());
+			board.setAllowedMoves(0);
 			board.setSelected(-1);
 		}
 	}

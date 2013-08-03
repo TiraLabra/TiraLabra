@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -20,7 +19,7 @@ public class BoardPanel extends JPanel
 
 	private int[][] board = new int[64][2];
 
-	private boolean[] allowedMoves = new boolean[64];
+	private long allowedMoves = 0;
 
 	private int selected = -1;
 
@@ -49,11 +48,9 @@ public class BoardPanel extends JPanel
 		repaint();
 	}
 
-	public void setAllowedMoves(List<Integer> moves)
+	public void setAllowedMoves(long moves)
 	{
-		Arrays.fill(allowedMoves, false);
-		for (int square: moves)
-			allowedMoves[square] = true;
+		allowedMoves = moves;
 		repaint();
 	}
 
@@ -109,7 +106,7 @@ public class BoardPanel extends JPanel
 		((Graphics2D) g).setStroke(new BasicStroke(4));
 		g.setColor(Color.GREEN);
 		for (int sqr = 0; sqr < 64; ++sqr) {
-			if (allowedMoves[sqr]) {
+			if (((allowedMoves & (1L << sqr))) != 0) {
 				int[] c = getCoordinates(sqr / 8, sqr % 8, 8, 8, getWidth(), getHeight());
 				g.drawRect(c[0] + 5, c[1] + 5, c[2] - c[0] - 10, c[3] - c[1] - 10);
 			}

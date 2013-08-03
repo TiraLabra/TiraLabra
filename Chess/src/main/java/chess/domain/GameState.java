@@ -62,10 +62,9 @@ public class GameState
 		board[from][1] = -1;
 	}
 
-	public List<Integer> getAllowedMoves(int sqr)
+	public long getAllowedMoves(int sqr)
 	{
-		List<Integer> moves = new ArrayList<Integer>(27);
-
+		long moves = 0;
 		if (board[sqr][0] < 0)
 			return moves;
 
@@ -75,61 +74,61 @@ public class GameState
 
 		switch (board[sqr][1]) {
 			case Pieces.KING:
-				addMove(moves, row - 1, col - 1, player);
-				addMove(moves, row - 1, col, player);
-				addMove(moves, row - 1, col + 1, player);
-				addMove(moves, row, col - 1, player);
-				addMove(moves, row, col + 1, player);
-				addMove(moves, row + 1, col - 1, player);
-				addMove(moves, row + 1, col, player);
-				addMove(moves, row + 1, col + 1, player);
+				moves |= getMove(row - 1, col - 1, player);
+				moves |= getMove(row - 1, col, player);
+				moves |= getMove(row - 1, col + 1, player);
+				moves |= getMove(row, col - 1, player);
+				moves |= getMove(row, col + 1, player);
+				moves |= getMove(row + 1, col - 1, player);
+				moves |= getMove(row + 1, col, player);
+				moves |= getMove(row + 1, col + 1, player);
 				break;
 			case Pieces.QUEEN:
-				addLineMoves(moves, row, col, -1, -1);
-				addLineMoves(moves, row, col, -1, 0);
-				addLineMoves(moves, row, col, -1, 1);
-				addLineMoves(moves, row, col, 0, -1);
-				addLineMoves(moves, row, col, 0, 1);
-				addLineMoves(moves, row, col, 1, -1);
-				addLineMoves(moves, row, col, 1, 0);
-				addLineMoves(moves, row, col, 1, 1);
+				moves |= getLineMoves(row, col, -1, -1);
+				moves |= getLineMoves(row, col, -1, 0);
+				moves |= getLineMoves(row, col, -1, 1);
+				moves |= getLineMoves(row, col, 0, -1);
+				moves |= getLineMoves(row, col, 0, 1);
+				moves |= getLineMoves(row, col, 1, -1);
+				moves |= getLineMoves(row, col, 1, 0);
+				moves |= getLineMoves(row, col, 1, 1);
 				break;
 			case Pieces.ROOK:
-				addLineMoves(moves, row, col, -1, 0);
-				addLineMoves(moves, row, col, 0, -1);
-				addLineMoves(moves, row, col, 0, 1);
-				addLineMoves(moves, row, col, 1, 0);
+				moves |= getLineMoves(row, col, -1, 0);
+				moves |= getLineMoves(row, col, 0, -1);
+				moves |= getLineMoves(row, col, 0, 1);
+				moves |= getLineMoves(row, col, 1, 0);
 				break;
 			case Pieces.BISHOP:
-				addLineMoves(moves, row, col, -1, -1);
-				addLineMoves(moves, row, col, -1, 1);
-				addLineMoves(moves, row, col, 1, -1);
-				addLineMoves(moves, row, col, 1, 1);
+				moves |= getLineMoves(row, col, -1, -1);
+				moves |= getLineMoves(row, col, -1, 1);
+				moves |= getLineMoves(row, col, 1, -1);
+				moves |= getLineMoves(row, col, 1, 1);
 				break;
 			case Pieces.KNIGHT:
-				addMove(moves, row - 2, col - 1, player);
-				addMove(moves, row - 2, col + 1, player);
-				addMove(moves, row - 1, col - 2, player);
-				addMove(moves, row - 1, col + 2, player);
-				addMove(moves, row + 2, col - 1, player);
-				addMove(moves, row + 2, col + 1, player);
-				addMove(moves, row + 1, col - 2, player);
-				addMove(moves, row + 1, col + 2, player);
+				moves |= getMove(row - 2, col - 1, player);
+				moves |= getMove(row - 2, col + 1, player);
+				moves |= getMove(row - 1, col - 2, player);
+				moves |= getMove(row - 1, col + 2, player);
+				moves |= getMove(row + 2, col - 1, player);
+				moves |= getMove(row + 2, col + 1, player);
+				moves |= getMove(row + 1, col - 2, player);
+				moves |= getMove(row + 1, col + 2, player);
 				break;
 			case Pieces.PAWN:
 				int nextRow = row - 1 + 2 * player;
 				if ((nextRow & ~7) == 0) {
 					if (board[nextRow * 8 + col][0] < 0) {
-						moves.add(nextRow * 8 + col);
+						moves |= 1L << nextRow * 8 + col;
 						int nextRow2 = row - 2 + 4 * player;
 						if ((nextRow2 & ~7) == 0
 								&& row == 6 - 5 * player && board[nextRow2 * 8 + col][0] < 0)
-							moves.add(nextRow2 * 8 + col);
+							moves |= 1L << nextRow2 * 8 + col;
 					}
 					if (col > 0 && board[nextRow * 8 + col - 1][0] == 1 - player)
-						moves.add(nextRow * 8 + col - 1);
+						moves |= 1L << nextRow * 8 + col - 1;
 					if (col < 7 && board[nextRow * 8 + col + 1][0] == 1 - player)
-						moves.add(nextRow * 8 + col + 1);
+						moves |= 1L << nextRow * 8 + col + 1;
 				}
 
 				break;
@@ -140,29 +139,32 @@ public class GameState
 		return moves;
 	}
 
-	private void addLineMoves(List<Integer> moves, int row, int col, int dr, int dc)
+	private long getLineMoves(int row, int col, int dr, int dc)
 	{
+		long moves = 0;
 		int player = board[row * 8 + col][0];
 		for (;;) {
 			row += dr;
 			col += dc;
-			if (addMove(moves, row, col, player)) {
+			long move = getMove(row, col, player);
+			if (move != 0) {
+				moves |= move;
 				if (board[row * 8 + col][0] == 1 - player)
 					break;
 			} else
 				break;
 		}
+		return moves;
 	}
 
-	private boolean addMove(List<Integer> moves, int row, int col, int player)
+	private long getMove(int row, int col, int player)
 	{
 		if (((row | col) & ~7) != 0)
-			return false;
+			return 0;
 
 		if (board[row * 8 + col][0] == player)
-			return false;
+			return 0;
 
-		moves.add(row * 8 + col);
-		return true;
+		return 1L << row * 8 + col;
 	}
 }
