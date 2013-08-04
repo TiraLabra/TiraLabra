@@ -1,10 +1,8 @@
 package fi.jw.cs.tiralabra;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -152,9 +150,27 @@ public class HuffmanTest extends TestCase {
         decoder.decode();
 
         assertEquals(decoder.getMessage(), message);
-
-
     }
 
+
+    public void testParseMap() {
+        Huffman h = new Huffman("");
+        char nil = '\0';
+        String map = "a" + nil + "0" + nil +
+                "b" + nil + "10" + nil +
+                "c" + nil + "110" + nil +
+                "d" + nil + "111";
+        Map<String, String> m = h.parseMap(map);
+
+        assertTrue(m.containsKey("a"));
+        assertTrue(m.containsKey("b"));
+        assertTrue(m.containsKey("c"));
+        assertTrue(m.containsKey("d"));
+
+        assertEquals("0", m.get("a"));
+        assertEquals("10", m.get("b"));
+        assertEquals("110", m.get("c"));
+        assertEquals("111", m.get("d"));
+    }
 
 }

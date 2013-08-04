@@ -3,6 +3,8 @@ package fi.jw.cs.tiralabra;
 import java.util.*;
 
 /**
+ * This class provides the utility of encoding and decoding a 8-bit text into a compressed Huffman encoding.
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-01
  */
@@ -31,47 +33,60 @@ public class Huffman {
         sortedNodes = new PriorityQueue<Node>();
     }
 
+
+    /**
+     * The main function to call when encoding.
+     */
     public void encode() {
-        calculateFrequencies();
-        buildTree();
-        assignCodes();
-        encodeMessage();
+        if (message.length() == 0)
+            throw new RuntimeException("No message provided");
+
+        frequencies = calculateFrequencies();
+        sortedNodes = createdWeightedNodes();
+        tree = buildTree();
+        map = assignCodes();
+        encodedMessage = encodeMessage();
     }
 
+    /**
+     * The main function to call when decoding a message
+     */
     public void decode() {
         buildReverseTree();
         decodeMessage();
     }
 
-    protected void calculateFrequencies() {
+    protected int[] calculateFrequencies() {
         char[] chars = message.toCharArray();
+        int[] freqs = new int[256];
         if (chars.length > 0) {
 
-            int uniques = 0;
             for (Character c : chars) {
-                int key = (int) c.charValue();
-                if (frequencies[key] == 0)
-                    uniques++;
-
-                frequencies[key]++;
+                frequencies[(int) c.charValue()]++;
             }
 
+        }
+        return frequencies;
+    }
 
-            sortedNodes = new PriorityQueue<Node>(uniques, Node.getComparator());
-            for (int i = 0; i < frequencies.length; i++) {
-                int weight = frequencies[i];
-                if (weight > 0) {
-                    Node s = new Node("" + (char) i, weight);
-                    sortedNodes.add(s);
-                }
+    protected PriorityQueue<Node> createdWeightedNodes() {
+        PriorityQueue<Node> nodes = new PriorityQueue<Node>(0, Node.getComparator());
+        for (int i = 0; i < frequencies.length; i++) {
+            int weight = frequencies[i];
+            if (weight > 0) {
+                Node s = new Node("" + (char) i, weight);
+                nodes.add(s);
             }
         }
+        return nodes;
     }
 
     /**
      * Building a Huffman tree where each node has a unique path and the least probable data is at the bottom
+     * <p/>
+     * The left/right divide is decided by the label value.
      */
-    protected void buildTree() {
+    protected BinaryTree buildTree() {
         Node root;
         PriorityQueue<Node> nodes = new PriorityQueue<Node>(sortedNodes);
 
@@ -83,21 +98,42 @@ public class Huffman {
             while (nodes.size() >= 2) {
                 Node n1 = nodes.poll();
                 Node n2 = nodes.poll();
-                boolean firstIsBigger = (n1.getWeight() >= n2.getWeight());
-                Node left = firstIsBigger ? n1 : n2;
-                Node right = firstIsBigger ? n2 : n1;
+
+                Node placeholder = chooseChildSides(n1, n2);
+                Node left = placeholder.getLeft();
+                Node right = placeholder.getRight();
+
                 String label = left.getLabel() + right.getLabel();
                 int weight = left.getWeight() + right.getWeight(); //TODO: possible interger overflow error
                 Node parent = new Node(label, weight, null, left, right);
+
                 left.setParent(parent);
                 right.setParent(parent);
+
                 nodes.add(parent);
             }
 
             root = nodes.poll();
         }
-        tree = new BinaryTree(root);
+        return new BinaryTree(root);
 
+    }
+
+    /**
+     * Assigns the nodes based on their labels so that we can build the tree in a deterministic fashion always
+     *
+     * @param n1
+     * @param n2
+     * @return Returns a temporary Node whose children have been set in the correct order
+     */
+    protected Node chooseChildSides(Node n1, Node n2) {
+        Node parent = new Node();
+        if (n1.getLabel().compareTo(n2.getLabel()) <= 0) {
+            parent.setLeft(n1);
+            parent.setRight(n2);
+        }
+
+        return parent;
     }
 
     /**
@@ -137,26 +173,28 @@ public class Huffman {
         tree = new BinaryTree(root);
     }
 
-    protected void assignCodes() {
+    protected Map<String, String> assignCodes() {
+        Map<String, String> m = new HashMap<String, String>();
         if (tree != null && tree.getRoot() != null) {
-            assignRecursive(tree.getRoot(), "");
+            assignRecursive(tree.getRoot(), "", m);
         }
+        return m;
     }
 
 
-    private void assignRecursive(Node node, String currentCode) {
+    private void assignRecursive(Node node, String currentCode, Map<String, String> m) {
         Node left = node.getLeft();
         Node right = node.getRight();
 
         if (left == null && right == null) {
-            map.put(node.getLabel(), currentCode);
+            m.put(node.getLabel(), currentCode);
         } else {
 
             if (left != null)
-                assignRecursive(left, currentCode + LEFT);
+                assignRecursive(left, currentCode + LEFT, m);
 
             if (right != null)
-                assignRecursive(right, currentCode + RIGHT);
+                assignRecursive(right, currentCode + RIGHT, m);
         }
     }
 
@@ -164,48 +202,55 @@ public class Huffman {
         return map.get(symbol);
     }
 
-    protected void encodeMessage() {
-        encodedMessage = "";
+    protected String encodeMessage() {
+        String encoded = "";
         for (char c : message.toCharArray()) {
-            encodedMessage += getCodeFor("" + c);
+            encoded += getCodeFor("" + c);
         }
+        return encoded;
     }
 
-    protected void decodeMessage() {
-        message = "";
+    protected String decodeMessage() {
+        String msg = "";
         Node root = tree.getRoot();
         Node current = root;
         Node next;
         String currentPath = "";
         for (char c : encodedMessage.toCharArray()) {
 
-            if (c == LEFT) {
-                next = current.getLeft();
-            } else if (c == RIGHT) {
-                next = current.getRight();
-            } else {
-                throw new IllegalArgumentException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
+            switch (c) {
+                case LEFT:
+                    next = current.getLeft();
+                    break;
+                case RIGHT:
+                    next = current.getRight();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
             }
 
-            if (next != null) {
-                current = next;
-                if (current.isLeaf()) {
-                    message += current.getLabel();
-                    current = root;
-                    currentPath = "";
-                } else {
-                    currentPath += c;
-                    current.setLabel(currentPath);
-                }
-            } else {
+            if (next == null) {
                 throw new NoSuchElementException();
             }
 
+            current = next;
+
+            if (current.isLeaf()) {
+                msg += current.getLabel();
+                current = root;
+                currentPath = "";
+            } else {
+                currentPath += c;
+                current.setLabel(currentPath);
+            }
         }
+
+        return msg;
     }
 
+
     public Map<String, String> parseMap(String serial) {
-        String[] parts = serial.split("\\.");
+        String[] parts = serial.split("__");
 
         Map<String, String> m = new HashMap<String, String>();
         for (int i = 0; i < parts.length; i += 2) {
@@ -219,10 +264,10 @@ public class Huffman {
 
     public String encodeMap() {
         String encodedMap = "";
-        String sep = ".";
+        String sep = "__";
         for (String key : map.keySet()) {
             String value = map.get(key);
-            encodedMap += String.format("%03d", (int) (key.charAt(0))) + sep;
+            encodedMap += key + sep;
             encodedMap += value + sep;
         }
 

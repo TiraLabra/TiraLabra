@@ -1,10 +1,9 @@
 package fi.jw.cs.tiralabra;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.*;
+import java.io.*;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -13,8 +12,7 @@ import java.io.IOException;
 
 public class Steganographer {
 
-    public static final int BITS_PER_PIXEL = 3; // cannot assume alpha
-    private File file;
+    public static final int BITS_PER_PIXEL = 3; // alpha is discarded
     private BufferedImage image;
     private String message;
     private int width;
@@ -25,12 +23,12 @@ public class Steganographer {
         this(path, "");
     }
 
-    public Steganographer(String path, String message) throws IOException {
-        file = new File(path);
+    public Steganographer(String path, String msg) throws IOException {
+        File file = new File(path);
         image = ImageIO.read(file);
         width = image.getWidth();
         height = image.getHeight();
-        this.message = message;
+        message = msg;
         messageLength = message.length();
 
     }
@@ -42,7 +40,7 @@ public class Steganographer {
 
     protected void checkMessageSize() throws IllegalArgumentException {
 
-        int maxBits = width * height * BITS_PER_PIXEL;
+        int maxBits = getMaximumMessageLength();
 
         if (messageLength > maxBits) {
             throw new IllegalArgumentException("Trying to stuff " + messageLength + " bits to a picture with just " + maxBits + " bits available for encoding");
@@ -77,7 +75,6 @@ public class Steganographer {
 
     protected void decodeBits() {
         messageLength = readMessageLength(0, 0);
-        System.out.println("decoding message lenght is " + messageLength);
         message = "";
         int bitsRead = 0;
         for (int w = 1; w < width; w++) {
@@ -88,7 +85,6 @@ public class Steganographer {
                     int red = c.getRed();
                     int green = c.getGreen();
                     int blue = c.getBlue();
-                    int alpha = c.getAlpha();
 
                     message += getChar(red);
                     bitsRead++;
@@ -126,19 +122,9 @@ public class Steganographer {
                     int alpha = c.getAlpha();
 
 
-                    // 0xfe = 254 = 0b11111110 => ANDing will clear the LSB
-                    red &= 0xfe;
-                    green &= 0xfe;
-                    blue &= 0xfe;
-
-                    if (r == '1')
-                        red |= 1;
-
-                    if (g == '1')
-                        green |= 1;
-
-                    if (b == '1')
-                        blue |= 1;
+                    red = setSteganoBit(red, r);
+                    green = setSteganoBit(green, g);
+                    blue = setSteganoBit(blue, b);
 
                     Color n = new Color(red, green, blue, alpha);
                     image.setRGB(w, h, n.getRGB());
@@ -147,27 +133,25 @@ public class Steganographer {
         }
     }
 
-    public void emptyLeastSignificantBits() {
-
-        for (int w = 0; w < width; w++) {
-            for (int h = 0; h < height; h++) {
-                Color c = new Color(image.getRGB(w, h));
-                int red = c.getRed();
-                int green = c.getGreen();
-                int blue = c.getBlue();
-                int alpha = c.getAlpha();
-
-                // 0xfe = 254 = 0b11111110 => ANDing will clear the LSB
-                red &= 0xfe;
-                green &= 0xfe;
-                blue &= 0xfe;
-
-                Color n = new Color(red, green, blue, alpha);
-                image.setRGB(w, h, n.getRGB());
-            }
-        }
+    /**
+     * First zero the least significant bit by ANDing it with 0xfe = 0b11111110 which will retain all but the last bit.<br/>
+     * Then set the bit if the character calls for it.
+     *
+     * @param colorChannel int channel from a java.awt.Color object
+     * @param bit          char that can be either '0' or '1'
+     * @return int value after the given operations.
+     */
+    protected int setSteganoBit(int colorChannel, char bit) {
+        int or = (bit == '1') ? 1 : 0;
+        return ((colorChannel &= 0xfe) | or);
     }
 
+    /**
+     * Saves the current image into
+     *
+     * @param path
+     * @throws IOException
+     */
     public void saveFile(String path) throws IOException {
         File f = new File(path);
         ImageIO.write(image, "png", f);

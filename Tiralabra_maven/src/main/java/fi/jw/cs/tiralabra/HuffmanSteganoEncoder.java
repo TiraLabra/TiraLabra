@@ -1,8 +1,14 @@
 package fi.jw.cs.tiralabra;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.util.*;
 
 /**
+ * This is a command-line utility to invoke the Huffman-Steganography encoding and decoding of files.
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
  */
@@ -22,6 +28,16 @@ public class HuffmanSteganoEncoder {
                     break;
                 case 'd':
                     decode(args[1], "");
+                    break;
+                case 'b':
+                    Huffman h = new Huffman("");
+                    Map<String, String> m = new HashMap<String, String>();
+                    m.put("\t", "0");
+                    m.put(" ", "10");
+                    m.put("l", "110");
+                    m.put("p", "111");
+                    h.setMap(m);
+                    System.out.println(h.encodeMap());
                     break;
             }
 
@@ -43,17 +59,25 @@ public class HuffmanSteganoEncoder {
         String message = "";
         String src = args[1];
         String dest = args[2];
-
-        for (int i = 3; i < args.length; i++) {
-            message += args[i] + " ";
+        if ("file".equals(args[3])) {
+            System.out.println("Reading from file");
+            byte[] bytes = Files.readAllBytes(Paths.get(args[4]));
+            Charset cs = Charset.defaultCharset();
+            message = cs.decode(ByteBuffer.wrap(bytes)).toString();
+        } else {
+            System.out.println("Reading from cli [" + args[3] + "]");
+            for (int i = 3; i < args.length; i++) {
+                message += args[i] + " ";
+            }
+            message = message.trim();
         }
-
-        message = message.trim();
+        System.out.println("Message length: " + message.length() + " bytes");
         Huffman encoder = new Huffman(message);
         encoder.encode();
         String encodedMessage = encoder.getEncodedMessage();
+        System.out.println("Map:\n" + encoder.encodeMap());
         Steganographer s = new Steganographer(src, encodedMessage);
-        //encoder.getSerializedMap();
+
         s.encode();
         s.saveFile(dest);
         System.out.println(dest + " saved");
@@ -67,8 +91,8 @@ public class HuffmanSteganoEncoder {
         String stegDecoded = dec.getMessage();
 
         Huffman decoder = new Huffman();
-        //decoder.parseMap(map);
-        //decoder.setMap(encoder.getMap());
+
+        decoder.setMap(decoder.parseMap(map));
         decoder.setEncodedMessage(stegDecoded);
         decoder.decode();
         System.out.println(decoder.getMessage());

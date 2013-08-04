@@ -1,6 +1,6 @@
 package fi.jw.cs.tiralabra;
 
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -14,6 +14,10 @@ public class Node {
     private Node left;
     private Node right;
 
+
+    public Node() {
+        this("", 0, null, null, null);
+    }
 
     public Node(String label, int weight) {
         this(label, weight, null, null, null);
