@@ -39,13 +39,17 @@ public class Huffman {
      */
     public void encode() {
         if (message.length() == 0)
-            throw new RuntimeException("No message provided");
+            throw new IllegalArgumentException("No message provided");
 
-        frequencies = calculateFrequencies();
-        sortedNodes = createdWeightedNodes();
-        tree = buildTree();
-        map = assignCodes();
-        encodedMessage = encodeMessage();
+        frequencyAnalysis();
+        buildTree();
+        assignCodes();
+        encodeMessage();
+    }
+
+    protected void frequencyAnalysis() {
+        calculateFrequencies();
+        createdWeightedNodes();
     }
 
     /**
@@ -56,29 +60,27 @@ public class Huffman {
         decodeMessage();
     }
 
-    protected int[] calculateFrequencies() {
+    private void calculateFrequencies() {
+        frequencies = new int[256];
+
         char[] chars = message.toCharArray();
-        int[] freqs = new int[256];
         if (chars.length > 0) {
 
             for (Character c : chars) {
                 frequencies[(int) c.charValue()]++;
             }
-
         }
-        return frequencies;
     }
 
-    protected PriorityQueue<Node> createdWeightedNodes() {
-        PriorityQueue<Node> nodes = new PriorityQueue<Node>(0, Node.getComparator());
+    private void createdWeightedNodes() {
+        sortedNodes = new PriorityQueue<Node>(1, Node.getComparator());
         for (int i = 0; i < frequencies.length; i++) {
             int weight = frequencies[i];
             if (weight > 0) {
                 Node s = new Node("" + (char) i, weight);
-                nodes.add(s);
+                sortedNodes.add(s);
             }
         }
-        return nodes;
     }
 
     /**
@@ -86,7 +88,7 @@ public class Huffman {
      * <p/>
      * The left/right divide is decided by the label value.
      */
-    protected BinaryTree buildTree() {
+    protected void buildTree() {
         Node root;
         PriorityQueue<Node> nodes = new PriorityQueue<Node>(sortedNodes);
 
@@ -115,22 +117,25 @@ public class Huffman {
 
             root = nodes.poll();
         }
-        return new BinaryTree(root);
+        tree = new BinaryTree(root);
 
     }
 
     /**
      * Assigns the nodes based on their labels so that we can build the tree in a deterministic fashion always
      *
-     * @param n1
-     * @param n2
+     * @param n1 First <code>Node</code> to compare
+     * @param n2 Second <code>Node</code> to compare
      * @return Returns a temporary Node whose children have been set in the correct order
      */
-    protected Node chooseChildSides(Node n1, Node n2) {
+    protected static Node chooseChildSides(Node n1, Node n2) {
         Node parent = new Node();
         if (n1.getLabel().compareTo(n2.getLabel()) <= 0) {
             parent.setLeft(n1);
             parent.setRight(n2);
+        } else {
+            parent.setLeft(n2);
+            parent.setRight(n1);
         }
 
         return parent;
@@ -173,28 +178,26 @@ public class Huffman {
         tree = new BinaryTree(root);
     }
 
-    protected Map<String, String> assignCodes() {
-        Map<String, String> m = new HashMap<String, String>();
+    protected void assignCodes() {
         if (tree != null && tree.getRoot() != null) {
-            assignRecursive(tree.getRoot(), "", m);
+            assignRecursive(tree.getRoot(), "");
         }
-        return m;
     }
 
 
-    private void assignRecursive(Node node, String currentCode, Map<String, String> m) {
+    private void assignRecursive(Node node, String currentCode) {
         Node left = node.getLeft();
         Node right = node.getRight();
 
         if (left == null && right == null) {
-            m.put(node.getLabel(), currentCode);
+            map.put(node.getLabel(), currentCode);
         } else {
 
             if (left != null)
-                assignRecursive(left, currentCode + LEFT, m);
+                assignRecursive(left, currentCode + LEFT);
 
             if (right != null)
-                assignRecursive(right, currentCode + RIGHT, m);
+                assignRecursive(right, currentCode + RIGHT);
         }
     }
 
@@ -202,16 +205,15 @@ public class Huffman {
         return map.get(symbol);
     }
 
-    protected String encodeMessage() {
-        String encoded = "";
+    protected void encodeMessage() {
+        encodedMessage = "";
         for (char c : message.toCharArray()) {
-            encoded += getCodeFor("" + c);
+            encodedMessage += getCodeFor("" + c);
         }
-        return encoded;
     }
 
-    protected String decodeMessage() {
-        String msg = "";
+    protected void decodeMessage() {
+        message = "";
         Node root = tree.getRoot();
         Node current = root;
         Node next;
@@ -236,7 +238,7 @@ public class Huffman {
             current = next;
 
             if (current.isLeaf()) {
-                msg += current.getLabel();
+                message += current.getLabel();
                 current = root;
                 currentPath = "";
             } else {
@@ -244,8 +246,6 @@ public class Huffman {
                 current.setLabel(currentPath);
             }
         }
-
-        return msg;
     }
 
 
