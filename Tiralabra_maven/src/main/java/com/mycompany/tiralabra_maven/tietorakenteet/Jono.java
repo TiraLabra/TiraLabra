@@ -14,9 +14,26 @@ import java.util.Queue;
  * @author John Lång
  */
 public class Jono implements Queue<Object> {
+    
+    private Solmu   ensimmainen, viimeinen;
+    private int     pituus;
+    
+    public Jono() {
+        
+    }
 
     public boolean add(Object e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Solmu seuraava = new Solmu(e);
+        if (ensimmainen == null) {
+            ensimmainen = seuraava;
+            viimeinen   = seuraava;
+            pituus      = 1;
+            return true;
+        }
+        viimeinen.seuraaja = seuraava;
+        viimeinen = seuraava;
+        pituus++;
+        return true;
     }
 
     public boolean offer(Object e) {
@@ -40,7 +57,7 @@ public class Jono implements Queue<Object> {
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pituus;
     }
 
     public boolean isEmpty() {
