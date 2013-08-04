@@ -11,7 +11,7 @@ public class StackNode {
     
     public StackNode(int move){
         this.move = move;
-        this.result = result;
+        this.result = -2;
         this.next = null;
     }
 
