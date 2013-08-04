@@ -1,12 +1,12 @@
 package chess.gui;
 
+import chess.domain.Pieces;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -17,7 +17,7 @@ public class BoardPanel extends JPanel
 {
 	private BufferedImage image;
 
-	private int[][] board = new int[64][2];
+	private int[] board = new int[64];
 
 	private long allowedMoves = 0;
 
@@ -40,11 +40,9 @@ public class BoardPanel extends JPanel
 		drawSelection(g);
 	}
 
-	public void setBoard(int board[][])
+	public void setBoard(int board[])
 	{
-		for (int i = 0; i < 64; ++i)
-			for (int j = 0; j < 2; ++j)
-				this.board[i][j] = board[i][j];
+		this.board = board.clone();
 		repaint();
 	}
 
@@ -79,8 +77,10 @@ public class BoardPanel extends JPanel
 	private void drawPieces(Graphics g)
 	{
 		for (int sqr = 0; sqr < 64; ++sqr) {
-			if (board[sqr][0] >= 0)
-				drawPiece(sqr / 8, sqr % 8, board[sqr][0], board[sqr][1], g);
+			if (board[sqr] >= 0) {
+				drawPiece(sqr / 8, sqr % 8, board[sqr] / Pieces.COUNT,
+						board[sqr] % Pieces.COUNT, g);
+			}
 		}
 	}
 

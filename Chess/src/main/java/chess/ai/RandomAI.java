@@ -1,6 +1,7 @@
 package chess.ai;
 
 import chess.domain.GameState;
+import chess.domain.Pieces;
 import java.util.Random;
 
 /**
@@ -11,14 +12,14 @@ public class RandomAI implements AI
 	private Random rnd = new Random();
 
 	@Override
-	public void move(GameState state, int player)
+	public void move(GameState state)
 	{
 		int from;
 		long moves;
 		do {
 			from = rnd.nextInt(64);
 			moves = state.getAllowedMoves(from);
-		} while (state.getBoard()[from][0] != player || moves == 0);
+		} while (state.getBoard()[from] / Pieces.COUNT != state.getPlayer() || moves == 0);
 
 		int to;
 		do {

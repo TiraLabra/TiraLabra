@@ -3,7 +3,7 @@ package chess.domain;
 /**
  * Nappuloita vastaavat kokonaislukuvakiot.
  */
-public abstract class Pieces
+public final class Pieces
 {
 	public static final int KING = 0;
 
@@ -16,4 +16,10 @@ public abstract class Pieces
 	public static final int KNIGHT = 4;
 
 	public static final int PAWN = 5;
+
+	public static final int COUNT = 6;
+
+	private Pieces()
+	{
+	}
 }
