@@ -73,4 +73,13 @@ public final class BitBoard
 
 		return board;
 	}
+
+	public void copyFrom(BitBoard source)
+	{
+		for (int player = 0; player < 2; ++player) {
+			for (int piece = 0; piece < Pieces.COUNT; ++piece)
+				pieces[player][piece] = source.pieces[player][piece];
+			playerPieces[player] = source.playerPieces[player];
+		}
+	}
 }

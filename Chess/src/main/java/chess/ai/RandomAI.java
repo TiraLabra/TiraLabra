@@ -14,12 +14,14 @@ public class RandomAI implements AI
 	@Override
 	public void move(GameState state)
 	{
+		int player = state.getNextMovingPlayer();
+
 		int from;
 		long moves;
 		do {
 			from = rnd.nextInt(64);
-			moves = state.getAllowedMoves(from);
-		} while (state.getBoard()[from] / Pieces.COUNT != state.getPlayer() || moves == 0);
+			moves = state.getLegalMoves(from);
+		} while (state.getBoard()[from] / Pieces.COUNT != player || moves == 0);
 
 		int to;
 		do {

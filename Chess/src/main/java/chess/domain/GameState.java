@@ -8,16 +8,16 @@ public final class GameState
 {
 	private final BitBoard bitboard = new BitBoard();
 
-	private int player = Players.WHITE;
+	private int nextMovingPlayer = Players.WHITE;
 
 	public GameState()
 	{
 		setupInitialPosition();
 	}
 
-	public int getPlayer()
+	public int getNextMovingPlayer()
 	{
-		return player;
+		return nextMovingPlayer;
 	}
 
 	private void setupInitialPosition()
@@ -50,96 +50,57 @@ public final class GameState
 	public void move(int from, int to)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			if (bitboard.hasPiece(player, piece, from)) {
-				bitboard.removePiece(player, piece, from);
-				bitboard.addPiece(player, piece, to);
+			if (bitboard.hasPiece(nextMovingPlayer, piece, from)) {
+				bitboard.removePiece(nextMovingPlayer, piece, from);
+				bitboard.addPiece(nextMovingPlayer, piece, to);
 				break;
 			}
 		}
 
-		bitboard.removePiece(1 - player, to);
+		bitboard.removePiece(1 - nextMovingPlayer, to);
 
-		player = 1 - player;
+		nextMovingPlayer = 1 - nextMovingPlayer;
 	}
 
-	public void undoMove()
+	public long getLegalMoves(int fromSqr)
 	{
-	}
+		long moves = getPseudoLegalMoves(nextMovingPlayer, fromSqr);
 
-	public long getAllowedMoves(int sqr)
-	{
-		long moves = 0;
-
-		int row = sqr / 8;
-		int col = sqr % 8;
-
-		if (bitboard.hasPiece(player, Pieces.KING, sqr)) {
-			moves |= getMove(row - 1, col - 1, player);
-			moves |= getMove(row - 1, col, player);
-			moves |= getMove(row - 1, col + 1, player);
-			moves |= getMove(row, col - 1, player);
-			moves |= getMove(row, col + 1, player);
-			moves |= getMove(row + 1, col - 1, player);
-			moves |= getMove(row + 1, col, player);
-			moves |= getMove(row + 1, col + 1, player);
-		} else if (bitboard.hasPiece(player, Pieces.QUEEN, sqr)) {
-			moves |= getLineMoves(row, col, -1, -1);
-			moves |= getLineMoves(row, col, -1, 0);
-			moves |= getLineMoves(row, col, -1, 1);
-			moves |= getLineMoves(row, col, 0, -1);
-			moves |= getLineMoves(row, col, 0, 1);
-			moves |= getLineMoves(row, col, 1, -1);
-			moves |= getLineMoves(row, col, 1, 0);
-			moves |= getLineMoves(row, col, 1, 1);
-		} else if (bitboard.hasPiece(player, Pieces.ROOK, sqr)) {
-			moves |= getLineMoves(row, col, -1, 0);
-			moves |= getLineMoves(row, col, 0, -1);
-			moves |= getLineMoves(row, col, 0, 1);
-			moves |= getLineMoves(row, col, 1, 0);
-		} else if (bitboard.hasPiece(player, Pieces.BISHOP, sqr)) {
-			moves |= getLineMoves(row, col, -1, -1);
-			moves |= getLineMoves(row, col, -1, 1);
-			moves |= getLineMoves(row, col, 1, -1);
-			moves |= getLineMoves(row, col, 1, 1);
-		} else if (bitboard.hasPiece(player, Pieces.KNIGHT, sqr)) {
-			moves |= getMove(row - 2, col - 1, player);
-			moves |= getMove(row - 2, col + 1, player);
-			moves |= getMove(row - 1, col - 2, player);
-			moves |= getMove(row - 1, col + 2, player);
-			moves |= getMove(row + 2, col - 1, player);
-			moves |= getMove(row + 2, col + 1, player);
-			moves |= getMove(row + 1, col - 2, player);
-			moves |= getMove(row + 1, col + 2, player);
-		} else if (bitboard.hasPiece(player, Pieces.PAWN, sqr)) {
-			int nextRow = row - 1 + 2 * player;
-			if ((nextRow & ~7) == 0) {
-				if (!bitboard.hasPiece(nextRow * 8 + col)) {
-					moves |= 1L << nextRow * 8 + col;
-					int nextRow2 = row - 2 + 4 * player;
-					if (row == 6 - 5 * player && (nextRow2 & ~7) == 0
-							&& !bitboard.hasPiece(nextRow2 * 8 + col))
-						moves |= 1L << nextRow2 * 8 + col;
-				}
-				if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
-					moves |= 1L << nextRow * 8 + col - 1;
-				if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
-					moves |= 1L << nextRow * 8 + col + 1;
+		for (int toSqr = 0; toSqr < 64; ++toSqr) {
+			if ((moves & (1L << toSqr)) != 0) {
+				if (!isLegalMove(fromSqr, toSqr))
+					moves &= ~(1L << toSqr);
 			}
 		}
-
-		//TODO ohestalyönti, tornitus
 
 		return moves;
 	}
 
-	private long getLineMoves(int row, int col, int dr, int dc)
+	private boolean isLegalMove(int fromSqr, int toSqr)
+	{
+		GameState copy = clone();
+		copy.move(fromSqr, toSqr);
+		return !copy.isKingChecked(nextMovingPlayer);
+	}
+
+	public long getPseudoLegalMoves(int player, int sqr)
+	{
+		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
+			if (bitboard.hasPiece(nextMovingPlayer, piece, sqr))
+				return getPseudoLegalMoves(player, piece, sqr);
+		}
+
+		return 0;
+	}
+
+	private long getLineMoves(int player, int row, int col, int dr, int dc)
 	{
 		long moves = 0;
 		for (;;) {
 			row += dr;
 			col += dc;
 
-			long move = getMove(row, col, player);
+			long move = getMove(player, row, col);
 			if (move == 0)
 				break;
 
@@ -150,7 +111,7 @@ public final class GameState
 		return moves;
 	}
 
-	private long getMove(int row, int col, int player)
+	private long getMove(int player, int row, int col)
 	{
 		if (((row | col) & ~7) != 0)
 			return 0;
@@ -160,5 +121,166 @@ public final class GameState
 			return 0;
 
 		return 1L << sqr;
+	}
+
+	public long getAttackMoves(int player, int piece, int sqr)
+	{
+		long moves = 0;
+
+		int row = sqr / 8;
+		int col = sqr % 8;
+
+		switch (piece) {
+			case Pieces.KING:
+				moves |= getMove(player, row - 1, col - 1);
+				moves |= getMove(player, row - 1, col);
+				moves |= getMove(player, row - 1, col + 1);
+				moves |= getMove(player, row, col - 1);
+				moves |= getMove(player, row, col + 1);
+				moves |= getMove(player, row + 1, col - 1);
+				moves |= getMove(player, row + 1, col);
+				moves |= getMove(player, row + 1, col + 1);
+				break;
+			case Pieces.QUEEN:
+				moves |= getLineMoves(player, row, col, -1, -1);
+				moves |= getLineMoves(player, row, col, -1, 0);
+				moves |= getLineMoves(player, row, col, -1, 1);
+				moves |= getLineMoves(player, row, col, 0, -1);
+				moves |= getLineMoves(player, row, col, 0, 1);
+				moves |= getLineMoves(player, row, col, 1, -1);
+				moves |= getLineMoves(player, row, col, 1, 0);
+				moves |= getLineMoves(player, row, col, 1, 1);
+				break;
+			case Pieces.ROOK:
+				moves |= getLineMoves(player, row, col, -1, 0);
+				moves |= getLineMoves(player, row, col, 0, -1);
+				moves |= getLineMoves(player, row, col, 0, 1);
+				moves |= getLineMoves(player, row, col, 1, 0);
+				break;
+			case Pieces.BISHOP:
+				moves |= getLineMoves(player, row, col, -1, -1);
+				moves |= getLineMoves(player, row, col, -1, 1);
+				moves |= getLineMoves(player, row, col, 1, -1);
+				moves |= getLineMoves(player, row, col, 1, 1);
+				break;
+			case Pieces.KNIGHT:
+				moves |= getMove(player, row - 2, col - 1);
+				moves |= getMove(player, row - 2, col + 1);
+				moves |= getMove(player, row - 1, col - 2);
+				moves |= getMove(player, row - 1, col + 2);
+				moves |= getMove(player, row + 2, col - 1);
+				moves |= getMove(player, row + 2, col + 1);
+				moves |= getMove(player, row + 1, col - 2);
+				moves |= getMove(player, row + 1, col + 2);
+				break;
+			case Pieces.PAWN:
+				int nextRow = row - 1 + 2 * player;
+				if ((nextRow & ~7) == 0) {
+					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
+						moves |= 1L << nextRow * 8 + col - 1;
+					if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
+						moves |= 1L << nextRow * 8 + col + 1;
+				}
+				break;
+		}
+
+		return moves;
+	}
+
+	public long getPseudoLegalMoves(int player, int piece, int sqr)
+	{
+		long moves = 0;
+
+		int row = sqr / 8;
+		int col = sqr % 8;
+
+		switch (piece) {
+			case Pieces.KING:
+			case Pieces.QUEEN:
+			case Pieces.ROOK:
+			case Pieces.BISHOP:
+			case Pieces.KNIGHT:
+				moves = getAttackMoves(player, piece, sqr);
+				break;
+			case Pieces.PAWN:
+				int nextRow = row - 1 + 2 * player;
+				if ((nextRow & ~7) == 0) {
+					if (!bitboard.hasPiece(nextRow * 8 + col)) {
+						moves |= 1L << nextRow * 8 + col;
+						int nextRow2 = row - 2 + 4 * player;
+						if (row == 6 - 5 * player && (nextRow2 & ~7) == 0
+								&& !bitboard.hasPiece(nextRow2 * 8 + col))
+							moves |= 1L << nextRow2 * 8 + col;
+					}
+					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
+						moves |= 1L << nextRow * 8 + col - 1;
+					if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
+						moves |= 1L << nextRow * 8 + col + 1;
+				}
+				break;
+		}
+
+		//TODO ohestalyönti, tornitus
+		return moves;
+	}
+
+	public boolean isCheckMate()
+	{
+		for (int sqr = 0; sqr < 64; ++sqr)
+			if (getLegalMoves(sqr) != 0)
+				return false;
+		return isKingChecked(nextMovingPlayer);
+	}
+
+	public boolean isStaleMate()
+	{
+		for (int sqr = 0; sqr < 64; ++sqr)
+			if (getLegalMoves(sqr) != 0)
+				return false;
+		return !isKingChecked(nextMovingPlayer);
+	}
+
+	private boolean isKingChecked(int defendingPlayer)
+	{
+		int kingSqr = getKingSquare(defendingPlayer);
+		return isSquareThreatened(defendingPlayer, kingSqr);
+	}
+
+	private boolean isSquareThreatened(int defendingPLayer, int sqr)
+	{
+		int attackingPlayer = 1 - defendingPLayer;
+		long sqrBit = 1L << sqr;
+		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
+			for (int attackingSqr = 0; attackingSqr < 64; ++attackingSqr)
+				if (bitboard.hasPiece(attackingPlayer, piece, attackingSqr)) {
+					long attackMoves = getAttackMoves(attackingPlayer, piece, attackingSqr);
+					if ((sqrBit & attackMoves) != 0)
+						return true;
+				}
+		}
+		return false;
+	}
+
+	public int getKingSquare(int player)
+	{
+		int sqr = 0;
+		for (; sqr < 64; ++sqr) {
+			if (bitboard.hasPiece(player, Pieces.KING, sqr))
+				break;
+		}
+		return sqr;
+	}
+
+	private GameState(GameState copyFrom)
+	{
+		nextMovingPlayer = copyFrom.nextMovingPlayer;
+		bitboard.copyFrom(copyFrom.bitboard);
+	}
+
+	@Override
+	public GameState clone()
+	{
+
+		return new GameState(this);
 	}
 }
