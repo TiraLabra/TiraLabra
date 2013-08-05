@@ -8,25 +8,25 @@
  * @author albis
  */
 public class Laatikko {
-    private double leveys;
-    private double pituus;
-    private double korkeus;
+    private int leveys;
+    private int pituus;
+    private int korkeus;
     
-    public Laatikko (double pituus, double leveys, double korkeus) {
+    public Laatikko(int leveys, int pituus, int korkeus) {
         this.leveys = leveys;
         this.pituus = pituus;
         this.korkeus = korkeus;
     }
     
-    public double getLeveys() {
-        return this.leveys;
+    public int getLeveys() {
+        return leveys;
     }
     
-    public double getPituus() {
-        return this.pituus;
+    public int getPituus() {
+        return pituus;
     }
     
-    public double getKorkeus() {
-        return this.korkeus;
+    public int getKorkeus() {
+        return korkeus;
     }
 }

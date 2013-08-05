@@ -8,40 +8,53 @@
  * @author albis
  */
 public class Lava {
-    private double leveys;
-    private double pituus;
-    private double korkeus;
+    private int leveys;
+    private int pituus;
+    private int korkeus;
     
-    private boolean[][][] asetetutLaatikot;
+    private boolean[][] asetetutLaatikot;
     
-    public Lava (int pituus, int leveys, int korkeus) {
+    public Lava(int leveys, int pituus, int korkeus) {
         this.leveys = leveys;
         this.pituus = pituus;
         this.korkeus = korkeus;
         
-        this.asetetutLaatikot = new boolean[leveys*2][pituus*2][korkeus*2];
+        asetetutLaatikot = new boolean[leveys][pituus];
     }
     
-    public void asetaLaatikko (int x, int y, int z, int leveys,
-            int pituus, int korkeus) {
-        for (int i = x*2; i < x*2+leveys*2; i++) {
-            for (int j = y*2; j < y*2+pituus*2; j++) {
-                for (int k = z*2; k < z*2+korkeus*2; k++) {
-                    asetetutLaatikot[i][j][k] = true;
-                }
+    public void merkitseLaatikko(int x, int y, int leveys, int pituus) {
+        for (int i = x; i < x+leveys; i++) {
+            for (int j = y; j < y+pituus; j++) {
+                    asetetutLaatikot[i][j] = true;
             }
         }
     }
     
-    public double getLeveys() {
-        return this.leveys;
+    public void taytaRuutu(int x, int y) {
+        asetetutLaatikot[x][y] = true;
     }
     
-    public double getPituus() {
-        return this.pituus;
+    public Lava kopioi() {
+        Lava kopio = new Lava(leveys, pituus, korkeus);
+        
+        for (int i = 0; i < leveys; i++) {
+            for (int j = 0; j < pituus; j++) {
+                kopio.taytaRuutu(i, j);
+            }
+        }
+        
+        return kopio;
     }
     
-    public double getKorkeus() {
-        return this.korkeus;
+    public int getLeveys() {
+        return leveys;
+    }
+    
+    public int getPituus() {
+        return pituus;
+    }
+    
+    public int getKorkeus() {
+        return korkeus;
     }
 }
