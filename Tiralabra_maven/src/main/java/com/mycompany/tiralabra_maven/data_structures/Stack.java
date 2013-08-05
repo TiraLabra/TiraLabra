@@ -11,12 +11,11 @@ public class Stack {
     public Stack() {
         node = null;
     }
-
-    public void put(int move) {
-        if (node == null) {
-            node = new StackNode(move);
+    
+    public void put(StackNode sn){
+        if (node == null){
+            node = sn;
         } else {
-            StackNode sn = new StackNode(move);
             sn.setNext(node);
             node = sn;
         }
@@ -32,9 +31,6 @@ public class Stack {
         return node;
     }
     
-    public void setTopResult(int result){
-        node.setResult(result);
-    }
     
     public int size(){
         if (node == null){

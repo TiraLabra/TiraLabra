@@ -19,7 +19,7 @@ public class GameTreeNode {
         this.children = new GameTreeNode[9];
         this.move = move;
         this.result = result;
-        this.timesPlayed = 0;
+        this.timesPlayed = 1;
     }
 
     public GameTreeNode[] getChildren() {
@@ -27,12 +27,11 @@ public class GameTreeNode {
     }
 
     public GameTreeNode getChild(int move, int result) {
-        for (GameTreeNode child : children) {
-            if (child.move == move && child.result == result) {
-                return child;
-            }
-        }
-        return null;
+        return children[3 * move + (result + 1)];
+    }
+    
+    public GameTreeNode getChild(StackNode sn){
+        return children[3 * sn.getMove() + (sn.getResult() + 1)];
     }
 
     public int getTimesPlayed() {
@@ -45,8 +44,13 @@ public class GameTreeNode {
     
     public void thisPlayed(){
         timesPlayed++;
+    }  
+    
+    public void addChild(StackNode sn){
+        if (getChild(sn) == null){
+            children[3 * sn.getMove() + (sn.getResult() + 1)] = new GameTreeNode(sn.getMove(), sn.getResult());
+        } else {
+            getChild(sn).timesPlayed++;
+        }
     }
-    
-    
-    
 }

@@ -9,7 +9,7 @@ public class StackNode {
     private int move;
     private int result;
     
-    public StackNode(int move){
+    public StackNode(int move, int result){
         this.move = move;
         this.result = -2;
         this.next = null;
@@ -31,9 +31,6 @@ public class StackNode {
         this.next = next;
     }
 
-    public void setResult(int result) {
-        this.result = result;
-    }
     
     
     

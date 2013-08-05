@@ -15,11 +15,11 @@ public class Bot {
     
     
     public int makeAMove(){
-        return 1;
+        return ai.determineMove();
     }
     
     public void upDateAi(int result){
-        
+        ai.update(result);
     }
     
     public void loadProfile(File file){

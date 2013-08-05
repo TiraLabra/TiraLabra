@@ -105,7 +105,7 @@ public class Game {
         return f;
     }
 
-    public int playRound(int rockPaperScissors) {
+    public int playRound(int move) {
         if (gameMode == GameMode.BOT_VS_BOT) {
             int primary = primaryBot.makeAMove();
             int secondary = secondaryBot.makeAMove();
@@ -116,10 +116,10 @@ public class Game {
             return lastRound;
         }
         int primary = primaryBot.makeAMove();
-        lastRound = results[primary][rockPaperScissors];
+        lastRound = results[primary][move];
         primaryBot.upDateAi(lastRound);
         updateStatistics(lastRound);
-        return results[primary][rockPaperScissors];
+        return results[primary][move];
     }
 
     private void setUpResultTable() {
