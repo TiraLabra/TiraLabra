@@ -1,6 +1,8 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
+import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Stack;
@@ -11,9 +13,9 @@ import java.util.Stack;
  */
 public final class Tulkki {
 
-    private static final Stack<Character> PINO = new Stack<Character>();
-    private static final Queue<String> JONO = new ArrayDeque<String>();
-    private static final Queue<Character> APUJONO = new ArrayDeque<Character>();
+    private static final Pino<Character> PINO = new Pino<Character>();
+    private static final Queue<String> JONO = new Jono<String>();
+    private static final Queue<Character> APUJONO = new Jono<Character>();
     private static char[] syotteenMerkit;
     private static char merkki;
     private static int indeksi;
@@ -26,9 +28,7 @@ public final class Tulkki {
         
         // Koska tulkin kentät ovat staattiset, on jonoon voinut jäädä edellisen
         // kutsukerran paluuarvo.        
-        while (!JONO.isEmpty()) {
-            JONO.poll();
-        }
+        JONO.clear();
         
         syotteenMerkit = MERKKIJONO.toCharArray();
 

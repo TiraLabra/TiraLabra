@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
@@ -10,20 +6,18 @@ import java.util.Iterator;
 import java.util.Queue;
 
 /**
+ * Jonotietorakenne joka toteuttaa operaatiot <tt>add</tt>, <tt>poll</tt>,
+ * <tt>isEmpty</tt> ja <tt>clear</tt>.
  *
  * @author John Lång
  */
-public class Jono implements Queue<Object> {
+public class Jono<T> implements Queue<T> {
     
-    private Solmu   ensimmainen, viimeinen;
-    private int     pituus;
-    
-    public Jono() {
-        
-    }
+    private Solmu<T>    ensimmainen, viimeinen;
+    private int         pituus;
 
-    public boolean add(Object e) {
-        Solmu seuraava = new Solmu(e);
+    public boolean add(T e) {
+        Solmu seuraava = new Solmu<T>(e);
         if (ensimmainen == null) {
             ensimmainen = seuraava;
             viimeinen   = seuraava;
@@ -36,39 +30,49 @@ public class Jono implements Queue<Object> {
         return true;
     }
 
-    public boolean offer(Object e) {
+    public boolean offer(T e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object remove() {
+    public T remove() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object poll() {
+    public T poll() {
+        if (ensimmainen == null) {
+            return null;
+        }
+        Solmu<T> solmu = ensimmainen;
+        ensimmainen = solmu.seuraaja;
+        pituus--;
+        return solmu.ARVO;
+    }
+
+    public T element() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object element() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Object peek() {
+    public T peek() {
+//        if (ensimmainen == null) {
+//            return null;
+//        }
+//        return ensimmainen.ARVO;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int size() {
-        return pituus;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pituus == 0;
     }
 
     public boolean contains(Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Iterator<Object> iterator() {
+    public Iterator<T> iterator() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -88,7 +92,7 @@ public class Jono implements Queue<Object> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public boolean addAll(Collection<? extends Object> c) {
+    public boolean addAll(Collection<? extends T> c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -101,7 +105,12 @@ public class Jono implements Queue<Object> {
     }
 
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while (!isEmpty()) {
+            poll();
+        }
+        ensimmainen = null;
+        viimeinen   = null;
+        pituus      = 0;
     }
 
 }

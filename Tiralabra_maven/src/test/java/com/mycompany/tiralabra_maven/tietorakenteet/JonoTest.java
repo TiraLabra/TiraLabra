@@ -1,25 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
-import java.util.Collection;
-import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
-/**
- *
- * @author johnny
- */
-@Ignore // Kekseneräinen testiluokka.
 public class JonoTest {
+    
+    private Jono    jono;
+    private Object  testiObjekti;
     
     public JonoTest() {
     }
@@ -34,268 +26,106 @@ public class JonoTest {
     
     @Before
     public void setUp() {
+        jono        = new Jono<Object>();
+        testiObjekti  = new Object();
     }
     
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of add method, of class Jono.
-     */
-    @org.junit.Test
+    @Test
     public void testAdd() {
-        System.out.println("add");
-        Object e = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.add(e);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(jono.add(testiObjekti));
     }
 
-    /**
-     * Test of offer method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testOffer() {
-        System.out.println("offer");
-        Object e = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.offer(e);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.offer(testiObjekti);
     }
 
-    /**
-     * Test of remove method, of class Jono.
-     */
-    @org.junit.Test
-    public void testRemove_0args() {
-        System.out.println("remove");
-        Jono instance = new Jono();
-        Object expResult = null;
-        Object result = instance.remove();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    @Test(expected = UnsupportedOperationException.class)
+    public void testRemove() {
+        jono.remove();
     }
 
-    /**
-     * Test of poll method, of class Jono.
-     */
-    @org.junit.Test
+    @Test
     public void testPoll() {
-        System.out.println("poll");
-        Jono instance = new Jono();
-        Object expResult = null;
-        Object result = instance.poll();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.add(testiObjekti);
+        Object paluuarvo = jono.poll();
+        assertEquals(testiObjekti, paluuarvo);
     }
 
-    /**
-     * Test of element method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testElement() {
-        System.out.println("element");
-        Jono instance = new Jono();
-        Object expResult = null;
-        Object result = instance.element();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.element();
     }
 
-    /**
-     * Test of peek method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testPeek() {
-        System.out.println("peek");
-        Jono instance = new Jono();
-        Object expResult = null;
-        Object result = instance.peek();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.peek();
     }
 
-    /**
-     * Test of size method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testSize() {
-        System.out.println("size");
-        Jono instance = new Jono();
-        int expResult = 0;
-        int result = instance.size();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.size();
     }
 
-    /**
-     * Test of isEmpty method, of class Jono.
-     */
-    @org.junit.Test
+    @Test
     public void testIsEmpty() {
-        System.out.println("isEmpty");
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.isEmpty();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.add(testiObjekti);
+        assertFalse(jono.isEmpty());
     }
 
-    /**
-     * Test of contains method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testContains() {
-        System.out.println("contains");
-        Object o = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.contains(o);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.contains(testiObjekti);
     }
 
-    /**
-     * Test of iterator method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testIterator() {
-        System.out.println("iterator");
-        Jono instance = new Jono();
-        Iterator expResult = null;
-        Iterator result = instance.iterator();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.iterator();
     }
 
-    /**
-     * Test of toArray method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testToArray_0args() {
-        System.out.println("toArray");
-        Jono instance = new Jono();
-        Object[] expResult = null;
-        Object[] result = instance.toArray();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.toArray();
     }
 
-//    /**
-//     * Test of toArray method, of class Jono.
-//     */
-//    @org.junit.Test
-//    public void testToArray_GenericType() {
-//        System.out.println("toArray");
-//        T[] a = null;
-//        Jono instance = new Jono();
-//        Object[] expResult = null;
-//        Object[] result = instance.toArray(a);
-//        assertArrayEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test(expected = UnsupportedOperationException.class)
+    public void testToArray_GenericType() {
+        jono.toArray(new Object[1]);
+    }
 
-    /**
-     * Test of remove method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testRemove_Object() {
-        System.out.println("remove");
-        Object o = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.remove(o);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.remove(testiObjekti);
     }
 
-    /**
-     * Test of containsAll method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testContainsAll() {
-        System.out.println("containsAll");
-        Collection<?> c = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.containsAll(c);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.containsAll(new Jono());
     }
 
-    /**
-     * Test of addAll method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testAddAll() {
-        System.out.println("addAll");
-        Collection<? extends Object> c = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.addAll(c);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.addAll(new Jono());
     }
 
-    /**
-     * Test of removeAll method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testRemoveAll() {
-        System.out.println("removeAll");
-        Collection<?> c = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.removeAll(c);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.removeAll(new Jono());
     }
 
-    /**
-     * Test of retainAll method, of class Jono.
-     */
-    @org.junit.Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testRetainAll() {
-        System.out.println("retainAll");
-        Collection<?> c = null;
-        Jono instance = new Jono();
-        boolean expResult = false;
-        boolean result = instance.retainAll(c);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.retainAll(new Jono());
     }
 
-    /**
-     * Test of clear method, of class Jono.
-     */
-    @org.junit.Test
+    @Test
     public void testClear() {
-        System.out.println("clear");
-        Jono instance = new Jono();
-        instance.clear();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        jono.add(testiObjekti);
+        jono.clear();
+        assertTrue(jono.isEmpty());
     }
 }

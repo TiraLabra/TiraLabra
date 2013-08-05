@@ -1,6 +1,7 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -11,10 +12,10 @@ import java.util.Stack;
  */
 public final class Laskin {
     
-    private final Stack<Integer> PINO;
+    private final Pino<Integer> PINO;
     
     public Laskin() {
-        PINO = new Stack<Integer>();
+        PINO = new Pino<Integer>();
         
     }
     
