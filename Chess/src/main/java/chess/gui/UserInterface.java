@@ -1,6 +1,7 @@
 package chess.gui;
 
 import chess.ai.AI;
+import chess.ai.MinMaxAI;
 import chess.ai.RandomAI;
 import chess.domain.GameState;
 import chess.domain.Pieces;
@@ -33,7 +34,7 @@ public class UserInterface implements Runnable, MouseListener
 
 	private int player = Players.WHITE;
 
-	private AI ai = new RandomAI();
+	private AI ai = new MinMaxAI();
 
 	@Override
 	public void run()

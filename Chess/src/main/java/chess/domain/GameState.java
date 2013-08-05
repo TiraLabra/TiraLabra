@@ -47,6 +47,11 @@ public final class GameState
 		return bitboard.toArray();
 	}
 
+	public long getPieces(int player, int piece)
+	{
+		return bitboard.getPieces(player, piece);
+	}
+
 	public void move(int from, int to)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
@@ -282,5 +287,11 @@ public final class GameState
 	{
 
 		return new GameState(this);
+	}
+
+	public boolean areBothKingsAlive()
+	{
+		return bitboard.getPieces(Players.WHITE, Pieces.KING) != 0
+				&& bitboard.getPieces(Players.BLACK, Pieces.KING) != 0;
 	}
 }
