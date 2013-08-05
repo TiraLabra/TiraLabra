@@ -53,10 +53,9 @@ public class MinMaxAI implements AI
 					if ((moves & (1L << toSqr)) == 0)
 						continue;
 
-					GameState newState = state.clone();
-					newState.move(fromSqr, toSqr);
-
-					int value = -search(depth - 1, -beta, -alpha, newState);
+					int capturedPiece = state.move(fromSqr, toSqr, pieceType);
+					int value = -search(depth - 1, -beta, -alpha, state);
+					state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
 
 					if (value >= beta)
 						return value;

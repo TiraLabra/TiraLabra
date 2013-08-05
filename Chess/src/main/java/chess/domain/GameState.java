@@ -59,7 +59,7 @@ public final class GameState
 		return bitboard.getPieces(player, piece);
 	}
 
-	public void move(int from, int to)
+	public int move(int from, int to)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
 			if (bitboard.hasPiece(nextMovingPlayer, piece, from)) {
@@ -69,9 +69,30 @@ public final class GameState
 			}
 		}
 
-		bitboard.removePiece(1 - nextMovingPlayer, to);
+		int capturedPiece = bitboard.removePiece(1 - nextMovingPlayer, to);
 
 		nextMovingPlayer = 1 - nextMovingPlayer;
+
+		return capturedPiece;
+	}
+
+	public int move(int from, int to, int pieceType)
+	{
+		bitboard.removePiece(nextMovingPlayer, pieceType, from);
+		bitboard.addPiece(nextMovingPlayer, pieceType, to);
+		int capturedPiece = bitboard.removePiece(1 - nextMovingPlayer, to);
+		nextMovingPlayer = 1 - nextMovingPlayer;
+		return capturedPiece;
+	}
+
+	public void undoMove(int from, int to, int movedPiece, int capturedPiece)
+	{
+		nextMovingPlayer = 1 - nextMovingPlayer;
+
+		bitboard.removePiece(nextMovingPlayer, movedPiece, to);
+		bitboard.addPiece(nextMovingPlayer, movedPiece, from);
+		if (capturedPiece != -1)
+			bitboard.addPiece(1 - nextMovingPlayer, capturedPiece, to);
 	}
 
 	public long getLegalMoves(int fromSqr)
@@ -292,7 +313,6 @@ public final class GameState
 	@Override
 	public GameState clone()
 	{
-
 		return new GameState(this);
 	}
 

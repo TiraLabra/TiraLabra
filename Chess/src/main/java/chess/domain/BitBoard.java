@@ -31,14 +31,15 @@ public final class BitBoard
 		playerPieces[player] &= ~sqrBit;
 	}
 
-	public void removePiece(int player, int sqr)
+	public int removePiece(int player, int sqr)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
 			if (hasPiece(player, piece, sqr)) {
 				removePiece(player, piece, sqr);
-				break;
+				return piece;
 			}
 		}
+		return -1;
 	}
 
 	public long getPieces(int player, int piece)
