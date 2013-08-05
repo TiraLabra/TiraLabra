@@ -10,7 +10,7 @@ public class MinMaxAI implements AI
 
 	private int bestMoveTo;
 
-	private static final int DEFAULT_SEARCH_DEPTH = 6;
+	private static final int DEFAULT_SEARCH_DEPTH = 8;
 
 	private final int searchDepth; // Pitää olla vähintään 2!
 
@@ -44,32 +44,58 @@ public class MinMaxAI implements AI
 
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
-			for (int fromSqr = 0; fromSqr < 64; ++fromSqr) {
-				if ((pieces & (1L << fromSqr)) == 0)
-					continue;
-
+			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
+				int fromSqr = Long.numberOfTrailingZeros(pieces);
 				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
-				for (int toSqr = 0; toSqr < 64; ++toSqr) {
-					if ((moves & (1L << toSqr)) == 0)
-						continue;
 
-					int capturedPiece = state.move(fromSqr, toSqr, pieceType);
-					int value = -search(depth - 1, -beta, -alpha, state);
-					state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
-
+				for (int capturedPiece = Pieces.COUNT - 1; capturedPiece >= 0; --capturedPiece) {
+					long captureMoves = moves & state.getPieces(1 - player, capturedPiece);
+					int value = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr,
+							captureMoves);
 					if (value >= beta)
 						return value;
-
-					if (value > alpha) {
-						if (depth == searchDepth) {
-							bestMoveFrom = fromSqr;
-							bestMoveTo = toSqr;
-							log("" + bestMoveFrom + " " + bestMoveTo + " "
-									+ (value - getScore(state, 0)));
-						}
-						alpha = value;
-					}
+					alpha = Math.max(alpha, value);
 				}
+			}
+		}
+
+		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+			long pieces = state.getPieces(player, pieceType);
+			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
+				int fromSqr = Long.numberOfTrailingZeros(pieces);
+				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
+				moves &= ~state.getPieces(1 - player);
+				int value = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr, moves);
+				if (value >= beta)
+					return value;
+				alpha = Math.max(alpha, value);
+			}
+		}
+
+		return alpha;
+	}
+
+	private int iterateMoves(int depth, int alpha, int beta, GameState state, int pieceType,
+			int fromSqr, long moves)
+	{
+		for (; moves != 0; moves -= Long.lowestOneBit(moves)) {
+			int toSqr = Long.numberOfTrailingZeros(moves);
+
+			int capturedPiece = state.move(fromSqr, toSqr, pieceType);
+			int value = -search(depth - 1, -beta, -alpha, state);
+			state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
+
+			if (value >= beta)
+				return value;
+
+			if (value > alpha) {
+				if (depth == searchDepth) {
+					bestMoveFrom = fromSqr;
+					bestMoveTo = toSqr;
+					log("" + bestMoveFrom + " " + bestMoveTo + " "
+							+ (value - getScore(state, 0)));
+				}
+				alpha = value;
 			}
 		}
 

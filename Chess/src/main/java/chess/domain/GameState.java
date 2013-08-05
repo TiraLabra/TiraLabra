@@ -59,6 +59,11 @@ public final class GameState
 		return bitboard.getPieces(player, piece);
 	}
 
+	public long getPieces(int player)
+	{
+		return bitboard.getPieces(player);
+	}
+
 	public int move(int from, int to)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
