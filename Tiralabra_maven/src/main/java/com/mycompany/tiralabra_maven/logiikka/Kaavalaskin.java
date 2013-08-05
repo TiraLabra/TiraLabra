@@ -1,8 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.tiralabra_maven.logiikka;
+
+import java.util.Queue;
 
 /**
  *
@@ -10,10 +9,19 @@ package com.mycompany.tiralabra_maven.logiikka;
  */
 public class Kaavalaskin {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Tulkki t = new Tulkki();
+        Laskin l = new Laskin();
+        
+        // Clean codea parhaimmillaan
+        Queue<String> kaava = t.tulkitseMerkkijono("(7 + 3) * 5");
+        System.out.println(kaava.toString());
+        System.out.println("=");
+        System.out.println(l.laske(kaava));
+        
+        kaava = t.tulkitseMerkkijono("7 + 3 * 5");
+        System.out.println(kaava.toString());
+        System.out.println("=");
+        System.out.println(l.laske(kaava));
     }
 }

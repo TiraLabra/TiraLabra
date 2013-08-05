@@ -1,3 +1,1 @@
-Tiralabraprojektini, jonka aiheena on lausekkeita käsittelevä laskin.
-
-* * *
+Tiralabraprojektini, jonka aiheena on kaavoja käsittelevä laskin.

@@ -1,6 +1,10 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,8 +17,8 @@ public class LaskinTest {
     
     private static final Random ARPOJA = new Random();
     
-    private Laskin      laskin;
-    private String[]    syote;
+    private Laskin          laskin;
+    private Queue<String>   syote;
     
     public LaskinTest() {
     }
@@ -29,7 +33,8 @@ public class LaskinTest {
     
     @Before
     public void setUp() {
-        laskin = new Laskin();
+        laskin  = new Laskin();
+        syote   = new ArrayDeque<String>();
     }
     
     @After
@@ -37,135 +42,110 @@ public class LaskinTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testLaskeVirheellinenSyote1() {
-        syote = new String[2];
-        
-        syote[0] = "3";
-        syote[1] = "+";
+    public void testLaskeVirheellinenSyote1() {        
+        syote.add("3");
+        syote.add("+");
         
         laskin.laske(syote);
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void testLaskeVirheellinenSyote2() {
-        syote = new String[4];
-        
-        syote[0] = "3";
-        syote[1] = "2";
-        syote[2] = "5";
-        syote[3] = "+";
+    public void testLaskeVirheellinenSyote2() {        
+        syote.add("3");
+        syote.add("2");
+        syote.add("5");
+        syote.add("+");
         
         laskin.laske(syote);
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void testLaskeVirheellinenSyote3() {
-        syote = new String[3];
-        
-        syote[0] = "3";
-        syote[1] = "2";
-        syote[2] = "^";
+    public void testLaskeVirheellinenSyote3() {        
+        syote.add("3");
+        syote.add("2");
+        syote.add("^");
         
         laskin.laske(syote);
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void testLaskeVirheellinenSyote4() {
-        syote = new String[3];
-        
-        syote[0] = "3";
-        syote[1] = "2";
-        syote[2] = "8";
+    public void testLaskeVirheellinenSyote4() {        
+        syote.add("3");
+        syote.add("2");
+        syote.add("8");
         
         laskin.laske(syote);
     }
     
     @Test(expected = ArithmeticException.class)
     public void testAritmeettinenYlivuoto() {
-        syote = new String[3];
-        
-        int n = 50000, m = 50000;
-        
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = "*";
+        syote.add("50000");
+        syote.add("50000");
+        syote.add("*");
         
         laskin.laske(syote);
     }
     
     @Test(expected = ArithmeticException.class)
     public void testNollallaJakaminen() {
-        syote = new String[3];
-        
-        int n = 57,
-                m = 0;
-        
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = "/";
+        syote.add("57");
+        syote.add("0");
+        syote.add("/");
         
         laskin.laske(syote);
     }
     
     @Test
-    public void testSumma() {
-        syote = new String[6];
-        
+    public void testSumma() {        
         int n = ARPOJA.nextInt(Integer.MAX_VALUE / 2),
                 m = ARPOJA.nextInt(Integer.MAX_VALUE / 2),
                 summa = n + m;
         
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = " ";
-        syote[3] = "+";
-        syote[4] = " ";
-        syote[5] = " ";
+        syote.add(String.valueOf(n));
+        syote.add(String.valueOf(m));
+        syote.add(" ");
+        syote.add("+");
+        syote.add(" ");
+        syote.add(" ");
         
         assertEquals(summa, laskin.laske(syote));
     }
     
     @Test
-    public void testErotus() {
-        syote = new String[3];
-        
+    public void testErotus() {        
         int n = ARPOJA.nextInt(Integer.MAX_VALUE),
                 m = ARPOJA.nextInt(Integer.MAX_VALUE),
                 erotus = n - m;
         
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = "-";
+        syote.add(String.valueOf(n));
+        syote.add(String.valueOf(m));
+        syote.add("-");
         
         assertEquals(erotus, laskin.laske(syote));
     }
     
     @Test
     public void testTulo() {
-        syote = new String[3];
-        
         int n = ARPOJA.nextInt(46340),
                 m = ARPOJA.nextInt(46340),
                 tulo = n * m;
         
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = "*";
+        syote.add(String.valueOf(n));
+        syote.add(String.valueOf(m));
+        syote.add("*");
         
         assertEquals(tulo, laskin.laske(syote));
     }
     
     @Test
     public void testOsamaara() {
-        syote = new String[3];
-        
         int n = ARPOJA.nextInt(Integer.MAX_VALUE),
                 m = ARPOJA.nextInt(Integer.MAX_VALUE - 1) + 1,
                 osamaara = n / m;
         
-        syote[0] = String.valueOf(n);
-        syote[1] = String.valueOf(m);
-        syote[2] = "/";
+        syote.add(String.valueOf(n));
+        syote.add(String.valueOf(m));
+        syote.add("/");
         
         assertEquals(osamaara, laskin.laske(syote));
     }
