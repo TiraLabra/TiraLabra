@@ -2,6 +2,7 @@ package chess.gui;
 
 import chess.ai.AI;
 import chess.ai.MinMaxAI;
+import chess.ai.PerformanceTest;
 import chess.domain.GameState;
 import chess.domain.Pieces;
 import chess.domain.Players;
@@ -83,7 +84,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		board.add(resultLabel);
 
 		logArea = new LogArea();
-		logArea.setPreferredSize(new Dimension(150, 0));
+		logArea.setPreferredSize(new Dimension(180, 0));
 		container.add(logArea, BorderLayout.EAST);
 	}
 
@@ -98,7 +99,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		exitItem = createMenuItem(gameMenu, "Exit");
 
 		JMenu debugMenu = new JMenu("Debug");
-		//menuBar.add(debugMenu);
+		menuBar.add(debugMenu);
 
 		performanceTestItem = createMenuItem(debugMenu, "Performance test");
 
@@ -202,6 +203,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 	private void runPerformanceTest()
 	{
+		new Thread(new PerformanceTest(logArea)).start();
 	}
 
 	public void actionPerformed(ActionEvent ae)

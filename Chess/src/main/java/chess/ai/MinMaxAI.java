@@ -10,20 +10,28 @@ public class MinMaxAI implements AI
 
 	private int bestMoveTo;
 
-	private static final int SEARCH_DEPTH = 6; // Pitää olla vähintään 2!
+	private static final int DEFAULT_SEARCH_DEPTH = 6;
 
-	private Logger logger;
+	private final int searchDepth; // Pitää olla vähintään 2!
+
+	private final Logger logger;
 
 	private boolean loggingEnabled = false;
 
 	public MinMaxAI(Logger logger)
 	{
+		this(logger, DEFAULT_SEARCH_DEPTH);
+	}
+
+	public MinMaxAI(Logger logger, int searchDepth)
+	{
 		this.logger = logger;
+		this.searchDepth = searchDepth;
 	}
 
 	public void move(GameState state)
 	{
-		search(SEARCH_DEPTH, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+		search(searchDepth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
 		state.move(bestMoveFrom, bestMoveTo);
 	}
 
@@ -54,7 +62,7 @@ public class MinMaxAI implements AI
 						return value;
 
 					if (value > alpha) {
-						if (depth == SEARCH_DEPTH) {
+						if (depth == searchDepth) {
 							bestMoveFrom = fromSqr;
 							bestMoveTo = toSqr;
 							log("" + bestMoveFrom + " " + bestMoveTo + " "

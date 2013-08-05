@@ -1,5 +1,7 @@
 package chess.domain;
 
+import java.util.Random;
+
 /**
  * Tallentaa nappuloiden sijainnit ja muut pelitilanteen tiedot. (Sallitut tornitukset,
  * ohestalyönnit ja aikaisemmat laudan tilanteet 50 vuoron ajalta.)
@@ -13,6 +15,11 @@ public final class GameState
 	public GameState()
 	{
 		setupInitialPosition();
+	}
+
+	public GameState(Random rnd)
+	{
+		randomize(rnd);
 	}
 
 	public int getNextMovingPlayer()
@@ -293,5 +300,32 @@ public final class GameState
 	{
 		return bitboard.getPieces(Players.WHITE, Pieces.KING) != 0
 				&& bitboard.getPieces(Players.BLACK, Pieces.KING) != 0;
+	}
+
+	private void randomize(Random rnd)
+	{
+		do {
+			bitboard.clear();
+			addRandomizedPieces(1, 1, Pieces.KING, rnd);
+			addRandomizedPieces(0, 1, Pieces.QUEEN, rnd);
+			addRandomizedPieces(0, 2, Pieces.ROOK, rnd);
+			addRandomizedPieces(0, 2, Pieces.BISHOP, rnd);
+			addRandomizedPieces(0, 2, Pieces.KNIGHT, rnd);
+			addRandomizedPieces(0, 8, Pieces.PAWN, rnd);
+		} while (isCheckMate() || isKingChecked(Players.BLACK));
+	}
+
+	private void addRandomizedPieces(int min, int max, int pieceType, Random rnd)
+	{
+		for (int player = 0; player < 2; ++player) {
+			int n = min + rnd.nextInt(1 + max - min);
+			for (int i = 0; i < n; ++i) {
+				int sqr;
+				do {
+					sqr = pieceType != Pieces.PAWN ? rnd.nextInt(64) : 8 + rnd.nextInt(48);
+				} while (bitboard.hasPiece(sqr));
+				bitboard.addPiece(player, pieceType, sqr);
+			}
+		}
 	}
 }

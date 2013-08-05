@@ -8,6 +8,15 @@ public final class BitBoard
 
 	private final long[] playerPieces = new long[2];
 
+	public void clear()
+	{
+		for (int player = 0; player < 2; ++player) {
+			for (int piece = 0; piece < Pieces.COUNT; ++piece)
+				pieces[player][piece] = 0;
+			playerPieces[player] = 0;
+		}
+	}
+
 	public void addPiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
