@@ -9,17 +9,22 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 /**
  * Käyttöliittymän pääikkuna.
  */
-public class UserInterface implements Runnable, MouseListener
+public class UserInterface implements Runnable, MouseListener, ActionListener
 {
 	private JFrame frame;
 
@@ -37,6 +42,8 @@ public class UserInterface implements Runnable, MouseListener
 
 	private LogArea logArea;
 
+	private JMenuItem newGameItem, exitItem, performanceTestItem;
+
 	@Override
 	public void run()
 	{
@@ -52,6 +59,7 @@ public class UserInterface implements Runnable, MouseListener
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		createComponents(frame.getContentPane());
+		createMenu();
 
 		frame.setMinimumSize(new Dimension(200, 200));
 		frame.pack();
@@ -77,6 +85,32 @@ public class UserInterface implements Runnable, MouseListener
 		logArea = new LogArea();
 		logArea.setPreferredSize(new Dimension(150, 0));
 		container.add(logArea, BorderLayout.EAST);
+	}
+
+	private void createMenu()
+	{
+		JMenuBar menuBar = new JMenuBar();
+
+		JMenu gameMenu = new JMenu("Game");
+		menuBar.add(gameMenu);
+
+		newGameItem = createMenuItem(gameMenu, "New game");
+		exitItem = createMenuItem(gameMenu, "Exit");
+
+		JMenu debugMenu = new JMenu("Debug");
+		//menuBar.add(debugMenu);
+
+		performanceTestItem = createMenuItem(debugMenu, "Performance test");
+
+		frame.add(menuBar, BorderLayout.NORTH);
+	}
+
+	private JMenuItem createMenuItem(JMenu menu, String caption)
+	{
+		JMenuItem item = new JMenuItem(caption);
+		item.addActionListener(this);
+		menu.add(item);
+		return item;
 	}
 
 	public void mouseClicked(MouseEvent me)
@@ -158,8 +192,25 @@ public class UserInterface implements Runnable, MouseListener
 
 	private void startNewGame()
 	{
+		selectedSquare = -1;
 		state = new GameState();
 		board.setBoard(state.getBoard());
+		board.setSelected(-1);
+		board.setAllowedMoves(0);
 		ai = new MinMaxAI(logArea);
+	}
+
+	private void runPerformanceTest()
+	{
+	}
+
+	public void actionPerformed(ActionEvent ae)
+	{
+		if (ae.getSource() == newGameItem)
+			startNewGame();
+		else if (ae.getSource() == performanceTestItem)
+			runPerformanceTest();
+		else if (ae.getSource() == exitItem)
+			System.exit(0);
 	}
 }
