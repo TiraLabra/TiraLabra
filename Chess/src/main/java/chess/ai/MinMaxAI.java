@@ -2,6 +2,7 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Pieces;
+import chess.util.Logger;
 
 public class MinMaxAI implements AI
 {
@@ -10,6 +11,15 @@ public class MinMaxAI implements AI
 	private int bestMoveTo;
 
 	private static final int SEARCH_DEPTH = 6; // Pitää olla vähintään 2!
+
+	private Logger logger;
+
+	private boolean loggingEnabled = false;
+
+	public MinMaxAI(Logger logger)
+	{
+		this.logger = logger;
+	}
 
 	public void move(GameState state)
 	{
@@ -47,6 +57,8 @@ public class MinMaxAI implements AI
 						if (depth == SEARCH_DEPTH) {
 							bestMoveFrom = fromSqr;
 							bestMoveTo = toSqr;
+							log("" + bestMoveFrom + " " + bestMoveTo + " "
+									+ (value - getScore(state, 0)));
 						}
 						alpha = value;
 					}
@@ -68,5 +80,16 @@ public class MinMaxAI implements AI
 			score -= Long.bitCount(state.getPieces(1 - player, pieceType)) * pieceValue;
 		}
 		return score;
+	}
+
+	public void setLoggingEnabled(boolean enabled)
+	{
+		loggingEnabled = enabled;
+	}
+
+	private void log(String msg)
+	{
+		if (loggingEnabled)
+			logger.logMessage(msg);
 	}
 }

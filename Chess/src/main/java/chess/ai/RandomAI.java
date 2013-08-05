@@ -30,4 +30,9 @@ public class RandomAI implements AI
 
 		state.move(from, to);
 	}
+
+	@Override
+	public void setLoggingEnabled(boolean enabled)
+	{
+	}
 }

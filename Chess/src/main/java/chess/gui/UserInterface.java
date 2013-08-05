@@ -2,7 +2,6 @@ package chess.gui;
 
 import chess.ai.AI;
 import chess.ai.MinMaxAI;
-import chess.ai.RandomAI;
 import chess.domain.GameState;
 import chess.domain.Pieces;
 import chess.domain.Players;
@@ -34,14 +33,16 @@ public class UserInterface implements Runnable, MouseListener
 
 	private int player = Players.WHITE;
 
-	private AI ai = new MinMaxAI();
+	private AI ai;
+
+	private LogArea logArea;
 
 	@Override
 	public void run()
 	{
 		createFrame();
-		state = new GameState();
-		board.setBoard(state.getBoard());
+
+		startNewGame();
 	}
 
 	private void createFrame()
@@ -62,19 +63,20 @@ public class UserInterface implements Runnable, MouseListener
 		container.setLayout(new BorderLayout());
 
 		board = new BoardPanel();
-		container.add(board);
 		board.setPreferredSize(new Dimension(600, 600));
 		board.addMouseListener(this);
 		board.setLayout(new BorderLayout());
+		container.add(board, BorderLayout.CENTER);
 
 		resultLabel = new JLabel();
 		resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resultLabel.setVisible(false);
-
 		resultLabel.setFont(new Font(resultLabel.getFont().getFontName(), Font.BOLD, 30));
 		board.add(resultLabel);
 
-		container.add(board);
+		logArea = new LogArea();
+		logArea.setPreferredSize(new Dimension(150, 0));
+		container.add(logArea, BorderLayout.EAST);
 	}
 
 	public void mouseClicked(MouseEvent me)
@@ -152,5 +154,12 @@ public class UserInterface implements Runnable, MouseListener
 			resultLabel.setText("Check mate! " + (winner == 0 ? "White" : "Black") + " wins.");
 		board.setAllowedMoves(0);
 		board.setSelected(-1);
+	}
+
+	private void startNewGame()
+	{
+		state = new GameState();
+		board.setBoard(state.getBoard());
+		ai = new MinMaxAI(logArea);
 	}
 }
