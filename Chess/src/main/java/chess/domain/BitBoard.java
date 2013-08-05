@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public final class BitBoard
 {
-	private final long[][] pieces = new long[2][Pieces.COUNT];
+	private final long[] pieces = new long[2 * Pieces.COUNT];
 
 	private final long[] playerPieces = new long[2];
 
@@ -12,7 +12,7 @@ public final class BitBoard
 	{
 		for (int player = 0; player < 2; ++player) {
 			for (int piece = 0; piece < Pieces.COUNT; ++piece)
-				pieces[player][piece] = 0;
+				pieces[player * Pieces.COUNT + piece] = 0;
 			playerPieces[player] = 0;
 		}
 	}
@@ -20,14 +20,14 @@ public final class BitBoard
 	public void addPiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
-		pieces[player][piece] |= sqrBit;
+		pieces[player * Pieces.COUNT + piece] |= sqrBit;
 		playerPieces[player] |= sqrBit;
 	}
 
 	public void removePiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
-		pieces[player][piece] &= ~sqrBit;
+		pieces[player * Pieces.COUNT + piece] &= ~sqrBit;
 		playerPieces[player] &= ~sqrBit;
 	}
 
@@ -44,7 +44,7 @@ public final class BitBoard
 
 	public long getPieces(int player, int piece)
 	{
-		return pieces[player][piece];
+		return pieces[player * Pieces.COUNT + piece];
 	}
 
 	public long getPieces(int player)
@@ -54,7 +54,7 @@ public final class BitBoard
 
 	public boolean hasPiece(int player, int piece, int sqr)
 	{
-		return (pieces[player][piece] & (1L << sqr)) != 0;
+		return (pieces[player * Pieces.COUNT + piece] & (1L << sqr)) != 0;
 	}
 
 	public boolean hasPiece(int player, int sqr)
@@ -75,7 +75,7 @@ public final class BitBoard
 		for (int player = 0; player < 2; ++player) {
 			for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 				for (int sqr = 0; sqr < 64; ++sqr) {
-					if ((pieces[player][pieceType] & (1L << sqr)) != 0)
+					if ((pieces[player * Pieces.COUNT + pieceType] & (1L << sqr)) != 0)
 						board[sqr] = player * Pieces.COUNT + pieceType;
 				}
 			}
@@ -87,8 +87,10 @@ public final class BitBoard
 	public void copyFrom(BitBoard source)
 	{
 		for (int player = 0; player < 2; ++player) {
-			for (int piece = 0; piece < Pieces.COUNT; ++piece)
-				pieces[player][piece] = source.pieces[player][piece];
+			for (int piece = 0; piece < Pieces.COUNT; ++piece) {
+				int p = player * Pieces.COUNT + piece;
+				pieces[p] = source.pieces[p];
+			}
 			playerPieces[player] = source.playerPieces[player];
 		}
 	}
