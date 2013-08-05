@@ -1,5 +1,7 @@
 package ohjelma;
 
+import java.util.ArrayList;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -9,11 +11,11 @@ package ohjelma;
  * @author kkivikat
  */
 public class Verkko {
-    int lahde;
-    int kohde;
-    int lyhyinpituus;
+    ArrayList kaaret;
+    ArrayList solmut;
 
-    public Verkko() {
-        
+    public Verkko(ArrayList kaaret, ArrayList solmut) {
+        this.kaaret = kaaret;
+        this.solmut = solmut;
     }
 }

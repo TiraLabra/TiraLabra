@@ -1,6 +1,6 @@
 package ohjelma;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 
 /*
  * To change this template, choose Tools | Templates
@@ -14,45 +14,50 @@ public class Main {
 //
 
     public static void main(String[] args) {
+        Solmu eka = new Solmu();
+        Solmu toka = new Solmu();
         
-        int x = 5;
-        int y = 6;
-        int v = 7;
-        Linkitettylista lista = new Linkitettylista();
-        System.out.println("Pushataan 5");
-        lista.push(x);
-        System.out.println("Pushataan 6");
-        lista.push(y);
-        System.out.println("Pushataan 7");
-        lista.push(v);
+        Kaari a = new Kaari(eka, toka);
         
-        System.out.println("Popataan 7");
-        lista.pop();
-        System.out.println("Popataan 6");
-        lista.pop();
-        System.out.println("Popataan 5");
-        lista.pop();
+        Solmu kol = new Solmu();
+        Solmu nel = new Solmu();
         
-//        Scanner lukija = new Scanner(System.in);
-//        System.out.println("Tee ensin verkko: ");
-//        Verkko verkko[] = new Verkko[10];
-//        for (int i = 0; i < 10; i++) {
-//            verkko[i]. = new Verkko();
-//            System.out.println("["+i+"] : Anna lähtöpaikka");
-//            verkko[i].lahde = lukija.nextInt();
-//            
-//            System.out.println("["+i+"] : Anna kohdepaikka");
-//            verkko[i].kohde = lukija.nextInt();
-//            
-//            System.out.println("["+i+"] : Anna paino");
-//            verkko[i].paino = lukija.nextInt();
-//        }
-//        
-//        BellmanFord(verkko, 10, 5, 4);
-//        System.out.println("Millä algoritmilla haluat suorittaa haun?" + "\n"
-//                + "1. Bellman-Ford" + "\n"
-//                + "2. Dijkstra");
-//        String vastaus = reader.nextLine();
-//        Suoritin.suorita(vastaus);
+        Kaari b = new Kaari(kol, nel);
+        
+        Solmu viis = new Solmu();
+        Solmu kuus = new Solmu();
+        
+        Kaari c = new Kaari(viis, kuus);
+        
+        Solmu seitm = new Solmu();
+        Solmu kaheks = new Solmu();
+        
+        Kaari d = new Kaari(seitm, kaheks);
+        
+        Solmu yheks = new Solmu();
+        Solmu kymm = new Solmu();
+        
+        Kaari e = new Kaari(yheks, kymm);
+        
+        ArrayList<Kaari> kaaret = new ArrayList<Kaari>();
+        ArrayList<Solmu> solmut = new ArrayList<Solmu>();
+        solmut.add(eka);
+        solmut.add(toka);
+        solmut.add(kol);
+        solmut.add(nel);
+        solmut.add(viis);
+        solmut.add(kuus);
+        solmut.add(seitm);
+        solmut.add(kaheks);
+        solmut.add(yheks);
+        solmut.add(kymm);
+        
+        Verkko verkko = new Verkko(kaaret, solmut);
+        
+       
+        BellmanFord aloita = new BellmanFord();
+        aloita.BellmanFord(verkko);
+        
+        
     }
 }
