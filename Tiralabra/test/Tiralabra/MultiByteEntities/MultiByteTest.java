@@ -84,7 +84,7 @@ public class MultiByteTest {
     }
 
     @Test
-    public void testRandomDataForSameHashesShouldFail(){
+    public void testRandomDataForSameHashesShouldFail() {
         int[] doubleByteHashArray = new int[incrementalData.length];
         int[] tripleByteHashArray = new int[incrementalData.length];
         int[] quadByteHashArray = new int[incrementalData.length];
@@ -98,7 +98,7 @@ public class MultiByteTest {
         checkForMatchingHashes(quadByteHashArray, false);
 
     }
-    
+
     @Test
     public void predefinedMultiByteHashTestNoSameHashes() {
         int[] doubleByteHashArray = new int[incrementalData.length];
@@ -128,6 +128,38 @@ public class MultiByteTest {
         checkForMatchingHashes(doubleByteHashArray, true);
         checkForMatchingHashes(tripleByteHashArray, true);
         checkForMatchingHashes(quadByteHashArray, true);
+    }
+
+    @Test
+    public void testForDataOverrFlowProtection() {
+        for (int i = 2; i < 10; i++) {
+
+            MultiByte multiByte = new MultiByte(i);
+            for (int j = 0; j < 100; j++) {
+                assertEquals("Data overflow", j < i, multiByte.addData(randomData[j]));
+            }
+
+        }
+    }
+
+    @Test
+    public void testEqualsMethod() {
+        for (int i = 2; i < 10; i++) {
+
+            MultiByte reference = new MultiByte(i);
+            for (int j = 0; j < i; j++) {
+                reference.addData(sameData[j]);
+            }
+
+            for (int j = 0; j < sameData.length; j++) {
+                MultiByte referred = new MultiByte(i);
+                for (int k = 0; k < i; k++) {
+                    referred.addData(sameData[j]);
+                }
+                assertTrue("Non-equal multi-byte objects with identical data", reference.equals(referred));
+            }
+
+        }
     }
 
     private void indtroduceHashCodes(int[] multiByteHashArray, byte[] dataArray, int width) {
