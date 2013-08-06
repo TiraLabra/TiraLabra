@@ -42,13 +42,13 @@ public class MinMaxAI implements AI
 
 		int player = state.getNextMovingPlayer();
 
-		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+		for (int pieceType = Pieces.COUNT - 1; pieceType >= 0; --pieceType) {
 			long pieces = state.getPieces(player, pieceType);
 			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 				int fromSqr = Long.numberOfTrailingZeros(pieces);
 				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
 
-				for (int capturedPiece = Pieces.COUNT - 1; capturedPiece >= 0; --capturedPiece) {
+				for (int capturedPiece = 0; capturedPiece < Pieces.COUNT; ++capturedPiece) {
 					long captureMoves = moves & state.getPieces(1 - player, capturedPiece);
 					int value = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr,
 							captureMoves);
@@ -59,7 +59,7 @@ public class MinMaxAI implements AI
 			}
 		}
 
-		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+		for (int pieceType = Pieces.COUNT - 1; pieceType >= 0; --pieceType) {
 			long pieces = state.getPieces(player, pieceType);
 			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 				int fromSqr = Long.numberOfTrailingZeros(pieces);
