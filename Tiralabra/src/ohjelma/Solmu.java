@@ -9,12 +9,14 @@ package ohjelma;
  * @author kkivikat
  */
 public class Solmu {
+    // HUOM: Paino siis tähän asti lyhyin reitti tähän solmuun
+    private final int numero;
+    private int paino;
 
-    int numero;
-    int paino;
-    int edellinen;
 
-    public Solmu() {
+    public Solmu(int numero) {
+        paino = Integer.MAX_VALUE;
+        this.numero = numero;
     }
 
     public int getSolmuNumero() {
@@ -25,15 +27,14 @@ public class Solmu {
         return paino;
     }
 
-    public int getEdellinenSolmu() {
-        return edellinen;
-    }
 
     public void setPaino(int paino) {
         this.paino = paino;
     }
-
-    public void setEdellinen(int edellinen) {
-        this.edellinen = edellinen;
+    
+    @Override
+    public String toString() {
+        return ""+getPaino();
     }
+
 }

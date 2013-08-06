@@ -1,6 +1,8 @@
 package ohjelma;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /*
  * To change this template, choose Tools | Templates
@@ -14,50 +16,46 @@ public class Main {
 //
 
     public static void main(String[] args) {
-        Solmu eka = new Solmu();
-        Solmu toka = new Solmu();
+        HashMap<Integer, Solmu> solmut = new HashMap<Integer, Solmu>();
+        HashSet<Kaari> kaaret = new HashSet<Kaari>();
         
-        Kaari a = new Kaari(eka, toka);
+        //*****************************************//
         
-        Solmu kol = new Solmu();
-        Solmu nel = new Solmu();
+        Solmu eka = new Solmu(1);
+        Solmu toka = new Solmu(2);
+        Solmu kolmas = new Solmu(3);
+        Solmu neljas = new Solmu(4);
+        Solmu viides = new Solmu(5);
+        Solmu kuudes = new Solmu(6);
         
-        Kaari b = new Kaari(kol, nel);
+
+        solmut.put(eka.getSolmuNumero(), eka);
+        solmut.put(toka.getSolmuNumero(), toka);
+        solmut.put(kolmas.getSolmuNumero(), kolmas);
+        solmut.put(neljas.getSolmuNumero(), neljas);
+        solmut.put(viides.getSolmuNumero(), viides);
+        solmut.put(kuudes.getSolmuNumero(), kuudes);
         
-        Solmu viis = new Solmu();
-        Solmu kuus = new Solmu();
+        //*****************************************//
         
-        Kaari c = new Kaari(viis, kuus);
+        Kaari a = new Kaari(eka, kolmas, 5);
+        Kaari b = new Kaari(eka, toka, 3);
+        Kaari c = new Kaari(toka, kolmas, 1);
+        Kaari d = new Kaari(kolmas, viides, 3);
+        Kaari e = new Kaari(toka, neljas, 4);
+        Kaari f = new Kaari(viides, kuudes, 6);
+        Kaari g = new Kaari(neljas, kuudes, 2);
+
+        kaaret.add(a);kaaret.add(b);kaaret.add(c);kaaret.add(d);
+        kaaret.add(e);kaaret.add(f);kaaret.add(g);
         
-        Solmu seitm = new Solmu();
-        Solmu kaheks = new Solmu();
-        
-        Kaari d = new Kaari(seitm, kaheks);
-        
-        Solmu yheks = new Solmu();
-        Solmu kymm = new Solmu();
-        
-        Kaari e = new Kaari(yheks, kymm);
-        
-        ArrayList<Kaari> kaaret = new ArrayList<Kaari>();
-        ArrayList<Solmu> solmut = new ArrayList<Solmu>();
-        solmut.add(eka);
-        solmut.add(toka);
-        solmut.add(kol);
-        solmut.add(nel);
-        solmut.add(viis);
-        solmut.add(kuus);
-        solmut.add(seitm);
-        solmut.add(kaheks);
-        solmut.add(yheks);
-        solmut.add(kymm);
-        
-        Verkko verkko = new Verkko(kaaret, solmut);
-        
-       
-        BellmanFord aloita = new BellmanFord();
+        //*****************************************//
+
+        Verkko verkko = new Verkko(solmut, kaaret);
+
+        BellmanFord aloita = new BellmanFord(verkko, solmut, kaaret);
         aloita.BellmanFord(verkko);
-        
-        
+
+
     }
 }

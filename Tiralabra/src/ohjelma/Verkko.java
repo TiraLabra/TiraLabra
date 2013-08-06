@@ -1,6 +1,7 @@
 package ohjelma;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /*
  * To change this template, choose Tools | Templates
@@ -11,11 +12,11 @@ import java.util.ArrayList;
  * @author kkivikat
  */
 public class Verkko {
-    ArrayList kaaret;
-    ArrayList solmut;
+    private HashSet<Kaari> kaaret;
+    private HashMap<Integer, Solmu> solmut;
 
-    public Verkko(ArrayList kaaret, ArrayList solmut) {
-        this.kaaret = kaaret;
+    public Verkko(HashMap solmut, HashSet kaaret) {
         this.solmut = solmut;
+        this.kaaret = kaaret;
     }
 }
