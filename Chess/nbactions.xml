@@ -36,4 +36,18 @@
                 <exec.executable>${profiler.java}</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-assembly</actionName>
+            <displayName>assembly</displayName>
+            <goals>
+                <goal>assembly:assembly</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-cobertura</actionName>
+            <displayName>cobertura</displayName>
+            <goals>
+                <goal>cobertura:cobertura</goal>
+            </goals>
+        </action>
     </actions>
