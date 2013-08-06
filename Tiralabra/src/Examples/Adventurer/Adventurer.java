@@ -74,8 +74,12 @@ public class Adventurer {
         shortestPath(x1,y1,x2,y2);
     }
     private void shortestPath(int x1, int y1, int x2, int y2) {
+        long start = System.currentTimeMillis();
         Path p = this.grid.shortestPath(x1, y1, x2, y2);
+        long end = System.currentTimeMillis();
+        System.out.println("Polku: ");
         System.out.println(p.toString());
+        System.out.println("Suoritusaika: " + (end-start) +  " millisekunttia");
         LinkedList<Vertex> path = p.getPath();
         Iterator<Vertex> i = new Iterator<Vertex>(path);
         while(i.hasNext()){

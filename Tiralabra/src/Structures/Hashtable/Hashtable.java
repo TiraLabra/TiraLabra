@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Structures.Hashtable;
 
 import Utils.Iterator;
 import Structures.LinkedList.LinkedList;
 
-/**
- *
- * @author Kalle
- */
 public class Hashtable<K,V> {
     private Object table[];
     private LinkedList<K> keySet;

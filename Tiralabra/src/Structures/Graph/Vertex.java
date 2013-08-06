@@ -1,15 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Structures.Graph;
 
 import Structures.LinkedList.LinkedList;
 
-/**
- *
- * @author Kalle
- */
+
 public class Vertex {
     private int key;
     private String name;
