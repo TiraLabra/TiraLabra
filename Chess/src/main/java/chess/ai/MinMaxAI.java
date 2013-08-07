@@ -63,7 +63,7 @@ public class MinMaxAI implements AI
 			}
 		}
 
-		for (int pieceType = Pieces.COUNT - 1; pieceType >= 0; --pieceType) {
+		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
 			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 				int fromSqr = Long.numberOfTrailingZeros(pieces);
@@ -117,6 +117,7 @@ public class MinMaxAI implements AI
 			score += Long.bitCount(state.getPieces(player, pieceType)) * pieceValue;
 			score -= Long.bitCount(state.getPieces(1 - player, pieceType)) * pieceValue;
 		}
+		score -= Long.bitCount(state.getPieces(player) | state.getPieces(1 - player));
 		return score;
 	}
 
