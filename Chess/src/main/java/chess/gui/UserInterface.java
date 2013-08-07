@@ -211,6 +211,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		board.setBoard(state.getBoard());
 		board.setSelected(-1);
 		board.setAllowedMoves(0);
+		resultLabel.setVisible(false);
 		ai = new MinMaxAI(logArea);
 	}
 
