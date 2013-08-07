@@ -6,8 +6,7 @@ package Structures.Queue;
 
 
 /**
- *
- * @author Kalle
+ * Queue structure
  */
 public class Queue<T> {
     private Node tail;
@@ -16,6 +15,9 @@ public class Queue<T> {
         this.tail=null;
         this.head=null;
     }
+    /**
+     * Adds an object to the queue
+     */
     public void enqueue(T data){
         if(this.head==null){
             Node n=new Node(null,data);
@@ -27,6 +29,9 @@ public class Queue<T> {
             this.tail=n;
         }
     }
+    /**
+     * Removes an object from the queue
+     */
     public T dequeue(){
         if(this.head!=null){
             T data=(T)this.head.getData();
@@ -35,6 +40,9 @@ public class Queue<T> {
         }
         return null;
     }
+    /**
+     * Checks if the queue is empty
+     */
     public boolean isEmpty(){
         return this.head==null;
     }

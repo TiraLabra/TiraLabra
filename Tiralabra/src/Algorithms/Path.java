@@ -3,7 +3,9 @@ package Algorithms;
 import Structures.Graph.Vertex;
 import Structures.LinkedList.LinkedList;
 import Utils.Iterator;
-
+/**
+* Contains information about a path in a graph
+*/
 public class Path {
     private LinkedList<Vertex> path;
     private int length;

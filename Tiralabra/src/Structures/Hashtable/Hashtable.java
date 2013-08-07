@@ -4,9 +4,15 @@ package Structures.Hashtable;
 import Utils.Iterator;
 import Structures.LinkedList.LinkedList;
 
+/**
+ * Hash table structure
+ */
 public class Hashtable<K,V> {
     private Object table[];
     private LinkedList<K> keySet;
+    /**
+     * Creates a hash table
+     */
     public Hashtable(){
         this.table=new Object[300];
         this.keySet=new LinkedList<K>();
@@ -14,6 +20,9 @@ public class Hashtable<K,V> {
             this.table[i]=new LinkedList<TableData<K,V>>();
         }
     }
+    /**
+     * Creates a hash table of certain size
+     */
     public Hashtable(int size){
         this.table=new Object[size];
         this.keySet=new LinkedList<K>();
@@ -21,6 +30,11 @@ public class Hashtable<K,V> {
             this.table[i]=new LinkedList<TableData<K,V>>();
         }
     }
+    /**
+     * Finds the object in the hash table that has the given key
+     * @param Key of the object
+     * @return Object connected with the given key
+     */
     public V get(K key){
         Iterator<TableData<K,V>> i = new Iterator<TableData<K,V>>((LinkedList<TableData<K,V>>)table[(Math.abs(key.hashCode())%this.table.length)]);
         while(i.hasNext()){
@@ -31,6 +45,9 @@ public class Hashtable<K,V> {
         }
         return null;
     }
+    /**
+     * Removes the given key from the hash table
+     */
     public void remove(K key){
         int location = (Math.abs(key.hashCode())%this.table.length);
         LinkedList<TableData<K,V>> keys = (LinkedList<TableData<K,V>>)this.table[location];
@@ -51,6 +68,9 @@ public class Hashtable<K,V> {
             }
         }
     }
+    /**
+     * Adds an object connected with the given key to the hash table
+     */
     public void put(K key,V value){
         LinkedList<TableData<K,V>> list = (LinkedList<TableData<K,V>>)table[(Math.abs(key.hashCode())%this.table.length)];
         if(list.isEmpty()){
@@ -69,6 +89,9 @@ public class Hashtable<K,V> {
         list.add(new TableData<K,V>(key,value));
         this.keySet.add(key);
     }
+    /**
+     * Checks if hash table contains the given key
+     */
     public boolean containsKey(K key){
         LinkedList<TableData<K,V>> list = (LinkedList<TableData<K,V>>)table[(Math.abs(key.hashCode())%this.table.length)];
         if(list.isEmpty()){
@@ -83,6 +106,9 @@ public class Hashtable<K,V> {
         }
         return false;
     }
+    /**
+     * Returns all the keys in the hash table
+     */
     public LinkedList<K> keySet(){
         return this.keySet;
     }

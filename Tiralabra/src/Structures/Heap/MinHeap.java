@@ -1,19 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Structures.Heap;
 
 import Structures.Hashtable.Hashtable;
 
 /**
- *
- * @author Kalle
+ * Minium heap structure
  */
 public class MinHeap<T> {
     private Node heap[];
     private int heapsize;
     private Hashtable<T,Integer> location;
+    /**
+     * Creates a minium heap of certain size
+     */
     public MinHeap(int size){
         this.heap=new Node[size*2];
         this.heapsize=0;
@@ -54,6 +52,10 @@ public class MinHeap<T> {
             this.heap[l]=temp;
         }
     }
+    /**
+     * Inserts data with a certain key to the heap
+     * @param Key which determines place in the heap and the object to store
+     */
     public void insert(int key, T data){
         Node n = new Node(key,data);
         this.heapsize++;
@@ -66,6 +68,10 @@ public class MinHeap<T> {
         this.heap[i]=n;
         this.location.put((T)(data), i);
     }
+    /**
+     * Pops out the smallest key in the heap
+     * @return Object of the smallest key in the heap
+     */
     public T pop(){
         if(isEmpty()){
             return null;
@@ -78,9 +84,16 @@ public class MinHeap<T> {
         heapify(1);
         return (T)min;
     }
+    /**
+     * Checks if certain object is currently in the heap
+     * @return true if object is in the heap, false otherwise
+     */
     public boolean inHeap(T node){
         return this.location.get(node)!=-1 && this.location.get(node)!=0;
     }
+    /**
+     * Decreases the key of a certain object
+     */
     public void decrease(T node, int key){
         if(this.location.get(node)==-1 || this.location.get(node)==0){
             return;
@@ -98,6 +111,9 @@ public class MinHeap<T> {
             }
         }
     }
+    /**
+     * Checks if the heap is empty
+     */
     public boolean isEmpty(){
         return this.heapsize==0;
     }

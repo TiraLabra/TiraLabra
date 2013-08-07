@@ -5,14 +5,16 @@
 package Structures.Stack;
 
 /**
- *
- * @author Kalle
+ * Stack structure
  */
 public class Stack<T> {
     private Node top;
     public Stack(){
         this.top=null;
     }
+    /**
+     * Adds an object to the stack
+     */
     public void push(T data){
         if(this.top==null){
             Node n=new Node(null,data);
@@ -22,6 +24,9 @@ public class Stack<T> {
             this.top=n;
         }
     }
+    /**
+     * Removes an object from the stack
+     */
     public T pop(){
         if(this.top!=null){
             T data=(T)this.top.getData();
@@ -30,6 +35,9 @@ public class Stack<T> {
         }
         return null;
     }
+    /**
+     * Checks if the stack is empty
+     */
     public boolean isEmpty(){
         return this.top==null;
     }
