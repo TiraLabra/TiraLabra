@@ -55,7 +55,7 @@ public class Huffman {
     /**
      * The main function to call when decoding a message
      */
-    public void decode() {
+    public void decode() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
         buildReverseTree();
         decodeMessage();
     }
@@ -144,7 +144,7 @@ public class Huffman {
     /**
      * Given a map of key=>code pairs it will generate the Huffman tree that corresponds to it
      */
-    protected void buildReverseTree() {
+    protected void buildReverseTree() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
         Node root = new Node("root", 0);
         Node current = root;
         for (String key : map.keySet()) {
@@ -169,7 +169,7 @@ public class Huffman {
                         current = right;
                     }
                 } else {
-                    throw new IllegalArgumentException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
+                    throw new IllegalHuffmanCodeException("Code must be either " + LEFT + " or " + RIGHT + ". But was: " + c);
                 }
             }
             current.setLabel(key);
@@ -251,8 +251,12 @@ public class Huffman {
 
     public Map<String, String> parseMap(String serial) {
         String[] parts = serial.split("__");
-
         Map<String, String> m = new HashMap<String, String>();
+
+        if (parts.length < 2) {
+            return m;
+        }
+
         for (int i = 0; i < parts.length; i += 2) {
             String key = parts[i];
             String value = parts[i + 1];

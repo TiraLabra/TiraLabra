@@ -145,38 +145,81 @@ public class HuffmanTest extends TestCase {
         assertEquals(r.getLabel(), resultRight.getLabel());
     }
 
-//    public void testEncodeDecode() {
-//        final String message = "Hello world!";
-//        Huffman encoder = new Huffman(message);
-//        encoder.encode();
-//
-//        Huffman decoder = new Huffman();
-//        decoder.setMap(encoder.getMap());
-//        decoder.setEncodedMessage(encoder.getEncodedMessage());
-//        decoder.decode();
-//
-//        assertEquals(decoder.getMessage(), message);
-//    }
+    public void testMapParsing() {
+        Huffman encoder = new Huffman("abb");
+        encoder.encode();
+        Map<String, String> old = encoder.getMap();
+        String encodedMap = encoder.encodeMap();
+        Huffman decoder = new Huffman();
+        Map<String, String> decoded = decoder.parseMap(encodedMap);
+        assertEquals(old, decoded);
+    }
+
+    public void testEncodeDecode() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
+        final String message = "Hello world!";
+        Huffman encoder = new Huffman();
+        encoder.setMessage(message);
+        encoder.encode();
+        String map = encoder.encodeMap();
+        String encodedMessage = encoder.getEncodedMessage();
+
+        Huffman decoder = new Huffman();
+        decoder.setMap(decoder.parseMap(map));
+        decoder.setEncodedMessage(encodedMessage);
+
+        decoder.decode();
+
+        assertEquals(decoder.getMessage(), message);
+    }
 
 
     public void testParseMap() {
-//        Huffman h = new Huffman("");
-//        char nil = '\0';
-//        String map = "a" + nil + "0" + nil +
-//                "b" + nil + "10" + nil +
-//                "c" + nil + "110" + nil +
-//                "d" + nil + "111";
-//        Map<String, String> m = h.parseMap(map);
-//
-//        assertTrue(m.containsKey("a"));
-//        assertTrue(m.containsKey("b"));
-//        assertTrue(m.containsKey("c"));
-//        assertTrue(m.containsKey("d"));
-//
-//        assertEquals("0", m.get("a"));
-//        assertEquals("10", m.get("b"));
-//        assertEquals("110", m.get("c"));
-//        assertEquals("111", m.get("d"));
+        Huffman h = new Huffman("");
+        char nil = '\0';
+        String map = "a" + nil + "0" + nil +
+                "b" + nil + "10" + nil +
+                "c" + nil + "110" + nil +
+                "d" + nil + "111";
+
+        Map<String, String> m = h.parseMap(map);
+        assertTrue(m.isEmpty());
+    }
+
+    public void testDecode() {
+        Map<String, String> map = new java.util.HashMap<String, String>();
+        map.put("a", "0");
+        Huffman h = new Huffman();
+        h.setMap(map);
+        h.setEncodedMessage("a");
+
+        try {
+            h.decode();
+            fail("Illegal movement a");
+        } catch (IllegalArgumentException iae) {
+//            is ok
+        } catch (Exception e) {
+            fail("Wrong exception");
+        }
+
+        h.setEncodedMessage("1");
+
+        try {
+            h.decode();
+            fail("No element with key 1");
+        } catch (java.util.NoSuchElementException nsee) {
+            // is ok
+        } catch (Exception e) {
+            fail("Wrong exception. Was supposed to be No Such Element");
+        }
+
+        map.put("b", "2");
+        h.setMap(map);
+        try {
+            h.decode();
+            fail("2 Is not a valid Huffman code.");
+        } catch (IllegalHuffmanCodeException illegal) {
+
+        }
     }
 
 }

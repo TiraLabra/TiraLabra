@@ -44,6 +44,9 @@ public class HuffmanSteganoEncoder {
         } catch (IOException ioe) {
             System.out.println("Oh poop.");
             ioe.printStackTrace();
+        } catch (IllegalHuffmanCodeException huff) {
+            System.out.println("Huffman decoding failed");
+            huff.printStackTrace();
         }
 
 
@@ -84,7 +87,7 @@ public class HuffmanSteganoEncoder {
         s = null;
     }
 
-    static void decode(String path, String map) throws IOException {
+    static void decode(String path, String map) throws IOException, IllegalHuffmanCodeException {
         System.out.println("Opening " + path);
         Steganographer dec = new Steganographer(path);
         dec.decodeBits();

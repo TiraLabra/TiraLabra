@@ -13,6 +13,7 @@ import java.io.*;
 public class Steganographer {
 
     public static final int BITS_PER_PIXEL = 3; // alpha is discarded
+    public static final int BITS_PER_CHAR = 8;
     private BufferedImage image;
     private String message;
     private int width;
@@ -49,13 +50,15 @@ public class Steganographer {
     }
 
     public int getMaximumMessageLength() {
-        return (width * height * BITS_PER_PIXEL) / 8; // in bytes.
+        int totalBits = (width * height * BITS_PER_PIXEL);
+        int totalChars = totalBits / BITS_PER_CHAR;
+        return totalChars;
     }
 
     protected void writeMessageLength(int x, int y) {
         Color msgLen = new Color(messageLength);
         int len = removeAlphaChannel(msgLen.getRGB());
-        image.setRGB(0, 0, len);
+        image.setRGB(x, y, len);
     }
 
     protected int readMessageLength(int x, int y) {
