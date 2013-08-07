@@ -19,7 +19,7 @@ public class Ai {
     public Ai() {
         this.tree = new GameTreeNode(-2, -2);
         this.stack = new Stack();
-        this.depth = 4;
+        this.depth = 3;
         this.lastMove = -2;
     }
 
@@ -31,9 +31,9 @@ public class Ai {
         int[] is = treeStatistics();
 
         int x = is[0];
-        is[0] = is[1];
-        is[1] = is[2];
-        is[2] = x;
+        is[0] = is[2];
+        is[2] = is[1];
+        is[1] = x;
 
 
         //for testing
@@ -78,7 +78,7 @@ public class Ai {
             StackNode sn = s.pop();
             stack.put(sn);
             gtn.addChild(sn);
-            gtn = tree.getChild(sn);
+            gtn = gtn.getChild(sn);
         }
     }
 

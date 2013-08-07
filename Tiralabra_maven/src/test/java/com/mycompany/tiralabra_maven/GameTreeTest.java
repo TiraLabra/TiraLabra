@@ -6,11 +6,9 @@ package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.data_structures.GameTreeNode;
 import com.mycompany.tiralabra_maven.data_structures.StackNode;
+import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -55,8 +53,51 @@ public class GameTreeTest extends TestCase{
     }
     
     @Test
-    public void testAdding2(){
+    public void testGoingThrough(){
+        StackNode sn = new StackNode(0, -1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
         
+        sn = new StackNode(0, 0);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(0, 1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(1, -1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(1, 0);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(1, 1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(2, -1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(2, 0);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
+        
+        sn = new StackNode(2, 1);
+        tree.addChild(sn);
+        assertEquals(tree.getChild(sn), new GameTreeNode(sn.getMove(), sn.getResult()));
+        tree = tree.getChild(sn);
     }
 
 }
