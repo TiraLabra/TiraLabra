@@ -16,7 +16,6 @@ public class Labyrintti {
     private BufferedImage labyrintti;
     private int lattia;
     private int seina;
-    private int etaisyys;
     
     public Labyrintti(String laby){
         try {
@@ -24,29 +23,45 @@ public class Labyrintti {
         } catch (Exception e){
             System.out.println("Kuvaa ei löytynyt");
         }
-        
+        asetaLattiaJaSeina();
     }
     
     public BufferedImage haeLaby(){
         return labyrintti;
     }
     
-    public void asetaLattiaJaSeina(){
-        lattia = -1;
-        seina = -16777216;
+    private void asetaLattiaJaSeina(){
+        lattia = -1; //Valkoinen
+        seina = -16777216; //Musta
     }
     
-    public void etaisyys(int a, int b, int a1, int b1) {
-        if(labyrintti.getRGB(a, b) == seina || labyrintti.getRGB(a1, b1) == seina) {
-            return;
-        }
-        
-        if (labyrintti.getRGB(a, b)==lattia && labyrintti.getRGB(a1, b1)==lattia) {
-            etaisyys = 1;
+    /**
+     * 
+     * @param x
+     * Metodilla määritetään pisteen etäisyysarvo, eli kuinka pitkä matka on
+     * kuljettava, että siihen voi päästä.
+     */
+    public int etaisyys(Solmu x) {
+        if(labyrintti.getRGB(x.getA(), x.getB()) == lattia) {
+            return 1;
         } else {
-            etaisyys = 1000000;
+            return 1000000;
         }
     }
+
+    public int getLattia() {
+        return lattia;
+    }
+
+    public int getSeina() {
+        return seina;
+    }
     
+    public int getWidth() {
+        return labyrintti.getWidth();
+    }
     
+    public int getHeight() {
+        return labyrintti.getHeight();
+    }
 }
