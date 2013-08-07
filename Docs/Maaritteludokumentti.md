@@ -11,3 +11,10 @@ Harjoitustyön tarkoituksena on lähinnä harjoitella eri puiden rakentamista ja
 Käyttäjän on mahdollista valita mitä rakententeista vertaillaan kullakin kerralla (ainakin kahta, mahdollisesti myös kaikkia samaan aikaan). Lisäksi käyttäjä valitsee verrattavat operaatiot (yksi, useampi, tai kaikki kerrallaan). Mahdollisesti käyttäjän on myös mahdollista määritellä puiden sisältämien alkioiden määrä vertailuissa.
 
 Tilavaativuus tulee siis olemaan luokkaa O(n), jossa n = puiden alkioiden määrä x puiden määrä. Aikavaativuus on maksimissaan O(n), kun vertaillaan alkoioiden tulostamista, ja minimissä O (log n) kun vertailussa ei tutkita alkioiden tulostamista.
+
+
+Lähteet (tulevat tarkentumaan):
+http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+http://en.wikipedia.org/wiki/Treap
+http://en.wikipedia.org/wiki/B-tree
+http://en.wikipedia.org/wiki/Threaded_binary_tree
