@@ -18,6 +18,8 @@ public class MinMaxAI implements AI
 
 	private boolean loggingEnabled = false;
 
+	private int count;
+
 	public MinMaxAI(Logger logger)
 	{
 		this(logger, DEFAULT_SEARCH_DEPTH);
@@ -31,7 +33,9 @@ public class MinMaxAI implements AI
 
 	public void move(GameState state)
 	{
+		count = 0;
 		search(searchDepth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+		log("count=" + count);
 		state.move(bestMoveFrom, bestMoveTo);
 	}
 
@@ -104,6 +108,7 @@ public class MinMaxAI implements AI
 
 	private int getScore(GameState state, int depth)
 	{
+		++count;
 		int player = state.getNextMovingPlayer();
 		int score = -depth;
 		Long.bitCount(bestMoveTo);

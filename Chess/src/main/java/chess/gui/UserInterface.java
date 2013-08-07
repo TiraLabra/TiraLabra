@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -44,6 +45,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	private LogArea logArea;
 
 	private JMenuItem newGameItem, exitItem, performanceTestItem;
+
+	JCheckBoxMenuItem debugInfoItem;
 
 	@Override
 	public void run()
@@ -103,12 +106,22 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 		performanceTestItem = createMenuItem(debugMenu, "Performance test");
 
+		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
+
 		frame.add(menuBar, BorderLayout.NORTH);
 	}
 
 	private JMenuItem createMenuItem(JMenu menu, String caption)
 	{
 		JMenuItem item = new JMenuItem(caption);
+		item.addActionListener(this);
+		menu.add(item);
+		return item;
+	}
+
+	private JCheckBoxMenuItem createCheckBoxMenuItem(JMenu menu, String caption)
+	{
+		JCheckBoxMenuItem item = new JCheckBoxMenuItem(caption);
 		item.addActionListener(this);
 		menu.add(item);
 		return item;
@@ -212,6 +225,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 			startNewGame();
 		else if (ae.getSource() == performanceTestItem)
 			runPerformanceTest();
+		else if (ae.getSource() == debugInfoItem)
+			ai.setLoggingEnabled(debugInfoItem.getState());
 		else if (ae.getSource() == exitItem)
 			System.exit(0);
 	}
