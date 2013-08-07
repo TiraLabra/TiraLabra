@@ -15,6 +15,7 @@ public class Stack {
     public void put(StackNode sn){
         if (node == null){
             node = sn;
+            sn.setNext(null);
         } else {
             sn.setNext(node);
             node = sn;

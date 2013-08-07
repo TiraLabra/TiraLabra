@@ -36,6 +36,12 @@ public class Ai {
         is[2] = x;
 
 
+        //for testing
+        for (int i : is) {
+            System.out.println(i);
+        }
+        System.out.println();
+
         double[] ds = new double[3];
 
         for (int i = 0; i < 3; i++) {
@@ -55,9 +61,8 @@ public class Ai {
     }
 
     public void update(int result) {
-
         stack.put(new StackNode(oppnentsLastMove(result), result));
-        if (stack.size() < depth) {
+        if (stack.size() < depth + 1) {
         } else {
             Stack s = new Stack();
             for (int i = 0; i < depth; i++) {
@@ -72,7 +77,6 @@ public class Ai {
         for (int i = 0; i < depth; i++) {
             StackNode sn = s.pop();
             stack.put(sn);
-
             gtn.addChild(sn);
             gtn = tree.getChild(sn);
         }
@@ -81,19 +85,21 @@ public class Ai {
     private int[] treeStatistics() {
         GameTreeNode gtn = tree;
         Stack s = new Stack();
-        for (int i = 0; i < depth - 1; i++) {
-            s.put(stack.pop());
+        
+        StackNode node = stack.peek();
+        for (int i = 0; i < depth -1; i++) {
+            s.put(new StackNode(node.getMove(), node.getResult()));
+            node = node.getNext();
         }
+        
 
         for (int i = 0; i < depth - 1; i++) {
             StackNode sn = s.pop();
-
-            if (gtn.getChild(sn) != null) {
+            if (gtn.getChild(sn) == null) {
                 int[] is = {0, 0, 0};
                 return is;
             }
             gtn = gtn.getChild(sn);
-            stack.put(sn);
         }
 
         int[] is = new int[3];
@@ -118,11 +124,11 @@ public class Ai {
         }
         if (lastMove < 2 && result == -1) {
             return lastMove + 1;
-        } else if (lastMove > 0 && result == 1){
+        } else if (lastMove > 0 && result == 1) {
             return lastMove - 1;
-        } else if (lastMove == 0 && result == 1){
+        } else if (lastMove == 0 && result == 1) {
             return 2;
-        } else if (lastMove == 2 && result == -1){
+        } else if (lastMove == 2 && result == -1) {
             return 0;
         }
         return -2;

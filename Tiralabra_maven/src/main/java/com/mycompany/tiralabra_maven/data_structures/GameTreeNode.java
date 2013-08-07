@@ -41,6 +41,33 @@ public class GameTreeNode {
     public void setTimesPlayed(int timesPlayed) {
         this.timesPlayed = timesPlayed;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GameTreeNode other = (GameTreeNode) obj;
+        if (this.move != other.move) {
+            return false;
+        }
+        if (this.result != other.result) {
+            return false;
+        }
+        if (this.timesPlayed != other.timesPlayed) {
+            return false;
+        }
+        return true;
+    }
     
     public void thisPlayed(){
         timesPlayed++;

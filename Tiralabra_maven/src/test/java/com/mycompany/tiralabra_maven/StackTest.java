@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  *
  * @author Joel Nummelin
  */
-public class StackTest extends TestCase {
+public class StackTest extends TestCase{
     private Stack stack;
     
     
@@ -40,6 +40,17 @@ public class StackTest extends TestCase {
         assertEquals(stack.size(), 2);
         stack.pop();
         assertEquals(stack.size(), 1);
+    }
+    
+    public void testStackBehaviour(){
+        stack.put(new StackNode(0, 0));
+        stack.put(new StackNode(0, 1));
+        stack.put(new StackNode(1, 0));
+        stack.put(new StackNode(1, 1));
+        assertEquals(stack.pop(), new StackNode(1, 1));
+        assertEquals(stack.pop(), new StackNode(1, 0));
+        assertEquals(stack.pop(), new StackNode(0, 1));
+        assertEquals(stack.pop(), new StackNode(0, 0));
     }
     
 }
