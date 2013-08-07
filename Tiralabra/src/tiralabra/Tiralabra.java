@@ -7,7 +7,7 @@ package tiralabra;
 import java.util.PriorityQueue;
 
 /**
- *
+ * 
  * @author joonaslongi
  */
 public class Tiralabra {

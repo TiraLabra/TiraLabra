@@ -8,12 +8,18 @@ import java.io.File;
 import java.io.FileInputStream;
 
 /**
- *
+ * Lukee tiedoston ja siinä esiintyvät merkit ja niiden toistot.
  * @author joonaslongi
  */
 public class Lukija {
+    
     FileInputStream fileinput; 
-
+    
+    /**
+     * Alustaa uuden tiedostonlukijan.
+     * @param tiedosto 
+     */
+    
     public Lukija(String tiedosto){
         File file = new File(tiedosto);
         try {
@@ -24,6 +30,10 @@ public class Lukija {
         
     }
     
+    /**
+     * Yritää lukea yhden bitin tiedostosta ja palauttaa sen.
+     * @return 
+     */
     public int lue(){
         try{
             return fileinput.read();
@@ -33,6 +43,11 @@ public class Lukija {
         return -1;
     }
     
+    /**
+     * Kertoo montako bittia on lukematta.
+     * @return 
+     */
+    
     public int vapaana(){
         try{
             return fileinput.available();
@@ -41,6 +56,10 @@ public class Lukija {
         }
         return -1;
     }
+    
+    /**
+     * Sulkee lukijan.
+     */
     
     public void sulje(){
         try{

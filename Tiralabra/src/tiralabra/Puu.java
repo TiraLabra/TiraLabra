@@ -7,7 +7,7 @@ package tiralabra;
 import java.util.PriorityQueue;
 
 /**
- *
+ * Luo Huffmanin puun
  * @author Joonas
  */
 public class Puu {
@@ -16,10 +16,19 @@ public class Puu {
     private Node root;
     private String reitit[];
     
+    /**
+     * Luo uuden puu luokan parametrina prioriteettijono.
+     * @param que 
+     */
     public Puu(PriorityQueue que){
          this.que = que;
          reitit = new String[256];
     }
+    
+    /**
+     * Kokoaa jonosta puun. Aloitetaan kahdeesta pienimmästä ja muodostetaan niille
+     * vanhempi jonka toistot on lapsien toistojen summa.
+     */
     
     public void kokoa(){
         while(que.size() > 1) {
@@ -33,10 +42,22 @@ public class Puu {
         this.root = que.poll();
     }
     
+    /**
+     * Getteri root nodelle
+     * @return 
+     */
+    
     public Node getRoot(){
         return this.root;
     }
     
+    /**
+     * Tallettaa taulukkoon jokaisen merkin "koodin" / sijainnin puussa
+     * Node on puun root Node ja code on aluksi vain tyhä "" String, johon 
+     * lisätään 0 tai 1 reitistä riippuen.
+     * @param node
+     * @param code 
+     */
     public void muodostaReitit(Node node, String code){
         if (node != null) {
             if (node.getVasen() == null && node.getOikea() == null) {
@@ -48,6 +69,10 @@ public class Puu {
         }
     }
     
+    /**
+     * Palauttaa luodun reittitaulukon.
+     * @return 
+     */
     public String[] getReitit(){
         return this.reitit;
     }
