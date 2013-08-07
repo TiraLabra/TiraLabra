@@ -1,3 +1,9 @@
+package logiikka;
+
+import osat.Laatikko;
+import osat.Lava;
+import tyokalut.KasvavaLista;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -14,14 +20,16 @@ public class Laskuri {
     private KasvavaLista parasJarjestys;
     
     public Laskuri() {
-        laatikko = new Laatikko(40, 60, 40);
-        lava = new Lava(80, 120, 130);
     }
     
-    public void laske(int leveys, int pituus, int korkeus) {
+    public KasvavaLista laske(Laatikko laatikko, Lava lava) {
         parasJarjestys = new KasvavaLista();
+        this.laatikko = laatikko;
+        this.lava = lava;
         
         asetaLaatikko(0, 0, lava, new KasvavaLista());
+        
+        return parasJarjestys;
     }
     
     private void asetaLaatikko(int x, int y, Lava vanhaLava, KasvavaLista jarjestysTahanAsti) {
