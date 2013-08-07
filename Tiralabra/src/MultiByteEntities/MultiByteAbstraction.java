@@ -85,6 +85,7 @@ public abstract class MultiByteAbstraction {
         double hashCode = 3;
 
         for (int i = 0; i < bytes.length; i++) {
+            hashCode *= 97;
             hashCode += bytes[i];
         }
 
@@ -95,21 +96,21 @@ public abstract class MultiByteAbstraction {
         double m = Math.pow(2, (width * 8)) + 607;
         m = fetchPrime(width);
 
-        hashCode = (((5 * hashCode) + 11) % p) % m;
+        hashCode = (((hashCode*5) + 11) % p) % m;
 
-        return (int) hashCode;
+        return (int) Math.abs(hashCode);
     }
 
 
     private double fetchPrime(int width) {
-        switch (width) {
-            case 2:
-                return 66221.0;
-            case 3:
-                return 16779199.0;
-            case 4:
-                return 4294970909.0;    
-        }
+//        switch (width) {
+//            case 2:
+//                return 66221.0;
+//            case 3:
+//                return 16779199.0;
+//            case 4:
+//                return 4294970909.0;    
+//        }
         return 4297880887.0;
     }
 }

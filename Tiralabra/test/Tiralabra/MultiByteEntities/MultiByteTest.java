@@ -75,7 +75,7 @@ public class MultiByteTest {
         };
 
         this.randomData = new byte[2000000];
-        Random randomByteGenerator = new Random(2719);
+        Random randomByteGenerator = new Random(2719); //seed is prime number for maximum randomness.
         randomByteGenerator.nextBytes(randomData);
     }
 
@@ -185,7 +185,7 @@ public class MultiByteTest {
             int j = multiByteHashArray[i];
 
             if (multiByteHashArray[i] == 0) {
-                break;
+                continue;
             }
 
             for (int k = 0; k < multiByteHashArray.length; k++) {
@@ -194,7 +194,7 @@ public class MultiByteTest {
                 }
 
                 if (multiByteHashArray[k] == 0) {
-                    break;
+                    continue;
                 }
                 assertEquals("Matching hashcodes" + i, matching, multiByteHashArray[k] == multiByteHashArray[i]);
             }
