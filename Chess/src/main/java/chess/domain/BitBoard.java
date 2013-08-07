@@ -94,4 +94,18 @@ public final class BitBoard
 			playerPieces[player] = source.playerPieces[player];
 		}
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		BitBoard bb2 = (BitBoard) obj;
+		for (int i = Pieces.COUNT - 1; i >= 0; --i) {
+			if (pieces[i] != bb2.pieces[i])
+				return false;
+			if (pieces[Pieces.COUNT + i] != bb2.pieces[Pieces.COUNT + i])
+				return false;
+		}
+
+		return true;
+	}
 }

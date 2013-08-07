@@ -8,9 +8,22 @@ import java.util.Random;
  */
 public final class GameState
 {
+	private static final int[] zobristRndNumbers = new int[Players.COUNT * Pieces.COUNT * 64];
+
+	private static final int zobristRndPlayer;
+
+	static {
+		Random rnd = new Random();
+		for (int i = 0; i < zobristRndNumbers.length; ++i)
+			zobristRndNumbers[i] = rnd.nextInt();
+		zobristRndPlayer = rnd.nextInt();
+	}
+
 	private final BitBoard bitboard = new BitBoard();
 
 	private int nextMovingPlayer = Players.WHITE;
+
+	private int zobristCode;
 
 	public GameState()
 	{
@@ -44,9 +57,9 @@ public final class GameState
 	private void addInitialPiece(int row, int col, int piece)
 	{
 		int sqr = row * 8 + col;
-		bitboard.addPiece(Players.BLACK, piece, sqr);
+		addPiece(Players.BLACK, piece, sqr);
 		int sqr2 = (7 - row) * 8 + col;
-		bitboard.addPiece(Players.WHITE, piece, sqr2);
+		addPiece(Players.WHITE, piece, sqr2);
 	}
 
 	public int[] getBoard()
@@ -68,36 +81,35 @@ public final class GameState
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
 			if (bitboard.hasPiece(nextMovingPlayer, piece, from)) {
-				bitboard.removePiece(nextMovingPlayer, piece, from);
-				bitboard.addPiece(nextMovingPlayer, piece, to);
+				removePiece(nextMovingPlayer, piece, from);
+				addPiece(nextMovingPlayer, piece, to);
 				break;
 			}
 		}
 
-		int capturedPiece = bitboard.removePiece(1 - nextMovingPlayer, to);
+		int capturedPiece = removePiece(1 - nextMovingPlayer, to);
 
-		nextMovingPlayer = 1 - nextMovingPlayer;
+		changeNextMovingPlayer();
 
 		return capturedPiece;
 	}
 
 	public int move(int from, int to, int pieceType)
 	{
-		bitboard.removePiece(nextMovingPlayer, pieceType, from);
-		bitboard.addPiece(nextMovingPlayer, pieceType, to);
-		int capturedPiece = bitboard.removePiece(1 - nextMovingPlayer, to);
-		nextMovingPlayer = 1 - nextMovingPlayer;
+		removePiece(nextMovingPlayer, pieceType, from);
+		addPiece(nextMovingPlayer, pieceType, to);
+		int capturedPiece = removePiece(1 - nextMovingPlayer, to);
+		changeNextMovingPlayer();
 		return capturedPiece;
 	}
 
 	public void undoMove(int from, int to, int movedPiece, int capturedPiece)
 	{
-		nextMovingPlayer = 1 - nextMovingPlayer;
-
-		bitboard.removePiece(nextMovingPlayer, movedPiece, to);
-		bitboard.addPiece(nextMovingPlayer, movedPiece, from);
+		changeNextMovingPlayer();
+		removePiece(nextMovingPlayer, movedPiece, to);
+		addPiece(nextMovingPlayer, movedPiece, from);
 		if (capturedPiece != -1)
-			bitboard.addPiece(1 - nextMovingPlayer, capturedPiece, to);
+			addPiece(1 - nextMovingPlayer, capturedPiece, to);
 	}
 
 	public long getLegalMoves(int fromSqr)
@@ -313,6 +325,7 @@ public final class GameState
 	{
 		nextMovingPlayer = copyFrom.nextMovingPlayer;
 		bitboard.copyFrom(copyFrom.bitboard);
+		zobristCode = copyFrom.zobristCode;
 	}
 
 	@Override
@@ -349,8 +362,47 @@ public final class GameState
 				do {
 					sqr = pieceType != Pieces.PAWN ? rnd.nextInt(64) : 8 + rnd.nextInt(48);
 				} while (bitboard.hasPiece(sqr));
-				bitboard.addPiece(player, pieceType, sqr);
+				addPiece(player, pieceType, sqr);
 			}
 		}
+	}
+
+	private void changeNextMovingPlayer()
+	{
+		nextMovingPlayer = 1 - nextMovingPlayer;
+		zobristCode ^= zobristRndPlayer;
+	}
+
+	private void addPiece(int player, int piece, int sqr)
+	{
+		bitboard.addPiece(player, piece, sqr);
+		zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+	}
+
+	private void removePiece(int player, int piece, int sqr)
+	{
+		bitboard.removePiece(player, piece, sqr);
+		zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+	}
+
+	private int removePiece(int player, int sqr)
+	{
+		int capturedPiece = bitboard.removePiece(player, sqr);
+		if (capturedPiece != -1)
+			zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + capturedPiece * 64 + sqr];
+		return capturedPiece;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return zobristCode;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		GameState state2 = (GameState) obj;
+		return bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
 	}
 }
