@@ -46,11 +46,12 @@ public final class Laskin {
                 case '-':
                 case '*':
                 case '/':
+                case '%':
                     sievenna(merkki);
                     break;
                 default:
                     try {
-                        PINO.push(Integer.parseInt(merkkijono));
+                        PINO.lisaa(Integer.parseInt(merkkijono));
                     } catch (NumberFormatException poikkeus) {
                         throw new IllegalArgumentException("Virheellinen luku "
                                 + "\"" + merkkijono + "\"!");
@@ -58,11 +59,11 @@ public final class Laskin {
             }
         }
         
-        if (PINO.size() > 1) {
+        if (PINO.koko() > 1) {
             throw new IllegalArgumentException("Liikaa operandeja!");
         }
         
-        return PINO.pop();
+        return PINO.poista();
     }
     
     private void sievenna(final char OPERAATTORI)
@@ -71,8 +72,8 @@ public final class Laskin {
         int m = 0;
         try {
             // Käyttäjä on saattanut syöttää liian vähän operandeja.
-            m = PINO.pop();
-            n = PINO.pop();
+            m = PINO.poista();
+            n = PINO.poista();
         } catch (Exception poikkeus) {
             throw new IllegalArgumentException("Puuttuvia operandeja!");
         }
@@ -80,21 +81,24 @@ public final class Laskin {
         switch (OPERAATTORI) {
             case '+':
                 tarkastaYlaraja(n + m, Integer.MAX_VALUE);
-                PINO.push(n + m);
+                PINO.lisaa(n + m);
                 break;
             case '-':
-                PINO.push(n - m);
+                // Vähennyslaskun yhteydessä ei tarvitse tarkastaa mitään sillä
+                // myös 0 - Integer.MAX_VALUE mahtuu int-tyyppiin.
+                PINO.lisaa(n - m);
                 break;
             case '*':
                 tarkastaYlaraja((long) n * m, Integer.MAX_VALUE);
-                PINO.push(n * m);
+                PINO.lisaa(n * m);
                 break;
             case '/':
-                if (m == 0) {
-                    throw new ArithmeticException("Jakolaskun nimittäjä "
-                            + "oli nolla!");
-                }
-                PINO.push(n / m);
+                tarkastaNimittaja(m);
+                PINO.lisaa(n / m);
+                break;
+            case '%':
+                tarkastaNimittaja(m);
+                PINO.lisaa(n % m);
                 break;
         }
     }
@@ -103,6 +107,13 @@ public final class Laskin {
             throws ArithmeticException {
         if (LUKU > YLARAJA) {
             throw new ArithmeticException("Aritmeettinen ylivuoto!");
+        }
+    }
+
+    private void tarkastaNimittaja(final int NIMITTAJA) throws ArithmeticException {
+        if (NIMITTAJA == 0) {
+            throw new ArithmeticException("Jakolaskun nimittäjä "
+                    + "oli nolla!");
         }
     }
 

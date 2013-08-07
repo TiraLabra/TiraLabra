@@ -51,6 +51,7 @@ public class JonoTest {
 
     @Test
     public void testPoll() {
+        assertNull(jono.poll());
         jono.add(testiObjekti);
         Object paluuarvo = jono.poll();
         assertEquals(testiObjekti, paluuarvo);
@@ -66,9 +67,11 @@ public class JonoTest {
         jono.peek();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testSize() {
-        jono.size();
+        jono.add(testiObjekti);
+        jono.add(testiObjekti);
+        assertEquals(2, jono.size());
     }
 
     @Test
@@ -127,5 +130,16 @@ public class JonoTest {
         jono.add(testiObjekti);
         jono.clear();
         assertTrue(jono.isEmpty());
+    }
+    
+    @Test
+    public void testToString() {
+        assertEquals(jono.toString(), "\u2205");
+        jono.add(3);
+        assertEquals(jono.toString(), "{3}");
+        jono.add(2);
+        jono.add(5);
+        jono.add(8);
+        assertEquals(jono.toString(), "(3,2,5,8)");
     }
 }

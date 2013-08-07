@@ -149,4 +149,17 @@ public class LaskinTest {
         
         assertEquals(osamaara, laskin.laske(syote));
     }
+    
+    @Test
+    public void testJakojaannos() {
+        int n = ARPOJA.nextInt(Integer.MAX_VALUE),
+                m = ARPOJA.nextInt(Integer.MAX_VALUE - 1) + 1,
+                jakojaannos = n % m;
+        
+        syote.add(String.valueOf(n));
+        syote.add(String.valueOf(m));
+        syote.add("%");
+        
+        assertEquals(jakojaannos, laskin.laske(syote));
+    }
 }

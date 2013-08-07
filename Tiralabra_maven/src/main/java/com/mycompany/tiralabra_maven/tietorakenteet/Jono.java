@@ -7,11 +7,12 @@ import java.util.Queue;
 
 /**
  * Jonotietorakenne joka toteuttaa operaatiot <tt>add</tt>, <tt>poll</tt>,
- * <tt>isEmpty</tt> ja <tt>clear</tt>.
+ * <tt>size</tt>, <tt>isEmpty</tt> ja <tt>clear</tt>. Debuggauksen
+ * helpottamiseksi olen myös ylikirjoittanut metodin <tt>toString</tt>.
  *
  * @author John Lång
  */
-public class Jono<T> implements Queue<T> {
+public final class Jono<T> implements Queue<T> {
     
     private Solmu<T>    ensimmainen, viimeinen;
     private int         pituus;
@@ -61,7 +62,7 @@ public class Jono<T> implements Queue<T> {
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pituus;
     }
 
     public boolean isEmpty() {
@@ -105,12 +106,37 @@ public class Jono<T> implements Queue<T> {
     }
 
     public void clear() {
-        while (!isEmpty()) {
-            poll();
-        }
         ensimmainen = null;
         viimeinen   = null;
         pituus      = 0;
+    }
+    
+    @Override
+    public String toString() {
+        
+         if (isEmpty()) {
+             return "\u2205";
+         }
+        
+        StringBuilder mjr = new StringBuilder();
+        Solmu<T> solmu = ensimmainen;
+        
+        if (ensimmainen.seuraaja == null) {
+            mjr.append("{");
+            mjr.append(solmu.ARVO);
+            mjr.append("}");
+        } else {
+            mjr.append('(');        
+            while (solmu != null) {
+                mjr.append(solmu.ARVO);
+                mjr.append(',');
+                solmu = solmu.seuraaja;
+            }
+            mjr.delete(mjr.length() - 1, mjr.length());
+            mjr.append(')');
+        }
+        
+        return mjr.toString();
     }
 
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
@@ -14,12 +10,12 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * 
  * @author John Lång
  */
-final class Solmu<T> {
+class Solmu<V> {
     
-    protected final T ARVO;
+    protected final V ARVO;
     protected Solmu seuraaja;
     
-    Solmu(final T ARVO) {
+    Solmu(final V ARVO) {
         this.ARVO = ARVO;
     }
 

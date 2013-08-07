@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 public class TulkkiTest {
     
@@ -76,26 +77,36 @@ public class TulkkiTest {
         vertaileJonoja();
     }
     
-//    @Test
-//    public void testKelvollinenKaava3() {
-//        odotusarvo.add("7");
-//        odotusarvo.add("3");
-//        odotusarvo.add("/");
-//        odotusarvo.add("5");
-//        odotusarvo.add("*");
-//        
-//        saatuArvo = tulkki.tulkitseMerkkijono("7 / 3 * 5");
-//        
-//        vertaileJonoja();
-//    }
+    @Test
+    public void testKelvollinenKaava3() {
+        odotusarvo.add("7");
+        odotusarvo.add("3");
+        odotusarvo.add("/");
+        odotusarvo.add("5");
+        odotusarvo.add("*");
+        
+        saatuArvo = tulkki.tulkitseMerkkijono("7 / 3 * 5");
+        
+        vertaileJonoja();
+    }
     
     @Test
     public void testKelvollinenKaava4() {
-        // Jostain syystä jälkimmäisestä luvusta tulee kaavaan mukaan vain
-        // ensimmäinen merkki.
+        odotusarvo.add("7");
+        odotusarvo.add("3");
+        odotusarvo.add("%");
+        odotusarvo.add("5");
+        odotusarvo.add("/");
+        
+        saatuArvo = tulkki.tulkitseMerkkijono("7 % 3 / 5");
+        
+        vertaileJonoja();
+    }
+    
+    @Test
+    public void testKelvollinenKaava5() {
         int n = ARPOJA.nextInt(Integer.MAX_VALUE / 2),
-//                m = ARPOJA.nextInt(Integer.MAX_VALUE / 2);
-                m = 9;
+                m = ARPOJA.nextInt(Integer.MAX_VALUE / 2);
         String a = String.valueOf(n), b = String.valueOf(m);
         
         odotusarvo.add(a);
