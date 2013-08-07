@@ -19,7 +19,7 @@ public class Ai {
     public Ai() {
         this.tree = new GameTreeNode(-2, -2);
         this.stack = new Stack();
-        this.depth = 3;
+        this.depth = 4;
         this.lastMove = -2;
     }
 
@@ -28,19 +28,20 @@ public class Ai {
             lastMove = new Random().nextInt(3);
             return lastMove;
         }
-        int[] is = treeStatistics();
+        int[] is = treeStatistics(0);
+        int counter = 0;
+        while (true){
+            if (is[0] != 0 || is[1] != 0 || is[2] != 0) {
+                break;
+            }
+            counter++;
+            is = treeStatistics(counter);
+        }
 
         int x = is[0];
         is[0] = is[2];
         is[2] = is[1];
         is[1] = x;
-
-
-        //for testing
-        for (int i : is) {
-            System.out.println(i);
-        }
-        System.out.println();
 
         double[] ds = new double[3];
 
@@ -62,7 +63,7 @@ public class Ai {
 
     public void update(int result) {
         stack.put(new StackNode(oppnentsLastMove(result), result));
-        if (stack.size() < depth + 1) {
+        if (stack.size() < depth) {
         } else {
             Stack s = new Stack();
             for (int i = 0; i < depth; i++) {
@@ -82,18 +83,18 @@ public class Ai {
         }
     }
 
-    private int[] treeStatistics() {
+    private int[] treeStatistics(int decreaseHeight) {
         GameTreeNode gtn = tree;
         Stack s = new Stack();
         
         StackNode node = stack.peek();
-        for (int i = 0; i < depth -1; i++) {
+        for (int i = 0; i < depth -(decreaseHeight + 1); i++) {
             s.put(new StackNode(node.getMove(), node.getResult()));
             node = node.getNext();
         }
         
 
-        for (int i = 0; i < depth - 1; i++) {
+        for (int i = 0; i < depth - (decreaseHeight + 1); i++) {
             StackNode sn = s.pop();
             if (gtn.getChild(sn) == null) {
                 int[] is = {0, 0, 0};
@@ -104,6 +105,7 @@ public class Ai {
 
         int[] is = new int[3];
 
+        System.out.println();
         for (int i = 0; i < 9; i++) {
             if (gtn.getChildren()[i] != null) {
                 if (i >= 0 && i < 3) {
@@ -133,4 +135,6 @@ public class Ai {
         }
         return -2;
     }
+
+
 }
