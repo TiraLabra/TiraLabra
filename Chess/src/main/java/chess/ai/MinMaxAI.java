@@ -6,7 +6,9 @@ import chess.util.Logger;
 
 public class MinMaxAI implements AI
 {
-	private static final int DEFAULT_SEARCH_DEPTH = 8;
+	private static final double DEFAULT_TIME_LIMIT = 3.0;
+
+	private static final double ESTIMATED_BRANCHING_FACTOR = 3.5;
 
 	private final int searchDepth; // Pitää olla vähintään 2!
 
@@ -24,29 +26,42 @@ public class MinMaxAI implements AI
 
 	private TranspositionTable transposTable = new TranspositionTable();
 
+	private double timeLimit;
+
 	public MinMaxAI(Logger logger)
 	{
-		this(logger, DEFAULT_SEARCH_DEPTH);
+		this(logger, Integer.MAX_VALUE, DEFAULT_TIME_LIMIT);
 	}
 
-	public MinMaxAI(Logger logger, int searchDepth)
+	public MinMaxAI(Logger logger, int searchDepth, double timeLimit)
 	{
 		this.logger = logger;
 		this.searchDepth = searchDepth;
+		this.timeLimit = timeLimit;
 	}
 
 	public void move(GameState state)
 	{
+		long start = System.nanoTime();
 		transposTable.clear();
 		for (int d = 2; d <= searchDepth; ++d) {
 			count = 0;
 			transpCount = 0;
 			currentSearchDepth = d;
 			searchWithTranspositionLookup(d, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+
+			//StateInfo info = transposTable.get(state);
+			//log("d=" + d + " best=" + info.bestMoveFrom + "->" + info.bestMoveTo);
+			log("d=" + d);
+
+			double elapsedTime = (System.nanoTime() - start) * 1e-9;
+			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
+				break;
 		}
 		log("count=" + count);
 		log("transpCount=" + transpCount);
 		log("transpTableSize=" + transposTable.size());
+		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
 		StateInfo info = transposTable.get(state);
 		state.move(info.bestMoveFrom, info.bestMoveTo);
 	}
@@ -148,7 +163,7 @@ public class MinMaxAI implements AI
 
 		if (score > alpha) {
 			if (info != null) {
-				if (depth == searchDepth && loggingEnabled)
+				if (depth == currentSearchDepth && loggingEnabled)
 					log("" + fromSqr + " " + toSqr + " " + (score - getScore(state, 0)));
 				info.bestMoveFrom = fromSqr;
 				info.bestMoveTo = toSqr;
