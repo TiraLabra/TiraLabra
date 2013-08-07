@@ -38,4 +38,17 @@ public final class Hajautuskartta<V> {
         return YLIVUOTOLISTAT[hajauta(avain)].hae(avain);
     }
     
+    @Override
+    public String toString() {
+        StringBuilder mjr = new StringBuilder();
+        mjr.append('{');
+        for (AvainArvoJono<Character, V> avainArvoJono : YLIVUOTOLISTAT) {
+            mjr.append(avainArvoJono.toString());
+            mjr.append(',');
+        }
+        mjr.delete(mjr.length() - 1, mjr.length());
+        mjr.append('}');
+        return mjr.toString();
+    }
+    
 }

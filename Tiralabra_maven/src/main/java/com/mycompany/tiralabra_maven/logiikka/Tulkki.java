@@ -19,8 +19,8 @@ public final class Tulkki {
     private static final Hajautuskartta<Integer> PRIORITEETIT
             = new Hajautuskartta<Integer>(3);
     private static final Pino<Character> PINO = new Pino<Character>();
-    private static final Queue<String> JONO = new Jono<String>();
-    private static final Queue<Character> APUJONO = new Jono<Character>();
+    private static final Jono<String> JONO = new Jono<String>();
+    private static final Jono<Character> APUJONO = new Jono<Character>();
     private static char[] syotteenMerkit;
     private static char merkki;
     private static int indeksi;
@@ -36,12 +36,12 @@ public final class Tulkki {
     public Tulkki() {
     }
 
-    public Queue<String> tulkitseMerkkijono(final String MERKKIJONO)
+    public Jono<String> tulkitseMerkkijono(final String MERKKIJONO)
             throws IllegalArgumentException {
         
         // Koska tulkin kentät ovat staattiset, on jonoon voinut jäädä edellisen
         // kutsukerran paluuarvo.        
-        JONO.clear();
+        JONO.tyhjenna();
         
         syotteenMerkit = MERKKIJONO.toCharArray();
 
@@ -65,7 +65,7 @@ public final class Tulkki {
                         PINO.poista();
                         break;
                     }
-                    JONO.add(PINO.poista() + "");
+                    JONO.lisaa(PINO.poista() + "");
                 }
             } else {
                 throw new IllegalArgumentException("Merkkijono \"" + MERKKIJONO
@@ -74,7 +74,7 @@ public final class Tulkki {
         }
         
         while (!PINO.onTyhja()) {
-            JONO.add(PINO.poista() + "");
+            JONO.lisaa(PINO.poista() + "");
         }
 
         return JONO;
@@ -91,7 +91,11 @@ public final class Tulkki {
     }
     
     private boolean merkkiOnOperaattori() {
-        switch(merkki) {
+        // Tämän tarkastuksen voisi myös suorittaa hakemalla merkkiä
+        // hajautuskartasta ja vertaamalla sitä arvoon null (koska kaikki
+        // tuetut operaattorit on lisätty hajautuskarttaan). Switch on nopeampi
+        // sillä siinä tarvitsee suorittaa vain yksi vertailu.
+        switch (merkki) {
             case '+': case '-': case '*': case '/': case '%':
                 return true;
             default:
@@ -101,7 +105,7 @@ public final class Tulkki {
 
     private void kasitteleLuku() {
         if (merkkiOnNumero()) {
-            APUJONO.add(merkki);
+            APUJONO.lisaa(merkki);
             indeksi++;
             if (indeksi == syotteenMerkit.length) {
 //                JONO.add(APUJONO.poll() + "");
@@ -117,10 +121,10 @@ public final class Tulkki {
     
     private void kokoaLuku() {
         StringBuilder mjr = new StringBuilder();
-        while (!APUJONO.isEmpty()) {
-            mjr.append(APUJONO.poll());
+        while (!APUJONO.onTyhja()) {
+            mjr.append(APUJONO.poista());
         }
-        JONO.add(mjr.toString());
+        JONO.lisaa(mjr.toString());
     }
     
     private void kasitteleOperaattori() {
@@ -132,7 +136,7 @@ public final class Tulkki {
             if (pinonYlin != '(') {
                 // Pienemmän prioriteetin laskutoimitukset suoritetaan ensin.
                 if (PRIORITEETIT.hae(merkki) >= PRIORITEETIT.hae(pinonYlin)) {
-                    JONO.add(PINO.poista() + "");
+                    JONO.lisaa(PINO.poista() + "");
                 }
             }
             PINO.lisaa(merkki);

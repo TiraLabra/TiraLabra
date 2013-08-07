@@ -48,4 +48,16 @@ public class HajautuskarttaTest {
         h.lisaa('l', 2);
         assertEquals(5, h.hae('e'));
     }
+    
+    @Test
+    public void testToString() {
+        String oikeaVastaus = "{(c\u21A63,f\u21A66,i\u21A69,l\u21A62),"
+                + "{a\u21A61},\u2205}";
+        h.lisaa('a', 1);
+        h.lisaa('c', 3);
+        h.lisaa('f', 6);
+        h.lisaa('i', 9);
+        h.lisaa('l', 2);
+        assertEquals(oikeaVastaus, h.toString());
+    }
 }

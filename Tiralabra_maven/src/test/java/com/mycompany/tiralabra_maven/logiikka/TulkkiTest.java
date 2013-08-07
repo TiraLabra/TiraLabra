@@ -1,6 +1,7 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Random;
@@ -20,7 +21,7 @@ public class TulkkiTest {
     private static final Random ARPOJA = new Random();
     
     private static Tulkki   tulkki;
-    private Queue<String>   odotusarvo, saatuArvo;
+    private Jono<String>    odotusarvo, saatuArvo;
     
     @BeforeClass
     public static void setUpClass() {
@@ -33,7 +34,7 @@ public class TulkkiTest {
     
     @Before
     public void setUp() {
-        odotusarvo  = new ArrayDeque<String>();
+        odotusarvo  = new Jono<String>();
     }
     
     @After
@@ -53,11 +54,11 @@ public class TulkkiTest {
 
     @Test
     public void testKelvollinenKaava1() {
-        odotusarvo.add("7");
-        odotusarvo.add("3");
-        odotusarvo.add("+");
-        odotusarvo.add("5");
-        odotusarvo.add("*");
+        odotusarvo.lisaa("7");
+        odotusarvo.lisaa("3");
+        odotusarvo.lisaa("+");
+        odotusarvo.lisaa("5");
+        odotusarvo.lisaa("*");
         
         saatuArvo = tulkki.tulkitseMerkkijono("(7 + 3) * 5");
         
@@ -66,11 +67,11 @@ public class TulkkiTest {
     
     @Test
     public void testKelvollinenKaava2() {
-        odotusarvo.add("7");
-        odotusarvo.add("3");
-        odotusarvo.add("5");
-        odotusarvo.add("*");
-        odotusarvo.add("+");
+        odotusarvo.lisaa("7");
+        odotusarvo.lisaa("3");
+        odotusarvo.lisaa("5");
+        odotusarvo.lisaa("*");
+        odotusarvo.lisaa("+");
         
         saatuArvo = tulkki.tulkitseMerkkijono("7 + 3 * 5");
         
@@ -79,11 +80,11 @@ public class TulkkiTest {
     
     @Test
     public void testKelvollinenKaava3() {
-        odotusarvo.add("7");
-        odotusarvo.add("3");
-        odotusarvo.add("/");
-        odotusarvo.add("5");
-        odotusarvo.add("*");
+        odotusarvo.lisaa("7");
+        odotusarvo.lisaa("3");
+        odotusarvo.lisaa("/");
+        odotusarvo.lisaa("5");
+        odotusarvo.lisaa("*");
         
         saatuArvo = tulkki.tulkitseMerkkijono("7 / 3 * 5");
         
@@ -92,11 +93,11 @@ public class TulkkiTest {
     
     @Test
     public void testKelvollinenKaava4() {
-        odotusarvo.add("7");
-        odotusarvo.add("3");
-        odotusarvo.add("%");
-        odotusarvo.add("5");
-        odotusarvo.add("/");
+        odotusarvo.lisaa("7");
+        odotusarvo.lisaa("3");
+        odotusarvo.lisaa("%");
+        odotusarvo.lisaa("5");
+        odotusarvo.lisaa("/");
         
         saatuArvo = tulkki.tulkitseMerkkijono("7 % 3 / 5");
         
@@ -109,9 +110,9 @@ public class TulkkiTest {
                 m = ARPOJA.nextInt(Integer.MAX_VALUE / 2);
         String a = String.valueOf(n), b = String.valueOf(m);
         
-        odotusarvo.add(a);
-        odotusarvo.add(b);
-        odotusarvo.add("+");
+        odotusarvo.lisaa(a);
+        odotusarvo.lisaa(b);
+        odotusarvo.lisaa("+");
         
         saatuArvo = tulkki.tulkitseMerkkijono(a + " + " + b);
         
@@ -120,9 +121,9 @@ public class TulkkiTest {
     
     private void vertaileJonoja() {
         String a, b;
-        while (!odotusarvo.isEmpty()) {
-            a = odotusarvo.poll();
-            b = saatuArvo.poll();
+        while (!odotusarvo.onTyhja()) {
+            a = odotusarvo.poista();
+            b = saatuArvo.poista();
             if (!a.equals(b)) {
                 fail("Tulkki palautti virheellisen RPN-kaavan!");
             }

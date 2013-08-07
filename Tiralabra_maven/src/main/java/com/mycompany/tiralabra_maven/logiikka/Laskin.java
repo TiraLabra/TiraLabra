@@ -1,6 +1,7 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
 import java.util.Queue;
 import java.util.Stack;
@@ -29,13 +30,13 @@ public final class Laskin {
      * @throws ArithmeticException Jos tapahtuu nollalla jakaminen tai
      * aritmeettinen ylivuoto.
      */
-    public int laske(final Queue<String> SYOTE) throws IllegalArgumentException,
+    public int laske(final Jono<String> SYOTE) throws IllegalArgumentException,
             ArithmeticException {
         String merkkijono;
         char merkki;
         
-        while (!SYOTE.isEmpty()) {
-            merkkijono = SYOTE.poll();
+        while (!SYOTE.onTyhja()) {
+            merkkijono = SYOTE.poista();
             merkki = merkkijono.charAt(0);
             switch (merkki) {
                 case ' ':

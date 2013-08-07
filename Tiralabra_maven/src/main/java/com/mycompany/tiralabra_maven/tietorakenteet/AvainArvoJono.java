@@ -43,4 +43,36 @@ final class AvainArvoJono<K, V> {
         return paluuarvo;
     }
     
+    @Override
+    public String toString() {
+        
+         if (ensimmainen == null) {
+             return "\u2205";
+         }
+        
+        StringBuilder mjr = new StringBuilder();
+        AvainArvoSolmu solmu = ensimmainen;
+        
+        if (ensimmainen.seuraaja == null) {
+            mjr.append("{");
+            mjr.append(solmu.AVAIN);
+            mjr.append("\u21A6");
+            mjr.append(solmu.ARVO);
+            mjr.append("}");
+        } else {
+            mjr.append('(');        
+            while (solmu != null) {
+                mjr.append(solmu.AVAIN);
+                mjr.append("\u21A6");
+                mjr.append(solmu.ARVO);
+                mjr.append(',');
+                solmu = solmu.seuraaja;
+            }
+            mjr.delete(mjr.length() - 1, mjr.length());
+            mjr.append(')');
+        }
+        
+        return mjr.toString();
+    }
+    
 }

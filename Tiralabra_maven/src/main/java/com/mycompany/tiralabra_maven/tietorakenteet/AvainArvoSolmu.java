@@ -7,15 +7,14 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * @see Solmu
  * @author John Lång
  */
-final class AvainArvoSolmu<K, V> {
+final class AvainArvoSolmu<K, V> extends Solmu<V> {
     
     protected final K AVAIN;
-    protected final V ARVO;
     protected AvainArvoSolmu seuraaja;
     
     AvainArvoSolmu(K avain, V arvo) {
+        super(arvo);
         AVAIN   = avain;
-        ARVO    = arvo;
     }
     
 }

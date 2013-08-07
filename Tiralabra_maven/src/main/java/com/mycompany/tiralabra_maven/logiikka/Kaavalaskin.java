@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import java.util.Queue;
 
 /**
@@ -16,7 +17,6 @@ public static void main(String[] args) {
         Laskin l = new Laskin();
         Kayttoliittyma k = new Tekstikayttoliittyma();
         
-//        // Clean codea parhaimmillaan
 //        Queue<String> kaava = t.tulkitseMerkkijono("(7 + 3) * 5");
 //        System.out.println(kaava.toString());
 //        System.out.println("=");
@@ -28,7 +28,7 @@ public static void main(String[] args) {
 //        System.out.println(l.laske(kaava));
         
         String syote = k.pyydaSyote("Kaava:");
-        Queue<String> kaava = t.tulkitseMerkkijono(syote);
+        Jono<String> kaava = t.tulkitseMerkkijono(syote);
         k.tulosta("RPN-kaavan symbolit: " + kaava);
         k.tulosta("Kaavan lukuarvo:     " + l.laske(kaava));
     }
