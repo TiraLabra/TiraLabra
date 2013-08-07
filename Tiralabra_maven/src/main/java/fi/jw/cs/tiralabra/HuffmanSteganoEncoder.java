@@ -37,7 +37,7 @@ public class HuffmanSteganoEncoder {
                     m.put("l", "110");
                     m.put("p", "111");
                     h.setMap(m);
-                    System.out.println(h.encodeMap());
+                    System.out.println(h.getStringifiedMap());
                     break;
             }
 
@@ -78,7 +78,7 @@ public class HuffmanSteganoEncoder {
         Huffman encoder = new Huffman(message);
         encoder.encode();
         String encodedMessage = encoder.getEncodedMessage();
-        System.out.println("Map:\n" + encoder.encodeMap());
+        System.out.println("Map:\n" + encoder.getStringifiedMap());
         Steganographer s = new Steganographer(src, encodedMessage);
 
         s.encode();

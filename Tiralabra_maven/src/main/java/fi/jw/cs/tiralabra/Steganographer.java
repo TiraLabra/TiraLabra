@@ -6,6 +6,14 @@ import java.awt.image.*;
 import java.io.*;
 
 /**
+ * Encodes a series of 1s and 0s into an image's R, G and B channels into the least significant bit
+ * <p/>
+ * Currently only supports writing in PNG format so that the image length can be deterministically
+ * be read from the 0,0 position pixel.
+ * <p/>
+ * The maximum message length is the pixel count divided by <code>>BITS_PER_PIXEL</code which is currently
+ * hard-coded as 3 since there are 3 channels we can require to be available: red, green and blue.
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-01
  */
@@ -19,12 +27,18 @@ public class Steganographer {
     private int width;
     private int height;
     private int messageLength;
+    private String path;
+
+    public Steganographer() {
+
+    }
 
     public Steganographer(String path) throws IOException {
         this(path, "");
     }
 
     public Steganographer(String path, String msg) throws IOException {
+        this.path = path;
         File file = new File(path);
         image = ImageIO.read(file);
         width = image.getWidth();
@@ -34,9 +48,20 @@ public class Steganographer {
 
     }
 
-    public void encode() {
+    public void encode() throws IOException {
+        ensureFileHandles();
         checkMessageSize();
         encodeBits();
+    }
+
+    private void ensureFileHandles() throws java.io.IOException {
+        if (path == null || path.length() == 0) {
+            throw new IllegalArgumentException("No path defined");
+        }
+
+        if (image == null) {
+            image = ImageIO.read(new File(path));
+        }
     }
 
     protected void checkMessageSize() throws IllegalArgumentException {
@@ -49,35 +74,59 @@ public class Steganographer {
 
     }
 
+
     public int getMaximumMessageLength() {
         int totalBits = (width * height * BITS_PER_PIXEL);
         int totalChars = totalBits / BITS_PER_CHAR;
         return totalChars;
     }
 
-    protected void writeMessageLength(int x, int y) {
+    /**
+     * Writes the message length as an int as the first pixel's color value.
+     */
+    protected void writeMessageLength() {
         Color msgLen = new Color(messageLength);
         int len = removeAlphaChannel(msgLen.getRGB());
-        image.setRGB(x, y, len);
+        image.setRGB(0, 0, len);
     }
 
-    protected int readMessageLength(int x, int y) {
-        return removeAlphaChannel(image.getRGB(x, y)); // has alpha channel again;
+    /**
+     * Read message length from the first pixel of the image. Remove alpha channel so that we get the correct original int.
+     *
+     * @return
+     */
+    protected int readMessageLength() {
+        return removeAlphaChannel(image.getRGB(0, 0)); // has alpha channel again;
     }
 
-    protected int removeAlphaChannel(int color) {
-        return ((color << 8) >> 8);
+    /**
+     * In a <code>Color</code> the 8 most significant bits are the alpha channel after which come RGB
+     *
+     * @param color int from a <code>java.awt.Color.getRGB()</code> call
+     * @return int that you can write with <code>java.awt.image.BufferedImage.setRGB()</code>
+     */
+    protected static int removeAlphaChannel(final int color) {
+        return ((color << 8) >>> 8);
     }
 
-    protected char getChar(int color) {
+    /**
+     * Return char matching the least significant bit of the integer
+     *
+     * @param color value from <code>getRGB()</code>
+     * @return '1' or '0'
+     */
+    protected static char getChar(int color) {
         if ((color & 1) == 1)
             return '1';
         else
             return '0';
     }
 
+    /**
+     * Go through the image until <code>messageLength</code> bits have been read in from r, g and b channels in that order.
+     */
     protected void decodeBits() {
-        messageLength = readMessageLength(0, 0);
+        messageLength = readMessageLength();
         message = "";
         int bitsRead = 0;
         for (int w = 1; w < width; w++) {
@@ -105,9 +154,12 @@ public class Steganographer {
         }
     }
 
+    /**
+     * Encode the 'binary' string into the pixels' r, g and b channels in that order.
+     */
     protected void encodeBits() {
 
-        writeMessageLength(0, 0);
+        writeMessageLength();
 
         char[] chars = message.toCharArray();
         int charsWritten = 0;
@@ -167,4 +219,6 @@ public class Steganographer {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

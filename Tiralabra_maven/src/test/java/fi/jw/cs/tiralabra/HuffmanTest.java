@@ -149,7 +149,7 @@ public class HuffmanTest extends TestCase {
         Huffman encoder = new Huffman("abb");
         encoder.encode();
         Map<String, String> old = encoder.getMap();
-        String encodedMap = encoder.encodeMap();
+        String encodedMap = encoder.getStringifiedMap();
         Huffman decoder = new Huffman();
         Map<String, String> decoded = decoder.parseMap(encodedMap);
         assertEquals(old, decoded);
@@ -160,7 +160,7 @@ public class HuffmanTest extends TestCase {
         Huffman encoder = new Huffman();
         encoder.setMessage(message);
         encoder.encode();
-        String map = encoder.encodeMap();
+        String map = encoder.getStringifiedMap();
         String encodedMessage = encoder.getEncodedMessage();
 
         Huffman decoder = new Huffman();

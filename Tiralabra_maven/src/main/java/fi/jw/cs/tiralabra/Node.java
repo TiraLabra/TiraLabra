@@ -3,6 +3,9 @@ package fi.jw.cs.tiralabra;
 import java.util.*;
 
 /**
+ * A weighted <code>Node</code> that is going to be used by the <code>BinaryTree</code> class
+ * <p/>
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
  */
@@ -90,6 +93,9 @@ public class Node {
         return new NodeWeightComparator();
     }
 
+    /**
+     * Private inner class of <code>Node</code> to provide a means to sort Nodes based on weight
+     */
     private static class NodeWeightComparator implements Comparator<Node> {
 
         @Override

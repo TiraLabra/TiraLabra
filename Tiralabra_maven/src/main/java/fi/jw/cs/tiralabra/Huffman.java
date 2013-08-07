@@ -13,6 +13,8 @@ public class Huffman {
 
     static final char LEFT = '0';
     static final char RIGHT = '1';
+    static final String SERIAL_SEPARATOR = "__";
+
 
     private String message;
     private String encodedMessage;
@@ -47,31 +49,41 @@ public class Huffman {
         encodeMessage();
     }
 
+    /**
+     * Calculates frequencies of individual characters in source <code>message</code> and creates a weighted
+     * <code>PriorityQueue</code> for the Huffman tree building.
+     */
     protected void frequencyAnalysis() {
         calculateFrequencies();
         createdWeightedNodes();
     }
 
     /**
-     * The main function to call when decoding a message
+     * The main function to call when decoding the <code>encodedMessage</code> with the help of <code>map</code>
+     *
+     * @throws <code>IllegalHuffmanCodeException</code>
+     *          should it encounter a non-binary encoded value.
      */
     public void decode() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
         buildReverseTree();
         decodeMessage();
     }
 
+
     private void calculateFrequencies() {
         frequencies = new int[256];
 
         char[] chars = message.toCharArray();
         if (chars.length > 0) {
-
             for (Character c : chars) {
                 frequencies[(int) c.charValue()]++;
             }
         }
     }
 
+    /**
+     * Transforms the frequency array into a <code>PriorityQueue</code> of <code>Node</code>s
+     */
     private void createdWeightedNodes() {
         sortedNodes = new PriorityQueue<Node>(1, Node.getComparator());
         for (int i = 0; i < frequencies.length; i++) {
@@ -122,7 +134,7 @@ public class Huffman {
     }
 
     /**
-     * Assigns the nodes based on their labels so that we can build the tree in a deterministic fashion always
+     * Assigns the <code>Node</code>s based on their labels so that we can build the tree in a deterministic fashion
      *
      * @param n1 First <code>Node</code> to compare
      * @param n2 Second <code>Node</code> to compare
@@ -142,7 +154,7 @@ public class Huffman {
     }
 
     /**
-     * Given a map of key=>code pairs it will generate the Huffman tree that corresponds to it
+     * Rebuilds the Huffman tree from <code>map</code>, which must be set to a <code>Map</code> of (<code>String key => String code</code>) pairs.
      */
     protected void buildReverseTree() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
         Node root = new Node("root", 0);
@@ -178,7 +190,10 @@ public class Huffman {
         tree = new BinaryTree(root);
     }
 
-    protected void assignCodes() {
+    /**
+     * Assigns Huffman codes in a depth-first search of the tree.
+     */
+    protected void assignCodes() { // TODO: Potential StackOverflow with all 256 keys present?
         if (tree != null && tree.getRoot() != null) {
             assignRecursive(tree.getRoot(), "");
         }
@@ -201,17 +216,27 @@ public class Huffman {
         }
     }
 
+
+    /**
+     * Helper method to avoid using the <code>getMap()</code> for getting the appropriate code.
+     */
     protected String getCodeFor(String symbol) {
         return map.get(symbol);
     }
 
-    protected void encodeMessage() {
+    /**
+     * Build the end-result message based on the Huffman mapping.
+     */
+    protected void encodeMessage() { //TODO: Bad name. Confusing with encode()
         encodedMessage = "";
         for (char c : message.toCharArray()) {
             encodedMessage += getCodeFor("" + c);
         }
     }
 
+    /**
+     * Traverses the Huffman tree again and again until all bits/chars of the <code>encodedMessage</code> are processed.
+     */
     protected void decodeMessage() {
         message = "";
         Node root = tree.getRoot();
@@ -249,8 +274,14 @@ public class Huffman {
     }
 
 
+    /**
+     * Parses a Huffman code map that has been previously encoded into a String representation.
+     *
+     * @param serial <code>String</code> representation of the map
+     * @return <code>Map</code> of <code>String key => String code</code> pairs. <br/>e.g. "a" => "10", "b" => "101" etc.
+     */
     public Map<String, String> parseMap(String serial) {
-        String[] parts = serial.split("__");
+        String[] parts = serial.split(SERIAL_SEPARATOR);
         Map<String, String> m = new HashMap<String, String>();
 
         if (parts.length < 2) {
@@ -266,13 +297,17 @@ public class Huffman {
         return m;
     }
 
-    public String encodeMap() {
+    /**
+     * Naive implementation of Map to String serialization.
+     *
+     * @return String of all the keys and values joined together by a separator value.
+     */
+    public String getStringifiedMap() {
         String encodedMap = "";
-        String sep = "__";
         for (String key : map.keySet()) {
             String value = map.get(key);
-            encodedMap += key + sep;
-            encodedMap += value + sep;
+            encodedMap += key + SERIAL_SEPARATOR;
+            encodedMap += value + SERIAL_SEPARATOR;
         }
 
         return encodedMap;
