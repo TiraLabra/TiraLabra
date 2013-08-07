@@ -1,7 +1,9 @@
 package com.mycompany.tiralabra_maven;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -49,6 +51,34 @@ public class Controls implements ActionListener {
     }
 
     private void options() {
+        if (game.getGameMode() == GameMode.BOT_VS_BOT){
+            int n = -1;
+            Object[] options = {"Play 1 round", "Play 10 rounds", "Play 100 rounds", "Play 1000 rounds", "Play 10000 rounds"};
+            while (n == -1){
+                n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors", 
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+                        options, options);
+            }
+            if (n == 0){
+                report(game.playRound(0));
+            } else if (n == 1){
+                for (int i = 0; i < 10; i++) {
+                    report(game.playRound(0));
+                }
+            } else if (n == 2){
+                for (int i = 0; i < 100; i++) {
+                    report(game.playRound(0));
+                }
+            } else if (n == 3){
+                for (int i = 0; i < 1000; i++) {
+                    report(game.playRound(0));
+                }
+            } else if (n == 4){
+                for (int i = 0; i < 10000; i++) {
+                    report(game.playRound(0));
+                }
+            }
+        }
     }
 
     private void report(int result) {

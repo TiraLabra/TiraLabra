@@ -45,7 +45,7 @@ public class Game {
                 botVsBot();
                 break;
         }
-        this.primaryBot = new Bot();
+        this.primaryBot = new Bot(0);
         this.statistics = new Statistics(0, 0, 0);
     }
 
@@ -83,7 +83,7 @@ public class Game {
 
     private void botVsBot() {
         this.gameMode = GameMode.BOT_VS_BOT;
-        this.secondaryBot = new Bot();
+        this.secondaryBot = new Bot(1);
     }
 
     private File newPlayer() throws IOException {

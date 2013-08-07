@@ -7,23 +7,25 @@ import java.io.File;
  * @author Joel Nummelin
  */
 public class Bot {
+
     private Ai ai;
-    
-    public Bot(){
-        ai = new Ai();
+
+    public Bot(int type) {
+        if (type == 0) {
+            ai = new AdvancedAi();
+        } else {
+            ai = new SimpleAi();
+        }
     }
-    
-    
-    public int makeAMove(){
+
+    public int makeAMove() {
         return ai.determineMove();
     }
-    
-    public void upDateAi(int result){
+
+    public void upDateAi(int result) {
         ai.update(result);
     }
-    
-    public void loadProfile(File file){
-        
+
+    public void loadProfile(File file) {
     }
-    
 }

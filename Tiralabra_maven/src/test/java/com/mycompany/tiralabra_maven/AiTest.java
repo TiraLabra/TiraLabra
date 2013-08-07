@@ -4,7 +4,7 @@
  */
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.player.Ai;
+import com.mycompany.tiralabra_maven.player.AdvancedAi;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import org.junit.Test;
  * @author Joel Nummelin
  */
 public class AiTest extends TestCase{
-    private Ai ai;
+    private AdvancedAi ai;
     
     public AiTest() {
     }
@@ -23,7 +23,7 @@ public class AiTest extends TestCase{
     @Before
     @Override
     public void setUp() {
-        ai = new Ai();
+        ai = new AdvancedAi();
     }
     
     @Test
