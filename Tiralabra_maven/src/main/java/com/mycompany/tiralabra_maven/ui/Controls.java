@@ -1,5 +1,7 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.ui;
 
+import com.mycompany.tiralabra_maven.Game;
+import com.mycompany.tiralabra_maven.GameMode;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
- *
+ * Action listener for all buttons that ui has
  * @author Joel Nummelin
  */
 public class Controls implements ActionListener {
@@ -15,12 +17,21 @@ public class Controls implements ActionListener {
     private Game game;
     private JTextArea textArea;
 
+    /**
+     * Text area is for showing results
+     * @param game
+     * @param textArea 
+     */
     public Controls(Game game, JTextArea textArea) {
         this.game = game;
         this.textArea = textArea;
         this.textArea.setEditable(false);
     }
 
+    /**
+     * Is executed when a ui button is pressed.
+     * @param e 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -38,21 +49,34 @@ public class Controls implements ActionListener {
         }
     }
 
+    /**
+     * Player plays rock against ai.
+     */
     private void rock() {
         report(game.playRound(0));
     }
 
+    /**
+     * Player plays paper against ai.
+     */
     private void paper() {
         report(game.playRound(1));
     }
 
+    /**
+     * Player plays scissors against ai.
+     */
     private void scissors() {
         report(game.playRound(2));
     }
 
+    /**
+     * Is used to play multiple ai vs ai rounds in a row. 
+     */
     private void options() {
         if (game.getGameMode() == GameMode.BOT_VS_BOT){
             int n = -1;
+       
             Object[] options = {"Play 1 round", "Play 10 rounds", "Play 100 rounds", "Play 1000 rounds", "Play 10000 rounds"};
             while (n == -1){
                 n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors", 
@@ -81,6 +105,10 @@ public class Controls implements ActionListener {
         }
     }
 
+    /**
+     * Shows round result in text area.  
+     * @param result 
+     */
     private void report(int result) {
         String text = "";
         if (result == 0){

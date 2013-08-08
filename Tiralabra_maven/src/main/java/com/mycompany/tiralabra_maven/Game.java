@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
+ * Contains game logic. 
  * @author joel Nummelin
  */
 public class Game {
@@ -25,6 +25,9 @@ public class Game {
     private Statistics statistics;
     private int lastRound;
 
+    /**
+     * Sets up the game in right game mode. 
+     */
     public Game() {
         setUpResultTable();
         int n = -1;
@@ -49,6 +52,9 @@ public class Game {
         this.statistics = new Statistics(0, 0, 0);
     }
 
+    /**
+     * Sets up human vs ai game with saving.
+     */
     private void playVsBot() {
         int n = -1;
         Object[] options = {"New player", "Existing player"};
@@ -76,16 +82,28 @@ public class Game {
         this.player = new Player(file);
     }
 
+    
+    /**
+     * Sets up human vs ai game without saving.
+     */
     private void asGuest() {
         this.gameMode = GameMode.GUEST_VS_BOT;
         this.player = new Player();
     }
 
+    /**
+     * Sets up ai vs ai game.
+     */
     private void botVsBot() {
         this.gameMode = GameMode.BOT_VS_BOT;
         this.secondaryBot = new Bot(1);
     }
 
+    /**
+     * Creates new player profile file.
+     * @return file
+     * @throws IOException 
+     */
     private File newPlayer() throws IOException {
         String playerName = null;
 
@@ -105,6 +123,11 @@ public class Game {
         return f;
     }
 
+    /**
+     * Play one round. parameter move is used only when it's human vs ai. 
+     * @param move
+     * @return result
+     */
     public int playRound(int move) {
         if (gameMode == GameMode.BOT_VS_BOT) {
             int primary = primaryBot.makeAMove();
@@ -122,6 +145,9 @@ public class Game {
         return results[primary][move];
     }
 
+    /**
+     * Sets up table that gives game results.
+     */
     private void setUpResultTable() {
         this.results = new int[3][3];
         results[0][0] = 0;
@@ -135,14 +161,27 @@ public class Game {
         results[2][2] = 0;
     }
 
+    
+    /**
+     * 
+     * @return gameMode
+     */
     public GameMode getGameMode() {
         return gameMode;
     }
 
+    /**
+     * 
+     * @return statistics
+     */
     public Statistics getStatistics() {
         return statistics;
     }
 
+    /**
+     * Updates general game statistics.
+     * @param result 
+     */
     private void updateStatistics(int result) {
         if (result == 0){
             statistics.draw();

@@ -5,16 +5,26 @@
 package com.mycompany.tiralabra_maven.data_structures;
 
 /**
- *
+ * GameTreeNode is used to follow players move patterns. 
  * @author Joel Nummelin
  */
 public class GameTreeNode {
 
     private GameTreeNode[] children;
+    /**
+     * Opponents move.
+     */
     private int move;
+    /**
+     * Round result in ai's point of view. -1: loss, 0: draw, 1: win.
+     */
     private int result;
     private int timesPlayed;
 
+    /**
+     * @param move
+     * @param result 
+     */
     public GameTreeNode(int move, int result) {
         this.children = new GameTreeNode[9];
         this.move = move;
@@ -73,6 +83,11 @@ public class GameTreeNode {
         timesPlayed++;
     }  
     
+    /**
+     * If node has no child with same move and result than sn, then creates a new child node. 
+     * Onherwise adds one to the right child's TimesPlayed attribute. 
+     * @param sn 
+     */
     public void addChild(StackNode sn){
         if (getChild(sn) == null){
             children[3 * sn.getMove() + (sn.getResult() + 1)] = new GameTreeNode(sn.getMove(), sn.getResult());

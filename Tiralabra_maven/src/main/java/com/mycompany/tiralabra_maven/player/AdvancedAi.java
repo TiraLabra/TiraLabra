@@ -6,7 +6,7 @@ import com.mycompany.tiralabra_maven.data_structures.StackNode;
 import java.util.Random;
 
 /**
- *
+ * This should be the most advanced ai in this project. 
  * @author Joel Nummelin
  */
 public class AdvancedAi implements Ai{
@@ -23,6 +23,10 @@ public class AdvancedAi implements Ai{
         this.lastMove = -2;
     }
 
+    /**
+     * Determines next move. 
+     * @return move
+     */
     @Override
     public int determineMove() {
         if (stack.size() < depth) {
@@ -62,6 +66,11 @@ public class AdvancedAi implements Ai{
         return move;
     }
 
+    
+    /**
+     * Gives ai last rounds result so ai can improve. 
+     * @param result 
+     */
     @Override
     public void update(int result) {
         stack.put(new StackNode(oppnentsLastMove(result), result));
@@ -75,6 +84,10 @@ public class AdvancedAi implements Ai{
         }
     }
 
+    /**
+     * Puts last rounds result in the game tree.
+     * @param s 
+     */
     private void updateTree(Stack s) {
         GameTreeNode gtn = tree;
         for (int i = 0; i < depth; i++) {
@@ -85,6 +98,11 @@ public class AdvancedAi implements Ai{
         }
     }
 
+    /**
+     * Searchs familiar move patterns from the tree and gives statistics about them if any. 
+     * @param decreaseHeight
+     * @return moves
+     */
     private int[] treeStatistics(int decreaseHeight) {
         GameTreeNode gtn = tree;
         Stack s = new Stack();
@@ -122,6 +140,11 @@ public class AdvancedAi implements Ai{
         return is;
     }
 
+    /**
+     * Return opponent's last move. 
+     * @param result
+     * @return move
+     */
     private int oppnentsLastMove(int result) {
         if (result == 0) {
             return lastMove;

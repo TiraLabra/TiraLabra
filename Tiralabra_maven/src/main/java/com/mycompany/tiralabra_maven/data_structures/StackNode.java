@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.data_structures;
 
 /**
- *
+ * StackNodes are used by Stack. 
  * @author Joel Nummelin
  */
 public class StackNode {
@@ -9,12 +9,14 @@ public class StackNode {
     private int move;
     private int result;
     
+    
     public StackNode(int move, int result){
         this.move = move;
         this.result = result;
         this.next = null;
     }
 
+    
     public StackNode getNext() {
         return next;
     }

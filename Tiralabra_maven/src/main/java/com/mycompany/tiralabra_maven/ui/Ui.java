@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven.ui;
 
-import com.mycompany.tiralabra_maven.Controls;
 import com.mycompany.tiralabra_maven.Game;
 import java.awt.Container;
 import java.awt.Desktop;

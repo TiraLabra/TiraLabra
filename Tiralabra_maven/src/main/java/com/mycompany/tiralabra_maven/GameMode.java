@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- *
+ * 
  * @author Joel Nummelin
  */
 public enum GameMode {

@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- *
+ * General game statistics.
  * @author Joel Nummelin
  */
 public class Statistics {
@@ -12,6 +12,12 @@ public class Statistics {
     private int totalLosses;
     private int totalDraws;
     
+    /**
+     * 
+     * @param totalWins
+     * @param totalLosses
+     * @param totalDraws 
+     */
     public Statistics(int totalWins, int totalLosses , int totalDraws){
         this.totalWins = totalWins;
         this.totalLosses = totalLosses;
