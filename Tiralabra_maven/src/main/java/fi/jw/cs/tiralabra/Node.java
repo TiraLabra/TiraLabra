@@ -9,7 +9,7 @@ import java.util.*;
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
  */
-public class Node {
+public class Node implements Comparable<Node> {
     private String label;
     private String code;
     private int weight;
@@ -20,6 +20,10 @@ public class Node {
 
     public Node() {
         this("", 0, null, null, null);
+    }
+
+    public Node(String label) {
+        this(label, 0, null, null, null);
     }
 
     public Node(String label, int weight) {
@@ -91,6 +95,23 @@ public class Node {
 
     public static Comparator<Node> getComparator() {
         return new NodeWeightComparator();
+    }
+
+    /**
+     */
+    @Override
+    public int compareTo(Node o) {
+        return (label.compareTo(o.getLabel()));
+    }
+
+    /**
+     * Utility method to avoid <code>a.compareTo(b) &lt; 0</code> style code
+     *
+     * @param o
+     * @return
+     */
+    public boolean lessThan(Node o) {
+        return (this.compareTo(o) < 0);
     }
 
     /**
