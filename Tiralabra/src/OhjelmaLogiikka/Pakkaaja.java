@@ -37,15 +37,6 @@ public class Pakkaaja {
         } catch (IOException ex) {
             System.out.println("IO-virhe: " + ex.getMessage());
         }
-
-        // lue tiedostosta tavut
-        // tiedot hash mappiin
-        // laske tavujen esiintymistiheys
-        // esiintymistiheyden pohjalta minimijono
-        // muodosta puu minimijonosta
-        // muodosta hajautustaulu puusta
-        // korvaa tiedostoon tavut koodeilla
-        // tallenna tiedostoon
     }
 
     private OmaList<Byte> huffmanKoodaa(OmaList<Byte> luetutTavut, String header) throws IOException {

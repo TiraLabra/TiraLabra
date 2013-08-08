@@ -1,0 +1,18 @@
+4 tavua - headerin koko tavuissa 
+n tavua - header
+loppuosa tiedostosta - pakattu tiedosto
+
+Header tarkemmin:
+
+Ennen headeria: 
+	Alussa 4 tavua - headerin pituus tavuissa. Luetaan tämän verran tavuja ja puretaan huffman-koodaus headerista.
+	
+Header: jokaiselle blokki - koodiparille: 
+	1 tavu joka kertoo blokin pituuden tavuissa. Blokki aina tavun moninkerta. 1 tavu -> maks 255. tavua pitkä blokki
+	1 tavu joka kertoo koodin pituuden tavuissa. -> maks 255*8 bittiä pitkä koodi
+	1 tavu joka kertoo kuinka monta merkitsevää bittiä on viimeisessä tavussa; todennäköisesti jouduttu lisäämään paddingia.
+	x tavua blokille, maks 255 tavua
+	y tavua koodille, maks 255 tavua
+	Maks. tila per blokki - koodipari: 2x255 + 3*1 -> 513 tavua. Todennäköisesti merkittävästi pienempi käytännössä.
+
+
