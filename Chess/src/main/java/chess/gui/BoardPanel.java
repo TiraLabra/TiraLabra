@@ -15,14 +15,29 @@ import javax.swing.JPanel;
  */
 public class BoardPanel extends JPanel
 {
+	/**
+	 * Sisältää nappuloiden tekstuurit.
+	 */
 	private BufferedImage image;
 
+	/**
+	 * Laudan sisältö. (ks. BitBoard.toArray()).
+	 */
 	private int[] board = new int[64];
 
+	/**
+	 * Bittimaski sallituista siirroista valitussa ruudussa.
+	 */
 	private long allowedMoves = 0;
 
+	/**
+	 * Kursorilla valittu peliruutu tai -1, jos ruutua ei ole valittu.
+	 */
 	private int selected = -1;
 
+	/**
+	 * Luo uuden BoardPanel-objektin.
+	 */
 	public BoardPanel()
 	{
 		try {
@@ -40,24 +55,43 @@ public class BoardPanel extends JPanel
 		drawSelection(g);
 	}
 
+	/**
+	 * Asettaa laudan sisällön.
+	 *
+	 * @param board laudan sisältö taulukkona, jossa alkioden arvo on nappulan tyyppi ko.
+	 * ruudussa, tai -1, jos ruutu on tyhjä
+	 */
 	public void setBoard(int board[])
 	{
 		this.board = board.clone();
 		repaint();
 	}
 
+	/**
+	 * Asettaa sallitut siirrot, jotka renderöidään vihreää reunusta käyttäen.
+	 *
+	 * @param moves siirrot bittimaskina
+	 */
 	public void setAllowedMoves(long moves)
 	{
 		allowedMoves = moves;
 		repaint();
 	}
 
+	/**
+	 * Asettaa valitun ruudun, joka renderöidään sinistä reunusta käyttäen.
+	 *
+	 * @param selected valitun ruudun indeksi
+	 */
 	public void setSelected(int selected)
 	{
 		this.selected = selected;
 		repaint();
 	}
 
+	/**
+	 * Piirtää laudan taustakuvan.
+	 */
 	private void drawBoard(Graphics g)
 	{
 		g.setColor(new Color(0xf8d8b2));
@@ -74,6 +108,9 @@ public class BoardPanel extends JPanel
 		}
 	}
 
+	/**
+	 * Piirtää kaikki nappulat.
+	 */
 	private void drawPieces(Graphics g)
 	{
 		for (int sqr = 0; sqr < 64; ++sqr) {
@@ -84,6 +121,9 @@ public class BoardPanel extends JPanel
 		}
 	}
 
+	/**
+	 * Piirtää yksittäisen nappulan.
+	 */
 	private void drawPiece(int row, int col, int player, int piece, Graphics g)
 	{
 		int[] dst = getCoordinates(row, col, 8, 8, getWidth(), getHeight());
@@ -91,6 +131,10 @@ public class BoardPanel extends JPanel
 		g.drawImage(image, dst[0], dst[1], dst[2], dst[3], src[0], src[1], src[2], src[3], null);
 	}
 
+	/**
+	 * Laskee tietyn solun left/top/right/bottom-koordinaatit taulukossa, jossa on annettu määrä
+	 * rivejä/sarakkeita, ja annettu leveys/korkeus (pikseleinä).
+	 */
 	private int[] getCoordinates(int row, int col, int rows, int columns, int width, int height)
 	{
 		int[] ret = new int[4];
@@ -101,6 +145,9 @@ public class BoardPanel extends JPanel
 		return ret;
 	}
 
+	/**
+	 * Piirtää indikaattorit sallituille siirroille.
+	 */
 	private void drawMoveIndicators(Graphics g)
 	{
 		((Graphics2D) g).setStroke(new BasicStroke(4));
@@ -113,6 +160,9 @@ public class BoardPanel extends JPanel
 		}
 	}
 
+	/**
+	 * Piirtää indikaattorin valitulle ruudulle.
+	 */
 	private void drawSelection(Graphics g)
 	{
 		if (selected >= 0) {

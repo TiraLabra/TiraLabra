@@ -2,33 +2,15 @@ package chess.ai;
 
 import chess.domain.GameState;
 import java.util.HashMap;
-import java.util.Map;
 
-final class TranspositionTable
+/**
+ * Transpositiotaulu, eli hajautustaulu johon tallennetaan jo analysoidut pelitilanteet, ja haun
+ * tulokset.
+ *
+ * Avaimena käytetään pelitilanteita, joille lasketaan Zobrist-hajautusarvo.
+ *
+ * //TODO oma toteutus joka ei tee muistiallokaatioita
+ */
+final class TranspositionTable extends HashMap<GameState, StateInfo>
 {
-	private final Map<GameState, StateInfo> positions = new HashMap<GameState, StateInfo>();
-
-	TranspositionTable()
-	{
-	}
-
-	StateInfo get(GameState state)
-	{
-		return positions.get(state);
-	}
-
-	void put(GameState state, StateInfo info)
-	{
-		positions.put(state, info);
-	}
-
-	void clear()
-	{
-		positions.clear();
-	}
-
-	int size()
-	{
-		return positions.size();
-	}
 }

@@ -16,19 +16,19 @@ public class RandomAI implements AI
 	{
 		int player = state.getNextMovingPlayer();
 
-		int from;
+		int fromSqr;
 		long moves;
 		do {
-			from = rnd.nextInt(64);
-			moves = state.getLegalMoves(from);
-		} while (state.getBoard()[from] / Pieces.COUNT != player || moves == 0);
+			fromSqr = rnd.nextInt(64);
+			moves = state.getLegalMoves(fromSqr);
+		} while (state.getBoard()[fromSqr] / Pieces.COUNT != player || moves == 0);
 
-		int to;
+		int toSqr;
 		do {
-			to = rnd.nextInt(64);
-		} while ((moves & (1L << to)) == 0);
+			toSqr = rnd.nextInt(64);
+		} while ((moves & (1L << toSqr)) == 0);
 
-		state.move(from, to);
+		state.move(fromSqr, toSqr);
 	}
 
 	@Override

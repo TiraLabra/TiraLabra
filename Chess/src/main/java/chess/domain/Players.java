@@ -1,5 +1,8 @@
 package chess.domain;
 
+/**
+ * Pelaajia vastaavat kokonaislukuvakiot.
+ */
 public final class Players
 {
 	public static final int WHITE = 0;

@@ -4,9 +4,14 @@ import chess.util.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-
+/**
+ * Komponentti pelin lokia, debuggausta ym varten.
+ */
 public class LogArea extends JScrollPane implements Logger
 {
+	/**
+	 * Tekstikenttä.
+	 */
 	private JTextArea logTextArea;
 
 	public LogArea()
@@ -22,6 +27,9 @@ public class LogArea extends JScrollPane implements Logger
 		logTextArea.append(message + "\n");
 	}
 
+	/**
+	 * Tyhjentää lokin.
+	 */
 	public void clear()
 	{
 		logTextArea.setText("");

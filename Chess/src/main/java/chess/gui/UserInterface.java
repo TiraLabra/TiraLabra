@@ -28,25 +28,52 @@ import javax.swing.WindowConstants;
  */
 public class UserInterface implements Runnable, MouseListener, ActionListener
 {
+	/**
+	 * Pääikkuna.
+	 */
 	private JFrame frame;
 
+	/**
+	 * Label pelin lopputuloksen ilmoittamiseksi.
+	 */
 	private JLabel resultLabel;
 
+	/**
+	 * Pelilaudan renderöinti.
+	 */
 	private BoardPanel board;
 
+	/**
+	 * Pelitilanne.
+	 */
 	private GameState state;
 
+	/**
+	 * Valittu peliruutu tai -1 jos ei valittu.
+	 */
 	private int selectedSquare = -1;
 
+	/**
+	 * Ihmispelaajan nappuloiden väri.
+	 */
 	private int player = Players.WHITE;
 
+	/**
+	 * Tietokonevastustaja.
+	 */
 	private AI ai;
 
+	/**
+	 * Lokialue.
+	 */
 	private LogArea logArea;
 
+	/**
+	 * Valikkoelementit.
+	 */
 	private JMenuItem newGameItem, exitItem, performanceTestItem;
 
-	JCheckBoxMenuItem debugInfoItem;
+	private JCheckBoxMenuItem debugInfoItem;
 
 	@Override
 	public void run()
@@ -56,6 +83,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		startNewGame();
 	}
 
+	/**
+	 * Luo pääikunan.
+	 */
 	private void createFrame()
 	{
 		frame = new JFrame("Chess");
@@ -70,6 +100,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Luo komponentit.
+	 */
 	private void createComponents(Container container)
 	{
 		container.setLayout(new BorderLayout());
@@ -91,6 +124,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		container.add(logArea, BorderLayout.EAST);
 	}
 
+	/**
+	 * Luo valikon.
+	 */
 	private void createMenu()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -111,6 +147,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		frame.add(menuBar, BorderLayout.NORTH);
 	}
 
+	/**
+	 * Luo yhden tavallisen valikkoelementin.
+	 */
 	private JMenuItem createMenuItem(JMenu menu, String caption)
 	{
 		JMenuItem item = new JMenuItem(caption);
@@ -119,6 +158,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		return item;
 	}
 
+	/**
+	 * Luo yhden checkbox-valikkoelementin.
+	 */
 	private JCheckBoxMenuItem createCheckBoxMenuItem(JMenu menu, String caption)
 	{
 		JCheckBoxMenuItem item = new JCheckBoxMenuItem(caption);
@@ -131,6 +173,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	{
 	}
 
+	/**
+	 * Mouse-down-tapahtumien käsittely.
+	 */
 	public void mousePressed(MouseEvent me)
 	{
 		if (state.isCheckMate())
@@ -186,6 +231,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	{
 	}
 
+	/**
+	 * Palauttaa ruudun indeksin annetuissa pikselikoordinaateissa.
+	 */
 	private int getSquareFromCoordinates(int x, int y)
 	{
 		int row = 8 * y / board.getHeight();
@@ -193,6 +241,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		return row * 8 + col;
 	}
 
+	/**
+	 * Näyttää pelin lopputuloksen.
+	 *
+	 * @param winner voittanutpelaaja tai -1 jos pattitilanne
+	 */
 	void setResult(int winner)
 	{
 		resultLabel.setVisible(true);
@@ -204,6 +257,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		board.setSelected(-1);
 	}
 
+	/**
+	 * Uusi peli.
+	 */
 	private void startNewGame()
 	{
 		selectedSquare = -1;
@@ -215,11 +271,17 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		ai = new MinMaxAI(logArea);
 	}
 
+	/**
+	 * Suorituskykytesti.
+	 */
 	private void runPerformanceTest()
 	{
 		new Thread(new PerformanceTest(logArea)).start();
 	}
 
+	/**
+	 * Tapahtumien käsittely.
+	 */
 	public void actionPerformed(ActionEvent ae)
 	{
 		if (ae.getSource() == newGameItem)

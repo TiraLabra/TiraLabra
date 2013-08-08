@@ -2,12 +2,27 @@ package chess.domain;
 
 import java.util.Arrays;
 
+/**
+ * Tietorakenne nappuloiden sijaintien tallentamiseen 64-bittisinä maskeina. Maskit tallennetaan
+ * row-major formaatissa, niin että bitti 0 vastaa laudan vasenta yläkulmaan (a8) ja bitti 63
+ * oikeaa alakulmaa (h1).
+ */
 public final class BitBoard
 {
+	/**
+	 * Maskit kullekin nappulatyypille, ottaen huomioon pelaajan värin. Valkoiset nappulat 0-5,
+	 * ja mustat 6-11.
+	 */
 	private final long[] pieces = new long[2 * Pieces.COUNT];
 
+	/**
+	 * Maskit kummankin pelaajan kaikille nappuloille. Valkoinen 0, musta 1.
+	 */
 	private final long[] playerPieces = new long[2];
 
+	/**
+	 * Tyhjentää laudan sisällön.
+	 */
 	public void clear()
 	{
 		for (int player = 0; player < 2; ++player) {
@@ -17,6 +32,13 @@ public final class BitBoard
 		}
 	}
 
+	/**
+	 * Lisää laudalle nappulan.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param piece nappulatyyppi (0-5)
+	 * @param sqr ruutu (0-63)
+	 */
 	public void addPiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
@@ -24,6 +46,13 @@ public final class BitBoard
 		playerPieces[player] |= sqrBit;
 	}
 
+	/**
+	 * Poistaa laudalta nappulan.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param piece nappulatyyppi (0-5)
+	 * @param sqr ruutu (0-63)
+	 */
 	public void removePiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
@@ -31,6 +60,13 @@ public final class BitBoard
 		playerPieces[player] &= ~sqrBit;
 	}
 
+	/**
+	 * Poistaa laudalta nappulan, kun sen tyyppiä ei tiedetä.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param sqr ruutu (0-63)
+	 * @return palauttaa poistetun nappulan tyypin, tai -1 jos ruudussa ei ollut nappulaa
+	 */
 	public int removePiece(int player, int sqr)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
@@ -42,31 +78,69 @@ public final class BitBoard
 		return -1;
 	}
 
+	/**
+	 * Palauttaa kaikki pelaajan tietyntyyppiset nappulat bittimaskina.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param piece nappulatyyppi (0-5)
+	 */
 	public long getPieces(int player, int piece)
 	{
 		return pieces[player * Pieces.COUNT + piece];
 	}
 
+	/**
+	 * Palauttaa kaikki pelaajan nappulat bittimaskina.
+	 *
+	 * @param player pelaaja (0-1)
+	 */
 	public long getPieces(int player)
 	{
 		return playerPieces[player];
 	}
 
+	/**
+	 * Tarkistaa, onko pelaajalla tietyn tyyppinen nappula annetussa ruudussa.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param piece nappulatyyppi (0-5)
+	 * @param sqr ruutu (0-63)
+	 * @return true, jos nappula löytyi
+	 */
 	public boolean hasPiece(int player, int piece, int sqr)
 	{
 		return (pieces[player * Pieces.COUNT + piece] & (1L << sqr)) != 0;
 	}
 
+	/**
+	 * Tarkistaa, onko pelaajalla jokin nappula annetussa ruudussa.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param sqr ruutu (0-63)
+	 * @return true, jos nappula löytyi
+	 */
 	public boolean hasPiece(int player, int sqr)
 	{
 		return (playerPieces[player] & (1L << sqr)) != 0;
 	}
 
+	/**
+	 * Tarkistaa, onko annetussa ruudussa jomman kumman pelaajan nappula.
+	 *
+	 * @param sqr ruutu (0-63)
+	 * @return true, jos nappula löytyi
+	 */
 	public boolean hasPiece(int sqr)
 	{
 		return ((playerPieces[Players.WHITE] | playerPieces[Players.BLACK]) & (1L << sqr)) != 0;
 	}
 
+	/**
+	 * Muodostaa laudasta 64-alkoisen taulukon. Kunkin alkion arvo on nappulan tyyppi ko. ruudussa
+	 * (valk. 0-5, musta 6-11), tai -1 jos ruutu on tyhjä.
+	 *
+	 * @return laudan sisältö taulukkona
+	 */
 	public int[] toArray()
 	{
 		int[] board = new int[64];
@@ -84,6 +158,11 @@ public final class BitBoard
 		return board;
 	}
 
+	/**
+	 * Kopoi laudan sisällön toisesta BitBoard-objektista.
+	 *
+	 * @param source kopioinnin lähde
+	 */
 	public void copyFrom(BitBoard source)
 	{
 		for (int player = 0; player < 2; ++player) {
@@ -95,6 +174,12 @@ public final class BitBoard
 		}
 	}
 
+	/**
+	 * Vertaa laudan sisältöä toiseen. Palau
+	 *
+	 * @param obj toinen BitBoard-objekti
+	 * @return palauttaa tosi jos ja vain jos jokaisen ruudun sisältö on täsmälleen sama
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
