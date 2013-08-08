@@ -24,6 +24,7 @@ public class TiedostoLukija {
 
     public OmaList<Byte> lueTiedosto() throws FileNotFoundException, IOException {
         BufferedInputStream stream = new BufferedInputStream(new FileInputStream(TIEDOSTO));
+
         try {
             OmaList<Byte> luettuData = lue(stream);
             return luettuData;
@@ -33,21 +34,20 @@ public class TiedostoLukija {
 
     }
 
-
     private OmaList<Byte> lue(BufferedInputStream stream) throws IOException {
 
         OmaList luettuData = new OmaArrayList<Byte>();
-        byte[] puskuri = new byte[1];
+        byte[] puskuri = new byte[128];
 
-        int luettu = stream.read(puskuri);
+        int luettu = 0;
 
-        while (luettu != -1) {
-            luettuData.add(puskuri[0]);
-            luettu = stream.read(puskuri);
+
+        while ((luettu = stream.read(puskuri)) != -1) {
+            for (int i = 0; i < luettu; ++i) {
+                luettuData.add(puskuri[i]);                
+            }
         }
 
         return luettuData;
     }
-
-    
 }

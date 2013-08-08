@@ -9,13 +9,14 @@ public class Main {
     public static void main(String[] args) {
         int blokinKoko = 8;
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
-       // Purkaaja purkaaja = new Purkaaja(blokinKoko); 
-        
-        
+        Purkaaja purkaaja = new Purkaaja(blokinKoko);
+
+
         System.out.println("Pakataan...");
-        pakkaaja.pakkaa("Testitiedostot/Kalimba.mp3", "Testitiedostot/ulos.dat");
-      //  System.out.println("Puretaan...");
-       // purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
-        
+       // pakkaaja.pakkaa("Testitiedostot/Kalimba.mp3", "Testitiedostot/ulos.dat");
+        pakkaaja.pakkaa("Testitiedostot/suuri.xml", "Testitiedostot/ulos.dat");
+        System.out.println("Puretaan...");
+        purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
+
     }
 }

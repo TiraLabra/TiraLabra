@@ -43,8 +43,8 @@ public class TiedostoKirjoittaja {
     private void kirjoita(OmaList<Byte> tieto) throws IOException {
         byte[] taulu = new byte[1];
         
-        for (int i = 0, j = 0; i < tieto.size(); ++i) {
-            taulu[j] = tieto.get(i);
+        for (int i = 0; i < tieto.size(); ++i) {
+            taulu[0] = tieto.get(i);
             kirjoitusStream.write(taulu);
         }
     }

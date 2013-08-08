@@ -30,6 +30,24 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         alustaTaulukko(arvot);
 
     }
+    /**
+     * Varaa ainakin taulukonKoko-muuttujan verran tilaa heti luonnin yhteydessä taulukolleen.
+     * @param taulukonKoko Kuinka monta alkiota sisäinen taulukko varaa ainakin heti aluksi
+     */
+    public OmaHashMap(int taulukonKoko) {
+        koko = 0;
+        nykyinenKokoPaikka = 0;
+        for (; nykyinenKokoPaikka < ALKULUKUJA.length; ++nykyinenKokoPaikka) {
+            if (ALKULUKUJA[nykyinenKokoPaikka] > taulukonKoko) {
+                taulukonKoko = ALKULUKUJA[nykyinenKokoPaikka];
+                break;
+            }
+        }
+        
+        arvot = new Object[taulukonKoko];
+        alustaTaulukko(arvot);
+
+    }
 
     /**
      * Alustaa taulukon

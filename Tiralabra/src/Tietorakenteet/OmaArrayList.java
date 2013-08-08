@@ -10,15 +10,23 @@ public class OmaArrayList<T> implements OmaList<T> {
     private int hashCode;
     private boolean listaEiMuuttunut; // onko hashCode laskettava uudelleen
 
+
     /**
      * Konstruktori. Alustaa sisäiset rakenteet, ei mitään kummempaa käyttäjän
      * kannalta.
      */
     public OmaArrayList() {
-
-        data = new Object[1];
+        this(1);
+    }
+    /**
+     * Konstruktori. Varaa tilaa koko-parametrin määrittämälle alkiolle
+     * @param koko Kuinka monelle alkiolle varataan tilaa suoraan
+     */
+    public OmaArrayList(int koko) {
+        data = new Object[koko];
         datanKoko = 0;
         listaEiMuuttunut = false;
+                
     }
 
     @Override
