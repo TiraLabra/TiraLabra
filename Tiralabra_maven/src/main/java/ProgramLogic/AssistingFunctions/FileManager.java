@@ -1,9 +1,5 @@
 package ProgramLogic.AssistingFunctions;
 
-/**
- *
- * @author alpa
- */
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -15,34 +11,32 @@ public class FileManager {
     File managedFile;
     JFileChooser chooser;
 
-    /*
+    /**
      * Class constructor
      */
     public FileManager() {
         this.chooser = new JFileChooser();
     }
 
-    /*
+    /**
      * Calls for the file compression algorithm 
      */
-    public File compressFile(File f) {
-        return null;
+    public void compressFile(File f) {
     }
 
-    /*
+    /**
      * Calls for the file decompression algorithm
      */
-    public File decompressFile(File f) {
-        return null;
+    public void decompressFile(File f) {
     }
 
-    /*
+    /**
      * Browses for a file and sets it as the file currently managed
      */
-    public void setFile() {
+    public void selectFile() {
     }
 
-    /*
+    /**
      * Returns the name of the file currently managed
      */
     public String getFileName() {
