@@ -1,51 +1,82 @@
 package domain;
 
-
 /**
+ * Pino-luokka, joka vastaa ohjelman tietorakenteen toteutuksesta
  *
  * @author jukkapit
  */
-public class Pino {    
+public class Pino {
+
     private int top;
     private Object[] table;
-/**
- * Konstruktori
- * @param pinonKoko 
- */
+
+    /**
+     * Konstruktori, joka luo uuden tyhjän pinon, jonka koon se saa
+     * konstruktorin parametrina
+     *
+     * @param pinonKoko Kokonaisluku
+     */
     public Pino(int pinonKoko) {
         top = -1;
         table = new Object[pinonKoko];
     }
+
     /**
-     * 
-     * @param lisattava 
+     * Lisää parametrina olevan olion pinon päällimmäiseksi
+     *
+     * @param lisattava Object-luokan olio
      */
-    public void push(Object lisattava){
+    public void push(Object lisattava) {
         top++;
-        table[top] = lisattava;        
+        table[top] = lisattava;
     }
+
     /**
-     * 
-     * @return 
+     * Poistaa pinon päällimmäisenä olevan olion, ja palauttaa sen metodin
+     * arvona
+     *
+     * @return Object-luokan olio
      */
-    public Object pop(){
+    public Object pop() {
         Object poistettava = table[top];
         top--;
         return poistettava;
     }
+
     /**
-     * 
-     * @return 
+     * Testaa, onko pino tyhjä
+     *
+     * @return Totuusarvo (tosi tai epätosi)
      */
-    public boolean empty(){
-        return top==-1;
+    public boolean empty() {
+        return top == -1;
     }
+
     /**
-     * 
-     * @return 
+     * Kertoo pinon päällimmäisenä olevan olion metodin paluuarvona poistamatta
+     * sitä pinosta
+     *
+     * @return Object-luokan olio
      */
-    public Object peek(){
+    public Object peek() {
         return table[top];
     }
-    
+
+    /**
+     * Kertoo pinon koon metodin paluuarvona
+     *
+     * @return Kokonaisluku
+     */
+    public int getSize() {
+        return table.length;
+    }
+
+    /**
+     * Kertoo pinon päällimäisenä olevan olion sijainnin taulukossa
+     *
+     * @return Kokonaisluku
+     */
+    public int getTop() {
+        return top;
+    }
 }
