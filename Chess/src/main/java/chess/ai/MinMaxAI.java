@@ -10,6 +10,10 @@ public class MinMaxAI implements AI
 
 	private static final double ESTIMATED_BRANCHING_FACTOR = 3.5;
 
+	private static final int NULL_MOVE_REDUCTION1 = 2;
+
+	private static final int NULL_MOVE_REDUCTION2 = 4;
+
 	private final int searchDepth; // Pitää olla vähintään 2!
 
 	private int currentSearchDepth;
@@ -99,11 +103,20 @@ public class MinMaxAI implements AI
 
 		int player = state.getNextMovingPlayer();
 
+		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
+			state.nullMove();
+			int score = -searchWithTranspositionLookup(depth - NULL_MOVE_REDUCTION1 - 1, -beta,
+					-alpha, state);
+			state.nullMove();
+			if (score >= beta)
+				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
+		}
+
 		if (info != null && info.bestMoveFrom != -1) {
 			alpha = searchMove(depth, alpha, beta, state, info.bestMovePieceType, info.bestMoveFrom,
 					info.bestMoveTo, info);
 			if (alpha >= beta)
-				return alpha;
+				return beta;
 		}
 
 		for (int pieceType = Pieces.COUNT - 1; pieceType >= 0; --pieceType) {
@@ -117,7 +130,7 @@ public class MinMaxAI implements AI
 					alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr,
 							captureMoves, info);
 					if (alpha >= beta)
-						return alpha;
+						return beta;
 				}
 			}
 		}
@@ -130,7 +143,7 @@ public class MinMaxAI implements AI
 				moves &= ~state.getPieces(1 - player);
 				alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr, moves, info);
 				if (alpha >= beta)
-					return alpha;
+					return beta;
 			}
 		}
 
@@ -144,7 +157,7 @@ public class MinMaxAI implements AI
 			int toSqr = Long.numberOfTrailingZeros(moves);
 			alpha = searchMove(depth, alpha, beta, state, pieceType, fromSqr, toSqr, info);
 			if (alpha >= beta)
-				return alpha;
+				return beta;
 		}
 
 		return alpha;
@@ -153,10 +166,6 @@ public class MinMaxAI implements AI
 	private int searchMove(int depth, int alpha, int beta, GameState state, int pieceType,
 			int fromSqr, int toSqr, StateInfo info)
 	{
-		if (info != null && (info.depth == -1 && fromSqr == info.bestMoveFrom
-				&& toSqr == info.bestMoveTo))
-			return alpha;
-
 		int capturedPiece = state.move(fromSqr, toSqr, pieceType);
 		int score = -searchWithTranspositionLookup(depth - 1, -beta, -alpha, state);
 		state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);

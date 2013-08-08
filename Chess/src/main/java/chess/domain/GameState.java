@@ -103,6 +103,11 @@ public final class GameState
 		return capturedPiece;
 	}
 
+	public void nullMove()
+	{
+		changeNextMovingPlayer();
+	}
+
 	public void undoMove(int from, int to, int movedPiece, int capturedPiece)
 	{
 		changeNextMovingPlayer();
