@@ -2,31 +2,51 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
- * Jonotietorakenne joka toteuttaa operaatiot <tt>add</tt>, <tt>poll</tt>,
- * <tt>size</tt>, <tt>isEmpty</tt> ja <tt>clear</tt>. Debuggauksen
- * helpottamiseksi olen myös ylikirjoittanut metodin <tt>toString</tt>.
+ * Jonotietorakenne joka toteuttaa operaatiot <tt>lisaa</tt>, <tt>poista</tt>,
+ * <tt>koko</tt>, <tt>onTyhja</tt> ja <tt>tyhjenna</tt>. Debuggauksen
+ * helpottamiseksi olen myös ylikirjoittanut metodin <tt>toString</tt>. Jono on
+ * toteutettu sillä oletuksella, ettei siihen yritetä lisätä yli
+ * <i>2 147 483 647</i> alkiota. Jonoon lisättyjen muuttujien viite voidaan
+ * asettaa vain kerran.
  *
+ * @param <T> Jonoon säilöttävien tietoalkioiden tyyppi.
  * @author John Lång
  */
 public final class Jono<T> {
     
     private Solmu<T>    ensimmainen, viimeinen;
     private int         pituus;
+    
+    /**
+     * Palauttaa luokan uuden instanssin.
+     */
+    public Jono() {
+        this.pituus = 0;
+    }
 
-    public boolean lisaa(T e) {
-        Solmu seuraava = new Solmu<T>(e);
+    /**
+     * Lisää alkion jonon viimeiseksi.
+     *
+     * @param arvo Jonoon lisättävä tietoalkio.
+     */
+    public void lisaa(T arvo) {
+        Solmu seuraava = new Solmu<T>(arvo);
         if (ensimmainen == null) {
             ensimmainen = seuraava;
             viimeinen   = seuraava;
             pituus      = 1;
-            return true;
+        } else {
+            viimeinen.seuraaja = seuraava;
+            viimeinen = seuraava;
+            pituus++;
         }
-        viimeinen.seuraaja = seuraava;
-        viimeinen = seuraava;
-        pituus++;
-        return true;
     }
 
+    /**
+     * Poistaa ja palauttaa jonon ensimmäisen alkion.
+     *
+     * @return Jonon ensimmäinen alkio tai <tt>null</tt> jos jono on tyhjä.
+     */
     public T poista() {
         if (ensimmainen == null) {
             return null;
@@ -37,6 +57,11 @@ public final class Jono<T> {
         return solmu.ARVO;
     }
 
+    /**
+     * Palauttaa jonon ensimmäisen alkion.
+     *
+     * @return Jonon ensimmäinen alkio tai <tt>null</tt> jos jono on tyhjä.
+     */
     public T kurkista() {
         if (ensimmainen == null) {
             return null;
@@ -44,18 +69,25 @@ public final class Jono<T> {
         return ensimmainen.ARVO;
     }
     
+    /**
+     *
+     * @return Jonon alkioiden määrä.
+     */
     public int pituus() {
         return pituus;
     }
 
-    public int koko() {
-        return pituus;
-    }
-
+    /**
+     *
+     * @return Tosi jos jono on tyhjä; epätosi muuten.
+     */
     public boolean onTyhja() {
         return pituus == 0;
     }
 
+    /**
+     * Poistaa jonon kaikki alkiot.
+     */
     public void tyhjenna() {
         ensimmainen = null;
         viimeinen   = null;

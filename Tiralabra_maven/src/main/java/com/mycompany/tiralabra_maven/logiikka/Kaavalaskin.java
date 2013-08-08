@@ -7,12 +7,21 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import java.util.Queue;
 
 /**
+ * Ohjelman pääluokka, joka vastaa kolmen pääkomponentin, <b>Kayttoliittyma</b>, 
+ * <b>Tulkki</b> ja <b>Laskin</b>, käynnistämisestä sekä ohjelman suorituksen
+ * päättämisestä. Lisäksi luokka käsittelee mahdolliset käyttäjän antamat
+ * käynnistysparametrit.
  *
  * @author John Lång
  */
 public final class Kaavalaskin {
 
-public static void main(String[] args) {
+    /**
+     * Ohjelman suoritus alkaa ja päättyy tässä staattisessa metodissa.
+     *
+     * @param args Mahdolliset käynnistysparametrit.
+     */
+    public static void main(String[] args) {
         Tulkki t = new Tulkki();
         Laskin l = new Laskin();
         Kayttoliittyma k = new Tekstikayttoliittyma();

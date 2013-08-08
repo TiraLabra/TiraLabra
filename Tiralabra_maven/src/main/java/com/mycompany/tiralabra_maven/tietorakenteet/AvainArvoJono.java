@@ -3,8 +3,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
  * Jono, jonka on tarkoitus toimia luokan <b>Hajautuskartta</b> komponenttina.
- * Alkuvaiheessa tällä luokalla on vain avain-arvoparien lisäys- ja
- * hakutoiminnot.
+ * Tällä luokalla on vain avain-arvoparien lisäys- ja hakutoiminnot.
  *
  * @author John Lång
  */
@@ -12,9 +11,14 @@ final class AvainArvoJono<K, V> {
     
     private AvainArvoSolmu<K, V> ensimmainen, viimeinen;
 
-    public AvainArvoJono() {
+    AvainArvoJono() {
     }
     
+    /**
+     * Lisää jonoon uuden avain-arvoparin.
+     * @param avain Lisättävä avain.
+     * @param arvo  Lisättävä arvo.
+     */
     void lisaa(K avain, V arvo) {
         AvainArvoSolmu<K, V> solmu = new AvainArvoSolmu<K, V>(avain, arvo);
         if (ensimmainen == null) {
@@ -26,6 +30,12 @@ final class AvainArvoJono<K, V> {
         }
     }
     
+    /**
+     * Hakee jonosta arvon annetulla avaimella.
+     * 
+     * @param avain Haettava avain.
+     * @return      Avainta vastaava arvo tai <tt>null</tt> jos sellaista ei ole.
+     */
     V hae(K avain) {
         V paluuarvo = null;
         AvainArvoSolmu<K, V> solmu = ensimmainen;
@@ -35,9 +45,7 @@ final class AvainArvoJono<K, V> {
                 paluuarvo = solmu.ARVO;
                 break;
             }
-            // Teen tyyppimuunnoksen ilman tarkasteluja sillä kaikki solmut ovat
-            // AvainArvoSolmuja (niitä ei voi ulkopuolelta lisäillä tänne):
-            solmu = (AvainArvoSolmu) solmu.seuraaja;
+            solmu = solmu.seuraaja;
         }
         
         return paluuarvo;

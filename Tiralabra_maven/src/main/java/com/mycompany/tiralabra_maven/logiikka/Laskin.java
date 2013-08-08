@@ -7,7 +7,8 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Luokan vastuulla on laskea sille annetun RPN-kaavan lukuarvo oikein.
+ * Luokan vastuulla on laskea sille annetun käänteistä puolalaista notaatiota
+ * (RPN) käyttävän kaavan lukuarvo oikein.
  *
  * @author John Lång
  */
@@ -15,6 +16,9 @@ public final class Laskin {
     
     private final Pino<Integer> PINO;
     
+    /**
+     * Palauttaa luokan uuden instanssin.
+     */
     public Laskin() {
         PINO = new Pino<Integer>();
         

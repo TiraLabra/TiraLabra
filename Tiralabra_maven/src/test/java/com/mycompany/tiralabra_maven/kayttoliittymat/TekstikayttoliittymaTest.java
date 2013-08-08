@@ -10,29 +10,51 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author johnny
+ */
 public class TekstikayttoliittymaTest {
     
     private Tekstikayttoliittyma k;
     
+    /**
+     *
+     */
     public TekstikayttoliittymaTest() {
     }
     
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
     
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
     
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
 
+    /**
+     *
+     */
     @Test
     public void testTulosta() {
         k = new Tekstikayttoliittyma();
@@ -43,6 +65,9 @@ public class TekstikayttoliittymaTest {
         assertEquals(merkkijono, ulostulo.toString().trim());
     }
 
+    /**
+     *
+     */
     @Test
     public void testPyydaSyote() {
         String testisyote = "1+1";

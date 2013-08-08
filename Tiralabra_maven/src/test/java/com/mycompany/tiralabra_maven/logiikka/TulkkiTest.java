@@ -13,45 +13,89 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 
+/**
+ *
+ * @author johnny
+ */
 public class TulkkiTest {
     
+    /**
+     *
+     */
     public TulkkiTest() {
     }
     
     private static final Random ARPOJA = new Random();
     
-    private static Tulkki   tulkki;
-    private Jono<String>    odotusarvo, saatuArvo;
+    private static Tulkki       tulkki;
+    private Jono<String>        odotusarvo, saatuArvo;
     
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
         tulkki = new Tulkki();
     }
     
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
+    /**
+     *
+     */
     @Before
     public void setUp() {
         odotusarvo  = new Jono<String>();
     }
     
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
     
         
+    /**
+     *
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testEpakelpoKaava1() {
         tulkki.tulkitseMerkkijono("7 ^ 3 * 5");
     }
     
+    /**
+     *
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testEpakelpoKaava2() {
         tulkki.tulkitseMerkkijono("(7 + 3)) + 5");
     }
+    
+    /**
+     *
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEpakelpoKaava3() {
+        tulkki.tulkitseMerkkijono("((7 + 3) + 5");
+    }
+    
+    /**
+     * 
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLiianIsoLuku() {
+        tulkki.tulkitseMerkkijono("486547367356354364356 + 1");
+    }
 
+    /**
+     *
+     */
     @Test
     public void testKelvollinenKaava1() {
         odotusarvo.lisaa("7");
@@ -65,6 +109,9 @@ public class TulkkiTest {
         vertaileJonoja();
     }
     
+    /**
+     *
+     */
     @Test
     public void testKelvollinenKaava2() {
         odotusarvo.lisaa("7");
@@ -78,6 +125,9 @@ public class TulkkiTest {
         vertaileJonoja();
     }
     
+    /**
+     *
+     */
     @Test
     public void testKelvollinenKaava3() {
         odotusarvo.lisaa("7");
@@ -91,6 +141,9 @@ public class TulkkiTest {
         vertaileJonoja();
     }
     
+    /**
+     *
+     */
     @Test
     public void testKelvollinenKaava4() {
         odotusarvo.lisaa("7");
@@ -104,6 +157,9 @@ public class TulkkiTest {
         vertaileJonoja();
     }
     
+    /**
+     *
+     */
     @Test
     public void testKelvollinenKaava5() {
         int n = ARPOJA.nextInt(Integer.MAX_VALUE / 2),

@@ -5,8 +5,8 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * Tämän luokan olion on tarkoitus toimia linkitetyn tietorakenteen 
  * peruskomponenttina joka ei näy suoraan muualla ohjelmassa. Solmu ei tarvitse
  * set/get metodeja tai syötteen tarkastuksia koska ne on tarkoituksenmukaisinta
- * suorittaa itse solmun sisältävässä tietorakenteessa. Solmun arvo ei voi 
- * muuttua.
+ * suorittaa itse solmun sisältävässä tietorakenteessa. Solmun viitteen arvo
+ * voidaan asettaa vain kerran.
  * 
  * @author John Lång
  */

@@ -1,10 +1,6 @@
 
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Ylivuotolistoja sekä jakojäännösmenetelmään perustuvaa hajautusfunktiota
  * hyödyntävä hajautuskartta. Hajautusfunktion yksinkertaistamiseksi ja tämän
@@ -12,20 +8,30 @@ import java.util.Set;
  * <b>char</b>.
  * 
  * @author John Lång
- * @param <Character>
- * @param <V> 
+ * @param <V> Hajautuskartan tietoalkioiden tyyppi.
  */
 public final class Hajautuskartta<V> {
     
     private final AvainArvoJono<Character, V>[] YLIVUOTOLISTAT;
 
-    public Hajautuskartta(final int TAULUN_PITUS) {
-        this.YLIVUOTOLISTAT = new AvainArvoJono[TAULUN_PITUS];
-        for (int i = 0; i < TAULUN_PITUS; i++) {
+    /**
+     * Palauttaa luokan uuden instanssin.
+     *
+     * @param HAJAUTUSTAULUN_PITUS Hajautustaulun pituus.
+     */
+    public Hajautuskartta(final int HAJAUTUSTAULUN_PITUS) {
+        this.YLIVUOTOLISTAT = new AvainArvoJono[HAJAUTUSTAULUN_PITUS];
+        for (int i = 0; i < HAJAUTUSTAULUN_PITUS; i++) {
             YLIVUOTOLISTAT[i] = new AvainArvoJono<Character, V>();
         }
     }
 
+    /**
+     * Lisää hajautuskarttaan annetun avain-arvoparin.
+     *
+     * @param avain Lisättävä avain.
+     * @param arvo  Lisättävä arvo.
+     */
     public void lisaa(char avain, V arvo) {
         YLIVUOTOLISTAT[hajauta(avain)].lisaa(avain, arvo);
     }
@@ -34,6 +40,12 @@ public final class Hajautuskartta<V> {
         return (int) avain % YLIVUOTOLISTAT.length;
     }
     
+    /**
+     * Hakee hajautuskartasta arvon annetulla avaimella.
+     *
+     * @param avain Haettava avain.
+     * @return      Avainta vastaava arvo tai <tt>null</tt> jos sellaista ei ole.
+     */
     public V hae(char avain) {
         return YLIVUOTOLISTAT[hajauta(avain)].hae(avain);
     }

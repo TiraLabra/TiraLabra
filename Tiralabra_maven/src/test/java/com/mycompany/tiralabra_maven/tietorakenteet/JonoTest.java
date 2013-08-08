@@ -8,37 +8,63 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author johnny
+ */
 public class JonoTest {
     
     private Jono    jono;
     private Object  testiObjekti;
     
+    /**
+     *
+     */
     public JonoTest() {
     }
     
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
     
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
+    /**
+     *
+     */
     @Before
     public void setUp() {
         jono            = new Jono<Object>();
         testiObjekti    = new Object();
     }
     
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
 
+    /**
+     *
+     */
     @Test
     public void testLisaa() {
-        assertTrue(jono.lisaa(testiObjekti));
+        jono.lisaa(testiObjekti);
+        assertEquals(testiObjekti, jono.kurkista());
     }
     
+    /**
+     *
+     */
     @Test
     public void testKurkista() {
         assertNull(jono.kurkista());
@@ -47,6 +73,9 @@ public class JonoTest {
         assertEquals(1, jono.pituus());
     }
     
+    /**
+     *
+     */
     @Test
     public void testPituus() {
         jono.lisaa(testiObjekti);
@@ -60,6 +89,9 @@ public class JonoTest {
         assertEquals(8, jono.pituus());
     }
 
+    /**
+     *
+     */
     @Test
     public void testPoista() {
         assertNull(jono.poista());
@@ -68,19 +100,18 @@ public class JonoTest {
         assertEquals(testiObjekti, paluuarvo);
     }
 
-    @Test
-    public void testKoko() {
-        jono.lisaa(testiObjekti);
-        jono.lisaa(testiObjekti);
-        assertEquals(2, jono.koko());
-    }
-
+    /**
+     *
+     */
     @Test
     public void testOnTyhja() {
         jono.lisaa(testiObjekti);
         assertFalse(jono.onTyhja());
     }
 
+    /**
+     *
+     */
     @Test
     public void testTyhjenna() {
         jono.lisaa(testiObjekti);
@@ -88,6 +119,9 @@ public class JonoTest {
         assertTrue(jono.onTyhja());
     }
     
+    /**
+     *
+     */
     @Test
     public void testToString() {
         assertEquals(jono.toString(), "\u2205");

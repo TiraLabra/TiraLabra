@@ -8,30 +8,52 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author johnny
+ */
 public class HajautuskarttaTest {
     
+    /**
+     *
+     */
     public HajautuskarttaTest() {
     }
     
     private Hajautuskartta h;
     
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
     
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
+    /**
+     *
+     */
     @Before
     public void setUp() {
         h = new Hajautuskartta(3);
     }
     
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
 
+    /**
+     *
+     */
     @Test
     public void testLisaaJaHae() {
         h.lisaa('a', 1);
@@ -49,6 +71,9 @@ public class HajautuskarttaTest {
         assertEquals(5, h.hae('e'));
     }
     
+    /**
+     *
+     */
     @Test
     public void testToString() {
         String oikeaVastaus = "{(c\u21A63,f\u21A66,i\u21A69,l\u21A62),"
