@@ -109,16 +109,15 @@ public class OmaArrayListTest {
 
         assertEquals("Väärä alkion arvo", lista.size(), 2);
     }
-    
-    @Test 
+
+    @Test
     public void addAllNullLisaysEiMuutaKokoa() {
         lista.add(1);
         lista.add(2);
-             
+
         lista.addAll(null);
         assertEquals("Väärä alkion arvo", lista.size(), 2);
     }
-    
 
     @Test
     public void alkioOnTallennettuOikein() {
@@ -215,6 +214,54 @@ public class OmaArrayListTest {
     }
 
     @Test
+    public void listanKokoOikeaRemoveObjektinJaljiltaKunPoistetaanVaara() {
+        Integer yksi = new Integer(1);
+        Integer kaksi = new Integer(2);
+        Integer kolme = new Integer(3);
+        Integer nelja = new Integer(4);
+        Integer viisi = new Integer(5);
+
+        lista.add(yksi);
+        lista.add(kaksi);
+        lista.add(kolme);
+        lista.add(nelja);
+
+        lista.remove(viisi);
+        assertEquals("Listan koko väärä removen jäljiltä", 4, lista.size());
+    }
+
+    @Test
+    public void removeObjectPalauttFalseKunEioleListalla() {
+        Integer yksi = new Integer(1);
+        Integer kaksi = new Integer(2);
+        Integer kolme = new Integer(3);
+        Integer nelja = new Integer(4);
+        Integer viisi = new Integer(5);
+
+        lista.add(yksi);
+        lista.add(kaksi);
+        lista.add(kolme);
+        lista.add(nelja);
+
+        assertFalse("Lista väärän arvon kun poistettiin olematonta", lista.remove(viisi));
+    }
+
+    @Test
+    public void removeObjectPalauttaaOikean() {
+        Integer yksi = new Integer(1);
+        Integer kaksi = new Integer(2);
+        Integer kolme = new Integer(3);
+        Integer nelja = new Integer(4);
+
+        lista.add(yksi);
+        lista.add(kaksi);
+        lista.add(kolme);
+        lista.add(nelja);
+
+        assertTrue("Lista palautti väärän arvon kun poistetaan arvoa", lista.remove(kolme));
+    }
+
+    @Test
     public void listanKokoOikeaRemoveIndeksinJaljilta() {
         Integer yksi = new Integer(1);
         Integer kaksi = new Integer(2);
@@ -228,6 +275,21 @@ public class OmaArrayListTest {
 
         lista.remove(2);
         assertEquals("Listan koko väärä removen jäljiltä", lista.size(), 3);
+    }
+
+    @Test
+    public void RemoveIndeksiPalauttaaOikean() {
+        Integer yksi = new Integer(1);
+        Integer kaksi = new Integer(2);
+        Integer kolme = new Integer(3);
+        Integer nelja = new Integer(4);
+
+        lista.add(yksi);
+        lista.add(kaksi);
+        lista.add(kolme);
+        lista.add(nelja);
+
+        assertEquals("Palautti väärän objektin", kolme, lista.remove(2));
     }
 
     @Test
@@ -340,6 +402,32 @@ public class OmaArrayListTest {
     }
 
     @Test
+    public void listanKokoOikeaClearinJalkeenKunLisataan() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+
+        lista.clear();
+        lista.add(1);
+        lista.add(2);
+        assertEquals("Listan koko väärä clear()-kutsun jälkeen", 2, lista.size());
+    }
+
+    @Test
+    public void listaAntaaOikeanArvonKunLisataanClearataanJaLisataan() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+
+        lista.clear();
+        lista.add(1);
+        lista.add(2);
+        assertTrue("Väärä arvo clear()-kutsun jälkeen", 2 == lista.get(1));
+    }
+
+    @Test
     public void isEmptyClearinJalkeen() {
         lista.add(1);
         lista.add(2);
@@ -348,6 +436,19 @@ public class OmaArrayListTest {
 
         lista.clear();
         assertTrue("isEmpty väärin clear()-kutsun jälkeen", lista.isEmpty());
+    }
+
+    @Test
+    public void eiOleIsEmptyClearinJalkeenKunLisattyTavaraa() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+
+        lista.clear();
+        lista.add(1);
+
+        assertFalse("isEmpty väärin clear()-kutsun jälkeen", lista.isEmpty());
     }
 
     @Test
@@ -479,6 +580,24 @@ public class OmaArrayListTest {
         lista2.add(3);
         lista2.add(4);
         lista2.add(15);
+
+        assertFalse("Equals antaa virheellisesti true", lista.equals(lista2));
+    }
+
+    @Test
+    public void arraytEriKunSisaltoSamaPaitsiViimeinen() {
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        lista.add(4);
+        lista.add(15);
+
+        OmaArrayList<Integer> lista2 = new OmaArrayList<Integer>();
+        lista2.add(1);
+        lista2.add(2);
+        lista2.add(3);
+        lista2.add(4);
+        lista2.add(16);
 
         assertFalse("Equals antaa virheellisesti true", lista.equals(lista2));
     }

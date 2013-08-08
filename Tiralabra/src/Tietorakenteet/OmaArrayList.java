@@ -165,9 +165,10 @@ public class OmaArrayList<T> implements OmaList<T> {
         listaEiMuuttunut = true;
         long paluuArvo = 0;
         for (int i = 0; i < datanKoko; ++i) {
-            paluuArvo += ((paluuArvo + data[i].hashCode() + i) % Integer.MAX_VALUE) % Integer.MAX_VALUE;
+            paluuArvo += ((paluuArvo + data[i].hashCode() + i));
         }
-        hashCode = (int) (paluuArvo % Integer.MAX_VALUE);
+        
+        hashCode = Math.abs((int) (paluuArvo % Integer.MAX_VALUE));
         return hashCode;
 
     }

@@ -33,17 +33,6 @@ public class TiedostoLukija {
 
     }
 
-    public OmaList<String> lueTiedostoRiveittain() throws FileNotFoundException, IOException {
-
-        BufferedReader reader = new BufferedReader(new FileReader(TIEDOSTO));
-        try {
-            OmaList<String> luettu = lueRiveittain(reader);
-            return luettu;
-        } finally {
-            reader.close();
-        }
-
-    }
 
     private OmaList<Byte> lue(BufferedInputStream stream) throws IOException {
 
@@ -60,17 +49,5 @@ public class TiedostoLukija {
         return luettuData;
     }
 
-    private OmaList<String> lueRiveittain(BufferedReader reader) throws IOException {
-        OmaList<String> rivit = new OmaArrayList<String>();
-        while (true) {
-            String rivi = reader.readLine();
-            if (rivi == null) {
-                break;
-            }
-            if (rivi.length() != 0) {
-                rivit.add(rivi);
-            }      
-        }
-        return rivit;
-    }
+    
 }

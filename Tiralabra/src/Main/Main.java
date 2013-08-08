@@ -1,7 +1,7 @@
 package Main;
 
-import OhjelmaLogiikka.Pakkaaja;
-import OhjelmaLogiikka.Purkaaja;
+import OhjelmaLogiikka.Pakkaaja.Pakkaaja;
+import OhjelmaLogiikka.Purkaaja.Purkaaja;
 
 public class Main {
 
@@ -10,7 +10,11 @@ public class Main {
         int blokinKoko = 8;
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
         Purkaaja purkaaja = new Purkaaja(blokinKoko); 
-        pakkaaja.pakkaa("Testitiedostot/suuri.xml", "Testitiedostot/ulos.dat");
+        
+        
+        System.out.println("Pakataan...");
+        pakkaaja.pakkaa("Testitiedostot/Kalimba.mp3", "Testitiedostot/ulos.dat");
+        System.out.println("Puretaan...");
         purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
         
     }
