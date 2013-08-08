@@ -1,11 +1,8 @@
 
 package kolmiopeli.UI.napit;
 
-import kolmiopeli.UI.napit.KolmioNappi;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import javax.swing.JButton;
-import kolmiopeli.UI.Peliruudukko;
 import kolmiopeli.UI.Peliruudukko;
 import kolmiopeli.domain.Kolmio;
 
@@ -55,7 +52,8 @@ public class YlospainKolmioNappi extends JButton implements KolmioNappi {
     
     
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
+        
         if (getModel().isPressed()) {
             g.setColor(getBackground());
             setOnkoValittuna(true);

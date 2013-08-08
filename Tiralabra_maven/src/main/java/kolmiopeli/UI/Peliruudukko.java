@@ -1,17 +1,14 @@
 package kolmiopeli.UI;
 
-import kolmiopeli.UI.napit.AlaspainKolmioNappi;
-import kolmiopeli.UI.napit.YlospainKolmioNappi;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+import kolmiopeli.UI.napit.AlaspainKolmioNappi;
+import kolmiopeli.UI.napit.YlospainKolmioNappi;
 import kolmiopeli.domain.Kolmio;
+import kolmiopeli.domain.Koordinaatti;
 import kolmiopeli.logiikka.Siirrot;
 
 /**
@@ -24,13 +21,17 @@ public class Peliruudukko extends JPanel {
     private Kolmio[][] peliruudukko;
     private Kolmio valittuKolmio;
     private PeliFrame peliFrame;
+    private List<Koordinaatti> tuhoutuvat;
+    private final int ruudukonKorkeus;
+    private final int ruudukonLeveys;
+
 
     public Peliruudukko(PeliFrame peliFrame) {
         this.peliFrame = peliFrame;
         this.peliruudukko = peliFrame.getPeliruudukko().getRuudukko();
 
-        int ruudukonKorkeus = this.peliruudukko.length;
-        int ruudukonLeveys = this.peliruudukko[0].length;
+        this.ruudukonKorkeus = this.peliruudukko.length;
+        this.ruudukonLeveys = this.peliruudukko[0].length;
         GridLayout ruudukonLayout = new GridLayout(ruudukonKorkeus, ruudukonLeveys, -30, 0);
         this.setLayout(ruudukonLayout);
         this.taytaKolmiot(ruudukonKorkeus, ruudukonLeveys);
@@ -74,17 +75,19 @@ public class Peliruudukko extends JPanel {
     }
 
     public void taytaKolmiot(int korkeus, int leveys) {
+
         this.removeAll();
         for (int rivi = 0; rivi < korkeus; rivi++) {
             for (int sarake = 0; sarake < leveys; sarake++) {
                 Kolmio piirrettava = this.peliruudukko[rivi][sarake];
-                
+
                 if (piirrettava == null) {
-                    this.add(new JLabel("lol"));
+                    JLabel boom = new JLabel("BOOM");
+                    this.add(boom);
+                    boom.paintComponents(this.getGraphics());
                     continue;
                 }
-                
-                
+
                 JButton kolmioNappina;
                 if (piirrettava.osoittaakoKolmioYlospain()) {
                     kolmioNappina = new YlospainKolmioNappi(piirrettava, this);
@@ -93,10 +96,46 @@ public class Peliruudukko extends JPanel {
                 }
                 kolmioNappina.addActionListener(new TapahtumaKuuntelija(this));
                 this.add(kolmioNappina);
+                kolmioNappina.paintComponents(this.getGraphics());
 
-                this.repaint();
-                this.revalidate();
+
             }
         }
+
+        this.revalidate();
+
     }
+
+    public void taytaKolmiot(List<Koordinaatti> tuhoutuneet) {
+
+        for (Koordinaatti koordinaatti : tuhoutuneet) {
+            int rivi = koordinaatti.getRivi();
+            int sarake = koordinaatti.getSarake();
+            this.remove(rivi * this.ruudukonLeveys + sarake);
+            Kolmio piirrettava = this.peliruudukko[rivi][sarake];
+            JButton kolmioNappina = null;
+
+            if (piirrettava == null) {
+                JLabel boom = new JLabel("BOOM");
+                this.add(boom, rivi * this.ruudukonLeveys + sarake);
+                boom.paintComponents(this.getGraphics());
+            } else if (piirrettava.osoittaakoKolmioYlospain()) {
+                kolmioNappina = new YlospainKolmioNappi(piirrettava, this);
+                kolmioNappina.addActionListener(new TapahtumaKuuntelija(this));
+                this.add(kolmioNappina, rivi * this.ruudukonLeveys + sarake);
+                kolmioNappina.paintComponents(this.getGraphics());
+            } else {
+                kolmioNappina = new AlaspainKolmioNappi(piirrettava, this);
+                kolmioNappina.addActionListener(new TapahtumaKuuntelija(this));
+                this.add(kolmioNappina, rivi * this.ruudukonLeveys + sarake);
+                kolmioNappina.paintComponents(this.getGraphics());
+            }
+            this.revalidate();
+            
+        }
+        
+
+    }
+
+
 }

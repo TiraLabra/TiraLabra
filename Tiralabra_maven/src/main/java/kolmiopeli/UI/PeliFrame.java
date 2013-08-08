@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.awt.Container;
 import javax.swing.JPanel;
 import kolmiopeli.domain.Ruudukko;
+import kolmiopeli.logiikka.KolmioTayttaja;
 import kolmiopeli.logiikka.PistesiirtojenEtsija;
 import kolmiopeli.logiikka.Siirrot;
-import kolmiopeli.logiikka.KolmioTayttaja;
 
 /**
  * Kayttoliittyman keskeisin osa, luo pelitilanteen ja vaihtaa pelin loppuessa GameOver nakyman
@@ -17,13 +17,13 @@ import kolmiopeli.logiikka.KolmioTayttaja;
 public class PeliFrame {
 
     private Ruudukko ruudukko;
-    private PistesiirtojenEtsija etsija;
     private Siirrot siirrot;
     private InfoPaneeli infoPaneeli;
     private GameOverPanel gameover;
     private Container nakymat;
     private KolmioTayttaja tayttaja;
     private Peliruudukko peliruudukko;
+    private PistesiirtojenEtsija etsija;
 
 
     public PeliFrame(int rivit, int sarakkeet, Container container) {
@@ -75,6 +75,12 @@ public class PeliFrame {
         return ruudukko;
     }
 
+    public KolmioTayttaja getTayttaja() {
+        return tayttaja;
+    }
+
+    
+    
     public PistesiirtojenEtsija getEtsija() {
         return etsija;
     }

@@ -1,12 +1,10 @@
 
 package kolmiopeli.UI.napit;
 
-import kolmiopeli.UI.napit.KolmioNappi;
 import java.awt.*;
 import javax.swing.JButton;
 import kolmiopeli.UI.Peliruudukko;
 import kolmiopeli.domain.Kolmio;
-import kolmiopeli.domain.Ruudukko;
 
 /**
  *
@@ -32,7 +30,7 @@ public class AlaspainKolmioNappi extends JButton implements KolmioNappi {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         if (getModel().isPressed()) {
             g.setColor(getBackground());
         } else {

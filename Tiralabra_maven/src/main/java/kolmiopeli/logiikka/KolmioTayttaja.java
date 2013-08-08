@@ -37,6 +37,7 @@ public class KolmioTayttaja {
      * @param taytettavatRuudut Lista koordinaateista jotka pitaa tayttaa.
      */
     public void taytaTietytRuudut(ArrayList<Koordinaatti> taytettavatRuudut) {
+
         for (Koordinaatti koordinaatti : taytettavatRuudut) {
             int rivi = koordinaatti.getRivi();
             int sarake = koordinaatti.getSarake();
@@ -46,6 +47,7 @@ public class KolmioTayttaja {
 
             this.peliruudukko[rivi][sarake] = taytaRuutuunKolmio(rivi, sarake, viimeinenRivi, viimeinenSarake, palautettava);
         }
+
     }
 
     public void taytaKaikkiRuudut() {

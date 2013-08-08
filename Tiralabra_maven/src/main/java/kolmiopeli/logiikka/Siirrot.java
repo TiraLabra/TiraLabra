@@ -2,6 +2,7 @@ package kolmiopeli.logiikka;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
 import kolmiopeli.domain.Ruudukko;
@@ -32,7 +33,7 @@ public class Siirrot {
      */
     public Siirrot(Ruudukko peliruudukko) {
         this.peliruudukko = peliruudukko.getRuudukko();
-        this.pisteenlaskija = new Pisteenlaskija(peliruudukko);
+        this.pisteenlaskija = new Pisteenlaskija();
     }
 
     /**
@@ -63,18 +64,18 @@ public class Siirrot {
      *
      * @param siirrettavanRivi Rivi, jossa siirrettava kolmio sijaitsee.
      * @param siirrettavanSarake Sarake, jossa siirrettava kolmio sijaitsee.
-     * @return True, jos siirto onnistui.
+     * @return Tuhoutuvien listan jos siirto onnistui, muuten null.
      */
-    public boolean siirraKolmioVasemmalle(int siirrettavanRivi, int siirrettavanSarake) {
+    public List siirraKolmioVasemmalle(int siirrettavanRivi, int siirrettavanSarake) {
 
         // Vasemman reunan kolmioita ei voi siirtaa vasemmalle
         if (siirrettavanSarake == 0) {
-            return false;
+            return null;
         }
 
         // Tuottaako siirto pisteita
         if (!this.etsija.tuottaakoPisteitaJosVaihtaa(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi, siirrettavanSarake - 1)) {
-            return false;
+            return null;
         }
 
         return siirraKolmio(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi, siirrettavanSarake - 1);
@@ -85,18 +86,18 @@ public class Siirrot {
      *
      * @param siirrettavanRivi Rivi, jossa siirrettava kolmio sijaitsee.
      * @param siirrettavanSarake Sarake, jossa siirrettava kolmio sijaitsee.
-     * @return True, jos siirto onnistui.
+     * @return Tuhoutuvien listan jos siirto onnistui, muuten null.
      */
-    public boolean siirraKolmioOikealle(int siirrettavanRivi, int siirrettavanSarake) {
+    public List siirraKolmioOikealle(int siirrettavanRivi, int siirrettavanSarake) {
 
         // Oikean reunan kolmioita ei voi siirtaa oikealle
         if (siirrettavanSarake == this.peliruudukko[0].length - 1) {
-            return false;
+            return null;
         }
 
         // Tuottaako siirto pisteita
         if (!this.etsija.tuottaakoPisteitaJosVaihtaa(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi, siirrettavanSarake + 1)) {
-            return false;
+            return null;
         }
 
         return siirraKolmio(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi, siirrettavanSarake + 1);
@@ -107,23 +108,23 @@ public class Siirrot {
      *
      * @param siirrettavanRivi Rivi, jossa siirrettava kolmio sijaitsee.
      * @param siirrettavanSarake Sarake, jossa siirrettava kolmio sijaitsee.
-     * @return True, jos siirto onnistui.
+     * @return Tuhoutuvien listan jos siirto onnistui, muuten null.
      */
-    public boolean siirraKolmioYlos(int siirrettavanRivi, int siirrettavanSarake) {
+    public List siirraKolmioYlos(int siirrettavanRivi, int siirrettavanSarake) {
 
         // Ylareunan kolmioita ei voi siirtaa ylos
         if (siirrettavanRivi == 0) {
-            return false;
+            return null;
         }
 
         // Jos kolmio osoittaa ylospain, sita ei voi siirtaa ylos
         if (this.peliruudukko[siirrettavanRivi][siirrettavanSarake].osoittaakoKolmioYlospain()) {
-            return false;
+            return null;
         }
 
         // Tuottaako siirto pisteita
         if (!this.etsija.tuottaakoPisteitaJosVaihtaa(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi - 1, siirrettavanSarake)) {
-            return false;
+            return null;
         }
 
         return siirraKolmio(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi - 1, siirrettavanSarake);
@@ -134,29 +135,29 @@ public class Siirrot {
      *
      * @param siirrettavanRivi Rivi, jossa siirrettava kolmio sijaitsee.
      * @param siirrettavanSarake Sarake, jossa siirrettava kolmio sijaitsee.
-     * @return True, jos siirto onnistui.
+     * @return Tuhoutuvien listan jos siirto onnistui, muuten null.
      */
-    public boolean siirraKolmioAlas(int siirrettavanRivi, int siirrettavanSarake) {
+    public List siirraKolmioAlas(int siirrettavanRivi, int siirrettavanSarake) {
 
         // Alareunan kolmioita ei voi siirtaa alas
         if (siirrettavanRivi == this.peliruudukko.length - 1) {
-            return false;
+            return null;
         }
 
         // Jos kolmio osoittaa alaspain, sita ei voi siirtaa alas
         if (!this.peliruudukko[siirrettavanRivi][siirrettavanSarake].osoittaakoKolmioYlospain()) {
-            return false;
+            return null;
         }
 
         // Tuottaako siirto pisteita
         if (!this.etsija.tuottaakoPisteitaJosVaihtaa(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi + 1, siirrettavanSarake)) {
-            return false;
+            return null;
         }
 
         return siirraKolmio(siirrettavanRivi, siirrettavanSarake, siirrettavanRivi + 1, siirrettavanSarake);
     }
 
-    private boolean siirraKolmio(int siirrettavanRivi, int siirrettavanSarake, int viereisenRivi, int viereisenSarake) {
+    private List siirraKolmio(int siirrettavanRivi, int siirrettavanSarake, int viereisenRivi, int viereisenSarake) {
         // Toisen apumuuttujista voi poistaa, lisatty selkeyden takia
         Kolmio siirrettava = this.peliruudukko[siirrettavanRivi][siirrettavanSarake];
         Kolmio viereinen = this.peliruudukko[viereisenRivi][viereisenSarake];
@@ -168,21 +169,21 @@ public class Siirrot {
         this.peliruudukko[siirrettavanRivi][siirrettavanSarake] = viereinen;
         viereinen.setSijainti(siirrettavanRivi, siirrettavanSarake);
 
-        lahetaTuhoutuvatPisteenlaskijalle(siirrettava, viereinen);
+        ArrayList<Koordinaatti> tuhoutuvat = (ArrayList<Koordinaatti>) muodostaListaTuhoutuvista(siirrettava, viereinen);
 
 
-        return true;
+        return tuhoutuvat;
     }
 
-    private void lahetaTuhoutuvatPisteenlaskijalle(Kolmio siirrettava, Kolmio viereinen) {
+    private List muodostaListaTuhoutuvista(Kolmio siirrettava, Kolmio viereinen) {
         ArrayList<Koordinaatti> tuhoutuvat = new ArrayList();
         tuhoutuvat.addAll(this.etsija.getTamanKolmionKanssaTuhoutuvat(siirrettava));
         tuhoutuvat.addAll(this.etsija.getTamanKolmionKanssaTuhoutuvat(viereinen));
         Collections.sort(tuhoutuvat);
         Collections.reverse(tuhoutuvat);
-        // Piirra tassa valissa peliruudukkoon mitka ovat tuhoutuneet
-        this.pisteenlaskija.tuhoaKolmiot(tuhoutuvat);
+        // Lisataan tuhoutuvien tielta pois siirtyva kolmio listaan jotta boom vaihe osaa piirtaa sen oikein
+        tuhoutuvat.add(0, viereinen.getKoordinaatti());
         System.out.println(tuhoutuvat);
-        
+        return tuhoutuvat;
     }
 }
