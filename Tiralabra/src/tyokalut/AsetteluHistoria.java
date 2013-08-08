@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tyokalut;
 
 import java.io.File;
@@ -12,20 +8,32 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- *
+ * Toteutetaan AVL-puun muodossa historia kaikista aiemmin lasketuista tuotteista,
+ * jotka aina tallennetaan tekstitiedostoon ja ohjelman käynnistyessä luetaan takaisin
+ * AsetteluHistoria-olioksi.
+ * 
  * @author albis
  */
 public class AsetteluHistoria {
+    /**
+     * 
+     */
     private HashMap<Integer, KasvavaLista> historia = new HashMap<Integer, KasvavaLista>();
     
     public AsetteluHistoria() {
         
     }
     
+    /**
+     * Metodi, jolla uusia laskettuja asettelumäärityksiä tallennetaan.
+     */
     public void lisaa() {
         
     }
     
+    /**
+     * Metodi, joka avaa vanhat asettelutavat sisältävän tiedoston ja lukee sen tiedot.
+     */
     public void avaa() {
         File historiaTiedosto = new File("historia.txt");
         try {
@@ -55,6 +63,10 @@ public class AsetteluHistoria {
         
     }
     
+    /**
+     * Metodi, joka tallentaa kaikki puun sisältämät asettelutavat tekstitiedostoon
+     * ohjelma suljettaessa.
+     */
     public void tallenna() {
         try {
             FileWriter kirjoittaja = new FileWriter("historia.txt");

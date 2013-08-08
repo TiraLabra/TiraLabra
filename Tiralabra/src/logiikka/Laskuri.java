@@ -4,24 +4,37 @@ import osat.Laatikko;
 import osat.Lava;
 import tyokalut.KasvavaLista;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
+ * Luokka, joka huolehtii laatikoiden parhaan asettelutavan laskemisesta.
  *
  * @author albis
  */
 public class Laskuri {
+    /**
+     * Laatikko-olio, jonka kuvaaman laatikon asettelutapa lasketaan.
+     */
     private Laatikko laatikko;
+    
+    /**
+     * Lava-olio, jonka kuvaamalle lavalle asetettavat laatikot on laitettava.
+     */
     private Lava lava;
     
+    /**
+     * Lista, jota käytetään laatikon asettelutavan kuvaamiseen.
+     */
     private KasvavaLista parasJarjestys;
     
     public Laskuri() {
     }
     
+    /**
+     * Metodi, joka huolehtii laatikoiden asettelutavan laskemisesta.
+     * 
+     * @param laatikko Laatikko, jonka asettelutapa lasketaan.
+     * @param lava Lava, jolle laatikko asetellaan.
+     * @return Palauttaa parhaan asettelutavan listana.
+     */
     public KasvavaLista laske(Laatikko laatikko, Lava lava) {
         parasJarjestys = new KasvavaLista();
         this.laatikko = laatikko;
@@ -32,6 +45,16 @@ public class Laskuri {
         return parasJarjestys;
     }
     
+    /**
+     * Rekursiivinen metodi, joka asettaa laatikoita lavalle ja näin kokeilemalla selvittää parhaan
+     * tavan asetella laatikot.
+     * 
+     * @param x Asetettavan laatikon vasemman yläkulman sijainti x-akselilla.
+     * @param y Asetettavan laatikon vasemman yläkulman sijainti y-akselilla.
+     * @param vanhaLava Lava-olio, joka sisältää tiedon jo asetetuista ruuduista ja näin myös siitä,
+     * mihin laatikoita voidaan vielä asettaa.
+     * @param jarjestysTahanAsti Lavalle tällä hetkellä asetettujen laatikoiden asennot.
+     */
     private void asetaLaatikko(int x, int y, Lava vanhaLava, KasvavaLista jarjestysTahanAsti) {
         if (jarjestysTahanAsti.length() > parasJarjestys.length()) {
             parasJarjestys = jarjestysTahanAsti.kopioi();

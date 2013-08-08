@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kayttoliittyma;
 
 import java.awt.Container;
@@ -11,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
+ * Graafisen käyttöliittymän kokoava luokka.
  *
  * @author albis
  */
