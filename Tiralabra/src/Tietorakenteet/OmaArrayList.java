@@ -49,7 +49,7 @@ public class OmaArrayList<T> implements OmaList<T> {
 
         data[datanKoko] = e;
         ++datanKoko;
-        
+
         listaEiMuuttunut = false;
         return true;
     }
@@ -63,7 +63,7 @@ public class OmaArrayList<T> implements OmaList<T> {
         for (int i = 0; i < e.size(); ++i) {
             add(e.get(i));
         }
-        
+
         listaEiMuuttunut = false;
         return true;
     }
@@ -76,9 +76,9 @@ public class OmaArrayList<T> implements OmaList<T> {
                 return true;
             }
         }
-        
+
         listaEiMuuttunut = false;
-        
+
         return false;
     }
 
@@ -86,7 +86,7 @@ public class OmaArrayList<T> implements OmaList<T> {
     public void clear() {
         data = new Object[1];
         datanKoko = 0;
-        
+
         listaEiMuuttunut = false;
     }
 
@@ -103,9 +103,9 @@ public class OmaArrayList<T> implements OmaList<T> {
         if (index < 0 || index >= datanKoko) {
             throw new IndexOutOfBoundsException("Indeksi ulkona taulukosta");
         }
-        
+
         listaEiMuuttunut = false;
-        
+
         T retval = (T) data[index];
         data[index] = element;
         return retval;
@@ -118,7 +118,7 @@ public class OmaArrayList<T> implements OmaList<T> {
         }
 
         listaEiMuuttunut = false;
-        
+
         T poistettava = (T) data[index];
         for (int i = index + 1; i < datanKoko; ++i) {
             data[i - 1] = data[i];
@@ -147,30 +147,30 @@ public class OmaArrayList<T> implements OmaList<T> {
     }
 
     /**
-     * Laskee hajautusarvon taulukon sisällön perusteella.
+     * Laskee hajautusarvon taulukon sisällön perusteella. Toteuttaa
+     * Shift-add-xor-algoritmin. Lähde:
+     * http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx
      *
      * @return hajautusarvo
      */
-    // todo: etsi kunnon algoritmi
     @Override
     public int hashCode() {
 
         // optimointia: modulo on kohtuu kallis operaatio, ja tätä metodia kutsutaan paljon
         // jos listaan ei ole koskettu, palautetaan vanha hashcode eikä lasketa uudelleen
-        
+
         if (listaEiMuuttunut) {
             return hashCode;
         }
-        
-        listaEiMuuttunut = true;
-        long paluuArvo = 0;
-        for (int i = 0; i < datanKoko; ++i) {
-            paluuArvo += ((paluuArvo + data[i].hashCode() + i));
-        }
-        
-        hashCode = Math.abs((int) (paluuArvo % Integer.MAX_VALUE));
-        return hashCode;
 
+        listaEiMuuttunut = true;
+ 
+        hashCode = 0;
+        for (int i = 0; i < datanKoko; ++i) {
+            hashCode ^= (hashCode << 5) + (hashCode >> 2) + data[i].hashCode();
+        }
+
+        return hashCode;
     }
 
     /**
@@ -194,6 +194,11 @@ public class OmaArrayList<T> implements OmaList<T> {
         if (datanKoko != verrattava.datanKoko) {
             return false;
         }
+
+        if (hashCode() != verrattava.hashCode()) {
+            return false;
+        }
+
 
         for (int i = 0; i < datanKoko; ++i) {
             if (!data[i].equals(verrattava.data[i])) {

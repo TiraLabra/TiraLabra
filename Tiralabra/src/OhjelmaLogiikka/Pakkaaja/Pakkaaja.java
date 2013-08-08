@@ -98,7 +98,7 @@ public class Pakkaaja {
                 esiintymisTiheydet.put(avain, esiintymisTiheydet.get(avain) + 1);
             }
         }
-        
+     
         return esiintymisTiheydet;
     }
 

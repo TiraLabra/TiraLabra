@@ -1,7 +1,5 @@
 package Tietorakenteet;
 
-import java.util.HashMap;
-
 /**
  * Oma Hashmap-implementaatio. Talukko[hashCode] sisältää ylivuotolistan johonka
  * tallennetaan kaikki objektit jotka saavat saman hash coden Ylivuotolista
@@ -52,12 +50,13 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         ++nykyinenKokoPaikka;
         Object[] uusiTaulukko;
         
+
         if (nykyinenKokoPaikka < ALKULUKUJA.length) {
             uusiTaulukko = new Object[ALKULUKUJA[nykyinenKokoPaikka]];
         } else {
             uusiTaulukko = new Object[arvot.length * 2];
         }
-        
+
         alustaTaulukko(uusiTaulukko);
 
         rehash(uusiTaulukko);
