@@ -18,6 +18,11 @@ public class MultiByteTable {
     private MultiByte[] data;
     
     /**
+     * Statistics to keep, whether is deleted or not.
+     */
+    private int[] stats;
+    
+    /**
      * 
      * The index to which new data is added, also the count of items.
      */
@@ -29,6 +34,7 @@ public class MultiByteTable {
     public MultiByteTable() {
         this.putIndex = 0;
         this.data = new MultiByte[16];
+        this.stats = new int[16];
     }
     
     public int size(){
@@ -44,19 +50,38 @@ public class MultiByteTable {
     public boolean put(MultiByte multiByte) {
         if (putIndex < data.length) {
             data[putIndex] = multiByte;
+            stats[putIndex] = 1;
             putIndex++;
             return true;
         } else {
             try {
                 MultiByte[] newTable = new MultiByte[data.length * 2];
+                int[] newStats = new int[data.length*2];
                 System.arraycopy(data, 0, newTable, 0, data.length);
+                System.arraycopy(stats, 0, newStats, 0, data.length);
                 data = newTable;
+                stats = newStats;
                 data[putIndex] = multiByte;
+                stats[putIndex] = 1;
                 putIndex++;
                 return true;
             } catch (Exception e) {
                 return false;
             }
+        }
+    }
+    
+    /**
+     * Returns and removes an entry from the table. Deletion does not remove an entry, rather it is marked as deleted.
+     * @param key
+     * @return the multibyte data contained in the index specified by the key.
+     */
+    public MultiByte fetchRemove(int key){
+        if (key<putIndex){
+            stats[key] = -1;
+            return data[key];
+        } else {
+            return null;
         }
     }
 
@@ -79,12 +104,34 @@ public class MultiByteTable {
         return false;
     }
 
-    public MultiByte fetch(int index) {
-        return this.data[index];
+    /**
+     * Returns the multibyte data specified by the key, if it exists.
+     * @param key
+     * @return 
+     */
+    public MultiByte fetch(int key) {
+        if (key<putIndex && stats[key] == 1){
+            return data[key];
+        }
+        return null;
     }
 
+    /**
+     * Returns the entire data set.
+     * @return 
+     */
     public MultiByte[] fetchArray() {
         return this.data;
+    }
+    
+    /**
+     * Clears the entire dataset to be used with caution, all entries are purged.
+     */
+    public void clear(){
+        this.data = new MultiByte[16];
+        this.stats = new int[16];
+        this.putIndex = 0;
+        
     }
     
 }
