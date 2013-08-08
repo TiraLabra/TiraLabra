@@ -11,7 +11,7 @@ Ajattelin aloittaa toteuttamalla algoritmin joka generoi eri permutaatiot tavoil
 
 Tavoitteena olevat aika- ja tilavaativuudet:
 
-En ole vielä ehtinyt hahmotella algoritmia, jolla lähestyn laatikkojen sijoittamistapaa, mutta nopea ensimmäisestä versiosta ei tule vaan aikavaativuus venyy varmasti eksponentiaaliseksi. Laatikot voi asettaa käytännössä kuudella eri tavalla lavalle, mikä aiheuttaa algoritmille huomattavasti laskettavaa. Aion lähestyä ongelmaa rekursiivisesti ja pyrkiä saamaan aikaan toimivan algoritmin. Myöhemmin pyrin tutustumaan ongelmaan tarkemmin ja parantelemaan algoritmiani.
+En ole vielä ehtinyt hahmotella algoritmia, jolla lähestyn laatikkojen sijoittamistapaa, mutta nopea ensimmäisestä versiosta ei tule. Laatikot voi asettaa käytännössä kuudella eri tavalla lavalle, mikä aiheuttaa algoritmille huomattavasti laskettavaa. Aion lähestyä ongelmaa rekursiivisesti ja pyrkiä saamaan aikaan toimivan algoritmin, jonka jälkeen pyrin parantelemaan sitä ja katsomaan ongelmaa muilta kanteilta.
 
 AVL-puun lisäys: aikavaativuus = O(log(n)), tilavaativuus = O(1)
 AVL-puun haku: aikavaativuus = O(log(n)), tilavaativuus = O(1)
@@ -19,7 +19,4 @@ AVL-puun poisto: aikavaativuus = O(log(n)), tilavaativuus = O(1)
 
 Lähteet:
 
-Keväällä 2013 järjestetyn Tietorakenteet ja algoritmit –kurssin luentomateriaali
-http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
-
-http://www.dtic.mil/cgi-bin/GetTRDoc?AD=ADA517366#page=13
+Keväällä 2013 järjestetyn Tietorakenteet ja algoritmit –kurssin luentomateriaali.
