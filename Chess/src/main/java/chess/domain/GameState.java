@@ -66,6 +66,18 @@ public final class GameState
 	}
 
 	/**
+	 * Luo uuden pelitilanteen käyttäen annettua laudan tilaa ja vuorossa olevaa pelaajaa.
+	 *
+	 * @param board pelilaudan sisältö
+	 * @param startingPlayer ensimmäisenä oleva pelaaja
+	 */
+	public GameState(BitBoard board, int startingPlayer)
+	{
+		this.bitboard.copyFrom(board);
+		this.nextMovingPlayer = startingPlayer;
+	}
+
+	/**
 	 * Palauttaa seuraavana vuorossa olevan pelaajan.
 	 *
 	 * @return 0-1
@@ -246,10 +258,9 @@ public final class GameState
 				if ((nextRow & ~7) == 0) {
 					if (!bitboard.hasPiece(nextRow * 8 + col)) {
 						moves |= 1L << nextRow * 8 + col;
-						int nextRow2 = row - 2 + 4 * player;
-						if (row == 6 - 5 * player && (nextRow2 & ~7) == 0
-								&& !bitboard.hasPiece(nextRow2 * 8 + col))
-							moves |= 1L << nextRow2 * 8 + col;
+						int doublePushSqr = (4 - player) * 8 + col;
+						if (row == 6 - 5 * player && !bitboard.hasPiece(doublePushSqr))
+							moves |= 1L << doublePushSqr;
 					}
 					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
 						moves |= 1L << nextRow * 8 + col - 1;
@@ -379,16 +390,50 @@ public final class GameState
 	 * Palauttaa annetun pelaajan kuninkaan sijainnin.
 	 *
 	 * @param player pelaaja (0-1)
-	 * @return sijainti (0-63)
+	 * @return sijainti (0-63), tai -1 jos laudalla ei ole kuningasta
 	 */
 	public int getKingSquare(int player)
 	{
-		int sqr = 0;
-		for (; sqr < 64; ++sqr) {
+		for (int sqr = 0; sqr < 64; ++sqr) {
 			if (bitboard.hasPiece(player, Pieces.KING, sqr))
-				break;
+				return sqr;
 		}
-		return sqr;
+		return -1;
+	}
+
+	/**
+	 * Tarkistaa, onko kunigas uhattuna.
+	 *
+	 * @param defendingPlayer pelaaja, jonka kuninkaasta on kyse
+	 * @return true, jos on uhattu
+	 */
+	public boolean isKingChecked(int defendingPlayer)
+	{
+		int kingSqr = getKingSquare(defendingPlayer);
+		return isSquareThreatened(defendingPlayer, kingSqr);
+	}
+
+	/**
+	 * Tarkistaa, onko vastustajalla mahdollisia hyökkäyssiirtoja, jotka kohdistuvat annettuun
+	 * ruutuun.
+	 *
+	 * @param defendingPLayer puolustava pelaaja
+	 * @param sqr
+	 * @return
+	 */
+	public boolean isSquareThreatened(int defendingPLayer, int sqr)
+	{
+		int attackingPlayer = 1 - defendingPLayer;
+		long sqrBit = 1L << sqr;
+		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
+			for (int attackingSqr = 0; attackingSqr < 64; ++attackingSqr)
+				if (bitboard.hasPiece(attackingPlayer, piece, attackingSqr)) {
+					long attackMoves = getAttackMoves(attackingPlayer, piece, attackingSqr);
+					if ((sqrBit & attackMoves) != 0)
+						return true;
+				}
+		}
+		return false;
 	}
 
 	@Override
@@ -461,41 +506,6 @@ public final class GameState
 	}
 
 	/**
-	 * Tarkistaa, onko kunigas uhattuna.
-	 *
-	 * @param defendingPlayer pelaaja, jonka kuninkaasta on kyse
-	 * @return true, jos on uhattu
-	 */
-	private boolean isKingChecked(int defendingPlayer)
-	{
-		int kingSqr = getKingSquare(defendingPlayer);
-		return isSquareThreatened(defendingPlayer, kingSqr);
-	}
-
-	/**
-	 * Tarkistaa, onko vastustajalla mahdollisia hyökkäyssiirtoja, jotka kohdistuvat annettuun
-	 * ruutuun.
-	 *
-	 * @param defendingPLayer puolustava pelaaja
-	 * @param sqr
-	 * @return
-	 */
-	private boolean isSquareThreatened(int defendingPLayer, int sqr)
-	{
-		int attackingPlayer = 1 - defendingPLayer;
-		long sqrBit = 1L << sqr;
-		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			for (int attackingSqr = 0; attackingSqr < 64; ++attackingSqr)
-				if (bitboard.hasPiece(attackingPlayer, piece, attackingSqr)) {
-					long attackMoves = getAttackMoves(attackingPlayer, piece, attackingSqr);
-					if ((sqrBit & attackMoves) != 0)
-						return true;
-				}
-		}
-		return false;
-	}
-
-	/**
 	 * Luo pelitilanteen kopioimalla sen toisesta pelitilanteesta.
 	 */
 	private GameState(GameState copyFrom)
@@ -519,7 +529,7 @@ public final class GameState
 			addRandomizedPieces(0, 2, Pieces.BISHOP, rnd);
 			addRandomizedPieces(0, 2, Pieces.KNIGHT, rnd);
 			addRandomizedPieces(0, 8, Pieces.PAWN, rnd);
-		} while (isCheckMate() || isKingChecked(Players.BLACK));
+		} while (isCheckMate() || isStaleMate() || isKingChecked(Players.BLACK));
 	}
 
 	/**
@@ -597,6 +607,11 @@ public final class GameState
 		addInitialPiece(0, 7, Pieces.ROOK);
 		for (int i = 0; i < 8; ++i)
 			addInitialPiece(1, i, Pieces.PAWN);
+
+//		addPiece(Players.WHITE, Pieces.KING, 6 * 8 + 7);
+//		addPiece(Players.WHITE, Pieces.BISHOP, 6 * 8 + 0);
+//		addPiece(Players.BLACK, Pieces.KING, 4);
+//		addPiece(Players.BLACK, Pieces.QUEEN, 3);
 	}
 
 	/**

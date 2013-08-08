@@ -175,7 +175,7 @@ public final class BitBoard
 	}
 
 	/**
-	 * Vertaa laudan sisältöä toiseen. Palau
+	 * Vertaa laudan sisältöä toiseen.
 	 *
 	 * @param obj toinen BitBoard-objekti
 	 * @return palauttaa tosi jos ja vain jos jokaisen ruudun sisältö on täsmälleen sama

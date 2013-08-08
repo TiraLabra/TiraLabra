@@ -339,7 +339,7 @@ public class MinMaxAI implements AI
 	 * @param depth
 	 * @return
 	 */
-	private int getScore(GameState state, int depth)
+	int getScore(GameState state, int depth)
 	{
 		++count;
 		int player = state.getNextMovingPlayer();

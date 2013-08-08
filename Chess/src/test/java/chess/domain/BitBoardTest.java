@@ -135,4 +135,42 @@ public class BitBoardTest
 		assertEquals(1L << 25, bb.getPieces(Players.WHITE, Pieces.PAWN));
 		assertEquals(1L << 25, bb.getPieces(Players.WHITE));
 	}
+
+	@Test
+	public void testEqualsTrue()
+	{
+		BitBoard bb2 = new BitBoard();
+		assertTrue(bb.equals(bb2));
+
+		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb.addPiece(Players.BLACK, Pieces.BISHOP, 63);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 25);
+		bb2.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb2.addPiece(Players.BLACK, Pieces.BISHOP, 63);
+		bb2.addPiece(Players.WHITE, Pieces.PAWN, 25);
+		assertTrue(bb2.equals(bb));
+	}
+
+	@Test
+	public void testEqualsFalse()
+	{
+		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb.addPiece(Players.BLACK, Pieces.BISHOP, 63);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 25);
+		BitBoard bb2 = new BitBoard();
+		bb2.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb2.addPiece(Players.BLACK, Pieces.BISHOP, 63);
+		bb2.addPiece(Players.BLACK, Pieces.PAWN, 25);
+		assertFalse(bb.equals(bb2));
+
+		bb2.removePiece(Players.BLACK, 25);
+		bb2.addPiece(Players.WHITE, Pieces.KING, 25);
+		assertFalse(bb2.equals(bb));
+
+		bb2.removePiece(Players.WHITE, 25);
+		bb2.addPiece(Players.BLACK, Pieces.KING, 25);
+		bb.removePiece(Players.WHITE, 25);
+		bb.addPiece(Players.BLACK, Pieces.PAWN, 25);
+		assertFalse(bb2.equals(bb));
+	}
 }
