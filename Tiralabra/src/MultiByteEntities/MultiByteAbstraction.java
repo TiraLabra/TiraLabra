@@ -56,61 +56,51 @@ public abstract class MultiByteAbstraction {
 
     /**
      * The implementation checks the class of supplied object and then its'
-     * hashcode.
+     * bytes for a match.
      *
      * @param o
-     * @return true if hashcodes match, false if not the same class or hashcodes
+     * @return true if bytes match, false if not the same class or bytes
      * do not match.
      */
     @Override
     public boolean equals(Object o) {
         if (o.getClass().equals(this.getClass())) {
-            return this.hashCode() == o.hashCode();
+            MultiByte match = (MultiByte) o;
+            return this.checkBytes(match);
         } else {
             return false;
         }
     }
 
     /**
-     * The implementation tries to provide a perfect hash using a universal hash
-     * function. The implementation might have to be re-written for improved
-     * collision protection, but it is modelled so that all the permutations of
-     * the current byte-width should fit into a single array of greater length
-     * than the number of permutations.
+     * Recoded to a generic hashCode generator.
      *
      * @return
      */
     @Override
     public int hashCode() {
-        double hashCode = 3;
-
+        int hash = 11;
         for (int i = 0; i < bytes.length; i++) {
-            hashCode *= 97;
-            hashCode += bytes[i];
+            
+            hash += ((bytes[i]+11) * 97);
+            
         }
-
-        double p = Math.pow(2, (width * 8)) + 3571;
-
-        p = fetchPrime(width);
-
-        double m = Math.pow(2, (width * 8)) + 607;
-        m = fetchPrime(width);
-
-        hashCode = (((hashCode*5) + 11) % p) % m;
-
-        return (int) Math.abs(hashCode);
+     
+        return hash;
     }
-
-
-    private double fetchPrime(int width) {
-//        switch (width) {
-//            case 2:
-//                return 66221.0;
-//            case 3:
-//                return 16779199.0;
-//            case 4:
-//                return 4294970909.0;    
-//        }
-        return 4297880887.0;
+    
+    /**
+     * Checks for internal matches on the byte level.
+     * @param toMatch
+     * @return true if all bytes match.
+     */
+    private boolean checkBytes(MultiByte toMatch){
+        byte[] match = toMatch.getBytes();
+        for (int i = 0; i < match.length; i++) {
+            if (match[i] != this.bytes[i]){
+                return false;
+            }
+        }
+        return true;
     }
 }

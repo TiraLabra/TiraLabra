@@ -4,7 +4,7 @@
  */
 package Tiralabra.HashedByteDictionary;
 
-import Dictionary.HashedByteDictionary;
+import Dictionary.MultiByteTable;
 import MultiByteEntities.MultiByte;
 import java.util.Random;
 import org.junit.After;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class HashedDictionaryTest {
 
-    HashedByteDictionary dictionary;
+    MultiByteTable dictionary;
     byte[] randomData;
 
     public HashedDictionaryTest() {
@@ -55,7 +55,7 @@ public class HashedDictionaryTest {
      }
      
      private void testWidth(int width){
-         dictionary = new HashedByteDictionary();
+         dictionary = new MultiByteTable();
          for (int i = 0; i < randomData.length; i+=(width)) {
              if (i+width < randomData.length) {
                  MultiByte multiByte = new MultiByte(width);
