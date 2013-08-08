@@ -29,7 +29,7 @@ PROJECT_DIR=Tiralabra_maven
 #if [ -f $PROJECT_DIR/pom.xml ]
 #  then
   cd $PROJECT_DIR
-  mvn test
+  mvn test -Dmaven.compiler.target=1.7 -Dmaven.compiler.source=1.7 -B
 #else
 #  cd $PROJECT_DIR
 #  ant test

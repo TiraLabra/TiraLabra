@@ -14,13 +14,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
-  <build>
-        <plugins>
-      <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.5.7.201204190339</version>
-    <executions>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.5.7.201204190339</version>
+      <executions>
         <execution>
             <goals>
                 <goal>prepare-agent</goal>
@@ -33,10 +33,10 @@
                 <goal>report</goal>
             </goals>
         </execution>
-    </executions>
-</plugin>
+      </executions>
+    </plugin>
   </plugins>
-  </build>
+</build>
   
   <dependencies>
     <dependency>
