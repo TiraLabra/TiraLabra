@@ -7,7 +7,9 @@ package com.mycompany.tiralabra_maven;
  */
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,7 +21,7 @@ public class App
      *
      * @param args
      */
-    private LinkedList<String> kulkuneuvo;
+    private static LinkedList<String> kulkuneuvo;
     /**
      *
      */
@@ -37,22 +39,69 @@ public class App
         System.out.println("Anna päätös pysäkki:");
         paatto = lukija.nextLine();
         
-        kulkuneuvo();
+        System.out.println(matka(kulkuneuvo(), lahto,paatto));
     }
     
-    static public int matka(LinkedList kulkuneuvo, String lahto, String paatto) {
-        int maara = 0;
+    /**
+     *
+     * @param kulkuneuvo
+     * @param asema
+     * @return
+     */
+    static public boolean onkoAsema(LinkedList kulkuneuvo, String asema) {
         
+        if (kulkuneuvo.contains(asema)) {
+            return true;
+        }
+        
+        return false;
+    }
     
+    /**
+     *
+     * @param kulkuneuvo
+     * @param lahto
+     * @param paatto
+     * @return
+     */
+    static public List matka(LinkedList kulkuneuvo, String lahto, String paatto) {
+        int maara = 0;
+        int alku = 0;
+        int loppu =0;
         
-        return maara;
+        List<String> asema= new ArrayList<String>();
+        asema.add("");
+        
+        
+        
+        if (onkoAsema(kulkuneuvo, lahto) == true) {
+            alku = kulkuneuvo.indexOf(lahto)+1;
+            if (onkoAsema(kulkuneuvo, paatto) == true) {
+                loppu = kulkuneuvo.indexOf(paatto)+1;
+                if (alku < loppu) {
+                    asema = kulkuneuvo.subList(alku, loppu);
+                }
+                else {
+                    asema = kulkuneuvo.subList(loppu, alku);
+                }
+            }
+            else {
+                System.out.println("Päättöasemaa ei löydy");
+            }
+        }
+        else {
+            System.out.println("Lähtöasemaa ei löydy");
+        }
+        
+        return asema;
     }
     
     /**
      *Toistaiseksi asemat lisätään yksitellen, tähän koitan keksiä
      * paremman ratkaisun
+     * @return 
      */
-    static public void kulkuneuvo() {
+    static public LinkedList kulkuneuvo() {
         LinkedList metro = new LinkedList();
         pysakki(metro, "Ruoholahti");
         pysakki(metro, "Kamppi");
@@ -63,11 +112,16 @@ public class App
         pysakki(metro, "Kalasatama");
         pysakki(metro, "Siilitie");
 
-        int index= 0;
+       /* 
+        * Testataan asemien tulostus
+        * int index= 0;
         while(index < metro.size()) {
             System.out.println(metro.get(index));
             index++;
-        }
+        }*/
+        
+        return metro;
+        
     }
     
     /**
