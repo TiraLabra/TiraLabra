@@ -1,7 +1,7 @@
 Mitä algoritmeja ja tietorakenteita toteutat työssäsi:
-Tavoitteena toteuttaa Bellman-Ford ja Dijkstran algoritmit ainakin
-näin aluksi. Kunhan saan ensin netbeansin auki ja ohjelman
-alulle niin varmasti tulee lisää muita ideoita :).
+Tavoitteena toteuttaa Bellman-Ford, Dijkstran ja joku kolmas algoritmi.
+En ole varma vielä mitä tietorakenteita käytän, mutta näin aluksi olen
+hahmotellut pinon, hashmapin, linkitetyn listan jne.
 
 *****************************************
 
@@ -12,10 +12,8 @@ joten näistä on varmaan hyvä alottaa.
 *****************************************
 
 Mitä syötteitä ohjelma saa ja miten näitä käytetään:
-Perusidea on että käyttäjä valitsee millä algoritmilla
-verkko käydään läpi. Ohjelma siis suorittaa haun/läpikäynnin
-käyttäjän valitsemalla algoritmilla ja tulostaa lyhyimmän reitin 
-ja kenties jotain muuta tietoa reiteistä.
+Ohjelma pyytää käyttäjää tekemään ensin verkon ja sitten ajamaan
+verkon haluamallaan algoritmilla.
 
 *****************************************
 
