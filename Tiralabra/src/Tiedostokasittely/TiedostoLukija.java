@@ -17,37 +17,28 @@ import java.io.IOException;
 public class TiedostoLukija {
 
     private final File TIEDOSTO;
+    private BufferedInputStream stream;
+
 
     public TiedostoLukija(String nimi) {
-        TIEDOSTO = new File(nimi);
+        TIEDOSTO = new File(nimi);      
+        stream = null;
     }
 
-    public OmaList<Byte> lueTiedosto() throws FileNotFoundException, IOException {
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(TIEDOSTO));
+    public void avaaTiedosto() throws FileNotFoundException {
+        stream = new BufferedInputStream(new FileInputStream(TIEDOSTO));
+    }
 
-        try {
-            OmaList<Byte> luettuData = lue(stream);
-            return luettuData;
-        } finally {
+    public void suljeTiedosto() throws IOException {
+        if (stream != null) {
             stream.close();
         }
-
+        stream = null;
     }
 
-    private OmaList<Byte> lue(BufferedInputStream stream) throws IOException {
+    public int lue(byte [] puskuri) throws IOException {
+      
+        return stream.read(puskuri);
 
-        OmaList luettuData = new OmaArrayList<Byte>();
-        byte[] puskuri = new byte[128];
-
-        int luettu = 0;
-
-
-        while ((luettu = stream.read(puskuri)) != -1) {
-            for (int i = 0; i < luettu; ++i) {
-                luettuData.add(puskuri[i]);                
-            }
-        }
-
-        return luettuData;
     }
 }

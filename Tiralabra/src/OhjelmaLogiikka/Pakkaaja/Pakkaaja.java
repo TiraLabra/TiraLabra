@@ -12,9 +12,7 @@ import Tietorakenteet.OmaTreeNode;
 import Tietorakenteet.Pari;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.Comparator;
-import java.util.Deque;
 
 public class Pakkaaja {
 
@@ -25,17 +23,23 @@ public class Pakkaaja {
     }
 
     public void pakkaa(String tiedosto, String ulosTiedosto) {
-
         try {
-            System.out.println("Luetaan tiedosto");
-            TiedostoLukija lukija = new TiedostoLukija(tiedosto);
-            TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
+            String header = ulosTiedosto + ".header";
+            OmaList<OmaList<Byte>> blokit = luoBlokit(tiedosto);
 
-            OmaList<Byte> luetutTavut = lukija.lueTiedosto();
-            System.out.println("Pakkaus aloitettu");
-            OmaList<Byte> pakattu = huffmanKoodaa(luetutTavut, ulosTiedosto + ".header");
-            System.out.println("Valmis. Kirjoitetaan lopputulos.");
-            kirjoittaja.kirjoitaTiedosto(pakattu);
+
+            OmaMap<OmaList<Byte>, String> koodit = muodostaKoodit(blokit);
+
+            // muodostetaan header
+            Pari<Integer, OmaList<Byte>> pakatut = tiivista(blokit, koodit);
+            blokit.clear(); // vapautetaan muisti
+
+            TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
+
+            kirjoittaja.kirjoitaTiedosto((new HeaderMuodostaja()).muodostaHeader(koodit, pakatut.ensimmainen));
+
+            kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
+            kirjoittaja.kirjoitaTiedosto(pakatut.toinen);
 
         } catch (FileNotFoundException ex) {
             System.out.println("Tiedostoa ei löytynyn: " + ex.getMessage());
@@ -44,47 +48,44 @@ public class Pakkaaja {
         }
     }
 
-    private OmaList<Byte> huffmanKoodaa(OmaList<Byte> luetutTavut, String header) throws IOException {
-        OmaList<OmaList<Byte>> blokit = luoBlokit(luetutTavut);
+    private OmaList<OmaList<Byte>> luoBlokit(String tiedosto) throws FileNotFoundException, IOException {
 
-        // hash map: alkio tiedostosta - pari joka sisältää korvaavan alkion ja siinä olevien bittien määrän
-        OmaMap<OmaList<Byte>, String> koodit = muodostaKoodit(blokit);
+        TiedostoLukija lukija = new TiedostoLukija(tiedosto);
+        lukija.avaaTiedosto();
 
-        // muodostetaan header
-        OmaList<Byte> ulos;
-        Pari<Integer, OmaList<Byte>> pakatut = tiivista(blokit, koodit);
-        TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
-
-        kirjoittaja.kirjoitaTiedosto((new HeaderMuodostaja()).muodostaHeader(koodit, pakatut.ensimmainen));
-
-        return pakatut.toinen;
-    }
-
-    private OmaList<OmaList<Byte>> luoBlokit(OmaList<Byte> luetutTavut) {
         OmaList<OmaList<Byte>> blokit = new OmaArrayList<OmaList<Byte>>();
-        OmaList<Byte> blokki = new OmaArrayList<Byte>();
+        long koko = 0;
 
-        for (int i = 0; i < luetutTavut.size(); ++i) {
-            blokki.add(luetutTavut.get(i));
-
-            if (blokki.size() % BLOKIN_KOKO == 0) {
-                blokit.add(blokki);
-                blokki = new OmaArrayList<Byte>();
+        byte [] luetutTavut = new byte[BLOKIN_KOKO];
+        int luettu = 0;
+        
+        while ((luettu = lukija.lue(luetutTavut)) > 0) {
+            OmaList<Byte> blokki = new OmaArrayList<Byte>(BLOKIN_KOKO);
+            for (int i = 0; i < luettu; ++i) {
+                blokki.add(luetutTavut[i]);
             }
-        }
-
-        // jämäblokki vielä
-        if (blokki.size() > 0) {
+            
             blokit.add(blokki);
-
         }
+
+        lukija.suljeTiedosto();
         return blokit;
     }
 
     private OmaMap<OmaList<Byte>, String> muodostaKoodit(OmaList<OmaList<Byte>> blokit) {
         OmaMap<OmaList<Byte>, Integer> esiintymisTiheydet = laskeEsiintymisTiheys(blokit);
+        System.out.println("Esiintymistiheydet.size(): " + esiintymisTiheydet.size());
+        int koko = 0;
+        OmaList<OmaList<Byte>> avaimet = esiintymisTiheydet.avaimet();
+        for (int i = 0; i < avaimet.size(); ++i) {
+            koko += avaimet.get(i).capacity();
+        }
+
+        System.out.println("Esiintymistiheyksien avaimien muistikulutus~ (kt) " + koko / 1024);
 
         OmaQueue<OmaTreeNode<Integer, OmaList<Byte>>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
+        esiintymisTiheydet.clear(); // vapautetaan muisti
+
         OmaTreeNode<Integer, OmaList<Byte>> puu = muodostaHuffmanPuu(jono);
 
         return kooditPuusta(puu);
@@ -102,7 +103,7 @@ public class Pakkaaja {
                 esiintymisTiheydet.put(avain, esiintymisTiheydet.get(avain) + 1);
             }
         }
-     
+
         return esiintymisTiheydet;
     }
 
@@ -147,53 +148,53 @@ public class Pakkaaja {
      */
     private OmaMap<OmaList<Byte>, String> kooditPuusta(OmaTreeNode<Integer, OmaList<Byte>> puu) {
         OmaMap<OmaList<Byte>, String> koodit = new OmaHashMap<OmaList<Byte>, String>();
-        
-       // kayPuuLapiJaLuoKooditIteratiivisesti(puu, koodit);
-        
+
+        // kayPuuLapiJaLuoKooditIteratiivisesti(puu, koodit);
+
         kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, "");
 
         return koodit;
     }
     /*
-    private void kayPuuLapiJaLuoKooditIteratiivisesti(OmaTreeNode<Integer, OmaList<Byte>> puu, OmaMap<OmaList<Byte>, String> koodit) {
-        Deque<Pari
-              <
-              OmaTreeNode<Integer, OmaList<Byte>>, 
-              String
-              >
-             > 
-                stack = new ArrayDeque<Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>>();
+     private void kayPuuLapiJaLuoKooditIteratiivisesti(OmaTreeNode<Integer, OmaList<Byte>> puu, OmaMap<OmaList<Byte>, String> koodit) {
+     Deque<Pari
+     <
+     OmaTreeNode<Integer, OmaList<Byte>>, 
+     String
+     >
+     > 
+     stack = new ArrayDeque<Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>>();
        
-        Pari<OmaTreeNode<Integer, OmaList<Byte>>, String> node = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
-        node.ensimmainen = puu;
-        node.toinen = "";
-        stack.add(node);
-        int koko = 0;
+     Pari<OmaTreeNode<Integer, OmaList<Byte>>, String> node = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
+     node.ensimmainen = puu;
+     node.toinen = "";
+     stack.add(node);
+     int koko = 0;
         
-        while (!stack.isEmpty()) {
-            node = stack.pop();
-            ++koko;
-            if (node.ensimmainen.onLehti() == false) {
-                Pari<OmaTreeNode<Integer, OmaList<Byte>>, String> temp = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
-                temp.ensimmainen = node.ensimmainen.oikeaLapsi();
-                temp.toinen = node.toinen + "1";
-                stack.add(temp);
-                temp = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
+     while (!stack.isEmpty()) {
+     node = stack.pop();
+     ++koko;
+     if (node.ensimmainen.onLehti() == false) {
+     Pari<OmaTreeNode<Integer, OmaList<Byte>>, String> temp = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
+     temp.ensimmainen = node.ensimmainen.oikeaLapsi();
+     temp.toinen = node.toinen + "1";
+     stack.add(temp);
+     temp = new Pari<OmaTreeNode<Integer, OmaList<Byte>>, String>();
                 
-                temp.ensimmainen = node.ensimmainen.vasenLapsi();
-                temp.toinen = node.toinen + "0";
+     temp.ensimmainen = node.ensimmainen.vasenLapsi();
+     temp.toinen = node.toinen + "0";
                 
-                stack.add(temp);
-            }
-            else {
-                koodit.put(node.ensimmainen.haeArvo(), node.toinen);
-            }
-        }
+     stack.add(temp);
+     }
+     else {
+     koodit.put(node.ensimmainen.haeArvo(), node.toinen);
+     }
+     }
         
-        System.out.println("Puun koko: " + koko);
+     System.out.println("Puun koko: " + koko);
         
         
-    }*/
+     }*/
 
     /**
      * Rekursiometodi kooditPuusta-metodille. käy rekursiivisesti puun läpi ja
@@ -209,7 +210,7 @@ public class Pakkaaja {
     private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, OmaList<Byte>> node, OmaMap<OmaList<Byte>, String> koodit, String koodi) {
         // puun pitäisi olla täydellinen
         assert (node != null);
-        
+
         if (node.onLehti()) {
             koodit.put(node.haeArvo(), koodi);
             return;
@@ -234,10 +235,10 @@ public class Pakkaaja {
         byte tavu = 0;
 
         OmaList<Byte> tiiviste = new OmaArrayList<Byte>();
-       
+
         for (int i = 0; i < blokit.size(); ++i) {
             String pakkausKoodi = koodit.get(blokit.get(i));
-            
+
 
             assert (pakkausKoodi != null);
 

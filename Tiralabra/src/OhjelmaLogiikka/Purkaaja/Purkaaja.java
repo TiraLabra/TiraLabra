@@ -20,15 +20,18 @@ public class Purkaaja {
 
     public void pura(String pakattu, String kohde) {
         try {
-            TiedostoLukija lukija = new TiedostoLukija(pakattu);
+
             TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(kohde);
 
 
             Pari<Integer, OmaMap<String, OmaList<Byte>>> paluu = (new HeaderLukija()).lueHeader(pakattu);
             OmaMap<String, OmaList<Byte>> koodit = paluu.toinen;
 
+
             int viimeisessaTavussaMerkitseviaBitteja = paluu.ensimmainen;
-            OmaList<Byte> purettuData = puraData(lukija.lueTiedosto(), koodit, viimeisessaTavussaMerkitseviaBitteja);
+
+            OmaList<Byte> purettuData = puraData(pakattu, koodit, viimeisessaTavussaMerkitseviaBitteja);
+
             System.out.println("purettudata koko: " + purettuData.size());
             kirjoittaja.kirjoitaTiedosto(purettuData);
 
@@ -39,37 +42,35 @@ public class Purkaaja {
         }
     }
 
-    private Pari<String, OmaList<Byte>> parseroiRivi(String rivi) {
-        int rajanPaikka = rivi.length() - 1;
-        while (rajanPaikka > 0) {
-            if (rivi.charAt(rajanPaikka) == ' ') {
-                break;
-            }
-            --rajanPaikka;
-        }
-        Pari paluu = new Pari();
-        paluu.ensimmainen = rivi.substring(rajanPaikka + 1);
+    private OmaList<Byte> puraData(String tiedosto, OmaMap<String, OmaList<Byte>> koodit, int viimeisessaTavussaMerkitseviaBitteja) throws FileNotFoundException, IOException {
+        TiedostoLukija lukija = new TiedostoLukija(tiedosto);
+        lukija.avaaTiedosto();
 
-        byte[] merkki = rivi.substring(0, rajanPaikka).getBytes();
-        OmaList<Byte> merkkiTavuina = new OmaArrayList<Byte>();
+        OmaList<Byte> puretut = new OmaArrayList<Byte>();
+        kasitteleTiedosto(lukija, viimeisessaTavussaMerkitseviaBitteja, koodit, puretut);
 
-        for (int i = 0; i < merkki.length; ++i) {
-            merkkiTavuina.add(merkki[i]);
-        }
-
-        paluu.toinen = merkkiTavuina;
-        return paluu;
+        lukija.suljeTiedosto();
+        return puretut;
     }
 
-    private OmaList<Byte> puraData(OmaList<Byte> pakattuData, OmaMap<String, OmaList<Byte>> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
-        OmaList<Byte> puretut = new OmaArrayList<Byte>();
-        Byte kasiteltavaTavu = 0;
+    private void kasitteleTiedosto(TiedostoLukija lukija, int viimeisessaTavussaMerkitseviaBitteja, OmaMap<String, OmaList<Byte>> koodit, OmaList<Byte> puretut) throws IOException {
         String koodi = "";
-        for (int i = 0; i < pakattuData.size(); ++i) {
-            kasiteltavaTavu = pakattuData.get(i);
+
+        byte [] puskuri = new byte[2];
+        byte [] luku = new byte[1];
+        byte kasiteltavaTavu;
+
+        
+        lukija.lue(puskuri);
+        boolean viimeinenTavu = false;
+        while (true) {
+            
+            kasiteltavaTavu = puskuri[0];
+            puskuri[0] = puskuri[1];
+
 
             int maks = 8;
-            if (i == pakattuData.size() - 1) {
+            if (viimeinenTavu) {
                 maks = viimeisessaTavussaMerkitseviaBitteja;
             }
             for (int j = 0; j < maks; ++j) {
@@ -87,9 +88,19 @@ public class Purkaaja {
                     koodi = "";
                 }
             }
-
+            
+            if (viimeinenTavu)
+            {
+                break;
+            }
+            
+            if (lukija.lue(luku) == -1) {
+                viimeinenTavu = true;
+            }
+            else {
+                puskuri[1] = luku[0];
+            }
 
         }
-        return puretut;
     }
 }

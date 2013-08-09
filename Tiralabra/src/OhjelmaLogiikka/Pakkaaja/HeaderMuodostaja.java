@@ -78,7 +78,9 @@ public class HeaderMuodostaja {
         Pari<Integer, OmaList<Byte>> koodinTiedot = muunnaKoodiStringTavuiksi(koodi);
 
         int merkitseviaBitteja = koodinTiedot.ensimmainen;
+        
         int pituus = koodinTiedot.toinen.size();
+        
         // tallennetaan bittiblokin pituus
         if (pituus > 255) {
             throw new IllegalArgumentException("Koodin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());

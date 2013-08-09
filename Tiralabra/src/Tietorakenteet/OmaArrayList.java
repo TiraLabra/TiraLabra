@@ -18,6 +18,8 @@ public class OmaArrayList<T> implements OmaList<T> {
     public OmaArrayList() {
         this(1);
     }
+    
+   
     /**
      * Konstruktori. Varaa tilaa koko-parametrin määrittämälle alkiolle
      * @param koko Kuinka monelle alkiolle varataan tilaa suoraan
@@ -28,7 +30,11 @@ public class OmaArrayList<T> implements OmaList<T> {
         listaEiMuuttunut = false;
                 
     }
-
+    @Override
+    public int capacity() {
+        return data.length;
+    }
+    
     @Override
     public int size() {
         return datanKoko;
@@ -52,7 +58,9 @@ public class OmaArrayList<T> implements OmaList<T> {
     @Override
     public boolean add(T e) {
         if (data.length == datanKoko) {
+         
             kasvataKokoa();
+       
         }
 
         data[datanKoko] = e;
@@ -140,7 +148,14 @@ public class OmaArrayList<T> implements OmaList<T> {
      * Metodi joka tuplaa taulukon koon kutsuttaessa
      */
     private void kasvataKokoa() {
-        data = Arrays.copyOf(data, data.length * 2);
+        Object [] uusiArray = new Object[data.length * 2];
+        
+        for (int i = 0; i < datanKoko; ++i) {
+            uusiArray[i] = data[i];
+        }
+        
+        data = uusiArray;
+        
     }
 
     @Override
