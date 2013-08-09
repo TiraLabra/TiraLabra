@@ -129,6 +129,8 @@ public final class GameState
 	 */
 	public int move(int fromSqr, int toSqr)
 	{
+		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
+
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
 			if (bitboard.hasPiece(nextMovingPlayer, piece, fromSqr)) {
 				removePiece(nextMovingPlayer, piece, fromSqr);
@@ -136,8 +138,6 @@ public final class GameState
 				break;
 			}
 		}
-
-		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 
 		changeNextMovingPlayer();
 
@@ -156,9 +156,9 @@ public final class GameState
 	 */
 	public int move(int fromSqr, int toSqr, int pieceType)
 	{
+		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 		removePiece(nextMovingPlayer, pieceType, fromSqr);
 		addPiece(nextMovingPlayer, pieceType, toSqr);
-		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 		changeNextMovingPlayer();
 		return capturedPiece;
 	}
@@ -394,11 +394,8 @@ public final class GameState
 	 */
 	public int getKingSquare(int player)
 	{
-		for (int sqr = 0; sqr < 64; ++sqr) {
-			if (bitboard.hasPiece(player, Pieces.KING, sqr))
-				return sqr;
-		}
-		return -1;
+		long kingSqrMask = bitboard.getPieces(player, Pieces.KING);
+		return kingSqrMask == 0 ? -1 : Long.numberOfTrailingZeros(kingSqrMask);
 	}
 
 	/**

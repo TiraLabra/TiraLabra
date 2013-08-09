@@ -13,23 +13,22 @@ public final class BitBoard
 	 * Maskit kullekin nappulatyypille, ottaen huomioon pelaajan värin. Valkoiset nappulat 0-5,
 	 * ja mustat 6-11.
 	 */
-	private final long[] pieces = new long[2 * Pieces.COUNT];
+	private final long[] pieces = new long[Pieces.COUNT];
 
 	/**
 	 * Maskit kummankin pelaajan kaikille nappuloille. Valkoinen 0, musta 1.
 	 */
-	private final long[] playerPieces = new long[2];
+	private final long[] playerPieces = new long[Players.COUNT];
 
 	/**
 	 * Tyhjentää laudan sisällön.
 	 */
 	public void clear()
 	{
-		for (int player = 0; player < 2; ++player) {
-			for (int piece = 0; piece < Pieces.COUNT; ++piece)
-				pieces[player * Pieces.COUNT + piece] = 0;
-			playerPieces[player] = 0;
-		}
+		for (int piece = 0; piece < Pieces.COUNT; ++piece)
+			pieces[piece] = 0;
+		playerPieces[Players.WHITE] = 0;
+		playerPieces[Players.BLACK] = 0;
 	}
 
 	/**
@@ -42,7 +41,7 @@ public final class BitBoard
 	public void addPiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
-		pieces[player * Pieces.COUNT + piece] |= sqrBit;
+		pieces[piece] |= sqrBit;
 		playerPieces[player] |= sqrBit;
 	}
 
@@ -56,7 +55,7 @@ public final class BitBoard
 	public void removePiece(int player, int piece, int sqr)
 	{
 		long sqrBit = 1L << sqr;
-		pieces[player * Pieces.COUNT + piece] &= ~sqrBit;
+		pieces[piece] &= ~sqrBit;
 		playerPieces[player] &= ~sqrBit;
 	}
 
@@ -86,7 +85,7 @@ public final class BitBoard
 	 */
 	public long getPieces(int player, int piece)
 	{
-		return pieces[player * Pieces.COUNT + piece];
+		return playerPieces[player] & pieces[piece];
 	}
 
 	/**
@@ -109,7 +108,7 @@ public final class BitBoard
 	 */
 	public boolean hasPiece(int player, int piece, int sqr)
 	{
-		return (pieces[player * Pieces.COUNT + piece] & (1L << sqr)) != 0;
+		return (playerPieces[player] & pieces[piece] & (1L << sqr)) != 0;
 	}
 
 	/**
@@ -146,10 +145,10 @@ public final class BitBoard
 		int[] board = new int[64];
 		Arrays.fill(board, -1);
 
-		for (int player = 0; player < 2; ++player) {
+		for (int player = 0; player < Players.COUNT; ++player) {
 			for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 				for (int sqr = 0; sqr < 64; ++sqr) {
-					if ((pieces[player * Pieces.COUNT + pieceType] & (1L << sqr)) != 0)
+					if (hasPiece(player, pieceType, sqr))
 						board[sqr] = player * Pieces.COUNT + pieceType;
 				}
 			}
@@ -165,13 +164,10 @@ public final class BitBoard
 	 */
 	public void copyFrom(BitBoard source)
 	{
-		for (int player = 0; player < 2; ++player) {
-			for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-				int p = player * Pieces.COUNT + piece;
-				pieces[p] = source.pieces[p];
-			}
-			playerPieces[player] = source.playerPieces[player];
-		}
+		for (int piece = 0; piece < Pieces.COUNT; ++piece)
+			pieces[piece] = source.pieces[piece];
+		playerPieces[Players.WHITE] = source.playerPieces[Players.WHITE];
+		playerPieces[Players.BLACK] = source.playerPieces[Players.BLACK];
 	}
 
 	/**
@@ -184,10 +180,11 @@ public final class BitBoard
 	public boolean equals(Object obj)
 	{
 		BitBoard bb2 = (BitBoard) obj;
+		if (playerPieces[Players.WHITE] != bb2.playerPieces[Players.WHITE]
+				|| playerPieces[Players.BLACK] != bb2.playerPieces[Players.BLACK])
+			return false;
 		for (int i = Pieces.COUNT - 1; i >= 0; --i) {
 			if (pieces[i] != bb2.pieces[i])
-				return false;
-			if (pieces[Pieces.COUNT + i] != bb2.pieces[Pieces.COUNT + i])
 				return false;
 		}
 
