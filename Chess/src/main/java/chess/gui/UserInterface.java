@@ -71,7 +71,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	/**
 	 * Valikkoelementit.
 	 */
-	private JMenuItem newGameItem, exitItem, performanceTestItem;
+	private JMenuItem newGameItem, exitItem, perfTestItem, perfTest2Item;
 
 	private JCheckBoxMenuItem debugInfoItem;
 
@@ -140,8 +140,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		JMenu debugMenu = new JMenu("Debug");
 		menuBar.add(debugMenu);
 
-		performanceTestItem = createMenuItem(debugMenu, "Performance test");
-
+		perfTestItem = createMenuItem(debugMenu, "Performance test");
+		perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
 		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
 
 		frame.add(menuBar, BorderLayout.NORTH);
@@ -276,7 +276,15 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	 */
 	private void runPerformanceTest()
 	{
-		new Thread(new PerformanceTest(logArea)).start();
+		new Thread(new PerformanceTest(logArea, 2, 5.0)).start();
+	}
+
+	/**
+	 * Suorituskykytesti.
+	 */
+	private void runPerformanceTest2()
+	{
+		new Thread(new PerformanceTest(logArea, 7, 10.0)).start();
 	}
 
 	/**
@@ -286,8 +294,10 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	{
 		if (ae.getSource() == newGameItem)
 			startNewGame();
-		else if (ae.getSource() == performanceTestItem)
+		else if (ae.getSource() == perfTestItem)
 			runPerformanceTest();
+		else if (ae.getSource() == perfTest2Item)
+			runPerformanceTest2();
 		else if (ae.getSource() == debugInfoItem)
 			ai.setLoggingEnabled(debugInfoItem.getState());
 		else if (ae.getSource() == exitItem)

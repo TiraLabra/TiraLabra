@@ -14,14 +14,20 @@ public class PerformanceTest implements Runnable
 	 */
 	private Logger logger;
 
+	private int startDepth;
+
+	private double length;
+
 	/**
 	 * Konstruktori.
 	 *
 	 * @param logger loki
 	 */
-	public PerformanceTest(Logger logger)
+	public PerformanceTest(Logger logger, int startDepth, double length)
 	{
 		this.logger = logger;
+		this.startDepth = startDepth;
+		this.length = length;
 	}
 
 	/**
@@ -38,7 +44,7 @@ public class PerformanceTest implements Runnable
 	{
 		logger.logMessage("Running test...");
 
-		int depth = 2;
+		int depth = startDepth;
 		int n;
 		do {
 			Random rnd = new Random(123456);
@@ -46,7 +52,7 @@ public class PerformanceTest implements Runnable
 			double totalTime = 0;
 
 			n = 0;
-			while (totalTime < 5.0) {
+			while (totalTime < length) {
 				totalTime += runSingleTest(depth, rnd);
 				++n;
 			}
