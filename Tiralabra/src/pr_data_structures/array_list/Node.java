@@ -7,6 +7,8 @@ package pr_data_structures.array_list;
 /**
  *
  * @author henrikorpela
+ * 
+ * Array_lists node.
  */
 public class Node {
     private Object data;

@@ -5,7 +5,7 @@
 package pr_data_structures.stack;
 
 /**
- *
+ * Custom Stack class. Includes lots methods that normal stack doesn't.
  * @author henrikorpela
  */
 
@@ -22,7 +22,9 @@ public class Stack<Type> {
         this.first = null;
         this.size = 0;
     }
-    
+    /**
+     * Adds new element into stack.
+     */
     public void add(Type data)
     {
         Node new_node = new Node((Object)data);
@@ -39,7 +41,11 @@ public class Stack<Type> {
         this.first.prev = temp;
         this.size ++;
     }
-    
+    /**
+     * Gets element in given index.
+     * @param index index that data is to be retrieved.
+     * @return data in given index.
+     */
     public Type get_in_index(int index)
     {
         Node node = this.first;
@@ -55,12 +61,29 @@ public class Stack<Type> {
         }
         return null;
     }
-    
+    /**
+     * Gets first element in stack.
+     * @return first element in stack.
+     */
     public Type get_first()
     {
         return (Type)this.first.getData();
     }
-    
+    /**
+     * Gets and removes first element in stack.
+     * @return first element in stack.
+     */
+    public Type exstract_first()
+    {
+        Type first = this.get_first();
+        this.remove(first);
+        return first;
+    }
+    /**
+     * checks if stack contains given data.
+     * @param data data that is searched.
+     * @return true if data is included in stack. Otherwise false.
+     */
     public boolean contains(Type data)
     {
         Node node = this.first;
@@ -74,7 +97,10 @@ public class Stack<Type> {
         }
         return false;
     }
-    
+    /**
+     * Removes given data from stack.
+     * @param data data to be removed.
+     */
     public void remove(Type data)
     {
         Node node = this.first;
@@ -90,12 +116,16 @@ public class Stack<Type> {
             node = node.prev;
         }
     }
-    
+    /*
+     * Returns size of the stack.
+     */
     public int size()
     {
         return this.size;
     }
-    
+    /*
+     * Return true if stack is empty. Otherwise false.
+     */
     public boolean is_empty()
     {
         if(this.first == null)
@@ -103,6 +133,30 @@ public class Stack<Type> {
             return true;
         }
         return false;
+    }
+    /**
+     * Constructs stack in string format.
+     * Elements are separated with space.
+     * @return stacks string format.
+     */
+    @Override
+    public String toString()
+    {
+        String stack_string = "";
+        Node node = this.first;
+        while(node != null)
+        {
+            if(node.prev == null)
+            {
+                stack_string = stack_string + node.getData().toString();
+            }
+            else
+            {
+                stack_string = stack_string + node.getData().toString() + " ";
+            }
+            node = node.prev;
+        }
+        return stack_string;
     }
     
     private Remove_identifier identify_place(Node node)
@@ -137,7 +191,10 @@ public class Stack<Type> {
     private void remove_first(Node node)
     {
         this.first = node.prev;
-        this.first.next = null;
+        if(this.first != null)
+        {
+            this.first.next = null;
+        }
     }
     
     private void remove_mid(Node node)
@@ -152,25 +209,5 @@ public class Stack<Type> {
     {
         Node temp = node.next;
         temp.prev = null;
-    }
-    
-    @Override
-    public String toString()
-    {
-        String stack_string = "";
-        Node node = this.first;
-        while(node != null)
-        {
-            if(node.prev == null)
-            {
-                stack_string = stack_string + node.getData().toString();
-            }
-            else
-            {
-                stack_string = stack_string + node.getData().toString() + " ";
-            }
-            node = node.prev;
-        }
-        return stack_string;
     }
 }

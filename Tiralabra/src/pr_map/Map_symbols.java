@@ -12,8 +12,8 @@ import pr_data_structures.stack.Stack;
  */
 public enum Map_symbols {
     WALL("W",1000000,"Wall"),
-    ROAD(":",1,"Road"),
-    GRASS(",",2,"Grass"),
+    ROAD("R",1,"Road"),
+    GRASS("G",2,"Grass"),
     CAR("C",0,"Get away car"),
     POLICE("P",0,"Police officer"),
     PRISONER("@",0,"Escaping prisoner");
@@ -40,7 +40,7 @@ public enum Map_symbols {
         return this.symbol;
     }
     
-    public static boolean check_symbol(String symbol)
+    public static boolean check_map_symbol(String symbol)
     {
         if(symbols.is_empty())
         {
@@ -55,11 +55,11 @@ public enum Map_symbols {
         {
             return WALL;
         }
-        else if(symbol.equals(":"))
+        else if(symbol.equals("R"))
         {
             return ROAD;
         }
-        else if(symbol.equals(","))
+        else if(symbol.equals("G"))
         {
             return GRASS;
         }
@@ -92,7 +92,5 @@ public enum Map_symbols {
         symbols.add("R");
         symbols.add("G");
         symbols.add("C");
-        symbols.add("P");
-        symbols.add("@");
     }
 }

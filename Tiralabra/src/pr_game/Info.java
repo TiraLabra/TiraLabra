@@ -12,6 +12,21 @@ import java.util.Scanner;
  * @author henrikorpela
  */
 public class Info {
+    
+    public static String read_command()
+    {
+        Scanner reader = new Scanner(System.in);
+        return reader.nextLine();
+    }
+    
+    public static void print_commands()
+    {
+        System.out.print("LOAD: load map\n");
+        System.out.print("SHOW: show which map has been loaded\n");
+        System.out.print("PLAY: play current map\n");
+        System.out.print("EXIT: exit program\n");
+    }
+    
     public static String ask_file_name()
     {
         Scanner reader = new Scanner(System.in);
