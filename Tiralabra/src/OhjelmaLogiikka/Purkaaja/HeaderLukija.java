@@ -23,15 +23,15 @@ public class HeaderLukija {
      * @throws FileNotFoundException jos annettua tiedostoa ei löydy
      * @throws IOException Jos tapahtuu IO-virhe
      */
-    public Pari<Integer, OmaMap<String, OmaList<Byte>>> lueHeader(String sisaan) throws FileNotFoundException, IOException {
+    public Pari<Integer, OmaMap<String, byte [] >> lueHeader(String sisaan) throws FileNotFoundException, IOException {
         TiedostoLukija headerLukija = new TiedostoLukija(sisaan + ".header");
         headerLukija.avaaTiedosto();
 
 
-        Pari<Integer, OmaMap<String, OmaList<Byte>>> paluu = new Pari<Integer, OmaMap<String, OmaList<Byte>>>();
+        Pari<Integer, OmaMap<String, byte [] >> paluu = new Pari<Integer, OmaMap<String, byte [] >>();
 
-        byte[] headerAlku = new byte[5];
-        if (headerLukija.lue(headerAlku) != 5) {
+        byte[] headerAlku = new byte[1];
+        if (headerLukija.lue(headerAlku) != 1) {
             throw new IOException("Header-tiedoston korruptoitunut - ensimmäisen viiden tavun luku epäonnistui");
         }
 
@@ -43,8 +43,8 @@ public class HeaderLukija {
         return paluu;
     }
 
-    private OmaMap<String, OmaList<Byte>> lueKoodiBlokkiParit(TiedostoLukija headerLukija) throws IOException {
-        OmaMap<String, OmaList<Byte>> koodit = new OmaHashMap<String, OmaList<Byte>>();
+    private OmaMap<String, byte []> lueKoodiBlokkiParit(TiedostoLukija headerLukija) throws IOException {
+        OmaMap<String, byte []> koodit = new OmaHashMap<String, byte []>();
 
         while (lueYksiKoodiBlokkiPari(headerLukija, koodit)) {
         }
@@ -52,7 +52,7 @@ public class HeaderLukija {
         return koodit;
     }
 
-    private boolean lueYksiKoodiBlokkiPari(TiedostoLukija headerLukija, OmaMap<String, OmaList<Byte>> koodit) throws IOException {
+    private boolean lueYksiKoodiBlokkiPari(TiedostoLukija headerLukija, OmaMap<String, byte [] > koodit) throws IOException {
 
         byte[] lukuPuskuri = new byte[1];
 
@@ -77,27 +77,23 @@ public class HeaderLukija {
         int merkitseviaBitteja = lukuPuskuri[0] + OFFSET;
         assert (merkitseviaBitteja >= 1 && merkitseviaBitteja <= 8);
 
-        OmaList<Byte> blokki = lueBlokki(blokinPituus, headerLukija);
+        byte [] blokki = lueBlokki(blokinPituus, headerLukija);
         String koodi = lueKoodi(koodinPituus, headerLukija, merkitseviaBitteja);
 
         koodit.put(koodi, blokki);
         return true;
     }
 
-    private OmaList<Byte> lueBlokki(int blokinPituus, TiedostoLukija headerLukija) throws IOException {
+    private byte [] lueBlokki(int blokinPituus, TiedostoLukija headerLukija) throws IOException {
 
         byte[] puskuri = new byte[blokinPituus];
 
-        OmaList<Byte> blokki = new OmaArrayList<Byte>();
+       
         if (headerLukija.lue(puskuri) != blokinPituus) {
             throw new IOException("Header-tiedoston korruptoitunut - blokin luku epäonnistui");
         }
-
-        for (int i = 0; i < blokinPituus; ++i) {
-            blokki.add(puskuri[i]);
-
-        }
-        return blokki;
+        
+        return puskuri;
     }
 
     private String lueKoodi(int koodinPituus, TiedostoLukija headerLukija, int merkitseviaBitteja) throws IOException {

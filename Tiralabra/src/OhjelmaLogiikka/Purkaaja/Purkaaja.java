@@ -18,42 +18,38 @@ public class Purkaaja {
         BLOKIN_KOKO = blokinKoko;
     }
 
-    public void pura(String pakattu, String kohde) {
+    public void pura(String sisaanTiedosto, String ulosTiedosto) {
         try {
 
-            TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(kohde);
+            
 
 
-            Pari<Integer, OmaMap<String, OmaList<Byte>>> paluu = (new HeaderLukija()).lueHeader(pakattu);
-            OmaMap<String, OmaList<Byte>> koodit = paluu.toinen;
-
+            Pari<Integer, OmaMap<String, byte [] >> paluu = (new HeaderLukija()).lueHeader(sisaanTiedosto);
+            OmaMap<String, byte [] > koodit = paluu.toinen;
 
             int viimeisessaTavussaMerkitseviaBitteja = paluu.ensimmainen;
 
-            OmaList<Byte> purettuData = puraData(pakattu, koodit, viimeisessaTavussaMerkitseviaBitteja);
-
-            System.out.println("purettudata koko: " + purettuData.size());
-            kirjoittaja.kirjoitaTiedosto(purettuData);
-
-
+            puraData(sisaanTiedosto, ulosTiedosto, koodit, viimeisessaTavussaMerkitseviaBitteja);
+            
         } catch (Exception ex) {
             System.out.println("Jotain meni pieleen: " + ex.getMessage());
 
         }
     }
 
-    private OmaList<Byte> puraData(String tiedosto, OmaMap<String, OmaList<Byte>> koodit, int viimeisessaTavussaMerkitseviaBitteja) throws FileNotFoundException, IOException {
-        TiedostoLukija lukija = new TiedostoLukija(tiedosto);
+    private void puraData(String sisaanTiedosto, String ulosTiedosto, OmaMap<String, byte []> koodit, int viimeisessaTavussaMerkitseviaBitteja) throws FileNotFoundException, IOException {
+        TiedostoLukija lukija = new TiedostoLukija(sisaanTiedosto);
+        TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
         lukija.avaaTiedosto();
-
-        OmaList<Byte> puretut = new OmaArrayList<Byte>();
-        kasitteleTiedosto(lukija, viimeisessaTavussaMerkitseviaBitteja, koodit, puretut);
+        kirjoittaja.avaaTiedosto();
+ 
+        kasitteleTiedosto(lukija, kirjoittaja, viimeisessaTavussaMerkitseviaBitteja, koodit);
 
         lukija.suljeTiedosto();
-        return puretut;
+        kirjoittaja.suljeTiedosto();
     }
 
-    private void kasitteleTiedosto(TiedostoLukija lukija, int viimeisessaTavussaMerkitseviaBitteja, OmaMap<String, OmaList<Byte>> koodit, OmaList<Byte> puretut) throws IOException {
+    private void kasitteleTiedosto(TiedostoLukija lukija, TiedostoKirjoittaja kirjoittaja, int viimeisessaTavussaMerkitseviaBitteja, OmaMap<String, byte []> koodit) throws IOException {
         String koodi = "";
 
         byte [] puskuri = new byte[2];
@@ -83,8 +79,8 @@ public class Purkaaja {
                     koodi += "0";
                 }
 
-                if (koodit.containsKey(koodi)) {
-                    puretut.addAll(koodit.get(koodi));
+                if (koodit.containsKey(koodi)) {                  
+                    kirjoittaja.kirjoita(koodit.get(koodi));
                     koodi = "";
                 }
             }

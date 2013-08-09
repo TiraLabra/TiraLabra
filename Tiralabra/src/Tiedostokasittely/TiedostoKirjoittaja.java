@@ -23,29 +23,17 @@ public class TiedostoKirjoittaja {
 
     }
 
-    public void kirjoitaTiedosto(OmaList<Byte> tieto) throws IOException {
-
-        avaaStream();
-        kirjoita(tieto);
-        suljeStream();
+    public void kirjoita(byte[] kirjoitusPuskuri) throws IOException {
+        kirjoitusStream.write(kirjoitusPuskuri);
     }
 
-    private void avaaStream() throws FileNotFoundException  {
+    public void avaaTiedosto() throws FileNotFoundException {
         inputStream = new FileOutputStream(TIEDOSTO);
         kirjoitusStream = new BufferedOutputStream(inputStream);
     }
 
-    private void suljeStream() throws IOException {
+    public void suljeTiedosto() throws IOException {
         kirjoitusStream.close();
         inputStream.close();
-    }
-
-    private void kirjoita(OmaList<Byte> tieto) throws IOException {
-        byte[] taulu = new byte[1];
-        
-        for (int i = 0; i < tieto.size(); ++i) {
-            taulu[0] = tieto.get(i);
-            kirjoitusStream.write(taulu);
-        }
     }
 }
