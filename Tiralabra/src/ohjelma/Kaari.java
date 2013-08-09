@@ -14,21 +14,41 @@ public class Kaari {
     private final Solmu kohde;
     private int etaisyys;
     
+    /**
+    * Alustetaan kaarelle solmut ja niiden välinen etäisyys.
+    **/
     public Kaari(Solmu alku, Solmu kohde, int etaisyys) {
         this.alku = alku;
         this.kohde = kohde;
         this.etaisyys = etaisyys;
     }
     
+    /**
+    * Palauttaa alkusolmun.
+    **/
     public Solmu getAlku() {
         return alku;
     }
     
+    /**
+    * Palauttaa kohdesolmun.
+    **/
     public Solmu getKohde() {
         return kohde;
     }
     
+    /**
+    * Palauttaa kaaren etäisyyden, eli pituuden alkusolmusta kohdesolmuun).
+    **/
     public int getEtaisyys() {
         return etaisyys;
+    }
+    
+    /**
+    * Merkkiesitys testausta varten.
+    **/
+    @Override
+    public String toString() {
+        return ""+kohde.getSolmuNumero();
     }
 }

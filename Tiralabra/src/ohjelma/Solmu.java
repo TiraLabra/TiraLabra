@@ -13,28 +13,48 @@ public class Solmu {
     private final int numero;
     private int paino;
 
-
+    /**
+    * Alustetaan solmulle numero ja paino.
+    **/
     public Solmu(int numero) {
         paino = Integer.MAX_VALUE;
         this.numero = numero;
     }
 
+    /**
+    * Palauttaa solmun numeron.
+    **/
     public int getSolmuNumero() {
         return numero;
     }
 
+    /**
+    * Palauttaa solmun painon.
+    **/
     public int getPaino() {
         return paino;
     }
 
-
+    /**
+    * Asettaa solmulle uuden painon.
+    **/
     public void setPaino(int paino) {
         this.paino = paino;
     }
     
+    /**
+    * Palauttaa tämän solmun.
+    **/
+    public Solmu getSolmu() {
+        return this;
+    }
+    
     @Override
-    public String toString() {
-        return ""+getPaino();
+    /**
+    * Merkkiesitys testausta varten.
+    **/
+    public String toString() { // tämä vaihettu getPainosta numeroks!
+        return ""+numero;
     }
 
 }
