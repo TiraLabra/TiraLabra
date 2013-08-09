@@ -72,9 +72,9 @@ public class Purkaaja {
                 } else {
                     koodi += "0";
                 }
-
-                if (koodit.containsKey(koodi)) {                  
-                    kirjoittaja.kirjoita(koodit.get(koodi));
+                byte [] array = koodit.get(koodi);
+                if (array != null) {                  
+                    kirjoittaja.kirjoita(array);
                     koodi = "";
                 }
             }

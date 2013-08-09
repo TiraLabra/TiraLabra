@@ -7,16 +7,14 @@ public class OmaArrayList<T> implements OmaList<T> {
 
     private Object[] data;
     private int datanKoko;
-    private int hashCode;
-    private boolean listaEiMuuttunut; // onko hashCode laskettava uudelleen
-
+  
 
     /**
      * Konstruktori. Alustaa sisäiset rakenteet, ei mitään kummempaa käyttäjän
      * kannalta.
      */
     public OmaArrayList() {
-        this(1);
+        this(4);
     }
     
    
@@ -27,7 +25,7 @@ public class OmaArrayList<T> implements OmaList<T> {
     public OmaArrayList(int koko) {
         data = new Object[koko];
         datanKoko = 0;
-        listaEiMuuttunut = false;
+       
                 
     }
     @Override
@@ -66,7 +64,6 @@ public class OmaArrayList<T> implements OmaList<T> {
         data[datanKoko] = e;
         ++datanKoko;
 
-        listaEiMuuttunut = false;
         return true;
     }
 
@@ -79,8 +76,6 @@ public class OmaArrayList<T> implements OmaList<T> {
         for (int i = 0; i < e.size(); ++i) {
             add(e.get(i));
         }
-
-        listaEiMuuttunut = false;
         return true;
     }
 
@@ -93,8 +88,7 @@ public class OmaArrayList<T> implements OmaList<T> {
             }
         }
 
-        listaEiMuuttunut = false;
-
+    
         return false;
     }
 
@@ -103,7 +97,7 @@ public class OmaArrayList<T> implements OmaList<T> {
         data = new Object[1];
         datanKoko = 0;
 
-        listaEiMuuttunut = false;
+    
     }
 
     @Override
@@ -120,7 +114,7 @@ public class OmaArrayList<T> implements OmaList<T> {
             throw new IndexOutOfBoundsException("Indeksi ulkona taulukosta");
         }
 
-        listaEiMuuttunut = false;
+  
 
         T retval = (T) data[index];
         data[index] = element;
@@ -133,7 +127,6 @@ public class OmaArrayList<T> implements OmaList<T> {
             throw new IndexOutOfBoundsException("Indeksi ulkona taulukosta");
         }
 
-        listaEiMuuttunut = false;
 
         T poistettava = (T) data[index];
         for (int i = index + 1; i < datanKoko; ++i) {
@@ -179,16 +172,7 @@ public class OmaArrayList<T> implements OmaList<T> {
     @Override
     public int hashCode() {
 
-        // optimointia: modulo on kohtuu kallis operaatio, ja tätä metodia kutsutaan paljon
-        // jos listaan ei ole koskettu, palautetaan vanha hashcode eikä lasketa uudelleen
-
-        if (listaEiMuuttunut) {
-            return hashCode;
-        }
-
-        listaEiMuuttunut = true;
- 
-        hashCode = 0;
+        int hashCode = 0;
         for (int i = 0; i < datanKoko; ++i) {
             hashCode ^= (hashCode << 5) + (hashCode >> 2) + data[i].hashCode();
         }

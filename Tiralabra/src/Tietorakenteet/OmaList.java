@@ -103,4 +103,5 @@ public interface OmaList<T> {
      * @return Taulukko joka sisältää listan objektit.
      */
     public Object[] toArray();
+
 }

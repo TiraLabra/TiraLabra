@@ -10,6 +10,7 @@ import Tietorakenteet.OmaMap;
 import Tietorakenteet.OmaMinimiPriorityQueue;
 import Tietorakenteet.OmaQueue;
 import Tietorakenteet.OmaTreeNode;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Comparator;
@@ -51,8 +52,8 @@ public class Pakkaaja {
         TiedostoLukija lukija = new TiedostoLukija(tiedosto);
         lukija.avaaTiedosto();
 
-        OmaList<ByteWrapper> blokit = new OmaArrayList<ByteWrapper>();
-        int muistikulutus = 8 + 12 + 4 + 4 + 1; // OmaList + array sisällä + koko + hashcode + onko muuttunut;
+        OmaList<ByteWrapper> blokit = new OmaArrayList<ByteWrapper>(16384/BLOKIN_KOKO);
+        int muistikulutus = 8 + 12 + 4 + 4 + 1 + 4*(16384/BLOKIN_KOKO); // OmaList + array sisällä + koko + hashcode + onko muuttunut;
 
 
         byte[] luetutTavut = new byte[BLOKIN_KOKO];
@@ -93,15 +94,16 @@ public class Pakkaaja {
     }
 
     private OmaMap<ByteWrapper, Integer> laskeEsiintymisTiheys(OmaList<ByteWrapper> blokit) {
-
-        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(blokit.size() / 10);
+      
+        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>((int)Math.pow(2, 12));
 
         for (int i = 0; i < blokit.size(); ++i) {
             ByteWrapper avain = blokit.get(i);
-            if (!esiintymisTiheydet.containsKey(avain)) {
+            Integer arvo = esiintymisTiheydet.get(avain);
+            if (arvo == null) {
                 esiintymisTiheydet.put(avain, 1);
             } else {
-                esiintymisTiheydet.put(avain, esiintymisTiheydet.get(avain) + 1);
+                esiintymisTiheydet.put(avain, arvo + 1);
             }
         }
 
@@ -119,6 +121,11 @@ public class Pakkaaja {
         OmaList<ByteWrapper> avaimet = esiintymisTiheydet.avaimet();
 
         for (int i = 0; i < avaimet.size(); ++i) {
+            if (esiintymisTiheydet.get(avaimet.get(i)) == null) {
+
+                Integer foo = esiintymisTiheydet.get(avaimet.get(i));
+            }
+
             OmaTreeNode<Integer, ByteWrapper> node = new OmaTreeNode<Integer, ByteWrapper>(esiintymisTiheydet.get(avaimet.get(i)), avaimet.get(i));
             jono.push(node);
         }
@@ -148,9 +155,7 @@ public class Pakkaaja {
      * ("0101001001")
      */
     private OmaMap<ByteWrapper, String> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
-        OmaMap<ByteWrapper, String> koodit = new OmaHashMap<ByteWrapper, String>();
-
-
+        OmaMap<ByteWrapper, String> koodit = new OmaHashMap<ByteWrapper, String>((int)Math.pow(2, 14));
 
         kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, "");
 

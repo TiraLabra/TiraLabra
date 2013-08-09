@@ -15,35 +15,37 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     // alkulukuja
 
     final double MAKSIMI_KUORMA_KERROIN = 0.7;
-    private static final int[] ALKULUKUJA = {3, 7, 13, 23, 41, 83, 163, 317, 751, 1511, 3041, 6089, 122143, 24691, 48023,
-        81973, 104729, 204427, 421303, 854159, 1684489, 3149561, 6157103};
+    //  private static final int[] ALKULUKUJA = {3, 7, 13, 23, 41, 83, 163, 317, 751, 1511, 3041, 6089, 122143, 24691, 48023,
+    //      81973, 104729, 204427, 421303, 854159, 1684489, 3149561, 6157103};
     int koko;
-    private int nykyinenKokoPaikka = 0;
+//    private int nykyinenKokoPaikka = 0;
     private Object[] arvot;
 
     /**
      * Konstruktori
      */
     public OmaHashMap() {
-        koko = 0;
-        arvot = new Object[ALKULUKUJA[nykyinenKokoPaikka]];
-        alustaTaulukko(arvot);
+        this(32);
 
     }
+
     /**
-     * Varaa ainakin taulukonKoko-muuttujan verran tilaa heti luonnin yhteydessä taulukolleen.
-     * @param taulukonKoko Kuinka monta alkiota sisäinen taulukko varaa ainakin heti aluksi
+     * Varaa ainakin taulukonKoko-muuttujan verran tilaa heti luonnin yhteydessä
+     * taulukolleen.
+     *
+     * @param taulukonKoko Kuinka monta alkiota sisäinen taulukko varaa ainakin
+     * heti aluksi
      */
     public OmaHashMap(int taulukonKoko) {
+
+        /*nykyinenKokoPaikka = 0;
+         for (; nykyinenKokoPaikka < ALKULUKUJA.length; ++nykyinenKokoPaikka) {
+         if (ALKULUKUJA[nykyinenKokoPaikka] > taulukonKoko) {
+         taulukonKoko = ALKULUKUJA[nykyinenKokoPaikka];
+         break;
+         }
+         }*/
         koko = 0;
-        nykyinenKokoPaikka = 0;
-        for (; nykyinenKokoPaikka < ALKULUKUJA.length; ++nykyinenKokoPaikka) {
-            if (ALKULUKUJA[nykyinenKokoPaikka] > taulukonKoko) {
-                taulukonKoko = ALKULUKUJA[nykyinenKokoPaikka];
-                break;
-            }
-        }
-        
         arvot = new Object[taulukonKoko];
         alustaTaulukko(arvot);
 
@@ -56,8 +58,7 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
      */
     private void alustaTaulukko(Object[] taulukko) {
         for (int i = 0; i < taulukko.length; ++i) {
-            OmaList<Pari<K, V>> lista = new OmaArrayList<Pari<K, V>>();
-            taulukko[i] = lista;
+            taulukko[i] = new OmaArrayList<Pari<K, V>>();
         }
     }
 
@@ -65,22 +66,11 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
      * Kasvattaa taulukon kokoa
      */
     private void kasvata() {
-        ++nykyinenKokoPaikka;
-        Object[] uusiTaulukko;
-        
 
-        if (nykyinenKokoPaikka < ALKULUKUJA.length) {
-            uusiTaulukko = new Object[ALKULUKUJA[nykyinenKokoPaikka]];
-        } else {
-            uusiTaulukko = new Object[arvot.length * 2];
-        }
-
+        Object[] uusiTaulukko = new Object[arvot.length * 2];
         alustaTaulukko(uusiTaulukko);
-
         rehash(uusiTaulukko);
-
         arvot = uusiTaulukko;
-
     }
 
     /**
@@ -102,19 +92,16 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
 
     @Override
     public void clear() {
-        nykyinenKokoPaikka = 0;
+
         koko = 0;
-        arvot = new Object[ALKULUKUJA[nykyinenKokoPaikka]];
+        arvot = new Object[32];
         alustaTaulukko(arvot);
     }
 
-    @Override
-    public boolean containsKey(Object key) {
-        return get(key) != null;
-    }
-
+    
     private int taulukonIndeksi(Object key, Object[] obj) {
-        return Math.abs(key.hashCode() % obj.length);
+        return key.hashCode() & (obj.length - 1);
+     //  return Math.abs(key.hashCode() % obj.length);
     }
 
     @Override
@@ -139,33 +126,29 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     @Override
     public boolean isEmpty() {
         return koko == 0;
-    }
+    }  
 
     @Override
-    public V put(K key, V value) {
-        V vanha = get(key);
-
+    public void put(K key, V value) {
         if (asetaTaulukkoon(key, value, arvot)) {
             ++koko;
         }
 
-        if ((double) koko / arvot.length > MAKSIMI_KUORMA_KERROIN) {
+        if (koko > arvot.length * MAKSIMI_KUORMA_KERROIN) {
             kasvata();
         }
-
-        return vanha;
-    }
+    } 
 
     private boolean asetaTaulukkoon(K key, V value, Object[] taulukko) {
-        boolean kokoMuuttunut = true;
+     
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) taulukko[taulukonIndeksi(key, taulukko)];
 
-        // jos on jo taulukossa, poistetaan
-        for (int i = 0; i < lista.size(); ++i) {
+        // jos on jo taulukossa, korvataan
+        for (int i = 0; i < lista.size(); ++i) {            
             if (lista.get(i).ensimmainen.equals(key)) {
-                lista.remove(i);
-                kokoMuuttunut = false;
-                break;
+                lista.get(i).toinen = value;
+                return false;
+                //break;
             }
         }
 
@@ -173,7 +156,7 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         pari.ensimmainen = key;
         pari.toinen = value;
         lista.add(pari);
-        return kokoMuuttunut;
+        return true;
     }
 
     @Override
@@ -187,9 +170,6 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
                 avainLista.add(lista.get(j).ensimmainen);
             }
         }
-
-
         return avainLista;
-
     }
 }

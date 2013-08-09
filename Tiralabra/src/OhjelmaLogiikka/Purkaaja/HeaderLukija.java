@@ -3,6 +3,7 @@ package OhjelmaLogiikka.Purkaaja;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaHashMap;
+import Tietorakenteet.OmaHashMap2;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.Pari;

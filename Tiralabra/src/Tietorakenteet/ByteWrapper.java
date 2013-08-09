@@ -31,27 +31,57 @@ public class ByteWrapper {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode() {/*
+         unsigned oat_hash ( void *key, int len )
+         2 {
+         3   unsigned char *p = key;
+         4   unsigned h = 0;
+         5   int i;
+         6 
+         7   for ( i = 0; i < len; i++ ) {
+         8     h += p[i];
+         9     h += ( h << 10 );
+         10     h ^= ( h >> 6 );
+         11   }
+         12 
+         13   h += ( h << 3 );
+         14   h ^= ( h >> 11 );
+         15   h += ( h << 15 );
+         16 
+         17   return h;
+         18 }*/
 
-        // optimointia: modulo on kohtuu kallis operaatio, ja tätä metodia kutsutaan paljon
-        // jos listaan ei ole koskettu, palautetaan vanha hashcode eikä lasketa uudelleen
-
-        if (byteTaulukko == null) {
-            throw new NullPointerException("Alustamaton taulukko");
-        }
-        int hashCode = 0;
+       /* int h = 0;
         for (int i = 0; i < byteTaulukko.length; ++i) {
-            hashCode ^= (hashCode << 5) + (hashCode >> 2) + byteTaulukko[i];
+            h += byteTaulukko[i];
+            h += (h << 10);
+            h ^= (h >> 6);
         }
 
-        return hashCode;
+        h += (h << 3);
+        h ^= (h >> 11);
+        h += (h << 15);
+        return h;*/
+         int hashCode = 0;
+         for (int i = 0; i < byteTaulukko.length; ++i) {
+         hashCode ^= (hashCode << 5) + (hashCode >> 2) + byteTaulukko[i];
+         }
+
+         return hashCode;
     }
 
     @Override
     public boolean equals(Object obj) {
+
+
         if (obj == null) {
             return false;
         }
+
+        if (this == obj) {
+            return true;
+        }
+
         if (getClass() != obj.getClass()) {
             return false;
         }
@@ -68,6 +98,7 @@ public class ByteWrapper {
         if (!Arrays.equals(this.byteTaulukko, other.byteTaulukko)) {
             return false;
         }
+
         return true;
     }
 }

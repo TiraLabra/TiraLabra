@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class OmaHashMapTest {
 
-    OmaHashMap<Integer, String> hashMap;
+    OmaHashMap2<Integer, String> hashMap;
 
     public OmaHashMapTest() {
     }
@@ -32,7 +32,7 @@ public class OmaHashMapTest {
 
     @Before
     public void setUp() {
-        hashMap = new OmaHashMap<Integer, String>();
+        hashMap = new OmaHashMap2<Integer, String>();
     }
 
     @After
@@ -197,36 +197,36 @@ public class OmaHashMapTest {
 
     @Test
     public void hashMapArvoOikeaKunReHashataan() {
-        hashMap.put(1, "Yksi");
-        hashMap.put(2, "Kaksi");
-        hashMap.put(3, "Kolme");
-        hashMap.put(4, "Neljä");
-        hashMap.put(5, "Viisi");
 
-        assertEquals("Hashmap antoi väärän arvon", "Yksi", hashMap.get(1));
+         for (int i = 0; i < 1500; i += 7) {
+            hashMap.put(i, "yarr" + i);         
+        }
+
+        assertEquals("Hashmap antoi väärän arvon", "yarr105", hashMap.get(105));
     }
-
+    
     @Test
-    public void containsKeyPalauttaaOikean() {
-        hashMap.put(1, "Yksi");
-        hashMap.put(2, "Kaksi");
-        hashMap.put(3, "Kolme");
-        hashMap.put(4, "Neljä");
-        hashMap.put(5, "Viisi");
+    public void hashMapArvoOikeaKunReHashataan2() {
 
-        assertTrue("Hashmap ei löytänyt avainta", hashMap.containsKey(5));
+         for (int i = 0; i < 2500; i += 13) {
+            hashMap.put(i, "yarr" + i);
+        }
+
+        assertEquals("Hashmap antoi väärän arvon", "yarr130", hashMap.get(130));
     }
-
+    
     @Test
-    public void containsKeyPalauttaaOikeanKunHaetaanOlematonta() {
-        hashMap.put(1, "Yksi");
-        hashMap.put(2, "Kaksi");
-        hashMap.put(3, "Kolme");
-        hashMap.put(4, "Neljä");
-        hashMap.put(5, "Viisi");
+    public void hashMapKokoOikeaKunReHashataan() {
 
-        assertFalse("Hashmap ei löytänyt avainta", hashMap.containsKey(15));
+        for (int i = 0; i < 1500; i += 3) {
+            hashMap.put(i, "yarr" + i);
+        }
+
+        assertEquals("Hashmap antoi väärän arvon", 500, hashMap.size());
     }
+
+  
+
 
     @Test
     public void avaimetKokoNollaTyhjalleKartalle() {
@@ -271,5 +271,29 @@ public class OmaHashMapTest {
             }
             assertTrue("Avainta ei palautettu oikein", loytyi);
         }
+    }
+
+    @Test
+    public void kokoOikeaKunAvaimetHashaaSamaanIndeksiin() {
+
+        hashMap.put(1, "1");
+        hashMap.put(2, "2");
+        hashMap.put(3, "3");
+        hashMap.put(33, "5");
+
+        assertEquals("Hash map ei toiminut oikein kun avaimilla samoja hashcodeja", 4, hashMap.size());
+    }
+
+    @Test
+    public void arvoOikeaKunAvaimetHashaaSamaanIndeksiin() {
+
+        hashMap.put(1, "1");
+        hashMap.put(2, "2");
+        hashMap.put(3, "3");
+        hashMap.put(33, "33");
+        
+        assertEquals("Hash map ei toiminut oikein kun avaimilla samoja hashcodeja", "1", hashMap.get(1));
+        assertEquals("Hash map ei toiminut oikein kun avaimilla samoja hashcodeja", "33", hashMap.get(33));
+        
     }
 }
