@@ -5,7 +5,7 @@
 package Domain;
 
 /**
- *
+ * Rajapinta objekteille, jotka sijaitsevat koordinaateissa pelialueella.
  * @author Emleri
  */
 public interface Peliobjekti {

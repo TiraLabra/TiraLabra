@@ -7,7 +7,7 @@ package Domain;
 import UI.Kartanpiirtaja;
 
 /**
- *
+ * Ohjelmalogiikan perusrunko.
  * @author Emleri
  */
 public class Sovelluslogiikka {
@@ -17,6 +17,10 @@ public class Sovelluslogiikka {
     private Polunetsija polunetsija;
     
 
+    /**
+     * Konstruktori. Luo pelin tarvitsemat oliot ja valmistelee ohjelman käyttöä
+     * varten.
+     */
     public Sovelluslogiikka() {
         this.hirviot = new Hirvio[1];
         this.hirviot[0] = new Hirvio(new Koordinaatit(0, 0));
@@ -25,6 +29,9 @@ public class Sovelluslogiikka {
         this.luola.lisaaObjekti(hirviot[0]);
     }
     
+    /**
+     * Käskee pelilooppia etenemään yhdellä askeleella.
+     */
     public void eteneAskel() {
         //Laske polut hirviöille
         for(int i = 0; i < hirviot.length; i++) {

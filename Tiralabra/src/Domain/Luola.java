@@ -42,9 +42,10 @@ public class Luola {
     }
 
     /**
-     * Siirtää parametreina saaduissa koordinaateissa sijaitsevan objektin toisiin
-     * saatuihin koordinaatteihin ja päivittää uuden sijainnin myös objektiin.
-     * 
+     * Siirtää parametreina saaduissa koordinaateissa sijaitsevan objektin
+     * toisiin saatuihin koordinaatteihin ja päivittää uuden sijainnin myös
+     * objektiin.
+     *
      * @param vanha objektin nykyinen sijainti
      * @param uusi objektin uusi sijainti
      * @return true/false: operaatio onnistui/ei onnistunut
@@ -52,31 +53,51 @@ public class Luola {
     public boolean siirraObjektia(Koordinaatit vanha, Koordinaatit uusi) {
         if (luola[vanha.getX()][vanha.getY()] == null || vanha == null || uusi == null) {
             return false;
+        } else if (uusi.getX() < this.leveys && uusi.getY() < this.korkeus) {
+            luola[uusi.getX()][uusi.getY()] = luola[vanha.getX()][vanha.getY()];
+            luola[vanha.getX()][vanha.getY()] = null;
+            luola[uusi.getX()][uusi.getY()].setKoordinaatit(uusi);
+
+            return true;
+        } else {
+            return false;
         }
-        
-        luola[uusi.getX()][uusi.getY()] = luola[vanha.getX()][vanha.getY()];
-        luola[vanha.getX()][vanha.getY()] = null;
-        luola[uusi.getX()][uusi.getY()].setKoordinaatit(uusi);
-        
-        return true;
     }
 
+    /**
+     * Getteri pelialueen korkeudelle.
+     *
+     * @return korkeus
+     */
     public int getKorkeus() {
         return korkeus;
     }
 
+    /**
+     * Getteri pelialueen leveydelle.
+     *
+     * @return leveys
+     */
     public int getLeveys() {
         return leveys;
     }
 
+    /**
+     * Getteri pelialueelle kaksiulotteisena taulukkona.
+     *
+     * @return pelialue
+     */
     public Peliobjekti[][] getLuola() {
         return luola;
     }
 
-    Koordinaatit getKohde() {
+    /**
+     * Getteri hirviöiden kohteen sijainnille.
+     *
+     * @return sijainti koordinaatteina
+     */
+    public Koordinaatit getKohde() {
         // toteutus kesken
-        return new Koordinaatit(0,0);
+        return new Koordinaatit(0, 0);
     }
-    
-    
 }

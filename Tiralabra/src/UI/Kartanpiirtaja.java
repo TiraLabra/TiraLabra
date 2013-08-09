@@ -9,16 +9,24 @@ import Domain.Luola;
 import Domain.Peliobjekti;
 
 /**
- *
+ * Piirtää pelialueen ascii-grafiikkana.
  * @author Emleri
  */
 public class Kartanpiirtaja {
     private Luola luola;
 
+    /**
+     * Konstruktori, saa parametrina viitteen piirrettävään pelialueeseen.
+     * @param luola pelialue
+     */
     public Kartanpiirtaja(Luola luola) {
         this.luola = luola;
     }
     
+    /**
+     * Piirtää pelialueen rivi kerrallaan merkkijonoina. (tällä hetkellä vain
+     * System.Outiin, myöhemmin käyttöliittymän karttaikkunaan)
+     */
     public void piirra() {
         Peliobjekti[][] alue = luola.getLuola();
         for(int i = 0; i < luola.getKorkeus(); i++) {
