@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 PROJECT_DIR=Tiralabra
 # Tätä tiedostoa käytetään automatisoituun testien ajamiseen.
 # Tiedoston ajaminen linuxilla ./run_tests.sh tulee aikaansaada
@@ -20,10 +20,6 @@ PROJECT_DIR=Tiralabra
 if [ -d Tiralabra_maven ]
 	then
 	PROJECT_DIR=Tiralabra_maven
-fi
-if [ -d Tiralabra ]
-	then
-	PROJECT_DIR=Tiralabra
 fi
 
 if [ -f $PROJECT_DIR/pom.xml ]
