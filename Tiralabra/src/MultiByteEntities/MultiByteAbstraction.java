@@ -82,7 +82,7 @@ public abstract class MultiByteAbstraction {
         int hash = 11;
         for (int i = 0; i < bytes.length; i++) {
             
-            hash += ((Math.abs(bytes[i])+11) * 97);
+            hash += (((bytes[i])+11) * 97);
             
         }
      
@@ -96,6 +96,9 @@ public abstract class MultiByteAbstraction {
      */
     private boolean checkBytes(MultiByte toMatch){
         byte[] match = toMatch.getBytes();
+        if (match.length != this.bytes.length){
+            return false;
+        }
         for (int i = 0; i < match.length; i++) {
             if (match[i] != this.bytes[i]){
                 return false;
