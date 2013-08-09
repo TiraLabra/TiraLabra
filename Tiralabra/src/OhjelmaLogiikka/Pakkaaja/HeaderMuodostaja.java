@@ -1,6 +1,7 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import Tiedostokasittely.TiedostoKirjoittaja;
+import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
@@ -22,14 +23,14 @@ public class HeaderMuodostaja {
      * tavussa on merkitseviä dataosiossa merkitsee mitään
      * @return tavut jotka kirjoitetaan tiedostoon.
      */
-    public void muodostaHeader(String header, OmaMap<OmaList<Byte>, String> koodit, Integer viimeisessaTavussaMerkitseviaBitteja) {
+    public void muodostaHeader(String header, OmaMap<ByteWrapper, String> koodit, Integer viimeisessaTavussaMerkitseviaBitteja) {
         try {
             TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
             kirjoittaja.avaaTiedosto();
            
             alustaHeader(viimeisessaTavussaMerkitseviaBitteja, kirjoittaja);
 
-            OmaList<OmaList<Byte>> blokit = koodit.avaimet();
+            OmaList<ByteWrapper> blokit = koodit.avaimet();
 
             for (int i = 0; i < blokit.size(); ++i) {
                 muodostaBlokkiAvainPari(blokit.get(i), koodit.get(blokit.get(i)), kirjoittaja);
@@ -68,7 +69,7 @@ public class HeaderMuodostaja {
      * @param koodi blokin koodi
      * @param header header-lista johonka tallennetaan
      */
-    private void muodostaBlokkiAvainPari(OmaList<Byte> blokki, String koodi, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    private void muodostaBlokkiAvainPari(ByteWrapper blokki, String koodi, TiedostoKirjoittaja kirjoittaja) throws IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
@@ -99,12 +100,8 @@ public class HeaderMuodostaja {
         kirjoittaja.kirjoita(puskuri);
 
         // tallennetaan blokki
-        puskuri = new byte[blokki.size()];
-        for (int i = 0; i < blokki.size(); ++i) {
-            puskuri[i] = blokki.get(i);
-        }
-        
-        kirjoittaja.kirjoita(puskuri);
+       
+        kirjoittaja.kirjoita(blokki.byteTaulukko);
 
         // tallennetaan koodi
         puskuri = new byte[koodinTiedot.toinen.size()];

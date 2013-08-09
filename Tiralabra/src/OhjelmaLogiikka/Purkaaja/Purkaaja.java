@@ -2,9 +2,6 @@ package OhjelmaLogiikka.Purkaaja;
 
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
-import Tietorakenteet.OmaArrayList;
-import Tietorakenteet.OmaHashMap;
-import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.Pari;
 import java.io.FileNotFoundException;
@@ -20,9 +17,6 @@ public class Purkaaja {
 
     public void pura(String sisaanTiedosto, String ulosTiedosto) {
         try {
-
-            
-
 
             Pari<Integer, OmaMap<String, byte [] >> paluu = (new HeaderLukija()).lueHeader(sisaanTiedosto);
             OmaMap<String, byte [] > koodit = paluu.toinen;

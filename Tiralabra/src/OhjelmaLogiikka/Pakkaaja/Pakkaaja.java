@@ -2,6 +2,7 @@ package OhjelmaLogiikka.Pakkaaja;
 
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
+import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
@@ -9,7 +10,6 @@ import Tietorakenteet.OmaMap;
 import Tietorakenteet.OmaMinimiPriorityQueue;
 import Tietorakenteet.OmaQueue;
 import Tietorakenteet.OmaTreeNode;
-import Tietorakenteet.Pari;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Comparator;
@@ -24,11 +24,11 @@ public class Pakkaaja {
 
     public void pakkaa(String tiedosto, String ulosTiedosto) {
         try {
-            
-            OmaList<OmaList<Byte>> blokit = luoBlokit(tiedosto);
+
+            OmaList<ByteWrapper> blokit = luoBlokit(tiedosto);
 
 
-            OmaMap<OmaList<Byte>, String> koodit = muodostaKoodit(blokit);
+            OmaMap<ByteWrapper, String> koodit = muodostaKoodit(blokit);
 
 
             int viimeisessaTavussaMerkitseviaBitteja = tiivista(ulosTiedosto, blokit, koodit);
@@ -46,56 +46,58 @@ public class Pakkaaja {
         }
     }
 
-    private OmaList<OmaList<Byte>> luoBlokit(String tiedosto) throws FileNotFoundException, IOException {
+    private OmaList<ByteWrapper> luoBlokit(String tiedosto) throws FileNotFoundException, IOException {
 
         TiedostoLukija lukija = new TiedostoLukija(tiedosto);
         lukija.avaaTiedosto();
 
-        OmaList<OmaList<Byte>> blokit = new OmaArrayList<OmaList<Byte>>();
-        long koko = 0;
+        OmaList<ByteWrapper> blokit = new OmaArrayList<ByteWrapper>();
+        int muistikulutus = 8 + 12 + 4 + 4 + 1; // OmaList + array sisällä + koko + hashcode + onko muuttunut;
+
 
         byte[] luetutTavut = new byte[BLOKIN_KOKO];
         int luettu = 0;
 
         while ((luettu = lukija.lue(luetutTavut)) > 0) {
-            OmaList<Byte> blokki = new OmaArrayList<Byte>(BLOKIN_KOKO);
+            ByteWrapper blokki = new ByteWrapper();
+
+            blokki.byteTaulukko = new byte[luettu];
+
             for (int i = 0; i < luettu; ++i) {
-                blokki.add(luetutTavut[i]);
+                blokki.byteTaulukko[i] = luetutTavut[i];
             }
+
+            // omalist + array + n byteä arrayssa
+            muistikulutus += 8 + 12 + luettu;
 
             blokit.add(blokki);
         }
+
+        System.out.println("Arvioitu blokkitietueen muistikulutus: " + muistikulutus / 1024 + "kt (" + muistikulutus / 1024 / 1024 + "mt)");
 
         lukija.suljeTiedosto();
         return blokit;
     }
 
-    private OmaMap<OmaList<Byte>, String> muodostaKoodit(OmaList<OmaList<Byte>> blokit) {
-        OmaMap<OmaList<Byte>, Integer> esiintymisTiheydet = laskeEsiintymisTiheys(blokit);
-     
-     
-        int koko = 0;
-        OmaList<OmaList<Byte>> avaimet = esiintymisTiheydet.avaimet();
-        for (int i = 0; i < avaimet.size(); ++i) {
-            koko += avaimet.get(i).capacity();
-        }
+    private OmaMap<ByteWrapper, String> muodostaKoodit(OmaList<ByteWrapper> blokit) {
 
-   
-        OmaQueue<OmaTreeNode<Integer, OmaList<Byte>>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
+        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = laskeEsiintymisTiheys(blokit);
+
+        OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
         esiintymisTiheydet.clear(); // vapautetaan muisti
 
-        OmaTreeNode<Integer, OmaList<Byte>> puu = muodostaHuffmanPuu(jono);
+        OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
 
         return kooditPuusta(puu);
 
     }
 
-    private OmaMap<OmaList<Byte>, Integer> laskeEsiintymisTiheys(OmaList<OmaList<Byte>> blokit) {
+    private OmaMap<ByteWrapper, Integer> laskeEsiintymisTiheys(OmaList<ByteWrapper> blokit) {
 
-        OmaMap<OmaList<Byte>, Integer> esiintymisTiheydet = new OmaHashMap<OmaList<Byte>, Integer>(blokit.size() / 10);
+        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(blokit.size() / 10);
 
         for (int i = 0; i < blokit.size(); ++i) {
-            OmaList<Byte> avain = blokit.get(i);
+            ByteWrapper avain = blokit.get(i);
             if (!esiintymisTiheydet.containsKey(avain)) {
                 esiintymisTiheydet.put(avain, 1);
             } else {
@@ -106,33 +108,33 @@ public class Pakkaaja {
         return esiintymisTiheydet;
     }
 
-    private OmaQueue<OmaTreeNode<Integer, OmaList<Byte>>> muodostaPrioriteettiJono(OmaMap<OmaList<Byte>, Integer> esiintymisTiheydet) {
-        OmaQueue<OmaTreeNode<Integer, OmaList<Byte>>> jono = new OmaMinimiPriorityQueue<OmaTreeNode<Integer, OmaList<Byte>>>(new Comparator<OmaTreeNode<Integer, OmaList<Byte>>>() {
+    private OmaQueue<OmaTreeNode<Integer, ByteWrapper>> muodostaPrioriteettiJono(OmaMap<ByteWrapper, Integer> esiintymisTiheydet) {
+        OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = new OmaMinimiPriorityQueue<OmaTreeNode<Integer, ByteWrapper>>(new Comparator<OmaTreeNode<Integer, ByteWrapper>>() {
             @Override
-            public int compare(OmaTreeNode<Integer, OmaList<Byte>> o1, OmaTreeNode<Integer, OmaList<Byte>> o2) {
+            public int compare(OmaTreeNode<Integer, ByteWrapper> o1, OmaTreeNode<Integer, ByteWrapper> o2) {
                 return o1.haeAvain() - o2.haeAvain();
             }
         });
 
-        OmaList<OmaList<Byte>> avaimet = esiintymisTiheydet.avaimet();
+        OmaList<ByteWrapper> avaimet = esiintymisTiheydet.avaimet();
 
         for (int i = 0; i < avaimet.size(); ++i) {
-            OmaTreeNode<Integer, OmaList<Byte>> node = new OmaTreeNode<Integer, OmaList<Byte>>(esiintymisTiheydet.get(avaimet.get(i)), avaimet.get(i));
+            OmaTreeNode<Integer, ByteWrapper> node = new OmaTreeNode<Integer, ByteWrapper>(esiintymisTiheydet.get(avaimet.get(i)), avaimet.get(i));
             jono.push(node);
         }
 
         return jono;
     }
 
-    private OmaTreeNode<Integer, OmaList<Byte>> muodostaHuffmanPuu(OmaQueue<OmaTreeNode<Integer, OmaList<Byte>>> jono) {
+    private OmaTreeNode<Integer, ByteWrapper> muodostaHuffmanPuu(OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono) {
         while (jono.size() > 1) {
-            OmaTreeNode<Integer, OmaList<Byte>> node1 = jono.pop();
-            OmaTreeNode<Integer, OmaList<Byte>> node2 = jono.pop();
-            OmaTreeNode<Integer, OmaList<Byte>> uusiNode = new OmaTreeNode<Integer, OmaList<Byte>>(node1.haeAvain() + node2.haeAvain(), null, node1, node2);
+            OmaTreeNode<Integer, ByteWrapper> node1 = jono.pop();
+            OmaTreeNode<Integer, ByteWrapper> node2 = jono.pop();
+            OmaTreeNode<Integer, ByteWrapper> uusiNode = new OmaTreeNode<Integer, ByteWrapper>(node1.haeAvain() + node2.haeAvain(), null, node1, node2);
             jono.push(uusiNode);
         }
 
-        OmaTreeNode<Integer, OmaList<Byte>> puu = jono.pop();
+        OmaTreeNode<Integer, ByteWrapper> puu = jono.pop();
 
         assert (jono.isEmpty());
         return puu;
@@ -145,10 +147,10 @@ public class Pakkaaja {
      * @return Map, avaimena blokki, arvona binäärikoodi Stringinä
      * ("0101001001")
      */
-    private OmaMap<OmaList<Byte>, String> kooditPuusta(OmaTreeNode<Integer, OmaList<Byte>> puu) {
-        OmaMap<OmaList<Byte>, String> koodit = new OmaHashMap<OmaList<Byte>, String>();
+    private OmaMap<ByteWrapper, String> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
+        OmaMap<ByteWrapper, String> koodit = new OmaHashMap<ByteWrapper, String>();
 
-        // kayPuuLapiJaLuoKooditIteratiivisesti(puu, koodit);
+
 
         kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, "");
 
@@ -166,7 +168,7 @@ public class Pakkaaja {
      * arvona koodi
      * @param koodi Tähänasti kasattu binäärikoodi
      */
-    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, OmaList<Byte>> node, OmaMap<OmaList<Byte>, String> koodit, String koodi) {
+    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaMap<ByteWrapper, String> koodit, String koodi) {
         // puun pitäisi olla täydellinen
         assert (node != null);
 
@@ -188,10 +190,10 @@ public class Pakkaaja {
      * @param koodit map joka sisältää blokki - koodiparit
      * @return Viimeisen tavun merkitsevien bittien määrä
      */
-    private int tiivista(String ulosTiedosto, OmaList<OmaList<Byte>> blokit, OmaMap<OmaList<Byte>, String> koodit) throws FileNotFoundException, IOException {
+    private int tiivista(String ulosTiedosto, OmaList<ByteWrapper> blokit, OmaMap<ByteWrapper, String> koodit) throws FileNotFoundException, IOException {
         int bittejaKaytetty = 0;
-        byte [] puskuri = new byte[1];
-        
+        byte[] puskuri = new byte[1];
+
         TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
         kirjoittaja.avaaTiedosto();
 
@@ -209,7 +211,7 @@ public class Pakkaaja {
 
                 ++bittejaKaytetty;
                 if (bittejaKaytetty == 8) {
-                    
+
                     kirjoittaja.kirjoita(puskuri);
                     puskuri[0] = 0;
                     bittejaKaytetty = 0;
