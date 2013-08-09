@@ -21,6 +21,8 @@ class TapahtumaKuuntelija implements ActionListener {
     private int korkeus;
     private int leveys;
     private ArrayList<Koordinaatti> tuhoutuvat;
+    private int moneskoTimerToisto;
+    private ArrayList<Koordinaatti> kombot;
 
     TapahtumaKuuntelija(Peliruudukko peliruudukko) {
         this.peliruudukko = peliruudukko;
@@ -60,48 +62,75 @@ class TapahtumaKuuntelija implements ActionListener {
 
         if (tuhoutuvat != null) {
             this.peliruudukko.setValittuKolmio(null);
-            
+
             // Siirretaan ei-tuhoutuneen kolmion koordinaatti pois muistiin ettei sita tuhota
             Koordinaatti siirtyneenKolmionKoordinaatti = tuhoutuvat.get(0);
             tuhoutuvat.remove(0);
-            
-            
+
+
             this.peliruudukko.getSiirrot().getPisteenlaskija().lisaaTuhoutuneistaPisteet(tuhoutuvat);
-            this.peliruudukko.getPeliFrame().getPeliruudukko().poistaKolmiotKohdista(tuhoutuvat);
-            
+            this.peliruudukko.getPeliFrame().getPelilauta().poistaKolmiotKohdista(tuhoutuvat);
+
             // Lisataan siirtynyt kolmio piirtamista varten listaan
             tuhoutuvat.add(0, siirtyneenKolmionKoordinaatti);
             this.peliruudukko.taytaKolmiot(tuhoutuvat);
-            
+
             // Poistetaan siirretty kolmio listasta jotta sen paalle ei arvota uutta
             this.tuhoutuvat.remove(0);
 
+            // Saada tassa kuinka nopeasti animaatiot nakyvat
+            final Timer timer = new Timer(2000, null);
+            this.moneskoTimerToisto = 0;
+            this.kombot = new ArrayList<Koordinaatti>();
+            
+            // Animaatio tapahtuu tassa metodissa timerin avustuksella, jatkuu kunnes komboja ei enaa loydy
             ActionListener teePiirto = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudut(tuhoutuvat);
-                    peliruudukko.taytaKolmiot(korkeus, leveys);
-                    // Paivitetaan pisteet ja siirrot
-                    peliruudukko.getPeliFrame().getInfoPaneeli().paivita();
-                    if (peliruudukko.getPeliFrame().getInfoPaneeli().getSiirtoja() == 0) {
-                        CardLayout paneelit = (CardLayout) peliruudukko.getPeliFrame().getNakymat().getLayout();
-                        peliruudukko.getPeliFrame().getGameover().removeAll();
-                        peliruudukko.getPeliFrame().getGameover().revalidate();
-                        peliruudukko.getPeliFrame().getGameover().paivita();
-                        paneelit.last(peliruudukko.getPeliFrame().getNakymat());
+                    
+                    if (moneskoTimerToisto == 0) {
+                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
+                        peliruudukko.taytaKolmiot(korkeus, leveys);
+                        moneskoTimerToisto++;
+
+                    } else if (moneskoTimerToisto == 1) {
+                        kombot.clear();
+                        kombot.addAll(peliruudukko.getPeliFrame().getKomboEtsija().etsiKombot(tuhoutuvat));
+                        
+                        if (kombot.isEmpty()) {
+                            System.out.println("KOMBOT LOPPUIVAT");
+                            timer.stop();
+                            
+                            // Paivitetaan pisteet ja siirrot
+                            peliruudukko.getPeliFrame().getInfoPaneeli().paivita();
+                            
+                            // Jos siirrot loppuvat, peli loppuu
+                            if (peliruudukko.getPeliFrame().getInfoPaneeli().getSiirtoja() == 0) {
+                                CardLayout paneelit = (CardLayout) peliruudukko.getPeliFrame().getNakymat().getLayout();
+                                peliruudukko.getPeliFrame().getGameover().removeAll();
+                                peliruudukko.getPeliFrame().getGameover().revalidate();
+                                peliruudukko.getPeliFrame().getGameover().paivita();
+                                paneelit.last(peliruudukko.getPeliFrame().getNakymat());
+                            }
+                            
+                        } else {
+                            peliruudukko.getSiirrot().getPisteenlaskija().lisaaTuhoutuneistaPisteet(kombot);
+                            peliruudukko.getPeliFrame().getPelilauta().poistaKolmiotKohdista(kombot);
+                            peliruudukko.taytaKolmiot(kombot);
+                            peliruudukko.getPeliFrame().getInfoPaneeli().paivitaPisteet();
+                            moneskoTimerToisto = 2;
+                        }
+                        
+                    } else if (moneskoTimerToisto == 2) {
+                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(kombot);
+                        peliruudukko.taytaKolmiot(kombot);
+                        moneskoTimerToisto = 1;
                     }
                 }
             };
-            Timer timer = new Timer(300, teePiirto);
-            timer.setRepeats(false);
+            
+            timer.addActionListener(teePiirto);
             timer.start();
-
-
-
-
+            
         }
-
-
-
-
     }
 }

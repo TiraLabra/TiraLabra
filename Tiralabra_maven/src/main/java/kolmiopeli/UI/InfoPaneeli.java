@@ -19,9 +19,9 @@ public class InfoPaneeli extends JPanel {
         this.peliFrame = peliFrame;
         this.pisteenlaskija = peliFrame.getSiirrot().getPisteenlaskija();
         this.setLayout(new GridLayout(1, 2));
-        this.add(new JLabel("Pisteet: " + getPisteet()));
         this.siirtoja = this.peliFrame.getEtsija().etsiKaikkiPistesiirrot();
         this.add(new JLabel("Siirtoja: " + this.siirtoja));
+        this.add(new JLabel("Pisteet: " + getPisteet()));
 
     }
 
@@ -42,13 +42,20 @@ public class InfoPaneeli extends JPanel {
 
     void paivita() {
         this.removeAll();
-        this.add(new JLabel("Pisteet: " + getPisteet()));
         this.add(new JLabel("Siirtoja: " + laskeSiirrot()));
+        this.add(new JLabel("Pisteet: " + getPisteet()));
         this.repaint();
         this.revalidate();
     }
 
     void nollaaPisteet() {
         this.pisteenlaskija.nollaaPisteet();
+    }
+
+    void paivitaPisteet() {
+        this.remove(1);
+        this.add(new JLabel("Pisteet: " + getPisteet()));
+        this.repaint();
+        this.revalidate();
     }
 }

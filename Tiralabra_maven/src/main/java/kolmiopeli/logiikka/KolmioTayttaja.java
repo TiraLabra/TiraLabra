@@ -276,4 +276,12 @@ public class KolmioTayttaja {
         }
         return palautettava;
     }
+
+    public void taytaTietytRuudutRajoittamatta(ArrayList<Koordinaatti> tuhoutuvat) {
+        for (Koordinaatti koordinaatti : tuhoutuvat) {
+            int rivi = koordinaatti.getRivi();
+            int sarake = koordinaatti.getSarake();
+            this.peliruudukko[rivi][sarake] = new Kolmio(this.variarpoja.arvoVari(), rivi, sarake);
+        }
+    }
 }

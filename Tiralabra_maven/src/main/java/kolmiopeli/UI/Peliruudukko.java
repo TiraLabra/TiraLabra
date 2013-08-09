@@ -28,7 +28,7 @@ public class Peliruudukko extends JPanel {
 
     public Peliruudukko(PeliFrame peliFrame) {
         this.peliFrame = peliFrame;
-        this.peliruudukko = peliFrame.getPeliruudukko().getRuudukko();
+        this.peliruudukko = peliFrame.getPelilauta().getRuudukko();
 
         this.ruudukonKorkeus = this.peliruudukko.length;
         this.ruudukonLeveys = this.peliruudukko[0].length;

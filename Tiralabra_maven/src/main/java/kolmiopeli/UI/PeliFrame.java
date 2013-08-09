@@ -9,6 +9,7 @@ import kolmiopeli.domain.Ruudukko;
 import kolmiopeli.logiikka.KolmioTayttaja;
 import kolmiopeli.logiikka.PistesiirtojenEtsija;
 import kolmiopeli.logiikka.Siirrot;
+import kolmiopeli.logiikka.algoritmit.KomboEtsija;
 
 /**
  * Kayttoliittyman keskeisin osa, luo pelitilanteen ja vaihtaa pelin loppuessa GameOver nakyman
@@ -24,6 +25,8 @@ public class PeliFrame {
     private KolmioTayttaja tayttaja;
     private Peliruudukko peliruudukko;
     private PistesiirtojenEtsija etsija;
+    private KomboEtsija komboEtsija;
+
 
 
     public PeliFrame(int rivit, int sarakkeet, Container container) {
@@ -34,6 +37,7 @@ public class PeliFrame {
         this.etsija = new PistesiirtojenEtsija(ruudukko);
         this.siirrot = new Siirrot(ruudukko);
         this.siirrot.setEtsija(etsija);
+        this.komboEtsija = new KomboEtsija(ruudukko.getRuudukko());
         
         
         
@@ -71,7 +75,7 @@ public class PeliFrame {
 
     }
 
-    public Ruudukko getPeliruudukko() {
+    public Ruudukko getPelilauta() {
         return ruudukko;
     }
 
@@ -79,6 +83,9 @@ public class PeliFrame {
         return tayttaja;
     }
 
+    public KomboEtsija getKomboEtsija() {
+        return komboEtsija;
+    }
     
     
     public PistesiirtojenEtsija getEtsija() {

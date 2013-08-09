@@ -1,18 +1,21 @@
-
 package kolmiopeli.domain;
 
 /**
- * Koordinaatti olio joka on sama kuin toinen koordinaatti jos niitten rivi ja sarake ovat samat.
+ * Koordinaatti olio joka on sama kuin toinen koordinaatti jos niitten rivi ja
+ * sarake ovat samat.
+ *
  * @author Eemi
  */
 public class Koordinaatti implements Comparable {
+
     private int rivi;
     private int sarake;
 
     /**
      * Luo annetusta rivista ja sarakkeesta koordinaatin.
+     *
      * @param rivi
-     * @param sarake 
+     * @param sarake
      */
     public Koordinaatti(int rivi, int sarake) {
         this.rivi = rivi;
@@ -26,8 +29,6 @@ public class Koordinaatti implements Comparable {
     public int getSarake() {
         return sarake;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -59,9 +60,6 @@ public class Koordinaatti implements Comparable {
     public String toString() {
         return "Koordinaatti{" + rivi + ", " + sarake + "}\n";
     }
-    
-    
-    
 
     @Override
     public int compareTo(Object o) {
@@ -70,18 +68,22 @@ public class Koordinaatti implements Comparable {
             return 0;
         } else if (this.rivi > verrattava.getRivi()) {
             return 1;
-        } else if (this.rivi < verrattava.getRivi())  {
+        } else if (this.rivi < verrattava.getRivi()) {
             return -1;
         } else {
-            if (this.sarake> verrattava.getSarake()) {
+            if (this.sarake > verrattava.getSarake()) {
                 return 1;
             } else {
                 return -1;
             }
         }
     }
-    
-    
-    
-    
+
+    public boolean osoittaakoKoordinaatinRuutuYlospain() {
+        if ((rivi + sarake) % 2 == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
