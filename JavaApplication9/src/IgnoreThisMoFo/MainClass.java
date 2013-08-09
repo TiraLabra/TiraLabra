@@ -26,38 +26,44 @@ public class MainClass {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         HashMap<Integer, HashMap> mapit = new HashMap<>();
-        HashMap<Integer, HashMap> freqit = new HashMap<>();
-        LinkedList<encodeStatistics> statsit = new LinkedList<>();
-        for (int i = 2; i < 5; i++) {
-            HashMap<Integer, ByteClass> mappi = new HashMap<>();
-            HashMap<Integer, Integer> freq = new HashMap<>();
-            mapit.put(i, mappi);
-            freqit.put(i, freq);
-            
-            encodeStatistics stats = new encodeStatistics(mappi, freq, i);
-            Thread t = new Thread(stats);
-            statsit.add(stats);
-            t.start();
-            
-        }
+
+        Path path = Paths.get("joku");
+        byte[] data = Files.readAllBytes(path);
         
-        for (int i = 0; i < statsit.size(); i++) {
-            System.out.println(statsit.get(i));
-            Thread.sleep(200);
-            if (!statsit.get(i).isReady() && i==statsit.size()-1){
-                i = -1;
-            }
-        }
-        printTheFuckers(mapit, freqit);        
+        System.out.println(data.length);
+
+//        HashMap<Integer, HashMap> freqit = new HashMap<>();
+//        LinkedList<encodeStatistics> statsit = new LinkedList<>();
+//        for (int i = 2; i < 5; i++) {
+//            HashMap<Integer, ByteClass> mappi = new HashMap<>();
+//            HashMap<Integer, Integer> freq = new HashMap<>();
+//            mapit.put(i, mappi);
+//            freqit.put(i, freq);
+//            
+//            encodeStatistics stats = new encodeStatistics(mappi, freq, i);
+//            Thread t = new Thread(stats);
+//            statsit.add(stats);
+//            t.start();
+//            
+//        }
+//        
+//        for (int i = 0; i < statsit.size(); i++) {
+//            System.out.println(statsit.get(i));
+//            Thread.sleep(200);
+//            if (!statsit.get(i).isReady() && i==statsit.size()-1){
+//                i = -1;
+//            }
+//        }
+//        printTheFuckers(mapit, freqit);        
     }
 
     private static void printTheFuckers(HashMap<Integer, HashMap> mapit, HashMap<Integer, HashMap> freqit) {
         for (int mappinro : mapit.keySet()) {
-            
+
             HashMap<Integer, ByteClass> mappi = mapit.get(mappinro);
             HashMap<Integer, Integer> freq = freqit.get(mappinro);
-            
-            System.out.println("Byte Width: "+mappinro+" permutations: "+Math.pow(2, (8*mappinro)));
+
+            System.out.println("Byte Width: " + mappinro + " permutations: " + Math.pow(2, (8 * mappinro)));
             System.out.println("total entries: " + mappi.size());
             int freqSum = 0;
             for (int word : freq.keySet()) {
@@ -65,9 +71,9 @@ public class MainClass {
             }
             freqSum /= freq.size();
             System.out.println("Average reference frequency with all refs: " + freqSum);
-            
+
             List<Integer> toRemove = new LinkedList<>();
-            
+
             int maxRefs = 0;
             for (int word : freq.keySet()) {
                 int wordFreq = freq.get(word);
@@ -78,14 +84,14 @@ public class MainClass {
                     toRemove.add(word);
                 }
             }
-            
+
             for (int word : toRemove) {
                 mappi.remove(word);
                 freq.remove(word);
             }
-            
-            
-            
+
+
+
             System.out.println("total entries: " + mappi.size());
             freqSum = 0;
             for (int word : freq.keySet()) {
@@ -93,7 +99,7 @@ public class MainClass {
             }
             freqSum /= freq.size();
             System.out.println("Average reference frequency without all refs under 4: " + freqSum);
-            System.out.println("Max refs: "+maxRefs);
+            System.out.println("Max refs: " + maxRefs);
             System.out.println("");
         }
     }
@@ -112,10 +118,10 @@ public class MainClass {
             this.width = width;
             this.ready = false;
         }
-        
+
         @Override
-        public String toString(){
-            return "Mode: "+this.width+": "+this.percentDone+"%";
+        public String toString() {
+            return "Mode: " + this.width + ": " + this.percentDone + "%";
         }
 
         @Override
@@ -127,7 +133,7 @@ public class MainClass {
 
                 for (int i = 0; i < data.length; i = i + width) {
                     if (i + width < data.length) {
-                        
+
                         LinkedList<Byte> byteList = new LinkedList<>();
                         for (int k = 0; k < width; k++) {
                             byteList.add(data[i + k]);
@@ -147,13 +153,13 @@ public class MainClass {
                                 dealWithIt(quadByte);
                                 break;
                         }
-                        
-                        
+
+
                     }
 
-                    double k=i;
-                    double j=data.length;
-                    this.percentDone=(int) ((k/j)*100);
+                    double k = i;
+                    double j = data.length;
+                    this.percentDone = (int) ((k / j) * 100);
                 }
                 this.percentDone = 100;
 
@@ -177,8 +183,8 @@ public class MainClass {
 
             }
         }
-        
-        public boolean isReady(){
+
+        public boolean isReady() {
             return this.ready;
         }
     }

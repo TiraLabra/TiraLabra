@@ -3,43 +3,49 @@
  *
  * @author virta
  */
+import Dictionary.MultiByteHashedTable;
 import Dictionary.MultiByteTable;
 import MultiByteEntities.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Tiralabra {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        byte[] randomData = new byte[2000];
-        Random randomByteGenerator = new Random(2719); //seed is prime number for maximum randomness.
-        randomByteGenerator.nextBytes(randomData);
-
-        MultiByteTable table = new MultiByteTable();
         
-        int width = 2;
+        Path path = Paths.get("joku");
+        byte[] randomData = Files.readAllBytes(path);
         
+        
+        MultiByteHashedTable table = new MultiByteHashedTable(randomData.length);
+//        
+        int width = 3;
+//        
         fillTable(randomData, width, table);
         
-//        for (int i = 0; i < table.size(); i++) {
-//            System.out.println(table.fetch(i).hashCode());
-//            
+////        for (int i = 0; i < table.size(); i++) {
+////            System.out.println(table.fetch(i).hashCode());
+////            
+////        }
+//        
+//        int[][] hashes = new int[table.size()][2];
+//        hashes = introduceHashes(table, hashes);
+//        System.out.println(table.size());
+//        
+//        int hashCount = 0;
+//        
+//        for (int i = 0; i < hashes.length; i++) {
+//            System.out.println(hashes[i][0]+" "+hashes[i][1]);
+//            if (hashes[i][0]==0){
+//                break;
+//            }
 //        }
-        
-        int[][] hashes = new int[table.size()][2];
-        hashes = introduceHashes(table, hashes);
-        System.out.println(table.size());
-        
-        int hashCount = 0;
-        
-        for (int i = 0; i < hashes.length; i++) {
-            System.out.println(hashes[i][0]+" "+hashes[i][1]);
-            if (hashes[i][0]==0){
-                break;
-            }
-        }
-        System.out.println("Count: "+hashCount);
+//        System.out.println("Count: "+hashCount);
     }
     
     public static void initializeTable(int[][] table){
@@ -66,17 +72,15 @@ public class Tiralabra {
         return 0;
     }
 
-    private static void fillTable(byte[] randomData, int width, MultiByteTable table) {
-        for (int i = 0; i < randomData.length; i++) {
+    private static void fillTable(byte[] randomData, int width, MultiByteHashedTable table) {
+        for (int i = 0; i < randomData.length; i+=width) {
             
-            if (i+width-1<randomData.length){
+            if (i+width<randomData.length){
                 MultiByte mb = new MultiByte(width);
                 for (int j = 0; j < width; j++) {
                     mb.addData(randomData[i+j]);
                 }
-                if (!table.contains(mb)){
-                    table.put(mb);
-                }
+                table.put(mb);
             }
             
         }

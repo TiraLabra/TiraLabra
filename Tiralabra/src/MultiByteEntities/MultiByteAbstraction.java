@@ -82,7 +82,7 @@ public abstract class MultiByteAbstraction {
         int hash = 11;
         for (int i = 0; i < bytes.length; i++) {
             
-            hash += ((bytes[i]+11) * 97);
+            hash += ((Math.abs(bytes[i])+11) * 97);
             
         }
      
