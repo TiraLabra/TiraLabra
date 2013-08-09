@@ -5,6 +5,13 @@ package chess.ai;
  */
 final class StateInfo
 {
+	final long state;
+
+	StateInfo(long state)
+	{
+		this.state = state;
+	}
+
 	/**
 	 * Syvyys, johon asti pelitilanne on analysoitu.
 	 */

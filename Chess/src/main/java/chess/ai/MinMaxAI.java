@@ -143,7 +143,7 @@ public class MinMaxAI implements AI
 		log("trposTblSize=" + trposTable.size());
 		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
 
-		StateInfo info = trposTable.get(state);
+		StateInfo info = trposTable.get(state.getId());
 		state.move(info.bestMoveFrom, info.bestMoveTo);
 	}
 
@@ -161,14 +161,14 @@ public class MinMaxAI implements AI
 	private int searchWithTranspositionLookup(int depth, int alpha, int beta, GameState state)
 	{
 		boolean add = false;
-		StateInfo info = trposTable.get(state);
+		StateInfo info = trposTable.get(state.getId());
 		if (info != null) {
 			if (info.depth >= depth) {
 				++trposTblHitCount;
 				return info.score;
 			}
 		} else if (depth >= currentSearchDepth - trposDepth) {
-			info = new StateInfo();
+			info = new StateInfo(state.getId());
 			add = true;
 		}
 
@@ -180,7 +180,7 @@ public class MinMaxAI implements AI
 			// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
 			// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
 			if (add)
-				trposTable.put(state.clone(), info);
+				trposTable.put(info);
 		}
 
 		return score;

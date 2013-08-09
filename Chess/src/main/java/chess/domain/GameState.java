@@ -15,21 +15,27 @@ public final class GameState
 	 * Lista satunnaisnumeroista Zobrist-hajautuskoodin laskemiseksi. Jokaiselle
 	 * pelaaja-nappula-ruutu-kombinaatiolle on oma satunnaisnumeronsa.
 	 */
-	private static final int[] zobristRndNumbers = new int[Players.COUNT * Pieces.COUNT * 64];
+	private static final long[] ZOBRIST_RND = new long[Players.COUNT * Pieces.COUNT * 64];
 
 	/**
 	 * Satunnaisnumero, jolla zobrist-koodi xorrataan kun musta on vuorossa.
 	 */
-	private static final int zobristRndPlayer;
+	private static final long ZOBRIST_RND_PLAYER;
+
+	/**
+	 * Tyhjää lautaa vastaava satunnaisnumero.
+	 */
+	private static final long ZOBRIST_RND_EMPTY;
 
 	/**
 	 * Zobrist-satunnaisnumeroiden alustus.
 	 */
 	static {
 		Random rnd = new Random();
-		for (int i = 0; i < zobristRndNumbers.length; ++i)
-			zobristRndNumbers[i] = rnd.nextInt();
-		zobristRndPlayer = rnd.nextInt();
+		for (int i = 0; i < ZOBRIST_RND.length; ++i)
+			ZOBRIST_RND[i] = rnd.nextLong();
+		ZOBRIST_RND_PLAYER = rnd.nextLong();
+		ZOBRIST_RND_EMPTY = rnd.nextLong();
 	}
 
 	/**
@@ -45,7 +51,7 @@ public final class GameState
 	/**
 	 * Zobrist-hajautuskoodi
 	 */
-	private int zobristCode;
+	private long zobristCode = ZOBRIST_RND_EMPTY;
 
 	/**
 	 * Luo uuden pelitilanteen käyttäen standardia shakin aloitusmuodostelmaa.
@@ -439,8 +445,12 @@ public final class GameState
 		return new GameState(this);
 	}
 
-	@Override
-	public int hashCode()
+	/**
+	 * Palauttaa pelitilannetta vastaavan 64-bittisen Zobrist-arvon.
+	 *
+	 * @return
+	 */
+	public long getId()
 	{
 		return zobristCode;
 	}
@@ -449,7 +459,10 @@ public final class GameState
 	public boolean equals(Object obj)
 	{
 		GameState state2 = (GameState) obj;
-		return bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
+		boolean r = bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
+		if (!r && zobristCode == state2.zobristCode)
+			throw new RuntimeException("awr");
+		return r;
 	}
 
 	/**
@@ -557,7 +570,7 @@ public final class GameState
 	private void changeNextMovingPlayer()
 	{
 		nextMovingPlayer = 1 - nextMovingPlayer;
-		zobristCode ^= zobristRndPlayer;
+		zobristCode ^= ZOBRIST_RND_PLAYER;
 	}
 
 	/**
@@ -566,7 +579,7 @@ public final class GameState
 	private void addPiece(int player, int piece, int sqr)
 	{
 		bitboard.addPiece(player, piece, sqr);
-		zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+		zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
 	}
 
 	/**
@@ -575,7 +588,7 @@ public final class GameState
 	private void removePiece(int player, int piece, int sqr)
 	{
 		bitboard.removePiece(player, piece, sqr);
-		zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+		zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
 	}
 
 	/**
@@ -585,7 +598,7 @@ public final class GameState
 	{
 		int capturedPiece = bitboard.removePiece(player, sqr);
 		if (capturedPiece != -1)
-			zobristCode ^= zobristRndNumbers[player * Pieces.COUNT * 64 + capturedPiece * 64 + sqr];
+			zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + capturedPiece * 64 + sqr];
 		return capturedPiece;
 	}
 
@@ -604,11 +617,6 @@ public final class GameState
 		addInitialPiece(0, 7, Pieces.ROOK);
 		for (int i = 0; i < 8; ++i)
 			addInitialPiece(1, i, Pieces.PAWN);
-
-//		addPiece(Players.WHITE, Pieces.KING, 6 * 8 + 7);
-//		addPiece(Players.WHITE, Pieces.BISHOP, 6 * 8 + 0);
-//		addPiece(Players.BLACK, Pieces.KING, 4);
-//		addPiece(Players.BLACK, Pieces.QUEEN, 3);
 	}
 
 	/**

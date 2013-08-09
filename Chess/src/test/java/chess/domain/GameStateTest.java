@@ -64,7 +64,7 @@ public class GameStateTest
 		GameState s2 = new GameState();
 		s2.move(48, 40);
 		assertTrue(s.equals(s2));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class GameStateTest
 		s2.move(48, 40);
 		s2.move(8, 16);
 		assertTrue(s.equals(s2));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class GameStateTest
 		GameState s2 = new GameState();
 		s2.move(52, 44);
 		assertFalse(s.equals(s2));
-		assertFalse(s.hashCode() == s2.hashCode());
+		assertFalse(s.getId() == s2.getId());
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class GameStateTest
 		s2.move(52, 36);
 		s2.move(8, 16);
 		assertFalse(s.equals(s2));
-		assertFalse(s.hashCode() == s2.hashCode());
+		assertFalse(s.getId() == s2.getId());
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class GameStateTest
 		GameState s2 = s.clone();
 		assertTrue(s.equals(s2));
 		assertTrue(s2.equals(s));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 		assertTrue(s.getPieces(Players.WHITE) == s2.getPieces(Players.WHITE));
 		assertTrue(s.getPieces(Players.BLACK) == s2.getPieces(Players.BLACK));
 		assertTrue(s.getPieces(Players.WHITE, Pieces.PAWN)
@@ -477,9 +477,9 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KING, 42);
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
-		int h = s.hashCode();
+		long h = s.getId();
 		s.move(42, 34);
-		assertFalse(h == s.hashCode());
+		assertFalse(h == s.getId());
 	}
 
 	@Test
@@ -501,7 +501,7 @@ public class GameStateTest
 		assertEquals(sqrs(51), s.getPieces(Players.WHITE, Pieces.KNIGHT));
 		assertEquals(sqrs(11), s.getPieces(Players.BLACK, Pieces.PAWN));
 		assertTrue(s.equals(s2));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 		assertEquals(Players.WHITE, s.getNextMovingPlayer());
 	}
 
@@ -524,7 +524,7 @@ public class GameStateTest
 		assertEquals(sqrs(51), s.getPieces(Players.WHITE, Pieces.KNIGHT));
 		assertEquals(sqrs(34), s.getPieces(Players.BLACK, Pieces.PAWN));
 		assertTrue(s.equals(s2));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 		assertEquals(Players.WHITE, s.getNextMovingPlayer());
 	}
 
@@ -547,7 +547,7 @@ public class GameStateTest
 		assertEquals(sqrs(51), s.getPieces(Players.WHITE, Pieces.KNIGHT));
 		assertEquals(sqrs(34), s.getPieces(Players.BLACK, Pieces.PAWN));
 		assertFalse(s.equals(s2));
-		assertFalse(s.hashCode() == s2.hashCode());
+		assertFalse(s.getId() == s2.getId());
 		assertEquals(Players.BLACK, s.getNextMovingPlayer());
 	}
 
@@ -571,7 +571,7 @@ public class GameStateTest
 		assertEquals(sqrs(51), s.getPieces(Players.WHITE, Pieces.KNIGHT));
 		assertEquals(sqrs(34), s.getPieces(Players.BLACK, Pieces.PAWN));
 		assertTrue(s.equals(s2));
-		assertTrue(s.hashCode() == s2.hashCode());
+		assertTrue(s.getId() == s2.getId());
 		assertEquals(Players.WHITE, s.getNextMovingPlayer());
 	}
 }
