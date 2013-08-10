@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class OmaHashMapTest {
 
-    OmaHashMap2<Integer, String> hashMap;
+    OmaHashMap<Integer, String> hashMap;
 
     public OmaHashMapTest() {
     }
@@ -32,12 +32,24 @@ public class OmaHashMapTest {
 
     @Before
     public void setUp() {
-        hashMap = new OmaHashMap2<Integer, String>();
+        hashMap = new OmaHashMap<Integer, String>();
     }
 
     @After
     public void tearDown() {
     }
+    
+    @Test
+    public void uusiHashMapToimiiKunKokoOnKahdenPotenssi() {
+        OmaMap foo = new OmaHashMap(16);
+        assertNotNull("Jotakin meni pieleen", foo);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void uusiHashMapHeittaaPoikkeuksenJosKokoEiOleKahdenPotenssi() {
+        OmaMap foo = new OmaHashMap(27);
+    }
+    
 
     @Test
     public void uusiHashMapKokoNolla() {

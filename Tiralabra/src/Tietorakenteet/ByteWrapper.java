@@ -31,37 +31,7 @@ public class ByteWrapper {
     }
 
     @Override
-    public int hashCode() {/*
-         unsigned oat_hash ( void *key, int len )
-         2 {
-         3   unsigned char *p = key;
-         4   unsigned h = 0;
-         5   int i;
-         6 
-         7   for ( i = 0; i < len; i++ ) {
-         8     h += p[i];
-         9     h += ( h << 10 );
-         10     h ^= ( h >> 6 );
-         11   }
-         12 
-         13   h += ( h << 3 );
-         14   h ^= ( h >> 11 );
-         15   h += ( h << 15 );
-         16 
-         17   return h;
-         18 }*/
-
-       /* int h = 0;
-        for (int i = 0; i < byteTaulukko.length; ++i) {
-            h += byteTaulukko[i];
-            h += (h << 10);
-            h ^= (h >> 6);
-        }
-
-        h += (h << 3);
-        h ^= (h >> 11);
-        h += (h << 15);
-        return h;*/
+    public int hashCode() {
          int hashCode = 0;
          for (int i = 0; i < byteTaulukko.length; ++i) {
          hashCode ^= (hashCode << 5) + (hashCode >> 2) + byteTaulukko[i];

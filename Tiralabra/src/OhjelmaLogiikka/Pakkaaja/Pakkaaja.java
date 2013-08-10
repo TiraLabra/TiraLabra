@@ -3,14 +3,13 @@ package OhjelmaLogiikka.Pakkaaja;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.OmaArrayList;
+import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.OmaMinimiPriorityQueue;
 import Tietorakenteet.OmaQueue;
 import Tietorakenteet.OmaTreeNode;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Comparator;
@@ -29,19 +28,19 @@ public class Pakkaaja {
         try {
             long aika = System.nanoTime();
             System.out.println("Aloitetaan pakkaaminen");
-            
-            OmaMap<ByteWrapper, String> koodit = luoKoodit(sisaan);
+
+            OmaMap<ByteWrapper, Koodi> koodit = luoKoodit(sisaan);
             int bittejaKaytetty = tiivista(sisaan, ulos, koodit);
-            
+
             ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(ulos + ".header", koodit, bittejaKaytetty);
-            
+
             aika = (System.nanoTime() - aika);
-            
-            System.out.println("Pakkaamiseen kului " + aika/1000000 + " ms");
-            System.out.println("Käsiteltiin " + ((double)sisaanTiedostonKoko/1024/1024 / ((double)aika/1000000000)) + " megatavua/sekunti");
-            System.out.println("Pakatun tiedoston koko: " + (double)ulosTiedostonKoko/1024/1024 + " megatavua " + "(" + (double)ulosTiedostonKoko/1024 + "kilotavua)");
-            System.out.println("Tiivistysprosentti: " + (1.0 - (double)ulosTiedostonKoko/(double)sisaanTiedostonKoko)*100.0 + "%");
-            
+
+            System.out.println("Pakkaamiseen kului " + aika / 1000000 + " ms");
+            System.out.println("Käsiteltiin " + ((double) sisaanTiedostonKoko / 1024 / 1024 / ((double) aika / 1000000000)) + " megatavua/sekunti");
+            System.out.println("Pakatun tiedoston koko: " + (double) ulosTiedostonKoko / 1024 / 1024 + " megatavua " + "(" + (double) ulosTiedostonKoko / 1024 + "kilotavua)");
+            System.out.println("Tiivistysprosentti: " + (1.0 - (double) ulosTiedostonKoko / (double) sisaanTiedostonKoko) * 100.0 + "%");
+
             System.out.print("\n\n");
         } catch (FileNotFoundException ex) {
             System.out.println("Tiedostoa ei löytynyt: " + ex.getMessage());
@@ -49,45 +48,44 @@ public class Pakkaaja {
             System.out.println("IO-virhe: " + ex.getMessage());
         }
     }
-    
-    private OmaMap<ByteWrapper, String> luoKoodit(String sisaan) throws FileNotFoundException, IOException {
-            
-            TiedostoLukija lukija = new TiedostoLukija(sisaan);
-            sisaanTiedostonKoko = lukija.koko();
-            System.out.println("Pakattavan tiedoston koko " + (double)sisaanTiedostonKoko/1024/1024 + " megatavua (" + (double)sisaanTiedostonKoko/1024 + " kilotavua)");
-            
-            lukija.avaaTiedosto();
-            OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(8192);
 
-            byte[] luetutTavut = new byte[BLOKIN_KOKO];
-            int luettu = 0;
+    private OmaMap<ByteWrapper, Koodi> luoKoodit(String sisaan) throws FileNotFoundException, IOException {
 
-            while ((luettu = lukija.lue(luetutTavut)) > 0) {
-                ByteWrapper blokki = new ByteWrapper();
+        TiedostoLukija lukija = new TiedostoLukija(sisaan);
+        sisaanTiedostonKoko = lukija.koko();
+        System.out.println("Pakattavan tiedoston koko " + (double) sisaanTiedostonKoko / 1024 / 1024 + " megatavua (" + (double) sisaanTiedostonKoko / 1024 + " kilotavua)");
 
-                blokki.byteTaulukko = new byte[luettu];
+        lukija.avaaTiedosto();
+        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(8192);
 
-                for (int i = 0; i < luettu; ++i) {
-                    blokki.byteTaulukko[i] = luetutTavut[i];
-                }
+        byte[] luetutTavut = new byte[BLOKIN_KOKO];
+        int luettu = 0;
 
-                Integer arvo = esiintymisTiheydet.get(blokki);
-                if (arvo == null) {
-                    esiintymisTiheydet.put(blokki, 1);
-                } else {
-                    esiintymisTiheydet.put(blokki, arvo + 1);
-                }
+        while ((luettu = lukija.lue(luetutTavut)) > 0) {
+            ByteWrapper blokki = new ByteWrapper();
+
+            blokki.byteTaulukko = new byte[luettu];
+
+            for (int i = 0; i < luettu; ++i) {
+                blokki.byteTaulukko[i] = luetutTavut[i];
             }
 
-            OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
-            esiintymisTiheydet.clear(); // vapautetaan muisti
+            Integer arvo = esiintymisTiheydet.get(blokki);
+            if (arvo == null) {
+                esiintymisTiheydet.put(blokki, 1);
+            } else {
+                esiintymisTiheydet.put(blokki, arvo + 1);
+            }
+        }
 
-            OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
-         
-            lukija.suljeTiedosto();
-            return kooditPuusta(puu);
+        OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
+        esiintymisTiheydet.clear(); // vapautetaan muisti
+
+        OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
+
+        lukija.suljeTiedosto();
+        return kooditPuusta(puu);
     }
-
 
     private OmaQueue<OmaTreeNode<Integer, ByteWrapper>> muodostaPrioriteettiJono(OmaMap<ByteWrapper, Integer> esiintymisTiheydet) {
         OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = new OmaMinimiPriorityQueue<OmaTreeNode<Integer, ByteWrapper>>(new Comparator<OmaTreeNode<Integer, ByteWrapper>>() {
@@ -128,10 +126,10 @@ public class Pakkaaja {
      * @return Map, avaimena blokki, arvona binäärikoodi Stringinä
      * ("0101001001")
      */
-    private OmaMap<ByteWrapper, String> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
-        OmaMap<ByteWrapper, String> koodit = new OmaHashMap<ByteWrapper, String>((int) Math.pow(2, 14));
+    private OmaMap<ByteWrapper, Koodi> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
+        OmaMap<ByteWrapper, Koodi> koodit = new OmaHashMap<ByteWrapper, Koodi>((int) Math.pow(2, 14));
 
-        kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, "");
+        kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, 0, 0, "");
 
         return koodit;
     }
@@ -147,21 +145,28 @@ public class Pakkaaja {
      * arvona koodi
      * @param koodi Tähänasti kasattu binäärikoodi
      */
-    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaMap<ByteWrapper, String> koodit, String koodi) {
+    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaMap<ByteWrapper, Koodi> koodit, long koodi, int paikka, String foo) {
         // puun pitäisi olla täydellinen
         assert (node != null);
 
         if (node.onLehti()) {
-            koodit.put(node.haeArvo(), koodi);
+            Koodi k = new Koodi();
+            k.koodi = koodi;
+            k.pituus = paikka;
+            koodit.put(node.haeArvo(), k);
             return;
         }
 
-        kayPuuLapiJaLuoKooditRekursiivisesti(node.vasenLapsi(), koodit, koodi + "0");
-        kayPuuLapiJaLuoKooditRekursiivisesti(node.oikeaLapsi(), koodit, koodi + "1");
+
+        kayPuuLapiJaLuoKooditRekursiivisesti(node.vasenLapsi(), koodit, koodi, paikka + 1, foo + "0");
+
+        koodi = koodi | (1 << paikka);
+        kayPuuLapiJaLuoKooditRekursiivisesti(node.oikeaLapsi(), koodit, koodi, paikka + 1, foo + "1");
 
     }
 
-    private int tiivista(String sisaan, String ulos, OmaMap<ByteWrapper, String> koodit) throws FileNotFoundException, IOException {
+    private int tiivista(String sisaan, String ulos, OmaMap<ByteWrapper, Koodi> koodit) throws FileNotFoundException, IOException {
+
         TiedostoLukija lukija = new TiedostoLukija(sisaan);
         lukija.avaaTiedosto();
         byte[] luetutTavut = new byte[BLOKIN_KOKO];
@@ -170,6 +175,7 @@ public class Pakkaaja {
         kirjoittaja.avaaTiedosto();
         int bittejaKaytetty = 0;
         byte[] puskuri = new byte[1];
+
         while ((luettu = lukija.lue(luetutTavut)) > 0) {
             ByteWrapper blokki = new ByteWrapper();
 
@@ -179,12 +185,12 @@ public class Pakkaaja {
                 blokki.byteTaulukko[i] = luetutTavut[i];
             }
 
-            String pakkausKoodi = koodit.get(blokki);
-            for (int j = 0; j < pakkausKoodi.length(); ++j) {
-                byte arvo = 1;
-                if (pakkausKoodi.charAt(j) == '0') {
-                    arvo = 0;
-                }
+            Koodi pakkausKoodi = koodit.get(blokki);
+         
+           
+            for (int j = 0; j < pakkausKoodi.pituus; ++j) {
+                int arvo = (int) (pakkausKoodi.koodi & (1 << j));
+                arvo = arvo >> j;
 
                 puskuri[0] = (byte) (puskuri[0] | (arvo << bittejaKaytetty));
 
@@ -203,11 +209,11 @@ public class Pakkaaja {
         } else {
             bittejaKaytetty = 8; // viimeisessä tavussa on kaikki tavut merkitseviä 
         }
-        
-        
+
+
         kirjoittaja.suljeTiedosto();
         ulosTiedostonKoko = kirjoittaja.koko();
         lukija.suljeTiedosto();
         return bittejaKaytetty;
-    } 
+    }
 }

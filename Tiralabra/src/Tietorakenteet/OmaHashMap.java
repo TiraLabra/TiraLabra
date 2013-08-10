@@ -12,43 +12,57 @@ package Tietorakenteet;
  * @param <V> Arvo
  */
 public class OmaHashMap<K, V> implements OmaMap<K, V> {
-    // alkulukuja
 
-    final double MAKSIMI_KUORMA_KERROIN = 0.7;
-    //  private static final int[] ALKULUKUJA = {3, 7, 13, 23, 41, 83, 163, 317, 751, 1511, 3041, 6089, 122143, 24691, 48023,
-    //      81973, 104729, 204427, 421303, 854159, 1684489, 3149561, 6157103};
-    int koko;
-//    private int nykyinenKokoPaikka = 0;
+    private final double MAKSIMI_KUORMA_KERROIN = 0.7;
+    private int koko;
     private Object[] arvot;
 
     /**
-     * Konstruktori
+     * Konstruktori. Asettaa kapasiteetin 32 alkille
      */
     public OmaHashMap() {
         this(32);
-
     }
 
     /**
-     * Varaa ainakin taulukonKoko-muuttujan verran tilaa heti luonnin yhteydessä
-     * taulukolleen.
+     * Asettaa kapasiteetin taulukonKoko-parametrin määrittämäksi. Parametrin on
+     * oltava kahden potenssi
      *
-     * @param taulukonKoko Kuinka monta alkiota sisäinen taulukko varaa ainakin
-     * heti aluksi
+     * @param taulukonKoko Kuinka monta alkiota sisäinen taulukko varaa aluksi
+     * @throws IllegalArgumentException jos taulukonKoko ei ole kahden potenssi
      */
-    public OmaHashMap(int taulukonKoko) {
+    public OmaHashMap(int taulukonKoko) throws IllegalArgumentException {
 
-        /*nykyinenKokoPaikka = 0;
-         for (; nykyinenKokoPaikka < ALKULUKUJA.length; ++nykyinenKokoPaikka) {
-         if (ALKULUKUJA[nykyinenKokoPaikka] > taulukonKoko) {
-         taulukonKoko = ALKULUKUJA[nykyinenKokoPaikka];
-         break;
-         }
-         }*/
+        double potenssi = Math.log(taulukonKoko) / Math.log(2);
+        potenssi = potenssi - (int) potenssi;
+        if (potenssi > 0.000000001) {
+            throw new IllegalArgumentException("Annetun koon on oltava kahden potenssi");
+        }
+
         koko = 0;
         arvot = new Object[taulukonKoko];
         alustaTaulukko(arvot);
+    }
 
+    public void tulostaTila() {
+        System.out.println("Nykyinen kuormakerroin: " + (double) koko / arvot.length + "\n\n");
+
+        System.out.println("Indeksien pituudet: ");
+        int eiTyhjia = 0;
+        for (int i = 0; i < arvot.length; ++i) {
+
+            OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
+            System.out.println("Indeksin " + i + " pituus: " + lista.size());
+
+            if (lista.size() > 0) {
+                ++eiTyhjia;
+            }
+        }
+
+        System.out.println("\n\nKeskimääräinen kuorma ei-tyhjällä indeksillä " + (double) koko / eiTyhjia);
+
+
+        System.out.println("");
     }
 
     /**
@@ -98,23 +112,19 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         alustaTaulukko(arvot);
     }
 
-    
     private int taulukonIndeksi(Object key, Object[] obj) {
-        return key.hashCode() & (obj.length - 1);
-     //  return Math.abs(key.hashCode() % obj.length);
-    }
+        return key.hashCode() & (obj.length - 1);       
+     }
 
     @Override
     public V get(Object key) {
-
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[taulukonIndeksi(key, arvot)];
-
+        assert (lista != null);
         for (int i = 0; i < lista.size(); ++i) {
             if (lista.get(i).ensimmainen.equals(key)) {
                 return lista.get(i).toinen;
             }
         }
-
         return null;
     }
 
@@ -126,7 +136,7 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     @Override
     public boolean isEmpty() {
         return koko == 0;
-    }  
+    }
 
     @Override
     public void put(K key, V value) {
@@ -137,14 +147,14 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         if (koko > arvot.length * MAKSIMI_KUORMA_KERROIN) {
             kasvata();
         }
-    } 
+    }
 
     private boolean asetaTaulukkoon(K key, V value, Object[] taulukko) {
-     
+
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) taulukko[taulukonIndeksi(key, taulukko)];
 
         // jos on jo taulukossa, korvataan
-        for (int i = 0; i < lista.size(); ++i) {            
+        for (int i = 0; i < lista.size(); ++i) {
             if (lista.get(i).ensimmainen.equals(key)) {
                 lista.get(i).toinen = value;
                 return false;

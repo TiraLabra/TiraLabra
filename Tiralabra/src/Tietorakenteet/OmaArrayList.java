@@ -10,7 +10,7 @@ public class OmaArrayList<T> implements OmaList<T> {
   
 
     /**
-     * Konstruktori. Alustaa sisäiset rakenteet, ei mitään kummempaa käyttäjän
+     * Konstruktori. Alustaa taulukolle 4 tavua tilaa
      * kannalta.
      */
     public OmaArrayList() {
@@ -19,15 +19,14 @@ public class OmaArrayList<T> implements OmaList<T> {
     
    
     /**
-     * Konstruktori. Varaa tilaa koko-parametrin määrittämälle alkiolle
+     * Konstruktori. Varaa tilaa koko-parametrin verran
      * @param koko Kuinka monelle alkiolle varataan tilaa suoraan
      */
     public OmaArrayList(int koko) {
         data = new Object[koko];
         datanKoko = 0;
-       
-                
     }
+    
     @Override
     public int capacity() {
         return data.length;

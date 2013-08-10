@@ -2,6 +2,7 @@ package OhjelmaLogiikka.Pakkaaja;
 
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tietorakenteet.ByteWrapper;
+import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
@@ -23,11 +24,11 @@ public class HeaderMuodostaja {
      * tavussa on merkitseviä dataosiossa merkitsee mitään
      * @return tavut jotka kirjoitetaan tiedostoon.
      */
-    public long muodostaHeader(String header, OmaMap<ByteWrapper, String> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
+    public long muodostaHeader(String header, OmaMap<ByteWrapper, Koodi> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
         try {
             TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
             kirjoittaja.avaaTiedosto();
-           
+
             alustaHeader(viimeisessaTavussaMerkitseviaBitteja, kirjoittaja);
 
             OmaList<ByteWrapper> blokit = koodit.avaimet();
@@ -35,7 +36,7 @@ public class HeaderMuodostaja {
             for (int i = 0; i < blokit.size(); ++i) {
                 muodostaBlokkiAvainPari(blokit.get(i), koodit.get(blokit.get(i)), kirjoittaja);
             }
-            
+
             kirjoittaja.suljeTiedosto();
             return kirjoittaja.koko();
         } catch (Exception ex) {
@@ -59,7 +60,7 @@ public class HeaderMuodostaja {
             throw new IllegalArgumentException("Tavussa oltava vähintään yksi ja korkeintaan 8 merkitsevää bittiä - annettu arvo: " + viimeisessaTavussaMerkitseviaBitteja);
         }
 
-        byte [] puskuri = new byte[1];
+        byte[] puskuri = new byte[1];
         puskuri[0] = (byte) (viimeisessaTavussaMerkitseviaBitteja - OFFSET);
         kirjoittaja.kirjoita(puskuri);
     }
@@ -71,49 +72,40 @@ public class HeaderMuodostaja {
      * @param koodi blokin koodi
      * @param header header-lista johonka tallennetaan
      */
-    private void muodostaBlokkiAvainPari(ByteWrapper blokki, String koodi, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    private void muodostaBlokkiAvainPari(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
-        byte [] puskuri = new byte[1];
-        
+        byte[] puskuri = new byte[1];
+
         // tallennettavan bittiblokin pituus tavuissa
+        
+      
         puskuri[0] = (byte) (blokki.size() - OFFSET);
         kirjoittaja.kirjoita(puskuri);
-        
-        Pari<Integer, OmaList<Byte>> koodinTiedot = muunnaKoodiStringTavuiksi(koodi);
 
-        int merkitseviaBitteja = koodinTiedot.ensimmainen;
-
-        int pituus = koodinTiedot.toinen.size();
-
-        
-        if (pituus > 255) {
-            throw new IllegalArgumentException("Koodin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
+        if (koodi.pituus > 64) {
+            throw new IllegalArgumentException("Koodin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + koodi.pituus);
         }
 
-        puskuri[0] = (byte) (pituus - OFFSET);
+        byte[] koodiTavuina = muunnaKoodiTavuiksi(koodi);
+
+
+
+        
+
+        puskuri[0] = (byte) (koodi.pituus - OFFSET);
         kirjoittaja.kirjoita(puskuri);
 
-        // tallennetaan viimeisen tavun merkitsevien bittien määrä
-        assert (merkitseviaBitteja >= 1 && merkitseviaBitteja <= 8);
-
-        puskuri[0] = (byte) (merkitseviaBitteja - OFFSET);
-        kirjoittaja.kirjoita(puskuri);
-
-        // tallennetaan blokki
-       
+        // tallennetaan blokki       
         kirjoittaja.kirjoita(blokki.byteTaulukko);
+     
 
         // tallennetaan koodi
-        puskuri = new byte[koodinTiedot.toinen.size()];
-        for (int i = 0; i < koodinTiedot.toinen.size(); ++i) {
-             puskuri[i] = koodinTiedot.toinen.get(i);
-        }
-        
-        kirjoittaja.kirjoita(puskuri);
+        kirjoittaja.kirjoita(koodiTavuina);
+       
     }
-    
+
     /**
      *
      * @param koodi Muunnettava koodi
@@ -122,42 +114,27 @@ public class HeaderMuodostaja {
      * on koodattu koodi bitteinä (jokainen 8 merkin String-blokki koodataan
      * yhteen byteen)
      */
-    private Pari<Integer, OmaList<Byte>> muunnaKoodiStringTavuiksi(String koodi) {
+    private byte[] muunnaKoodiTavuiksi(Koodi koodi) {
         // muunnetaan tallennettava koodi String -> byteihin pakatut bitit
-        OmaList<Byte> muunnettuKoodi = new OmaArrayList<Byte>();
-        Pari<Integer, OmaList<Byte>> koodinTiedot = new Pari<Integer, OmaList<Byte>>();
-
-
+        byte[] muunnettuKoodi = new byte[koodi.pituus / 8 + 1];
+        
+        int paikka = 0;
         int tavunPaikka = 0;
-        int tavu = 0;
-        for (int i = 0; i < koodi.length(); ++i) {
-
-            int arvo = 0;
-            if (koodi.charAt(i) == '1') {
-                arvo = 1;
-            }
-
-            tavu = tavu | (arvo << tavunPaikka);
-
-            ++tavunPaikka;
-            if (tavunPaikka == 8) {
-                tavunPaikka = 0;
-
-                // arvon on mahduttava yhteen tavuun - muutoin jotain on rikki shifteissä
-                assert (tavu >= 0 && tavu <= 255);
-                // koska tallennetaan bittikuvioita, ei ole väliä vaikka 11111111 ei mahdukkaan tavuun 
-                muunnettuKoodi.add((byte) tavu);
-                tavu = 0;
+        for (int i = 0; i < koodi.pituus; ++i) {
+            int arvo = (int) (koodi.koodi & (1 << i));
+            arvo = arvo >> i;
+            
+            muunnettuKoodi[tavunPaikka] = (byte) (muunnettuKoodi[tavunPaikka] | (arvo << paikka));
+             
+             
+            ++paikka;
+            if (paikka == 8) {
+                paikka = 0;
+                ++tavunPaikka;
             }
         }
-
-        if (tavunPaikka > 0) {
-            muunnettuKoodi.add((byte) tavu);
-        } else {
-            tavunPaikka = 8; // kaikki tavut merkitseviä
-        }
-        koodinTiedot.toinen = muunnettuKoodi;
-        koodinTiedot.ensimmainen = tavunPaikka;
-        return koodinTiedot;
+      
+        assert (tavunPaikka * 8 + paikka == koodi.pituus);
+        return muunnettuKoodi;
     }
 }
