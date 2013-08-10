@@ -39,6 +39,9 @@ public class TiedostoLukija {
     public int lue(byte [] puskuri) throws IOException {
       
         return stream.read(puskuri);
-
+    }
+    
+    public long koko() {
+        return TIEDOSTO.length();
     }
 }

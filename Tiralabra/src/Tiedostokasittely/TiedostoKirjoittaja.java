@@ -36,4 +36,8 @@ public class TiedostoKirjoittaja {
         kirjoitusStream.close();
         inputStream.close();
     }
+    
+    public long koko() {
+        return TIEDOSTO.length();
+    }
 }

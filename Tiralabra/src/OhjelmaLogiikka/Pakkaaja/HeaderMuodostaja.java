@@ -23,7 +23,7 @@ public class HeaderMuodostaja {
      * tavussa on merkitseviä dataosiossa merkitsee mitään
      * @return tavut jotka kirjoitetaan tiedostoon.
      */
-    public void muodostaHeader(String header, OmaMap<ByteWrapper, String> koodit, Integer viimeisessaTavussaMerkitseviaBitteja) {
+    public long muodostaHeader(String header, OmaMap<ByteWrapper, String> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
         try {
             TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
             kirjoittaja.avaaTiedosto();
@@ -35,11 +35,13 @@ public class HeaderMuodostaja {
             for (int i = 0; i < blokit.size(); ++i) {
                 muodostaBlokkiAvainPari(blokit.get(i), koodit.get(blokit.get(i)), kirjoittaja);
             }
-
+            
             kirjoittaja.suljeTiedosto();
+            return kirjoittaja.koko();
         } catch (Exception ex) {
             System.out.println("Jotain meni pieleen headerin luomisessa " + ex.getMessage());
         }
+        return 0;
     }
 
     /**

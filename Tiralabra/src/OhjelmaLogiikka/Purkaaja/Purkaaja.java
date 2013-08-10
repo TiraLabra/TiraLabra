@@ -10,20 +10,26 @@ import java.io.IOException;
 public class Purkaaja {
 
     private final int BLOKIN_KOKO;
-
+    private long tiedostonKoko;
     public Purkaaja(int blokinKoko) {
         BLOKIN_KOKO = blokinKoko;
     }
 
     public void pura(String sisaanTiedosto, String ulosTiedosto) {
         try {
-
+            long aika = System.nanoTime();
+            
             Pari<Integer, OmaMap<String, byte [] >> paluu = (new HeaderLukija()).lueHeader(sisaanTiedosto);
             OmaMap<String, byte [] > koodit = paluu.toinen;
 
             int viimeisessaTavussaMerkitseviaBitteja = paluu.ensimmainen;
 
             puraData(sisaanTiedosto, ulosTiedosto, koodit, viimeisessaTavussaMerkitseviaBitteja);
+            
+            aika = (System.nanoTime() - aika);
+            System.out.println("Puretun tiedoston koko: " + (double)tiedostonKoko /1024/1024 + " megatavua");
+            System.out.println("Purkamiseen kului " + aika/1000000 + " ms");
+            System.out.println("Käsiteltiin " + ((double)tiedostonKoko/1024/1024 / (aika/1000000000)) + " megatavua/sekunti");
             
         } catch (Exception ex) {
             System.out.println("Jotain meni pieleen: " + ex.getMessage());
@@ -38,7 +44,7 @@ public class Purkaaja {
         kirjoittaja.avaaTiedosto();
  
         kasitteleTiedosto(lukija, kirjoittaja, viimeisessaTavussaMerkitseviaBitteja, koodit);
-
+        tiedostonKoko = kirjoittaja.koko();
         lukija.suljeTiedosto();
         kirjoittaja.suljeTiedosto();
     }
