@@ -39,7 +39,7 @@ public class MinMaxAITest
 		bb.addPiece(Players.WHITE, Pieces.KING, 42);
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		GameState s = new GameState(bb, Players.WHITE);
-		assertEquals((-1000 - 9 - 5 - 3 - 3 - 1 + 1000 + 3) * 1000000 - 8 - 99, ai.getScore(s, 99));
+		assertEquals((-1000 - 9 - 5 - 3 - 3 - 1 + 1000 + 3) * 1000 - 8, ai.getScore(s, 99));
 	}
 
 	@Test
@@ -104,5 +104,51 @@ public class MinMaxAITest
 		GameState s = new GameState(bb, Players.WHITE);
 		ai.move(s);
 		assertEquals(sqrs(37), s.getPieces(Players.WHITE, Pieces.QUEEN));
+	}
+
+	@Test
+	public void doesntStaleMateWhenHasMaterialAdvantage()
+	{
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.WHITE, Pieces.KING, 0);
+		bb.addPiece(Players.BLACK, Pieces.QUEEN, 1);
+		bb.addPiece(Players.WHITE, Pieces.KING, 63);
+		GameState s = new GameState(bb, Players.BLACK);
+		ai.move(s);
+		assertFalse(sqrs(37) == s.getPieces(Players.WHITE, Pieces.QUEEN));
+	}
+
+	@Test
+	public void staleMatesWhenHasMaterialDisadvantage()
+	{
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.WHITE, Pieces.KING, 40);
+		bb.addPiece(Players.WHITE, Pieces.QUEEN, 56);
+		bb.addPiece(Players.WHITE, Pieces.BISHOP, 57);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 41);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 48);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 50);
+		bb.addPiece(Players.WHITE, Pieces.ROOK, 49);
+		bb.addPiece(Players.BLACK, Pieces.KING, 63);
+		bb.addPiece(Players.BLACK, Pieces.BISHOP, 47);
+		bb.addPiece(Players.BLACK, Pieces.PAWN, 26);
+		bb.addPiece(Players.BLACK, Pieces.PAWN, 42);
+		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 33);
+		GameState s = new GameState(bb, Players.BLACK);
+		ai.move(s);
+		assertEquals(sqrs(11), s.getPieces(Players.BLACK, Pieces.BISHOP));
+	}
+
+	@Test
+	public void doesntMakeIllegalMoveWhenCheckMateInevitable()
+	{
+		ai = new MinMaxAI(null, 4, 0); // minimisyvyys mattitilanteen tunnistamiseksi
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.WHITE, Pieces.KING, 1);
+		bb.addPiece(Players.BLACK, Pieces.ROOK, 10);
+		bb.addPiece(Players.BLACK, Pieces.KING, 17);
+		GameState s = new GameState(bb, Players.WHITE);
+		ai.move(s);
+		assertEquals(sqrs(0), s.getPieces(Players.WHITE, Pieces.KING));
 	}
 }

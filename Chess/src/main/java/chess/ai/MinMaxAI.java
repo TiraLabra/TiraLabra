@@ -71,6 +71,8 @@ public class MinMaxAI implements AI
 	 */
 	private boolean loggingEnabled = false;
 
+	private int ply = 0;
+
 	/**
 	 * Evaluoitujen positioiden määrä (getScore()-kutsut) debuggausta varten.
 	 */
@@ -262,6 +264,9 @@ public class MinMaxAI implements AI
 			}
 		}
 
+		if (alpha < -(Pieces.values[Pieces.KING] >> 1) && state.isStaleMate())
+			return 0;
+
 		return alpha;
 	}
 
@@ -310,9 +315,11 @@ public class MinMaxAI implements AI
 	private int searchMove(int depth, int alpha, int beta, GameState state, StateInfo info,
 			int pieceType, int fromSqr, int toSqr)
 	{
+		++ply;
 		int capturedPiece = state.move(fromSqr, toSqr, pieceType);
 		int score = -searchWithTranspositionLookup(depth - 1, -beta, -alpha, state);
 		state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
+		--ply;
 
 		if (score > alpha) {
 			if (info != null) {
@@ -332,24 +339,30 @@ public class MinMaxAI implements AI
 	 * Laskee pistemäärän pelitilanteelle, perustuen pelaajien nappuloiden yhteisarvojen erotukseen.
 	 * Lisäksi tasapisteissä painotetaan hieman tilannetta, jossa nappuloiden kokonaismäärä
 	 * laudalle on pienempi. Tällä saadaan tekoälystä aggressiivisempi; ilman avauskirjastoa tms.
-	 * alkupeli on muutoin liian passiivinen. Lisäksi syvyys hakupuussa vaikuttaa pistemäärään;
-	 * mitä nopeammin paras tilanne saavutetaan, sitä parempi.
+	 * alkupeli on muutoin liian passiivinen. Lisäksi mattitilanteissa syvyys vaikuttaa
+	 * pistemäärään; mattiin joutumista tulee viivyttää niin pitkään kuin mahdollista; muutoin voi
+	 * aiheutua laiton siirto tilanteessa, jossa matti on välttämätön.
 	 *
 	 * @param state pelitila
-	 * @param depth
-	 * @return
+	 * @return pistemäärä
 	 */
-	int getScore(GameState state, int depth)
+	int getScore(GameState state)
 	{
 		++count;
 		int player = state.getNextMovingPlayer();
-		int score = -depth;
+		int score = 0;
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 			int pieceValue = Pieces.values[pieceType];
 			score += Long.bitCount(state.getPieces(player, pieceType)) * pieceValue;
 			score -= Long.bitCount(state.getPieces(1 - player, pieceType)) * pieceValue;
 		}
 		score -= Long.bitCount(state.getPieces(player) | state.getPieces(1 - player));
+
+		if (score > Pieces.values[Pieces.KING] >> 1)
+			score += Pieces.values[Pieces.KING] * (100 - ply);
+		else if (score < -(Pieces.values[Pieces.KING] >> 1))
+			score -= Pieces.values[Pieces.KING] * (100 - ply);
+
 		return score;
 	}
 
