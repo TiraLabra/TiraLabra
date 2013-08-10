@@ -39,7 +39,7 @@ public class MinMaxAITest
 		bb.addPiece(Players.WHITE, Pieces.KING, 42);
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		GameState s = new GameState(bb, Players.WHITE);
-		assertEquals((-1000 - 9 - 5 - 3 - 3 - 1 + 1000 + 3) * 1000 - 8, ai.getScore(s, 99));
+		assertEquals((-1000 - 9 - 5 - 3 - 3 - 1 + 1000 + 3) * 1000 - 8, ai.getScore(s));
 	}
 
 	@Test
@@ -109,10 +109,11 @@ public class MinMaxAITest
 	@Test
 	public void doesntStaleMateWhenHasMaterialAdvantage()
 	{
+		ai = new MinMaxAI(null, 5, 0);
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 0);
 		bb.addPiece(Players.BLACK, Pieces.QUEEN, 1);
-		bb.addPiece(Players.WHITE, Pieces.KING, 63);
+		bb.addPiece(Players.BLACK, Pieces.KING, 63);
 		GameState s = new GameState(bb, Players.BLACK);
 		ai.move(s);
 		assertFalse(sqrs(37) == s.getPieces(Players.WHITE, Pieces.QUEEN));

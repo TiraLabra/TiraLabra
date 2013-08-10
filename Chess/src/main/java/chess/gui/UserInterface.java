@@ -284,7 +284,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	 */
 	private void runPerformanceTest2()
 	{
-		new Thread(new PerformanceTest(logArea, 7, 10.0)).start();
+		new Thread(new PerformanceTest(logArea, 8, 15.0)).start();
 	}
 
 	/**

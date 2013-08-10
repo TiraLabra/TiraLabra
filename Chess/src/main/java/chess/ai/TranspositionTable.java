@@ -23,7 +23,7 @@ final class TranspositionTable
 	/**
 	 * Kerroin, jolla taulun kokoa kasvatetaan, kun uudelleenhajautuskynnys ylitetään.
 	 */
-	private static final int GROWTH_FACTOR = 4;
+	private static final int GROWTH_FACTOR = 2;
 
 	//private static final Object REMOVED = new StateInfo();
 	/**
@@ -72,7 +72,7 @@ final class TranspositionTable
 	 */
 	public void put(StateInfo info)
 	{
-		if (size >= capacity >> 2)
+		if (size > capacity >> 1)
 			grow();
 
 		int h = (int) info.state & mask;

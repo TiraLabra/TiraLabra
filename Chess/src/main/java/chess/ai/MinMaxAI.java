@@ -17,7 +17,7 @@ public class MinMaxAI implements AI
 	/**
 	 * Estimoitu haarautumiskerroin, jota käytetään suoritusajaan arviointiin.
 	 */
-	private static final double ESTIMATED_BRANCHING_FACTOR = 3.5;
+	private static final double ESTIMATED_BRANCHING_FACTOR = 5;
 
 	/**
 	 * Kuinka monta tasoa hakupuuta pienennetään nollasiirron kanssa. Oletuksena on, että siirron
@@ -33,26 +33,21 @@ public class MinMaxAI implements AI
 	private static final int NULL_MOVE_REDUCTION2 = 4;
 
 	/**
+	 * Transpositiotaulun maksimikoko. Rajoituksena tälle on transpositiotaulun viemän muistin
+	 * määrä.
+	 */
+	private static final int MAX_TRANSPOSITION_TABLE_SIZE = 1024 * 1024 - 20;
+
+	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
 	 * kuninkaan uhatuksi.
 	 */
 	private final int searchDepth;
 
 	/**
-	 * Hetkellinen hakusyvyys, jota kasvatetaan vähitellen (iterative deepening search).
-	 */
-	private int currentSearchDepth;
-
-	/**
 	 * Transpositiotaulu johon tallennetaan jo analysoidut tilanteet ja parhaat siirrot niissä.
 	 */
 	private TranspositionTable trposTable = new TranspositionTable();
-
-	/**
-	 * Syvyys, johon asti transpositiotaulu tallennetaan. Rajoituksena tälle on transpositiotaulun
-	 * viemän muistin määrä.
-	 */
-	private final int trposDepth = 6;
 
 	/**
 	 * Aikaraja (sekunteina) parhaan siirron etsimiselle tai 0 jos aikarajaa ei ole. Hakuajan
@@ -71,12 +66,25 @@ public class MinMaxAI implements AI
 	 */
 	private boolean loggingEnabled = false;
 
+	/**
+	 * Siirtojen määrä analysoitavan pelipuun juuresta.
+	 */
 	private int ply = 0;
 
 	/**
-	 * Evaluoitujen positioiden määrä (getScore()-kutsut) debuggausta varten.
+	 * Pistemäärä juurisolmussa.
 	 */
-	private int count;
+	private int rootScore;
+
+	/**
+	 * Pino, johon hakujen tulokset kullakin pelipuun tasolla tallennetaan väliaikaisesti.
+	 */
+	private StateInfo[] results = new StateInfo[1024];
+
+	/**
+	 * Analysoitujen pelipuun solmujen määrä.
+	 */
+	private int nodeCount;
 
 	/**
 	 * Transpositiotaulusta löydettyjen positioiden lukumäärä.
@@ -123,27 +131,28 @@ public class MinMaxAI implements AI
 	@Override
 	public void move(GameState state)
 	{
+		rootScore = getScore(state);
+
 		long start = System.nanoTime();
 		trposTable.clear();
-		for (int d = 2; d <= searchDepth; ++d) {
-			count = 0;
-			trposTblHitCount = 0;
-			currentSearchDepth = d;
-			searchWithTranspositionLookup(d, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+		int depth;
+		for (depth = 2; depth <= searchDepth; ++depth) {
+			log("depth=" + depth);
 
-			//StateInfo info = transposTable.get(state);
-			//log("d=" + d + " best=" + info.bestMoveFrom + "->" + info.bestMoveTo);
-			log("d=" + d);
+			nodeCount = 0;
+			trposTblHitCount = 0;
+			searchWithTranspositionLookup(depth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
 
 			double elapsedTime = (System.nanoTime() - start) * 1e-9;
 			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
 				break;
 		}
 
-		log("count=" + count);
+		log("nodeCount=" + nodeCount);
 		log("trposTblHitCount=" + trposTblHitCount);
 		log("trposTblSize=" + trposTable.size());
 		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
+		log(String.format("branchingFactor=%.3g", Math.pow(nodeCount, 1.0 / depth)));
 
 		StateInfo info = trposTable.get(state.getId());
 		state.move(info.bestMoveFrom, info.bestMoveTo);
@@ -162,27 +171,30 @@ public class MinMaxAI implements AI
 	 */
 	private int searchWithTranspositionLookup(int depth, int alpha, int beta, GameState state)
 	{
-		boolean add = false;
+		++nodeCount;
+
+		if (depth == 0 || !state.areBothKingsAlive())
+			return getScore(state);
+
 		StateInfo info = trposTable.get(state.getId());
-		if (info != null) {
-			if (info.depth >= depth) {
-				++trposTblHitCount;
-				return info.score;
-			}
-		} else if (depth >= currentSearchDepth - trposDepth) {
-			info = new StateInfo(state.getId());
-			add = true;
+		if (info != null && info.depth >= depth) {
+			++trposTblHitCount;
+			return info.score;
 		}
+
+		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
+			results[ply] = new StateInfo(state.getId());
+		} else
+			results[ply] = null;
 
 		int score = search(depth, alpha, beta, state, info);
 
-		if (info != null) {
-			info.depth = depth;
-			info.score = score;
+		if (results[ply] != null) {
+			results[ply].depth = depth;
+			results[ply].score = score;
 			// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
 			// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
-			if (add)
-				trposTable.put(info);
+			trposTable.put(results[ply]);
 		}
 
 		return score;
@@ -205,22 +217,20 @@ public class MinMaxAI implements AI
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
-	 * @param info transpositiotaulun tietue johon paras siirto/pistemäärä tallennetaan (null, jos
-	 * kyseistä positiota ei tallenneta transpositiotauluun)
+	 * @param info aiemman haun tulos tai null, jos positiota ei löytynyt transpositiotaulusta
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
 	private int search(int depth, int alpha, int beta, GameState state, StateInfo info)
 	{
-		if (depth == 0 || !state.areBothKingsAlive())
-			return getScore(state, depth);
-
 		int player = state.getNextMovingPlayer();
 
 		// Nollasiirtoredusointi.
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
 			state.nullMove();
+			++ply;
 			int score = -searchWithTranspositionLookup(depth - NULL_MOVE_REDUCTION1 - 1, -beta,
 					-alpha, state);
+			--ply;
 			state.nullMove();
 			if (score >= beta)
 				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
@@ -228,7 +238,7 @@ public class MinMaxAI implements AI
 
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
 		if (info != null && info.bestMoveFrom != -1) {
-			alpha = searchMove(depth, alpha, beta, state, info, info.bestMovePieceType,
+			alpha = searchMove(depth, alpha, beta, state, info.bestMovePieceType,
 					info.bestMoveFrom, info.bestMoveTo);
 			if (alpha >= beta)
 				return beta;
@@ -243,7 +253,7 @@ public class MinMaxAI implements AI
 
 				for (int capturedPiece = 0; capturedPiece < Pieces.COUNT; ++capturedPiece) {
 					long captureMoves = moves & state.getPieces(1 - player, capturedPiece);
-					alpha = iterateMoves(depth, alpha, beta, state, info, pieceType, fromSqr,
+					alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr,
 							captureMoves);
 					if (alpha >= beta)
 						return beta;
@@ -258,7 +268,7 @@ public class MinMaxAI implements AI
 				int fromSqr = Long.numberOfTrailingZeros(pieces);
 				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
 				moves &= ~state.getPieces(1 - player);
-				alpha = iterateMoves(depth, alpha, beta, state, info, pieceType, fromSqr, moves);
+				alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr, moves);
 				if (alpha >= beta)
 					return beta;
 			}
@@ -277,19 +287,17 @@ public class MinMaxAI implements AI
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
-	 * @param info transpositiotaulun tietue johon paras siirto/pistemäärä tallennetaan (null, jos
-	 * kyseistä positiota ei tallenneta transpositiotauluun)
 	 * @param pieceType siirrettävän nappulan tyyppi
 	 * @param fromSqr siirrettävän nappulan sijainti
 	 * @param moves siirrot 64-bittisenä bittimaskina
 	 * @return uusi alfa-arvo
 	 */
-	private int iterateMoves(int depth, int alpha, int beta, GameState state, StateInfo info,
-			int pieceType, int fromSqr, long moves)
+	private int iterateMoves(int depth, int alpha, int beta, GameState state, int pieceType,
+			int fromSqr, long moves)
 	{
 		for (; moves != 0; moves -= Long.lowestOneBit(moves)) {
 			int toSqr = Long.numberOfTrailingZeros(moves);
-			alpha = searchMove(depth, alpha, beta, state, info, pieceType, fromSqr, toSqr);
+			alpha = searchMove(depth, alpha, beta, state, pieceType, fromSqr, toSqr);
 			if (alpha >= beta)
 				return beta;
 		}
@@ -305,14 +313,12 @@ public class MinMaxAI implements AI
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
-	 * @param info transpositiotaulun tietue johon paras siirto/pistemäärä tallennetaan (null, jos
-	 * kyseistä positiota ei tallenneta transpositiotauluun)
 	 * @param pieceType siirrettävän nappulan tyyppi
 	 * @param fromSqr siirrettävän nappulan vanha sijainti
 	 * @param toSqr sirrettävän nappulan uusi sijainti
 	 * @return uusi alfa-arvo
 	 */
-	private int searchMove(int depth, int alpha, int beta, GameState state, StateInfo info,
+	private int searchMove(int depth, int alpha, int beta, GameState state,
 			int pieceType, int fromSqr, int toSqr)
 	{
 		++ply;
@@ -322,12 +328,12 @@ public class MinMaxAI implements AI
 		--ply;
 
 		if (score > alpha) {
-			if (info != null) {
-				if (depth == currentSearchDepth && loggingEnabled)
-					log("" + fromSqr + " " + toSqr + " " + (score - getScore(state, 0)));
-				info.bestMoveFrom = fromSqr;
-				info.bestMoveTo = toSqr;
-				info.bestMovePieceType = pieceType;
+			if (results[ply] != null) {
+				if (ply == 0 && loggingEnabled)
+					log("" + fromSqr + " " + toSqr + " " + (score - rootScore));
+				results[ply].bestMoveFrom = fromSqr;
+				results[ply].bestMoveTo = toSqr;
+				results[ply].bestMovePieceType = pieceType;
 			}
 			alpha = score;
 		}
@@ -348,7 +354,6 @@ public class MinMaxAI implements AI
 	 */
 	int getScore(GameState state)
 	{
-		++count;
 		int player = state.getNextMovingPlayer();
 		int score = 0;
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
@@ -381,5 +386,15 @@ public class MinMaxAI implements AI
 	{
 		if (loggingEnabled)
 			logger.logMessage(msg);
+	}
+
+	/**
+	 * Palauttaa analysoitujen pelipuun solmujen määrän edellisessä move()-kutsussa.
+	 *
+	 * @return
+	 */
+	public int getNodeCount()
+	{
+		return nodeCount;
 	}
 }

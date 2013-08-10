@@ -18,6 +18,8 @@ public class PerformanceTest implements Runnable
 
 	private double length;
 
+	private long totalNodes = 0;
+
 	/**
 	 * Konstruktori.
 	 *
@@ -58,7 +60,8 @@ public class PerformanceTest implements Runnable
 			}
 
 			double avgTime = totalTime * 1e3 / n;
-			logger.logMessage(String.format("d=%d n=%d t=%.3fms", depth, n, avgTime));
+			logger.logMessage(String.format("d%d: %d %.3fms %.3g", depth, n, avgTime,
+					Math.pow(totalNodes / n, 1.0 / depth)));
 
 			++depth;
 		} while (n > 10);
@@ -76,10 +79,11 @@ public class PerformanceTest implements Runnable
 	private double runSingleTest(int depth, Random rnd)
 	{
 		GameState state = new GameState(rnd);
-		AI ai = new MinMaxAI(logger, depth, 0.0);
+		MinMaxAI ai = new MinMaxAI(logger, depth, 0.0);
 
 		long start = System.nanoTime();
 		ai.move(state);
+		totalNodes += ai.getNodeCount();
 		return (System.nanoTime() - start) * 1e-9;
 	}
 }
