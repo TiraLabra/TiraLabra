@@ -12,12 +12,12 @@ import Utils.Iterator;
 * Dijkstra's algorithm for finding the shortest path between vertex a and b. Only works with a graph that has only positive weights
 */
 
-public class Dijkstra implements PathFinder{
+public class Dijkstra extends Relax implements PathFinder{
     private Graph graph;
     public Dijkstra(Graph graph){
+        super(graph);
         this.graph=graph;
     }
-
     @Override
     public Path shortestPath(Vertex a, Vertex b) {
         Hashtable<Vertex,Integer> distance=new Hashtable<Vertex,Integer>(graph.getVertices().size()*2);
@@ -42,19 +42,13 @@ public class Dijkstra implements PathFinder{
             while(i.hasNext()){
                 Vertex v = i.getNext();
                 if(h.inHeap(v)){
-                    relax(u,v,distance,path);
+                    super.relax(u,v,distance,path);
                     h.decrease(v,distance.get(v));
                 }
             }
             u=h.pop();
         }
         return getPath(a,b,path,distance);
-    }
-    private void relax(Vertex a, Vertex b, Hashtable<Vertex,Integer> distance, Hashtable<Vertex,Vertex> path){
-        if(distance.get(b)>distance.get(a)+graph.getWeight(a,b)){
-            distance.put(b,distance.get(a)+graph.getWeight(a,b));
-            path.put(b,a);
-        }
     }
     private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
         Vertex u = path.get(b);

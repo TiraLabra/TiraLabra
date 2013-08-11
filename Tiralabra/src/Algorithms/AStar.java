@@ -13,10 +13,11 @@ import Utils.Iterator;
 * A star algorithm for finding the shortest path between vertex a and b using Dijkstra's algorithm with heuristics. Only works with a graph that has only positive weights
 */
 
-public class AStar implements PathFinder{
+public class AStar extends Relax implements PathFinder{
     private Graph graph;
     private Heuristics heuristics;
     public AStar(Graph graph, Heuristics heuristics){
+        super(graph);
         this.graph=graph;
         this.heuristics=heuristics;
     }
@@ -46,7 +47,7 @@ public class AStar implements PathFinder{
             while(i.hasNext()){
                 Vertex v = i.getNext();
                 if(h.inHeap(v)){
-                    relax(u,v,distance,path);
+                    super.relax(u,v,distance,path);
                     h.decrease(v,distance.get(v)+heur.get(v));
                 }
                 
@@ -54,12 +55,6 @@ public class AStar implements PathFinder{
             u=h.pop();
         }
         return getPath(a,b,path,distance);
-    }
-    private void relax(Vertex a, Vertex b, Hashtable<Vertex,Integer> distance, Hashtable<Vertex,Vertex> path){
-        if(distance.get(b)>distance.get(a)+graph.getWeight(a,b)){
-            distance.put(b,distance.get(a)+graph.getWeight(a,b));
-            path.put(b,a);
-        }
     }
     private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
         Vertex u = path.get(b);
