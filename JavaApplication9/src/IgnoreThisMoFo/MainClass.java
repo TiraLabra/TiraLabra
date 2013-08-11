@@ -24,13 +24,24 @@ public class MainClass {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-
+        
         HashMap<Integer, HashMap> mapit = new HashMap<>();
 
-        Path path = Paths.get("joku");
-        byte[] data = Files.readAllBytes(path);
+//        Path path = Paths.get("joku");
+//        byte[] data = Files.readAllBytes(path);
         
-        System.out.println(data.length);
+        
+        int[] table = new int[100000];
+        
+        int keys = table.length;
+        int singleSetSize = 250;
+        int level = 1;
+        while (keys > 251){
+            keys /= 250;
+            level++;
+        }
+        
+        System.out.println(level);
 
 //        HashMap<Integer, HashMap> freqit = new HashMap<>();
 //        LinkedList<encodeStatistics> statsit = new LinkedList<>();
@@ -56,13 +67,13 @@ public class MainClass {
 //        }
 //        printTheFuckers(mapit, freqit);        
     }
-
+    
     private static void printTheFuckers(HashMap<Integer, HashMap> mapit, HashMap<Integer, HashMap> freqit) {
         for (int mappinro : mapit.keySet()) {
-
+            
             HashMap<Integer, ByteClass> mappi = mapit.get(mappinro);
             HashMap<Integer, Integer> freq = freqit.get(mappinro);
-
+            
             System.out.println("Byte Width: " + mappinro + " permutations: " + Math.pow(2, (8 * mappinro)));
             System.out.println("total entries: " + mappi.size());
             int freqSum = 0;
@@ -71,9 +82,9 @@ public class MainClass {
             }
             freqSum /= freq.size();
             System.out.println("Average reference frequency with all refs: " + freqSum);
-
+            
             List<Integer> toRemove = new LinkedList<>();
-
+            
             int maxRefs = 0;
             for (int word : freq.keySet()) {
                 int wordFreq = freq.get(word);
@@ -84,14 +95,14 @@ public class MainClass {
                     toRemove.add(word);
                 }
             }
-
+            
             for (int word : toRemove) {
                 mappi.remove(word);
                 freq.remove(word);
             }
-
-
-
+            
+            
+            
             System.out.println("total entries: " + mappi.size());
             freqSum = 0;
             for (int word : freq.keySet()) {
@@ -103,42 +114,42 @@ public class MainClass {
             System.out.println("");
         }
     }
-
+    
     public static class encodeStatistics implements Runnable {
-
+        
         private HashMap<Integer, ByteClass> mappi;
         private HashMap<Integer, Integer> freq;
         private int width;
         private boolean ready;
         private int percentDone;
-
+        
         public encodeStatistics(HashMap<Integer, ByteClass> mappi, HashMap<Integer, Integer> freq, int width) {
             this.freq = freq;
             this.mappi = mappi;
             this.width = width;
             this.ready = false;
         }
-
+        
         @Override
         public String toString() {
             return "Mode: " + this.width + ": " + this.percentDone + "%";
         }
-
+        
         @Override
         public void run() {
             Path path = Paths.get("joku");
             byte[] data;
             try {
                 data = Files.readAllBytes(path);
-
+                
                 for (int i = 0; i < data.length; i = i + width) {
                     if (i + width < data.length) {
-
+                        
                         LinkedList<Byte> byteList = new LinkedList<>();
                         for (int k = 0; k < width; k++) {
                             byteList.add(data[i + k]);
                         }
-
+                        
                         switch (width) {
                             case 2:
                                 DoubleByte doubleByte = new DoubleByte(byteList.pollFirst(), byteList.pollFirst());
@@ -153,23 +164,23 @@ public class MainClass {
                                 dealWithIt(quadByte);
                                 break;
                         }
-
-
+                        
+                        
                     }
-
+                    
                     double k = i;
                     double j = data.length;
                     this.percentDone = (int) ((k / j) * 100);
                 }
                 this.percentDone = 100;
-
+                
             } catch (IOException ex) {
                 Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             this.ready = true;
         }
-
+        
         private void dealWithIt(ByteClass byteWord) {
             if (mappi.containsKey(byteWord.hashCode())) {
                 int frequ = freq.remove(byteWord.hashCode());
@@ -183,7 +194,7 @@ public class MainClass {
 
             }
         }
-
+        
         public boolean isReady() {
             return this.ready;
         }
