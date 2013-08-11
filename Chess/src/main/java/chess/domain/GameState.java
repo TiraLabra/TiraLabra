@@ -1,5 +1,6 @@
 package chess.domain;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -52,6 +53,16 @@ public final class GameState
 	 * Zobrist-hajautuskoodi
 	 */
 	private long zobristCode = ZOBRIST_RND_EMPTY;
+
+	/**
+	 * Aikaisempien pelitilanteiden Zobrist-tunnisteet.
+	 */
+	private long[] earlierStates = new long[1024];
+
+	/**
+	 * Tehtyjen puolisiirtojen lukumäärä.
+	 */
+	private int ply = 0;
 
 	/**
 	 * Luo uuden pelitilanteen käyttäen standardia shakin aloitusmuodostelmaa.
@@ -135,6 +146,8 @@ public final class GameState
 	 */
 	public int move(int fromSqr, int toSqr)
 	{
+		earlierStates[ply++] = zobristCode;
+
 		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
@@ -162,6 +175,7 @@ public final class GameState
 	 */
 	public int move(int fromSqr, int toSqr, int pieceType)
 	{
+		earlierStates[ply++] = zobristCode;
 		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 		removePiece(nextMovingPlayer, pieceType, fromSqr);
 		addPiece(nextMovingPlayer, pieceType, toSqr);
@@ -188,6 +202,7 @@ public final class GameState
 	 */
 	public void undoMove(int fromSqr, int toSqr, int movedPiece, int capturedPiece)
 	{
+		--ply;
 		changeNextMovingPlayer();
 		removePiece(nextMovingPlayer, movedPiece, toSqr);
 		addPiece(nextMovingPlayer, movedPiece, fromSqr);
@@ -463,6 +478,16 @@ public final class GameState
 		if (!r && zobristCode == state2.zobristCode)
 			throw new RuntimeException("awr");
 		return r;
+	}
+
+	/**
+	 * Palauttaa taulukossa kaikkien aikaisempien pelitilanteiden tunnisteet.
+	 *
+	 * @return
+	 */
+	public long[] getEarlierStates()
+	{
+		return Arrays.copyOf(earlierStates, ply);
 	}
 
 	/**

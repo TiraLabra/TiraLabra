@@ -7,11 +7,6 @@ final class StateInfo
 {
 	final long state;
 
-	StateInfo(long state)
-	{
-		this.state = state;
-	}
-
 	/**
 	 * Syvyys, johon asti pelitilanne on analysoitu.
 	 */
@@ -37,4 +32,9 @@ final class StateInfo
 	 * Nappulan tyyppi parhaassa siirrossa.
 	 */
 	int bestMovePieceType;
+
+	StateInfo(long state)
+	{
+		this.state = state;
+	}
 }

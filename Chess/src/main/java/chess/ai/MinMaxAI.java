@@ -36,7 +36,7 @@ public class MinMaxAI implements AI
 	 * Transpositiotaulun maksimikoko. Rajoituksena tälle on transpositiotaulun viemän muistin
 	 * määrä.
 	 */
-	private static final int MAX_TRANSPOSITION_TABLE_SIZE = 1024 * 1024 - 20;
+	private static final int MAX_TRANSPOSITION_TABLE_SIZE = 1024 * 1024;
 
 	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
@@ -48,6 +48,11 @@ public class MinMaxAI implements AI
 	 * Transpositiotaulu johon tallennetaan jo analysoidut tilanteet ja parhaat siirrot niissä.
 	 */
 	private TranspositionTable trposTable = new TranspositionTable();
+
+	/**
+	 * Hakutaulu aikaisempia pelitilanteita varten.
+	 */
+	private TranspositionTable earlierStates = new TranspositionTable(512);
 
 	/**
 	 * Aikaraja (sekunteina) parhaan siirron etsimiselle tai 0 jos aikarajaa ei ole. Hakuajan
@@ -132,6 +137,7 @@ public class MinMaxAI implements AI
 	public void move(GameState state)
 	{
 		rootScore = getScore(state);
+		setEarlierStates(state);
 
 		long start = System.nanoTime();
 		trposTable.clear();
@@ -173,6 +179,11 @@ public class MinMaxAI implements AI
 	{
 		++nodeCount;
 
+		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
+		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
+		if (earlierStates.get(state.getId()) != null)
+			return 0;
+
 		if (depth == 0 || !state.areBothKingsAlive())
 			return getScore(state);
 
@@ -182,18 +193,18 @@ public class MinMaxAI implements AI
 			return info.score;
 		}
 
-		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
-			results[ply] = new StateInfo(state.getId());
-		} else
-			results[ply] = null;
+		results[ply] = new StateInfo(state.getId());
+		earlierStates.put(results[ply]);
 
 		int score = search(depth, alpha, beta, state, info);
 
-		if (results[ply] != null) {
+		earlierStates.remove(state.getId());
+
+		// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
+		// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
+		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
 			results[ply].depth = depth;
 			results[ply].score = score;
-			// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
-			// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
 			trposTable.put(results[ply]);
 		}
 
@@ -328,13 +339,11 @@ public class MinMaxAI implements AI
 		--ply;
 
 		if (score > alpha) {
-			if (results[ply] != null) {
-				if (ply == 0 && loggingEnabled)
-					log("" + fromSqr + " " + toSqr + " " + (score - rootScore));
-				results[ply].bestMoveFrom = fromSqr;
-				results[ply].bestMoveTo = toSqr;
-				results[ply].bestMovePieceType = pieceType;
-			}
+			if (ply == 0 && loggingEnabled)
+				log("" + fromSqr + " " + toSqr + " " + (score - rootScore));
+			results[ply].bestMoveFrom = fromSqr;
+			results[ply].bestMoveTo = toSqr;
+			results[ply].bestMovePieceType = pieceType;
 			alpha = score;
 		}
 
@@ -396,5 +405,13 @@ public class MinMaxAI implements AI
 	public int getNodeCount()
 	{
 		return nodeCount;
+	}
+
+	private void setEarlierStates(GameState state)
+	{
+		earlierStates.clear();
+		long[] states = state.getEarlierStates();
+		for (int i = 0; i < states.length; ++i)
+			earlierStates.put(new StateInfo(states[i]));
 	}
 }

@@ -25,11 +25,20 @@ final class TranspositionTable
 	 */
 	private static final int GROWTH_FACTOR = 2;
 
-	//private static final Object REMOVED = new StateInfo();
 	/**
-	 * Tietueiden määrä taulussa.
+	 * Tietue poistettujen alkioiden merkitsemiseksi, jotta kokeilujonot pysyvät yhtenäisenä.
 	 */
-	private int size;
+	private static final StateInfo REMOVED = new StateInfo(0);
+
+	/**
+	 * Käytössä olevat + poistetuksi merkityt alkiot.
+	 */
+	private int reservedCount = 0;
+
+	/**
+	 * Poistettujen tietueiden lukumäärä.
+	 */
+	private int removedCount = 0;
 
 	/**
 	 * Taulun koko, kahden potenssi.
@@ -72,15 +81,15 @@ final class TranspositionTable
 	 */
 	public void put(StateInfo info)
 	{
-		if (size > capacity >> 1)
-			grow();
+		if (reservedCount >= capacity >> 1)
+			rehash();
 
 		int h = (int) info.state & mask;
 		int d = 1;
-		while (entries[h] != null && /*entries[h] != REMOVED &&*/ entries[h].state != info.state)
+		while (entries[h] != null && entries[h] != REMOVED && entries[h].state != info.state)
 			h = (h + d++) & mask;
-		if (entries[h] == null /*|| entries[h] == REMOVED*/)
-			++size;
+		if (entries[h] == null || entries[h] == REMOVED)
+			++reservedCount;
 
 		entries[h] = info;
 	}
@@ -96,7 +105,7 @@ final class TranspositionTable
 		int h = (int) state & mask;
 		int d = 1;
 		while (entries[h] != null) {
-			if (/*entries[h] != REMOVED &&*/state == entries[h].state)
+			if (entries[h] != REMOVED && state == entries[h].state)
 				return entries[h];
 			h = (h + d++) & mask;
 		}
@@ -124,7 +133,8 @@ final class TranspositionTable
 			throw new IllegalArgumentException("Initial capacity too small.");
 		mask = capacity - 1;
 		entries = new StateInfo[capacity];
-		size = 0;
+		reservedCount = 0;
+		removedCount = 0;
 	}
 
 	/**
@@ -134,20 +144,55 @@ final class TranspositionTable
 	 */
 	public int size()
 	{
-		return size;
+		return reservedCount - removedCount;
 	}
 
 	/**
-	 * Suorittaa uudelleenhajautuksen ja kasvattaa taulun kokoa.
+	 * Poistaa pelitilanteen taulusta.
+	 *
+	 * @param state pelitilanteen tunniste
 	 */
-	private void grow()
+	public void remove(long state)
 	{
-		int newCapacity = GROWTH_FACTOR * capacity;
+		int h = (int) state & mask;
+		int d = 1;
+		while (entries[h] != null) {
+			if (state == entries[h].state) {
+				entries[h] = REMOVED;
+				++removedCount;
+				return;
+			}
+			h = (h + d++) & mask;
+		}
+	}
+
+	/**
+	 * Suorittaa uudelleenhajautuksen.
+	 */
+	private void rehash()
+	{
+		int newCapacity = capacity;
+		if (reservedCount - removedCount >= capacity >> 1)
+			newCapacity *= GROWTH_FACTOR;
 		int newMask = newCapacity - 1;
 		StateInfo[] newEntries = new StateInfo[newCapacity];
 
+		copyEntries(newEntries, newMask);
+
+		capacity = newCapacity;
+		mask = newMask;
+		entries = newEntries;
+		reservedCount -= removedCount;
+		removedCount = 0;
+	}
+
+	/**
+	 * Kopioi tietueet uuteen taulukkoon hajautusarvojen mukaisesti.
+	 */
+	private void copyEntries(StateInfo[] newEntries, int newMask)
+	{
 		for (int i = 0; i < capacity; ++i) {
-			if (entries[i] != null /*&& entries[i] != REMOVED*/) {
+			if (entries[i] != null && entries[i] != REMOVED) {
 				int h = (int) entries[i].state & newMask;
 				int d = 1;
 				while (newEntries[h] != null)
@@ -155,9 +200,5 @@ final class TranspositionTable
 				newEntries[h] = entries[i];
 			}
 		}
-
-		capacity = newCapacity;
-		mask = newMask;
-		entries = newEntries;
 	}
 }
