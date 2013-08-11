@@ -147,7 +147,7 @@ public class MinMaxAI implements AI
 
 			nodeCount = 0;
 			trposTblHitCount = 0;
-			searchWithTranspositionLookup(depth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+			search(depth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
 
 			double elapsedTime = (System.nanoTime() - start) * 1e-9;
 			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
@@ -165,9 +165,21 @@ public class MinMaxAI implements AI
 	}
 
 	/**
-	 * Tarkistaa transpositiotaulusta onko annettu pelitilanne jo analysoitu vaadituun syvyyteen
-	 * asti. Jos ei ole analysoitu, tai syvyys hakutaulussa on liian pieni, analysoidaan tilanne
-	 * kutsumalla varsinaista minmax-hakufunktiota (search()).
+	 * Minmax-haun pääfunktio. Toteutettu negamax-hakuna, eli samaa funktiota käytetään molemmille
+	 * pelaajille, ja tarvitsee ainostaan negatoida pistemäärät ja vaihtaa alfa/beta-parametrit
+	 * keskenään.
+	 *
+	 * Lisäksi käytetään alfa-beta karsintaa. Alfa vastaa parhaan tähän mennessä löydetyn siirron
+	 * pistemäärää, ja beta vastaa parasta vastustajan siirtoa (beta >= alfa). Jos löydetään
+	 * betaa suurempi pistearvo, voidaan ko. alipuun etsintä lopettaa, koska vastustaja olisi
+	 * voinut estää tilanteen jo aikaisemmin (ts. tilanne on liian hyvä).
+	 *
+	 * Alfa-beta-karsinnan tehokkaan toiminnan vuoksi on tärkeää, että kussakin tilanteessa
+	 * parhaat siirrot käydään läpi mahdollisimman aikaisessa vaiheessa.
+	 *
+	 * Funktio tarkistaa ensin transpositiotaulusta onko annettu pelitilanne jo analysoitu vaadituun
+	 * syvyyteen asti. Jos on analysoitu, ja tallennetun solmun tyyppi on sopiva, voidaan
+	 * tallennettu pistemäärä palauttaa.
 	 *
 	 * @param depth vaadittava jäljellä oleva hakusyvyys
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
@@ -175,7 +187,7 @@ public class MinMaxAI implements AI
 	 * @param state pelitila
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
-	private int searchWithTranspositionLookup(int depth, int alpha, int beta, GameState state)
+	private int search(int depth, int alpha, int beta, GameState state)
 	{
 		++nodeCount;
 
@@ -190,39 +202,30 @@ public class MinMaxAI implements AI
 		StateInfo info = trposTable.get(state.getId());
 		if (info != null && info.depth >= depth) {
 			++trposTblHitCount;
-			return info.score;
+			if (info.nodeType == StateInfo.NODE_TYPE_EXACT
+					|| info.nodeType == StateInfo.NODE_TYPE_LOWER_BOUND && info.score >= beta
+					|| info.nodeType == StateInfo.NODE_TYPE_UPPER_BOUND && info.score <= alpha)
+				return info.score;
 		}
 
 		results[ply] = new StateInfo(state.getId());
+		results[ply].nodeType = StateInfo.NODE_TYPE_UPPER_BOUND;
 		earlierStates.put(results[ply]);
 
-		int score = search(depth, alpha, beta, state, info);
+		depth = applyNullMoveReduction(depth, alpha, beta, state);
+		int score = searchAllMoves(depth, alpha, beta, state, info);
 
 		earlierStates.remove(state.getId());
 
 		// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
 		// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
-		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
-			results[ply].depth = depth;
-			results[ply].score = score;
-			trposTable.put(results[ply]);
-		}
+		addTranspositionTableEntry(depth, score, results[ply]);
 
 		return score;
 	}
 
 	/**
-	 * Minmax-haun pääfunktio. Toteutettu negamax-hakuna, eli samaa funktiota käytetään molemmille
-	 * pelaajille, ja tarvitsee ainostaan negatoida pistemäärät ja vaihtaa alfa/beta-parametrit
-	 * keskenään.
-	 *
-	 * Lisäksi käytetään alfa-beta karsintaa. Alfa vastaa parhaan tähän mennessä löydetyn siirron
-	 * pistemäärää, ja beta vastaa parasta vastustajan siirtoa (beta >= alfa). Jos löydetään
-	 * betaa suurempi pistearvo, voidaan ko. alipuun etsintä lopettaa, koska vastustaja olisi
-	 * voinut estää tilanteen jo aikaisemmin (ts. tilanne on liian hyvä).
-	 *
-	 * Alfa-beta-karsinnan tehokkaan toiminnan vuoksi on tärkeää, että kussakin tilanteessa
-	 * parhaat siirrot käydään läpi mahdollisimman aikaisessa vaiheessa.
+	 * Käy läpi kaikki mahdolliset siirrot.
 	 *
 	 * @param depth vaadittava jäljellä oleva hakusyvyys
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
@@ -231,28 +234,18 @@ public class MinMaxAI implements AI
 	 * @param info aiemman haun tulos tai null, jos positiota ei löytynyt transpositiotaulusta
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
-	private int search(int depth, int alpha, int beta, GameState state, StateInfo info)
+	private int searchAllMoves(int depth, int alpha, int beta, GameState state, StateInfo info)
 	{
 		int player = state.getNextMovingPlayer();
-
-		// Nollasiirtoredusointi.
-		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
-			state.nullMove();
-			++ply;
-			int score = -searchWithTranspositionLookup(depth - NULL_MOVE_REDUCTION1 - 1, -beta,
-					-alpha, state);
-			--ply;
-			state.nullMove();
-			if (score >= beta)
-				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
-		}
 
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
 		if (info != null && info.bestMoveFrom != -1) {
 			alpha = searchMove(depth, alpha, beta, state, info.bestMovePieceType,
 					info.bestMoveFrom, info.bestMoveTo);
-			if (alpha >= beta)
-				return beta;
+			if (alpha >= beta) {
+				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+				return alpha;
+			}
 		}
 
 		// Etsitään ensimmäisenä kaikki lyönnit.
@@ -264,10 +257,12 @@ public class MinMaxAI implements AI
 
 				for (int capturedPiece = 0; capturedPiece < Pieces.COUNT; ++capturedPiece) {
 					long captureMoves = moves & state.getPieces(1 - player, capturedPiece);
-					alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr,
+					alpha = searchMoves(depth, alpha, beta, state, pieceType, fromSqr,
 							captureMoves);
-					if (alpha >= beta)
-						return beta;
+					if (alpha >= beta) {
+						results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+						return alpha;
+					}
 				}
 			}
 		}
@@ -279,9 +274,12 @@ public class MinMaxAI implements AI
 				int fromSqr = Long.numberOfTrailingZeros(pieces);
 				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
 				moves &= ~state.getPieces(1 - player);
-				alpha = iterateMoves(depth, alpha, beta, state, pieceType, fromSqr, moves);
-				if (alpha >= beta)
-					return beta;
+				alpha = searchMoves(depth, alpha, beta, state, pieceType, fromSqr, moves);
+				if (alpha >= beta) {
+					results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+					return alpha;
+				}
+
 			}
 		}
 
@@ -303,14 +301,14 @@ public class MinMaxAI implements AI
 	 * @param moves siirrot 64-bittisenä bittimaskina
 	 * @return uusi alfa-arvo
 	 */
-	private int iterateMoves(int depth, int alpha, int beta, GameState state, int pieceType,
+	private int searchMoves(int depth, int alpha, int beta, GameState state, int pieceType,
 			int fromSqr, long moves)
 	{
 		for (; moves != 0; moves -= Long.lowestOneBit(moves)) {
 			int toSqr = Long.numberOfTrailingZeros(moves);
 			alpha = searchMove(depth, alpha, beta, state, pieceType, fromSqr, toSqr);
 			if (alpha >= beta)
-				return beta;
+				return alpha;
 		}
 
 		return alpha;
@@ -334,7 +332,7 @@ public class MinMaxAI implements AI
 	{
 		++ply;
 		int capturedPiece = state.move(fromSqr, toSqr, pieceType);
-		int score = -searchWithTranspositionLookup(depth - 1, -beta, -alpha, state);
+		int score = -search(depth - 1, -beta, -alpha, state);
 		state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
 		--ply;
 
@@ -345,6 +343,7 @@ public class MinMaxAI implements AI
 			results[ply].bestMoveTo = toSqr;
 			results[ply].bestMovePieceType = pieceType;
 			alpha = score;
+			results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
 		}
 
 		return alpha;
@@ -387,6 +386,29 @@ public class MinMaxAI implements AI
 	}
 
 	/**
+	 * Nollasiirtoredusointi.
+	 *
+	 * @param depth vaadittava jäljellä oleva hakusyvyys
+	 * @param alpha alfa-beta-karsinnan alfa-arvo
+	 * @param beta alfa-beta-karsinnan beta-arvo
+	 * @param state pelitilanne
+	 * @return uusi syvyysarvo
+	 */
+	private int applyNullMoveReduction(int depth, int alpha, int beta, GameState state)
+	{
+		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
+			state.nullMove();
+			++ply;
+			int score = -search(depth - NULL_MOVE_REDUCTION1 - 1, -beta, -alpha, state);
+			--ply;
+			state.nullMove();
+			if (score >= beta)
+				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
+		}
+		return depth;
+	}
+
+	/**
 	 * Lisää uuden viestin lokiin.
 	 *
 	 * @param msg viesti
@@ -407,11 +429,32 @@ public class MinMaxAI implements AI
 		return nodeCount;
 	}
 
+	/**
+	 * Päivittää taulun, joka sisältää aikaisemmat pelitilanteet.
+	 *
+	 * @param state pelitilanne
+	 */
 	private void setEarlierStates(GameState state)
 	{
 		earlierStates.clear();
 		long[] states = state.getEarlierStates();
 		for (int i = 0; i < states.length; ++i)
 			earlierStates.put(new StateInfo(states[i]));
+	}
+
+	/**
+	 * Lisää tietueen tranpositiotauluun, jos sen koko ei ylitä maksimikokoa.
+	 *
+	 * @param depth analysoitu syvyys
+	 * @param score haun palauttama pistemäärä
+	 * @param result hakua vastaava tietue
+	 */
+	private void addTranspositionTableEntry(int depth, int score, StateInfo result)
+	{
+		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
+			result.depth = depth;
+			result.score = score;
+			trposTable.put(result);
+		}
 	}
 }
