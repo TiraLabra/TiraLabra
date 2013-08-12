@@ -79,7 +79,7 @@ class TapahtumaKuuntelija implements ActionListener {
             this.tuhoutuvat.remove(0);
 
             // Saada tassa kuinka nopeasti animaatiot nakyvat
-            final Timer timer = new Timer(2000, null);
+            final Timer timer = new Timer(300, null);
             this.moneskoTimerToisto = 0;
             this.kombot = new ArrayList<Koordinaatti>();
             
