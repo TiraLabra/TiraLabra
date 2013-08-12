@@ -16,7 +16,7 @@ public class TiedostoKirjoittaja implements ITiedostoKirjoittaja {
     private OutputStream inputStream;
     private final File TIEDOSTO;
     /**
-     * Tiedoston nimi johonka kirjoitetaan
+     * Konstruktori. Parametrina tiedoston nimi johonka kirjoitetaan
      * @param nimi tiedoston nimi
      */
     public TiedostoKirjoittaja(String nimi) {

@@ -10,7 +10,7 @@ public class Main {
         int blokinKoko = 4;
 
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
-        Purkaaja purkaaja = new Purkaaja(blokinKoko);
+        Purkaaja purkaaja = new Purkaaja();
 
 
         System.out.println("Pakataan...");

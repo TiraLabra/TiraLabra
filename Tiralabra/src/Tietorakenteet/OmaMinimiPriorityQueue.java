@@ -72,7 +72,7 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
         return paluu;
     }
-
+    
     private int haeVasemmanLapsenIndeksi(int i) {
         return 2 * (i + 1) - 1;
     }
@@ -103,7 +103,7 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
         return (i - 1) / 2;
     }
 
-    // suoraan luentomonisteesta napattu
+    // suoraan luentomonisteesta napattu - varmistaa että keko toteuttaa kekoehdon
     private void heapify(int paikka) {
         T vasen = haeVasenLapsi(paikka);
         T oikea = haeOikeaLapsi(paikka);
