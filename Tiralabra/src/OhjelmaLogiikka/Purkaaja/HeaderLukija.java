@@ -1,5 +1,6 @@
 package OhjelmaLogiikka.Purkaaja;
 
+import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaHashMap;
@@ -10,7 +11,7 @@ import java.io.IOException;
 
 public class HeaderLukija {
 
-    private final int OFFSET = 127;
+    private final int OFFSET = 128;
 
     /**
      * Lukee annetusta tiedostosta headerin tiedot
@@ -22,12 +23,12 @@ public class HeaderLukija {
      * @throws FileNotFoundException jos annettua tiedostoa ei löydy
      * @throws IOException Jos tapahtuu IO-virhe
      */
-    public Pari<Integer, OmaMap<Koodi, byte [] >> lueHeader(String sisaan) throws FileNotFoundException, IOException {
+    public Pari<Integer, OmaMap<Koodi, byte[]>> lueHeader(String sisaan) throws FileNotFoundException, IOException {
         TiedostoLukija headerLukija = new TiedostoLukija(sisaan + ".header");
         headerLukija.avaaTiedosto();
 
 
-        Pari<Integer, OmaMap<Koodi, byte [] >> paluu = new Pari<Integer, OmaMap<Koodi, byte [] >>();
+        Pari<Integer, OmaMap<Koodi, byte[]>> paluu = new Pari<Integer, OmaMap<Koodi, byte[]>>();
 
         byte[] headerAlku = new byte[1];
         if (headerLukija.lue(headerAlku) != 1) {
@@ -42,23 +43,23 @@ public class HeaderLukija {
         return paluu;
     }
 
-    private OmaMap<Koodi, byte []> lueKoodiBlokkiParit(TiedostoLukija headerLukija) throws IOException {
-        OmaMap<Koodi, byte []> koodit = new OmaHashMap<Koodi, byte []>();
+    private OmaMap<Koodi, byte[]> lueKoodiBlokkiParit(TiedostoLukija headerLukija) throws IOException {
+        OmaMap<Koodi, byte[]> koodit = new OmaHashMap<Koodi, byte[]>();
 
         while (lueYksiKoodiBlokkiPari(headerLukija, koodit)) {
         }
 
-        
+
         for (int i = 0; i < 8; ++i) {
             Koodi koodi = new Koodi();
             koodi.pituus = 3;
             koodi.koodi = i;
-           
+
         }
         return koodit;
     }
 
-    private boolean lueYksiKoodiBlokkiPari(TiedostoLukija headerLukija, OmaMap<Koodi, byte [] > koodit) throws IOException {
+    private boolean lueYksiKoodiBlokkiPari(TiedostoLukija headerLukija, OmaMap<Koodi, byte[]> koodit) throws IOException {
 
         byte[] lukuPuskuri = new byte[1];
 
@@ -77,53 +78,53 @@ public class HeaderLukija {
         assert (koodinPituusBiteissa >= 1 && koodinPituusBiteissa <= 64);
 
 
-        byte [] blokki = lueBlokki(blokinPituus, headerLukija);
+        byte[] blokki = lueBlokki(blokinPituus, headerLukija);
         Koodi koodi = lueKoodi(koodinPituusBiteissa, headerLukija);
 
         koodit.put(koodi, blokki);
         return true;
     }
 
-    private byte [] lueBlokki(int blokinPituus, TiedostoLukija headerLukija) throws IOException {
-        
-        
+    private byte[] lueBlokki(int blokinPituus, TiedostoLukija headerLukija) throws IOException {
+
+
         byte[] puskuri = new byte[blokinPituus];
 
-       
+
         if (headerLukija.lue(puskuri) != blokinPituus) {
             throw new IOException("Header-tiedoston korruptoitunut - blokin luku epäonnistui");
         }
-       
+
         return puskuri;
     }
     // koodin pituus - bittejä
+
     private Koodi lueKoodi(int koodinPituus, TiedostoLukija headerLukija) throws IOException {
         byte[] lukuPuskuri;
-        lukuPuskuri = new byte[koodinPituus/8+1];
-       
+        lukuPuskuri = new byte[koodinPituus / 8 + 1];
+
         if (headerLukija.lue(lukuPuskuri) != lukuPuskuri.length) {
             throw new IOException("Header-tiedoston korruptoitunut - koodi lukeminen epäonnistu");
         }
         Koodi koodi = new Koodi();
         koodi.pituus = koodinPituus;
-        
+
         int paikka = 0;
         int puskurinPaikka = 0;
         for (int i = 0; i < koodinPituus; ++i) {
-            
-                int luettuArvo = lukuPuskuri[puskurinPaikka] & (1 << paikka);
-                luettuArvo = luettuArvo >> paikka;
-                
-                ++paikka;
-                
-                if (paikka == 8) {
-                    paikka = 0;
-                    ++puskurinPaikka;
-                }
-                assert (luettuArvo == 1 || luettuArvo == 0);
-                
-                koodi.koodi = koodi.koodi | (luettuArvo << i);
 
+            int luettuArvo = BittiUtility.haeBitinArvoPaikasta(lukuPuskuri[puskurinPaikka], paikka);
+            ++paikka;
+
+            if (paikka == 8) {
+                paikka = 0;
+                ++puskurinPaikka;
+            }
+            assert (luettuArvo == 1 || luettuArvo == 0);
+
+            // koodi.koodi = koodi.koodi | (luettuArvo << i);
+
+            koodi.koodi = BittiUtility.tallennaBitinArvoPaikalle(koodi, luettuArvo, i);
         }
 
         return koodi;

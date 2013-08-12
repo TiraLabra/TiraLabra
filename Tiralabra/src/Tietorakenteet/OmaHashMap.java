@@ -44,26 +44,6 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         alustaTaulukko(arvot);
     }
 
-    public void tulostaTila() {
-        System.out.println("Nykyinen kuormakerroin: " + (double) koko / arvot.length + "\n\n");
-
-        System.out.println("Indeksien pituudet: ");
-        int eiTyhjia = 0;
-        for (int i = 0; i < arvot.length; ++i) {
-
-            OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
-            System.out.println("Indeksin " + i + " pituus: " + lista.size());
-
-            if (lista.size() > 0) {
-                ++eiTyhjia;
-            }
-        }
-
-        System.out.println("\n\nKeskimääräinen kuorma ei-tyhjällä indeksillä " + (double) koko / eiTyhjia);
-
-
-        System.out.println("");
-    }
 
     /**
      * Alustaa taulukon
@@ -94,12 +74,11 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
      */
     private void rehash(Object[] uusiTaulukko) {
         for (int i = 0; i < arvot.length; ++i) {
+            
             assert (arvot[i] != null);
             OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
             if (!lista.isEmpty()) {
-                for (int j = 0; j < lista.size(); ++j) {
-                    asetaTaulukkoon(lista.get(j).ensimmainen, lista.get(j).toinen, uusiTaulukko);
-                }
+                reHashaaLista(lista, uusiTaulukko);
             }
         }
     }
@@ -119,7 +98,9 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     @Override
     public V get(Object key) {
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[taulukonIndeksi(key, arvot)];
+        
         assert (lista != null);
+        
         for (int i = 0; i < lista.size(); ++i) {
             if (lista.get(i).ensimmainen.equals(key)) {
                 return lista.get(i).toinen;
@@ -152,20 +133,12 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     private boolean asetaTaulukkoon(K key, V value, Object[] taulukko) {
 
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) taulukko[taulukonIndeksi(key, taulukko)];
-
-        // jos on jo taulukossa, korvataan
-        for (int i = 0; i < lista.size(); ++i) {
-            if (lista.get(i).ensimmainen.equals(key)) {
-                lista.get(i).toinen = value;
-                return false;
-                //break;
-            }
+        
+        if (korvaaJosJoTaulukossa(lista, key, value)) {
+            return false;
         }
-
-        Pari<K, V> pari = new Pari<K, V>();
-        pari.ensimmainen = key;
-        pari.toinen = value;
-        lista.add(pari);
+        
+        lisaaTaulukkoon(key, value, lista);
         return true;
     }
 
@@ -181,5 +154,29 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
             }
         }
         return avainLista;
+    }
+
+    private boolean korvaaJosJoTaulukossa(OmaList<Pari<K, V>> lista, K key, V value) {
+        // jos on jo taulukossa, korvataan
+        for (int i = 0; i < lista.size(); ++i) {
+            if (lista.get(i).ensimmainen.equals(key)) {
+                lista.get(i).toinen = value;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void lisaaTaulukkoon(K key, V value, OmaList<Pari<K, V>> lista) {
+        Pari<K, V> pari = new Pari<K, V>();
+        pari.ensimmainen = key;
+        pari.toinen = value;
+        lista.add(pari);
+    }
+
+    private void reHashaaLista(OmaList<Pari<K, V>> lista, Object[] uusiTaulukko) {
+        for (int j = 0; j < lista.size(); ++j) {
+            asetaTaulukkoon(lista.get(j).ensimmainen, lista.get(j).toinen, uusiTaulukko);
+        }
     }
 }

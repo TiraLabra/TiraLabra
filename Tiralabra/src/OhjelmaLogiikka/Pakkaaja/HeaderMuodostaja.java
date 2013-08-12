@@ -1,5 +1,6 @@
 package OhjelmaLogiikka.Pakkaaja;
 
+import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
@@ -11,13 +12,13 @@ import java.io.IOException;
 
 public class HeaderMuodostaja {
 
-    private final int OFFSET = 127;
+    private final int OFFSET = 128;
 
     /**
      * Muodostaa headerin. Formaatin yksityiskohdat löytyy
      * tiedostoformaatti.txt-tiedostosta. Huom: kaikki yhden bitin pituuskentät
      * tallennetaan offsetin kanssa koska java käyttää vain etumerkillisiä
-     * lukuja ja 255 -> 128 on liian suuri tiputus (eli -127 = 0, 128 = 255)
+     * lukuja ja 255 -> 127 on liian suuri tiputus (eli -128 = 0, 127 = 255)
      *
      * @param koodit Blokki-koodiparit
      * @param viimeisessaTavussaMerkitseviaBitteja montako bittiä viimeisessä
@@ -46,14 +47,14 @@ public class HeaderMuodostaja {
     }
 
     /**
-     * Tallentaa taulukkoon merkitsevien bittien määrän ja varaa 4 tavua tilaa
-     * taulukkoon headerin kokoa varten.
+     * Tallentaa taulukkoon merkitsevien bittien määrän headeriin
      *
      * @param viimeisessaTavussaMerkitseviaBitteja montako bittiä viimeisessä
      * tavussa on merkitseviä
-     * @param header header-tavut
+     * @param kirjoittaja TiedostoKirjoittaja johonka kirjoitetaan
      * @throws IllegalArgumentException jos viimeisessaTavussaMerkitseviaBitteja
      * on alle 1 tai suurempi kuin 8
+     * @throws IOException jos jotakin menee vikaan tiedoston kirjoituksessa
      */
     private void alustaHeader(Integer viimeisessaTavussaMerkitseviaBitteja, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (viimeisessaTavussaMerkitseviaBitteja > 8 || viimeisessaTavussaMerkitseviaBitteja < 1) {
@@ -66,21 +67,23 @@ public class HeaderMuodostaja {
     }
 
     /**
-     * Muodostaa yhden blokki-koodi-parin headeriin
+     * Muodostaa yhden blokki-koodi-parin ja kirjoittaa sen headeriin headeriin
      *
      * @param blokki Koodattava blokki
      * @param koodi blokin koodi
-     * @param header header-lista johonka tallennetaan
+     * @param kirjoittaja TiedostoKirjoittaja johonka kirjoitetaan
+     * @throws IllegalArgumentException Jos blokin pituus on suurempi kuin 255
+     * tavua - pituuden on mahduttava yhteen tavuun, tai jos koodin pituus on
+     * suurempi kuin 64 - koodin on mahduttava long-muuttujaan
+     * @throws IOException Jos jotakin menee vikaan kirjoitettaessa tietoa headeriin
      */
-    private void muodostaBlokkiAvainPari(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    private void muodostaBlokkiAvainPari(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
         byte[] puskuri = new byte[1];
 
         // tallennettavan bittiblokin pituus tavuissa
-        
-      
         puskuri[0] = (byte) (blokki.size() - OFFSET);
         kirjoittaja.kirjoita(puskuri);
 
@@ -90,50 +93,36 @@ public class HeaderMuodostaja {
 
         byte[] koodiTavuina = muunnaKoodiTavuiksi(koodi);
 
-
-
-        
-
         puskuri[0] = (byte) (koodi.pituus - OFFSET);
-        kirjoittaja.kirjoita(puskuri);
-
-        // tallennetaan blokki       
+        kirjoittaja.kirjoita(puskuri); // tallennetaan merkitsevien bittien määrä  - max 64 bittiä koska bittien on mahduttava long-muuttujaan
         kirjoittaja.kirjoita(blokki.byteTaulukko);
-     
-
-        // tallennetaan koodi
         kirjoittaja.kirjoita(koodiTavuina);
-       
+
     }
 
     /**
+     * Muuntaa annetun Koodi-objektin koodi-kentän byte[]-taulukoksi.
      *
      * @param koodi Muunnettava koodi
-     * @return <Integer, OmaList<Byte>>-pari. Integer kertoo viimeisessä tavussa
-     * olevien merkitsevien bittien määrän, OmaList<Byte> sisältää tavut johon
-     * on koodattu koodi bitteinä (jokainen 8 merkin String-blokki koodataan
-     * yhteen byteen)
+     * @return byte [] koodin bitit tallennettuna byte-taulukkoon.
      */
     private byte[] muunnaKoodiTavuiksi(Koodi koodi) {
         // muunnetaan tallennettava koodi String -> byteihin pakatut bitit
         byte[] muunnettuKoodi = new byte[koodi.pituus / 8 + 1];
-        
+
         int paikka = 0;
         int tavunPaikka = 0;
         for (int i = 0; i < koodi.pituus; ++i) {
-            int arvo = (int) (koodi.koodi & (1 << i));
-            arvo = arvo >> i;
-            
-            muunnettuKoodi[tavunPaikka] = (byte) (muunnettuKoodi[tavunPaikka] | (arvo << paikka));
-             
-             
+            int arvo = BittiUtility.haeBitinArvoPaikasta(koodi, i);
+            muunnettuKoodi[tavunPaikka] = BittiUtility.tallennaBitinArvoPaikalle(muunnettuKoodi[tavunPaikka], arvo, paikka);
+
             ++paikka;
             if (paikka == 8) {
                 paikka = 0;
                 ++tavunPaikka;
             }
         }
-      
+
         assert (tavunPaikka * 8 + paikka == koodi.pituus);
         return muunnettuKoodi;
     }

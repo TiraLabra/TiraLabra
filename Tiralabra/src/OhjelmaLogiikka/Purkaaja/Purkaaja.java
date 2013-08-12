@@ -1,5 +1,6 @@
 package OhjelmaLogiikka.Purkaaja;
 
+import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.Koodi;
@@ -31,7 +32,7 @@ public class Purkaaja {
             aika = (System.nanoTime() - aika);
             System.out.println("Puretun tiedoston koko: " + (double) tiedostonKoko / 1024 / 1024 + " megatavua");
             System.out.println("Purkamiseen kului " + aika / 1000000 + " ms");
-            System.out.println("Käsiteltiin " + ((double) tiedostonKoko / 1024 / 1024 / (aika / 1000000000)) + " megatavua/sekunti");
+            System.out.println("Käsiteltiin " + ((double) tiedostonKoko / 1024 / 1024 / ((double)aika / 1000000000)) + " megatavua/sekunti");
 
         } catch (Exception ex) {
             System.out.println("Jotain meni pieleen: " + ex.getMessage());
@@ -75,9 +76,9 @@ public class Purkaaja {
             }
            
             for (int j = 0; j < maks; ++j) {
-                int luettuArvo = kasiteltavaTavu & (1 << j);
-                luettuArvo = luettuArvo >> j;
-                koodi.koodi = koodi.koodi | (luettuArvo << koodi.pituus);
+                int luettuArvo = BittiUtility.haeBitinArvoPaikasta(kasiteltavaTavu, j);
+                koodi.koodi = BittiUtility.tallennaBitinArvoPaikalle(koodi, luettuArvo, koodi.pituus);
+               
                 koodi.pituus++;
                 byte[] array = koodit.get(koodi);
                 if (array != null) {

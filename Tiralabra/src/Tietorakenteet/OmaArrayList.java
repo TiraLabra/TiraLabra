@@ -54,14 +54,11 @@ public class OmaArrayList<T> implements OmaList<T> {
 
     @Override
     public boolean add(T e) {
-        if (data.length == datanKoko) {
-         
+        if (kapasiteettiTaynna()) {
             kasvataKokoa();
-       
         }
-
-        data[datanKoko] = e;
-        ++datanKoko;
+        
+        lisaaElementti(e);
 
         return true;
     }
@@ -213,5 +210,14 @@ public class OmaArrayList<T> implements OmaList<T> {
         }
 
         return true;
+    }
+
+    private boolean kapasiteettiTaynna() {
+        return data.length == datanKoko;
+    }
+
+    private void lisaaElementti(T e) {
+        data[datanKoko] = e;
+        ++datanKoko;
     }
 }
