@@ -3,12 +3,23 @@
  *
  * @author maef
  */
-public class Solmu {
+public class Solmu implements Comparable<Solmu>{
     private int a;
     private int b;
-    private Labyrintti laby;
+    private int heuristiikka;
+    private int alkuarvo = Integer.MAX_VALUE;
+    private Solmu[][] laby;
+    boolean seina;
 
-    public Solmu(int a, int b, Labyrintti laby) {
+    public void setOnkoSeina(boolean seina) {
+        this.seina = seina;
+    }
+
+    public void setHeuristiikka(int heuristiikka) {
+        this.heuristiikka = heuristiikka;
+    }
+
+    public Solmu(int a, int b, Solmu[][] laby) {
         this.a = a;
         this.b = b;
         this.laby = laby;
@@ -37,13 +48,11 @@ public class Solmu {
      * Kertoo solmun viereiset solmut vaaka-akselilla.
      * n:n arvon pitää olla joko 1 tai -1.
      */
-    public Solmu vierusX(int n) { 
-        if (a == 0 || a == laby.getWidth()-1) {
+    public Solmu vierusX(int n) {
+        if (a+n<0 || a+n > laby[0].length) {
             return null;
         }
-        
-        Solmu vierus = new Solmu((a+n), b, laby);
-        return vierus;
+        return laby[b][a+n];
     }
     
     /**
@@ -54,10 +63,23 @@ public class Solmu {
      * n:n arvon on oltava joko 1 tai -1.
      */
     public Solmu vierusY(int n) {
-        if (b == 0 || b == laby.getHeight()-1) {
+        if (b+n<0 || b+n > laby.length) {
             return null;
         }
-        Solmu vierus = new Solmu(a, (b+n), laby);
-        return vierus;
+        return laby[b+n][a];
+    }
+    
+    public int getHeuristiikka() {
+        return heuristiikka;
+    }
+
+    @Override
+    public int compareTo(Solmu o) {
+        return 0;
+    }
+    
+    @Override
+    public String toString(){
+        return "( a: "+ a+ " b: " + b + " h: " + heuristiikka + " )";
     }
 }

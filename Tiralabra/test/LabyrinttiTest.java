@@ -43,5 +43,15 @@ public class LabyrinttiTest {
          
          assertEquals(1000000, labyrintti.etaisyys(a));
      }
+     
+     @Test
+     public void getHeight(){
+         assertEquals(350, labyrintti.getHeight());
+     }
+     
+     @Test
+     public void getWidth() {
+         assertEquals(500, labyrintti.getWidth());
+     }
     
 }
