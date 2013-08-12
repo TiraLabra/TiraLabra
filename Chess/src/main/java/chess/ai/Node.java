@@ -116,9 +116,9 @@ public class Node
 	 */
 	private static String itostr(int x)
 	{
-		if (x == Integer.MIN_VALUE + 1)
+		if (x == Scores.MIN)
 			return "-\u221e";
-		else if (x == Integer.MAX_VALUE)
+		else if (x == Scores.MAX)
 			return "\u221e";
 		else
 			return Integer.toString(x);

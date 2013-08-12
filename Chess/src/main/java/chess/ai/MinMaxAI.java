@@ -12,7 +12,7 @@ public class MinMaxAI implements AI
 	/**
 	 * Oletusaikaraja (sekunteina), jos konstruktorissa ei ole annettu aikarajaa.
 	 */
-	private static final double DEFAULT_TIME_LIMIT = 3.0;
+	private static final double DEFAULT_TIME_LIMIT = 2.0;
 
 	/**
 	 * Estimoitu haarautumiskerroin, jota käytetään suoritusajaan arviointiin.
@@ -160,7 +160,7 @@ public class MinMaxAI implements AI
 
 			nodeCount = 0;
 			trposTblHitCount = 0;
-			search(depth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+			search(depth, Scores.MIN, Scores.MAX, state);
 			info = trposTable.get(state.getId());
 			treeGenerator.endNode(-1, -1, info.score, -1, -1, 0);
 
@@ -210,7 +210,7 @@ public class MinMaxAI implements AI
 		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
 		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
 		if (earlierStates.get(state.getId()) != null)
-			return 0;
+			return Scores.DRAW;
 
 		if (depth == 0 || !state.areBothKingsAlive())
 			return getScore(state);
@@ -232,6 +232,8 @@ public class MinMaxAI implements AI
 		int score = searchAllMoves(depth, alpha, beta, state, info);
 
 		earlierStates.remove(state.getId());
+
+		score = applyScoreDepthAdjustment(score, state);
 
 		// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
 		// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
@@ -299,7 +301,7 @@ public class MinMaxAI implements AI
 			}
 		}
 
-		if (alpha < -(Pieces.values[Pieces.KING] >> 1) && state.isStaleMate())
+		if (alpha < -Scores.CHECK_MATE_THRESHOLD && state.isStaleMate())
 			return 0;
 
 		return alpha;
@@ -372,9 +374,7 @@ public class MinMaxAI implements AI
 	 * Laskee pistemäärän pelitilanteelle, perustuen pelaajien nappuloiden yhteisarvojen erotukseen.
 	 * Lisäksi tasapisteissä painotetaan hieman tilannetta, jossa nappuloiden kokonaismäärä
 	 * laudalle on pienempi. Tällä saadaan tekoälystä aggressiivisempi; ilman avauskirjastoa tms.
-	 * alkupeli on muutoin liian passiivinen. Lisäksi mattitilanteissa syvyys vaikuttaa
-	 * pistemäärään; mattiin joutumista tulee viivyttää niin pitkään kuin mahdollista; muutoin voi
-	 * aiheutua laiton siirto tilanteessa, jossa matti on välttämätön.
+	 * alkupeli on muutoin liian passiivinen.
 	 *
 	 * @param state pelitila
 	 * @return pistemäärä
@@ -384,17 +384,11 @@ public class MinMaxAI implements AI
 		int player = state.getNextMovingPlayer();
 		int score = 0;
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
-			int pieceValue = Pieces.values[pieceType];
+			int pieceValue = Scores.PIECE_VALUES[pieceType];
 			score += Long.bitCount(state.getPieces(player, pieceType)) * pieceValue;
 			score -= Long.bitCount(state.getPieces(1 - player, pieceType)) * pieceValue;
 		}
 		score -= Long.bitCount(state.getPieces(player) | state.getPieces(1 - player));
-
-		if (score > Pieces.values[Pieces.KING] >> 1)
-			score += Pieces.values[Pieces.KING] * (100 - ply);
-		else if (score < -(Pieces.values[Pieces.KING] >> 1))
-			score -= Pieces.values[Pieces.KING] * (100 - ply);
-
 		return score;
 	}
 
@@ -460,6 +454,28 @@ public class MinMaxAI implements AI
 		long[] states = state.getEarlierStates();
 		for (int i = 0; i < states.length; ++i)
 			earlierStates.put(new StateInfo(states[i]));
+	}
+
+	/**
+	 * Pienentää siirron pistemäärää jokaista siirtoa kohden niin, että jos usealla siirrolla
+	 * päästään samanarvoiseeen lopputilanteeseen, valitaan se, jonka vaatima siirtomäärä on pienin.
+	 * (Ja vastustaja pyrkii viivyttämään sitä.) Erityisesti mattiin joutumista tulee viivyttää niin
+	 * pitkään kuin mahdollista; muutoin voi aiheutua laiton siirto tilanteessa, jossa matti on
+	 * välttämätön.
+	 *
+	 * @param score parhaan siirron pistemäärä (alfa)
+	 * @param state pistemäärä ennen siirtoa
+	 */
+	private int applyScoreDepthAdjustment(int score, GameState state)
+	{
+		if (score > Scores.CHECK_MATE_THRESHOLD)
+			score -= Scores.CHECK_MATE_DEPTH_ADJUSTMENT;
+//		else {
+//			int currentScore = getScore(state);
+//			if (score > currentScore)
+//				score -= SCORE_DEPTH_ADJUSTMENT;
+//		}
+		return score;
 	}
 
 	/**

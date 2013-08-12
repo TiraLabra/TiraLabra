@@ -40,25 +40,6 @@ public final class Pieces
 	 */
 	public static final int COUNT = 6;
 
-	/**
-	 * Nappuloiden arvot, joita käytetään pelitilanteiden pistemäärien arvioimiseen. Arvot on
-	 * skaalattu 1000:lla, jotta pienempiä arvoja voidaan käyttää muita pisteytyskriteerejä
-	 * varten.
-	 *
-	 * Myös kuninkaalle on annettu pistemäärä, koska MinMaxAI perustuu pseudolaillisiin siirtoihin,
-	 * jotka voivat mahdollistaa kuninkaan lyönnin.
-	 */
-	public static final int[] values = new int[Pieces.COUNT];
-
-	static {
-		values[Pieces.KING] = 1000 * 1000;
-		values[Pieces.QUEEN] = 9 * 1000;
-		values[Pieces.ROOK] = 5 * 1000;
-		values[Pieces.BISHOP] = 3 * 1000;
-		values[Pieces.KNIGHT] = 3 * 1000;
-		values[Pieces.PAWN] = 1 * 1000;
-	}
-
 	public static final String[] symbols = new String[Pieces.COUNT];
 
 	static {
