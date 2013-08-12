@@ -1,5 +1,5 @@
 
-package gui;
+
 
 import java.awt.*;
 import javax.swing.*;
@@ -11,6 +11,7 @@ import javax.swing.*;
 public class Kayttoliittyma implements Runnable {
 
     private JFrame frame;
+    private Labyrintti laby = new Labyrintti("labyrintti");
 
     /**
      *
@@ -24,7 +25,7 @@ public class Kayttoliittyma implements Runnable {
     @Override
     public void run() {
         frame = new JFrame("Labyrintti");
-        frame.setPreferredSize(new Dimension(600, 400));
+        frame.setPreferredSize(new Dimension(600, 450));
         
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
   
@@ -40,6 +41,8 @@ public class Kayttoliittyma implements Runnable {
  * @param container 
  */
     private void luoKomponentit(Container container) {
+        Image sokkelo = laby.haeLaby();
+        
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         
         JPanel kehys = new JPanel();
@@ -48,6 +51,7 @@ public class Kayttoliittyma implements Runnable {
         container.add(kehys);
         
         JLabel kuva = new JLabel();
+        kuva.setIcon(new ImageIcon(sokkelo));
         kehys.add(kuva);
         
         JPanel napit = new JPanel();
@@ -57,7 +61,7 @@ public class Kayttoliittyma implements Runnable {
         JButton nappi = new JButton("Aloita suunnistus");
         napit.add(nappi);
         
-        Kuuntelija kuuntelija = new Kuuntelija(nappi);
+        Kuuntelija kuuntelija = new Kuuntelija(nappi, kuva, laby);
         
         nappi.addActionListener(kuuntelija);
 

@@ -29,7 +29,7 @@ public class SuunnistajaAStar {
      * @return 
      * Etsii ja palauttaa lyhimmän polun.
      */
-    private ArrayList<Solmu> etsi() {  //En ole testannut, mutta jotenkin tuntuu siltä, että tämä EI toimi...
+    public ArrayList<Solmu> etsi() {  //Ei toimi. Juuttuu silmukkaan.
         ArrayList<Solmu> kasitelty = new ArrayList();
         ArrayList<Solmu> nykyiset = new ArrayList();
         ArrayList<Solmu> polku = new ArrayList();
@@ -38,7 +38,7 @@ public class SuunnistajaAStar {
         int matka = 0;
         
         
-        while (!nykyiset.isEmpty()) {
+        while (true) {
             
             if (laby.etaisyys(a) == 1000000){
             return null;
@@ -49,20 +49,22 @@ public class SuunnistajaAStar {
             }
             
             for (int i = -1; i < 1; i+=2) {
-                if (a.vierusX(i)!=null && !kasitelty.contains(a.vierusX(i))) {
+                if (a.vierusX(i)!=null) {
                 nykyiset.add(a.vierusX(i));
                 }
-                if (a.vierusY(i)!=null && !kasitelty.contains(a.vierusY(i))) {
+                if (a.vierusY(i)!=null) {
                 nykyiset.add(a.vierusY(i));
                 }
             }
             
-            for (int i = 1; i < 5; i++) {
+            for (int i = 0; i < nykyiset.size(); i++) {
                 if (laby.etaisyys(nykyiset.get(i))+heuristiikka(nykyiset.get(i)) < laby.etaisyys(a)+heuristiikka(a)) {
                     a = nykyiset.get(i);
                     polku.add(a);
                 }
-                kasitelty.add(nykyiset.get(i));
+                if (!kasitelty.contains(nykyiset.get(i))) {
+                    kasitelty.add(nykyiset.get(i));
+                }
             }
             nykyiset.clear();
             nykyiset.add(a);
