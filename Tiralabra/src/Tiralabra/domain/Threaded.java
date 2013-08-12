@@ -9,8 +9,17 @@ package Tiralabra.domain;
  */
 public class Threaded implements Puu {
 
+    /**
+     * Puun juurisolmu.
+     *
+     */
     private SolmuThreaded juuri;
 
+    /**
+     * Luo uuden puun ja sen juurisolmun annetulla arvolla.
+     *
+     * @param emo juurisolmun arvo.
+     */
     public Threaded(int emo) {
         juuri = new SolmuThreaded(emo);
     }
@@ -22,12 +31,12 @@ public class Threaded implements Puu {
         while (pointteri.getVasen() != null) {
             pointteri = pointteri.getVasen();
         }
-        
+
         while (pointteri != null) {
-        arvot = arvot + pointteri.getKey() + "\n";
-        pointteri = succ(pointteri);
+            arvot = arvot + pointteri.getKey() + "\n";
+            pointteri = succ(pointteri);
         }
-        
+
         return arvot;
     }
 
@@ -70,20 +79,54 @@ public class Threaded implements Puu {
     @Override
     public void delete(int key) {
         SolmuThreaded pois = searchThreaded(key);
+        
+        if (pois == null) {
+            return;
+        }
+
+        //solmu on juuri jolla yksi lapsi 
+        if (pois.getParent() == null && (!pois.oikeaStatusGet() || !pois.vasenStatusGet())) {
+            if (pois.oikeaStatusGet()) {
+                pois.getOikea().setParent(null);
+                this.juuri = pois.getOikea();
+            } else {
+                pois.getVasen().setParent(null);
+                this.juuri = pois.getVasen();
+            }
+        }
+
+        //solmulla on kaksi lasta: korvataan solmun arvo seuraajan arvolla, poistetaan seuraaja
         if (pois.oikeaStatusGet() && pois.vasenStatusGet()) {
             SolmuThreaded succ = succ(pois);
             pois.setKey(succ.getKey());
-            poista(succ);
-        } else if (pois.getParent() != null){
+
+            //seuraaja on juuri, aloitetaan alusta!
+            if (succ.getParent() == null) {
+                this.delete(succ.getKey());
+
+            } else {
+                poista(succ);
+            }
+            //solmulla on yksi lapsi, eikä solmu ole juuri
+        } else if (pois.getParent() != null) {
             poista(pois);
         }
     }
 
     @Override
-    public Solmu search(int key) {
-        return (Solmu) searchThreaded(key);
+    public boolean search(int key) {
+        if (searchThreaded(key) == null) {
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * Antaa annetun solmun seuraajan, null jos seuraajaa ei ole.
+     *
+     * @param s solmu, jonka seuraaja haetaan
+     * @return solmun s seuraaja tai null-arvo
+     */
     private SolmuThreaded succ(SolmuThreaded s) {
         if (!s.oikeaStatusGet()) {
             return s.getOikea();
@@ -95,17 +138,79 @@ public class Threaded implements Puu {
         return s;
     }
 
+    /**
+     * Poistaa solmun 'pois' puusta. Solmun 'pois' parent-solmu saa uudeksi
+     * lapsekseen poistettavan solmun asianmukaisen lapsen, viitteet seuraajiin/edeltäjiin korjautuvat.
+     *
+     * @param pois poistettava solmu
+     */
     private void poista(SolmuThreaded pois) {
-        if (pois.getParent().getVasen().getKey() == pois.getKey()) {
-            pois.getParent().setVasen(pois.getOikea());
-        } else if (pois.getParent().getOikea().getKey() == pois.getKey()) {
-            pois.getParent().setOikea(pois.getVasen());
+
+        //poistettava solmu on vanhempansa vasen lapsi
+        if (pois.getParent().getVasen() != null && pois.getParent().getVasen().getKey() == pois.getKey()) {
+
+            //poistettava on lapseton
+            if (!pois.oikeaStatusGet() && !pois.vasenStatusGet()) {
+                pois.getParent().setVasen(pois.getVasen());
+                pois.getParent().vasemmanLapsenStatusSet(false);
+            } 
+            
+            //poistettavalla on yksi lapsi
+            else {
+                if (pois.oikeaStatusGet()) {
+                    pois.getOikea().setParent(pois.getParent());
+                    //poistettavan lapsi osoittaa takaisin poistettavaan
+                    if (pois.getOikea().getVasen() == pois) {
+                        pois.getOikea().setVasen(pois.getParent());
+                    }
+                    pois.getParent().setVasen(pois.getOikea());
+                } else {
+                    pois.getVasen().setParent(pois.getParent());
+                    if (pois.getVasen().getOikea() == pois) {
+                        pois.getVasen().setOikea(pois.getParent());
+                    }
+                    pois.getParent().setVasen(pois.getVasen());
+                }
+            }
+
+
+        } 
+        
+        //poistettava on vanhempansa oikea lapsi, edellisen kanssa symmetrinen
+        else if (pois.getParent().getOikea() != null && pois.getParent().getOikea().getKey() == pois.getKey()) {
+
+            if (!pois.oikeaStatusGet() && !pois.vasenStatusGet()) {
+                pois.getParent().setOikea(pois.getOikea());
+                pois.getParent().oikeanLapsenStatusSet(false);
+            } else {
+                if (pois.vasenStatusGet()) {
+                    pois.getVasen().setParent(pois.getParent());
+                    if (pois.getVasen().getOikea() == pois) {
+                        pois.getVasen().setOikea(pois.getParent());
+                    }
+                    pois.getParent().setOikea(pois.getVasen());
+                } else {
+                    pois.getOikea().setParent(pois.getParent());
+                    if (pois.getOikea().getVasen() == pois) {
+                        pois.getOikea().setVasen(pois.getParent());
+                    }
+                    pois.getParent().setOikea(pois.getOikea());
+                }
+            }
+
+
         }
     }
 
+    /**
+     * Threaded-puun oma hakutoiminto.
+     *
+     * @param key haettava arvo
+     * @return null jos arvoa ei löydy, muuten arvon sisältävä solmu
+     */
     private SolmuThreaded searchThreaded(int key) {
         SolmuThreaded kulkija = this.juuri;
-        while (kulkija.getKey() != key || kulkija != null) {
+        while (kulkija.getKey() != key) {
             if (key < kulkija.getKey() && kulkija.vasenStatusGet()) {
                 kulkija = kulkija.getVasen();
             } else if (key > kulkija.getKey() && kulkija.oikeaStatusGet()) {
@@ -113,7 +218,20 @@ public class Threaded implements Puu {
             } else {
                 return null;
             }
+            if (kulkija == null) {
+                return null;
+            }
         }
+
         return kulkija;
+    }
+
+    /**
+     * Palauttaa puun juurisolmun.
+     *
+     * @return juurisolmu
+     */
+    public SolmuThreaded getJuuri() {
+        return juuri;
     }
 }

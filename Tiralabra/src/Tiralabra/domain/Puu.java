@@ -7,7 +7,7 @@ package Tiralabra.domain;
 
 public interface Puu {    
     
-    /** Tulostaa puun solmujen arvot suuruusjärjestyksessä.
+    /** Antaa String-muotoisen esityksen puun solmujen arvoista suuruusjärjestyksessä.
      * 
      * @return alkioiden arvot suuruusjärjestyksessä
      */
@@ -24,9 +24,9 @@ public interface Puu {
      */
     public void delete(int key);
     
-    /** Palauttaa solmun, joka sisältää annetun arvon; null jos arvoa ei löydy puusta. 
+    /** Katsoo löytyykö puusta etsittyä arvoa; palauttaa false jos arvoa ei löydy puusta. 
      * @param key etsittävä arvo.
-     * @return etsitty Solmu tai null-arvo, jos haettu arvo ei kuulu puuhun.
+     * @return true jos arvo esiintyy puussa, false jos ei
      */
-    public Solmu search(int key);
+    public boolean search(int key);
 }

@@ -4,10 +4,10 @@ package Tiralabra.domain;
  * B-puussa solmuilla voi olla useampia lapsia.
  * @author Pia Pakarinen
  */
-public class B extends Puu{
+public class B implements Puu{
 
     public B(int emo) {
-        super(emo);
+        
     }
 
     @Override
@@ -26,7 +26,7 @@ public class B extends Puu{
     }
 
     @Override
-    public Solmu search(int key) {
+    public int search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

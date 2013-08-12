@@ -4,10 +4,10 @@ package Tiralabra.domain;
  * Punamustapuu on itsestään tasapainottuva binäärihakupuu, joka käyttää hyväksen solmujen värjäämistä.
  * @author Pia Pakarinen
  */
-public class Punamusta extends Puu{
+public class Punamusta implements Puu{
 
     public Punamusta(int emo) {
-        super(emo);
+      
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Punamusta extends Puu{
     }
 
     @Override
-    public Solmu search(int key) {
+    public int search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
