@@ -16,11 +16,6 @@ public class MinMaxAI implements AI
 	private static final double DEFAULT_TIME_LIMIT = 2.0;
 
 	/**
-	 * Estimoitu haarautumiskerroin, jota käytetään suoritusajaan arviointiin.
-	 */
-	private static final double ESTIMATED_BRANCHING_FACTOR = 5;
-
-	/**
 	 * Kuinka monta tasoa hakupuuta pienennetään nollasiirron kanssa. Oletuksena on, että siirron
 	 * skippaaminen heikentää asemaa enemmän kuin hakusyvyyden pienentäminen tämän verran.
 	 */
@@ -161,6 +156,7 @@ public class MinMaxAI implements AI
 		trposTable.clear();
 		int depth;
 		StateInfo info = null;
+		double branchingFactor = 0.0;
 		for (depth = 2; depth <= searchDepth; ++depth) {
 			log("depth=" + depth);
 
@@ -171,7 +167,8 @@ public class MinMaxAI implements AI
 			treeGenerator.endNode(0, info.score, 0);
 
 			double elapsedTime = (System.nanoTime() - start) * 1e-9;
-			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
+			branchingFactor = Math.pow(nodeCount, 1.0 / depth);
+			if (timeLimit > 0 && elapsedTime * branchingFactor > timeLimit)
 				break;
 		}
 
@@ -179,7 +176,7 @@ public class MinMaxAI implements AI
 		log("trposTblHitCount=" + trposTblHitCount);
 		log("trposTblSize=" + trposTable.size());
 		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
-		log(String.format("branchingFactor=%.3g", Math.pow(nodeCount, 1.0 / depth)));
+		log(String.format("branchingFactor=%.3g", branchingFactor));
 
 		state.move(info.bestMove);
 	}
