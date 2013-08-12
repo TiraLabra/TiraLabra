@@ -1,17 +1,31 @@
 package OhjelmaLogiikka;
 
-import OhjelmaLogiikka.BittiUtility;
-
+/**
+ * Apuluokka joka muodostaa kanonisoidut huffman-koodit.
+ *
+ */
 public class KanonisoidunKoodinMuodostaja {
 
     private long koodi;
     private int vanhaPituus;
 
+    /**
+     * Konstruktori.
+     */
     public KanonisoidunKoodinMuodostaja() {
         koodi = -1;
         vanhaPituus = 0;
     }
 
+    /**
+     * Muodostaa kanonisen koodin. Uusi koodi riippuu edellisestä kutsusta joten
+     * metodia on kutsuttava koodeille oikeassa järjestyksessä (lyhyistä
+     * koodeista pitkiin, samanpituiset koodit blokkien suuruusjärjestyksessä)
+     *
+     * @param nykyinenPituus käsiteltävän koodin pituus biteissä.
+     * @return uusi koodi tallennettuna long-muuttujaan
+     * @see <a href="https://en.wikipedia.org/wiki/Canonical_Huffman_code">https://en.wikipedia.org/wiki/Canonical_Huffman_code</a>
+     */
     public long muodostaKoodi(int nykyinenPituus) {
         ++koodi;
 

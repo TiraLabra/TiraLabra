@@ -29,7 +29,7 @@ public class Pakkaaja {
             koodit = null; // koodeja ei tarvita enää, gc voi kerätä
             long ulosTiedostonKoko = tiivistaja.haeTiedostonKoko();
             
-            ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(ulos + ".header", koodiMuodostaja.haeKooditJarjestettyna(), bittejaKaytetty);
+            ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(ulos + ".header", koodiMuodostaja.haeKooditJarjestettyna(), bittejaKaytetty, BLOKIN_KOKO);
             tulostaStatsit(aika, sisaanTiedostonKoko, ulosTiedostonKoko);
 
             

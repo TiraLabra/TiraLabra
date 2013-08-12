@@ -13,7 +13,7 @@ import java.io.IOException;
 public class HeaderLukija {
 
     private final int OFFSET = 128;
-    
+    private int blokinPituus;
 
     /**
      * Lukee annetusta tiedostosta headerin tiedot
@@ -32,13 +32,17 @@ public class HeaderLukija {
 
         Pari<Integer, OmaMap<Koodi, byte[]>> paluu = new Pari<Integer, OmaMap<Koodi, byte[]>>();
 
-        byte[] headerAlku = new byte[1];
-        if (headerLukija.lue(headerAlku) != 1) {
-            throw new IOException("Header-tiedoston korruptoitunut - ensimmäisen viiden tavun luku epäonnistui");
+        byte[] headerAlku = new byte[2];
+        if (headerLukija.lue(headerAlku) != 2) {
+            throw new IOException("Header-tiedoston korruptoitunut - ensimmäisen  tavun luku epäonnistui");
         }
-
+        
+        
+       
         paluu.ensimmainen = headerAlku[0] + OFFSET;
-
+        
+        blokinPituus = headerAlku[1] + OFFSET;
+         
         paluu.toinen = lueKoodiBlokkiParit(headerLukija);
         headerLukija.suljeTiedosto();
 
@@ -62,37 +66,45 @@ public class HeaderLukija {
             return false; // tiedoston loppu
         }
 
-        int blokinPituus = lukuPuskuri[0] + OFFSET;
-        assert (blokinPituus >= 1 && blokinPituus <= 255);
-
-        if (headerLukija.lue(lukuPuskuri) == 0) {
-            throw new IOException("Header-tiedoston korruptoitunut - koodiblokin koon lukeminen epäonnistui");
+        int pituus = blokinPituus;
+        int koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
+        // poikkeava blokki - onkin tallennettu blokin pituus koska se on poikkeava (viimeinen blokki)
+       
+        if (koodinPituusBiteissa == 0) {
+            if (headerLukija.lue(lukuPuskuri) == 0) {
+                throw new IOException("Header-tiedoston korruptoitunut - koodiblokin koon lukeminen epäonnistui");
+            }
+            
+            pituus = lukuPuskuri[0] + OFFSET;
+            
+            if (headerLukija.lue(lukuPuskuri) == 0) {
+                throw new IOException("Header-tiedoston korruptoitunut - koodiblokin koon lukeminen epäonnistui");
+            }
+            
+            koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
         }
 
-        int koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
         assert (koodinPituusBiteissa >= 1 && koodinPituusBiteissa <= 64);
 
 
-        byte[] blokki = lueBlokki(blokinPituus, headerLukija);
+        byte[] blokki = lueBlokki(headerLukija, pituus);
         Koodi koodi = new Koodi();
-        
+
         koodi.koodi = muodostaja.muodostaKoodi(koodinPituusBiteissa);
         koodi.pituus = koodinPituusBiteissa;
-        
+
         koodit.put(koodi, blokki);
         return true;
     }
 
-    private byte[] lueBlokki(int blokinPituus, TiedostoLukija headerLukija) throws IOException {
+    private byte[] lueBlokki(TiedostoLukija headerLukija, int pituus) throws IOException {
 
 
-        byte[] puskuri = new byte[blokinPituus];
+        byte[] puskuri = new byte[pituus];
 
-
-        if (headerLukija.lue(puskuri) != blokinPituus) {
-            throw new IOException("Header-tiedoston korruptoitunut - blokin luku epäonnistui");
-        }
-
+        int luettu = headerLukija.lue(puskuri);
+        assert (luettu == pituus);
+        
         return puskuri;
     }
 }

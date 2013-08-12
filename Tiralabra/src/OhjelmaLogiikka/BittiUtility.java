@@ -9,23 +9,21 @@ public class BittiUtility {
 
     /**
      * Hakee annetun Koodi-objektin koodi-kentästä paikka-muuttujan määrittämän
-     * bitin arvon ja palauttaa sen Huomaa että metodi ei tarkista että
-     * paikka-muuttuja sisältää järkevän arvon
+     * bitin arvon ja palauttaa sen. Huomaa että metodi ei tarkista että
+     * paikka-muuttuja sisältää järkevän arvon vaan tämä on kutsujan vastuulla.
      *
      * @param koodi Koodi-objekti jonka koodikenttää tutkitaan
      * @param paikka Paikka jolta bitti halutaan
      * @return 0 tai 1 riippuen bitin arvosta
      */
     public static int haeBitinArvoPaikasta(Koodi koodi, int paikka) {
-        long arvo = (koodi.koodi & (1 << paikka));
-        arvo = arvo >> paikka;
-        return (int)arvo;
+       return haeBitinArvoPaikasta(koodi.koodi, paikka);
     }
 
     /**
      * Hakee annetun byte-muuttujasta paikka-muuttujan määrittämän bitin arvon
-     * ja palauttaa sen Huomaa että metodi ei tarkista että paikka-muuttuja
-     * sisältää järkevän arvon
+     * ja palauttaa sen. Huomaa että metodi ei tarkista että paikka-muuttuja
+     * sisältää järkevän arvon vaan tämä on kutsujan vastuulla.
      *
      * @param koodi byte jonka arvoa tutkitaan
      * @param paikka Paikka jolta bitti halutaan
@@ -36,7 +34,15 @@ public class BittiUtility {
         arvo = arvo >> paikka;
         return arvo;
     }
-    
+    /**
+     * Hakee annetun long-muuttujasta paikka-muuttujan määrittämän bitin arvon
+     * ja palauttaa sen. Huomaa että metodi ei tarkista että paikka-muuttuja
+     * sisältää järkevän arvon vaan tämä on kutsujan vastuulla.
+     *
+     * @param koodi long jonka arvoa tutkitaan
+     * @param paikka Paikka jolta bitti halutaan
+     * @return 0 tai 1 riippuen bitin arvosta
+     */
     public static int haeBitinArvoPaikasta(long koodi, long paikka) {
         long arvo =  (koodi & (1L << paikka));
         arvo = arvo >> paikka;

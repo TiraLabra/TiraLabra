@@ -54,15 +54,6 @@ public class Kanonisoija {
         return koodit;
     }
 
-    private long vaihdaBittiJarjestys(Long koodi, int pituus) {
-        long uusiKoodi = 0L;
-
-        for (int i = 0; i < pituus; ++i) {
-            uusiKoodi = BittiUtility.tallennaBitinArvoPaikalle(uusiKoodi, BittiUtility.haeBitinArvoPaikasta(koodi, i), pituus - 1 - i);
-        }
-        return uusiKoodi;
-    }
-
     private OmaMinimiPriorityQueue<Pari<ByteWrapper, Koodi>> luoJono() {
         return new OmaMinimiPriorityQueue<Pari<ByteWrapper, Koodi>>(new Comparator<Pari<ByteWrapper, Koodi>>() {
             @Override
@@ -71,13 +62,13 @@ public class Kanonisoija {
 
                 if (paluu == 0) {
                     int pos = 0;
-                    if (o1.ensimmainen.byteTaulukko.length == o2.ensimmainen.byteTaulukko.length) {
-                        while (paluu == 0 && pos < o1.ensimmainen.byteTaulukko.length) {
+                    if (o1.ensimmainen.size() == o2.ensimmainen.size()) {
+                        while (paluu == 0 && pos < o1.ensimmainen.size()) {
                             paluu = o1.ensimmainen.byteTaulukko[pos] - o2.ensimmainen.byteTaulukko[pos];
                             ++pos;
                         }
                     } else {
-                        paluu = o1.ensimmainen.byteTaulukko.length - o2.ensimmainen.byteTaulukko.length;
+                        paluu = o1.ensimmainen.size() - o2.ensimmainen.size();
                     }
                     
                     

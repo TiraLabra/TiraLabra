@@ -24,7 +24,7 @@ public class ByteWrapper {
      * Apumetodi. Palauttaa taulukon koon. wrapper.size() on mielyttävämpi kuin
      * wrapper.byteTaulukko.length
      *
-     * @return
+     * @return taulukon pituus
      */
     public int size() {
         return byteTaulukko.length;
