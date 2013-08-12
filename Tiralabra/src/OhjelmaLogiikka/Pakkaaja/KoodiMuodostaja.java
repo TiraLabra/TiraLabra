@@ -37,7 +37,8 @@ public class KoodiMuodostaja {
         OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
         OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
         OmaList<Pari<ByteWrapper, Koodi>> koodiLista = kooditPuusta(puu);
-        return (new Kanonisoija()).kanonisoi(koodiLista);
+        Kanonisoija kanonisoija = new Kanonisoija(); 
+        return kanonisoija.kanonisoi(koodiLista);
     }
 
     private OmaQueue<OmaTreeNode<Integer, ByteWrapper>> muodostaPrioriteettiJono(OmaMap<ByteWrapper, Integer> esiintymisTiheydet) {

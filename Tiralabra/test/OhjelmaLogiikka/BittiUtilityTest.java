@@ -86,6 +86,26 @@ public class BittiUtilityTest {
     }
 
     @Test
+    public void testaaEttaHaeBitinArvoPaikastaLongilleHakeeOikeanArvon1() {
+        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta( 10L, 3));
+    }
+
+    @Test
+    public void testaaEttaHaeBitinArvoPaikastaLongilleHakeeOikeanArvon2() {
+        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(8589934592L, 33));
+    }
+
+    @Test
+    public void testaaEttaHaeBitinArvoPaikastaLongilleHakeeOikeanArvon3() {
+        assertEquals("Bitin arvo väärä", 0, BittiUtility.haeBitinArvoPaikasta((long) 381384729134L, 0));
+    }
+
+    @Test
+    public void testaaEttaHaeBitinArvoPaikastaLongilleHakeeOikeanArvon4() {
+        assertEquals("Bitin arvo väärä", 0, BittiUtility.haeBitinArvoPaikasta((long) 9663709185L, 25));
+    }
+
+    @Test
     public void testaaEttaTallennaBitinArvoPaikalleKoodilleToimiiOikein() {
         Koodi koodi = new Koodi();
         koodi.koodi = 0;
@@ -130,17 +150,17 @@ public class BittiUtilityTest {
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleTavulleToimiiOikeinKunBitinArvoJoYksi2() {
-        assertEquals("Bitin arvo väärä", -50, BittiUtility.tallennaBitinArvoPaikalle((byte) -50, 0, 7)); 
+        assertEquals("Bitin arvo väärä", -50, BittiUtility.tallennaBitinArvoPaikalle((byte) -50, 0, 7));
     }
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleLongilleToimiiOikein() {
-        assertEquals("Bitin arvo väärä", (long)Math.pow(2, 30)+1, (long)BittiUtility.tallennaBitinArvoPaikalle(1L, 1, 30));
+        assertEquals("Bitin arvo väärä", (long) Math.pow(2, 30) + 1, (long) BittiUtility.tallennaBitinArvoPaikalle(1L, 1, 30));
     }
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleLongilleToimiiOikein2() {
-        assertEquals("Bitin arvo väärä", 1074921473L, (long)BittiUtility.tallennaBitinArvoPaikalle(1179649L, 1, 30));
+        assertEquals("Bitin arvo väärä", 1074921473L, (long) BittiUtility.tallennaBitinArvoPaikalle(1179649L, 1, 30));
     }
 
     @Test

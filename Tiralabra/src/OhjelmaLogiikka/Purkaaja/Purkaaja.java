@@ -77,14 +77,15 @@ public class Purkaaja {
            
             for (int j = 0; j < maks; ++j) {
                 int luettuArvo = BittiUtility.haeBitinArvoPaikasta(kasiteltavaTavu, j);
+              
                 koodi.koodi = BittiUtility.tallennaBitinArvoPaikalle(koodi, luettuArvo, koodi.pituus);
-               
+                
                 koodi.pituus++;
                 byte[] array = koodit.get(koodi);
                 if (array != null) {
                    
                     kirjoittaja.kirjoita(array);
-                    //  luettuArvo = 0;
+                  
                     koodi.koodi = 0;
                     koodi.pituus = 0;
                 }

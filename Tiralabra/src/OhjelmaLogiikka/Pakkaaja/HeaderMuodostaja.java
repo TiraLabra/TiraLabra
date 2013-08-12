@@ -4,10 +4,8 @@ import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
-import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
-import Tietorakenteet.Pari;
 import java.io.IOException;
 
 public class HeaderMuodostaja {

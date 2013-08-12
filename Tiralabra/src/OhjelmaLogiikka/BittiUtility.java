@@ -17,9 +17,9 @@ public class BittiUtility {
      * @return 0 tai 1 riippuen bitin arvosta
      */
     public static int haeBitinArvoPaikasta(Koodi koodi, int paikka) {
-        int arvo = (int) (koodi.koodi & (1 << paikka));
+        long arvo = (koodi.koodi & (1 << paikka));
         arvo = arvo >> paikka;
-        return arvo;
+        return (int)arvo;
     }
 
     /**
@@ -32,9 +32,15 @@ public class BittiUtility {
      * @return 0 tai 1 riippuen bitin arvosta
      */
     public static int haeBitinArvoPaikasta(byte koodi, int paikka) {
-        int arvo = (int) (koodi & (1 << paikka));
+        int arvo = (koodi & (1 << paikka));
         arvo = arvo >> paikka;
         return arvo;
+    }
+    
+    public static int haeBitinArvoPaikasta(long koodi, long paikka) {
+        long arvo =  (koodi & (1L << paikka));
+        arvo = arvo >> paikka;
+        return (int)arvo;
     }
 
     /**
@@ -79,7 +85,7 @@ public class BittiUtility {
      * @param paikka Bitin paikka
      * @return koodi-kentän arvo jolle operaatio on toteutettu
      */
-    public static long tallennaBitinArvoPaikalle(long longArvo, int arvo, int paikka) {
+    public static long tallennaBitinArvoPaikalle(long longArvo, long arvo, int paikka) {
         return (long) (longArvo | (arvo << paikka));
     }
 }

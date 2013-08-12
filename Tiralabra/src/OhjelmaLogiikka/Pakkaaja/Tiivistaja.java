@@ -68,11 +68,13 @@ public class Tiivistaja {
             blokki.byteTaulukko[i] = luetutTavut[i];
         }
         Koodi pakkausKoodi = koodit.get(blokki);
-        bittejaKaytetty = kopioiTavuunPakkausKoodienBitteja(pakkausKoodi, puskuri, bittejaKaytetty, kirjoittaja);
+        System.out.println("Blokki: " + blokki.byteTaulukko[0]);
+        System.out.println("Koodi: " + Long.toBinaryString(pakkausKoodi.koodi));
+        bittejaKaytetty = kopioiTavuunPakkausKoodienBittejaJaKirjoita(pakkausKoodi, puskuri, bittejaKaytetty, kirjoittaja);
         return bittejaKaytetty;
     }
 
-    private int kopioiTavuunPakkausKoodienBitteja(Koodi pakkausKoodi, byte[] puskuri, int bittejaKaytetty, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    private int kopioiTavuunPakkausKoodienBittejaJaKirjoita(Koodi pakkausKoodi, byte[] puskuri, int bittejaKaytetty, TiedostoKirjoittaja kirjoittaja) throws IOException {
         for (int j = 0; j < pakkausKoodi.pituus; ++j) {
             int arvo = BittiUtility.haeBitinArvoPaikasta(pakkausKoodi, j);
 
@@ -80,7 +82,7 @@ public class Tiivistaja {
 
             ++bittejaKaytetty;
             if (bittejaKaytetty == 8) {
-
+                    
                 kirjoittaja.kirjoita(puskuri);
                 puskuri[0] = 0;
                 bittejaKaytetty = 0;

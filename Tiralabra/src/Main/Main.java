@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        int blokinKoko = 2;
+        int blokinKoko = 1;
         
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
         Purkaaja purkaaja = new Purkaaja(blokinKoko);
