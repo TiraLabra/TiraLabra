@@ -68,8 +68,7 @@ public class Tiivistaja {
             blokki.byteTaulukko[i] = luetutTavut[i];
         }
         Koodi pakkausKoodi = koodit.get(blokki);
-        System.out.println("Blokki: " + blokki.byteTaulukko[0]);
-        System.out.println("Koodi: " + Long.toBinaryString(pakkausKoodi.koodi));
+        
         bittejaKaytetty = kopioiTavuunPakkausKoodienBittejaJaKirjoita(pakkausKoodi, puskuri, bittejaKaytetty, kirjoittaja);
         return bittejaKaytetty;
     }

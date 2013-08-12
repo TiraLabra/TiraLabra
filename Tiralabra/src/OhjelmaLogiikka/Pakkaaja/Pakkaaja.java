@@ -20,17 +20,16 @@ public class Pakkaaja {
             long aika = System.nanoTime();
             System.out.println("Aloitetaan pakkaaminen");
             
-            KoodiMuodostaja koodiLuoja = new KoodiMuodostaja(BLOKIN_KOKO);
-            OmaMap<ByteWrapper, Koodi> koodit = koodiLuoja.muodostaKoodit(sisaan);
-            long sisaanTiedostonKoko = koodiLuoja.haeTiedostonKoko();
+            KoodiMuodostaja koodiMuodostaja = new KoodiMuodostaja(BLOKIN_KOKO);
+            OmaMap<ByteWrapper, Koodi> koodit = koodiMuodostaja.muodostaKoodit(sisaan);
+            long sisaanTiedostonKoko = koodiMuodostaja.haeTiedostonKoko();
                     
             Tiivistaja tiivistaja = new Tiivistaja(BLOKIN_KOKO);
             int bittejaKaytetty = tiivistaja.tiivista(sisaan, ulos, koodit);
+            koodit = null; // koodeja ei tarvita enää, gc voi kerätä
             long ulosTiedostonKoko = tiivistaja.haeTiedostonKoko();
             
-            ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(ulos + ".header", koodit, bittejaKaytetty);
-
-            
+            ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(ulos + ".header", koodiMuodostaja.haeKooditJarjestettyna(), bittejaKaytetty);
             tulostaStatsit(aika, sisaanTiedostonKoko, ulosTiedostonKoko);
 
             

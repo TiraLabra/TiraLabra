@@ -5,7 +5,7 @@ import Tiedostokasittely.TiedostoKirjoittaja;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaList;
-import Tietorakenteet.OmaMap;
+import Tietorakenteet.Pari;
 import java.io.IOException;
 
 public class HeaderMuodostaja {
@@ -23,17 +23,16 @@ public class HeaderMuodostaja {
      * tavussa on merkitseviä dataosiossa merkitsee mitään
      * @return tavut jotka kirjoitetaan tiedostoon.
      */
-    public long muodostaHeader(String header, OmaMap<ByteWrapper, Koodi> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
+    public long muodostaHeader(String header, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja) {
         try {
             TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
             kirjoittaja.avaaTiedosto();
 
             alustaHeader(viimeisessaTavussaMerkitseviaBitteja, kirjoittaja);
 
-            OmaList<ByteWrapper> blokit = koodit.avaimet();
 
-            for (int i = 0; i < blokit.size(); ++i) {
-                muodostaBlokkiAvainPari(blokit.get(i), koodit.get(blokit.get(i)), kirjoittaja);
+            for (int i = 0; i < koodit.size(); ++i) {
+                tallennaBlokinTiedot(koodit.get(i).ensimmainen, koodit.get(i).toinen, kirjoittaja);
             }
 
             kirjoittaja.suljeTiedosto();
@@ -75,7 +74,7 @@ public class HeaderMuodostaja {
      * suurempi kuin 64 - koodin on mahduttava long-muuttujaan
      * @throws IOException Jos jotakin menee vikaan kirjoitettaessa tietoa headeriin
      */
-    private void muodostaBlokkiAvainPari(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
+    private void tallennaBlokinTiedot(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
@@ -89,39 +88,11 @@ public class HeaderMuodostaja {
             throw new IllegalArgumentException("Koodin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + koodi.pituus);
         }
 
-        byte[] koodiTavuina = muunnaKoodiTavuiksi(koodi);
+  
 
         puskuri[0] = (byte) (koodi.pituus - OFFSET);
         kirjoittaja.kirjoita(puskuri); // tallennetaan merkitsevien bittien määrä  - max 64 bittiä koska bittien on mahduttava long-muuttujaan
         kirjoittaja.kirjoita(blokki.byteTaulukko);
-        kirjoittaja.kirjoita(koodiTavuina);
-
-    }
-
-    /**
-     * Muuntaa annetun Koodi-objektin koodi-kentän byte[]-taulukoksi.
-     *
-     * @param koodi Muunnettava koodi
-     * @return byte [] koodin bitit tallennettuna byte-taulukkoon.
-     */
-    private byte[] muunnaKoodiTavuiksi(Koodi koodi) {
-        // muunnetaan tallennettava koodi String -> byteihin pakatut bitit
-        byte[] muunnettuKoodi = new byte[koodi.pituus / 8 + 1];
-
-        int paikka = 0;
-        int tavunPaikka = 0;
-        for (int i = 0; i < koodi.pituus; ++i) {
-            int arvo = BittiUtility.haeBitinArvoPaikasta(koodi, i);
-            muunnettuKoodi[tavunPaikka] = BittiUtility.tallennaBitinArvoPaikalle(muunnettuKoodi[tavunPaikka], arvo, paikka);
-
-            ++paikka;
-            if (paikka == 8) {
-                paikka = 0;
-                ++tavunPaikka;
-            }
-        }
-
-        assert (tavunPaikka * 8 + paikka == koodi.pituus);
-        return muunnettuKoodi;
+        
     }
 }

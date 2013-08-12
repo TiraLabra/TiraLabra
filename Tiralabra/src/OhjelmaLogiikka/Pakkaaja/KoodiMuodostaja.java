@@ -22,6 +22,11 @@ import java.util.Comparator;
 public class KoodiMuodostaja {
     private long sisaanTiedostonKoko;
     private final int BLOKIN_KOKO;
+    private Kanonisoija kanonisoija;
+    
+    public OmaList<Pari<ByteWrapper, Koodi>> haeKooditJarjestettyna() {
+        return kanonisoija.haeKooditJarjestettyna();
+    }
     
     public KoodiMuodostaja(int blokinKoko) {
         BLOKIN_KOKO = blokinKoko;
@@ -37,7 +42,8 @@ public class KoodiMuodostaja {
         OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
         OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
         OmaList<Pari<ByteWrapper, Koodi>> koodiLista = kooditPuusta(puu);
-        Kanonisoija kanonisoija = new Kanonisoija(); 
+        kanonisoija = new Kanonisoija(); 
+        
         return kanonisoija.kanonisoi(koodiLista);
     }
 

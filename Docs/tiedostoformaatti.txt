@@ -1,24 +1,18 @@
+
+Header-tiedosto:
 1 tavu - montako bittiä viimeisessä dataosion tavussa on merkitseviä - tätä joudutaan todennäköisesti täyttämään roskalla koska java kirjoittaa vain kokonaisia tavuja tiedostoon.
-4 tavua - headerin koko tavuissa 
-n tavua - header
-loppuosa tiedostosta - pakattu tiedosto
+n tavua - huffman-koodit
 
-Header tarkemmin:
-
-Ennen headeria: 
-	Alussa 4 tavua - headerin pituus tavuissa. Luetaan tämän verran tavuja ja puretaan huffman-koodaus headerista
-	Tämän jälkeen yksi tavu joka kertoo moniko bitti on merkitsevä viimeisessä dataosion tavussa.
 	
-Header: jokaiselle blokki - koodiparille: 
+jokaiselle blokki - koodiparille: 
 	1 tavu joka kertoo blokin pituuden tavuissa. Blokki aina tavun moninkerta. 1 tavu -> maks 255. tavua pitkä blokki
-	1 tavu joka kertoo koodin pituuden tavuissa. -> maks 255*8 bittiä pitkä koodi
-	1 tavu joka kertoo kuinka monta merkitsevää bittiä on viimeisessä tavussa; todennäköisesti jouduttu lisäämään täytebittejä.
+	1 tavu joka kertoo koodin pituuden biteissä
 	x tavua blokille, maks 255 tavua. Bittikuvio joka on korvattu huffman-koodilla. Koska luetaan aina tavun kokoisissa osissa, tämä ei sisällä täytebittejä
-	y tavua koodille, maks 255 tavua. Bittikuvio joka korvaa blokin. Tämä voi sisältää täytebittejä.
-	Maks. tila per blokki - koodipari: 2x255 + 3*1 -> 513 tavua. Todennäköisesti merkittävästi pienempi käytännössä.
+	
+	Maks. tila per blokki - koodipari: 255 + 2*1 -> 257 tavua. Käytännössä blokin pituus + 2x1 tavua, esim. blokkikoon ollessa 8 tavua, vie yksi blokki headerista 10 tavua
 
-Huom: Konversio koodissa: Kaikki yhden bitin pituuskentät tallennetaan 127 offsetillä koska javassa on vain etumerkillisiä lukuja.
+Huom: Konversio koodissa: Kaikki yhden bitin pituuskentät tallennetaan 128 offsetillä koska javassa on vain etumerkillisiä lukuja.
+Koodit kanonisia huffman-koodeja. Koodi voidaan rakentaa paikkatiedon ja pituuden perusteella, näitä ei tarvitse tallentaa
 
-Headeria seuraa dataosio; datan blokit korvattuna huffman-koodeilla. Viimeinen voi sisältää täytebittejä
-
-
+datatiedosto:
+Pakattu tiedosto missä blokit korvattu huffman-koodeilla. Viimeinen tavu sisältää mahdollisesti täytebittejä.
