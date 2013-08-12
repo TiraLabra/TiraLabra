@@ -15,7 +15,7 @@ public class MinMaxAITest
 	@Before
 	public void setUp()
 	{
-		ai = new MinMaxAI(null, 3, 0);
+		ai = new MinMaxAI(null, 3, 0, 0);
 	}
 
 	private static long sqrs(int... sqrs)
@@ -109,7 +109,7 @@ public class MinMaxAITest
 	@Test
 	public void doesntStaleMateWhenHasMaterialAdvantage()
 	{
-		ai = new MinMaxAI(null, 5, 0);
+		ai = new MinMaxAI(null, 5, 0, 0);
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 0);
 		bb.addPiece(Players.BLACK, Pieces.QUEEN, 1);
@@ -143,7 +143,7 @@ public class MinMaxAITest
 	@Test
 	public void doesntMakeIllegalMoveWhenCheckMateInevitable()
 	{
-		ai = new MinMaxAI(null, 4, 0); // minimisyvyys mattitilanteen tunnistamiseksi
+		ai = new MinMaxAI(null, 4, 0, 0); // minimisyvyys mattitilanteen tunnistamiseksi
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 1);
 		bb.addPiece(Players.BLACK, Pieces.ROOK, 10);

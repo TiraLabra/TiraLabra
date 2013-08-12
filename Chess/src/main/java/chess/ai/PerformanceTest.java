@@ -79,7 +79,7 @@ public class PerformanceTest implements Runnable
 	private double runSingleTest(int depth, Random rnd)
 	{
 		GameState state = new GameState(rnd);
-		MinMaxAI ai = new MinMaxAI(logger, depth, 0.0);
+		MinMaxAI ai = new MinMaxAI(logger, depth, 0.0, 0);
 
 		long start = System.nanoTime();
 		ai.move(state);

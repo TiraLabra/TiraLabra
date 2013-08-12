@@ -71,7 +71,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	/**
 	 * Valikkoelementit.
 	 */
-	private JMenuItem newGameItem, exitItem, perfTestItem, perfTest2Item;
+	private JMenuItem newGameItem, exitItem, perfTestItem, perfTest2Item, showGameTreeItem;
 
 	private JCheckBoxMenuItem debugInfoItem;
 
@@ -120,7 +120,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		board.add(resultLabel);
 
 		logArea = new LogArea();
-		logArea.setPreferredSize(new Dimension(180, 0));
+		logArea.setPreferredSize(new Dimension(200, 0));
 		container.add(logArea, BorderLayout.EAST);
 	}
 
@@ -142,6 +142,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 		perfTestItem = createMenuItem(debugMenu, "Performance test");
 		perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
+		showGameTreeItem = createMenuItem(debugMenu, "Show game tree for last AI move");
 		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
 
 		frame.add(menuBar, BorderLayout.NORTH);
@@ -197,6 +198,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 				ai.move(state);
 				board.setBoard(state.getBoard());
+				showGameTreeItem.setEnabled(true);
 
 				if (state.isCheckMate()) {
 					setResult(1 - player);
@@ -269,6 +271,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		board.setAllowedMoves(0);
 		resultLabel.setVisible(false);
 		ai = new MinMaxAI(logArea);
+		ai.setLoggingEnabled(debugInfoItem.getState());
+		showGameTreeItem.setEnabled(false);
 	}
 
 	/**
@@ -287,6 +291,12 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		new Thread(new PerformanceTest(logArea, 8, 15.0)).start();
 	}
 
+	private void showGameTree()
+	{
+		if (((MinMaxAI) ai).getGameTree() != null)
+			new GameTreeViewer(((MinMaxAI) ai).getGameTree());
+	}
+
 	/**
 	 * Tapahtumien käsittely.
 	 */
@@ -298,6 +308,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 			runPerformanceTest();
 		else if (ae.getSource() == perfTest2Item)
 			runPerformanceTest2();
+		else if (ae.getSource() == showGameTreeItem)
+			showGameTree();
 		else if (ae.getSource() == debugInfoItem)
 			ai.setLoggingEnabled(debugInfoItem.getState());
 		else if (ae.getSource() == exitItem)

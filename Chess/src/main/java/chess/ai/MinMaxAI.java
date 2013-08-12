@@ -39,6 +39,11 @@ public class MinMaxAI implements AI
 	private static final int MAX_TRANSPOSITION_TABLE_SIZE = 1024 * 1024;
 
 	/**
+	 * Oletussyvyys puun tallentamiseksi käyttöliittymää varten.
+	 */
+	private static final int DEFAULT_TREE_GENERATION_DEPTH = 3;
+
+	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
 	 * kuninkaan uhatuksi.
 	 */
@@ -87,6 +92,11 @@ public class MinMaxAI implements AI
 	private StateInfo[] results = new StateInfo[1024];
 
 	/**
+	 * Tallentaa eksplisiittisen pelipuun.
+	 */
+	private TreeGenerator treeGenerator;
+
+	/**
 	 * Analysoitujen pelipuun solmujen määrä.
 	 */
 	private int nodeCount;
@@ -104,7 +114,7 @@ public class MinMaxAI implements AI
 	 */
 	public MinMaxAI(Logger logger)
 	{
-		this(logger, Integer.MAX_VALUE, DEFAULT_TIME_LIMIT);
+		this(logger, Integer.MAX_VALUE, DEFAULT_TIME_LIMIT, DEFAULT_TREE_GENERATION_DEPTH);
 	}
 
 	/**
@@ -113,14 +123,16 @@ public class MinMaxAI implements AI
 	 * @param logger loggeri debug-viestejä varten
 	 * @param searchDepth maksimi hakusyvyys
 	 * @param timeLimit aikaraja yhden parhaan siirron laskemiselle
+	 * @param treeGenerationDepth syvyys, johon asti pelipuu tallennetaan
 	 */
-	public MinMaxAI(Logger logger, int searchDepth, double timeLimit)
+	public MinMaxAI(Logger logger, int searchDepth, double timeLimit, int treeGenerationDepth)
 	{
 		if (searchDepth < 2)
 			throw new IllegalArgumentException("Search depth too small.");
 		this.logger = logger;
 		this.searchDepth = searchDepth;
 		this.timeLimit = timeLimit;
+		this.treeGenerator = new TreeGenerator(treeGenerationDepth);
 	}
 
 	/**
@@ -142,12 +154,15 @@ public class MinMaxAI implements AI
 		long start = System.nanoTime();
 		trposTable.clear();
 		int depth;
+		StateInfo info = null;
 		for (depth = 2; depth <= searchDepth; ++depth) {
 			log("depth=" + depth);
 
 			nodeCount = 0;
 			trposTblHitCount = 0;
 			search(depth, -Integer.MAX_VALUE, Integer.MAX_VALUE, state);
+			info = trposTable.get(state.getId());
+			treeGenerator.endNode(-1, -1, info.score, -1, -1, 0);
 
 			double elapsedTime = (System.nanoTime() - start) * 1e-9;
 			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
@@ -160,7 +175,6 @@ public class MinMaxAI implements AI
 		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
 		log(String.format("branchingFactor=%.3g", Math.pow(nodeCount, 1.0 / depth)));
 
-		StateInfo info = trposTable.get(state.getId());
 		state.move(info.bestMoveFrom, info.bestMoveTo);
 	}
 
@@ -190,6 +204,8 @@ public class MinMaxAI implements AI
 	private int search(int depth, int alpha, int beta, GameState state)
 	{
 		++nodeCount;
+
+		treeGenerator.startNode(alpha, beta, state.getNextMovingPlayer());
 
 		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
 		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
@@ -336,6 +352,9 @@ public class MinMaxAI implements AI
 		state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
 		--ply;
 
+		treeGenerator.endNode(fromSqr, toSqr, -score, pieceType, capturedPiece,
+				results[ply + 1] != null ? results[ply + 1].nodeType : -1);
+
 		if (score > alpha) {
 			if (ply == 0 && loggingEnabled)
 				log("" + fromSqr + " " + toSqr + " " + (score - rootScore));
@@ -402,6 +421,7 @@ public class MinMaxAI implements AI
 			int score = -search(depth - NULL_MOVE_REDUCTION1 - 1, -beta, -alpha, state);
 			--ply;
 			state.nullMove();
+			treeGenerator.endNode(-1, -1, -score, -1, -1, 0);
 			if (score >= beta)
 				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
 		}
@@ -440,6 +460,16 @@ public class MinMaxAI implements AI
 		long[] states = state.getEarlierStates();
 		for (int i = 0; i < states.length; ++i)
 			earlierStates.put(new StateInfo(states[i]));
+	}
+
+	/**
+	 * Palauttaa tallennetun pelipuun.
+	 *
+	 * @return
+	 */
+	public Node getGameTree()
+	{
+		return treeGenerator.getTree();
 	}
 
 	/**

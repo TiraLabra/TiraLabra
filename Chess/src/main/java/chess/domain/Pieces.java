@@ -59,6 +59,17 @@ public final class Pieces
 		values[Pieces.PAWN] = 1 * 1000;
 	}
 
+	public static final String[] symbols = new String[Pieces.COUNT];
+
+	static {
+		symbols[Pieces.KING] = "K";
+		symbols[Pieces.QUEEN] = "Q";
+		symbols[Pieces.ROOK] = "R";
+		symbols[Pieces.BISHOP] = "B";
+		symbols[Pieces.KNIGHT] = "N";
+		symbols[Pieces.PAWN] = "";
+	}
+
 	private Pieces()
 	{
 	}
