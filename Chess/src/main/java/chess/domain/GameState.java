@@ -164,23 +164,33 @@ public final class GameState
 	}
 
 	/**
-	 * Tekee pelitilanteeseen annetun siirron, kun siirrettävän nappulan tyyppi tiedetään
-	 * (hieman nopeampi). Jos kohderuudussa on nappula, se poistetaan, ja lyödyn nappulan tyyppi
-	 * palautetaan. Siirron validiutta ei tehokkuussyistä tarkasteta enää tässä vaiheessa.
+	 * Tekee pelitilanteeseen annetun siirron.
 	 *
-	 * @param fromSqr siirrettävän nappulan vanha sijainti (0-63)
-	 * @param toSqr siirrettävän nappulan uusi sijainti (0-63)
-	 * @param pieceType siirrettävän nappulan tyyppi (0-5)
-	 * @return lyödyn nappulan tyyppi tai -1, jos kohderuutu tyhjä
+	 * @param move pakattu siirto
 	 */
-	public int move(int fromSqr, int toSqr, int pieceType)
+	public void move(int move)
 	{
 		earlierStates[ply++] = zobristCode;
-		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
-		removePiece(nextMovingPlayer, pieceType, fromSqr);
-		addPiece(nextMovingPlayer, pieceType, toSqr);
+		if (Move.getCapturedType(move) != -1)
+			removePiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
+		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
+		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getToSqr(move));
 		changeNextMovingPlayer();
-		return capturedPiece;
+	}
+
+	/**
+	 * Peruu aikaisemman tehdyn siirron.
+	 *
+	 * @param move pakattu siirto
+	 */
+	public void undoMove(int move)
+	{
+		--ply;
+		changeNextMovingPlayer();
+		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getToSqr(move));
+		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
+		if (Move.getCapturedType(move) != -1)
+			addPiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
 	}
 
 	/**

@@ -39,23 +39,13 @@ final class StateInfo
 	int score;
 
 	/**
-	 * Parhaan siirron lähtöruutu, tai -1 jos yhtään siirtoa ei ole vielä löydetty (esim jos
-	 * tilanne aiheuttaa beta-cutoffin).
+	 * Paras löydetty siirto koodattuna 32-bittisenä lukuna (ks Move), tai 0 jos siirtoa ei ole
+	 * vielä löydetty.
 	 */
-	int bestMoveFrom = -1;
+	int bestMove;
 
 	/**
-	 * Parhaan löydetyn siirron kohderuutu.
-	 */
-	int bestMoveTo;
-
-	/**
-	 * Nappulan tyyppi parhaassa siirrossa.
-	 */
-	int bestMovePieceType;
-
-	/**
-	 * Hakupuun solmun tyyppi. Eksakti, alaraja ta yläraja. (0-2)
+	 * Hakupuun solmun tyyppi. Eksakti, alaraja tai yläraja. (0-2)
 	 */
 	int nodeType;
 

@@ -1,6 +1,6 @@
 package chess.ai;
 
-import chess.domain.Pieces;
+import chess.domain.Move;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,24 +26,10 @@ public class Node
 	public int score;
 
 	/**
-	 * Lähtöruutu siirrolle, jolla solmuun tultiin.
+	 * Siirto, jolla solmuun päädyttiin, tai 0 jos kyseessä juurisolmu tai nollasiirtoa käyttävä
+	 * haku.
 	 */
-	int fromSqr = -1;
-
-	/**
-	 * Kohderuutu siirrolle, jolla solmuun tultiin.
-	 */
-	int toSqr;
-
-	/**
-	 * Nappulatyyppi siirrosse, jolla solmuun tultiin.
-	 */
-	int pieceType;
-
-	/**
-	 * Lyödyn nappulan tyyppi siirrossa, jolla solmuun tultiin.
-	 */
-	int capturedPiece;
+	int move;
 
 	/**
 	 * Puolisiirtojen määrä pelipuun juuresta.
@@ -90,8 +76,8 @@ public class Node
 	public String toString()
 	{
 		String moveStr;
-		if (fromSqr >= 0)
-			moveStr = moveToStr(pieceType, fromSqr, toSqr, capturedPiece) + " " + -score;
+		if (move != 0)
+			moveStr = Move.toString(move) + " " + -score;
 		else
 			moveStr = ply > 0 ? "Null move search" : "";
 		return moveStr
@@ -99,16 +85,6 @@ public class Node
 				+ " \u03b2=" + itostr(beta)
 				+ " s" + new String[]{"=", ">=", "<="}[nodeType] + score
 				+ ")";
-	}
-
-	/**
-	 * Muuntaa siirron merkkijonoksi.
-	 */
-	private static String moveToStr(int pieceType, int fromSqr, int toSqr, int capturedPiece)
-	{
-		String ret = Pieces.symbols[pieceType] + sqrToStr(fromSqr);
-		ret += (capturedPiece >= 0 ? "x" + Pieces.symbols[capturedPiece] : "-");
-		return ret + sqrToStr(toSqr);
 	}
 
 	/**
@@ -122,13 +98,5 @@ public class Node
 			return "\u221e";
 		else
 			return Integer.toString(x);
-	}
-
-	/**
-	 * Muuntaa ruudun merkkijonoksi (a1-h8).
-	 */
-	private static String sqrToStr(int sqr)
-	{
-		return "" + (char) ('a' + sqr % 8) + (char) ('8' - sqr / 8);
 	}
 }

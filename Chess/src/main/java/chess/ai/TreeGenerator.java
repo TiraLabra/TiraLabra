@@ -51,14 +51,11 @@ class TreeGenerator
 	/**
 	 * Tallentaa loput solmun informaatiosta ja palaa edelliselle tasolle.
 	 */
-	void endNode(int fromSqr, int toSqr, int score, int pieceType, int capturedPiece, int nodeType)
+	void endNode(int move, int score, int nodeType)
 	{
 		if (--ply == lastNode.ply) {
-			lastNode.fromSqr = fromSqr;
-			lastNode.toSqr = toSqr;
+			lastNode.move = move;
 			lastNode.score = score;
-			lastNode.pieceType = pieceType;
-			lastNode.capturedPiece = capturedPiece;
 			lastNode.nodeType = nodeType;
 			lastNode = lastNode.parent;
 		}

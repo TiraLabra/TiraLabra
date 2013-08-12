@@ -24,17 +24,14 @@ public class TreeGeneratorTest
 	public void saveNodeInfo()
 	{
 		tg.startNode(1, 2, 3);
-		tg.endNode(4, 5, 6, 7, 8, 9);
+		tg.endNode(4, 5, 6);
 		assertNotNull(tg.getTree());
 		assertEquals(1, tg.getTree().alpha);
 		assertEquals(2, tg.getTree().beta);
 		assertEquals(3, tg.getTree().player);
-		assertEquals(4, tg.getTree().fromSqr);
-		assertEquals(5, tg.getTree().toSqr);
-		assertEquals(6, tg.getTree().score);
-		assertEquals(7, tg.getTree().pieceType);
-		assertEquals(8, tg.getTree().capturedPiece);
-		assertEquals(9, tg.getTree().nodeType);
+		assertEquals(4, tg.getTree().move);
+		assertEquals(5, tg.getTree().score);
+		assertEquals(6, tg.getTree().nodeType);
 	}
 
 	@Test
@@ -42,18 +39,18 @@ public class TreeGeneratorTest
 	{
 		tg.startNode(1, 0, 0);
 		tg.startNode(2, 0, 0);
-		tg.endNode(2, 0, 0, 0, 0, 0);
+		tg.endNode(2, 0, 0);
 		tg.startNode(3, 0, 0);
-		tg.endNode(3, 0, 0, 0, 0, 0);
-		tg.endNode(1, 0, 0, 0, 0, 0);
+		tg.endNode(3, 0, 0);
+		tg.endNode(1, 0, 0);
 		assertNotNull(tg.getTree());
 		assertEquals(1, tg.getTree().alpha);
-		assertEquals(1, tg.getTree().fromSqr);
+		assertEquals(1, tg.getTree().move);
 		assertEquals(2, tg.getTree().nodes.size());
 		assertEquals(2, tg.getTree().nodes.get(0).alpha);
-		assertEquals(2, tg.getTree().nodes.get(0).fromSqr);
+		assertEquals(2, tg.getTree().nodes.get(0).move);
 		assertEquals(3, tg.getTree().nodes.get(1).alpha);
-		assertEquals(3, tg.getTree().nodes.get(1).fromSqr);
+		assertEquals(3, tg.getTree().nodes.get(1).move);
 	}
 
 	@Test
@@ -62,17 +59,17 @@ public class TreeGeneratorTest
 		tg.startNode(1, 0, 0);
 		tg.startNode(2, 0, 0);
 		tg.startNode(3, 0, 0);
-		tg.endNode(3, 0, 0, 0, 0, 0);
-		tg.endNode(2, 0, 0, 0, 0, 0);
-		tg.endNode(1, 0, 0, 0, 0, 0);
+		tg.endNode(3, 0, 0);
+		tg.endNode(2, 0, 0);
+		tg.endNode(1, 0, 0);
 		assertNotNull(tg.getTree());
 		assertEquals(0, tg.getTree().ply);
 		assertEquals(1, tg.getTree().alpha);
-		assertEquals(1, tg.getTree().fromSqr);
+		assertEquals(1, tg.getTree().move);
 		assertEquals(1, tg.getTree().nodes.size());
 		assertEquals(1, tg.getTree().nodes.get(0).ply);
 		assertEquals(2, tg.getTree().nodes.get(0).alpha);
-		assertEquals(2, tg.getTree().nodes.get(0).fromSqr);
+		assertEquals(2, tg.getTree().nodes.get(0).move);
 		assertEquals(0, tg.getTree().nodes.get(0).nodes.size());
 	}
 
@@ -80,11 +77,11 @@ public class TreeGeneratorTest
 	public void startingNewTree()
 	{
 		tg.startNode(1, 0, 0);
-		tg.endNode(1, 0, 0, 0, 0, 0);
+		tg.endNode(1, 0, 0);
 		tg.startNode(2, 0, 0);
-		tg.endNode(2, 0, 0, 0, 0, 0);
+		tg.endNode(2, 0, 0);
 		assertNotNull(tg.getTree());
 		assertEquals(2, tg.getTree().alpha);
-		assertEquals(2, tg.getTree().fromSqr);
+		assertEquals(2, tg.getTree().move);
 	}
 }

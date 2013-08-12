@@ -1,6 +1,7 @@
 package chess.ai;
 
 import chess.domain.GameState;
+import chess.domain.Move;
 import chess.domain.Pieces;
 import chess.util.Logger;
 
@@ -107,6 +108,11 @@ public class MinMaxAI implements AI
 	private int trposTblHitCount;
 
 	/**
+	 * Pino siirtolistoista (välttää uudelleenallokoinnin jokaisessa solmussa).
+	 */
+	private MoveList[] moveLists = new MoveList[100];
+
+	/**
 	 * Luo uuden tekoälyobjektin käyttäen oletusaikarajaa. Hakusyvyys on rajoitettu ainoastaan
 	 * aikarajan puitteissa.
 	 *
@@ -162,7 +168,7 @@ public class MinMaxAI implements AI
 			trposTblHitCount = 0;
 			search(depth, Scores.MIN, Scores.MAX, state);
 			info = trposTable.get(state.getId());
-			treeGenerator.endNode(-1, -1, info.score, -1, -1, 0);
+			treeGenerator.endNode(0, info.score, 0);
 
 			double elapsedTime = (System.nanoTime() - start) * 1e-9;
 			if (timeLimit > 0 && elapsedTime * ESTIMATED_BRANCHING_FACTOR > timeLimit)
@@ -175,7 +181,7 @@ public class MinMaxAI implements AI
 		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
 		log(String.format("branchingFactor=%.3g", Math.pow(nodeCount, 1.0 / depth)));
 
-		state.move(info.bestMoveFrom, info.bestMoveTo);
+		state.move(info.bestMove);
 	}
 
 	/**
@@ -257,77 +263,36 @@ public class MinMaxAI implements AI
 		int player = state.getNextMovingPlayer();
 
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
-		if (info != null && info.bestMoveFrom != -1) {
-			alpha = searchMove(depth, alpha, beta, state, info.bestMovePieceType,
-					info.bestMoveFrom, info.bestMoveTo);
+		int tptblMove = 0;
+		if (info != null && info.bestMove != 0) {
+			tptblMove = info.bestMove;
+			alpha = searchMove(depth, alpha, beta, state, info.bestMove);
 			if (alpha >= beta) {
 				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
 				return alpha;
 			}
 		}
 
-		// Etsitään ensimmäisenä kaikki lyönnit.
-		for (int pieceType = Pieces.COUNT - 1; pieceType >= 0; --pieceType) {
-			long pieces = state.getPieces(player, pieceType);
-			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
-				int fromSqr = Long.numberOfTrailingZeros(pieces);
-				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
+		if (moveLists[ply] == null)
+			moveLists[ply] = new MoveList();
+		moveLists[ply].populate(state);
 
-				for (int capturedPiece = 0; capturedPiece < Pieces.COUNT; ++capturedPiece) {
-					long captureMoves = moves & state.getPieces(1 - player, capturedPiece);
-					alpha = searchMoves(depth, alpha, beta, state, pieceType, fromSqr,
-							captureMoves);
-					if (alpha >= beta) {
-						results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
-						return alpha;
-					}
-				}
-			}
-		}
-
-		// Viimeisenä siirrot, joissa ei tapahdu materiaalimuutoksia.
-		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
-			long pieces = state.getPieces(player, pieceType);
-			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
-				int fromSqr = Long.numberOfTrailingZeros(pieces);
-				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
-				moves &= ~state.getPieces(1 - player);
-				alpha = searchMoves(depth, alpha, beta, state, pieceType, fromSqr, moves);
+		for (int i = 0; i < MoveList.PRIORITIES; ++i) {
+			int count = moveLists[ply].getCount(i);
+			for (int j = 0; j < count; ++j) {
+				int move = moveLists[ply].getMove(i, j);
+				if (move == tptblMove) // Ei etsitä tätä uudestaan!
+					continue;
+				alpha = searchMove(depth, alpha, beta, state, move);
 				if (alpha >= beta) {
 					results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
 					return alpha;
 				}
-
 			}
 		}
 
 		if (alpha < -Scores.CHECK_MATE_THRESHOLD && state.isStaleMate())
 			return 0;
-
-		return alpha;
-	}
-
-	/**
-	 * Käy läpi kaikki bittimaskissa annetut siirrot tietylle nappulalle.
-	 *
-	 * @param depth vaadittava jäljellä oleva hakusyvyys
-	 * @param alpha alfa-beta-karsinnan alfa-arvo
-	 * @param beta alfa-beta-karsinnan beta-arvo
-	 * @param state pelitila
-	 * @param pieceType siirrettävän nappulan tyyppi
-	 * @param fromSqr siirrettävän nappulan sijainti
-	 * @param moves siirrot 64-bittisenä bittimaskina
-	 * @return uusi alfa-arvo
-	 */
-	private int searchMoves(int depth, int alpha, int beta, GameState state, int pieceType,
-			int fromSqr, long moves)
-	{
-		for (; moves != 0; moves -= Long.lowestOneBit(moves)) {
-			int toSqr = Long.numberOfTrailingZeros(moves);
-			alpha = searchMove(depth, alpha, beta, state, pieceType, fromSqr, toSqr);
-			if (alpha >= beta)
-				return alpha;
-		}
 
 		return alpha;
 	}
@@ -345,26 +310,25 @@ public class MinMaxAI implements AI
 	 * @param toSqr sirrettävän nappulan uusi sijainti
 	 * @return uusi alfa-arvo
 	 */
-	private int searchMove(int depth, int alpha, int beta, GameState state,
-			int pieceType, int fromSqr, int toSqr)
+	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
 	{
 		++ply;
-		int capturedPiece = state.move(fromSqr, toSqr, pieceType);
+		state.move(move);
 		int score = -search(depth - 1, -beta, -alpha, state);
-		state.undoMove(fromSqr, toSqr, pieceType, capturedPiece);
+		state.undoMove(move);
 		--ply;
 
-		treeGenerator.endNode(fromSqr, toSqr, -score, pieceType, capturedPiece,
-				results[ply + 1] != null ? results[ply + 1].nodeType : -1);
+		int nodeType = results[ply + 1] != null ? results[ply + 1].nodeType : -1;
+		treeGenerator.endNode(move, -score, nodeType);
 
 		if (score > alpha) {
-			if (ply == 0 && loggingEnabled)
-				log("" + fromSqr + " " + toSqr + " " + (score - rootScore));
-			results[ply].bestMoveFrom = fromSqr;
-			results[ply].bestMoveTo = toSqr;
-			results[ply].bestMovePieceType = pieceType;
-			alpha = score;
+			if (ply == 0 && loggingEnabled) {
+				log("" + Move.getFromSqr(move) + " " + Move.getToSqr(move) + " "
+						+ (score - rootScore));
+			}
+			results[ply].bestMove = move;
 			results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
+			alpha = score;
 		}
 
 		return alpha;
@@ -415,7 +379,7 @@ public class MinMaxAI implements AI
 			int score = -search(depth - NULL_MOVE_REDUCTION1 - 1, -beta, -alpha, state);
 			--ply;
 			state.nullMove();
-			treeGenerator.endNode(-1, -1, -score, -1, -1, 0);
+			treeGenerator.endNode(0, -score, 0);
 			if (score >= beta)
 				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
 		}

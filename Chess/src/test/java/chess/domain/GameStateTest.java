@@ -72,11 +72,11 @@ public class GameStateTest
 	{
 		s.move(48, 40);
 		s.move(8, 16);
-		s.move(62, 45, Pieces.KNIGHT);
-		s.move(1, 18, Pieces.KNIGHT);
+		s.move(62, 45);
+		s.move(1, 18);
 		GameState s2 = new GameState();
-		s2.move(62, 45, Pieces.KNIGHT);
-		s2.move(1, 18, Pieces.KNIGHT);
+		s2.move(62, 45);
+		s2.move(1, 18);
 		s2.move(48, 40);
 		s2.move(8, 16);
 		assertTrue(s.equals(s2));
