@@ -37,7 +37,12 @@ public class KanonisoidunKoodinMuodostaja {
         // bittien paikka on vaihdettava koska purkaja aloittaa koodin lukemisen eri puolelta ja ei muuten löydä vastaavuutta
         return vaihdaBittiJarjestys(koodi, vanhaPituus);
     }
-
+    /**
+     * Kääntää bittikuvion ympäri, esim 10001000 -> 00010001. Tämä on tarpeellista johtuen siitä miten purkaaja lukee bittejä tiedostosta
+     * @param koodi käännettävä bittikuvio
+     * @param pituus kuinka monta bittiä on merkitseviä
+     * @return käännetty bittikuvio
+     */
     private long vaihdaBittiJarjestys(long koodi, int pituus) {
         long uusiKoodi = 0L;
 

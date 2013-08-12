@@ -1,16 +1,17 @@
 
-Header-tiedosto:
-1 tavu - montako bittiä viimeisessä dataosion tavussa on merkitseviä - tätä joudutaan todennäköisesti täyttämään roskalla koska java kirjoittaa vain kokonaisia tavuja tiedostoon.
+Header-tiedoston alussa:
+
+1 tavu - montako bittiä viimeisessä dataosion tavussa on merkitseviä - Viimeinen tavu sisältää mahdollisesti täytebittejä koska java kirjoittaa vain kokonaisia tavuja tiedostoon.
 1 tavu - blokin pituus tavuissa
 n tavua - huffman-koodit
 
 	
-jokaiselle blokki - koodiparille JOS koodinpituus on sama kuin alussa ilmoitettu: 
-	1 tavu joka kertoo koodin pituuden biteissä
+jokaiselle blokki - koodiparille ***JOS*** koodinpituus on sama kuin alussa ilmoitettu: 
+	1 tavu joka kertoo koodin pituuden biteissä. Arvo väliltä 1 - 64 koska bitit tallennetaan sisäisesti 64-bittiseen long-muuttujaan
 	x tavua blokille, maks 255 tavua. Bittikuvio joka on korvattu huffman-koodilla. Koska luetaan aina tavun kokoisissa osissa, tämä ei sisällä täytebittejä
 	Maks. tila per blokki - koodipari: 255 + 2*1 -> 257 tavua. Käytännössä blokin pituus + 2x1 tavua, esim. blokkikoon ollessa 8 tavua, vie yksi blokki headerista 10 tavua
 
-jos blokin pituus eroaa ilmoitetusta (viimeinen pakattavasta tiedostosta luettu blokki voi olla lyhyempi kuin ilmoitettu)
+***Jos*** blokin pituus eroaa ilmoitetusta (viimeinen pakattavasta tiedostosta luettu blokki voi olla lyhyempi kuin ilmoitettu)
 	1 tavu - arvo 0 - ilmoittaa että poikkeava blokki
 	1 tavu - blokin pituus
 	1 tavu - koodin pituus biteissä

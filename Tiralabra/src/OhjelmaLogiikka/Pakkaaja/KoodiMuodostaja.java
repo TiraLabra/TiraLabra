@@ -1,8 +1,7 @@
-
-
 package OhjelmaLogiikka.Pakkaaja;
 
 import OhjelmaLogiikka.BittiUtility;
+import Tiedostokasittely.ITiedostoLukija;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
@@ -18,35 +17,78 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Comparator;
 
-
+/**
+ * Luokka joka muodostaa huffman-koodit annetusta tiedostosta
+ */
 public class KoodiMuodostaja {
+
     private long sisaanTiedostonKoko;
     private final int BLOKIN_KOKO;
     private Kanonisoija kanonisoija;
-    
+
+    /**
+     * Palauttaa listan kanonisista koodeista järjestettynä koodin pituuksien
+     * mukaan. Headerin kirjoitus tarvitsee tätä
+     *
+     * @return
+     */
     public OmaList<Pari<ByteWrapper, Koodi>> haeKooditJarjestettyna() {
         return kanonisoija.haeKooditJarjestettyna();
     }
-    
+
+    /**
+     * Konstruktori. Saa parametrikseen blokin koon. Blokin koko = montako tavua
+     * luetaan tiedostosta kerralla. Blokeista luodaan huffman-koodit
+     *
+     * @param blokinKoko Blokin koko tavuissa
+     */
     public KoodiMuodostaja(int blokinKoko) {
         BLOKIN_KOKO = blokinKoko;
     }
-    
+
+    /**
+     * Palauttaa luettavan tiedoston koon.
+     *
+     * @return luettavan tiedoston koko
+     */
     public long haeTiedostonKoko() {
         return sisaanTiedostonKoko;
     }
-    
-    public OmaMap<ByteWrapper, Koodi> muodostaKoodit(String sisaan) throws FileNotFoundException, IOException {
-        
-        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = laskeEsiintymisTiheydet(sisaan);
+
+    /**
+     * Muodostaa koodit annetusta tiedostosta. Tämä metodi avaa tiedoston joten
+     * tiedoston tulee olla suljettuna kun se välitetään metodille.
+     *
+     * @param lukuTiedosto ITiedostoLukija-rajapinnan toteuttava objekti
+     * @return Taulu joka sisältää Blokki-koodiparit. Koodit ovat kanoniset.
+     * @throws FileNotFoundException Jos annettua tiedostoa ei löydy
+     * @throws IOException Jos jotakin menee pieleen lukuvaiheessa
+     */
+    public OmaMap<ByteWrapper, Koodi> muodostaKoodit(ITiedostoLukija lukuTiedosto) throws FileNotFoundException, IOException {
+
+        // lasketaan blokkien esiintymistiheydet
+        OmaMap<ByteWrapper, Integer> esiintymisTiheydet = laskeEsiintymisTiheydet(lukuTiedosto);
+        // prioriteettijono esiintymistiheyksien pohjalta
         OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = muodostaPrioriteettiJono(esiintymisTiheydet);
+        // rakennetaan puu prioriteettijonon avulla
         OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
+        // lasketaan koodit puusta ja tehdään lista blokki-koodi-pareista 
         OmaList<Pari<ByteWrapper, Koodi>> koodiLista = kooditPuusta(puu);
-        kanonisoija = new Kanonisoija(); 
-        
+        // kanonisoidaan koodit jotta header-tiedosto olisi pienempi
+        kanonisoija = new Kanonisoija();
         return kanonisoija.kanonisoi(koodiLista);
     }
 
+    /**
+     * Muodostaa prioriteettijonon esiintymistiheyksistä kasvavan tiheyden
+     * mukaan (ensimmäinen alkio harvinaisin, viimeinen yleisin). Alkiot
+     * tallennettu puunodeihin koska huffman-puu rakennetaan jonoa käyttäen
+     *
+     * @param esiintymisTiheydet Taulu jossa avaimena blokki ja arvona kuinka
+     * monta kertaa blokki esiintynyt tiedostossa.
+     * @return Prioriteettijono joka sisältää puun silmuissa järjestettynä
+     * kasvavaan järjestykseen esiintymistiheyden mukaan
+     */
     private OmaQueue<OmaTreeNode<Integer, ByteWrapper>> muodostaPrioriteettiJono(OmaMap<ByteWrapper, Integer> esiintymisTiheydet) {
         OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono = new OmaMinimiPriorityQueue<OmaTreeNode<Integer, ByteWrapper>>(new Comparator<OmaTreeNode<Integer, ByteWrapper>>() {
             @Override
@@ -65,6 +107,13 @@ public class KoodiMuodostaja {
         return jono;
     }
 
+    /**
+     * Muodostaa huffman-puun annetusta jonosta.
+     *
+     * @param jono Jono joka sisältää esiintymistiheydet ja blokit tallennettuna
+     * puun nodeihin kasvavassa esiintymistiheysjärjestyksessä
+     * @return Muodostetun huffman-puun juuri
+     */
     private OmaTreeNode<Integer, ByteWrapper> muodostaHuffmanPuu(OmaQueue<OmaTreeNode<Integer, ByteWrapper>> jono) {
         while (jono.size() > 1) {
             OmaTreeNode<Integer, ByteWrapper> node1 = jono.pop();
@@ -76,10 +125,18 @@ public class KoodiMuodostaja {
         OmaTreeNode<Integer, ByteWrapper> puu = jono.pop();
 
         assert (jono.isEmpty());
+
         return puu;
     }
 
-
+    /**
+     * Muodostaa listan blokki-koodipareista huffman-puun perusteella. Koodit
+     * periaatteessa kävisivät sellaisenaan tiedoston tiivistykseen mutta ne
+     * kanonisoidaan vielä seuraavalla askeleella headerin kutistamiseksi.
+     *
+     * @param puu Huffman-puun juuri
+     * @return Lista blokki-koodi-pareista
+     */
     private OmaList<Pari<ByteWrapper, Koodi>> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
         OmaList<Pari<ByteWrapper, Koodi>> koodit = new OmaArrayList<Pari<ByteWrapper, Koodi>>((int) Math.pow(2, 14));
 
@@ -88,8 +145,17 @@ public class KoodiMuodostaja {
         return koodit;
     }
 
+    /**
+     * Rekursiometodi puun läpi käymiseen
+     *
+     * @param node käsiteltävä puun silmu
+     * @param koodit lista blokki-koodipareista
+     * @param koodi tähän asti muodostettu huffman-koodi
+     * @param paikka paikka puussa, tarvitaan huffman-koodin muodostamista
+     * varten
+     */
     private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaList<Pari<ByteWrapper, Koodi>> koodit, long koodi, int paikka) {
-        // puun pitäisi olla täydellinen
+        // puun pitäisi olla täysi
         assert (node != null);
 
         if (node.onLehti()) {
@@ -99,39 +165,49 @@ public class KoodiMuodostaja {
             Pari pari = new Pari();
             pari.ensimmainen = node.haeArvo();
             pari.toinen = k;
-            
+
             koodit.add(pari);
             return;
         }
 
         kayPuuLapiJaLuoKooditRekursiivisesti(node.vasenLapsi(), koodit, koodi, paikka + 1);
-        
+
         koodi = BittiUtility.tallennaBitinArvoPaikalle(koodi, 1, paikka);
         kayPuuLapiJaLuoKooditRekursiivisesti(node.oikeaLapsi(), koodit, koodi, paikka + 1);
     }
 
- 
-
-    private OmaMap<ByteWrapper, Integer> laskeEsiintymisTiheydet(String sisaan) throws IllegalArgumentException, IOException, FileNotFoundException {
-        TiedostoLukija lukija = new TiedostoLukija(sisaan);
+    /**
+     * Laskee annetusta tiedostosta blokkien esiintymistiheydet
+     *
+     * @param lukija ITiedostoLukija-rajapinnan toeuttava objekti. Tästä luetaan
+     * blokit
+     * @return palauttaa Taulun joka sisältää blokit ja niiden
+     * esiintymistiheydet
+     * @throws IOException Jos lukeminen epäonnistuu
+     */
+    private OmaMap<ByteWrapper, Integer> laskeEsiintymisTiheydet(ITiedostoLukija lukija) throws IOException {
         lukija.avaaTiedosto();
         sisaanTiedostonKoko = lukija.koko();
-        
+
         System.out.println("Pakattavan tiedoston koko " + (double) sisaanTiedostonKoko / 1024 / 1024 + " megatavua (" + (double) sisaanTiedostonKoko / 1024 + " kilotavua)");
-        
+
         OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(8192);
-        
+
         byte[] luetutTavut = new byte[BLOKIN_KOKO];
         int luettu;
-        
+
         while ((luettu = lukija.lue(luetutTavut)) > 0) {
             kasitteleBlokki(luettu, luetutTavut, esiintymisTiheydet);
         }
-        
-        lukija.suljeTiedosto();
+
         return esiintymisTiheydet;
     }
-
+    /**
+     * Käsittelee yhden blokin
+     * @param luettu montako tavua luettu tiedostosta
+     * @param luetutTavut luetut tavut
+     * @param esiintymisTiheydet Taulu blokki-esiintymistiheyksistä
+     */
     private void kasitteleBlokki(int luettu, byte[] luetutTavut, OmaMap<ByteWrapper, Integer> esiintymisTiheydet) {
         ByteWrapper blokki = new ByteWrapper();
 

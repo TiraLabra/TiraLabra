@@ -6,11 +6,7 @@ package Tietorakenteet;
 *
  */
 public interface OmaList<T> {
-    /**
-     * Sisäisen taulukon koko
-     * @return Sisäisen taulukon koko
-     */
-    public int capacity();
+
    /**
      * Metodi joka lukee palauttaa listan koon. Arvo aina ei-negatiivinen
      *

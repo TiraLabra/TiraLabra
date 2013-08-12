@@ -5,17 +5,25 @@ import java.util.Comparator;
 /**
  * Luokka joka toteuttaa minimiprioriteettijonon. Koska en tarvitse muuta, en
  * ala rakentamaan yleisempää jonoa joka toteuttaisi myös
- * maksimiprioriteettijonon. Lisäksi add-operaatio olettaa aina että keko
- * toteuttaa kekoehdon
+ * maksimiprioriteettijonon - tosin comparatorin toiminnan ympäri kääntämällä
+ * toimii myös maksimiprioriteettijonona mutta tällöin rikotaan compare-metodin
+ * kontraktia. Lisäksi add-operaatio olettaa aina että keko toteuttaa kekoehdon
+ * 
+ * Metodien javadocit rajapinnan yhteydessä
+ * 
+ * @param <T> Varastoitavan objektin tyyppi
  */
 public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
     OmaList<T> keko;
     Comparator<T> vertaaja;
+
     /**
-     * Konstruktori. Ottaa parametrina Comparator<T> - rajapinnan toteuttavan objektin
-     * joka vastaa objektien vertailusta
-     * @param vertaaja Objekti joka toteuttaa Comparator-rajapinnan ja joka vastaa objektien vertailusta
+     * Konstruktori. Ottaa parametrina Comparator<T> - rajapinnan toteuttavan
+     * objektin joka vastaa objektien vertailusta
+     *
+     * @param vertaaja Objekti joka toteuttaa Comparator-rajapinnan ja joka
+     * vastaa objektien vertailusta
      */
     public OmaMinimiPriorityQueue(Comparator<T> vertaaja) {
         keko = new OmaArrayList<T>();

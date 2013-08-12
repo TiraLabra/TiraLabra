@@ -1,8 +1,11 @@
 package Tietorakenteet;
 
-import java.util.Arrays;
 
-// javan genericsien suunnittelija voisi hypätä sillalta alas
+/**
+ * Oma arraylist-implementaatio. Metodien javadocit rajapinnan yhteydessä.
+ * 
+ * @param <T> Varastoitavan objektin tyyppi.
+ */
 public class OmaArrayList<T> implements OmaList<T> {
 
     private Object[] data;
@@ -26,12 +29,7 @@ public class OmaArrayList<T> implements OmaList<T> {
         data = new Object[koko];
         datanKoko = 0;
     }
-    
-    @Override
-    public int capacity() {
-        return data.length;
-    }
-    
+        
     @Override
     public int size() {
         return datanKoko;
@@ -134,7 +132,7 @@ public class OmaArrayList<T> implements OmaList<T> {
     }
 
     /**
-     * Metodi joka tuplaa taulukon koon kutsuttaessa
+     * Metodi joka tuplaa taulukon koon kutsuttaessa ja kopioi vanhan taulukon uuteen & korvaa vanhan taulukon uudella
      */
     private void kasvataKokoa() {
         Object [] uusiArray = new Object[data.length * 2];

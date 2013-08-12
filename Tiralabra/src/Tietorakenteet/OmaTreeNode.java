@@ -1,5 +1,10 @@
 package Tietorakenteet;
-
+/**
+ * Luokka joka kuvailee yhtä puun silmua. Lähinnä datavarasto
+ * 
+ * @param <K> Avaimen tyyppi.
+ * @param <V> Arvon tyyppi 
+ */
 public class OmaTreeNode<K, V> {
 
     private final K AVAIN;
@@ -8,13 +13,7 @@ public class OmaTreeNode<K, V> {
     private final OmaTreeNode OIKEA;
 
     public OmaTreeNode(K avain, V arvo) {
-        
-        // OmaTreeNode(avain, arvo, null, null) ei toimi
-        // javan genericsit on rasittavia
-        AVAIN = avain;
-        ARVO = arvo;
-        VASEN = null;
-        OIKEA = null;
+        this(avain, arvo, null, null);       
     }
 
     public OmaTreeNode(K avain, V arvo, OmaTreeNode vasenLapsi, OmaTreeNode oikeaLapsi) {

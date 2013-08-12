@@ -1,6 +1,8 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import OhjelmaLogiikka.BittiUtility;
+import Tiedostokasittely.ITiedostoKirjoittaja;
+import Tiedostokasittely.ITiedostoLukija;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.ByteWrapper;
@@ -9,36 +11,70 @@ import Tietorakenteet.OmaMap;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Luokka joka vastaa itse tiedoston tiivistyksestä
+ *
+ */
 public class Tiivistaja {
 
     private final int BLOKIN_KOKO;
     private long ulosTiedostonKoko;
 
+    /**
+     * Konstruktori. Ottaa parametrina blokin koon
+     *
+     * @param blokinKoko Blokin koko
+     */
     public Tiivistaja(int blokinKoko) {
         BLOKIN_KOKO = blokinKoko;
     }
 
+    /**
+     * Kertoo kuinka suuri tiivistetystä tiedostosta tuli. Ei sisällä headeria
+     *
+     * @return Tiivistetyn tiedoston koko
+     */
     public long haeTiedostonKoko() {
         return ulosTiedostonKoko;
     }
 
-    public int tiivista(String sisaan, String ulos, OmaMap<ByteWrapper, Koodi> koodit) throws FileNotFoundException, IOException {
+    /**
+     * Tiivistää annetun tiedoston ja kirjoittaa lopputuloksen toiseen annettuun
+     * tiedostoon.
+     *
+     * @param lukija Lähdetiedosto
+     * @param kirjoittaja Kohdetiedosto
+     * @param koodit Taulu joka sisältää blokki-koodi-parit
+     * @return montako bittiä on merkitseviä viimeisessä tavussa
+     * @throws IOException Jos jotakin menee vikaan lukemisessa tai
+     * kirjoituksessa
+     */
+    public int tiivista(ITiedostoLukija lukija, ITiedostoKirjoittaja kirjoittaja, OmaMap<ByteWrapper, Koodi> koodit) throws IOException {
+        int merkitseviaBittejaViimeisessaTavussa;
+        try {
+            lukija.avaaTiedosto();
+            kirjoittaja.avaaTiedosto();
 
-        TiedostoLukija lukija = new TiedostoLukija(sisaan);
-        lukija.avaaTiedosto();
+            merkitseviaBittejaViimeisessaTavussa = kirjoitaKoodit(lukija, kirjoittaja, koodit);
 
-        TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulos);
-        kirjoittaja.avaaTiedosto();
 
-        int bittejaKaytetty = kirjoitaBlokit(lukija, koodit, kirjoittaja);
+        } finally {
+            lukija.suljeTiedosto();
+            kirjoittaja.suljeTiedosto();
+            ulosTiedostonKoko = kirjoittaja.koko();
+        }
 
-        lukija.suljeTiedosto();
-        kirjoittaja.suljeTiedosto();
-        ulosTiedostonKoko = kirjoittaja.koko();
-        return bittejaKaytetty;
+        return merkitseviaBittejaViimeisessaTavussa;
     }
-
-    private int kirjoitaBlokit(TiedostoLukija lukija, OmaMap<ByteWrapper, Koodi> koodit, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    /**
+     * Lukee lähdetiedostosta blokit ja kirjoittaa kohdetiedostoon huffman-koodit
+     * @param lukija lähdetiedosto
+     * @param kirjoittaja kohdetiedosto
+     * @param koodit Taulu joka sisältää blokki-koodi-parit
+     * @return montako bittiä on merkitseviä viimeisessa tavussa
+     * @throws IOException Jos luku\kirjoitusoperaatioissa menee jotakin pieleen
+     */
+    private int kirjoitaKoodit(ITiedostoLukija lukija, ITiedostoKirjoittaja kirjoittaja, OmaMap<ByteWrapper, Koodi> koodit) throws IOException {
         byte[] puskuri = new byte[1];
         byte[] luetutTavut = new byte[BLOKIN_KOKO];
         int luettu;
@@ -51,29 +87,56 @@ public class Tiivistaja {
         bittejaKaytetty = hoidaViimeinenTavu(bittejaKaytetty, kirjoittaja, puskuri);
         return bittejaKaytetty;
     }
-
-    private int hoidaViimeinenTavu(int bittejaKaytetty, TiedostoKirjoittaja kirjoittaja, byte[] puskuri) throws IOException {
-        if (bittejaKaytetty != 0) {
+    /**
+     * Käsittelee viimeisen tavun jonka on voinut jäädä kesken jos se ei ole tasan 8 bittiä pitkä
+     * @param bittejaKaytetty Montako bittiä on käytetty tavusta tähän mennessä
+     * @param kirjoittaja kohdetiedosto
+     * @param puskuri yhden tavun taulukko jossa käsiteltävät bitit majailevat
+     * @return montako tavua on merkitseviä viimeisessä
+     * @throws IOException jos kirjoitusoperaatio epäonnistuu
+     */
+    private int hoidaViimeinenTavu(int bittejaKaytetty, ITiedostoKirjoittaja kirjoittaja, byte[] puskuri) throws IOException {
+        if (bittejaKaytetty != 0) { // viimeisen tavun käsittely on kesken - tallennetaan tiedostoon
             kirjoittaja.kirjoita(puskuri);
         } else {
             bittejaKaytetty = 8; // viimeisessä tavussa on kaikki tavut merkitseviä jos koko tavu on kirjoitettu
         }
         return bittejaKaytetty;
     }
-
-    private int kasitteleBlokki(int luettu, byte[] luetutTavut, OmaMap<ByteWrapper, Koodi> koodit, byte[] puskuri, int bittejaKaytetty, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    /**
+     * Käsittelee luetun blokin ja tallentaa tiedostoon. Jos viimeinen luettu blokki on pienempi kuin blokin koko, jää sen käsittely kesken
+     * @param luettu monta tavua luettu
+     * @param luetutTavut tavut jotka luettu
+     * @param koodit Taulu joka sisältää blokki-koodi-parit
+     * @param puskuri Yhden tavun puskuri johonka huffman-koodeja tallennetaan. Kun 8 bittiä käsitelty, tallennetaan tiedostoon
+     * @param bittejaKaytetty Monta bittiä on käytetty tähän mennessä puskurista
+     * @param kirjoittaja Kohdetiedosto
+     * @return Monta bittiä on käytetty puskurista
+     * @throws IOException Jos kirjoitusoperaatio epäonnistuu
+     */
+    private int kasitteleBlokki(int luettu, byte[] luetutTavut, OmaMap<ByteWrapper, Koodi> koodit, byte[] puskuri, int bittejaKaytetty, ITiedostoKirjoittaja kirjoittaja) throws IOException {
         ByteWrapper blokki = new ByteWrapper();
         blokki.byteTaulukko = new byte[luettu];
+        
         for (int i = 0; i < luettu; ++i) {
             blokki.byteTaulukko[i] = luetutTavut[i];
         }
+        // käytetään ByteWrapper-objektia hashmapin avaimena ja haetaan sitä vastaava huffman-pakkauskoodi
         Koodi pakkausKoodi = koodit.get(blokki);
-        
+
         bittejaKaytetty = kopioiTavuunPakkausKoodienBittejaJaKirjoita(pakkausKoodi, puskuri, bittejaKaytetty, kirjoittaja);
         return bittejaKaytetty;
     }
-
-    private int kopioiTavuunPakkausKoodienBittejaJaKirjoita(Koodi pakkausKoodi, byte[] puskuri, int bittejaKaytetty, TiedostoKirjoittaja kirjoittaja) throws IOException {
+    /**
+     * Kopioi tavupuskuriin nykyisen koodin bitit ja tarvittaessa kirjoittaa tiedostoon jos kaikki bitit käytetty
+     * @param pakkausKoodi huffman-koodi
+     * @param puskuri tavupuskuri
+     * @param bittejaKaytetty monta bittiä käytetty puskurista
+     * @param kirjoittaja Kohdetiedosto
+     * @return monta bittiä käytetty
+     * @throws IOException Jos kirjoitus epäonnistuu
+     */
+    private int kopioiTavuunPakkausKoodienBittejaJaKirjoita(Koodi pakkausKoodi, byte[] puskuri, int bittejaKaytetty, ITiedostoKirjoittaja kirjoittaja) throws IOException {
         for (int j = 0; j < pakkausKoodi.pituus; ++j) {
             int arvo = BittiUtility.haeBitinArvoPaikasta(pakkausKoodi, j);
 
@@ -81,7 +144,7 @@ public class Tiivistaja {
 
             ++bittejaKaytetty;
             if (bittejaKaytetty == 8) {
-                    
+
                 kirjoittaja.kirjoita(puskuri);
                 puskuri[0] = 0;
                 bittejaKaytetty = 0;
@@ -89,6 +152,4 @@ public class Tiivistaja {
         }
         return bittejaKaytetty;
     }
-
-
 }

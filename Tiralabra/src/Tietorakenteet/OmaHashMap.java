@@ -1,15 +1,20 @@
 package Tietorakenteet;
 
 /**
- * Oma Hashmap-implementaatio. Talukko[hashCode] sisältää ylivuotolistan johonka
+ * Oma Hashmap-implementaatio. arvot[hashCode] sisältää ylivuotolistan johonka
  * tallennetaan kaikki objektit jotka saavat saman hash coden Ylivuotolista
- * toteutettu arraylistillä - jos taulu toimii oikein, ylivuotolistat ovat
- * pieniä eikä muistia hukata paljoa ja arraylistillä on parempi käyttäytyminen
- * välimuistissa koska data on peräkkäin muistissa vs linkitetyn listan alkiot
- * jotka voivat olla mielivaltaisissa paikoissa
+ * toteutettu arraylistillä, pääasiassa koska en halua implementoida linkitettyä
+ * listää koska arraylist on jo olemassa. Lisäksi jos taulu toimii oikein,
+ * ylivuotolistat ovat pieniä eikä muistia hukata paljoa ja arraylistillä on
+ * parempi käyttäytyminen välimuistissa koska data on peräkkäin muistissa vs
+ * linkitetyn listan alkiot jotka voivat olla mielivaltaisissa paikoissa
+ * 
+ * Metodien javadocit rajapinnan yhteydessä.
  *
  * @param <K> Avain
  * @param <V> Arvo
+ * 
+ 
  */
 public class OmaHashMap<K, V> implements OmaMap<K, V> {
 
@@ -44,7 +49,6 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
         alustaTaulukko(arvot);
     }
 
-
     /**
      * Alustaa taulukon
      *
@@ -74,7 +78,7 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
      */
     private void rehash(Object[] uusiTaulukko) {
         for (int i = 0; i < arvot.length; ++i) {
-            
+
             assert (arvot[i] != null);
             OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
             if (!lista.isEmpty()) {
@@ -92,15 +96,15 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     }
 
     private int taulukonIndeksi(Object key, Object[] obj) {
-        return key.hashCode() & (obj.length - 1);       
-     }
+        return key.hashCode() & (obj.length - 1);
+    }
 
     @Override
     public V get(Object key) {
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[taulukonIndeksi(key, arvot)];
-        
+
         assert (lista != null);
-        
+
         for (int i = 0; i < lista.size(); ++i) {
             if (lista.get(i).ensimmainen.equals(key)) {
                 return lista.get(i).toinen;
@@ -133,11 +137,11 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
     private boolean asetaTaulukkoon(K key, V value, Object[] taulukko) {
 
         OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) taulukko[taulukonIndeksi(key, taulukko)];
-        
+
         if (korvaaJosJoTaulukossa(lista, key, value)) {
             return false;
         }
-        
+
         lisaaTaulukkoon(key, value, lista);
         return true;
     }

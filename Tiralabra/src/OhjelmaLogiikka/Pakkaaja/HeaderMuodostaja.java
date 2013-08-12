@@ -1,5 +1,6 @@
 package OhjelmaLogiikka.Pakkaaja;
 
+import Tiedostokasittely.ITiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
@@ -7,32 +8,59 @@ import Tietorakenteet.OmaList;
 import Tietorakenteet.Pari;
 import java.io.IOException;
 
+/**
+ * Luokka joka vastaa header-tiedoston kirjoittamisesta.
+ *
+ */
 public class HeaderMuodostaja {
 
     private final int OFFSET = 128;
     private int blokinPituus;
 
-    public long muodostaHeader(String header, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) {
+    /**
+     * Luo header-tiedoston annettujen parametrien perusteella
+     *
+     * @param headerKirjoittaja ITiedostoKirjoittaja-rajapinnan toteuttava objekti
+     * @param koodit Lista blokki - koodipareista
+     * @param viimeisessaTavussaMerkitseviaBitteja montako merkitsevää bittiä
+     * pakatun tiedoston viimeisessä tavussa on
+     * @param blokinPituus - pakattaessa käyteyn blokin pituus
+     * @return Headerin koko tavuissa
+     */
+    public long muodostaHeader(ITiedostoKirjoittaja headerKirjoittaja, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) {
         try {
-            TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(header);
-            kirjoittaja.avaaTiedosto();
+           
+            headerKirjoittaja.avaaTiedosto();
             this.blokinPituus = blokinPituus;
-            alustaHeader(viimeisessaTavussaMerkitseviaBitteja, kirjoittaja);
+            alustaHeader(viimeisessaTavussaMerkitseviaBitteja, headerKirjoittaja);
             
             for (int i = 0; i < koodit.size(); ++i) {
-                tallennaBlokinTiedot(koodit.get(i).ensimmainen, koodit.get(i).toinen, kirjoittaja);
-
+                tallennaBlokinTiedot(koodit.get(i).ensimmainen, koodit.get(i).toinen, headerKirjoittaja);
             }
-
-            kirjoittaja.suljeTiedosto();
-            return kirjoittaja.koko();
+            
+            headerKirjoittaja.suljeTiedosto();
+            return headerKirjoittaja.koko();
         } catch (Exception ex) {
             System.out.println("Jotain meni pieleen headerin luomisessa " + ex.getMessage());
+
         }
         return 0;
     }
 
-    private void alustaHeader(Integer viimeisessaTavussaMerkitseviaBitteja, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
+    /**
+     * Kirjoittaa headerin alkuun tietoja ennen varsinaisten huffman-koodien
+     * tallennusta
+     *
+     * @param viimeisessaTavussaMerkitseviaBitteja Montako bittiä on merkitseviä
+     * tallennetun tiedoston viimeisessä tavussa
+     * @param kirjoittaja TiedostoKirjoittaja-objekti joka vastaa
+     * tiedostoonkirjoituksesta
+     * @throws IllegalArgumentException Jos Viimeisessä tavussa on alle 1 tai
+     * yli 8 merkitsevää bittiä. Alle 1 tarkoittaa että viimeinen tavu ei olisi
+     * merkitsevä ollenkaan ja tavussa on max. 8 bittiä
+     * @throws IOException Jos tiedostoonkirjoituksessa meni jotakin vikaan
+     */
+    private void alustaHeader(Integer viimeisessaTavussaMerkitseviaBitteja, ITiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (viimeisessaTavussaMerkitseviaBitteja > 8 || viimeisessaTavussaMerkitseviaBitteja < 1) {
             throw new IllegalArgumentException("Tavussa oltava vähintään yksi ja korkeintaan 8 merkitsevää bittiä - annettu arvo: " + viimeisessaTavussaMerkitseviaBitteja);
         }
@@ -45,9 +73,21 @@ public class HeaderMuodostaja {
         kirjoittaja.kirjoita(puskuri);
     }
 
-    private void tallennaBlokinTiedot(ByteWrapper blokki, Koodi koodi, TiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
-
-
+    /**
+     * Tallentaa headeriin blokin tiedot. Katso dokumentaatiosta
+     * tiedostoformaatti.txt formaatin selventämiseksi
+     *
+     * @param blokki headeriin tallennettava blokki
+     * @param koodi blokkia vastaava koodi - tarvitaan vain tämän pituus koska
+     * itse koodi voidaan rakentaa paikkatiedon avulla purkuvaiheessa
+     * @param kirjoittaja TiedostoKirjoittaja-objekti joka vastaa
+     * tiedostoonkirjoituksesta
+     * @throws IllegalArgumentException jos blokin koko on yli 255 (ei mahdu
+     * yhteen tavuun tieto) tai jos koodin pituus on yli 64 (purkuvaiheessa ei
+     * mahdu long-muuttujaan)
+     * @throws IOException Jos kirjoituksessa menee jotakin vikaan
+     */
+    private void tallennaBlokinTiedot(ByteWrapper blokki, Koodi koodi, ITiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
@@ -69,7 +109,7 @@ public class HeaderMuodostaja {
         }
 
         puskuri[0] = (byte) (koodi.pituus - OFFSET);
-       
+
         kirjoittaja.kirjoita(puskuri); // tallennetaan merkitsevien bittien määrä  - max 64 bittiä koska bittien on mahduttava long-muuttujaan
         kirjoittaja.kirjoita(blokki.byteTaulukko);
 
