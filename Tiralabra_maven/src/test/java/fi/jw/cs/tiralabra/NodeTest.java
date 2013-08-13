@@ -26,4 +26,32 @@ public class NodeTest extends TestCase {
         assertFalse(parent.isLeaf());
     }
 
+    public void testCounting() {
+        Node root = new Node();
+        Node left1 = new Node();
+        Node right1 = new Node();
+        Node left2 = new Node();
+
+        assertEquals(0, root.getChildCount());
+        assertEquals(0, root.getLeftCount());
+        assertEquals(0, root.getRightCount());
+
+        root.setLeft(left1);
+
+        assertEquals(1, root.getChildCount());
+        assertEquals(1, root.getLeftCount());
+        assertEquals(0, root.getRightCount());
+
+        left1.setRight(left2);
+
+        assertEquals(2, root.getChildCount());
+        assertEquals(2, root.getLeftCount());
+        assertEquals(0, root.getRightCount());
+
+        assertEquals(1, left1.getChildCount());
+        assertEquals(0, left1.getLeftCount());
+        assertEquals(1, left1.getRightCount());
+
+
+    }
 }

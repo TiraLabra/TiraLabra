@@ -16,6 +16,8 @@ public class Node implements Comparable<Node> {
     private Node parent;
     private Node left;
     private Node right;
+    private int leftCount;
+    private int rightCount;
 
 
     public Node() {
@@ -36,6 +38,8 @@ public class Node implements Comparable<Node> {
         this.parent = parent;
         this.left = left;
         this.right = right;
+        this.leftCount = 0;
+        this.rightCount = 0;
     }
 
 
@@ -69,12 +73,33 @@ public class Node implements Comparable<Node> {
         this.parent = parent;
     }
 
+    public int getChildCount() {
+        return leftCount + rightCount;
+    }
+
     public Node getLeft() {
         return left;
     }
 
     public void setLeft(Node left) {
         this.left = left;
+        left.setParent(this);
+        this.leftCount = 1 + left.getChildCount();
+        if (parent != null) {
+            parent.updateChildCount(this, getChildCount());
+        }
+    }
+
+    public void updateChildCount(Node child, int total) {
+        if (child.equals(left)) {
+            leftCount = 1 + total;
+        } else {
+            rightCount = 1 + total;
+        }
+
+        if (parent != null) {
+            parent.updateChildCount(this, getChildCount());
+        }
     }
 
     public Node getRight() {
@@ -83,6 +108,19 @@ public class Node implements Comparable<Node> {
 
     public void setRight(Node right) {
         this.right = right;
+        right.setParent(this);
+        this.rightCount = 1 + right.getChildCount();
+        if (parent != null) {
+            parent.updateChildCount(this, getChildCount());
+        }
+    }
+
+    public int getLeftCount() {
+        return leftCount;
+    }
+
+    public int getRightCount() {
+        return rightCount;
     }
 
     public String getCode() {

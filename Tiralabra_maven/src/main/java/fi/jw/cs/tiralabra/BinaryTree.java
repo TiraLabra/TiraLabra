@@ -10,12 +10,21 @@ public class BinaryTree {
 
     private Node root;
 
+    public BinaryTree() {
+
+    }
+
     public BinaryTree(Node root) {
         this.root = root;
     }
 
     public Node getRoot() {
         return root;
+    }
+
+    public String[] keySet() {
+        String[] keys = new String[0];
+        return keys;
     }
 
     public void insert(Node child) {
