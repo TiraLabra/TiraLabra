@@ -161,7 +161,7 @@ public class MultiByteHashedTable {
     /**
      * Use with caution. Purges from the data all multibytes that have not been
      * referenced the given amount. Builds a new table for data, statistics and
-     * references with multibytes with at least the given amount of references.
+     * references with multibytes with at least the given amount of references in the actual data.
      *
      * This method should always be run prior to requesting an array for encoding
      * to attain meaningful results.
