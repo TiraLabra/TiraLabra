@@ -1,6 +1,6 @@
 package fi.jw.cs.tiralabra;
 
-import java.util.*;
+import java.util.Comparator;
 
 /**
  * A weighted <code>Node</code> that is going to be used by the <code>BinaryTree</code> class
@@ -135,10 +135,49 @@ public class Node implements Comparable<Node> {
         return new NodeWeightComparator();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        if (weight != node.weight) return false;
+        if (code != null ? !code.equals(node.code) : node.code != null) return false;
+        if (!label.equals(node.label)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = label.hashCode();
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + weight;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "label='" + label + '\'' +
+                ", code='" + code + '\'' +
+                ", weight=" + weight +
+                '}';
+    }
+
     /**
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     *         is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
      */
     @Override
     public int compareTo(Node o) {
+        if (o == null)
+            throw new NullPointerException();
+
         return (label.compareTo(o.getLabel()));
     }
 
@@ -147,8 +186,12 @@ public class Node implements Comparable<Node> {
      *
      * @param o
      * @return
+     * @throws NullPointerException if the specified object is null
      */
     public boolean lessThan(Node o) {
+        if (o == null)
+            throw new NullPointerException();
+
         return (this.compareTo(o) < 0);
     }
 

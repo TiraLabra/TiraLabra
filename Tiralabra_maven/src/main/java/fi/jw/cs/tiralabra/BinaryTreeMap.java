@@ -15,6 +15,32 @@ public class BinaryTreeMap {
         return bt.keySet();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BinaryTreeMap that = (BinaryTreeMap) o;
+
+        if (!bt.equals(that.bt)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return bt.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "BinaryTreeMap{" +
+                "bt=" + bt +
+                '}';
+    }
+
     public void put(String key, String value) {
         Node n = bt.searchByLabel(key);
         if (n == null) {
@@ -30,5 +56,9 @@ public class BinaryTreeMap {
     public String get(String key) {
         Node n = bt.searchByLabel(key);
         return (n == null ? null : n.getCode());
+    }
+
+    public boolean isEmpty() {
+        return bt.isEmpty();
     }
 }

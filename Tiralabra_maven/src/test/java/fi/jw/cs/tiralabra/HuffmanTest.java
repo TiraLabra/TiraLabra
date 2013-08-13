@@ -1,8 +1,9 @@
 package fi.jw.cs.tiralabra;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import java.util.*;
+import java.util.PriorityQueue;
+
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -124,7 +125,7 @@ public class HuffmanTest extends TestCase {
 
     public void testEncodeMessage() {
         Huffman h = new Huffman("abc.");
-        HashMap<String, String> map = new HashMap<String, String>();
+        BinaryTreeMap map = new BinaryTreeMap();
         map.put("a", "0");
         map.put("b", "10");
         map.put("c", "110");
@@ -148,10 +149,10 @@ public class HuffmanTest extends TestCase {
     public void testMapParsing() {
         Huffman encoder = new Huffman("abb");
         encoder.encode();
-        Map<String, String> old = encoder.getMap();
+        BinaryTreeMap old = encoder.getMap();
         String encodedMap = encoder.getStringifiedMap();
         Huffman decoder = new Huffman();
-        Map<String, String> decoded = decoder.parseMap(encodedMap);
+        BinaryTreeMap decoded = decoder.parseMap(encodedMap);
         assertEquals(old, decoded);
     }
 
@@ -161,6 +162,7 @@ public class HuffmanTest extends TestCase {
         encoder.setMessage(message);
         encoder.encode();
         String map = encoder.getStringifiedMap();
+        System.out.println(map);
         String encodedMessage = encoder.getEncodedMessage();
 
         Huffman decoder = new Huffman();
@@ -181,12 +183,12 @@ public class HuffmanTest extends TestCase {
                 "c" + nil + "110" + nil +
                 "d" + nil + "111";
 
-        Map<String, String> m = h.parseMap(map);
+        BinaryTreeMap m = h.parseMap(map);
         assertTrue(m.isEmpty());
     }
 
     public void testDecode() {
-        Map<String, String> map = new java.util.HashMap<String, String>();
+        BinaryTreeMap map = new BinaryTreeMap();
         map.put("a", "0");
         Huffman h = new Huffman();
         h.setMap(map);

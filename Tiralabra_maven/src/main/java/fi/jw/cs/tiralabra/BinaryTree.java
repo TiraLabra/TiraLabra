@@ -1,5 +1,7 @@
 package fi.jw.cs.tiralabra;
 
+import java.util.Arrays;
+
 /**
  * Placeholder for the appropriate data structure.
  *
@@ -22,6 +24,39 @@ public class BinaryTree {
         return root;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BinaryTree that = (BinaryTree) o;
+
+
+        if (root != null ? !root.equals(that.root) : that.root != null) return false;
+
+        String[] keys = keySet();
+        String[] other = that.keySet();
+        return Arrays.equals(keys, other);
+    }
+
+    @Override
+    public int hashCode() {
+        return root != null ? Arrays.deepHashCode(keySet()) : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "BinaryTree{" +
+                "root=" + root +
+                '}';
+    }
+
+
+    public boolean isEmpty() {
+        return (getRoot() == null);
+    }
+
+
     public String[] keySet() {
         return keySet(root);
     }
@@ -32,7 +67,7 @@ public class BinaryTree {
 
 
         String[] leftKeys = keySet(node.getLeft());
-        String[] rightKeys = keySet(node.getLeft());
+        String[] rightKeys = keySet(node.getRight());
 
         int numKeys = 1 + leftKeys.length + rightKeys.length;
         String[] keys = new String[numKeys];
@@ -43,7 +78,7 @@ public class BinaryTree {
             keys[i++] = leftKeys[l];
 
         for (int l = 0; l < rightKeys.length; l++)
-            keys[i++] = leftKeys[l];
+            keys[i++] = rightKeys[l];
 
         return keys;
     }
@@ -54,10 +89,16 @@ public class BinaryTree {
         } else {
             Node current = root;
             boolean success = false;
+            if (current == null) {
+                throw new NullPointerException("BinaryTree.insert() current was null before loop");
+            }
             while (!success) {
+                if (current == null) {
+                    throw new NullPointerException("BinaryTree.insert() current was null");
+                }
 
                 if (child.lessThan(current)) {
-                    if (current.getLeft() != null) {
+                    if (current.getLeft() == null) {
                         current.setLeft(child);
                         child.setParent(current);
                         success = true;
@@ -65,7 +106,7 @@ public class BinaryTree {
                         current = current.getLeft();
                     }
                 } else {
-                    if (current.getRight() != null) {
+                    if (current.getRight() == null) {
                         current.setRight(child);
                         child.setParent(current);
                         success = true;

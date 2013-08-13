@@ -1,6 +1,8 @@
 package fi.jw.cs.tiralabra;
 
-import java.util.*;
+
+import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 
 /**
  * This class provides the utility of encoding and decoding a 8-bit text into a compressed Huffman encoding.
@@ -18,7 +20,7 @@ public class Huffman {
 
     private String message;
     private String encodedMessage;
-    private Map<String, String> map;
+    private BinaryTreeMap map;
     private int[] frequencies;
     private PriorityQueue<Node> sortedNodes;
     private BinaryTree tree;
@@ -30,7 +32,7 @@ public class Huffman {
 
     public Huffman(String message) {
         this.message = message;
-        map = new HashMap<String, String>();
+        map = new BinaryTreeMap();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new PriorityQueue<Node>();
     }
@@ -64,7 +66,7 @@ public class Huffman {
      * @throws <code>IllegalHuffmanCodeException</code>
      *          should it encounter a non-binary encoded value.
      */
-    public void decode() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
+    public void decode() throws IllegalHuffmanCodeException {
         buildReverseTree();
         decodeMessage();
     }
@@ -156,7 +158,7 @@ public class Huffman {
     /**
      * Rebuilds the Huffman tree from <code>map</code>, which must be set to a <code>Map</code> of (<code>String key => String code</code>) pairs.
      */
-    protected void buildReverseTree() throws fi.jw.cs.tiralabra.IllegalHuffmanCodeException {
+    protected void buildReverseTree() throws IllegalHuffmanCodeException {
         Node root = new Node("root", 0);
         Node current = root;
         for (String key : map.keySet()) {
@@ -280,9 +282,9 @@ public class Huffman {
      * @param serial <code>String</code> representation of the map
      * @return <code>Map</code> of <code>String key => String code</code> pairs. <br/>e.g. "a" => "10", "b" => "101" etc.
      */
-    public Map<String, String> parseMap(String serial) {
+    public BinaryTreeMap parseMap(String serial) {
         String[] parts = serial.split(SERIAL_SEPARATOR);
-        Map<String, String> m = new HashMap<String, String>();
+        BinaryTreeMap m = new BinaryTreeMap();
 
         if (parts.length < 2) {
             return m;
@@ -332,11 +334,11 @@ public class Huffman {
     }
 
 
-    public Map<String, String> getMap() {
-        return new HashMap<String, String>(map);
+    public BinaryTreeMap getMap() {
+        return map;
     }
 
-    public void setMap(final Map<String, String> map) {
+    public void setMap(final BinaryTreeMap map) {
         this.map = map;
     }
 

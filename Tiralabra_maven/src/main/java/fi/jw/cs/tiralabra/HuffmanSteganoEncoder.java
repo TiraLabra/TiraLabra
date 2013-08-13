@@ -1,10 +1,10 @@
 package fi.jw.cs.tiralabra;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.charset.*;
-import java.nio.file.*;
-import java.util.*;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * This is a command-line utility to invoke the Huffman-Steganography encoding and decoding of files.
@@ -31,7 +31,7 @@ public class HuffmanSteganoEncoder {
                     break;
                 case 'b':
                     Huffman h = new Huffman("");
-                    Map<String, String> m = new HashMap<String, String>();
+                    BinaryTreeMap m = new BinaryTreeMap();
                     m.put("\t", "0");
                     m.put(" ", "10");
                     m.put("l", "110");
