@@ -18,7 +18,7 @@ import java.util.Comparator;
  *
  */
 public class Kanonisoija {
-    
+
     private OmaList<Pari<ByteWrapper, Koodi>> kooditJarjestyksesaHeaderiaVarten;
 
     /**
@@ -35,7 +35,8 @@ public class Kanonisoija {
     /**
      * Kanonisoi annetut koodit
      *
-     * @param blokkiKoodiLista Taulu koodeista joista halutaan muodostaa kanoniset koodit
+     * @param blokkiKoodiLista Taulu koodeista joista halutaan muodostaa
+     * kanoniset koodit
      * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
      */
     public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
@@ -44,9 +45,11 @@ public class Kanonisoija {
     }
 
     /**
-     * Luo kanonisoidut koodit annetusta taulusta jossa avaimena koodien pituus ja arvona lista blokki-koodi-pareista joiden koodien pituus on avaimena
+     * Luo kanonisoidut koodit annetusta taulusta jossa avaimena koodien pituus
+     * ja arvona lista blokki-koodi-pareista joiden koodien pituus on avaimena
      *
-     * @param normaalitKoodit Taulu koodeista joista halutaan muodostaa kanoniset koodit
+     * @param normaalitKoodit Taulu koodeista joista halutaan muodostaa
+     * kanoniset koodit
      * @return Taulu jossa blokki avaimena ja kanoninen koodi arvona
      */
     private OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit) {
@@ -63,8 +66,10 @@ public class Kanonisoija {
 
         return kanonisoidutKoodit;
     }
+
     /**
      * Käy taulun läpi ja kanonisoi listojen koodit.
+     *
      * @param normaalitKoodit Koodit jotka halutaan kanonisoida
      * @param muodostaja objekti joka muodostaa kanoniset koodit
      * @param kanonisoidutKoodit Kanonisoidut koodit
@@ -72,23 +77,45 @@ public class Kanonisoija {
     private void kasitteleTaulu(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit,
             KanonisoidunKoodinMuodostaja muodostaja, OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit) {
 
-        int indeksi = 0;
-        int kasiteltyja = 0;
-        while (kasiteltyja < normaalitKoodit.size()) {
-            OmaList<Pari<ByteWrapper, Koodi>> lista = normaalitKoodit.get(indeksi);
-            ++indeksi;
+        OmaList<Integer> avaimet = normaalitKoodit.avaimet();
+        avaimet = sorttaaAvaimet(avaimet);
 
-            if (lista == null) {
-                continue;
-            }
+        for (int i = 0; i < avaimet.size(); ++i) {
+            OmaList<Pari<ByteWrapper, Koodi>> lista = normaalitKoodit.get(avaimet.get(i));
 
-            for (int i = 0; i < lista.size(); ++i) {
-                Pari<ByteWrapper, Koodi> pari = lista.get(i);
+            for (int j = 0; j < lista.size(); ++j) {
+                Pari<ByteWrapper, Koodi> pari = lista.get(j);
                 pari.toinen.koodi = muodostaja.muodostaKoodi(pari.toinen.pituus);
                 kooditJarjestyksesaHeaderiaVarten.add(pari);
                 kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);
             }
-            ++kasiteltyja;
         }
+    }
+    
+    /**
+     * Sorttaa heapin avulla avaimet pienimmästä suurimpaan
+     * @param avaimet Lista avaimista 
+     * @return Avaimet järjestyksessä
+     */
+    private OmaList<Integer> sorttaaAvaimet(OmaList<Integer> avaimet) {
+        OmaList<Integer> paluu = new OmaArrayList<Integer>();
+        
+        OmaMinimiPriorityQueue<Integer> heapsort = new OmaMinimiPriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+
+        for (int i = 0; i < avaimet.size(); ++i) {
+            heapsort.push(avaimet.get(i));
+        }
+
+        while (!heapsort.isEmpty()) {
+            paluu.add(heapsort.pop());
+        }
+
+
+        return paluu;
     }
 }

@@ -22,7 +22,6 @@ import java.util.Comparator;
  */
 public class KoodiMuodostaja {
 
-    private long sisaanTiedostonKoko;
     private final int BLOKIN_KOKO;
     private Kanonisoija kanonisoija;
 
@@ -51,10 +50,7 @@ public class KoodiMuodostaja {
      *
      * @return luettavan tiedoston koko
      */
-    public long haeTiedostonKoko() {
-        return sisaanTiedostonKoko;
-    }
-
+ 
     /**
      * Muodostaa koodit annetusta tiedostosta. Tämä metodi avaa tiedoston joten
      * tiedoston tulee olla suljettuna kun se välitetään metodille.
@@ -203,9 +199,6 @@ public class KoodiMuodostaja {
      */
     private OmaMap<ByteWrapper, Integer> laskeEsiintymisTiheydet(ITiedostoLukija lukija) throws IOException {
         lukija.avaaTiedosto();
-        sisaanTiedostonKoko = lukija.koko();
-
-        System.out.println("Pakattavan tiedoston koko " + (double) sisaanTiedostonKoko / 1024 / 1024 + " megatavua (" + (double) sisaanTiedostonKoko / 1024 + " kilotavua)");
 
         OmaMap<ByteWrapper, Integer> esiintymisTiheydet = new OmaHashMap<ByteWrapper, Integer>(8192);
 

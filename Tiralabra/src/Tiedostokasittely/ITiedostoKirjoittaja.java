@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Rajapinta joka määrittää operaatiot kirjoitusoperaatioille. Mahdollistaa valeobjektien käytön yksikkötesteissä.
+ * Rajapinta joka määrittää kirjoitusoperaatiot. Mahdollistaa valeobjektien käytön yksikkötesteissä.
  * 
  */
 public interface ITiedostoKirjoittaja {

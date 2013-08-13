@@ -3,12 +3,9 @@ package OhjelmaLogiikka.Pakkaaja;
 import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.ITiedostoKirjoittaja;
 import Tiedostokasittely.ITiedostoLukija;
-import Tiedostokasittely.TiedostoKirjoittaja;
-import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaMap;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**

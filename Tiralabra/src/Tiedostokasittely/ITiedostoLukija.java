@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Rajapinta joka määrittää operaatiot lukuoperaatioille. Mahdollistaa valeobjektien käytön yksikkötesteissä.
+ * Rajapinta joka määrittää  lukuoperaatiot. Mahdollistaa valeobjektien käytön yksikkötesteissä.
  * 
  */
 public interface ITiedostoLukija {

@@ -1,5 +1,6 @@
 package OhjelmaLogiikka.Pakkaaja;
 
+import Tiedostokasittely.ITiedostoLukija;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
 import Tietorakenteet.ByteWrapper;
@@ -48,13 +49,17 @@ public class Pakkaaja {
             long aika = System.nanoTime();
             System.out.println("Aloitetaan pakkaaminen");
 
+            
+            ITiedostoLukija lukija = new TiedostoLukija(sisaan);
+            long sisaanTiedostonKoko = lukija.koko();
+            System.out.println("Pakattavan tiedoston koko " + (double) sisaanTiedostonKoko / 1024 / 1024 + " megatavua (" + (double) sisaanTiedostonKoko / 1024 + " kilotavua)");        
+            
             KoodiMuodostaja koodiMuodostaja = new KoodiMuodostaja(BLOKIN_KOKO);
-            OmaMap<ByteWrapper, Koodi> koodit = koodiMuodostaja.muodostaKoodit(new TiedostoLukija(sisaan));
-            long sisaanTiedostonKoko = koodiMuodostaja.haeTiedostonKoko();
-
+            OmaMap<ByteWrapper, Koodi> koodit = koodiMuodostaja.muodostaKoodit(lukija);
+            
             Tiivistaja tiivistaja = new Tiivistaja(BLOKIN_KOKO);
             int bittejaKaytetty = tiivistaja.tiivista(new TiedostoLukija(sisaan), new TiedostoKirjoittaja(ulos), koodit);
-            koodit = null; // koodeja ei tarvita enää, gc voi kerätä
+
             long ulosTiedostonKoko = tiivistaja.haeTiedostonKoko();
 
             ulosTiedostonKoko += (new HeaderMuodostaja()).muodostaHeader(new TiedostoKirjoittaja(ulos + ".header"), koodiMuodostaja.haeKooditJarjestettyna(), bittejaKaytetty, BLOKIN_KOKO);
