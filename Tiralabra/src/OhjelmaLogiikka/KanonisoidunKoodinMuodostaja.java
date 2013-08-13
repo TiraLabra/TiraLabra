@@ -28,12 +28,12 @@ public class KanonisoidunKoodinMuodostaja {
      */
     public long muodostaKoodi(int nykyinenPituus) {
         ++koodi;
-
+       
         if (nykyinenPituus > vanhaPituus) {
             koodi = koodi << (nykyinenPituus - vanhaPituus);
             vanhaPituus = nykyinenPituus;
         }
-
+     
         // bittien paikka on vaihdettava koska purkaja aloittaa koodin lukemisen eri puolelta ja ei muuten löydä vastaavuutta
         return vaihdaBittiJarjestys(koodi, vanhaPituus);
     }

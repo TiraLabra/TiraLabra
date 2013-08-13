@@ -22,7 +22,7 @@ public class HeaderLukija {
 
     /**
      * Lukee annetusta tiedostosta headerin tiedot. Headerin formaatin tiedot
-     * löytyy tiedostoformaatti.txt-tiedostosta
+     * löytyy tiedostoformaatti.txt-tiedostosta dokumentaatiohakemistosta.
      *
      * @param headerLukija ITiedostoLukijan toteuttava objekti. Tästä luetaan
      * tarvittavat tiedot
@@ -92,9 +92,8 @@ public class HeaderLukija {
         if (headerLukija.lue(lukuPuskuri) == -1) {
             return false; // tiedoston loppu
         }
-
         int koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
-        
+                
         // poikkeava blokki - onkin tallennettu blokin pituus koska se on poikkeava (viimeisen tiedostosta luetun blokin pituus ei välttämättä ole sama kuin ilmoitettu blokkipituus)
         if (koodinPituusBiteissa == 0) {
             lueTavu(headerLukija, lukuPuskuri);
@@ -105,7 +104,9 @@ public class HeaderLukija {
             koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
         }
 
-        assert (koodinPituusBiteissa >= 1 && koodinPituusBiteissa <= 64);
+        if (koodinPituusBiteissa < 1 || koodinPituusBiteissa > 64) {
+            throw new IOException("Koodin koko virheellinen header-tiedostossa: " + koodinPituusBiteissa);
+        }
 
 
         byte[] blokki = lueBlokki(headerLukija, pituus);
@@ -126,14 +127,11 @@ public class HeaderLukija {
      */
     private byte[] lueBlokki(ITiedostoLukija headerLukija, int pituus) throws IOException {
 
-
         byte[] puskuri = new byte[pituus];
 
         if ( headerLukija.lue(puskuri) != pituus) {
             throw new IOException("Header-tiedoston korruptoitunut - blokin lukeminen epäonnistui");
         }
-        
-
         return puskuri;
     }
     /**

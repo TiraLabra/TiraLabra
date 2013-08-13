@@ -2,6 +2,7 @@ package Tietorakenteet;
 /**
  * Apuluokka huffman-koodeja varten
  * Sisältää koodi-kentän johonka koodi tallennetaan bitteinä; max 64 bittiä pitkä koodi sekä montako bittiä on merkitseviä koodissa.
+ * Bitit tallennetaan LSB -> MSB-järjestyksessä eli ensiksi vähiten merkitsevät bitit otetaan käyttöön
  * 
  */
 public class Koodi {
