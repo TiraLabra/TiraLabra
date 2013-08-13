@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.player.Bot;
-import com.mycompany.tiralabra_maven.player.Player;
+import com.mycompany.tiralabra_maven.player.FileHandler;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
@@ -18,18 +18,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Game {
 
     private GameMode gameMode;
-    private Player player;
     private Bot primaryBot;
     private Bot secondaryBot;
     private int[][] results;
     private Statistics statistics;
     private int lastRound;
+    private FileHandler fileHandler;
     private File file;
 
     /**
      * Sets up the game in right game mode. 
      */
-    public Game() {
+    public Game() throws IOException {
         setUpResultTable();
         this.primaryBot = new Bot(0);
         this.statistics = new Statistics(0, 0, 0);
@@ -51,6 +51,8 @@ public class Game {
                 botVsBot();
                 break;
         }
+        fileHandler = new FileHandler(file);
+        primaryBot.loadProfile(fileHandler);
     }
 
     /**
@@ -86,7 +88,6 @@ public class Game {
      */
     private void asGuest() {
         this.gameMode = GameMode.GUEST_VS_BOT;
-        this.player = new Player();
     }
 
     /**
@@ -140,6 +141,7 @@ public class Game {
         lastRound = results[primary][move];
         primaryBot.updateAi(lastRound);
         updateStatistics(lastRound);
+        fileHandler.saveLine(primary, lastRound);
         return results[primary][move];
     }
 

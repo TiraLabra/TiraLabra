@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven.player;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -10,7 +9,6 @@ import java.io.IOException;
 public class Bot {
 
     private Ai ai;
-    private File file;
 
     public Bot(int type) {
         if (type == 0) {
@@ -24,15 +22,11 @@ public class Bot {
         return ai.determineMove();
     }
 
-    public void updateAi(int result) throws IOException {
+    public void updateAi(int result) {
         int x = ai.update(result);
-        if (file != null){
-            new FileHandler(file).saveLine(x, result);
-        }
     }
 
-    public void loadProfile(File file) throws IOException {
-        this.file = file;
-        ai.setStack(new FileHandler(file).getLines());
+    public void loadProfile(FileHandler fh) throws IOException {
+        ai.loadProfile(fh.getLines());
     }
 }

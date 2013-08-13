@@ -163,7 +163,25 @@ public class AdvancedAi implements Ai{
     }
 
     @Override
-    public void setStack(Stack s) {
+    public void loadProfile(Stack s) {
+        if (s.size() < depth){
+            return;
+        }
+        Stack s2 = new Stack();
+        while (s.peek() != null){
+            s2.put(s.pop());
+        }
+        
+        for (int i = 0; i < depth -1; i++) {
+            stack.put(s2.pop());
+        }
+
+        while (s2.peek() != null){
+            StackNode sn = s2.pop();
+            lastMove = sn.getMove();
+            update(sn.getResult());
+        }
+        stack = new Stack();
     }
 
 

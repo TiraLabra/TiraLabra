@@ -10,5 +10,5 @@ public interface Ai {
     public int determineMove();
     
     public int update(int result);
-    public void setStack(Stack s);
+    public void loadProfile(Stack s);
 }
