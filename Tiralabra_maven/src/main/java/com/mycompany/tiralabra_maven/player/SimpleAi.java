@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven.player;
 
+import com.mycompany.tiralabra_maven.data_structures.Stack;
+
 /**
  *
  * @author Joel Nummelin
@@ -34,10 +36,10 @@ public class SimpleAi implements Ai {
     }
 
     @Override
-    public void update(int result) {
+    public int update(int result) {
         if (result == 0) {
             opponentsMoves[LastMove]++;
-            return;
+            return 0;
         }
 
         if (LastMove == 0) {
@@ -62,5 +64,10 @@ public class SimpleAi implements Ai {
                 opponentsMoves[0]++;
             }
         }
+        return 0;
+    }
+
+    @Override
+    public void setStack(Stack s) {
     }
 }

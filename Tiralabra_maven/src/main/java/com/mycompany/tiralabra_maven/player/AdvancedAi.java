@@ -72,7 +72,7 @@ public class AdvancedAi implements Ai{
      * @param result 
      */
     @Override
-    public void update(int result) {
+    public int update(int result) {
         stack.put(new StackNode(oppnentsLastMove(result), result));
         if (stack.size() < depth) {
         } else {
@@ -82,6 +82,7 @@ public class AdvancedAi implements Ai{
             }
             updateTree(s);
         }
+        return oppnentsLastMove(result);
     }
 
     /**
@@ -159,6 +160,10 @@ public class AdvancedAi implements Ai{
             return 0;
         }
         return -2;
+    }
+
+    @Override
+    public void setStack(Stack s) {
     }
 
 

@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven.player;
 
+import com.mycompany.tiralabra_maven.data_structures.Stack;
+
 /**
  *
  * @author Joel Nummelin
@@ -7,5 +9,6 @@ package com.mycompany.tiralabra_maven.player;
 public interface Ai {
     public int determineMove();
     
-    public void update(int result);
+    public int update(int result);
+    public void setStack(Stack s);
 }

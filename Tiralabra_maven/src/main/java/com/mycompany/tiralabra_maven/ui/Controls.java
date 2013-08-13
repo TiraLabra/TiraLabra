@@ -5,6 +5,9 @@ import com.mycompany.tiralabra_maven.GameMode;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
@@ -36,44 +39,60 @@ public class Controls implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Rock":
-                rock();
+        try {
+            rock();
+        } catch (IOException ex) {
+            Logger.getLogger(Controls.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 break;
             case "Paper":
-                paper();
+        try {
+            paper();
+        } catch (IOException ex) {
+            Logger.getLogger(Controls.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 break;
             case "Scissors":
-                scissors();
+        try {
+            scissors();
+        } catch (IOException ex) {
+            Logger.getLogger(Controls.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 break;
             case "...":
-                options();
+        try {
+            options();
+        } catch (IOException ex) {
+            Logger.getLogger(Controls.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }
 
     /**
      * Player plays rock against ai.
      */
-    private void rock() {
+    private void rock() throws IOException {
         report(game.playRound(0));
     }
 
     /**
      * Player plays paper against ai.
      */
-    private void paper() {
+    private void paper() throws IOException {
         report(game.playRound(1));
     }
 
     /**
      * Player plays scissors against ai.
      */
-    private void scissors() {
+    private void scissors() throws IOException {
         report(game.playRound(2));
     }
 
     /**
      * Is used to play multiple ai vs ai rounds in a row. 
      */
-    private void options() {
+    private void options() throws IOException {
         if (game.getGameMode() == GameMode.BOT_VS_BOT){
             int n = -1;
        

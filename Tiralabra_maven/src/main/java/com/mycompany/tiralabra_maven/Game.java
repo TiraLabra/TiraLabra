@@ -24,12 +24,15 @@ public class Game {
     private int[][] results;
     private Statistics statistics;
     private int lastRound;
+    private File file;
 
     /**
      * Sets up the game in right game mode. 
      */
     public Game() {
         setUpResultTable();
+        this.primaryBot = new Bot(0);
+        this.statistics = new Statistics(0, 0, 0);
         int n = -1;
         Object[] options = {"Play vs bot", "Play vs bot as guest", "Bot vs bot"};
         while (n == -1) {
@@ -48,8 +51,6 @@ public class Game {
                 botVsBot();
                 break;
         }
-        this.primaryBot = new Bot(0);
-        this.statistics = new Statistics(0, 0, 0);
     }
 
     /**
@@ -64,8 +65,6 @@ public class Game {
                     null, options, options);
         }
 
-        File file = null;
-
         if (n == 0) {
             try {
                 file = newPlayer();
@@ -79,7 +78,6 @@ public class Game {
             fc.showOpenDialog(null);
             file = fc.getSelectedFile();
         }
-        this.player = new Player(file);
     }
 
     
@@ -128,19 +126,19 @@ public class Game {
      * @param move
      * @return result
      */
-    public int playRound(int move) {
+    public int playRound(int move) throws IOException {
         if (gameMode == GameMode.BOT_VS_BOT) {
             int primary = primaryBot.makeAMove();
             int secondary = secondaryBot.makeAMove();
-            primaryBot.upDateAi(results[primary][secondary]);
-            secondaryBot.upDateAi(results[secondary][primary]);
+            primaryBot.updateAi(results[primary][secondary]);
+            secondaryBot.updateAi(results[secondary][primary]);
             lastRound = results[primary][secondary];
             updateStatistics(lastRound);
             return lastRound;
         }
         int primary = primaryBot.makeAMove();
         lastRound = results[primary][move];
-        primaryBot.upDateAi(lastRound);
+        primaryBot.updateAi(lastRound);
         updateStatistics(lastRound);
         return results[primary][move];
     }
