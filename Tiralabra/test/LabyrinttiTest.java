@@ -35,11 +35,11 @@ public class LabyrinttiTest {
      
      @Test
      public void etaisyysTest(){
-         Solmu a = new Solmu(5,5, labyrintti);
+         Solmu a = new Solmu(5,5, labyrintti.verkko);
          
          assertEquals(1, labyrintti.etaisyys(a));
          
-         a = new Solmu(1,1, labyrintti);
+         a = new Solmu(1,1, labyrintti.verkko);
          
          assertEquals(1000000, labyrintti.etaisyys(a));
      }

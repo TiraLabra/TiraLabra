@@ -4,8 +4,8 @@
  * @author maef
  */
 public class Solmu implements Comparable<Solmu>{
-    private int a;
-    private int b;
+    private int x;
+    private int y;
     private int heuristiikka;
     private int alkuarvo = Integer.MAX_VALUE;
     private Solmu[][] laby;
@@ -20,25 +20,25 @@ public class Solmu implements Comparable<Solmu>{
     }
 
     public Solmu(int a, int b, Solmu[][] laby) {
-        this.a = a;
-        this.b = b;
+        this.x = a;
+        this.y = b;
         this.laby = laby;
     }
 
-    public int getA() {
-        return a;
+    public int getX() {
+        return x;
     }
 
-    public int getB() {
-        return b;
+    public int getY() {
+        return y;
     }
 
-    public void setA(int a) {
-        this.a = a;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public void setB(int b) {
-        this.b = b;
+    public void setY(int y) {
+        this.y = y;
     }
     
     /**
@@ -49,10 +49,18 @@ public class Solmu implements Comparable<Solmu>{
      * n:n arvon pitää olla joko 1 tai -1.
      */
     public Solmu vierusX(int n) {
-        if (a+n<0 || a+n > laby[0].length) {
+        if (x+n<0 || x+n > laby[0].length) {
             return null;
         }
-        return laby[b][a+n];
+        return laby[y][x+n];
+    }
+
+    public int getAlkuarvo() {
+        return alkuarvo;
+    }
+
+    public void setAlkuarvo(int alkuarvo) {
+        this.alkuarvo = alkuarvo;
     }
     
     /**
@@ -63,10 +71,10 @@ public class Solmu implements Comparable<Solmu>{
      * n:n arvon on oltava joko 1 tai -1.
      */
     public Solmu vierusY(int n) {
-        if (b+n<0 || b+n > laby.length) {
+        if (y+n<0 || y+n > laby.length) {
             return null;
         }
-        return laby[b+n][a];
+        return laby[y+n][x];
     }
     
     public int getHeuristiikka() {
@@ -75,11 +83,11 @@ public class Solmu implements Comparable<Solmu>{
 
     @Override
     public int compareTo(Solmu o) {
-        return 0;
+        return (this.heuristiikka)-(o.heuristiikka);
     }
     
     @Override
     public String toString(){
-        return "( a: "+ a+ " b: " + b + " h: " + heuristiikka + " )";
+        return "( x: "+ x+ " y: " + y + " h: " + heuristiikka + " )";
     }
 }

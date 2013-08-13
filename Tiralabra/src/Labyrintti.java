@@ -27,6 +27,9 @@ public class Labyrintti {
         luoSolmuverkko();
     }
 
+    /*
+     * Luo kuvasta taulukkoesityksen.
+     */
     private void luoSolmuverkko() {
         verkko = new Solmu[getHeight()][getWidth()];
 
@@ -60,7 +63,7 @@ public class Labyrintti {
      * matka on kuljettava, että siihen voi päästä.
      */
     public int etaisyys(Solmu x) {
-        if (labyrintti.getRGB(x.getA(), x.getB()) == lattia) {
+        if (labyrintti.getRGB(x.getX(), x.getY()) == lattia) {
             return 1;
         } else {
             return 1000000;

@@ -43,7 +43,7 @@ public class Kuuntelija implements ActionListener{
        g.setColor(Color.red);
        PriorityQueue<Solmu> polku = suunnistaja.etsi();
         for (Solmu solmu : polku) {
-            g.drawLine(solmu.getA(), solmu.getA(), solmu.getB(), solmu.getB());
+            g.drawLine(solmu.getX(), solmu.getX(), solmu.getY(), solmu.getY());
         }
     }
 }
