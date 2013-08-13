@@ -1,5 +1,6 @@
 package sovelluslogiikka;
 
+import domain.Pino;
 import java.util.Scanner;
 
 /**
@@ -52,6 +53,16 @@ public class Laskin {
      * @param syote Merkkijono
      */
     public void ratkaiseLaskutoimitus(String syote) {
+        Pino operandit = new Pino(syote.length());
+        Pino luvut = new Pino(syote.length());
+        
+        for (int i = 0; i < syote.length(); i++) {
+            switch(syote.charAt(i)){
+                case '+':
+            }
+            
+        }
+        
         System.out.println("Ratkaisu: ");
     }
 }

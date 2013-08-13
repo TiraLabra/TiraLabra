@@ -11,7 +11,7 @@ public class Main {
     /**
      * Suorittaa ohjelman annetuilla parametreilla
      *
-     * @param args Merkkijonot
+     * @param args Komentoriviparametrit
      */
     public static void main(String[] args) {
         Laskin laskin = new Laskin();
