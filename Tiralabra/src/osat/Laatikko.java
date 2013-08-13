@@ -25,9 +25,9 @@ public class Laatikko {
     /**
      * Tuotteet toisistaan erottava tunniste.
      */
-    private String EAN;
+    private long EAN;
     
-    public Laatikko(int leveys, int pituus, int korkeus, String EAN) {
+    public Laatikko(int leveys, int pituus, int korkeus, long EAN) {
         this.leveys = leveys;
         this.pituus = pituus;
         this.korkeus = korkeus;
@@ -46,7 +46,11 @@ public class Laatikko {
         return korkeus;
     }
     
-    public String getEAN() {
+    public long getEAN() {
         return EAN;
+    }
+    
+    public void setEAN(long EAN) {
+        this.EAN = EAN;
     }
 }

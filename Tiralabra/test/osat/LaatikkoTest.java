@@ -20,7 +20,7 @@ public class LaatikkoTest {
     
     @Before
     public void setUp() {
-        laatikko = new Laatikko(40, 60, 40, "583952952532");
+        laatikko = new Laatikko(40, 60, 40, 123456789111L);
     }
     
     @Test
@@ -40,6 +40,6 @@ public class LaatikkoTest {
     
     @Test
     public void EANasettuuOikein() {
-        assertEquals("583952952532", laatikko.getEAN());
+        assertEquals(123456789111L, laatikko.getEAN());
     }
 }

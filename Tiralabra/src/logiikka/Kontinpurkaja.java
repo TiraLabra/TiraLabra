@@ -28,7 +28,7 @@ public class Kontinpurkaja {
      * @param lavanPituus Sen lavan pituus, jolle laatikot on asetettava.
      * @param lavanKorkeus Sen lavan korkeus, jolle laatikot on asetettava.
      */
-    public void laskeParasAsettelu(int laatikonLeveys, int laatikonPituus, int laatikonKorkeus, String EAN,
+    public void laskeParasAsettelu(int laatikonLeveys, int laatikonPituus, int laatikonKorkeus, long EAN,
             int lavanLeveys, int lavanPituus, int lavanKorkeus) {
         
         KasvavaLista asettelu = laskuri.laske(new Laatikko(laatikonLeveys, laatikonPituus, laatikonKorkeus,
