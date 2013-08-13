@@ -73,7 +73,9 @@ public class KoodiMuodostaja {
         // rakennetaan puu prioriteettijonon avulla
         OmaTreeNode<Integer, ByteWrapper> puu = muodostaHuffmanPuu(jono);
         // lasketaan koodit puusta ja tehdään lista blokki-koodi-pareista 
-        OmaList<Pari<ByteWrapper, Koodi>> koodiLista = kooditPuusta(puu);
+        // avain on koodin pituus, arvo lista koodeista joilla on avaimen pituus
+        // nopeuttaa kanonisoidun koodin lukemista
+        OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> koodiLista = kooditPuusta(puu);
         // kanonisoidaan koodit jotta header-tiedosto olisi pienempi
         kanonisoija = new Kanonisoija();
         return kanonisoija.kanonisoi(koodiLista);
@@ -130,15 +132,18 @@ public class KoodiMuodostaja {
     }
 
     /**
-     * Muodostaa listan blokki-koodipareista huffman-puun perusteella. Koodit
-     * periaatteessa kävisivät sellaisenaan tiedoston tiivistykseen mutta ne
-     * kanonisoidaan vielä seuraavalla askeleella headerin kutistamiseksi.
+     * Muodostaa taulun jossa avaimena koodin pituus ja arvona lista
+     * blokki-koodipareista joiden koodien pituus on avaimena. Tämä nopeuttaa
+     * kanonisointia; ennen antoi vain listan joka oli järjestettävä pituuden
+     * mukaan -> O(n log n)-operaatio joka suurilla parien määrillä hidasti
+     * pakkausta. Nyt koodit on jo järjestetty pituuksien mukaan.
      *
      * @param puu Huffman-puun juuri
-     * @return Lista blokki-koodi-pareista
+     * @return Taulu jossa avaimena koodin pituus ja arvona lista blokki-koodipareista
+     * blokki-koodipareista joiden koodien pituus on avaimena
      */
-    private OmaList<Pari<ByteWrapper, Koodi>> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
-        OmaList<Pari<ByteWrapper, Koodi>> koodit = new OmaArrayList<Pari<ByteWrapper, Koodi>>((int) Math.pow(2, 14));
+    private OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> kooditPuusta(OmaTreeNode<Integer, ByteWrapper> puu) {
+        OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> koodit = new OmaHashMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>>((int) Math.pow(2, 14));
 
         kayPuuLapiJaLuoKooditRekursiivisesti(puu, koodit, 0, 0);
 
@@ -149,24 +154,35 @@ public class KoodiMuodostaja {
      * Rekursiometodi puun läpi käymiseen
      *
      * @param node käsiteltävä puun silmu
-     * @param koodit lista blokki-koodipareista
+     * @param koodit Taulu jossa avaimena koodin pituus ja arvona lista blokki-koodipareista
      * @param koodi tähän asti muodostettu huffman-koodi
      * @param paikka paikka puussa, tarvitaan huffman-koodin muodostamista
      * varten
      */
-    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaList<Pari<ByteWrapper, Koodi>> koodit, long koodi, int paikka) {
+    private void kayPuuLapiJaLuoKooditRekursiivisesti(OmaTreeNode<Integer, ByteWrapper> node, OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> koodit, long koodi, int paikka) {
         // puun pitäisi olla täysi
         assert (node != null);
 
         if (node.onLehti()) {
+
+
+
             Koodi k = new Koodi();
             k.koodi = koodi;
             k.pituus = paikka;
+
             Pari pari = new Pari();
             pari.ensimmainen = node.haeArvo();
             pari.toinen = k;
 
-            koodit.add(pari);
+            OmaList<Pari<ByteWrapper, Koodi>> lista = koodit.get(k.pituus);
+            if (lista == null) {
+                lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>(32);
+                lista.add(pari);
+                koodit.put(k.pituus, lista);
+            } else {
+                lista.add(pari);
+            }
             return;
         }
 
@@ -202,8 +218,10 @@ public class KoodiMuodostaja {
 
         return esiintymisTiheydet;
     }
+
     /**
      * Käsittelee yhden blokin
+     *
      * @param luettu montako tavua luettu tiedostosta
      * @param luetutTavut luetut tavut
      * @param esiintymisTiheydet Taulu blokki-esiintymistiheyksistä

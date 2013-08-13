@@ -18,7 +18,7 @@ import java.util.Comparator;
  *
  */
 public class Kanonisoija {
-
+    
     private OmaList<Pari<ByteWrapper, Koodi>> kooditJarjestyksesaHeaderiaVarten;
 
     /**
@@ -35,96 +35,60 @@ public class Kanonisoija {
     /**
      * Kanonisoi annetut koodit
      *
-     * @param blokkiKoodiLista lista blokki-koodipareista
+     * @param blokkiKoodiLista Taulu koodeista joista halutaan muodostaa kanoniset koodit
      * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
      */
-    public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaList<Pari<ByteWrapper, Koodi>> blokkiKoodiLista) {
+    public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
 
-        return kanonisoidutKoodit(asetaKooditJonoon(blokkiKoodiLista));
+        return kanonisoidutKoodit(blokkiKoodiLista);
     }
 
     /**
-     * Luo minimiprioriteettijonon annetuista blokki-koodipareista.
-     * Minimiprioriteettijono on sisäisesti heap -> heap sort kun seuraavassa
-     * metodissa popataan, O(n log n) missä n on blokkien määrä. Suurilla
-     * tiedostoilla tämä voi olla raskas operaatio koska n on
-     * tiedostonkoko/blokkikoko -> esim. 70 megan tiedostolla ja 8 blokkikoolla
-     * n ~ 9 miljoonaa
+     * Luo kanonisoidut koodit annetusta taulusta jossa avaimena koodien pituus ja arvona lista blokki-koodi-pareista joiden koodien pituus on avaimena
      *
-     * @param blokkiKoodiLista lista blokki-koodipareista
-     * @return minimiprioriteettijono blokeille
+     * @param normaalitKoodit Taulu koodeista joista halutaan muodostaa kanoniset koodit
+     * @return Taulu jossa blokki avaimena ja kanoninen koodi arvona
      */
-    private OmaQueue<Pari<ByteWrapper, Koodi>> asetaKooditJonoon(OmaList<Pari<ByteWrapper, Koodi>> blokkiKoodiLista) {
-        OmaMinimiPriorityQueue<Pari<ByteWrapper, Koodi>> koodiJono = luoJono();
+    private OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit) {
 
-        for (int i = 0; i < blokkiKoodiLista.size(); ++i) {
-            koodiJono.push(blokkiKoodiLista.get(i));
-        }
-
-        return koodiJono;
-    }
-
-    /**
-     * Luo kanonisoidut koodit annetun prioriteettijonon avulla. Tämän +
-     * asetakooditJonoon-metodin aikavaatimus O(n log n). 
-     *
-     * @param koodiJono Minimiprioriteettijono jossa koodi-blokkiparit
-     * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
-     */
-    private OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit(OmaQueue<Pari<ByteWrapper, Koodi>> koodiJono) {
-        
         // luetaan parit pituusjärjestyksessä, korvataan koodi uudella kanonisella koodilla, palautetaan lista
-        int kerroin = (int)(Math.log(koodiJono.size())/Math.log(2)); 
-        int koko = (int)Math.pow(2, kerroin);
-        OmaMap<ByteWrapper, Koodi> koodit = new OmaHashMap<ByteWrapper, Koodi>(koko);
+        int kerroin = (int) (Math.log(normaalitKoodit.size()) / Math.log(2));
+        int koko = (int) Math.pow(2, kerroin);
+
+        OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit = new OmaHashMap<ByteWrapper, Koodi>(koko);
         kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<ByteWrapper, Koodi>>(koko);
-        
+
         KanonisoidunKoodinMuodostaja muodostaja = new KanonisoidunKoodinMuodostaja();
-        while (!koodiJono.isEmpty()) {
-            Pari<ByteWrapper, Koodi> pari = koodiJono.pop();
+        kasitteleTaulu(normaalitKoodit, muodostaja, kanonisoidutKoodit);
 
-            pari.toinen.koodi = muodostaja.muodostaKoodi(pari.toinen.pituus);
-
-            kooditJarjestyksesaHeaderiaVarten.add(pari);
-            koodit.put(pari.ensimmainen, pari.toinen);
-        }
-
-        return koodit;
+        return kanonisoidutKoodit;
     }
-
     /**
-     * Apumetodi joka luo prioriteettijonon. Piilotettu omaan metodiin suuren
-     * Comparator-blokin takia
-     *
-     * @return Prioriteettijono
+     * Käy taulun läpi ja kanonisoi listojen koodit.
+     * @param normaalitKoodit Koodit jotka halutaan kanonisoida
+     * @param muodostaja objekti joka muodostaa kanoniset koodit
+     * @param kanonisoidutKoodit Kanonisoidut koodit
      */
-    private OmaMinimiPriorityQueue<Pari<ByteWrapper, Koodi>> luoJono() {
-        return new OmaMinimiPriorityQueue<Pari<ByteWrapper, Koodi>>(new Comparator<Pari<ByteWrapper, Koodi>>() {
-            @Override
-            public int compare(Pari<ByteWrapper, Koodi> o1, Pari<ByteWrapper, Koodi> o2) {
-                long paluu = o1.toinen.pituus - o2.toinen.pituus;
+    private void kasitteleTaulu(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit,
+            KanonisoidunKoodinMuodostaja muodostaja, OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit) {
 
-                if (paluu == 0) {
-                    int pos = 0;
-                    if (o1.ensimmainen.size() == o2.ensimmainen.size()) {
-                        while (paluu == 0 && pos < o1.ensimmainen.size()) {
-                            paluu = o1.ensimmainen.byteTaulukko[pos] - o2.ensimmainen.byteTaulukko[pos];
-                            ++pos;
-                        }
-                    } else {
-                        paluu = o1.ensimmainen.size() - o2.ensimmainen.size();
-                    }
+        int indeksi = 0;
+        int kasiteltyja = 0;
+        while (kasiteltyja < normaalitKoodit.size()) {
+            OmaList<Pari<ByteWrapper, Koodi>> lista = normaalitKoodit.get(indeksi);
+            ++indeksi;
 
-
-                }
-
-                if (paluu > 0) {
-                    return 1;
-                } else if (paluu == 0) {
-                    return 0;
-                }
-                return -1;
+            if (lista == null) {
+                continue;
             }
-        });
+
+            for (int i = 0; i < lista.size(); ++i) {
+                Pari<ByteWrapper, Koodi> pari = lista.get(i);
+                pari.toinen.koodi = muodostaja.muodostaKoodi(pari.toinen.pituus);
+                kooditJarjestyksesaHeaderiaVarten.add(pari);
+                kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);
+            }
+            ++kasiteltyja;
+        }
     }
 }
