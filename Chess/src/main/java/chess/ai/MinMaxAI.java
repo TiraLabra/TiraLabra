@@ -40,10 +40,22 @@ public class MinMaxAI implements AI
 	private static final int DEFAULT_TREE_GENERATION_DEPTH = 3;
 
 	/**
+	 * Oletusarvo maksimihakusyvyydelle.
+	 */
+	private static final int DEFAULT_SEARCH_DEPTH = 100;
+
+	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
 	 * kuninkaan uhatuksi.
 	 */
 	private final int searchDepth;
+
+	/**
+	 * Poikkeus, joka heitetään aikarajan kuluessa umpeen.
+	 */
+	private static class TimeLimitException extends Exception
+	{
+	}
 
 	/**
 	 * Transpositiotaulu johon tallennetaan jo analysoidut tilanteet ja parhaat siirrot niissä.
@@ -70,12 +82,12 @@ public class MinMaxAI implements AI
 	/**
 	 * Kirjoitetaanko debuggausinformaatiota lokiin vai ei.
 	 */
-	private boolean loggingEnabled = false;
+	private boolean loggingEnabled;
 
 	/**
 	 * Siirtojen määrä analysoitavan pelipuun juuresta.
 	 */
-	private int ply = 0;
+	private int ply;
 
 	/**
 	 * Pistemäärä juurisolmussa.
@@ -85,12 +97,17 @@ public class MinMaxAI implements AI
 	/**
 	 * Pino, johon hakujen tulokset kullakin pelipuun tasolla tallennetaan väliaikaisesti.
 	 */
-	private StateInfo[] results = new StateInfo[1024];
+	private StateInfo[] results;
 
 	/**
 	 * Tallentaa eksplisiittisen pelipuun.
 	 */
 	private TreeGenerator treeGenerator;
+
+	/**
+	 * Viimeisimmän iteraation aikana tallennettu puu.
+	 */
+	private Node tree;
 
 	/**
 	 * Analysoitujen pelipuun solmujen määrä.
@@ -105,7 +122,12 @@ public class MinMaxAI implements AI
 	/**
 	 * Pino siirtolistoista (välttää uudelleenallokoinnin jokaisessa solmussa).
 	 */
-	private MoveList[] moveLists = new MoveList[100];
+	private final MoveList[] moveLists;
+
+	/**
+	 * Aloitusajankohta, josta aikaraja lasketaan.
+	 */
+	private long startTime;
 
 	/**
 	 * Luo uuden tekoälyobjektin käyttäen oletusaikarajaa. Hakusyvyys on rajoitettu ainoastaan
@@ -115,7 +137,7 @@ public class MinMaxAI implements AI
 	 */
 	public MinMaxAI(Logger logger)
 	{
-		this(logger, Integer.MAX_VALUE, DEFAULT_TIME_LIMIT, DEFAULT_TREE_GENERATION_DEPTH);
+		this(logger, DEFAULT_SEARCH_DEPTH, DEFAULT_TIME_LIMIT, DEFAULT_TREE_GENERATION_DEPTH);
 	}
 
 	/**
@@ -134,15 +156,22 @@ public class MinMaxAI implements AI
 		this.searchDepth = searchDepth;
 		this.timeLimit = timeLimit;
 		this.treeGenerator = new TreeGenerator(treeGenerationDepth);
+		this.results = new StateInfo[searchDepth + 1];
+		this.moveLists = new MoveList[searchDepth + 1];
+		this.ply = 0;
+		this.loggingEnabled = false;
 	}
 
 	/**
 	 * Laskee ja suorittaa siirron annettuun pelitilanteeseen. Suorittaa minmax-algoritmia
 	 * iterative-deepening -menetelmää käyttäen. Hakusyvyyttä kasvatetaan joka iteraatiolla, kunnes
-	 * arvioidaan, että seuraava iteraatio ylittäisi aikarajan.
+	 * aikaraja tulee vastaan.
 	 *
 	 * Transpositiotaulua ei resetoida iteraatioiden välillä, vaan aikaisemman iteraation tuloksia
 	 * käytetään hakupuun läpikäyntijärjestyksen optimoinnissa.
+	 *
+	 * Lopullinen siirto sekä kaikki haun ilmoittamat debug-arvot annetaan viimeisestä onnistuneesta
+	 * iteraatiosta.
 	 *
 	 * @param state pelitilanne
 	 */
@@ -151,34 +180,61 @@ public class MinMaxAI implements AI
 	{
 		rootScore = getScore(state);
 		setEarlierStates(state);
-
-		long start = System.nanoTime();
+		startTime = System.nanoTime();
 		trposTable.clear();
-		int depth;
-		StateInfo info = null;
-		double branchingFactor = 0.0;
-		for (depth = 2; depth <= searchDepth; ++depth) {
-			log("depth=" + depth);
+		int bestMove = 0;
+		GameState stateCopy = state.clone();
+		int lastIterNodeCount = 0, lastIterTrPosTblHitCount = 0, lastIterTrposTblSize = 0;
+		double lastIterBranchingFactor = 0.0;
 
-			nodeCount = 0;
-			trposTblHitCount = 0;
-			search(depth, Scores.MIN, Scores.MAX, state);
-			info = trposTable.get(state.getId());
-			treeGenerator.endNode(0, info.score, 0);
-
-			double elapsedTime = (System.nanoTime() - start) * 1e-9;
-			branchingFactor = Math.pow(nodeCount, 1.0 / depth);
-			if (timeLimit > 0 && elapsedTime * branchingFactor > timeLimit)
+		for (int depth = 2; depth <= searchDepth; ++depth) {
+			if (!findMove(stateCopy, depth))
 				break;
+
+			lastIterNodeCount = nodeCount;
+			lastIterTrPosTblHitCount = trposTblHitCount;
+			lastIterTrposTblSize = trposTable.size();
+			lastIterBranchingFactor = Math.pow(nodeCount, 1.0 / depth);
+			bestMove = trposTable.get(state.getId()).bestMove;
 		}
 
-		log("nodeCount=" + nodeCount);
-		log("trposTblHitCount=" + trposTblHitCount);
-		log("trposTblSize=" + trposTable.size());
-		log(String.format("t=%.3fms", (System.nanoTime() - start) * 1e-6));
-		log(String.format("branchingFactor=%.3g", branchingFactor));
+		log("nodeCount=" + lastIterNodeCount);
+		log("trposTblHitCount=" + lastIterTrPosTblHitCount);
+		log("trposTblSize=" + lastIterTrposTblSize);
+		log(String.format("t=%.3fms", (System.nanoTime() - startTime) * 1e-6));
+		log(String.format("branchingFactor=%.3g", lastIterBranchingFactor));
 
-		state.move(info.bestMove);
+		state.move(bestMove);
+	}
+
+	/**
+	 * Suorittaa yhden iteraation iterative-deepening -hausta, eli käynnistää minmax-haun annettuun
+	 * syvyyteen asti.
+	 *
+	 * @param state kopio alkuperäisestä pelitilasta
+	 * @param depth hakusyvyys
+	 * @return true, jos haku suoritettiin loppuun, false jos aikaraja tuli vastaan
+	 */
+	private boolean findMove(GameState state, int depth)
+	{
+		log("depth=" + depth);
+
+		nodeCount = 0;
+		trposTblHitCount = 0;
+		ply = 0;
+		treeGenerator.clear();
+
+		try {
+			search(depth, Scores.MIN, Scores.MAX, state);
+		} catch (TimeLimitException e) {
+			return false;
+		}
+
+		StateInfo info = trposTable.get(state.getId());
+		treeGenerator.endNode(0, info.score, 0);
+		tree = treeGenerator.getTree();
+
+		return true;
 	}
 
 	/**
@@ -203,16 +259,19 @@ public class MinMaxAI implements AI
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
 	 * @return palauttaa parhaan löydetyn pistemäärän
+	 * @throws TimeLimitException kun aikaraja tulee täyteen
 	 */
-	private int search(int depth, int alpha, int beta, GameState state)
+	private int search(int depth, int alpha, int beta, GameState state) throws TimeLimitException
 	{
 		++nodeCount;
+
+		checkTimeLimit();
 
 		treeGenerator.startNode(alpha, beta, state.getNextMovingPlayer());
 
 		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
 		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
-		if (earlierStates.get(state.getId()) != null)
+		if (earlierStates.get(state.getId()) != null && ply > 0)
 			return Scores.DRAW;
 
 		if (depth == 0 || !state.areBothKingsAlive())
@@ -232,7 +291,7 @@ public class MinMaxAI implements AI
 		earlierStates.put(results[ply]);
 
 		depth = applyNullMoveReduction(depth, alpha, beta, state);
-		int score = searchAllMoves(depth, alpha, beta, state, info);
+		int score = searchAllMoves(depth, alpha, beta, state, info != null ? info.bestMove : 0);
 
 		earlierStates.remove(state.getId());
 
@@ -252,24 +311,22 @@ public class MinMaxAI implements AI
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
-	 * @param info aiemman haun tulos tai null, jos positiota ei löytynyt transpositiotaulusta
+	 * @param tptblMove transpositiotaulusta löydetty aiempi paras siirto tai 0, jos ei löytynyt
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
-	private int searchAllMoves(int depth, int alpha, int beta, GameState state, StateInfo info)
+	private int searchAllMoves(int depth, int alpha, int beta, GameState state, int tpTblMove)
+			throws TimeLimitException
 	{
-		int player = state.getNextMovingPlayer();
-
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
-		int tptblMove = 0;
-		if (info != null && info.bestMove != 0) {
-			tptblMove = info.bestMove;
-			alpha = searchMove(depth, alpha, beta, state, info.bestMove);
+		if (tpTblMove != 0) {
+			alpha = searchMove(depth, alpha, beta, state, tpTblMove);
 			if (alpha >= beta) {
 				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
 				return alpha;
 			}
 		}
 
+		// Muodostetaan priorisoitu siirtolista.
 		if (moveLists[ply] == null)
 			moveLists[ply] = new MoveList();
 		moveLists[ply].populate(state);
@@ -278,7 +335,7 @@ public class MinMaxAI implements AI
 			int count = moveLists[ply].getCount(i);
 			for (int j = 0; j < count; ++j) {
 				int move = moveLists[ply].getMove(i, j);
-				if (move == tptblMove) // Ei etsitä tätä uudestaan!
+				if (move == tpTblMove) // Ei etsitä tätä uudestaan!
 					continue;
 				alpha = searchMove(depth, alpha, beta, state, move);
 				if (alpha >= beta) {
@@ -288,6 +345,7 @@ public class MinMaxAI implements AI
 			}
 		}
 
+		// Pattitilanteiden tunnistus.
 		if (alpha < -Scores.CHECK_MATE_THRESHOLD && state.isStaleMate())
 			return 0;
 
@@ -302,12 +360,11 @@ public class MinMaxAI implements AI
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
-	 * @param pieceType siirrettävän nappulan tyyppi
-	 * @param fromSqr siirrettävän nappulan vanha sijainti
-	 * @param toSqr sirrettävän nappulan uusi sijainti
+	 * @param move siirto
 	 * @return uusi alfa-arvo
 	 */
 	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
+			throws TimeLimitException
 	{
 		++ply;
 		state.move(move);
@@ -320,8 +377,7 @@ public class MinMaxAI implements AI
 
 		if (score > alpha) {
 			if (ply == 0 && loggingEnabled) {
-				log("" + Move.getFromSqr(move) + " " + Move.getToSqr(move) + " "
-						+ (score - rootScore));
+				log(" " + Move.toString(move) + " " + (score - rootScore));
 			}
 			results[ply].bestMove = move;
 			results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
@@ -369,6 +425,7 @@ public class MinMaxAI implements AI
 	 * @return uusi syvyysarvo
 	 */
 	private int applyNullMoveReduction(int depth, int alpha, int beta, GameState state)
+			throws TimeLimitException
 	{
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
 			state.nullMove();
@@ -446,7 +503,7 @@ public class MinMaxAI implements AI
 	 */
 	public Node getGameTree()
 	{
-		return treeGenerator.getTree();
+		return tree;
 	}
 
 	/**
@@ -462,6 +519,22 @@ public class MinMaxAI implements AI
 			result.depth = depth;
 			result.score = score;
 			trposTable.put(result);
+		}
+	}
+
+	/**
+	 * Tarkistaa tietyin väliajoin onko aikaraja kulunut umpeen, ja jos on niin heittää poikkeuksen.
+	 *
+	 * @throws TimeLimitException
+	 */
+	private void checkTimeLimit() throws TimeLimitException
+	{
+		if ((nodeCount & 0xfff) == 0) {
+			double t = (System.nanoTime() - startTime) * 1e-9;
+			if (timeLimit != 0 && t > timeLimit) {
+				log(String.format("  time limit (%.1fms)", t * 1e3));
+				throw new TimeLimitException();
+			}
 		}
 	}
 }

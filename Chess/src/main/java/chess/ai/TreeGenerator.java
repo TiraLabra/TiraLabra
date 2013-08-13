@@ -18,12 +18,12 @@ class TreeGenerator
 	/**
 	 * Edellinen lisätty solmu.
 	 */
-	private Node lastNode = null;
+	private Node lastNode;
 
 	/**
 	 * Tämänhetkinen puun taso.
 	 */
-	private int ply = 0;
+	private int ply;
 
 	/**
 	 * Konstruktori.
@@ -33,6 +33,7 @@ class TreeGenerator
 	TreeGenerator(int maxDepth)
 	{
 		this.maxDepth = maxDepth;
+		clear();
 	}
 
 	/**
@@ -59,6 +60,15 @@ class TreeGenerator
 			lastNode.nodeType = nodeType;
 			lastNode = lastNode.parent;
 		}
+	}
+
+	/**
+	 * Tyhjentää puun sisällön.
+	 */
+	void clear()
+	{
+		ply = 0;
+		lastNode = null;
 	}
 
 	/**

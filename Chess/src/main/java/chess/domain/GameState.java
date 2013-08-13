@@ -567,6 +567,7 @@ public final class GameState
 		nextMovingPlayer = copyFrom.nextMovingPlayer;
 		bitboard.copyFrom(copyFrom.bitboard);
 		zobristCode = copyFrom.zobristCode;
+		earlierStates = copyFrom.earlierStates.clone();
 	}
 
 	/**

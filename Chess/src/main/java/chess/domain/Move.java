@@ -89,7 +89,10 @@ public final class Move
 	{
 		String ret = Pieces.symbols[getPieceType(move)] + sqrToStr(getFromSqr(move));
 		ret += (getCapturedType(move) >= 0 ? "x" + Pieces.symbols[getCapturedType(move)] : "-");
-		return ret + sqrToStr(getToSqr(move));
+		ret += sqrToStr(getToSqr(move));
+		if (getPromotedType(move) != -1)
+			ret += Pieces.symbols[getPromotedType(move)];
+		return ret;
 	}
 
 	/**
