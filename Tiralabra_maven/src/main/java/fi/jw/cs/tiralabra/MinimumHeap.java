@@ -55,6 +55,18 @@ public class MinimumHeap {
         heap[b] = heap[a];
     }
 
+    public Comparable deleteMinimum() {
+        if (size > 0) {
+            Comparable c = heap[0];
+            swap(0, size - 1);
+            size--;
+            heapify(0);
+            return c;
+        } else {
+            return null;
+        }
+    }
+
     int parent(int i) {
         return (i / 2);
     }
