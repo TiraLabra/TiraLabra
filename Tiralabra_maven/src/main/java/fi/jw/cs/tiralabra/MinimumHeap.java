@@ -35,7 +35,11 @@ public class MinimumHeap {
         int l = left(i);
         int r = right(i);
         if (r < size) {
-
+            int smallest = (isFirstSmaller(heap[l], heap[r])) ? l : r;
+            if (isFirstSmaller(heap[smallest], heap[i])) {
+                swap(smallest, i);
+                heapify(smallest);
+            }
         } else if (l == size - 1 && isFirstSmaller(heap[l], heap[i])) {
             swap(i, l);
         }
