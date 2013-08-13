@@ -5,9 +5,18 @@ package Tiralabra.domain;
  * @author Pia Pakarinen
  */
 public class Punamusta implements Puu{
+    
+    /**
+     * Puun juurisolmu.
+     */
+    SolmuPunamusta juuri;
 
+    /** Luodaan uusi puu.
+     * Juurisolmuksi asetetaan musta, annetun arvon sisältävä solmu.
+     * @param emo juurisolmun arvo
+     */
     public Punamusta(int emo) {
-      
+      juuri = new SolmuPunamusta(emo, false);
     }
 
     @Override
@@ -26,7 +35,7 @@ public class Punamusta implements Puu{
     }
 
     @Override
-    public int search(int key) {
+    public boolean search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
