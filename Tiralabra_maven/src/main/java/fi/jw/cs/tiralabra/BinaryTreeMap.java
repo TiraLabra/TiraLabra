@@ -11,6 +11,10 @@ public class BinaryTreeMap {
         bt = new BinaryTree();
     }
 
+    public String[] keySet() {
+        return bt.keySet();
+    }
+
     public void put(String key, String value) {
         Node n = bt.searchByLabel(key);
         if (n == null) {

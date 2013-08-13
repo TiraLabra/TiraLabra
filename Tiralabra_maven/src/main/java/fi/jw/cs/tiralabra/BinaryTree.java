@@ -23,7 +23,28 @@ public class BinaryTree {
     }
 
     public String[] keySet() {
-        String[] keys = new String[0];
+        return keySet(root);
+    }
+
+    private String[] keySet(Node node) {
+        if (node == null)
+            return new String[0];
+
+
+        String[] leftKeys = keySet(node.getLeft());
+        String[] rightKeys = keySet(node.getLeft());
+
+        int numKeys = 1 + leftKeys.length + rightKeys.length;
+        String[] keys = new String[numKeys];
+        int i = 0;
+        keys[i++] = node.getLabel();
+
+        for (int l = 0; l < leftKeys.length; l++)
+            keys[i++] = leftKeys[l];
+
+        for (int l = 0; l < rightKeys.length; l++)
+            keys[i++] = leftKeys[l];
+
         return keys;
     }
 
