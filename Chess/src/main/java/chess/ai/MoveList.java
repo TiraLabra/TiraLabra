@@ -14,17 +14,23 @@ public final class MoveList
 	/**
 	 * Eri prioriteettiluokkien kokonaismäärä.
 	 */
-	public static final int PRIORITIES = 12;
+	public static final int PRIORITIES = 13;
 
 	/**
 	 * Siirrot jaettuna useaan listaan siten, että jokaiselle prioriteetille on oma listansa.
+	 * Maksimi siirtojen määrä missään positiossa on 218, joten 256 on riittävä taulukon koko.
 	 */
-	private final int[][] moves = new int[PRIORITIES][512];
+	private final int[][] moves = new int[PRIORITIES][256];
 
 	/**
 	 * Siirtojen lukumäärä kussakin listassa.
 	 */
 	private final int[] moveCounts = new int[PRIORITIES];
+
+	/**
+	 * Bittimaskin korotettaville sotilaille.
+	 */
+	private static final long[] PROMOTABLE = {0x000000000000FF00L, 0x00FF000000000000L};
 
 	/**
 	 * Täyttää siirtolistan sisällön annetusta pelitilanteesta.
@@ -36,24 +42,51 @@ public final class MoveList
 		int player = state.getNextMovingPlayer();
 		clear();
 
+		// Muut kuin sotilaat.
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
-			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
-				int fromSqr = Long.numberOfTrailingZeros(pieces);
-				long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
-				for (int capturedType = 0; capturedType < Pieces.COUNT; ++capturedType) {
-					long captureMoves = moves & state.getPieces(1 - player, capturedType);
-					for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
-						int toSqr = Long.numberOfTrailingZeros(captureMoves);
-						add(pieceType, fromSqr, toSqr, capturedType, -1);
-					}
-				}
+			addMoves(state, pieceType, pieces, -1);
+		}
 
-				long quietMoves = moves & ~state.getPieces(1 - player);
-				for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
-					int toSqr = Long.numberOfTrailingZeros(quietMoves);
-					add(pieceType, fromSqr, toSqr, -1, -1);
+		// Korotettavat sotilaat.
+		long pieces = state.getPieces(player, Pieces.PAWN) & PROMOTABLE[player];
+		if (pieces != 0) {
+			for (int promotedType = Pieces.QUEEN; promotedType <= Pieces.KNIGHT; ++promotedType)
+				addMoves(state, Pieces.PAWN, pieces, promotedType);
+		}
+
+		// Ei-korotettavat sotilaat.
+		pieces = state.getPieces(player, Pieces.PAWN) & ~PROMOTABLE[player];
+		addMoves(state, Pieces.PAWN, pieces, -1);
+	}
+
+	/**
+	 * Lisää siirrot kaikille annetun tyyppisille nappuloille.
+	 *
+	 * @param state pelitilanne
+	 * @param pieceType nappulatyyppi
+	 * @param pieces nappuloiden sijainnit bittimaskina
+	 * @param promotedType korotuksen tyyppi
+	 */
+	private void addMoves(GameState state, int pieceType, long pieces, int promotedType)
+	{
+		int player = state.getNextMovingPlayer();
+
+		for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
+			int fromSqr = Long.numberOfTrailingZeros(pieces);
+			long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
+			for (int capturedType = 0; capturedType < Pieces.COUNT; ++capturedType) {
+				long captureMoves = moves & state.getPieces(1 - player, capturedType);
+				for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
+					int toSqr = Long.numberOfTrailingZeros(captureMoves);
+					add(pieceType, fromSqr, toSqr, capturedType, promotedType);
 				}
+			}
+
+			long quietMoves = moves & ~state.getPieces(1 - player);
+			for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
+				int toSqr = Long.numberOfTrailingZeros(quietMoves);
+				add(pieceType, fromSqr, toSqr, -1, promotedType);
 			}
 		}
 	}
@@ -89,13 +122,17 @@ public final class MoveList
 	}
 
 	/**
-	 * Lisää uuden siirron listaan. Prioriteettiluokat on jaettu siten, että ensimmäisenä (0-10)
-	 * ovat lyönnit järjestettynä materiaalierotuksen mukaan, ja viimeisenä (11) tavalliset siirrot.
+	 * Lisää uuden siirron listaan. Prioriteetit asetetaan seruvaavasti:
+	 * korotukset: 5
+	 * lyönnit: 0-10 (0 on PxK ja 10 on KxP)
+	 * muut siirrot: 11
 	 */
 	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int promotedType)
 	{
-		int priority = 11;
-		if (capturedType != -1)
+		int priority = 12;
+		if (promotedType != -1)
+			priority = 5;
+		else if (capturedType != -1)
 			priority = capturedType - pieceType + 5;
 		int idx = moveCounts[priority]++;
 		moves[priority][idx] = Move.pack(fromSqr, toSqr, pieceType, capturedType, promotedType);

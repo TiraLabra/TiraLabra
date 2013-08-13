@@ -153,7 +153,10 @@ public final class GameState
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
 			if (bitboard.hasPiece(nextMovingPlayer, piece, fromSqr)) {
 				removePiece(nextMovingPlayer, piece, fromSqr);
-				addPiece(nextMovingPlayer, piece, toSqr);
+				if (piece == Pieces.PAWN && toSqr / 8 == 7 * nextMovingPlayer)
+					addPiece(nextMovingPlayer, Pieces.QUEEN, toSqr);
+				else
+					addPiece(nextMovingPlayer, piece, toSqr);
 				break;
 			}
 		}
@@ -174,7 +177,10 @@ public final class GameState
 		if (Move.getCapturedType(move) != -1)
 			removePiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
 		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
-		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getToSqr(move));
+		int newType = Move.getPromotedType(move);
+		if (newType == -1)
+			newType = Move.getPieceType(move);
+		addPiece(nextMovingPlayer, newType, Move.getToSqr(move));
 		changeNextMovingPlayer();
 	}
 
@@ -187,7 +193,10 @@ public final class GameState
 	{
 		--ply;
 		changeNextMovingPlayer();
-		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getToSqr(move));
+		int newType = Move.getPromotedType(move);
+		if (newType == -1)
+			newType = Move.getPieceType(move);
+		removePiece(nextMovingPlayer, newType, Move.getToSqr(move));
 		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
 		if (Move.getCapturedType(move) != -1)
 			addPiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
