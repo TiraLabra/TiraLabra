@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra;
+package tiralabra.tietorakenteet;
 
 import java.util.PriorityQueue;
 
@@ -23,6 +23,16 @@ public class Puu {
     public Puu(PriorityQueue que){
          this.que = que;
          reitit = new String[256];
+    }
+    
+    /**
+     * Luo puun reiteistä lukiessa
+     * @param reitit 
+     */
+    
+    public Puu(String[] reitit){
+        this.root = new Node(-1,-1);
+        this.reitit = reitit;
     }
     
     /**
@@ -58,6 +68,7 @@ public class Puu {
      * @param node
      * @param code 
      */
+    
     public void muodostaReitit(Node node, String code){
         if (node != null) {
             if (node.getVasen() == null && node.getOikea() == null) {
@@ -75,6 +86,44 @@ public class Puu {
      */
     public String[] getReitit(){
         return this.reitit;
+    }
+    
+    /**
+     * Kokoaa Huffman puun reitiestä, jotka luetaan purettavan tiedoston alusta
+     */
+    
+    public void kokoaReiteista(){
+        for(int i = 0; i < reitit.length; i ++){
+            if (reitit[i] != null){
+                lisaaNode(i, reitit[i], this.root);
+            }
+        }
+    }
+    
+    /**
+     *  Lisää noden oikealle paikalle puuhun juuresta lähtien. Mikäli
+     *  oikeaa / vasenta lasta ei ole, se luodaan kunnes päästään kyseisen
+     *  merkin reitti loppuun.
+     * @param merkki itse merkki ascii muodossa
+     * @param reitti merkin reitti puussa
+     * @param node puun juuri
+     */
+    
+    public void lisaaNode(int merkki, String reitti, Node node){
+        for(int i = 0; i < reitti.length(); i ++){
+            if(reitti.charAt(i) == '0'){
+                if(node.getVasen() == null){
+                    node.setVasen(new Node(-1, -1));
+                }
+                node = node.getVasen();
+            } else {
+                if(node.getOikea() == null){
+                    node.setOikea(new Node(-1,-1));
+                }
+                node = node.getOikea();
+            }
+        }
+        node.setMerkki(merkki);
     }
     
 }

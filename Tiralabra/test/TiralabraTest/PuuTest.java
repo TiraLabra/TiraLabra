@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.Node;
-import tiralabra.Puu;
+import tiralabra.tietorakenteet.Node;
+import tiralabra.tietorakenteet.Puu;
 
 /**
  *
@@ -47,7 +47,7 @@ public class PuuTest {
 
     @Before
     public void setUp() {
-        PriorityQueue jono = new PriorityQueue();
+        PriorityQueue<Node> jono = new PriorityQueue<Node>();
         jono.add(new Node(97, 45));
         jono.add(new Node(98, 13));
         jono.add(new Node(99, 12));

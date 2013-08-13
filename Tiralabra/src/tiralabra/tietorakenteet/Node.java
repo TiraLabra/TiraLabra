@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra;
+package tiralabra.tietorakenteet;
 
 /**
  * Nodeista luodaan huffman puu
@@ -92,10 +92,12 @@ public class Node implements Comparable<Node> {
     public void setMerkki(int merkki) {
         this.merkki = merkki;
     }
+    
     /**
      * Getteri merkille.
      * @return 
      */
+    
     public int getMerkki() {
         return this.merkki;
     }
@@ -104,6 +106,7 @@ public class Node implements Comparable<Node> {
      * toString overrideri Nodejen helpompaan tulostamiseen.
      * @return 
      */
+    
     @Override
     public String toString(){
         return "(merkki: " + this.merkki + " toistot: " + this.toistot + " vasen: " + this.vasen + " oikea: " + this.oikea + " )";

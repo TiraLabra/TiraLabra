@@ -4,50 +4,74 @@
  */
 package tiralabra;
 
-import java.util.PriorityQueue;
+import java.io.File;
+import java.util.Scanner;
+import tiralabra.tiedostonkasittely.Pakkaaja;
+import tiralabra.tiedostonkasittely.Purkaja;
 
 /**
- * 
+ *
  * @author joonaslongi
  */
 public class Tiralabra {
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        PriorityQueue<Node> que = new PriorityQueue<Node>();
-        
-        Laskija laskija = new Laskija();
-        laskija.laske("src/Tiralabra/testitiedosto2.txt");
-        
-        int toistot[] = laskija.getToistot();
-        
-        for (int i = 0; i < 256; i ++){
-            if(toistot[i] > 0){
-                Node node = new Node(i,toistot[i]);
-                que.add(node);
+        Scanner lukija = new Scanner(System.in);
+        while (true) {
+            System.out.println("Tervetuloa!");
+            System.out.println("Haluatko ");
+            System.out.println("1. Pakata tiedoston");
+            System.out.println("2. Purkaa tiedoston");
+            System.out.println("3. Lopettaa?");
+            System.out.println("(kirjoita 1, 2 tai 3)");
+            String toiminto = lukija.nextLine();
+            if (toiminto.equals("1")) {
+                System.out.println("Anna pakattavan tiedoston sijainti juurikansioon nähden");
+                System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                String nimi = lukija.nextLine();
+                File tiedosto = new File(nimi);
+                while (!tiedosto.exists()) {
+                    System.out.println("Tiedostoa ei löytynyt, yritä uudelleen");
+                    System.out.println("Anna pakattavan tiedoston sijainti juurikansioon nähden");
+                    System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                    nimi = lukija.nextLine();
+                    tiedosto = new File(nimi);
+                }
+                System.out.println("Anna pakatulle tiedostolle uusi nimi:");
+                String uusinimi = lukija.nextLine();
+
+                long pakkausAlku = System.currentTimeMillis();
+                Pakkaaja pakkaaja = new Pakkaaja("src/Tiralabra/" + uusinimi, nimi);
+                pakkaaja.pakkaa();
+                long pakkausLoppu = System.currentTimeMillis();
+                System.out.println("Pakattu ajassa " + (pakkausLoppu - pakkausAlku) +" ms");
+            } else if(toiminto.equals("2")) {
+
+                System.out.println("Anna purettavan tiedoston sijainti juurikansioon nähden");
+                System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                String nimi = lukija.nextLine();
+                File tiedosto = new File(nimi);
+                while (!tiedosto.exists()) {
+                    System.out.println("Tiedostoa ei löytynyt, yritä uudelleen");
+                    System.out.println("Anna purettavan tiedoston sijainti juurikansioon nähden");
+                    System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                    nimi = lukija.nextLine();
+                    tiedosto = new File(nimi);
+                }
+                System.out.println("Anna puretulle tiedostolle uusi nimi:");
+                String uusinimi = lukija.nextLine();
+                 long purkuAlku = System.currentTimeMillis();
+                Purkaja purkaja = new Purkaja(nimi, "src/Tiralabra/" + uusinimi);
+                purkaja.pura();
+                long purkuLoppu = System.currentTimeMillis();
+                System.out.println("purettu ajassa " + (purkuLoppu - purkuAlku) + " ms");
+                
+            } else if(toiminto.equals("3")){
+                break;
             }
         }
-        
-        Puu puu = new Puu(que);
-        puu.kokoa();
-        Node root = puu.getRoot(); 
-
-        puu.muodostaReitit(root, "");
-        String[] reitit = puu.getReitit();
-      
-        Lukija lukija = new Lukija ("src/Tiralabra/testitiedosto2.txt");
-        
-        Kirjoittaja kirjoittaja = new Kirjoittaja("src/Tiralabra/uusi");
-        while (lukija.vapaana() > 0){
-            String kirjoitettava = reitit[lukija.lue()];
-            int kirjoita = Integer.parseInt(kirjoitettava);
-            kirjoittaja.kirjoita(kirjoita);
-        }
-        lukija.sulje();
-        kirjoittaja.sulje();
     }
-    
-    
 }

@@ -11,7 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import tiralabra.Node;
+import tiralabra.tietorakenteet.Node;
 import static org.junit.Assert.*;
 
 /**
