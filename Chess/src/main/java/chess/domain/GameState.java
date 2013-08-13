@@ -332,14 +332,7 @@ public final class GameState
 
 		switch (piece) {
 			case Pieces.KING:
-				moves |= getMove(player, row - 1, col - 1);
-				moves |= getMove(player, row - 1, col);
-				moves |= getMove(player, row - 1, col + 1);
-				moves |= getMove(player, row, col - 1);
-				moves |= getMove(player, row, col + 1);
-				moves |= getMove(player, row + 1, col - 1);
-				moves |= getMove(player, row + 1, col);
-				moves |= getMove(player, row + 1, col + 1);
+				moves |= Movemasks.KING_MOVES[fromSqr] & ~bitboard.getPieces(player);
 				break;
 			case Pieces.QUEEN:
 				moves |= getLineMoves(player, row, col, -1, -1);
@@ -364,14 +357,7 @@ public final class GameState
 				moves |= getLineMoves(player, row, col, 1, 1);
 				break;
 			case Pieces.KNIGHT:
-				moves |= getMove(player, row - 2, col - 1);
-				moves |= getMove(player, row - 2, col + 1);
-				moves |= getMove(player, row - 1, col - 2);
-				moves |= getMove(player, row - 1, col + 2);
-				moves |= getMove(player, row + 2, col - 1);
-				moves |= getMove(player, row + 2, col + 1);
-				moves |= getMove(player, row + 1, col - 2);
-				moves |= getMove(player, row + 1, col + 2);
+				moves |= Movemasks.KNIGHT_MOVES[fromSqr] & ~bitboard.getPieces(player);
 				break;
 			case Pieces.PAWN:
 				int nextRow = row - 1 + 2 * player;
@@ -462,13 +448,14 @@ public final class GameState
 	{
 		int attackingPlayer = 1 - defendingPLayer;
 		long sqrBit = 1L << sqr;
-		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			for (int attackingSqr = 0; attackingSqr < 64; ++attackingSqr)
-				if (bitboard.hasPiece(attackingPlayer, piece, attackingSqr)) {
-					long attackMoves = getAttackMoves(attackingPlayer, piece, attackingSqr);
-					if ((sqrBit & attackMoves) != 0)
-						return true;
-				}
+		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+			long pieces = bitboard.getPieces(attackingPlayer, pieceType);
+			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
+				int attackingSqr = Long.numberOfTrailingZeros(pieces);
+				long attackMoves = getAttackMoves(attackingPlayer, pieceType, attackingSqr);
+				if ((sqrBit & attackMoves) != 0)
+					return true;
+			}
 		}
 		return false;
 	}
