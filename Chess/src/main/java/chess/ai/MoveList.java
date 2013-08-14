@@ -17,6 +17,24 @@ final class MoveList
 	static final int PRIORITIES = 12;
 
 	/**
+	 * Eri lyöntien prioriteetit (CAPTURE_PRIORITIES[piece][capturedType]).
+	 */
+	static final int[][] CAPTURE_PRIORITIES = new int[][]{
+		{0, 8, 8, 9, 9, 9},
+		{0, 4, 5, 6, 6, 7},
+		{0, 3, 4, 5, 5, 6},
+		{0, 2, 3, 4, 4, 5},
+		{0, 2, 3, 4, 4, 5},
+		{0, 1, 2, 3, 3, 4}
+	};
+
+	/**
+	 * Korotusten prioriteetit. (Muuksi kuin kuningattareksi korottaminen kannattaa vain harvoin,
+	 * joten ne analysoidaan viimeisenä.)
+	 */
+	static final int[] PROMOTION_PRIORITIES = new int[]{-1, 3, 11, 11, 11, -1};
+
+	/**
 	 * Siirrot jaettuna useaan listaan siten, että jokaiselle prioriteetille on oma listansa.
 	 * Maksimi siirtojen määrä missään positiossa on 218, joten 256 on riittävä taulukon koko.
 	 */
@@ -123,17 +141,18 @@ final class MoveList
 
 	/**
 	 * Lisää uuden siirron listaan. Prioriteetit asetetaan seruvaavasti:
-	 * korotukset: 5
-	 * lyönnit: 0-10 (0 on PxK ja 10 on KxP)
-	 * muut siirrot: 11
+	 * Korotukset kuningattareksi: 3
+	 * Lyönnit: 0-9 (0 on PxK ja 9 on KxP)
+	 * Normaalit siirrot: 10
+	 * Korotukset torniksi/lähetiksi/ratsuksi: 11
 	 */
 	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int promotedType)
 	{
-		int priority = 11;
+		int priority = 10;
 		if (promotedType != -1)
-			priority = 5;
+			priority = PROMOTION_PRIORITIES[promotedType];
 		else if (capturedType != -1)
-			priority = capturedType - pieceType + 5;
+			priority = CAPTURE_PRIORITIES[pieceType][capturedType];
 		int idx = moveCounts[priority]++;
 		moves[priority][idx] = Move.pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
 	}
