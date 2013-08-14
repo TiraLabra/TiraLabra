@@ -16,6 +16,10 @@ import java.nio.file.Paths;
 
 /**
  * This is a command-line utility to invoke the Huffman-Steganography encoding and decoding of files.
+ * <p/>
+ * <p>
+ * Author's note: Here be dragons. This cli could be cleaned up :)
+ * </p>
  *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
