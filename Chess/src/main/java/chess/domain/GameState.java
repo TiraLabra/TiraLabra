@@ -32,7 +32,7 @@ public final class GameState
 	 * Zobrist-satunnaisnumeroiden alustus.
 	 */
 	static {
-		Random rnd = new Random();
+		Random rnd = new Random(999);
 		for (int i = 0; i < ZOBRIST_RND.length; ++i)
 			ZOBRIST_RND[i] = rnd.nextLong();
 		ZOBRIST_RND_PLAYER = rnd.nextLong();

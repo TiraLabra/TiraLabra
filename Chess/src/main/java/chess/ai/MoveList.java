@@ -9,12 +9,12 @@ import java.util.Arrays;
  * Ylläpitää sallituista siirroista listaa, joka on jaettu useampaan eri prioriteettiluokkaan.
  * Tarkoituksena on siirtojen tehokas järjestäminen alfa-beta-karsintaa varten.
  */
-public final class MoveList
+final class MoveList
 {
 	/**
 	 * Eri prioriteettiluokkien kokonaismäärä.
 	 */
-	public static final int PRIORITIES = 13;
+	static final int PRIORITIES = 12;
 
 	/**
 	 * Siirrot jaettuna useaan listaan siten, että jokaiselle prioriteetille on oma listansa.
@@ -28,7 +28,7 @@ public final class MoveList
 	private final int[] moveCounts = new int[PRIORITIES];
 
 	/**
-	 * Bittimaskin korotettaville sotilaille.
+	 * Bittimaski korotettaville sotilaille.
 	 */
 	private static final long[] PROMOTABLE = {0x000000000000FF00L, 0x00FF000000000000L};
 
@@ -37,13 +37,13 @@ public final class MoveList
 	 *
 	 * @param state pelitilanne
 	 */
-	public void populate(GameState state)
+	void populate(GameState state)
 	{
 		int player = state.getNextMovingPlayer();
 		clear();
 
 		// Muut kuin sotilaat.
-		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+		for (int pieceType = 0; pieceType < Pieces.COUNT - 1; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
 			addMoves(state, pieceType, pieces, -1);
 		}
@@ -97,7 +97,7 @@ public final class MoveList
 	 * @param priority prioriteetti
 	 * @return siirtojen lukumäärä
 	 */
-	public int getCount(int priority)
+	int getCount(int priority)
 	{
 		return moveCounts[priority];
 	}
@@ -108,7 +108,7 @@ public final class MoveList
 	 * @param priority prioriteetti
 	 * @return siirtojen lukumäärä
 	 */
-	public int getMove(int priority, int idx)
+	int getMove(int priority, int idx)
 	{
 		return moves[priority][idx];
 	}
@@ -129,7 +129,7 @@ public final class MoveList
 	 */
 	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int promotedType)
 	{
-		int priority = 12;
+		int priority = 11;
 		if (promotedType != -1)
 			priority = 5;
 		else if (capturedType != -1)

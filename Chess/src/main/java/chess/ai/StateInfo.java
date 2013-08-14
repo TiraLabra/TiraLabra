@@ -13,7 +13,7 @@ final class StateInfo
 
 	/**
 	 * Tietueeseen tallennettu pistemäärä on alaraja. Vastaa hakupuun solmua, jonka lapsisolmuista
-	 * jonkin pistemäärä on betaa suurempi. (Cut-node, Type 2)
+	 * jonkin pistemäärä on vähintään yhtär suuri kuin beeta. (Cut-node, Type 2)
 	 */
 	static final int NODE_TYPE_LOWER_BOUND = 1;
 

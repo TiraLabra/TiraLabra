@@ -3,7 +3,7 @@ package chess.ai;
 /**
  * Tallentaa eksplisiittisen pelipuun käyttöliittymää varten.
  */
-class TreeGenerator
+final class TreeGenerator
 {
 	/**
 	 * Maksimisyvyys.

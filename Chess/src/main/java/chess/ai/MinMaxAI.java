@@ -101,7 +101,7 @@ public class MinMaxAI implements AI
 	/**
 	 * Tallentaa eksplisiittisen pelipuun.
 	 */
-	private TreeGenerator treeGenerator;
+	private final TreeGenerator treeGenerator;
 
 	/**
 	 * Viimeisimmän iteraation aikana tallennettu puu.
