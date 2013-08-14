@@ -17,6 +17,12 @@ public class BinaryTreeMap {
         return bt.keys();
     }
 
+    /**
+     * Comparing two <code>BinaryTreeMaps</code> is comparing their binary trees since the maps themselves are quite empty.
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

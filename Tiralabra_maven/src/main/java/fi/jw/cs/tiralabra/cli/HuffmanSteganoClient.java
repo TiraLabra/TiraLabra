@@ -5,6 +5,9 @@ import fi.jw.cs.tiralabra.Huffman;
 import fi.jw.cs.tiralabra.IllegalHuffmanCodeException;
 import fi.jw.cs.tiralabra.Steganographer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -19,7 +22,10 @@ import java.nio.file.Paths;
  */
 
 public class HuffmanSteganoClient {
+    static Charset cs = Charset.defaultCharset();
+
     public static void main(String... args) {
+
 
         try {
             char cmd = args[0].charAt(0);
@@ -67,10 +73,11 @@ public class HuffmanSteganoClient {
         String message = "";
         String src = args[1];
         String dest = args[2];
+
         if ("file".equals(args[3])) {
             System.out.println("Reading from file");
             byte[] bytes = Files.readAllBytes(Paths.get(args[4]));
-            Charset cs = Charset.defaultCharset();
+
             message = cs.decode(ByteBuffer.wrap(bytes)).toString();
         } else {
             System.out.println("Reading from cli [" + args[3] + "]");
@@ -83,12 +90,22 @@ public class HuffmanSteganoClient {
         Huffman encoder = new Huffman(message);
         encoder.encode();
         String encodedMessage = encoder.getEncodedMessage();
-        System.out.println("Map:\n" + encoder.getStringifiedMap());
+        String map = encoder.getStringifiedMap();
+        System.out.println("Map:\n" + map);
         Steganographer s = new Steganographer(src, encodedMessage);
 
         s.encode();
         s.saveFile(dest);
         System.out.println(dest + " saved");
+
+        // let's write the map to file so we can open it
+
+        if ("file".equals(args[3])) {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(dest + ".huff"));
+            bw.write(map);
+            bw.close();
+        }
+
         s = null;
     }
 
@@ -100,7 +117,15 @@ public class HuffmanSteganoClient {
 
         Huffman decoder = new Huffman();
 
-        decoder.setMap(decoder.parseMap(map));
+        String huffMap = map;
+        File m = new File(path + ".huff");
+        if (m.exists()) {
+            System.out.println("Reading from file");
+            byte[] bytes = Files.readAllBytes(Paths.get(m.toURI()));
+
+            huffMap = cs.decode(ByteBuffer.wrap(bytes)).toString();
+        }
+        decoder.setMap(decoder.parseMap(huffMap));
         decoder.setEncodedMessage(stegDecoded);
         decoder.decode();
         System.out.println(decoder.getMessage());

@@ -14,6 +14,27 @@ import java.io.IOException;
  * <p/>
  * The maximum message length is the pixel count divided by <code>>BITS_PER_PIXEL</code which is currently
  * hard-coded as 3 since there are 3 channels we can require to be available: red, green and blue.
+ * <p/>
+ * <p>
+ * <strong>Example use</strong>
+ * </p>
+ * <p/>
+ * <pre>
+ *     String binaryMessage = "101010101101011111000011100011001"; // For example from Huffman encoding :)
+ *     String sourceFile = "/path/to/file.jpg";
+ *     String destination = "/path/to/output.png"; //Note that the format will be PNG even if filename would end as .jpg
+ *     Steganographer s = new Steganographer(sourceFile, binaryMessage);
+ *     s.encode();
+ *     s.saveFile(destination);
+ * </pre>
+ * <p>
+ * The saved file should be visually nigh indistinguishable from the original. To recover the hidden binary string:
+ * </p>
+ * <pre>
+ *     Steganographer dec = new Steganographer(pathToFilename);
+ *     dec.decode();
+ *     String originalBinaryString = dec.getMessage();
+ * </pre>
  *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-01

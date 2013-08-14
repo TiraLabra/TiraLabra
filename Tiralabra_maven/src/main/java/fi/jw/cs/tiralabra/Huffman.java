@@ -1,10 +1,33 @@
 package fi.jw.cs.tiralabra;
 
 
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
 /**
  * This class provides the utility of encoding and decoding a 8-bit text into a compressed Huffman encoding.
+ * <p/>
+ * <p>
+ * <pre>
+ *         Huffman huff = new Huffman();
+ *         huff.setMessage(variableWithMessage);
+ *         huff.encode();
+ *         String encoded = huff.getEncodedMessage();
+ *         String huffmanMap = huff.getStringifiedMap();
+ *     </pre>
+ * With the above code you can now write the 1's and 0's as an actual binary to a file or encode them otherwise.
+ * With the huffmanMap you will be able to decode the message back. Like so:
+ * </p>
+ * <p>
+ * <pre>
+ *
+ *         Huffman decoder = new Huffman();
+ *         decoder.setMap(decoder.parseMap(huffmanMap));
+ *         decoder.setEncodedMessage(encoded); // this can be read from file, over the network as binary etc.
+ *         decoder.decode();
+ *         String originalMessage = decoder.getMessage();
+ *     </pre>
+ * </p>
  *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-01
@@ -30,7 +53,7 @@ public class Huffman {
     }
 
     public Huffman(String message) {
-        this.message = message;
+        this.message = new String(message.getBytes(StandardCharsets.US_ASCII));
         map = new BinaryTreeMap();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new SimplePriorityQueue<Node>();

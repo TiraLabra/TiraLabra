@@ -3,6 +3,8 @@ package fi.jw.cs.tiralabra;
 import java.util.Comparator;
 
 /**
+ * The methods of a priority queue as needed by the <code>Huffman</code> class.
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-13
  */
@@ -18,6 +20,11 @@ public class SimplePriorityQueue<T extends Comparable<T>> {
         heap = new MinimumHeap<T>(comparator);
     }
 
+    /**
+     * Create a new priority queue based on another instance
+     *
+     * @param source another <code>SimplePriorityQueue</code> instance
+     */
     public SimplePriorityQueue(SimplePriorityQueue<T> source) {
         heap = new MinimumHeap<T>(source.getHeap());
     }

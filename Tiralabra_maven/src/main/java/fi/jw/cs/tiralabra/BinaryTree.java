@@ -27,7 +27,7 @@ public class BinaryTree {
     /**
      * Equality is based ultimately on the keyset of each tree.
      *
-     * @param o
+     * @param o other BinaryTree
      * @return
      */
     @Override
@@ -70,16 +70,16 @@ public class BinaryTree {
 
 
     public String[] keys() {
-        return keySet(root);
+        return keys(root);
     }
 
-    private String[] keySet(Node node) {
+    private String[] keys(Node node) {
         if (node == null)
             return new String[0];
 
 
-        String[] leftKeys = keySet(node.getLeft());
-        String[] rightKeys = keySet(node.getRight());
+        String[] leftKeys = keys(node.getLeft());
+        String[] rightKeys = keys(node.getRight());
 
         int numKeys = 1 + leftKeys.length + rightKeys.length;
         String[] keys = new String[numKeys];
