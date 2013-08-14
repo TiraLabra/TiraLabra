@@ -44,28 +44,16 @@ public class Kanonisoija {
      */
     public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
 
-        return kanonisoidutKoodit(blokkiKoodiLista);
-    }
-
-    /**
-     * Luo kanonisoidut koodit annetusta taulusta jossa avaimena koodien pituus
-     * ja arvona lista blokki-koodi-pareista joiden koodien pituus on avaimena
-     *
-     * @param normaalitKoodit Taulu koodeista joista halutaan muodostaa
-     * kanoniset koodit
-     * @return Taulu jossa blokki avaimena ja kanoninen koodi arvona
-     */
-    private OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit) {
-
+       
         // luetaan parit pituusjärjestyksessä, korvataan koodi uudella kanonisella koodilla, palautetaan lista
-        int kerroin = (int) (Math.log(normaalitKoodit.size()) / Math.log(2));
+        int kerroin = (int) (Math.log(blokkiKoodiLista.size()) / Math.log(2));
         int koko = (int) Math.pow(2, kerroin);
 
         OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit = new OmaHashMap<ByteWrapper, Koodi>(koko);
         kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<ByteWrapper, Koodi>>(koko);
 
         KanonisoidunKoodinMuodostaja muodostaja = new KanonisoidunKoodinMuodostaja();
-        kasitteleTaulu(normaalitKoodit, muodostaja, kanonisoidutKoodit);
+        kasitteleTaulu(blokkiKoodiLista, muodostaja, kanonisoidutKoodit);
 
         return kanonisoidutKoodit;
     }

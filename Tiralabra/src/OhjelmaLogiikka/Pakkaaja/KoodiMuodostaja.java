@@ -160,25 +160,7 @@ public class KoodiMuodostaja {
         assert (node != null);
 
         if (node.onLehti()) {
-
-
-
-            Koodi k = new Koodi();
-            k.koodi = koodi;
-            k.pituus = paikka;
-
-            Pari pari = new Pari();
-            pari.ensimmainen = node.haeArvo();
-            pari.toinen = k;
-
-            OmaList<Pari<ByteWrapper, Koodi>> lista = koodit.get(k.pituus);
-            if (lista == null) {
-                lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>(32);
-                lista.add(pari);
-                koodit.put(k.pituus, lista);
-            } else {
-                lista.add(pari);
-            }
+            lisaaListaanTiedot(koodi, paikka, node, koodit);
             return;
         }
 
@@ -233,6 +215,25 @@ public class KoodiMuodostaja {
             esiintymisTiheydet.put(blokki, 1);
         } else {
             esiintymisTiheydet.put(blokki, arvo + 1);
+        }
+    }
+
+    private void lisaaListaanTiedot(long koodi, int paikka, OmaTreeNode<Integer, ByteWrapper> node, OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> koodit) {
+        Koodi k = new Koodi();
+        k.koodi = koodi;
+        k.pituus = paikka;
+
+        Pari pari = new Pari();
+        pari.ensimmainen = node.haeArvo();
+        pari.toinen = k;
+
+        OmaList<Pari<ByteWrapper, Koodi>> lista = koodit.get(k.pituus);
+        if (lista == null) {
+            lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>(32);
+            lista.add(pari);
+            koodit.put(k.pituus, lista);
+        } else {
+            lista.add(pari);
         }
     }
 }
