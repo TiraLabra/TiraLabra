@@ -6,6 +6,7 @@ import Tietorakenteet.ByteWrapper;
 import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.Pari;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -20,31 +21,30 @@ public class HeaderMuodostaja {
     /**
      * Luo header-tiedoston annettujen parametrien perusteella
      *
-     * @param headerKirjoittaja ITiedostoKirjoittaja-rajapinnan toteuttava objekti
+     * @param headerKirjoittaja ITiedostoKirjoittaja-rajapinnan toteuttava
+     * objekti
      * @param koodit Lista blokki - koodipareista
      * @param viimeisessaTavussaMerkitseviaBitteja montako merkitsevää bittiä
      * pakatun tiedoston viimeisessä tavussa on
      * @param blokinPituus - pakattaessa käyteyn blokin pituus
      * @return Headerin koko tavuissa
+     * @throws IOException jos kirjoitus\lukuoperaatoissa vikaa
+     * @throws IllegalArgumentException jos merkitsevien bittien määrä on alle 1
+     * tai suurempi kuin 8; tai jos blokin pituus yli 255 tai alle 0 tai jos
+     * listassa bytewrapperin koko yli 255 tai jos koodin pituus alle 1 tai
+     * suurempi kuin 64
      */
-    public long muodostaHeader(ITiedostoKirjoittaja headerKirjoittaja, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) {
-        try {
-           
-            headerKirjoittaja.avaaTiedosto();
-            this.blokinPituus = blokinPituus;
-            alustaHeader(viimeisessaTavussaMerkitseviaBitteja, headerKirjoittaja);
-            
-            for (int i = 0; i < koodit.size(); ++i) {
-                tallennaBlokinTiedot(koodit.get(i).ensimmainen, koodit.get(i).toinen, headerKirjoittaja);
-            }
-            
-            headerKirjoittaja.suljeTiedosto();
-            return headerKirjoittaja.koko();
-        } catch (Exception ex) {
-            System.out.println("Jotain meni pieleen headerin luomisessa " + ex.getMessage());
+    public long muodostaHeader(ITiedostoKirjoittaja headerKirjoittaja, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) throws IllegalArgumentException, IOException {
+        headerKirjoittaja.avaaTiedosto();
+        this.blokinPituus = blokinPituus;
+        alustaHeader(viimeisessaTavussaMerkitseviaBitteja, headerKirjoittaja);
 
+        for (int i = 0; i < koodit.size(); ++i) {
+            tallennaBlokinTiedot(koodit.get(i).ensimmainen, koodit.get(i).toinen, headerKirjoittaja);
         }
-        return 0;
+
+        headerKirjoittaja.suljeTiedosto();
+        return headerKirjoittaja.koko();
     }
 
     /**
@@ -57,12 +57,17 @@ public class HeaderMuodostaja {
      * tiedostoonkirjoituksesta
      * @throws IllegalArgumentException Jos Viimeisessä tavussa on alle 1 tai
      * yli 8 merkitsevää bittiä. Alle 1 tarkoittaa että viimeinen tavu ei olisi
-     * merkitsevä ollenkaan ja tavussa on max. 8 bittiä
+     * merkitsevä ollenkaan ja tavussa on max. 8 bittiä. Jos blokin pituus yli
+     * 255 tai alle 1 myös aiheuttaa tämän poikkeuksen
      * @throws IOException Jos tiedostoonkirjoituksessa meni jotakin vikaan
      */
     private void alustaHeader(Integer viimeisessaTavussaMerkitseviaBitteja, ITiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (viimeisessaTavussaMerkitseviaBitteja > 8 || viimeisessaTavussaMerkitseviaBitteja < 1) {
             throw new IllegalArgumentException("Tavussa oltava vähintään yksi ja korkeintaan 8 merkitsevää bittiä - annettu arvo: " + viimeisessaTavussaMerkitseviaBitteja);
+        }
+
+        if (blokinPituus > 255 || blokinPituus < 1) {
+            throw new IllegalArgumentException("Blokin pituus virheellinen: " + blokinPituus);
         }
 
         byte[] puskuri = new byte[1];
@@ -104,8 +109,8 @@ public class HeaderMuodostaja {
             kirjoittaja.kirjoita(puskuri);
         }
 
-        if (koodi.pituus > 64) {
-            throw new IllegalArgumentException("Koodin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + koodi.pituus);
+        if (koodi.pituus > 64 || koodi.pituus <= 0) {
+            throw new IllegalArgumentException("Koodin pituus on virheellinen: " + koodi.pituus);
         }
 
         puskuri[0] = (byte) (koodi.pituus - OFFSET);

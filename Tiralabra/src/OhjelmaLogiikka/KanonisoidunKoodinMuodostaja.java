@@ -24,11 +24,15 @@ public class KanonisoidunKoodinMuodostaja {
      *
      * @param nykyinenPituus käsiteltävän koodin pituus biteissä.
      * @return uusi koodi tallennettuna long-muuttujaan
+     * @throws IllegalArgumentException jos annettu koodin pituus on pienempi kuin edellinen annettu pituus
      * @see <a href="https://en.wikipedia.org/wiki/Canonical_Huffman_code">https://en.wikipedia.org/wiki/Canonical_Huffman_code</a>
      */
     public long muodostaKoodi(int nykyinenPituus) {
+        if (nykyinenPituus < vanhaPituus) {
+            throw new IllegalArgumentException("Annettu koodin pituus pienempi kuin edellinen");
+        }
         ++koodi;
-       
+        
         if (nykyinenPituus > vanhaPituus) {
             koodi = koodi << (nykyinenPituus - vanhaPituus);
             vanhaPituus = nykyinenPituus;

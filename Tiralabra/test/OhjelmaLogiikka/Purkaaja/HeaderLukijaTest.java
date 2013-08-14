@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package OhjelmaLogiikka.Purkaaja;
 
 import TestiTiedostoLuokat.TestiLukija;
@@ -17,10 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Omistaja
- */
 public class HeaderLukijaTest {
 
     private TestiLukija tiedosto;

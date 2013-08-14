@@ -8,7 +8,6 @@ import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.OmaMinimiPriorityQueue;
-import Tietorakenteet.OmaQueue;
 import Tietorakenteet.Pari;
 import java.util.Comparator;
 
@@ -33,10 +32,14 @@ public class Kanonisoija {
     }
 
     /**
-     * Kanonisoi annetut koodit
+     * Kanonisoi annetut koodit. Saa parametrikseen taulun jossa avaimena koodin
+     * pituus, arvona lista jossa on blokkikoodi-parit joilla sama pituus kuin
+     * avaimella. Tällä säästetään O(n log n)-sorttaus kun halutaan lukea parit
+     * koodin pituusjärjestyksessä (vain avainluettelo on sortattava, ei
+     * koodi-blokki-parit)
      *
      * @param blokkiKoodiLista Taulu koodeista joista halutaan muodostaa
-     * kanoniset koodit
+     * kanoniset koodit.
      * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
      */
     public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
@@ -91,15 +94,16 @@ public class Kanonisoija {
             }
         }
     }
-    
+
     /**
      * Sorttaa heapin avulla avaimet pienimmästä suurimpaan
-     * @param avaimet Lista avaimista 
+     *
+     * @param avaimet Lista avaimista
      * @return Avaimet järjestyksessä
      */
     private OmaList<Integer> sorttaaAvaimet(OmaList<Integer> avaimet) {
         OmaList<Integer> paluu = new OmaArrayList<Integer>();
-        
+
         OmaMinimiPriorityQueue<Integer> heapsort = new OmaMinimiPriorityQueue<Integer>(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
