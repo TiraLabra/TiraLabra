@@ -3,7 +3,7 @@ package fi.jw.cs.tiralabra;
 import java.util.Arrays;
 
 /**
- * Placeholder for the appropriate data structure.
+ * Simple binary tree implementation with <code>Node</code> instances.
  *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-02
@@ -24,6 +24,12 @@ public class BinaryTree {
         return root;
     }
 
+    /**
+     * Equality is based ultimately on the keyset of each tree.
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,14 +40,20 @@ public class BinaryTree {
 
         if (root != null ? !root.equals(that.root) : that.root != null) return false;
 
-        String[] keys = keySet();
-        String[] other = that.keySet();
-        return Arrays.equals(keys, other);
+        String[] keys = keys();
+        String[] other = that.keys();
+        if (keys.length != other.length) return false;
+
+        for (int i = 0; i < keys.length; i++)
+            if (!keys[i].equals(other[i]))
+                return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return root != null ? Arrays.deepHashCode(keySet()) : 0;
+        return root != null ? Arrays.deepHashCode(keys()) : 0;
     }
 
     @Override
@@ -57,7 +69,7 @@ public class BinaryTree {
     }
 
 
-    public String[] keySet() {
+    public String[] keys() {
         return keySet(root);
     }
 

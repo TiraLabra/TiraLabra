@@ -1,6 +1,8 @@
 package fi.jw.cs.tiralabra;
 
 /**
+ * A String->String map with a binary tree as the data structure. Does not implement full a <code>java.util.Map</code> class
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-13
  */
@@ -11,8 +13,8 @@ public class BinaryTreeMap {
         bt = new BinaryTree();
     }
 
-    public String[] keySet() {
-        return bt.keySet();
+    public String[] keys() {
+        return bt.keys();
     }
 
     @Override

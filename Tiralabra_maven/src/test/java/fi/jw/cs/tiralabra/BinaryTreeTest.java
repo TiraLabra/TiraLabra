@@ -26,7 +26,7 @@ public class BinaryTreeTest {
         bt.insert(c);
 
         assertFalse(bt.isEmpty());
-        String[] keys = bt.keySet();
+        String[] keys = bt.keys();
         assertEquals(3, keys.length);
 
         boolean aFound = false;

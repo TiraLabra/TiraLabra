@@ -160,7 +160,7 @@ public class Huffman {
     protected void buildReverseTree() throws IllegalHuffmanCodeException {
         Node root = new Node("root", 0);
         Node current = root;
-        for (String key : map.keySet()) {
+        for (String key : map.keys()) {
             String value = map.get(key);
             for (char c : value.toCharArray()) {
                 if (c == LEFT) {
@@ -305,7 +305,7 @@ public class Huffman {
      */
     public String getStringifiedMap() {
         String encodedMap = "";
-        for (String key : map.keySet()) {
+        for (String key : map.keys()) {
             String value = map.get(key);
             encodedMap += key + SERIAL_SEPARATOR;
             encodedMap += value + SERIAL_SEPARATOR;

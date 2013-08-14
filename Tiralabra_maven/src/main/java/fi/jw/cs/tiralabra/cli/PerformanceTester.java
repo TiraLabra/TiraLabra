@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
+ * Simple performance tests in a console application
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-13
  */
