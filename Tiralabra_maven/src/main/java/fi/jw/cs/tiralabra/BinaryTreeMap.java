@@ -53,6 +53,11 @@ public class BinaryTreeMap {
         }
     }
 
+    public boolean containsKey(String key) {
+        Node n = bt.searchByLabel(key);
+        return (n != null);
+    }
+
     public String get(String key) {
         Node n = bt.searchByLabel(key);
         return (n == null ? null : n.getCode());
