@@ -30,7 +30,7 @@ public class Kuuntelija implements ActionListener{
         this.nappi = nappi;
         this.kuva = kuva;
         this.laby = laby;
-        suunnistaja = new SuunnistajaAStar(laby.verkko[3][3], laby.verkko[94][147], laby);
+        suunnistaja = new SuunnistajaAStar(laby.verkko[3][3], laby.verkko[94][147], laby); 
     }
 
     /**
@@ -41,7 +41,7 @@ public class Kuuntelija implements ActionListener{
     public void actionPerformed(ActionEvent e) {
        Graphics g = kuva.getGraphics();
        g.setColor(Color.red);
-       PriorityQueue<Solmu> polku = suunnistaja.etsi();
+       ArrayList<Solmu> polku = suunnistaja.etsi();
         for (Solmu solmu : polku) {
             g.drawLine(solmu.getX(), solmu.getX(), solmu.getY(), solmu.getY());
         }

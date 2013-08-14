@@ -45,11 +45,12 @@ public class Solmu implements Comparable<Solmu>{
      * 
      * @param n
      * @return 
-     * Kertoo solmun viereiset solmut vaaka-akselilla.
+     * Kertoo solmun viereiset solmut pystyakselilla.
      * n:n arvon pitää olla joko 1 tai -1.
      */
-    public Solmu vierusX(int n) {
-        if (x+n<0 || x+n > laby[0].length) {
+    public Solmu vierusY(int n) {
+        if (x+n<0 || x+n >= laby[0].length) {
+
             return null;
         }
         return laby[y][x+n];
@@ -67,11 +68,11 @@ public class Solmu implements Comparable<Solmu>{
      * 
      * @param n
      * @return
-     * Kertoo solmun viereiset solmut pystyakselilla.
+     * Kertoo solmun viereiset solmut vaaka-akselilla.
      * n:n arvon on oltava joko 1 tai -1.
      */
-    public Solmu vierusY(int n) {
-        if (y+n<0 || y+n > laby.length) {
+    public Solmu vierusX(int n) {
+        if (y+n<0 || y+n >= laby.length) {
             return null;
         }
         return laby[y+n][x];
@@ -83,7 +84,8 @@ public class Solmu implements Comparable<Solmu>{
 
     @Override
     public int compareTo(Solmu o) {
-        return (this.heuristiikka)-(o.heuristiikka);
+        return ((this.alkuarvo+this.heuristiikka)-(o.alkuarvo+o.heuristiikka));
+       // return (this.heuristiikka)-(o.heuristiikka);
     }
     
     @Override
