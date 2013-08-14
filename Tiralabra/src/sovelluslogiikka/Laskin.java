@@ -12,6 +12,8 @@ public class Laskin {
 
     private Scanner lukija;
     private String kokonaisluvut;
+    private String eiSallitutMerkitAlussa;
+    private String eiSallitutMerkitLopussa;
 
     private enum OPERANDI {
 
@@ -24,13 +26,16 @@ public class Laskin {
     public Laskin() {
         lukija = new Scanner(System.in);
         kokonaisluvut = "0123456789";
+        eiSallitutMerkitAlussa = "+-*/)";
+        eiSallitutMerkitLopussa = "+-*/(";
     }
 
     /**
      * Asettaa laskimen valmiustilaan
      */
     public void kaynnista() {
-        System.out.println("Tervetuloa käyttämään laskinta!\n"
+        System.out.println("Tervetuloa käyttämään kokonaislukulaskinta!\n"
+                + "Laskimen kaikki ratkaisut ovat tarkkuudeltaan kokonaislukuja. "
                 + "Voit sulkea laskimen kirjoittamalla milloin tahansa \"QUIT\" syöteriville.\n");
         while (true) {
             System.out.print("Syötä laskutoimitus (sallitut merkit ovat: 0-9, (, ), +, -, * ja /): ");
@@ -39,6 +44,8 @@ public class Laskin {
                 break;
             } else if (tarkastaSyote(syote)) {
                 ratkaiseLaskutoimitus(syote);
+            } else {
+                System.out.println("Laskutoimitus on virheellinen. Tarkista syötetty laskutoimitus.\n");
             }
         }
     }
@@ -52,7 +59,25 @@ public class Laskin {
      * @return Totuusarvo (tosi tai epätosi)
      */
     public boolean tarkastaSyote(String syote) {
-        return true;
+        if (syote.isEmpty()) {
+            return false;
+        } else if (eiSallitutMerkitAlussa.indexOf(syote.charAt(0)) == 0 || eiSallitutMerkitLopussa.indexOf(syote.charAt(syote.length() - 1)) == syote.length() - 1) {
+            return false;
+        } else if (syote.contains("/0") || syote.contains(" ")) {
+            return false;
+        } else if (syote.contains("++") || syote.contains("--") || syote.contains("**") || syote.contains("//")) {
+            return false;
+        } else if (syote.contains("+-") || syote.contains("+*") || syote.contains("+/")) {
+            return false;
+        } else if (syote.contains("-+") || syote.contains("-*") || syote.contains("-/")) {
+            return false;
+        } else if (syote.contains("*+") || syote.contains("*-") || syote.contains("*/")) {
+            return false;
+        } else if (syote.contains("/+") || syote.contains("/-") || syote.contains("/*")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -91,8 +116,6 @@ public class Laskin {
                     while (operandit.peek() != OPERANDI.SULKUAUKI) {
                         suoritaOperaatiot(luvut, operandit);
                     }
-                    OPERANDI operandi = (OPERANDI) operandit.pop();
-                    assert (operandi == OPERANDI.SULKUAUKI);
                     break;
                 default:
                     int j = i;
@@ -109,8 +132,7 @@ public class Laskin {
             suoritaOperaatiot(luvut, operandit);
         }
         int ratkaisu = (Integer) luvut.pop();
-        assert (luvut.empty());
-        System.out.println("Ratkaisu: " + ratkaisu);
+        System.out.println("Ratkaisu: " + ratkaisu + "\n");
     }
 
     /**
@@ -125,14 +147,25 @@ public class Laskin {
             case PLUS:
                 luvut.push((Integer) luvut.pop() + (Integer) luvut.pop());
                 break;
+            case MIINUS:
+                int vahentaja = (Integer) luvut.pop();
+                int vahennettava = (Integer) luvut.pop();
+                luvut.push(vahennettava - vahentaja);
+                break;
             case KERTO:
                 luvut.push((Integer) luvut.pop() * (Integer) luvut.pop());
                 break;
-            case MIINUS:
-                int luku1 = (Integer) luvut.pop();
-                int luku2 = (Integer) luvut.pop();
-                luvut.push(luku2 - luku1);
-                break;
+            case JAKO:
+                int jakaja = (Integer) luvut.pop();
+                int jaettava = (Integer) luvut.pop();
+                int vakiojakaja = 1;
+                if (jakaja == 0) {
+                    System.out.println("Virhe, laskutoimituksessa yritetään jakaa nollalla, mikä ei ole sallittua, joten käytetään jakajana vakiota yksi.");
+                    luvut.push(jaettava / vakiojakaja);
+                } else {
+                    luvut.push(jaettava / jakaja);
+
+                }
         }
     }
 }
