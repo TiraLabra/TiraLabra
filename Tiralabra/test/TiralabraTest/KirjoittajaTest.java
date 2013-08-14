@@ -35,8 +35,8 @@ public class KirjoittajaTest {
     
     @Before
     public void setUp() {
-        this.kirjoittaja = new Kirjoittaja("src/Tiralabra/kirjoittajaTesti");
-        this.lukija = new Lukija("src/Tiralabra/kirjoittajaTesti");
+        this.kirjoittaja = new Kirjoittaja("src/Tiralabra/tiedostot/kirjoittajaTesti");
+        this.lukija = new Lukija("src/Tiralabra/tiedostot/kirjoittajaTesti");
     }
     
     @After

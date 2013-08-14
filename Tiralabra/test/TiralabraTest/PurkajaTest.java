@@ -33,7 +33,7 @@ public class PurkajaTest {
     
     @Before
     public void setUp() {
-        this.purkaja = new Purkaja("src/Tiralabra/purkutesti.txt","testattu.txt");
+        this.purkaja = new Purkaja("src/Tiralabra/tiedostot/purkutesti.txt","testattu.txt");
     }
     
     @After
@@ -68,6 +68,14 @@ public class PurkajaTest {
         assertEquals("0", reitit[99]);
         
     }
+    
+    @Test
+    public void etsiiReitit(){
+        purkaja.pura();
+        assertEquals(0, purkaja.merkinReitti());
+        
+    }
+    
 
 
 }

@@ -42,7 +42,7 @@ public class LaskijaTest {
     
     @Test
     public void laskeeOikein(){
-        laskija.laske("src/Tiralabra/testitiedosto.txt");
+        laskija.laske("src/Tiralabra/tiedostot/testitiedosto.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(4, taulukko[97]);
         assertEquals(2, taulukko[98]);
@@ -55,7 +55,7 @@ public class LaskijaTest {
     
     @Test
     public void eiLaskeKuulumattomiaKirjaimia(){
-        laskija.laske("src/Tiralabra/testitiedosto.txt");
+        laskija.laske("src/Tiralabra/tiedostot/testitiedosto.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(0, taulukko[96]);
         assertEquals(0, taulukko[0]);

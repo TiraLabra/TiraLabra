@@ -186,4 +186,5 @@ public class Purkaja {
     public int getKaikkiMerkit(){
         return this.kaikkiMerkit;
     }
+
 }

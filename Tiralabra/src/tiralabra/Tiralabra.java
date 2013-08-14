@@ -30,13 +30,13 @@ public class Tiralabra {
             String toiminto = lukija.nextLine();
             if (toiminto.equals("1")) {
                 System.out.println("Anna pakattavan tiedoston sijainti juurikansioon nähden");
-                System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
                 String nimi = lukija.nextLine();
                 File tiedosto = new File(nimi);
                 while (!tiedosto.exists()) {
                     System.out.println("Tiedostoa ei löytynyt, yritä uudelleen");
                     System.out.println("Anna pakattavan tiedoston sijainti juurikansioon nähden");
-                    System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                    System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
                     nimi = lukija.nextLine();
                     tiedosto = new File(nimi);
                 }
@@ -44,27 +44,27 @@ public class Tiralabra {
                 String uusinimi = lukija.nextLine();
 
                 long pakkausAlku = System.currentTimeMillis();
-                Pakkaaja pakkaaja = new Pakkaaja("src/Tiralabra/" + uusinimi, nimi);
+                Pakkaaja pakkaaja = new Pakkaaja("src/Tiralabra/tiedostot/" + uusinimi, nimi);
                 pakkaaja.pakkaa();
                 long pakkausLoppu = System.currentTimeMillis();
                 System.out.println("Pakattu ajassa " + (pakkausLoppu - pakkausAlku) +" ms");
             } else if(toiminto.equals("2")) {
 
                 System.out.println("Anna purettavan tiedoston sijainti juurikansioon nähden");
-                System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
                 String nimi = lukija.nextLine();
                 File tiedosto = new File(nimi);
                 while (!tiedosto.exists()) {
                     System.out.println("Tiedostoa ei löytynyt, yritä uudelleen");
                     System.out.println("Anna purettavan tiedoston sijainti juurikansioon nähden");
-                    System.out.println("(esim src/Tiralabra/esimerkki.txt)");
+                    System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
                     nimi = lukija.nextLine();
                     tiedosto = new File(nimi);
                 }
                 System.out.println("Anna puretulle tiedostolle uusi nimi:");
                 String uusinimi = lukija.nextLine();
                  long purkuAlku = System.currentTimeMillis();
-                Purkaja purkaja = new Purkaja(nimi, "src/Tiralabra/" + uusinimi);
+                Purkaja purkaja = new Purkaja(nimi, "src/Tiralabra/tiedostot/" + uusinimi);
                 purkaja.pura();
                 long purkuLoppu = System.currentTimeMillis();
                 System.out.println("purettu ajassa " + (purkuLoppu - purkuAlku) + " ms");

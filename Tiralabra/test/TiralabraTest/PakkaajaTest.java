@@ -33,7 +33,7 @@ public class PakkaajaTest {
     
     @Before
     public void setUp() {
-        this.pakkaaja = new Pakkaaja("testattu.txt", "src/Tiralabra/testitiedosto2.txt");
+        this.pakkaaja = new Pakkaaja("testattu.txt", "src/Tiralabra/tiedostot/testitiedosto2.txt");
         pakkaaja.pakkaa();
     }
     

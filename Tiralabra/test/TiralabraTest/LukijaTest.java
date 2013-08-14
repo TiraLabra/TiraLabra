@@ -35,7 +35,7 @@ public class LukijaTest {
     
     @Before
     public void setUp() {
-        this.lukija = new Lukija("src/Tiralabra/testitiedosto.txt");
+        this.lukija = new Lukija("src/Tiralabra/tiedostot/testitiedosto.txt");
     }
     
     @After
