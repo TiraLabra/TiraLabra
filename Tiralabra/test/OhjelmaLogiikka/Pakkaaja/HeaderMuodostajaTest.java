@@ -162,7 +162,18 @@ public class HeaderMuodostajaTest {
             assertTrue("Ei pitäisi tapahtua...", false);
         }
     }
+    
+    @Test
+    public void headerPalauttaaOikeanHeaderinKoon() {
+        try {
+            long koko = muodostaja.muodostaHeader(kirjoittaja, koodit, 5, 1);
 
+            assertEquals("Blokkien koko väärä headerissa", 12, koko);
+        } catch (IOException ex) {
+            assertTrue("Ei pitäisi tapahtua...", false);
+        }
+    }
+    
     @Test
     public void headerissaKooditTallennettuOikein() {
         try {

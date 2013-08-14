@@ -25,9 +25,14 @@ public class PurkuKoodi {
      * viimeisessä tavussa
      * @param koodit Koodi-blokkiparit
      * @throws IOException Jos lukeminen\kirjoitus epäonnistuu
+     * @throws IllegalArgumentException jos viimeisessaTavussaMerkitseviaBitteja alle 1 tai yli 8
      */
     public void kasitteleTiedosto(ITiedostoLukija lukija, ITiedostoKirjoittaja kirjoittaja, int viimeisessaTavussaMerkitseviaBitteja, OmaMap<Koodi, byte[]> koodit) throws IOException {
-
+        
+        if (viimeisessaTavussaMerkitseviaBitteja < 1 || viimeisessaTavussaMerkitseviaBitteja > 8) {
+            throw new IllegalArgumentException("Virheellinen bittimäärä viimeiselle tavulle: " + viimeisessaTavussaMerkitseviaBitteja);
+        }
+        
         byte[] puskuri = new byte[2];
         byte[] luku = new byte[1];
         byte kasiteltavaTavu;

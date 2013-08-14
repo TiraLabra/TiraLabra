@@ -90,7 +90,7 @@ public class Kanonisoija {
                 Pari<ByteWrapper, Koodi> pari = lista.get(j);
                 pari.toinen.koodi = muodostaja.muodostaKoodi(pari.toinen.pituus);
                 kooditJarjestyksesaHeaderiaVarten.add(pari);
-                kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);
+                kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);                
             }
         }
     }
