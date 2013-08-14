@@ -1,4 +1,9 @@
-package fi.jw.cs.tiralabra;
+package fi.jw.cs.tiralabra.cli;
+
+import fi.jw.cs.tiralabra.BinaryTreeMap;
+import fi.jw.cs.tiralabra.Huffman;
+import fi.jw.cs.tiralabra.IllegalHuffmanCodeException;
+import fi.jw.cs.tiralabra.Steganographer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -13,7 +18,7 @@ import java.nio.file.Paths;
  * @since 2013-08-02
  */
 
-public class HuffmanSteganoEncoder {
+public class HuffmanSteganoClient {
     public static void main(String... args) {
 
         try {
@@ -90,7 +95,7 @@ public class HuffmanSteganoEncoder {
     static void decode(String path, String map) throws IOException, IllegalHuffmanCodeException {
         System.out.println("Opening " + path);
         Steganographer dec = new Steganographer(path);
-        dec.decodeBits();
+        dec.decode();
         String stegDecoded = dec.getMessage();
 
         Huffman decoder = new Huffman();

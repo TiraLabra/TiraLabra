@@ -1,9 +1,10 @@
 package fi.jw.cs.tiralabra;
 
-import javax.imageio.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Encodes a series of 1s and 0s into an image's R, G and B channels into the least significant bit
@@ -52,6 +53,11 @@ public class Steganographer {
         ensureFileHandles();
         checkMessageSize();
         encodeBits();
+    }
+
+    public void decode() throws IOException {
+        ensureFileHandles();
+        decodeBits();
     }
 
     private void ensureFileHandles() throws java.io.IOException {
