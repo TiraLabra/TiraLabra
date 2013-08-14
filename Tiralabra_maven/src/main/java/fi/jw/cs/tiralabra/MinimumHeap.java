@@ -1,33 +1,54 @@
 package fi.jw.cs.tiralabra;
 
+import java.util.Comparator;
+
 /**
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-13
  */
-public class MinimumHeap {
-    Comparable[] heap;
-    int size;
+public class MinimumHeap<T extends Comparable> {
+    private T[] heap;
+    private int size;
+    Comparator<T> comparator;
 
     public MinimumHeap() {
-        heap = new Comparable[100];
+        heap = (T[]) new Comparable[100];
     }
 
-    public void insert(Comparable item) {
+    public MinimumHeap(Comparator cmp) {
+        heap = (T[]) new Comparable[100];
+        comparator = cmp;
+    }
+
+    public MinimumHeap(MinimumHeap<T> source) {
+        T[] other = source.getHeap();
+        size = source.getSize();
+        heap = (T[]) new Comparable[size];
+        for (int i = 0; i < size; i++)
+            heap[i] = other[i];
+
+    }
+
+    public void insert(T item) {
         size++;
         if (size > heap.length) {
-            Comparable[] newHeap = new Comparable[size * 2];
+            T[] newHeap = (T[]) new Comparable[size * 2];
             for (int i = 0; i < heap.length; i++) {
                 newHeap[i] = heap[i];
             }
             heap = newHeap;
         }
-        int i = size;
-        while (i > 0 && (heap[parent(i)].compareTo(item) > 0)) {
-            heap[i] = heap[parent(i)];
-            i = parent(i);
-        }
+        if (size == 1) {
+            heap[0] = item;
+        } else {
+            int i = size - 1;
+            while (i > 0 && (isFirstSmaller(item, heap[parent(i)]))) {
+                heap[i] = heap[parent(i)];
+                i = parent(i);
+            }
 
-        heap[i] = item;
+            heap[i] = item;
+        }
 
     }
 
@@ -45,22 +66,26 @@ public class MinimumHeap {
         }
     }
 
-    public boolean isFirstSmaller(Comparable a, Comparable b) {
-        return (a.compareTo(b) < 0);
+    public boolean isFirstSmaller(T a, T b) {
+        return (comparator != null ? comparator.compare(a, b) < 0 : a.compareTo(b) < 0);
     }
 
     protected void swap(int a, int b) {
-        Comparable temp = heap[a];
+        T temp = heap[a];
         heap[a] = heap[b];
-        heap[b] = heap[a];
+        heap[b] = temp;
     }
 
-    public Comparable deleteMinimum() {
+    public T deleteMinimum() {
         if (size > 0) {
-            Comparable c = heap[0];
-            swap(0, size - 1);
+
+            T c = heap[0];
             size--;
-            heapify(0);
+            if (size > 0) {
+                swap(0, size);
+                heapify(0);
+            }
+
             return c;
         } else {
             return null;
@@ -79,4 +104,11 @@ public class MinimumHeap {
         return (i * 2) + 1;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public T[] getHeap() {
+        return heap;
+    }
 }

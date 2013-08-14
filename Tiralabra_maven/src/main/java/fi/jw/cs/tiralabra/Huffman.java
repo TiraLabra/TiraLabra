@@ -2,7 +2,6 @@ package fi.jw.cs.tiralabra;
 
 
 import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
 
 /**
  * This class provides the utility of encoding and decoding a 8-bit text into a compressed Huffman encoding.
@@ -22,7 +21,7 @@ public class Huffman {
     private String encodedMessage;
     private BinaryTreeMap map;
     private int[] frequencies;
-    private PriorityQueue<Node> sortedNodes;
+    private SimplePriorityQueue<Node> sortedNodes;
     private BinaryTree tree;
 
 
@@ -34,7 +33,7 @@ public class Huffman {
         this.message = message;
         map = new BinaryTreeMap();
         frequencies = new int[256]; // accepting 8-bit chars
-        sortedNodes = new PriorityQueue<Node>();
+        sortedNodes = new SimplePriorityQueue<Node>();
     }
 
 
@@ -87,7 +86,7 @@ public class Huffman {
      * Transforms the frequency array into a <code>PriorityQueue</code> of <code>Node</code>s
      */
     private void createdWeightedNodes() {
-        sortedNodes = new PriorityQueue<Node>(1, Node.getComparator());
+        sortedNodes = new SimplePriorityQueue<Node>(Node.getComparator());
         for (int i = 0; i < frequencies.length; i++) {
             int weight = frequencies[i];
             if (weight > 0) {
@@ -104,7 +103,7 @@ public class Huffman {
      */
     protected void buildTree() {
         Node root;
-        PriorityQueue<Node> nodes = new PriorityQueue<Node>(sortedNodes);
+        SimplePriorityQueue<Node> nodes = new SimplePriorityQueue<Node>(sortedNodes);
 
         if (nodes.size() == 1) {
             Node onlyChild = nodes.poll();
@@ -342,8 +341,8 @@ public class Huffman {
         this.map = map;
     }
 
-    public PriorityQueue<Node> getSortedNodes() {
-        return new PriorityQueue<Node>(sortedNodes);
+    public SimplePriorityQueue<Node> getSortedNodes() {
+        return new SimplePriorityQueue<Node>(sortedNodes);
     }
 
     public BinaryTree getTree() {

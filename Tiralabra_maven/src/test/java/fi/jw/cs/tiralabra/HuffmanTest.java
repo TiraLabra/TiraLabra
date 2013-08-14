@@ -2,8 +2,6 @@ package fi.jw.cs.tiralabra;
 
 import junit.framework.TestCase;
 
-import java.util.PriorityQueue;
-
 
 /**
  * @author Jan Wikholm <jw@jw.fi>
@@ -25,7 +23,7 @@ public class HuffmanTest extends TestCase {
         Huffman h = new Huffman("a");
         h.frequencyAnalysis();
 
-        PriorityQueue<Node> nodes = h.getSortedNodes();
+        SimplePriorityQueue<Node> nodes = h.getSortedNodes();
         assertEquals(1, nodes.size());
 
         Node s = nodes.poll();
@@ -35,7 +33,7 @@ public class HuffmanTest extends TestCase {
         h = new Huffman("abbcbba");
         h.frequencyAnalysis();
 
-        PriorityQueue<Node> freq = h.getSortedNodes();
+        SimplePriorityQueue<Node> freq = h.getSortedNodes();
         assertEquals(3, freq.size());
 
         Node head = freq.poll();
@@ -162,7 +160,6 @@ public class HuffmanTest extends TestCase {
         encoder.setMessage(message);
         encoder.encode();
         String map = encoder.getStringifiedMap();
-        System.out.println(map);
         String encodedMessage = encoder.getEncodedMessage();
 
         Huffman decoder = new Huffman();

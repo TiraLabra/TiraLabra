@@ -184,15 +184,15 @@ public class Node implements Comparable<Node> {
     /**
      * Utility method to avoid <code>a.compareTo(b) &lt; 0</code> style code
      *
-     * @param o
-     * @return
+     * @param other <code>Node</code> to compare with
+     * @return true if the object is less than the other object
      * @throws NullPointerException if the specified object is null
      */
-    public boolean lessThan(Node o) {
-        if (o == null)
+    public boolean lessThan(Node other) {
+        if (other == null)
             throw new NullPointerException();
 
-        return (this.compareTo(o) < 0);
+        return (this.compareTo(other) < 0);
     }
 
     /**
@@ -202,6 +202,9 @@ public class Node implements Comparable<Node> {
 
         @Override
         public int compare(Node o1, Node o2) {
+            if (o2 == null)
+                throw new NullPointerException("NodeWeightComparator o2 is null");
+
             return o1.getWeight() - o2.getWeight();
         }
     }
