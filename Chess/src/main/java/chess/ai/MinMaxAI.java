@@ -297,7 +297,7 @@ public class MinMaxAI implements AI
 		results[ply].nodeType = StateInfo.NODE_TYPE_UPPER_BOUND;
 		earlierStates.put(results[ply]);
 
-		depth = applyNullMoveReduction(depth, alpha, beta, state);
+		depth = applyNullMoveReduction(depth, beta, state);
 		int score = searchAllMoves(depth, alpha, beta, state, info != null ? info.bestMove : 0);
 
 		earlierStates.remove(state.getId());
@@ -309,6 +309,21 @@ public class MinMaxAI implements AI
 		addTranspositionTableEntry(depth, score, results[ply]);
 
 		return score;
+	}
+
+	/**
+	 * Haku, jossa hakuikkuna on rajattu pienimpään mahdolliseen, eli [beta - 1, beta]. Mahdollistaa
+	 * nopeamman haun silloin, kun tarvitsee ainoastaan todistaa, että haun lopputulos on suurempi
+	 * tai yhtä suuri kuin beeta.
+	 *
+	 * @param depth vaadittava jäljellä oleva hakusyvyys
+	 * @param beta beeta-arvo
+	 * @param state pelitila
+	 * @return palauttaa parhaan löydetyn pistemäärän
+	 */
+	private int zeroWindowSearch(int depth, int beta, GameState state) throws TimeLimitException
+	{
+		return search(depth, beta - 1, beta, state);
 	}
 
 	/**
@@ -327,10 +342,8 @@ public class MinMaxAI implements AI
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
 		if (tpTblMove != 0) {
 			alpha = searchMove(depth, alpha, beta, state, tpTblMove);
-			if (alpha >= beta) {
-				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+			if (alpha >= beta)
 				return alpha;
-			}
 		}
 
 		// Muodostetaan priorisoitu siirtolista.
@@ -345,10 +358,8 @@ public class MinMaxAI implements AI
 				if (move == tpTblMove) // Ei etsitä tätä uudestaan!
 					continue;
 				alpha = searchMove(depth, alpha, beta, state, move);
-				if (alpha >= beta) {
-					results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+				if (alpha >= beta)
 					return alpha;
-				}
 			}
 		}
 
@@ -373,12 +384,20 @@ public class MinMaxAI implements AI
 	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
 			throws TimeLimitException
 	{
-		int player = state.getNextMovingPlayer();
-
 		++ply;
 		state.move(move);
 		evaluator.makeMove(move);
-		int score = -search(depth - 1, -beta, -alpha, state);
+		int score;
+		if (results[ply - 1].nodeType == StateInfo.NODE_TYPE_UPPER_BOUND) {
+			// Etsitään normaalisti niin kauan kunnes löydetään arvo välillä ]alfa,beta[
+			score = -search(depth - 1, -beta, -alpha, state);
+		} else {
+			// Lopuille solmuille tarkistetaan vain, että pistemäärä on korkeintaan alfa (tai
+			// aiheuttaa beta-cutoffin). Jos ei, niin suoritetaan normaali haku.
+			score = -zeroWindowSearch(depth - 1, -alpha, state);
+			if (score > alpha && score < beta)
+				score = -search(depth - 1, -beta, -alpha, state);
+		}
 		evaluator.undoMove();
 		state.undoMove(move);
 		--ply;
@@ -391,7 +410,10 @@ public class MinMaxAI implements AI
 				log(" " + Move.toString(move) + " " + (score - rootScore));
 			}
 			results[ply].bestMove = move;
-			results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
+			if (score >= beta)
+				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+			else
+				results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
 			alpha = score;
 		}
 
@@ -405,7 +427,8 @@ public class MinMaxAI implements AI
 	}
 
 	/**
-	 * Nollasiirtoredusointi.
+	 * Nollasiirtoredusointi. Skippaa yhden vuoron, ja tarkistaa aiheuttaako uusi tilanne
+	 * beeta-leikkauksen. Jos aiheuttaa, niin pienennetään varsinaista hakusyvyyttä.
 	 *
 	 * @param depth vaadittava jäljellä oleva hakusyvyys
 	 * @param alpha alfa-beta-karsinnan alfa-arvo
@@ -413,14 +436,14 @@ public class MinMaxAI implements AI
 	 * @param state pelitilanne
 	 * @return uusi syvyysarvo
 	 */
-	private int applyNullMoveReduction(int depth, int alpha, int beta, GameState state)
+	private int applyNullMoveReduction(int depth, int beta, GameState state)
 			throws TimeLimitException
 	{
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
 			state.nullMove();
 			evaluator.makeNullMove();
 			++ply;
-			int score = -search(depth - NULL_MOVE_REDUCTION1 - 1, -beta, -alpha, state);
+			int score = -zeroWindowSearch(depth - NULL_MOVE_REDUCTION1 - 1, 1 - beta, state);
 			--ply;
 			evaluator.undoMove();
 			state.nullMove();
