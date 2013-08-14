@@ -10,10 +10,13 @@ package Encoding;
  */
 public class MultiByteDecoder {
 
-    private static int byteArrayToInt(byte[] b) {
-        return b[3] & 0xFF
-                | (b[2] & 0xFF) << 8
-                | (b[1] & 0xFF) << 16
-                | (b[0] & 0xFF) << 24;
+    private int byteArrayToInt(byte[] b) {
+        int returnInt = 0;
+        int multiplier = 0;
+        for (int i = b.length-1; i >= 0; i--) {
+            returnInt |= ((b[i] & 0xFF) << multiplier*8);
+            multiplier++;
+        }
+        return returnInt;
     }
 }

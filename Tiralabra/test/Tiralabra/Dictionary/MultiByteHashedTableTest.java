@@ -149,7 +149,7 @@ public class MultiByteHashedTableTest {
 
         int keyCount = table.getStats()[1];
 
-        MultiByte[] array = table.getArray();
+        MultiByte[] array = table.getArray(2);
 
         assertEquals("Keycount does not match", keyCount, array.length);
     }
@@ -158,7 +158,7 @@ public class MultiByteHashedTableTest {
     public void testSortingOfData() {
         fillTable(sortingData, 2);
 
-        MultiByte[] array = table.getArray();
+        MultiByte[] array = table.getArray(2);
 
         MultiByte mb1 = new MultiByte(2);
         mb1.addData(new Byte("1"));
