@@ -1,7 +1,7 @@
 package Main;
 
 import OhjelmaLogiikka.Pakkaaja.Pakkaaja;
-import OhjelmaLogiikka.Purkaaja.Purkaaja;
+import OhjelmaLogiikka.Purkaja.Purkaja;
 
 public class Main {
 
@@ -10,7 +10,7 @@ public class Main {
         int blokinKoko = 1;
 
         Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
-        Purkaaja purkaaja = new Purkaaja();
+        Purkaja purkaaja = new Purkaja();
 
 
         System.out.println("Pakataan...");

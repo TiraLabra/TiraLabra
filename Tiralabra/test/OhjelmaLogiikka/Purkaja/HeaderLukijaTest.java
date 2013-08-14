@@ -1,6 +1,7 @@
 
-package OhjelmaLogiikka.Purkaaja;
+package OhjelmaLogiikka.Purkaja;
 
+import OhjelmaLogiikka.Purkaja.HeaderLukija;
 import TestiTiedostoLuokat.TestiLukija;
 import Tietorakenteet.Koodi;
 import Tietorakenteet.OmaList;

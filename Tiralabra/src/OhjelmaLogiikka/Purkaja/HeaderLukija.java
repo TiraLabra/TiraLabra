@@ -1,4 +1,4 @@
-package OhjelmaLogiikka.Purkaaja;
+package OhjelmaLogiikka.Purkaja;
 
 import OhjelmaLogiikka.KanonisoidunKoodinMuodostaja;
 import OhjelmaLogiikka.BittiUtility;

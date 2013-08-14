@@ -1,6 +1,6 @@
 
 
-package OhjelmaLogiikka.Purkaaja;
+package OhjelmaLogiikka.Purkaja;
 
 import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.ITiedostoKirjoittaja;

@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OhjelmaLogiikka.Purkaaja;
+package OhjelmaLogiikka.Purkaja;
 
+import OhjelmaLogiikka.Purkaja.PurkuKoodi;
 import TestiTiedostoLuokat.TestiKirjoittaja;
 import TestiTiedostoLuokat.TestiLukija;
 import Tiedostokasittely.ITiedostoKirjoittaja;

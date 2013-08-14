@@ -1,4 +1,4 @@
-package OhjelmaLogiikka.Purkaaja;
+package OhjelmaLogiikka.Purkaja;
 
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
@@ -12,14 +12,14 @@ import java.io.IOException;
  * Luokka joka vastaa tiedoston purkamisesta
  *
  */
-public class Purkaaja {
+public class Purkaja {
 
     private long tiedostonKoko;
 
     /**
      * Konstruktori
      */
-    public Purkaaja() {
+    public Purkaja() {
     }
 
     /**

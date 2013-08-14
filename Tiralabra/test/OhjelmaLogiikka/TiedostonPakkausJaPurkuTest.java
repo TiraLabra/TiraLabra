@@ -6,7 +6,7 @@ package OhjelmaLogiikka;
 
 import OhjelmaLogiikka.Pakkaaja.KoodiMuodostaja;
 import OhjelmaLogiikka.Pakkaaja.Tiivistaja;
-import OhjelmaLogiikka.Purkaaja.PurkuKoodi;
+import OhjelmaLogiikka.Purkaja.PurkuKoodi;
 import TestiTiedostoLuokat.TestiKirjoittaja;
 import TestiTiedostoLuokat.TestiLukija;
 import Tiedostokasittely.TiedostoKirjoittaja;
