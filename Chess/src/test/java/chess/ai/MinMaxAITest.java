@@ -27,22 +27,6 @@ public class MinMaxAITest
 	}
 
 	@Test
-	public void getScore()
-	{
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.KING, 0);
-		bb.addPiece(Players.BLACK, Pieces.QUEEN, 1);
-		bb.addPiece(Players.BLACK, Pieces.ROOK, 2);
-		bb.addPiece(Players.BLACK, Pieces.BISHOP, 3);
-		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 4);
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 8);
-		bb.addPiece(Players.WHITE, Pieces.KING, 42);
-		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
-		GameState s = new GameState(bb, Players.WHITE);
-		assertEquals((-1000 - 9 - 5 - 3 - 3 - 1 + 1000 + 3) * 1000 - 8, ai.getScore(s));
-	}
-
-	@Test
 	public void avoidsCheckByEscaping()
 	{
 		BitBoard bb = new BitBoard();

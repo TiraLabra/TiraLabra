@@ -2,7 +2,6 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Move;
-import chess.domain.Pieces;
 import chess.util.Logger;
 
 /**
@@ -130,6 +129,11 @@ public class MinMaxAI implements AI
 	private long startTime;
 
 	/**
+	 * Evaluaattori pelitilanteen pisteyttämiseen.
+	 */
+	private final Evaluator evaluator;
+
+	/**
 	 * Luo uuden tekoälyobjektin käyttäen oletusaikarajaa. Hakusyvyys on rajoitettu ainoastaan
 	 * aikarajan puitteissa.
 	 *
@@ -160,6 +164,7 @@ public class MinMaxAI implements AI
 		this.moveLists = new MoveList[searchDepth + 1];
 		this.ply = 0;
 		this.loggingEnabled = false;
+		this.evaluator = new Evaluator(searchDepth);
 	}
 
 	/**
@@ -178,7 +183,8 @@ public class MinMaxAI implements AI
 	@Override
 	public void move(GameState state)
 	{
-		rootScore = getScore(state);
+		evaluator.reset(state);
+		rootScore = evaluator.getScore();
 		setEarlierStates(state);
 		startTime = System.nanoTime();
 		trposTable.clear();
@@ -223,6 +229,7 @@ public class MinMaxAI implements AI
 		trposTblHitCount = 0;
 		ply = 0;
 		treeGenerator.clear();
+		evaluator.reset(state);
 
 		try {
 			search(depth, Scores.MIN, Scores.MAX, state);
@@ -275,7 +282,7 @@ public class MinMaxAI implements AI
 			return Scores.DRAW;
 
 		if (depth == 0 || !state.areBothKingsAlive())
-			return getScore(state);
+			return evaluator.getScore();
 
 		StateInfo info = trposTable.get(state.getId());
 		if (info != null && info.depth >= depth) {
@@ -366,9 +373,13 @@ public class MinMaxAI implements AI
 	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
 			throws TimeLimitException
 	{
+		int player = state.getNextMovingPlayer();
+
 		++ply;
 		state.move(move);
+		evaluator.makeMove(move);
 		int score = -search(depth - 1, -beta, -alpha, state);
+		evaluator.undoMove();
 		state.undoMove(move);
 		--ply;
 
@@ -385,28 +396,6 @@ public class MinMaxAI implements AI
 		}
 
 		return alpha;
-	}
-
-	/**
-	 * Laskee pistemäärän pelitilanteelle, perustuen pelaajien nappuloiden yhteisarvojen erotukseen.
-	 * Lisäksi tasapisteissä painotetaan hieman tilannetta, jossa nappuloiden kokonaismäärä
-	 * laudalle on pienempi. Tällä saadaan tekoälystä aggressiivisempi; ilman avauskirjastoa tms.
-	 * alkupeli on muutoin liian passiivinen.
-	 *
-	 * @param state pelitila
-	 * @return pistemäärä
-	 */
-	int getScore(GameState state)
-	{
-		int player = state.getNextMovingPlayer();
-		int score = 0;
-		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
-			int pieceValue = Scores.PIECE_VALUES[pieceType];
-			score += Long.bitCount(state.getPieces(player, pieceType)) * pieceValue;
-			score -= Long.bitCount(state.getPieces(1 - player, pieceType)) * pieceValue;
-		}
-		score -= Long.bitCount(state.getPieces(player) | state.getPieces(1 - player));
-		return score;
 	}
 
 	@Override
@@ -429,9 +418,11 @@ public class MinMaxAI implements AI
 	{
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
 			state.nullMove();
+			evaluator.makeNullMove();
 			++ply;
 			int score = -search(depth - NULL_MOVE_REDUCTION1 - 1, -beta, -alpha, state);
 			--ply;
+			evaluator.undoMove();
 			state.nullMove();
 			treeGenerator.endNode(0, -score, 0);
 			if (score >= beta)
