@@ -6,13 +6,14 @@ import static org.junit.Assert.*;
 
 public class PunamustaTest {
 
-    Punamusta p = new Punamusta(10);
+    Punamusta p;
     
     public PunamustaTest() {
     }
     
     @Before
     public void setUp() {
+        p = new Punamusta(10);
     }
     
     @Test
@@ -33,6 +34,28 @@ public class PunamustaTest {
         assertEquals(false, p.search(999));
     }
     
+    @Test
+    public void perusInsert(){
+        p.insert(11);
+        p.insert(5);
+        assertEquals(11, p.getJuuri().getOikea().getArvo());
+        assertEquals(5, p.getJuuri().getVasen().getArvo());
+    }
     
+    @Test
+    public void perusDelete(){
+        p.insert(23);
+        p.insert(6);
+        p.delete(23);
+        assertEquals(null, p.getJuuri().getOikea());
+        p.delete(6);
+        assertEquals(null, p.getJuuri().getVasen());
+    }
+    
+    @Test
+    public void deleteJuuri(){
+        p.delete(10);
+        assertEquals(null, p.getJuuri());
+    }
     
 }

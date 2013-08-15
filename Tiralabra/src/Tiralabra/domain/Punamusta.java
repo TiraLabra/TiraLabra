@@ -1,9 +1,13 @@
 package Tiralabra.domain;
 
+import Tiralabra.util.Lista;
+
 /**
- * Toteuttaa vasemmalle nojaavan punamustan puun. Punamustapuu on itsestään tasapainottuva
- * binäärihakupuu, joka käyttää hyväksen solmujen värjäämistä. Tässä toteutuksessa insert/delete-operaatioit on mallinettu
- * seuraavasta osoitteesta löytyvää koodia mukaillen: https://gist.github.com/rkapsi/741080
+ * Toteuttaa vasemmalle nojaavan punamustan puun. Punamustapuu on itsestään
+ * tasapainottuva binäärihakupuu, joka käyttää hyväksen solmujen värjäämistä.
+ * Tässä toteutuksessa insert/delete-operaatioit on mallinettu seuraavasta
+ * osoitteesta löytyvää koodia mukaillen: https://gist.github.com/rkapsi/741080
+ *
  * @author Pia Pakarinen
  */
 public class Punamusta implements Puu {
@@ -25,55 +29,60 @@ public class Punamusta implements Puu {
 
     @Override
     public String tulostaArvot() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //Lista l = sisa(new Lista());
+        //l.jarjesta();
+        //return l.toString();
+        return "";
     }
-    
+
     @Override
     public void insert(int key) {
         juuri = insert(juuri, key);
         juuri.setVari(false);
     }
-    
-    /** Toteuttaa solmun lisäämisen ja puun tasapainottamisen.
-     * 
-     * @param nyk puun vanha juuri
+
+    /**
+     * Toteuttaa solmun lisäämisen ja puun tasapainottamisen.
+     *
+     * @param nyk käsittelyssä oleva solmu
      * @param key uuden solmun sisältämä arvo
-     * @return puun uusi juuri
+     * @return käsittelyyn siirtyvä solmu; lopussa puun uusi juuri
      */
     private SolmuPunamusta insert(SolmuPunamusta nyk, int key) {
         if (nyk == null) {
             return new SolmuPunamusta(key, true);
         }
-        
+
         if ((nyk.getOikea() != null && nyk.getVasen() != null) && (nyk.getOikea().getVari() && nyk.getVasen().getVari())) {
             vaihdaVarit(nyk);
         }
-        
+
         if (key == nyk.getArvo()) {
             return nyk;
         }
         if (key < nyk.getArvo()) {
-            nyk.getVasen().setVasen(insert(nyk.getVasen(), key));
+            nyk.setVasen(insert(nyk.getVasen(), key));
         } else {
-            nyk.getOikea().setOikea(insert(nyk.getOikea(), key));
+            nyk.setOikea(insert(nyk.getOikea(), key));
         }
-        
+
         //oikea lapsi on punainen, vasen lapsi joko musta tai null
         if ((nyk.getOikea() != null && nyk.getOikea().getVari() && nyk.getVasen() == null) || (nyk.getOikea() != null && nyk.getOikea().getVari() && nyk.getVasen() != null && !nyk.getVasen().getVari())) {
             nyk = vasenkierto(nyk);
         }
-        
+
         //vasen lapsi on punainen ja vasemman vasen lapsi on punainen
-        if (nyk.getVasen() != null && nyk.getVasen() != null && nyk.getVasen().getVari() && nyk.getVasen().getVasen().getVari()) {
+        if (nyk.getVasen() != null && nyk.getVasen().getVasen() != null && nyk.getVasen().getVari() && nyk.getVasen().getVasen().getVari()) {
             nyk = oikeakierto(nyk);
         }
-        
+
         return nyk;
     }
 
     @Override
     public void delete(int key) {
-        
+        juuri = delete(juuri, key);
+        juuri.setVari(false);
     }
 
     @Override
@@ -103,17 +112,6 @@ public class Punamusta implements Puu {
         SolmuPunamusta x = s.getOikea();
         s.setOikea(x.getVasen());
         x.setVasen(s);
-        
-        x.setParent(s.getParent());
-        if (s.getParent() != null) {
-            if (s.getParent().getOikea() == s) {
-                s.getParent().setOikea(x);
-            } else {
-                s.getParent().setVasen(x);
-            }
-        } 
-        s.setParent(x);
-        
         x.setVari(s.getVari());
         s.setVari(true);
         return x;
@@ -129,17 +127,7 @@ public class Punamusta implements Puu {
         SolmuPunamusta x = s.getVasen();
         s.setVasen(x.getOikea());
         x.setOikea(s);
-        
-        x.setParent(s.getParent());
-        if (s.getParent() != null) {
-            if (s.getParent().getOikea() == s) {
-                s.getParent().setOikea(x);
-            } else {
-                s.getParent().setVasen(x);
-            }
-        } 
-        s.setParent(x);
-        
+
         x.setVari(s.getVari());
         s.setVari(true);
         return x;
@@ -184,23 +172,8 @@ public class Punamusta implements Puu {
     }
 
     /**
-     * Palauttaa solmun sisarsolmun,
+     * Vaihtaa annetun solmun ja sen lasten värit nykyistä vastakkaisiksi,
      *
-     * @param s solmu, jolle sisar haetaan
-     * @return solmun s sisarsolmu
-     */
-    private SolmuPunamusta sisar(SolmuPunamusta s) {
-        SolmuPunamusta sisar;
-        if (s.getParent().getOikea() == s) {
-            sisar = s.getParent().getVasen();
-        } else {
-            sisar = s.getParent().getOikea();
-        }
-        return sisar;
-    }
-
-    /** Vaihtaa annetun solmun ja sen lasten värit nykyistä vastakkaisiksi,
-     * 
      * @param nyk solmu, jolle värinvaihto-operaatio suoritetaan
      */
     private void vaihdaVarit(SolmuPunamusta nyk) {
@@ -209,4 +182,122 @@ public class Punamusta implements Puu {
         nyk.getOikea().setVari(!nyk.getOikea().getVari());
     }
 
+    /**
+     * Poistaa puusta key-arvon sisältävän solmun ja tasapainottaa puun samalla.
+     *
+     * @param nyk käsittelyssä oleva solmu
+     * @param key poistettavan solmun arvo
+     * @return käsittelyyn siirtyvä solmu, lopussa puun uusi juuri
+     */
+    private SolmuPunamusta delete(SolmuPunamusta nyk, int key) {
+        if (key < nyk.getArvo()) {
+            if (!nyk.getVasen().getVari() && !nyk.getVasen().getVasen().getVari()) {
+                nyk = siirraPunVas(nyk);
+            }
+            nyk.setVasen(delete(nyk.getVasen(), key));
+        } else {
+            if (nyk.getVasen() != null && nyk.getVasen().getVari()) {
+                nyk = oikeakierto(nyk);
+            }
+
+            if (key == nyk.getArvo() && nyk.getOikea() == null) {
+                return null;
+            }
+
+            if (!nyk.getOikea().getVari() && !nyk.getOikea().getVasen().getVari()) {
+                nyk = siirraPunOik(nyk);
+            }
+
+            if (key == nyk.getArvo()) {
+                nyk.setArvo(succ(nyk).getArvo());
+                nyk.setOikea(deleteSeur(nyk));
+            } else {
+                nyk.setOikea(delete(nyk.getOikea(), key));
+            }
+        }
+
+        return korjaa(nyk);
+    }
+
+    /**
+     * Suorittaa kiertoja ja värinvaihdoksia, joita tarvitaan puun
+     * tasoittamisessa solmuja poistettaessa.
+     *
+     * @param nyk solmu, jolle operaatiot suoritetaan
+     * @return solmu, josta käsittely jatkuu muualla
+     */
+    private SolmuPunamusta siirraPunVas(SolmuPunamusta nyk) {
+        vaihdaVarit(nyk);
+        if (nyk.getOikea().getVasen().getVari()) {
+            nyk.getOikea().setOikea(oikeakierto(nyk.getOikea()));
+            nyk = vasenkierto(nyk);
+            vaihdaVarit(nyk);
+        }
+        return nyk;
+    }
+
+    /**
+     * Suorittaa kiertoja ja värinvaihdoksia, joita tarvitaan puun
+     * tasoittamisessa solmuja poistettaessa.
+     *
+     * @param nyk solmu, jolle operaatiot suoritetaan
+     * @return solmu, josta käsittely jatkuu muualla
+     */
+    private SolmuPunamusta siirraPunOik(SolmuPunamusta nyk) {
+        vaihdaVarit(nyk);
+        if (nyk.getVasen().getVasen().getVari()) {
+            nyk = oikeakierto(nyk);
+            vaihdaVarit(nyk);
+        }
+        return nyk;
+    }
+
+    /**
+     * Poistaa puusta annetun solmun seuraajan ja tasapainottaa.
+     *
+     * @param nyk käsiteltävissä oleva solmu
+     * @return lopussa alkuperäisen solmun uusi oikea lapsi
+     */
+    private SolmuPunamusta deleteSeur(SolmuPunamusta nyk) {
+        if (nyk.getVasen() == null) {
+            return null;
+        }
+
+        if (!nyk.getVasen().getVari() && !nyk.getVasen().getVasen().getVari()) {
+            nyk = siirraPunVas(nyk);
+        }
+
+        nyk.setVasen(deleteSeur(nyk.getVasen()));
+        return korjaa(nyk);
+    }
+
+    /**
+     * Suorittaa tarvittavia kiertoja ja värivaihdoksia puun ominaisuuksien
+     * säilyttämiseksi.
+     *
+     * @param nyk käsittelyssä oleva solmu
+     * @return solmu käsittelyn jälkeen
+     */
+    private SolmuPunamusta korjaa(SolmuPunamusta nyk) {
+        if (nyk.getOikea() == null || !nyk.getOikea().getVari()) {
+            nyk = vasenkierto(nyk);
+        }
+
+        if (nyk.getVasen() != null && nyk.getVasen().getVasen() != null && nyk.getVasen().getVari() && nyk.getVasen().getVasen().getVari()) {
+            nyk = oikeakierto(nyk);
+        }
+
+        if (nyk.getVasen().getVari() && nyk.getOikea().getVari()) {
+            vaihdaVarit(nyk);
+        }
+        return nyk;
+    }
+    /**
+     * Palauttaa solmujen arvo sisäjärjestyksessä.
+     *
+     * @return linkitetty-lista esitys puun solmuista
+     */
+    /*private Lista sisa(Lista l) {
+     * 
+     * }*/
 }

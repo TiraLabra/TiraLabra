@@ -21,11 +21,6 @@ public class SolmuPunamusta {
      */
     private SolmuPunamusta vasen;
     
-    /**
-     * Solmun vanhempi.
-     */
-    private SolmuPunamusta parent;
-    
     /** Solmun väri.
      * True jos solmu on punainen, false jos musta.
      */
@@ -63,14 +58,6 @@ public class SolmuPunamusta {
      */
     public SolmuPunamusta getVasen() {
         return vasen;
-    }
-
-    /** Palauttaa solmun vanhemman.
-     * 
-     * @return parent-solmu
-     */
-    public SolmuPunamusta getParent() {
-        return parent;
     }
     
     /** Palauttaa solmun värin; true jos punainen.
@@ -111,13 +98,4 @@ public class SolmuPunamusta {
     public void setVasen(SolmuPunamusta vasen) {
         this.vasen = vasen;
     }
-
-    /** Asettaa solmulle vanhemman.
-     * 
-     * @param parent solmun uusi parent-solmu
-     */
-    public void setParent(SolmuPunamusta parent) {
-        this.parent = parent;
-    }
-    
 }

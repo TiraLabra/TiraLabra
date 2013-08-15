@@ -46,5 +46,29 @@ public class Lista {
         }
         return false;
     }
+
+    /** Palauttaa listan alkion arvon.
+     * 
+     * @return arvo
+     */
+    public int getArvo() {
+        return arvo;
+    }
+
+    /** Palauttaa listalla seuraavan alkion.
+     * 
+     * @return nykyistä alkiota seuraava
+     */
+    public Lista getNext() {
+        return next;
+    }
+
+    /** Palauttaa listalla edeltävän alkion,
+     * 
+     * @return nykyistä alkiota edeltävä
+     */
+    public Lista getPrev() {
+        return prev;
+    }
     
 }
