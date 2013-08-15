@@ -425,7 +425,7 @@ public class MinMaxAI implements AI
 
 		if (score > alpha) {
 			if (ply == 0 && loggingEnabled) {
-				log(" " + Move.toString(move) + " " + (score - rootScore));
+				log("  " + Move.toString(move) + " " + (score - rootScore));
 			}
 			results[ply].bestMove = move;
 			if (score >= beta)
@@ -560,9 +560,9 @@ public class MinMaxAI implements AI
 	 */
 	private void checkTimeLimit() throws TimeLimitException
 	{
-		if ((nodeCount & 0xfff) == 0) {
+		if ((nodeCount & 0xfff) == 0 && timeLimit != 0) {
 			double t = (System.nanoTime() - startTime) * 1e-9;
-			if (timeLimit != 0 && t > timeLimit) {
+			if (t > timeLimit) {
 				log(String.format("  time limit (%.1fms)", t * 1e3));
 				throw new TimeLimitException();
 			}

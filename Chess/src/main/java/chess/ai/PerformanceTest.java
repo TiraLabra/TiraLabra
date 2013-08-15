@@ -53,9 +53,10 @@ public class PerformanceTest implements Runnable
 
 			double totalTime = 0;
 
+			MinMaxAI ai = new MinMaxAI(logger, depth, 0.0, 0);
 			n = 0;
 			while (totalTime < length) {
-				totalTime += runSingleTest(depth, rnd);
+				totalTime += runSingleTest(depth, rnd, ai);
 				++n;
 			}
 
@@ -76,10 +77,9 @@ public class PerformanceTest implements Runnable
 	 * @param rnd Random-objekti satunnaisen pelitilanteen generoimiseksi
 	 * @return palauttaa käytetyn ajan, poislukien pelitilanteen arpomiseen kulunut aika
 	 */
-	private double runSingleTest(int depth, Random rnd)
+	private double runSingleTest(int depth, Random rnd, MinMaxAI ai)
 	{
 		GameState state = new GameState(rnd);
-		MinMaxAI ai = new MinMaxAI(logger, depth, 0.0, 0);
 
 		long start = System.nanoTime();
 		ai.move(state);

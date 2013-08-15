@@ -43,7 +43,6 @@ final class Evaluator
 	 * on hyödyllisempi.
 	 *
 	 * @param state juurisolmun pelitila
-	 * @return pistemäärä
 	 */
 	void reset(GameState state)
 	{

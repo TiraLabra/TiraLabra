@@ -23,7 +23,7 @@ public class Node
 	/**
 	 * Solmun pistemäärä.
 	 */
-	public int score;
+	int score;
 
 	/**
 	 * Siirto, jolla solmuun päädyttiin, tai 0 jos kyseessä juurisolmu tai nollasiirtoa käyttävä
@@ -73,6 +73,12 @@ public class Node
 			parent.nodes.add(this);
 	}
 
+	void setResult(int score, int nodeType)
+	{
+		this.score = score;
+		this.nodeType = nodeType;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -82,11 +88,11 @@ public class Node
 		else
 			str = ply > 0 ? "Null move search" : "";
 		if (ply > 0)
-			str += " " + getIneqSign(-score, -beta, -alpha) + -score;
+			str += " " + getIneqSign(-score, -beta, -alpha) + itostr(-score);
 		return str
 				+ " (\u03b1=" + itostr(alpha)
 				+ " \u03b2=" + itostr(beta)
-				+ " s" + getIneqSign(score, alpha, beta) + score
+				+ " s" + getIneqSign(score, alpha, beta) + itostr(score)
 				+ ")";
 	}
 
@@ -97,8 +103,12 @@ public class Node
 	{
 		if (x == Scores.MIN)
 			return "-\u221e";
+		else if (x == Scores.MIN + 1)
+			return "-\u221e+1";
 		else if (x == Scores.MAX)
 			return "\u221e";
+		else if (x == Scores.MAX - 1)
+			return "\u221e-1";
 		else
 			return Integer.toString(x);
 	}

@@ -1,7 +1,7 @@
 package chess.domain;
 
 /**
- * Nappuloita vastaavat kokonaislukuvakiot.
+ * Nappuloita vastaavat kokonaislukuvakiot. Vakiot ovat nappuloiden laskevassa arvojärjestyksessä.
  */
 public final class Pieces
 {
@@ -43,14 +43,14 @@ public final class Pieces
 	/**
 	 * Nappuloiden yksikirjaimiset symbolit.
 	 */
-	public static final String[] symbols = new String[Pieces.COUNT];
+	public static final String[] SYMBOLS = new String[Pieces.COUNT];
 
 	static {
-		symbols[Pieces.KING] = "K";
-		symbols[Pieces.QUEEN] = "Q";
-		symbols[Pieces.ROOK] = "R";
-		symbols[Pieces.BISHOP] = "B";
-		symbols[Pieces.KNIGHT] = "N";
-		symbols[Pieces.PAWN] = "";
+		SYMBOLS[Pieces.KING] = "K";
+		SYMBOLS[Pieces.QUEEN] = "Q";
+		SYMBOLS[Pieces.ROOK] = "R";
+		SYMBOLS[Pieces.BISHOP] = "B";
+		SYMBOLS[Pieces.KNIGHT] = "N";
+		SYMBOLS[Pieces.PAWN] = "";
 	}
 }

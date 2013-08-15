@@ -136,4 +136,41 @@ public class MinMaxAITest
 		ai.move(s);
 		assertEquals(sqrs(0), s.getPieces(Players.WHITE, Pieces.KING));
 	}
+
+	@Test
+	public void promotesToKnightForFasterCheckMate()
+	{
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.WHITE, Pieces.KING, 18);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 9);
+		bb.addPiece(Players.BLACK, Pieces.KING, 16);
+		bb.addPiece(Players.BLACK, Pieces.PAWN, 8);
+		bb.addPiece(Players.BLACK, Pieces.PAWN, 24);
+		GameState s = new GameState(bb, Players.WHITE);
+		ai.move(s);
+		assertEquals(sqrs(1), s.getPieces(Players.WHITE, Pieces.KNIGHT));
+	}
+
+	@Test
+	public void returnsWhenTimeLimit()
+	{
+		ai = new MinMaxAI(null, 20, 0.0000001, 0);
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.WHITE, Pieces.KING, 1);
+		bb.addPiece(Players.BLACK, Pieces.ROOK, 10);
+		bb.addPiece(Players.BLACK, Pieces.KING, 17);
+		GameState s = new GameState(bb, Players.WHITE);
+		ai.move(s);
+		assertNotNull(ai.getGameTree());
+	}
+
+	@Test
+	public void throwsIfDepthTooSmall()
+	{
+		try {
+			new MinMaxAI(null, 1, 0, 3);
+			fail("IllegalArgumentException not thrown");
+		} catch (IllegalArgumentException e) {
+		}
+	}
 }

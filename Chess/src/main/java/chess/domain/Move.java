@@ -87,11 +87,11 @@ public final class Move
 	 */
 	public static String toString(int move)
 	{
-		String ret = Pieces.symbols[getPieceType(move)] + sqrToStr(getFromSqr(move));
-		ret += (getCapturedType(move) >= 0 ? "x" + Pieces.symbols[getCapturedType(move)] : "-");
+		String ret = Pieces.SYMBOLS[getPieceType(move)] + sqrToStr(getFromSqr(move));
+		ret += getCapturedType(move) >= 0 ? "x" + Pieces.SYMBOLS[getCapturedType(move)] : "-";
 		ret += sqrToStr(getToSqr(move));
 		if (getPromotedType(move) != -1)
-			ret += Pieces.symbols[getPromotedType(move)];
+			ret += Pieces.SYMBOLS[getPromotedType(move)];
 		return ret;
 	}
 

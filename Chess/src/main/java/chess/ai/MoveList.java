@@ -149,10 +149,10 @@ final class MoveList
 	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int promotedType)
 	{
 		int priority = 10;
-		if (promotedType != -1)
-			priority = PROMOTION_PRIORITIES[promotedType];
-		else if (capturedType != -1)
+		if (capturedType != -1)
 			priority = CAPTURE_PRIORITIES[pieceType][capturedType];
+		else if (promotedType != -1)
+			priority = PROMOTION_PRIORITIES[promotedType];
 		int idx = moveCounts[priority]++;
 		moves[priority][idx] = Move.pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
 	}

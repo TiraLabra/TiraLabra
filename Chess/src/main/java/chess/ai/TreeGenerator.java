@@ -55,8 +55,7 @@ final class TreeGenerator
 	void endNode(int score, int nodeType)
 	{
 		if (--ply == lastNode.ply) {
-			lastNode.score = score;
-			lastNode.nodeType = nodeType;
+			lastNode.setResult(score, nodeType);
 			lastNode = lastNode.parent;
 		}
 	}
