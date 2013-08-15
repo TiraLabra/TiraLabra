@@ -11,7 +11,7 @@ operandeista sekä näiden tulkintajärjestystä ohjaavista sulkumerkeistä.
 Ohjelma pystyy muuntamaan tavanomaisella matemaattisella notaatiolla annetut
 kaavat käänteiseen puolalaiseen notaatioon (RPN). Tarkoituksenani on toteuttaa
 tämä toiminnallisuus implementoimalla Edsger Dijkstran keksimä Shunting yard
--algoritmi.
+-algoritmi [1].
 
 Lisäksi ohjelma pystyy laskemaan RPN-kaavan arvon. Käyttäjä pystyy suoraan
 antamaan tällaisen kaavan tai se voidaan tuottaa edellä mainitulla algoritmilla.
@@ -32,5 +32,10 @@ alkioiden määrään. Toisin sanoen pyrin siihen, että käyttämieni pino- ja
 jonotietorakenteiden edellä mainittujen operaatioiden aikafunktion asymptoottinen
 yläraja on luokkaa O(1) ja tilafunktion O(n).
 
+Lisäksi ohjelma pystyy käsittelemään UNIX grep -tyylisiä säännöllisiä lausekkeita
+käyttäen äärellistä (determinististä) automaattia joka käy läpi tiloja
+leveyssuuntaisesti [2].
+
 Lähteet:
-http://en.wikipedia.org/wiki/Shunting-yard_algorithm
+[1] http://en.wikipedia.org/wiki/Shunting-yard_algorithm
+[2] http://swtch.com/~rsc/regexp/regexp1.html

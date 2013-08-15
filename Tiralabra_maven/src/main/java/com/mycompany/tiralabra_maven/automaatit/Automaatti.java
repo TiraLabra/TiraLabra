@@ -5,19 +5,26 @@ import com.mycompany.tiralabra_maven.totuusfunktiot.Disjunktio;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 
 /**
+ * Tämän luokan tarkoituksena on toteuttaa (UNIX grep-tyylisiä) säännöllisiä
+ * lausekkeita käsittelevä äärellinen deterministinen automaatti. Automaatti käy
+ * läpi tiloja leveyssuuntaisella läpikäynnillää.
  *
  * @author John Lång <jllang@cs.helsinki.fi>
  */
 public class Automaatti {
     
+    // VAROITUS: Sisältä keskeneräistä koodia
+    
+    // Pitänee refaktoroida tätä luokkaa aika rankalla kädellä siten, että
+    // konstruktorissa asetetaan regex ja kasittele-metodilla katsotaan täsmääkö
+    // se annetulla merkkijonolla...
+    
     private Automaattisolmu[]       alkutilat;
     private Automaattisolmu         lopputila;
     private String[]                data;
     private Jono<Automaattisolmu>   solmut;
-//    private Jono<String>            apujono;
     
     public Automaatti() {
-//        apujono = new Jono<String>();
     }
     
     public boolean kasittele(final Jono<String> SYOTE) {
@@ -80,6 +87,8 @@ public class Automaatti {
                 solmut.lisaa(solmu);
             }
         }
+        // Yhtäkään tutkittua polkua pitkin ei päästy maaliin; siispä merkkijono
+        // ei täsmännyt regexin kanssa.
         return false;
     }
 
