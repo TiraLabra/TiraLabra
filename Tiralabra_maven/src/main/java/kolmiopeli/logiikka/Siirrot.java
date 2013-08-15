@@ -183,7 +183,6 @@ public class Siirrot {
         Collections.reverse(tuhoutuvat);
         // Lisataan tuhoutuvien tielta pois siirtyva kolmio listaan jotta boom vaihe osaa piirtaa sen oikein
         tuhoutuvat.add(0, viereinen.getKoordinaatti());
-        System.out.println(tuhoutuvat);
         return tuhoutuvat;
     }
 }

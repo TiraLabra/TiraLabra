@@ -58,7 +58,7 @@ public class Koordinaatti implements Comparable {
 
     @Override
     public String toString() {
-        return "Koordinaatti{" + rivi + ", " + sarake + "}\n";
+        return "{" + rivi + ", " + sarake + "}";
     }
 
     @Override

@@ -78,6 +78,8 @@ class TapahtumaKuuntelija implements ActionListener {
             // Poistetaan siirretty kolmio listasta jotta sen paalle ei arvota uutta
             this.tuhoutuvat.remove(0);
 
+            System.out.println("\nPelaajan siirto: " + tuhoutuvat);
+            
             // Saada tassa kuinka nopeasti animaatiot nakyvat
             final Timer timer = new Timer(300, null);
             this.moneskoTimerToisto = 0;
@@ -113,16 +115,18 @@ class TapahtumaKuuntelija implements ActionListener {
                             }
                             
                         } else {
-                            peliruudukko.getSiirrot().getPisteenlaskija().lisaaTuhoutuneistaPisteet(kombot);
-                            peliruudukko.getPeliFrame().getPelilauta().poistaKolmiotKohdista(kombot);
-                            peliruudukko.taytaKolmiot(kombot);
+                            tuhoutuvat.clear();
+                            tuhoutuvat.addAll(kombot);
+                            peliruudukko.getSiirrot().getPisteenlaskija().lisaaTuhoutuneistaPisteet(tuhoutuvat);
+                            peliruudukko.getPeliFrame().getPelilauta().poistaKolmiotKohdista(tuhoutuvat);
+                            peliruudukko.taytaKolmiot(tuhoutuvat);
                             peliruudukko.getPeliFrame().getInfoPaneeli().paivitaPisteet();
                             moneskoTimerToisto = 2;
                         }
                         
                     } else if (moneskoTimerToisto == 2) {
-                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(kombot);
-                        peliruudukko.taytaKolmiot(kombot);
+                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
+                        peliruudukko.taytaKolmiot(tuhoutuvat);
                         moneskoTimerToisto = 1;
                     }
                 }

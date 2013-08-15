@@ -27,8 +27,40 @@ public class KomboEtsija {
     /**
      * Kay lapi juuriarvottujen kolmioiden laheisia kolmioita niin pitkalle kun
      * loytyy sopivan varisia.
-     *
-     * @param Array kohdista joissa on uunituoreita uusia kolmioita arvottu.
+     * 
+     * Algoritmin kulku:
+     * 1. Alustaa joukon, johon kerataan kaikki algoritmin lapikaynnin aikana keratyt
+     *    tuhoutuvat kolmiot (esim 3 punaista ja 4 vihreaa, jos tallaiset on loydetty).
+     * 
+     * 2. Aloitetaan for-loop, jossa kaydaan lapi parametrina annetut koordinaatit.
+     * 
+     *    3. Vuorossa oleva koordinaatti on BFS lapikaynnin juuri.
+     * 
+     *       4. Jos juuri on jo todettu osaksi jotain tuhoutuvaa kolmioyhdistelmaa
+     *          (kuuluu jo palautettavaan joukkoon), niin siirrytaan for-loopissa
+     *          seuraavaan parametrijoukon alkioon.
+     * 
+     *    5. Aloitetaan juuresta varsinainen BFS, alustetaan peliruudukon kokoinen
+     *       boolean-taulukko joka toimii BFS:n solmujen lapikayntimerkkauksena,
+     *       BFS:n jono ja lista johon kerataan tutkittavan juuren kanssa samanvariset
+     *       kolmiot.
+     * 
+     *    6. Jatketaan BFS:saa niin pitkalle juuresta kuin vain loytyy samanvarisia
+     *       vierekkaisia. Lisataan aina viereinen samanvarinen kolmio listaan joka
+     *       pitaa niista kirjaa. Kolmiot ovat "verkon" solmuja ja jokaisesta lahtee 
+     *       kolme kaarta viereisiin kolmioihin (reunoissa vahemman).
+     * 
+     *    7. BFS:n loputtua tarkistetaan onko juuren kanssa samanvarisia kolmioita
+     *       loytynyt tarpeeksi (kolme vierekkaista).
+     * 
+     *       8. Jos on, lisataan listan kolmiot alussa maariteltyyn joukkoon. Muuten
+     *          siirry seuraavaan parametrijoukon alkioon ja tutki sita (kohta 3.)
+     *          lisaamatta listaa.
+     * 
+     * 9. Kun kaikki parametrijoukon alkiot on kayty lapi for-loopissa, niin palauta
+     *    joukko kaikista loydetyista tuhoutuvista kolmioista.
+     * 
+     * @param Array kohdista joissa on uunituoreita uusia kolmioita tutkittavaksi.
      */
     public HashSet<Koordinaatti> etsiKombot(ArrayList<Koordinaatti> juuriArvotut) {
         debugViestit.tuplaviiva();
@@ -60,7 +92,7 @@ public class KomboEtsija {
         for (int i = 0; i < juuriArvotutTaulukko.length; i++) {
             Koordinaatti root = juuriArvotutTaulukko[i];
 
-            debugViestit.viiva();
+            debugViestit.tahtia();
             debugViestit.tutkitaanJuurta(root);
 
             etsiSamanvarisetJuuresta(root, kaikkiTuhoutuvat);
@@ -92,22 +124,11 @@ public class KomboEtsija {
         onkoKaytyLapi[root.getRivi()][root.getSarake()] = true;
         rootinVariset.add(root);
 
-        debugViestit.valiTahtia();
+        debugViestit.valiviiva();
 
         kayLapiKolmioita(rootinVariset, tutkittavienJono, onkoKaytyLapi);
 
         return rootinVariset;
-    }
-
-    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
-
-        // Jos aloituskolmion kanssa samanvarisia vierekkaita loytyi vahintaan kolme niin lisataan ne tuhoutuvien joukkoon
-        if (rootinVariset.size() >= 3) {
-            debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
-            kaikkiTuhoutuvat.addAll(rootinVariset);
-        } else {
-            debugViestit.juurenVarisiaVain(root, rootinVariset);
-        }
     }
 
     private void kayLapiKolmioita(ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
@@ -123,150 +144,109 @@ public class KomboEtsija {
             // 2. Viereinen on samanvarinen kuin tutkittava
             // 3. Viereista ei ole kayty lapi
             Kolmio viereinen = null;
-            tutkiOikeanpuolinen(viereinen, tutkittava, tRivi, tSarake, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
-            tutkiVasemmanpuolinen(viereinen, tutkittava, tRivi, tSarake, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
+            int vRivi;
+            int vSarake;
+
+            // Oikeanpuolinen
+            vRivi = tRivi;
+            vSarake = tSarake + 1;
+            tutkiViereinen(viereinen, vRivi, vSarake, tutkittava, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
+
+            // Vasemmanpuolinen
+            vRivi = tRivi;
+            vSarake = tSarake - 1;
+            tutkiViereinen(viereinen, vRivi, vSarake, tutkittava, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
+            
+            // Pystysuunnat
             tutkiPystysuunta(viereinen, tutkittava, tRivi, tSarake, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
 
-            debugViestit.valiTahtia();
+            debugViestit.valiviiva();
         }
-
     }
 
-    private void tutkiOikeanpuolinen(Kolmio viereinen, Koordinaatti tutkittava, int tRivi, int tSarake, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
-        // Oikeanpuolinen
-        int vRivi = tRivi;
-        int vSarake = tSarake + 1;
-        int nollaJosEhdotTayttyy = 0;
-
-//        if (viereinenEiOleReunassa(tutkittava, viereinen, vRivi, vSarake)) {
-//            nollaJosEhdotTayttyy += viereinenOnSamanvarinen(viereinen.getKolmionVari(), tVari);
-//            nollaJosEhdotTayttyy += viereistaEiOleKaytyLapi(vRivi, vSarake, onkoKaytyLapi);
-//        }
-//            
-        
+    private void tutkiViereinen(Kolmio viereinen, int vRivi, int vSarake, Koordinaatti tutkittava, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
 
 
-        if (tSarake + 1 < peliruudukko[0].length) {
-            viereinen = peliruudukko[tRivi][tSarake + 1];
-
-            if (viereinen.getKolmionVari() == tVari
-                    && !onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()]) {
-
-                System.out.println(">>> " + tutkittava.toString() + ">>> - Vasemmalta loytyi samanvarinen, vari " + viereinen.getKolmionVari());
-
-                tutkittavienJono.addLast(viereinen.getKoordinaatti());
-                onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
-                rootinVariset.add(viereinen.getKoordinaatti());
+        if (viereinenEiOleReunassa(tutkittava, vRivi, vSarake)) {
+            viereinen = peliruudukko[vRivi][vSarake];
+            if (viereinenOnSamanvarinen(viereinen, tutkittava, tVari)) {
+                if (viereistaEiOleKaytyLapi(viereinen, tutkittava, vRivi, vSarake, onkoKaytyLapi)) {
+                    debugViestit.loytyiSamanvarinenTutkimaton(tutkittava, viereinen);
+                    tutkittavienJono.addLast(viereinen.getKoordinaatti());
+                    onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
+                    rootinVariset.add(viereinen.getKoordinaatti());
+                    
+                }
             }
-
-        } else {
         }
-
-    }
-
-    private void tutkiVasemmanpuolinen(Kolmio viereinen, Koordinaatti tutkittava, int tRivi, int tSarake, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
-        // Vasemmanpuolinen
-        if (tSarake - 1 >= 0) {
-            viereinen = peliruudukko[tRivi][tSarake - 1];
-
-            if (viereinen.getKolmionVari() == tVari
-                    && !onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()]) {
-
-                System.out.println(">>> " + tutkittava.toString() + ">>> - Oikealta loytyi samanvarinen, vari " + viereinen.getKolmionVari());
-
-                tutkittavienJono.addLast(viereinen.getKoordinaatti());
-                onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
-                rootinVariset.add(viereinen.getKoordinaatti());
-            }
-
-        } else {
-            System.out.println(">>> " + tutkittava.toString() + ">>> - Tutkittava on vasemmassa reunassa");
-        }
-
     }
 
     private void tutkiPystysuunta(Kolmio viereinen, Koordinaatti tutkittava, int tRivi, int tSarake, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
         // Testataan tutkitaanko ylapuolella vai alapuolella olevaa kolmiota
+        int vRivi;
+        int vSarake;
         if (tutkittava.osoittaakoKoordinaatinRuutuYlospain()) {
-
             // Alapuolella
-            if (tRivi + 1 < peliruudukko.length) {
-                viereinen = peliruudukko[tRivi + 1][tSarake];
-
-                if (viereinen.getKolmionVari() == tVari
-                        && !onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()]) {
-
-                    System.out.println(">>> " + tutkittava.toString() + ">>> - Alapuolelta loytyi samanvarinen, vari " + viereinen.getKolmionVari());
-
-                    tutkittavienJono.addLast(viereinen.getKoordinaatti());
-                    onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
-                    rootinVariset.add(viereinen.getKoordinaatti());
-                }
-
-            } else {
-                System.out.println(">>> " + tutkittava.toString() + ">>> - Tutkittava on alareunassa");
-            }
+            vRivi = tRivi + 1;
+            vSarake = tSarake;
+            tutkiViereinen(viereinen, vRivi, vSarake, tutkittava, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
 
         } else {
-
             // Ylapuolella
-            if (tRivi - 1 >= 0) {
-                viereinen = peliruudukko[tRivi - 1][tSarake];
-
-                if (viereinen.getKolmionVari() == tVari
-                        && !onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()]) {
-                    System.out.println(">>> " + tutkittava.toString() + ">>> - Ylapuolelta loytyi samanvarinen, vari " + viereinen.getKolmionVari());
-
-
-                    tutkittavienJono.addLast(viereinen.getKoordinaatti());
-                    onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
-                    rootinVariset.add(viereinen.getKoordinaatti());
-                }
-
-            } else {
-            }
+            vRivi = tRivi - 1;
+            vSarake = tSarake;
+            tutkiViereinen(viereinen, vRivi, vSarake, tutkittava, tVari, rootinVariset, tutkittavienJono, onkoKaytyLapi);
 
         }
 
     }
+    
+    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
+        // Jos aloituskolmion kanssa samanvarisia vierekkaita loytyi vahintaan kolme niin lisataan ne tuhoutuvien joukkoon
+        if (rootinVariset.size() >= 3) {
+            debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
+            kaikkiTuhoutuvat.addAll(rootinVariset);
+        } else {
+            debugViestit.juurenVarisiaVain(root, rootinVariset);
+        }
+    }
 
-    private boolean viereinenEiOleReunassa(Koordinaatti tutkittava, Kolmio viereinen, int vRivi, int vSarake) {
+    private boolean viereinenEiOleReunassa(Koordinaatti tutkittava, int vRivi, int vSarake) {
         int reunaRivi = peliruudukko.length - 1;
         int reunaSarake = peliruudukko[0].length - 1;
         if (vRivi < 0) {
-            
+            debugViestit.tutkittavaYlareunassa(tutkittava);
             return false;
         } else if (vRivi > reunaRivi) {
-            System.out.println(">>> " + tutkittava.toString() + ">>> - Tutkittava on ylareunassa");
-            
+            debugViestit.tutkittavaAlareunassa(tutkittava);
             return false;
         } else if (vSarake < 0) {
-            
+            debugViestit.tutkittavaVasemmassaReunassa(tutkittava);
             return false;
         } else if (vSarake > reunaSarake) {
-            System.out.println(">>> " + tutkittava.toString() + ">>> - Tutkittava on oikeassa reunassa");
-            
+            debugViestit.tutkittavaOikeassaReunassa(tutkittava);
             return false;
         } else {
-            viereinen = peliruudukko[vRivi][vSarake];
             return true;
         }
     }
 
-    private int viereinenOnSamanvarinen(Color vVari, Color tVari) {
+    private boolean viereinenOnSamanvarinen(Kolmio viereinen, Koordinaatti tutkittava, Color tVari) {
+        Color vVari = viereinen.getKolmionVari();
         if (vVari != tVari) {
-            return 1;
+            debugViestit.viereinenErivarinen(tutkittava, viereinen);
+            return false;
         } else {
-            return 0;
+            return true;
         }
     }
-    
-    private int viereistaEiOleKaytyLapi(int vRivi, int vSarake, boolean[][] onkoKaytyLapi) {
+
+    private boolean viereistaEiOleKaytyLapi(Kolmio viereinen, Koordinaatti tutkittava, int vRivi, int vSarake, boolean[][] onkoKaytyLapi) {
         if (onkoKaytyLapi[vRivi][vSarake]) {
-            return 1;
+            debugViestit.viereinenKaytyLapi(tutkittava, viereinen);
+            return false;
         } else {
-            return 0;
+            return true;
         }
     }
-    
 }
