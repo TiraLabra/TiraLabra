@@ -1,7 +1,9 @@
-package ohjelma;
-
-
+package ohjelma.algoritmit;
 import java.util.HashSet;
+import ohjelma.verkko.Kaari;
+import ohjelma.verkko.Solmu;
+import ohjelma.verkko.Verkko;
+import ohjelma.tietorakenteet.iHashMap;
 
 /*
  * To change this template, choose Tools | Templates
@@ -26,15 +28,15 @@ public class BellmanFord {
     /**
     * Päämetodi.
     **/
-    public boolean BellmanFord(Verkko G) {
-        alusta(G);
-        for (int i = 1; i < solmut.koko() - 1; i++) {
+    public boolean BellmanFord() {
+        alusta();
+        for (int i = 1; i < solmut.koko() - 1; i++) {                               // Käydään kaikki kaaret läpi ja relaksoidaan jännitteet
             for (Kaari kaari : kaaret) {
                 Relax(kaari);
             }
         }
-        solmut.tulostaArvot(); // testausta varten
-        for (Kaari kaari : kaaret) {
+        tulostaSolmut();                                                            // Huom! tulostaSolmut() vain testausta varten
+        for (Kaari kaari : kaaret) {                                                // Tarkastetaan syklit
             if (sykliTarkastus(kaari) == false) {
                 return false;
             }
@@ -47,17 +49,17 @@ public class BellmanFord {
     * Alustaa verkon painot (aloitussolmu = 0 ja loput 99).
     **/
     
-    public void alusta(Verkko G) {
+    public void alusta() {
+        solmut.get(1).setPaino(0);
         for (int i = 2; i < solmut.koko(); i++) {
             solmut.get(i).setPaino(99);
         }
-        solmut.get(1).setPaino(0);
     }
 
     /**
     * Kaarien painojen päivitys/relaksointi.
     **/
-    public void Relax(Kaari kaari) {
+    public void Relax(Kaari kaari) {                                                // päivittää kaarten painoja jos löytyy jännitteitä (eli toisin sanoen lyhyempi polku)
         if (kaari.getKohde().getPaino() > ((kaari.getAlku().getPaino() + kaari.getEtaisyys()))) {
             kaari.getKohde().setPaino((kaari.getAlku().getPaino() + kaari.getEtaisyys()));
         }
@@ -71,6 +73,19 @@ public class BellmanFord {
             return false;
         } else {
             return true;
+        }
+    }
+
+    
+    /*********************************************************/
+    /*             Testaukseen käytettävät metodit           */
+    /*********************************************************/
+    
+    private void tulostaSolmut() {
+        for (int x = 1; x < solmut.koko() + 1; x++) {
+            System.out.println("Solmun nro: " + solmut.get(x).getSolmuNumero());
+            System.out.println("Solmun paino " + solmut.get(x).getPaino());
+            System.out.println("");
         }
     }
 }

@@ -1,7 +1,9 @@
-package ohjelma;
+package ohjelma.verkko;
+
 
 import java.util.HashSet;
 import java.util.Scanner;
+import ohjelma.tietorakenteet.iHashMap;
 
 /*
  * To change this template, choose Tools | Templates
@@ -61,7 +63,5 @@ public class Verkko {
     **/
     public iHashMap<Integer, Solmu> getSolmut() {
         return solmut;
-    }
-    
-    
+    }  
 }
