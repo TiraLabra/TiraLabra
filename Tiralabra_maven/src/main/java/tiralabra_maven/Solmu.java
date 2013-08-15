@@ -1,64 +1,80 @@
-
-package com.mycompany.tiralabra_maven;
+package tiralabra_maven;
 
 /**
  * Puun solmu luokka
+ *
  * @author esaaksvu
  */
 public class Solmu {
+
+    private Solmu isaSolmu;
     private Solmu vasenLapsi;
     private Solmu oikeaLapsi;
     private int arvo;
-    
+
     /**
      * Luo uuden solmu-olion, jotka muodostavat puun
+     *
      * @param arvo on solmun sisältämä "data"
      */
-    public Solmu(int arvo){
-        this.arvo=arvo;
+    public Solmu(int arvo) {
+        this.arvo = arvo;
     }
-    
+
     /**
      * Asettaa solmulle vasemman lapsen
+     *
      * @param s on vasemman lapsen solmu
      */
-    public void setVasen(Solmu s){
-        vasenLapsi=s;
+    public void setVasen(Solmu s) {
+        vasenLapsi = s;
     }
-    
+
     /**
-     *Asettaa solmulle oikeanpuoleisen lapsen
+     * Asettaa solmulle oikeanpuoleisen lapsen
+     *
      * @param s on oikeanpuoleisen lapsen solmu
      */
-    public void setOikea(Solmu s){
-        oikeaLapsi=s;
+    public void setOikea(Solmu s) {
+        oikeaLapsi = s;
     }
+
     /**
      * Metodi joka tutkii onko solmulla jälkeläisiä
+     *
      * @return true, jos solmulla ei ole lapsia
      */
-    public boolean lapseton(){
-        return (oikeaLapsi==null && vasenLapsi==null);
+    public boolean lapseton() {
+        return (oikeaLapsi == null && vasenLapsi == null);
     }
-    
+
     /**
      * Tulostaa solmun lapsineen muodossa juuri{vasen,oikea}
+     *
      * @return tulostuksen solmusta ja lapsista
      */
     @Override
-    public String toString(){
-        return arvo+"{"+getVasen()+","+getOikea()+"}";
+    public String toString() {
+       return arvo+"{"+vasenLapsi+","+oikeaLapsi+"}";
     }
 
-    int getArvo(){
+    int getArvo() {
         return arvo;
     }
-    
+
     Solmu getVasen() {
         return vasenLapsi;
     }
 
     Solmu getOikea() {
-       return oikeaLapsi;
+        return oikeaLapsi;
+    }
+
+    void setIsa(Solmu a) {
+        isaSolmu = a;
+    }
+
+    Solmu getIsaSolmu() {
+        return isaSolmu;
     }
 }

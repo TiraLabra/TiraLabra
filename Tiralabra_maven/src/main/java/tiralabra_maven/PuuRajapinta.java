@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven;
+package tiralabra_maven;
 
 /**
  * Puurajapinta, jossa määritellään puissa käytetyt metodit
@@ -11,12 +11,6 @@ public interface PuuRajapinta {
      * @return päälimmäinen solmu
      */
     public Solmu getJuuri();
-
-    /**
-     * palauttaa puun syvyyden
-     * @return puun syvyys
-     */
-    public int getSyvyys();
 
      /**
      * Poistaa solmun arvon perusteella
@@ -32,7 +26,7 @@ public interface PuuRajapinta {
      * 2  3 mutta keskeneräinen
      * @return tulostus koko puusta
      */
-    public String tulostaPuu();
+    public String tulostaPuu(Solmu s);
 
      /**
      * Lisää uuden solmun puuhun, tasapainoalgoritmi puuttuu vielä
