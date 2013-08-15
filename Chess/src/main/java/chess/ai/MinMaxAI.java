@@ -232,16 +232,38 @@ public class MinMaxAI implements AI
 		evaluator.reset(state);
 
 		try {
-			search(depth, Scores.MIN, Scores.MAX, state);
+			createNodeAndSearch(depth, Scores.MIN, Scores.MAX, state, 0);
 		} catch (TimeLimitException e) {
 			return false;
 		}
 
-		StateInfo info = trposTable.get(state.getId());
-		treeGenerator.endNode(0, info.score, 0);
 		tree = treeGenerator.getTree();
 
 		return true;
+	}
+
+	/**
+	 * Apufunktio, joka tallentaa hakupuun solmun tiedot ja kutsuu varsinaista hakufunktiota.
+	 *
+	 * @param depth vaadittava jäljellä oleva hakusyvyys
+	 * @param alpha alfa-beta-karsinnan alfa-arvo
+	 * @param beta alfa-beta-karsinnan beta-arvo
+	 * @param state pelitila
+	 * @param move hakupuun solmua edeltävä siirto (0 jos juurisolmu tai nollasiirto)
+	 * @return palauttaa parhaan löydetyn pistemäärän
+	 * @throws chess.ai.MinMaxAI.TimeLimitException
+	 */
+	private int createNodeAndSearch(int depth, int alpha, int beta, GameState state,
+			int move) throws TimeLimitException
+	{
+		treeGenerator.startNode(alpha, beta, state.getNextMovingPlayer(), move);
+
+		int score = search(depth, alpha, beta, state);
+
+		int nodeType = results[ply] != null ? results[ply].nodeType : -1;
+		treeGenerator.endNode(score, nodeType);
+
+		return score;
 	}
 
 	/**
@@ -273,8 +295,6 @@ public class MinMaxAI implements AI
 		++nodeCount;
 
 		checkTimeLimit();
-
-		treeGenerator.startNode(alpha, beta, state.getNextMovingPlayer());
 
 		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
 		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
@@ -321,9 +341,10 @@ public class MinMaxAI implements AI
 	 * @param state pelitila
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
-	private int zeroWindowSearch(int depth, int beta, GameState state) throws TimeLimitException
+	private int zeroWindowSearch(int depth, int beta, GameState state, int move)
+			throws TimeLimitException
 	{
-		return search(depth, beta - 1, beta, state);
+		return createNodeAndSearch(depth, beta - 1, beta, state, move);
 	}
 
 	/**
@@ -390,20 +411,17 @@ public class MinMaxAI implements AI
 		int score;
 		if (results[ply - 1].nodeType == StateInfo.NODE_TYPE_UPPER_BOUND) {
 			// Etsitään normaalisti niin kauan kunnes löydetään arvo välillä ]alfa,beta[
-			score = -search(depth - 1, -beta, -alpha, state);
+			score = -createNodeAndSearch(depth - 1, -beta, -alpha, state, move);
 		} else {
 			// Lopuille solmuille tarkistetaan vain, että pistemäärä on korkeintaan alfa (tai
 			// aiheuttaa beta-cutoffin). Jos ei, niin suoritetaan normaali haku.
-			score = -zeroWindowSearch(depth - 1, -alpha, state);
+			score = -zeroWindowSearch(depth - 1, -alpha, state, move);
 			if (score > alpha && score < beta)
-				score = -search(depth - 1, -beta, -alpha, state);
+				score = -createNodeAndSearch(depth - 1, -beta, -alpha, state, move);
 		}
 		evaluator.undoMove();
 		state.undoMove(move);
 		--ply;
-
-		int nodeType = results[ply + 1] != null ? results[ply + 1].nodeType : -1;
-		treeGenerator.endNode(move, -score, nodeType);
 
 		if (score > alpha) {
 			if (ply == 0 && loggingEnabled) {
@@ -443,11 +461,10 @@ public class MinMaxAI implements AI
 			state.nullMove();
 			evaluator.makeNullMove();
 			++ply;
-			int score = -zeroWindowSearch(depth - NULL_MOVE_REDUCTION1 - 1, 1 - beta, state);
+			int score = -zeroWindowSearch(depth - NULL_MOVE_REDUCTION1 - 1, 1 - beta, state, 0);
 			--ply;
 			evaluator.undoMove();
 			state.nullMove();
-			treeGenerator.endNode(0, -score, 0);
 			if (score >= beta)
 				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
 		}

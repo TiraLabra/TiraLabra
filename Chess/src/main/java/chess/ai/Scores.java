@@ -17,7 +17,7 @@ final class Scores
 	/**
 	 * Suurin mahdollinen pistemäärä.
 	 */
-	static final int MAX = Integer.MAX_VALUE;
+	static final int MAX = -MIN;
 
 	/**
 	 * Määrä, jolla mattitilanteen arvoa pienennetään siirtoa kohden, jotta mattiin pyritään niin

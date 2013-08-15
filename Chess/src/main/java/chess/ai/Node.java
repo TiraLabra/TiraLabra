@@ -29,7 +29,7 @@ public class Node
 	 * Siirto, jolla solmuun päädyttiin, tai 0 jos kyseessä juurisolmu tai nollasiirtoa käyttävä
 	 * haku.
 	 */
-	int move;
+	final int move;
 
 	/**
 	 * Puolisiirtojen määrä pelipuun juuresta.
@@ -61,12 +61,13 @@ public class Node
 	 *
 	 * @param parent solmun vanhempi tai null jos juurisolmu
 	 */
-	Node(int ply, int alpha, int beta, int player, Node parent)
+	Node(int ply, int alpha, int beta, int player, int move, Node parent)
 	{
 		this.ply = ply;
 		this.alpha = alpha;
 		this.beta = beta;
 		this.player = player;
+		this.move = move;
 		this.parent = parent;
 		if (parent != null)
 			parent.nodes.add(this);
@@ -75,15 +76,17 @@ public class Node
 	@Override
 	public String toString()
 	{
-		String moveStr;
+		String str;
 		if (move != 0)
-			moveStr = Move.toString(move) + " " + -score;
+			str = Move.toString(move);
 		else
-			moveStr = ply > 0 ? "Null move search" : "";
-		return moveStr
+			str = ply > 0 ? "Null move search" : "";
+		if (ply > 0)
+			str += " " + getIneqSign(-score, -beta, -alpha) + -score;
+		return str
 				+ " (\u03b1=" + itostr(alpha)
 				+ " \u03b2=" + itostr(beta)
-				+ " s" + new String[]{"=", ">=", "<="}[nodeType] + score
+				+ " s" + getIneqSign(score, alpha, beta) + score
 				+ ")";
 	}
 
@@ -98,5 +101,18 @@ public class Node
 			return "\u221e";
 		else
 			return Integer.toString(x);
+	}
+
+	/**
+	 * Palauttaa epäyhtälösuuruusmerkin solmun tyypin mukaan.
+	 */
+	private static String getIneqSign(int score, int alpha, int beta)
+	{
+		if (score <= alpha)
+			return "\u2264";
+		else if (score >= beta)
+			return "\u2265";
+		else
+			return "=";
 	}
 }

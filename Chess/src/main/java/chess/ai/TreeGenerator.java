@@ -39,10 +39,10 @@ final class TreeGenerator
 	/**
 	 * Luo uuden solmun.
 	 */
-	void startNode(int alpha, int beta, int player)
+	void startNode(int alpha, int beta, int player, int move)
 	{
 		if (ply <= maxDepth) {
-			lastNode = new Node(ply, alpha, beta, player, lastNode);
+			lastNode = new Node(ply, alpha, beta, player, move, lastNode);
 			if (lastNode.parent == null)
 				root = lastNode;
 		}
@@ -52,10 +52,9 @@ final class TreeGenerator
 	/**
 	 * Tallentaa loput solmun informaatiosta ja palaa edelliselle tasolle.
 	 */
-	void endNode(int move, int score, int nodeType)
+	void endNode(int score, int nodeType)
 	{
 		if (--ply == lastNode.ply) {
-			lastNode.move = move;
 			lastNode.score = score;
 			lastNode.nodeType = nodeType;
 			lastNode = lastNode.parent;
