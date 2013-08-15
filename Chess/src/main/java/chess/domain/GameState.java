@@ -150,13 +150,13 @@ public final class GameState
 
 		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
 
-		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			if (bitboard.hasPiece(nextMovingPlayer, piece, fromSqr)) {
-				removePiece(nextMovingPlayer, piece, fromSqr);
-				if (piece == Pieces.PAWN && toSqr / 8 == 7 * nextMovingPlayer)
+		for (int pieceType = 0;; ++pieceType) {
+			if (bitboard.hasPiece(nextMovingPlayer, pieceType, fromSqr)) {
+				removePiece(nextMovingPlayer, pieceType, fromSqr);
+				if (pieceType == Pieces.PAWN && toSqr / 8 == 7 * nextMovingPlayer)
 					addPiece(nextMovingPlayer, Pieces.QUEEN, toSqr);
 				else
-					addPiece(nextMovingPlayer, piece, toSqr);
+					addPiece(nextMovingPlayer, pieceType, toSqr);
 				break;
 			}
 		}
@@ -257,14 +257,14 @@ public final class GameState
 	 * ja mattitilanteet vältetään antamalla kuninkaan lyönnille hyvin suuri/pieni pistearvo.
 	 *
 	 * @param player pelaaja (0-1)
-	 * @param sqr ruutu (0-63)
+	 * @param fromSqr ruutu (0-63)
 	 * @return siirrot bittimaskina
 	 */
-	public long getPseudoLegalMoves(int player, int sqr)
+	public long getPseudoLegalMoves(int player, int fromSqr)
 	{
 		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			if (bitboard.hasPiece(nextMovingPlayer, piece, sqr))
-				return getPseudoLegalMoves(player, piece, sqr);
+			if (bitboard.hasPiece(nextMovingPlayer, piece, fromSqr))
+				return getPseudoLegalMoves(player, piece, fromSqr);
 		}
 
 		return 0;
@@ -274,43 +274,34 @@ public final class GameState
 	 * Palauttaa pseudolailliset siirrot, kun nappulan tyyppi tiedetään.
 	 *
 	 * @param player pelaaja
-	 * @param piece nappulan tyyppi
+	 * @param pieceType nappulan tyyppi
 	 * @param fromSqr nappulan sijainti
 	 * @return siirrot bittimaskina
 	 */
-	public long getPseudoLegalMoves(int player, int piece, int fromSqr)
+	public long getPseudoLegalMoves(int player, int pieceType, int fromSqr)
 	{
+		if (pieceType != Pieces.PAWN)
+			return getAttackMoves(player, pieceType, fromSqr);
+
 		long moves = 0;
 
 		int row = fromSqr / 8;
 		int col = fromSqr % 8;
+		int nextRow = row - 1 + 2 * player;
 
-		switch (piece) {
-			case Pieces.KING:
-			case Pieces.QUEEN:
-			case Pieces.ROOK:
-			case Pieces.BISHOP:
-			case Pieces.KNIGHT:
-				moves = getAttackMoves(player, piece, fromSqr);
-				break;
-			case Pieces.PAWN:
-				int nextRow = row - 1 + 2 * player;
-				if ((nextRow & ~7) == 0) {
-					if (!bitboard.hasPiece(nextRow * 8 + col)) {
-						moves |= 1L << nextRow * 8 + col;
-						int doublePushSqr = (4 - player) * 8 + col;
-						if (row == 6 - 5 * player && !bitboard.hasPiece(doublePushSqr))
-							moves |= 1L << doublePushSqr;
-					}
-					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
-						moves |= 1L << nextRow * 8 + col - 1;
-					if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
-						moves |= 1L << nextRow * 8 + col + 1;
-				}
-				break;
+		if ((nextRow & ~7) == 0) {
+			if (!bitboard.hasPiece(nextRow * 8 + col)) {
+				moves |= 1L << nextRow * 8 + col;
+				int doublePushSqr = (4 - player) * 8 + col;
+				if (row == 6 - 5 * player && !bitboard.hasPiece(doublePushSqr))
+					moves |= 1L << doublePushSqr;
+			}
+			if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
+				moves |= 1L << nextRow * 8 + col - 1;
+			if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
+				moves |= 1L << nextRow * 8 + col + 1;
 		}
 
-		//TODO ohestalyönti, tornitus
 		return moves;
 	}
 
@@ -480,10 +471,7 @@ public final class GameState
 	public boolean equals(Object obj)
 	{
 		GameState state2 = (GameState) obj;
-		boolean r = bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
-		if (!r && zobristCode == state2.zobristCode)
-			throw new RuntimeException("awr");
-		return r;
+		return bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
 	}
 
 	/**

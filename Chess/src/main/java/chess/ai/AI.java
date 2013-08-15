@@ -15,7 +15,7 @@ public interface AI
 	void move(GameState state);
 
 	/**
-	 *
+	 * Asettaa loki-informaation tuottamisen päälle tai pois päältä.
 	 */
 	void setLoggingEnabled(boolean enabled);
 }

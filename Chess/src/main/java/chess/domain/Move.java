@@ -13,7 +13,7 @@ public final class Move
 	 * @param toSqr kohderuutu
 	 * @param pieceType siirrettävän nappulan tyyppi
 	 * @param capturedType lyödyn nappulan tyyppi tai -1 jos kohderuutu on tyhjä
-	 * @param promotedType nappula, joho
+	 * @param promotedType nappula, johon sotilas korotetaan, tai -1 jos siirto ei ole korotus
 	 * @return pakattu siirto
 	 */
 	public static int pack(int fromSqr, int toSqr, int pieceType, int capturedType,
@@ -101,9 +101,5 @@ public final class Move
 	private static String sqrToStr(int sqr)
 	{
 		return "" + (char) ('a' + sqr % 8) + (char) ('8' - sqr / 8);
-	}
-
-	private Move()
-	{
 	}
 }

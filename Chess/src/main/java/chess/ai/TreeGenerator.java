@@ -6,7 +6,7 @@ package chess.ai;
 final class TreeGenerator
 {
 	/**
-	 * Maksimisyvyys.
+	 * Syvyys, johon asti puu tallennetaan.
 	 */
 	private final int maxDepth;
 

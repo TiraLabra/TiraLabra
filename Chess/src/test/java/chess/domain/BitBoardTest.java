@@ -173,4 +173,16 @@ public class BitBoardTest
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 25);
 		assertFalse(bb2.equals(bb));
 	}
+
+	@Test
+	public void testEqualsFalse2()
+	{
+		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb.addPiece(Players.BLACK, Pieces.BISHOP, 63);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 25);
+		BitBoard bb2 = new BitBoard();
+		bb2.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		bb2.addPiece(Players.WHITE, Pieces.PAWN, 25);
+		assertFalse(bb.equals(bb2));
+	}
 }

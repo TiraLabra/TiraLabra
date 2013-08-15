@@ -21,7 +21,7 @@ class GameTreeViewer extends JFrame
 	 */
 	GameTreeViewer(Node rootNode)
 	{
-		setTitle("Game tree");
+		setTitle("Search tree");
 
 		DefaultMutableTreeNode root = getTreeNodes(rootNode);
 		JTree tree = new JTree(root);

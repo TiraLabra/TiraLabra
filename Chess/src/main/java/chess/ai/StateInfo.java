@@ -19,7 +19,7 @@ final class StateInfo
 
 	/**
 	 * Tietueeseen tallennettu pistemäärä on yläraja. Vastaa hakupuun solmua, jonka lapsisolmuista
-	 * minkään pistemäärä ei ole alfaa suurempi. (All-node (Type 3))
+	 * minkään pistemäärä ei ole alfaa suurempi. (All-node, Type 3)
 	 */
 	static final int NODE_TYPE_UPPER_BOUND = 2;
 

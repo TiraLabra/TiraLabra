@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class GameStateTest
 {
-	GameState s;
+	private GameState s;
 
 	@Before
 	public void setUp()
@@ -289,6 +289,15 @@ public class GameStateTest
 	}
 
 	@Test
+	public void getMovesReturnsZeroIfNoPieceInSqr()
+	{
+		BitBoard bb = new BitBoard();
+		s = new GameState(bb, Players.WHITE);
+		assertEquals(sqrs(), s.getLegalMoves(13));
+		assertEquals(sqrs(), s.getPseudoLegalMoves(Players.WHITE, 63));
+	}
+
+	@Test
 	public void areBothKingsAliveTrue()
 	{
 		BitBoard bb = new BitBoard();
@@ -428,8 +437,13 @@ public class GameStateTest
 	@Test
 	public void randomStateIsLegal()
 	{
-		for (int i = 0; i < 10; ++i) {
-			s = new GameState(new Random());
+		Integer[] seeds = new Integer[]{
+			1740108745 /*matti*/,
+			1116454540 /*patti*/,
+			115934186 /*musta shakissa*/};
+
+		for (Integer seed: seeds) {
+			s = new GameState(new Random(seed));
 			assertFalse(s.isCheckMate());
 			assertFalse(s.isStaleMate());
 			assertTrue(s.areBothKingsAlive());

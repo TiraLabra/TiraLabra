@@ -6,6 +6,9 @@ import java.util.Arrays;
  * Tietorakenne nappuloiden sijaintien tallentamiseen 64-bittisinä maskeina. Maskit tallennetaan
  * row-major formaatissa, niin että bitti 0 vastaa laudan vasenta yläkulmaan (a8) ja bitti 63
  * oikeaa alakulmaa (h1).
+ *
+ * Tallentaa 8 maskia: 6 eri nappulatyypeille ja 2 pelaajille. Tietyn pelaajan tietyn tyyppiset
+ * nappulat saadaa AND-operaatiolla nappulatyypin maskin ja pelaajan maskin välillä.
  */
 public final class BitBoard
 {

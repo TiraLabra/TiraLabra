@@ -79,7 +79,6 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	public void run()
 	{
 		createFrame();
-
 		startNewGame();
 	}
 
@@ -142,7 +141,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 		perfTestItem = createMenuItem(debugMenu, "Performance test");
 		perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
-		showGameTreeItem = createMenuItem(debugMenu, "Show game tree for last AI move");
+		showGameTreeItem = createMenuItem(debugMenu, "Show search tree for last AI move");
 		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
 
 		frame.add(menuBar, BorderLayout.NORTH);
@@ -170,6 +169,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		return item;
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me)
 	{
 	}
@@ -177,6 +177,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	/**
 	 * Mouse-down-tapahtumien käsittely.
 	 */
+	@Override
 	public void mousePressed(MouseEvent me)
 	{
 		if (state.isCheckMate())
@@ -221,14 +222,17 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me)
 	{
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me)
 	{
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me)
 	{
 	}
@@ -300,6 +304,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	/**
 	 * Tapahtumien käsittely.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent ae)
 	{
 		if (ae.getSource() == newGameItem)

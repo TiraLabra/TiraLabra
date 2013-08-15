@@ -40,6 +40,9 @@ public final class Pieces
 	 */
 	public static final int COUNT = 6;
 
+	/**
+	 * Nappuloiden yksikirjaimiset symbolit.
+	 */
 	public static final String[] symbols = new String[Pieces.COUNT];
 
 	static {
@@ -49,9 +52,5 @@ public final class Pieces
 		symbols[Pieces.BISHOP] = "B";
 		symbols[Pieces.KNIGHT] = "N";
 		symbols[Pieces.PAWN] = "";
-	}
-
-	private Pieces()
-	{
 	}
 }

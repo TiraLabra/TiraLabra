@@ -17,7 +17,7 @@ public final class Movemasks
 	public static final long[] KNIGHT_MOVES = new long[64];
 
 	/**
-	 * Generoi kaikki
+	 * Generoi kaikki siirtojen bittimaskit.
 	 */
 	static {
 		for (int sqr = 0; sqr < 64; ++sqr) {

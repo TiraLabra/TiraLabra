@@ -12,6 +12,10 @@ package chess.ai;
  * Hajautustaulu käyttää avointa hajautusta (open addressing) ja neliöllistä kokeilujonoa
  * ((h + i/2 + i^2/2) % n). Kun taulun koko on kahden potenssi, kokeilujono käy läpi kaikki taulun
  * alkiot kunnes vapaa alkio löytyy.
+ *
+ * Poisto tapahtuu merkitsemällä alkiot asettamalla viite erityiseen REMOVED-objektiin, jotta
+ * kokeilujonot pysyvät yhtenäisenä. Kun varattujen elementtien (käytössä olevat + poistetut)
+ * yhteismäärä ylittää puolet kapasiteetista, suoritetaan uudelleenhajautus.
  */
 final class TranspositionTable
 {

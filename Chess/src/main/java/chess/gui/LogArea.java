@@ -5,7 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- * Komponentti pelin lokia, debuggausta ym varten.
+ * Tekstialue peli- ja debug-informaation näyttämistä varten.
  */
 public class LogArea extends JScrollPane implements Logger
 {
@@ -14,6 +14,9 @@ public class LogArea extends JScrollPane implements Logger
 	 */
 	private JTextArea logTextArea;
 
+	/**
+	 * Konstruktori.
+	 */
 	public LogArea()
 	{
 		logTextArea = new JTextArea();
