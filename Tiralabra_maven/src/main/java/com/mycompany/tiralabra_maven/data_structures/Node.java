@@ -4,20 +4,20 @@ package com.mycompany.tiralabra_maven.data_structures;
  * StackNodes are used by Stack. 
  * @author Joel Nummelin
  */
-public class StackNode {
-    private StackNode next;
+public class Node {
+    private Node next;
     private int move;
     private int result;
     
     
-    public StackNode(int move, int result){
+    public Node(int move, int result){
         this.move = move;
         this.result = result;
         this.next = null;
     }
 
     
-    public StackNode getNext() {
+    public Node getNext() {
         return next;
     }
 
@@ -29,7 +29,7 @@ public class StackNode {
         return result;
     }
 
-    public void setNext(StackNode next) {
+    public void setNext(Node next) {
         this.next = next;
     }
 
@@ -49,7 +49,7 @@ public class StackNode {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final StackNode other = (StackNode) obj;
+        final Node other = (Node) obj;
         if (this.move != other.move) {
             return false;
         }

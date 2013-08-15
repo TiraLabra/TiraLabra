@@ -12,7 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Contains game logic. 
+ * Contains game logic.
+ *
  * @author joel Nummelin
  */
 public class Game {
@@ -24,12 +25,14 @@ public class Game {
     private Statistics statistics;
     private int lastRound;
     private FileHandler fileHandler;
+    private FileHandler fileHandler2;
     private File file;
 
     /**
-     * Sets up the game in right game mode. 
+     * Sets up the game in right game mode.
      */
     public Game() throws IOException {
+        fileHandler2 = new FileHandler(new File("profiles/all"));
         setUpResultTable();
         this.primaryBot = new Bot(0);
         this.statistics = new Statistics(0, 0, 0);
@@ -46,10 +49,10 @@ public class Game {
                 break;
             case 1:
                 asGuest();
-                break;
+                return;
             case 2:
                 botVsBot();
-                break;
+                return;
         }
         fileHandler = new FileHandler(file);
         primaryBot.loadProfile(fileHandler);
@@ -82,12 +85,16 @@ public class Game {
         }
     }
 
-    
     /**
      * Sets up human vs ai game without saving.
      */
     private void asGuest() {
         this.gameMode = GameMode.GUEST_VS_BOT;
+        try {
+            primaryBot.loadProfile(fileHandler2);
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -100,8 +107,9 @@ public class Game {
 
     /**
      * Creates new player profile file.
+     *
      * @return file
-     * @throws IOException 
+     * @throws IOException
      */
     private File newPlayer() throws IOException {
         String playerName = null;
@@ -123,7 +131,8 @@ public class Game {
     }
 
     /**
-     * Play one round. parameter move is used only when it's human vs ai. 
+     * Play one round. parameter move is used only when it's human vs ai.
+     *
      * @param move
      * @return result
      */
@@ -141,7 +150,10 @@ public class Game {
         lastRound = results[primary][move];
         primaryBot.updateAi(lastRound);
         updateStatistics(lastRound);
-        fileHandler.saveLine(primary, lastRound);
+        if (gameMode == GameMode.PLAYER_VS_BOT) {
+            fileHandler.saveLine(primary, lastRound);
+        }
+        fileHandler2.saveLine(primary, lastRound);
         return results[primary][move];
     }
 
@@ -161,9 +173,8 @@ public class Game {
         results[2][2] = 0;
     }
 
-    
     /**
-     * 
+     *
      * @return gameMode
      */
     public GameMode getGameMode() {
@@ -171,7 +182,7 @@ public class Game {
     }
 
     /**
-     * 
+     *
      * @return statistics
      */
     public Statistics getStatistics() {
@@ -180,17 +191,16 @@ public class Game {
 
     /**
      * Updates general game statistics.
-     * @param result 
+     *
+     * @param result
      */
     private void updateStatistics(int result) {
-        if (result == 0){
+        if (result == 0) {
             statistics.draw();
-        } else if (result == 1){
+        } else if (result == 1) {
             statistics.win();
-        } else if (result == -1){
+        } else if (result == -1) {
             statistics.lose();
         }
     }
-    
-    
 }

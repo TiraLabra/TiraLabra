@@ -6,7 +6,7 @@ package com.mycompany.tiralabra_maven.data_structures;
  */
 public class Stack {
 
-    StackNode node;
+    Node node;
 
     public Stack() {
         node = null;
@@ -16,7 +16,7 @@ public class Stack {
      * Puts a new node on the stack. 
      * @param sn 
      */
-    public void put(StackNode sn){
+    public void put(Node sn){
         if (node == null){
             node = sn;
             sn.setNext(null);
@@ -30,8 +30,8 @@ public class Stack {
      * Removes and returns the top node of the stack. 
      * @return stackNode
      */
-    public StackNode pop() {
-        StackNode sn = node;
+    public Node pop() {
+        Node sn = node;
         node = node.getNext();
         return sn;
     }
@@ -40,7 +40,7 @@ public class Stack {
      * Returns the top node of the stack.
      * @return stackNode
      */
-    public StackNode peek(){
+    public Node peek(){
         return node;
     }
     
@@ -54,7 +54,7 @@ public class Stack {
             return 0;
         }
         int i = 1;
-        StackNode sn = node;
+        Node sn = node;
         while(sn.getNext() != null){
             i++;
             sn = sn.getNext();

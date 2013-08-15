@@ -40,7 +40,7 @@ public class GameTreeNode {
         return children[3 * move + (result + 1)];
     }
     
-    public GameTreeNode getChild(StackNode sn){
+    public GameTreeNode getChild(Node sn){
         return children[3 * sn.getMove() + (sn.getResult() + 1)];
     }
 
@@ -88,7 +88,7 @@ public class GameTreeNode {
      * Onherwise adds one to the right child's TimesPlayed attribute. 
      * @param sn 
      */
-    public void addChild(StackNode sn){
+    public void addChild(Node sn){
         if (getChild(sn) == null){
             children[3 * sn.getMove() + (sn.getResult() + 1)] = new GameTreeNode(sn.getMove(), sn.getResult());
         } else {

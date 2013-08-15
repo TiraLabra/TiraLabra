@@ -2,9 +2,11 @@ package com.mycompany.tiralabra_maven.ui;
 
 import com.mycompany.tiralabra_maven.Game;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,12 +27,16 @@ public class Ui implements Runnable{
         frame.setPreferredSize(new Dimension(500 , 200));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        createComponents(frame);
+        try {
+            createComponents(frame);
+        } catch (IOException ex) {
+            Logger.getLogger(Ui.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frame.pack();
         frame.setVisible(true);
     }
     
-    public void createComponents(Container container){
+    public void createComponents(Container container) throws IOException{
         GridLayout layout = new GridLayout(2, 1);
         container.setLayout(layout);
         

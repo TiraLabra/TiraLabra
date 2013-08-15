@@ -5,7 +5,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.data_structures.Stack;
-import com.mycompany.tiralabra_maven.data_structures.StackNode;
+import com.mycompany.tiralabra_maven.data_structures.Node;
 import junit.framework.TestCase;
 
 /**
@@ -26,7 +26,7 @@ public class StackTest extends TestCase{
     
     public void testPuttingStuffOnStack(){
         assertEquals(stack.peek(), null);
-        stack.put(new StackNode(0 , 0));
+        stack.put(new Node(0 , 0));
         assertEquals(stack.peek().getMove(), 0);
         assertEquals(stack.peek().getResult(), 0);
         stack.pop();
@@ -35,22 +35,22 @@ public class StackTest extends TestCase{
     
     public  void testStackSize(){
         assertEquals(stack.size(), 0);
-        stack.put(new StackNode(1, 2));
-        stack.put(new StackNode(1, 1));
+        stack.put(new Node(1, 2));
+        stack.put(new Node(1, 1));
         assertEquals(stack.size(), 2);
         stack.pop();
         assertEquals(stack.size(), 1);
     }
     
     public void testStackBehaviour(){
-        stack.put(new StackNode(0, 0));
-        stack.put(new StackNode(0, 1));
-        stack.put(new StackNode(1, 0));
-        stack.put(new StackNode(1, 1));
-        assertEquals(stack.pop(), new StackNode(1, 1));
-        assertEquals(stack.pop(), new StackNode(1, 0));
-        assertEquals(stack.pop(), new StackNode(0, 1));
-        assertEquals(stack.pop(), new StackNode(0, 0));
+        stack.put(new Node(0, 0));
+        stack.put(new Node(0, 1));
+        stack.put(new Node(1, 0));
+        stack.put(new Node(1, 1));
+        assertEquals(stack.pop(), new Node(1, 1));
+        assertEquals(stack.pop(), new Node(1, 0));
+        assertEquals(stack.pop(), new Node(0, 1));
+        assertEquals(stack.pop(), new Node(0, 0));
     }
     
 }

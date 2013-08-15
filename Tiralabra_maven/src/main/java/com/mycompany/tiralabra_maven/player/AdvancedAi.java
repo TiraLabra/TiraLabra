@@ -2,7 +2,7 @@ package com.mycompany.tiralabra_maven.player;
 
 import com.mycompany.tiralabra_maven.data_structures.GameTreeNode;
 import com.mycompany.tiralabra_maven.data_structures.Stack;
-import com.mycompany.tiralabra_maven.data_structures.StackNode;
+import com.mycompany.tiralabra_maven.data_structures.Node;
 import java.util.Random;
 
 /**
@@ -34,13 +34,18 @@ public class AdvancedAi implements Ai{
             return lastMove;
         }
         int[] is = treeStatistics(0);
-        int counter = 0;
-        while (true){
-            if (is[0] != 0 || is[1] != 0 || is[2] != 0) {
-                break;
+        
+        for (int i = 1; i < depth; i++) {
+            if (is[0] != 0 || is[1] != 0 || is[2] != 0){
+                if (is[0] + is[1] + is[2] > 2){
+                    break;
+                }
+                is = treeStatisticsIgnoreResults(i - 1);
+                if (is[0] + is[1] + is[2] > 2){
+                    break;
+                }
             }
-            counter++;
-            is = treeStatistics(counter);
+            is = treeStatistics(i);
         }
 
         int x = is[0];
@@ -73,7 +78,7 @@ public class AdvancedAi implements Ai{
      */
     @Override
     public int update(int result) {
-        stack.put(new StackNode(oppnentsLastMove(result), result));
+        stack.put(new Node(oppnentsLastMove(result), result));
         if (stack.size() < depth) {
         } else {
             Stack s = new Stack();
@@ -92,7 +97,7 @@ public class AdvancedAi implements Ai{
     private void updateTree(Stack s) {
         GameTreeNode gtn = tree;
         for (int i = 0; i < depth; i++) {
-            StackNode sn = s.pop();
+            Node sn = s.pop();
             stack.put(sn);
             gtn.addChild(sn);
             gtn = gtn.getChild(sn);
@@ -108,15 +113,15 @@ public class AdvancedAi implements Ai{
         GameTreeNode gtn = tree;
         Stack s = new Stack();
         
-        StackNode node = stack.peek();
+        Node node = stack.peek();
         for (int i = 0; i < depth -(decreaseHeight + 1); i++) {
-            s.put(new StackNode(node.getMove(), node.getResult()));
+            s.put(new Node(node.getMove(), node.getResult()));
             node = node.getNext();
         }
         
 
         for (int i = 0; i < depth - (decreaseHeight + 1); i++) {
-            StackNode sn = s.pop();
+            Node sn = s.pop();
             if (gtn.getChild(sn) == null) {
                 int[] is = {0, 0, 0};
                 return is;
@@ -126,7 +131,6 @@ public class AdvancedAi implements Ai{
 
         int[] is = new int[3];
 
-        System.out.println();
         for (int i = 0; i < 9; i++) {
             if (gtn.getChildren()[i] != null) {
                 if (i >= 0 && i < 3) {
@@ -177,11 +181,62 @@ public class AdvancedAi implements Ai{
         }
 
         while (s2.peek() != null){
-            StackNode sn = s2.pop();
+            Node sn = s2.pop();
             lastMove = sn.getMove();
             update(sn.getResult());
         }
         stack = new Stack();
+    }
+
+    /**
+     * Gives statistics about opponents moves. This method is used if treeStatistics method gives too few data. 
+     * @param decreaseHeight
+     * @return moves
+     */
+    private int[] treeStatisticsIgnoreResults(int decreaseHeight) {
+        Stack s = new Stack();
+        
+        Node node = stack.peek();
+        for (int i = 0; i < depth -(decreaseHeight + 1); i++) {
+            s.put(new Node(node.getMove(), node.getResult()));
+            node = node.getNext();
+        }
+        
+        int[] is = new int[3];
+        for (int i = 0; i < 3; i++) {
+            is[i] = search(s.peek(), tree.getChildren(), i * 3);
+        }
+        
+        return is;
+    }
+
+    private int search(Node node, GameTreeNode[] nodes, int startIndex) {
+        if (node == null){
+            int sum = 0;
+            for (int i = startIndex; i < startIndex + 3; i++) {
+                if (nodes[i] == null){
+                    continue;
+                }
+                sum += nodes[i].getTimesPlayed();
+            }
+            return sum;
+        }
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        
+        if (nodes[node.getMove() * 3] != null){
+            a = search(node.getNext(), nodes[node.getMove() * 3].getChildren(), startIndex);
+        }
+        
+        if (nodes[node.getMove() * 3 + 1] != null){
+            b = search(node.getNext(), nodes[node.getMove() * 3 + 1].getChildren(), startIndex);
+        }
+        
+        if (nodes[node.getMove() * 3 + 2] != null){
+            c = search(node.getNext(), nodes[node.getMove() * 3 + 2].getChildren(), startIndex);
+        }
+        return a + b + c;
     }
 
 
