@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Auto generate single AllTests file for CuTest.
 # Searches through all *.c files in the current directory.
@@ -6,14 +6,15 @@
 # Author: Asim Jalis
 # Date: 01/08/2003
 
+# 31 May 2006: added exit code for main() -- Brandon Volbright
+
 if test $# -eq 0 ; then FILES=*.c ; else FILES=$* ; fi
 
 echo '
 
 /* This is auto-generated code. Edit at your own peril. */
-#include <stdio.h>
-#include <stdlib.h>
 
+#include <stdio.h>
 #include "CuTest.h"
 
 '
@@ -26,7 +27,7 @@ cat $FILES | grep '^void Test' |
 echo \
 '
 
-void RunAllTests(void) 
+int RunAllTests(void) 
 {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
@@ -44,12 +45,12 @@ echo \
     CuSuiteSummary(suite, output);
     CuSuiteDetails(suite, output);
     printf("%s\n", output->buffer);
-    CuStringDelete(output);
-    CuSuiteDelete(suite);
+
+    return suite->failCount == 0 ? 0 : 1;
 }
 
 int main(void)
 {
-    RunAllTests();
+    return RunAllTests();
 }
 '
