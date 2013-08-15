@@ -2,7 +2,6 @@
 package com.mycompany.tiralabra_maven.kayttoliittymat;
 
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
-import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -43,7 +42,7 @@ public final class Tekstikayttoliittyma implements Kayttoliittyma {
      * @see Kayttoliittyma#tulosta(java.lang.String)
      */
     public void tulosta(String viesti) {
-        System.out.println(viesti);
+        System.out.print(viesti);
     }
 
     /**
@@ -59,7 +58,7 @@ public final class Tekstikayttoliittyma implements Kayttoliittyma {
      */
     public String pyydaSyote(String viesti) {
         tulosta(viesti);
-        System.out.print("> ");
+//        System.out.print("> ");
         return LUKIJA.nextLine();
     }
 

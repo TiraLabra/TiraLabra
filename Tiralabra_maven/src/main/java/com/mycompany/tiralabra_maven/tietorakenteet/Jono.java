@@ -30,6 +30,9 @@ public final class Jono<T> {
      * @param arvo Jonoon lisättävä tietoalkio.
      */
     public void lisaa(T arvo) {
+//        if (pituus == Integer.MAX_VALUE) {
+//            throw new IndexOutOfBoundsException("Jonoon tuli täyteen!");
+//        }
         Solmu seuraava = new Solmu<T>(arvo);
         if (ensimmainen == null) {
             ensimmainen = seuraava;
@@ -109,14 +112,17 @@ public final class Jono<T> {
             mjr.append(solmu.ARVO);
             mjr.append("}");
         } else {
-            mjr.append('(');        
+            // Muutin toStringiä tilapäisesti jotta voisin leikkiä hienomman
+            // näköisellä tulosteella.
+//            mjr.append('(');        
             while (solmu != null) {
                 mjr.append(solmu.ARVO);
-                mjr.append(',');
+//                mjr.append(',');
+                mjr.append(' ');
                 solmu = solmu.seuraaja;
             }
-            mjr.delete(mjr.length() - 1, mjr.length());
-            mjr.append(')');
+//            mjr.delete(mjr.length() - 1, mjr.length());
+//            mjr.append(')');
         }
         
         return mjr.toString();

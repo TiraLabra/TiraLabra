@@ -4,10 +4,7 @@ package com.mycompany.tiralabra_maven.logiikka;
 import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
-import java.util.ArrayDeque;
 import java.util.EmptyStackException;
-import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Luokan vastuulla on tulkita merkkijonoina annetut matemaattiset kaavat
@@ -155,13 +152,13 @@ public final class Tulkki {
     }
     
     private void kasitteleOperaattori() {
-        // Pitäisi ehkä tehdä joku hashmappi operaattorien prioriteeteille.
         if (PINO.onTyhja()) {
             PINO.lisaa(merkki);
         } else {
             char pinonYlin = PINO.kurkista();
             if (pinonYlin != '(') {
                 // Pienemmän prioriteetin laskutoimitukset suoritetaan ensin.
+                // Siispä ne lisätään ulostuloon ensimmäisinä.
                 if (PRIORITEETIT.hae(merkki) >= PRIORITEETIT.hae(pinonYlin)) {
                     JONO.lisaa(PINO.poista() + "");
                 }

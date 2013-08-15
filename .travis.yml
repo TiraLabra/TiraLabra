@@ -2,8 +2,5 @@ language: java
 jdk:
   - oraclejdk7
   - openjdk7
-notifications:
-  email: jllang@cs.helsinki.fi
-
 install: "./install.sh"
 script: "./run_tests.sh"

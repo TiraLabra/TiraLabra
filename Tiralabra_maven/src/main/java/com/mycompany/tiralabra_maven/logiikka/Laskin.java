@@ -3,8 +3,6 @@ package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
-import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Luokan vastuulla on laskea sille annetun käänteistä puolalaista notaatiota
@@ -64,6 +62,8 @@ public final class Laskin {
             }
         }
         
+        // Tässä vaiheessa pinossa tulisi olla jäljellä vain kaavan lopullinen
+        // lukuarvo.
         if (PINO.koko() > 1) {
             throw new IllegalArgumentException("Liikaa operandeja!");
         }
@@ -89,8 +89,7 @@ public final class Laskin {
                 PINO.lisaa(n + m);
                 break;
             case '-':
-                // Vähennyslaskun yhteydessä ei tarvitse tarkastaa mitään sillä
-                // myös 0 - Integer.MAX_VALUE mahtuu int-tyyppiin.
+                // TODO: Lisää tarkastus.
                 PINO.lisaa(n - m);
                 break;
             case '*':

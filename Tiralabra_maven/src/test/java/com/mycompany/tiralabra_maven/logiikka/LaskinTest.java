@@ -2,17 +2,13 @@
 package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
