@@ -284,4 +284,14 @@ public class KolmioTayttaja {
             this.peliruudukko[rivi][sarake] = new Kolmio(this.variarpoja.arvoVari(), rivi, sarake);
         }
     }
+
+    public void taytaKaikkiRuudutRajoittamatta() {
+        int korkeus = this.peliruudukko.length;
+        int leveys = this.peliruudukko[0].length;
+        for (int rivi = 0; rivi < korkeus; rivi++) {
+            for (int sarake = 0; sarake < leveys; sarake++) {
+                this.peliruudukko[rivi][sarake] = new Kolmio(this.variarpoja.arvoVari(), rivi, sarake);
+            }
+        }
+    }
 }

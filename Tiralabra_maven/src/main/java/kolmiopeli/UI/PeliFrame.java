@@ -39,6 +39,10 @@ public class PeliFrame {
 //        this.ruudukko.setRuudukko(test1);
         this.tayttaja = new KolmioTayttaja(this.ruudukko);
         tayttaja.taytaKaikkiRuudut();
+        
+        
+//         Seuraava rivi on aikatestaukseen tarkoitettu osa
+//        tayttaja.taytaKaikkiRuudutRajoittamatta();
 
         this.etsija = new PistesiirtojenEtsija(ruudukko);
         this.siirrot = new Siirrot(ruudukko);
@@ -60,6 +64,11 @@ public class PeliFrame {
         this.nakymat = nakymat;
 
         container.add(nakymat);
+        
+        
+        // Nama on myos aikatestauksen alkuosia
+//        KomboEtsijaAnimointiSatunnaisessaRuudukossa a = new KomboEtsijaAnimointiSatunnaisessaRuudukossa(this.peliruudukko);
+//        a.animoiKomboEtsinta();
 
 
 
