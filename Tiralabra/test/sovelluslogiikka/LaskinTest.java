@@ -46,9 +46,4 @@ public class LaskinTest {
     public void jakolaskuToimiiOikein() {
         assertEquals(5, laskin.ratkaiseLaskutoimitus("100/20"));
     }
-    
-    @Test
-    public void suorituskyky(){
-        
-    }
 }

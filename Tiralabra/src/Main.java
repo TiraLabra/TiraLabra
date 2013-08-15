@@ -15,17 +15,19 @@ public class Main {
      */
     public static void main(String[] args) {
         Laskin laskin = new Laskin();
-//        laskin.kaynnista();
-        long aikaAlussa1 = System.currentTimeMillis();
-        int tulos = laskin.ratkaiseLaskutoimitus("2+2+1+2+3+3+3+4+4+4+4+4+4+4+4+4+4+4+4");
-        long aikaLopussa1 = System.currentTimeMillis();
-        System.out.println("(2+2)*5000 = " + tulos+ " Aikaa kului: " + (aikaLopussa1 - aikaAlussa1) + "ms");
+        laskin.kaynnista();
 
-        String laskutoimitus = "2+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+42+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+42+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+42+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+42+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+42+2+(1+2+(3+3+3*(4+4)/4+4)*4+4+4)+4+4+4+4+4";
-        aikaAlussa1 = System.currentTimeMillis();
-        tulos = laskin.ratkaiseLaskutoimitus(laskutoimitus);
-        aikaLopussa1 = System.currentTimeMillis();
-        System.out.println("Aikaa kului: " + (aikaLopussa1 - aikaAlussa1) + "ms  --  " + laskutoimitus + "="+tulos);
+        //Suorituskykytestit
+        String laskutoimitus1 = "3*9-5";
+        long testi1AikaAlussa = System.currentTimeMillis();
+        int ratkaisu1 = laskin.ratkaiseLaskutoimitus(laskutoimitus1);
+        long testi1AikaLopussa = System.currentTimeMillis();
+        System.out.println("Laskutoimitukseen " + laskutoimitus1 + " = " + ratkaisu1 + " kului aikaa: " + (testi1AikaLopussa - testi1AikaAlussa) + "ms.");
 
+        String laskutoimitus2 = "45/5+(500-30))";
+        long testi2AikaAlussa = System.currentTimeMillis();
+        int ratkaisu2 = laskin.ratkaiseLaskutoimitus(laskutoimitus2);
+        long testi2AikaLopussa = System.currentTimeMillis();
+        System.out.println("Laskutoimitukseen " + laskutoimitus2 + " = " + ratkaisu2 + " kului aikaa: " + (testi2AikaLopussa - testi2AikaAlussa) + "ms.");
     }
 }

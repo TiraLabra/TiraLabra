@@ -81,7 +81,8 @@ public class Laskin {
     }
 
     /**
-     * Ratkaisee parametrina annetun laskutoimituksen, ja ilmoittaa ratkaisun
+     * Ratkaisee parametrina annetun laskutoimituksen, ja palauttaa ratkaisun
+     * metodin arvona
      *
      * @param syote Merkkijono
      */
@@ -164,7 +165,6 @@ public class Laskin {
                     luvut.push(jaettava / vakiojakaja);
                 } else {
                     luvut.push(jaettava / jakaja);
-
                 }
         }
     }
