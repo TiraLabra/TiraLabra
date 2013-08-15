@@ -72,6 +72,15 @@ public class Pino {
     }
 
     /**
+     * Kertoo pinossa olevien olioiden lukumäärän metodin paluuarvona
+     *
+     * @return Kokonaisluku
+     */
+    public int getOlioidenLkm() {
+        return top + 1;
+    }
+
+    /**
      * Kertoo pinon päällimäisenä olevan olion sijainnin taulukossa
      *
      * @return Kokonaisluku

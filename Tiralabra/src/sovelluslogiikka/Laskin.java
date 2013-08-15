@@ -43,7 +43,7 @@ public class Laskin {
             if (syote.equals("QUIT")) {
                 break;
             } else if (tarkastaSyote(syote)) {
-                ratkaiseLaskutoimitus(syote);
+                System.out.println("Ratkaisu: " + ratkaiseLaskutoimitus(syote) + "\n");
             } else {
                 System.out.println("Laskutoimitus on virheellinen. Tarkista syötetty laskutoimitus.\n");
             }
@@ -85,7 +85,7 @@ public class Laskin {
      *
      * @param syote Merkkijono
      */
-    public void ratkaiseLaskutoimitus(String syote) {
+    public int ratkaiseLaskutoimitus(String syote) {
         Pino operandit = new Pino(syote.length());
         Pino luvut = new Pino(syote.length());
 
@@ -132,7 +132,7 @@ public class Laskin {
             suoritaOperaatiot(luvut, operandit);
         }
         int ratkaisu = (Integer) luvut.pop();
-        System.out.println("Ratkaisu: " + ratkaisu + "\n");
+        return ratkaisu;
     }
 
     /**
