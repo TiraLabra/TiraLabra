@@ -10,6 +10,7 @@ public class Solmu implements Comparable<Solmu>{
     private int alkuarvo = Integer.MAX_VALUE;
     private Solmu[][] laby;
     boolean seina;
+    private Solmu polku;
 
     public void setOnkoSeina(boolean seina) {
         this.seina = seina;
@@ -19,9 +20,9 @@ public class Solmu implements Comparable<Solmu>{
         this.heuristiikka = heuristiikka;
     }
 
-    public Solmu(int a, int b, Solmu[][] laby) {
-        this.x = a;
-        this.y = b;
+    public Solmu(int x, int y, Solmu[][] laby) {
+        this.x = x;
+        this.y = y;
         this.laby = laby;
     }
 
@@ -41,6 +42,14 @@ public class Solmu implements Comparable<Solmu>{
         this.y = y;
     }
     
+    public void setPolku(Solmu solmu) {
+        this.polku = solmu;
+    }
+    
+    public Solmu getPolku(){
+        return this.polku;
+    }
+    
     /**
      * 
      * @param n
@@ -48,7 +57,7 @@ public class Solmu implements Comparable<Solmu>{
      * Kertoo solmun viereiset solmut pystyakselilla.
      * n:n arvon pitää olla joko 1 tai -1.
      */
-    public Solmu vierusY(int n) {
+    public Solmu vierusX(int n) {
         if (x+n<0 || x+n >= laby[0].length) {
 
             return null;
@@ -71,7 +80,7 @@ public class Solmu implements Comparable<Solmu>{
      * Kertoo solmun viereiset solmut vaaka-akselilla.
      * n:n arvon on oltava joko 1 tai -1.
      */
-    public Solmu vierusX(int n) {
+    public Solmu vierusY(int n) {
         if (y+n<0 || y+n >= laby.length) {
             return null;
         }

@@ -93,5 +93,14 @@ public class JarjestysjonoTest {
     public void onkoKokoOikein(){
         assertEquals(4, jono.size());
     }
+    
+    /*
+     * Testaa, palauttaako contains-metodi oikean boolean-arvon.
+     */
+    @Test
+    public void toimiikoContains() {
+        assertEquals(true, jono.contains(5));
+        assertEquals(false, jono.contains(26));
+    }
 
 }

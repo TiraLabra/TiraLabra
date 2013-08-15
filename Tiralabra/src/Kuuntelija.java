@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import rakenteet.Jarjestysjono;
 
 /**
  *
@@ -30,7 +31,7 @@ public class Kuuntelija implements ActionListener{
         this.nappi = nappi;
         this.kuva = kuva;
         this.laby = laby;
-        suunnistaja = new SuunnistajaAStar(laby.verkko[3][3], laby.verkko[94][147], laby); 
+        suunnistaja = new SuunnistajaAStar(laby.verkko[3][3], laby.verkko[90][68], laby); 
     }
 
     /**
@@ -41,9 +42,9 @@ public class Kuuntelija implements ActionListener{
     public void actionPerformed(ActionEvent e) {
        Graphics g = kuva.getGraphics();
        g.setColor(Color.red);
-       ArrayList<Solmu> polku = suunnistaja.etsi();
-        for (Solmu solmu : polku) {
-            g.drawLine(solmu.getX(), solmu.getX(), solmu.getY(), solmu.getY());
+       Jarjestysjono<Solmu> polku = suunnistaja.etsi(g);
+        for (int i=0; i<polku.size(); i++) {
+            g.drawRect(polku.get(i).getX(), polku.get(i).getY(), 1, 1);
         }
     }
 }

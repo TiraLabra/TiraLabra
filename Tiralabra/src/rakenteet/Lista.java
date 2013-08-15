@@ -1,6 +1,8 @@
 
 package rakenteet;
 
+import java.util.Arrays;
+
 /**
  *
  * @author maef
@@ -8,27 +10,44 @@ package rakenteet;
  */
 public class Lista<E> {
     
-    private transient Object[] jono;
+    private transient Object[] lista;
     private int koko;
 
     public Lista() {
-        jono = new Object[10];
+        lista = new Object[10];
     }
     
     public void add(E e) {
-        if (koko >= 10) {
-            Object[] uusiJono = new Object[2*koko];
+        if (koko == lista.length) {
+            Object[] uusiLista = new Object[2*koko];
             for (int i = 0; i < koko; i++) {
-                uusiJono[i] = jono[i];
+                uusiLista[i] = lista[i];
             }
-            jono = uusiJono;
+            lista = uusiLista;
         }
         
-        jono[koko] = e;
+        lista[koko] = e;
         koko++;
     }
     
+    public boolean contains(E e) {
+        int a = Arrays.binarySearch(lista, e);
+        return a>=0;
+//        for (int i = 0; i < koko; i++) {
+//            if (jono[i].equals(e)) {
+//                return true;
+//            }
+//        }
+//        return false;
+    }
     
+    public E get(int i) {
+        return (E) lista[i];
+    }
+    
+    public int size() {
+        return koko;
+    }
     
     
     

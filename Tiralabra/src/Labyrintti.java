@@ -35,8 +35,8 @@ public class Labyrintti {
 
         for (int i = 0; i < getHeight(); i++) {
             for (int j = 0; j < getWidth(); j++) {
-                Solmu s = new Solmu(i, j, verkko);
-                s.setOnkoSeina(seina(i, j));
+                Solmu s = new Solmu(j, i, verkko);
+               s.setOnkoSeina(seina(j, i));
                 verkko[i][j] = s;
             }
         }
@@ -50,11 +50,11 @@ public class Labyrintti {
         lattia = -1; //Valkoinen
         seina = -16777216; //Musta
     }
-    
-    private boolean seina(int i, int j){
-        return labyrintti.getRGB(j, i) == seina;
-            
-        
+
+    private boolean seina(int i, int j) {
+        return labyrintti.getRGB(i, j) == seina;
+
+
     }
 
     /**
@@ -63,10 +63,18 @@ public class Labyrintti {
      * matka on kuljettava, että siihen voi päästä.
      */
     public int etaisyys(Solmu x) {
-        if (labyrintti.getRGB(x.getX(), x.getY()) == lattia) {
-            return 1;
-        } else {
-            return 1000000;
+        try {
+            if (labyrintti.getRGB(x.getX(), x.getY()) == lattia) {
+                return 1;
+            } else {
+                return 1000000;
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: ");
+            System.out.println("  solmu.getx: " + x.getX());
+            System.out.println("  solmu.gety: " + x.getY());
+            System.out.println("  " + e.getMessage());
+            return 9999999;
         }
     }
 

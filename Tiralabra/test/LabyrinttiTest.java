@@ -17,10 +17,12 @@ public class LabyrinttiTest {
     public LabyrinttiTest() {
     }
     private Labyrintti labyrintti;
+    private Labyrintti laby;
     
     @Before
     public void setUp() {
         labyrintti = new Labyrintti("labyrintti");
+        laby = new Labyrintti("labyTest5x5");
     }
 
     /**
@@ -53,5 +55,40 @@ public class LabyrinttiTest {
      public void getWidth() {
          assertEquals(500, labyrintti.getWidth());
      }
-    
+     
+     @Test
+    public void testKuvanLuentaJaLabyrintinLuonti(){
+         assertTrue(laby.getWidth()==5);
+         assertTrue(laby.getHeight()==5);
+         
+         assertFalse(laby.verkko[0][0].seina);
+         assertTrue(laby.verkko[0][1].seina);
+         assertFalse(laby.verkko[0][2].seina);
+         assertFalse(laby.verkko[0][3].seina);
+         assertFalse(laby.verkko[0][4].seina);
+         
+         assertFalse(laby.verkko[1][0].seina);
+         assertTrue(laby.verkko[1][1].seina);
+         assertTrue(laby.verkko[1][2].seina);
+         assertFalse(laby.verkko[1][3].seina);
+         assertFalse(laby.verkko[1][4].seina);
+         
+         assertFalse(laby.verkko[2][0].seina);
+         assertFalse(laby.verkko[2][1].seina);
+         assertTrue(laby.verkko[2][2].seina);
+         assertFalse(laby.verkko[2][3].seina);
+         assertFalse(laby.verkko[2][4].seina);
+         
+         assertFalse(laby.verkko[3][0].seina);
+         assertFalse(laby.verkko[3][1].seina);
+         assertTrue(laby.verkko[3][2].seina);
+         assertFalse(laby.verkko[3][3].seina);
+         assertFalse(laby.verkko[3][4].seina);
+         
+         assertFalse(laby.verkko[4][0].seina);
+         assertFalse(laby.verkko[4][1].seina);
+         assertFalse(laby.verkko[4][2].seina);
+         assertFalse(laby.verkko[4][3].seina);
+         assertFalse(laby.verkko[4][4].seina);
+     }
 }
