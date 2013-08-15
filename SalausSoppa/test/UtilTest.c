@@ -30,7 +30,7 @@ void TestAllOneFromFirstBitPermute(CuTest* tc)
     CuAssertTrue(tc, permuted == 0xffffffffffffffffUL);
 }
 
-void TestExampleInitialPermutation(CuTest* tc)
+void TestExampleInitialPermutationAndReverse(CuTest* tc)
 {
     // from http://orlingrabbe.com/des.htm
     uint64_t initial = 0x123456789abcdefUL;
@@ -46,5 +46,17 @@ void TestExampleInitialPermutation(CuTest* tc)
     size_t IP_len = sizeof IP / sizeof IP[0];
     uint64_t permuted = permute(initial, IP_len, IP);
 
+    size_t IP_rev[] = {40, 8, 48, 16, 56, 24, 64, 32,
+                       39, 7, 47, 15, 55, 23, 63, 31,
+                       38, 6, 46, 14, 54, 22, 62, 30,
+                       37, 5, 45, 13, 53, 21, 61, 29,
+                       36, 4, 44, 12, 52, 20, 60, 28,
+                       35, 3, 43, 11, 51, 19, 59, 27,
+                       34, 2, 42, 10, 50, 18, 58, 26,
+                       33, 1, 41,  9, 49, 17, 57, 25};
+    size_t IP_rev_len = sizeof IP_rev / sizeof IP_rev[0];
+    uint64_t permuted_reverse = permute(permuted, IP_rev_len, IP_rev);
+
     CuAssertTrue(tc, permuted == 0xcc00ccfff0aaf0aaUL);
+    CuAssertTrue(tc, permuted_reverse == initial);
 }

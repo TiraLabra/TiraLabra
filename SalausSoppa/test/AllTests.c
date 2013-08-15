@@ -9,7 +9,7 @@
 
 extern void TestAllZeroPermute(CuTest*);
 extern void TestAllOneFromFirstBitPermute(CuTest*);
-extern void TestExampleInitialPermutation(CuTest*);
+extern void TestExampleInitialPermutationAndReverse(CuTest*);
 
 
 void RunAllTests(void) 
@@ -20,7 +20,7 @@ void RunAllTests(void)
 
     SUITE_ADD_TEST(suite, TestAllZeroPermute);
     SUITE_ADD_TEST(suite, TestAllOneFromFirstBitPermute);
-    SUITE_ADD_TEST(suite, TestExampleInitialPermutation);
+    SUITE_ADD_TEST(suite, TestExampleInitialPermutationAndReverse);
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
