@@ -2,6 +2,8 @@ package logiikka;
 
 import osat.Laatikko;
 import osat.Lava;
+import tyokalut.AVLsolmu;
+import tyokalut.HistorianKasittelija;
 import tyokalut.KasvavaLista;
 
 /**
@@ -11,10 +13,26 @@ import tyokalut.KasvavaLista;
  * @author albis
  */
 public class Kontinpurkaja {
+    /**
+     * Luokka, joka huolehtii tuotteen asettelutavan laskemisesta.
+     */
     private Laskuri laskuri;
     
+    /**
+     * Historian sisältävän AVL-puun toiminnot kokoava olio.
+     */
+    private HistorianKasittelija historia;
+    
+    /**
+     * Historiatiedot sisältävän AVL-puun juurisolmu.
+     */
+    private AVLsolmu juuri;
+    
     public Kontinpurkaja() {
-        this.laskuri = new Laskuri();
+        laskuri = new Laskuri();
+        historia = new HistorianKasittelija();
+        
+        juuri = historia.avaa();
     }
     
     /**
@@ -30,10 +48,37 @@ public class Kontinpurkaja {
      */
     public void laskeParasAsettelu(int laatikonLeveys, int laatikonPituus, int laatikonKorkeus, long EAN,
             int lavanLeveys, int lavanPituus, int lavanKorkeus) {
+        Laatikko laatikko = new Laatikko(laatikonLeveys, laatikonPituus, laatikonKorkeus, EAN);
+        Lava lava = new Lava(lavanLeveys, lavanPituus, lavanKorkeus);
+        KasvavaLista asettelu = laskuri.laske(laatikko, lava);
         
-        KasvavaLista asettelu = laskuri.laske(new Laatikko(laatikonLeveys, laatikonPituus, laatikonKorkeus,
-                EAN), new Lava(lavanLeveys, lavanPituus, lavanKorkeus));
+        AVLsolmu solmu = historia.etsi(juuri, EAN);
         
-        
+        if (solmu == null) {
+            historia.AVLlisays(juuri, laatikko, asettelu, lava);
+        } else {
+            solmu.setLaatikko(laatikko);
+            solmu.setAsettelu(asettelu);
+        }
+    }
+    
+    /**
+     * Hakee AVL-puusta annetun EAN-koodin mukaisen tuotteen asettelun, jos sellainen
+     * on laskettu.
+     * 
+     * @param EAN Haluttu tuote.
+     * @return Palauttaa halutun tuotteen tiedot historiasta.
+     */
+    public AVLsolmu haeTuote(long EAN) {
+        return historia.etsi(juuri, EAN);
+    }
+    
+    /**
+     * Tallentaa kaikki AVL-puussa olevat asettelutiedot tekstitiedostoon seuraavaa
+     * käyttökertaa varten.
+     * 
+     */
+    public void tallennaHistoria() {
+        historia.tallenna(juuri);
     }
 }

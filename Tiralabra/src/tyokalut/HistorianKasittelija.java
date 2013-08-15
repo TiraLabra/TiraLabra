@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import osat.Laatikko;
+import osat.Lava;
 
 /**
  * Toteutetaan AVL-puun muodossa historia kaikista aiemmin lasketuista tuotteista,
@@ -20,10 +21,16 @@ public class HistorianKasittelija {
     }
     
     /**
-     * Metodi, jolla uusia laskettuja asettelumäärityksiä tallennetaan.
+     * Lisää solmun annettuun AVL-puuhun
+     * 
+     * @param juuri Sen AVL-puun juurisolmu, johon halutaan lisätä.
+     * @param laatikko Kokotiedot sisältävä laatikko-olio, joka lisätään.
+     * @param asettelu Asettelutapa, joka lisätään uuteen solmuun.
+     * @param lava Lavan mittatiedot, jotka lisätään uuteen solmuun.
+     * @return Palauttaa lisätyn solmun.
      */
-    private AVLsolmu lisaa(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu) {
-        AVLsolmu uusi = new AVLsolmu(laatikko, asettelu);
+    private AVLsolmu lisaa(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+        AVLsolmu uusi = new AVLsolmu(laatikko, asettelu, lava);
         
         if (juuri == null) {
             juuri = uusi;
@@ -53,8 +60,16 @@ public class HistorianKasittelija {
         return uusi;
     }
     
-    public void AVLlisays(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu) {
-        AVLsolmu uusi = lisaa(juuri, laatikko, asettelu);
+    /**
+     * Käyttää lisaa-metodia ja tämän jälkeen huolehtii puun tasapainossa pysymisestä.
+     * 
+     * @param juuri Sen AVL-puun juurisolmu, johon lisätään.
+     * @param laatikko Lisättävä, mittatiedot sisältävä laatikko-olio.
+     * @param asettelu Lisättävät asettelutiedot sisältävä lista.
+     * @param lava Lavan mittatiedot sisältävä olio.
+     */
+    public void AVLlisays(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+        AVLsolmu uusi = lisaa(juuri, laatikko, asettelu, lava);
         AVLsolmu solmu = uusi.getVanhempi();
         
         while (solmu != null) {
@@ -111,6 +126,13 @@ public class HistorianKasittelija {
         }
     }
     
+    /**
+     * Etsii annetusta AVL-puusta onko siellä annetun EAN-koodin tuotetta.
+     * 
+     * @param solmu Puun juurisolmu, josta etsitään.
+     * @param EAN Halutun tuotteen EAN-koodi.
+     * @return Palauttaa halutun tuotteen tiedot, jos löytyy, null jos ei.
+     */
     public AVLsolmu etsi(AVLsolmu solmu, long EAN) {
         if (solmu == null || solmu.getKey() == EAN) {
             return solmu;
@@ -123,7 +145,13 @@ public class HistorianKasittelija {
         }
     }
     
-    public AVLsolmu kiertoOikealle(AVLsolmu solmu) {
+    /**
+     * AVL-puun solmuja oikealle kiertävä metodi, jolla huolehditaan sen tasapainosta.
+     * 
+     * @param solmu Solmu, jonka suhteen kierto tehdään.
+     * @return Palauttaa uuden solmujen vanhemman.
+     */
+    private AVLsolmu kiertoOikealle(AVLsolmu solmu) {
         AVLsolmu vasen = solmu.getVasen();
         vasen.setVanhempi(solmu.getVanhempi());
         
@@ -142,7 +170,13 @@ public class HistorianKasittelija {
         return vasen;
     }
     
-    public AVLsolmu kiertoVasemmalle(AVLsolmu solmu) {
+    /**
+     * AVL-puun solmuja vasemmalle kiertävä metodi, jolla huolehditaan sen tasapainosta.
+     * 
+     * @param solmu Solmu, jonka suhteen kierto tehdään.
+     * @return Palauttaa uuden solmujen vanhemman.
+     */
+    private AVLsolmu kiertoVasemmalle(AVLsolmu solmu) {
         AVLsolmu oikea = solmu.getOikea();
         oikea.setVanhempi(solmu.getVanhempi());
         
@@ -161,18 +195,36 @@ public class HistorianKasittelija {
         return oikea;
     }
     
-    public AVLsolmu oikeaVasenKierto(AVLsolmu solmu) {
+    /**
+     * AVL-puun solmuja ensin oikealle ja sitten vasemmalle kiertävä metodi, jolla huolehditaan sen tasapainosta.
+     * 
+     * @param solmu Solmu, jonka suhteen kierto tehdään.
+     * @return Palauttaa uuden solmujen vanhemman.
+     */
+    private AVLsolmu oikeaVasenKierto(AVLsolmu solmu) {
         AVLsolmu oikea = solmu.getOikea();
         solmu.setOikea(kiertoOikealle(oikea));
         return kiertoVasemmalle(solmu);
     }
     
-    public AVLsolmu vasenOikeaKierto(AVLsolmu solmu) {
+    /**
+     * AVL-puun solmuja ensin vasemmalle ja sitten oikealle kiertävä metodi, jolla huolehditaan sen tasapainosta.
+     * 
+     * @param solmu Solmu, jonka suhteen kierto tehdään.
+     * @return Palauttaa uuden solmujen vanhemman.
+     */
+    private AVLsolmu vasenOikeaKierto(AVLsolmu solmu) {
         AVLsolmu vasen = solmu.getVasen();
         solmu.setVasen(kiertoVasemmalle(vasen));
         return kiertoOikealle(solmu);
     }
     
+    /**
+     * Kertoo annetun solmun etäisyyden lehtisolmuista.
+     * 
+     * @param solmu Solmu, jonka korkeus halutaan tietää.
+     * @return Palauttaa korkeustiedon kokonaislukuna.
+     */
     private int haeKorkeus(AVLsolmu solmu) {
         if (solmu == null) {
             return -1;
@@ -193,11 +245,17 @@ public class HistorianKasittelija {
             while (lukija.hasNextLine()) {
                 String rivi = lukija.nextLine();
                 
-                String[] osat = rivi.split(":");
-                String[] mitat = osat[0].split("-");
+                String[] osat = rivi.split("=");
+                String[] mitat = osat[0].split(":");
                 
-                Laatikko laatikko = new Laatikko(Integer.parseInt(mitat[0]), Integer.parseInt(mitat[1]), 
-                        Integer.parseInt(mitat[2]), Long.parseLong(mitat[3]));
+                String[] laatikonMitat = mitat[0].split("-");
+                String[] lavanMitat = mitat[1].split("-");
+                
+                Laatikko laatikko = new Laatikko(Integer.parseInt(laatikonMitat[0]),
+                        Integer.parseInt(laatikonMitat[1]), 
+                        Integer.parseInt(laatikonMitat[2]), Long.parseLong(laatikonMitat[3]));
+                Lava lava = new Lava(Integer.parseInt(lavanMitat[0]), Integer.parseInt(lavanMitat[1]),
+                        Integer.parseInt(lavanMitat[2]));
                 
                 KasvavaLista asettelu = new KasvavaLista();
                 
@@ -207,7 +265,7 @@ public class HistorianKasittelija {
                     asettelu.lisaa(osat[i]);
                 }
                 
-                lisaa(juuri, laatikko, asettelu);
+                AVLlisays(juuri, laatikko, asettelu, lava);
             }
             
             lukija.close();
@@ -222,7 +280,7 @@ public class HistorianKasittelija {
      * Metodi, joka tallentaa kaikki puun sisältämät asettelutavat tekstitiedostoon
      * ohjelma suljettaessa.
      */
-    public void tallenna(Laatikko tallennettava, KasvavaLista asettelu, AVLsolmu juuri) {
+    public void tallenna(AVLsolmu juuri) {
         try {
             FileWriter kirjoittaja = new FileWriter("historia.txt");
             

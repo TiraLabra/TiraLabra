@@ -45,6 +45,10 @@ public class Laskuri {
         return parasJarjestys;
     }
     
+    public int laskeKerrokset(Laatikko laatikko, Lava lava) {
+        return lava.getKorkeus() / laatikko.getKorkeus();
+    }
+    
     /**
      * Rekursiivinen metodi, joka asettaa laatikoita lavalle ja näin kokeilemalla selvittää parhaan
      * tavan asetella laatikot.

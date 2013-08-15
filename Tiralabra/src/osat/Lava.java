@@ -89,6 +89,13 @@ public class Lava {
         return korkeus;
     }
     
+    /**
+     * Kertoo, onko kyseisellä ruudulla laatikko vai ei.
+     * 
+     * @param x Haetun ruudun sijainti x-akselilla.
+     * @param y Haetun ruudun sijainti y-akselilla
+     * @return Palauttaa true, jos on tyhjä, false jos ruutu on täysi.
+     */
     public boolean onkoTyhja(int x, int y) {
         return asetetutLaatikot[x][y];
     }
