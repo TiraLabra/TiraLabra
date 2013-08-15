@@ -4,7 +4,6 @@
  */
 package com.mycompany.tiralabra_maven.automaatit;
 
-import com.mycompany.tiralabra_maven.automaatit.Automaatti;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,12 +41,11 @@ public class AutomaattiTest {
     @Ignore // Kesken...
     @Test
     public void testKasittele() {
-        Automaatti a = new Automaatti();
         Jono<String> s = new Jono<String>();
         s.lisaa("a");
         s.lisaa("b");
         s.lisaa("|");
-        s.lisaa("c");
-        assertFalse(a.kasittele(s));
+        Automaatti a = new Automaatti(s);
+        assertFalse(a.kasittele());
     }
 }

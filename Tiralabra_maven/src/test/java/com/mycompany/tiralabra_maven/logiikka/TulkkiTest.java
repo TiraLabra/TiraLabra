@@ -82,6 +82,11 @@ public class TulkkiTest {
         tulkki.tulkitseMerkkijono("((7 + 3) + 5");
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public void testEpakelpoKaava4() {
+        tulkki.tulkitseMerkkijono("(a7 + 3) + 5");
+    }
+    
     /**
      * 
      */

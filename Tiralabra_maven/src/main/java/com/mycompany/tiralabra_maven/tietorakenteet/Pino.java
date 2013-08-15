@@ -34,6 +34,11 @@ public final class Pino<T> {
         return korkeus == 0;
     }
     
+    public void tyhjenna() {
+        ylin = null;
+        korkeus = 0;
+    }
+    
     /**
      * Vastaa Javan <b>Stack</b>-tietorakenteen <tt>push</tt> operaatiota sillä 
      * erotuksella ettei <b>Pino</b>n <tt>lisaa</tt>-metodilla ole paluuarvoa.

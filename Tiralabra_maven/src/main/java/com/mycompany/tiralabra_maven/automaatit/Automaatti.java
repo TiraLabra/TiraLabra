@@ -24,12 +24,13 @@ public class Automaatti {
     private String[]                data;
     private Jono<Automaattisolmu>   solmut;
     
-    public Automaatti() {
+    public Automaatti(final Jono<String> SAANNOLLINEN_LAUSEKE) {
     }
     
-    public boolean kasittele(final Jono<String> SYOTE) {
-        alusta(SYOTE);
-        return suorita();
+    public boolean kasittele() {
+        throw new UnsupportedOperationException("Ominaisuutta ei ole vielä toteutettu.");
+//        alusta(SYOTE);
+//        return suorita();
     }
         
     private void alusta(final Jono<String> SYOTE) {

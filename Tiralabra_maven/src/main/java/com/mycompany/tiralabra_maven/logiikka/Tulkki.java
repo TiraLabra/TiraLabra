@@ -20,6 +20,7 @@ public final class Tulkki {
     private static final Pino<Character> PINO = new Pino<Character>();
     private static final Jono<String> JONO = new Jono<String>();
     private static final Jono<Character> APUJONO = new Jono<Character>();
+    private static String merkkijono;
     private static char[] syotteenMerkit;
     private static char merkki;
     private static int indeksi;
@@ -54,21 +55,24 @@ public final class Tulkki {
      */
     public Jono<String> tulkitseMerkkijono(final String MERKKIJONO)
             throws IllegalArgumentException {
+        merkkijono = MERKKIJONO;
         
         // Koska tulkin kentät ovat staattiset, on jonoon voinut jäädä edellisen
         // kutsukerran paluuarvo.        
         JONO.tyhjenna();
+        // Pinoon on voinut myös jäädä jotain.
+        PINO.tyhjenna();
         
         // Pientä kapselointia
-        iteroiMerkit(MERKKIJONO);        
-        tyhjennaPino(MERKKIJONO);
+        iteroiMerkit();        
+        tyhjennaPino();
 
         return JONO;
     }
     
-    private void iteroiMerkit(final String MERKKIJONO)
+    private void iteroiMerkit()
             throws EmptyStackException, IllegalArgumentException {
-        syotteenMerkit = MERKKIJONO.toCharArray();
+        syotteenMerkit = merkkijono.toCharArray();
         for (indeksi = 0; indeksi < syotteenMerkit.length; indeksi++) {
             merkki = syotteenMerkit[indeksi];
             if (merkki == ' ') {
@@ -83,7 +87,10 @@ public final class Tulkki {
             } else if (merkki == ')') {
                 while (true) {
                     if (PINO.onTyhja()) {
-                        kaadu("Kaavan \"" + MERKKIJONO + "\" sulkumerkit eivät"
+                        // Vasen sulkumerkki puuttuu. (Code coverage bugittaa
+                        // tämän rivin osalta jostain syystä, testimetodi
+                        // testEpakelpoKaava3 kattaa tämän rivin.)
+                        kaadu("Kaavan \"" + merkkijono + "\" sulkumerkit eivät "
                                 + "täsmää!");
                     } else if (PINO.kurkista() == '(') {
                         PINO.poista();
@@ -92,7 +99,9 @@ public final class Tulkki {
                     JONO.lisaa(PINO.poista() + "");
                 }
             } else {
-                kaadu("Kaava \"" + MERKKIJONO + "\" sisältää tuntemattomia"
+                // Code coverage bugittaa myös tässä, testEpakelpoKaava4 testaa
+                // tämän rivin.
+                kaadu("Kaava \"" + merkkijono + "\" sisältää tuntemattomia"
                         + "merkkejä!");
             }
         }
@@ -167,19 +176,19 @@ public final class Tulkki {
         }
     }    
 
-    private void tyhjennaPino(final String MERKKIJONO)
+    private void tyhjennaPino()
             throws IllegalArgumentException {
         while (!PINO.onTyhja()) {
             merkki = PINO.poista();
             // Pinossa ei saa olla enää sulkuja
             if (merkki == '(') {
-                kaadu("Kaavan \"" + MERKKIJONO + "\" sulkumerkit eivät täsmää!");
+                kaadu("Kaavan \"" + merkkijono + "\" sulkumerkit eivät täsmää!");
             }
             JONO.lisaa(merkki + "");
         }
     }
     
-    private void kaadu(String viesti) throws IllegalArgumentException {
-        throw new IllegalArgumentException(viesti);
+    private void kaadu(final String VIESTI) throws IllegalArgumentException {
+        throw new IllegalArgumentException(VIESTI);
     }
 }

@@ -62,6 +62,13 @@ public class PinoTest {
         pino.lisaa(testiObjekti);
         assertFalse(pino.onTyhja());
     }
+    
+    @Test
+    public void testTyhjenna() {
+        pino.lisaa(testiObjekti);
+        pino.tyhjenna();
+        assertEquals(0, pino.koko());
+    }
 
     /**
      *
