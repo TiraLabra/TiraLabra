@@ -43,11 +43,7 @@ public class Kanonisoija {
      * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
      */
     public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
-
-       
-        // luetaan parit pituusjärjestyksessä, korvataan koodi uudella kanonisella koodilla, palautetaan lista
-        int kerroin = (int) (Math.log(blokkiKoodiLista.size()) / Math.log(2));
-        int koko = (int) Math.pow(2, kerroin);
+        int koko = laskeHashMapilleKoko(blokkiKoodiLista);
 
         OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit = new OmaHashMap<ByteWrapper, Koodi>(koko);
         kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<ByteWrapper, Koodi>>(koko);
@@ -109,5 +105,11 @@ public class Kanonisoija {
 
 
         return paluu;
+    }
+
+    private int laskeHashMapilleKoko(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
+        int kerroin = (int) (Math.log(blokkiKoodiLista.size()) / Math.log(2));
+        int koko = (int) Math.pow(2, kerroin);
+        return koko;
     }
 }

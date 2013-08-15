@@ -2,31 +2,28 @@ package Tietorakenteet;
 
 /**
  * Oma Hashmap-implementaatio. arvot[hashCode] sisältää ylivuotolistan johonka
- * tallennetaan kaikki objektit jotka saavat saman hash coden Ylivuotolista
- * toteutettu arraylistillä, pääasiassa koska en halua implementoida linkitettyä
- * listää koska arraylist on jo olemassa. Lisäksi jos taulu toimii oikein,
- * ylivuotolistat ovat pieniä eikä muistia hukata paljoa ja arraylistillä on
- * parempi käyttäytyminen välimuistissa koska data on peräkkäin muistissa vs
- * linkitetyn listan alkiot jotka voivat olla mielivaltaisissa paikoissa
- * 
+ * tallennetaan kaikki objektit jotka saavat saman hash coden.
+ *
  * Metodien javadocit rajapinnan yhteydessä.
  *
  * @param <K> Avain
  * @param <V> Arvo
- * 
- 
+ *
+ *
  */
 public class OmaHashMap<K, V> implements OmaMap<K, V> {
 
-    private final double MAKSIMI_KUORMA_KERROIN = 0.7;
+    private final static double MAKSIMI_KUORMA_KERROIN = 0.75;
+    private final static int OLETUS_KOKO = 32;
     private int koko;
-    private Object[] arvot;
+    private double kasvatusPiste;
+    private HashMapAlkio[] arvot;
 
     /**
-     * Konstruktori. Asettaa kapasiteetin 32 alkille
+     * Konstruktori. Asettaa kapasiteetin oletuskooksi
      */
     public OmaHashMap() {
-        this(32);
+        this(OLETUS_KOKO);
     }
 
     /**
@@ -44,55 +41,23 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
             throw new IllegalArgumentException("Annetun koon on oltava kahden potenssi");
         }
 
+
         koko = 0;
-        arvot = new Object[taulukonKoko];
-        alustaTaulukko(arvot);
+        arvot = new HashMapAlkio[taulukonKoko];
+
+        laskeKasvatusPiste();
     }
 
-    /**
-     * Alustaa taulukon
-     *
-     * @param taulukko Alustettava taulukko
-     */
-    private void alustaTaulukko(Object[] taulukko) {
-        for (int i = 0; i < taulukko.length; ++i) {
-            taulukko[i] = new OmaArrayList<Pari<K, V>>();
-        }
-    }
-
-    /**
-     * Kasvattaa taulukon kokoa
-     */
-    private void kasvata() {
-
-        Object[] uusiTaulukko = new Object[arvot.length * 2];
-        alustaTaulukko(uusiTaulukko);
-        rehash(uusiTaulukko);
-        arvot = uusiTaulukko;
-    }
-
-    /**
-     * Rehashaa kaikki avain-arvo-parit uuteen taulukkoon
-     *
-     * @param uusiTaulukko taulukko johonka rehashataan avain-arvo-parit
-     */
-    private void rehash(Object[] uusiTaulukko) {
-        for (int i = 0; i < arvot.length; ++i) {
-
-            assert (arvot[i] != null);
-            OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
-            if (!lista.isEmpty()) {
-                reHashaaLista(lista, uusiTaulukko);
-            }
-        }
+    private void laskeKasvatusPiste() {
+        kasvatusPiste = (double) arvot.length * MAKSIMI_KUORMA_KERROIN;
     }
 
     @Override
     public void clear() {
 
         koko = 0;
-        arvot = new Object[32];
-        alustaTaulukko(arvot);
+        arvot = new HashMapAlkio[OLETUS_KOKO];
+
     }
 
     private int taulukonIndeksi(Object key, Object[] obj) {
@@ -101,13 +66,11 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
 
     @Override
     public V get(Object key) {
-        OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[taulukonIndeksi(key, arvot)];
+        HashMapAlkio<K, V> alkio = arvot[taulukonIndeksi(key, arvot)];
 
-        assert (lista != null);
-
-        for (int i = 0; i < lista.size(); ++i) {
-            if (lista.get(i).ensimmainen.equals(key)) {
-                return lista.get(i).toinen;
+        for (; alkio != null; alkio = alkio.seuraava) {
+            if (alkio.avain.equals(key)) {
+                return alkio.arvo;
             }
         }
         return null;
@@ -129,58 +92,105 @@ public class OmaHashMap<K, V> implements OmaMap<K, V> {
             ++koko;
         }
 
-        if (koko > arvot.length * MAKSIMI_KUORMA_KERROIN) {
+        if (koko > kasvatusPiste) {
             kasvata();
         }
     }
+    /**
+     * Asettaa avain-arvo-parin tauluun
+     * @param key Avain
+     * @param value arvo
+     * @param taulukko taulukko johonka asetetaan
+     * @return Lisättiinkö tauluun kokonaan uusi alkio 
+     */
+    private boolean asetaTaulukkoon(K key, V value, HashMapAlkio[] taulukko) {
 
-    private boolean asetaTaulukkoon(K key, V value, Object[] taulukko) {
+        int indeksi = taulukonIndeksi(key, taulukko);
+        HashMapAlkio<K, V> alkio = taulukko[indeksi];
 
-        OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) taulukko[taulukonIndeksi(key, taulukko)];
-
-        if (korvaaJosJoTaulukossa(lista, key, value)) {
+        if (korvaaJoJosOlemassa(alkio, key, value)) {
             return false;
         }
 
-        lisaaTaulukkoon(key, value, lista);
+        lisaaListaan(key, value, alkio, taulukko, indeksi);
         return true;
     }
-
+    
     @Override
     public OmaList<K> avaimet() {
         OmaList<K> avainLista = new OmaArrayList<K>();
 
         for (int i = 0; i < arvot.length; ++i) {
-            OmaList<Pari<K, V>> lista = (OmaList<Pari<K, V>>) arvot[i];
-
-            for (int j = 0; j < lista.size(); ++j) {
-                avainLista.add(lista.get(j).ensimmainen);
+            for (HashMapAlkio<K, V> alkio = arvot[i]; alkio != null; alkio = alkio.seuraava) {
+                avainLista.add(alkio.avain);
             }
         }
         return avainLista;
     }
+    /**
+     * Jos avain on jo listassa, korvataan sen arvo
+     * 
+     * @param alkio lista jota tarkastellaan
+     * @param key avain
+     * @param value arvo
+     * @return Korvattiinko vanha arvo listasta
+     */
+    private boolean korvaaJoJosOlemassa(HashMapAlkio<K, V> alkio, K key, V value) {
 
-    private boolean korvaaJosJoTaulukossa(OmaList<Pari<K, V>> lista, K key, V value) {
-        // jos on jo taulukossa, korvataan
-        for (int i = 0; i < lista.size(); ++i) {
-            if (lista.get(i).ensimmainen.equals(key)) {
-                lista.get(i).toinen = value;
+        for (HashMapAlkio<K, V> paikka = alkio; paikka != null; paikka = paikka.seuraava) {
+            if (paikka.avain.equals(key)) {
+                paikka.arvo = value;
                 return true;
             }
         }
         return false;
     }
+    /**
+     * Lisää listaan uuden avain-arvo-parin
+     * @param key avain
+     * @param value arvo
+     * @param alkio vanha alkio
+     * @param taulukko taulukko 
+     * @param indeksi taulukon indeksi
+     */
+    private void lisaaListaan(K key, V value, HashMapAlkio<K, V> alkio, HashMapAlkio[] taulukko, int indeksi) {
+        HashMapAlkio<K, V> uusi = new HashMapAlkio<K, V>();
+        uusi.avain = key;
+        uusi.arvo = value;
+        uusi.seuraava = alkio;
+        taulukko[indeksi] = uusi;
 
-    private void lisaaTaulukkoon(K key, V value, OmaList<Pari<K, V>> lista) {
-        Pari<K, V> pari = new Pari<K, V>();
-        pari.ensimmainen = key;
-        pari.toinen = value;
-        lista.add(pari);
     }
 
-    private void reHashaaLista(OmaList<Pari<K, V>> lista, Object[] uusiTaulukko) {
-        for (int j = 0; j < lista.size(); ++j) {
-            asetaTaulukkoon(lista.get(j).ensimmainen, lista.get(j).toinen, uusiTaulukko);
+    /**
+     * Kasvattaa taulukon kokoa
+     */
+    private void kasvata() {
+
+        HashMapAlkio[] uusiTaulukko = new HashMapAlkio[arvot.length * 2];
+        rehash(uusiTaulukko);
+        arvot = uusiTaulukko;
+        laskeKasvatusPiste();
+    }
+
+    /**
+     * Rehashaa kaikki avain-arvo-parit uuteen taulukkoon
+     *
+     * @param uusiTaulukko taulukko johonka rehashataan avain-arvo-parit
+     */
+    private void rehash(HashMapAlkio[] uusiTaulukko) {
+        for (int i = 0; i < arvot.length; ++i) {
+             reHashaaLista(arvot[i], uusiTaulukko);
+        }
+    }
+    /**
+     * Rehashaa linkitetyn listan alkiot uuteen taulukkoo
+     * @param alkio Vanha listan alkio
+     * @param uusiTaulukko uusi taulukko johonka siirretään
+     */
+    private void reHashaaLista(HashMapAlkio<K, V> alkio, HashMapAlkio[] uusiTaulukko) {
+        for (; alkio != null; alkio = alkio.seuraava) {
+            asetaTaulukkoon(alkio.avain, alkio.arvo, uusiTaulukko);
         }
     }
 }
