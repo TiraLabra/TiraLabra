@@ -1,4 +1,4 @@
-package kolmiopeli.logiikka.algoritmit;
+package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -167,7 +167,7 @@ public class KomboEtsija {
     private void tutkiViereinen(Kolmio viereinen, int vRivi, int vSarake, Koordinaatti tutkittava, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
 
 
-        if (viereinenEiOleReunassa(tutkittava, vRivi, vSarake)) {
+        if (viereinenEiOleYliReunan(tutkittava, vRivi, vSarake)) {
             viereinen = peliruudukko[vRivi][vSarake];
             if (viereinenOnSamanvarinen(viereinen, tutkittava, tVari)) {
                 if (viereistaEiOleKaytyLapi(viereinen, tutkittava, vRivi, vSarake, onkoKaytyLapi)) {
@@ -211,7 +211,7 @@ public class KomboEtsija {
         }
     }
 
-    private boolean viereinenEiOleReunassa(Koordinaatti tutkittava, int vRivi, int vSarake) {
+    private boolean viereinenEiOleYliReunan(Koordinaatti tutkittava, int vRivi, int vSarake) {
         int reunaRivi = peliruudukko.length - 1;
         int reunaSarake = peliruudukko[0].length - 1;
         if (vRivi < 0) {
@@ -249,4 +249,16 @@ public class KomboEtsija {
             return true;
         }
     }
+    
+    public boolean testViereistaEiOleKaytyLapi(Kolmio viereinen, Koordinaatti tutkittava, int vRivi, int vSarake, boolean[][] onkoKaytyLapi) {
+        return this.viereistaEiOleKaytyLapi(viereinen, tutkittava, vRivi, vSarake, onkoKaytyLapi);
+    }
+    public boolean testViereinenOnSamanvarinen(Kolmio viereinen, Koordinaatti tutkittava, Color tVari) {
+        return this.viereinenOnSamanvarinen(viereinen, tutkittava, tVari);
+    }
+    public boolean testViereinenEiOleYliReunan(Koordinaatti tutkittava, int vRivi, int vSarake) {
+        return this.viereinenEiOleYliReunan(tutkittava, vRivi, vSarake);
+    }
+    
+    
 }
