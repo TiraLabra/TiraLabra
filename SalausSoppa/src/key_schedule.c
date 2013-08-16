@@ -4,6 +4,7 @@
 #include "util.h"
 #include "key_schedule.h"
 
+/* Initial permutation in the key schedule */
 size_t PC1[] = {57,   49,    41,   33,    25,    17,    9,
                  1,   58,    50,   42,    34,    26,   18,
                 10,    2,    59,   51,    43,    35,   27,
@@ -14,6 +15,7 @@ size_t PC1[] = {57,   49,    41,   33,    25,    17,    9,
                 21,   13,     5,   28,    20,    12,    4};
 size_t PC1_LEN = sizeof PC1 / sizeof PC1[0];
 
+/* Final permutation in the key schedule */
 size_t PC2[] = {14,    17,   11,    24,     1,    5,
                  3,    28,   15,     6,    21,   10,
                 23,    19,   12,     4,    26,    8,
@@ -24,13 +26,24 @@ size_t PC2[] = {14,    17,   11,    24,     1,    5,
                 46,    42,   50,    36,    29,   32};
 size_t PC2_LEN = sizeof PC2 / sizeof PC2[0];
 
+/* Number of rotations for given subkey */
 int rotations[] = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
 
+/**
+ * @brief Shifts the target one bit to the left, wrapping around
+ *
+ * The function "wraps around", moving the leftmost bit to the beginning.
+ * This function works with the 28 leftmost bits (as is used in the key 
+ * schedule algorithm).
+ */
 void rotate_one(uint64_t* target)
 {
 	*target = (*target << 1) ^ ((*target & 0x8000000000000000UL) >> 27);
 }
 
+/**
+ * @brief Rotaes both subkeys a specified amount to the left
+ */
 void left_rotate(uint64_t subkey[2], int rotations)
 {
 	for(int i = 0; i < rotations; i++) {
@@ -39,6 +52,9 @@ void left_rotate(uint64_t subkey[2], int rotations)
 	}
 }
 
+/**
+ * @brief DES key schedule algorithm
+ */
 void generate_subkeys(uint64_t key, uint64_t subkeys[SUBKEY_NUM])
 {
 	uint64_t permuted_key = permute(key, PC1_LEN, PC1);
