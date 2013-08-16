@@ -53,26 +53,23 @@ public class Punamusta implements Puu {
             return new SolmuPunamusta(key, true);
         }
 
-        if ((nyk.getOikea() != null && nyk.getVasen() != null) && (nyk.getOikea().getVari() && nyk.getVasen().getVari())) {
+        if (punainen(nyk.getVasen()) && punainen(nyk.getOikea())) {
             vaihdaVarit(nyk);
         }
 
-        if (key == nyk.getArvo()) {
-            return nyk;
-        }
         if (key < nyk.getArvo()) {
             nyk.setVasen(insert(nyk.getVasen(), key));
-        } else {
+        } else if (key > nyk.getArvo()){
             nyk.setOikea(insert(nyk.getOikea(), key));
         }
 
         //oikea lapsi on punainen, vasen lapsi joko musta tai null
-        if ((nyk.getOikea() != null && nyk.getOikea().getVari() && nyk.getVasen() == null) || (nyk.getOikea() != null && nyk.getOikea().getVari() && nyk.getVasen() != null && !nyk.getVasen().getVari())) {
+        if (punainen(nyk.getOikea()) && !punainen(nyk.getVasen())) {
             nyk = vasenkierto(nyk);
         }
 
         //vasen lapsi on punainen ja vasemman vasen lapsi on punainen
-        if (nyk.getVasen() != null && nyk.getVasen().getVasen() != null && nyk.getVasen().getVari() && nyk.getVasen().getVasen().getVari()) {
+        if (punainen(nyk.getVasen()) && punainen(nyk.getVasen().getVasen())) {
             nyk = oikeakierto(nyk);
         }
 
@@ -82,6 +79,9 @@ public class Punamusta implements Puu {
     @Override
     public void delete(int key) {
         juuri = delete(juuri, key);
+        if (juuri == null) {
+            return;
+        }
         juuri.setVari(false);
     }
 
@@ -191,12 +191,12 @@ public class Punamusta implements Puu {
      */
     private SolmuPunamusta delete(SolmuPunamusta nyk, int key) {
         if (key < nyk.getArvo()) {
-            if (!nyk.getVasen().getVari() && !nyk.getVasen().getVasen().getVari()) {
+            if (!punainen(nyk.getVasen()) && !punainen(nyk.getVasen().getVasen())) {
                 nyk = siirraPunVas(nyk);
             }
             nyk.setVasen(delete(nyk.getVasen(), key));
         } else {
-            if (nyk.getVasen() != null && nyk.getVasen().getVari()) {
+            if (punainen(nyk.getVasen())) {
                 nyk = oikeakierto(nyk);
             }
 
@@ -204,7 +204,7 @@ public class Punamusta implements Puu {
                 return null;
             }
 
-            if (!nyk.getOikea().getVari() && !nyk.getOikea().getVasen().getVari()) {
+            if (!punainen(nyk.getOikea()) && !punainen(nyk.getOikea().getVasen())) {
                 nyk = siirraPunOik(nyk);
             }
 
@@ -228,7 +228,7 @@ public class Punamusta implements Puu {
      */
     private SolmuPunamusta siirraPunVas(SolmuPunamusta nyk) {
         vaihdaVarit(nyk);
-        if (nyk.getOikea().getVasen().getVari()) {
+        if (punainen(nyk.getOikea().getVasen())) {
             nyk.getOikea().setOikea(oikeakierto(nyk.getOikea()));
             nyk = vasenkierto(nyk);
             vaihdaVarit(nyk);
@@ -245,7 +245,7 @@ public class Punamusta implements Puu {
      */
     private SolmuPunamusta siirraPunOik(SolmuPunamusta nyk) {
         vaihdaVarit(nyk);
-        if (nyk.getVasen().getVasen().getVari()) {
+        if (punainen(nyk.getVasen().getVasen())) {
             nyk = oikeakierto(nyk);
             vaihdaVarit(nyk);
         }
@@ -263,7 +263,7 @@ public class Punamusta implements Puu {
             return null;
         }
 
-        if (!nyk.getVasen().getVari() && !nyk.getVasen().getVasen().getVari()) {
+        if (!punainen(nyk.getVasen()) && !punainen(nyk.getVasen().getVasen())) {
             nyk = siirraPunVas(nyk);
         }
 
@@ -279,18 +279,27 @@ public class Punamusta implements Puu {
      * @return solmu käsittelyn jälkeen
      */
     private SolmuPunamusta korjaa(SolmuPunamusta nyk) {
-        if (nyk.getOikea() == null || !nyk.getOikea().getVari()) {
+        if (punainen(nyk.getOikea())) {
             nyk = vasenkierto(nyk);
         }
 
-        if (nyk.getVasen() != null && nyk.getVasen().getVasen() != null && nyk.getVasen().getVari() && nyk.getVasen().getVasen().getVari()) {
+        if (nyk.getVasen() != null && punainen(nyk.getVasen()) && punainen(nyk.getVasen().getVasen())) {
             nyk = oikeakierto(nyk);
         }
 
-        if (nyk.getVasen().getVari() && nyk.getOikea().getVari()) {
+        if (punainen(nyk.getVasen()) && punainen(nyk.getOikea())) {
             vaihdaVarit(nyk);
         }
         return nyk;
+    }
+    
+    /** Tarkistaa solmun värin; null solmut ovat mustia.
+     * 
+     * @param s tarkistettava solmu
+     * @return true jos solmu on punainen, false jos musta tai null
+     */
+    private boolean punainen(SolmuPunamusta s){
+        return s != null && s.getVari();
     }
     /**
      * Palauttaa solmujen arvo sisäjärjestyksessä.
