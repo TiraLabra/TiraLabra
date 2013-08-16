@@ -7,9 +7,10 @@ package tiralabra_maven;
  */
 public class Solmu {
 
-    private Solmu isaSolmu;
+    private Solmu vanhemSolmu;
     private Solmu vasenLapsi;
     private Solmu oikeaLapsi;
+    private int korkeus;
     private int arvo;
 
     /**
@@ -58,23 +59,35 @@ public class Solmu {
        return arvo+"{"+vasenLapsi+","+oikeaLapsi+"}";
     }
 
-    int getArvo() {
+    public int getArvo() {
         return arvo;
     }
 
-    Solmu getVasen() {
+    public Solmu getVasen() {
         return vasenLapsi;
     }
 
-    Solmu getOikea() {
+    public Solmu getOikea() {
         return oikeaLapsi;
     }
 
-    void setIsa(Solmu a) {
-        isaSolmu = a;
+    public void setVanhem(Solmu a) {
+        vanhemSolmu = a;
     }
 
-    Solmu getIsaSolmu() {
-        return isaSolmu;
+    public Solmu getVanhem() {
+        return vanhemSolmu;
+    }
+
+    public void setArvo(int arvo) {
+        this.arvo=arvo;
+    }
+    
+    public void setKorkeus(int h){
+        this.korkeus=h;
+    }
+    
+    public int getKorkeus(){
+        return korkeus;
     }
 }

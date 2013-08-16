@@ -5,33 +5,27 @@ package tiralabra_maven;
  * @author esaaksvu
  */
 public interface PuuRajapinta {
-
+    
     /**
-     * Metodi joka palauttaa puun päälimmäisen solmun
-     * @return päälimmäinen solmu
+     * Hakee puista solmun arvon perusteella
+     * @param i on solmun arvo jolla haetaan
+     * @return viite solmuun jos löytyy, null jos ei
      */
-    public Solmu getJuuri();
-
-     /**
+    public Solmu hae(int i);
+    
+    /**
      * Poistaa solmun arvon perusteella
-     * @param i arvo joka poistetaan puusta
-     * @return true jos poisto onnistui
+     * @param i on solmun arvo
+     * @return true jos poisto onnistuu
      */
     public boolean poistaSolmu(int i);
 
-   /**
-     * Palauttaa tulostuksen puusta muodossa 
-     *   1
-     *  /\
-     * 2  3 mutta keskeneräinen
-     * @return tulostus koko puusta
+    /**
+     * Lisää solmun puuhun
+     * @param uusi on viite solmuun joka halutaan lisätä
+     * @return palauttaa viitteen lisätyn solmun vanhempaan
      */
-    public String tulostaPuu(Solmu s);
-
-     /**
-     * Lisää uuden solmun puuhun, tasapainoalgoritmi puuttuu vielä
-     * @param uusi solmu joka lisätään puuhun
-     */
-    public void lisaaSolmu(Solmu uusi);
+    public Solmu lisaaSolmu(Solmu uusi);
+    
 
 }

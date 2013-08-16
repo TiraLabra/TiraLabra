@@ -1,7 +1,5 @@
 package tiralabra_maven;
 
-import java.util.Random;
-
 /**
  * Luokka joka suorittaa ohjelman
  * @author esaaksvu
@@ -9,28 +7,30 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
+        PuuRajapinta a = new AVLHakuPuu();
+        PuuRajapinta b = new BinaariHakupuu();
+        
         long startTime = System.nanoTime();
-        PuuRajapinta p = new BinaariHakupuu();
-        Random r = new Random();
+        for (int i = 0; i < 10; i++) {
+            a.lisaaSolmu(new Solmu(i));
+        }
+        long e1 = System.nanoTime() - startTime;
         
-        p.lisaaSolmu(new Solmu(9));
-        p.lisaaSolmu(new Solmu(13));
-        p.lisaaSolmu(new Solmu(2));
-        p.lisaaSolmu(new Solmu(4));
-        p.lisaaSolmu(new Solmu(3));
-        p.lisaaSolmu(new Solmu(7));
-        p.lisaaSolmu(new Solmu(6));
-        p.lisaaSolmu(new Solmu(15));
-        p.lisaaSolmu(new Solmu(18));
-        p.lisaaSolmu(new Solmu(17));
-        p.lisaaSolmu(new Solmu(20));
-      
+        startTime = System.nanoTime();
+         for (int i = 0; i < 100; i++) {
+            b.lisaaSolmu(new Solmu(i));
+        }
+        long e2 = System.nanoTime() - startTime;
         
-        
-        long estimatedTime = System.nanoTime() - startTime;
-        System.out.println(p.getJuuri().getArvo());
-        System.out.println(p.getJuuri());
-        System.out.println("-------------------\n" + estimatedTime + "ns");
+        System.out.println(a);
+        System.exit(0);
+        System.out.println("AVLpuu: "+ e1+"ns");
+        System.out.println("--------vs---------\n" + "BinääriPuu: "+e2+ "ns");
+        long win = (e1<e2) ? e2-e1 : e2-e1;
+        win = win/10000000;
+        System.out.println("--------------------------\n");
+        System.out.println("AVLpuu oli: "+(win)+"ms nopeampi/hitaampi");
+        System.out.println("--------------------------\n");
 
     }
 }
