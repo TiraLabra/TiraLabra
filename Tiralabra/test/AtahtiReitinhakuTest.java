@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tokaviikko.AtahtiReitinhaku;
 
 /**
  *
@@ -109,7 +108,7 @@ public class AtahtiReitinhakuTest {
     public void testPoistaRuutuKeosta() {
         System.out.println("poistaRuutuKeosta");
         AtahtiReitinhaku instance = null;
-        instance.poistaRuutuKeosta();
+        instance.poistaKeosta();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
