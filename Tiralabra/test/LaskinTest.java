@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 
+import Model.LaskinModel;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class LaskinTest {
     
-    private Laskin laskin;
+    private LaskinModel laskin;
     private double virhemarginaali = 0.1;
     private double[][] matriisi1 = {{1, 2},
                                     {3, 4}};
@@ -32,8 +33,8 @@ public class LaskinTest {
  
     
     public LaskinTest() {
-        laskin = new Laskin();
-        
+        laskin = new LaskinModel();
+    
     }
     
     @BeforeClass
@@ -132,6 +133,17 @@ public class LaskinTest {
         }
     }
    
+   
+   @Test
+    public void matriisinDeterminantti(){
+        try {
+            double laskettuTulos = laskin.laskeDeterminantti(matriisi4);
+            double odotettuTulos = 24;
+            assertTrue((Math.abs(laskettuTulos) - Math.abs(odotettuTulos) < virhemarginaali));
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
+    }
     
     private boolean tarkistaMatriisit(double[][] laskettuTulos, double[][] odotettuTulos) {
         for (int i = 0; i < laskettuTulos.length; i++) {
