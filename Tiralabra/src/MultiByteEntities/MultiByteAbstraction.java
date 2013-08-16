@@ -74,15 +74,18 @@ public abstract class MultiByteAbstraction {
 
     /**
      * Recoded to a generic hashCode generator.
+     * Makes an integer representation of the contained bytearray
+     * and generates a hashcode based on that.
      *
      * @return
      */
     @Override
     public int hashCode() {
         int hash = 11;
+        int byteArrayAsInteger = ByteConversion.IntegerConverter.ByteToInteger(bytes);
         for (int i = 0; i < bytes.length; i++) {
             
-            hash += (((bytes[i])+11) * 97);
+            hash += ((byteArrayAsInteger+11) * 97);
             
         }
      

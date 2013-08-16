@@ -39,17 +39,17 @@ public class MultiByteHashedTable {
     private int keyCount;
 
     /**
-     * Initialize the table to contain the specified number of buckets and a
-     * 1000 bucket overflow for same hashes. This structure makes it very much
+     * Initialize the table to contain 16 by 16 buckets. 
+     * This structure makes it very much
      * faster to locate a specific multibyte although it implies a list
      * structure as overflow.
      *
      */
-    public MultiByteHashedTable(int size) {
-        this.size = size;
-        this.data = new MultiByte[size][1000];
-        this.stats = new int[size];
-        this.references = new int[size][1000];
+    public MultiByteHashedTable() {
+        this.size = 16;
+        this.data = new MultiByte[16][16];
+        this.stats = new int[16];
+        this.references = new int[16][16];
         this.keyCount = 0;
     }
 
@@ -97,19 +97,39 @@ public class MultiByteHashedTable {
             if (!this.contains(multiByte)) {
                 for (int i = 0; i < data[hash].length; i++) {
                     if (this.data[hash][i] == null) {
-                        this.data[hash][i] = multiByte;
-                        stats[hash]++;
-                        references[hash][i] = 1;
-                        keyCount++;
-                        return true;
+                        return insertIntoTable(hash, i, multiByte);
                     }
                 }
+                rehash(multiByte);
             } else {
                 this.references[hash][getIndex(hash, multiByte)]++;
+                return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Rehashes the table to twice its original size with the new multibyte.
+     */
+    private void rehash(MultiByte mb) {
+        MultiByte[][] oldData = this.data;
+        
+        this.data = new MultiByte[size*2][size*2];
+        this.references = new int[size*2][size*2];
+        this.stats = new int[size*2];
+        this.size = size*2;
+        this.keyCount = 0;
+        
+        for (int i = 0; i < oldData.length; i++) {
+            for (int j = 0; j < oldData[i].length; j++) {
+                if (oldData[i][j] != null) {
+                    this.put(oldData[i][j]);
+                }
+            }
+        }
+        this.put(mb);
     }
 
     /**
@@ -229,7 +249,7 @@ public class MultiByteHashedTable {
         mergeSort(objectArray);
 
         MultiByte[] returnArray = extractMultiByteArray(objectArray, maxKeyCount);
-        
+
         rehash(returnArray);
 
         return returnArray;
@@ -237,7 +257,8 @@ public class MultiByteHashedTable {
 
     /**
      * Rehashes the entire table with the data in the array.
-     * @param array 
+     *
+     * @param array
      */
     private void rehash(MultiByte[] array) {
         this.data = new MultiByte[array.length][array.length];
@@ -258,7 +279,8 @@ public class MultiByteHashedTable {
      * @return
      */
     private MultiByte[] extractMultiByteArray(Object[][] source, int maxCount) {
-        MultiByte[] array = new MultiByte[maxCount];
+        int arraySize = maxCount < source.length ? maxCount : source.length;
+        MultiByte[] array = new MultiByte[arraySize];
         for (int i = 0; i < array.length; i++) {
             array[i] = (MultiByte) source[i][0];
         }
@@ -351,5 +373,13 @@ public class MultiByteHashedTable {
             destination[destIndex][1] = source[i][1];
             destIndex++;
         }
+    }
+
+    private boolean insertIntoTable(int hash, int i, MultiByte multiByte) {
+        this.data[hash][i] = multiByte;
+        stats[hash]++;
+        references[hash][i] = 1;
+        keyCount++;
+        return true;
     }
 }

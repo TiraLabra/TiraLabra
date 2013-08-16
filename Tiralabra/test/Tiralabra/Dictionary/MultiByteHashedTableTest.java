@@ -71,11 +71,21 @@ public class MultiByteHashedTableTest {
         };
 
         sortingData = new byte[]{
-            new Byte("5"), new Byte("5"),
-            new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"),
+            new Byte("5"), new Byte("5"), new Byte("5"), new Byte("5"),
+            new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"),
             new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"),
             new Byte("4"), new Byte("4"), new Byte("4"), new Byte("4"),
-            new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1")
+            new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"),
+            new Byte("5"), new Byte("5"), new Byte("5"), new Byte("5"),
+            new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"),
+            new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"),
+            new Byte("4"), new Byte("4"), new Byte("4"), new Byte("4"),
+            new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"),
+            new Byte("5"), new Byte("5"), new Byte("5"), new Byte("5"),
+            new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"),
+            new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"),
+            new Byte("4"), new Byte("4"), new Byte("4"), new Byte("4"),
+            new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1")
         };
 
         randomData = new byte[2000];
@@ -92,13 +102,13 @@ public class MultiByteHashedTableTest {
 
 
         for (int i = 2; i < 4; i++) {
-            table = new MultiByteHashedTable(incrementalData.length);
+            table = new MultiByteHashedTable();
             introduceValues(incrementalData, table, i);
             testWithData(incrementalData, i, table);
         }
 
         for (int i = 2; i < 4; i++) {
-            table = new MultiByteHashedTable(sameData.length);
+            table = new MultiByteHashedTable();
             introduceValues(sameData, table, i);
             testWithData(sameData, i, table);
         }
@@ -143,6 +153,9 @@ public class MultiByteHashedTableTest {
 
     }
 
+    /**
+     * At the moment fails due to changes in the hahstable method getArray.
+     */
     @Test
     public void testKeyCountAfterSorting() {
         fillTable(randomData, 2);
@@ -154,25 +167,38 @@ public class MultiByteHashedTableTest {
         assertEquals("Keycount does not match", keyCount, array.length);
     }
 
+    /**
+     * Fails for unknown reason for the moment.
+     */
     @Test
     public void testSortingOfData() {
-        fillTable(sortingData, 2);
+        fillTable(sortingData, 4);
 
-        MultiByte[] array = table.getArray(2);
+        MultiByte[] array = table.getArray(4);
 
-        MultiByte mb1 = new MultiByte(2);
+        MultiByte mb1 = new MultiByte(4);
         mb1.addData(new Byte("1"));
         mb1.addData(new Byte("1"));
-        MultiByte mb2 = new MultiByte(2);
+        mb1.addData(new Byte("1"));
+        mb1.addData(new Byte("1"));
+        MultiByte mb2 = new MultiByte(4);
         mb2.addData(new Byte("2"));
         mb2.addData(new Byte("2"));
-        MultiByte mb3 = new MultiByte(2);
+        mb2.addData(new Byte("2"));
+        mb2.addData(new Byte("2"));
+        MultiByte mb3 = new MultiByte(4);
         mb3.addData(new Byte("3"));
         mb3.addData(new Byte("3"));
-        MultiByte mb4 = new MultiByte(2);
+        mb3.addData(new Byte("3"));
+        mb3.addData(new Byte("3"));
+        MultiByte mb4 = new MultiByte(4);
         mb4.addData(new Byte("4"));
         mb4.addData(new Byte("4"));
-        MultiByte mb5 = new MultiByte(2);
+        mb4.addData(new Byte("4"));
+        mb4.addData(new Byte("4"));
+        MultiByte mb5 = new MultiByte(4);
+        mb5.addData(new Byte("5"));
+        mb5.addData(new Byte("5"));
         mb5.addData(new Byte("5"));
         mb5.addData(new Byte("5"));
 
@@ -189,7 +215,7 @@ public class MultiByteHashedTableTest {
     }
 
     private void fillTable(byte[] data, int width) {
-        table = new MultiByteHashedTable(data.length);
+        table = new MultiByteHashedTable();
         for (int i = 0; i < data.length; i += width) {
             if (i + width - 1 < data.length) {
                 MultiByte mb = new MultiByte(width);

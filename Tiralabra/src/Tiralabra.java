@@ -23,7 +23,7 @@ public class Tiralabra {
 
         int width = 6;
         
-        MultiByteHashedTable table = new MultiByteHashedTable(randomData.length / width);
+        MultiByteHashedTable table = new MultiByteHashedTable();
 
         fillTable(randomData, width, table);
 

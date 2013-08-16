@@ -48,7 +48,7 @@ public class MultiByteEncoder implements Runnable {
     public MultiByteEncoder(byte[] data, int width) {
         this.byteWidth = width;
         this.data = data;
-        this.hashTable = new MultiByteHashedTable(data.length / width + (data.length % 2));
+        this.hashTable = new MultiByteHashedTable();
     }
 
     /**
@@ -105,7 +105,7 @@ public class MultiByteEncoder implements Runnable {
             if (mb != null && hashTable.contains(mb)) {             //multibyte is null if not enough data in the array
                 int keyInteger = getkey(mb);                    //the hashtable will contain the mb, and so will the local keytable
                 int thisKeyByteSize = getBytesPerKey(keyInteger);
-                byte[] keyBytes = intToByteArray(keyInteger, thisKeyByteSize);
+                byte[] keyBytes = ByteConversion.IntegerConverter.IntegerToByte(keyInteger, thisKeyByteSize);
                 thisKeyByteSize = keyBytes.length;              //size of the key might be reduced in the previous method
 
                 if (thisKeyByteSize == bytesPerPreviousKey && runLength < 9) {      //if the previous keysize was the same, use runlength encoding for current width, allow up to nine bytewidths of length
@@ -138,7 +138,7 @@ public class MultiByteEncoder implements Runnable {
             if (newPrefix) {
                 int prefixInt = generatePrefixInteger(bytesPerPreviousKey, runLength);
 
-                byte prefix = intToByteArray(prefixInt, 1)[0];
+                byte prefix = ByteConversion.IntegerConverter.IntegerToByte(prefixInt, 1)[0];
                 encodedData[prefixIndex] = prefix;
                 prefixIndex = encodedDataIndex;         //next prefix is put to the next location for data
                 encodedDataIndex++;                     //and dataindex is advanced by one
@@ -287,61 +287,6 @@ public class MultiByteEncoder implements Runnable {
             return mb;
         }
         return null;
-    }
-
-    /**
-     * Takes any integer and produces a bytearray which represents the integer.
-     *
-     * @param key the key to be encoded in byte fashion.
-     * @param byteCount the number of bytes it takes for the key.
-     * @return a byte array representation of the given key.
-     */
-    private byte[] intToByteArray(int key, int byteCount) {
-        byte[] keyBytes = createByteArrayFromInt(byteCount, key);
-
-        keyBytes = removeLeadingZeros(keyBytes);
-
-        return keyBytes;
-    }
-
-    /**
-     * Removes leadong zeros from a bytearray, they are not needed and take space.
-     *
-     * @param keyBytes
-     * @return
-     */
-    private byte[] removeLeadingZeros(byte[] keyBytes) {
-        int removeLeadingZerosIndex = 0;
-        for (int i = 0; i < keyBytes.length; i++) {
-            if (keyBytes[i] == 0) {
-                removeLeadingZerosIndex = i + 1;
-            } else {
-                break;
-            }
-        }
-        byte[] newKey = new byte[keyBytes.length - removeLeadingZerosIndex];
-        for (int i = 0; i < newKey.length; i++) {
-            newKey[i] = keyBytes[removeLeadingZerosIndex];
-            removeLeadingZerosIndex++;
-        }
-        return newKey;
-    }
-
-    /**
-     * Creates a bytearray from the integer given as parameter.
-     *
-     * @param byteCount
-     * @param key
-     * @return
-     */
-    private byte[] createByteArrayFromInt(int byteCount, int key) {
-        byte[] keyBytes = new byte[byteCount];
-        int index = 0;
-        for (int i = keyBytes.length - 1; i >= 0; i--) {
-            keyBytes[index] = (byte) ((key >> (8 * i)) & 0xFF);   //start from the maximum number of iterations to account for higher shifting.
-            index++;
-        }
-        return keyBytes;
     }
 
     /**
