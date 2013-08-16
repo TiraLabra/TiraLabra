@@ -58,4 +58,33 @@ public class PunamustaTest {
         assertEquals(null, p.getJuuri());
     }
     
+    @Test
+    public void uusiSolmuPunainen(){
+        p.insert(6);
+        assertEquals(true, p.getJuuri().getVasen().getVari());
+    }
+    
+    @Test
+    public void juuriOnMusta(){
+        assertEquals(false, p.getJuuri().getVari());
+        p.insert(11);
+        p.insert(34);
+        p.insert(5);
+        assertEquals(false, p.getJuuri().getVari());
+        p.delete(34);
+        assertEquals(false, p.getJuuri().getVari());
+    }
+    
+    @Test
+    public void tulostus(){
+        p.insert(1);
+        p.insert(897);
+        p.insert(3);
+        assertEquals("1\n3\n10\n897\n", p.tulostaArvot());
+    }
+    
+    @Test
+    public void olematonPoisEiRäjähdä(){
+        p.delete(101);
+    }
 }

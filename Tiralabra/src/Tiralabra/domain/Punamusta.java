@@ -1,6 +1,6 @@
 package Tiralabra.domain;
 
-import Tiralabra.util.Lista;
+import Tiralabra.util.ALista;
 
 /**
  * Toteuttaa vasemmalle nojaavan punamustan puun. Punamustapuu on itsestään
@@ -29,10 +29,7 @@ public class Punamusta implements Puu {
 
     @Override
     public String tulostaArvot() {
-        //Lista l = sisa(new Lista());
-        //l.jarjesta();
-        //return l.toString();
-        return "";
+        return sisa(new ALista(), juuri).toString();
     }
 
     @Override
@@ -59,7 +56,7 @@ public class Punamusta implements Puu {
 
         if (key < nyk.getArvo()) {
             nyk.setVasen(insert(nyk.getVasen(), key));
-        } else if (key > nyk.getArvo()){
+        } else if (key > nyk.getArvo()) {
             nyk.setOikea(insert(nyk.getOikea(), key));
         }
 
@@ -78,11 +75,13 @@ public class Punamusta implements Puu {
 
     @Override
     public void delete(int key) {
-        juuri = delete(juuri, key);
-        if (juuri == null) {
-            return;
+        if (search(key)) {
+            juuri = delete(juuri, key);
+            if (juuri == null) {
+                return;
+            }
+            juuri.setVari(false);
         }
-        juuri.setVari(false);
     }
 
     @Override
@@ -292,21 +291,28 @@ public class Punamusta implements Puu {
         }
         return nyk;
     }
-    
-    /** Tarkistaa solmun värin; null solmut ovat mustia.
-     * 
+
+    /**
+     * Tarkistaa solmun värin; null solmut ovat mustia.
+     *
      * @param s tarkistettava solmu
      * @return true jos solmu on punainen, false jos musta tai null
      */
-    private boolean punainen(SolmuPunamusta s){
+    private boolean punainen(SolmuPunamusta s) {
         return s != null && s.getVari();
     }
     /**
-     * Palauttaa solmujen arvo sisäjärjestyksessä.
+     * Käy puun läpi sisäjärjestyksessä.
      *
-     * @return linkitetty-lista esitys puun solmuista
+     * @return automaattisesti järjestetty linkitetty-lista esitys puun solmuista
      */
-    /*private Lista sisa(Lista l) {
-     * 
-     * }*/
+    private ALista sisa(ALista l, SolmuPunamusta s) {
+        if (s == null) {
+            return l;
+        }
+        l.lisaa(s.getArvo());
+        sisa(l, s.getVasen());
+        sisa(l, s.getOikea());
+        return l;
+      }
 }

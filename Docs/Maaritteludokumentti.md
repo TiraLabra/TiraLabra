@@ -2,7 +2,7 @@ Määrittelydokumentti
 
 Tässä tietorakenteiden harjoitustyössä toteutetaan erilaisten hakupuiden tehokkuutta vertaileva ohjelma. 
 
-Mahdollisia vertailukohteita ovat punamustat-, B-, treap- ja threaded-puut.
+Mahdollisia vertailukohteita ovat vasemmallae nojaavat punamustat-, B-, treap- ja threaded-puut.
 
 Ohjelmassa on mahdollista vertaillaan perusoperaatioiden (insert, delete, search) lisäksi myös puiden alkioiden tulostusta suuruusjärjestyksessä.
 
@@ -15,6 +15,7 @@ Tilavaativuus tulee siis olemaan luokkaa O(n), jossa n = puiden alkioiden määr
 
 Lähteet (tulevat tarkentumaan):
 http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+https://gist.github.com/rkapsi/741080
 http://en.wikipedia.org/wiki/Treap
 http://en.wikipedia.org/wiki/B-tree
 http://en.wikipedia.org/wiki/Threaded_binary_tree
