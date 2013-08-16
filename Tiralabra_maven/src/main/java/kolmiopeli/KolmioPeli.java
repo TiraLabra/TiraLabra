@@ -3,6 +3,7 @@ package kolmiopeli;
 import java.awt.Color;
 import kolmiopeli.UI.Kayttoliittyma;
 import kolmiopeli.domain.Kolmio;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.Nopeustestaus;
 
 /**
  * @author eemihauk
@@ -21,9 +22,10 @@ public class KolmioPeli {
 //        s.setEtsija(etsija);
 
         
-
-        Kayttoliittyma k = new Kayttoliittyma();
-        k.run();
+            Nopeustestaus n = new Nopeustestaus(10, 10);
+            n.kayLapiKomboja();
+//        Kayttoliittyma k = new Kayttoliittyma();
+//        k.run();
         
 //        PeliFrame k = new PeliFrame(8, 15);
 //        k.run();

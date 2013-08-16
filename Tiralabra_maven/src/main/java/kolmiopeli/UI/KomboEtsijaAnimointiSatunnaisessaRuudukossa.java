@@ -13,7 +13,7 @@ import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
 
 /**
- *
+ * KOKEILUA
  * @author Eemi
  */
 public class KomboEtsijaAnimointiSatunnaisessaRuudukossa {

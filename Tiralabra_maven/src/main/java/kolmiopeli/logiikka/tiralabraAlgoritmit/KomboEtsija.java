@@ -2,6 +2,7 @@ package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import kolmiopeli.domain.Kolmio;
@@ -62,9 +63,9 @@ public class KomboEtsija {
      * 
      * @param Array kohdista joissa on uunituoreita uusia kolmioita tutkittavaksi.
      */
-    public HashSet<Koordinaatti> etsiKombot(ArrayList<Koordinaatti> juuriArvotut) {
+    public HashSet<Koordinaatti> etsiKombot(Collection juuriArvotut) {
         debugViestit.tuplaviiva();
-        Koordinaatti[] juuriArvotutTaulukko = juuriArvotut.toArray(new Koordinaatti[juuriArvotut.size()]);
+        Koordinaatti[] juuriArvotutTaulukko = (Koordinaatti[]) juuriArvotut.toArray(new Koordinaatti[juuriArvotut.size()]);
         // BFS pohdintaa:
         // Miten merkkaan lapikaydyt kolmiot?
         // 1. Teen kolmioille muuttujan, mutta miten ja kuinka tehokkaasti "resettaan" kaikkien kolmioiden muuttujat uuden etsinnan alkaessa
