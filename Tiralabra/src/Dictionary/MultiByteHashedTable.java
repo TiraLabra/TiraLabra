@@ -5,8 +5,6 @@
 package Dictionary;
 
 import MultiByteEntities.MultiByte;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Operators;
-import com.sun.org.omg.CORBA.OperationMode;
 
 /**
  * A Hashmap like structure with collision handling. Puts the given multibyte
@@ -100,7 +98,7 @@ public class MultiByteHashedTable {
                         return insertIntoTable(hash, i, multiByte);
                     }
                 }
-                rehash(multiByte);
+                return rehash(multiByte);
             } else {
                 this.references[hash][getIndex(hash, multiByte)]++;
                 return true;
@@ -112,24 +110,32 @@ public class MultiByteHashedTable {
 
     /**
      * Rehashes the table to twice its original size with the new multibyte.
+     * If the table size grows too big, throws an out of memory error.
      */
-    private void rehash(MultiByte mb) {
+    private boolean rehash(MultiByte mb) {
         MultiByte[][] oldData = this.data;
         
-        this.data = new MultiByte[size*2][size*2];
-        this.references = new int[size*2][size*2];
-        this.stats = new int[size*2];
-        this.size = size*2;
-        this.keyCount = 0;
+        try {
+            this.data = new MultiByte[size * 2][size * 2];
+            this.references = new int[size * 2][size * 2];
+            this.stats = new int[size * 2];
+            this.size = size * 2;
+            this.keyCount = 0;
+        } catch (Error e) {
+            throw new OutOfMemoryError("Hashtable too big, not enough memory.");
+        }
         
         for (int i = 0; i < oldData.length; i++) {
             for (int j = 0; j < oldData[i].length; j++) {
                 if (oldData[i][j] != null) {
                     this.put(oldData[i][j]);
+                } else {
+                    break;
                 }
             }
         }
         this.put(mb);
+        return true;
     }
 
     /**
@@ -179,9 +185,7 @@ public class MultiByteHashedTable {
 
     /**
      * Use with caution. Purges from the data all multibytes that have not been
-     * referenced the given amount. Builds a new table for data, statistics and
-     * references with multibytes with at least the given amount of references
-     * in the actual data.
+     * referenced the given amount. Rehashes according to that data.
      *
      * This method should always be run prior to requesting an array for
      * encoding to attain meaningful results.
@@ -206,16 +210,7 @@ public class MultiByteHashedTable {
             }
         }
 
-        this.data = new MultiByte[keyCount][keyCount];
-        this.references = new int[keyCount][keyCount];
-        this.stats = new int[keyCount];
-        this.size = keyCount;
-        this.keyCount = 0;
-
-        for (int i = 0; i < toKeepIndex; i++) {
-            this.put(multiBytesToKeep[i]);
-        }
-
+        rehash(multiBytesToKeep);
     }
 
     /**
@@ -256,7 +251,7 @@ public class MultiByteHashedTable {
     }
 
     /**
-     * Rehashes the entire table with the data in the array.
+     * Rehashes and rebuilds the entire table with the data in the array.
      *
      * @param array
      */
@@ -375,10 +370,17 @@ public class MultiByteHashedTable {
         }
     }
 
-    private boolean insertIntoTable(int hash, int i, MultiByte multiByte) {
-        this.data[hash][i] = multiByte;
+    /**
+     * Inserts the given multibyte into the internal table at the hashed location by subindex and updates references.
+     * @param hash
+     * @param subIndex
+     * @param multiByte
+     * @return 
+     */
+    private boolean insertIntoTable(int hash, int subIndex, MultiByte multiByte) {
+        this.data[hash][subIndex] = multiByte;
         stats[hash]++;
-        references[hash][i] = 1;
+        references[hash][subIndex] = 1;
         keyCount++;
         return true;
     }
