@@ -30,7 +30,7 @@ public class BellmanFord {
     **/
     public boolean BellmanFord() {
         alusta();
-        for (int i = 1; i < solmut.koko() - 1; i++) {                               // Käydään kaikki kaaret läpi ja relaksoidaan jännitteet
+        for (int i = 1; i < solmut.koko() - 1; i++) {                                   // Käydään kaikki kaaret läpi ja relaksoidaan jännitteet
             for (Kaari kaari : kaaret) {
                 Relax(kaari);
             }
@@ -82,6 +82,7 @@ public class BellmanFord {
     /*********************************************************/
     
     private void tulostaSolmut() {
+        System.out.println("Bellman-Ford tulokset: ");
         for (int x = 1; x < solmut.koko() + 1; x++) {
             System.out.println("Solmun nro: " + solmut.get(x).getSolmuNumero());
             System.out.println("Solmun paino " + solmut.get(x).getPaino());

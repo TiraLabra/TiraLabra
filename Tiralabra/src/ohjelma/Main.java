@@ -33,14 +33,14 @@ public class Main {
         /**************************************************************/
 
         // Bellman-Ford
-        long bellmanFordAlussa = System.currentTimeMillis();
-        BellmanFord bellmanAloita = new BellmanFord(verkko);
-        System.out.println(bellmanAloita.BellmanFord());
-        long bellmanFordLopussa = System.currentTimeMillis();
-        
-        System.out.println("Alussa: "  + bellmanFordAlussa);
-        System.out.println("Lopussa: " + bellmanFordLopussa);
-        System.out.println("Kesti: "   +(bellmanFordLopussa - bellmanFordAlussa) + " ms");
+//        long bellmanFordAlussa = System.currentTimeMillis();
+//        BellmanFord bellmanAloita = new BellmanFord(verkko);
+//        System.out.println(bellmanAloita.BellmanFord());
+//        long bellmanFordLopussa = System.currentTimeMillis();
+//        
+//        System.out.println("Alussa: "  + bellmanFordAlussa);
+//        System.out.println("Lopussa: " + bellmanFordLopussa);
+//        System.out.println("Kesti: "   +(bellmanFordLopussa - bellmanFordAlussa) + " ms");
         
         /**************************************************************/
         

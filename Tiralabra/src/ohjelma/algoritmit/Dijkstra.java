@@ -3,12 +3,11 @@
  * and open the template in the editor.
  */
 package ohjelma.algoritmit;
-
 import java.util.HashSet;
+import ohjelma.tietorakenteet.iHashMap;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;
-import ohjelma.tietorakenteet.iHashMap;
 
 /**
  *
@@ -25,34 +24,35 @@ public class Dijkstra {
     }
 
     /**
-    * Päämetodi.
-    **/
+     * Päämetodi.
+     *
+     */
     public void Dijkstra() {
         alusta();
-        for (int i = 1; i < solmut.koko(); i++) {
-            Solmu lahin = etsiLahinSolmu(solmut.get(i));                            // etsi solmut(i) solmun lähin solmu ja tallenna sen [lähin]
-            Kaari[] vieruskaaret = haeVierussolmut(lahin);                          // etsi [lähin] solmun vierussolmut
-            for (int j = 0; vieruskaaret[j] != null; j++) {                         // käy [lähin] solmun vieruskaverit läpi kunnes törmätään nulliin
-                Relax(vieruskaaret[j]);                                             // relaksoi kaikki vierussolmut
+        for (int i = 1; i < solmut.koko() + 1; i++) {
+            Solmu lahin = etsiLahinSolmu(solmut.get(i));                            // etsi solmut(i) solmun lähin solmu ja tallenna sen [lähin]                                                                                    // Lisätään solmu käydyt joukkoon jottei käydä samaa solmua uudestaan läpi
+            Kaari[] vieruskaaret = haeVierussolmut(lahin);                          // etsii [lähin] solmun vierussolmut
+            for (int j = 0; vieruskaaret[j] != null; j++) {                         // käy [lähin] solmun vierussolmut läpi kunnes törmätään nulliin
+                Relax(vieruskaaret[j]);
             }
         }
         tulostaSolmut();
     }
 
     /**
-     * Palauttaa lähimmän solmun ja relaksoi kohteen tarvittaessa.
+     * Palauttaa lähimmän solmun ja asettaa painoja.
      */
-    public Solmu etsiLahinSolmu(Solmu alku) {
-        Kaari uusilyhyin = null; 
+    public Solmu etsiLahinSolmu(Solmu solmu) {
+        Kaari uusilyhyin = null;
         int pienin = Integer.MAX_VALUE;
-        
+
         for (Kaari kaari : kaaret) {
-            if (kaari.getAlku().equals(alku)) {                                     // Huomioidaan vain kaaret joiden alkusolmu on sama kuin parametrin [solmu]
-                if (kaari.getAlku().getPaino() + kaari.getEtaisyys() < pienin) {    // jos alkusolmun paino+etäisyys on pienempi kuin [pienin]
-                    pienin = kaari.getAlku().getPaino() + kaari.getEtaisyys();      // päivitetään paino+etäisyys [pienin] alkioon
-                    uusilyhyin = kaari;                                             // päivitetään uusi lyhyin kaari [uusilyhyin] alkioon
-                    if (kaari.getKohde().getPaino() > pienin) {                     // Jos Kohteen paino on suurempi kuin [pienin],
-                        kaari.getKohde().setPaino(pienin);                          // relaksoidaan kohde (eli asetetaan pienin löydetty reitti/paino)
+            if (kaari.getAlku().equals(solmu)) {                    // Huomioidaan vain kaaret joiden alkusolmu on sama kuin parametrin [solmu]
+                if (kaari.getKohde().getPaino() > kaari.getAlku().getPaino() + kaari.getEtaisyys()) { // jos kohteen paino > kuin matka tästä solmusta kohteeseen
+                    kaari.getKohde().setPaino(kaari.getAlku().getPaino() + kaari.getEtaisyys());      // päivitetään kohteen paino
+                    if ((kaari.getAlku().getPaino() + kaari.getEtaisyys()) < pienin) {
+                        pienin = kaari.getAlku().getPaino() + kaari.getEtaisyys();  // päivitetään muuttujaa [pienin] jos löytyy lyhyempi reitti
+                        uusilyhyin = kaari;
                     }
                 }
             }
@@ -89,17 +89,21 @@ public class Dijkstra {
         }
     }
 
-    public void Relax(Kaari kaari) {                                                // päivittää kaarten painoja jos löytyy jännitteitä (eli toisin sanoen lyhyempi polku)
+    public void Relax(Kaari kaari) {                                                // päivittää vierussolmujen painoja jos löytyy lyhyempiä reittejä
         if (kaari.getKohde().getPaino() > ((kaari.getAlku().getPaino() + kaari.getEtaisyys()))) {
             kaari.getKohde().setPaino((kaari.getAlku().getPaino() + kaari.getEtaisyys()));
         }
     }
-    
-    /*********************************************************/
-    /*             Testaukseen käytettävät metodit           */
-    /*********************************************************/
 
+    /**
+     * ******************************************************
+     */
+    /*             Testaukseen käytettävät metodit           */
+    /**
+     * ******************************************************
+     */
     private void tulostaSolmut() {
+        System.out.println("Dijkstra tulokset: ");
         for (int x = 1; x < solmut.koko() + 1; x++) {
             System.out.println("Solmun nro: " + solmut.get(x).getSolmuNumero());
             System.out.println("Solmun paino " + solmut.get(x).getPaino());
