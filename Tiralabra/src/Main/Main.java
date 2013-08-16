@@ -16,21 +16,21 @@ public class Main {
         Purkaja purkaaja = new Purkaja();
         
       /*  ArrayListVertailu vertailu = new ArrayListVertailu();
-        vertailu.vertaile();
+        vertailu.vertaile();*/
         
         HashMapVertailu hVertailu = new HashMapVertailu();
-        hVertailu.vertaile();*/
+        hVertailu.vertaile();
         
         
         
 
-        System.out.println("Pakataan...");
+       /* System.out.println("Pakataan...");
     //    pakkaaja.pakkaa("Testitiedostot/kuva.BMP", "Testitiedostot/ulos.dat");
        // pakkaaja.pakkaa("Testitiedostot/Kalimba.mp3", "Testitiedostot/ulos.dat");
         pakkaaja.pakkaa("Testitiedostot/loremipsum.txt", "Testitiedostot/ulos.dat");
      
         System.out.println("Puretaan...");
-        purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
+        purkaaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");*/
 
 
     }

@@ -87,7 +87,7 @@ public class BittiUtilityTest {
 
     @Test
     public void testaaEttaHaeBitinArvoPaikastaLongilleHakeeOikeanArvon1() {
-        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta( 10L, 3));
+        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(10L, 3));
     }
 
     @Test
@@ -171,5 +171,16 @@ public class BittiUtilityTest {
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleLongilleToimiiOikeinKunBitinArvoJoYksi2() {
         assertEquals("Bitin arvo väärä", 528416L, BittiUtility.tallennaBitinArvoPaikalle(528416L, 0, 19));
+    }
+
+    @Test
+    public void testaaEttaHaeBitinArvoPaikaltaToimiiAivanAarilaidastaByte() {
+        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(-128, 8));
+    }   
+
+    @Test
+    public void testaaEttaHaeBitinArvoPaikaltaToimiiAivanAarilaidastaLong() {
+        assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(Long.MIN_VALUE, 63));
+        
     }
 }

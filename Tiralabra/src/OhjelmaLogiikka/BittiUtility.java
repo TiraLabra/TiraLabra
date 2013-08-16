@@ -31,7 +31,7 @@ public class BittiUtility {
      */
     public static int haeBitinArvoPaikasta(byte koodi, int paikka) {
         int arvo = (koodi & (1 << paikka));
-        arvo = arvo >> paikka;
+        arvo = arvo >>> paikka;
         return arvo;
     }
     /**
@@ -45,7 +45,7 @@ public class BittiUtility {
      */
     public static int haeBitinArvoPaikasta(long koodi, long paikka) {
         long arvo =  (koodi & (1L << paikka));
-        arvo = arvo >> paikka;
+        arvo = arvo >>> paikka;
         return (int)arvo;
     }
 
