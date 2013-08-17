@@ -1,9 +1,9 @@
 package Tiralabra.util;
 
 /**
- * Kahteen suuntaan linkitetty lista, jossa solmut ovat automaattisesti järjestyksessä. 
- * Listaa oletetaan aina käytettävän listan ensimmäisestä solmusta (head) lähtien. 
- * Aikavaativuus poistolla ja lisäämisellä O(n).
+ * Kahteen suuntaan linkitetty lista, jossa solmut ovat automaattisesti
+ * järjestyksessä. Listaa oletetaan aina käytettävän listan ensimmäisestä
+ * solmusta (head) lähtien. Aikavaativuus poistolla ja lisäämisellä O(n).
  * Solmujen järjestys on pienimmästä suurimpaan.
  *
  * @author Pia Pakarinen
@@ -61,8 +61,7 @@ public class ALista {
         if (y.getNext() == null && y.getArvo() < x) {
             uusi = new Listasolmu(x, y, null);
             y.setNext(uusi);
-        }
-        //muuten uusi solmu tulee paikalleen joko listan alkuun tai jonnekkin väliin
+        } //muuten uusi solmu tulee paikalleen joko listan alkuun tai jonnekkin väliin
         else {
             Listasolmu edeltaja = y.getPrev();
             uusi = new Listasolmu(x, edeltaja, y);
@@ -91,11 +90,13 @@ public class ALista {
             return true;
         }
 
-        Listasolmu iter = head.getNext();
-        while (iter.getNext() != null && iter.getArvo() <= x) {
+        Listasolmu iter = head;
+        while (iter != null && iter.getArvo() <= x) {
             if (iter.getArvo() == x) {
                 iter.getPrev().setNext(iter.getNext());
-                iter.getNext().setPrev(iter.getPrev());
+                if (iter.getNext() != null) {
+                    iter.getNext().setPrev(iter.getPrev());
+                }
                 koko--;
                 return true;
             }
@@ -122,8 +123,9 @@ public class ALista {
         return koko;
     }
 
-    /** Palautaa listan alkiot string-muotoisena esityksenä.
-     * 
+    /**
+     * Palautaa listan alkiot string-muotoisena esityksenä.
+     *
      * @return alkiot min ---> max
      */
     @Override

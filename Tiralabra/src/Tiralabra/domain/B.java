@@ -1,13 +1,22 @@
 package Tiralabra.domain;
 
-/** Toteuttaa B-puun.
- * B-puussa solmuilla voi olla useampia lapsia.
+/** Toteuttaa 2-3 B-puun.
+ * 2-3 B-puussa solmulla voi olla 1-2 arvoa, ja 0-3 lasta.
  * @author Pia Pakarinen
  */
 public class B implements Puu{
 
+    /**
+     * Puun juurisolmu.
+     */
+    private SolmuB juuri;
+    
+    /**
+     * Luo uuden 2-3 B-puun ja tälle juurisolmun annetulla arvolla.
+     * @param emo juurisolmun arvo
+     */
     public B(int emo) {
-        
+        juuri = new SolmuB(emo);
     }
 
     @Override
@@ -26,7 +35,7 @@ public class B implements Puu{
     }
 
     @Override
-    public int search(int key) {
+    public boolean search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
