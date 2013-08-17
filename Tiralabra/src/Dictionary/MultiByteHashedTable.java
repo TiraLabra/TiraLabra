@@ -4,12 +4,13 @@
  */
 package Dictionary;
 
+import Encoding.MultiByteEncoder;
 import MultiByteEntities.MultiByte;
 
 /**
  * A Hashmap like structure with collision handling. Puts the given multibyte
  * entity into a bucket using its hashcode as a reference for the internal
- * hashing.
+ * hashing. Is interruptible from the MultiByteEncoder class.
  *
  * @author virta
  */
@@ -28,19 +29,21 @@ public class MultiByteHashedTable {
      */
     private int[] stats;
     /**
-     * Statistics bout reference count for each multi-byte entry.
+     * Statistics about reference count for each multi-byte entry.
      */
     private int[][] references;
     /**
      * Kept updated so it doesn't have to be searched from data.
      */
     private int keyCount;
+    
+    /**
+     * When rehashing do not call rehashing methods recursively.
+     */
+    private boolean rehashing;
 
     /**
-     * Initialize the table to contain 16 by 16 buckets. 
-     * This structure makes it very much
-     * faster to locate a specific multibyte although it implies a list
-     * structure as overflow.
+     * Initialize the hashtable to contain 16 by 16 buckets.
      *
      */
     public MultiByteHashedTable() {
@@ -49,10 +52,15 @@ public class MultiByteHashedTable {
         this.stats = new int[16];
         this.references = new int[16][16];
         this.keyCount = 0;
+        this.rehashing = false;
     }
 
     public int[][] getReferences() {
         return this.references;
+    }
+    
+    public int getKeyCount(){
+        return this.keyCount;
     }
 
     /**
@@ -64,6 +72,10 @@ public class MultiByteHashedTable {
     public int[] getStats() {
         int[] reduced = new int[3];
         for (int i = 0; i < stats.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             if (stats[i] != 0) {
                 reduced[0]++;
                 reduced[1] += stats[i];
@@ -82,10 +94,7 @@ public class MultiByteHashedTable {
      *
      * @param multiByte
      * @return true if the operation succeeded, false if the internal hashing
-     * function returned an invalid hash which should never happen. Will also
-     * return false if the subarray reaches its now predefined limit, this will
-     * probably need to be rewritten to allow a reconstruction of the subarray
-     * according to the needed space.
+     * function returned an invalid hash which should never happen.
      */
     public boolean put(MultiByte multiByte) {
 
@@ -94,11 +103,17 @@ public class MultiByteHashedTable {
         if (hash < size) {
             if (!this.contains(multiByte)) {
                 for (int i = 0; i < data[hash].length; i++) {
+                    if (MultiByteEncoder.interrupt) {
+                        break;
+                    }
+
                     if (this.data[hash][i] == null) {
                         return insertIntoTable(hash, i, multiByte);
                     }
                 }
-                return rehash(multiByte);
+                if (!rehashing) {
+                    return rehashToGreaterSize(multiByte);
+                }
             } else {
                 this.references[hash][getIndex(hash, multiByte)]++;
                 return true;
@@ -109,12 +124,13 @@ public class MultiByteHashedTable {
     }
 
     /**
-     * Rehashes the table to twice its original size with the new multibyte.
-     * If the table size grows too big, throws an out of memory error.
+     * Rehashes the table to twice its original size with the new multibyte. If
+     * the table size grows too big, throws an out of memory error.
      */
-    private boolean rehash(MultiByte mb) {
+    private boolean rehashToGreaterSize(MultiByte mb) {
+        rehashing = true;
         MultiByte[][] oldData = this.data;
-        
+
         try {
             this.data = new MultiByte[size * 2][size * 2];
             this.references = new int[size * 2][size * 2];
@@ -124,8 +140,12 @@ public class MultiByteHashedTable {
         } catch (Error e) {
             throw new OutOfMemoryError("Hashtable too big, not enough memory.");
         }
-        
+
         for (int i = 0; i < oldData.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             for (int j = 0; j < oldData[i].length; j++) {
                 if (oldData[i][j] != null) {
                     this.put(oldData[i][j]);
@@ -135,6 +155,7 @@ public class MultiByteHashedTable {
             }
         }
         this.put(mb);
+        rehashing = false;
         return true;
     }
 
@@ -159,6 +180,10 @@ public class MultiByteHashedTable {
     public boolean contains(MultiByte multiByte) {
         int hash = this.getHash(multiByte.hashCode());
         for (int i = 0; i < data[hash].length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte)) {
                 return true;
             }
@@ -176,6 +201,10 @@ public class MultiByteHashedTable {
      */
     private int getIndex(int hash, MultiByte mb) {
         for (int i = 0; i < data[hash].length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             if (mb.equals(data[hash][i])) {
                 return i;
             }
@@ -195,22 +224,41 @@ public class MultiByteHashedTable {
     public void purgeAndClean(int byteWidth) {
         int minRefCount = byteWidth + 1;
 
-        MultiByte[] multiBytesToKeep = new MultiByte[keyCount];
+        MultiByte[] multiBytesToKeep = new MultiByte[16];
         int toKeepIndex = 0;
         for (int i = 0; i < references.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                return;
+            }
+
             if (references[i][0] != 0) {
                 for (int j = 0; j < references[i].length; j++) {
+                    if (MultiByteEncoder.interrupt) {
+                        return;
+                    }
+
                     if (references[i][j] >= minRefCount) {
                         multiBytesToKeep[toKeepIndex] = data[i][j];
                         toKeepIndex++;
                     } else if (references[i][j] == 0) {
                         break;
                     }
+                    multiBytesToKeep = toKeepIndex == multiBytesToKeep.length ? enlargeTable(toKeepIndex, multiBytesToKeep) : multiBytesToKeep;
                 }
             }
         }
 
-        rehash(multiBytesToKeep);
+        multiBytesToKeep = removeTrailingEmptySpace(multiBytesToKeep, toKeepIndex);
+
+        rehashToData(multiBytesToKeep);
+    }
+
+    private MultiByte[] removeTrailingEmptySpace(MultiByte[] table, int index) {
+        MultiByte[] newTable = new MultiByte[index];
+        for (int i = 0; i < newTable.length; i++) {
+            newTable[i] = table[i];
+        }
+        return newTable;
     }
 
     /**
@@ -228,6 +276,10 @@ public class MultiByteHashedTable {
         int[] referenceCounts = new int[keyCount];
         int arrayIndex = 0;
         for (int i = 0; i < data.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             if (data[i][0] != null) {
                 for (int j = 0; j < data[i].length; j++) {
                     if (data[i][j] != null) {
@@ -245,7 +297,7 @@ public class MultiByteHashedTable {
 
         MultiByte[] returnArray = extractMultiByteArray(objectArray, maxKeyCount);
 
-        rehash(returnArray);
+        rehashToData(returnArray);
 
         return returnArray;
     }
@@ -255,13 +307,17 @@ public class MultiByteHashedTable {
      *
      * @param array
      */
-    private void rehash(MultiByte[] array) {
+    private void rehashToData(MultiByte[] array) {
         this.data = new MultiByte[array.length][array.length];
         this.references = new int[array.length][array.length];
         this.stats = new int[array.length];
         this.size = array.length;
         this.keyCount = 0;
         for (int i = 0; i < array.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                return;
+            }
+
             this.put(array[i]);
         }
     }
@@ -327,6 +383,10 @@ public class MultiByteHashedTable {
         int dataIndex = 0;
 
         while (firstIndex < firstPart.length && secondIndex < secondPart.length) {
+            if (MultiByteEncoder.interrupt) {
+                return;
+            }
+
             if ((Integer) firstPart[firstIndex][1] > (Integer) secondPart[secondIndex][1]) {
                 destination[dataIndex][0] = firstPart[firstIndex][0];
                 destination[dataIndex][1] = firstPart[firstIndex][1];
@@ -364,6 +424,10 @@ public class MultiByteHashedTable {
      */
     private void cloneFrom(Object[][] source, Object[][] destination, int from, int until, int destIndex) {
         for (int i = from; i < until; i++) {
+            if (MultiByteEncoder.interrupt) {
+                return;
+            }
+
             destination[destIndex][0] = source[i][0];
             destination[destIndex][1] = source[i][1];
             destIndex++;
@@ -371,11 +435,13 @@ public class MultiByteHashedTable {
     }
 
     /**
-     * Inserts the given multibyte into the internal table at the hashed location by subindex and updates references.
+     * Inserts the given multibyte into the internal table at the hashed
+     * location by subindex and updates references.
+     *
      * @param hash
      * @param subIndex
      * @param multiByte
-     * @return 
+     * @return
      */
     private boolean insertIntoTable(int hash, int subIndex, MultiByte multiByte) {
         this.data[hash][subIndex] = multiByte;
@@ -383,5 +449,14 @@ public class MultiByteHashedTable {
         references[hash][subIndex] = 1;
         keyCount++;
         return true;
+    }
+
+    private MultiByte[] enlargeTable(int toKeepIndex, MultiByte[] multiBytesToKeep) {
+        MultiByte[] newTable = new MultiByte[toKeepIndex * 2];
+        for (int k = 0; k < multiBytesToKeep.length; k++) {
+            newTable[k] = multiBytesToKeep[k];
+        }
+        multiBytesToKeep = newTable;
+        return multiBytesToKeep;
     }
 }
