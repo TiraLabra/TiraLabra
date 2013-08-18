@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * Laskin-luokka, joka vastaa ohjelman toiminnallisuuden toteutuksesta
  *
- * @author jukkapit
+ * @author csgit
  */
 public class Laskin {
 

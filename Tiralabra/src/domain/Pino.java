@@ -3,7 +3,7 @@ package domain;
 /**
  * Pino-luokka, joka vastaa ohjelman tietorakenteen toteutuksesta
  *
- * @author jukkapit
+ * @author csgit
  */
 public class Pino {
 

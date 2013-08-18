@@ -4,7 +4,7 @@ import sovelluslogiikka.Laskin;
 /**
  * Ohjelman suoritusluokka
  *
- * @author jukkapit
+ * @author csgit
  */
 public class Main {
 
