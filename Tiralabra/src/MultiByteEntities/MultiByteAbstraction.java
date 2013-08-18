@@ -82,7 +82,7 @@ public abstract class MultiByteAbstraction {
     @Override
     public int hashCode() {
         int hash = 11;
-        int byteArrayAsInteger = ByteConversion.IntegerConverter.ByteToInteger(bytes);
+        int byteArrayAsInteger = Utilities.IntegerConverter.ByteToInteger(bytes);
         for (int i = 0; i < bytes.length; i++) {
             
             hash += ((byteArrayAsInteger+11) * 97);

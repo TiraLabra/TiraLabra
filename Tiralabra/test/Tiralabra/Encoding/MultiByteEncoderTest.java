@@ -67,9 +67,9 @@ public class MultiByteEncoderTest {
     public void testEncodingNonZeroKeysAndData() {
         encoder = new MultiByteEncoder(encodingData, 4);
         encoderThread = new Thread(encoder);
-        assertEquals("Incorrect status", MultiByteEncoder.StatusEnum.NULL, encoder.getStatus());
+        assertEquals("Incorrect status", Encoding.StatusEnum.NULL, encoder.getStatus());
         encoderThread.start();
-        while (encoder.getStatus() != MultiByteEncoder.StatusEnum.DONE) {
+        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
             //do nothing
         }
         byte[] keys = encoder.getEncodedKeys();
@@ -86,7 +86,7 @@ public class MultiByteEncoderTest {
         encoder = new MultiByteEncoder(encodingData, 4);
         encoderThread = new Thread(encoder);
         encoderThread.start();
-        while (encoder.getStatus() != MultiByteEncoder.StatusEnum.DONE) {
+        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
             //do nothing
         }
         byte[] keys = encoder.getEncodedKeys();
@@ -100,10 +100,10 @@ public class MultiByteEncoderTest {
     public void testInterruption(){
         encoder = new MultiByteEncoder(randomData, 4);
         encoderThread = new Thread(encoder);
-        assertEquals("Thread already running", MultiByteEncoder.StatusEnum.NULL, encoder.getStatus());
+        assertEquals("Thread already running", Encoding.StatusEnum.NULL, encoder.getStatus());
         encoderThread.start();
-        MultiByteEncoder.StatusEnum status = encoder.getStatus();
-        if (status == MultiByteEncoder.StatusEnum.BUILDING || status == MultiByteEncoder.StatusEnum.ENCODING){
+        Encoding.StatusEnum status = encoder.getStatus();
+        if (status == Encoding.StatusEnum.BUILDING || status == Encoding.StatusEnum.ENCODING){
             encoder.interrupt();
             assertFalse("Encoder was not interrupted", encoderThread.isAlive());
         }

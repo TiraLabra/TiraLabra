@@ -2,16 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ByteConversion;
+package Utilities;
 
 /**
  * Extracted from its original location in the encoder.
+ *
  * @author virta
  */
 public class IntegerConverter {
 
     /**
      * Decodes an integer from the bytearray given as parameter.
+     *
      * @param array
      * @return an integer representation of the bytearray.
      */
@@ -80,4 +82,24 @@ public class IntegerConverter {
         }
         return newKey;
     }
+
+    /**
+     * Calculates the approximate byte-width for the supplied integer.
+     *
+     * @param integer
+     * @return
+     */
+    public static int getBytesPerInteger(int integer) {
+        if (integer == 1) {
+            return 1;
+        }
+        int bytes = 0;
+        double k = integer;
+        while (k > 1) {
+            k /= 255;
+            bytes++;
+        }
+        return bytes;
+    }
+    
 }
