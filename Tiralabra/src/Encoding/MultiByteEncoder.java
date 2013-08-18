@@ -42,7 +42,8 @@ public class MultiByteEncoder implements Runnable {
      */
     private StatusEnum status;
     /**
-     * Used to stop current operations. Can be accessed by hashtable in static context.
+     * Used to stop current operations. Can be accessed by hashtable in static
+     * context.
      */
     public static boolean interrupt;
 
@@ -115,11 +116,11 @@ public class MultiByteEncoder implements Runnable {
             return;
         }
 
-        if (!makeAndCleanKeys()){
+        if (!makeAndCleanKeys()) {
             this.status = StatusEnum.DATAERROR;
             return;
         }
-        
+
         if (interrupt) {
             this.status = StatusEnum.INTERRUPTED;
             return;
@@ -168,7 +169,7 @@ public class MultiByteEncoder implements Runnable {
         boolean newPrefix = false;
 
         encodedDataIndex = encodeRemainderToBegginning(remainder, encodedDataIndex, prefixIndex);
-        prefixIndex=encodedDataIndex;
+        prefixIndex = encodedDataIndex;
         encodedDataIndex++;
 
         for (int i = 0; i < data.length; i += byteWidth) {
@@ -252,7 +253,7 @@ public class MultiByteEncoder implements Runnable {
     }
 
     /**
-     * Enoces any supplied data into the supplied data array beginning at the
+     * Encodes any supplied data into the supplied data array beginning at the
      * supplied index.
      *
      * @param data
@@ -350,10 +351,13 @@ public class MultiByteEncoder implements Runnable {
      * data is in the worst case 1 byte. The reference count for any multibyte
      * is thus defined by the equation: bytewidth + 1, and the maximum number of
      * keys by: 2 ^ ( (bytewidth-2) *8 ).
+     * @return true if there are more than zero keys false otherwise. There might
+     * be zero keys if the data is almost random and not enough references are made
+     * to any keys.
      */
     private boolean makeAndCleanKeys() {
         hashTable.purgeAndClean(byteWidth);
-        if (hashTable.getKeyCount()>0) {
+        if (hashTable.getKeyCount() > 0) {
             keys = hashTable.getArray(byteWidth);
             return true;
         }
@@ -361,7 +365,7 @@ public class MultiByteEncoder implements Runnable {
     }
 
     /**
-     * Creates a bytearray of the keys stored in the global MultiByte array
+     * Creates a bytearray of the keys stored in the global MultiByte array:
      * keys.
      *
      * @return
@@ -442,6 +446,14 @@ public class MultiByteEncoder implements Runnable {
         return encodedDataIndex;
     }
 
+    /**
+     * Enumerators for the status of operations.
+     * NULL: operations have not started.
+     * BUILDING: analyzing the data and building a hashset of keys.
+     * ENCODING: analyzing and encoding the data with the keys.
+     * DATAERROR: if the data is random enough there may be no keys to encode.
+     * INTERRUPTED: the user may interrupt all operations eg. if they see that it takes too long.
+     */
     public enum StatusEnum {
 
         NULL,

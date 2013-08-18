@@ -36,7 +36,6 @@ public class MultiByteHashedTable {
      * Kept updated so it doesn't have to be searched from data.
      */
     private int keyCount;
-    
     /**
      * When rehashing do not call rehashing methods recursively.
      */
@@ -58,8 +57,8 @@ public class MultiByteHashedTable {
     public int[][] getReferences() {
         return this.references;
     }
-    
-    public int getKeyCount(){
+
+    public int getKeyCount() {
         return this.keyCount;
     }
 
@@ -89,8 +88,7 @@ public class MultiByteHashedTable {
 
     /**
      * Puts the specified multi-byte entity to a bucket in the table. If the
-     * given multibyte is already in the table the reference count for it is
-     * increased.
+     * given multibyte is already in the table its reference count is increased.
      *
      * @param multiByte
      * @return true if the operation succeeded, false if the internal hashing
