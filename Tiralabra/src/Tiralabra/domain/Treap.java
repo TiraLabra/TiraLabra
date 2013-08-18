@@ -6,6 +6,7 @@ package Tiralabra.domain;
  */
 public class Treap implements Puu{
 
+    private SolmuTreap juuri;
     
     public Treap(int emo) {
     }
@@ -26,7 +27,7 @@ public class Treap implements Puu{
     }
 
     @Override
-    public int search(int key) {
+    public boolean search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

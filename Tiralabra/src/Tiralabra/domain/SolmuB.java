@@ -28,16 +28,22 @@ public class SolmuB {
      */
     private SolmuB keski;
 
+    /**
+     * Solmun vanhempi.
+     */
+    private SolmuB vanh;
+    
     /** Luo uuden solmun yhdellä arvolla.
      * 
      * @param key uuden solmun ensimmäinen arvo
      */
-    public SolmuB(int key) {
-        solmunarvot = new ALista(key);
+    public SolmuB(int key, SolmuB v) {
+        this.solmunarvot = new ALista(key);
+        this.vanh = v;
     }
     
     /**
-     * Lisaa solmuun toisen arvon.
+     * Lisaa solmuun arvon.
      * @param k solmulle asetettava uusi arvo
      */
     public void lisaaArvo(int k){
@@ -81,34 +87,76 @@ public class SolmuB {
     }
 
     /**
-     * Asettaa keskimmäisen lapsen.
+     * Asettaa keskimmäisen lapsen ja sille vanhemmaksi tämän solmun.
      * @param keski uusi keskimmäinen lapsisolmu
      */
     public void setKeski(SolmuB keski) {
         this.keski = keski;
+        if (this.keski != null) {
+            this.keski.setParent(this);
+        }
     }
 
     /**
-     * Asettaa oikean lapsen.
+     * Asettaa oikean lapsen ja sille vanhemmaksi tämän solmun.
      * @param oikea uusi oikea lapsisolmu
      */
     public void setOikea(SolmuB oikea) {
         this.oikea = oikea;
+        if (this.oikea != null) {
+            this.oikea.setParent(this);
+        }
     }
 
     /**
-     * Asettaa vasemman lapsen.
+     * Asettaa vasemman lapsen, ja sille vanhemmaksi tämän solmun.
      * @param vasen uusi keskimmäinen lapsisolmu
      */
     public void setVasen(SolmuB vasen) {
         this.vasen = vasen;
+        if (this.vasen != null) {
+            this.vasen.setParent(this);
+        }
     }
 
     /**
-     * Palauttaa listan solmun arvoista.
-     * @return solmun arvot
+     * Palauttaa solmun ensimmäisen arvon.
+     * @return solmun ensimmäinen ja pienin arvo
      */
-    public ALista getSolmunarvot() {
-        return solmunarvot;
+    public int getEnsimmainenArvo() {
+        return solmunarvot.getLista().getArvo();
     }
+    
+    /**
+     * Palauttaa solmun toisen arvon.
+     * Ei kutsuta, jos toista arvoa ei olemassa.
+     * @return solmun toinen ja suurempi arvo
+     */
+    public int getToinenArvo(){
+        return solmunarvot.getLista().getNext().getArvo();
+    }
+
+    /**
+     * Palauttaa solmun vanhemman.
+     * @return parent-solmu
+     */
+    public SolmuB getParent() {
+        return vanh;
+    }
+
+    /**
+     * Asettaa solmulle vanhemman.
+     * @param vanh solmun uusi parent-solmu
+     */
+    public void setParent(SolmuB vanh) {
+        this.vanh = vanh;
+    }
+
+    /**
+     * Kertoo solmun koon; kuinka monta arvoa siihen kuuluu.
+     */
+    public int solmunKoko(){
+        return this.solmunarvot.getKoko();
+    }
+    
 }
