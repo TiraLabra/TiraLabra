@@ -59,6 +59,8 @@ public class MultiByteDecoder implements Runnable{
      */
     private int encodedDataStartingIndex;
     
+    private int decodingIndex;
+    
     /**
      * Constructs a decoder with the specified data.
      * @param data 
@@ -66,6 +68,7 @@ public class MultiByteDecoder implements Runnable{
     public MultiByteDecoder(byte[] data){
         this.combinedDataAndKeys = data;
         this.encodedDataStartingIndex = 0;
+        this.decodingIndex = 0;
     }
 
     /**
@@ -107,6 +110,24 @@ public class MultiByteDecoder implements Runnable{
                 
             }
         }
+    }
+    
+    private void decodeAtIndex(int dataIndex, int runLength, int keyWidth){
+        for (int i = dataIndex; i < dataIndex+runLength; i+=keyWidth) {
+            byte[] keyArray = new byte[keyWidth];
+            for (int j = 0; j < keyWidth; j++) {
+                keyArray[j] = encodedData[i+j];
+            }
+            int key = IntegerConverter.ByteToInteger(keyArray);
+            MultiByte mb = keys[key];
+        }
+    }
+    
+    private void insertIntoDecodedData(byte[] data){
+        if (decodingIndex+data.length>=decodedData.length){
+            decodedData = ArrayUtilities.expandArray(decodedData);
+        }
+        ArrayUtilities.encodeIntoArray(data, decodedData, decodingIndex);
     }
     
     /**
