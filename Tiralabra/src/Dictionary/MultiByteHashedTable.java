@@ -7,7 +7,6 @@ package Dictionary;
 import Encoding.MultiByteEncoder;
 import MultiByteEntities.MultiByte;
 import Utilities.ArrayUtilities;
-import sun.misc.Hashing;
 
 /**
  * A Hashmap like structure with collision handling. Puts the given multibyte
@@ -97,27 +96,32 @@ public class MultiByteHashedTable {
      * function returned an invalid hash which should never happen.
      */
     public boolean put(MultiByte multiByte) {
-        int[] multiByteIndex = contains(multiByte);
-
-        if (multiByteIndex == null) {
-            for (int i = 0; i < 5; i++) {
-                int hash = getHash(multiByte.hashCode(), i);
-                for (int j = 0; j < data[hash].length; j++) {
-                    if (MultiByteEncoder.interrupt) {
-                        break;
-                    }
-
-                    if (this.data[hash][j] == null) {
-                        insertIntoTable(hash, j, multiByte);
+        int[] multiByteIndex = indexForMultiByte(multiByte);
+        
+        if (multiByteIndex == null){
+            rehashToGreaterSize();
+            multiByteIndex = indexForMultiByte(multiByte);
+        }
+        
+        if (data[multiByteIndex[0]][multiByteIndex[1]] == null) {
+//            for (int i = 0; i < size; i++) {
+//                int hash = getHash(multiByte.hashCode(), i);
+//                for (int j = 0; j < data[hash].length; j++) {
+//                    if (MultiByteEncoder.interrupt) {
+//                        break;
+//                    }
+//
+//                    if (this.data[hash][j] == null) {
+                        insertIntoTable(multiByteIndex[0], multiByteIndex[1], multiByte);
 
                         double fillRatio = (double) keyCount / (Math.pow(size, 2));
                         if (fillRatio >= 0.8) {
                             rehashToGreaterSize();
                         }
                         return true;
-                    }
-                }
-            }
+//                    }
+//                }
+//            }
 //            if (!rehashing && fillRatio>0.8) {
 //                return rehashToGreaterSize(multiByte);
 //            }
@@ -126,7 +130,11 @@ public class MultiByteHashedTable {
             return true;
         }
 
-        return false;
+//        return false;
+    }
+    
+    public MultiByte getMultibyte(int[] index){
+        return this.data[index[0]][index[1]];
     }
 
     /**
@@ -181,19 +189,18 @@ public class MultiByteHashedTable {
     }
 
     /**
-     * Checks the contents of the subtable at the hash location for a matching
-     * multibyte.
+     * Searches the hashtable for a matching multibyte.
      *
      * @param multiByte
-     * @return
+     * @return the inxed for the multibyte or an empty index into which new data can be put.
      */
-    public int[] contains(MultiByte multiByte) {
+    public int[] indexForMultiByte(MultiByte multiByte) {
 
-        for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < size; j++) {
             int hash = getHash(multiByte.hashCode(), j);
 
             if (this.data[hash][0] == null) {
-                return null;
+                return new int[]{hash, 0};
             }
 
             for (int i = 0; i < data[hash].length; i++) {
@@ -204,7 +211,7 @@ public class MultiByteHashedTable {
                 if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte)) {
                     return new int[]{hash, i};
                 } else if (this.data[hash][i] == null) {
-                    break;
+                    return new int[]{hash, i};
                 }
             }
         }
