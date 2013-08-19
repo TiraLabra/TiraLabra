@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * Luo verkon annetuista solmuista / kaarista.
  *
  * @author kkivikat
  */
@@ -64,11 +61,16 @@ public class Verkko {
         Solmu ysi = new Solmu(9);
         Solmu kyba = new Solmu(10);
 
-        solmut.put(1, eka);solmut.put(2, toka);
-        solmut.put(3, kol);solmut.put(4, nel);
-        solmut.put(5, viis);solmut.put(6, kuus);
-        solmut.put(7, seitt);solmut.put(8, kasi);
-        solmut.put(9, ysi);solmut.put(10, kyba);
+        solmut.put(1, eka);
+        solmut.put(2, toka);
+        solmut.put(3, kol);
+        solmut.put(4, nel);
+        solmut.put(5, viis);
+        solmut.put(6, kuus);
+        solmut.put(7, seitt);
+        solmut.put(8, kasi);
+        solmut.put(9, ysi);
+        solmut.put(10, kyba);
 
         Kaari kaari1 = new Kaari(eka, toka, 1);
         Kaari kaari2 = new Kaari(eka, kol, 3);
@@ -87,14 +89,22 @@ public class Verkko {
         Kaari kaari15 = new Kaari(ysi, kuus, 3);
         Kaari kaari16 = new Kaari(kasi, ysi, 2);
 
-        kaaret.add(kaari1);kaaret.add(kaari2);
-        kaaret.add(kaari3);kaaret.add(kaari4);
-        kaaret.add(kaari5);kaaret.add(kaari6);
-        kaaret.add(kaari7);kaaret.add(kaari8);
-        kaaret.add(kaari9);kaaret.add(kaari10);
-        kaaret.add(kaari11);kaaret.add(kaari12);
-        kaaret.add(kaari13);kaaret.add(kaari14);
-        kaaret.add(kaari15);kaaret.add(kaari16);
+        kaaret.add(kaari1);
+        kaaret.add(kaari2);
+        kaaret.add(kaari3);
+        kaaret.add(kaari4);
+        kaaret.add(kaari5);
+        kaaret.add(kaari6);
+        kaaret.add(kaari7);
+        kaaret.add(kaari8);
+        kaaret.add(kaari9);
+        kaaret.add(kaari10);
+        kaaret.add(kaari11);
+        kaaret.add(kaari12);
+        kaaret.add(kaari13);
+        kaaret.add(kaari14);
+        kaaret.add(kaari15);
+        kaaret.add(kaari16);
 
         System.out.println("Oikeat loppupainot: " + "\n"
                 + "0, 1, 3, 9, 5, 7, 6, 9, 11, 18");
