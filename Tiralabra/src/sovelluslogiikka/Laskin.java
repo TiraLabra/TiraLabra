@@ -12,8 +12,7 @@ public class Laskin {
 
     private Scanner lukija;
     private String kokonaisluvut;
-    private String eiSallitutMerkitAlussa;
-    private String eiSallitutMerkitLopussa;
+    private String sallitutMerkit;
 
     private enum OPERANDI {
 
@@ -26,8 +25,7 @@ public class Laskin {
     public Laskin() {
         lukija = new Scanner(System.in);
         kokonaisluvut = "0123456789";
-        eiSallitutMerkitAlussa = "+-*/)";
-        eiSallitutMerkitLopussa = "+-*/(";
+        sallitutMerkit = "0123456789()+-*/";
     }
 
     /**
@@ -45,7 +43,7 @@ public class Laskin {
             } else if (tarkastaSyote(syote)) {
                 System.out.println("Ratkaisu: " + ratkaiseLaskutoimitus(syote) + "\n");
             } else {
-                System.out.println("Laskutoimitus on virheellinen. Tarkista syötetty laskutoimitus.\n");
+                System.out.println("Tarkista laskutoimitus ja syötä se korjattuna uudelleen.\n");
             }
         }
     }
@@ -59,21 +57,39 @@ public class Laskin {
      * @return Totuusarvo (tosi tai epätosi)
      */
     public boolean tarkastaSyote(String syote) {
+        for (int i = 0; i < syote.length(); i++) {
+            if (sallitutMerkit.indexOf(syote.charAt(i)) == -1) {
+                System.out.print("Laskutoimitus sisältää ei-sallittuja merkkejä. ");
+                return false;
+            }
+        }
         if (syote.isEmpty()) {
+            System.out.print("Et syöttänyt yhtään merkkiä. ");
             return false;
-        } else if (eiSallitutMerkitAlussa.indexOf(syote.charAt(0)) == 0 || eiSallitutMerkitLopussa.indexOf(syote.charAt(syote.length() - 1)) == syote.length() - 1) {
+        } else if (syote.contains("/0") || syote.contains("()") || syote.contains(")(")) {
             return false;
-        } else if (syote.contains("/0") || syote.contains(" ")) {
+        } else if (syote.charAt(0) == '+' || syote.charAt(0) == '-' || syote.charAt(0) == '*' || syote.charAt(0) == '/' || syote.charAt(0) == ')') {
+            return false;
+        } else if (syote.charAt(syote.length() - 1) == '+' || syote.charAt(syote.length() - 1) == '-' || syote.charAt(syote.length() - 1) == '*' || syote.charAt(syote.length() - 1) == '/' || syote.charAt(syote.length() - 1) == '(') {
             return false;
         } else if (syote.contains("++") || syote.contains("--") || syote.contains("**") || syote.contains("//")) {
+            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkejä peräkkäin. ");
             return false;
         } else if (syote.contains("+-") || syote.contains("+*") || syote.contains("+/")) {
+            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
+
             return false;
         } else if (syote.contains("-+") || syote.contains("-*") || syote.contains("-/")) {
+            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
+
             return false;
         } else if (syote.contains("*+") || syote.contains("*-") || syote.contains("*/")) {
+            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
+
             return false;
         } else if (syote.contains("/+") || syote.contains("/-") || syote.contains("/*")) {
+            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
+
             return false;
         } else {
             return true;
