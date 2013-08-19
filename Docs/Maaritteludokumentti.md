@@ -13,7 +13,8 @@ joten näistä on varmaan hyvä alottaa.
 
 Mitä syötteitä ohjelma saa ja miten näitä käytetään:
 Ohjelma pyytää käyttäjää tekemään ensin verkon ja sitten ajamaan
-verkon haluamallaan algoritmilla.
+verkon haluamallaan algoritmilla. Valmiita verkkoja on myös Verkko -luokan
+teeVerkko() metodin alla.
 
 *****************************************
 

@@ -1,9 +1,9 @@
 package ohjelma.algoritmit;
+import java.util.HashMap;
 import java.util.HashSet;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;
-import ohjelma.tietorakenteet.iHashMap;
 
 /*
  * To change this template, choose Tools | Templates
@@ -14,7 +14,7 @@ import ohjelma.tietorakenteet.iHashMap;
  * @author kkivikat
  */
 public class BellmanFord {
-    private iHashMap<Integer, Solmu> solmut;
+    private HashMap<Integer, Solmu> solmut;
     private HashSet<Kaari> kaaret;
 
     /**
@@ -30,13 +30,13 @@ public class BellmanFord {
     **/
     public boolean BellmanFord() {
         alusta();
-        for (int i = 1; i < solmut.koko() - 1; i++) {                                   // Käydään kaikki kaaret läpi ja relaksoidaan jännitteet
+        for (int i = 1; i < solmut.size(); i++) {   // Käydään kaikki kaaret läpi ja relaksoidaan jännitteet
             for (Kaari kaari : kaaret) {
                 Relax(kaari);
             }
         }
-        tulostaSolmut();                                                            // Huom! tulostaSolmut() vain testausta varten
-        for (Kaari kaari : kaaret) {                                                // Tarkastetaan syklit
+        tulostaSolmut();                            // Huom! tulostaSolmut() vain testausta varten
+        for (Kaari kaari : kaaret) {                // Tarkastetaan syklit
             if (sykliTarkastus(kaari) == false) {
                 return false;
             }
@@ -51,15 +51,15 @@ public class BellmanFord {
     
     public void alusta() {
         solmut.get(1).setPaino(0);
-        for (int i = 2; i < solmut.koko(); i++) {
+        for (int i = 2; i <= solmut.size(); i++) {
             solmut.get(i).setPaino(99);
         }
     }
 
     /**
     * Kaarien painojen päivitys/relaksointi.
-    **/
-    public void Relax(Kaari kaari) {                                                // päivittää kaarten painoja jos löytyy jännitteitä (eli toisin sanoen lyhyempi polku)
+    **/                                                    
+    public void Relax(Kaari kaari) {                // päivittää kaarten painoja jos löytyy jännitteitä (eli toisin sanoen lyhyempi polku)
         if (kaari.getKohde().getPaino() > ((kaari.getAlku().getPaino() + kaari.getEtaisyys()))) {
             kaari.getKohde().setPaino((kaari.getAlku().getPaino() + kaari.getEtaisyys()));
         }
@@ -69,10 +69,11 @@ public class BellmanFord {
     * Jos löytyy negatiivinen sykli, palautetaan false, muuten true.
     **/
     public boolean sykliTarkastus(Kaari kaari) {
-        if (kaari.getKohde().getPaino() > ((kaari.getAlku().getPaino() + kaari.getEtaisyys()))) {
+        if (kaari.getKohde().getPaino() > (kaari.getAlku().getPaino() + kaari.getEtaisyys())) {
             return false;
         } else {
             return true;
+            
         }
     }
 
@@ -83,10 +84,8 @@ public class BellmanFord {
     
     private void tulostaSolmut() {
         System.out.println("Bellman-Ford tulokset: ");
-        for (int x = 1; x < solmut.koko() + 1; x++) {
-            System.out.println("Solmun nro: " + solmut.get(x).getSolmuNumero());
-            System.out.println("Solmun paino " + solmut.get(x).getPaino());
-            System.out.println("");
+        for (int x = 1; x < solmut.size() + 1; x++) {
+            System.out.print(solmut.get(x).getPaino()+", ");
         }
     }
 }
