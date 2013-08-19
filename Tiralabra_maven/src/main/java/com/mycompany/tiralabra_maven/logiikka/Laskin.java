@@ -45,11 +45,7 @@ public final class Laskin {
                     // Tulkin pitäisi poistaa välilyönnit, mutta käyttäjän
                     // antamassa RPN-kaavassa niitä saattaa olla.
                     break;
-                case '+':
-                case '-':
-                case '*':
-                case '/':
-                case '%':
+                case '+': case '-': case '*': case '/': case '%':
                     sievenna(merkki);
                     break;
                 default:

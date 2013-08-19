@@ -16,7 +16,7 @@ import java.util.EmptyStackException;
 public final class Tulkki {
 
     private static final Hajautuskartta<Integer> PRIORITEETIT
-            = new Hajautuskartta<Integer>(3);
+            = new Hajautuskartta<Integer>();
     private static final Pino<Character> PINO = new Pino<Character>();
     private static final Jono<String> JONO = new Jono<String>();
     private static final Jono<Character> APUJONO = new Jono<Character>();
@@ -62,6 +62,13 @@ public final class Tulkki {
         JONO.tyhjenna();
         // Pinoon on voinut myös jäädä jotain.
         PINO.tyhjenna();
+        
+//        // Debuggaustulosteita:
+//        System.out.println(PRIORITEETIT);
+//        System.out.println(PRIORITEETIT.tayttosuhde());
+//        PRIORITEETIT.uudelleenhajauta(5);
+//        System.out.println(PRIORITEETIT);
+//        System.out.println(PRIORITEETIT.tayttosuhde());
         
         // Pientä kapselointia
         iteroiMerkit();        
