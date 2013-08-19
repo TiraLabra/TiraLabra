@@ -3,7 +3,7 @@ package logiikka;
 import osat.Laatikko;
 import osat.Lava;
 import tyokalut.AVLsolmu;
-import tyokalut.HistorianKasittelija;
+import tyokalut.AVLkasittelija;
 import tyokalut.KasvavaLista;
 
 /**
@@ -21,7 +21,7 @@ public class Kontinpurkaja {
     /**
      * Historian sisältävän AVL-puun toiminnot kokoava olio.
      */
-    private HistorianKasittelija historia;
+    private AVLkasittelija historia;
     
     /**
      * Historiatiedot sisältävän AVL-puun juurisolmu.
@@ -30,7 +30,7 @@ public class Kontinpurkaja {
     
     public Kontinpurkaja() {
         laskuri = new Laskuri();
-        historia = new HistorianKasittelija();
+        historia = new AVLkasittelija();
         
         juuri = historia.avaa();
     }
@@ -55,7 +55,7 @@ public class Kontinpurkaja {
         AVLsolmu solmu = historia.etsi(juuri, EAN);
         
         if (solmu == null) {
-            historia.AVLlisays(juuri, laatikko, asettelu, lava);
+            historia.AVLlisays(laatikko, asettelu, lava);
         } else {
             solmu.setLaatikko(laatikko);
             solmu.setAsettelu(asettelu);
@@ -79,6 +79,6 @@ public class Kontinpurkaja {
      * 
      */
     public void tallennaHistoria() {
-        historia.tallenna(juuri);
+        historia.tallenna();
     }
 }

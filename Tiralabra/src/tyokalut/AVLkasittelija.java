@@ -15,9 +15,11 @@ import osat.Lava;
  * 
  * @author albis
  */
-public class HistorianKasittelija {
+public class AVLkasittelija {
+    private AVLsolmu juuri;
     
-    public HistorianKasittelija() {
+    public AVLkasittelija() {
+        juuri = null;
     }
     
     /**
@@ -29,7 +31,7 @@ public class HistorianKasittelija {
      * @param lava Lavan mittatiedot, jotka lisätään uuteen solmuun.
      * @return Palauttaa lisätyn solmun.
      */
-    private AVLsolmu lisaa(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+    private AVLsolmu lisaa(Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
         AVLsolmu uusi = new AVLsolmu(laatikko, asettelu, lava);
         
         if (juuri == null) {
@@ -68,8 +70,8 @@ public class HistorianKasittelija {
      * @param asettelu Lisättävät asettelutiedot sisältävä lista.
      * @param lava Lavan mittatiedot sisältävä olio.
      */
-    public void AVLlisays(AVLsolmu juuri, Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
-        AVLsolmu uusi = lisaa(juuri, laatikko, asettelu, lava);
+    public void AVLlisays(Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+        AVLsolmu uusi = lisaa(laatikko, asettelu, lava);
         AVLsolmu solmu = uusi.getVanhempi();
         
         while (solmu != null) {
@@ -225,7 +227,7 @@ public class HistorianKasittelija {
      * @param solmu Solmu, jonka korkeus halutaan tietää.
      * @return Palauttaa korkeustiedon kokonaislukuna.
      */
-    private int haeKorkeus(AVLsolmu solmu) {
+    public int haeKorkeus(AVLsolmu solmu) {
         if (solmu == null) {
             return -1;
         }
@@ -237,7 +239,6 @@ public class HistorianKasittelija {
      */
     public AVLsolmu avaa() {
         File historiaTiedosto = new File("historia.txt");
-        AVLsolmu juuri = null;
         
         try {
             Scanner lukija = new Scanner(historiaTiedosto);
@@ -265,7 +266,7 @@ public class HistorianKasittelija {
                     asettelu.lisaa(osat[i]);
                 }
                 
-                AVLlisays(juuri, laatikko, asettelu, lava);
+                AVLlisays(laatikko, asettelu, lava);
             }
             
             lukija.close();
@@ -280,7 +281,7 @@ public class HistorianKasittelija {
      * Metodi, joka tallentaa kaikki puun sisältämät asettelutavat tekstitiedostoon
      * ohjelma suljettaessa.
      */
-    public void tallenna(AVLsolmu juuri) {
+    public void tallenna() {
         try {
             FileWriter kirjoittaja = new FileWriter("historia.txt");
             
@@ -290,5 +291,9 @@ public class HistorianKasittelija {
         } catch (IOException e) {
             System.out.println("Virhe tallennettaessa!" + e.getMessage());
         }
+    }
+    
+    public AVLsolmu getJuuri() {
+        return juuri;
     }
 }

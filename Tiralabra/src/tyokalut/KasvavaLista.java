@@ -31,14 +31,10 @@ public class KasvavaLista {
         }
         
         String[] kopio = new String[lista.length];
-        for (int i = 0; i < lista.length; i++) {
-            kopio[i] = lista[i];
-        }
+        kopioiAlkiot(lista, kopio, lista.length);
         
         lista = new String[kopio.length+10];
-        for (int i = 0; i < kopio.length; i++) {
-            lista[i] = kopio[i];
-        }
+        kopioiAlkiot(kopio, lista, kopio.length);
         
         lista[kopio.length] = lisattava;
     }
@@ -56,6 +52,19 @@ public class KasvavaLista {
             }
         }
         return lista.length;
+    }
+    
+    /**
+     * Kopioi annetun määrän alkioita taulukon alusta toisen taulukon alkuun.
+     * 
+     * @param lahde Taulukko, jonka alkioita kopioidaan.
+     * @param kohde Taulukko, johon alkioita kopioidaan.
+     * @param montako Kopioitavien alkioiden määrä.
+     */
+    private void kopioiAlkiot(String[] lahde, String[] kohde, int montako) {
+        for (int i = 0; i < montako; i++) {
+            kohde[i] = lahde[i];
+        }
     }
     
     /**
