@@ -28,7 +28,7 @@ public class Labyrintti {
     }
 
     /*
-     * Luo kuvasta taulukkoesityksen.
+     * Luo kuvasta taulukkoesityksen. 
      */
     private void luoSolmuverkko() {
         verkko = new Solmu[getHeight()][getWidth()];

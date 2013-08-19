@@ -16,12 +16,12 @@ public class LabyrinttiTest {
     
     public LabyrinttiTest() {
     }
-    private Labyrintti labyrintti;
+
     private Labyrintti laby;
     
     @Before
     public void setUp() {
-        labyrintti = new Labyrintti("labyrintti");
+
         laby = new Labyrintti("labyTest5x5");
     }
 
@@ -31,29 +31,29 @@ public class LabyrinttiTest {
     
     @Test
     public void asetaLattiaJaSeinaTest(){
-         assertEquals(-1, labyrintti.getLattia());
-         assertEquals(-16777216, labyrintti.getSeina());
+         assertEquals(-1, laby.getLattia());
+         assertEquals(-16777216, laby.getSeina());
      } 
      
      @Test
      public void etaisyysTest(){
-         Solmu a = new Solmu(5,5, labyrintti.verkko);
+         Solmu a = new Solmu(0,0, laby.verkko);
          
-         assertEquals(1, labyrintti.etaisyys(a));
+         assertEquals(1, laby.etaisyys(a));
          
-         a = new Solmu(1,1, labyrintti.verkko);
+         a = new Solmu(1,1, laby.verkko);
          
-         assertEquals(1000000, labyrintti.etaisyys(a));
+         assertEquals(1000000, laby.etaisyys(a));
      }
      
      @Test
      public void getHeight(){
-         assertEquals(350, labyrintti.getHeight());
+         assertEquals(5, laby.getHeight());
      }
      
      @Test
      public void getWidth() {
-         assertEquals(500, labyrintti.getWidth());
+         assertEquals(5, laby.getWidth());
      }
      
      @Test

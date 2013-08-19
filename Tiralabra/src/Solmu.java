@@ -94,7 +94,6 @@ public class Solmu implements Comparable<Solmu>{
     @Override
     public int compareTo(Solmu o) {
         return ((this.alkuarvo+this.heuristiikka)-(o.alkuarvo+o.heuristiikka));
-       // return (this.heuristiikka)-(o.heuristiikka);
     }
     
     @Override

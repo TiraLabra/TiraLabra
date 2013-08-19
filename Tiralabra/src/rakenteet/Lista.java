@@ -31,14 +31,13 @@ public class Lista<E> {
     }
     
     public boolean contains(E e) {
-        int a = Arrays.binarySearch(lista, e);
-        return a>=0;
-//        for (int i = 0; i < koko; i++) {
-//            if (jono[i].equals(e)) {
-//                return true;
-//            }
-//        }
-//        return false;
+
+        for (int i = 0; i < koko; i++) {
+            if (lista[i].equals(e)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public E get(int i) {
@@ -47,6 +46,10 @@ public class Lista<E> {
     
     public int size() {
         return koko;
+    }
+
+    public void clear() {
+        koko = 0;
     }
     
     

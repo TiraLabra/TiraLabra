@@ -100,25 +100,24 @@ public class Jarjestysjono<E> {
     }
 
     public boolean contains(E e) {
-        if (koko % 100 == 0) {
-            System.out.println("Järj. listan koko: " + koko);
-        }
-//        return Arrays.binarySearch(jono, 0, koko, e) >= 0;
-        long alku = 0;
-        if (koko % 200 == 0) {
-            alku = System.currentTimeMillis();
-        }
+//        if (koko % 100 == 0) {
+//            System.out.println("Järj. listan koko: " + koko);
+//        }
+//        long alku = 0;
+//        if (koko % 200 == 0) {
+//            alku = System.currentTimeMillis();
+//        }
         for (int i = 0; i < koko; i++) {
             if (jono[i].equals(e)) {
-                if (koko % 200 == 0) {
-                    System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku) + "ms");
-                }
+//                if (koko % 200 == 0) {
+//                    System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku) + "ms");
+//                }
                 return true;
             }
         }
-        if (koko % 200 == 0) {
-            System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku));
-        }
+//        if (koko % 200 == 0) {
+//            System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku));
+//        }
         return false;
     }
 }

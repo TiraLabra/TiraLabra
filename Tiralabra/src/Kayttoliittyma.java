@@ -3,6 +3,7 @@
 
 import java.awt.*;
 import javax.swing.*;
+import rakenteet.Jarjestysjono;
 
 /**
  *
@@ -11,7 +12,7 @@ import javax.swing.*;
 public class Kayttoliittyma implements Runnable {
 
     private JFrame frame;
-    private Labyrintti laby = new Labyrintti("labyrintti");
+    private Labyrintti laby = new Labyrintti("laby20x20");
 
     /**
      *
@@ -25,7 +26,7 @@ public class Kayttoliittyma implements Runnable {
     @Override
     public void run() {
         frame = new JFrame("Labyrintti");
-        frame.setPreferredSize(new Dimension(600, 450));
+        frame.setPreferredSize(new Dimension(700, 350));
         
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
   
@@ -43,15 +44,39 @@ public class Kayttoliittyma implements Runnable {
     private void luoKomponentit(Container container) {
         Image sokkelo = laby.haeLaby();
         
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
         
         JPanel kehys = new JPanel();
-        kehys.setPreferredSize(new Dimension(600, 400));
-        kehys.setBackground(Color.BLACK);
+        kehys.setPreferredSize(new Dimension(700, 350));
+        kehys.setBackground(Color.LIGHT_GRAY);
         container.add(kehys);
         
+        JPanel labyt = new JPanel();
+        labyt.setLayout(new BoxLayout(labyt, BoxLayout.Y_AXIS));
+        labyt.setBackground(Color.LIGHT_GRAY);
+        
+        JButton valitse = new JButton("Vaihda labyrintti");
+        
+        JTextField labyrintti = new JTextField();
+        labyt.add(labyrintti);
+        
+        JLabel laby1 = new JLabel("laby20x20");
+        JLabel laby2 = new JLabel("laby2");
+        JLabel laby3 = new JLabel("laby3");
+        JLabel laby4 = new JLabel("labyEiSeinia");
+        JLabel laby5 = new JLabel("labyMetsa");
+        
+        labyt.add(laby1);
+        labyt.add(laby2);
+        labyt.add(laby3);
+        labyt.add(laby4);
+        labyt.add(laby5);
+        labyt.add(labyrintti);
+        labyt.add(valitse);
+        kehys.add(labyt);
+        
         JLabel kuva = new JLabel();
-        kuva.setIcon(new ImageIcon(sokkelo));
+        kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
         kehys.add(kuva);
         
         JPanel napit = new JPanel();
@@ -66,6 +91,7 @@ public class Kayttoliittyma implements Runnable {
         nappi.addActionListener(kuuntelija);
 
     }
+
     
     /**
      *
