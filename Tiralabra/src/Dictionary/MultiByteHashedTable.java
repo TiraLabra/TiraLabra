@@ -6,6 +6,8 @@ package Dictionary;
 
 import Encoding.MultiByteEncoder;
 import MultiByteEntities.MultiByte;
+import Utilities.ArrayUtilities;
+import sun.misc.Hashing;
 
 /**
  * A Hashmap like structure with collision handling. Puts the given multibyte
@@ -46,10 +48,10 @@ public class MultiByteHashedTable {
      *
      */
     public MultiByteHashedTable() {
-        this.size = 16;
-        this.data = new MultiByte[16][16];
-        this.stats = new int[16];
-        this.references = new int[16][16];
+        this.size = 37;
+        this.data = new MultiByte[size][size];
+        this.stats = new int[size];
+        this.references = new int[size][size];
         this.keyCount = 0;
         this.rehashing = false;
     }
@@ -95,27 +97,33 @@ public class MultiByteHashedTable {
      * function returned an invalid hash which should never happen.
      */
     public boolean put(MultiByte multiByte) {
+        int[] multiByteIndex = contains(multiByte);
 
-        int hash = this.getHash(multiByte.hashCode());
-
-        if (hash < size) {
-            if (!this.contains(multiByte)) {
-                for (int i = 0; i < data[hash].length; i++) {
+        if (multiByteIndex == null) {
+            for (int i = 0; i < 5; i++) {
+                int hash = getHash(multiByte.hashCode(), i);
+                for (int j = 0; j < data[hash].length; j++) {
                     if (MultiByteEncoder.interrupt) {
                         break;
                     }
 
-                    if (this.data[hash][i] == null) {
-                        return insertIntoTable(hash, i, multiByte);
+                    if (this.data[hash][j] == null) {
+                        insertIntoTable(hash, j, multiByte);
+
+                        double fillRatio = (double) keyCount / (Math.pow(size, 2));
+                        if (fillRatio >= 0.8) {
+                            rehashToGreaterSize();
+                        }
+                        return true;
                     }
                 }
-                if (!rehashing) {
-                    return rehashToGreaterSize(multiByte);
-                }
-            } else {
-                this.references[hash][getIndex(hash, multiByte)]++;
-                return true;
             }
+//            if (!rehashing && fillRatio>0.8) {
+//                return rehashToGreaterSize(multiByte);
+//            }
+        } else {
+            this.references[ multiByteIndex[0]][ multiByteIndex[1]]++;
+            return true;
         }
 
         return false;
@@ -125,15 +133,15 @@ public class MultiByteHashedTable {
      * Rehashes the table to twice its original size with the new multibyte. If
      * the table size grows too big, throws an out of memory error.
      */
-    private boolean rehashToGreaterSize(MultiByte mb) {
+    private boolean rehashToGreaterSize() {
         rehashing = true;
         MultiByte[][] oldData = this.data;
 
         try {
-            this.data = new MultiByte[size * 2][size * 2];
-            this.references = new int[size * 2][size * 2];
-            this.stats = new int[size * 2];
-            this.size = size * 2;
+            this.size = size * 2 + 37;
+            this.data = new MultiByte[size][size];
+            this.references = new int[size][size];
+            this.stats = new int[size];
             this.keyCount = 0;
         } catch (Error e) {
             throw new OutOfMemoryError("Hashtable too big, not enough memory.");
@@ -152,20 +160,24 @@ public class MultiByteHashedTable {
                 }
             }
         }
-        this.put(mb);
+//        this.put(mb);
         rehashing = false;
+
         return true;
     }
 
     /**
-     * Generic method for single hashing.
+     * Generic method for double open hashing.
      *
      * @param hashCode
      * @return
      */
-    private int getHash(int hashCode) {
-        int hash = ((11 * hashCode + 13) % size);
-        return Math.abs(hash);
+    private int getHash(long hashCode, int cycle) {
+        hashCode = Math.abs(hashCode);
+        long primaryHash = ((3 * hashCode + 13) % (size + 7)) % size;
+        long seccondaryHash = ((5 * hashCode + 11) % (size + 37)) % size;
+
+        return (int) ((primaryHash + (cycle * seccondaryHash)) % size);
     }
 
     /**
@@ -175,41 +187,50 @@ public class MultiByteHashedTable {
      * @param multiByte
      * @return
      */
-    public boolean contains(MultiByte multiByte) {
-        int hash = this.getHash(multiByte.hashCode());
-        for (int i = 0; i < data[hash].length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
+    public int[] contains(MultiByte multiByte) {
+
+        for (int j = 0; j < 5; j++) {
+            int hash = getHash(multiByte.hashCode(), j);
+
+            if (this.data[hash][0] == null) {
+                return null;
             }
 
-            if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte)) {
-                return true;
-            }
-        }
-        return false;
-    }
+            for (int i = 0; i < data[hash].length; i++) {
+                if (MultiByteEncoder.interrupt) {
+                    break;
+                }
 
-    /**
-     * Returns an index for the given multibyte in the subtable.
-     *
-     * @param hash
-     * @param mb
-     * @return index for the multibyte or -1 if not found, which should never
-     * happen.
-     */
-    private int getIndex(int hash, MultiByte mb) {
-        for (int i = 0; i < data[hash].length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
-            }
-
-            if (mb.equals(data[hash][i])) {
-                return i;
+                if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte)) {
+                    return new int[]{hash, i};
+                } else if (this.data[hash][i] == null) {
+                    break;
+                }
             }
         }
-        return -1;
+        return null;
     }
 
+//    /**
+//     * Returns an index for the given multibyte in the subtable. Currently not needed as table uses a dynamic open double hash.
+//     *
+//     * @param hash
+//     * @param mb
+//     * @return index for the multibyte or -1 if not found, which should never
+//     * happen.
+//     */
+//    private int getIndex(int hash, MultiByte mb) {
+//        for (int i = 0; i < data[hash].length; i++) {
+//            if (MultiByteEncoder.interrupt) {
+//                break;
+//            }
+//
+//            if (mb.equals(data[hash][i])) {
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
     /**
      * Use with caution. Purges from the data all multibytes that have not been
      * referenced the given amount. Rehashes according to that data.
@@ -246,19 +267,18 @@ public class MultiByteHashedTable {
             }
         }
 
-        multiBytesToKeep = removeTrailingEmptySpace(multiBytesToKeep, toKeepIndex);
+        multiBytesToKeep = ArrayUtilities.contractMultiByteArray(multiBytesToKeep, toKeepIndex);
 
         rehashToData(multiBytesToKeep);
     }
 
-    private MultiByte[] removeTrailingEmptySpace(MultiByte[] table, int index) {
-        MultiByte[] newTable = new MultiByte[index];
-        for (int i = 0; i < newTable.length; i++) {
-            newTable[i] = table[i];
-        }
-        return newTable;
-    }
-
+//    private MultiByte[] removeTrailingEmptySpace(MultiByte[] table, int index) {
+//        MultiByte[] newTable = new MultiByte[index];
+//        for (int i = 0; i < newTable.length; i++) {
+//            newTable[i] = table[i];
+//        }
+//        return newTable;
+//    }
     /**
      * Builds a one-dimensional array of the contained multibyte entities, sorts
      * the array descending by referencecount, ie the number of times a
@@ -441,12 +461,11 @@ public class MultiByteHashedTable {
      * @param multiByte
      * @return
      */
-    private boolean insertIntoTable(int hash, int subIndex, MultiByte multiByte) {
+    private void insertIntoTable(int hash, int subIndex, MultiByte multiByte) {
         this.data[hash][subIndex] = multiByte;
         stats[hash]++;
         references[hash][subIndex] = 1;
         keyCount++;
-        return true;
     }
 
     private MultiByte[] enlargeTable(int toKeepIndex, MultiByte[] multiBytesToKeep) {

@@ -134,7 +134,7 @@ public class MultiByteHashedTableTest {
                 for (int k = 0; k < i; k++) {
                     mb.addData(data[i]);
                 }
-                assertEquals("Unequal multibyte found", true, table.contains(mb));
+                assertNotNull("Unequal multibyte found", table.contains(mb));
             }
         }
     }

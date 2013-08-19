@@ -184,7 +184,7 @@ public class MultiByteEncoder implements Runnable {
 
             MultiByte mb = ArrayUtilities.makeMultiByte(i, data, byteWidth);
 
-            if (mb != null && hashTable.contains(mb)) {
+            if (mb != null && hashTable.contains(mb) != null) {
                 int keyInteger = getkey(mb);
                 int thisKeyByteSize = IntegerConverter.getBytesPerInteger(keyInteger);
                 byte[] keyBytes = IntegerConverter.IntegerToByte(keyInteger, thisKeyByteSize);

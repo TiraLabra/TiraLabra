@@ -72,14 +72,14 @@ public class ArrayUtilities {
     }
 
     /**
-     * Expands the given array to twice its original size, might have to be
+     * Expands the given object array to twice its original size, might have to be
      * recoded.
      *
      * @param array
      * @return
      */
-    public static byte[] expandArray(byte[] array) {
-        byte[] newArray = new byte[array.length * 2];
+    public static Object[] expandArray(Object[] array) {
+        Object[] newArray = new Object[array.length * 2];
         for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
         }
@@ -93,12 +93,26 @@ public class ArrayUtilities {
      * @param toSize
      * @return
      */
-    public static byte[] contractArray(byte[] array, int toSize) {
-        byte[] newArray = new byte[toSize];
+    public static MultiByte[] contractMultiByteArray(MultiByte[] array, int toSize) {
+        MultiByte[] newArray = new MultiByte[toSize];
         for (int i = 0; i < newArray.length; i++) {
             newArray[i] = array[i];
         }
         return newArray;
     }
-    
+
+    /**
+     * Expands the given byte array to twice its original size, might have to be
+     * recoded.
+     *
+     * @param array
+     * @return
+     */
+    public static byte[] expandByteArray(byte[] array) {
+        byte[] newArray = new byte[array.length * 2];
+        for (int i = 0; i < array.length; i++) {
+            newArray[i] = array[i];
+        }
+        return newArray;
+    }
 }

@@ -82,7 +82,7 @@ public class MultiByteEncoderTest {
     }
 
     @Test
-    public void testKeysAndDataValidity() {
+    public void testKeysAndDataValiditySimple() {
         encoder = new MultiByteEncoder(encodingData, 4);
         encoderThread = new Thread(encoder);
         encoderThread.start();

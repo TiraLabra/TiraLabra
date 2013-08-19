@@ -4,6 +4,8 @@
  */
 package MultiByteEntities;
 
+import Utilities.IntegerConverter;
+
 /**
  * Abstracts the use of a multiple-byte single entity.
  *
@@ -82,14 +84,14 @@ public abstract class MultiByteAbstraction {
     @Override
     public int hashCode() {
         int hash = 11;
-        int byteArrayAsInteger = Utilities.IntegerConverter.ByteToInteger(bytes);
-        for (int i = 0; i < bytes.length; i++) {
-            
-            hash += ((byteArrayAsInteger+11) * 97);
-            
-        }
+        int byteArrayAsInteger = IntegerConverter.ByteToInteger(bytes);
+//        for (int i = 0; i < bytes.length; i++) {
+//            
+//            hash += ((byteArrayAsInteger+11) * 97);
+//            
+//        }
      
-        return hash;
+        return byteArrayAsInteger;
     }
     
     /**

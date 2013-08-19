@@ -4,8 +4,8 @@
  */
 package Encoding;
 
-import Utilities.*;
 import MultiByteEntities.MultiByte;
+import Utilities.*;
 
 /**
  * This decoding mechanism takes apart the encoded data and produces a machine readable byte array.
@@ -59,6 +59,9 @@ public class MultiByteDecoder implements Runnable{
      */
     private int encodedDataStartingIndex;
     
+    /**
+     * Where in the decoded data array data is put.
+     */
     private int decodingIndex;
     
     /**
@@ -95,8 +98,9 @@ public class MultiByteDecoder implements Runnable{
      */
     private void decodeData(){
         this.decodedData = new byte[combinedDataAndKeys.length];
-        int decodeIndex = 1 + remainder.length;
+        decodingIndex = 1 + remainder.length;
         int encodingIndex = encodedDataStartingIndex;
+        
         while (encodingIndex < encodedData.length){
             byte[] prefixByte = new byte[] { encodedData[encodingIndex] };
             int prefixInteger = IntegerConverter.ByteToInteger(prefixByte);
@@ -112,7 +116,15 @@ public class MultiByteDecoder implements Runnable{
         }
     }
     
-    private void decodeAtIndex(int dataIndex, int runLength, int keyWidth){
+    /**
+     * Decodes runLength number of keys of the byte-width keyWidth starting at the dataIndex in the encoded data.
+     * Calls inserting method to insert the decoded data into the array.
+     * @param dataIndex
+     * @param runLength
+     * @param keyWidth
+     * @return 
+     */
+    private int decodeKeyAtIndex(int dataIndex, int runLength, int keyWidth){
         for (int i = dataIndex; i < dataIndex+runLength; i+=keyWidth) {
             byte[] keyArray = new byte[keyWidth];
             for (int j = 0; j < keyWidth; j++) {
@@ -120,14 +132,20 @@ public class MultiByteDecoder implements Runnable{
             }
             int key = IntegerConverter.ByteToInteger(keyArray);
             MultiByte mb = keys[key];
+            insertIntoDecodedData(mb.getBytes());
         }
+        return dataIndex+runLength;
     }
     
+    /**
+     * Inserts into the decoded data array the data given as parameter.
+     * @param data 
+     */
     private void insertIntoDecodedData(byte[] data){
         if (decodingIndex+data.length>=decodedData.length){
-            decodedData = ArrayUtilities.expandArray(decodedData);
+            decodedData = ArrayUtilities.expandByteArray(decodedData);
         }
-        ArrayUtilities.encodeIntoArray(data, decodedData, decodingIndex);
+        decodingIndex = ArrayUtilities.encodeIntoArray(data, decodedData, decodingIndex);
     }
     
     /**
@@ -212,7 +230,7 @@ public class MultiByteDecoder implements Runnable{
     }
 
     /**
-     * Extracts from the combined keys and data the actual keys into a new array for easier manupulation.
+     * Extracts from the combined keys and data the actual keys into a new array for easier manipulation.
      * @param header
      * @param keyCount 
      */
@@ -226,7 +244,7 @@ public class MultiByteDecoder implements Runnable{
     }
 
     /**
-     * Extractracts from the combined keys and data the encoded data into a new array for easier manipulation.
+     * Extracts from the combined keys and data the encoded data into a new array for easier manipulation.
      * @param header
      * @param keyCount 
      */
