@@ -83,33 +83,33 @@ public class MultiByteEncoderTest {
 
     }
 
-//    @Test
-//    public void testKeysAndDataValiditySimple() {
-//        encoder = new MultiByteEncoder(encodingData, 4);
-//        encoderThread = new Thread(encoder);
-//        encoderThread.start();
-//        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
-//            //do nothing
-//        }
-//        byte[] keys = encoder.getEncodedKeys();
-//        assertEquals("More than four keys found", 16, keys.length);
-//        byte[] data = encoder.getEncodedData();
-//        assertTrue("Larger encoded data than original data", data.length < encodingData.length);
-//
-//    }
+    @Test
+    public void testKeysAndDataValiditySimple() {
+        encoder = new MultiByteEncoder(encodingData, 4);
+        encoderThread = new Thread(encoder);
+        encoderThread.start();
+        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
+            //do nothing
+        }
+        byte[] keys = encoder.getEncodedKeys();
+        assertEquals("More than four keys found", 16, keys.length);
+        byte[] data = encoder.getEncodedData();
+        assertTrue("Larger encoded data than original data", data.length < encodingData.length);
+
+    }
     
-//    @Test
-//    public void testInterruption(){
-//        encoder = new MultiByteEncoder(randomData, 4);
-//        encoderThread = new Thread(encoder);
-//        assertEquals("Thread already running", Encoding.StatusEnum.NULL, encoder.getStatus());
-//        encoderThread.start();
-//        Encoding.StatusEnum status = encoder.getStatus();
-//        if (status == Encoding.StatusEnum.BUILDING || status == Encoding.StatusEnum.ENCODING){
-//            encoder.interrupt();
-//            assertFalse("Encoder was not interrupted", encoderThread.isAlive());
-//        }
-//    }
+    @Test
+    public void testInterruption(){
+        encoder = new MultiByteEncoder(randomData, 4);
+        encoderThread = new Thread(encoder);
+        assertEquals("Thread already running", Encoding.StatusEnum.NULL, encoder.getStatus());
+        encoderThread.start();
+        Encoding.StatusEnum status = encoder.getStatus();
+        if (status == Encoding.StatusEnum.BUILDING || status == Encoding.StatusEnum.ENCODING){
+            encoder.interrupt();
+            assertFalse("Encoder was not interrupted", encoderThread.isAlive());
+        }
+    }
     
     
 }

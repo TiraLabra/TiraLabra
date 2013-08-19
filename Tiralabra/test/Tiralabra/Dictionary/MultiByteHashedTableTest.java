@@ -100,7 +100,6 @@ public class MultiByteHashedTableTest {
     @Test
     public void testContainsMethod() {
 
-
         for (int i = 2; i < 4; i++) {
             table = new MultiByteHashedTable();
             introduceValues(incrementalData, table, i);
@@ -134,10 +133,10 @@ public class MultiByteHashedTableTest {
                 for (int k = 0; k < i; k++) {
                     mb.addData(data[i]);
                 }
-                table.put(mb);
                 int[] index = table.indexForMultiByte(mb);
                 boolean isSame = mb.equals(table.getMultibyte(index));
-                assertTrue("Unequal multibyte found", isSame);
+                assertTrue("Unequal multibyte found, method 1", isSame);
+                assertTrue("Unequal multibyte found, method 2", table.contains(mb));
             }
         }
     }
@@ -156,28 +155,22 @@ public class MultiByteHashedTableTest {
 
     }
 
-    /**
-     * At the moment fails due to changes in the hahstable method getArray.
-     */
     @Test
     public void testKeyCountAfterSorting() {
         fillTable(randomData, 2);
 
-        MultiByte[] array = table.getArray(2);
+        MultiByte[] array = table.getSortedArray(2);
         
         int keyCount = table.getStats()[1];
 
         assertEquals("Keycount does not match", keyCount, array.length);
     }
 
-    /**
-     * Fails for unknown reason for the moment.
-     */
     @Test
     public void testSortingOfData() {
         fillTable(sortingData, 4);
 
-        MultiByte[] array = table.getArray(4);
+        MultiByte[] array = table.getSortedArray(4);
 
         MultiByte mb1 = new MultiByte(4);
         mb1.addData(new Byte("1"));

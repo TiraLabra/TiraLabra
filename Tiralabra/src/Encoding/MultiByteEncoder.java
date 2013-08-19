@@ -136,7 +136,9 @@ public class MultiByteEncoder implements Runnable {
             return;
         }
 
-        encodeData(remainder);
+        if (!encodeData(remainder)){
+            return;
+        }
 
         this.status = StatusEnum.DONE;
 
@@ -159,7 +161,7 @@ public class MultiByteEncoder implements Runnable {
      * @param remainder
      * @return
      */
-    private void encodeData(byte[] remainder) {
+    private boolean encodeData(byte[] remainder) {
 
         encodedData = new byte[data.length];
 
@@ -171,21 +173,26 @@ public class MultiByteEncoder implements Runnable {
         boolean newPrefix = false;
 
         byte[] remainderWithPrefix = makeRemainderWithPrefix(remainder);
-        encodedDataIndex = ArrayUtilities.encodeIntoArray(remainderWithPrefix, data, prefixIndex);
-        prefixIndex = encodedDataIndex;
-        encodedDataIndex++;
+        prefixIndex = ArrayUtilities.encodeIntoArray(remainderWithPrefix, data, prefixIndex);
+        encodedDataIndex = prefixIndex + 1;
 
         for (int i = 0; i < data.length; i += byteWidth) {
 
             if (interrupt) {
                 this.status = StatusEnum.INTERRUPTED;
-                return;
+                return false;
             }
 
             MultiByte mb = ArrayUtilities.makeMultiByte(i, data, byteWidth);
-
-            if (mb != null && hashTable.indexForMultiByte(mb) != null) {
+            
+            if (mb != null && hashTable.contains(mb) ) {
                 int keyInteger = getkey(mb);
+                
+                if (keyInteger == -1){
+                    this.status = StatusEnum.DATAERROR;
+                    return false;
+                }
+                
                 int thisKeyByteSize = IntegerConverter.getBytesPerInteger(keyInteger);
                 byte[] keyBytes = IntegerConverter.IntegerToByte(keyInteger, thisKeyByteSize);
                 thisKeyByteSize = keyBytes.length;
@@ -201,6 +208,7 @@ public class MultiByteEncoder implements Runnable {
                 encodedDataIndex = ArrayUtilities.encodeIntoArray(keyBytes, encodedData, encodedDataIndex);
 
             } else {
+                
                 if (bytesPerPreviousKey == 0 && runLength < 86) {
                     runLength++;
                 } else {
@@ -209,11 +217,11 @@ public class MultiByteEncoder implements Runnable {
                     newPrefix = true;
                 }
 
-                if (mb != null) {
-                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);
-                } else {
-                    newPrefix = true;
-                }
+//                if (mb != null) {
+//                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);
+//                } else {
+//                    newPrefix = true;
+//                }
 
             }
 
@@ -233,6 +241,8 @@ public class MultiByteEncoder implements Runnable {
         }
 
         encodedData = ArrayUtilities.removeTrailingZeros(encodedData, encodedDataIndex);
+        
+        return true;
     }
 
     /**
@@ -305,7 +315,7 @@ public class MultiByteEncoder implements Runnable {
     private boolean makeAndCleanKeys() {
         hashTable.purgeAndClean(byteWidth);
         if (hashTable.getKeyCount() > 0) {
-            keys = hashTable.getArray(byteWidth);
+            keys = hashTable.getSortedArray(byteWidth);
             return true;
         }
         return false;
@@ -322,15 +332,9 @@ public class MultiByteEncoder implements Runnable {
         int encodeIndex = 0;
         for (int i = 0; i < keys.length; i++) {
             byte[] keyData = keys[i].getBytes();
-            for (int j = 0; j < keyData.length; j++) {
-                if (interrupt) {
-                    this.status = StatusEnum.INTERRUPTED;
-                    return;
-                }
+            
+            encodeIndex = ArrayUtilities.encodeIntoArray(keyData, encodedKeys, encodeIndex);
 
-                encodedKeys[encodeIndex] = keyData[j];
-                encodeIndex++;
-            }
         }
     }
 
@@ -370,9 +374,12 @@ public class MultiByteEncoder implements Runnable {
             rawPrefix = IntegerConverter.IntegerToByte(remainder.length, 1)[0];
             remainderAndPrefix = new byte[1+remainder.length];
             remainderAndPrefix[0] = rawPrefix;
-            for (int i = 1; i < remainderAndPrefix.length; i++) {
-                remainderAndPrefix[i] = remainder[i-1];
-            }
+            
+            ArrayUtilities.encodeIntoArray(remainder, remainderAndPrefix, 1);
+            
+//            for (int i = 1; i < remainderAndPrefix.length; i++) {
+//                remainderAndPrefix[i] = remainder[i-1];
+//            }
         } else {
             remainderAndPrefix = new byte[]{ new Byte("0") };
         }

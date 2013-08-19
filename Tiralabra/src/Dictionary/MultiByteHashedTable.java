@@ -43,16 +43,26 @@ public class MultiByteHashedTable {
     private boolean rehashing;
 
     /**
-     * Initialize the hashtable to contain 16 by 16 buckets.
+     * Initialize the hashtable to contain 37 by 16 buckets.
      *
      */
     public MultiByteHashedTable() {
-        this.size = 37;
-        this.data = new MultiByte[size][size];
-        this.stats = new int[size];
-        this.references = new int[size][size];
-        this.keyCount = 0;
+        initialize(37);
         this.rehashing = false;
+    }
+
+    /**
+     * Initalizes the table to contain the specified numer of buckets with 16
+     * buckets for overflow.
+     *
+     * @param size
+     */
+    private void initialize(int size) {
+        this.size = size;
+        this.data = new MultiByte[size][16];
+        this.stats = new int[size];
+        this.references = new int[size][16];
+        this.keyCount = 0;
     }
 
     public int[][] getReferences() {
@@ -97,43 +107,29 @@ public class MultiByteHashedTable {
      */
     public boolean put(MultiByte multiByte) {
         int[] multiByteIndex = indexForMultiByte(multiByte);
-        
-        if (multiByteIndex == null){
+
+        while (multiByteIndex == null) {
             rehashToGreaterSize();
             multiByteIndex = indexForMultiByte(multiByte);
         }
-        
-        if (data[multiByteIndex[0]][multiByteIndex[1]] == null) {
-//            for (int i = 0; i < size; i++) {
-//                int hash = getHash(multiByte.hashCode(), i);
-//                for (int j = 0; j < data[hash].length; j++) {
-//                    if (MultiByteEncoder.interrupt) {
-//                        break;
-//                    }
-//
-//                    if (this.data[hash][j] == null) {
-                        insertIntoTable(multiByteIndex[0], multiByteIndex[1], multiByte);
 
-                        double fillRatio = (double) keyCount / (Math.pow(size, 2));
-                        if (fillRatio >= 0.8) {
-                            rehashToGreaterSize();
-                        }
-                        return true;
-//                    }
-//                }
-//            }
-//            if (!rehashing && fillRatio>0.8) {
-//                return rehashToGreaterSize(multiByte);
-//            }
+        if (data[multiByteIndex[0]][multiByteIndex[1]] == null) {
+            insertIntoTable(multiByteIndex[0], multiByteIndex[1], multiByte);
+
+            double fillRatio = (double) keyCount / (Math.pow(size, 2));
+            if (fillRatio >= 0.8) {
+                rehashToGreaterSize();
+            }
+            return true;
+            
         } else {
             this.references[ multiByteIndex[0]][ multiByteIndex[1]]++;
             return true;
         }
 
-//        return false;
     }
-    
-    public MultiByte getMultibyte(int[] index){
+
+    public MultiByte getMultibyte(int[] index) {
         return this.data[index[0]][index[1]];
     }
 
@@ -146,11 +142,7 @@ public class MultiByteHashedTable {
         MultiByte[][] oldData = this.data;
 
         try {
-            this.size = size * 2 + 37;
-            this.data = new MultiByte[size][size];
-            this.references = new int[size][size];
-            this.stats = new int[size];
-            this.keyCount = 0;
+            initialize(size * 2 + 37);
         } catch (Error e) {
             throw new OutOfMemoryError("Hashtable too big, not enough memory.");
         }
@@ -168,7 +160,7 @@ public class MultiByteHashedTable {
                 }
             }
         }
-//        this.put(mb);
+        
         rehashing = false;
 
         return true;
@@ -192,52 +184,38 @@ public class MultiByteHashedTable {
      * Searches the hashtable for a matching multibyte.
      *
      * @param multiByte
-     * @return the inxed for the multibyte or an empty index into which new data can be put.
+     * @return the inxed for the multibyte or an empty index into which new data
+     * can be put.
      */
     public int[] indexForMultiByte(MultiByte multiByte) {
 
         for (int j = 0; j < size; j++) {
             int hash = getHash(multiByte.hashCode(), j);
 
-            if (this.data[hash][0] == null) {
-                return new int[]{hash, 0};
-            }
-
             for (int i = 0; i < data[hash].length; i++) {
                 if (MultiByteEncoder.interrupt) {
                     break;
                 }
 
-                if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte)) {
-                    return new int[]{hash, i};
-                } else if (this.data[hash][i] == null) {
+                if (this.data[hash][i] != null && this.data[hash][i].equals(multiByte) || this.data[hash][i] == null) {
                     return new int[]{hash, i};
                 }
             }
+
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
         }
         return null;
     }
+    
+    public boolean contains(MultiByte mb){
+        int[] indexForMultiByte = this.indexForMultiByte(mb);
+        MultiByte toTest = this.getMultibyte(indexForMultiByte);
+        return (indexForMultiByte != null && toTest!= null && toTest.equals(mb));
+    }
 
-//    /**
-//     * Returns an index for the given multibyte in the subtable. Currently not needed as table uses a dynamic open double hash.
-//     *
-//     * @param hash
-//     * @param mb
-//     * @return index for the multibyte or -1 if not found, which should never
-//     * happen.
-//     */
-//    private int getIndex(int hash, MultiByte mb) {
-//        for (int i = 0; i < data[hash].length; i++) {
-//            if (MultiByteEncoder.interrupt) {
-//                break;
-//            }
-//
-//            if (mb.equals(data[hash][i])) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
     /**
      * Use with caution. Purges from the data all multibytes that have not been
      * referenced the given amount. Rehashes according to that data.
@@ -269,7 +247,7 @@ public class MultiByteHashedTable {
                     } else if (references[i][j] == 0) {
                         break;
                     }
-                    multiBytesToKeep = toKeepIndex == multiBytesToKeep.length ? enlargeTable(toKeepIndex, multiBytesToKeep) : multiBytesToKeep;
+                    multiBytesToKeep = toKeepIndex == multiBytesToKeep.length ? ArrayUtilities.expandMultiByteArray(multiBytesToKeep) : multiBytesToKeep;
                 }
             }
         }
@@ -279,13 +257,6 @@ public class MultiByteHashedTable {
         rehashToData(multiBytesToKeep);
     }
 
-//    private MultiByte[] removeTrailingEmptySpace(MultiByte[] table, int index) {
-//        MultiByte[] newTable = new MultiByte[index];
-//        for (int i = 0; i < newTable.length; i++) {
-//            newTable[i] = table[i];
-//        }
-//        return newTable;
-//    }
     /**
      * Builds a one-dimensional array of the contained multibyte entities, sorts
      * the array descending by referencecount, ie the number of times a
@@ -294,11 +265,10 @@ public class MultiByteHashedTable {
      *
      * @return an array of multibytes sorted descending to reference count.
      */
-    public MultiByte[] getArray(int byteWidth) {
+    public MultiByte[] getSortedArray(int byteWidth) {
         int maxKeyCount = (int) Math.pow(2, ((byteWidth - 2) * 8));
 
         Object[][] objectArray = new Object[keyCount][2];
-        int[] referenceCounts = new int[keyCount];
         int arrayIndex = 0;
         for (int i = 0; i < data.length; i++) {
             if (MultiByteEncoder.interrupt) {
@@ -333,11 +303,7 @@ public class MultiByteHashedTable {
      * @param array
      */
     private void rehashToData(MultiByte[] array) {
-        this.data = new MultiByte[array.length][array.length];
-        this.references = new int[array.length][array.length];
-        this.stats = new int[array.length];
-        this.size = array.length;
-        this.keyCount = 0;
+        initialize(37);
         for (int i = 0; i < array.length; i++) {
             if (MultiByteEncoder.interrupt) {
                 return;

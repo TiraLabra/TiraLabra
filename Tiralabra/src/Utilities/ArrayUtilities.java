@@ -26,6 +26,10 @@ public class ArrayUtilities {
      */
     public static int encodeIntoArray(byte[] data, byte[] dataArray, int dataIndex) {
         for (int i = 0; i < data.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             dataArray[dataIndex] = data[i];
             dataIndex++;
         }
@@ -72,21 +76,6 @@ public class ArrayUtilities {
     }
 
     /**
-     * Expands the given object array to twice its original size, might have to be
-     * recoded.
-     *
-     * @param array
-     * @return
-     */
-    public static Object[] expandArray(Object[] array) {
-        Object[] newArray = new Object[array.length * 2];
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[i];
-        }
-        return newArray;
-    }
-
-    /**
      * Contracts the given array into the size specified.
      *
      * @param array
@@ -96,6 +85,10 @@ public class ArrayUtilities {
     public static MultiByte[] contractMultiByteArray(MultiByte[] array, int toSize) {
         MultiByte[] newArray = new MultiByte[toSize];
         for (int i = 0; i < newArray.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             newArray[i] = array[i];
         }
         return newArray;
@@ -111,8 +104,27 @@ public class ArrayUtilities {
     public static byte[] expandByteArray(byte[] array) {
         byte[] newArray = new byte[array.length * 2];
         for (int i = 0; i < array.length; i++) {
+            if (MultiByteEncoder.interrupt) {
+                break;
+            }
+
             newArray[i] = array[i];
         }
         return newArray;
+    }
+
+    /**
+     * Expands the array given as parameter to twice its size.
+     * @param toKeepIndex
+     * @param mbArray
+     * @return 
+     */
+    public static MultiByte[] expandMultiByteArray(MultiByte[] mbArray) {
+        MultiByte[] newTable = new MultiByte[mbArray.length * 2];
+        for (int k = 0; k < mbArray.length; k++) {
+            newTable[k] = mbArray[k];
+        }
+        mbArray = newTable;
+        return mbArray;
     }
 }
