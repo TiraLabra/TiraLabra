@@ -5,30 +5,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class SolmuBTest {
+public class SolmuKaksiKolmeTest {
 
-    SolmuB s;
+    SolmuKaksiKolme s;
     
-    public SolmuBTest() {
+    public SolmuKaksiKolmeTest() {
     }
     
     @Before
     public void setUp() {
-        s = new SolmuB(6, null);
+        s = new SolmuKaksiKolme(6, null);
     }
     
     @Test
     public void setteritgetterit(){
         assertEquals(6, s.getEnsimmainenArvo());
         assertEquals(1, s.solmunKoko());
-        s.setKeski(new SolmuB(5, s));
-        s.setOikea(new SolmuB(7, s));
-        s.setVasen(new SolmuB(3, s));
+        s.setKeski(new SolmuKaksiKolme(5, s));
+        s.setOikea(new SolmuKaksiKolme(7, s));
+        s.setVasen(new SolmuKaksiKolme(3, s));
         assertEquals(3, s.getVasen().getEnsimmainenArvo());
         assertEquals(5, s.getKeski().getEnsimmainenArvo());
         assertEquals(7, s.getOikea().getEnsimmainenArvo());
         assertEquals(s, s.getOikea().getParent());
-        s.setParent(new SolmuB(9, null));
+        s.setParent(new SolmuKaksiKolme(9, null));
         assertEquals(9, s.getParent().getEnsimmainenArvo());
         s.lisaaArvo(8);
         assertEquals(8, s.getToinenArvo());

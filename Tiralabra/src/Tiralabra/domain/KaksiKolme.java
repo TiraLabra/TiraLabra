@@ -1,30 +1,32 @@
 package Tiralabra.domain;
 
+import Tiralabra.util.ALista;
+
 /**
  * Toteuttaa 2-3 hakupuun. 2-3 hakupuusa solmulla voi olla 1-2 arvoa, ja 0-3
- * lasta.
- *
+ * lasta. Pahin tapaus haulle, lisäämiselle, tulostamiselle ja poistolle O(n), koska
+ * puu ei ole itsestään tasapainottuva.
  * @author Pia Pakarinen
  */
-public class B implements Puu {
+public class KaksiKolme implements Puu {
 
     /**
      * Puun juurisolmu.
      */
-    private SolmuB juuri;
+    private SolmuKaksiKolme juuri;
 
     /**
-     * Luo uuden 2-3 B-puun ja tälle juurisolmun annetulla arvolla.
+     * Luo uuden 2-3 KaksiKolme-puun ja tälle juurisolmun annetulla arvolla.
      *
      * @param emo juurisolmun arvo
      */
-    public B(int emo) {
-        juuri = new SolmuB(emo, null);
+    public KaksiKolme(int emo) {
+        juuri = new SolmuKaksiKolme(emo, null);
     }
     
     @Override
     public String tulostaArvot() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return sisa(new ALista(), juuri).toString();
     }
     
     @Override
@@ -39,7 +41,26 @@ public class B implements Puu {
     
     @Override
     public boolean search(int key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SolmuKaksiKolme i = juuri;
+        while (i != null) {
+            if (key == i.getEnsimmainenArvo() || (i.solmunKoko() == 2 && key == i.getToinenArvo())) {
+                break;
+            } else if (key < i.getEnsimmainenArvo()) {
+                i = i.getVasen();
+            } else if (key > i.getEnsimmainenArvo()) {
+                if (i.solmunKoko() == 2) {
+                    if (key < i.getToinenArvo()) {
+                        i = i.getKeski();
+                    } else {
+                        i = i.getOikea();
+                    }
+                } else {
+                    i = i.getOikea();
+                }
+            }
+        }
+        
+        return i != null;
     }
 
     /**
@@ -49,7 +70,7 @@ public class B implements Puu {
      * @param key Uuden solmun arvo.
      * @param s Uuden solmun vanhempi tai paikka.
      */
-    private void insert2(int key, SolmuB s) {
+    private void insert2(int key, SolmuKaksiKolme s) {
         if (s.getEnsimmainenArvo() == key) {
             return;
         }
@@ -61,7 +82,7 @@ public class B implements Puu {
             if (key < s.getToinenArvo() && key > s.getEnsimmainenArvo()) {
                 //solmulle luodaan uusi lehti s:n keskimmäisenä lapsena
                 if (s.getKeski() == null) {
-                    s.setKeski(new SolmuB(key, s));
+                    s.setKeski(new SolmuKaksiKolme(key, s));
                     return;
                 } else {
                     insert2(key, s.getKeski());
@@ -69,14 +90,14 @@ public class B implements Puu {
             } else if (key > s.getToinenArvo()) {
                 //solmusta tulee uusi lehti oikealle
                 if (s.getOikea() == null) {
-                    s.setOikea(new SolmuB(key, s));
+                    s.setOikea(new SolmuKaksiKolme(key, s));
                     return;
                 } else {
                     insert2(key, s.getOikea());
                 }
             } else {
                 if (s.getVasen() == null) {
-                    s.setVasen(new SolmuB(key, s));
+                    s.setVasen(new SolmuKaksiKolme(key, s));
                     return;
                 } else {
                     insert2(key, s.getVasen());
@@ -103,13 +124,13 @@ public class B implements Puu {
      * @param s solmu, jolle seuraaja haetaan
      * @return solmun s seuraaja
      */
-    private SolmuB succSolmu1(SolmuB s) {
+    private SolmuKaksiKolme succSolmu1(SolmuKaksiKolme s) {
         //seuraaja ei tarpeen
         if (s.getKeski() == null) {
             return null;
         }
         
-        SolmuB it = s.getKeski();
+        SolmuKaksiKolme it = s.getKeski();
         
         while (it.getVasen() != null) {
             it = it.getVasen();
@@ -125,13 +146,13 @@ public class B implements Puu {
      * @param s solmu, jolle seuraaja haetaan
      * @return solmun s seuraaja
      */
-    private SolmuB succSolmu2(SolmuB s) {
+    private SolmuKaksiKolme succSolmu2(SolmuKaksiKolme s) {
         //seuraaja ei tarpeen
         if (s.getOikea() == null) {
             return null;
         }
         
-        SolmuB it = s.getOikea();
+        SolmuKaksiKolme it = s.getOikea();
         
         while (it.getVasen() != null) {
             it = it.getVasen();
@@ -145,8 +166,8 @@ public class B implements Puu {
      * @param key poistettava arvo
      * @param s käsiteltävissä oleva solmu
      */
-    private void delete2(int key, SolmuB s) {
-        SolmuB seur;
+    private void delete2(int key, SolmuKaksiKolme s) {
+        SolmuKaksiKolme seur;
         while (s != null) {
             if (s.getEnsimmainenArvo() == key) {
                 seur = succSolmu1(s);
@@ -161,6 +182,7 @@ public class B implements Puu {
                         break;
                     }
                 } else {
+                    s.poistaArvo(key);
                     s.lisaaArvo(seur.getEnsimmainenArvo());
                     poistaHelppo(seur.getEnsimmainenArvo(), seur);
                     break;
@@ -203,22 +225,22 @@ public class B implements Puu {
      *
      * @param s solmu, jolle uudet alipuut luodaan
      */
-    private void jaaLapsetVasemmalta(SolmuB s) {
-        SolmuB uusivasen = null;
-        SolmuB uusikeski = null;
+    private void jaaLapsetVasemmalta(SolmuKaksiKolme s) {
+        SolmuKaksiKolme uusivasen = null;
+        SolmuKaksiKolme uusikeski = null;
         int v;
         while (s.getVasen() != null) {
             v = s.getVasen().getEnsimmainenArvo();
             if (v > s.getEnsimmainenArvo()) {
                 if (uusikeski == null) {
-                    uusikeski = new SolmuB(v, s);
+                    uusikeski = new SolmuKaksiKolme(v, s);
                 } else {
                     insert2(v, uusikeski);
                 }
                 delete2(v, s.getVasen());
             } else if (v < s.getEnsimmainenArvo()) {
                 if (uusivasen == null) {
-                    uusivasen = new SolmuB(v, s);
+                    uusivasen = new SolmuKaksiKolme(v, s);
                 } else {
                     insert2(v, uusivasen);
                 }
@@ -235,22 +257,22 @@ public class B implements Puu {
      *
      * @param s solmu, jolle uudet alipuut luodaan
      */
-    private void jaaLapsetOikealta(SolmuB s) {
-        SolmuB uusioikea = null;
-        SolmuB uusikeski = null;
+    private void jaaLapsetOikealta(SolmuKaksiKolme s) {
+        SolmuKaksiKolme uusioikea = null;
+        SolmuKaksiKolme uusikeski = null;
         int v;
         while (s.getOikea() != null) {
             v = s.getOikea().getEnsimmainenArvo();
             if (v < s.getToinenArvo()) {
                 if (uusikeski == null) {
-                    uusikeski = new SolmuB(v, s);
+                    uusikeski = new SolmuKaksiKolme(v, s);
                 } else {
                     insert2(v, uusikeski);
                 }
                 delete2(v, s.getOikea());
             } else if (v < s.getToinenArvo()) {
                 if (uusioikea == null) {
-                    uusioikea = new SolmuB(v, s);
+                    uusioikea = new SolmuKaksiKolme(v, s);
                 } else {
                     insert2(v, uusioikea);
                 }
@@ -267,7 +289,7 @@ public class B implements Puu {
      * @param arvo poistettava arvo
      * @param s solmu, josta arvo poistuu
      */
-    private void poistaHelppo(int arvo, SolmuB s) {
+    private void poistaHelppo(int arvo, SolmuKaksiKolme s) {
 
         //lehtisolmu
         if (s.getKeski() == null && s.getOikea() == null && s.getVasen() == null) {
@@ -309,7 +331,26 @@ public class B implements Puu {
      *
      * @return puun juurisolmu
      */
-    public SolmuB getJuuri() {
+    public SolmuKaksiKolme getJuuri() {
         return juuri;
     }
+    
+    /**
+     * Käy puun läpi sisäjärjestyksessä.
+     *
+     * @return automaattisesti järjestetty linkitetty-lista esitys puun solmuista
+     */
+    private ALista sisa(ALista l, SolmuKaksiKolme s) {
+        if (s == null) {
+            return l;
+        }
+        l.lisaa(s.getEnsimmainenArvo());
+        if (s.solmunKoko() == 2) {
+            l.lisaa(s.getToinenArvo());
+        }
+        sisa(l, s.getKeski());
+        sisa(l, s.getVasen());
+        sisa(l, s.getOikea());
+        return l;
+      }
 }

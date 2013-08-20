@@ -86,10 +86,7 @@ public class Punamusta implements Puu {
 
     @Override
     public boolean search(int key) {
-        if (etsiSolmu(key) == null) {
-            return false;
-        }
-        return true;
+        return etsiSolmu(key) != null;
     }
 
     /**

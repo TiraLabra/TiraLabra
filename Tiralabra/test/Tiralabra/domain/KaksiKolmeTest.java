@@ -4,16 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class BTest {
+public class KaksiKolmeTest {
 
-    B p;
+    KaksiKolme p;
     
-    public BTest() {
+    public KaksiKolmeTest() {
     }
     
     @Before
     public void setUp() {
-        p = new B(10);
+        p = new KaksiKolme(10);
         
         p.insert(20);
         
@@ -67,7 +67,7 @@ public class BTest {
     
     @Test
     public void insertSamaArvo(){
-        p = new B(8);
+        p = new KaksiKolme(8);
         p.insert(8);
         assertEquals(1, p.getJuuri().solmunKoko());
         assertEquals(8, p.getJuuri().getEnsimmainenArvo());
@@ -88,5 +88,66 @@ public class BTest {
     public void poistoArvo1(){
         p.delete(15);
         assertEquals(17, p.getJuuri().getKeski().getEnsimmainenArvo());
+        assertEquals(null, p.getJuuri().getKeski().getKeski());
+        assertEquals(18, p.getJuuri().getKeski().getToinenArvo());
+        assertEquals(19, p.getJuuri().getKeski().getOikea().getEnsimmainenArvo());
+        assertEquals(14, p.getJuuri().getKeski().getVasen().getEnsimmainenArvo());
+    }
+    
+    @Test
+    public void poistaArvo2(){
+        p.delete(7);
+        assertEquals(5, p.getJuuri().getVasen().getEnsimmainenArvo());
+        assertEquals(8, p.getJuuri().getVasen().getToinenArvo());
+        assertEquals(null, p.getJuuri().getVasen().getOikea());
+        assertEquals(6, p.getJuuri().getVasen().getKeski().getEnsimmainenArvo());
+        assertEquals(4, p.getJuuri().getVasen().getVasen().getEnsimmainenArvo());
+    }
+    
+    @Test
+    public void poista2ArvoaJuuresta(){
+        p.delete(10);
+        p.delete(20);
+        assertEquals(14, p.getJuuri().getEnsimmainenArvo());
+        assertEquals(22, p.getJuuri().getToinenArvo());
+        assertEquals(null, p.getJuuri().getKeski().getVasen());
+        assertEquals(null, p.getJuuri().getOikea().getVasen());
+        assertEquals(null, p.getJuuri().getParent());
+    }
+    
+    @Test
+    public void poistaJaLisaa(){
+        p.delete(18);
+        p.insert(16);
+        assertEquals(19, p.getJuuri().getKeski().getToinenArvo());
+        assertEquals(16, p.getJuuri().getKeski().getKeski().getEnsimmainenArvo());
+    }
+    
+    @Test
+    public void poistaJaLisaa2(){
+        p.insert(32);
+        p.insert(26);
+        p.delete(25);
+        assertEquals(26, p.getJuuri().getOikea().getEnsimmainenArvo());
+        assertEquals(2, p.getJuuri().getOikea().solmunKoko());
+        assertEquals(27, p.getJuuri().getOikea().getKeski().getEnsimmainenArvo());
+        assertEquals(1, p.getJuuri().getOikea().getKeski().solmunKoko());
+        assertEquals(32, p.getJuuri().getOikea().getOikea().getToinenArvo());
+    }
+    
+    @Test
+    public void etsi(){
+        assertTrue(p.search(20));
+        assertTrue(p.search(27));
+        assertTrue(p.search(17));
+        assertTrue(p.search(8));
+        assertTrue(p.search(4));
+        assertFalse(p.search(99));
+        assertFalse(p.search(16));
+    }
+    
+    @Test
+    public void tulosta(){
+        assertEquals("4\n5\n6\n7\n8\n10\n14\n15\n17\n18\n19\n20\n22\n25\n27\n30\n31\n", p.tulostaArvot());
     }
 }

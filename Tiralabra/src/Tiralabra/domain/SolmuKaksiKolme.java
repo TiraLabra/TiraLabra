@@ -6,7 +6,7 @@ import Tiralabra.util.ALista;
  * Solmulla voi olla useampia arvoja, ja korkeintaan kolme lasta.
  * @author Pia Pakarinen
  */
-public class SolmuB {
+public class SolmuKaksiKolme {
     
     /**
      * Lista, joka tallentaa solmuun kuuluvat 1 tai 2 arvoa.
@@ -16,28 +16,28 @@ public class SolmuB {
     /**
      * Oikeanpuolinen lapsisolmu.
      */
-    private SolmuB oikea;
+    private SolmuKaksiKolme oikea;
     
     /**
      * Vasemmanpuolinen lapsisolmu.
      */
-    private SolmuB vasen;
+    private SolmuKaksiKolme vasen;
     
     /**
      * Keskimmäinen lapsisolmu.
      */
-    private SolmuB keski;
+    private SolmuKaksiKolme keski;
 
     /**
      * Solmun vanhempi.
      */
-    private SolmuB vanh;
+    private SolmuKaksiKolme vanh;
     
     /** Luo uuden solmun yhdellä arvolla.
      * 
      * @param key uuden solmun ensimmäinen arvo
      */
-    public SolmuB(int key, SolmuB v) {
+    public SolmuKaksiKolme(int key, SolmuKaksiKolme v) {
         this.solmunarvot = new ALista(key);
         this.vanh = v;
     }
@@ -66,7 +66,7 @@ public class SolmuB {
      * Oikea lapsisolmu.
      * @return oikea lapsi
      */
-    public SolmuB getOikea() {
+    public SolmuKaksiKolme getOikea() {
         return oikea;
     }
 
@@ -74,7 +74,7 @@ public class SolmuB {
      * Vasen lapsisolmu.
      * @return vasen lapsi
      */
-    public SolmuB getVasen() {
+    public SolmuKaksiKolme getVasen() {
         return vasen;
     }
 
@@ -82,7 +82,7 @@ public class SolmuB {
      * Keskimmäinen lapsisolmu.
      * @return keskimmäinen lapsi
      */
-    public SolmuB getKeski() {
+    public SolmuKaksiKolme getKeski() {
         return keski;
     }
 
@@ -90,7 +90,7 @@ public class SolmuB {
      * Asettaa keskimmäisen lapsen ja sille vanhemmaksi tämän solmun.
      * @param keski uusi keskimmäinen lapsisolmu
      */
-    public void setKeski(SolmuB keski) {
+    public void setKeski(SolmuKaksiKolme keski) {
         this.keski = keski;
         if (this.keski != null) {
             this.keski.setParent(this);
@@ -101,7 +101,7 @@ public class SolmuB {
      * Asettaa oikean lapsen ja sille vanhemmaksi tämän solmun.
      * @param oikea uusi oikea lapsisolmu
      */
-    public void setOikea(SolmuB oikea) {
+    public void setOikea(SolmuKaksiKolme oikea) {
         this.oikea = oikea;
         if (this.oikea != null) {
             this.oikea.setParent(this);
@@ -112,7 +112,7 @@ public class SolmuB {
      * Asettaa vasemman lapsen, ja sille vanhemmaksi tämän solmun.
      * @param vasen uusi keskimmäinen lapsisolmu
      */
-    public void setVasen(SolmuB vasen) {
+    public void setVasen(SolmuKaksiKolme vasen) {
         this.vasen = vasen;
         if (this.vasen != null) {
             this.vasen.setParent(this);
@@ -140,7 +140,7 @@ public class SolmuB {
      * Palauttaa solmun vanhemman.
      * @return parent-solmu
      */
-    public SolmuB getParent() {
+    public SolmuKaksiKolme getParent() {
         return vanh;
     }
 
@@ -148,7 +148,7 @@ public class SolmuB {
      * Asettaa solmulle vanhemman.
      * @param vanh solmun uusi parent-solmu
      */
-    public void setParent(SolmuB vanh) {
+    public void setParent(SolmuKaksiKolme vanh) {
         this.vanh = vanh;
     }
 
