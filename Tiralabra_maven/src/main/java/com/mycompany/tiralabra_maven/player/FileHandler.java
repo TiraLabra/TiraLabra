@@ -22,6 +22,12 @@ public class FileHandler {
         this.scanner = new Scanner(file);
     }
     
+    public FileHandler(File file, boolean isNew) throws IOException {
+        this.fileWriter = new FileWriter(file, !isNew);
+        this.scanner = new Scanner(file);
+    }
+    
+    
     public void saveLine(int move, int result) {
         try {
             fileWriter.append(Integer.toString(move) + Integer.toString(result) + "\n");

@@ -204,13 +204,20 @@ public class AdvancedAi implements Ai{
         
         int[] is = new int[3];
         for (int i = 0; i < 3; i++) {
-            is[i] = search(s.peek(), tree.getChildren(), i * 3);
+            is[i] = searchAndSum(s.peek(), tree.getChildren(), i * 3);
         }
         
         return is;
     }
 
-    private int search(Node node, GameTreeNode[] nodes, int startIndex) {
+    /**
+     * Returns statistics about opponents moves. 
+     * @param node
+     * @param nodes
+     * @param startIndex
+     * @return sum
+     */
+    private int searchAndSum(Node node, GameTreeNode[] nodes, int startIndex) {
         if (node == null){
             int sum = 0;
             for (int i = startIndex; i < startIndex + 3; i++) {
@@ -226,15 +233,15 @@ public class AdvancedAi implements Ai{
         int c = 0;
         
         if (nodes[node.getMove() * 3] != null){
-            a = search(node.getNext(), nodes[node.getMove() * 3].getChildren(), startIndex);
+            a = searchAndSum(node.getNext(), nodes[node.getMove() * 3].getChildren(), startIndex);
         }
         
         if (nodes[node.getMove() * 3 + 1] != null){
-            b = search(node.getNext(), nodes[node.getMove() * 3 + 1].getChildren(), startIndex);
+            b = searchAndSum(node.getNext(), nodes[node.getMove() * 3 + 1].getChildren(), startIndex);
         }
         
         if (nodes[node.getMove() * 3 + 2] != null){
-            c = search(node.getNext(), nodes[node.getMove() * 3 + 2].getChildren(), startIndex);
+            c = searchAndSum(node.getNext(), nodes[node.getMove() * 3 + 2].getChildren(), startIndex);
         }
         return a + b + c;
     }

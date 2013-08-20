@@ -35,7 +35,6 @@ public class Game {
         fileHandler2 = new FileHandler(new File("profiles/all"));
         setUpResultTable();
         this.primaryBot = new Bot(0);
-        this.statistics = new Statistics(0, 0, 0);
         int n = -1;
         Object[] options = {"Play vs bot", "Play vs bot as guest", "Bot vs bot"};
         while (n == -1) {
@@ -54,6 +53,7 @@ public class Game {
                 botVsBot();
                 return;
         }
+        this.statistics = new Statistics(file);
         fileHandler = new FileHandler(file);
         primaryBot.loadProfile(fileHandler);
     }
@@ -61,7 +61,7 @@ public class Game {
     /**
      * Sets up human vs ai game with saving.
      */
-    private void playVsBot() {
+    private void playVsBot() throws IOException {
         int n = -1;
         Object[] options = {"New player", "Existing player"};
         while (n == -1) {

@@ -1,5 +1,9 @@
 package com.mycompany.tiralabra_maven;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * General game statistics.
  * @author Joel Nummelin
@@ -12,16 +16,29 @@ public class Statistics {
     private int totalLosses;
     private int totalDraws;
     
+
     /**
      * 
-     * @param totalWins
-     * @param totalLosses
-     * @param totalDraws 
+     * @param file
+     * @throws FileNotFoundException 
      */
-    public Statistics(int totalWins, int totalLosses , int totalDraws){
-        this.totalWins = totalWins;
-        this.totalLosses = totalLosses;
-        this.totalDraws = totalDraws;
+    Statistics(File file) throws FileNotFoundException {
+        
+        if (file == null){
+            return;
+        }
+        Scanner sc = new Scanner(file);
+        
+        while (sc.hasNextLine()){
+            char c = sc.nextLine().charAt(1);
+            if (c == '-'){
+                totalLosses++;
+            } else if (c == 0){
+                totalDraws++;
+            } else {
+                totalWins++;
+            }
+        }
     }
 
     public int getSessionWins() {
