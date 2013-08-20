@@ -66,6 +66,17 @@ public class MultiByteDecoderTest {
 
         assertEquals("Incorrect byte found at index 1", 2, decodedData[0]);
     }
+    
+    @Test
+    public void testDecoderInterruption() throws InterruptedException{
+        setUpEndoedDataType1();
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedDataType1);
+        Thread decoderThread = new Thread(decoder);
+        decoderThread.start();
+        decoder.interrupt();
+        Thread.sleep(100);
+        assertEquals("Decoder was not interrupted", StatusEnum.INTERRUPTED, decoder.getStatus());
+    }
 
     @Test
     public void testEncodingAndDecodingDataType1() {
