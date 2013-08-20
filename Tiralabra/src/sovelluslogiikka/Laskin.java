@@ -16,7 +16,7 @@ public class Laskin {
 
     private enum OPERANDI {
 
-        PLUS, MIINUS, KERTO, JAKO, SULKUAUKI
+        PLUS, MIINUS, KERTO, JAKO, ALKUSULKU
     };
 
     /**
@@ -32,7 +32,7 @@ public class Laskin {
      * Asettaa laskimen valmiustilaan
      */
     public void kaynnista() {
-        System.out.println("Tervetuloa käyttämään kokonaislukulaskinta!\n"
+        System.out.println("Tervetuloa käyttämään kokonaislukujen laskinta!\n"
                 + "Laskimen kaikki ratkaisut ovat tarkkuudeltaan kokonaislukuja. "
                 + "Voit sulkea laskimen kirjoittamalla milloin tahansa \"QUIT\" syöteriville.\n");
         while (true) {
@@ -64,32 +64,25 @@ public class Laskin {
             }
         }
         if (syote.isEmpty()) {
-            System.out.print("Et syöttänyt yhtään merkkiä. ");
+            System.out.print("Laskutoimitus ei sisällä yhtään merkkiä. ");
             return false;
-        } else if (syote.contains("/0") || syote.contains("()") || syote.contains(")(")) {
+        } else if (syote.contains("()") || syote.contains(")(")) {
+            System.out.print("Laskutoimitus sisältää peräkkäin alku- ja loppusulun, joiden välissä ei ole yhtäkään merkkiä tai peräkkäin loppu- ja alkusulun, joiden välissä ei ole yhtäkään merkkiä. ");
             return false;
-        } else if (syote.charAt(0) == '+' || syote.charAt(0) == '-' || syote.charAt(0) == '*' || syote.charAt(0) == '/' || syote.charAt(0) == ')') {
+        } else if (syote.charAt(0) == '+' || syote.charAt(0) == '*' || syote.charAt(0) == '/' || syote.charAt(0) == ')') {
+            System.out.print("Laskutoimitus sisältää laskuoperaatiomerkin tai loppusulun ennen ensimmäistäkään lukua. ");
             return false;
         } else if (syote.charAt(syote.length() - 1) == '+' || syote.charAt(syote.length() - 1) == '-' || syote.charAt(syote.length() - 1) == '*' || syote.charAt(syote.length() - 1) == '/' || syote.charAt(syote.length() - 1) == '(') {
+            System.out.print("Laskutoimitus sisältää laskuoperaatiomerkin tai alkusulun viimeisen luvun jälkeen. ");
             return false;
-        } else if (syote.contains("++") || syote.contains("--") || syote.contains("**") || syote.contains("//")) {
-            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkejä peräkkäin. ");
+        } else if (syote.charAt(0) == '-' || syote.contains("--") || syote.contains("-+") || syote.contains("+-") || syote.contains("*-") || syote.contains("/-")) {
+            System.out.print("Laskutoimitus sisältää yhden tai useamman laskuoperaation negatiivisilla kokonaisluvuilla, mikä ei ole sallittua, sillä laskin pystyy käsittelemään laskutoimituksen syöttövaiheessa ainoastaan positiivisia kokonaislukuja. ");
             return false;
-        } else if (syote.contains("+-") || syote.contains("+*") || syote.contains("+/")) {
-            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
-
-            return false;
-        } else if (syote.contains("-+") || syote.contains("-*") || syote.contains("-/")) {
-            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
-
-            return false;
-        } else if (syote.contains("*+") || syote.contains("*-") || syote.contains("*/")) {
-            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
-
-            return false;
-        } else if (syote.contains("/+") || syote.contains("/-") || syote.contains("/*")) {
-            System.out.print("Laskutoimitus sisältää kaksi tai useampia laskuoperaatiomerkkiä peräkkäin. ");
-
+        } else if (syote.contains("++") || syote.contains("+*") || syote.contains("+/")
+                || syote.contains("-*") || syote.contains("-/")
+                || syote.contains("**") || syote.contains("*+") || syote.contains("*/")
+                || syote.contains("//") || syote.contains("/+") || syote.contains("/*")) {
+            System.out.print("Laskutoimitus sisältää  peräkkäin kahden tai useamman laskuoperaatiomerkin, joiden välissä ei ole yhtäkään lukua. ");
             return false;
         } else {
             return true;
@@ -109,7 +102,7 @@ public class Laskin {
         for (int i = 0; i < syote.length(); i++) {
             switch (syote.charAt(i)) {
                 case '(':
-                    operandit.push(OPERANDI.SULKUAUKI);
+                    operandit.push(OPERANDI.ALKUSULKU);
                     break;
                 case '*':
                     operandit.push(OPERANDI.KERTO);
@@ -130,7 +123,7 @@ public class Laskin {
                     operandit.push(OPERANDI.MIINUS);
                     break;
                 case ')':
-                    while (operandit.peek() != OPERANDI.SULKUAUKI) {
+                    while (operandit.peek() != OPERANDI.ALKUSULKU) {
                         suoritaOperaatiot(luvut, operandit);
                     }
                     break;
@@ -177,11 +170,12 @@ public class Laskin {
                 int jaettava = (Integer) luvut.pop();
                 int vakiojakaja = 1;
                 if (jakaja == 0) {
-                    System.out.println("Virhe, laskutoimituksessa yritetään jakaa nollalla, mikä ei ole sallittua, joten käytetään jakajana vakiota yksi.");
+                    System.out.println("Laskutoimitus sisältää nollalla jakamista, mikä voi pahimmillaan johtaa universumin luhistumiseen, joten käytetään jakajana kokonaislukua yksi.");
                     luvut.push(jaettava / vakiojakaja);
                 } else {
                     luvut.push(jaettava / jakaja);
                 }
+                break;
         }
     }
 }
