@@ -7,7 +7,6 @@ package Tiralabra.Encoding;
 import Encoding.MultiByteDecoder;
 import Encoding.MultiByteEncoder;
 import Encoding.StatusEnum;
-import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,17 +19,15 @@ import sun.audio.AudioPlayer;
  *
  * @author virta
  */
-public class MultiByteEncoderTest {
+public class MultiByteDecoderTest {
 
-    MultiByteEncoder encoder;
-    Thread encoderThread;
-    byte[] encodingDataType1;
-    byte[] randomData;
-    byte[] encodingDataType2;
-    byte[] encodingDataType3;
-    byte[] encodingDataType4;
+    private byte[] encodedDataType1;
+    private byte[] encodingDataType1;
+    private byte[] encodingDataType2;
+    private byte[] encodingDataType3;
+    private byte[] encodingDataType4;
 
-    public MultiByteEncoderTest() {
+    public MultiByteDecoderTest() {
     }
 
     @BeforeClass
@@ -49,228 +46,166 @@ public class MultiByteEncoderTest {
     public void tearDown() {
     }
 
-    private void setupRandomData() {
-        Random r = new Random(2719);
-        randomData = new byte[20000];
-        r.nextBytes(randomData);
+    @Test
+    public void testDecodingDataType1() {
+        setUpEndoedDataType1();
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedDataType1);
+        Thread decoderThread = new Thread(decoder);
+        assertEquals("Incorrect status", Encoding.StatusEnum.NULL, decoder.getStatus());
+
+//        decoder.run();
+        decoderThread.start();
+
+        boolean threadIsAlive = decoderThread.isAlive();
+
+        while (decoder.getStatus() != Encoding.StatusEnum.DONE) {
+            assertTrue("Decoder is not running", threadIsAlive);      //if debugging with decoder.run() and thread has not been started.
+        }
+
+        byte[] decodedData = decoder.getDecodedData();
+
+        assertEquals("Incorrect byte found at index 1", 2, decodedData[0]);
     }
 
     @Test
-    public void testEncodingNonZeroKeysAndData() {
+    public void testEncodingAndDecodingDataType1() {
         setupEncodingDataType1();
-        encoder = new MultiByteEncoder(encodingDataType1, 4);
-        encoderThread = new Thread(encoder);
-        assertEquals("Incorrect status", Encoding.StatusEnum.NULL, encoder.getStatus());
+        MultiByteEncoder encoder = new MultiByteEncoder(encodingDataType1, 4);
+        Thread encoderThread = new Thread(encoder);
         encoderThread.start();
-        StatusEnum status = encoder.getStatus();
-        while (status != Encoding.StatusEnum.DONE) {
-            status = encoder.getStatus();
-        }
-        byte[] keys = encoder.getEncodedKeys();
-        assertTrue("Zero keys found", keys.length > 0);
-        byte[] data = encoder.getEncodedData();
-        assertTrue("Zero data found", data.length > 0);
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
-        assertTrue("Zero length comined data and keys", combined.length > 0);
+//        encoder.run();
 
-    }
-
-    @Test
-    public void testKeysAndDataValiditySimple() {
-        setupEncodingDataType1();
-        encoder = new MultiByteEncoder(encodingDataType1, 4);
-        encoderThread = new Thread(encoder);
-        encoderThread.start();
-        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
-            //do nothing
-        }
-        byte[] keys = encoder.getEncodedKeys();
-        assertEquals("More than four keys found", 16, keys.length);
-        byte[] data = encoder.getEncodedData();
-        assertTrue("Larger encoded data than original data", data.length < encodingDataType1.length);
-
-    }
-
-    @Test
-    public void testInterruption() {
-        setupRandomData();
-        encoder = new MultiByteEncoder(randomData, 4);
-        encoderThread = new Thread(encoder);
-        assertEquals("Thread already running", Encoding.StatusEnum.NULL, encoder.getStatus());
-        encoderThread.start();
-        Encoding.StatusEnum status = encoder.getStatus();
-        if (status == Encoding.StatusEnum.BUILDING || status == Encoding.StatusEnum.ENCODING) {
-            encoder.interrupt();
-            assertFalse("Encoder was not interrupted", encoderThread.isAlive());
-        }
-    }
-
-    @Test
-    public void testCombinedDataAndKeysValidityType1() {
-        setupEncodingDataType1();
-        encoder = new MultiByteEncoder(encodingDataType1, 4);
-        encoderThread = new Thread(encoder);
-//        encoder.run();            //disable one or the other for debugging
-        encoderThread.start();
-        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
+        while (encoder.getStatus() != StatusEnum.DONE) {
             //do nothing
         }
 
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
+        byte[] encodedData = encoder.getCombinedEncodedKeysAndData();
 
-        byte headerByteWidth = combined[0];
-        assertEquals("Wrong bytewidth in header", 4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerByteWidth}));
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedData);
+        Thread decoderThread = new Thread(decoder);
+        decoderThread.start();
 
-        byte headerKeyCount = combined[1];
-        assertEquals("Wrong number of keys", 4*4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerKeyCount}));
-
-        byte zeroAfterHeader = combined[2];
-        assertEquals("Zero byte not found after header", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroAfterHeader}));
-
-        byte zeroRemainderLength = combined[19];
-        assertEquals("Zero byte not found as remainder", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroRemainderLength}));
-
-        byte prefixForRawData = combined[20];
-        assertEquals("Wrong prefix for raw data", 170, Utilities.IntegerConverter.ByteToInteger(new byte[]{prefixForRawData}));
-
-        byte firstByteOfRawData = combined[21];
-        byte five = new Byte("5");
-        assertEquals("Wrong data found", Utilities.IntegerConverter.ByteToInteger(new byte[]{five}), Utilities.IntegerConverter.ByteToInteger(new byte[]{firstByteOfRawData}));
-
-        byte firstKeyPrefix = combined[25];
-        int prefixInt = Utilities.IntegerConverter.ByteToInteger(new byte[]{firstKeyPrefix});
-        int keyWidth = prefixInt / 10;
-        int runlength = prefixInt - (keyWidth * 10);
-        assertEquals("Wrong width for key", 1, keyWidth);
-        assertEquals("Wrong runlength", 9, runlength);
-    }
-
-    @Test
-    public void testCombinedDataAndKeysValidityType2() {
-        setupEncodingDataType2();
-        encoder = new MultiByteEncoder(encodingDataType2, 4);
-        encoderThread = new Thread(encoder);
-//        encoder.run();            //disable one or the other for debugging
-        encoderThread.start();
-        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
+        while (decoder.getStatus() != StatusEnum.DONE) {
             //do nothing
         }
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
 
-        byte headerByteWidth = combined[0];
-        assertEquals("Wrong bytewidth in header", 4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerByteWidth}));
-
-        byte headerKeyCount = combined[1];
-        assertEquals("Wrong number of keys", 4*4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerKeyCount}));
-
-        byte zeroAfterHeader = combined[2];
-        assertEquals("Zero byte not found after header", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroAfterHeader}));
-
-        byte zeroRemainderLength = combined[19];
-        assertEquals("Zero byte not found as remainder", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroRemainderLength}));
-
-        byte firstPrefix = combined[20];
-        assertEquals("Wrong first prefix", 11, Utilities.IntegerConverter.ByteToInteger(new byte[]{firstPrefix}));
-
-        byte secondPrefix = combined[22];
-        assertEquals("Wrong next prefix", 19, Utilities.IntegerConverter.ByteToInteger(new byte[]{secondPrefix}));
-    }
-
-    @Test
-    public void testCombinedDataAndKeysValidityType3() {
-        setupEncodingDataType3();
-        encoder = new MultiByteEncoder(encodingDataType3, 4);
-        encoderThread = new Thread(encoder);
-//        encoder.run();            //disable one or the other for debugging
-        encoderThread.start();
-        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
-            //do nothing
-        }
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
-
-        byte headerByteWidth = combined[0];
-        assertEquals("Wrong bytewidth in header", 4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerByteWidth}));
-
-        byte headerKeyCount = combined[1];
-        assertEquals("Wrong number of keys", 4*4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerKeyCount}));
-
-        byte zeroAfterHeader = combined[2];
-        assertEquals("Zero byte not found after header", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroAfterHeader}));
-
-        byte zeroRemainderLength = combined[19];
-        assertEquals("Zero byte not found as remainder", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroRemainderLength}));
-
-        byte firstPrefix = combined[20];
-        assertEquals("Wrong first prefix", 170, Utilities.IntegerConverter.ByteToInteger(new byte[]{firstPrefix}));
-
-        byte secondPrefix = combined[25];
-        assertEquals("Wrong second prefix", 171, Utilities.IntegerConverter.ByteToInteger(new byte[]{secondPrefix}));
+        byte[] decodedData = decoder.getDecodedData();
         
-        byte thirdPrefix = combined[34];
-        assertEquals("Wrong third prefix", 19, Utilities.IntegerConverter.ByteToInteger(new byte[]{thirdPrefix}));
-    }
+        assertEquals("Different length in original and decoded data", encodingDataType1.length, decodedData.length);
 
-    @Test
-    public void testCombinedDataAndKeysValidityType4() {
-        setupEncodingDataType4();
-        encoder = new MultiByteEncoder(encodingDataType4, 4);
-        encoderThread = new Thread(encoder);
-//        encoder.run();            //disable one or the other for debugging
-        encoderThread.start();
-        while (encoder.getStatus() != Encoding.StatusEnum.DONE) {
-            //do nothing
-        }
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
-
-        byte headerByteWidth = combined[0];
-        assertEquals("Wrong bytewidth in header", 4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerByteWidth}));
-
-        byte headerKeyCount = combined[1];
-        assertEquals("Wrong number of keys", 4*4, Utilities.IntegerConverter.ByteToInteger(new byte[]{headerKeyCount}));
-
-        byte zeroAfterHeader = combined[2];
-        assertEquals("Zero byte not found after header", 0, Utilities.IntegerConverter.ByteToInteger(new byte[]{zeroAfterHeader}));
-
-        byte remainderLength = combined[19];
-        assertEquals("Zero byte as remainder length", 2, Utilities.IntegerConverter.ByteToInteger(new byte[]{remainderLength}));
-        
-        byte firstPrefix = combined[22];
-        assertEquals("Wrong first prefix", 170, Utilities.IntegerConverter.ByteToInteger(new byte[]{firstPrefix}));
-        
-        byte secondPrefix = combined[27];
-        assertEquals("Wrong secong prefix", 171, Utilities.IntegerConverter.ByteToInteger(new byte[]{secondPrefix}));
-        
-        byte thirdPrefix = combined[36];
-        assertEquals("Wrong third prefix", 19, Utilities.IntegerConverter.ByteToInteger(new byte[]{thirdPrefix}));
-    }
-    
-    @Test
-    public void testEncodingAndDecodingDataType1(){
-        setupEncodingDataType1();
-        encoder = new MultiByteEncoder(encodingDataType1, 3);
-        encoderThread = new Thread(encoder);
-        encoderThread.start();
-        
-        while (encoder.getStatus() != StatusEnum.DONE){
-            //do nothing
-        }
-        
-        byte[] combined = encoder.getCombinedEncodedKeysAndData();
-        
-        MultiByteDecoder byteDecoder = new MultiByteDecoder(combined);
-        Thread decodingThread = new Thread(byteDecoder);
-        decodingThread.start();
-        
-        while (byteDecoder.getStatus() != StatusEnum.DONE){
-            //do nothing
-        }
-        
-        byte[] decodedData = byteDecoder.getDecodedData();
-        
         for (int i = 0; i < decodedData.length; i++) {
-            assertEquals("Decoded data did not match", encodingDataType1[i], decodedData[i]);
+            assertEquals("Error in decoded data", encodingDataType1[i], decodedData[i]);
         }
+    }
+
+    @Test
+    public void testEncodingAndDecodingDataType2() {
+        setupEncodingDataType2();
+        MultiByteEncoder encoder = new MultiByteEncoder(encodingDataType2, 4);
+        Thread encoderThread = new Thread(encoder);
+        encoderThread.start();
+//        encoder.run();
+
+        while (encoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] encodedData = encoder.getCombinedEncodedKeysAndData();
+
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedData);
+        Thread decoderThread = new Thread(decoder);
+        decoderThread.start();
+
+        while (decoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] decodedData = decoder.getDecodedData();
         
+        assertEquals("Different length in original and decoded data", encodingDataType2.length, decodedData.length);
+
+        for (int i = 0; i < decodedData.length; i++) {
+            assertEquals("Error in decoded data", encodingDataType2[i], decodedData[i]);
+        }
+    }
+
+    @Test
+    public void testEncodingAndDecodingDataType3() {
+        setupEncodingDataType3();
+        MultiByteEncoder encoder = new MultiByteEncoder(encodingDataType3, 4);
+        Thread encoderThread = new Thread(encoder);
+        encoderThread.start();
+//        encoder.run();
+
+        while (encoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] encodedData = encoder.getCombinedEncodedKeysAndData();
+
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedData);
+        Thread decoderThread = new Thread(decoder);
+        decoderThread.start();
+
+        while (decoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] decodedData = decoder.getDecodedData();
+        
+        assertEquals("Different length in original and decoded data", encodingDataType3.length, decodedData.length);
+
+        for (int i = 0; i < decodedData.length; i++) {
+            assertEquals("Error in decoded data", encodingDataType3[i], decodedData[i]);
+        }
+    }
+
+    @Test
+    public void testEncodingAndDecodingDataType4() {
+        setupEncodingDataType4();
+        MultiByteEncoder encoder = new MultiByteEncoder(encodingDataType4, 4);
+        Thread encoderThread = new Thread(encoder);
+        encoderThread.start();
+//        encoder.run();
+
+        while (encoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] encodedData = encoder.getCombinedEncodedKeysAndData();
+
+        MultiByteDecoder decoder = new MultiByteDecoder(encodedData);
+        Thread decoderThread = new Thread(decoder);
+//        decoderThread.start();
+        decoder.run();
+        while (decoder.getStatus() != StatusEnum.DONE) {
+            //do nothing
+        }
+
+        byte[] decodedData = decoder.getDecodedData();
+        
+        assertEquals("Different length in original and decoded data", encodingDataType4.length, decodedData.length);
+
+        for (int i = 0; i < decodedData.length; i++) {
+            assertEquals("Error in decoded data", encodingDataType4[i], decodedData[i]);
+        }
+    }
+
+    private void setUpEndoedDataType1() {
+        encodedDataType1 = new byte[]{
+            new Byte("4"), new Byte("16"), new Byte("0"),
+            new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"),
+            new Byte("2"), new Byte("2"), new Byte("2"), new Byte("2"),
+            new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"),
+            new Byte("4"), new Byte("4"), new Byte("4"), new Byte("4"),
+            new Byte("2"),
+            new Byte("3"), new Byte("8"),
+            new Byte("11"), new Byte("1"),
+            new Byte("12"), new Byte("2"), new Byte("2"),
+            new Byte("-85"), new Byte("7"), new Byte("7"), new Byte("7"), new Byte("7"), new Byte("6"), new Byte("6"), new Byte("6"), new Byte("6"),
+            new Byte("19"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("3"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"), new Byte("1"),
+            new Byte("13"), new Byte("0"), new Byte("0"), new Byte("0")
+        };
     }
 
     private void setupEncodingDataType1() {

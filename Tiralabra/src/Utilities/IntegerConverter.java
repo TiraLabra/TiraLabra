@@ -63,21 +63,21 @@ public class IntegerConverter {
      * Removes leadong zeros from a bytearray, they are not needed and take
      * space.
      *
-     * @param keyBytes
+     * @param array
      * @return
      */
-    private static byte[] removeLeadingZeros(byte[] keyBytes) {
+    private static byte[] removeLeadingZeros(byte[] array) {
         int removeLeadingZerosIndex = 0;
-        for (int i = 0; i < keyBytes.length; i++) {
-            if (keyBytes[i] == 0) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == 0) {
                 removeLeadingZerosIndex = i + 1;
             } else {
                 break;
             }
         }
-        byte[] newKey = new byte[keyBytes.length - removeLeadingZerosIndex];
+        byte[] newKey = new byte[array.length - removeLeadingZerosIndex];
         for (int i = 0; i < newKey.length; i++) {
-            newKey[i] = keyBytes[removeLeadingZerosIndex];
+            newKey[i] = array[removeLeadingZerosIndex];
             removeLeadingZerosIndex++;
         }
         return newKey;
