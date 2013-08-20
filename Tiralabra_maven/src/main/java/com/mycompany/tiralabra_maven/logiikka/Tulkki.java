@@ -15,15 +15,15 @@ import java.util.EmptyStackException;
  */
 public final class Tulkki {
 
-    private static final Hajautuskartta<Integer> PRIORITEETIT
-            = new Hajautuskartta<Integer>();
-    private static final Pino<Character> PINO = new Pino<Character>();
-    private static final Jono<String> JONO = new Jono<String>();
-    private static final Jono<Character> APUJONO = new Jono<Character>();
-    private static String merkkijono;
-    private static char[] syotteenMerkit;
-    private static char merkki;
-    private static int indeksi;
+    private static final Hajautuskartta<Integer>    PRIORITEETIT
+            = new Hajautuskartta<>();
+    private static final Pino<Character>            PINO = new Pino<>();
+    private static final Jono<String>               JONO = new Jono<>();
+    private static final Jono<Character>            APUJONO = new Jono<>();
+    private static String                           merkkijono;
+    private static char[]                           syotteenMerkit;
+    private static char                             merkki;
+    private static int                              indeksi;
     
     static {
         PRIORITEETIT.lisaa('/', 1);

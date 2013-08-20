@@ -52,9 +52,14 @@ public class HajautuskarttaTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void testEpakelpoKonstruktorinParametri() {
+    public void testEpakelpoKonstruktorinParametri1() {
         Hajautuskartta a = new Hajautuskartta(-3);
     }
+    
+//    @Test(expected = IllegalArgumentException.class)
+//    public void testEpakelpoKonstruktorinParametri2() {
+//        Hajautuskartta a = new Hajautuskartta();
+//    }
 
     /**
      *

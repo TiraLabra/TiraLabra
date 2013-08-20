@@ -13,10 +13,10 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 final class AvainArvoJono<K, V> {
     
     private AvainArvoSolmu<K, V> ensimmainen, viimeinen;
-    private int pituus;
+//    private int pituus;
 
     AvainArvoJono() {
-        pituus = 0;
+//        pituus = 0;
     }
     
     /**
@@ -34,7 +34,7 @@ final class AvainArvoJono<K, V> {
             viimeinen.seuraaja = solmu;
             viimeinen = solmu;
         }
-        pituus++;
+//        pituus++;
     }
     
     /**
@@ -98,7 +98,8 @@ final class AvainArvoJono<K, V> {
      * @see     Hajautuskartta#uudelleenHajauta() 
      */
     Jono<K> avainjono() {
-        if (pituus == 0) {
+//        if (pituus == 0) {
+        if (ensimmainen == null) {
             return null;
         }
         Jono<K> paluuarvo = new Jono<K>();
@@ -118,7 +119,8 @@ final class AvainArvoJono<K, V> {
      * @see     Hajautuskartta#uudelleenHajauta() 
      */
     Jono<V> arvojono() {
-        if (pituus == 0) {
+//        if (pituus == 0) {
+        if (ensimmainen == null) {
             return null;
         }
         Jono<V> paluuarvo = new Jono<V>();
@@ -130,8 +132,8 @@ final class AvainArvoJono<K, V> {
         return paluuarvo;
     }
     
-    int pituus() {
-        return pituus;
-    }
+//    int pituus() {
+//        return pituus;
+//    }
     
 }
