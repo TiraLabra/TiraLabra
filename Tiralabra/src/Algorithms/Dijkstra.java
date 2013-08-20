@@ -5,14 +5,13 @@ import Structures.Graph.Vertex;
 import Structures.Heap.MinHeap;
 import Structures.LinkedList.LinkedList;
 import Structures.Hashtable.Hashtable;
-import Structures.Stack.Stack;
 import Utils.Iterator;
 
 /**
 * Dijkstra's algorithm for finding the shortest path between vertex a and b. Only works with a graph that has only positive weights
 */
 
-public class Dijkstra extends Relax implements PathFinder{
+public class Dijkstra extends PathFinder{
     private Graph graph;
     public Dijkstra(Graph graph){
         super(graph);
@@ -48,21 +47,6 @@ public class Dijkstra extends Relax implements PathFinder{
             }
             u=h.pop();
         }
-        return getPath(a,b,path,distance);
-    }
-    private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
-        Vertex u = path.get(b);
-        Stack<Vertex> stack=new Stack<Vertex>();
-        int d = distance.get(b);
-        LinkedList<Vertex> p=new LinkedList<Vertex>();
-        while(u!=a){
-            stack.push(u);
-            u=path.get(u);
-        }
-        while(!stack.isEmpty()){
-            Vertex v=stack.pop(); 
-            p.add(v);
-        }
-        return new Path(p,d);
+        return super.getPath(a,b,path,distance);
     }
 }

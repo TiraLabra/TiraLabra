@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Structures.Stack;
 
-/**
- *
- * @author Kalle
- */
 public class Node {
     private Node next;
     private Object data;

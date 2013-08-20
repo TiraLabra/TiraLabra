@@ -37,9 +37,6 @@ public class CycleDetectorTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of hasCycle method, of class CycleDetector.
-     */
     @Test
     public void hasCycleTest() {
         Graph g = new Graph();

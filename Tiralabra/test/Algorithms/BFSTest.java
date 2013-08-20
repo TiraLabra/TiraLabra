@@ -37,7 +37,6 @@ public class BFSTest {
     @After
     public void tearDown() {
     }
-
     @Test
     public void shortestPathTest() {
         Graph myGraph = new Graph();

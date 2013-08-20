@@ -13,13 +13,13 @@ public class Path {
         this.path=path;
         this.length=length;
     }
-    /*
+    /**
      * @return The path as a list
      */
     public LinkedList<Vertex> getPath(){
         return this.path;
     }
-    /*
+    /**
      * @return Length of the path
      */
     public int getLength(){

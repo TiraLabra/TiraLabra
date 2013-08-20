@@ -5,7 +5,6 @@ import Structures.Graph.Vertex;
 import Structures.LinkedList.LinkedList;
 import Structures.Hashtable.Hashtable;
 import Structures.Queue.Queue;
-import Structures.Stack.Stack;
 import Utils.Color;
 import Utils.Iterator;
 
@@ -13,9 +12,10 @@ import Utils.Iterator;
 * BFS algorithm for finding the shortest path between vertex a and b. Only works with a weightless graph
 */
 
-public class BFS implements PathFinder{
+public class BFS extends PathFinder{
     public Graph graph;
     public BFS(Graph graph){
+        super(graph);
         this.graph=graph;
     }
     @Override
@@ -53,21 +53,6 @@ public class BFS implements PathFinder{
         if(distance.get(b)==Integer.MAX_VALUE){
             return null;
         }
-        return getPath(a,b,tree,distance);
-    }
-    private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
-        Vertex u = path.get(b);
-        Stack<Vertex> stack=new Stack<Vertex>();
-        int d = distance.get(b);
-        LinkedList<Vertex> p=new LinkedList<Vertex>();
-        while(u!=a){
-            stack.push(u);
-            u=path.get(u);
-        }
-        while(!stack.isEmpty()){
-            Vertex v=stack.pop(); 
-            p.add(v);
-        }
-        return new Path(p,d);
+        return super.getPath(a,b,tree,distance);
     }
 }

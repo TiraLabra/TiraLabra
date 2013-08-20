@@ -2,7 +2,6 @@ package Algorithms;
 
 import Structures.Graph.Graph;
 import Structures.Graph.Vertex;
-import Structures.Grid.Coordinate;
 import Structures.Hashtable.Hashtable;
 import Structures.Heap.MinHeap;
 import Structures.LinkedList.LinkedList;
@@ -12,8 +11,7 @@ import Utils.Iterator;
 /**
 * A star algorithm for finding the shortest path between vertex a and b using Dijkstra's algorithm with heuristics. Only works with a graph that has only positive weights
 */
-
-public class AStar extends Relax implements PathFinder{
+public class AStar extends PathFinder{
     private Graph graph;
     private Heuristics heuristics;
     public AStar(Graph graph, Heuristics heuristics){
@@ -54,21 +52,6 @@ public class AStar extends Relax implements PathFinder{
             }
             u=h.pop();
         }
-        return getPath(a,b,path,distance);
-    }
-    private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
-        Vertex u = path.get(b);
-        Stack<Vertex> stack=new Stack<Vertex>();
-        int d = distance.get(b);
-        LinkedList<Vertex> p=new LinkedList<Vertex>();
-        while(u!=a){
-            stack.push(u);
-            u=path.get(u);
-        }
-        while(!stack.isEmpty()){
-            Vertex v=stack.pop(); 
-            p.add(v);
-        }
-        return new Path(p,d);
+        return super.getPath(a,b,path,distance);
     }
 }

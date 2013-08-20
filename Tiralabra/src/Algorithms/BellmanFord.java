@@ -12,7 +12,7 @@ import Utils.Iterator;
 * Bellman-Ford algorithm for finding the shortest path between vertex a and b. Works with any graph but recommended only for a graph that has negative weights
 */
 
-public class BellmanFord extends Relax implements PathFinder {
+public class BellmanFord extends PathFinder{
     private Graph graph;
     public BellmanFord(Graph graph){
         super(graph);
@@ -40,21 +40,6 @@ public class BellmanFord extends Relax implements PathFinder {
                 super.relax(e.getA(),e.getB(),distance,path);
             }
         }
-        return getPath(a,b,path,distance);
-    }
-    private Path getPath(Vertex a, Vertex b, Hashtable<Vertex,Vertex> path, Hashtable<Vertex,Integer> distance){
-        Vertex u = path.get(b);
-        Stack<Vertex> stack=new Stack<Vertex>();
-        int d = distance.get(b);
-        LinkedList<Vertex> p=new LinkedList<Vertex>();
-        while(u!=a){
-            stack.push(u);
-            u=path.get(u);
-        }
-        while(!stack.isEmpty()){
-            Vertex v=stack.pop(); 
-            p.add(v);
-        }
-        return new Path(p,d);
+        return super.getPath(a,b,path,distance);
     }
 }

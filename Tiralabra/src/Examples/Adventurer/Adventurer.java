@@ -93,8 +93,13 @@ public class Adventurer {
 
     private int[] getStartAndEnd(Scanner scanner) {
         int[] startAndEnd = new int[4];
+        String regex = "[0-9]+,[0-9]+";
         System.out.println("Anna lähtöpaikka muodossa x,y: ");
         String coords = scanner.nextLine();
+        while(!coords.matches(regex)){
+            System.out.println("Anna lähtöpaikka muodossa x,y: ");
+            coords = scanner.nextLine();
+        }
         startAndEnd[0]=Integer.parseInt(coords.split(",")[0]);
         startAndEnd[1]=Integer.parseInt(coords.split(",")[1]);
         while(startAndEnd[0]<0 || startAndEnd[0]>mapWidth-1 || startAndEnd[1]<0 || startAndEnd[1]>mapHeight-1){
@@ -103,8 +108,13 @@ public class Adventurer {
             startAndEnd[0]=Integer.parseInt(coords.split(",")[0]);
             startAndEnd[1]=Integer.parseInt(coords.split(",")[1]);
         }
+        regex = "[0-9]+,[0-9]+";
         System.out.println("Anna määränpää muodossa x,y: ");
         coords = scanner.nextLine();
+        while(!coords.matches(regex)){
+            System.out.println("Anna määränpää muodossa x,y: ");
+            coords = scanner.nextLine();
+        }
         startAndEnd[2]=Integer.parseInt(coords.split(",")[0]);
         startAndEnd[3]=Integer.parseInt(coords.split(",")[1]);
         while(startAndEnd[2]<0 || startAndEnd[2]>mapWidth-1 || startAndEnd[3]<0 || startAndEnd[3]>mapHeight-1 || (startAndEnd[0]==startAndEnd[2] && startAndEnd[1]==startAndEnd[3])){
@@ -117,9 +127,14 @@ public class Adventurer {
     }
     private int[] getSize(Scanner scanner){
         int[] size = new int[2];
+        String regex = "[0-9]+";
         System.out.println("Anna kartan mitat: ");
         System.out.println("Korkeus: ");
         String measure = scanner.nextLine();
+        while(!measure.matches(regex)){
+            System.out.println("Korkeus: ");
+            measure = scanner.nextLine();
+        }
         size[0]=Integer.parseInt(measure);
         while(size[0]<3 || size[0]>50){
             System.out.println("Anna korkeus, joka on suurempi kuin 2 ja pienempi kuin 50: ");
@@ -127,8 +142,13 @@ public class Adventurer {
             measure = scanner.nextLine();
             size[0]=Integer.parseInt(measure);
         }
+        regex = "[0-9]+";
         System.out.println("Leveys: ");
         measure = scanner.nextLine();
+        while(!measure.matches(regex)){
+           System.out.println("Leveys: ");
+           measure = scanner.nextLine(); 
+        }
         size[1]=Integer.parseInt(measure);
         while(size[1]<3 || size[1]>50){
             System.out.println("Anna leveys, joka on suurempi kuin 2 ja pienempi kuin 50: ");

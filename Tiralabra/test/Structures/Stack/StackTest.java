@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Structures.Stack;
 
 import org.junit.After;
@@ -11,10 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Kalle
- */
 public class StackTest {
     private Stack<String> t;
     public StackTest() {
@@ -37,9 +29,6 @@ public class StackTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of push method, of class Stack.
-     */
     @Test
     public void standartTest() {
         this.t.push("Kalle");

@@ -46,6 +46,11 @@ public class GraphTest {
         assertEquals(false,g.isConnected(a, c));
         g.disconnect(a, b);
         assertEquals(false,g.isConnected(a, b));
+        g.disconnect(b, c);
+        assertEquals(false,g.isConnected(b, c));
+        g.connectBothWays(b, c);
+        assertEquals(true,g.isConnected(b, c));
+        assertEquals(true,g.isConnected(c, b));
     }
     public void setWeightTest(){
         Graph g = new Graph();

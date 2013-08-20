@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Structures.Queue;
 
 import org.junit.After;
@@ -11,10 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Kalle
- */
 public class QueueTest {
     private Queue<String> q;
     public QueueTest() {
@@ -37,9 +29,6 @@ public class QueueTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of enqueue method, of class Queue.
-     */
     @Test
     public void testEnqueue() {
         this.q.enqueue("Kalle");
