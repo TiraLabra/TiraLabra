@@ -1,8 +1,10 @@
+package com.mycompany.tiralabra_maven;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven;
+
 
 import com.mycompany.tiralabra_maven.data_structures.Node;
 import com.mycompany.tiralabra_maven.data_structures.Stack;
@@ -12,7 +14,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 /**
  *
@@ -33,8 +34,8 @@ public class FileHandlerTest extends TestCase {
         }
     }
 
-    @Test
-    public void readingAndWritingTest() {
+    
+    public void testReadingAndWriting() {
         for (int i = 0; i < 10; i++) {
             fileHandler.saveLine(0, 0);
         }

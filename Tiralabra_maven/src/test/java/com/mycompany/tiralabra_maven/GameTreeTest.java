@@ -8,8 +8,6 @@ import com.mycompany.tiralabra_maven.data_structures.GameTreeNode;
 import com.mycompany.tiralabra_maven.data_structures.Node;
 import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  *
@@ -25,7 +23,6 @@ public class GameTreeTest extends TestCase{
     
 
     
-    @Before
     @Override
     public void setUp() {
         tree = new GameTreeNode(-2, -2);
@@ -33,7 +30,6 @@ public class GameTreeTest extends TestCase{
     
     
     
-    @Test
     public void testAdding(){
         tree.addChild(new Node(0, -1));
         tree.addChild(new Node(0, 0));
@@ -52,7 +48,6 @@ public class GameTreeTest extends TestCase{
         assertEquals(tree.getChild(new Node(2, 0)), tree.getChildren()[7]);
     }
     
-    @Test
     public void testGoingThrough(){
         Node sn = new Node(0, -1);
         tree.addChild(sn);

@@ -7,8 +7,6 @@ package com.mycompany.tiralabra_maven;
 import com.mycompany.tiralabra_maven.player.AdvancedAi;
 import com.mycompany.tiralabra_maven.player.Bot;
 import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  *
@@ -28,7 +26,7 @@ public class BotTest extends TestCase{
         bot = new Bot(0);
     }
     
-    @Test
+
     public void testAiBehavior(){
         int x = ai.determineMove();
         
@@ -47,7 +45,7 @@ public class BotTest extends TestCase{
         assertTrue(y > 7);
     }
     
-    @Test
+
     public void testBot() {
         for (int i = 0; i < 400; i++) {
             int x = bot.makeAMove();

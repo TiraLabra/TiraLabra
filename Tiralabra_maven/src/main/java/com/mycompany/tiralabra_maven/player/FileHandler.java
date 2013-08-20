@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.player;
 
-import com.mycompany.tiralabra_maven.data_structures.Stack;
 import com.mycompany.tiralabra_maven.data_structures.Node;
+import com.mycompany.tiralabra_maven.data_structures.Stack;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,11 +19,6 @@ public class FileHandler {
 
     public FileHandler(File file) throws IOException {
         this.fileWriter = new FileWriter(file, true);
-        this.scanner = new Scanner(file);
-    }
-    
-    public FileHandler(File file, boolean isNew) throws IOException {
-        this.fileWriter = new FileWriter(file, !isNew);
         this.scanner = new Scanner(file);
     }
     

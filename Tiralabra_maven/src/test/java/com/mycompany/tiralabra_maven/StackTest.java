@@ -4,8 +4,8 @@
  */
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.data_structures.Stack;
 import com.mycompany.tiralabra_maven.data_structures.Node;
+import com.mycompany.tiralabra_maven.data_structures.Stack;
 import junit.framework.TestCase;
 
 /**

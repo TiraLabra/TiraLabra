@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven.player;
 
 import com.mycompany.tiralabra_maven.data_structures.GameTreeNode;
-import com.mycompany.tiralabra_maven.data_structures.Stack;
 import com.mycompany.tiralabra_maven.data_structures.Node;
+import com.mycompany.tiralabra_maven.data_structures.Stack;
 import java.util.Random;
 
 /**

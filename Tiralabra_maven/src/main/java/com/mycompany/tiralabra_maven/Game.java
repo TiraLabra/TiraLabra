@@ -4,6 +4,7 @@ import com.mycompany.tiralabra_maven.player.Bot;
 import com.mycompany.tiralabra_maven.player.FileHandler;
 import java.awt.Frame;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,12 +28,14 @@ public class Game {
     private FileHandler fileHandler;
     private FileHandler fileHandler2;
     private File file;
+    private File file2;
 
     /**
      * Sets up the game in right game mode.
      */
     public Game() throws IOException {
-        fileHandler2 = new FileHandler(new File("profiles/all"));
+        file2 = new File("profiles/all");
+        fileHandler2 = new FileHandler(file2);
         setUpResultTable();
         this.primaryBot = new Bot(0);
         int n = -1;
@@ -71,18 +74,15 @@ public class Game {
         }
 
         if (n == 0) {
-            try {
-                file = newPlayer();
-            } catch (IOException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            this.gameMode = GameMode.PLAYER_VS_BOT;
-            JFileChooser fc = new JFileChooser("profiles/");
-            fc.setFileFilter(new FileNameExtensionFilter("Player profile", "player"));
-            fc.showOpenDialog(null);
-            file = fc.getSelectedFile();
+            newPlayer();
         }
+        
+        this.gameMode = GameMode.PLAYER_VS_BOT;
+        JFileChooser fc = new JFileChooser("profiles/");
+        fc.setFileFilter(new FileNameExtensionFilter("Player profile", "player"));
+        fc.showOpenDialog(null);
+        file = fc.getSelectedFile();
+
     }
 
     /**
@@ -100,9 +100,10 @@ public class Game {
     /**
      * Sets up ai vs ai game.
      */
-    private void botVsBot() {
+    private void botVsBot() throws FileNotFoundException {
         this.gameMode = GameMode.BOT_VS_BOT;
         this.secondaryBot = new Bot(1);
+        this.statistics = new Statistics(file2);
     }
 
     /**
@@ -111,7 +112,7 @@ public class Game {
      * @return file
      * @throws IOException
      */
-    private File newPlayer() throws IOException {
+    private void newPlayer() throws IOException {
         String playerName = null;
 
         while (true) {
@@ -127,7 +128,7 @@ public class Game {
         }
         File f = new File("profiles/" + playerName + ".player");
         f.createNewFile();
-        return f;
+        file = f;
     }
 
     /**
