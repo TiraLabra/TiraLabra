@@ -1,9 +1,8 @@
 package Tiralabra.domain;
 
-import Tiralabra.util.ALista;
-
 /**
- * Toteuttaa 2-3 B-puun. 2-3 B-puussa solmulla voi olla 1-2 arvoa, ja 0-3 lasta.
+ * Toteuttaa 2-3 hakupuun. 2-3 hakupuusa solmulla voi olla 1-2 arvoa, ja 0-3
+ * lasta.
  *
  * @author Pia Pakarinen
  */
@@ -22,125 +21,295 @@ public class B implements Puu {
     public B(int emo) {
         juuri = new SolmuB(emo, null);
     }
-
+    
     @Override
     public String tulostaArvot() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
     @Override
     public void insert(int key) {
-        SolmuB i = juuri;
-        while (true) {
-            //uuden solmu arvo löytyy jo puusta, ei tehdä mitään
-            if (i.getEnsimmainenArvo() == key) {
-                return;
-            } else if (i.solmunKoko() == 2 && i.getToinenArvo() == key) {
-                return;
-            }
-
-            //uusi solmu on pienempi kuin nykyisen solmun pienin
-            if (key < i.getEnsimmainenArvo()) {
-                //ollaan lehtisolmussa
-                if (i.getVasen() == null) {
-
-                    break;
-                }
-
-                i = i.getVasen();
-            } //suurempi kuin nykyisen solmun pienin
-            else if (key > i.getEnsimmainenArvo()) {
-                if (i.solmunKoko() == 2) {
-                    //pienempi kuin nykyisen solmun toinen arvo
-                    if (i.getToinenArvo() > key) {
-                        //ollaan lehtisolmussa
-                        if (i.getKeski() == null) {
-
-                            break;
-                        }
-                        i = i.getKeski();
-                    } //suurempi kuin kumpikaan nykyisen solmun arvoista
-                    else {
-                        //ollaan lehtisolmussa
-                        if (i.getOikea() == null) {
-                            lisaaOikealle(i, key);
-                            break;
-                        }
-                        i = i.getOikea();
-                    }
-                } //solmussa vain yksi arvo, uusi sitä suurempi
-                else {
-                    i = i.getOikea();
-                }
-            }
-        }
-
+        insert2(key, this.juuri);
     }
-
+    
     @Override
     public void delete(int key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        delete2(key, this.juuri);
     }
-
+    
     @Override
     public boolean search(int key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
-     * Lisää solmun, kun uuden solmun paikka on nykyisen solmun oikeana lapsena.
+     * Etsii rekursiivisesti solmulle paikan puusta. Uusi solmu lisätään solmuun
+     * jos siinä on tilaa, muuten se muodostaa uuden lehden.
      *
-     * @param i solmu, jolle uusi solmu tulee oikeaksi lapseksi
-     * @param key uuden solmun arvo
+     * @param key Uuden solmun arvo.
+     * @param s Uuden solmun vanhempi tai paikka.
      */
-    private void lisaaOikealle(SolmuB i, int key) {
-        //luodaan apulista, joka selvittää käsiteltävien arvojen järjestyksen
-        ALista apulista = new ALista(key);
-        apulista.lisaa(i.getEnsimmainenArvo());
-        apulista.lisaa(i.getToinenArvo());
-        int pienin = apulista.getLista().getArvo();
-        int keski = apulista.getLista().getNext().getArvo();
-
-        //lehtisolmussa on vielä tilaa
-        if (i.solmunKoko() < 2) {
-            i.lisaaArvo(key);
-        } //parenttiin mahtuu; lisätään sinne keskimmäinen arvo, pienimmästä tulee uusi
-        // keskimmäinen lapsi
-        else if (i.getParent().solmunKoko() < 2) {
-            i.getParent().lisaaArvo(keski);
-            i.getParent().setKeski(new SolmuB(pienin, i));
-            if (key == keski) {
-                i.poistaArvo(pienin);
-            } else {
-                i.poistaArvo(keski);
+    private void insert2(int key, SolmuB s) {
+        if (s.getEnsimmainenArvo() == key) {
+            return;
+        }
+        //solmu on jo täynnä
+        if (s.solmunKoko() == 2) {
+            if (s.getToinenArvo() == key) {
+                return;
             }
-        } else {
-            //parent ja lehti molemmat täynnä, keskimmäinen arvo matkustaa puussa ylöspäin
-            if (keski != key) {
-                i.poistaArvo(keski);
-                if (i.getEnsimmainenArvo() == pienin) {
-                    i.lisaaArvo(apulista.getLista().getNext().getNext().getArvo());
+            if (key < s.getToinenArvo() && key > s.getEnsimmainenArvo()) {
+                //solmulle luodaan uusi lehti s:n keskimmäisenä lapsena
+                if (s.getKeski() == null) {
+                    s.setKeski(new SolmuB(key, s));
+                    return;
                 } else {
-                    i.lisaaArvo(pienin);
+                    insert2(key, s.getKeski());
+                }
+            } else if (key > s.getToinenArvo()) {
+                //solmusta tulee uusi lehti oikealle
+                if (s.getOikea() == null) {
+                    s.setOikea(new SolmuB(key, s));
+                    return;
+                } else {
+                    insert2(key, s.getOikea());
+                }
+            } else {
+                if (s.getVasen() == null) {
+                    s.setVasen(new SolmuB(key, s));
+                    return;
+                } else {
+                    insert2(key, s.getVasen());
                 }
             }
-            matkusta(i.getParent(), keski);
+        }
+
+        //solmuun mahtuu
+        if (s.solmunKoko() < 2) {
+            s.lisaaArvo(key);
+            //kaksoisarvoiselle solmulle täytyy lapsi-puut jakaa uudelleen
+            if (key == s.getEnsimmainenArvo() && s.getVasen() != null) {
+                jaaLapsetVasemmalta(s);
+            } else if (s.getOikea() != null) {
+                jaaLapsetOikealta(s);
+            }
         }
     }
 
     /**
-     * Kutsutaan tilanteessa, jossa uutta arvoa ei voida asettaa lehtisolmuun
-     * tai tämän vanhempaan. Matkustaa puussa ylöspäin kunnes arvolle löytyy
-     * paikka tai uusi juuri luodaan.
+     * Palauttaa ensimmäisen arvon seuraajasolmun, null jos ei ole tarpeen
+     * (keskimmäistä lasta ei ole).
      *
-     * @param s käsitteillä oleva solmu
-     * @param key arvo vailla paikkaa
+     * @param s solmu, jolle seuraaja haetaan
+     * @return solmun s seuraaja
      */
-    private void matkusta(SolmuB s, int key) {
-        if (s.solmunKoko() < 2) {
-            s.lisaaArvo(key);
-            return;
+    private SolmuB succSolmu1(SolmuB s) {
+        //seuraaja ei tarpeen
+        if (s.getKeski() == null) {
+            return null;
+        }
+        
+        SolmuB it = s.getKeski();
+        
+        while (it.getVasen() != null) {
+            it = it.getVasen();
+        }
+        
+        return it;
+    }
+
+    /**
+     * Palauttaa seuraajasolmun annetulle solmulle, null jos seuraaja ei ole
+     * tarpeen (oikea alipuu ei olemassa).
+     *
+     * @param s solmu, jolle seuraaja haetaan
+     * @return solmun s seuraaja
+     */
+    private SolmuB succSolmu2(SolmuB s) {
+        //seuraaja ei tarpeen
+        if (s.getOikea() == null) {
+            return null;
+        }
+        
+        SolmuB it = s.getOikea();
+        
+        while (it.getVasen() != null) {
+            it = it.getVasen();
+        }
+        return it;
+    }
+
+    /**
+     * Poistaa annetun arvon lähtien annetusta solmusta.
+     *
+     * @param key poistettava arvo
+     * @param s käsiteltävissä oleva solmu
+     */
+    private void delete2(int key, SolmuB s) {
+        SolmuB seur;
+        while (s != null) {
+            if (s.getEnsimmainenArvo() == key) {
+                seur = succSolmu1(s);
+                if (seur == null) {
+                    if (s.solmunKoko() == 2) {
+                        s.setVasen(s.getKeski());
+                        s.setKeski(null);
+                        s.poistaArvo(key);
+                        break;
+                    } else {
+                        poistaHelppo(key, s);
+                        break;
+                    }
+                } else {
+                    s.lisaaArvo(seur.getEnsimmainenArvo());
+                    poistaHelppo(seur.getEnsimmainenArvo(), seur);
+                    break;
+                }
+            } else if (s.solmunKoko() == 2) {
+                if (s.getToinenArvo() == key) {
+                    seur = succSolmu2(s);
+                    //tilanne, jossa kaksiarvoisella solmulla ei oikeaa lasta
+                    if (seur == null) {
+                        s.poistaArvo(key);
+                        s.setOikea(s.getKeski());
+                        s.setKeski(null);
+                        s.poistaArvo(key);
+                        break;
+                    } //muuten korvataan seuraajalla ja poistetaan tästä arvo
+                    else {
+                        s.poistaArvo(key);
+                        s.lisaaArvo(seur.getEnsimmainenArvo());
+                        poistaHelppo(seur.getEnsimmainenArvo(), seur);
+                        break;
+                    }
+                }
+            }
+            //arvoa ei vielä löytynyt, jatketaan matkaa
+            if (key > s.getEnsimmainenArvo()) {
+                if (s.solmunKoko() == 2 && key < s.getToinenArvo()) {
+                    s = s.getKeski();
+                } else {
+                    s = s.getOikea();
+                }
+            } else {
+                s = s.getVasen();
+            }
         }
     }
 
+    /**
+     * Luo uudet alipuut (vasen ja keskimmäinen) uudelle kaksiarvoiselle
+     * solmulle kun uusi lisätty solmu on entistä pienempi.
+     *
+     * @param s solmu, jolle uudet alipuut luodaan
+     */
+    private void jaaLapsetVasemmalta(SolmuB s) {
+        SolmuB uusivasen = null;
+        SolmuB uusikeski = null;
+        int v;
+        while (s.getVasen() != null) {
+            v = s.getVasen().getEnsimmainenArvo();
+            if (v > s.getEnsimmainenArvo()) {
+                if (uusikeski == null) {
+                    uusikeski = new SolmuB(v, s);
+                } else {
+                    insert2(v, uusikeski);
+                }
+                delete2(v, s.getVasen());
+            } else if (v < s.getEnsimmainenArvo()) {
+                if (uusivasen == null) {
+                    uusivasen = new SolmuB(v, s);
+                } else {
+                    insert2(v, uusivasen);
+                }
+                delete2(v, s.getVasen());
+            }
+        }
+        s.setKeski(uusikeski);
+        s.setVasen(uusivasen);
+    }
+
+    /**
+     * Luo uudet alipuut (oikea ja keskimmäinen) uudelle kaksiarvoiselle
+     * solmulle kun uusi lisätty solmu on entistä suurempi.
+     *
+     * @param s solmu, jolle uudet alipuut luodaan
+     */
+    private void jaaLapsetOikealta(SolmuB s) {
+        SolmuB uusioikea = null;
+        SolmuB uusikeski = null;
+        int v;
+        while (s.getOikea() != null) {
+            v = s.getOikea().getEnsimmainenArvo();
+            if (v < s.getToinenArvo()) {
+                if (uusikeski == null) {
+                    uusikeski = new SolmuB(v, s);
+                } else {
+                    insert2(v, uusikeski);
+                }
+                delete2(v, s.getOikea());
+            } else if (v < s.getToinenArvo()) {
+                if (uusioikea == null) {
+                    uusioikea = new SolmuB(v, s);
+                } else {
+                    insert2(v, uusioikea);
+                }
+                delete2(v, s.getOikea());
+            }
+        }
+        s.setKeski(uusikeski);
+        s.setOikea(uusioikea);
+    }
+
+    /**
+     * Poistaa puusta arvon, jonka solmulla ei ole vasenta lasta
+     *
+     * @param arvo poistettava arvo
+     * @param s solmu, josta arvo poistuu
+     */
+    private void poistaHelppo(int arvo, SolmuB s) {
+
+        //lehtisolmu
+        if (s.getKeski() == null && s.getOikea() == null && s.getVasen() == null) {
+            if (s.solmunKoko() == 2) {
+                s.poistaArvo(arvo);
+            } else {
+                if (s.getParent().getKeski() == s) {
+                    s.getParent().setKeski(null);
+                } else if (s.getParent().getOikea() == s) {
+                    s.getParent().setOikea(null);
+                } else {
+                    s.getParent().setVasen(null);
+                }
+            }
+            return;
+        }
+
+        //solmussa on vain yksi arvo; koska vasenta lasta ei voi enää löytyä,
+        //eikä yksiarvoisella voi olla keskimmäistä lasta, siirretään mahdollinen
+        //oikea lapsi pykälä ylöspäin
+        if (s.solmunKoko() == 1) {
+            s.getParent().setVasen(s.getOikea());
+        } //solmussa on kaksi arvoa, ei vasenta lasta; riippuen poistettavan arvon paikasta, keskimmäisestä
+        //lapsesta tulee joko uusi oikea tai vasen lapsi
+        else {
+            if (arvo == s.getEnsimmainenArvo()) {
+                s.setVasen(s.getKeski());
+                s.setKeski(null);
+            } else {
+                s.setOikea(s.getKeski());
+                s.setKeski(null);
+            }
+        }
+        s.poistaArvo(arvo);
+    }
+
+    /**
+     * Palauttaa juurisolmun.
+     *
+     * @return puun juurisolmu
+     */
+    public SolmuB getJuuri() {
+        return juuri;
+    }
 }

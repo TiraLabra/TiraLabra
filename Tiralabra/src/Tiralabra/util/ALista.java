@@ -83,7 +83,14 @@ public class ALista {
      * @return true jos poistettava solmu löytyy listalta, false muuten
      */
     public boolean poista(int x) {
+        if (this.koko == 0) {
+            return false;
+        }
         if (head.getArvo() == x) {
+            if (head.getNext() == null) {
+                head = null;
+                return true;
+            }
             head.getNext().setPrev(null);
             head = head.getNext();
             koko--;
