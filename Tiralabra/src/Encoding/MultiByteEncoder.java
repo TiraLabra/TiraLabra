@@ -165,16 +165,16 @@ public class MultiByteEncoder implements Runnable {
 
         encodedData = new byte[data.length];
 
-        int bytesPerPreviousKey = -1;
-        int bytesPerNextKey = 0;
-        int runLength = 1;
+        int bytesPerPreviousKey = -1;   //initial value, tells algorithm to create the first prefix
+        int bytesPerNextKey = 0;        //after initializing the first prefix gets the value -1 to tell algorithm not to reinitalize first prefix but to continue to the next bytewidth of data.
+        int runLength = 1;              //run-length for current bytewidth of key or raw data.
         int prefixIndex = 0;
-        int encodedDataIndex;
+        int encodedDataIndex = 0;
         boolean newPrefix = false;
 
         byte[] remainderWithPrefix = makeRemainderWithPrefix(remainder);
-        prefixIndex = ArrayUtilities.encodeIntoArray(remainderWithPrefix, data, prefixIndex);
-        encodedDataIndex = prefixIndex + 1;
+        prefixIndex = ArrayUtilities.encodeIntoArray(remainderWithPrefix, encodedData, prefixIndex);
+        encodedDataIndex = prefixIndex;
 
         for (int i = 0; i < data.length; i += byteWidth) {
 
@@ -186,9 +186,9 @@ public class MultiByteEncoder implements Runnable {
             MultiByte mb = ArrayUtilities.makeMultiByte(i, data, byteWidth);
             
             if (mb != null && hashTable.contains(mb) ) {
-                int keyInteger = getkey(mb);
+                int keyInteger = getkey(mb);                //there is a key for the multibyte, fetch it.
                 
-                if (keyInteger == -1){
+                if (keyInteger == -1){                          //if there was no key for the multibyte, should NEVER happen.
                     this.status = StatusEnum.DATAERROR;
                     return false;
                 }
@@ -196,12 +196,31 @@ public class MultiByteEncoder implements Runnable {
                 int thisKeyByteSize = IntegerConverter.getBytesPerInteger(keyInteger);
                 byte[] keyBytes = IntegerConverter.IntegerToByte(keyInteger, thisKeyByteSize);
                 thisKeyByteSize = keyBytes.length;
+                
+                if (keyInteger == 0){                           //if hte key was 0, ie the multi-byte was in the first index, make an array for it, as zero is otherwise 0 length.
+                    thisKeyByteSize = 1;
+                    keyBytes = new byte[]{new Byte("0")};
+                }
 
-                if (thisKeyByteSize == bytesPerPreviousKey && runLength < 9) {
+                if (thisKeyByteSize == bytesPerPreviousKey && runLength < 9 && bytesPerNextKey != -1) {     //if keys' bytesize matches and initializations have been done
                     runLength++;
+                    
+                } else if (bytesPerPreviousKey == -1) {                 //initialization, always create the first prefix.
+                    bytesPerNextKey = -1;
+                    bytesPerPreviousKey = thisKeyByteSize;
+                    encodedDataIndex++;
+                    newPrefix = true;
+                    
+                } else if (bytesPerNextKey == -1){                      //if initialized, continue to the next byteiwdth of data.
+                    bytesPerPreviousKey = thisKeyByteSize;
+                    bytesPerNextKey = thisKeyByteSize;
+                    encodedDataIndex++;
+                    
                 } else {
                     bytesPerNextKey = thisKeyByteSize;
-                    bytesPerPreviousKey = bytesPerPreviousKey == -1 ? thisKeyByteSize : bytesPerPreviousKey;
+                    int multiplier = bytesPerPreviousKey == 0 ? byteWidth : bytesPerPreviousKey;        //calculate index multiplier for the prefix to be formed
+                    prefixIndex = encodedDataIndex - (runLength*multiplier) - 1;                        //the actual index for the prefix, based on previous keys' bytewidth and runlength.
+                    encodedDataIndex++;
                     newPrefix = true;
                 }
 
@@ -209,19 +228,33 @@ public class MultiByteEncoder implements Runnable {
 
             } else {
                 
-                if (bytesPerPreviousKey == 0 && runLength < 86) {
+                if (bytesPerPreviousKey == 0 && runLength < 86 && bytesPerNextKey != -1) {
                     runLength++;
+                    
+                } else if (bytesPerPreviousKey == -1) {
+                    bytesPerNextKey = -1;
+                    bytesPerPreviousKey = 0;
+                    encodedDataIndex++;
+                    newPrefix = true;
+                    
+                } else if (bytesPerNextKey == -1){
+                    bytesPerPreviousKey = 0;
+                    bytesPerNextKey = 0;
+                    encodedDataIndex++;
+                    
                 } else {
                     bytesPerNextKey = 0;
-                    bytesPerPreviousKey = bytesPerPreviousKey == -1 ? 0 : bytesPerPreviousKey;
+                    int multiplier = bytesPerPreviousKey == 0 ? byteWidth : bytesPerPreviousKey;
+                    prefixIndex = encodedDataIndex - (runLength*multiplier) - 1;
+                    encodedDataIndex++;
                     newPrefix = true;
                 }
-
-//                if (mb != null) {
-//                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);
-//                } else {
-//                    newPrefix = true;
-//                }
+                
+                if (mb != null) {
+                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);
+                } else {
+                    newPrefix = true;
+                }
 
             }
 
@@ -230,15 +263,21 @@ public class MultiByteEncoder implements Runnable {
 
                 byte prefix = IntegerConverter.IntegerToByte(prefixInt, 1)[0];
                 encodedData[prefixIndex] = prefix;
-                prefixIndex = encodedDataIndex;
-                encodedDataIndex++;
-                bytesPerPreviousKey = bytesPerNextKey;
+                if (bytesPerNextKey != -1) {
+                    bytesPerPreviousKey = bytesPerNextKey;          //if algorithm has moved past initializations.
+                }
                 runLength = 1;
-
                 newPrefix = false;
             }
 
         }
+        
+        // make the last prefix
+        int multiplier = bytesPerPreviousKey == 0 ? byteWidth : bytesPerPreviousKey;
+        prefixIndex = encodedDataIndex - (runLength*multiplier) - 1;
+        int prefixInt = generatePrefixInteger(bytesPerPreviousKey, runLength);
+        byte prefix = IntegerConverter.IntegerToByte(prefixInt, 1)[0];
+        encodedData[prefixIndex] = prefix;
 
         encodedData = ArrayUtilities.removeTrailingZeros(encodedData, encodedDataIndex);
         
@@ -376,10 +415,7 @@ public class MultiByteEncoder implements Runnable {
             remainderAndPrefix[0] = rawPrefix;
             
             ArrayUtilities.encodeIntoArray(remainder, remainderAndPrefix, 1);
-            
-//            for (int i = 1; i < remainderAndPrefix.length; i++) {
-//                remainderAndPrefix[i] = remainder[i-1];
-//            }
+
         } else {
             remainderAndPrefix = new byte[]{ new Byte("0") };
         }
