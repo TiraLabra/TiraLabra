@@ -47,13 +47,16 @@ public class HashtableTest {
         assertEquals(19, (int)this.ht.get("Simo"));
         this.ht.put("Salla",61);
         assertEquals(61, (int)this.ht.get("Salla"));
+        assertEquals(null, this.ht.get("Samu"));
     }
     @Test
     public void keyCollisionTest() {
         this.ht.put("Kalle",71);
-        assertEquals(71, (int)this.ht.get("Kalle"));
+        this.ht.put("Kalle", 12);
+        assertEquals(12, (int)this.ht.get("Kalle"));
         this.ht.put("Pekka",19);
-        assertEquals(19, (int)this.ht.get("Pekka"));
+        this.ht.put("Pekka", 23);
+        assertEquals(23, (int)this.ht.get("Pekka"));
     }
     @Test
     public void removeAndContainsKeyTest(){
@@ -65,5 +68,6 @@ public class HashtableTest {
         assertEquals(true, this.ht.containsKey("Pekka"));
         this.ht.remove("Salla");
         assertEquals(false, this.ht.containsKey("Salla"));
+        assertEquals(false, this.ht.containsKey("Joni"));
     }
 }
