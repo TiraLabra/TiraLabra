@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 /**
@@ -34,10 +35,10 @@ public class UIscreen implements Runnable {
     private JRadioButton byteWidth12;
     private JRadioButton byteWidth16;
     private JButton compressButton;
-    private JLabel compressionStatusWindow;
+    private JTextArea compressionStatusWindow;
     private JButton decompressSelectionButton;
     private JLabel decompressSelectionLabel;
-    private JLabel decompressStatus;
+    private JTextArea decompressStatus;
     private JButton decompressButton;
     private JButton interruptCompression;
     private JButton interruptDecompression;
@@ -100,7 +101,8 @@ public class UIscreen implements Runnable {
         interruptCompression.setEnabled(false);
         baseComponent.add(interruptCompression);
         
-        compressionStatusWindow = new JLabel("No operations");
+        compressionStatusWindow = new JTextArea("No operations");
+        compressionStatusWindow.setEditable(false);
         baseComponent.add(compressionStatusWindow);
         
         tabPane.addTab("Compress", baseComponent);
@@ -136,7 +138,7 @@ public class UIscreen implements Runnable {
         interruptDecompression.setEnabled(false);
         baseComponent.add(interruptDecompression);
         
-        decompressStatus = new JLabel("No operations");
+        decompressStatus = new JTextArea("No operations");
         baseComponent.add(decompressStatus);
         
         tabPane.add("Decompress", baseComponent);
@@ -167,7 +169,7 @@ public class UIscreen implements Runnable {
         
         fileMethodChooser.add(fileMethodSingle);
         fileMethodChooser.add(fileMethodRecursive);
-//        fileMethodRecursive.setEnabled(false);      //disabled until recursive method is coded
+        fileMethodRecursive.setEnabled(false);      //disabled until recursive method is coded
     }
 
     private void createByteWidthChooser(JComponent options) {

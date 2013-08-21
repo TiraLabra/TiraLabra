@@ -4,6 +4,7 @@
  */
 package Utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -24,10 +25,10 @@ public class FileIO {
      * @param catenationString
      * @throws IOException 
      */
-    public static void writeToFile(byte[] data, URI uriString, String catenationString) throws IOException{
-        String newFileName = uriString+catenationString;
-        Path pathToNewFile = Paths.get(newFileName);
-        Files.write(pathToNewFile, data, StandardOpenOption.CREATE);
+    public static void writeToFile(byte[] data, String String) throws IOException{
+        File file = new File(String+".vZip");
+        Path path = file.toPath();
+        Files.write(path, data, StandardOpenOption.CREATE);
     }
     
     /**
@@ -36,7 +37,9 @@ public class FileIO {
      * @return
      * @throws IOException 
      */
-    public static byte[] readFromFile(Path path) throws IOException{
+    public static byte[] readFromFile(String pathString) throws IOException{
+        File file = new File(pathString);
+        Path path = file.toPath();
         byte[] data = Files.readAllBytes(path);
         return data;
     }

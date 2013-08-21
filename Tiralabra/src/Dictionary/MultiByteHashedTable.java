@@ -212,8 +212,11 @@ public class MultiByteHashedTable {
     
     public boolean contains(MultiByte mb){
         int[] indexForMultiByte = this.indexForMultiByte(mb);
-        MultiByte toTest = this.getMultibyte(indexForMultiByte);
-        return (indexForMultiByte != null && toTest!= null && toTest.equals(mb));
+        if (indexForMultiByte != null){
+            MultiByte toTest = this.getMultibyte(indexForMultiByte);
+            return toTest != null && toTest.equals(mb);
+        }
+        return false;
     }
 
     /**

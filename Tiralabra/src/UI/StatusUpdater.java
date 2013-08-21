@@ -8,6 +8,7 @@ import Encoding.Compressor;
 import Encoding.Decompressor;
 import Encoding.StatusEnum;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 /**
  * A runnable class for updating the status of either the compression or decompression.
@@ -28,12 +29,12 @@ public class StatusUpdater implements Runnable {
     /**
      * Label for compression satus.
      */
-    private JLabel compressionSatus;
+    private JTextArea compressionSatus;
     
     /**
      * Label for decompression status.
      */
-    private JLabel decompressionStatus;
+    private JTextArea decompressionStatus;
     
     /**
      * Tells an instance of this class whether to update the comressor or decompressor stauts.
@@ -50,7 +51,7 @@ public class StatusUpdater implements Runnable {
      */
     private int thread;
 
-    public StatusUpdater(Compressor compressor, Decompressor decompressor, JLabel compressionSatus, JLabel decompressionStatus, boolean isCompressor, int thread) {
+    public StatusUpdater(Compressor compressor, Decompressor decompressor, JTextArea compressionSatus, JTextArea decompressionStatus, boolean isCompressor, int thread) {
         if (isCompressor) {
             this.compressor = compressor;
             this.compressionSatus = compressionSatus;
@@ -58,7 +59,7 @@ public class StatusUpdater implements Runnable {
             this.decompressionStatus = decompressionStatus;
             this.decompressor = decompressor;
         }
-
+        this.isCompressor = isCompressor;
         this.interrupt = false;
         this.thread = thread;
     }
@@ -84,11 +85,14 @@ public class StatusUpdater implements Runnable {
      * @param field
      * @param status 
      */
-    private void printStatus(JLabel field, StatusEnum status) {
+    private void printStatus(JTextArea field, StatusEnum status) {
         String statusText = field.getText();
+        if (field.getRows()>20){
+            statusText ="";
+        }
         switch (status) {
             case BUILDING:
-                statusText+=thread+": Analyzing \n";
+                statusText+=thread+": Analyzing\n";
                 break;
             case DATAERROR:
                 statusText+=thread+": Error in data\n";

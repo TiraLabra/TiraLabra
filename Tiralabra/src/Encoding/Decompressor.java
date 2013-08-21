@@ -5,33 +5,71 @@
 package Encoding;
 
 import Utilities.FileIO;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
+ * This class works as the middleman between decoder, fileIO and userinterface.
  * @author virta
  */
 public class Decompressor implements Runnable {
     
-    private Path pathToCompressedData;
+    /**
+     * The path to the file to be decompressed.
+     */
+    private String pathToCompressedData;
+    
+    /**
+     * The resulting decompressed data.
+     */
     private byte[] decompressedData;
+    
+    /**
+     * The decoder to use.
+     */
     private MultiByteDecoder decoder;
     
-    public Decompressor(Path path){
+    /**
+     * The name of the file.
+     */
+    private String fileName;
+    
+    private Thread decoderThread;
+    
+    public Decompressor(String path){
         this.pathToCompressedData = path;
     }
     
+    /**
+     * Reads from the path the files' contents and starts a new decoder thread.
+     * @throws Exception 
+     */
     private void decompress() throws Exception {
         byte[] compressedData = FileIO.readFromFile(pathToCompressedData);
         decoder = new MultiByteDecoder(compressedData);
-        Thread decoderThread = new Thread(decoder);
+        decoderThread = new Thread(decoder);
         decoderThread.start();
     }
     
+    public void interrupt(){
+        decoder.interrupt();
+        decoderThread.stop();
+    }
+    
+    /**
+     * Useful for querying the status of the encoder and this class' instance.
+     * @return 
+     */
     public StatusEnum queryStatus(){
         return decoder.getStatus();
     }
 
+    /**
+     * Calls the internal decompress method then waits in a loop for decompression to finish.
+     * After succesful decompression, queries the decompressed data from the encoder and writes it to file.
+     */
     @Override
     public void run() {
         try {
@@ -49,9 +87,17 @@ public class Decompressor implements Runnable {
         
         if (completedSuccesfully){
             decompressedData = decoder.getDecodedData();
-//            FileIO.writeToFile(decompressedData, null, null);
+            writeToFile();
         }
         
+    }
+    
+    private void writeToFile(){
+        try {
+            FileIO.writeToFile(decompressedData, fileName);
+        } catch (IOException ex) {
+            
+        }
     }
     
 }

@@ -4,6 +4,8 @@
  */
 package UI;
 
+import Encoding.Compressor;
+import Encoding.Decompressor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,6 +18,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -35,21 +38,26 @@ public class UIscreenListener implements ActionListener {
     private JRadioButton byteWidth12;
     private JRadioButton byteWidth16;
     private JButton compressButton;
-    private JLabel compressionStatusWindow;
+    private JTextArea compressionStatusWindow;
     private JButton decompressSelectionButton;
     private JLabel decompressSelectionLabel;
-    private JLabel decompressStatus;
+    private JTextArea decompressStatusWindow;
     private JButton decompressButton;
     private File selectedSingleFileForCompression;
     private JButton interruptCompression;
     private JButton interruptDecompression;
     private File selectedFileForDecompression;
-    private Path pathToFileForDecompression;
+    private String pathToFileForDecompression;
+    private String pathToSingleFileForCompression;
+    private Decompressor decompressor;
+    private StatusUpdater decompressorStatusUpdater;
+    private Compressor compressor;
+    private StatusUpdater compressorStatusUpdater;
 
     public UIscreenListener(JFrame frame, JRadioButton fileMethodSingle, JRadioButton fileMethodRecursive,
             JButton fileChooser, JLabel pathView, JRadioButton byteWidth4, JRadioButton byteWidth8,
-            JRadioButton byteWidth12, JRadioButton byteWidth16, JButton compressButton, JLabel compressionStatusWindow,
-            JButton decopressSelectionButton, JLabel decompressSelectionLabel, JLabel decompressStatus, JButton decompressButton,
+            JRadioButton byteWidth12, JRadioButton byteWidth16, JButton compressButton, JTextArea compressionStatusWindow,
+            JButton decopressSelectionButton, JLabel decompressSelectionLabel, JTextArea decompressStatus, JButton decompressButton,
             JButton interruptCompression, JButton interruptDecompression) {
 
         this.frame = frame;
@@ -65,7 +73,7 @@ public class UIscreenListener implements ActionListener {
         this.compressionStatusWindow = compressionStatusWindow;
         this.decompressSelectionButton = decopressSelectionButton;
         this.decompressSelectionLabel = decompressSelectionLabel;
-        this.decompressStatus = decompressStatus;
+        this.decompressStatusWindow = decompressStatus;
         this.decompressButton = decompressButton;
         this.interruptCompression = interruptCompression;
         this.interruptDecompression = interruptDecompression;
@@ -92,14 +100,14 @@ public class UIscreenListener implements ActionListener {
 
         } else if (source.equals(decompressButton)) {
             startDecompression();
-            
+
         } else if (source.equals(decompressSelectionButton)) {
             try {
                 chooseFileForDecompression();
             } catch (IOException ex) {
                 decompressSelectionLabel.setText("Inaccessible file");
             }
-            
+
         } else if (source.equals(interruptCompression)) {
             interruptCompressionAction();
 
@@ -107,27 +115,26 @@ public class UIscreenListener implements ActionListener {
             interruptDecompressionAction();
         }
     }
-    
-    private void chooseFileForDecompression() throws IOException{
+
+    private void chooseFileForDecompression() throws IOException {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("vZipped files", "vZip"));
         int validity = chooser.showOpenDialog(frame);
-        
-        if (validity == JFileChooser.APPROVE_OPTION){
-            selectedFileForDecompression = chooser.getSelectedFile();
-            pathToFileForDecompression = selectedFileForDecompression.toPath();
+
+        if (validity == JFileChooser.APPROVE_OPTION) {
+            pathToFileForDecompression = chooser.getSelectedFile().getCanonicalPath();
             decompressSelectionLabel.setText(selectedFileForDecompression.getCanonicalPath());
         } else {
             decompressSelectionLabel.setText("Invalid file");
         }
     }
-    
-    private void chooseFolderForCompression(){
+
+    private void chooseFolderForCompression() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int validity = chooser.showOpenDialog(frame);
-        
-        if (validity == JFileChooser.APPROVE_OPTION){
+
+        if (validity == JFileChooser.APPROVE_OPTION) {
             pathToCompressFile.setText("approved");         //make it work
         }
     }
@@ -137,15 +144,20 @@ public class UIscreenListener implements ActionListener {
         int validity = fileChooser.showOpenDialog(frame);
 
         if (validity == JFileChooser.APPROVE_OPTION) {
-            selectedSingleFileForCompression = fileChooser.getSelectedFile();
-            pathToCompressFile.setText(selectedSingleFileForCompression.getCanonicalPath());
+//            selectedSingleFileForCompression = fileChooser.getSelectedFile();
+            pathToSingleFileForCompression = fileChooser.getSelectedFile().getCanonicalPath();
+            pathToCompressFile.setText(pathToSingleFileForCompression);
         } else {
             pathToCompressFile.setText("Invalid file");
         }
     }
 
     private void compressFile() {
-        if (byteWidth4.isSelected()) {
+
+        if (pathToSingleFileForCompression == null) {
+            compressionStatusWindow.setText("Select file for compression");
+
+        } else if (byteWidth4.isSelected()) {
             startSinlgeFileCompression(4);
 
         } else if (byteWidth8.isSelected()) {
@@ -157,56 +169,75 @@ public class UIscreenListener implements ActionListener {
         } else if (byteWidth16.isSelected()) {
             startSinlgeFileCompression(16);
 
-        } else if (selectedSingleFileForCompression == null) {
-            compressionStatusWindow.setText("Select file for compression");
-
         } else {
             compressionStatusWindow.setText("Select byte-width for compression");
         }
     }
 
     private void startSinlgeFileCompression(int bytewidth) {
-        byteWidth4.setEnabled(false);
-        byteWidth8.setEnabled(false);
-        byteWidth12.setEnabled(false);
-        byteWidth16.setEnabled(false);
-        compressButton.setEnabled(false);
-        interruptCompression.setEnabled(true);
-        fileChooser.setEnabled(false);
+
+        toggleCompressorButtons(false);
+
+        compressor = new Compressor(pathToSingleFileForCompression, bytewidth);
+        Thread compressorThread = new Thread(compressor);
+
+        compressorStatusUpdater = new StatusUpdater(compressor, null, compressionStatusWindow, null, true, 1);
+        Thread compressorUpdaterThread = new Thread(compressorStatusUpdater);
+
+        compressionStatusWindow.setText("");
         
-        //start compression with parameters
+        compressorThread.start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            
+        }
+        compressorUpdaterThread.start();
+
     }
 
     private void interruptCompressionAction() {
-        byteWidth4.setEnabled(true);
-        byteWidth8.setEnabled(true);
-        byteWidth12.setEnabled(true);
-        byteWidth16.setEnabled(true);
-        compressButton.setEnabled(true);
-        interruptCompression.setEnabled(false);
-        fileChooser.setEnabled(true);
-        
-        //interrupt the algorithm
+        toggleCompressorButtons(true);
+        compressor.interrupt();
     }
 
     private void interruptDecompressionAction() {
-        decompressButton.setEnabled(true);
-        decompressSelectionButton.setEnabled(true);
-        interruptDecompression.setEnabled(false);
-        
-        //interrupt the algorithm
+        toggleDecompressorButtons(true);
+
+        decompressor.interrupt();
     }
-    
-    private void startDecompression(){
+
+    private void startDecompression() {
         if (selectedFileForDecompression != null) {
-            decompressButton.setEnabled(false);
-            decompressSelectionButton.setEnabled(false);
-            interruptDecompression.setEnabled(true);
-            
-            //start decompression
+            toggleDecompressorButtons(false);
+
+            decompressor = new Decompressor(pathToFileForDecompression);
+            Thread decompressorThread = new Thread(decompressor);
+
+            decompressorStatusUpdater = new StatusUpdater(null, decompressor, null, decompressStatusWindow, false, 1);
+            Thread updaterThread = new Thread(decompressorStatusUpdater);
+
+            decompressorThread.start();
+            updaterThread.start();
         } else {
-            decompressStatus.setText("Select a file for decompression");
+            decompressStatusWindow.setText("Select a file for decompression");
         }
-        
+
+    }
+
+    private void toggleCompressorButtons(boolean isEnabled) {
+        byteWidth4.setEnabled(isEnabled);
+        byteWidth8.setEnabled(isEnabled);
+        byteWidth12.setEnabled(isEnabled);
+        byteWidth16.setEnabled(isEnabled);
+        compressButton.setEnabled(isEnabled);
+        interruptCompression.setEnabled(!isEnabled);
+        fileChooser.setEnabled(isEnabled);
+    }
+
+    private void toggleDecompressorButtons(boolean isEnabled) {
+        decompressButton.setEnabled(isEnabled);
+        decompressSelectionButton.setEnabled(isEnabled);
+        interruptDecompression.setEnabled(!isEnabled);
     }
 }
