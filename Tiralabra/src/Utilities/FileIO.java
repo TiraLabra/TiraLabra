@@ -17,15 +17,27 @@ import java.nio.file.StandardOpenOption;
  */
 public class FileIO {
     
+    /**
+     * Writes the bytes into a new file with the catenated string as filename.
+     * @param data
+     * @param uriString
+     * @param catenationString
+     * @throws IOException 
+     */
     public static void writeToFile(byte[] data, URI uriString, String catenationString) throws IOException{
         String newFileName = uriString+catenationString;
         Path pathToNewFile = Paths.get(newFileName);
         Files.write(pathToNewFile, data, StandardOpenOption.CREATE);
     }
     
-    public static byte[] readFromFile(URI uriString) throws IOException{
-        Path pathToFile = Paths.get(uriString);
-        byte[] data = Files.readAllBytes(pathToFile);
+    /**
+     * Reads bytes from the specified by the uri-string.
+     * @param uriString
+     * @return
+     * @throws IOException 
+     */
+    public static byte[] readFromFile(Path path) throws IOException{
+        byte[] data = Files.readAllBytes(path);
         return data;
     }
     
