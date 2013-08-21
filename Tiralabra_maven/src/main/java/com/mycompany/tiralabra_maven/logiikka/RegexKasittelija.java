@@ -1,6 +1,7 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.automaatit.Automaatti;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 
 /**
@@ -11,6 +12,8 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
  */
 public class RegexKasittelija {
     
+    private static Automaatti AUTOMAATTI;
+    
     public void asetaSaannollinenLauseke(final Jono<String> SYOTE) {
         throw new UnsupportedOperationException("Ominaisuutta ei ole vielä toteutettu.");
     }
@@ -18,5 +21,5 @@ public class RegexKasittelija {
     public boolean tasmaa(final String MERKKIJONO) {
         throw new UnsupportedOperationException("Ominaisuutta ei ole vielä toteutettu.");
     }
-
+    
 }

@@ -3,7 +3,11 @@ package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
+import com.mycompany.tiralabra_maven.suorituskykytestit.HajautuskartanSuorituskyky;
+import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
+import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Ohjelman pääluokka, joka vastaa kolmen pääkomponentin, <b>Kayttoliittyma</b>, 
@@ -39,6 +43,8 @@ public final class Kaavalaskin {
         k.tulosta("Laskennan kesto:    " + laskimenAika + " ns.\n");
         System.out.printf("JVM:n viive:        %-1.1f ns.\n",
                 testaaAjanotonViive());
+        
+//        HajautuskartanSuorituskyky.main();
     }
     
     private static double testaaAjanotonViive() {
