@@ -56,7 +56,14 @@ public class SuunnistajaDFS{ //Vaatii vielä työstämistä...
         }
         
         solmu.setAlkuarvo(matka);
-        solmu.setPolku(edellinen);
+//        solmu.setPolku(edellinen);
+        
+        if (edellinen!=null) {
+        if (solmu.getAlkuarvo()>=edellinen.getAlkuarvo()+laby.etaisyys(edellinen)) {
+            solmu.setAlkuarvo(edellinen.getAlkuarvo()+laby.etaisyys(edellinen));
+            solmu.setPolku(edellinen);
+        }
+        }
         
         g.drawRect(solmu.getX()*15, solmu.getY()*15, 15, 15);
         kerroVierusX(solmu);

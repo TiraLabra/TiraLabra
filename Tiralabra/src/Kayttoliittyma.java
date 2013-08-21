@@ -2,6 +2,12 @@
 
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import rakenteet.Jarjestysjono;
 
@@ -12,7 +18,7 @@ import rakenteet.Jarjestysjono;
 public class Kayttoliittyma implements Runnable {
 
     private JFrame frame;
-    private Labyrintti laby = new Labyrintti("laby20x20");
+    private Labyrintti laby;
 
     /**
      *
@@ -42,7 +48,12 @@ public class Kayttoliittyma implements Runnable {
  * @param container 
  */
     private void luoKomponentit(Container container) {
-        Image sokkelo = laby.haeLaby();
+        Image alku = null;
+        try {
+            alku = ImageIO.read(new File("src/valitselaby.jpg"));
+        } catch (IOException ex) {
+            Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
         
@@ -76,7 +87,7 @@ public class Kayttoliittyma implements Runnable {
         kehys.add(labyt);
         
         JLabel kuva = new JLabel();
-        kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
+        kuva.setIcon(new ImageIcon(alku.getScaledInstance(300, 300, 0)));
         kehys.add(kuva);
         
         JPanel napit = new JPanel();
@@ -86,9 +97,10 @@ public class Kayttoliittyma implements Runnable {
         JButton nappi = new JButton("Aloita suunnistus");
         napit.add(nappi);
         
-        Kuuntelija kuuntelija = new Kuuntelija(nappi, kuva, laby);
+        Kuuntelija kuuntelija = new Kuuntelija(nappi, valitse, labyrintti, kuva, laby);
         
         nappi.addActionListener(kuuntelija);
+        valitse.addActionListener(kuuntelija);
 
     }
 

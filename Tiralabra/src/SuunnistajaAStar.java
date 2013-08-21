@@ -50,7 +50,6 @@ public class SuunnistajaAStar implements Suunnistaja{
     public Jarjestysjono<Solmu> etsi(Graphics g) {
         Solmu kasiteltava;
         alku.setAlkuarvo(0);
-        int kierroksia = 0;
 
         if (alku.seina || maali.seina) {
             return null;
@@ -86,7 +85,6 @@ public class SuunnistajaAStar implements Suunnistaja{
                     naapurit.get(i).setPolku(kasiteltava);
                 }
             } 
-            kierroksia++;
         }
         return muodostaPolku();
     }
