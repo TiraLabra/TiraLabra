@@ -23,7 +23,7 @@ public class Bot {
     }
 
     public void updateAi(int result) {
-        int x = ai.update(result);
+        ai.update(result);
     }
 
     public void loadProfile(FileHandler fh) throws IOException {

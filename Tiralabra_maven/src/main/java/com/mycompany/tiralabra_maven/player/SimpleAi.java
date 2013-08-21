@@ -36,10 +36,9 @@ public class SimpleAi implements Ai {
     }
 
     @Override
-    public int update(int result) {
+    public void update(int result) {
         if (result == 0) {
             opponentsMoves[LastMove]++;
-            return 0;
         }
 
         if (LastMove == 0) {
@@ -64,7 +63,6 @@ public class SimpleAi implements Ai {
                 opponentsMoves[0]++;
             }
         }
-        return 0;
     }
 
     @Override

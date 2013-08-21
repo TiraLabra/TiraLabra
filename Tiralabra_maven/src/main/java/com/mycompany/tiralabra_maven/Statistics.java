@@ -33,7 +33,7 @@ public class Statistics {
             char c = sc.nextLine().charAt(1);
             if (c == '-'){
                 totalLosses++;
-            } else if (c == 0){
+            } else if (c == '0'){
                 totalDraws++;
             } else {
                 totalWins++;

@@ -20,14 +20,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Game {
 
     private GameMode gameMode;
+    //main bot
     private Bot primaryBot;
     private Bot secondaryBot;
     private int[][] results;
     private Statistics statistics;
     private int lastRound;
     private FileHandler fileHandler;
+    //filehandler2 is for saving all games
     private FileHandler fileHandler2;
     private File file;
+    //file2 is for filehandler2
     private File file2;
 
     /**

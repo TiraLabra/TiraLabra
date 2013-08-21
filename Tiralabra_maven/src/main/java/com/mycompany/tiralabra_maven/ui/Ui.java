@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven.ui;
 
 import com.mycompany.tiralabra_maven.Game;
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -24,7 +25,7 @@ public class Ui implements Runnable{
     @Override
     public void run() {
         frame = new JFrame("Rock, Paper, Scissors");
-        frame.setPreferredSize(new Dimension(500 , 200));
+        frame.setPreferredSize(new Dimension(500 , 300));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
@@ -37,7 +38,7 @@ public class Ui implements Runnable{
     }
     
     public void createComponents(Container container) throws IOException{
-        GridLayout layout = new GridLayout(2, 1);
+        BorderLayout layout = new BorderLayout();
         container.setLayout(layout);
         
         this.game = new Game();
@@ -53,9 +54,10 @@ public class Ui implements Runnable{
         JButton optionsButton = new JButton("...");
         optionsButton.addActionListener(controls);
         
-        container.add(textArea);
+        container.add(textArea, BorderLayout.CENTER);
         
         JLabel label = new JLabel();
+        label.setPreferredSize(new Dimension(200, 100));
         label.setLayout(new GridLayout(1, 4));
         
         label.add(rockButton);
@@ -63,7 +65,7 @@ public class Ui implements Runnable{
         label.add(scissorsButton);
         label.add(optionsButton);
         
-        container.add(label);
+        container.add(label, BorderLayout.SOUTH);
         
         
         

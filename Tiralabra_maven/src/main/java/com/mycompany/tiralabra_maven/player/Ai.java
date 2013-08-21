@@ -3,12 +3,16 @@ package com.mycompany.tiralabra_maven.player;
 import com.mycompany.tiralabra_maven.data_structures.Stack;
 
 /**
- *
+ * Interface for ais
  * @author Joel Nummelin
  */
 public interface Ai {
     public int determineMove();
     
-    public int update(int result);
+    /**
+     * 
+     * @param result
+     */
+    public void update(int result);
     public void loadProfile(Stack s);
 }

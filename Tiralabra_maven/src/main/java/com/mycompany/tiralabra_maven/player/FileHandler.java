@@ -10,19 +10,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Takes care of saving and loading. 
  * @author Joel Nummelin
  */
 public class FileHandler {
     private FileWriter fileWriter;
     private Scanner scanner;
 
+    
     public FileHandler(File file) throws IOException {
         this.fileWriter = new FileWriter(file, true);
         this.scanner = new Scanner(file);
     }
     
-    
+    /**
+     * Saves one action. 
+     * @param move
+     * @param result 
+     */
     public void saveLine(int move, int result) {
         try {
             fileWriter.append(Integer.toString(move) + Integer.toString(result) + "\n");
@@ -33,6 +38,11 @@ public class FileHandler {
         }
     }
     
+    /**
+     * Returns all content of the file in a form of stack. 
+     * @return stack
+     * @throws IOException 
+     */
     public Stack getLines() throws IOException{
         Stack stack = new Stack();
         while (scanner.hasNextLine()){
