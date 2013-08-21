@@ -7,7 +7,7 @@ import Structures.LinkedList.LinkedList;
 import Structures.Stack.Stack;
 
 /**
-* A super class for a path finder algorithm
+* A super class for a path finding algorithm
 */
 public abstract class PathFinder {
     private Graph graph;
@@ -39,6 +39,7 @@ public abstract class PathFinder {
         return new Path(p,d);
     }
     /**
+     * Finds the shortest path between two vertices
      * @param The start vertex and  the end vertex of a path
      * @return The shortest path between vertex a and vertex b
      */

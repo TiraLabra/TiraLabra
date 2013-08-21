@@ -10,14 +10,8 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.Stack;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-/**
- *
- * @author Kalle
- */
 public class Window {
     private int width;
     private int height;

@@ -11,7 +11,8 @@ import Structures.Graph.Vertex;
 import Structures.Hashtable.Hashtable;
 
 /**
- * Greates a width*height sized grid, which presents coordinate points that are 1 unit apart from each other and have x between 0 and width-1 and y between 0 and height-1.
+ * Greates a width*height sized grid, which presents coordinate points that are 1 unit apart 
+ * from each other and have x between 0 and width-1 and y between 0 and height-1.
  */
 public class Grid implements Heuristics{
     private Hashtable<Coordinate,Vertex> grid;

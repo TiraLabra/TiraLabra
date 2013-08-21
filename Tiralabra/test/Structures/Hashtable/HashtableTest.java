@@ -37,7 +37,6 @@ public class HashtableTest {
     @After
     public void tearDown() {
     }
-
     @Test
     public void standartTest() {
         this.ht.put("Kalle",11);

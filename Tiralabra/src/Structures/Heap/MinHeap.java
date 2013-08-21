@@ -26,6 +26,10 @@ public class MinHeap<T> {
     private int right(int i){
         return 2*i+1;
     }
+    /**
+     * Drops node towards the bottom of the heap via the smallest node (left or right child) if such exists
+     * so that the heap rule remains valid
+     */
     private void heapify(int i){
         int l = left(i);
         int r = right(i);

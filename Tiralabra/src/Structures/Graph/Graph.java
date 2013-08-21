@@ -69,6 +69,7 @@ public class Graph {
         }      
     }
     /**
+    * Creates an undirected edge between two vertices without a weight
     * @param Two vertices and the weight to be connected in a way that a is connected to b and b is connected to a
     */
     public void connectBothWays(Vertex a, Vertex b, int weight){
@@ -76,6 +77,7 @@ public class Graph {
         connect(b,a,weight);
     }
     /**
+    * Creates an undirected edge between two vertices with a weight
     * @param Two vertices to be connected in a way that a is connected to b and b is connected to a
     */
     public void connectBothWays(Vertex a, Vertex b){
@@ -174,6 +176,7 @@ public class Graph {
         this.currentKey++;
     }
     /**
+    * Gives all the vertices in the graph
     * @return List of all vertices in the graph
     */
     public LinkedList<Vertex> getVertices(){

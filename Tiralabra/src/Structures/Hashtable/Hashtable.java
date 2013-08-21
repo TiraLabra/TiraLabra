@@ -72,6 +72,7 @@ public class Hashtable<K,V> {
      * Adds an object connected with the given key to the hash table
      */
     public void put(K key,V value){
+        manage();
         LinkedList<TableData<K,V>> list = (LinkedList<TableData<K,V>>)table[(Math.abs(key.hashCode())%this.table.length)];
         if(list.isEmpty()){
             list.add(new TableData<K,V>(key,value));
@@ -88,6 +89,33 @@ public class Hashtable<K,V> {
         }
         list.add(new TableData<K,V>(key,value));
         this.keySet.add(key);
+    }
+    /**
+     * If keys' share in the table becomes too large, this method will call for the extend method to make the table bigger
+     */
+    private void manage(){
+        if(this.keySet.size()/this.table.length>1){
+            extend();
+        }
+    }
+    private void extend(){
+        Object[] newTable = new Object[this.table.length*2];
+        for(int i=0; i<newTable.length; i++){
+            newTable[i]=new LinkedList<TableData<K,V>>();
+        }
+        LinkedList<TableData<K,V>> data = new LinkedList<TableData<K,V>>();
+        Iterator<K> keyIterator = new Iterator<K>(this.keySet);
+        while(keyIterator.hasNext()){
+            K key = keyIterator.getNext();
+            V value = get(key);
+            data.add(new TableData<K,V>(key,value));
+        }
+        this.table=newTable;
+        Iterator<TableData<K,V>> dataIterator = new Iterator<TableData<K,V>>(data);
+        while(dataIterator.hasNext()){
+            TableData<K,V> currentData = dataIterator.getNext();
+            put(currentData.getKey(),currentData.getValue());
+        }
     }
     /**
      * Checks if hash table contains the given key
