@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tallennus.Lukija;
+import tiralabra.tiedostonkasittely.TiedostonLukija;
 
 
 /**
@@ -20,7 +20,7 @@ import tiralabra.tallennus.Lukija;
  */
 public class LukijaTest {
     
-    private Lukija lukija;
+    private TiedostonLukija lukija;
     
     public LukijaTest() {
     }
@@ -35,7 +35,7 @@ public class LukijaTest {
     
     @Before
     public void setUp() {
-        this.lukija = new Lukija("src/Tiralabra/tiedostot/testitiedosto.txt");
+        this.lukija = new TiedostonLukija("test.txt");
     }
     
     @After

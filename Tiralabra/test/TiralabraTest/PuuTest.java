@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tiralabra.tietorakenteet.Node;
+import tiralabra.tietorakenteet.PrioriteettiJono;
 import tiralabra.tietorakenteet.Puu;
 
 /**
@@ -47,13 +48,13 @@ public class PuuTest {
 
     @Before
     public void setUp() {
-        PriorityQueue<Node> jono = new PriorityQueue<Node>();
-        jono.add(new Node(97, 45));
-        jono.add(new Node(98, 13));
-        jono.add(new Node(99, 12));
-        jono.add(new Node(100, 16));
-        jono.add(new Node(102, 5));
-        jono.add(new Node(101, 9));
+        PrioriteettiJono jono = new PrioriteettiJono();
+        jono.lisaa(new Node(97, 45));
+        jono.lisaa(new Node(98, 13));
+        jono.lisaa(new Node(99, 12));
+        jono.lisaa(new Node(100, 16));
+        jono.lisaa(new Node(102, 5));
+        jono.lisaa(new Node(101, 9));
         
         this.puu = new Puu(jono);
     }

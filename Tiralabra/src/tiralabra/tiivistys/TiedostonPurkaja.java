@@ -2,24 +2,24 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tiedostonkasittely;
+package tiralabra.tiivistys;
 
-import tiralabra.tallennus.Lukija;
-import tiralabra.tallennus.Kirjoittaja;
-import tiralabra.tietorakenteet.Puu;
+import tiralabra.tiedostonkasittely.TiedostonKirjoittaja;
+import tiralabra.tiedostonkasittely.TiedostonLukija;
+import tiralabra.tietorakenteet.Jono;
 import tiralabra.tietorakenteet.Node;
-import java.util.LinkedList;
+import tiralabra.tietorakenteet.Puu;
 
 /**
  * Purkaa tiedoston
  * @author joonaslongi
  */
-public class Purkaja {
+public class TiedostonPurkaja {
 
-    private Lukija lukija;
-    private Kirjoittaja kirjoittaja;
+    private TiedostonLukija lukija;
+    private TiedostonKirjoittaja kirjoittaja;
     private Puu puu;
-    private LinkedList<Boolean> que;
+    private Jono bittiJono;
     private int eriMerkit;
     private int kaikkiMerkit;
 
@@ -31,10 +31,10 @@ public class Purkaja {
      * @param uusiTiedosto nimi uudelle tiedostolle
      */ 
     
-    public Purkaja(String tiedosto, String uusiTiedosto) {
-        que = new LinkedList<Boolean>();
-        lukija = new Lukija(tiedosto);
-        kirjoittaja = new Kirjoittaja(uusiTiedosto);
+    public TiedostonPurkaja(String tiedosto, String uusiTiedosto) {
+        bittiJono = new Jono();
+        lukija = new TiedostonLukija(tiedosto);
+        kirjoittaja = new TiedostonKirjoittaja(uusiTiedosto);
     }
     
     public void pura(){
@@ -47,13 +47,15 @@ public class Purkaja {
 
     /**
      * Lukee tiedoston alusta kuinka monta eri merkkiä tiedosto sisältää.
+     * raja > 0 estää ohjelman ikuisen loopin, jos lukija palauttaa virheen
+     * sattuessa -1.
      * @return 
      */
     
     public int lueEriMerkit() {
         int raja = lukija.lue();
         String eriMerkkienMaara = "";
-        while (raja != 47) {
+        while (raja != 47 && raja > 0) {
             eriMerkkienMaara += (char) raja;
             raja = lukija.lue();
         }
@@ -62,13 +64,15 @@ public class Purkaja {
     
     /**
      * Lukee tiedoston alusta, montako merkkiä se sisältää.
+     * raja > 0 estää ohjelman ikuisen loopin, jos lukija palauttaa virheen
+     * sattuessa -1.
      * @return 
      */
     
     public int lueKaikkiMerkit() {
         int raja = lukija.lue();
         String merkitSumma = "";
-        while (raja != 47) {
+        while (raja != 47 && raja > 0) {
             merkitSumma += (char)raja;
             raja = lukija.lue();
         }
@@ -77,6 +81,8 @@ public class Purkaja {
     
     /**
      * Lukee tiedoston alusta jokaisen käytetyn merkin reitin
+     * raja > 0 estää ohjelman ikuisen loopin, jos lukija palauttaa virheen
+     * sattuessa -1.
      * puussa.
      * @return 
      */
@@ -87,7 +93,7 @@ public class Purkaja {
             String reitti = "";
             int merkki = lukija.lue();
             int raja = lukija.lue();
-            while (raja != 47) {
+            while (raja != 47 && raja > 0) {
                 reitti += (char) raja;
                 raja = lukija.lue();
             }
@@ -104,12 +110,12 @@ public class Purkaja {
     public void lueBitit() {
         while (lukija.vapaana() > 1) {
             lueTavu();
-            while (que.size() >= 256) {
+            while (bittiJono.getKoko() >= 256) {
                 kirjoittaja.kirjoita(merkinReitti());
             }
         }
         int roskaa = lukija.lue() - 48;
-        while (que.size() > roskaa) {
+        while (bittiJono.getKoko() > roskaa) {
             kirjoittaja.kirjoita(merkinReitti());
         }
     }
@@ -122,7 +128,7 @@ public class Purkaja {
         int input = lukija.lue();
         boolean[] bitit = muunnaBiteiksi(input);
         for (int i = 0; i < bitit.length; i++) {
-            que.add(bitit[i]);
+            bittiJono.lisaa(bitit[i]);
         }
     }
     
@@ -151,7 +157,7 @@ public class Purkaja {
           if (node.getVasen() == null && node.getOikea() == null) {
               return node.getMerkki();
           }
-          boolean bit = que.pollFirst();
+          boolean bit = bittiJono.ota();
           if (!bit) {
              node = node.getVasen();
           } else {

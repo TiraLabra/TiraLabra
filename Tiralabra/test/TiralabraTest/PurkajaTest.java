@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tiedostonkasittely.Purkaja;
+import tiralabra.tiivistys.TiedostonPurkaja;
 
 /**
  *
@@ -18,7 +18,7 @@ import tiralabra.tiedostonkasittely.Purkaja;
  */
 public class PurkajaTest {
     
-    private Purkaja purkaja;
+    private TiedostonPurkaja purkaja;
     
     public PurkajaTest() {
     }
@@ -33,7 +33,7 @@ public class PurkajaTest {
     
     @Before
     public void setUp() {
-        this.purkaja = new Purkaja("src/Tiralabra/tiedostot/purkutesti.txt","testattu.txt");
+        this.purkaja = new TiedostonPurkaja("purkutesti.txt","testattu.txt");
     }
     
     @After
@@ -72,7 +72,7 @@ public class PurkajaTest {
     @Test
     public void etsiiReitit(){
         purkaja.pura();
-        assertEquals(0, purkaja.merkinReitti());
+        assertEquals(99, purkaja.merkinReitti());
         
     }
     

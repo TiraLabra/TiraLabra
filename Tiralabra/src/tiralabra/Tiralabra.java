@@ -6,8 +6,8 @@ package tiralabra;
 
 import java.io.File;
 import java.util.Scanner;
-import tiralabra.tiedostonkasittely.Pakkaaja;
-import tiralabra.tiedostonkasittely.Purkaja;
+import tiralabra.tiivistys.TiedostonPakkaaja;
+import tiralabra.tiivistys.TiedostonPurkaja;
 
 /**
  *
@@ -44,7 +44,7 @@ public class Tiralabra {
                 String uusinimi = lukija.nextLine();
 
                 long pakkausAlku = System.currentTimeMillis();
-                Pakkaaja pakkaaja = new Pakkaaja("src/Tiralabra/tiedostot/" + uusinimi, nimi);
+                TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja("src/Tiralabra/tiedostot/" + uusinimi, nimi);
                 pakkaaja.pakkaa();
                 long pakkausLoppu = System.currentTimeMillis();
                 System.out.println("Pakattu ajassa " + (pakkausLoppu - pakkausAlku) +" ms");
@@ -64,7 +64,7 @@ public class Tiralabra {
                 System.out.println("Anna puretulle tiedostolle uusi nimi:");
                 String uusinimi = lukija.nextLine();
                  long purkuAlku = System.currentTimeMillis();
-                Purkaja purkaja = new Purkaja(nimi, "src/Tiralabra/tiedostot/" + uusinimi);
+                TiedostonPurkaja purkaja = new TiedostonPurkaja(nimi, "src/Tiralabra/tiedostot/" + uusinimi);
                 purkaja.pura();
                 long purkuLoppu = System.currentTimeMillis();
                 System.out.println("purettu ajassa " + (purkuLoppu - purkuAlku) + " ms");
@@ -72,6 +72,7 @@ public class Tiralabra {
             } else if(toiminto.equals("3")){
                 break;
             }
+            System.out.println("---------------------------------------");
         }
     }
 }

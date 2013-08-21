@@ -2,23 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tiedostonkasittely;
+package tiralabra.tiivistys;
 
-import tiralabra.tallennus.Lukija;
-import tiralabra.tallennus.Lukija;
+import tiralabra.tiedostonkasittely.TiedostonLukija;
 
 /**
  * Laskee merkkien toistot tiedostossa.
  * @author joonaslongi
  */
-public class Laskija {
+public class ToistojenLaskija {
     private int[] toisto;
     
     /**
      *  Alustaa uuden laskijan. Max 256 eri ascii merkkiä.
      */
     
-    public Laskija(){
+    public ToistojenLaskija(){
         toisto = new int[256];
     }
     
@@ -29,7 +28,7 @@ public class Laskija {
      */
     
     public void laske(String tiedosto){
-        Lukija lukija = new Lukija (tiedosto);
+        TiedostonLukija lukija = new TiedostonLukija (tiedosto);
         while (lukija.vapaana() > 0){
             toisto[lukija.lue()]++;
         }

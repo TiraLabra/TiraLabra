@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tiedostonkasittely.Laskija;
+import tiralabra.tiivistys.ToistojenLaskija;
 
 /**
  *
@@ -18,7 +18,7 @@ import tiralabra.tiedostonkasittely.Laskija;
  */
 public class LaskijaTest {
     
-    private Laskija laskija;
+    private ToistojenLaskija laskija;
     
     public LaskijaTest() {
     }
@@ -33,7 +33,7 @@ public class LaskijaTest {
     
     @Before
     public void setUp() {
-        this.laskija = new Laskija();
+        this.laskija = new ToistojenLaskija();
     }
     
     @After
@@ -42,7 +42,7 @@ public class LaskijaTest {
     
     @Test
     public void laskeeOikein(){
-        laskija.laske("src/Tiralabra/tiedostot/testitiedosto.txt");
+        laskija.laske("test.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(4, taulukko[97]);
         assertEquals(2, taulukko[98]);
@@ -55,7 +55,7 @@ public class LaskijaTest {
     
     @Test
     public void eiLaskeKuulumattomiaKirjaimia(){
-        laskija.laske("src/Tiralabra/tiedostot/testitiedosto.txt");
+        laskija.laske("test.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(0, taulukko[96]);
         assertEquals(0, taulukko[0]);

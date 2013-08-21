@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tiedostonkasittely.Pakkaaja;
+import tiralabra.tiivistys.TiedostonPakkaaja;
 
 /**
  *
@@ -18,7 +18,7 @@ import tiralabra.tiedostonkasittely.Pakkaaja;
  */
 public class PakkaajaTest {
     
-    private Pakkaaja pakkaaja;
+    private TiedostonPakkaaja pakkaaja;
     
     public PakkaajaTest() {
     }
@@ -33,7 +33,7 @@ public class PakkaajaTest {
     
     @Before
     public void setUp() {
-        this.pakkaaja = new Pakkaaja("testattu.txt", "src/Tiralabra/tiedostot/testitiedosto2.txt");
+        this.pakkaaja = new TiedostonPakkaaja("testattu.txt", "test2.txt");
         pakkaaja.pakkaa();
     }
     
@@ -68,7 +68,7 @@ public class PakkaajaTest {
     @Test
     public void muodostaaJonon(){
         pakkaaja.muodostaJono();
-        assertEquals(3, pakkaaja.getJono().size());
+        assertEquals(3, pakkaaja.getJono().koko());
     }
     
 

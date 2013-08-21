@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tallennus;
+package tiralabra.tiedostonkasittely;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
  *
  * @author Joonas
  */
-public class Kirjoittaja {
+public class TiedostonKirjoittaja {
 
     FileOutputStream fileout;
 
@@ -21,7 +21,7 @@ public class Kirjoittaja {
      *
      * @param tiedosto
      */
-    public Kirjoittaja(String tiedosto) {
+    public TiedostonKirjoittaja(String tiedosto) {
         try {
             fileout = new FileOutputStream(new File(tiedosto));
         } catch (Exception e) {

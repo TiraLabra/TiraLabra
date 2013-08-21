@@ -2,15 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tiedostonkasittely;
+package tiralabra.tiivistys;
 
-import tiralabra.tiedostonkasittely.Laskija;
-import tiralabra.tallennus.Kirjoittaja;
-import tiralabra.tallennus.Lukija;
-import tiralabra.tietorakenteet.Puu;
+import tiralabra.tiedostonkasittely.TiedostonKirjoittaja;
+import tiralabra.tiedostonkasittely.TiedostonLukija;
+import tiralabra.tietorakenteet.Jono;
 import tiralabra.tietorakenteet.Node;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import tiralabra.tietorakenteet.PrioriteettiJono;
+import tiralabra.tietorakenteet.Puu;
 
 
 
@@ -20,17 +19,17 @@ import java.util.PriorityQueue;
  * @author joonaslongi
  */
 
-public class Pakkaaja {
+public class TiedostonPakkaaja {
     
-    private Kirjoittaja kirjoittaja;
-    private Lukija lukija;
+    private TiedostonKirjoittaja kirjoittaja;
+    private TiedostonLukija lukija;
     private Puu puu;
-    private PriorityQueue<Node> jono;
-    private Laskija laskija;
+    private PrioriteettiJono jono;
+    private ToistojenLaskija laskija;
     private String tiedosto;
     private String[] reitit;
     private int[] toistot;
-    private LinkedList<Boolean> que;
+    private Jono bittiJono;
     
     /**
      * Alustaa kirjoittajan, prioriteettijonon, laskijan, lukijan ja jonon.
@@ -38,13 +37,13 @@ public class Pakkaaja {
      * @param tiedosto pakattava tiedosto
      */
     
-    public Pakkaaja(String uusiTiedosto, String tiedosto){
-        this.kirjoittaja = new Kirjoittaja(uusiTiedosto);
-        this.jono = new PriorityQueue<Node>();
-        this.laskija = new Laskija();
+    public TiedostonPakkaaja(String uusiTiedosto, String tiedosto){
+        this.kirjoittaja = new TiedostonKirjoittaja(uusiTiedosto);
+        this.jono = new PrioriteettiJono();
+        this.laskija = new ToistojenLaskija();
         this.tiedosto = tiedosto;
-        this.lukija = new Lukija(tiedosto);
-        this.que = new LinkedList<Boolean>();
+        this.lukija = new TiedostonLukija(tiedosto);
+        this.bittiJono = new Jono();
         
     }
     
@@ -87,7 +86,7 @@ public class Pakkaaja {
         for (int i = 0; i < 256; i ++){
             if(toistot[i] > 0){
                 Node node = new Node(i,toistot[i]);
-                jono.add(node);
+                jono.lisaa(node);
             }
         }
     }
@@ -181,16 +180,16 @@ public class Pakkaaja {
             String koodi = reitit[lukija.lue()];
             for(int i = 0; i < koodi.length(); i ++){
                 if(koodi.charAt(i) == '0'){
-                    que.add(false);
+                    bittiJono.lisaa(false);
                 } else {
-                    que.add(true);
+                    bittiJono.lisaa(true);
                 }
             }
-            while(que.size() > 8){
+            while(bittiJono.getKoko() > 8){
                 kirjoittaja.kirjoita(kirjoitaTavu());
             }
         }
-        int roskaa = 8 - que.size();
+        int roskaa = 8 - bittiJono.getKoko();
         kirjoittaja.kirjoita(kirjoitaTavu());
         kirjoitaTekstia("" + roskaa);
     }
@@ -205,8 +204,8 @@ public class Pakkaaja {
         int tavu = 0;
         boolean bitti = false;
         for(int i = 0 ; i < 8; i ++){
-            if(!que.isEmpty()){
-                bitti = que.pollFirst();
+            if(!bittiJono.tyhja()){
+                bitti = bittiJono.ota();
             }
             if(bitti){
                 tavu +=(1 << (7-i));
@@ -220,7 +219,7 @@ public class Pakkaaja {
      * @return laskija
      */
     
-    public Laskija getLaskija(){
+    public ToistojenLaskija getLaskija(){
         return this.laskija;
     }
     
@@ -229,7 +228,7 @@ public class Pakkaaja {
      * @return jono
      */
     
-    public PriorityQueue getJono(){
+    public PrioriteettiJono getJono(){
         return this.jono;
     }
     

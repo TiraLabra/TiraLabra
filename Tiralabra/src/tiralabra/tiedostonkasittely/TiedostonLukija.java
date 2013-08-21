@@ -2,16 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tallennus;
+package tiralabra.tiedostonkasittely;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Lukee tiedoston ja siinä esiintyvät merkit ja niiden toistot.
  * @author joonaslongi
  */
-public class Lukija {
+public class TiedostonLukija {
     
     FileInputStream fileinput; 
     
@@ -20,11 +21,11 @@ public class Lukija {
      * @param tiedosto 
      */
     
-    public Lukija(String tiedosto){
+    public TiedostonLukija(String tiedosto){
         File file = new File(tiedosto);
         try {
             fileinput = new FileInputStream(file);
-        } catch (Exception e){
+        } catch (IOException e){
             System.out.println("Tiedostoa " + e + " ei löydy");
         }
         
@@ -37,7 +38,7 @@ public class Lukija {
     public int lue(){
         try{
             return fileinput.read();
-        } catch (Exception e){
+        } catch (IOException e){
             System.out.println("Ei pysty lukemaan " + e);
         }
         return -1;
@@ -51,7 +52,7 @@ public class Lukija {
     public int vapaana(){
         try{
             return fileinput.available();
-        } catch ( Exception e){
+        } catch ( IOException e){
             System.out.println("Ei toimi" + e);
         }
         return -1;
@@ -64,7 +65,7 @@ public class Lukija {
     public void sulje(){
         try{
             fileinput.close();   
-        } catch (Exception e){
+        } catch (IOException e){
             System.out.println("Sulkeminen ei onnistu" + e);
         }
     }

@@ -4,15 +4,13 @@
  */
 package tiralabra.tietorakenteet;
 
-import java.util.PriorityQueue;
-
 /**
  * Luo Huffmanin puun
  * @author Joonas
  */
 public class Puu {
     
-    private PriorityQueue<Node> que;
+    private PrioriteettiJono jono;
     private Node root;
     private String reitit[];
     
@@ -20,8 +18,8 @@ public class Puu {
      * Luo uuden puu luokan parametrina prioriteettijono.
      * @param que 
      */
-    public Puu(PriorityQueue que){
-         this.que = que;
+    public Puu(PrioriteettiJono jono){
+         this.jono = jono;
          reitit = new String[256];
     }
     
@@ -41,15 +39,15 @@ public class Puu {
      */
     
     public void kokoa(){
-        while(que.size() > 1) {
-            Node pienin = que.poll();
-            Node pienin2 = que.poll();
+        while(jono.koko() > 1) {
+            Node pienin = jono.ota();
+            Node pienin2 = jono.ota();
             Node newNode = new Node(-1, pienin.getToistot() + pienin2.getToistot());
             newNode.setVasen(pienin);
             newNode.setOikea(pienin2);
-            que.add(newNode);
+            jono.lisaa(newNode);
         }
-        this.root = que.poll();
+        this.root = jono.ota();
     }
     
     /**

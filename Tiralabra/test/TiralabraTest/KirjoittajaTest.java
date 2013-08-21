@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tallennus.Kirjoittaja;
-import tiralabra.tallennus.Lukija;
+import tiralabra.tiedostonkasittely.TiedostonKirjoittaja;
+import tiralabra.tiedostonkasittely.TiedostonLukija;
 
 /**
  *
@@ -19,8 +19,8 @@ import tiralabra.tallennus.Lukija;
  */
 public class KirjoittajaTest {
     
-    private Kirjoittaja kirjoittaja;
-    private Lukija lukija;
+    private TiedostonKirjoittaja kirjoittaja;
+    private TiedostonLukija lukija;
     
     public KirjoittajaTest() {
     }
@@ -35,8 +35,8 @@ public class KirjoittajaTest {
     
     @Before
     public void setUp() {
-        this.kirjoittaja = new Kirjoittaja("src/Tiralabra/tiedostot/kirjoittajaTesti");
-        this.lukija = new Lukija("src/Tiralabra/tiedostot/kirjoittajaTesti");
+        this.kirjoittaja = new TiedostonKirjoittaja("testi");
+        this.lukija = new TiedostonLukija("testi");
     }
     
     @After
