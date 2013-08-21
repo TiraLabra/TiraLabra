@@ -50,7 +50,7 @@ public class Laskin {
 
     /**
      * Tarkastaa, onko annettu parametri kelvollinen laskutoimitukseksi, ja
-     * ilmoittaa, jos ei ole
+     * palauttaa vastauksen metodin arvona
      *
      * @param syote Merkkijono
      *
@@ -63,7 +63,10 @@ public class Laskin {
                 return false;
             }
         }
-        if (syote.isEmpty()) {
+        if (!sulutTasapainossa(syote)) {
+            System.out.print("Laskutoimituksen sulut ovat epätasapainossa. ");
+            return false;
+        } else if (syote.isEmpty()) {
             System.out.print("Laskutoimitus ei sisällä yhtään merkkiä. ");
             return false;
         } else if (syote.contains("()") || syote.contains(")(")) {
@@ -90,6 +93,37 @@ public class Laskin {
     }
 
     /**
+     * Tarkastaa, onko parametrina annetun laskutoimituksen sulut tasapainossa,
+     * ja palauttaa vastauksen metodin arvona
+     *
+     * @param syote Merkkijono
+     *
+     * @return Totuusarvo (tosi tai epätosi)
+     */
+    public boolean sulutTasapainossa(String syote) {
+        Pino sulut = new Pino(syote.length());
+        for (int i = 0; i < syote.length(); i++) {
+            char sulku1 = syote.charAt(i);
+            if (sulku1 == '(') {
+                sulut.push(sulku1);
+            } else if (sulku1 == ')') {
+                if (sulut.empty()) {
+                    return false;
+                }
+                char sulku2 = (Character) sulut.pop();
+                if (sulku1 == ')' && sulku2 != '(') {
+                    return false;
+                }
+            }
+        }
+        if (!sulut.empty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Ratkaisee parametrina annetun laskutoimituksen, ja palauttaa ratkaisun
      * metodin arvona
      *
@@ -105,9 +139,15 @@ public class Laskin {
                     operandit.push(OPERANDI.ALKUSULKU);
                     break;
                 case '*':
+                    while (!operandit.empty() && (operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
+                        suoritaOperaatiot(luvut, operandit);
+                    }
                     operandit.push(OPERANDI.KERTO);
                     break;
                 case '/':
+                    while (!operandit.empty() && (operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
+                        suoritaOperaatiot(luvut, operandit);
+                    }
                     operandit.push(OPERANDI.JAKO);
                     break;
                 case '+':
@@ -126,6 +166,8 @@ public class Laskin {
                     while (operandit.peek() != OPERANDI.ALKUSULKU) {
                         suoritaOperaatiot(luvut, operandit);
                     }
+                    OPERANDI operandi = (OPERANDI) operandit.pop();
+                    assert (operandi == OPERANDI.ALKUSULKU);
                     break;
                 default:
                     int j = i;
