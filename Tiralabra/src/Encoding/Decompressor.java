@@ -109,5 +109,14 @@ public class Decompressor implements Runnable {
             
         }
     }
+
+    /**
+     * Returns a reference to the decoder if present, else null. Used in detemining whether an instance of the decoder
+     * has been initialized and a status updater thread can be started.
+     * @return 
+     */
+    public MultiByteDecoder getDecoder() {
+        return this.decoder;
+    }
     
 }

@@ -36,6 +36,9 @@ public class Compressor implements Runnable {
      */
     private int byteWidth;
     
+    /**
+     * Kept as a global variable for interruption, which does not work yet.
+     */
     private Thread encoderThread;
 ;    
     public Compressor(String pathToFile, int byteWidth){
@@ -68,6 +71,10 @@ public class Compressor implements Runnable {
      */
     public StatusEnum queryStatus(){
         return encoder.getStatus();
+    }
+    
+    public MultiByteEncoder getEncoder(){
+        return this.encoder;
     }
 
     /**

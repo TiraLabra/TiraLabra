@@ -47,11 +47,16 @@ public class StatusUpdater implements Runnable {
     private boolean interrupt;
     
     /**
+     * Having a reference to the listener enables the toggling of buttons when updating loops finish.
+     */
+    private UIscreenListener listener;
+    
+    /**
      * Thread label, since many instances of compressor and decompressor may be run simultaneously they need to be named.
      */
     private int thread;
 
-    public StatusUpdater(Compressor compressor, Decompressor decompressor, JTextArea compressionSatus, JTextArea decompressionStatus, boolean isCompressor, int thread) {
+    public StatusUpdater(Compressor compressor, Decompressor decompressor, JTextArea compressionSatus, JTextArea decompressionStatus, boolean isCompressor, int thread, UIscreenListener listener) {
         if (isCompressor) {
             this.compressor = compressor;
             this.compressionSatus = compressionSatus;
@@ -59,6 +64,7 @@ public class StatusUpdater implements Runnable {
             this.decompressionStatus = decompressionStatus;
             this.decompressor = decompressor;
         }
+        this.listener = listener;
         this.isCompressor = isCompressor;
         this.interrupt = false;
         this.thread = thread;
@@ -69,14 +75,16 @@ public class StatusUpdater implements Runnable {
     }
 
     /**
-     * Calls the appropriate loop for the updater.
+     * Calls the appropriate loop for the updater. When loop finishes toggles the appropriate buttons for the GUI.
      */
     @Override
     public void run() {
         if (isCompressor) {
             loopCompressionStatus();
+            listener.toggleCompressorButtons(true);
         } else {
             loopDecompressionStatus();
+            listener.toggleDecompressorButtons(true);
         }
     }
 
@@ -125,7 +133,7 @@ public class StatusUpdater implements Runnable {
             printStatus(compressionSatus, status);
             status = compressor.queryStatus();
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 return true;
             }
@@ -147,7 +155,7 @@ public class StatusUpdater implements Runnable {
             printStatus(decompressionStatus, status);
             status = decompressor.queryStatus();
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 return true;
             }
