@@ -6,7 +6,8 @@ import javax.swing.JPanel;
 import tyokalut.AVLsolmu;
 
 /**
- *
+ * Lavan mallinnuksen piirtämisestä huolehtiva luokka.
+ * 
  * @author albis
  */
 public class Piirtoalusta extends JPanel {
@@ -44,10 +45,20 @@ public class Piirtoalusta extends JPanel {
                 korkeus = solmu.getLaatikko().getLeveys();
             }
             
-            g.fill3DRect(alkuX, alkuY, leveys, korkeus, true);
+            int suhde = solmu.getLava().getKorkeus() / super.getHeight();
+            
+            g.fill3DRect(alkuX, alkuY, leveys / suhde, korkeus / suhde, true);
         }
     }
     
+    /**
+     * Mittaa annetun numeroisen laatikon lavalta leveyssuunnassa vievän tilan.
+     * 
+     * @param alkuX Laatikon vasemman yläkulman sijainti x-akselilla.
+     * @param alkuY Laatikon vasemman yläkulman sijainti y-akselilla.
+     * @param monesko Mitattavan laatikon numero.
+     * @return Palauttaa kokonaisluvun, joka kertoo laatikon vievän tilan.
+     */
     private int haeLeveys(int alkuX, int alkuY, int monesko) {
         int leveys = 0;
         
@@ -61,6 +72,12 @@ public class Piirtoalusta extends JPanel {
         return leveys;
     }
     
+    /**
+     * Etsii annetun numeroisen laatikon vasemman ylänurkan sijainnin x-akselilla.
+     * 
+     * @param monesko Etsittävän laatikon numero
+     * @return Palauttaa laatikon vasemman yläkulman sijainnin x-akselilla.
+     */
     private int etsiAlkuX(int monesko) {
         for (int i = 0; i < asettelu.length; i++) {
             for (int j = 0; j < asettelu[0].length; j++) {
@@ -73,6 +90,12 @@ public class Piirtoalusta extends JPanel {
         return -1;
     }
     
+    /**
+     * Etsii annetun numeroisen laatikon vasemman ylänurkan sijainnin y-akselilla.
+     * 
+     * @param monesko Etsittävän laatikon numero
+     * @return Palauttaa laatikon vasemman yläkulman sijainnin y-akselilla.
+     */
     private int etsiAlkuY(int monesko) {
         for (int i = 0; i < asettelu.length; i++) {
             for (int j = 0; j < asettelu[0].length; j++) {

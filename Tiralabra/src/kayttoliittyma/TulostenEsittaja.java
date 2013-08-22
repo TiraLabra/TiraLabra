@@ -12,7 +12,8 @@ import tyokalut.AVLsolmu;
 
 /**
  * Luokka, joka luo piirroksen yhdestä laatikkokerroksesta, jotta käyttäjä
- * helposti näkee kuinka laatikot on asetettava.
+ * helposti näkee kuinka laatikot on asetettava ja kertoo minkä kokoisilla
+ * laatikoilla ja mitä lavoja käyttäen asettelu on laskettu.
  * 
  * @author albis
  */
