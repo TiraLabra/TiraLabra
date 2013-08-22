@@ -5,6 +5,7 @@
 package Tiralabra.Dictionary;
 
 import Dictionary.MultiByteHashedTable;
+import Encoding.MultiByteEncoder;
 import MultiByteEntities.MultiByte;
 import java.util.Random;
 import org.junit.After;
@@ -25,6 +26,7 @@ public class MultiByteHashedTableTest {
     byte[] sameData;
     byte[] randomData;
     byte[] sortingData;
+    MultiByteEncoder encoder;
 
     public MultiByteHashedTableTest() {
     }
@@ -39,6 +41,8 @@ public class MultiByteHashedTableTest {
 
     @Before
     public void setUp() {
+        encoder = new MultiByteEncoder(sameData, 4);
+        
         this.incrementalData = new byte[]{
             new Byte("1"), new Byte("2"), new Byte("3"), new Byte("4"), new Byte("5"), new Byte("6"), new Byte("7"), new Byte("8"),
             new Byte("11"), new Byte("21"), new Byte("31"), new Byte("41"), new Byte("51"), new Byte("61"), new Byte("71"), new Byte("81")};
@@ -101,13 +105,13 @@ public class MultiByteHashedTableTest {
     public void testContainsMethod() {
 
         for (int i = 2; i < 4; i++) {
-            table = new MultiByteHashedTable();
+            table = new MultiByteHashedTable(encoder);
             introduceValues(incrementalData, table, i);
             testWithData(incrementalData, i, table);
         }
 
         for (int i = 2; i < 4; i++) {
-            table = new MultiByteHashedTable();
+            table = new MultiByteHashedTable(encoder);
             introduceValues(sameData, table, i);
             testWithData(sameData, i, table);
         }
@@ -211,7 +215,7 @@ public class MultiByteHashedTableTest {
     }
 
     private void fillTable(byte[] data, int width) {
-        table = new MultiByteHashedTable();
+        table = new MultiByteHashedTable(encoder);
         for (int i = 0; i < data.length; i += width) {
             if (i + width - 1 < data.length) {
                 MultiByte mb = new MultiByte(width);

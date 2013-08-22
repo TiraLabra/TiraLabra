@@ -36,6 +36,9 @@ public class Decompressor implements Runnable {
      */
     private String fileName;
     
+    /**
+     * Thread for the decoder.
+     */
     private Thread decoderThread;
     
     public Decompressor(String path){
@@ -53,9 +56,12 @@ public class Decompressor implements Runnable {
         decoderThread.start();
     }
     
+    /**
+     * Used to interrupt the decoding process. Does not work yet.
+     */
     public void interrupt(){
         decoder.interrupt();
-        decoderThread.stop();
+//        decoderThread.stop();
     }
     
     /**
@@ -92,8 +98,12 @@ public class Decompressor implements Runnable {
         
     }
     
+    /**
+     * Writes the data to file, handles IOException.
+     */
     private void writeToFile(){
         try {
+            fileName = fileName.substring(0, fileName.length()-5);
             FileIO.writeToFile(decompressedData, fileName);
         } catch (IOException ex) {
             

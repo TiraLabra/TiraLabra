@@ -26,9 +26,9 @@ public class ArrayUtilities {
      */
     public static int encodeIntoArray(byte[] data, byte[] dataArray, int dataIndex) {
         for (int i = 0; i < data.length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
-            }
+//            if (MultiByteEncoder.interrupt) {
+//                break;
+//            }
 
             dataArray[dataIndex] = data[i];
             dataIndex++;
@@ -66,9 +66,9 @@ public class ArrayUtilities {
     public static byte[] removeTrailingZeros(byte[] encodedData, int lastIndex) {
         byte[] trimmed = new byte[lastIndex];
         for (int i = 0; i < trimmed.length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
-            }
+//            if (MultiByteEncoder.interrupt) {
+//                break;
+//            }
 
             trimmed[i] = encodedData[i];
         }
@@ -85,9 +85,9 @@ public class ArrayUtilities {
     public static MultiByte[] contractMultiByteArray(MultiByte[] array, int toSize) {
         MultiByte[] newArray = new MultiByte[toSize];
         for (int i = 0; i < newArray.length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
-            }
+//            if (MultiByteEncoder.interrupt) {
+//                break;
+//            }
 
             newArray[i] = array[i];
         }
@@ -104,9 +104,9 @@ public class ArrayUtilities {
     public static byte[] expandByteArray(byte[] array) {
         byte[] newArray = new byte[array.length * 2];
         for (int i = 0; i < array.length; i++) {
-            if (MultiByteEncoder.interrupt) {
-                break;
-            }
+//            if (MultiByteEncoder.interrupt) {
+//                break;
+//            }
 
             newArray[i] = array[i];
         }

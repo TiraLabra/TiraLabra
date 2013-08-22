@@ -41,14 +41,20 @@ public class MultiByteHashedTable {
      * When rehashing do not call rehashing methods recursively.
      */
     private boolean rehashing;
+    
+    /**
+     * Stored here to enquire if it has been interrupted so this class' operations are stopped as well.
+     */
+    private MultiByteEncoder encoder;
 
     /**
      * Initialize the hashtable to contain 37 by 16 buckets.
      *
      */
-    public MultiByteHashedTable() {
+    public MultiByteHashedTable(MultiByteEncoder encoder) {
         initialize(37);
         this.rehashing = false;
+        this.encoder = encoder;
     }
 
     /**
@@ -82,7 +88,7 @@ public class MultiByteHashedTable {
     public int[] getStats() {
         int[] reduced = new int[3];
         for (int i = 0; i < stats.length; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 break;
             }
 
@@ -148,7 +154,7 @@ public class MultiByteHashedTable {
         }
 
         for (int i = 0; i < oldData.length; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 break;
             }
 
@@ -193,7 +199,7 @@ public class MultiByteHashedTable {
             int hash = getHash(multiByte.hashCode(), j);
 
             for (int i = 0; i < data[hash].length; i++) {
-                if (MultiByteEncoder.interrupt) {
+                if (encoder.isInterrupted()) {
                     break;
                 }
 
@@ -202,7 +208,7 @@ public class MultiByteHashedTable {
                 }
             }
 
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 break;
             }
 
@@ -234,13 +240,13 @@ public class MultiByteHashedTable {
         MultiByte[] multiBytesToKeep = new MultiByte[16];
         int toKeepIndex = 0;
         for (int i = 0; i < references.length; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 return;
             }
 
             if (references[i][0] != 0) {
                 for (int j = 0; j < references[i].length; j++) {
-                    if (MultiByteEncoder.interrupt) {
+                    if (encoder.isInterrupted()){
                         return;
                     }
 
@@ -274,7 +280,7 @@ public class MultiByteHashedTable {
         Object[][] objectArray = new Object[keyCount][2];
         int arrayIndex = 0;
         for (int i = 0; i < data.length; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 break;
             }
 
@@ -308,7 +314,7 @@ public class MultiByteHashedTable {
     private void rehashToData(MultiByte[] array) {
         initialize(37);
         for (int i = 0; i < array.length; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 return;
             }
 
@@ -377,7 +383,7 @@ public class MultiByteHashedTable {
         int dataIndex = 0;
 
         while (firstIndex < firstPart.length && secondIndex < secondPart.length) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 return;
             }
 
@@ -418,7 +424,7 @@ public class MultiByteHashedTable {
      */
     private void cloneFrom(Object[][] source, Object[][] destination, int from, int until, int destIndex) {
         for (int i = from; i < until; i++) {
-            if (MultiByteEncoder.interrupt) {
+            if (encoder.isInterrupted()) {
                 return;
             }
 
@@ -444,12 +450,4 @@ public class MultiByteHashedTable {
         keyCount++;
     }
 
-    private MultiByte[] enlargeTable(int toKeepIndex, MultiByte[] multiBytesToKeep) {
-        MultiByte[] newTable = new MultiByte[toKeepIndex * 2];
-        for (int k = 0; k < multiBytesToKeep.length; k++) {
-            newTable[k] = multiBytesToKeep[k];
-        }
-        multiBytesToKeep = newTable;
-        return multiBytesToKeep;
-    }
 }

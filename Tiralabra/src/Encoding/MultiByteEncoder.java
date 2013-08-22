@@ -47,7 +47,7 @@ public class MultiByteEncoder implements Runnable {
      * Used to stop current operations. Can be accessed by hashtable in static
      * context.
      */
-    public static boolean interrupt;
+    public boolean interrupt;
 
     /**
      * Data to be encoded is given as a parameter, as is the width of the
@@ -59,9 +59,9 @@ public class MultiByteEncoder implements Runnable {
     public MultiByteEncoder(byte[] data, int width) {
         this.byteWidth = width;
         this.data = data;
-        this.hashTable = new MultiByteHashedTable();
         this.status = StatusEnum.NULL;
-        MultiByteEncoder.interrupt = false;
+        this.interrupt = false;
+        this.hashTable = new MultiByteHashedTable(this);
     }
 
     public byte[] getEncodedKeys() {
@@ -77,9 +77,12 @@ public class MultiByteEncoder implements Runnable {
     }
 
     public void interrupt() {
-        MultiByteEncoder.interrupt = true;
+        this.interrupt = true;
     }
-
+    
+    public boolean isInterrupted(){
+        return this.interrupt;
+    }
     /**
      * Builds and returns a byte array of the encoded keys and data with a table header.
      *

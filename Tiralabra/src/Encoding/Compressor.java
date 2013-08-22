@@ -54,9 +54,12 @@ public class Compressor implements Runnable {
         encoderThread.start();
     }
     
+    /**
+     * Used to interrupt the encoding process. Does not work yet.
+     */
     public void interrupt(){
         encoder.interrupt();
-        encoderThread.stop();
+//        encoderThread.stop();
     }
     
     /**
@@ -93,9 +96,12 @@ public class Compressor implements Runnable {
         }
     }
     
+    /**
+     * Used to write the data to file, handles IOExceptions.
+     */
     private void writeToFile(){
         try {
-            FileIO.writeToFile(encodedData, pathToDataToBeCompressed);
+            FileIO.writeToFile(encodedData, pathToDataToBeCompressed+".vZip");
         } catch (IOException ex) {
             
         }

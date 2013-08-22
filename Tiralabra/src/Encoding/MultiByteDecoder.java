@@ -54,7 +54,7 @@ public class MultiByteDecoder implements Runnable {
     /**
      * Used to interrupt operations.
      */
-    public static boolean interrupt;
+    public boolean interrupt;
     /**
      * Used to query the status of current operations.
      */
@@ -67,7 +67,7 @@ public class MultiByteDecoder implements Runnable {
      */
     public MultiByteDecoder(byte[] data) {
         this.status = StatusEnum.NULL;
-        MultiByteDecoder.interrupt = false;
+        this.interrupt = false;
         this.combinedDataAndKeys = data;
         this.writeToIndex = 0;
     }
@@ -77,9 +77,20 @@ public class MultiByteDecoder implements Runnable {
     }
     
     public void interrupt(){
-        MultiByteDecoder.interrupt = true;
+        this.interrupt = true;
+    }
+    
+    public boolean isInterrupted(){
+        return this.interrupt;
+    }
+    
+    public MultiByte[] getKeys() {
+        return this.keys;
     }
 
+    public byte[] getDecodedData() {
+        return this.decodedData;
+    }
     /**
      * Enables multiple instances of decoding to take place in separate threads.
      */
@@ -113,14 +124,6 @@ public class MultiByteDecoder implements Runnable {
         decodeData();
         
         this.status = StatusEnum.DONE;
-    }
-
-    public MultiByte[] getKeys() {
-        return this.keys;
-    }
-
-    public byte[] getDecodedData() {
-        return this.decodedData;
     }
 
     /**

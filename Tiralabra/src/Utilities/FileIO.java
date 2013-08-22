@@ -26,9 +26,9 @@ public class FileIO {
      * @throws IOException 
      */
     public static void writeToFile(byte[] data, String String) throws IOException{
-        File file = new File(String+".vZip");
+        File file = new File(String);
         Path path = file.toPath();
-        Files.write(path, data, StandardOpenOption.CREATE);
+        Files.write(path, data, StandardOpenOption.CREATE_NEW);
     }
     
     /**
