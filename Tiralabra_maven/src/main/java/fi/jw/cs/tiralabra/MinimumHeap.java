@@ -45,8 +45,9 @@ public class MinimumHeap<T extends Comparable> {
     public MinimumHeap(MinimumHeap<T> source) {
         T[] other = source.getHeap();
         size = source.getSize();
-        heap = (T[]) new Comparable[size];
-        for (int i = 0; i < size; i++)
+        comparator = source.getComparator();
+        heap = (T[]) new Comparable[size + 1];
+        for (int i = 1; i <= size; i++)
             heap[i] = other[i];
 
     }
@@ -58,10 +59,10 @@ public class MinimumHeap<T extends Comparable> {
         makeSureDataFits();
 
         if (size == 1) {
-            heap[0] = item;
+            heap[1] = item;
         } else {
-            int i = size - 1;
-            while (i > 0 && (isFirstSmaller(item, heap[parent(i)]))) {
+            int i = size;
+            while (i > 1 && (isFirstSmaller(item, heap[parent(i)]))) {
                 heap[i] = heap[parent(i)];
                 i = parent(i);
             }
@@ -71,13 +72,23 @@ public class MinimumHeap<T extends Comparable> {
 
     }
 
+    @Override
+    public String toString() {
+        String str = "Heap{";
+        for (int i = 1; i <= size; i++) {
+            str += "\n" + i + " = " + heap[i];
+        }
+        System.out.println("};");
+        return str;
+    }
+
     /**
      * If heap array is not large enough, double it in size.
      */
     private void makeSureDataFits() {
-        if (size > heap.length) {
-            T[] newHeap = (T[]) new Comparable[size * 2];
-            for (int i = 0; i < heap.length; i++) {
+        if (size >= heap.length) {
+            T[] newHeap = (T[]) new Comparable[size * 2 + 1];
+            for (int i = 1; i < heap.length; i++) {
                 newHeap[i] = heap[i];
             }
             heap = newHeap;
@@ -87,13 +98,13 @@ public class MinimumHeap<T extends Comparable> {
     public void heapify(int i) {
         int l = left(i);
         int r = right(i);
-        if (r < size) {
+        if (r <= size) {
             int smallest = (isFirstSmaller(heap[l], heap[r])) ? l : r;
             if (isFirstSmaller(heap[smallest], heap[i])) {
                 swap(smallest, i);
                 heapify(smallest);
             }
-        } else if (l == size - 1 && isFirstSmaller(heap[l], heap[i])) {
+        } else if (l == size && isFirstSmaller(heap[l], heap[i])) {
             swap(i, l);
         }
     }
@@ -129,13 +140,11 @@ public class MinimumHeap<T extends Comparable> {
      */
     public T deleteMinimum() {
         if (size > 0) {
-            T c = heap[0];
-            size--;
 
-            if (size > 0) {
-                swap(0, size);
-                heapify(0);
-            }
+            T c = heap[1];
+            swap(1, size);
+            size--;
+            heapify(1);
 
             return c;
         } else {
@@ -161,5 +170,9 @@ public class MinimumHeap<T extends Comparable> {
 
     public T[] getHeap() {
         return heap;
+    }
+
+    public Comparator<T> getComparator() {
+        return comparator;
     }
 }
