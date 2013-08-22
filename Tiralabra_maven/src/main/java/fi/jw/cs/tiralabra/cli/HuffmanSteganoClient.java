@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 /**
  * This is a command-line utility to invoke the Huffman-Steganography encoding and decoding of files.
@@ -28,36 +29,55 @@ import java.nio.file.Paths;
 public class HuffmanSteganoClient {
     static Charset cs = Charset.defaultCharset();
 
-    public static void main(String... args) {
+    static final String QUIT = "q";
+    static Scanner scanner;
+    static BinaryTreeMap options = new BinaryTreeMap();
 
+    public static void main(String... args) {
+        options.put("1", "Huffman encode");
+        options.put("2", "Huffman decode");
+        options.put("3", "Stegano encode");
+        options.put("4", "Stegano decode");
+        options.put("5", "Huffman-Stegano encode");
+        options.put("6", "Stegano-Huffman decode");
+        options.put(QUIT, "Quit");
+
+        welcome();
+        printOptions();
+        scanner = new Scanner(System.in);
+        String choice = "1";//scanner.nextLine();
 
         try {
-            char cmd = args[0].charAt(0);
-            Steganographer s;
-            switch (cmd) {
-                case 'c':
-                    checkMaxLength(args[1]);
-                    break;
-                case 'e':
-                    encode(args);
-                    break;
-                case 'd':
-                    decode(args[1], "");
-                    break;
-                case 'b':
-                    Huffman h = new Huffman("");
-                    BinaryTreeMap m = new BinaryTreeMap();
-                    m.put("\t", "0");
-                    m.put(" ", "10");
-                    m.put("l", "110");
-                    m.put("p", "111");
-                    h.setMap(m);
-                    System.out.println(h.getStringifiedMap());
-                    break;
+            while (!choice.equals(QUIT)) {
+                if (validChoice(choice)) {
+
+                    switch (choice) {
+                        case "1":
+                            String filename = "/home/unfo/TiraLabra/Tiralabra_maven/lib/huffman.txt";//requestSourceFilename();
+                            String[] results = huffmanEncode(filename);
+                            break;
+                        case "check":
+                            checkMaxLength(args[1]);
+                            break;
+                        case "encode":
+                            encode(args);
+                            break;
+                        case "decode":
+                            decode(args[1], "");
+                            break;
+                    }
+
+                } else {
+                    System.out.println("[" + choice + "] is not a valid option. Please retry.");
+                }
+
+                printOptions();
+                choice = scanner.nextLine();
+
             }
 
         } catch (IOException ioe) {
-            System.out.println("Oh poop.");
+            System.out.println("IO Failed");
             ioe.printStackTrace();
         } catch (IllegalHuffmanCodeException huff) {
             System.out.println("Huffman decoding failed");
@@ -67,9 +87,60 @@ public class HuffmanSteganoClient {
 
     }
 
+    static String requestSourceFilename() {
+        System.out.print("File to read from > ");
+        return scanner.nextLine().trim();
+    }
+
+    static boolean validChoice(String choice) {
+        return options.containsKey(choice);
+    }
+
+    static void welcome() {
+        System.out.println("Welcome to a Huffman/Steganographer encoder/decoder program");
+        for (String key : options.keys()) {
+            System.out.println(key + ") " + options.get(key));
+        }
+    }
+
+    static void printOptions() {
+        System.out.print("Would you like to :");
+    }
+
+    static String[] huffmanEncode(String source) throws IOException {
+        String message = readFileContentsString(source);
+        if (message == null || message.length() == 0) {
+            throw new IllegalArgumentException();
+        }
+
+        Huffman encoder = new Huffman(message);
+        encoder.encode();
+        String encodedMessage = encoder.getEncodedMessage();
+        String map = encoder.getStringifiedMap();
+        String[] result = new String[2];
+
+        int originalBits = encoder.getMessage().length() * Huffman.BITS_PER_CHAR;
+        int encodedBits = encodedMessage.length();
+        double compressionRatio = 100 * ((double) encodedBits / (double) originalBits);
+        System.out.println("Original message length: " + originalBits + " bits");
+        System.out.println("Compressed message length: " + encodedBits + " bits");
+        System.out.println("Compressed size: " + (int) compressionRatio + " %");
+        System.out.println(map);
+
+        return result;
+    }
+
     static void checkMaxLength(String path) throws IOException {
         Steganographer s = new Steganographer(path);
         System.out.println("Maximum encoding length for file " + path + " = " + s.getMaximumMessageLength());
+    }
+
+    static String readFileContentsString(String path) throws IOException {
+        return cs.decode(ByteBuffer.wrap(readFileContents(path))).toString();
+    }
+
+    static byte[] readFileContents(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
     }
 
     static void encode(String... args) throws IOException {
