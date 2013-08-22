@@ -1,0 +1,18 @@
+Javan arraylistin suoritukseen kului 18322ms
+Oman arraylistin suoritukseen kului 14545ms
+Put-vertailu
+String: Javan hashmapin suoritukseen kului 20263ms
+String: Oman hashmapin suoritukseen kului 18290ms
+Int: Javan hashmapin suoritukseen kului 5856ms
+Int: Oman hashmapin suoritukseen kului 8191ms
+Get-vertailu
+String: Javan hashmapin suoritukseen kului 12292ms
+String: Oman hashmapin suoritukseen kului 9729ms
+Int: Javan hashmapin suoritukseen kului 2926ms
+Int: Oman hashmapin suoritukseen kului 1356ms
+Push
+Int: Javan jonon suoritukseen kului 1841ms
+Int: Oman jonon suoritukseen kului 16901ms
+Pop
+Int: Javan jonon suoritukseen kului 16025ms
+Int: Oman jonon suoritukseen kului 25898ms
