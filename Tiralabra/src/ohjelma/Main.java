@@ -1,10 +1,10 @@
 package ohjelma;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import ohjelma.algoritmit.BellmanFord;
 import ohjelma.algoritmit.Dijkstra;
+import ohjelma.tietorakenteet.iHashMap;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;
@@ -22,7 +22,7 @@ public class Main {
 //
 
     public static void main(String[] args) {
-        Verkko verkko = null;
+        Verkko verkko;
         Scanner lukija = new Scanner(System.in);
         while (true) {
             int vastaus;
@@ -81,6 +81,6 @@ public class Main {
     }
 
     public static Verkko luoVerkko() {
-        return new Verkko(new HashMap<Integer, Solmu>(), new HashSet<Kaari>());
+        return new Verkko(new iHashMap<Integer, Solmu>(), new HashSet<Kaari>());
     }
 }

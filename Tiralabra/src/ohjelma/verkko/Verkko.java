@@ -1,8 +1,8 @@
 package ohjelma.verkko;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
+import ohjelma.tietorakenteet.iHashMap;
 
 /**
  * Luo verkon annetuista solmuista / kaarista.
@@ -12,9 +12,9 @@ import java.util.Scanner;
 public class Verkko {
 
     private HashSet<Kaari> kaaret;
-    private HashMap<Integer, Solmu> solmut;
+    private iHashMap<Integer, Solmu> solmut;
 
-    public Verkko(HashMap solmut, HashSet kaaret) {
+    public Verkko(iHashMap solmut, HashSet kaaret) {
         this.solmut = solmut;
         this.kaaret = kaaret;
 
@@ -279,7 +279,7 @@ public class Verkko {
      * Palauttaa kaikki verkkoon kuuluvat solmut).
      *
      */
-    public HashMap<Integer, Solmu> getSolmut() {
+    public iHashMap<Integer, Solmu> getSolmut() {
         return solmut;
     }
 }

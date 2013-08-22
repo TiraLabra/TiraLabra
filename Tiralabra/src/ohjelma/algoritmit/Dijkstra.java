@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 package ohjelma.algoritmit;
-import java.util.HashMap;
 import java.util.HashSet;
+import ohjelma.tietorakenteet.iHashMap;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;
@@ -15,7 +15,7 @@ import ohjelma.verkko.Verkko;
  */
 public class Dijkstra {
 
-    private HashMap<Integer, Solmu> solmut;
+    private iHashMap<Integer, Solmu> solmut;
     private HashSet<Kaari> kaaret;
 
     public Dijkstra(Verkko verkko) {
@@ -29,7 +29,7 @@ public class Dijkstra {
      */
     public void Dijkstra() {
         alusta();
-        for (int i = 1; i < solmut.size() + 1; i++) {
+        for (int i = 1; i < solmut.getArvojenMaara() + 1; i++) {
             Solmu lahin = etsiLahinSolmu(solmut.get(i));                            // etsi solmut(i) solmun lähin solmu ja tallenna sen [lähin]                                                                                    // Lisätään solmu käydyt joukkoon jottei käydä samaa solmua uudestaan läpi
             Kaari[] vieruskaaret = haeVierussolmut(lahin);                          // etsii [lähin] solmun vierussolmut
             for (int j = 0; vieruskaaret[j] != null; j++) {                         // käy [lähin] solmun vierussolmut läpi kunnes törmätään nulliin
@@ -86,7 +86,7 @@ public class Dijkstra {
      */
     public void alusta() {
         solmut.get(1).setPaino(0);                                                  // ekalle solmulle aina paino 0
-        for (int i = 2; i < solmut.size(); i++) {                                   // lopuille solmuille painoksi 99
+        for (int i = 2; i < solmut.getArvojenMaara(); i++) {                                   // lopuille solmuille painoksi 99
             solmut.get(i).setPaino(99);
         }
     }
@@ -106,7 +106,7 @@ public class Dijkstra {
      */
     private void tulostaSolmut() {
         System.out.println("Dijkstra tulokset: ");
-        for (int x = 1; x < solmut.size() + 1; x++) {
+        for (int x = 1; x < solmut.getArvojenMaara() + 1; x++) {
             System.out.print(solmut.get(x).getPaino()+", ");
         }
     }
