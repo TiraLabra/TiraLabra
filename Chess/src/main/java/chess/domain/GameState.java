@@ -136,40 +136,9 @@ public final class GameState
 	}
 
 	/**
-	 * Tekee pelitilanteeseen annetun siirron. Jos kohderuudussa on nappula, se poistetaan, ja
-	 * lyödyn nappulan tyyppi palautetaan. Siirron validiutta ei tehokkuussyistä tarkasteta
-	 * enää tässä vaiheessa.
-	 *
-	 * @param fromSqr siirrettävän nappulan vanha sijainti (0-63)
-	 * @param toSqr siirrettävän nappulan uusi sijainti (0-63)
-	 * @return lyödyn nappulan tyyppi tai -1, jos kohderuutu tyhjä
-	 */
-	public int move(int fromSqr, int toSqr)
-	{
-		earlierStates[ply++] = zobristCode;
-
-		int capturedPiece = removePiece(1 - nextMovingPlayer, toSqr);
-
-		for (int pieceType = 0;; ++pieceType) {
-			if (bitboard.hasPiece(nextMovingPlayer, pieceType, fromSqr)) {
-				removePiece(nextMovingPlayer, pieceType, fromSqr);
-				if (pieceType == Pieces.PAWN && toSqr / 8 == 7 * nextMovingPlayer)
-					addPiece(nextMovingPlayer, Pieces.QUEEN, toSqr);
-				else
-					addPiece(nextMovingPlayer, pieceType, toSqr);
-				break;
-			}
-		}
-
-		changeNextMovingPlayer();
-
-		return capturedPiece;
-	}
-
-	/**
 	 * Tekee pelitilanteeseen annetun siirron.
 	 *
-	 * @param move pakattu siirto
+	 * @param move siirto pakattuna int-muuttujaan (ks. Move)
 	 */
 	public void move(int move)
 	{
@@ -185,9 +154,9 @@ public final class GameState
 	}
 
 	/**
-	 * Peruu aikaisemman tehdyn siirron.
+	 * Kumoaa aikaisemman siirron tekemät muutokset pelitilanteeseen.
 	 *
-	 * @param move pakattu siirto
+	 * @param move siirto pakattuna int-muuttujaan (ks. Move)
 	 */
 	public void undoMove(int move)
 	{
@@ -212,42 +181,52 @@ public final class GameState
 	}
 
 	/**
-	 * Peruu aikaisemman tehdyn siirron.
+	 * Palauttaa kaikki lailliset siirrot siirtovuorossa olevalle pelaajalle.
 	 *
-	 * @param fromSqr siirrettyn nappulan vanha sijainti (0-63)
-	 * @param toSqr siirrettyn nappulan uusi sijainti (0-63)
-	 * @param movedPiece siirretyn nappulan tyyppi
-	 * @param capturedPiece lyödyn nappulan tyyppi tai -1, jos kohderuutu oli tyhjä
+	 * @return siirrot taulukkona
 	 */
-	public void undoMove(int fromSqr, int toSqr, int movedPiece, int capturedPiece)
+	public int[] getLegalMoves()
 	{
-		--ply;
-		changeNextMovingPlayer();
-		removePiece(nextMovingPlayer, movedPiece, toSqr);
-		addPiece(nextMovingPlayer, movedPiece, fromSqr);
-		if (capturedPiece != -1)
-			addPiece(1 - nextMovingPlayer, capturedPiece, toSqr);
+		int count = 0;
+		int[] moves = new int[27];
+		long pieces = bitboard.getPieces(nextMovingPlayer);
+		for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
+			int fromSqr = Long.numberOfTrailingZeros(pieces);
+			int[] sqrMoves = getLegalMoves(fromSqr);
+			for (int i = 0; i < sqrMoves.length; ++i)
+				moves[count++] = sqrMoves[i];
+		}
+		return Arrays.copyOf(moves, count);
 	}
 
 	/**
-	 * Palauttaa bittimaskina kaikki lailliset siirrot annetusta ruudusta. Huomio sen, että
-	 * siirto ei saa jättää kuningasta uhatuksi.
+	 * Palauttaa kaikki lailliset siirrot yhdestä ruudusta.
 	 *
 	 * @param fromSqr ruutu (0-63)
-	 * @return bittimaski sallituista siirroista
+	 * @return siirrot taulukkona
 	 */
-	public long getLegalMoves(int fromSqr)
+	public int[] getLegalMoves(int fromSqr)
 	{
-		long moves = getPseudoLegalMoves(nextMovingPlayer, fromSqr);
+		int count = 0;
+		int[] moves = new int[27]; // Maksimi siirtomäärä yhdestä ruudusta.
 
-		for (int toSqr = 0; toSqr < 64; ++toSqr) {
-			if ((moves & (1L << toSqr)) != 0) {
-				if (!isLegalMove(fromSqr, toSqr))
-					moves &= ~(1L << toSqr);
-			}
+		long movesMask = getPseudoLegalMoves(nextMovingPlayer, fromSqr);
+
+		for (; movesMask != 0; movesMask -= Long.lowestOneBit(movesMask)) {
+			int toSqr = Long.numberOfTrailingZeros(movesMask);
+			int pieceType = bitboard.getPieceType(nextMovingPlayer, fromSqr);
+			int capturedType = bitboard.getPieceType(1 - nextMovingPlayer, toSqr);
+			int move = Move.pack(fromSqr, toSqr, pieceType, capturedType, -1);
+			if (!isLegalMove(move))
+				continue;
+			if (pieceType == Pieces.PAWN && (toSqr / 8) == nextMovingPlayer * 7) {
+				for (int promoType = Pieces.QUEEN; promoType <= Pieces.KNIGHT; ++promoType)
+					moves[count++] = Move.pack(fromSqr, toSqr, pieceType, capturedType, promoType);
+			} else
+				moves[count++] = move;
 		}
 
-		return moves;
+		return Arrays.copyOf(moves, count);
 	}
 
 	/**
@@ -373,7 +352,7 @@ public final class GameState
 	public boolean isCheckMate()
 	{
 		for (int sqr = 0; sqr < 64; ++sqr)
-			if (getLegalMoves(sqr) != 0)
+			if (getLegalMoves(sqr).length != 0)
 				return false;
 		return isKingChecked(nextMovingPlayer);
 	}
@@ -387,7 +366,7 @@ public final class GameState
 	public boolean isStaleMate()
 	{
 		for (int sqr = 0; sqr < 64; ++sqr)
-			if (getLegalMoves(sqr) != 0)
+			if (getLegalMoves(sqr).length != 0)
 				return false;
 		return !isKingChecked(nextMovingPlayer);
 	}
@@ -612,17 +591,6 @@ public final class GameState
 	}
 
 	/**
-	 * Lisää nappulan ja päivittää Zobrist-koodin.
-	 */
-	private int removePiece(int player, int sqr)
-	{
-		int capturedPiece = bitboard.removePiece(player, sqr);
-		if (capturedPiece != -1)
-			zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + capturedPiece * 64 + sqr];
-		return capturedPiece;
-	}
-
-	/**
 	 * Lisää nappulat normaalin aloitusmuodostelman mukaisesti.
 	 */
 	private void setupInitialPosition()
@@ -653,14 +621,13 @@ public final class GameState
 	/**
 	 * Tarkistaa, onko "pseudolaillinen" siirto laillinen, eli ei jätä kunigasta uhatuksi.
 	 *
-	 * @param fromSqr lähtöruutu (0-63)
-	 * @param toSqr kohderuutu (0-63)
+	 * @param move siirto
 	 * @return true jos laillinen, false jos laiton siirto
 	 */
-	private boolean isLegalMove(int fromSqr, int toSqr)
+	private boolean isLegalMove(int move)
 	{
 		GameState copy = clone();
-		copy.move(fromSqr, toSqr);
+		copy.move(move);
 		return !copy.isKingChecked(nextMovingPlayer);
 	}
 }

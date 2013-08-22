@@ -14,10 +14,19 @@ public class PerformanceTest implements Runnable
 	 */
 	private Logger logger;
 
+	/**
+	 * Aloitussyvyys.
+	 */
 	private int startDepth;
 
+	/**
+	 * Kunkin iteraation pituus sekunteina.
+	 */
 	private double length;
 
+	/**
+	 * Iteraation aikana analysoitujen solmujen kokonäismäärä.
+	 */
 	private long totalNodes = 0;
 
 	/**
@@ -56,7 +65,7 @@ public class PerformanceTest implements Runnable
 			MinMaxAI ai = new MinMaxAI(logger, depth, 0.0, 0);
 			n = 0;
 			while (totalTime < length) {
-				totalTime += runSingleTest(depth, rnd, ai);
+				totalTime += runSingleTest(ai, rnd);
 				++n;
 			}
 
@@ -73,16 +82,21 @@ public class PerformanceTest implements Runnable
 	/**
 	 * Arpoo satunnaisen pelitlanteen ja laskee siihen parhaan siirron MinMaxAI:n avulla.
 	 *
-	 * @param depth käytettävä hakusyvyys
+	 * @param ai käytettävä tekoälyobjekti
 	 * @param rnd Random-objekti satunnaisen pelitilanteen generoimiseksi
 	 * @return palauttaa käytetyn ajan, poislukien pelitilanteen arpomiseen kulunut aika
 	 */
-	private double runSingleTest(int depth, Random rnd, MinMaxAI ai)
+	private double runSingleTest(MinMaxAI ai, Random rnd)
 	{
 		GameState state = new GameState(rnd);
 
 		long start = System.nanoTime();
-		ai.move(state);
+		try {
+			int move = ai.getMove(state);
+			if (move == 0) // Käytetään tulosta johonkin, ettei operaatiota optimoida pois.
+				throw new RuntimeException("Never thrown");
+		} catch (InterruptedException e) {
+		}
 		totalNodes += ai.getNodeCount();
 		return (System.nanoTime() - start) * 1e-9;
 	}

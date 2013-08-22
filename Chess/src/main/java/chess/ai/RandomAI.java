@@ -1,38 +1,20 @@
 package chess.ai;
 
 import chess.domain.GameState;
-import chess.domain.Pieces;
+import chess.game.Player;
 import java.util.Random;
 
 /**
  * Tekoäly, joka valitsee siirron satunnaisesti.
  */
-public class RandomAI implements AI
+public class RandomAI implements Player
 {
 	private Random rnd = new Random();
 
 	@Override
-	public void move(GameState state)
+	public int getMove(GameState state)
 	{
-		int player = state.getNextMovingPlayer();
-
-		int fromSqr;
-		long moves;
-		do {
-			fromSqr = rnd.nextInt(64);
-			moves = state.getLegalMoves(fromSqr);
-		} while (state.getBoard()[fromSqr] / Pieces.COUNT != player || moves == 0);
-
-		int toSqr;
-		do {
-			toSqr = rnd.nextInt(64);
-		} while ((moves & (1L << toSqr)) == 0);
-
-		state.move(fromSqr, toSqr);
-	}
-
-	@Override
-	public void setLoggingEnabled(boolean enabled)
-	{
+		int[] moves = state.getLegalMoves();
+		return moves[rnd.nextInt(moves.length)];
 	}
 }

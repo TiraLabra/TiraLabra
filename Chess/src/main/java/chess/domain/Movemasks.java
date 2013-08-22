@@ -7,6 +7,11 @@ package chess.domain;
 public final class Movemasks
 {
 	/**
+	 * Bittimaski korotettavien sotilaiden sijainneista kummallekin pelaajalle.
+	 */
+	public static final long[] PROMOTABLE = {0x000000000000FF00L, 0x00FF000000000000L};
+
+	/**
 	 * Bittimaskit ratsun siirroista kussakin pelilaudan ruudussa.
 	 */
 	public static final long[] KING_MOVES = new long[64];

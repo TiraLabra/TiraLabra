@@ -2,6 +2,7 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Move;
+import chess.domain.Movemasks;
 import chess.domain.Pieces;
 import java.util.Arrays;
 
@@ -46,11 +47,6 @@ final class MoveList
 	private final int[] moveCounts = new int[PRIORITIES];
 
 	/**
-	 * Bittimaski korotettaville sotilaille.
-	 */
-	private static final long[] PROMOTABLE = {0x000000000000FF00L, 0x00FF000000000000L};
-
-	/**
 	 * Täyttää siirtolistan sisällön annetusta pelitilanteesta.
 	 *
 	 * @param state pelitilanne
@@ -67,14 +63,14 @@ final class MoveList
 		}
 
 		// Korotettavat sotilaat.
-		long pieces = state.getPieces(player, Pieces.PAWN) & PROMOTABLE[player];
+		long pieces = state.getPieces(player, Pieces.PAWN) & Movemasks.PROMOTABLE[player];
 		if (pieces != 0) {
 			for (int promotedType = Pieces.QUEEN; promotedType <= Pieces.KNIGHT; ++promotedType)
 				addMoves(state, Pieces.PAWN, pieces, promotedType);
 		}
 
 		// Ei-korotettavat sotilaat.
-		pieces = state.getPieces(player, Pieces.PAWN) & ~PROMOTABLE[player];
+		pieces = state.getPieces(player, Pieces.PAWN) & ~Movemasks.PROMOTABLE[player];
 		addMoves(state, Pieces.PAWN, pieces, -1);
 	}
 

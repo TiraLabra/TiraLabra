@@ -138,6 +138,22 @@ public final class BitBoard
 	}
 
 	/**
+	 * Palauttaa nappulan tyypin ruudussa.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @param sqr ruutu (0-63)
+	 * @return nappulatyyppi (0-5) tai -1 jos ruutu tyhjä
+	 */
+	public int getPieceType(int player, int sqr)
+	{
+		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
+			if (hasPiece(player, piece, sqr))
+				return piece;
+		}
+		return -1;
+	}
+
+	/**
 	 * Muodostaa laudasta 64-alkoisen taulukon. Kunkin alkion arvo on nappulan tyyppi ko. ruudussa
 	 * (valk. 0-5, musta 6-11), tai -1 jos ruutu on tyhjä.
 	 *

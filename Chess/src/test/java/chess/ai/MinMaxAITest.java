@@ -2,6 +2,7 @@ package chess.ai;
 
 import chess.domain.BitBoard;
 import chess.domain.GameState;
+import chess.domain.Move;
 import chess.domain.Pieces;
 import chess.domain.Players;
 import static org.junit.Assert.*;
@@ -10,7 +11,7 @@ import org.junit.Test;
 
 public class MinMaxAITest
 {
-	MinMaxAI ai;
+	private MinMaxAI ai;
 
 	@Before
 	public void setUp()
@@ -27,31 +28,29 @@ public class MinMaxAITest
 	}
 
 	@Test
-	public void avoidsCheckByEscaping()
+	public void avoidsCheckByEscaping() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 0);
 		bb.addPiece(Players.BLACK, Pieces.KING, 17);
 		bb.addPiece(Players.BLACK, Pieces.BISHOP, 18);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(1), s.getPieces(Players.WHITE, Pieces.KING));
+		assertEquals(Move.pack(0, 1, Pieces.KING, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void avoidsCheckByCapturing()
+	public void avoidsCheckByCapturing() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 4);
 		bb.addPiece(Players.BLACK, Pieces.QUEEN, 12);
 		bb.addPiece(Players.BLACK, Pieces.KING, 42);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(12), s.getPieces(Players.WHITE, Pieces.KING));
+		assertEquals(Move.pack(4, 12, Pieces.KING, Pieces.QUEEN, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void avoidsCheckByBlocking()
+	public void avoidsCheckByBlocking() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 0);
@@ -60,12 +59,11 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.BISHOP, 36);
 		bb.addPiece(Players.BLACK, Pieces.BISHOP, 37);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(27), s.getPieces(Players.WHITE, Pieces.BISHOP));
+		assertEquals(Move.pack(41, 27, Pieces.BISHOP, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void canCheckMate()
+	public void canCheckMate() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 52);
@@ -73,12 +71,11 @@ public class MinMaxAITest
 		bb.addPiece(Players.WHITE, Pieces.ROOK, 11);
 		bb.addPiece(Players.BLACK, Pieces.KING, 5);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(1, 11), s.getPieces(Players.WHITE, Pieces.ROOK));
+		assertEquals(Move.pack(33, 1, Pieces.ROOK, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void canFork()
+	public void canFork() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 56);
@@ -86,25 +83,23 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.KING, 5);
 		bb.addPiece(Players.BLACK, Pieces.ROOK, 1);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(37), s.getPieces(Players.WHITE, Pieces.QUEEN));
+		assertEquals(Move.pack(58, 37, Pieces.QUEEN, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void doesntStaleMateWhenHasMaterialAdvantage()
+	public void doesntStaleMateWhenHasMaterialAdvantage() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 5, 0, 0);
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 0);
-		bb.addPiece(Players.BLACK, Pieces.QUEEN, 1);
+		bb.addPiece(Players.WHITE, Pieces.QUEEN, 1);
 		bb.addPiece(Players.BLACK, Pieces.KING, 63);
 		GameState s = new GameState(bb, Players.BLACK);
-		ai.move(s);
-		assertFalse(sqrs(37) == s.getPieces(Players.WHITE, Pieces.QUEEN));
+		assertFalse(Move.pack(1, 46, Pieces.QUEEN, -1, -1) == ai.getMove(s));
 	}
 
 	@Test
-	public void staleMatesWhenHasMaterialDisadvantage()
+	public void staleMatesWhenHasMaterialDisadvantage() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 40);
@@ -120,12 +115,11 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 42);
 		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 33);
 		GameState s = new GameState(bb, Players.BLACK);
-		ai.move(s);
-		assertEquals(sqrs(11), s.getPieces(Players.BLACK, Pieces.BISHOP));
+		assertEquals(Move.pack(47, 11, Pieces.BISHOP, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void doesntMakeIllegalMoveWhenCheckMateInevitable()
+	public void doesntMakeIllegalMoveWhenCheckMateInevitable() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 4, 0, 0); // minimisyvyys mattitilanteen tunnistamiseksi
 		BitBoard bb = new BitBoard();
@@ -133,12 +127,11 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.ROOK, 10);
 		bb.addPiece(Players.BLACK, Pieces.KING, 17);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(0), s.getPieces(Players.WHITE, Pieces.KING));
+		assertEquals(Move.pack(1, 0, Pieces.KING, -1, -1), ai.getMove(s));
 	}
 
 	@Test
-	public void promotesToKnightForFasterCheckMate()
+	public void promotesToKnightForFasterCheckMate() throws InterruptedException
 	{
 		BitBoard bb = new BitBoard();
 		bb.addPiece(Players.WHITE, Pieces.KING, 18);
@@ -147,12 +140,11 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 8);
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 24);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
-		assertEquals(sqrs(1), s.getPieces(Players.WHITE, Pieces.KNIGHT));
+		assertEquals(Move.pack(9, 1, Pieces.PAWN, -1, Pieces.KNIGHT), ai.getMove(s));
 	}
 
 	@Test
-	public void returnsWhenTimeLimit()
+	public void returnsWhenTimeLimit() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 20, 0.0000001, 0);
 		BitBoard bb = new BitBoard();
@@ -160,7 +152,7 @@ public class MinMaxAITest
 		bb.addPiece(Players.BLACK, Pieces.ROOK, 10);
 		bb.addPiece(Players.BLACK, Pieces.KING, 17);
 		GameState s = new GameState(bb, Players.WHITE);
-		ai.move(s);
+		ai.getMove(s);
 		assertNotNull(ai.getGameTree());
 	}
 

@@ -2,12 +2,13 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Move;
+import chess.game.Player;
 import chess.util.Logger;
 
 /**
  * Minmaxiin ja alfa-beta-karsintaan perustuva tekoäly.
  */
-public class MinMaxAI implements AI
+public class MinMaxAI implements Player
 {
 	/**
 	 * Oletusaikaraja (sekunteina), jos konstruktorissa ei ole annettu aikarajaa.
@@ -181,7 +182,7 @@ public class MinMaxAI implements AI
 	 * @param state pelitilanne
 	 */
 	@Override
-	public void move(GameState state)
+	public int getMove(GameState state) throws InterruptedException
 	{
 		evaluator.reset(state);
 		rootScore = evaluator.getScore();
@@ -210,7 +211,7 @@ public class MinMaxAI implements AI
 		log(String.format("t=%.3fms", (System.nanoTime() - startTime) * 1e-6));
 		log(String.format("branchingFactor=%.3g", lastIterBranchingFactor));
 
-		state.move(bestMove);
+		return bestMove;
 	}
 
 	/**
@@ -221,7 +222,7 @@ public class MinMaxAI implements AI
 	 * @param depth hakusyvyys
 	 * @return true, jos haku suoritettiin loppuun, false jos aikaraja tuli vastaan
 	 */
-	private boolean findMove(GameState state, int depth)
+	private boolean findMove(GameState state, int depth) throws InterruptedException
 	{
 		log("depth=" + depth);
 
@@ -254,7 +255,7 @@ public class MinMaxAI implements AI
 	 * @throws chess.ai.MinMaxAI.TimeLimitException
 	 */
 	private int createNodeAndSearch(int depth, int alpha, int beta, GameState state,
-			int move) throws TimeLimitException
+			int move) throws TimeLimitException, InterruptedException
 	{
 		treeGenerator.startNode(alpha, beta, state.getNextMovingPlayer(), move);
 
@@ -290,7 +291,8 @@ public class MinMaxAI implements AI
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 * @throws TimeLimitException kun aikaraja tulee täyteen
 	 */
-	private int search(int depth, int alpha, int beta, GameState state) throws TimeLimitException
+	private int search(int depth, int alpha, int beta, GameState state)
+			throws TimeLimitException, InterruptedException
 	{
 		++nodeCount;
 
@@ -342,7 +344,7 @@ public class MinMaxAI implements AI
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
 	private int zeroWindowSearch(int depth, int beta, GameState state, int move)
-			throws TimeLimitException
+			throws TimeLimitException, InterruptedException
 	{
 		return createNodeAndSearch(depth, beta - 1, beta, state, move);
 	}
@@ -358,7 +360,7 @@ public class MinMaxAI implements AI
 	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
 	private int searchAllMoves(int depth, int alpha, int beta, GameState state, int tpTblMove)
-			throws TimeLimitException
+			throws TimeLimitException, InterruptedException
 	{
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
 		if (tpTblMove != 0) {
@@ -403,7 +405,7 @@ public class MinMaxAI implements AI
 	 * @return uusi alfa-arvo
 	 */
 	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
-			throws TimeLimitException
+			throws TimeLimitException, InterruptedException
 	{
 		++ply;
 		state.move(move);
@@ -438,7 +440,9 @@ public class MinMaxAI implements AI
 		return alpha;
 	}
 
-	@Override
+	/**
+	 * Asettaa loki-informaation tuottamisen päälle tai pois päältä.
+	 */
 	public void setLoggingEnabled(boolean enabled)
 	{
 		loggingEnabled = enabled;
@@ -455,7 +459,7 @@ public class MinMaxAI implements AI
 	 * @return uusi syvyysarvo
 	 */
 	private int applyNullMoveReduction(int depth, int beta, GameState state)
-			throws TimeLimitException
+			throws TimeLimitException, InterruptedException
 	{
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
 			state.nullMove();
@@ -556,11 +560,14 @@ public class MinMaxAI implements AI
 	/**
 	 * Tarkistaa tietyin väliajoin onko aikaraja kulunut umpeen, ja jos on niin heittää poikkeuksen.
 	 *
-	 * @throws TimeLimitException
+	 * @throws chess.ai.MinMaxAI.TimeLimitException
+	 * @throws InterruptedException
 	 */
-	private void checkTimeLimit() throws TimeLimitException
+	private void checkTimeLimit() throws TimeLimitException, InterruptedException
 	{
 		if ((nodeCount & 0xfff) == 0 && timeLimit != 0) {
+			if (Thread.interrupted())
+				throw new InterruptedException();
 			double t = (System.nanoTime() - startTime) * 1e-9;
 			if (t > timeLimit) {
 				log(String.format("  time limit (%.1fms)", t * 1e3));

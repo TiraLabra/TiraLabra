@@ -1,11 +1,14 @@
 package chess.gui;
 
-import chess.ai.AI;
 import chess.ai.MinMaxAI;
 import chess.ai.PerformanceTest;
 import chess.domain.GameState;
+import chess.domain.Move;
 import chess.domain.Pieces;
 import chess.domain.Players;
+import chess.game.Game;
+import chess.game.Observer;
+import chess.game.Player;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -26,7 +29,7 @@ import javax.swing.WindowConstants;
 /**
  * Käyttöliittymän pääikkuna.
  */
-public class UserInterface implements Runnable, MouseListener, ActionListener
+public class UserInterface implements Runnable, MouseListener, ActionListener, Player, Observer
 {
 	/**
 	 * Pääikkuna.
@@ -44,11 +47,6 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	private BoardPanel board;
 
 	/**
-	 * Pelitilanne.
-	 */
-	private GameState state;
-
-	/**
 	 * Valittu peliruutu tai -1 jos ei valittu.
 	 */
 	private int selectedSquare = -1;
@@ -61,7 +59,28 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	/**
 	 * Tietokonevastustaja.
 	 */
-	private AI ai;
+	private Player aiPlayer;
+
+	/**
+	 * Runnable-peliobjekti, jota suoritetaan omassa säikeessään.
+	 */
+	private Game game;
+
+	/**
+	 * Pelaajan valitsema siirto.
+	 */
+	private int humanPlayerMove;
+
+	/**
+	 * Dummy-objekti, jonka avulla pelisäie odottaa, että käyttöliittymä palauttaa pelaajan siirron.
+	 * Null, jos pelisäie ei odota pelaajan siirtoa.
+	 */
+	private Object humanPlayerMoveNotifier;
+
+	/**
+	 * Sallitut siirrot valitusta ruudusta.
+	 */
+	int[] moves;
 
 	/**
 	 * Lokialue.
@@ -180,41 +199,46 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	@Override
 	public void mousePressed(MouseEvent me)
 	{
-		if (state.isCheckMate())
+		if (humanPlayerMoveNotifier == null)
 			return;
 
 		int sqr = getSquareFromCoordinates(me.getX(), me.getY());
-		if (selectedSquare >= 0) {
-			if ((state.getLegalMoves(selectedSquare) & (1L << sqr)) != 0) {
-				state.move(selectedSquare, sqr);
-				board.setBoard(state.getBoard());
+		if (selectedSquare >= 0)
+			attemptMove(sqr);
+		updateSquareSelection(sqr);
+	}
 
-				if (state.isCheckMate()) {
-					setResult(player);
-					return;
-				} else if (state.isStaleMate()) {
-					setResult(-1);
-					return;
-				}
-
-				ai.move(state);
-				board.setBoard(state.getBoard());
-				showGameTreeItem.setEnabled(true);
-
-				if (state.isCheckMate()) {
-					setResult(1 - player);
-					return;
-				} else if (state.isStaleMate()) {
-					setResult(-1);
-					return;
+	/**
+	 * Jos klikattu ruutu on sallittujen siirtojen joukossa, siirtää pelaajan nappulan.
+	 *
+	 * @param sqr ruutu
+	 */
+	private void attemptMove(int sqr)
+	{
+		for (int i = 0; i < moves.length; ++i) {
+			if (Move.getToSqr(moves[i]) == sqr) {
+				humanPlayerMove = moves[i];
+				synchronized (humanPlayerMoveNotifier) {
+					humanPlayerMoveNotifier.notify();
 				}
 			}
 		}
+	}
 
-		if (state.getBoard()[sqr] / Pieces.COUNT == player) {
-			selectedSquare = sqr;
-			long moves = state.getLegalMoves(sqr);
-			board.setAllowedMoves(moves);
+	/**
+	 * Päivittää käyttöliittymän valitun ruudun mukaisesti. (Sallitut siirrot ko. ruudusta jne.)
+	 *
+	 * @param newSelectedSqr pelaajan klikkaama ruutu
+	 */
+	private void updateSquareSelection(int newSelectedSqr)
+	{
+		if (game.getState().getBoard()[newSelectedSqr] / Pieces.COUNT == player) {
+			selectedSquare = newSelectedSqr;
+			moves = game.getState().getLegalMoves(newSelectedSqr);
+			long movesMask = 0;
+			for (int i = 0; i < moves.length; ++i)
+				movesMask |= 1L << Move.getToSqr(moves[i]);
+			board.setAllowedMoves(movesMask);
 			board.setSelected(selectedSquare);
 		} else {
 			board.setAllowedMoves(0);
@@ -252,7 +276,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	 *
 	 * @param winner voittanutpelaaja tai -1 jos pattitilanne
 	 */
-	void setResult(int winner)
+	private void setResult(int winner)
 	{
 		resultLabel.setVisible(true);
 		if (winner == -1)
@@ -268,15 +292,21 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	 */
 	private void startNewGame()
 	{
+		if (game != null)
+			game.interrupt();
+
+		aiPlayer = new MinMaxAI(logArea);
+		refreshLoggingEnabledState();
+		game = new Game(this, aiPlayer, this);
+
 		selectedSquare = -1;
-		state = new GameState();
-		board.setBoard(state.getBoard());
+		board.setBoard(game.getState().getBoard());
 		board.setSelected(-1);
 		board.setAllowedMoves(0);
 		resultLabel.setVisible(false);
-		ai = new MinMaxAI(logArea);
-		ai.setLoggingEnabled(debugInfoItem.getState());
 		showGameTreeItem.setEnabled(false);
+
+		new Thread(game).start();
 	}
 
 	/**
@@ -288,7 +318,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 	}
 
 	/**
-	 * Suorituskykytesti.
+	 * Toinen suorituskykytesti (alkaa syvyydestä 8 + pitemmät iteraatiot).
 	 */
 	private void runPerformanceTest2()
 	{
@@ -297,8 +327,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 
 	private void showGameTree()
 	{
-		if (((MinMaxAI) ai).getGameTree() != null)
-			new GameTreeViewer(((MinMaxAI) ai).getGameTree());
+		if (((MinMaxAI) aiPlayer).getGameTree() != null)
+			new GameTreeViewer(((MinMaxAI) aiPlayer).getGameTree());
 	}
 
 	/**
@@ -316,8 +346,44 @@ public class UserInterface implements Runnable, MouseListener, ActionListener
 		else if (ae.getSource() == showGameTreeItem)
 			showGameTree();
 		else if (ae.getSource() == debugInfoItem)
-			ai.setLoggingEnabled(debugInfoItem.getState());
+			refreshLoggingEnabledState();
 		else if (ae.getSource() == exitItem)
 			System.exit(0);
+	}
+
+	@Override
+	public int getMove(GameState state) throws InterruptedException
+	{
+		humanPlayerMoveNotifier = new Object();
+		synchronized (humanPlayerMoveNotifier) {
+			humanPlayerMoveNotifier.wait();
+			humanPlayerMoveNotifier = null;
+		}
+		return humanPlayerMove;
+	}
+
+	@Override
+	public void notifyMove(GameState state, int ply, Player player, int move)
+	{
+		board.setBoard(state.getBoard());
+		if (player instanceof MinMaxAI)
+			showGameTreeItem.setEnabled(true);
+		int turn = (ply / 2 + 1);
+		logArea.logMessage("" + turn + (ply % 2 == 0 ? ". " : "... ") + Move.toString(move));
+	}
+
+	@Override
+	public void notifyEnd(GameState state, int result)
+	{
+		setResult(result);
+	}
+
+	/**
+	 * Asettaa MinMaxAI:n lokiviestit valinnan mukaisesti päälle tai pois.
+	 */
+	private void refreshLoggingEnabledState()
+	{
+		if (aiPlayer instanceof MinMaxAI)
+			((MinMaxAI) aiPlayer).setLoggingEnabled(debugInfoItem.getState());
 	}
 }
