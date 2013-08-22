@@ -63,7 +63,7 @@ public class Pino {
     }
 
     /**
-     * Kertoo pinon koon metodin paluuarvona
+     * Kertoo, kuinka monta oliota pinoon enintään mahtuu
      *
      * @return Kokonaisluku
      */

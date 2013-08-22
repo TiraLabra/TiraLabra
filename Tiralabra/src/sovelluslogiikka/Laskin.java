@@ -75,10 +75,12 @@ public class Laskin {
         } else if (syote.charAt(0) == '+' || syote.charAt(0) == '*' || syote.charAt(0) == '/' || syote.charAt(0) == ')') {
             System.out.print("Laskutoimitus sisältää laskuoperaatiomerkin tai loppusulun ennen ensimmäistäkään lukua. ");
             return false;
-        } else if (syote.charAt(syote.length() - 1) == '+' || syote.charAt(syote.length() - 1) == '-' || syote.charAt(syote.length() - 1) == '*' || syote.charAt(syote.length() - 1) == '/' || syote.charAt(syote.length() - 1) == '(') {
+        } else if (syote.charAt(syote.length() - 1) == '+' || syote.charAt(syote.length() - 1) == '-' || syote.charAt(syote.length() - 1) == '*'
+                || syote.charAt(syote.length() - 1) == '/' || syote.charAt(syote.length() - 1) == '(') {
             System.out.print("Laskutoimitus sisältää laskuoperaatiomerkin tai alkusulun viimeisen luvun jälkeen. ");
             return false;
-        } else if (syote.charAt(0) == '-' || syote.contains("--") || syote.contains("-+") || syote.contains("+-") || syote.contains("*-") || syote.contains("/-")) {
+        } else if (syote.charAt(0) == '-' || syote.contains("--") || syote.contains("-+") || syote.contains("+-")
+                || syote.contains("*-") || syote.contains("/-") || syote.contains("(-")) {
             System.out.print("Laskutoimitus sisältää yhden tai useamman laskuoperaation negatiivisilla kokonaisluvuilla, mikä ei ole sallittua, sillä laskin pystyy käsittelemään laskutoimituksen syöttövaiheessa ainoastaan positiivisia kokonaislukuja. ");
             return false;
         } else if (syote.contains("++") || syote.contains("+*") || syote.contains("+/")
