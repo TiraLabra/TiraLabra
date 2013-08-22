@@ -18,8 +18,45 @@ public class PerformanceTester {
         String[][] randomStrings = generateStrings(n);
         String[] included = randomStrings[0];
         String[] excluded = randomStrings[1];
-        testQueues(n, included, excluded);
-        testMaps(n, included, excluded);
+        //testQueues(n, included, excluded);
+        //testMaps(n, included, excluded);
+        testQueueScaling();
+    }
+
+    private static void testQueueScaling() {
+        int repetitions = 10;
+        long[] durations = new long[repetitions];
+        final int startN = 1000000;
+        int num = startN;
+        int incrementer = startN;
+        int cycles = 5;
+
+        for (int cycle = 0; cycle < cycles; cycle++) {
+            System.out.println("Cycle " + cycle);
+            num = startN;
+            for (int i = 1; i <= repetitions; i++) {
+                num += incrementer;
+                System.out.println("Repeating at " + i + " num = " + num);
+                long start = System.currentTimeMillis();
+                SimplePriorityQueue<Integer> q = new SimplePriorityQueue<Integer>();
+                for (int j = 0; j < num; j++) {
+                    q.add(j);
+                }
+                while (!q.isEmpty()) {
+                    q.poll();
+                }
+                long duration = System.currentTimeMillis() - start;
+                durations[i - 1] += duration;
+            }
+        }
+
+        num = startN;
+        for (int i = 0; i < repetitions; i++) {
+            num += incrementer;
+            double avgdur = (double) durations[i] / (double) cycles;
+            System.out.println(num + "\t => " + avgdur + " ms\t=" + (avgdur / num) + "/item");
+        }
+
 
     }
 
