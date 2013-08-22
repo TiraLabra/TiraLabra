@@ -27,6 +27,12 @@ public class Punamusta implements Puu {
         juuri = new SolmuPunamusta(emo, false);
     }
 
+    /**
+     * Luodaan uusi, tyhjä punamustapuu.
+     */
+    public Punamusta() {
+    }
+
     @Override
     public String tulostaArvot() {
         return sisa(new ALista(), juuri).toString();
@@ -225,7 +231,7 @@ public class Punamusta implements Puu {
     private SolmuPunamusta siirraPunVas(SolmuPunamusta nyk) {
         vaihdaVarit(nyk);
         if (punainen(nyk.getOikea().getVasen())) {
-            nyk.getOikea().setOikea(oikeakierto(nyk.getOikea()));
+            nyk.setOikea(oikeakierto(nyk.getOikea()));
             nyk = vasenkierto(nyk);
             vaihdaVarit(nyk);
         }

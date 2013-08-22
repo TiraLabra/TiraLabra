@@ -23,6 +23,12 @@ public class KaksiKolme implements Puu {
     public KaksiKolme(int emo) {
         juuri = new SolmuKaksiKolme(emo, null);
     }
+
+    /**
+     * Luo uuden tyhjän puun.
+     */
+    public KaksiKolme() {
+    }
     
     @Override
     public String tulostaArvot() {
@@ -31,6 +37,10 @@ public class KaksiKolme implements Puu {
     
     @Override
     public void insert(int key) {
+        if (juuri == null) {
+            this.juuri = new SolmuKaksiKolme(key, null);
+            return;
+        }
         insert2(key, this.juuri);
     }
     

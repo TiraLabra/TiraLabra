@@ -24,6 +24,12 @@ public class Threaded implements Puu {
         juuri = new SolmuThreaded(emo);
     }
 
+    /**
+     * Luo uuden tyhjän puun.
+     */
+    public Threaded() {
+    }
+
     @Override
     public String tulostaArvot() {
         String arvot = "";
@@ -42,6 +48,10 @@ public class Threaded implements Puu {
 
     @Override
     public void insert(int key) {
+        if(juuri == null){
+            juuri = new SolmuThreaded(key);
+            return;
+        }
         SolmuThreaded parent = juuri;
         SolmuThreaded uusi = new SolmuThreaded(key);
 

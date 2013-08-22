@@ -6,9 +6,22 @@ package Tiralabra.domain;
  */
 public class Treap implements Puu{
 
+    /**
+     * Juurisolmu.
+     */
     private SolmuTreap juuri;
     
+    /**
+     * Luo uuden puun, jolle luodaan juurisolmu annetulla arvolla.
+     * @param emo juurisolmun arvo
+     */
     public Treap(int emo) {
+    }
+
+    /**
+     * Luo uuden tyhjän puun.
+     */
+    public Treap() {
     }
 
     @Override
