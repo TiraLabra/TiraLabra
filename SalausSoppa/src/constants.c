@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/* Initial permutation, used in des_encrypt and decrypt */
 size_t IP[] = 
     {58, 50, 42, 34, 26, 18, 10, 2,
      60, 52, 44, 36, 28, 20, 12, 4,
@@ -11,6 +12,7 @@ size_t IP[] =
      61, 53, 45, 37, 29, 21, 13, 5,
      63, 55, 47, 39, 31, 23, 15, 7};
 
+/* Reverse of the initial permutation, used in encrypt and decrypt */
 size_t IP_rev[] = 
     {40, 8, 48, 16, 56, 24, 64, 32,
      39, 7, 47, 15, 55, 23, 63, 31,
@@ -21,6 +23,8 @@ size_t IP_rev[] =
      34, 2, 42, 10, 50, 18, 58, 26,
      33, 1, 41,  9, 49, 17, 57, 25};
 
+/* Expansion permutation, expands 32 bits to 48 bits for key mixing,
+   used in the Feistel function */
 size_t E[] =
     {32,  1,  2,  3,  4,  5,
       4,  5,  6,  7,  8,  9,
@@ -31,6 +35,7 @@ size_t E[] =
      24, 25, 26, 27, 28, 29,
      28, 29, 30, 31, 32,  1};
 
+/* S-boxes, used in the Feistel function */
 #define SBOX_1 \
     {{14,  4, 13, 1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9, 0,  7},\
      { 0, 15,  7, 4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5, 3,  8},\
@@ -91,7 +96,7 @@ uint8_t sbox_6[4][16] = SBOX_6;
 uint8_t sbox_7[4][16] = SBOX_7;
 uint8_t sbox_8[4][16] = SBOX_8;
 
-
+/* The final permutation in the Feistel function */
 size_t P[] = 
     {16,  7, 20, 21, 29, 12, 28, 17,
       1, 15, 23, 26,  5, 18, 31, 10,

@@ -8,6 +8,9 @@
 extern size_t IP[64];
 extern size_t IP_rev[64];
 
+/**
+ * @brief Encrypts 64-bit block input with key
+ */
 uint64_t des_encrypt(uint64_t input, uint64_t key)
 {
     input = permute(input, 64, IP);
@@ -30,6 +33,9 @@ uint64_t des_encrypt(uint64_t input, uint64_t key)
     return permute(input, 64, IP_rev);
 }
 
+/**
+ * @brief Decrypts 64-bit block input with key
+ */
 uint64_t des_decrypt(uint64_t input, uint64_t key)
 {
     input = permute(input, 64, IP);
