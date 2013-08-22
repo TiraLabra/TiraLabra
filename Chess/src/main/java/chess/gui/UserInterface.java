@@ -1,6 +1,7 @@
 package chess.gui;
 
 import chess.ai.MinMaxAI;
+import chess.ai.Node;
 import chess.ai.PerformanceTest;
 import chess.domain.GameState;
 import chess.domain.Move;
@@ -94,7 +95,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Valikkoelementit.
 	 */
-	private JMenuItem newGameItem, exitItem, perfTestItem, perfTest2Item, showGameTreeItem;
+	private JMenuItem newGameItem, newGameItem2, exitItem, perfTestItem, perfTest2Item,
+			showGameTreeItem;
 
 	private JCheckBoxMenuItem debugInfoItem;
 
@@ -102,7 +104,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void run()
 	{
 		createFrame();
-		startNewGame();
+		startNewGame(false);
 	}
 
 	/**
@@ -157,6 +159,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		menuBar.add(gameMenu);
 
 		newGameItem = createMenuItem(gameMenu, "New game");
+		newGameItem2 = createMenuItem(gameMenu, "New game (AI vs AI)");
 		exitItem = createMenuItem(gameMenu, "Exit");
 
 		JMenu debugMenu = new JMenu("Debug");
@@ -236,13 +239,15 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 */
 	private void updateSquareSelection(int newSelectedSqr)
 	{
-		selectedSquare = newSelectedSqr;
-		moves = game.getState().getLegalMoves(newSelectedSqr);
-		long movesMask = 0;
-		for (int i = 0; i < moves.length; ++i)
-			movesMask |= 1L << Move.getToSqr(moves[i]);
-		board.setAllowedMoves(movesMask);
-		board.setSelected(selectedSquare);
+		if (newSelectedSqr >= 0) {
+			selectedSquare = newSelectedSqr;
+			moves = game.getState().getLegalMoves(newSelectedSqr);
+			long movesMask = 0;
+			for (int i = 0; i < moves.length; ++i)
+				movesMask |= 1L << Move.getToSqr(moves[i]);
+			board.setAllowedMoves(movesMask);
+			board.setSelected(selectedSquare);
+		}
 	}
 
 	@Override
@@ -273,14 +278,14 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Uusi peli.
 	 */
-	private void startNewGame()
+	private void startNewGame(boolean aiVsAi)
 	{
 		if (gameThread != null)
 			gameThread.interrupt();
 
 		aiPlayer = new MinMaxAI(logArea);
 		refreshLoggingEnabledState();
-		game = new Game(this, aiPlayer, this);
+		game = new Game(aiVsAi ? new MinMaxAI(logArea) : this, aiPlayer, this);
 
 		selectedSquare = -1;
 		board.setBoard(game.getState().getBoard());
@@ -311,8 +316,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 
 	private void showGameTree()
 	{
-		if (((MinMaxAI) aiPlayer).getGameTree() != null)
-			new GameTreeViewer(((MinMaxAI) aiPlayer).getGameTree());
+		Node tree = ((MinMaxAI) aiPlayer).getGameTree();
+		if (tree != null)
+			new GameTreeViewer(tree);
 	}
 
 	/**
@@ -322,7 +328,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void actionPerformed(ActionEvent ae)
 	{
 		if (ae.getSource() == newGameItem)
-			startNewGame();
+			startNewGame(false);
+		else if (ae.getSource() == newGameItem2)
+			startNewGame(true);
 		else if (ae.getSource() == perfTestItem)
 			runPerformanceTest();
 		else if (ae.getSource() == perfTest2Item)
