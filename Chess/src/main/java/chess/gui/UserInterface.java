@@ -4,7 +4,6 @@ import chess.ai.MinMaxAI;
 import chess.ai.PerformanceTest;
 import chess.domain.GameState;
 import chess.domain.Move;
-import chess.domain.Pieces;
 import chess.domain.Players;
 import chess.game.Game;
 import chess.game.Observer;
@@ -237,18 +236,13 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 */
 	private void updateSquareSelection(int newSelectedSqr)
 	{
-		if (game.getState().getBoard()[newSelectedSqr] / Pieces.COUNT == player) {
-			selectedSquare = newSelectedSqr;
-			moves = game.getState().getLegalMoves(newSelectedSqr);
-			long movesMask = 0;
-			for (int i = 0; i < moves.length; ++i)
-				movesMask |= 1L << Move.getToSqr(moves[i]);
-			board.setAllowedMoves(movesMask);
-			board.setSelected(selectedSquare);
-		} else {
-			board.setAllowedMoves(0);
-			board.setSelected(-1);
-		}
+		selectedSquare = newSelectedSqr;
+		moves = game.getState().getLegalMoves(newSelectedSqr);
+		long movesMask = 0;
+		for (int i = 0; i < moves.length; ++i)
+			movesMask |= 1L << Move.getToSqr(moves[i]);
+		board.setAllowedMoves(movesMask);
+		board.setSelected(selectedSquare);
 	}
 
 	@Override
@@ -274,22 +268,6 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		int row = 8 * y / board.getHeight();
 		int col = 8 * x / board.getWidth();
 		return row * 8 + col;
-	}
-
-	/**
-	 * Näyttää pelin lopputuloksen.
-	 *
-	 * @param winner voittanutpelaaja tai -1 jos pattitilanne
-	 */
-	private void setResult(int winner)
-	{
-		resultLabel.setVisible(true);
-		if (winner == -1)
-			resultLabel.setText("Stale mate!");
-		else
-			resultLabel.setText("Check mate! " + (winner == 0 ? "White" : "Black") + " wins.");
-		board.setAllowedMoves(0);
-		board.setSelected(-1);
 	}
 
 	/**
@@ -372,16 +350,28 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void notifyMove(GameState state, int ply, Player player, int move)
 	{
 		board.setBoard(state.getBoard());
+		updateSquareSelection(selectedSquare);
 		if (player instanceof MinMaxAI)
 			showGameTreeItem.setEnabled(true);
+		if (ply == 0)
+			logArea.logMessage("--- Game started ---");
 		int turn = (ply / 2 + 1);
-		logArea.logMessage("" + turn + (ply % 2 == 0 ? ". " : "... ") + Move.toString(move));
+		logArea.logMessage("" + turn + (ply % 2 == 0 ? ". " : ". ... ") + Move.toString(move));
 	}
 
 	@Override
 	public void notifyEnd(GameState state, int result)
 	{
-		setResult(result);
+		resultLabel.setVisible(true);
+		String msg;
+		if (result == -1)
+			msg = "Stale mate!";
+		else
+			msg = "Check mate! " + (result == 0 ? "White" : "Black") + " wins.";
+		resultLabel.setText(msg);
+		logArea.logMessage(msg);
+		board.setAllowedMoves(0);
+		board.setSelected(-1);
 	}
 
 	/**
