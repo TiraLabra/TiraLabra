@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import logiikka.Kontinpurkaja;
 import osat.Laatikko;
-import osat.Lava;
+import osat.Nelikulmio;
 import tyokalut.AVLsolmu;
 
 /**
@@ -42,12 +42,12 @@ public class TulostenEsittaja implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         AVLsolmu solmu = kontinpurkaja.haeTuote(EAN);
         Laatikko laatikko = solmu.getLaatikko();
-        Lava lava = solmu.getLava();
+        Nelikulmio lava = solmu.getLava();
         
         panel.setLayout(new GridLayout(2, 1));
         
-        panel.add(luoTietosarake(laatikko, lava));
-        panel.add(luoAsettelusarake(laatikko, lava));
+        panel.add(luoTietosarake(solmu));
+        panel.add(new Piirtoalusta(solmu, panel.getHeight()));
     }
     
     /**
@@ -56,7 +56,10 @@ public class TulostenEsittaja implements ActionListener {
      * 
      * @return Palauttaa JPanel-olion, johon merkittynä halutut mittatiedot.
      */
-    private JPanel luoTietosarake(Laatikko laatikko, Lava lava) {
+    private JPanel luoTietosarake(AVLsolmu solmu) {
+        Laatikko laatikko = solmu.getLaatikko();
+        Nelikulmio lava = solmu.getLava();
+        
         int laatikonLeveys = laatikko.getLeveys();
         int laatikonPituus = laatikko.getPituus();
         int laatikonKorkeus = laatikko.getKorkeus();
@@ -68,19 +71,9 @@ public class TulostenEsittaja implements ActionListener {
         JPanel tiedot = new JPanel();
         tiedot.add(new JLabel("Laatikon leveys: " + laatikonLeveys + "\nLaatikon pituus: " +
                 laatikonPituus + "\nLaatikon korkeus: " + laatikonKorkeus + "\n\nLavan leveys" +
-                lavanLeveys + "\nLavan pituus: " + lavanPituus + "\nLavan korkeus: " + lavanKorkeus));
+                lavanLeveys + "\nLavan pituus: " + lavanPituus + "\nLavan korkeus: " + lavanKorkeus +
+                "\n\n Kerroksia mahtuu: " + solmu.getKerrokset()));
         
         return tiedot;
-    }
-    
-    /**
-     * Luo laatikoiden asettelua yläsuunnasta kuvattuna esittämän hahmotelman.
-     * 
-     * @return Palauttaa JPanel-olion, jossa optimoitu asettelu esitetään.
-     */
-    private JPanel luoAsettelusarake(Laatikko laatikko, Lava lava) {
-        JPanel asettelu = new JPanel();
-        
-        return asettelu;
     }
 }

@@ -3,7 +3,7 @@ package tyokalut;
 import java.io.FileWriter;
 import java.io.IOException;
 import osat.Laatikko;
-import osat.Lava;
+import osat.Nelikulmio;
 
 /**
  * AVL-puun solmua kuvaava peruskomponentti, joihin kerätään tiedot aiemmin laskettujen
@@ -19,14 +19,19 @@ public class AVLsolmu {
     private Laatikko laatikko;
     
     /**
-     * Lista, joka sisältää tiedon kuinka laatikot on aseteltu.
+     * Kaksiulotteinen taulukko, joka sisältää tiedon kuinka laatikot on aseteltu.
      */
-    private KasvavaLista asettelu;
+    private int[][] asettelu;
+    
+    /**
+     * Kokonaisluku, joka kertoo kuinka monta kerrosta lavalle voidaan tehdä.
+     */
+    private int kerrostenMaara;
     
     /**
      * Sisältää tiedon minkä kokoiselle lavalle laatikoiden asettelu on laskettu.
      */
-    private Lava lava;
+    private Nelikulmio lava;
     
     /**
      * Solmun vasen lapsi.
@@ -48,7 +53,7 @@ public class AVLsolmu {
      */
     private int korkeus;
     
-    public AVLsolmu(Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+    public AVLsolmu(Laatikko laatikko, int[][] asettelu, Nelikulmio lava) {
         vasen = null;
         oikea = null;
         vanhempi = null;
@@ -58,39 +63,15 @@ public class AVLsolmu {
         this.laatikko = laatikko;
         this.asettelu = asettelu;
         this.lava = lava;
-    }
-    
-    /**
-     * Tallentaa solmun tiedot tekstitiedostoon seuraavaa käyttökertaa varten.
-     * 
-     * @param kirjoittaja Tiedostoon kirjoittamisesta huolehtiva olio.
-     * @throws IOException 
-     */
-    public void tallennaSolmu(FileWriter kirjoittaja) throws IOException {
-        if (vasen != null) {
-            vasen.tallennaSolmu(kirjoittaja);
-        }
         
-        kirjoittaja.write(laatikko.getLeveys() + "-" + laatikko.getPituus() + "-" + laatikko.getKorkeus() +
-                "-" + laatikko.getEAN() + ":");
-        kirjoittaja.write(lava.getLeveys() + "-" + lava.getPituus() + "-" + lava.getKorkeus() + "=");
-        
-        kirjoittaja.write(asettelu.getAsento(0));
-        for (int i = 1; i < asettelu.length(); i++) {
-            kirjoittaja.write("," + asettelu.getAsento(i));
-        }
-        kirjoittaja.write("\n");
-        
-        if (oikea != null) {
-            oikea.tallennaSolmu(kirjoittaja);
-        }
+        kerrostenMaara = lava.getKorkeus() / laatikko.getKorkeus();
     }
     
     public long getKey() {
         return laatikko.getEAN();
     }
     
-    public KasvavaLista getAsettelu() {
+    public int[][] getAsettelu() {
         return asettelu;
     }
     
@@ -110,11 +91,15 @@ public class AVLsolmu {
         return korkeus;
     }
     
+    public int getKerrokset() {
+        return kerrostenMaara;
+    }
+    
     public Laatikko getLaatikko() {
         return laatikko;
     }
     
-    public Lava getLava() {
+    public Nelikulmio getLava() {
         return lava;
     }
     
@@ -138,7 +123,11 @@ public class AVLsolmu {
         this.laatikko = laatikko;
     }
     
-    public void setAsettelu(KasvavaLista asettelu) {
+    public void setLava(Nelikulmio lava) {
+        this.lava = lava;
+    }
+    
+    public void setAsettelu(int[][] asettelu) {
         this.asettelu = asettelu;
     }
 }

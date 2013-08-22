@@ -6,7 +6,7 @@ package osat;
  *
  * @author albis
  */
-public class Laatikko {
+public class Laatikko extends Nelikulmio{
     /**
      * Kokonaisluku, joka kertoo kyseisen laatikon leveyden.
      */
@@ -28,22 +28,8 @@ public class Laatikko {
     private long EAN;
     
     public Laatikko(int leveys, int pituus, int korkeus, long EAN) {
-        this.leveys = leveys;
-        this.pituus = pituus;
-        this.korkeus = korkeus;
+        super(leveys, pituus, korkeus);
         this.EAN = EAN;
-    }
-    
-    public int getLeveys() {
-        return leveys;
-    }
-    
-    public int getPituus() {
-        return pituus;
-    }
-    
-    public int getKorkeus() {
-        return korkeus;
     }
     
     public long getEAN() {

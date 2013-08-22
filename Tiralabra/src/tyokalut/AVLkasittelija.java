@@ -1,12 +1,7 @@
 package tyokalut;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import osat.Laatikko;
-import osat.Lava;
+import osat.Nelikulmio;
 
 /**
  * Toteutetaan AVL-puun muodossa historia kaikista aiemmin lasketuista tuotteista,
@@ -31,7 +26,7 @@ public class AVLkasittelija {
      * @param lava Lavan mittatiedot, jotka lisätään uuteen solmuun.
      * @return Palauttaa lisätyn solmun.
      */
-    private AVLsolmu lisaa(Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+    private AVLsolmu lisaa(Laatikko laatikko, int[][] asettelu, Nelikulmio lava) {
         AVLsolmu uusi = new AVLsolmu(laatikko, asettelu, lava);
         
         if (juuri == null) {
@@ -70,7 +65,7 @@ public class AVLkasittelija {
      * @param asettelu Lisättävät asettelutiedot sisältävä lista.
      * @param lava Lavan mittatiedot sisältävä olio.
      */
-    public void AVLlisays(Laatikko laatikko, KasvavaLista asettelu, Lava lava) {
+    public void AVLlisays(Laatikko laatikko, int[][] asettelu, Nelikulmio lava) {
         AVLsolmu uusi = lisaa(laatikko, asettelu, lava);
         AVLsolmu solmu = uusi.getVanhempi();
         
@@ -232,65 +227,6 @@ public class AVLkasittelija {
             return -1;
         }
         return solmu.getKorkeus();
-    }
-    
-    /**
-     * Metodi, joka avaa vanhat asettelutavat sisältävän tiedoston ja lukee sen tiedot.
-     */
-    public AVLsolmu avaa() {
-        File historiaTiedosto = new File("historia.txt");
-        
-        try {
-            Scanner lukija = new Scanner(historiaTiedosto);
-            
-            while (lukija.hasNextLine()) {
-                String rivi = lukija.nextLine();
-                
-                String[] osat = rivi.split("=");
-                String[] mitat = osat[0].split(":");
-                
-                String[] laatikonMitat = mitat[0].split("-");
-                String[] lavanMitat = mitat[1].split("-");
-                
-                Laatikko laatikko = new Laatikko(Integer.parseInt(laatikonMitat[0]),
-                        Integer.parseInt(laatikonMitat[1]), 
-                        Integer.parseInt(laatikonMitat[2]), Long.parseLong(laatikonMitat[3]));
-                Lava lava = new Lava(Integer.parseInt(lavanMitat[0]), Integer.parseInt(lavanMitat[1]),
-                        Integer.parseInt(lavanMitat[2]));
-                
-                KasvavaLista asettelu = new KasvavaLista();
-                
-                String[] asennot = osat[1].split(",");
-                
-                for (int i = 0; i < asennot.length; i++) {
-                    asettelu.lisaa(osat[i]);
-                }
-                
-                AVLlisays(laatikko, asettelu, lava);
-            }
-            
-            lukija.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Virhe tiedostoa avattaessa!" + e.getMessage());
-        }
-        
-        return juuri;
-    }
-    
-    /**
-     * Metodi, joka tallentaa kaikki puun sisältämät asettelutavat tekstitiedostoon
-     * ohjelma suljettaessa.
-     */
-    public void tallenna() {
-        try {
-            FileWriter kirjoittaja = new FileWriter("historia.txt");
-            
-            juuri.tallennaSolmu(kirjoittaja);
-            
-            kirjoittaja.close();
-        } catch (IOException e) {
-            System.out.println("Virhe tallennettaessa!" + e.getMessage());
-        }
     }
     
     public AVLsolmu getJuuri() {

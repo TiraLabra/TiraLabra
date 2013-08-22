@@ -1,10 +1,9 @@
 package logiikka;
 
 import osat.Laatikko;
-import osat.Lava;
-import tyokalut.AVLsolmu;
+import osat.Nelikulmio;
 import tyokalut.AVLkasittelija;
-import tyokalut.KasvavaLista;
+import tyokalut.AVLsolmu;
 
 /**
  * Luokka, joka ohjailee muita luokkia ja kokoaa niiden ominaisuudet yhteen toimivan ohjelman
@@ -23,16 +22,9 @@ public class Kontinpurkaja {
      */
     private AVLkasittelija historia;
     
-    /**
-     * Historiatiedot sisältävän AVL-puun juurisolmu.
-     */
-    private AVLsolmu juuri;
-    
     public Kontinpurkaja() {
         laskuri = new Laskuri();
         historia = new AVLkasittelija();
-        
-        juuri = historia.avaa();
     }
     
     /**
@@ -48,16 +40,19 @@ public class Kontinpurkaja {
      */
     public void laskeParasAsettelu(int laatikonLeveys, int laatikonPituus, int laatikonKorkeus, long EAN,
             int lavanLeveys, int lavanPituus, int lavanKorkeus) {
-        Laatikko laatikko = new Laatikko(laatikonLeveys, laatikonPituus, laatikonKorkeus, EAN);
-        Lava lava = new Lava(lavanLeveys, lavanPituus, lavanKorkeus);
-        KasvavaLista asettelu = laskuri.laske(laatikko, lava);
         
-        AVLsolmu solmu = historia.etsi(juuri, EAN);
+        Laatikko laatikko = new Laatikko(laatikonLeveys, laatikonPituus, laatikonKorkeus, EAN);
+        Nelikulmio lava = new Nelikulmio(lavanLeveys, lavanPituus, lavanKorkeus);
+        
+        int[][] asettelu = laskuri.laske(laatikko, lava);
+        
+        AVLsolmu solmu = haeTuote(EAN);
         
         if (solmu == null) {
             historia.AVLlisays(laatikko, asettelu, lava);
         } else {
             solmu.setLaatikko(laatikko);
+            solmu.setLava(lava);
             solmu.setAsettelu(asettelu);
         }
     }
@@ -70,15 +65,6 @@ public class Kontinpurkaja {
      * @return Palauttaa halutun tuotteen tiedot historiasta.
      */
     public AVLsolmu haeTuote(long EAN) {
-        return historia.etsi(juuri, EAN);
-    }
-    
-    /**
-     * Tallentaa kaikki AVL-puussa olevat asettelutiedot tekstitiedostoon seuraavaa
-     * käyttökertaa varten.
-     * 
-     */
-    public void tallennaHistoria() {
-        historia.tallenna();
+        return historia.etsi(historia.getJuuri(), EAN);
     }
 }
