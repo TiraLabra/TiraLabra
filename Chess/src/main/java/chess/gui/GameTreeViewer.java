@@ -40,8 +40,8 @@ class GameTreeViewer extends JFrame
 	private DefaultMutableTreeNode getTreeNodes(Node node)
 	{
 		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node);
-		for (Node n: node.nodes)
-			treeNode.add(getTreeNodes(n));
+		for (int i = 0; i < node.nodes.size(); ++i)
+			treeNode.add(getTreeNodes(node.nodes.get(i)));
 		return treeNode;
 	}
 }

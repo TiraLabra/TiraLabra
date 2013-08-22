@@ -162,12 +162,12 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		newGameItem2 = createMenuItem(gameMenu, "New game (AI vs AI)");
 		exitItem = createMenuItem(gameMenu, "Exit");
 
-		JMenu debugMenu = new JMenu("Debug");
+		JMenu debugMenu = new JMenu("Info");
 		menuBar.add(debugMenu);
 
-		perfTestItem = createMenuItem(debugMenu, "Performance test");
-		perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
-		showGameTreeItem = createMenuItem(debugMenu, "Show search tree for last AI move");
+		perfTestItem = createMenuItem(debugMenu, "Run performance test");
+		//perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
+		showGameTreeItem = createMenuItem(debugMenu, "View search tree for last AI move...");
 		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
 
 		frame.add(menuBar, BorderLayout.NORTH);
@@ -287,6 +287,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		refreshLoggingEnabledState();
 		game = new Game(aiVsAi ? new MinMaxAI(logArea) : this, aiPlayer, this);
 
+		logArea.logMessage("--- Game started ---");
 		selectedSquare = -1;
 		board.setBoard(game.getState().getBoard());
 		board.setSelected(-1);
@@ -361,8 +362,6 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		updateSquareSelection(selectedSquare);
 		if (player instanceof MinMaxAI)
 			showGameTreeItem.setEnabled(true);
-		if (ply == 0)
-			logArea.logMessage("--- Game started ---");
 		int turn = (ply / 2 + 1);
 		logArea.logMessage("" + turn + (ply % 2 == 0 ? ". " : ". ... ") + Move.toString(move));
 	}
