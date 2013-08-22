@@ -67,6 +67,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	private Game game;
 
 	/**
+	 * Säie, jossa peliä suoritetaan.
+	 */
+	private Thread gameThread;
+
+	/**
 	 * Pelaajan valitsema siirto.
 	 */
 	private int humanPlayerMove;
@@ -292,8 +297,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 */
 	private void startNewGame()
 	{
-		if (game != null)
-			game.interrupt();
+		if (gameThread != null)
+			gameThread.interrupt();
 
 		aiPlayer = new MinMaxAI(logArea);
 		refreshLoggingEnabledState();
@@ -306,7 +311,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		resultLabel.setVisible(false);
 		showGameTreeItem.setEnabled(false);
 
-		new Thread(game).start();
+		gameThread = new Thread(game);
+		gameThread.start();
 	}
 
 	/**

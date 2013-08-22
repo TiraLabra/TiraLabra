@@ -37,11 +37,6 @@ public class Game implements Runnable
 	private List<Integer> moves = new ArrayList<Integer>();
 
 	/**
-	 * Säie, jossa peliä suoritetaan.
-	 */
-	private Thread gameThread;
-
-	/**
 	 * Luo uuden pelin.
 	 *
 	 * @param whitePlayer valkoinen pelaaja
@@ -62,8 +57,6 @@ public class Game implements Runnable
 	@Override
 	public void run()
 	{
-		gameThread = Thread.currentThread();
-
 		int currentPlayer = Players.WHITE;
 
 		while (!state.isCheckMate() && !state.isStaleMate()) {
@@ -78,7 +71,8 @@ public class Game implements Runnable
 		if (state.isCheckMate())
 			result = 1 ^ state.getNextMovingPlayer();
 
-		observer.notifyEnd(state, result);
+		if (observer != null)
+			observer.notifyEnd(state, result);
 	}
 
 	/**
@@ -112,14 +106,6 @@ public class Game implements Runnable
 	}
 
 	/**
-	 * Keskeyttää pelin.
-	 */
-	public void interrupt()
-	{
-		gameThread.interrupt();
-	}
-
-	/**
 	 * Pyytää pelaajalta siirron ja käsittelee sen.
 	 *
 	 * @param player pelaaja (0-1)
@@ -130,6 +116,7 @@ public class Game implements Runnable
 		int move = players[player].getMove(state);
 		state.move(move);
 		moves.add(move);
-		observer.notifyMove(state, moves.size() - 1, players[player], move);
+		if (observer != null)
+			observer.notifyMove(state, moves.size() - 1, players[player], move);
 	}
 }
