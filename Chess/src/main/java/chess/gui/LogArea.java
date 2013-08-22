@@ -28,6 +28,7 @@ public class LogArea extends JScrollPane implements Logger
 	public void logMessage(String message)
 	{
 		logTextArea.append(message + "\n");
+		logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
 	}
 
 	/**
