@@ -1,8 +1,8 @@
 
 package OhjelmaLogiikka.Pakkaaja;
 
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.TiedostoBlokki;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class KanonisoijaTest {
 
     private Kanonisoija kanonisoija;
-    private OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista;
+    private OmaMap<Integer, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>>> blokkiKoodiLista;
 
     public KanonisoijaTest() {
     }
@@ -35,7 +35,7 @@ public class KanonisoijaTest {
     @Before
     public void setUp() {
         kanonisoija = new Kanonisoija();
-        blokkiKoodiLista = new OmaHashMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>>();
+        blokkiKoodiLista = new OmaHashMap<Integer, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>>>();
 
     }
 
@@ -46,21 +46,21 @@ public class KanonisoijaTest {
 
     @Test
     public void kanonisoitujenKoodienMaaraOikea() {
-        OmaList<Pari<ByteWrapper, Koodi>> lista = taytaLista();
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = taytaLista();
         blokkiKoodiLista.put(6, lista);
 
-        OmaMap<ByteWrapper, Koodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
+        OmaMap<TiedostoBlokki, HuffmanKoodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
         assertEquals("Koodien määrä väärä", 8, taulu.size());
     }
 
     @Test
     public void kanonisoitujenKoodienPituudetOikein() {
-        OmaList<Pari<ByteWrapper, Koodi>> lista = taytaLista();
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = taytaLista();
         blokkiKoodiLista.put(6, lista);
 
-        OmaMap<ByteWrapper, Koodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
+        OmaMap<TiedostoBlokki, HuffmanKoodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
 
-        ByteWrapper wrapper = new ByteWrapper();
+        TiedostoBlokki wrapper = new TiedostoBlokki();
         wrapper.byteTaulukko = new byte[1];
 
         wrapper.byteTaulukko[0] = 'a';
@@ -90,12 +90,12 @@ public class KanonisoijaTest {
     
     @Test
     public void kanonisoitujenKoodienArvotOikein() {
-        OmaList<Pari<ByteWrapper, Koodi>> lista = taytaLista();
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = taytaLista();
         blokkiKoodiLista.put(6, lista);
 
-        OmaMap<ByteWrapper, Koodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
+        OmaMap<TiedostoBlokki, HuffmanKoodi> taulu = kanonisoija.kanonisoi(blokkiKoodiLista);
 
-        ByteWrapper wrapper = new ByteWrapper();
+        TiedostoBlokki wrapper = new TiedostoBlokki();
         wrapper.byteTaulukko = new byte[1];
         // ennen kääntöä koodien pitäisi olla: 
         // 0000 a, 0001 b, 0010 c
@@ -135,11 +135,11 @@ public class KanonisoijaTest {
     
     @Test
     public void jarjestettyjenKoodienJarjestysOikea() {
-        OmaList<Pari<ByteWrapper, Koodi>> lista = taytaLista();
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = taytaLista();
         blokkiKoodiLista.put(6, lista);
 
         kanonisoija.kanonisoi(blokkiKoodiLista);
-        OmaList<Pari<ByteWrapper, Koodi>> jarjestetyt = kanonisoija.haeKooditJarjestettyna();
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> jarjestetyt = kanonisoija.haeKooditJarjestettyna();
         int nykyinenPituus = Integer.MIN_VALUE;
         
         for (int i  = 0; i < jarjestetyt.size(); ++i) {
@@ -148,32 +148,32 @@ public class KanonisoijaTest {
         }   
     }
     
-    private OmaList<Pari<ByteWrapper, Koodi>> taytaLista() {
-        OmaList<Pari<ByteWrapper, Koodi>> lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>();
+    private OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> taytaLista() {
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>();
 
         alusta(4, 1, new byte[]{'a'}, lista);
         alusta(4, 0, new byte[]{'b'}, lista);
         alusta(4, 2, new byte[]{'c'}, lista);
         blokkiKoodiLista.put(4, lista);
 
-        lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>();
+        lista = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>();
         alusta(5, 3, new byte[]{'d'}, lista);
         alusta(5, 4, new byte[]{'e'}, lista);
         alusta(5, 5, new byte[]{'f'}, lista);
         blokkiKoodiLista.put(5, lista);
 
-        lista = new OmaArrayList<Pari<ByteWrapper, Koodi>>();
+        lista = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>();
         alusta(6, 3, new byte[]{'g'}, lista);
         alusta(6, 4, new byte[]{'h'}, lista);
         blokkiKoodiLista.put(6, lista);
         return lista;
     }
 
-    private void alusta(int pituus, long koodi, byte[] blokki, OmaList<Pari<ByteWrapper, Koodi>> lista) {
-        Koodi k = new Koodi();
+    private void alusta(int pituus, long koodi, byte[] blokki, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista) {
+        HuffmanKoodi k = new HuffmanKoodi();
 
-        ByteWrapper wrapper = new ByteWrapper();
-        Pari<ByteWrapper, Koodi> pari = new Pari<ByteWrapper, Koodi>();
+        TiedostoBlokki wrapper = new TiedostoBlokki();
+        Pari<TiedostoBlokki, HuffmanKoodi> pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
 
 
         k.pituus = pituus;

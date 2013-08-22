@@ -7,8 +7,8 @@ package Tietorakenteet;
  * @param <T> Varastoitavan objektin tyyppi.
  */
 public class OmaArrayList<T> implements OmaList<T> {
-
-    private Object[] data;
+    private final static int OLETUS_KOKO = 32;
+    private T[] data;
     private int datanKoko;
   
 
@@ -17,7 +17,7 @@ public class OmaArrayList<T> implements OmaList<T> {
      * kannalta.
      */
     public OmaArrayList() {
-        this(4);
+        this(OLETUS_KOKO);
     }
     
    
@@ -26,7 +26,7 @@ public class OmaArrayList<T> implements OmaList<T> {
      * @param koko Kuinka monelle alkiolle varataan tilaa suoraan
      */
     public OmaArrayList(int koko) {
-        data = new Object[koko];
+        data = (T[])new Object[koko];
         datanKoko = 0;
     }
         
@@ -88,7 +88,7 @@ public class OmaArrayList<T> implements OmaList<T> {
 
     @Override
     public void clear() {
-        data = new Object[1];
+        data = (T[])new Object[OLETUS_KOKO];
         datanKoko = 0;
 
     
@@ -108,10 +108,8 @@ public class OmaArrayList<T> implements OmaList<T> {
             throw new IndexOutOfBoundsException("Indeksi ulkona taulukosta");
         }
 
-  
-
         T retval = (T) data[index];
-        data[index] = element;
+        data[index] = (T)element;
         return retval;
     }
 
@@ -135,14 +133,13 @@ public class OmaArrayList<T> implements OmaList<T> {
      * Metodi joka tuplaa taulukon koon kutsuttaessa ja kopioi vanhan taulukon uuteen & korvaa vanhan taulukon uudella
      */
     private void kasvataKokoa() {
-        Object [] uusiArray = new Object[data.length * 2];
+        T [] uusiArray = (T[])new Object[data.length * 2];
         
         for (int i = 0; i < datanKoko; ++i) {
             uusiArray[i] = data[i];
         }
         
         data = uusiArray;
-        
     }
 
     @Override

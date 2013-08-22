@@ -1,8 +1,8 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import OhjelmaLogiikka.KanonisoidunKoodinMuodostaja;
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.TiedostoBlokki;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
@@ -18,7 +18,7 @@ import java.util.Comparator;
  */
 public class Kanonisoija {
 
-    private OmaList<Pari<ByteWrapper, Koodi>> kooditJarjestyksesaHeaderiaVarten;
+    private OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> kooditJarjestyksesaHeaderiaVarten;
 
     /**
      * Palauttaa listan kanonisista koodeista pituusjärjestyksessä (ensimmäisenä
@@ -27,7 +27,7 @@ public class Kanonisoija {
      *
      * @return listan blokki-koodipareista kasvavassa pituusjärjestyksessä
      */
-    public OmaList<Pari<ByteWrapper, Koodi>> haeKooditJarjestettyna() {
+    public OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> haeKooditJarjestettyna() {
         return kooditJarjestyksesaHeaderiaVarten;
     }
 
@@ -42,11 +42,11 @@ public class Kanonisoija {
      * kanoniset koodit.
      * @return Taulu jossa blokki avaimena ja kanoninen koodi avaimena
      */
-    public OmaMap<ByteWrapper, Koodi> kanonisoi(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
-        int koko = laskeHashMapilleKoko(blokkiKoodiLista);
+    public OmaMap<TiedostoBlokki, HuffmanKoodi> kanonisoi(OmaMap<Integer, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>>> blokkiKoodiLista) {
+        int koko = laskeHashMapilleKoko(blokkiKoodiLista.size());
 
-        OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit = new OmaHashMap<ByteWrapper, Koodi>(koko);
-        kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<ByteWrapper, Koodi>>(koko);
+        OmaMap<TiedostoBlokki, HuffmanKoodi> kanonisoidutKoodit = new OmaHashMap<TiedostoBlokki, HuffmanKoodi>(koko);
+        kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>(koko);
 
         KanonisoidunKoodinMuodostaja muodostaja = new KanonisoidunKoodinMuodostaja();
         kasitteleTaulu(blokkiKoodiLista, muodostaja, kanonisoidutKoodit);
@@ -61,20 +61,20 @@ public class Kanonisoija {
      * @param muodostaja objekti joka muodostaa kanoniset koodit
      * @param kanonisoidutKoodit Kanonisoidut koodit
      */
-    private void kasitteleTaulu(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> normaalitKoodit,
-            KanonisoidunKoodinMuodostaja muodostaja, OmaMap<ByteWrapper, Koodi> kanonisoidutKoodit) {
+    private void kasitteleTaulu(OmaMap<Integer, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>>> normaalitKoodit,
+            KanonisoidunKoodinMuodostaja muodostaja, OmaMap<TiedostoBlokki, HuffmanKoodi> kanonisoidutKoodit) {
 
         OmaList<Integer> avaimet = normaalitKoodit.avaimet();
         avaimet = sorttaaAvaimet(avaimet);
 
         for (int i = 0; i < avaimet.size(); ++i) {
-            OmaList<Pari<ByteWrapper, Koodi>> lista = normaalitKoodit.get(avaimet.get(i));
+            OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> lista = normaalitKoodit.get(avaimet.get(i));
 
             for (int j = 0; j < lista.size(); ++j) {
-                Pari<ByteWrapper, Koodi> pari = lista.get(j);
-                pari.toinen.koodi = muodostaja.muodostaKoodi(pari.toinen.pituus);
+                Pari<TiedostoBlokki, HuffmanKoodi> pari = lista.get(j);
+                pari.toinen.koodi = muodostaja.muodostaKanoninenHuffmanKoodi(pari.toinen.pituus);
                 kooditJarjestyksesaHeaderiaVarten.add(pari);
-                kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);                
+                kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);
             }
         }
     }
@@ -88,12 +88,7 @@ public class Kanonisoija {
     private OmaList<Integer> sorttaaAvaimet(OmaList<Integer> avaimet) {
         OmaList<Integer> paluu = new OmaArrayList<Integer>();
 
-        OmaMinimiPriorityQueue<Integer> heapsort = new OmaMinimiPriorityQueue<Integer>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1 - o2;
-            }
-        });
+        OmaMinimiPriorityQueue<Integer> heapsort = luoHeap();
 
         for (int i = 0; i < avaimet.size(); ++i) {
             heapsort.push(avaimet.get(i));
@@ -106,10 +101,25 @@ public class Kanonisoija {
 
         return paluu;
     }
-
-    private int laskeHashMapilleKoko(OmaMap<Integer, OmaList<Pari<ByteWrapper, Koodi>>> blokkiKoodiLista) {
-        int kerroin = (int) (Math.log(blokkiKoodiLista.size()) / Math.log(2));
-        int koko = (int) Math.pow(2, kerroin);
-        return koko;
+    /**
+     * Apumetodi. Laskee hashmapille koon
+     * @param koko koko josta lasketaan kahden potenssi taulukkoa varten
+     * @return 
+     */
+    private int laskeHashMapilleKoko(int koko) {
+        int kerroin = (int) (Math.log(koko) / Math.log(2));
+        return (int) Math.pow(2, kerroin);
+    }
+    /**
+     * Apumetodi. Luo minimiprioriteettijonon
+     * @return Minimiprioriteettijono
+     */
+    private OmaMinimiPriorityQueue<Integer> luoHeap() {
+        return new OmaMinimiPriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
     }
 }

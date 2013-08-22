@@ -1,0 +1,391 @@
+Pakataan pieni.txt blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.0015840530395507812 megatavua (1.6220703125 kilotavua)
+Pakkaamiseen kului 60 ms
+Käsiteltiin 0.026083233678366645 megatavua/sekunti
+Pakatun tiedoston koko: 0.0010881423950195312 megatavua (1.1142578125kilotavua)
+Tiivistysprosentti: 31.306441902468396%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.0015840530395507812 megatavua
+Purkamiseen kului 18.319824 ms
+Käsiteltiin 0.0864666079516256 megatavua/sekunti
+
+Pakataan pieni.txt blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.0015840530395507812 megatavua (1.6220703125 kilotavua)
+Pakkaamiseen kului 32 ms
+Käsiteltiin 0.049017282486540616 megatavua/sekunti
+Pakatun tiedoston koko: 0.0015344619750976562 megatavua (1.5712890625kilotavua)
+Tiivistysprosentti: 3.130644190246834%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.0015840530395507812 megatavua
+Purkamiseen kului 12.293124 ms
+Käsiteltiin 0.12885683407657655 megatavua/sekunti
+
+Pakataan pieni.txt blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.0015840530395507812 megatavua (1.6220703125 kilotavua)
+Pakkaamiseen kului 20 ms
+Käsiteltiin 0.07585389953328339 megatavua/sekunti
+Pakatun tiedoston koko: 0.00196075439453125 megatavua (2.0078125kilotavua)
+Tiivistysprosentti: -23.780854906682713%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.0015840530395507812 megatavua
+Purkamiseen kului 7.239319 ms
+Käsiteltiin 0.21881243795870595 megatavua/sekunti
+
+Pakataan pieni.txt blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.0015840530395507812 megatavua (1.6220703125 kilotavua)
+Pakkaamiseen kului 61 ms
+Käsiteltiin 0.025878484514398514 megatavua/sekunti
+Pakatun tiedoston koko: 0.0019502639770507812 megatavua (1.9970703125kilotavua)
+Tiivistysprosentti: -23.118603251053592%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.0015840530395507812 megatavua
+Purkamiseen kului 2.803898 ms
+Käsiteltiin 0.5649467418396751 megatavua/sekunti
+
+Pakataan keskisuuri.txt blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.01737213134765625 megatavua (17.7890625 kilotavua)
+Pakkaamiseen kului 44 ms
+Käsiteltiin 0.3902210023625409 megatavua/sekunti
+Pakatun tiedoston koko: 0.01035308837890625 megatavua (10.6015625kilotavua)
+Tiivistysprosentti: 40.40404040404041%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.01737213134765625 megatavua
+Purkamiseen kului 13.911 ms
+Käsiteltiin 1.2488053588998813 megatavua/sekunti
+
+Pakataan keskisuuri.txt blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.01737213134765625 megatavua (17.7890625 kilotavua)
+Pakkaamiseen kului 26 ms
+Käsiteltiin 0.6458581849230673 megatavua/sekunti
+Pakatun tiedoston koko: 0.010779380798339844 megatavua (11.0380859375kilotavua)
+Tiivistysprosentti: 37.95015371102327%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.01737213134765625 megatavua
+Purkamiseen kului 10.606657 ms
+Käsiteltiin 1.6378517140373494 megatavua/sekunti
+
+Pakataan keskisuuri.txt blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.01737213134765625 megatavua (17.7890625 kilotavua)
+Pakkaamiseen kului 35 ms
+Käsiteltiin 0.4843826086113902 megatavua/sekunti
+Pakatun tiedoston koko: 0.015134811401367188 megatavua (15.498046875kilotavua)
+Tiivistysprosentti: 12.878787878787879%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.01737213134765625 megatavua
+Purkamiseen kului 13.324463 ms
+Käsiteltiin 1.303777221465229 megatavua/sekunti
+
+Pakataan keskisuuri.txt blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.01737213134765625 megatavua (17.7890625 kilotavua)
+Pakkaamiseen kului 34 ms
+Käsiteltiin 0.5069756588052837 megatavua/sekunti
+Pakatun tiedoston koko: 0.018784523010253906 megatavua (19.2353515625kilotavua)
+Tiivistysprosentti: -8.130215195432577%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.01737213134765625 megatavua
+Purkamiseen kului 12.313422 ms
+Käsiteltiin 1.410828878248163 megatavua/sekunti
+
+Pakataan loremipsum.txt blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.07208919525146484 megatavua (73.8193359375 kilotavua)
+Pakkaamiseen kului 36 ms
+Käsiteltiin 1.9770171250829245 megatavua/sekunti
+Pakatun tiedoston koko: 0.038421630859375 megatavua (39.34375kilotavua)
+Tiivistysprosentti: 46.70264978635023%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.07208919525146484 megatavua
+Purkamiseen kului 13.677575 ms
+Käsiteltiin 5.270612316252321 megatavua/sekunti
+
+Pakataan loremipsum.txt blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.07208919525146484 megatavua (73.8193359375 kilotavua)
+Pakkaamiseen kului 15 ms
+Käsiteltiin 4.5124062041843 megatavua/sekunti
+Pakatun tiedoston koko: 0.035140037536621094 megatavua (35.9833984375kilotavua)
+Tiivistysprosentti: 51.25477900808298%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.07208919525146484 megatavua
+Purkamiseen kului 11.864421 ms
+Käsiteltiin 6.0760820314337165 megatavua/sekunti
+
+Pakataan loremipsum.txt blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.07208919525146484 megatavua (73.8193359375 kilotavua)
+Pakkaamiseen kului 18 ms
+Käsiteltiin 3.829903183570963 megatavua/sekunti
+Pakatun tiedoston koko: 0.03498363494873047 megatavua (35.8232421875kilotavua)
+Tiivistysprosentti: 51.471736053233855%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.07208919525146484 megatavua
+Purkamiseen kului 44.737075 ms
+Käsiteltiin 1.6113971521710984 megatavua/sekunti
+
+Pakataan loremipsum.txt blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 0.07208919525146484 megatavua (73.8193359375 kilotavua)
+Pakkaamiseen kului 29 ms
+Käsiteltiin 2.4122460902443366 megatavua/sekunti
+Pakatun tiedoston koko: 0.041930198669433594 megatavua (42.9365234375kilotavua)
+Tiivistysprosentti: 41.835668267386325%
+
+
+Puretaan...
+Puretun tiedoston koko: 0.07208919525146484 megatavua
+Purkamiseen kului 27.427592 ms
+Käsiteltiin 2.6283457640563137 megatavua/sekunti
+
+Pakataan suuri.xml blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 2.8759517669677734 megatavua (2944.974609375 kilotavua)
+Pakkaamiseen kului 1063 ms
+Käsiteltiin 2.7031425531704283 megatavua/sekunti
+Pakatun tiedoston koko: 1.7108345031738281 megatavua (1751.89453125kilotavua)
+Tiivistysprosentti: 40.51240626411386%
+
+
+Puretaan...
+Puretun tiedoston koko: 2.8759517669677734 megatavua
+Purkamiseen kului 527.842122 ms
+Käsiteltiin 5.448507512190877 megatavua/sekunti
+
+Pakataan suuri.xml blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 2.8759517669677734 megatavua (2944.974609375 kilotavua)
+Pakkaamiseen kului 444 ms
+Käsiteltiin 6.473925722120896 megatavua/sekunti
+Pakatun tiedoston koko: 1.1674737930297852 megatavua (1195.4931640625kilotavua)
+Tiivistysprosentti: 59.4056546274871%
+
+
+Puretaan...
+Puretun tiedoston koko: 2.8759517669677734 megatavua
+Purkamiseen kului 328.122162 ms
+Käsiteltiin 8.764881193754213 megatavua/sekunti
+
+Pakataan suuri.xml blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 2.8759517669677734 megatavua (2944.974609375 kilotavua)
+Pakkaamiseen kului 340 ms
+Käsiteltiin 8.434636082968183 megatavua/sekunti
+Pakatun tiedoston koko: 0.8496561050415039 megatavua (870.0478515625kilotavua)
+Tiivistysprosentti: 70.45652452171237%
+
+
+Puretaan...
+Puretun tiedoston koko: 2.8759517669677734 megatavua
+Purkamiseen kului 220.388381 ms
+Käsiteltiin 13.04947091093597 megatavua/sekunti
+
+Pakataan suuri.xml blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 2.8759517669677734 megatavua (2944.974609375 kilotavua)
+Pakkaamiseen kului 307 ms
+Käsiteltiin 9.357728030239574 megatavua/sekunti
+Pakatun tiedoston koko: 0.6653366088867188 megatavua (681.3046875kilotavua)
+Tiivistysprosentti: 76.86551573887455%
+
+
+Puretaan...
+Puretun tiedoston koko: 2.8759517669677734 megatavua
+Purkamiseen kului 176.157001 ms
+Käsiteltiin 16.326071349090313 megatavua/sekunti
+
+Pakataan kuva.BMP blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 6.729179382324219 megatavua (6890.6796875 kilotavua)
+Pakkaamiseen kului 1709 ms
+Käsiteltiin 3.9354609943662178 megatavua/sekunti
+Pakatun tiedoston koko: 5.376490592956543 megatavua (5505.5263671875kilotavua)
+Tiivistysprosentti: 20.10183876091687%
+
+
+Puretaan...
+Puretun tiedoston koko: 6.729179382324219 megatavua
+Purkamiseen kului 1236.954894 ms
+Käsiteltiin 5.4401170284906275 megatavua/sekunti
+
+Pakataan kuva.BMP blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 6.729179382324219 megatavua (6890.6796875 kilotavua)
+Pakkaamiseen kului 2221 ms
+Käsiteltiin 3.028822885007224 megatavua/sekunti
+Pakatun tiedoston koko: 4.706061363220215 megatavua (4819.0068359375kilotavua)
+Tiivistysprosentti: 30.06485492745522%
+
+
+Puretaan...
+Puretun tiedoston koko: 6.729179382324219 megatavua
+Purkamiseen kului 1569.40224 ms
+Käsiteltiin 4.287734024340515 megatavua/sekunti
+
+Pakataan kuva.BMP blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 6.729179382324219 megatavua (6890.6796875 kilotavua)
+Pakkaamiseen kului 3396 ms
+Käsiteltiin 1.9814043093852005 megatavua/sekunti
+Pakatun tiedoston koko: 5.23642635345459 megatavua (5362.1005859375kilotavua)
+Tiivistysprosentti: 22.18328482653765%
+
+
+Puretaan...
+Puretun tiedoston koko: 6.729179382324219 megatavua
+Purkamiseen kului 2666.775038 ms
+Käsiteltiin 2.5233397217377953 megatavua/sekunti
+
+Pakataan kuva.BMP blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 6.729179382324219 megatavua (6890.6796875 kilotavua)
+Pakkaamiseen kului 3238 ms
+Käsiteltiin 2.0777163064298176 megatavua/sekunti
+Pakatun tiedoston koko: 5.677299499511719 megatavua (5813.5546875kilotavua)
+Tiivistysprosentti: 15.631621971254194%
+
+
+Puretaan...
+Puretun tiedoston koko: 6.729179382324219 megatavua
+Purkamiseen kului 3288.695414 ms
+Käsiteltiin 2.046154640432207 megatavua/sekunti
+
+Pakataan kuva2.BMP blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 7.910209655761719 megatavua (8100.0546875 kilotavua)
+Pakkaamiseen kului 1847 ms
+Käsiteltiin 4.2821084183562865 megatavua/sekunti
+Pakatun tiedoston koko: 6.255923271179199 megatavua (6406.0654296875kilotavua)
+Tiivistysprosentti: 20.91330643022279%
+
+
+Puretaan...
+Puretun tiedoston koko: 7.910209655761719 megatavua
+Purkamiseen kului 1388.625037 ms
+Käsiteltiin 5.69643312268877 megatavua/sekunti
+
+Pakataan kuva2.BMP blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 7.910209655761719 megatavua (8100.0546875 kilotavua)
+Pakkaamiseen kului 1443 ms
+Käsiteltiin 5.480570953327365 megatavua/sekunti
+Pakatun tiedoston koko: 4.679620742797852 megatavua (4791.931640625kilotavua)
+Tiivistysprosentti: 40.84074953197654%
+
+
+Puretaan...
+Puretun tiedoston koko: 7.910209655761719 megatavua
+Purkamiseen kului 1054.293494 ms
+Käsiteltiin 7.502853523026406 megatavua/sekunti
+
+Pakataan kuva2.BMP blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 7.910209655761719 megatavua (8100.0546875 kilotavua)
+Pakkaamiseen kului 1670 ms
+Käsiteltiin 4.734749606789 megatavua/sekunti
+Pakatun tiedoston koko: 4.454099655151367 megatavua (4560.998046875kilotavua)
+Tiivistysprosentti: 43.69176230484555%
+
+
+Puretaan...
+Puretun tiedoston koko: 7.910209655761719 megatavua
+Purkamiseen kului 1419.872117 ms
+Käsiteltiin 5.571071902218162 megatavua/sekunti
+
+Pakataan kuva2.BMP blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 7.910209655761719 megatavua (8100.0546875 kilotavua)
+Pakkaamiseen kului 1266 ms
+Käsiteltiin 6.247297991444353 megatavua/sekunti
+Pakatun tiedoston koko: 3.5030956268310547 megatavua (3587.169921875kilotavua)
+Tiivistysprosentti: 55.71425057894093%
+
+
+Puretaan...
+Puretun tiedoston koko: 7.910209655761719 megatavua
+Purkamiseen kului 1129.235112 ms
+Käsiteltiin 7.004927115445308 megatavua/sekunti
+
+Pakataan valtava.txt blokkikoolla 1...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 66.12327289581299 megatavua (67710.2314453125 kilotavua)
+Pakkaamiseen kului 15414 ms
+Käsiteltiin 4.289599537111349 megatavua/sekunti
+Pakatun tiedoston koko: 40.25482177734375 megatavua (41220.9375kilotavua)
+Tiivistysprosentti: 39.12155279916168%
+
+
+Puretaan...
+Puretun tiedoston koko: 66.12327289581299 megatavua
+Purkamiseen kului 8737.589901 ms
+Käsiteltiin 7.567678690006418 megatavua/sekunti
+
+Pakataan valtava.txt blokkikoolla 2...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 66.12327289581299 megatavua (67710.2314453125 kilotavua)
+Pakkaamiseen kului 10926 ms
+Käsiteltiin 6.051862090122368 megatavua/sekunti
+Pakatun tiedoston koko: 31.44301986694336 megatavua (32197.65234375kilotavua)
+Tiivistysprosentti: 52.44787729051692%
+
+
+Puretaan...
+Puretun tiedoston koko: 66.12327289581299 megatavua
+Purkamiseen kului 8024.687387 ms
+Käsiteltiin 8.239981161500788 megatavua/sekunti
+
+Pakataan valtava.txt blokkikoolla 3...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 66.12327289581299 megatavua (67710.2314453125 kilotavua)
+Pakkaamiseen kului 9635 ms
+Käsiteltiin 6.862343749768392 megatavua/sekunti
+Pakatun tiedoston koko: 26.458827018737793 megatavua (27093.8388671875kilotavua)
+Tiivistysprosentti: 59.985605884288894%
+
+
+Puretaan...
+Puretun tiedoston koko: 66.12327289581299 megatavua
+Purkamiseen kului 7010.84008 ms
+Käsiteltiin 9.431576264939277 megatavua/sekunti
+
+Pakataan valtava.txt blokkikoolla 4...
+Aloitetaan pakkaaminen
+Pakattavan tiedoston koko 66.12327289581299 megatavua (67710.2314453125 kilotavua)
+Pakkaamiseen kului 10712 ms
+Käsiteltiin 6.172578354513537 megatavua/sekunti
+Pakatun tiedoston koko: 23.63088893890381 megatavua (24198.0302734375kilotavua)
+Tiivistysprosentti: 64.26237252935472%
+
+
+Puretaan...
+Puretun tiedoston koko: 66.12327289581299 megatavua
+Purkamiseen kului 7932.370494 ms
+Käsiteltiin 8.335878026099293 megatavua/sekunti

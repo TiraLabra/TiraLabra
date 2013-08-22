@@ -19,7 +19,7 @@ import java.util.Arrays;
  * worst case 19 + 9*(oikea koko*2) koska arraylist tuplaa kokonsa kasvatessaan.
  * Hash code tarvitaan että voidaan käyttää indeksinä hashmapille
  */
-public class ByteWrapper {
+public class TiedostoBlokki {
 
     public byte[] byteTaulukko;
 
@@ -70,7 +70,7 @@ public class ByteWrapper {
             return false;
         }
 
-        final ByteWrapper other = (ByteWrapper) obj;
+        final TiedostoBlokki other = (TiedostoBlokki) obj;
         if (hashCode() != other.hashCode()) {
             return false;
         }

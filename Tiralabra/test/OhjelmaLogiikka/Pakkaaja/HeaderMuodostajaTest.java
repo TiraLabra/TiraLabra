@@ -6,8 +6,8 @@ package OhjelmaLogiikka.Pakkaaja;
 
 import TestiTiedostoLuokat.TestiKirjoittaja;
 import TestiTiedostoLuokat.TestiLukija;
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.TiedostoBlokki;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaArrayList;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.Pari;
@@ -27,7 +27,7 @@ public class HeaderMuodostajaTest {
 
     private HeaderMuodostaja muodostaja;
     private TestiKirjoittaja kirjoittaja;
-    OmaList<Pari<ByteWrapper, Koodi>> koodit;
+    OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> koodit;
 
     public HeaderMuodostajaTest() {
     }
@@ -211,15 +211,15 @@ public class HeaderMuodostajaTest {
         }
     }
 
-    private OmaList<Pari<ByteWrapper, Koodi>> luoKoodit() {
+    private OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> luoKoodit() {
 
-        Pari<ByteWrapper, Koodi> pari;
-        OmaList<Pari<ByteWrapper, Koodi>> paluu = new OmaArrayList<Pari<ByteWrapper, Koodi>>();
+        Pari<TiedostoBlokki, HuffmanKoodi> pari;
+        OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> paluu = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>();
 
-        ByteWrapper wrapper = new ByteWrapper();
+        TiedostoBlokki wrapper = new TiedostoBlokki();
 
-        pari = new Pari<ByteWrapper, Koodi>();
-        Koodi koodi = new Koodi();
+        pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.pituus = 2;
         koodi.koodi = 0;
         wrapper.byteTaulukko = new byte[]{'a'};
@@ -227,9 +227,9 @@ public class HeaderMuodostajaTest {
         pari.toinen = koodi;
         paluu.add(pari);
 
-        pari = new Pari<ByteWrapper, Koodi>();
-        koodi = new Koodi();
-        wrapper = new ByteWrapper();
+        pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
+        koodi = new HuffmanKoodi();
+        wrapper = new TiedostoBlokki();
         koodi.pituus = 2;
         koodi.koodi = 1;
         wrapper.byteTaulukko = new byte[]{'b'};
@@ -237,9 +237,9 @@ public class HeaderMuodostajaTest {
         pari.toinen = koodi;
         paluu.add(pari);
 
-        pari = new Pari<ByteWrapper, Koodi>();
-        koodi = new Koodi();
-        wrapper = new ByteWrapper();
+        pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
+        koodi = new HuffmanKoodi();
+        wrapper = new TiedostoBlokki();
         koodi.pituus = 3;
         koodi.koodi = 7;
         wrapper.byteTaulukko = new byte[]{'c'};
@@ -247,9 +247,9 @@ public class HeaderMuodostajaTest {
         pari.toinen = koodi;
         paluu.add(pari);
 
-        pari = new Pari<ByteWrapper, Koodi>();
-        koodi = new Koodi();
-        wrapper = new ByteWrapper();
+        pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
+        koodi = new HuffmanKoodi();
+        wrapper = new TiedostoBlokki();
         koodi.pituus = 3;
         koodi.koodi = 5;
         wrapper.byteTaulukko = new byte[]{'d'};
@@ -257,9 +257,9 @@ public class HeaderMuodostajaTest {
         pari.toinen = koodi;
         paluu.add(pari);
 
-        pari = new Pari<ByteWrapper, Koodi>();
-        koodi = new Koodi();
-        wrapper = new ByteWrapper();
+        pari = new Pari<TiedostoBlokki, HuffmanKoodi>();
+        koodi = new HuffmanKoodi();
+        wrapper = new TiedostoBlokki();
         koodi.pituus = 4;
         koodi.koodi = 15;
         wrapper.byteTaulukko = new byte[]{'e'};

@@ -6,8 +6,8 @@ package OhjelmaLogiikka.Pakkaaja;
 
 import TestiTiedostoLuokat.TestiKirjoittaja;
 import TestiTiedostoLuokat.TestiLukija;
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.TiedostoBlokki;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaMap;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class TiivistajaTest {
     private Tiivistaja tiivistaja;
     private TestiLukija lukija;
     private TestiKirjoittaja kirjoittaja;
-    private OmaMap<ByteWrapper, Koodi> koodit;
+    private OmaMap<TiedostoBlokki, HuffmanKoodi> koodit;
 
     public TiivistajaTest() {
     }
@@ -46,7 +46,7 @@ public class TiivistajaTest {
         lukija = new TestiLukija();
         lukija.tavut = "abcde".getBytes();
         kirjoittaja = new TestiKirjoittaja();
-        koodit = new OmaHashMap<ByteWrapper, Koodi>();
+        koodit = new OmaHashMap<TiedostoBlokki, HuffmanKoodi>();
         luoKoodit();
     }
 
@@ -101,39 +101,39 @@ public class TiivistajaTest {
     }
 
     private void luoKoodit() {
-        ByteWrapper wrapper;
-        Koodi koodi;
+        TiedostoBlokki wrapper;
+        HuffmanKoodi koodi;
 
-        wrapper = new ByteWrapper();
-        koodi = new Koodi();
+        wrapper = new TiedostoBlokki();
+        koodi = new HuffmanKoodi();
         wrapper.byteTaulukko = new byte[]{'a'};
         koodi.pituus = 2;
         koodi.koodi = 0;
         koodit.put(wrapper, koodi);
 
-        wrapper = new ByteWrapper();
-        koodi = new Koodi();
+        wrapper = new TiedostoBlokki();
+        koodi = new HuffmanKoodi();
         wrapper.byteTaulukko = new byte[]{'b'};
         koodi.pituus = 3;
         koodi.koodi = 1;
         koodit.put(wrapper, koodi);
 
-        wrapper = new ByteWrapper();
-        koodi = new Koodi();
+        wrapper = new TiedostoBlokki();
+        koodi = new HuffmanKoodi();
         wrapper.byteTaulukko = new byte[]{'c'};
         koodi.pituus = 3;
         koodi.koodi = 2;
         koodit.put(wrapper, koodi);
 
-        wrapper = new ByteWrapper();
-        koodi = new Koodi();
+        wrapper = new TiedostoBlokki();
+        koodi = new HuffmanKoodi();
         wrapper.byteTaulukko = new byte[]{'d'};
         koodi.pituus = 4;
         koodi.koodi = 4;
         koodit.put(wrapper, koodi);
 
-        wrapper = new ByteWrapper();
-        koodi = new Koodi();
+        wrapper = new TiedostoBlokki();
+        koodi = new HuffmanKoodi();
         wrapper.byteTaulukko = new byte[]{'e'};
         koodi.pituus = 4;
         koodi.koodi = 8;

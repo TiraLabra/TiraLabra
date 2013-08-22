@@ -8,14 +8,14 @@ import java.util.Comparator;
  * maksimiprioriteettijonon - tosin comparatorin toiminnan ympäri kääntämällä
  * toimii myös maksimiprioriteettijonona mutta tällöin rikotaan compare-metodin
  * kontraktia. Lisäksi add-operaatio olettaa aina että keko toteuttaa kekoehdon
- * 
+ *
  * Metodien javadocit rajapinnan yhteydessä
- * 
+ *
  * @param <T> Varastoitavan objektin tyyppi
  */
 public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
-    OmaList<T> keko;
+    OmaArrayList<T> keko;
     Comparator<T> vertaaja;
 
     /**
@@ -46,16 +46,18 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
         keko.add(e);
         int paikka = keko.size() - 1;
-        if (paikka != 0) {
-            while (true) {
-                if (vertaaja.compare(keko.get(haeVanhemmanIndeksi(paikka)), keko.get(paikka)) > 0) {
-                    vaihda(haeVanhemmanIndeksi(paikka), paikka);
-                    paikka = haeVanhemmanIndeksi(paikka);
-                } else {
-                    break;
-                }
+
+        while (paikka != 0) {
+            int vanhemmanIndeksi = haeVanhemmanIndeksi(paikka);
+
+            if (vertaaja.compare(keko.get(vanhemmanIndeksi), keko.get(paikka)) > 0) {
+                vaihda(vanhemmanIndeksi, paikka);
+                paikka = vanhemmanIndeksi;
+            } else {
+                break;
             }
         }
+
 
 
         return true;
@@ -72,9 +74,9 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
 
         return paluu;
     }
-    
+
     private int haeVasemmanLapsenIndeksi(int i) {
-        return 2 * (i + 1) - 1;
+        return ((i + 1) << 1) - 1;
     }
 
     private T haeVasenLapsi(int i) {
@@ -96,11 +98,12 @@ public class OmaMinimiPriorityQueue<T> implements OmaQueue<T> {
     }
 
     private int haeOikeanLapsenIndeksi(int i) {
-        return 2 * (i + 1);
+        return (i + 1) << 1;
     }
 
     private int haeVanhemmanIndeksi(int i) {
-        return (i - 1) / 2;
+        return (i - 1) >>> 1;
+        
     }
 
     // suoraan luentomonisteesta napattu - varmistaa että keko toteuttaa kekoehdon

@@ -9,21 +9,18 @@ import OhjelmaLogiikka.Pakkaaja.Tiivistaja;
 import OhjelmaLogiikka.Purkaja.PurkuKoodi;
 import TestiTiedostoLuokat.TestiKirjoittaja;
 import TestiTiedostoLuokat.TestiLukija;
-import Tiedostokasittely.TiedostoKirjoittaja;
-import Tiedostokasittely.TiedostoLukija;
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
-import java.io.FileNotFoundException;
+import Tietorakenteet.TiedostoBlokki;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class TiedostonPakkausJaPurkuTest {
 
@@ -110,25 +107,29 @@ public class TiedostonPakkausJaPurkuTest {
         KoodiMuodostaja koodiMuodostaja = new KoodiMuodostaja(blokkiKoko);
         Tiivistaja tiivistaja = new Tiivistaja(blokkiKoko);
 
-        OmaMap<ByteWrapper, Koodi> pakkausKoodit = koodiMuodostaja.muodostaKoodit(lukija);
+        OmaMap<TiedostoBlokki, HuffmanKoodi> pakkausKoodit = koodiMuodostaja.muodostaKoodit(lukija);
         TestiKirjoittaja kirjoittaja = new TestiKirjoittaja();
         kirjoittaja.avaaTiedosto();
         int bittejaKaytetty = tiivistaja.tiivista(lukija, kirjoittaja, pakkausKoodit);
-        
+
         assertTrue("Tiivistetty tiedosto suurempi kuin alkuperäinen!", kirjoittaja.koko() < lukija.koko());
-        
+
         TestiLukija uusi = new TestiLukija();
         uusi.tavut = kirjoittaja.haeTavut();
 
         PurkuKoodi purkaja = new PurkuKoodi();
         purettu.avaaTiedosto();
-        purkaja.kasitteleTiedosto(uusi, purettu, bittejaKaytetty, muodostaPurkuKoodit(pakkausKoodit));
+        try {
+            purkaja.kasitteleTiedosto(uusi, purettu, bittejaKaytetty, muodostaPurkuKoodit(pakkausKoodit));
+        } catch (Exception ex) {
+            assertTrue("Ei pitäisi tapahtua...", false);
+        }
     }
 
-    private OmaMap<Koodi, byte[]> muodostaPurkuKoodit(OmaMap<ByteWrapper, Koodi> pakkausKoodit) {
-        OmaMap<Koodi, byte[]> paluu = new OmaHashMap<Koodi, byte[]>();
+    private OmaMap<HuffmanKoodi, byte[]> muodostaPurkuKoodit(OmaMap<TiedostoBlokki, HuffmanKoodi> pakkausKoodit) {
+        OmaMap<HuffmanKoodi, byte[]> paluu = new OmaHashMap<HuffmanKoodi, byte[]>();
 
-        OmaList<ByteWrapper> avaimet = pakkausKoodit.avaimet();
+        OmaList<TiedostoBlokki> avaimet = pakkausKoodit.avaimet();
         for (int i = 0; i < avaimet.size(); ++i) {
             paluu.put(pakkausKoodit.get(avaimet.get(i)), avaimet.get(i).byteTaulukko);
         }

@@ -3,7 +3,7 @@ package OhjelmaLogiikka.Purkaja;
 
 import OhjelmaLogiikka.Purkaja.HeaderLukija;
 import TestiTiedostoLuokat.TestiLukija;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.Pari;
@@ -58,7 +58,7 @@ public class HeaderLukijaTest {
         // 5 merkitsevää bittiä, - blokkikoko 1 - 8 bittiä koodissa, 'a' blokki, 8 bittiä koodissa, 'b' blokki. 128 offset
         tiedosto.tavut = new byte[]{(5 - 128), (1 - 128), (2 - 128), 'a', (2 - 128), 'b', (3 - 128), 'c'};
                 
-        Pari<Integer, OmaMap<Koodi, byte[]>> koodit = headerLukija.lueHeader(tiedosto);
+        Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> koodit = headerLukija.lueHeader(tiedosto);
         assertEquals("Väärä merkitsevien tavujen määrä", new Integer(5), koodit.ensimmainen);
     }
 
@@ -70,12 +70,12 @@ public class HeaderLukijaTest {
         // kanonisoituna pitäisi lukea 00, 10 ja  001 eli 0, 2 ja 1 integereinä (tallennettu longiin)
         // ensiksi 00 a:lle, 0 + 1 = 01, bittijärjestys käännetään ennen palautusta -> 10 b
         // 01 + 1 = 10, koska pituus suurempi (3 vs 2) shifti oikealle -> 100, käännös -> 001 c
-        Pari<Integer, OmaMap<Koodi, byte[]>> koodit = headerLukija.lueHeader(tiedosto);
-        Koodi koodi = new Koodi();
+        Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> koodit = headerLukija.lueHeader(tiedosto);
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.pituus = 2;
         koodi.koodi = 0;
         
-        OmaList<Koodi> avaimet = koodit.toinen.avaimet();
+        OmaList<HuffmanKoodi> avaimet = koodit.toinen.avaimet();
     
         assertEquals("A:n koodi väärä", 'a', koodit.toinen.get(koodi)[0]);
         koodi.koodi = 2;

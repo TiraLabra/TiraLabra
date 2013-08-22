@@ -1,12 +1,10 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import Tiedostokasittely.ITiedostoKirjoittaja;
-import Tiedostokasittely.TiedostoKirjoittaja;
-import Tietorakenteet.ByteWrapper;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.TiedostoBlokki;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.Pari;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -19,7 +17,8 @@ public class HeaderMuodostaja {
     private int blokinPituus;
 
     /**
-     * Luo header-tiedoston annettujen parametrien perusteella
+     * Luo header-tiedoston annettujen parametrien perusteella.
+     * Tiedostoformaatista enemmän tiedostoformaatti.txt-tiedostossa.
      *
      * @param headerKirjoittaja ITiedostoKirjoittaja-rajapinnan toteuttava
      * objekti
@@ -31,10 +30,10 @@ public class HeaderMuodostaja {
      * @throws IOException jos kirjoitus\lukuoperaatoissa vikaa
      * @throws IllegalArgumentException jos merkitsevien bittien määrä on alle 1
      * tai suurempi kuin 8; tai jos blokin pituus yli 255 tai alle 0 tai jos
-     * listassa bytewrapperin koko yli 255 tai jos koodin pituus alle 1 tai
+     * listassa TiedostoBlokin koko yli 255 tai jos koodin pituus alle 1 tai
      * suurempi kuin 64
      */
-    public long muodostaHeader(ITiedostoKirjoittaja headerKirjoittaja, OmaList<Pari<ByteWrapper, Koodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) throws IllegalArgumentException, IOException {
+    public long muodostaHeader(ITiedostoKirjoittaja headerKirjoittaja, OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> koodit, int viimeisessaTavussaMerkitseviaBitteja, int blokinPituus) throws IllegalArgumentException, IOException {
         headerKirjoittaja.avaaTiedosto();
         this.blokinPituus = blokinPituus;
         alustaHeader(viimeisessaTavussaMerkitseviaBitteja, headerKirjoittaja);
@@ -92,31 +91,36 @@ public class HeaderMuodostaja {
      * mahdu long-muuttujaan)
      * @throws IOException Jos kirjoituksessa menee jotakin vikaan
      */
-    private void tallennaBlokinTiedot(ByteWrapper blokki, Koodi koodi, ITiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
+    private void tallennaBlokinTiedot(TiedostoBlokki blokki, HuffmanKoodi koodi, ITiedostoKirjoittaja kirjoittaja) throws IllegalArgumentException, IOException {
         if (blokki.size() > 255) {
             throw new IllegalArgumentException("Annetun blokin pituus on suurempi kuin header-formaattiin on varattu tilaa: Pituus: " + blokki.size());
         }
         byte[] puskuri = new byte[1];
-        // jos bittiblokin pituus eroaa blokkipituudesta, tallennetaan
-        // merkitään tämä 0:llä että purkuvaiheessa tiedetään että on poikkeava blokki
-
+        // jos bittiblokin pituus eroaa blokkipituudesta, kirjoitetaan erikoisblokki
+        
         if (blokki.size() != blokinPituus) {
-            puskuri[0] = (byte) (0 - OFFSET);
-            kirjoittaja.kirjoita(puskuri);
-
-            // tallennettavan bittiblokin pituus tavuissa
-            puskuri[0] = (byte) (blokki.size() - OFFSET);
-            kirjoittaja.kirjoita(puskuri);
+            kirjoitaErikoisBlokki(puskuri, kirjoittaja, blokki);
         }
 
+        //   max 64 bittiä koska bittien on mahduttava long-muuttujaan purkuvaiheessa
         if (koodi.pituus > 64 || koodi.pituus <= 0) {
             throw new IllegalArgumentException("Koodin pituus on virheellinen: " + koodi.pituus);
         }
 
         puskuri[0] = (byte) (koodi.pituus - OFFSET);
 
-        kirjoittaja.kirjoita(puskuri); // tallennetaan merkitsevien bittien määrä  - max 64 bittiä koska bittien on mahduttava long-muuttujaan
+        kirjoittaja.kirjoita(puskuri);
         kirjoittaja.kirjoita(blokki.byteTaulukko);
 
+    }
+
+    private void kirjoitaErikoisBlokki(byte[] puskuri, ITiedostoKirjoittaja kirjoittaja, TiedostoBlokki blokki) throws IOException {
+        // merkitään tämä 0:llä että purkuvaiheessa tiedetään että on poikkeava blokki (normaalisti arvo välillä 1 - 64)
+        puskuri[0] = (byte) (0 - OFFSET);
+        kirjoittaja.kirjoita(puskuri);
+
+        // tallennettavan bittiblokin pituus tavuissa
+        puskuri[0] = (byte) (blokki.size() - OFFSET);
+        kirjoittaja.kirjoita(puskuri);
     }
 }

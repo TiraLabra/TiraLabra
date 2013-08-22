@@ -4,7 +4,7 @@ import OhjelmaLogiikka.KanonisoidunKoodinMuodostaja;
 import OhjelmaLogiikka.BittiUtility;
 import Tiedostokasittely.ITiedostoLukija;
 import Tiedostokasittely.TiedostoLukija;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaHashMap;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.Pari;
@@ -32,11 +32,11 @@ public class HeaderLukija {
      * @throws FileNotFoundException jos annettua tiedostoa ei löydy
      * @throws IOException Jos tapahtuu IO-virhe
      */
-    public Pari<Integer, OmaMap<Koodi, byte[]>> lueHeader(ITiedostoLukija headerLukija) throws FileNotFoundException, IOException {
+    public Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> lueHeader(ITiedostoLukija headerLukija) throws FileNotFoundException, IOException {
 
         headerLukija.avaaTiedosto();
 
-        Pari<Integer, OmaMap<Koodi, byte[]>> paluu = new Pari<Integer, OmaMap<Koodi, byte[]>>();
+        Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> paluu = new Pari<Integer, OmaMap<HuffmanKoodi, byte[]>>();
         lueHeaderinAlku(headerLukija, paluu);
 
         paluu.toinen = lueKoodiBlokkiParit(headerLukija);
@@ -50,7 +50,7 @@ public class HeaderLukija {
      * @param paluu pari joka sisältää muuttujan johonka merkitsevien bittien määrä tallennetaan
      * @throws IOException Jos lukemisessa tapahtuu virhe
      */
-    private void lueHeaderinAlku(ITiedostoLukija headerLukija, Pari<Integer, OmaMap<Koodi, byte[]>> paluu) throws IOException {
+    private void lueHeaderinAlku(ITiedostoLukija headerLukija, Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> paluu) throws IOException {
         byte[] headerAlku = new byte[2];
         if (headerLukija.lue(headerAlku) != 2) {
             throw new IOException("Header-tiedoston korruptoitunut - ensimmäisen kahden tavun luku epäonnistui");
@@ -66,11 +66,12 @@ public class HeaderLukija {
      * @return Taulu jossa on koodi - blokkiparit.
      * @throws IOException 
      */    
-    private OmaMap<Koodi, byte[]> lueKoodiBlokkiParit(ITiedostoLukija headerLukija) throws IOException {
-        OmaMap<Koodi, byte[]> koodit = new OmaHashMap<Koodi, byte[]>();
+    private OmaMap<HuffmanKoodi, byte[]> lueKoodiBlokkiParit(ITiedostoLukija headerLukija) throws IOException {
+        OmaMap<HuffmanKoodi, byte[]> koodit = new OmaHashMap<HuffmanKoodi, byte[]>();
         // generoidut koodit riippuvat edellisistä koodeista, luotava täällä jotta hengissä koko lukutapahtuman ajan
         KanonisoidunKoodinMuodostaja muodostaja = new KanonisoidunKoodinMuodostaja(); 
         while (lueYksiKoodiBlokkiPari(headerLukija, koodit, muodostaja)) {
+            // http://farm3.static.flickr.com/2186/2191798590_c02566b1ca.jpg
         }
 
         return koodit;
@@ -80,27 +81,24 @@ public class HeaderLukija {
      * @param headerLukija header
      * @param koodit taulu johonko koodi-blokkiparit tallennetaan
      * @param muodostaja KanonisoidunKoodinMuodostaja-objekti joka muodostaa koodin joita tarvitaan purkuvaiheessa
-     * @return onko tiedosto luettu loppuun.
+     * @return onko tiedostossa vielä luettavaa.
      * @throws IOException 
      */
-    private boolean lueYksiKoodiBlokkiPari(ITiedostoLukija headerLukija, OmaMap<Koodi, byte[]> koodit, KanonisoidunKoodinMuodostaja muodostaja) throws IOException {
-
+    private boolean lueYksiKoodiBlokkiPari(ITiedostoLukija headerLukija, OmaMap<HuffmanKoodi, byte[]> koodit, KanonisoidunKoodinMuodostaja muodostaja) throws IOException {
         byte[] lukuPuskuri = new byte[1];
-        
         int pituus = blokinPituus;
         
         if (headerLukija.lue(lukuPuskuri) == -1) {
             return false; // tiedoston loppu
         }
+        
         int koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
                 
         // poikkeava blokki - onkin tallennettu blokin pituus koska se on poikkeava (viimeisen tiedostosta luetun blokin pituus ei välttämättä ole sama kuin ilmoitettu blokkipituus)
         if (koodinPituusBiteissa == 0) {
             lueTavu(headerLukija, lukuPuskuri);
-
             pituus = lukuPuskuri[0] + OFFSET;
             lueTavu(headerLukija, lukuPuskuri);
-
             koodinPituusBiteissa = lukuPuskuri[0] + OFFSET;
         }
 
@@ -108,14 +106,7 @@ public class HeaderLukija {
             throw new IOException("Koodin koko virheellinen header-tiedostossa: " + koodinPituusBiteissa);
         }
 
-
-        byte[] blokki = lueBlokki(headerLukija, pituus);
-        Koodi koodi = new Koodi();
-
-        koodi.koodi = muodostaja.muodostaKoodi(koodinPituusBiteissa);
-        koodi.pituus = koodinPituusBiteissa;
-
-        koodit.put(koodi, blokki);
+        muodostaHuffmanKoodi(headerLukija, pituus, muodostaja, koodinPituusBiteissa, koodit);
         return true;
     }
     /**
@@ -144,5 +135,23 @@ public class HeaderLukija {
         if (headerLukija.lue(lukuPuskuri) == 0) {
             throw new IOException("Header-tiedoston korruptoitunut - tavun lukeminen epäonnistui");
         }
+    }
+    /**
+     * Muodostaa annetuista tiedoista yhden huffman-koodin
+     * @param headerLukija Lukija
+     * @param pituus blokin pituus 
+     * @param muodostaja kanonisoidunkoodin muodostaja
+     * @param koodinPituusBiteissa koodin pituus biteissä 
+     * @param koodit taulu koodi-blokki-pareista
+     * @throws IOException Jos lukuoperaatio epäonnistuu
+     */
+    private void muodostaHuffmanKoodi(ITiedostoLukija headerLukija, int pituus, KanonisoidunKoodinMuodostaja muodostaja, int koodinPituusBiteissa, OmaMap<HuffmanKoodi, byte[]> koodit) throws IOException {
+        byte[] blokki = lueBlokki(headerLukija, pituus);
+        HuffmanKoodi koodi = new HuffmanKoodi();
+
+        koodi.koodi = muodostaja.muodostaKanoninenHuffmanKoodi(koodinPituusBiteissa);
+        koodi.pituus = koodinPituusBiteissa;
+
+        koodit.put(koodi, blokki);
     }
 }

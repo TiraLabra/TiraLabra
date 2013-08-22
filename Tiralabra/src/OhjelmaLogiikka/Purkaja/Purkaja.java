@@ -1,8 +1,9 @@
 package OhjelmaLogiikka.Purkaja;
 
+import Poikkeukset.PurkuException;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaMap;
 import Tietorakenteet.Pari;
 import java.io.FileNotFoundException;
@@ -28,22 +29,20 @@ public class Purkaja {
      * @param sisaanTiedosto Tiedosto joka puretaan
      * (tiedostonimi.header-tiedoston oltava myös olemassa)
      * @param ulosTiedosto Tiedosto johonka puretaan
+     * @throws FileNotFoundException Jos sisaanTiedostoa ei löydy
+     * @throws IOException Jos tiedostokäsittelyssä tapahtuu virhe
+     * @throws PurkuException Jos purkamisessa tapahtuu virhe
      */
-    public void pura(String sisaanTiedosto, String ulosTiedosto) {
-        try {
+    public void pura(String sisaanTiedosto, String ulosTiedosto) throws FileNotFoundException, IOException,  PurkuException {
             long aika = System.nanoTime();
 
-            Pari<Integer, OmaMap<Koodi, byte[]>> paluu = (new HeaderLukija()).lueHeader(new TiedostoLukija(sisaanTiedosto + ".header"));
+            Pari<Integer, OmaMap<HuffmanKoodi, byte[]>> paluu = (new HeaderLukija()).lueHeader(new TiedostoLukija(sisaanTiedosto + ".header"));
 
-            OmaMap<Koodi, byte[]> koodit = paluu.toinen;
+            OmaMap<HuffmanKoodi, byte[]> koodit = paluu.toinen;
             int viimeisessaTavussaMerkitseviaBitteja = paluu.ensimmainen;
 
             puraData(sisaanTiedosto, ulosTiedosto, koodit, viimeisessaTavussaMerkitseviaBitteja);
-            tulostaStatsit(aika);
-
-        } catch (Exception ex) {
-            System.out.println("Jotain meni pieleen: " + ex.getMessage());
-        }
+            tulostaStatsit(aika);        
     }
 
     /**
@@ -57,24 +56,26 @@ public class Purkaja {
      * luettavassa tavussa on merkitseviä
      * @throws FileNotFoundException Jos luettavaa tiedostoa ei löydy
      * @throws IOException Jos jotakin menee pieleen lukemisessa tai
+     * @throws PurkuException jos purkamisessa tapahtuu virhe
      * kirjoituksesa
      */
-    private void puraData(String sisaanTiedosto, String ulosTiedosto, OmaMap<Koodi, byte[]> koodit, int viimeisessaTavussaMerkitseviaBitteja) throws FileNotFoundException, IOException {
+    private void puraData(String sisaanTiedosto, String ulosTiedosto, OmaMap<HuffmanKoodi, byte[]> koodit, int viimeisessaTavussaMerkitseviaBitteja) throws FileNotFoundException, IOException, PurkuException {
         TiedostoLukija lukija = new TiedostoLukija(sisaanTiedosto);
         TiedostoKirjoittaja kirjoittaja = new TiedostoKirjoittaja(ulosTiedosto);
         lukija.avaaTiedosto();
         kirjoittaja.avaaTiedosto();
 
         (new PurkuKoodi()).kasitteleTiedosto(lukija, kirjoittaja, viimeisessaTavussaMerkitseviaBitteja, koodit);
-        tiedostonKoko = kirjoittaja.koko();
+        
         lukija.suljeTiedosto();
         kirjoittaja.suljeTiedosto();
+        tiedostonKoko = kirjoittaja.koko();
     }
 
     private void tulostaStatsit(long aika) {
         aika = (System.nanoTime() - aika);
         System.out.println("Puretun tiedoston koko: " + (double) tiedostonKoko / 1024 / 1024 + " megatavua");
-        System.out.println("Purkamiseen kului " + aika / 1000000 + " ms");
+        System.out.println("Purkamiseen kului " + (double)aika / 1000000 + " ms");
         System.out.println("Käsiteltiin " + ((double) tiedostonKoko / 1024 / 1024 / ((double) aika / 1000000000)) + " megatavua/sekunti");
     }
 }

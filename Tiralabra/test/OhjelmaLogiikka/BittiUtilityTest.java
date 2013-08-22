@@ -4,7 +4,7 @@
  */
 package OhjelmaLogiikka;
 
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,28 +39,28 @@ public class BittiUtilityTest {
 
     @Test
     public void testaaEttaHaeBitinArvoPaikastaKoodilleHakeeOikeanArvon1() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 16; // 0000...00010000
         assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(koodi, 4));
     }
 
     @Test
     public void testaaEttaHaeBitinArvoPaikastaKoodilleHakeeOikeanArvon2() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 16; // 0000...00010000
         assertEquals("Bitin arvo väärä", 0, BittiUtility.haeBitinArvoPaikasta(koodi, 3));
     }
 
     @Test
     public void testaaEttaHaeBitinArvoPaikastaKoodilleHakeeOikeanArvon3() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 23; // 0000...00010111
         assertEquals("Bitin arvo väärä", 1, BittiUtility.haeBitinArvoPaikasta(koodi, 1));
     }
 
     @Test
     public void testaaEttaHaeBitinArvoPaikastaKoodilleHakeeOikeanArvon4() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 23; // 0000...00010111
         assertEquals("Bitin arvo väärä", 0, BittiUtility.haeBitinArvoPaikasta(koodi, 3));
     }
@@ -107,28 +107,28 @@ public class BittiUtilityTest {
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleKoodilleToimiiOikein() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 0;
         assertEquals("Bitin arvo väärä", 32, BittiUtility.tallennaBitinArvoPaikalle(koodi, 1, 5)); // 2^5 = 32
     }
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleKoodilleToimiiOikein2() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 16;
         assertEquals("Bitin arvo väärä", 48, BittiUtility.tallennaBitinArvoPaikalle(koodi, 1, 5)); // 32 + 16 = 48
     }
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleKoodilleToimiiOikeinKunBitinArvoJoYksi() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 32;
         assertEquals("Bitin arvo väärä", 32, BittiUtility.tallennaBitinArvoPaikalle(koodi, 1, 5)); // 2^5 = 1
     }
 
     @Test
     public void testaaEttaTallennaBitinArvoPaikalleKoodilleToimiiOikeinKunBitinArvoJoYksi2() {
-        Koodi koodi = new Koodi();
+        HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.koodi = 32;
         assertEquals("Bitin arvo väärä", 32, BittiUtility.tallennaBitinArvoPaikalle(koodi, 0, 5)); // 2^5 = 1
     }

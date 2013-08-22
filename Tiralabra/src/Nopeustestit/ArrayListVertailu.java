@@ -25,9 +25,9 @@ public class ArrayListVertailu {
     }
 
     private long testaaOmaArrayList() {
-        long alku = System.nanoTime();
-        OmaList<Integer> lista = new OmaArrayList<Integer>();
-
+        
+        OmaArrayList<Integer> lista = new OmaArrayList<Integer>();
+        long alku = System.nanoTime();   
         for (int i = 0; i < SISA_LOOP_KOKO; ++i) {
             lista.add(i);
         }
@@ -36,9 +36,9 @@ public class ArrayListVertailu {
     }
 
     private long testaaJavaArrayList() {
+        
+        ArrayList<Integer> lista = new ArrayList<Integer>();
         long alku = System.nanoTime();
-        List<Integer> lista = new ArrayList<Integer>();
-
         for (int i = 0; i < SISA_LOOP_KOKO; ++i) {
             lista.add(i);
         }

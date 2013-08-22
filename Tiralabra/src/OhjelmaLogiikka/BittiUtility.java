@@ -1,6 +1,6 @@
 package OhjelmaLogiikka;
 
-import Tietorakenteet.Koodi;
+import Tietorakenteet.HuffmanKoodi;
 
 /**
  * Utility-luokka bittishiftejä varten jotta koodin lukeminen olisi helpompaa
@@ -8,7 +8,7 @@ import Tietorakenteet.Koodi;
 public class BittiUtility {
 
     /**
-     * Hakee annetun Koodi-objektin koodi-kentästä paikka-muuttujan määrittämän
+     * Hakee annetun HuffmanKoodi-objektin koodi-kentästä paikka-muuttujan määrittämän
      * bitin arvon ja palauttaa sen. Huomaa että metodi ei tarkista että
      * paikka-muuttuja sisältää järkevän arvon vaan tämä on kutsujan vastuulla.
      *
@@ -16,7 +16,7 @@ public class BittiUtility {
      * @param paikka Paikka jolta bitti halutaan
      * @return 0 tai 1 riippuen bitin arvosta
      */
-    public static int haeBitinArvoPaikasta(Koodi koodi, int paikka) {
+    public static int haeBitinArvoPaikasta(HuffmanKoodi koodi, int paikka) {
        return haeBitinArvoPaikasta(koodi.koodi, paikka);
     }
 
@@ -61,7 +61,7 @@ public class BittiUtility {
      * @param paikka Bitin paikka
      * @return koodi-kentän arvo jolle operaatio on toteutettu
      */
-    public static long tallennaBitinArvoPaikalle(Koodi koodi, int arvo, int paikka) {
+    public static long tallennaBitinArvoPaikalle(HuffmanKoodi koodi, int arvo, int paikka) {
         return tallennaBitinArvoPaikalle(koodi.koodi, arvo, paikka);
     }
 

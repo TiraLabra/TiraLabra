@@ -45,8 +45,8 @@ public class KanonisoidunKoodinMuodostajaTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void heittaaIllegalArgumentExceptionKunAnnetaanKoodienPituudetVaarin() {
-        muodostaja.muodostaKoodi(5);
-        muodostaja.muodostaKoodi(4);
+        muodostaja.muodostaKanoninenHuffmanKoodi(5);
+        muodostaja.muodostaKanoninenHuffmanKoodi(4);
     }
 
     @Test
@@ -58,12 +58,12 @@ public class KanonisoidunKoodinMuodostajaTest {
         // käännettynä ympäri: 00, 10, 001, 101, 0011, 1011
         // eli 0, 2, 1, 5, 3, 11 integereinä
 
-        koodit.add(muodostaja.muodostaKoodi(2));
-        koodit.add(muodostaja.muodostaKoodi(2));
-        koodit.add(muodostaja.muodostaKoodi(3));
-        koodit.add(muodostaja.muodostaKoodi(3));
-        koodit.add(muodostaja.muodostaKoodi(4));
-        koodit.add(muodostaja.muodostaKoodi(4));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(2));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(2));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(3));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(3));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(4));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(4));
 
         assertEquals("Muodostettu koodi väärä", new Long(0), koodit.get(0));
         assertEquals("Muodostettu koodi väärä", new Long(2), koodit.get(1));
@@ -82,12 +82,12 @@ public class KanonisoidunKoodinMuodostajaTest {
         // käännettynä ympäri: 00, 0100, 01100, 011100, 111100 ja  000010
         // eli 0, 4, 12, 28, 60, 2 integereinä
 
-        koodit.add(muodostaja.muodostaKoodi(3));
-        koodit.add(muodostaja.muodostaKoodi(4));
-        koodit.add(muodostaja.muodostaKoodi(5));
-        koodit.add(muodostaja.muodostaKoodi(6));
-        koodit.add(muodostaja.muodostaKoodi(6));
-        koodit.add(muodostaja.muodostaKoodi(6));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(3));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(4));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(5));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(6));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(6));
+        koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(6));
 
         assertEquals("Muodostettu koodi väärä", new Long(0), koodit.get(0));
         assertEquals("Muodostettu koodi väärä", new Long(4), koodit.get(1));
@@ -103,7 +103,7 @@ public class KanonisoidunKoodinMuodostajaTest {
 
         for (int i = 4; i < 20; ++i) {
             for (int j = 0; j < 8; ++j) {
-                koodit.add(muodostaja.muodostaKoodi(i));
+                koodit.add(muodostaja.muodostaKanoninenHuffmanKoodi(i));
             }
         }
 

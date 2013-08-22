@@ -5,7 +5,7 @@ package Tietorakenteet;
  * Bitit tallennetaan LSB -> MSB-järjestyksessä eli ensiksi vähiten merkitsevät bitit otetaan käyttöön
  * 
  */
-public class Koodi {
+public class HuffmanKoodi {
 
     public long koodi;
     public int pituus;
@@ -35,7 +35,7 @@ public class Koodi {
             return false;
         }
         
-        final Koodi other = (Koodi) obj;
+        final HuffmanKoodi other = (HuffmanKoodi) obj;
         
         if (this.koodi != other.koodi) {
             return false;
