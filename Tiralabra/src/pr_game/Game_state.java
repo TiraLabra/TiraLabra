@@ -1,13 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package pr_game;
 
 /**
  *
- * @author henrikorpela
+ * @author Henri Korpela
+ * Defines Game states.
  */
 public enum Game_state {
-    MENU,GAME,EXIT;
+    /**
+     * Menu state. Indicates that game is displaying menus.
+     */
+    MENU,
+    /**
+     * Game state indicates that game is playing the game.
+     */
+    GAME,
+    /**
+     * Exit state indicates that program ends during next loop.
+     */
+    EXIT;
 }

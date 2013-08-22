@@ -11,18 +11,18 @@ package pr_data_structures.array_list;
  * My ArrayList class includes same operations as Javas
  * ArrayList class.
  */
-public class Array_list<Type> {
+public class ArrayList<Type> {
     private final int initial_size;
     private int size;
     private int lenght;
     private Node list[];
     
-    public Array_list()
+    public ArrayList()
     {
         this(100);
     }
     
-    public Array_list(int initial_size)
+    public ArrayList(int initial_size)
     {
         this.initial_size = initial_size;
         this.lenght = 0;

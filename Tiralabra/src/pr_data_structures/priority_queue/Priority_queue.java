@@ -12,5 +12,5 @@ public interface Priority_queue<Type> {
     public Type get_min();
     public Type extract_min();
     public void add(Type data,int key);
-    public void decrease_key(int index,int new_key);
+    public void decrease_key(Type type,int new_key);
 }

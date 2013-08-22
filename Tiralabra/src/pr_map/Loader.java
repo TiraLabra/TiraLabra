@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package pr_map;
 
 import java.io.File;
@@ -10,17 +7,48 @@ import java.util.Scanner;
 
 /**
  *
- * @author henrikorpela
+ * @author Henri Korpela
+ * Loads map from file that
+ * is given by the user.
  */
 public class Loader {
+    /**
+     * Name of the map that is loaded.
+     */
     private static String name;
-    private static int widht;
+    /**
+     * Width of the map that is loaded. 
+     */
+    private static int width;
+    /**
+     * Height of the map that is loaded.
+     */
     private static int height;
+    /**
+     * Size of the information header of the map.
+     * Size of the header depends amount of polices
+     * on the map. Header size is used to count offset
+     * for actual map data.
+     */
     private static int header_size;
+    /**
+     * Max size for map width and height.
+     */
     private static final int MAX_SIZE = 500;
+    /**
+     * Min size for map width and height.
+     */
     private static final int MIN_SIZE = 1;
-    
-    
+    /**
+     * Loads map from file. If errors occur during
+     * load operation loading is interrupted.
+     * @param file_name Name of the file where
+     * map is saved.
+     * @param map Map object that loaded map
+     * is loaded.
+     * @return Errors if that occur
+     * during loading. Null if no errors occur.
+     */
     public static Map_errors load_map(String file_name,Map map)
     {
         initialize_modifiers();
@@ -45,9 +73,9 @@ public class Loader {
             String line = reader.nextLine();
             if(line_number == 4)
             {
-                map.create_map(name,widht,height);
+                map.create_map(name,width,height);
             }
-            Map_errors error = interrept_line(line,line_number,map);
+            Map_errors error = interpert_line(line,line_number,map);
             if(error != null)
             {
                 return error;
@@ -56,16 +84,28 @@ public class Loader {
         }
         return null;
     }
-    
+    /**
+     * Initializes all Loader variables.
+     * This methods is called at the start
+     * of the loading process.
+     */
     private static void initialize_modifiers()
     {
-        widht = -1;
+        width = -1;
         height = -1;
         header_size = -1;
         name = null;
     }
-    
-    private static Map_errors interrept_line(String line,int line_number,Map map)
+    /**
+     * Interprets one line of the file.
+     * 
+     * @param line Line to be interpret.
+     * @param line_number Number of the
+     * line in the file.
+     * @param map Map where map is loaded.
+     * @return Errors that occur. Null if no errors occur.
+     */
+    private static Map_errors interpert_line(String line,int line_number,Map map)
     {
         if(police_line(line_number))
         {
@@ -79,8 +119,8 @@ public class Loader {
             case 2:
                 try
                 {
-                    widht = Integer.parseInt(line);
-                    if(widht < MIN_SIZE || widht > MAX_SIZE)
+                    width = Integer.parseInt(line);
+                    if(width < MIN_SIZE || width > MAX_SIZE)
                     {
                         throw new Exception();
                     }
@@ -117,8 +157,18 @@ public class Loader {
                 break;
             case 5: try
                     {
+                        int[] car_position = interrept_coordinates(line);
+                        map.set_get_away_car_position(car_position[0],car_position[1]);
+                    }
+                    catch(Exception e)
+                    {
+                        return Map_errors.INVALID_CAR_POSITION;
+                    }
+            case 6: try
+                    {
                         int ammount_of_police = Integer.parseInt(line);
-                        header_size = 5 + ammount_of_police;
+                        header_size = 6 + ammount_of_police; // Six lines is all
+                        // other header information except pölices.
                     }
                     catch(Exception e)
                     {
@@ -130,7 +180,18 @@ public class Loader {
         }
         return null;
     }
-    
+    /**
+     * Checks whether line is a line that
+     * contains information of polices
+     * position or not. This done by checking
+     * that given linenumber is within header
+     * and that is after all other data in the header.
+     * Police positions are last information in
+     * the header.
+     * @param line_number
+     * @return True if line is police line
+     * false if isn't.
+     */
     private static boolean police_line(int line_number)
     {
         if(header_size != -1 && line_number > 5 && line_number <= header_size)
@@ -139,7 +200,14 @@ public class Loader {
         }
         return false;
     }
-    
+    /**
+     * Interprets police line.
+     * @param line Police line that contains
+     * information of polices position.
+     * @param map Map that police is added.
+     * @return Errors that occur.  Null if no errors occur.
+     * Errors occur if police has invalid position.
+     */
     private static Map_errors interrept_police(String line,Map map)
     {
         try
@@ -154,7 +222,13 @@ public class Loader {
         }
         return null;
     }
-    
+    /**
+     * Reads coordinates from given line.
+     * @param line Line that includes coordinates.
+     * @return Array that contains coordinates.
+     * @throws Exception Throws Exception
+     * if line doesn't contain coordinates.
+     */
     private static int[] interrept_coordinates(String line) throws Exception
     {
         String coordinate_strings[] = line.split(" ");
@@ -167,14 +241,20 @@ public class Loader {
         coordinates[1] = Integer.parseInt(coordinate_strings[1]);
         return coordinates;
     }
-    
+    /**
+     * Checks that coordinates are valid.
+     * Coordinates have to be inside the map.
+     * @param coordinates Coordinates to be checked.
+     * @throws Exception Throws exception id coordinates
+     * are invalid.
+     */
     private static void check_coordinates(int [] coordinates) throws Exception
     {
         if(coordinates.length != 2)
         {
             throw new Exception();
         }
-        if(coordinates[0] < 0 || coordinates[0] >= widht)
+        if(coordinates[0] < 0 || coordinates[0] >= width)
         {
             throw new Exception();
         }
@@ -183,14 +263,21 @@ public class Loader {
             throw new Exception();
         }
     }
-    
+    /**
+     * Interprets line that contains
+     * map data.
+     * @param line Line that contains map data.
+     * @param line_number number of the line.
+     * @param map Map that data is loaded to.
+     * @return Errors that occur.  Null if no errors occur.
+     */
     private static Map_errors interrept_map_line(String line,int line_number,Map map)
     {
         if(!map.has_map_been_created())
         {
             return Map_errors.MAP_CREATION_ERROR;
         }
-        if(line.length() != widht)
+        if(line.length() != width)
         {
             return Map_errors.MAP_DESCRIPTION_WIDHT_ERROR;
         }
@@ -199,10 +286,10 @@ public class Loader {
         {
             return Map_errors.MAP_DESCRIPTION_HEIGHT_ERROR;
         }
-        for(int x = 0;x < widht;x ++)
+        for(int x = 0;x < width;x ++)
         {
             String symbol = get_symbol(line,x);
-            if(!Map_symbols.check_map_symbol(symbol))
+            if(!Map_symbols.check_landscape_symbol(symbol))
             {
                 return Map_errors.INVALID_MAP_SYMBOL;
             }
@@ -210,7 +297,12 @@ public class Loader {
         }
         return null;
     }
-    
+    /**
+     * Return symbol in lines index that is given.
+     * @param line Line thats symbol is read.
+     * @param index Symbols index.
+     * @return Symbol in line in given index.
+     */
     private static String get_symbol(String line,int index)
     {
         char symbol = line.charAt(index);

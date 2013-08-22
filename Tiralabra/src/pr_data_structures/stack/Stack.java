@@ -80,6 +80,25 @@ public class Stack<Type> {
         return first;
     }
     /**
+     * Finds corresponding data from stack.
+     * @param data Data to be found.
+     * @return Data if it's found and
+     * null if data isn't found.
+     */
+    public Type find(Object data)
+    {
+        Node node = this.first;
+        while(node != null)
+        {
+            if(node.getData().equals(data))
+            {
+                return (Type)node.getData();
+            }
+            node = node.prev;
+        }
+        return null;
+    }
+    /**
      * checks if stack contains given data.
      * @param data data that is searched.
      * @return true if data is included in stack. Otherwise false.

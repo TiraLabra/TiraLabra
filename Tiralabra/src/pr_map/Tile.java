@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package pr_map;
 
 /**
  *
- * @author henrikorpela
+ * @author Henri Korpela
+ * 
  */
 public class Tile {
     private int weight;
@@ -16,8 +14,8 @@ public class Tile {
     public Tile(int weight,Map_symbols in_tile,Map_symbols on_tile)
     {
         this.actor_on_tile = on_tile;
-        this.update_weight();
         this.in_tile = in_tile;
+        this.update_weight();
     }
     
     public int get_weight()
@@ -28,7 +26,6 @@ public class Tile {
     public void set_weight(int new_weight)
     {
         this.weight = new_weight;
-        this.update_weight();
     }
     
     public Map_symbols get_in_tile()
@@ -39,6 +36,7 @@ public class Tile {
     public void set_in_tile(Map_symbols in_tile)
     {
         this.in_tile = in_tile;
+        this.update_weight();
     }
     
     public Map_symbols get_actor_on_tile()
@@ -67,6 +65,13 @@ public class Tile {
     
     private void update_weight()
     {
-        this.weight = weight + this.actor_on_tile.get_weight();
+        if(this.actor_on_tile != null)
+        {
+            this.weight = Integer.MAX_VALUE;
+        }
+        else
+        {
+            this.weight = this.in_tile.get_weight();
+        }
     }
 }
