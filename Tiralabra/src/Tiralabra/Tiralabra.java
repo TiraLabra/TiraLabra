@@ -106,7 +106,7 @@ public class Tiralabra {
             fileBytes = FileIO.readFromFile(path);
             return true;
         } catch (IOException ex) {
-            System.out.println("Error reading file: "+ex.getMessage());
+            System.out.println("Error reading file: "+ex.toString());
             return false;
         }
     }

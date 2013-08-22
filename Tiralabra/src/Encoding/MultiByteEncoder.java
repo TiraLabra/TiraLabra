@@ -228,7 +228,7 @@ public class MultiByteEncoder implements Runnable {
                     newPrefix = true;
                 }
 
-                encodedDataIndex = ArrayUtilities.encodeIntoArray(keyBytes, encodedData, encodedDataIndex);
+                encodedDataIndex = ArrayUtilities.encodeIntoArray(keyBytes, encodedData, encodedDataIndex);     //For some reason fails if bytewidth is uneven
 
             } else {
                 
@@ -255,7 +255,7 @@ public class MultiByteEncoder implements Runnable {
                 }
                 
                 if (mb != null) {
-                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);
+                    encodedDataIndex = ArrayUtilities.encodeIntoArray(mb.getBytes(), encodedData, encodedDataIndex);       //For some reason fails if bytewidth is uneven
                 } else {                //the last data is the remainder and is not encoded, make a new prefix but don't make the last prefix as it would mess things up, also subtract one from encoding index so array is properly contrated
                     newPrefix = true;
                     makeLastPrefix = false;
