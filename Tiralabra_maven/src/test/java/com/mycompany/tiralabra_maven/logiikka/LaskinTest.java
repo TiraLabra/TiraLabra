@@ -47,7 +47,7 @@ public class LaskinTest {
     @Before
     public void setUp() {
         laskin  = new Laskin();
-        syote   = new Jono<String>();
+        syote   = new Jono<>();
     }
     
     /**

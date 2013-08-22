@@ -26,7 +26,7 @@ final class AvainArvoJono<K, V> {
      * @param arvo  Lisättävä arvo.
      */
     void lisaa(K avain, V arvo) {
-        AvainArvoSolmu<K, V> solmu = new AvainArvoSolmu<K, V>(avain, arvo);
+        AvainArvoSolmu<K, V> solmu = new AvainArvoSolmu<>(avain, arvo);
         if (ensimmainen == null) {
             ensimmainen = solmu;
             viimeinen = solmu;
@@ -102,7 +102,7 @@ final class AvainArvoJono<K, V> {
         if (ensimmainen == null) {
             return null;
         }
-        Jono<K> paluuarvo = new Jono<K>();
+        Jono<K> paluuarvo = new Jono<>();
         AvainArvoSolmu<K, V> solmu = ensimmainen;
         while (solmu != null) {
             paluuarvo.lisaa(solmu.AVAIN);
@@ -123,7 +123,7 @@ final class AvainArvoJono<K, V> {
         if (ensimmainen == null) {
             return null;
         }
-        Jono<V> paluuarvo = new Jono<V>();
+        Jono<V> paluuarvo = new Jono<>();
         AvainArvoSolmu<K, V> solmu = ensimmainen;
         while (solmu != null) {
             paluuarvo.lisaa(solmu.ARVO);

@@ -34,6 +34,9 @@ public final class Pino<T> {
         return korkeus == 0;
     }
     
+    /**
+     * Poistaa pinosta kaikki alkiot.
+     */
     public void tyhjenna() {
         ylin = null;
         korkeus = 0;
@@ -45,7 +48,7 @@ public final class Pino<T> {
      * @param arvo Pinoon lisättävä alkio.
      */
     public void lisaa(T arvo) {
-        Solmu<T> uusiSolmu = new Solmu<T>(arvo);
+        Solmu<T> uusiSolmu = new Solmu<>(arvo);
         uusiSolmu.seuraaja = ylin;
         ylin = uusiSolmu;
         korkeus++;

@@ -20,7 +20,7 @@ public class HajautuskarttaTest {
     public HajautuskarttaTest() {
     }
     
-    private Hajautuskartta h;
+    private Hajautuskartta hk;
     
     /**
      *
@@ -41,7 +41,7 @@ public class HajautuskarttaTest {
      */
     @Before
     public void setUp() {
-        h = new Hajautuskartta(3);
+        hk = new Hajautuskartta(3);
     }
     
     /**
@@ -66,19 +66,37 @@ public class HajautuskarttaTest {
      */
     @Test
     public void testLisaaJaHae() {
-        h.lisaa('a', 1);
-        h.lisaa('b', 2);
-        h.lisaa('c', 3);
-        h.lisaa('d', 4);
-        h.lisaa('e', 5);
-        h.lisaa('f', 6);
-        h.lisaa('g', 7);
-        h.lisaa('h', 8);
-        h.lisaa('i', 9);
-        h.lisaa('j', 0);
-        h.lisaa('k', 1);
-        h.lisaa('l', 2);
-        assertEquals(5, h.hae('e'));
+        hk.lisaa('a', 1);
+        hk.lisaa('b', 2);
+        hk.lisaa('c', 3);
+        hk.lisaa('d', 4);
+        hk.lisaa('e', 5);
+        hk.lisaa('f', 6);
+        hk.lisaa('g', 7);
+        hk.lisaa('h', 8);
+        hk.lisaa('i', 9);
+        hk.lisaa('j', 0);
+        hk.lisaa('k', 1);
+        hk.lisaa('l', 2);
+        hk.lisaa(' ', 2);
+        hk.lisaa(' ', 3);
+        assertEquals(5, hk.haeEnsimmainen('e'));
+        assertEquals(2, hk.haeEnsimmainen(' '));
+    }
+    
+    @Test
+    public void testHaeKaikki() {
+        hk.lisaa('a', 4);
+        hk.lisaa('b', 5);
+        hk.lisaa('a', 3);
+        hk.lisaa('a', 3);
+        hk.lisaa(' ', 16);
+        Jono<Integer> oikeaVastaus = new Jono<>();
+        oikeaVastaus.lisaa(4);
+        oikeaVastaus.lisaa(3);
+        oikeaVastaus.lisaa(3);
+        AvainArvoJonoTest.vertaaJonoja(oikeaVastaus, hk.haeKaikki('a'));
+        assertNull(hk.haeKaikki('z'));
     }
     
     /**
@@ -88,32 +106,32 @@ public class HajautuskarttaTest {
     public void testToString() {
         String oikeaVastaus = "{(c\u21A63,f\u21A66,i\u21A69,l\u21A62),"
                 + "{a\u21A61},\u2205}";
-        h.lisaa('a', 1);
-        h.lisaa('c', 3);
-        h.lisaa('f', 6);
-        h.lisaa('i', 9);
-        h.lisaa('l', 2);
-        assertEquals(oikeaVastaus, h.toString());
+        hk.lisaa('a', 1);
+        hk.lisaa('c', 3);
+        hk.lisaa('f', 6);
+        hk.lisaa('i', 9);
+        hk.lisaa('l', 2);
+        assertEquals(oikeaVastaus, hk.toString());
     }
     
     @Test
     public void testTayttosuhde() {
-        assertEquals(0, h.tayttosuhde(), 0.000001);
-        h.lisaa('c', 8);
-        assertEquals(1 / 3.0, h.tayttosuhde(), 0.000001);
-        h.lisaa('g', 3);
-        h.lisaa('a', 8);
-        assertEquals(1, h.tayttosuhde(), 0.000001);
+        assertEquals(0, hk.tayttosuhde(), 0.000001);
+        hk.lisaa('c', 8);
+        assertEquals(1 / 3.0, hk.tayttosuhde(), 0.000001);
+        hk.lisaa('g', 3);
+        hk.lisaa('a', 8);
+        assertEquals(1, hk.tayttosuhde(), 0.000001);
     }
     
     @Test
     public void testUudelleenhajauta() {
-        h.lisaa('/', 1);
-        h.lisaa('*', 1);
-        h.lisaa('%', 1);
-        h.lisaa('+', 2);
-        h.lisaa('-', 2);
-        h.uudelleenhajauta(5);
-        assertEquals("{{-\u21A62},\u2205,(*\u21A61,%\u21A61,/\u21A61),{+\u21A62},\u2205}", h.toString());
+        hk.lisaa('/', 1);
+        hk.lisaa('*', 1);
+        hk.lisaa('%', 1);
+        hk.lisaa('+', 2);
+        hk.lisaa('-', 2);
+        hk.uudelleenhajauta(5);
+        assertEquals("{{-\u21A62},\u2205,(*\u21A61,%\u21A61,/\u21A61),{+\u21A62},\u2205}", hk.toString());
     }
 }

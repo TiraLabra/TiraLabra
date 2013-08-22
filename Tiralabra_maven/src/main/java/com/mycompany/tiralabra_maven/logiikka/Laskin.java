@@ -18,7 +18,7 @@ public final class Laskin {
      * Palauttaa luokan uuden instanssin.
      */
     public Laskin() {
-        PINO = new Pino<Integer>();
+        PINO = new Pino<>();
         
     }
     

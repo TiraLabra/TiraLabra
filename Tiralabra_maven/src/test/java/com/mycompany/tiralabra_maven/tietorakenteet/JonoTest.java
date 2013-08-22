@@ -43,7 +43,7 @@ public class JonoTest {
      */
     @Before
     public void setUp() {
-        jono            = new Jono<Object>();
+        jono            = new Jono<>();
         testiObjekti    = new Object();
     }
     

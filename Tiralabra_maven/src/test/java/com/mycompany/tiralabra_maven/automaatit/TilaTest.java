@@ -1,12 +1,14 @@
 
 package com.mycompany.tiralabra_maven.automaatit;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.AvainArvoJonoTest;
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -41,11 +43,15 @@ public class TilaTest {
         Tila u = new Tila(true);
         t.lisaaTilasiirtyma('a', u);
         t.lisaaTilasiirtyma('b', t);
-        assertEquals(u, t.tilasiirtyma('a'));
-        assertEquals(t, t.tilasiirtyma('b'));
-        assertNull(t.tilasiirtyma('c'));
+        Jono<Tila> oikeavastaus = new Jono<>();
+        oikeavastaus.lisaa(u);
+        AvainArvoJonoTest.vertaaJonoja(oikeavastaus, t.tilasiirtymat('a'));
+        oikeavastaus.tyhjenna();
+        oikeavastaus.lisaa(t);
+        AvainArvoJonoTest.vertaaJonoja(oikeavastaus, t.tilasiirtymat('b'));
+        assertNull(t.tilasiirtymat('c'));
         assertFalse(t.ON_HYVAKSYVA);
-        t = t.tilasiirtyma('a');
+        t = t.tilasiirtymat('a').poista();
         assertTrue(t.ON_HYVAKSYVA);
     }
 

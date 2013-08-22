@@ -3,9 +3,10 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
  * Ylivuotolistoja sekä jakojäännösmenetelmään perustuvaa hajautusfunktiota
- * hyödyntävä hajautuskartta. Hajautusfunktion yksinkertaistamiseksi ja tämän
- * projektin tarpeita ajatellen hajautuskartan avaimet voivat olla vain tyyppiä
- * <b>char</b>. Hajautuskartta tukee myös uudelleenhajautusta mutta ei tee sitä
+ * hyödyntävä hajautuskartta jonka avain-arvoparit eivät ole muuttuvia eivätkä
+ * uniikkeja. Hajautusfunktion yksinkertaistamiseksi ja tämän projektin tarpeita
+ * ajatellen hajautuskartan avaimet voivat olla vain tyyppiä <b>char</b>.
+ * Hajautuskartta tukee myös uudelleenhajautusta mutta ei tee sitä
  * automaattisesti. Lisäksi usein käytettävät operaatiot <tt>lisaa</tt> ja
  * <tt>hae</tt> eivät tarkasta syötettä. Olen pyrkinyt minimoimaan näillä
  * toimilla tietorakenteen kompleksisuutta.
@@ -65,33 +66,74 @@ public final class Hajautuskartta<V> {
      * kuva-alkion <i>h</i>(<i>n</i>) arvo on <i>n</i>:n jakojäännös
      * nimittäjällä <i>m</i>.
      * 
-     * @param avain Hajautettava <b>char</b>-arvo.
+     * @param AVAIN Hajautettava <b>char</b>-arvo.
      * @return <b>int</b>-tyyppiseksi muutettu hajautettu avain.
      */
-    private int hajauta(char avain) {
+    private int hajauta(final char AVAIN) {
         // Tämä metodi voisi periaatteessa olla julkinen ja ehkä jopa static.
-        return avain % ylivuotolistat.length;
+        return AVAIN % ylivuotolistat.length;
     }
 
     /**
      * Lisää hajautuskarttaan annetun avain-arvoparin.
      *
-     * @param avain Lisättävä avain.
-     * @param arvo  Lisättävä arvo.
+     * @param AVAIN Lisättävä avain.
+     * @param ARVO  Lisättävä arvo.
      */
-    public void lisaa(char avain, V arvo) {
-        ylivuotolistat[hajauta(avain)].lisaa(avain, arvo);
+    public void lisaa(final char AVAIN, final V ARVO) {
+        ylivuotolistat[hajauta(AVAIN)].lisaa(AVAIN, ARVO);
         alkioita++;
     }
     
     /**
-     * Hakee hajautuskartasta arvon annetulla avaimella.
+     * Palauttaa ensimmäisen avaimella löytyneen arvon.
      *
-     * @param avain Haettava avain.
+     * @param AVAIN Haettava avain.
      * @return      Avainta vastaava arvo tai <tt>null</tt> jos sellaista ei ole.
      */
-    public V hae(char avain) {
-        return ylivuotolistat[hajauta(avain)].hae(avain);
+    public V haeEnsimmainen(final char AVAIN) {
+        return ylivuotolistat[hajauta(AVAIN)].hae(AVAIN);
+    }
+    
+    /**
+     * Palauttaa jonon kaikista avaimeen liitetyistä arvoista. Metodi on 
+     * tarpeen luokan <b>Tila</b> tilasiirtymässä jossa samalla merkillä voidaan
+     * siirtyä useampaan eri tilaan. Esimerkki tällaisesta tilanteesta on
+     * säännöllinen lauseke "a| ab".
+     * 
+     * @return <b>Jono</b>, joka sisältää kaikki avaimeen liitetyt arvot.
+     */
+    public Jono<V> haeKaikki(final char AVAIN) {
+        // Tämä operaatio voi olla ehkä vähän hidas...
+        Jono<V> paluuarvo = null;
+        AvainArvoJono<Character, V> avainArvoJono = ylivuotolistat[hajauta(AVAIN)];
+        
+        if (avainArvoJono.hae(AVAIN) == null) {
+            return paluuarvo;
+        }
+        
+        paluuarvo                   = new Jono<>();
+        Jono<V> arvoJono            = avainArvoJono.arvojono();
+        
+        if (arvoJono.pituus() == 1) {
+            return arvoJono;
+        }
+        
+        Jono<Character> avainjono   = avainArvoJono.avainjono();
+        
+        Character avain;
+        V arvo;
+        while (!avainjono.onTyhja()) {
+            // Käydään avain- ja arvojonoja läpi samanaikaisesti ja lisätään
+            // arvo ulostuloon jos avaimet täsmäävät (jonot ovat saman mittaiset).
+            avain   = avainjono.poista();
+            arvo    = arvoJono.poista();
+            if (avain.equals(AVAIN)) {
+                paluuarvo.lisaa(arvo);
+            }
+        }
+        
+        return paluuarvo;
     }
     
     @Override

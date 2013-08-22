@@ -47,7 +47,7 @@ public class TulkkiTest {
      */
     @Before
     public void setUp() {
-        odotusarvo  = new Jono<String>();
+        odotusarvo  = new Jono<>();
     }
     
     /**

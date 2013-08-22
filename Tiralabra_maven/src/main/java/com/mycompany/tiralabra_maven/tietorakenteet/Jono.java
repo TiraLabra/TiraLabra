@@ -33,7 +33,7 @@ public final class Jono<T> {
 //        if (pituus == Integer.MAX_VALUE) {
 //            throw new IndexOutOfBoundsException("Jonoon tuli täyteen!");
 //        }
-        Solmu seuraava = new Solmu<T>(arvo);
+        Solmu seuraava = new Solmu<>(arvo);
         if (ensimmainen == null) {
             ensimmainen = seuraava;
             viimeinen   = seuraava;
@@ -89,7 +89,7 @@ public final class Jono<T> {
     }
 
     /**
-     * Poistaa jonon kaikki alkiot.
+     * Poistaa jonosta kaikki alkiot.
      */
     public void tyhjenna() {
         ensimmainen = null;

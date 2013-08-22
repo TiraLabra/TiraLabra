@@ -43,7 +43,7 @@ public class PinoTest {
      */
     @Before
     public void setUp() {
-        pino            = new Pino<Object>();
+        pino            = new Pino<>();
         testiObjekti    = new Object();
     }
     

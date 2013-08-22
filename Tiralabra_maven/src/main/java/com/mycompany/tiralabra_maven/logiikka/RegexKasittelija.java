@@ -15,11 +15,11 @@ public class RegexKasittelija {
     private static Automaatti AUTOMAATTI;
     
     public void asetaSaannollinenLauseke(final Jono<String> SYOTE) {
-        throw new UnsupportedOperationException("Ominaisuutta ei ole vielä toteutettu.");
+        AUTOMAATTI = new Automaatti(SYOTE);
     }
 
     public boolean tasmaa(final String MERKKIJONO) {
-        throw new UnsupportedOperationException("Ominaisuutta ei ole vielä toteutettu.");
+        return AUTOMAATTI.kieliSisaltaa(MERKKIJONO);
     }
     
 }

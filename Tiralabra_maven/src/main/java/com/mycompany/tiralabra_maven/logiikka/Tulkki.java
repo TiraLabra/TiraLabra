@@ -175,7 +175,7 @@ public final class Tulkki {
             if (pinonYlin != '(') {
                 // Pienemmän prioriteetin laskutoimitukset suoritetaan ensin.
                 // Siispä ne lisätään ulostuloon ensimmäisinä.
-                if (PRIORITEETIT.hae(merkki) >= PRIORITEETIT.hae(pinonYlin)) {
+                if (PRIORITEETIT.haeEnsimmainen(merkki) >= PRIORITEETIT.haeEnsimmainen(pinonYlin)) {
                     JONO.lisaa(PINO.poista() + "");
                 }
             }

@@ -4,11 +4,10 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -117,19 +116,8 @@ public class AvainArvoJonoTest {
         
         vertaaJonoja(odotettuAvainjono, saatuAvainjono);
     }
-
-//    @Test
-//    public void testPituus() {
-//        int lisaykset = arpoja.nextInt(10000);
-//        
-//        for (int i = 0; i < lisaykset; i++) {
-//            aajono.lisaa('a', i);
-//        }
-//        
-//        assertTrue(lisaykset == aajono.pituus());
-//    }
     
-    private void vertaaJonoja(Jono a, Jono b) {
+    public static void vertaaJonoja(Jono a, Jono b) {
         Object o, p;
         while (!a.onTyhja()) {
             o = a.poista();

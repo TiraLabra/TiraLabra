@@ -6,18 +6,18 @@ package com.mycompany.tiralabra_maven.suorituskykytestit;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Tämä luokka vertaa luokkien <b>Hajautuskartta</b> ja <b>HashMap</b>
- * suorituskykyä keskenään miljoonan alkion lisäyksen ja luvun kestossa.
+ * suorituskykyä keskenään alkioiden lisäyksen ja luvun kestossa sekä muistin
+ * kulutuksessa.
  *
  * @author John Lång <jllang@cs.helsinki.fi>
  */
 public final class HajautuskartanSuorituskyky {
     
     private static final String MERKIT = "0123456789abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ+-*/%^|()?";
+    private static final char[] MERKIT2 = MERKIT.toCharArray(); // Tämä ei taida olla lukemisen kannalta Stringiä nopeampi...
     private static final int TESTI_HAJAUTUSKARTTA_KIRJOITUS = 0;
     private static final int TESTI_HAJAUTUSKARTTA_LUKU      = 1;
     private static final int TESTI_HASHMAP_KIRJOITUS        = 2;
@@ -26,7 +26,10 @@ public final class HajautuskartanSuorituskyky {
     private static HashMap<Character, Integer> hm;
     private static int hajautustaulunPituus;
     
-    public static void main() {
+    /**
+     * Aloittaa suorituskyvyn testaamisen.
+     */
+    public static void aloita() {
         hajautustaulunPituus = 1543;
         testaa(1000);
         hajautustaulunPituus = 12289;
@@ -41,9 +44,9 @@ public final class HajautuskartanSuorituskyky {
 //        testaa(100000000);
     }
     
-    public static void testaa(final int ALKIOITA) {
+    private static void testaa(final int ALKIOITA) {
         System.out.println("Aloitetaan Hajautuskartan suorituskykytestaus "
-                + ALKIOITA + " alkiolla.");
+                + ALKIOITA + " avain-arvoparilla.");
         System.out.println("----------------------------------------" +
                 "----------------------------------------");
         long[] ajat;
@@ -115,7 +118,7 @@ public final class HajautuskartanSuorituskyky {
                 hk = new Hajautuskartta<>(hajautustaulunPituus);
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hk.lisaa(MERKIT.charAt(j % 78), j);
+                    hk.lisaa(MERKIT2[j % 78], j);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
@@ -123,7 +126,7 @@ public final class HajautuskartanSuorituskyky {
             for (int i = 0; i < 10; i++) {
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hk.hae(MERKIT.charAt(j % 78));
+                    hk.haeEnsimmainen(MERKIT2[j % 78]);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
@@ -134,7 +137,7 @@ public final class HajautuskartanSuorituskyky {
                 hm = new HashMap<>();
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hm.put(MERKIT.charAt(j % 78), j);
+                    hm.put(MERKIT2[j % 78], j);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
@@ -142,7 +145,7 @@ public final class HajautuskartanSuorituskyky {
             for (int i = 0; i < 10; i++) {
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hm.get(MERKIT.charAt(j % 78));
+                    hm.get(MERKIT2[j % 78]);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
