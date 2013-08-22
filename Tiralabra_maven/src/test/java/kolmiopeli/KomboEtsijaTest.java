@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Eemi
+ * 
  */
 public class KomboEtsijaTest {
     private Ruudukko lauta;
@@ -30,7 +30,7 @@ public class KomboEtsijaTest {
     public KomboEtsijaTest() {
         lauta = new Ruudukko(4, 5);
         lauta.setRuudukko(testiRuudukko);
-        etsija = new KomboEtsija(lauta.getRuudukko());
+        etsija = new KomboEtsija(lauta.getRuudukko(), false);
     }
     
     @Test
@@ -125,7 +125,7 @@ public class KomboEtsijaTest {
         odotettuTulos.add(new Koordinaatti(0, 4));
         odotettuTulos.add(new Koordinaatti(1, 4));
         
-        HashSet<Koordinaatti> loydetyt = etsija.etsiKombot(tutkittavat);
+        HashSet<Koordinaatti> loydetyt = (HashSet<Koordinaatti>) etsija.etsiKombot(tutkittavat);
         
         assertTrue("Syotteella " + tutkittavat + " etsija loysi koordinaatit " + loydetyt 
                 + " vaikka odotetut koordinaatit olivat " + odotettuTulos,
@@ -144,7 +144,7 @@ public class KomboEtsijaTest {
         odotettuTulos.add(new Koordinaatti(3, 2));
         odotettuTulos.add(new Koordinaatti(3, 3));
         
-        HashSet<Koordinaatti> loydetyt = etsija.etsiKombot(tutkittavat);
+        HashSet<Koordinaatti> loydetyt = (HashSet<Koordinaatti>) etsija.etsiKombot(tutkittavat);
         
         assertTrue("Syotteella " + tutkittavat + " etsija loysi koordinaatit " + loydetyt 
                 + " vaikka odotetut koordinaatit olivat " + odotettuTulos,
@@ -152,7 +152,7 @@ public class KomboEtsijaTest {
     }
     
     @Test
-    public void testaaTilanteita3() {
+    public void testaaKunOdotettuJoukkoTyhja() {
         ArrayList<Koordinaatti> tutkittavat = new ArrayList<Koordinaatti>();
         tutkittavat.add(new Koordinaatti(0, 0));
         tutkittavat.add(new Koordinaatti(0, 1));
@@ -160,7 +160,7 @@ public class KomboEtsijaTest {
         
         HashSet<Koordinaatti> odotettuTulos = new HashSet<Koordinaatti>();
         
-        HashSet<Koordinaatti> loydetyt = etsija.etsiKombot(tutkittavat);
+        HashSet<Koordinaatti> loydetyt = (HashSet<Koordinaatti>) etsija.etsiKombot(tutkittavat);
         
         assertTrue("Syotteella " + tutkittavat + " etsija loysi koordinaatit " + loydetyt 
                 + " vaikka odotetut koordinaatit olivat " + odotettuTulos,
@@ -168,7 +168,7 @@ public class KomboEtsijaTest {
     }
     
     @Test
-    public void testaaTilanteita4() {
+    public void testaaKunOdotettuJoukkoIso() {
         ArrayList<Koordinaatti> tutkittavat = new ArrayList<Koordinaatti>();
         tutkittavat.add(new Koordinaatti(3, 4));
         tutkittavat.add(new Koordinaatti(3, 2));
@@ -190,7 +190,7 @@ public class KomboEtsijaTest {
         odotettuTulos.add(new Koordinaatti(3, 2));
         odotettuTulos.add(new Koordinaatti(3, 3));
         
-        HashSet<Koordinaatti> loydetyt = etsija.etsiKombot(tutkittavat);
+        HashSet<Koordinaatti> loydetyt = (HashSet<Koordinaatti>) etsija.etsiKombot(tutkittavat);
         
         assertTrue("Syotteella " + tutkittavat + " etsija loysi koordinaatit " + loydetyt 
                 + " vaikka odotetut koordinaatit olivat " + odotettuTulos,

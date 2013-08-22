@@ -20,9 +20,15 @@ public class KomboEtsija {
     private Kolmio[][] peliruudukko;
     private final KomboEtsijaDebugViestit debugViestit;
 
-    public KomboEtsija(Kolmio[][] peliruudukko) {
+    /**
+     * KomboEtsija algoritmiluokan konstruktori, liittaa etsijalle ruudukon ja 
+     * laittaa debug viestit paalle tai pois.
+     * @param peliruudukko
+     * @param debugPaalla 
+     */
+    public KomboEtsija(Kolmio[][] peliruudukko, boolean debugPaalla) {
         this.peliruudukko = peliruudukko;
-        this.debugViestit = new KomboEtsijaDebugViestit();
+        this.debugViestit = new KomboEtsijaDebugViestit(debugPaalla);
     }
 
     /**
@@ -61,9 +67,10 @@ public class KomboEtsija {
      * 9. Kun kaikki parametrijoukon alkiot on kayty lapi for-loopissa, niin palauta
      *    joukko kaikista loydetyista tuhoutuvista kolmioista.
      * 
-     * @param Array kohdista joissa on uunituoreita uusia kolmioita tutkittavaksi.
+     * @param juuriArvotut Array kohdista joissa on uunituoreita uusia kolmioita tutkittavaksi.
+     * @return Palauttaa joukon koordinaatteja joissa on loydetyt kombokolmio koordinaatit.
      */
-    public HashSet<Koordinaatti> etsiKombot(Collection juuriArvotut) {
+    public Collection etsiKombot(Collection juuriArvotut) {
         debugViestit.tuplaviiva();
         Koordinaatti[] juuriArvotutTaulukko = (Koordinaatti[]) juuriArvotut.toArray(new Koordinaatti[juuriArvotut.size()]);
         // BFS pohdintaa:

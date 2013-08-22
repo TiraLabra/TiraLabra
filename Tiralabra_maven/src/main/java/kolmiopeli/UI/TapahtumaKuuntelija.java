@@ -81,7 +81,7 @@ class TapahtumaKuuntelija implements ActionListener {
             System.out.println("\nPelaajan siirto: " + tuhoutuvat);
             
             // Saada tassa kuinka nopeasti animaatiot nakyvat
-            final Timer timer = new Timer(900, null);
+            final Timer timer = new Timer(2000, null);
             this.moneskoTimerToisto = 0;
             this.kombot = new ArrayList<Koordinaatti>();
             

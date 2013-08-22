@@ -47,7 +47,7 @@ public class PeliFrame {
         this.etsija = new PistesiirtojenEtsija(ruudukko);
         this.siirrot = new Siirrot(ruudukko);
         this.siirrot.setEtsija(etsija);
-        this.komboEtsija = new KomboEtsija(ruudukko.getRuudukko());
+        this.komboEtsija = new KomboEtsija(ruudukko.getRuudukko(), true);
 
 
 

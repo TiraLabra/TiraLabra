@@ -11,49 +11,23 @@ import kolmiopeli.logiikka.tiralabraAlgoritmit.Nopeustestaus;
 public class KolmioPeli {
 
     public static void main(String[] args) {
-//        Ruudukko ruudukko = new Ruudukko(8, 15);
-//        AlkutilanteenLuoja tayttaja = new AlkutilanteenLuoja(ruudukko);
-//        tayttaja.taytaRuudukko();
-//        ruudukko.setPeliruudukko(testausPelilauta);
-//        Siirrot s = new Siirrot();
-//        s.setPeliruudukko(ruudukko);
-//        
-//        PistesiirtojenEtsija etsija = new PistesiirtojenEtsija(ruudukko);
-//        s.setEtsija(etsija);
 
+
+        // Nopeustesti
+//            Nopeustestaus n = new Nopeustestaus(100, 100);
+//            n.algoritminKeskiarvoNopeus(500);
+            
+            
+            
+        // Peli    
+        Kayttoliittyma k = new Kayttoliittyma();
+        k.run();
         
-            Nopeustestaus n = new Nopeustestaus(10, 10);
-            n.kayLapiKomboja();
-//        Kayttoliittyma k = new Kayttoliittyma();
-//        k.run();
-        
-//        PeliFrame k = new PeliFrame(8, 15);
-//        k.run();
 
 
 
-//        System.out.println("**KOORDINAATIT OVAT MUOTOA (rivi, sarake), LAHTIEN (0,0)**");
-//        System.out.println(ruudukko);
-//        System.out.println("KolmioPareja = " + etsija.getKolmiopareja());
-//        System.out.println("Pistesiirtoja = " + etsija.etsiKaikkiPistesiirrot());
-//        System.out.println("");
 
-//        System.out.println("Onko kolmio (0,1) ylospain? " + ruudukko.getRuudukko()[0][1].osoittaakoKolmioYlospain());
-//        System.out.println("Onko kolmio (1,1) ylospain? " + ruudukko.getRuudukko()[1][1].osoittaakoKolmioYlospain());
-//
-//        System.out.println("");
-//
-//        System.out.println("Siirretaan (1,2) vasemmalle. Onnistuiko? " + s.siirraKolmioVasemmalle(1, 2));
-//        System.out.println(ruudukko);
-//        System.out.println("");
-//
-//        System.out.println("Siirretaan (2,3) oikealle. Onnistuiko? " + s.siirraKolmioOikealle(2, 3));
-//        System.out.println(ruudukko);
-//        System.out.println("");
-//
-//        System.out.println("Siirretaan (2,3) ylos. Onnistuiko? " + s.siirraKolmioYlos(2, 3));
-//        System.out.println(ruudukko);
-//        System.out.println("");
+
 
 
 

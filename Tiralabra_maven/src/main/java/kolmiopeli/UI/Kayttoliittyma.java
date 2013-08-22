@@ -43,7 +43,7 @@ public class Kayttoliittyma implements Runnable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         this.frame.getContentPane().removeAll();
-        new PeliFrame(8, 15, this.frame.getContentPane()); // TAALLA RUUDUKON KOON YKSI HARDCODED KOHTA
+        new PeliFrame(8, 14, this.frame.getContentPane()); // TAALLA RUUDUKON KOON YKSI HARDCODED KOHTA
         this.frame.revalidate();
 
         
