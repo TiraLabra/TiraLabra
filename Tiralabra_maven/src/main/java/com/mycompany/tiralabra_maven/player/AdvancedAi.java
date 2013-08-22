@@ -35,20 +35,7 @@ public class AdvancedAi implements Ai {
             lastMove = new Random().nextInt(3);
             return lastMove;
         }
-        int[] is = treeStatistics(0);
-
-        for (int i = 1; i < depth; i++) {
-            if (is[0] != 0 || is[1] != 0 || is[2] != 0) {
-                if (is[0] + is[1] + is[2] > 2) {
-                    break;
-                }
-                is = treeStatisticsIgnoreResults(i - 1);
-                if (is[0] + is[1] + is[2] > 2) {
-                    break;
-                }
-            }
-            is = treeStatistics(i);
-        }
+        int[] is = FindStatistics();
 
         int move = pickMove(is);
         lastMove = move;
@@ -61,10 +48,7 @@ public class AdvancedAi implements Ai {
      * @return move
      */
     private int pickMove(int[] is) {
-        int x = is[0];
-        is[0] = is[2];
-        is[2] = is[1];
-        is[1] = x;
+        is = changeMoves(is);
 
         double[] ds = new double[3];
 
@@ -284,6 +268,31 @@ public class AdvancedAi implements Ai {
                     is[2] += gtn.getTimesPlayed();
                 }
             }
+        }
+        return is;
+    }
+
+    private int[] changeMoves(int[] is) {
+        int x = is[0];
+        is[0] = is[2];
+        is[2] = is[1];
+        is[1] = x;
+        return is;
+    }
+
+    private int[] FindStatistics() {
+        int[] is = treeStatistics(0);
+        for (int i = 1; i < depth; i++) {
+            if (is[0] != 0 || is[1] != 0 || is[2] != 0) {
+                if (is[0] + is[1] + is[2] > 2) {
+                    break;
+                }
+                is = treeStatisticsIgnoreResults(i - 1);
+                if (is[0] + is[1] + is[2] > 2) {
+                    break;
+                }
+            }
+            is = treeStatistics(i);
         }
         return is;
     }

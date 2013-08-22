@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven;
 import com.mycompany.tiralabra_maven.player.Bot;
 import com.mycompany.tiralabra_maven.player.FileHandler;
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,25 +42,11 @@ public class Game {
         fileHandler2 = new FileHandler(file2);
         setUpResultTable();
         this.primaryBot = new Bot(0);
-        int n = -1;
-        Object[] options = {"Play vs bot", "Play vs bot as guest", "Bot vs bot"};
-        while (n == -1) {
-            n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null, options, options);
-        }
-        switch (n) {
-            case 0:
-                playVsBot();
-                break;
-            case 1:
-                asGuest();
-                return;
-            case 2:
-                botVsBot();
-                return;
-        }
+        gameModeWindow();
         this.statistics = new Statistics(file);
+        if (gameMode != GameMode.PLAYER_VS_BOT){
+            return;
+        }
         fileHandler = new FileHandler(file);
         primaryBot.loadProfile(fileHandler);
     }
@@ -68,24 +55,8 @@ public class Game {
      * Sets up human vs ai game with saving.
      */
     private void playVsBot() throws IOException {
-        int n = -1;
-        Object[] options = {"New player", "Existing player"};
-        while (n == -1) {
-            n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null, options, options);
-        }
-
-        if (n == 0) {
-            newPlayer();
-        }
-        
-        this.gameMode = GameMode.PLAYER_VS_BOT;
-        JFileChooser fc = new JFileChooser("profiles/");
-        fc.setFileFilter(new FileNameExtensionFilter("Player profile", "player"));
-        fc.showOpenDialog(null);
-        file = fc.getSelectedFile();
-
+        showNewOrExistingPlayerWindow();
+        showFileBrowser();
     }
 
     /**
@@ -142,23 +113,9 @@ public class Game {
      */
     public int playRound(int move) throws IOException {
         if (gameMode == GameMode.BOT_VS_BOT) {
-            int primary = primaryBot.makeAMove();
-            int secondary = secondaryBot.makeAMove();
-            primaryBot.updateAi(results[primary][secondary]);
-            secondaryBot.updateAi(results[secondary][primary]);
-            lastRound = results[primary][secondary];
-            updateStatistics(lastRound);
-            return lastRound;
+            return playBotVsBotRound();
         }
-        int primary = primaryBot.makeAMove();
-        lastRound = results[primary][move];
-        primaryBot.updateAi(lastRound);
-        updateStatistics(lastRound);
-        if (gameMode == GameMode.PLAYER_VS_BOT) {
-            fileHandler.saveLine(primary, lastRound);
-        }
-        fileHandler2.saveLine(primary, lastRound);
-        return results[primary][move];
+        return playHumanVsBotRound(move);
     }
 
     /**
@@ -206,5 +163,84 @@ public class Game {
         } else if (result == -1) {
             statistics.lose();
         }
+    }
+
+    /**
+     * Shows pop-up option window asking game mode. 
+     * @throws HeadlessException
+     * @throws IOException 
+     */
+    private void gameModeWindow() throws HeadlessException, IOException {
+        int n = -1;
+        Object[] options = {"Play vs bot", "Play vs bot as guest", "Bot vs bot"};
+        while (n == -1) {
+            n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options);
+        }
+        switch (n) {
+            case 0:
+                playVsBot();
+                break;
+            case 1:
+                asGuest();
+                break;
+            case 2:
+                botVsBot();
+                break;
+        }
+    }
+
+    /**
+     * Executes one bot vs bot round
+     * @return result
+     */
+    private int playBotVsBotRound() {
+        int primary = primaryBot.makeAMove();
+        int secondary = secondaryBot.makeAMove();
+        primaryBot.updateAi(results[primary][secondary]);
+        secondaryBot.updateAi(results[secondary][primary]);
+        lastRound = results[primary][secondary];
+        updateStatistics(lastRound);
+        return lastRound;
+    }
+
+    /**
+     * Executes one human vs bot round. 
+     * @param move
+     * @return result
+     */
+    private int playHumanVsBotRound(int move) {
+        int primary = primaryBot.makeAMove();
+        lastRound = results[primary][move];
+        primaryBot.updateAi(lastRound);
+        updateStatistics(lastRound);
+        if (gameMode == GameMode.PLAYER_VS_BOT) {
+            fileHandler.saveLine(primary, lastRound);
+        }
+        fileHandler2.saveLine(primary, lastRound);
+        return results[primary][move];
+    }
+
+    private void showNewOrExistingPlayerWindow() throws HeadlessException, IOException {
+        int n = -1;
+        Object[] options = {"New player", "Existing player"};
+        while (n == -1) {
+            n = JOptionPane.showOptionDialog(new Frame(), "Please select", "Rock, Paper, Scissors",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options);
+        }
+
+        if (n == 0) {
+            newPlayer();
+        }
+    }
+
+    private void showFileBrowser() throws HeadlessException {
+        this.gameMode = GameMode.PLAYER_VS_BOT;
+        JFileChooser fc = new JFileChooser("profiles/");
+        fc.setFileFilter(new FileNameExtensionFilter("Player profile", "player"));
+        fc.showOpenDialog(null);
+        file = fc.getSelectedFile();
     }
 }
