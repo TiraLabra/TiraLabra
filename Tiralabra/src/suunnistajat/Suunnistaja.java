@@ -1,6 +1,9 @@
+package suunnistajat;
+
 
 import java.awt.Graphics;
-import rakenteet.Jarjestysjono;
+import rakenteet.*;
+import verkko.Solmu;
 
 
 
@@ -10,6 +13,6 @@ import rakenteet.Jarjestysjono;
  */
 public interface Suunnistaja {
     
-    public Jarjestysjono<Solmu> etsi(Graphics g) ;
+    Lista<Solmu> etsi(Graphics g);
     
 }

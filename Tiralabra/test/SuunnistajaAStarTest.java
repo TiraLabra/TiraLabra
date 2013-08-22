@@ -1,4 +1,7 @@
 
+import suunnistajat.SuunnistajaAStar;
+import verkko.Labyrintti;
+import verkko.Solmu;
 import fi.helsinki.cs.tmc.edutestutils.Reflex;
 import fi.helsinki.cs.tmc.edutestutils.Reflex.ClassRef;
 import fi.helsinki.cs.tmc.edutestutils.Reflex.MethodAndReturnType;

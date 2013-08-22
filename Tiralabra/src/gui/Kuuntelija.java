@@ -1,22 +1,21 @@
-
-
+package gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.*;
+import java.util.logging.*;
 import javax.swing.*;
 import rakenteet.*;
+import suunnistajat.SuunnistajaAStar;
+import suunnistajat.SuunnistajaDFS;
+import verkko.Labyrintti;
+import verkko.Solmu;
 
 /**
  *
  * @author maef
  */
-public class Kuuntelija implements ActionListener{
-    
+public class Kuuntelija implements ActionListener {
+
     private JButton nappi;
     private JButton valitse;
     private JTextField labyrintti;
@@ -24,8 +23,6 @@ public class Kuuntelija implements ActionListener{
     private Labyrintti laby;
     private SuunnistajaAStar aStar;
     private SuunnistajaDFS dfs;
-    private SuunnistajaDijkstra dijkstra;
-    
 
     /**
      *
@@ -49,19 +46,17 @@ public class Kuuntelija implements ActionListener{
             laby = new Labyrintti(labyrintti.getText());
             Image sokkelo = laby.haeLaby();
             kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
-            aStar = new SuunnistajaAStar(laby.verkko[1][1], laby.verkko[17][19], laby);
-            dfs = new SuunnistajaDFS(laby.verkko[1][1], laby.verkko[17][19], laby);
-            dijkstra = new SuunnistajaDijkstra(laby.verkko[1][1], laby.verkko[17][19], laby);
-        }
-        
-       else {
-       Graphics g = kuva.getGraphics();
-       Jarjestysjono<Solmu> polku = aStar.etsi(g);
-//       Lista<Solmu> polku = dijkstra.etsi(g);
-       g.setColor(Color.red);
-        for (int i=0; i<polku.size(); i++) {
-            g.fillRect(polku.get(i).getX()*15, polku.get(i).getY()*15, 15, 15);
-        }
+            try {
+                aStar = new SuunnistajaAStar(laby.verkko[1][1], laby.verkko[17][19], laby);
+                dfs = new SuunnistajaDFS(laby.verkko[1][1], laby.verkko[17][19], laby);
+            } catch (Exception ex) {
+                kuva.setText("Asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
+            }
+        } else {
+            Graphics g = kuva.getGraphics();
+            aStar.etsi(g);
+//            dfs.etsi(g);
+
         }
     }
 }

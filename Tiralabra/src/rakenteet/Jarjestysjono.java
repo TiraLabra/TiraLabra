@@ -1,7 +1,5 @@
 package rakenteet;
 
-import java.util.Arrays;
-
 /**
  *
  * @author maef Tietorakenteen tapainen, joka korvaa valmiissa versiossa
@@ -9,7 +7,7 @@ import java.util.Arrays;
  * lähellä ohjelman tarkoitukseen. Korvaamisen yksinkertaistamiseksi, metodeilla
  * on samat nimet kuin PriorityQueue-olion metodeilla.
  */
-public class Jarjestysjono<E> {
+public class Jarjestysjono<E> implements TiRa{
 
     private transient Object[] jono;
     private int koko;
@@ -19,7 +17,8 @@ public class Jarjestysjono<E> {
         koko = 0;
     }
 
-    public void add(E e) {
+    @Override
+    public void add(Object e) {
         if (koko == jono.length) {
             Object[] uusiJono = new Object[2 * koko];
             for (int i = 0; i < koko; i++) {
@@ -53,10 +52,12 @@ public class Jarjestysjono<E> {
         return (E) jono[i];
     }
 
+    @Override
     public void clear() {
         koko = 0;
     }
 
+    @Override
     public int size() {
         return koko;
     }
@@ -99,25 +100,16 @@ public class Jarjestysjono<E> {
         return taulu;
     }
 
-    public boolean contains(E e) {
-//        if (koko % 100 == 0) {
-//            System.out.println("Järj. listan koko: " + koko);
-//        }
-//        long alku = 0;
-//        if (koko % 200 == 0) {
-//            alku = System.currentTimeMillis();
-//        }
+    
+    @Override
+    public boolean contains(Object e) {
         for (int i = 0; i < koko; i++) {
             if (jono[i].equals(e)) {
-//                if (koko % 200 == 0) {
-//                    System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku) + "ms");
-//                }
                 return true;
             }
         }
-//        if (koko % 200 == 0) {
-//            System.out.println("aikaa kului: " + (System.currentTimeMillis() - alku));
-//        }
         return false;
     }
+
+
 }

@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+import verkko.Labyrintti;
+import verkko.Solmu;
 import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;

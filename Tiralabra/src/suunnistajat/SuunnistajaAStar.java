@@ -1,18 +1,19 @@
+package suunnistajat;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rakenteet.Jarjestysjono;
-import rakenteet.Jarjestysjono;
+import rakenteet.*;
+import verkko.Labyrintti;
+import verkko.Solmu;
 
 /**
  * Tänne ohjelmoidaan verkon läpikäyvä A*-algoritmi.
  *
  * @author maef
  */
-public class SuunnistajaAStar implements Suunnistaja{
+public class SuunnistajaAStar implements Suunnistaja {
 
     // Lähtöpiste
     private Solmu alku;
@@ -23,7 +24,7 @@ public class SuunnistajaAStar implements Suunnistaja{
     //Mihin tallennetaan
     private Jarjestysjono<Solmu> kasitelty = new Jarjestysjono();
     private Jarjestysjono<Solmu> nykyiset = new Jarjestysjono();
-    private Jarjestysjono<Solmu> polku = new Jarjestysjono();
+    private Lista<Solmu> polku = new Lista();
 
     public SuunnistajaAStar(Solmu a, Solmu b, Labyrintti laby) {
 
@@ -32,7 +33,7 @@ public class SuunnistajaAStar implements Suunnistaja{
         this.maali = b;
         this.laby = laby;
         a.setHeuristiikka(heuristiikka(a));
-        
+
 
         for (int i = 0; i < laby.getHeight(); i++) {
             for (int j = 0; j < laby.getWidth(); j++) {
@@ -47,28 +48,31 @@ public class SuunnistajaAStar implements Suunnistaja{
      * @return Etsii ja palauttaa lyhimmän polun.
      */
     @Override
-    public Jarjestysjono<Solmu> etsi(Graphics g) {
+    public Lista<Solmu> etsi(Graphics g) {
         Solmu kasiteltava;
         alku.setAlkuarvo(0);
 
         if (alku.seina || maali.seina) {
             return null;
         }
-        
+
         g.setColor(Color.blue);
-        g.drawRect(maali.getX()*15, maali.getY()*15, 15, 15);
-       
+        g.drawRect(maali.getX() * (300 / laby.getWidth()), maali.getY() * (300 / laby.getHeight()), 300 / laby.getWidth(), 300 / laby.getHeight());
+
         nykyiset.add(alku);
         while (!kasitelty.contains(maali)) {
             kasiteltava = nykyiset.poll();
-            
-            g.drawRect(kasiteltava.getX()*15, kasiteltava.getY()*15, 15, 15);
+
+            if (kasiteltava == null) {
+                return null;
+            }
+            g.drawRect(kasiteltava.getX() * 300 / laby.getWidth(), kasiteltava.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
             try {
-                Thread.sleep(70); 
+                Thread.sleep(70);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SuunnistajaAStar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             Jarjestysjono<Solmu> naapurit = maaritaNaapurit(kasiteltava);
             /*
              * 1) Otetaan lupaavin
@@ -84,9 +88,32 @@ public class SuunnistajaAStar implements Suunnistaja{
                     naapurit.get(i).setAlkuarvo(kasiteltava.getAlkuarvo() + laby.etaisyys(naapurit.get(i)));
                     naapurit.get(i).setPolku(kasiteltava);
                 }
-            } 
+            }
         }
-        return muodostaPolku();
+        polku = muodostaPolku();
+
+
+        g.setColor(Color.red);
+
+        if (polku == null) {
+            return null;
+        }
+        for (int i = 0; i < polku.size(); i++) {
+            g.fillRect(polku.get(i).getX() * 300 / laby.getWidth(), polku.get(i).getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+//                    Logger.getLogger(Kuuntelija.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+
+
+        return null;
+
+
+
+
     }
 
     /**
@@ -94,9 +121,6 @@ public class SuunnistajaAStar implements Suunnistaja{
      * ei. Etäisyydet ovat kaikki Manhattan-etäisyyksiä.
      */
     private int heuristiikka(Solmu x) {
-        if (x.seina) {
-            return 1000000 + Math.abs((x.getX() - maali.getX())) + Math.abs(x.getY() - maali.getY());
-        }
         return Math.abs((x.getX() - maali.getX())) + Math.abs(x.getY() - maali.getY());
     }
 
@@ -115,7 +139,7 @@ public class SuunnistajaAStar implements Suunnistaja{
                 }
             }
 
-            if (!kasitelty.contains(kasiteltava.vierusX(i)) && kasiteltava.vierusX(i) !=null) {
+            if (!kasitelty.contains(kasiteltava.vierusX(i)) && kasiteltava.vierusX(i) != null && !kasiteltava.vierusX(i).seina) {
                 nykyiset.add(kasiteltava.vierusX(i));
                 naapurit.add(kasiteltava.vierusX(i));
             }
@@ -126,7 +150,7 @@ public class SuunnistajaAStar implements Suunnistaja{
 
                 }
 
-                if (!kasitelty.contains(kasiteltava.vierusY(i)) && kasiteltava.vierusY(i) != null) {
+                if (!kasitelty.contains(kasiteltava.vierusY(i)) && kasiteltava.vierusY(i) != null && !kasiteltava.vierusY(i).seina) {
                     nykyiset.add(kasiteltava.vierusY(i));
                     naapurit.add(kasiteltava.vierusY(i));
                 }
@@ -135,12 +159,18 @@ public class SuunnistajaAStar implements Suunnistaja{
         return naapurit;
     }
 
-    private Jarjestysjono<Solmu> muodostaPolku() {
+    private Lista<Solmu> muodostaPolku() {
         Solmu s = maali;
         polku.add(s);
+        Keko<Solmu> keko = new Keko();
+
         while (s.getPolku() != null) {
-            polku.add(s.getPolku());
+            keko.put(s.getPolku());
             s = s.getPolku();
+        }
+
+        while ((s = keko.poll()) != null) {
+            polku.add(s);
         }
         return polku;
     }

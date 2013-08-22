@@ -1,23 +1,23 @@
 
 package rakenteet;
 
-import java.util.Arrays;
-
 /**
  *
  * @author maef
  * Tietorakenteen tapainen, joka korvaa ohjelman valmiissa versiossa ArrayList-olion.
+ * Ei sisällä sen kaikkia ominaisuuksia, mutta on riittävä.
  */
-public class Lista<E> {
+public class Lista<E> implements TiRa{
     
-    private transient Object[] lista;
-    private int koko;
+    protected transient Object[] lista;
+    protected int koko;
 
     public Lista() {
         lista = new Object[10];
     }
     
-    public void add(E e) {
+    @Override
+    public void add(Object e) {
         if (koko == lista.length) {
             Object[] uusiLista = new Object[2*koko];
             for (int i = 0; i < koko; i++) {
@@ -30,7 +30,8 @@ public class Lista<E> {
         koko++;
     }
     
-    public boolean contains(E e) {
+    @Override
+    public boolean contains(Object e) {
 
         for (int i = 0; i < koko; i++) {
             if (lista[i].equals(e)) {
@@ -44,14 +45,16 @@ public class Lista<E> {
         return (E) lista[i];
     }
     
+    @Override
     public int size() {
         return koko;
     }
 
+    @Override
     public void clear() {
         koko = 0;
+        lista = new Object[10];
     }
     
-    
-    
+   
 }

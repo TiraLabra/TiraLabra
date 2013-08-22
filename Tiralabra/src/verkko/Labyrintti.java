@@ -1,3 +1,5 @@
+package verkko;
+
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,11 +17,11 @@ public class Labyrintti {
     private BufferedImage labyrintti;
     private int lattia;
     private int seina;
-    Solmu[][] verkko;
+    public Solmu[][] verkko;
 
     public Labyrintti(String laby) {
         try {
-            labyrintti = ImageIO.read(new File("src/" + laby + ".bmp"));
+            labyrintti = ImageIO.read(new File("src/verkko/labyt/" + laby + ".bmp"));
         } catch (Exception e) {
             System.out.println("Kuvaa ei löytynyt");
         }

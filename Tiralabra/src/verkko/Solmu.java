@@ -1,3 +1,5 @@
+package verkko;
+
 
 /**
  *
@@ -9,7 +11,7 @@ public class Solmu implements Comparable<Solmu>{
     private int heuristiikka;
     private int alkuarvo = Integer.MAX_VALUE;
     private Solmu[][] laby;
-    boolean seina;
+    public boolean seina;
     private Solmu polku;
 
     public void setOnkoSeina(boolean seina) {

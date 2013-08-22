@@ -1,15 +1,16 @@
+package gui;
+
 
 
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import rakenteet.Jarjestysjono;
+import verkko.Labyrintti;
 
 /**
  *
@@ -88,6 +89,9 @@ public class Kayttoliittyma implements Runnable {
         
         JLabel kuva = new JLabel();
         kuva.setIcon(new ImageIcon(alku.getScaledInstance(300, 300, 0)));
+        
+
+        
         kehys.add(kuva);
         
         JPanel napit = new JPanel();
