@@ -4,7 +4,8 @@ import chess.domain.GameState;
 import chess.domain.Move;
 import chess.domain.Pieces;
 import chess.domain.Players;
-import java.util.ArrayList;
+import chess.util.CustomArrayList;
+import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -79,9 +80,9 @@ public class GameTest
 
 	private static class TestObserver implements Observer
 	{
-		ArrayList<Integer> moves = new ArrayList<Integer>();
+		List<Integer> moves = new CustomArrayList<Integer>();
 
-		ArrayList<Integer> results = new ArrayList<Integer>();
+		List<Integer> results = new CustomArrayList<Integer>();
 
 		@Override
 		public void notifyMove(GameState state, int ply, Player player, int move)

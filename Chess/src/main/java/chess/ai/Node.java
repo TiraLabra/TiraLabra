@@ -1,7 +1,7 @@
 package chess.ai;
 
 import chess.domain.Move;
-import java.util.ArrayList;
+import chess.util.CustomArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class Node
 	/**
 	 * Lapsisolmut.
 	 */
-	public final List<Node> nodes = new ArrayList<Node>();
+	public final List<Node> nodes = new CustomArrayList<Node>();
 
 	/**
 	 * Solmun pistemäärä.

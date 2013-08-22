@@ -2,7 +2,7 @@ package chess.game;
 
 import chess.domain.GameState;
 import chess.domain.Players;
-import java.util.ArrayList;
+import chess.util.CustomArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public class Game implements Runnable
 	/**
 	 * Lista kaikista siirroista.
 	 */
-	private List<Integer> moves = new ArrayList<Integer>();
+	private List<Integer> moves = new CustomArrayList<Integer>();
 
 	/**
 	 * Luo uuden pelin.
