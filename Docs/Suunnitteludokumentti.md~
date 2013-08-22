@@ -8,6 +8,4 @@ ArrayListin tavoin poimia tietyssä indeksissä sijaitsevan arvon.
 
 Ohjelman aikavaativuus on lineaarinen Jarjestysjonoon sijoitettujen 
 arvojen suhteen. Mitä enemmän olioita jonoon lisätään, sitä kauemmin
-siltä kestää tutkima, onko joku arvo jonossa. Lisäksi A*-algoritmin 
-aikavaativuus on lineaarinen, jos sen heuristiikkametodi on optimaalinen.
-Tämän ohjelman A*-sovelluksen heuristiikka lasketaan vakioaikaisesti.
+siltä kestää tutkima, onko joku arvo jonossa. 
