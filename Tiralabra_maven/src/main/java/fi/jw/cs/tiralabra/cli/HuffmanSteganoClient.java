@@ -29,46 +29,34 @@ import java.util.Scanner;
 public class HuffmanSteganoClient {
     static Charset cs = Charset.defaultCharset();
 
+    static final String ENCODE = "1";
+    static final String DECODE = "2";
     static final String QUIT = "q";
     static Scanner scanner;
     static BinaryTreeMap options = new BinaryTreeMap();
 
     public static void main(String... args) {
-        options.put("1", "Huffman encode");
-        options.put("2", "Huffman decode");
-        options.put("3", "Stegano encode");
-        options.put("4", "Stegano decode");
-        options.put("5", "Huffman-Stegano encode");
-        options.put("6", "Stegano-Huffman decode");
+        options.put(ENCODE, "Huffman-Stegano encode");
+        options.put(DECODE, "Stegano-Huffman decode");
         options.put(QUIT, "Quit");
 
         welcome();
         printOptions();
         scanner = new Scanner(System.in);
-        String choice = "1";//scanner.nextLine();
+        String choice = scanner.nextLine();
 
         try {
             while (!choice.equals(QUIT)) {
-                if (validChoice(choice)) {
 
-                    switch (choice) {
-                        case "1":
-                            String filename = "/home/unfo/TiraLabra/Tiralabra_maven/lib/huffman.txt";//requestSourceFilename();
-                            String[] results = huffmanEncode(filename);
-                            break;
-                        case "check":
-                            checkMaxLength(args[1]);
-                            break;
-                        case "encode":
-                            encode(args);
-                            break;
-                        case "decode":
-                            decode(args[1], "");
-                            break;
-                    }
-
-                } else {
-                    System.out.println("[" + choice + "] is not a valid option. Please retry.");
+                switch (choice) {
+                    case ENCODE:
+                        encode();
+                        break;
+                    case DECODE:
+                        decode();
+                        break;
+                    default:
+                        System.out.println("[" + choice + "] is not a valid option. Please retry.");
                 }
 
                 printOptions();
@@ -84,11 +72,12 @@ public class HuffmanSteganoClient {
             huff.printStackTrace();
         }
 
-
+        System.out.println("Goodbye.");
     }
 
-    static String requestSourceFilename() {
-        System.out.print("File to read from > ");
+    static String requestSourceFilename(String _prompt) {
+        String prompt = (_prompt == null || _prompt.length() == 0) ? "File to read from" : _prompt;
+        System.out.print(prompt + "> ");
         return scanner.nextLine().trim();
     }
 
@@ -98,13 +87,15 @@ public class HuffmanSteganoClient {
 
     static void welcome() {
         System.out.println("Welcome to a Huffman/Steganographer encoder/decoder program");
-        for (String key : options.keys()) {
-            System.out.println(key + ") " + options.get(key));
-        }
+
     }
 
     static void printOptions() {
-        System.out.print("Would you like to :");
+        System.out.println("Choose next action:");
+        for (String key : options.keys()) {
+            System.out.println(key + ") " + options.get(key));
+        }
+        System.out.print(">> ");
     }
 
     static String[] huffmanEncode(String source) throws IOException {
@@ -125,14 +116,16 @@ public class HuffmanSteganoClient {
         System.out.println("Original message length: " + originalBits + " bits");
         System.out.println("Compressed message length: " + encodedBits + " bits");
         System.out.println("Compressed size: " + (int) compressionRatio + " %");
-        System.out.println(map);
 
+        result[0] = encodedMessage;
+        result[1] = map;
         return result;
     }
 
     static void checkMaxLength(String path) throws IOException {
         Steganographer s = new Steganographer(path);
-        System.out.println("Maximum encoding length for file " + path + " = " + s.getMaximumMessageLength());
+        int[] max = s.getMaximumMessageLength();
+        System.out.println("Maximum encoding length for file " + path + " = " + max[0] + " bits or roughly " + max[1] + " chars");
     }
 
     static String readFileContentsString(String path) throws IOException {
@@ -143,66 +136,72 @@ public class HuffmanSteganoClient {
         return Files.readAllBytes(Paths.get(path));
     }
 
-    static void encode(String... args) throws IOException {
+    static void encode() throws IOException {
+        String filename = requestSourceFilename("Give path to plain text file");
+        String[] results = huffmanEncode(filename);
+        String encodedMessage = results[0];
+        String encodedMap = results[1];
 
-        String message = "";
-        String src = args[1];
-        String dest = args[2];
+        String image = requestSourceFilename("Give path to image to inject");
 
-        if ("file".equals(args[3])) {
-            System.out.println("Reading from file");
-            byte[] bytes = Files.readAllBytes(Paths.get(args[4]));
+        steganoEncode(image, encodedMessage, encodedMap);
 
-            message = cs.decode(ByteBuffer.wrap(bytes)).toString();
-        } else {
-            System.out.println("Reading from cli [" + args[3] + "]");
-            for (int i = 3; i < args.length; i++) {
-                message += args[i] + " ";
-            }
-            message = message.trim();
-        }
-        System.out.println("Message length: " + message.length() + " bytes");
-        Huffman encoder = new Huffman(message);
-        encoder.encode();
-        String encodedMessage = encoder.getEncodedMessage();
-        String map = encoder.getStringifiedMap();
-        System.out.println("Map:\n" + map);
-        Steganographer s = new Steganographer(src, encodedMessage);
+    }
 
+    static void steganoEncode(String path, String msg, String map) throws IOException {
+        Steganographer s = new Steganographer(path, msg);
         s.encode();
+        String baseName = new File(path).getName();
+        String dest = "encoded-" + baseName + ".png";
         s.saveFile(dest);
-        System.out.println(dest + " saved");
 
-        // let's write the map to file so we can open it
 
-        if ("file".equals(args[3])) {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(dest + ".huff"));
-            bw.write(map);
-            bw.close();
-        }
+        String huffmanMapFilename = mapFilename(dest);
+        writeHuffmanMap(huffmanMapFilename, map);
 
+        System.out.println("Encoded image saved as " + dest);
+        System.out.println("Huffman map saved as " + huffmanMapFilename);
         s = null;
     }
 
-    static void decode(String path, String map) throws IOException, IllegalHuffmanCodeException {
-        System.out.println("Opening " + path);
-        Steganographer dec = new Steganographer(path);
-        dec.decode();
-        String stegDecoded = dec.getMessage();
+    static String mapFilename(String path) {
+        return path + ".huff";
+    }
 
-        Huffman decoder = new Huffman();
+    private static void writeHuffmanMap(String path, String map) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+        bw.write(map);
+        bw.close();
+    }
 
-        String huffMap = map;
-        File m = new File(path + ".huff");
+    private static String readHuffmanMap(String path) throws IOException {
+        File m = new File(path);
         if (m.exists()) {
-            System.out.println("Reading from file");
             byte[] bytes = Files.readAllBytes(Paths.get(m.toURI()));
 
-            huffMap = cs.decode(ByteBuffer.wrap(bytes)).toString();
+            return cs.decode(ByteBuffer.wrap(bytes)).toString();
+        } else {
+            throw new IOException("Huffman map file " + path + " missing.");
         }
+    }
+
+    static void decode() throws IOException, IllegalHuffmanCodeException {
+        String image = requestSourceFilename("Give path to image to decode");
+        String stegDecoded = steganoDecode(image);
+        String huffmanMapFilename = mapFilename(image);
+        String huffMap = readHuffmanMap(huffmanMapFilename);
+
+        Huffman decoder = new Huffman();
         decoder.setMap(decoder.parseMap(huffMap));
         decoder.setEncodedMessage(stegDecoded);
         decoder.decode();
         System.out.println(decoder.getMessage());
+    }
+
+    private static String steganoDecode(String image) throws IOException {
+
+        Steganographer dec = new Steganographer(image);
+        dec.decode();
+        return dec.getMessage();
     }
 }

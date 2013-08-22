@@ -93,7 +93,7 @@ public class Steganographer {
 
     protected void checkMessageSize() throws IllegalArgumentException {
 
-        int maxBits = getMaximumMessageLength();
+        int maxBits = getMaximumMessageLength()[0];
 
         if (messageLength > maxBits) {
             throw new IllegalArgumentException("Trying to stuff " + messageLength + " bits to a picture with just " + maxBits + " bits available for encoding");
@@ -102,10 +102,13 @@ public class Steganographer {
     }
 
 
-    public int getMaximumMessageLength() {
+    public int[] getMaximumMessageLength() {
         int totalBits = (width * height * BITS_PER_PIXEL);
         int totalChars = totalBits / BITS_PER_CHAR;
-        return totalChars;
+        int[] max = new int[2];
+        max[0] = totalBits;
+        max[1] = totalChars;
+        return max;
     }
 
     /**
