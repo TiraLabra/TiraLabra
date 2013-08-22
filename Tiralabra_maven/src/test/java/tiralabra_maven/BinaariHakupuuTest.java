@@ -20,22 +20,6 @@ public class BinaariHakupuuTest {
     public BinaariHakupuuTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of lisaaSolmu method, of class BinaariHakupuu.
      */
@@ -49,7 +33,7 @@ public class BinaariHakupuuTest {
         instance.lisaaSolmu(u1);
         instance.lisaaSolmu(u2);
         instance.lisaaSolmu(u3);
-        String expResult = "15{2{-100{null,null},null},null}";
+        String expResult = "15{2{-100,[]},[]}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
@@ -104,7 +88,7 @@ public class BinaariHakupuuTest {
         Solmu u2 = new Solmu(2);
         instance.lisaaSolmu(u1);
         instance.lisaaSolmu(u2);
-        String expResult = "1{null,2{null,null}}";
+        String expResult = "1{[],2}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }

@@ -9,29 +9,22 @@ public class BinaariHakupuu implements PuuRajapinta {
 
     Solmu juuri;
 
-    private Solmu min(Solmu s) {
-        while (s.getVasen() != null) {
-            s = s.getVasen();
-        }
-        return s;
-    }
-
     /**
      * Lisää solmun puuhun
+     *
      * @param uusi viite solmu olioon joka lisätään
-     * @return Solmun vanhempi
      */
-    public Solmu lisaaSolmu(Solmu uusi) {
+    public void lisaaSolmu(Solmu uusi) {
         if (juuri == null) {
             juuri = uusi;
-            return juuri;
+            return;
         }
         Solmu haku = juuri;
         Solmu vanhem = juuri;
         while (haku != null) {
             vanhem = haku;
             if (uusi.getArvo() == haku.getArvo()) {
-                return null;
+                return;
             }
             if (uusi.getArvo() < haku.getArvo()) {
                 haku = haku.getVasen();
@@ -45,11 +38,11 @@ public class BinaariHakupuu implements PuuRajapinta {
         } else {
             vanhem.setOikea(uusi);
         }
-        return vanhem;
     }
 
     /**
      * Poistaa solmun puusta
+     *
      * @param i on solmun arvo joka poistetaan
      * @return true jos poisto onnistui
      */
@@ -88,7 +81,7 @@ public class BinaariHakupuu implements PuuRajapinta {
         }
 
         Solmu seur = min(poistet.getOikea());
-        seur.setArvo(poistet.getArvo());
+        poistet.setArvo(seur.getArvo());
         Solmu lapsi = seur.getOikea();
         pVanhem = seur.getVanhem();
         if (pVanhem.getVasen() == seur) {
@@ -105,6 +98,7 @@ public class BinaariHakupuu implements PuuRajapinta {
 
     /**
      * Hakee puusta tiettyä arvoa ja palauttaa viitteen solmusta
+     *
      * @param i solmun arvo jota haetaan
      * @return viite solmuun, jos löytyy. Muussa tapauksessa null.
      */
@@ -128,6 +122,16 @@ public class BinaariHakupuu implements PuuRajapinta {
      */
     @Override
     public String toString() {
+        if (juuri == null) {
+            return "null";
+        }
         return juuri.toString();
+    }
+
+    private Solmu min(Solmu s) {
+        while (s.getVasen() != null) {
+            s = s.getVasen();
+        }
+        return s;
     }
 }

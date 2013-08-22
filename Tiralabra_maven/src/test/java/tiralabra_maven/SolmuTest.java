@@ -4,10 +4,6 @@
  */
 package tiralabra_maven;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,22 +16,6 @@ public class SolmuTest {
     public SolmuTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of setVasen method, of class Solmu.
      */
@@ -45,7 +25,7 @@ public class SolmuTest {
         Solmu s1 = new Solmu(3);
         Solmu instance = new Solmu(5);
         instance.setVasen(s1);
-        assertEquals("5{3{null,null},null}", instance.toString());
+        assertEquals("5{3,[]}", instance.toString());
     }
 
     /**
@@ -57,7 +37,7 @@ public class SolmuTest {
         Solmu s1 = new Solmu(7);
         Solmu instance = new Solmu(2);
         instance.setOikea(s1);
-        assertEquals("2{null,7{null,null}}", instance.toString());
+        assertEquals("2{[],7}", instance.toString());
     }
 
     /**
@@ -79,7 +59,7 @@ public class SolmuTest {
     public void testToString() {
         System.out.println("toString");
         Solmu instance = new Solmu(2);
-        String expResult = "2{null,null}";
+        String expResult = "2";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
@@ -187,5 +167,23 @@ public class SolmuTest {
         int expResult = 3;
         int result = instance.getKorkeus();
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void testSetVari() {
+        System.out.println("setVari");
+        Boolean b = true;
+        Solmu instance = new Solmu(3);
+        instance.setVari(b);
+        assertEquals(b,instance.getVari());
+    }
+
+    @Test
+    public void testGetVari() {
+        System.out.println("getVari");
+        Boolean b = true;
+        Solmu instance = new Solmu(7);
+        instance.setVari(b);
+        assertEquals(b,instance.getVari());
     }
 }

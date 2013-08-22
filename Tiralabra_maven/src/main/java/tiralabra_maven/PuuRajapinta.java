@@ -23,9 +23,8 @@ public interface PuuRajapinta {
     /**
      * Lisää solmun puuhun
      * @param uusi on viite solmuun joka halutaan lisätä
-     * @return palauttaa viitteen lisätyn solmun vanhempaan
      */
-    public Solmu lisaaSolmu(Solmu uusi);
+    public void lisaaSolmu(Solmu uusi);
     
 
 }

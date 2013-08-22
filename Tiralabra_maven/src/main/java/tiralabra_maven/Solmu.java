@@ -1,7 +1,7 @@
 package tiralabra_maven;
 
 /**
- * Puun solmu luokka
+ * Puun solmu luokka Sisältää AVL ja punamustaan tarvittavat muuttujat
  *
  * @author esaaksvu
  */
@@ -10,7 +10,8 @@ public class Solmu {
     private Solmu vanhemSolmu;
     private Solmu vasenLapsi;
     private Solmu oikeaLapsi;
-    private int korkeus;
+    private int korkeus; //AVL puutaa varten
+    private boolean vari; //Punamusta puuta varten, t=musta, f=punainen
     private int arvo;
 
     /**
@@ -20,24 +21,6 @@ public class Solmu {
      */
     public Solmu(int arvo) {
         this.arvo = arvo;
-    }
-
-    /**
-     * Asettaa solmulle vasemman lapsen
-     *
-     * @param s on vasemman lapsen solmu
-     */
-    public void setVasen(Solmu s) {
-        vasenLapsi = s;
-    }
-
-    /**
-     * Asettaa solmulle oikeanpuoleisen lapsen
-     *
-     * @param s on oikeanpuoleisen lapsen solmu
-     */
-    public void setOikea(Solmu s) {
-        oikeaLapsi = s;
     }
 
     /**
@@ -56,7 +39,28 @@ public class Solmu {
      */
     @Override
     public String toString() {
-       return arvo+"{"+vasenLapsi+","+oikeaLapsi+"}";
+        if (lapseton()) {
+            return "" + arvo;
+        }
+        if (vasenLapsi != null && oikeaLapsi != null) {
+            return arvo + "{" + vasenLapsi + "," + oikeaLapsi + "}";
+        }
+        if (vasenLapsi != null) {
+            return arvo + "{" + vasenLapsi + ",[]}";
+        }
+        if (oikeaLapsi != null) {
+            return arvo + "{[]," + oikeaLapsi + "}";
+        }
+        return "";
+
+    }
+
+    public void setVasen(Solmu s) {
+        vasenLapsi = s;
+    }
+
+    public void setOikea(Solmu s) {
+        oikeaLapsi = s;
     }
 
     public int getArvo() {
@@ -80,14 +84,32 @@ public class Solmu {
     }
 
     public void setArvo(int arvo) {
-        this.arvo=arvo;
+        this.arvo = arvo;
     }
-    
-    public void setKorkeus(int h){
-        this.korkeus=h;
+
+    /**
+     * korkeus AVL-puuta varten
+     *
+     * @param Solmun korkeus puussa, 0 on juuri
+     */
+    public void setKorkeus(int h) {
+        this.korkeus = h;
     }
-    
-    public int getKorkeus(){
+
+    public int getKorkeus() {
         return korkeus;
+    }
+
+    /**
+     * Väri punamustapuuta varten
+     *
+     * @param true jos on musta
+     */
+    public void setVari(Boolean b) {
+        vari = b;
+    }
+
+    public boolean getVari() {
+        return vari;
     }
 }
