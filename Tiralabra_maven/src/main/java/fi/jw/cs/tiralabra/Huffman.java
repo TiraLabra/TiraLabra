@@ -38,7 +38,7 @@ public class Huffman {
     static final char LEFT = '0';
     static final char RIGHT = '1';
     static final String SERIAL_SEPARATOR = "__";
-
+    public static final int BITS_PER_CHAR = 8; //
 
     private String message;
     private String encodedMessage;

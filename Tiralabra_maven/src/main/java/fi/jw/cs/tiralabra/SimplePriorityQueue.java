@@ -48,4 +48,9 @@ public class SimplePriorityQueue<T extends Comparable<T>> {
     public MinimumHeap<T> getHeap() {
         return heap;
     }
+
+    @Override
+    public String toString() {
+        return "SimplePriorityQueue<Heap=" + heap.toString() + ">";
+    }
 }
