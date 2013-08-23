@@ -5,6 +5,7 @@ import chess.ai.Node;
 import chess.ai.PerformanceTest;
 import chess.domain.GameState;
 import chess.domain.Move;
+import chess.domain.Pieces;
 import chess.domain.Players;
 import chess.game.Game;
 import chess.game.Observer;
@@ -224,6 +225,9 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	{
 		for (int i = 0; i < moves.length; ++i) {
 			if (Move.getToSqr(moves[i]) == sqr) {
+				if (Move.getPromotedType(moves[i]) != -1
+						&& Move.getPromotedType(moves[i]) != Pieces.QUEEN)
+					continue;
 				humanPlayerMove = moves[i];
 				synchronized (humanPlayerMoveNotifier) {
 					humanPlayerMoveNotifier.notify();
