@@ -2,30 +2,30 @@ package View;
 
 import Controller.Controller;
 
-
-
-
 public class Kayttoliittyma extends javax.swing.JFrame {
 
     private Controller controller;
 //    private Integer[] matriisiDimensiot = {1,2,3,4,6};
 
-
+    /**
+     * Mahdollistaa controllerin injektoinnin testejä varten.
+     * 
+     * @param controller 
+     */
     public Kayttoliittyma(Controller controller) {
         initComponents();
         this.controller = controller;
-        
+
 
     }
-    
 
-
-    public void run() {    
+    /**
+     * Käynnistää käyttöliittymän.
+     */
+    public void run() {
         setVisible(true);
     }
 
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,11 +47,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        virheRuutu = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         matriisiB = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        tulosruutu = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         matriisiA = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
@@ -108,10 +108,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jLabel4.setText("Matriisi A");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 72, 23));
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        virheRuutu.setEditable(false);
+        virheRuutu.setColumns(20);
+        virheRuutu.setRows(5);
+        jScrollPane1.setViewportView(virheRuutu);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, -1, -1));
 
@@ -121,10 +121,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 240, 251));
 
-        jTextArea3.setEditable(false);
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane3.setViewportView(jTextArea3);
+        tulosruutu.setEditable(false);
+        tulosruutu.setColumns(20);
+        tulosruutu.setRows(5);
+        jScrollPane3.setViewportView(tulosruutu);
 
         getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 130, 300, 251));
 
@@ -145,8 +145,20 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Lähettää Controllerille parametrit, joka palauttaa tuloksen tulosruutuun.
+     *
+     * @param evt Laske-napin painaminen käyttöliittymässä
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        controller.laske(matriisiA.getText(), matriisiB.getText());
+        try {
+            tulosruutu.setText(null);
+            tulosruutu.setText(controller.laske(matriisiA.getText(), matriisiB.getText(), getLaskutoimitus(), skalaari.getText()));
+            virheRuutu.setText(null);
+        } catch (Exception e) {
+            virheRuutu.setText(e.getMessage());
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
@@ -168,11 +180,20 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextArea matriisiA;
     private javax.swing.JTextArea matriisiB;
     private javax.swing.JTextField skalaari;
+    private javax.swing.JTextArea tulosruutu;
+    private javax.swing.JTextArea virheRuutu;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     *
+     * @return Tarkistaa mikä laskutoimitus on valittuna ja palauttaa sen
+     * indeksinumeron.
+     */
+    private int getLaskutoimitus() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
