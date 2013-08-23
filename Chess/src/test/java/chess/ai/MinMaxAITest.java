@@ -83,6 +83,22 @@ public class MinMaxAITest
 	}
 
 	@Test
+	public void promotesToRookToAvoidStaleMate() throws InterruptedException
+	{
+		ai = new MinMaxAI(null, 10, 0, 0);
+		GameState s = new GameState("Ka7 g7 Qc5", "Kd7 Qd3", Players.WHITE);
+		assertEquals("g7-g8R", Move.toString(ai.getMove(s)));
+	}
+
+	@Test
+	public void bugfixTest1() throws InterruptedException
+	{
+		ai = new MinMaxAI(null, 10, 0, 0);
+		GameState s = new GameState("Ka7 Qg8 Qc5", "Kd7 Qd3", Players.BLACK);
+		assertEquals("Qd3-a6", Move.toString(ai.getMove(s)));
+	}
+
+	@Test
 	public void returnsWhenTimeLimit() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 20, 0.0000001, 0);

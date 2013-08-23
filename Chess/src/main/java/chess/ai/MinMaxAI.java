@@ -317,20 +317,21 @@ public class MinMaxAI implements Player
 
 		results[ply] = new StateInfo(state.getId());
 		results[ply].nodeType = StateInfo.NODE_TYPE_UPPER_BOUND;
+		results[ply].score = Scores.MIN;
 		earlierStates.put(results[ply]);
 
 		depth = applyNullMoveReduction(depth, beta, state);
-		int score = searchAllMoves(depth, alpha, beta, state, info != null ? info.bestMove : 0);
+		searchAllMoves(depth, alpha, beta, state, info != null ? info.bestMove : 0);
 
 		earlierStates.remove(state.getId());
 
-		score = applyScoreDepthAdjustment(score, state);
+		results[ply].score = applyScoreDepthAdjustment(results[ply].score, state);
 
 		// Tietue lisätään transpositiotauluun vasta jälkikäteen, koska on mahdollista
 		// että haun aikana tullaan samaan pelitilanteeseen uudestaan.
-		addTranspositionTableEntry(depth, score, results[ply]);
+		addTranspositionTableEntry(depth, results[ply]);
 
-		return score;
+		return results[ply].score;
 	}
 
 	/**
@@ -357,16 +358,15 @@ public class MinMaxAI implements Player
 	 * @param beta alfa-beta-karsinnan beta-arvo
 	 * @param state pelitila
 	 * @param tptblMove transpositiotaulusta löydetty aiempi paras siirto tai 0, jos ei löytynyt
-	 * @return palauttaa parhaan löydetyn pistemäärän
 	 */
-	private int searchAllMoves(int depth, int alpha, int beta, GameState state, int tpTblMove)
+	private void searchAllMoves(int depth, int alpha, int beta, GameState state, int tpTblMove)
 			throws TimeLimitException, InterruptedException
 	{
 		// Jos hakutauluun on tallennettu paras siirto, kokeillaan sitä ensimmäisenä.
 		if (tpTblMove != 0) {
 			alpha = searchMove(depth, alpha, beta, state, tpTblMove);
 			if (alpha >= beta)
-				return alpha;
+				return;
 		}
 
 		// Muodostetaan priorisoitu siirtolista.
@@ -382,15 +382,13 @@ public class MinMaxAI implements Player
 					continue;
 				alpha = searchMove(depth, alpha, beta, state, move);
 				if (alpha >= beta)
-					return alpha;
+					return;
 			}
 		}
 
 		// Pattitilanteiden tunnistus.
-		if (alpha < -Scores.CHECK_MATE_THRESHOLD && state.isStaleMate())
-			return 0;
-
-		return alpha;
+		if (results[ply].score < -Scores.CHECK_MATE_THRESHOLD && state.isStaleMate())
+			results[ply].score = 0;
 	}
 
 	/**
@@ -425,16 +423,18 @@ public class MinMaxAI implements Player
 		state.undoMove(move);
 		--ply;
 
-		if (score > alpha) {
-			if (ply == 0 && loggingEnabled) {
-				log("  " + Move.toString(move) + " " + (score - rootScore));
-			}
+		if (score > results[ply].score) {
+			results[ply].score = score;
 			results[ply].bestMove = move;
-			if (score >= beta)
-				results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
-			else
-				results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
-			alpha = score;
+			if (score > alpha) {
+				if (ply == 0 && loggingEnabled)
+					log("  " + Move.toString(move) + " " + (score - rootScore));
+				if (score >= beta)
+					results[ply].nodeType = StateInfo.NODE_TYPE_LOWER_BOUND;
+				else
+					results[ply].nodeType = StateInfo.NODE_TYPE_EXACT;
+				alpha = score;
+			}
 		}
 
 		return alpha;
@@ -545,14 +545,12 @@ public class MinMaxAI implements Player
 	 * Lisää tietueen tranpositiotauluun, jos sen koko ei ylitä maksimikokoa.
 	 *
 	 * @param depth analysoitu syvyys
-	 * @param score haun palauttama pistemäärä
 	 * @param result hakua vastaava tietue
 	 */
-	private void addTranspositionTableEntry(int depth, int score, StateInfo result)
+	private void addTranspositionTableEntry(int depth, StateInfo result)
 	{
 		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
 			result.depth = depth;
-			result.score = score;
 			trposTable.put(result);
 		}
 	}
