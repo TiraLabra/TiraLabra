@@ -11,6 +11,7 @@ import kolmiopeli.logiikka.KolmioTayttaja;
 import kolmiopeli.logiikka.PistesiirtojenEtsija;
 import kolmiopeli.logiikka.Siirrot;
 import kolmiopeli.logiikka.tiralabraAlgoritmit.KomboEtsija;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.Romahduttaja;
 
 /**
  * Kayttoliittyman keskeisin osa, luo pelitilanteen ja vaihtaa pelin loppuessa
@@ -33,12 +34,15 @@ public class PeliFrame {
         {new Kolmio(Color.GREEN, 1, 0), new Kolmio(Color.CYAN, 1, 1), new Kolmio(Color.MAGENTA, 1, 2), new Kolmio(Color.MAGENTA, 1, 3), new Kolmio(Color.RED, 1, 4)},
         {new Kolmio(Color.CYAN, 2, 0), new Kolmio(Color.CYAN, 2, 1), new Kolmio(Color.CYAN, 2, 2), new Kolmio(Color.MAGENTA, 2, 3), new Kolmio(Color.BLUE, 2, 4)},
         {new Kolmio(Color.CYAN, 3, 0), new Kolmio(Color.MAGENTA, 3, 1), new Kolmio(Color.MAGENTA, 3, 2), new Kolmio(Color.MAGENTA, 3, 3), new Kolmio(Color.CYAN, 3, 4)},};
+    private Romahduttaja rohamduttaja;
+
 
     public PeliFrame(int rivit, int sarakkeet, Container container) {
         this.ruudukko = new Ruudukko(rivit, sarakkeet);
 //        this.ruudukko.setRuudukko(test1);
         this.tayttaja = new KolmioTayttaja(this.ruudukko);
         tayttaja.taytaKaikkiRuudut();
+        this.rohamduttaja = new Romahduttaja(this.ruudukko.getRuudukko(), true);
         
         
 //         Seuraava rivi on aikatestaukseen tarkoitettu osa
@@ -94,6 +98,10 @@ public class PeliFrame {
         return ruudukko;
     }
 
+    public Romahduttaja getRohamduttaja() {
+        return rohamduttaja;
+    }
+    
     public KolmioTayttaja getTayttaja() {
         return tayttaja;
     }

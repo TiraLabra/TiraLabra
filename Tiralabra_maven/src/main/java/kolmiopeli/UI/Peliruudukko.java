@@ -105,6 +105,10 @@ public class Peliruudukko extends JPanel {
         this.revalidate();
 
     }
+    
+    public void taytaKaikkiKolmiot() {
+        taytaKolmiot(this.ruudukonKorkeus, this.ruudukonLeveys);
+    }
 
     public void taytaKolmiot(List<Koordinaatti> tuhoutuneet) {
 

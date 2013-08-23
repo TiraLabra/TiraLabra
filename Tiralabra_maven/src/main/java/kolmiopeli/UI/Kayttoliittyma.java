@@ -29,7 +29,7 @@ public class Kayttoliittyma implements Runnable, ActionListener {
     public void run() {
         frame = new JFrame("Kolmio-peli");
 
-        frame.setPreferredSize(new Dimension(640, 558));
+        frame.setPreferredSize(new Dimension(640, 588));
         frame.setResizable(false);
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

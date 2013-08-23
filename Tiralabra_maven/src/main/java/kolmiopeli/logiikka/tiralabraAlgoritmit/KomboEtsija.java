@@ -72,18 +72,8 @@ public class KomboEtsija {
      */
     public Collection etsiKombot(Collection juuriArvotut) {
         debugViestit.tuplaviiva();
+        debugViestit.kayLapiJoukko(juuriArvotut);
         Koordinaatti[] juuriArvotutTaulukko = (Koordinaatti[]) juuriArvotut.toArray(new Koordinaatti[juuriArvotut.size()]);
-        // BFS pohdintaa:
-        // Miten merkkaan lapikaydyt kolmiot?
-        // 1. Teen kolmioille muuttujan, mutta miten ja kuinka tehokkaasti "resettaan" kaikkien kolmioiden muuttujat uuden etsinnan alkaessa
-        // 2. Teen kutsutilanteessa uuden taulukon (kopion verkosta) jossa pidan kirjaa
-        // 3. Pidan listaa koordinaateista jotka on kayty lapi, tarkistus jonkinlaisella hashauksella
-
-        // Mika naista olisi paras kompromissi aika ja tilavaativuuksien suhteen?
-        // JA LISAKSI jos tuhoutuneiden tilalle arpoutuu kaksi vierekkaista samaa varia niin kuinka 
-
-        // Itse toteutettavat rakenteet:
-        // Lista, jono, hashset (nopeuden takia, ehka pelkka taulukko riittaa?)
 
         // Joukko joka keraa kaikki mahdolliset tuhoutuvat ja palauttaa ne.
         HashSet<Koordinaatti> kaikkiTuhoutuvat = lahdeTutkimaanArvottuja(juuriArvotutTaulukko);

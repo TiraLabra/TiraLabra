@@ -8,8 +8,8 @@ package kolmiopeli.domain;
  */
 public class Koordinaatti implements Comparable {
 
-    private int rivi;
-    private int sarake;
+    private final int rivi;
+    private final int sarake;
 
     /**
      * Luo annetusta rivista ja sarakkeesta koordinaatin.

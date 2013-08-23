@@ -6,6 +6,7 @@ package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
@@ -140,6 +141,12 @@ class KomboEtsijaDebugViestit {
     void viereinenKaytyLapi(Koordinaatti tutkittava, Kolmio viereinen) {
         if (onkoPaalla) {
             System.out.println(tutkittava + viereinen.getKoordinaatti().toString() + "kayty lapi");
+        }
+    }
+
+    void kayLapiJoukko(Collection juuriArvotut) {
+        if (onkoPaalla) {
+            System.out.println("Etsija sai parametriksi joukon:\n" + juuriArvotut);
         }
     }
 }

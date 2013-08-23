@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.swing.Timer;
 import kolmiopeli.UI.napit.KolmioNappi;
 import kolmiopeli.domain.Kolmio;
@@ -22,7 +23,7 @@ class TapahtumaKuuntelija implements ActionListener {
     private int leveys;
     private ArrayList<Koordinaatti> tuhoutuvat;
     private int moneskoTimerToisto;
-    private ArrayList<Koordinaatti> kombot;
+    private Collection romahtavienKombot;
 
     TapahtumaKuuntelija(Peliruudukko peliruudukko) {
         this.peliruudukko = peliruudukko;
@@ -73,7 +74,9 @@ class TapahtumaKuuntelija implements ActionListener {
 
             // Lisataan siirtynyt kolmio piirtamista varten listaan
             tuhoutuvat.add(0, siirtyneenKolmionKoordinaatti);
-            this.peliruudukko.taytaKolmiot(tuhoutuvat);
+            
+//            this.peliruudukko.taytaKolmiot(tuhoutuvat);
+            this.peliruudukko.taytaKaikkiKolmiot();
 
             // Poistetaan siirretty kolmio listasta jotta sen paalle ei arvota uutta
             this.tuhoutuvat.remove(0);
@@ -81,24 +84,29 @@ class TapahtumaKuuntelija implements ActionListener {
             System.out.println("\nPelaajan siirto: " + tuhoutuvat);
             
             // Saada tassa kuinka nopeasti animaatiot nakyvat
-            final Timer timer = new Timer(2000, null);
+            final Timer timer = new Timer(900, null);
             this.moneskoTimerToisto = 0;
-            this.kombot = new ArrayList<Koordinaatti>();
+            this.romahtavienKombot = new ArrayList<Koordinaatti>();
             
             // Animaatio tapahtuu tassa metodissa timerin avustuksella, jatkuu kunnes komboja ei enaa loydy
             ActionListener teePiirto = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     
                     if (moneskoTimerToisto == 0) {
-                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
+                        
+                        // Romahduttaja/Tayttaja
+//                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
+                        romahtavienKombot = peliruudukko.getPeliFrame().getRohamduttaja().romahduta(tuhoutuvat);
+                        tuhoutuvat.clear();
+                        tuhoutuvat.addAll(romahtavienKombot);
+                        
                         peliruudukko.taytaKolmiot(korkeus, leveys);
                         moneskoTimerToisto++;
 
                     } else if (moneskoTimerToisto == 1) {
-                        kombot.clear();
-                        kombot.addAll(peliruudukko.getPeliFrame().getKomboEtsija().etsiKombot(tuhoutuvat));
+                        romahtavienKombot = peliruudukko.getPeliFrame().getKomboEtsija().etsiKombot(tuhoutuvat);
                         
-                        if (kombot.isEmpty()) {
+                        if (romahtavienKombot.isEmpty()) {
                             System.out.println("KOMBOT LOPPUIVAT");
                             timer.stop();
                             
@@ -116,17 +124,31 @@ class TapahtumaKuuntelija implements ActionListener {
                             
                         } else {
                             tuhoutuvat.clear();
-                            tuhoutuvat.addAll(kombot);
+                            tuhoutuvat.addAll(romahtavienKombot);
                             peliruudukko.getSiirrot().getPisteenlaskija().lisaaTuhoutuneistaPisteet(tuhoutuvat);
                             peliruudukko.getPeliFrame().getPelilauta().poistaKolmiotKohdista(tuhoutuvat);
-                            peliruudukko.taytaKolmiot(tuhoutuvat);
+                            
+                            
+//                            peliruudukko.taytaKolmiot(tuhoutuvat);
+                            peliruudukko.taytaKaikkiKolmiot();
+                            
                             peliruudukko.getPeliFrame().getInfoPaneeli().paivitaPisteet();
                             moneskoTimerToisto = 2;
                         }
                         
                     } else if (moneskoTimerToisto == 2) {
-                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
-                        peliruudukko.taytaKolmiot(tuhoutuvat);
+                        
+                        // Romahduttaja/Tayttaja
+//                        peliruudukko.getPeliFrame().getTayttaja().taytaTietytRuudutRajoittamatta(tuhoutuvat);
+                        
+                        romahtavienKombot = peliruudukko.getPeliFrame().getRohamduttaja().romahduta(tuhoutuvat);
+                        tuhoutuvat.clear();
+                        tuhoutuvat.addAll(romahtavienKombot);
+                        System.out.println("tuhoutuvat" + tuhoutuvat);
+                        
+//                        peliruudukko.taytaKolmiot(tuhoutuvat);
+                        peliruudukko.taytaKaikkiKolmiot();
+                        
                         moneskoTimerToisto = 1;
                     }
                 }

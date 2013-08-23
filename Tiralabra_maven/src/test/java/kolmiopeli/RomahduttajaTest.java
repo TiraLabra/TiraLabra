@@ -10,10 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Eemi
- */
+
 public class RomahduttajaTest {
 
     static Kolmio[][] testiRuudukko = {{new Kolmio(Color.MAGENTA, 0, 0), new Kolmio(Color.RED, 0, 1), new Kolmio(Color.BLUE, 0, 2), new Kolmio(Color.RED, 0, 3), new Kolmio(Color.RED, 0, 4)},
