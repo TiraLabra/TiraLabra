@@ -4,8 +4,9 @@ import Tiralabra.util.ALista;
 
 /**
  * Toteuttaa 2-3 hakupuun. 2-3 hakupuusa solmulla voi olla 1-2 arvoa, ja 0-3
- * lasta. Pahin tapaus haulle, lisäämiselle, tulostamiselle ja poistolle O(n), koska
- * puu ei ole itsestään tasapainottuva.
+ * lasta. Pahin tapaus haulle, lisäämiselle, tulostamiselle ja poistolle O(n),
+ * koska puu ei ole itsestään tasapainottuva.
+ *
  * @author Pia Pakarinen
  */
 public class KaksiKolme implements Puu {
@@ -29,26 +30,28 @@ public class KaksiKolme implements Puu {
      */
     public KaksiKolme() {
     }
-    
+
     @Override
     public String tulostaArvot() {
         return sisa(new ALista(), juuri).toString();
     }
-    
+
     @Override
     public void insert(int key) {
         if (juuri == null) {
             this.juuri = new SolmuKaksiKolme(key, null);
-            return;
+        } else {
+            insert2(key, this.juuri);
         }
-        insert2(key, this.juuri);
     }
-    
+
     @Override
     public void delete(int key) {
-        delete2(key, this.juuri);
+        if (this.juuri != null) {
+            delete2(key, this.juuri);;
+        }
     }
-    
+
     @Override
     public boolean search(int key) {
         SolmuKaksiKolme i = juuri;
@@ -69,7 +72,7 @@ public class KaksiKolme implements Puu {
                 }
             }
         }
-        
+
         return i != null;
     }
 
@@ -139,19 +142,19 @@ public class KaksiKolme implements Puu {
         if (s.getKeski() == null) {
             return null;
         }
-        
+
         SolmuKaksiKolme it = s.getKeski();
-        
+
         while (it.getVasen() != null) {
             it = it.getVasen();
         }
-        
+
         return it;
     }
 
     /**
-     * Palauttaa seuraajasolmun annetulle solmulle, null jos seuraaja ei ole
-     * tarpeen (oikea alipuu ei olemassa).
+     * Palauttaa seuraajan arvon annetulle arvo (suurempi arvo solmussa), null
+     * jos seuraaja ei ole tarpeen (oikea alipuu ei olemassa).
      *
      * @param s solmu, jolle seuraaja haetaan
      * @return solmun s seuraaja
@@ -161,9 +164,9 @@ public class KaksiKolme implements Puu {
         if (s.getOikea() == null) {
             return null;
         }
-        
+
         SolmuKaksiKolme it = s.getOikea();
-        
+
         while (it.getVasen() != null) {
             it = it.getVasen();
         }
@@ -182,38 +185,26 @@ public class KaksiKolme implements Puu {
             if (s.getEnsimmainenArvo() == key) {
                 seur = succSolmu1(s);
                 if (seur == null) {
-                    if (s.solmunKoko() == 2) {
-                        s.setVasen(s.getKeski());
-                        s.setKeski(null);
-                        s.poistaArvo(key);
-                        break;
-                    } else {
-                        poistaHelppo(key, s);
-                        break;
-                    }
+                    poistaHelppo(key, s);
+                    break;
                 } else {
                     s.poistaArvo(key);
                     s.lisaaArvo(seur.getEnsimmainenArvo());
                     poistaHelppo(seur.getEnsimmainenArvo(), seur);
                     break;
                 }
-            } else if (s.solmunKoko() == 2) {
-                if (s.getToinenArvo() == key) {
-                    seur = succSolmu2(s);
-                    //tilanne, jossa kaksiarvoisella solmulla ei oikeaa lasta
-                    if (seur == null) {
-                        s.poistaArvo(key);
-                        s.setOikea(s.getKeski());
-                        s.setKeski(null);
-                        s.poistaArvo(key);
-                        break;
-                    } //muuten korvataan seuraajalla ja poistetaan tästä arvo
-                    else {
-                        s.poistaArvo(key);
-                        s.lisaaArvo(seur.getEnsimmainenArvo());
-                        poistaHelppo(seur.getEnsimmainenArvo(), seur);
-                        break;
-                    }
+            } else if (s.solmunKoko() == 2 && s.getToinenArvo() == key) {
+                seur = succSolmu2(s);
+                if (seur == null) {
+                    poistaHelppo(key, s);
+                    break;
+                } //korvataan seuraajalla ja poistetaan tästä arvo
+                else {
+                    s.poistaArvo(key);
+                    s.lisaaArvo(seur.getEnsimmainenArvo());
+                    poistaHelppo(seur.getEnsimmainenArvo(), seur);
+                    break;
+
                 }
             }
             //arvoa ei vielä löytynyt, jatketaan matkaa
@@ -294,7 +285,7 @@ public class KaksiKolme implements Puu {
     }
 
     /**
-     * Poistaa puusta arvon, jonka solmulla ei ole vasenta lasta
+     * Poistaa puusta arvon, jolla ei ole enää
      *
      * @param arvo poistettava arvo
      * @param s solmu, josta arvo poistuu
@@ -306,6 +297,10 @@ public class KaksiKolme implements Puu {
             if (s.solmunKoko() == 2) {
                 s.poistaArvo(arvo);
             } else {
+                if (s.getParent() == null) {
+                    this.juuri = null;
+                    return;
+                }
                 if (s.getParent().getKeski() == s) {
                     s.getParent().setKeski(null);
                 } else if (s.getParent().getOikea() == s) {
@@ -317,11 +312,24 @@ public class KaksiKolme implements Puu {
             return;
         }
 
+
+
         //solmussa on vain yksi arvo; koska vasenta lasta ei voi enää löytyä,
         //eikä yksiarvoisella voi olla keskimmäistä lasta, siirretään mahdollinen
         //oikea lapsi pykälä ylöspäin
         if (s.solmunKoko() == 1) {
-            s.getParent().setVasen(s.getOikea());
+            if (s.getParent() == null) {
+                s.getOikea().setParent(null);
+                this.juuri = s.getOikea();
+                return;
+            }
+            if (s == s.getParent().getVasen()) {
+                s.getParent().setVasen(s.getOikea());
+            } else if (s == s.getParent().getOikea()) {
+                s.getParent().setOikea(s.getOikea());
+            } else {
+                s.getParent().setKeski(s.getOikea());
+            }
         } //solmussa on kaksi arvoa, ei vasenta lasta; riippuen poistettavan arvon paikasta, keskimmäisestä
         //lapsesta tulee joko uusi oikea tai vasen lapsi
         else {
@@ -344,11 +352,12 @@ public class KaksiKolme implements Puu {
     public SolmuKaksiKolme getJuuri() {
         return juuri;
     }
-    
+
     /**
      * Käy puun läpi sisäjärjestyksessä.
      *
-     * @return automaattisesti järjestetty linkitetty-lista esitys puun solmuista
+     * @return automaattisesti järjestetty linkitetty-lista esitys puun
+     * solmuista
      */
     private ALista sisa(ALista l, SolmuKaksiKolme s) {
         if (s == null) {
@@ -362,5 +371,5 @@ public class KaksiKolme implements Puu {
         sisa(l, s.getVasen());
         sisa(l, s.getOikea());
         return l;
-      }
+    }
 }

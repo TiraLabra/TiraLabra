@@ -39,37 +39,38 @@ public class ALista {
     /**
      * Lisää listalle uuden solmun oikeaan paikkaansa.
      *
-     * @param x uuden solmun arvo
+     * @param key uuden solmun arvo
      */
-    public void lisaa(int x) {
-        Listasolmu y = this.head;
+    public void lisaa(int key) {
+        Listasolmu uudenNext = this.head;
 
         //lista on tyhjä
-        if (y == null) {
-            y = new Listasolmu(x, null, null);
-            head = y;
+        if (uudenNext == null) {
+            uudenNext = new Listasolmu(key, null, null);
+            head = uudenNext;
+            koko++;
             return;
         }
 
         //etsitään uuden solmun paikka
-        while (y.getNext() != null && y.getArvo() < x) {
-            y = y.getNext();
+        while (uudenNext.getNext() != null && uudenNext.getArvo() < key) {
+            uudenNext = uudenNext.getNext();
         }
 
         Listasolmu uusi;
         //uusi solmu on suurempi kuin listan edelliset, tulee viimeiseksi
-        if (y.getNext() == null && y.getArvo() < x) {
-            uusi = new Listasolmu(x, y, null);
-            y.setNext(uusi);
+        if (uudenNext.getNext() == null && uudenNext.getArvo() < key) {
+            uusi = new Listasolmu(key, uudenNext, null);
+            uudenNext.setNext(uusi);
         } //muuten uusi solmu tulee paikalleen joko listan alkuun tai jonnekkin väliin
         else {
-            Listasolmu edeltaja = y.getPrev();
-            uusi = new Listasolmu(x, edeltaja, y);
-            if (edeltaja != null) {
-                edeltaja.setNext(uusi);
+            Listasolmu uudenPrev = uudenNext.getPrev();
+            uusi = new Listasolmu(key, uudenPrev, uudenNext);
+            if (uudenPrev != null) {
+                uudenPrev.setNext(uusi);
             }
-            y.setPrev(uusi);
-            if (head == y) {
+            uudenNext.setPrev(uusi);
+            if (head == uudenNext) {
                 head = uusi;
             }
         }
@@ -86,11 +87,14 @@ public class ALista {
         if (this.koko == 0) {
             return false;
         }
+        
         if (head.getArvo() == x) {
             if (head.getNext() == null) {
                 head = null;
+                koko = 0;
                 return true;
             }
+            
             head.getNext().setPrev(null);
             head = head.getNext();
             koko--;
@@ -109,6 +113,7 @@ public class ALista {
             }
             iter = iter.getNext();
         }
+        
         return false;
     }
 
