@@ -86,11 +86,25 @@ public final class GameState
 	 * Luo uuden pelitilanteen käyttäen annettua laudan tilaa ja vuorossa olevaa pelaajaa.
 	 *
 	 * @param board pelilaudan sisältö
-	 * @param startingPlayer ensimmäisenä oleva pelaaja
+	 * @param startingPlayer ensimmäisenä vuorossa oleva pelaaja
 	 */
 	public GameState(BitBoard board, int startingPlayer)
 	{
 		this.bitboard.copyFrom(board);
+		this.nextMovingPlayer = startingPlayer;
+	}
+
+	/**
+	 * Luo uuden pelitilanteen, missä nappuloiden sijainnit on annettu merkkijonoina (esim
+	 * "Ka8 Bc7").
+	 *
+	 * @param whitePieces valkoiset nappulat
+	 * @param blackPieces mustat nappulat
+	 * @param startingPlayer ensimmäisenä vuorossa oleva pelaaja
+	 */
+	public GameState(String whitePieces, String blackPieces, int startingPlayer)
+	{
+		this.bitboard.copyFrom(new BitBoard(whitePieces, blackPieces));
 		this.nextMovingPlayer = startingPlayer;
 	}
 

@@ -53,4 +53,19 @@ public final class Pieces
 		SYMBOLS[Pieces.KNIGHT] = "N";
 		SYMBOLS[Pieces.PAWN] = "";
 	}
+
+	/**
+	 * Palauttaa nappulan symbolia vastaavan vakion.
+	 *
+	 * @param symbol merkkijonosymboli
+	 * @return nappulan vakio tai -1 jos symboli ei kelvollinen
+	 */
+	public static int fromString(String symbol)
+	{
+		for (int pieceType = 0; pieceType < SYMBOLS.length; ++pieceType) {
+			if (symbol.equals(SYMBOLS[pieceType]))
+				return pieceType;
+		}
+		return -1;
+	}
 }

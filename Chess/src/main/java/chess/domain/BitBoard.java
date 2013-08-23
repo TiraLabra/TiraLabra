@@ -24,6 +24,26 @@ public final class BitBoard
 	private final long[] playerPieces = new long[Players.COUNT];
 
 	/**
+	 * Luo tyhjän laudan.
+	 */
+	public BitBoard()
+	{
+	}
+
+	/**
+	 * Luo uuden laudan, missä nappuloiden sijainnit on annettu merkkijonoina (esim
+	 * "Ka8 Bc7").
+	 *
+	 * @param whitePieces valkoiset nappulat
+	 * @param blackPieces mustat nappulat
+	 */
+	public BitBoard(String whitePieces, String blackPieces)
+	{
+		addPieces(Players.WHITE, whitePieces);
+		addPieces(Players.BLACK, blackPieces);
+	}
+
+	/**
 	 * Tyhjentää laudan sisällön.
 	 */
 	public void clear()
@@ -208,5 +228,25 @@ public final class BitBoard
 		}
 
 		return true;
+	}
+
+	/**
+	 * Lisää pelaajan nappulat merkkijonosta.
+	 *
+	 * @param player pelaaja
+	 * @param pieces nappulat merkkijonona
+	 */
+	private void addPieces(int player, String pieces)
+	{
+		int i = 0;
+		while (i < pieces.length()) {
+			int pieceType = Pieces.PAWN;
+			if (Character.isUpperCase(pieces.charAt(i)))
+				pieceType = Pieces.fromString(Character.toString(pieces.charAt(i++)));
+			int sqr = pieces.charAt(i++) - 'a';
+			sqr += ('8' - pieces.charAt(i++)) * 8;
+			addPiece(player, pieceType, sqr);
+			++i;
+		}
 	}
 }

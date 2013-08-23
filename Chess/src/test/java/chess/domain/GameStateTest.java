@@ -552,6 +552,28 @@ public class GameStateTest
 	}
 
 	@Test
+	public void undoRevertsOldStateWithPromotionMove()
+	{
+		BitBoard bb = new BitBoard();
+		bb.addPiece(Players.BLACK, Pieces.KING, 29);
+		bb.addPiece(Players.WHITE, Pieces.KING, 42);
+		bb.addPiece(Players.WHITE, Pieces.PAWN, 11);
+		s = new GameState(bb, Players.WHITE);
+		GameState s2 = s.clone();
+		int move = Move.pack(11, 3, Pieces.PAWN, -1, Pieces.QUEEN);
+		s.move(move);
+		s.undoMove(move);
+		assertEquals(sqrs(11, 42), s.getPieces(Players.WHITE));
+		assertEquals(sqrs(29), s.getPieces(Players.BLACK));
+		assertEquals(sqrs(42), s.getPieces(Players.WHITE, Pieces.KING));
+		assertEquals(sqrs(11), s.getPieces(Players.WHITE, Pieces.PAWN));
+		assertEquals(sqrs(29), s.getPieces(Players.BLACK, Pieces.KING));
+		assertTrue(s.equals(s2));
+		assertTrue(s.getId() == s2.getId());
+		assertEquals(Players.WHITE, s.getNextMovingPlayer());
+	}
+
+	@Test
 	public void nullMove()
 	{
 		BitBoard bb = new BitBoard();
@@ -596,5 +618,18 @@ public class GameStateTest
 		assertTrue(s.equals(s2));
 		assertTrue(s.getId() == s2.getId());
 		assertEquals(Players.WHITE, s.getNextMovingPlayer());
+	}
+
+	@Test
+	public void constructorGetsPiecesFromString()
+	{
+		s = new GameState("a2 Kd4", "Qh1 Ba8", Players.BLACK);
+		assertEquals(Players.BLACK, s.getNextMovingPlayer());
+		assertEquals(sqrs(48, 35), s.getPieces(Players.WHITE));
+		assertEquals(sqrs(63, 0), s.getPieces(Players.BLACK));
+		assertEquals(sqrs(48), s.getPieces(Players.WHITE, Pieces.PAWN));
+		assertEquals(sqrs(35), s.getPieces(Players.WHITE, Pieces.KING));
+		assertEquals(sqrs(63), s.getPieces(Players.BLACK, Pieces.QUEEN));
+		assertEquals(sqrs(0), s.getPieces(Players.BLACK, Pieces.BISHOP));
 	}
 }

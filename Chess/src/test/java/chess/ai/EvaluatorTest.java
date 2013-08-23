@@ -1,6 +1,5 @@
 package chess.ai;
 
-import chess.domain.BitBoard;
 import chess.domain.GameState;
 import chess.domain.Move;
 import chess.domain.Pieces;
@@ -17,18 +16,7 @@ public class EvaluatorTest
 	public void setUp()
 	{
 		e = new Evaluator(2);
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.KING, 4);
-		bb.addPiece(Players.BLACK, Pieces.QUEEN, 3);
-		bb.addPiece(Players.BLACK, Pieces.ROOK, 36);
-		bb.addPiece(Players.BLACK, Pieces.BISHOP, 5);
-		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 6);
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 54);
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 55);
-		bb.addPiece(Players.WHITE, Pieces.KING, 61);
-		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
-		bb.addPiece(Players.WHITE, Pieces.PAWN, 9);
-		GameState state = new GameState(bb, Players.WHITE);
+		GameState state = new GameState("Kf1 Nd2 b7", "Ke8 Qd8 Re4 Bf8 Ng8 g2 h2", Players.WHITE);
 		e.reset(state);
 	}
 
@@ -43,10 +31,7 @@ public class EvaluatorTest
 	public void firstMovingPlayerBlack()
 	{
 		e = new Evaluator(2);
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 14);
-		bb.addPiece(Players.WHITE, Pieces.BISHOP, 43);
-		GameState state = new GameState(bb, Players.BLACK);
+		GameState state = new GameState("Bd3", "g7", Players.BLACK);
 		e.reset(state);
 		assertEquals(1002 - 3007, e.getScore());
 	}
@@ -156,10 +141,7 @@ public class EvaluatorTest
 	{
 		e.makeMove(Move.pack(18, 32, Pieces.BISHOP, Pieces.PAWN, -1));
 
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.KING, 4);
-		bb.addPiece(Players.WHITE, Pieces.BISHOP, 49);
-		GameState state = new GameState(bb, Players.WHITE);
+		GameState state = new GameState("Bb2", "Ke8", Players.WHITE);
 
 		e.reset(state);
 		assertEquals(3004 - 1000005, e.getScore());

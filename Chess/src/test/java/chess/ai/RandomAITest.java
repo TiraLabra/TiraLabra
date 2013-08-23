@@ -1,8 +1,6 @@
 package chess.ai;
 
-import chess.domain.BitBoard;
 import chess.domain.GameState;
-import chess.domain.Pieces;
 import chess.domain.Players;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -18,12 +16,7 @@ public class RandomAITest
 	public void setUp()
 	{
 		ai = new RandomAI();
-
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.WHITE, Pieces.KING, 8);
-		bb.addPiece(Players.WHITE, Pieces.PAWN, 9);
-		bb.addPiece(Players.BLACK, Pieces.KING, 4);
-		s = new GameState(bb, Players.WHITE);
+		s = new GameState("Ka7 b7", "Ke8", Players.WHITE);
 	}
 
 	@Test

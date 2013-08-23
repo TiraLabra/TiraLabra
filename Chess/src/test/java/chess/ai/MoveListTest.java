@@ -1,6 +1,5 @@
 package chess.ai;
 
-import chess.domain.BitBoard;
 import chess.domain.GameState;
 import chess.domain.Move;
 import chess.domain.Pieces;
@@ -46,18 +45,7 @@ public class MoveListTest
 		// .  .  .  .  .  q  .  .
 		// .  .  .  .  R  .  .  .
 		// .  .  .  .  .  .  .  .
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.KING, 14);
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 23);
-		bb.addPiece(Players.BLACK, Pieces.QUEEN, 25);
-		bb.addPiece(Players.BLACK, Pieces.ROOK, 52);
-		bb.addPiece(Players.BLACK, Pieces.ROOK, 2);
-		bb.addPiece(Players.WHITE, Pieces.KING, 15);
-		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 31);
-		bb.addPiece(Players.WHITE, Pieces.QUEEN, 45);
-		bb.addPiece(Players.WHITE, Pieces.PAWN, 9);
-		bb.addPiece(Players.WHITE, Pieces.PAWN, 34);
-		GameState state = new GameState(bb, Players.WHITE);
+		GameState state = new GameState("Kh7 Nh5 Qf3 b7 c4", "Rc8 Kg7 h6 Qb5 Re2", Players.WHITE);
 		list.populate(state);
 	}
 
@@ -125,9 +113,7 @@ public class MoveListTest
 	@Test
 	public void findsMovesFromCorrectPlayer()
 	{
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 44);
-		GameState state = new GameState(bb, Players.BLACK);
+		GameState state = new GameState("", "e3", Players.BLACK);
 		list.populate(state);
 		assertEquals(10, find(44, 52, Pieces.PAWN, -1, -1));
 	}
@@ -135,9 +121,7 @@ public class MoveListTest
 	@Test
 	public void repopulatingRemovesOldMoves()
 	{
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 7);
-		GameState state = new GameState(bb, Players.WHITE);
+		GameState state = new GameState("Nh8", "", Players.WHITE);
 		list.populate(state);
 		assertEquals(-1, find(34, 25, Pieces.PAWN, Pieces.QUEEN, -1));
 	}
@@ -145,9 +129,7 @@ public class MoveListTest
 	@Test
 	public void hasCorrectMovesAfterRepopulating()
 	{
-		BitBoard bb = new BitBoard();
-		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 7);
-		GameState state = new GameState(bb, Players.WHITE);
+		GameState state = new GameState("Nh8", "", Players.WHITE);
 		list.populate(state);
 		for (int pri = 0; pri < MoveList.PRIORITIES; ++pri)
 			assertEquals(pri == 10 ? 2 : 0, list.getCount(pri));
