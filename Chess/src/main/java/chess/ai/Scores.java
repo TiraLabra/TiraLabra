@@ -22,14 +22,15 @@ final class Scores
 	/**
 	 * Määrä, jolla mattitilanteen arvoa pienennetään siirtoa kohden, jotta mattiin pyritään niin
 	 * aikaisin kuin mahdollista, ja mattiin joutumista viivytetään niin pitkään kuin mahdollista.
-	 * Tulee olla isompi kuin suurin mahdollinen nappuloiden arvon muutos yhdessä siirrossa.
+	 * Tulee olla isompi kuin suurin mahdollinen nappuloiden yhteispistemäärän (pl. kuningas)
+	 * erotus.
 	 */
-	static final int CHECK_MATE_DEPTH_ADJUSTMENT = 10 * 1000;
+	static final int CHECK_MATE_DEPTH_ADJUSTMENT = 1000 * 100;
 
 	/**
 	 * Arvo, jota (itseisarvoltaan) suurempi pistemäärä on aina matti.
 	 */
-	static final int CHECK_MATE_THRESHOLD = 300 * 1000;
+	static final int CHECK_MATE_THRESHOLD = 1000 * 100;
 
 	/**
 	 * Tasapelin pistemäärä.
@@ -47,12 +48,12 @@ final class Scores
 	static final int[] PIECE_VALUES = new int[Pieces.COUNT];
 
 	static {
-		PIECE_VALUES[Pieces.KING] = 1000 * 1000;
-		PIECE_VALUES[Pieces.QUEEN] = 9 * 1000;
-		PIECE_VALUES[Pieces.ROOK] = 5 * 1000;
-		PIECE_VALUES[Pieces.BISHOP] = 3 * 1000;
-		PIECE_VALUES[Pieces.KNIGHT] = 3 * 1000;
-		PIECE_VALUES[Pieces.PAWN] = 1 * 1000;
+		PIECE_VALUES[Pieces.KING] = 1000000 * 100;
+		PIECE_VALUES[Pieces.QUEEN] = 9 * 100;
+		PIECE_VALUES[Pieces.ROOK] = 5 * 100;
+		PIECE_VALUES[Pieces.BISHOP] = 3 * 100;
+		PIECE_VALUES[Pieces.KNIGHT] = 3 * 100;
+		PIECE_VALUES[Pieces.PAWN] = 1 * 100;
 	}
 
 	/**

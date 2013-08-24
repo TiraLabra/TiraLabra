@@ -99,6 +99,15 @@ public class MinMaxAITest
 	}
 
 	@Test
+	public void bugfixTest2() throws InterruptedException
+	{
+		// Laiton siirto jos Scores.CHECK_MATE_DEPTH_ADJUSTMENT liian pieni.
+		ai = new MinMaxAI(null, 10, 0, 0);
+		GameState s = new GameState("Kb4 Qa1", "b2 Qc4 Rc5 Kd4", Players.WHITE);
+		assertEquals("Kb4-a3", Move.toString(ai.getMove(s)));
+	}
+
+	@Test
 	public void returnsWhenTimeLimit() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 20, 0.0000001, 0);

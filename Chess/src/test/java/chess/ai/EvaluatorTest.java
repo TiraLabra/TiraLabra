@@ -23,8 +23,8 @@ public class EvaluatorTest
 	@Test
 	public void newState()
 	{
-		assertEquals((-1000005 - 9004 - 5002 - 3001 - 3001 - 1008 - 1007
-				+ 1000004 + 3005 + 1008), e.getScore());
+		assertEquals((-100000005 - 904 - 502 - 301 - 301 - 108 - 107
+				+ 100000004 + 305 + 108), e.getScore());
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class EvaluatorTest
 		e = new Evaluator(2);
 		GameState state = new GameState("Bd3", "g7", Players.BLACK);
 		e.reset(state);
-		assertEquals(1002 - 3007, e.getScore());
+		assertEquals(102 - 307, e.getScore());
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class EvaluatorTest
 	{
 		int s = e.getScore();
 		e.makeMove(Move.pack(51, 36, Pieces.KNIGHT, Pieces.ROOK, -1));
-		assertEquals(-(s + 9 - 5 + 5002), e.getScore());
+		assertEquals(-(s + 9 - 5 + 502), e.getScore());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class EvaluatorTest
 	{
 		int s = e.getScore();
 		e.makeMove(Move.pack(9, 0, Pieces.PAWN, Pieces.KING, Pieces.KNIGHT));
-		assertEquals(-(s + 3000 - 1008 + 1000000), e.getScore());
+		assertEquals(-(s + 300 - 108 + 100000000), e.getScore());
 	}
 
 	@Test
@@ -118,12 +118,12 @@ public class EvaluatorTest
 		int s = e.getScore();
 
 		e.makeMove(Move.pack(18, 32, Pieces.BISHOP, Pieces.PAWN, -1));
-		int d1 = 1 - 4 + 1005;
+		int d1 = 1 - 4 + 105;
 		assertEquals(-(s + d1), e.getScore());
 		assertEquals(-d1, e.getRelativeScore());
 
 		e.makeMove(Move.pack(49, 58, Pieces.PAWN, Pieces.QUEEN, Pieces.BISHOP));
-		int d2 = 3001 - 1008 + 9003;
+		int d2 = 301 - 108 + 903;
 		assertEquals(s + d1 - d2, e.getScore());
 		assertEquals(d1 - d2, e.getRelativeScore());
 
@@ -144,7 +144,7 @@ public class EvaluatorTest
 		GameState state = new GameState("Bb2", "Ke8", Players.WHITE);
 
 		e.reset(state);
-		assertEquals(3004 - 1000005, e.getScore());
+		assertEquals(304 - 100000005, e.getScore());
 		assertEquals(0, e.getRelativeScore());
 	}
 
