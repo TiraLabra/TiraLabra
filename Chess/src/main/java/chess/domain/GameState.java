@@ -311,39 +311,28 @@ public final class GameState
 	{
 		long moves = 0;
 
-		int row = fromSqr / 8;
-		int col = fromSqr % 8;
-
 		switch (piece) {
 			case Pieces.KING:
 				moves |= Movemasks.KING_MOVES[fromSqr] & ~bitboard.getPieces(player);
 				break;
 			case Pieces.QUEEN:
-				moves |= getLineMoves(player, row, col, -1, -1);
-				moves |= getLineMoves(player, row, col, -1, 0);
-				moves |= getLineMoves(player, row, col, -1, 1);
-				moves |= getLineMoves(player, row, col, 0, -1);
-				moves |= getLineMoves(player, row, col, 0, 1);
-				moves |= getLineMoves(player, row, col, 1, -1);
-				moves |= getLineMoves(player, row, col, 1, 0);
-				moves |= getLineMoves(player, row, col, 1, 1);
+				long allPieces = bitboard.getPieces();
+				moves |= Movemasks.getQueenMoves(fromSqr, allPieces, bitboard.getPieces(player));
 				break;
 			case Pieces.ROOK:
-				moves |= getLineMoves(player, row, col, -1, 0);
-				moves |= getLineMoves(player, row, col, 0, -1);
-				moves |= getLineMoves(player, row, col, 0, 1);
-				moves |= getLineMoves(player, row, col, 1, 0);
+				allPieces = bitboard.getPieces();
+				moves |= Movemasks.getRookMoves(fromSqr, allPieces, bitboard.getPieces(player));
 				break;
 			case Pieces.BISHOP:
-				moves |= getLineMoves(player, row, col, -1, -1);
-				moves |= getLineMoves(player, row, col, -1, 1);
-				moves |= getLineMoves(player, row, col, 1, -1);
-				moves |= getLineMoves(player, row, col, 1, 1);
+				allPieces = bitboard.getPieces();
+				moves |= Movemasks.getBishopMoves(fromSqr, allPieces, bitboard.getPieces(player));
 				break;
 			case Pieces.KNIGHT:
 				moves |= Movemasks.KNIGHT_MOVES[fromSqr] & ~bitboard.getPieces(player);
 				break;
 			case Pieces.PAWN:
+				int row = fromSqr / 8;
+				int col = fromSqr % 8;
 				int nextRow = row - 1 + 2 * player;
 				if ((nextRow & ~7) == 0) {
 					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
@@ -475,56 +464,6 @@ public final class GameState
 	public long[] getEarlierStates()
 	{
 		return Arrays.copyOf(earlierStates, ply);
-	}
-
-	/**
-	 * Muodostaa bittimaskin lähetin/kunigattaren/tornin siirroista yhteen suuntaan. Lisätään kaikki
-	 * ruudut ko. suuntaan, kunnes tullaan laudan reunaan tai vastaan tulee toinen nappula. (Jos
-	 * se on erivärinen, lyönti lasketaan mukaan siirtoihin.)
-	 *
-	 * @param player pelaaja
-	 * @param row siirrettävän nappulan rivi
-	 * @param col siirrettävän nappulan sarake
-	 * @param dr suunnan rivikomponentti (-1,0,1)
-	 * @param dc suunnan sarakekomponentti (-1,0,1)
-	 * @return bittimaski siirroista
-	 */
-	private long getLineMoves(int player, int row, int col, int dr, int dc)
-	{
-		long moves = 0;
-		for (;;) {
-			row += dr;
-			col += dc;
-
-			long move = getMove(player, row, col);
-			if (move == 0)
-				break;
-
-			moves |= move;
-			if (bitboard.hasPiece(1 - player, row * 8 + col))
-				break;
-		}
-		return moves;
-	}
-
-	/**
-	 * Muodostaa bittimaskin yksittäisestä siirrosta.
-	 *
-	 * @param player pelaaja
-	 * @param row nappulan rivi
-	 * @param col nappulan sarake
-	 * @return bittimaski
-	 */
-	private long getMove(int player, int row, int col)
-	{
-		if (((row | col) & ~7) != 0)
-			return 0;
-
-		int sqr = row * 8 + col;
-		if (bitboard.hasPiece(player, sqr))
-			return 0;
-
-		return 1L << sqr;
 	}
 
 	/**

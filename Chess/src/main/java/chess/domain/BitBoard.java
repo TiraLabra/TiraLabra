@@ -122,6 +122,16 @@ public final class BitBoard
 	}
 
 	/**
+	 * Palauttaa kummankin pelaajan nappulat.
+	 *
+	 * @return
+	 */
+	public long getPieces()
+	{
+		return playerPieces[Players.WHITE] | playerPieces[Players.BLACK];
+	}
+
+	/**
 	 * Tarkistaa, onko pelaajalla tietyn tyyppinen nappula annetussa ruudussa.
 	 *
 	 * @param player pelaaja (0-1)
