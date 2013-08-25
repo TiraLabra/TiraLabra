@@ -121,14 +121,5 @@ public class SolmuTreap {
      */
     public int getPrioriteetti() {
         return prioriteetti;
-    }
-
-    /**
-     * Asettaa solmulle prioriteetin.
-     * @param prioriteetti solmun uusi prioriteetti
-     */
-    public void setPrioriteetti(int prioriteetti) {
-        this.prioriteetti = prioriteetti;
-    }
-    
+    }    
 }

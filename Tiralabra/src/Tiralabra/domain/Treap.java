@@ -121,15 +121,6 @@ public class Treap implements Puu {
     }
 
     /**
-     * Asettaa puulle uuden juuren.
-     *
-     * @param juuri puun uusi juuri
-     */
-    public void setJuuri(SolmuTreap juuri) {
-        this.juuri = juuri;
-    }
-
-    /**
      * Palauttaa puun juuren.
      *
      * @return puun juuri
@@ -147,12 +138,12 @@ public class Treap implements Puu {
         if (s.getVanhempi() == null) {
             return;
         }
-        
+
         SolmuTreap isovanh = s.getVanhempi().getVanhempi();
 
         s.getVanhempi().setVasen(s.getOikea());
         s.setOikea(s.getVanhempi());
-        
+
         puunKiertoPuuhunTakaisin(isovanh, s);
     }
 
@@ -169,7 +160,7 @@ public class Treap implements Puu {
 
         s.getVanhempi().setOikea(s.getVasen());
         s.setVasen(s.getVanhempi());
-        
+
         puunKiertoPuuhunTakaisin(isovanh, s);
     }
 
@@ -188,6 +179,7 @@ public class Treap implements Puu {
                 isovanh.setVasen(s);
             }
         } else {
+            s.setVanhempi(null);
             juuri = s;
         }
     }
@@ -220,6 +212,10 @@ public class Treap implements Puu {
             return;
         } //poistettava solmu on lehtisolmu
         else if (pois.getOikea() == null && pois.getVasen() == null) {
+            if (juuri == pois) {
+                juuri = null;
+                return;
+            }
             if (pois == pois.getVanhempi().getOikea()) {
                 pois.getVanhempi().setOikea(null);
             } else {
@@ -231,19 +227,35 @@ public class Treap implements Puu {
         delete2(pois);
     }
 
-    /** Korjaa puun keko-ominaisuuden.
-     * Nostaa valittua solmua ylemmäs, kunnes sen prioriteetti on suurempi kuin lapsien.
+    /**
+     * Korjaa puun keko-ominaisuuden. Nostaa valittua solmua ylemmäs, kunnes sen
+     * prioriteetti on suurempi kuin lapsien.
+     *
      * @param s korjattava solmu
      */
     private void heapi(SolmuTreap s) {
         if (s.getVanhempi() == null) {
-            if (s.getVanhempi() == null) {
-                this.juuri = s;
+            juuri = s;
+        } else if (s.getPrioriteetti() > s.getVanhempi().getPrioriteetti()) {
+            if (s == s.getVanhempi().getOikea()) {
+                kierrosVasemmalle(s);
+            } else {
+                kierrosOikealle(s);
             }
-        } else if (s.getPrioriteetti() > s.getVanhempi().getPrioriteetti()){
-            ///????
-            kierrosOikealle(s);
-            heapi(s.getVanhempi());
+            heapi(s);
+        }
+    }
+
+    /**
+     * Tekee annetusta solmusta lehtisolmun.
+     * @param s solmu, josta halutaan lehti
+     */
+    private void teelehti(SolmuTreap s) {
+        while (s.getVasen() != null) {
+            kierrosOikealle(s.getVasen());
+        }
+        while (s.getOikea() != null) {
+            kierrosVasemmalle(s.getOikea());
         }
     }
 }

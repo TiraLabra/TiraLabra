@@ -23,8 +23,10 @@ public class TreapTest {
         SolmuTreap lapsi;
         if (p.getJuuri().getOikea() != null) {
             lapsi = p.getJuuri().getOikea();
+            assertTrue(p.getJuuri().getArvo() < p.getJuuri().getOikea().getArvo());
         } else {
             lapsi = p.getJuuri().getVasen();
+            assertTrue(p.getJuuri().getArvo() > p.getJuuri().getVasen().getArvo());
         }
 
         assertEquals(true, p.getJuuri().getPrioriteetti() > lapsi.getPrioriteetti());
@@ -33,15 +35,62 @@ public class TreapTest {
 
     @Test
     public void delete() {
+        p.delete(10);
+        assertTrue(p.getJuuri() == null);
+    }
+    
+    @Test
+    public void deleteUsea(){
+        p.insert(89);
+        p.insert(3);
+        p.insert(7);
+        
+        p.delete(10);
+        assertFalse(p.search(10));
+        if (p.getJuuri().getOikea() != null) {
+            assertTrue(p.getJuuri().getArvo() < p.getJuuri().getOikea().getArvo());
+            assertTrue(p.getJuuri().getPrioriteetti() > p.getJuuri().getOikea().getPrioriteetti());
+        } else if (p.getJuuri().getVasen() != null) {
+            assertTrue(p.getJuuri().getArvo() > p.getJuuri().getVasen().getArvo());
+            assertTrue(p.getJuuri().getPrioriteetti() > p.getJuuri().getVasen().getPrioriteetti());
+        }
+        
+        p.delete(3);
+        assertFalse(p.search(3));
+        p.delete(89);
+        assertFalse(p.search(89));
+        p.delete(7);
+        assertFalse(p.search(7));
+        assertTrue(p.getJuuri() == null);
     }
 
     @Test
     public void search() {
+        assertFalse(p.search(1119));
+        assertTrue(p.search(10));
+    }
+    
+    @Test
+    public void searchUsea(){
+        p.insert(1);
+        p.insert(786);
+        p.insert(67);
+        assertFalse(p.search(777));
+        assertTrue(p.search(1));
+        assertTrue(p.search(786));
+        assertTrue(p.search(67));
     }
 
     @Test
     public void tulosta() {
         assertEquals("10\n", p.tulostaArvot());
+    }
+    
+    @Test
+    public void tulostaUsea() {
+        p.insert(6);
+        p.insert(15);
+        assertEquals("6\n10\n15\n", p.tulostaArvot());
     }
 
     @Test
