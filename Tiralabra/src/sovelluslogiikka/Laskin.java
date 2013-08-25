@@ -59,7 +59,7 @@ public class Laskin {
     public boolean tarkastaSyote(String syote) {
         for (int i = 0; i < syote.length(); i++) {
             if (sallitutMerkit.indexOf(syote.charAt(i)) == -1) {
-                System.out.print("Laskutoimitus sisältää ei-sallittuja merkkejä. ");
+                System.out.print("Laskutoimitus sisältää ei-sallittuja merkkejä tai välilyöntejä. ");
                 return false;
             }
         }
@@ -79,12 +79,12 @@ public class Laskin {
                 || syote.charAt(syote.length() - 1) == '/' || syote.charAt(syote.length() - 1) == '(') {
             System.out.print("Laskutoimitus sisältää laskuoperaatiomerkin tai alkusulun viimeisen luvun jälkeen. ");
             return false;
-        } else if (syote.charAt(0) == '-' || syote.contains("--") || syote.contains("-+") || syote.contains("+-")
+        } else if (syote.charAt(0) == '-' || syote.contains("--") || syote.contains("+-")
                 || syote.contains("*-") || syote.contains("/-") || syote.contains("(-")) {
             System.out.print("Laskutoimitus sisältää yhden tai useamman laskuoperaation negatiivisilla kokonaisluvuilla, mikä ei ole sallittua, sillä laskin pystyy käsittelemään laskutoimituksen syöttövaiheessa ainoastaan positiivisia kokonaislukuja. ");
             return false;
         } else if (syote.contains("++") || syote.contains("+*") || syote.contains("+/")
-                || syote.contains("-*") || syote.contains("-/")
+                || syote.contains("-+") || syote.contains("-*") || syote.contains("-/")
                 || syote.contains("**") || syote.contains("*+") || syote.contains("*/")
                 || syote.contains("//") || syote.contains("/+") || syote.contains("/*")) {
             System.out.print("Laskutoimitus sisältää  peräkkäin kahden tai useamman laskuoperaatiomerkin, joiden välissä ei ole yhtäkään lukua. ");

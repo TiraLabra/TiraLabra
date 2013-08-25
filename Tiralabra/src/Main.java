@@ -15,7 +15,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Laskin laskin = new Laskin();
-        laskin.kaynnista();
+//        laskin.kaynnista();
 
         //Suorituskykytestit
         String laskutoimitus1 = "3*9-5";
@@ -24,7 +24,7 @@ public class Main {
         long testi1AikaLopussa = System.currentTimeMillis();
         System.out.println("Laskutoimitukseen " + laskutoimitus1 + " = " + ratkaisu1 + " kului aikaa: " + (testi1AikaLopussa - testi1AikaAlussa) + "ms.");
 
-        String laskutoimitus2 = "45/5+(500-30))";
+        String laskutoimitus2 = "45/5+(500-30)";
         long testi2AikaAlussa = System.currentTimeMillis();
         int ratkaisu2 = laskin.ratkaiseLaskutoimitus(laskutoimitus2);
         long testi2AikaLopussa = System.currentTimeMillis();

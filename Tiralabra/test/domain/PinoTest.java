@@ -5,31 +5,31 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PinoTest {
-
+    
     Pino pino;
-
+    
     @Before
     public void setUp() {
         pino = new Pino(10);
     }
-
+    
     @Test
     public void konstruktoriAsettaaPinonKoonJaHuipunViitteenOikein() {
         assertEquals(10, pino.getSize());
         assertEquals(-1, pino.getTop());
     }
-
+    
     @Test
     public void pinoOnTyhjaKunSiihenEiOleLisattyYhtakaanOliota() {
-        assertEquals(true, pino.empty());
+        assertTrue(pino.empty());
     }
-
+    
     @Test
     public void pinoEiOleTyhjaKunSiihenOnLisattyYksikinOlio() {
         pino.push("lisättävä olio");
-        assertEquals(false, pino.empty());
+        assertFalse(pino.empty());
     }
-
+    
     @Test
     public void peekPalauttaaPinonPaallimmaisenOlionMutteiPoistaSitaEikaMuutaHuipunViitetta() {
         pino.push("lisättävä olio");
@@ -37,14 +37,14 @@ public class PinoTest {
         assertEquals(1, pino.getOlioidenLkm());
         assertEquals(0, pino.getTop());
     }
-
+    
     @Test
     public void pinossaOnYksiOlioJaHuipunViiteOnOikeinYhdenPushinJalkeen() {
         pino.push("lisättävä olio");
         assertEquals(1, pino.getOlioidenLkm());
         assertEquals(0, pino.getTop());
     }
-
+    
     @Test
     public void pinossaOnUseampiaOliotaJaHuipunViiteOnOikeinUseammanPushinJalkeen() {
         pino.push("lisättävä olio 1");
@@ -53,7 +53,7 @@ public class PinoTest {
         assertEquals(3, pino.getOlioidenLkm());
         assertEquals(2, pino.getTop());
     }
-
+    
     @Test
     public void popPalauttaaPinonPaallimaisenOlionTyhjentaaPinonJaAsettaaHuipunViitteenOikeinYhdenPushinJalkeen() {
         pino.push("lisättävä olio");
@@ -61,7 +61,7 @@ public class PinoTest {
         assertEquals(0, pino.getOlioidenLkm());
         assertEquals(-1, pino.getTop());
     }
-
+    
     @Test
     public void popPalauttaaPinonPaallimaisenOlionPoistaaSenAsettaaHuipunViitteenJaPinonOlioidenLukumaaranOikeinUseammanPushinJalkeen() {
         pino.push("lisättävä olio 1");
@@ -70,9 +70,9 @@ public class PinoTest {
         assertEquals("lisättävä olio 3", pino.pop());
         assertEquals(1, pino.getTop());
         assertEquals(2, pino.getOlioidenLkm());
-
+        
     }
-
+    
     @Test
     public void popPalauttaaPinonPaallimaisenOlionPoistaaSenAsettaaHuipunViitteenJaPinonOlioidenLukumaaranOikeinUseammanPushinJaYhdenPopinJalkeen() {
         pino.push("lisättävä olio 1");

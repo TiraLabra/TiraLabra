@@ -84,4 +84,51 @@ public class LaskinTest {
 //        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
 //        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
     }
+
+    @Test
+    public void syoteEiKelpaaKunSeSisaltaaEiSallitunMerkinTaiValilyonnin() {
+        assertFalse(laskin.tarkastaSyote("3a+4"));
+        assertFalse(laskin.tarkastaSyote("3+ 4"));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSenSulutOvatEpatasapainossa() {
+        assertFalse(laskin.tarkastaSyote("(45-3)/(2*9"));
+        assertFalse(laskin.tarkastaSyote("((45-3)/(2*9)"));
+    }
+
+    @Test
+    public void syotteeksiEiKelpaaTyhjaMerkkijono() {
+        assertFalse(laskin.tarkastaSyote(""));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSeSisaltaaSulutJoidenValissaEiOleMerkkia() {
+        assertFalse(laskin.tarkastaSyote("5*21+()-34/8"));
+        assertFalse(laskin.tarkastaSyote("(5*21)(34/8)"));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSenEnsimmainenMerkkiOnOperandiTaiLoppusulku() {
+        assertFalse(laskin.tarkastaSyote("*1000-75"));
+        assertFalse(laskin.tarkastaSyote(")1000-75"));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSenViimeinenMerkkiOnOperandiTaiAlkusulku() {
+        assertFalse(laskin.tarkastaSyote("56/2+"));
+        assertFalse(laskin.tarkastaSyote("56/2("));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSeSisaltaaLaskuoperaationNegatiivisillaLuvuilla() {
+        assertFalse(laskin.tarkastaSyote("4*-3"));
+        assertFalse(laskin.tarkastaSyote("4*(-3+2)"));
+    }
+
+    @Test
+    public void syoteEiKelpaaKunSeSisaltaaPerakkaisetOperanditJoidenValissaEiOleLukua() {
+        assertFalse(laskin.tarkastaSyote("5024//2"));
+        assertFalse(laskin.tarkastaSyote("5024+*2"));
+    }
 }
