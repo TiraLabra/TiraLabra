@@ -50,8 +50,9 @@ final class MoveList
 	 * Täyttää siirtolistan sisällön annetusta pelitilanteesta.
 	 *
 	 * @param state pelitilanne
+	 * @param excludeQuietMoves ainoastaan lyönnit
 	 */
-	void populate(GameState state)
+	void populate(GameState state, boolean excludeQuietMoves)
 	{
 		int player = state.getNextMovingPlayer();
 		clear();
@@ -59,19 +60,19 @@ final class MoveList
 		// Muut kuin sotilaat.
 		for (int pieceType = 0; pieceType < Pieces.COUNT - 1; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
-			addMoves(state, pieceType, pieces, -1);
+			addMoves(state, pieceType, pieces, -1, excludeQuietMoves);
 		}
 
 		// Korotettavat sotilaat.
 		long pieces = state.getPieces(player, Pieces.PAWN) & Movemasks.PROMOTABLE[player];
 		if (pieces != 0) {
 			for (int promotedType = Pieces.QUEEN; promotedType <= Pieces.KNIGHT; ++promotedType)
-				addMoves(state, Pieces.PAWN, pieces, promotedType);
+				addMoves(state, Pieces.PAWN, pieces, promotedType, excludeQuietMoves);
 		}
 
 		// Ei-korotettavat sotilaat.
 		pieces = state.getPieces(player, Pieces.PAWN) & ~Movemasks.PROMOTABLE[player];
-		addMoves(state, Pieces.PAWN, pieces, -1);
+		addMoves(state, Pieces.PAWN, pieces, -1, excludeQuietMoves);
 	}
 
 	/**
@@ -81,26 +82,33 @@ final class MoveList
 	 * @param pieceType nappulatyyppi
 	 * @param pieces nappuloiden sijainnit bittimaskina
 	 * @param promotedType korotuksen tyyppi
+	 * @param excludeQuietMoves ainostaan lyönnit
 	 */
-	private void addMoves(GameState state, int pieceType, long pieces, int promotedType)
+	private void addMoves(GameState state, int pieceType, long pieces, int promotedType,
+			boolean excludeQuietMoves)
 	{
 		int player = state.getNextMovingPlayer();
 
 		for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 			int fromSqr = Long.numberOfTrailingZeros(pieces);
 			long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
-			for (int capturedType = 0; capturedType < Pieces.COUNT; ++capturedType) {
-				long captureMoves = moves & state.getPieces(1 - player, capturedType);
-				for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
-					int toSqr = Long.numberOfTrailingZeros(captureMoves);
-					add(pieceType, fromSqr, toSqr, capturedType, promotedType);
+
+			if ((moves & state.getPieces(1 - player)) != 0) {
+				for (int capturedType = 0; capturedType < Pieces.COUNT; ++capturedType) {
+					long captureMoves = moves & state.getPieces(1 - player, capturedType);
+					for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
+						int toSqr = Long.numberOfTrailingZeros(captureMoves);
+						add(pieceType, fromSqr, toSqr, capturedType, promotedType);
+					}
 				}
 			}
 
-			long quietMoves = moves & ~state.getPieces(1 - player);
-			for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
-				int toSqr = Long.numberOfTrailingZeros(quietMoves);
-				add(pieceType, fromSqr, toSqr, -1, promotedType);
+			if (!excludeQuietMoves) {
+				long quietMoves = moves & ~state.getPieces(1 - player);
+				for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
+					int toSqr = Long.numberOfTrailingZeros(quietMoves);
+					add(pieceType, fromSqr, toSqr, -1, promotedType);
+				}
 			}
 		}
 	}

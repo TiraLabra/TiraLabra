@@ -62,7 +62,7 @@ public class PerformanceTest implements Runnable
 
 			double totalTime = 0;
 
-			MinMaxAI ai = new MinMaxAI(logger, depth, 0.0, 0);
+			MinMaxAI ai = new MinMaxAI(logger, depth, 30, 0.0, 0);
 			n = 0;
 			while (totalTime < length) {
 				totalTime += runSingleTest(ai, rnd);

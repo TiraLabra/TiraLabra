@@ -14,7 +14,7 @@ public class MinMaxAITest
 	@Before
 	public void setUp()
 	{
-		ai = new MinMaxAI(null, 3, 0, 0);
+		ai = new MinMaxAI(null, 3, 30, 0, 0);
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class MinMaxAITest
 	@Test
 	public void doesntStaleMateWhenHasMaterialAdvantage() throws InterruptedException
 	{
-		ai = new MinMaxAI(null, 5, 0, 0);
+		ai = new MinMaxAI(null, 5, 30, 0, 0);
 		GameState s = new GameState("Ka8 Kb8", "Kh1", Players.BLACK);
 		assertFalse("Qb8-g3".equals(Move.toString(ai.getMove(s))));
 	}
@@ -70,7 +70,7 @@ public class MinMaxAITest
 	@Test
 	public void doesntMakeIllegalMoveWhenCheckMateInevitable() throws InterruptedException
 	{
-		ai = new MinMaxAI(null, 4, 0, 0); // minimisyvyys mattitilanteen tunnistamiseksi
+		ai = new MinMaxAI(null, 4, 30, 0, 0); // minimisyvyys mattitilanteen tunnistamiseksi
 		GameState s = new GameState("Kb8", "Rc7 Kb6", Players.WHITE);
 		assertEquals("Kb8-a8", Move.toString(ai.getMove(s)));
 	}
@@ -85,7 +85,7 @@ public class MinMaxAITest
 	@Test
 	public void promotesToRookToAvoidStaleMate() throws InterruptedException
 	{
-		ai = new MinMaxAI(null, 10, 0, 0);
+		ai = new MinMaxAI(null, 6, 30, 0, 0);
 		GameState s = new GameState("Ka7 g7 Qc5", "Kd7 Qd3", Players.WHITE);
 		assertEquals("g7-g8R", Move.toString(ai.getMove(s)));
 	}
@@ -93,7 +93,7 @@ public class MinMaxAITest
 	@Test
 	public void bugfixTest1() throws InterruptedException
 	{
-		ai = new MinMaxAI(null, 10, 0, 0);
+		ai = new MinMaxAI(null, 6, 30, 0, 0);
 		GameState s = new GameState("Ka7 Qg8 Qc5", "Kd7 Qd3", Players.BLACK);
 		assertEquals("Qd3-a6", Move.toString(ai.getMove(s)));
 	}
@@ -102,7 +102,7 @@ public class MinMaxAITest
 	public void bugfixTest2() throws InterruptedException
 	{
 		// Laiton siirto jos Scores.CHECK_MATE_DEPTH_ADJUSTMENT liian pieni.
-		ai = new MinMaxAI(null, 10, 0, 0);
+		ai = new MinMaxAI(null, 6, 30, 0, 0);
 		GameState s = new GameState("Kb4 Qa1", "b2 Qc4 Rc5 Kd4", Players.WHITE);
 		assertEquals("Kb4-a3", Move.toString(ai.getMove(s)));
 	}
@@ -110,7 +110,7 @@ public class MinMaxAITest
 	@Test
 	public void returnsWhenTimeLimit() throws InterruptedException
 	{
-		ai = new MinMaxAI(null, 20, 0.0000001, 0);
+		ai = new MinMaxAI(null, 99, 30, 0.0000001, 0);
 		GameState s = new GameState("Kb8", "Kb6 Rc7", Players.WHITE);
 		ai.getMove(s);
 		assertNotNull(ai.getGameTree());
@@ -120,7 +120,7 @@ public class MinMaxAITest
 	public void throwsIfDepthTooSmall()
 	{
 		try {
-			new MinMaxAI(null, 1, 0, 3);
+			new MinMaxAI(null, 1, 30, 0, 3);
 			fail("IllegalArgumentException not thrown");
 		} catch (IllegalArgumentException e) {
 		}

@@ -8,7 +8,7 @@ import chess.util.Logger;
 /**
  * Minmaxiin ja alfa-beta-karsintaan perustuva tekoäly.
  */
-public class MinMaxAI implements Player
+public final class MinMaxAI implements Player
 {
 	/**
 	 * Oletusaikaraja (sekunteina), jos konstruktorissa ei ole annettu aikarajaa.
@@ -45,10 +45,20 @@ public class MinMaxAI implements Player
 	private static final int DEFAULT_SEARCH_DEPTH = 100;
 
 	/**
+	 * Oletusarvo quiescence-haun maksimisyvyydelle.
+	 */
+	private static final int DEFAULT_QUIESCENCE_SEARCH_DEPTH = 30;
+
+	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
 	 * kuninkaan uhatuksi.
 	 */
 	private final int searchDepth;
+
+	/**
+	 * Maksimisyvyys quiescence-haulle (normaalin hakusyvyyden lisäksi).
+	 */
+	private final int quiescenceSearchDepth;
 
 	/**
 	 * Poikkeus, joka heitetään aikarajan kuluessa umpeen.
@@ -142,7 +152,8 @@ public class MinMaxAI implements Player
 	 */
 	public MinMaxAI(Logger logger)
 	{
-		this(logger, DEFAULT_SEARCH_DEPTH, DEFAULT_TIME_LIMIT, DEFAULT_TREE_GENERATION_DEPTH);
+		this(logger, DEFAULT_SEARCH_DEPTH, DEFAULT_QUIESCENCE_SEARCH_DEPTH, DEFAULT_TIME_LIMIT,
+				DEFAULT_TREE_GENERATION_DEPTH);
 	}
 
 	/**
@@ -150,22 +161,25 @@ public class MinMaxAI implements Player
 	 *
 	 * @param logger loggeri debug-viestejä varten
 	 * @param searchDepth maksimi hakusyvyys
+	 * @param quiescenceSearchDepth quiescence-haun syvyys
 	 * @param timeLimit aikaraja yhden parhaan siirron laskemiselle
 	 * @param treeGenerationDepth syvyys, johon asti pelipuu tallennetaan
 	 */
-	public MinMaxAI(Logger logger, int searchDepth, double timeLimit, int treeGenerationDepth)
+	public MinMaxAI(Logger logger, int searchDepth, int quiescenceSearchDepth, double timeLimit,
+			int treeGenerationDepth)
 	{
 		if (searchDepth < 2)
 			throw new IllegalArgumentException("Search depth too small.");
 		this.logger = logger;
 		this.searchDepth = searchDepth;
+		this.quiescenceSearchDepth = quiescenceSearchDepth;
 		this.timeLimit = timeLimit;
 		this.treeGenerator = new TreeGenerator(treeGenerationDepth);
-		this.results = new StateInfo[searchDepth + 1];
-		this.moveLists = new MoveList[searchDepth + 1];
+		this.results = new StateInfo[searchDepth + 1 + quiescenceSearchDepth];
+		this.moveLists = new MoveList[searchDepth + 1 + quiescenceSearchDepth];
 		this.ply = 0;
 		this.loggingEnabled = false;
-		this.evaluator = new Evaluator(searchDepth);
+		this.evaluator = new Evaluator(searchDepth + quiescenceSearchDepth);
 	}
 
 	/**
@@ -303,9 +317,20 @@ public class MinMaxAI implements Player
 		if (earlierStates.get(state.getId()) != null && ply > 0)
 			return Scores.DRAW;
 
-		if (depth == 0 || !state.areBothKingsAlive())
+		if (!state.areBothKingsAlive())
 			return evaluator.getScore();
 
+		// Quiescence-haku, kun depth <= 0. Vaaditaan, että jokainen siirto parantaa staattista
+		// pistemäärää.
+		if (depth <= 0) {
+			int e = evaluator.getScore();
+			if (-depth >= quiescenceSearchDepth || e >= beta)
+				return e;
+			if (e > alpha)
+				alpha = e;
+		}
+
+		// Katsotaan, voidaanko tulos hakea transpositiotaulusta.
 		StateInfo info = trposTable.get(state.getId());
 		if (info != null && info.depth >= depth) {
 			++trposTblHitCount;
@@ -315,15 +340,21 @@ public class MinMaxAI implements Player
 				return info.score;
 		}
 
+		// Luodaan tietue haun tulokselle.
 		results[ply] = new StateInfo(state.getId());
 		results[ply].nodeType = StateInfo.NODE_TYPE_UPPER_BOUND;
 		results[ply].score = Scores.MIN;
 		earlierStates.put(results[ply]);
 
+		// Käydään läpi siirrot.
 		depth = applyNullMoveReduction(depth, beta, state);
-		searchAllMoves(depth, alpha, beta, state, info != null ? info.bestMove : 0);
+		searchAllMoves(depth, alpha, beta, state, info != null && depth > 0 ? info.bestMove : 0);
 
 		earlierStates.remove(state.getId());
+
+		// Jos quiescence-haussa ei löytynyt sallittuja lyöntejä, asetetaan pistemääräksi alaraja.
+		if (depth <= 0 && results[ply].score == Scores.MIN)
+			results[ply].score = alpha;
 
 		results[ply].score = applyScoreDepthAdjustment(results[ply].score, state);
 
@@ -369,11 +400,13 @@ public class MinMaxAI implements Player
 				return;
 		}
 
-		// Muodostetaan priorisoitu siirtolista.
+		// Muodostetaan priorisoitu siirtolista. Normaalissa haussa käydään läpi kaikki siirrot,
+		// ja quiescence-haussa (depth <= 0) ainostaan lyönnit.
 		if (moveLists[ply] == null)
 			moveLists[ply] = new MoveList();
-		moveLists[ply].populate(state);
+		moveLists[ply].populate(state, depth <= 0);
 
+		// Käydään siirrot läpi priorisoidussa järjestyksessä.
 		for (int i = 0; i < MoveList.PRIORITIES; ++i) {
 			int count = moveLists[ply].getCount(i);
 			for (int j = 0; j < count; ++j) {
@@ -405,9 +438,13 @@ public class MinMaxAI implements Player
 	private int searchMove(int depth, int alpha, int beta, GameState state, int move)
 			throws TimeLimitException, InterruptedException
 	{
+		// Suoritetaan siirto.
 		++ply;
 		state.move(move);
 		evaluator.makeMove(move);
+
+		// Jatketaan hakua rekursiivisesti. PV-solmuille tehdään täysi haku ja muille haku
+		// pienennetyllä hakuikkunan koolla.
 		int score;
 		if (results[ply - 1].nodeType == StateInfo.NODE_TYPE_UPPER_BOUND) {
 			// Etsitään normaalisti niin kauan kunnes löydetään arvo välillä ]alfa,beta[
@@ -419,10 +456,13 @@ public class MinMaxAI implements Player
 			if (score > alpha && score < beta)
 				score = -createNodeAndSearch(depth - 1, -beta, -alpha, state, move);
 		}
+
+		// Kumotaan siirto.
 		evaluator.undoMove();
 		state.undoMove(move);
 		--ply;
 
+		// Parannus edelliseeen parhaimpaan siirtoon verrattuna.
 		if (score > results[ply].score) {
 			results[ply].score = score;
 			results[ply].bestMove = move;
@@ -542,14 +582,16 @@ public class MinMaxAI implements Player
 	}
 
 	/**
-	 * Lisää tietueen tranpositiotauluun, jos sen koko ei ylitä maksimikokoa.
+	 * Lisää tietueen tranpositiotauluun, jos sen koko ei ylitä maksimikokoa. Quiescence-haun
+	 * (depth 0 tai pienempi) tuloksia ei tallenneta, koska kyseisiä alipuita ei ole analysoitu
+	 * kokonaan.
 	 *
 	 * @param depth analysoitu syvyys
 	 * @param result hakua vastaava tietue
 	 */
 	private void addTranspositionTableEntry(int depth, StateInfo result)
 	{
-		if (trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
+		if (depth > 0 && trposTable.size() < MAX_TRANSPOSITION_TABLE_SIZE) {
 			result.depth = depth;
 			trposTable.put(result);
 		}

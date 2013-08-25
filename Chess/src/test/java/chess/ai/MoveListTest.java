@@ -46,7 +46,7 @@ public class MoveListTest
 		// .  .  .  .  R  .  .  .
 		// .  .  .  .  .  .  .  .
 		GameState state = new GameState("Kh7 Nh5 Qf3 b7 c4", "Rc8 Kg7 h6 Qb5 Re2", Players.WHITE);
-		list.populate(state);
+		list.populate(state, false);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class MoveListTest
 	public void findsMovesFromCorrectPlayer()
 	{
 		GameState state = new GameState("", "e3", Players.BLACK);
-		list.populate(state);
+		list.populate(state, false);
 		assertEquals(10, find(44, 52, Pieces.PAWN, -1, -1));
 	}
 
@@ -122,7 +122,7 @@ public class MoveListTest
 	public void repopulatingRemovesOldMoves()
 	{
 		GameState state = new GameState("Nh8", "", Players.WHITE);
-		list.populate(state);
+		list.populate(state, false);
 		assertEquals(-1, find(34, 25, Pieces.PAWN, Pieces.QUEEN, -1));
 	}
 
@@ -130,7 +130,7 @@ public class MoveListTest
 	public void hasCorrectMovesAfterRepopulating()
 	{
 		GameState state = new GameState("Nh8", "", Players.WHITE);
-		list.populate(state);
+		list.populate(state, false);
 		for (int pri = 0; pri < MoveList.PRIORITIES; ++pri)
 			assertEquals(pri == 10 ? 2 : 0, list.getCount(pri));
 	}
