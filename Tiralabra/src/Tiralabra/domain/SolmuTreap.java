@@ -1,10 +1,12 @@
 package Tiralabra.domain;
 
+import java.util.Random;
+
 /** Solmu Treapeille.
  * Tallettaa "normaalien" solmun ominaisuuksien lisäksi solmulle prioriteetin.
  * @author Pia Pakarinen
  */
-class SolmuTreap {
+public class SolmuTreap {
     
     /**
      * Solmun vasen lapsi.
@@ -37,9 +39,9 @@ class SolmuTreap {
      * @param p solmun prioriteetti
      * @param v solmun vanhempi
      */
-    public SolmuTreap(int a, int p, SolmuTreap v) {
+    public SolmuTreap(int a, SolmuTreap v) {
         this.arvo = a;
-        this.prioriteetti = p;
+        this.prioriteetti = new Random().nextInt();
         this.vanhempi = v;
     }
 
