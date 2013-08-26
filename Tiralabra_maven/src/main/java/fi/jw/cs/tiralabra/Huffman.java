@@ -56,7 +56,7 @@ public class Huffman {
     }
 
     public Huffman(String message) {
-        this.message = new String(message.getBytes(StandardCharsets.ISO_8859_1));
+        this.message = new String(message.getBytes(StandardCharsets.US_ASCII));
         map = new BinaryTreeMap();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new SimplePriorityQueue<Node>();
