@@ -100,7 +100,9 @@ public class Huffman {
      *          should it encounter a non-binary encoded value.
      */
     public void decode() throws IllegalHuffmanCodeException {
+        log("Huffman decoding started. Building reverse tree");
         buildReverseTree();
+        log("Decoding message");
         decodeMessage();
     }
 
@@ -312,6 +314,7 @@ public class Huffman {
      */
     protected void decodeMessage() {
         message = "";
+        StringBuilder sb = new StringBuilder();
         Node root = tree.getRoot();
         Node current = root;
         Node next;
@@ -336,7 +339,7 @@ public class Huffman {
             current = next;
 
             if (current.isLeaf()) {
-                message += current.getLabel();
+                sb.append(current.getLabel());
                 current = root;
                 currentPath = "";
             } else {
@@ -344,6 +347,7 @@ public class Huffman {
                 current.setLabel(currentPath);
             }
         }
+        message = sb.toString();
     }
 
 

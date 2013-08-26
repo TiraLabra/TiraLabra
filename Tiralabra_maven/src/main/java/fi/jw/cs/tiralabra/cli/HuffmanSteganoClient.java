@@ -188,6 +188,7 @@ public class HuffmanSteganoClient {
     static void decode() throws IOException, IllegalHuffmanCodeException {
         String image = requestSourceFilename("Give path to image to decode");
         String stegDecoded = steganoDecode(image);
+        System.out.println("Steganographic decoding done. Beginning Huffman decoding");
         String huffmanMapFilename = mapFilename(image);
         String huffMap = readHuffmanMap(huffmanMapFilename);
 
