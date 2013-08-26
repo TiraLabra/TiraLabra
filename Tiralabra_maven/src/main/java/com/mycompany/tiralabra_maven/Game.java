@@ -43,7 +43,6 @@ public class Game {
         setUpResultTable();
         this.primaryBot = new Bot(0);
         gameModeWindow();
-        this.statistics = new Statistics(file);
         if (gameMode != GameMode.PLAYER_VS_BOT){
             return;
         }
@@ -57,6 +56,7 @@ public class Game {
     private void playVsBot() throws IOException {
         showNewOrExistingPlayerWindow();
         showFileBrowser();
+        this.statistics = new Statistics(file);
     }
 
     /**
@@ -65,6 +65,7 @@ public class Game {
     private void asGuest() {
         this.gameMode = GameMode.GUEST_VS_BOT;
         try {
+            this.statistics = new Statistics(file2);
             primaryBot.loadProfile(fileHandler2);
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +78,7 @@ public class Game {
     private void botVsBot() throws FileNotFoundException {
         this.gameMode = GameMode.BOT_VS_BOT;
         this.secondaryBot = new Bot(1);
-        this.statistics = new Statistics(file2);
+        this.statistics = new Statistics(null);
     }
 
     /**
@@ -135,7 +136,6 @@ public class Game {
     }
 
     /**
-     *
      * @return gameMode
      */
     public GameMode getGameMode() {
@@ -143,7 +143,6 @@ public class Game {
     }
 
     /**
-     *
      * @return statistics
      */
     public Statistics getStatistics() {
@@ -222,6 +221,11 @@ public class Game {
         return results[primary][move];
     }
 
+    /**
+     * Shows pop-up window asking to create new profile or not. 
+     * @throws HeadlessException
+     * @throws IOException 
+     */
     private void showNewOrExistingPlayerWindow() throws HeadlessException, IOException {
         int n = -1;
         Object[] options = {"New player", "Existing player"};
@@ -236,6 +240,10 @@ public class Game {
         }
     }
 
+    /**
+     * Shows pop-up file browser. This method is for choosing a player profile. 
+     * @throws HeadlessException 
+     */
     private void showFileBrowser() throws HeadlessException {
         this.gameMode = GameMode.PLAYER_VS_BOT;
         JFileChooser fc = new JFileChooser("profiles/");

@@ -272,6 +272,11 @@ public class AdvancedAi implements Ai {
         return is;
     }
 
+    /**
+     * Changes number positions in given array. 
+     * @param is
+     * @return moves
+     */
     private int[] changeMoves(int[] is) {
         int x = is[0];
         is[0] = is[2];
@@ -280,6 +285,10 @@ public class AdvancedAi implements Ai {
         return is;
     }
 
+    /**
+     * Finds the most suitable statistics to use in current situation. 
+     * @return moves
+     */
     private int[] FindStatistics() {
         int[] is = treeStatistics(0);
         for (int i = 1; i < depth; i++) {
