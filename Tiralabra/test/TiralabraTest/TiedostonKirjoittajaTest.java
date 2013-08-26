@@ -17,12 +17,12 @@ import tiralabra.tiedostonkasittely.TiedostonLukija;
  *
  * @author joonaslongi
  */
-public class KirjoittajaTest {
+public class TiedostonKirjoittajaTest {
     
     private TiedostonKirjoittaja kirjoittaja;
     private TiedostonLukija lukija;
     
-    public KirjoittajaTest() {
+    public TiedostonKirjoittajaTest() {
     }
     
     @BeforeClass

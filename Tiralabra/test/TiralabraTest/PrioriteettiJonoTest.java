@@ -48,6 +48,50 @@ public class PrioriteettiJonoTest {
     @Test
     public void testaaTyhjyys(){
         assertEquals(true, jono.tyhja());
+        assertEquals(0, jono.koko());
+    }
+    
+    @Test
+    public void eiTyhjaKunLisataan(){
+        jono.lisaa(new Node(97, 2));
+        assertFalse(jono.tyhja());
+    }
+    
+    @Test
+    public void tyhjaKunKaikkiOtetaan(){
+        jono.lisaa(new Node(97, 2));
+        jono.lisaa(new Node(98, 2));
+        assertFalse(jono.tyhja());
+        jono.ota();
+        jono.ota();
+        assertTrue(jono.tyhja());
+    }
+    
+    @Test
+    public void kokoOikeinKunLisataan(){
+        jono.lisaa(new Node(97, 2));
+        jono.lisaa(new Node(98, 2));
+        assertEquals(2, jono.koko());
+    }
+    
+    @Test
+    public void kokoOikeinKunOtetaan(){
+        jono.lisaa(new Node(97, 2));
+        jono.lisaa(new Node(98, 2));
+        assertEquals(2, jono.koko());
+        jono.ota();
+        assertEquals(1, jono.koko());
+    }
+    
+    @Test
+    public void kokoOikeinKunLisataanMonta(){
+        jono.lisaa(new Node(97, 2));
+        jono.lisaa(new Node(98, 3));
+        jono.lisaa(new Node(99, 4));
+        jono.lisaa(new Node(100, 5));
+        jono.lisaa(new Node(101, 6));
+        jono.lisaa(new Node(102, 7));
+        assertEquals(6, jono.koko());
     }
     
     @Test
@@ -56,6 +100,7 @@ public class PrioriteettiJonoTest {
         assertEquals(1, jono.koko());
         assertEquals(97, jono.getKeko()[0].getMerkki());
     }
+    
     @Test
     public void lisaaMonta(){
         jono.lisaa(new Node(97, 2));
@@ -64,7 +109,6 @@ public class PrioriteettiJonoTest {
         jono.lisaa(new Node(100, 5));
         jono.lisaa(new Node(101, 6));
         jono.lisaa(new Node(102, 7));
-        assertEquals(6, jono.koko());
         assertEquals(97, jono.getKeko()[0].getMerkki());
         assertEquals(102, jono.getKeko()[5].getMerkki());
     }
@@ -81,7 +125,7 @@ public class PrioriteettiJonoTest {
     }
     
     @Test
-    public void ottaaOikein(){
+    public void ottaaPienimman(){
         jono.lisaa(new Node(97, 2));
         jono.lisaa(new Node(98, 11));
         jono.lisaa(new Node(99, 1));

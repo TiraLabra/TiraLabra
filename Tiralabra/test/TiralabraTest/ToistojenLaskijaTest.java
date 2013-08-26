@@ -16,11 +16,11 @@ import tiralabra.tiivistys.ToistojenLaskija;
  *
  * @author Joonas
  */
-public class LaskijaTest {
+public class ToistojenLaskijaTest {
     
     private ToistojenLaskija laskija;
     
-    public LaskijaTest() {
+    public ToistojenLaskijaTest() {
     }
     
     @BeforeClass

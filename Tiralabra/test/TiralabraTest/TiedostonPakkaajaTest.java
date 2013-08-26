@@ -16,11 +16,11 @@ import tiralabra.tiivistys.TiedostonPakkaaja;
  *
  * @author joonaslongi
  */
-public class PakkaajaTest {
+public class TiedostonPakkaajaTest {
     
     private TiedostonPakkaaja pakkaaja;
     
-    public PakkaajaTest() {
+    public TiedostonPakkaajaTest() {
     }
     
     @BeforeClass
@@ -42,11 +42,23 @@ public class PakkaajaTest {
     }
     
     @Test
-    public void laskeeToistotOikein(){
-        assertEquals(0, pakkaaja.getLaskija().getToistot()[96]);
+    public void oikeatToistotA(){
         assertEquals(4, pakkaaja.getLaskija().getToistot()[97]);
+    }
+    
+    @Test
+    public void oikeatToistotB(){
         assertEquals(3, pakkaaja.getLaskija().getToistot()[98]);
+    }
+    
+    @Test
+    public void oikeatToistotC(){
         assertEquals(5, pakkaaja.getLaskija().getToistot()[99]);
+    }
+    
+    @Test
+    public void eiYlimaaraisiaToistoja(){
+        assertEquals(0, pakkaaja.getLaskija().getToistot()[96]);
         assertEquals(0, pakkaaja.getLaskija().getToistot()[100]);
     }
     

@@ -49,6 +49,13 @@ public class JonoTest {
     @Test
     public void testaaTyhjyys(){
         assertEquals(true, jono.tyhja());
+        assertEquals(0, jono.getKoko());
+    }
+    
+    @Test
+    public void eiTyhjaKunLisataan(){
+        jono.lisaa(true);
+        assertTrue(!jono.tyhja());
     }
     
     @Test
@@ -56,7 +63,21 @@ public class JonoTest {
         assertEquals(0, jono.getKoko());
         jono.lisaa(true);
         assertEquals(1, jono.getKoko());
+    }
+    
+    @Test
+    public void ottaaYhdenOikein(){
+        jono.lisaa(true);
         assertEquals(true, jono.ota());
+    }
+    
+    @Test
+    public void kokoOikeinKunOtetaan(){
+        jono.lisaa(true);
+        jono.lisaa(true);
+        assertEquals(2, jono.getKoko());
+        jono.ota();
+        assertEquals(1, jono.getKoko());
     }
     
     @Test
@@ -83,7 +104,7 @@ public class JonoTest {
     }
     
     @Test
-    public void ottaaOikein(){
+    public void ottaaMontaOikein(){
         jono.lisaa(true);
         jono.lisaa(true);
         jono.lisaa(true);

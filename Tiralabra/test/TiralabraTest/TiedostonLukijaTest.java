@@ -18,11 +18,11 @@ import tiralabra.tiedostonkasittely.TiedostonLukija;
  *
  * @author Joonas
  */
-public class LukijaTest {
+public class TiedostonLukijaTest {
     
     private TiedostonLukija lukija;
     
-    public LukijaTest() {
+    public TiedostonLukijaTest() {
     }
     
     @BeforeClass

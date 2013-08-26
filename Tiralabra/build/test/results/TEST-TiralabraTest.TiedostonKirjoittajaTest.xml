@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Joonas-Longi-MacBook.local" name="TiralabraTest.PrioriteettiJonoTest" tests="11" time="0.089" timestamp="2013-08-26T08:16:57">
+<testsuite errors="0" failures="0" hostname="Joonas-Longi-MacBook.local" name="TiralabraTest.TiedostonKirjoittajaTest" tests="2" time="0.123" timestamp="2013-08-26T08:16:59">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="FI" />
@@ -62,7 +62,7 @@
     <property name="manifest.available+main.class" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner TiralabraTest.PrioriteettiJonoTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/test/results/TEST-TiralabraTest.PrioriteettiJonoTest.xml crashfile=/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/junitvmwatcher8863459331197730816.properties propsfile=/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/junit5146580179969353925.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner TiralabraTest.TiedostonKirjoittajaTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/test/results/TEST-TiralabraTest.TiedostonKirjoittajaTest.xml crashfile=/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/junitvmwatcher2841240765665758412.properties propsfile=/Users/joonaslongi/Documents/TiraLabra-1/Tiralabra/build/junit1708680068017225473.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -429,17 +429,8 @@
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="apple.awt.CToolkit" />
   </properties>
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="testaaTyhjyys" time="0.0030" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="eiTyhjaKunLisataan" time="0.0010" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="tyhjaKunKaikkiOtetaan" time="0.0010" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="kokoOikeinKunLisataan" time="0.0" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="kokoOikeinKunOtetaan" time="0.0" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="kokoOikeinKunLisataanMonta" time="0.0010" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="lisaaYhden" time="0.0" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="lisaaMonta" time="0.0" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="korjaaOikein" time="0.0" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="ottaaPienimman" time="0.0010" />
-  <testcase classname="TiralabraTest.PrioriteettiJonoTest" name="vaihtaaNodet" time="0.0" />
+  <testcase classname="TiralabraTest.TiedostonKirjoittajaTest" name="kirjoittaa" time="0.046" />
+  <testcase classname="TiralabraTest.TiedostonKirjoittajaTest" name="kirjoittaa2" time="0.0" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -64,8 +64,9 @@ public class PuuTest {
     public void tearDown() {
     }
     
+    
     @Test
-    public void kokoaaOikein(){
+    public void juuriOikein(){
         puu.kokoa();
         assertEquals(-1, puu.getRoot().getMerkki());
         assertEquals(45+13+12+16+5+9, puu.getRoot().getToistot());

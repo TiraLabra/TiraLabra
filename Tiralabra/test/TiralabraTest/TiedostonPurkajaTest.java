@@ -16,11 +16,11 @@ import tiralabra.tiivistys.TiedostonPurkaja;
  *
  * @author joonaslongi
  */
-public class PurkajaTest {
+public class TiedostonPurkajaTest {
     
     private TiedostonPurkaja purkaja;
     
-    public PurkajaTest() {
+    public TiedostonPurkajaTest() {
     }
     
     @BeforeClass
@@ -74,6 +74,28 @@ public class PurkajaTest {
         purkaja.pura();
         assertEquals(99, purkaja.merkinReitti());
         
+    }
+    
+    @Test
+    public void tavuBiteiksi(){
+        boolean[] oikein = {false, true, true, false, false, false, false, true};
+        boolean[] bitit = purkaja.muunnaBiteiksi(97);
+        for(int i = 0; i < 8 ; i++){
+            assertEquals(oikein[i], bitit[i]);
+        }
+    }
+    
+    @Test
+    public void bititMeneeJonoon(){
+        purkaja.lueTavu();
+        assertEquals(8, purkaja.getJono().getKoko());
+    }
+    
+    @Test
+    public void jonoKasvaa(){
+        purkaja.lueTavu();
+        purkaja.lueTavu();
+        assertEquals(16, purkaja.getJono().getKoko());
     }
     
 

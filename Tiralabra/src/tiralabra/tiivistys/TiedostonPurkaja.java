@@ -192,5 +192,14 @@ public class TiedostonPurkaja {
     public int getKaikkiMerkit(){
         return this.kaikkiMerkit;
     }
+    
+    /**
+     * Bittijono getter.
+     * @return 
+     */
+    
+    public Jono getJono(){
+        return this.bittiJono;
+    }
 
 }
