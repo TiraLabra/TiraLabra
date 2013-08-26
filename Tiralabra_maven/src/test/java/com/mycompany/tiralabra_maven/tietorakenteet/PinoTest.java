@@ -67,7 +67,7 @@ public class PinoTest {
     public void testTyhjenna() {
         pino.lisaa(testiObjekti);
         pino.tyhjenna();
-        assertEquals(0, pino.koko());
+        assertEquals(0, pino.korkeus());
     }
 
     /**
@@ -75,8 +75,16 @@ public class PinoTest {
      */
     @Test
     public void testLisaa() {
+        pino.lisaa(null);
+        pino.lisaa(null);
+        pino.lisaa(new Object());
+        pino.lisaa(new Object());
         pino.lisaa(testiObjekti);
-        assertEquals(pino.koko(), 1);
+        assertEquals(testiObjekti, pino.poista());
+        assertNotNull(pino.poista());
+        assertNotNull(pino.poista());
+        assertNull(pino.poista());
+        assertNull(pino.poista());
     }
 
     /**
@@ -109,11 +117,19 @@ public class PinoTest {
      *
      */
     @Test
-    public void testKoko() {
+    public void testKorkeus() {
         pino.lisaa(testiObjekti);
+        pino.lisaa(new Object());
+        pino.lisaa(new Object());
+        pino.lisaa(null);
+        pino.lisaa(null);
+        pino.lisaa(new Object());
+        pino.lisaa(null);
+        pino.lisaa(new Object());
+        pino.lisaa(null);
+        pino.lisaa(new Object());
         pino.lisaa(testiObjekti);
-        pino.lisaa(testiObjekti);
-        pino.lisaa(testiObjekti);
-        assertEquals(pino.koko(), 4);
+        pino.lisaa(new Object());
+        assertEquals(12, pino.korkeus());
     }
 }

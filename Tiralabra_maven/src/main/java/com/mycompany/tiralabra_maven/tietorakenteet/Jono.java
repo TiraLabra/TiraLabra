@@ -6,8 +6,8 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * <tt>koko</tt>, <tt>onTyhja</tt> ja <tt>tyhjenna</tt>. Debuggauksen
  * helpottamiseksi olen myös ylikirjoittanut metodin <tt>toString</tt>. Jono on
  * toteutettu sillä oletuksella, ettei siihen yritetä lisätä yli
- * <i>2 147 483 647</i> alkiota. Jonoon lisättyjen muuttujien viite voidaan
- * asettaa vain kerran.
+ * <i>2 147 483 647</i> alkiota. Jonon lisaa-metodi sallii duplikaatit,
+ * mukaanlukien useamman <i>null</i>-arvon lisäys.
  *
  * @param <T> Jonoon säilöttävien tietoalkioiden tyyppi.
  * @author John Lång
@@ -23,17 +23,28 @@ public final class Jono<T> {
     public Jono() {
         this.pituus = 0;
     }
+    
+    /**
+     * Palauttaa luokan uuden instanssin, johon on lisätty syötteenä annetut
+     * alkiot.
+     */    
+    public Jono(final T... ALKIOT) {
+        this.pituus = 0;
+        for (T alkio : ALKIOT) {
+            lisaa(alkio);
+        }
+    }
 
     /**
      * Lisää alkion jonon viimeiseksi.
      *
-     * @param arvo Jonoon lisättävä tietoalkio.
+     * @param ARVO Jonoon lisättävä tietoalkio.
      */
-    public void lisaa(T arvo) {
+    public void lisaa(final T ARVO) {
 //        if (pituus == Integer.MAX_VALUE) {
 //            throw new IndexOutOfBoundsException("Jonoon tuli täyteen!");
 //        }
-        Solmu seuraava = new Solmu<>(arvo);
+        Solmu seuraava = new Solmu<>(ARVO);
         if (ensimmainen == null) {
             ensimmainen = seuraava;
             viimeinen   = seuraava;
@@ -97,6 +108,25 @@ public final class Jono<T> {
         pituus      = 0;
     }
     
+    /**
+     * Lisää syötteenä annetun <b>Jono</b>-instanssin solmut metodin suorittavan
+     * instanssin loppuun. Operaation lopputulos on sama kuin jos jokainen alkio
+     * lisättäisiin erikseen metodilla <tt>lisaa</tt>, mutta <tt>yhdista</tt> on
+     * nopeampi suorittaa, sillä sen aikavaativuus on luokkaa <i>O</i>(1). Jos
+     * syöte on <i>null</i>, ei metodi tee mitään.
+     * 
+     * @param JONO 
+     */
+    public void yhdista(final Jono<T> JONO) {
+        if (JONO == null) {
+            return;
+        }
+        
+        this.viimeinen.seuraaja = JONO.ensimmainen;
+        this.viimeinen = JONO.viimeinen;
+        this.pituus += JONO.pituus;
+    }
+    
     @Override
     public String toString() {
         
@@ -112,17 +142,34 @@ public final class Jono<T> {
             mjr.append(solmu.ARVO);
             mjr.append("}");
         } else {
-            // Muutin toStringiä tilapäisesti jotta voisin leikkiä hienomman
-            // näköisellä tulosteella.
-//            mjr.append('(');        
+            mjr.append('(');        
             while (solmu != null) {
                 mjr.append(solmu.ARVO);
-//                mjr.append(',');
-                mjr.append(' ');
+                mjr.append(',');
                 solmu = solmu.seuraaja;
             }
-//            mjr.delete(mjr.length() - 1, mjr.length());
-//            mjr.append(')');
+            mjr.delete(mjr.length() - 1, mjr.length());
+            mjr.append(')');
+        }
+        
+        return mjr.toString();
+    }
+    
+    /**
+     * Muuttaa jonon käyttöliittymässä tulostettavaan merkkijonomuotoon.
+     * Tarkemmin ilmaistuna metodi palauttaa merkkijonon jokaisesta alkiosta 
+     * (<b>String</b>:ksi muutettuna) eroteltuna välilyönneillä.
+     * 
+     * @return Jonon alkioista muodostettu <b>String</b>.
+     */
+    public String tuloste() {        
+        StringBuilder mjr = new StringBuilder();
+        Solmu<T> solmu = ensimmainen;
+        
+        while (solmu != null) {
+            mjr.append(solmu.ARVO);
+            mjr.append(' ');
+            solmu = solmu.seuraaja;
         }
         
         return mjr.toString();

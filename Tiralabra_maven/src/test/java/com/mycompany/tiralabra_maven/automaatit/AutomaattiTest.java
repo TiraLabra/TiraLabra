@@ -1,6 +1,7 @@
 
 package com.mycompany.tiralabra_maven.automaatit;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,7 +15,6 @@ import org.junit.Test;
  *
  * @author John Lång <jllang@cs.helsinki.fi>
  */
-@Ignore
 public class AutomaattiTest {
     
     public AutomaattiTest() {
@@ -33,16 +33,16 @@ public class AutomaattiTest {
     
     @Before
     public void setUp() {
-        lauseke = new Jono<>();
-        lauseke.lisaa("a");
-        lauseke.lisaa("|");
-        lauseke.lisaa("aa");
-        lauseke.lisaa("|");
-        lauseke.lisaa("ab");
-        lauseke.lisaa("|");
-        lauseke.lisaa("c");
-        lauseke.lisaa(".");
-        a = new Automaatti(lauseke);
+//        lauseke = new Jono<>();
+//        lauseke.lisaa("a");
+//        lauseke.lisaa("|");
+//        lauseke.lisaa("aa");
+//        lauseke.lisaa("|");
+//        lauseke.lisaa("ab");
+//        lauseke.lisaa("|");
+//        lauseke.lisaa("c");
+//        lauseke.lisaa(".");
+//        a = new Automaatti(lauseke);
     }
     
     @After
@@ -52,11 +52,29 @@ public class AutomaattiTest {
     /**
      * Test of kieliSisaltaa method, of class Automaatti.
      */
+    @Ignore
     @Test
     public void testKieliSisaltaa() {
 //        assertFalse(a.kieliSisaltaa("a"));
 //        assertTrue(a.kieliSisaltaa("aac"));
-        assertTrue(a.kieliSisaltaa("a"));
+//        assertTrue(a.kieliSisaltaa("a"));
 //        assertTrue(a.kieliSisaltaa("ab"));
+        lauseke = new Jono<>("a", "?");
+//        lauseke.lisaa("d");
+//        lauseke.lisaa("?");
+        a = new Automaatti(lauseke);    
+        System.out.println("NFA:n tilasiirtymäpuu:");
+        System.out.println(a);
+        
+        assertTrue(a.kieliSisaltaa("acg"));
+//        assertTrue(a.kieliSisaltaa("Jotain ihan randomia settiä..."));
+//        assertTrue(a.kieliSisaltaa("ööö"));
+//        assertFalse(a.kieliSisaltaa("ööö"));
+        assertTrue(a.kieliSisaltaa("bcg"));
+//        assertTrue(a.kieliSisaltaa("cg"));
+        assertTrue(a.kieliSisaltaa("abcg"));
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("ad"));
+        assertFalse(a.kieliSisaltaa("adc"));
     }
 }

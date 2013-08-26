@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.logiikka;
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
 import com.mycompany.tiralabra_maven.suorituskykytestit.HajautuskartanSuorituskyky;
+import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 
 /**
@@ -21,6 +22,9 @@ public final class Kaavalaskin {
      * @param args Mahdolliset käynnistysparametrit.
      */
     public static void main(String[] args) {
+        
+        Hajautuskartta<Integer> h = new Hajautuskartta();
+        
         if (args.length == 0) {
             Tulkki t = new Tulkki();
             Laskin l = new Laskin();
@@ -31,7 +35,7 @@ public final class Kaavalaskin {
             long aloitusaika = System.nanoTime(), tulkinAika, laskimenAika;
             Jono<String> kaava = t.tulkitseMerkkijono(syote);
             tulkinAika = System.nanoTime() - aloitusaika;
-            k.tulosta("RPN-kaava:          " + kaava.toString() + '\n');
+            k.tulosta("RPN-kaava:          " + kaava.tuloste() + '\n');
             aloitusaika = System.nanoTime();
             kaavanArvo = l.laske(kaava);
             laskimenAika = System.nanoTime() - aloitusaika;

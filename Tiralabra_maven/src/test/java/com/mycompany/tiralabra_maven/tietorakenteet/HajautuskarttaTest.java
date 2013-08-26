@@ -84,21 +84,6 @@ public class HajautuskarttaTest {
         assertEquals(2, hk.haeEnsimmainen(' '));
     }
     
-    @Test
-    public void testHaeKaikki() {
-        hk.lisaa('a', 4);
-        hk.lisaa('b', 5);
-        hk.lisaa('a', 3);
-        hk.lisaa('a', 3);
-        hk.lisaa(' ', 16);
-        Jono<Integer> oikeaVastaus = new Jono<>();
-        oikeaVastaus.lisaa(4);
-        oikeaVastaus.lisaa(3);
-        oikeaVastaus.lisaa(3);
-        AvainArvoJonoTest.vertaaJonoja(oikeaVastaus, hk.haeKaikki('a'));
-        assertNull(hk.haeKaikki('z'));
-    }
-    
     /**
      *
      */
@@ -113,25 +98,5 @@ public class HajautuskarttaTest {
         hk.lisaa('l', 2);
         assertEquals(oikeaVastaus, hk.toString());
     }
-    
-    @Test
-    public void testTayttosuhde() {
-        assertEquals(0, hk.tayttosuhde(), 0.000001);
-        hk.lisaa('c', 8);
-        assertEquals(1 / 3.0, hk.tayttosuhde(), 0.000001);
-        hk.lisaa('g', 3);
-        hk.lisaa('a', 8);
-        assertEquals(1, hk.tayttosuhde(), 0.000001);
-    }
-    
-    @Test
-    public void testUudelleenhajauta() {
-        hk.lisaa('/', 1);
-        hk.lisaa('*', 1);
-        hk.lisaa('%', 1);
-        hk.lisaa('+', 2);
-        hk.lisaa('-', 2);
-        hk.uudelleenhajauta(5);
-        assertEquals("{{-\u21A62},\u2205,(*\u21A61,%\u21A61,/\u21A61),{+\u21A62},\u2205}", hk.toString());
-    }
+
 }

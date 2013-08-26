@@ -60,7 +60,15 @@ public class JonoTest {
     @Test
     public void testLisaa() {
         jono.lisaa(testiObjekti);
-        assertEquals(testiObjekti, jono.kurkista());
+        jono.lisaa(null);
+        jono.lisaa(null);
+        jono.lisaa(new Object());
+        jono.lisaa(new Object());
+        assertEquals(testiObjekti, jono.poista());
+        assertNull(jono.poista());
+        assertNull(jono.poista());
+        assertNotNull(jono.poista());
+        assertNotNull(jono.poista());
     }
     
     /**
@@ -82,12 +90,16 @@ public class JonoTest {
         jono.lisaa(testiObjekti);
         jono.lisaa(new Object());
         jono.lisaa(new Object());
+        jono.lisaa(null);
+        jono.lisaa(null);
         jono.lisaa(new Object());
+        jono.lisaa(null);
         jono.lisaa(new Object());
+        jono.lisaa(null);
         jono.lisaa(new Object());
         jono.lisaa(testiObjekti);
         jono.lisaa(new Object());
-        assertEquals(8, jono.pituus());
+        assertEquals(12, jono.pituus());
     }
 
     /**
@@ -120,10 +132,24 @@ public class JonoTest {
         assertTrue(jono.onTyhja());
     }
     
-    /**
-     *
-     */
-    @Ignore // Tilapäistä säätöä.
+    @Test
+    public void testYhdista() {
+        Jono<Integer> a = new Jono<>(1, 2, 3);
+        Jono<Integer> b = new Jono<>(4, 5, 6);
+        a.yhdista(b);
+        Jono<Integer> c = new Jono<>(1, 2, 3, 4, 5, 6);
+        AvainArvoJonoTest.vertaaJonoja(c, a);
+    }
+    
+    @Test
+    public void testYhdista2() {
+        Jono<Integer> a = new Jono<>(1, 2, 3);
+        Jono<Integer> b = null;
+        a.yhdista(b);
+        Jono<Integer> c = new Jono<>(1, 2, 3);
+        AvainArvoJonoTest.vertaaJonoja(c, a);
+    }
+    
     @Test
     public void testToString() {
         assertEquals(jono.toString(), "\u2205");
@@ -133,5 +159,11 @@ public class JonoTest {
         jono.lisaa(5);
         jono.lisaa(8);
         assertEquals(jono.toString(), "(3,2,5,8)");
+    }
+    
+    @Test
+    public void tuloste() {
+        jono = new Jono("1", "+", "2", "*", "3");
+        assertEquals(jono.tuloste(), "1 + 2 * 3 ");
     }
 }

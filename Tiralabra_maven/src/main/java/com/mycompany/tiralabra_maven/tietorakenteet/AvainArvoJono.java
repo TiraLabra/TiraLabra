@@ -5,15 +5,14 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * Jono, jonka on tarkoitus toimia luokan <b>Hajautuskartta</b> komponenttina.
  * Tällä luokalla on vain avain-arvoparien lisäys- ja hakutoiminnot. Sama avain-
  * arvopari voi esiintyä jonossa useaan kertaan. On kuitenkin syytä huomata,
- * että metodi <tt>hae</tt> palauttaa aina vain ensimmäiseen avaimeen liitetyn
- * arvon sillä luokalla ei ole metodia joka poistaisi alkioita jonosta.
+ * että metodi <tt>haeEnsimmainen</tt> palauttaa aina vain ensimmäiseen avaimeen
+ * liitetyn arvon sillä luokalla ei ole metodia joka poistaisi alkioita jonosta.
  *
  * @author John Lång
  */
-final class AvainArvoJono<K, V> {
+class AvainArvoJono<K, V> {
     
-    private AvainArvoSolmu<K, V> ensimmainen, viimeinen;
-//    private int pituus;
+    protected AvainArvoSolmu<K, V> ensimmainen, viimeinen;
 
     AvainArvoJono() {
 //        pituus = 0;
@@ -59,8 +58,7 @@ final class AvainArvoJono<K, V> {
     }
     
     @Override
-    public String toString() {
-        
+    public String toString() {        
          if (ensimmainen == null) {
              return "\u2205";
          }
@@ -89,51 +87,5 @@ final class AvainArvoJono<K, V> {
         
         return mjr.toString();
     }
-    
-    /**
-     * Palauttaa jonon solmujen avaimista.
-     * 
-     * @return  Uusi <b>Jono</b>-instanssi joka sisältää <b>AvainArvoJono</b>:n
-     *          tietoalkioiden avaimet.
-     * @see     Hajautuskartta#uudelleenHajauta() 
-     */
-    Jono<K> avainjono() {
-//        if (pituus == 0) {
-        if (ensimmainen == null) {
-            return null;
-        }
-        Jono<K> paluuarvo = new Jono<>();
-        AvainArvoSolmu<K, V> solmu = ensimmainen;
-        while (solmu != null) {
-            paluuarvo.lisaa(solmu.AVAIN);
-            solmu = solmu.seuraaja;
-        }
-        return paluuarvo;
-    }
-    
-    /**
-     * Palauttaa jonon solmujen arvoista.
-     * 
-     * @return  Uusi <b>Jono</b>-instanssi joka sisältää <b>AvainArvoJono</b>:n
-     *          tietoalkioiden arvot.
-     * @see     Hajautuskartta#uudelleenHajauta() 
-     */
-    Jono<V> arvojono() {
-//        if (pituus == 0) {
-        if (ensimmainen == null) {
-            return null;
-        }
-        Jono<V> paluuarvo = new Jono<>();
-        AvainArvoSolmu<K, V> solmu = ensimmainen;
-        while (solmu != null) {
-            paluuarvo.lisaa(solmu.ARVO);
-            solmu = solmu.seuraaja;
-        }
-        return paluuarvo;
-    }
-    
-//    int pituus() {
-//        return pituus;
-//    }
     
 }

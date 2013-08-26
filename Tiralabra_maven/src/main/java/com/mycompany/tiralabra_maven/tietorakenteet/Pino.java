@@ -8,8 +8,8 @@ import java.util.EmptyStackException;
  * Javan <b>Stack</b>. Perustoiminnallisuus tarkoittaa tässä operaatioita
  * <tt>onTyhja</tt>, <tt>lisaa</tt>, <tt>kurkista</tt>, <tt>poista</tt> ja
  * <tt>koko</tt>. Pino on toteutettu sillä oletuksella, ettei siihen yritetä
- * lisätä yli <i>2 147 483 647</i> alkiota. Pinoon lisättyjen muuttujien viite
- * voidaan asettaa vain kerran.
+ * lisätä yli <i>2 147 483 647</i> alkiota. Pinon lisaa-metodi sallii
+ * duplikaatit, mukaanlukien useamman <i>null</i>-arvon lisäys.
  * 
  * @author John Lång
  * @param <T> Pinoon säilöttävien tietoalkioiden tyyppi.
@@ -87,7 +87,7 @@ public final class Pino<T> {
      * 
      * @return Pinon alkioiden määrä.
      */
-    public int koko() {
+    public int korkeus() {
         return korkeus;
     }
     

@@ -1,11 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.tiralabra_maven.suorituskykytestit;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
-import java.util.HashMap;
 
 /**
  * Tämä luokka vertaa luokkien <b>Hajautuskartta</b> ja <b>HashMap</b>
@@ -16,14 +14,17 @@ import java.util.HashMap;
  */
 public final class HajautuskartanSuorituskyky {
     
-    private static final String MERKIT = "0123456789abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ+-*/%^|()?";
-    private static final char[] MERKIT2 = MERKIT.toCharArray(); // Tämä ei taida olla lukemisen kannalta Stringiä nopeampi...
+    private static final char[] MERKIT = "0123456789abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ+-*/%^|()?".toCharArray();
     private static final int TESTI_HAJAUTUSKARTTA_KIRJOITUS = 0;
     private static final int TESTI_HAJAUTUSKARTTA_LUKU      = 1;
     private static final int TESTI_HASHMAP_KIRJOITUS        = 2;
     private static final int TESTI_HASHMAP_LUKU             = 3;
     private static Hajautuskartta<Integer>     hk;
-    private static HashMap<Character, Integer> hm;
+//    private static HashMap<Character, Integer> hm;
+    // Päädyin vaihtamaan Hajatuskartan kanssa vertailtavan luokan Googlen Guava
+    // -kirjaston HashMultimap:iksi, koska se lienee toiminnaltaan lähempänä
+    // omaa implementaatiotani.
+    private static Multimap<Character, Integer> hmm;
     private static int hajautustaulunPituus;
     
     /**
@@ -54,21 +55,21 @@ public final class HajautuskartanSuorituskyky {
         ajat = ajanotto(ALKIOITA, TESTI_HAJAUTUSKARTTA_KIRJOITUS);
         System.out.println("Hajautuskartan kirjoitusajat:");
         System.out.println("Keskimääräinen aika:            "
-                + keskiarvo(ajat) + " ms.");
-        System.out.println("Lyhyin aika:                    " + pienin(ajat)
-                + " ms.");
-        System.out.println("Pisin aika:                     " + suurin(ajat)
-                + " ms.");
+                + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
+        System.out.println("Lyhyin aika:                    "
+                + Suorituskykytyokalut.pienin(ajat) + " ms.");
+        System.out.println("Pisin aika:                     "
+                + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
         ajat = ajanotto(ALKIOITA, TESTI_HAJAUTUSKARTTA_LUKU);
         System.out.println("Hajautuskartan lukuajat:");
         System.out.println("Keskimääräinen aika:            "
-                + keskiarvo(ajat) + " ms.");
-        System.out.println("Lyhyin aika:                    " + pienin(ajat)
-                + " ms.");
-        System.out.println("Pisin aika:                     " + suurin(ajat)
-                + " ms.");
+                + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
+        System.out.println("Lyhyin aika:                    "
+                + Suorituskykytyokalut.pienin(ajat) + " ms.");
+        System.out.println("Pisin aika:                     "
+                + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
         long muistia = Runtime.getRuntime().freeMemory();
@@ -80,29 +81,30 @@ public final class HajautuskartanSuorituskyky {
         System.out.println('\n');
         
         ajat = ajanotto(ALKIOITA, TESTI_HASHMAP_KIRJOITUS);
-        System.out.println("HashMapin kirjoitusajat:");
+        System.out.println("HashMultimapin kirjoitusajat:");
         System.out.println("Keskimääräinen aika:            "
-                + keskiarvo(ajat) + " ms.");
-        System.out.println("Lyhyin aika:                    " + pienin(ajat)
-                + " ms.");
-        System.out.println("Pisin aika:                     " + suurin(ajat)
-                + " ms.");
+                + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
+        System.out.println("Lyhyin aika:                    "
+                + Suorituskykytyokalut.pienin(ajat) + " ms.");
+        System.out.println("Pisin aika:                     "
+                + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
         ajat = ajanotto(ALKIOITA, TESTI_HASHMAP_LUKU);
-        System.out.println("HashMapin lukuajat:");
+        System.out.println("HashMultimapin lukuajat:");
         System.out.println("Keskimääräinen aika:            "
-                + keskiarvo(ajat) + " ms.");
-        System.out.println("Lyhyin aika:                    " + pienin(ajat)
-                + " ms.");
-        System.out.println("Pisin aika:                     " + suurin(ajat)
-                + " ms.");
+                + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
+        System.out.println("Lyhyin aika:                    "
+                + Suorituskykytyokalut.pienin(ajat) + " ms.");
+        System.out.println("Pisin aika:                     "
+                + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
         muistia = Runtime.getRuntime().freeMemory();
-        hm = null;
+//        hm = null;
+        hmm = null;
         Runtime.getRuntime().gc();
-        System.out.println("HashMapin muistinkulutus:       "
+        System.out.println("HashMultimapin muistinkulutus:  "
                 + (Runtime.getRuntime().freeMemory() - muistia) + " tavua.");
         System.out.println("========================================" +
                 "========================================");
@@ -118,7 +120,7 @@ public final class HajautuskartanSuorituskyky {
                 hk = new Hajautuskartta<>(hajautustaulunPituus);
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hk.lisaa(MERKIT2[j % 78], j);
+                    hk.lisaa(MERKIT[j % 78], j);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
@@ -126,18 +128,21 @@ public final class HajautuskartanSuorituskyky {
             for (int i = 0; i < 10; i++) {
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hk.haeEnsimmainen(MERKIT2[j % 78]);
+                    hk.haeEnsimmainen(MERKIT[j % 78]);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
         } else if (TESTIN_NUMERO == TESTI_HASHMAP_KIRJOITUS) {
             for (int i = 0; i < 10; i++) {
-                hm = null;
+//                hm = null;
+                hmm = null;
                 Runtime.getRuntime().gc();
-                hm = new HashMap<>();
+//                hm = new HashMap<>();
+                hmm = HashMultimap.create();
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hm.put(MERKIT2[j % 78], j);
+//                    hm.put(MERKIT[j % 78], j);
+                    hmm.put(MERKIT[j % 78], j);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
@@ -145,44 +150,13 @@ public final class HajautuskartanSuorituskyky {
             for (int i = 0; i < 10; i++) {
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hm.get(MERKIT2[j % 78]);
+//                    hm.get(MERKIT[j % 78]);
+                    hmm.get(MERKIT[j % 78]);
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
         }
         return ajat;
-    }
-    
-    private static float keskiarvo(final long[] LUVUT) {
-        long summa = 0;
-        for (long l : LUVUT) {
-            summa += l;
-        }
-        return summa / 10.0f;
-    }
-    
-    private static long pienin(final long[] LUVUT) {
-        long pienin = Long.MAX_VALUE;
-        
-        for (long l : LUVUT) {
-            if (l < pienin) {
-                pienin = l;
-            }
-        }
-        
-        return pienin;
-    }
-    
-    private static long suurin(final long[] LUVUT) {
-        long suurin = 0;
-        
-        for (long l : LUVUT) {
-            if (l > suurin) {
-                suurin = l;
-            }
-        }
-        
-        return suurin;
     }
     
 }

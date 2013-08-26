@@ -78,46 +78,11 @@ public class AvainArvoJonoTest {
         aajono.lisaa('l', 2);
         assertEquals(oikeaVastaus, aajono.toString());
     }
-
-    @Test
-    public void testAvainjono() {
-        assertNull(aajono.avainjono());
-        
-        Jono<Character> odotettuAvainjono = new Jono<>();
-        odotettuAvainjono.lisaa('a');
-        odotettuAvainjono.lisaa('b');
-        odotettuAvainjono.lisaa('c');
-        odotettuAvainjono.lisaa('b');
-        
-        aajono.lisaa('a', 1);
-        aajono.lisaa('b', 1);
-        aajono.lisaa('c', 2);
-        aajono.lisaa('b', 2);   
-        Jono saatuAvainjono = aajono.avainjono(); 
-        
-        vertaaJonoja(odotettuAvainjono, saatuAvainjono);
-    }
-
-    @Test
-    public void testArvojono() {
-        assertNull(aajono.arvojono());
-        
-        Jono<Integer> odotettuAvainjono = new Jono<>();
-        odotettuAvainjono.lisaa(1);
-        odotettuAvainjono.lisaa(1);
-        odotettuAvainjono.lisaa(2);
-        odotettuAvainjono.lisaa(2);
-        
-        aajono.lisaa('a', 1);
-        aajono.lisaa('b', 1);
-        aajono.lisaa('c', 2);
-        aajono.lisaa('b', 2);    
-        Jono saatuAvainjono = aajono.arvojono(); 
-        
-        vertaaJonoja(odotettuAvainjono, saatuAvainjono);
-    }
     
     public static void vertaaJonoja(Jono a, Jono b) {
+        // Tein tästä metodista pikaratkaisuna public staticin koska useamman
+        // testiluokan pitää vertailla jonoja. Tietysti olisi hienompaa tehdä
+        // erillinen luokka näille yhteisille toiminnoille.
         Object o, p;
         while (!a.onTyhja()) {
             o = a.poista();

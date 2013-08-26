@@ -60,7 +60,7 @@ public final class Laskin {
         
         // Tässä vaiheessa pinossa tulisi olla jäljellä vain kaavan lopullinen
         // lukuarvo.
-        if (PINO.koko() > 1) {
+        if (PINO.korkeus() > 1) {
             throw new IllegalArgumentException("Liikaa operandeja!");
         }
         
