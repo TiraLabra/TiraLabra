@@ -25,6 +25,11 @@ public class SuunnistajaAStar implements Suunnistaja {
     private Jarjestysjono<Solmu> kasitelty = new Jarjestysjono();
     private Jarjestysjono<Solmu> nykyiset = new Jarjestysjono();
     private Lista<Solmu> polku = new Lista();
+    
+    //Suorituskykytestauksen välimuuttujat. Näillä vältetään piirtämiseen kuluvan ajan huomioonotto.
+    private long aikaValissa;
+    private long aikaValissa2;
+    private long valiaika = 0;
 
     public SuunnistajaAStar(Solmu a, Solmu b, Labyrintti laby) {
 
@@ -48,12 +53,14 @@ public class SuunnistajaAStar implements Suunnistaja {
      * @return Etsii ja palauttaa lyhimmän polun.
      */
     @Override
-    public Lista<Solmu> etsi(Graphics g) {
+    public void etsi(Graphics g) {
+        long aikaAlussa = System.currentTimeMillis(); 
+        
         Solmu kasiteltava;
         alku.setAlkuarvo(0);
 
         if (alku.seina || maali.seina) {
-            return null;
+            return;
         }
 
         g.setColor(Color.blue);
@@ -64,14 +71,18 @@ public class SuunnistajaAStar implements Suunnistaja {
             kasiteltava = nykyiset.poll();
 
             if (kasiteltava == null) {
-                return null;
+                return;
             }
+            
+            aikaValissa = System.currentTimeMillis();
             g.drawRect(kasiteltava.getX() * 300 / laby.getWidth(), kasiteltava.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
             try {
                 Thread.sleep(70);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SuunnistajaAStar.class.getName()).log(Level.SEVERE, null, ex);
             }
+            aikaValissa2 = System.currentTimeMillis();
+            valiaika = valiaika + (aikaValissa2-aikaValissa);
 
             Jarjestysjono<Solmu> naapurit = maaritaNaapurit(kasiteltava);
             /*
@@ -89,30 +100,14 @@ public class SuunnistajaAStar implements Suunnistaja {
                     naapurit.get(i).setPolku(kasiteltava);
                 }
             }
+            
         }
+
         polku = muodostaPolku();
+        long aikaLopussa = System.currentTimeMillis();
+        piirraPolku(laby, polku, g);
 
-
-        g.setColor(Color.red);
-
-        if (polku == null) {
-            return null;
-        }
-        for (int i = 0; i < polku.size(); i++) {
-            g.fillRect(polku.get(i).getX() * 300 / laby.getWidth(), polku.get(i).getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-//                    Logger.getLogger(Kuuntelija.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-
-
-        return null;
-
-
-
+        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika)+"ms.");
 
     }
 
@@ -156,10 +151,12 @@ public class SuunnistajaAStar implements Suunnistaja {
                 }
             }
         }
+        long aikaLopussa = System.currentTimeMillis();
         return naapurit;
     }
 
     private Lista<Solmu> muodostaPolku() {
+        long aikaAlussa = System.currentTimeMillis();
         Solmu s = maali;
         polku.add(s);
         Keko<Solmu> keko = new Keko();
@@ -172,6 +169,23 @@ public class SuunnistajaAStar implements Suunnistaja {
         while ((s = keko.poll()) != null) {
             polku.add(s);
         }
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Polun muodostamiseen kului aikaa: "+(aikaLopussa-aikaAlussa)+"ms.");
         return polku;
+    }
+
+    private void piirraPolku(Labyrintti laby, Lista<Solmu> polku, Graphics g) {
+        g.setColor(Color.RED);
+        if (polku == null) {
+            return;
+        }
+        for (int i = 0; i < polku.size(); i++) {
+            g.fillRect(polku.get(i).getX() * 300 / laby.getWidth(), polku.get(i).getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                    Logger.getLogger(SuunnistajaAStar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

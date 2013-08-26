@@ -10,7 +10,7 @@ import verkko.Solmu;
 
 /**
  *
- * @author maef Jos tätä ei saada toimimaan ajoissa, se heitetään romukoppaan.
+ * @author maef 
  */
 public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämistä...
     // Lähtöpiste
@@ -23,6 +23,11 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
     //Polku
     private Lista<Solmu> polku = new Lista();
     private Keko<Solmu> keko = new Keko();
+    
+    //Suorituskykytestauksen välimuuttujat. Näillä vältetään piirtämiseen kuluvan ajan huomioonotto.
+    private long aikaValissa;
+    private long aikaValissa2;
+    private long valiaika = 0; //Piirtämiseen kuluva kokonaisaika.
 
     public SuunnistajaDFS(Solmu alku, Solmu maali, Labyrintti laby) {
         this.alku = alku;
@@ -32,13 +37,19 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
     }
 
     @Override
-    public Lista<Solmu> etsi(Graphics g) {
+    public void etsi(Graphics g) {
+        long aikaAlussa = System.currentTimeMillis();
+        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.blue);
         g.drawRect(maali.getX() * (300 / laby.getWidth()), maali.getY() * (300 / laby.getHeight()), 300 / laby.getWidth(), 300 / laby.getHeight());
         DFSVisit(alku, null, laby, g);
-        tulostaKeko();
+        aikaValissa2 = System.currentTimeMillis();
+        valiaika =+ (aikaValissa2-aikaValissa);
+//        tulostaKeko();
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika));
 
-        return muodostaPolku();
+        muodostaPolku();
     }
 
     private Lista<Solmu> muodostaPolku() {
@@ -55,11 +66,6 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
 
     private boolean DFSVisit(Solmu solmu, Solmu edellinen, Labyrintti laby, Graphics g) {
 
-        try {
-            Thread.sleep(70);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SuunnistajaDFS.class.getName()).log(Level.SEVERE, null, ex);
-        }
         keko.put(solmu);
 
         if (edellinen == null) {
@@ -68,8 +74,16 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
             solmu.setAlkuarvo(edellinen.getAlkuarvo() + 1);
         }
 
+        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.RED);
         g.fillRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
+        try {
+            Thread.sleep(70);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SuunnistajaDFS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        aikaValissa2 = System.currentTimeMillis();
+        valiaika =+ (aikaValissa2-aikaValissa);
         Lista<Solmu> vierus = kerroVierus(solmu);
 
         if (solmu.getX() == maali.getX() && solmu.getY() == maali.getY()) {
@@ -85,11 +99,14 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
             }
         }
         keko.poll();
+        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.WHITE);
         g.fillRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
         g.setColor(Color.CYAN);
 
         g.drawRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
+        aikaValissa2 = System.currentTimeMillis();
+        valiaika =+ (aikaValissa2-aikaValissa);
         return false;
     }
 

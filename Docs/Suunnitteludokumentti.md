@@ -5,9 +5,12 @@ Polunetsintään käytetään A*-algoritmia, ja tietorakenteena toimiva
 Jarjestysjono on eräänlainen ArrayListin ja PriorityQueuen hybridi.
 Sen toimintaperiaate on sama kuin PriorityQueuella, mutta siitä voi
 ArrayListin tavoin poimia tietyssä indeksissä sijaitsevan arvon.
+Lisäksi ohjelmassa käytetään DFS-hakua vertailun vuoksi. DFS:llä on
+edellämainittujen rakenteiden lisäksi myös Keko, joka ei varsinaisesti
+ole "keko" termin varsinaisessa merkityksessä, mutta sen toimintaperiaate
+on melko lähellä.
 
-Ohjelman aikavaativuus on lineaarinen Jarjestysjonoon sijoitettujen 
-arvojen suhteen. Mitä enemmän olioita jonoon lisätään, sitä kauemmin
-siltä kestää tutkima, onko joku arvo jonossa. Lisäksi A*-algoritmin 
-aikavaativuus on lineaarinen, jos sen heuristiikkametodi on optimaalinen.
-Tämän ohjelman A*-sovelluksen heuristiikka lasketaan vakioaikaisesti.
+Ohjelman aikavaativuus on A* algoritmilla eksponentiaalinen. DFS-haun
+aikavaativuus on laskelmien perusteella lineaarinen, mutta suurilla
+syötteillä päädytään StackOverflow-virheeseen.
+

@@ -48,14 +48,14 @@ public class Kuuntelija implements ActionListener {
             kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
             try {
                 aStar = new SuunnistajaAStar(laby.verkko[1][1], laby.verkko[17][19], laby);
-                dfs = new SuunnistajaDFS(laby.verkko[1][1], laby.verkko[17][19], laby);
+                dfs = new SuunnistajaDFS(laby.verkko[3][1], laby.verkko[17][19], laby);
             } catch (Exception ex) {
                 kuva.setText("Asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
             }
         } else {
             Graphics g = kuva.getGraphics();
-            aStar.etsi(g);
-//            dfs.etsi(g);
+//            aStar.etsi(g);
+            dfs.etsi(g);
 
         }
     }

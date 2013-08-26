@@ -13,6 +13,6 @@ import verkko.Solmu;
  */
 public interface Suunnistaja {
     
-    Lista<Solmu> etsi(Graphics g);
+    void etsi(Graphics g);
     
 }
