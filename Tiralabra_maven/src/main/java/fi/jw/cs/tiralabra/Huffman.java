@@ -4,6 +4,9 @@ package fi.jw.cs.tiralabra;
 import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 
+import static fi.jw.cs.tiralabra.Logger.log;
+import static fi.jw.cs.tiralabra.Logger.prettyPrintDuration;
+
 /**
  * This class provides the utility of encoding and decoding a 8-bit text into a compressed Huffman encoding.
  * <p/>
@@ -53,7 +56,7 @@ public class Huffman {
     }
 
     public Huffman(String message) {
-        this.message = new String(message.getBytes(StandardCharsets.US_ASCII));
+        this.message = new String(message.getBytes(StandardCharsets.ISO_8859_1));
         map = new BinaryTreeMap();
         frequencies = new int[256]; // accepting 8-bit chars
         sortedNodes = new SimplePriorityQueue<Node>();
@@ -67,10 +70,16 @@ public class Huffman {
         if (message.length() == 0)
             throw new IllegalArgumentException("No message provided");
 
+        log("Starting Huffman encoding");
+        log("Frequency analysis starting");
         frequencyAnalysis();
+        log("Frequency analysis complete. Building tree");
         buildTree();
+        log("Tree built. Assigning codes");
         assignCodes();
+        log("Encoding message");
         encodeMessage();
+        log("Encoding complete");
     }
 
     /**
@@ -78,7 +87,9 @@ public class Huffman {
      * <code>PriorityQueue</code> for the Huffman tree building.
      */
     protected void frequencyAnalysis() {
+        log("\tcalculate frequencies");
         calculateFrequencies();
+        log("\tcreate weighted nodes");
         createdWeightedNodes();
     }
 
@@ -98,10 +109,22 @@ public class Huffman {
         frequencies = new int[256];
 
         char[] chars = message.toCharArray();
+        int len = chars.length;
+        log("\t\tMessage length: " + len);
+
         if (chars.length > 0) {
+            int tenPercent = len / 10;
+            int nth = 0;
+            int i = 0;
             for (Character c : chars) {
+                if (i++ > tenPercent) {
+                    log((++nth) + "0%");
+                    i = 0;
+                }
+
                 frequencies[(int) c.charValue()]++;
             }
+            log("100%");
         }
     }
 
@@ -253,9 +276,35 @@ public class Huffman {
      */
     protected void encodeMessage() { //TODO: Bad name. Confusing with encode()
         encodedMessage = "";
-        for (char c : message.toCharArray()) {
-            encodedMessage += getCodeFor("" + c);
+
+        char[] chars = message.toCharArray();
+        int len = chars.length;
+        StringBuilder sb = new StringBuilder(len);
+        long start = System.currentTimeMillis();
+        log("\t\tMessage length: " + len);
+
+        if (chars.length > 0) {
+            int onePercent = len / 100;
+            int tenPercent = len / 10;
+            int limit = (tenPercent > 1000 ? onePercent : tenPercent);
+            int nth = 0;
+            int i = 0;
+            int counter = 0;
+
+            for (char c : chars) {
+                if (i++ > onePercent) {
+                    ++nth;
+                    long laptime = System.currentTimeMillis();
+                    long elapsed = laptime - start;
+                    double eta = Math.round(elapsed / (0.1 * nth) - elapsed);
+                    if (i > limit)
+                        log(nth + "% | Elapsed: " + prettyPrintDuration(elapsed) + " | ETA: " + prettyPrintDuration(eta));
+                    i = 0;
+                }
+                sb.append(getCodeFor("" + c));
+            }
         }
+        encodedMessage = sb.toString();
     }
 
     /**
