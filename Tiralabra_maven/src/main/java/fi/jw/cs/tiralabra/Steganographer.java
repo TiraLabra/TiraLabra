@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static fi.jw.cs.tiralabra.Logger.log;
+
 /**
  * Encodes a series of 1s and 0s into an image's R, G and B channels into the least significant bit
  * <p/>
@@ -78,6 +80,7 @@ public class Steganographer {
 
     public void decode() throws IOException {
         ensureFileHandles();
+        log("Stegano decoding bits");
         decodeBits();
     }
 
@@ -158,6 +161,7 @@ public class Steganographer {
     protected void decodeBits() {
         messageLength = readMessageLength();
         message = "";
+        StringBuilder sb = new StringBuilder();
         int bitsRead = 0;
         for (int w = 1; w < width; w++) {
             for (int h = 0; h < height; h++) {
@@ -168,20 +172,21 @@ public class Steganographer {
                     int green = c.getGreen();
                     int blue = c.getBlue();
 
-                    message += getChar(red);
+                    sb.append(getChar(red));
                     bitsRead++;
 
                     if (bitsRead < messageLength) {
-                        message += getChar(green);
+                        sb.append(getChar(green));
                         bitsRead++;
                     }
                     if (bitsRead < messageLength) {
-                        message += getChar(blue);
+                        sb.append(getChar(blue));
                         bitsRead++;
                     }
                 }
             }
         }
+        message = sb.toString();
     }
 
     /**
