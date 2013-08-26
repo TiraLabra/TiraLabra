@@ -28,7 +28,7 @@ class AvainArvoJono<K, V> {
         AvainArvoSolmu<K, V> solmu = new AvainArvoSolmu<>(avain, arvo);
         if (ensimmainen == null) {
             ensimmainen = solmu;
-            viimeinen = solmu;
+            viimeinen   = solmu;
         } else {
             viimeinen.seuraaja = solmu;
             viimeinen = solmu;

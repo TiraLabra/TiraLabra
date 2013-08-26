@@ -1,14 +1,12 @@
 
 package com.mycompany.tiralabra_maven.automaatit;
 
-import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -52,29 +50,23 @@ public class AutomaattiTest {
     /**
      * Test of kieliSisaltaa method, of class Automaatti.
      */
-    @Ignore
+//    @Ignore
     @Test
     public void testKieliSisaltaa() {
 //        assertFalse(a.kieliSisaltaa("a"));
 //        assertTrue(a.kieliSisaltaa("aac"));
 //        assertTrue(a.kieliSisaltaa("a"));
 //        assertTrue(a.kieliSisaltaa("ab"));
-        lauseke = new Jono<>("a", "?");
+//        lauseke = new Jono<>("a", "?", "b", "?", "c", "?");
+//        lauseke = new Jono<>("a", "b", "c", "|");
+//        lauseke = new Jono<>("a", "b", "c", "|", "d", "?");
 //        lauseke.lisaa("d");
 //        lauseke.lisaa("?");
-        a = new Automaatti(lauseke);    
-        System.out.println("NFA:n tilasiirtymäpuu:");
+//        lauseke = new Jono("a", "?", "b", "?", "c", "?", "d", ".");
+        lauseke = new Jono("a", "?", "bc", "?", "csd", "?", "d", ".");
+        a = new Automaatti(lauseke);
         System.out.println(a);
         
-        assertTrue(a.kieliSisaltaa("acg"));
-//        assertTrue(a.kieliSisaltaa("Jotain ihan randomia settiä..."));
-//        assertTrue(a.kieliSisaltaa("ööö"));
-//        assertFalse(a.kieliSisaltaa("ööö"));
-        assertTrue(a.kieliSisaltaa("bcg"));
-//        assertTrue(a.kieliSisaltaa("cg"));
-        assertTrue(a.kieliSisaltaa("abcg"));
-        assertFalse(a.kieliSisaltaa("d"));
-        assertFalse(a.kieliSisaltaa("ad"));
-        assertFalse(a.kieliSisaltaa("adc"));
+        assertTrue(a.kieliSisaltaa("a"));
     }
 }

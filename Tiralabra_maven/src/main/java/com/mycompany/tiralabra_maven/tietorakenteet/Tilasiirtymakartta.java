@@ -122,19 +122,19 @@ public final class Tilasiirtymakartta extends Hajautuskartta<Tila> {
         int epatyhjia = 0;
         for (Tilasiirtymajono avainArvoJono : ylivuotolistat) {
             mj = avainArvoJono.sisennettyMerkkijono(SISENNYS);
+            // Poistetaan "Ö":t että saadaan lyhyempi tuloste:
             if (!mj.equals("\u2205")) {
                 epatyhjia++;
-                // Poistetaan "Ö":t että saadaan lyhyempi tuloste.
                 mjr.append(mj);
                 mjr.append(',');
                 mjr.append('\n');
                 mjr.append(SISENNYS);
             }
         }
-        mjr.delete(mjr.length() - (SISENNYS.length() + 2), mjr.length());
-        if (epatyhjia > 1) {
-            mjr.append('\n');
-            mjr.append(SISENNYS);
+        if (epatyhjia <= 1) {
+            mjr.delete(mjr.length() - (SISENNYS.length() + 2), mjr.length());
+        } else {
+            mjr.delete(mjr.length() - 4, mjr.length());
         }
         mjr.append('}');
         return mjr.toString();
