@@ -36,10 +36,10 @@ public class Huffman {
             tulostaAlkuTiedot();
             String toiminto = lukija.nextLine();
             if (toiminto.equals("1")) {
-                pura();
+                pakkaa();
                 
             } else if(toiminto.equals("2")) {
-                pakkaa();
+                pura();
                 
             } else if(toiminto.equals("3")){
                 break;
@@ -62,11 +62,11 @@ public class Huffman {
     }
     
     /**
-     * Kysyy käyttäjätlä pakattavan tiedoston, uuden nimen ja suorittaa
-     * pakkauksen.
+     * Kysyy käyttäjätlä purettavan tiedoston, uuden nimen ja suorittaa
+     * purkamisen.
      */
     
-    private void pakkaa(){
+    private void pura(){
         System.out.println("Anna purettavan tiedoston sijainti juurikansioon nähden");
         System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
         String nimi = lukija.nextLine();
@@ -79,19 +79,20 @@ public class Huffman {
             nimi = lukija.nextLine();
             tiedosto = new File(nimi);
         }
-        System.out.println("Anna puretulle tiedostolle uusi nimi:");
+        System.out.println("Anna puratulle tiedostolle uusi nimi:");
         String uusinimi = lukija.nextLine();
-        suoritaPakkaus(nimi, uusinimi);
+        suoritaPurku(nimi, uusinimi);
         
     }
     
     /**
-     * Suorittaa pakkauksen ja laskee pakkaamiseen kuluneen ajan.
+     * Suorittaa purkamisen ja laskee purkuun kuluneen ajan.
      * @param nimi
      * @param uusinimi 
      */
     
-    private void suoritaPakkaus(String nimi, String uusinimi){
+    private void suoritaPurku(String nimi, String uusinimi){
+        System.out.println("Odota hetki, puretaan tiedostoa.");
         long purkuAlku = System.currentTimeMillis();
         TiedostonPurkaja purkaja = new TiedostonPurkaja(nimi, "src/Tiralabra/tiedostot/" + uusinimi);
         purkaja.pura();
@@ -100,11 +101,11 @@ public class Huffman {
     }
     
     /**
-     * Kysyy käyttäjältä purettavan tiedoston, uuden nimen ja suorittaa
-     * purkamisen.
+     * Kysyy käyttäjältä pakattavan tiedoston, uuden nimen ja suorittaa
+     * pakkauksen.
      */
     
-    private void pura(){
+    private void pakkaa(){
         System.out.println("Anna pakattavan tiedoston sijainti juurikansioon nähden");
         System.out.println("(esim src/Tiralabra/tiedostot/esimerkki.txt)");
         String nimi = lukija.nextLine();
@@ -119,16 +120,17 @@ public class Huffman {
         }
         System.out.println("Anna pakatulle tiedostolle uusi nimi:");
         String uusinimi = lukija.nextLine();
-        suoritaPurku(nimi, uusinimi);
+        suoritaPakkaus(nimi, uusinimi);
     }
     
     /**
-     * Purkaa tiedoston ja laskee kuluneen ajan.
+     * Pakkaa tiedoston ja laskee kuluneen ajan.
      * @param nimi
      * @param uusinimi 
      */
     
-    private void suoritaPurku(String nimi, String uusinimi){
+    private void suoritaPakkaus(String nimi, String uusinimi){
+        System.out.println("Odota hetki, pakataan tiedostoa.");
         long pakkausAlku = System.currentTimeMillis();
         TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja("src/Tiralabra/tiedostot/" + uusinimi, nimi);
         pakkaaja.pakkaa();

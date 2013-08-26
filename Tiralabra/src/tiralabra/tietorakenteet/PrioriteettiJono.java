@@ -72,7 +72,7 @@ public class PrioriteettiJono {
         Node pienin = keko[0];
         keko[0] = keko[koko -1];
         koko--;
-        korjaa(0);
+        korjaaYlos(0);
         return pienin;
     }
     
@@ -93,7 +93,7 @@ public class PrioriteettiJono {
      * @param indeksi 
      */
     
-    public void korjaa(int indeksi){
+    public void korjaaYlos(int indeksi){
         int vasen = 2 * indeksi;
         int oikea = 2 * indeksi + 1;
         int pienin = indeksi;
@@ -105,7 +105,7 @@ public class PrioriteettiJono {
         }
         if(pienin != indeksi){
             vaihda(indeksi, pienin);
-            korjaa(pienin);
+            korjaaYlos(pienin);
         }
     }
     
