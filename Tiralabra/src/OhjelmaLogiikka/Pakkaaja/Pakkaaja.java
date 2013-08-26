@@ -3,9 +3,9 @@ package OhjelmaLogiikka.Pakkaaja;
 import Tiedostokasittely.ITiedostoLukija;
 import Tiedostokasittely.TiedostoKirjoittaja;
 import Tiedostokasittely.TiedostoLukija;
-import Tietorakenteet.TiedostoBlokki;
 import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaMap;
+import Tietorakenteet.TiedostoBlokki;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

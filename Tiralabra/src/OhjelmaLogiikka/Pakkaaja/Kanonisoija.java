@@ -1,6 +1,7 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import OhjelmaLogiikka.KanonisoidunKoodinMuodostaja;
+import OhjelmaLogiikka.Sorttaaja;
 import Tietorakenteet.TiedostoBlokki;
 import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaArrayList;
@@ -18,7 +19,7 @@ import java.util.Comparator;
  */
 public class Kanonisoija {
 
-    private OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> kooditJarjestyksesaHeaderiaVarten;
+    private OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> kooditJarjestyksessaHeaderiaVarten;
 
     /**
      * Palauttaa listan kanonisista koodeista pituusjärjestyksessä (ensimmäisenä
@@ -28,12 +29,12 @@ public class Kanonisoija {
      * @return listan blokki-koodipareista kasvavassa pituusjärjestyksessä
      */
     public OmaList<Pari<TiedostoBlokki, HuffmanKoodi>> haeKooditJarjestettyna() {
-        return kooditJarjestyksesaHeaderiaVarten;
+        return kooditJarjestyksessaHeaderiaVarten;
     }
 
     /**
      * Kanonisoi annetut koodit. Saa parametrikseen taulun jossa avaimena koodin
-     * pituus, arvona lista jossa on blokkikoodi-parit joilla sama pituus kuin
+     * pituus, arvona lista jossa on blokki-koodi-parit joilla sama pituus kuin
      * avaimella. Tällä säästetään O(n log n)-sorttaus kun halutaan lukea parit
      * koodin pituusjärjestyksessä (vain avainluettelo on sortattava, ei
      * koodi-blokki-parit)
@@ -46,7 +47,7 @@ public class Kanonisoija {
         int koko = laskeHashMapilleKoko(blokkiKoodiLista.size());
 
         OmaMap<TiedostoBlokki, HuffmanKoodi> kanonisoidutKoodit = new OmaHashMap<TiedostoBlokki, HuffmanKoodi>(koko);
-        kooditJarjestyksesaHeaderiaVarten = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>(koko);
+        kooditJarjestyksessaHeaderiaVarten = new OmaArrayList<Pari<TiedostoBlokki, HuffmanKoodi>>(koko);
 
         KanonisoidunKoodinMuodostaja muodostaja = new KanonisoidunKoodinMuodostaja();
         kasitteleTaulu(blokkiKoodiLista, muodostaja, kanonisoidutKoodit);
@@ -73,7 +74,7 @@ public class Kanonisoija {
             for (int j = 0; j < lista.size(); ++j) {
                 Pari<TiedostoBlokki, HuffmanKoodi> pari = lista.get(j);
                 pari.toinen.koodi = muodostaja.muodostaKanoninenHuffmanKoodi(pari.toinen.pituus);
-                kooditJarjestyksesaHeaderiaVarten.add(pari);
+                kooditJarjestyksessaHeaderiaVarten.add(pari);
                 kanonisoidutKoodit.put(pari.ensimmainen, pari.toinen);
             }
         }
@@ -86,20 +87,9 @@ public class Kanonisoija {
      * @return Avaimet järjestyksessä
      */
     private OmaList<Integer> sorttaaAvaimet(OmaList<Integer> avaimet) {
-        OmaList<Integer> paluu = new OmaArrayList<Integer>();
-
-        OmaMinimiPriorityQueue<Integer> heapsort = luoHeap();
-
-        for (int i = 0; i < avaimet.size(); ++i) {
-            heapsort.push(avaimet.get(i));
-        }
-
-        while (!heapsort.isEmpty()) {
-            paluu.add(heapsort.pop());
-        }
-
-
-        return paluu;
+        Sorttaaja sorttaaja = new Sorttaaja();
+        return sorttaaja.sorttaaKasvavaanJarjestykseen(avaimet, luoKomparaattori());
+        
     }
     /**
      * Apumetodi. Laskee hashmapille koon
@@ -111,15 +101,15 @@ public class Kanonisoija {
         return (int) Math.pow(2, kerroin);
     }
     /**
-     * Apumetodi. Luo minimiprioriteettijonon
+     * Apumetodi. Luo komparaattorin
      * @return Minimiprioriteettijono
      */
-    private OmaMinimiPriorityQueue<Integer> luoHeap() {
-        return new OmaMinimiPriorityQueue<Integer>(new Comparator<Integer>() {
+    public Comparator<Integer> luoKomparaattori() {
+        return new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return o1 - o2;
             }
-        });
+        };
     }
 }

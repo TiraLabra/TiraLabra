@@ -57,8 +57,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-         testausSaaPoistaa();
-        //  pakkausJaPurkuKysyParametrit();
+        // testausSaaPoistaa();
+          pakkausJaPurkuKysyParametrit();
         // nopeusVertailu();
     }
 

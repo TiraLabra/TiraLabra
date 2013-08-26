@@ -97,12 +97,8 @@ public class KanonisoijaTest {
 
         TiedostoBlokki wrapper = new TiedostoBlokki();
         wrapper.byteTaulukko = new byte[1];
-        // ennen kääntöä koodien pitäisi olla: 
-        // 0000 a, 0001 b, 0010 c
-        // 00110 d, 00111 e, 01000 f
-        // 010010 g 010011 h
         
-        // käännön jälkeen 
+        // käännön jälkeen koodien pitäisi olla:
         // 0000 a, 1000 b, 0100 c
         // 01100 d, 11100 e, 00010 f
         // 010010 g, 110010 h

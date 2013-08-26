@@ -138,9 +138,5 @@ public class TiivistajaTest {
         koodi.pituus = 4;
         koodi.koodi = 8;
         koodit.put(wrapper, koodi);
-
-
-
-
     }
 }

@@ -1,0 +1,38 @@
+15.8.2013
+
+String: Javan arraylistin suoritukseen kului 20490ms
+String: Oman arraylistin suoritukseen kului 35645ms
+Int: Javan arraylistin suoritukseen kului 5956ms
+Int: Oman arraylistin suoritukseen kului 22805ms
+
+16.8.2013 - korvattu object[] OmaArrayList[]:llä
+
+String: Javan arraylistin suoritukseen kului 17488ms
+String: Oman arraylistin suoritukseen kului 31849ms
+Int: Javan arraylistin suoritukseen kului 5208ms
+Int: Oman arraylistin suoritukseen kului 21185ms
+
+
+Poistettu yksi kertolasku put-metodista
+
+
+String: Javan arraylistin suoritukseen kului 16715ms
+String: Oman arraylistin suoritukseen kului 30539ms
+Int: Javan arraylistin suoritukseen kului 4932ms
+Int: Oman arraylistin suoritukseen kului 20076ms
+
+
+String: Javan arraylistin suoritukseen kului 16567ms
+String: Oman arraylistin suoritukseen kului 30677ms
+Int: Javan arraylistin suoritukseen kului 4854ms
+Int: Oman arraylistin suoritukseen kului 20100ms
+
+
+
+Refaktorointi: Ylivuotolista vaihdettu OmaArrayList -> linkitetty lista
+
+String: Javan hashmapin    suoritukseen kului 16323ms
+String: Oman hashmapin suoritukseen kului 14946ms
+Int: Javan hashmapin suoritukseen kului 4775ms
+Int: Oman hashmapin suoritukseen kului 7021ms
+

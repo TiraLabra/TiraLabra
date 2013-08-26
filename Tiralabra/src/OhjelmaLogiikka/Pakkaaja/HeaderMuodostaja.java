@@ -1,10 +1,10 @@
 package OhjelmaLogiikka.Pakkaaja;
 
 import Tiedostokasittely.ITiedostoKirjoittaja;
-import Tietorakenteet.TiedostoBlokki;
 import Tietorakenteet.HuffmanKoodi;
 import Tietorakenteet.OmaList;
 import Tietorakenteet.Pari;
+import Tietorakenteet.TiedostoBlokki;
 import java.io.IOException;
 
 /**

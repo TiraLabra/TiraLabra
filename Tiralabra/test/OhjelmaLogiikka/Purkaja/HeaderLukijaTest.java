@@ -74,9 +74,7 @@ public class HeaderLukijaTest {
         HuffmanKoodi koodi = new HuffmanKoodi();
         koodi.pituus = 2;
         koodi.koodi = 0;
-        
-        OmaList<HuffmanKoodi> avaimet = koodit.toinen.avaimet();
-    
+            
         assertEquals("A:n koodi väärä", 'a', koodit.toinen.get(koodi)[0]);
         koodi.koodi = 2;
         assertEquals("B:n koodi väärä", 'b', koodit.toinen.get(koodi)[0]);   

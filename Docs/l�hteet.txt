@@ -1,4 +1,0 @@
-http://en.wikipedia.org/wiki/Huffman_coding – sivu tarkistettu 1.8.2013
-Introduction To Algorithms, Third edition sivut 428 – 435 – Thomas H. Cormen et al.
-https://en.wikipedia.org/wiki/Canonical_Huffman_code - sivu tarkistettu 12.8.2013
-http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx - tarkistettu 12.8.2013

@@ -6,14 +6,14 @@ package OhjelmaLogiikka;
  */
 public class KanonisoidunKoodinMuodostaja {
 
-    private long koodi;
+    private long huffmanKoodi;
     private int vanhaPituus;
 
     /**
      * Konstruktori.
      */
     public KanonisoidunKoodinMuodostaja() {
-        koodi = -1;
+        huffmanKoodi = -1;
         vanhaPituus = 0;
     }
 
@@ -31,15 +31,15 @@ public class KanonisoidunKoodinMuodostaja {
         if (nykyinenPituus < vanhaPituus) {
             throw new IllegalArgumentException("Annettu koodin pituus pienempi kuin edellinen");
         }
-        ++koodi;
+        ++huffmanKoodi;
         
         if (nykyinenPituus > vanhaPituus) {
-            koodi = koodi << (nykyinenPituus - vanhaPituus);
+            huffmanKoodi = huffmanKoodi << (nykyinenPituus - vanhaPituus);
             vanhaPituus = nykyinenPituus;
         }
      
         // bittien paikka on vaihdettava koska purkaja aloittaa koodin lukemisen eri puolelta ja ei muuten löydä vastaavuutta
-        return vaihdaBittiJarjestys(koodi, vanhaPituus);
+        return vaihdaBittiJarjestys(huffmanKoodi, vanhaPituus);
     }
     /**
      * Kääntää bittikuvion ympäri, esim 10001000 -> 00010001. Tämä on tarpeellista johtuen siitä miten purkaaja lukee bittejä tiedostosta
