@@ -12,9 +12,9 @@ public class MoveListTest
 {
 	private MoveList list;
 
-	private int find(int fromSqr, int toSqr, int pieceType, int capturedType, int promotedType)
+	private int find(String moveStr)
 	{
-		int move = Move.pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
+		int move = Move.fromString(moveStr);
 		for (int pri = 0; pri < MoveList.PRIORITIES; ++pri) {
 			for (int i = 0; i < list.getCount(pri); ++i) {
 				if (list.getMove(pri, i) == move)
@@ -60,44 +60,44 @@ public class MoveListTest
 	@Test
 	public void kingCapturesHavePriority0()
 	{
-		assertEquals(0, find(31, 14, Pieces.KNIGHT, Pieces.KING, -1));
-		assertEquals(0, find(15, 14, Pieces.KING, Pieces.KING, -1));
+		assertEquals(0, find("Nh5xKg7"));
+		assertEquals(0, find("Kh7xKg7"));
 	}
 
 	@Test
 	public void normalCapturesHavePriorities1to9()
 	{
-		assertEquals(1, find(34, 25, Pieces.PAWN, Pieces.QUEEN, -1));
-		assertEquals(5, find(45, 52, Pieces.QUEEN, Pieces.ROOK, -1));
-		assertEquals(9, find(15, 23, Pieces.KING, Pieces.PAWN, -1));
+		assertEquals(1, find("c4xQb5"));
+		assertEquals(5, find("Qf3xRe2"));
+		assertEquals(9, find("Kh7xh6"));
 	}
 
 	@Test
 	public void capturePromotionsHaveCorrectPriorities()
 	{
-		assertEquals(2, find(9, 2, Pieces.PAWN, Pieces.ROOK, Pieces.QUEEN));
-		assertEquals(2, find(9, 2, Pieces.PAWN, Pieces.ROOK, Pieces.KNIGHT));
+		assertEquals(2, find("b7xRc8Q"));
+		assertEquals(2, find("b7xRc8N"));
 	}
 
 	@Test
 	public void queenPromotionsHavePriority3()
 	{
-		assertEquals(3, find(9, 1, Pieces.PAWN, -1, Pieces.QUEEN));
+		assertEquals(3, find("b7-b8Q"));
 	}
 
 	@Test
 	public void otherPromotionsHavePriority11()
 	{
-		assertEquals(11, find(9, 1, Pieces.PAWN, -1, Pieces.ROOK));
-		assertEquals(11, find(9, 1, Pieces.PAWN, -1, Pieces.BISHOP));
-		assertEquals(11, find(9, 1, Pieces.PAWN, -1, Pieces.KNIGHT));
+		assertEquals(11, find("b7-b8R"));
+		assertEquals(11, find("b7-b8B"));
+		assertEquals(11, find("b7-b8N"));
 	}
 
 	@Test
 	public void normalMovesHavePriority10()
 	{
-		assertEquals(10, find(15, 7, Pieces.KING, -1, -1));
-		assertEquals(10, find(45, 27, Pieces.QUEEN, -1, -1));
+		assertEquals(10, find("Kh7-h8"));
+		assertEquals(10, find("Qf3-d5"));
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class MoveListTest
 	{
 		GameState state = new GameState("", "e3", Players.BLACK);
 		list.populate(state, false);
-		assertEquals(10, find(44, 52, Pieces.PAWN, -1, -1));
+		assertEquals(10, find("e3-e2"));
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class MoveListTest
 	{
 		GameState state = new GameState("Nh8", "", Players.WHITE);
 		list.populate(state, false);
-		assertEquals(-1, find(34, 25, Pieces.PAWN, Pieces.QUEEN, -1));
+		assertEquals(-1, find("c4xQb5"));
 	}
 
 	@Test

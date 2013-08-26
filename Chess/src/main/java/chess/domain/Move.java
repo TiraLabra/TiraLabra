@@ -96,6 +96,46 @@ public final class Move
 	}
 
 	/**
+	 * Luo siirron sen merkkijonoesityksestä.
+	 *
+	 * @param s siirto merkkijonona (esim. "Ke3xNf4")
+	 * @return siirto
+	 */
+	public static int fromString(String s)
+	{
+		if (!s.matches("[KQRBN]?[a-h][1-8](-|x[KQRBN]?)[a-h][1-8][QRBN]?"))
+			throw new IllegalArgumentException("Invalid move format.");
+
+		int i = 0;
+
+		int pieceType = Pieces.PAWN;
+		if (Character.isUpperCase(s.charAt(i)))
+			pieceType = Pieces.fromString(Character.toString(s.charAt(i++)));
+
+		int fromSqr = s.charAt(i++) - 'a';
+		fromSqr += ('8' - s.charAt(i++)) * 8;
+
+		int capturedType = -1;
+		if (s.charAt(i++) == 'x') {
+			capturedType = Pieces.PAWN;
+			if (Character.isUpperCase(s.charAt(i)))
+				capturedType = Pieces.fromString(Character.toString(s.charAt(i++)));
+		}
+
+		int toSqr = s.charAt(i++) - 'a';
+		toSqr += ('8' - s.charAt(i++)) * 8;
+
+		int promotedType = -1;
+		if (i != s.length()) {
+			if (pieceType != Pieces.PAWN)
+				throw new IllegalArgumentException("Invalid move format.");
+			promotedType = Pieces.fromString(Character.toString(s.charAt(i++)));
+		}
+
+		return pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
+	}
+
+	/**
 	 * Muuntaa ruudun merkkijonoksi (a1-h8).
 	 */
 	private static String sqrToStr(int sqr)

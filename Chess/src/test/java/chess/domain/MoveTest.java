@@ -81,4 +81,52 @@ public class MoveTest
 	{
 		assertEquals("b7-b8R", Move.toString(Move.pack(9, 1, Pieces.PAWN, -1, Pieces.ROOK)));
 	}
+
+	@Test
+	public void testFromStringWithNormalMove()
+	{
+		int mov = Move.pack(0, 63, Pieces.BISHOP, -1, -1);
+		assertEquals(mov, Move.fromString("Ba8-h1"));
+	}
+
+	@Test
+	public void testFromStringWithPawnMove()
+	{
+		int mov = Move.pack(51, 35, Pieces.PAWN, -1, -1);
+		assertEquals(mov, Move.fromString("d2-d4"));
+	}
+
+	@Test
+	public void testFromStringWithCapture()
+	{
+		int mov = Move.pack(30, 20, Pieces.KNIGHT, Pieces.QUEEN, -1);
+		assertEquals(mov, Move.fromString("Ng5xQe6"));
+	}
+
+	@Test
+	public void testFromStringWithPromotion()
+	{
+		int mov = Move.pack(9, 1, Pieces.PAWN, -1, Pieces.ROOK);
+		assertEquals(mov, Move.fromString("b7-b8R"));
+	}
+
+	@Test
+	public void fromStringThrowsOnIllegalSyntax()
+	{
+		try {
+			Move.fromString("Na1-Bh8");
+			fail("IllegalArgumentException not thrown.");
+		} catch (IllegalArgumentException e) {
+		}
+	}
+
+	@Test
+	public void fromStringThrowsOnIllegalPromotion()
+	{
+		try {
+			Move.fromString("Ra7-a8Q");
+			fail("IllegalArgumentException not thrown.");
+		} catch (IllegalArgumentException e) {
+		}
+	}
 }

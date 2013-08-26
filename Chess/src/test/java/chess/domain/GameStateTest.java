@@ -60,9 +60,9 @@ public class GameStateTest
 	@Test
 	public void equalWhenSamePosition()
 	{
-		s.move(Move.pack(48, 40, Pieces.PAWN, -1, -1));
+		s.move(Move.fromString("a2-a3"));
 		GameState s2 = new GameState();
-		s2.move(Move.pack(48, 40, Pieces.PAWN, -1, -1));
+		s2.move(Move.fromString("a2-a3"));
 		assertTrue(s.equals(s2));
 		assertTrue(s.getId() == s2.getId());
 	}
@@ -70,15 +70,15 @@ public class GameStateTest
 	@Test
 	public void equalWhenTwoDifferentPathsToSamePosition()
 	{
-		s.move(Move.pack(48, 40, Pieces.PAWN, -1, -1));
-		s.move(Move.pack(8, 16, Pieces.PAWN, -1, -1));
-		s.move(Move.pack(62, 45, Pieces.KNIGHT, -1, -1));
-		s.move(Move.pack(1, 18, Pieces.KNIGHT, -1, -1));
+		s.move(Move.fromString("a2-a3"));
+		s.move(Move.fromString("a7-a6"));
+		s.move(Move.fromString("Ng1-f3"));
+		s.move(Move.fromString("Nb8-c6"));
 		GameState s2 = new GameState();
-		s2.move(Move.pack(62, 45, Pieces.KNIGHT, -1, -1));
-		s2.move(Move.pack(1, 18, Pieces.KNIGHT, -1, -1));
-		s2.move(Move.pack(48, 40, Pieces.PAWN, -1, -1));
-		s2.move(Move.pack(8, 16, Pieces.PAWN, -1, -1));
+		s2.move(Move.fromString("Ng1-f3"));
+		s2.move(Move.fromString("Nb8-c6"));
+		s2.move(Move.fromString("a2-a3"));
+		s2.move(Move.fromString("a7-a6"));
 		assertTrue(s.equals(s2));
 		assertTrue(s.getId() == s2.getId());
 	}
@@ -86,9 +86,9 @@ public class GameStateTest
 	@Test
 	public void notEqualWhenDifferentPosition()
 	{
-		s.move(Move.pack(57, 42, Pieces.KNIGHT, -1, -1));
+		s.move(Move.fromString("Nb1-c3"));
 		GameState s2 = new GameState();
-		s2.move(Move.pack(57, 44, Pieces.KNIGHT, -1, -1));
+		s2.move(Move.fromString("Nb1-a3"));
 		assertFalse(s.equals(s2));
 		assertFalse(s.getId() == s2.getId());
 	}
@@ -96,12 +96,12 @@ public class GameStateTest
 	@Test
 	public void notEqualWhenSamePositionButDifferentPlayer()
 	{
-		s.move(Move.pack(52, 44, Pieces.PAWN, -1, -1));
-		s.move(Move.pack(8, 16, Pieces.PAWN, -1, -1));
-		s.move(Move.pack(33, 36, Pieces.PAWN, -1, -1));
+		s.move(Move.fromString("e2-e3"));
+		s.move(Move.fromString("a7-a6"));
+		s.move(Move.fromString("e3-e4"));
 		GameState s2 = new GameState();
-		s2.move(Move.pack(52, 36, Pieces.PAWN, -1, -1));
-		s2.move(Move.pack(8, 16, Pieces.PAWN, -1, -1));
+		s2.move(Move.fromString("e2-e4"));
+		s2.move(Move.fromString("a7-a6"));
 		assertFalse(s.equals(s2));
 		assertFalse(s.getId() == s2.getId());
 	}
@@ -109,7 +109,7 @@ public class GameStateTest
 	@Test
 	public void clonedStateHasSameData()
 	{
-		s.move(Move.pack(52, 44, Pieces.PAWN, -1, -1));
+		s.move(Move.fromString("e2-e3"));
 		GameState s2 = s.clone();
 		assertTrue(s.equals(s2));
 		assertTrue(s2.equals(s));
@@ -467,7 +467,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KING, 42);
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
-		s.move(Move.pack(42, 34, Pieces.KING, -1, -1));
+		s.move(Move.fromString("Kc3-c4"));
 		assertEquals(sqrs(34, 51), s.getPieces(Players.WHITE));
 		assertEquals(sqrs(11, 29), s.getPieces(Players.BLACK));
 		assertEquals(sqrs(34), s.getPieces(Players.WHITE, Pieces.KING));
@@ -485,7 +485,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KING, 42);
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
-		s.move(Move.pack(42, 34, Pieces.KING, -1, -1));
+		s.move(Move.fromString("Kc3-c4"));
 		assertEquals(Players.BLACK, s.getNextMovingPlayer());
 	}
 
@@ -499,7 +499,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
 		long h = s.getId();
-		s.move(Move.pack(42, 34, Pieces.KING, -1, -1));
+		s.move(Move.fromString("Kc3-c4"));
 		assertFalse(h == s.getId());
 	}
 
@@ -513,7 +513,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
 		GameState s2 = s.clone();
-		int move = Move.pack(42, 34, Pieces.KING, -1, -1);
+		int move = Move.fromString("Kc3-c4");
 		s.move(move);
 		s.undoMove(move);
 		assertEquals(sqrs(42, 51), s.getPieces(Players.WHITE));
@@ -537,7 +537,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.KNIGHT, 51);
 		s = new GameState(bb, Players.WHITE);
 		GameState s2 = s.clone();
-		int move = Move.pack(42, 34, Pieces.KING, Pieces.PAWN, -1);
+		int move = Move.fromString("Kc3xc4");
 		s.move(move);
 		s.undoMove(move);
 		assertEquals(sqrs(42, 51), s.getPieces(Players.WHITE));
@@ -560,7 +560,7 @@ public class GameStateTest
 		bb.addPiece(Players.WHITE, Pieces.PAWN, 11);
 		s = new GameState(bb, Players.WHITE);
 		GameState s2 = s.clone();
-		int move = Move.pack(11, 3, Pieces.PAWN, -1, Pieces.QUEEN);
+		int move = Move.fromString("d7-d8Q");
 		s.move(move);
 		s.undoMove(move);
 		assertEquals(sqrs(11, 42), s.getPieces(Players.WHITE));
