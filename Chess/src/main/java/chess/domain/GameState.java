@@ -196,7 +196,7 @@ public final class GameState
 	public int[] getLegalMoves()
 	{
 		int count = 0;
-		int[] moves = new int[27];
+		int[] moves = new int[256];
 		long pieces = bitboard.getPieces(nextMovingPlayer);
 		for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 			int fromSqr = Long.numberOfTrailingZeros(pieces);
