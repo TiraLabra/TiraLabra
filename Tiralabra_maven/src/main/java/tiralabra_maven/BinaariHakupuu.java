@@ -23,9 +23,6 @@ public class BinaariHakupuu implements PuuRajapinta {
         Solmu vanhem = juuri;
         while (haku != null) {
             vanhem = haku;
-            if (uusi.getArvo() == haku.getArvo()) {
-                return;
-            }
             if (uusi.getArvo() < haku.getArvo()) {
                 haku = haku.getVasen();
             } else {

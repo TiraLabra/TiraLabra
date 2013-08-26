@@ -1,5 +1,6 @@
 package tiralabra_maven;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -13,36 +14,47 @@ public class Main {
         PuuRajapinta avl = new AVLHakuPuu();
         PuuRajapinta bin = new BinaariHakupuu();
         PuuRajapinta rb = new PunMusPuu();
-        
+
+        int count = 100000;
         Random r = new Random();
-        int [] testNumbers = new int[5000000];
-        for (int i = 0; i < 5000000; i++) {
-            testNumbers[i]=r.nextInt(500000);
+        int[] testNumbers = new int[count];
+        for (int i = 0; i < count; i++) {
+            testNumbers[i] = i;
         }
-        
-        System.out.println("Adding 5000000 randoms to Binary...");  
-        long bin_start = System.currentTimeMillis();
-        for (int i:testNumbers) bin.lisaaSolmu(new Solmu(i));
-        long bin_t = System.currentTimeMillis()-bin_start;
-        System.out.println("took: "+bin_t+"ms");
-        
-        System.out.println("Adding 5000000 randoms to AVL...");       
-        long avl_start = System.currentTimeMillis();
-        for (int i:testNumbers) avl.lisaaSolmu(new Solmu(i));
-        long avl_t = System.currentTimeMillis()-avl_start;
-        System.out.println("took: "+avl_t+"ms");
- 
-        System.out.println("Adding 5000000 randoms to RB...");  
-        long rb_start = System.currentTimeMillis();
-        for (int i:testNumbers) rb.lisaaSolmu(new Solmu(i));
-        long rb_t = System.currentTimeMillis()-rb_start;
-        System.out.println("took: "+rb_t+"ms");
-        
-        
-        
-        
-        
-    
-    
+
+        for (int j = 1; j < 4; j++) {
+            if (j==1) System.out.println("Punamustapuu___________");
+            if (j == 2) {
+                rb = new AVLHakuPuu();
+                System.out.println("AVLPUU_________________");
+            }
+            if (j == 3) {
+                rb = new BinaariHakupuu();
+                System.out.println("Binäärihakupuu_________");
+            }
+
+            System.out.println("Adding " + count + " numbers to tree...");
+            for (int i : testNumbers) {
+                rb.lisaaSolmu(new Solmu(i));
+            }
+            System.out.println("Starting removing...");
+            long time_avg = 0;
+            for (int i = 0; i < 1000; i++) {
+                long rb_start = System.nanoTime();
+                rb.poistaSolmu(testNumbers[r.nextInt(count)]);
+                time_avg = time_avg + System.nanoTime() - rb_start;
+
+            }
+
+            System.out.println(time_avg / 1000 + "ns per each");
+            System.out.println("Add 1000 more....");
+            time_avg = 0;
+            for (int i = 0; i < 1000; i++) {
+                long rb_start = System.nanoTime();
+                rb.lisaaSolmu(new Solmu(testNumbers[r.nextInt(count)]));
+                time_avg = time_avg + System.nanoTime() - rb_start;
+            }
+            System.out.println(time_avg/1000 + "ns per each");
+        }
     }
 }

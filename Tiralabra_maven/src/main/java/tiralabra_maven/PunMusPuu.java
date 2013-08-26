@@ -3,7 +3,8 @@ package tiralabra_maven;
 //Toteutettu käyttäen lähteessä olevaa pseudokoodia: 
 //http://www.pp.htv.fi/uvaisane/yo/tira/
 /**
- * Punamustapuun totetutus 
+ * Punamustapuun totetutus
+ *
  * @author esaaksvu
  */
 public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
@@ -15,17 +16,16 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
      * arvot
      */
     public PunMusPuu() {
-        nil = new Solmu(0);
+        nil = new Solmu(-99);
         nil.setVari(true);
+        juuri = nil;
         nil.setVanhem(nil);
         nil.setOikea(nil);
         nil.setVasen(nil);
-        juuri = nil;
     }
 
-     /**
-     * Lisää solmun puuhun (Kaipaa refaktorointia)
-     *
+    /**
+     * Lisää solmun punamusta puuhun
      * @param uusi viite solmu olioon joka lisätään
      */
     @Override
@@ -37,14 +37,7 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
 
         while (x != nil) {
             y = x;
-            if (uusi.getArvo() == x.getArvo()) {
-                return;
-            }
-            if (uusi.getArvo() < x.getArvo()) {
-                x = x.getVasen();
-            } else {
-                x = x.getOikea();
-            }
+            x = (uusi.getArvo() < x.getArvo()) ? x.getVasen() : x.getOikea();
         }
         uusi.setVanhem(y);
         if (y == nil) {
@@ -58,7 +51,7 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
         korjaaPuuLisa(uusi);
     }
 
-       /**
+    /**
      * Poistaa solmun puusta (keskeneräinen/sisältää virheitä)
      *
      * @param i on solmun arvo joka poistetaan
@@ -66,17 +59,13 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
      */
     @Override
     public boolean poistaSolmu(int i) {
-        Solmu pois = super.hae(i);
-        if (pois == null) {
+        Solmu pois = hae(i);
+        if (pois == nil) {
             return false;
         }
         Solmu x;
         if (pois.getVasen() == nil || pois.getOikea() == nil) {
-            if (pois.getVasen() != nil) {
-                x = pois.getVasen();
-            } else {
-                x = pois.getOikea();
-            }
+            x = (pois.getVasen() != nil) ? pois.getVasen() : pois.getOikea();
             Solmu w = pois.getVanhem();
             if (w == nil) {
                 juuri = x;
@@ -144,55 +133,59 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
         juuri.setVari(true);
     }
 
-    private void korjaaPuuPois(Solmu x) {
-        while (x != juuri && x.getVari()) {
-            if (x == x.getVanhem().getVasen()) {
-                Solmu w = x.getVanhem().getOikea();
+    private void korjaaPuuPois(Solmu pois) {
+        while (pois != juuri && pois.getVari()) { 
+            if (pois == pois.getVanhem().getVasen()) {
+                Solmu sis = pois.getVanhem().getOikea();
+                if (!sis.getVari()) {
+                    sis.setVari(true);
+                    pois.getVanhem().setVari(false);
+                    kaannaVasen(pois.getVanhem());
+                    sis = pois.getVanhem().getOikea();
+                }
+                if (sis.getVasen().getVari() && sis.getOikea().getVari()) {
+                    sis.setVari(false);
+                    pois = pois.getVanhem();
+                    continue;
+                } else if (sis.getOikea().getVari()) {
+                    sis.getVasen().setVari(true);
+                    sis.setVari(false);
+                    kaannaOikea(sis);
+                    sis = pois.getVanhem().getOikea();
+                }
+                sis.setVari(pois.getVanhem().getVari());
+                pois.getVanhem().setVari(true);
+                sis.getOikea().setVari(true);
+                kaannaVasen(pois.getVanhem());
+                pois = juuri;
+            } else if (pois == pois.getVanhem().getOikea()) {
+                Solmu w = pois.getVanhem().getVasen();
                 if (!w.getVari()) {
                     w.setVari(true);
-                    x.getVanhem().setVari(false);
-                    kaannaVasen(x.getVanhem());
-                    w = x.getVanhem().getOikea();
-                }
-                if (w.getVasen().getVari() && w.getOikea().getVari()) {
-                    w.setVari(false);
-                    x = x.getVanhem();
-                } else if (w.getOikea().getVari()) {
-                    w.getVasen().setVari(true);
-                    w.setVari(false);
-                    kaannaOikea(w);
-                    w = x.getVanhem().getOikea();
-                }
-                w.setVari(x.getVanhem().getVari());
-                x.getVanhem().setVari(true);
-                w.getOikea().setVari(true);
-                kaannaVasen(x.getVanhem());
-                x = juuri;
-            } else if (x == x.getVanhem().getOikea()) {
-                Solmu w = x.getVanhem().getVasen();
-                if (!w.getVari()) {
-                    w.setVari(true);
-                    x.getVanhem().setVari(false);
-                    kaannaOikea(x.getVanhem());
-                    w = x.getVanhem().getVasen();
+                    pois.getVanhem().setVari(false);
+                    kaannaOikea(pois.getVanhem());
+                    w = pois.getVanhem().getVasen();
                 }
                 if (w.getOikea().getVari() && w.getVasen().getVari()) {
                     w.setVari(false);
-                    x = x.getVanhem();
-                } else if (w.getVasen().getVari()) {
+                    pois = pois.getVanhem();
+                    continue;
+                }
+                
+                else if (w.getVasen().getVari()) {
                     w.getOikea().setVari(true);
                     w.setVari(false);
                     kaannaVasen(w);
-                    w = x.getVanhem().getVasen();
+                    w = pois.getVanhem().getVasen();
                 }
-                w.setVari(x.getVanhem().getVari());
-                x.getVanhem().setVari(true);
+                w.setVari(pois.getVanhem().getVari());
+                pois.getVanhem().setVari(true);
                 w.getVasen().setVari(true);
-                kaannaOikea(x.getVanhem());
-                x = juuri;
+                kaannaOikea(pois.getVanhem());
+                pois = juuri;
             }
         }
-        x.setVari(true);
+        pois.setVari(true);
     }
 
     private void kaannaVasen(Solmu x) {
@@ -276,11 +269,24 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
 
     }
 
-     /**
-     * Palauttaa tulostuksen puusta 
+    /**
+     * Palauttaa tulostuksen puusta
      */
     @Override
     public String toString() {
         return tulosta(juuri);
+    }
+
+    @Override
+    public Solmu hae(int i) {
+        Solmu haku = juuri;
+
+        while (haku != nil && haku.getArvo() != i) {
+            haku = (i < haku.getArvo()) ? haku.getVasen() : haku.getOikea();
+        }
+        if (haku == nil || (haku == juuri && haku.getArvo() != i)) {
+            return nil;
+        }
+        return haku;
     }
 }
