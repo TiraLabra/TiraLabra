@@ -40,7 +40,7 @@ public class BitBoardTest
 		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
 		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 63);
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 25);
-		bb.removePiece(Players.BLACK, 27);
+		bb.removePiece(Players.BLACK, Pieces.KNIGHT, 27);
 		assertEquals(1L << 63, bb.getPieces(Players.BLACK, Pieces.KNIGHT));
 		assertEquals(1L << 63 | 1L << 25, bb.getPieces(Players.BLACK));
 	}
@@ -54,18 +54,6 @@ public class BitBoardTest
 		bb.removePiece(Players.BLACK, Pieces.KNIGHT, 27);
 		assertEquals(1L << 63, bb.getPieces(Players.BLACK, Pieces.KNIGHT));
 		assertEquals(1L << 63 | 1L << 25, bb.getPieces(Players.BLACK));
-	}
-
-	@Test
-	public void testRemovePieceReturnVal()
-	{
-		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
-		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 63);
-		bb.addPiece(Players.BLACK, Pieces.PAWN, 25);
-		int p = bb.removePiece(Players.BLACK, 27);
-		assertEquals(Pieces.KNIGHT, p);
-		p = bb.removePiece(Players.BLACK, 28);
-		assertEquals(-1, p);
 	}
 
 	@Test
@@ -163,13 +151,13 @@ public class BitBoardTest
 		bb2.addPiece(Players.BLACK, Pieces.PAWN, 25);
 		assertFalse(bb.equals(bb2));
 
-		bb2.removePiece(Players.BLACK, 25);
+		bb2.removePiece(Players.BLACK, Pieces.PAWN, 25);
 		bb2.addPiece(Players.WHITE, Pieces.KING, 25);
 		assertFalse(bb2.equals(bb));
 
-		bb2.removePiece(Players.WHITE, 25);
+		bb2.removePiece(Players.WHITE, Pieces.KING, 25);
 		bb2.addPiece(Players.BLACK, Pieces.KING, 25);
-		bb.removePiece(Players.WHITE, 25);
+		bb.removePiece(Players.WHITE, Pieces.PAWN, 25);
 		bb.addPiece(Players.BLACK, Pieces.PAWN, 25);
 		assertFalse(bb2.equals(bb));
 	}

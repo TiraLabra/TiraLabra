@@ -249,9 +249,9 @@ public final class GameState
 	 */
 	public long getPseudoLegalMoves(int player, int fromSqr)
 	{
-		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			if (bitboard.hasPiece(nextMovingPlayer, piece, fromSqr))
-				return getPseudoLegalMoves(player, piece, fromSqr);
+		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
+			if (bitboard.hasPiece(nextMovingPlayer, pieceType, fromSqr))
+				return getPseudoLegalMoves(player, pieceType, fromSqr);
 		}
 
 		return 0;
@@ -363,9 +363,10 @@ public final class GameState
 	 */
 	public boolean isStaleMate()
 	{
-		for (int sqr = 0; sqr < 64; ++sqr)
+		for (int sqr = 0; sqr < 64; ++sqr) {
 			if (getLegalMoves(sqr).length != 0)
 				return false;
+		}
 		return !isKingChecked(nextMovingPlayer);
 	}
 

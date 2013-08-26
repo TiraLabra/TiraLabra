@@ -63,6 +63,7 @@ public final class BitBoard
 	 */
 	public void addPiece(int player, int piece, int sqr)
 	{
+		assert ((playerPieces[0] | playerPieces[1]) & (1L << sqr)) == 0;
 		long sqrBit = 1L << sqr;
 		pieces[piece] |= sqrBit;
 		playerPieces[player] |= sqrBit;
@@ -77,27 +78,10 @@ public final class BitBoard
 	 */
 	public void removePiece(int player, int piece, int sqr)
 	{
+		assert (pieces[piece] & playerPieces[player] & (1L << sqr)) != 0;
 		long sqrBit = 1L << sqr;
 		pieces[piece] &= ~sqrBit;
 		playerPieces[player] &= ~sqrBit;
-	}
-
-	/**
-	 * Poistaa laudalta nappulan, kun sen tyyppiä ei tiedetä.
-	 *
-	 * @param player pelaaja (0-1)
-	 * @param sqr ruutu (0-63)
-	 * @return palauttaa poistetun nappulan tyypin, tai -1 jos ruudussa ei ollut nappulaa
-	 */
-	public int removePiece(int player, int sqr)
-	{
-		for (int piece = 0; piece < Pieces.COUNT; ++piece) {
-			if (hasPiece(player, piece, sqr)) {
-				removePiece(player, piece, sqr);
-				return piece;
-			}
-		}
-		return -1;
 	}
 
 	/**
