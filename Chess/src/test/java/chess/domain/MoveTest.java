@@ -13,7 +13,7 @@ public class MoveTest
 	{
 		new Move();
 		move = Move.pack(61, 62, 3, 4, 5);
-		move2 = Move.pack(62, 63, 5, -1, -1);
+		move2 = Move.pack(62, 63, 5, -1, 5);
 	}
 
 	@Test
@@ -41,9 +41,9 @@ public class MoveTest
 	}
 
 	@Test
-	public void testGetPromotedType()
+	public void testGetNewType()
 	{
-		assertEquals(5, Move.getPromotedType(move));
+		assertEquals(5, Move.getNewType(move));
 	}
 
 	@Test
@@ -53,53 +53,51 @@ public class MoveTest
 	}
 
 	@Test
-	public void testEmptyPromotedType()
-	{
-		assertEquals(-1, Move.getPromotedType(move2));
-	}
-
-	@Test
 	public void testToStringWithNormalMove()
 	{
-		assertEquals("Ba8-h1", Move.toString(Move.pack(0, 63, Pieces.BISHOP, -1, -1)));
+		int mov = Move.pack(0, 63, Pieces.BISHOP, -1, Pieces.BISHOP);
+		assertEquals("Ba8-h1", Move.toString(mov));
 	}
 
 	@Test
 	public void testToStringWithPawnMove()
 	{
-		assertEquals("d2-d4", Move.toString(Move.pack(51, 35, Pieces.PAWN, -1, -1)));
+		int mov = Move.pack(51, 35, Pieces.PAWN, -1, Pieces.PAWN);
+		assertEquals("d2-d4", Move.toString(mov));
 	}
 
 	@Test
 	public void testToStringWithCapture()
 	{
-		assertEquals("Ng5xQe6", Move.toString(Move.pack(30, 20, Pieces.KNIGHT, Pieces.QUEEN, -1)));
+		int mov = Move.pack(30, 20, Pieces.KNIGHT, Pieces.QUEEN, Pieces.KNIGHT);
+		assertEquals("Ng5xQe6", Move.toString(mov));
 	}
 
 	@Test
 	public void testToStringWithPromotion()
 	{
-		assertEquals("b7-b8R", Move.toString(Move.pack(9, 1, Pieces.PAWN, -1, Pieces.ROOK)));
+		int mov = Move.pack(9, 1, Pieces.PAWN, -1, Pieces.ROOK);
+		assertEquals("b7-b8R", Move.toString(mov));
 	}
 
 	@Test
 	public void testFromStringWithNormalMove()
 	{
-		int mov = Move.pack(0, 63, Pieces.BISHOP, -1, -1);
+		int mov = Move.pack(0, 63, Pieces.BISHOP, -1, Pieces.BISHOP);
 		assertEquals(mov, Move.fromString("Ba8-h1"));
 	}
 
 	@Test
 	public void testFromStringWithPawnMove()
 	{
-		int mov = Move.pack(51, 35, Pieces.PAWN, -1, -1);
+		int mov = Move.pack(51, 35, Pieces.PAWN, -1, Pieces.PAWN);
 		assertEquals(mov, Move.fromString("d2-d4"));
 	}
 
 	@Test
 	public void testFromStringWithCapture()
 	{
-		int mov = Move.pack(30, 20, Pieces.KNIGHT, Pieces.QUEEN, -1);
+		int mov = Move.pack(30, 20, Pieces.KNIGHT, Pieces.QUEEN, Pieces.KNIGHT);
 		assertEquals(mov, Move.fromString("Ng5xQe6"));
 	}
 

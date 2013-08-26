@@ -95,15 +95,12 @@ final class Evaluator
 		int toSqr = Move.getToSqr(move);
 		int pieceType = Move.getPieceType(move);
 		int capturedType = Move.getCapturedType(move);
-		int promotedType = Move.getPromotedType(move);
+		int newType = Move.getNewType(move);
 
 		score -= Scores.POSITIONAL_PIECE_VALUES[player][pieceType][fromSqr];
+		score += Scores.POSITIONAL_PIECE_VALUES[player][newType][toSqr];
 		if (capturedType >= 0)
 			score += Scores.POSITIONAL_PIECE_VALUES[1 - player][capturedType][toSqr];
-		if (promotedType >= 0)
-			score += Scores.POSITIONAL_PIECE_VALUES[player][promotedType][toSqr];
-		else
-			score += Scores.POSITIONAL_PIECE_VALUES[player][pieceType][toSqr];
 
 		scores[++ply] = -score;
 		player = 1 - player;

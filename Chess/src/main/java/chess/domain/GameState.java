@@ -160,10 +160,7 @@ public final class GameState
 		if (Move.getCapturedType(move) != -1)
 			removePiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
 		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
-		int newType = Move.getPromotedType(move);
-		if (newType == -1)
-			newType = Move.getPieceType(move);
-		addPiece(nextMovingPlayer, newType, Move.getToSqr(move));
+		addPiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		changeNextMovingPlayer();
 	}
 
@@ -176,10 +173,7 @@ public final class GameState
 	{
 		--ply;
 		changeNextMovingPlayer();
-		int newType = Move.getPromotedType(move);
-		if (newType == -1)
-			newType = Move.getPieceType(move);
-		removePiece(nextMovingPlayer, newType, Move.getToSqr(move));
+		removePiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
 		if (Move.getCapturedType(move) != -1)
 			addPiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
@@ -230,7 +224,7 @@ public final class GameState
 			int toSqr = Long.numberOfTrailingZeros(movesMask);
 			int pieceType = bitboard.getPieceType(nextMovingPlayer, fromSqr);
 			int capturedType = bitboard.getPieceType(1 - nextMovingPlayer, toSqr);
-			int move = Move.pack(fromSqr, toSqr, pieceType, capturedType, -1);
+			int move = Move.pack(fromSqr, toSqr, pieceType, capturedType, pieceType);
 			if (!isLegalMove(move))
 				continue;
 			if (pieceType == Pieces.PAWN && (toSqr / 8) == nextMovingPlayer * 7) {
@@ -354,9 +348,10 @@ public final class GameState
 	 */
 	public boolean isCheckMate()
 	{
-		for (int sqr = 0; sqr < 64; ++sqr)
+		for (int sqr = 0; sqr < 64; ++sqr) {
 			if (getLegalMoves(sqr).length != 0)
 				return false;
+		}
 		return isKingChecked(nextMovingPlayer);
 	}
 

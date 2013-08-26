@@ -13,15 +13,13 @@ public final class Move
 	 * @param toSqr kohderuutu
 	 * @param pieceType siirrettävän nappulan tyyppi
 	 * @param capturedType lyödyn nappulan tyyppi tai -1 jos kohderuutu on tyhjä
-	 * @param promotedType nappula, johon sotilas korotetaan, tai -1 jos siirto ei ole korotus
+	 * @param newType nappulan uusi tyyppi (sama kuin pieceType, jos siirto ei ole korotus)
 	 * @return pakattu siirto
 	 */
-	public static int pack(int fromSqr, int toSqr, int pieceType, int capturedType,
-			int promotedType)
+	public static int pack(int fromSqr, int toSqr, int pieceType, int capturedType, int newType)
 	{
 		++capturedType;
-		++promotedType;
-		return fromSqr | toSqr << 8 | pieceType << 16 | capturedType << 20 | promotedType << 24;
+		return fromSqr | toSqr << 8 | pieceType << 16 | capturedType << 20 | newType << 24;
 	}
 
 	/**
@@ -69,14 +67,14 @@ public final class Move
 	}
 
 	/**
-	 * Palauttaa korotetun nappulan tyypin tai -1 jos sitä ei ole.
+	 * Palauttaa nappulan uuden tyypin (sama kuin alkuperäinen nappula jos siirto ei ole korotus).
 	 *
 	 * @param move pakattu siirto
 	 * @return
 	 */
-	public static int getPromotedType(int move)
+	public static int getNewType(int move)
 	{
-		return (move >> 24 & 0x7) - 1;
+		return move >> 24 & 0x7;
 	}
 
 	/**
@@ -90,8 +88,8 @@ public final class Move
 		String ret = Pieces.SYMBOLS[getPieceType(move)] + sqrToStr(getFromSqr(move));
 		ret += getCapturedType(move) >= 0 ? "x" + Pieces.SYMBOLS[getCapturedType(move)] : "-";
 		ret += sqrToStr(getToSqr(move));
-		if (getPromotedType(move) != -1)
-			ret += Pieces.SYMBOLS[getPromotedType(move)];
+		if (getNewType(move) != getPieceType(move))
+			ret += Pieces.SYMBOLS[getNewType(move)];
 		return ret;
 	}
 
@@ -125,14 +123,14 @@ public final class Move
 		int toSqr = s.charAt(i++) - 'a';
 		toSqr += ('8' - s.charAt(i++)) * 8;
 
-		int promotedType = -1;
+		int newType = pieceType;
 		if (i != s.length()) {
 			if (pieceType != Pieces.PAWN)
 				throw new IllegalArgumentException("Invalid move format.");
-			promotedType = Pieces.fromString(Character.toString(s.charAt(i++)));
+			newType = Pieces.fromString(Character.toString(s.charAt(i++)));
 		}
 
-		return pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
+		return pack(fromSqr, toSqr, pieceType, capturedType, newType);
 	}
 
 	/**

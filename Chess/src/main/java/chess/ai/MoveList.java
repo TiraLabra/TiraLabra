@@ -60,7 +60,7 @@ final class MoveList
 		// Muut kuin sotilaat.
 		for (int pieceType = 0; pieceType < Pieces.COUNT - 1; ++pieceType) {
 			long pieces = state.getPieces(player, pieceType);
-			addMoves(state, pieceType, pieces, -1, excludeQuietMoves);
+			addMoves(state, pieceType, pieces, pieceType, excludeQuietMoves);
 		}
 
 		// Korotettavat sotilaat.
@@ -72,7 +72,7 @@ final class MoveList
 
 		// Ei-korotettavat sotilaat.
 		pieces = state.getPieces(player, Pieces.PAWN) & ~Movemasks.PROMOTABLE[player];
-		addMoves(state, Pieces.PAWN, pieces, -1, excludeQuietMoves);
+		addMoves(state, Pieces.PAWN, pieces, Pieces.PAWN, excludeQuietMoves);
 	}
 
 	/**
@@ -81,10 +81,10 @@ final class MoveList
 	 * @param state pelitilanne
 	 * @param pieceType nappulatyyppi
 	 * @param pieces nappuloiden sijainnit bittimaskina
-	 * @param promotedType korotuksen tyyppi
+	 * @param newType nappulan uusi tyyppi (korotus)
 	 * @param excludeQuietMoves ainostaan lyönnit
 	 */
-	private void addMoves(GameState state, int pieceType, long pieces, int promotedType,
+	private void addMoves(GameState state, int pieceType, long pieces, int newType,
 			boolean excludeQuietMoves)
 	{
 		int player = state.getNextMovingPlayer();
@@ -98,7 +98,7 @@ final class MoveList
 					long captureMoves = moves & state.getPieces(1 - player, capturedType);
 					for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
 						int toSqr = Long.numberOfTrailingZeros(captureMoves);
-						add(pieceType, fromSqr, toSqr, capturedType, promotedType);
+						add(pieceType, fromSqr, toSqr, capturedType, newType);
 					}
 				}
 			}
@@ -107,7 +107,7 @@ final class MoveList
 				long quietMoves = moves & ~state.getPieces(1 - player);
 				for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
 					int toSqr = Long.numberOfTrailingZeros(quietMoves);
-					add(pieceType, fromSqr, toSqr, -1, promotedType);
+					add(pieceType, fromSqr, toSqr, -1, newType);
 				}
 			}
 		}
@@ -150,14 +150,14 @@ final class MoveList
 	 * Normaalit siirrot: 10
 	 * Korotukset torniksi/lähetiksi/ratsuksi: 11
 	 */
-	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int promotedType)
+	private void add(int pieceType, int fromSqr, int toSqr, int capturedType, int newType)
 	{
 		int priority = 10;
 		if (capturedType != -1)
 			priority = CAPTURE_PRIORITIES[pieceType][capturedType];
-		else if (promotedType != -1)
-			priority = PROMOTION_PRIORITIES[promotedType];
+		else if (newType != pieceType)
+			priority = PROMOTION_PRIORITIES[newType];
 		int idx = moveCounts[priority]++;
-		moves[priority][idx] = Move.pack(fromSqr, toSqr, pieceType, capturedType, promotedType);
+		moves[priority][idx] = Move.pack(fromSqr, toSqr, pieceType, capturedType, newType);
 	}
 }
