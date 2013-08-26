@@ -45,8 +45,8 @@ public class LaskinTest {
 
     @Test
     public void yhteenlaskuJaVahennyslaskuToimivatSulkeillaJaIlman() {
-//        assertEquals(-12, laskin.ratkaiseLaskutoimitus("(36+2)-(57-3)+4"));
-        assertEquals(-12, laskin.ratkaiseLaskutoimitus("36+2-57-3+4"));
+        assertEquals(-12, laskin.ratkaiseLaskutoimitus("(36+2)-(57-3)+4"));
+        assertEquals(-18, laskin.ratkaiseLaskutoimitus("36+2-57-3+4"));
     }
 
     @Test
@@ -63,20 +63,20 @@ public class LaskinTest {
 
     @Test
     public void vahennyslaskuJaKertolaskuToimivatSulkeillaJaIlman() {
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
+        assertEquals(15018, laskin.ratkaiseLaskutoimitus("((945-6)*8-3)*2"));
+        assertEquals(891, laskin.ratkaiseLaskutoimitus("945-6*8-3*2"));
     }
 
     @Test
     public void vahennyslaskuJaJakolaskuToimivatSulkeillaJaIlman() {
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
+        assertEquals(-3, laskin.ratkaiseLaskutoimitus("(140-20)/(10-20)/4"));
+        assertEquals(133, laskin.ratkaiseLaskutoimitus("140-20/10-20/4"));
     }
 
     @Test
     public void kertolaskuJaJakolaskuToimivatSulkeillaJaIlman() {
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
+        assertEquals(7, laskin.ratkaiseLaskutoimitus("24*7/(4/2*12)"));
+        assertEquals(252, laskin.ratkaiseLaskutoimitus("24*7/4/2*12"));
     }
 
     @Test

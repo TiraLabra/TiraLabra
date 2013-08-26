@@ -15,7 +15,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Laskin laskin = new Laskin();
-//        laskin.kaynnista();
+        laskin.kaynnista();
 
         //Suorituskykytestit
         String laskutoimitus1 = "3*9-5";

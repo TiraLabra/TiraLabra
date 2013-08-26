@@ -153,13 +153,15 @@ public class Laskin {
                     operandit.push(OPERANDI.JAKO);
                     break;
                 case '+':
-                    while (!operandit.empty() && (operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
+                    while (!operandit.empty() && (operandit.peek() == OPERANDI.PLUS || operandit.peek() == OPERANDI.MIINUS
+                            || operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
                         suoritaOperaatiot(luvut, operandit);
                     }
                     operandit.push(OPERANDI.PLUS);
                     break;
                 case '-':
-                    while (!operandit.empty() && (operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
+                    while (!operandit.empty() && (operandit.peek() == OPERANDI.MIINUS || operandit.peek() == OPERANDI.PLUS
+                            || operandit.peek() == OPERANDI.KERTO || operandit.peek() == OPERANDI.JAKO)) {
                         suoritaOperaatiot(luvut, operandit);
                     }
                     operandit.push(OPERANDI.MIINUS);
