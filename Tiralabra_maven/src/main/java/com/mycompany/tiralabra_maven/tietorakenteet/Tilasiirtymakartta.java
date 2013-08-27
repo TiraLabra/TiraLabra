@@ -63,35 +63,9 @@ public final class Tilasiirtymakartta extends Hajautuskartta<Tila> {
      */
     public Jono<Tila> haeKaikki(final char AVAIN) {
         // Tämä operaatio voi olla ehkä vähän hidas...
-        Jono<Tila> paluuarvo = null;
         Tilasiirtymajono avainArvoJono = ylivuotolistat[hajauta(AVAIN)];
         
-        if (avainArvoJono.hae(AVAIN) == null) {
-            return paluuarvo;
-        }
-        
-        paluuarvo                   = new Jono<>();
-        Jono<Tila> arvoJono            = avainArvoJono.arvojono();
-        
-        if (arvoJono.pituus() == 1) {
-            return arvoJono;
-        }
-        
-        Jono<Character> avainjono   = avainArvoJono.avainjono();
-        
-        Character avain;
-        Tila arvo;
-        while (!avainjono.onTyhja()) {
-            // Käydään avain- ja arvojonoja läpi samanaikaisesti ja lisätään
-            // arvo ulostuloon jos avaimet täsmäävät (jonot ovat yhtä pitkät).
-            avain   = avainjono.poista();
-            arvo    = arvoJono.poista();
-            if (avain.equals(AVAIN)) {
-                paluuarvo.lisaa(arvo);
-            }
-        }
-        
-        return paluuarvo;
+        return avainArvoJono.haeKaikki(AVAIN);
     }
     
     @Override

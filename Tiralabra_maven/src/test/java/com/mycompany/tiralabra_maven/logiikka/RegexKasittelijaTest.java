@@ -1,8 +1,10 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -12,7 +14,6 @@ import org.junit.Test;
  *
  * @author John Lång <jllang@cs.helsinki.fi>
  */
-@Ignore // Luokka ei ole vielä valmis (koska se on riippuvainen Automaatista).
 public class RegexKasittelijaTest {
     
     private RegexKasittelija rk;
@@ -37,13 +38,13 @@ public class RegexKasittelijaTest {
     public void tearDown() {
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testAsetaSaannollinenLauseke() {
-        rk.asetaSaannollinenLauseke(null);
+        rk.asetaSaannollinenLauseke(new Jono<>("a", "b", "|", "c", "\\?", "."));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testTasmaa() {
-        rk.tasmaa(null);
+        assertTrue(rk.tasmaa("ac?"));
     }
 }

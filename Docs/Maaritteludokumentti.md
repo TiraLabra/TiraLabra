@@ -37,5 +37,6 @@ käyttäen äärellistä (determinististä) automaattia joka käy läpi tiloja
 leveyssuuntaisesti [2].
 
 Lähteet:
-[1] http://en.wikipedia.org/wiki/Shunting-yard_algorithm
-[2] http://swtch.com/~rsc/regexp/regexp1.html
+1.	Shunting yard -algoritmi: http://en.wikipedia.org/wiki/Shunting-yard_algorithm
+2.	Russ Cox: Regular Expression Matching Can Be Simple And Fast, Tammikuu 2007
+	http://swtch.com/~rsc/regexp/regexp1.html

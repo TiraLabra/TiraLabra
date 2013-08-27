@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -31,42 +32,139 @@ public class AutomaattiTest {
     
     @Before
     public void setUp() {
-//        lauseke = new Jono<>();
-//        lauseke.lisaa("a");
-//        lauseke.lisaa("|");
-//        lauseke.lisaa("aa");
-//        lauseke.lisaa("|");
-//        lauseke.lisaa("ab");
-//        lauseke.lisaa("|");
-//        lauseke.lisaa("c");
-//        lauseke.lisaa(".");
-//        a = new Automaatti(lauseke);
     }
     
     @After
     public void tearDown() {
     }
-
-    /**
-     * Test of kieliSisaltaa method, of class Automaatti.
-     */
-//    @Ignore
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testEpakelpoLauseke() {
+        a = new Automaatti(null);
+    }
+    
     @Test
-    public void testKieliSisaltaa() {
-//        assertFalse(a.kieliSisaltaa("a"));
-//        assertTrue(a.kieliSisaltaa("aac"));
-//        assertTrue(a.kieliSisaltaa("a"));
-//        assertTrue(a.kieliSisaltaa("ab"));
-//        lauseke = new Jono<>("a", "?", "b", "?", "c", "?");
-//        lauseke = new Jono<>("a", "b", "c", "|");
-//        lauseke = new Jono<>("a", "b", "c", "|", "d", "?");
-//        lauseke.lisaa("d");
-//        lauseke.lisaa("?");
-//        lauseke = new Jono("a", "?", "b", "?", "c", "?", "d", ".");
-        lauseke = new Jono("a", "?", "bc", "?", "csd", "?", "d", ".");
+    public void testKieliSisaltaa1() {
+        lauseke = new Jono("a", ".");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("b"));
+        assertTrue(a.kieliSisaltaa("a"));        
+    }
+
+    @Test
+    public void testKieliSisaltaa2() {
+        lauseke = new Jono("ab", ".");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("a"));
+        assertFalse(a.kieliSisaltaa("b"));
+        assertTrue(a.kieliSisaltaa("ab"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa3() {
+        lauseke = new Jono("a", ".", "b", ".", "c", ".");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("a"));
+        assertFalse(a.kieliSisaltaa("b"));
+        assertFalse(a.kieliSisaltaa("ab"));
+        assertTrue(a.kieliSisaltaa("abc"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa4() {
+        lauseke = new Jono("a", "b", "c", ".");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("a"));
+        assertFalse(a.kieliSisaltaa("b"));
+        assertFalse(a.kieliSisaltaa("ab"));
+        assertTrue(a.kieliSisaltaa("abc"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa5() {
+        lauseke = new Jono("aaa", ".");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("a"));
+        assertFalse(a.kieliSisaltaa("aa"));
+        assertTrue(a.kieliSisaltaa("aaa"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa6() {
+        lauseke = new Jono("a", "?", "b", "?", "c", "?");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("aa"));
+        assertTrue(a.kieliSisaltaa("ac"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa7() {
+        lauseke = new Jono("a", "b", "c", "|");
         a = new Automaatti(lauseke);
         System.out.println(a);
         
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("aa"));
+        assertFalse(a.kieliSisaltaa("ab"));
+        assertFalse(a.kieliSisaltaa("aaa"));
         assertTrue(a.kieliSisaltaa("a"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa8() {
+        lauseke = new Jono("a", ".", "a", "*");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("d"));
+        assertTrue(a.kieliSisaltaa("a"));
+        assertTrue(a.kieliSisaltaa("aa"));
+        assertTrue(a.kieliSisaltaa("aaa"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa9() {
+        lauseke = new Jono("a", ".", "a", "+");
+        a = new Automaatti(lauseke);
+        
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("a"));
+        assertTrue(a.kieliSisaltaa("aa"));
+        assertTrue(a.kieliSisaltaa("aaa"));
+    }
+    
+    @Test
+    public void testKieliSisaltaa10() {
+        lauseke = new Jono("b", ".", "a", "+", "cd", "e", "f", "|", "d", "|", "g", "?");
+        Tila.nollaaTilalaskuri();
+        a = new Automaatti(lauseke);
+        System.out.println(a);
+        
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("ba"));
+        assertFalse(a.kieliSisaltaa("baaeg"));
+        assertTrue(a.kieliSisaltaa("bacddg"));
+        assertTrue(a.kieliSisaltaa("baaaaaaed"));
+    }
+    
+    @Ignore // Pitänee tehdä tästä issue Githubiin...
+    @Test
+    public void testKieliSisaltaa11() {
+        lauseke = new Jono("ab", "bc", "cd", "|", "*");
+        Tila.nollaaTilalaskuri();
+        a = new Automaatti(lauseke);
+        System.out.println(a);
+        
+        assertFalse(a.kieliSisaltaa("d"));
+        assertFalse(a.kieliSisaltaa("ba"));
+        assertFalse(a.kieliSisaltaa("ab"));
+        assertTrue(a.kieliSisaltaa("ababab"));
+        assertTrue(a.kieliSisaltaa("abcdabbcbc"));
     }
 }

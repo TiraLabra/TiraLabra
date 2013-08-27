@@ -13,12 +13,12 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
  */
 public final class Automaatti {
     
-    private final String            KIELI;  // toString-metodia varten
+    private final String            KIELI;          // toString-metodia varten
     private final Tila              ALKUTILA;
-    private Tila                    viimeisin;
-    private final Jono<Tila>        TILAT;
-    private final Jono<Character>   EHDOT;
-    private final Pino<String>      DATA;
+    private final Pino<Tila>        ALIALKUTILAT;   // Automaatin rakentamiseen
+    private final Pino<Character>   EHDOT;          // Automaatin rakentamiseen
+    private final Pino<String>      DATA;           // Automaatin rakentamiseen
+    private Tila                    viimeisin;      // Automaatin rakentamiseen
     
     /**
      * Palauttaa luokan uuden instanssin. 
@@ -27,22 +27,15 @@ public final class Automaatti {
      * @see Tulkki#tulkitseMerkkijono
      */
     public Automaatti(final Jono<String> LAUSEKE) {
-//        this.LAUSEKE  = LAUSEKE;
         if (LAUSEKE == null) {
+            // Jacoco jälleen bugittaa... (testEpakelpoLauseke)
             throw new IllegalArgumentException("Syötteenä saatu säännöllinen "
                     + "lauseke oli tyhjä!");
-        } else if (LAUSEKE.pituus() == 1 || LAUSEKE.kurkista().equals("*")) {
-            // Tämä kieli sisältää kaikki merkkijonot.
-            this.KIELI          = "*";
-            this.ALKUTILA       = new Tila(true);
-            this.TILAT          = null;
-            this.EHDOT          = null;
-            this.DATA           = null;
         } else {
             this.KIELI          = LAUSEKE.tuloste();
             this.ALKUTILA       = new Tila(false);
-            this.TILAT          = new Jono<>();
-            this.EHDOT          = new Jono<>();
+            this.ALIALKUTILAT   = new Pino<>();
+            this.EHDOT          = new Pino<>();
             this.DATA           = new Pino<>();
             rakennaKieli(LAUSEKE);
         }
@@ -63,28 +56,45 @@ public final class Automaatti {
             return false;
         }
         
-        char[] merkit = MERKKIJONO.toCharArray();
-        TILAT.tyhjenna();
+        final char[] MERKIT = MERKKIJONO.toCharArray();
+        final Jono<Tila> TILAT = new Jono<>();
         TILAT.lisaa(ALKUTILA);
-        Tila tila = new Tila(false); // Jottei kääntäjä herjaisi.        
-        Jono<Tila> tilasiirtymat;
-//        boolean onnistui = false;
+        Tila tila;    
+        Jono<Tila> tilasiirtymat = null;
+        int i = 0;
         
-        for (int i = 0; i < merkit.length; i++) {
+        while (!TILAT.onTyhja()) {
             tila = TILAT.poista();
-//            tilasiirtymat = tila.tilasiirtymat(merkit[i]);
-            tilasiirtymat = tila.tilasiirtymat(merkit[i]);
-//            if (tilasiirtymat == null && !tila.ON_HYVAKSYVA) {
-//                return false;
-//            }
+            if (i == MERKKIJONO.length()) {
+                // Koko syöte on käsitelty:
+                if (tila.ON_HYVAKSYVA) {
+                    // Päädyttiin hyväksyvään tilaan:
+                    return true;
+                } else if (epsilonTilasiirtymia(tila)) {
+                    // Löydettiin epsilon-tilasiirtymiä:
+                    TILAT.yhdista(tila.tilasiirtymat('\u03b5'));
+                    continue;
+                }
+                return false;
+            }
+            tilasiirtymat = tila.tilasiirtymat(MERKIT[i]);
+            if (tilasiirtymat == null) {
+                // Ei löydetty merkin kanssa täsmääviä tilasiirtymiä:
+                if (epsilonTilasiirtymia(tila)) {
+                    TILAT.yhdista(tila.tilasiirtymat('\u03b5'));
+                    continue;
+                }
+                return false;
+            }
             TILAT.yhdista(tilasiirtymat);
-//            TILAT.yhdista(tila.tilasiirtymat('\u03b5'));
-            // "Epsiloneille" pitäisi kehittää joku fiksu ratkaisu, esim. tilaan
-            // tieto että siirryttiinkö siihen "ilmaiseksi" jolloin i:tä voidaan
-            // pienentää yhdellä.
+            i++;
         }
-        
-        return tila.ON_HYVAKSYVA;
+        // Tilat loppuivat kesken eikä päästy hyväksyvään tilaan:
+        return false;
+    }
+    
+    private boolean epsilonTilasiirtymia(final Tila TILA) {
+        return TILA.tilasiirtymat('\u03b5') != null;
     }
     
     private void rakennaKieli(final Jono<String> LAUSEKE) {
@@ -98,18 +108,16 @@ public final class Automaatti {
                 // Myöhemmin voisi tietysti implementoida ilmaisuja kuten \s, \d
                 // tai [a-z] (mutta nämä eivät ole varsinaisia regexejä vaan
                 // lyhenteitä.)
+                if (merkkijono.charAt(0) == '\\') {
+                    DATA.lisaa(merkkijono.substring(merkkijono.length() - 1));
+                    continue;
+                }
                 DATA.lisaa(merkkijono);
             } else {
                 merkki = merkkijono.charAt(0);
                 switch (merkki) {
                     case '.':
-                        Tila tila = new Tila(LAUSEKE.onTyhja());
-                        konkatenoi(tila);
-                        while (!TILAT.onTyhja()) {
-                            viimeisin.lisaaTilasiirtyma(EHDOT.poista(),
-                                    TILAT.poista());
-                        }
-                        viimeisin = tila;
+                        konkatenoi(LAUSEKE.onTyhja());
                         break;
                     case '|':
                         haarauta(LAUSEKE.onTyhja());
@@ -118,13 +126,10 @@ public final class Automaatti {
                         nollaTaiYksi(LAUSEKE.onTyhja());
                         break;
                     case '*':
-                        nollaTaiUseampi();
+                        nollaTaiUseampi(LAUSEKE.onTyhja());
                         break;
                     case '+':
-                        yksiTaiUseampi();
-                        break;
-                    case '\\':
-                        DATA.lisaa(merkkijono.substring(1));
+                        yksiTaiUseampi(LAUSEKE.onTyhja());
                         break;
                     default:
                         DATA.lisaa(merkkijono);
@@ -132,7 +137,27 @@ public final class Automaatti {
             }
         }
         // Viimeisen tilan tulee olla hyväksyvä.
-        viimeisin = new Tila(true);
+//        viimeisin = new Tila(true);
+    }
+    
+    private void konkatenoi(final boolean PAATTYY_HYVAKSYVAAN_TILAAN) {
+        final Tila TILA = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
+        
+        if (DATA.korkeus() > 1) {
+            StringBuilder mjr = new StringBuilder();
+            
+            while (!DATA.onTyhja()) {
+                mjr.append(DATA.poista());
+            }
+            
+            // Pitää kääntää merkkijono toisin päin koska alimerkkijonot
+            // otettiin pinosta:
+            DATA.lisaa(mjr.reverse().toString());
+        }
+        
+        ketjuta(TILA);
+        viimeisin.lisaaTilasiirtyma(EHDOT.poista(), ALIALKUTILAT.poista());
+        viimeisin = TILA;
     }
     
     /**
@@ -142,60 +167,75 @@ public final class Automaatti {
      * 
      * @param YHTYMAKOHTA 
      */
-    private void konkatenoi(final Tila YHTYMAKOHTA) {
-        String merkkijono = DATA.poista();
-        Tila tila = new Tila(false);
-        EHDOT.lisaa(merkkijono.charAt(0));
-        int j = merkkijono.length();
+    private void ketjuta(final Tila YHTYMAKOHTA) {
+        final String MERKKIJONO = DATA.poista();
+        EHDOT.lisaa(MERKKIJONO.charAt(0));
+        int j = MERKKIJONO.length();
         
-        if (j > 1) {
-            TILAT.lisaa(tila);
-            Tila edellinenTila;
-            j--;
-            for (int i = 1; i < j; i++) {
-                edellinenTila = tila;
-                tila = new Tila(false);
-                edellinenTila.lisaaTilasiirtyma(merkkijono.charAt(i), tila);
-            }
-            tila.lisaaTilasiirtyma(merkkijono.charAt(j), YHTYMAKOHTA);
-        } else {
-            TILAT.lisaa(YHTYMAKOHTA);
+        if (j == 1) {
+            ALIALKUTILAT.lisaa(YHTYMAKOHTA);
+            return;
         }
+        
+        Tila tila = new Tila(false);
+        ALIALKUTILAT.lisaa(tila);
+        Tila edellinenTila;
+        j--;
+        for (int i = 1; i < j; i++) {
+            edellinenTila = tila;
+            tila = new Tila(false);
+            edellinenTila.lisaaTilasiirtyma(MERKKIJONO.charAt(i), tila);
+        }
+        tila.lisaaTilasiirtyma(MERKKIJONO.charAt(j), YHTYMAKOHTA);
     }
     
     private void haarauta(final boolean PAATTYY_HYVAKSYVAAN_TILAAN) {
-        Tila tila = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
+        final Tila TILA = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
         while (!DATA.onTyhja()) {
-            konkatenoi(tila);
+            ketjuta(TILA);
         }        
-        while (!TILAT.onTyhja()) {
-            viimeisin.lisaaTilasiirtyma(EHDOT.poista(), TILAT.poista());
+        while (!ALIALKUTILAT.onTyhja()) {
+            viimeisin.lisaaTilasiirtyma(EHDOT.poista(), ALIALKUTILAT.poista());
         }
-        viimeisin = tila;
+        viimeisin = TILA;
     }
     
     private void nollaTaiYksi(final boolean PAATTYY_HYVAKSYVAAN_TILAAN) {
-        Tila tila = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
-        konkatenoi(tila);
-        viimeisin.lisaaTilasiirtyma('\u03b5', tila);
-        viimeisin.lisaaTilasiirtyma(EHDOT.poista(), TILAT.poista());
-        viimeisin = tila;
+        final Tila TILA = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
+        while (!DATA.onTyhja()) {
+            ketjuta(TILA);
+        }
+        viimeisin.lisaaTilasiirtyma('\u03b5', TILA);
+        viimeisin.lisaaTilasiirtyma(EHDOT.poista(), ALIALKUTILAT.poista());
+        viimeisin = TILA;
         
     }
     
-    private void nollaTaiUseampi() {
-        
+    private void nollaTaiUseampi(final boolean PAATTYY_HYVAKSYVAAN_TILAAN) {
+        final Tila TILA = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);
+        while (!DATA.onTyhja()) {
+            ketjuta(TILA);
+        }
+        viimeisin.lisaaTilasiirtyma('\u03b5', TILA);
+        TILA.lisaaTilasiirtyma(EHDOT.poista(), ALIALKUTILAT.poista());
+        viimeisin = TILA;
     }
     
-    private void yksiTaiUseampi() {
-        
+    private void yksiTaiUseampi(final boolean PAATTYY_HYVAKSYVAAN_TILAAN) {
+        final Tila TILA = new Tila(PAATTYY_HYVAKSYVAAN_TILAAN);        
+        while (!DATA.onTyhja()) {
+            ketjuta(TILA);
+        }
+        viimeisin.lisaaTilasiirtyma(EHDOT.kurkista(), ALIALKUTILAT.kurkista());
+        TILA.lisaaTilasiirtyma(EHDOT.poista(), ALIALKUTILAT.poista());
+        viimeisin = TILA;
     }
     
     @Override
     public String toString() {
         return "Kielen \"" + KIELI.substring(0, KIELI.length() - 1)
-                + "\" epädeterministinen äärellinen automaatti:\n "
+                + "\" epädeterministinen äärellinen automaatti:\n\u21A6"
                 + ALKUTILA.sisennettyMerkkijono("");
     }
-    
+
 }

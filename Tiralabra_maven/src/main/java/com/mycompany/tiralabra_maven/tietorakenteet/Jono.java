@@ -122,9 +122,15 @@ public final class Jono<T> {
             return;
         }
         
-        this.viimeinen.seuraaja = JONO.ensimmainen;
-        this.viimeinen = JONO.viimeinen;
-        this.pituus += JONO.pituus;
+        if (ensimmainen == null) {
+            this.ensimmainen    = JONO.ensimmainen;
+            this.viimeinen      = JONO.viimeinen;
+            this.pituus         = JONO.pituus;
+        } else {
+            this.viimeinen.seuraaja = JONO.ensimmainen;
+            this.viimeinen          = JONO.viimeinen;
+            this.pituus             += JONO.pituus;
+        }
     }
     
     @Override

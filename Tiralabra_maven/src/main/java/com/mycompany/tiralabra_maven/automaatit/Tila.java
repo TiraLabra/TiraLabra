@@ -2,6 +2,7 @@
 package com.mycompany.tiralabra_maven.automaatit;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
+import com.mycompany.tiralabra_maven.tietorakenteet.Tilasiirtymajono;
 import com.mycompany.tiralabra_maven.tietorakenteet.Tilasiirtymakartta;
 
 /**
@@ -16,12 +17,14 @@ public final class Tila {
     private static int tiloja = 0;
     
     final boolean ON_HYVAKSYVA;
-    private final Tilasiirtymakartta TILASIIRTYMAT;
+    private boolean tulostettu = false;
+//    private final Tilasiirtymakartta TILASIIRTYMAT;
+    private final Tilasiirtymajono TILASIIRTYMAT;
     private final int ID;
     
     public Tila(final boolean ON_HYVAKSYVA) {
         this.ON_HYVAKSYVA   = ON_HYVAKSYVA;
-        this.TILASIIRTYMAT  = new Tilasiirtymakartta(3);
+        this.TILASIIRTYMAT  = new Tilasiirtymajono();
         this.ID = tiloja;
         Tila.tiloja++;
     }
@@ -42,6 +45,7 @@ public final class Tila {
      */
     public Jono<Tila> tilasiirtymat(final Character MERKKI) {
         // Tila[] voisi ehkä olla nopeampi tietorakenne...
+//        return TILASIIRTYMAT.haeKaikki(MERKKI);
         return TILASIIRTYMAT.haeKaikki(MERKKI);
     }
     
@@ -53,29 +57,36 @@ public final class Tila {
         mjr.append(ID);
         mjr.append(']');
         mjr.append('<');
+        mjr.append('.');
+        mjr.append('.');
+        mjr.append('.');
         mjr.append('>');
         
         return mjr.toString();
     }
     
     public String sisennettyMerkkijono(final String SISENNYS) {
-        StringBuilder mjr = new StringBuilder();
-        
 //        mjr.append(SISENNYS);
-        mjr.append('[');
-        mjr.append(ID);
-        mjr.append(']');
-        mjr.append('<');
-        if (ON_HYVAKSYVA) {
-            mjr.append('1');
-        } else {
-            mjr.append('0');
-        }
-        mjr.append(',');
-        mjr.append(TILASIIRTYMAT.sisennettyMerkkijono(SISENNYS + "    "));
-        mjr.append('>');
+        if (!tulostettu) {
+            tulostettu = true;
+            StringBuilder mjr = new StringBuilder();
+            
+            mjr.append('[');
+            mjr.append(ID);
+            mjr.append(']');
+            mjr.append('<');
+            if (ON_HYVAKSYVA) {
+                mjr.append('1');
+            } else {
+                mjr.append('0');
+            }
+            mjr.append(',');
+            mjr.append(TILASIIRTYMAT.sisennettyMerkkijono(SISENNYS + "  "));
+            mjr.append('>');
         
         return mjr.toString();
+        }
+        return toString();
     }
     
     public static void nollaaTilalaskuri() {

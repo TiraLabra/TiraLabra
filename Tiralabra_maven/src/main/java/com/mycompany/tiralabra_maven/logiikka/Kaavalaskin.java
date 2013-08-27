@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.automaatit.Automaatti;
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
 import com.mycompany.tiralabra_maven.suorituskykytestit.HajautuskartanSuorituskyky;
@@ -26,24 +27,26 @@ public final class Kaavalaskin {
         Hajautuskartta<Integer> h = new Hajautuskartta();
         
         if (args.length == 0) {
-            Tulkki t = new Tulkki();
-            Laskin l = new Laskin();
-            Kayttoliittyma k = new Tekstikayttoliittyma();
-
-            String syote = k.pyydaSyote("Kaava:              ");
-            int kaavanArvo;
-            long aloitusaika = System.nanoTime(), tulkinAika, laskimenAika;
-            Jono<String> kaava = t.tulkitseMerkkijono(syote);
-            tulkinAika = System.nanoTime() - aloitusaika;
-            k.tulosta("RPN-kaava:          " + kaava.tuloste() + '\n');
-            aloitusaika = System.nanoTime();
-            kaavanArvo = l.laske(kaava);
-            laskimenAika = System.nanoTime() - aloitusaika;
-            k.tulosta("Kaavan lukuarvo:    " + kaavanArvo + '\n');
-            k.tulosta("Tulkkauksen kesto:  " + tulkinAika + " ns.\n");
-            k.tulosta("Laskennan kesto:    " + laskimenAika + " ns.\n");
-            System.out.printf("JVM:n viive:        %-1.1f ns.\n",
-                    testaaAjanotonViive());
+//            Tulkki t = new Tulkki();
+//            Laskin l = new Laskin();
+//            Kayttoliittyma k = new Tekstikayttoliittyma();
+//
+//            String syote = k.pyydaSyote("Kaava:              ");
+//            int kaavanArvo;
+//            long aloitusaika = System.nanoTime(), tulkinAika, laskimenAika;
+//            Jono<String> kaava = t.tulkitseMerkkijono(syote);
+//            tulkinAika = System.nanoTime() - aloitusaika;
+//            k.tulosta("RPN-kaava:          " + kaava.tuloste() + '\n');
+//            aloitusaika = System.nanoTime();
+//            kaavanArvo = l.laske(kaava);
+//            laskimenAika = System.nanoTime() - aloitusaika;
+//            k.tulosta("Kaavan lukuarvo:    " + kaavanArvo + '\n');
+//            k.tulosta("Tulkkauksen kesto:  " + tulkinAika + " ns.\n");
+//            k.tulosta("Laskennan kesto:    " + laskimenAika + " ns.\n");
+//            System.out.printf("JVM:n viive:        %-1.1f ns.\n",
+//                    testaaAjanotonViive());
+            Automaatti a = new Automaatti(new Jono<>("abc", "."));
+            System.out.println(a);
         } else if (args[0].toLowerCase().trim().equals("hkp")) {
             HajautuskartanSuorituskyky.aloita();
         } else {

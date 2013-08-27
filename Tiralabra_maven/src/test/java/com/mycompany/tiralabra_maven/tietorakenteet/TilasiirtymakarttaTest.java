@@ -88,8 +88,9 @@ public class TilasiirtymakarttaTest {
         hk.lisaa('d', v);
         hk.lisaa('e', t);
         hk.uudelleenhajauta(5);
-        assertEquals("{{c\u21A6[1]<>},(a\u21A6[0]<>,d\u21A6[2]<>),(b\u21A6[0]<>"
-                + ",e\u21A6[0]<>),\u2205,\u2205}", hk.toString());
+        assertEquals("{{c\u21A6[1]<...>},(a\u21A6[0]<...>,d\u21A6[2]<...>),"
+                + "(b\u21A6[0]<...>,e\u21A6[0]<...>),\u2205,\u2205}",
+                hk.toString());
     }
     
 }
