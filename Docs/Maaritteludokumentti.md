@@ -17,5 +17,5 @@ Ohjelman tavoitteellinen aikavaatimus on O(n) ja tilavaativuus O(1).
 - Lähteet
 
 http://en.wikipedia.org/wiki/Shunting-yard_algorithm
-http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
+
 
