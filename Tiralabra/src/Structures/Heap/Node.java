@@ -1,13 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Structures.Heap;
 
-/**
- *
- * @author Kalle
- */
+
 public class Node {
     private int key;
     private Object data;

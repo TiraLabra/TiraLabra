@@ -5,7 +5,6 @@ import Structures.Graph.Vertex;
 import Structures.Hashtable.Hashtable;
 import Structures.Heap.MinHeap;
 import Structures.LinkedList.LinkedList;
-import Structures.Stack.Stack;
 import Utils.Iterator;
 
 /**
