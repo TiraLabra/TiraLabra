@@ -88,11 +88,11 @@ public class Treap implements Puu {
     /**
      * Etsii annetun arvon sisältävän solmun puusta, palauttaa null jos ei
      * löydy.
-     *
+     * Asetettu julkiseksi lähinnä testausta varten.
      * @param arvo haettava arvo
      * @return null-viite tai haetun arvon sisältävä solmu
      */
-    private SolmuTreap searchSolmu(int arvo) {
+    public SolmuTreap searchSolmu(int arvo) {
         SolmuTreap i = this.juuri;
         while (i != null) {
             if (arvo == i.getArvo()) {
@@ -221,6 +221,7 @@ public class Treap implements Puu {
             } else {
                 pois.getVanhempi().setVasen(null);
             }
+            heapi(pois.getVanhempi());
             return;
         }
         teelehti(pois);
