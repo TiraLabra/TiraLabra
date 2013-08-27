@@ -575,8 +575,10 @@ public final class GameState
 	 */
 	private boolean isLegalMove(int move)
 	{
-		GameState copy = clone();
-		copy.move(move);
-		return !copy.isKingChecked(nextMovingPlayer);
+		int player = nextMovingPlayer;
+		move(move);
+		boolean legal = !isKingChecked(player);
+		undoMove(move);
+		return legal;
 	}
 }
