@@ -91,6 +91,14 @@ public class MinMaxAITest
 	}
 
 	@Test
+	public void canDoEnPassant() throws InterruptedException
+	{
+		GameState s = new GameState("Ka7 d2", "Kh1 e4", Players.WHITE);
+		s.makeMove(Move.fromString("d2-d4"));
+		assertEquals("e4xd3", Move.toString(ai.getMove(s)));
+	}
+
+	@Test
 	public void bugfixTest1() throws InterruptedException
 	{
 		ai = new MinMaxAI(null, 6, 30, 0, 0);

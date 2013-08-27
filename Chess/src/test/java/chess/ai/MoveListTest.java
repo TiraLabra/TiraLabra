@@ -2,7 +2,6 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Move;
-import chess.domain.Pieces;
 import chess.domain.Players;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -28,24 +27,17 @@ public class MoveListTest
 	public void setUp()
 	{
 		list = new MoveList();
-		// 0  1  2  3  4  5  6  7
-		// 8  9  10 11 12 13 14 15
-		// 16 17 18 19 20 21 22 23
-		// 24 25 26 27 28 29 30 31
-		// 32 33 34 35 36 37 38 39
-		// 40 41 42 43 44 45 46 47
-		// 48 49 50 51 52 53 54 55
-		// 56 57 58 59 60 61 62 63
-		//
 		// .  .  R  .  .  .  .  .
-		// .  p  .  .  .  .  K  k
-		// .  .  .  .  .  .  .  P
-		// .  Q  .  .  .  .  .  n
-		// .  .  p  .  .  .  .  .
+		// .  p  .  P  .  .  K  k
+		// .  Q  .  .  .  .  .  P
+		// .  .  p  .  .  .  .  n
 		// .  .  .  .  .  q  .  .
 		// .  .  .  .  R  .  .  .
 		// .  .  .  .  .  .  .  .
-		GameState state = new GameState("Kh7 Nh5 Qf3 b7 c4", "Rc8 Kg7 h6 Qb5 Re2", Players.WHITE);
+		// .  .  .  .  .  .  .  .
+		GameState state = new GameState("Kh7 Nh5 Qf4 b7 c5", "Rc8 Kg7 h6 Qb6 Re3 d7",
+				Players.BLACK);
+		state.makeMove(Move.fromString("d7-d5")); // Luo ohestalyöntitilanteen.
 		list.populate(state, false);
 	}
 
@@ -67,8 +59,8 @@ public class MoveListTest
 	@Test
 	public void normalCapturesHavePriorities1to9()
 	{
-		assertEquals(1, find("c4xQb5"));
-		assertEquals(5, find("Qf3xRe2"));
+		assertEquals(1, find("c5xQb6"));
+		assertEquals(5, find("Qf4xRe3"));
 		assertEquals(9, find("Kh7xh6"));
 	}
 
@@ -94,10 +86,16 @@ public class MoveListTest
 	}
 
 	@Test
+	public void enPassantHasPriority4()
+	{
+		assertEquals(4, find("c5xd6"));
+	}
+
+	@Test
 	public void normalMovesHavePriority10()
 	{
 		assertEquals(10, find("Kh7-h8"));
-		assertEquals(10, find("Qf3-d5"));
+		assertEquals(10, find("Qf4-d6"));
 	}
 
 	@Test
@@ -106,7 +104,7 @@ public class MoveListTest
 		assertEquals(2, list.getCount(0));
 		assertEquals(1, list.getCount(1));
 		assertEquals(4, list.getCount(2));
-		assertEquals(27, list.getCount(10));
+		assertEquals(27, list.getCount(10)); // Kh7:3 Nh5:2 Qf4:21 b7:0 c5:1
 		assertEquals(3, list.getCount(11));
 	}
 
@@ -123,7 +121,7 @@ public class MoveListTest
 	{
 		GameState state = new GameState("Nh8", "", Players.WHITE);
 		list.populate(state, false);
-		assertEquals(-1, find("c4xQb5"));
+		assertEquals(-1, find("c5xQb6"));
 	}
 
 	@Test

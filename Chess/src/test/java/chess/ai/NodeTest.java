@@ -1,7 +1,6 @@
 package chess.ai;
 
 import chess.domain.Move;
-import chess.domain.Pieces;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;

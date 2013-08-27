@@ -440,7 +440,7 @@ public final class MinMaxAI implements Player
 	{
 		// Suoritetaan siirto.
 		++ply;
-		state.move(move);
+		state.makeMove(move);
 		evaluator.makeMove(move);
 
 		// Jatketaan hakua rekursiivisesti. PV-solmuille tehdään täysi haku ja muille haku
@@ -502,13 +502,13 @@ public final class MinMaxAI implements Player
 			throws TimeLimitException, InterruptedException
 	{
 		if (depth >= NULL_MOVE_REDUCTION1 + 1) {
-			state.nullMove();
+			state.makeNullMove();
 			evaluator.makeNullMove();
 			++ply;
 			int score = -zeroWindowSearch(depth - NULL_MOVE_REDUCTION1 - 1, 1 - beta, state, 0);
 			--ply;
 			evaluator.undoMove();
-			state.nullMove();
+			state.undoNullMove();
 			if (score >= beta)
 				depth = Math.max(depth - NULL_MOVE_REDUCTION2, 1);
 		}

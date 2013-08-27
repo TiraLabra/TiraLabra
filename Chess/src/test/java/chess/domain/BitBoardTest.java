@@ -110,13 +110,12 @@ public class BitBoardTest
 	}
 
 	@Test
-	public void testCopyFrom()
+	public void testClone()
 	{
 		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
 		bb.addPiece(Players.BLACK, Pieces.BISHOP, 63);
 		bb.addPiece(Players.WHITE, Pieces.PAWN, 25);
-		BitBoard bb2 = new BitBoard();
-		bb2.copyFrom(bb);
+		BitBoard bb2 = bb.clone();
 		assertEquals(1L << 27, bb2.getPieces(Players.BLACK, Pieces.KNIGHT));
 		assertEquals(1L << 63, bb2.getPieces(Players.BLACK, Pieces.BISHOP));
 		assertEquals(1L << 27 | 1L << 63, bb2.getPieces(Players.BLACK));

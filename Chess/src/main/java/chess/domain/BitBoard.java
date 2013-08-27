@@ -16,18 +16,19 @@ public final class BitBoard
 	 * Maskit kullekin nappulatyypille, ottaen huomioon pelaajan värin. Valkoiset nappulat 0-5,
 	 * ja mustat 6-11.
 	 */
-	private final long[] pieces = new long[Pieces.COUNT];
+	private final long[] pieces;
 
 	/**
 	 * Maskit kummankin pelaajan kaikille nappuloille. Valkoinen 0, musta 1.
 	 */
-	private final long[] playerPieces = new long[Players.COUNT];
+	private final long[] playerPieces;
 
 	/**
 	 * Luo tyhjän laudan.
 	 */
 	public BitBoard()
 	{
+		this(new long[Pieces.COUNT], new long[Players.COUNT]);
 	}
 
 	/**
@@ -39,6 +40,7 @@ public final class BitBoard
 	 */
 	public BitBoard(String whitePieces, String blackPieces)
 	{
+		this();
 		addPieces(Players.WHITE, whitePieces);
 		addPieces(Players.BLACK, blackPieces);
 	}
@@ -190,17 +192,10 @@ public final class BitBoard
 		return board;
 	}
 
-	/**
-	 * Kopoi laudan sisällön toisesta BitBoard-objektista.
-	 *
-	 * @param source kopioinnin lähde
-	 */
-	public void copyFrom(BitBoard source)
+	@Override
+	public BitBoard clone()
 	{
-		for (int piece = 0; piece < Pieces.COUNT; ++piece)
-			pieces[piece] = source.pieces[piece];
-		playerPieces[Players.WHITE] = source.playerPieces[Players.WHITE];
-		playerPieces[Players.BLACK] = source.playerPieces[Players.BLACK];
+		return new BitBoard(pieces.clone(), playerPieces.clone());
 	}
 
 	/**
@@ -242,5 +237,14 @@ public final class BitBoard
 			addPiece(player, pieceType, sqr);
 			++i;
 		}
+	}
+
+	/**
+	 * Muodostaa laudan annetuista bittimaskitaulukoista.
+	 */
+	private BitBoard(long[] pieces, long[] playerPieces)
+	{
+		this.pieces = pieces;
+		this.playerPieces = playerPieces;
 	}
 }

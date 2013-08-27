@@ -24,6 +24,11 @@ public final class GameState
 	private static final long ZOBRIST_RND_PLAYER;
 
 	/**
+	 * Satunnaisnumerot ohestalyöntiruuduille (näistä ainoastaan 16 on käytössä).
+	 */
+	private static final long[] ZOBRIST_RND_EN_PASSANT = new long[64];
+
+	/**
 	 * Tyhjää lautaa vastaava satunnaisnumero.
 	 */
 	private static final long ZOBRIST_RND_EMPTY;
@@ -37,27 +42,21 @@ public final class GameState
 			ZOBRIST_RND[i] = rnd.nextLong();
 		ZOBRIST_RND_PLAYER = rnd.nextLong();
 		ZOBRIST_RND_EMPTY = rnd.nextLong();
+		for (int i = 0; i < ZOBRIST_RND_EN_PASSANT.length; ++i)
+			ZOBRIST_RND_EN_PASSANT[i] = rnd.nextLong();
 	}
+
+	static final private int MAX_MOVES = 256;
 
 	/**
 	 * Laudan tilanteen bittimaskiesitys.
 	 */
-	private final BitBoard bitboard = new BitBoard();
+	private final BitBoard bitboard;
 
 	/**
 	 * Seuraavana vuorossa oleva pelaaja. (0-1).
 	 */
-	private int nextMovingPlayer = Players.WHITE;
-
-	/**
-	 * Zobrist-hajautuskoodi
-	 */
-	private long zobristCode = ZOBRIST_RND_EMPTY;
-
-	/**
-	 * Aikaisempien pelitilanteiden Zobrist-tunnisteet.
-	 */
-	private long[] earlierStates = new long[1024];
+	private int nextMovingPlayer;
 
 	/**
 	 * Tehtyjen puolisiirtojen lukumäärä.
@@ -65,10 +64,23 @@ public final class GameState
 	private int ply = 0;
 
 	/**
+	 * Pino aiempien pelitilanteiden Zobrist-tunnisteille. Tämänhetkinen tunniste on
+	 * zobristCodes[ply].
+	 */
+	private final long[] zobristCodes;
+
+	/**
+	 * Pino aiempien pelitilanteiden ohestalyöntiruuduille. Tämänhetkinen ohestalyöntiruutu on
+	 * enPassantSquares[ply].
+	 */
+	private final int[] enPassantSquares;
+
+	/**
 	 * Luo uuden pelitilanteen käyttäen standardia shakin aloitusmuodostelmaa.
 	 */
 	public GameState()
 	{
+		this(new BitBoard(), Players.WHITE);
 		setupInitialPosition();
 	}
 
@@ -79,6 +91,7 @@ public final class GameState
 	 */
 	public GameState(Random rnd)
 	{
+		this(new BitBoard(), Players.WHITE);
 		randomize(rnd);
 	}
 
@@ -90,8 +103,9 @@ public final class GameState
 	 */
 	public GameState(BitBoard board, int startingPlayer)
 	{
-		this.bitboard.copyFrom(board);
-		this.nextMovingPlayer = startingPlayer;
+		this(board, new long[MAX_MOVES + 1], new int[MAX_MOVES + 1], 0, startingPlayer);
+		zobristCodes[0] = ZOBRIST_RND_EMPTY;
+		enPassantSquares[0] = -1;
 	}
 
 	/**
@@ -104,8 +118,7 @@ public final class GameState
 	 */
 	public GameState(String whitePieces, String blackPieces, int startingPlayer)
 	{
-		this.bitboard.copyFrom(new BitBoard(whitePieces, blackPieces));
-		this.nextMovingPlayer = startingPlayer;
+		this(new BitBoard(whitePieces, blackPieces), startingPlayer);
 	}
 
 	/**
@@ -140,6 +153,26 @@ public final class GameState
 	}
 
 	/**
+	 * Palauttaa tehtyjen siirtojen määrän.
+	 *
+	 * @return
+	 */
+	public int getPly()
+	{
+		return ply;
+	}
+
+	/**
+	 * Palauttaa ruudun johon ohestalyönti on sallittu seuraavalla siirrolla.
+	 *
+	 * @return ruutu tai -1 jos ohestalyönti ei mahdollinen
+	 */
+	public int getEnPassantSquare()
+	{
+		return enPassantSquares[ply];
+	}
+
+	/**
 	 * Palauttaa kaikki pelaajan nappulat bittimaskina.
 	 *
 	 * @param player pelaaja (0-1)
@@ -154,11 +187,13 @@ public final class GameState
 	 *
 	 * @param move siirto pakattuna int-muuttujaan (ks. Move)
 	 */
-	public void move(int move)
+	public void makeMove(int move)
 	{
-		earlierStates[ply++] = zobristCode;
+		zobristCodes[ply + 1] = zobristCodes[ply];
+		++ply;
 		if (Move.getCapturedType(move) != -1)
-			removePiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
+			removeCapturedPiece(move);
+		updateEnPassantSquare(move);
 		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
 		addPiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		changeNextMovingPlayer();
@@ -171,21 +206,33 @@ public final class GameState
 	 */
 	public void undoMove(int move)
 	{
-		--ply;
 		changeNextMovingPlayer();
 		removePiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
 		if (Move.getCapturedType(move) != -1)
-			addPiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
+			restoreCapturedPiece(move);
+		--ply;
 	}
 
 	/**
-	 * Tekee "nollasiirron". Ainoastaan vaihtaa aktiivisen pelaajan ja päivittää
-	 * Zobrist-hajautuskoodin. Nollasiirto voidaan kumota kutsumalla funktiota uudestaan.
+	 * Tekee "nollasiirron". Ainoastaan vaihtaa vuorossa olevan pelaajan pelaajan ja päivittää
+	 * Zobrist-hajautuskoodin. Lisäksi resetoi ohestalyöntiruudun.
 	 */
-	public void nullMove()
+	public void makeNullMove()
+	{
+		zobristCodes[ply + 1] = zobristCodes[ply];
+		++ply;
+		enPassantSquares[ply] = -1;
+		changeNextMovingPlayer();
+	}
+
+	/**
+	 * Kumoaa aikaisemman nollasiirron tekemät muutokset pelitilanteeseen.
+	 */
+	public void undoNullMove()
 	{
 		changeNextMovingPlayer();
+		--ply;
 	}
 
 	/**
@@ -224,6 +271,8 @@ public final class GameState
 			int toSqr = Long.numberOfTrailingZeros(movesMask);
 			int pieceType = bitboard.getPieceType(nextMovingPlayer, fromSqr);
 			int capturedType = bitboard.getPieceType(1 - nextMovingPlayer, toSqr);
+			if (toSqr == enPassantSquares[ply] && pieceType == Pieces.PAWN)
+				capturedType = Pieces.PAWN;
 			int move = Move.pack(fromSqr, toSqr, pieceType, capturedType, pieceType);
 			if (!isLegalMove(move))
 				continue;
@@ -283,9 +332,12 @@ public final class GameState
 				if (row == 6 - 5 * player && !bitboard.hasPiece(doublePushSqr))
 					moves |= 1L << doublePushSqr;
 			}
-			if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
+			long enemySqrs = bitboard.getPieces(1 - player);
+			if (enPassantSquares[ply] != -1)
+				enemySqrs |= 1L << enPassantSquares[ply];
+			if (col > 0 && (enemySqrs & 1L << nextRow * 8 + col - 1) != 0)
 				moves |= 1L << nextRow * 8 + col - 1;
-			if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
+			if (col < 7 && (enemySqrs & 1L << nextRow * 8 + col + 1) != 0)
 				moves |= 1L << nextRow * 8 + col + 1;
 		}
 
@@ -329,9 +381,12 @@ public final class GameState
 				int col = fromSqr % 8;
 				int nextRow = row - 1 + 2 * player;
 				if ((nextRow & ~7) == 0) {
-					if (col > 0 && bitboard.hasPiece(1 - player, nextRow * 8 + col - 1))
+					long enemySqrs = bitboard.getPieces(1 - player);
+					if (enPassantSquares[ply] != -1)
+						enemySqrs |= 1L << enPassantSquares[ply];
+					if (col > 0 && (enemySqrs & 1L << nextRow * 8 + col - 1) != 0)
 						moves |= 1L << nextRow * 8 + col - 1;
-					if (col < 7 && bitboard.hasPiece(1 - player, nextRow * 8 + col + 1))
+					if (col < 7 && (enemySqrs & 1L << nextRow * 8 + col + 1) != 0)
 						moves |= 1L << nextRow * 8 + col + 1;
 				}
 				break;
@@ -363,6 +418,8 @@ public final class GameState
 	 */
 	public boolean isStaleMate()
 	{
+		if (ply == MAX_MOVES)
+			return true;
 		for (int sqr = 0; sqr < 64; ++sqr) {
 			if (getLegalMoves(sqr).length != 0)
 				return false;
@@ -432,7 +489,8 @@ public final class GameState
 	@Override
 	public GameState clone()
 	{
-		return new GameState(this);
+		return new GameState(bitboard.clone(), zobristCodes.clone(), enPassantSquares.clone(),
+				ply, nextMovingPlayer);
 	}
 
 	/**
@@ -442,14 +500,16 @@ public final class GameState
 	 */
 	public long getId()
 	{
-		return zobristCode;
+		return zobristCodes[ply];
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
 		GameState state2 = (GameState) obj;
-		return bitboard.equals(state2.bitboard) && nextMovingPlayer == state2.nextMovingPlayer;
+		return bitboard.equals(state2.bitboard)
+				&& nextMovingPlayer == state2.nextMovingPlayer
+				&& enPassantSquares[ply] == state2.enPassantSquares[state2.ply];
 	}
 
 	/**
@@ -459,18 +519,20 @@ public final class GameState
 	 */
 	public long[] getEarlierStates()
 	{
-		return Arrays.copyOf(earlierStates, ply);
+		return Arrays.copyOf(zobristCodes, ply);
 	}
 
 	/**
 	 * Luo pelitilanteen kopioimalla sen toisesta pelitilanteesta.
 	 */
-	private GameState(GameState copyFrom)
+	private GameState(BitBoard board, long[] zobristCodes, int[] enPassantSquares, int ply,
+			int nextMovingPlayer)
 	{
-		nextMovingPlayer = copyFrom.nextMovingPlayer;
-		bitboard.copyFrom(copyFrom.bitboard);
-		zobristCode = copyFrom.zobristCode;
-		earlierStates = copyFrom.earlierStates.clone();
+		this.bitboard = board;
+		this.zobristCodes = zobristCodes;
+		this.enPassantSquares = enPassantSquares;
+		this.ply = ply;
+		this.nextMovingPlayer = nextMovingPlayer;
 	}
 
 	/**
@@ -518,7 +580,7 @@ public final class GameState
 	private void changeNextMovingPlayer()
 	{
 		nextMovingPlayer = 1 - nextMovingPlayer;
-		zobristCode ^= ZOBRIST_RND_PLAYER;
+		zobristCodes[ply] ^= ZOBRIST_RND_PLAYER;
 	}
 
 	/**
@@ -527,7 +589,7 @@ public final class GameState
 	private void addPiece(int player, int piece, int sqr)
 	{
 		bitboard.addPiece(player, piece, sqr);
-		zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+		zobristCodes[ply] ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
 	}
 
 	/**
@@ -536,7 +598,7 @@ public final class GameState
 	private void removePiece(int player, int piece, int sqr)
 	{
 		bitboard.removePiece(player, piece, sqr);
-		zobristCode ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+		zobristCodes[ply] ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
 	}
 
 	/**
@@ -576,9 +638,60 @@ public final class GameState
 	private boolean isLegalMove(int move)
 	{
 		int player = nextMovingPlayer;
-		move(move);
+		makeMove(move);
 		boolean legal = !isKingChecked(player);
 		undoMove(move);
 		return legal;
+	}
+
+	/**
+	 * Poistaa laudalta lyödyn nappulan. Käsittelee ohestalyönnit erikoistapauksena.
+	 *
+	 * @param move siirto
+	 */
+	private void removeCapturedPiece(int move)
+	{
+		assert Move.getCapturedType(move) != -1;
+		int toSqr = Move.getToSqr(move);
+		if (Move.getPieceType(move) == Pieces.PAWN && toSqr == enPassantSquares[ply - 1])
+			removePiece(1 - nextMovingPlayer, Pieces.PAWN, toSqr + 8 - 16 * nextMovingPlayer);
+		else
+			removePiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
+	}
+
+	/**
+	 * Palauttaa laudalle edellisessä siirrossa lyödyn nappulan. Käsittelee ohestalyönnit
+	 * erikoistapauksena.
+	 *
+	 * @param move siirto
+	 */
+	private void restoreCapturedPiece(int move)
+	{
+		assert Move.getCapturedType(move) != -1;
+		int toSqr = Move.getToSqr(move);
+		if (Move.getPieceType(move) == Pieces.PAWN && toSqr == enPassantSquares[ply - 1])
+			addPiece(1 - nextMovingPlayer, Pieces.PAWN, toSqr + 8 - 16 * nextMovingPlayer);
+		else
+			addPiece(1 - nextMovingPlayer, Move.getCapturedType(move), Move.getToSqr(move));
+	}
+
+	/**
+	 * Päivittää ohestalyöntiruudun sekä zobrist-koodin sen mukaisesti. Jos siirto on sotilaan
+	 * kahden ruudun mittainen avaussiirto, väliin jäänyt siirto asetetaan ohestalyöntiruuduksi.
+	 * Muussa tapauksessa sille annetaan arvo -1.
+	 *
+	 * @param move siirto
+	 */
+	private void updateEnPassantSquare(int move)
+	{
+		if (enPassantSquares[ply - 1] != -1)
+			zobristCodes[ply] ^= ZOBRIST_RND_EN_PASSANT[enPassantSquares[ply - 1]];
+		if (Move.getPieceType(move) == Pieces.PAWN
+				&& Move.getFromSqr(move) >>> 3 == 6 - 5 * nextMovingPlayer
+				&& Move.getToSqr(move) >>> 3 == 4 - nextMovingPlayer) {
+			enPassantSquares[ply] = Move.getFromSqr(move) - 8 + 16 * nextMovingPlayer;
+			zobristCodes[ply] ^= ZOBRIST_RND_EN_PASSANT[enPassantSquares[ply]];
+		} else
+			enPassantSquares[ply] = -1;
 	}
 }

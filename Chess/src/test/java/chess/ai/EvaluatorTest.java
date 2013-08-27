@@ -2,7 +2,6 @@ package chess.ai;
 
 import chess.domain.GameState;
 import chess.domain.Move;
-import chess.domain.Pieces;
 import chess.domain.Players;
 import static org.junit.Assert.*;
 import org.junit.Before;

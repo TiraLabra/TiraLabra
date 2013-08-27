@@ -88,14 +88,18 @@ final class MoveList
 			boolean excludeQuietMoves)
 	{
 		int player = state.getNextMovingPlayer();
+		long enPassantMask = getEnPassantMask(state);
 
 		for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 			int fromSqr = Long.numberOfTrailingZeros(pieces);
 			long moves = state.getPseudoLegalMoves(player, pieceType, fromSqr);
 
-			if ((moves & state.getPieces(1 - player)) != 0) {
+			if ((moves & state.getPieces(1 - player)) != 0 || state.getEnPassantSquare() != -1) {
 				for (int capturedType = 0; capturedType < Pieces.COUNT; ++capturedType) {
-					long captureMoves = moves & state.getPieces(1 - player, capturedType);
+					long captureTargets = state.getPieces(1 - player, capturedType);
+					if (pieceType == Pieces.PAWN && capturedType == Pieces.PAWN)
+						captureTargets |= enPassantMask;
+					long captureMoves = moves & captureTargets;
 					for (; captureMoves != 0; captureMoves -= Long.lowestOneBit(captureMoves)) {
 						int toSqr = Long.numberOfTrailingZeros(captureMoves);
 						add(pieceType, fromSqr, toSqr, capturedType, newType);
@@ -104,13 +108,31 @@ final class MoveList
 			}
 
 			if (!excludeQuietMoves) {
-				long quietMoves = moves & ~state.getPieces(1 - player);
+				long allCaptureTargets = state.getPieces(1 - player);
+				if (pieceType == Pieces.PAWN)
+					allCaptureTargets |= enPassantMask;
+				long quietMoves = moves & ~allCaptureTargets;
 				for (; quietMoves != 0; quietMoves -= Long.lowestOneBit(quietMoves)) {
 					int toSqr = Long.numberOfTrailingZeros(quietMoves);
 					add(pieceType, fromSqr, toSqr, -1, newType);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Palauttaa ohestalyöntiruutua vastaavan bittimaskin. (0 jos ohestalyönti ei mahdollinen.)
+	 *
+	 * @param state pelitila
+	 * @return bittimaski
+	 */
+	private long getEnPassantMask(GameState state)
+	{
+		long enPassantSqr = state.getEnPassantSquare();
+		if (enPassantSqr == -1)
+			return 0L;
+		else
+			return 1L << enPassantSqr;
 	}
 
 	/**

@@ -114,7 +114,7 @@ public class Game implements Runnable
 	private void getAndProcessMove(int player) throws InterruptedException
 	{
 		int move = players[player].getMove(state);
-		state.move(move);
+		state.makeMove(move);
 		moves.add(move);
 		if (observer != null)
 			observer.notifyMove(state, moves.size() - 1, players[player], move);
