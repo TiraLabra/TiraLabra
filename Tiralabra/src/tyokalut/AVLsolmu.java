@@ -1,7 +1,5 @@
 package tyokalut;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import osat.Laatikko;
 import osat.Nelikulmio;
 

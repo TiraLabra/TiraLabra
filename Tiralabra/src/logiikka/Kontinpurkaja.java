@@ -4,6 +4,7 @@ import osat.Laatikko;
 import osat.Nelikulmio;
 import tyokalut.AVLkasittelija;
 import tyokalut.AVLsolmu;
+import tyokalut.TiedostonKasittelija;
 
 /**
  * Luokka, joka ohjailee muita luokkia ja kokoaa niiden ominaisuudet yhteen toimivan ohjelman
@@ -22,9 +23,14 @@ public class Kontinpurkaja {
      */
     private AVLkasittelija historia;
     
+    private TiedostonKasittelija tiedostonKasittelija;
+    
     public Kontinpurkaja() {
         laskuri = new Laskuri();
         historia = new AVLkasittelija();
+        tiedostonKasittelija = new TiedostonKasittelija(historia);
+        
+        tiedostonKasittelija.avaa();
     }
     
     /**
@@ -66,5 +72,12 @@ public class Kontinpurkaja {
      */
     public AVLsolmu haeTuote(long EAN) {
         return historia.etsi(historia.getJuuri(), EAN);
+    }
+    
+    /**
+     * Tallentaa AVL-puussa olevat asettelutiedot muistiin.
+     */
+    public void tallennaHaut() {
+        tiedostonKasittelija.tallenna();
     }
 }

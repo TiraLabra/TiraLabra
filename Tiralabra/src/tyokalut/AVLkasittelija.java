@@ -11,6 +11,9 @@ import osat.Nelikulmio;
  * @author albis
  */
 public class AVLkasittelija {
+    /**
+     * Käsiteltävän AVL-puun juurisolmu.
+     */
     private AVLsolmu juuri;
     
     public AVLkasittelija() {
@@ -74,7 +77,6 @@ public class AVLkasittelija {
             AVLsolmu alipuu;
             
             if (haeKorkeus(solmu.getVasen()) - haeKorkeus(solmu.getOikea()) > 1) {
-                
                 if (haeKorkeus(solmu.getVasen().getVasen()) > haeKorkeus(solmu.getVasen().getOikea())) {
                     alipuu = kiertoOikealle(solmu);
                 } else {

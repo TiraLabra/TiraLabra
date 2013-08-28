@@ -1,4 +1,4 @@
-package kayttoliittyma;
+package kayttoliittyma.osat;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,20 +14,23 @@ public class Piirtoalusta extends JPanel {
     AVLsolmu solmu;
     int[][] asettelu;
     
-    public Piirtoalusta(AVLsolmu solmu, int korkeus) {
+    public Piirtoalusta(AVLsolmu solmu) {
         super.setBackground(new Color(156, 93, 82));
         
         this.solmu = solmu;
         asettelu = solmu.getAsettelu();
-        
-        int leveys = korkeus / (solmu.getLava().getKorkeus() / solmu.getLava().getLeveys());
-        super.setSize(leveys, korkeus);
     }
     
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
         int monesko = 1;
-        g.setColor(Color.BLACK);
+        
+        int lavanPituus = solmu.getLava().getPituus();
+        int lavanLeveys = solmu.getLava().getLeveys();
+        
+        this.setSize(lavanLeveys, lavanPituus);
         
         while (true) {
             int alkuX = etsiAlkuX(monesko);
@@ -37,17 +40,20 @@ public class Piirtoalusta extends JPanel {
                 break;
             }
             
-            int leveys = haeLeveys(alkuX, alkuY, monesko);
-            int korkeus;
-            if (leveys == solmu.getLaatikko().getLeveys()) {
-                korkeus = solmu.getLaatikko().getKorkeus();
+            int laatikonLeveys = haeLeveys(alkuX, alkuY, monesko);
+            int laatikonPituus;
+            if (laatikonLeveys == solmu.getLaatikko().getLeveys()) {
+                laatikonPituus = solmu.getLaatikko().getPituus();
             } else {
-                korkeus = solmu.getLaatikko().getLeveys();
+                laatikonPituus = solmu.getLaatikko().getLeveys();
             }
             
-            int suhde = solmu.getLava().getKorkeus() / super.getHeight();
+            g.setColor(Color.BLACK);
+            g.fill3DRect(alkuX, alkuY, laatikonLeveys, laatikonPituus, true);
+            g.setColor(Color.BLUE);
+            g.draw3DRect(alkuX, alkuY, laatikonLeveys, laatikonPituus, true);
             
-            g.fill3DRect(alkuX, alkuY, leveys / suhde, korkeus / suhde, true);
+            monesko++;
         }
     }
     

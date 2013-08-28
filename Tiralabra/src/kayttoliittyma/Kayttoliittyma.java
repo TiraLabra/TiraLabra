@@ -8,7 +8,8 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import kayttoliittyma.kuuntelijat.ValikkoHistoriaKuuntelija;
+import kayttoliittyma.kuuntelijat.ValikkoLaskuriKuuntelija;
 import logiikka.Kontinpurkaja;
 
 /**
@@ -41,8 +42,7 @@ public class Kayttoliittyma implements Runnable {
         
         frame.setPreferredSize(new Dimension((int) koko.getWidth() / 2, (int) koko.getHeight() / 2));
         
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
+        lisaaSulkuoperaatio();
         luoKomponentit(frame.getContentPane());
         
         frame.pack();
@@ -60,9 +60,9 @@ public class Kayttoliittyma implements Runnable {
         JButton nappi = new JButton();
         
         JButton laskuriNappi = new JButton("Laskuri");
-        laskuriNappi.addActionListener(new ValikkoLaskuriKuuntelija(panel, nappi));
+        laskuriNappi.addActionListener(new ValikkoLaskuriKuuntelija(panel, nappi, kontinpurkaja));
         JButton historiaNappi = new JButton("Historia");
-        historiaNappi.addActionListener(new ValikkoHistoriaKuuntelija(panel, nappi));
+        historiaNappi.addActionListener(new ValikkoHistoriaKuuntelija(panel, nappi, kontinpurkaja));
         
         valikko.add(laskuriNappi);
         valikko.add(historiaNappi);
@@ -70,6 +70,22 @@ public class Kayttoliittyma implements Runnable {
         container.add(valikko, BorderLayout.NORTH);
         container.add(panel);
         container.add(nappi, BorderLayout.SOUTH);
+        
         nappi.setVisible(false);
+    }
+    
+    /**
+     * Käyttöliittymän tavallisen sulkemisen korvaava metodi, joka aina ennen sulkemista
+     * tallentaa asettelutiedot sisältävän AVL-puun muistiin tekstitiedostoon, josta
+     * nämä tiedot saadaan ohjelman seuraavalla käyttökerralla.
+     */
+    private void lisaaSulkuoperaatio() {
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                kontinpurkaja.tallennaHaut();
+                System.exit(0);
+            }
+        });
     }
 }

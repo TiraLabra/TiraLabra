@@ -1,5 +1,6 @@
 package tyokalut;
 
+import java.util.Random;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import osat.Nelikulmio;
  */
 public class AVLkasittelijaTest {
     private AVLkasittelija historia;
+    private int monesko;
     
     public AVLkasittelijaTest() {
     }
@@ -57,5 +59,69 @@ public class AVLkasittelijaTest {
         assertEquals(historia.haeKorkeus(historia.getJuuri().getVasen().getVasen()), 0);
         assertEquals(historia.haeKorkeus(historia.getJuuri().getVasen().getVasen().getVasen()), -1);
         assertEquals(historia.haeKorkeus(historia.getJuuri().getOikea()), 0);
+    }
+    
+    @Test
+    public void jarjestysOikein() {
+        Random arpoja = new Random();
+        
+        for (int i = 0; i < 25; i++) {
+            historia.AVLlisays(new Laatikko(1, 1, 1, arpoja.nextLong()), new int[1][1],
+                    new Nelikulmio(1, 1, 1));
+        }
+        
+        long[] avaimet = haeAvaimet();
+        
+        for (int i = 1; i < avaimet.length; i++) {
+            if (avaimet[i] < avaimet[i-1]) {
+                throw new AssertionError();
+            }
+        }
+    }
+    
+    private long[] haeAvaimet() {
+        long[] avaimet = new long[29];
+        monesko = 0;
+        
+        lisaaAvain(historia.getJuuri(), avaimet);
+        
+        return avaimet;
+    }
+    
+    private void lisaaAvain(AVLsolmu solmu, long[] avaimet) {
+        if (solmu == null) {
+            return;
+        }
+        
+        lisaaAvain(solmu.getVasen(), avaimet);
+        
+        avaimet[monesko] = solmu.getKey();
+        monesko++;
+        
+        lisaaAvain(solmu.getOikea(), avaimet);
+    }
+    
+    @Test
+    public void oikeaMaaraSolmuja() {
+        Random arpoja = new Random();
+        
+        for (int i = 0; i < 25; i++) {
+            historia.AVLlisays(new Laatikko(1, 1, 1, arpoja.nextLong()), new int[1][1],
+                    new Nelikulmio(1, 1, 1));
+        }
+        
+        assertEquals(29, laskeSolmut(historia.getJuuri()));
+    }
+    
+    private int laskeSolmut(AVLsolmu solmu) {
+        if (solmu == null) {
+            return 0;
+        }
+        
+        if (solmu.getVasen() == null && solmu.getOikea() == null) {
+            return 1;
+        }
+        
+        return laskeSolmut(solmu.getVasen()) + laskeSolmut(solmu.getOikea()) + 1;
     }
 }

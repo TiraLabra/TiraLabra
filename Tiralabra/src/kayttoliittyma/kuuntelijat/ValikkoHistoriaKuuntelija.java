@@ -1,4 +1,4 @@
-package kayttoliittyma;
+package kayttoliittyma.kuuntelijat;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import logiikka.Kontinpurkaja;
 
 /**
  * Luokka, joka huolehtii historian hakemisen graafisesta esittämisestä ja syötteiden
@@ -25,9 +26,12 @@ public class ValikkoHistoriaKuuntelija implements ActionListener {
      */
     private JButton nappi;
     
-    public ValikkoHistoriaKuuntelija(JPanel panel, JButton nappi) {
+    private Kontinpurkaja kontinpurkaja;
+    
+    public ValikkoHistoriaKuuntelija(JPanel panel, JButton nappi, Kontinpurkaja kontinpurkaja) {
         this.panel = panel;
         this.nappi = nappi;
+        this.kontinpurkaja = kontinpurkaja;
     }
     
     @Override
@@ -46,6 +50,7 @@ public class ValikkoHistoriaKuuntelija implements ActionListener {
         panel.add(hakukentta, BorderLayout.SOUTH);
         
         nappi.setText("Hae");
+        nappi.addActionListener(new TulostenEsittaja(panel, kontinpurkaja, syote));
         nappi.setVisible(true);
     }
     

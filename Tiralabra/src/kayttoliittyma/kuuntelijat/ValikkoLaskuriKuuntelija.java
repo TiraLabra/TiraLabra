@@ -1,4 +1,4 @@
-package kayttoliittyma;
+package kayttoliittyma.kuuntelijat;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import logiikka.Kontinpurkaja;
 
 /**
  * Luokka, joka luo graafisen käyttöliittymän ja tarjoaa syötemahdollisuuden
@@ -25,13 +26,18 @@ public class ValikkoLaskuriKuuntelija implements ActionListener {
      */
     private JButton nappi;
     
-    public ValikkoLaskuriKuuntelija(JPanel panel, JButton nappi) {
+    
+    private Kontinpurkaja kontinpurkaja;
+    
+    public ValikkoLaskuriKuuntelija(JPanel panel, JButton nappi, Kontinpurkaja kontinpurkaja) {
         this.panel = panel;
         this.nappi = nappi;
+        
+        this.kontinpurkaja = kontinpurkaja;
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent ae) {
         panel.removeAll();
         panel.repaint();
         
@@ -66,6 +72,8 @@ public class ValikkoLaskuriKuuntelija implements ActionListener {
         panel.add(lavanKorkeus);
         
         nappi.setText("Laske");
+        nappi.addActionListener(new LaskentaKuuntelija(kontinpurkaja, panel, nappi));
+                
         nappi.setVisible(true);
     }
     
