@@ -26,7 +26,7 @@ public class BalancedGameGeneratorTest
 			testAI.getMove(state);
 		} catch (InterruptedException e) {
 		}
-		int score = testAI.getGameTree().score;
+		int score = testAI.getSearchTree().score;
 		assertTrue(Math.abs(score) < 2.0 * Scores.PIECE_VALUES[Pieces.PAWN]);
 	}
 }

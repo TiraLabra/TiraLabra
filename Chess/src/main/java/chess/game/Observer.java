@@ -15,7 +15,7 @@ public interface Observer
 	 * @param player siirron tehnyt pelaaja
 	 * @param move siirto (ks. Move)
 	 */
-	void notifyMove(GameState state, int ply, Player player, int move);
+	void notifyMove(GameState state, int ply, Player player, int move) throws InterruptedException;
 
 	/**
 	 * Kutsutaan kun peli on päättynyt.

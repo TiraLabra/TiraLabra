@@ -67,6 +67,8 @@ public class Game implements Runnable
 			} catch (InterruptedException e) {
 				return;
 			}
+			if (Thread.interrupted())
+				return;
 			currentPlayer = 1 ^ currentPlayer;
 		}
 
@@ -75,6 +77,17 @@ public class Game implements Runnable
 
 		if (observer != null)
 			observer.notifyEnd(state, result);
+	}
+
+	/**
+	 * Palauttaa pelaajaobjektin.
+	 *
+	 * @param player pelaaja (0-1)
+	 * @return
+	 */
+	public Player getPlayer(int player)
+	{
+		return players[player];
 	}
 
 	/**

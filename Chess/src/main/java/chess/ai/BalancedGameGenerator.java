@@ -28,7 +28,7 @@ public final class BalancedGameGenerator
 				testAI.getMove(gameState);
 			} catch (InterruptedException e) {
 			}
-			int score = testAI.getGameTree().score;
+			int score = testAI.getSearchTree().score;
 			if (Math.abs(score) < maxImbalance * Scores.PIECE_VALUES[Pieces.PAWN])
 				return gameState;
 		}

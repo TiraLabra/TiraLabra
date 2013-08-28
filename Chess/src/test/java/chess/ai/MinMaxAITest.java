@@ -121,7 +121,7 @@ public class MinMaxAITest
 		ai = new MinMaxAI(null, 99, 30, 0.0000001, 0);
 		GameState s = new GameState("Kb8", "Kb6 Rc7", Players.WHITE);
 		ai.getMove(s);
-		assertNotNull(ai.getGameTree());
+		assertNotNull(ai.getSearchTree());
 	}
 
 	@Test

@@ -9,17 +9,17 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * Ikkuna pelipuun näyttämiseen. Käyttää hyväksi puuta, jonka MinMaxAI tallentaa tiettyyn syvyyteen
- * asti (oletus 3).
+ * Ikkuna MinMaxAI:n hakupuun näyttämiseen. Käyttää hyväksi puuta, jonka hakualgoritmi tallentaa
+ * tiettyyn syvyyteen asti (oletus 3).
  */
-class GameTreeViewer extends JFrame
+class SearchTreeViewer extends JFrame
 {
 	/**
 	 * Luo uuden ikkunan käyttäen annettua pelipuuta.
 	 *
 	 * @param rootNode MinMaxAI:n tallentama puu
 	 */
-	GameTreeViewer(Node rootNode)
+	SearchTreeViewer(Node rootNode)
 	{
 		setTitle("Search tree");
 

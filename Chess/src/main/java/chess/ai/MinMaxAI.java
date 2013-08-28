@@ -11,11 +11,6 @@ import chess.util.Logger;
 public final class MinMaxAI implements Player
 {
 	/**
-	 * Oletusaikaraja (sekunteina), jos konstruktorissa ei ole annettu aikarajaa.
-	 */
-	private static final double DEFAULT_TIME_LIMIT = 2.0;
-
-	/**
 	 * Kuinka monta tasoa hakupuuta pienennetään nollasiirron kanssa. Oletuksena on, että siirron
 	 * skippaaminen heikentää asemaa enemmän kuin hakusyvyyden pienentäminen tämän verran.
 	 */
@@ -33,21 +28,6 @@ public final class MinMaxAI implements Player
 	 * määrä.
 	 */
 	private static final int MAX_TRANSPOSITION_TABLE_SIZE = 1024 * 1024;
-
-	/**
-	 * Oletussyvyys puun tallentamiseksi käyttöliittymää varten.
-	 */
-	private static final int DEFAULT_TREE_GENERATION_DEPTH = 3;
-
-	/**
-	 * Oletusarvo maksimihakusyvyydelle.
-	 */
-	private static final int DEFAULT_SEARCH_DEPTH = 100;
-
-	/**
-	 * Oletusarvo quiescence-haun maksimisyvyydelle.
-	 */
-	private static final int DEFAULT_QUIESCENCE_SEARCH_DEPTH = 30;
 
 	/**
 	 * Maksimi hakusyvyys. Pitää olla vähintään 2, jottei tekoäly suorita siirtoja jotka jättävät
@@ -143,18 +123,6 @@ public final class MinMaxAI implements Player
 	 * Evaluaattori pelitilanteen pisteyttämiseen.
 	 */
 	private final Evaluator evaluator;
-
-	/**
-	 * Luo uuden tekoälyobjektin käyttäen oletusaikarajaa. Hakusyvyys on rajoitettu ainoastaan
-	 * aikarajan puitteissa.
-	 *
-	 * @param logger loggeri debug-viestejä varten
-	 */
-	public MinMaxAI(Logger logger)
-	{
-		this(logger, DEFAULT_SEARCH_DEPTH, DEFAULT_QUIESCENCE_SEARCH_DEPTH, DEFAULT_TIME_LIMIT,
-				DEFAULT_TREE_GENERATION_DEPTH);
-	}
 
 	/**
 	 * Luo uuden tekoälyobjektin käyttäen annettua aikarajaa ja maksimihakusyvyyttä.
@@ -576,7 +544,7 @@ public final class MinMaxAI implements Player
 	 *
 	 * @return
 	 */
-	public Node getGameTree()
+	public Node getSearchTree()
 	{
 		return tree;
 	}

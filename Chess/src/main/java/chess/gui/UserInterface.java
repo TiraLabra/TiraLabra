@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
@@ -55,16 +56,6 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	private int selectedSquare = -1;
 
 	/**
-	 * Ihmispelaajan nappuloiden väri.
-	 */
-	private int player = Players.WHITE;
-
-	/**
-	 * Tietokonevastustaja.
-	 */
-	private Player aiPlayer;
-
-	/**
 	 * Runnable-peliobjekti, jota suoritetaan omassa säikeessään.
 	 */
 	private Game game;
@@ -86,6 +77,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	private Object humanPlayerMoveNotifier;
 
 	/**
+	 * Dummy-objekti jolla pelisäie odottaa "Execute AI move" valikkokomentoa.
+	 */
+	private final Object nextMoveNotifier = new Object();
+
+	/**
 	 * Sallitut siirrot valitusta ruudusta.
 	 */
 	int[] moves;
@@ -98,16 +94,26 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Valikkoelementit.
 	 */
-	private JMenuItem newGameItem, newGameItem2, exitItem, perfTestItem, perfTest2Item,
-			showGameTreeItem;
-	private JCheckBoxMenuItem debugInfoItem, randomItem;
+	private JMenuItem newGameItem, simulItem, exitItem, perfTestItem, perfTest2Item,
+			showGameTreeItem, nextMoveItem;
 
+	private JCheckBoxMenuItem debugInfoItem, randomItem, pauseItem;
+
+	/**
+	 * Valikot pelaaja-asetuksien konfigurointiin.
+	 */
+	private final PlayerConfigMenu[] playerConfigs = new PlayerConfigMenu[2];
+
+	/**
+	 * Edellisen tekoälysiirron hakupuu.
+	 */
+	private Node previousSearchTree;
 
 	@Override
 	public void run()
 	{
 		createFrame();
-		startNewGame(false);
+		startNewGame();
 	}
 
 	/**
@@ -162,15 +168,23 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		menuBar.add(gameMenu);
 
 		newGameItem = createMenuItem(gameMenu, "New game");
-		newGameItem2 = createMenuItem(gameMenu, "New game (AI vs AI)");
+		newGameItem.setAccelerator(KeyStroke.getKeyStroke("F2"));
 		randomItem = createCheckBoxMenuItem(gameMenu, "Random start position");
+		pauseItem = createCheckBoxMenuItem(gameMenu, "Pause before AI move");
+		pauseItem.setAccelerator(KeyStroke.getKeyStroke("F3"));
+		nextMoveItem = createMenuItem(gameMenu, "Execute AI move");
+		nextMoveItem.setAccelerator(KeyStroke.getKeyStroke("F4"));
 		exitItem = createMenuItem(gameMenu, "Exit");
+
+		menuBar.add(playerConfigs[0] = new PlayerConfigMenu("Player 1", this, logArea, false));
+		menuBar.add(playerConfigs[1] = new PlayerConfigMenu("Player 2", this, logArea, true));
 
 		JMenu debugMenu = new JMenu("Info");
 		menuBar.add(debugMenu);
 
 		perfTestItem = createMenuItem(debugMenu, "Run performance test");
-		//perfTest2Item = createMenuItem(debugMenu, "Performance test 2");
+		//perfTest2Item = createMenuItem(debugMenu, "Run performance test 2");
+		//simulItem = createMenuItem(debugMenu, "Run simulation");
 		showGameTreeItem = createMenuItem(debugMenu, "View search tree for last AI move...");
 		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
 
@@ -285,15 +299,16 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Uusi peli.
 	 */
-	private void startNewGame(boolean aiVsAi)
+	private void startNewGame()
 	{
 		if (gameThread != null)
 			gameThread.interrupt();
 
-		aiPlayer = new MinMaxAI(logArea);
-		refreshLoggingEnabledState();
-		game = new Game(createGame(), aiVsAi ? new MinMaxAI(logArea) : this, aiPlayer, this);
+		Player whitePlayer = playerConfigs[0].getPlayer();
+		Player blackPlayer = playerConfigs[1].getPlayer();
+		game = new Game(createGame(), whitePlayer, blackPlayer, this);
 
+		refreshLoggingEnabledState();
 		logArea.logMessage("--- Game started ---");
 		selectedSquare = -1;
 		board.setBoard(game.getState().getBoard());
@@ -301,11 +316,16 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		board.setAllowedMoves(0);
 		resultLabel.setVisible(false);
 		showGameTreeItem.setEnabled(false);
+		updateEnabledStatus();
 
 		gameThread = new Thread(game);
 		gameThread.start();
 	}
 
+	/**
+	 * Luo uuden pelitilanteen. (Joko standardialoitustilanne tai satunnainen tilanne asetuksen
+	 * mukaan).
+	 */
 	private GameState createGame()
 	{
 		if (randomItem.getState())
@@ -330,11 +350,32 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		new Thread(new PerformanceTest(logArea, 8, 15.0)).start();
 	}
 
-	private void showGameTree()
+	/**
+	 * Käynnistää simulaation.
+	 */
+	private void runSimulation()
 	{
-		Node tree = ((MinMaxAI) aiPlayer).getGameTree();
-		if (tree != null)
-			new GameTreeViewer(tree);
+		//new Thread(new Simulation(logArea, 3600)).start();
+	}
+
+	/**
+	 * Suorittaa seuraavan tekoälysiirron.
+	 */
+	private void nextMove()
+	{
+		synchronized (nextMoveNotifier) {
+			nextMoveNotifier.notify();
+		}
+	}
+
+	/**
+	 * "Pause before AI move" disabloitu tai enabloitu.
+	 */
+	private void changePausedStatus()
+	{
+		updateEnabledStatus();
+		if (!pauseItem.isSelected())
+			nextMove();
 	}
 
 	/**
@@ -344,15 +385,19 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void actionPerformed(ActionEvent ae)
 	{
 		if (ae.getSource() == newGameItem)
-			startNewGame(false);
-		else if (ae.getSource() == newGameItem2)
-			startNewGame(true);
+			startNewGame();
 		else if (ae.getSource() == perfTestItem)
 			runPerformanceTest();
 		else if (ae.getSource() == perfTest2Item)
 			runPerformanceTest2();
+		else if (ae.getSource() == simulItem)
+			runSimulation();
+		else if (ae.getSource() == pauseItem)
+			changePausedStatus();
+		else if (ae.getSource() == nextMoveItem)
+			nextMove();
 		else if (ae.getSource() == showGameTreeItem)
-			showGameTree();
+			new SearchTreeViewer(previousSearchTree);
 		else if (ae.getSource() == debugInfoItem)
 			refreshLoggingEnabledState();
 		else if (ae.getSource() == exitItem)
@@ -372,13 +417,29 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 
 	@Override
 	public void notifyMove(GameState state, int ply, Player player, int move)
+			throws InterruptedException
 	{
+		if (pauseItem.isSelected() && player instanceof MinMaxAI)
+			waitForNextMoveCommand();
+
 		board.setBoard(state.getBoard());
 		updateSquareSelection(selectedSquare);
-		if (player instanceof MinMaxAI)
+		if (player instanceof MinMaxAI) {
+			previousSearchTree = ((MinMaxAI) player).getSearchTree();
 			showGameTreeItem.setEnabled(true);
+		}
 		int turn = (ply / 2 + 1);
 		logArea.logMessage("" + turn + (ply % 2 == 0 ? ". " : ". ... ") + Move.toString(move));
+	}
+
+	/**
+	 * Odottaa, että käyttäjä antaa valikkokomennon siirron suorittamiseksi.
+	 */
+	private void waitForNextMoveCommand() throws InterruptedException
+	{
+		synchronized (nextMoveNotifier) {
+			nextMoveNotifier.wait();
+		}
 	}
 
 	@Override
@@ -401,7 +462,17 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 */
 	private void refreshLoggingEnabledState()
 	{
-		if (aiPlayer instanceof MinMaxAI)
-			((MinMaxAI) aiPlayer).setLoggingEnabled(debugInfoItem.getState());
+		for (int player = 0; player < Players.COUNT; ++player) {
+			if (game.getPlayer(player) instanceof MinMaxAI)
+				((MinMaxAI) game.getPlayer(player)).setLoggingEnabled(debugInfoItem.getState());
+		}
+	}
+
+	/**
+	 * Disabloi "Execute AI move" -valikkokomennon jos "Pause before AI move" on disabloitu.
+	 */
+	private void updateEnabledStatus()
+	{
+		nextMoveItem.setEnabled(pauseItem.isSelected());
 	}
 }
