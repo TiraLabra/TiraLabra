@@ -1,6 +1,6 @@
 package chess.gui;
 
-import chess.domain.Pieces;
+import chess.domain.BitBoard;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,9 +21,9 @@ public class BoardPanel extends JPanel
 	private BufferedImage image;
 
 	/**
-	 * Laudan sisältö. (ks. BitBoard.toArray()).
+	 * Laudan sisältö.
 	 */
-	private int[] board = new int[64];
+	private BitBoard board = new BitBoard();
 
 	/**
 	 * Bittimaski sallituista siirroista valitussa ruudussa.
@@ -56,12 +56,11 @@ public class BoardPanel extends JPanel
 	}
 
 	/**
-	 * Asettaa laudan sisällön.
+	 * Asettaa renderöitävien nappuloiden sijainnit.
 	 *
-	 * @param board laudan sisältö taulukkona, jossa alkioden arvo on nappulan tyyppi ko.
-	 * ruudussa, tai -1, jos ruutu on tyhjä
+	 * @param board laudan sisältö
 	 */
-	public void setBoard(int board[])
+	public void setBoard(BitBoard board)
 	{
 		this.board = board.clone();
 		repaint();
@@ -114,10 +113,9 @@ public class BoardPanel extends JPanel
 	private void drawPieces(Graphics g)
 	{
 		for (int sqr = 0; sqr < 64; ++sqr) {
-			if (board[sqr] >= 0) {
-				drawPiece(sqr / 8, sqr % 8, board[sqr] / Pieces.COUNT,
-						board[sqr] % Pieces.COUNT, g);
-			}
+			int player = board.getPlayer(sqr);
+			if (player >= 0)
+				drawPiece(sqr / 8, sqr % 8, player, board.getPieceType(player, sqr), g);
 		}
 	}
 

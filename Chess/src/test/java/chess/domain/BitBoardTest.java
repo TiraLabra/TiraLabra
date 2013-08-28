@@ -97,16 +97,13 @@ public class BitBoardTest
 	}
 
 	@Test
-	public void testToArray()
+	public void testGetPlayer()
 	{
-		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
 		bb.addPiece(Players.WHITE, Pieces.QUEEN, 40);
-		int[] a = bb.toArray();
-		assertEquals(64, a.length);
-		assertEquals(-1, a[0]);
-		assertEquals(-1, a[63]);
-		assertEquals(Players.BLACK * Pieces.COUNT + Pieces.KNIGHT, a[27]);
-		assertEquals(Players.WHITE * Pieces.COUNT + Pieces.QUEEN, a[40]);
+		bb.addPiece(Players.BLACK, Pieces.KNIGHT, 27);
+		assertEquals(Players.WHITE, bb.getPlayer(40));
+		assertEquals(Players.BLACK, bb.getPlayer(27));
+		assertEquals(-1, bb.getPlayer(26));
 	}
 
 	@Test

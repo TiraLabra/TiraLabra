@@ -1,6 +1,7 @@
 package chess.ai;
 
 import chess.domain.GameState;
+import chess.domain.Randomizer;
 import chess.util.Logger;
 import java.util.Random;
 
@@ -88,7 +89,7 @@ public class PerformanceTest implements Runnable
 	 */
 	private double runSingleTest(MinMaxAI ai, Random rnd)
 	{
-		GameState state = new GameState(rnd);
+		GameState state = Randomizer.createGame(rnd);
 
 		long start = System.nanoTime();
 		try {

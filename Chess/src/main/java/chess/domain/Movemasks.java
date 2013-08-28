@@ -18,6 +18,11 @@ package chess.domain;
 public final class Movemasks
 {
 	/**
+	 * Bittimaski tornitusoikeuksista alkutilanteessa.
+	 */
+	public static long INITIAL_CASTLING_RIGHTS = 0x8100000000000081L;
+
+	/**
 	 * Bittimaski korotettavien sotilaiden sijainneista kummallekin pelaajalle.
 	 */
 	public static final long[] PROMOTABLE = {0x000000000000FF00L, 0x00FF000000000000L};
@@ -147,13 +152,12 @@ public final class Movemasks
 	 *
 	 * @param fromSqr lähtöruutu
 	 * @param allPieces kaikki nappulat
-	 * @param friendlyPieces samanväriset nappulat
 	 * @return siirot bittimaskina
 	 */
-	public static long getRookMoves(int fromSqr, long allPieces, long friendlyPieces)
+	public static long getRookMoves(int fromSqr, long allPieces)
 	{
 		int hash = rookOccupancyHash(fromSqr, allPieces);
-		return ROOK_MOVES[fromSqr][hash] & ~friendlyPieces;
+		return ROOK_MOVES[fromSqr][hash];
 	}
 
 	/**
@@ -161,13 +165,12 @@ public final class Movemasks
 	 *
 	 * @param fromSqr lähtöruutu
 	 * @param allPieces kaikki nappulat
-	 * @param friendlyPieces samanväriset nappulat
 	 * @return siirot bittimaskina
 	 */
-	public static long getBishopMoves(int fromSqr, long allPieces, long friendlyPieces)
+	public static long getBishopMoves(int fromSqr, long allPieces)
 	{
 		int hash = bishopOccupancyHash(fromSqr, allPieces);
-		return BISHOP_MOVES[fromSqr][hash] & ~friendlyPieces;
+		return BISHOP_MOVES[fromSqr][hash];
 	}
 
 	/**
@@ -176,15 +179,14 @@ public final class Movemasks
 	 *
 	 * @param fromSqr lähtöruutu
 	 * @param allPieces kaikki nappulat
-	 * @param friendlyPieces samanväriset nappulat
 	 * @return siirot bittimaskina
 	 */
-	public static long getQueenMoves(int fromSqr, long allPieces, long friendlyPieces)
+	public static long getQueenMoves(int fromSqr, long allPieces)
 	{
 		int rhash = rookOccupancyHash(fromSqr, allPieces);
 		int bhash = bishopOccupancyHash(fromSqr, allPieces);
 		long moves = ROOK_MOVES[fromSqr][rhash] | BISHOP_MOVES[fromSqr][bhash];
-		return moves & ~friendlyPieces;
+		return moves;
 	}
 
 	/**

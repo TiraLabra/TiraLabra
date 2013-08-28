@@ -1,7 +1,5 @@
 package chess.domain;
 
-import java.util.Arrays;
-
 /**
  * Tietorakenne nappuloiden sijaintien tallentamiseen 64-bittisinä maskeina. Maskit tallennetaan
  * row-major formaatissa, niin että bitti 0 vastaa laudan vasenta yläkulmaan (a8) ja bitti 63
@@ -170,26 +168,18 @@ public final class BitBoard
 	}
 
 	/**
-	 * Muodostaa laudasta 64-alkoisen taulukon. Kunkin alkion arvo on nappulan tyyppi ko. ruudussa
-	 * (valk. 0-5, musta 6-11), tai -1 jos ruutu on tyhjä.
+	 * Palauttaa pelaajan, joka omistaa ruudussa olevan nappulan.
 	 *
-	 * @return laudan sisältö taulukkona
+	 * @param sqr ruutu (0-63)
+	 * @return pelaaja (0-1) tai -1 jos ruutu on tyhjä
 	 */
-	public int[] toArray()
+	public int getPlayer(int sqr)
 	{
-		int[] board = new int[64];
-		Arrays.fill(board, -1);
-
 		for (int player = 0; player < Players.COUNT; ++player) {
-			for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
-				for (int sqr = 0; sqr < 64; ++sqr) {
-					if (hasPiece(player, pieceType, sqr))
-						board[sqr] = player * Pieces.COUNT + pieceType;
-				}
-			}
+			if (hasPiece(player, sqr))
+				return player;
 		}
-
-		return board;
+		return -1;
 	}
 
 	@Override

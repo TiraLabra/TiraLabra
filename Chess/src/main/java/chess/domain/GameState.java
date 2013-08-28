@@ -29,6 +29,11 @@ public final class GameState
 	private static final long[] ZOBRIST_RND_EN_PASSANT = new long[64];
 
 	/**
+	 * Satunnaisnumerot tornitusoikeuksille (näistä ainoastaan 4 on käytössä).
+	 */
+	private static final long[] ZOBRIST_RND_CASTLINGRIGHTS = new long[64];
+
+	/**
 	 * Tyhjää lautaa vastaava satunnaisnumero.
 	 */
 	private static final long ZOBRIST_RND_EMPTY;
@@ -44,6 +49,8 @@ public final class GameState
 		ZOBRIST_RND_EMPTY = rnd.nextLong();
 		for (int i = 0; i < ZOBRIST_RND_EN_PASSANT.length; ++i)
 			ZOBRIST_RND_EN_PASSANT[i] = rnd.nextLong();
+		for (int i = 0; i < ZOBRIST_RND_CASTLINGRIGHTS.length; ++i)
+			ZOBRIST_RND_CASTLINGRIGHTS[i] = rnd.nextLong();
 	}
 
 	static final private int MAX_MOVES = 256;
@@ -76,36 +83,19 @@ public final class GameState
 	private final int[] enPassantSquares;
 
 	/**
+	 * Pino aiempien pelitilanteiden tornitusoikeuksista.
+	 */
+	private final long[] castlingRights;
+
+	/**
 	 * Luo uuden pelitilanteen käyttäen standardia shakin aloitusmuodostelmaa.
 	 */
 	public GameState()
 	{
-		this(new BitBoard(), Players.WHITE);
-		setupInitialPosition();
-	}
-
-	/**
-	 * Luo satunnaisen (mutta sallitun) pelitilanteen.
-	 *
-	 * @param rnd käytettävä satunnaislukugeneraattori
-	 */
-	public GameState(Random rnd)
-	{
-		this(new BitBoard(), Players.WHITE);
-		randomize(rnd);
-	}
-
-	/**
-	 * Luo uuden pelitilanteen käyttäen annettua laudan tilaa ja vuorossa olevaa pelaajaa.
-	 *
-	 * @param board pelilaudan sisältö
-	 * @param startingPlayer ensimmäisenä vuorossa oleva pelaaja
-	 */
-	public GameState(BitBoard board, int startingPlayer)
-	{
-		this(board, new long[MAX_MOVES + 1], new int[MAX_MOVES + 1], 0, startingPlayer);
-		zobristCodes[0] = ZOBRIST_RND_EMPTY;
-		enPassantSquares[0] = -1;
+		this(new BitBoard(
+				"Ra1 Nb1 Bc1 Qd1 Ke1 Bf1 Ng1 Rh1 a2 b2 c2 d2 e2 f2 g2 h2",
+				"Ra8 Nb8 Bc8 Qd8 Ke8 Bf8 Ng8 Rh8 a7 b7 c7 d7 e7 f7 g7 h7"),
+				Players.WHITE);
 	}
 
 	/**
@@ -122,6 +112,48 @@ public final class GameState
 	}
 
 	/**
+	 * Luo uuden pelitilanteen käyttäen annettua laudan tilaa ja vuorossa olevaa pelaajaa.
+	 * Pelitilanne sallii tornitukset vain jos kuninkaiden ja tornien sijainnit ovat normaalin
+	 * alkutilanteen mukaiset.
+	 *
+	 * @param board pelilaudan sisältö
+	 * @param startingPlayer ensimmäisenä vuorossa oleva pelaaja
+	 */
+	public GameState(BitBoard board, int startingPlayer)
+	{
+		this(board, new long[MAX_MOVES + 1], new int[MAX_MOVES + 1], new long[MAX_MOVES + 1], 0,
+				startingPlayer);
+
+		this.zobristCodes[0] = ZOBRIST_RND_EMPTY;
+		this.enPassantSquares[0] = -1;
+		if (startingPlayer == Players.BLACK)
+			this.zobristCodes[0] ^= ZOBRIST_RND_PLAYER;
+
+		// Asetetaan tornitusoikeudet vain jos kuninkaat/tornit oikeissa kohdissa.
+		if (board.hasPiece(Players.WHITE, Pieces.KING, 60)
+				&& board.hasPiece(Players.WHITE, Pieces.ROOK, 56)
+				&& board.hasPiece(Players.WHITE, Pieces.ROOK, 63)
+				&& board.hasPiece(Players.BLACK, Pieces.KING, 4)
+				&& board.hasPiece(Players.BLACK, Pieces.ROOK, 0)
+				&& board.hasPiece(Players.BLACK, Pieces.ROOK, 7)) {
+			this.castlingRights[0] = Movemasks.INITIAL_CASTLING_RIGHTS;
+			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[0];
+			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[7];
+			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[56];
+			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[63];
+		}
+
+		// Päivitetään Zobrist-tunniste laudalla jo olevien nappuloiden mukaisesti.
+		for (int player = 0; player < 2; ++player) {
+			for (int sqr = 0; sqr < 64; ++sqr) {
+				int piece = board.getPieceType(player, sqr);
+				if (piece != -1)
+					zobristCodes[0] ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
+			}
+		}
+	}
+
+	/**
 	 * Palauttaa seuraavana vuorossa olevan pelaajan.
 	 *
 	 * @return 0-1
@@ -132,13 +164,13 @@ public final class GameState
 	}
 
 	/**
-	 * Palauttaa laudan sisällön taulukkona.
+	 * Palauttaa laudan sisällön.
 	 *
-	 * @return 64-alkioinen taulukko
+	 * @return
 	 */
-	public int[] getBoard()
+	public BitBoard getBoard()
 	{
-		return bitboard.toArray();
+		return bitboard;
 	}
 
 	/**
@@ -173,6 +205,16 @@ public final class GameState
 	}
 
 	/**
+	 * Palauttaa tornitusoikeudet bittimaskina. (Ykkösbitti asetettu vastaavan tornin kohdalla.)
+	 *
+	 * @return
+	 */
+	public long getCastlingRights()
+	{
+		return castlingRights[ply];
+	}
+
+	/**
 	 * Palauttaa kaikki pelaajan nappulat bittimaskina.
 	 *
 	 * @param player pelaaja (0-1)
@@ -193,7 +235,9 @@ public final class GameState
 		++ply;
 		if (Move.getCapturedType(move) != -1)
 			removeCapturedPiece(move);
+		handleCastlingMove(move);
 		updateEnPassantSquare(move);
+		updateCastlingRights(move);
 		removePiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
 		addPiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		changeNextMovingPlayer();
@@ -209,6 +253,7 @@ public final class GameState
 		changeNextMovingPlayer();
 		removePiece(nextMovingPlayer, Move.getNewType(move), Move.getToSqr(move));
 		addPiece(nextMovingPlayer, Move.getPieceType(move), Move.getFromSqr(move));
+		undoCastlingMove(move);
 		if (Move.getCapturedType(move) != -1)
 			restoreCapturedPiece(move);
 		--ply;
@@ -316,10 +361,14 @@ public final class GameState
 	 */
 	public long getPseudoLegalMoves(int player, int pieceType, int fromSqr)
 	{
-		if (pieceType != Pieces.PAWN)
-			return getAttackMoves(player, pieceType, fromSqr);
-
 		long moves = 0;
+
+		if (pieceType != Pieces.PAWN) {
+			moves = getThreatenedSquares(player, pieceType, fromSqr) & ~getPieces(player);
+			if (pieceType == Pieces.KING)
+				moves |= getCastlingMoves(player);
+			return moves;
+		}
 
 		int row = fromSqr / 8;
 		int col = fromSqr % 8;
@@ -345,48 +394,42 @@ public final class GameState
 	}
 
 	/**
-	 * Palauttaa ne pseudolailliset siirrot, jotka voivat lyödä vastustajan nappulan silloin, jos
-	 * kohderuudussa on vastustajan nappula.
+	 * Palauttaa nappulan uhkaamat ruudut (ruudut, joihin lyönti on mahdollinen, jos ruudussa olisi
+	 * vastustajan nappula) .
 	 *
 	 * @param player pelaaja
 	 * @param piece nappulaTyyppi
 	 * @param fromSqr siirrettävän nappulan sijainti
 	 * @return lyöntisiirrot bittimaskina
 	 */
-	public long getAttackMoves(int player, int piece, int fromSqr)
+	public long getThreatenedSquares(int player, int piece, int fromSqr)
 	{
 		long moves = 0;
 
 		switch (piece) {
 			case Pieces.KING:
-				moves |= Movemasks.KING_MOVES[fromSqr] & ~bitboard.getPieces(player);
+				moves |= Movemasks.KING_MOVES[fromSqr];
 				break;
 			case Pieces.QUEEN:
-				long allPieces = bitboard.getPieces();
-				moves |= Movemasks.getQueenMoves(fromSqr, allPieces, bitboard.getPieces(player));
+				moves |= Movemasks.getQueenMoves(fromSqr, bitboard.getPieces());
 				break;
 			case Pieces.ROOK:
-				allPieces = bitboard.getPieces();
-				moves |= Movemasks.getRookMoves(fromSqr, allPieces, bitboard.getPieces(player));
+				moves |= Movemasks.getRookMoves(fromSqr, bitboard.getPieces());
 				break;
 			case Pieces.BISHOP:
-				allPieces = bitboard.getPieces();
-				moves |= Movemasks.getBishopMoves(fromSqr, allPieces, bitboard.getPieces(player));
+				moves |= Movemasks.getBishopMoves(fromSqr, bitboard.getPieces());
 				break;
 			case Pieces.KNIGHT:
-				moves |= Movemasks.KNIGHT_MOVES[fromSqr] & ~bitboard.getPieces(player);
+				moves |= Movemasks.KNIGHT_MOVES[fromSqr];
 				break;
 			case Pieces.PAWN:
 				int row = fromSqr / 8;
 				int col = fromSqr % 8;
 				int nextRow = row - 1 + 2 * player;
 				if ((nextRow & ~7) == 0) {
-					long enemySqrs = bitboard.getPieces(1 - player);
-					if (enPassantSquares[ply] != -1)
-						enemySqrs |= 1L << enPassantSquares[ply];
-					if (col > 0 && (enemySqrs & 1L << nextRow * 8 + col - 1) != 0)
+					if (col > 0)
 						moves |= 1L << nextRow * 8 + col - 1;
-					if (col < 7 && (enemySqrs & 1L << nextRow * 8 + col + 1) != 0)
+					if (col < 7)
 						moves |= 1L << nextRow * 8 + col + 1;
 				}
 				break;
@@ -439,18 +482,6 @@ public final class GameState
 	}
 
 	/**
-	 * Palauttaa annetun pelaajan kuninkaan sijainnin.
-	 *
-	 * @param player pelaaja (0-1)
-	 * @return sijainti (0-63), tai -1 jos laudalla ei ole kuningasta
-	 */
-	public int getKingSquare(int player)
-	{
-		long kingSqrMask = bitboard.getPieces(player, Pieces.KING);
-		return kingSqrMask == 0 ? -1 : Long.numberOfTrailingZeros(kingSqrMask);
-	}
-
-	/**
 	 * Tarkistaa, onko kunigas uhattuna.
 	 *
 	 * @param defendingPlayer pelaaja, jonka kuninkaasta on kyse
@@ -458,28 +489,27 @@ public final class GameState
 	 */
 	public boolean isKingChecked(int defendingPlayer)
 	{
-		int kingSqr = getKingSquare(defendingPlayer);
-		return isSquareThreatened(defendingPlayer, kingSqr);
+		long kingMask = bitboard.getPieces(defendingPlayer, Pieces.KING);
+		return isSquareThreatened(defendingPlayer, kingMask);
 	}
 
 	/**
-	 * Tarkistaa, onko vastustajalla mahdollisia hyökkäyssiirtoja, jotka kohdistuvat annettuun
-	 * ruutuun.
+	 * Tarkistaa, onko vastustajalla mahdollisia hyökkäyssiirtoja, jotka kohdistuvat johonkin
+	 * annettuista ruuduista.
 	 *
 	 * @param defendingPLayer puolustava pelaaja
 	 * @param sqr
-	 * @return
+	 * @return true jos jokin ruutu on uhattuna
 	 */
-	public boolean isSquareThreatened(int defendingPLayer, int sqr)
+	public boolean isSquareThreatened(int defendingPlayer, long sqrs)
 	{
-		int attackingPlayer = 1 - defendingPLayer;
-		long sqrBit = 1L << sqr;
+		int attackingPlayer = 1 - defendingPlayer;
 		for (int pieceType = 0; pieceType < Pieces.COUNT; ++pieceType) {
 			long pieces = bitboard.getPieces(attackingPlayer, pieceType);
 			for (; pieces != 0; pieces -= Long.lowestOneBit(pieces)) {
 				int attackingSqr = Long.numberOfTrailingZeros(pieces);
-				long attackMoves = getAttackMoves(attackingPlayer, pieceType, attackingSqr);
-				if ((sqrBit & attackMoves) != 0)
+				long attackMoves = getThreatenedSquares(attackingPlayer, pieceType, attackingSqr);
+				if ((sqrs & attackMoves) != 0)
 					return true;
 			}
 		}
@@ -490,7 +520,7 @@ public final class GameState
 	public GameState clone()
 	{
 		return new GameState(bitboard.clone(), zobristCodes.clone(), enPassantSquares.clone(),
-				ply, nextMovingPlayer);
+				castlingRights.clone(), ply, nextMovingPlayer);
 	}
 
 	/**
@@ -507,9 +537,12 @@ public final class GameState
 	public boolean equals(Object obj)
 	{
 		GameState state2 = (GameState) obj;
-		return bitboard.equals(state2.bitboard)
+		boolean result = bitboard.equals(state2.bitboard)
 				&& nextMovingPlayer == state2.nextMovingPlayer
-				&& enPassantSquares[ply] == state2.enPassantSquares[state2.ply];
+				&& enPassantSquares[ply] == state2.enPassantSquares[state2.ply]
+				&& castlingRights[ply] == state2.castlingRights[state2.ply];
+		assert !result || zobristCodes[ply] == state2.zobristCodes[state2.ply];
+		return result;
 	}
 
 	/**
@@ -525,53 +558,15 @@ public final class GameState
 	/**
 	 * Luo pelitilanteen kopioimalla sen toisesta pelitilanteesta.
 	 */
-	private GameState(BitBoard board, long[] zobristCodes, int[] enPassantSquares, int ply,
-			int nextMovingPlayer)
+	private GameState(BitBoard board, long[] zobristCodes, int[] enPassantSquares,
+			long[] castlingRights, int ply, int nextMovingPlayer)
 	{
 		this.bitboard = board;
 		this.zobristCodes = zobristCodes;
 		this.enPassantSquares = enPassantSquares;
+		this.castlingRights = castlingRights;
 		this.ply = ply;
 		this.nextMovingPlayer = nextMovingPlayer;
-	}
-
-	/**
-	 * Luo satunnaisen pelitilanteen. Jos pelitilanne ei ole laillinen, arvotaan uusi niin kauan
-	 * kunnes laillinen tilanne löytyy.
-	 */
-	private void randomize(Random rnd)
-	{
-		do {
-			bitboard.clear();
-			addRandomizedPieces(1, 1, Pieces.KING, rnd);
-			addRandomizedPieces(0, 1, Pieces.QUEEN, rnd);
-			addRandomizedPieces(0, 2, Pieces.ROOK, rnd);
-			addRandomizedPieces(0, 2, Pieces.BISHOP, rnd);
-			addRandomizedPieces(0, 2, Pieces.KNIGHT, rnd);
-			addRandomizedPieces(0, 8, Pieces.PAWN, rnd);
-		} while (isCheckMate() || isStaleMate() || isKingChecked(Players.BLACK));
-	}
-
-	/**
-	 * Lisää satunnaisen määrän tietyn tyyppisiä nappuloita kummallekin pelaajalle.
-	 *
-	 * @param min minimimäärä
-	 * @param max maksimimäärä
-	 * @param pieceType tyyppi
-	 * @param rnd satunnaisgeneraattori
-	 */
-	private void addRandomizedPieces(int min, int max, int pieceType, Random rnd)
-	{
-		for (int player = 0; player < 2; ++player) {
-			int n = min + rnd.nextInt(1 + max - min);
-			for (int i = 0; i < n; ++i) {
-				int sqr;
-				do {
-					sqr = pieceType != Pieces.PAWN ? rnd.nextInt(64) : 8 + rnd.nextInt(48);
-				} while (bitboard.hasPiece(sqr));
-				addPiece(player, pieceType, sqr);
-			}
-		}
 	}
 
 	/**
@@ -599,34 +594,6 @@ public final class GameState
 	{
 		bitboard.removePiece(player, piece, sqr);
 		zobristCodes[ply] ^= ZOBRIST_RND[player * Pieces.COUNT * 64 + piece * 64 + sqr];
-	}
-
-	/**
-	 * Lisää nappulat normaalin aloitusmuodostelman mukaisesti.
-	 */
-	private void setupInitialPosition()
-	{
-		addInitialPiece(0, 0, Pieces.ROOK);
-		addInitialPiece(0, 1, Pieces.KNIGHT);
-		addInitialPiece(0, 2, Pieces.BISHOP);
-		addInitialPiece(0, 3, Pieces.QUEEN);
-		addInitialPiece(0, 4, Pieces.KING);
-		addInitialPiece(0, 5, Pieces.BISHOP);
-		addInitialPiece(0, 6, Pieces.KNIGHT);
-		addInitialPiece(0, 7, Pieces.ROOK);
-		for (int i = 0; i < 8; ++i)
-			addInitialPiece(1, i, Pieces.PAWN);
-	}
-
-	/**
-	 * Lisää nappulan samaan kohtaan kummallekin pelaajalle (x-akselin suhteen peilattuna)
-	 */
-	private void addInitialPiece(int row, int col, int piece)
-	{
-		int sqr = row * 8 + col;
-		addPiece(Players.BLACK, piece, sqr);
-		int sqr2 = (7 - row) * 8 + col;
-		addPiece(Players.WHITE, piece, sqr2);
 	}
 
 	/**
@@ -693,5 +660,107 @@ public final class GameState
 			zobristCodes[ply] ^= ZOBRIST_RND_EN_PASSANT[enPassantSquares[ply]];
 		} else
 			enPassantSquares[ply] = -1;
+	}
+
+	/**
+	 * Jos siirretään kuningasta tai tornia, poistetaan vastaavat tornitusmahdollisuudet.
+	 */
+	private void updateCastlingRights(int move)
+	{
+		castlingRights[ply] = castlingRights[ply - 1];
+		if (Move.getPieceType(move) == Pieces.KING) {
+			removeCastlingRight(56 * (1 - nextMovingPlayer));
+			removeCastlingRight(56 * (1 - nextMovingPlayer) + 7);
+		} else if (Move.getPieceType(move) == Pieces.ROOK)
+			removeCastlingRight(Move.getFromSqr(move));
+	}
+
+	/**
+	 * Poistaa annettua torniruutua vastaavan tornitusoikeuden.
+	 */
+	private void removeCastlingRight(int rookSqr)
+	{
+		long sqrBit = 1L << rookSqr;
+		if ((castlingRights[ply] & sqrBit) != 0) {
+			castlingRights[ply] &= ~sqrBit;
+			zobristCodes[ply] ^= ZOBRIST_RND_CASTLINGRIGHTS[rookSqr];
+		}
+	}
+
+	/**
+	 * Jos siirto on tornitus, siirtää tornin oikeaan kohtaan.
+	 */
+	private void handleCastlingMove(int move)
+	{
+		int toSqr = Move.getToSqr(move);
+		if (Move.getPieceType(move) == Pieces.KING && ((Move.getFromSqr(move) - toSqr) & 3) == 2) {
+			int row = toSqr >>> 3;
+			int col = toSqr & 7;
+			int rookFromSqr, rookToSqr;
+			if (col == 2) {
+				rookFromSqr = 8 * row + 0;
+				rookToSqr = 8 * row + 3;
+			} else {
+				rookFromSqr = 8 * row + 7;
+				rookToSqr = 8 * row + 5;
+			}
+			removePiece(nextMovingPlayer, Pieces.ROOK, rookFromSqr);
+			addPiece(nextMovingPlayer, Pieces.ROOK, rookToSqr);
+		}
+	}
+
+	/**
+	 * Peruu aikaisemman tornituksen, eli siirtää tornin takaisin aikaisempaan ruutuun.
+	 */
+	private void undoCastlingMove(int move)
+	{
+		int toSqr = Move.getToSqr(move);
+		if (Move.getPieceType(move) == Pieces.KING && ((Move.getFromSqr(move) - toSqr) & 3) == 2) {
+			int row = toSqr >>> 3;
+			int col = toSqr & 7;
+			int rookFromSqr, rookToSqr;
+			if (col == 2) {
+				rookFromSqr = 8 * row + 0;
+				rookToSqr = 8 * row + 3;
+			} else {
+				rookFromSqr = 8 * row + 7;
+				rookToSqr = 8 * row + 5;
+			}
+			removePiece(nextMovingPlayer, Pieces.ROOK, rookToSqr);
+			addPiece(nextMovingPlayer, Pieces.ROOK, rookFromSqr);
+		}
+	}
+
+	/**
+	 * Palauttaa sallitut tornitussiirrot annetulle pelaajalle. Vaatimukset tornitukselle:
+	 * - kyseinen tornitusoikeus on vielä voimassa (tornia tai kuningasta ei siirretty)
+	 * - ruudut kuninkaan ja tornin välillä ovat tyhjiä
+	 * - kuningas ei saa olla uhattuna missään ruudussa, jonka kautta se kulkee
+	 *
+	 * @param player
+	 * @return tornitussiirrot bittimaskina (kuninkaan kohderuudut)
+	 */
+	private long getCastlingMoves(int player)
+	{
+		int rowOffset = 56 * (1 - player);
+		long moves = 0;
+		if ((castlingRights[ply] & (1L << rowOffset)) != 0) {
+			long betweenSquares = (1L << 1 | 1L << 2 | 1L << 3) << rowOffset;
+			if ((betweenSquares & bitboard.getPieces()) == 0) {
+				long kingSqrs = (1L << 2 | 1L << 3 | 1L << 4) << rowOffset;
+				if (!isSquareThreatened(player, kingSqrs))
+					moves |= 1L << 2;
+			}
+		}
+		if ((castlingRights[ply] & (1L << (rowOffset + 7))) != 0) {
+			long betweenSquares = (1L << 5 | 1L << 6) << rowOffset;
+			if ((betweenSquares & bitboard.getPieces()) == 0) {
+				long kingSqrs = (1L << 4 | 1L << 5 | 1L << 6) << rowOffset;
+				if (!isSquareThreatened(player, kingSqrs))
+					moves |= 1L << 6;
+			}
+		}
+		moves <<= rowOffset;
+		return moves;
 	}
 }

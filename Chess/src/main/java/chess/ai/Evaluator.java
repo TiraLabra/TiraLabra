@@ -102,6 +102,9 @@ final class Evaluator
 		if (capturedType >= 0)
 			score += Scores.POSITIONAL_PIECE_VALUES[1 - player][capturedType][toSqr];
 
+		// Tornituksien ja ohestalyöntien aiheuttamat positiomuutokset tulisi periaatteessa myös
+		// huomoida, mutta hyöty on pieni verrattuna tehokkuusmenetykseen.
+
 		scores[++ply] = -score;
 		player = 1 - player;
 	}

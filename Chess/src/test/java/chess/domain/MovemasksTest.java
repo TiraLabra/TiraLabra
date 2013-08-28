@@ -57,21 +57,13 @@ public class MovemasksTest
 	public void rookMovesOnEmptyBoard()
 	{
 		assertEquals(toStr(sqrs(5, 13, 16, 17, 18, 19, 20, 22, 23, 29, 37, 45, 53, 61)),
-				toStr(Movemasks.getRookMoves(21, sqrs(), sqrs())));
+				toStr(Movemasks.getRookMoves(21, sqrs())));
 	}
 
 	@Test
-	public void rookMovesWithFriendlyBlockers()
+	public void rookMovesWithBlockers()
 	{
-		long friendlyPieces = sqrs(34, 19, 38, 39, 3, 23, 26, 42, 59);
-		long moves = Movemasks.getRookMoves(35, friendlyPieces, friendlyPieces);
-		assertEquals(toStr(sqrs(27, 36, 37, 43, 51)), toStr(moves));
-	}
-
-	@Test
-	public void rookMovesWithEnemyBlockers()
-	{
-		long moves = Movemasks.getRookMoves(35, sqrs(34, 19, 38, 39, 3, 23, 26, 42, 59), sqrs());
+		long moves = Movemasks.getRookMoves(35, sqrs(34, 19, 38, 39, 3, 23, 26, 42, 59));
 		assertEquals(toStr(sqrs(34, 27, 19, 36, 37, 38, 43, 51, 59)), toStr(moves));
 	}
 
@@ -79,29 +71,21 @@ public class MovemasksTest
 	public void bishopMovesOnEmptyBoard()
 	{
 		assertEquals(toStr(sqrs(57, 41, 32, 43, 36, 29, 22, 15, 59)),
-				toStr(Movemasks.getBishopMoves(50, sqrs(), sqrs())));
+				toStr(Movemasks.getBishopMoves(50, sqrs())));
 	}
 
 	@Test
-	public void bishopMovesWithFriendlyBlockers()
+	public void bishopMovesWithBlockers()
 	{
-		long friendlyPieces = sqrs(17, 30, 62, 51, 43, 46, 49);
-		long moves = Movemasks.getBishopMoves(44, friendlyPieces, friendlyPieces);
-		assertEquals(toStr(sqrs(35, 26, 37, 53)), toStr(moves));
-	}
-
-	@Test
-	public void bishopMovesWithEnemyBlockers()
-	{
-		long moves = Movemasks.getBishopMoves(44, sqrs(17, 30, 62, 51, 43, 46, 49), sqrs());
+		long moves = Movemasks.getBishopMoves(44, sqrs(17, 30, 62, 51, 43, 46, 49));
 		assertEquals(toStr(sqrs(51, 35, 26, 17, 37, 30, 53, 62)), toStr(moves));
 	}
 
 	@Test
 	public void queenMoves()
 	{
-		long moves = Movemasks.getQueenMoves(20, sqrs(22, 36, 29, 41), sqrs(22, 36));
-		assertEquals(toStr(sqrs(19, 18, 17, 16, 11, 2, 12, 4, 13, 6, 21, 29, 28, 27, 34, 41)),
+		long moves = Movemasks.getQueenMoves(20, sqrs(22, 36, 29, 41, 18, 58));
+		assertEquals(toStr(sqrs(19, 18, 11, 2, 12, 4, 13, 6, 21, 29, 28, 27, 34, 41, 22, 36)),
 				toStr(moves));
 	}
 }

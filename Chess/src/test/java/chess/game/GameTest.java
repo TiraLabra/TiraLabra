@@ -103,10 +103,10 @@ public class GameTest
 		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
 		game.run();
 		assertEquals(4, game.getState().getEarlierStates().length);
-		assertEquals(Pieces.PAWN, game.getState().getBoard()[45]);
-		assertEquals(Pieces.COUNT + Pieces.PAWN, game.getState().getBoard()[28]);
-		assertEquals(Pieces.PAWN, game.getState().getBoard()[38]);
-		assertEquals(Pieces.COUNT + Pieces.QUEEN, game.getState().getBoard()[39]);
+		assertEquals(Pieces.PAWN, game.getState().getBoard().getPieceType(0, 45));
+		assertEquals(Pieces.PAWN, game.getState().getBoard().getPieceType(1, 28));
+		assertEquals(Pieces.PAWN, game.getState().getBoard().getPieceType(0, 38));
+		assertEquals(Pieces.QUEEN, game.getState().getBoard().getPieceType(1, 39));
 	}
 
 	@Test
