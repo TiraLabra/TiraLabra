@@ -7,12 +7,18 @@ package domain;
  */
 public class Pino {
 
+    /**
+     * Kokonaisluku, joka kertoo pinon huipun viitteen
+     */
     private int top;
+    /**
+     * Object-luokan taulukko-olio, johon tallennettaan pinon oliot
+     */
     private Object[] table;
 
     /**
-     * Konstruktori, joka luo uuden tyhjän pinon, jonka koon se saa
-     * konstruktorin parametrina
+     * Konstruktori, joka luo uuden tyhjän pinon, jonka koko annetaan
+     * parametrina
      *
      * @param pinonKoko Kokonaisluku
      */

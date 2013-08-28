@@ -10,17 +10,50 @@ import java.util.Scanner;
  */
 public class Laskin {
 
+    /**
+     * Scanner-luokan olio, joka lukee käyttäjän antaman syötteen
+     */
     private Scanner lukija;
+    /**
+     * Laskin-luokan olion tunnistamat kokonaisluvut merkkijonona
+     */
     private String kokonaisluvut;
+    /**
+     * Käyttäjän syötteessä sallitut merkit merkkijonona
+     */
     private String sallitutMerkit;
 
+    /**
+     * Lueteltu tyyppi, jonka vakioarvoja käytetään Laskin-luokan metodeissa
+     * operandipinon muodostamiseksi
+     */
     private enum OPERANDI {
 
-        PLUS, MIINUS, KERTO, JAKO, ALKUSULKU
+        /**
+         *
+         */
+        PLUS,
+        /**
+         *
+         */
+        MIINUS,
+        /**
+         *
+         */
+        KERTO,
+        /**
+         *
+         */
+        JAKO,
+        /**
+         *
+         */
+        ALKUSULKU
     };
 
     /**
-     * Konstruktori
+     * Konstruktori, joka luo uuden laskimen määrittäen tunnistetut
+     * kokonaisluvut, sallitut syötemerkit ja syötteen käyttäjän antamaksi
      */
     public Laskin() {
         lukija = new Scanner(System.in);
