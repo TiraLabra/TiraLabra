@@ -7,10 +7,13 @@ import chess.domain.Players;
 import chess.util.CustomArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GameTest
 {
+	private GameState state;
+
 	private Game game;
 
 	private static String[] mateMoves = new String[]{
@@ -97,10 +100,16 @@ public class GameTest
 		}
 	}
 
+	@Before
+	public void setup()
+	{
+		state = new GameState();
+	}
+
 	@Test
 	public void usesPlayerMoves()
 	{
-		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
+		game = new Game(state, new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
 		game.run();
 		assertEquals(4, game.getState().getEarlierStates().length);
 		assertEquals(Pieces.PAWN, game.getState().getBoard().getPieceType(0, 45));
@@ -112,7 +121,7 @@ public class GameTest
 	@Test
 	public void detectsStaleMate()
 	{
-		game = new Game(new TestPlayer(staleMateMoves), new TestPlayer(staleMateMoves), null);
+		game = new Game(state, new TestPlayer(staleMateMoves), new TestPlayer(staleMateMoves), null);
 		game.run();
 		assertEquals(-1, game.getResult());
 	}
@@ -120,7 +129,7 @@ public class GameTest
 	@Test
 	public void setsResult()
 	{
-		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
+		game = new Game(state, new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
 		game.run();
 		assertEquals(Players.BLACK, game.getResult());
 	}
@@ -129,7 +138,7 @@ public class GameTest
 	public void notifiesObserverAboutMoves()
 	{
 		TestObserver obs = new TestObserver();
-		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), obs);
+		game = new Game(state, new TestPlayer(mateMoves), new TestPlayer(mateMoves), obs);
 		game.run();
 		assertEquals(4, obs.moves.size());
 		assertEquals(mateMoves[2], Move.toString(obs.moves.get(2).intValue()));
@@ -139,7 +148,7 @@ public class GameTest
 	public void notifiesObserverAboutResult()
 	{
 		TestObserver obs = new TestObserver();
-		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), obs);
+		game = new Game(state, new TestPlayer(mateMoves), new TestPlayer(mateMoves), obs);
 		game.run();
 		assertEquals(1, obs.results.size());
 		assertEquals(1, obs.results.get(0).intValue());
@@ -148,7 +157,7 @@ public class GameTest
 	@Test
 	public void setsMoveHistory()
 	{
-		game = new Game(new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
+		game = new Game(state, new TestPlayer(mateMoves), new TestPlayer(mateMoves), null);
 		game.run();
 		assertEquals(mateMoves.length, game.getMoves().size());
 		assertEquals(mateMoves[0], Move.toString(game.getMoves().get(0).intValue()));
@@ -160,7 +169,7 @@ public class GameTest
 	@Test
 	public void canBeInterrupted()
 	{
-		game = new Game(new TestPlayer2(), new TestPlayer2(), null);
+		game = new Game(state, new TestPlayer2(), new TestPlayer2(), null);
 		Thread thr = new Thread(game);
 		thr.start();
 		thr.interrupt();

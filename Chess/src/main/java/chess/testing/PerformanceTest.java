@@ -1,8 +1,8 @@
 package chess.testing;
 
 import chess.ai.MinMaxAI;
+import chess.domain.GameGenerator;
 import chess.domain.GameState;
-import chess.domain.Randomizer;
 import chess.util.Logger;
 import java.util.Random;
 
@@ -67,7 +67,7 @@ public class PerformanceTest implements Runnable
 			MinMaxAI ai = new MinMaxAI(logger, depth, 30, 0.0, 0);
 			n = 0;
 			while (totalTime < length) {
-				totalTime += runSingleTest(ai, rnd);
+				totalTime += runSingleTest(ai, rnd.nextLong());
 				++n;
 			}
 
@@ -88,9 +88,9 @@ public class PerformanceTest implements Runnable
 	 * @param rnd Random-objekti satunnaisen pelitilanteen generoimiseksi
 	 * @return palauttaa käytetyn ajan, poislukien pelitilanteen arpomiseen kulunut aika
 	 */
-	private double runSingleTest(MinMaxAI ai, Random rnd)
+	private double runSingleTest(MinMaxAI ai, long seed)
 	{
-		GameState state = Randomizer.createGame(rnd);
+		GameState state = GameGenerator.createGame(seed);
 
 		long start = System.nanoTime();
 		try {

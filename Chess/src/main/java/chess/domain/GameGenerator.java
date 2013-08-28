@@ -5,16 +5,17 @@ import java.util.Random;
 /**
  * Satunnaisen pelitilanteen luominen.
  */
-public final class Randomizer
+public final class GameGenerator
 {
 	/**
 	 * Luo satunnaisen pelitilanteen. Jos pelitilanne ei ole laillinen, arvotaan uusi niin kauan
 	 * kunnes laillinen tilanne löytyy.
 	 *
-	 * @param rnd satunnaisgeneraattori
+	 * @param seed siemenluku satunnaisgeneraattoria varten
 	 */
-	public static GameState createGame(Random rnd)
+	public static GameState createGame(long seed)
 	{
+		Random rnd = new Random(seed);
 		GameState state;
 		do {
 			BitBoard board = new BitBoard();

@@ -14,12 +14,12 @@ public class Game implements Runnable
 	/**
 	 * Pelitilanne.
 	 */
-	private GameState state = new GameState();
+	private final GameState state;
 
 	/**
 	 * Pelaajat.
 	 */
-	private Player[] players = new Player[2];
+	private final Player[] players = new Player[2];
 
 	/**
 	 * Pelin voittaja (-1 jos kesken tai patti).
@@ -29,24 +29,26 @@ public class Game implements Runnable
 	/**
 	 * Observer-objekti, jolle annetaan tietoa pelin etenemisestä.
 	 */
-	private Observer observer;
+	private final Observer observer;
 
 	/**
 	 * Lista kaikista siirroista.
 	 */
-	private List<Integer> moves = new CustomArrayList<Integer>();
+	private final List<Integer> moves = new CustomArrayList<Integer>();
 
 	/**
-	 * Luo uuden pelin.
+	 * Luo uuden pelin käyttäen annettua aloituspelitilannetta.
 	 *
+	 * @param state pelitilanne
 	 * @param whitePlayer valkoinen pelaaja
 	 * @param blackPlayer musta pelaaja
 	 * @param observer tarkkailijaobjekti
 	 */
-	public Game(Player whitePlayer, Player blackPlayer, Observer observer)
+	public Game(GameState state, Player whitePlayer, Player blackPlayer, Observer observer)
 	{
-		players[Players.WHITE] = whitePlayer;
-		players[Players.BLACK] = blackPlayer;
+		this.state = state;
+		this.players[Players.WHITE] = whitePlayer;
+		this.players[Players.BLACK] = blackPlayer;
 		this.observer = observer;
 	}
 

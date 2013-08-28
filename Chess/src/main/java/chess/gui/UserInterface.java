@@ -1,5 +1,6 @@
 package chess.gui;
 
+import chess.ai.BalancedGameGenerator;
 import chess.ai.MinMaxAI;
 import chess.ai.Node;
 import chess.domain.GameState;
@@ -18,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -98,8 +100,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 */
 	private JMenuItem newGameItem, newGameItem2, exitItem, perfTestItem, perfTest2Item,
 			showGameTreeItem;
+	private JCheckBoxMenuItem debugInfoItem, randomItem;
 
-	private JCheckBoxMenuItem debugInfoItem;
 
 	@Override
 	public void run()
@@ -161,6 +163,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 
 		newGameItem = createMenuItem(gameMenu, "New game");
 		newGameItem2 = createMenuItem(gameMenu, "New game (AI vs AI)");
+		randomItem = createCheckBoxMenuItem(gameMenu, "Random start position");
 		exitItem = createMenuItem(gameMenu, "Exit");
 
 		JMenu debugMenu = new JMenu("Info");
@@ -289,7 +292,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 
 		aiPlayer = new MinMaxAI(logArea);
 		refreshLoggingEnabledState();
-		game = new Game(aiVsAi ? new MinMaxAI(logArea) : this, aiPlayer, this);
+		game = new Game(createGame(), aiVsAi ? new MinMaxAI(logArea) : this, aiPlayer, this);
 
 		logArea.logMessage("--- Game started ---");
 		selectedSquare = -1;
@@ -301,6 +304,14 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 
 		gameThread = new Thread(game);
 		gameThread.start();
+	}
+
+	private GameState createGame()
+	{
+		if (randomItem.getState())
+			return BalancedGameGenerator.createGame(new Random().nextLong(), 1.0);
+		else
+			return new GameState();
 	}
 
 	/**
