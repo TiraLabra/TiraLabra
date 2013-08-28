@@ -7,7 +7,8 @@ Testisyötteet olivat:
 1. Sama merkki toistettuna n kertaa (static n increase)
 2. Loin aluksi max-merkkisen satunnaissyötteen, josta otin n ensimmäistä merkkiä (single random
 3. Jokaisella diskreetillä n arvolla loin uuden n-merkkisen satunnaissyötteen (full random)
-4. 
+
+
 ## Miten testit voidaan toistaa
 
 Ajamalla ```fi.jw.cs.tiralabra.cli.PerformanceTester```
