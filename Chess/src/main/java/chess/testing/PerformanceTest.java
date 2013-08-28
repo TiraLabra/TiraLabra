@@ -1,5 +1,6 @@
-package chess.ai;
+package chess.testing;
 
+import chess.ai.MinMaxAI;
 import chess.domain.GameState;
 import chess.domain.Randomizer;
 import chess.util.Logger;

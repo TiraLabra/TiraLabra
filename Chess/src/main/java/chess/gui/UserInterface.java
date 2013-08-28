@@ -2,7 +2,6 @@ package chess.gui;
 
 import chess.ai.MinMaxAI;
 import chess.ai.Node;
-import chess.ai.PerformanceTest;
 import chess.domain.GameState;
 import chess.domain.Move;
 import chess.domain.Pieces;
@@ -10,6 +9,7 @@ import chess.domain.Players;
 import chess.game.Game;
 import chess.game.Observer;
 import chess.game.Player;
+import chess.testing.PerformanceTest;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
