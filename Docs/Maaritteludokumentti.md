@@ -33,7 +33,7 @@ jonotietorakenteiden edellä mainittujen operaatioiden aikafunktion asymptoottin
 yläraja on luokkaa O(1) ja tilafunktion O(n).
 
 Lisäksi ohjelma pystyy käsittelemään UNIX grep -tyylisiä säännöllisiä lausekkeita
-käyttäen äärellistä (determinististä) automaattia joka käy läpi tiloja
+käyttäen äärellistä (epädeterminististä) automaattia joka käy läpi tiloja
 leveyssuuntaisesti [2].
 
 Lähteet:
