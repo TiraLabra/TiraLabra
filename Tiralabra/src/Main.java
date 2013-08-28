@@ -15,25 +15,25 @@ public class Main {
      */
     public static void main(String[] args) {
         Laskin laskin = new Laskin();
-//        laskin.kaynnista();
+        laskin.kaynnista();
 
         //Suorituskykytestit
-        String laskutoimitus1 = "3*9-5";
-        long testi1AikaAlussa = System.currentTimeMillis();
-        int ratkaisu1 = laskin.ratkaiseLaskutoimitus(laskutoimitus1);
-        long testi1AikaLopussa = System.currentTimeMillis();
-        System.out.println("Laskutoimitukseen " + laskutoimitus1 + "=" + ratkaisu1 + " kului aikaa: " + (testi1AikaLopussa - testi1AikaAlussa) + " ms.");
-
-        String laskutoimitus2 = "45/5+(500-30)";
-        long testi2AikaAlussa = System.currentTimeMillis();
-        int ratkaisu2 = laskin.ratkaiseLaskutoimitus(laskutoimitus2);
-        long testi2AikaLopussa = System.currentTimeMillis();
-        System.out.println("Laskutoimitukseen " + laskutoimitus2 + "=" + ratkaisu2 + " kului aikaa: " + (testi2AikaLopussa - testi2AikaAlussa) + " ms.");
-
-        String laskutoimitus3 = "((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35";
-        long testi3AikaAlussa = System.currentTimeMillis();
-        int ratkaisu3 = laskin.ratkaiseLaskutoimitus(laskutoimitus3);
-        long testi3AikaLopussa = System.currentTimeMillis();
-        System.out.println("Laskutoimitukseen " + laskutoimitus3 + "=" + ratkaisu3 + " kului aikaa: " + (testi3AikaLopussa - testi3AikaAlussa) + " ms.");
+//        String laskutoimitus1 = "3*9-5";
+//        long testi1AikaAlussa = System.currentTimeMillis();
+//        int ratkaisu1 = laskin.ratkaiseLaskutoimitus(laskutoimitus1);
+//        long testi1AikaLopussa = System.currentTimeMillis();
+//        System.out.println("Laskutoimitukseen " + laskutoimitus1 + "=" + ratkaisu1 + " kului aikaa: " + (testi1AikaLopussa - testi1AikaAlussa) + " ms.");
+//
+//        String laskutoimitus2 = "45/5+(500-30)";
+//        long testi2AikaAlussa = System.currentTimeMillis();
+//        int ratkaisu2 = laskin.ratkaiseLaskutoimitus(laskutoimitus2);
+//        long testi2AikaLopussa = System.currentTimeMillis();
+//        System.out.println("Laskutoimitukseen " + laskutoimitus2 + "=" + ratkaisu2 + " kului aikaa: " + (testi2AikaLopussa - testi2AikaAlussa) + " ms.");
+//
+//        String laskutoimitus3 = "((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35+((3000/5)+248)*35";
+//        long testi3AikaAlussa = System.currentTimeMillis();
+//        int ratkaisu3 = laskin.ratkaiseLaskutoimitus(laskutoimitus3);
+//        long testi3AikaLopussa = System.currentTimeMillis();
+//        System.out.println("Laskutoimitukseen " + laskutoimitus3 + "=" + ratkaisu3 + " kului aikaa: " + (testi3AikaLopussa - testi3AikaAlussa) + " ms.");
     }
 }

@@ -30,23 +30,29 @@ public class Laskin {
     private enum OPERANDI {
 
         /**
-         *
+         * OPERANDI-enumluokan arvo, jota käytetään operandipinossa ilmaisemaan
+         * yhteenlaskuoperaation suorittamista
          */
         PLUS,
         /**
-         *
+         * OPERANDI-enumluokan arvo, jota käytetään operandipinossa ilmaisemaan
+         * vähennyslaskuoperaation suorittamista
          */
         MIINUS,
         /**
-         *
+         * OPERANDI-enumluokan arvo, jota käytetään operandipinossa ilmaisemaan
+         * kertolaskuoperaation suorittamista
          */
         KERTO,
         /**
-         *
+         * OPERANDI-enumluokan arvo, jota käytetään operandipinossa ilmaisemaan
+         * jakolaskuoperaation suorittamista
          */
         JAKO,
         /**
-         *
+         * OPERANDI-enumluokan arvo, jota käytetään operandipinossa ilmaisemaan
+         * kohtaa ,jonka jälkeiset laskuoperaatiot suoritetaan, kun käyttäjän
+         * syötteestä on luettu loppusulku
          */
         ALKUSULKU
     };
