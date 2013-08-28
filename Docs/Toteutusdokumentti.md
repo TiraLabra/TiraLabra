@@ -29,9 +29,7 @@ q) Quit
 
 ### Huffman
 
-Wikipedia-artikkelin mukaan Huffman-koodauksen vaativuus on O(n log n). Testasin aikavaativuutta kolmella eri metodilla ja kaikilla vaikuttaisi n=20M asti graafit melko lineaarisilta.
-
-![Huffman encoding performance](huffman-perf-graphs.png "Huffman encoding performance")
+Wikipedia-artikkelin mukaan Huffman-koodauksen vaativuus on O(n log n), omien testien perusteella performanssi on ainakin n=20M asti melko lineaarista.
 
 ## Suorituskyky- ja O-analyysivertailu (mikäli työ vertailupainotteinen)
 
