@@ -27,6 +27,12 @@ q) Quit
 
 ## Saavutetut aika- ja tilavaativuudet (m.m. O-analyysi pseudokoodista)
 
+### Huffman
+
+Wikipedia-artikkelin mukaan Huffman-koodauksen vaativuus on O(n log n). Testasin aikavaativuutta kolmella eri metodilla ja kaikilla vaikuttaisi n=20M asti graafit melko lineaarisilta.
+
+![Huffman encoding performance](huffman-perf-graphs.png "Huffman encoding performance")
+
 ## Suorituskyky- ja O-analyysivertailu (mikäli työ vertailupainotteinen)
 
 Huffman-pakkauksesta voisin sanoa sen verran, että 4.2 MB kokoinen raamatun englanninkielinen versio (33978 riviä, 840245 sanaa, 4397206 merkkiä) pakkautuu noin 4 sekunnissa 57%:iin alkuperäiskoosta.
