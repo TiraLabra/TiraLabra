@@ -1,10 +1,10 @@
 package fi.jw.cs.tiralabra.cli;
 
 import fi.jw.cs.tiralabra.BinaryTreeMap;
+import fi.jw.cs.tiralabra.Huffman;
 import fi.jw.cs.tiralabra.SimplePriorityQueue;
 
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Simple performance tests in a console application
@@ -14,14 +14,92 @@ import java.util.PriorityQueue;
  */
 public class PerformanceTester {
     public static void main(String... args) {
-        int n = 1000000;
-        String[][] randomStrings = generateStrings(n);
-        String[] included = randomStrings[0];
-        String[] excluded = randomStrings[1];
+        int n = 20000000;
+		int inc = 500000;
+//        String[][] randomStrings = generateStrings(n);
+//        String[] included = randomStrings[0];
+//        String[] excluded = randomStrings[1];
         //testQueues(n, included, excluded);
         //testMaps(n, included, excluded);
-        testQueueScaling();
+//        testQueueScaling();
+
+		testHuffmanPureN(n,inc);
+		testHuffmanSingleRandom(n,inc);
+		testHuffmanRandom(n,inc);
     }
+
+	private static void testHuffmanPureN(int max, int incrementer) {
+		System.out.println("Test Huffman pure n size");
+		int current = 10;
+
+
+
+		while (current < max) {
+			String msg = getTimesN("A", current);
+			long start = System.currentTimeMillis();
+			Huffman h = new Huffman(msg);
+			h.encode();
+			long end = System.currentTimeMillis();
+
+			System.out.println(current + "," + (end-start));
+			current += incrementer;
+		}
+
+	}
+	private static void testHuffmanRandom(int max, int incrementer) {
+		System.out.println("Test Huffman Random");
+		int current = 10;
+
+		List<Long> times = new ArrayList<>();
+
+
+		while (current < max) {
+			String msg = getRandomTimesN(current);
+			long start = System.currentTimeMillis();
+			Huffman h = new Huffman(msg);
+			h.encode();
+			long end = System.currentTimeMillis();
+			System.out.println(current + "," + (end-start));
+			current += incrementer;
+		}
+
+	}
+
+	private static void testHuffmanSingleRandom(int max, int incrementer) {
+		System.out.println("Test Huffman Single Random");
+		int current = 10;
+
+		String wholeRandom = getRandomTimesN(max);
+		long[] times = new long[max];
+		while (current < max) {
+			String msg = wholeRandom.substring(0,current);
+			long start = System.currentTimeMillis();
+			Huffman h = new Huffman(msg);
+			h.encode();
+			long end = System.currentTimeMillis();
+			System.out.println(current + "," + (end-start));
+			current += incrementer;
+		}
+
+	}
+
+	private static String getTimesN(String str, int n) {
+		StringBuilder sb = new StringBuilder(n);
+		int i = 0;
+		while (i++ < n)
+			sb.append(str);
+
+		return sb.toString();
+	}
+	private static String getRandomTimesN(int n) {
+		StringBuilder sb = new StringBuilder(n);
+		int i = 0;
+		Random r = new Random();
+		while (i++ < n)
+			sb.append((char)r.nextInt(255));
+
+		return sb.toString();
+	}
 
     private static void testQueueScaling() {
         int repetitions = 10;
