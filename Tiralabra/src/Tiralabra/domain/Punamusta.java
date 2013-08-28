@@ -143,6 +143,9 @@ public class Punamusta implements Puu {
      */
     private SolmuPunamusta etsiSolmu(int key) {
         SolmuPunamusta kulkija = this.juuri;
+        if (kulkija == null) {
+            return null;
+        }
         while (kulkija.getArvo() != key) {
             if (key < kulkija.getArvo()) {
                 kulkija = kulkija.getVasen();

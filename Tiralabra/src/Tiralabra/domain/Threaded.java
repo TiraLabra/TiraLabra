@@ -34,6 +34,9 @@ public class Threaded implements Puu {
     public String tulostaArvot() {
         String arvot = "";
         SolmuThreaded pointteri = juuri;
+        if (pointteri == null) {
+            return "";
+        }
         while (pointteri.getVasen() != null) {
             pointteri = pointteri.getVasen();
         }
@@ -52,10 +55,14 @@ public class Threaded implements Puu {
             juuri = new SolmuThreaded(key);
             return;
         }
+        
         SolmuThreaded parent = juuri;
         SolmuThreaded uusi = new SolmuThreaded(key);
 
         while (true) {
+            if (key == parent.getKey()) {
+                break;
+            }
             if (key < parent.getKey()) {
                 if (parent.getVasen() == null || !parent.vasenStatusGet()) {
                     parent.vasemmanLapsenStatusSet(true);
@@ -188,7 +195,6 @@ public class Threaded implements Puu {
         
         //poistettava on vanhempansa oikea lapsi, edellisen kanssa symmetrinen
         else if (pois.getParent().getOikea() != null && pois.getParent().getOikea().getKey() == pois.getKey()) {
-
             if (!pois.oikeaStatusGet() && !pois.vasenStatusGet()) {
                 pois.getParent().setOikea(pois.getOikea());
                 pois.getParent().oikeanLapsenStatusSet(false);
@@ -220,6 +226,9 @@ public class Threaded implements Puu {
      */
     private SolmuThreaded searchThreaded(int key) {
         SolmuThreaded kulkija = this.juuri;
+        if (kulkija == null) {
+            return null;
+        }
         while (kulkija.getKey() != key) {
             if (key < kulkija.getKey() && kulkija.vasenStatusGet()) {
                 kulkija = kulkija.getVasen();
