@@ -34,7 +34,11 @@ yläraja on luokkaa O(1) ja tilafunktion O(n).
 
 Lisäksi ohjelma pystyy käsittelemään UNIX grep -tyylisiä säännöllisiä lausekkeita
 käyttäen äärellistä (epädeterminististä) automaattia joka käy läpi tiloja
-leveyssuuntaisesti [2].
+leveyssuuntaisesti [2]. Parhaassa tapauksessa tällaisen läpikäynnin aikavaativuus
+lienee luokkaa O(n). Esimerkiksi jos säännöllinen kieli on muotoa a+ koska
+jokaisella tilalla voi tällöin vain yksi mahdollinen tilasiirtymä ja viimeinen
+tilasiirtymä on silmukka. Tällöin silmukan suorituskerrat riippuvat täysin 
+syötteenä olevasta merkkijonosta.
 
 Lähteet:
 1.	Shunting yard -algoritmi: http://en.wikipedia.org/wiki/Shunting-yard_algorithm
