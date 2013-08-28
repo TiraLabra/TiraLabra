@@ -1,24 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralabra_maven;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author esaaksvu
- */
 public class AVLHakuPuuTest {
-    
-    public AVLHakuPuuTest() {
-    }
-    
-    /**
-     * Test of lisaaSolmu method, of class AVLHakuPuu.
-     */
+
     @Test
     public void testLisaaSolmu() {
         System.out.println("lisaaSolmu");
@@ -31,23 +17,20 @@ public class AVLHakuPuuTest {
         instance.lisaaSolmu(u2);
         instance.lisaaSolmu(u3);
         String result = instance.toString();
-        
+
         assertEquals(expResult, result);
     }
-    
+
     @Test
-    public void testTasapainoisuus(){
+    public void testTasapainoisuus() {
         AVLHakuPuu avl = new AVLHakuPuu();
         for (int i = 0; i < 7; i++) {
-            avl.lisaaSolmu(new Solmu((int)Math.random()*100));
+            avl.lisaaSolmu(new Solmu((int) Math.random() * 100));
         }
-        boolean b = (avl.juuri.getKorkeus()<3);
+        boolean b = (avl.juuri.getKorkeus() < 3);
         assertEquals(true, b);
     }
 
-    /**
-     * Test of poistaSolmu method, of class AVLHakuPuu.
-     */
     @Test
     public void testPoistaSolmu() {
         System.out.println("poistaSolmu");
@@ -57,8 +40,7 @@ public class AVLHakuPuuTest {
         instance.lisaaSolmu(new Solmu(65));
         instance.lisaaSolmu(new Solmu(3));
         boolean expResult = true;
-        boolean result = instance.poistaSolmu(arvo);
-        assertEquals(expResult, result);   
+        boolean result = instance.poistaSolmu(instance.hae(arvo));
+        assertEquals(expResult, result);
     }
-
 }

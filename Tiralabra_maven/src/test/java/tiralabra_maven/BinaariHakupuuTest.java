@@ -1,28 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralabra_maven;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author esaaksvu
- */
 public class BinaariHakupuuTest {
     
-    public BinaariHakupuuTest() {
-    }
-    
-    /**
-     * Test of lisaaSolmu method, of class BinaariHakupuu.
-     */
     @Test
     public void testLisaaSolmu() {
         System.out.println("lisaaSolmu");
@@ -38,9 +20,6 @@ public class BinaariHakupuuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of poistaSolmu method, of class BinaariHakupuu.
-     */
     @Test
     public void testPoistaSolmu() {
         System.out.println("poistaSolmu");
@@ -53,14 +32,11 @@ public class BinaariHakupuuTest {
         instance.lisaaSolmu(u2);
         instance.lisaaSolmu(u3);
         boolean expResult = true;
-        boolean result = instance.poistaSolmu(i);
+        boolean result = instance.poistaSolmu(u2);
         assertEquals(expResult, result);
         
     }
 
-    /**
-     * Test of hae method, of class BinaariHakupuu.
-     */
     @Test
     public void testHae() {
         System.out.println("hae");
@@ -77,9 +53,6 @@ public class BinaariHakupuuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of toString method, of class BinaariHakupuu.
-     */
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -90,6 +63,20 @@ public class BinaariHakupuuTest {
         instance.lisaaSolmu(u2);
         String expResult = "1{[],2}";
         String result = instance.toString();
+        assertEquals(expResult, result);
+    }
+
+    @Test
+    public void testMin() {
+        System.out.println("min");
+        BinaariHakupuu instance = new BinaariHakupuu();
+        Solmu s = new Solmu(13);
+        instance.lisaaSolmu(s);
+        for (int i = 0; i < 10; i++) {
+            instance.lisaaSolmu(new Solmu(i));
+        }
+        Solmu expResult = instance.hae(0);
+        Solmu result = instance.min(s);
         assertEquals(expResult, result);
     }
 }

@@ -1,11 +1,11 @@
 package tiralabra_maven;
 
 /**
- * AVLPuu toteutus käyttäen perinnöllisyyttä ja rajapintaa
+ * AVLPuu toteutus käyttäen perinnöllisyyttä
  *
  * @author esaaksvu
  */
-public class AVLHakuPuu extends BinaariHakupuu implements PuuRajapinta {
+public class AVLHakuPuu extends BinaariHakupuu {
 
     /**
      * Lisää solmun puuhun
@@ -32,17 +32,17 @@ public class AVLHakuPuu extends BinaariHakupuu implements PuuRajapinta {
     /**
      * Poistaa solmun puusta
      *
-     * @param arvo poistettavan solmun arvo
+     * @param pois poistettavan solmun viite
      * @return true jos poisto onnistuu
      */
     @Override
-    public boolean poistaSolmu(int arvo) {
-        Solmu pois = super.hae(arvo);
+    public boolean poistaSolmu(Solmu pois) {
         if (pois == null) {
             return false;
         }
-        pois = pois.getVanhem();
-        super.poistaSolmu(arvo);
+        Solmu v = pois.getVanhem();
+        super.poistaSolmu(pois);
+        pois = v;
         Solmu p = null;
         if (pois != null) {
             p = pois.getVanhem();
@@ -67,6 +67,7 @@ public class AVLHakuPuu extends BinaariHakupuu implements PuuRajapinta {
     }
 
     private Solmu kaannaVasen(Solmu k1) {
+        if (k1.getOikea()==null) return null;
         Solmu k2 = k1.getOikea();
         k2.setVanhem(k1.getVanhem());
         k1.setVanhem(k2);
@@ -81,6 +82,7 @@ public class AVLHakuPuu extends BinaariHakupuu implements PuuRajapinta {
     }
 
     private Solmu kaannaOikea(Solmu k1) {
+        if (k1.getVasen()==null) return null;
         Solmu k2 = k1.getVasen();
         k2.setVanhem(k1.getVanhem());
         k1.setVanhem(k2);

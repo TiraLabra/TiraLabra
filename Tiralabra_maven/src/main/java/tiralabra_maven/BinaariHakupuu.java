@@ -40,11 +40,10 @@ public class BinaariHakupuu implements PuuRajapinta {
     /**
      * Poistaa solmun puusta
      *
-     * @param i on solmun arvo joka poistetaan
+     * @param poistet on viite solmuun joka halutaan poistaa
      * @return true jos poisto onnistui
      */
-    public boolean poistaSolmu(int i) {
-        Solmu poistet = hae(i);
+    public boolean poistaSolmu(Solmu poistet) {
         if (poistet == null) {
             return false;
         }
@@ -125,7 +124,12 @@ public class BinaariHakupuu implements PuuRajapinta {
         return juuri.toString();
     }
 
-    private Solmu min(Solmu s) {
+    /**
+     * Hakee solmusta pienemmän solmun 
+     * @param s Solmu josta aletaan etsimään pienintä
+     * @return pienin solmu
+     */
+    public Solmu min(Solmu s) {
         while (s.getVasen() != null) {
             s = s.getVasen();
         }

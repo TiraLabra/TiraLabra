@@ -1,24 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tiralabra_maven;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author esaaksvu
- */
 public class SolmuTest {
 
     public SolmuTest() {
     }
 
-    /**
-     * Test of setVasen method, of class Solmu.
-     */
     @Test
     public void testSetVasen() {
         System.out.println("setVasen");
@@ -28,9 +17,6 @@ public class SolmuTest {
         assertEquals("5{3,[]}", instance.toString());
     }
 
-    /**
-     * Test of setOikea method, of class Solmu.
-     */
     @Test
     public void testSetOikea() {
         System.out.println("setOikea");
@@ -40,9 +26,6 @@ public class SolmuTest {
         assertEquals("2{[],7}", instance.toString());
     }
 
-    /**
-     * Test of lapseton method, of class Solmu.
-     */
     @Test
     public void testLapseton() {
         System.out.println("lapseton");
@@ -51,10 +34,7 @@ public class SolmuTest {
         boolean result = instance.lapseton();
         assertEquals(expResult, result);
     }
-
-    /**
-     * Test of toString method, of class Solmu.
-     */
+    
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -64,9 +44,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of getArvo method, of class Solmu.
-     */
     @Test
     public void testGetArvo() {
         System.out.println("getArvo");
@@ -76,9 +53,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of getVasen method, of class Solmu.
-     */
     @Test
     public void testGetVasen() {
         System.out.println("getVasen");
@@ -90,9 +64,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of getOikea method, of class Solmu.
-     */
     @Test
     public void testGetOikea() {
         System.out.println("getOikea");
@@ -104,9 +75,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of setVanhem method, of class Solmu.
-     */
     @Test
     public void testSetVanhem() {
         System.out.println("setVanhem");
@@ -118,9 +86,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of getVanhem method, of class Solmu.
-     */
     @Test
     public void testGetVanhem() {
         System.out.println("getVanhem");
@@ -132,9 +97,6 @@ public class SolmuTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of setArvo method, of class Solmu.
-     */
     @Test
     public void testSetArvo() {
         System.out.println("setArvo");
@@ -144,9 +106,6 @@ public class SolmuTest {
         assertEquals(14, instance.getArvo());
     }
 
-    /**
-     * Test of setKorkeus method, of class Solmu.
-     */
     @Test
     public void testSetKorkeus() {
         System.out.println("setKorkeus");
@@ -156,9 +115,6 @@ public class SolmuTest {
         assertEquals(5, instance.getKorkeus());
     }
 
-    /**
-     * Test of getKorkeus method, of class Solmu.
-     */
     @Test
     public void testGetKorkeus() {
         System.out.println("getKorkeus");

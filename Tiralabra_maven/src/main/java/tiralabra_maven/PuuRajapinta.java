@@ -14,11 +14,11 @@ public interface PuuRajapinta {
     public Solmu hae(int i);
     
     /**
-     * Poistaa solmun arvon perusteella
-     * @param i on solmun arvo
+     * Poistaa solmun viitteen perusteella
+     * @param pois on solmun viite
      * @return true jos poisto onnistuu
      */
-    public boolean poistaSolmu(int i);
+    public boolean poistaSolmu(Solmu pois);
 
     /**
      * Lisää solmun puuhun

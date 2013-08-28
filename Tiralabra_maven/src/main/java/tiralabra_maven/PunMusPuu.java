@@ -7,8 +7,9 @@ package tiralabra_maven;
  *
  * @author esaaksvu
  */
-public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
+public class PunMusPuu implements PuuRajapinta {
 
+    Solmu juuri;
     Solmu nil;
 
     /**
@@ -18,17 +19,17 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
     public PunMusPuu() {
         nil = new Solmu(-99);
         nil.setVari(true);
-        juuri = nil;
         nil.setVanhem(nil);
         nil.setOikea(nil);
         nil.setVasen(nil);
+        juuri = nil;
     }
 
     /**
      * Lisää solmun punamusta puuhun
+     *
      * @param uusi viite solmu olioon joka lisätään
      */
-    @Override
     public void lisaaSolmu(Solmu uusi) {
         uusi.setOikea(nil);
         uusi.setVasen(nil);
@@ -52,15 +53,13 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
     }
 
     /**
-     * Poistaa solmun puusta (keskeneräinen/sisältää virheitä)
+     * Poistaa solmun puusta
      *
-     * @param i on solmun arvo joka poistetaan
+     * @param pois poistettavan solmun viite
      * @return true jos poisto onnistui
      */
-    @Override
-    public boolean poistaSolmu(int i) {
-        Solmu pois = hae(i);
-        if (pois == nil) {
+    public boolean poistaSolmu(Solmu pois) {
+        if (pois == nil || pois == null) {
             return false;
         }
         Solmu x;
@@ -94,6 +93,24 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
             korjaaPuuPois(x);
         }
         return true;
+    }
+
+    /**
+     * hakee solmun puusta
+     *
+     * @param i haettavan solmun arvo
+     * @return viite solmuun, null jos ei löydy
+     */
+    public Solmu hae(int i) {
+        Solmu haku = juuri;
+
+        while (haku != nil && haku.getArvo() != i) {
+            haku = (i < haku.getArvo()) ? haku.getVasen() : haku.getOikea();
+        }
+        if (haku == nil || (haku == juuri && haku.getArvo() != i)) {
+            return nil;
+        }
+        return haku;
     }
 
     private void korjaaPuuLisa(Solmu uusi) {
@@ -134,7 +151,7 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
     }
 
     private void korjaaPuuPois(Solmu pois) {
-        while (pois != juuri && pois.getVari()) { 
+        while (pois != juuri && pois.getVari()) {
             if (pois == pois.getVanhem().getVasen()) {
                 Solmu sis = pois.getVanhem().getOikea();
                 if (!sis.getVari()) {
@@ -170,9 +187,7 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
                     w.setVari(false);
                     pois = pois.getVanhem();
                     continue;
-                }
-                
-                else if (w.getVasen().getVari()) {
+                } else if (w.getVasen().getVari()) {
                     w.getOikea().setVari(true);
                     w.setVari(false);
                     kaannaVasen(w);
@@ -275,18 +290,5 @@ public class PunMusPuu extends BinaariHakupuu implements PuuRajapinta {
     @Override
     public String toString() {
         return tulosta(juuri);
-    }
-
-    @Override
-    public Solmu hae(int i) {
-        Solmu haku = juuri;
-
-        while (haku != nil && haku.getArvo() != i) {
-            haku = (i < haku.getArvo()) ? haku.getVasen() : haku.getOikea();
-        }
-        if (haku == nil || (haku == juuri && haku.getArvo() != i)) {
-            return nil;
-        }
-        return haku;
     }
 }

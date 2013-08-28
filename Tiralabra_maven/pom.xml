@@ -12,7 +12,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <exec.mainClass>tiralabra_maven.Main</exec.mainClass> 
+ </properties>
 
   <dependencies>
     <dependency>
