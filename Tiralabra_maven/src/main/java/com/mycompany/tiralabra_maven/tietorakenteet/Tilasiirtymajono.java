@@ -1,14 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import com.mycompany.tiralabra_maven.automaatit.Tila;
 
 /**
+ * Perusominaisuuksiltaan kuten <b>AvainArvoJono</b>, mutta muokattu luokan
+ * <b>Tila</b> tarpeita ajatellen.
  *
  * @author John Lång <jllang@cs.helsinki.fi>
+ * @see AvainArvoJono
+ * @see Tila
  */
 public final class Tilasiirtymajono extends AvainArvoJono<Character,Tila> {
    
@@ -23,7 +24,13 @@ public final class Tilasiirtymajono extends AvainArvoJono<Character,Tila> {
         mjr.append('\n');
         mjr.append(SISENNYS);
         while (solmu != null) {
-            mjr.append(solmu.AVAIN);
+            if (solmu.AVAIN != '\u03b5') {
+                mjr.append('\'');
+                mjr.append(solmu.AVAIN);
+                mjr.append('\'');
+            } else {
+                mjr.append('\u03b5');
+            }
             mjr.append("\u21A6");
             mjr.append(solmu.ARVO.sisennettyMerkkijono(SISENNYS));
             mjr.append(',');
@@ -85,6 +92,15 @@ public final class Tilasiirtymajono extends AvainArvoJono<Character,Tila> {
         return paluuarvo;
     }
     
+    /**
+     * Palauttaa kaikki annettua arvoa vastaavat avaimet uutena <b>Jono</b>
+     * instanssina. Mallintaa tilan kaikkien mahdollisten tilasiirtymien joukkoa
+     * annetulla merkillä.
+     * 
+     * @param AVAIN Merkki, jolla haetaan tilasiirtymiä.
+     * @return <b>Jono</b> kaikista merkkiin liitetyistä tilasiirtymistä tai
+     * <i>null</i> jos sellaisia ei ole.
+     */
     public Jono<Tila> haeKaikki(final char AVAIN) {
         if (hae(AVAIN) == null) {
             return null;

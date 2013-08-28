@@ -8,7 +8,7 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
  * Luokan vastuulla on laskea sille annetun käänteistä puolalaista notaatiota
  * (RPN) käyttävän kaavan lukuarvo oikein.
  *
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  */
 public final class Laskin {
     
@@ -25,11 +25,11 @@ public final class Laskin {
     /**
      * Laskee annetun RPN-kaavan lukuarvon.
      * 
-     * @param SYOTE Kaavan operaattorit ja operandit merkkijonomuodossa.
-     * @return Kaavan lukuarvo.
-     * @throws IllegalArgumentException Jos käyttäjän syöttämässä RPN-kaavassa
+     * @param   SYOTE Kaavan operaattorit ja operandit merkkijonomuodossa.
+     * @return  Kaavan lukuarvo.
+     * @throws  IllegalArgumentException Jos käyttäjän syöttämässä RPN-kaavassa
      * on syntaksivirhe.
-     * @throws ArithmeticException Jos tapahtuu nollalla jakaminen tai
+     * @throws  ArithmeticException Jos tapahtuu nollalla jakaminen tai
      * aritmeettinen ylivuoto.
      */
     public int laske(final Jono<String> SYOTE) throws IllegalArgumentException,

@@ -8,7 +8,8 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * että metodi <tt>haeEnsimmainen</tt> palauttaa aina vain ensimmäiseen avaimeen
  * liitetyn arvon sillä luokalla ei ole metodia joka poistaisi alkioita jonosta.
  *
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
+ * @see Hajautuskartta
  */
 class AvainArvoJono<K, V> {
     
@@ -37,7 +38,7 @@ class AvainArvoJono<K, V> {
     }
     
     /**
-     * Hakee jonosta arvon annetulla avaimella.
+     * Hakee jonosta ensimmäisen vastaantulevan arvon annetulle avaimelle.
      * 
      * @param avain Haettava avain.
      * @return      Avainta vastaava arvo tai <tt>null</tt> jos sellaista ei ole.

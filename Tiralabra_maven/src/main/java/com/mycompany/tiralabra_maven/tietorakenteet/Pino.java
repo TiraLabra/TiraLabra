@@ -11,7 +11,7 @@ import java.util.EmptyStackException;
  * lisätä yli <i>2 147 483 647</i> alkiota. Pinon lisaa-metodi sallii
  * duplikaatit, mukaanlukien useamman <i>null</i>-arvon lisäys.
  * 
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  * @param <T> Pinoon säilöttävien tietoalkioiden tyyppi.
  */
 public final class Pino<T> {
@@ -27,6 +27,7 @@ public final class Pino<T> {
     }
     
     /**
+     * Ilmoittaa onko pino tyhjä.
      *
      * @return Tosi jos pino on tyhjä; epätosi muuten.
      */
@@ -84,6 +85,7 @@ public final class Pino<T> {
     }
     
     /**
+     * Ilmoittaa pinon alkioiden määrän.
      * 
      * @return Pinon alkioiden määrä.
      */

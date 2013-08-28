@@ -11,7 +11,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * <tt>hae</tt> eivät tarkasta syötettä. Olen pyrkinyt minimoimaan näillä
  * toimilla tietorakenteen kompleksisuutta.
  * 
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  * @param <V> Hajautuskartan tietoalkioiden tyyppi.
  */
 public class Hajautuskartta<V> {

@@ -12,8 +12,8 @@ public final class Suorituskykytyokalut {
     /**
      * Laskee annetun taulukon alkioiden aritmeettisen keskiarvon.
      * 
-     * @param LUVUT
-     * @return 
+     * @param LUVUT Taulukko luvuista, joiden aritmeettinen keskiarvo lasketaan.
+     * @return Taulukon alkioiden aritmeettinen keskiarvo.
      */
     public static float keskiarvo(final long[] LUVUT) {
         long summa = 0;
@@ -23,6 +23,12 @@ public final class Suorituskykytyokalut {
         return summa / LUVUT.length;
     }
     
+    /**
+     * Palauttaa annetun taulukon pienimmän luvun.
+     * 
+     * @param LUVUT Taulukko luvuista, joista etsitään pienintä.
+     * @return Taulukon pienin luku.
+     */
     public static long pienin(final long[] LUVUT) {
         long pienin = Long.MAX_VALUE;
         
@@ -35,6 +41,12 @@ public final class Suorituskykytyokalut {
         return pienin;
     }
     
+    /**
+     * Palauttaa annetun taulukon suurimman luvun.
+     * 
+     * @param LUVUT Taulukko luvuista, joista suurinta etsitään.
+     * @return Taulukon suurin luku.
+     */
     public static long suurin(final long[] LUVUT) {
         long suurin = 0;
         

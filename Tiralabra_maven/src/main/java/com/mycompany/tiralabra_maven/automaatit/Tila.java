@@ -3,14 +3,13 @@ package com.mycompany.tiralabra_maven.automaatit;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import com.mycompany.tiralabra_maven.tietorakenteet.Tilasiirtymajono;
-import com.mycompany.tiralabra_maven.tietorakenteet.Tilasiirtymakartta;
 
 /**
- * 
- * 
- * http://en.wikipedia.org/wiki/Nondeterministic_finite_automaton_with_%CE%B5-moves
+ * Mallintaa yhtä (epädeterministisen) äärellisen automaatin tilaa.
+ * <b>Tila</b>:n rooli on toimia luokan <b>Automaatti</b> komponenttina.
  *
  * @author John Lång <jllang@cs.helsinki.fi>
+ * @see Automaatti
  */
 public final class Tila {
     
@@ -22,8 +21,14 @@ public final class Tila {
     private final Tilasiirtymajono TILASIIRTYMAT;
     private final int ID;
     
+    /**
+     * Palauttaa luokan uuden instanssin.
+     *
+     * @param ON_HYVAKSYVA
+     */
     public Tila(final boolean ON_HYVAKSYVA) {
         this.ON_HYVAKSYVA   = ON_HYVAKSYVA;
+//        this.TILASIIRTYMAT  = new Tilasiirtymakartta(23);
         this.TILASIIRTYMAT  = new Tilasiirtymajono();
         this.ID = tiloja;
         Tila.tiloja++;
@@ -37,6 +42,8 @@ public final class Tila {
     }
     
     /**
+     * Palauttaa uuden <b>Jono</b>-instanssin syötteenä annetulla merkillä
+     * mahdollisista tilasiirtymistä.
      * 
      * @param   MERKKI Syötteen merkki jolle etsitään tilasiirtymää.
      * @return  <b>Jono</b> joka sisältää automaatin seuraavat mahdolliset 
@@ -65,6 +72,12 @@ public final class Tila {
         return mjr.toString();
     }
     
+    /**
+     * Palauttaa merkkijonoesityksen käytettäväksi tekstikäyttöliittymässä.
+     *
+     * @param SISENNYS  Jokaisen rivin eteen lisättävä merkkijono.
+     * @return          Sisennetty merkkijo.
+     */
     public String sisennettyMerkkijono(final String SISENNYS) {
 //        mjr.append(SISENNYS);
         if (!tulostettu) {
@@ -89,6 +102,11 @@ public final class Tila {
         return toString();
     }
     
+    /**
+     * Nollaa luokan staattisen kentän <tt>tiloja</tt> arvon, jolloin uusien
+     * <b>Tila</b>-olioiden kentän <tt>ID</tt> numerointi alkaa jälleen juosta
+     * nollasta alkaen.
+     */
     public static void nollaaTilalaskuri() {
         Tila.tiloja = 0;
     }

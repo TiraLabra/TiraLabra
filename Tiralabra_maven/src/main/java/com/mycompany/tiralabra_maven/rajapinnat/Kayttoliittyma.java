@@ -4,7 +4,7 @@ package com.mycompany.tiralabra_maven.rajapinnat;
 /**
  * Tämän rajapinnan toteuttava luokka vastaa käyttäjän kanssa kommunikoinnista.
  *
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  */
 public interface Kayttoliittyma {
     

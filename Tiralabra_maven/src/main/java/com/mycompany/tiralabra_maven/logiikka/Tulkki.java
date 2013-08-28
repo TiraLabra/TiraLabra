@@ -7,96 +7,86 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
 import java.util.EmptyStackException;
 
 /**
- * Luokan vastuulla on tulkita merkkijonoina annetut matemaattiset kaavat
- * käänteiseen puolalaiseen notaatioon (RPN) käyttäen Shunting yard -algoritmia.
+ * Luokan implementaation vastuulla on jonkin infiksinotaatiolla annetun
+ * formaalin kielen kaavan tulkitseminen käänteiseen puolalaiseen notaatioon
+ * (RPN). Tulkkaamisessa hyödynnetään Edsger Dijkstran keksimää Shunting yard 
+ * -algoritmia.
  *
- * @author John Lång
- * @see Laskin
+ * @author John Lång <jllang@cs.helsinki.fi>
  */
-public final class Tulkki {
-
-    private static final Hajautuskartta<Integer>    PRIORITEETIT
-            = new Hajautuskartta<>();
-    private static final Pino<Character>            PINO = new Pino<>();
-    private static final Jono<String>               JONO = new Jono<>();
-    private static final Jono<Character>            APUJONO = new Jono<>();
-    private static String                           merkkijono;
-    private static char[]                           syotteenMerkit;
-    private static char                             merkki;
-    private static int                              indeksi;
+public abstract class Tulkki {
     
-    static {
-        PRIORITEETIT.lisaa('/', 1);
-        PRIORITEETIT.lisaa('*', 1);
-        PRIORITEETIT.lisaa('%', 1);
-        PRIORITEETIT.lisaa('+', 2);
-        PRIORITEETIT.lisaa('-', 2);
-    }
-
+    protected final Hajautuskartta<Integer> PRIORITEETIT;
+    protected final Pino<Character>         PINO;
+    protected final Jono<String>            JONO;
+    protected final Jono<Character>         APUJONO;
+    protected String                        merkkijono;
+    protected char[]                        syotteenMerkit;
+    protected char                          merkki;
+    protected int                           indeksi;
+    
     /**
      * Palauttaa luokan uuden instanssin.
      */
     public Tulkki() {
+        this.PRIORITEETIT   = new Hajautuskartta<>(4);
+        this.PINO           = new Pino<>();
+        this.JONO           = new Jono<>();
+        this.APUJONO        = new Jono<>();
     }
-
+    
     /**
-     * Tulkitsee (mikäli mahdollista) syötteenä annetun matemaattisen kaavan
-     * RPN kaavaksi. Tulkin tulee varmistaa että kaavan sulkumerkit täsmäävät
-     * ja että kaikki kaavan (literaali-)luvut mahtuvat int-muuttujiin.
-     * Tarkemmat laskemiseen ja operaattoreihin liittyvät tarkastukset kuuluvat
-     * luokan <b>Laskin</b> vastuulle.
+     * Tulkitsee (mikäli mahdollista) syötteenä annetun kaavan RPN kaavaksi.
+     * Tulkin tulee varmistaa että kaavan sulkumerkit täsmäävät (ja että kaikki
+     * kaavan literaalit mahtuvat int-muuttujiin mikäli dataa käsitellään
+     * kokonaislukumuodossa; kts. <b>Aritmetiikkatulkki</b>). Tarkemmat kaavan
+     * ja operaattorien (kielestä riippuvaan) käsittelyyn liittyvät tarkastukset
+     * kuuluvat RPN-kaavaa syötteenään käsittelevän luokan vastuulle.
      *
-     * @param MERKKIJONO Matemaattinen kaava.
-     * @return Matemaattinen kaava käänteisellä puolalaisella notaatiolla.
-     * @throws IllegalArgumentException Jos kaava ei sisällä yhtä paljon
+     * @param   MERKKIJONO Matemaattinen kaava.
+     * @return  Matemaattinen kaava käänteisellä puolalaisella notaatiolla.
+     * @throws  IllegalArgumentException Jos kaava ei sisällä yhtä paljon
      * vasemman- ja oikeanpuoleisia sulkumerkkejä tai jos se sisältää numeerisia
      * arvoja jotka ovat liian suuria int-muuttujaan.
-     * @see Laskin
+     * @see Aritmetiikkatulkki
+     * @see Regextulkki
      */
     public Jono<String> tulkitseMerkkijono(final String MERKKIJONO)
             throws IllegalArgumentException {
         merkkijono = MERKKIJONO;
         
-        // Koska tulkin kentät ovat staattiset, on jonoon voinut jäädä edellisen
-        // kutsukerran paluuarvo.        
-        JONO.tyhjenna();
-        // Pinoon on voinut myös jäädä jotain.
+        // Ihan vain varmuuden vuoksi:
         PINO.tyhjenna();
+        JONO.tyhjenna();
         
-//        // Debuggaustulosteita:
-//        System.out.println(PRIORITEETIT);
-//        System.out.println(PRIORITEETIT.tayttosuhde());
-//        PRIORITEETIT.uudelleenhajauta(5);
-//        System.out.println(PRIORITEETIT);
-//        System.out.println(PRIORITEETIT.tayttosuhde());
-        
-        // Pientä kapselointia
         iteroiMerkit();        
         tyhjennaPino();
 
         return JONO;
     }
     
-    private void iteroiMerkit()
+    protected void iteroiMerkit()
             throws EmptyStackException, IllegalArgumentException {
         syotteenMerkit = merkkijono.toCharArray();
         for (indeksi = 0; indeksi < syotteenMerkit.length; indeksi++) {
             merkki = syotteenMerkit[indeksi];
             if (merkki == ' ') {
                 continue;
-            } else if (merkkiOnNumero()) {
-                kasitteleLuku();
-                indeksi--;
+            } else if (merkkiOnLyhenne()) {
+                kasitteleLyhenne();
             } else if (merkkiOnOperaattori()) {
                 kasitteleOperaattori();
+            } else if (merkkiOnDataa()) {
+                kasitteleData();
+                indeksi--;
             } else if (merkki == '(') {
                 PINO.lisaa(merkki);
             } else if (merkki == ')') {
                 while (true) {
                     if (PINO.onTyhja()) {
                         // Vasen sulkumerkki puuttuu. (Code coverage bugittaa
-                        // tämän rivin osalta jostain syystä, testimetodi
-                        // testEpakelpoKaava3 kattaa tämän rivin.)
+                        // tämän rivin osalta jostain syystä, Aritmetiikkatulkin
+                        // testimetodi testEpakelpoKaava3 kattaa tämän rivin.)
                         kaadu("Kaavan \"" + merkkijono + "\" sulkumerkit eivät "
                                 + "täsmää!");
                     } else if (PINO.kurkista() == '(') {
@@ -106,84 +96,42 @@ public final class Tulkki {
                     JONO.lisaa(PINO.poista() + "");
                 }
             } else {
-                // Code coverage bugittaa myös tässä, testEpakelpoKaava4 testaa
-                // tämän rivin.
+                // Code coverage bugittaa myös tässä,
+                // AritmetiikkatulkkiTest.testEpakelpoKaava4 testaa tämän rivin.
                 kaadu("Kaava \"" + merkkijono + "\" sisältää tuntemattomia"
                         + "merkkejä!");
             }
         }
     }
 
-    private boolean merkkiOnNumero() {
-        switch (merkki) {
-            case '0': case '1': case '2': case '3': case '4':
-            case '5': case '6': case '7': case '8': case '9':
-                return true;
-            default:
-                return false;
-        }
-    }
+    protected abstract boolean merkkiOnLyhenne();
     
-    private boolean merkkiOnOperaattori() {
-        // Tämän tarkastuksen voisi myös suorittaa hakemalla merkkiä
-        // hajautuskartasta ja vertaamalla sitä arvoon null (koska kaikki
-        // tuetut operaattorit on lisätty hajautuskarttaan). Switch on nopeampi
-        // sillä siinä tarvitsee suorittaa vain yksi vertailu.
-        switch (merkki) {
-            case '+': case '-': case '*': case '/': case '%':
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    private void kasitteleLuku() throws IllegalArgumentException {
-        if (merkkiOnNumero()) {
-            APUJONO.lisaa(merkki);
-            indeksi++;
-            if (indeksi == syotteenMerkit.length) {
-                kokoaLuku();
-                return;
-            }
-            merkki = syotteenMerkit[indeksi];
-            kasitteleLuku();
-        } else {
-            kokoaLuku();
-        }
-    }
+    protected abstract boolean merkkiOnOperaattori();
     
-    private void kokoaLuku() throws IllegalArgumentException {
-        StringBuilder mjr = new StringBuilder();
-        while (!APUJONO.onTyhja()) {
-            mjr.append(APUJONO.poista());
-        }
-        // Varmisteteaan että luku mahtuu int-muuttujaan. (Lukuhan ei voi olla
-        // negatiivinen paitsi epäsuorasti vähennyslaskun muodossa.)
-        // Pitääkin miettiä jos toteuttaisi myös liukuluvut...
-        if (Integer.parseInt(mjr.toString()) <= Integer.MAX_VALUE) {
-            JONO.lisaa(mjr.toString());
-        } else {
-            kaadu("Kaava sisälsi liian suuria lukuja!");
-        }
-    }
+    protected abstract boolean merkkiOnDataa();
     
-    private void kasitteleOperaattori() {
+    protected abstract void kasitteleLyhenne();
+    
+    protected void kasitteleOperaattori() {
         if (PINO.onTyhja()) {
             PINO.lisaa(merkki);
         } else {
             char pinonYlin = PINO.kurkista();
             if (pinonYlin != '(') {
-                // Pienemmän prioriteetin laskutoimitukset suoritetaan ensin.
-                // Siispä ne lisätään ulostuloon ensimmäisinä.
-                if (PRIORITEETIT.haeEnsimmainen(merkki) >= PRIORITEETIT.haeEnsimmainen(pinonYlin)) {
+                // Pienemmän prioriteetin operaattorit lisätään ulostuloon
+                // ensimmäisinä.
+                if (PRIORITEETIT.haeEnsimmainen(merkki)
+                        >= PRIORITEETIT.haeEnsimmainen(pinonYlin)) {
                     JONO.lisaa(PINO.poista() + "");
                 }
             }
             PINO.lisaa(merkki);
         }
-    }    
+    }
+    
+    protected abstract void kasitteleData();
 
-    private void tyhjennaPino()
+    protected void tyhjennaPino()
             throws IllegalArgumentException {
         while (!PINO.onTyhja()) {
             merkki = PINO.poista();
@@ -195,7 +143,8 @@ public final class Tulkki {
         }
     }
     
-    private void kaadu(final String VIESTI) throws IllegalArgumentException {
+    protected void kaadu(final String VIESTI) throws IllegalArgumentException {
         throw new IllegalArgumentException(VIESTI);
     }
+    
 }

@@ -12,7 +12,8 @@ import org.junit.Test;
 
 /**
  *
- * @author johnny
+ * @author John Lång <jllang@cs.helsinki.fi>
+
  */
 public class LaskinTest {
     

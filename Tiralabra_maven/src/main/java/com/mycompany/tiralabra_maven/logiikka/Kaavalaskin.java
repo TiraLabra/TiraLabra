@@ -1,10 +1,8 @@
 package com.mycompany.tiralabra_maven.logiikka;
 
-import com.mycompany.tiralabra_maven.automaatit.Automaatti;
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
 import com.mycompany.tiralabra_maven.suorituskykytestit.HajautuskartanSuorituskyky;
-import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 
 /**
@@ -13,40 +11,34 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
  * päättämisestä. Lisäksi luokka käsittelee mahdolliset käyttäjän antamat
  * käynnistysparametrit.
  *
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  */
 public final class Kaavalaskin {
+    
+    static final Kayttoliittyma K = new Tekstikayttoliittyma();
 
     /**
      * Ohjelman suoritus alkaa ja päättyy tässä staattisessa metodissa.
      *
      * @param args Mahdolliset käynnistysparametrit.
      */
-    public static void main(String[] args) {
-        
-        Hajautuskartta<Integer> h = new Hajautuskartta();
-        
-        if (args.length == 0) {
-//            Tulkki t = new Tulkki();
-//            Laskin l = new Laskin();
-//            Kayttoliittyma k = new Tekstikayttoliittyma();
-//
-//            String syote = k.pyydaSyote("Kaava:              ");
-//            int kaavanArvo;
-//            long aloitusaika = System.nanoTime(), tulkinAika, laskimenAika;
-//            Jono<String> kaava = t.tulkitseMerkkijono(syote);
-//            tulkinAika = System.nanoTime() - aloitusaika;
-//            k.tulosta("RPN-kaava:          " + kaava.tuloste() + '\n');
-//            aloitusaika = System.nanoTime();
-//            kaavanArvo = l.laske(kaava);
-//            laskimenAika = System.nanoTime() - aloitusaika;
-//            k.tulosta("Kaavan lukuarvo:    " + kaavanArvo + '\n');
-//            k.tulosta("Tulkkauksen kesto:  " + tulkinAika + " ns.\n");
-//            k.tulosta("Laskennan kesto:    " + laskimenAika + " ns.\n");
-//            System.out.printf("JVM:n viive:        %-1.1f ns.\n",
-//                    testaaAjanotonViive());
-            Automaatti a = new Automaatti(new Jono<>("abc", "."));
-            System.out.println(a);
+    public static void main(String[] args) {        
+        if (args.length == 0 || args[0].equals("al")) {
+            try {
+                aritmetiikkaproseduuri();
+            }
+            catch (Exception e) {
+                System.out.println("Tapahtui virhe!");
+                System.out.println(e.getMessage());
+            }
+        } else if (args[0].toLowerCase().trim().equals("sl")) {
+            try {
+                regexproseduuri();
+            }
+            catch (Exception e) {
+                System.out.println("Tapahtui virhe!");
+                System.out.println(e.getMessage());
+            }
         } else if (args[0].toLowerCase().trim().equals("hkp")) {
             HajautuskartanSuorituskyky.aloita();
         } else {
@@ -63,5 +55,73 @@ public final class Kaavalaskin {
             c += b;
         }
         return c / 10.0;
+    }
+
+    private static void aritmetiikkaproseduuri() throws ArithmeticException, IllegalArgumentException {
+        final Tulkki T = new Aritmetiikkatulkki();
+        final Laskin L = new Laskin();
+        String syote;
+        int kaavanArvo;
+        long aloitusaika, tulkinAika, laskimenAika;
+        
+        while (true) {
+            syote = K.pyydaSyote("Kaava:              ");
+            aloitusaika = System.nanoTime();
+            if (syote.equals("lopeta")) {
+                break;
+            }
+            Jono<String> kaava = T.tulkitseMerkkijono(syote);
+            tulkinAika = System.nanoTime() - aloitusaika;
+            K.tulosta("RPN-kaava:          " + kaava.tuloste() + '\n');
+            aloitusaika = System.nanoTime();
+            kaavanArvo = L.laske(kaava);
+            laskimenAika = System.nanoTime() - aloitusaika;
+            K.tulosta("Kaavan lukuarvo:    " + kaavanArvo + '\n');
+            K.tulosta("Tulkkauksen kesto:  " + tulkinAika + " ns.\n");
+            K.tulosta("Laskennan kesto:    " + laskimenAika + " ns.\n");
+            System.out.printf("JVM:n viive:        %-1.1f ns.\n",
+                    testaaAjanotonViive());
+        }
+    }
+
+    private static void regexproseduuri() throws IllegalArgumentException {
+        final Tulkki T = new Regextulkki();
+        final Regexkasittelija R = new Regexkasittelija();
+        String syote;
+        long aloitusaika, tulkinAika, rakennusAika, etsintaAika;
+        boolean tasmaa;
+        
+        while (true) {                
+            syote = K.pyydaSyote("Regex:              ");
+            if (syote.equals("lopeta")) {
+                break;
+            }
+            aloitusaika = System.nanoTime();
+            Jono<String> kaava = T.tulkitseMerkkijono(syote);
+            tulkinAika = System.nanoTime() - aloitusaika;
+            K.tulosta("RPN-regex:          " + kaava.tuloste() + '\n');
+            aloitusaika = System.nanoTime();
+            R.asetaSaannollinenLauseke(kaava);
+            rakennusAika = System.nanoTime() - aloitusaika;
+//            k.tulosta("Kaavan lukuarvo:    " + kaavanArvo + '\n');
+            K.tulosta("Tulkkauksen kesto:  " + tulkinAika + " ns.\n");
+            K.tulosta("NFA:n rakentaminen: " + rakennusAika + " ns.\n");
+            System.out.printf("JVM:n viive:        %-1.1f ns.\n",
+                    testaaAjanotonViive());
+            while (true) {
+                syote = K.pyydaSyote("Merkkijono:         ");
+                if (syote.equals("lopeta")) {
+                    break;
+                }
+                aloitusaika = System.nanoTime();
+                tasmaa = R.tasmaa(syote);
+                etsintaAika = System.nanoTime() - aloitusaika;
+                if (tasmaa) {
+                    K.tulosta("Annettu merkkijono täsmää säännöllisen "
+                            + "lausekkeen kanssa!\n");
+                }
+                K.tulosta("NFA:n läpikäynti:   " + etsintaAika + " ns.\n");
+            }
+        }
     }
 }

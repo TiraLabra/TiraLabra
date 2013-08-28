@@ -7,14 +7,16 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
 /**
  * Tämä luokka mallintaa epädeterminististä äärellistä automaattia. Automaatti
  * osaa tarkastaa kuuluuko syötteenä annettu merkkijono konstruktorissa
- * (lopullisesti) määriteltyyn säännölliseen kieleen.
+ * (lopullisesti) määriteltyyn säännölliseen kieleen. <b>Automaatti</b> on
+ * luokan <b>RegexKasittelija</b> komponentti.
  *
  * @author John Lång <jllang@cs.helsinki.fi>
+ * @see RegexKasittelija
  */
 public final class Automaatti {
     
-    private final String            KIELI;          // toString-metodia varten
-    private final Tila              ALKUTILA;
+//    private final String            KIELI;          // toString-metodia varten
+    private final Tila              ALKUTILA;       // Rakennus ja läpikäynti
     private final Pino<Tila>        ALIALKUTILAT;   // Automaatin rakentamiseen
     private final Pino<Character>   EHDOT;          // Automaatin rakentamiseen
     private final Pino<String>      DATA;           // Automaatin rakentamiseen
@@ -32,7 +34,7 @@ public final class Automaatti {
             throw new IllegalArgumentException("Syötteenä saatu säännöllinen "
                     + "lauseke oli tyhjä!");
         } else {
-            this.KIELI          = LAUSEKE.tuloste();
+//            this.KIELI          = LAUSEKE.tuloste();
             this.ALKUTILA       = new Tila(false);
             this.ALIALKUTILAT   = new Pino<>();
             this.EHDOT          = new Pino<>();
@@ -44,7 +46,8 @@ public final class Automaatti {
     /**
      * Tutkii sisältyykö parametrina annettu merkkijono automaatin säännölliseen
      * kieleen. Merkkijono sisältyy kieleen jos ja vain jos automaatin suoritus
-     * päättyy hyväksyvässä tilassa sen käytyä läpi kaikki merkkijonon merkit.
+     * päättyy hyväksyvässä tilassa sen käytyä läpi kaikki merkkijonon merkkejä
+     * vastaavat tilasiirtymät.
      * 
      * @param MERKKIJONO    Jokin merkkijono.
      * @return              <i>true</i> jos ja vain jos parametrina annettu
@@ -117,7 +120,15 @@ public final class Automaatti {
                 merkki = merkkijono.charAt(0);
                 switch (merkki) {
                     case '.':
-                        konkatenoi(LAUSEKE.onTyhja());
+                        if (!DATA.onTyhja()) {
+                            konkatenoi(LAUSEKE.onTyhja());
+                        }
+//                        else {
+//                            if (LAUSEKE.onTyhja()) {
+//                                viimeisin.lisaaTilasiirtyma('\u03b5',
+//                                        new Tila(true));
+//                            }
+//                        }
                         break;
                     case '|':
                         haarauta(LAUSEKE.onTyhja());
@@ -233,8 +244,7 @@ public final class Automaatti {
     
     @Override
     public String toString() {
-        return "Kielen \"" + KIELI.substring(0, KIELI.length() - 1)
-                + "\" epädeterministinen äärellinen automaatti:\n\u21A6"
+        return "Epädeterministinen äärellinen automaatti:\n\u21A6"
                 + ALKUTILA.sisennettyMerkkijono("");
     }
 

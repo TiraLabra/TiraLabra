@@ -10,7 +10,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * mukaanlukien useamman <i>null</i>-arvon lisäys.
  *
  * @param <T> Jonoon säilöttävien tietoalkioiden tyyppi.
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  */
 public final class Jono<T> {
     
@@ -135,10 +135,10 @@ public final class Jono<T> {
     
     @Override
     public String toString() {
-        
-         if (onTyhja()) {
-             return "\u2205";
-         }
+        // Tämä metodi on lähinnä debuggausta varten. Katso metodi tuloste.
+        if (onTyhja()) {
+            return "\u2205";
+        }
         
         StringBuilder mjr = new StringBuilder();
         Solmu<T> solmu = ensimmainen;

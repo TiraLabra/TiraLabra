@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Tämän luokka toteuttaa rajapinnan <b>Kayttoliittyma</b> ja sen vastuulla on
  * syötteiden pyytäminen käyttäjältä sekä viestien tulostaminen terminaalissa.
  *
- * @author John Lång
+ * @author John Lång <jllang@cs.helsinki.fi>
  * @see Kayttoliittyma
  */
 public final class Tekstikayttoliittyma implements Kayttoliittyma {
@@ -41,6 +41,7 @@ public final class Tekstikayttoliittyma implements Kayttoliittyma {
      * @param viesti Tulostettava viesti.
      * @see Kayttoliittyma#tulosta(java.lang.String)
      */
+    @Override
     public void tulosta(String viesti) {
         System.out.print(viesti);
     }
@@ -56,6 +57,7 @@ public final class Tekstikayttoliittyma implements Kayttoliittyma {
      * @see Tekstikayttoliittyma#Tekstikayttoliittyma(java.lang.String) 
      * @see Kayttoliittyma#pyydaSyote(java.lang.String) 
      */
+    @Override
     public String pyydaSyote(String viesti) {
         tulosta(viesti);
 //        System.out.print("> ");

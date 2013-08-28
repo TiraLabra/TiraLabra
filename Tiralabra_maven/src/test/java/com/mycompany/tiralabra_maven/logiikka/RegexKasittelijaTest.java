@@ -7,7 +7,6 @@ import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -16,7 +15,7 @@ import org.junit.Test;
  */
 public class RegexKasittelijaTest {
     
-    private RegexKasittelija rk;
+    private Regexkasittelija rk;
     
     public RegexKasittelijaTest() {
     }
@@ -31,7 +30,7 @@ public class RegexKasittelijaTest {
     
     @Before
     public void setUp() {
-        rk = new RegexKasittelija();
+        rk = new Regexkasittelija();
     }
     
     @After
@@ -40,7 +39,7 @@ public class RegexKasittelijaTest {
 
     @Test
     public void testAsetaSaannollinenLauseke() {
-        rk.asetaSaannollinenLauseke(new Jono<>("a", "b", "|", "c", "\\?", "."));
+        rk.asetaSaannollinenLauseke(new Jono<>("a", "b", "|", "c", ".", "\\?", "."));
     }
 
     @Test
