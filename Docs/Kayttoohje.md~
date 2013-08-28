@@ -1,6 +1,3 @@
-jar-tiedosto löytyy kansiosta Tiralabta/dist
-Ajamiseen tarvittavat tiedostot löytyvät kansiosta Tiralabra/src
-
 Kun käyttöliittymä on auki, ohjelma tulee ajaa seuraavanlaisesti:
 	1. Kirjoita tekstikenttään haluamasi labyrintin nimi TÄSMÄLLEEN samalla tavalla kuin se on kentän yläpuolella lueteltuna,
 	ja valitse se painamalla nappia "Valitse labyrintti".

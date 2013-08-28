@@ -23,6 +23,7 @@ public class Kuuntelija implements ActionListener {
     private Labyrintti laby;
     private SuunnistajaAStar aStar;
     private SuunnistajaDFS dfs;
+    private boolean suunnistajaAStar = true;
 
     /**
      *
@@ -48,14 +49,21 @@ public class Kuuntelija implements ActionListener {
             kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
             try {
                 aStar = new SuunnistajaAStar(laby.verkko[1][1], laby.verkko[17][19], laby);
-                dfs = new SuunnistajaDFS(laby.verkko[3][1], laby.verkko[17][19], laby);
+                dfs = new SuunnistajaDFS(laby.verkko[1][1], laby.verkko[17][19], laby);
             } catch (Exception ex) {
                 kuva.setText("Asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
             }
+        } else if ("AStar".equals(e.getActionCommand())) {
+            suunnistajaAStar = true;
+        } else if ("DFS".equals(e.getActionCommand())) {
+            suunnistajaAStar = false;
         } else {
             Graphics g = kuva.getGraphics();
-//            aStar.etsi(g);
-            dfs.etsi(g);
+            if (suunnistajaAStar) {
+                aStar.etsi(g);
+            } else {
+                dfs.etsi(g);
+            }
 
         }
     }

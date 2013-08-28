@@ -37,7 +37,7 @@ public class SuunnistajaAStarTest {
         int tulos =  heuristiikkaMethod.invokeOn(ast, laby.verkko[1][0]);
         assertEquals(1, tulos);
         tulos =  heuristiikkaMethod.invokeOn(ast, laby.verkko[0][1]);
-        assertEquals(1000003, tulos);
+        assertEquals(3, tulos);
         
         tulos =  heuristiikkaMethod.invokeOn(ast, laby.verkko[2][4]);
         assertEquals(4, tulos);

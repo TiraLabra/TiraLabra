@@ -54,7 +54,7 @@ public class SuunnistajaAStar implements Suunnistaja {
      */
     @Override
     public void etsi(Graphics g) {
-        long aikaAlussa = System.currentTimeMillis(); 
+//        long aikaAlussa = System.currentTimeMillis(); 
         
         Solmu kasiteltava;
         alku.setAlkuarvo(0);
@@ -74,15 +74,15 @@ public class SuunnistajaAStar implements Suunnistaja {
                 return;
             }
             
-            aikaValissa = System.currentTimeMillis();
+//            aikaValissa = System.currentTimeMillis();
             g.drawRect(kasiteltava.getX() * 300 / laby.getWidth(), kasiteltava.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
             try {
                 Thread.sleep(70);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SuunnistajaAStar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            aikaValissa2 = System.currentTimeMillis();
-            valiaika = valiaika + (aikaValissa2-aikaValissa);
+//            aikaValissa2 = System.currentTimeMillis();
+//            valiaika = valiaika + (aikaValissa2-aikaValissa);
 
             Jarjestysjono<Solmu> naapurit = maaritaNaapurit(kasiteltava);
             /*
@@ -104,10 +104,10 @@ public class SuunnistajaAStar implements Suunnistaja {
         }
 
         polku = muodostaPolku();
-        long aikaLopussa = System.currentTimeMillis();
+//        long aikaLopussa = System.currentTimeMillis();
         piirraPolku(laby, polku, g);
 
-        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika)+"ms.");
+//        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika)+"ms.");
 
     }
 
@@ -151,12 +151,11 @@ public class SuunnistajaAStar implements Suunnistaja {
                 }
             }
         }
-        long aikaLopussa = System.currentTimeMillis();
         return naapurit;
     }
 
     private Lista<Solmu> muodostaPolku() {
-        long aikaAlussa = System.currentTimeMillis();
+//        long aikaAlussa = System.currentTimeMillis();
         Solmu s = maali;
         polku.add(s);
         Keko<Solmu> keko = new Keko();
@@ -169,8 +168,8 @@ public class SuunnistajaAStar implements Suunnistaja {
         while ((s = keko.poll()) != null) {
             polku.add(s);
         }
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Polun muodostamiseen kului aikaa: "+(aikaLopussa-aikaAlussa)+"ms.");
+//        long aikaLopussa = System.currentTimeMillis();
+//        System.out.println("Polun muodostamiseen kului aikaa: "+(aikaLopussa-aikaAlussa)+"ms.");
         return polku;
     }
 

@@ -67,7 +67,7 @@ public class Kayttoliittyma implements Runnable {
         labyt.setLayout(new BoxLayout(labyt, BoxLayout.Y_AXIS));
         labyt.setBackground(Color.LIGHT_GRAY);
         
-        JButton valitse = new JButton("Vaihda labyrintti");
+        JButton valitse = new JButton("Valitse labyrintti");
         
         JTextField labyrintti = new JTextField();
         labyt.add(labyrintti);
@@ -90,13 +90,21 @@ public class Kayttoliittyma implements Runnable {
         JLabel kuva = new JLabel();
         kuva.setIcon(new ImageIcon(alku.getScaledInstance(300, 300, 0)));
         
-
-        
         kehys.add(kuva);
         
         JPanel napit = new JPanel();
         napit.setLayout(new BoxLayout(napit, BoxLayout.Y_AXIS));
         kehys.add(napit);
+        
+        ButtonGroup suunnistajat = new ButtonGroup();
+        JRadioButton aStar = new JRadioButton("aStar");
+        aStar.setActionCommand("AStar");
+        JRadioButton dfs = new JRadioButton("dfs"); 
+        dfs.setActionCommand("DFS");
+        suunnistajat.add(aStar);
+        suunnistajat.add(dfs);
+        napit.add(aStar);
+        napit.add(dfs);
         
         JButton nappi = new JButton("Aloita suunnistus");
         napit.add(nappi);
@@ -105,6 +113,8 @@ public class Kayttoliittyma implements Runnable {
         
         nappi.addActionListener(kuuntelija);
         valitse.addActionListener(kuuntelija);
+        aStar.addActionListener(kuuntelija);
+        dfs.addActionListener(kuuntelija);
 
     }
 

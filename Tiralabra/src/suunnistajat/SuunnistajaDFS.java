@@ -38,16 +38,15 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
 
     @Override
     public void etsi(Graphics g) {
-        long aikaAlussa = System.currentTimeMillis();
-        aikaValissa = System.currentTimeMillis();
+//        long aikaAlussa = System.currentTimeMillis();
+//        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.blue);
         g.drawRect(maali.getX() * (300 / laby.getWidth()), maali.getY() * (300 / laby.getHeight()), 300 / laby.getWidth(), 300 / laby.getHeight());
         DFSVisit(alku, null, laby, g);
-        aikaValissa2 = System.currentTimeMillis();
-        valiaika =+ (aikaValissa2-aikaValissa);
-//        tulostaKeko();
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika));
+//        aikaValissa2 = System.currentTimeMillis();
+//        valiaika =+ (aikaValissa2-aikaValissa);
+////        long aikaLopussa = System.currentTimeMillis();
+//        System.out.println("Algoritmiin kului aikaa: "+((aikaLopussa-aikaAlussa)-valiaika));
 
         muodostaPolku();
     }
@@ -74,7 +73,7 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
             solmu.setAlkuarvo(edellinen.getAlkuarvo() + 1);
         }
 
-        aikaValissa = System.currentTimeMillis();
+//        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.RED);
         g.fillRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
         try {
@@ -82,8 +81,8 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
         } catch (InterruptedException ex) {
             Logger.getLogger(SuunnistajaDFS.class.getName()).log(Level.SEVERE, null, ex);
         }
-        aikaValissa2 = System.currentTimeMillis();
-        valiaika =+ (aikaValissa2-aikaValissa);
+//        aikaValissa2 = System.currentTimeMillis();
+//        valiaika =+ (aikaValissa2-aikaValissa);
         Lista<Solmu> vierus = kerroVierus(solmu);
 
         if (solmu.getX() == maali.getX() && solmu.getY() == maali.getY()) {
@@ -99,14 +98,14 @@ public class SuunnistajaDFS implements Suunnistaja { //Vaatii vielä työstämis
             }
         }
         keko.poll();
-        aikaValissa = System.currentTimeMillis();
+//        aikaValissa = System.currentTimeMillis();
         g.setColor(Color.WHITE);
         g.fillRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
         g.setColor(Color.CYAN);
 
         g.drawRect(solmu.getX() * 300 / laby.getWidth(), solmu.getY() * 300 / laby.getHeight(), 300 / laby.getWidth(), 300 / laby.getHeight());
-        aikaValissa2 = System.currentTimeMillis();
-        valiaika =+ (aikaValissa2-aikaValissa);
+//        aikaValissa2 = System.currentTimeMillis();
+//        valiaika =+ (aikaValissa2-aikaValissa);
         return false;
     }
 
