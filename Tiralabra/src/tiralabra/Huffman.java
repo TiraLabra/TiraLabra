@@ -95,7 +95,7 @@ public class Huffman {
     private void suoritaPurku(String nimi, String uusinimi){
         System.out.println("Odota hetki, puretaan tiedostoa.");
         long purkuAlku = System.currentTimeMillis();
-        TiedostonPurkaja purkaja = new TiedostonPurkaja(nimi, "src/Tiralabra/tiedostot/" + uusinimi);
+        TiedostonPurkaja purkaja = new TiedostonPurkaja(nimi, uusinimi);
         purkaja.pura();
         long purkuLoppu = System.currentTimeMillis();
         System.out.println("purettu ajassa " + (purkuLoppu - purkuAlku) + " ms"); 
@@ -134,7 +134,7 @@ public class Huffman {
     private void suoritaPakkaus(String nimi, String uusinimi){
         System.out.println("Odota hetki, pakataan tiedostoa.");
         long pakkausAlku = System.currentTimeMillis();
-        TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja("src/Tiralabra/tiedostot/" + uusinimi, nimi);
+        TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja(uusinimi, nimi);
         pakkaaja.pakkaa();
         long pakkausLoppu = System.currentTimeMillis();
         System.out.println("Pakattu ajassa " + (pakkausLoppu - pakkausAlku) + " ms");
