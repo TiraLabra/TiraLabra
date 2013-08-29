@@ -81,6 +81,7 @@ public class Huffman {
         }
         System.out.println("Anna puratulle tiedostolle uusi nimi:");
         String uusinimi = lukija.nextLine();
+        uusinimi +=".purettu";
         suoritaPurku(nimi, uusinimi);
         
     }
@@ -120,6 +121,7 @@ public class Huffman {
         }
         System.out.println("Anna pakatulle tiedostolle uusi nimi:");
         String uusinimi = lukija.nextLine();
+        uusinimi +=".pakattu";
         suoritaPakkaus(nimi, uusinimi);
     }
     
