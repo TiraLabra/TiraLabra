@@ -107,21 +107,21 @@ public class TekstiUI {
      * Tulostaa ohjeen ohjelman käyttöä varten.
      */
     private void tulostaOhje() {
-        System.out.println("\n Ohjelmassa on mahdollista testata neljän erilaisen puu-tietorakenteen\n"
+        System.out.println("\n Ohjelmassa on mahdollista testata neljän erilaisen puu-tietorakenteen "
                 + "toimintanopeuksia. \n"
                 + " Punamustapuut ovat itsestään tasapainottuvia binäärihakupuita. \n"
-                + " Treapit ovat kekojen ja puiden risteytys. Toimivat kuin normaalit binäärihakupuut,\n"
-                + "mutta solmuilla on lisäksi toiset arvot, joidenka mukaan rakenne on samaan aikaa\n"
+                + " Treapit ovat kekojen ja puiden risteytys. Toimivat kuin normaalit binäärihakupuut, "
+                + "mutta solmuilla on lisäksi toiset arvot, joidenka mukaan rakenne on samaan aikaa "
                 + "kekojärjestyksessä, ja näin keskimäärin tasapainoinen.\n"
-                + " Kaksi-kolme hakupuut ovat hakupuita, joissa solmulla on kaksi mahdollista arvoa, \n"
+                + " Kaksi-kolme hakupuut ovat hakupuita, joissa solmulla on kaksi mahdollista arvoa, "
                 + "ja tällöin mahdollisesti kolme lasta.\n"
-                + " Threaded puut ovat binäärihakupuita, joiden tyhjät lapsi-pointterit osoittavat \n"
+                + " Threaded puut ovat binäärihakupuita, joiden tyhjät lapsi-pointterit osoittavat "
                 + "ylöspäin puussa.\n"
-                + " Tässä ohjelmassa on mahdollista valita syötteen koko joko valitsemalla määrä itse\n"
+                + " Tässä ohjelmassa on mahdollista valita syötteen koko joko valitsemalla määrä itse "
                 + "tai käyttämällä yhtä kolmesta valmiista kokoluokasta.\n"
-                + " Testattavat puut valitaan yksi kerrallaan, jonka jälkeen tulokset annetaan \n"
+                + " Testattavat puut valitaan yksi kerrallaan, jonka jälkeen tulokset annetaan "
                 + "millisekunnin tarkuudella.\n"
-                + " Lisäksi voidaan testata kaikki puut yhtäaikaa, ja nähdä tulokset nopeimmiten ja hitaimmiten"
+                + " Lisäksi voidaan testata kaikki puut yhtäaikaa, ja nähdä tulokset nopeimmiten ja hitaimmiten "
                 + "suoritetuista operaatioista.\n"
                 + "\nSyötä jokin merkki palataksesi\n");
         luk.next();

@@ -196,33 +196,33 @@ public class Vertailija {
 
         //Hakee ajat punamustapuille.
         long pmI = this.insertAika(r, pm);
-        long pmD = this.deleteAika(pm);
         long pmS = this.searchAika(pm);
         long pmT = this.tulostaAika(pm);
+        long pmD = this.deleteAika(pm);
 
 
         // Hakee ajat threaded-puille.
         alkiot = new ALista();
         long thI = this.insertAika(r, th);
-        long thD = this.deleteAika(th);
         long thS = this.searchAika(th);
         long thT = this.tulostaAika(th);
+        long thD = this.deleteAika(th);
 
 
         //Hakee ajat kaksikolme-puille.
         alkiot = new ALista();
         long kkI = this.insertAika(r, kk);
-        long kkD = this.deleteAika(kk);
         long kkS = this.searchAika(kk);
         long kkT = this.tulostaAika(kk);
+        long kkD = this.deleteAika(kk);
 
 
         // Hakee ajat Treap-rakenteille
         alkiot = new ALista();
         long trI = this.insertAika(r, tr);
-        long trD = this.deleteAika(tr);
         long trS = this.searchAika(tr);
         long trT = this.tulostaAika(tr);
+        long trD = this.deleteAika(tr);
 
         return "Alkioiden lisääminen : " + vertaaKaikki(pmI, thI, kkI, trI)
                 + "\nAlkioiden poistaminen puusta: " + vertaaKaikki(pmD, thD, kkD, trD)

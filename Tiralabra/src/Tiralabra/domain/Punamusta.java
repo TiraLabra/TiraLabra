@@ -5,8 +5,10 @@ import Tiralabra.util.ALista;
 /**
  * Toteuttaa vasemmalle nojaavan punamustan puun. Punamustapuu on itsestään
  * tasapainottuva binäärihakupuu, joka käyttää hyväksen solmujen värjäämistä.
- * Tässä toteutuksessa insert/delete-operaatioit on mallinettu seuraavasta
- * osoitteesta löytyvää koodia mukaillen: https://gist.github.com/rkapsi/741080
+ * Vasemmalle nojaavassa puussa oikea lapsisolmu ei voi olla punainen. Vasemmalle nojaavat
+ * punamustapuut on kehittänyt Robert Sedgewick.
+ * Tässä toteutuksessa insert/delete-operaatiot, niiden käyttämät värjäys- kierto yms. apuoperaatiot
+ * on mallinettu seuraavasta osoitteesta löytyvää koodia mukaillen: https://gist.github.com/rkapsi/741080
  *
  * @author Pia Pakarinen
  */
@@ -46,7 +48,9 @@ public class Punamusta implements Puu {
 
     /**
      * Toteuttaa solmun lisäämisen ja puun tasapainottamisen.
-     *
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
+     * 
      * @param nyk käsittelyssä oleva solmu
      * @param key uuden solmun sisältämä arvo
      * @return käsittelyyn siirtyvä solmu; lopussa puun uusi juuri
@@ -106,6 +110,8 @@ public class Punamusta implements Puu {
 
     /**
      * Kiertää annettua solmua vasemmalle.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param s kierrettävä solmu
      * @return s:n paikalle liikkunut solmu
@@ -121,6 +127,8 @@ public class Punamusta implements Puu {
 
     /**
      * Kiertää annettua solmua oikealle.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param s kierrettävä solmu
      * @return s:n paikalle siirtynyt solmu
@@ -177,7 +185,9 @@ public class Punamusta implements Puu {
     }
 
     /**
-     * Vaihtaa annetun solmun ja sen lasten värit nykyistä vastakkaisiksi,
+     * Vaihtaa annetun solmun ja sen lasten värit nykyistä vastakkaisiksi.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk solmu, jolle värinvaihto-operaatio suoritetaan
      */
@@ -189,6 +199,8 @@ public class Punamusta implements Puu {
 
     /**
      * Poistaa puusta key-arvon sisältävän solmun ja tasapainottaa puun samalla.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk käsittelyssä oleva solmu
      * @param key poistettavan solmun arvo
@@ -227,6 +239,8 @@ public class Punamusta implements Puu {
     /**
      * Suorittaa kiertoja ja värinvaihdoksia, joita tarvitaan puun
      * tasoittamisessa solmuja poistettaessa.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk solmu, jolle operaatiot suoritetaan
      * @return solmu, josta käsittely jatkuu muualla
@@ -244,6 +258,8 @@ public class Punamusta implements Puu {
     /**
      * Suorittaa kiertoja ja värinvaihdoksia, joita tarvitaan puun
      * tasoittamisessa solmuja poistettaessa.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk solmu, jolle operaatiot suoritetaan
      * @return solmu, josta käsittely jatkuu muualla
@@ -259,6 +275,8 @@ public class Punamusta implements Puu {
 
     /**
      * Poistaa puusta annetun solmun seuraajan ja tasapainottaa.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk käsiteltävissä oleva solmu
      * @return lopussa alkuperäisen solmun uusi oikea lapsi
@@ -279,6 +297,8 @@ public class Punamusta implements Puu {
     /**
      * Suorittaa tarvittavia kiertoja ja värivaihdoksia puun ominaisuuksien
      * säilyttämiseksi.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param nyk käsittelyssä oleva solmu
      * @return solmu käsittelyn jälkeen
@@ -300,6 +320,8 @@ public class Punamusta implements Puu {
 
     /**
      * Tarkistaa solmun värin; null solmut ovat mustia.
+     * 
+     * Mallinnettu koodista: https://gist.github.com/rkapsi/741080
      *
      * @param s tarkistettava solmu
      * @return true jos solmu on punainen, false jos musta tai null
