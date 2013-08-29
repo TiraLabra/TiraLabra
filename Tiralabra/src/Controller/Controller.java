@@ -39,20 +39,22 @@ public class Controller {
      * @param matriisiA Käyttöliittymän matriisi A
      * @param matriisiB Käyttöliittymän matriisi B
      */
-    public String laske(String matriisiA, String matriisiB, int laskutoimitus, String skalaari) throws Exception {
-        if (laskutoimitus == 1) {
-            laskin.kerroSkalaarilla(luoMatriisi(matriisiA.split("\\r?\\n")), Integer.parseInt(skalaari));
-        } else if (laskutoimitus == 2) {
-            laskin.laskeYhteen(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
-        } else if (laskutoimitus == 3) {
-            laskin.kerroMatriisit(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
-        } else if (laskutoimitus == 4) {
-            laskin.laskeDeterminantti(luoMatriisi(matriisiA.split("\\r?\\n")));
+    public String laske(String matriisiA, String matriisiB, String laskutoimitus, String skalaari) throws Exception {
+        int numero = Integer.parseInt(laskutoimitus);
+        double[][] palautettava;
+        if (numero == 1) {
+            palautettava = laskin.kerroSkalaarilla(luoMatriisi(matriisiA.split("\\r?\\n")), Integer.parseInt(skalaari));
+        } else if (numero == 2) {
+            palautettava = laskin.laskeYhteen(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
+        } else if (numero == 3) {
+            palautettava = laskin.kerroMatriisit(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
+        } else if (numero == 4) {
+            return laskin.laskeDeterminantti(luoMatriisi(matriisiA.split("\\r?\\n"))) + "";
         } else {
             throw new Exception("Valitse laskutoimitus");
         }
 
-        return null;
+        return luoStringMatriisi(palautettava);
 
     }
 
@@ -67,6 +69,7 @@ public class Controller {
     public double[][] luoMatriisi(String[] matriisiPilkuillaEroteltuna) {
         poistaEiNumeerisetMerkitLopusta(matriisiPilkuillaEroteltuna);
         String[] ekaRivi = matriisiPilkuillaEroteltuna[0].split(",");
+        
         double[][] matriisi = new double[matriisiPilkuillaEroteltuna.length][ekaRivi.length];
         for (int i = 0; i < matriisi.length; i++) {
             String[] rivi = matriisiPilkuillaEroteltuna[i].split(",");
@@ -86,11 +89,31 @@ public class Controller {
     private void poistaEiNumeerisetMerkitLopusta(String[] matriisiPilkuillaEroteltuna) {
         for (int i = 0; i < matriisiPilkuillaEroteltuna.length; i++) {
             String rivi = matriisiPilkuillaEroteltuna[i];
-            int viimeinenKirjain = rivi.length() - 1;
+            int viimeinenKirjain = rivi.length() -1;
             while (!Character.isDigit(rivi.charAt(viimeinenKirjain))) {
                 viimeinenKirjain--;
             }
-            matriisiPilkuillaEroteltuna[i] = rivi.substring(0, viimeinenKirjain);
+            matriisiPilkuillaEroteltuna[i] = rivi.substring(0, viimeinenKirjain + 1);
         }
+    }
+
+    /**
+     *  Muodostaa String olion matriisista käyttöliittymää varten.
+     * 
+     * @param palautettavaMatriisi
+     * @return Matriisi String-muodossa
+     */
+    private String luoStringMatriisi(double[][] palautettavaMatriisi) {
+        String stringMatriisi = "";     
+        for (int i = 0; i < palautettavaMatriisi.length; i++) {
+            for (int j = 0; j < palautettavaMatriisi[0].length; j++) {
+                stringMatriisi += palautettavaMatriisi[i][j] + ", ";
+            }
+            
+            stringMatriisi = stringMatriisi.substring(0, stringMatriisi.length()-2);
+            stringMatriisi += "\n";
+        }      
+        return stringMatriisi;
+
     }
 }

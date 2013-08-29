@@ -30,6 +30,11 @@ public class LaskinTest {
     private double[][] matriisi4 = {{ 2,-1,-2},
                                     {-4, 6,3},
                                     {-4,-2,8}};
+    private double[][] matriisi5 = {{3, 5, 7, 11, 13}, 
+                                    {5, 7, 11, 13, 17}, 
+                                    {7, 11, 13, 17, 19}, 
+                                    {11, 13, 17, 19, 23}, 
+                                    {13, 17, 19, 23, 29}};
  
     
     public LaskinTest() {
@@ -99,9 +104,9 @@ public class LaskinTest {
         }
     } 
    
-    @Test(expected = Exception.class)
-   public void matriisinKertominenMatriisillaEriTyyppi() throws Exception {	
-         laskin.laskeYhteen(matriisi1, matriisi3);
+    @Test (expected = Exception.class)
+   public void matriisinKertominenMatriisillaEriTyyppi() throws Exception {	               
+            laskin.kerroMatriisit(matriisi3, matriisi1);
    }
    
    @Test
@@ -115,6 +120,14 @@ public class LaskinTest {
         } catch (Exception ex) {
             assertTrue(ex.getMessage(), false);
         }
+  
+    }
+   
+   @Test (expected = Exception.class)
+    public void matriisiLUDekompositioDoolittleEiNeliomatriisi() throws Exception{
+            double[][] matriisi      = {{ 2,-1,-2},
+                                        {-2, 4,-1}};
+               laskin.luDekompositioDoolittle(matriisi);
     }
    
    @Test
@@ -130,6 +143,12 @@ public class LaskinTest {
         }
     }
    
+    @Test  (expected = Exception.class)
+    public void matriisiLUDekompositioDoolittleYlempiKolmiomatriisiEiNeliomatriisi() throws Exception{
+         double[][] matriisi      = {{ 2,-1,-2},
+                                     {-2, 4,-1}};      
+            laskin.luDekompositioDoolittleYlempiKolmiomatriisi(matriisi);
+    }
    
    @Test
     public void matriisinDeterminantti(){
@@ -141,7 +160,71 @@ public class LaskinTest {
             assertTrue(ex.getMessage(), false);
         }
     }
+   
+   @Test
+    public void matriisinDeterminanttiYksikkoMatriisi(){
+        try {
+            double[][] matriisi = {{ 1, 0,0},
+                                    {0, 1,0},
+                                    {0,0,1}};
+            double laskettuTulos = laskin.laskeDeterminantti(matriisi);
+            double odotettuTulos = 1;
+            assertTrue((Math.abs(laskettuTulos) - Math.abs(odotettuTulos) < virhemarginaali));
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
+    }
+   
+   @Test
+    public void matriisinDeterminanttiNollaMatriisi(){
+        try {
+            double[][] matriisi = {{ 0, 0, 0},
+                                    {0, 0, 0},
+                                    {0, 0, 0}};
+            double laskettuTulos = laskin.laskeDeterminantti(matriisi);
+            double odotettuTulos = 0;
+            assertTrue("Laskettu tulos oli: " + laskettuTulos,(Math.abs(laskettuTulos) - Math.abs(odotettuTulos) < virhemarginaali));
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
+    }
+   
+    @Test (expected = Exception.class)
+   public void matriisinDeterminanttiEiNelioMatriisi() throws Exception {	
+            double[][] matriisi = {{ 0, 0, 0},
+                                    {0, 0, 0},}; 
+        laskin.laskeDeterminantti(matriisi);
+   }
     
+    @Test (expected = Exception.class)
+   public void matriisinDeterminanttiNullArvolla() throws Exception{	
+        laskin.laskeDeterminantti(null);
+   }
+    
+    @Test
+    public void matriisinDeterminanttiSuorituskykyAlleNeliollinen() throws Exception {
+      long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            laskin.laskeDeterminantti(matriisi4);
+        }
+      long endTime = System.currentTimeMillis();
+      long difference1 = endTime-startTime;
+
+      double kerroin1 = difference1 / (matriisi4.length*matriisi4.length);
+      startTime = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            laskin.laskeDeterminantti(matriisi5);
+        }
+      endTime = System.currentTimeMillis();  
+       long difference2 = endTime-startTime;
+      double kerroin2 = difference2 / (matriisi5.length*matriisi5.length); 
+        
+      assertTrue(kerroin2 < (kerroin1*kerroin1));
+    }
+    
+        
+        
+        
     private boolean tarkistaMatriisit(double[][] laskettuTulos, double[][] odotettuTulos) {
         for (int i = 0; i < laskettuTulos.length; i++) {
                 for (int j = 0; j < laskettuTulos[0].length; j++) {

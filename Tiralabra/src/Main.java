@@ -1,65 +1,98 @@
 
 import Controller.Controller;
-import View.MatriisiTaulukko;
-
-
-
-
-
+import Model.LaskinModel;
+import java.lang.reflect.Array;
 
 public class Main {
 
     public static void main(String[] args) {
-//        Laskin laskin = new Laskin();
-//
-//        double[][] matriisi1 = {{1, 2},
-//            {3, 4}};
-//
-//        double[][] matriisi2 = {{4, 3},
-//            {2, 1}};
-//        try {
-//            tulostaMatriisi(laskin.kerroMatriisit(matriisi1, matriisi2));
-//        } catch (Exception ex) {
-//            
-//        }    
-            
-     
-    //
-    //        tulostaMatriisi(matriisi1);
-    //
-    //        System.out.println("----");
-    //        try {
-    //            tulostaMatriisi(laskin.kerroMatriisit(matriisi1, matriisi2));
-    //        } catch (Exception e) {
-    //            System.out.println(e.getMessage());
-    //        }       
-        
+ 
+ 
+
         Controller matriisilaskin = new Controller();
         matriisilaskin.run();
-//        
-//        double[][] matriisi3 = {{2, -1,-2},
-//            {-4,6,3},
-//            {-4,-2,8}};
-//        
-//        tulostaMatriisi(matriisi3);
-//        System.out.println("");
-//        try {
-//            System.out.println(laskin.laskeDeterminantti(matriisi3));
-//  
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//        }                
-//        System.out.println("");
-//        tulostaMatriisi(matriisi3);
-//        
-    }
 
-    static public void tulostaMatriisi(double[][] matriisi) {
-        for (int rivi = 0; rivi < matriisi.length; rivi++) {
-            for (int sarake = 0; sarake < matriisi[0].length; sarake++) {
-                System.out.print(matriisi[rivi][sarake] + ",");
+
+    }
+    
+    public static void performanceTest() {
+    
+           double[][] matriisi4 = {{2, -1, -2},
+            {-4, 6, 3},
+            {-4, -2, 8}};
+        double[][] matriisi5 = {{3, 5, 7, 11, 13},
+            {5, 7, 11, 13, 17},
+            {7, 11, 13, 17, 19},
+            {11, 13, 17, 19, 23},
+            {13, 17, 19, 23, 29}};
+        
+        
+        try {
+ 
+            LaskinModel laskin = new LaskinModel();
+            
+            long startTime = System.currentTimeMillis();
+            for (int i = 0; i < 100000; i++) {
+                laskin.laskeDeterminantti(matriisi5);
             }
+            long endTime = System.currentTimeMillis();
+            long difference1 = endTime - startTime;
+
+            double kerroin1 = difference1 / (matriisi5.length * matriisi5.length);
+            System.out.println("Aika: " + difference1);
+            System.out.println("Aika jaettuna alkioilla. Alkioita: " + (matriisi5.length * matriisi5.length) + " Kerroin: " + kerroin1);
+            
             System.out.println("");
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < 100000; i++) {
+                laskin.laskeDeterminantti(matriisi4);
+            }
+            endTime = System.currentTimeMillis();
+            difference1 = endTime - startTime;
+
+            kerroin1 = difference1 / (matriisi4.length * matriisi4.length);
+            System.out.println("Aika: " + difference1);
+            System.out.println("Aika jaettuna alkioilla. Alkioita: " + (matriisi4.length * matriisi4.length) + " Kerroin: " + kerroin1);
+            
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < 100000; i++) {
+                laskin.laskeDeterminantti(matriisi5);
+            }
+            endTime = System.currentTimeMillis();
+            System.out.println("");
+            long difference2 = endTime - startTime;
+            double kerroin2 = difference2 / (matriisi5.length * matriisi5.length);
+            System.out.println("Aika: " + difference2);
+            System.out.println("Aika jaettuna alkioilla. Alkioita: " + (matriisi5.length * matriisi5.length) + " Kerroin: " + kerroin2);
+            
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < 100000; i++) {
+                laskin.laskeDeterminantti(matriisi5);
+            }
+            endTime = System.currentTimeMillis();
+            System.out.println("");
+            difference2 = endTime - startTime;
+            kerroin2 = difference2 / (matriisi5.length * matriisi5.length);
+            System.out.println("Aika: " + difference2);
+            System.out.println("Aika jaettuna alkioilla. Alkioita: " + (matriisi5.length * matriisi5.length) + " Kerroin: " + kerroin2);
+            
+            
+            System.out.println("");
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < 100000; i++) {
+                laskin.laskeDeterminantti(matriisi4);
+            }
+            endTime = System.currentTimeMillis();
+            difference1 = endTime - startTime;
+
+            kerroin1 = difference1 / (matriisi4.length * matriisi4.length);
+            System.out.println("Aika: " + difference1);
+            System.out.println("Aika jaettuna alkioilla. Alkioita: " + (matriisi4.length * matriisi4.length) + " Kerroin: " + kerroin1);
+            
+            
+        } catch (Exception e) {
         }
+    
     }
 }
+    

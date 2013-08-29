@@ -1,5 +1,7 @@
 package Model;
 
+import java.text.DecimalFormat;
+
 /**
  * Laskin toteuttaa liukulukutaulukkona annetuille matriiseille
  * laskutoimituksia.
@@ -69,7 +71,7 @@ public class LaskinModel {
 
             return uusi;
         } else {
-            throw new Exception("Matriisin tuloa ei voi määritellä");
+            throw new Exception("Matriisin tuloa ei voi määritellä. Tarkista matriisien tyypit");
         }
     }
 
@@ -115,6 +117,9 @@ public class LaskinModel {
                     for (int k = 0; k < i; k++) {
                         l[j][i] = l[j][i] - l[j][k] * u[k][i];
                     }
+                    if (u[i][i] ==0){
+                    return null;
+                    }
                     l[j][i] = l[j][i] / u[i][i];
                 }
             }
@@ -133,7 +138,7 @@ public class LaskinModel {
      */
     public double[][] luDekompositioDoolittle(double[][] matriisi) throws Exception {
         if (matriisi.length == matriisi[0].length) {
-            double[][] dekompositio = new double[matriisi.length][matriisi.length];
+            double[][] dekompositio = new double[matriisi.length][matriisi.length]; // TODO tarkista pitäisikö laittaa käyttöön.
             for (int i = 0; i < dekompositio.length; i++) {
                 for (int j = i; j < dekompositio.length; j++) {
                     for (int k = 0; k < i; k++) {
@@ -143,6 +148,9 @@ public class LaskinModel {
                 for (int j = i + 1; j < dekompositio.length; j++) {
                     for (int k = 0; k < i; k++) {
                         matriisi[j][i] = matriisi[j][i] - matriisi[j][k] * matriisi[k][i];
+                    }
+                    if (matriisi[i][i] ==0){
+                    return null;
                     }
                     matriisi[j][i] = matriisi[j][i] / matriisi[i][i];
                 }
@@ -162,12 +170,17 @@ public class LaskinModel {
      * @throws Exception Vain neliömatriiseille voidaan laskea determinantti
      */
     public double laskeDeterminantti(double[][] matriisi) throws Exception {
-        double[][] laskettava = luDekompositioDoolittleYlempiKolmiomatriisi(matriisi);
-        double determinantti = 1;
-        for (int i = 0; i < laskettava.length; i++) {
-            determinantti = determinantti * laskettava[i][i];
+        double[][] laskettavaKolmiomatriisi = luDekompositioDoolittleYlempiKolmiomatriisi(matriisi);
+        if (laskettavaKolmiomatriisi == null) {
+            return 0;
         }
-        return determinantti;
+        double determinantti = 1;
+        for (int i = 0; i < laskettavaKolmiomatriisi.length; i++) {
+            determinantti = determinantti * laskettavaKolmiomatriisi[i][i];
+        }
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.valueOf(twoDForm.format(determinantti));
+
     }
 
 }

@@ -18,6 +18,18 @@ import static org.junit.Assert.*;
 public class ControllerTest {
 
     private Controller controller;
+    private double virhemarginaali = 0.1;
+    private double[][] matriisi1 = {{1, 2},
+                                    {3, 4}};
+    private double[][] matriisi2= {{4, 3},
+                                   {2, 1}};
+    private double[][] matriisi3= {{4, 3},
+                                   {2, 1},
+                                   {3, 2}};
+    
+    private double[][] matriisi4 = {{ 2,-1,-2},
+                                    {-4, 6,3},
+                                    {-4,-2,8}};
 
     public ControllerTest() {
         controller = new Controller();
@@ -65,7 +77,23 @@ public class ControllerTest {
         
     }
     
-    
+@Test
+    public void matriisinDeterminanttiController(){
+        try {
+            String laskettava = "2,-1,-2\n-4,6,3\n-4,-2,8";
+            String laskettuTulos = controller.laske(laskettava,null, "4",null);
+            String odotettuTulos = "24.0";
+
+            assertEquals(laskettuTulos, odotettuTulos);
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
+    }
+     
+     
+     
+     
+     
     
     private boolean tarkistaMatriisit(double[][] laskettuTulos, double[][] odotettuTulos) {
         for (int i = 0; i < laskettuTulos.length; i++) {

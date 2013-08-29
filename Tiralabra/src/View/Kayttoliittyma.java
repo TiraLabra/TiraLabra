@@ -43,7 +43,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         skalaari = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        Laske = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -59,6 +59,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(850, 550));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -93,14 +94,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         skalaari.setText("Anna skalaari");
         getContentPane().add(skalaari, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 437, 87, -1));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Laske");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Laske.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Laske.setText("Laske");
+        Laske.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                LaskeActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 400, 143, 62));
+        getContentPane().add(Laske, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 400, 143, 62));
 
         jLabel3.setText("Tulos");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 72, 20));
@@ -113,7 +114,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         virheRuutu.setRows(5);
         jScrollPane1.setViewportView(virheRuutu);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 400, -1, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 460, 400, 50));
 
         matriisiB.setColumns(20);
         matriisiB.setRows(5);
@@ -150,22 +151,22 @@ public class Kayttoliittyma extends javax.swing.JFrame {
      *
      * @param evt Laske-napin painaminen käyttöliittymässä
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void LaskeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaskeActionPerformed
         try {
             tulosruutu.setText(null);
-            tulosruutu.setText(controller.laske(matriisiA.getText(), matriisiB.getText(), getLaskutoimitus(), skalaari.getText()));
+            tulosruutu.setText(controller.laske(matriisiA.getText(), matriisiB.getText(), buttonGroup1.getSelection().getActionCommand(), skalaari.getText()));
             virheRuutu.setText(null);
         } catch (Exception e) {
             virheRuutu.setText(e.getMessage());
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_LaskeActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Laske;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -194,6 +195,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
      * indeksinumeron.
      */
     private int getLaskutoimitus() {
-        throw new UnsupportedOperationException("Not yet implemented");
+     return 1;
     }
 }
