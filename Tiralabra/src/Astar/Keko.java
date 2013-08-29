@@ -133,19 +133,30 @@ public class Keko {
      */
     public static void main(String[] args) {
 
-        Keko avoinLista = new Keko(2, 5);
+        
+        long aikaAlussa = System.currentTimeMillis(); 
+        
+        Keko avoinLista = new Keko(1000, 10000);
         Ruutu temp = null;
-        for (int i = 0; i < 10; i++) {
-            int h = (int) Math.round(Math.random() * 99);
+        for (int i = 0; i < 10000000; i++) {
+            int h = (int) Math.round(Math.random() * 199999999);
             Ruutu lisattava = new Ruutu(temp, 0, 0, 1, h);
             avoinLista.lisaaAlkio(lisattava);
             System.out.print(lisattava.getF() + " ");
             temp = lisattava;
         }
+        
+        
+        
         System.out.println("\n");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000000; i++) {
             temp = avoinLista.poistaPienin();
             System.out.println(temp.getF());
         }
+        
+        long aikaLopussa = System.currentTimeMillis();
+        
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
+        
     }
 }

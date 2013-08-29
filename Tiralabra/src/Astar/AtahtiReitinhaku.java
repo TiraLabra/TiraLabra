@@ -73,7 +73,6 @@ public class AtahtiReitinhaku {
         Ruutu naapuriVanhempi = null;
 
         // toistetaan kunnes avointen ruutujen lista on tyhjä
-        // TODO: onTyhja()
         while (!this.avoinLista.onTyhja()) {
 
             kasiteltava = poistaKeosta();
@@ -127,17 +126,18 @@ public class AtahtiReitinhaku {
                     }
                 }
 
+                // jos naapuri ruutu on seinä, jätetaan se huomiotta
+                if (this.labyrintti[naapuriY][naapuriX] != '#') {
+                    // jos naapuriruutua ei ole olemassa, lisätään se avoimeenlistaan
+                    if (this.ruudut[naapuriY][naapuriX] == null) {
+                        this.lisaaKekoon(naapuriY, naapuriX, naapuriG, naapuriVanhempi);
+                    }
 
-                // jos naapuriruutua ei ole olemassa, lisataan se avoimeenlistaan
-                if (this.ruudut[naapuriY][naapuriX] == null) {
-                    this.lisaaKekoon(naapuriY, naapuriX, naapuriG, naapuriVanhempi);
+                    // Jos ruutu on suljetussa listassa, ei tarvitse tehdä mitään,
+                    // koska tämä A*-algoritmi _ei_ salli diagonaalisia siirtymiä
+                    // ruutujen välillä. Näin ollen jokaisen siirtymän kustannus on aina
+                    // vakio 1, joten G-arvojen vertailua ei tarvitse tehda.
                 }
-
-                // Jos ruutu on suljetussalistassa, ei tarvitse tehdä mitään,
-                // koska tämä A*-algoritmi _ei_ salli diagonaalisia siirtymiä
-                // ruutujen välillä. Näin ollen jokaisen siirtymän kustannus on aina
-                // vakio 1, joten G-arvojen vertailua ei tarvitse tehda.
-
 
             } // for
 
@@ -150,15 +150,15 @@ public class AtahtiReitinhaku {
 
     /**
      * Muokkaa labyrinttia siten, etta lisaa 'o' merkkeja ilmaisemaan parhaan
-     * loydetyn polun.
+     * löydetyn polun.
      *
      * @param ruutu Ruutu, joka on maaliruutu.
-     * @return Labyrintti, johon merkitty lyhin polku 'o'-merkeilla.
+     * @return Labyrintti, johon merkitty lyhin polku 'o'-merkeillä.
      */
     private char[][] luoPolku(Ruutu ruutu) {
 
         if (ruutu != null) {
-            // pakitetaan takaisin kohti lahtoruutua
+            // pakitetaan takaisin kohti lähtöruutua
             // ja merkitaan labyrinttiin polkua.
             ruutu = ruutu.getParent();
             while (ruutu.getParent() != null) {
@@ -171,7 +171,7 @@ public class AtahtiReitinhaku {
 
     /**
      * Luo annettujen parametrien avulla uuden Ruutu-olion, joka laitetaan
-     * luonnin jalkeen avoimeenlistaan (eli Kekoon).
+     * luonnin jälkeen avoimeenlistaan (eli Kekoon).
      *
      * @param y Ko. ruudun y-akselin arvo.
      * @param x Ko. ruudun x-akselin arvo.
@@ -187,7 +187,7 @@ public class AtahtiReitinhaku {
     }
 
     /**
-     * Poistaa pienimman F-arvon omaavan ruudun avoimestalistasta.
+     * Poistaa pienimmän F-arvon omaavan ruudun avoimestalistasta.
      *
      * @return Avoimestalistasta poistettu ruutu
      */
@@ -200,7 +200,7 @@ public class AtahtiReitinhaku {
 
     /**
      * Laskee heuristisen arvion parametreina annetuiden koordinaattien
-     * perusteella. Kyseessa on ns. manhattanin heurestiikka. Tämä heurestiikka
+     * perusteella. Kyseessä on ns. manhattanin heurestiikka. Tämä heurestiikka
      * on toimiva, sillä ko. ohjelmassa liikutaan vain vaaka- ja pystysuunnassa,
      * jolloin matkaa ei koskaan yliarvioida.
      *
