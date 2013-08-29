@@ -75,7 +75,7 @@ class PlayerConfigMenu extends JMenu implements ActionListener
 		createDepthMenu();
 		quiescenceItem = createCheckBoxMenuItem(this, "Quiescence search");
 
-		timeLimitMenu.getItem(9).setSelected(true);
+		timeLimitMenu.getItem(8).setSelected(true);
 		depthMenu.getItem(DEPTH_OPTIONS.length - 1).setSelected(true);
 		quiescenceItem.setSelected(true);
 		aiItem.setSelected(aiSelected);

@@ -95,7 +95,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 * Valikkoelementit.
 	 */
 	private JMenuItem newGameItem, simulItem, exitItem, perfTestItem, perfTest2Item,
-			showGameTreeItem, nextMoveItem;
+			showGameTreeItem, nextMoveItem, demo1Item, demo2Item;
 
 	private JCheckBoxMenuItem debugInfoItem, randomItem, pauseItem;
 
@@ -113,7 +113,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void run()
 	{
 		createFrame();
-		startNewGame();
+		startNewGame(null);
 	}
 
 	/**
@@ -179,14 +179,21 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		menuBar.add(playerConfigs[0] = new PlayerConfigMenu("Player 1", this, logArea, false));
 		menuBar.add(playerConfigs[1] = new PlayerConfigMenu("Player 2", this, logArea, true));
 
-		JMenu debugMenu = new JMenu("Info");
-		menuBar.add(debugMenu);
+		JMenu miscMenu = new JMenu("Misc");
+		menuBar.add(miscMenu);
 
-		perfTestItem = createMenuItem(debugMenu, "Run performance test");
+		perfTestItem = createMenuItem(miscMenu, "Run performance test");
 		//perfTest2Item = createMenuItem(debugMenu, "Run performance test 2");
 		//simulItem = createMenuItem(debugMenu, "Run simulation");
-		showGameTreeItem = createMenuItem(debugMenu, "View search tree for last AI move...");
-		debugInfoItem = createCheckBoxMenuItem(debugMenu, "Show debug info");
+		showGameTreeItem = createMenuItem(miscMenu, "View search tree for last AI move...");
+		debugInfoItem = createCheckBoxMenuItem(miscMenu, "Show debug info");
+
+		JMenu demoMenu = new JMenu("Demo");
+		miscMenu.add(demoMenu);
+
+		demo1Item = createMenuItem(demoMenu, "Demo 1");
+		demo2Item = createMenuItem(demoMenu, "Demo 2");
+
 
 		frame.add(menuBar, BorderLayout.NORTH);
 	}
@@ -299,14 +306,14 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Uusi peli.
 	 */
-	private void startNewGame()
+	private void startNewGame(GameState state)
 	{
 		if (gameThread != null)
 			gameThread.interrupt();
 
 		Player whitePlayer = playerConfigs[0].getPlayer();
 		Player blackPlayer = playerConfigs[1].getPlayer();
-		game = new Game(createGame(), whitePlayer, blackPlayer, this);
+		game = new Game(createGame(state), whitePlayer, blackPlayer, this);
 
 		refreshLoggingEnabledState();
 		logArea.logMessage("--- Game started ---");
@@ -326,9 +333,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	 * Luo uuden pelitilanteen. (Joko standardialoitustilanne tai satunnainen tilanne asetuksen
 	 * mukaan).
 	 */
-	private GameState createGame()
+	private GameState createGame(GameState state)
 	{
-		if (randomItem.getState())
+		if (state != null)
+			return state;
+		else if (randomItem.getState())
 			return BalancedGameGenerator.createGame(new Random().nextLong(), 1.0);
 		else
 			return new GameState();
@@ -385,7 +394,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	public void actionPerformed(ActionEvent ae)
 	{
 		if (ae.getSource() == newGameItem)
-			startNewGame();
+			startNewGame(null);
+		else if (ae.getSource() == demo1Item)
+			startNewGame(new GameState("Ke5", "Ka8 Bb8 Bc8", Players.WHITE));
+		else if (ae.getSource() == demo2Item)
+			startNewGame(new GameState("Kg3 e4", "Kc6 e5", Players.WHITE));
 		else if (ae.getSource() == perfTestItem)
 			runPerformanceTest();
 		else if (ae.getSource() == perfTest2Item)
