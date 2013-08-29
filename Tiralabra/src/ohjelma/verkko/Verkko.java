@@ -1,8 +1,10 @@
 package ohjelma.verkko;
 
+
 import java.util.HashSet;
 import java.util.Scanner;
 import ohjelma.tietorakenteet.iHashMap;
+import ohjelma.tietorakenteet.iHashSet;
 
 /**
  * Luo verkon annetuista solmuista / kaarista.
@@ -19,11 +21,12 @@ public class Verkko {
         this.kaaret = kaaret;
 
     }
-
+    
     /**
      * Alustaa verkon luomalla solmut, kaaret ja niiden yhteydet.
      *
      */
+    
     public void omaVerkko() {
         System.out.println("Monta solmua verkossa on?");
         Scanner lukija = new Scanner(System.in);
@@ -32,7 +35,6 @@ public class Verkko {
         for (int i = 1; i < solmumaara + 1; i++) {
             solmut.put(i, new Solmu(i));
         }
-
         System.out.println("Monta kaarta verkossa on?");
         int kaarimaara = lukija.nextInt();
 

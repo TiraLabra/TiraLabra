@@ -5,6 +5,7 @@
 package ohjelma.algoritmit;
 import java.util.HashSet;
 import ohjelma.tietorakenteet.iHashMap;
+import ohjelma.tietorakenteet.iHashSet;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;

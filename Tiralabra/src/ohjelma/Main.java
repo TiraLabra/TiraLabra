@@ -5,6 +5,7 @@ import java.util.Scanner;
 import ohjelma.algoritmit.BellmanFord;
 import ohjelma.algoritmit.Dijkstra;
 import ohjelma.tietorakenteet.iHashMap;
+import ohjelma.tietorakenteet.iHashSet;
 import ohjelma.verkko.Kaari;
 import ohjelma.verkko.Solmu;
 import ohjelma.verkko.Verkko;
@@ -22,6 +23,8 @@ public class Main {
 //
 
     public static void main(String[] args) {
+
+
         Verkko verkko;
         Scanner lukija = new Scanner(System.in);
         while (true) {

@@ -10,29 +10,31 @@ import java.util.Map;
  *
  * @author kkivikat
  */
-public class iHashMapEntry<K,V> implements Map.Entry<K,V>{
+public class iHashMapTaulu<K,V> implements Map.Entry<K,V>{
     
     final int hash;
     final K avain;
     V arvo;
-    iHashMapEntry<K,V> seuraava;
+    iHashMapTaulu<K,V> seuraava;
     
-    public iHashMapEntry(int h, K k, V v, iHashMapEntry<K,V> n) {
+    public iHashMapTaulu(int h, K k, V v, iHashMapTaulu<K,V> n) {
         this.avain = k;
         this.hash = h;
         this.arvo = v;
         this.seuraava = n;
     }
-    
-    public void recordAccess(iHashMap<K,V> m) {
-    }
 
-    
+     /**
+     * Palauttaa avaimen.
+     */
     @Override
     public K getKey() {
         return avain;
     }
 
+     /**
+     * Palauttaa arvon.
+     */
     @Override
     public V getValue() {
         return arvo;

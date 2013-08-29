@@ -6,36 +6,29 @@ package ohjelma.tietorakenteet;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
  *
  * @author kkivikat
  */
-public class iHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V> {
-    
-    private int maxKapasiteetti = 16;
+public class iHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
+
     private int arvojenmaara = 0;
-    private iHashMapEntry<K, V>[] table;
+    private iHashMapTaulu<K, V>[] taulu;
 
     public iHashMap() {
-        table = new iHashMapEntry[maxKapasiteetti];
+        taulu = new iHashMapTaulu[5];
     }
 
-     /**
+    /**
      * Tarkastaa onko HashMap tyhjä.
      */
     public boolean onkoTyhja() {
         return arvojenmaara == 0;
     }
-    
-     /**
-     * Palauttaa koko HashMapin maksimikapasiteetin.
-     */
-    public int getMaxKoko() {
-        return maxKapasiteetti;
-    }
-    
+
     /**
      * Palauttaa HashMapissa olevien arvojen määrän.
      */
@@ -43,17 +36,11 @@ public class iHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V> {
         return arvojenmaara;
     }
 
-    
     public int haeIndeksi(int h, int pituus) {
         return h & (pituus - 1);
     }
 
-    public int hash(int h) {
-        h ^= (h >>> 20) ^ (h >>> 12);
-        return h ^ (h >>> 7) ^ (h >>> 4);
-    }
-
-     /**
+    /**
      * Palauttaa avaimelle kuuluvan arvon.
      */
     @Override
@@ -61,17 +48,17 @@ public class iHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V> {
         if (avain == null) {
             return getNullArvo();
         }
-        int hash = hash(avain.hashCode());
-        for (iHashMapEntry<K, V> e = table[haeIndeksi(hash, table.length)]; e != null; e = e.seuraava) {
+        int hash = avain.hashCode();                                            // Haetaan avaimen hashkoodia vastaava kori/indeksi
+        for (iHashMapTaulu<K, V> e = taulu[haeIndeksi(hash, taulu.length)]; e != null; e = e.seuraava) {
             Object k;
-            if (e.hash == hash && ((k = e.avain) == avain || avain.equals(k))) {
-                return e.arvo;
+            if (e.hash == hash && ((k = e.avain) == avain || avain.equals(k))) {// käydään läpi vain tämä kori, koska hashkoodin perusteella tiedetään
+                return e.arvo;                                                  // että arvon on oltava tämän korin listan jossakin kohdassa.
             }
         }
         return null;
     }
 
-     /**
+    /**
      * Lisää avain-arvo parin.
      */
     @Override
@@ -80,50 +67,48 @@ public class iHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V> {
             return putNull(arvo);
         }
 
-        int hash = hash(avain.hashCode());
-        int koriIndeksi = haeIndeksi(hash, table.length);
+        int hash = avain.hashCode();
+        int koriIndeksi = haeIndeksi(hash, taulu.length);                       // lasketaan mihin kohtaan taulukkoa arvot sijoitetaan.
 
-
-        for (iHashMapEntry<K, V> e = table[koriIndeksi]; e != null; e = e.seuraava) {
+        for (iHashMapTaulu<K, V> e = taulu[koriIndeksi]; e != null; e = e.seuraava) {
             Object k;
-            if (e.hash == hash && ((k = e.avain) == avain || avain.equals(k))) {
-                V oldValue = e.arvo;
+            if (e.hash == hash && ((k = e.avain) == avain || avain.equals(k))) { // katsotaan jos taulukossa on jo samalla avaimella asetettu arvo
+                V vanhaArvo = e.arvo;                                            // jos on, korvataan vanha arvo uudella.
                 e.arvo = arvo;
-                e.recordAccess(this);
-                return oldValue;
+                return vanhaArvo;
             }
         }
-        uusiEntry(hash, avain, arvo, koriIndeksi);
+        uusiEntry(hash, avain, arvo, koriIndeksi);                              // muuten lisäys
         ++arvojenmaara;
         return null;
     }
 
-     /**
-     * Lopullinen avain-arvo parin lisäys mikäli arvoa ei ollut vielä olemassa eikä se ole null.
+    /**
+     * Lopullinen avain-arvo parin lisäys mikäli arvoa ei ollut vielä olemassa
+     * eikä se ole null.
      */
     public void uusiEntry(int hash, K avain, V arvo, int bucketIndeksi) {
-        iHashMapEntry<K, V> e = table[bucketIndeksi];
-        table[bucketIndeksi] = new iHashMapEntry<K, V>(hash, avain, arvo, e);
+        iHashMapTaulu<K, V> e = taulu[bucketIndeksi];
+        taulu[bucketIndeksi] = new iHashMapTaulu<K, V>(hash, avain, arvo, e);
     }
 
     private V putNull(V arvo) {
-        for (iHashMapEntry<K, V> e = table[0]; e != null; e = e.seuraava) {
+        for (iHashMapTaulu<K, V> e = taulu[0]; e != null; e = e.seuraava) {
             if (e.seuraava == null) {
-                V oldValue = e.arvo;
+                V vanhaArvo = e.arvo;
                 e.arvo = arvo;
-                e.recordAccess(this);
-                return oldValue;
+                return vanhaArvo;
             }
         }
         uusiEntry(0, null, arvo, 0);
         return null;
     }
 
-     /**
+    /**
      * Hakee nullille arvon.
      */
     private V getNullArvo() {
-        for (iHashMapEntry<K, V> e = table[0]; e != null; e = e.seuraava) {
+        for (iHashMapTaulu<K, V> e = taulu[0]; e != null; e = e.seuraava) {
             if (e.avain == null) {
                 return e.arvo;
             }
@@ -135,4 +120,6 @@ public class iHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V> {
     public Set<Entry<K, V>> entrySet() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+  
 }
