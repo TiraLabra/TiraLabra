@@ -10,7 +10,5 @@ edellämainittujen rakenteiden lisäksi myös Keko, joka ei varsinaisesti
 ole "keko" termin varsinaisessa merkityksessä, mutta sen toimintaperiaate
 on melko lähellä.
 
-Ohjelman aikavaativuus on A* algoritmilla eksponentiaalinen. DFS-haun
-aikavaativuus on laskelmien perusteella lineaarinen, mutta suurilla
-syötteillä päädytään StackOverflow-virheeseen.
+Ohjelman aikavaativuus on A* algoritmilla eksponentiaalinen. 
 

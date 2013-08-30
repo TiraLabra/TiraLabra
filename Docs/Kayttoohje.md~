@@ -6,7 +6,7 @@ Kun käyttöliittymä on auki, ohjelma tulee ajaa seuraavanlaisesti:
 	ja valitse se painamalla nappia "Valitse labyrintti". Luetellut labyrintit ovat kaikki kokoluokkaa 20*20 pikseliä.
 	2. Kirjoita suunnistajien yläpuolella oleviin tekstikenttiin alku- ja lähtöpisteen koordinaatit. X = vaala-akseli, Y = pystyakseli.
 	Koordinaattipiste (0,0) sijaitsee oikeassa yläkulmassa.
-	3. Valitse haluamasi suunnistaja. Jos et valitse suunnistajaa, ohjelma heittää poikkeuksen. Valintaruutua on klikattava uudestaan jos vaihdat koordinaatteja!
+	3. Valitse haluamasi suunnistaja. Valintaruutua on klikattava uudestaan jos vaihdat koordinaatteja!
 	4. Käynnistä haku painamalla nappia "Aloita suunnistus".
 	5. Mikäli haluat ajaa ohjelman heti uudelleen eri labyrintilla, palaa kohtaan 1.
 
