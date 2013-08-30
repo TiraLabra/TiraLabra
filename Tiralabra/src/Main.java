@@ -9,8 +9,9 @@ public class Main {
  
  
 
-        Controller matriisilaskin = new Controller();
-        matriisilaskin.run();
+//        Controller matriisilaskin = new Controller();
+//        matriisilaskin.run();
+     performanceTest();
 
 
     }
