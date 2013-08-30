@@ -2,12 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package tiralabra.tietorakenteet;
 
 /**
  * Luo Huffmanin puun
  * @author Joonas
  */
+
 public class Puu {
     
     private PrioriteettiJono jono;
@@ -16,8 +18,9 @@ public class Puu {
     
     /**
      * Luo uuden puu luokan parametrina prioriteettijono.
-     * @param que 
+     * @param jono 
      */
+    
     public Puu(PrioriteettiJono jono){
          this.jono = jono;
          reitit = new String[256];

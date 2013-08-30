@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TiralabraTest;
+package TiralabraTest.tietorakenteet;
 
 import java.util.PriorityQueue;
 import org.junit.After;
@@ -22,6 +22,7 @@ import tiralabra.tietorakenteet.Puu;
 public class PuuTest {
     
     private Puu puu;
+    private Puu reititPuu;
     
     public PuuTest() {
     }
@@ -57,6 +58,12 @@ public class PuuTest {
         jono.lisaa(new Node(101, 9));
         
         this.puu = new Puu(jono);
+        
+        String[] polut = new String[256];
+        polut[97] = "0";
+        polut[98] = "1";
+        polut[99] = "00";
+        this.reititPuu = new Puu(polut);
     }
     
 
@@ -108,6 +115,65 @@ public class PuuTest {
         assertEquals("111",reitit[100]);
         assertEquals("1101",reitit[101]);
         assertEquals("1100",reitit[102]);
+    }
+    
+    @Test
+    public void lisaaANodenReiteilla(){
+        reititPuu.lisaaNode(97, "0", reititPuu.getRoot());
+        assertEquals(97, reititPuu.getRoot().getVasen().getMerkki());
+    }
+    
+    @Test
+    public void lisaaBNodenReiteilla(){
+        reititPuu.lisaaNode(98, "01", reititPuu.getRoot());
+        assertEquals(98, reititPuu.getRoot().getVasen().getOikea().getMerkki());
+    }
+    
+    @Test
+    public void lisaaNodenPitkallaReitilla(){
+        reititPuu.lisaaNode(97, "00001101", reititPuu.getRoot());
+        assertEquals(97, reititPuu.getRoot().getVasen().getVasen().getVasen().getVasen().getOikea().getOikea().getVasen().getOikea().getMerkki());
+    }
+    
+    @Test
+    public void matkallaOlevatNodetOikein(){
+        reititPuu.lisaaNode(97, "00001101", reititPuu.getRoot());
+        assertEquals(-1, reititPuu.getRoot().getVasen().getMerkki());
+    }
+    
+    @Test
+    public void eiYlimaaraisiaNodeja(){
+        reititPuu.lisaaNode(97, "00001101", reititPuu.getRoot());
+        assertEquals(null, reititPuu.getRoot().getOikea());
+    }
+    @Test
+    public void eiYlimaaraisiaNodeja2(){
+        reititPuu.lisaaNode(97, "00001101", reititPuu.getRoot());
+        assertEquals(null, reititPuu.getRoot().getVasen().getVasen().getOikea());
+    }
+    
+    @Test
+    public void kokoaaReiteista(){
+        reititPuu.kokoaReiteista();
+        assertEquals(-1, reititPuu.getRoot().getMerkki());
+    }
+    
+    @Test
+    public void kokoaaReiteistaAOikeallaPaikalla(){
+        reititPuu.kokoaReiteista();
+        assertEquals(97, reititPuu.getRoot().getVasen().getMerkki());
+    }
+    
+    @Test
+    public void kokoaaReiteistaBOikeallaPaikalla(){
+        reititPuu.kokoaReiteista();
+        assertEquals(98, reititPuu.getRoot().getOikea().getMerkki());
+    }
+    
+    @Test
+    public void kokoaaReiteistaCOikeallaPaikalla(){
+        reititPuu.kokoaReiteista();
+        assertEquals(99, reititPuu.getRoot().getVasen().getVasen().getMerkki());
     }
     
     

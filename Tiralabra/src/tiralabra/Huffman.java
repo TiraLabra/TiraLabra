@@ -6,8 +6,8 @@ package tiralabra;
 
 import java.io.File;
 import java.util.Scanner;
-import tiralabra.tiivistys.TiedostonPakkaaja;
-import tiralabra.tiivistys.TiedostonPurkaja;
+import tiralabra.koodaus.TiedostonPakkaaja;
+import tiralabra.koodaus.TiedostonPurkaja;
 
 /**
  * Pakkauksen ja purkamisen "käyttöjärjestelmä".

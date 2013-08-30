@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.tiivistys;
+package tiralabra.koodaus;
 
 import tiralabra.tiedostonkasittely.TiedostonKirjoittaja;
 import tiralabra.tiedostonkasittely.TiedostonLukija;

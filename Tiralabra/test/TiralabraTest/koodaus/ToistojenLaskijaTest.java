@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package TiralabraTest;
+package TiralabraTest.koodaus;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.tiivistys.ToistojenLaskija;
+import tiralabra.koodaus.ToistojenLaskija;
 
 /**
  *
@@ -41,27 +41,59 @@ public class ToistojenLaskijaTest {
     }
     
     @Test
-    public void laskeeOikein(){
+    public void laskeeOikeinA(){
         laskija.laske("test.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(4, taulukko[97]);
+    }
+    
+    @Test
+    public void laskeeOikeinB(){
+        laskija.laske("test.txt");
+        int taulukko[] = laskija.getToistot();
         assertEquals(2, taulukko[98]);
-        assertEquals(3, taulukko[99]);
-        assertEquals(2, taulukko[100]);
+    }
+    
+    @Test
+    public void laskeeOikeinE(){
+        laskija.laske("test.txt");
+        int taulukko[] = laskija.getToistot();
         assertEquals(8, taulukko[101]);
-        assertEquals(9, taulukko[102]);
+    }
+    
+    @Test
+    public void laskeeOikeinG(){
+        laskija.laske("test.txt");
+        int taulukko[] = laskija.getToistot();
         assertEquals(2, taulukko[103]);
     }
     
     @Test
-    public void eiLaskeKuulumattomiaKirjaimia(){
+    public void eiLaskeKuulumattomiaViereisiaKirjaimia(){
         laskija.laske("test.txt");
         int taulukko[] = laskija.getToistot();
         assertEquals(0, taulukko[96]);
-        assertEquals(0, taulukko[0]);
-        assertEquals(0, taulukko[44]);
-        assertEquals(0, taulukko[255]);
         assertEquals(0, taulukko[104]);
 
+    }
+    
+    @Test
+    public void eiLaskeKuulumattomiaKirjaimiaAlusta(){
+        laskija.laske("test.txt");
+        int taulukko[] = laskija.getToistot();
+        int tarkistus = 96;
+        for(int i = 0; i < tarkistus;i++){
+            assertEquals(0, taulukko[i]);
+        }
+    }
+    
+    @Test
+    public void eiLaskeKuulumattomiaKirjaimiaLopusta(){
+        laskija.laske("test.txt");
+        int taulukko[] = laskija.getToistot();
+        int tarkistus = 256;
+        for(int i = 105; i < tarkistus;i++){
+            assertEquals(0, taulukko[i]);
+        }
     }
 }

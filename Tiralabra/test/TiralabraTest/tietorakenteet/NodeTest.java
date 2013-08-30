@@ -1,4 +1,4 @@
-package TiralabraTest;
+package TiralabraTest.tietorakenteet;
 
 /*
  * To change this template, choose Tools | Templates
