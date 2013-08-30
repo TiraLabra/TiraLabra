@@ -1,8 +1,5 @@
 package gui;
 
-
-
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -96,6 +93,21 @@ public class Kayttoliittyma implements Runnable {
         napit.setLayout(new BoxLayout(napit, BoxLayout.Y_AXIS));
         kehys.add(napit);
         
+        JPanel alkuJaMaali = new JPanel();
+        alkuJaMaali.setPreferredSize(new Dimension(40, 40));
+        alkuJaMaali.setLayout(new GridLayout(2, 2));
+        napit.add(alkuJaMaali);
+        
+        JTextField alkuY = new JTextField("Alku Y");
+        JTextField alkuX = new JTextField("Alku X");
+        JTextField maaliY = new JTextField("Maali Y");
+        JTextField maaliX = new JTextField("Maali X");
+        alkuJaMaali.add(alkuX);
+        alkuJaMaali.add(alkuY);
+        alkuJaMaali.add(maaliX);
+        alkuJaMaali.add(maaliY);
+        
+        
         ButtonGroup suunnistajat = new ButtonGroup();
         JRadioButton aStar = new JRadioButton("aStar");
         aStar.setActionCommand("AStar");
@@ -109,7 +121,7 @@ public class Kayttoliittyma implements Runnable {
         JButton nappi = new JButton("Aloita suunnistus");
         napit.add(nappi);
         
-        Kuuntelija kuuntelija = new Kuuntelija(nappi, valitse, labyrintti, kuva, laby);
+        Kuuntelija kuuntelija = new Kuuntelija(nappi, valitse, alkuX, alkuY, maaliX, maaliY, labyrintti, kuva, laby);
         
         nappi.addActionListener(kuuntelija);
         valitse.addActionListener(kuuntelija);

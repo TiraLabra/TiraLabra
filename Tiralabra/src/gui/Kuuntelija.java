@@ -2,13 +2,10 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.*;
 import javax.swing.*;
-import rakenteet.*;
 import suunnistajat.SuunnistajaAStar;
 import suunnistajat.SuunnistajaDFS;
 import verkko.Labyrintti;
-import verkko.Solmu;
 
 /**
  *
@@ -24,17 +21,26 @@ public class Kuuntelija implements ActionListener {
     private SuunnistajaAStar aStar;
     private SuunnistajaDFS dfs;
     private boolean suunnistajaAStar = true;
+    private JTextField alkuX;
+    private JTextField alkuY;
+    private JTextField maaliX;
+    private JTextField maaliY;
 
     /**
      *
      * @param nappi
      */
-    public Kuuntelija(JButton nappi, JButton valitse, JTextField labyrintti, JLabel kuva, Labyrintti laby) {
+    public Kuuntelija(JButton nappi, JButton valitse, JTextField alkuX, JTextField alkuY, JTextField maaliX, JTextField maaliY, JTextField labyrintti, JLabel kuva, Labyrintti laby) {
         this.nappi = nappi;
         this.kuva = kuva;
         this.laby = laby;
         this.valitse = valitse;
         this.labyrintti = labyrintti;
+        this.alkuX = alkuX;
+        this.alkuY = alkuY;
+        this.maaliX = maaliX;
+        this.maaliY = maaliY;
+        
     }
 
     /**
@@ -43,20 +49,28 @@ public class Kuuntelija implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        kuva.setText("");
         if (e.getSource().equals(valitse)) {
             laby = new Labyrintti(labyrintti.getText());
             Image sokkelo = laby.haeLaby();
             kuva.setIcon(new ImageIcon(sokkelo.getScaledInstance(300, 300, 0)));
-            try {
-                aStar = new SuunnistajaAStar(laby.verkko[1][1], laby.verkko[17][19], laby);
-                dfs = new SuunnistajaDFS(laby.verkko[1][1], laby.verkko[17][19], laby);
-            } catch (Exception ex) {
-                kuva.setText("Asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
-            }
+
         } else if ("AStar".equals(e.getActionCommand())) {
+            try {
+            aStar = new SuunnistajaAStar(laby.verkko[Integer.parseInt(alkuY.getText())][Integer.parseInt(alkuX.getText())], laby.verkko[Integer.parseInt(maaliY.getText())][Integer.parseInt(maaliX.getText())], laby);
             suunnistajaAStar = true;
+             } catch (Exception ex) {
+                kuva.setText("Antamasi syöte ei ole kokonaisluku tai asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
+            }
+            
         } else if ("DFS".equals(e.getActionCommand())) {
+            try {
+            dfs = new SuunnistajaDFS(laby.verkko[Integer.parseInt(alkuY.getText())][Integer.parseInt(alkuX.getText())], laby.verkko[Integer.parseInt(maaliY.getText())][Integer.parseInt(maaliX.getText())], laby);
             suunnistajaAStar = false;
+            } catch (Exception ex) {
+                kuva.setText("Antamasi syöte ei ole kokonaisluku tai asettamasi alku- tai maalipiste on labyrintin ulkopuolella.");
+            }
+            
         } else {
             Graphics g = kuva.getGraphics();
             if (suunnistajaAStar) {
@@ -64,7 +78,6 @@ public class Kuuntelija implements ActionListener {
             } else {
                 dfs.etsi(g);
             }
-
         }
     }
 }
