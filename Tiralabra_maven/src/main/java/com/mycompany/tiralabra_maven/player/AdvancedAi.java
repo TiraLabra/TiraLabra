@@ -38,33 +38,35 @@ public class AdvancedAi implements Ai {
             return lastMove;
         }
         int[] is = FindStatistics();
-        
-        for (int i : is) {
-            i += 2;
-        }
+
         playData.setUsedData(is);
-        
+
         int move = pickMove(is);
         lastMove = move;
         return move;
     }
 
     /**
-     * Chooses a move based on the given data and random. 
+     * Chooses a move based on the given data and random.
+     *
      * @param is
      * @return move
      */
     private int pickMove(int[] is) {
-        is = changeMoves(is);
+        if (playData.counterAntiStrategy()) {
+            is = changeMovesCounter(is);
+        } else {
+            is = changeMoves(is);
+        }
 
         double[] ds = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            ds[i] = (is[i]) * Math.random();
+            ds[i] = (is[i] + 2) * Math.random();
         }
-        
+
         int move = 0;
-        
+
         for (int i = 0; i < 3; i++) {
             if (ds[i] > ds[move]) {
                 move = i;
@@ -80,7 +82,8 @@ public class AdvancedAi implements Ai {
      */
     @Override
     public void update(int result) {
-        stack.put(new Node(oppnentsLastMove(result), result));
+        playData.update(opponentsLastMove(result));
+        stack.put(new Node(opponentsLastMove(result), result));
         if (stack.size() < depth) {
         } else {
             Stack s = new Stack();
@@ -140,7 +143,7 @@ public class AdvancedAi implements Ai {
      * @param result
      * @return move
      */
-    private int oppnentsLastMove(int result) {
+    private int opponentsLastMove(int result) {
         if (result == 0) {
             return lastMove;
         }
@@ -280,7 +283,8 @@ public class AdvancedAi implements Ai {
     }
 
     /**
-     * Changes number positions in given array. 
+     * Changes number positions in given array.
+     *
      * @param is
      * @return moves
      */
@@ -293,12 +297,13 @@ public class AdvancedAi implements Ai {
     }
 
     /**
-     * Finds the most suitable statistics to use in current situation. 
+     * Finds the most suitable statistics to use in current situation.
+     *
      * @return moves
      */
     private int[] FindStatistics() {
         int[] is = treeStatistics(0);
-        
+
         for (int i = 1; i < depth; i++) {
             playData.setUsedDepth(depth - (i - 1));
             playData.setUsedWideData(true);
@@ -320,5 +325,13 @@ public class AdvancedAi implements Ai {
     @Override
     public void showData() {
         playData.showWindow(stack);
+    }
+
+    private int[] changeMovesCounter(int[] is) {
+        int x = is[2];
+        is[0] = is[1];
+        is[2] = is[0];
+        is[1] = x;
+        return is;
     }
 }
