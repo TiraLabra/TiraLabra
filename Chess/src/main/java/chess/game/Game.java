@@ -3,13 +3,14 @@ package chess.game;
 import chess.domain.GameState;
 import chess.domain.Players;
 import chess.util.CustomArrayList;
+import chess.util.InterruptableRunnable;
 import java.util.List;
 
 /**
  * Peliluokka. Ottaa parametrinaan kaksi pelaajaobjekti, ja suorittaa niiden siirtoja kunnes
  * peli päättyy. Pelitilanteesta annetaan tietoa Observer-rajapinnan kautta.
  */
-public class Game implements Runnable
+public class Game extends InterruptableRunnable
 {
 	/**
 	 * Pelitilanne.
@@ -57,18 +58,12 @@ public class Game implements Runnable
 	 * metodia ja päivittää pelitilannetta kunnes päädytään mattiin/pattiin.
 	 */
 	@Override
-	public void run()
+	public void runImpl() throws InterruptedException
 	{
 		int currentPlayer = Players.WHITE;
 
 		while (!state.isCheckMate() && !state.isStaleMate()) {
-			try {
-				getAndProcessMove(currentPlayer);
-			} catch (InterruptedException e) {
-				return;
-			}
-			if (Thread.interrupted())
-				return;
+			getAndProcessMove(currentPlayer);
 			currentPlayer = 1 ^ currentPlayer;
 		}
 

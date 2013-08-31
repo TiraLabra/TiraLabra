@@ -18,16 +18,13 @@ public final class BalancedGameGenerator
 	 * @param maxImbalance suurin sallittu epätasapaino pisteissä (yksikkönä yksi sotilas)
 	 * @return pelitilanne
 	 */
-	public static GameState createGame(long seed, double maxImbalance)
+	public static GameState createGame(long seed, double maxImbalance) throws InterruptedException
 	{
 		Random rnd = new Random();
 		for (;;) {
 			GameState gameState = GameGenerator.createGame(rnd.nextLong());
 			MinMaxAI testAI = new MinMaxAI(null, 5, 30, 0.05, 0);
-			try {
-				testAI.getMove(gameState);
-			} catch (InterruptedException e) {
-			}
+			testAI.getMove(gameState);
 			int score = testAI.getSearchTree().score;
 			if (Math.abs(score) < maxImbalance * Scores.PIECE_VALUES[Pieces.PAWN])
 				return gameState;

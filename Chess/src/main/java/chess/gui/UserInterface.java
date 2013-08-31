@@ -11,6 +11,7 @@ import chess.game.Game;
 import chess.game.Observer;
 import chess.game.Player;
 import chess.testing.PerformanceTest;
+import chess.testing.Simulation;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -66,6 +68,11 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	private Thread gameThread;
 
 	/**
+	 * Säie, jossa nopeustestiä/simulaatiota suoritetaan.
+	 */
+	private Thread testThread;
+
+	/**
 	 * Pelaajan valitsema siirto.
 	 */
 	private int humanPlayerMove;
@@ -94,8 +101,8 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	/**
 	 * Valikkoelementit.
 	 */
-	private JMenuItem newGameItem, simulItem, exitItem, perfTestItem, perfTest2Item,
-			showGameTreeItem, nextMoveItem, demo1Item, demo2Item;
+	private JMenuItem newGameItem, simulStartItem, stopTestItem, exitItem, perfTestItem,
+			perfTest2Item, perfTest3Item, showGameTreeItem, nextMoveItem, demo1Item, demo2Item;
 
 	private JCheckBoxMenuItem debugInfoItem, randomItem, pauseItem;
 
@@ -182,18 +189,23 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		JMenu miscMenu = new JMenu("Misc");
 		menuBar.add(miscMenu);
 
-		perfTestItem = createMenuItem(miscMenu, "Run performance test");
-		//perfTest2Item = createMenuItem(debugMenu, "Run performance test 2");
-		//simulItem = createMenuItem(debugMenu, "Run simulation");
+		JMenu testMenu = new JMenu("Run test");
+		miscMenu.add(testMenu);
+		perfTestItem = createMenuItem(testMenu, "Performance test (5s)");
+		perfTest2Item = createMenuItem(testMenu, "Performance test (60s)");
+		perfTest3Item = createMenuItem(testMenu, "Performance test (60s, no QS)");
+		simulStartItem = createMenuItem(testMenu, "Simulation with selected players");
+		stopTestItem = createMenuItem(testMenu, "Stop test");
+		stopTestItem.setEnabled(false);
+
 		showGameTreeItem = createMenuItem(miscMenu, "View search tree for last AI move...");
 		debugInfoItem = createCheckBoxMenuItem(miscMenu, "Show debug info");
 
 		JMenu demoMenu = new JMenu("Demo");
-		miscMenu.add(demoMenu);
+		//miscMenu.add(demoMenu);
 
 		demo1Item = createMenuItem(demoMenu, "Demo 1");
 		demo2Item = createMenuItem(demoMenu, "Demo 2");
-
 
 		frame.add(menuBar, BorderLayout.NORTH);
 	}
@@ -337,34 +349,61 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 	{
 		if (state != null)
 			return state;
-		else if (randomItem.getState())
-			return BalancedGameGenerator.createGame(new Random().nextLong(), 1.0);
-		else
+		else if (randomItem.getState()) {
+			try {
+				return BalancedGameGenerator.createGame(new Random().nextLong(), 1.0);
+			} catch (InterruptedException ex) {
+				return null; // Ei tapahdu koskaan. (ohjelman pääsäie)
+			}
+		} else
 			return new GameState();
 	}
 
 	/**
 	 * Suorituskykytesti.
 	 */
-	private void runPerformanceTest()
+	private void runPerformanceTest(int startDepth, double length, boolean qs)
 	{
-		new Thread(new PerformanceTest(logArea, 2, 5.0)).start();
+		stopTest();
+		startTest(new PerformanceTest(logArea, startDepth, length, qs));
 	}
 
 	/**
-	 * Toinen suorituskykytesti (alkaa syvyydestä 8 + pitemmät iteraatiot).
-	 */
-	private void runPerformanceTest2()
-	{
-		new Thread(new PerformanceTest(logArea, 8, 15.0)).start();
-	}
-
-	/**
-	 * Käynnistää simulaation.
+	 * Käynnistää simulaation kahden tekoälypelaajan välillä.
 	 */
 	private void runSimulation()
 	{
-		//new Thread(new Simulation(logArea, 3600)).start();
+		stopTest();
+		Player player1 = playerConfigs[0].getPlayer();
+		Player player2 = playerConfigs[1].getPlayer();
+		if (player1 instanceof UserInterface || player2 instanceof UserInterface)
+			JOptionPane.showMessageDialog(frame, "Both players must be AI players.");
+		else
+			startTest(new Simulation(logArea, 3600, player1, player2));
+	}
+
+	/**
+	 * Suorittaa annetun testin/simulaation uudessa säikeessä.
+	 */
+	private void startTest(Runnable testRunnable)
+	{
+		testThread = new Thread(testRunnable);
+		testThread.start();
+		stopTestItem.setEnabled(true);
+	}
+
+	/**
+	 * Keskeyttää tämänhetkisen testin/simulaation.
+	 */
+	private void stopTest()
+	{
+		if (testThread != null) {
+			if (testThread.isAlive())
+				logArea.logMessage("Stopped.");
+			testThread.interrupt();
+		}
+		testThread = null;
+		stopTestItem.setEnabled(false);
 	}
 
 	/**
@@ -400,11 +439,15 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		else if (ae.getSource() == demo2Item)
 			startNewGame(new GameState("Kg3 e4", "Kc6 e5", Players.WHITE));
 		else if (ae.getSource() == perfTestItem)
-			runPerformanceTest();
+			runPerformanceTest(2, 5.0, true);
 		else if (ae.getSource() == perfTest2Item)
-			runPerformanceTest2();
-		else if (ae.getSource() == simulItem)
+			runPerformanceTest(2, 60.0, true);
+		else if (ae.getSource() == perfTest3Item)
+			runPerformanceTest(2, 60.0, false);
+		else if (ae.getSource() == simulStartItem)
 			runSimulation();
+		else if (ae.getSource() == stopTestItem)
+			stopTest();
 		else if (ae.getSource() == pauseItem)
 			changePausedStatus();
 		else if (ae.getSource() == nextMoveItem)

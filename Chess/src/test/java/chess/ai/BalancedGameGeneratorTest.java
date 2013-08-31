@@ -18,14 +18,11 @@ public class BalancedGameGeneratorTest
 	}
 
 	@Test
-	public void returnsValidGame()
+	public void returnsValidGame() throws InterruptedException
 	{
 		GameState state = BalancedGameGenerator.createGame(123, 2.0);
 		MinMaxAI testAI = new MinMaxAI(null, 5, 30, 0.05, 0);
-		try {
-			testAI.getMove(state);
-		} catch (InterruptedException e) {
-		}
+		testAI.getMove(state);
 		int score = testAI.getSearchTree().score;
 		assertTrue(Math.abs(score) < 2.0 * Scores.PIECE_VALUES[Pieces.PAWN]);
 	}

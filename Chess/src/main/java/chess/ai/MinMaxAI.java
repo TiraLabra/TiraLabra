@@ -166,6 +166,7 @@ public final class MinMaxAI implements Player
 	@Override
 	public int getMove(GameState state) throws InterruptedException
 	{
+		tree = null;
 		evaluator.reset(state);
 		rootScore = evaluator.getScore();
 		setEarlierStates(state);
@@ -276,9 +277,9 @@ public final class MinMaxAI implements Player
 	private int search(int depth, int alpha, int beta, GameState state)
 			throws TimeLimitException, InterruptedException
 	{
-		++nodeCount;
-
 		checkTimeLimit();
+
+		++nodeCount;
 
 		// Jos aikaisempaan pelitilanteeseen saavutaan uudestaan, pattitilanteiden välttämiseksi
 		// (tai saavuttamiseksi) näille annetaan tasapeliä vastaava pistearvo.
@@ -573,11 +574,11 @@ public final class MinMaxAI implements Player
 	 */
 	private void checkTimeLimit() throws TimeLimitException, InterruptedException
 	{
-		if ((nodeCount & 0xfff) == 0 && timeLimit != 0) {
+		if ((nodeCount & 0xfff) == 0) {
 			if (Thread.interrupted())
 				throw new InterruptedException();
 			double t = (System.nanoTime() - startTime) * 1e-9;
-			if (t > timeLimit) {
+			if (timeLimit != 0 && t > timeLimit && tree != null) {
 				log(String.format("  time limit (%.1fms)", t * 1e3));
 				throw new TimeLimitException();
 			}
