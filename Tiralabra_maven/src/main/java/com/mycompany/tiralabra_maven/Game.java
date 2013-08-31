@@ -148,6 +148,11 @@ public class Game {
     public Statistics getStatistics() {
         return statistics;
     }
+    
+    
+    public void showData(){
+        primaryBot.showData();
+    }
 
     /**
      * Updates general game statistics.

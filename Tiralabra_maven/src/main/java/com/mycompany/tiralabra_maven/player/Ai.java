@@ -15,4 +15,5 @@ public interface Ai {
      */
     public void update(int result);
     public void loadProfile(Stack s);
+    public void showData();
 }

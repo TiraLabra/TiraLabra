@@ -59,6 +59,26 @@ public class Node {
         return true;
     }
 
+    @Override
+    public String toString() {
+        String s = "";
+        if (move == 0){
+            s += "Rock, ";
+        } else if (move == 1){
+            s += "Paper, ";
+        } else if (move == 2){
+            s += "Scissors, ";
+        }
+        if (result == -1){
+            s += "bot lost";
+        } else if (result == 0){
+            s += "draw";
+        } else if (result == 1){
+            s += "bot won";
+        }
+        return s;
+    }
+
     
     
     

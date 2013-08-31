@@ -121,6 +121,8 @@ public class Controls implements ActionListener {
                     report(game.playRound(0));
                 }
             }
+        } else {
+            game.showData();
         }
     }
 

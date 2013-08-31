@@ -16,12 +16,14 @@ public class AdvancedAi implements Ai {
     private Stack stack;
     private int depth;
     private int lastMove;
+    private PlayData playData;
 
     public AdvancedAi() {
         this.tree = new GameTreeNode(-2, -2);
         this.stack = new Stack();
         this.depth = 4;
         this.lastMove = -2;
+        this.playData = new PlayData();
     }
 
     /**
@@ -36,7 +38,12 @@ public class AdvancedAi implements Ai {
             return lastMove;
         }
         int[] is = FindStatistics();
-
+        
+        for (int i : is) {
+            i += 2;
+        }
+        playData.setUsedData(is);
+        
         int move = pickMove(is);
         lastMove = move;
         return move;
@@ -53,7 +60,7 @@ public class AdvancedAi implements Ai {
         double[] ds = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            ds[i] = (is[i] + 3) * Math.random();
+            ds[i] = (is[i]) * Math.random();
         }
         
         int move = 0;
@@ -291,11 +298,15 @@ public class AdvancedAi implements Ai {
      */
     private int[] FindStatistics() {
         int[] is = treeStatistics(0);
+        
         for (int i = 1; i < depth; i++) {
+            playData.setUsedDepth(depth - (i - 1));
+            playData.setUsedWideData(true);
             if (is[0] != 0 || is[1] != 0 || is[2] != 0) {
                 if (is[0] + is[1] + is[2] > 2) {
                     break;
                 }
+                playData.setUsedWideData(false);
                 is = treeStatisticsIgnoreResults(i - 1);
                 if (is[0] + is[1] + is[2] > 2) {
                     break;
@@ -304,5 +315,10 @@ public class AdvancedAi implements Ai {
             is = treeStatistics(i);
         }
         return is;
+    }
+
+    @Override
+    public void showData() {
+        playData.showWindow(stack);
     }
 }

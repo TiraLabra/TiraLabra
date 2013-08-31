@@ -68,4 +68,8 @@ public class SimpleAi implements Ai {
     @Override
     public void loadProfile(Stack s) {
     }
+
+    @Override
+    public void showData() {
+    }
 }

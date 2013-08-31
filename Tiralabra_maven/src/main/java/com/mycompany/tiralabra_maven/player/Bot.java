@@ -29,4 +29,8 @@ public class Bot {
     public void loadProfile(FileHandler fh) throws IOException {
         ai.loadProfile(fh.getLines());
     }
+    
+    public void showData(){
+        ai.showData();
+    }
 }
