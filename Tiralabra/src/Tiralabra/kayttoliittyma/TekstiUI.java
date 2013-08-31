@@ -143,7 +143,7 @@ public class TekstiUI {
             } else if (komento == 2) {
                 syote = 1000;
             } else if (komento == 3) {
-                syote = 10000;
+                syote = 5000;
             } else if (komento == 4) {
                 System.out.print("\nYli 5000 alkion syötteitä ei suositella hitauden takia. \nAnna syötteen koko: ");
                 syote = luk.nextInt();

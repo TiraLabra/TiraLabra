@@ -5,3 +5,11 @@ Ohjelmaan tietorakenteisiin kuuluu neljä puurakennetta ja automaattisesti järj
 Käyttäjälle ohjelma tarjoaa mahdollisuuden vertailla puurakenteita. Vertailun voi suorittaa joko rakenteille yksitellen, tai hakea kunkin operaatioin parhaiten ja huonointen suorittavat rakenteet kaikista mahdollisuuksista. Syötteen koon ja alkioiden syöttöjärjestyksen voi myös valita.
 
 Punamustapuiden kohdalla ohjelma muotoilee hyvin läheisesti valmista koodia. Tämä on valittu sen takia, koska nojaavista punamusta puista löytyvä materiaali käyttää hyvin läheisesti valmista koodia puiden toimimisen selittämiseksi.
+
+
+
+
+
+Ohjelmalle mahdollisilla syötteillä ei ole ylärajaa, mutta 10 000 alkiota suurempia syötteitä ei todellakaan suositella - jo 10 000 alkion vertailu vaatii huomattavaa odotusaikaa. Ohjelman valmiista syötteen koista suurin (5000 alkiota) vie aikaa keskimäärin noin 8 sekuntia, kun kaikkia puita vertaillaan keskenään. Negatiiviset syötteet käsitellään 0:n alkion syötteinä. 
+
+Ohjelmaa suositellaan vain keskimääräisten tendenssien laskemiseen. Puihin lisätä satunnainen joukko arvoja Javan valmista Random-luokkaa käyttäen, eri arvojoukot joka puuhun myös kaikkia yhtäaikaa vertailtaessa. Puut eivät tallenna samaa arvoa kahteen kertaan, joten kokoerot puiden välillä voivat huonolla tuurilla olla suuret. Tällöin ajankulutus voi antaa joistain puista tehokkaamman vaikutelman muihin verrattuna, kuin on totta käytännössä. Jos testituloksien keskiarvoja tarkastellaan useamman käyttökerran jälkeen, tällöin voidaan todennäköisemmin saada vertailukelpoisia tuloksia.

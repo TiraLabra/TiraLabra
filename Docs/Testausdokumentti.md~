@@ -1,4 +1,11 @@
 
-Ohjelmaan on tehty JUnit testit kaikille luokille paitsi käyttöliittymään kuuluviin. Solmuille tehdyt testit testaavat lähinnä solmujen attribuuttien asettamista. Puu-luokkien testit testaavat puun operaatioiden oikeellisuutta ja toimivuutta. Ajankulutusta JUnit testit eivät testaa, ja niissä syötteet ovat vain hyvin pieniä kokoluokiltaan. 
+Ohjelmaan on tehty JUnit testit kaikille luokille paitsi käyttöliittymään kuuluville. Solmuille tehdyt testit testaavat lähinnä solmujen attribuuttien asettamista. Puu-luokkien testit testaavat puun operaatioiden oikeellisuutta ja toimivuutta. Ajankulutusta JUnit testit eivät testaa, ja niissä syötteet ovat vain hyvin pieniä kokoluokiltaan. 
 
-Itse ohjelma toimii muun toiminnallisuuden testaajana. Sillä on mahdollista tarkistaa puiden operaatioiden ajankulutuksen itse valitsemallaan syötteellä. Käyttäjän on mahdollista valita sekä syötteen koko, että alkioiden syöttöjärjestys (suuruus- tai satunnaisjärjestys).
+Itse ohjelma toimii ajankulutuksen testaajana. Sillä on mahdollista tarkistaa puiden operaatioiden ajankulutuksen itse valitsemallaan syötteellä. Käyttäjän on mahdollista valita sekä syötteen koko, että alkioiden syöttöjärjestys (suuruus- tai satunnaisjärjestys). 
+
+Pienellä syötteellä Threaded-puut suoriutuivat parhaiten. Threaded-puut eivät ole automaattisesti tasapainottuvia, joten niiden ei tarvitse suorittaa lisäoperaatioita lisäämisen tai poiston yhteydessä. Huonointen suorituivat muut puut vuorotellen.
+
+Suuremmalla syötteellä Threaded-puut toimivat alkioiden tulostuksen kohdalla selvästi ja jatkuvasti nopeimmiten. Hitaimmissa tai nopeimmissa ei yllättävästi näkynyt muiden operaatioiden kohdalla mitään merkittäviä tendenssejä. Mahdollisesti erot näkyvät vasta syötteiden kokojen kasvaessa suuremmiksi kuin tällä toteutuksella on käytännöllistä testata, tai sitten aineistoa olisi tullut kerätä enemmän kuin oli mahdollisuus.
+
+Kun käytössä oli suuruusjärjestykseinen syöte, Threaded-puiden voittoprosentti tippui hieman muissa kuin tulostusoperaatioissa.
+
