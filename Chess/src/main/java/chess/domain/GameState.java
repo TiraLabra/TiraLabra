@@ -53,7 +53,10 @@ public final class GameState
 			ZOBRIST_RND_CASTLINGRIGHTS[i] = rnd.nextLong();
 	}
 
-	static final private int MAX_MOVES = 256;
+	/**
+	 * Taulukoiden aloituskapasiteetti.
+	 */
+	static final private int START_CAPACITY = 8;
 
 	/**
 	 * Laudan tilanteen bittimaskiesitys.
@@ -74,18 +77,23 @@ public final class GameState
 	 * Pino aiempien pelitilanteiden Zobrist-tunnisteille. Tämänhetkinen tunniste on
 	 * zobristCodes[ply].
 	 */
-	private final long[] zobristCodes;
+	private long[] zobristCodes;
 
 	/**
 	 * Pino aiempien pelitilanteiden ohestalyöntiruuduille. Tämänhetkinen ohestalyöntiruutu on
 	 * enPassantSquares[ply].
 	 */
-	private final int[] enPassantSquares;
+	private int[] enPassantSquares;
 
 	/**
 	 * Pino aiempien pelitilanteiden tornitusoikeuksista.
 	 */
-	private final long[] castlingRights;
+	private long[] castlingRights;
+
+	/**
+	 * Pitää kirjaa kuinka monta siirtoa on kulunut edellisestä lyönnistä tai sotilaan siirrosta.
+	 */
+	private int[] halfMoveClocks;
 
 	/**
 	 * Luo uuden pelitilanteen käyttäen standardia shakin aloitusmuodostelmaa.
@@ -121,8 +129,8 @@ public final class GameState
 	 */
 	public GameState(BitBoard board, int startingPlayer)
 	{
-		this(board, new long[MAX_MOVES + 1], new int[MAX_MOVES + 1], new long[MAX_MOVES + 1], 0,
-				startingPlayer);
+		this(board, new long[START_CAPACITY], new int[START_CAPACITY], new long[START_CAPACITY],
+				new int[START_CAPACITY], 0, startingPlayer);
 
 		this.zobristCodes[0] = ZOBRIST_RND_EMPTY;
 		this.enPassantSquares[0] = -1;
@@ -231,8 +239,10 @@ public final class GameState
 	 */
 	public void makeMove(int move)
 	{
+		growArrays();
 		zobristCodes[ply + 1] = zobristCodes[ply];
 		++ply;
+		updateHalfMoveClock(move);
 		if (Move.getCapturedType(move) != -1)
 			removeCapturedPiece(move);
 		handleCastlingMove(move);
@@ -265,6 +275,7 @@ public final class GameState
 	 */
 	public void makeNullMove()
 	{
+		growArrays();
 		zobristCodes[ply + 1] = zobristCodes[ply];
 		++ply;
 		enPassantSquares[ply] = -1;
@@ -455,13 +466,14 @@ public final class GameState
 
 	/**
 	 * Tarkistaa, onko pelitilanne patissa, eli siirtovuorossa olevalla pelaajalla ei ole
-	 * laillisia siirtoja, ja kuningas EI OLE uhattuna.
+	 * laillisia siirtoja, ja kuningas EI OLE uhattuna. Lisäksi tilanne on patti, jos se on
+	 * toistunut aikaisemmin tai on kulunut 50 siirtoa ilman lyöntejä tai sotilaiden siirtoja.
 	 *
 	 * @return true jos patti
 	 */
 	public boolean isStaleMate()
 	{
-		if (ply == MAX_MOVES)
+		if (isRepeatedState() || halfMoveClocks[ply] >= 50)
 			return true;
 		for (int sqr = 0; sqr < 64; ++sqr) {
 			if (getLegalMoves(sqr).length != 0)
@@ -520,7 +532,7 @@ public final class GameState
 	public GameState clone()
 	{
 		return new GameState(bitboard.clone(), zobristCodes.clone(), enPassantSquares.clone(),
-				castlingRights.clone(), ply, nextMovingPlayer);
+				castlingRights.clone(), halfMoveClocks.clone(), ply, nextMovingPlayer);
 	}
 
 	/**
@@ -559,7 +571,7 @@ public final class GameState
 	 * Luo pelitilanteen kopioimalla sen toisesta pelitilanteesta.
 	 */
 	private GameState(BitBoard board, long[] zobristCodes, int[] enPassantSquares,
-			long[] castlingRights, int ply, int nextMovingPlayer)
+			long[] castlingRights, int[] halfMoveClocks, int ply, int nextMovingPlayer)
 	{
 		this.bitboard = board;
 		this.zobristCodes = zobristCodes;
@@ -567,6 +579,7 @@ public final class GameState
 		this.castlingRights = castlingRights;
 		this.ply = ply;
 		this.nextMovingPlayer = nextMovingPlayer;
+		this.halfMoveClocks = halfMoveClocks;
 	}
 
 	/**
@@ -762,5 +775,42 @@ public final class GameState
 		}
 		moves <<= rowOffset;
 		return moves;
+	}
+
+	/**
+	 * Kasvattaa sisäisten taulukoiden kokoa.
+	 */
+	private void growArrays()
+	{
+		if (ply + 1 >= zobristCodes.length) {
+			int newSize = 2 * zobristCodes.length;
+			zobristCodes = Arrays.copyOf(zobristCodes, newSize);
+			castlingRights = Arrays.copyOf(castlingRights, newSize);
+			enPassantSquares = Arrays.copyOf(enPassantSquares, newSize);
+			halfMoveClocks = Arrays.copyOf(halfMoveClocks, newSize);
+		}
+	}
+
+	/**
+	 * Tarkistaa onko pelitilanne toistunut aikaisemmin.
+	 */
+	private boolean isRepeatedState()
+	{
+		for (int i = ply - halfMoveClocks[ply]; i < ply; ++i) {
+			if (zobristCodes[i] == zobristCodes[ply])
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Päivittää laskurin 50 siirron säännön toteuttamiseksi.
+	 */
+	private void updateHalfMoveClock(int move)
+	{
+		if (Move.getCapturedType(move) != -1 || Move.getPieceType(move) == Pieces.PAWN)
+			halfMoveClocks[ply] = 0;
+		else
+			halfMoveClocks[ply] = halfMoveClocks[ply - 1] + 1;
 	}
 }
