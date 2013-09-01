@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Luokka testaa puita käyttäjän syötteilläs
+ * Luokka testaa puita käyttäjän syötteillä
  *
  * @author esaaksvu
  */
@@ -20,10 +20,14 @@ public class suoritusKyky {
      */
     public PuuRajapinta[] luoPuut() {
         String puu = kysyString("Mitä testaan, AVL, RB, SP, BIN? (Voi sisältää useamman)");
-        koko = kysyInt("Kuinka monta luku lisätään puuhu?");
+        while (koko < 1) {
+            koko = kysyInt("Kuinka monta luku lisätään puuhu? (>0)");
+        }
         boolean jarjest = kysyBoolean("Järjestetty taulu? (true/false)");
         if (!jarjest) {
-            varia = kysyInt("Millä välillä arvotut luvut ovat?");
+            while (varia < 1) {
+                varia = kysyInt("Millä välillä arvotut luvut ovat? (>0)");
+            }
         }
         try {
             System.out.println("Alustetaan puita....");
@@ -42,14 +46,14 @@ public class suoritusKyky {
      * @return tulostus ajasta
      */
     public String operoiPuita(PuuRajapinta[] puut) {
-        String t = kysyString("Mitä puille tehdään? (Hae,Poista,Lisää,Nollaa)").toLowerCase();
+        String t = kysyString("Mitä puille tehdään? (Hae,Poista,Lisaa,Nollaa)").toLowerCase();
         if (t.equals("hae")) {
             return haePuista(puut);
         }
         if (t.equals("poista")) {
             return poistaPuista(puut);
         }
-        if (t.equals("lisää")) {
+        if (t.equals("lisaa")) {
             return lisaaPuihin(puut);
         }
         if (t.equals("nollaa")) {
@@ -67,9 +71,6 @@ public class suoritusKyky {
      * @return int taulu
      */
     public int[] luoRandTaulu(int koko, int variaatio) {
-        if (koko <= 0) {
-            return null;
-        }
         try {
             int[] numerot = new int[koko];
             for (int i = 0; i < koko; i++) {
@@ -82,15 +83,12 @@ public class suoritusKyky {
     }
 
     /**
-     * luo järjestetyn taulun 0,1,2,3,..,koko
+     * luo järjestetyn taulun 0,1,2,3,..,koko-1
      *
      * @param koko on taulun viimeinen alkio nollasta alkaen
      * @return int taulukko
      */
     public int[] luoJarjTaulu(int koko) {
-        if (koko <= 0) {
-            return null;
-        }
         int[] numerot = new int[koko];
         for (int i = 0; i < koko; i++) {
             numerot[i] = i;
@@ -178,18 +176,7 @@ public class suoritusKyky {
                 for (int j : taulu) {
                     t += lisaaAika(puut[i], j);
                 }
-                if (i == 0) {
-                    System.out.println("BIN: " + t + "ms");
-                }
-                if (i == 1) {
-                    System.out.println("RB: " + t + "ms");
-                }
-                if (i == 2) {
-                    System.out.println("SP: " + t + "ms");
-                }
-                if (i == 3) {
-                    System.out.println("AVL: " + t + "ms");
-                }
+                System.out.print(tulostaTulos(i, t));
             }
         }
         return puut;
@@ -205,18 +192,7 @@ public class suoritusKyky {
                     t += (varia == 0) ? hakuAika(puut[i], koko)
                             : hakuAika(puut[i], varia);
                 }
-                if (i == 0) {
-                    s += "BIN: " + t + " ms\n";
-                }
-                if (i == 1) {
-                    s += "RB: " + t + " ms\n";
-                }
-                if (i == 2) {
-                    s += "SP: " + t + " ms\n";
-                }
-                if (i == 3) {
-                    s += "AVL: " + t + " ms\n";
-                }
+                s += tulostaTulos(i, t);
             }
         }
         return s;
@@ -235,18 +211,7 @@ public class suoritusKyky {
                         t += poistoAika(puut[i], varia);
                     }
                 }
-                if (i == 0) {
-                    s += "BIN: " + t + " ms\n";
-                }
-                if (i == 1) {
-                    s += "RB: " + t + " ms\n";
-                }
-                if (i == 2) {
-                    s += "SP: " + t + " ms\n";
-                }
-                if (i == 3) {
-                    s += "AVL: " + t + " ms\n";
-                }
+                s += tulostaTulos(i, t);
 
             }
         }
@@ -256,32 +221,38 @@ public class suoritusKyky {
     private String lisaaPuihin(PuuRajapinta[] puut) {
         String s = "";
         int kerrat = kysyInt("Montako kertaa lisätään?");
+        int[] arvot;
+        if (varia == 0) {
+            arvot = luoRandTaulu(kerrat, koko);
+        } else {
+            arvot = luoRandTaulu(kerrat, varia);
+        }
         for (int i = 0; i < puut.length; i++) {
             if (puut[i] != null) {
                 long t = 0;
-                for (int j = 0; j < kerrat; j++) {
-                    if (varia == 0) {
-                        t += lisaaAika(puut[i], koko);
-                    } else {
-                        t += lisaaAika(puut[i], varia);
-                    }
+                for (int j:arvot){
+                    t +=lisaaAika(puut[i], j);
                 }
-                if (i == 0) {
-                    s += "BIN: " + t + " ms\n";
-                }
-                if (i == 1) {
-                    s += "RB: " + t + " ms\n";
-                }
-                if (i == 2) {
-                    s += "SP: " + t + " ms\n";
-                }
-                if (i == 3) {
-                    s += "AVL: " + t + " ms\n";
-                }
-
+                s += tulostaTulos(i, t);
             }
         }
         return s;
+    }
+
+    private String tulostaTulos(int i, long t) {
+        if (i == 0) {
+            return "BIN: " + t + " ms\n";
+        }
+        if (i == 1) {
+            return "RB: " + t + " ms\n";
+        }
+        if (i == 2) {
+            return "SP: " + t + " ms\n";
+        }
+        if (i == 3) {
+            return "AVL: " + t + " ms\n";
+        }
+        return "";
     }
 
     private long hakuAika(PuuRajapinta puu, int n) {

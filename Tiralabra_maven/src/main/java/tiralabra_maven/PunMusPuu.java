@@ -30,6 +30,7 @@ public class PunMusPuu implements PuuRajapinta {
      *
      * @param uusi viite solmu olioon joka lisätään
      */
+    @Override
     public void lisaaSolmu(Solmu uusi) {
         uusi.setOikea(nil);
         uusi.setVasen(nil);
@@ -56,11 +57,11 @@ public class PunMusPuu implements PuuRajapinta {
      * Poistaa solmun puusta
      *
      * @param pois poistettavan solmun viite
-     * @return true jos poisto onnistui
      */
-    public boolean poistaSolmu(Solmu pois) {
+    @Override
+    public void poistaSolmu(Solmu pois) {
         if (pois == nil || pois == null) {
-            return false;
+            return;
         }
         Solmu x;
         if (pois.getVasen() == nil || pois.getOikea() == nil) {
@@ -77,7 +78,7 @@ public class PunMusPuu implements PuuRajapinta {
             if (pois.getVari()) {
                 korjaaPuuPois(x);
             }
-            return true;
+            return;
         }
         Solmu y = succ(pois);
         x = y.getOikea();
@@ -92,7 +93,6 @@ public class PunMusPuu implements PuuRajapinta {
         if (y.getVari()) {
             korjaaPuuPois(x);
         }
-        return true;
     }
 
     /**
@@ -101,6 +101,7 @@ public class PunMusPuu implements PuuRajapinta {
      * @param i haettavan solmun arvo
      * @return viite solmuun, null jos ei löydy
      */
+    @Override
     public Solmu hae(int i) {
         Solmu haku = juuri;
 
@@ -153,7 +154,7 @@ public class PunMusPuu implements PuuRajapinta {
     private void korjaaPuuPois(Solmu pois) {
         while (pois != juuri && pois.getVari()) {
             if (pois == pois.getVanhem().getVasen()) {
-                Solmu sis = pois.getVanhem().getOikea();
+                Solmu sis = pois.getVanhem().getOikea(); //sisar
                 if (!sis.getVari()) {
                     sis.setVari(true);
                     pois.getVanhem().setVari(false);
@@ -176,26 +177,26 @@ public class PunMusPuu implements PuuRajapinta {
                 kaannaVasen(pois.getVanhem());
                 pois = juuri;
             } else if (pois == pois.getVanhem().getOikea()) {
-                Solmu w = pois.getVanhem().getVasen();
-                if (!w.getVari()) {
-                    w.setVari(true);
+                Solmu sis = pois.getVanhem().getVasen();
+                if (!sis.getVari()) {
+                    sis.setVari(true);
                     pois.getVanhem().setVari(false);
                     kaannaOikea(pois.getVanhem());
-                    w = pois.getVanhem().getVasen();
+                    sis = pois.getVanhem().getVasen();
                 }
-                if (w.getOikea().getVari() && w.getVasen().getVari()) {
-                    w.setVari(false);
+                if (sis.getOikea().getVari() && sis.getVasen().getVari()) {
+                    sis.setVari(false);
                     pois = pois.getVanhem();
                     continue;
-                } else if (w.getVasen().getVari()) {
-                    w.getOikea().setVari(true);
-                    w.setVari(false);
-                    kaannaVasen(w);
-                    w = pois.getVanhem().getVasen();
+                } else if (sis.getVasen().getVari()) {
+                    sis.getOikea().setVari(true);
+                    sis.setVari(false);
+                    kaannaVasen(sis);
+                    sis = pois.getVanhem().getVasen();
                 }
-                w.setVari(pois.getVanhem().getVari());
+                sis.setVari(pois.getVanhem().getVari());
                 pois.getVanhem().setVari(true);
-                w.getVasen().setVari(true);
+                sis.getVasen().setVari(true);
                 kaannaOikea(pois.getVanhem());
                 pois = juuri;
             }
@@ -286,6 +287,7 @@ public class PunMusPuu implements PuuRajapinta {
 
     /**
      * Palauttaa tulostuksen puusta
+     * @return juuri(Väri){Vasen(väri),Oikea(väri)}
      */
     @Override
     public String toString() {

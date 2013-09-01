@@ -14,6 +14,7 @@ public class BinaariHakupuu implements PuuRajapinta {
      *
      * @param uusi viite solmu olioon joka lisätään
      */
+    @Override
     public void lisaaSolmu(Solmu uusi) {
         if (juuri == null) {
             juuri = uusi;
@@ -41,24 +42,24 @@ public class BinaariHakupuu implements PuuRajapinta {
      * Poistaa solmun puusta
      *
      * @param poistet on viite solmuun joka halutaan poistaa
-     * @return true jos poisto onnistui
      */
-    public boolean poistaSolmu(Solmu poistet) {
+    @Override
+    public void poistaSolmu(Solmu poistet) {
         if (poistet == null) {
-            return false;
+            return;
         }
         Solmu pVanhem = poistet.getVanhem();
         if (poistet.lapseton()) {
             if (pVanhem == null) {
                 juuri = null;
-                return true;
+                return;
             }
             if (poistet == pVanhem.getVasen()) {
                 pVanhem.setVasen(null);
             } else {
                 pVanhem.setOikea(null);
             }
-            return true;
+            return;
         }
         if (poistet.getOikea() == null || poistet.getVasen() == null) {
             Solmu lapsi = (poistet.getVasen() != null)
@@ -66,14 +67,13 @@ public class BinaariHakupuu implements PuuRajapinta {
             lapsi.setVanhem(pVanhem);
             if (pVanhem == null) {
                 juuri = lapsi;
-                return true;
+                return;
             }
             if (poistet == pVanhem.getVasen()) {
                 pVanhem.setVasen(lapsi);
             } else {
                 pVanhem.setOikea(lapsi);
             }
-            return true;
         }
 
         Solmu seur = min(poistet.getOikea());
@@ -88,7 +88,6 @@ public class BinaariHakupuu implements PuuRajapinta {
         if (lapsi != null) {
             lapsi.setVanhem(pVanhem);
         }
-        return true;
 
     }
 
@@ -98,6 +97,7 @@ public class BinaariHakupuu implements PuuRajapinta {
      * @param i solmun arvo jota haetaan
      * @return viite solmuun, jos löytyy. Muussa tapauksessa null.
      */
+    @Override
     public Solmu hae(int i) {
         Solmu haku = juuri;
 

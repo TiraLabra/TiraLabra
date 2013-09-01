@@ -16,9 +16,8 @@ public interface PuuRajapinta {
     /**
      * Poistaa solmun viitteen perusteella
      * @param pois on solmun viite
-     * @return true jos poisto onnistuu
      */
-    public boolean poistaSolmu(Solmu pois);
+    public void poistaSolmu(Solmu pois);
 
     /**
      * Lisää solmun puuhun

@@ -10,8 +10,6 @@ public class SplayPuu extends BinaariHakupuu {
     /**
      * Hakee puista solmun arvon perusteella
      *
-     * @param i on solmun arvo jolla haetaan
-     * @return viite solmuun jos löytyy, null jos ei
      */
     @Override
     public void lisaaSolmu(Solmu uusi) {
@@ -23,12 +21,11 @@ public class SplayPuu extends BinaariHakupuu {
      * Poistaa solmun viitteen perusteella
      *
      * @param pois on solmun viite
-     * @return true jos poisto onnistuu
      */
     @Override
-    public boolean poistaSolmu(Solmu pois) {
+    public void poistaSolmu(Solmu pois) {
         if (pois == null) {
-            return false;
+            return;
         }
         splay(pois);
         if (pois.getVasen() == null) {
@@ -46,7 +43,6 @@ public class SplayPuu extends BinaariHakupuu {
             y.setVasen(pois.getVasen());
             y.getVasen().setVanhem(y);
         }
-        return true;
     }
 
     /**
@@ -117,9 +113,6 @@ public class SplayPuu extends BinaariHakupuu {
             return;
         }
         Solmu y = x.getOikea();
-        if (y == null) {
-            System.out.println(x);
-        }
         x.setOikea(y.getVasen());
         if (y.getVasen() != null) {
             y.getVasen().setVanhem(x);

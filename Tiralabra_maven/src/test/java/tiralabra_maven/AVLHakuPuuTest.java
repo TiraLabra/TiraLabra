@@ -39,8 +39,9 @@ public class AVLHakuPuuTest {
         instance.lisaaSolmu(new Solmu(arvo));
         instance.lisaaSolmu(new Solmu(65));
         instance.lisaaSolmu(new Solmu(3));
-        boolean expResult = true;
-        boolean result = instance.poistaSolmu(instance.hae(arvo));
+        instance.poistaSolmu(instance.hae(arvo));
+        Solmu expResult = null;
+        Solmu result = instance.hae(arvo);
         assertEquals(expResult, result);
     }
 }

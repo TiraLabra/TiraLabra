@@ -1,8 +1,7 @@
 package tiralabra_maven;
 
 /**
- * Luokka joka suorittaa ohjelman export MAVEN_OPTS="-Xmx2048m -Xms512m" (if
- * necessary) + mvn exec:java
+ * Luokka joka suorittaa ohjelman export MAVEN_OPTS="-Xmx2048m -Xms512m" mvn exec:java
  *
  * @author esaaksvu
  */

@@ -90,7 +90,7 @@ public class Solmu {
     /**
      * korkeus AVL-puuta varten
      *
-     * @param Solmun korkeus puussa, 0 on juuri
+     * @param h solmun korkeus puussa
      */
     public void setKorkeus(int h) {
         this.korkeus = h;
@@ -102,8 +102,8 @@ public class Solmu {
 
     /**
      * Väri punamustapuuta varten
-     *
-     * @param true jos on musta
+     * 
+     * @param b true = musta, false=pun
      */
     public void setVari(Boolean b) {
         vari = b;

@@ -31,12 +31,33 @@ public class BinaariHakupuuTest {
         instance.lisaaSolmu(u1);
         instance.lisaaSolmu(u2);
         instance.lisaaSolmu(u3);
-        boolean expResult = true;
-        boolean result = instance.poistaSolmu(u2);
+        instance.poistaSolmu(u2);
+        Solmu expResult = null;
+        Solmu result = instance.hae(u2.getArvo());
         assertEquals(expResult, result);
         
     }
 
+    @Test
+    public void testPoistaSolmu2() {
+        System.out.println("poistaSolmu2");
+        int i = 12;
+        Solmu u1 = new Solmu(15);
+        Solmu u2 = new Solmu(i);
+        Solmu u3 = new Solmu(20);
+        BinaariHakupuu instance = new BinaariHakupuu();
+        instance.lisaaSolmu(u1);
+        instance.lisaaSolmu(u2);
+        instance.lisaaSolmu(u3);
+        instance.poistaSolmu(u2);
+        String expResult = "15{[],20}";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+        
+    }
+    
+
+    
     @Test
     public void testHae() {
         System.out.println("hae");

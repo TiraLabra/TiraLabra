@@ -28,8 +28,9 @@ public class SplayPuuTest {
         instance.lisaaSolmu(u1);
         instance.lisaaSolmu(u2);
         instance.lisaaSolmu(u3);
-        boolean expResult = true;
-        boolean result = instance.poistaSolmu(u2);
+        instance.poistaSolmu(u2);
+        Solmu expResult = null;
+        Solmu result = instance.hae(u2.getArvo());
         assertEquals(expResult, result);
         assertEquals("50{[],63}", instance.toString());
     }

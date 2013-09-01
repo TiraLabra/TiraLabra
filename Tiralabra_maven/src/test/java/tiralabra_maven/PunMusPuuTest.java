@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * @author esaaksvu
  */
 public class PunMusPuuTest {
-    
+
     public PunMusPuuTest() {
     }
 
@@ -31,8 +31,9 @@ public class PunMusPuuTest {
         int i = 5;
         PunMusPuu instance = new PunMusPuu();
         instance.lisaaSolmu(new Solmu(i));
-        boolean expResult = true;
-        boolean result = instance.poistaSolmu(instance.hae(i));
+        instance.poistaSolmu(instance.hae(i));
+        Solmu expResult = instance.nil;
+        Solmu result = instance.hae(i);
         assertEquals(expResult, result);
     }
 

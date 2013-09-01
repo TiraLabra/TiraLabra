@@ -33,12 +33,11 @@ public class AVLHakuPuu extends BinaariHakupuu {
      * Poistaa solmun puusta
      *
      * @param pois poistettavan solmun viite
-     * @return true jos poisto onnistuu
      */
     @Override
-    public boolean poistaSolmu(Solmu pois) {
+    public void poistaSolmu(Solmu pois) {
         if (pois == null) {
-            return false;
+            return;
         }
         Solmu v = pois.getVanhem();
         super.poistaSolmu(pois);
@@ -57,7 +56,6 @@ public class AVLHakuPuu extends BinaariHakupuu {
                 p = p.getVanhem();
             }
         }
-        return true;
     }
 
     private boolean epaTasapainossa(Solmu p) {
