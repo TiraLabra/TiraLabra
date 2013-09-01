@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.Listasolmu;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaHashSet;
 import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList;
 
 /**
@@ -76,15 +78,14 @@ public class KomboEtsija {
         Koordinaatti[] juuriArvotutTaulukko = (Koordinaatti[]) juuriArvotut.toArray(new Koordinaatti[juuriArvotut.size()]);
 
         // Joukko joka keraa kaikki mahdolliset tuhoutuvat ja palauttaa ne.
-        HashSet<Koordinaatti> kaikkiTuhoutuvat = lahdeTutkimaanArvottuja(juuriArvotutTaulukko);
+        OmaHashSet<Koordinaatti> kaikkiTuhoutuvat = lahdeTutkimaanArvottuja(juuriArvotutTaulukko);
 
         // Palautetaan lopuksi kaikki mahdolliset tuhoutuvat
-        debugViestit.loydetytKombot(kaikkiTuhoutuvat);
-        return kaikkiTuhoutuvat;
+        return palautaUIlleJavanRakenne(kaikkiTuhoutuvat);
     }
 
-    private HashSet<Koordinaatti> lahdeTutkimaanArvottuja(Koordinaatti[] juuriArvotutTaulukko) {
-        HashSet<Koordinaatti> kaikkiTuhoutuvat = new HashSet<Koordinaatti>();
+    private OmaHashSet<Koordinaatti> lahdeTutkimaanArvottuja(Koordinaatti[] juuriArvotutTaulukko) {
+        OmaHashSet<Koordinaatti> kaikkiTuhoutuvat = new OmaHashSet<Koordinaatti>();
 
         // Lahdetaan kaymaan peliruudukkoa lapi jokaisesta uudesta kolmiosta vuorotellen
         for (int i = 0; i < juuriArvotutTaulukko.length; i++) {
@@ -99,7 +100,7 @@ public class KomboEtsija {
         return kaikkiTuhoutuvat;
     }
 
-    private void etsiSamanvarisetJuuresta(Koordinaatti root, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
+    private void etsiSamanvarisetJuuresta(Koordinaatti root, OmaHashSet<Koordinaatti> kaikkiTuhoutuvat) {
 
         // Jos jokin aiempi kolmio on jo loytanyt jonkin toisen uusista kolmioista niin jatketaan seuraavaan uuteen kolmioon
         // esim jos uusissa kolmioissa on vierekkain samanvarisia
@@ -199,7 +200,7 @@ public class KomboEtsija {
 
     }
     
-    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, OmaLinkedList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
+    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, OmaLinkedList<Koordinaatti> rootinVariset, OmaHashSet<Koordinaatti> kaikkiTuhoutuvat) {
         // Jos aloituskolmion kanssa samanvarisia vierekkaita loytyi vahintaan kolme niin lisataan ne tuhoutuvien joukkoon
         if (rootinVariset.size() >= 3) {
             debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
@@ -258,10 +259,29 @@ public class KomboEtsija {
         return this.viereinenEiOleYliReunan(tutkittava, vRivi, vSarake);
     }
 
-    private void lisaaOmaLinkedListinAlkiotHashSettiin(HashSet<Koordinaatti> kaikkiTuhoutuvat, OmaLinkedList<Koordinaatti> rootinVariset) {
+    private void lisaaOmaLinkedListinAlkiotHashSettiin(OmaHashSet<Koordinaatti> kaikkiTuhoutuvat, OmaLinkedList<Koordinaatti> rootinVariset) {
         while (rootinVariset.size() > 0) {
             kaikkiTuhoutuvat.add(rootinVariset.removeFirst());
         }
+    }
+
+    // Paatin vetaa tahan rajan etta mihin asti implementoin omia tietorakenteita,
+    // muuten niiden lisaaminen olisi rajahtanyt kasiin kun koko ohjelma olisi pian 
+    // pitanyt refactoroida.
+    private Collection palautaUIlleJavanRakenne(OmaHashSet<Koordinaatti> kaikkiTuhoutuvat) {
+        HashSet<Koordinaatti> palautettavat = new HashSet<Koordinaatti>();
+        OmaLinkedList<Koordinaatti> lista = kaikkiTuhoutuvat.getLisatyt();
+        Listasolmu solmu = null;
+        for (int i = 0; i < lista.size(); i++) {
+            if (i == 0) {
+                solmu = lista.peekFirst();
+            } else {
+                solmu = solmu.getNext();
+            }
+            palautettavat.add((Koordinaatti) solmu.getKey());
+        }
+        debugViestit.loydetytKombot(palautettavat);
+        return palautettavat;
     }
     
     

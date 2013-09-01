@@ -4,7 +4,7 @@ package kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet;
 /**
  * OmaLinkedList listan muodostava listasolmu olio.
  */
-class Listasolmu {
+public class Listasolmu {
     private Object key;
     private Listasolmu next;
     private Listasolmu prev;
@@ -22,23 +22,23 @@ class Listasolmu {
         this.prev = prev;
     }
 
-    Object getKey() {
+    public Object getKey() {
         return key;
     }
 
-    Listasolmu getNext() {
+    public Listasolmu getNext() {
         return next;
     }
 
-    Listasolmu getPrev() {
+    public Listasolmu getPrev() {
         return prev;
     }
 
-    void setPrev(Listasolmu uusiSolmu) {
+    public void setPrev(Listasolmu uusiSolmu) {
         prev = uusiSolmu;
     }
 
-    void setNext(Listasolmu uusiSolmu) {
+    public void setNext(Listasolmu uusiSolmu) {
         next = uusiSolmu;
     }
     

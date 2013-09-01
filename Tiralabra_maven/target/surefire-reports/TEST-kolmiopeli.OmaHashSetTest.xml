@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.104" errors="0" skipped="0" tests="13" name="kolmiopeli.KomboEtsijaTest">
+<testsuite failures="0" time="0.001" errors="0" skipped="0" tests="7" name="kolmiopeli.OmaHashSetTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_07\jre\bin"/>
@@ -62,17 +62,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenYliYlareunanFalse"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenAliAlareunanFalse"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenYliVasemmanReunanFalse"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenYliOikeanReunanFalse"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenNurkassaTrue"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenEriVarinenFalse"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="palauttaakoViereinenSamanvarinenTrue"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="huomaakoEttaViereinenOnKaytyLapi"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="huomaakoEttaViereistaEiOleKaytyLapi"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="testaaTilanteita1"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="testaaTilanteita2"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="testaaKunOdotettuJoukkoTyhja"/>
-  <testcase time="0" classname="kolmiopeli.KomboEtsijaTest" name="testaaKunOdotettuJoukkoIso"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="kaksiKertaaSamanAlkionLisaaminenOnnistuuEnsimmaisellaJaEpaonnistuuToisella"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="joukonKokoAluksiNolla"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="tyhjaJoukkoEiSisallaAlkiota"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="kaksiKertaaLisattyAlkioKasvattaaJoukonKokoaVainYhdella"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="kahdenEriAlkionLisaaminenJoukkoonKasvattaaSenKokoaKahdella"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="joukkoonLisattyLoytyyJoukosta"/>
+  <testcase time="0" classname="kolmiopeli.OmaHashSetTest" name="kahdenEriAlkionLisaaminenJoukkoonOnnistuu"/>
 </testsuite>

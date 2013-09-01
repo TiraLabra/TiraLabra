@@ -106,5 +106,13 @@ public class OmaLinkedList<K> {
     public int size() {
         return size;
     }
+    
+    public Listasolmu peekFirst() {
+        return head;
+    }
+    
+    public Listasolmu peekLast() {
+        return tail;
+    }
 
 }

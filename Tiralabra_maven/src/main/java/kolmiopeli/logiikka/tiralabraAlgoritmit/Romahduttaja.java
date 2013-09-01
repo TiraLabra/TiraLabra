@@ -1,5 +1,6 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,6 +8,9 @@ import java.util.List;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
 import kolmiopeli.domain.Variarpoja;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.Listasolmu;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaHashSet;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList;
 
 /**
  * Romahduttaja liikuttelee peliruudukon kolmioiden sijainteja ylhaalta alaspain
@@ -19,8 +23,8 @@ public class Romahduttaja {
     private Kolmio[][] peliruudukko;
     private final Variarpoja variarpoja;
     private final RomahduttajaDebugViestit debugViestit;
-    private List<Koordinaatti> tyhjienRuutujenLista;
-    private Collection muutettujenJoukko;
+    private OmaLinkedList<Koordinaatti> tyhjienRuutujenLista;
+    private OmaHashSet<Koordinaatti> muutettujenJoukko;
 
     /**
      * Konstruktori, joka saa parametrina peliruudukon ja tiedon laitetaanko
@@ -48,19 +52,25 @@ public class Romahduttaja {
      */
     public Collection romahduta(Collection tyhjatRuudut) {
         this.debugViestit.romahdusAlkaa();
-        tyhjienRuutujenLista = (ArrayList<Koordinaatti>) tyhjatRuudut;
-        muutettujenJoukko = new HashSet<Koordinaatti>();
+        tyhjienRuutujenLista = taytaLista((ArrayList<Koordinaatti>) tyhjatRuudut);
+        muutettujenJoukko = new OmaHashSet<Koordinaatti>();
         kayLapiTyhjatRuudut();
-        this.debugViestit.romautettujenJoukkoOn(muutettujenJoukko);
-        return muutettujenJoukko;
+        
+        return palautaUIlleJavanRakenne();
     }
 
     /**
      * Kay lapi romahduta-metodiin parametrina annetut koordinaatit.
      */
     private void kayLapiTyhjatRuudut() {
+        Listasolmu solmu = null;
         for (int i = 0; i < tyhjienRuutujenLista.size(); i++) {
-            Koordinaatti taytettavaTyhja = tyhjienRuutujenLista.get(i);
+            if (i == 0) {
+                solmu = tyhjienRuutujenLista.peekFirst();
+            } else {
+                solmu = solmu.getNext();
+            }
+            Koordinaatti taytettavaTyhja = (Koordinaatti) solmu.getKey();
             romahdutaYlapuolellaOlevat(taytettavaTyhja);
         }
     }
@@ -207,10 +217,40 @@ public class Romahduttaja {
     private boolean romahtavaOnTyhja(int tyhjaRivi, int tyhjaSarake, int romahtavanRivi, int romahtavanSarake) {
         if (peliruudukko[romahtavanRivi][romahtavanSarake] == null) {
             Koordinaatti siirraViimeiseksi = new Koordinaatti(tyhjaRivi, tyhjaSarake);
-            this.tyhjienRuutujenLista.add(siirraViimeiseksi);
+            this.tyhjienRuutujenLista.addLast(siirraViimeiseksi);
             this.debugViestit.siirrettiinListanPohjalle(siirraViimeiseksi);
             return true;
         }
         return false;
     }
+
+    private OmaLinkedList<Koordinaatti> taytaLista(ArrayList<Koordinaatti> listaAnnettu) {
+        OmaLinkedList<Koordinaatti> lista = new OmaLinkedList<Koordinaatti>();
+        for (Koordinaatti koordinaatti : listaAnnettu) {
+            lista.addLast(koordinaatti);
+        }
+        return lista;
+    }
+
+
+    // Paatin vetaa tahan rajan etta mihin asti implementoin omia tietorakenteita,
+    // muuten niiden lisaaminen olisi rajahtanyt kasiin kun koko ohjelma olisi pian 
+    // pitanyt refactoroida.
+    private Collection palautaUIlleJavanRakenne() {
+        HashSet<Koordinaatti> palautettavat = new HashSet<Koordinaatti>();
+        OmaLinkedList<Koordinaatti> lista = muutettujenJoukko.getLisatyt();
+        Listasolmu solmu = null;
+        for (int i = 0; i < lista.size(); i++) {
+            if (i == 0) {
+                solmu = lista.peekFirst();
+            } else {
+                solmu = solmu.getNext();
+            }
+            palautettavat.add((Koordinaatti) solmu.getKey());
+        }
+        this.debugViestit.romautettujenJoukkoOn(palautettavat);
+        return palautettavat;
+    }
+
+
 }

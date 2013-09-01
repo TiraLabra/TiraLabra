@@ -6,6 +6,7 @@ import java.util.HashSet;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
 import kolmiopeli.domain.Variarpoja;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaHashSet;
 
 /**
  * Nopeustestissa luodaan vapaasti arvottu peliruudukko jonka komboetsija kay
@@ -23,6 +24,7 @@ public class Nopeustestaus {
     private final int leveys;
     private ArrayList<Koordinaatti> tuhoutuvat;
     private KomboEtsijaJavalla javaEtsija;
+    private Romahduttaja romahduttaja;
 
     public Nopeustestaus(int korkeus, int leveys) {
         arpoja = new Variarpoja();
@@ -32,6 +34,7 @@ public class Nopeustestaus {
         taytaKolmiotSatunnaisesti();
         etsija = new KomboEtsija(peliruudukko, false);
         javaEtsija = new KomboEtsijaJavalla(peliruudukko, false);
+        romahduttaja = new Romahduttaja(peliruudukko, false);
         alustaListaKokoRuudukonKoordinaateista();
     }
     
@@ -67,7 +70,7 @@ public class Nopeustestaus {
     private double kayLapiKombojaOmillaRakenteilla() {
         long aika = System.nanoTime();
         HashSet<Koordinaatti> kombot = (HashSet<Koordinaatti>) etsija.etsiKombot(tuhoutuvat);
-        while (!kombot.isEmpty()) {
+        while (kombot.size() != 0) {
             
             kombot = (HashSet<Koordinaatti>) etsija.etsiKombot(kombot);
             tuhoaJaArvoUudetKohtiin(kombot);   
@@ -106,8 +109,11 @@ public class Nopeustestaus {
 
     private void tuhoaJaArvoUudetKohtiin(HashSet<Koordinaatti> kombot) {
         for (Koordinaatti k : kombot) {
-            peliruudukko[k.getRivi()][k.getSarake()] = new Kolmio(arpoja.arvoVari(), k.getRivi(), k.getSarake());
+            peliruudukko[k.getRivi()][k.getSarake()] = null;
         }
+        ArrayList<Koordinaatti> lista = new ArrayList<Koordinaatti>();
+        lista.addAll(kombot);
+        this.romahduttaja.romahduta(lista);
     }
 
     private double laskeKeskiarvo(ArrayList<Double> testitulokset) {

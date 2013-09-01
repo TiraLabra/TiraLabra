@@ -28,20 +28,10 @@ ominaisuuksia peliin TiraLabran aikana:
 	T‰ll‰ hetkell‰ uudet kolmiot arvotaan suoraan r‰j‰ht‰neiden paikalle,
 	mutta tavoitteena olisi ett‰ r‰j‰ht‰neiden paikalle romahtaisi yl‰puolelta
 	kolmioita ja uudet kolmiot arvottaisiin pelilaudan yll‰.	
-		En ole viel‰ p‰‰tt‰nyt/keksinyt miten toteutan kolmioiden 
-	romahtamisen joten t‰ss‰ vaiheessa t‰h‰n kohtaan ei ole viel‰ sanottavaa
-	tarkemmista algoritmeista tai aikavaativuuksista.
+		Romahtaminen tapahtuu "linjoina" (kuva Docseissa) ja aikavaativuus
+	on pahimmillaan tuhoutuneiden kolmioiden leveys kertaa niitten syvyys peliruudukossa.
 
-(3. Olemassaolevan pistesiirtojen etsimisalgoritmin parantaminen)
-
-	T‰m‰ on yksi mahdollinen lis‰ys/parannus mit‰ peliin voi TiraLabran
-	aikana tehd‰. T‰ll‰ hetkell‰ peli k‰y jokaisen siirron j‰lkeen koko
-	laudan l‰pi p‰ivitt‰ess‰‰n miss‰ kohtaa lautaa on mahdollisia siirtoja,
-	vaikka siirtojen oikean m‰‰r‰n yll‰pitoon paljon pienemm‰n alueen 
-	l‰pik‰ynti riitt‰isi.
-
-
-N‰m‰ kolme (kaksi ensimm‰ist‰ ensisijaisesti) ovat t‰ss‰ vaiheessa TiraLabraa 
+N‰m‰ kaksi ovat t‰ss‰ vaiheessa TiraLabraa 
 suunnittelemani tavoitteet. Koska pelilauta on aika pieni niin algoritmien 
 tehokkuus ei ehk‰ tule n‰kyviin tai ole olennaista mutta ensisijaisena 
 tavoitteena on taata algoritmien oikeellisuus ja toimivuus.

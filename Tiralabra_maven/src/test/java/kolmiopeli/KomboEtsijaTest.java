@@ -7,9 +7,7 @@ import java.util.HashSet;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
 import kolmiopeli.domain.Ruudukko;
-import kolmiopeli.logiikka.KolmioTayttaja;
 import kolmiopeli.logiikka.tiralabraAlgoritmit.KomboEtsija;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

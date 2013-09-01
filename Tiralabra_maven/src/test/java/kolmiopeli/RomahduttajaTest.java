@@ -13,17 +13,20 @@ import static org.junit.Assert.*;
 
 public class RomahduttajaTest {
 
-    static Kolmio[][] testiRuudukko = {{new Kolmio(Color.MAGENTA, 0, 0), new Kolmio(Color.RED, 0, 1), new Kolmio(Color.BLUE, 0, 2), new Kolmio(Color.RED, 0, 3), new Kolmio(Color.RED, 0, 4)},
+    static Kolmio[][] testiRuudukkoRomahtavatKeskella = {{new Kolmio(Color.MAGENTA, 0, 0), new Kolmio(Color.RED, 0, 1), new Kolmio(Color.BLUE, 0, 2), new Kolmio(Color.RED, 0, 3), new Kolmio(Color.RED, 0, 4)},
         {new Kolmio(Color.GREEN, 1, 0), new Kolmio(Color.CYAN, 1, 1), new Kolmio(Color.MAGENTA, 1, 2), new Kolmio(Color.MAGENTA, 1, 3), new Kolmio(Color.RED, 1, 4)},
         {new Kolmio(Color.CYAN, 2, 0), null, null, new Kolmio(Color.MAGENTA, 2, 3), new Kolmio(Color.BLUE, 2, 4)},
         {new Kolmio(Color.CYAN, 3, 0), new Kolmio(Color.MAGENTA, 3, 1), null, new Kolmio(Color.MAGENTA, 3, 3), new Kolmio(Color.CYAN, 3, 4)},};
+    static Kolmio[][] testiRuudukkoRomahtavatYlhaalla = {{null, null, null, new Kolmio(Color.RED, 0, 3), new Kolmio(Color.RED, 0, 4)},
+        {new Kolmio(Color.GREEN, 1, 0), new Kolmio(Color.CYAN, 1, 1), new Kolmio(Color.MAGENTA, 1, 2), new Kolmio(Color.MAGENTA, 1, 3), new Kolmio(Color.RED, 1, 4)},
+        {new Kolmio(Color.CYAN, 2, 0), new Kolmio(Color.CYAN, 2, 0), new Kolmio(Color.CYAN, 2, 0), new Kolmio(Color.MAGENTA, 2, 3), new Kolmio(Color.BLUE, 2, 4)},
+        {new Kolmio(Color.CYAN, 3, 0), new Kolmio(Color.MAGENTA, 3, 1), new Kolmio(Color.CYAN, 2, 0), new Kolmio(Color.MAGENTA, 3, 3), new Kolmio(Color.CYAN, 3, 4)},};
+
     private Ruudukko lauta;
     private Romahduttaja romahduttaja;
 
     public RomahduttajaTest() {
         lauta = new Ruudukko(4, 5);
-        lauta.setRuudukko(testiRuudukko);
-        romahduttaja = new Romahduttaja(lauta.getRuudukko(), true);
     }
 
     @Before
@@ -32,6 +35,8 @@ public class RomahduttajaTest {
     
     @Test
     public void alkutesti() {
+        lauta.setRuudukko(testiRuudukkoRomahtavatKeskella);
+        romahduttaja = new Romahduttaja(lauta.getRuudukko(), true);
         ArrayList<Koordinaatti> romahtavat = new ArrayList<Koordinaatti>();
         romahtavat.add(new Koordinaatti(2, 1));
         Kolmio k1 = lauta.getRuudukko()[1][1];
@@ -46,6 +51,24 @@ public class RomahduttajaTest {
         assertTrue("k3 vaarin", lauta.getRuudukko()[3][2] == k3);
         
     }
+    
+    @Test
+    public void romahtajaLuoUusiaYlariville() {
+        lauta.setRuudukko(testiRuudukkoRomahtavatYlhaalla);
+        romahduttaja = new Romahduttaja(lauta.getRuudukko(), true);
+        ArrayList<Koordinaatti> romahtavat = new ArrayList<Koordinaatti>();
+        romahtavat.add(new Koordinaatti(0, 0));
+        romahtavat.add(new Koordinaatti(0, 1));
+        romahtavat.add(new Koordinaatti(0, 2));
+        romahduttaja.romahduta(romahtavat);
+        
+        assertTrue("Ylarivilla ei arvottu uutta", lauta.getRuudukko()[0][0] != null);
+        assertTrue("Ylarivilla ei arvottu uutta", lauta.getRuudukko()[0][1] != null);
+        assertTrue("Ylarivilla ei arvottu uutta", lauta.getRuudukko()[0][2] != null);
+        
+    }
+    
+
     
     
 }
