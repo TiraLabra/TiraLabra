@@ -174,7 +174,7 @@ public class HuffmanTest extends TestCase {
 
     public void testParseMap() {
         Huffman h = new Huffman("");
-        char nil = '\0';
+        char nil = ' ';
         String map = "a" + nil + "0" + nil +
                 "b" + nil + "10" + nil +
                 "c" + nil + "110" + nil +
