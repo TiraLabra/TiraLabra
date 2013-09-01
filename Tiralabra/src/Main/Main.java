@@ -26,40 +26,8 @@ public class Main {
 
     }
 
-    private static void testausSaaPoistaa() {
-        int[] blokkikoot = {1, 2, 3, 4};
-        String polku = "Testitiedostot/";
-        String[] nimet = {"pieni.txt", "keskisuuri.txt", "loremipsum.txt", "suuri.xml", "kuva.BMP", "kuva2.BMP", "valtava.txt"};
-        
-        for (String nimi : nimet) {
-            for (int blokinKoko : blokkikoot) {
-
-                Pakkaaja pakkaaja = new Pakkaaja(blokinKoko);
-                Purkaja purkaja = new Purkaja();
-
-                try {
-                    System.out.println("Pakataan " + nimi + " blokkikoolla " + blokinKoko + "...");
-                    pakkaaja.pakkaa(polku + nimi, "Testitiedostot/ulos.dat");
-
-                    System.out.println("Puretaan...");
-                    purkaja.pura("Testitiedostot/ulos.dat", "Testitiedostot/purettu.txt");
-
-                    System.out.println();
-                } catch (FileNotFoundException ex) {
-                    System.out.println("Annettua tiedostoa ei löytynyt - tarkista tiedostonimi");
-                } catch (IOException ex) {
-                    System.out.println("IO-virhe: " + ex.getMessage());
-                } catch (PurkuException ex) {
-                    System.out.println("Virhe purettaessa tiedostoa" + ex.getMessage());
-                }
-            }
-        }
-    }
-
     public static void main(String[] args) {
-        // testausSaaPoistaa();
           pakkausJaPurkuKysyParametrit();
-        // nopeusVertailu();
     }
 
     /**
