@@ -7,7 +7,6 @@ package com.mycompany.tiralabra_maven;
 import java.io.File;
 import java.io.FileNotFoundException;
 import junit.framework.TestCase;
-import org.junit.Before;
 
 /**
  *

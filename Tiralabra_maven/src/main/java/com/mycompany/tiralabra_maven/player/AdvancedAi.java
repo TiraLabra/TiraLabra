@@ -18,6 +18,9 @@ public class AdvancedAi implements Ai {
     private int lastMove;
     private PlayData playData;
 
+    /**
+     * Constructor. 
+     */
     public AdvancedAi() {
         this.tree = new GameTreeNode(-2, -2);
         this.stack = new Stack();

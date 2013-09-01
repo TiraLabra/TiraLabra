@@ -61,7 +61,7 @@ public class Ui implements Runnable{
         scissorsButton.addActionListener(controls);
         JButton optionsButton = new JButton("...");
         optionsButton.addActionListener(controls);
-        
+
         container.add(textArea, BorderLayout.CENTER);
         
         JLabel label = new JLabel();

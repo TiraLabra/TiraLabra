@@ -72,6 +72,9 @@ public class Controls implements ActionListener {
      * Player plays rock against ai.
      */
     private void rock() throws IOException {
+        if (game.getGameMode() == GameMode.BOT_VS_BOT){
+            return;
+        }
         report(game.playRound(0));
     }
 
@@ -79,6 +82,9 @@ public class Controls implements ActionListener {
      * Player plays paper against ai.
      */
     private void paper() throws IOException {
+        if (game.getGameMode() == GameMode.BOT_VS_BOT){
+            return;
+        }
         report(game.playRound(1));
     }
 
@@ -86,6 +92,9 @@ public class Controls implements ActionListener {
      * Player plays scissors against ai.
      */
     private void scissors() throws IOException {
+        if (game.getGameMode() == GameMode.BOT_VS_BOT){
+            return;
+        }
         report(game.playRound(2));
     }
 
