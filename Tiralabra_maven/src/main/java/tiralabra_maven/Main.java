@@ -1,8 +1,9 @@
 package tiralabra_maven;
 
 /**
- * Luokka joka suorittaa ohjelman
- * export MAVEN_OPTS="-Xmx2048m -Xms512m" (if necessary) + mvn exec:java
+ * Luokka joka suorittaa ohjelman export MAVEN_OPTS="-Xmx2048m -Xms512m" (if
+ * necessary) + mvn exec:java
+ *
  * @author esaaksvu
  */
 public class Main {
@@ -15,12 +16,14 @@ public class Main {
             if (puut == null) {
                 puut = s.luoPuut();
             }
-            String t  = s.operoiPuita(puut);
-            if (t.equals("nollaa")){
-                puut=null;
+            String t = s.operoiPuita(puut);
+            if (t.equals("nollaa")) {
+                puut = null;
                 continue;
             }
-            if (t.equals("")) return;
+            if (t.equals("")) {
+                return;
+            }
             System.out.println(t);
         }
 

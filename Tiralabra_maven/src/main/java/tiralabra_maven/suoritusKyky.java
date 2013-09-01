@@ -37,6 +37,7 @@ public class suoritusKyky {
 
     /**
      * Tekee puille operaatioita ja palauttaa tulostuksen ajasta
+     *
      * @param puut puut joille operaatiot tehdään
      * @return tulostus ajasta
      */
@@ -171,10 +172,23 @@ public class suoritusKyky {
             puut[3] = new AVLHakuPuu();
         }
 
-        for (PuuRajapinta puu : puut) {
-            if (puu != null) {
-                for (int i : taulu) {
-                    puu.lisaaSolmu(new Solmu(i));
+        for (int i = 0; i < puut.length; i++) {
+            if (puut[i] != null) {
+                long t = 0;
+                for (int j : taulu) {
+                    t += lisaaAika(puut[i], j);
+                }
+                if (i == 0) {
+                    System.out.println("BIN: " + t + "ms");
+                }
+                if (i == 1) {
+                    System.out.println("RB: " + t + "ms");
+                }
+                if (i == 2) {
+                    System.out.println("SP: " + t + "ms");
+                }
+                if (i == 3) {
+                    System.out.println("AVL: " + t + "ms");
                 }
             }
         }
@@ -188,20 +202,20 @@ public class suoritusKyky {
             if (puut[i] != null) {
                 long t = 0;
                 for (int j = 0; j < kerrat; j++) {
-                    t += (varia == 0) ? hakuAika(puut[0], koko)
-                            : hakuAika(puut[0], varia);
+                    t += (varia == 0) ? hakuAika(puut[i], koko)
+                            : hakuAika(puut[i], varia);
                 }
                 if (i == 0) {
-                    s += "BIN: " + t / kerrat + " ns\n";
+                    s += "BIN: " + t + " ms\n";
                 }
                 if (i == 1) {
-                    s += "RB: " + t / kerrat + " ns\n";
+                    s += "RB: " + t + " ms\n";
                 }
                 if (i == 2) {
-                    s += "SP: " + t / kerrat + " ns\n";
+                    s += "SP: " + t + " ms\n";
                 }
                 if (i == 3) {
-                    s += "AVL: " + t / kerrat + " ns\n";
+                    s += "AVL: " + t + " ms\n";
                 }
             }
         }
@@ -216,22 +230,22 @@ public class suoritusKyky {
                 long t = 0;
                 for (int j = 0; j < kerrat; j++) {
                     if (varia == 0) {
-                        t += poistoAika(puut[0], koko);
+                        t += poistoAika(puut[i], koko);
                     } else {
-                        t += poistoAika(puut[0], varia);
+                        t += poistoAika(puut[i], varia);
                     }
                 }
                 if (i == 0) {
-                    s += "BIN: " + t / kerrat + " ns\n";
+                    s += "BIN: " + t + " ms\n";
                 }
                 if (i == 1) {
-                    s += "RB: " + t / kerrat + " ns\n";
+                    s += "RB: " + t + " ms\n";
                 }
                 if (i == 2) {
-                    s += "SP: " + t / kerrat + " ns\n";
+                    s += "SP: " + t + " ms\n";
                 }
                 if (i == 3) {
-                    s += "AVL: " + t / kerrat + " ns\n";
+                    s += "AVL: " + t + " ms\n";
                 }
 
             }
@@ -247,22 +261,22 @@ public class suoritusKyky {
                 long t = 0;
                 for (int j = 0; j < kerrat; j++) {
                     if (varia == 0) {
-                        t += lisaaAika(puut[0], koko);
+                        t += lisaaAika(puut[i], koko);
                     } else {
-                        t += lisaaAika(puut[0], varia);
+                        t += lisaaAika(puut[i], varia);
                     }
                 }
                 if (i == 0) {
-                    s += "BIN: " + t / kerrat + " ns\n";
+                    s += "BIN: " + t + " ms\n";
                 }
                 if (i == 1) {
-                    s += "RB: " + t / kerrat + " ns\n";
+                    s += "RB: " + t + " ms\n";
                 }
                 if (i == 2) {
-                    s += "SP: " + t / kerrat + " ns\n";
+                    s += "SP: " + t + " ms\n";
                 }
                 if (i == 3) {
-                    s += "AVL: " + t / kerrat + " ns\n";
+                    s += "AVL: " + t + " ms\n";
                 }
 
             }
@@ -272,22 +286,22 @@ public class suoritusKyky {
 
     private long hakuAika(PuuRajapinta puu, int n) {
         int i = getRandLuku(n);
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
         puu.hae(i);
-        return System.nanoTime() - start;
+        return System.currentTimeMillis() - start;
     }
 
     private long poistoAika(PuuRajapinta puu, int n) {
-        Solmu pois = puu.hae(getRandLuku(n));
-        long start = System.nanoTime();
-        puu.poistaSolmu(pois);
-        return System.nanoTime() - start;
+        int i = getRandLuku(n);
+        long start = System.currentTimeMillis();
+        puu.poistaSolmu(puu.hae(i));
+        return System.currentTimeMillis() - start;
     }
 
     private long lisaaAika(PuuRajapinta puu, int n) {
-        Solmu uusi = new Solmu(getRandLuku(n));
-        long start = System.nanoTime();
+        Solmu uusi = new Solmu(n);
+        long start = System.currentTimeMillis();
         puu.lisaaSolmu(uusi);
-        return System.nanoTime() - start;
+        return System.currentTimeMillis() - start;
     }
 }
