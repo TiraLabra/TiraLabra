@@ -17,3 +17,5 @@ Ajamalla ```fi.jw.cs.tiralabra.cli.PerformanceTester```
 
 ![Huffman encoding performance](huffman-perf-graphs.png "Huffman encoding performance")
 
+![Steganographic encoding performance](stegano-perf-graphs.png "Steganographic encoding performance")
+
