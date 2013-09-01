@@ -278,7 +278,11 @@ public final class GameState
 		growArrays();
 		zobristCodes[ply + 1] = zobristCodes[ply];
 		++ply;
+		halfMoveClocks[ply] = halfMoveClocks[ply - 1];
+		if (enPassantSquares[ply - 1] != -1)
+			zobristCodes[ply] ^= ZOBRIST_RND_EN_PASSANT[enPassantSquares[ply - 1]];
 		enPassantSquares[ply] = -1;
+		castlingRights[ply] = castlingRights[ply - 1];
 		changeNextMovingPlayer();
 	}
 
@@ -577,9 +581,9 @@ public final class GameState
 		this.zobristCodes = zobristCodes;
 		this.enPassantSquares = enPassantSquares;
 		this.castlingRights = castlingRights;
+		this.halfMoveClocks = halfMoveClocks;
 		this.ply = ply;
 		this.nextMovingPlayer = nextMovingPlayer;
-		this.halfMoveClocks = halfMoveClocks;
 	}
 
 	/**
@@ -686,6 +690,8 @@ public final class GameState
 			removeCastlingRight(56 * (1 - nextMovingPlayer) + 7);
 		} else if (Move.getPieceType(move) == Pieces.ROOK)
 			removeCastlingRight(Move.getFromSqr(move));
+		else if (Move.getCapturedType(move) != -1)
+			removeCastlingRight(Move.getToSqr(move));
 	}
 
 	/**
