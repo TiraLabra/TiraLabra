@@ -5,11 +5,11 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList;
 
 /**
  * Kapseloidut debug viestit, joita KomboEtsija lahettaa etsiessaan.
@@ -68,13 +68,13 @@ class KomboEtsijaDebugViestit {
         }
     }
 
-    void juurenMukanaTuhoutuvat(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset) {
+    void juurenMukanaTuhoutuvat(Koordinaatti root, OmaLinkedList<Koordinaatti> rootinVariset) {
         if (onkoPaalla) {
             System.out.println(root.toString() + " - Juuri ja ymparilta loytyneita samanvarisia: " + rootinVariset.size());
         }
     }
 
-    void juurenVarisiaVain(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset) {
+    void juurenVarisiaVain(Koordinaatti root, OmaLinkedList<Koordinaatti> rootinVariset) {
         if (onkoPaalla) {
             System.out.println(root.toString() + " - Samanvarisia loytyi vain: " + rootinVariset.size());
         }

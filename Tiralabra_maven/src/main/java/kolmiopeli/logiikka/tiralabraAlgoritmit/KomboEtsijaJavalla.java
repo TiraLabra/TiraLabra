@@ -202,10 +202,10 @@ public class KomboEtsijaJavalla {
     private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
         // Jos aloituskolmion kanssa samanvarisia vierekkaita loytyi vahintaan kolme niin lisataan ne tuhoutuvien joukkoon
         if (rootinVariset.size() >= 3) {
-            debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
+//            debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
             kaikkiTuhoutuvat.addAll(rootinVariset);
         } else {
-            debugViestit.juurenVarisiaVain(root, rootinVariset);
+//            debugViestit.juurenVarisiaVain(root, rootinVariset);
         }
     }
 

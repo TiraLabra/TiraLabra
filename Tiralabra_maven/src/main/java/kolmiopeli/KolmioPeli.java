@@ -14,14 +14,14 @@ public class KolmioPeli {
 
 
         // Nopeustesti
-//            Nopeustestaus n = new Nopeustestaus(100, 100);
-//            n.algoritminKeskiarvoNopeus(500);
+            Nopeustestaus n = new Nopeustestaus(100, 100);
+            n.rakenteidenNopeusvertailu(100);
             
             
             
         // Peli    
-        Kayttoliittyma k = new Kayttoliittyma();
-        k.run();
+//        Kayttoliittyma k = new Kayttoliittyma();
+//        k.run();
         
 
 

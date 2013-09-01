@@ -7,10 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * 
- */
+
 public class OmaLinkedListTest {
     private OmaLinkedList lista;
     private Koordinaatti testiK1;

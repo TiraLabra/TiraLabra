@@ -1,12 +1,12 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import kolmiopeli.domain.Kolmio;
 import kolmiopeli.domain.Koordinaatti;
+import kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList;
 
 /**
  * Luokka lahtee kaymaan pelilautaa lapi uusista arvotuista kolmioista ja etsii
@@ -107,20 +107,20 @@ public class KomboEtsija {
             debugViestit.juuriOnJoTuhoutumassa(root);
             return;
         }
-        ArrayList<Koordinaatti> rootinVariset = keraaRootinVariset(root);
+        OmaLinkedList<Koordinaatti> rootinVariset = keraaRootinVariset(root);
         loytykoTarpeeksiSamanvarisia(root, rootinVariset, kaikkiTuhoutuvat);
     }
 
-    private ArrayList<Koordinaatti> keraaRootinVariset(Koordinaatti root) {
+    private OmaLinkedList<Koordinaatti> keraaRootinVariset(Koordinaatti root) {
 
         // Merkkaus, jono ja lista johon kerataan rootin viereiset samanvariset
         boolean[][] onkoKaytyLapi = new boolean[peliruudukko.length][peliruudukko[0].length];
         LinkedList<Koordinaatti> tutkittavienJono = new LinkedList<Koordinaatti>();
-        ArrayList<Koordinaatti> rootinVariset = new ArrayList<Koordinaatti>();
+        OmaLinkedList<Koordinaatti> rootinVariset = new OmaLinkedList<Koordinaatti>();
 
         tutkittavienJono.addLast(root);
         onkoKaytyLapi[root.getRivi()][root.getSarake()] = true;
-        rootinVariset.add(root);
+        rootinVariset.addLast(root);
 
         debugViestit.valiviiva();
 
@@ -129,7 +129,7 @@ public class KomboEtsija {
         return rootinVariset;
     }
 
-    private void kayLapiKolmioita(ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
+    private void kayLapiKolmioita(OmaLinkedList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
         while (!tutkittavienJono.isEmpty()) {
             Koordinaatti tutkittava = tutkittavienJono.removeFirst();
             int tRivi = tutkittava.getRivi();
@@ -162,7 +162,7 @@ public class KomboEtsija {
         }
     }
 
-    private void tutkiViereinen(Kolmio viereinen, int vRivi, int vSarake, Koordinaatti tutkittava, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
+    private void tutkiViereinen(Kolmio viereinen, int vRivi, int vSarake, Koordinaatti tutkittava, Color tVari, OmaLinkedList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
 
 
         if (viereinenEiOleYliReunan(tutkittava, vRivi, vSarake)) {
@@ -172,14 +172,14 @@ public class KomboEtsija {
                     debugViestit.loytyiSamanvarinenTutkimaton(tutkittava, viereinen);
                     tutkittavienJono.addLast(viereinen.getKoordinaatti());
                     onkoKaytyLapi[viereinen.getSijaintiRivi()][viereinen.getSijaintiSarake()] = true;
-                    rootinVariset.add(viereinen.getKoordinaatti());
+                    rootinVariset.addLast(viereinen.getKoordinaatti());
                     
                 }
             }
         }
     }
 
-    private void tutkiPystysuunta(Kolmio viereinen, Koordinaatti tutkittava, int tRivi, int tSarake, Color tVari, ArrayList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
+    private void tutkiPystysuunta(Kolmio viereinen, Koordinaatti tutkittava, int tRivi, int tSarake, Color tVari, OmaLinkedList<Koordinaatti> rootinVariset, LinkedList<Koordinaatti> tutkittavienJono, boolean[][] onkoKaytyLapi) {
         // Testataan tutkitaanko ylapuolella vai alapuolella olevaa kolmiota
         int vRivi;
         int vSarake;
@@ -199,11 +199,11 @@ public class KomboEtsija {
 
     }
     
-    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, ArrayList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
+    private void loytykoTarpeeksiSamanvarisia(Koordinaatti root, OmaLinkedList<Koordinaatti> rootinVariset, HashSet<Koordinaatti> kaikkiTuhoutuvat) {
         // Jos aloituskolmion kanssa samanvarisia vierekkaita loytyi vahintaan kolme niin lisataan ne tuhoutuvien joukkoon
         if (rootinVariset.size() >= 3) {
             debugViestit.juurenMukanaTuhoutuvat(root, rootinVariset);
-            kaikkiTuhoutuvat.addAll(rootinVariset);
+            lisaaOmaLinkedListinAlkiotHashSettiin(kaikkiTuhoutuvat, rootinVariset);
         } else {
             debugViestit.juurenVarisiaVain(root, rootinVariset);
         }
@@ -256,6 +256,12 @@ public class KomboEtsija {
     }
     public boolean testViereinenEiOleYliReunan(Koordinaatti tutkittava, int vRivi, int vSarake) {
         return this.viereinenEiOleYliReunan(tutkittava, vRivi, vSarake);
+    }
+
+    private void lisaaOmaLinkedListinAlkiotHashSettiin(HashSet<Koordinaatti> kaikkiTuhoutuvat, OmaLinkedList<Koordinaatti> rootinVariset) {
+        while (rootinVariset.size() > 0) {
+            kaikkiTuhoutuvat.add(rootinVariset.removeFirst());
+        }
     }
     
     

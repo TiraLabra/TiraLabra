@@ -22,6 +22,7 @@ public class Nopeustestaus {
     private final int korkeus;
     private final int leveys;
     private ArrayList<Koordinaatti> tuhoutuvat;
+    private KomboEtsijaJavalla javaEtsija;
 
     public Nopeustestaus(int korkeus, int leveys) {
         arpoja = new Variarpoja();
@@ -30,26 +31,56 @@ public class Nopeustestaus {
         peliruudukko = new Kolmio[korkeus][leveys];
         taytaKolmiotSatunnaisesti();
         etsija = new KomboEtsija(peliruudukko, false);
+        javaEtsija = new KomboEtsijaJavalla(peliruudukko, false);
         alustaListaKokoRuudukonKoordinaateista();
     }
     
-    public void algoritminKeskiarvoNopeus(int kertoja) {
+    public void rakenteidenNopeusvertailu(int kertoja) {
+        System.out.println("-- NOPEUSVERTAILU --");
+        System.out.println("Peliruudukon koko: " + korkeus + "x" + leveys);
+        System.out.println("Testin toistomaara: " + kertoja);
+        algoritminKeskiarvoNopeusOmillaRakenteilla(kertoja);
+        algoritminKeskiarvoNopeusJavanRakenteilla(kertoja);
+    }
+    
+    private void algoritminKeskiarvoNopeusOmillaRakenteilla(int kertoja) {
         ArrayList<Double> testitulokset = new ArrayList<Double>();
         for (int i = 0; i < kertoja; i++) {
             this.taytaKolmiotSatunnaisesti();
-            double tulos = kayLapiKomboja();
+            double tulos = kayLapiKombojaOmillaRakenteilla();
             testitulokset.add(tulos);
         }
-        System.out.println(laskeKeskiarvo(testitulokset) + " ms"); 
+        System.out.println("Keskiarvo omilla rakenteilla: " + laskeKeskiarvo(testitulokset) + " ms"); 
+    }
+    
+    private void algoritminKeskiarvoNopeusJavanRakenteilla(int kertoja) {
+        ArrayList<Double> testitulokset = new ArrayList<Double>();
+        for (int i = 0; i < kertoja; i++) {
+            this.taytaKolmiotSatunnaisesti();
+            double tulos = kayLapiKombojaJavanRakenteilla();
+            testitulokset.add(tulos);
+        }
+        System.out.println("Keskiarvo javan rakenteilla: " + laskeKeskiarvo(testitulokset) + " ms"); 
     }
     
     
-    public double kayLapiKomboja() {
+    private double kayLapiKombojaOmillaRakenteilla() {
         long aika = System.nanoTime();
         HashSet<Koordinaatti> kombot = (HashSet<Koordinaatti>) etsija.etsiKombot(tuhoutuvat);
         while (!kombot.isEmpty()) {
             
             kombot = (HashSet<Koordinaatti>) etsija.etsiKombot(kombot);
+            tuhoaJaArvoUudetKohtiin(kombot);   
+            
+        }
+        return (System.nanoTime() - aika)/1000000.0;
+    }
+    private double kayLapiKombojaJavanRakenteilla() {
+        long aika = System.nanoTime();
+        HashSet<Koordinaatti> kombot = (HashSet<Koordinaatti>) javaEtsija.etsiKombot(tuhoutuvat);
+        while (!kombot.isEmpty()) {
+            
+            kombot = (HashSet<Koordinaatti>) javaEtsija.etsiKombot(kombot);
             tuhoaJaArvoUudetKohtiin(kombot);   
             
         }

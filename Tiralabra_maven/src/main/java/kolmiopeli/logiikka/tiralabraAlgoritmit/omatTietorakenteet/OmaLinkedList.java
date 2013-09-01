@@ -1,5 +1,10 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+
+
 /**
  * Oma implementaatio kahteen suuntaan linkitetysta listasta.
  */
@@ -101,4 +106,5 @@ public class OmaLinkedList<K> {
     public int size() {
         return size;
     }
+
 }
