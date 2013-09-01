@@ -4,7 +4,7 @@
 
 	<groupId>chess</groupId>
 	<artifactId>chess</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<name>chess</name>
