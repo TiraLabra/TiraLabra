@@ -30,7 +30,7 @@ public class BotTest extends TestCase{
     public void testAiBehavior(){
         int x = ai.determineMove();
         
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 500; i++) {
             ai.update(1);
         }
         
@@ -47,7 +47,7 @@ public class BotTest extends TestCase{
     
 
     public void testBot() {
-        for (int i = 0; i < 400; i++) {
+        for (int i = 0; i < 1000; i++) {
             int x = bot.makeAMove();
             if (x == 0){
                 bot.updateAi(1);
@@ -61,7 +61,6 @@ public class BotTest extends TestCase{
                 x++;
             }
         }
-        
         assertTrue(x > 6);
     }
 }

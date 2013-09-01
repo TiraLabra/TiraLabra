@@ -10,6 +10,10 @@ public class Bot {
 
     private Ai ai;
 
+    /**
+     * Constructor. 
+     * @param type 
+     */
     public Bot(int type) {
         if (type == 0) {
             ai = new AdvancedAi();
@@ -18,6 +22,10 @@ public class Bot {
         }
     }
 
+    /**
+     * 
+     * @return move
+     */
     public int makeAMove() {
         return ai.determineMove();
     }

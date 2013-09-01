@@ -39,8 +39,10 @@ public class AdvancedAi implements Ai {
         }
         int[] is = FindStatistics();
 
-        playData.setUsedData(is);
-
+        int[] is2 = new int[3];
+        System.arraycopy(is, 0, is2, 0, 3);
+        playData.setUsedData(is2);
+        
         int move = pickMove(is);
         lastMove = move;
         return move;
@@ -54,7 +56,7 @@ public class AdvancedAi implements Ai {
      */
     private int pickMove(int[] is) {
         if (playData.counterAntiStrategy()) {
-            is = changeMovesCounter(is);
+            is = changeMovesOpposite(is);
         } else {
             is = changeMoves(is);
         }
@@ -322,12 +324,20 @@ public class AdvancedAi implements Ai {
         return is;
     }
 
+    /**
+     * Shows info about ai's decision. 
+     */
     @Override
     public void showData() {
         playData.showWindow(stack);
     }
 
-    private int[] changeMovesCounter(int[] is) {
+    /**
+     * Changes number positions in given array. This method is opposite to changeMoves(int[] is).
+     * @param is
+     * @return is
+     */
+    private int[] changeMovesOpposite(int[] is) {
         int x = is[2];
         is[0] = is[1];
         is[2] = is[0];

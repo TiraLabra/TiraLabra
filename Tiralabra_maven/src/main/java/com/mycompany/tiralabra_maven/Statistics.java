@@ -18,7 +18,7 @@ public class Statistics {
     
 
     /**
-     * 
+     * Constructor. 
      * @param file
      * @throws FileNotFoundException 
      */

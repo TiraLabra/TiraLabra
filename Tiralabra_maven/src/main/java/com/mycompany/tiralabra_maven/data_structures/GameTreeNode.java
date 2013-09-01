@@ -54,9 +54,14 @@ public class GameTreeNode {
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
+        hash = 37 * hash + this.move;
+        hash = 37 * hash + this.result;
+        hash = 37 * hash + this.timesPlayed;
         return hash;
     }
+
+
 
     @Override
     public boolean equals(Object obj) {
@@ -85,7 +90,7 @@ public class GameTreeNode {
     
     /**
      * If node has no child with same move and result than sn, then creates a new child node. 
-     * Onherwise adds one to the right child's TimesPlayed attribute. 
+     * Otherwise adds one to the right child's TimesPlayed attribute. 
      * @param sn 
      */
     public void addChild(Node sn){

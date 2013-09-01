@@ -15,13 +15,16 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 /**
- *
+ * Game ui
  * @author Joel Nummelin
  */
 public class Ui implements Runnable{
     private JFrame frame;
     private Game game;
 
+    /**
+     * Starts a new game. 
+     */
     @Override
     public void run() {
         frame = new JFrame("Rock, Paper, Scissors");
@@ -36,7 +39,12 @@ public class Ui implements Runnable{
         frame.pack();
         frame.setVisible(true);
     }
-    
+
+    /**
+     * Set up for ui components.
+     * @param container
+     * @throws IOException 
+     */
     public void createComponents(Container container) throws IOException{
         BorderLayout layout = new BorderLayout();
         container.setLayout(layout);

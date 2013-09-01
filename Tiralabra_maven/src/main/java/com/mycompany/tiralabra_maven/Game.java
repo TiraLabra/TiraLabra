@@ -150,6 +150,9 @@ public class Game {
     }
     
     
+    /**
+     * Shows pop-up window about ai's decision. 
+     */
     public void showData(){
         primaryBot.showData();
     }

@@ -1,4 +1,4 @@
-Tarkoituksena on luoda kivi, paperi, sakset -tekoäly, joka kykenee saamaan ihmistä vastaan selvästi suuremman voittoprosentin kuin 50. Tekoäly perustuu vastustajan siirtojen seuraamiseen ja niistä oppimiseen. 
+Tarkoituksena on luoda kivi, paperi, sakset -tekoäly, joka kykenee saamaan ihmistä vastaan selvää etua. Tekoäly perustuu vastustajan siirtojen seuraamiseen ja niistä oppimiseen. 
 
 * * *
 

@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * This class is for showing info about ai's moves and and to follow if player tries to break ai's strategy. 
  * @author Joel Nummelin
  */
 public class PlayData {
@@ -15,7 +15,10 @@ public class PlayData {
     private boolean usedWideData;
     private int alertCounter;
     private boolean usedCounterAntiStategy;
-    
+
+    /**
+     * Constructor
+     */
     public PlayData(){
         this.usedData = new int[3];
         this.usedDepth = 0;
@@ -23,19 +26,35 @@ public class PlayData {
         this.alertCounter = 0;
     }
 
+    /**
+     * Setter
+     * @param usedData 
+     */
     public void setUsedData(int[] usedData) {
         this.usedData = usedData;
     }
 
 
+    /**
+     * Setter
+     * @param usedDepth 
+     */
     public void setUsedDepth(int usedDepth) {
         this.usedDepth = usedDepth;
     }
     
+    /**
+     * Setter
+     * @param b 
+     */
     public void setUsedWideData(boolean b){
         this.usedWideData = b;
     }
     
+    /**
+     * Shows pop up window about ai's decisions. 
+     * @param stack 
+     */
     public void showWindow(Stack stack){
         String youPlayed = "Last " + usedDepth + " moves you played: ";
         String[] moveList = new String[4];
@@ -52,21 +71,24 @@ public class PlayData {
             moves += moveList[i] + "\n";
         }
         
-        
-        
         JOptionPane.showMessageDialog(null, "Used counter anti-strategy: " + usedCounterAntiStategy + "\n" 
                 + "Used wide data: " + usedWideData + "\n" 
                 + youPlayed + "\n"
                 + moves + "\n"
-                + "Bots multipliers: \n"
+                + "Your multipliers: \n"
                 + "Rock: " + usedData[0] + "\n"
                 + "Paper: " + usedData[1] + "\n"
                 + "Scissors: " + usedData[2]);
     }
     
+    
+    /**
+     * Determines whether there ai plays opposite or not. 
+     * @return b
+     */
     public boolean counterAntiStrategy(){
+        usedCounterAntiStategy = false;
         if (alertCounter < 3){
-            usedCounterAntiStategy = false;
             return false;
         }
         int random = new Random().nextInt(3) + 2;
@@ -78,18 +100,22 @@ public class PlayData {
     }
     
     
+    /**
+     * Raises alertCounter if opponent played the least expected move. 
+     * @param move 
+     */
     public void update(int move){
         if (usedData[0] == usedData[1] && usedData[1] == usedData[2]){
+            if (alertCounter > 2){
+                alertCounter = 2;
+            }
             return;
         }
-        check01(move);
-        check02(move);
-        check12(move);
-        
+           
         int smallest = 0;
         
         for (int i = 0; i < 3; i++) {
-            if (usedData[i] < smallest){
+            if (usedData[i] < usedData[smallest]){
                 smallest = i;
             }
         }
@@ -97,8 +123,8 @@ public class PlayData {
         int biggest = 0;
         
         for (int i = 0; i < 3; i++) {
-            if (usedData[i] > biggest){
-                smallest = i;
+            if (usedData[i] > usedData[biggest]){
+                biggest = i;
             }
         }
         
@@ -106,61 +132,14 @@ public class PlayData {
             alertCounter++;
         }
         if (move == biggest){
-            alertCounter = 0;
+            alertCounter -= 2;
         }
         
-    }
-
-    private void check01(int move) {
-        if (usedData[0] == usedData[1]){
-            if (move == 0 || move == 1){
-                if (usedData[0] < usedData[2]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            } else {
-                if (usedData[0] > usedData[2]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            }
+        if (alertCounter < 0){
+            alertCounter = 0;
+        }
+        if (alertCounter > 5){
+            alertCounter = 5;
         }
     }
-    private void check02(int move) {
-        if (usedData[0] == usedData[2]){
-            if (move == 0 || move == 2){
-                if (usedData[0] < usedData[2]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            } else {
-                if (usedData[0] > usedData[2]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            }
-        }
-    }
-    private void check12(int move) {
-        if (usedData[1] == usedData[2]){
-            if (move == 1 || move == 2){
-                if (usedData[1] < usedData[0]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            } else {
-                if (usedData[1] > usedData[0]){
-                    alertCounter++;
-                } else{
-                    alertCounter = 0;
-                }
-            }
-        }
-    }
-    
 }

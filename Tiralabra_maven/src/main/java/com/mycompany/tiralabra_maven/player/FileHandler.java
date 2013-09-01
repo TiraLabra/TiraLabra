@@ -17,7 +17,11 @@ public class FileHandler {
     private FileWriter fileWriter;
     private Scanner scanner;
 
-    
+    /**
+     * Constructor. 
+     * @param file
+     * @throws IOException 
+     */
     public FileHandler(File file) throws IOException {
         this.fileWriter = new FileWriter(file, true);
         this.scanner = new Scanner(file);
