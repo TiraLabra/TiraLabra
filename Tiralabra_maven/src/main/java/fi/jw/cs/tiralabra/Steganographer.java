@@ -255,5 +255,11 @@ public class Steganographer {
         this.message = message;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 }

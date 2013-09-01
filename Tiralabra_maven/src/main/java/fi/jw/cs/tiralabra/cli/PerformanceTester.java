@@ -3,7 +3,10 @@ package fi.jw.cs.tiralabra.cli;
 import fi.jw.cs.tiralabra.BinaryTreeMap;
 import fi.jw.cs.tiralabra.Huffman;
 import fi.jw.cs.tiralabra.SimplePriorityQueue;
+import fi.jw.cs.tiralabra.Steganographer;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -13,9 +16,9 @@ import java.util.*;
  * @since 2013-08-13
  */
 public class PerformanceTester {
-    public static void main(String... args) {
-        int n = 20000000;
-		int inc = 500000;
+    public static void main(String... args) throws IOException {
+        int n = 200000000;
+		int inc = 3333333;
 //        String[][] randomStrings = generateStrings(n);
 //        String[] included = randomStrings[0];
 //        String[] excluded = randomStrings[1];
@@ -23,9 +26,47 @@ public class PerformanceTester {
         //testMaps(n, included, excluded);
 //        testQueueScaling();
 
-		testHuffmanPureN(n,inc);
-		testHuffmanSingleRandom(n,inc);
-		testHuffmanRandom(n,inc);
+//		testHuffmanPureN(n,inc);
+//		testHuffmanSingleRandom(n,inc);
+//		testHuffmanRandom(n,inc);
+
+        testSteganoPerformance(n, inc);
+    }
+
+    private static void testSteganoPerformance(int max, int incrementer) throws IOException {
+        System.out.println("Testing Stegano performance");
+        int current = 1;
+
+        int pixels = max / 3;
+        int height = pixels / 10;
+        int width = 10;
+        int repeat = 10;
+        System.out.println("Setting up blank image of " + width + "x" + height);
+        BufferedImage img = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+
+        String message = getTimesN("1", max);
+        while (current < max) {
+            String msg = message.substring(0, current);
+
+            double durationAVG = 0;
+
+            for (int r = 0; r < repeat; r++) {
+                Steganographer stego = new Steganographer();
+                stego.setPath("foo");
+                stego.setImage(img);
+                stego.setMessage(msg);
+
+                long start = System.currentTimeMillis();
+
+                stego.encode();
+                long end = System.currentTimeMillis();
+                durationAVG += (end - start);
+            }
+
+            double duration = durationAVG / repeat;
+            System.out.println(current + "," + (duration));
+            current += incrementer;
+        }
     }
 
 	private static void testHuffmanPureN(int max, int incrementer) {
