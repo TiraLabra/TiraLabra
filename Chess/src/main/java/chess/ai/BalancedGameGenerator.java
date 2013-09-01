@@ -23,7 +23,7 @@ public final class BalancedGameGenerator
 		Random rnd = new Random();
 		for (;;) {
 			GameState gameState = GameGenerator.createGame(rnd.nextLong());
-			MinMaxAI testAI = new MinMaxAI(null, 5, 30, 0.05, 0);
+			MinMaxAI testAI = new MinMaxAI(null, 5, 30, 0.0, 0);
 			testAI.getMove(gameState);
 			int score = testAI.getSearchTree().score;
 			if (Math.abs(score) < maxImbalance * Scores.PIECE_VALUES[Pieces.PAWN])

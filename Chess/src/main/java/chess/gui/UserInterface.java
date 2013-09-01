@@ -379,7 +379,7 @@ public class UserInterface implements Runnable, MouseListener, ActionListener, P
 		if (player1 instanceof UserInterface || player2 instanceof UserInterface)
 			JOptionPane.showMessageDialog(frame, "Both players must be AI players.");
 		else
-			startTest(new Simulation(logArea, 3600, player1, player2));
+			startTest(new Simulation(logArea, 0, player1, player2));
 	}
 
 	/**

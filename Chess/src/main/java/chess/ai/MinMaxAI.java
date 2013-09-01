@@ -185,7 +185,7 @@ public final class MinMaxAI implements Player
 			lastIterTrPosTblHitCount = trposTblHitCount;
 			lastIterTrposTblSize = trposTable.size();
 			lastIterBranchingFactor = Math.pow(nodeCount, 1.0 / depth);
-			bestMove = trposTable.get(state.getId()).bestMove;
+			bestMove = results[0].bestMove;
 		}
 
 		log("nodeCount=" + lastIterNodeCount);

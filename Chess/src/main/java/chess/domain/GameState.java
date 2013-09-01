@@ -138,17 +138,13 @@ public final class GameState
 			this.zobristCodes[0] ^= ZOBRIST_RND_PLAYER;
 
 		// Asetetaan tornitusoikeudet vain jos kuninkaat/tornit oikeissa kohdissa.
-		if (board.hasPiece(Players.WHITE, Pieces.KING, 60)
-				&& board.hasPiece(Players.WHITE, Pieces.ROOK, 56)
-				&& board.hasPiece(Players.WHITE, Pieces.ROOK, 63)
-				&& board.hasPiece(Players.BLACK, Pieces.KING, 4)
-				&& board.hasPiece(Players.BLACK, Pieces.ROOK, 0)
-				&& board.hasPiece(Players.BLACK, Pieces.ROOK, 7)) {
-			this.castlingRights[0] = Movemasks.INITIAL_CASTLING_RIGHTS;
-			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[0];
-			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[7];
-			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[56];
-			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[63];
+		if (board.hasPiece(Players.WHITE, Pieces.KING, 60)) {
+			checkCastlingRight(Players.WHITE, 56);
+			checkCastlingRight(Players.WHITE, 63);
+		}
+		if (board.hasPiece(Players.BLACK, Pieces.KING, 4)) {
+			checkCastlingRight(Players.BLACK, 0);
+			checkCastlingRight(Players.BLACK, 7);
 		}
 
 		// Päivitetään Zobrist-tunniste laudalla jo olevien nappuloiden mukaisesti.
@@ -220,6 +216,14 @@ public final class GameState
 	public long getCastlingRights()
 	{
 		return castlingRights[ply];
+	}
+
+	/**
+	 * Palauttaa siirtojen lukumäärän edellisen lyönnin tai sotilaan siirron jälkeen.
+	 */
+	public long getHalfMoveClock()
+	{
+		return halfMoveClocks[ply];
 	}
 
 	/**
@@ -818,5 +822,16 @@ public final class GameState
 			halfMoveClocks[ply] = 0;
 		else
 			halfMoveClocks[ply] = halfMoveClocks[ply - 1] + 1;
+	}
+
+	/**
+	 * Asettaa aloitustilanteen tornitusoikeuden, jos torni on oikeassa kohtaa.
+	 */
+	private void checkCastlingRight(int player, int sqr)
+	{
+		if (bitboard.hasPiece(player, Pieces.ROOK, sqr)) {
+			this.castlingRights[0] |= 1L << sqr;
+			this.zobristCodes[0] ^= ZOBRIST_RND_CASTLINGRIGHTS[sqr];
+		}
 	}
 }

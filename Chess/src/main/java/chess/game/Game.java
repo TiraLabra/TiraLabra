@@ -60,12 +60,8 @@ public class Game extends InterruptableRunnable
 	@Override
 	public void runImpl() throws InterruptedException
 	{
-		int currentPlayer = Players.WHITE;
-
-		while (!state.isCheckMate() && !state.isStaleMate()) {
-			getAndProcessMove(currentPlayer);
-			currentPlayer = 1 ^ currentPlayer;
-		}
+		while (!state.isCheckMate() && !state.isStaleMate())
+			getAndProcessMove();
 
 		if (state.isCheckMate())
 			result = 1 ^ state.getNextMovingPlayer();
@@ -118,11 +114,11 @@ public class Game extends InterruptableRunnable
 	/**
 	 * Pyytää pelaajalta siirron ja käsittelee sen.
 	 *
-	 * @param player pelaaja (0-1)
 	 * @throws InterruptedException
 	 */
-	private void getAndProcessMove(int player) throws InterruptedException
+	private void getAndProcessMove() throws InterruptedException
 	{
+		int player = state.getNextMovingPlayer();
 		int move = players[player].getMove(state);
 		state.makeMove(move);
 		moves.add(move);

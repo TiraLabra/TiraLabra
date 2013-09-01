@@ -103,7 +103,7 @@ public class Simulation extends InterruptableRunnable
 
 	/**
 	 * Tulostaa peliparin pistemäärän, kaikkien pelien keskipistemäärän sekä 95% luottamusvälin
-	 * (noin 2*keskihajonta).
+	 * (noin 2*keskihajonta/sqrt(n)).
 	 */
 	private void printStatistics(int score, int count, double sum, double sqrSum)
 	{

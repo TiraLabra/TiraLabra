@@ -29,6 +29,20 @@ public class GameStateTest
 		return s.charAt(0) - 'a' + ('8' - s.charAt(1)) * 8;
 	}
 
+	private static long perft(GameState state, int depth)
+	{
+		int[] moves = state.getLegalMoves();
+		if (depth == 1)
+			return moves.length;
+		long count = 0;
+		for (int i = 0; i < moves.length; ++i) {
+			state.makeMove(moves[i]);
+			count += perft(state, depth - 1);
+			state.undoMove(moves[i]);
+		}
+		return count;
+	}
+
 	@Test
 	public void whiteHasFirstTurn()
 	{
@@ -270,6 +284,17 @@ public class GameStateTest
 				str(s.getThreatenedSquares(Players.WHITE, Pieces.KING, sq("e1"))));
 		assertEquals("d8 f8 d7 e7 f7",
 				str(s.getThreatenedSquares(Players.BLACK, Pieces.KING, sq("e8"))));
+	}
+
+	@Test
+	public void rookCaptureRemovesCastlingRights()
+	{
+		GameState s = new GameState("Ra1 Ke1 Rh1", "b2", Players.BLACK);
+		s.makeMove(Move.fromString("b2xRa1Q"));
+		assertEquals("h1", str(s.getCastlingRights()));
+		GameState s2 = new GameState("Ke1 Rh1", "Qa1", Players.WHITE);
+		assertEquals(s2, s);
+		assertEquals(s2.getId(), s.getId());
 	}
 
 	@Test
@@ -685,6 +710,34 @@ public class GameStateTest
 	}
 
 	@Test
+	public void nullMoveKeepsCastlingRights()
+	{
+		GameState s = new GameState("Ra1 Ke1", "a2", Players.WHITE);
+		s.makeNullMove();
+		assertEquals("a1", str(s.getCastlingRights()));
+	}
+
+	@Test
+	public void nullMoveKeepsHalfMoveClock()
+	{
+		GameState s = new GameState("Ra1 Ke1", "a2", Players.WHITE);
+		s.makeMove(Move.fromString("Ke1-e2"));
+		s.makeNullMove();
+		assertEquals(1, s.getHalfMoveClock());
+	}
+
+	@Test
+	public void nullMoveAfterDoublePush()
+	{
+		GameState s = new GameState("a2", "b4", Players.WHITE);
+		s.makeMove(Move.fromString("a2-a4"));
+		s.makeNullMove();
+		GameState s2 = new GameState("a4", "b4", Players.WHITE);
+		assertEquals(s2, s);
+		assertEquals(s2.getId(), s.getId());
+	}
+
+	@Test
 	public void undoNullMoveRestoresOldState()
 	{
 		GameState s = new GameState("Kc3 Nd2", "Kf5 c4", Players.WHITE);
@@ -708,5 +761,116 @@ public class GameStateTest
 		assertEquals("d4", str(s.getPieces(Players.WHITE, Pieces.KING)));
 		assertEquals("h1", str(s.getPieces(Players.BLACK, Pieces.QUEEN)));
 		assertEquals("a8", str(s.getPieces(Players.BLACK, Pieces.BISHOP)));
+	}
+
+	@Test
+	public void testLegalMoveGenerationInInitialPosition()
+	{
+		GameState s = new GameState();
+		for (int i = 0; i < 2; ++i) {
+			assertEquals(20, perft(s, 1));
+			assertEquals(400, perft(s, 2));
+			assertEquals(8902, perft(s, 3));
+			//assertEquals(197281, perft(s, 4));
+			//assertEquals(4865609, perft(s, 5));
+			//assertEquals(119060324, perft(s, 6));
+			s.makeNullMove();
+		}
+	}
+
+	@Test
+	public void testLegalMoveGenerationInAnotherPosition()
+	{
+		// http://chessprogramming.wikispaces.com/Perft+Results (Position 4)
+		GameState s = new GameState("Kg1 Qd1 Ra1 Rf1 Ba4 Bb4 Nf3 Nh6 a2 a7 b5 c4 d2 e4 g2 h2",
+				"Ke8 Qa3 Ra8 Rh8 Bb6 Bg6 Na5 Nf6 b7 b2 c7 d7 f7 g7 h7", Players.WHITE);
+		for (int i = 0; i < 2; ++i) {
+			assertEquals(6, perft(s, 1));
+			assertEquals(264, perft(s, 2));
+			assertEquals(9467, perft(s, 3));
+			//assertEquals(422333, perft(s, 4));
+			//assertEquals(15833292, perft(s, 5));
+			s = new GameState("Ke1 Qa6 Ra1 Rh1 Bb3 Bg3 Na4 Nf3 b2 b7 c2 d2 f2 g2 h2",
+					"Kg8 Qd8 Ra8 Rf8 Ba5 Bb5 Nf6 Nh3 a7 a2 b4 c5 d7 e5 g7 h7", Players.BLACK);
+		}
+
+	}
+
+	@Test
+	public void repeatedPositionIsAStaleMate()
+	{
+		GameState s = new GameState("Ka1 Qb1", "Kg7 Qh8", Players.WHITE);
+		s.makeMove(Move.fromString("Qb1-c1"));
+		s.makeMove(Move.fromString("Qh8-g8"));
+		s.makeMove(Move.fromString("Qc1-b1"));
+		s.makeMove(Move.fromString("Qg8-h8"));
+		assertTrue(s.isStaleMate());
+	}
+
+	@Test
+	public void notRepeatedPositionIfDifferentEnPassantSquare()
+	{
+		GameState s = new GameState("Ka1 Qb1 e2", "Kg7 Qh8 d4", Players.WHITE);
+		s.makeMove(Move.fromString("e2-e4"));
+		s.makeMove(Move.fromString("Qh8-g8"));
+		s.makeMove(Move.fromString("Qb1-c1"));
+		s.makeMove(Move.fromString("Qg8-h8"));
+		s.makeMove(Move.fromString("Qc1-b1"));
+		assertFalse(s.isStaleMate());
+	}
+
+	@Test
+	public void notRepeatedPositionIfDifferentCastlingRights()
+	{
+		GameState s = new GameState("Ke1 Ra1", "Ke8", Players.WHITE);
+		s.makeMove(Move.fromString("Ra1-a2"));
+		s.makeMove(Move.fromString("Ke8-e7"));
+		s.makeMove(Move.fromString("Ra2-a1"));
+		s.makeMove(Move.fromString("Ke7-e8"));
+		assertFalse(s.isStaleMate());
+	}
+
+	@Test
+	public void normalMovesIncreaseHalfMoveClock()
+	{
+		GameState s = new GameState("Ke1", "Ke8", Players.WHITE);
+		s.makeMove(Move.fromString("Ke1-e2"));
+		assertEquals(1, s.getHalfMoveClock());
+		s.makeMove(Move.fromString("Ke8-e7"));
+		assertEquals(2, s.getHalfMoveClock());
+	}
+
+	@Test
+	public void pawnMovesResetHalfMoveClock()
+	{
+		GameState s = new GameState("Ke1", "Ke8 d7", Players.WHITE);
+		s.makeMove(Move.fromString("Ke1-e2"));
+		s.makeMove(Move.fromString("d7-d6"));
+		assertEquals(0, s.getHalfMoveClock());
+	}
+
+	@Test
+	public void capturesResetHalfMoveClock()
+	{
+		GameState s = new GameState("Ke1 Ra1", "Ke8 Ra8", Players.WHITE);
+		s.makeMove(Move.fromString("Ke1-e2"));
+		s.makeMove(Move.fromString("Ra8xRa1"));
+		assertEquals(0, s.getHalfMoveClock());
+	}
+
+	@Test
+	public void staleMateWhenHalfMoveClockReaches50()
+	{
+		GameState s = new GameState("Ke1 Qa1", "Ke8 Qa8", Players.WHITE);
+		String[][] moveCycles = new String[][]{
+			{"Qa1-a2", "Qa2-a3", "Qa3-b3", "Qb3-c3", "Qc3-c2", "Qc2-b1", "Qb1-a1"}, // 7
+			{"Qa8-a7", "Qa7-a6", "Qa6-b6", "Qb6-c6", "Qc6-c7", "Qc7-c8", "Qc8-b8", "Qb8-a8"} // 8
+		};
+		// 7 * 8 >= 50
+		for (int i = 0; i < 50; ++i) {
+			assertFalse(s.isStaleMate());
+			s.makeMove(Move.fromString(moveCycles[i % 2][i / 2 % moveCycles[i % 2].length]));
+		}
+		assertTrue(s.isStaleMate());
 	}
 }
