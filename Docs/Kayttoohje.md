@@ -1,7 +1,9 @@
 Mitä ohjelma tekee?
 
 Ohjelmalla voi tehdä omia verkkoja ja ajaa ne käytössä olevilla
-hakualgoritmeilla. Tällä hetkellä käytössä on Bellman-Ford ja Dijkstra.
+hakualgoritmeilla. Käytössä on Bellman-Ford ja Dijkstra.
+
+*****************************************
 
 Miten käytetään?
 

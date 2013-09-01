@@ -4,40 +4,31 @@
  */
 package ohjelma.tietorakenteet;
 
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  *
  * @author kkivikat
  */
-public class iHashSet<E> extends AbstractSet<E> implements Set<E> {
+public class iHashSet<Kaari> {
 
-    private iHashMap<E, Object> taulu;
+    private iHashMap<Kaari, Object> taulu;
     private static final Object nykyinen = new Object();
 
     public iHashSet() {
-        taulu = new iHashMap();
+        taulu = new iHashMap<Kaari, Object>();
     }
 
-    @Override
-    public boolean add(E e) {
+     /**
+     * Lisää tauluun elementin oletuksella ettei se löydy jo taulusta.
+     */
+    public boolean add(Kaari e) {
         return taulu.put(e, nykyinen) == null;
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return taulu.keySet().iterator();
-    }
-
-    @Override
+     /**
+     * Palauttaa arvojen määrän.
+     */
     public int size() {
         return taulu.getArvojenMaara();
-    }
-
-    public Set palauta() {
-        Set set = taulu.entrySet();
-        return set;
     }
 }

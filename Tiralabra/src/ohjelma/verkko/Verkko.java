@@ -45,7 +45,6 @@ public class Verkko {
             int kohde = lukija.nextInt();
             System.out.println("Anna kaaren " + i + " pituus");
             int pituus = lukija.nextInt();
-
             kaaret.add(new Kaari(solmut.get(lahto).getSolmu(), solmut.get(kohde).getSolmu(), pituus));
         }
     }

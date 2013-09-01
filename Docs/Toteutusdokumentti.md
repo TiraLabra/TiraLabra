@@ -7,4 +7,8 @@ ona oma luokkansa. Verkko koostuu luonnollisesti solmuista (HashMap) ja kaarista
 
 Työn mahdolliset puutteet ja parannusehdotukset
 
-HashSet ei ole vielä valmis enkä ole vielä löytänyt tapaa jolla voisin luoda isomman testiverkon (vastauksineen) jolla saisi tarkempia tuloksia algoritmien suorituskykyeroista jne.
+HashSettiä en saanut valmiiksi, tosin ei varmasti olisi ollut pitkä matka saada se valmiiksi. En vain saanut ratkaistuksi miten HashMapista saisi setin For-Each -läpikäyntiä varten.
+Yleisesti ohjelman rakennetta olisi voinut miettiä testausta ajatellen.
+
+Loppujen lopuksi olen aika pettynyt koska käytin n. 4 tuntia päivässä työn tekemiseen, eikä se juuri
+näy työssä. Varsinkin viimeisinä viikkoina en saanut juuri mitään aikaiseksi kooditasolla, kun aikaa tuhlaantui pelkästään siihen että en löytänyt hyvää tapaa testata koodiani.

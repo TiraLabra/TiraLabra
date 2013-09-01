@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author kkivikat
  */
-public class iHashMapTaulu<K,V> implements Map.Entry<K,V>{
+public class iHashMapTaulu<K,V> {
     
     final int hash;
     final K avain;
@@ -27,7 +27,6 @@ public class iHashMapTaulu<K,V> implements Map.Entry<K,V>{
      /**
      * Palauttaa avaimen.
      */
-    @Override
     public K getKey() {
         return avain;
     }
@@ -35,16 +34,7 @@ public class iHashMapTaulu<K,V> implements Map.Entry<K,V>{
      /**
      * Palauttaa arvon.
      */
-    @Override
     public V getValue() {
         return arvo;
-    }
-
-
-
-    @Override
-    public Object setValue(Object arvo) {
-        Object vanhaArvo = arvo;
-        return vanhaArvo;
     }
 }

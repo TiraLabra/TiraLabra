@@ -4,16 +4,11 @@
  */
 package ohjelma.tietorakenteet;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 /**
  *
  * @author kkivikat
  */
-public class iHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
+public class iHashMap<K, V> {
 
     private int arvojenmaara = 0;
     private iHashMapTaulu<K, V>[] taulu;
@@ -43,7 +38,7 @@ public class iHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     /**
      * Palauttaa avaimelle kuuluvan arvon.
      */
-    @Override
+
     public V get(Object avain) {
         if (avain == null) {
             return getNullArvo();
@@ -61,7 +56,7 @@ public class iHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     /**
      * Lisää avain-arvo parin.
      */
-    @Override
+
     public V put(K avain, V arvo) {
         if (avain == null) {
             return putNull(arvo);
@@ -115,11 +110,4 @@ public class iHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         }
         return null;
     }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-  
 }
