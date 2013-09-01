@@ -1,9 +1,9 @@
-package domain;
+package ohjelma.domain;
 
 /**
  * Pino-luokka, joka vastaa ohjelman tietorakenteen toteutuksesta
  *
- * @author csgit
+ * @author jukkapit
  */
 public class Pino {
 

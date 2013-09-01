@@ -1,12 +1,12 @@
-package sovelluslogiikka;
+package ohjelma.sovelluslogiikka;
 
-import domain.Pino;
+import ohjelma.domain.Pino;
 import java.util.Scanner;
 
 /**
  * Laskin-luokka, joka vastaa ohjelman toiminnallisuuden toteutuksesta
  *
- * @author csgit
+ * @author jukkapit
  */
 public class Laskin {
 
@@ -72,7 +72,8 @@ public class Laskin {
      */
     public void kaynnista() {
         System.out.println("Tervetuloa käyttämään kokonaislukujen laskinta!\n"
-                + "Laskimen kaikki ratkaisut ovat tarkkuudeltaan kokonaislukuja. "
+                + "Laskimen kaikki ratkaisut ovat tarkkuudeltaan kokonaislukuja eli reaalilukuratkaisuissa laskin ilmoittaa ratkaisuksi luvun kokonaisosan ilman pyöristyksiä. "
+                + "Suurin positiivinen kokonaislukuratkaisu, jonka laskin kykenee tuottamaan on 2147483647, ja vastaavasti negatiivisella puolella kyseisen luvun vastaluku. "
                 + "Voit sulkea laskimen kirjoittamalla milloin tahansa \"QUIT\" syöteriville.\n");
         while (true) {
             System.out.print("Syötä laskutoimitus (sallitut merkit ovat: 0-9, (, ), +, -, * ja /): ");

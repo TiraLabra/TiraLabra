@@ -1,4 +1,4 @@
-- Mitä algoritmeja ja tietorakenteita toteutat työssäsi
+﻿- Mitä algoritmeja ja tietorakenteita toteutat työssäsi
 
 Toteutan ns. shunting-yard-algoritmin ja siinä tarvittavan pino-tietorakenteen.
 
@@ -8,11 +8,11 @@ Ratkaisen, miten käyttäjän ohjelmalleni syöttämästä merkkijonomuodossa ol
 
 - Mitä syötteitä ohjelma saa ja miten näitä käytetään
 
-Ohjelman syötteenä toimii käyttäjän kirjoittamana merkkijono jollekin laskutoimitukselle. Ohjelma käyttää tätä kyseistä merkkijonoa algoritmin ja tietorakenteen yhteistoiminnassa muodostaakseen ratkaisun laskutoimitukseen.
+Ohjelman syötteenä toimii käyttäjän kirjoittamana merkkijono jollekin laskutoimitukselle. Ohjelma käyttää tätä kyseistä merkkijonoa algoritmin ja tietorakenteen yhteistoiminnassa muodostaakseen ratkaisun laskutoimitukseen. Ohjelmassa on myös syötteen tarkastusmetodi, joka estää ohjelman etenemisen laskuvaiheeseen, jos syöte on epäkelvollinen.
 
-- Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysi)
+- Tavoitteena olevat aika- ja tilavaativuudet
 
-Ohjelman tavoitteellinen aikavaatimus on O(n) ja tilavaativuus O(1).
+Ohjelman tavoitteellinen aikavaativuus on O(n) ja tilavaativuus O(1).
 
 - Lähteet
 

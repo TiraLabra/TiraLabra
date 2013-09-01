@@ -1,5 +1,6 @@
 package sovelluslogiikka;
 
+import ohjelma.sovelluslogiikka.Laskin;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -81,8 +82,8 @@ public class LaskinTest {
 
     @Test
     public void kaikkiLaskuoperaatiotToimivatSulkeillaJaIlman() {
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
-//        assertEquals(, laskin.ratkaiseLaskutoimitus(""));
+        assertEquals(-308, laskin.ratkaiseLaskutoimitus("((3453-23)*(98+3))/(4-11*(25+1000)/10)"));
+        assertEquals(1024, laskin.ratkaiseLaskutoimitus("3453-23*98+3/4-11*25+1000/10"));
     }
 
     @Test
