@@ -55,6 +55,7 @@ public class ControllerTest {
     
     @Test
     public void stringistaDoubletaulukoksiOnnistuu() {
+        try {
         String[] testiSyote = {"1,2,3","2,3,4","3,5,6"};
         double[][] odotettuMatriisi = {
                             {1,2,3},
@@ -62,19 +63,24 @@ public class ControllerTest {
                             {3,5,6}
         };       
         assertTrue(tarkistaMatriisit(controller.luoMatriisi(testiSyote), odotettuMatriisi));       
-        
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
     }
     
      @Test
     public void stringistaDoubletaulukoksiOnnistuuYlimaaraisillaMerkeillaLopussa() {
-        String[] testiSyote = {"1,2,3m,.","2,3,4,.-","3,5,6dfsa"};
+         try {
+         String[] testiSyote = {"1,2,3m,.","2,3,4,.-","3,5,6dfsa"};
         double[][] odotettuMatriisi = {
                             {1,2,3},
                             {2,3,4},
                             {3,5,6}
         };       
         assertTrue(tarkistaMatriisit(controller.luoMatriisi(testiSyote), odotettuMatriisi));       
-        
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
     }
     
 @Test

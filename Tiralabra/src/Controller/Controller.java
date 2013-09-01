@@ -44,18 +44,17 @@ public class Controller {
         double[][] palautettava;
         if (numero == 1) {
             palautettava = laskin.kerroSkalaarilla(luoMatriisi(matriisiA.split("\\r?\\n")), Integer.parseInt(skalaari));
+        } else if (numero == 4) {
+            return laskin.laskeDeterminantti(luoMatriisi(matriisiA.split("\\r?\\n"))) + "";
         } else if (numero == 2) {
             palautettava = laskin.laskeYhteen(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
         } else if (numero == 3) {
             palautettava = laskin.kerroMatriisit(luoMatriisi(matriisiA.split("\\r?\\n")), luoMatriisi(matriisiB.split("\\r?\\n")));
-        } else if (numero == 4) {
-            return laskin.laskeDeterminantti(luoMatriisi(matriisiA.split("\\r?\\n"))) + "";
         } else {
             throw new Exception("Valitse laskutoimitus");
         }
 
         return luoStringMatriisi(palautettava);
-
     }
 
     /**
@@ -66,18 +65,26 @@ public class Controller {
      * taulukko matriisin alkioista.
      * @return liukulukutaulukko String taulukosta.
      */
-    public double[][] luoMatriisi(String[] matriisiPilkuillaEroteltuna) {
-        poistaEiNumeerisetMerkitLopusta(matriisiPilkuillaEroteltuna);
-        String[] ekaRivi = matriisiPilkuillaEroteltuna[0].split(",");
-        
-        double[][] matriisi = new double[matriisiPilkuillaEroteltuna.length][ekaRivi.length];
-        for (int i = 0; i < matriisi.length; i++) {
-            String[] rivi = matriisiPilkuillaEroteltuna[i].split(",");
-            for (int j = 0; j < matriisi[0].length; j++) {
-                matriisi[i][j] = Double.parseDouble(rivi[j]);
+    public double[][] luoMatriisi(String[] matriisiPilkuillaEroteltuna) throws Exception {
+        try {
+            poistaEiNumeerisetMerkitLopusta(matriisiPilkuillaEroteltuna);
+            String[] ekaRivi = matriisiPilkuillaEroteltuna[0].split(",");
+
+            double[][] matriisi = new double[matriisiPilkuillaEroteltuna.length][ekaRivi.length];
+            for (int i = 0; i < matriisi.length; i++) {
+                String[] rivi = matriisiPilkuillaEroteltuna[i].split(",");
+                for (int j = 0; j < matriisi[0].length; j++) {
+                    try {
+                        matriisi[i][j] = Double.parseDouble(rivi[j]);
+                    } catch (Exception e) {
+                        throw new Exception("matriisissa on ylimääräisiä merkkejä");
+                    }
+                }
             }
+            return matriisi;
+        } catch (Exception e) {
+            throw new Exception("Matriisi(it) on tyhjä(/tyhjiä)");
         }
-        return matriisi;
     }
 
     /**
@@ -89,7 +96,7 @@ public class Controller {
     private void poistaEiNumeerisetMerkitLopusta(String[] matriisiPilkuillaEroteltuna) {
         for (int i = 0; i < matriisiPilkuillaEroteltuna.length; i++) {
             String rivi = matriisiPilkuillaEroteltuna[i];
-            int viimeinenKirjain = rivi.length() -1;
+            int viimeinenKirjain = rivi.length() - 1;
             while (!Character.isDigit(rivi.charAt(viimeinenKirjain))) {
                 viimeinenKirjain--;
             }
@@ -98,21 +105,21 @@ public class Controller {
     }
 
     /**
-     *  Muodostaa String olion matriisista käyttöliittymää varten.
-     * 
+     * Muodostaa String olion matriisista käyttöliittymää varten.
+     *
      * @param palautettavaMatriisi
      * @return Matriisi String-muodossa
      */
     private String luoStringMatriisi(double[][] palautettavaMatriisi) {
-        String stringMatriisi = "";     
+        String stringMatriisi = "";
         for (int i = 0; i < palautettavaMatriisi.length; i++) {
             for (int j = 0; j < palautettavaMatriisi[0].length; j++) {
                 stringMatriisi += palautettavaMatriisi[i][j] + ", ";
             }
-            
-            stringMatriisi = stringMatriisi.substring(0, stringMatriisi.length()-2);
+
+            stringMatriisi = stringMatriisi.substring(0, stringMatriisi.length() - 2);
             stringMatriisi += "\n";
-        }      
+        }
         return stringMatriisi;
 
     }
