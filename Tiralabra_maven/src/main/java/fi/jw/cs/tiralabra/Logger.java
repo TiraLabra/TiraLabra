@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * Utility class to log timestamped messages without needing to use System.out.println() which is too verbose.
+ *
  * @author Jan Wikholm <jw@jw.fi>
  * @since 2013-08-26
  */
@@ -29,6 +31,11 @@ public class Logger {
         return nowAsISO;
     }
 
+    /**
+     * Output message to <code>System.out</code> with the current timestamp
+     *
+     * @param string
+     */
     public static void log(String string) {
         if (LOGGING_ENABLED) {
             System.out.print(getTimestamp() + " >> ");
@@ -37,6 +44,12 @@ public class Logger {
         }
     }
 
+    /**
+     * Output message to <code>System.out</code> with printf so you can use patterns.
+     *
+     * @param pattern
+     * @param objects
+     */
     public static void logf(String pattern, Object... objects) {
         if (LOGGING_ENABLED) {
             System.out.print(getTimestamp() + " >> ");
