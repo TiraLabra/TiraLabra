@@ -57,4 +57,5 @@ public class TiedostonLukijaTest {
         lukija.lue();
         assertEquals(29, lukija.vapaana());
     }
+    
 }
