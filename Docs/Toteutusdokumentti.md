@@ -41,6 +41,8 @@ Compressed message length: 20058638 bits
 Compressed size: 57 %
 ```
 
+Steganografia-algoritmin piti olla O(n) aikavaativuus ja testien perusteella siihen olen päässyt.
+
 ## Työn mahdolliset puutteet ja parannusehdotukset
 
 Ohjelma hyväksyy vain US-ASCII-tekstiä, joten ääkköset eivät toimi. Otin tämän rajauksen lähinnä siksi, että itselläni on kokemusta eri tekstimerkistöjen kanssa tappelusta ja halusin rajata ohjelman scopea.
