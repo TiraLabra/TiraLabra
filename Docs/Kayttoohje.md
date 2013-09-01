@@ -2,7 +2,7 @@
 ------------------------------
 
 
-Käyttöohje alkutilanteessa:
+Käyttöohje:
 
 	Pelissa on tarkoitus kerata pisteita yhdistelemalla
 	samanvarisista tasasivuisista kolmioista kolmen tai useamman
@@ -13,8 +13,8 @@ Käyttöohje alkutilanteessa:
 	ja pelaajan tarkoitus on loytaa kohtia jossa kahden 
 	vierekkaisen kolmion vaihdolla muodostuu vahintaan kolmen 
 	samanvarisen kolmion kuvio, joka yhdistamisen jalkeen haviaa.
-	Havinneiden kolmioiden tilalle peli luo uudet satunnaiset
-	kolmiot, jotka ovat rajoitettu niin ettevät ne muodosta ns. comboja. 
+	Rajahtaneiden kolmioiden tilalle romahtaa ylapuolelta uudet
+	ja jos liikkuneet kolmiot muodostavat uusia yhdistelmiä 
 
 	Pelaajalta vaaditaan oma muistilappu ja kynä parhaiden
 	tulostensa ylläpitämiseen sillä pelissä ei sellaista
