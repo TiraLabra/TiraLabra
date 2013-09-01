@@ -206,7 +206,14 @@ public class OmaLinkedListTest {
         assertTrue("Listan koko ei kahden lisayksen ja yhden poiston jalkeen ollut 1", lista.size()==1);
         lista.removeFirst();
         assertTrue("Listan koko ei kahden lisayksen ja kahden poiston jalkeen ollut 0", lista.size()==0);
-        
+    }
+    
+    @Test
+    public void poistoTyhjastaListastaPalauttaaNull() {
+        Object poistettu = lista.removeFirst();
+        assertTrue("Tyhjasta ensimmaisen poistaminen ei palauttanut null", poistettu == null);
+        poistettu = lista.removeLast();
+        assertTrue("Tyhjasta viimeisen poistaminen ei palauttanut null", poistettu == null);
     }
 
     

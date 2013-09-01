@@ -1,11 +1,11 @@
-
 package kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet;
 
 /**
  *
- * 
+ *
  */
 public class OmaLinkedList {
+
     private Listasolmu head;
     private Listasolmu tail;
     private int size;
@@ -15,7 +15,7 @@ public class OmaLinkedList {
         this.tail = null;
         this.size = 0;
     }
-    
+
     public void addFirst(Object key) {
         Listasolmu uusiSolmu = new Listasolmu(key, head, null);
         if (head != null) {
@@ -28,7 +28,7 @@ public class OmaLinkedList {
         }
         size++;
     }
-    
+
     public void addLast(Object key) {
         Listasolmu uusiSolmu = new Listasolmu(key, null, tail);
         if (tail != null) {
@@ -41,22 +41,42 @@ public class OmaLinkedList {
         }
         size++;
     }
-    
+
     public Object removeFirst() {
+        if (head == null) {
+            return null;
+        }
         Listasolmu poistettava = head;
-        Listasolmu uusiHead = poistettava.getNext();
-        head = uusiHead;
-        
-        return null;
+        if (poistettava.getNext() == null) {
+            head = null;
+            tail = null;
+        } else {
+            Listasolmu uusiHead = poistettava.getNext();
+            uusiHead.setPrev(null);
+            head = uusiHead;
+        }
+        size--;
+        return poistettava.getKey();
     }
-    
+
     public Object removeLast() {
-        return null;
+        if (tail == null) {
+            return null;
+        }
+        Listasolmu poistettava = tail;
+        if (poistettava.getPrev() == null) {
+            head = null;
+            tail = null;
+        } else {
+            Listasolmu uusiTail = poistettava.getPrev();
+            uusiTail.setNext(null);
+            tail = uusiTail;
+        }
+        size--;
+        return poistettava.getKey();
     }
-    
+
     public int size() {
         return size;
     }
-    
-    
 }

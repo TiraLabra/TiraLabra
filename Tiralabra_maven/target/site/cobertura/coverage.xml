@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.18829337094499296" branch-rate="0.12042682926829268" lines-covered="267" lines-valid="1418" branches-covered="79" branches-valid="656" complexity="2.69921875" version="1.9.4.1" timestamp="1377290225716">
+<coverage line-rate="0.2223728813559322" branch-rate="0.14583333333333334" lines-covered="328" lines-valid="1475" branches-covered="98" branches-valid="672" complexity="2.66044776119403" version="1.9.4.1" timestamp="1378043435781">
 	<sources>
 		<source>--source</source>
 		<source>E:/Computer/Programming/Git/TiraLabra/Tiralabra_maven/src/main/java</source>
@@ -1393,7 +1393,7 @@
 				</class>
 			</classes>
 		</package>
-		<package name="kolmiopeli.domain" line-rate="0.26066350710900477" branch-rate="0.1" complexity="3.395348837209302">
+		<package name="kolmiopeli.domain" line-rate="0.27488151658767773" branch-rate="0.125" complexity="3.395348837209302">
 			<classes>
 				<class name="kolmiopeli.domain.Kolmio" filename="kolmiopeli/domain/Kolmio.java" line-rate="0.8571428571428571" branch-rate="1.0" complexity="1.1111111111111112">
 					<methods>
@@ -1559,10 +1559,10 @@
 					<methods>
 						<method name="&lt;init&gt;" signature="(II)V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="20" hits="105" branch="false"/>
-								<line number="21" hits="105" branch="false"/>
-								<line number="22" hits="105" branch="false"/>
-								<line number="23" hits="105" branch="false"/>
+								<line number="20" hits="147" branch="false"/>
+								<line number="21" hits="147" branch="false"/>
+								<line number="22" hits="147" branch="false"/>
+								<line number="23" hits="147" branch="false"/>
 							</lines>
 						</method>
 						<method name="compareTo" signature="(Ljava/lang/Object;)I" line-rate="0.0" branch-rate="0.0">
@@ -1597,32 +1597,32 @@
 						</method>
 						<method name="equals" signature="(Ljava/lang/Object;)Z" line-rate="0.6" branch-rate="0.5">
 							<lines>
-								<line number="43" hits="28" branch="true" condition-coverage="50% (1/2)">
+								<line number="43" hits="56" branch="true" condition-coverage="50% (1/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
 								<line number="44" hits="0" branch="false"/>
-								<line number="46" hits="28" branch="true" condition-coverage="50% (1/2)">
+								<line number="46" hits="56" branch="true" condition-coverage="50% (1/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
 								<line number="47" hits="0" branch="false"/>
-								<line number="49" hits="28" branch="false"/>
-								<line number="50" hits="28" branch="true" condition-coverage="50% (1/2)">
+								<line number="49" hits="56" branch="false"/>
+								<line number="50" hits="56" branch="true" condition-coverage="50% (1/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
 								<line number="51" hits="0" branch="false"/>
-								<line number="53" hits="28" branch="true" condition-coverage="50% (1/2)">
+								<line number="53" hits="56" branch="true" condition-coverage="50% (1/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
 								<line number="54" hits="0" branch="false"/>
-								<line number="56" hits="28" branch="false"/>
+								<line number="56" hits="56" branch="false"/>
 							</lines>
 						</method>
 						<method name="getRivi" signature="()I" line-rate="1.0" branch-rate="1.0">
@@ -1661,42 +1661,42 @@
 						</method>
 					</methods>
 					<lines>
-						<line number="20" hits="105" branch="false"/>
-						<line number="21" hits="105" branch="false"/>
-						<line number="22" hits="105" branch="false"/>
-						<line number="23" hits="105" branch="false"/>
+						<line number="20" hits="147" branch="false"/>
+						<line number="21" hits="147" branch="false"/>
+						<line number="22" hits="147" branch="false"/>
+						<line number="23" hits="147" branch="false"/>
 						<line number="26" hits="104" branch="false"/>
 						<line number="30" hits="78" branch="false"/>
 						<line number="35" hits="93" branch="false"/>
 						<line number="36" hits="93" branch="false"/>
 						<line number="37" hits="93" branch="false"/>
 						<line number="38" hits="93" branch="false"/>
-						<line number="43" hits="28" branch="true" condition-coverage="50% (1/2)">
+						<line number="43" hits="56" branch="true" condition-coverage="50% (1/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
 						<line number="44" hits="0" branch="false"/>
-						<line number="46" hits="28" branch="true" condition-coverage="50% (1/2)">
+						<line number="46" hits="56" branch="true" condition-coverage="50% (1/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
 						<line number="47" hits="0" branch="false"/>
-						<line number="49" hits="28" branch="false"/>
-						<line number="50" hits="28" branch="true" condition-coverage="50% (1/2)">
+						<line number="49" hits="56" branch="false"/>
+						<line number="50" hits="56" branch="true" condition-coverage="50% (1/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
 						<line number="51" hits="0" branch="false"/>
-						<line number="53" hits="28" branch="true" condition-coverage="50% (1/2)">
+						<line number="53" hits="56" branch="true" condition-coverage="50% (1/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
 						<line number="54" hits="0" branch="false"/>
-						<line number="56" hits="28" branch="false"/>
+						<line number="56" hits="56" branch="false"/>
 						<line number="61" hits="70" branch="false"/>
 						<line number="66" hits="0" branch="false"/>
 						<line number="67" hits="0" branch="true" condition-coverage="0% (0/2)">
@@ -2011,7 +2011,7 @@
 						<line number="110" hits="0" branch="false"/>
 					</lines>
 				</class>
-				<class name="kolmiopeli.domain.Variarpoja" filename="kolmiopeli/domain/Variarpoja.java" line-rate="0.10344827586206896" branch-rate="0.058823529411764705" complexity="8.0">
+				<class name="kolmiopeli.domain.Variarpoja" filename="kolmiopeli/domain/Variarpoja.java" line-rate="0.13793103448275862" branch-rate="0.10294117647058823" complexity="8.0">
 					<methods>
 						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
@@ -2020,7 +2020,7 @@
 								<line number="23" hits="15" branch="false"/>
 							</lines>
 						</method>
-						<method name="arvoVari" signature="()Ljava/awt/Color;" line-rate="0.5" branch-rate="0.4">
+						<method name="arvoVari" signature="()Ljava/awt/Color;" line-rate="0.75" branch-rate="0.7">
 							<lines>
 								<line number="31" hits="3" branch="false"/>
 								<line number="33" hits="3" branch="true" condition-coverage="50% (1/2)">
@@ -2040,19 +2040,19 @@
 										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
-								<line number="38" hits="2" branch="false"/>
-								<line number="39" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="38" hits="0" branch="false"/>
+								<line number="39" hits="2" branch="true" condition-coverage="100% (2/2)">
 									<conditions>
-										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="0" type="jump" coverage="100%"/>
 									</conditions>
 								</line>
-								<line number="40" hits="0" branch="false"/>
-								<line number="41" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="40" hits="1" branch="false"/>
+								<line number="41" hits="1" branch="true" condition-coverage="50% (1/2)">
 									<conditions>
-										<condition number="0" type="jump" coverage="0%"/>
+										<condition number="0" type="jump" coverage="50%"/>
 									</conditions>
 								</line>
-								<line number="42" hits="0" branch="false"/>
+								<line number="42" hits="1" branch="false"/>
 								<line number="44" hits="0" branch="false"/>
 							</lines>
 						</method>
@@ -2295,19 +2295,19 @@
 								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
-						<line number="38" hits="2" branch="false"/>
-						<line number="39" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="38" hits="0" branch="false"/>
+						<line number="39" hits="2" branch="true" condition-coverage="100% (2/2)">
 							<conditions>
-								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="0" type="jump" coverage="100%"/>
 							</conditions>
 						</line>
-						<line number="40" hits="0" branch="false"/>
-						<line number="41" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="40" hits="1" branch="false"/>
+						<line number="41" hits="1" branch="true" condition-coverage="50% (1/2)">
 							<conditions>
-								<condition number="0" type="jump" coverage="0%"/>
+								<condition number="0" type="jump" coverage="50%"/>
 							</conditions>
 						</line>
-						<line number="42" hits="0" branch="false"/>
+						<line number="42" hits="1" branch="false"/>
 						<line number="44" hits="0" branch="false"/>
 						<line number="58" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
@@ -6525,8 +6525,62 @@
 				</class>
 			</classes>
 		</package>
-		<package name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet" line-rate="0.0" branch-rate="1.0" complexity="0.0">
+		<package name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet" line-rate="0.9830508474576272" branch-rate="1.0" complexity="1.8333333333333333">
 			<classes>
+				<class name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.Listasolmu" filename="kolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu.java" line-rate="1.0" branch-rate="1.0" complexity="1.0">
+					<methods>
+						<method name="&lt;init&gt;" signature="(Ljava/lang/Object;Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;)V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="13" hits="36" branch="false"/>
+								<line number="14" hits="36" branch="false"/>
+								<line number="15" hits="36" branch="false"/>
+								<line number="16" hits="36" branch="false"/>
+								<line number="17" hits="36" branch="false"/>
+							</lines>
+						</method>
+						<method name="getKey" signature="()Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="20" hits="30" branch="false"/>
+							</lines>
+						</method>
+						<method name="getNext" signature="()Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="24" hits="32" branch="false"/>
+							</lines>
+						</method>
+						<method name="getPrev" signature="()Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="28" hits="30" branch="false"/>
+							</lines>
+						</method>
+						<method name="setNext" signature="(Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;)V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="36" hits="16" branch="false"/>
+								<line number="37" hits="16" branch="false"/>
+							</lines>
+						</method>
+						<method name="setPrev" signature="(Lkolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/Listasolmu;)V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="32" hits="16" branch="false"/>
+								<line number="33" hits="16" branch="false"/>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="13" hits="36" branch="false"/>
+						<line number="14" hits="36" branch="false"/>
+						<line number="15" hits="36" branch="false"/>
+						<line number="16" hits="36" branch="false"/>
+						<line number="17" hits="36" branch="false"/>
+						<line number="20" hits="30" branch="false"/>
+						<line number="24" hits="32" branch="false"/>
+						<line number="28" hits="30" branch="false"/>
+						<line number="32" hits="16" branch="false"/>
+						<line number="33" hits="16" branch="false"/>
+						<line number="36" hits="16" branch="false"/>
+						<line number="37" hits="16" branch="false"/>
+					</lines>
+				</class>
 				<class name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaHashSet" filename="kolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/OmaHashSet.java" line-rate="0.0" branch-rate="1.0" complexity="0.0">
 					<methods>
 						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
@@ -6539,16 +6593,190 @@
 						<line number="8" hits="0" branch="false"/>
 					</lines>
 				</class>
-				<class name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList" filename="kolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/OmaLinkedList.java" line-rate="0.0" branch-rate="1.0" complexity="0.0">
+				<class name="kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet.OmaLinkedList" filename="kolmiopeli/logiikka/tiralabraAlgoritmit/omatTietorakenteet/OmaLinkedList.java" line-rate="1.0" branch-rate="1.0" complexity="2.6666666666666665">
 					<methods>
-						<method name="&lt;init&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
+						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
 							<lines>
-								<line number="8" hits="0" branch="false"/>
+								<line number="13" hits="21" branch="false"/>
+								<line number="14" hits="21" branch="false"/>
+								<line number="15" hits="21" branch="false"/>
+								<line number="16" hits="21" branch="false"/>
+								<line number="17" hits="21" branch="false"/>
+							</lines>
+						</method>
+						<method name="addFirst" signature="(Ljava/lang/Object;)V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="20" hits="19" branch="false"/>
+								<line number="21" hits="19" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="22" hits="6" branch="false"/>
+								<line number="23" hits="6" branch="false"/>
+								<line number="25" hits="19" branch="false"/>
+								<line number="26" hits="19" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="27" hits="13" branch="false"/>
+								<line number="29" hits="19" branch="false"/>
+								<line number="30" hits="19" branch="false"/>
+							</lines>
+						</method>
+						<method name="addLast" signature="(Ljava/lang/Object;)V" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="33" hits="17" branch="false"/>
+								<line number="34" hits="17" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="35" hits="10" branch="false"/>
+								<line number="36" hits="10" branch="false"/>
+								<line number="38" hits="17" branch="false"/>
+								<line number="39" hits="17" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="40" hits="7" branch="false"/>
+								<line number="42" hits="17" branch="false"/>
+								<line number="43" hits="17" branch="false"/>
+							</lines>
+						</method>
+						<method name="removeFirst" signature="()Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="46" hits="17" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="47" hits="1" branch="false"/>
+								<line number="49" hits="16" branch="false"/>
+								<line number="50" hits="16" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="51" hits="6" branch="false"/>
+								<line number="52" hits="6" branch="false"/>
+								<line number="54" hits="10" branch="false"/>
+								<line number="55" hits="10" branch="false"/>
+								<line number="56" hits="10" branch="false"/>
+								<line number="58" hits="16" branch="false"/>
+								<line number="59" hits="16" branch="false"/>
+							</lines>
+						</method>
+						<method name="removeLast" signature="()Ljava/lang/Object;" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="63" hits="15" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="64" hits="1" branch="false"/>
+								<line number="66" hits="14" branch="false"/>
+								<line number="67" hits="14" branch="true" condition-coverage="100% (2/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="100%"/>
+									</conditions>
+								</line>
+								<line number="68" hits="8" branch="false"/>
+								<line number="69" hits="8" branch="false"/>
+								<line number="71" hits="6" branch="false"/>
+								<line number="72" hits="6" branch="false"/>
+								<line number="73" hits="6" branch="false"/>
+								<line number="75" hits="14" branch="false"/>
+								<line number="76" hits="14" branch="false"/>
+							</lines>
+						</method>
+						<method name="size" signature="()I" line-rate="1.0" branch-rate="1.0">
+							<lines>
+								<line number="80" hits="5" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="8" hits="0" branch="false"/>
+						<line number="13" hits="21" branch="false"/>
+						<line number="14" hits="21" branch="false"/>
+						<line number="15" hits="21" branch="false"/>
+						<line number="16" hits="21" branch="false"/>
+						<line number="17" hits="21" branch="false"/>
+						<line number="20" hits="19" branch="false"/>
+						<line number="21" hits="19" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="22" hits="6" branch="false"/>
+						<line number="23" hits="6" branch="false"/>
+						<line number="25" hits="19" branch="false"/>
+						<line number="26" hits="19" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="27" hits="13" branch="false"/>
+						<line number="29" hits="19" branch="false"/>
+						<line number="30" hits="19" branch="false"/>
+						<line number="33" hits="17" branch="false"/>
+						<line number="34" hits="17" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="35" hits="10" branch="false"/>
+						<line number="36" hits="10" branch="false"/>
+						<line number="38" hits="17" branch="false"/>
+						<line number="39" hits="17" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="40" hits="7" branch="false"/>
+						<line number="42" hits="17" branch="false"/>
+						<line number="43" hits="17" branch="false"/>
+						<line number="46" hits="17" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="47" hits="1" branch="false"/>
+						<line number="49" hits="16" branch="false"/>
+						<line number="50" hits="16" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="51" hits="6" branch="false"/>
+						<line number="52" hits="6" branch="false"/>
+						<line number="54" hits="10" branch="false"/>
+						<line number="55" hits="10" branch="false"/>
+						<line number="56" hits="10" branch="false"/>
+						<line number="58" hits="16" branch="false"/>
+						<line number="59" hits="16" branch="false"/>
+						<line number="63" hits="15" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="64" hits="1" branch="false"/>
+						<line number="66" hits="14" branch="false"/>
+						<line number="67" hits="14" branch="true" condition-coverage="100% (2/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="100%"/>
+							</conditions>
+						</line>
+						<line number="68" hits="8" branch="false"/>
+						<line number="69" hits="8" branch="false"/>
+						<line number="71" hits="6" branch="false"/>
+						<line number="72" hits="6" branch="false"/>
+						<line number="73" hits="6" branch="false"/>
+						<line number="75" hits="14" branch="false"/>
+						<line number="76" hits="14" branch="false"/>
+						<line number="80" hits="5" branch="false"/>
 					</lines>
 				</class>
 			</classes>
