@@ -312,8 +312,6 @@ public class KaksiKolme implements Puu {
             return;
         }
 
-
-
         //solmussa on vain yksi arvo; koska vasenta lasta ei voi enää löytyä,
         //eikä yksiarvoisella voi olla keskimmäistä lasta, siirretään mahdollinen
         //oikea lapsi pykälä ylöspäin

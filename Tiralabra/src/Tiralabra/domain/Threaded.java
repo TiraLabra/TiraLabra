@@ -64,10 +64,13 @@ public class Threaded implements Puu {
                 break;
             }
             if (key < parent.getKey()) {
-                if (parent.getVasen() == null || !parent.vasenStatusGet()) {
+                //nykyisen solmun vasemmalla on paikka
+                if (!parent.vasenStatusGet()) {
                     parent.vasemmanLapsenStatusSet(true);
+                    //uuden solmun seuraaja on sen uusi vanhempi
                     uusi.setOikea(parent);
                     uusi.oikeanLapsenStatusSet(false);
+                    //uuden solmun edeltäjä on vanhemman entinen edeltäjä
                     uusi.setVasen(parent.getVasen());
                     uusi.vasemmanLapsenStatusSet(false);
                     parent.setVasen(uusi);
@@ -77,10 +80,13 @@ public class Threaded implements Puu {
                     parent = parent.getVasen();
                 }
             } else {
-                if (parent.getOikea() == null || !parent.oikeaStatusGet()) {
+                if (!parent.oikeaStatusGet()) {
+                    //nykyisen solmun oikealla on paikka
                     parent.oikeanLapsenStatusSet(true);
+                    //uuden solmun edeltäjä on sen uusi vanhempi
                     uusi.setVasen(parent);
                     uusi.vasemmanLapsenStatusSet(false);
+                    //uuden solmun seuraaja on vanhemman entinen seuraaja
                     uusi.setOikea(parent.getOikea());
                     uusi.oikeanLapsenStatusSet(false);
                     parent.setOikea(uusi);
@@ -219,7 +225,7 @@ public class Threaded implements Puu {
     }
 
     /**
-     * Threaded-puun oma hakutoiminto.
+     * Hake puusta arvoa vastaavan solmun.
      *
      * @param key haettava arvo
      * @return null jos arvoa ei löydy, muuten arvon sisältävä solmu
@@ -247,7 +253,7 @@ public class Threaded implements Puu {
 
     /**
      * Palauttaa puun juurisolmun.
-     *
+     * Metodia käytetään puun testauksessa.
      * @return juurisolmu
      */
     public SolmuThreaded getJuuri() {

@@ -77,7 +77,7 @@ public class Treap implements Puu {
     @Override
     public void delete(int key) {
         SolmuTreap pois = searchSolmu(key);
-        delete2(pois);
+        deleteTreap(pois);
     }
 
     @Override
@@ -104,20 +104,6 @@ public class Treap implements Puu {
             }
         }
         return i;
-    }
-
-    /**
-     * Palauttaa solmun s seuraajasolmun.
-     *
-     * @param s solmu, jolle seuraaja haetaan
-     * @return solmun s seuraaja (oikean alipuun vasemmaisin solmu)
-     */
-    private SolmuTreap seuraaja(SolmuTreap s) {
-        SolmuTreap seuraaja = s.getOikea();
-        while (seuraaja != null && seuraaja.getVasen() != null) {
-            seuraaja = seuraaja.getVasen();
-        }
-        return seuraaja;
     }
 
     /**
@@ -206,7 +192,7 @@ public class Treap implements Puu {
      *
      * @param pois poistettava solmu
      */
-    private void delete2(SolmuTreap pois) {
+    private void deleteTreap(SolmuTreap pois) {
         //poistettavaa solmua ei löydy
         if (pois == null) {
             return;
@@ -225,7 +211,7 @@ public class Treap implements Puu {
             return;
         }
         teelehti(pois);
-        delete2(pois);
+        deleteTreap(pois);
     }
 
     /**
