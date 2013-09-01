@@ -144,10 +144,6 @@ public final class Automaatti {
             }
         }
     }
-    
-    private boolean kaikkiOperanditOnKasitelty() {
-        return false;
-    }
         
     private void taytaPino(final Tila TILA) {
         // Varmistaan että pinossa DATA on dataa:

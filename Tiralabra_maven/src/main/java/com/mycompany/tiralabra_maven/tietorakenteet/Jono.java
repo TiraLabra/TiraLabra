@@ -59,7 +59,7 @@ public final class Jono<T> {
     /**
      * Poistaa ja palauttaa jonon ensimmäisen alkion.
      *
-     * @return Jonon ensimmäinen alkio tai <tt>null</tt> jos jono on tyhjä.
+     * @return Jonon ensimmäinen alkio tai <i>null</i> jos jono on tyhjä.
      */
     public T poista() {
         if (ensimmainen == null) {
@@ -71,6 +71,11 @@ public final class Jono<T> {
         return solmu.ARVO;
     }
     
+    /**
+     * Palauttaa jonon viimeisen alkion.
+     * 
+     * @return Jonon viimeinen alkio. Voi olla myös <i>null</i>.
+     */
     public T viimeinen() {
         return viimeinen.ARVO;
     }

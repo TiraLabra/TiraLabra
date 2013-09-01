@@ -1,9 +1,8 @@
 
 package com.mycompany.tiralabra_maven.suorituskykytestit;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
+import com.mycompany.tiralabra_maven.tietorakenteet.Pino;
+import java.util.Stack;
 
 /**
  * Tämä luokka vertaa luokkien <b>Hajautuskartta</b> ja <b>HashMap</b>
@@ -12,48 +11,37 @@ import com.mycompany.tiralabra_maven.tietorakenteet.Hajautuskartta;
  *
  * @author John Lång <jllang@cs.helsinki.fi>
  */
-public final class HajautuskartanSuorituskyky {
+public final class PinonSuorituskyky {
     
-    private static final char[] MERKIT = "0123456789abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ+-*/%^|()?".toCharArray();
-    private static final int TESTI_HAJAUTUSKARTTA_KIRJOITUS = 0;
-    private static final int TESTI_HAJAUTUSKARTTA_LUKU      = 1;
-    private static final int TESTI_HASHMAP_KIRJOITUS        = 2;
-    private static final int TESTI_HASHMAP_LUKU             = 3;
-    private static Hajautuskartta<Integer>     hk;
-//    private static HashMap<Character, Integer> hm;
-    // Päädyin vaihtamaan Hajatuskartan kanssa vertailtavan luokan Googlen Guava
-    // -kirjaston HashMultimap:iksi, koska se lienee toiminnaltaan lähempänä
-    // omaa implementaatiotani.
-    private static Multimap<Character, Integer> hmm;
-    private static int hajautustaulunPituus = 78;
+    private static final int TESTI_JONO_KIRJOITUS   = 0;
+    private static final int TESTI_JONO_LUKU        = 1;
+    private static final int TESTI_STACK_KIRJOITUS  = 2;
+    private static final int TESTI_STACK_LUKU       = 3;
+    private static Pino<Integer>     pino;
+    private static Stack<Integer>   stack;
+    
     
     /**
      * Aloittaa suorituskyvyn testaamisen.
      */
     public static void aloita() {
-//        hajautustaulunPituus = 1543;
 //        testaa(1000);
-//        hajautustaulunPituus = 12289;
 //        testaa(10000);
-//        hajautustaulunPituus = 196613;
         testaa(100000);
-//        hajautustaulunPituus = 1572871;
         testaa(1000000);
-//        hajautustaulunPituus = 12582917;
         testaa(10000000);
-//        hajautustaulunPituus = 100663319;
 //        testaa(100000000);
     }
     
     private static void testaa(final int ALKIOITA) {
-        System.out.println("Aloitetaan Hajautuskartan suorituskykytestaus "
+        System.out.println("Aloitetaan Pinon suorituskykytestaus "
                 + ALKIOITA + " avain-arvoparilla.");
         System.out.println("----------------------------------------" +
                 "----------------------------------------");
         long[] ajat;
         
-        ajat = ajanotto(ALKIOITA, TESTI_HAJAUTUSKARTTA_KIRJOITUS);
-        System.out.println("Hajautuskartan kirjoitusajat:");
+        ajat = ajanotto(ALKIOITA, TESTI_JONO_KIRJOITUS);
+        System.out.println("Pinon kirjoitusajat:");
         System.out.println("Keskimääräinen aika:            "
                 + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
         System.out.println("Lyhyin aika:                    "
@@ -62,8 +50,8 @@ public final class HajautuskartanSuorituskyky {
                 + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
-        ajat = ajanotto(ALKIOITA, TESTI_HAJAUTUSKARTTA_LUKU);
-        System.out.println("Hajautuskartan lukuajat:");
+        ajat = ajanotto(ALKIOITA, TESTI_JONO_LUKU);
+        System.out.println("Pinon lukuajat:");
         System.out.println("Keskimääräinen aika:            "
                 + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
         System.out.println("Lyhyin aika:                    "
@@ -73,15 +61,15 @@ public final class HajautuskartanSuorituskyky {
         System.out.println();
         
         long muistia = Runtime.getRuntime().freeMemory();
-        hk = null;
+        pino = null;
         Runtime.getRuntime().gc();
-        System.out.println("Hajautuskartan muistinkulutus:  "
+        System.out.println("Pinon muistinkulutus:     "
                 + (Runtime.getRuntime().freeMemory() - muistia) + " tavua.");
         
         System.out.println('\n');
         
-        ajat = ajanotto(ALKIOITA, TESTI_HASHMAP_KIRJOITUS);
-        System.out.println("HashMultimapin kirjoitusajat:");
+        ajat = ajanotto(ALKIOITA, TESTI_STACK_KIRJOITUS);
+        System.out.println("Stack:n kirjoitusajat:");
         System.out.println("Keskimääräinen aika:            "
                 + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
         System.out.println("Lyhyin aika:                    "
@@ -90,8 +78,8 @@ public final class HajautuskartanSuorituskyky {
                 + Suorituskykytyokalut.suurin(ajat) + " ms.");
         System.out.println();
         
-        ajat = ajanotto(ALKIOITA, TESTI_HASHMAP_LUKU);
-        System.out.println("HashMultimapin lukuajat:");
+        ajat = ajanotto(ALKIOITA, TESTI_STACK_LUKU);
+        System.out.println("Stack:n lukuajat:");
         System.out.println("Keskimääräinen aika:            "
                 + Suorituskykytyokalut.keskiarvo(ajat) + " ms.");
         System.out.println("Lyhyin aika:                    "
@@ -102,9 +90,9 @@ public final class HajautuskartanSuorituskyky {
         
         muistia = Runtime.getRuntime().freeMemory();
 //        hm = null;
-        hmm = null;
+//        hmm = null;
         Runtime.getRuntime().gc();
-        System.out.println("HashMultimapin muistinkulutus:  "
+        System.out.println("Stack:n muistinkulutus:   "
                 + (Runtime.getRuntime().freeMemory() - muistia) + " tavua.");
         System.out.println("========================================" +
                 "========================================");
@@ -113,50 +101,62 @@ public final class HajautuskartanSuorituskyky {
     private static long[] ajanotto(final int ALKIOITA, final int TESTIN_NUMERO) {
         long aloitushetki;
         long[] ajat = new long[10];
-        if (TESTIN_NUMERO == TESTI_HAJAUTUSKARTTA_KIRJOITUS) {
+        if (TESTIN_NUMERO == TESTI_JONO_KIRJOITUS) {
             for (int i = 0; i < 10; i++) {
-                hk = null;
+                pino = null;
                 Runtime.getRuntime().gc();
-                hk = new Hajautuskartta<>(hajautustaulunPituus);
+                pino = new Pino<>();
+                aloitushetki = System.currentTimeMillis();
+                taytaPino(ALKIOITA);
+                ajat[i] = System.currentTimeMillis() - aloitushetki;
+            }
+        } else if (TESTIN_NUMERO == TESTI_JONO_LUKU) {
+            pino = null;
+            Runtime.getRuntime().gc();
+            pino = new Pino<>();
+            for (int i = 0; i < 10; i++) {
+                taytaPino(ALKIOITA);
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-                    hk.lisaa(MERKIT[j % 78], j);
+                    pino.poista();
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
-        } else if (TESTIN_NUMERO == TESTI_HAJAUTUSKARTTA_LUKU) {
+        } else if (TESTIN_NUMERO == TESTI_STACK_KIRJOITUS) {
             for (int i = 0; i < 10; i++) {
-                aloitushetki = System.currentTimeMillis();
-                for (int j = 0; j < ALKIOITA; j++) {
-                    hk.haeEnsimmainen(MERKIT[j % 78]);
-                }
-                ajat[i] = System.currentTimeMillis() - aloitushetki;
-            }
-        } else if (TESTIN_NUMERO == TESTI_HASHMAP_KIRJOITUS) {
-            for (int i = 0; i < 10; i++) {
-//                hm = null;
-                hmm = null;
+                stack = null;
                 Runtime.getRuntime().gc();
-//                hm = new HashMap<>();
-                hmm = HashMultimap.create();
+                stack = new Stack<>();
                 aloitushetki = System.currentTimeMillis();
-                for (int j = 0; j < ALKIOITA; j++) {
-//                    hm.put(MERKIT[j % 78], j);
-                    hmm.put(MERKIT[j % 78], j);
-                }
+                taytaStack(ALKIOITA);
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
-        } else if (TESTIN_NUMERO == TESTI_HASHMAP_LUKU) {
+        } else if (TESTIN_NUMERO == TESTI_STACK_LUKU) {
+            stack = null;
+            Runtime.getRuntime().gc();
+            stack = new Stack<>();
             for (int i = 0; i < 10; i++) {
+                taytaStack(ALKIOITA);
                 aloitushetki = System.currentTimeMillis();
                 for (int j = 0; j < ALKIOITA; j++) {
-//                    hm.get(MERKIT[j % 78]);
-                    hmm.get(MERKIT[j % 78]);
+                      stack.pop();
                 }
                 ajat[i] = System.currentTimeMillis() - aloitushetki;
             }
         }
         return ajat;
+    }
+
+    private static void taytaPino(final int ALKIOITA) {
+        for (int j = 0; j < ALKIOITA; j++) {
+            pino.lisaa(j);
+        }
+    }
+
+    private static void taytaStack(final int ALKIOITA) {
+        for (int j = 0; j < ALKIOITA; j++) {
+              stack.push(j);
+        }
     }
     
 }

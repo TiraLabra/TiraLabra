@@ -3,6 +3,8 @@ package com.mycompany.tiralabra_maven.logiikka;
 import com.mycompany.tiralabra_maven.kayttoliittymat.Tekstikayttoliittyma;
 import com.mycompany.tiralabra_maven.rajapinnat.Kayttoliittyma;
 import com.mycompany.tiralabra_maven.suorituskykytestit.HajautuskartanSuorituskyky;
+import com.mycompany.tiralabra_maven.suorituskykytestit.JononSuorituskyky;
+import com.mycompany.tiralabra_maven.suorituskykytestit.PinonSuorituskyky;
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 
 /**
@@ -36,6 +38,10 @@ public final class Kaavalaskin {
                 rpnRegexproseduuri();
             } else if (args[0].toLowerCase().trim().equals("hkp")) {
                 HajautuskartanSuorituskyky.aloita();
+            } else if (args[0].toLowerCase().trim().equals("jp")) {
+                JononSuorituskyky.aloita();
+            } else if (args[0].toLowerCase().trim().equals("pp")) {
+                PinonSuorituskyky.aloita();
             } else {
                 KAYTTOLIITTYMA.tulosta("Tuntematon argumentti \"" + args[0] + "\".\n");
             }
@@ -47,14 +53,18 @@ public final class Kaavalaskin {
     }
     
     private static void tulostaOhje() {
-        KAYTTOLIITTYMA.tulosta("\nKäynnistysargumentit (joista yksi tulee valita):\n" +
-        "\n" +
+        KAYTTOLIITTYMA.tulosta("\nKäynnistysargumentit (joista yksi tulee valita"
+                + "):\n\n" +
         "al	Käynnistää aritmeettisten kaavojen tulkin ja laskimen.\n" +
         "sl	Käynnistää säännöllisten lausekkeiden tulkin ja käsittelijän.\n"
                 + "kal	Käynnistää aritmeettisten kaavojen laskimen.\n" +
         "ksl	Käynnistää säännöllisten lausekkeiden käsittelijän.\n" +
-        "hkp	Käynnistää luokan Hajautuskartta suorituskykyä toiseen luokkaan\n"
-                + "        vertaavan aliohjelman.\n");
+        "hkp	Käynnistää luokan Hajautuskartta suorituskykyä toiseen luokkaan"
+                + "\n        vertaavan aliohjelman.\n" +
+        "jp	Käynnistää luokan Jono suorituskykyä toiseen luokkaan"
+                + "\n        vertaavan aliohjelman.\n" +
+        "pp	Käynnistää luokan Pino suorituskykyä toiseen luokkaan"
+                + "\n        vertaavan aliohjelman.\n");
     }
 
     private static double testaaAjanotonViive() {

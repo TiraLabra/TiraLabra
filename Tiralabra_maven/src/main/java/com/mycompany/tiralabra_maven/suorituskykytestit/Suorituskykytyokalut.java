@@ -20,7 +20,7 @@ public final class Suorituskykytyokalut {
         for (long l : LUVUT) {
             summa += l;
         }
-        return summa / LUVUT.length;
+        return (summa * 1.0f) / LUVUT.length;
     }
     
     /**

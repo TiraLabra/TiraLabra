@@ -19,6 +19,10 @@ Jar-tiedosto löytynee projektin juurikansiosta.
 |`ksl`	|Käynnistää säännöllisten lausekkeiden käsittelijän.				   |
 |`hkp`	|Käynnistää luokan Hajautuskartta suorituskykyä toiseen luokkaan  |
 ||vertaavan aliohjelman.|
+|`jp`	|Käynnistää luokan Jono suorituskykyä toiseen luokkaan  |
+||vertaavan aliohjelman.|
+|`pp`	|Käynnistää luokan Pino suorituskykyä toiseen luokkaan  |
+||vertaavan aliohjelman.|
 
 * * *
 
@@ -103,8 +107,8 @@ epsilon) on oman erityismerkityksensä tyhjän merkin (`'\0'`) symbolina.
 |`\<merkki>`|Literaali. Seuraava merkki tulkitaan operandina. (Esimerkiksi  |
 ||kaava `a\+` merkitsee kieltä joka sisältää merkkijonon `a+` eikä silmukkaa.) |												   |
 |`[a0-am]{n}`|Mikä tahansa merkki väliltä `a0 ... am`. Tulkataan kaavaksi  |
-||`"a1 ... am` &#124; toistettuna n kertaa. Jos parametri `{n}` puuttuu, suoritetaan|
-||yksi toisto. \*\*|
+||`"a1 ... am` &#124; toistettuna n kertaa. Jos parametri `{n}` puuttuu,|
+||suoritetaan yksi toisto. \*\*|
 |`[a0a1...am]`|Jokin vaihtoehdoista `a0, a1 ... am`. Tulkataan kaavaksi  |
 ||`a0, a1 ... am` &#124;. \*\*|
 
@@ -117,7 +121,8 @@ epsilon) on oman erityismerkityksensä tyhjän merkin (`'\0'`) symbolina.
 	kolme peräkkäistä tilaa joista jokaiseen voidaan siirtyä vain yhdellä
 	vaihtoehdolla (ensin `a`, sitten `b`, lopuksi `c`).  
 \*\*=	Myös `[...]*` on mahdollinen. Tällöin kuitenkin tulkataan ensin lyhenne
-	`[...]`, jonka jälkeen lisätään tavallinen `*`-operaattori.
+	`[...]`, jonka jälkeen lisätään tavallinen `*`-operaattori. Tämän tyyppiset
+	kaavat eivät kuitenkaan toimi oikein tällä hetkellä.
 
 Esimerkkejä säännöllisten lausekkeiden tulkin tunnistamista kielistä:  
 `a`, `a*`, `[a-k]{3}`, `a|b`, `7|k.c`
@@ -143,7 +148,7 @@ pelkkä `a`. Joissain tapauksissa konkatenointi pitää eksplisiittisesti merkit
 operaattorilla `.`. Jos säännöllisessä lausekkeessa ei ole muita operaattoreita,
 on loppuun syytä lisätä konkatenointia merkitsevä operaattori. Esimerkiksi
 säännöllisen lausekkeen `sfg` kanssa ei täsmää mikään merkkijono, mutta 
-lausekkeen `sfg .` kanssa täsmää merkkijono "sfg". Aiemmin mainitun
+lausekkeen `sfg .` kanssa täsmää merkkijono `sfg`. Aiemmin mainitun
 esimerkkikaavan `ab c |` kohdalla on kuitenkin muistettava että kaavalla
 `a b . c |` on erilainen semantiikka sillä sen kanssa täsmää vain merkkijono
 `abc`. Tämä asia on selitetty säännöllisten lausekkeiden tulkkia käsittelevän
