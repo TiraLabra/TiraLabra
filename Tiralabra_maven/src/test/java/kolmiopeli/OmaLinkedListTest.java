@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Eemi
+ * 
  */
 public class OmaLinkedListTest {
     private OmaLinkedList lista;
@@ -21,7 +21,7 @@ public class OmaLinkedListTest {
     
     @Before
     public void setUp() {
-        this.lista = new OmaLinkedList();
+        this.lista = new OmaLinkedList<Koordinaatti>();
         this.testiK1 = new Koordinaatti(1, 1);
         this.testiK2 = new Koordinaatti(2, 2);
     }

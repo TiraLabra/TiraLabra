@@ -2,8 +2,7 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet;
 
 /**
- *
- * @author Eemi
+ * 
  */
 class Listasolmu {
     private Object key;

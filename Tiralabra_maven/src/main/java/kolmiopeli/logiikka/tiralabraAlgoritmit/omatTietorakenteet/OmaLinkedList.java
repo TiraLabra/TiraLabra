@@ -1,22 +1,28 @@
 package kolmiopeli.logiikka.tiralabraAlgoritmit.omatTietorakenteet;
 
 /**
- *
- *
+ * Oma implementaatio kahteen suuntaan linkitetysta listasta.
  */
-public class OmaLinkedList {
+public class OmaLinkedList<K> {
 
     private Listasolmu head;
     private Listasolmu tail;
     private int size;
 
+    /**
+     * Konstruktori, joka alustaa listan headiksi ja tailiksi null ja kooksi nolla.
+     */
     public OmaLinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
     }
-
-    public void addFirst(Object key) {
+    
+    /**
+     * Lisaa listan alkuun alkion.
+     * @param key Listaan lisattava olio.
+     */
+    public void addFirst(K key) {
         Listasolmu uusiSolmu = new Listasolmu(key, head, null);
         if (head != null) {
             Listasolmu edellinenEka = uusiSolmu.getNext();
@@ -29,7 +35,11 @@ public class OmaLinkedList {
         size++;
     }
 
-    public void addLast(Object key) {
+    /**
+     * Lisaa listan loppuun alkion.
+     * @param key Listaan lisattava olio.
+     */
+    public void addLast(K key) {
         Listasolmu uusiSolmu = new Listasolmu(key, null, tail);
         if (tail != null) {
             Listasolmu edellinenVika = uusiSolmu.getPrev();
@@ -42,7 +52,11 @@ public class OmaLinkedList {
         size++;
     }
 
-    public Object removeFirst() {
+    /**
+     * Poistaa ja palauttaa listan ensimmaisen alkion.
+     * @return Listan alusta poistettu ja palautettu olio.
+     */
+    public K removeFirst() {
         if (head == null) {
             return null;
         }
@@ -56,10 +70,14 @@ public class OmaLinkedList {
             head = uusiHead;
         }
         size--;
-        return poistettava.getKey();
+        return (K) poistettava.getKey();
     }
 
-    public Object removeLast() {
+    /**
+     * Poistaa ja palauttaa listan viimeisen alkion.
+     * @return Listan lopusta poistettu ja palautettu olio.
+     */
+    public K removeLast() {
         if (tail == null) {
             return null;
         }
@@ -73,9 +91,13 @@ public class OmaLinkedList {
             tail = uusiTail;
         }
         size--;
-        return poistettava.getKey();
+        return (K) poistettava.getKey();
     }
 
+    /**
+     * Palauttaa listan koon.
+     * @return Listan koko.
+     */
     public int size() {
         return size;
     }
