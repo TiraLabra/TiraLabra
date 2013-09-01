@@ -1,0 +1,33 @@
+Asettelulaskuri:
+
+1 laatikko: 0.109s
+2 laatikkoa: 0.138s
+3 laatikkoa: 0.22s
+4 laatikkoa: 0.293s
+
+
+8 laatikkoa: 1.931s
+9 laatikkoa: 11.919s
+10 laatikkoa: 13.61s
+
+Tästä eteenpäin laskenta menee jo todella hitaaksi niin, ettei ohjelmaa ole järkeä käyttää.
+
+AVL-lisäys:
+
+10 solmulla: 0.094s
+100 solmulla: 0.1s
+1000 solmulla: 0.125s
+10000 solmulla: 0.243s
+100000 solmulla: 0.504s
+1000000 solmulla: 5.027s
+
+AVL-haku:
+
+Lisätty solmut ja haettu puun suurin arvo
+
+10 solmusta: 0.094
+100 solmusta: 0.108
+1000 solmusta: 0.117
+10000 solmusta: 0.239
+100000 solmusta: 0.529
+1000000 solmusta: 5.028

@@ -1,0 +1,29 @@
+Ohjelma koostuu käytettäviä esineitä, eli laatikoita ja lavoja mallintavista luokista, laskentaominaisuuden hoitavasta luokasta ja AVL-puusta, johon laskentatietoja tallennetaan. Tämän lisäksi on tietenkin graafisen käyttöliittymän muodostavat luokat sekä laskentahistorian tekstitiedostoon tallentamisesta ja avaamisesta huolehtiva luokka.
+
+Saavutetut aikavaativuudet:
+
+Laskuri
+-------
+Seuraavan paikan merkitseminen: O(n2) laatikon sijaintiin nähden
+Laatikon asetus: O(n) laatikon kokoon nähden
+Vertailu edelliseen parhaaseen laatikkomäärään: O(1)
+Laatikon poisto: O(n)
+Kokeilujen määrä: eksponentiaalinen
+
+Lopullinen aikavaativuus on siis eksponentiaalinen
+
+AVL-puu
+-------
+AVL-lisäys: O(log(n))
+AVL-haku: O(log(n))
+
+
+Pahin puute mielestäni on, että ohjelma osaa laskea asettelun vain laatikoille, joilla on "tämä puoli ylöspäin"-rajoitus. Ideana oli siis, että laatikot olisi voinut asettaa miten päin tahansa, mutta loppujenlopuksi aika ei riittänyt laskennan laajentamiseen. En ole myöskään kovinkaan tyytyväinen saavuttamaani laskennan suorituskykyyn, sillä aikavaativuuden ollessa eksponentiaalinen suurilla syötteillä (siis pienillä laatikoiden koilla) laskenta on armottoman hidas. Voin kuitenkin lohduttaa itseäni sillä, että käytännössä tämä ei kovin suuri ongelma olisi, sillä kovin pienet laatikot ovat aika harvassa. 
+Mielestäni paras tapa parantaa suorituskykyä olisi ollut ainakin aluksi keksiä joku parempi tapa pitää kirjaa asetetuista laatikoista, sillä suuren taulukon käsittely vie huomattavan paljon aikaa.
+
+Lähteet:
+
+Keväällä 2013 järjestetyn Tietorakenteet ja algoritmit –kurssin luentomateriaali
+http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
+
+http://www.dtic.mil/cgi-bin/GetTRDoc?AD=ADA517366#page=13

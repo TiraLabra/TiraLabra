@@ -49,9 +49,23 @@ public class ValikkoHistoriaKuuntelija implements ActionListener {
         panel.setLayout(new BorderLayout());
         panel.add(hakukentta, BorderLayout.SOUTH);
         
+        asetaNappi(syote);
+    }
+    
+    /**
+     * Poistaa napin mahdollisen aiemman toimintakuuntelijan ja asettaa sen vastaamaan
+     * haun tarpeita.
+     * 
+     * @param syote 
+     */
+    private void asetaNappi(JTextArea syote) {
+        ActionListener[] kuuntelijat = nappi.getActionListeners();
+        if (kuuntelijat.length > 0) {
+            nappi.removeActionListener(kuuntelijat[0]);
+        }
+        
         nappi.setText("Hae");
         nappi.addActionListener(new TulostenEsittaja(panel, kontinpurkaja, syote));
         nappi.setVisible(true);
     }
-    
 }

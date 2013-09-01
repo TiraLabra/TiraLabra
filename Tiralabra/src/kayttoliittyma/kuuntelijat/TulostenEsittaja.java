@@ -59,7 +59,34 @@ public class TulostenEsittaja implements ActionListener {
         panel.removeAll();
         panel.repaint();
         
+        if (!luoKomponentit(EANluku)) {
+            return;
+        }
+        
+        sovitaKuva();
+    }
+    
+    /**
+     * Metodi sovittaa uudet komponentit grafiikkaan.
+     */
+    private void sovitaKuva() {
+        JFrame frame = (JFrame) panel.getTopLevelAncestor();
+        frame.pack();
+        frame.repaint();
+    }
+    
+    /**
+     * Kokoaa tietojen esittämiseen käytettävät oliot näkyville.
+     * 
+     * @param EANluku Aseteltavan tuotteen tunniste.
+     * @return Palauttaa false, jos tuotetta ei löydy, true jos löytyy.
+     */
+    private boolean luoKomponentit(long EANluku) {
         AVLsolmu solmu = kontinpurkaja.haeTuote(EANluku);
+        if (solmu == null) {
+            return false;
+        }
+        
         Laatikko laatikko = solmu.getLaatikko();
         Nelikulmio lava = solmu.getLava();
         
@@ -68,8 +95,6 @@ public class TulostenEsittaja implements ActionListener {
         panel.add(new Tietosarake(solmu));
         panel.add(new Piirtoalusta(solmu));
         
-        JFrame frame = (JFrame) panel.getTopLevelAncestor();
-        frame.pack();
-        frame.repaint();
+        return true;
     }
 }

@@ -35,34 +35,41 @@ public class TiedostonKasittelija {
                 lukija.nextLine();
             }
             while (lukija.hasNextLine()) {
-                String rivi = lukija.nextLine();
-                String[] osat = rivi.split(":");
-                
-                
-                Laatikko laatikko = new Laatikko(Integer.parseInt(osat[0]), Integer.parseInt(osat[1]),
-                        Integer.parseInt(osat[2]), Long.parseLong(osat[3]));
-                
-                
-                Nelikulmio lava = new Nelikulmio(Integer.parseInt(osat[5]), Integer.parseInt(osat[6]),
-                        Integer.parseInt(osat[7]));
-                
-                
-                int[][] asettelu = new int[lava.getPituus()][lava.getLeveys()];
-                
-                String asetteluMerkkijono[] = osat[4].split(",");
-                int monesko = 0;
-                
-                for (int i = 0; i < lava.getPituus(); i++) {
-                    for (int j = 0; j < lava.getLeveys(); j++) {
-                        asettelu[i][j] = Integer.parseInt(asetteluMerkkijono[monesko]);
-                        monesko++;
-                    }
-                }
-                
-                historia.AVLlisays(laatikko, asettelu, lava);
+                haeTietoPuuhun(lukija);
             }
         } catch (IOException e) {
         }
+    }
+    
+    /**
+     * Hakee tekstitiedostosta seuraavalla rivillä olevan asettelutiedon ja lisää
+     * sen AVL-puuhun, josta sitä voidaan tarkastella.
+     * @param lukija 
+     */
+    private void haeTietoPuuhun(Scanner lukija) {
+        String rivi = lukija.nextLine();
+        String[] osat = rivi.split(":");
+                
+                
+        Laatikko laatikko = new Laatikko(Integer.parseInt(osat[0]), Integer.parseInt(osat[1]),
+        Integer.parseInt(osat[2]), Long.parseLong(osat[3]));
+                
+        Nelikulmio lava = new Nelikulmio(Integer.parseInt(osat[5]), Integer.parseInt(osat[6]),
+        Integer.parseInt(osat[7]));
+                
+        int[][] asettelu = new int[lava.getPituus()][lava.getLeveys()];
+                
+       String asetteluMerkkijono[] = osat[4].split(",");
+       int monesko = 0;
+                
+       for (int i = 0; i < lava.getPituus(); i++) {
+            for (int j = 0; j < lava.getLeveys(); j++) {
+                asettelu[i][j] = Integer.parseInt(asetteluMerkkijono[monesko]);
+                monesko++;
+            }
+        }
+                
+        historia.AVLlisays(laatikko, asettelu, lava);
     }
     
     public void tallenna() {

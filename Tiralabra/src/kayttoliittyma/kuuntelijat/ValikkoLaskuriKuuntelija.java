@@ -71,10 +71,22 @@ public class ValikkoLaskuriKuuntelija implements ActionListener {
         panel.add(new JLabel("Lavan korkeus:"));
         panel.add(lavanKorkeus);
         
+        asetaNappi();
+    }
+    
+    /**
+     * Poistaa mahdollisen aiemman toimintakuuntelijan ja asettaa napin vastaamaan
+     * laskennan tarpeita.
+     */
+    private void asetaNappi() {
+        ActionListener[] kuuntelijat = nappi.getActionListeners();
+        if (kuuntelijat.length > 0) {
+            nappi.removeActionListener(kuuntelijat[0]);
+        }
+        
         nappi.setText("Laske");
         nappi.addActionListener(new LaskentaKuuntelija(kontinpurkaja, panel, nappi));
                 
         nappi.setVisible(true);
     }
-    
 }

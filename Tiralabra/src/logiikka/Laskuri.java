@@ -160,8 +160,8 @@ public class Laskuri {
      */
     private void onkoUusiParas(int monesko) {
         if (monesko > montakoParhaallaLavalla) {
-                montakoParhaallaLavalla = monesko;
-                kopioiTaulukko(asettelu, parasAsettelu);
+            montakoParhaallaLavalla = monesko;
+            kopioiTaulukko(asettelu, parasAsettelu);
         }
     }
     

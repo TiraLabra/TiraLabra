@@ -1,5 +1,3 @@
 Ohjelman toimintaa testattiin JUniteilla ja lähes valmiina/valmiina versiona manuaalisesti. Tärkeimpinä laskennan JUnit testeissä testatasin erilaisia asettelutapoja ja AVL-puun JUniteissa testattiin sekä omalla syötteellä, sekä satunnaisella syötteellä puun solmujen oikein asettumista.
 
 Manuaalisesti testasin ohjelmaa paljon saatuani sen graafisen käyttöliittymän käyttökuntoon monia erilaisia laatikoiden ja lavojen kokoja käyttäen. Ainakin ohjelman manuaalista testausta on helppo suorittaa koska vain laskemalla itse paperilla kuinka laatikot asettuvat parhaiten ja tämän jälkeen kokeilemalla samoilla arvoilla ohjelman tuottaman vastauksen.
-
-Suorituskykyä on testattu luomalla JUnit testejä erilaisilla syötteillä.

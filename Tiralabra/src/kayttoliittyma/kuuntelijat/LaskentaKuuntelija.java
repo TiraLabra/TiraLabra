@@ -28,8 +28,6 @@ public class LaskentaKuuntelija implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        nappi.setVisible(false);
-        
         JTextArea laatikonLeveys = (JTextArea) panel.getComponent(1);
         JTextArea laatikonPituus = (JTextArea) panel.getComponent(3);
         JTextArea laatikonKorkeus = (JTextArea) panel.getComponent(5);
@@ -58,13 +56,25 @@ public class LaskentaKuuntelija implements ActionListener {
             kontinpurkaja.laskeParasAsettelu(laatikonLeveysLuku, laatikonPituusLuku, laatikonKorkeusLuku,
                 EAN, lavanLeveysLuku, lavanPituusLuku, lavanKorkeusLuku);
             
-            nappi.removeActionListener(nappi.getActionListeners()[0]);
-            nappi.addActionListener(new TulostenEsittaja(panel, kontinpurkaja, tuotteenEAN));
-            nappi.doClick();
+            painaNappia(tuotteenEAN);
         } catch (NumberFormatException e) {
             panel.removeAll();
             panel.repaint();
             panel.add(new JLabel("Virheellinen syöte!"));
         }       
+    }
+    
+    /**
+     * Ottaa napin pois näkyvistä, asettaa oikean kuuntelijan sille laskentatuloksen
+     * esittämistä varten ja suorittaa painalluksen.
+     * 
+     * @param tuotteenEAN Esitettävän tuotteen tunniste.
+     */
+    private void painaNappia(JTextArea tuotteenEAN) {
+        nappi.setVisible(false);
+        
+        nappi.removeActionListener(nappi.getActionListeners()[0]);
+        nappi.addActionListener(new TulostenEsittaja(panel, kontinpurkaja, tuotteenEAN));
+        nappi.doClick();
     }
 }
