@@ -2,7 +2,7 @@
 SOURCES = $(wildcard src/*.c)
 TARGET = ssoppa
 TEST_EXECUTABLE = alltests
-CFLAGS = -std=c99 -Wall -Isrc/
+CFLAGS = -std=c99 -O2 -Wall -Isrc/
 
 ALLTESTS = test/AllTests.c
 TEST_SOURCES = $(filter-out $(ALLTESTS), $(wildcard test/*.c)) $(ALLTESTS)
