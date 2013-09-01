@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "des.h"
+#include "key_schedule.h"
 
 #ifndef __BIG_ENDIAN__
     #define BYTEORDER_CONVERT(x) convert_to_le(x)
@@ -60,6 +61,8 @@ void process_file(int mode, char* keyfile, char* inputfile, char* outputfile)
     FILE* output = fopen(outputfile, "wb");
 
     uint64_t key = read_key(key_handle);
+    uint64_t* keys = malloc(sizeof (uint64_t) * SUBKEY_NUM);
+    generate_subkeys(key, keys);
 
     uint64_t buffer = 0UL;
     uint64_t last = 0UL;
@@ -85,11 +88,11 @@ void process_file(int mode, char* keyfile, char* inputfile, char* outputfile)
             if(mode & MODE_CBC) {
                 buffer ^= last;
             }
-            buffer = des_encrypt(buffer, key);
+            buffer = des_encrypt(buffer, keys);
             last = buffer;
         } else {
             uint64_t oldcipher = buffer;
-            buffer = des_decrypt(buffer, key);
+            buffer = des_decrypt(buffer, keys);
             if(mode & MODE_CBC) {
                 buffer ^= last;
                 last = oldcipher;
@@ -105,8 +108,8 @@ void process_file(int mode, char* keyfile, char* inputfile, char* outputfile)
 void printUsage(char* cmd)
 {
     printf("Usage: \n"
-           "  to encrypt, `%s -e --mode=... keyfile input output`\n"
-           "  to decrypt, `%s -d --mode=... keyfile input output`\n"
+           "  to encrypt, `%s -e --mode keyfile input output`\n"
+           "  to decrypt, `%s -d --mode keyfile input output`\n"
            "  valid modes are ecb (electronic codebook) and cbc (cipher block chaining)\n", 
               cmd, cmd);
 }
@@ -136,6 +139,7 @@ int main(int argc, char *argv[])
         printUsage(argv[0]);
         return 0;
     } 
+
 
     process_file(mode, argv[3], argv[4], argv[5]);
 
