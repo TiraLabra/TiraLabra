@@ -70,6 +70,10 @@ public final class Jono<T> {
         pituus--;
         return solmu.ARVO;
     }
+    
+    public T viimeinen() {
+        return viimeinen.ARVO;
+    }
 
     /**
      * Palauttaa jonon ensimmäisen alkion.

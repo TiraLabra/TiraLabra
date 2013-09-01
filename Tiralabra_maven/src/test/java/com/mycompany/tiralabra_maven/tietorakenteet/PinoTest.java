@@ -2,41 +2,14 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import java.util.EmptyStackException;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class PinoTest {
-    
-    /**
-     *
-     */
-    public PinoTest() {
-    }
     
     private Pino<Object>    pino;
     private Object          testiObjekti;
-    
-    /**
-     *
-     */
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDownClass() {
-    }
     
     /**
      *
@@ -47,16 +20,6 @@ public class PinoTest {
         testiObjekti    = new Object();
     }
     
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     *
-     */
     @Test
     public void testOnTyhja() {
         pino.lisaa(testiObjekti);
@@ -70,9 +33,6 @@ public class PinoTest {
         assertEquals(0, pino.korkeus());
     }
 
-    /**
-     *
-     */
     @Test
     public void testLisaa() {
         pino.lisaa(null);
@@ -87,35 +47,23 @@ public class PinoTest {
         assertNull(pino.poista());
     }
 
-    /**
-     *
-     */
     @Test
     public void testKurkista1() {
         pino.lisaa(testiObjekti);
         assertEquals(pino.kurkista(), testiObjekti);
     }
     
-    /**
-     *
-     */
     @Test(expected = EmptyStackException.class)
     public void testKurkista2() {
         pino.kurkista();
     }
 
-    /**
-     *
-     */
     @Test
     public void testPoista() {
         pino.lisaa(testiObjekti);
         assertEquals(pino.poista(), testiObjekti);
     }
 
-    /**
-     *
-     */
     @Test
     public void testKorkeus() {
         pino.lisaa(testiObjekti);

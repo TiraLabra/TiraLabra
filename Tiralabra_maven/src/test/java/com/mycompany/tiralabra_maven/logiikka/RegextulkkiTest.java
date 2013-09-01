@@ -1,103 +1,105 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
+import com.mycompany.tiralabra_maven.tietorakenteet.JonoTest;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
-@Ignore // Ei ole nyt aikaa tehdä tätä testiä.
 public class RegextulkkiTest {
     
     public RegextulkkiTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    private Regextulkki rt;
     
     @Before
     public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+        this.rt = new Regextulkki();
     }
 
-    /**
-     * Test of merkkiOnLyhenne method, of class Regextulkki.
-     */
     @Test
     public void testMerkkiOnLyhenne() {
-        System.out.println("merkkiOnLyhenne");
-        Regextulkki instance = new Regextulkki();
-        boolean expResult = false;
-        boolean result = instance.merkkiOnLyhenne();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        rt.merkki = '[';
+        assertTrue(rt.merkkiOnLyhenne());
     }
 
-    /**
-     * Test of merkkiOnOperaattori method, of class Regextulkki.
-     */
     @Test
     public void testMerkkiOnOperaattori() {
-        System.out.println("merkkiOnOperaattori");
-        Regextulkki instance = new Regextulkki();
-        boolean expResult = false;
-        boolean result = instance.merkkiOnOperaattori();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        rt.merkki = '|';
+        assertTrue(rt.merkkiOnOperaattori());
+        rt.merkki = '.';
+        assertTrue(rt.merkkiOnOperaattori());
+        rt.merkki = '?';
+        assertTrue(rt.merkkiOnOperaattori());
+        rt.merkki = '*';
+        assertTrue(rt.merkkiOnOperaattori());
+        rt.merkki = '+';
+        assertTrue(rt.merkkiOnOperaattori());
     }
 
-    /**
-     * Test of merkkiOnDataa method, of class Regextulkki.
-     */
     @Test
-    public void testMerkkiOnDataa() {
-        System.out.println("merkkiOnDataa");
-        Regextulkki instance = new Regextulkki();
-        boolean expResult = false;
-        boolean result = instance.merkkiOnDataa();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testMerkkiOnOperandi() {
+        rt.merkki = 'g';
+        assertTrue(rt.merkkiOnOperandi());
     }
 
-    /**
-     * Test of kasitteleLyhenne method, of class Regextulkki.
-     */
     @Test
-    public void testKasitteleLyhenne() {
-        System.out.println("kasitteleLyhenne");
-        Regextulkki instance = new Regextulkki();
-        instance.kasitteleLyhenne();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testKasitteleLyhenne1() {
+        Jono<String> oikeaVastaus = new Jono("a", "b", "c", "|");
+        Jono<String> saatuVastaus = rt.tulkitseMerkkijono("[a-c]");
+        JonoTest.vertaaJonoja(oikeaVastaus, saatuVastaus);
+        oikeaVastaus = new Jono("a", "b", "c", "|", "*");
+        saatuVastaus = rt.tulkitseMerkkijono("[a-c]*");
+        JonoTest.vertaaJonoja(oikeaVastaus, saatuVastaus);
+        oikeaVastaus = new Jono("a", "b", "c", "|", "a", "b", "c", "|");
+        saatuVastaus = rt.tulkitseMerkkijono("[a-c]{2}");
+        JonoTest.vertaaJonoja(oikeaVastaus, saatuVastaus);
+        oikeaVastaus =new Jono("a", "g", "7", "|", "a", "g", "7", "|", "a", "g",
+                "7", "|", "a", "g", "7", "|", "a", "g", "7", "|");
+        saatuVastaus = rt.tulkitseMerkkijono("[ag7]{5}");
+        JonoTest.vertaaJonoja(oikeaVastaus, saatuVastaus);
+    }
+    
+    @Test
+    public void testKasitteleLyhenne2() {
+        Jono<String> oikeaVastaus = new Jono("a", "b", "c", "|", "a", "b", "c",
+                "|", "a", "b", "c", "|");
+        rt.merkkijono       = "[a-c]{3}.d";
+        rt.syotteenMerkit   = rt.merkkijono.toCharArray();
+        rt.PINO.tyhjenna();
+        rt.JONO.tyhjenna();
+        rt.indeksi      = 0;
+        rt.merkki       = '[';
+        rt.kasitteleLyhenne();
+        assertEquals(8, rt.indeksi);
+        JonoTest.vertaaJonoja(oikeaVastaus, rt.JONO);
+    }
+    
+    @Test
+    public void testKasitteleOperandi1() {
+        Jono<String> oikeaVastaus   = new Jono("a");
+        rt.merkkijono               = "a.b|c";
+        rt.syotteenMerkit           = rt.merkkijono.toCharArray();
+        rt.PINO.tyhjenna();
+        rt.JONO.tyhjenna();
+        rt.indeksi  = 0;
+        rt.merkki   = 'a';
+        rt.kasitteleOperandi();
+        JonoTest.vertaaJonoja(oikeaVastaus, rt.JONO);
     }
 
-    /**
-     * Test of kasitteleData method, of class Regextulkki.
-     */
     @Test
-    public void testKasitteleData() {
-        System.out.println("kasitteleData");
-        Regextulkki instance = new Regextulkki();
-        instance.kasitteleData();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testKasitteleOperandi2() {
+        Jono<String> oikeaVastaus   = new Jono("abc");
+        rt.merkkijono               = ".abc*";
+        rt.syotteenMerkit           = rt.merkkijono.toCharArray();
+        rt.PINO.tyhjenna();
+        rt.JONO.tyhjenna();
+        rt.indeksi  = 1;
+        rt.merkki   = 'a';
+        rt.kasitteleOperandi();
+        JonoTest.vertaaJonoja(oikeaVastaus, rt.JONO);
     }
 }

@@ -16,7 +16,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  */
 public class Hajautuskartta<V> {
     
-    protected AvainArvoJono<Character, V>[] ylivuotolistat;
+    private AvainArvoJono<Character, V>[] ylivuotolistat;
     protected int alkioita;
     
     /**
@@ -39,15 +39,16 @@ public class Hajautuskartta<V> {
     
     protected void tarkastaHajautustaulunPituus(final int HAJAUTUSTAULUN_PITUUS)
             throws IllegalArgumentException {
-        // Ylärajaa ei tarvitse tarkastaa sillä int pyörähtää ympäri
-        // negatiiviseksi ylivuodon sattuessa.
         if (HAJAUTUSTAULUN_PITUUS <= 0) {
             throw new IllegalArgumentException("Hajautustaulun pituuden pitää "
                     + "olla positiivinen!");
+        } else if (HAJAUTUSTAULUN_PITUUS > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Hajautustaulun pituus voi olla "
+                    + "enintään " + Integer.MAX_VALUE + "!");
         }
     }
 
-    protected AvainArvoJono<Character, V>[] alustaYlivuotolistat(
+    private AvainArvoJono<Character, V>[] alustaYlivuotolistat(
             final int HAJAUTUSTAULUN_PITUS) {
         AvainArvoJono<Character, V>[] paluuarvo
                 = new AvainArvoJono[HAJAUTUSTAULUN_PITUS];

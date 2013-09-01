@@ -18,8 +18,7 @@ public final class Tilasiirtymakartta extends Hajautuskartta<Tila> {
         this.alkioita   = 0;
     }
 
-    @Override
-    protected Tilasiirtymajono[] alustaYlivuotolistat(int HAJAUTUSTAULUN_PITUS) {
+    private Tilasiirtymajono[] alustaYlivuotolistat(int HAJAUTUSTAULUN_PITUS) {
         Tilasiirtymajono[] paluuarvo
                 = new Tilasiirtymajono[HAJAUTUSTAULUN_PITUS];
         for (int i = 0; i < HAJAUTUSTAULUN_PITUS; i++) {
@@ -49,7 +48,6 @@ public final class Tilasiirtymakartta extends Hajautuskartta<Tila> {
         return ylivuotolistat[hajauta(AVAIN)].hae(AVAIN);
     }    
     
-    
     /**
      * Palauttaa jonon kaikista avaimeen liitetyistä arvoista. Metodi on 
      * tarpeen luokan <b>Tila</b> tilasiirtymässä jossa samalla merkillä voidaan
@@ -78,6 +76,12 @@ public final class Tilasiirtymakartta extends Hajautuskartta<Tila> {
         return mjr.toString();
     }
     
+    /**
+     * Palauttaa merkkijonoesityksen käytettäväksi tekstikäyttöliittymässä.
+     *
+     * @param SISENNYS  Jokaisen rivin eteen lisättävä merkkijono.
+     * @return          Sisennetty merkkijo.
+     */
     public String sisennettyMerkkijono(final String SISENNYS) {
         if (alkioita == 0) {
             return "\u2205";

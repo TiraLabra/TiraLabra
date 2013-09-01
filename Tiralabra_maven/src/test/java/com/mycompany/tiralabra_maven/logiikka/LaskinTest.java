@@ -3,18 +3,10 @@ package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
-
- */
 public class LaskinTest {
     
     private static final Random ARPOJA = new Random();
@@ -22,45 +14,12 @@ public class LaskinTest {
     private Laskin          laskin;
     private Jono<String>   syote;
     
-    /**
-     *
-     */
-    public LaskinTest() {
-    }
-    
-    /**
-     *
-     */
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    /**
-     *
-     */
     @Before
     public void setUp() {
         laskin  = new Laskin();
         syote   = new Jono<>();
     }
     
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     *
-     */
     @Test(expected = IllegalArgumentException.class)
     public void testLaskeVirheellinenSyote1() {        
         syote.lisaa("3");
@@ -69,9 +28,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test(expected = IllegalArgumentException.class)
     public void testLaskeVirheellinenSyote2() {        
         syote.lisaa("3");
@@ -82,9 +38,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test(expected = IllegalArgumentException.class)
     public void testLaskeVirheellinenSyote3() {        
         syote.lisaa("3");
@@ -94,9 +47,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test(expected = IllegalArgumentException.class)
     public void testLaskeVirheellinenSyote4() {        
         syote.lisaa("3");
@@ -106,9 +56,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test(expected = ArithmeticException.class)
     public void testAritmeettinenYlivuoto() {
         syote.lisaa("50000");
@@ -118,9 +65,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test(expected = ArithmeticException.class)
     public void testNollallaJakaminen() {
         syote.lisaa("57");
@@ -130,9 +74,6 @@ public class LaskinTest {
         laskin.laske(syote);
     }
     
-    /**
-     *
-     */
     @Test
     public void testSumma() {        
         int n = ARPOJA.nextInt(Integer.MAX_VALUE / 2),
@@ -149,9 +90,6 @@ public class LaskinTest {
         assertEquals(summa, laskin.laske(syote));
     }
     
-    /**
-     *
-     */
     @Test
     public void testErotus() {        
         int n = ARPOJA.nextInt(Integer.MAX_VALUE),
@@ -165,9 +103,6 @@ public class LaskinTest {
         assertEquals(erotus, laskin.laske(syote));
     }
     
-    /**
-     *
-     */
     @Test
     public void testTulo() {
         int n = ARPOJA.nextInt(46340),
@@ -181,9 +116,6 @@ public class LaskinTest {
         assertEquals(tulo, laskin.laske(syote));
     }
     
-    /**
-     *
-     */
     @Test
     public void testOsamaara() {
         int n = ARPOJA.nextInt(Integer.MAX_VALUE),
@@ -197,9 +129,6 @@ public class LaskinTest {
         assertEquals(osamaara, laskin.laske(syote));
     }
     
-    /**
-     *
-     */
     @Test
     public void testJakojaannos() {
         int n = ARPOJA.nextInt(Integer.MAX_VALUE),

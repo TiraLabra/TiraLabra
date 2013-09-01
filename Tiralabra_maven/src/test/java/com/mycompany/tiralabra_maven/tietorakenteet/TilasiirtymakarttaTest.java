@@ -2,39 +2,16 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import com.mycompany.tiralabra_maven.automaatit.Tila;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class TilasiirtymakarttaTest {
     
-    public TilasiirtymakarttaTest() {
-    }
-    
     private Tilasiirtymakartta hk;
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
     
     @Before
     public void setUp() {
         hk = new Tilasiirtymakartta(3);
-    }
-    
-    @After
-    public void tearDown() {
     }
     
     @Test
@@ -60,7 +37,7 @@ public class TilasiirtymakarttaTest {
         oikeaVastaus.lisaa(t);
         oikeaVastaus.lisaa(u);
         oikeaVastaus.lisaa(v);
-        AvainArvoJonoTest.vertaaJonoja(oikeaVastaus, hk.haeKaikki('a'));
+        JonoTest.vertaaJonoja(oikeaVastaus, hk.haeKaikki('a'));
         assertNull(hk.haeKaikki('z'));
     }
     

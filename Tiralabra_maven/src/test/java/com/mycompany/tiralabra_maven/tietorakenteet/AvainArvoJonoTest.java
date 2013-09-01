@@ -2,17 +2,10 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class AvainArvoJonoTest {
     
     private AvainArvoJono<Character, Integer> aajono;
@@ -21,24 +14,12 @@ public class AvainArvoJonoTest {
     public AvainArvoJonoTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
         this.aajono = new AvainArvoJono<>();
         this.arpoja = new Random();
     }
     
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testLisaa() {
         aajono.lisaa('a', 1);
@@ -77,17 +58,5 @@ public class AvainArvoJonoTest {
         aajono.lisaa('i', 9);
         aajono.lisaa('l', 2);
         assertEquals(oikeaVastaus, aajono.toString());
-    }
-    
-    public static void vertaaJonoja(Jono a, Jono b) {
-        // Tein tästä metodista pikaratkaisuna public staticin koska useamman
-        // testiluokan pitää vertailla jonoja. Tietysti olisi hienompaa tehdä
-        // erillinen luokka näille yhteisille toiminnoille.
-        Object o, p;
-        while (!a.onTyhja()) {
-            o = a.poista();
-            p = b.poista();
-            assertEquals(o, p);
-        }
     }
 }

@@ -2,41 +2,19 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import com.mycompany.tiralabra_maven.automaatit.Tila;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class TilasiirtymajonoTest {
     
     private Tilasiirtymajono tsj;
-    
-    public TilasiirtymajonoTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
     
     @Before
     public void setUp() {
         this.tsj = new Tilasiirtymajono();
     }
     
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testAvainjono() {
         assertNull(tsj.avainjono());
@@ -55,7 +33,7 @@ public class TilasiirtymajonoTest {
         tsj.lisaa(null, v);
         Jono saatuAvainjono = tsj.avainjono(); 
         
-        AvainArvoJonoTest.vertaaJonoja(odotettuAvainjono, saatuAvainjono);
+        JonoTest.vertaaJonoja(odotettuAvainjono, saatuAvainjono);
     }
 
     @Test
@@ -76,6 +54,6 @@ public class TilasiirtymajonoTest {
         tsj.lisaa(null, v);
         Jono saatuTilajono = tsj.arvojono(); 
         
-        AvainArvoJonoTest.vertaaJonoja(odotettuTilajono, saatuTilajono);
+        JonoTest.vertaaJonoja(odotettuTilajono, saatuTilajono);
     }
 }

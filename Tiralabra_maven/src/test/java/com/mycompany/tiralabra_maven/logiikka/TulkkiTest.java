@@ -1,22 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 @Ignore // Ei ole nyt aikaa tehdä tätä testiä.
 public class TulkkiTest {
     
@@ -39,9 +32,6 @@ public class TulkkiTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of tulkitseMerkkijono method, of class Tulkki.
-     */
     @Test
     public void testTulkitseMerkkijono() {
         System.out.println("tulkitseMerkkijono");
@@ -54,9 +44,6 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of iteroiMerkit method, of class Tulkki.
-     */
     @Test
     public void testIteroiMerkit() {
         System.out.println("iteroiMerkit");
@@ -66,9 +53,6 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of merkkiOnLyhenne method, of class Tulkki.
-     */
     @Test
     public void testMerkkiOnLyhenne() {
         System.out.println("merkkiOnLyhenne");
@@ -80,9 +64,6 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of merkkiOnOperaattori method, of class Tulkki.
-     */
     @Test
     public void testMerkkiOnOperaattori() {
         System.out.println("merkkiOnOperaattori");
@@ -94,23 +75,17 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of merkkiOnDataa method, of class Tulkki.
-     */
     @Test
     public void testMerkkiOnDataa() {
         System.out.println("merkkiOnDataa");
         Tulkki instance = new TulkkiImpl();
         boolean expResult = false;
-        boolean result = instance.merkkiOnDataa();
+        boolean result = instance.merkkiOnOperandi();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of kasitteleLyhenne method, of class Tulkki.
-     */
     @Test
     public void testKasitteleLyhenne() {
         System.out.println("kasitteleLyhenne");
@@ -120,9 +95,6 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of kasitteleOperaattori method, of class Tulkki.
-     */
     @Test
     public void testKasitteleOperaattori() {
         System.out.println("kasitteleOperaattori");
@@ -132,21 +104,15 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of kasitteleData method, of class Tulkki.
-     */
     @Test
     public void testKasitteleData() {
         System.out.println("kasitteleData");
         Tulkki instance = new TulkkiImpl();
-        instance.kasitteleData();
+        instance.kasitteleOperandi();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of tyhjennaPino method, of class Tulkki.
-     */
     @Test
     public void testTyhjennaPino() {
         System.out.println("tyhjennaPino");
@@ -156,9 +122,6 @@ public class TulkkiTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of kaadu method, of class Tulkki.
-     */
     @Test
     public void testKaadu() {
         System.out.println("kaadu");
@@ -179,14 +142,14 @@ public class TulkkiTest {
             return false;
         }
 
-        public boolean merkkiOnDataa() {
+        public boolean merkkiOnOperandi() {
             return false;
         }
 
         public void kasitteleLyhenne() {
         }
 
-        public void kasitteleData() {
+        public void kasitteleOperandi() {
         }
     }
 }

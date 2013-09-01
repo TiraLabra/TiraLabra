@@ -1,54 +1,17 @@
 
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class HajautuskarttaTest {
-    
-    /**
-     *
-     */
-    public HajautuskarttaTest() {
-    }
     
     private Hajautuskartta hk;
     
-    /**
-     *
-     */
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    /**
-     *
-     */
     @Before
     public void setUp() {
         hk = new Hajautuskartta(3);
-    }
-    
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -56,14 +19,6 @@ public class HajautuskarttaTest {
         Hajautuskartta a = new Hajautuskartta(-3);
     }
     
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testEpakelpoKonstruktorinParametri2() {
-//        Hajautuskartta a = new Hajautuskartta();
-//    }
-
-    /**
-     *
-     */
     @Test
     public void testLisaaJaHae() {
         hk.lisaa('a', 1);
@@ -84,9 +39,6 @@ public class HajautuskarttaTest {
         assertEquals(2, hk.haeEnsimmainen(' '));
     }
     
-    /**
-     *
-     */
     @Test
     public void testToString() {
         String oikeaVastaus = "{(c\u21A63,f\u21A66,i\u21A69,l\u21A62),"

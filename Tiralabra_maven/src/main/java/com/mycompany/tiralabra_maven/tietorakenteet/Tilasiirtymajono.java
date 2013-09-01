@@ -12,24 +12,42 @@ import com.mycompany.tiralabra_maven.automaatit.Tila;
  * @see Tila
  */
 public final class Tilasiirtymajono extends AvainArvoJono<Character,Tila> {
-   
+    
+    /**
+     * Palauttaa merkkijonoesityksen käytettäväksi tekstikäyttöliittymässä.
+     *
+     * @param SISENNYS  Jokaisen rivin eteen lisättävä merkkijono.
+     * @return          Sisennetty merkkijo.
+     */
     public String sisennettyMerkkijono(final String SISENNYS) {        
-         if (ensimmainen == null) {
-             return "\u2205";
-         }
+        if (ensimmainen == null) {
+            return "\u2205";
+        }
         
+        int alkioita = 0;
         StringBuilder mjr = new StringBuilder();
         AvainArvoSolmu<Character, Tila> solmu = ensimmainen;
         mjr.append("(");        
         mjr.append('\n');
         mjr.append(SISENNYS);
         while (solmu != null) {
+            if (alkioita == 5) {
+                mjr.append('.');
+                mjr.append('.');
+                mjr.append('.');
+                mjr.append(',');
+                mjr.append('\n');
+                mjr.append(SISENNYS);
+                break;
+            }
             if (solmu.AVAIN != '\u03b5') {
                 mjr.append('\'');
                 mjr.append(solmu.AVAIN);
                 mjr.append('\'');
             } else {
+                mjr.append(' ');
                 mjr.append('\u03b5');
+                mjr.append(' ');
             }
             mjr.append("\u21A6");
             mjr.append(solmu.ARVO.sisennettyMerkkijono(SISENNYS));
@@ -37,12 +55,13 @@ public final class Tilasiirtymajono extends AvainArvoJono<Character,Tila> {
             mjr.append('\n');
             mjr.append(SISENNYS);
             solmu = solmu.seuraaja;
+            alkioita++;
         }
-        mjr.delete(mjr.length() - 2, mjr.length());
+        mjr.delete(mjr.length() - (SISENNYS.length() + 2), mjr.length());
         
-//            mjr.delete(1, SISENNYS.length() + 2);
+        mjr.append('\n');
+        mjr.append(SISENNYS);
         mjr.append(")");
-//        }
         
         return mjr.toString();
     }

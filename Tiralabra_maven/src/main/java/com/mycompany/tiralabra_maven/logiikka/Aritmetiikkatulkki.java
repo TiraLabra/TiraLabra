@@ -1,6 +1,8 @@
 
 package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
+
 /**
  * Luokan vastuulla on tulkita merkkijonoina annetut aritmeettiset kaavat
  * käänteiseen puolalaiseen notaatioon (RPN).
@@ -15,17 +17,18 @@ public final class Aritmetiikkatulkki extends Tulkki {
      * Palauttaa luokan uuden instanssin.
      */
     public Aritmetiikkatulkki() {
-        PRIORITEETIT.lisaa('/', 1);
-        PRIORITEETIT.lisaa('*', 1);
-        PRIORITEETIT.lisaa('%', 1);
-        PRIORITEETIT.lisaa('+', 2);
-        PRIORITEETIT.lisaa('-', 2);
+//        PRIORITEETIT.lisaa('^', 1);
+        PRIORITEETIT.lisaa('/', 2);
+        PRIORITEETIT.lisaa('*', 2);
+        PRIORITEETIT.lisaa('%', 2);
+        PRIORITEETIT.lisaa('+', 3);
+        PRIORITEETIT.lisaa('-', 3);
     }
 
     @Override
     protected boolean merkkiOnLyhenne() {
-        // Aritmetiikkatulkille ei ole lyhenteitä.
-        return false;
+        // Potenssilasku käsitellään (ainoana) lyhenteenä:
+        return merkki == '^';
     }
     
     @Override
@@ -43,7 +46,7 @@ public final class Aritmetiikkatulkki extends Tulkki {
     }
     
     @Override
-    protected boolean merkkiOnDataa() {
+    protected boolean merkkiOnOperandi() {
         switch (merkki) {
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
@@ -55,13 +58,42 @@ public final class Aritmetiikkatulkki extends Tulkki {
     
     @Override
     protected void kasitteleLyhenne() {
-        // Lyhenteet eivät ole käytössä aritmetiikkatulkilla. Siispä ei tehdä
-        // mitään.
+        // Potenssilaskun voisi tottakai toteuttaa fiksumminkin jotenkin siihen
+        // tapaan että käsiteltäisiin eksponenttia kuten sulkujen sisässä olevaa
+        // lauseketta. Päädyin nyt kuitenkin näissä olosuhteissa paljon
+        // alkeellisempaan ratkaisuun jossa tulkki korvaa potenssit
+        // kertolaskuilla. Tämä ratkaisu ei kuulu Shunting yard -algoritmiin.
+        if (JONO.onTyhja()) {
+            kaadu("Potenssilaskun kantaluku puuttuu!");
+        }
+        // Siirretään kaikki pääjonon alkiot tilapäisjonoon ja tyhjennetään
+        // pääjono, jotta sieltä saataisiin napattua eksponentti:
+        Jono<String> tilapaisjono = new Jono<>();
+        tilapaisjono.yhdista(JONO);
+        JONO.tyhjenna();
+        String kantaluku = tilapaisjono.viimeinen();
+        indeksi++;
+        merkki = syotteenMerkit[indeksi];
+        if (!merkkiOnOperandi()) {
+            kaadu("Eksponentin tulee olla positiivinen kokonaisluku");
+        }
+        kasitteleOperandi();
+        int eksponentti = Integer.parseInt(JONO.poista());
+        if (eksponentti > 1) {
+            for (int i = 1; i < eksponentti; i++) {
+                tilapaisjono.lisaa(kantaluku);
+                tilapaisjono.lisaa("*");
+            }
+        }
+//        PINO.lisaa('*');
+//        tilapaisjono.lisaa("*");
+        JONO.yhdista(tilapaisjono);
+        indeksi--;
     }
     
     @Override
-    protected void kasitteleData() throws IllegalArgumentException {
-        if (merkkiOnDataa()) {
+    protected void kasitteleOperandi() throws IllegalArgumentException {
+        if (merkkiOnOperandi()) {
             APUJONO.lisaa(merkki);
             indeksi++;
             if (indeksi == syotteenMerkit.length) {
@@ -69,7 +101,7 @@ public final class Aritmetiikkatulkki extends Tulkki {
                 return;
             }
             merkki = syotteenMerkit[indeksi];
-            kasitteleData();
+            kasitteleOperandi();
         } else {
             kokoaData();
         }

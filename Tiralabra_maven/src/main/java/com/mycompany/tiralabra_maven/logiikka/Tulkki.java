@@ -76,8 +76,8 @@ public abstract class Tulkki {
                 kasitteleLyhenne();
             } else if (merkkiOnOperaattori()) {
                 kasitteleOperaattori();
-            } else if (merkkiOnDataa()) {
-                kasitteleData();
+            } else if (merkkiOnOperandi()) {
+                kasitteleOperandi();
                 indeksi--;
             } else if (merkki == '(') {
                 PINO.lisaa(merkki);
@@ -104,11 +104,18 @@ public abstract class Tulkki {
         }
     }
 
+    /**
+     * Tutkii onko käsittelyssä oleva merkki lyhenne. Tarkoitan lyhenteellä
+     * tulkille tarkoitettua metakaavaa joka muutetaan joukoksi RPN-alikaavoja.
+     * 
+     * @return  <i>true</i> jos ja vain jos käsittelyssä oleva merkki lyhenne;
+     *          <i>false</i> muuten.
+     */
     protected abstract boolean merkkiOnLyhenne();
     
     protected abstract boolean merkkiOnOperaattori();
     
-    protected abstract boolean merkkiOnDataa();
+    protected abstract boolean merkkiOnOperandi();
     
     protected abstract void kasitteleLyhenne();
     
@@ -129,7 +136,7 @@ public abstract class Tulkki {
         }
     }
     
-    protected abstract void kasitteleData();
+    protected abstract void kasitteleOperandi();
 
     protected void tyhjennaPino()
             throws IllegalArgumentException {

@@ -2,60 +2,46 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author John Lång <jllang@cs.helsinki.fi>
- */
 public class JonoTest {
+
+    /**
+     * Testaa onko <b>Jono</b>-olioilla <i>a</i> ja <i>b</i> samanarvoiset
+     * alkiot. Jonojen tulee olla yhtä pitkät sekä jokaista a:sta poistettua
+     * alkiota o kohden täytyy olla b:stä poistettu alkio p siten että
+     * <tt>assertEquals(o,p)</tt> onnistuu.
+     * 
+     * @param a
+     * @param b
+     * @see Jono
+     */
+    public static void vertaaJonoja(Jono a, Jono b) {
+        assertEquals(a.pituus(), b.pituus());
+        Object o;
+        Object p;
+        while (!a.onTyhja()) {
+            o = a.poista();
+            p = b.poista();
+            assertEquals(o, p);
+        }
+    }
     
     private Jono    jono;
     private Object  testiObjekti;
     
-    /**
-     *
-     */
-    public JonoTest() {
-    }
-    
-    /**
-     *
-     */
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    /**
-     *
-     */
     @Before
     public void setUp() {
         jono            = new Jono<>();
         testiObjekti    = new Object();
     }
     
-    /**
-     *
-     */
     @After
     public void tearDown() {
     }
 
-    /**
-     *
-     */
     @Test
     public void testLisaa() {
         jono.lisaa(testiObjekti);
@@ -70,9 +56,6 @@ public class JonoTest {
         assertNotNull(jono.poista());
     }
     
-    /**
-     *
-     */
     @Test
     public void testKurkista() {
         assertNull(jono.kurkista());
@@ -81,9 +64,6 @@ public class JonoTest {
         assertEquals(1, jono.pituus());
     }
     
-    /**
-     *
-     */
     @Test
     public void testPituus() {
         jono.lisaa(testiObjekti);
@@ -100,10 +80,7 @@ public class JonoTest {
         jono.lisaa(new Object());
         assertEquals(12, jono.pituus());
     }
-
-    /**
-     *
-     */
+    
     @Test
     public void testPoista() {
         assertNull(jono.poista());
@@ -112,18 +89,12 @@ public class JonoTest {
         assertEquals(testiObjekti, paluuarvo);
     }
 
-    /**
-     *
-     */
     @Test
     public void testOnTyhja() {
         jono.lisaa(testiObjekti);
         assertFalse(jono.onTyhja());
     }
 
-    /**
-     *
-     */
     @Test
     public void testTyhjenna() {
         jono.lisaa(testiObjekti);
@@ -137,7 +108,7 @@ public class JonoTest {
         Jono<Integer> b = new Jono<>(4, 5, 6);
         a.yhdista(b);
         Jono<Integer> c = new Jono<>(1, 2, 3, 4, 5, 6);
-        AvainArvoJonoTest.vertaaJonoja(c, a);
+        vertaaJonoja(c, a);
     }
     
     @Test
@@ -146,7 +117,7 @@ public class JonoTest {
         Jono<Integer> b = null;
         a.yhdista(b);
         Jono<Integer> c = new Jono<>(1, 2, 3);
-        AvainArvoJonoTest.vertaaJonoja(c, a);
+        vertaaJonoja(c, a);
     }
     
     @Test

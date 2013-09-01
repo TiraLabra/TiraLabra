@@ -28,7 +28,7 @@ public final class Regexkasittelija {
     public void asetaSaannollinenLauseke(final Jono<String> SYOTE) {
         Tila.nollaaTilalaskuri();
         AUTOMAATTI = new Automaatti(SYOTE);
-        System.out.println(AUTOMAATTI);
+        Kaavalaskin.KAYTTOLIITTYMA.tulosta(AUTOMAATTI.toString());
     }
 
     /**
