@@ -14,8 +14,8 @@ public class KolmioPeli {
 
 
         // Nopeustesti
-            Nopeustestaus n = new Nopeustestaus(100, 100);
-            n.rakenteidenNopeusvertailu(100);
+            Nopeustestaus n = new Nopeustestaus(150, 150);
+            n.rakenteidenNopeusvertailu(50);
             
             
             
