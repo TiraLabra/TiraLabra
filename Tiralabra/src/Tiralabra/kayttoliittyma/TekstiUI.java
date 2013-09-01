@@ -34,7 +34,6 @@ public class TekstiUI {
     public void kaynnista() {
         syote = 100;
         jarjestys = false;
-        Puu puu;
         luk = new Scanner(System.in);
         System.out.print("Puuvertailija!");
         while (true) {
@@ -45,33 +44,11 @@ public class TekstiUI {
                     + "4: Vertaa kaikkia\n"
                     + "Muu: Lopeta\n");
 
-            int komento = 0;
-            try {
-                komento = luk.nextInt();
-            } catch (Exception e) {
-                break;
-            }
-
-            if (komento == 1) {
-                tulostaOhje();
-            } else if (komento == 2) {
-                valitseSyote();
-            } else if (komento == 3) {
-                puu = valitsePuu();
-                if (puu == null) {
-                    System.out.println("\nEt valinnut tietorakennetta.");
-                } else {
-                    Vertailija v = new Vertailija(syote, jarjestys);
-                    String tulos = v.vertaile(puu);
-                    System.out.println(tulos + "+\n\nSyötä jokin merkki palataksesi. ");
-                    luk.next();
-                }
-            } else if (komento == 4) {
-                Vertailija v = new Vertailija(syote, jarjestys);
-                String t = v.vertaileKaikki(new Punamusta(), new Threaded(), new KaksiKolme(), new Treap());
-                System.out.println(t + "\n\nSyötä jokin merkki palataksesi.");
-                luk.next();
-            } else {
+            int komento = hankiKomento();
+            
+            if(komento != 0){
+                suoritaKomennot(komento);
+            }else {
                 break;
             }
         }
@@ -90,7 +67,7 @@ public class TekstiUI {
                 + "3: Treap\n"
                 + "4: Threaded-puu\n"
                 + "Muu: Palaa\n");
-        int komento = luk.nextInt();
+        int komento = hankiKomento();
         if (komento == 1) {
             return new Punamusta();
         } else if (komento == 2) {
@@ -135,9 +112,9 @@ public class TekstiUI {
                 + "2: Keskikokoinen syöte(noin 1000 alkiota)\n"
                 + "3: Suuri syöte (noin 5000 alkiota)\n"
                 + "4: Oma syöte\n");
-        int komento;
-        try {
-            komento = luk.nextInt();
+        
+        int komento = hankiKomento();
+        
             if (komento == 1) {
                 syote = 100;
             } else if (komento == 2) {
@@ -147,24 +124,64 @@ public class TekstiUI {
             } else if (komento == 4) {
                 System.out.print("\nYli 5000 alkion syötteitä ei suositella hitauden takia. \nAnna syötteen koko: ");
                 syote = luk.nextInt();
+            } else {
+                System.out.println("Epäkäypä komento.\n");
             }
-        } catch (Exception e) {
-            System.out.println("Epäkäypä komento.\n");
-        }
-
 
         System.out.println("\nValitse syötteen tyyppi: \n"
                 + "1: Luvut lisätään satunnaisjärjestyksessä\n"
                 + "2: Luvut lisätään suuruusjärjestyksessä\n");
-        try{
-            komento = luk.nextInt();
+        
+        komento = hankiKomento();
             if (komento == 1) {
                 jarjestys = false;
             } else if (komento == 2) {
                 jarjestys = true;
+            } else {
+                System.out.println("Epäkäypä komento.\n");
             }
-        } catch (Exception e) {
-            System.out.println("Epäkäypä komento\n");
-        }
+    }
+
+    /**
+     * Hakee komennolle arvo, estää käyttäjää syöttämästä virheellisiä syötteitä.
+     * @return komennon arvo
+     */
+    private int hankiKomento() {
+        int komento;
+        try {
+                komento = luk.nextInt();
+            } catch (Exception e) {
+                komento = 0;
+            }
+        return komento;
+    }
+
+    /**
+     * Suorittaa käyttäjän valitseman komennon.
+     * @param komento ohjelman seuraava suoritettava toiminto
+     * @param puu käytettävä puu
+     */
+    private void suoritaKomennot(int komento) {
+        Puu puu;
+        if (komento == 1) {
+                tulostaOhje();
+            } else if (komento == 2) {
+                valitseSyote();
+            } else if (komento == 3) {
+                puu = valitsePuu();
+                if (puu == null) {
+                    System.out.println("\nEt valinnut tietorakennetta.");
+                } else {
+                    Vertailija v = new Vertailija(syote, jarjestys);
+                    String tulos = v.vertaile(puu);
+                    System.out.println(tulos + "+\n\nSyötä jokin merkki palataksesi. ");
+                    luk.next();
+                }
+            } else if (komento == 4) {
+                Vertailija v = new Vertailija(syote, jarjestys);
+                String t = v.vertaileKaikki(new Punamusta(), new Threaded(), new KaksiKolme(), new Treap());
+                System.out.println(t + "\n\nSyötä jokin merkki palataksesi.");
+                luk.next();
+            }
     }
 }
