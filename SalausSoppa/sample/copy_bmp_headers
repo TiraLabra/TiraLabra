@@ -1,0 +1,4 @@
+#!/bin/bash
+
+HEADER_LENGTH=`od -A n -j 10 -N 4 -t u4 $1 | sed -e 's/^[ \t]*//'`
+dd if=$1 of=$2 bs=$HEADER_LENGTH count=1 conv=notrunc
