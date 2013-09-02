@@ -47,22 +47,8 @@ uint64_t read_key(FILE* keyfile)
 }
 
 /* Encrypt/decrypt file and write to output */
-void process_file(int mode, char* keyfile, char* inputfile, char* outputfile)
+void process_file(int mode, uint64_t key, FILE* input, FILE* output)
 {
-    FILE* key_handle = fopen(keyfile, "rb");
-    if(key_handle == NULL) {
-        printf("Could not open key file\n");
-        exit(EXIT_FAILURE);
-    }
-
-    FILE* input = fopen(inputfile, "rb");
-    if(input == NULL) {
-        printf("Could not open input file\n");
-        exit(EXIT_FAILURE);
-    }
-    FILE* output = fopen(outputfile, "wb");
-
-    uint64_t key = read_key(key_handle);
     uint64_t* keys = malloc(sizeof (uint64_t) * SUBKEY_NUM);
     generate_subkeys(key, keys);
 
@@ -177,8 +163,22 @@ int main(int argc, char *argv[])
         return 0;
     } 
 
+    FILE* key_handle = fopen(argv[3], "rb");
+    if(key_handle == NULL) {
+        printf("Could not open key file\n");
+        exit(EXIT_FAILURE);
+    }
 
-    process_file(mode, argv[3], argv[4], argv[5]);
+    FILE* input = fopen(argv[4], "rb");
+    if(input == NULL) {
+        printf("Could not open input file\n");
+        exit(EXIT_FAILURE);
+    }
+    FILE* output = fopen(argv[5], "wb");
+
+    uint64_t key = read_key(key_handle);
+
+    process_file(mode, key, input, output);
 
 
     return 0;
