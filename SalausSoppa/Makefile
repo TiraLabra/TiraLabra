@@ -25,6 +25,7 @@ $(TEST_EXECUTABLE): $(ALLTESTS) $(TEST_OBJS)
 
 test: $(TEST_EXECUTABLE)
 	./$(TEST_EXECUTABLE)
+	@rm test/test_data_*
 
 clean: 
 	rm -f $(OBJS) $(TEST_OBJS) $(ALLTESTS) $(TEST_EXECUTABLE) $(TARGET)
