@@ -202,14 +202,12 @@ public class MultiByteHashedTableTest {
         mb5.addData(new Byte("5"));
         mb5.addData(new Byte("5"));
 
-        int[] hashes = new int[]{
-            mb1.hashCode(), mb2.hashCode(), mb3.hashCode(), mb4.hashCode(), mb5.hashCode()
-        };
+        MultiByte[] multibytes = new MultiByte[]{mb1, mb2, mb3, mb4, mb5};
 
         assertEquals("wrong number of keys", 5, table.getStats()[1]);
 
         for (int i = 0; i < array.length; i++) {
-            assertEquals("Wrong sorting", hashes[i], array[i].hashCode());
+            assertTrue("Wrong sorting", multibytes[i].equals(array[i]));
         }
 
     }

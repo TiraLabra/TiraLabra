@@ -43,19 +43,32 @@ public class IntegerConverterTest {
         int converted = Utilities.IntegerConverter.ByteToInteger(IntegerToByte);
         assertEquals("Not a correct conversion: "+one, one, converted);
         assertEquals("Differing bytewidth: "+IntegerToByte.length, 1, IntegerToByte.length);
-        
+    }
+
+    @Test
+    public void integerToTwoBytes() {
+        byte[] IntegerToByte;
+        int converted;
         int twoBytes = 300;
         IntegerToByte = Utilities.IntegerConverter.IntegerToByte(twoBytes, 2);
         converted = Utilities.IntegerConverter.ByteToInteger(IntegerToByte);
         assertEquals("Not a correct conversion: "+twoBytes, twoBytes, converted);
         assertEquals("Differing bytewidth: "+IntegerToByte.length, 2, IntegerToByte.length);
-        
+    }
+
+    @Test
+    public void integerToManyBytes() {
+        byte[] IntegerToByte;
+        int converted;
         int manyBytes = 90000;
         IntegerToByte = Utilities.IntegerConverter.IntegerToByte(manyBytes, 3);
         converted = Utilities.IntegerConverter.ByteToInteger(IntegerToByte);
         assertEquals("Not a correct conversion: "+manyBytes, manyBytes, converted);
         assertEquals("Differing bytewidth: "+IntegerToByte.length, 3, IntegerToByte.length);
-        
+    }
+
+    @Test
+    public void bytesToInteger() throws NumberFormatException {
         byte[] byteArray = new byte[]{
           new Byte("2"), new Byte("9")
         };
@@ -63,6 +76,5 @@ public class IntegerConverterTest {
         byte[] convertedBytes = Utilities.IntegerConverter.IntegerToByte(byteToInteger, 2);
         assertEquals("Unequal bytes in converted array: ", byteArray[0], convertedBytes[0]);
         assertEquals("Unequal bytes in converted array: ", byteArray[1], convertedBytes[1]);
-        
     }
 }

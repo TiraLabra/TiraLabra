@@ -122,7 +122,7 @@ public class MultiByteHashedTable {
         if (data[multiByteIndex[0]][multiByteIndex[1]] == null) {
             insertIntoTable(multiByteIndex[0], multiByteIndex[1], multiByte);
 
-            double fillRatio = (double) keyCount / (Math.pow(size, 2));
+            double fillRatio = (double) keyCount / (size * 16);
             if (fillRatio >= 0.8) {
                 rehashToGreaterSize();
             }
@@ -216,6 +216,12 @@ public class MultiByteHashedTable {
         return null;
     }
     
+    /**
+     * Retrieves an index for the specified multibyte, if the index was null return false, else
+     * test that the given location contains a multibyte and that that multibyte equals the given multibyte.
+     * @param mb
+     * @return 
+     */
     public boolean contains(MultiByte mb){
         int[] indexForMultiByte = this.indexForMultiByte(mb);
         if (indexForMultiByte != null){

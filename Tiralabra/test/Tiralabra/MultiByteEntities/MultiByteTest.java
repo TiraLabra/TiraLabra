@@ -83,21 +83,21 @@ public class MultiByteTest {
     public void tearDown() {
     }
 
-    @Test
-    public void testRandomDataForSameHashesShouldFail() {
-        int[] doubleByteHashArray = new int[incrementalData.length];
-        int[] tripleByteHashArray = new int[incrementalData.length];
-        int[] quadByteHashArray = new int[incrementalData.length];
-
-        indtroduceHashCodes(doubleByteHashArray, incrementalData, 2);
-        indtroduceHashCodes(tripleByteHashArray, incrementalData, 3);
-        indtroduceHashCodes(quadByteHashArray, incrementalData, 4);
-
-        checkForMatchingHashes(doubleByteHashArray, false);
-        checkForMatchingHashes(tripleByteHashArray, false);
-        checkForMatchingHashes(quadByteHashArray, false);
-
-    }
+//    @Test
+//    public void testRandomDataForSameHashesShouldFail() {
+//        int[] doubleByteHashArray = new int[randomData.length];
+//        int[] tripleByteHashArray = new int[randomData.length];
+//        int[] quadByteHashArray = new int[randomData.length];
+//
+//        indtroduceHashCodes(doubleByteHashArray, randomData, 2);
+//        indtroduceHashCodes(tripleByteHashArray, randomData, 3);
+//        indtroduceHashCodes(quadByteHashArray, randomData, 4);
+//
+//        checkForMatchingHashes(doubleByteHashArray, false);
+//        checkForMatchingHashes(tripleByteHashArray, false);
+//        checkForMatchingHashes(quadByteHashArray, false);
+//
+//    }
 
     @Test
     public void predefinedMultiByteHashTestNoSameHashes() {
@@ -196,7 +196,7 @@ public class MultiByteTest {
                 if (multiByteHashArray[k] == 0) {
                     continue;
                 }
-                assertEquals("Matching hashcodes" + i, matching, multiByteHashArray[k] == multiByteHashArray[i]);
+                assertEquals("Matching hashcodes " + i, matching, multiByteHashArray[k] == multiByteHashArray[i]);
             }
         }
     }
