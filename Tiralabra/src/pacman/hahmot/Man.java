@@ -2,34 +2,20 @@ package pacman.hahmot;
 
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
+import pacman.peli.Pacman;
 
 /**
  * Man luokka kuvaa pelin päähahmoa, jota pelaaja liikuttaa kentällä. Manin
- * tehtävä on liikuttaa itseään kentällä ja tietää minne se voi liikkua. Man myös
- * tietää omat elämänsä ja osaa vähentää niitä, kun man kuolee.
+ * tehtävä on liikuttaa itseään kentällä ja tietää minne se voi liikkua. Man
+ * myös tietää omat elämänsä ja osaa vähentää niitä, kun man kuolee.
  *
  * @author hhkopper
  */
-public class Man {
+public class Man extends Hahmo{
 
     /**
-     * Koordinaatti X
-     */
-    private int x;
-      /**
-     * Koordinaatti Y
-     */
-    private int y;
-      /**
-     * Suunta, johon Man liikkuu.
-     */
-    private Suunta suunta;
-      /**
-     * Alusta, jolle Man luodaan.
-     */
-    private Pelialusta alusta;
-      /**
-     * Manin elämien määrä, kun elämät loppuvat, peli loppuu. Arvoksi asetetaan kolme.
+     * Manin elämien määrä, kun elämät loppuvat, peli loppuu. Arvoksi asetetaan
+     * kolme.
      */
     private int elamat;
 
@@ -57,30 +43,6 @@ public class Man {
         alusta.getPeliruutu(x, y).setOnkoMan(true);
     }
 
-    public Suunta getSuunta() {
-        return this.suunta;
-    }
-
-    public void setSuunta(Suunta suunta) {
-        this.suunta = suunta;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getElamat() {
         return elamat;
     }
@@ -96,18 +58,54 @@ public class Man {
      * Muutetaan koordinaatteja ja kerrotaan alustalle mistä ruudusta mihin
      * ruutuun Man liikkuu. Jos seuraava ruutu on seinä mihin ollaan liikkumassa
      * Man jää paikalleen.
+     *
+     * @param heikkous
      */
-    public void liiku() {
+    public void liiku(boolean heikkous, Pacman peli) {
+
+        if (heikkous == false) {
+            etene();
+
+            if (osuukoSeinaan()) {
+                palaa();
+            } else {
+                siirraMan();
+            }
+        } else {
+            etene();
+
+            if (osuukoSeinaan()) {
+                palaa();
+            } else if (katsoVoikoLiikkuaSivuille()) {
+                siirraMan();
+            } else {
+                siirraMan();
+                peli.manSyoPistepallo();
+                peli.luoHedelma();
+                peli.kuoleekoHaamuTaiMan();
+                etene();
+                if (osuukoSeinaan()) {
+                    palaa();
+                }
+                siirraMan();
+            }
+        }
+
+    }
+
+    private void palaa() {
+        this.y = this.y - this.suunta.getY();
+        this.x = this.x - this.suunta.getX();
+    }
+
+    private void etene() {
         this.y = this.y + this.suunta.getY();
         this.x = this.x + this.suunta.getX();
+    }
 
-        if (osuukoSeinaan()) {
-            this.y = this.y - this.suunta.getY();
-            this.x = this.x - this.suunta.getX();
-        } else {
-            alusta.getPeliruutu(x, y).setOnkoMan(true);
-            alusta.getPeliruutu(x - suunta.getX(), y - suunta.getY()).setOnkoMan(false);
-        }
+    private void siirraMan() {
+        alusta.getPeliruutu(x, y).setOnkoMan(true);
+        alusta.getPeliruutu(x - suunta.getX(), y - suunta.getY()).setOnkoMan(false);
     }
 
     /**
@@ -132,4 +130,5 @@ public class Man {
         this.y = 11;
         alusta.getPeliruutu(x, y).setOnkoMan(true);
     }
+
 }

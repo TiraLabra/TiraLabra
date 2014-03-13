@@ -80,16 +80,16 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
             if (haamu.getTyyppi().equals("vahva")) {
                 if (haamu.getNimi().equals("red")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("red.png"));
-                    piirräHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva( g, kuva, haamu);
                 } else if (haamu.getNimi().equals("green")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("green.png"));
-                    piirräHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva( g, kuva, haamu);
                 } else if (haamu.getNimi().equals("magenta")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("magenta.png"));
-                    piirräHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva( g, kuva, haamu);
                 } else if (haamu.getNimi().equals("cyan")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("cyan.png"));
-                    piirräHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva( g, kuva, haamu);
                 }
             } else {
                 piirraHeikotHaamut(g, haamu);
@@ -105,7 +105,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
      */
     private void piirraHeikotHaamut(Graphics g, Haamu haamu) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("heikkoHaamu.png"));
-        piirräHaamunKuva( g, kuva, haamu);
+        piirraHaamunKuva( g, kuva, haamu);
     }
 
     /**
@@ -303,7 +303,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
      * @param kuva haamun oma kuva
      * @param haamu haamu, josta kuva piirretään
      */
-    private void piirräHaamunKuva(Graphics g, ImageIcon kuva, Haamu haamu) {
+    private void piirraHaamunKuva(Graphics g, ImageIcon kuva, Haamu haamu) {
         g.drawImage(kuva.getImage(), haamu.getX() * this.ruudunSivu, haamu.getY() * this.ruudunSivu, frame);
     }
 }

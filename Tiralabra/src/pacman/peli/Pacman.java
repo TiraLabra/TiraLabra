@@ -63,6 +63,8 @@ public class Pacman extends Timer implements ActionListener {
      * Boolean arvo kertoo onko peli voitettu (true) vai hävitty (false).
      */
     private boolean tilanne;
+    
+    private boolean heikko;
 
     /**
      * Konstruktorissa luodaan pelialusta ja kaikki komponentit sille, luodaan
@@ -80,6 +82,7 @@ public class Pacman extends Timer implements ActionListener {
         this.hedelmanPaikat = new ArrayList<Peliruutu>();
         this.jatkuu = true;
         this.tilanne = false;
+        this.heikko = false;
 
         addActionListener(this);
         setInitialDelay(2000);
@@ -87,6 +90,10 @@ public class Pacman extends Timer implements ActionListener {
 
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
+    }
+    
+    public boolean getHeikko() {
+        return this.heikko;
     }
 
     public Man getMan() {
@@ -142,6 +149,7 @@ public class Pacman extends Timer implements ActionListener {
     public void heikennaHaamut() {
         for (Haamu haamu : haamut) {
             haamu.setTyyppi("heikko");
+            this.heikko = true;
             haamu.setHeikkous(30);
         }
     }
@@ -155,6 +163,7 @@ public class Pacman extends Timer implements ActionListener {
         if (haamu.getTyyppi().equals("heikko")) {
             if (haamu.getHeikkous() == 0) {
                 haamu.setTyyppi("vahva");
+                this.heikko = false;
             } else {
                 haamu.vahennaHeikkous();
             }
@@ -283,7 +292,7 @@ public class Pacman extends Timer implements ActionListener {
      * Kun pisteet ylittävät 400 ja kentällä ei vielä ole hedelmää arvotaan ensimmainen hedelmä.
      * Jatkossa, kun kentällä on hedelmä, arvotaan uusi vasta, kun man osuu hedelmään ja saa tästä 100 pistettä.
      */
-    private void luoHedelma() {
+    public void luoHedelma() {
         if (laskuri.getPisteet() > 400) {
             if (onkoHedelmaAlustalla()) {
                 if (manOsuuHedelmaan()) {
@@ -327,7 +336,7 @@ public class Pacman extends Timer implements ActionListener {
             haamuHeikostaVahvaksi(haamu);
         }
         kuoleekoHaamuTaiMan();
-        this.man.liiku();
+        this.man.liiku(this.heikko, this);
         kuoleekoHaamuTaiMan();
         manSyoPistepallo();
         luoHedelma();
@@ -336,6 +345,9 @@ public class Pacman extends Timer implements ActionListener {
         if (man.getElamat() <= 0) {
             jatkuu = false;
         }
+        System.out.println(this.man.getElamat());
+        System.out.println(this.man.getX());
+        System.out.println(this.man.getY());
         this.paivitettava.paivita();
         setDelay(300);
 

@@ -12,20 +12,8 @@ import pacman.alusta.Pelialusta;
  *
  * @author hhkopper
  */
-public class Haamu {
+public class Haamu extends Hahmo {
 
-    /**
-     * Koordinaatti Y
-     */
-    private int y;
-      /**
-     * Koordinaatti X
-     */
-    private int x;
-      /**
-     * Suunta, johon haamu liikkuu.
-     */
-    private Suunta suunta;
     /**
      * Tyyppi kertoo onko haamu heikko vai vahva.
      */
@@ -35,10 +23,7 @@ public class Haamu {
      * heikosta vahvaksi.
      */
     private String nimi;
-    /**
-     * Alusta, jolle haamu asetetaan.
-     */
-    private Pelialusta alusta;
+
     /**
      * Haamun sen hetkisestä ruudusta kaikki suunnat, jossa on käytävää.
      */
@@ -68,32 +53,8 @@ public class Haamu {
         this.alusta = alusta;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
     public String getNimi() {
         return this.nimi;
-    }
-
-    public void setSuunta(Suunta uusiSuunta) {
-        this.suunta = uusiSuunta;
-    }
-
-    public Suunta getSuunta() {
-        return this.suunta;
     }
 
     public ArrayList<Suunta> getSuuntaLista() {
@@ -193,24 +154,4 @@ public class Haamu {
         alusta.getPeliruutu(x, y).setOnkoHaamu(true);
     }
 
-    /**
-     * Tarkistetaan voiko ruudusta, jossa haamu on, liikkua muualle kuin
-     * eteenpäin tai taaksepäin.
-     *
-     * @return palauttaa boolean arvon true jos pystyy false jos ei.
-     */
-    public boolean katsoVoikoLiikkuaSivuille() {
-        if (suunta == Suunta.VASEN || suunta == Suunta.OIKEA) {
-            if (alusta.getPeliruutu(x, y - 1).getRuudunTyyppi() == 1 || alusta.getPeliruutu(x, y + 1).getRuudunTyyppi() == 1
-                    || alusta.getPeliruutu(x, y - 1).getRuudunTyyppi() == 3 || alusta.getPeliruutu(x, y + 1).getRuudunTyyppi() == 3) {
-                return true;
-            }
-        } else if (suunta == Suunta.ALAS || suunta == Suunta.YLOS) {
-            if (alusta.getPeliruutu(x - 1, y).getRuudunTyyppi() == 1 || alusta.getPeliruutu(x + 1, y).getRuudunTyyppi() == 1
-                    || alusta.getPeliruutu(x - 1, y).getRuudunTyyppi() == 3 || alusta.getPeliruutu(x + 1, y).getRuudunTyyppi() == 3) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
