@@ -345,9 +345,6 @@ public class Pacman extends Timer implements ActionListener {
         if (man.getElamat() <= 0) {
             jatkuu = false;
         }
-        System.out.println(this.man.getElamat());
-        System.out.println(this.man.getX());
-        System.out.println(this.man.getY());
         this.paivitettava.paivita();
         setDelay(300);
 
