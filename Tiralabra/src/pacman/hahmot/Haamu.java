@@ -1,3 +1,6 @@
+
+//Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
+
 package pacman.hahmot;
 
 import java.util.ArrayList;
