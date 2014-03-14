@@ -1,9 +1,18 @@
 package labyrintti.osat;
 
 public class Ruutu {
+    /**
+     * Ruudun arvo.
+     */
     private int arvo;
-    private int x; //sarake
-    private int y; //rivi
+    /**
+     * Ruudun x-koordinaatti.
+     */
+    private int x; //rivi
+    /**
+     * Ruudun y-koordinaatti.
+     */
+    private int y; //sarake
 
     public Ruutu(int arvo, int x, int y) {
         this.arvo = arvo;

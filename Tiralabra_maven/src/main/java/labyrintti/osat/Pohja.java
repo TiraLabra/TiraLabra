@@ -5,14 +5,26 @@ import java.util.Scanner;
 
 public class Pohja {
 
+    /**
+     * Taulukko kartan muistamiseen.
+     */
     private Ruutu[][] kartta;
+    /**
+     * Kartan korkeus.
+     */
     private int korkeus;
+    /**
+     * Kartan leveys.
+     */
     private int leveys;
 
     public Pohja() {
 
     }
 
+    /**
+     * Luo tekstitiedostosta pohjan.
+     */
     public void luoPohja() {
         File tiedosto = new File("src/main/java/labyrintti/osat/kartta.txt");
         Scanner lukija = null;
@@ -37,19 +49,22 @@ public class Pohja {
             System.out.println("Tiedoston lukeminen epäonnistui.");
             return;
         }
-        int y = 0;
+        int x = 0;
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
-            for (int i = 0; i < rivi.length(); i++) {
-                int arvo = Integer.parseInt(""+rivi.charAt(i));
-                Ruutu ruutu = new Ruutu(arvo, i, y);
-                kartta[i][y]=ruutu;
+            for (int j = 0; j < rivi.length(); j++) {
+                int arvo = Integer.parseInt(""+rivi.charAt(j));
+                Ruutu ruutu = new Ruutu(arvo, x, j);
+                kartta[x][j]=ruutu;
             }
-            y++;
+            x++;
         }
         lukija.close();
     }
     
+    /**
+     * Tulostaa pohjakartan.
+     */
     public void tulostaPohja(){
         for (int i = 0; i < korkeus; i++) {
             for (int j = 0; j < leveys; j++) {
