@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <vector>
 
@@ -165,14 +166,14 @@ merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusiv
 			}
 		}
 	}
-
+	
 	std::sort(merges.begin(), merges.end(), merge_cmp_distance_less());
 
 	std::cout << "Merges:\n";
 	for(c_uint i=0; i<merges.size(); ++i)
 	{
 		std::cout << "Merge #" << i << ": " << "First: " << merges[i].first << " Second: " << merges[i].second
-			<< " Distance: " << (int)merges[i].distance << "\n";
+			<< " Distance: " << merges[i].distance << "\n";
 	}
 
 	return merges;

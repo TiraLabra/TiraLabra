@@ -36,9 +36,16 @@ struct sequence
 				|| (first > pSequence.first && first > pSequence.last && last > pSequence.first && last > pSequence.last));
 	}
 
-	c_data value_distance(const sequence& pSequence) const
+	bool can_contain(const sequence& pSequence) const
 	{
-		return std::max(std::max(first, last), std::max(first, last)) - std::min(std::min(first, last), std::min(pSequence.first, pSequence.last));;
+		return (first < pSequence.first && first < pSequence.last && last > pSequence.first && last > pSequence.last)
+			|| (first > pSequence.first && first > pSequence.last && last < pSequence.first && last < pSequence.last);
+	}
+
+	c_uint value_distance(const sequence& pSequence) const
+	{
+		return std::abs(std::max(std::max(first, last), std::max(pSequence.first, pSequence.last))
+			- std::min(std::min(first, last), std::min(pSequence.first, pSequence.last)));
 	}
 };
 

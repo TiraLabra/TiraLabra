@@ -7,9 +7,9 @@ struct merge
 {
 	c_offset first;
 	c_offset second;
-	c_data distance;
+	c_uint distance;
 
-	merge(const c_offset& pFirst, const c_offset& pSecond, const c_data& pDistance)
+	merge(const c_offset& pFirst, const c_offset& pSecond, const c_uint& pDistance)
 		: first(pFirst),
 		second(pSecond),
 		distance(pDistance)
