@@ -1,0 +1,5 @@
+add_executable(cmprsr_test_sequence cmprsr_test_sequence.cpp)
+target_link_libraries(cmprsr_test_sequence cmprsrlib)
+
+add_executable(cmprsr_test_merge cmprsr_test_merge.cpp)
+target_link_libraries(cmprsr_test_merge cmprsrlib)

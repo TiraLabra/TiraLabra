@@ -1,189 +1,89 @@
-#include <algorithm>
 #include <iostream>
-#include <fstream>
-#include <map>
-#include <vector>
 
-#include "cmprsr_types.h"
+#include "cmprsrlib.h"
 
-#include "cmprsr_sequence.h"
-#include "cmprsr_merge.h"
-
-typedef std::vector<sequence> sequence_list;
-typedef std::vector<merge> merge_list;
-
-// Finds ascending/descending sequences in data.
-sequence_list findSequences(const c_data* pData, const c_size& pLength, const bool& pInclusive)
+void printSequences(const c_data* pData, const sequence_list& pSequences)
 {
-	// For debug purposes, to be removed
-	c_uint* ascending = new c_uint[pLength];
-	c_uint* descending = new c_uint[pLength];
-	c_int* delta = new c_int[pLength];
-
-	sequence_list sequences;
-
-	c_uint ascCount = 1;
-	c_uint descCount = 1;
-
-	for(c_uint i=1; i<pLength; ++i)
+	for(c_uint i=0; i<pSequences.size(); ++i)
 	{
-		if(pData[i] > pData[i-1])
-		{
-			++ascCount;
-			for(c_uint j=0; j<descCount; ++j)
-			{
-				descending[i-j-1] = j;
-				delta[i-j-1] = -((c_int)j);
-			}
-
-			if(descCount > 1)
-				sequences.push_back(sequence(i - descCount, descCount, pData[i - descCount], pData[i - 1]));
-
-			descCount = 1;
-
-		}else if(pData[i] < pData[i-1])
-		{
-			++descCount;
-			for(c_uint j=0; j<ascCount; ++j)
-			{
-				ascending[i-j-1] = j;
-				delta[i-j-1] = j;
-			}
-
-			if(ascCount > 1)
-			{
-				sequences.push_back(sequence(i - ascCount, ascCount, pData[i - ascCount], pData[i - 1]));
-			}
-
-			ascCount = 1;
-		}else{
-			if(pInclusive)
-			{
-				++ascCount;
-				++descCount;
-			}else{
-				for(c_uint j=0; j<ascCount; ++j)
-				{
-					ascending[i-j-1] = j;
-					delta[i-j-1] = j;
-				}
-
-				if(ascCount > 1)
-					sequences.push_back(sequence(i - ascCount, ascCount, pData[i - ascCount], pData[i - 1]));
-
-				ascCount = 1;
-
-				for(c_uint j=0; j<descCount; ++j)
-				{
-					descending[i-j-1] = j;
-					delta[i-j-1] = -((c_int)j);
-				}
-
-				if(descCount > 1)
-					sequences.push_back(sequence(i - descCount, descCount, pData[i - descCount], pData[i - 1]));
-
-				descCount = 1;
-			}
-		}
+		std::cout << "Sequence " << i << ": " << "Offset: " << pSequences[i]->offset << " Length: " << pSequences[i]->length
+			<< " First: " << (int)pSequences[i]->first << " Last: " << (int)pSequences[i]->last << "\n";
+		std::cout << "Sequence " << i << " data: ";
+		for(c_uint j=0; j<pSequences[i]->length; ++j)
+			std::cout << pData[pSequences[i]->offset + j];
+		std::cout << "\n";
 	}
-
-	for(c_uint i=0; i<ascCount; ++i)
-	{
-		ascending[pLength-i-1] = i;
-		delta[pLength-i-1] = i;
-	}
-
-	if(ascCount > 1)
-		sequences.push_back(sequence(pLength - ascCount, ascCount, pData[pLength - ascCount], pData[pLength - 1]));
-
-	for(c_uint i=0; i<descCount; ++i)
-	{
-		descending[pLength-i-1] = i;
-		delta[pLength-i-1] = -((c_int)i);
-	}
-
-	if(descCount > 1)
-		sequences.push_back(sequence(pLength - descCount, descCount, pData[pLength - descCount], pData[pLength - 1]));
-
-	std::sort(sequences.begin(), sequences.end(), seq_cmp_offset_less());
-
-	
-	std::cout << "Data:";
-	for(c_uint i=0; i<pLength; ++i)
-		std::cout << " " << (c_uint)pData[i];
-	std::cout << "\n";
-
-	std::cout << "Ascending: ";
-	for(c_uint i=0; i<pLength; ++i)
-	{
-		std::cout.width(3);
-		std::cout << ascending[i];
-	}
-	std::cout << "\n";
-
-	std::cout << "Descending:";
-	for(c_uint i=0; i<pLength; ++i)
-	{
-		std::cout.width(3);
-		std::cout << descending[i];
-	}
-	std::cout << "\n";
-
-	std::cout << "Delta:     ";
-	for(c_uint i=0; i<pLength; ++i)
-	{
-		std::cout.width(3);
-		std::cout << delta[i];
-	}
-	std::cout << "\n\n";
-
-	std::cout << "Sequences:\n";
-	for(c_uint i=0; i<sequences.size(); ++i)
-		std::cout << "Sequence #" << i << ": " << "Offset: " << sequences[i].offset << " Length: " << sequences[i].length
-			<< " First: " << (int)sequences[i].first << " Last: " << (int)sequences[i].last << "\n";
-	std::cout << "\n";
-
-	return sequences;
-}
-
-// Creates a list of sequences that can be merged (concatenated)
-merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusive)
-{
-	merge_list merges;
-	for(c_uint i=0; i<pSequences.size()-1; ++i)
-	{
-		bool possibleMergeFound = false;
-		for(c_uint j=i+1; j<pSequences.size(); ++j)
-		{
-			if(pSequences[i].no_offset_overlap(pSequences[j]))
-			{
-				if(pSequences[i].no_value_overlap(pSequences[j], pInclusive))
-					merges.push_back(merge(i, j, pSequences[i].value_distance(pSequences[j])));
-				possibleMergeFound = true;
-			}else if(possibleMergeFound)
-			{
-				break;
-			}
-		}
-	}
-	
-	std::sort(merges.begin(), merges.end(), merge_cmp_distance_less());
-
-	std::cout << "Merges:\n";
-	for(c_uint i=0; i<merges.size(); ++i)
-	{
-		std::cout << "Merge #" << i << ": " << "First: " << merges[i].first << " Second: " << merges[i].second
-			<< " Distance: " << merges[i].distance << "\n";
-	}
-
-	return merges;
 }
 
 int main(int argc, char** argv)
 {
-	std::string str = "46780123";
-	mergeSequences(findSequences(str.c_str(), str.size(), true), true);
+	const char* str = "5678556780912212344332215";
+	c_uint length = strlen(str);
+	char* data = (char*)malloc(length);
+	memcpy(data, str, length);
+	data[length-1] = 0;
 
+	bool inclusive = true;
+	sequence_list sequences = findSequences(data, length, inclusive);
+	merge_list concatenates = concatenateSequences(sequences, inclusive);
+	merge_list merges = mergeSequences(sequences, inclusive);
+
+	std::cout << "Data: " << data << "\n";
+
+	std::cout << "Sequences:\n";
+	printSequences(data, sequences);
+	std::cout << "\n";
+
+	while(!concatenates.empty())
+	{
+		merge* m = concatenates.front();
+		concatenates.erase(concatenates.begin());
+
+		for(c_uint i=concatenates.size(); i>0; --i)
+		{
+			if(m->collides(*concatenates[i - 1]))
+				concatenates.erase(concatenates.begin() + 1 - 1);
+			//if(m->collides(*concatenates[i - 1]))
+				//concatenates.erase(concatenates.begin() + i - 1);
+		}
+
+		cmprsr_memmove_in_array(data + sequences[m->first]->offset + sequences[m->first]->length, data + sequences[m->second]->offset, sequences[m->second]->length);
+		bool forward = sequences[m->first]->offset > sequences[m->second]->offset;
+		for(c_uint j=0; j<sequences.size(); ++j)
+		{
+			if(sequence_in_merge_range(sequences, j, *m))
+			{
+				if(forward)
+				{
+					std::cout << "Need to move sequence #" << j << " to: " << sequences[j]->offset << " + " << sequences[m->first]->offset - sequences[m->second]->offset << "\n";
+					sequences[j]->offset += sequences[m->first]->offset - sequences[m->second]->offset;
+				}
+				else
+				{
+					std::cout << "Need to move sequence #" << j << " to: " << sequences[j]->offset << " - " << sequences[m->second]->offset - sequences[m->first]->offset << "\n";
+					sequences[j]->offset -= sequences[m->second]->offset - sequences[m->first]->offset;
+				}
+			}
+			/*if(m->inRange(*sequences[j]))
+			{
+				if(forward)
+				{
+					std::cout << "Need to move sequence #" << j << " to: " << sequences[j]->offset << " + " << m->first->offset - m->second->offset << "\n";
+					sequences[j]->offset += m->first->offset - m->second->offset;
+				}
+				else
+				{
+					std::cout << "Need to move sequence #" << j << " to: " << sequences[j]->offset << " - " << m->second->offset - m->first->offset << "\n";
+					sequences[j]->offset -= m->second->offset - m->first->offset;
+				}
+			}*/
+		}
+
+		std::cout << "Sequences:\n";
+		printSequences(data, sequences);
+		std::cout << "\n";
+	}
+	
 	int i;
 	std::cin >> i;
 
