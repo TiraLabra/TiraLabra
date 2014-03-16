@@ -1,5 +1,4 @@
 #!/bin/bash
-PROJECT_DIR=Tiralabra
 # Tätä tiedostoa käytetään automatisoituun testien ajamiseen.
 # Tiedoston ajaminen linuxilla ./run_tests.sh tulee aikaansaada
 # ohjelmasi testien suorittaminen.
