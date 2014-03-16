@@ -35,10 +35,6 @@ public class Board extends JPanel implements ActionListener{
      *
      */
     public static int x_map = 0;
-
-    /**
-     *
-     */
     public static int y_map = 0;
     
     private Hiiri maus;
@@ -69,30 +65,24 @@ public class Board extends JPanel implements ActionListener{
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(maus.getImage(), maus.getX(), maus.getY(), this);
-            int [][] map= {
-                 {0,0,0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0,0,0},
-                 {0,0,1,1,0,0,0,0,0,0},
-                 {0,0,0,1,0,0,0,1,1,1},
-                 {0,0,0,1,0,0,0,1,0,0},
-                 {0,0,0,1,0,0,0,1,0,0},
-                 {0,0,0,1,1,1,1,1,0,0},
-                 {0,0,0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0,2,0}
-               };
+            
+            int [][] map = Wall.getMap();            
             
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
-                    if(map[i][j] == 0){
-                        g2d.drawImage(tiili.getImage(), x_map, y_map, this);                     
+                    if(map[i][j] == 1){
+                        g2d.drawImage(tiili.getImage(), x_map, y_map, this);                         
                     }
-                    y_map = y_map + 5;
+                    x_map = x_map + 50;
                 } 
-                y_map = 0;
-                x_map = x_map + 5;
+                x_map = 0;
+                y_map = y_map + 50;
             }
-        g2d.drawImage(tiili.getImage(), x_map, y_map, this);
+            
+            y_map = 0;
+            x_map = 0;
+
+        
         
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
