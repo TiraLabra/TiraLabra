@@ -1,5 +1,6 @@
 package pacman.peli;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
@@ -8,11 +9,13 @@ public class Haku {
     private HashMap<Peliruutu,Integer> alkuun;
     private HashMap<Peliruutu,Integer> loppuun;
     private HashMap<Peliruutu,Peliruutu> polku;
+    private ArrayList<Peliruutu> kaydyt;
     
     public Haku() {
         alkuun = new HashMap<Peliruutu,Integer>();
         loppuun = new HashMap<Peliruutu, Integer>();
         polku = new HashMap<Peliruutu, Peliruutu>();
+        kaydyt = new ArrayList<Peliruutu>();
     }
     
     public Peliruutu aStar(Peliruutu lahto, Peliruutu maali, Pelialusta alusta) {
@@ -25,6 +28,10 @@ public class Haku {
                 polku.put(nykyinen, null);
             }
         }
+        
+        alkuun.put(lahto, 0);
+        kaydyt.clear();
+        
         
         
         return null;
