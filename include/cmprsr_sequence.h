@@ -60,10 +60,16 @@ struct sequence
 				|| (first > pSequence.first && first > pSequence.last && last < pSequence.first && last < pSequence.last);
 	}
 
-	c_uint value_distance(const sequence& pSequence) const
+	c_uint value_range(const sequence& pSequence) const
 	{
 		return std::abs(std::max(std::max(first, last), std::max(pSequence.first, pSequence.last))
 			- std::min(std::min(first, last), std::min(pSequence.first, pSequence.last)));
+	}
+
+	c_uint value_distance(const sequence& pSequence) const
+	{
+		return std::min(std::abs(std::max(first, last) - std::min(pSequence.first, pSequence.last)),
+			std::abs(std::max(pSequence.first, pSequence.last) - std::min(first, last)));
 	}
 };
 

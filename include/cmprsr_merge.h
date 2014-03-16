@@ -8,13 +8,15 @@ struct merge
 {
 	sequence* first;
 	sequence* second;
-	c_uint distance;
+	c_uint value_distance;
+	c_uint value_range;
 	bool valid;
 
 	merge(sequence* pFirst, sequence* pSecond)
 		: first(pFirst),
 		second(pSecond),
-		distance(pFirst->value_distance(*pSecond)),
+		value_distance(pFirst->value_distance(*pSecond)),
+		value_range(pFirst->value_range(*pSecond)),
 		valid(true)
 	{
 	}
@@ -31,19 +33,19 @@ struct merge
 	}
 };
 
-struct merge_cmp_distance_less
+struct merge_cmp_value_range_less
 {
 	bool operator()(const merge* pA, const merge* pB) const
 	{
-		return pA->distance < pB->distance;
+		return pA->value_range < pB->value_range;
 	}
 };
 
-struct merge_cmp_distance_greater
+struct merge_cmp_value_distance_less
 {
 	bool operator()(const merge* pA, const merge* pB) const
 	{
-		return pA->distance > pB->distance;
+		return pA->value_distance < pB->value_distance;
 	}
 };
 

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-# Coming soon
+cmake
