@@ -60,6 +60,7 @@ public class Man extends Hahmo{
      * Man jää paikalleen.
      *
      * @param heikkous
+     * @param peli
      */
     public void liiku(boolean heikkous, Pacman peli) {
 
