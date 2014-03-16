@@ -12,22 +12,18 @@ typedef std::vector<merge*> merge_list;
 
 // Finds increasing/decreasing sequences in data.
 // Returns list of found sequences in increasing offset order.
-sequence_list findSequences(const c_data* pData, const c_size& pLength, const bool& pInclusive);
-
-// Creates a list of sequences that can be merged (concatenated).
-//merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusive);
+sequence_list findSequences(const c_data* pData, const c_size& pLength);
 
 // Creates a list of sequences that can be concatenated.
 merge_list concatenateSequences(const sequence_list& pSequences, const bool& pInclusive);
 
-// Creates a list of sequences that can be merged.
+// Creates a list of sequences that can possibly be merged.
 merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusive);
 
-bool sequence_in_merge_range(const sequence_list& pSequences, const c_uint& pSequence, const merge& pMerge);
-
-// Moves memory in array, allows overlapping
+// Moves memory in array, allows overlapping.
 void cmprsr_memmove_in_array(void* pDst, void* pSrc, const size_t& pSize);
 
+// Reverses data in sequence.
 void reverseSequence(c_data* pData, const sequence& pSequence);
 
 #endif

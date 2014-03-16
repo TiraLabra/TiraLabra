@@ -4,27 +4,28 @@
 
 #include "cmprsrlib.h"
 
-// Finds ascending/descending sequences in data.
-sequence_list findSequences(const c_data* pData, const c_size& pLength, const bool& pInclusive)
+sequence_list findSequences(const c_data* pData, const c_size& pLength)
 {
 	sequence_list sequences;
 
-	c_uint ascCount = 0;
-	c_uint descCount = 0;
-
 	c_uint count = 1;
+	bool found = false;
 	bool increasing = true;
 
 	for(c_uint i=1; i<pLength; ++i)
 	{
-		if(pData[i] != pData[i - 1] && (pData[i] > pData[i - 1]) != increasing)
+		if(pData[i] != pData[i - 1])
 		{
-			if(count > 1)
+			bool inc = pData[i] > pData[i - 1];
+			if(found && inc != increasing)
 			{
 				sequences.push_back(new sequence(i - count, count, pData[i - count], pData[i - 1]));
 				count = 0;
+				found = false;
+			}else{
+				found = true;
 			}
-			increasing = !increasing;
+			increasing = inc;
 		}
 
 		++count;
@@ -36,7 +37,6 @@ sequence_list findSequences(const c_data* pData, const c_size& pLength, const bo
 	return sequences;
 }
 
-// Creates a list of sequences that can be concatenated.
 merge_list concatenateSequences(const sequence_list& pSequences, const bool& pInclusive)
 {
 	merge_list merges;
@@ -49,9 +49,9 @@ merge_list concatenateSequences(const sequence_list& pSequences, const bool& pIn
 			if(pSequences[i]->no_offset_overlap(*pSequences[j]))
 			{
 				if(pSequences[i]->range_before(*pSequences[j], pInclusive))
-					merges.push_back(new merge(i, j, pSequences[i]->value_distance(*pSequences[j])));
+					merges.push_back(new merge(pSequences[i], pSequences[j]));
 				else if(pSequences[j]->range_before(*pSequences[i], pInclusive))
-					merges.push_back(new merge(j, i, pSequences[j]->value_distance(*pSequences[i])));
+					merges.push_back(new merge(pSequences[j], pSequences[i]));
 
 				found = true;
 			}else if(found)
@@ -73,19 +73,13 @@ merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusiv
 		for(c_uint j=i+1; j<pSequences.size(); ++j)
 		{
 			if(pSequences[i]->can_contain(*pSequences[j], pInclusive))
-				merges.push_back(new merge(i, j, pSequences[i]->value_distance(*pSequences[j])));
+				merges.push_back(new merge(pSequences[i], pSequences[j]));
 			else if(pSequences[j]->can_contain(*pSequences[i], pInclusive))
-				merges.push_back(new merge(j, i, pSequences[j]->value_distance(*pSequences[i])));
+				merges.push_back(new merge(pSequences[j], pSequences[i]));
 		}
 	}
 
 	return merges;
-}
-
-bool sequence_in_merge_range(const sequence_list& pSequences, const c_uint& pSequence, const merge& pMerge)
-{
-		return (pSequences[pMerge.first]->offset <= pSequences[pSequence]->offset && pSequences[pMerge.second]->offset >= pSequences[pSequence]->offset)
-			|| (pSequences[pMerge.first]->offset >= pSequences[pSequence]->offset && pSequences[pMerge.second]->offset <= pSequences[pSequence]->offset);
 }
 
 void cmprsr_memmove_in_array(void* pDst, void* pSrc, const size_t& pSize)
