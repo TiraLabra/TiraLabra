@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.0)
 
 project(cmprsr)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external/cxxtest)
 
 set(CMPRSR_BUILD_TESTS 1 CACHE BOOL "Build tests")
 
@@ -13,7 +14,7 @@ set(CMPRSRLIB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 add_subdirectory(src)
 
 set(CMPRSR_SOURCE_FILES
-	main.cpp)
+	src/main.cpp)
 
 include_directories(${CMPRSRLIB_INCLUDE_DIR})
 

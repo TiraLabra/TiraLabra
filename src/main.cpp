@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <iostream>
 
 #include "cmprsrlib.h"
@@ -35,8 +37,5 @@ int main(int argc, char** argv)
 	std::cout << "Sequences:\n";
 	printSequences(str, sequences);
 	
-	int i;
-	std::cin >> i;
-
 	return 0;
 }

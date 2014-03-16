@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cmake
+ctest --output-on-failure
