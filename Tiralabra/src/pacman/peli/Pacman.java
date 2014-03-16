@@ -147,9 +147,9 @@ public class Pacman extends Timer implements ActionListener {
      * Asetetaan haamujen tyypiksi heikko, jolloin man pystyy syömään haamuja.
      */
     public void heikennaHaamut() {
+        this.heikko = true;
         for (Haamu haamu : haamut) {
-            haamu.setTyyppi("heikko");
-            this.heikko = true;
+            haamu.setTyyppi("heikko");            
             haamu.setHeikkous(30);
         }
     }
@@ -336,6 +336,9 @@ public class Pacman extends Timer implements ActionListener {
             haamuHeikostaVahvaksi(haamu);
         }
         kuoleekoHaamuTaiMan();
+        if(tarkistaOnkoHeikkoja() == 0) {
+            this.heikko = false;
+        }
         this.man.liiku(this.heikko, this);
         kuoleekoHaamuTaiMan();
         manSyoPistepallo();
@@ -351,5 +354,15 @@ public class Pacman extends Timer implements ActionListener {
         if (!jatkuu) {
             this.stop();
         }
+    }
+
+    private int tarkistaOnkoHeikkoja() {
+        int heikkoja = 0;
+        for (Haamu haamu : haamut) {
+            if(haamu.getTyyppi().equals("heikko")) {
+                heikkoja++;
+            }
+        }
+        return heikkoja;
     }
 }

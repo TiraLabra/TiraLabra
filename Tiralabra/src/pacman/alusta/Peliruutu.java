@@ -95,4 +95,32 @@ public class Peliruutu {
     public boolean getOnkoExtraPallo() {
         return this.onkoExtraPallo;
     }
+    
+    @Override
+    public boolean equals(Object olio) {
+        if(olio == null) {
+            return false;
+        }
+        if(getClass() != olio.getClass()) {
+            return false;
+        }
+        
+        Peliruutu verrattava = (Peliruutu) olio;
+        
+        if(this.x != verrattava.getX() || this.y != verrattava.getY()) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        if(this.x < 0 || this.y < 0) {
+            return hash;
+        }
+        
+        return this.ruudunTyyppi*(this.x+this.y);
+    }
 }
