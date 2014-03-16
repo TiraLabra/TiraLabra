@@ -18,8 +18,8 @@
 <h4>Ratkaisu</h4>
 <p>On siis käytettävä tietorakennetta, jonka avulla ei tarvitse kahlata läpi jokaista validia sanaa. Käyttämällä hajautustaulukkoja pystytään eliminoimaan monta vaihtoehtoa. Jos käytettäviä kirjaimia on kahdeksan ja aakkostoon kuuluu 26 kirjainta, niin pelkästään ensimmäisten kirjainten hajautustaulukolla pystyttäisiin karsimaan n. (26-8)/26=18/26 läpikäytävistä sanoista (osalle kirjaimista tietenkin painottuu enemmän sanoja). Kahdeksan kirjaimen anagrammia tarkistettaessa on siis pahimmillaan (jos sana on validi) etsittävä kahdeksasta eri hajautustaulukosta kirjainavainta. Eli:</p>
 <ul>
-<li>1. kirjaimen hajautustaulukosta on etsittävä avaimena olevaa anagrammin 1. kirjainta.</li>
-<li>Jos avain löytyy jatketaan etsintää sen kohdalla olevasta hajautustaulusta samalla tavalla,...</li>
+<li>1. kirjainten hajautustaulukosta on etsittävä avaimena olevaa anagrammin 1. kirjainta.</li>
+<li>Jos avain löytyy jatketaan etsintää sen viittaamassa hajautustaulussa samalla tavalla,...</li>
 <li>kunnes löydetään anagrammin viimeinen eli 8. kirjain.</li>
 </ul>
 <p>Nyt jokaisen anagrammin kohdalla on tehtävä korkeintaan kahdeksan hajautustauluhakua. Ongelman aikavaativuus kutistuu luokkaan <i>8*k=O(k)</i>. Hajautustauluja käyttäen validien sanojen määrällä ei siis periaatteessa ole aikavaativuuden kannalta mitään väliä.</p>
