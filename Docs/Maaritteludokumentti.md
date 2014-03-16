@@ -6,7 +6,7 @@ Aion parhaimman mahdollisimman reitin selvittämiseen käyttää A*-algoritmia, kosk
 
 Käyttäjä ei anna ohjelmalle syötteitä, mutta ohjelma saa pelialustan tekstitiedostona, jonka perusteella pelialusta luodaan. Tekstitiedostossa pelialustan eri ominaisuudet on merkitty eri tunnuksin, mitkä koodi sitten tunnistaa ja asettaa ominaisuudet alustalle.
 
-A*-algoritmin aikavaativuuden tavoite on tässä ohjelmassa O(|E|+|V|log|V|) ja tilavaativuuden tavoite on O(n2).
+A*-algoritmin aikavaativuuden tavoite on tässä ohjelmassa O(|E|+|V|log|V|) ja tilavaativuuden tavoite on O(n^2).
 
 Lähteet:
 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
