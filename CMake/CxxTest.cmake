@@ -12,6 +12,6 @@ function(cxx_test target source)
         DEPENDS "${source}"
     )
     add_executable(${target} ${CPP_FULL_NAME})
-    set_target_properties(${target} PROPERTIES COMPILE_FLAGS "-Wno-effc++")
+    #set_target_properties(${target} PROPERTIES COMPILE_FLAGS "-Wno-effc++")
     add_test(${target} ${RUNTIME_OUTPUT_DIRECTORY}/${target})
 endfunction(cxx_test)
