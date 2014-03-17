@@ -25,10 +25,10 @@ public class Board extends JPanel implements ActionListener{
     /**
      *
      */
-    public final int B_WIDTH = 350;
-    private final int B_HEIGHT = 350;
-    private final int INITIAL_X = -40;
-    private final int INITIAL_Y = -40;
+//    public final int B_WIDTH = 350;
+//    private final int B_HEIGHT = 350;
+//    private final int INITIAL_X = -40;
+//    private final int INITIAL_Y = -40;
     private final int DELAY = 50;
 
     /**
@@ -64,6 +64,12 @@ public class Board extends JPanel implements ActionListener{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
+        g2d.setColor(Color.YELLOW);
+        g2d.fillRect(0, 0, 50, 50);
+        g2d.setColor(Color.orange);
+        g2d.fillRect(450, 450, 500, 500);
+
+        
         g2d.drawImage(maus.getImage(), maus.getX(), maus.getY(), this);
             
             int [][] map = Wall.getMap();            

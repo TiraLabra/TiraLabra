@@ -1,6 +1,9 @@
 
 package com.mycompany.tiralabra_maven;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 
 
@@ -9,15 +12,23 @@ import javax.swing.JFrame;
  * @author Tiina
  */
 public class Hiirestys extends JFrame{
+    public static int lev = 500;
+    //Jframen bordereiden vuoksi lisään nyt tähän 40. se on suunnilleen niin. 
+    public static int kor = 540;
     
+    /**
+     *
+     */
     public Hiirestys(){
         add(new Board());
         setTitle("Hiiri!");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(lev, kor);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        
+    
     }
 
     /**
@@ -54,5 +65,7 @@ public class Hiirestys extends JFrame{
             }
         
     }
+
+
     
 }

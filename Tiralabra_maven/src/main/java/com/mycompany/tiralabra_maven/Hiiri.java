@@ -6,6 +6,12 @@
 
 package com.mycompany.tiralabra_maven;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -25,18 +31,27 @@ public class Hiiri {
     public Hiiri(){
         ImageIcon ii = new ImageIcon("maus.png");
         image = ii.getImage();
-        x = 50;
-        y = 50;
+        x = 0;
+        y = 0;
 
     }
     
    //nyt hiiri tekee hypyn tuntemattomaan jos menee yli reunan.
    public void move() {
-        if (y > 700) {
-            
-            y = -40;
-            x = -40;
+       //hiiri pysyy pelilaudan sisällä. korkeudessa on Jframen bordereiden vuoksi 90.
+        if (y >= Hiirestys.kor - 90){
+            y = Hiirestys.kor - 90;
         }
+        if(y <= 0){
+            y = 0;
+        }
+        if (x >= Hiirestys.lev - 50){
+            x = Hiirestys.lev - 50;
+        }
+        if(x <= 0){
+           x = 0;
+        }
+        //hiiri liikkuu aina 50 kerrallaan.
         x += dx;
         y += dy;
    }
@@ -60,22 +75,22 @@ public class Hiiri {
 
         if (key == KeyEvent.VK_LEFT) {
             dy = 0;
-            dx = -1;
+            dx = -50;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            
-            dx = 1;
+            dy = 0;
+            dx = 50;
         }
 
         if (key == KeyEvent.VK_UP) {
             dx = 0;
-            dy = -1;
+            dy = -50;
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            
-            dy = 1;
+            dx = 0;
+            dy = 50;
         }
     }
 
