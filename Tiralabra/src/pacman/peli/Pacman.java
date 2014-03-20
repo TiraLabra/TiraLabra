@@ -332,6 +332,7 @@ public class Pacman extends Timer implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         for (Haamu haamu : haamut) {
+            
             haamu.liiku();
             haamuHeikostaVahvaksi(haamu);
         }

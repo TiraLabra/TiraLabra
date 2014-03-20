@@ -6,7 +6,7 @@ package pacman.alusta;
  *
  * @author hhkopper
  */
-public class Peliruutu {
+public class Peliruutu implements Comparable<Peliruutu>{
 
     /**
      * Ruudun X koordinaatti.
@@ -36,6 +36,10 @@ public class Peliruutu {
      * Kertoo onko ekstra pistepallo ruudussa, true, jos on ja false, jos ei.
      */
     private boolean onkoExtraPallo;
+    
+    private int etaisyysAlkuun;
+    
+    private int etaisyysMaaliin;
 
     /**
      * Konstruktorissa annetaan arvot koordinaateille.
@@ -46,6 +50,23 @@ public class Peliruutu {
     public Peliruutu(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    
+    public int getEtaisyysAlkuun() {
+        return this.etaisyysAlkuun;
+    }
+    
+    public int getEtaisyysMaaliin() {
+        return this.etaisyysMaaliin;
+    }
+    
+    public void setEtaisyysAlkuun(int luku) {
+        this.etaisyysAlkuun = luku;
+    }
+    
+    public void setEtaisyysMaaliin(int luku) {
+        this.etaisyysMaaliin = luku;
     }
 
     public int getX() {
@@ -122,5 +143,10 @@ public class Peliruutu {
         }
         
         return this.ruudunTyyppi*(this.x+this.y);
+    }
+    
+    public int compareTo(Peliruutu ruutu) {
+
+        return (this.etaisyysAlkuun+this.etaisyysMaaliin) - (ruutu.getEtaisyysAlkuun()+ruutu.getEtaisyysMaaliin());
     }
 }
