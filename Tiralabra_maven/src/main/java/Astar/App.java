@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven;
+package Astar;
 
 /**
  * Hello world!
@@ -8,6 +8,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Map kartta1 = new Map();
     }
 }
