@@ -8,7 +8,7 @@ The application I am developing should be a working command-line application, ta
 
 Input and output
 ----------------
-The application accepts a number of parameters and flags from the command line, including flags for encryption or decryption (specified in [manual file] (https://github.com/Julppu/Tira-DESu/blob/master/Docs/Kayttoohje.md)).
+The application accepts a number of parameters and flags from the command line, including flags for encryption or decryption (specified in [manual file] (https://github.com/Julppu/Tira-DESu/blob/master/Docs/man.md).
 
 Algorithms
 ----------
