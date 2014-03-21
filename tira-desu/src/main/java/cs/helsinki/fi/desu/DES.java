@@ -10,6 +10,7 @@ package cs.helsinki.fi.desu;
  */
 public class DES {
 
+    /* Initial permutation */
     private static final byte[] IP = { 
         58, 50, 42, 34, 26, 18, 10, 2,
         60, 52, 44, 36, 28, 20, 12, 4,
@@ -21,7 +22,8 @@ public class DES {
         63, 55, 47, 39, 31, 23, 15, 7
     };
 
-    private static final byte[] FP = {
+    /* Reversed initial permutation */
+    private static final byte[] reverseIP = {
         40, 8, 48, 16, 56, 24, 64, 32,
         39, 7, 47, 15, 55, 23, 63, 31,
         38, 6, 46, 14, 54, 22, 62, 30,
@@ -29,9 +31,10 @@ public class DES {
         36, 4, 44, 12, 52, 20, 60, 28,
         35, 3, 43, 11, 51, 19, 59, 27,
         34, 2, 42, 10, 50, 18, 58, 26,
-        33, 1, 41, 9, 49, 17, 57, 25
+        33, 1, 41, 9,  49, 17, 57, 25
     };
 
+    /* Expansion permutation */
     private static final byte[] E = {
         32, 1,  2,  3,  4,  5,
         4,  5,  6,  7,  8,  9,
@@ -43,7 +46,8 @@ public class DES {
         28, 29, 30, 31, 32, 1
     };
 
-    private static final byte[][] s = 
+    /* S-Boxes 1 to 8, use as array of arrays */
+    private static final byte[][] sBox = 
        {
         14, 4,  13,  1,  2, 15, 11,  8,  3,  10, 6, 12,  5,  9,  0,  7,
         0,  15,  7,  4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5,  3,  8, 
@@ -86,6 +90,7 @@ public class DES {
         2,  1,  14, 7,  4,  10, 8,  13, 15, 12, 9,  0,  3,  5,  6,  11
     }};
 
+    /* Key schedule initial permutation */
     private static final byte[] PC1 = {
         57, 49, 41, 33, 25, 17, 9,
         1,  58, 50, 42, 34, 26, 18,
@@ -97,17 +102,7 @@ public class DES {
         21, 13, 5,  28, 20, 12, 4
     };
 
-    private static final byte[] PC2 = {
-        14, 17, 11, 24, 1,  5,
-        3,  28, 15, 6,  21, 10,
-        23, 19, 12, 4,  26, 8,
-        16, 7,  27, 20, 13, 2,
-        41, 52, 31, 37, 47, 55,
-        30, 40, 51, 45, 33, 48,
-        44, 49, 39, 56, 34, 53,
-        46, 42, 50, 36, 29, 32
-    };
-
+    /* Key schedule final permutation */
     private static final byte[] PC2 = {
         14, 17, 11, 24, 1,  5,
         3,  28, 15, 6,  21, 10,
@@ -127,7 +122,11 @@ public class DES {
         return null;
     }
     
-    public byte[] feistel() {
+    public byte[] feistelF() {
+        return null;
+    }
+
+    public byte[] feistelS() {
         return null;
     }
     
