@@ -6,6 +6,7 @@ package pacman.hahmot;
 import java.util.ArrayList;
 import java.util.Random;
 import pacman.alusta.Pelialusta;
+import pacman.alusta.Peliruutu;
 
 /**
  *
@@ -92,6 +93,13 @@ public class Haamu extends Hahmo {
      */
     public void luoHaamuAlustalle() {
         alusta.getPeliruutu(x, y).setOnkoHaamu(true);
+    }
+    
+    public void liiku(Peliruutu ruutu) {
+        this.setX(ruutu.getX());
+        this.setY(ruutu.getY());
+        alusta.getPeliruutu(x, y).setOnkoHaamu(true);
+        alusta.getPeliruutu(x - suunta.getX(), y - suunta.getY()).setOnkoHaamu(false);
     }
 
     /**

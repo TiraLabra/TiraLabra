@@ -65,6 +65,8 @@ public class Pacman extends Timer implements ActionListener {
     private boolean tilanne;
     
     private boolean heikko;
+    
+    private Haku haku;
 
     /**
      * Konstruktorissa luodaan pelialusta ja kaikki komponentit sille, luodaan
@@ -83,6 +85,7 @@ public class Pacman extends Timer implements ActionListener {
         this.jatkuu = true;
         this.tilanne = false;
         this.heikko = false;
+        this.haku = new Haku();
 
         addActionListener(this);
         setInitialDelay(2000);
@@ -331,11 +334,26 @@ public class Pacman extends Timer implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        for (Haamu haamu : haamut) {
-            
-            haamu.liiku();
-            haamuHeikostaVahvaksi(haamu);
-        }
+//        for (Haamu haamu : haamut) {
+//            
+//            haamu.liiku();
+//            haamuHeikostaVahvaksi(haamu);
+//        }
+        haamut.get(1).liiku();
+        haamuHeikostaVahvaksi(haamut.get(1));
+        haamut.get(2).liiku();
+        haamuHeikostaVahvaksi(haamut.get(2));
+        haamut.get(3).liiku();
+        haamuHeikostaVahvaksi(haamut.get(3));
+        
+        Haamu haamu = haamut.get(0);
+        Peliruutu hk = alusta.getPeliruutu(haamu.getX(), haamu.getY());
+        Peliruutu mk = alusta.getPeliruutu(man.getX(), man.getY());
+        System.out.println(mk.toString());
+        Peliruutu siirto = haku.aStar(hk, mk, alusta);
+        haamut.get(0).liiku(siirto);
+        System.out.println(siirto.toString());
+        
         kuoleekoHaamuTaiMan();
         if(tarkistaOnkoHeikkoja() == 0) {
             this.heikko = false;

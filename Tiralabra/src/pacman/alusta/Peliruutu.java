@@ -142,11 +142,17 @@ public class Peliruutu implements Comparable<Peliruutu>{
             return hash;
         }
         
-        return this.ruudunTyyppi*(this.x+this.y);
+        return this.x*19+this.y;
     }
     
+    @Override
     public int compareTo(Peliruutu ruutu) {
 
         return (this.etaisyysAlkuun+this.etaisyysMaaliin) - (ruutu.getEtaisyysAlkuun()+ruutu.getEtaisyysMaaliin());
+    }
+    
+    @Override
+    public String toString() {
+        return "("+this.x+","+this.y+")";
     }
 }
