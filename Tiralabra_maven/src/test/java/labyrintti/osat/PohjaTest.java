@@ -23,16 +23,10 @@ public class PohjaTest {
     public PohjaTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
+        pohja = new Pohja();
+        pohja.luoPohja();
     }
     
     @After
