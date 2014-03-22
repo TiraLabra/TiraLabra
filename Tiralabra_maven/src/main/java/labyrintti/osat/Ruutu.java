@@ -27,7 +27,8 @@ public class Ruutu implements Comparable<Ruutu> {
      */
     private boolean kayty;
     /**
-     * Ruutu tuntee ruudun, josta siihen on tultu, jotta voi selvittää polun reitin.
+     * Ruutu tuntee ruudun, josta siihen on tultu, jotta voi selvittää polun
+     * reitin.
      */
     private Ruutu edellinen;
 
@@ -43,8 +44,9 @@ public class Ruutu implements Comparable<Ruutu> {
 
     /**
      * Laskee etäisyyden maaliruutuun
-     * @param maaliX, maaliruudun x-koordinaatti
-     * @param maaliY, maaliruudun y-koordinaatti
+     *
+     * @param maaliX Maaliruudun x-koordinaatti
+     * @param maaliY Maaliruudun y-koordinaatti
      */
     public void laskeEtaisyysMaaliin(int maaliX, int maaliY) {
         etaisyysLoppuun = Math.abs((x - maaliX)) + Math.abs((y - maaliY));
@@ -70,10 +72,19 @@ public class Ruutu implements Comparable<Ruutu> {
         return etaisyysLoppuun;
     }
 
+    /**
+     * Laskee ruudun alun ja lopun etäisyyksien summan.
+     *
+     * @return etaisyys alkuun + etaisyys loppuun
+     */
     public int getEtaisyyksiensumma() {
         return etaisyysAlkuun + etaisyysLoppuun;
     }
 
+    /**
+     *
+     * @return true jos etsijä on jo käynyt ruudussa, muuten false
+     */
     public boolean onkoKayty() {
         return kayty;
     }
@@ -99,6 +110,10 @@ public class Ruutu implements Comparable<Ruutu> {
         return "" + arvo;
     }
 
+    public String koordinaatit() {
+        return x + "," + y;
+    }
+
     @Override
     public int compareTo(Ruutu r) {
         return getEtaisyyksiensumma() - r.getEtaisyyksiensumma();
@@ -106,19 +121,16 @@ public class Ruutu implements Comparable<Ruutu> {
 
     @Override
     public boolean equals(Object o) {
-        if(o==null){
+        if (o == null) {
             return false;
         }
-        if(getClass() != o.getClass()){
+        if (getClass() != o.getClass()) {
             return false;
         }
         Ruutu verrattava = (Ruutu) o;
-        if(x==verrattava.getX() && y==verrattava.getY()){
+        if (x == verrattava.getX() && y == verrattava.getY()) {
             return true;
         }
         return false;
     }
-    
-    
-
 }

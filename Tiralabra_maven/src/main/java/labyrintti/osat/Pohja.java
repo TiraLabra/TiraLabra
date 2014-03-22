@@ -17,9 +17,21 @@ public class Pohja {
      * Kartan leveys.
      */
     private int leveys;
+    /**
+     * Lähtöruudun x-koordinaatti.
+     */
     private int lahtoX;
+    /**
+     * Lähtöruudun y-koordinaatti.
+     */
     private int lahtoY;
+    /**
+     * Maaliruudun x-koordinaatti.
+     */
     private int maaliX;
+    /**
+     * Maaliruudun y-koordinaatti.
+     */
     private int maaliY;
 
     public Pohja() {
@@ -27,11 +39,12 @@ public class Pohja {
     }
 
     /**
-     * Luo tekstitiedostosta pohjan.
+     * Luo tekstitiedostosta pohjan taulukkoon.
      */
-    public void luoPohja() {
-        File tiedosto = new File("src/main/java/labyrintti/osat/kartta.txt");
+    public void luoPohja(String tiedostoPolku) {
+        File tiedosto = new File(tiedostoPolku);
         Scanner lukija = null;
+        
         try {
             lukija = new Scanner(tiedosto);
         } catch (Exception e) {
@@ -41,7 +54,7 @@ public class Pohja {
 
         leveys = lukija.nextLine().length();
         korkeus = 1;
-        while (lukija.hasNextLine()) {
+        while (lukija.hasNextLine()) { //selvitetään, kuinka monta riviä pohjataulukkoon tulee
             lukija.nextLine();
             korkeus++;
         }

@@ -1,4 +1,4 @@
-Määrittelydokumentti
+﻿Määrittelydokumentti
 ====================
 Aihe - Polunetsintä
 -------------------
@@ -13,4 +13,5 @@ Aikavaativuuden tavoite algoritmille on O((m+n)log n), jossa m tarkoittaa verkon
 Lähteet
 -------
 http://fi.wikipedia.org/wiki/Polunetsint%C3%A4 
+
 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf  

@@ -3,15 +3,10 @@ package com.mycompany.tiralabra_maven;
 import labyrintti.osat.Pohja;
 import labyrintti.sovellus.Etsija;
 
-/**
- * Hello world!
- *
- */
 public class App {
     public static void main( String[] args ){
         Pohja p = new Pohja();
-        //System.out.println( "Hello World!" );
-        p.luoPohja();
+        p.luoPohja("src/main/java/labyrintti/osat/kartta1.txt");
         //p.tulostaPohja();
         Etsija e = new Etsija(p);
         e.aStar();
