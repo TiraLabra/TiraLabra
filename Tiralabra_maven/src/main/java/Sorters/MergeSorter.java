@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class MergeSorter {
     
     public int[] mergeSort(int[] arrayToSort){
+        //taulukko on jo järjestyksessä jos <2
         if(arrayToSort.length<2){
             return arrayToSort;
         }
@@ -15,30 +16,30 @@ public class MergeSorter {
             int keski = (int) arrayToSort.length/2;
             int[] left = mergeSort(Arrays.copyOfRange(arrayToSort, 0, keski));
             int[] right = mergeSort(Arrays.copyOfRange(arrayToSort, keski, arrayToSort.length));
-            int i = 0;
-            int j = 0;
-            int k = 0;
-            while(i<left.length&&j<right.length){
-                if(left[i]<right[j]){
-                    uusi[k]=left[i];
-                    k++;
-                    i++;
+            int vasemmanTaulukonIndeksi = 0;
+            int oikeanTaulukonIndeksi = 0;
+            int lopullisentaulukonIndeksi = 0;
+            while(vasemmanTaulukonIndeksi<left.length&&oikeanTaulukonIndeksi<right.length){
+                if(left[vasemmanTaulukonIndeksi]<right[oikeanTaulukonIndeksi]){
+                    uusi[lopullisentaulukonIndeksi]=left[vasemmanTaulukonIndeksi];
+                    lopullisentaulukonIndeksi++;
+                    vasemmanTaulukonIndeksi++;
                 }
                 else{
-                    uusi[k]=right[j];
-                    k++;
-                    j++;
+                    uusi[lopullisentaulukonIndeksi]=right[oikeanTaulukonIndeksi];
+                    lopullisentaulukonIndeksi++;
+                    oikeanTaulukonIndeksi++;
                 }
             }
-            while(i<left.length){
-                uusi[k]=left[i];
-                i++;
-                k++;
+            while(vasemmanTaulukonIndeksi<left.length){
+                uusi[lopullisentaulukonIndeksi]=left[vasemmanTaulukonIndeksi];
+                vasemmanTaulukonIndeksi++;
+                lopullisentaulukonIndeksi++;
             }
-            while(j<right.length){
-                uusi[k]=right[j];
-                j++;
-                k++;
+            while(oikeanTaulukonIndeksi<right.length){
+                uusi[lopullisentaulukonIndeksi]=right[oikeanTaulukonIndeksi];
+                oikeanTaulukonIndeksi++;
+                lopullisentaulukonIndeksi++;
             }
             return uusi;
         }
