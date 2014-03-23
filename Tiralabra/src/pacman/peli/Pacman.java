@@ -63,9 +63,9 @@ public class Pacman extends Timer implements ActionListener {
      * Boolean arvo kertoo onko peli voitettu (true) vai hävitty (false).
      */
     private boolean tilanne;
-    
+
     private boolean heikko;
-    
+
     private Haku haku;
 
     /**
@@ -94,7 +94,7 @@ public class Pacman extends Timer implements ActionListener {
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
     }
-    
+
     public boolean getHeikko() {
         return this.heikko;
     }
@@ -152,14 +152,15 @@ public class Pacman extends Timer implements ActionListener {
     public void heikennaHaamut() {
         this.heikko = true;
         for (Haamu haamu : haamut) {
-            haamu.setTyyppi("heikko");            
+            haamu.setTyyppi("heikko");
             haamu.setHeikkous(30);
         }
     }
 
     /**
-     * Jos haamun tyyppi on heikko ja heikkousaika on loppunut, muutetaan haamun tyyppi vahvaksi.
-     * Jos heikkousaika ei ole vielä loppu, vähennetään sitä.
+     * Jos haamun tyyppi on heikko ja heikkousaika on loppunut, muutetaan haamun
+     * tyyppi vahvaksi. Jos heikkousaika ei ole vielä loppu, vähennetään sitä.
+     *
      * @param haamu haamu, jonka tyyppiä tutkitaan.
      */
     private void haamuHeikostaVahvaksi(Haamu haamu) {
@@ -174,9 +175,9 @@ public class Pacman extends Timer implements ActionListener {
     }
 
     /**
-     * Man syö pistepallon kentältä ja kasvatetaan pistemäärää.
-     * Jos tavallinen pistepallo, kasvatetaan vain pistemäärää.
-     * Jos ekstrapistepallo, muutetaan haamujen tyyppi heikoksi ja kasvatetaan pistemäärää.
+     * Man syö pistepallon kentältä ja kasvatetaan pistemäärää. Jos tavallinen
+     * pistepallo, kasvatetaan vain pistemäärää. Jos ekstrapistepallo, muutetaan
+     * haamujen tyyppi heikoksi ja kasvatetaan pistemäärää.
      */
     public void manSyoPistepallo() {
         if (alusta.getPeliruutu(man.getX(), man.getY()).getOnkoPallo()) {
@@ -190,8 +191,8 @@ public class Pacman extends Timer implements ActionListener {
     }
 
     /**
-     * Katsotaan kuoleeko haamu tai man, kun ne osuvat samaan ruutuun. 
-     * Jos haamun tyyppi on heikko, tällöin haamu kuolee ja palaa lähtöruutuunsa.
+     * Katsotaan kuoleeko haamu tai man, kun ne osuvat samaan ruutuun. Jos
+     * haamun tyyppi on heikko, tällöin haamu kuolee ja palaa lähtöruutuunsa.
      * Jos taas haamun tyyppi on vahva, niin man kuolee ja palaa lähtöruutuun.
      */
     public void kuoleekoHaamuTaiMan() {
@@ -334,28 +335,24 @@ public class Pacman extends Timer implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-//        for (Haamu haamu : haamut) {
-//            
-//            haamu.liiku();
-//            haamuHeikostaVahvaksi(haamu);
-//        }
-        haamut.get(1).liiku();
-        haamuHeikostaVahvaksi(haamut.get(1));
-        haamut.get(2).liiku();
-        haamuHeikostaVahvaksi(haamut.get(2));
-        haamut.get(3).liiku();
-        haamuHeikostaVahvaksi(haamut.get(3));
-        
-        Haamu haamu = haamut.get(0);
-        Peliruutu hk = alusta.getPeliruutu(haamu.getX(), haamu.getY());
-        Peliruutu mk = alusta.getPeliruutu(man.getX(), man.getY());
-        System.out.println(mk.toString());
-        Peliruutu siirto = haku.aStar(hk, mk, alusta);
-        haamut.get(0).liiku(siirto);
-        System.out.println(siirto.toString());
-        
+        for (Haamu haamu : haamut) {
+            if (haamu.getNimi().equals("red")) {
+                Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(man.getX(), man.getY()), alusta);
+                haamu.liiku(siirto);
+            } 
+//            else if (haamu.getNimi().equals("cyan")) {
+//                Peliruutu maali = haamu.selvitaMaali(this.getMan());
+//                Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), maali, alusta);
+//                haamu.liiku(siirto);
+//            } 
+            else {
+                haamu.liiku();
+            }
+            haamuHeikostaVahvaksi(haamu);
+        }
+
         kuoleekoHaamuTaiMan();
-        if(tarkistaOnkoHeikkoja() == 0) {
+        if (tarkistaOnkoHeikkoja() == 0) {
             this.heikko = false;
         }
         this.man.liiku(this.heikko, this);
@@ -378,7 +375,7 @@ public class Pacman extends Timer implements ActionListener {
     private int tarkistaOnkoHeikkoja() {
         int heikkoja = 0;
         for (Haamu haamu : haamut) {
-            if(haamu.getTyyppi().equals("heikko")) {
+            if (haamu.getTyyppi().equals("heikko")) {
                 heikkoja++;
             }
         }

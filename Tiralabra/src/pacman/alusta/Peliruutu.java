@@ -148,7 +148,7 @@ public class Peliruutu implements Comparable<Peliruutu>{
     @Override
     public int compareTo(Peliruutu ruutu) {
 
-        return (this.etaisyysAlkuun+this.etaisyysMaaliin) - (ruutu.getEtaisyysAlkuun()+ruutu.getEtaisyysMaaliin());
+        return (this.etaisyysMaaliin+this.etaisyysAlkuun) - (ruutu.getEtaisyysMaaliin()+ruutu.getEtaisyysAlkuun());
     }
     
     @Override

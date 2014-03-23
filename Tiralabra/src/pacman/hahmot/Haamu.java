@@ -1,6 +1,4 @@
-
 //Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
-
 package pacman.hahmot;
 
 import java.util.ArrayList;
@@ -94,7 +92,11 @@ public class Haamu extends Hahmo {
     public void luoHaamuAlustalle() {
         alusta.getPeliruutu(x, y).setOnkoHaamu(true);
     }
-    
+
+    /**
+     * Liikuttaa haluttuun ruutuun.
+     * @param ruutu
+     */
     public void liiku(Peliruutu ruutu) {
         this.setX(ruutu.getX());
         this.setY(ruutu.getY());
@@ -103,11 +105,12 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Haamua liikuttava metodi. 
-     * Jos haamun seuraava ruutu olisi seinä arvotaan uusi suunta, minkä jälkeen liikutaan tähän suuntaa. 
-     * Liiku metodi myös tarkistaa, pääseekö ruudusta, jossa haamu on myös muualle kuin samaan suuntaan jatkamalla tai peruuttamalla. 
-     * Jos muuallekin pääsee arvotaan uusi suunta ja liikutaan sinne. 
-     * Muissa tapauksissa liikutaan suuntaan, joka haamulla on suuntana.
+     * Haamua liikuttava metodi. Jos haamun seuraava ruutu olisi seinä arvotaan
+     * uusi suunta, minkä jälkeen liikutaan tähän suuntaa. Liiku metodi myös
+     * tarkistaa, pääseekö ruudusta, jossa haamu on myös muualle kuin samaan
+     * suuntaan jatkamalla tai peruuttamalla. Jos muuallekin pääsee arvotaan
+     * uusi suunta ja liikutaan sinne. Muissa tapauksissa liikutaan suuntaan,
+     * joka haamulla on suuntana.
      */
     public void liiku() {
         if (alusta.getPeliruutu(x + this.suunta.getX(), y + this.suunta.getY()).getRuudunTyyppi() == 0) {
@@ -163,6 +166,12 @@ public class Haamu extends Hahmo {
         this.y = 9;
         this.x = 9;
         alusta.getPeliruutu(x, y).setOnkoHaamu(true);
+    }
+
+    public Peliruutu selvitaMaali(Man man) {
+        
+            return alusta.getPeliruutu(man.getX(), man.getY());
+        
     }
 
 }
