@@ -1,0 +1,179 @@
+{
+	"nodes": {
+		"nodeA": 
+			{
+			"title": "Node A",
+			"location": 
+			{
+				"x": 150,
+				"y": 200
+			},
+			"neighbours": 
+			{
+				"nodeB": 10,
+				"nodeC": 13,
+				"nodeE": 5
+			}								
+		},
+		"nodeB": 
+			{
+			"title": "Node B",
+			"location": 
+				{
+				"x": 400,
+				"y": 50
+			},
+			"neighbours": 
+			{
+				"nodeA": 10,
+				"nodeE": 25,
+				"nodeF": 15
+			}								
+		},
+		"nodeC": 
+			{
+			"title": "Node C",
+			"location": 
+			{
+				"x": 100,
+				"y": 500
+			},
+			"neighbours": 
+					{
+					"nodeA": 10,
+					"nodeD": 5						
+					}
+								
+			}
+			,
+			"nodeD": 
+				{
+				"title": "Node D",
+				"location": 
+					{
+						"x": 350,
+						"y": 550
+					}
+				,
+				"neighbours": 
+					{
+						"nodeC": 10,
+						"nodeE": 13,
+						"nodeH": 11
+												
+					}
+								
+			}
+			,
+			"nodeE": 
+				{
+				"title": "Node E",
+				"location": 
+					{
+						"x": 330,
+						"y": 370
+					}
+				,
+				"neighbours": 
+					{
+						"nodeA": 10,
+						"nodeB": 13,
+						"nodeD": 25,
+						"nodeG": 5						
+					}
+								
+			}
+			,
+			"nodeF": 
+				{
+				"title": "Node F",
+				"location": 
+					{
+						"x": 480,
+						"y": 425
+					}
+				,
+				"neighbours": 
+					{
+						"nodeC": 10,
+						"nodeD": 13,
+						"nodeE": 25,
+						"nodeB": 5						
+					}
+								
+			},
+			"nodeG": 
+				{
+				"title": "Node G",
+				"location": 
+					{
+						"x": 600,
+						"y": 100
+					}
+				,
+				"neighbours": 
+					{
+						"nodeF": 13,
+						"nodeE": 25,
+						"nodeB": 5,
+						"nodeI": 7						
+					}
+								
+			},
+			"nodeH": 
+				{
+				"title": "Node H",
+				"location": 
+					{
+						"x": 700,
+						"y": 500
+					}
+				,
+				"neighbours": 
+					{
+						"nodeF": 13,
+						"nodeD": 25,
+						"nodeI": 5						
+					}
+								
+			},
+			"nodeI": 
+				{
+				"title": "Node I",
+				"location": 
+					{
+						"x": 650,
+						"y": 300
+					}
+				,
+				"neighbours": 
+					{
+						"nodeH": 13,
+						"nodeG": 25,
+						"nodeF": 5						
+					}
+								
+			},
+			
+			"nodeJ": 
+				{
+				"title": "Node J",
+				"location": 
+					{
+						"x": 725,
+						"y": 200
+					}
+				,
+				"neighbours": 
+					{
+						"nodeH": 13,
+						"nodeG": 25,
+						"nodeI": 5						
+					}
+								
+			}
+			
+		}
+}
+
+ 
