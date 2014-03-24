@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven;
+package juhor.tiralabra.ui;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
