@@ -6,32 +6,34 @@ package Astar;
  */
 public class Map {
     public Node[][] field;
+    int y = 8;
+    int x = 12;
     
     public Map() {
-        field = new Node[8][8];
-        for(int i=0; i<8;i++) {   
-            for(int j=0; j<8;j++) {
+        field = new Node[8][12];
+        for(int i=0; i<y;i++) {   
+            for(int j=0; j<x;j++) {
                 if(i==0)
                     field[i][j] = new Node('*', i, j);
                 
-                if(j == 0 || j == 7)
+                if(j == 0 || j == (x-1))
                     field[i][j] = new Node('*', i, j);
                 
-                if(0<i && i<=7)
+                if(0<i && i<=x-1)
                     field[i][j] = new Node('0', i, j);
-                if(j==0 || j==7)
+                if(j==0 || j==x-1)
                     field[i][j] = new Node('*', i, j);
-                if(i==7)
+                if(i==y-1)
                     field[i][j] = new Node('*', i, j);
             }
         }
-        field[0][6].setValue('0');
-        field[7][2].setValue('0');
+        field[0][10].setValue('0');
+        //field[7][2].setValue('0');
     }
    
     public void printField() {
-        for(int i = 0; i<8; i++) {
-            for(int j = 0; j<8;j++) {
+        for(int i = 0; i<y; i++) {
+            for(int j = 0; j<x;j++) {
                 System.out.print(field[i][j].getValue());
             }
             System.out.println();
