@@ -6,7 +6,7 @@
 
 #include "cmprsrlib.h"
 
-sequence_list findSequences(const c_data* pData, const c_size& pLength)
+sequence_list findSequences(const c_data* pData, const c_size& pLength, const c_uint& pMinSequence, const c_uint& pMaxDifference)
 {
 	sequence_list sequences;
 
@@ -21,7 +21,9 @@ sequence_list findSequences(const c_data* pData, const c_size& pLength)
 			bool inc = pData[i] > pData[i - 1];
 			if(found && inc != increasing)
 			{
-				sequences.push_back(new sequence(i - count, count, pData[i - count], pData[i - 1]));
+				if(count >= pMinSequence)
+					sequences.push_back(new sequence(i - count, count, pData[i - count], pData[i - 1]));
+
 				count = 0;
 				found = false;
 			}else{
@@ -42,6 +44,36 @@ sequence_list findSequences(const c_data* pData, const c_size& pLength)
 merge_list concatenateSequences(const sequence_list& pSequences, const bool& pInclusive)
 {
 	merge_list merges;
+	sequence_list sequences = pSequences;
+
+	c_uint iterationCount = 0;
+	
+	for(c_uint i=0; i<sequences.size() - 1; ++i)
+	{
+		for(c_uint j=i+1; j<sequences.size(); ++j)
+		{
+			++iterationCount;
+			if(sequences[i]->no_offset_overlap(*sequences[j]) && sequences[i]->no_value_overlap(*sequences[j], true))
+			{
+				if(sequences[i]->block_before(*sequences[j]))
+					merges.push_back(new merge(sequences[i], sequences[j]));
+				else
+					merges.push_back(new merge(sequences[j], sequences[i]));
+				sequences.erase(sequences.begin() + j);
+				break;
+			}
+		}
+	}
+
+	std::cout << "Iteration count: " << iterationCount << "\n";
+
+	return merges;
+}
+
+merge_list concatenateSequencesSlow(const sequence_list& pSequences, const bool& pInclusive)
+{
+	merge_list merges;
+	std::map<sequence*, merge*> sequenceMerges;
 
 	for(c_uint i=0; i<pSequences.size()-1; ++i)
 	{
@@ -51,9 +83,26 @@ merge_list concatenateSequences(const sequence_list& pSequences, const bool& pIn
 			if(pSequences[i]->no_offset_overlap(*pSequences[j]))
 			{
 				if(pSequences[i]->range_before(*pSequences[j], pInclusive))
-					merges.push_back(new merge(pSequences[i], pSequences[j]));
-				else if(pSequences[j]->range_before(*pSequences[i], pInclusive))
-					merges.push_back(new merge(pSequences[j], pSequences[i]));
+				{
+					merge* m = sequenceMerges[pSequences[i]];
+					if(m)
+					{
+						if(m->value_distance > pSequences[i]->value_distance(*pSequences[j]))
+							m->second = pSequences[j];
+					}else{
+						sequenceMerges[pSequences[i]] = new merge(pSequences[i], pSequences[j]);
+					}
+				}else if(pSequences[j]->range_before(*pSequences[i], pInclusive))
+				{
+					merge* m = sequenceMerges[pSequences[j]];
+					if(m)
+					{
+						if(m->value_distance > pSequences[j]->value_distance(*pSequences[i]))
+							m->second = pSequences[j];
+					}else{
+						sequenceMerges[pSequences[j]] = new merge(pSequences[j], pSequences[i]);
+					}
+				}
 
 				found = true;
 			}else if(found)
@@ -62,6 +111,10 @@ merge_list concatenateSequences(const sequence_list& pSequences, const bool& pIn
 			}
 		}
 	}
+
+	std::map<sequence*, merge*>::iterator it;
+	for(it = sequenceMerges.begin(); it != sequenceMerges.end(); ++it)
+		merges.push_back(it->second);
 
 	return merges;
 }
@@ -84,7 +137,7 @@ merge_list mergeSequences(const sequence_list& pSequences, const bool& pInclusiv
 	return merges;
 }
 
-void cmprsr_memmove_in_array(void* pDst, void* pSrc, const size_t& pSize)
+void memmove_in_array(void* pDst, void* pSrc, const size_t& pSize)
 {
 	char* dst = static_cast<char*>(pDst);
 	char* src = static_cast<char*>(pSrc);
@@ -110,4 +163,11 @@ void reverseSequence(c_data* pData, const sequence& pSequence)
 		pData[pSequence.offset+i] = pData[pSequence.offset+pSequence.length-i-1];
 		pData[pSequence.offset+pSequence.length-i-1] = tmp;
 	}
+}
+
+void mergeData(c_data* pData, merge& pMerge)
+{
+	memmove_in_array(pData + pMerge.second->offset, pData + pMerge.first->offset, pMerge.first->length);
+	pMerge.first->offset = pMerge.second->offset;
+	pMerge.second->offset += pMerge.first->length;
 }
