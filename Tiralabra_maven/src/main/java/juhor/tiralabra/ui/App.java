@@ -12,7 +12,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        //Perseptroni oppii AND-operaation:
+        
+        //Testataan perseptronin toimintaa oppimalla AND-operaatio:
         
         double[][] inputVectors = {{1,0,0},{1,1,0},{1,0,1},{1,1,1}};
         boolean[] outputs = {false,false,false,true};
@@ -22,7 +23,7 @@ public class App
         
         double[] w = p.getWeights();
         
-        double[] vec  = {1,0,1};
+        double[] vec  = {1,1,1};
         boolean troo = p.test(vec);
         System.out.println(Arrays.toString(w)); //tulostetaan painot
         System.out.println(troo); //tulostetaan tulos
