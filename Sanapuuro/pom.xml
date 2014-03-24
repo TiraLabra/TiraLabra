@@ -31,7 +31,6 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
-                <version>2.5</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -39,11 +38,6 @@
                 <configuration>
                     <instrumentation>
                         <includes>
-                            <include>sanapuuro.sanapuuro/*.class</include>
-                            <include>sanapuuro.sanapuuro.grid/*.class</include>
-                            <include>sanapuuro.sanapuuro.words/*.class</include>
-                            <include>sanapuuro.sanapuuro.letters/*.class</include>
-                            <include>sanapuuro.sanapuuro.readers/*.class</include>
                         </includes>
                     </instrumentation>
                 </configuration>
@@ -55,47 +49,9 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
-                        <param>sanapuuro.sanapuuro.Game</param>
-                        <param>sanapuuro.sanapuuro.Player</param>
-                        <param>sanapuuro.sanapuuro.grid.*</param>
-                        <param>sanapuuro.sanapuuro.words.*</param>
-                        <param>sanapuuro.sanapuuro.letters.*</param>
-                        <param>sanapuuro.sanapuuro.readers.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>sanapuuro.sanapuuro.GameTest</param>
-                        <param>sanapuuro.sanapuuro.PlayerTest</param>
-                        <param>sanapuuro.sanapuuro.grid.*</param>
-                        <param>sanapuuro.sanapuuro.words.*</param>
-                        <param>sanapuuro.sanapuuro.letters.*</param>
-                        <param>sanapuuro.sanapuuro.readers.*</param>
                     </targetTests>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>sanapuuro.sanapuuro.gui.GameWindow</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin> 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>sanapuuro.sanapuuro.gui.GameWindow</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>
