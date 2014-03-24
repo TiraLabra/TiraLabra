@@ -3,13 +3,12 @@ package blokus.logiikka;
 import blokus.conf.GlobaalitMuuttujat;
 
 /**
- * Jokaisella pelaajalla on oma näkökulmansa pelilaudalle, siis mihin hän
- * voi laattansa asettaa. Tarkastus laudalta tarkastetaan voiko pelaaja asettaa
+ * Jokaisella pelaajalla on oma näkökulmansa pelilaudalle, siis mihin hän voi
+ * laattansa asettaa. Tarkastus laudalta tarkastetaan voiko pelaaja asettaa
  * laattansa tiettyyn kohtaa lautaa.
- * 
+ *
  * @author Simo Auvinen
  */
-
 public class TarkastusLauta {
 
     int[][] tLauta;
@@ -24,25 +23,26 @@ public class TarkastusLauta {
     }
 
     /**
-     * Metodi tarkistaa tarkistus laudasta onnistuuko laatan lisääminen 
-     * kyseiseen kohtaan. Siis että laatta on kulmittain edelliseen nähden ja 
+     * Metodi tarkistaa tarkistus laudasta onnistuuko laatan lisääminen
+     * kyseiseen kohtaan. Siis että laatta on kulmittain edelliseen nähden ja
      * muutenkin sääntöjen mukaan asetettu.
+     *
      * @param laatta
      * @param y
      * @param x
-     * @return Virheteksin jos lisääminen ei onnistu tai tyhjän tekstin jos 
+     * @return Virheteksin jos lisääminen ei onnistu tai tyhjän tekstin jos
      * lisääminen onnistuu
      */
     public String tarkistaVoikoLisata(Laatta laatta, int y, int x) {
         String laattaSalKohtaan = " Laatan tulee olla kulmittain jo asetettuun nähden!";
         for (int i = 0; i < GlobaalitMuuttujat.RUUDUKON_KOKO; i++) {
             for (int j = 0; j < GlobaalitMuuttujat.RUUDUKON_KOKO; j++) {
-                if (!onkoLaudalla(y, x, i, j) && laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA) {                   
+                if (!onkoLaudalla(y, x, i, j) && laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA) {
                     return " Laatan tulee olla kokonaan laudalla!";
                 } else if (onkoLaudalla(y, x, i, j)) {
                     if (laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA && tLauta[y + i - 3][x + j - 3] == GlobaalitMuuttujat.KIELLETTY_ALUE) {
                         return " Laattan sivu ei saa koskea jo asetettuun laattaan!";
-                    }else if (laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA && tLauta[y + i - 3][x + j - 3] == GlobaalitMuuttujat.LAATTA) {
+                    } else if (laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA && tLauta[y + i - 3][x + j - 3] == GlobaalitMuuttujat.LAATTA) {
                         return " Laattaa ei voi asettaa jo asetetun laatan päälle!";
                     }
                     if (laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA && tLauta[y + i - 3][x + j - 3] == GlobaalitMuuttujat.KULMA) {
@@ -55,18 +55,24 @@ public class TarkastusLauta {
     }
 
     /**
-     * Muuttaa halutun koodin tarkastus laudalle. 
+     * Muuttaa halutun koodin tarkastus laudalle.
+     *
      * @param koodi
      * @param y
      * @param x
      */
     public void lisaaLaatta(int koodi, int y, int x) {
         if (!(y < 0 || x < 0 || y >= GlobaalitMuuttujat.LAUDAN_KOKO || x >= GlobaalitMuuttujat.LAUDAN_KOKO)) {
-            tLauta[y][x] = koodi;
+            if (tLauta[y][x] != GlobaalitMuuttujat.LAATTA) {
+                if (!(koodi == GlobaalitMuuttujat.KULMA &&  tLauta[y][x] == GlobaalitMuuttujat.KIELLETTY_ALUE)) {
+                    tLauta[y][x] = koodi;
+                }
+                
+            }
+
         }
 
     }
-
 
     /**
      *
@@ -89,11 +95,15 @@ public class TarkastusLauta {
         if (id == 1) {
             tLauta[0][0] = 1;
         } else if (id == 2) {
-            tLauta[0][tLauta.length-1] = 1;
+            tLauta[0][tLauta.length - 1] = 1;
         } else if (id == 4) {
-            tLauta[tLauta.length-1][0] = 1;
+            tLauta[tLauta.length - 1][0] = 1;
         } else if (id == 3) {
-            tLauta[tLauta.length-1][tLauta.length-1] = 1;
-        } 
+            tLauta[tLauta.length - 1][tLauta.length - 1] = 1;
+        }
+    }
+
+    public int[][] gettLauta() {
+        return tLauta;
     }
 }

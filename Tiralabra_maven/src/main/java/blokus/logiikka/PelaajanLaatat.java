@@ -7,11 +7,12 @@ import java.util.HashMap;
 /**
  * PelaajanLaatat luo pelaajalle alussa kaikki käytössä olevat laatat ja pitää
  * niitä kasassa.
- * 
+ *
  * @author Simo Auvinen
  */
 public class PelaajanLaatat {
 
+    private HashMap<Integer, Laatta> laatat;
     private HashMap<Integer, Laatta> jaljellaLaatat;
     private HashMap<Integer, Laatta> pelatutLaatat;
     private int pelaajanID;
@@ -24,8 +25,9 @@ public class PelaajanLaatat {
      *
      */
     public PelaajanLaatat(int pelaajanID) {
-        jaljellaLaatat = new HashMap<Integer, Laatta>();
+        laatat = new HashMap<Integer, Laatta>();
         pelatutLaatat = new HashMap<Integer, Laatta>();
+        jaljellaLaatat = new HashMap<Integer, Laatta>();
         this.pelaajanID = pelaajanID;
         laattaValitsin = getLaattaValitimenAlkuTilanne();
         alustaLaatat();
@@ -50,7 +52,7 @@ public class PelaajanLaatat {
      * @return Palauttaa automaattisesti seuraavan laatan joka on käyttämättä
      */
     public Laatta getSeuraavaLaatta() {
-        if (!jaljellaLaatat.isEmpty()) {
+        if (!laatat.isEmpty()) {
             for (int i = 21; i > 0; i--) {
                 if (!pelatutLaatat.containsKey(i)) {
                     poistaLaattaValitsemesta(i);
@@ -67,13 +69,20 @@ public class PelaajanLaatat {
      * @return palauttaa tietyn ID:n laatan ja lisää sen pelatuihin laattoihin
      */
     public Laatta getLaattaById(int laatanID) {
-        Laatta laatta = jaljellaLaatat.get(laatanID);
+        Laatta laatta = laatat.get(laatanID);
         pelatutLaatat.put(laatanID, laatta);
+        jaljellaLaatat.remove(laatanID);
+        return laatta;
+    }
+
+    public Laatta getLaattaByIdIlmanPoistoa(int laatanID) {
+        Laatta laatta = laatat.get(laatanID);
         return laatta;
     }
 
     /**
      * Poistaa valitsimesta kaikki laatan id:tä vastaavat arvot
+     *
      * @param laatanID
      */
     public void poistaLaattaValitsemesta(int laatanID) {
@@ -87,13 +96,15 @@ public class PelaajanLaatat {
     }
 
     /**
-     *  Palauttaa valitsimeen oikeaan kohtaan, laatan ID:tä vastaavat arvot
+     * Palauttaa valitsimeen oikeaan kohtaan, laatan ID:tä vastaavat arvot
+     *
      * @param laatanID
      */
     public void palautaLaattaValitsimeen(int laatanID) {
         int[][] alkuperainen = getLaattaValitimenAlkuTilanne();
         if (pelatutLaatat.containsKey(laatanID)) {
             pelatutLaatat.remove(laatanID);
+            jaljellaLaatat.put(laatanID, getLaattaByIdIlmanPoistoa(laatanID));
         }
         for (int i = 0; i < alkuperainen.length; i++) {
             for (int j = 0; j < alkuperainen[i].length; j++) {
@@ -130,11 +141,13 @@ public class PelaajanLaatat {
     }
 
     private void lisaaUusiLaatta(int koko, int[][] malli, int laatanID) {
-        jaljellaLaatat.put(laatanID, new Laatta(koko, malli, laatanID, pelaajanID));
+        Laatta asetettava = new Laatta(koko, malli, laatanID, pelaajanID);
+        laatat.put(laatanID, asetettava);
+        jaljellaLaatat.put(laatanID, asetettava);
     }
 
-    public HashMap<Integer, Laatta> getJaljellaLaatat() {
-        return jaljellaLaatat;
+    public HashMap<Integer, Laatta> getLaatat() {
+        return laatat;
     }
 
     public HashMap<Integer, Laatta> getPelatutLaatat() {
@@ -148,6 +161,16 @@ public class PelaajanLaatat {
     public int getPelaajanID() {
         return pelaajanID;
     }
+
+    public HashMap<Integer, Laatta> getJaljellaLaatat() {
+        return jaljellaLaatat;
+    }
+    
+    public void setJaljellaLaatatTyhjaksi() {
+        jaljellaLaatat.clear();
+    }
+    
+    
 
     private boolean koordinaatitOikeinValitsimeen(int y, int x) {
         return y >= 0 && x >= 0 && y < laattaValitsin.length && x < laattaValitsin[y].length;

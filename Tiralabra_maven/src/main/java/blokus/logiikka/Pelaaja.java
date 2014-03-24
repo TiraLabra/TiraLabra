@@ -1,6 +1,8 @@
 package blokus.logiikka;
 
+import blokus.AI.PelaajaAI;
 import blokus.conf.GlobaalitMuuttujat;
+import blokus.conf.LaattojenMuodot;
 import java.util.HashMap;
 
 /**
@@ -9,27 +11,44 @@ import java.util.HashMap;
  *
  * @author Simo Auvinen
  */
-public class Pelaaja {
+public class Pelaaja  {
 
     private int pelaajanID;
     private PelaajanLaatat laatat;
     private TarkastusLauta tarkastusLauta;
+    private boolean olenkoAI;
+    private PelaajaAI pelaajaAI;
     /**
      * Tällähetkellä "kädessä" oleva laatta
      */
     private Laatta valittuna;
 
     /**
-     * Määrittää ID:n pelaajalle Luo pelaajalle laatat ja tarkastus
-     * laudan ja ottaa pelaajan käteen ensimmäisen laatan.
-     * @param id 
+     * Määrittää ID:n pelaajalle Luo pelaajalle laatat ja tarkastus laudan ja
+     * ottaa pelaajan käteen ensimmäisen laatan.
+     *
+     * @param id
      */
-    public Pelaaja(int pelaajanID) {
+    public Pelaaja(int pelaajanID, boolean ai) {
+        this.olenkoAI = ai;
         this.pelaajanID = pelaajanID;
         laatat = new PelaajanLaatat(pelaajanID);
         tarkastusLauta = new TarkastusLauta(pelaajanID);
-        valittuna = laatat.getSeuraavaLaatta();
+       
+        
+        if (ai){
+            pelaajaAI = new PelaajaAI(this); 
+            valittuna = new Laatta(1, LaattojenMuodot.MALLI1, 1, pelaajanID);
+        } else {
+            valittuna = laatat.getSeuraavaLaatta();
+        }
     }
+
+    public PelaajaAI getPelaajaAI() {
+        return pelaajaAI;
+    }
+    
+    
 
     /**
      * Hakee pelaajan käteen automaattisesti seuraavan vapaan laatan
@@ -82,5 +101,11 @@ public class Pelaaja {
 
     public Laatta getValittuna() {
         return valittuna;
+    }
+
+ 
+
+    public boolean getOlenkoAi() {
+        return olenkoAI;
     }
 }

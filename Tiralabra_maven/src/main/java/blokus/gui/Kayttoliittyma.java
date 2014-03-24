@@ -157,6 +157,12 @@ public class Kayttoliittyma extends JFrame {
             lisaaTeksti("--------------------------------------------");
             lisaaTeksti(" " + blokus.getIDVariTekstina(blokus.getVuorossa().getPelaajantID()) + " pelaaja on vuorossa.");
         }
+        
+        if (blokus.getVuorossa().getOlenkoAi()) {
+            vuoroVaihtuu();
+            
+            
+        }
 
     }
 
