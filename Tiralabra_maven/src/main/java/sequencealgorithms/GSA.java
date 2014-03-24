@@ -8,30 +8,28 @@ package sequencealgorithms;
 import com.mycompany.tiralabra_maven.InputReader;
 
 /**
- * Longest Common Subsequence problem. Takes two strings as input and produces
- * one of the longest subsequences.
+ * Global Sequence Alignment problem.
  *
- * @author Jari Haavisto
+ * @author riha
  */
-public class LCS {
+public class GSA {
 
     private char[] input1, input2;
-    private ScoringMatrix s;
     private AlignmentMatrix m;
+    private ScoringMatrix s;
     private char[][] solution;
 
-    public LCS(String filename) {
+    public GSA(String filename) {
         char[][] input = InputReader.readInput(filename);
         input1 = input[0];
         input2 = input[1];
-
         char[] alphabet = {'a', 't', 'c', 'g'};
 
-        s = new ScoringMatrix(alphabet);
         m = new AlignmentMatrix(input1.length, input2.length);
-        
-        s.setUp(1, Double.NEGATIVE_INFINITY, 0);
-
+        s = new ScoringMatrix(alphabet);
+        s.setMatchBonus(1);
+        s.setIndelPenalty(-1);
+        s.setMismatchPenalty(-5);
     }
 
     public void calculateAlignment() {
@@ -57,27 +55,47 @@ public class LCS {
         }
     }
 
-    public void findSolution() {
-        int i = input1.length, j = input2.length;
-        int suurempi = i;
-        if (j > i) {
-            suurempi = j;
+    private double max(double a, double b, double c) {
+        if (a > b) {
+            if (a > c) {
+                return a;
+            }
+            return c;
         }
-        solution = new char[1][suurempi];
-        int k = 0;
-        while (i > 0 && j > 0) {
-            int step = m.getPath(i, j);
-            if (step == 0) {
-                solution[0][k] = input1[i - 1];
-                k++;
-                i--;
-                j--;
+        if (b > c) {
+            return b;
+        }
+        return c;
+    }
+
+    public void printAlignmentMatrix() {
+        m.print();
+    }
+
+    public void findSolution() {
+        int l = input1.length + input2.length;
+        solution = new char[2][l];
+
+        int p = input1.length, q = input2.length;
+        while (p > 0 || q > 0) {
+            l--;
+            int path = m.getPath(p, q);
+//            System.out.println("p = " + p + " q = " + q + " path = " + path);
+            if (path == 0) {
+                solution[0][l] = input1[p - 1];
+                solution[1][l] = input2[q - 1];
+                p--;
+                q--;
             }
-            if (step == 1) {
-                i--;
+            if (path == 1) {
+                solution[0][l] = input1[p - 1];
+                solution[1][l] = '-';
+                p--;
             }
-            if (step == 2) {
-                j--;
+            if (path == 2) {
+                solution[0][l] = '-';
+                solution[1][l] = input2[q - 1];
+                q--;
             }
         }
     }
@@ -87,11 +105,13 @@ public class LCS {
     }
 
     public void printSolution() {
-        for (int l = solution[0].length - 1; l >= 0; l--) {
-            System.out.print(solution[0][l]);
-        }
-        System.out.println("");
 
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < solution[i].length; j++) {
+                System.out.print(solution[i][j]);
+            }
+            System.out.println();
+        }
     }
 
 }

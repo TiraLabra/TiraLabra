@@ -8,13 +8,24 @@ package sequencealgorithms;
 /**
  * ScoringMatrix keeps track of the path penalties and bonuses.
  *
- * @author riha
+ * @author Jari Haavisto
  */
 public class ScoringMatrix {
 
+    /**
+     * The Scoring Matrix.
+     */
     private double[][] matrix;
+    /**
+     * The alphabet used in inputs.
+     */
     private char[] alphabet;
 
+    /**
+     * Initializes a new alphabet array that includes the indel character '-' and initializes a new Scoring Matrix.
+     * 
+     * @param alphabet The alphabet used in inputs.
+     */
     public ScoringMatrix(char[] alphabet) {
         this.alphabet = new char[alphabet.length+1];
         this.alphabet[0] = '-';
@@ -24,7 +35,9 @@ public class ScoringMatrix {
         matrix = new double[this.alphabet.length][this.alphabet.length];
         
     }
-    
+    /**
+     * Prints the Scoring Matrix
+     */
     public void print() {
         for (int i=0; i<matrix.length; i++) {
             for (int j=0; j<matrix[0].length; j++) {
@@ -34,6 +47,11 @@ public class ScoringMatrix {
         }
     }
 
+    /**
+     * Sets the penalty for insertion and deletion.
+     * 
+     * @param penalty Non-negative. 
+     */
     public void setIndelPenalty(double penalty) {
         for (int i = 1; i < matrix.length; i++) {
             matrix[i][0] = penalty;
@@ -41,12 +59,22 @@ public class ScoringMatrix {
         }
     }
 
+    /**
+     * Sets the match bonus. 
+     * 
+     * @param bonus 
+     */
     public void setMatchBonus(double bonus) {
         for (int i = 1; i < matrix.length; i++) {
             matrix[i][i] = bonus;
         }
     }
 
+    /**
+     * Sets the penalty for a mismatch.
+     * 
+     * @param penalty Non-negative. 
+     */
     public void setMismatchPenalty(double penalty) {
         for (int i = 1; i < matrix.length; i++) {
             for (int j = 1; j < matrix.length; j++) {
@@ -55,6 +83,12 @@ public class ScoringMatrix {
                 }
             }
         }
+    }
+    
+    public void setUp(double match, double mismatch, double indel) {
+        setMatchBonus(match);
+        setMismatchPenalty(mismatch);
+        setIndelPenalty(indel);
     }
 
     private int indexOf(char c) {
