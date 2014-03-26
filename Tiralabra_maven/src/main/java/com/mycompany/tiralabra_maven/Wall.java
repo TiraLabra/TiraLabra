@@ -22,10 +22,10 @@ public class Wall {
     private int x;
     private int y;
     private Image image;
-    int leveys, korkeus;
+    static int leveys, korkeus;
 
     /**
-     *
+     *Hakee seinän kuvan.
      */
     public Wall(){
         ImageIcon ii = new ImageIcon("tiili.png");
@@ -35,9 +35,17 @@ public class Wall {
     
 
 //     ei voi vielä itse määritellä leveyttä ja korkeutta.
-//    public static int[][] getMap(int leveys, int korkeus){
+//    public static int[][] getMap(int leveys, int korkeus
+
 //          int[][] map2 = new int[leveys][korkeus];
-    public static int[][] getMap(){
+
+    /**
+     *map-taulukkoon merkitään seinät ykkösillä.
+     * @return
+     */
+        public static int[][] getMap(){
+        korkeus = (Hiirestys.kor - 40) / 50;
+        leveys = Hiirestys.lev / 50;
         int [][] map= {
                  {0,0,0,0,0,0,0,0,0,0,},
                  {0,0,0,0,0,0,0,0,0,0,},

@@ -35,6 +35,10 @@ public class Board extends JPanel implements ActionListener{
      *
      */
     public static int x_map = 0;
+
+    /**
+     *
+     */
     public static int y_map = 0;
     
     private Hiiri maus;
@@ -43,7 +47,7 @@ public class Board extends JPanel implements ActionListener{
     //private int x, y;
 
     /**
-     *
+     *Luo uuden JPanelin, jota käytetään pelialustana. Luo myös hiiren ja seinät.
      */
         public Board() {
         addKeyListener(new TAdapter());
@@ -58,7 +62,7 @@ public class Board extends JPanel implements ActionListener{
     }
 
     /**
-     *
+     *Piirtää hiiren ja seinät.
      * @param g
      */
     public void paint(Graphics g) {
@@ -88,8 +92,8 @@ public class Board extends JPanel implements ActionListener{
             y_map = 0;
             x_map = 0;
 
-        
-        
+        g2d.drawString(Hiiri.getXcoord()+"", 20, 20);
+        g2d.drawString(Hiiri.getYcoord()+"", 60, 60);
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }

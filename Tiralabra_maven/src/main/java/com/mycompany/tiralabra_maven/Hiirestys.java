@@ -1,23 +1,36 @@
 
 package com.mycompany.tiralabra_maven;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 
 
 /**
  *
- * @author Tiina
+ * Pääluokka, josta ohjelma ajetaan
  */
 public class Hiirestys extends JFrame{
+
+    /**
+     *JFrame leveys
+     */
     public static int lev = 500;
-    //Jframen bordereiden vuoksi lisään nyt tähän 40. se on suunnilleen niin. 
-    public static int kor = 540;
+    //Jframen bordereiden vuoksi lisään nyt tähän 40. se on suunnilleen niin.
+
+    /**
+     *Jframe korkeus
+     */
+        public static int kor = 540;
     
     /**
-     *
+     *Konstruktori. 
+     * 
+     * Luo uuden Boardin.
      */
     public Hiirestys(){
         add(new Board());
@@ -33,8 +46,9 @@ public class Hiirestys extends JFrame{
 
     /**
      * @param args the command line arguments
+     * @throws java.awt.AWTException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AWTException {
                 new Hiirestys();
                     int [][] map= {
                  {0,0,0,0,0,0,0,0,0,0},
@@ -64,6 +78,9 @@ public class Hiirestys extends JFrame{
                 x_map = x_map + 50;
             }
         
+        System.out.println("testiä" + Node.kor);
+        System.out.println("kor " + Wall.korkeus + " lev " + Wall.leveys);
+        System.out.println(Wall.getMap()[2][1]);
     }
 
 
