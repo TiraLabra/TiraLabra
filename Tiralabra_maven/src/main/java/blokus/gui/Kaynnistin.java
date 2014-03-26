@@ -22,6 +22,9 @@ public class Kaynnistin extends JFrame {
     JCheckBox pelaaja3;
     JCheckBox pelaaja4;
 
+    /**
+     *
+     */
     public Kaynnistin() {
         super("Blokus");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +34,7 @@ public class Kaynnistin extends JFrame {
 
     private void valmisteleValikko() {
         pohja = new JPanel();
-        JLabel teksti1 = new JLabel("Valitkaa ihmispelaajat:");
+        JLabel teksti1 = new JLabel("Valitkaa tietokonepelaajat:");
         pelaaja1 = new JCheckBox("Pelaaja 1");
 
         JLabel teksti2 = new JLabel("Pelaaja 2:");

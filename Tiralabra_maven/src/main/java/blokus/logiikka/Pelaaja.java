@@ -27,7 +27,8 @@ public class Pelaaja  {
      * Määrittää ID:n pelaajalle Luo pelaajalle laatat ja tarkastus laudan ja
      * ottaa pelaajan käteen ensimmäisen laatan.
      *
-     * @param id
+     * @param pelaajanID 
+     * @param ai 
      */
     public Pelaaja(int pelaajanID, boolean ai) {
         this.olenkoAI = ai;

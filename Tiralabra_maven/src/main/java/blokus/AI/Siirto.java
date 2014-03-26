@@ -10,15 +10,25 @@ public class Siirto {
     
     private int kohdeI;
     private int kohdeJ;
+    private int ympari;
+    private int asento;
     
     private Laatta laatta;
     
     private int hyvyys;
 
+    /**
+     *
+     * @param kohdeI
+     * @param kohdeJ
+     * @param laatta
+     */
     public Siirto(int kohdeI, int kohdeJ, Laatta laatta) {
         this.kohdeI = kohdeI;
         this.kohdeJ = kohdeJ;
         this.laatta = laatta;
+        ympari = laatta.getYmpari();
+        asento = laatta.getAsento();
         pisteytaSiirto();
     }
 
@@ -26,6 +36,19 @@ public class Siirto {
         hyvyys = laatta.getKoko() + laskeuudetPaikat();
     }
 
+    public int getAsento() {
+        return asento;
+    }
+
+    public int getYmpari() {
+        return ympari;
+    }
+    
+
+    /**
+     *
+     * @return
+     */
     public int getHyvyys() {
         return hyvyys;
     }

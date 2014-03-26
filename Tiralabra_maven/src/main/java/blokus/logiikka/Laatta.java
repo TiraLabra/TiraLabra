@@ -6,30 +6,34 @@ import blokus.conf.GlobaalitMuuttujat;
  * Pelaaja asettaa laattoja pelilaudalle. Laatalla on muoto, josta ilmenee sen
  * vuorovaikutus muiden pelilaudalla olevien laattojen suhteen. Laatan koko
  * vaikuttaa myös siitä saataviin pisteisiin.
- * 
+ *
  * @author Simo Auvinen
  */
-
-
 public class Laatta {
-     
+
     private int koko;
     private int[][] muoto;
+    private int[][] alkupainenMuoto;
     private int laatanID;
     private int pelaajanID;
+    private int asento;
+    private int ympari;
 
     /**
      *
      * @param koko Laatan koko ruutuina
      * @param muoto ennalta määrätty muoto laatalle
-     * @param id ykilöity ID laatalle
+     * @param laatanID 
      * @param pelaajanID laatan omistavan pelaajan ID
      */
     public Laatta(int koko, int[][] muoto, int laatanID, int pelaajanID) {
         this.koko = koko;
         this.muoto = muoto;
+        this.alkupainenMuoto = muoto;
         this.laatanID = laatanID;
         this.pelaajanID = pelaajanID;
+        asento = 1;
+        ympari = 0;
 
     }
 
@@ -45,6 +49,11 @@ public class Laatta {
             }
         }
         muoto = kaannos;
+        if (asento > 1) {
+            asento--;
+        } else {
+            asento = 4;
+        }
     }
 
     /**
@@ -59,7 +68,11 @@ public class Laatta {
             }
         }
         muoto = kaannos;
-
+        if (asento < 4) {
+            asento++;
+        } else {
+            asento = 1;
+        }
 
     }
 
@@ -75,6 +88,31 @@ public class Laatta {
             }
         }
         muoto = kaannos;
+        if (ympari == 0) {
+            ympari = 1;
+        } else {
+            ympari = 0;
+        }
+    }
+
+    /**
+     *
+     */
+    public void palautaAlkuperainenAsento() {
+        muoto = alkupainenMuoto;
+        ympari = 0;
+        asento = 1;
+    }
+
+    public void kaannaTiettyynAsentoon(int as, int ym) {
+        palautaAlkuperainenAsento();
+        if (ympari != ym) {
+            kaannaYmpari();
+        }
+        while (asento != as) {
+            kaannaOikeaan();
+        }
+
     }
 
     /**
@@ -85,6 +123,14 @@ public class Laatta {
      */
     public int getTaulukonArvo(int i, int j) {
         return muoto[i][j];
+    }
+
+    public int getAsento() {
+        return asento;
+    }
+
+    public int getYmpari() {
+        return ympari;
     }
 
     public int getKoko() {

@@ -26,8 +26,12 @@ public class Blokus {
     public boolean onkoPeliOhi;
 
     /**
-     * Luo pelille peli laudan ja pelaajat. Lisää pelaajat ja alustaa pelaajien
+     * Luo pelille peli laudan ja pelaajat. Lisää ihmis- ja AI pelaajat ja alustaa pelaajien
      * pisteet ja käynnistää ensimmäisen vuoron.
+     * @param pelaaja1 true, jos AI
+     * @param pelaaja2 true, jos AI
+     * @param pelaaja4 true, jos AI
+     * @param pelaaja3 true, jos AI
      */
     public Blokus(boolean pelaaja1, boolean pelaaja2, boolean pelaaja3, boolean pelaaja4) {
         onkoPeliOhi = false;
@@ -78,7 +82,7 @@ public class Blokus {
                 vuorossa.vaihdaValittuaSeuraavaan();
             }
             
-            if (vuorossa.getValittuna() == null) {
+            if (vuorossa.getValittuna() == null || vuorossa.getLaatat().getJaljellaLaatat().isEmpty()) {
                 antautuu = true;
             }
         }

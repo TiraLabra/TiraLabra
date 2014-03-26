@@ -22,7 +22,7 @@ public class Lauta {
 
     /**
      * Liittää logiikan peliladan käyttöliittymään
-     * @param peliLauta
+     * @param lauta 
      * @param resoluutio
      */
     public Lauta(PeliLauta lauta, int resoluutio) {

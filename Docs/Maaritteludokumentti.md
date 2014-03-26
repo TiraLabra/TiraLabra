@@ -7,4 +7,4 @@ Blokuksen ideana on saada enemm‰n laattoja asetettua laudalle kuin vastustajat. 
 Teko‰lyn tavoitteeksi tulee maksimoida ensisijaisesti maksimoida pisteens‰ samalla est‰en vastustajia. Alkupelist‰ siirtojen suuntaa painotetaan îoikeaan suuntaanî.  
 Jokaisella pelaajalla on 21 laattaa, jotka voi asettaa 8 eri tavalla laudalle. Mahdollisia laattojen asettamispaikkoja on aluksi yksi, mutta m‰‰r‰ vaihtelee pelitilanteen mukaan. Laattaa asettaessa tulee siis painottaa siihen, ett‰ se tuottaa mahdollisimman paljon uusia mahdollisia asettamispakkoja. 
 
-Tyˆss‰ tullaan k‰ytt‰m‰‰n XXX algoritmeja ja XXX tietorakenteita, jotka selvi‰v‰t, kun p‰‰st‰‰n vauhtiin.
+Tyˆss‰ tullaan k‰ytt‰m‰‰n mm. pelipuu algoritmeja ja mm.  listoja, jonoja..  tietorakenteita, jotka selvi‰v‰t, kun p‰‰st‰‰n vauhtiin.

@@ -103,7 +103,7 @@ public class TarkastusLauta {
         }
     }
 
-    public int[][] gettLauta() {
+    public int[][] getLauta() {
         return tLauta;
     }
 }
