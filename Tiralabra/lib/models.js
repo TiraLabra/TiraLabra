@@ -32,6 +32,12 @@
   function Particle(opts) {
     opts = opts || {};
     this.title = opts.title;
+    
+    /* MOD: Added id field */
+    this.id = opts.id;
+    
+    /* MOD: Added total field */
+    this.total = 0;
 
     /* Store dimensions and pre-compute center */
     this.dimensions = {
@@ -80,6 +86,10 @@
     this.stage.append(this.el);
     this.setPosition();
     return this;
+  };
+  
+  Particle.prototype.visited = function() {
+    $(this.el).addClass("visited");
   };
 
   /**
@@ -132,6 +142,7 @@
    */
   Node.prototype.onAttach = function() {
     this.el.append('<h4>' + this.title + '</h4>');
+    this.el.append('<span class="total"></span>');
   };
 
   /**
@@ -202,6 +213,14 @@
   Node.prototype.onDragEnd = function(e) {
     this.el.removeClass('dragging');
     $(window).off('mousemove');
+    var segs = this.segments;
+    $.each(segs, function (seg) {
+    	var dist = Math.sqrt((segs[seg].distance.x * segs[seg].distance.x) + (segs[seg].distance.y * segs[seg].distance.y));
+    	dist = Math.round(dist/10);
+    	segs[seg].time = dist;
+    	segs[seg].el.find(".time").text(dist);
+    });
+    
   };
 
   /**
@@ -257,7 +276,12 @@
     /* Save references to the origin and destination Nodes */
     this.origin = opts.origin;
     this.destination = opts.destination;
-
+    
+    /* MOD: Added time for segment */
+	//this.time = opts.time;	
+	this.el.append('<span class="time"></span>');
+	
+	
     /* Add references for this segment to both origin and destination */
     this.origin.addSegment(this);
     this.destination.addSegment(this);
@@ -329,6 +353,11 @@
     this.canvas.ctx.lineTo(0, this.canvas.raw.height - this.dimensions.h - 0.5);
     this.canvas.ctx.stroke();
     this.calculateRotation();
+    
+    var dist = Math.sqrt((this.distance.x * this.distance.x) + (this.distance.y * this.distance.y));
+    	dist = Math.round(dist/10);
+    	this.time = dist;
+    	this.el.find(".time").text(dist);
   };
 
   /**

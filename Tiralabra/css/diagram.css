@@ -4,7 +4,7 @@ html {
 body {
   -webkit-user-select: none;
   -moz-user-select: none;
-  background-image: url(images/appvis-bg.png);
+  background-image: url(../images/appvis-bg.png);
   height: 100%;
   margin: 0;
   padding: 0;
@@ -23,6 +23,9 @@ body {
   z-index: 2;
   -webkit-backface-visibility: hidden;
 }
+.node.visited {
+	background: red;
+}
 .node h4 {
   color: #067195;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
@@ -33,6 +36,12 @@ body {
   left: 56px;
   bottom: 0;
   font-size: 11px;
+}
+.node span.total {
+	color: #FFFFFF;
+	left: 6px;
+    position: absolute;
+    top: 7px;
 }
 .node.animate {
   -webkit-transition: all 0.3s ease-in-out;
@@ -62,4 +71,9 @@ body {
 .segment .endpoint {
   position: absolute;
   top: -9px;
+}
+.segment .time {
+  position: absolute;
+  right: 10px;
+  top: -15px;
 }
