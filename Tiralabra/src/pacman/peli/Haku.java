@@ -14,8 +14,8 @@ import pacman.hahmot.Suunta;
  */
 public class Haku {
 
-    private static int parasSumma;
-    private static Peliruutu[] parasReitti;
+    private int parasSumma;
+    private Peliruutu[] parasReitti;
     private boolean ekaKerta;
 
     /**
@@ -65,21 +65,25 @@ public class Haku {
      * @param solmulista
      */
     private void etsiNaapurit(Pelialusta alusta, Peliruutu ruutu, PriorityQueue<Peliruutu> solmulista) {
-        Peliruutu ylos = alusta.getPeliruutu(ruutu.getX() + Suunta.YLOS.getX(), ruutu.getY() + Suunta.YLOS.getY());
-        if (ylos.getRuudunTyyppi() != 0) {
-            solmulista.add(ylos);
-        }
-        Peliruutu alas = alusta.getPeliruutu(ruutu.getX() + Suunta.ALAS.getX(), ruutu.getY() + Suunta.ALAS.getY());
-        if (alas.getRuudunTyyppi() != 0) {
-            solmulista.add(alas);
-        }
-        Peliruutu vasen = alusta.getPeliruutu(ruutu.getX() + Suunta.VASEN.getX(), ruutu.getY() + Suunta.VASEN.getY());
-        if (vasen.getRuudunTyyppi() != 0) {
-            solmulista.add(vasen);
-        }
-        Peliruutu oikea = alusta.getPeliruutu(ruutu.getX() + Suunta.OIKEA.getX(), ruutu.getY() + Suunta.OIKEA.getY());
-        if (oikea.getRuudunTyyppi() != 0) {
-            solmulista.add(oikea);
+        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, solmulista, Suunta.YLOS);
+        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, solmulista, Suunta.ALAS);
+        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, solmulista, Suunta.VASEN);
+        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, solmulista, Suunta.OIKEA);
+    }
+    
+    /**
+     * Katsoo onko annetussa suunnassa oleva ruutu sellainen mihin voi liikkua.
+     * 
+     * @param alusta
+     * @param ruutu
+     * @param solmulista
+     * @param suunta 
+     */
+
+    private void haeNaapuriAnnetustaSuunnasta(Pelialusta alusta, Peliruutu ruutu, PriorityQueue<Peliruutu> solmulista, Suunta suunta) {
+        Peliruutu haettava = alusta.getPeliruutu(ruutu.getX() + suunta.getX(), ruutu.getY() + suunta.getY());
+        if (haettava.getRuudunTyyppi() != 0) {
+            solmulista.add(haettava);
         }
     }
 
@@ -103,8 +107,7 @@ public class Haku {
 
     /**
      *
-     * Metodi selvittää rekursiivisesti parhaimman reitin lähtöruudusta maaliin
-     * ja .
+     * Metodi selvittää rekursiivisesti parhaimman reitin lähtöruudusta maaliin.
      *
      * @param nykyinen
      * @param alusta
@@ -117,52 +120,45 @@ public class Haku {
      */
     public void liiku(Peliruutu nykyinen, Pelialusta alusta, int summa, Peliruutu maali, Peliruutu[] reitti, int indeksi, PriorityQueue<Peliruutu> solmulista, ArrayList<Peliruutu> kaydyt) {
 
-        if (ollaankoMaalissa(nykyinen, maali, summa, reitti, indeksi)) {
-            return;
-        }
-
         if (nykyinen == null) {
             return;
-        } else if (this.ekaKerta == false) {
+        } else if (ollaankoMaalissa(nykyinen, maali, summa, reitti, indeksi)) {
+            return;
+        } else if (this.ekaKerta == true) {
+            this.ekaKerta = false;
+        } else {
             summa += 1;
-            if (nykyinen.getEtaisyysAlkuun() < summa) {
+            if (nykyinen.getEtaisyysAlkuun() < summa || summa >= parasSumma) {
                 return;
             }
             solmulista = new PriorityQueue<Peliruutu>();
             etsiNaapurit(alusta, nykyinen, solmulista);
             nykyinen.setEtaisyysAlkuun(summa);
-        } else {
-            this.ekaKerta = false;
-        }
-
-        if (summa >= parasSumma) {
-            return;
         }
 
         reitti[indeksi] = nykyinen;
         indeksi++;
+        Peliruutu[] reittiKopio = reitistaKopioReitti(reitti);
 
-        nykyinen = solmulista.poll();
-
-        Peliruutu[] reittiKopio = new Peliruutu[reitti.length + 1];
-        System.arraycopy(reitti, 0, reittiKopio, 0, reitti.length);
-        
         ArrayList<Peliruutu> kaydytKopio = kaydyt;
 
-        liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, solmulista, kaydytKopio);
-        if (!solmulista.isEmpty()) {
+        while (!solmulista.isEmpty()) {
             nykyinen = solmulista.poll();
             liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, solmulista, kaydytKopio);
-            if (!solmulista.isEmpty()) {
-                nykyinen = solmulista.poll();
-                liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, solmulista, kaydytKopio);
-                if (!solmulista.isEmpty()) {
-                    nykyinen = solmulista.poll();
-                    liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, solmulista, kaydytKopio);
-                }
-            }
         }
 
+    }
+    
+    /**
+     * Metodi tekee reitistä kopion.
+     * @param reitti
+     * @return 
+     */
+
+    private Peliruutu[] reitistaKopioReitti(Peliruutu[] reitti) {
+        Peliruutu[] reittiKopio = new Peliruutu[reitti.length + 1];
+        System.arraycopy(reitti, 0, reittiKopio, 0, reitti.length);
+        return reittiKopio;
     }
 
     /**

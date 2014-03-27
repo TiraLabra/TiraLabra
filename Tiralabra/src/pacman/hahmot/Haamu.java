@@ -95,6 +95,7 @@ public class Haamu extends Hahmo {
 
     /**
      * Liikuttaa haluttuun ruutuun.
+     *
      * @param ruutu
      */
     public void liiku(Peliruutu ruutu) {
@@ -170,8 +171,17 @@ public class Haamu extends Hahmo {
 
     public Peliruutu selvitaMaali(Man man) {
         
-            return alusta.getPeliruutu(man.getX(), man.getY());
         
+        if(onkoAlustanSisalla(man.getX(), man.getY()) ) {
+            return alusta.getPeliruutu(man.getX()+man.getSuunta().getX()*2, man.getY()+man.getSuunta().getY()*2);
+        }
+
+        return alusta.getPeliruutu(man.getX(), man.getY());
+
+    }
+    
+    public boolean onkoAlustanSisalla(int x, int y) {
+        return x <= 17 && x > 1 && y <= 19 && y > 1;
     }
 
 }
