@@ -20,7 +20,7 @@ public class PohjaTest {
     @Before
     public void setUp() {
         pohja = new Pohja();
-        pohja.luoPohja("src/main/java/labyrintti/osat/kartta2.txt");
+        pohja.alustaPohja("src/main/java/labyrintti/osat/kartta2.txt");
     }
     
     @After

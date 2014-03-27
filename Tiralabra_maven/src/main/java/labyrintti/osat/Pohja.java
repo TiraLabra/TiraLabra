@@ -41,62 +41,91 @@ public class Pohja {
     /**
      * Luo tekstitiedostosta pohjan taulukkoon.
      */
-    public void luoPohja(String tiedostoPolku) {
+    public void alustaPohja(String tiedostoPolku) {
         File tiedosto = new File(tiedostoPolku);
+        Scanner lukija = liitäTiedostoLukijaan(tiedosto);
+
+        leveys = lukija.nextLine().length();
+        laskeKorkeus(lukija);
+        kartta = new Ruutu[korkeus][leveys];
+        lukija = liitäTiedostoLukijaan(tiedosto);
+        tallennaPohjaTaulukkoon(lukija);
+        lukija.close();
+    }
+
+    /**
+     * 
+     * @param tiedosto annetaan scannerille
+     * @return Scanner lukija
+     */
+    private Scanner liitäTiedostoLukijaan(File tiedosto) {
         Scanner lukija = null;
-        
         try {
             lukija = new Scanner(tiedosto);
         } catch (Exception e) {
             System.out.println("Tiedoston lukeminen epäonnistui.");
-            return;
+            return null;
         }
+        return lukija;
+    }
 
-        leveys = lukija.nextLine().length();
+    /**
+     * Tallennetaan tiedoston kartta taulukkoon.
+     * @param lukija lukee tiedostoa
+     */
+    private void tallennaPohjaTaulukkoon(Scanner lukija) {
+        int x = 0;
+        while (lukija.hasNextLine()) {
+            String rivi = lukija.nextLine();
+            for (int j = 0; j < rivi.length(); j++) {
+                char merkki = rivi.charAt(j);
+                int arvo = tarkistaRuudunArvo(merkki, x, j);
+                kartta[x][j] = new Ruutu(arvo, x, j);
+            }
+            x++;
+        }
+    }
+    
+    /**
+     * Määrittää ruudulle painoarvon.
+     * @param merkki luettava merkki
+     * @param x rivi
+     * @param j sarake
+     * @return ruudun arvo
+     */
+    private int tarkistaRuudunArvo(char merkki, int x, int j){
+        int arvo = 0;
+        if (merkki == 'L') {
+                    lahtoX = x;
+                    lahtoY = j;
+                    arvo = 0;
+                } else if (merkki == 'M') {
+                    maaliX = x;
+                    maaliY = j;
+                    arvo = 0;
+                } else {
+                    arvo = Integer.parseInt("" + merkki);
+                }
+        return arvo;
+    }
+
+    /**
+     * Laskee taulukolle korkeuden.
+     * @param lukija lukee tiedostoa
+     */
+    private void laskeKorkeus(Scanner lukija) {
         korkeus = 1;
         while (lukija.hasNextLine()) { //selvitetään, kuinka monta riviä pohjataulukkoon tulee
             lukija.nextLine();
             korkeus++;
         }
-        kartta = new Ruutu[korkeus][leveys];
-        try {
-            lukija = new Scanner(tiedosto);
-        } catch (Exception e) {
-            System.out.println("Tiedoston lukeminen epäonnistui.");
-            return;
-        }
-        int x = 0;
-        int arvo = 0;
-        while (lukija.hasNextLine()) {
-            String rivi = lukija.nextLine();
-            for (int j = 0; j < rivi.length(); j++) {
-                //int arvo = Integer.parseInt(""+rivi.charAt(j));
-                char merkki = rivi.charAt(j);
-                if (merkki == 'L') {
-                    lahtoX=x;
-                    lahtoY=j;
-                    arvo = 0;
-                } else if (merkki == 'M') {
-                    maaliX=x;
-                    maaliY=j;
-                    arvo = 0;
-                } else {
-                    arvo = Integer.parseInt(""+merkki);
-                }
-                Ruutu ruutu = new Ruutu(arvo, x, j);
-                    kartta[x][j] = ruutu;
-            }
-            x++;
-        }
-        lukija.close();
     }
-    
-    
+
     public Ruutu[][] getKartta() {
         return kartta;
     }
-    
-    public Ruutu getRuutu(int i, int j){
+
+    public Ruutu getRuutu(int i, int j) {
         return kartta[i][j];
     }
 
@@ -123,16 +152,16 @@ public class Pohja {
     public int getMaaliY() {
         return maaliY;
     }
-    
-    public Ruutu getLahto(){
+
+    public Ruutu getLahto() {
         return kartta[lahtoX][lahtoY];
     }
-    
-    public Ruutu getMaali(){
+
+    public Ruutu getMaali() {
         return kartta[maaliX][maaliY];
     }
-    
-   /**
+
+    /**
      * Tulostaa pohjakartan.
      */
     public void tulostaPohja() {

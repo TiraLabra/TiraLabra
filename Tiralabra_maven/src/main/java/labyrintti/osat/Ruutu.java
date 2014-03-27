@@ -36,8 +36,8 @@ public class Ruutu implements Comparable<Ruutu> {
         this.arvo = arvo;
         this.x = x;
         this.y = y;
-        etaisyysAlkuun = Integer.MAX_VALUE;
-        etaisyysLoppuun = Integer.MAX_VALUE;
+        etaisyysAlkuun = 2000000000; //Integer.MAX_VALUE;
+        etaisyysLoppuun = 2000000000; // Integer.MAX_VALUE;
         kayty = false;
         edellinen = null;
     }
@@ -77,7 +77,7 @@ public class Ruutu implements Comparable<Ruutu> {
      *
      * @return etaisyys alkuun + etaisyys loppuun
      */
-    public int getEtaisyyksiensumma() {
+    public int getEtaisyyksienSumma() {
         return etaisyysAlkuun + etaisyysLoppuun;
     }
 
@@ -116,7 +116,7 @@ public class Ruutu implements Comparable<Ruutu> {
 
     @Override
     public int compareTo(Ruutu r) {
-        return getEtaisyyksiensumma() - r.getEtaisyyksiensumma();
+        return getEtaisyyksienSumma() - r.getEtaisyyksienSumma();
     }
 
     @Override

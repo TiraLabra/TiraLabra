@@ -23,7 +23,7 @@ public class EtsijaTest {
     @Before
     public void setUp() {
         Pohja pohja = new Pohja();
-        pohja.luoPohja("src/main/java/labyrintti/osat/kartta2.txt");
+        pohja.alustaPohja("src/main/java/labyrintti/osat/kartta2.txt");
         etsija = new Etsija(pohja);
     }
     
@@ -34,7 +34,7 @@ public class EtsijaTest {
     @Test
     public void alustusOikein() {
         etsija.alustus();
-        assertEquals(8, etsija.getKaymattomat().size());
+        assertEquals(8, etsija.getKaymattomat().getKeonKoko());
         Pohja p = etsija.getPohja();
         assertEquals(0, p.getRuutu(p.getLahtoX(), p.getLahtoY()).getArvo());
         assertEquals(0, p.getRuutu(p.getMaaliX(), p.getMaaliY()).getArvo());
@@ -45,7 +45,7 @@ public class EtsijaTest {
         etsija.aStar();
         Pohja p = etsija.getPohja();
         assertTrue(p.getRuutu(p.getMaaliX(), p.getMaaliY()).onkoKayty());
-        assertEquals(3, etsija.getKaymattomat().size());
+        assertEquals(3, etsija.getKaymattomat().getKeonKoko());
     }
     
     @Test

@@ -35,8 +35,8 @@ public class RuutuTest {
     @Test
     public void ruutuLuodaanOikein() {
         assertEquals(0, ruutu.getArvo());
-        assertEquals(Integer.MAX_VALUE, ruutu.getEtaisyysAlkuun());
-        assertEquals(Integer.MAX_VALUE, ruutu.getEtaisyysLoppuun());
+        assertEquals(2000000000, ruutu.getEtaisyysAlkuun());
+        assertEquals(2000000000, ruutu.getEtaisyysLoppuun());
     }
 
     @Test
@@ -49,6 +49,6 @@ public class RuutuTest {
     public void etaisyyksienSummaOikein(){
         ruutu.laskeEtaisyysMaaliin(1, 2);
         ruutu.setEtaisyysAlkuun(1);
-        assertEquals(4, ruutu.getEtaisyyksiensumma());
+        assertEquals(4, ruutu.getEtaisyyksienSumma());
     }
 }

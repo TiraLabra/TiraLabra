@@ -10,10 +10,10 @@ public class Etsija {
     //tira pruju s. 613 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
 
     /**
-     * Järjestetty jono käymättömistä ruuduista. Ensimmäisenä on ruutu, jolla
-     * alun ja lopun etäisyyksien summa on pienin.
+     * Minimikeko käymättömistä ruuduista. Ensimmäisenä on ruutu, jolla alun ja
+     * lopun etäisyyksien summa on pienin.
      */
-    private PriorityQueue<Ruutu> kaymattomat;
+    private Minimikeko kaymattomat;
     /**
      * Pohja-olio, johon pohjakartta on tallennettu.
      */
@@ -21,7 +21,8 @@ public class Etsija {
 
     public Etsija(Pohja p) {
         pohja = p;
-        kaymattomat = new PriorityQueue();
+        kaymattomat = new Minimikeko(p.getKorkeus() * p.getLeveys());
+
     }
 
     /**
@@ -35,9 +36,10 @@ public class Etsija {
                 if (ruutu.equals(pohja.getLahto())) {
                     ruutu.setEtaisyysAlkuun(0);
                 }
-                kaymattomat.add(ruutu);
             }
         }
+        kaymattomat.alustaTaulukko(pohja);
+        kaymattomat.rakennaKeko();
     }
 
     /**
@@ -46,25 +48,45 @@ public class Etsija {
     public void aStar() {
         alustus();
         while (!pohja.getMaali().onkoKayty()) {
-            Ruutu kasiteltava = kaymattomat.poll(); // jonon ensimmäisellä alun ja lopun etäisyyksien summa on pienin
+            Ruutu kasiteltava = kaymattomat.pollPienin();
             kasiteltava.setKayty(true);
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
-                    if ((i == 0 && j != 0) || (i != 0 && j == 0)) { //käydään läpi viereiset ruudut
-                        int x = kasiteltava.getX() + i;
-                        int y = kasiteltava.getY() + j;
-                        if (ruutuPohjansisalla(x, y)) { //tarkistetaan että ei mennä kartan ulkopuolelle
-                            Ruutu viereinen = pohja.getRuutu(x, y);
-                            if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei menn
-                                viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
-                                viereinen.setEdellinen(kasiteltava);
-                                kaymattomat.remove(viereinen);
-                                kaymattomat.add(viereinen);
-                            }
-                        }
+            kayLapiViereisetRuudut(kasiteltava);
+        }
+    }
+
+    /**
+     * Käy läpi käsiteltävän ruudun kaikki naapuriruudut
+     *
+     * @param kasiteltava käsittelyssä oleva ruutu
+     */
+    private void kayLapiViereisetRuudut(Ruutu kasiteltava) {
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if ((i == 0 && j != 0) || (i != 0 && j == 0)) { //käydään läpi viereiset ruudut pysty- ja vaakasuunnassa
+                    int x = kasiteltava.getX() + i;
+                    int y = kasiteltava.getY() + j;
+                    if (ruutuPohjansisalla(x, y)) {
+                        Ruutu viereinen = pohja.getRuutu(x, y);
+                        relax(kasiteltava, viereinen);
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Päivittää viereisen ruudun etäisyyden alkuun, jos on löytynyt lyhyempi
+     * reitti
+     *
+     * @param kasiteltava käsittelyssä oleva ruutu
+     * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
+     */
+    private void relax(Ruutu kasiteltava, Ruutu viereinen) {
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei menn
+            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
+            viereinen.setEdellinen(kasiteltava);
+            kaymattomat.paivitaRuutuKekoon(kasiteltava);
+
         }
     }
 
@@ -92,29 +114,20 @@ public class Etsija {
      *
      * @return lista, jossa reitti. Ensimmäisenä on reitin lähtöruutu.
      */
-    public ArrayList<Ruutu> getReitti() {
-        ArrayList<Ruutu> reitti = new ArrayList();
+    public void getReitti() {
         Ruutu kasiteltava = pohja.getMaali();
-        while (kasiteltava != null) {
-            reitti.add(kasiteltava);
-            kasiteltava = kasiteltava.getEdellinen();
+        tulostaReitti(kasiteltava);
+    }
+    
+    public void tulostaReitti(Ruutu kasiteltava) {
+        if(kasiteltava==null){
+            return;
         }
-        Collections.reverse(reitti);
-        return reitti;
+        tulostaReitti(kasiteltava.getEdellinen());
+        System.out.println(kasiteltava.koordinaatit());
     }
 
-    /**
-     * Tulostaa listalla olevan reitin koordinaatit.
-     *
-     * @param reitti Lista, johon reitti on tallennettu.
-     */
-    public void tulostaReitti(ArrayList<Ruutu> reitti) {
-        for (Ruutu ruutu : reitti) {
-            System.out.println(ruutu.koordinaatit());
-        }
-    }
-
-    public PriorityQueue<Ruutu> getKaymattomat() {
+    public Minimikeko getKaymattomat() {
         return kaymattomat;
     }
 
