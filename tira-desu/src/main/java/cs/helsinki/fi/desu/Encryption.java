@@ -1,6 +1,3 @@
-/**
- * The class to enrypt given message.
-
 package cs.helsinki.fi.desu;
 
 /**
@@ -11,8 +8,10 @@ package cs.helsinki.fi.desu;
 
 public class Encryption {
     
-    public Encryption() {
-        
+    private DES des;
+    
+    public Encryption(DES des) {
+        this.des = des;
     }
     
     /**

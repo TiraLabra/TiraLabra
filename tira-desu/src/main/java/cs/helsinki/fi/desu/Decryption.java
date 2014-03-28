@@ -9,8 +9,10 @@ package cs.helsinki.fi.desu;
 
 public class Decryption {
     
-    public Decryption() {
-        
+    private DES des;
+    
+    public Decryption(DES des) {
+        this.des = des;
     }
     
     /**
