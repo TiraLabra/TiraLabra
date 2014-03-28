@@ -8,24 +8,17 @@ public class App {
 
     public static void main(String[] args) {
         Pohja p = new Pohja();
-        p.alustaPohja("src/main/java/labyrintti/osat/kartta1.txt");
-        //p.tulostaPohja();
-        Etsija e = new Etsija(p);
-        e.aStar();
-//        int[] lukuja = new int[10];
-//        for (int i = 0; i < 10; i++) {
-//            lukuja[i] = 11 - i;
-//        }
-//        Minimikeko keko = new Minimikeko(p.getKorkeus()*p.getLeveys());
-//        keko.alustaTaulukko(p);
-//        keko.rakennaKeko();
-//        keko.tulosta();
-//        keko.pollPienin();
-//        System.out.println("poistettu maali");
-//        keko.tulosta();
-
-        System.out.println("Reitin koordinaatit:");
-        System.out.println("x,y");
-        e.getReitti();
+        p.alustaPohja("src/main/java/labyrintti/osat/kartta2.txt");
+        Minimikeko keko = new Minimikeko(8);
+        keko.alustaTaulukko(p);
+        keko.tulosta();
+        keko.rakennaKeko();
+        System.out.println("Järjestetty keko: ");
+        keko.tulosta();
+//        Etsija e = new Etsija(p);
+//        e.aStar();
+//        System.out.println("Reitin koordinaatit:");
+//        System.out.println("x,y");
+//        System.out.println(e.getReitti());
     }
 }

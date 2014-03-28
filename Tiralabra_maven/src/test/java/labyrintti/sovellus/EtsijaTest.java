@@ -49,13 +49,29 @@ public class EtsijaTest {
     }
     
     @Test
+    public void kekoJarjestaaRuudutOikein(){
+        etsija.alustus();
+        Minimikeko keko = etsija.getKaymattomat();
+        assertEquals("(0,3) (1,0) (1,1) (0,1) (0,0) (0,2) (1,2) (1,3)", keko.getAlkiot());
+    }
+    
+    @Test
+    public void palauttaaPienimman(){
+        etsija.alustus();
+        Minimikeko keko = etsija.getKaymattomat();
+        Ruutu pienin = keko.pollPienin();
+        Ruutu tarkistus = new Ruutu(0, 0, 3);
+        assertEquals(tarkistus.getArvo(), pienin.getArvo());
+        assertEquals(tarkistus.getX(), pienin.getX());
+        assertEquals(tarkistus.getY(), pienin.getY());
+        assertEquals(7, keko.getKeonKoko());
+        assertEquals("(1,0) (0,0) (1,1) (0,1) (1,3) (0,2) (1,2)", keko.getAlkiot());
+    }
+    
+    @Test
     public void reittiOikein(){
         etsija.aStar();
-        ArrayList<Ruutu> reitti = etsija.getReitti();
-        assertEquals("0,3", reitti.get(0).koordinaatit());
-        assertEquals("0,2", reitti.get(1).koordinaatit());
-        assertEquals("0,1", reitti.get(2).koordinaatit());
-        assertEquals("1,1", reitti.get(3).koordinaatit());
-        assertEquals("1,0", reitti.get(4).koordinaatit());
+        etsija.getReitti();
+        assertEquals("(0,3) (0,2) (0,1) (1,1) (1,0)", etsija.getReitti());
     }
 }

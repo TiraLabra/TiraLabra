@@ -1,5 +1,9 @@
 package labyrintti.osat;
 
+/**
+ * Ruutu on karttapohjan taulukon alkio.
+ * @author heidvill
+ */
 public class Ruutu implements Comparable<Ruutu> {
 
     /**
@@ -105,13 +109,21 @@ public class Ruutu implements Comparable<Ruutu> {
         this.kayty = kayty;
     }
 
+    /**
+     * 
+     * @return ruudun arvo
+     */
     @Override
     public String toString() {
         return "" + arvo;
     }
 
+    /**
+     * 
+     * @return ruudun koordinaatit (x,y)
+     */
     public String koordinaatit() {
-        return x + "," + y;
+        return "(" + x + "," + y + ")";
     }
 
     @Override
@@ -128,7 +140,7 @@ public class Ruutu implements Comparable<Ruutu> {
             return false;
         }
         Ruutu verrattava = (Ruutu) o;
-        if (x == verrattava.getX() && y == verrattava.getY()) {
+        if (x == verrattava.getX() && y == verrattava.getY() && arvo==verrattava.getArvo()) {
             return true;
         }
         return false;

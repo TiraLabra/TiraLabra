@@ -6,6 +6,10 @@ import java.util.PriorityQueue;
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
 
+/**
+ * Etsijä etsii lyhimmän reitin karttapohjasta.
+ * @author heidvill
+ */
 public class Etsija {
     //tira pruju s. 613 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
 
@@ -55,7 +59,7 @@ public class Etsija {
     }
 
     /**
-     * Käy läpi käsiteltävän ruudun kaikki naapuriruudut
+     * Käy läpi käsiteltävän ruudun kaikki naapuriruudut.
      *
      * @param kasiteltava käsittelyssä oleva ruutu
      */
@@ -76,7 +80,7 @@ public class Etsija {
 
     /**
      * Päivittää viereisen ruudun etäisyyden alkuun, jos on löytynyt lyhyempi
-     * reitti
+     * reitti.
      *
      * @param kasiteltava käsittelyssä oleva ruutu
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
@@ -85,7 +89,8 @@ public class Etsija {
         if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei menn
             viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
             viereinen.setEdellinen(kasiteltava);
-            kaymattomat.paivitaRuutuKekoon(kasiteltava);
+//            kaymattomat.paivitaRuutuKekoon(viereinen);
+            kaymattomat.rakennaKeko();
 
         }
     }
@@ -107,24 +112,15 @@ public class Etsija {
         return true;
     }
 
-    /**
-     * Tallentaa reitin listaan. Hyödyntää ruutujen edellinen-attribuuttia.
-     * Koska reitti tallentuu listaan päinvastaisessa järjestyksessä, täytyy
-     * lista kääntää.
-     *
-     * @return lista, jossa reitti. Ensimmäisenä on reitin lähtöruutu.
-     */
-    public void getReitti() {
+    public String getReitti() {
         Ruutu kasiteltava = pohja.getMaali();
-        tulostaReitti(kasiteltava);
-    }
-    
-    public void tulostaReitti(Ruutu kasiteltava) {
-        if(kasiteltava==null){
-            return;
+        String reitti = "";
+        while (!kasiteltava.equals(pohja.getLahto())) {
+            reitti = " " + kasiteltava.koordinaatit() + reitti;
+            kasiteltava = kasiteltava.getEdellinen();
         }
-        tulostaReitti(kasiteltava.getEdellinen());
-        System.out.println(kasiteltava.koordinaatit());
+        reitti = pohja.getLahto().koordinaatit() + reitti;
+        return reitti;
     }
 
     public Minimikeko getKaymattomat() {

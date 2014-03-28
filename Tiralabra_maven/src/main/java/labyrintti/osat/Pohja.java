@@ -3,6 +3,10 @@ package labyrintti.osat;
 import java.io.File;
 import java.util.Scanner;
 
+/**
+ * Karttapohja, jossa on ruudut. Erityisesti pohja tietää lähtö ja maaliruudun.
+ * @author heidvill
+ */
 public class Pohja {
 
     /**

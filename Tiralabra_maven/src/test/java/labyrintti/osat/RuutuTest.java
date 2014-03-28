@@ -51,4 +51,31 @@ public class RuutuTest {
         ruutu.setEtaisyysAlkuun(1);
         assertEquals(4, ruutu.getEtaisyyksienSumma());
     }
+    
+    @Test
+    public void equalsToimii(){
+        Object obj = null;
+        assertEquals(false, ruutu.equals(obj));
+        String mj = (String) obj;
+        assertEquals(false, ruutu.equals(mj));
+        Ruutu verrattava1 = new Ruutu(0, 1, 0);
+        assertEquals(false, ruutu.equals(verrattava1));
+        Ruutu verrattava2 = new Ruutu(0, 0, 0);
+        assertEquals(true, ruutu.equals(verrattava2));
+    }
+    
+    @Test
+    public void compareToimii(){
+        Ruutu verrattava = new Ruutu(0, 0, 0);
+        int palautus = ruutu.compareTo(verrattava);
+        assertEquals(true, palautus==0);
+        
+        verrattava.setEtaisyysAlkuun(4);
+        palautus = ruutu.compareTo(verrattava);
+        assertEquals(true, palautus>0);
+        
+//        verrattava.setEtaisyysAlkuun(-5);
+//        palautus = ruutu.compareTo(verrattava);
+//        assertEquals(true, palautus>0);
+    }
 }
