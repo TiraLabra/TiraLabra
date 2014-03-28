@@ -334,6 +334,7 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         liikutaHaamut();
         kuoleekoHaamuTaiMan();
         if (tarkistaOnkoHeikkoja() == 0) {
@@ -361,11 +362,13 @@ public class Pacman extends Timer implements ActionListener {
             if (haamu.getNimi().equals("red")) {
                 Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(man.getX(), man.getY()), alusta);
                 haamu.liiku(siirto);
-            } else if (haamu.getNimi().equals("cyan")) {
+            } 
+            else if (haamu.getNimi().equals("cyan")) {
                 Peliruutu maali = haamu.selvitaMaali(man);
                 Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), maali, alusta);
                 haamu.liiku(siirto);
-            } else {
+            } 
+            else {
                 haamu.liiku();
             }
             haamuHeikostaVahvaksi(haamu);

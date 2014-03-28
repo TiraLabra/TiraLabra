@@ -36,6 +36,8 @@ public class Haamu extends Hahmo {
      */
     private int heikkous;
 
+    private ArrayList<Peliruutu> kielletytRuudut;
+
     /**
      * Konstruktorissa Haamulle asetetaan tarvittavat arvot, jotka saadaan
      * parametrina. Haamun tyypiksi asetetaan aluksi vahva.
@@ -53,6 +55,22 @@ public class Haamu extends Hahmo {
         this.tyyppi = "vahva";
         this.nimi = nimi;
         this.alusta = alusta;
+        this.kielletytRuudut = new ArrayList<Peliruutu>();
+    }
+
+    public void lisaaKielletytRuudut() {
+
+        for (int y = 7; y == 7 && y == 11; y += 4) {
+            for (int x = 0; x >= 0 && x < 3; x++) {
+                kielletytRuudut.add(alusta.getPeliruutu(x, y));
+                kielletytRuudut.add(alusta.getPeliruutu(alusta.getLeveys() - 1 - x, y));
+            }
+        }
+        kielletytRuudut.add(alusta.getPeliruutu(8, 9));
+        kielletytRuudut.add(alusta.getPeliruutu(9, 8));
+        kielletytRuudut.add(alusta.getPeliruutu(9, 9));
+        kielletytRuudut.add(alusta.getPeliruutu(10, 9));
+
     }
 
     public String getNimi() {
@@ -146,17 +164,36 @@ public class Haamu extends Hahmo {
      */
     public void arvoUusiSuunta() {
 
-        mahdollisetSuunnat = new ArrayList<Suunta>();
-
-        for (Suunta s : Suunta.values()) {
-            if (alusta.getPeliruutu(x + s.getX(), y + s.getY()).getRuudunTyyppi() == 1 || alusta.getPeliruutu(x + s.getX(), y + s.getY()).getRuudunTyyppi() == 3) {
-                mahdollisetSuunnat.add(s);
-            }
-        }
+        selvitaMahdollisetSuunnat();
 
         Random arpoja = new Random();
         int arpaluku = arpoja.nextInt(mahdollisetSuunnat.size());
         this.suunta = mahdollisetSuunnat.get(arpaluku);
+    }
+
+    private void selvitaMahdollisetSuunnat() {
+
+        mahdollisetSuunnat = new ArrayList<Suunta>();
+
+        for (Suunta s : Suunta.values()) {
+            Peliruutu tarkasteltava = alusta.getPeliruutu(x + s.getX(), y + s.getY());
+
+            if (tarkasteltava.getRuudunTyyppi() == 1 || tarkasteltava.getRuudunTyyppi() == 3) {
+                mahdollisetSuunnat.add(s);
+            }
+        }
+    }
+
+    private void selvitaMahdollisetSuunnat2(Peliruutu maali) {
+        mahdollisetSuunnat = new ArrayList<Suunta>();
+
+        for (Suunta s : Suunta.values()) {
+            Peliruutu tarkasteltava = alusta.getPeliruutu(maali.getX() + s.getX(), maali.getY() + s.getY());
+
+            if (tarkasteltava.getRuudunTyyppi() == 1) {
+                mahdollisetSuunnat.add(s);
+            }
+        }
     }
 
     /**
@@ -170,16 +207,46 @@ public class Haamu extends Hahmo {
     }
 
     public Peliruutu selvitaMaali(Man man) {
-        
-        
-        if(onkoAlustanSisalla(man.getX(), man.getY()) ) {
-            return alusta.getPeliruutu(man.getX()+man.getSuunta().getX()*2, man.getY()+man.getSuunta().getY()*2);
+
+        int testiX = man.getX() + man.getSuunta().getX() * 3;
+        int testiY = man.getY() + man.getSuunta().getY() * 3;
+
+        if (onkoHuonoRuutu(testiX, testiY)) {
+            return alusta.getPeliruutu(man.getX(), man.getY());
         }
 
+        Peliruutu maali = alusta.getPeliruutu(testiX, testiY);
+
+        if (maali.getRuudunTyyppi() == 0) {
+            selvitaMahdollisetSuunnat2(maali);
+            if (!mahdollisetSuunnat.isEmpty()) {
+
+                Suunta snta = arvoSuunta();
+                maali = alusta.getPeliruutu(maali.getX() + snta.getX(), maali.getY() + snta.getY());
+
+                if (onkoAlustanSisalla(maali.getX(), maali.getY())) {
+                    return maali;
+                }
+            }
+        }
         return alusta.getPeliruutu(man.getX(), man.getY());
 
     }
-    
+
+    private Suunta arvoSuunta() {
+        Random arpoja = new Random();
+        int arpaluku = arpoja.nextInt(mahdollisetSuunnat.size());
+        Suunta snta = mahdollisetSuunnat.get(arpaluku);
+        return snta;
+    }
+
+    private boolean onkoHuonoRuutu(int testiX, int testiY) {
+        if (onkoAlustanSisalla(testiX, testiY) == false || kielletytRuudut.contains(alusta.getPeliruutu(testiX, testiY)) == true) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean onkoAlustanSisalla(int x, int y) {
         return x <= 17 && x > 1 && y <= 19 && y > 1;
     }
