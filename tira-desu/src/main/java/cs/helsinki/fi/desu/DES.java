@@ -1,12 +1,10 @@
-/*
- * Main logic methods for DES encryption.
- */
 
 package cs.helsinki.fi.desu;
 
 /**
- * @author Juha Lindqvist
- * @email juha.lindqvist@cs.helsinki.fi
+ * Main logic methods for DES encryption.
+ *
+ * @author Juha Lindqvist <juha.lindqvist@cs.helsinki.fi>
  */
 public class DES {
 
@@ -113,24 +111,101 @@ public class DES {
         44, 49, 39, 56, 34, 53,
         46, 42, 50, 36, 29, 32
     };
+
+    // 
+    private static int[] keyShift = 
+            {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
+    
+    // 
+    private static int[] expandTbl = 
+            {32, 1,   2,  3,  4,  5,  4,  5,  6,  7,  8,  9,  8,
+              9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17, 16, 17,
+             18, 19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26,
+             27, 28, 29, 28, 29, 30, 31, 32, 1 };
+    
+    // instance for opreating bits
+    private BitOperations bitOps;
     
     public DES() {
-        
+        bitOps = new BitOperations();
     }
     
-    public byte[] permute() {
-        return null;
+    /**
+     * Method for applying a permutation to an array of bytes. Permutations
+     * are done bitwise based on the elements of parameter table.
+     * 
+     * @param  input  input array of bits
+     * @param  table  table of permutation
+     * @return        permuted array of bytes
+     */
+    public byte[] permute(byte[] input, int[] table) {
+        int numOfBytes = table.length - 1 / 8 + 1;
+        byte[] output = new byte[numOfBytes];
+        for (int i = 0; i < table.length; i++) {
+            int value = bitOps.extractBit(input, table[i] - 1);
+            bitOps.setBit(ouput, i, value);
+        }
+        return output;
     }
     
-    public byte[] feistelF() {
-        return null;
+    /**
+     * Main Feistel function for structuring block ciphers.
+     * 
+     * @param   R 
+     * @param   K array of subkeys
+     * @return    subsitution-permuted array
+     */
+    public byte[] feistelF(byte[] R, byte[] K) {
+        byte[] output = permute(R, expandTable);
+        output = bitOps.xor(output, K);
+        output = feistelS(output);
+        output = permute(output, P);
+        return output;
     }
 
-    public byte[] feistelS() {
-        return null;
+    /**
+     * Applies the 8 S-Boxes to the 48 bits of data, resulting in 32 bits
+     * of output.
+     * 
+     * @param input original array of 48 bits
+     * @return      resulting 32 bits of data
+     */
+    public byte[] feistelS(byte[] input) {
+        input = separateBytes(input, 6);
+        byte[] output = new byte[input.length / 2];
+        int half = 0;
+        for (int i = 0; i < input.length; i++) {
+            byte[] value = input[i];
+            int r = 2 * (value >> 7 && 0x0001) + (value >> 2 & 0x0001);
+            int c = value >> 3 & 0x000F;
+            int val = sBox[i][r][c];
+            if (b % 2 == 0)
+                half = val;
+            else
+                output[b / 2] = (byte) 16 * half + val;
+        }
+        return output;
     }
     
-    public byte[] generateKeys() {
-        return null;
+    /**
+     * Generates subkeys for encryption and decryption.
+     * 
+     * @param key original key by which to generate subkeys
+     * @return    array of subkeys
+     */
+    public byte[][] generateKeys(byte[] key) {
+        byte[][] output = new byte[16][];
+        byte[] tempK = permute(key, PC1);
+        byte[] C = bitOps.extractBits(tempK, 0, PC1.length / 2);
+        byte[] D = bitOps.extractBits(tempK, PC1.length / 2, PC1.length / 2);
+        
+        for (int i = 0; i < 16; i++) {
+            C = bitOps.rotateLeft(C, 28, keyShift[i]);
+            D = bitOps.rotateLeft(D, 28, keyShift[i]);
+            byte[] CD = bitOps.concatBits(C, 28, D, 28);
+            output[i] = permute(CD, PC2);
+        }
+
+        return output;
     }
 }
