@@ -1,13 +1,11 @@
-/**
- * Does all operations on bytes and bits, for example XOR and getting 
- * needed bits from a byte.
- */
 
 package cs.helsinki.fi.desu;
 
 /**
- * @author Juha Lindqvist
- * @email "juha.lindqvist@cs.helsinki.fi"
+ * Does all operations on bytes and bits, for example XOR and getting
+ * needed bits from a byte.
+ * 
+ * @author Juha Lindqvist <juha.lindqvist@cs.helsinki.fi>
  */
 
 public class BitOperation {
@@ -19,6 +17,7 @@ public class BitOperation {
     /**
      * Inserts a bit value to a byte vector. Calculates which nit needs to
      * be set and to which value.
+     * 
      * @param  input  input vector
      * @param  pos    place to insert value
      */
@@ -33,6 +32,7 @@ public class BitOperation {
     
     /**
      * Takes a vector and extracts one bit from given position.
+     * 
      * @param  input byte to extract bit from
      * @param  pos   where to extract bit from
      * @return       the bit from pos
@@ -48,6 +48,7 @@ public class BitOperation {
     /**
      * Takes a vector of bytes and extracts bits from it from starting position
      * to end position.
+     *
      * @param  input  vector of bytes
      * @param  pos    starting position
      * @param  n      number of bits to extract
@@ -66,6 +67,7 @@ public class BitOperation {
     /**
      * Rotates bits to the left from given input vector by given number of
      * positions.
+     *
      * @param   input  input byte vector
      * @param   len    length of bits to rotate
      * @param   pos    position from where to rotate
@@ -83,11 +85,12 @@ public class BitOperation {
     
     /**
      * Apply XOR to two sets of bytes and return the resulting byte[].
+     *
      * @param  a first voctor
      * @param  b second vector
      * @return   result vector from XOR-operation
      */
-    public byte[] xorBytes(byte[] a, byte[] b) {
+    public byte[] xor(byte[] a, byte[] b) {
         byte[] output = new byte[a.length];
         for (int i = 0; i < a.length; i++) {
             out[i] = (byte) (a[i] ^ b[i]);
@@ -97,6 +100,7 @@ public class BitOperation {
     
     /**
      * Separates blocks to chunks of required size.
+     *
      * @param  input  input vector of bytes
      * @param  len    length of block to get
      * @return        vector of bits of given length
