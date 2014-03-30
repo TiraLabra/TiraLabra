@@ -1,7 +1,6 @@
 
 package labyrintti.sovellus;
 
-import java.util.ArrayList;
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
 import org.junit.After;
@@ -60,10 +59,9 @@ public class EtsijaTest {
         etsija.alustus();
         Minimikeko keko = etsija.getKaymattomat();
         Ruutu pienin = keko.pollPienin();
-        Ruutu tarkistus = new Ruutu(0, 0, 3);
-        assertEquals(tarkistus.getArvo(), pienin.getArvo());
-        assertEquals(tarkistus.getX(), pienin.getX());
-        assertEquals(tarkistus.getY(), pienin.getY());
+        assertEquals(0, pienin.getArvo());
+        assertEquals(0, pienin.getX());
+        assertEquals(3, pienin.getY());
         assertEquals(7, keko.getKeonKoko());
         assertEquals("(1,0) (0,0) (1,1) (0,1) (1,3) (0,2) (1,2)", keko.getAlkiot());
     }

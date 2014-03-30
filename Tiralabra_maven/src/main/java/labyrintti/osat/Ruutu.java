@@ -11,13 +11,13 @@ public class Ruutu implements Comparable<Ruutu> {
      */
     private int arvo;
     /**
-     * Ruudun x-koordinaatti.
+     * Ruudun x-koordinaatti, kertoo millä rivillä ruutu on.
      */
-    private int x; //rivi
+    private int x;
     /**
-     * Ruudun y-koordinaatti.
+     * Ruudun y-koordinaatti, kertoo missä sarakkeessa ruutu on.
      */
-    private int y; //sarake
+    private int y;
     /**
      * Ruudun arvioitu etäisyys loppuun, |x-maaliX|+|y-maaliY|.
      */
@@ -40,14 +40,14 @@ public class Ruutu implements Comparable<Ruutu> {
         this.arvo = arvo;
         this.x = x;
         this.y = y;
-        etaisyysAlkuun = 2000000000; //Integer.MAX_VALUE;
-        etaisyysLoppuun = 2000000000; // Integer.MAX_VALUE;
+        etaisyysAlkuun = 2000000000;
+        etaisyysLoppuun = 2000000000;
         kayty = false;
         edellinen = null;
     }
 
     /**
-     * Laskee etäisyyden maaliruutuun
+     * Laskee etäisyyden maaliruutuun.
      *
      * @param maaliX Maaliruudun x-koordinaatti
      * @param maaliY Maaliruudun y-koordinaatti
@@ -93,6 +93,10 @@ public class Ruutu implements Comparable<Ruutu> {
         return kayty;
     }
 
+    /**
+     * 
+     * @return ruutu, josta tähän ruutuun on tultu.
+     */
     public Ruutu getEdellinen() {
         return edellinen;
     }
@@ -140,7 +144,7 @@ public class Ruutu implements Comparable<Ruutu> {
             return false;
         }
         Ruutu verrattava = (Ruutu) o;
-        if (x == verrattava.getX() && y == verrattava.getY() && arvo==verrattava.getArvo()) {
+        if (x == verrattava.getX() && y == verrattava.getY()) { // && arvo==verrattava.getArvo()
             return true;
         }
         return false;

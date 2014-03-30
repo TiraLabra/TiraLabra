@@ -1,8 +1,5 @@
 package labyrintti.sovellus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.PriorityQueue;
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
 
@@ -86,12 +83,11 @@ public class Etsija {
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
      */
     private void relax(Ruutu kasiteltava, Ruutu viereinen) {
-        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei menn
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
             viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
             viereinen.setEdellinen(kasiteltava);
 //            kaymattomat.paivitaRuutuKekoon(viereinen);
             kaymattomat.rakennaKeko();
-
         }
     }
 
@@ -112,6 +108,10 @@ public class Etsija {
         return true;
     }
 
+    /**
+     * Palauttaa reitin merkkijonona.
+     * @return merkkijono reitistä
+     */
     public String getReitti() {
         Ruutu kasiteltava = pohja.getMaali();
         String reitti = "";

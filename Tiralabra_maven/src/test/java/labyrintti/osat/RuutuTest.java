@@ -6,9 +6,7 @@
 package labyrintti.osat;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -46,34 +44,34 @@ public class RuutuTest {
     }
 
     @Test
-    public void etaisyyksienSummaOikein(){
+    public void etaisyyksienSummaOikein() {
         ruutu.laskeEtaisyysMaaliin(1, 2);
         ruutu.setEtaisyysAlkuun(1);
         assertEquals(4, ruutu.getEtaisyyksienSumma());
     }
-    
+
     @Test
-    public void equalsToimii(){
+    public void equalsToimii() {
         Object obj = null;
         assertEquals(false, ruutu.equals(obj));
-        String mj = (String) obj;
+        String mj = "asdf";
         assertEquals(false, ruutu.equals(mj));
         Ruutu verrattava1 = new Ruutu(0, 1, 0);
         assertEquals(false, ruutu.equals(verrattava1));
         Ruutu verrattava2 = new Ruutu(0, 0, 0);
         assertEquals(true, ruutu.equals(verrattava2));
     }
-    
+
     @Test
-    public void compareToimii(){
+    public void compareToimii() {
         Ruutu verrattava = new Ruutu(0, 0, 0);
         int palautus = ruutu.compareTo(verrattava);
-        assertEquals(true, palautus==0);
-        
+        assertEquals(true, palautus == 0);
+
         verrattava.setEtaisyysAlkuun(4);
         palautus = ruutu.compareTo(verrattava);
-        assertEquals(true, palautus>0);
-        
+        assertEquals(true, palautus > 0);
+
 //        verrattava.setEtaisyysAlkuun(-5);
 //        palautus = ruutu.compareTo(verrattava);
 //        assertEquals(true, palautus>0);

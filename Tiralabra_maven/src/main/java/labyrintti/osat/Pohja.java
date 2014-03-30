@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 /**
  * Karttapohja, jossa on ruudut. Erityisesti pohja tietää lähtö ja maaliruudun.
+ *
  * @author heidvill
  */
 public class Pohja {
@@ -39,7 +40,6 @@ public class Pohja {
     private int maaliY;
 
     public Pohja() {
-
     }
 
     /**
@@ -58,7 +58,8 @@ public class Pohja {
     }
 
     /**
-     * 
+     * Liittää annetun tekstitiedoston scanner-luokan oliolle.
+     *
      * @param tiedosto annetaan scannerille
      * @return Scanner lukija
      */
@@ -75,6 +76,7 @@ public class Pohja {
 
     /**
      * Tallennetaan tiedoston kartta taulukkoon.
+     *
      * @param lukija lukee tiedostoa
      */
     private void tallennaPohjaTaulukkoon(Scanner lukija) {
@@ -89,32 +91,32 @@ public class Pohja {
             x++;
         }
     }
-    
+
     /**
      * Määrittää ruudulle painoarvon.
+     *
      * @param merkki luettava merkki
      * @param x rivi
      * @param j sarake
      * @return ruudun arvo
      */
-    private int tarkistaRuudunArvo(char merkki, int x, int j){
-        int arvo = 0;
+    private int tarkistaRuudunArvo(char merkki, int x, int j) {
         if (merkki == 'L') {
-                    lahtoX = x;
-                    lahtoY = j;
-                    arvo = 0;
-                } else if (merkki == 'M') {
-                    maaliX = x;
-                    maaliY = j;
-                    arvo = 0;
-                } else {
-                    arvo = Integer.parseInt("" + merkki);
-                }
-        return arvo;
+            lahtoX = x;
+            lahtoY = j;
+            return 0;
+        } else if (merkki == 'M') {
+            maaliX = x;
+            maaliY = j;
+            return 0;
+        } else {
+            return Integer.parseInt("" + merkki);
+        }
     }
 
     /**
      * Laskee taulukolle korkeuden.
+     *
      * @param lukija lukee tiedostoa
      */
     private void laskeKorkeus(Scanner lukija) {
