@@ -2,17 +2,30 @@ package pacman.peli;
 
 import pacman.alusta.Peliruutu;
 
+/**
+ * Järjestäjä luokka, järjestää taulukon, etäisyysarvioiden perusteella.
+ * Järjestäminen tapahtuu lomitusjärjestämisen idealla.
+ * @author Hanna
+ */
 public class Jarjestaja {
 
     private Peliruutu[] solmut;
-    private Peliruutu[] apu;
 
+    /**
+     * Konstruktorissa alustetaan solmulista parametrinä olevaksi solmulistaksi.
+     * @param solmulista
+     */
     public Jarjestaja(Peliruutu[] solmulista) {
         solmut = solmulista;
-        apu = new Peliruutu[solmulista.length];
     }
 
-    public void merge(int vasenReuna, int keskikohta, int oikeaReuna) {
+    /**
+     * Metodi lomittaa palaset sopivaan järjestykseen.
+     * @param vasenReuna
+     * @param keskikohta
+     * @param oikeaReuna
+     */
+    private void merge(int vasenReuna, int keskikohta, int oikeaReuna) {
         
         Peliruutu[] apu = new Peliruutu[solmut.length];
 
@@ -43,6 +56,11 @@ public class Jarjestaja {
 
     }
 
+    /**
+     * Metodi pilkkoo taulukon pieniksi osiksi ja kutsuu tämän jälkeen taulukon osat lomittavaa metodia.
+     * @param vasenReuna
+     * @param oikeaReuna
+     */
     public void mergeSort(int vasenReuna, int oikeaReuna) {
         if (vasenReuna < oikeaReuna) {
             int keski = vasenReuna + (oikeaReuna - vasenReuna) / 2;
@@ -54,10 +72,6 @@ public class Jarjestaja {
     
     public void setLista(Peliruutu[] lista) {
         this.solmut = lista;
-    }
-    
-    public Peliruutu[] getLista() {
-        return this.solmut;
     }
 }
 

@@ -1,7 +1,6 @@
 package pacman.peli;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.hahmot.Suunta;
@@ -30,13 +29,13 @@ public class Haku {
     /**
      * aStar on hakualgoritmi, joka palauttaa peliruudun johon haamun kannattaa
      * liikahtaa saavuttaakseen tavoitteensa. Parametrinaan aStar saa
-     * lähtöruudun, maaliruudun ja alustan jolla peli toimii. Algoritmin on
+     * lähtöruudun, maaliruudun ja alustan, jolla peli toimii. Algoritmin on
      * tarkoitus selvittää paras reitti lähtöruudun ja maaliruudun välille.
      *
      * @param lahto
      * @param maali
      * @param alusta
-     * @return
+     * @return Peliruutu, johon haamun kuuluu liikahtaa.
      */
     public Peliruutu aStar(Peliruutu lahto, Peliruutu maali, Pelialusta alusta) {
         alustus(alusta, maali);
@@ -45,19 +44,17 @@ public class Haku {
 
         lahto.setEtaisyysAlkuun(0);
 
-        ArrayList<Peliruutu> kaydyt = new ArrayList<Peliruutu>();
-
         Peliruutu[] solmulista = new Peliruutu[1];
-
         solmulista = etsiNaapurit(alusta, lahto, solmulista);
+
         Jarjestaja jarjesta = new Jarjestaja(solmulista);
         jarjesta.mergeSort(0, solmulista.length - 1);
 
         Peliruutu[] reitti = new Peliruutu[1];
 
-        liiku(lahto, alusta, 1, maali, reitti, 0, solmulista, kaydyt, jarjesta);
-        this.ekaKerta = true;
+        liiku(lahto, alusta, 1, maali, reitti, 0, solmulista, jarjesta);
 
+        this.ekaKerta = true;
         return parasReitti[1];
     }
 
@@ -68,20 +65,30 @@ public class Haku {
      * @param alusta
      * @param ruutu
      * @param solmulista
+     * @return Taulukko, josta selviää mahdolliset naapurit.
      */
     private Peliruutu[] etsiNaapurit(Pelialusta alusta, Peliruutu ruutu, Peliruutu[] solmulista) {
         ArrayList<Peliruutu> naapurit = new ArrayList<Peliruutu>();
 
-        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, Suunta.YLOS);
-        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, Suunta.ALAS);
-        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, Suunta.VASEN);
-        haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, Suunta.OIKEA);
+        for (Suunta suunta : Suunta.values()) {
+            haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, suunta);
+        }
 
+        Peliruutu[] uusiLista = naapuriListaTaulukoksi(naapurit);
+
+        return uusiLista;
+    }
+    
+    /**
+     * Metodi muuttaa listan, johon on tallennettu sopivat naapurit, taulukoksi.
+     * @param naapurit
+     * @return Palauttaa taulukon, jossa sopivat naapurit.
+     */
+    private Peliruutu[] naapuriListaTaulukoksi(ArrayList<Peliruutu> naapurit) {
         Peliruutu[] uusiLista = new Peliruutu[naapurit.size()];
         for (int i = 0; i < naapurit.size(); i++) {
             uusiLista[i] = naapurit.get(i);
         }
-
         return uusiLista;
     }
 
@@ -98,12 +105,11 @@ public class Haku {
         if (haettava.getRuudunTyyppi() != 0) {
             naapurit.add(haettava);
         }
-
     }
 
     /**
      * Metodi alustaa pelialustan siten, että asettaan jokaiselle ruudulle
-     * etäisyysarvion maaliruutuun.
+     * etäisyysarvion maaliruutuun ja alkuruutuun suuren luvun.
      *
      * @param alusta
      * @param maali
@@ -120,7 +126,6 @@ public class Haku {
     }
 
     /**
-     *
      * Metodi selvittää rekursiivisesti parhaimman reitin lähtöruudusta maaliin.
      *
      * @param nykyinen
@@ -130,14 +135,14 @@ public class Haku {
      * @param reitti
      * @param indeksi
      * @param solmulista
-     * @param kaydyt
+     * @param jar
      */
-    public void liiku(Peliruutu nykyinen, Pelialusta alusta, int summa, Peliruutu maali, Peliruutu[] reitti, int indeksi, Peliruutu[] solmulista, ArrayList<Peliruutu> kaydyt, Jarjestaja jar) {
+    public void liiku(Peliruutu nykyinen, Pelialusta alusta, int summa, Peliruutu maali, Peliruutu[] reitti, int indeksi, Peliruutu[] solmulista, Jarjestaja jar) {
 
         if (nykyinen == null || ollaankoMaalissa(nykyinen, maali, summa, reitti, indeksi)) {
             return;
         }
-        
+
         if (this.ekaKerta == true) {
             this.ekaKerta = false;
         } else {
@@ -147,7 +152,7 @@ public class Haku {
             }
             solmulista = new Peliruutu[1];
             solmulista = etsiNaapurit(alusta, nykyinen, solmulista);
-            
+
             jar.setLista(solmulista);
             jar.mergeSort(0, solmulista.length - 1);
             nykyinen.setEtaisyysAlkuun(summa);
@@ -157,27 +162,47 @@ public class Haku {
         indeksi++;
         Peliruutu[] reittiKopio = reitistaKopioReitti(reitti);
 
-        ArrayList<Peliruutu> kaydytKopio = kaydyt;
         Peliruutu[] uusiLista = new Peliruutu[1];
         nykyinen = solmulista[0];
 
-        while (uusiLista.length != 0) {            
-            uusiLista = paivitaListanPituus(solmulista, uusiLista);
-
-            liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, uusiLista, kaydytKopio, jar);
-            
-            if(uusiLista.length > 0) {
-                nykyinen = uusiLista[0];
-                solmulista = uusiLista;
-            }            
-        }
+        liikutaNiinKauanKunOnNaapureita(uusiLista, solmulista, nykyinen, alusta, summa, maali, reittiKopio, indeksi, jar);
 
     }
+    /**
+     * Metodi kutsuu rekursiivisesti liiku-metodia, niin kauan kun tietyllä ruudulla on naapureita.
+     * @param uusiLista
+     * @param solmulista
+     * @param nykyinen
+     * @param alusta
+     * @param summa
+     * @param maali
+     * @param reittiKopio
+     * @param indeksi
+     * @param jar 
+     */
+    private void liikutaNiinKauanKunOnNaapureita(Peliruutu[] uusiLista, Peliruutu[] solmulista, Peliruutu nykyinen, Pelialusta alusta, int summa, Peliruutu maali, Peliruutu[] reittiKopio, int indeksi, Jarjestaja jar) {
+        while (uusiLista.length != 0) {
+            uusiLista = paivitaListanPituus(solmulista, uusiLista);
 
+            liiku(nykyinen, alusta, summa, maali, reittiKopio, indeksi, uusiLista, jar);
+
+            if (uusiLista.length > 0) {
+                nykyinen = uusiLista[0];
+                solmulista = uusiLista;
+            }
+        }
+    }
+
+    /**
+     * Metodi päivittää taulukon pituuden oikeaksi, kun sieltä otetaan yksi ruutu nykyiseksi.
+     * @param solmulista
+     * @param uusiLista
+     * @return Palauttaa listan, jonka kokoa on vähennetty yhdellä ja kaikkia ruutuja on siirretty yhdellä indeksillä eteenpäin.
+     */
     private Peliruutu[] paivitaListanPituus(Peliruutu[] solmulista, Peliruutu[] uusiLista) {
         if (solmulista.length > 1) {
             uusiLista = new Peliruutu[solmulista.length - 1];
-            
+
             for (int i = 0; i < uusiLista.length; i++) {
                 uusiLista[i] = solmulista[i + 1];
             }
@@ -191,7 +216,7 @@ public class Haku {
      * Metodi tekee reitistä kopion.
      *
      * @param reitti
-     * @return
+     * @return Palauttaa taulukon, joka on kopio reitistä.
      */
     private Peliruutu[] reitistaKopioReitti(Peliruutu[] reitti) {
         Peliruutu[] reittiKopio = new Peliruutu[reitti.length + 1];
@@ -200,7 +225,6 @@ public class Haku {
     }
 
     /**
-     *
      * Tarkistaan ollaanko jo päästy maaliruutuun, jos ollaan palautetaan true.
      * Jos ei vielä olla maalissa palautetaan false.
      *
@@ -209,7 +233,7 @@ public class Haku {
      * @param summa
      * @param reitti
      * @param indeksi
-     * @return
+     * @return Palauttaa totuusarvon, sen perusteella ollaanko maalissa vai ei.
      */
     private boolean ollaankoMaalissa(Peliruutu nykyinen, Peliruutu maali, int summa, Peliruutu[] reitti, int indeksi) {
         if (nykyinen.equals(maali)) {
@@ -229,7 +253,7 @@ public class Haku {
      *
      * @param maali
      * @param ruutu
-     * @return
+     * @return Palauttaa int arvon joka on etäisyysarvio.
      */
     public int etaisyys(Peliruutu maali, Peliruutu ruutu) {
 
