@@ -7,13 +7,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import pacman.alusta.Pelialusta;
+import pacman.alusta.Peliruutu;
 import pacman.hahmot.Haamu;
+import pacman.hahmot.Man;
 import pacman.hahmot.Suunta;
 
 public class HaamuTest {
 
     private Pelialusta alusta;
     private Haamu haamu;
+    private Man man;
 
     public HaamuTest() {
     }
@@ -32,6 +35,7 @@ public class HaamuTest {
         alusta.luoPelialusta();
         haamu = new Haamu(9, 8, Suunta.ALAS, "RED", alusta);
         haamu.luoHaamuAlustalle();
+        man = new Man(9, 11, Suunta.OIKEA, alusta);
     }
 
     @After
@@ -113,5 +117,38 @@ public class HaamuTest {
         haamu.setY(7);
         haamu.setSuunta(Suunta.OIKEA);
         assertTrue(haamu.katsoVoikoLiikkuaSivuille());
+    }
+
+    @Test
+    public void selvittaaOikeinMaalinKunRuutuMahdollinen() {
+        Peliruutu maali = haamu.selvitaMaali(man);
+        assertEquals("(12,11)", maali.toString());
+    }
+
+    @Test
+    public void selvittaaOikeinMaalinKunVastassaSeina() {
+        man.setX(3);
+        man.setY(9);
+        man.setSuunta(Suunta.VASEN);
+        Peliruutu maali = haamu.selvitaMaali(man);
+        assertEquals("(3,9)", maali.toString());
+    }
+    
+    @Test
+    public void selvittaaOikeinMaalinKunHuonoRuutu(){
+        man.setX(17);
+        man.setY(9);
+        Peliruutu maali = haamu.selvitaMaali(man);
+        assertEquals("(17,9)", maali.toString());
+    }
+    
+    @Test
+    public void selvittaaOikeinMaalinJosHaamuMaaliRuudussa() {
+        man.setX(14);
+        man.setY(9);
+        haamu.setX(17);
+        haamu.setY(9);
+        Peliruutu maali= haamu.selvitaMaali(man);
+        assertEquals("(16,9)", maali.toString());
     }
 }

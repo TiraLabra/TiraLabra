@@ -3,6 +3,7 @@ package pacman;
 import javax.swing.SwingUtilities;
 import pacman.alusta.Peliruutu;
 import pacman.gui.Kayttoliittyma;
+import pacman.hahmot.Haamu;
 import pacman.peli.Jarjestaja;
 import pacman.peli.Pacman;
 
@@ -11,6 +12,13 @@ public class Main {
     public static void main(String[] args) throws Exception {  
        
         Pacman peli = new Pacman();
+//        Haamu haamu = peli.getHaamuLista().get(0);
+//        haamu.lisaaKielletytRuudut();
+//        
+//        for (Peliruutu peliruutu : haamu.getKielletyt()) {
+//            System.out.println(peliruutu.toString());
+//        }
+        
         Kayttoliittyma kayttis = new Kayttoliittyma(peli);
         
         SwingUtilities.invokeLater(kayttis);

@@ -35,10 +35,10 @@ public class Haamu extends Hahmo {
      * heikko.
      */
     private int heikkous;
-    
+
     /**
-     * Lista sisältää tiedon ruuduista, joita ei saa valita haamun liikkumisruuduiksi.
-     * Haamu siis tietää mihin ruutuun ei saa mennä.
+     * Lista sisältää tiedon ruuduista, joita ei saa valita haamun
+     * liikkumisruuduiksi. Haamu siis tietää mihin ruutuun ei saa mennä.
      */
     private ArrayList<Peliruutu> kielletytRuudut;
 
@@ -63,15 +63,15 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä liikkua.
-     * Paikat ovat haamujen karsinassa ja reunoilla.
+     * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä
+     * liikkua. Paikat ovat haamujen karsinassa ja reunoilla.
      */
     public void lisaaKielletytRuudut() {
 
-        for (int y = 7; y == 7 && y == 11; y += 4) {
-            for (int x = 0; x >= 0 && x < 3; x++) {
-                kielletytRuudut.add(alusta.getPeliruutu(x, y));
-                kielletytRuudut.add(alusta.getPeliruutu(alusta.getLeveys() - 1 - x, y));
+        for (int i = 7; i == 7 || i == 11; i += 4) {
+            for (int j = 0; j >= 0 && j < 3; j++) {
+                kielletytRuudut.add(alusta.getPeliruutu(j, i));
+                kielletytRuudut.add(alusta.getPeliruutu(alusta.getLeveys() - 1 - j, i));
             }
         }
         kielletytRuudut.add(alusta.getPeliruutu(8, 9));
@@ -83,6 +83,10 @@ public class Haamu extends Hahmo {
 
     public String getNimi() {
         return this.nimi;
+    }
+    
+    public ArrayList<Peliruutu> getKielletyt() {
+        return this.kielletytRuudut;
     }
 
     public ArrayList<Suunta> getSuuntaLista() {
@@ -180,8 +184,9 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Metodi selvittää mihin suuntii haamu voisi liikahtaa, siitä ruudussa missä se metodin kutsuma hetkellä on.
-     * Tallentaa sopivat suunnat ArrayListaan.
+     * Metodi selvittää mihin suuntii haamu voisi liikahtaa, siitä ruudussa
+     * missä se metodin kutsuma hetkellä on. Tallentaa sopivat suunnat
+     * ArrayListaan.
      */
     private void selvitaMahdollisetSuunnat() {
 
@@ -197,8 +202,10 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Metodi selvittää missä suunnassa uusi maali voisi olla, jos alkuperäinen ruutu ei sovi maaliruuduksi.
-     * @param maali 
+     * Metodi selvittää missä suunnassa uusi maali voisi olla, jos alkuperäinen
+     * ruutu ei sovi maaliruuduksi.
+     *
+     * @param maali
      */
     private void selvitaMahdollisetSuunnat2(Peliruutu maali) {
         mahdollisetSuunnat = new ArrayList<Suunta>();
@@ -223,10 +230,11 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Metodi tarkistaa onko maali sopiva ruutu, haamulle Cyan.
-     * Haamulla on kohteena kolme ruutua Manin edellä oleva ruutu. 
-     * Jos ruutu ei ole sopiva maaliksi etsitään uusi ruutu.
-     * os ei löydy mitään sopivaa ruutua, maali on Man itse.
+     * Metodi tarkistaa onko maali sopiva ruutu, haamulle Cyan. Haamulla on
+     * kohteena kolme ruutua Manin edellä oleva ruutu. Jos ruutu ei ole sopiva
+     * maaliksi etsitään uusi ruutu. os ei löydy mitään sopivaa ruutua, maali on
+     * Man itse.
+     *
      * @param man
      * @return Palauttaa sopivan maali ruudun.
      */
@@ -241,23 +249,45 @@ public class Haamu extends Hahmo {
 
         Peliruutu maali = alusta.getPeliruutu(testiX, testiY);
 
-        if (maali.getRuudunTyyppi() == 0) {
-            selvitaMahdollisetSuunnat2(maali);
-            if (!mahdollisetSuunnat.isEmpty()) {
-
-                Suunta snta = arvoSuunta();
-                maali = alusta.getPeliruutu(maali.getX() + snta.getX(), maali.getY() + snta.getY());
-
-                if (onkoAlustanSisalla(maali.getX(), maali.getY())) {
-                    return maali;
-                }
-            }
+        if (maali.getX() == this.x && maali.getY() == this.y) {
+            return selvitaMaaliSuunnista(maali, man);
         }
+
+        if (maali.getRuudunTyyppi() == 0) {
+            Peliruutu uusiMaali = selvitaMaaliSuunnista(maali, man);
+            if (uusiMaali.getX() == this.x && uusiMaali.getY() == this.y) {
+                return selvitaMaaliSuunnista(uusiMaali, man);
+            } else {
+                return uusiMaali;
+            }
+        } else {
+            return maali;
+        }
+
+    }
+
+    /**
+     * Metodi selvittää uuden maaliruudun, vanhan maaliruudun ympärillä olevista ruuduista.
+     * @param maali
+     * @param man
+     * @return palauttaa uuden maaliruudun
+     */
+    private Peliruutu selvitaMaaliSuunnista(Peliruutu maali, Man man) {
+
+        selvitaMahdollisetSuunnat2(maali);
+        if (!mahdollisetSuunnat.isEmpty()) {
+            Suunta snta = arvoSuunta();
+            Peliruutu uusiMaali = alusta.getPeliruutu(maali.getX() + snta.getX(), maali.getY() + snta.getY());
+            if (onkoAlustanSisalla(maali.getX(), maali.getY())) {
+                return alusta.getPeliruutu(uusiMaali.getX(), uusiMaali.getY());
+            }
+        } 
         return alusta.getPeliruutu(man.getX(), man.getY());
     }
 
     /**
      * Metodi arvoo listan komponenteista yhden.
+     *
      * @return Palauttaa listasta arvotun suunnan.
      */
     private Suunta arvoSuunta() {
@@ -266,15 +296,17 @@ public class Haamu extends Hahmo {
         Suunta snta = mahdollisetSuunnat.get(arpaluku);
         return snta;
     }
-    
+
     /**
-     * Metodi tarkistaa onko ruutu käyvä vai huono.
-     * Ruutu ei ole hyvä, jos se on alustan ulkopuolella tai se kuuluu kiellettyihin ruutuihin.
+     * Metodi tarkistaa onko ruutu käyvä vai huono. Ruutu ei ole hyvä, jos se on
+     * alustan ulkopuolella tai se kuuluu kiellettyihin ruutuihin.
+     *
      * @param testiX
      * @param testiY
      * @return Palauttaa true, jos ruutu on huono.
      */
     private boolean onkoHuonoRuutu(int testiX, int testiY) {
+        this.lisaaKielletytRuudut();
         if (onkoAlustanSisalla(testiX, testiY) == false || kielletytRuudut.contains(alusta.getPeliruutu(testiX, testiY)) == true) {
             return true;
         }
@@ -283,12 +315,16 @@ public class Haamu extends Hahmo {
 
     /**
      * Metodi tarkistaa ovatko koordinaatit pelialustan sisäpuolella.
+     *
      * @param x
      * @param y
      * @return palauttaa totuusarvon.
      */
     private boolean onkoAlustanSisalla(int x, int y) {
-        return x <= 17 && x > 1 && y <= 19 && y > 1;
+        if (x <= 17 && x > 1 && y <= 19 && y > 1) {
+            return true;
+        }
+        return false;
     }
 
 }

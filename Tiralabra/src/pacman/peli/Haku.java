@@ -25,6 +25,15 @@ public class Haku {
         this.ekaKerta = true;
 
     }
+    
+    public int getParasSumma() {
+        return this.parasSumma;
+    }
+    
+    public Peliruutu[] getParasReitti() {
+        return this.parasReitti;
+    }
+    
 
     /**
      * aStar on hakualgoritmi, joka palauttaa peliruudun johon haamun kannattaa
