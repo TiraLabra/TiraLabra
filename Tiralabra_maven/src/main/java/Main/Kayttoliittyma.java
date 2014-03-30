@@ -5,14 +5,12 @@
  */
 package Main;
 
-import Sorters.IntroSorter;
-import Sorters.MergeSorter;
-import Sorters.ShellSorter;
+import Sorters.*;
 import java.util.Random;
 
 /**
  *
- * @author Admin
+ * @author nkostiai
  */
 public class Kayttoliittyma {
 
@@ -21,8 +19,8 @@ public class Kayttoliittyma {
     private int[] mediumArray;
     private int[] largeArray;
     private MergeSorter mergeSorter;
-    private ShellSorter shellSorter;
     private IntroSorter introSorter;
+    private SmoothSorter smoothSorter;
 
     public Kayttoliittyma() {
         randomizer = new Random();
@@ -30,8 +28,8 @@ public class Kayttoliittyma {
         mediumArray = new int[100000];
         largeArray = new int[10000000];
         mergeSorter = new MergeSorter();
-        shellSorter = new ShellSorter();
         introSorter = new IntroSorter();
+        smoothSorter = new SmoothSorter();
     }
 
     public void kaynnista() {
@@ -46,12 +44,15 @@ public class Kayttoliittyma {
     }
 
     public void jarjestaTaulukko(int[] jarjestettava) {
+        muodostaTaulukot();
         System.out.println("Mergesort...");
         jarjestaMergesortilla(jarjestettava);
-//        System.out.println("Shellsort...");
-//        jarjestaShellsortilla(jarjestettava);
-        System.out.println("Introsort");
+        muodostaTaulukot();
+        System.out.println("Introsort...");
         jarjestaIntrosortilla(jarjestettava);
+        muodostaTaulukot();
+        System.out.println("Smoothsort...");
+        jarjestaSmoothsortilla(jarjestettava);
     }
 
     private void jarjestaMergesortilla(int[] jarjestettava) {
@@ -62,14 +63,13 @@ public class Kayttoliittyma {
 
     }
 
-    private void jarjestaShellsortilla(int[] jarjestettava) {
+    private void jarjestaSmoothsortilla(int[] jarjestettava) {
         long aloitus = System.nanoTime();
-        shellSorter.shellSort(jarjestettava);
+        smoothSorter.smoothSort(jarjestettava);
         long lopetus = System.nanoTime();
-        System.out.println("shellSortilla aikaa meni: " + ((lopetus - aloitus) / 1000000) + "ms");
+        System.out.println("Smoothsortilla aikaa meni: " + ((lopetus - aloitus) / 1000000) + "ms");
 
     }
-    
     
     
     private void jarjestaIntrosortilla(int[] jarjestettava) {

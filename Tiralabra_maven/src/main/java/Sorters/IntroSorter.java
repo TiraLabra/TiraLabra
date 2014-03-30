@@ -7,17 +7,38 @@ package Sorters;
 
 /**
  *
- * @author Admin
+ * @author nkostiai
+ * 
+ * Introsort on hybridi-järjestämisealgoritmi, joka käyttää hyväkseen sekä quicksortia, että heapsortia.
+ * Introsort aloitetaan quicksortilla ja rekursiosyvyyden noustessa tarpeeksi korkealle algoritmi vaihtaa heapsorttiin.
+ * Algoritmi implementoi myös insertionsortin, jota käytetään taulukon ollessa tarpeeksi pieni.
+ * 
  */
 public class IntroSorter {
-
+    
+    /**
+     * Taulukon minimikoko. Taulukon ollessa pienempi järjestäminen hoidetaan insertion sortilla.
+     */
     private final int sizeThreshold = 16;
-
+    
+    
+    /**
+     * Introsortin aloitusmetodi. Metodi laskee taulukon pituuden perusteella quicksortin rekursiosyvyyden.
+     * @param arrayToSort Taulukko joka järjestetään.
+     */
     public void introSort(int[] arrayToSort) {
         int depthLimit = (int) Math.floor((Math.log(arrayToSort.length) / Math.log(2)));
         intro_QuickSort(arrayToSort, 0, arrayToSort.length, depthLimit);
     }
-
+    
+    
+    /**
+     * Quicksortin päämetodi. 
+     * @param arrayToSort Taulukko joka järjestetään.
+     * @param first Järjestämisen aloitusindeksi.
+     * @param last Järjestämisen lopetusindeksi.
+     * @param depthLimit Rekursion maksimisyvyys.
+     */
     private void intro_QuickSort(int[] arrayToSort, int first, int last, int depthLimit) {
         int median;
         while (last - first > sizeThreshold) {
@@ -33,7 +54,15 @@ public class IntroSorter {
         }
         intro_InsertionSort(arrayToSort, first, last);
     }
-
+    
+    /**
+     * 
+     * @param array
+     * @param first
+     * @param last
+     * @param median
+     * @return 
+     */
     private int partition(int[] array, int first, int last, int median) {
         int i, j;
         i = first;
@@ -49,7 +78,13 @@ public class IntroSorter {
 
         }
     }
-
+    
+    /**
+     * Heapsortin päämetodi
+     * @param array Järjestettävä taulukko.
+     * @param first 
+     * @param last 
+     */
     public void intro_HeapSort(int[] array, int first, int last) {
         int gap = last - first;
         //build heap
@@ -60,13 +95,25 @@ public class IntroSorter {
             heapify(array, 1, i - 1, first);
         }
     }
-
+    
+    /**
+     * 
+     * @param array
+     * @param gap
+     * @param first 
+     */
     private void intro_buildHeap(int[] array, int gap, int first) {
         for (int i = gap / 2; i >= 1; i = i - 1) {
             heapify(array, i, gap, first);
         }
     }
-
+    /**
+     * 
+     * @param array
+     * @param index
+     * @param last
+     * @param first 
+     */
     private void heapify(int[] array, int index, int last, int first) {
         int d = array[first + index - 1];
         int child;
@@ -84,6 +131,12 @@ public class IntroSorter {
         array[first + index - 1] = d;
     }
 
+    /**
+     * 
+     * @param arrayToSort
+     * @param first
+     * @param last 
+     */
     public void intro_InsertionSort(int[] arrayToSort, int first, int last) {
         int j, temp;
         for (int i = first; i < last; i++) {
@@ -96,7 +149,15 @@ public class IntroSorter {
             arrayToSort[j] = temp;
         }
     }
-
+    
+    /**
+     * Metodi joka laskee taulukon arvojen perusteella kolmen arvon mediaanin.
+     * @param array Taulukko josta mediaani lasketaan.
+     * @param first Ensimmäinen indeksi, josta mediaani lasketaan.
+     * @param mid Keskimmäinen indeksi, josta mediaani lasketaan.
+     * @param last Viimeinen indeksi, josta mediaani lasketaan.
+     * @return Mediaani.
+     */
     public int medianOfThree(int[] array, int first, int mid, int last) {
         if (((array[first] <= array[mid]) && array[last] >= array[mid]) || (array[first] >= array[mid]) && array[last] <= array[mid]) {
             return array[mid];
