@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sanapuuro.readers;
 
 import sanapuuro.fileio.WordReader;
-import java.util.List;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,32 +19,33 @@ import static org.junit.Assert.*;
  * @author skaipio
  */
 public class WordReaderTest {
+
     private final WordReader reader;
-    
+
     public WordReaderTest() {
         this.reader = new WordReader();
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
-     @Test
-     public void allWordsAreReadIn() {
-         List<String> words = this.reader.getWords();
-         assertEquals("aa", words.get(0));
-         assertEquals("zyzzyvas", words.get(words.size()-1));
-     }
+    @Test
+    public void allWordsAreReadIn() {
+        Set<String> words = this.reader.getWords();
+        assertTrue(words.contains("aa"));
+        assertTrue(words.contains("zyzzyvas"));
+    }
 }

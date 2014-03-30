@@ -18,7 +18,7 @@ import sanapuuro.words.WordEvaluator.EvaluationResult;
  */
 public class TwoPlayerGame {
 
-    private final WordEvaluator evaluator = new WordEvaluator();
+    private final WordEvaluator evaluator;
     private Player playerWithTurn;
     private Player playerWaiting;
     private final Grid grid;
@@ -26,10 +26,11 @@ public class TwoPlayerGame {
 
     private final View view;
 
-    public TwoPlayerGame(Grid grid, Player playerOne, Player playerTwo, Letters letters, View view) {
+    public TwoPlayerGame(Grid grid, Player playerOne, Player playerTwo, Letters letters, WordEvaluator evaluator, View view) {
         this.grid = grid;
         this.playerWithTurn = playerOne;
         this.playerWaiting = playerTwo;
+        this.evaluator = evaluator;
         this.view = view;
     }
 
@@ -51,6 +52,7 @@ public class TwoPlayerGame {
                 }
                 successiveSkips = 0;              
             }else{
+                this.view.showMessage(this.playerWithTurn + " skips their turn");
                 successiveSkips++;
             }
             if (this.grid.isFull() || successiveSkips == 2) {

@@ -5,11 +5,10 @@
  */
 package sanapuuro.fileio;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import sanapuuro.words.WordList;
 
 /**
@@ -18,7 +17,7 @@ import sanapuuro.words.WordList;
  */
 public final class WordReader implements WordList {
     private final String englishWordListPath = "words/english_words";
-    private final List<String> words;
+    private final Set<String> words;
     
     public WordReader(){
         this.words = this.getWords();
@@ -27,11 +26,11 @@ public final class WordReader implements WordList {
     /**
      * @return All valid English words given by a file.
      */
-    public List<String> getWords() {
+    public Set<String> getWords() {
         try {
             InputStream file = ClassLoader.getSystemResourceAsStream(englishWordListPath);
             Scanner reader = new Scanner(file);
-            List<String> scannedWords = new ArrayList<>();
+            Set<String> scannedWords = new HashSet<>();
             while (reader.hasNext()) {
                 String word = reader.nextLine();
                 scannedWords.add(word);
@@ -41,7 +40,7 @@ public final class WordReader implements WordList {
             System.out.println(e.getMessage());
 
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
     /**

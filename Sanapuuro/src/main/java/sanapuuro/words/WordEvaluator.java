@@ -5,7 +5,6 @@
  */
 package sanapuuro.words;
 
-import sanapuuro.fileio.WordReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +18,11 @@ import sanapuuro.utils.LetterContainerCoordinateComparator;
 public class WordEvaluator {
 
     private final int wordLengthMinimum = 3;    // A minimum length for a word to be evaluated.
-    private final WordList wordValidator = new WordReader();    // Checks if the given word is an actual word.
+    private final WordList wordValidator;    // Checks if the given word is an actual word.
+
+    public WordEvaluator(WordList wordValidator) {
+        this.wordValidator = wordValidator;
+    }
 
     /**
      * Evalutes the letters in the letter containers, checking if they form a word.

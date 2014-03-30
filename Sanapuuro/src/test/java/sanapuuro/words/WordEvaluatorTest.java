@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import sanapuuro.fileio.WordReader;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;
 import sanapuuro.letters.Letter;
@@ -25,7 +26,7 @@ import sanapuuro.letters.Letter;
 public class WordEvaluatorTest {
 
     private Grid grid;
-    private final WordEvaluator wordEvaluator = new WordEvaluator();
+    private final WordEvaluator wordEvaluator = new WordEvaluator(new WordReader());
     private final List<LetterContainer> validHorizontalWord = new ArrayList<>();
     private final List<LetterContainer> validVerticalWord = new ArrayList<>();
     private final List<LetterContainer> wordWithGaps = new ArrayList<>();

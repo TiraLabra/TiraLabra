@@ -8,8 +8,11 @@ package sanapuuro;
 import java.util.Random;
 import java.util.Scanner;
 import sanapuuro.fileio.LetterReader;
+import sanapuuro.fileio.WordReader;
 import sanapuuro.grid.Grid;
 import sanapuuro.letters.LetterPool;
+import sanapuuro.words.WordEvaluator;
+import sanapuuro.words.WordList;
 
 /**
  *
@@ -21,6 +24,8 @@ public class Game {
      */
     public static void main(String[] args) {   
         Random rnd = new Random();
+        WordList words = new WordReader();
+        WordEvaluator evaluator = new WordEvaluator(words);
         LetterReader letterReader = new LetterReader(rnd);
         LetterPool letterPoolOne = new LetterPool(letterReader);
         LetterPool letterPoolTwo = new LetterPool(letterReader);
@@ -31,14 +36,14 @@ public class Game {
         
         Grid grid = new Grid(8, 8);
         
-        HumanPlayer humanPlayerOne = new HumanPlayer(controllerOne, letterPoolOne, grid, "Hessu");
-        HumanPlayer humanPlayerTwo = new HumanPlayer(controllerTwo, letterPoolTwo, grid, "Mikki");
+        HumanPlayer playerOne = new HumanPlayer(controllerOne, letterPoolOne, grid, "Hessu");
+        AiPlayer playerTwo = new AiPlayer(letterPoolTwo, grid, "Mikki", words);
         
-        GameView view = new GameView(grid, humanPlayerOne, humanPlayerTwo, letterReader);
+        GameView view = new GameView(grid, playerOne, playerTwo, letterReader);
         controllerOne.addListener(view);
         controllerTwo.addListener(view);
         
-        TwoPlayerGame game = new TwoPlayerGame(grid, humanPlayerOne, humanPlayerTwo, letterReader, view);
+        TwoPlayerGame game = new TwoPlayerGame(grid, playerOne, playerTwo, letterReader, evaluator, view);
         game.startGame();
     }
 }
