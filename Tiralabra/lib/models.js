@@ -38,6 +38,9 @@
     
     /* MOD: Added total field */
     this.total = 0;
+    
+    /* MOD: Added cameFrom field */
+    this.cameFrom = '';
 
     /* Store dimensions and pre-compute center */
     this.dimensions = {
@@ -90,6 +93,9 @@
   
   Particle.prototype.visited = function() {
     $(this.el).addClass("visited");
+  };
+  Particle.prototype.onPath = function() {
+    $(this.el).addClass("onPath");
   };
 
   /**
@@ -171,8 +177,9 @@
    * a new node. Can be used to trigger other events
    * specific to the diagram.
    */
+  
   Node.prototype.onClick = function(e) {
-    (this.events.click || this.events.base).call(this);
+    (this.events.click || this.events.base).call(this);    
     return false;
   };
 
@@ -220,6 +227,7 @@
     	segs[seg].time = dist;
     	segs[seg].el.find(".time").text(dist);
     });
+    
     
   };
 

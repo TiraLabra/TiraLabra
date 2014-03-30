@@ -26,6 +26,9 @@ body {
 .node.visited {
 	background: red;
 }
+.node.onPath {
+	background: green !important;
+}
 .node h4 {
   color: #067195;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
@@ -76,4 +79,10 @@ body {
   position: absolute;
   right: 10px;
   top: -15px;
+}
+
+#ctrl {
+	position: absolute;
+	top: 30px;
+	right: 200px;
 }

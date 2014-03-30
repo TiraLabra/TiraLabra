@@ -135,7 +135,8 @@
 						"nodeF": 13,
 						"nodeD": 25,
 						"nodeI": 5,
-						"nodeJ": 6						
+						"nodeJ": 6,
+						"nodeK": 6						
 					}
 								
 			},
@@ -171,6 +172,22 @@
 						"nodeH": 13,
 						"nodeG": 25,
 						"nodeI": 5						
+					}
+								
+			},
+			"nodeK": 
+				{
+				"title": "Node K",
+				"location": 
+					{
+						"x": 800,
+						"y": 150
+					}
+				,
+				"neighbours": 
+					{
+						"nodeH": 13,
+						"nodeG": 25						
 					}
 								
 			}
