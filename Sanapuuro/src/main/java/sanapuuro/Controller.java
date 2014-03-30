@@ -10,6 +10,10 @@ package sanapuuro;
  *
  * @author skaipio
  */
-interface ControllerListener {
-    void selectorMoved(Controller controller);
+public interface Controller {
+    int getSubmissionStartX();
+    int getSubmissionStartY();
+    int getSubmissionDeltaX();
+    int getSubmissionDeltaY();
+    String getSubmission();
 }

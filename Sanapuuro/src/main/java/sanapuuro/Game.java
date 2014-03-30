@@ -34,7 +34,11 @@ public class Game {
         HumanPlayer humanPlayerOne = new HumanPlayer(controllerOne, letterPoolOne, grid, "Hessu");
         HumanPlayer humanPlayerTwo = new HumanPlayer(controllerTwo, letterPoolTwo, grid, "Mikki");
         
-        TwoPlayerGame game = new TwoPlayerGame(grid, humanPlayerOne, humanPlayerTwo, letterReader);
+        GameView view = new GameView(grid, humanPlayerOne, humanPlayerTwo, letterReader);
+        controllerOne.addListener(view);
+        controllerTwo.addListener(view);
+        
+        TwoPlayerGame game = new TwoPlayerGame(grid, humanPlayerOne, humanPlayerTwo, letterReader, view);
         game.startGame();
     }
 }

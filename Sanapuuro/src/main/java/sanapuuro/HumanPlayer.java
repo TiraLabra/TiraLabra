@@ -14,18 +14,16 @@ import sanapuuro.letters.LetterPool;
  */
 public class HumanPlayer implements Player {
 
-    private final ConsoleController controller;
+    private final Controller controller;
     private final Grid grid;
     private final LetterPool letterPool;    // Pool for picking letters from.
-    private final List<LetterContainer> containersForSubmission = new ArrayList<>();
+    private final List<LetterContainer> submissionContainers = new ArrayList<>();
     private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
     private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
     private int score = 0;          // Score.
-    private boolean isSkipping = false;
-    private boolean hasMadeASubmission = false;
     private final String name;
 
-    public HumanPlayer(ConsoleController controller, LetterPool letterPool, Grid grid, String name) {
+    public HumanPlayer(Controller controller, LetterPool letterPool, Grid grid, String name) {
         this.controller = controller;
         this.letterPool = letterPool;
         this.grid = grid;
@@ -37,11 +35,6 @@ public class HumanPlayer implements Player {
         return this.score;
     }
 
-    @Override
-    public List<LetterContainer> getContainersForSubmission() {
-        return new ArrayList<>(this.containersForSubmission);
-    }
-    
     public List<LetterContainer> getSelectedContainers() {
         return new ArrayList<>(this.selectedContainers);
     }
@@ -51,13 +44,13 @@ public class HumanPlayer implements Player {
     }
 
     /**
-     * Clears selected and added letters (NOTE: does not return added letters
-     * back to pool).
+     * Clears selected and added letters
      */
     private void clearSelectionsAndAdditions() {
+        this.letterPool.clearLetterPicks();
         this.addedContainers.clear();
         this.selectedContainers.clear();
-        this.containersForSubmission.clear();
+        this.submissionContainers.clear();
     }
 
     @Override
@@ -66,106 +59,66 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public ConsoleController getController() {
-        return this.controller;
+    public List<LetterContainer> getSubmission() {
+        this.placeSubmission();
+        return this.submissionContainers;
+
     }
 
     @Override
-    public void addScore(int score) {
-        this.score += score;
-    }
-
-    @Override
-    public boolean hasMadeASubmission() {
-        return this.hasMadeASubmission;
-    }
-
-    @Override
-    public boolean isSkipping() {
-        return this.isSkipping;
-    }
-
-    @Override
-    public void makeMove() {
-        this.isSkipping = false;
-        this.hasMadeASubmission = false;
-        Move move = this.controller.getMove();
-        switch (move){
-            case CursorMoved:
-                break;
-            case Skip:
-                this.isSkipping = true;
-                break;
-            case Submitted:
-                this.hasMadeASubmission = true;
-                String submission = this.controller.getSubmission();
-                this.trySubmission(submission);
-                break;
-        }
-    }
-    
-    @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
-    
-    private void trySubmission(String submission){
-        char direction = this.controller.getDirection();
-        switch (direction){
-            case 'a':
-                this.placeSubmission(submission, -1, 0);
-                break;
-            case 'd':
-                this.placeSubmission(submission, 1, 0);
-                break;
-            case 'w':
-                this.placeSubmission(submission, 0, -1);
-                break;
-            case 's':
-                this.placeSubmission(submission, 0, 1);
-                break;
-        }
-    }
-    
-    private void placeSubmission(String submission, int deltaX, int deltaY){
+
+    private void placeSubmission() {
+        String submission = this.controller.getSubmission();
         int i = 0;
-        int x = this.controller.getX();
-        int y = this.controller.getY();
-        while (i < submission.length()){
-            if (this.grid.isWithinGrid(x, y) && this.grid.hasContainerAt(x, y)){
+        int x = this.controller.getSubmissionStartX();
+        int y = this.controller.getSubmissionStartY();
+        int deltaX = this.controller.getSubmissionDeltaX();
+        int deltaY = this.controller.getSubmissionDeltaY();
+        while (i < submission.length()) {
+            if (!this.grid.isWithinGrid(x, y)) break;
+            if (this.grid.hasContainerAt(x, y)) {
                 LetterContainer selected = this.grid.getContainerAt(x, y);
                 this.selectedContainers.add(selected);
-                this.containersForSubmission.add(selected);
-                x+=deltaX;
-                y+=deltaY;
-                if (submission.charAt(i) == ' '){
+                this.submissionContainers.add(selected);
+                x += deltaX;
+                y += deltaY;
+                if (submission.charAt(i) == ' ') {
                     i++;
                 }
-            }else if (this.letterPool.hasFreeLetter(submission.charAt(i))){
+            } else if (this.letterPool.hasFreeLetter(submission.charAt(i))) {
                 LetterContainer used = this.letterPool.useLetter(submission.charAt(i));
                 this.addedContainers.add(used);
-                this.containersForSubmission.add(used);
+                this.submissionContainers.add(used);
                 this.grid.setContainerAt(used, x, y);
-                x+=deltaX;
-                y+=deltaY;
+                x += deltaX;
+                y += deltaY;
                 i++;
-            }else{
+            } else {
                 i++;
-            }  
+            }
         }
     }
 
     @Override
-    public void successfulSubmission() {
-        this.clearSelectionsAndAdditions();
+    public void successfulSubmission(int score) {
+        this.score += score;     
         this.letterPool.replacePickedLetters();
+        this.clearSelectionsAndAdditions();
     }
 
     @Override
     public void unsuccessfulSubmission() {
-        for(LetterContainer container : this.addedContainers){
+        for (LetterContainer container : this.addedContainers) {
             this.grid.removeContainer(container);
         }
         this.clearSelectionsAndAdditions();
+    }
+
+    @Override
+    public Controller getController() {
+        return this.controller;
     }
 }

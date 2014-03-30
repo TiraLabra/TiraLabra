@@ -10,6 +10,7 @@ package sanapuuro;
  *
  * @author skaipio
  */
-interface ControllerListener {
-    void selectorMoved(Controller controller);
+public interface View {
+    void updateView(Controller controller);
+    void showMessage(String msg);
 }

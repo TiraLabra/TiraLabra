@@ -16,7 +16,7 @@ import sanapuuro.utils.LetterAlphabeticalComparator;
  *
  * @author skaipio
  */
-public class GameView {
+public class GameView implements View, ControllerListener{
 
     private final Grid grid;
     private final Player playerOne;
@@ -31,7 +31,8 @@ public class GameView {
         Collections.sort(this.letters, new LetterAlphabeticalComparator());
     }
 
-    void printView(ConsoleController controller) {
+    @Override
+    public void updateView(Controller controller) {
         System.out.println();
         this.printLetterScores();
         this.printRow(0, controller);
@@ -56,15 +57,15 @@ public class GameView {
         System.out.print(msg);
     }
 
-    private void printRow(int row, ConsoleController controller) {
+    private void printRow(int row, Controller controller) {
         for (int x = 0; x < grid.width; x++) {
             if (grid.hasContainerAt(x, row)) {
-                if (row == controller.getY() && x == controller.getX()) {
+                if (row == controller.getSubmissionStartY() && x == controller.getSubmissionStartX()) {
                     System.out.print(grid.getContainerAt(x, row).letter);
                 } else {
                     System.out.print(grid.getContainerAt(x, row).letter.character + "");
                 }
-            } else if (row == controller.getY() && x == controller.getX()) {
+            } else if (row == controller.getSubmissionStartY() && x == controller.getSubmissionStartX()) {
                 System.out.print("@");
             } else {
                 System.out.print(".");
@@ -78,5 +79,15 @@ public class GameView {
         }
         System.out.print(letters.get(letters.size()-1).character + ": " + letters.get(letters.size()-1).score);
         System.out.println();
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        System.out.println(msg);
+    }
+
+    @Override
+    public void selectorMoved(Controller controller) {
+        this.updateView(controller);
     }
 }

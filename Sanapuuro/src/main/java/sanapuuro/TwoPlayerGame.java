@@ -19,49 +19,44 @@ import sanapuuro.words.WordEvaluator.EvaluationResult;
 public class TwoPlayerGame {
 
     private final WordEvaluator evaluator = new WordEvaluator();
-//    private final Player playerOne, playerTwo;
     private Player playerWithTurn;
     private Player playerWaiting;
     private final Grid grid;
     private int successiveSkips = 0;
 
-    private final GameView view;
+    private final View view;
 
-    public TwoPlayerGame(Grid grid, Player playerOne, Player playerTwo, Letters letters) {
+    public TwoPlayerGame(Grid grid, Player playerOne, Player playerTwo, Letters letters, View view) {
         this.grid = grid;
-//        this.playerOne = playerOne;
-//        this.playerTwo = playerTwo;
         this.playerWithTurn = playerOne;
         this.playerWaiting = playerTwo;
-        this.view = new GameView(grid, playerOne, playerTwo, letters);
+        this.view = view;
     }
 
     public void startGame() {
         while (true) {
-            this.view.printView(this.playerWithTurn.getController());
-            this.view.printMessage(this.playerWithTurn + "'s turn: ");
-            this.playerWithTurn.makeMove();
-            if (this.playerWithTurn.hasMadeASubmission()) {
-                this.view.printMessage(this.playerWithTurn + " submitted the word " +
-                        this.stringFromLetterContainers(this.playerWithTurn.getContainersForSubmission()).toUpperCase());
-                EvaluationResult result = this.evaluator.evalute(playerWithTurn.getContainersForSubmission());
+            this.view.updateView(this.playerWithTurn.getController());
+            this.view.showMessage(this.playerWithTurn + "'s turn: ");
+            List<LetterContainer> submission = this.playerWithTurn.getSubmission();
+            if (!submission.isEmpty()) {
+                String submissionStr = this.stringFromLetterContainers(submission).toUpperCase();
+                this.view.showMessage(this.playerWithTurn + " submitted the word " + submissionStr);
+                EvaluationResult result = this.evaluator.evalute(submission);
                 if (result.succeeded) {
-                    this.playerWithTurn.successfulSubmission();
-                    this.playerWithTurn.addScore(result.getScore());
+                    System.out.println(this.playerWithTurn + " was awarded " + result.getScore() + " points");
+                    this.playerWithTurn.successfulSubmission(result.getScore());
                 }else{
+                    System.out.println(submissionStr + " is not a valid word");
                     this.playerWithTurn.unsuccessfulSubmission();
                 }
-                this.swapTurn();
-            }
-            if (this.playerWithTurn.isSkipping()) {
-                swapTurn();
-                successiveSkips++;
+                successiveSkips = 0;              
             }else{
-                successiveSkips = 0;
+                successiveSkips++;
             }
             if (this.grid.isFull() || successiveSkips == 2) {
                 break;
             }
+            this.swapTurn();
         }
     }
 

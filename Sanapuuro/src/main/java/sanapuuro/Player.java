@@ -16,13 +16,9 @@ import sanapuuro.letters.LetterPool;
  */
 public interface Player {
     int getScore();
-    void addScore(int score);
     LetterPool getLetterPool();
-    ConsoleController getController();
-    List<LetterContainer> getContainersForSubmission();
-    boolean hasMadeASubmission();
-    boolean isSkipping();
-    void makeMove();
-    void successfulSubmission();
+    List<LetterContainer> getSubmission();
+    void successfulSubmission(int score);
     void unsuccessfulSubmission();
+    Controller getController();
 }
