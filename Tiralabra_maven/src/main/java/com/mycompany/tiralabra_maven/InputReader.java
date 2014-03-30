@@ -29,8 +29,8 @@ public class InputReader {
             FileReader fr = new FileReader(filename);
             BufferedReader reader = new BufferedReader(fr);
             char[][] input = new char[2][0];
-            input[0] = reader.readLine().toCharArray();
-            input[1] = reader.readLine().toCharArray();
+            input[0] = reader.readLine().toLowerCase().toCharArray();
+            input[1] = reader.readLine().toLowerCase().toCharArray();
             return input;
         } catch (FileNotFoundException e) {
             System.out.println("Tiedostoa ei löydy!");

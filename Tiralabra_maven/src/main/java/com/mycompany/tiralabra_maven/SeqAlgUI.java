@@ -50,7 +50,8 @@ public class SeqAlgUI {
 
     public void runLCS() {
         System.out.println("Enter input file name:");
-        LCS lcs = new LCS(readFilename());
+        char[] alphabet = {'a', 't', 'c', 'g'};
+        LCS lcs = new LCS(readFilename(), alphabet);
         lcs.calculateAlignment();
         lcs.findSolution();
         System.out.println("A longest common subsequence:");
@@ -60,16 +61,18 @@ public class SeqAlgUI {
 
     public void runGSA() {
         System.out.println("Enter input file name:");
-        GSA gsa = new GSA(readFilename());
+        char[] alphabet = {'a', 't', 'c', 'g'};
+        GSA gsa = new GSA(readFilename(), alphabet);
         gsa.calculateAlignment();
         gsa.findSolution();
         System.out.println("Best matching global sequence alignment:");
         printSolution(gsa.getSolution());
     }
-    
+
     public void runLSA() {
         System.out.println("Enter input file name:");
-        LSA lsa = new LSA(readFilename());
+        char[] alphabet = {'a', 't', 'c', 'g'};
+        LSA lsa = new LSA(readFilename(), alphabet);
         lsa.calculateAlignment();
         lsa.findSolution();
         System.out.println("An alignment with best local match sequence:");

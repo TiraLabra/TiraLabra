@@ -13,118 +13,106 @@ import com.mycompany.tiralabra_maven.InputReader;
  *
  * @author riha
  */
-public class LSA {
+public class LSA extends PSA implements Problem {
 
-    private char[] input1, input2;
-    private AlignmentMatrix m;
-    private ScoringMatrix s;
-    private double bestScore;
-    private int bestScoreX, bestScoreY;
-    private char[][] solution;
+    public LSA(String filename, char[] alphabet) {
+        super(filename, alphabet);
+    }
 
-    public LSA(String filename) {
-        char[][] input = InputReader.readInput(filename);
-        input1 = input[0];
-        input2 = input[1];
-        char[] alphabet = {'a', 't', 'c', 'g'};
-
-        m = new AlignmentMatrix(input1.length, input2.length);
-        s = new ScoringMatrix(alphabet);
-        s.setMatchBonus(1);
+    public void setUpScoringMatrix() {
+        s.setMatchBonus(2);
         s.setIndelPenalty(-1);
-        s.setMismatchPenalty(-5);
-
-        bestScore = 0;
-        bestScoreX = 0;
-        bestScoreY = 0;
+        s.setMismatchPenalty(-1);
     }
 
-    public void calculateAlignment() {
+    /**
+     * Extends the superclass method by adding the option zero to all score
+     * possibilities.
+     *
+     * @param i, j The Coordinates of the target entry.
+     * @return A double array consisting of the possible scores
+     */
+    @Override
+    public double[] possibleScores(int i, int j) {
+        double[] scores = new double[4];
+        scores[0] = m.get(i - 1, j - 1) + s.getScore(input1[i - 1], input2[j - 1]);
+        scores[1] = m.get(i - 1, j) + s.getScore('-', input1[i - 1]);
+        scores[2] = m.get(i, j - 1) + s.getScore(input2[j - 1], '-');
+        scores[3] = 0;
+        return scores;
 
-        for (int i = 1; i < input1.length + 1; i++) {
-            for (int j = 1; j < input2.length + 1; j++) {
-                double d = m.get(i - 1, j - 1) + s.getScore(input1[i - 1], input2[j - 1]);
-                double y = m.get(i - 1, j) + s.getScore('-', input1[i - 1]);
-                double x = m.get(i, j - 1) + s.getScore(input2[j - 1], '-');
+    }
 
-                double max = d;
-                int path = 0;
-                if (y > max) {
-                    max = y;
-                    path = 1;
-                }
-                if (x > max) {
-                    max = x;
-                    path = 2;
-                }
-                if (max < 0) {
-                    max = 0;
-                    path = -1;
-                }
-                if (max > bestScore) {
-                    bestScore = max;
-                    bestScoreX = i;
-                    bestScoreY = j;
-                }
-                m.setScore(i, j, max);
-                m.setPath(i, j, path);
-            }
+//    public void findSolution() {
+//        char[][] preSolution = new char[2][input1.length + input2.length];
+//        int p = m.getBestScoreX();
+//        int q = m.getBestScoreY();
+//        int length = 0;
+//        while (solutionContinueCondition(p, q)) {
+//            switch (m.getPath(p, q)) {
+//                case 0:
+//                    preSolution[0][length] = input1[p - 1];
+//                    preSolution[1][length] = input2[q - 1];
+//                    p--;
+//                    q--;
+//                    break;
+//                case 1:
+//                    preSolution[0][length] = input1[p - 1];
+//                    preSolution[1][length] = '-';
+//                    p--;
+//                    break;
+//                case 2:
+//                    preSolution[0][length] = '-';
+//                    preSolution[1][length] = input2[q - 1];
+//                    q--;
+//                    break;
+//            }
+//            length++;
+//        }
+//
+//        setSolution(preSolution, length);
+//    }
+    
+    @Override
+    public int findSolutionStartX() {
+        return m.getBestScoreX();
+    }
+    
+    @Override
+    public int findSolutionStartY() {
+        return m.getBestScoreY();
+    }
+
+    @Override
+    public boolean solutionContinueCondition(int p, int q) {
+        return (m.get(p, q) > 0);
+    }
+
+    @Override
+    public void setSolution(char[][] preSolution, int length) {
+        solution = new char[2][length];
+        for (int i = 0; i < length; i++) {
+            solution[0][i] = preSolution[0][length - i - 1];
+            solution[1][i] = preSolution[1][length - i - 1];
         }
+
     }
 
-    public void printAlignmentMatrix() {
-        m.print();
-    }
-
-    public void findSolution() {
-
-        solution = new char[2][input1.length + input2.length];
-        if (bestScoreX > bestScoreY) {
-            for (int i = 0; i < input1.length; i++) {
-                solution[0][i] = input1[i];
-            }
-            int n = bestScoreX - bestScoreY;
-            for (int i = 0; i < input2.length; i++) {
-                solution[1][i + n] = input2[i];
-            }
-        } else {
-            for (int i = 0; i < input2.length; i++) {
-                solution[1][i] = input2[i];
-            }
-            int n = bestScoreY - bestScoreX;
-            for (int i = 0; i < input1.length; i++) {
-                solution[0][i + n] = input1[i];
-            }
+    /**
+     * Debug method
+     *
+     * @param p
+     */
+    private void print(char[][] p) {
+        System.out.println("PRESOLUTION:");
+        for (int i = 0; i < p[0].length; i++) {
+            System.out.print(p[0][i]);
         }
-
-        for (int i = 0; i < solution[0].length; i++) {
-            if (solution[0][i] == '\u0000') {
-                if (solution[1][i] == '\u0000') {
-                    break;
-                } else {
-                    solution[0][i] = '-';
-                }
-            } else {
-                if (solution[1][i] == '\u0000') {
-                    solution[1][i] = '-';
-                } else {
-                    // convert to uppercase
-                }
-            }
+        System.out.println("");
+        for (int i = 0; i < p[1].length; i++) {
+            System.out.print(p[1][i]);
         }
-    }
-
-    public char[][] getSolution() {
-        return solution;
-    }
-
-    public void printSolution() {
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < solution[i].length; j++) {
-                System.out.print(solution[i][j]);
-            }
-            System.out.println();
-        }
+        System.out.println("");
     }
 
 }
