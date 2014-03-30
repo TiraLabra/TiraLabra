@@ -7,7 +7,7 @@ package sanapuuro;
 
 import java.util.Random;
 import java.util.Scanner;
-import sanapuuro.filereaders.LetterReader;
+import sanapuuro.fileio.LetterReader;
 import sanapuuro.grid.Grid;
 import sanapuuro.letters.LetterPool;
 

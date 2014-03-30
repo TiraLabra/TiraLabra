@@ -74,99 +74,6 @@ public class HumanPlayer implements Player {
         return null;
     }
 
-//    public boolean clearSelections() {
-//        if (this.controlsEnabled) {
-//            this.returnAllAddedLettersBackToLetterPool();
-//            this.addedContainers.clear();
-//            this.selectedContainers.clear();
-//        }
-//        return false;
-//    }
-
-    /**
-     * Selects the letter from the given location and adds to selected letter
-     * containers if there is any at the location.
-     *
-     * @param x Coordinate to set to.
-     * @param y Coordinate to set to.
-     * @return True if there was a container to select, false otherwise.
-     */
-    public boolean selectLetterAt(int x, int y) {
-//        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
-//            LetterContainer selection = this.grid.getContainerAt(x, y);
-//            if (!this.selectedContainers.contains(selection)) {
-//                this.selectedContainers.add(selection);
-//                return true;
-//            }
-//        }
-//        return false;
-        return true;
-    }
-
-    /**
-     * Removes the latest selection from player's selected letter containers if
-     * there is any.
-     *
-     * @return True if controls are enabled and there were selected containers,
-     * false otherwise.
-     */
-    public boolean removeLastSelection() {
-//        if (this.controlsEnabled && !this.selectedContainers.isEmpty()) {
-//            int index = this.selectedContainers.size() - 1;
-//            LetterContainer container = this.selectedContainers.get(index);
-//            if (this.addedContainers.contains(container)) {
-//                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
-//                this.grid.removeContainerAt(container.getX(), container.getY());
-//                this.addedContainers.remove(container);
-//            }
-//            this.selectedContainers.remove(index);
-//            return true;
-//        }
-//        return false;
-        return true;
-    }
-
-    /**
-     * Evaluates currently selected letters and raises the score if evaluation
-     * was successful.
-     *
-     * @return True if letters formed a valid word, false otherwise.
-     */
-    public boolean submitSelectedLetters() {
-//        if (!this.controlsEnabled) {
-//            return false;
-//        }
-//        if (this.selectedContainers.isEmpty()) {
-//            this.status = "No letters have been selected!";
-//            return false;
-//        }
-//        EvaluationResult result = this.evaluation.submitWord(this, this.selectedContainers);
-//        this.status = result.reason;
-//
-//        if (result.succeeded) {
-//            this.score += result.getScore();
-//
-//            this.setSelectedLettersToGridPermanently();
-//            this.letterPool.replacePickedLetters();
-//
-//            this.clearSelectionsAndAdditions();
-//            return true;
-//        } else {
-//            this.returnAllAddedLettersBackToLetterPool();
-//            this.clearSelectionsAndAdditions();
-//        }
-//        return result.succeeded;
-        return true;
-    }
-
-    /**
-     * Sets this instance's selected letters to the letter grid permanently.
-     */
-    private void setSelectedLettersToGridPermanently() {
-//        this.grid.setLettersToGridPermanently(this.selectedContainers);
-//        this.letterPool.replacePickedLetters();
-    }
-
     /**
      * Clears selected and added letters (NOTE: does not return added letters
      * back to pool).
@@ -174,14 +81,6 @@ public class HumanPlayer implements Player {
     private void clearSelectionsAndAdditions() {
         this.addedContainers.clear();
         this.selectedContainers.clear();
-    }
-
-    /**
-     * Returns all added letters back to pool but does not clear them.
-     */
-    private void returnAllAddedLettersBackToLetterPool() {
-//        this.grid.removeContainersFromGrid(this.addedContainers);
-//        this.letterPool.clearLetterPicks();
     }
 
     @Override

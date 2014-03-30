@@ -6,7 +6,7 @@
 
 package sanapuuro.readers;
 
-import sanapuuro.filereaders.LetterReader;
+import sanapuuro.fileio.LetterReader;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;

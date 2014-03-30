@@ -6,7 +6,7 @@
 
 package sanapuuro.readers;
 
-import sanapuuro.filereaders.WordReader;
+import sanapuuro.fileio.WordReader;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
