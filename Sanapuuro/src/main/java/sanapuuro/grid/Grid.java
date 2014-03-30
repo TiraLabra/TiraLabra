@@ -43,7 +43,7 @@ public class Grid {
      */
     public boolean hasContainerAt(int x, int y) {
         if (!isWithinGrid(x, y)) {
-            throw new IllegalArgumentException("Given coordinates are not within grid.");
+            throw new IllegalArgumentException("Given coordinates (" + x + "," + y + ") are not within grid.");
         }
         return this.containers[x][y] != null;
     }

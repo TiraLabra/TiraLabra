@@ -46,48 +46,6 @@ public class LetterPoolTest {
     public void tearDown() {
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsExceptionIfSelectionIndexTooSmall() {
-        this.letterPool.setCurrentSelection(-1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsExceptionIfSelectionIndexTooLarge() {
-        this.letterPool.setCurrentSelection(8);
-    }
-    
-    @Test
-    public void indicesSetAsUsedWhenPickingLetters() {
-        this.letterPool.useLetter();
-        this.letterPool.setCurrentSelection(1);
-        this.letterPool.useLetter();
-        
-        assertTrue(this.letterPool.isIndexUsed(0));
-        assertTrue(this.letterPool.isIndexUsed(1));
-    }
-    
-    @Test
-    public void returnsNullIfSelectionAlreadyUsed() {
-        LetterContainer container = this.letterPool.useLetter();
-        assertNotNull(container);
-        container = this.letterPool.useLetter();
-        assertNull(container);
-        this.letterPool.setCurrentSelection(1);
-        container = this.letterPool.useLetter();
-        assertNotNull(container);
-    }
-    
-    @Test
-    public void freesUsedIndicesOnReplacingLetters() {
-        this.letterPool.useLetter();
-        this.letterPool.setCurrentSelection(1);
-        this.letterPool.useLetter();
-        this.letterPool.clearLetterPicks();
-        
-        assertFalse(this.letterPool.isIndexUsed(0));
-        assertFalse(this.letterPool.isIndexUsed(1));
-    }
-
     private class LettersForTest implements Letters {
 
         List<Letter> letters = new ArrayList<>();
@@ -121,6 +79,11 @@ public class LetterPoolTest {
         public Letter getRandomLetter() {
             i++;
             return this.letters.get(i - 1);
+        }
+
+        @Override
+        public List<Letter> getAllLetters() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 }

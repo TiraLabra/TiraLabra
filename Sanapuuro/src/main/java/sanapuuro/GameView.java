@@ -5,8 +5,12 @@
  */
 package sanapuuro;
 
+import java.util.Collections;
+import java.util.List;
 import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.Letter;
+import sanapuuro.letters.Letters;
+import sanapuuro.utils.LetterAlphabeticalComparator;
 
 /**
  *
@@ -14,37 +18,45 @@ import sanapuuro.grid.LetterContainer;
  */
 public class GameView {
 
-    private Grid grid;
-    private ConsoleController controller;
-    private Player playerOne;
-    private Player playerTwo;
+    private final Grid grid;
+    private final Player playerOne;
+    private final Player playerTwo;
+    private final List<Letter> letters;
 
-    public GameView(Grid grid, ConsoleController controller, Player playerOne, Player playerTwo) {
+    public GameView(Grid grid, Player playerOne, Player playerTwo, Letters letters) {
         this.grid = grid;
-        this.controller = controller;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+        this.letters = letters.getAllLetters();
+        Collections.sort(this.letters, new LetterAlphabeticalComparator());
     }
 
-    void printView() {
+    void printView(ConsoleController controller) {
         System.out.println();
-        this.printRow(0);
-        System.out.println(" Player One's letters: " + playerOne.getLetterPool());
-        this.printRow(1);
-        System.out.println(" Player Two's letters: " + playerTwo.getLetterPool());
-        for (int y = 2; y < grid.height - 1; y++) {
-            this.printRow(y);
+        this.printLetterScores();
+        this.printRow(0, controller);
+        System.out.println(" " + playerOne + "'s letters: " + playerOne.getLetterPool());
+        this.printRow(1, controller);
+        System.out.println(" " + playerTwo + "'s letters: " + playerTwo.getLetterPool());
+        this.printRow(2, controller);
+        System.out.println();
+        this.printRow(3, controller);
+        System.out.println(" " + playerOne + "'s score: " + playerOne.getScore());
+        this.printRow(4, controller);
+        System.out.println(" " + playerTwo + "'s score: " + playerTwo.getScore());
+        for (int y = 5; y < grid.height - 1; y++) {
+            this.printRow(y, controller);
             System.out.println("");
         }
-        this.printRow(7);
-        System.out.print(" Player One's word: ");
-        for(LetterContainer container : playerOne.getContainersForSubmission()){
-            System.out.print(container.letter);
-        }
+        this.printRow(7, controller);
         System.out.println();
     }
+    
+    void printMessage(String msg){
+        System.out.print(msg);
+    }
 
-    private void printRow(int row) {
+    private void printRow(int row, ConsoleController controller) {
         for (int x = 0; x < grid.width; x++) {
             if (grid.hasContainerAt(x, row)) {
                 if (row == controller.getY() && x == controller.getX()) {
@@ -58,5 +70,13 @@ public class GameView {
                 System.out.print(".");
             }
         }
+    }
+
+    private void printLetterScores() {
+        for(int i = 0; i < letters.size() - 1; i++){
+            System.out.print(letters.get(i).character + ": " + letters.get(i).score + ", ");
+        }
+        System.out.print(letters.get(letters.size()-1).character + ": " + letters.get(letters.size()-1).score);
+        System.out.println();
     }
 }

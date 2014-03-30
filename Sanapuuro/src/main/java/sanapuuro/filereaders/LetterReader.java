@@ -6,7 +6,6 @@
 package sanapuuro.filereaders;
 
 import sanapuuro.utils.LetterFrequencyComparator;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,5 +103,10 @@ public class LetterReader implements Letters {
         int score = Integer.parseInt(matcher.group(2));
         float frequency = Float.parseFloat(matcher.group(3));
         return new Letter(character, score, frequency);
+    }
+
+    @Override
+    public List<Letter> getAllLetters() {
+        return new ArrayList<>(this.sortedLetters);
     }
 }

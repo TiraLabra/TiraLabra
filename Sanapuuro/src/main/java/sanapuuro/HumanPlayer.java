@@ -12,7 +12,7 @@ import sanapuuro.letters.LetterPool;
  *
  * @author skaipio@cs
  */
-public class HumanPlayer implements Player, ControllerListener {
+public class HumanPlayer implements Player {
 
     private final ConsoleController controller;
     private final Grid grid;
@@ -21,12 +21,15 @@ public class HumanPlayer implements Player, ControllerListener {
     private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
     private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
     private int score = 0;          // Score.
+    private boolean isSkipping = false;
+    private boolean hasMadeASubmission = false;
+    private final String name;
 
-    public HumanPlayer(ConsoleController controller, LetterPool letterPool, Grid grid) {
+    public HumanPlayer(ConsoleController controller, LetterPool letterPool, Grid grid, String name) {
         this.controller = controller;
         this.letterPool = letterPool;
         this.grid = grid;
-        controller.setListener(this);
+        this.name = name;
     }
 
     @Override
@@ -79,26 +82,6 @@ public class HumanPlayer implements Player, ControllerListener {
 //        }
 //        return false;
 //    }
-    /**
-     * Adds a letter container from the letter pool on the given location
-     * location if there is no other container already present and adds it to
-     * added containers.
-     *
-     * @param x Coordinate to set to.
-     * @param y Coordinate to set to.
-     */
-    private void addLetterTo(int x, int y) {
-        LetterContainer container = this.letterPool.useLetter();
-        if (container != null) {
-            boolean containerSet = this.grid.setContainerAt(container, x, y);
-            if (!containerSet) {
-                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
-            } else {
-                this.addedContainers.add(container);
-                this.containersForSubmission.add(container);
-            }
-        }
-    }
 
     /**
      * Selects the letter from the given location and adds to selected letter
@@ -202,21 +185,6 @@ public class HumanPlayer implements Player, ControllerListener {
     }
 
     @Override
-    public void letterAddedFromPoolIndex(int index, int gridX, int gridY) {
-        this.letterPool.setCurrentSelection(index);
-        this.addLetterTo(gridX, gridY);
-    }
-
-    @Override
-    public void letterSelectedAt(int gridX, int gridY) {
-    }
-
-    @Override
-    public void wordSubmission(int score) {
-        this.score += score;
-    }
-
-    @Override
     public LetterPool getLetterPool() {
         return this.letterPool;
     }
@@ -224,5 +192,108 @@ public class HumanPlayer implements Player, ControllerListener {
     @Override
     public ConsoleController getController() {
         return this.controller;
+    }
+
+    @Override
+    public void addScore(int score) {
+        this.score += score;
+    }
+
+    @Override
+    public boolean hasMadeASubmission() {
+        return this.hasMadeASubmission;
+    }
+
+    @Override
+    public boolean isSkipping() {
+        return this.isSkipping;
+    }
+
+    @Override
+    public void makeMove() {
+        this.isSkipping = false;
+        this.hasMadeASubmission = false;
+        Move move = this.controller.getMove();
+        switch (move){
+            case CursorMoved:
+                break;
+            case Skip:
+                this.isSkipping = true;
+                break;
+            case Submitted:
+                this.hasMadeASubmission = true;
+                String submission = this.controller.getSubmission();
+                this.trySubmission(submission);
+                break;
+        }
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
+    }
+    
+    private void trySubmission(String submission){
+        char direction = this.controller.getDirection();
+        switch (direction){
+            case 'a':
+                this.placeSubmission(submission, -1, 0);
+                break;
+            case 'd':
+                this.placeSubmission(submission, 1, 0);
+                break;
+            case 'w':
+                this.placeSubmission(submission, 0, -1);
+                break;
+            case 's':
+                this.placeSubmission(submission, 0, 1);
+                break;
+        }
+    }
+    
+    private void placeSubmission(String submission, int deltaX, int deltaY){
+        int i = 0;
+        int x = this.controller.getX();
+        int y = this.controller.getY();
+        while (i < submission.length()){
+            if (this.grid.isWithinGrid(x, y) && this.grid.hasContainerAt(x, y)){
+                LetterContainer selected = this.grid.getContainerAt(x, y);
+                this.selectedContainers.add(selected);
+                this.containersForSubmission.add(selected);
+                x+=deltaX;
+                y+=deltaY;
+                if (submission.charAt(i) == ' '){
+                    i++;
+                }
+            }else if (this.letterPool.hasFreeLetter(submission.charAt(i))){
+                LetterContainer used = this.letterPool.useLetter(submission.charAt(i));
+                this.addedContainers.add(used);
+                this.containersForSubmission.add(used);
+                this.grid.setContainerAt(used, x, y);
+                x+=deltaX;
+                y+=deltaY;
+                i++;
+            }else{
+                i++;
+            }  
+        }
+    }
+
+    @Override
+    public void successfulSubmission() {
+        this.addedContainers.clear();
+        this.selectedContainers.clear();
+        this.containersForSubmission.clear();
+        this.letterPool.replacePickedLetters();
+    }
+
+    @Override
+    public void unsuccessfulSubmission() {
+        for(LetterContainer container : this.addedContainers){
+            this.grid.removeContainer(container);
+        }
+        this.addedContainers.clear();
+        this.selectedContainers.clear();
+        this.containersForSubmission.clear();
     }
 }

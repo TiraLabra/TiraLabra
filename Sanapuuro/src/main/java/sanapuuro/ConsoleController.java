@@ -12,9 +12,8 @@ import java.util.Scanner;
  * @author skaipio
  */
 public class ConsoleController {
-
-    private boolean selectionMode = false;
-    private boolean horizontal = false;
+    private char direction;
+    private String submission;
     private final Scanner scanner;
     private final int gridHeight, gridWidth;
     private int x, y;
@@ -24,24 +23,6 @@ public class ConsoleController {
         this.scanner = scanner;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-    }
-
-    boolean makeMove() {
-        String input = scanner.nextLine();
-        switch (input) {
-            case "a":
-                return this.moveLeft();
-            case "d":
-                return this.moveRight();
-            case "w":
-                return this.moveUp();
-            case "s":
-                return this.moveDown();
-            case "q":
-                this.selectionMode = true;            
-                return this.addLetter(this.readIndexToAdd());
-        }
-        return false;
     }
 
     public void setListener(ControllerListener listener) {
@@ -80,19 +61,47 @@ public class ConsoleController {
         return this.setLocation(this.x + 1, y);
 
     }
+    
+    public char getDirection(){
+        return this.direction;
+    }
 
     public boolean canMoveTo(int x, int y) {
         return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
     }
-
-    private int readIndexToAdd() {
-        System.out.print("Letter index to add: ");
-        return scanner.nextInt();
+    
+    public String getSubmission(){
+        return this.submission;
     }
 
-    private boolean addLetter(int indexToAdd) {
-        this.listener.letterAddedFromPoolIndex(indexToAdd, this.x, this.y);
-        return true;
+    public Move getMove() {
+        String input = scanner.nextLine();
+        switch (input) {
+            case "a":
+                this.moveLeft();
+                return Move.CursorMoved;
+            case "d":
+                this.moveRight();
+                return Move.CursorMoved;
+            case "w":
+                this.moveUp();
+                return Move.CursorMoved;
+            case "s":
+                this.moveDown();
+                return Move.CursorMoved;
+            case "q":
+                System.out.print("Give direction to add letters (wasd): ");
+                input = scanner.nextLine();
+                while(input.isEmpty() || !"wasd".contains(input.charAt(0) + "")){
+                    System.out.print("Give direction to add letters (wasd): ");
+                    input = scanner.nextLine();
+                }
+                this.direction = input.charAt(0);
+                System.out.print("Give characters to add or space to select: ");
+                this.submission = scanner.nextLine();
+                return Move.Submitted;
+                //return this.addLetter(this.readIndexToAdd());
+        }
+        return Move.Skip;
     }
-
 }

@@ -20,12 +20,12 @@ public class LetterPool {
     public final int poolSize = 8;  // The maximum number of letters that can be placed at once.
     private final Letters letters;  // For getting random letters.
     private final LetterContainer[] pool = new LetterContainer[poolSize];   // Pool for holding the letters.
-    private final Set<Integer> usedLetterIndices = new HashSet(poolSize);   // A set of used letter indices (why isn't this an array of booleans???).
-    private int currentSelection = 0;   // Index of currently "highlighted" letter that can be added to the grid (probably obsolete now).
+    private final boolean[] lettersFree = new boolean[poolSize];
 
     public LetterPool(Letters letters) {
         this.letters = letters;
         for (int i = 0; i < poolSize; i++) {
+            this.lettersFree[i] = true;
             this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
         }
     }
@@ -34,83 +34,53 @@ public class LetterPool {
         return this.pool.clone();
     }
 
-    public int getCurrentSelectedIndex() {
-        return this.currentSelection;
-    }
-
-    /**
-     * For checking whether a letter container at the given index is already in
-     * the grid.
-     *
-     * @param i Index of the letter container.
-     * @return True if the letter container is in use, false otherwise.
-     */
-    public boolean isIndexUsed(int i) {
-        return this.usedLetterIndices.contains(i);
-    }
-
-    /**
-     * @return Currently selected LetterContainer.
-     */
-    public LetterContainer getCurrentSelection() {
-        return this.pool[this.currentSelection];
-    }
-
-    /**
-     * Sets the index to point at a LetterContainer in the pool.
-     *
-     * @param i
-     */
-    public void setCurrentSelection(int i) {
-        if (i < 0) {
-            throw new IllegalArgumentException("Given index is negative, when it should be positive");
-        }
-        if (i >= poolSize) {
-            throw new IllegalArgumentException("Given index is greater than pool size");
-        }
-        this.currentSelection = i;
-    }
-
     /**
      * Marks an index as used and returns the LetterContainer it was pointing
      * at.
      *
      * @return LetterContainer at the current selection.
      */
-    public LetterContainer useLetter() {
-        if (this.usedLetterIndices.contains(this.currentSelection)) {
-            return null;
+    public LetterContainer useLetter(char c) {
+        for (int i = 0; i < this.poolSize; i++) {
+            if (this.lettersFree[i] && this.pool[i].letter.character == c) {
+                this.lettersFree[i] = false;
+                return this.pool[i];
+            }
         }
-        this.usedLetterIndices.add(this.currentSelection);
-        return this.pool[this.currentSelection];
+        return null;
     }
 
     /**
      * Clears all selections freeing them for use again.
      */
     public void clearLetterPicks() {
-        this.usedLetterIndices.clear();
+        for (int i = 0; i < this.poolSize; i++) {
+            this.lettersFree[i] = true;
+        }
     }
 
     /**
-     * Replaces all LetterContainers that used indices are pointing at with new
-     * ones.
+     * Replaces all LetterContainers that are not free.
      */
     public void replacePickedLetters() {
-        for (int i : this.usedLetterIndices) {
-            this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
+        for (int i = 0; i < this.poolSize; i++) {
+            if (!this.lettersFree[i]) {
+                this.lettersFree[i] = true;
+                this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
+            }
         }
-        this.usedLetterIndices.clear();
     }
 
     /**
-     * Frees a LetterContainer for use at the location the given index is
-     * pointing at.
-     *
-     * @param i Index pointing at a LetterContainer to free.
+     * Frees a LetterContainer with the matching character back for use.
+     * @param c Character to match and free
      */
-    public void unpickLetterAtIndex(int i) {
-        this.usedLetterIndices.remove(i);
+    public void unpickLetter(char c) {
+        for (int i = 0; i < this.poolSize; i++) {
+            if (!this.lettersFree[i] && this.pool[i].letter.character == c) {
+                this.lettersFree[i] = true;
+            }
+        }
     }
 
     public String toString() {
@@ -123,5 +93,14 @@ public class LetterPool {
             }
         }
         return letters.toString();
+    }
+
+    public boolean hasFreeLetter(char c) {
+        for (int i = 0; i < this.poolSize; i++) {
+            if (this.lettersFree[i] && this.pool[i].letter.character == c) {
+                return true;
+            }
+        }
+        return false;
     }
 }
