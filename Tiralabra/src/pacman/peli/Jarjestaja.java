@@ -47,13 +47,23 @@ public class Jarjestaja {
             }
             k++;
         }
-        
+        kopioLoppu(i, keskikohta, k, apu);        
+
+    }
+
+    /**
+     * Kopio loppuosan aputaulusta solmut tauluun.
+     * @param i
+     * @param keskikohta
+     * @param k
+     * @param apu 
+     */
+    private void kopioLoppu(int i, int keskikohta, int k, Peliruutu[] apu) {
         while( i <= keskikohta) {
             solmut[k] = apu[i];
             k++;
             i++;
         }
-
     }
 
     /**

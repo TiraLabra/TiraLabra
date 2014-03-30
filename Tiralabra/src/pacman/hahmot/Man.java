@@ -94,16 +94,25 @@ public class Man extends Hahmo{
 
     }
 
+    /**
+     * Siirtyy yhden ruudun takaisin päin.
+     */
     private void palaa() {
         this.y = this.y - this.suunta.getY();
         this.x = this.x - this.suunta.getX();
     }
 
+    /**
+     * Siirtyy yhden ruudun eteenpäin.
+     */
     private void etene() {
         this.y = this.y + this.suunta.getY();
         this.x = this.x + this.suunta.getX();
     }
 
+    /**
+     * Siirtää manin tiedot alustalla.
+     */
     private void siirraMan() {
         alusta.getPeliruutu(x, y).setOnkoMan(true);
         alusta.getPeliruutu(x - suunta.getX(), y - suunta.getY()).setOnkoMan(false);
