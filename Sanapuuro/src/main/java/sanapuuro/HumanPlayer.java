@@ -51,36 +51,13 @@ public class HumanPlayer implements Player {
     }
 
     /**
-     * Gets player's latest selection.
-     *
-     * @return Latest selected letter container, null if none has been selected.
-     */
-    public LetterContainer getLastSelection() {
-        if (!this.selectedContainers.isEmpty()) {
-            return this.selectedContainers.get(this.selectedContainers.size() - 1);
-        }
-        return null;
-    }
-
-    /**
-     * Gets player's first selection.
-     *
-     * @return First selected letter container, null if none has been selected.
-     */
-    public LetterContainer getFirstSelection() {
-        if (!this.selectedContainers.isEmpty()) {
-            return this.selectedContainers.get(0);
-        }
-        return null;
-    }
-
-    /**
      * Clears selected and added letters (NOTE: does not return added letters
      * back to pool).
      */
     private void clearSelectionsAndAdditions() {
         this.addedContainers.clear();
         this.selectedContainers.clear();
+        this.containersForSubmission.clear();
     }
 
     @Override
@@ -180,9 +157,7 @@ public class HumanPlayer implements Player {
 
     @Override
     public void successfulSubmission() {
-        this.addedContainers.clear();
-        this.selectedContainers.clear();
-        this.containersForSubmission.clear();
+        this.clearSelectionsAndAdditions();
         this.letterPool.replacePickedLetters();
     }
 
@@ -191,8 +166,6 @@ public class HumanPlayer implements Player {
         for(LetterContainer container : this.addedContainers){
             this.grid.removeContainer(container);
         }
-        this.addedContainers.clear();
-        this.selectedContainers.clear();
-        this.containersForSubmission.clear();
+        this.clearSelectionsAndAdditions();
     }
 }
