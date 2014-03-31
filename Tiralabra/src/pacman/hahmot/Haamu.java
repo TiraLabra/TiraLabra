@@ -84,7 +84,7 @@ public class Haamu extends Hahmo {
     public String getNimi() {
         return this.nimi;
     }
-    
+
     public ArrayList<Peliruutu> getKielletyt() {
         return this.kielletytRuudut;
     }
@@ -253,6 +253,20 @@ public class Haamu extends Hahmo {
             return selvitaMaaliSuunnista(maali, man);
         }
 
+        return tarkistaOnkoSeina(maali, man);
+
+    }
+
+    /**
+     * Metodi tarkistaa onko maalin tyyppi seinä.
+     * Jos maali on seinä, metodi etsii uuden sopivan ruudun ja tämän jälkeen tarkistaa vielä, että etsitty ruutu ei ole sellainen missä olisi haamu.
+     * Jos ruudussa on haamu, täytyy etsiä vielä uusi ruutu.
+     * Jos alkuperäinen maali ei ole seinä, petodi palauttaa alkuperäisen maalin.
+     * @param maali
+     * @param man
+     * @return palauttaa sopivan maali ruudun.
+     */
+    private Peliruutu tarkistaOnkoSeina(Peliruutu maali, Man man) {
         if (maali.getRuudunTyyppi() == 0) {
             Peliruutu uusiMaali = selvitaMaaliSuunnista(maali, man);
             if (uusiMaali.getX() == this.x && uusiMaali.getY() == this.y) {
@@ -263,11 +277,12 @@ public class Haamu extends Hahmo {
         } else {
             return maali;
         }
-
     }
 
     /**
-     * Metodi selvittää uuden maaliruudun, vanhan maaliruudun ympärillä olevista ruuduista.
+     * Metodi selvittää uuden maaliruudun, vanhan maaliruudun ympärillä olevista
+     * ruuduista.
+     *
      * @param maali
      * @param man
      * @return palauttaa uuden maaliruudun
@@ -281,7 +296,7 @@ public class Haamu extends Hahmo {
             if (onkoAlustanSisalla(maali.getX(), maali.getY())) {
                 return alusta.getPeliruutu(uusiMaali.getX(), uusiMaali.getY());
             }
-        } 
+        }
         return alusta.getPeliruutu(man.getX(), man.getY());
     }
 

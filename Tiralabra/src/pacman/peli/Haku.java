@@ -53,8 +53,7 @@ public class Haku {
 
         lahto.setEtaisyysAlkuun(0);
 
-        Peliruutu[] solmulista = new Peliruutu[1];
-        solmulista = etsiNaapurit(alusta, lahto, solmulista);
+        Peliruutu[] solmulista = etsiNaapurit(alusta, lahto);
 
         Jarjestaja jarjesta = new Jarjestaja(solmulista);
         jarjesta.mergeSort(0, solmulista.length - 1);
@@ -76,16 +75,16 @@ public class Haku {
      * @param solmulista
      * @return Taulukko, josta selviää mahdolliset naapurit.
      */
-    private Peliruutu[] etsiNaapurit(Pelialusta alusta, Peliruutu ruutu, Peliruutu[] solmulista) {
+    private Peliruutu[] etsiNaapurit(Pelialusta alusta, Peliruutu ruutu) {
         ArrayList<Peliruutu> naapurit = new ArrayList<Peliruutu>();
 
         for (Suunta suunta : Suunta.values()) {
             haeNaapuriAnnetustaSuunnasta(alusta, ruutu, naapurit, suunta);
         }
 
-        Peliruutu[] uusiLista = naapuriListaTaulukoksi(naapurit);
+        Peliruutu[] solmulista = naapuriListaTaulukoksi(naapurit);
 
-        return uusiLista;
+        return solmulista;
     }
     
     /**
@@ -151,7 +150,6 @@ public class Haku {
         if (nykyinen == null || ollaankoMaalissa(nykyinen, maali, summa, reitti, indeksi)) {
             return;
         }
-
         if (this.ekaKerta == true) {
             this.ekaKerta = false;
         } else {
@@ -159,8 +157,8 @@ public class Haku {
             if (nykyinen.getEtaisyysAlkuun() < summa || summa >= parasSumma) {
                 return;
             }
-            solmulista = new Peliruutu[1];
-            solmulista = etsiNaapurit(alusta, nykyinen, solmulista);
+
+            solmulista = etsiNaapurit(alusta, nykyinen);
 
             jar.setLista(solmulista);
             jar.mergeSort(0, solmulista.length - 1);
