@@ -7,14 +7,14 @@
 package juhor.tiralabra.data_structures;
 
 /**
- *
+ * Class for easier training processes.
  * @author juhorim
  */
 public class TrainingData {
     private double[][] vectors;
-    private boolean[] outputs; 
+    private int[] outputs; 
     
-    public TrainingData(double[][] datamatrix, boolean[] outputvalues){
+    public TrainingData(double[][] datamatrix, int[] outputvalues){
         vectors = datamatrix;
         outputs = outputvalues;
     }
@@ -27,7 +27,7 @@ public class TrainingData {
         return vectors.length;
     }
     
-    public boolean getOutput(int index){
+    public int getOutput(int index){
         return outputs[index];
     }
     

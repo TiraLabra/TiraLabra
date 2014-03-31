@@ -2,6 +2,7 @@ package juhor.tiralabra.ui;
 
 import java.util.Arrays;
 import juhor.tiralabra.data_structures.TrainingData;
+import juhor.tiralabra.network_classes.MultiClassPerceptron;
 import juhor.tiralabra.network_classes.Perceptron;
 
 /**
@@ -16,16 +17,14 @@ public class App
         //Testataan perseptronin toimintaa oppimalla AND-operaatio:
         
         double[][] inputVectors = {{1,0,0},{1,1,0},{1,0,1},{1,1,1}};
-        boolean[] outputs = {false,false,false,true};
+        int[] outputs = {1,1,1,0};
         TrainingData data = new TrainingData(inputVectors, outputs);
-        Perceptron p = new Perceptron(data, 0, 0);
+        MultiClassPerceptron p = new MultiClassPerceptron(data,2);
         p.learn();
         
-        double[] w = p.getWeights();
         
         double[] vec  = {1,1,1};
-        boolean troo = p.test(vec);
-        System.out.println(Arrays.toString(w)); //tulostetaan painot
+        int troo = p.classify(vec);
         System.out.println(troo); //tulostetaan tulos
         
     }
