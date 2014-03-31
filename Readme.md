@@ -1,25 +1,11 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+## Sanapuuro
 
+Tämä projekti on jatkoa Sanapuuro-pelille, jonka tein JavaLabraa varten. Tämä versio on karumpi, ts. siinä ei ole graafista käyttöliittymää, vaan interaktio hoidetaan terminaalissa. Tässä versiossa ei ole enää yksinpeliä vaan se on korvattu kaksinpelillä. Toistaiseksi peliä pelataan lokaalisti tietokonetta vastaan.
 
-
-
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
-
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
+TiraLabraa varten teen peliin oman toteutuksen hajautustaulukosta validien sanojen nopeaa hakua varten.
 
 * * *
 
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
+### Käyttöohjeet
 
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
-
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
-
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
-
+Pelissä on kursori, jota voi liikutella 'w', 'a', 's' ja 'd' komentojen avulla. Kun halutaan syöttää sana kursorin osoittamasta kohdasta alkaen, annetaan komento 'q'. Peli pyytää sen jälkeen suunnan ja syötettävät kirjaimet. Pelaajan käytettävissä olevat kirjaimet ovat näkyvissä konsolitulosteessa.
