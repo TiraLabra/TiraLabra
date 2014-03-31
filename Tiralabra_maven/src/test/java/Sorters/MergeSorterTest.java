@@ -33,9 +33,6 @@ public class MergeSorterTest extends TestCase {
         int[] arrayToSort = new int[]{3,9,4,6,1,2,5,7,10,8};
         int[] sortedArray = new int[]{1,2,3,4,5,6,7,8,9,10};
         arrayToSort = sorterToTest.mergeSort(arrayToSort);
-        for(int i = 0; i < arrayToSort.length; i++){
-            System.out.print("["+arrayToSort[i]+"], ");
-        }
         assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
         
     }

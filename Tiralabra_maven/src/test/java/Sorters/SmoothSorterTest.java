@@ -39,9 +39,6 @@ public class SmoothSorterTest extends TestCase {
             int[] sortedArray = arrayToSort.clone();
             Arrays.sort(sortedArray);
             sorterToTest.smoothSort(arrayToSort);
-            for (int j = 0; j < arrayToSort.length; j++) {
-                System.out.print("[" + arrayToSort[j] + "], ");
-            }
             assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
         }
     }

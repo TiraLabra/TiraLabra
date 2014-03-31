@@ -33,9 +33,7 @@ public class MergeSorter {
         int middle = (int) arrayToSort.length / 2;
         int[] left = mergeSortInit(Arrays.copyOfRange(arrayToSort, 0, middle));
         int[] right = mergeSortInit(Arrays.copyOfRange(arrayToSort, middle, arrayToSort.length));
-        int leftArrayIndex = 0;
-        int rightArrayIndex = 0;
-        int newArrayIndex = 0;
+        int leftArrayIndex = 0, rightArrayIndex = 0, newArrayIndex = 0;
 
         while (leftArrayIndex < left.length && rightArrayIndex < right.length) {
             if (left[leftArrayIndex] < right[rightArrayIndex]) {
