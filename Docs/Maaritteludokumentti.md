@@ -7,7 +7,7 @@ Perseptroni on yksinkertainen algoritmi joka pyrkii jakamaan sille syötetyn dat
 Mahdollisia ongelmia verkon ratkaistavaksi: Jonkin kuvion tai muodon löytäminen pikselimuotoisesta datasta (object detection), objektin, esimerkiksi kuvion tunnistaminen (pattern recognition), laadunvalvonta: järjestelmä voisi esimerkiksi tunnistaa onko kuvassa oleva kuvio virheellinen, toisinsanoen poikkeaako se liikaa ennalta määrätystä tasosta. 
 Lopullinen ratkaistava ongelma selviää tarkemmin kun olen taustatutkimukseni saanut pidemmälle.
 
-Neuroverkot ovat erityisen mielenkiintoisia erilaisten ongelmien ratkaisuun, sillä ne kykenevät oppimaan virheistään ja datan kohina ei välttämättä haittaa niiden toimintaa (jos opetusdataa on tarpeeksi).
+Pyrin kirjoittamaan toteutusdokumenttiin jonkinasteista vertailua (oppimisnopeus, ratkaistavat ongelmat ja vastauksen tarkkuus) ainakin yksitasoisen perseptronin, moniluokkaisen perseptronin ja monitasoisen perseptronin välillä.
 
 lähteet:
 https://www.cs.helsinki.fi/u/ttonteri/ai/2013/slides08.pdf
