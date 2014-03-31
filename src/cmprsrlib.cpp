@@ -6,6 +6,93 @@
 
 #include "cmprsrlib.h"
 
+sequence_list encodeRLE(const c_data* pData, const c_uint& pLength)
+{
+	sequence_list sequences;
+	
+	for(c_uint i=1; i<pLength; ++i)
+	{
+		if(pData[i] == pData[i - 1])
+		{
+			c_uint count = 1;
+			while(++i < pLength && pData[i] == pData[i - 1] && count < 127)
+				++count;
+			
+			sequences.push_back(new sequence(i - count, count, pData[i - count], pData[i - 1]));
+		}
+	}
+
+	return sequences;
+}
+
+void decodeRLE(FILE* pInput, FILE* pOutput)
+{
+	c_int i;
+	while((i = fgetc(pInput)) != EOF)
+	{
+		char c = (char)i; 
+		if(c > 0)
+		{
+			int b = fgetc(pInput);
+			for(c_int i=0; i<c; ++i)
+				fputc(b, pOutput);
+		}else if(c < 0)
+		{
+			for(c_int i=0; i<-c; ++i)
+				fputc(fgetc(pInput), pOutput);
+		}
+	}
+}
+
+c_uint trailingZeros(c_data pData)
+{
+	c_uint c;
+	if(pData)
+	{
+		pData = (pData ^ (pData - 1)) >> 1;
+		for(c = 0; pData; ++c)
+			pData >>= 1;
+	}else{
+		c = sizeof(c_data) * 8;
+	}
+
+	return c;
+}
+
+sequence_list findBitSequences(const c_data* pData, const c_size& pLength, const c_uint& pMinSequence, const c_uint& pMinTrailing)
+{
+	sequence_list sequences;
+
+	c_uint count = 1;
+	c_uint bitCount = 0;
+	bool bitCountSet = false;
+
+	for(c_uint i=0; i<pLength; ++i)
+	{
+		c_uint b = trailingZeros(pData[i]);
+		if(!bitCountSet)
+		{
+			bitCount = b;
+			bitCountSet = true;
+		}else if(b < bitCount || b < pMinTrailing || b == 0 || bitCount == 0)
+		{
+			if(count >= pMinSequence)
+				sequences.push_back(new sequence(i - count, count, pData[i - count], pData[i - 1]));
+			
+			count = 0;
+			bitCount = 0;
+			bitCountSet = false;
+		}
+
+		++count;
+	}
+
+	if(count > 0)
+		sequences.push_back(new sequence(pLength - count, count, pData[pLength - count], pData[pLength - 1]));
+
+	return sequences;
+}
+
 sequence_list findSequences(const c_data* pData, const c_size& pLength, const c_uint& pMinSequence, const c_uint& pMaxDifference)
 {
 	sequence_list sequences;

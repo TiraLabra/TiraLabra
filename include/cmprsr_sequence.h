@@ -91,8 +91,9 @@ struct sequence
 	/// \return Minimum to maximum distance between the sequences' values.
 	c_uint value_range(const sequence& pSequence) const
 	{
-		return std::abs(std::max(std::max(first, last), std::max(pSequence.first, pSequence.last))
-			- std::min(std::min(first, last), std::min(pSequence.first, pSequence.last)));
+		return 0;
+		//return std::abs(std::max(std::max(first, last), std::max(pSequence.first, pSequence.last))
+			//- std::min(std::min(first, last), std::min(pSequence.first, pSequence.last)));
 	}
 
 	/// Gets the distance between the sequences' values.
@@ -100,8 +101,9 @@ struct sequence
 	/// \return Distance between sequences' values.
 	c_uint value_distance(const sequence& pSequence) const
 	{
-		return std::min(std::abs(std::max(first, last) - std::min(pSequence.first, pSequence.last)),
-			std::abs(std::max(pSequence.first, pSequence.last) - std::min(first, last)));
+		return 0;
+		//return std::min(std::abs(std::max(first, last) - std::min(pSequence.first, pSequence.last)),
+			//std::abs(std::max(pSequence.first, pSequence.last) - std::min(first, last)));
 	}
 };
 

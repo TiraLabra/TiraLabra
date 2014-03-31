@@ -10,6 +10,11 @@ typedef std::vector<sequence*> sequence_list;
 typedef std::vector<sequence_pair> sequence_pair_list;
 typedef std::vector<merge*> merge_list;
 
+sequence_list encodeRLE(const c_data* pData, const c_uint& pLength);
+void decodeRLE(FILE* pInput, FILE* pOutput);
+
+sequence_list findBitSequences(const c_data* pData, const c_size& pLength, const c_uint& pMinSequence, const c_uint& pMinTrailing);
+
 /// Finds increasing/decreasing sequences in data.
 /// \param pData Data to process.
 /// \param pLength Length of data.
@@ -24,13 +29,11 @@ sequence_list findSequences(const c_data* pData, const c_size& pLength, const c_
 /// \return A list of concatenateable sequences.
 merge_list concatenateSequences(const sequence_list& pSequences, const bool& pInclusive);
 
-
 /// Creates a list of sequences that can be concatenated.
 /// \param pSequences List of sequences.
 /// \param pInclusive Check inclusively or exclusively.
 /// \return A list of sequences that can be concatenated.
 merge_list concatenateSequencesSlow(const sequence_list& pSequences, const bool& pInclusive);
-
 
 /// Creates a list of sequences that can be merged.
 /// \param pSequences List of sequences.
