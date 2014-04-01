@@ -9,26 +9,29 @@ public class Main {
     
     public static void main(String[] args) {
         
-        if (args.length < 4 || args[0].isEmpty()) {
+        if (args.length < 4 || args.length == 0) {
             man();
             return;
         }
         
-        Operator op = new Operator();
+        Operator op = new Operator(args);
         if (args[0].equals("-e")) {
-            op.encrypt(args);
+            op.encrypt(args[3]);
         } else if (args[0].equals("-d")) {
-            op.decrypt(args);
+            op.decrypt(args[3]);
         } else
             man();
     }
     
+    /**
+     * Short user help to print in the case command parameters are wrong.
+     */
     public static void man() {
         System.out.println(
                 "Tira-DESu usage: \n" +
                 "  encrypt: '%s -e --mode keyfile input output'\n" + 
                 "  decrypt: '%s -d --mode keyfile input output'\n" +
-                "    where 'input' and 'output' are filenames\n" +
+                "    where 'keyfile', 'input' and 'output' are filenames\n" +
                 "  available modes: des and 3des"
         );
     }

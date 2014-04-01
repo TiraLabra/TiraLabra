@@ -1,7 +1,7 @@
 package cs.helsinki.fi.desu;
 
 /**
- * The class to enrypt given message.
+ * The class to encrypt given message.
  * 
  * @author Juha Lindqvist <juha.lindqvist@cs.helsinki.fi>
  */
