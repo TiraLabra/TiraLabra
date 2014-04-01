@@ -92,10 +92,13 @@ public class Operator {
     }
     
     /**
+     * Reads keyfile for triple DES algorithm.
      * 
+     * @param  file file for keys
+     * @return      three keys read from file
      */
     public byte[][] readTripleKey(File file) {
-        byte[][] tripleKey;
+        byte[][] tripleKey = new byte[3][56];
         try {
             Scanner scanner = new Scanner(file);
             for (int i = 0; i < 3; i++) {
