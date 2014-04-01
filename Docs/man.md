@@ -14,3 +14,9 @@ or
 where %s is the program name.
 
 If the program paramters are insufficient, nonexistent or simply wrong it prints a short guide to proper formatting of parameters.
+
+
+Keyfile
+-------
+
+The keyfile is a normal plaintext file that contains either a string of 56 bits for DES and three strings of 56 bits for triple DES. If this requirement is not met the program generates necessary padding to fill the 56 bits. The program also generates necessary subkeys from these keys.
