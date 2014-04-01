@@ -68,18 +68,19 @@ public class BitOperation {
     
     /**
      * Rotates bits to the left from given input vector by given number of
-     * positions.
+     * positions. Variable len allows for a single byte from a byte array to
+     * be rotated.
      *
      * @param  input input byte vector
      * @param  len   length of bits to rotate
-     * @param  pos   position from where to rotate
+     * @param  steps number of times to rotate
      * @return       new byte vector with bits rotated
      */
-    public byte[] rotateLeft(byte[] input, int len, int pos) {
+    public byte[] rotateLeft(byte[] input, int len, int steps) {
         int numBytes = (len - 1) / 8 + 1;
         byte[] output = new byte[numBytes];
         for (int i = 0; i < len; i++) {
-            int val = extractBit(input, (i + pos) % len);
+            int val = extractBit(input, (i + steps) % len);
             setBit(output, i, val);
         }
         return output;
