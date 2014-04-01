@@ -51,8 +51,9 @@ public class Kaynnistin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 Blokus peli = new Blokus(pelaaja1.isSelected(), pelaaja2.isSelected(),pelaaja3.isSelected(),pelaaja4.isSelected());
-                peli.aloitaVuoro();
+                 peli.aloitaVuoro();
                 Kayttoliittyma g = new Kayttoliittyma(peli);
+                
             }         
         });
 
