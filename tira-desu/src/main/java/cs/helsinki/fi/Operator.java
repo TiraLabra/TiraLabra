@@ -3,6 +3,9 @@ package cs.helsinki.fi;
 import cs.helsinki.fi.desu.DES;
 import cs.helsinki.fi.desu.Decryption;
 import cs.helsinki.fi.desu.Encryption;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * Container and logic class for the program. Handles everything from chopping
@@ -15,45 +18,30 @@ public class Operator {
     private DES des;
     private Encryption enc;
     private Decryption dec;
-    
-    // three keys for triple DES, only K is used for single
-    private byte[][] K;
-    private byte[][] K1;
-    private byte[][] K2;
 
     public Operator() {
         this.des = new DES();
-        this.enc = new Encryption(des);
-        this.dec = new Decryption(des);
+        this.enc = new Encryption();
+        this.dec = new Decryption();
     }
-
-    /**
-     * Encrypts data by cycling through DES three times with three separate
-     * keys.
-     * 
-     * @param  data data to be encrypted
-     * @param  keys three keys to be used in each cycle of encryption
-     * @return      encrypted data
-     */
-    public byte[] encryptTripleDES(byte[] data, byte[][] keys) {
-        K = des.generateKeys(keys[0]);
-        K1 = des.generateKeys(keys[1]);
-        K2 = des.generateKeys(keys[2]);
+    
+    public void encrypt(String[] args) {
         
-        return null;
+        if (args[1].equals("des"))
+            enc.encryptSingleDES(this.readFile(args[4]), this.readFile(args[3]));
+        else {
+            byte[][] keys;
+            enc.encryptTripleDES(this.readFile(args[4]), null);
+        }
     }
-
-    /**
-     * Encrypts data by cycling through DES with supplied key.
-     * 
-     * @param data data to encrypt
-     * @param key  key to use in encryption
-     * @return     encrypted data
-     */
-    public byte[] encrypt(byte[] data, byte[] key) {
-        K = des.generateKeys(key);
+    
+    public void decrypt(String[] args) {
+        Operator op = new Operator();
         
-        return null;
+        if (args[1].equals("des"))
+            dec.decryptSingleDES(this.readFile(args[4]), this.readFile(args[3]));
+        else
+            enc.encryptTripleDES(this.readFile(args[4]), null);
     }
 
     public byte[] encrypt64Block() {
@@ -61,35 +49,22 @@ public class Operator {
     }
 
     /**
-     * Decrypts data by cycling through three layers of DES with three separate
-     * keys.
+     * Reads data from given file and returns it in byte form.
      * 
-     * @param data data to be decrypted
-     * @param keys set of keys to use
-     * @return     decrypted data
+     * @param  filename file to read data from
+     * @return          contents of file in byte form
      */
-    public byte[] decryptTripleDES(byte[] data, byte[][] keys) {
-        K = des.generateKeys(keys[0]);
-        K1 = des.generateKeys(keys[1]);
-        K2 = des.generateKeys(keys[2]);
+    public byte[] readFile(String filename) {
+        File file = new File(filename);
+        byte[] output = null;
         
-        return null;
-    }
-
-    /**
-     * Decrypts given data by cycling it through DES with supplied key.
-     * 
-     * @param data data to decrypt
-     * @param key  key to use in decryption
-     * @return     decrypted data
-     */
-    public byte[] decrypt(byte[] data, byte[] key) {
-        K = des.generateKeys(key);
-        
-        return null;
-    }
-
-    public byte[] decrypt64Block() {
-        return null;
+        try {
+            Scanner scanner = new Scanner(file);
+            output = scanner.next().getBytes();
+        } catch (FileNotFoundException ioe) {
+            System.out.println("Error: ");
+            ioe.printStackTrace();
+        }
+        return output;
     }
 }
