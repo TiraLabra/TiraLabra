@@ -22,7 +22,6 @@ public class BitOperation {
      * @param pos   place to insert value
      * @param value value to set bit in pos to
      */
-    
     public void setBit(byte[] input, int pos, int value) {
         int posByte = pos / 8;
         int posBit = pos % 8;
