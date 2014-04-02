@@ -2,8 +2,8 @@
 package cs.helsinki.fi.desu;
 
 import java.util.Arrays;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * @author Juha Lindqvist <juha.lindqvist@cs.helsinki.fi>
@@ -20,6 +20,7 @@ public class BitOperationTest {
     /**
      * Test of setBit method, of class BitOperation.
      */
+    @Test
     public void testSetBit() {
         byte[] test = "tesuing".getBytes();
          // translates to 01110100011001010111001101110101011010010110111001100111
@@ -33,6 +34,7 @@ public class BitOperationTest {
     /**
      * Test of setBit method, of class BitOperation.
      */
+    @Test
     public void testSetBitMultipleTimes() {
         byte[] test = "aaaa".getBytes();
         
@@ -49,6 +51,7 @@ public class BitOperationTest {
     /**
      * Test of extractBit method, of class BitOperation.
      */
+    @Test
     public void testExtractBit() {
         byte[] test = "testing".getBytes();
          // translates to 01110100011001010111001101110100011010010110111001100111
@@ -60,6 +63,7 @@ public class BitOperationTest {
     /**
      * Test of extractMultipleBits method, of class BitOperation.
      */
+    @Test
     public void testExtractMultipleBits() {
         byte[] test = "aaaaaba".getBytes();
         byte[] result = "b".getBytes();
@@ -72,6 +76,7 @@ public class BitOperationTest {
     /**
      * Test of rotateLeft method, of class BitOperation.
      */
+    @Test
     public void testRotateLeft() {
         byte[] test = { 100, 6, 7, 8}; // 100 = 01100100
         byte result = -56;             // 56  = 11001000
@@ -86,6 +91,7 @@ public class BitOperationTest {
     /**
      * Test of xor method, of class BitOperation.
      */
+    @Test
     public void testXor() {
         byte a[] = { 1 }; // 01 in binary
         byte b[] = { 2 }; // 10 in binary
@@ -97,6 +103,7 @@ public class BitOperationTest {
     /**
      * Test of xor method, of class BitOperation.
      */
+    @Test
     public void testXor2() {
         byte a[] = { -67 }; // 1011 1101 in binary
         byte b[] = { -1 };  // 1111 1111 in binary
@@ -108,12 +115,14 @@ public class BitOperationTest {
     /**
      * Test of separateBytes method, of class BitOperation.
      */
+    @Test
     public void testSeparateBytes() {
     }
 
     /**
      * Test of concatBits method, of class BitOperation.
      */
+    @Test
     public void testConcatBits() {
     }
 }
