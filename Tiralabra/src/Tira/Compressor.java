@@ -31,7 +31,24 @@ public class Compressor {
         int arrayLength = wavAsByteArray.length;
         
         while(n < (arrayLength-44) ) {
-            wavAsByteArray[44+n] = (byte) 100;
+            //System.out.println((byte) 25);
+            if ((int) wavAsByteArray[44+n] > 25) {
+                
+                wavAsByteArray[44+n+0] = (byte) 25;
+                wavAsByteArray[44+n+1] = (byte) 25;
+                wavAsByteArray[44+n+2] = (byte) 25;
+                wavAsByteArray[44+n+3] = (byte) 25;
+                
+                wavAsByteArray[44+n+4] = (byte) -25;
+                wavAsByteArray[44+n+5] = (byte) -25;
+                wavAsByteArray[44+n+6] = (byte) -25;
+                wavAsByteArray[44+n+7] = (byte) -25;
+                
+                n+=8;
+            }
+            
+            //wavAsByteArray[44+n] = (byte) 100;
+            
             n++;
         }
 
