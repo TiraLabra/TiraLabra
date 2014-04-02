@@ -5,11 +5,23 @@
  */
 
 package Tira;
-
+import ch.aplu.util.*;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 /**
  *
  * @author samsalon
  */
 public class Writer {
+    
+    AudioFormat format;
+    
+    
+    
+    
+    public void write(byte[] wavAsByteArray, AudioFileFormat format) {
+        SoundRecorder sr = new SoundRecorder(format.getFormat());
+        sr.writeWavFile(wavAsByteArray, "output.wav");
+    }
     
 }

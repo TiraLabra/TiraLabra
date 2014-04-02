@@ -9,6 +9,7 @@ package Tira;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -16,16 +17,17 @@ import java.util.logging.Logger;
  */
 public class Main {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException {
         try {
             Reader r = new Reader();
             Writer w = new Writer();
             Compressor c = new Compressor();
             
             byte[] b = r.readFile();
-            System.out.println(b.toString());
             
             c.compress(b);
+            w.write(b, r.getFileFormat());
+            
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
