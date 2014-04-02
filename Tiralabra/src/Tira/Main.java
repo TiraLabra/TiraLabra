@@ -24,9 +24,10 @@ public class Main {
             Compressor c = new Compressor();
             
             byte[] b = r.readFile();
+            System.out.println(r.getFileFormat().toString());
             
-            c.compress(b);
-            w.write(b, r.getFileFormat());
+            byte[] bb = c.compress(b);
+            w.write(bb, r.getFileFormat());
             
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

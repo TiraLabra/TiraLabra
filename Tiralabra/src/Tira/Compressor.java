@@ -28,21 +28,15 @@ public class Compressor {
 
         n = 1;
 */
+        int arrayLength = wavAsByteArray.length;
         
-        for (byte b : wavAsByteArray) {
-
-            if (n > 45) {
-                if (b > 20) {
-                    b = 25;
-                } else if (b < -20) {
-                    b = -25;
-                }
-            }
-            
+        while(n < (arrayLength-44) ) {
+            wavAsByteArray[44+n] = (byte) 100;
             n++;
         }
 
         //muista 44byte offset koska jee
-        return null;
+        System.out.println("compression done!");
+        return wavAsByteArray;
     }
 }
