@@ -23,7 +23,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class Reader {
 
-    String filepath = "bang.wav";
+    String filepath = "11k16bitpcm.wav";
     File wavToRead = new File(filepath);
     AudioFileFormat format;
     
