@@ -47,12 +47,12 @@ public class Pohja {
      */
     public void alustaPohja(String tiedostoPolku) {
         File tiedosto = new File(tiedostoPolku);
-        Scanner lukija = liitäTiedostoLukijaan(tiedosto);
+        Scanner lukija = liitaTiedostoLukijaan(tiedosto);
 
         leveys = lukija.nextLine().length();
         laskeKorkeus(lukija);
         kartta = new Ruutu[korkeus][leveys];
-        lukija = liitäTiedostoLukijaan(tiedosto);
+        lukija = liitaTiedostoLukijaan(tiedosto);
         tallennaPohjaTaulukkoon(lukija);
         lukija.close();
     }
@@ -63,7 +63,7 @@ public class Pohja {
      * @param tiedosto annetaan scannerille
      * @return Scanner lukija
      */
-    private Scanner liitäTiedostoLukijaan(File tiedosto) {
+    private Scanner liitaTiedostoLukijaan(File tiedosto) {
         Scanner lukija = null;
         try {
             lukija = new Scanner(tiedosto);
