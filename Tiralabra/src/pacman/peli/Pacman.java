@@ -1,5 +1,6 @@
 package pacman.peli;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class Pacman extends Timer implements ActionListener {
     /**
      * ArrayList, joka sisältää kaikki kentällä olevat haamut.
      */
-    private ArrayList<Haamu> haamut;
+
+    private Lista haamut;
+//    private ArrayList<Haamu> haamut;
     /**
      * Pistelaskuri, joka pitää kirjaa kasvavasta pistemäärästä.
      */
@@ -68,6 +71,8 @@ public class Pacman extends Timer implements ActionListener {
 
     private Haku haku;
 
+    private Peliruutu magentaMaali;
+
     /**
      * Konstruktorissa luodaan pelialusta ja kaikki komponentit sille, luodaan
      * myös pistelaskuri ja highscore
@@ -78,7 +83,7 @@ public class Pacman extends Timer implements ActionListener {
         alusta.luoPelialusta();
         man = new Man(9, 11, Suunta.OIKEA, alusta);
         man.luoManAlustalle();
-        haamut = new ArrayList<Haamu>();
+        haamut = new Lista();
         this.luoHaamut();
         laskuri = new Pistelaskuri();
         this.hedelmanPaikat = new ArrayList<Peliruutu>();
@@ -86,6 +91,8 @@ public class Pacman extends Timer implements ActionListener {
         this.tilanne = false;
         this.heikko = false;
         this.haku = new Haku();
+        Haamu haamu = (Haamu) haamut.getAlkio(3);
+        this.magentaMaali = haamu.selvitaMaaliMagenta(arpoja);
 
         addActionListener(this);
         setInitialDelay(2000);
@@ -111,7 +118,7 @@ public class Pacman extends Timer implements ActionListener {
         return this.laskuri;
     }
 
-    public ArrayList<Haamu> getHaamuLista() {
+    public Lista getHaamuLista() {
         return this.haamut;
     }
 
@@ -135,15 +142,15 @@ public class Pacman extends Timer implements ActionListener {
      * Luodaan haamut pelialustalle omaan karsinaan.
      */
     private void luoHaamut() {
-        Haamu red = new Haamu(9, 8, Suunta.YLOS, "red", alusta);
+        Haamu red = new Haamu(9, 7, Suunta.YLOS, "red", alusta);
         Haamu green = new Haamu(10, 9, Suunta.YLOS, "green", alusta);
         Haamu cyan = new Haamu(8, 9, Suunta.YLOS, "cyan", alusta);
         Haamu magenta = new Haamu(9, 9, Suunta.YLOS, "magenta", alusta);
 
-        haamut.add(red);
-        haamut.add(green);
-        haamut.add(cyan);
-        haamut.add(magenta);
+        haamut.lisaa(red);
+        haamut.lisaa(green);
+        haamut.lisaa(cyan);
+        haamut.lisaa(magenta);
     }
 
     /**
@@ -151,7 +158,9 @@ public class Pacman extends Timer implements ActionListener {
      */
     public void heikennaHaamut() {
         this.heikko = true;
-        for (Haamu haamu : haamut) {
+
+        for (int i = 0; i < haamut.koko(); i++) {
+            Haamu haamu = (Haamu) haamut.getAlkio(i);
             haamu.setTyyppi("heikko");
             haamu.setHeikkous(30);
         }
@@ -196,7 +205,8 @@ public class Pacman extends Timer implements ActionListener {
      * Jos taas haamun tyyppi on vahva, niin man kuolee ja palaa lähtöruutuun.
      */
     public void kuoleekoHaamuTaiMan() {
-        for (Haamu haamu : haamut) {
+        for (int i = 0; i < haamut.koko(); i++) {
+            Haamu haamu = (Haamu) haamut.getAlkio(i);
             if (alusta.getPeliruutu(haamu.getX(), haamu.getY()).getOnkoMan()) {
                 if (haamu.getTyyppi().equals("heikko")) {
                     haamu.palaaAlkuun();
@@ -334,7 +344,7 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         liikutaHaamut();
         kuoleekoHaamuTaiMan();
         if (tarkistaOnkoHeikkoja() == 0) {
@@ -358,26 +368,86 @@ public class Pacman extends Timer implements ActionListener {
     }
 
     private void liikutaHaamut() {
-        for (Haamu haamu : haamut) {
-            if (haamu.getNimi().equals("red")) {
-                Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(man.getX(), man.getY()), alusta);
-                haamu.liiku(siirto);
-            } 
-            else if (haamu.getNimi().equals("cyan")) {
-                Peliruutu maali = haamu.selvitaMaali(man);
-                Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), maali, alusta);
-                haamu.liiku(siirto);
-            } 
-            else {
-                haamu.liiku();
+        for (int i = 0; i < haamut.koko(); i++) {
+            Haamu haamu = (Haamu) haamut.getAlkio(i);
+
+            if (haamu.getTyyppi().equals("heikko")) {
+                liikutaHaamutHeikkoina(haamu);
+            } else {
+                if (haamu.getNimi().equals("red")) {
+                    Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(man.getX(), man.getY()), alusta);
+                    haamu.liiku(siirto);
+                } else if (haamu.getNimi().equals("cyan")) {
+                    Peliruutu maali = haamu.selvitaMaaliCyan(man);
+                    Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), maali, alusta);
+                    haamu.liiku(siirto);
+                } else if (haamu.getNimi().equals("magenta")) {
+                    if (haamu.getX() == magentaMaali.getX() && haamu.getY() == magentaMaali.getY()) {
+                        while (haamu.getX() == magentaMaali.getX() && haamu.getY() == magentaMaali.getY()) {
+                            magentaMaali = haamu.selvitaMaaliMagenta(arpoja);
+                        }
+
+                    }
+                    System.out.println(magentaMaali.toString());
+                    Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), magentaMaali, alusta);
+                    haamu.liiku(siirto);
+                } else {
+                    haamu.liiku();
+                }
             }
+
             haamuHeikostaVahvaksi(haamu);
+        }
+    }
+
+    private void liikutaHaamutHeikkoina(Haamu haamu) {
+        liikutaRedHeikko(haamu);
+        liikutaCyanHeikko(haamu);
+        liikutaMagentaHeikko(haamu);
+        liikutaGreenHeikko(haamu);
+    }
+
+    private void liikutaGreenHeikko(Haamu haamu) {
+        if (haamu.getNimi().equals("green")) {
+            haamu.liiku();
+        }
+    }
+
+    private void liikutaMagentaHeikko(Haamu haamu) {
+        if (haamu.getNimi().equals("magenta")) {
+        }
+    }
+
+    private void liikutaCyanHeikko(Haamu haamu) {
+        if (haamu.getNimi().equals("cyan")) {
+            Peliruutu maali = haamu.selvitaMaaliCyan(man);
+            int peilaus = 9 - maali.getX();
+            maali = alusta.getPeliruutu(9 + peilaus, maali.getY());
+            if (maali.getX() == haamu.getX() && maali.getY() == haamu.getY()) {
+                maali = alusta.getPeliruutu(man.getX(), man.getY());
+            }
+            Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(maali.getX(), maali.getY()), alusta);
+            haamu.liiku(siirto);
+        }
+    }
+
+    private void liikutaRedHeikko(Haamu haamu) {
+        if (haamu.getNimi().equals("red")) {
+            int peilaus = 9 - man.getX();
+            Peliruutu maali = alusta.getPeliruutu(9 + peilaus, man.getY());
+            if (maali.getX() == haamu.getX() && maali.getY() == haamu.getY()) {
+                maali = alusta.getPeliruutu(man.getX(), man.getY());
+            }
+            Peliruutu siirto = haku.aStar(alusta.getPeliruutu(haamu.getX(), haamu.getY()), alusta.getPeliruutu(maali.getX(), maali.getY()), alusta);
+            haamu.liiku(siirto);
         }
     }
 
     private int tarkistaOnkoHeikkoja() {
         int heikkoja = 0;
-        for (Haamu haamu : haamut) {
+        for (int i = 0; i < haamut.koko(); i++) {
+            Haamu haamu = (Haamu) haamut.getAlkio(i);
+
             if (haamu.getTyyppi().equals("heikko")) {
                 heikkoja++;
             }

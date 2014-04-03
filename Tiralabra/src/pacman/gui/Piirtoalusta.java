@@ -12,14 +12,16 @@ import pacman.hahmot.Haamu;
 import pacman.hahmot.Suunta;
 
 /**
- * Piirtoalusta piirtää pelikentän, haamut, manin, pisteet ja elämät sekä pelin päättymisen jälkeisen tekstikentän.
+ * Piirtoalusta piirtää pelikentän, haamut, manin, pisteet ja elämät sekä pelin
+ * päättymisen jälkeisen tekstikentän.
  * 
 * @author hhkopper
  */
 public class Piirtoalusta extends JPanel implements Paivitettava {
-    
+
     /**
-     * Kertoo minkä kokoiseksi halutaan pelialustan yhtä ruutua kuvaavan ruudun sivun pituus.
+     * Kertoo minkä kokoiseksi halutaan pelialustan yhtä ruutua kuvaavan ruudun
+     * sivun pituus.
      */
     private int ruudunSivu;
     /**
@@ -47,7 +49,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
 
     /**
      * Piirtää pelialustan ja sen komponentit.
-     *     
+     *
      * @param g
      */
     @Override
@@ -69,27 +71,29 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
     }
 
     /**
-     * Jokaiselle haamulle annetaan kuva nimen perusteella.
-     * Jos haamujen tyyppi on heikko piirretään haamujen heikot kuvat.
+     * Jokaiselle haamulle annetaan kuva nimen perusteella. Jos haamujen tyyppi
+     * on heikko piirretään haamujen heikot kuvat.
      *
      * @param g
      */
     private void kuvitaHaamut(Graphics g) {
 
-        for (Haamu haamu : kayttis.getPeli().getHaamuLista()) {
+        for (int i = 0; i < kayttis.getPeli().getHaamuLista().koko(); i++) {
+            Haamu haamu = (Haamu) kayttis.getPeli().getHaamuLista().getAlkio(i);
+
             if (haamu.getTyyppi().equals("vahva")) {
                 if (haamu.getNimi().equals("red")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("red.png"));
-                    piirraHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva(g, kuva, haamu);
                 } else if (haamu.getNimi().equals("green")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("green.png"));
-                    piirraHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva(g, kuva, haamu);
                 } else if (haamu.getNimi().equals("magenta")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("magenta.png"));
-                    piirraHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva(g, kuva, haamu);
                 } else if (haamu.getNimi().equals("cyan")) {
                     ImageIcon kuva = new ImageIcon(this.getClass().getResource("cyan.png"));
-                    piirraHaamunKuva( g, kuva, haamu);
+                    piirraHaamunKuva(g, kuva, haamu);
                 }
             } else {
                 piirraHeikotHaamut(g, haamu);
@@ -105,7 +109,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
      */
     private void piirraHeikotHaamut(Graphics g, Haamu haamu) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("heikkoHaamu.png"));
-        piirraHaamunKuva( g, kuva, haamu);
+        piirraHaamunKuva(g, kuva, haamu);
     }
 
     /**
@@ -298,7 +302,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
 
     /**
      * Piirretään haamun kuva.
-     * 
+     *
      * @param g
      * @param kuva haamun oma kuva
      * @param haamu haamu, josta kuva piirretään

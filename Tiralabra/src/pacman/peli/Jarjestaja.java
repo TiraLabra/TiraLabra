@@ -28,10 +28,8 @@ public class Jarjestaja {
     private void merge(int vasenReuna, int keskikohta, int oikeaReuna) {
         
         Peliruutu[] apu = new Peliruutu[solmut.length];
-
-        for (int i = vasenReuna; i <= oikeaReuna; i++) {
-            apu[i] = solmut[i];
-        }
+        
+        kopioAlku(vasenReuna, oikeaReuna, apu);
 
         int i = vasenReuna;
         int j = keskikohta+1;
@@ -49,6 +47,12 @@ public class Jarjestaja {
         }
         kopioLoppu(i, keskikohta, k, apu);        
 
+    }
+
+    private void kopioAlku(int vasenReuna, int oikeaReuna, Peliruutu[] apu) {
+        for (int i = vasenReuna; i <= oikeaReuna; i++) {
+            apu[i] = solmut[i];
+        }
     }
 
     /**
