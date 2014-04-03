@@ -37,6 +37,9 @@ public class SeqAlgUI {
                 case 3:
                     runLSA();
                     break;
+                case 4:
+                    runGSAwGap();
+                    break;
                 case 0:
                     System.out.println("Quitting");
                     break main;
@@ -66,6 +69,16 @@ public class SeqAlgUI {
         gsa.calculateAlignment();
         gsa.findSolution();
         System.out.println("Best matching global sequence alignment:");
+        printSolution(gsa.getSolution());
+    }
+
+    public void runGSAwGap() {
+        System.out.println("Enter input file name:");
+        char[] alphabet = {'a', 't', 'c', 'g'};
+        GSA gsa = new GSA(readFilename(), alphabet);
+        gsa.calculateAlignment();
+        gsa.findSolution();
+        System.out.println("Best matching global sequence alignment with gap penalties:");
         printSolution(gsa.getSolution());
     }
 

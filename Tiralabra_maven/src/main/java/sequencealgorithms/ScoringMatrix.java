@@ -20,7 +20,10 @@ public class ScoringMatrix {
      * The alphabet used in inputs.
      */
     private char[] alphabet;
-
+    /**
+     * The gap penalty.
+     */
+    private double gapPenalty;
     /**
      * Initializes a new alphabet array that includes the indel character '-' and initializes a new Scoring Matrix.
      * 
@@ -33,7 +36,7 @@ public class ScoringMatrix {
             this.alphabet[i+1] = alphabet[i];
         }
         matrix = new double[this.alphabet.length][this.alphabet.length];
-        
+        this.gapPenalty = 0;
     }
     /**
      * Prints the Scoring Matrix
@@ -45,6 +48,22 @@ public class ScoringMatrix {
             }
             System.out.println("");
         }
+    }
+    
+    /**
+     * Setter for the gap penalty.
+     * @param penalty The penalty score
+     */
+    public void setGapPenalty(double penalty) {
+        gapPenalty = penalty;
+    }
+    
+    /**
+     * Getter for the gap penalty.
+     * @return The penalty score
+     */
+    public double getGapPenalty() {
+        return gapPenalty;
     }
 
     /**

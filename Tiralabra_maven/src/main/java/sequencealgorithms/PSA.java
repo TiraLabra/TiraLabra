@@ -47,6 +47,21 @@ abstract class PSA {
         solution = null;
 
         setUpScoringMatrix();
+        setUpAlignmentMatrix();
+    }
+    
+    /**
+     * Formats the first row and column from the alignment matrix.
+     */
+    public void setUpAlignmentMatrix() {
+        for (int i = 0; i< input1.length; i++) {
+            m.setScore(i+1, 0, m.get(i, 0)+s.getScore(input1[i], '-'));
+            m.setPath(i+1, 0, 1);
+        }
+        for (int j = 0; j < input2.length; j++) {
+            m.setScore(0, j+1, m.get(0, j)+s.getScore('-', input2[j]));
+            m.setPath(0, j+1, 2);
+        }
     }
 
     /**
@@ -135,15 +150,15 @@ abstract class PSA {
             length++;
         }
 
-        System.out.println("PRINT PRESOLUTION");
-        for (int i=0; i<preSolution[0].length; i++) {
-            System.out.print(preSolution[0][i]);
-        }
-        System.out.println("");
-        for (int i=0; i<preSolution[1].length; i++) {
-            System.out.print(preSolution[1][i]);
-        }
-        System.out.println("\nLength on " + length);
+//        System.out.println("PRINT PRESOLUTION");
+//        for (int i=0; i<preSolution[0].length; i++) {
+//            System.out.print(preSolution[0][i]);
+//        }
+//        System.out.println("");
+//        for (int i=0; i<preSolution[1].length; i++) {
+//            System.out.print(preSolution[1][i]);
+//        }
+//        System.out.println("\nLength on " + length);
 
         setSolution(preSolution, length);
     }
@@ -162,6 +177,8 @@ abstract class PSA {
      * @return The solution
      */
     public char[][] getSolution() {
+        System.out.println("Alignment matrix:");
+        m.print();
         return solution;
     }
 

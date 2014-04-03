@@ -15,8 +15,8 @@ public class GSA extends PSA implements Problem {
 
     public void setUpScoringMatrix() {
         s.setMatchBonus(1);
-        s.setIndelPenalty(-1);
-        s.setMismatchPenalty(-5);
+        s.setIndelPenalty(-2);
+        s.setMismatchPenalty(-1);
     }
 
 //    public void findSolution() {
