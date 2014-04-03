@@ -57,19 +57,4 @@ public:
 		TS_ASSERT(!s1.can_contain(s2, true));
 		TS_ASSERT(s2.can_contain(s1, true));
 	}
-
-	void testSequenceValueRangeDistance()
-	{
-		sequence s1(5, 6, 7, 8);
-		sequence s2(13, 100, 8, 9);
-
-		TS_ASSERT_EQUALS(s1.value_range(s2), 2);
-		TS_ASSERT_EQUALS(s1.value_distance(s2), 0);
-
-		s1.first = 5;
-		s1.last = 1;
-
-		TS_ASSERT(s2.value_range(s1) == 8);
-		TS_ASSERT(s2.value_distance(s1) == 3);
-	}
 };
