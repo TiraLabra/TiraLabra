@@ -174,8 +174,6 @@ abstract class PSA {
      * @return The solution
      */
     public char[][] getSolution() {
-        System.out.println("Alignment matrix:");
-        m.print();
         return solution;
     }
 

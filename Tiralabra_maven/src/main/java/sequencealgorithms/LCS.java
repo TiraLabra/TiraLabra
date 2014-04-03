@@ -40,7 +40,6 @@ public class LCS extends PSA implements Problem {
         while (length > 0) {
             length--;
             if (preSolution[0][length] == preSolution[1][length]) {
-                System.out.println("length on " + length);
                 solution[0][i] = preSolution[0][length];
                 i++;
             }
