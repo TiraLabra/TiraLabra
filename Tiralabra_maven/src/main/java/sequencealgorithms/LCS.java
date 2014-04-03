@@ -19,22 +19,22 @@ public class LCS extends PSA implements Problem {
     }
 
     @Override
-    public int findSolutionStartX() {
+    protected int findSolutionStartX() {
         return input1.length;
     }
 
     @Override
-    public int findSolutionStartY() {
+    protected int findSolutionStartY() {
         return input2.length;
     }
 
     @Override
-    public boolean solutionContinueCondition(int p, int q) {
+    protected boolean solutionContinueCondition(int p, int q) {
         return (p > 0 && q > 0);
     }
 
     @Override
-    public void setSolution(char[][] preSolution, int length) {
+    protected void setSolution(char[][] preSolution, int length) {
         solution = new char[2][length];
         int i = 0;
         while (length > 0) {
@@ -47,34 +47,4 @@ public class LCS extends PSA implements Problem {
         }
     }
 
-//    /**
-//     * Finds the solution to the problem based on the calculated alignment
-//     * matrix. Stores the solution on variable solution[][].
-//     */
-//    public void findSolution() {
-//
-//        m.print();
-//        int i = input1.length, j = input2.length;
-//        int suurempi = i;
-//        if (j > i) {
-//            suurempi = j;
-//        }
-//        solution = new char[1][suurempi];
-//        int k = 0;
-//        while (i > 0 && j > 0) {
-//            int step = m.getPath(i, j);
-//            if (step == 0) {
-//                solution[0][k] = input1[i - 1];
-//                k++;
-//                i--;
-//                j--;
-//            }
-//            if (step == 1) {
-//                i--;
-//            }
-//            if (step == 2) {
-//                j--;
-//            }
-//        }
-//    }
 }

@@ -163,13 +163,10 @@ abstract class PSA {
         setSolution(preSolution, length);
     }
 
-    abstract int findSolutionStartX();
-
-    abstract int findSolutionStartY();
-
-    abstract boolean solutionContinueCondition(int p, int q);
-
-    abstract void setSolution(char[][] preSolution, int length);
+    protected abstract int findSolutionStartX();
+    protected abstract int findSolutionStartY();
+    protected abstract boolean solutionContinueCondition(int p, int q);
+    protected abstract void setSolution(char[][] preSolution, int length);
 
     /**
      * Getter for the solution.
