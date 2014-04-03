@@ -40,12 +40,32 @@ void printBytes(const c_uint& pBytes, const bool& pSi)
 
 int main(int argc, char** argv)
 {
-	const char* str = "987567855556780912212344332215";
+	const char* str = "001122334555566788999";
 	c_uint length = strlen(str);
 	bool inclusive = true;
 
 	c_uint index = 0;
 	sequence_list s = encodeRLE(str, length);
+
+	sequence_list::iterator it = s.begin();
+	for(c_uint i=0; i<length; ++i)
+	{
+		if(it != s.end())
+		{
+			if(i >= (*it)->offset + (*it)->length)
+			{
+				if(++it != s.end())
+					std::cout << (char)(*it)->length;
+			}
+		}
+		if(it != s.end())
+		{
+			if(i < (*it)->offset)
+				std::cout  << str[i];
+		}else{
+			std::cout << str[i];
+		}
+	}
 
 	return 0;
 }
