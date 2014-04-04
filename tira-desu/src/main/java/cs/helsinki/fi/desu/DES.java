@@ -206,7 +206,7 @@ public class DES {
      * @param key original key by which to generate subkeys
      * @return array of subkeys
      */
-    public byte[][] generateKeys(byte[] key) {
+    public byte[][] generateSubkeys(byte[] key) {
         byte[][] output = new byte[16][];
         byte[] tempKey = permute(key, PC1);
         byte[] C = bitOps.extractMultipleBits(tempKey, 0, PC1.length / 2);
@@ -220,5 +220,23 @@ public class DES {
         }
 
         return output;
+    }
+    
+    /**
+     * Returns array containing the initial permutation.
+     * 
+     * @return  initial permutation array
+     */
+    public int[] getIP() {
+        return IP;
+    }
+    
+    /**
+     * Returns array containing the inverse initial permutation.
+     * 
+     * @return  inverse initial permutation array
+     */
+    public int[] getReverseIP() {
+        return reverseIP;
     }
 }

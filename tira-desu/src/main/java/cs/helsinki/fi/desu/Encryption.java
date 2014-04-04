@@ -9,6 +9,7 @@ package cs.helsinki.fi.desu;
 public class Encryption {
     
     private DES des;
+    private BitOperation bitOps;
     
     // three keys for triple DES, only K is used for single
     private byte[][] K;
@@ -17,6 +18,7 @@ public class Encryption {
     
     public Encryption() {
         this.des = new DES();
+        this.bitOps = new BitOperation();
     }
     
     /**
@@ -28,9 +30,9 @@ public class Encryption {
      * @return      encrypted data
      */
     public byte[] encryptTripleDES(byte[] data, byte[][] keys) {
-        K = des.generateKeys(keys[0]);
-        K1 = des.generateKeys(keys[1]);
-        K2 = des.generateKeys(keys[2]);
+        K = des.generateSubkeys(keys[0]);
+        K1 = des.generateSubkeys(keys[1]);
+        K2 = des.generateSubkeys(keys[2]);
         
         return null;
     }
@@ -43,19 +45,69 @@ public class Encryption {
      * @return     encrypted data
      */
     public byte[] encryptSingleDES(byte[] data, byte[] key) {
-        K = des.generateKeys(key);
-        
-        return null;
+        int length = 8 - data.length % 8;
+        byte[] output = new byte[data.length + length];
+        byte[] block = new byte[8];
+        byte[] padding = insertPadding(length);
+        K = des.generateSubkeys(key);
+        int count = 0;
+        int i;
+
+        for (i = 0; i < data.length + length; i++) {
+            if (i > 0 && i % 8 == 0) {
+                block = encrypt64Block(block,K);
+                System.arraycopy(block, 0, output, i - 8, block.length);
+            }
+            if (i < data.length)
+                block[i % 8] = data[i];
+            else {														
+                block[i % 8] = padding[count % 8];
+                count++;
+            }
+        }
+        if (block.length == 8){
+            block = encrypt64Block(block,K);
+            System.arraycopy(block, 0, output, i - 8, block.length);
+        }
+        return output;
     }
     
     /**
-     * Inserts padding to an uncompleted block. If block is not
-     * 64 bits inserts first a "1" and fills the rest with "0".
+     * Encrypts a single block of 64 bytes and passes it back to calling method.
      * 
-     * @param input block requiring padding
-     * @return      padded block
+     * @param  block   block to be encrypted
+     * @param  subkeys set of subkeys to use
+     * @return         encrypted block
      */
-    public byte[] insertPadding(byte[] input) {
-        return null;
+    public byte[] encrypt64Block(byte[] block, byte[][] subkeys) {
+        byte[] temp = des.permute(block, des.getIP());
+        byte[] L = bitOps.extractMultipleBits(temp, 0, des.getIP().length/2);
+        byte[] R = bitOps.extractMultipleBits(temp, des.getIP().length/2, des.getIP().length/2);
+ 
+        for (int i = 0; i < 16; i++) {
+            byte[] tempR = R;
+            R = des.feistelF(R,subkeys[i]);
+            R = bitOps.xor(L, R);
+            L = tempR;
+        }
+ 
+        temp = bitOps.concatBits(R, des.getIP().length/2, L, des.getIP().length/2);
+        temp = des.permute(temp, des.getReverseIP());
+        return temp;
+    }
+    
+    /**
+     * Creates a padding byte array to fill an incomplete block. First byte is "-128"
+     * followed by necessary number of "0".
+     * 
+     * @param  length length of required padding
+     * @return        padded block
+     */
+    public byte[] insertPadding(int length) {
+        byte[] padding = new byte[length];
+        padding[0] = -128;
+        for (int i = 0; i < length; i++)
+            padding[i] = 0;
+        return padding;
     }
 }
