@@ -36,11 +36,15 @@ abstract class PSA {
      * The alignment that solves the problem.
      */
     char[][] solution;
+    protected final double NEGINF = -1E100;
+    private boolean verbose;
 
-    public PSA(String filename, char[] alphabet) {
+    public PSA(String filename) {
         char[][] input = InputReader.readInput(filename);
         input1 = input[0];
         input2 = input[1];
+        alphabet = input[2];
+        
 
         s = new ScoringMatrix(alphabet);
         m = new AlignmentMatrix(input1.length, input2.length);
@@ -48,6 +52,8 @@ abstract class PSA {
 
         setUpScoringMatrix();
         setUpAlignmentMatrix();
+        
+        verbose = false;
     }
     
     /**
@@ -121,6 +127,11 @@ abstract class PSA {
     }
 
     public void findSolution() {
+        if (verbose) {
+            System.out.println("Finding solution from alignment matrix:");
+            m.print();
+        }
+        
         char[][] preSolution = new char[2][input1.length + input2.length];
         int p = findSolutionStartX();
         int q = findSolutionStartY();
@@ -174,7 +185,14 @@ abstract class PSA {
      * @return The solution
      */
     public char[][] getSolution() {
+        if (verbose) {
+            System.out.println("The alignment score is " + getAlignmentScore());
+        }
         return solution;
+    }
+    
+    public double getAlignmentScore() {
+        return m.get(input1.length, input2.length);
     }
 
     /**

@@ -16,6 +16,10 @@ import java.io.IOException;
  * @author Jari Haavisto
  */
 public class InputReader {
+    
+    private static char[] parseAlphabet(String sequences) {
+        return sequences.replaceAll("(.)(?=.*\\1)", "").toCharArray();
+    }
 
     /**
      * Reads a file that begins with two lines of input. Stores the input in two char arrays and returns both as one array. 
@@ -28,9 +32,12 @@ public class InputReader {
         try {
             FileReader fr = new FileReader(filename);
             BufferedReader reader = new BufferedReader(fr);
-            char[][] input = new char[2][0];
-            input[0] = reader.readLine().toLowerCase().toCharArray();
-            input[1] = reader.readLine().toLowerCase().toCharArray();
+            char[][] input = new char[3][0];
+            String line1 = reader.readLine().trim().toLowerCase();
+            String line2 = reader.readLine().trim().toLowerCase();
+            input[0] = line1.toCharArray();
+            input[1] = line2.toCharArray();
+            input[2] = parseAlphabet(line1 + line2);
             return input;
         } catch (FileNotFoundException e) {
             System.out.println("Tiedostoa ei löydy!");
@@ -40,4 +47,6 @@ public class InputReader {
         return null;
 
     }
+    
+    
 }

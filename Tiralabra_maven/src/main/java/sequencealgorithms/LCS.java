@@ -10,8 +10,8 @@ import com.mycompany.tiralabra_maven.InputReader;
  */
 public class LCS extends PSA implements Problem {
 
-    public LCS(String filename, char[] alphabet) {
-        super(filename, alphabet);
+    public LCS(String filename) {
+        super(filename);
     }
 
     public void setUpScoringMatrix() {
@@ -35,7 +35,13 @@ public class LCS extends PSA implements Problem {
 
     @Override
     protected void setSolution(char[][] preSolution, int length) {
-        solution = new char[2][length];
+        int actualLength = 0;
+        for (int i = 0; i<length; i++) {
+            if (preSolution[0][i] == preSolution[1][i]) {
+                actualLength++;
+            }
+        }
+        solution = new char[2][actualLength];
         int i = 0;
         while (length > 0) {
             length--;

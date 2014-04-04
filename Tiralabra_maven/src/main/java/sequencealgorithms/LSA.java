@@ -15,8 +15,9 @@ import com.mycompany.tiralabra_maven.InputReader;
  */
 public class LSA extends PSA implements Problem {
 
-    public LSA(String filename, char[] alphabet) {
-        super(filename, alphabet);
+    public LSA(String filename) {
+//        super(filename, alphabet);
+        super(filename);
     }
 
     public void setUpScoringMatrix() {
@@ -43,35 +44,6 @@ public class LSA extends PSA implements Problem {
 
     }
 
-//    public void findSolution() {
-//        char[][] preSolution = new char[2][input1.length + input2.length];
-//        int p = m.getBestScoreX();
-//        int q = m.getBestScoreY();
-//        int length = 0;
-//        while (solutionContinueCondition(p, q)) {
-//            switch (m.getPath(p, q)) {
-//                case 0:
-//                    preSolution[0][length] = input1[p - 1];
-//                    preSolution[1][length] = input2[q - 1];
-//                    p--;
-//                    q--;
-//                    break;
-//                case 1:
-//                    preSolution[0][length] = input1[p - 1];
-//                    preSolution[1][length] = '-';
-//                    p--;
-//                    break;
-//                case 2:
-//                    preSolution[0][length] = '-';
-//                    preSolution[1][length] = input2[q - 1];
-//                    q--;
-//                    break;
-//            }
-//            length++;
-//        }
-//
-//        setSolution(preSolution, length);
-//    }
     
     @Override
     public int findSolutionStartX() {
@@ -97,22 +69,10 @@ public class LSA extends PSA implements Problem {
         }
 
     }
-
-    /**
-     * Debug method
-     *
-     * @param p
-     */
-    private void print(char[][] p) {
-        System.out.println("PRESOLUTION:");
-        for (int i = 0; i < p[0].length; i++) {
-            System.out.print(p[0][i]);
-        }
-        System.out.println("");
-        for (int i = 0; i < p[1].length; i++) {
-            System.out.print(p[1][i]);
-        }
-        System.out.println("");
+    
+    @Override
+    public double getAlignmentScore() {
+        return m.getBestScore();
     }
 
 }

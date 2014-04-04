@@ -28,7 +28,7 @@ public class AlignmentMatrix {
      */
     private int[][] path;
 
-    private final double NEGINF = -1E100;
+    protected final double NEGINF = -1E100;
 
     /**
      * Constructor for the AlignmentMatrix.

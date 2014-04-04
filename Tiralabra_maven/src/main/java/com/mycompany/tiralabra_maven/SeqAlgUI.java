@@ -7,6 +7,7 @@ package com.mycompany.tiralabra_maven;
 
 import java.util.Scanner;
 import sequencealgorithms.GSA;
+import sequencealgorithms.GSAwGap;
 import sequencealgorithms.LCS;
 import sequencealgorithms.LSA;
 
@@ -53,8 +54,7 @@ public class SeqAlgUI {
 
     public void runLCS() {
         System.out.println("Enter input file name:");
-        char[] alphabet = {'a', 't', 'c', 'g'};
-        LCS lcs = new LCS(readFilename(), alphabet);
+        LCS lcs = new LCS(readFilename());
         lcs.calculateAlignment();
         lcs.findSolution();
         System.out.println("A longest common subsequence:");
@@ -64,8 +64,8 @@ public class SeqAlgUI {
 
     public void runGSA() {
         System.out.println("Enter input file name:");
-        char[] alphabet = {'a', 't', 'c', 'g'};
-        GSA gsa = new GSA(readFilename(), alphabet);
+//        char[] alphabet = {'a', 't', 'c', 'g'};
+        GSA gsa = new GSA(readFilename());
         gsa.calculateAlignment();
         gsa.findSolution();
         System.out.println("Best matching global sequence alignment:");
@@ -74,18 +74,17 @@ public class SeqAlgUI {
 
     public void runGSAwGap() {
         System.out.println("Enter input file name:");
-        char[] alphabet = {'a', 't', 'c', 'g'};
-        GSA gsa = new GSA(readFilename(), alphabet);
-        gsa.calculateAlignment();
-        gsa.findSolution();
+        GSAwGap gsawg = new GSAwGap(readFilename());
+        gsawg.calculateAlignment();
+        gsawg.findSolution();
         System.out.println("Best matching global sequence alignment with gap penalties:");
-        printSolution(gsa.getSolution());
+        printSolution(gsawg.getSolution());
     }
 
     public void runLSA() {
         System.out.println("Enter input file name:");
         char[] alphabet = {'a', 't', 'c', 'g'};
-        LSA lsa = new LSA(readFilename(), alphabet);
+        LSA lsa = new LSA(readFilename());
         lsa.calculateAlignment();
         lsa.findSolution();
         System.out.println("An alignment with best local match sequence:");
@@ -105,6 +104,7 @@ public class SeqAlgUI {
         System.out.println("1 - Longest Common Substring");
         System.out.println("2 - Global Sequence Alignment");
         System.out.println("3 - Local Sequence Alignment");
+        System.out.println("4 - Global Sequence Alignment with gap penalties");
         System.out.println("");
         System.out.println("0 - Quit");
     }
@@ -119,4 +119,5 @@ public class SeqAlgUI {
         String filename = reader.nextLine();
         return filename;
     }
+    
 }

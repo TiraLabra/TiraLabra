@@ -9,8 +9,8 @@ import com.mycompany.tiralabra_maven.InputReader;
  */
 public class GSA extends PSA implements Problem {
 
-    public GSA(String filename, char[] alphabet) {
-        super(filename, alphabet);
+    public GSA(String filename) {
+        super(filename);
     }
 
     public void setUpScoringMatrix() {
@@ -19,32 +19,6 @@ public class GSA extends PSA implements Problem {
         s.setMismatchPenalty(-1);
     }
 
-//    public void findSolution() {
-//        int l = input1.length + input2.length;
-//        solution = new char[2][l];
-//
-//        int p = input1.length, q = input2.length;
-//        while (p > 0 || q > 0) {
-//            l--;
-//            int path = m.getPath(p, q);
-//            if (path == 0) {
-//                solution[0][l] = input1[p - 1];
-//                solution[1][l] = input2[q - 1];
-//                p--;
-//                q--;
-//            }
-//            if (path == 1) {
-//                solution[0][l] = input1[p - 1];
-//                solution[1][l] = '-';
-//                p--;
-//            }
-//            if (path == 2) {
-//                solution[0][l] = '-';
-//                solution[1][l] = input2[q - 1];
-//                q--;
-//            }
-//        }
-//    }
     @Override
     public int findSolutionStartX() {
         return input1.length;

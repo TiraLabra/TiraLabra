@@ -5,13 +5,6 @@
  */
 package sequencealgorithms;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,10 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author riha
  */
-public class LCSTest {
+public class LCSTest extends TestFileOperations {
 
-    LCS lcs;
-    final private String TESTFILENAME = "testfile";
+    LCS identicalSeqs, shortSeqs, longSeqs;
 
     public LCSTest() {
     }
@@ -40,60 +32,62 @@ public class LCSTest {
 
     @Before
     public void setUp() {
-        String filename = "testsequence";
-        char[] alphabet = {'a', 't', 'g', 'c'};
-        lcs = new LCS(filename, alphabet);
-    }
+        writeNewTestSequenceFile("actg\nactg");
+        identicalSeqs = new LCS(TESTFILENAME);
+        identicalSeqs.calculateAlignment();
+        identicalSeqs.findSolution();
 
-    @After
-    public void tearDown() {
-        // delete TESTFILENAME
-    }
+        writeNewTestSequenceFile("agcga\ncagatagag");
+        shortSeqs = new LCS(TESTFILENAME);
+        shortSeqs.calculateAlignment();
+        shortSeqs.findSolution();
 
-    @Test
-    public void simpleDnaSequence() {
-        writeNewTestSequenceFile("aaacgt\ntgcaaa");
-        lcs = new LCS(TESTFILENAME, new char[]{'a', 't', 'g', 'c'});
-        lcs.calculateAlignment();
-        lcs.findSolution();
-        StringBuilder s = new StringBuilder();
-        String solution = s.append(lcs.getSolution()[0]).toString().trim();
-        assertEquals("aaa", solution);
     }
 
     @Test
-    public void longDnaSequence() {
-        writeNewTestSequenceFile("AAACCGTGAGTTATTCGTTCTAGAA\n"
-                + "CACCCCTAAGGTACCTTTGGTTC");
-        lcs = new LCS(TESTFILENAME, new char[]{'a', 't', 'g', 'c'});
-        lcs.calculateAlignment();
-        lcs.findSolution();
-        StringBuilder s = new StringBuilder();
-        String solution = s.append(lcs.getSolution()[0]).toString().trim();
-        assertEquals("acctggttttgttc", solution);
+    public void identicalSequenceGivesCorrectScore() {
+        assertEquals(4, identicalSeqs.getAlignmentScore(), 0.00001);
     }
 
-    private void writeNewTestSequenceFile(String input) {
-        Writer writer = null;
+    @Test
+    public void identicalSequenceSolutionIsTrueSubsequence() {
+        char[] solution = identicalSeqs.getSolution()[0];
+        char[] seq = {'a', 'c', 't', 'g'};
+        assertTrue(isSubseq(seq, solution));
+    }
 
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("testfile"), "utf-8"));
-            writer.write(input);
-        } catch (IOException ex) {
-            System.out.println("Virhe testissä writeFile " + ex);
-        } finally {
-            try {
-                writer.close();
-            } catch (Exception ex) {
-            }
+    @Test
+    public void shortSequenceGivesCorrectScore() {
+        assertEquals(4, shortSeqs.getAlignmentScore(), 0.00001);
+    }
+
+    @Test
+    public void shortSequenceSolutionIsTrueSubsequence() {
+        char[] solution = shortSeqs.getSolution()[0];
+        char[] seq1 = {'a','g','c','g','a'};
+        char[] seq2 = {'c','a','g','a','t','a','g','a','g'};
+        
+        assertTrue(isSubseq(seq1, solution) && isSubseq(seq2, solution));
+    }
+    
+    @Test
+    public void longSequenceGivesCorrectScore() {
+        
+    }
+
+    private boolean isSubseq(char[] seq, char[] sub) {
+        int k = -1;
+        for (int i = 0; i < sub.length; i++) {
+            do {
+                k++;
+            } while (k < seq.length && sub[i] != seq[k]);
         }
+        if (k < seq.length) {
+            System.out.println("returning false");
+            return true;
+        }
+        System.out.println("returning true");
+        return false;
     }
 
-//    @Test
-//    public void correctSequence() {
-//        String correct = "ACCTAGTACTTTG";
-//        String result = lcs.getSolution()[0].toString();
-//        assertEquals(correct, result);
-//    }
 }

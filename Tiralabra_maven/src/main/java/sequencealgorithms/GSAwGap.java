@@ -17,10 +17,16 @@ public class GSAwGap extends GSA {
      */
     private AlignmentMatrix horizontal, vertical;
 
-    public GSAwGap(String filename, char[] alphabet) {
-        super(filename, alphabet);
+    public GSAwGap(String filename) {
+        super(filename);
         horizontal = new AlignmentMatrix(input1.length, input2.length);
+        for (int i=0; i<input1.length; i++) {
+            horizontal.setScore(i, 0, NEGINF);
+        }
         vertical = new AlignmentMatrix(input1.length, input2.length);
+        for (int j=0; j<input2.length; j++) {
+            vertical.setScore(0, j, NEGINF);
+        }
     }
 
     @Override
