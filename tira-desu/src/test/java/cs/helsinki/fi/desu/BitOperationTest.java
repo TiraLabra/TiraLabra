@@ -107,7 +107,7 @@ public class BitOperationTest {
         byte b[] = { -1 };  // 1111 1111 in binary
         byte arr = 66;      // 0100 0010 in binary
         byte resArr[] = bitOp.xor(a, b);
-        assertEquals(Byte.toString(arr), Byte.toString(resArr[0]));
+        assertEquals(arr, resArr[0]);
     }
 
     /**
@@ -115,11 +115,18 @@ public class BitOperationTest {
      */
     @Test
     public void testSeparateBytes() {
-        byte[] test = {-1, 126, 127, 4};
-        byte[] result = bitOp.separateBytes(test, 4);
-        byte[] check = {-16, -16, 112, -32};
+        byte[] array = {-1, 126, 127, 4};
+        byte[] test = bitOp.separateBytes(array, 4);
+        byte[] result = {-16, -16, 112, -32};
         
-        assertTrue(Arrays.equals(result, check));
+        // array comparison fails for some reason, so had to do it this way
+        boolean success = true;
+        for (int i = 0; i < 4; i++) {
+            if (result[i] != test[i])
+                success = false;
+        }
+        
+        assertTrue(success);
     }
 
     /**
@@ -127,6 +134,11 @@ public class BitOperationTest {
      */
     @Test
     public void testConcatBits() {
-        fail("Not implemented yet");
+        byte[] testA = { -1, 0 };
+        byte[] testB = { 0, -1 };
+        byte[] result = { -1, 0 };
+        byte[] test = bitOp.concatBits(testA, 8, testB, 8);
+        
+        assertTrue(Arrays.equals(result, test));
     }
 }
