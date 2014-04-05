@@ -5,6 +5,7 @@ import labyrintti.osat.Ruutu;
 
 /**
  * Etsijä etsii lyhimmän reitin karttapohjasta.
+ *
  * @author heidvill
  */
 public class Etsija {
@@ -19,11 +20,19 @@ public class Etsija {
      * Pohja-olio, johon pohjakartta on tallennettu.
      */
     private Pohja pohja;
+    /**
+     * Lyhimmän reitin pituus.
+     */
+    private int reitinPituus;
+    /**
+     * Reitti tallennetaan 2-ulotteiseen taulukkoon.
+     */
+    private int[][] reitti;
 
     public Etsija(Pohja p) {
         pohja = p;
         kaymattomat = new Minimikeko(p.getKorkeus() * p.getLeveys());
-
+        reitti = null;
     }
 
     /**
@@ -53,6 +62,7 @@ public class Etsija {
             kasiteltava.setKayty(true);
             kayLapiViereisetRuudut(kasiteltava);
         }
+
     }
 
     /**
@@ -110,9 +120,10 @@ public class Etsija {
 
     /**
      * Palauttaa reitin merkkijonona.
+     *
      * @return merkkijono reitistä
      */
-    public String getReitti() {
+    public String getReittiMerkkijonona() {
         Ruutu kasiteltava = pohja.getMaali();
         String reitti = "";
         while (!kasiteltava.equals(pohja.getLahto())) {
@@ -123,11 +134,61 @@ public class Etsija {
         return reitti;
     }
 
+    /**
+     * Tallentaa löydetyn reitin 2-ulotteiseen taulukkoon.
+     */
+    public void tallennaReittiTaulukkoon() {
+        laskeReitinPituus();
+        reitti = new int[reitinPituus][2];
+        Ruutu kasiteltava = pohja.getMaali();
+        for (int i = reitinPituus - 1; i >= 0; i--) {
+            reitti[i][0] = kasiteltava.getX();
+            reitti[i][1] = kasiteltava.getY();
+            kasiteltava = kasiteltava.getEdellinen();
+        }
+    }
+    
+    /**
+     * Laskee reitin pituuden.
+     */
+    private void laskeReitinPituus(){
+        reitinPituus = 0;
+        Ruutu kasiteltava = pohja.getMaali();
+        reitinPituus++;
+        while (!kasiteltava.equals(pohja.getLahto())) {
+            kasiteltava = kasiteltava.getEdellinen();
+            reitinPituus++;
+        }
+    }
+
+    /**
+     * Tarkistaa onko annetuissa koordinaateissa oleva ruutu lyhimmällä reitillä.
+     * @param x rivi
+     * @param y sarake
+     * @return true, jos ruutu on lyhimmällä reitillä, muuten false.
+     */
+    public boolean onkoRuutuReitilla(int x, int y) {
+        for (int i = 0; i < reitinPituus; i++) {
+            if (reitti[i][0] == x && reitti[i][1] == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Minimikeko getKaymattomat() {
         return kaymattomat;
     }
 
     public Pohja getPohja() {
         return pohja;
+    }
+
+    public int[][] getReitti() {
+        return reitti;
+    }
+
+    public int getReitinPituus() {
+        return reitinPituus;
     }
 }

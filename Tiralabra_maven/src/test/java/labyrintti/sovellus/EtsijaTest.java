@@ -69,7 +69,11 @@ public class EtsijaTest {
     @Test
     public void reittiOikein(){
         etsija.aStar();
-        etsija.getReitti();
-        assertEquals("(0,3) (0,2) (0,1) (1,1) (1,0)", etsija.getReitti());
+        etsija.getReittiMerkkijonona();
+        assertEquals("(0,3) (0,2) (0,1) (1,1) (1,0)", etsija.getReittiMerkkijonona());
+        etsija.tallennaReittiTaulukkoon();
+        assertEquals(5, etsija.getReitinPituus());
+        assertTrue(etsija.onkoRuutuReitilla(0, 2));
+        assertTrue(!etsija.onkoRuutuReitilla(0, 0));
     }
 }
