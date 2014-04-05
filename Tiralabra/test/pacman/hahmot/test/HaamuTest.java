@@ -7,16 +7,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import pacman.alusta.Pelialusta;
-import pacman.alusta.Peliruutu;
 import pacman.hahmot.Haamu;
-import pacman.hahmot.Man;
+import pacman.hahmot.Red;
 import pacman.hahmot.Suunta;
+import pacman.tietorakenteet.Lista;
 
 public class HaamuTest {
 
     private Pelialusta alusta;
     private Haamu haamu;
-    private Man man;
 
     public HaamuTest() {
     }
@@ -33,75 +32,12 @@ public class HaamuTest {
     public void setUp() throws Exception {
         alusta = new Pelialusta(19, 21);
         alusta.luoPelialusta();
-        haamu = new Haamu(9, 8, Suunta.ALAS, "RED", alusta);
+        haamu = new Red(9, 8, Suunta.ALAS, "RED", alusta);
         haamu.luoHaamuAlustalle();
-        man = new Man(9, 11, Suunta.OIKEA, alusta);
     }
 
     @After
     public void tearDown() {
-    }
-
-    @Test
-    public void haamuLuodaanOikein() {
-        assertEquals(9, haamu.getX());
-        assertEquals(8, haamu.getY());
-        assertEquals(Suunta.ALAS, haamu.getSuunta());
-        assertEquals("RED", haamu.getNimi());
-        assertEquals("vahva", haamu.getTyyppi());
-    }
-
-    @Test
-    public void haamuLiikkuuOikeinAlas() {
-        haamu.liiku();
-        assertEquals(9, haamu.getX());
-        assertEquals(9, haamu.getY());
-        assertTrue(alusta.getPeliruutu(9, 9).getOnkoHaamu());
-        assertFalse(alusta.getPeliruutu(9, 8).getOnkoHaamu());
-    }
-
-    @Test
-    public void haamuLiikkuuOikeinYlos() {
-        haamu.setSuunta(Suunta.YLOS);
-        haamu.liiku();
-        assertEquals(Suunta.YLOS, haamu.getSuunta());
-        assertEquals(9, haamu.getX());
-        assertEquals(7, haamu.getY());
-        assertTrue(alusta.getPeliruutu(9, 7).getOnkoHaamu());
-        assertFalse(alusta.getPeliruutu(9, 8).getOnkoHaamu());
-    }
-
-    @Test
-    public void haamuLiikkuuOikeinOikealla() {
-        haamu.setX(7);
-        haamu.setY(7);
-        haamu.setSuunta(Suunta.OIKEA);
-        haamu.liiku();
-        assertEquals(Suunta.OIKEA, haamu.getSuunta());
-        assertEquals(8, haamu.getX());
-        assertEquals(7, haamu.getY());
-        assertTrue(alusta.getPeliruutu(8, 7).getOnkoHaamu());
-        assertFalse(alusta.getPeliruutu(7, 7).getOnkoHaamu());
-    }
-
-    @Test
-    public void haamuLiikkuuOikeinVasemmalle() {
-        haamu.setX(7);
-        haamu.setY(7);
-        haamu.setSuunta(Suunta.VASEN);
-        haamu.liiku();
-        assertEquals(Suunta.VASEN, haamu.getSuunta());
-        assertEquals(6, haamu.getX());
-        assertEquals(7, haamu.getY());
-        assertTrue(alusta.getPeliruutu(6, 7).getOnkoHaamu());
-        assertFalse(alusta.getPeliruutu(7, 7).getOnkoHaamu());
-    }
-
-    @Test
-    public void huomioiKaikkiSuunnat() {
-        haamu.setY(9);
-        haamu.liiku();
-        assertEquals(3, haamu.getSuuntaLista().koko());
     }
 
     @Test
@@ -118,42 +54,38 @@ public class HaamuTest {
         haamu.setSuunta(Suunta.OIKEA);
         assertTrue(haamu.katsoVoikoLiikkuaSivuille());
     }
-//
-//    @Test
-//    public void selvittaaOikeinMaalinKunRuutuMahdollinen() {
-//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-//        assertEquals("(12,11)", maali.toString());
-//    }
-//
-//    @Test
-//    public void selvittaaOikeinMaalinKunVastassaSeina() {
-//        man.setX(3);
-//        man.setY(9);
-//        man.setSuunta(Suunta.VASEN);
-//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-//        assertEquals("(3,9)", maali.toString());
-//    }
-//    
-//    @Test
-//    public void selvittaaOikeinMaalinKunHuonoRuutu(){
-//        man.setX(17);
-//        man.setY(9);
-//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-//        assertEquals("(17,9)", maali.toString());
-//    }
-//    
-//    @Test
-//    public void selvittaaOikeinMaalinJosHaamuMaaliRuudussa() {
-//        man.setX(14);
-//        man.setY(9);
-//        haamu.setX(17);
-//        haamu.setY(9);
-//        Peliruutu maali= haamu.selvitaMaaliCyan(man);
-//        assertEquals("(16,9)", maali.toString());
-//    }
-    
+
     @Test
     public void lisaaOikeatKielletytRuudut() {
+        Lista kielruu = haamu.getKielletyt();
+        
+        assertEquals(16, kielruu.koko());
+        assertTrue(kielruu.sisaltaa(alusta.getPeliruutu(0, 7)));
+        assertTrue(kielruu.sisaltaa(alusta.getPeliruutu(1, 11)));
+        assertTrue(kielruu.sisaltaa(alusta.getPeliruutu(17, 7)));
+        assertTrue(kielruu.sisaltaa(alusta.getPeliruutu(16, 11)));
+        assertTrue(kielruu.sisaltaa(alusta.getPeliruutu(9, 9)));
+        
+    }
+    
+    @Test
+    public void tarkistaaOikeinOnkoHuonoRuutu() {
+        assertTrue(haamu.tarkistaOnkoHuonoRuutu(-1, -100));
+        assertFalse(haamu.tarkistaOnkoHuonoRuutu(9, 11));
+        assertTrue(haamu.tarkistaOnkoHuonoRuutu(18, 19));
+        assertTrue(haamu.tarkistaOnkoHuonoRuutu(17, 7));
+    }
+    
+    @Test
+    public void liikkuuOikeinAnnettuunRuutuun() {
+        assertEquals(9, haamu.getX());
+        assertEquals(8, haamu.getY());
+        assertTrue(alusta.getPeliruutu(9, 8).getOnkoHaamu());
+        haamu.liiku(alusta.getPeliruutu(9, 9));
+        assertEquals(9, haamu.getX());
+        assertEquals(9, haamu.getY());
+        assertTrue(alusta.getPeliruutu(9, 9).getOnkoHaamu());
+        assertFalse(alusta.getPeliruutu(9, 8).getOnkoHaamu());
         
     }
 }

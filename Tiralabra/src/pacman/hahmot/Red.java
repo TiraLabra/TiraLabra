@@ -15,4 +15,8 @@ public class Red extends Haamu{
         this.kielletytRuudut = new Lista();
         this.lisaaKielletytRuudut();
     }
+
+    public void liiku() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

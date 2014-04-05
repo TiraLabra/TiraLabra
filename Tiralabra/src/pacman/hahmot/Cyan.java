@@ -33,13 +33,13 @@ public class Cyan extends Haamu {
         int testiX = laskeXCyan(man);
         int testiY = laskeYCyan(man);
 
-        if (tarkistaOnkoHuonoRuutu(testiX, testiY, man)) {
+        if (tarkistaOnkoHuonoRuutu(testiX, testiY)) {
             return alusta.getPeliruutu(man.getX(), man.getY());
         }
 
         Peliruutu maali = alusta.getPeliruutu(testiX, testiY);
 
-        if (tarkistaOnkoMaaliSamaKuinHaamunSijainti(maali, man)) {
+        if (tarkistaOnkoMaaliSamaKuinHaamunSijainti(maali)) {
             return selvitaMaaliSuunnista(maali, man);
         }
 
@@ -55,7 +55,7 @@ public class Cyan extends Haamu {
      * @param man
      * @return
      */
-    private boolean tarkistaOnkoMaaliSamaKuinHaamunSijainti(Peliruutu maali, Man man) {
+    private boolean tarkistaOnkoMaaliSamaKuinHaamunSijainti(Peliruutu maali) {
         if (maali.getX() == this.x && maali.getY() == this.y) {
             return true;
         }

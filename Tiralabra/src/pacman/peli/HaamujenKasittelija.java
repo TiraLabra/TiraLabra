@@ -1,7 +1,6 @@
 package pacman.peli;
 
 import java.util.Random;
-import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.hahmot.Cyan;
 import pacman.hahmot.Green;

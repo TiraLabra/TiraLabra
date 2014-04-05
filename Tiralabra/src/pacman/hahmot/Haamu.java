@@ -1,7 +1,6 @@
 //Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
 package pacman.hahmot;
 
-import java.util.Random;
 import pacman.alusta.Peliruutu;
 import pacman.tietorakenteet.Lista;
 
@@ -140,7 +139,7 @@ public abstract class Haamu extends Hahmo {
      * @param man
      * @return
      */
-    public boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY, Man man) {
+    public boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY) {
         if (onkoHuonoRuutu(testiX, testiY)) {
             return true;
         }

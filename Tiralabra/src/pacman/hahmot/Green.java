@@ -58,7 +58,7 @@ public class Green extends Haamu {
      * indeksistä valitaan uusi suunta. Arvottu suunta asetaan haamulle uudeksi
      * suunnaksi.
      */
-    public void arvoUusiSuunta() {
+    private void arvoUusiSuunta() {
 
         selvitaMahdollisetSuunnat();
 
