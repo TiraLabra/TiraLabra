@@ -1,4 +1,4 @@
-package pacman.peli;
+package pacman.tietorakenteet;
 
 import java.util.ArrayList;
 import pacman.alusta.Pelialusta;

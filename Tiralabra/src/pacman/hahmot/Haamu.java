@@ -1,11 +1,9 @@
 //Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
 package pacman.hahmot;
 
-import java.util.ArrayList;
 import java.util.Random;
-import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
-import pacman.peli.Lista;
+import pacman.tietorakenteet.Lista;
 
 /**
  *
@@ -15,56 +13,34 @@ import pacman.peli.Lista;
  *
  * @author hhkopper
  */
-public class Haamu extends Hahmo {
+public abstract class Haamu extends Hahmo {
 
     /**
      * Tyyppi kertoo onko haamu heikko vai vahva.
      */
-    private String tyyppi;
+    protected String tyyppi;
     /**
      * Nimen perusteella osataan antaa oikea väri haamuille haamujen muuttuessa
      * heikosta vahvaksi.
      */
-    private String nimi;
+    protected String nimi;
 
     /**
      * Haamun sen hetkisestä ruudusta kaikki suunnat, jossa on käytävää.
      */
-    private Lista mahdollisetSuunnat;
+    protected Lista mahdollisetSuunnat;
 //    private ArrayList<Suunta> mahdollisetSuunnat = new ArrayList<Suunta>();
     /**
      * Kertoo kuinka monen suorituskierroksen ajan haamu on vielä tyyppiä
      * heikko.
      */
-    private int heikkous;
+    protected int heikkous;
 
     /**
      * Lista sisältää tiedon ruuduista, joita ei saa valita haamun
      * liikkumisruuduiksi. Haamu siis tietää mihin ruutuun ei saa mennä.
      */
-    private Lista kielletytRuudut;
-
-
-    /**
-     * Konstruktorissa Haamulle asetetaan tarvittavat arvot, jotka saadaan
-     * parametrina. Haamun tyypiksi asetetaan aluksi vahva.
-     *
-     * @param x koordinaatti X
-     * @param y koordinaatti Y
-     * @param nimi haamun nimi, jonka avulla tunnistetaan väri.
-     * @param suunta Suunta, johon haamu liikkuu.
-     * @param alusta alusta, jolle haamu luodaan.
-     */
-    public Haamu(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
-        this.y = y;
-        this.x = x;
-        this.suunta = suunta;
-        this.tyyppi = "vahva";
-        this.nimi = nimi;
-        this.alusta = alusta;
-        this.kielletytRuudut = new Lista();
-        this.lisaaKielletytRuudut();
-    }
+    protected Lista kielletytRuudut;
 
     /**
      * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä
@@ -146,90 +122,6 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Haamua liikuttava metodi. Jos haamun seuraava ruutu olisi seinä arvotaan
-     * uusi suunta, minkä jälkeen liikutaan tähän suuntaa. Liiku metodi myös
-     * tarkistaa, pääseekö ruudusta, jossa haamu on myös muualle kuin samaan
-     * suuntaan jatkamalla tai peruuttamalla. Jos muuallekin pääsee arvotaan
-     * uusi suunta ja liikutaan sinne. Muissa tapauksissa liikutaan suuntaan,
-     * joka haamulla on suuntana.
-     */
-    public void liiku() {
-        if (alusta.getPeliruutu(x + this.suunta.getX(), y + this.suunta.getY()).getRuudunTyyppi() == 0) {
-            arvoUusiSuunta();
-            liikuSuunta();
-        } else if (katsoVoikoLiikkuaSivuille()) {
-            arvoUusiSuunta();
-            liikuSuunta();
-        } else {
-            liikuSuunta();
-        }
-    }
-
-    /**
-     * Liikutaan suuntaan, joka haamulla on suuntana. Muutetaan haamun
-     * koordinaatteja ja kerrotaan pelialustalle mistä ruudusta mihin ruutuun
-     * haamu siirtyy.
-     */
-    public void liikuSuunta() {
-
-        this.y = this.y + suunta.getY();
-        this.x = this.x + suunta.getX();
-        alusta.getPeliruutu(x, y).setOnkoHaamu(true);
-        alusta.getPeliruutu(x - suunta.getX(), y - suunta.getY()).setOnkoHaamu(false);
-    }
-
-    /**
-     * Kerätään listalle kaikki mahdolliset suunnat, johon haamu pystyy
-     * liikkumaan. Arvotaan listan perusteella numero, joka kertoo mistä
-     * indeksistä valitaan uusi suunta. Arvottu suunta asetaan haamulle uudeksi
-     * suunnaksi.
-     */
-    public void arvoUusiSuunta() {
-
-        selvitaMahdollisetSuunnat();
-
-        Random arpoja = new Random();
-        int arpaluku = arpoja.nextInt(mahdollisetSuunnat.koko());
-        this.suunta = (Suunta) mahdollisetSuunnat.getAlkio(arpaluku);
-    }
-
-    /**
-     * Metodi selvittää mihin suuntii haamu voisi liikahtaa, siitä ruudussa
-     * missä se metodin kutsuma hetkellä on. Tallentaa sopivat suunnat
-     * listaan.
-     */
-    private void selvitaMahdollisetSuunnat() {
-
-        mahdollisetSuunnat = new Lista();
-
-        for (Suunta s : Suunta.values()) {
-            Peliruutu tarkasteltava = alusta.getPeliruutu(x + s.getX(), y + s.getY());
-
-            if (tarkasteltava.getRuudunTyyppi() == 1 || tarkasteltava.getRuudunTyyppi() == 3) {
-                mahdollisetSuunnat.lisaa(s);
-            }
-        }
-    }
-
-    /**
-     * Metodi selvittää missä suunnassa uusi maali voisi olla, jos alkuperäinen
-     * ruutu ei sovi maaliruuduksi.
-     *
-     * @param maali
-     */
-    private void selvitaMahdollisetSuunnat2(Peliruutu maali) {
-        mahdollisetSuunnat = new Lista();
-
-        for (Suunta s : Suunta.values()) {
-            Peliruutu tarkasteltava = alusta.getPeliruutu(maali.getX() + s.getX(), maali.getY() + s.getY());
-
-            if (tarkasteltava.getRuudunTyyppi() == 1) {
-                mahdollisetSuunnat.lisaa(s);
-            }
-        }
-    }
-
-    /**
      * Asetaan haamun koordinaatit lähtöpaikan koordinaateiksi.
      */
     public void palaaAlkuun() {
@@ -240,184 +132,19 @@ public class Haamu extends Hahmo {
     }
 
     /**
-     * Metodi tarkistaa onko maali sopiva ruutu, haamulle Cyan. Haamulla on
-     * kohteena kolme ruutua Manin edellä oleva ruutu. Jos ruutu ei ole sopiva
-     * maaliksi etsitään uusi ruutu. Jos ei löydy mitään sopivaa ruutua, maali on
-     * Man itse.
+     * Tarkistetaan onko kyseisissä koordinaateissa oleva ruutu huono vai
+     * sopiva.
      *
-     * @param man
-     * @return Palauttaa sopivan maali ruudun.
-     */
-    public Peliruutu selvitaMaaliCyan(Man man) {
-
-        int testiX = laskeXCyan(man);
-        int testiY = laskeYCyan(man);
-
-        if (tarkistaOnkoHuonoRuutu(testiX, testiY, man)) return alusta.getPeliruutu(man.getX(), man.getY());
-
-        Peliruutu maali = alusta.getPeliruutu(testiX, testiY);
-
-        if (tarkistaOnkoMaaliSamaKuinHaamunSijainti(maali, man)) return selvitaMaaliSuunnista(maali, man);
-
-        return tarkistaOnkoSeina(maali, man);
-
-    }
-    
-    /**
-     * Tarkistetaan, onko tämän hetkinen maali sama kuin haamun omat koordinaatit
-     * @param maali
-     * @param man
-     * @return 
-     */
-    private boolean tarkistaOnkoMaaliSamaKuinHaamunSijainti(Peliruutu maali, Man man) {
-        if (maali.getX() == this.x && maali.getY() == this.y) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Tarkistetaan onko kyseisissä koordinaateissa oleva ruutu huono vai sopiva.
      * @param testiX
      * @param testiY
      * @param man
-     * @return 
+     * @return
      */
-    private boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY, Man man) {
+    public boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY, Man man) {
         if (onkoHuonoRuutu(testiX, testiY)) {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Lasketaan y-koordinaatti, siten, että se tulee sijaitsemaan kolme ruutua manin edellä.
-     * @param man
-     * @return 
-     */
-    private int laskeYCyan(Man man) {
-        int testiY = man.getY() + man.getSuunta().getY() * 3;
-        return testiY;
-    }
-
-    /**
-     * Lasketaan x-koordinaatti, siten, että se tulee sijaitsemaan kolme ruutua manin edellä.
-     * @param man
-     * @return 
-     */
-    private int laskeXCyan(Man man) {
-        int testiX = man.getX() + man.getSuunta().getX() * 3;
-        return testiX;
-    }
-
-    /**
-     * Selvitetaan Magenta haamulle ruutu, joka toimii sen maalina.
-     * @param arpoja
-     * @return palauttaa peliruudun, joka on maali
-     */
-    public Peliruutu selvitaMaaliMagenta(Random arpoja) {
-        int arpaX = arvoXMagenta(arpoja);
-        int arpaY = arvoYMagenta(arpoja);
-
-        Peliruutu maali = alusta.getPeliruutu(arpaX, arpaY);
-        maali = sopivanRuudunEtsiminen(maali, arpoja);
-        return maali;
-    }
-
-    /**
-     * Whilen sisälle mennään, jos ensimmäinen arvottu ruutu on seinä tai sisältyy listaan kielletyistä ruuduista.
-     * Whilen sisällä ollaan kunnes on löydetty sopiva ruutu maaliksi.
-     * @param maali
-     * @param arpoja
-     * @return 
-     */
-    private Peliruutu sopivanRuudunEtsiminen(Peliruutu maali, Random arpoja) {
-        int arpaX;
-        int arpaY;
-        while (maali.getRuudunTyyppi() == 0 || kielletytRuudut.sisaltaa(maali)) {
-            arpaX = arpoja.nextInt(16) + 1;
-            arpaY = arpoja.nextInt(18) + 1;
-
-            maali = alusta.getPeliruutu(arpaX, arpaY);
-        }
-        return maali;
-    }
-
-    /**
-     * Arvotaan y-koordinaatti
-     * @param arpoja
-     * @return 
-     */
-    private int arvoYMagenta(Random arpoja) {
-        int arpaY = arpoja.nextInt(18) + 1;
-        return arpaY;
-    }
-
-    /**
-     * Arvotaan x-koordinaatti
-     * @param arpoja
-     * @return 
-     */
-    private int arvoXMagenta(Random arpoja) {
-        int arpaX = arpoja.nextInt(16) + 1;
-        return arpaX;
-    }
-
-    /**
-     * Metodi tarkistaa onko maalin tyyppi seinä. Jos maali on seinä, metodi
-     * etsii uuden sopivan ruudun ja tämän jälkeen tarkistaa vielä, että etsitty
-     * ruutu ei ole sellainen missä olisi haamu. Jos ruudussa on haamu, täytyy
-     * etsiä vielä uusi ruutu. Jos alkuperäinen maali ei ole seinä, petodi
-     * palauttaa alkuperäisen maalin.
-     *
-     * @param maali
-     * @param man
-     * @return palauttaa sopivan maali ruudun.
-     */
-    private Peliruutu tarkistaOnkoSeina(Peliruutu maali, Man man) {
-        if (maali.getRuudunTyyppi() == 0) {
-            Peliruutu uusiMaali = selvitaMaaliSuunnista(maali, man);
-            if (uusiMaali.getX() == this.x && uusiMaali.getY() == this.y) {
-                return selvitaMaaliSuunnista(uusiMaali, man);
-            } else {
-                return uusiMaali;
-            }
-        } else {
-            return maali;
-        }
-    }
-
-    /**
-     * Metodi selvittää uuden maaliruudun, vanhan maaliruudun ympärillä olevista
-     * ruuduista.
-     *
-     * @param maali
-     * @param man
-     * @return palauttaa uuden maaliruudun
-     */
-    private Peliruutu selvitaMaaliSuunnista(Peliruutu maali, Man man) {
-
-        selvitaMahdollisetSuunnat2(maali);
-        if (!mahdollisetSuunnat.onkoTyhja()) {
-            Suunta snta = arvoSuunta();
-            Peliruutu uusiMaali = alusta.getPeliruutu(maali.getX() + snta.getX(), maali.getY() + snta.getY());
-            if (onkoAlustanSisalla(maali.getX(), maali.getY())) {
-                return alusta.getPeliruutu(uusiMaali.getX(), uusiMaali.getY());
-            }
-        }
-        return alusta.getPeliruutu(man.getX(), man.getY());
-    }
-
-    /**
-     * Metodi arvoo listan komponenteista yhden.
-     *
-     * @return Palauttaa listasta arvotun suunnan.
-     */
-    private Suunta arvoSuunta() {
-        Random arpoja = new Random();
-        int arpaluku = arpoja.nextInt(mahdollisetSuunnat.koko());
-        Suunta snta = (Suunta) mahdollisetSuunnat.getAlkio(arpaluku);
-        return snta;
     }
 
     /**
@@ -442,10 +169,18 @@ public class Haamu extends Hahmo {
      * @param y
      * @return palauttaa totuusarvon.
      */
-    private boolean onkoAlustanSisalla(int x, int y) {
+    public boolean onkoAlustanSisalla(int x, int y) {
         if (x <= 17 && x > 1 && y <= 19 && y > 1) {
             return true;
         }
+        return false;
+    }
+
+    public boolean olenkoSamassaRuudussaManinKanssa(Man man) {
+        if (man.getX() == this.x && man.getY() == this.y) {
+            return true;
+        }
+
         return false;
     }
 

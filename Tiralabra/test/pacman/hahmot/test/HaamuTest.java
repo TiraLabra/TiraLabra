@@ -118,39 +118,39 @@ public class HaamuTest {
         haamu.setSuunta(Suunta.OIKEA);
         assertTrue(haamu.katsoVoikoLiikkuaSivuille());
     }
-
-    @Test
-    public void selvittaaOikeinMaalinKunRuutuMahdollinen() {
-        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-        assertEquals("(12,11)", maali.toString());
-    }
-
-    @Test
-    public void selvittaaOikeinMaalinKunVastassaSeina() {
-        man.setX(3);
-        man.setY(9);
-        man.setSuunta(Suunta.VASEN);
-        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-        assertEquals("(3,9)", maali.toString());
-    }
-    
-    @Test
-    public void selvittaaOikeinMaalinKunHuonoRuutu(){
-        man.setX(17);
-        man.setY(9);
-        Peliruutu maali = haamu.selvitaMaaliCyan(man);
-        assertEquals("(17,9)", maali.toString());
-    }
-    
-    @Test
-    public void selvittaaOikeinMaalinJosHaamuMaaliRuudussa() {
-        man.setX(14);
-        man.setY(9);
-        haamu.setX(17);
-        haamu.setY(9);
-        Peliruutu maali= haamu.selvitaMaaliCyan(man);
-        assertEquals("(16,9)", maali.toString());
-    }
+//
+//    @Test
+//    public void selvittaaOikeinMaalinKunRuutuMahdollinen() {
+//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
+//        assertEquals("(12,11)", maali.toString());
+//    }
+//
+//    @Test
+//    public void selvittaaOikeinMaalinKunVastassaSeina() {
+//        man.setX(3);
+//        man.setY(9);
+//        man.setSuunta(Suunta.VASEN);
+//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
+//        assertEquals("(3,9)", maali.toString());
+//    }
+//    
+//    @Test
+//    public void selvittaaOikeinMaalinKunHuonoRuutu(){
+//        man.setX(17);
+//        man.setY(9);
+//        Peliruutu maali = haamu.selvitaMaaliCyan(man);
+//        assertEquals("(17,9)", maali.toString());
+//    }
+//    
+//    @Test
+//    public void selvittaaOikeinMaalinJosHaamuMaaliRuudussa() {
+//        man.setX(14);
+//        man.setY(9);
+//        haamu.setX(17);
+//        haamu.setY(9);
+//        Peliruutu maali= haamu.selvitaMaaliCyan(man);
+//        assertEquals("(16,9)", maali.toString());
+//    }
     
     @Test
     public void lisaaOikeatKielletytRuudut() {

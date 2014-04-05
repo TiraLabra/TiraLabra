@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 import pacman.alusta.Peliruutu;
 import pacman.gui.Kayttoliittyma;
 import pacman.hahmot.Haamu;
-import pacman.peli.Jarjestaja;
+import pacman.tietorakenteet.Jarjestaja;
 import pacman.peli.Pacman;
 
 public class Main {

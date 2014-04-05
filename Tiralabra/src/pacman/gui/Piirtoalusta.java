@@ -8,7 +8,11 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import pacman.hahmot.Cyan;
+import pacman.hahmot.Green;
 import pacman.hahmot.Haamu;
+import pacman.hahmot.Magenta;
+import pacman.hahmot.Red;
 import pacman.hahmot.Suunta;
 
 /**
@@ -77,28 +81,69 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
      * @param g
      */
     private void kuvitaHaamut(Graphics g) {
+        Red red = kayttis.getPeli().getKasittelija().getRed();
+        Green green = kayttis.getPeli().getKasittelija().getGreen();
+        Magenta magenta = kayttis.getPeli().getKasittelija().getMagenta();
+        Cyan cyan = kayttis.getPeli().getKasittelija().getCyan();
 
-        for (int i = 0; i < kayttis.getPeli().getHaamuLista().koko(); i++) {
-            Haamu haamu = (Haamu) kayttis.getPeli().getHaamuLista().getAlkio(i);
+        piirraRed(red, g);
+        piirraGreen(green, g);
+        piirraCyan(cyan, g);
+        piirraMagenta(magenta, g);
 
-            if (haamu.getTyyppi().equals("vahva")) {
-                if (haamu.getNimi().equals("red")) {
-                    ImageIcon kuva = new ImageIcon(this.getClass().getResource("red.png"));
-                    piirraHaamunKuva(g, kuva, haamu);
-                } else if (haamu.getNimi().equals("green")) {
-                    ImageIcon kuva = new ImageIcon(this.getClass().getResource("green.png"));
-                    piirraHaamunKuva(g, kuva, haamu);
-                } else if (haamu.getNimi().equals("magenta")) {
-                    ImageIcon kuva = new ImageIcon(this.getClass().getResource("magenta.png"));
-                    piirraHaamunKuva(g, kuva, haamu);
-                } else if (haamu.getNimi().equals("cyan")) {
-                    ImageIcon kuva = new ImageIcon(this.getClass().getResource("cyan.png"));
-                    piirraHaamunKuva(g, kuva, haamu);
-                }
-            } else {
-                piirraHeikotHaamut(g, haamu);
-            }
+    }
+
+    private void piirraRed(Red red, Graphics g) {
+        if (red.getTyyppi().equals("vahva")) {
+            piirraRedKuva(red, g);
+        } else {
+            piirraHeikotHaamut(g, red);
         }
+    }
+
+    private void piirraGreen(Green green, Graphics g) {
+        if (green.getTyyppi().equals("vahva")) {
+            piirraGreenKuva(green, g);
+        } else {
+            piirraHeikotHaamut(g, green);
+        }
+    }
+
+    private void piirraMagenta(Magenta magenta, Graphics g) {
+        if (magenta.getTyyppi().equals("vahva")) {
+            piirraMagentaKuva(magenta, g);
+        } else {
+            piirraHeikotHaamut(g, magenta);
+        }
+    }
+
+    private void piirraCyan(Cyan cyan, Graphics g) {
+        if (cyan.getTyyppi().equals("vahva")) {
+            piirraCyanKuva(cyan, g);
+        } else {
+            piirraHeikotHaamut(g, cyan);
+        }
+    }
+
+    private void piirraCyanKuva(Haamu haamu, Graphics g) {
+        ImageIcon kuva = new ImageIcon(this.getClass().getResource("cyan.png"));
+        piirraHaamunKuva(g, kuva, haamu);
+    }
+
+    private void piirraMagentaKuva(Haamu haamu, Graphics g) {
+        ImageIcon kuva = new ImageIcon(this.getClass().getResource("magenta.png"));
+        piirraHaamunKuva(g, kuva, haamu);
+
+    }
+
+    private void piirraGreenKuva(Haamu haamu, Graphics g) {
+        ImageIcon kuva = new ImageIcon(this.getClass().getResource("green.png"));
+        piirraHaamunKuva(g, kuva, haamu);
+    }
+
+    private void piirraRedKuva(Haamu haamu, Graphics g) {
+        ImageIcon kuva = new ImageIcon(this.getClass().getResource("red.png"));
+        piirraHaamunKuva(g, kuva, haamu);
     }
 
     /**

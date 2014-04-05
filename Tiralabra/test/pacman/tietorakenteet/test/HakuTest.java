@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pacman.peli.test;
+package pacman.tietorakenteet.test;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
-import pacman.peli.Haku;
+import pacman.tietorakenteet.Haku;
 import pacman.peli.Pacman;
 
 /**

@@ -1,4 +1,4 @@
-package pacman.peli;
+package pacman.tietorakenteet;
 
 import pacman.alusta.Peliruutu;
 
