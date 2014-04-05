@@ -93,6 +93,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
 
     }
 
+    /**
+     * Piirretään haamulle Red joko heikko tai vahva kuva.
+     * @param red
+     * @param g 
+     */
     private void piirraRed(Red red, Graphics g) {
         if (red.getTyyppi().equals("vahva")) {
             piirraRedKuva(red, g);
@@ -101,6 +106,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         }
     }
 
+    /**
+     * Piirretään haamulle Green joko heikko tai vahva kuva.
+     * @param green
+     * @param g 
+     */
     private void piirraGreen(Green green, Graphics g) {
         if (green.getTyyppi().equals("vahva")) {
             piirraGreenKuva(green, g);
@@ -109,6 +119,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         }
     }
 
+    /**
+     * Piirretään haamulle Magenta joko heikko tai vahva kuva.
+     * @param magenta
+     * @param g 
+     */
     private void piirraMagenta(Magenta magenta, Graphics g) {
         if (magenta.getTyyppi().equals("vahva")) {
             piirraMagentaKuva(magenta, g);
@@ -117,6 +132,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         }
     }
 
+    /**
+     * Piirretään haamulle Cyan joko heikko tai vahva kuva.
+     * @param cyan
+     * @param g 
+     */
     private void piirraCyan(Cyan cyan, Graphics g) {
         if (cyan.getTyyppi().equals("vahva")) {
             piirraCyanKuva(cyan, g);
@@ -125,22 +145,42 @@ public class Piirtoalusta extends JPanel implements Paivitettava {
         }
     }
 
+    /**
+     * Piirretään kuva Cyanista.
+     * @param haamu
+     * @param g 
+     */
     private void piirraCyanKuva(Haamu haamu, Graphics g) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("cyan.png"));
         piirraHaamunKuva(g, kuva, haamu);
     }
-
+ 
+    /**
+     * Piirretään kuva Magentasta.
+     * @param haamu
+     * @param g 
+     */
     private void piirraMagentaKuva(Haamu haamu, Graphics g) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("magenta.png"));
         piirraHaamunKuva(g, kuva, haamu);
 
     }
 
+    /**
+     * Piirretään kuva Geenistä.
+     * @param haamu
+     * @param g 
+     */
     private void piirraGreenKuva(Haamu haamu, Graphics g) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("green.png"));
         piirraHaamunKuva(g, kuva, haamu);
     }
 
+    /**
+     * Piirretään kuva Redistä.
+     * @param haamu
+     * @param g 
+     */
     private void piirraRedKuva(Haamu haamu, Graphics g) {
         ImageIcon kuva = new ImageIcon(this.getClass().getResource("red.png"));
         piirraHaamunKuva(g, kuva, haamu);

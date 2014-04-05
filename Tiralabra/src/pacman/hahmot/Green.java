@@ -5,14 +5,26 @@ import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.tietorakenteet.Lista;
 
+/**
+ * Green on yksi haamuista, liikkuu satunnaisesti ympäri pelialustaa.
+ * @author Hanna
+ */
 public class Green extends Haamu {
-
+    
+    /**
+     * Konstruktori, joka peritään yläluokalta haamu.
+     * @param x
+     * @param y
+     * @param suunta
+     * @param nimi
+     * @param alusta 
+     */
     public Green(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
         super(x, y, suunta, nimi, alusta);
     }
 
     /**
-     * Haamua liikuttava metodi. Jos haamun seuraava ruutu olisi seinä arvotaan
+     * Green haamua liikuttava metodi. Jos haamun seuraava ruutu olisi seinä arvotaan
      * uusi suunta, minkä jälkeen liikutaan tähän suuntaa. Liiku metodi myös
      * tarkistaa, pääseekö ruudusta, jossa haamu on myös muualle kuin samaan
      * suuntaan jatkamalla tai peruuttamalla. Jos muuallekin pääsee arvotaan

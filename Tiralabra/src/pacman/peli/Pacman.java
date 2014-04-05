@@ -62,10 +62,19 @@ public class Pacman extends Timer implements ActionListener {
      */
     private boolean tilanne;
 
+    /**
+     * Boolean arvo kertoo onko haamut heikkoja (true) vai vahvoja (false).
+     */
     private boolean heikko;
 
+    /**
+     * Haku on aStar, joka selvittää parasta reittiä haamuille.
+     */
     private Haku haku;
 
+    /**
+     * Haamujenkäsittelijä on luokan ilmentymä, joka hallinnoi haamujen toimintaa.
+     */
     private HaamujenKasittelija kasittelija;
 
     /**

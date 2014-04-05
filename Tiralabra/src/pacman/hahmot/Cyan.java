@@ -5,8 +5,20 @@ import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.tietorakenteet.Lista;
 
+/**
+ * Cyan on yksi haamuista, joka pyrkii ennakoimaan manin liikkumista.
+ * @author Hanna
+ */
 public class Cyan extends Haamu {
-
+    
+    /**
+     * Konstruktori, joka peritään yläluokalta haamu.
+     * @param x
+     * @param y
+     * @param suunta
+     * @param nimi
+     * @param alusta 
+     */
     public Cyan(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
         super(x, y, suunta, nimi, alusta);
     }

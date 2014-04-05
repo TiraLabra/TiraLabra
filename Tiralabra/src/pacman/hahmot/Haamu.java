@@ -1,4 +1,3 @@
-//Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
 package pacman.hahmot;
 
 import pacman.alusta.Pelialusta;
@@ -54,7 +53,7 @@ public abstract class Haamu extends Hahmo {
      * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä
      * liikkua. Paikat ovat haamujen karsinassa ja reunoilla.
      */
-    public void lisaaKielletytRuudut() {
+    private void lisaaKielletytRuudut() {
 
         for (int i = 7; i == 7 || i == 11; i += 4) {
             for (int j = 0; j >= 0 && j < 3; j++) {
@@ -145,14 +144,10 @@ public abstract class Haamu extends Hahmo {
      *
      * @param testiX
      * @param testiY
-     * @param man
      * @return
      */
     public boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY) {
-        if (onkoHuonoRuutu(testiX, testiY)) {
-            return true;
-        }
-        return false;
+        return onkoHuonoRuutu(testiX, testiY);
     }
 
     /**
@@ -184,6 +179,11 @@ public abstract class Haamu extends Hahmo {
         return false;
     }
 
+    /**
+     * Metodi kertoo onko haamu samassa ruudussa manin kanssa.
+     * @param man
+     * @return 
+     */
     public boolean olenkoSamassaRuudussaManinKanssa(Man man) {
         if (man.getX() == this.x && man.getY() == this.y) {
             return true;

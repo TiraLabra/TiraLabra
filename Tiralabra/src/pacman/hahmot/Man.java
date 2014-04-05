@@ -54,30 +54,22 @@ public class Man extends Hahmo {
     /**
      * Muutetaan koordinaatteja ja kerrotaan alustalle mistä ruudusta mihin
      * ruutuun Man liikkuu. Jos seuraava ruutu on seinä mihin ollaan liikkumassa
-     * Man jää paikalleen.
+     * Man jää paikalleen. Jos heikkous on true, eli haamut ovat heikkoja liikkuu Man kaksi ruutua kerralla, jos ei olla risteyksessä.
      *
      * @param heikkous
      * @param peli
      */
     public void liiku(boolean heikkous, Pacman peli) {
 
-        if (heikkous == false) {
-            etene();
-
-            if (osuukoSeinaan()) {
-                palaa();
-            } else {
-                siirraMan();
-            }
+        etene();
+        if (osuukoSeinaan()) {
+            palaa();
         } else {
-            etene();
+            siirraMan();
+        }
 
-            if (osuukoSeinaan()) {
-                palaa();
-            } else if (katsoVoikoLiikkuaSivuille()) {
-                siirraMan();
-            } else {
-                siirraMan();
+        if (heikkous != false) {
+            if (katsoVoikoLiikkuaSivuille() == false) {
                 peli.manSyoPistepallo();
                 peli.luoHedelma();
                 peli.kuoleekoHaamuTaiMan();

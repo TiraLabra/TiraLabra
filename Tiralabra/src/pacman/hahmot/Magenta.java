@@ -4,8 +4,20 @@ import java.util.Random;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 
+/**
+ * Magenta on yksi tyyppi haamuista, joka kiertelee ympäri alustaa, kohteenaan arvottu peliruutu.
+ * @author Hanna
+ */
 public class Magenta extends Haamu {
 
+    /**
+     * Konstruktori, joka peritään yläluokalta haamu.
+     * @param x
+     * @param y
+     * @param suunta
+     * @param nimi
+     * @param alusta 
+     */
     public Magenta(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
         super(x, y, suunta, nimi, alusta);
     }

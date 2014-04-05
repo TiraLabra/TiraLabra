@@ -28,6 +28,13 @@ public abstract class Hahmo {
      */
     protected int y;
     
+    /**
+     * Konstruktori, jossa pääritellään tarvittavat hahmon parametrit.
+     * @param x
+     * @param y
+     * @param suunta
+     * @param alusta 
+     */
     public Hahmo(int x, int y, Suunta suunta, Pelialusta alusta) {
         this.x = x;
         this.y = y;

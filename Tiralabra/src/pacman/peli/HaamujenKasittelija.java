@@ -10,6 +10,10 @@ import pacman.hahmot.Red;
 import pacman.hahmot.Suunta;
 import pacman.tietorakenteet.Haku;
 
+/**
+ * Haamujenkäsittelijä on luokka, joka hallinnoi haamujen toimintaa pelialustalla.
+ * @author Hanna
+ */
 public class HaamujenKasittelija {
 
     private Red red;
@@ -21,6 +25,12 @@ public class HaamujenKasittelija {
     private Random arpoja;
     private Pacman peli;
 
+    /**
+     * Konstruktori, jossa määritellää haamut alustalle ja tarvittavat parametrit.
+     * @param peli
+     * @param arpoja
+     * @param hakija 
+     */
     public HaamujenKasittelija(Pacman peli, Random arpoja, Haku hakija) {
         red = new Red(9, 7, Suunta.YLOS, "red", peli.getAlusta());
         green = new Green(10, 9, Suunta.YLOS, "green", peli.getAlusta());
@@ -60,6 +70,10 @@ public class HaamujenKasittelija {
 
     }
 
+    /**
+     * Heikennetään parametrinä oleva haamu.
+     * @param haamu 
+     */
     private void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
         haamu.setHeikkous(30);
@@ -82,6 +96,9 @@ public class HaamujenKasittelija {
         }
     }
 
+    /**
+     * Liikutetaan haamut.
+     */
     public void liikutaHaamut() {
         liikutaRed();
         liikutaGreen();
@@ -90,6 +107,9 @@ public class HaamujenKasittelija {
 
     }
 
+    /**
+     * Liikutetaan haamu Red omalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     */
     private void liikutaRed() {
         if (red.getTyyppi().equals("heikko")) {
             liikutaRedHeikko();
@@ -99,6 +119,9 @@ public class HaamujenKasittelija {
         haamuHeikostaVahvaksi(red);
     }
 
+    /**
+     * Liikutetaan haamu Green oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     */
     private void liikutaGreen() {
         if (green.getTyyppi().equals("heikko")) {
             liikutaGreenHeikko();
@@ -108,6 +131,9 @@ public class HaamujenKasittelija {
         haamuHeikostaVahvaksi(green);
     }
 
+    /**
+     * Liikutetaan haamu Magenta oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     */
     private void liikutaMagenta() {
         if (magenta.getTyyppi().equals("heikko")) {
             liikutaMagentaHeikko();
@@ -117,6 +143,9 @@ public class HaamujenKasittelija {
         haamuHeikostaVahvaksi(magenta);
     }
 
+    /**
+     * Liikutetaan haamu Cyan oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     */
     private void liikutaCyan() {
         if (cyan.getTyyppi().equals("heikko")) {
             liikutaCyanHeikko();
@@ -126,10 +155,17 @@ public class HaamujenKasittelija {
         haamuHeikostaVahvaksi(cyan);
     }
 
+    /**
+     * Liikutetaan vahva-tyyppinen Green sen omalla liiku-metodilla.
+     */
     private void liikutaVahvaGreen() {
         green.liiku();
     }
 
+    /**
+     * Selvitetään ensin Magentalle maali ruutu, minkä jälkeen etsitään ruutu, johon Magentan on kannattavinta liikkua.
+     * Tämän jälkeen siirretään Magenta ruutuun, jonka haku palauttaa.
+     */
     private void liikutaVahvaMagenta() {
 
         if (magenta.getX() == magentaMaali.getX() && magenta.getY() == magentaMaali.getY()) {
@@ -143,6 +179,10 @@ public class HaamujenKasittelija {
 
     }
 
+    /**
+     * Selvitetään Cyanille maali ruutu ja tämän jälkeen haulla etsitään mihin ruutuun Cyanin kannattaa liikahtaa.
+     * Tämän jälkeen siirretään Cyan haun palauttamaan ruutuun.
+     */
     private void liikutaVahvaCyan() {
 
         Peliruutu maali = cyan.selvitaMaaliCyan(peli.getMan());
@@ -151,6 +191,9 @@ public class HaamujenKasittelija {
 
     }
 
+    /**
+     * Annetaan haulle manin koordinaatit maaliksi ja liikutetaan Red hauan antamaan ruutuun.
+     */
     private void liikutaVahvaRed() {
 
         Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY()), peli.getAlusta());
@@ -158,15 +201,25 @@ public class HaamujenKasittelija {
 
     }
 
+    /**
+     * Liikutetaan Green samalla tavalla kuin vahvana.
+     */
     private void liikutaGreenHeikko() {
         green.liiku();
 
     }
 
+    /**
+     * Liikutetaan Magenta heikkona samalla tavalla kuin vahvana.
+     */
     private void liikutaMagentaHeikko() {
         this.liikutaVahvaMagenta();
     }
 
+    /**
+     * Liikutetaan Cyan heikkona siten, että lasketaan sille maaliksi vastakkainen ruutu, kuin mikä sillä olisi sen ollessa vahva.
+     * Tämän jälkeen etsitään taas haulla ruutu, johon Cyanin kannattaa liikahtaa.
+     */
     private void liikutaCyanHeikko() {
         Peliruutu maali = cyan.selvitaMaaliCyan(peli.getMan());
         int peilaus = 9 - maali.getX();
@@ -178,6 +231,10 @@ public class HaamujenKasittelija {
         cyan.liiku(siirto);
     }
 
+    /**
+     * Liikutetaan Red heikkona siten, että lasketaan ensin vastakkainen ruutu, kuin mikä sillä olisi sen ollessa vahva.
+     * Tämän jälkeen etsitään taas haulla ruutu, johon Redin kannattaa liikahtaa.
+     */
     private void liikutaRedHeikko() {
         int peilaus = 9 - peli.getMan().getX();
         Peliruutu maali = peli.getAlusta().getPeliruutu(9 + peilaus, peli.getMan().getY());
@@ -188,6 +245,10 @@ public class HaamujenKasittelija {
         red.liiku(siirto);
     }
 
+    /**
+     * Lasketaan kuinka monta haamuista on edelleen heikkona.
+     * @return Palauttaa int arvon, kuinka monta haamua on edelleen heikkona.
+     */
     public int tarkistaOnkoHeikkoja() {
         int heikkoja = 0;
         heikkoja = onkoHeikkoHaamu(heikkoja, red);
@@ -198,6 +259,12 @@ public class HaamujenKasittelija {
         return heikkoja;
     }
 
+    /**
+     * Tarkistetaan onko haamu heikko ja jos on kasvatetaan heikkojen määrää.
+     * @param heikkoja
+     * @param haamu
+     * @return 
+     */
     private int onkoHeikkoHaamu(int heikkoja, Haamu haamu) {
         if (haamu.getTyyppi().equals("heikko")) {
             heikkoja++;
