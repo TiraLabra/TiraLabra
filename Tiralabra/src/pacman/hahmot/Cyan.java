@@ -8,15 +8,7 @@ import pacman.tietorakenteet.Lista;
 public class Cyan extends Haamu {
 
     public Cyan(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
-        
-        this.x = x;
-        this.y = y;
-        this.suunta = suunta;
-        this.alusta = alusta;
-        this.nimi = nimi;
-        this.tyyppi = "vahva";
-        this.kielletytRuudut = new Lista();
-        this.lisaaKielletytRuudut();
+        super(x, y, suunta, nimi, alusta);
     }
 
     /**

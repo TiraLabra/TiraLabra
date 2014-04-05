@@ -3,19 +3,11 @@ package pacman.hahmot;
 import java.util.Random;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
-import pacman.tietorakenteet.Lista;
 
 public class Magenta extends Haamu {
 
     public Magenta(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
-        this.x = x;
-        this.y = y;
-        this.suunta = suunta;
-        this.nimi = nimi;
-        this.alusta = alusta;
-        this.tyyppi = "vahva";
-        kielletytRuudut = new Lista();
-        this.lisaaKielletytRuudut();
+        super(x, y, suunta, nimi, alusta);
     }
 
     /**

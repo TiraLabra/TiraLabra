@@ -1,6 +1,7 @@
 //Haamujen nimien perusteella kutsutaan tiettyä liikkumistapaa
 package pacman.hahmot;
 
+import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.tietorakenteet.Lista;
 
@@ -40,6 +41,14 @@ public abstract class Haamu extends Hahmo {
      * liikkumisruuduiksi. Haamu siis tietää mihin ruutuun ei saa mennä.
      */
     protected Lista kielletytRuudut;
+
+    public Haamu(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
+        super(x, y, suunta, alusta);
+        this.nimi = nimi;
+        this.tyyppi = "vahva";
+        kielletytRuudut = new Lista();
+        this.lisaaKielletytRuudut();
+    }
 
     /**
      * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä

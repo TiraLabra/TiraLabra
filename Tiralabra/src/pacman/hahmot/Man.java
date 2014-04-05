@@ -11,7 +11,7 @@ import pacman.peli.Pacman;
  *
  * @author hhkopper
  */
-public class Man extends Hahmo{
+public class Man extends Hahmo {
 
     /**
      * Manin elämien määrä, kun elämät loppuvat, peli loppuu. Arvoksi asetetaan
@@ -29,10 +29,7 @@ public class Man extends Hahmo{
      * @param alusta alusta, jolle man luodaan.
      */
     public Man(int x, int y, Suunta suunta, Pelialusta alusta) {
-        this.x = x;
-        this.y = y;
-        this.suunta = suunta;
-        this.alusta = alusta;
+        super(x, y, suunta, alusta);
         elamat = 3;
     }
 

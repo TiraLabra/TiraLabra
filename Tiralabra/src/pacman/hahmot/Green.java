@@ -8,14 +8,7 @@ import pacman.tietorakenteet.Lista;
 public class Green extends Haamu {
 
     public Green(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
-        this.x = x;
-        this.y = y;
-        this.suunta = suunta;
-        this.nimi = nimi;
-        this.alusta = alusta;
-        this.tyyppi = "vahva";
-        this.kielletytRuudut = new Lista();
-        this.lisaaKielletytRuudut();
+        super(x, y, suunta, nimi, alusta);
     }
 
     /**

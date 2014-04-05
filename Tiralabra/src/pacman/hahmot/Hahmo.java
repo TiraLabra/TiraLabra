@@ -28,6 +28,13 @@ public abstract class Hahmo {
      */
     protected int y;
     
+    public Hahmo(int x, int y, Suunta suunta, Pelialusta alusta) {
+        this.x = x;
+        this.y = y;
+        this.suunta = suunta;
+        this.alusta = alusta;
+    }
+    
     public void setX(int x) {
         this.x = x;
     }
