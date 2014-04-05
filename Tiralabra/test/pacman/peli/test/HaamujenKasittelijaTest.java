@@ -60,6 +60,23 @@ public class HaamujenKasittelijaTest {
     
     @Test
     public void asetetaanHaamuVahvaksi() {
-        
+        kasittelija.heikennaHaamut();
+        kasittelija.getGreen().setHeikkous(0);
+        kasittelija.getCyan().setHeikkous(0);
+        kasittelija.getMagenta().setHeikkous(0);
+        kasittelija.getRed().setHeikkous(0);
+        kasittelija.liikutaHaamut();
+        assertEquals("vahva", kasittelija.getCyan().getTyyppi());
+        assertEquals("vahva", kasittelija.getGreen().getTyyppi());
+        assertEquals("vahva", kasittelija.getMagenta().getTyyppi());
+        assertEquals("vahva", kasittelija.getRed().getTyyppi());
+    }
+    
+    @Test
+    public void kertooOikeinHeikkojenMaaran() {
+        kasittelija.heikennaHaamut();
+        assertEquals(4, kasittelija.tarkistaOnkoHeikkoja());
+        kasittelija.getGreen().setTyyppi("vahva");
+        assertEquals(3, kasittelija.tarkistaOnkoHeikkoja());
     }
 }
