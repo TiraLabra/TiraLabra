@@ -116,7 +116,7 @@ public class PacmanTest {
         manLiikuJaSyoPistepallo();
         pacman.etsiHedelmanPaikat();
 
-        assertEquals(3, pacman.getHedelmanPaikat().size());
+        assertEquals(3, pacman.getHedelmanPaikat().koko());
     }
 
     @Test

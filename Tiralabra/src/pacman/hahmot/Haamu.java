@@ -42,8 +42,7 @@ public class Haamu extends Hahmo {
      * Lista sisältää tiedon ruuduista, joita ei saa valita haamun
      * liikkumisruuduiksi. Haamu siis tietää mihin ruutuun ei saa mennä.
      */
-//    private ArrayList<Peliruutu> kielletytRuudut;
-    private Lista kielruu;
+    private Lista kielletytRuudut;
 
 
     /**
@@ -63,8 +62,7 @@ public class Haamu extends Hahmo {
         this.tyyppi = "vahva";
         this.nimi = nimi;
         this.alusta = alusta;
-        this.kielruu = new Lista();
-//        this.kielletytRuudut = new ArrayList<Peliruutu>();
+        this.kielletytRuudut = new Lista();
         this.lisaaKielletytRuudut();
     }
 
@@ -72,22 +70,25 @@ public class Haamu extends Hahmo {
      * Metodi lisää haamulle tiedon, mihin ruutuihin tämä ei saa missään nimessä
      * liikkua. Paikat ovat haamujen karsinassa ja reunoilla.
      */
-    private void lisaaKielletytRuudut() {
+    public void lisaaKielletytRuudut() {
 
         for (int i = 7; i == 7 || i == 11; i += 4) {
             for (int j = 0; j >= 0 && j < 3; j++) {
-                kielruu.lisaa(alusta.getPeliruutu(j, i));
-                kielruu.lisaa(alusta.getPeliruutu(alusta.getLeveys() - 1 - j, i));
+                kielletytRuudut.lisaa(alusta.getPeliruutu(j, i));
+                kielletytRuudut.lisaa(alusta.getPeliruutu(alusta.getLeveys() - 1 - j, i));
             }
         }
-        kielruu.lisaa(alusta.getPeliruutu(8, 9));
-        kielruu.lisaa(alusta.getPeliruutu(9, 8));
-        kielruu.lisaa(alusta.getPeliruutu(9, 9));
-        kielruu.lisaa(alusta.getPeliruutu(10, 9));
-        
-        kielruu.tulostaLista();
+        lisaaHaamujenKarsina();
+    }
 
-
+    /**
+     * Lisää kiellettyihin ruutuihin haamujen karsinan.
+     */
+    private void lisaaHaamujenKarsina() {
+        kielletytRuudut.lisaa(alusta.getPeliruutu(8, 9));
+        kielletytRuudut.lisaa(alusta.getPeliruutu(9, 8));
+        kielletytRuudut.lisaa(alusta.getPeliruutu(9, 9));
+        kielletytRuudut.lisaa(alusta.getPeliruutu(10, 9));
     }
 
     public String getNimi() {
@@ -95,7 +96,7 @@ public class Haamu extends Hahmo {
     }
 
     public Lista getKielletyt() {
-        return this.kielruu;
+        return this.kielletytRuudut;
     }
 
     public Lista getSuuntaLista() {
@@ -241,7 +242,7 @@ public class Haamu extends Hahmo {
     /**
      * Metodi tarkistaa onko maali sopiva ruutu, haamulle Cyan. Haamulla on
      * kohteena kolme ruutua Manin edellä oleva ruutu. Jos ruutu ei ole sopiva
-     * maaliksi etsitään uusi ruutu. os ei löydy mitään sopivaa ruutua, maali on
+     * maaliksi etsitään uusi ruutu. Jos ei löydy mitään sopivaa ruutua, maali on
      * Man itse.
      *
      * @param man
@@ -249,37 +250,117 @@ public class Haamu extends Hahmo {
      */
     public Peliruutu selvitaMaaliCyan(Man man) {
 
-        int testiX = man.getX() + man.getSuunta().getX() * 3;
-        int testiY = man.getY() + man.getSuunta().getY() * 3;
+        int testiX = laskeXCyan(man);
+        int testiY = laskeYCyan(man);
 
-        if (onkoHuonoRuutu(testiX, testiY)) {
-            return alusta.getPeliruutu(man.getX(), man.getY());
-        }
+        if (tarkistaOnkoHuonoRuutu(testiX, testiY, man)) return alusta.getPeliruutu(man.getX(), man.getY());
 
         Peliruutu maali = alusta.getPeliruutu(testiX, testiY);
 
-        if (maali.getX() == this.x && maali.getY() == this.y) {
-            return selvitaMaaliSuunnista(maali, man);
-        }
+        if (tarkistaOnkoMaaliSamaKuinHaamunSijainti(maali, man)) return selvitaMaaliSuunnista(maali, man);
 
         return tarkistaOnkoSeina(maali, man);
 
     }
+    
+    /**
+     * Tarkistetaan, onko tämän hetkinen maali sama kuin haamun omat koordinaatit
+     * @param maali
+     * @param man
+     * @return 
+     */
+    private boolean tarkistaOnkoMaaliSamaKuinHaamunSijainti(Peliruutu maali, Man man) {
+        if (maali.getX() == this.x && maali.getY() == this.y) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Tarkistetaan onko kyseisissä koordinaateissa oleva ruutu huono vai sopiva.
+     * @param testiX
+     * @param testiY
+     * @param man
+     * @return 
+     */
+    private boolean tarkistaOnkoHuonoRuutu(int testiX, int testiY, Man man) {
+        if (onkoHuonoRuutu(testiX, testiY)) {
+            return true;
+        }
+        return false;
+    }
 
+    /**
+     * Lasketaan y-koordinaatti, siten, että se tulee sijaitsemaan kolme ruutua manin edellä.
+     * @param man
+     * @return 
+     */
+    private int laskeYCyan(Man man) {
+        int testiY = man.getY() + man.getSuunta().getY() * 3;
+        return testiY;
+    }
+
+    /**
+     * Lasketaan x-koordinaatti, siten, että se tulee sijaitsemaan kolme ruutua manin edellä.
+     * @param man
+     * @return 
+     */
+    private int laskeXCyan(Man man) {
+        int testiX = man.getX() + man.getSuunta().getX() * 3;
+        return testiX;
+    }
+
+    /**
+     * Selvitetaan Magenta haamulle ruutu, joka toimii sen maalina.
+     * @param arpoja
+     * @return palauttaa peliruudun, joka on maali
+     */
     public Peliruutu selvitaMaaliMagenta(Random arpoja) {
-        int arpaX = arpoja.nextInt(16) + 1;
-        int arpaY = arpoja.nextInt(18) + 1;
+        int arpaX = arvoXMagenta(arpoja);
+        int arpaY = arvoYMagenta(arpoja);
 
         Peliruutu maali = alusta.getPeliruutu(arpaX, arpaY);
+        maali = sopivanRuudunEtsiminen(maali, arpoja);
+        return maali;
+    }
 
-        while (maali.getRuudunTyyppi() == 0 || kielruu.sisaltaa(maali)) {
+    /**
+     * Whilen sisälle mennään, jos ensimmäinen arvottu ruutu on seinä tai sisältyy listaan kielletyistä ruuduista.
+     * Whilen sisällä ollaan kunnes on löydetty sopiva ruutu maaliksi.
+     * @param maali
+     * @param arpoja
+     * @return 
+     */
+    private Peliruutu sopivanRuudunEtsiminen(Peliruutu maali, Random arpoja) {
+        int arpaX;
+        int arpaY;
+        while (maali.getRuudunTyyppi() == 0 || kielletytRuudut.sisaltaa(maali)) {
             arpaX = arpoja.nextInt(16) + 1;
             arpaY = arpoja.nextInt(18) + 1;
 
             maali = alusta.getPeliruutu(arpaX, arpaY);
         }
-        System.out.println(maali.toString());
         return maali;
+    }
+
+    /**
+     * Arvotaan y-koordinaatti
+     * @param arpoja
+     * @return 
+     */
+    private int arvoYMagenta(Random arpoja) {
+        int arpaY = arpoja.nextInt(18) + 1;
+        return arpaY;
+    }
+
+    /**
+     * Arvotaan x-koordinaatti
+     * @param arpoja
+     * @return 
+     */
+    private int arvoXMagenta(Random arpoja) {
+        int arpaX = arpoja.nextInt(16) + 1;
+        return arpaX;
     }
 
     /**
@@ -348,7 +429,7 @@ public class Haamu extends Hahmo {
      * @return Palauttaa true, jos ruutu on huono.
      */
     private boolean onkoHuonoRuutu(int testiX, int testiY) {
-        if (onkoAlustanSisalla(testiX, testiY) == false || kielruu.sisaltaa(alusta.getPeliruutu(testiX, testiY))) {
+        if (onkoAlustanSisalla(testiX, testiY) == false || kielletytRuudut.sisaltaa(alusta.getPeliruutu(testiX, testiY))) {
             return true;
         }
         return false;

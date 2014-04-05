@@ -1,9 +1,7 @@
 package pacman.peli;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
 import pacman.alusta.Pelialusta;
@@ -31,11 +29,10 @@ public class Pacman extends Timer implements ActionListener {
      */
     private Pelialusta alusta;
     /**
-     * ArrayList, joka sisältää kaikki kentällä olevat haamut.
+     * Lista, joka sisältää kaikki kentällä olevat haamut.
      */
 
     private Lista haamut;
-//    private ArrayList<Haamu> haamut;
     /**
      * Pistelaskuri, joka pitää kirjaa kasvavasta pistemäärästä.
      */
@@ -47,7 +44,7 @@ public class Pacman extends Timer implements ActionListener {
     /**
      * Kaikki mahdolliset peliruudut johon voi asettaa hedelman.
      */
-    private ArrayList<Peliruutu> hedelmanPaikat;
+    private Lista hedelmanPaikat;
     /**
      * Paivitettavan avulla voidaan kutsua Piirtoalustan, joka toteuttaa
      * rajapinnan paivitettava, metodia paivita.
@@ -86,7 +83,7 @@ public class Pacman extends Timer implements ActionListener {
         haamut = new Lista();
         this.luoHaamut();
         laskuri = new Pistelaskuri();
-        this.hedelmanPaikat = new ArrayList<Peliruutu>();
+        this.hedelmanPaikat = new Lista();
         this.jatkuu = true;
         this.tilanne = false;
         this.heikko = false;
@@ -134,7 +131,7 @@ public class Pacman extends Timer implements ActionListener {
         return this.hedelmanPaikka;
     }
 
-    public ArrayList<Peliruutu> getHedelmanPaikat() {
+    public Lista getHedelmanPaikat() {
         return this.hedelmanPaikat;
     }
 
@@ -244,8 +241,8 @@ public class Pacman extends Timer implements ActionListener {
      */
     public void arvoHedelma() {
         etsiHedelmanPaikat();
-        int luku = arpoja.nextInt(this.hedelmanPaikat.size());
-        this.hedelmanPaikka = this.hedelmanPaikat.get(luku);
+        int luku = arpoja.nextInt(this.hedelmanPaikat.koko());
+        this.hedelmanPaikka = (Peliruutu) this.hedelmanPaikat.getAlkio(luku);
     }
 
     /**
@@ -258,7 +255,7 @@ public class Pacman extends Timer implements ActionListener {
             for (int x = 0; x < alusta.getLeveys(); x++) {
                 if (onkoHedelmanPaikka(x, y)) {
                     Peliruutu ruutu = new Peliruutu(x, y);
-                    this.hedelmanPaikat.add(ruutu);
+                    this.hedelmanPaikat.lisaa(ruutu);
                 }
             }
         }

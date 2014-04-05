@@ -97,12 +97,12 @@ public class HaamuTest {
         assertFalse(alusta.getPeliruutu(7, 7).getOnkoHaamu());
     }
 
-//    @Test
-//    public void huomioiKaikkiSuunnat() {
-//        haamu.setY(9);
-//        haamu.liiku();
-//        assertEquals(3, haamu.getSuuntaLista().size());
-//    }
+    @Test
+    public void huomioiKaikkiSuunnat() {
+        haamu.setY(9);
+        haamu.liiku();
+        assertEquals(3, haamu.getSuuntaLista().koko());
+    }
 
     @Test
     public void palaaAlkuunOikein() {
@@ -150,5 +150,10 @@ public class HaamuTest {
         haamu.setY(9);
         Peliruutu maali= haamu.selvitaMaaliCyan(man);
         assertEquals("(16,9)", maali.toString());
+    }
+    
+    @Test
+    public void lisaaOikeatKielletytRuudut() {
+        
     }
 }
