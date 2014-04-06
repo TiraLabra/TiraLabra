@@ -37,6 +37,12 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
                     <instrumentation>
+                        <ignores>
+                            <ignore>sanapuuro.ui.*</ignore>
+                        </ignores>
+                        <excludes>
+                            <exclude>sanapuuro/ui/*.class</exclude>
+                        </excludes>
                         <includes>
                         </includes>
                     </instrumentation>
