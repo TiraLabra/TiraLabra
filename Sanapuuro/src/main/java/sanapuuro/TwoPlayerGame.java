@@ -5,6 +5,7 @@
  */
 package sanapuuro;
 
+import sanapuuro.ui.View;
 import java.util.List;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;

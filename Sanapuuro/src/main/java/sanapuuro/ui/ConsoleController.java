@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro;
+package sanapuuro.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 /**
  *
  * @author skaipio

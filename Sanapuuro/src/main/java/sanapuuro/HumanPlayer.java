@@ -1,5 +1,6 @@
 package sanapuuro;
 
+import sanapuuro.ui.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import sanapuuro.grid.Grid;

@@ -4,16 +4,15 @@
  * and open the template in the editor.
  */
 
-package sanapuuro;
+package sanapuuro.ui;
+
+import sanapuuro.ui.Controller;
 
 /**
  *
  * @author skaipio
  */
-public interface Controller {
-    int getSubmissionStartX();
-    int getSubmissionStartY();
-    int getSubmissionDeltaX();
-    int getSubmissionDeltaY();
-    String getSubmission();
+public interface View {
+    void updateView(Controller controller);
+    void showMessage(String msg);
 }

@@ -5,6 +5,8 @@
  */
 package sanapuuro;
 
+import sanapuuro.ui.GameView;
+import sanapuuro.ui.ConsoleController;
 import java.util.Random;
 import java.util.Scanner;
 import sanapuuro.fileio.LetterReader;
