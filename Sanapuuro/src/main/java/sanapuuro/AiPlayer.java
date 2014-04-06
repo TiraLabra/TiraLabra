@@ -6,6 +6,7 @@ import java.util.List;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;
 import sanapuuro.letters.LetterPool;
+import sanapuuro.words.WordEvaluator.Submission;
 import sanapuuro.words.WordList;
 
 /**
@@ -41,11 +42,11 @@ public class AiPlayer implements Player {
     }
 
     @Override
-    public List<LetterContainer> getSubmission() {
+    public Submission getSubmission() {
         this.bestAnagram = null;
         this.tryPermutations(this.letterPool.getLetters(), 0);
         this.placeSubmission();
-        return this.submissionContainers;
+        return new Submission(this.submissionContainers, this.bestAnagram.deltaX, this.bestAnagram.deltaY);
     }
 
     @Override

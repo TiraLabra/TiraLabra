@@ -29,16 +29,16 @@ public class WordEvaluator {
      * Evalutes the letters in the letter containers, checking if they form a
      * word. LetterContainers are evaluated in the order they are given.
      *
-     * @param letterContainers Containers to evaluate. Evaluated in the order
-     * they are given.
-     * @param deltaX The horizontal direction of the word. Positive if from left
-     * to right, negative if from right to left.
-     * @param deltaY The vertical direction of the word. Positive if from left
-     * to right, negative if from right to left.
+     * @param submission Submission to evaluate.
+     *
      * @return An evaluation result that holds whether the word was valid and a
      * positive score if it was.
      */
-    public EvaluationResult evalute(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
+    public EvaluationResult evalute(Submission submission) {
+        List<LetterContainer> letterContainers = submission.letterContainers;
+        int deltaX = submission.deltaX;
+        int deltaY = submission.deltaY;
+
         if (letterContainers == null || letterContainers.isEmpty()) {
             throw new IllegalArgumentException("No letters were given for validation.");
         }
@@ -69,6 +69,13 @@ public class WordEvaluator {
         }
     }
 
+    /**
+     * Limits number to -1, 0 or 1.
+     *
+     * @param n Number to limit.
+     * @return 1 if n is a positive number, 0 if n is 0, -1 if n is a negative
+     * number.
+     */
     private int getUnit(int n) {
         if (n == 0) {
             return n;
@@ -184,6 +191,33 @@ public class WordEvaluator {
 
         public int getScore() {
             return this.score;
+        }
+    }
+
+    /**
+     * A simple container class to hold the letter containers to be evaluated
+     * and the intended reading direction of the submission.
+     *
+     * @author skaipio
+     */
+    public static class Submission {
+
+        public final List<LetterContainer> letterContainers;
+        public final int deltaX;
+        public final int deltaY;
+
+        /**
+         * @param letterContainers Containers to evaluate. Evaluated in the
+         * order they are given.
+         * @param deltaX The horizontal direction of the word. Positive if from
+         * left to right, negative if from right to left.
+         * @param deltaY The vertical direction of the word. Positive if from
+         * left to right, negative if from right to left.
+         */
+        public Submission(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
+            this.letterContainers = letterContainers;
+            this.deltaX = deltaX;
+            this.deltaY = deltaY;
         }
     }
 }

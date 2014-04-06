@@ -11,6 +11,7 @@ import sanapuuro.grid.LetterContainer;
 import sanapuuro.letters.Letters;
 import sanapuuro.words.WordEvaluator;
 import sanapuuro.words.WordEvaluator.EvaluationResult;
+import sanapuuro.words.WordEvaluator.Submission;
 
 /**
  *
@@ -38,9 +39,10 @@ public class TwoPlayerGame {
         while (true) {
             this.view.updateView(this.playerWithTurn.getController());
             this.view.showMessage(this.playerWithTurn + "'s turn: ");
-            List<LetterContainer> submission = this.playerWithTurn.getSubmission();
-            if (!submission.isEmpty()) {
-                String submissionStr = this.stringFromLetterContainers(submission).toUpperCase();
+            Submission submission = this.playerWithTurn.getSubmission();
+            
+            if (!submission.letterContainers.isEmpty()) {
+                String submissionStr = this.stringFromLetterContainers(submission.letterContainers).toUpperCase();
                 this.view.showMessage(this.playerWithTurn + " submitted the word " + submissionStr);
                 EvaluationResult result = this.evaluator.evalute(submission);
                 if (result.succeeded) {
@@ -55,9 +57,11 @@ public class TwoPlayerGame {
                 this.view.showMessage(this.playerWithTurn + " skips their turn");
                 successiveSkips++;
             }
+            
             if (this.grid.isFull() || successiveSkips == 2) {
                 break;
             }
+            
             this.swapTurn();
         }
     }

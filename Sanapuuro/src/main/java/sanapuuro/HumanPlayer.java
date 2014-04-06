@@ -5,6 +5,7 @@ import java.util.List;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;
 import sanapuuro.letters.LetterPool;
+import sanapuuro.words.WordEvaluator.Submission;
 
 /**
  * Keeps track of score and has methods for selecting and adding letters for
@@ -59,9 +60,9 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public List<LetterContainer> getSubmission() {
+    public Submission getSubmission() {
         this.placeSubmission();
-        return this.submissionContainers;
+        return new Submission(this.submissionContainers, this.controller.getSubmissionDeltaX(), this.controller.getSubmissionDeltaY());
 
     }
 

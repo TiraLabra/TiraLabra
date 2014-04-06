@@ -5,7 +5,6 @@
  */
 package sanapuuro.words;
 
-import sanapuuro.words.WordEvaluator;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -27,11 +26,6 @@ public class WordEvaluatorTest {
 
     private Grid grid;
     private final WordEvaluator wordEvaluator = new WordEvaluator(new WordReader());
-    private final List<LetterContainer> validHorizontalWord = new ArrayList<>();
-    private final List<LetterContainer> validVerticalWord = new ArrayList<>();
-    private final List<LetterContainer> wordWithGaps = new ArrayList<>();
-    private final List<LetterContainer> wordNotOnSameRow = new ArrayList<>();
-    private final List<LetterContainer> wordTooShort = new ArrayList<>();
 
     @BeforeClass
     public static void setUpClass() {
@@ -56,97 +50,103 @@ public class WordEvaluatorTest {
     @Test
     public void correctValidationOfHorizontalWords() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> validHorizontalWord = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));
         this.grid.setContainerAt(container, 1, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('b', 3, 1));
         this.grid.setContainerAt(container, 2, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.setContainerAt(container, 3, 0);
-        this.validHorizontalWord.add(container);
-        assertTrue(this.wordEvaluator.evalute(validHorizontalWord).succeeded);
+        validHorizontalWord.add(container);
+        assertTrue(this.wordEvaluator.evalute(new WordEvaluator.Submission(validHorizontalWord, 1, 0)).succeeded);
     }
 
     @Test
     public void correctValidationOfVerticalWords() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> validVerticalWord = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.validVerticalWord.add(container);
+        validVerticalWord.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.setContainerAt(container, 0, 1);
-        this.validVerticalWord.add(container);
+        validVerticalWord.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
         this.grid.setContainerAt(container, 0, 2);
-        this.validVerticalWord.add(container);
+        validVerticalWord.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 3);
-        this.validVerticalWord.add(container);
-        assertTrue(this.wordEvaluator.evalute(validVerticalWord).succeeded);
+        validVerticalWord.add(container);
+        assertTrue(this.wordEvaluator.evalute(new WordEvaluator.Submission(validVerticalWord, 0, 1)).succeeded);
     }
 
     @Test
     public void doesNotValidateWordWithGaps() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> wordWithGaps = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.wordWithGaps.add(container);
+        wordWithGaps.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.setContainerAt(container, 0, 1);
-        this.wordWithGaps.add(container);
+        wordWithGaps.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
         this.grid.setContainerAt(container, 0, 2);
-        this.wordWithGaps.add(container);
+        wordWithGaps.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 4);
-        this.wordWithGaps.add(container);
-        assertFalse(this.wordEvaluator.evalute(wordWithGaps).succeeded);
+        wordWithGaps.add(container);
+        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordWithGaps, 1, 0)).succeeded);
     }
 
     @Test
     public void doesNotValidateWordNotOnSameRowOrColumn() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> wordNotOnSameRow = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.wordNotOnSameRow.add(container);
+        wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.setContainerAt(container, 1, 1);
-        this.wordNotOnSameRow.add(container);
+        wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
         this.grid.setContainerAt(container, 0, 2);
-        this.wordNotOnSameRow.add(container);
+        wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 3);
-        this.wordNotOnSameRow.add(container);
-        assertFalse(this.wordEvaluator.evalute(wordNotOnSameRow).succeeded);
+        wordNotOnSameRow.add(container);
+        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordNotOnSameRow, 1, 0)).succeeded);
     }
 
     @Test
     public void wordsTooShortNotValid() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> wordTooShort = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.wordTooShort.add(container);
+        wordTooShort.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.setContainerAt(container, 0, 1);
-        this.wordTooShort.add(container);
-        assertFalse(this.wordEvaluator.evalute(wordTooShort).succeeded);
+        wordTooShort.add(container);
+        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordTooShort, 1, 0)).succeeded);
     }
 
     @Test
     public void returnCorrectScoreForLetters() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
+        List<LetterContainer> validHorizontalWord = new ArrayList<>();
         this.grid.setContainerAt(container, 0, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));
         this.grid.setContainerAt(container, 1, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('b', 3, 1));
         this.grid.setContainerAt(container, 2, 0);
-        this.validHorizontalWord.add(container);
+        validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.setContainerAt(container, 3, 0);
-        this.validHorizontalWord.add(container);
-        int score = this.wordEvaluator.evalute(validHorizontalWord).getScore();
+        validHorizontalWord.add(container);
+        int score = this.wordEvaluator.evalute(new WordEvaluator.Submission(validHorizontalWord, 1, 0)).getScore();
         assertEquals(1 + 2 + 3 + 4, score);
     }
 }

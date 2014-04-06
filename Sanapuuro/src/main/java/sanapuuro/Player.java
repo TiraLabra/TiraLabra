@@ -6,9 +6,8 @@
 
 package sanapuuro;
 
-import java.util.List;
-import sanapuuro.grid.LetterContainer;
 import sanapuuro.letters.LetterPool;
+import sanapuuro.words.WordEvaluator.Submission;
 
 /**
  *
@@ -17,7 +16,7 @@ import sanapuuro.letters.LetterPool;
 public interface Player {
     int getScore();
     LetterPool getLetterPool();
-    List<LetterContainer> getSubmission();
+    Submission getSubmission();
     void successfulSubmission(int score);
     void unsuccessfulSubmission();
     Controller getController();
