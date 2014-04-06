@@ -15,14 +15,14 @@ import sanapuuro.grid.LetterContainer;
  * @author skaipio
  */
 public class LetterContainerCoordinateComparator implements Comparator<LetterContainer> {
-    private final boolean byRow;
-    public LetterContainerCoordinateComparator(boolean byRow){
-        this.byRow = byRow;
+    private final boolean byVerticalAxisCoordinate;
+    public LetterContainerCoordinateComparator(boolean byVerticalAxisCoordinate){
+        this.byVerticalAxisCoordinate = byVerticalAxisCoordinate;
     }
 
     @Override
     public int compare(LetterContainer o1, LetterContainer o2) {
-        if (byRow){
+        if (byVerticalAxisCoordinate){
             return Integer.compare(o1.getY(), o2.getY());
         }
         return Integer.compare(o1.getX(), o2.getX());

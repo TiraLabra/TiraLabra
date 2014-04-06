@@ -13,6 +13,7 @@ import sanapuuro.utils.LetterContainerCoordinateComparator;
 
 /**
  * Used for checking if letters form a word and the score for the word.
+ *
  * @author skaipio
  */
 public class WordEvaluator {
@@ -25,11 +26,19 @@ public class WordEvaluator {
     }
 
     /**
-     * Evalutes the letters in the letter containers, checking if they form a word.
-     * @param letterContainers Containers to evaluate.
-     * @return An evaluation result that holds whether the word was valid and a positive score if it was.
+     * Evalutes the letters in the letter containers, checking if they form a
+     * word. LetterContainers are evaluated in the order they are given.
+     *
+     * @param letterContainers Containers to evaluate. Evaluated in the order
+     * they are given.
+     * @param deltaX The horizontal direction of the word. Positive if from left
+     * to right, negative if from right to left.
+     * @param deltaY The vertical direction of the word. Positive if from left
+     * to right, negative if from right to left.
+     * @return An evaluation result that holds whether the word was valid and a
+     * positive score if it was.
      */
-    public EvaluationResult evalute(List<LetterContainer> letterContainers) {
+    public EvaluationResult evalute(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
         if (letterContainers == null || letterContainers.isEmpty()) {
             throw new IllegalArgumentException("No letters were given for validation.");
         }
@@ -37,32 +46,39 @@ public class WordEvaluator {
             return new EvaluationResult(false, "Word must be at least " + this.wordLengthMinimum + " characters long");
         }
 
-        List<LetterContainer> containerCopy = new ArrayList(letterContainers);
-        if (allContainersOnSameColumnWithoutGaps(containerCopy) || allContainersOnSameRowWithoutGaps(containerCopy)) {
-            StringBuilder word = new StringBuilder(letterContainers.size());
-            boolean allUsed = true;
-            for (LetterContainer container : letterContainers) {
-                if (!container.isPermanent()) {
-                    allUsed = false;
-                }
-                word.append(container.letter.character);
-            }
-            if (!allUsed) {
-                if (wordValidator.hasWord(word.toString())) {
-                    int score = this.evaluteLetters(letterContainers);
-                    return new EvaluationResult(true, "Score for word " + word.toString().toUpperCase() + ": " + score, score);
-                }else{
-                    return new EvaluationResult(false, word.toString().toUpperCase() + " is not a valid English word.");
-                }
-            } else {
-                return new EvaluationResult(false, "Word must have at least one letter not used before.");
-            }
+        if (deltaX == 0 && deltaY == 0) {
+            throw new IllegalArgumentException("Either deltaX or deltaY must be other than zero.");
         }
-        return new EvaluationResult(false, "Word must be on the same column or row and should not have gaps.");
+
+        deltaX = this.getUnit(deltaX);
+        deltaY = this.getUnit(deltaY);
+
+        if (this.wordHasGaps(letterContainers, deltaX, deltaY)) {
+            return new EvaluationResult(false, "The word must not have gaps.");
+        } else if (this.allLettersHaveBeenUsedPreviously(letterContainers)) {
+            return new EvaluationResult(false, "Word must have at least one letter not used before.");
+        }
+
+        String word = this.getWordFromContainers(letterContainers);
+
+        if (wordValidator.hasWord(word.toString())) {
+            int score = this.evaluteLetters(letterContainers);
+            return new EvaluationResult(true, "Score for word " + word.toString().toUpperCase() + ": " + score, score);
+        } else {
+            return new EvaluationResult(false, word.toString().toUpperCase() + " is not a valid English word.");
+        }
+    }
+
+    private int getUnit(int n) {
+        if (n == 0) {
+            return n;
+        }
+        return n > 0 ? 1 : -1;
     }
 
     /**
      * Evaluates the combined score of the given letters.
+     *
      * @param letterContainers Letter containers with letters to evaluate.
      * @return The combined score of the letters in the containers.
      */
@@ -75,33 +91,72 @@ public class WordEvaluator {
     }
 
     /**
-     * Checks that all the containers are on the same row and don't have gaps between them.
+     * Checks that all the containers are on the same row and don't have gaps
+     * between them.
+     *
      * @param letterContainers
-     * @return 
+     * @return true if all containers are on same row and do not have gaps
+     * between them
      */
     private boolean allContainersOnSameRowWithoutGaps(List<LetterContainer> letterContainers) {
-        Collections.sort(letterContainers, new LetterContainerCoordinateComparator(false));
-        for (int i = 1; i < letterContainers.size(); i++) {
-            LetterContainer previous = letterContainers.get(i - 1);
-            LetterContainer current = letterContainers.get(i);
+        List<LetterContainer> containerCopy = new ArrayList(letterContainers);
+        Collections.sort(containerCopy, new LetterContainerCoordinateComparator(false));
+
+        for (int i = 1; i < containerCopy.size(); i++) {
+            LetterContainer previous = containerCopy.get(i - 1);
+            LetterContainer current = containerCopy.get(i);
             if (current.getY() != previous.getY() || (current.getX() - previous.getX()) > 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks that all the containers are on the same row and don't have gaps
+     * between them.
+     *
+     * @param letterContainers
+     * @return
+     */
+    private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers) {
+        List<LetterContainer> containerCopy = new ArrayList(letterContainers);
+        Collections.sort(containerCopy, new LetterContainerCoordinateComparator(true));
+        for (int i = 1; i < containerCopy.size(); i++) {
+            LetterContainer previous = containerCopy.get(i - 1);
+            LetterContainer current = containerCopy.get(i);
+            if (current.getX() != previous.getX() || (current.getY() - previous.getY()) > 1) {
                 return false;
             }
         }
         return true;
     }
 
-    /**
-     * Checks that all the containers are on the same row and don't have gaps between them.
-     * @param letterContainers
-     * @return 
-     */
-    private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers) {
-        Collections.sort(letterContainers, new LetterContainerCoordinateComparator(true));
-        for (int i = 1; i < letterContainers.size(); i++) {
-            LetterContainer previous = letterContainers.get(i - 1);
-            LetterContainer current = letterContainers.get(i);
-            if (current.getX() != previous.getX() || (current.getY() - previous.getY()) > 1) {
+    private boolean wordHasGaps(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
+        for (int i = 0; i < letterContainers.size() - 1; i++) {
+            LetterContainer container = letterContainers.get(i);
+            LetterContainer nextContainer = letterContainers.get(i + 1);
+
+            if ((deltaX != 0 && container.getX() + deltaX != nextContainer.getX())
+                    || (deltaY != 0 && container.getY() + deltaY != nextContainer.getY())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getWordFromContainers(List<LetterContainer> letterContainers) {
+        StringBuilder word = new StringBuilder(letterContainers.size());
+        for (LetterContainer container : letterContainers) {
+            word.append(container.letter.character);
+        }
+        return word.toString();
+    }
+
+    private boolean allLettersHaveBeenUsedPreviously(List<LetterContainer> letterContainers) {
+        for (LetterContainer container : letterContainers) {
+            if (!container.isPermanent()) {
                 return false;
             }
         }
