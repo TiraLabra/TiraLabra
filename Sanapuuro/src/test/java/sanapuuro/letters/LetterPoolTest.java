@@ -6,7 +6,7 @@
 package sanapuuro.letters;
 
 import sanapuuro.letters.Letters;
-import sanapuuro.letters.LetterPool;
+import sanapuuro.letters.PlayerLetterPool;
 import sanapuuro.letters.Letter;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import sanapuuro.grid.LetterContainer;
  */
 public class LetterPoolTest {
 
-    private LetterPool letterPool;
+    private PlayerLetterPool letterPool;
 
     public LetterPoolTest() {
     }
@@ -39,7 +39,7 @@ public class LetterPoolTest {
 
     @Before
     public void setUp() {
-        this.letterPool = new LetterPool(new LettersForTest());
+        this.letterPool = new PlayerLetterPool(new LettersForTest());
     }
 
     @After

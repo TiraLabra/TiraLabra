@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;
-import sanapuuro.letters.LetterPool;
+import sanapuuro.letters.PlayerLetterPool;
 import sanapuuro.words.WordEvaluator.Submission;
 
 /**
@@ -18,14 +18,14 @@ public class HumanPlayer implements Player {
 
     private final Controller controller;
     private final Grid grid;
-    private final LetterPool letterPool;    // Pool for picking letters from.
+    private final PlayerLetterPool letterPool;    // Pool for picking letters from.
     private final List<LetterContainer> submissionContainers = new ArrayList<>();
     private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
     private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
     private int score = 0;          // Score.
     private final String name;
 
-    public HumanPlayer(Controller controller, LetterPool letterPool, Grid grid, String name) {
+    public HumanPlayer(Controller controller, PlayerLetterPool letterPool, Grid grid, String name) {
         this.controller = controller;
         this.letterPool = letterPool;
         this.grid = grid;
@@ -56,7 +56,7 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public LetterPool getLetterPool() {
+    public PlayerLetterPool getLetterPool() {
         return this.letterPool;
     }
 
@@ -90,7 +90,7 @@ public class HumanPlayer implements Player {
                 if (submission.charAt(i) == ' ') {
                     i++;
                 }
-            } else if (this.letterPool.hasFreeLetter(submission.charAt(i))) {
+            } else if (this.letterPool.letterIsFree(submission.charAt(i))) {
                 LetterContainer used = this.letterPool.useLetter(submission.charAt(i));
                 this.addedContainers.add(used);
                 this.submissionContainers.add(used);

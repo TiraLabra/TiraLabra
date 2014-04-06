@@ -43,7 +43,7 @@ public class TwoPlayerGame {
             Submission submission = this.playerWithTurn.getSubmission();
             
             if (!submission.letterContainers.isEmpty()) {
-                String submissionStr = this.stringFromLetterContainers(submission.letterContainers).toUpperCase();
+                String submissionStr = Util.stringFromLetterContainers(submission.letterContainers).toUpperCase();
                 this.view.showMessage(this.playerWithTurn + " submitted the word " + submissionStr);
                 EvaluationResult result = this.evaluator.evalute(submission);
                 if (result.succeeded) {
@@ -71,13 +71,5 @@ public class TwoPlayerGame {
         Player temp = this.playerWithTurn;
         this.playerWithTurn = this.playerWaiting;
         this.playerWaiting = temp;
-    }
-    
-    private String stringFromLetterContainers(List<LetterContainer> containers){
-        StringBuilder letters = new StringBuilder();
-        for(LetterContainer container : containers){
-            letters.append(container.letter.character);
-        }
-        return letters.toString();
     }
 }

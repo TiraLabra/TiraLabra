@@ -2,17 +2,16 @@ package sanapuuro;
 
 import sanapuuro.ui.Controller;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import sanapuuro.grid.Grid;
 import sanapuuro.grid.LetterContainer;
-import sanapuuro.letters.LetterPool;
 import sanapuuro.words.WordEvaluator.Submission;
 import sanapuuro.words.WordList;
 
 /**
  * Keeps track of score and has methods for selecting and adding letters for
- * submission.
+ * submission. An AI player that figures out and submits the word with the best
+ * score.
  *
  * @author skaipio@cs
  */
@@ -60,6 +59,26 @@ public class AiPlayer implements Player {
         return this.name;
     }
 
+    @Override
+    public void successfulSubmission(int score) {
+        this.score += score;
+        this.letterPool.replacePickedLetters();
+        this.clearSelectionsAndAdditions();
+    }
+
+    @Override
+    public void unsuccessfulSubmission() {
+        for (LetterContainer container : this.addedContainers) {
+            this.grid.removeContainer(container);
+        }
+        this.clearSelectionsAndAdditions();
+    }
+
+    @Override
+    public Controller getController() {
+        return this.controller;
+    }
+
     private void tryPermutations(LetterContainer[] containers, int k) {
         for (int i = k; i < containers.length; i++) {
             LetterContainer temp = containers[i];
@@ -76,10 +95,12 @@ public class AiPlayer implements Player {
             containers[i] = temp;
         }
     }
-    
-     private void tryAnagramToGrid(LetterContainer[] containers, int lettersFromStart) {
-        String anagram = this.getStringFromLetterContainers(containers,lettersFromStart);
-        if (!this.words.hasWord(anagram)) return;
+
+    private void tryAnagramToGrid(LetterContainer[] containers, int lettersFromStart) {
+        String anagram = this.getStringFromLetterContainers(containers, lettersFromStart);
+        if (!this.words.hasWord(anagram)) {
+            return;
+        }
         for (int x = 0; x < this.grid.width; x++) {
             for (int y = 0; y < this.grid.width; y++) {
                 this.tryAnagramAt(x, y, containers, lettersFromStart);
@@ -138,26 +159,6 @@ public class AiPlayer implements Player {
         return true;
     }
 
-    @Override
-    public void successfulSubmission(int score) {
-        this.score += score;
-        this.letterPool.replacePickedLetters();
-        this.clearSelectionsAndAdditions();
-    }
-
-    @Override
-    public void unsuccessfulSubmission() {
-        for (LetterContainer container : this.addedContainers) {
-            this.grid.removeContainer(container);
-        }
-        this.clearSelectionsAndAdditions();
-    }
-
-    @Override
-    public Controller getController() {
-        return this.controller;
-    }
-
     /**
      * Clears selected and added letters
      */
@@ -168,10 +169,10 @@ public class AiPlayer implements Player {
         this.submissionContainers.clear();
     }
 
-   
-
     private void placeSubmission() {
-        if (this.bestAnagram == null) return;
+        if (this.bestAnagram == null) {
+            return;
+        }
         int i = 0;
         String submission = this.getStringFromLetterContainers(this.bestAnagram.containers);
         int x = this.bestAnagram.x;
@@ -191,7 +192,7 @@ public class AiPlayer implements Player {
                 if (submission.charAt(i) == ' ') {
                     i++;
                 }
-            } else if (this.letterPool.hasFreeLetter(submission.charAt(i))) {
+            } else if (this.letterPool.letterIsFree(submission.charAt(i))) {
                 LetterContainer used = this.letterPool.useLetter(submission.charAt(i));
                 this.addedContainers.add(used);
                 this.submissionContainers.add(used);
@@ -204,10 +205,10 @@ public class AiPlayer implements Player {
             }
         }
     }
-    
+
     private String getStringFromLetterContainers(LetterContainer[] containers, int lettersFromStart) {
         StringBuilder submission = new StringBuilder();
-        for (int i = 0; i < lettersFromStart; i++){
+        for (int i = 0; i < lettersFromStart; i++) {
             submission.append(containers[i].letter.character);
         }
         return submission.toString();
@@ -215,13 +216,14 @@ public class AiPlayer implements Player {
 
     private String getStringFromLetterContainers(List<LetterContainer> containers) {
         StringBuilder submission = new StringBuilder();
-        for (LetterContainer container : containers){
+        for (LetterContainer container : containers) {
             submission.append(container.letter.character);
         }
         return submission.toString();
     }
 
-    private static class Anagram {  
+    private static class Anagram {
+
         public final int x;
         public final int y;
         public final int deltaX;
@@ -238,7 +240,6 @@ public class AiPlayer implements Player {
             this.containers = containers;
         }
 
-        
     }
 
     public static class ControllerStub implements Controller {

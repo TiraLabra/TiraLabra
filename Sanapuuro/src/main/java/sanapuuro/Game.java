@@ -12,7 +12,7 @@ import java.util.Scanner;
 import sanapuuro.fileio.LetterReader;
 import sanapuuro.fileio.WordReader;
 import sanapuuro.grid.Grid;
-import sanapuuro.letters.LetterPool;
+import sanapuuro.letters.PlayerLetterPool;
 import sanapuuro.words.WordEvaluator;
 import sanapuuro.words.WordList;
 
@@ -29,8 +29,8 @@ public class Game {
         WordList words = new WordReader();
         WordEvaluator evaluator = new WordEvaluator(words);
         LetterReader letterReader = new LetterReader(rnd);
-        LetterPool letterPoolOne = new LetterPool(letterReader);
-        LetterPool letterPoolTwo = new LetterPool(letterReader);
+        PlayerLetterPool letterPoolOne = new PlayerLetterPool(letterReader);
+        PlayerLetterPool letterPoolTwo = new PlayerLetterPool(letterReader);
         
         Scanner scanner = new Scanner(System.in);
         ConsoleController controllerOne = new ConsoleController(scanner, 8, 8);

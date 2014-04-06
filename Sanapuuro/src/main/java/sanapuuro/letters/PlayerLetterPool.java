@@ -5,9 +5,8 @@
  */
 package sanapuuro.letters;
 
+import sanapuuro.LetterPool;
 import sanapuuro.grid.LetterContainer;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Letter pool where all the letters a player can place to a letter grid are
@@ -15,14 +14,14 @@ import java.util.Set;
  *
  * @author skaipio
  */
-public class LetterPool {
+public class PlayerLetterPool implements LetterPool {
 
     public final int poolSize = 8;  // The maximum number of letters that can be placed at once.
     private final Letters letters;  // For getting random letters.
     private final LetterContainer[] pool = new LetterContainer[poolSize];   // Pool for holding the letters.
     private final boolean[] lettersFree = new boolean[poolSize];
 
-    public LetterPool(Letters letters) {
+    public PlayerLetterPool(Letters letters) {
         this.letters = letters;
         for (int i = 0; i < poolSize; i++) {
             this.lettersFree[i] = true;
@@ -30,6 +29,7 @@ public class LetterPool {
         }
     }
 
+    @Override
     public LetterContainer[] getLetters() {
         return this.pool.clone();
     }
@@ -40,6 +40,7 @@ public class LetterPool {
      *
      * @return LetterContainer at the current selection.
      */
+    @Override
     public LetterContainer useLetter(char c) {
         for (int i = 0; i < this.poolSize; i++) {
             if (this.lettersFree[i] && this.pool[i].letter.character == c) {
@@ -53,6 +54,7 @@ public class LetterPool {
     /**
      * Clears all selections freeing them for use again.
      */
+    @Override
     public void clearLetterPicks() {
         for (int i = 0; i < this.poolSize; i++) {
             this.lettersFree[i] = true;
@@ -62,6 +64,7 @@ public class LetterPool {
     /**
      * Replaces all LetterContainers that are not free.
      */
+    @Override
     public void replacePickedLetters() {
         for (int i = 0; i < this.poolSize; i++) {
             if (!this.lettersFree[i]) {
@@ -75,6 +78,7 @@ public class LetterPool {
      * Frees a LetterContainer with the matching character back for use.
      * @param c Character to match and free
      */
+    @Override
     public void unpickLetter(char c) {
         for (int i = 0; i < this.poolSize; i++) {
             if (!this.lettersFree[i] && this.pool[i].letter.character == c) {
@@ -95,7 +99,8 @@ public class LetterPool {
         return letters.toString();
     }
 
-    public boolean hasFreeLetter(char c) {
+    @Override
+    public boolean letterIsFree(char c) {
         for (int i = 0; i < this.poolSize; i++) {
             if (this.lettersFree[i] && this.pool[i].letter.character == c) {
                 return true;
