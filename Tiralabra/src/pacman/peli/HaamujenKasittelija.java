@@ -11,7 +11,9 @@ import pacman.hahmot.Suunta;
 import pacman.tietorakenteet.Haku;
 
 /**
- * Haamujenkäsittelijä on luokka, joka hallinnoi haamujen toimintaa pelialustalla.
+ * Haamujenkäsittelijä on luokka, joka hallinnoi haamujen toimintaa
+ * pelialustalla.
+ *
  * @author Hanna
  */
 public class HaamujenKasittelija {
@@ -26,10 +28,12 @@ public class HaamujenKasittelija {
     private Pacman peli;
 
     /**
-     * Konstruktori, jossa määritellää haamut alustalle ja tarvittavat parametrit.
+     * Konstruktori, jossa määritellää haamut alustalle ja tarvittavat
+     * parametrit.
+     *
      * @param peli
      * @param arpoja
-     * @param hakija 
+     * @param hakija
      */
     public HaamujenKasittelija(Pacman peli, Random arpoja, Haku hakija) {
         red = new Red(9, 7, Suunta.YLOS, "red", peli.getAlusta());
@@ -72,7 +76,8 @@ public class HaamujenKasittelija {
 
     /**
      * Heikennetään parametrinä oleva haamu.
-     * @param haamu 
+     *
+     * @param haamu
      */
     private void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
@@ -100,15 +105,20 @@ public class HaamujenKasittelija {
      * Liikutetaan haamut.
      */
     public void liikutaHaamut() {
+
+        
+        long aikaAlussa = System.currentTimeMillis();
         liikutaRed();
         liikutaGreen();
         liikutaCyan();
         liikutaMagenta();
-
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
     /**
-     * Liikutetaan haamu Red omalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     * Liikutetaan haamu Red omalla tavallaan, jos sen tyyppi on heikko tai, jos
+     * sen tyyppi on vahva.
      */
     private void liikutaRed() {
         if (red.getTyyppi().equals("heikko")) {
@@ -120,7 +130,8 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Liikutetaan haamu Green oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     * Liikutetaan haamu Green oalla tavallaan, jos sen tyyppi on heikko tai,
+     * jos sen tyyppi on vahva.
      */
     private void liikutaGreen() {
         if (green.getTyyppi().equals("heikko")) {
@@ -132,7 +143,8 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Liikutetaan haamu Magenta oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     * Liikutetaan haamu Magenta oalla tavallaan, jos sen tyyppi on heikko tai,
+     * jos sen tyyppi on vahva.
      */
     private void liikutaMagenta() {
         if (magenta.getTyyppi().equals("heikko")) {
@@ -144,7 +156,8 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Liikutetaan haamu Cyan oalla tavallaan, jos sen tyyppi on heikko tai, jos sen tyyppi on vahva.
+     * Liikutetaan haamu Cyan oalla tavallaan, jos sen tyyppi on heikko tai, jos
+     * sen tyyppi on vahva.
      */
     private void liikutaCyan() {
         if (cyan.getTyyppi().equals("heikko")) {
@@ -163,8 +176,9 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Selvitetään ensin Magentalle maali ruutu, minkä jälkeen etsitään ruutu, johon Magentan on kannattavinta liikkua.
-     * Tämän jälkeen siirretään Magenta ruutuun, jonka haku palauttaa.
+     * Selvitetään ensin Magentalle maali ruutu, minkä jälkeen etsitään ruutu,
+     * johon Magentan on kannattavinta liikkua. Tämän jälkeen siirretään Magenta
+     * ruutuun, jonka haku palauttaa.
      */
     private void liikutaVahvaMagenta() {
 
@@ -180,8 +194,9 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Selvitetään Cyanille maali ruutu ja tämän jälkeen haulla etsitään mihin ruutuun Cyanin kannattaa liikahtaa.
-     * Tämän jälkeen siirretään Cyan haun palauttamaan ruutuun.
+     * Selvitetään Cyanille maali ruutu ja tämän jälkeen haulla etsitään mihin
+     * ruutuun Cyanin kannattaa liikahtaa. Tämän jälkeen siirretään Cyan haun
+     * palauttamaan ruutuun.
      */
     private void liikutaVahvaCyan() {
 
@@ -192,7 +207,8 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Annetaan haulle manin koordinaatit maaliksi ja liikutetaan Red hauan antamaan ruutuun.
+     * Annetaan haulle manin koordinaatit maaliksi ja liikutetaan Red hauan
+     * antamaan ruutuun.
      */
     private void liikutaVahvaRed() {
 
@@ -217,8 +233,9 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Liikutetaan Cyan heikkona siten, että lasketaan sille maaliksi vastakkainen ruutu, kuin mikä sillä olisi sen ollessa vahva.
-     * Tämän jälkeen etsitään taas haulla ruutu, johon Cyanin kannattaa liikahtaa.
+     * Liikutetaan Cyan heikkona siten, että lasketaan sille maaliksi
+     * vastakkainen ruutu, kuin mikä sillä olisi sen ollessa vahva. Tämän
+     * jälkeen etsitään taas haulla ruutu, johon Cyanin kannattaa liikahtaa.
      */
     private void liikutaCyanHeikko() {
         Peliruutu maali = cyan.selvitaMaaliCyan(peli.getMan());
@@ -232,10 +249,12 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Liikutetaan Red heikkona siten, että lasketaan ensin vastakkainen ruutu, kuin mikä sillä olisi sen ollessa vahva.
-     * Tämän jälkeen etsitään taas haulla ruutu, johon Redin kannattaa liikahtaa.
+     * Liikutetaan Red heikkona siten, että lasketaan ensin vastakkainen ruutu,
+     * kuin mikä sillä olisi sen ollessa vahva. Tämän jälkeen etsitään taas
+     * haulla ruutu, johon Redin kannattaa liikahtaa.
      */
     private void liikutaRedHeikko() {
+        System.out.println("heikko");
         int peilaus = 9 - peli.getMan().getX();
         Peliruutu maali = peli.getAlusta().getPeliruutu(9 + peilaus, peli.getMan().getY());
         if (maali.getX() == red.getX() && maali.getY() == red.getY()) {
@@ -247,6 +266,7 @@ public class HaamujenKasittelija {
 
     /**
      * Lasketaan kuinka monta haamuista on edelleen heikkona.
+     *
      * @return Palauttaa int arvon, kuinka monta haamua on edelleen heikkona.
      */
     public int tarkistaOnkoHeikkoja() {
@@ -261,9 +281,10 @@ public class HaamujenKasittelija {
 
     /**
      * Tarkistetaan onko haamu heikko ja jos on kasvatetaan heikkojen määrää.
+     *
      * @param heikkoja
      * @param haamu
-     * @return 
+     * @return
      */
     private int onkoHeikkoHaamu(int heikkoja, Haamu haamu) {
         if (haamu.getTyyppi().equals("heikko")) {
