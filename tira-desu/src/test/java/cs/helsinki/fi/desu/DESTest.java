@@ -19,6 +19,7 @@ public class DESTest {
     /**
      * Test of permute method, of class DES.
      */
+    @Test
     public void testPermute() {
         
     }
@@ -26,6 +27,7 @@ public class DESTest {
     /**
      * Test of feistelF method, of class DES.
      */
+    @Test
     public void testFeistelF() {
         
     }
@@ -33,13 +35,14 @@ public class DESTest {
     /**
      * Test of feistelS method, of class DES.
      */
+    @Test
     public void testFeistelS() {
     }
 
     /**
      * Test of generateKeys method, of class DES.
      */
+    @Test
     public void testGenerateKeys() {
     }
-    
 }
