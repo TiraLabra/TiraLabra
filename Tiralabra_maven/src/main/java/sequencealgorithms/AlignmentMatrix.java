@@ -28,6 +28,9 @@ public class AlignmentMatrix {
      */
     private int[][] path;
 
+    /**
+     * Value for negative infinity
+     */
     protected final double NEGINF = -1E100;
 
     /**

@@ -13,18 +13,17 @@ import com.mycompany.tiralabra_maven.InputReader;
  *
  * @author riha
  */
-public class LSA extends PSA implements Problem {
+public class LSA extends PSA {
 
     public LSA(String filename) {
 //        super(filename, alphabet);
         super(filename);
     }
-
-    public void setUpScoringMatrix() {
-        s.setMatchBonus(2);
-        s.setIndelPenalty(-1);
-        s.setMismatchPenalty(-1);
-    }
+        
+//        s.setMatchBonus(2);
+//        s.setIndelPenalty(-1);
+//        s.setMismatchPenalty(-1);
+    
 
     /**
      * Extends the superclass method by adding the option zero to all score

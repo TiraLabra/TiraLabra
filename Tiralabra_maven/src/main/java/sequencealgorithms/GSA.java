@@ -5,19 +5,20 @@ import com.mycompany.tiralabra_maven.InputReader;
 /**
  * Global Sequence Alignment problem.
  *
- * @author riha
+ * @author Jari Haavisto
  */
-public class GSA extends PSA implements Problem {
+public class GSA extends PSA {
 
     public GSA(String filename) {
         super(filename);
     }
 
-    public void setUpScoringMatrix() {
-        s.setMatchBonus(1);
-        s.setIndelPenalty(-2);
-        s.setMismatchPenalty(-1);
-    }
+//    @Override
+//    public void setUpScoringMatrix() {
+//        s.setMatchBonus(1);
+//        s.setIndelPenalty(-2);
+//        s.setMismatchPenalty(-1);
+//    }
 
     @Override
     public int findSolutionStartX() {

@@ -13,7 +13,7 @@ import com.mycompany.tiralabra_maven.InputReader;
  *
  * @author jtthaavi@cs
  */
-abstract class PSA {
+abstract class PSA implements Problem {
 
     /**
      * The two input sequences.
@@ -44,37 +44,38 @@ abstract class PSA {
         input1 = input[0];
         input2 = input[1];
         alphabet = input[2];
-        
 
         s = new ScoringMatrix(alphabet);
         m = new AlignmentMatrix(input1.length, input2.length);
         solution = null;
 
-        setUpScoringMatrix();
+//        setUpScoringMatrix();
         setUpAlignmentMatrix();
-        
+
         verbose = false;
     }
-    
+
     /**
      * Formats the first row and column from the alignment matrix.
      */
     public void setUpAlignmentMatrix() {
-        for (int i = 0; i< input1.length; i++) {
-            m.setScore(i+1, 0, m.get(i, 0)+s.getScore(input1[i], '-'));
-            m.setPath(i+1, 0, 1);
+        for (int i = 0; i < input1.length; i++) {
+            m.setScore(i + 1, 0, m.get(i, 0) + s.getScore(input1[i], '-'));
+            m.setPath(i + 1, 0, 1);
         }
         for (int j = 0; j < input2.length; j++) {
-            m.setScore(0, j+1, m.get(0, j)+s.getScore('-', input2[j]));
-            m.setPath(0, j+1, 2);
+            m.setScore(0, j + 1, m.get(0, j) + s.getScore('-', input2[j]));
+            m.setPath(0, j + 1, 2);
         }
     }
 
-    /**
-     * Makes sure that the scoring matrix is not empty after constructor
-     * finishes.
-     */
-    abstract void setUpScoringMatrix();
+    @Override
+    public void setUpScoring(double matchBonus, double mismatchPenalty, double indelPenalty, double gapPenalty) {
+        s.setMatchBonus(matchBonus);
+        s.setMismatchPenalty(mismatchPenalty);
+        s.setIndelPenalty(indelPenalty);
+        s.setGapPenalty(gapPenalty);
+    }
 
     /**
      * Calculates the alignment scores and fills the alignment matrix.
@@ -131,7 +132,7 @@ abstract class PSA {
             System.out.println("Finding solution from alignment matrix:");
             m.print();
         }
-        
+
         char[][] preSolution = new char[2][input1.length + input2.length];
         int p = findSolutionStartX();
         int q = findSolutionStartY();
@@ -161,23 +162,24 @@ abstract class PSA {
             length++;
         }
 
-//        System.out.println("PRINT PRESOLUTION");
-//        for (int i=0; i<preSolution[0].length; i++) {
-//            System.out.print(preSolution[0][i]);
-//        }
-//        System.out.println("");
-//        for (int i=0; i<preSolution[1].length; i++) {
-//            System.out.print(preSolution[1][i]);
-//        }
-//        System.out.println("\nLength on " + length);
-
         setSolution(preSolution, length);
     }
 
     protected abstract int findSolutionStartX();
+
     protected abstract int findSolutionStartY();
+
     protected abstract boolean solutionContinueCondition(int p, int q);
+
     protected abstract void setSolution(char[][] preSolution, int length);
+
+    /**
+     *
+     */
+    public void solve() {
+        calculateAlignment();
+        findSolution();
+    }
 
     /**
      * Getter for the solution.
@@ -190,7 +192,7 @@ abstract class PSA {
         }
         return solution;
     }
-    
+
     public double getAlignmentScore() {
         return m.get(input1.length, input2.length);
     }

@@ -8,16 +8,27 @@ import com.mycompany.tiralabra_maven.InputReader;
  *
  * @author Jari Haavisto
  */
-public class LCS extends PSA implements Problem {
+public class LCS extends PSA {
 
     public LCS(String filename) {
         super(filename);
+        s.setUp(1, -1E100, 0);
     }
 
-    public void setUpScoringMatrix() {
-        s.setUp(1, -1E100, 0);  // -1E300 ~ negative infinity
-    }
+//    public void setUpScoringMatrix() {
+//        s.setUp(1, -1E100, 0);  // -1E300 ~ negative infinity
+//    }
 
+    /**
+     * LCS algorithm uses constant scoring and hence does not use this method.
+     * 
+     * @param matchBonus
+     * @param mismatchPenalty
+     * @param indelPenalty 
+     */
+    @Override
+    public void setUpScoring(double matchBonus, double mismatchPenalty, double indelPenalty, double GapPenalty) {}
+    
     @Override
     protected int findSolutionStartX() {
         return input1.length;

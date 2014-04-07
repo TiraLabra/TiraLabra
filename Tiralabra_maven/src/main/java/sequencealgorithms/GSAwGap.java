@@ -29,13 +29,13 @@ public class GSAwGap extends GSA {
         }
     }
 
-    @Override
-    public void setUpScoringMatrix() {
-        s.setMatchBonus(10);
-        s.setIndelPenalty(-15);
-        s.setMismatchPenalty(-2);
-        s.setGapPenalty(-7);
-    }
+//    @Override
+//    public void setUpScoringMatrix() {
+//        s.setMatchBonus(10);
+//        s.setIndelPenalty(-15);
+//        s.setMismatchPenalty(-2);
+//        s.setGapPenalty(-7);
+//    }
 
     @Override
     public double[] possibleScores(int i, int j) {
@@ -79,6 +79,13 @@ public class GSAwGap extends GSA {
         return betterScore;
     }
 
+    /**
+     * Returns the larger of two given doubles.
+     * 
+     * @param a 
+     * @param b 
+     * @return  
+     */
     private double max(double a, double b) {
         if (a > b) {
             return a;
