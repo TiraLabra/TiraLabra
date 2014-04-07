@@ -10,18 +10,18 @@ import java.util.ArrayList;
 public class Finder {
     
     Node current;
-    Node neighbour;
+    Node neighbor;
     ArrayList<Node> path;
-    ArrayList<Node> accessed;
+    Heap accessed;
     ArrayList<Node> checked;
     /**
      * Constructor
      */
     Finder(){
        current = null;
-       neighbour = null;
+       neighbor = null;
        path = new ArrayList();
-       accessed = new ArrayList();
+       accessed = new Heap();
        checked = new ArrayList();
     }
     /**
@@ -32,17 +32,21 @@ public class Finder {
      * @param goal 
      */
     public void findOptimal(Map m, Node start, Node goal) {     //begin path finding
-        accessed.add(start);                                    //initialize first node
+        accessed.insertNode(start);                             //initialize first node
         start.setToStart(0);
         start.setToGoal(goal.getY(), goal.getX());
         start.setPrev(start);                                   //start doesn't have a previous node
         
         while(!accessed.isEmpty()) {
-            current = accessed.get(0);                          //set added node to temp for easier access
+            current = accessed.getHighest();                    //mark node that is checked as current
+            accessed.removeNode();                              //remove current from the list of nodes to check
+            checked.add(current);                               //and store it in collection of checked ones
+            current.setValue('-');
+            System.out.println("current: ("+current.getX()+","+current.getY()+")");
             if (current == goal){
                 current.setValue('.');
-                break;  }                                       //route found
-
+                break;                                          //route found
+            }
             markNeighbour(m,goal,1,0);              
             markNeighbour(m,goal,-1,0);
             markNeighbour(m,goal,0,1);
@@ -52,35 +56,17 @@ public class Finder {
             markNeighbour(m,goal,-1,-1);
             markNeighbour(m,goal,-1,1);
             
-            accessed.remove(current);                           //remove from the list of nodes to check
-            accessed.trimToSize();
-            checked.add(current);                               //and store it in 
-            current.setValue('.');
             m.printField();
-            System.out.println();
+            for(int i = 1; i<=accessed.getSize();i++) {
+                System.out.print("(("+accessed.get(i).getX()+","+accessed.get(i).getY()+")"+accessed.get(i).getPrio()+")");
+                System.out.println();
+            }
         }
     }
     
+    
     /**
-     *  Places the neighbour in the correct slot based on its priority
-     */
-    public void placeNeighbour() {
-        for(int i = 0; i<accessed.size();i++) {
-            if(accessed.contains(neighbour))                        //just added, no need to continue
-               break;
-            if(accessed.isEmpty()) {                                //just add if empty
-               accessed.add(neighbour);   
-               break;}
-            if(accessed.get(i).getPrio() > neighbour.getPrio()){    //add if the one in i has lower prio
-               accessed.add(i, neighbour);
-               break;
-            }
-        }
-        if(!accessed.contains(neighbour) && neighbour.getValue() != 'X')
-           accessed.add(neighbour);
-    }
-    /**
-     * Goes through the neighbours of current node and marks them 
+     * Goes through the neighbors of current node and marks them 
      * 
      * @param m the map currently being analyzed
      * @param goal 
@@ -88,19 +74,20 @@ public class Finder {
      * @param x used to define a step in x-axis from current node
      */
     public void markNeighbour(Map m, Node goal, int y, int x) {
-        try{neighbour = m.field[current.getY()+(1*y)][current.getX()+(1*x)];    //fill in the data for neighbours
-                if(neighbour.getValue() == 'X')
-                    checked.add(neighbour);                                     //if a wall, discard
-                if(!checked.contains(neighbour)) {                              //if node hasn't been checked
-                    neighbour.setPrev(current);                                 //set this node as followers 'previous'
-                    neighbour.setToStart(current.getToStart()+1);               //set distance to start                    
-                    neighbour.setToGoal(goal.getY(),goal.getX());               //set distance to goal
-                    if(neighbour.getValue() == '0'){neighbour.setValue('*');}
-                    if(!accessed.contains(neighbour)) {
-                        placeNeighbour();
+        try{neighbor = m.field[current.getY()+(1*y)][current.getX()+(1*x)];    //fill in the data for neighbors
+                if(neighbor.getValue() == 'X')
+                    checked.add(neighbor);                                     //if a wall, discard
+                if(!checked.contains(neighbor)) {                              //if node hasn't been checked
+                    neighbor.setPrev(current);                                 //set this node as followers 'previous'
+                    neighbor.setToStart(current.getToStart()+1);               //set distance to start                    
+                    neighbor.setToGoal(goal.getY(),goal.getX());               //set distance to goal
+                    if(neighbor.getValue() == '0'){neighbor.setValue('*');}
+                    if(!accessed.hasNode(neighbor)) {
+                        accessed.insertNode(neighbor);
                     }
-                    if(accessed.contains(neighbour) && neighbour.getPrio()>((current.getToStart()+1)+neighbour.getToGoal())){
-                          neighbour.setToStart(current.getToStart()+1);     
+                    if(accessed.hasNode(neighbor) && neighbor.getPrio()>((current.getToStart()+1)+neighbor.getToGoal())){
+                          neighbor.setToStart(current.getToStart()+1);
+                          accessed.sortHeap(accessed.getSize());
                     }
                 }
             }   catch(Exception e) {}

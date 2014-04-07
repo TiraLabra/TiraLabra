@@ -23,4 +23,5 @@ Aika: O( ( |E|+|V| )log|V| )
 
 Lähteet:
 
-en.wikipedia.org/wiki/A*_search_algorithm
+Wikipedia - A*: en.wikipedia.org/wiki/A*_search_algorithm
+Tietorakenteet -kurssimateriaali - Helsingin yliopisto, Tietojenkäsittelytieteen laitos: http://www.cs.helsinki.fi/u/floreen/tira2012/tira.pdf
