@@ -50,9 +50,9 @@ public class MultiClassPerceptron {
                     }
                 }
 
-                if (indexLargest != trainingData.getOutput(i)) {
+                if (indexLargest != trainingData.getOutput(i)[0]) {
                     weights[indexLargest].substract(v);
-                    weights[trainingData.getOutput(i)].add(v);
+                    weights[(int) trainingData.getOutput(i)[0]].add(v);
                     errors++;
                 }
 

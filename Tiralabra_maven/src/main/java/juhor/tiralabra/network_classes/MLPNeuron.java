@@ -12,8 +12,7 @@ import juhor.tiralabra.data_structures.Vector;
  */
 public class MLPNeuron {
     private Vector weights;
-    private double lastActivation;
-    public double signalError;
+    
     /**
      * Main constructor. Initializes weight vector with small random values.
      * @param size
@@ -23,7 +22,7 @@ public class MLPNeuron {
         double[] values = new double[size];
         
         for(int i = 0; i < values.length; i++){
-            values[i] = rand.nextDouble()-0.5;
+            values[i] = 2*rand.nextDouble()-1;
         }
         weights = new Vector(values);
     }
@@ -34,6 +33,10 @@ public class MLPNeuron {
     
     public double getWeight(int i){
         return weights.getValue(i);
+    }
+    
+    public void addToWeigths(Vector v){
+        weights.add(v);
     }
     
     public void setWeight(int i, double d){
@@ -48,17 +51,11 @@ public class MLPNeuron {
      */
     public double calculateOutput(Vector input){
         double dproduct = weights.dotProduct(input);
-        lastActivation = 1/(1+Math.exp(-dproduct));
-        return lastActivation;
+        double activation = 1/(1+Math.exp(-dproduct));
+        return activation;
     }
     
-    public double calculateDerivative(){
-        return lastActivation*(1-lastActivation);
-    }
     
-    public double getLastActivation(){
-        return lastActivation;
-    }
     
     
     

@@ -50,10 +50,10 @@ public class Perceptron {
                 double z = weights.dotProduct(vec);
                 boolean out = classify(z);
                 
-                if(out && trainingData.getOutput(i) == 0){
+                if(out && trainingData.getOutput(i)[0] == 0){
                     weights.substract(vec);
                     errors++;
-                }else if(!out && trainingData.getOutput(i) == 1){
+                }else if(!out && trainingData.getOutput(i)[1] == 1){
                     weights.add(vec);
                     errors++;
                 }

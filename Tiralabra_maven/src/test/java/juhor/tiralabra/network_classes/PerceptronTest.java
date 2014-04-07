@@ -41,7 +41,7 @@ public class PerceptronTest {
     @Test
     public void testWithOr() {
         double[][] inputVectors = {{1, 0, 0}, {1, 1, 0}, {1, 0, 1}, {1, 1, 1}};
-        int[] outputs = {0, 1, 1, 1};
+        double[][] outputs = {{0}, {1}, {1}, {1}};
         TrainingData data = new TrainingData(inputVectors, outputs);
         Perceptron tron = new Perceptron(data, 0.5);
 
@@ -60,7 +60,7 @@ public class PerceptronTest {
     @Test
     public void testWithAnd() {
         double[][] inputVectors = {{1, 0, 0}, {1, 1, 0}, {1, 0, 1}, {1, 1, 1}};
-        int[] outputs = {0, 0, 0, 1};
+        double[][] outputs = {{0}, {0}, {0}, {1}};
         TrainingData data = new TrainingData(inputVectors, outputs);
         Perceptron tron = new Perceptron(data, 0.5);
 
@@ -79,7 +79,7 @@ public class PerceptronTest {
     @Test
     public void testWithNot() {
         double[][] inputVectors = {{1,0}, {1,1}};
-        int[] outputs = {1, 0};
+        double[][] outputs = {{1}, {0}};
         TrainingData data = new TrainingData(inputVectors, outputs);
         Perceptron tron = new Perceptron(data, 0.5);
 

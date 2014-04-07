@@ -12,9 +12,9 @@ package juhor.tiralabra.data_structures;
  */
 public class TrainingData {
     private double[][] vectors;
-    private int[] outputs; 
+    private double[][] outputs; 
     
-    public TrainingData(double[][] datamatrix, int[] outputvalues){
+    public TrainingData(double[][] datamatrix, double[][] outputvalues){
         vectors = datamatrix;
         outputs = outputvalues;
     }
@@ -27,8 +27,12 @@ public class TrainingData {
         return vectors.length;
     }
     
-    public int getOutput(int index){
+    public double[] getOutput(int index){
         return outputs[index];
+    }
+    
+    public double[][] getAllOutputs(){
+        return outputs;
     }
     
     public double[] getVector(int index){

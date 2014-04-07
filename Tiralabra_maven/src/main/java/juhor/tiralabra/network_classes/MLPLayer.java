@@ -13,6 +13,9 @@ public class MLPLayer {
     
     MLPNeuron[] neurons;
     double[] errorSignals;
+    Vector inputs;
+    Vector outputs;
+    int numberOfInputs;
     
     /**
      * Main constructor
@@ -22,6 +25,7 @@ public class MLPLayer {
     public MLPLayer(int numOfNeurons, int numOfInput){
         neurons = new MLPNeuron[numOfNeurons];
         errorSignals = new double[numOfNeurons];
+        numberOfInputs = numOfInput;
         Random rand = new Random();
         for(int i = 0; i < neurons.length; i++){
             neurons[i] = new MLPNeuron(numOfInput, rand);
@@ -33,12 +37,13 @@ public class MLPLayer {
      * @return 
      */
     public Vector layerOutputs(Vector input){
+        inputs = input;
         Vector output = new Vector(neurons.length);
         for(int i = 0; i < neurons.length; i++){
             double val = neurons[i].calculateOutput(input);
             output.setValue(i, val);
         }
-        
+        outputs = output;
         return output;
     }
     
