@@ -1,5 +1,4 @@
 package Sorters;
-import java.util.Arrays;
 
 /**
  *
@@ -30,8 +29,8 @@ public class MergeSorter {
     public int[] mergeSort(int[] arrayToSort) {
         int[] newArray = new int[arrayToSort.length];
         int middle = (int) arrayToSort.length / 2;
-        int[] left = mergeSortInit(Arrays.copyOfRange(arrayToSort, 0, middle));
-        int[] right = mergeSortInit(Arrays.copyOfRange(arrayToSort, middle, arrayToSort.length));
+        int[] left = mergeSortInit(GlobalMethods.copyRange(arrayToSort, 0, middle));
+        int[] right = mergeSortInit(GlobalMethods.copyRange(arrayToSort, middle, arrayToSort.length));
         int leftArrayIndex = 0, rightArrayIndex = 0, newArrayIndex = 0;
 
         while (leftArrayIndex < left.length && rightArrayIndex < right.length) {

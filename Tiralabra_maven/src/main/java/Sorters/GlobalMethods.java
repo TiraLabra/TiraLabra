@@ -22,5 +22,23 @@ public class GlobalMethods {
         array[a] = array[b];
         array[b] = temp;
     }
+    
+    /**
+     * Kopioi taulukon annetulta alueelta.
+     * 
+     * @param arrayToCopy Taulukko, joka kopioidaan.
+     * @param first Kopioitava alueen ensimmäinen indeksi (inclusive)
+     * @param last Kopioitavan alueen viimeinen indeksi (exclusive)
+     * @return Kopioitu taulukko
+     */
+    public static int[] copyRange(int[] arrayToCopy, int first, int last){
+        int[] newArray = new int[last - first];
+        int i = 0;
+        for(int j = first; j < last; j++){
+            newArray[i] = arrayToCopy[j];
+            i++;
+        }
+        return newArray;
+    }
 
 }
