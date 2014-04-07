@@ -12,6 +12,7 @@ import juhor.tiralabra.data_structures.Vector;
 public class MLPLayer {
     
     MLPNeuron[] neurons;
+    double[] errorSignals;
     
     /**
      * Main constructor
@@ -20,7 +21,7 @@ public class MLPLayer {
      */
     public MLPLayer(int numOfNeurons, int numOfInput){
         neurons = new MLPNeuron[numOfNeurons];
-        
+        errorSignals = new double[numOfNeurons];
         Random rand = new Random();
         for(int i = 0; i < neurons.length; i++){
             neurons[i] = new MLPNeuron(numOfInput, rand);
@@ -39,6 +40,14 @@ public class MLPLayer {
         }
         
         return output;
+    }
+    
+    public MLPNeuron getNeuron(int index){
+        return neurons[index];
+    }
+    
+    public int getSize(){
+        return neurons.length;
     }
     
     

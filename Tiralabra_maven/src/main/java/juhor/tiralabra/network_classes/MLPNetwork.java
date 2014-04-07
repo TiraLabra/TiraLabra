@@ -17,6 +17,7 @@ public class MLPNetwork {
     private double learningRate;
     private double minError;
     
+    
     public MLPNetwork(int numOfLayers, int[] numOfNeurons, double learnrate, int iterations, double minimum, TrainingData data){
         layers = new MLPLayer[numOfLayers];
         numOfIterations = iterations;
@@ -44,6 +45,12 @@ public class MLPNetwork {
         return last;  
     }
     
-    
+    public void SignalErrors(double[] expected, double[] output){
+        double sum;
+        //output layer:
+        for(int i = 0; i < layers[0].errorSignals.length; i++){
+            layers[0].errorSignals[i] = (expected[i]-output[i])*output[i]*(1-output[i]);
+        }
+    }
     
 }

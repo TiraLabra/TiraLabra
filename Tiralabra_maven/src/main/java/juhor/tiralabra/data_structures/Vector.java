@@ -72,4 +72,10 @@ public class Vector {
         
         return product;
     }
+    
+    public void multiplyByDouble(double d){
+        for(int i = 0; i < values.length; i++){
+            values[i] = values[i]*d;
+        }
+    }
 }
