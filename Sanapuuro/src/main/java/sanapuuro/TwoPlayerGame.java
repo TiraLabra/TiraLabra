@@ -5,14 +5,13 @@
  */
 package sanapuuro;
 
+import sanapuuro.utils.Util;
 import sanapuuro.ui.View;
 import java.util.List;
-import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.Letters;
-import sanapuuro.words.WordEvaluator;
-import sanapuuro.words.WordEvaluator.EvaluationResult;
-import sanapuuro.words.WordEvaluator.Submission;
+import sanapuuro.WordEvaluator.EvaluationResult;
+import sanapuuro.WordEvaluator.Submission;
 
 /**
  *

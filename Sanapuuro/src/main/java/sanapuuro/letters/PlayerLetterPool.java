@@ -5,9 +5,6 @@
  */
 package sanapuuro.letters;
 
-import sanapuuro.LetterPool;
-import sanapuuro.grid.LetterContainer;
-
 /**
  * Letter pool where all the letters a player can place to a letter grid are
  * kept.

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.grid;
+package sanapuuro.letters;
 
 import sanapuuro.letters.Letter;
 
@@ -36,11 +36,11 @@ public class LetterContainer {
         return this.y;
     }
     
-    void setX(int x){
+    public void setX(int x){
         this.x = x;
     }
     
-    void setY(int y){
+    public void setY(int y){
         this.y = y;
     }
     

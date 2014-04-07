@@ -3,10 +3,9 @@ package sanapuuro;
 import sanapuuro.ui.Controller;
 import java.util.ArrayList;
 import java.util.List;
-import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.PlayerLetterPool;
-import sanapuuro.words.WordEvaluator.Submission;
+import sanapuuro.WordEvaluator.Submission;
 
 /**
  * Keeps track of score and has methods for selecting and adding letters for

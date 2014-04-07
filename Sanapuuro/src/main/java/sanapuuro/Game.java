@@ -9,12 +9,10 @@ import sanapuuro.ui.GameView;
 import sanapuuro.ui.ConsoleController;
 import java.util.Random;
 import java.util.Scanner;
-import sanapuuro.fileio.LetterReader;
-import sanapuuro.fileio.WordReader;
-import sanapuuro.grid.Grid;
+import java.util.Set;
+import sanapuuro.fileio.FileIO;
+import sanapuuro.letters.GameLetters;
 import sanapuuro.letters.PlayerLetterPool;
-import sanapuuro.words.WordEvaluator;
-import sanapuuro.words.WordList;
 
 /**
  *
@@ -25,10 +23,12 @@ public class Game {
      * @param args the command line arguments
      */
     public static void main(String[] args) {   
+        FileIO fileIO = new FileIO();
         Random rnd = new Random();
-        WordList words = new WordReader();
+        
+        Set<String> words = fileIO.readInWordsFromFile("words/english_words");
         WordEvaluator evaluator = new WordEvaluator(words);
-        LetterReader letterReader = new LetterReader(rnd);
+        GameLetters letterReader = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
         PlayerLetterPool letterPoolOne = new PlayerLetterPool(letterReader);
         PlayerLetterPool letterPoolTwo = new PlayerLetterPool(letterReader);
         

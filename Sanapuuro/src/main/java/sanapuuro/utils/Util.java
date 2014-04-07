@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package sanapuuro;
+package sanapuuro.utils;
 
 import java.util.List;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.LetterContainer;
 
 /**
  *

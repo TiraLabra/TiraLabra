@@ -5,19 +5,19 @@
  */
 package sanapuuro;
 
-import java.util.ArrayList;
-import java.util.List;
+import sanapuuro.utils.Util;
+import sanapuuro.letters.LetterPool;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.Letter;
-import sanapuuro.words.WordEvaluator.Submission;
-import sanapuuro.words.WordList;
+import sanapuuro.WordEvaluator.Submission;
 
 /**
  *
@@ -25,7 +25,15 @@ import sanapuuro.words.WordList;
  */
 public class AiPlayerTest {
     private AiPlayer ai;
-    private WordList words;
+    private final Set<String> words = new HashSet<>();
+
+    public AiPlayerTest() {
+        this.words.add("nipsuli");
+        this.words.add("hipsu");
+        this.words.add("nipsu");
+    }
+    
+    
 
     @BeforeClass
     public static void setUpClass() {
@@ -37,7 +45,7 @@ public class AiPlayerTest {
 
     @Before
     public void setUp() {
-        ai = new AiPlayer(new LetterPoolStub(), new Grid(8,8), "Hessu", new WordListStub());
+        ai = new AiPlayer(new LetterPoolStub(), new Grid(8,8), "Hessu", this.words);
     }
 
     @After
@@ -55,22 +63,7 @@ public class AiPlayerTest {
         Submission submission = this.ai.getSubmission();
         assertEquals("hipsu", Util.stringFromLetterContainers(submission.letterContainers));      
     }
-    
-    public static class WordListStub implements WordList{
-        List<String> words = new ArrayList<>();
-        
-        public WordListStub(){
-            this.words.add("nipsuli");
-            this.words.add("hipsu");
-            this.words.add("nipsu");
-        }
 
-        @Override
-        public boolean hasWord(String word) {
-            return this.words.contains(word);
-        }
-        
-    }
 
     public static class LetterPoolStub implements LetterPool {
 

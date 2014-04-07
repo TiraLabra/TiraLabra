@@ -7,7 +7,7 @@
 package sanapuuro.utils;
 
 import java.util.Comparator;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.letters.LetterContainer;
 
 /**
  * Used to compare the x and y coordinate values of letter containers.

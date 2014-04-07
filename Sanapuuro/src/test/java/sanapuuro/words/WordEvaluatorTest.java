@@ -5,17 +5,19 @@
  */
 package sanapuuro.words;
 
+import sanapuuro.WordEvaluator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sanapuuro.fileio.WordReader;
-import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
+import sanapuuro.fileio.FileIO;
+import sanapuuro.Grid;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.Letter;
 
 /**
@@ -25,7 +27,13 @@ import sanapuuro.letters.Letter;
 public class WordEvaluatorTest {
 
     private Grid grid;
-    private final WordEvaluator wordEvaluator = new WordEvaluator(new WordReader());
+    private final Set<String> words;
+    private WordEvaluator wordEvaluator;
+
+    public WordEvaluatorTest() {
+        FileIO fileIO = new FileIO();
+        this.words = fileIO.readInWordsFromFile("words/english_words");
+    }
 
     @BeforeClass
     public static void setUpClass() {
@@ -38,6 +46,7 @@ public class WordEvaluatorTest {
     @Before
     public void setUp() {
         this.grid = new Grid(8, 8);
+        this.wordEvaluator = new WordEvaluator(this.words);
     }
 
     @After
@@ -49,8 +58,8 @@ public class WordEvaluatorTest {
     //
     @Test
     public void correctValidationOfHorizontalWords() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> validHorizontalWord = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));
@@ -67,8 +76,8 @@ public class WordEvaluatorTest {
 
     @Test
     public void correctValidationOfVerticalWords() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> validVerticalWord = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         validVerticalWord.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
@@ -85,8 +94,8 @@ public class WordEvaluatorTest {
 
     @Test
     public void doesNotValidateWordWithGaps() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> wordWithGaps = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         wordWithGaps.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
@@ -103,8 +112,8 @@ public class WordEvaluatorTest {
 
     @Test
     public void doesNotValidateWordNotOnSameRowOrColumn() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> wordNotOnSameRow = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
@@ -121,8 +130,8 @@ public class WordEvaluatorTest {
 
     @Test
     public void wordsTooShortNotValid() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> wordTooShort = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         wordTooShort.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
@@ -133,8 +142,8 @@ public class WordEvaluatorTest {
 
     @Test
     public void returnCorrectScoreForLetters() {
-        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         List<LetterContainer> validHorizontalWord = new ArrayList<>();
+        LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
         this.grid.setContainerAt(container, 0, 0);
         validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));

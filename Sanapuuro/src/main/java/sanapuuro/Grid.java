@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.grid;
+package sanapuuro;
 
+import sanapuuro.letters.LetterContainer;
 import java.util.List;
 
 /**

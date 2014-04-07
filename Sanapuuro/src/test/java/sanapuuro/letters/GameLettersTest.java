@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.readers;
+package sanapuuro.letters;
 
-import sanapuuro.fileio.LetterReader;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.junit.After;
@@ -15,18 +16,21 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import sanapuuro.letters.Letter;
 import static org.junit.Assert.*;
+import sanapuuro.fileio.FileIO;
 
 /**
  *
  * @author skaipio
  */
-public class LetterReaderTest {
+public class GameLettersTest {
+    private List<Letter> letters = new ArrayList<>();
     private Set<Character> englishLetters;
-    private LetterReader letterReader;
+    private GameLetters letterReader;
     
-    public LetterReaderTest() {
+    public GameLettersTest() {
+        FileIO fileIO = new FileIO();
+        this.letters = fileIO.readInLettersFromFile("letters/english_letters");
     }
     
     @BeforeClass
@@ -39,7 +43,7 @@ public class LetterReaderTest {
     
     @Before
     public void setUp() {
-        this.letterReader = new LetterReader(new Random(1));
+        this.letterReader = new GameLetters(new Random(1), this.letters);
         this.englishLetters = new HashSet<>();
         String letters = "abcdefghijklmnopqrstuvwxyz";
         for(int i = 0; i < letters.length(); i++){

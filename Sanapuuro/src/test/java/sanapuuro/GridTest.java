@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.grid;
+package sanapuuro;
 
-import sanapuuro.grid.LetterContainer;
-import sanapuuro.grid.Grid;
+import sanapuuro.letters.LetterContainer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +44,6 @@ public class GridTest {
 
     @Test
     public void gridHasNoLetterContainersAfterClearing() {
-        LetterContainer container = this.grid.getContainerAt(0, 0);
         this.grid.setContainerAt(new LetterContainer(new Letter('a', 0, 0)), 0, 0);
         this.grid.setContainerAt(new LetterContainer(new Letter('b', 0, 0)), 7, 7);
         boolean hasContainers = false;

@@ -11,7 +11,7 @@ import sanapuuro.ui.ControllerListener;
 import java.util.Collections;
 import java.util.List;
 import sanapuuro.Player;
-import sanapuuro.grid.Grid;
+import sanapuuro.Grid;
 import sanapuuro.letters.Letter;
 import sanapuuro.letters.Letters;
 import sanapuuro.utils.LetterAlphabeticalComparator;

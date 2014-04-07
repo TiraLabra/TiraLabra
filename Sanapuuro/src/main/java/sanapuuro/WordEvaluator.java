@@ -3,31 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.words;
+package sanapuuro;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import sanapuuro.grid.LetterContainer;
+import java.util.Set;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.utils.LetterContainerCoordinateComparator;
 
 /**
  * Used for checking if letters form a word and the score for the word.
- *
+ * All methods assume that given containers are in correct order
+ * for submission.
  * @author skaipio
  */
 public class WordEvaluator {
 
     private final int wordLengthMinimum = 3;    // A minimum length for a word to be evaluated.
-    private final WordList wordValidator;    // Checks if the given word is an actual word.
+    private final Set<String> words;            // Set of all valid words.
 
-    public WordEvaluator(WordList wordValidator) {
-        this.wordValidator = wordValidator;
+    public WordEvaluator(Set<String> words) {
+        this.words = words;
     }
 
     /**
      * Evalutes the letters in the letter containers, checking if they form a
-     * word. LetterContainers are evaluated in the order they are given.
+     * valid word. Letters with gaps between them are not accepted.
+     * LetterContainers are evaluated in the order they are given.
      *
      * @param submission Submission to evaluate.
      *
@@ -61,11 +64,11 @@ public class WordEvaluator {
 
         String word = this.getWordFromContainers(letterContainers);
 
-        if (wordValidator.hasWord(word.toString())) {
+        if (this.words.contains(word)) {
             int score = this.evaluteLetters(letterContainers);
-            return new EvaluationResult(true, "Score for word " + word.toString().toUpperCase() + ": " + score, score);
+            return new EvaluationResult(true, "Score for word " + word.toUpperCase() + ": " + score, score);
         } else {
-            return new EvaluationResult(false, word.toString().toUpperCase() + " is not a valid English word.");
+            return new EvaluationResult(false, word.toUpperCase() + " is not a valid English word.");
         }
     }
 
@@ -98,48 +101,12 @@ public class WordEvaluator {
     }
 
     /**
-     * Checks that all the containers are on the same row and don't have gaps
-     * between them.
-     *
-     * @param letterContainers
-     * @return true if all containers are on same row and do not have gaps
-     * between them
+     * Checks if the given containers have any gaps between them.
+     * @param letterContainers Containers to check. Assumes containers are in order.
+     * @param deltaX -1 if word is from right to left, 1 if word is from left to right.
+     * @param deltaY -1 if word is from bottom to top, 1 if word is from top to bottom.
+     * @return 
      */
-    private boolean allContainersOnSameRowWithoutGaps(List<LetterContainer> letterContainers) {
-        List<LetterContainer> containerCopy = new ArrayList(letterContainers);
-        Collections.sort(containerCopy, new LetterContainerCoordinateComparator(false));
-
-        for (int i = 1; i < containerCopy.size(); i++) {
-            LetterContainer previous = containerCopy.get(i - 1);
-            LetterContainer current = containerCopy.get(i);
-            if (current.getY() != previous.getY() || (current.getX() - previous.getX()) > 1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Checks that all the containers are on the same row and don't have gaps
-     * between them.
-     *
-     * @param letterContainers
-     * @return
-     */
-    private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers) {
-        List<LetterContainer> containerCopy = new ArrayList(letterContainers);
-        Collections.sort(containerCopy, new LetterContainerCoordinateComparator(true));
-        for (int i = 1; i < containerCopy.size(); i++) {
-            LetterContainer previous = containerCopy.get(i - 1);
-            LetterContainer current = containerCopy.get(i);
-            if (current.getX() != previous.getX() || (current.getY() - previous.getY()) > 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private boolean wordHasGaps(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
         for (int i = 0; i < letterContainers.size() - 1; i++) {
             LetterContainer container = letterContainers.get(i);

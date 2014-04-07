@@ -6,8 +6,9 @@
 
 package sanapuuro;
 
+import sanapuuro.letters.LetterPool;
 import sanapuuro.ui.Controller;
-import sanapuuro.words.WordEvaluator.Submission;
+import sanapuuro.WordEvaluator.Submission;
 
 /**
  *

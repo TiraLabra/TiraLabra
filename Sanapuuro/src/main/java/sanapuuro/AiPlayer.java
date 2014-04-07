@@ -1,12 +1,12 @@
 package sanapuuro;
 
+import sanapuuro.letters.LetterPool;
 import sanapuuro.ui.Controller;
 import java.util.ArrayList;
 import java.util.List;
-import sanapuuro.grid.Grid;
-import sanapuuro.grid.LetterContainer;
-import sanapuuro.words.WordEvaluator.Submission;
-import sanapuuro.words.WordList;
+import java.util.Set;
+import sanapuuro.letters.LetterContainer;
+import sanapuuro.WordEvaluator.Submission;
 
 /**
  * Keeps track of score and has methods for selecting and adding letters for
@@ -23,12 +23,12 @@ public class AiPlayer implements Player {
     private final List<LetterContainer> submissionContainers = new ArrayList<>();
     private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
     private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
-    private final WordList words;
+    private final Set<String> words;
     private int score = 0;          // Score.
     private final String name;
     private Anagram bestAnagram;
 
-    public AiPlayer(LetterPool letterPool, Grid grid, String name, WordList words) {
+    public AiPlayer(LetterPool letterPool, Grid grid, String name, Set<String> words) {
         this.letterPool = letterPool;
         this.grid = grid;
         this.name = name;
@@ -98,7 +98,7 @@ public class AiPlayer implements Player {
 
     private void tryAnagramToGrid(LetterContainer[] containers, int lettersFromStart) {
         String anagram = this.getStringFromLetterContainers(containers, lettersFromStart);
-        if (!this.words.hasWord(anagram)) {
+        if (!this.words.contains(anagram)) {
             return;
         }
         for (int x = 0; x < this.grid.width; x++) {
