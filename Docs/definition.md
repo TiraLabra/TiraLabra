@@ -4,7 +4,7 @@ The purpose of this laboratory project is to implement the Data Encryption Stand
 
 Implementation
 ==============
-The application I am developing should be a working command-line application, taking a message, either encrypted or not, and running necessary algorithms for it and producing the wanted result: either a decrypted or encrypted message. The main algorithm itself is a block cipher, of which there have been defined several different modes, some of which are being implemented here.
+The application I am developing should be a working command-line application, taking a message, either encrypted or not, and running necessary algorithms for it and producing the wanted result: either a decrypted or encrypted message. The main algorithm itself is a symmetric block cipher (both encryption and decryption keys are the same), of which there have been defined several different modes.
 
 Input and output
 ----------------
@@ -12,7 +12,10 @@ The application accepts a number of parameters and flags from the command line, 
 
 Algorithms
 ----------
-DES uses a number of algorithms for operations, main one being the Feistel f-function. DES chops the data under encryption/decryption into blocks of standard size, 64 bits, which is divided into two halves of 32 bits (left and right). The right half is passed to Feistel f-function and the left half if XOR-ed with the result. This is repeated 15 times, and on the 16th time the result is permuted for the last time.  
+DES chops the data under encryption/decryption into blocks of standard size, 64 bits. This block is permuted thourgh an Initial Permutation (IP) table, after which it is divided into two halves of 32 bits (left and right). The right half is passed to Feistel f-function and the left half if XOR-ed with the result. This is repeated 15 times, swapping left and right after every round, and on the 16th round both halves are permuted through an inverse IP table.
+
+The Feistel F-function operates on 32 bits of data, which it expands to 48 bits with an expansion table. This data is mixed with a key by XOR-ing it with data from the previous round. The resulting 8x6 bits are run through eight substitution boxes (S-Box) and finally permuted once with a fixed table.
+
 Other required algorithms are the Feistel s-function, which permutes the data through eight arrays of bits. Other algorithms are either implementations of different modes or methods for handling the data.
 
 Data Structures
