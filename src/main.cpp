@@ -5,23 +5,7 @@
 
 #include "cmprsrlib.h"
 
-void printSequence(const c_data* pData, const sequence& pSequence)
-{
-	std::cout << "Offset: " << pSequence.offset << " Length: " << pSequence.length
-		<< " First: " << pSequence.first << " Last: " << pSequence.last << " Data: ";
-	for(c_uint i=0; i<pSequence.length; ++i)
-		std::cout << pData[pSequence.offset + i];
-}
-
-void printSequences(const c_data* pData, const sequence_list& pSequences)
-{
-	for(c_uint i=0; i<pSequences.size(); ++i)
-	{
-		std::cout << "Sequence " << i << ": ";
-		printSequence(pData, *pSequences[i]);
-		std::cout << "\n";
-	}
-}
+#include "huffman.h"
 
 void printBytes(const c_uint& pBytes, const bool& pSi)
 {
@@ -41,31 +25,28 @@ void printBytes(const c_uint& pBytes, const bool& pSi)
 
 int main(int argc, char** argv)
 {
-	const char* str = "001122334555566788999";
+	const char* str = "00112233455556678899955";
 	c_uint length = strlen(str);
 	bool inclusive = true;
 
-	c_uint index = 0;
-	sequence_list s = encodeRLE(str, length);
+	int frequencies[256] = {0};
+	const char* ptr = str;
+	while(*ptr != '\0')
+		++frequencies[*ptr++];
 
-	sequence_list::iterator it = s.begin();
-	for(c_uint i=0; i<length; ++i)
+	Node* root = buildTree(frequencies, 255);
+
+	HuffmanCodeMap codes;
+	generateCodes(root, HuffmanCode(), codes);
+	
+	delete root;
+
+	for(HuffmanCodeMap::const_iterator it = codes.begin(); it != codes.end(); ++it)
 	{
-		if(it != s.end())
-		{
-			if(i >= (*it)->offset + (*it)->length)
-			{
-				if(++it != s.end())
-					std::cout << (char)(*it)->length;
-			}
-		}
-		if(it != s.end())
-		{
-			if(i < (*it)->offset)
-				std::cout  << str[i];
-		}else{
-			std::cout << str[i];
-		}
+		std::cout << it->first << " ";
+		for(unsigned int i=0; i<it->second.size(); ++i)
+			std::cout << it->second[i];
+		std::cout << std::endl;
 	}
 
 	return 0;

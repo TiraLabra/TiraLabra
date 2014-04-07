@@ -10,11 +10,6 @@ typedef std::vector<sequence*> sequence_list;
 typedef std::vector<sequence_pair> sequence_pair_list;
 typedef std::vector<merge*> merge_list;
 
-sequence_list encodeRLE(const c_data* pData, const c_uint& pLength);
-void decodeRLE(FILE* pInput, FILE* pOutput);
-
-sequence_list findBitSequences(const c_data* pData, const c_size& pLength, const c_uint& pMinSequence, const c_uint& pMinTrailing);
-
 /// Finds increasing/decreasing sequences in data.
 /// \param pData Data to process.
 /// \param pLength Length of data.
