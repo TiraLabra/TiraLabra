@@ -30,26 +30,23 @@ public class Compressor {
 */
         int arrayLength = wavAsByteArray.length;
         
-        while(n < (arrayLength-(100)) ) {
-            //ton satasen vois vaihtaa johonki tarkempaa, ei kovakoodattuun
-            //System.out.println((byte) 25);
+        while(n < (arrayLength-(45)) ) {
             
-            int sampleValue = (int) wavAsByteArray[44+n];
+            int leftSample = (int) wavAsByteArray[44+n];
+            int rightSample = (int) wavAsByteArray[44+n+1];
+
+            int peak = Math.max(leftSample, rightSample);
             
-            if ((int) sampleValue > 80) {
+            if (leftSample > 60) {
                 
-                wavAsByteArray[44+n+0] = (byte) (10);
-                wavAsByteArray[44+n+1] = (byte) (-10);
-                
-                //wavAsByteArray[44+n+2] = (byte) (10);
-                //wavAsByteArray[44+n+3] = (byte) (-10);
-                
-                n+=2;
             }
             
-            //wavAsByteArray[44+n] = (byte) 100;
+            System.out.println("left: " + leftSample);
+            System.out.println("right: " + rightSample);
             
-            n++;
+            
+            
+            n+=2;
         }
 
         //muista 44byte offset koska jee
