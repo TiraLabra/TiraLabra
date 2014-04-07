@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Sorters;
 
 /**
@@ -33,7 +28,7 @@ public class IntroSorter {
     
     
     /**
-     * Quicksortin päämetodi. 
+     * Quicksortin päämetodi. Järjestää taulukkoa quicksortilla niin kauan kunnes rekursiosyvyys menee yli määritellyn rajan. Tämän jälkeen loput taulukosta järjestetään lisäysjärjestämisellä. 
      * @param arrayToSort Taulukko joka järjestetään.
      * @param first Järjestämisen aloitusindeksi.
      * @param last Järjestämisen lopetusindeksi.
@@ -56,12 +51,13 @@ public class IntroSorter {
     }
     
     /**
-     * 
-     * @param array
-     * @param first
-     * @param last
-     * @param median
-     * @return 
+     * Quicksortin pivotin määrittelymetodi.
+     * Jakaa taulukon alkiot niin, että mediaania pienemmät alkiot ovat järjestettävän alueen toisella puolella ja suuremmat toisella puolella.
+     * @param array Taulukko, jota järjestetään.
+     * @param first Järjestettävän osuuden ensimmäinen alkio.
+     * @param last Järjestettävän osuuden viimeinen alkio.
+     * @param median Taulukon kolmesta luvusta laskettu mediaani.
+     * @return Käytettävän pivotin indeksi.
      */
     private int partition(int[] array, int first, int last, int median) {
         int i, j;
@@ -82,8 +78,8 @@ public class IntroSorter {
     /**
      * Heapsortin päämetodi
      * @param array Järjestettävä taulukko.
-     * @param first 
-     * @param last 
+     * @param first Järjestettävän osuuden ensimmäinen indeksi.
+     * @param last Järjestettävän osuuden viimeinen indeksi.
      */
     public void intro_HeapSort(int[] array, int first, int last) {
         int gap = last - first;
@@ -97,22 +93,24 @@ public class IntroSorter {
     }
     
     /**
-     * 
-     * @param array
-     * @param gap
-     * @param first 
+     * Heapsortin apumetodi, joka rakentaa olemassaolevasta taulukosta kekoehdon toteuttavan taulukon.
+     * Metodi toimii kutsumalla toistuvasti Heapify -metodia jokaiselle tarvittavalle alkiolle.
+     * @param array Taulukko josta keko rakennetaan.
+     * @param last Järjestettävän osuuden viimeinen indeksi.
+     * @param first Järjestettävän osuuden ensimmäinen indeksi.
      */
-    private void intro_buildHeap(int[] array, int gap, int first) {
-        for (int i = gap / 2; i >= 1; i = i - 1) {
-            heapify(array, i, gap, first);
+    private void intro_buildHeap(int[] array, int last, int first) {
+        for (int i = last / 2; i >= 1; i = i - 1) {
+            heapify(array, i, last, first);
         }
     }
     /**
+     * Heapsortin heapify -metodi. Metodi järjestää taulukon alkiot niin, että alkioiden järjestys noudattaa kekoehtoa.
      * 
-     * @param array
-     * @param index
-     * @param last
-     * @param first 
+     * @param array Taulukko, jonka alkioita järjestetään.
+     * @param index Taulukon kohta, josta lähdetään liikkeelle.
+     * @param last Järjestettävän alueen viimeinen indeksi.
+     * @param first Järjestettävän alueen ensimmäinen indeksi.
      */
     private void heapify(int[] array, int index, int last, int first) {
         int d = array[first + index - 1];
@@ -132,10 +130,11 @@ public class IntroSorter {
     }
 
     /**
+     * Quicksortin apuna käytettävän lisäysjärjestämismetodi.
      * 
-     * @param arrayToSort
-     * @param first
-     * @param last 
+     * @param arrayToSort Järjestettävä taulukko.
+     * @param first Järjestettävän osuuden ensimmäinen alkio.
+     * @param last Järjestettävän osuuden viimeinen alkio.
      */
     public void intro_InsertionSort(int[] arrayToSort, int first, int last) {
         int j, temp;

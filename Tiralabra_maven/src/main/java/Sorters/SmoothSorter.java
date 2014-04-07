@@ -4,10 +4,12 @@ package Sorters;
  * 
  * Smoothsort on vertailujärjestämisealgoritmi joka käyttää aputietorakenteenaan kekoa.
  * Smoothsort on kekojärjestämisen variaatio, jolla saavutetaan parempi aikavaativuus lähes järjestetyillä taulukoilla perinteiseen kekojärjestämiseen verrattuna.
+ * Smoothsortin periaatteena on muodostaa yhden keon sijasta useiden kekojen "metsä" käyttäen apuna leonardon sarjan numeroita. 
  * 
  * @author nkostiai
  */
 public final class SmoothSorter {
+    
     /**
      * Taulukko johon talletetaan ensimmäiset 40 numeroa Leonardon sarjasta. Numeroita käytetään määrittelemään osakekojen kokoja.
      */
@@ -26,15 +28,21 @@ public final class SmoothSorter {
         int length = arrayToSort.length;
         int orderLength = countOrderLength(length);
         int[] orders = new int[orderLength];
-        int trees = 0;
 
-        trees = fromLeftToRight(arrayToSort, orders, trees);
+        int trees = formLeonardoHeap(arrayToSort, orders, 0);
 
-        fromRightToLeft(arrayToSort, orders, trees);
+        breakDown(arrayToSort, orders, trees);
 
     }
-
-    private int fromLeftToRight(int[] arrayToSort, int[] orders, int trees) {
+    
+    /**
+     * Muodostetaan taulukosta leonardo-heap.
+     * @param arrayToSort Taulukko, jota järjestetään.
+     * @param orders Taulukko johon talletetaan muodostuvien sisäisten kekojen koot.
+     * @param trees Sisäisten kekojen määrä.
+     * @return Muodostuneiden puiden määrä.
+     */
+    private int formLeonardoHeap(int[] arrayToSort, int[] orders, int trees) {
         for (int i = 0; i < arrayToSort.length; i++) {
             if (trees > 1 && orders[trees - 2] == orders[trees - 1] + 1) {
                 trees--;
@@ -48,8 +56,15 @@ public final class SmoothSorter {
         }
         return trees;
     }
-
-    private void fromRightToLeft(int[] arrayToSort, int[] orders, int trees) {
+    
+    /**
+     * Suoritetaan lopullinen järjestäminen. Leonardo-heapista otetaan suurin elementti, asetetaan se taulukkoon ja pienennetään heapin kokoa.
+     * Tämän jälkeen korjataan jäljelle jääneen heapin kekoehto.
+     * @param arrayToSort Taulukko, jota järjestettään.
+     * @param orders Taulukko, johon on talletettu sisäisten puiden koot.
+     * @param trees Sisäisten puiden määrä.
+     */
+    private void breakDown(int[] arrayToSort, int[] orders, int trees) {
         for (int i = arrayToSort.length - 1; i > 0; i--) {
             if (orders[trees - 1] <= 1) {
                 trees--;
@@ -66,7 +81,14 @@ public final class SmoothSorter {
             }
         }
     }
-
+    /**
+     * Apumetodi, jonka avulla pidetään yllä kekoehtoa.
+     * Metodi etsii seuraavaksi suurimman alkion taulukosta ja asettaa sen heapin päällimmäiseksi.
+     * @param arrayToSort Taulukko, jota järjestetään.
+     * @param index Kohta, josta taulukkoa käydään läpi.
+     * @param tree Monennettako puuta käsitellään.
+     * @param orders Sisäisten puiden koot.
+     */
     private void findAndSift(int[] arrayToSort, int index, int tree, int[] orders) {
         int value = arrayToSort[index];
         while (tree > 0) {
@@ -88,7 +110,12 @@ public final class SmoothSorter {
         arrayToSort[index] = value;
         siftDown(arrayToSort, index, orders[tree]);
     }
-
+    /**
+     * Apumetodi, joka korjaa annetun sisäisen keon kekoehdon.
+     * @param arrayToSort Taulukko, jota järjestetään.
+     * @param index Taulukon indeksi.
+     * @param order Sisäisen keon koko.
+     */
     public void siftDown(int[] arrayToSort, int index, int order) {
         int value = arrayToSort[index];
         while (order > 1) {
@@ -110,12 +137,13 @@ public final class SmoothSorter {
     }
     
     /**
-     * 
+     * Lasketaan montako leonardon puuta kekoon muodostuu maksimissaan.
      * @param n Järjestettävän taulukon pituus
-     * @return 
+     * @return Laskettu määrä.
      */
     public int countOrderLength(int n) {
         return (int) (Math.log(n) / Math.log(2)) * 2;
+       
     }
     
     /**

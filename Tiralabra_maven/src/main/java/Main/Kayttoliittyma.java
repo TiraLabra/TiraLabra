@@ -15,44 +15,65 @@ import java.util.Random;
 public class Kayttoliittyma {
 
     private Random randomizer;
-    private int[] smallArray;
-    private int[] mediumArray;
-    private int[] largeArray;
+    int small = 1000;
+    int medium = 100000;
+    int large = 10000000;
     private MergeSorter mergeSorter;
     private IntroSorter introSorter;
     private SmoothSorter smoothSorter;
 
     public Kayttoliittyma() {
         randomizer = new Random();
-        smallArray = new int[1000];
-        mediumArray = new int[100000];
-        largeArray = new int[10000000];
         mergeSorter = new MergeSorter();
         introSorter = new IntroSorter();
         smoothSorter = new SmoothSorter();
     }
 
     public void kaynnista() {
-        System.out.println("Muodostetaan taulukot...");
-        muodostaTaulukot();
+        System.out.println("SATUNNAISTAULUKKO -----------");
         System.out.println("Järjestetään pieni taulukko...");
-        jarjestaTaulukko(smallArray);
+        jarjestaSatunnaisTaulukko(small);
         System.out.println("Järjestetään keskikokoinen taulukko...");
-        jarjestaTaulukko(mediumArray);
+        jarjestaSatunnaisTaulukko(medium);
         System.out.println("Järjestetään suuri taulukko...");
-        jarjestaTaulukko(largeArray);
+        jarjestaSatunnaisTaulukko(large);
+        System.out.println("JÄRJESTYKSESSÄ OLEVA TAULUKKO -----------");
+        System.out.println("Järjestetään pieni taulukko...");
+        jarjestaJarjestyksessaOlevaTaulukko(small);
+        System.out.println("Järjestetään keskikokoinen taulukko...");
+        jarjestaJarjestyksessaOlevaTaulukko(medium);
+        System.out.println("Järjestetään suuri taulukko...");
+        jarjestaJarjestyksessaOlevaTaulukko(large);
     }
-
-    public void jarjestaTaulukko(int[] jarjestettava) {
-        muodostaTaulukot();
+    
+    /**
+     * Muodostaa ja järjestää annetun kokoisen satunnaistaulukon kaikilla järjestämisalgoritmeillä.
+     * @param koko Haluttu koko.
+     */
+    public void jarjestaSatunnaisTaulukko(int koko) {
         System.out.println("Mergesort...");
-        jarjestaMergesortilla(jarjestettava);
-        muodostaTaulukot();
+        jarjestaMergesortilla(muodostaTaulukko(koko));
+
         System.out.println("Introsort...");
-        jarjestaIntrosortilla(jarjestettava);
-        muodostaTaulukot();
+        jarjestaIntrosortilla(muodostaTaulukko(koko));
+
         System.out.println("Smoothsort...");
-        jarjestaSmoothsortilla(jarjestettava);
+        jarjestaSmoothsortilla(muodostaTaulukko(koko));
+    }
+    
+    /**
+     * Muodostaa ja järjestää annetun kokoisen järjestyksessä olevan taulukon kaikilla järjestämisalgoritmeillä.
+     * @param koko 
+     */
+    public void jarjestaJarjestyksessaOlevaTaulukko(int koko){
+        System.out.println("Mergesort...");
+        jarjestaMergesortilla(muodostaJarjTaulukko(koko));
+
+        System.out.println("Introsort...");
+        jarjestaIntrosortilla(muodostaJarjTaulukko(koko));
+
+        System.out.println("Smoothsort...");
+        jarjestaSmoothsortilla(muodostaJarjTaulukko(koko));
     }
 
     private void jarjestaMergesortilla(int[] jarjestettava) {
@@ -79,17 +100,31 @@ public class Kayttoliittyma {
         System.out.println("Introsortilla aikaa meni: " + ((lopetus - aloitus) / 1000000) + "ms");
 
     }
-
-    private void muodostaTaulukot() {
-        for (int i = 0; i < smallArray.length; i++) {
-            smallArray[i] = randomizer.nextInt(smallArray.length);
+    /**
+     * 
+     * Muodostaa annetun kokoisen taulukon satunnaisgeneraattorilla.
+     * @param koko Taulukon koko.
+     * @return Taulukko.
+     */
+    private int[] muodostaTaulukko(int koko) {
+        int [] uusi = new int[koko];
+        for (int i = 0; i < uusi.length; i++) {
+            uusi[i] = randomizer.nextInt(uusi.length);
         }
-        for (int i = 0; i < mediumArray.length; i++) {
-            mediumArray[i] = randomizer.nextInt(mediumArray.length);
+        return uusi;
+    }
+    /**
+     * Muodostaa annetun kokoisen taulukon järjestyksessä.
+     * 
+     * @param koko Taulukon koko.
+     * @return Taulukko.
+     */
+    private int[] muodostaJarjTaulukko(int koko) {
+        int [] uusi = new int[koko];
+        for (int i = 0; i < uusi.length; i++) {
+            uusi[i] = i;
         }
-        for (int i = 0; i < largeArray.length; i++) {
-            largeArray[i] = randomizer.nextInt(largeArray.length);
-        }
+        return uusi;
     }
 
 }

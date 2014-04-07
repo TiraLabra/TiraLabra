@@ -53,7 +53,7 @@ public class IntroSorterTest extends TestCase {
             int[] sortedArray = arrayToSort.clone();
             Arrays.sort(sortedArray);
             introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
-            assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
+            assertTrue(Arrays.equals(arrayToSort, sortedArray));
         }
     }
     
@@ -63,7 +63,7 @@ public class IntroSorterTest extends TestCase {
             int[] sortedArray = arrayToSort.clone();
             Arrays.sort(sortedArray);
             introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
-            assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
+            assertTrue(Arrays.equals(arrayToSort, sortedArray));
         }
     }
     
@@ -73,7 +73,7 @@ public class IntroSorterTest extends TestCase {
             int[] sortedArray = arrayToSort.clone();
             Arrays.sort(sortedArray);
             introsort.introSort(arrayToSort);
-            assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
+            assertTrue(Arrays.equals(arrayToSort, sortedArray));
         }
     }
     

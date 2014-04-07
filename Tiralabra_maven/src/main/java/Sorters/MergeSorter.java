@@ -1,12 +1,11 @@
 package Sorters;
-
 import java.util.Arrays;
 
 /**
  *
  * @author nkostiai
  *
- * Mergesort on vertailujärjestysalgoritmi joka
+ * Mergesort on vertailujärjestysalgoritmi joka jakaa järjestettävän taulukon pieniin osiin, järjestää osat ja yhdistää osta "lomittamalla" niin, että lopullinen taulukko muodostuu järjestyksessä.
  *
  */
 public class MergeSorter {

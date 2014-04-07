@@ -6,6 +6,7 @@
 
 package Sorters;
 
+import java.util.Arrays;
 import junit.framework.TestCase;
 
 
@@ -33,8 +34,20 @@ public class MergeSorterTest extends TestCase {
         int[] arrayToSort = new int[]{3,9,4,6,1,2,5,7,10,8};
         int[] sortedArray = new int[]{1,2,3,4,5,6,7,8,9,10};
         arrayToSort = sorterToTest.mergeSort(arrayToSort);
-        assertTrue(cmethods.checkThatArraysAreTheSame(arrayToSort, sortedArray));
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
         
+    }
+    
+    public void testAfterMath(){
+        int[] newArray = new int[5];
+        int[] left = new int[]{1,2,3,4,5};
+        int[] right = new int[0];
+        int newArrayIndex = 0;
+        int leftArrayIndex = 0;
+        int rightArrayIndex = Integer.MAX_VALUE;
+        
+       newArray = sorterToTest.mergeSortAfterMath(newArray, left, right, newArrayIndex, leftArrayIndex, rightArrayIndex);
+       assertTrue(Arrays.equals(newArray, left));
     }
     
     
