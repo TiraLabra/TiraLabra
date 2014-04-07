@@ -1,5 +1,17 @@
 Aihemaarittely
 
+//huom. vertaisarvioija: Aihe vaihtui lennossa, vanhan aiheen matskut löytyy Vanha aihe -kansiosta.
+//Uuteen aiheeseen en ole vielä ehtinyt tätä kirjoittaessa toteuttaa mitään.
+
+Tarkoituksena toteuttaa se vanha kunnon A*-reitinhaku omilla tietorakenteilla.
+
+Huonoimman tapauksen tila- ja aikavaativuus on eksponentiaalinen.
+
+Lähteitä:
+http://en.wikipedia.org/wiki/A*_search_algorithm
+
+
+//Vanha aihe, jätetty kesken
 Dynamic Range Compression WAV-tiedostoille.
 
 Varsinainen algoritmi ei ole vielä muotoutunut. Tietorakenteena byte array.
