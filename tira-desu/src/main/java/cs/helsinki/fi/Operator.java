@@ -45,9 +45,12 @@ public class Operator {
         
         if (mode.equals("des"))
             encrypted = enc.encryptSingleDES(this.readFile(input), this.readFile(key));
-        else
+        else if (mode.equals("3des"))
             encrypted = enc.encryptTripleDES(this.readFile(input), null);
-        
+        else {
+            System.out.println("Error: Bad arguments\n  Unrecognized mode.");
+            return;
+        }
         this.writeFile(encrypted, output);
     }
     
@@ -63,9 +66,12 @@ public class Operator {
         
         if (mode.equals("des"))
             decrypted = dec.decryptSingleDES(this.readFile(input), this.readFile(key));
-        else
+        else if (mode.equals("3des"))
             decrypted = enc.encryptTripleDES(this.readFile(input), null);
-        
+        else {
+            System.out.println("Error: Bad arguments\n  Unrecognized mode.");
+            return;
+        }
         this.writeFile(decrypted, output);
     }
 
