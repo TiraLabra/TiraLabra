@@ -4,8 +4,8 @@ import blokus.conf.GlobaalitMuuttujat;
 import blokus.logiikka.Laatta;
 import blokus.logiikka.Pelaaja;
 import blokus.logiikka.PeliLauta;
-import java.util.ArrayList;
 import java.util.HashMap;
+import linkitettyLista.Lista;
 
 /**
  * Tekoälyn pohja
@@ -15,7 +15,8 @@ import java.util.HashMap;
 public class PelaajaAI {
 
     Pelaaja omaTilanne;
-    ArrayList<Sijainti> laudanMahdolliset;
+    //ArrayList<Sijainti> laudanMahdolliset;
+    Lista<Sijainti> laudanMahdolliset;
     Siirto parasSiirto;
    
 
@@ -57,12 +58,12 @@ public class PelaajaAI {
      */
     private void listaaMahdollisetAsettamisPaikat() {
         int[][] l = omaTilanne.getTarkastusLauta().getLauta();
-        laudanMahdolliset = new ArrayList<Sijainti>();
+        laudanMahdolliset = new Lista<Sijainti>();
         for (int i = 0; i < l.length; i++) {
             for (int j = 0; j < l.length; j++) {
                 if (l[i][j] == 1) {
                     Sijainti x = new Sijainti(i, j);
-                    laudanMahdolliset.add(x);
+                    laudanMahdolliset.lisaaListaan(x);
                 }
             }
         }
@@ -139,7 +140,7 @@ public class PelaajaAI {
                 if (la.getMuoto()[i][j] == 3) {
                     if (voikoLisata(la, s.getI() - (i - 3), s.getJ() - (j - 3), l)) {
 
-                        Siirto si = new Siirto(s.getI() - (i - 3), s.getJ() - (j - 3), la, l,laudanMahdolliset.size());
+                        Siirto si = new Siirto(s.getI() - (i - 3), s.getJ() - (j - 3), la, l,laudanMahdolliset.getListanKoko());
                         if (parasSiirto == null || parasSiirto.getHyvyys() < si.getHyvyys()) {
                             parasSiirto = si;
                         }

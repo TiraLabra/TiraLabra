@@ -2,10 +2,9 @@ package blokus.AI;
 
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.logiikka.Laatta;
-import blokus.logiikka.TarkastusLauta;
 
 /**
- *
+ * Kuvaa laudalle mahdollisesti asetettavaa siirtoa ja sen hyvyyttä
  * @author Ilkimys
  */
 public class Siirto {
@@ -19,7 +18,7 @@ public class Siirto {
     private int hyvyys;
 
     /**
-     *
+     * Luo halutun siirron
      * @param kohdeI
      * @param kohdeJ
      * @param laatta
@@ -35,37 +34,17 @@ public class Siirto {
         pisteytaSiirto(alkuperäisetSiirrot);
     }
 
+    
+    /*
+     * Pisteyttää halutun siirron
+     */
     private void pisteytaSiirto(int aS) {
         hyvyys = laatta.getKoko() + laskeuudetPaikat(aS);
     }
 
-    public int getAsento() {
-        return asento;
-    }
-
-    public int getYmpari() {
-        return ympari;
-    }
-
-    /**
-     *
-     * @return
+    /*
+     * Laskee siirron tuottamat uudet asettamis paikat
      */
-    public int getHyvyys() {
-        return hyvyys;
-    }
-
-    public int getKohdeI() {
-        return kohdeI;
-    }
-
-    public int getKohdeJ() {
-        return kohdeJ;
-    }
-
-    public Laatta getLaatta() {
-        return laatta;
-    }
 
     private int laskeuudetPaikat(int aS) {
         int[][] testiTLauta = kopioiLauta(tlauta);
@@ -121,5 +100,28 @@ public class Siirto {
             
         }
         return kopio;
+    }
+    
+        public int getAsento() {
+        return asento;
+    }
+
+    public int getYmpari() {
+        return ympari;
+    }
+    public int getHyvyys() {
+        return hyvyys;
+    }
+
+    public int getKohdeI() {
+        return kohdeI;
+    }
+
+    public int getKohdeJ() {
+        return kohdeJ;
+    }
+
+    public Laatta getLaatta() {
+        return laatta;
     }
 }

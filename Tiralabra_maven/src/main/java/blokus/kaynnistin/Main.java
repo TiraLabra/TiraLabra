@@ -3,6 +3,7 @@ package blokus.kaynnistin;
 import blokus.gui.Kaynnistin;
 import blokus.gui.Kayttoliittyma;
 import blokus.logiikka.Blokus;
+import linkitettyLista.Lista;
 
 
 /**
@@ -21,6 +22,8 @@ public class Main
 //        peli.aloitaVuoro();
 //        Kayttoliittyma g = new Kayttoliittyma(peli);
         Kaynnistin k = new Kaynnistin();
+        
+ 
         
     }
 }
