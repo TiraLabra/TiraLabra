@@ -11,7 +11,7 @@ import juhor.tiralabra.data_structures.Vector;
  */
 public class MLPLayer {
     
-    MLPNeuron[] neurons;
+    private MLPNeuron[] neurons;
     double[] errorSignals;
     Vector inputs;
     Vector outputs;
