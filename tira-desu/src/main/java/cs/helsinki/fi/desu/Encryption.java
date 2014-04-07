@@ -106,7 +106,7 @@ public class Encryption {
     public byte[] insertPadding(int length) {
         byte[] padding = new byte[length];
         padding[0] = -128;
-        for (int i = 0; i < length; i++)
+        for (int i = 1; i < length; i++)
             padding[i] = 0;
         return padding;
     }
