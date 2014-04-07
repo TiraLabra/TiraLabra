@@ -40,7 +40,11 @@ public class LSA extends PSA {
         scores[2] = m.get(i, j - 1) + s.getScore(input2[j - 1], '-');
         scores[3] = 0;
         return scores;
-
+    }
+    
+    @Override
+    public void setUpAlignmentMatrix() {
+        // Initialized matrix is already ready for LSA algorithm.
     }
 
     

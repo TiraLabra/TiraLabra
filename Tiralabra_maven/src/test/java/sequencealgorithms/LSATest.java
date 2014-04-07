@@ -35,18 +35,21 @@ public class LSATest extends TestFileOperations {
     public void setUp() {
         writeNewTestSequenceFile("actg\nactg");
         identicalSeqs = new LSA(TESTFILENAME);
+        identicalSeqs.setUpScoring(5, -3, -1, 0);
         identicalSeqs.calculateAlignment();
         identicalSeqs.findSolution();
 
         writeNewTestSequenceFile("aaatgccc\nccatgaa");
         simpleSeqs = new LSA(TESTFILENAME);
+        simpleSeqs.setUpScoring(5, -3, -1, 0);
         simpleSeqs.calculateAlignment();
         simpleSeqs.findSolution();
+        simpleSeqs.m.print();
     }
 
     @Test
     public void identicalSequenceGivesCorrectScore() {
-        assertEquals(8, identicalSeqs.getAlignmentScore(), 0.00001);
+        assertEquals(20, identicalSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test
@@ -62,7 +65,7 @@ public class LSATest extends TestFileOperations {
 
     @Test
     public void simpleSequenceGivesCorrectScore() {
-        assertEquals(6, simpleSeqs.getAlignmentScore(), 0.00001);
+        assertEquals(15, simpleSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test

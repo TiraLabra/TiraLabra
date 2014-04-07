@@ -48,10 +48,6 @@ abstract class PSA implements Problem {
         s = new ScoringMatrix(alphabet);
         m = new AlignmentMatrix(input1.length, input2.length);
         solution = null;
-
-//        setUpScoringMatrix();
-        setUpAlignmentMatrix();
-
         verbose = false;
     }
 
@@ -75,6 +71,8 @@ abstract class PSA implements Problem {
         s.setMismatchPenalty(mismatchPenalty);
         s.setIndelPenalty(indelPenalty);
         s.setGapPenalty(gapPenalty);
+        
+        setUpAlignmentMatrix();
     }
 
     /**

@@ -34,52 +34,56 @@ public class GSATest extends TestFileOperations {
     public void setUp() {
         writeNewTestSequenceFile("actg\nactg");
         identicalSeqs = new GSA(TESTFILENAME);
+        identicalSeqs.setUpScoring(5,-3,-1,0);
         identicalSeqs.calculateAlignment();
         identicalSeqs.findSolution();
 
         writeNewTestSequenceFile("actgactg\naaccttgg");
         shortSeqs = new GSA(TESTFILENAME);
+        shortSeqs.setUpScoring(5,-3,-1,0);
         shortSeqs.calculateAlignment();
         shortSeqs.findSolution();
 
         writeNewTestSequenceFile("gcgcgtgcgcggaaggagccaaggtgaagttgtagcagtgtgtcagaagaggtgcgtggcaccatgctgtcccccgaggcggagcgggtgctgcggtacctggtcgaagtagaggagttg\n"
                 + "gacttgtggaacctacttcctgaaaataaccttctgtcctccgagctctccgcacccgtggatgacctgctcccgtacacagatgttgccacctggctggatgaatgtccgaatgaagcg");
         longSeqs = new GSA(TESTFILENAME);
+        longSeqs.setUpScoring(5,-3,-1,0);
         longSeqs.calculateAlignment();
         longSeqs.findSolution();
     }
 
     @Test
     public void identicalSequencesGiveCorrectScore() {
-        assertEquals(4, identicalSeqs.getAlignmentScore(), 0.00001);
+        assertEquals(20, identicalSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test
     public void identicalSequenceSolutionMatchesScore() {
         double score = checkSolutionScore(identicalSeqs);
-        assertEquals(4, score, 0.00001);
+        assertEquals(20, score, 0.00001);
     }
 
     @Test
     public void shortSequenceGivesCorrectScore() {
-        assertEquals(-4, shortSeqs.getAlignmentScore(), 0.00001);
+        System.out.println("GAS: " + shortSeqs.getAlignmentScore());
+        assertEquals(19, shortSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test
     public void shortSequenceSolutionMatchesScore() {
         double score = checkSolutionScore(shortSeqs);
-        assertEquals(-4, score, 0.00001);
+        assertEquals(19, score, 0.00001);
     }
 
     @Test
     public void longSequenceGivesCorrectScore() {
-        assertEquals(-18, longSeqs.getAlignmentScore(), 0.00001);
+        assertEquals(285, longSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test
     public void longSequenceSolutionMatchesScore() {
         double score = checkSolutionScore(longSeqs);
-        assertEquals(-18, score, 0.00001);
+        assertEquals(285, score, 0.00001);
     }
 
     private double checkSolutionScore(GSA gsa) {
