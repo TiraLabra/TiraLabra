@@ -2,7 +2,15 @@
 
   var stage,
       Node = window.Node,
-      Segment = window.Segment;
+      Segment = window.Segment,
+      node,
+      nodes,
+      nodeArray,
+      openNodes,
+	  closedNodes,
+	  segmentCount,
+	  minDistanceToEnd,
+	  path;
 
   var NODE_DIMENSIONS = {
     w: 30,
@@ -15,7 +23,7 @@
 	
 	// get Nodes from .json file
 	$.getJSON('nodes.json', function(data) {
-		var node = new Array;
+		node = new Array;
 		$.each(data.nodes, function(key, value) {
    			
    			// create each Node based on JSON
@@ -57,9 +65,9 @@
     		}).attach();  		
    		}); 
    		
-   		var nodeArray = new Array;
+   		nodeArray = new Array;
    		// Segments can only be drawn after each Node has been created  		
-   		var segmentCount = 0;
+   		segmentCount = 0;
    		$.each(data.nodes, function(key, value) {
    			nodeArray[key] = key; 			
    			$.each(value.neighbours, function(subkey, subvalue) {
@@ -76,10 +84,11 @@
     		
    		});   				
 	
-		var openNodes = new Array;
-		var closedNodes = new Array;
-		var minDistanceToEnd = 0;
-		
+		openNodes = new Array;
+		closedNodes = new Array;
+		minDistanceToEnd = 0;
+	});    
+  }  	
 		// version of A* search
 		function nodeSearch(currentNode, end) {
 		
@@ -167,6 +176,7 @@
     	   		}
     	   		else {
     	   			window.console.log("done");
+    	   			path = new Array;
     	   			reconstructPath(closedNodes[0], end);
     	   		}
 	    	}
@@ -176,13 +186,13 @@
 		    		alert("Unreachable");
 		    	}
 		    	else {
+		    		path = new Array;
 		    		reconstructPath(closedNodes[0], end);
 		    	}	    		
 	    	}	    	   	    		
   		}
   		
-  		// reconstruct path
-  		var path = new Array;
+  		// reconstruct path  		
   		function reconstructPath(start, end) {
 			
 			$(".segment, .node").css("background", "#DDD");
@@ -224,7 +234,9 @@
   				}
   				$("#result").append("<li>"+path[0]+"</li>"); 			
   			}  			
-  		}  		  		
+  		}
+  	function randomize() {
+  	}  		  		
   		
   		$("#search").click( function () {
   		 	var start = $("#start").text();
@@ -241,8 +253,16 @@
 	  			}
 	  		}
   		});
-  	});    
-  }  
+  		$("#initialize").click( function () {
+  			$("#stage, #result").html("");
+  			$("#start").text("");
+  		 	$("#end").text("");
+  			initialize(); 	
+  		});
+  		$("#randomize").click( function () {
+  			randomize(); 	
+  		});
+  	
    
   initialize();
   

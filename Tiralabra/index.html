@@ -3,7 +3,8 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>HTML5 Node Diagram</title>
-    <script src="lib/jquery-1.7.2.min.js"></script>
+    <!--<script src="lib/jquery-1.7.2.min.js"></script>-->
+    <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="lib/models.js"></script>
     <script src="lib/underscore-min.js"></script>
     
@@ -15,7 +16,7 @@
     <div id="ctrl">	        
     	Start:<span id="start"></span><br />
     	End:<span id="end"></span><br /><br />
-    	<button class="btn" id="search">Search</button>
+    	<button class="btn" id="search">Search</button> <button class="btn" id="initialize">Initialize</button> <button class="btn" id="randomize">Randomize</button>
     	<div id="results">
     		<ul id="result"></ul>
     	</div>
