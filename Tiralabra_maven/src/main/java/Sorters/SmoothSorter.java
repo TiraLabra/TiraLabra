@@ -25,6 +25,7 @@ public final class SmoothSorter {
      * @param arrayToSort Järjestettävä taulukko.
      */
     public void smoothSort(int[] arrayToSort) {
+        if(arrayToSort.length > 1){
         int length = arrayToSort.length;
         int orderLength = countOrderLength(length);
         int[] orders = new int[orderLength];
@@ -32,6 +33,7 @@ public final class SmoothSorter {
         int trees = formLeonardoHeap(arrayToSort, orders, 0);
 
         breakDown(arrayToSort, orders, trees);
+        }
 
     }
     
