@@ -41,11 +41,41 @@ public class Pohja {
 
     public Pohja() {
     }
+    
+    public Pohja(int korkeus, int leveys, String syote){
+        kartta = new Ruutu[korkeus][leveys];
+        this.korkeus = korkeus;
+        this.leveys = leveys;
+        alustaPohja(syote);
+    }
+    
+    private void alustaPohja(String syote){
+        Scanner lukija = new Scanner(System.in);
+        for (int i = 0; i < korkeus; i++) {
+            for (int j = 0; j < leveys; j++) {
+                char merkki = syote.charAt(i*leveys+j);
+                int arvo = tarkistaRuudunArvo(merkki, i, j);
+                kartta[i][j] = new Ruutu(arvo, i, j);
+            }
+        }
+        tulostaPohja();
+        
+//        int x = 0;
+//        while (lukija.hasNextLine()) {
+//            String rivi = lukija.nextLine();
+//            for (int j = 0; j < rivi.length(); j++) {
+//                char merkki = rivi.charAt(j);
+//                int arvo = tarkistaRuudunArvo(merkki, x, j);
+//                kartta[x][j] = new Ruutu(arvo, x, j);
+//            }
+//            x++;
+//        }
+    }
 
     /**
      * Luo tekstitiedostosta pohjan taulukkoon.
      */
-    public void alustaPohja(String tiedostoPolku) {
+    public void alustaPohja1(String tiedostoPolku) {
         File tiedosto = new File(tiedostoPolku);
         Scanner lukija = liitaTiedostoLukijaan(tiedosto);
 

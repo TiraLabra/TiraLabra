@@ -30,9 +30,9 @@ public class Piirtoalusta extends JPanel {
     private Pohja pohja;
 
     /**
-     * 
+     *
      * @param kaynnistys
-     * @param sivu 
+     * @param sivu
      */
     public Piirtoalusta(Kaynnistys kaynnistys, int sivu) {
         this.kaynnistys = kaynnistys;
@@ -42,7 +42,8 @@ public class Piirtoalusta extends JPanel {
 
     /**
      * Piirtää kartan.
-     * @param g 
+     *
+     * @param g
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -50,6 +51,7 @@ public class Piirtoalusta extends JPanel {
         for (int i = 0; i < pohja.getKorkeus(); i++) {
             for (int j = 0; j < pohja.getLeveys(); j++) {
                 piirraRuutu(g, pohja.getRuutu(i, j));
+                piirraKaydyt(g, i, j);
                 piirraReitti(g, i, j);
             }
         }
@@ -57,6 +59,7 @@ public class Piirtoalusta extends JPanel {
 
     /**
      * Määrittää ruudulle värin sen arvon perusteella.
+     *
      * @param g Graphics
      * @param r Ruutu
      */
@@ -70,22 +73,31 @@ public class Piirtoalusta extends JPanel {
         }
         g.fill3DRect(r.getY() * sivu, r.getX() * sivu, sivu, sivu, true);
     }
-    
+
     /**
      * Piirtää reitin kartalle ruutujen päälle.
+     *
      * @param g Graphics
      * @param x korkeus
      * @param y leveys
      */
-    private void piirraReitti(Graphics g, int x, int y){
+    private void piirraReitti(Graphics g, int x, int y) {
         if (kaynnistys.getEtsija().getReitti() != null && kaynnistys.getEtsija().onkoRuutuReitilla(x, y)) {
-            g.setColor(Color.yellow);
+            g.setColor(Color.YELLOW);
+            g.fillOval(y * sivu + 15, x * sivu + 15, 10, 10);
+        }
+    }
+
+    private void piirraKaydyt(Graphics g, int x, int y) {
+        if (kaynnistys.getEtsija().getReitti() != null && !kaynnistys.getEtsija().onkoRuutuReitilla(x, y) && pohja.getRuutu(x, y).onkoKayty()) {
+            g.setColor(new Color(255, 255, 240));
             g.fillOval(y * sivu + 15, x * sivu + 15, 10, 10);
         }
     }
 
     /**
      * Tarkistaa, onko annetuissa koordinaateissa oleva ruutu lähtö tai maali.
+     *
      * @param i
      * @param j
      * @return true, jos ruutu on lähtö tai maali, muuten false.

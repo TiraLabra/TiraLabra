@@ -43,11 +43,9 @@ public class Etsija {
             for (int j = 0; j < pohja.getLeveys(); j++) {
                 Ruutu ruutu = pohja.getRuutu(i, j);
                 ruutu.laskeEtaisyysMaaliin(pohja.getMaaliX(), pohja.getMaaliY());
-                if (ruutu.equals(pohja.getLahto())) {
-                    ruutu.setEtaisyysAlkuun(0);
-                }
             }
         }
+        pohja.getLahto().setEtaisyysAlkuun(0);
         kaymattomat.alustaTaulukko(pohja);
         kaymattomat.rakennaKeko();
     }
@@ -93,8 +91,8 @@ public class Etsija {
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
      */
     private void relax(Ruutu kasiteltava, Ruutu viereinen) {
-        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
-            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1 && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
+            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1);
             viereinen.setEdellinen(kasiteltava);
 //            kaymattomat.paivitaRuutuKekoon(viereinen);
             kaymattomat.rakennaKeko();
@@ -147,11 +145,11 @@ public class Etsija {
             kasiteltava = kasiteltava.getEdellinen();
         }
     }
-    
+
     /**
      * Laskee reitin pituuden.
      */
-    private void laskeReitinPituus(){
+    private void laskeReitinPituus() {
         reitinPituus = 0;
         Ruutu kasiteltava = pohja.getMaali();
         reitinPituus++;
@@ -162,7 +160,9 @@ public class Etsija {
     }
 
     /**
-     * Tarkistaa onko annetuissa koordinaateissa oleva ruutu lyhimmällä reitillä.
+     * Tarkistaa onko annetuissa koordinaateissa oleva ruutu lyhimmällä
+     * reitillä.
+     *
      * @param x rivi
      * @param y sarake
      * @return true, jos ruutu on lyhimmällä reitillä, muuten false.

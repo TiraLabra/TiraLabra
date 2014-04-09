@@ -22,7 +22,7 @@ public class EtsijaTest {
     @Before
     public void setUp() {
         Pohja pohja = new Pohja();
-        pohja.alustaPohja("src/main/java/labyrintti/osat/kartta2.txt");
+        pohja.alustaPohja1("src/main/java/labyrintti/osat/kartta2.txt");
         etsija = new Etsija(pohja);
     }
     

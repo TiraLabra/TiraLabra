@@ -24,7 +24,7 @@ public class MinimikekoTest {
     public void setUp() {
         keko = new Minimikeko(8);
         p = new Pohja();
-        p.alustaPohja("src/main/java/labyrintti/osat/kartta2.txt");
+        p.alustaPohja1("src/main/java/labyrintti/osat/kartta2.txt");
         keko.alustaTaulukko(p);
     }
 
