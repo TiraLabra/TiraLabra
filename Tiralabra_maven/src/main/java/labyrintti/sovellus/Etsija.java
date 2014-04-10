@@ -54,13 +54,18 @@ public class Etsija {
      * A*-algoritmi, joka etsii lyhimmän reitin lähdöstä maaliin.
      */
     public void aStar() {
+        long aikaAlussa = System.currentTimeMillis();
         alustus();
         while (!pohja.getMaali().onkoKayty()) {
             Ruutu kasiteltava = kaymattomat.pollPienin();
+            while(kasiteltava.getArvo()==9){
+                kasiteltava = kaymattomat.pollPienin();
+            }
             kasiteltava.setKayty(true);
             kayLapiViereisetRuudut(kasiteltava);
         }
-
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
     /**
@@ -91,8 +96,8 @@ public class Etsija {
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
      */
     private void relax(Ruutu kasiteltava, Ruutu viereinen) {
-        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1 && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
-            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1);
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
+            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
             viereinen.setEdellinen(kasiteltava);
 //            kaymattomat.paivitaRuutuKekoon(viereinen);
             kaymattomat.rakennaKeko();
