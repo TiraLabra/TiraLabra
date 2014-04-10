@@ -73,7 +73,8 @@ public class Pacman extends Timer implements ActionListener {
     private Haku haku;
 
     /**
-     * Haamujenkäsittelijä on luokan ilmentymä, joka hallinnoi haamujen toimintaa.
+     * Haamujenkäsittelijä on luokan ilmentymä, joka hallinnoi haamujen
+     * toimintaa.
      */
     private HaamujenKasittelija kasittelija;
 
@@ -106,7 +107,7 @@ public class Pacman extends Timer implements ActionListener {
     public boolean getHeikko() {
         return this.heikko;
     }
-    
+
     public void setHeikko(boolean muutos) {
         this.heikko = muutos;
     }
@@ -138,6 +139,7 @@ public class Pacman extends Timer implements ActionListener {
     public Lista getHedelmanPaikat() {
         return this.hedelmanPaikat;
     }
+
     public HaamujenKasittelija getKasittelija() {
         return this.kasittelija;
     }
@@ -176,9 +178,11 @@ public class Pacman extends Timer implements ActionListener {
                 haamu.palaaAlkuun();
                 haamu.setTyyppi("vahva");
                 laskuri.kasvata(80);
+                System.out.println("kuoli " + haamu.getNimi());
             } else {
                 man.palaaAlkuun();
                 man.vahennaElama();
+                System.out.println("man kuoli");
             }
         }
     }
@@ -307,26 +311,53 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        long aikaAlussa = System.currentTimeMillis();
         kasittelija.liikutaHaamut();
         kuoleekoHaamuTaiMan();
-        if (kasittelija.tarkistaOnkoHeikkoja() == 0) {
-            this.heikko = false;
-        }
+        asetaHeikkous();
         this.man.liiku(this.heikko, this);
         kuoleekoHaamuTaiMan();
         manSyoPistepallo();
         luoHedelma();
         asetaSeina();
         paattyykoPeli();
+        paataPeliJosElamatLoppuu();
+        this.paivitettava.paivita();
+        setDelay(300);
+        paataPeli(aikaAlussa);
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+
+    }
+
+    /**
+     * Jos jatkuu muuttuja on false, päätetään peli.
+     */
+    private void paataPeli(Long aikaAlussa) {
+        if (!jatkuu) {
+            System.out.println("Loppu");
+            long aikaLopussa = System.currentTimeMillis();
+            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+            this.stop();
+        }
+    }
+
+    /**
+     * Asetetaan muuttuja jatkuu falseksi, jos manin elämät loppuvat.
+     */
+    private void paataPeliJosElamatLoppuu() {
         if (man.getElamat() <= 0) {
             jatkuu = false;
         }
-        this.paivitettava.paivita();
-        setDelay(300);
+    }
 
-        if (!jatkuu) {
-            this.stop();
+    /**
+     * Jos yksikään haamuista ei ole heikko, asetetaan muuttuja heikko falseksi.
+     * Eli kukaan ei ole heikko.
+     */
+    private void asetaHeikkous() {
+        if (kasittelija.tarkistaOnkoHeikkoja() == 0) {
+            this.heikko = false;
         }
     }
 

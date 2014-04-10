@@ -40,10 +40,18 @@ public class HaamujenKasittelija {
         green = new Green(10, 9, Suunta.YLOS, "green", peli.getAlusta());
         cyan = new Cyan(8, 9, Suunta.YLOS, "cyan", peli.getAlusta());
         magenta = new Magenta(9, 9, Suunta.YLOS, "magenta", peli.getAlusta());
+        luoHaamutAlustalle();
         this.magentaMaali = magenta.selvitaMaaliMagenta(arpoja);
         this.haku = hakija;
         this.arpoja = arpoja;
         this.peli = peli;
+    }
+
+    private void luoHaamutAlustalle() {
+        red.luoHaamuAlustalle();
+        green.luoHaamuAlustalle();
+        cyan.luoHaamuAlustalle();
+        magenta.luoHaamuAlustalle();
     }
 
     public Red getRed() {
@@ -60,6 +68,14 @@ public class HaamujenKasittelija {
 
     public Green getGreen() {
         return this.green;
+    }
+    
+    public void setMagentaMaali(Peliruutu ruutu) {
+        this.magentaMaali = ruutu;
+    }
+    
+    public Peliruutu getMagentaMaali() {
+        return this.magentaMaali;
     }
 
     /**
@@ -82,6 +98,7 @@ public class HaamujenKasittelija {
     private void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
         haamu.setHeikkous(30);
+        System.out.println("heikennetään");
     }
 
     /**
@@ -95,6 +112,7 @@ public class HaamujenKasittelija {
             if (haamu.getHeikkous() == 0) {
                 haamu.setTyyppi("vahva");
                 peli.setHeikko(false);
+                System.out.println("vahvaksi");
             } else {
                 haamu.vahennaHeikkous();
             }
@@ -106,67 +124,57 @@ public class HaamujenKasittelija {
      */
     public void liikutaHaamut() {
 
-        
-        long aikaAlussa = System.currentTimeMillis();
-        liikutaRed();
-        liikutaGreen();
-        liikutaCyan();
-        liikutaMagenta();
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+        liikutaHaamu(red);
+        liikutaHaamu(green);
+        liikutaHaamu(cyan);
+        liikutaHaamu(magenta);
     }
 
     /**
-     * Liikutetaan haamu Red omalla tavallaan, jos sen tyyppi on heikko tai, jos
-     * sen tyyppi on vahva.
+     * Metodi saa paramertinaan liikutettavan haamun ja liikuttaa sitä tavalla, joka riippuu siitä onko haamu heikko vai vahva.
+     * @param haamu 
      */
-    private void liikutaRed() {
-        if (red.getTyyppi().equals("heikko")) {
-            liikutaRedHeikko();
+    public void liikutaHaamu(Haamu haamu) {
+        if (haamu.getTyyppi().equals("heikko")) {
+            liikutaHaamuHeikkona(haamu);            
         } else {
+            liikuHaamuVahvana(haamu);
+        }
+        haamuHeikostaVahvaksi(haamu);
+    }
+
+    /**
+     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista haamua omalla tavallaan.
+     * @param haamu 
+     */
+    private void liikuHaamuVahvana(Haamu haamu) {
+        if(haamu.getNimi().equals("red")) {
             liikutaVahvaRed();
-        }
-        haamuHeikostaVahvaksi(red);
-    }
-
-    /**
-     * Liikutetaan haamu Green oalla tavallaan, jos sen tyyppi on heikko tai,
-     * jos sen tyyppi on vahva.
-     */
-    private void liikutaGreen() {
-        if (green.getTyyppi().equals("heikko")) {
-            liikutaGreenHeikko();
-        } else {
+        } else if(haamu.getNimi().equals("green")) {
             liikutaVahvaGreen();
-        }
-        haamuHeikostaVahvaksi(green);
-    }
-
-    /**
-     * Liikutetaan haamu Magenta oalla tavallaan, jos sen tyyppi on heikko tai,
-     * jos sen tyyppi on vahva.
-     */
-    private void liikutaMagenta() {
-        if (magenta.getTyyppi().equals("heikko")) {
-            liikutaMagentaHeikko();
-        } else {
+        } else if(haamu.getNimi().equals("cyan")) {
+            liikutaVahvaCyan();
+        } else if(haamu.getNimi().equals("magenta")) {
             liikutaVahvaMagenta();
         }
-        haamuHeikostaVahvaksi(magenta);
     }
 
     /**
-     * Liikutetaan haamu Cyan oalla tavallaan, jos sen tyyppi on heikko tai, jos
-     * sen tyyppi on vahva.
+     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista haamua omalla tavallaan.
+     * @param haamu 
      */
-    private void liikutaCyan() {
-        if (cyan.getTyyppi().equals("heikko")) {
+    private void liikutaHaamuHeikkona(Haamu haamu) {
+        if(haamu.getNimi().equals("red")) {
+            liikutaRedHeikko();
+        } else if(haamu.getNimi().equals("green")) {
+            liikutaGreenHeikko();
+        } else if(haamu.getNimi().equals("cyan")) {
             liikutaCyanHeikko();
-        } else {
-            liikutaVahvaCyan();
+        } else if(haamu.getNimi().equals("magenta")) {
+            liikutaMagentaHeikko();
         }
-        haamuHeikostaVahvaksi(cyan);
     }
+ 
 
     /**
      * Liikutetaan vahva-tyyppinen Green sen omalla liiku-metodilla.
@@ -186,7 +194,9 @@ public class HaamujenKasittelija {
             while (magenta.getX() == magentaMaali.getX() && magenta.getY() == magentaMaali.getY()) {
                 magentaMaali = magenta.selvitaMaaliMagenta(arpoja);
             }
-
+            System.out.println("uusi");
+            System.out.println(magentaMaali);
+            System.out.println("magenta " + magenta.getX() + " " + magenta.getY());
         }
         Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali, peli.getAlusta());
         magenta.liiku(siirto);
@@ -214,7 +224,6 @@ public class HaamujenKasittelija {
 
         Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY()), peli.getAlusta());
         red.liiku(siirto);
-
     }
 
     /**
@@ -254,7 +263,6 @@ public class HaamujenKasittelija {
      * haulla ruutu, johon Redin kannattaa liikahtaa.
      */
     private void liikutaRedHeikko() {
-        System.out.println("heikko");
         int peilaus = 9 - peli.getMan().getX();
         Peliruutu maali = peli.getAlusta().getPeliruutu(9 + peilaus, peli.getMan().getY());
         if (maali.getX() == red.getX() && maali.getY() == red.getY()) {

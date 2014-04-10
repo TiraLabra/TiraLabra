@@ -40,8 +40,7 @@ public class HaamujenKasittelijaTest {
     @Before
     public void setUp() {
         peli = new Pacman();
-        haku = new Haku();
-        kasittelija = new HaamujenKasittelija(peli, new Random(), haku);
+        kasittelija = peli.getKasittelija();
     }
 
     @After
@@ -78,5 +77,52 @@ public class HaamujenKasittelijaTest {
         assertEquals(4, kasittelija.tarkistaOnkoHeikkoja());
         kasittelija.getGreen().setTyyppi("vahva");
         assertEquals(3, kasittelija.tarkistaOnkoHeikkoja());
+    }
+    
+    @Test
+    public void liikuttaaOikeinVahvaRed() {
+        assertEquals(9, kasittelija.getRed().getX());
+        assertEquals(7, kasittelija.getRed().getY());
+        assertTrue(peli.getAlusta().getPeliruutu(9, 7).getOnkoHaamu());
+        kasittelija.liikutaHaamut();
+        assertEquals(10, kasittelija.getRed().getX());
+        assertEquals(7, kasittelija.getRed().getY());
+        assertTrue(peli.getAlusta().getPeliruutu(10, 7).getOnkoHaamu());
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinVahvaGreen() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinVahvaCyan() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinVahvaMagenta() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinHeikkoRed() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinHeikkoGreen() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinHeikkoMagenta() {
+        
+    }
+    
+    @Test
+    public void liikuttaaOikeinHeikkoCyan() {
+        
     }
 }
