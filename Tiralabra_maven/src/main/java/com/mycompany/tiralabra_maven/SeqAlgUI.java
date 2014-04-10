@@ -38,7 +38,10 @@ public class SeqAlgUI {
             if (problem == null) {
                 break;
             }
+            long startTime = System.currentTimeMillis();
             problem.solve();
+            long endTime = System.currentTimeMillis();
+            System.out.println("Solve time: " + (endTime - startTime));
             System.out.println("Solution:");
             printSolution(problem.getSolution());
         }
@@ -47,8 +50,8 @@ public class SeqAlgUI {
 
     /**
      * Problem selector. Asks input and sets up the problem to be solved.
-     * 
-     * @return The 
+     *
+     * @return The
      */
     private void selectProblem() {
         switch (readProblemSelection()) {
@@ -74,19 +77,34 @@ public class SeqAlgUI {
     }
 
     /**
+     * Reads user input and returns the selection. If the input is invalid,
+     * returns 0.
+     *
+     * @return
+     */
+    public int readProblemSelection() {
+        System.out.println("Select problem type:");
+        System.out.println("1 - Longest Common Substring");
+        System.out.println("2 - Global Sequence Alignment");
+        System.out.println("3 - Local Sequence Alignment");
+        System.out.println("4 - Global Sequence Alignment with gap penalties");
+        int selection = 0;
+        try {
+            selection = Integer.parseInt(reader.nextLine());
+        } catch (NumberFormatException e) {
+        }
+        return selection;
+    }
+
+    /**
      * Asks input and sets up the scoring used to solve the current problem.
-     * 
+     *
      * @param withGap True, if affine gap penalty is used.
      */
     private void setUpScoring(boolean withGap) {
-        System.out.println("1 - Use simple scoring scheme");
-        System.out.println("2 - Read scoring scheme from a file");
-        switch (readInt()) {
+        switch (readScoringSelection()) {
             case 1:
                 readUserScoring(withGap);
-                break;
-            case 2:
-                readFileScoring();
                 break;
             default:
                 useDefaultScoring();
@@ -94,9 +112,28 @@ public class SeqAlgUI {
     }
 
     /**
-     * Reads scoring scheme from user input. Limited to reading only 4 values: a match bonus, a mismatch penalty,
-     * an indel penalty and optionally a gap penalty.
-     * @param withGap 
+     * Reads user input and returns the selection. If the input is invalid,
+     * returns 0.
+     * @return 
+     */
+    private int readScoringSelection() {
+        System.out.println("0 - Use default scoring");
+        System.out.println("1 - Use simple scoring scheme");
+        int selection = 0;
+        try {
+            selection = Integer.parseInt(reader.nextLine());
+        } catch (NumberFormatException e) {
+        }
+        return selection;
+
+    }
+
+    /**
+     * Reads scoring scheme from user input. Limited to reading only 4 values: a
+     * match bonus, a mismatch penalty, an indel penalty and optionally a gap
+     * penalty.
+     *
+     * @param withGap
      */
     private void readUserScoring(boolean withGap) {
         System.out.println("Enter match bonus:");
@@ -107,23 +144,14 @@ public class SeqAlgUI {
         double indelPenalty = readDouble();
         double gapPenalty = 0;
         if (withGap) {
-            System.out.println("Enter affine gap penalty (negative):");
+            System.out.println("Enter gap penalty (negative):");
             gapPenalty = readDouble();
         }
-        System.out.println("!!!");
         problem.setUpScoring(matchBonus, mismatchPenalty, indelPenalty, gapPenalty);
     }
 
     /**
-     * Reads a scoring scheme from a file.
-     */
-    private void readFileScoring() {
-        System.out.println("To be implemented");
-        useDefaultScoring();
-    }
-
-    /**
-     * Uses a default scoring. 
+     * Uses a default scoring.
      */
     private void useDefaultScoring() {
         System.out.println("Using match bonus 5, mismatch penalty -3, indel penalty -1 and gap penalty 0.");
@@ -132,7 +160,8 @@ public class SeqAlgUI {
 
     /**
      * Prints the solution.
-     * @param solution 
+     *
+     * @param solution
      */
     private void printSolution(char[][] solution) {
         for (int i = 0; i < solution.length; i++) {
@@ -144,35 +173,21 @@ public class SeqAlgUI {
     }
 
     /**
-     * Reads user input and returns the selection. If the input is invalid, returns 0.
-     * @return 
-     */
-    public int readProblemSelection() {
-        System.out.println("Select problem type:");
-        System.out.println("1 - Longest Common Substring");
-        System.out.println("2 - Global Sequence Alignment");
-        System.out.println("3 - Local Sequence Alignment");
-        System.out.println("4 - Global Sequence Alignment with gap penalties");
-        int selection = 0;
-        try {
-        selection = Integer.parseInt(reader.nextLine());
-        } catch (NumberFormatException e) {}
-        return selection;
-    }
-
-    /**
-     * Reads user input and returns a file name. Does not test the validity of the input in any way.
-     * @return 
+     * Reads user input and returns a file name. Does not test the validity of
+     * the input in any way.
+     *
+     * @return
      */
     public String readFilename() {
         System.out.println("Enter input file name:");
         String filename = reader.nextLine();
         return filename;
     }
-    
+
     /**
      * Asks for a double until user gives a valid double.
-     * @return 
+     *
+     * @return
      */
     private double readDouble() {
         boolean cont = true;
@@ -187,10 +202,11 @@ public class SeqAlgUI {
         }
         return dbl;
     }
-    
+
     /**
      * Asks for an integer until user gives a valid integer.
-     * @return 
+     *
+     * @return
      */
     private int readInt() {
         boolean cont = true;
