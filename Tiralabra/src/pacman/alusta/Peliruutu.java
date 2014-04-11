@@ -40,6 +40,7 @@ public class Peliruutu implements Comparable<Peliruutu>{
     private int etaisyysAlkuun;
     
     private int etaisyysMaaliin;
+    private Peliruutu edellinen;
 
     /**
      * Konstruktorissa annetaan arvot koordinaateille.
@@ -52,6 +53,13 @@ public class Peliruutu implements Comparable<Peliruutu>{
         this.y = y;
     }
 
+    public Peliruutu getEdellinen() {
+        return this.edellinen;
+    }
+    
+    public void setEdellinen(Peliruutu ruutu) {
+        this.edellinen = ruutu;
+    }
     
     public int getEtaisyysAlkuun() {
         return this.etaisyysAlkuun;
