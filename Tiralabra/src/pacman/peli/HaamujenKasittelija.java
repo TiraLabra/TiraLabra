@@ -8,7 +8,7 @@ import pacman.hahmot.Haamu;
 import pacman.hahmot.Magenta;
 import pacman.hahmot.Red;
 import pacman.hahmot.Suunta;
-import pacman.tietorakenteet.Haku;
+import pacman.tietorakenteet.AStar;
 
 /**
  * Haamujenkäsittelijä on luokka, joka hallinnoi haamujen toimintaa
@@ -23,7 +23,7 @@ public class HaamujenKasittelija {
     private Green green;
     private Magenta magenta;
     private Peliruutu magentaMaali;
-    private Haku haku;
+    private AStar haku;
     private Random arpoja;
     private Pacman peli;
 
@@ -35,7 +35,7 @@ public class HaamujenKasittelija {
      * @param arpoja
      * @param hakija
      */
-    public HaamujenKasittelija(Pacman peli, Random arpoja, Haku hakija) {
+    public HaamujenKasittelija(Pacman peli, Random arpoja, AStar hakija) {
         red = new Red(9, 7, Suunta.YLOS, "red", peli.getAlusta());
         green = new Green(10, 9, Suunta.YLOS, "green", peli.getAlusta());
         cyan = new Cyan(8, 9, Suunta.YLOS, "cyan", peli.getAlusta());
@@ -69,11 +69,11 @@ public class HaamujenKasittelija {
     public Green getGreen() {
         return this.green;
     }
-    
+
     public void setMagentaMaali(Peliruutu ruutu) {
         this.magentaMaali = ruutu;
     }
-    
+
     public Peliruutu getMagentaMaali() {
         return this.magentaMaali;
     }
@@ -127,16 +127,34 @@ public class HaamujenKasittelija {
         liikutaHaamu(red);
         liikutaHaamu(green);
         liikutaHaamu(cyan);
-        liikutaHaamu(magenta);
+        liikutaHaamu(magenta);    
+        
+        tarkistaHaamujenRuudut();
+    }
+
+    public void tarkistaHaamujenRuudut() {
+        tarkistaEttaRuudutTietavatNiissaOlevanHaamu(cyan);
+        tarkistaEttaRuudutTietavatNiissaOlevanHaamu(red);
+        tarkistaEttaRuudutTietavatNiissaOlevanHaamu(green);
+        tarkistaEttaRuudutTietavatNiissaOlevanHaamu(magenta);
+    }
+    
+    private void tarkistaEttaRuudutTietavatNiissaOlevanHaamu(Haamu haamu) {
+        Peliruutu haamunRuutu = peli.getAlusta().getPeliruutu(haamu.getX(), haamu.getY());
+        if(haamunRuutu.getOnkoHaamu() == false) {
+            haamunRuutu.setOnkoHaamu(true);
+        }
     }
 
     /**
-     * Metodi saa paramertinaan liikutettavan haamun ja liikuttaa sitä tavalla, joka riippuu siitä onko haamu heikko vai vahva.
-     * @param haamu 
+     * Metodi saa paramertinaan liikutettavan haamun ja liikuttaa sitä tavalla,
+     * joka riippuu siitä onko haamu heikko vai vahva.
+     *
+     * @param haamu
      */
     public void liikutaHaamu(Haamu haamu) {
         if (haamu.getTyyppi().equals("heikko")) {
-            liikutaHaamuHeikkona(haamu);            
+            liikutaHaamuHeikkona(haamu);
         } else {
             liikuHaamuVahvana(haamu);
         }
@@ -144,37 +162,40 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista haamua omalla tavallaan.
-     * @param haamu 
+     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista
+     * haamua omalla tavallaan.
+     *
+     * @param haamu
      */
     private void liikuHaamuVahvana(Haamu haamu) {
-        if(haamu.getNimi().equals("red")) {
+        if (haamu.getNimi().equals("red")) {
             liikutaVahvaRed();
-        } else if(haamu.getNimi().equals("green")) {
+        } else if (haamu.getNimi().equals("green")) {
             liikutaVahvaGreen();
-        } else if(haamu.getNimi().equals("cyan")) {
+        } else if (haamu.getNimi().equals("cyan")) {
             liikutaVahvaCyan();
-        } else if(haamu.getNimi().equals("magenta")) {
+        } else if (haamu.getNimi().equals("magenta")) {
             liikutaVahvaMagenta();
         }
     }
 
     /**
-     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista haamua omalla tavallaan.
-     * @param haamu 
+     * Metodi katsoo parametrina saamansa haamun nimen ja liikuttaa jokaista
+     * haamua omalla tavallaan.
+     *
+     * @param haamu
      */
     private void liikutaHaamuHeikkona(Haamu haamu) {
-        if(haamu.getNimi().equals("red")) {
+        if (haamu.getNimi().equals("red")) {
             liikutaRedHeikko();
-        } else if(haamu.getNimi().equals("green")) {
+        } else if (haamu.getNimi().equals("green")) {
             liikutaGreenHeikko();
-        } else if(haamu.getNimi().equals("cyan")) {
+        } else if (haamu.getNimi().equals("cyan")) {
             liikutaCyanHeikko();
-        } else if(haamu.getNimi().equals("magenta")) {
+        } else if (haamu.getNimi().equals("magenta")) {
             liikutaMagentaHeikko();
         }
     }
- 
 
     /**
      * Liikutetaan vahva-tyyppinen Green sen omalla liiku-metodilla.
@@ -198,7 +219,10 @@ public class HaamujenKasittelija {
             System.out.println(magentaMaali);
             System.out.println("magenta " + magenta.getX() + " " + magenta.getY());
         }
-        Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali, peli.getAlusta());
+
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali);
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
         magenta.liiku(siirto);
 
     }
@@ -211,7 +235,9 @@ public class HaamujenKasittelija {
     private void liikutaVahvaCyan() {
 
         Peliruutu maali = cyan.selvitaMaaliCyan(peli.getMan());
-        Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), maali, peli.getAlusta());
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), maali);
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
         cyan.liiku(siirto);
 
     }
@@ -222,7 +248,9 @@ public class HaamujenKasittelija {
      */
     private void liikutaVahvaRed() {
 
-        Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY()), peli.getAlusta());
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY()));
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
         red.liiku(siirto);
     }
 
@@ -253,7 +281,9 @@ public class HaamujenKasittelija {
         if (maali.getX() == cyan.getX() && maali.getY() == cyan.getY()) {
             maali = peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY());
         }
-        Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()), peli.getAlusta());
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
         cyan.liiku(siirto);
     }
 
@@ -268,7 +298,9 @@ public class HaamujenKasittelija {
         if (maali.getX() == red.getX() && maali.getY() == red.getY()) {
             maali = peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY());
         }
-        Peliruutu siirto = haku.aStar(peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()), peli.getAlusta());
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
         red.liiku(siirto);
     }
 

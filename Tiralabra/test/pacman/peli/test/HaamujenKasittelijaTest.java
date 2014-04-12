@@ -5,7 +5,6 @@
  */
 package pacman.peli.test;
 
-import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import pacman.peli.HaamujenKasittelija;
 import pacman.peli.Pacman;
-import pacman.tietorakenteet.Haku;
+import pacman.tietorakenteet.AStar;
 
 /**
  *
@@ -24,7 +23,7 @@ public class HaamujenKasittelijaTest {
 
     private HaamujenKasittelija kasittelija;
     private Pacman peli;
-    private Haku haku;
+    private AStar haku;
 
     public HaamujenKasittelijaTest() {
     }
@@ -85,15 +84,20 @@ public class HaamujenKasittelijaTest {
         assertEquals(7, kasittelija.getRed().getY());
         assertTrue(peli.getAlusta().getPeliruutu(9, 7).getOnkoHaamu());
         kasittelija.liikutaHaamut();
-        assertEquals(10, kasittelija.getRed().getX());
+        assertEquals(8, kasittelija.getRed().getX());
         assertEquals(7, kasittelija.getRed().getY());
-        assertTrue(peli.getAlusta().getPeliruutu(10, 7).getOnkoHaamu());
+        assertTrue(peli.getAlusta().getPeliruutu(8, 7).getOnkoHaamu());
         
     }
     
     @Test
     public void liikuttaaOikeinVahvaGreen() {
-        
+        assertEquals(10, kasittelija.getGreen().getX());
+        assertEquals(9, kasittelija.getGreen().getY());
+        assertTrue(peli.getAlusta().getPeliruutu(10, 9).getOnkoHaamu());
+        kasittelija.liikutaHaamut();
+        assertEquals(9, kasittelija.getGreen().getX());
+        assertEquals(9, kasittelija.getGreen().getY());
     }
     
     @Test

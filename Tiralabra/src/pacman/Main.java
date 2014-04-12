@@ -13,28 +13,28 @@ public class Main {
 
         Pacman peli = new Pacman();
         
-        Pelialusta alusta = peli.getAlusta();
-        AStar haku = new AStar();
-        haku.astar(alusta, alusta.getPeliruutu(9, 7), alusta.getPeliruutu(9, 11));
-        Peliruutu[] reitti = haku.getReitti();
-        for (int i = reitti.length-1; i >= 0; i--) {
-            System.out.println(reitti[i]);
+//        Pelialusta alusta = peli.getAlusta();
+//        AStar haku = new AStar();
+//        haku.astar(alusta, alusta.getPeliruutu(9, 7), alusta.getPeliruutu(9, 11));
+//        Peliruutu[] reitti = haku.getReitti();
+//        for (int i = reitti.length-1; i >= 0; i--) {
+//            System.out.println(reitti[i]);
+//        }
+
+        Kayttoliittyma kayttis = new Kayttoliittyma(peli);
+
+        SwingUtilities.invokeLater(kayttis);
+
+        while (kayttis.getPaivitettava() == null) {
+            try {
+                Thread.sleep(0, 5);
+            } catch (InterruptedException ex) {
+                kayttis.virheilmoitus("Piirtoalustaa ei ole vielä luotu.");
+            }
         }
 
-//        Kayttoliittyma kayttis = new Kayttoliittyma(peli);
-//
-//        SwingUtilities.invokeLater(kayttis);
-//
-//        while (kayttis.getPaivitettava() == null) {
-//            try {
-//                Thread.sleep(0, 5);
-//            } catch (InterruptedException ex) {
-//                kayttis.virheilmoitus("Piirtoalustaa ei ole vielä luotu.");
-//            }
-//        }
-//
-//        peli.setPaivitettava(kayttis.getPaivitettava());
-//        peli.start();
+        peli.setPaivitettava(kayttis.getPaivitettava());
+        peli.start();
 
     }
 }

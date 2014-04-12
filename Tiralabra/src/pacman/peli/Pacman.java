@@ -1,7 +1,6 @@
 package pacman.peli;
 
 import pacman.tietorakenteet.Lista;
-import pacman.tietorakenteet.Haku;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -12,6 +11,7 @@ import pacman.gui.Paivitettava;
 import pacman.hahmot.Haamu;
 import pacman.hahmot.Man;
 import pacman.hahmot.Suunta;
+import pacman.tietorakenteet.AStar;
 
 /**
  *
@@ -70,7 +70,7 @@ public class Pacman extends Timer implements ActionListener {
     /**
      * Haku on aStar, joka selvittää parasta reittiä haamuille.
      */
-    private Haku haku;
+    private AStar haku;
 
     /**
      * Haamujenkäsittelijä on luokan ilmentymä, joka hallinnoi haamujen
@@ -84,7 +84,7 @@ public class Pacman extends Timer implements ActionListener {
      */
     public Pacman() {
         super(1000, null);
-        this.haku = new Haku();
+        this.haku = new AStar();
         alusta = new Pelialusta(19, 21);
         alusta.luoPelialusta();
         man = new Man(9, 11, Suunta.OIKEA, alusta);
@@ -196,13 +196,26 @@ public class Pacman extends Timer implements ActionListener {
     public void asetaSeina() {
         for (int y = 8; y < 11; y++) {
             for (int x = 8; x < 11; x++) {
-                if (alusta.getPeliruutu(x, y).getOnkoHaamu() || alusta.getPeliruutu(x, y).getOnkoMan()) {
+                if(tarkistaOnkoHaamua(kasittelija.getRed(), x, y)) return;
+                if(tarkistaOnkoHaamua(kasittelija.getGreen(), x, y)) return;
+                if(tarkistaOnkoHaamua(kasittelija.getCyan(), x, y)) return;
+                if(tarkistaOnkoHaamua(kasittelija.getMagenta(), x, y)) return;
+                if (alusta.getPeliruutu(x, y).getOnkoMan()) {
                     alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
                     return;
                 }
             }
         }
+
         alusta.getPeliruutu(9, 8).setRuudunTyyppi(0);
+    }
+
+    private boolean tarkistaOnkoHaamua(Haamu haamu,int x, int y) {
+        if (alusta.getPeliruutu(x, y).equals(alusta.getPeliruutu(haamu.getX(), haamu.getY()))) {
+            alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -319,9 +332,10 @@ public class Pacman extends Timer implements ActionListener {
         kuoleekoHaamuTaiMan();
         manSyoPistepallo();
         luoHedelma();
-        asetaSeina();
+
         paattyykoPeli();
         paataPeliJosElamatLoppuu();
+        asetaSeina();
         this.paivitettava.paivita();
         setDelay(300);
         paataPeli(aikaAlussa);

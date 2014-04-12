@@ -40,6 +40,7 @@ public abstract class Haamu extends Hahmo {
      * liikkumisruuduiksi. Haamu siis tietää mihin ruutuun ei saa mennä.
      */
     protected Lista kielletytRuudut;
+    
 
     public Haamu(int x, int y, Suunta suunta, String nimi, Pelialusta alusta) {
         super(x, y, suunta, alusta);

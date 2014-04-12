@@ -69,13 +69,14 @@ public class PacmanTest {
     public void rakennetaankoSeinaOikein2() {
         pacman.getKasittelija().getCyan().setX(1);
         pacman.getKasittelija().getCyan().setY(1);
+        pacman.getAlusta().getPeliruutu(8, 9).setOnkoHaamu(false);
         pacman.getKasittelija().getGreen().setX(1);
         pacman.getKasittelija().getGreen().setY(1);
+        pacman.getAlusta().getPeliruutu(10, 9).setOnkoHaamu(false);
         pacman.getKasittelija().getMagenta().setX(1);
         pacman.getKasittelija().getMagenta().setY(1);
-        pacman.getKasittelija().getRed().setX(1);
-        pacman.getKasittelija().getRed().setY(1);
-        
+        pacman.getAlusta().getPeliruutu(9, 9).setOnkoHaamu(false);
+
         
         pacman.asetaSeina();
         assertEquals(0, pacman.getAlusta().getPeliruutu(9, 8).getRuudunTyyppi());

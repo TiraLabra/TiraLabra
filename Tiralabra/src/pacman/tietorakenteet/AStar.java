@@ -4,63 +4,107 @@ import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
 import pacman.hahmot.Suunta;
 
+/**
+ * AStar on luokka, joka selvittää astar-haun avulla parhaan reitin lähtoruudusta maaliruutuun.
+ * @author Hanna
+ */
 public class AStar {
 
     private Peliruutu[] reitti;
+    private Peliruutu[] kaydyt;
+    private Peliruutu[] kaymattomat;
 
     public Peliruutu[] getReitti() {
         return this.reitti;
     }
-
+    
+    public Peliruutu[] getKaydyt() {
+        return this.kaydyt;
+    }
+    
+    public Peliruutu[] getKaymattomat() {
+        return this.kaymattomat;
+    }
+    
+    /**
+     * astar on metodi, joka käynnistää haun.
+     * Ensin etsitään sopivat ruudut pelialustalta listaan ja muodostetaan listasta taulukko jota myöhemmin järjestäjä osaa käsitellä.
+     * Alustetaan ruuduille tarvittavat arvot ja asetataan lähtöruudun etäisyydeksi lähtöön 0.
+     * Kutsutaan metodia liiku, joka varsinaisesti selvittää reittiä ja lopuksi muodostetaan varsinainen paras reitti.
+     * @param alusta
+     * @param lahto
+     * @param maali
+     */
     public void astar(Pelialusta alusta, Peliruutu lahto, Peliruutu maali) {
         Lista sopivatSolmut = new Lista();
         lisaaSopivatSolmut(alusta, sopivatSolmut);
-        Peliruutu[] kaymattomat = muunnaSopivatListaKaymattomatTaulukoksi(sopivatSolmut);
+        muunnaSopivatListaKaymattomatTaulukoksi(sopivatSolmut);
 
-        alustus(kaymattomat, maali);
+        alustus(maali);
 
         lahto.setEtaisyysAlkuun(0);
-        Peliruutu[] kaydyt = new Peliruutu[0];
-        liiku(kaydyt, maali, kaymattomat, alusta);
+        kaydyt = new Peliruutu[0];
+        liiku(maali, alusta);
+        muodostaReitti(maali, lahto);
+    }
 
+    /**
+     * Muodostetaan reitti aloittaen maali solmusta ja käymällä reittiä läpi peruuttaen.
+     * Jokainen ruutu tietää edellisensä eli sen ruudun josta on tultu käsiteltävään ruutuun lyhyintä reittiä.
+     * @param maali
+     * @param lahto 
+     */
+    private void muodostaReitti(Peliruutu maali, Peliruutu lahto) {
         Peliruutu solmu = maali;
         reitti = new Peliruutu[0];
 
         while (!solmu.equals(lahto)) {
-            System.out.println("täällä");
             lisaaRuutuReittiin(solmu);
             solmu = solmu.getEdellinen();
         }
     }
 
-    private Peliruutu[] muunnaSopivatListaKaymattomatTaulukoksi(Lista sopivatSolmut) {
-        Peliruutu[] kaymattomat = new Peliruutu[sopivatSolmut.koko()];
+    /**
+     * Muunnetaan lista taulukoksi, jotta käsiteltävää tietoa on helpompi käsitellä jatkossa.
+     * @param sopivatSolmut
+     */
+    public void muunnaSopivatListaKaymattomatTaulukoksi(Lista sopivatSolmut) {
+        kaymattomat = new Peliruutu[sopivatSolmut.koko()];
         for (int i = 0; i < kaymattomat.length; i++) {
             Peliruutu ruutu = (Peliruutu) sopivatSolmut.getAlkio(i);
             kaymattomat[i] = ruutu;
         }
-        return kaymattomat;
     }
 
+    /**
+     * Lisätään ruutu reittiin.
+     * Koska reitti on taulukko, täytyy joka lisäys kerralla luoda uusi taulukko, joka on yhtä suurempi.
+     * Uuteen taulukkoon kopiodaan vanhat tiedot ja lisätään uuteen taulukon kohtaan uusi reitin osa.
+     * @param solmu 
+     */
     private void lisaaRuutuReittiin(Peliruutu solmu) {
         Peliruutu[] uusiReitti = new Peliruutu[reitti.length + 1];
-        for (int i = 0; i < reitti.length; i++) {
-            uusiReitti[i] = reitti[i];
-        }
+        System.arraycopy(reitti, 0, uusiReitti, 0, reitti.length);
         uusiReitti[reitti.length] = solmu;
         reitti = uusiReitti;
     }
 
-    private void liiku(Peliruutu[] kaydyt, Peliruutu maali, Peliruutu[] kaymattomat, Pelialusta alusta) {
-        while (!tarkistaSisaltaakoMaalin(kaydyt, maali)) {
-            Jarjestaja jar = new Jarjestaja(kaymattomat);
-            jar.mergeSort(0, kaymattomat.length - 1);
+    /**
+     * Metodi etenee pelialustaa pitkin tutkien mikä on paras reitti lähdöstä maaliin.
+     * Alussa järjestetään käymättömät siten, että ensimmäiseen taulukon kohtaan tulee peliruutu, jolla on lyhin arvio matkasta lähdön ja maalin välillä.
+     * Paras ruutu otetaan talteen, poistetaan se käymättömien taulukosta, lisätään se käytyihin ja etsitään ruudulle naapurit joille sitten asetetaan
+     * maldolliset uudet etäisyystiedot.
+     * @param maali
+     * @param alusta 
+     */
+    private void liiku(Peliruutu maali, Pelialusta alusta) {
+        while (!tarkistaSisaltaakoMaalin(maali)) {
+            jarjestaKaymattomat(kaymattomat);
 
             Peliruutu lyhinMatka = kaymattomat[0];
-            System.out.println(lyhinMatka.getX());
-            System.out.println(lyhinMatka.getY());
-            kaymattomat = pollaaPienin(kaymattomat);
-            kaydyt = lisaaKaytyihin(kaydyt, lyhinMatka);
+
+            pollaaPienin();
+            lisaaKaytyihin(lyhinMatka);
 
             Lista naapurit = new Lista();
             selvitaNaapurit(alusta, lyhinMatka, naapurit);
@@ -69,14 +113,34 @@ public class AStar {
         }
     }
 
-    private void alustus(Peliruutu[] kaymattomat, Peliruutu maali) {
-        for (int i = 0; i < kaymattomat.length; i++) {
-            kaymattomat[i].setEtaisyysAlkuun(2000000000);
-            kaymattomat[i].setEtaisyysMaaliin(etaisyys(maali, kaymattomat[i]));
-            kaymattomat[i].setEdellinen(null);
+    /**
+     * Luodaan uusi järjestäjä, jolle annetaan parametrina järjestettävä taulukko.
+     * Tämän jälkeen järjestetään taulukko.
+     * @param kaymattomat 
+     */
+    private void jarjestaKaymattomat(Peliruutu[] kaymattomat) {
+        Jarjestaja jar = new Jarjestaja(kaymattomat);
+        jar.mergeSort(0, kaymattomat.length - 1);
+    }
+
+    /**
+     * Alustetaan jokaiselle sopiviin ruutuihin kuuluvalle ruudulle tarvittavat tiedot.
+     * Etaisyysalkuun on ääretön, etäisyysmaaliin lasketaan arvioimalla etäisyys ja edellinen asetetaan null arvoksi, koska sitä ei vielä tiedetä.
+     * @param maali
+     */
+    public void alustus(Peliruutu maali) {
+        for (Peliruutu kaymaton : kaymattomat) {
+            kaymaton.setEtaisyysAlkuun(2000000000);
+            kaymaton.setEtaisyysMaaliin(etaisyys(maali, kaymaton));
+            kaymaton.setEdellinen(null);
         }
     }
 
+    /**
+     * Jokaiselle käsiteltävän ruudun naapurille katsotaan voiko sen etäisyydeksi alkuun asettaa paremman arvon ja jos voi asetaan myös, että sen edellinen on käsiteltävä ruutu.
+     * @param naapurit
+     * @param lyhinMatka 
+     */
     private void relax(Lista naapurit, Peliruutu lyhinMatka) {
         for (int i = 0; i < naapurit.koko(); i++) {
             Peliruutu naapuri = (Peliruutu) naapurit.getAlkio(i);
@@ -87,7 +151,14 @@ public class AStar {
         }
     }
 
-    private void selvitaNaapurit(Pelialusta alusta, Peliruutu lyhinMatka, Lista naapurit) {
+    /**
+     * Selvitetään käsiteltävän ruudun naapurit.
+     * Sopivia naapureita ovat ruudut, jotka eivät ole tyypiltään seiniä.
+     * @param alusta
+     * @param lyhinMatka
+     * @param naapurit
+     */
+    public void selvitaNaapurit(Pelialusta alusta, Peliruutu lyhinMatka, Lista naapurit) {
         for (Suunta suunta : Suunta.values()) {
             if (alusta.getPeliruutu(lyhinMatka.getX() + suunta.getX(), lyhinMatka.getY() + suunta.getY()).getRuudunTyyppi() != 0) {
                 naapurit.lisaa(alusta.getPeliruutu(lyhinMatka.getX() + suunta.getX(), lyhinMatka.getY() + suunta.getY()));
@@ -95,26 +166,34 @@ public class AStar {
         }
     }
 
-    private Peliruutu[] lisaaKaytyihin(Peliruutu[] kaydyt, Peliruutu lyhinMatka) {
+    /**
+     * Lisätään käsiteltävä ruutu käytyihin ruutuihin.
+     * @param lyhinMatka 
+     */
+    private void lisaaKaytyihin(Peliruutu lyhinMatka) {
         Peliruutu[] uusiKaydyt = new Peliruutu[kaydyt.length + 1];
-        for (int i = 0; i < kaydyt.length; i++) {
-            uusiKaydyt[i] = kaydyt[i];
-        }
+        System.arraycopy(kaydyt, 0, uusiKaydyt, 0, kaydyt.length);
         uusiKaydyt[kaydyt.length] = lyhinMatka;
         kaydyt = uusiKaydyt;
-        return kaydyt;
     }
 
-    private Peliruutu[] pollaaPienin(Peliruutu[] kaymattomat) {
+    /**
+     * Pistetaan käymättömät taulukosta käsiteltäväksi valitty peliruutu, jolla oli pienin matka-arvio.
+     */
+    private void pollaaPienin() {
         Peliruutu[] uusiKaymattomat = new Peliruutu[kaymattomat.length - 1];
         for (int i = 0; i < uusiKaymattomat.length; i++) {
             uusiKaymattomat[i] = kaymattomat[i + 1];
         }
         kaymattomat = uusiKaymattomat;
-        return kaymattomat;
     }
 
-    private void lisaaSopivatSolmut(Pelialusta alusta, Lista sopivatSolmut) {
+    /**
+     * Käydään pelialusta läpi ja asetataan sopivaksi ruuduksi kaikki ne, jotka eivät ole seiniä.
+     * @param alusta
+     * @param sopivatSolmut
+     */
+    public void lisaaSopivatSolmut(Pelialusta alusta, Lista sopivatSolmut) {
         for (int y = 0; y < alusta.getKorkeus(); y++) {
             for (int x = 0; x < alusta.getLeveys(); x++) {
                 if (alusta.getPeliruutu(x, y).getRuudunTyyppi() != 0) {
@@ -124,6 +203,12 @@ public class AStar {
         }
     }
 
+    /**
+     * Lasketaan etäisyysarvio maaliin annetulle ruudulle.
+     * @param maali
+     * @param ruutu
+     * @return
+     */
     public int etaisyys(Peliruutu maali, Peliruutu ruutu) {
 
         int arvioX = Math.abs(ruutu.getX() - maali.getX());
@@ -133,9 +218,14 @@ public class AStar {
         return etaisyysarvio;
     }
 
-    public boolean tarkistaSisaltaakoMaalin(Peliruutu[] kaydyt, Peliruutu maali) {
-        for (int i = 0; i < kaydyt.length; i++) {
-            if (kaydyt[i].equals(maali)) {
+    /**
+     * Tarkistetaan sisältääkö käydyt taulukko maaliruudun.
+     * @param maali
+     * @return palauttaa true, jos sisältää.
+     */
+    private boolean tarkistaSisaltaakoMaalin(Peliruutu maali) {
+        for (Peliruutu kayty : kaydyt) {
+            if (kayty.equals(maali)) {
                 return true;
             }
         }
