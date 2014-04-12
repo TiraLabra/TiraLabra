@@ -98,7 +98,10 @@ public class HaamujenKasittelija {
     public void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
         haamu.setHeikkous(30);
-        System.out.println("heikennetään");
+        if (haamu.getNimi().equals("cyan")) {
+            System.out.println("heikennetään");
+        }
+
     }
 
     /**
@@ -112,7 +115,10 @@ public class HaamujenKasittelija {
             if (haamu.getHeikkous() == 0) {
                 haamu.setTyyppi("vahva");
                 peli.setHeikko(false);
-                System.out.println("vahvaksi");
+                if (haamu.getNimi().equals("cyan")) {
+                    System.out.println("vahvaksi");
+                }
+
             } else {
                 haamu.vahennaHeikkous();
             }
@@ -126,8 +132,13 @@ public class HaamujenKasittelija {
 
         liikutaHaamu(red);
         liikutaHaamu(green);
+        
+        long aikaAlussa = System.currentTimeMillis();
         liikutaHaamu(cyan);
-        liikutaHaamu(magenta);
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");   
+        
+        liikutaHaamu(magenta);       
 
         tarkistaHaamujenRuudut();
     }
@@ -224,6 +235,7 @@ public class HaamujenKasittelija {
             while (magenta.getX() == magentaMaali.getX() && magenta.getY() == magentaMaali.getY()) {
                 magentaMaali = magenta.selvitaMaaliMagenta(arpoja);
             }
+            System.out.println("uusi");
         }
 
         haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali);
@@ -289,7 +301,9 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Metodin avulla selvitään ensin normaalisti Cyanin maali ja tämän jälkeen kutsutaan metodi, joka selvittää haamun maalin kun se on heikko.
+     * Metodin avulla selvitään ensin normaalisti Cyanin maali ja tämän jälkeen
+     * kutsutaan metodi, joka selvittää haamun maalin kun se on heikko.
+     *
      * @return palauttaa maalin
      */
     public Peliruutu selvitaCyanMaaliHeikkona() {
@@ -299,9 +313,11 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Selvittää peilatun maaliruudun ja tarkistaa vielä, että jos kyseinen ruutu on haamun oma ruutu maaliruutu on tällöin manin ruutu.
+     * Selvittää peilatun maaliruudun ja tarkistaa vielä, että jos kyseinen
+     * ruutu on haamun oma ruutu maaliruutu on tällöin manin ruutu.
+     *
      * @param maali
-     * @return 
+     * @return
      */
     private Peliruutu maaliHeikolleCyan(Peliruutu maali) {
         int peilaus = 9 - maali.getX();
@@ -326,8 +342,10 @@ public class HaamujenKasittelija {
     }
 
     /**
-     * Selvittää peilatun haamun maalin, jos maaliruutu on haamun omaruutu, maali ruutu on manin ruutu.
-     * @return 
+     * Selvittää peilatun haamun maalin, jos maaliruutu on haamun omaruutu,
+     * maali ruutu on manin ruutu.
+     *
+     * @return
      */
     public Peliruutu maaliHeikolleRed() {
         int peilaus = 9 - peli.getMan().getX();

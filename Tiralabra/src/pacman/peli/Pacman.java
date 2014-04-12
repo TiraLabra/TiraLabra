@@ -176,13 +176,20 @@ public class Pacman extends Timer implements ActionListener {
         tarkistaKumpiKuolee(kasittelija.getGreen());
     }
 
+    /**
+     * Metodi katsoo kumpi hahmoista kuolee kun ne päätyvät samaan ruutuun.
+     * @param haamu 
+     */
     private void tarkistaKumpiKuolee(Haamu haamu) {
         if (haamu.olenkoSamassaRuudussaManinKanssa(man)) {
             if (haamu.getTyyppi().equals("heikko")) {
                 haamu.palaaAlkuun();
                 haamu.setTyyppi("vahva");
                 laskuri.kasvata(80);
-                System.out.println("kuoli " + haamu.getNimi());
+                if(haamu.getNimi().equals("cyan")) {
+                   System.out.println("vahvaksi"); 
+                }
+                
             } else {
                 man.palaaAlkuun();
                 man.vahennaElama();
@@ -328,7 +335,6 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        long aikaAlussa = System.currentTimeMillis();
         kasittelija.liikutaHaamut();
         kuoleekoHaamuTaiMan();
         asetaHeikkous();
@@ -342,20 +348,16 @@ public class Pacman extends Timer implements ActionListener {
         asetaSeina();
         this.paivitettava.paivita();
         setDelay(300);
-        paataPeli(aikaAlussa);
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+        paataPeli();
+        
 
     }
 
     /**
      * Jos jatkuu muuttuja on false, päätetään peli.
      */
-    private void paataPeli(Long aikaAlussa) {
+    private void paataPeli() {
         if (!jatkuu) {
-            System.out.println("Loppu");
-            long aikaLopussa = System.currentTimeMillis();
-            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
             this.stop();
         }
     }
