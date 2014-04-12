@@ -14,7 +14,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import pacman.alusta.Pelialusta;
 import pacman.alusta.Peliruutu;
-import pacman.hahmot.Green;
 import pacman.hahmot.Magenta;
 import pacman.hahmot.Suunta;
 
@@ -51,7 +50,7 @@ public class MagentaTest {
     }
 
     @Test
-    public void liikkuuOikein() {
+    public void selvittaaOikeanLaisenMaalin() {
         Peliruutu maali = magenta.selvitaMaaliMagenta(new Random());
         assertTrue(maali.getRuudunTyyppi() != 0);
         assertFalse(magenta.getKielletyt().sisaltaa(maali));

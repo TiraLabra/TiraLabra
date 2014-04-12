@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import pacman.hahmot.Haamu;
 import pacman.hahmot.Suunta;
 import pacman.peli.Pacman;
 

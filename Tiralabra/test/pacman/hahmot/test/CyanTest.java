@@ -83,4 +83,5 @@ public class CyanTest {
         Peliruutu maali = cyan.selvitaMaaliCyan(man);
         assertEquals("(16,9)", maali.toString());
     }
+    
 }

@@ -95,7 +95,7 @@ public class HaamujenKasittelija {
      *
      * @param haamu
      */
-    private void heikennaHaamu(Haamu haamu) {
+    public void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
         haamu.setHeikkous(30);
         System.out.println("heikennetään");
@@ -127,21 +127,30 @@ public class HaamujenKasittelija {
         liikutaHaamu(red);
         liikutaHaamu(green);
         liikutaHaamu(cyan);
-        liikutaHaamu(magenta);    
-        
+        liikutaHaamu(magenta);
+
         tarkistaHaamujenRuudut();
     }
 
+    /**
+     * Kutsutaan tarkistus metodia jokaiselle haamulle
+     */
     public void tarkistaHaamujenRuudut() {
         tarkistaEttaRuudutTietavatNiissaOlevanHaamu(cyan);
         tarkistaEttaRuudutTietavatNiissaOlevanHaamu(red);
         tarkistaEttaRuudutTietavatNiissaOlevanHaamu(green);
         tarkistaEttaRuudutTietavatNiissaOlevanHaamu(magenta);
     }
-    
+
+    /**
+     * Varmistetaan, että ruutu jossa haamu on tietää todella, että ruudussa on
+     * haamu.
+     *
+     * @param haamu
+     */
     private void tarkistaEttaRuudutTietavatNiissaOlevanHaamu(Haamu haamu) {
         Peliruutu haamunRuutu = peli.getAlusta().getPeliruutu(haamu.getX(), haamu.getY());
-        if(haamunRuutu.getOnkoHaamu() == false) {
+        if (haamunRuutu.getOnkoHaamu() == false) {
             haamunRuutu.setOnkoHaamu(true);
         }
     }
@@ -152,7 +161,7 @@ public class HaamujenKasittelija {
      *
      * @param haamu
      */
-    public void liikutaHaamu(Haamu haamu) {
+    private void liikutaHaamu(Haamu haamu) {
         if (haamu.getTyyppi().equals("heikko")) {
             liikutaHaamuHeikkona(haamu);
         } else {
@@ -215,9 +224,6 @@ public class HaamujenKasittelija {
             while (magenta.getX() == magentaMaali.getX() && magenta.getY() == magentaMaali.getY()) {
                 magentaMaali = magenta.selvitaMaaliMagenta(arpoja);
             }
-            System.out.println("uusi");
-            System.out.println(magentaMaali);
-            System.out.println("magenta " + magenta.getX() + " " + magenta.getY());
         }
 
         haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali);
@@ -275,16 +281,35 @@ public class HaamujenKasittelija {
      * jälkeen etsitään taas haulla ruutu, johon Cyanin kannattaa liikahtaa.
      */
     private void liikutaCyanHeikko() {
+        Peliruutu maali = selvitaCyanMaaliHeikkona();
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
+        cyan.liiku(siirto);
+    }
+
+    /**
+     * Metodin avulla selvitään ensin normaalisti Cyanin maali ja tämän jälkeen kutsutaan metodi, joka selvittää haamun maalin kun se on heikko.
+     * @return palauttaa maalin
+     */
+    public Peliruutu selvitaCyanMaaliHeikkona() {
         Peliruutu maali = cyan.selvitaMaaliCyan(peli.getMan());
+        maali = maaliHeikolleCyan(maali);
+        return maali;
+    }
+
+    /**
+     * Selvittää peilatun maaliruudun ja tarkistaa vielä, että jos kyseinen ruutu on haamun oma ruutu maaliruutu on tällöin manin ruutu.
+     * @param maali
+     * @return 
+     */
+    private Peliruutu maaliHeikolleCyan(Peliruutu maali) {
         int peilaus = 9 - maali.getX();
         maali = peli.getAlusta().getPeliruutu(9 + peilaus, maali.getY());
         if (maali.getX() == cyan.getX() && maali.getY() == cyan.getY()) {
             maali = peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY());
         }
-        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(cyan.getX(), cyan.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
-        Peliruutu[] reitti = haku.getReitti();
-        Peliruutu siirto = reitti[reitti.length - 1];
-        cyan.liiku(siirto);
+        return maali;
     }
 
     /**
@@ -293,15 +318,24 @@ public class HaamujenKasittelija {
      * haulla ruutu, johon Redin kannattaa liikahtaa.
      */
     private void liikutaRedHeikko() {
+        Peliruutu maali = maaliHeikolleRed();
+        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
+        Peliruutu[] reitti = haku.getReitti();
+        Peliruutu siirto = reitti[reitti.length - 1];
+        red.liiku(siirto);
+    }
+
+    /**
+     * Selvittää peilatun haamun maalin, jos maaliruutu on haamun omaruutu, maali ruutu on manin ruutu.
+     * @return 
+     */
+    public Peliruutu maaliHeikolleRed() {
         int peilaus = 9 - peli.getMan().getX();
         Peliruutu maali = peli.getAlusta().getPeliruutu(9 + peilaus, peli.getMan().getY());
         if (maali.getX() == red.getX() && maali.getY() == red.getY()) {
             maali = peli.getAlusta().getPeliruutu(peli.getMan().getX(), peli.getMan().getY());
         }
-        haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(red.getX(), red.getY()), peli.getAlusta().getPeliruutu(maali.getX(), maali.getY()));
-        Peliruutu[] reitti = haku.getReitti();
-        Peliruutu siirto = reitti[reitti.length - 1];
-        red.liiku(siirto);
+        return maali;
     }
 
     /**

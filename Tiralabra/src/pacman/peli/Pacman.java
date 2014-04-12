@@ -115,6 +115,10 @@ public class Pacman extends Timer implements ActionListener {
     public Man getMan() {
         return this.man;
     }
+    
+    public void setMan(Man man) {
+        this.man = man;
+    }
 
     public Pelialusta getAlusta() {
         return this.alusta;
