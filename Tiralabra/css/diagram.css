@@ -9,6 +9,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: helvetica, san-serif;
+  font-size: 14px;
 }
 .node {
   -webkit-border-radius: 48px;
@@ -84,5 +85,8 @@ body {
 #ctrl {
 	position: absolute;
 	top: 30px;
-	right: 200px;
+	right: 100px;
+}
+.bold {
+	font-weight: bold;	
 }

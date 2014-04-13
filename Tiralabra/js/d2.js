@@ -46,18 +46,23 @@
 				    	if (selectedEnd != this.id) {
 	    					$("#start").text(this.id);
 				    		click = 1;
+				    		$(".start").removeClass("bold");
+				    		$(".end").addClass("bold");
+				    		
 				    	}
 				    	else {
-    						alert("Start can't be the same as End");
+    						//alert("Start can't be the same as End");
     					}
 			    	}
 				    else {
 				    	if (selectedStart != this.id) {
 				    		$("#end").text(this.id);
 				    		click = 0;
+				    		$(".end").removeClass("bold");
+				    		$(".start").addClass("bold");
 				    	}
 				    	else {
-				    		alert("End can't be the same as Start");
+				    		//alert("End can't be the same as Start");
 				    	}    	
     				}
     	    	}
@@ -236,7 +241,89 @@
   			}  			
   		}
   	function randomize() {
-  	}  		  		
+  		for (x in node) {
+    		nodex = node[''+x+''];
+    	    nodex.el.on('webkitTransitionEnd transitionend', (function(n) {
+	            return function() {
+                	$(this).removeClass('animate');
+                	$(this).off('webkitTransitionEnd transitionend');
+                	_(n.segments).invoke('calculateRotation');
+            	};
+        	}(nodex)));
+        	nodex.segments.map(function(n) {
+            	n.el.addClass('animate');
+            	n.el.on('webkitTransitionEnd transitionend', function() {
+                	if ($(this).width() === 0) {
+                    	$(this).addClass('hide');
+                	} else {
+                    	$(this).off('webkitTransitionEnd transitionend');
+                    	$(this).removeClass('animate');
+                	}
+            	});
+            	setTimeout(function() {
+                	n.el.css({
+                    	width: 0
+                	});
+            	}, 15);
+        	});
+        	var oldValue, newValue, randomValue,
+        	random = Math.random();
+        	
+        	if (random <= 0.5) {
+        		oldValue = nodex.translate.x;
+        		randomValue = Math.round(Math.random()*50);
+        		if ((oldValue - randomValue) < 0) {
+        			nodex.translate.x = 0;
+        		}
+        		else {
+        			nodex.translate.x = oldValue - randomValue;
+        		}        		
+        	}
+        	else { 
+        		oldValue = nodex.translate.x;
+        		randomValue = Math.round(Math.random()*50);
+        		if ((oldValue + randomValue) > 900) {
+        			nodex.translate.x = 900;
+        		}
+        		else {
+        			nodex.translate.x = oldValue + randomValue;
+        		}         		
+        	}
+        	random = Math.random();
+        	if (random <= 0.5) {
+        		oldValue = nodex.translate.y;
+        		randomValue = Math.round(Math.random()*50);
+        		if ((oldValue - randomValue) < 0) {
+        			nodex.translate.y = 0;
+        		}
+        		else {
+        			nodex.translate.y = oldValue - randomValue;
+        		}         		
+        	}
+        	else { 
+        		oldValue = nodex.translate.y;
+        		randomValue = Math.round(Math.random()*50);
+        		if ((oldValue + randomValue) > 700) {
+        			nodex.translate.y = 700;
+        		}
+        		else {
+        			nodex.translate.y = oldValue + randomValue;
+        		}        		
+        	}
+        	nodex.el.addClass('animate');
+        	setTimeout((function(n) {
+            	return function() {
+                	n.setPosition();
+                	n.onDragEnd();
+            	};
+        	}(nodex)), 400);	
+		}
+  		
+	}
+  	
+  	
+  	
+  	  		  		
   		
   		$("#search").click( function () {
   		 	var start = $("#start").text();
