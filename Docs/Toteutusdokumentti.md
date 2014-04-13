@@ -1,4 +1,4 @@
-Suunnitteludokumentti
+Toteutusdokumentti
 ====================
 Yleisrakenne
 ------------
@@ -7,7 +7,7 @@ Labyrintti
 - Käynnistys: Käynnistää ohjelman
 
 Labyrintti/osat
-- Pohja: Kartta labyritistä
+- Pohja: Kartta labyrintistä
 - Ruutu: Kartta koostuu ruuduista
 
 Labyrintti/sovellus
@@ -83,5 +83,9 @@ Tavoiteltuun aikavaativuuteen päästäisiin ainakin, jos solmut olisi tallennet
 Heapify on toteutettu rekursiivisesti, joten sen pino on pahimmillaan keon korkeus, siis O(log V).
 
 aStarin tilavaativuudeksi tulee O(V) taulukoiden vuoksi.
+
+Lähteet
+---------
+http://www.cs.helsinki.fi/u/floreen/tira2014/tira.pdf
 
 

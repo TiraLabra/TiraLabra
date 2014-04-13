@@ -41,8 +41,6 @@ public class Etsija {
         this.alusta = alusta;
     }
     
-    
-
     /**
      * Alustaa pohjan ruutujen arvot.
      */

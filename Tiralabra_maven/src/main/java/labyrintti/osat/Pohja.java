@@ -49,8 +49,11 @@ public class Pohja {
         alustaPohja(syote);
     }
     
+    /**
+     * Alustaa pohjan merkkijonosta taulukkoon.
+     * @param syote kartta merkkijonona
+     */
     private void alustaPohja(String syote){
-        Scanner lukija = new Scanner(System.in);
         for (int i = 0; i < korkeus; i++) {
             for (int j = 0; j < leveys; j++) {
                 char merkki = syote.charAt(i*leveys+j);
@@ -58,18 +61,7 @@ public class Pohja {
                 kartta[i][j] = new Ruutu(arvo, i, j);
             }
         }
-        tulostaPohja();
-        
-//        int x = 0;
-//        while (lukija.hasNextLine()) {
-//            String rivi = lukija.nextLine();
-//            for (int j = 0; j < rivi.length(); j++) {
-//                char merkki = rivi.charAt(j);
-//                int arvo = tarkistaRuudunArvo(merkki, x, j);
-//                kartta[x][j] = new Ruutu(arvo, x, j);
-//            }
-//            x++;
-//        }
+//        tulostaPohja();
     }
 
     /**

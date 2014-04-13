@@ -41,7 +41,7 @@ public class Minimikeko {
      * @return vanhemman indeksi
      */
     private int vanhempi(int solmu) {
-        return (solmu-1) / 2;
+        return (solmu - 1) / 2;
     }
 
     /**
@@ -173,16 +173,11 @@ public class Minimikeko {
     }
 
     /**
-     * Päivittää keon,
-     * @param paivitettava 
+     * Päivittää keon, kun jonkin ruudun etäisyysarvio muuttuu.
+     *
+     * @param paivitettava ruutu jonka etäisyysarvio on muuttunut.
      */
     public void paivitaRuutuKekoon(Ruutu paivitettava) {
-//        for (int i = 0; i < ruudut.length; i++) {
-//            if (ruudut[i].equals(paivitettava)) {
-//                ruudut[i] = paivitettava;
-//            }
-//        }
-//        rakennaKeko();
         int solmu = 0;
         for (int i = 0; i < ruudut.length; i++) {
             if (ruudut[i].equals(paivitettava)) {
@@ -195,6 +190,7 @@ public class Minimikeko {
             solmu = vanhempi(solmu);
         }
     }
+
     public int getKeonKoko() {
         return keonKoko;
     }
