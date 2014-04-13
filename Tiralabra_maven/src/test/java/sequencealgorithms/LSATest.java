@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class LSATest extends TestFileOperations {
 
-    LSA identicalSeqs, simpleSeqs;
+    LSA identicalSeqs, simpleSeqs, longSeqs;
 
     public LSATest() {
     }
@@ -44,7 +44,6 @@ public class LSATest extends TestFileOperations {
         simpleSeqs.setUpScoring(5, -3, -1, 0);
         simpleSeqs.calculateAlignment();
         simpleSeqs.findSolution();
-        simpleSeqs.m.print();
     }
 
     @Test

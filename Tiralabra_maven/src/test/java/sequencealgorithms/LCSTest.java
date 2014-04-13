@@ -37,10 +37,17 @@ public class LCSTest extends TestFileOperations {
         identicalSeqs.calculateAlignment();
         identicalSeqs.findSolution();
 
-        writeNewTestSequenceFile("agcga\ncagatagag");
+//        writeNewTestSequenceFile("agcga\ncagatagag");
+        writeNewTestSequenceFile("actgactg\naaccttgg");
         shortSeqs = new LCS(TESTFILENAME);
         shortSeqs.calculateAlignment();
         shortSeqs.findSolution();
+
+        writeNewTestSequenceFile("gcgcgtgcgcggaaggagccaaggtgaagttgtagcagtgtgtcagaagaggtgcgtggcaccatgctgtcccccgaggcggagcgggtgctgcggtacctggtcgaagtagaggagttg\n"
+                + "gacttgtggaacctacttcctgaaaataaccttctgtcctccgagctctccgcacccgtggatgacctgctcccgtacacagatgttgccacctggctggatgaatgtccgaatgaagcg");
+        longSeqs = new LCS(TESTFILENAME);
+        longSeqs.calculateAlignment();
+        longSeqs.findSolution();
 
     }
 
@@ -58,21 +65,31 @@ public class LCSTest extends TestFileOperations {
 
     @Test
     public void shortSequenceGivesCorrectScore() {
-        assertEquals(4, shortSeqs.getAlignmentScore(), 0.00001);
+        assertEquals(5, shortSeqs.getAlignmentScore(), 0.00001);
     }
 
     @Test
     public void shortSequenceSolutionIsTrueSubsequence() {
         char[] solution = shortSeqs.getSolution()[0];
-        char[] seq1 = {'a','g','c','g','a'};
-        char[] seq2 = {'c','a','g','a','t','a','g','a','g'};
-        
+        char[] seq1 = ("actgactg").toCharArray();
+        char[] seq2 = ("aaccttgg").toCharArray();
+//        char[] seq1 = {'a','g','c','g','a'};
+//        char[] seq2 = {'c','a','g','a','t','a','g','a','g'};
+
         assertTrue(isSubseq(seq1, solution) && isSubseq(seq2, solution));
     }
-    
+
     @Test
     public void longSequenceGivesCorrectScore() {
-        
+        assertEquals(75, longSeqs.getAlignmentScore(), 0.00001);
+    }
+
+    @Test
+    public void longSequenceSolutionIsTrueSubsequence() {
+        char[] solution = longSeqs.getSolution()[0];
+        char[] seq1 = ("gcgcgtgcgcggaaggagccaaggtgaagttgtagcagtgtgtcagaagaggtgcgtggcaccatgctgtcccccgaggcggagcgggtgctgcggtacctggtcgaagtagaggagttg").toCharArray();
+        char[] seq2 = ("gacttgtggaacctacttcctgaaaataaccttctgtcctccgagctctccgcacccgtggatgacctgctcccgtacacagatgttgccacctggctggatgaatgtccgaatgaagcg").toCharArray();
+        assertTrue(isSubseq(seq1, solution) && isSubseq(seq2, solution));
     }
 
     private boolean isSubseq(char[] seq, char[] sub) {
@@ -83,10 +100,8 @@ public class LCSTest extends TestFileOperations {
             } while (k < seq.length && sub[i] != seq[k]);
         }
         if (k < seq.length) {
-            System.out.println("returning false");
             return true;
         }
-        System.out.println("returning true");
         return false;
     }
 
