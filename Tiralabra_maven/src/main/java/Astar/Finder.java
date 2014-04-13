@@ -57,11 +57,26 @@ public class Finder {
             markNeighbour(m,goal,-1,1);
             
             m.printField();
+            System.out.println(accessed.getSize());
             for(int i = 1; i<=accessed.getSize();i++) {
-                System.out.print("(("+accessed.get(i).getX()+","+accessed.get(i).getY()+")"+accessed.get(i).getPrio()+")");
+                System.out.print(i+":("+accessed.get(i).getX()+","+accessed.get(i).getY()+") "+accessed.get(i).getPrio());
                 System.out.println();
             }
         }
+    }
+    
+    /**
+     * 
+     * @param n the node to be 'filled'
+     * @param y goal on y-axis
+     * @param x goal on x-axis
+     */
+    public void setNodeVariables(Node n, int y,int x) {
+        n.setPrev(current);                                 //set this node as followers 'previous'
+        n.setToStart(current.getToStart()+1);               //set distance to start                    
+        n.setToGoal(y,x);
+        if(n.getValue() == '0')
+            n.setValue('*');
     }
     
     
@@ -78,16 +93,13 @@ public class Finder {
                 if(neighbor.getValue() == 'X')
                     checked.add(neighbor);                                     //if a wall, discard
                 if(!checked.contains(neighbor)) {                              //if node hasn't been checked
-                    neighbor.setPrev(current);                                 //set this node as followers 'previous'
-                    neighbor.setToStart(current.getToStart()+1);               //set distance to start                    
-                    neighbor.setToGoal(goal.getY(),goal.getX());               //set distance to goal
-                    if(neighbor.getValue() == '0'){neighbor.setValue('*');}
-                    if(!accessed.hasNode(neighbor)) {
+                    if(!accessed.hasNode(neighbor)){
                         accessed.insertNode(neighbor);
+                        setNodeVariables(neighbor,goal.getY(),goal.getX());
                     }
                     if(accessed.hasNode(neighbor) && neighbor.getPrio()>((current.getToStart()+1)+neighbor.getToGoal())){
                           neighbor.setToStart(current.getToStart()+1);
-                          accessed.sortHeap(accessed.getSize());
+                          accessed.sortHeap(1);
                     }
                 }
             }   catch(Exception e) {}
