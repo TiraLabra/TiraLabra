@@ -5,12 +5,15 @@ Yleisrakenne
 ### Paketit ja luokat
 Labyrintti
 - Käynnistys: Käynnistää ohjelman
+
 Labyrintti/osat
 - Pohja: Kartta labyritistä
 - Ruutu: Kartta koostuu ruuduista
+
 Labyrintti/sovellus
 - Etsijä: Laskee reitin A*:lla
 - Minimikeko: Oma toteutus minimikeosta
+
 Labyrintti/gui
 - Käyttöliittymä: Avaa sovelluksen ikkunaan
 - Napin kuuntelija: Käynnistää reitin etsimisen
@@ -20,20 +23,21 @@ Labyrintti/gui
 
 talukko n riviä * m saraketta
 
-aStar()
-alustetaan minimikeko
-while ei olla päästy maaliin
-	valitse keosta ruutu r, jolle lähtöön[r] + maaliin[r] on pienin
-	aseta r käydyksi true
-	käy läpu r:n naapurit
+	aStar()
+
+	alustetaan minimikeko
+	while ei olla päästy maaliin
+		valitse keosta ruutu r, jolle lähtöön[r] + maaliin[r] on pienin
+		aseta r käydyksi true
+		käy läpu r:n naapurit
 	
-alustus()
-for kaikille ruuduille r
-	maaliin[r] = arvio r-->m
-	lähtöön[r] = ääretön
-	reitti[r] = NIL
-lähtöön[lähtö] = 0
-lisää ruudut kekoon
+	alustus()
+		for kaikille ruuduille r
+			maaliin[r] = arvio r-->m
+			lähtöön[r] = ääretön
+			reitti[r] = NIL
+		lähtöön[lähtö] = 0
+		lisää ruudut kekoon
 
 käyLäpiNaapurit(r)
 for kaikki r:n naapureille q
@@ -41,7 +45,7 @@ for kaikki r:n naapureille q
 		lähtöön[q] = lähtöön[r]+arvo[q]
 		reitti[q] = r
 		
-aStar()
+	aStar()
 alustetaan minimikeko			// O(m*n)
 while ei olla päästy maaliin 	// ehdon tarkistaminen O(1)
 								// koko while O(???)
