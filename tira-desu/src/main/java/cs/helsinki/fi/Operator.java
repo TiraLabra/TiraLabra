@@ -123,7 +123,7 @@ public class Operator {
             if (!file.exists())
                 file.createNewFile();
             fw = new FileWriter(file);
-            fw.write(data.toString());
+            fw.write(new String(data, "UTF-8"));
         } catch (IOException ioe) {
             System.out.println("ERROR: ");
             ioe.printStackTrace();

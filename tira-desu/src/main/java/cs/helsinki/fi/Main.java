@@ -15,11 +15,11 @@ public class Main {
         }
         
         Operator op = new Operator(args);
-        if (args[0].equals("-e")) {
-            op.encrypt(args[3]);
-        } else if (args[0].equals("-d")) {
-            op.decrypt(args[3]);
-        } else
+        if (args[0].equals("-e"))
+            op.encrypt(args[2]);
+        else if (args[0].equals("-d"))
+            op.decrypt(args[2]);
+        else
             man();
     }
     
@@ -29,8 +29,8 @@ public class Main {
     public static void man() {
         System.out.println(
                 "Tira-DESu usage: \n" +
-                "  encrypt: '%s -e --mode keyfile input output'\n" + 
-                "  decrypt: '%s -d --mode keyfile input output'\n" +
+                "  encrypt: '%s -e mode keyfile input output'\n" + 
+                "  decrypt: '%s -d mode keyfile input output'\n" +
                 "    where 'keyfile', 'input' and 'output' are filenames\n" +
                 "  available modes: des and 3des"
         );

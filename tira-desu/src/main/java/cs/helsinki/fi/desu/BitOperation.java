@@ -108,11 +108,11 @@ public class BitOperation {
      * @return       vector of bits of given length
      */
     public byte[] separateBytes(byte[] input, int len) {
-        int numBytes = (8 * input.length - 1) / len + 1;
+        int numBytes = (8 * input.length - 1) / (len + 1);
         byte[] output = new byte[numBytes];
         for (int i = 0; i < numBytes; i++) {
             for (int j = 0; j < len; j++) {
-                int val = extractBit(input, (len * i) + j);
+                int val = extractBit(input, len * i + j);
                 setBit(output, 8 * i + j, val);
             }
         }
