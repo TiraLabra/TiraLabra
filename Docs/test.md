@@ -1,7 +1,7 @@
 Testing
 =======
 
-Testing is performed using JUnit unit tests. Testable input is written by hand and from that the output is calculated. If these match the algorithm is working correctly. Only exception to this is the ready algorithm, for which ready input and output are generated with outside software implementing DES. These should apply for this project also.  
+Testing is performed using JUnit unit tests. Testable input is written by hand and from that the output is calculated. If these match the algorithm is working correctly. Only exception to this is the ready algorithm, for which ready input and output are generated with outside software implementing DES (in this project, Java Cryptography Architecture). These should apply for this project also.  
 
 Coverage
 --------
@@ -20,3 +20,4 @@ To be published...
 
 Sources
 -------
+[Java Cryptography Architecture (JCA) Reference Guide] (http://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html)
