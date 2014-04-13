@@ -45,7 +45,11 @@ public class DecryptionTest {
      * Test of deletePadding method, of class Decryption.
      */
     public void testDeletePadding() {
+        byte[] test = {2, 7, 4, 8, 5, -128, 0, 0, 0, 0};
+        byte[] result = {2, 7, 4, 8, 5};
         
+        test = dec.deletePadding(test);
+        assertTrue(Arrays.equals(test, result));
     }
     
 }
