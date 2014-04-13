@@ -31,6 +31,7 @@ public class Kaynnistys {
         pohja.alustaPohja1("src/main/java/labyrintti/osat/kartta2.txt");
         etsija = new Etsija(pohja);
         kali = new Kayttoliittyma(this, 40);
+//        etsija.setPiirtoalusta(kali.getPiirtoalusta());
     }
 
     /**

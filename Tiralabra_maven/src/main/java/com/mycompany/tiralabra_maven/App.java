@@ -27,6 +27,6 @@ public class App {
 //        System.out.println("Reitin koordinaatit:");
 //        System.out.println("x,y");
 //        System.out.println(e.getReitti());
-//        new Kaynnistys().kaynnista();
+        new Kaynnistys().kaynnista();
     }
 }

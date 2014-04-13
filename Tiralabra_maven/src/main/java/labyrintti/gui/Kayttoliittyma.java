@@ -41,6 +41,7 @@ public class Kayttoliittyma implements Runnable {
         this.alusta = new Piirtoalusta(kaynnistys, sivu);
         this.kaynnistys = kaynnistys;
         this.sivu = sivu;
+        kaynnistys.getEtsija().setPiirtoalusta(alusta);
     }
 
     /**

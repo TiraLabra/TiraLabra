@@ -41,7 +41,7 @@ public class Minimikeko {
      * @return vanhemman indeksi
      */
     private int vanhempi(int solmu) {
-        return solmu / 2;
+        return (solmu-1) / 2;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Minimikeko {
      * @return oikean lapsen indeksi
      */
     private int oikeaLapsi(int solmu) {
-        return 2 * solmu + 2;
+        return 2 * (solmu + 1);
     }
 
     /**
@@ -172,29 +172,29 @@ public class Minimikeko {
         }
     }
 
-//    /**
-//     * Päivittää keon,
-//     * @param paivitettava 
-//     */
-//    public void paivitaRuutuKekoon(Ruutu paivitettava) {
+    /**
+     * Päivittää keon,
+     * @param paivitettava 
+     */
+    public void paivitaRuutuKekoon(Ruutu paivitettava) {
 //        for (int i = 0; i < ruudut.length; i++) {
 //            if (ruudut[i].equals(paivitettava)) {
 //                ruudut[i] = paivitettava;
 //            }
 //        }
 //        rakennaKeko();
-//        int solmu = 0;
-//        for (int i = 0; i < ruudut.length; i++) {
-//            if (ruudut[i].equals(paivitettava)) {
-//                solmu = i;
-//                break;
-//            }
-//        }
-//        while (solmu > 0 && ruudut[vanhempi(solmu)].getEtaisyyksienSumma() > ruudut[solmu].getEtaisyyksienSumma()) {
-//            vaihdaSolmujenPaikkaa(solmu, vanhempi(solmu));
-//            solmu = vanhempi(solmu);
-//        }
-//    }
+        int solmu = 0;
+        for (int i = 0; i < ruudut.length; i++) {
+            if (ruudut[i].equals(paivitettava)) {
+                solmu = i;
+                break;
+            }
+        }
+        while (solmu > 0 && ruudut[vanhempi(solmu)].getEtaisyyksienSumma() > ruudut[solmu].getEtaisyyksienSumma()) {
+            vaihdaSolmujenPaikkaa(solmu, vanhempi(solmu));
+            solmu = vanhempi(solmu);
+        }
+    }
     public int getKeonKoko() {
         return keonKoko;
     }

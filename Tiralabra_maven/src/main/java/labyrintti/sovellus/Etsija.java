@@ -1,5 +1,6 @@
 package labyrintti.sovellus;
 
+import labyrintti.gui.Piirtoalusta;
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
 
@@ -28,12 +29,19 @@ public class Etsija {
      * Reitti tallennetaan 2-ulotteiseen taulukkoon.
      */
     private int[][] reitti;
+    private Piirtoalusta alusta;
 
     public Etsija(Pohja p) {
         pohja = p;
         kaymattomat = new Minimikeko(p.getKorkeus() * p.getLeveys());
         reitti = null;
     }
+
+    public void setPiirtoalusta(Piirtoalusta alusta) {
+        this.alusta = alusta;
+    }
+    
+    
 
     /**
      * Alustaa pohjan ruutujen arvot.
@@ -63,6 +71,7 @@ public class Etsija {
             }
             kasiteltava.setKayty(true);
             kayLapiViereisetRuudut(kasiteltava);
+//            alusta.paivita();
         }
         long aikaLopussa = System.currentTimeMillis();
         System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
@@ -99,8 +108,8 @@ public class Etsija {
         if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
             viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
             viereinen.setEdellinen(kasiteltava);
-//            kaymattomat.paivitaRuutuKekoon(viereinen);
-            kaymattomat.rakennaKeko();
+            kaymattomat.paivitaRuutuKekoon(viereinen);
+//            kaymattomat.rakennaKeko();
         }
     }
 
