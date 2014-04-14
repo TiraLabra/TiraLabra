@@ -17,7 +17,7 @@ public class Util {
         for (int n : numbers){
             int closestPowerOfTwo = findClosestPowerOfTwoTo(n);
             int distanceFromPowerOfTwo = Math.abs(closestPowerOfTwo-n);
-            if (distanceFromPowerOfTwo >= farthestDistanceFromPowerOfTwo){
+            if (distanceFromPowerOfTwo > farthestDistanceFromPowerOfTwo){
                 farthestDistanceFromPowerOfTwo = distanceFromPowerOfTwo;
                 numberFarthest = n;
             }

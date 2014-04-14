@@ -5,11 +5,15 @@
  */
 package sanapuuro;
 
+import java.util.Iterator;
 import sanapuuro.ui.GameView;
 import sanapuuro.ui.ConsoleController;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+import sanapuuro.datastructures.MyHashSet;
+import sanapuuro.datastructures.StringHashFuncs;
+import sanapuuro.datastructures.Util;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;
 import sanapuuro.letters.PlayerLetterPool;

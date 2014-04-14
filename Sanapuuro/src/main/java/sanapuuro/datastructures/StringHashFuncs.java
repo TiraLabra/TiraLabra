@@ -24,11 +24,15 @@ public class StringHashFuncs implements HashFuncs<String> {
         for (int i = 0; i < s.length(); i++){
             int charVal = s.charAt(i);
             BigInteger ascii = new BigInteger(charVal + "");
-            BigInteger multiplier = new BigInteger("128");
+            //System.out.println("ascii = " + ascii);
+            BigInteger multiplier = new BigInteger("128");           
             multiplier = multiplier.pow(i);
-            hash.add(ascii.multiply(multiplier));
+            //System.out.println("multiplier = " + multiplier);
+            hash = hash.add(ascii.multiply(multiplier));
+            //System.out.println("hash = " + hash);
         }
         BigInteger remainder = hash.mod(new BigInteger(m+""));
+        //System.out.println("remainder = " + remainder);
         return remainder.intValue();
     }
     
@@ -38,9 +42,9 @@ public class StringHashFuncs implements HashFuncs<String> {
      * @return The hash value of string s.
      */
     @Override
-    public int getHash(String s, int numberOfTry, int m){
+    public int getHash(String s, int m, int numberOfTry){
        int hash = this.getNormalHash(s, m);
-       return hash + numberOfTry;
+       return (hash + numberOfTry) % m;
     }
     
     @Override

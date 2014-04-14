@@ -17,7 +17,7 @@ public interface HashFuncs<T> {
      * @param o Object to calculate a hash for.
      * @return The hash value of string s.
      */
-    int getHash(T o, int numberOfTry, int m);
+    int getHash(T o, int m, int numberOfTry);
 
     /**
      * Calculates normal hash value for a string.
