@@ -44,6 +44,13 @@ public class Kayttoliittyma {
         jarjestaJarjestyksessaOlevaTaulukko(medium);
         System.out.println("Järjestetään suuri taulukko...");
         jarjestaJarjestyksessaOlevaTaulukko(large);
+        System.out.println("KAIKKI LUVUT SAMOJA -TAULUKKO -----------");
+        System.out.println("Järjestetään pieni taulukko...");
+        jarjestaKaikkiSamojaTaulukko(small);
+        System.out.println("Järjestetään keskikokoinen taulukko...");
+        jarjestaKaikkiSamojaTaulukko(medium);
+        System.out.println("Järjestetään suuri taulukko...");
+        jarjestaKaikkiSamojaTaulukko(large);
     }
     
     /**
@@ -74,6 +81,17 @@ public class Kayttoliittyma {
 
         System.out.println("Smoothsort...");
         jarjestaSmoothsortilla(muodostaJarjTaulukko(koko));
+    }
+    
+    public void jarjestaKaikkiSamojaTaulukko(int koko){
+        System.out.println("Mergesort...");
+        jarjestaMergesortilla(muodostaKaikkiSamojaTaulukko(koko));
+
+        System.out.println("Introsort...");
+        jarjestaIntrosortilla(muodostaKaikkiSamojaTaulukko(koko));
+
+        System.out.println("Smoothsort...");
+        jarjestaSmoothsortilla(muodostaKaikkiSamojaTaulukko(koko));
     }
 
     private void jarjestaMergesortilla(int[] jarjestettava) {
@@ -123,6 +141,14 @@ public class Kayttoliittyma {
         int [] uusi = new int[koko];
         for (int i = 0; i < uusi.length; i++) {
             uusi[i] = i;
+        }
+        return uusi;
+    }
+    
+    private int[] muodostaKaikkiSamojaTaulukko(int koko){
+        int [] uusi = new int[koko];
+        for (int i = 0; i < uusi.length; i++) {
+            uusi[i] = 3;
         }
         return uusi;
     }
