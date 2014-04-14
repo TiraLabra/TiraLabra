@@ -5,12 +5,13 @@
  */
 package sanapuuro;
 
-import java.util.Iterator;
+import java.util.List;
 import sanapuuro.ui.GameView;
 import sanapuuro.ui.ConsoleController;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+import sanapuuro.datastructures.HashFuncs;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.datastructures.StringHashFuncs;
 import sanapuuro.datastructures.Util;
@@ -30,8 +31,9 @@ public class Game {
         FileIO fileIO = new FileIO();
         Random rnd = new Random();
         
-        Set<String> words = fileIO.readInWordsFromFile("words/english_words");
-        WordEvaluator evaluator = new WordEvaluator(words);
+        List<String> words = fileIO.readInWordsFromFile("words/english_words");
+        MyHashSet<String> wordSet = Util.convertListToMyHashSet(words, new StringHashFuncs());
+        WordEvaluator evaluator = new WordEvaluator(wordSet);
         GameLetters letterReader = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
         PlayerLetterPool letterPoolOne = new PlayerLetterPool(letterReader);
         PlayerLetterPool letterPoolTwo = new PlayerLetterPool(letterReader);
@@ -43,7 +45,7 @@ public class Game {
         Grid grid = new Grid(8, 8);
         
         HumanPlayer playerOne = new HumanPlayer(controllerOne, letterPoolOne, grid, "Hessu");
-        AiPlayer playerTwo = new AiPlayer(letterPoolTwo, grid, "Mikki", words);
+        AiPlayer playerTwo = new AiPlayer(letterPoolTwo, grid, "Mikki", wordSet);
         
         GameView view = new GameView(grid, playerOne, playerTwo, letterReader);
         controllerOne.addListener(view);

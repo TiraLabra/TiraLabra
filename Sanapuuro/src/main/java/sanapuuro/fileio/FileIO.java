@@ -43,8 +43,8 @@ public class FileIO {
      * @param path
      * @return All valid English words given by a file.
      */
-    public Set<String> readInWordsFromFile(String path) {
-        Set<String> scannedWords = new HashSet<>();
+    public List<String> readInWordsFromFile(String path) {
+        List<String> scannedWords = new ArrayList<>();
         try {
             InputStream file = ClassLoader.getSystemResourceAsStream(path);
             Scanner reader = new Scanner(file);            

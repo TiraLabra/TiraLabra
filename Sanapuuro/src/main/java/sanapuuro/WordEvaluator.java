@@ -5,12 +5,9 @@
  */
 package sanapuuro;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import sanapuuro.letters.LetterContainer;
-import sanapuuro.utils.LetterContainerCoordinateComparator;
 
 /**
  * Used for checking if letters form a word and the score for the word.
@@ -48,7 +45,6 @@ public class WordEvaluator {
         if (letterContainers.size() < wordLengthMinimum) {
             return new EvaluationResult(false, "Word must be at least " + this.wordLengthMinimum + " characters long");
         }
-
         if (deltaX == 0 && deltaY == 0) {
             throw new IllegalArgumentException("Either deltaX or deltaY must be other than zero.");
         }
