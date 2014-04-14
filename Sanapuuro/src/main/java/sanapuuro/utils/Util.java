@@ -23,6 +23,14 @@ public class Util {
         }
         return letters.toString();
     }
+    
+    public static String stringFromLetterContainers(LetterContainer[] containers){
+        StringBuilder letters = new StringBuilder();
+        for(LetterContainer container : containers){
+            letters.append(container.letter.character);
+        }
+        return letters.toString();
+    }
 
     /**
      * Creates a new MyHashSet from the objects in the given list.
@@ -37,5 +45,13 @@ public class Util {
             set.add(obj);
         }
         return set;
+    }
+
+    public static String getStringFromFirstNLetterContainers(LetterContainer[] containers, int lettersFromStart) {
+        StringBuilder letters = new StringBuilder();
+        for(int i = 0; i < lettersFromStart; i++){
+            letters.append(containers[i].letter.character);
+        }
+        return letters.toString();
     }
 }
