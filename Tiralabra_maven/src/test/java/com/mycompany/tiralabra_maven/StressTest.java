@@ -19,24 +19,44 @@ import sequencealgorithms.LSA;
 import sequencealgorithms.Problem;
 
 /**
+ * StressTest performs a series of performance tests to algorithms in sequencealgorithms package. One algorithm is tested at a time.
+ * All results are printed to terminal, nothing is saved to file, 
  *
- * @author riha
+ * @author Jari Haavisto
  */
 public class StressTest {
 
     private static final String NAME_PREFIX = "stressTestFile";
 
     /**
-     * Program to run a series of stress tests.
+     * Program to run a series of stress tests to a chosen algorithm.
      * 
      * @param args 
      */
     public static void main(String[] args) {
 
+        /**
+         * Number of tests to perform.
+         */
         int numOfTests = 20;
+        /**
+         * Each test produces a new file for the tests. Variable lenOfSeqs tells how many characters are used on the first test and how many more are
+         * used on each following test.
+         */
         int lenOfSeqs = 1000;
+        /**
+         * Each test solves the problem several times. Variable numOfRepeats tells how many repetitions are used.
+         */
         int numOfRepeats = 10;
-        int selector = 3;
+        /**
+         * Variable selector tells which algorithm is being tested. 
+         * 1 - Longest Common Subsequence
+         * 2 - Global Sequence Alignment
+         * 3 - Local Sequence Alignment
+         * 4 - Global Sequence Alignment with Gap Penalties
+         */
+        int selector = 1;
+        
         System.out.println("Executing " + numOfTests + " stress tests, each with two inputs of length incrementing by " + lenOfSeqs + " with each file.");
         generateTestFiles(numOfTests, lenOfSeqs);
         System.out.println("Files generated, beginning stress test");
@@ -180,7 +200,7 @@ public class StressTest {
     }
 
     /**
-     * Deletes all the files that contain the filename prefix defined in NAME_PREFIX
+     * Deletes all the files that contain the filename prefix defined in NAME_PREFIX. 
     */
     private static void deleteTestFiles() {
         File[] files = new File(".").listFiles();
