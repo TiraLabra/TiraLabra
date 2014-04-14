@@ -6,10 +6,21 @@
 
 package com.mycompany.tiralabra_maven;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Tiina
  */
 public class Astar {
+    
+    ArrayList openList = new ArrayList();
+    ArrayList closedList = new ArrayList();
+    int[][] map = Wall.getMap();
+    //hiiren sijainti kartalla. eli algoritmin eteneminen
+    Node current = new Node();
+    
+    
+    
     
 }

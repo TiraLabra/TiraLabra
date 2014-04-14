@@ -14,6 +14,8 @@ public class Node {
  
     private Node next = null;
     static int value, kor, lev;
+    //astar muuttujat.
+    private int f, h, g;
 
     /**
      *
@@ -48,7 +50,55 @@ public class Node {
     public int getValue() {
         return value;
     }
+    
+    /**
+     *
+     * @return
+     */
+    public int getH() {
+        return h;
+    }
  
+    /**
+     *
+     * @param next
+     */
+    public void setH(int h) {
+        this.h = h;
+    }
+ 
+    /**
+     *
+     * @return
+     */
+    public int getG() {
+        return g;
+    }
+ 
+    /**
+     *
+     * @param next
+     */
+    public void setG(int g) {
+        this.g = g;
+    }    
+    
+    /**
+     *
+     * @return
+     */
+    public int getF() {
+        return f;
+    }
+ 
+    /**
+     *
+     * @param next
+     */
+    public void setF(int f) {
+        this.f = f;
+    }    
+    
     /**
      *
      * @return
