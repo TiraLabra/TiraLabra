@@ -7,6 +7,7 @@ package sanapuuro.datastructures;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * A fixed size hash set for holding any kind of objects. The hash value for an
@@ -16,7 +17,7 @@ import java.util.Iterator;
  *
  * @author skaipio
  */
-public class MyHashSet<T> {
+public class MyHashSet<T> implements Set<T>{
 
     private Object[] table;
     public final int tableSize;
@@ -29,7 +30,6 @@ public class MyHashSet<T> {
      * @param numberOfKeys Minimum number of keys this set should be able to
      * hold.
      * @param hashFunction Function used to determine hash value for an object.
-     * @param size Fixed size for the set.
      */
     public MyHashSet(int numberOfKeys, HashFuncs<T> hashFunction) {
         this.hashFunction = hashFunction;
@@ -37,22 +37,25 @@ public class MyHashSet<T> {
         this.table = new Object[this.tableSize];
     }
 
+    @Override
     public int size() {
         return this.numberOfItems;
     }
 
+    @Override
     public boolean isEmpty() {
         return numberOfItems == 0;
     }
 
-    public boolean contains(T obj) {
+    @Override
+    public boolean contains(Object obj) {
         if (obj == null) {
             return false;
         }
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash(obj, numberOfTries, this.tableSize);
+            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -70,6 +73,7 @@ public class MyHashSet<T> {
      *
      * @return Iterator for traversing this set.
      */
+    @Override
     public Iterator<T> iterator() {
         return new Iter<>();
     }
@@ -83,14 +87,15 @@ public class MyHashSet<T> {
      * @return True if no equal object is in the set and the set is not full,
      * false otherwise.
      */
-    public boolean add(T obj) {
+    @Override
+    public boolean add(Object obj) {
         if (obj == null || this.numberOfItems == this.tableSize) {
             return false;
         }
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash(obj, numberOfTries, this.tableSize);
+            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
             if (this.table[hash] == null || this.table[hash] == Del.DEL) {
                 this.table[hash] = obj;
                 this.numberOfItems++;
@@ -108,14 +113,15 @@ public class MyHashSet<T> {
      * @param obj Object to remove.
      * @return True if object was found in the set, false otherwise.
      */
-    public boolean remove(T obj) {
+    @Override
+    public boolean remove(Object obj) {
         if (obj == null || this.numberOfItems == 0) {
             return false;
         }
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash(obj, numberOfTries, this.tableSize);
+            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -134,6 +140,36 @@ public class MyHashSet<T> {
      */
     public void clear() {
         this.table = new String[tableSize];
+    }
+
+    @Override
+    public Object[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class Iter<T> implements Iterator<T> {

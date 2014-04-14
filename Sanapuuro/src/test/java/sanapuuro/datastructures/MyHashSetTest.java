@@ -155,7 +155,7 @@ public class MyHashSetTest {
     private class HashFuncStub<String> implements HashFuncs<String> {
 
         @Override
-        public int getHash(String o, int numberOfTry, int m) {
+        public int getHash(String o, int m, int numberOfTry) {
             return (o.toString().length() + numberOfTry) % m;
         }
 

@@ -32,13 +32,14 @@ public class StringHashFuncs implements HashFuncs<String> {
             //System.out.println("hash = " + hash);
         }
         BigInteger remainder = hash.mod(new BigInteger(m+""));
-        //System.out.println("remainder = " + remainder);
         return remainder.intValue();
     }
     
     /**
      * Calculates hash value for a string with number of tries taken into account.
      * @param s String to calculate a hash for.
+     * @param m
+     * @param numberOfTry
      * @return The hash value of string s.
      */
     @Override
