@@ -43,15 +43,67 @@ public class SmoothSorterTest extends TestCase {
             assertTrue(Arrays.equals(arrayToSort, sortedArray));
         }
     }
-    
-    public void testLeonardoNumberGenerator(){
+
+    public void testLeonardoNumberGenerator() {
         int[] leonardo = sorterToTest.formLeonardoSequence();
-        assertTrue(Arrays.equals(new int[]{1,1,3,5,9}, Arrays.copyOfRange(leonardo, 0, 5)));
+        assertTrue(Arrays.equals(new int[]{1, 1, 3, 5, 9}, Arrays.copyOfRange(leonardo, 0, 5)));
     }
-    
-    public void testCountOrderLength(){
+
+    public void testCountOrderLength() {
         assertEquals(8, sorterToTest.countOrderLength(27));
         assertEquals(18, sorterToTest.countOrderLength(1000));
+    }
+
+    public void testSmoothSortWithSortedArray() {
+        int[] arrayToSort = cmethods.giveArrayInOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+
+    public void testSmoothSortWithReversedArray() {
+        int[] arrayToSort = cmethods.giveArrayInReverseOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+
+    public void testSmoothSortWithOneLengthArray() {
+        int[] arrayToSort = cmethods.giveArrayOfOne();
+        int[] sortedArray = cmethods.giveArrayOfOneSolution();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+
+    public void testSmoothSortWithNoLengthArray() {
+        int[] arrayToSort = cmethods.giveArrayOfNone();
+        int[] sortedArray = cmethods.giveArrayOfNoneSolution();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+
+    public void testSmoothSortWithAllSameNumbersArray() {
+        int[] arrayToSort = cmethods.giveArrayOfAllSameNumbers();
+        int[] sortedArray = cmethods.giveArrayOfAllSameNumbers();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+
+    public void testSmoothSortWithALargeArray() {
+        
+        int[] arrayToSort = cmethods.giveLargeArrayOfRandomNumbers();
+        int[] sortedArray = arrayToSort.clone();
+        Arrays.sort(sortedArray);
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+
+    }
+    
+    public void testSmoothSortWithHardCodedArray(){
+        int[] arrayToSort = cmethods.giveAHardCodedArray();
+        int[] sortedArray = cmethods.giveAHardCodedArraySolution();
+        sorterToTest.smoothSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
     }
 
 }

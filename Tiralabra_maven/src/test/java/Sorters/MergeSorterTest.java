@@ -50,6 +50,56 @@ public class MergeSorterTest extends TestCase {
        assertTrue(Arrays.equals(newArray, left));
     }
     
+    public void testMergeSortWithSortedArray(){
+        int[] arrayToSort = cmethods.giveArrayInOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
     
+    public void testMergeSortWithReversedArray(){
+        int[] arrayToSort = cmethods.giveArrayInReverseOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testMergeSortWithOneLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfOne();
+        int[] sortedArray = cmethods.giveArrayOfOneSolution();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testMergeSortWithNoLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfNone();
+        int[] sortedArray = cmethods.giveArrayOfNoneSolution();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testMergeSortWithAllSameNumbersArray(){
+        int[] arrayToSort = cmethods.giveArrayOfAllSameNumbers();
+        int[] sortedArray = cmethods.giveArrayOfAllSameNumbers();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testMergeSortWithALargeArray() {
+        
+        int[] arrayToSort = cmethods.giveLargeArrayOfRandomNumbers();
+        int[] sortedArray = arrayToSort.clone();
+        Arrays.sort(sortedArray);
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+
+    }
+    
+    public void testSmoothSortWithHardCodedArray(){
+        int[] arrayToSort = cmethods.giveAHardCodedArray();
+        int[] sortedArray = cmethods.giveAHardCodedArraySolution();
+        arrayToSort = sorterToTest.mergeSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
     
 }

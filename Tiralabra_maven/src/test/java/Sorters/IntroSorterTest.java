@@ -47,7 +47,7 @@ public class IntroSorterTest extends TestCase {
         assertEquals(2,introsort.medianOfThree(taulukko5, 0, 1, 2));
     }
     
-    public void testInsertionSort(){
+    public void testInsertionSortWithRandomArrays(){
         for (int i = 0; i < 10; i++) {
             int[] arrayToSort = cmethods.giveRandomArray();
             int[] sortedArray = arrayToSort.clone();
@@ -57,7 +57,7 @@ public class IntroSorterTest extends TestCase {
         }
     }
     
-    public void testHeapSort(){
+    public void testHeapSortWithRandomArrays(){
         for (int i = 0; i < 10; i++) {
             int[] arrayToSort = cmethods.giveRandomArray();
             int[] sortedArray = arrayToSort.clone();
@@ -67,7 +67,7 @@ public class IntroSorterTest extends TestCase {
         }
     }
     
-    public void testIntroSort(){
+    public void testIntroSortWithRandomArrays(){
         for (int i = 0; i < 10; i++) {
             int[] arrayToSort = cmethods.giveRandomArray();
             int[] sortedArray = arrayToSort.clone();
@@ -77,4 +77,140 @@ public class IntroSorterTest extends TestCase {
         }
     }
     
+    public void testInsertionSortWithSortedArray(){
+        int[] arrayToSort = cmethods.giveArrayInOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testInsertionSortWithReversedArray(){
+        int[] arrayToSort = cmethods.giveArrayInReverseOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testInsertionSortWithOneLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfOne();
+        int[] sortedArray = cmethods.giveArrayOfOneSolution();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testInsertionSortWithNoLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfNone();
+        int[] sortedArray = cmethods.giveArrayOfNoneSolution();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testInsertionSortWithAllSameNumbersArray(){
+        int[] arrayToSort = cmethods.giveArrayOfAllSameNumbers();
+        int[] sortedArray = cmethods.giveArrayOfAllSameNumbers();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testInsertionSortWithHardCodedArray(){
+        int[] arrayToSort = cmethods.giveAHardCodedArray();
+        int[] sortedArray = cmethods.giveAHardCodedArraySolution();
+        introsort.intro_InsertionSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithSortedArray(){
+        int[] arrayToSort = cmethods.giveArrayInOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithReversedArray(){
+        int[] arrayToSort = cmethods.giveArrayInReverseOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithOneLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfOne();
+        int[] sortedArray = cmethods.giveArrayOfOneSolution();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithNoLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfNone();
+        int[] sortedArray = cmethods.giveArrayOfNoneSolution();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithAllSameNumbersArray(){
+        int[] arrayToSort = cmethods.giveArrayOfAllSameNumbers();
+        int[] sortedArray = cmethods.giveArrayOfAllSameNumbers();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testHeapSortWithHardCodedArray(){
+        int[] arrayToSort = cmethods.giveAHardCodedArray();
+        int[] sortedArray = cmethods.giveAHardCodedArraySolution();
+        introsort.intro_HeapSort(arrayToSort, 0, arrayToSort.length);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithSortedArray(){
+        int[] arrayToSort = cmethods.giveArrayInOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithReversedArray(){
+        int[] arrayToSort = cmethods.giveArrayInReverseOrder();
+        int[] sortedArray = cmethods.giveArrayInOrder();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithOneLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfOne();
+        int[] sortedArray = cmethods.giveArrayOfOneSolution();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithNoLengthArray(){
+        int[] arrayToSort = cmethods.giveArrayOfNone();
+        int[] sortedArray = cmethods.giveArrayOfNoneSolution();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithAllSameNumbersArray(){
+        int[] arrayToSort = cmethods.giveArrayOfAllSameNumbers();
+        int[] sortedArray = cmethods.giveArrayOfAllSameNumbers();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+    
+    public void testIntroSortWithALargeArray() {
+        
+        int[] arrayToSort = cmethods.giveLargeArrayOfRandomNumbers();
+        int[] sortedArray = arrayToSort.clone();
+        Arrays.sort(sortedArray);
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+
+    }
+    
+    public void testIntroSortWithHardCodedArray(){
+        int[] arrayToSort = cmethods.giveAHardCodedArray();
+        int[] sortedArray = cmethods.giveAHardCodedArraySolution();
+        introsort.introSort(arrayToSort);
+        assertTrue(Arrays.equals(arrayToSort, sortedArray));
+    }
+  
 }
