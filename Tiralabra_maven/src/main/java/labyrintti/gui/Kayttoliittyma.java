@@ -41,7 +41,7 @@ public class Kayttoliittyma implements Runnable {
         this.alusta = new Piirtoalusta(kaynnistys, sivu);
         this.kaynnistys = kaynnistys;
         this.sivu = sivu;
-        kaynnistys.getEtsija().setPiirtoalusta(alusta);
+//        kaynnistys.getEtsija().setPiirtoalusta(alusta);
     }
 
     /**
@@ -51,7 +51,7 @@ public class Kayttoliittyma implements Runnable {
     public void run() {
         Pohja p = kaynnistys.getPohja();
         frame = new JFrame("Labyrintti");
-        frame.setPreferredSize(new Dimension((p.getLeveys() + 1) * sivu + 80, (p.getKorkeus() + 1) * sivu));
+        frame.setPreferredSize(new Dimension((p.getLeveys() + 1) * (sivu+1) + 80, (p.getKorkeus() + 1) * (sivu+2)));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         luoKomponentit(frame.getContentPane());

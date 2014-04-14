@@ -14,6 +14,48 @@ import labyrintti.sovellus.Etsija;
 public class Kaynnistys {
 
     /**
+     * Testisyöte.
+     */
+    private String esim1 = "99992222L2"
+            + "9999200002"
+            + "9992202222"
+            + "9992202222"
+            + "9292202222"
+            + "9292252222"
+            + "2292555222"
+            + "M299909999"
+            + "0000555222";
+    /**
+     * Testisyöte.
+     */
+    private String esim2 = "L0000"
+            + "99990"
+            + "00000"
+            + "09999"
+            + "0000M";
+    /**
+     * Testisyöte.
+     */
+    private String esim3 = "9999999999999999M9"
+            //            + "000000000000000900"
+            //            + "000000000000000900"
+            //            + "000000000000000000"
+            //            + "000000999990000000"
+            //            + "000000000090000000"
+            //            + "000000000090000000"
+            //            + "000000000090000000"
+            //            + "000000000000000000"
+            //            + "9L9999999999999999";
+            + "111111111111111911"
+            + "111111111111111911"
+            + "111111111111111111"
+            + "111111999991111111"
+            + "111111111191111111"
+            + "111111111191111111"
+            + "111111111191111111"
+            + "111111111111111111"
+            + "9L9999999999999999";
+    /**
      * Etsii kartasta lyhimmän reitin.
      */
     private Etsija etsija;
@@ -52,15 +94,36 @@ public class Kaynnistys {
             pohja = new Pohja(korkeus, leveys, syote);
         }
         etsija = new Etsija(pohja);
-
+//        testipohjat();
         kaynnistaGui();
     }
 
+//    /**
+//     * Metodi A*:n suorituskyvyn testaamiseen.
+//     */
+//    private void testipohjat() {
+//        String syote = "";
+//        for (int i = 2; i < 130; i++) {
+//            for (int j = 0; j < i * i; j++) {
+//                syote += "1";
+//            }
+//            syote = syote.substring(2);
+//            syote = "L" + syote + "M";
+//            pohja = new Pohja(i, i, syote);
+//            etsija = new Etsija(pohja);
+//            long aikaAlussa = System.currentTimeMillis();
+//            etsija.aStar();
+//            long aikaLopussa = System.currentTimeMillis();
+//            System.out.println("i = " + i + " Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+//            syote = "";          
+//        }
+//    }
+    
     /**
      * Käynnistää käyttöliittymän.
      */
     private void kaynnistaGui() {
-        kali = new Kayttoliittyma(this, 40);
+        kali = new Kayttoliittyma(this, 25);
 
         SwingUtilities.invokeLater(kali);
 
@@ -77,8 +140,8 @@ public class Kaynnistys {
      * Kysyy käyttäjältä kartan korkeuden ja leveyden.
      *
      * @param kysymys
-     * @return 0 jos käyttäjä haluaa käyttää valmista karttaa, muuten luvun
-     * väliltä 1-50
+     * @return 0 jos käyttäjä haluaa käyttää valmista karttaa, muuten luku
+     * väliltä 1-30
      */
     private int kysyKayttajalta(String kysymys) {
         System.out.print(kysymys);
@@ -100,24 +163,24 @@ public class Kaynnistys {
      */
     private boolean tarkistaLuku(String sana) {
         int luku = Integer.parseInt(sana);
-        if (luku > 0 && luku < 51) {
+        if (luku > 0 && luku < 31) {
             return true;
         } else {
-            System.out.print("Luvun pitää olla välillä 1 - 50, anna uusi luku: ");
+            System.out.print("Luvun pitää olla välillä 1 - 30, anna uusi luku: ");
             return false;
         }
     }
 
     /**
-     * Asettaa valmiin pohjan Pohja-oliolle.
+     * Asettaa valmiin kartan Pohja-oliolle.
      */
     private void valmisPohja() {
-        String syote = "L1111"
-                + "33331"
-                + "11111"
-                + "03333"
-                + "0000M";
-        pohja = new Pohja(5, 5, syote);
+//        String syote = esim3;
+//        pohja = new Pohja(10, 18, syote);
+//        String syote = esim2;
+//        pohja = new Pohja(5, 5, syote);
+        String syote = esim1;
+        pohja = new Pohja(9, 10, syote);
     }
 
     public Pohja getPohja() {
@@ -144,8 +207,7 @@ public class Kaynnistys {
             String rivi = lukija.nextLine();
             mones++;
             if (rivi.length() != leveys) {
-                mones--;
-                riviEiOikeanMittainen(mones, syote, leveys);
+                mones = riviEiOikeanMittainen(mones, syote, leveys);
             } else {
                 syote += rivi;
             }
@@ -164,17 +226,20 @@ public class Kaynnistys {
     /**
      * Ohjeistaa käyttäjää, jos syötetty rivi ei ole oikean mittainen.
      *
-     * @param mones monta hyväksyttyä riviä käyttäjä on syöttänyt.
+     * @param mones monta riviä käyttäjä on syöttänyt.
      * @param syote tähän asti annettu syöte
      * @param leveys kartan leveys
+     * @return mones-1 eli sallittujen rivien määrä
      */
-    private void riviEiOikeanMittainen(int mones, String syote, int leveys) {
+    private int riviEiOikeanMittainen(int mones, String syote, int leveys) {
+        mones--;
         System.out.println("Rivi on liian lyhyt/pitkä, olet syöttänyt tähän mennessä " + mones + " riviä, jotka ovat");
         System.out.println("(Jatka rivien syöttöä tästä)");
         for (int i = 0; i < mones; i++) {
             String mj = syote.substring(i * leveys, i * leveys + leveys);
             System.out.println(mj);
         }
+        return mones;
     }
 
     /**

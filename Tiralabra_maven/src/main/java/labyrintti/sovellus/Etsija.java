@@ -60,7 +60,6 @@ public class Etsija {
      * A*-algoritmi, joka etsii lyhimmän reitin lähdöstä maaliin.
      */
     public void aStar() {
-        long aikaAlussa = System.currentTimeMillis();
         alustus();
         while (!pohja.getMaali().onkoKayty()) {
             Ruutu kasiteltava = kaymattomat.pollPienin();
@@ -71,8 +70,6 @@ public class Etsija {
             kayLapiViereisetRuudut(kasiteltava);
 //            alusta.paivita();
         }
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
     /**

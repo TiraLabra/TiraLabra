@@ -1,8 +1,7 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
-
-
-
+Tietorakenteet ja algoritmit -kurssin harjoitustyö
+==================================================
+TiraLabra
+---------
 
 Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
 
