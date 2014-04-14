@@ -1,13 +1,10 @@
 package com.mycompany.tiralabra_maven;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import labyrintti.Kaynnistys;
+
+public class App {
+
+    public static void main(String[] args) {
+        new Kaynnistys().kaynnista();
     }
 }
