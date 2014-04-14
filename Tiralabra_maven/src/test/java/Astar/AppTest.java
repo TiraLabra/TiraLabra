@@ -11,8 +11,11 @@ public class AppTest
     extends TestCase
 {
     
-    public AppTest(){
-    }
+    
+        public void testNullTest() {
+            assertTrue(true);
+        }
+    
 
     
     

@@ -25,3 +25,4 @@ Lähteet:
 
 Wikipedia - A*: en.wikipedia.org/wiki/A*_search_algorithm
 Tietorakenteet -kurssimateriaali - Helsingin yliopisto, Tietojenkäsittelytieteen laitos: http://www.cs.helsinki.fi/u/floreen/tira2012/tira.pdf
+TKK - http://www.cse.hut.fi/en/research/SVG/TRAKLA2/tutorials/kekotutoriaali/

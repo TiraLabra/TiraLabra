@@ -8,6 +8,7 @@ import junit.framework.TestCase;
  */
 public class NodeTest extends TestCase {
     Node n = new Node('*',0,0);
+    Node n1 =new Node('X',1,2);
     
     
     /**
@@ -15,7 +16,18 @@ public class NodeTest extends TestCase {
      */
     public void testNodeCreation()
     {
-        assertTrue(n.getValue()=='*');
+        assertTrue(n != null && n.getValue()=='*');
+    }
+    
+    public void testCoordinates() {
+        assertTrue(n.getY() == 0);
+        assertTrue(n.getX() == 0);
+        
+    }
+    
+    public void testPathCreation() {
+        n.setPrev(n1);
+        assertTrue(n.getPrev()==n1);
     }
     
     public void testValueModification() {
@@ -33,4 +45,8 @@ public class NodeTest extends TestCase {
         n.setToGoal(4, 4);
         assertTrue(n.getPrio()==Math.sqrt(32)+1);
     }
+    
+    
+    
+    
 }
