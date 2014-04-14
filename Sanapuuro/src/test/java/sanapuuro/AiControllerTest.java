@@ -56,12 +56,6 @@ public class AiControllerTest {
     @After
     public void tearDown() {
     }
-
-//    @Test
-//    public void scoreRaisedOnSuccessfulSubmission() {
-//        this.ai.successfulSubmission(10);
-//        assertEquals(10, this.ai.getScore());       
-//    }
     
     @Test
     public void submitsBestWord() {

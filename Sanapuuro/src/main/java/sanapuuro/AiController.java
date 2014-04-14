@@ -48,10 +48,10 @@ public class AiController implements Controller {
     }
 
     /**
-     * Permute the
-     *
-     * @param containers
-     * @param k
+     * Tries all possible permutations of given containers to grid. Updates
+     * this instance's best known anagram with the best permutation.
+     * @param containers Containers to use for permutations.
+     * @param k The index to start permuting from.
      */
     public void tryPermutations(LetterContainer[] containers, int k) {
         for (int i = k; i < containers.length; i++) {
@@ -63,9 +63,7 @@ public class AiController implements Controller {
                 System.out.println("permutations handled: " + permutationsHandled);
                 System.out.println("millis taken by fitting: " + this.totalMillisTaken);
             }
-            for (int l = 0; l <= k; l++) {
-                this.tryPermutationToGrid(containers);
-            }
+            this.tryPermutationToGrid(containers);
             tryPermutations(containers, k + 1);
             temp = containers[k];
             containers[k] = containers[i];

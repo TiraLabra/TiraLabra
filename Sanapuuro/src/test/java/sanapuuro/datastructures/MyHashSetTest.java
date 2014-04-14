@@ -5,12 +5,14 @@
  */
 package sanapuuro.datastructures;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import sanapuuro.fileio.FileIO;
 
 /**
  *
@@ -39,23 +41,38 @@ public class MyHashSetTest {
     @After
     public void tearDown() {
     }
-    
+
+//    @Test
+//    public void testSpeed() {
+//        FileIO fileIO = new FileIO();
+//        List<String> words = fileIO.readInWordsFromFile("words/english_words");
+//        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new StringHashFuncs());
+//        
+//        long before = System.currentTimeMillis();
+//        for(int i = 0; i < 40000; i++){
+//            wordSet.contains(words.get(i));
+//        }
+//        long after = System.currentTimeMillis();
+//        
+//        System.out.println("Took time: " + (after-before));
+//    }
+
     @Test
-    public void hashSetSetsTableSizeToMValueOfHashFunc(){
+    public void hashSetSetsTableSizeToMValueOfHashFunc() {
         MyHashSet<String> set = new MyHashSet<>(1, new HashFuncStub<String>());
         assertEquals(3, set.tableSize);
     }
-    
+
     @Test
-    public void hashSetSizeIncreasesByAddingObjectsToIt(){
+    public void hashSetSizeIncreasesByAddingObjectsToIt() {
         this.mySet.add("abc");
         this.mySet.add("bcd");
         this.mySet.add("aaa");
         assertEquals(3, this.mySet.size());
     }
-    
+
     @Test
-    public void hashSetSizeDecreasesByRemovingObjectsFromIt(){
+    public void hashSetSizeDecreasesByRemovingObjectsFromIt() {
         this.mySet.add("abc");
         this.mySet.add("bcd");
         this.mySet.add("aaa");
@@ -83,7 +100,7 @@ public class MyHashSetTest {
         assertTrue(this.mySet.contains(inSet2));
         assertTrue(this.mySet.contains(inSet3));
     }
-    
+
     @Test
     public void hashSetContainsTwoDifferentObjectsWithSameHashValues() {
         String inSet = "abc";
@@ -93,7 +110,7 @@ public class MyHashSetTest {
         assertTrue(this.mySet.contains(inSet));
         assertTrue(this.mySet.contains(inSet2));
     }
-    
+
     @Test
     public void hashSetDoesNotContainARemovedObject() {
         String inSet = "abc";
@@ -101,7 +118,7 @@ public class MyHashSetTest {
         assertTrue(this.mySet.remove(inSet));
         assertFalse(this.mySet.contains(inSet));
     }
-    
+
     @Test
     public void hashSetContainsSecondObjectAfterRemovingFirstObjectWithSameHash() {
         this.mySet.add("abc");
@@ -109,7 +126,7 @@ public class MyHashSetTest {
         this.mySet.remove("abc");
         assertTrue(this.mySet.contains("cba"));
     }
-    
+
     @Test
     public void hashSetRemovesBothObjectsWithSameHashWhenRemovedInDifferentOrderThanAdded() {
         this.mySet.add("abc");
@@ -119,7 +136,7 @@ public class MyHashSetTest {
         assertFalse(this.mySet.contains("abc"));
         assertFalse(this.mySet.contains("cba"));
     }
-    
+
     @Test
     public void hashSetDoesNotRemoveAnObjectWithSameHashValueButNotEqual() {
         String inSet = "abc";
@@ -130,7 +147,7 @@ public class MyHashSetTest {
         assertTrue(this.mySet.contains(inSet));
         assertFalse(this.mySet.contains(inSet2));
     }
-    
+
     @Test
     public void hashSetDoesNotAddToAFullTable() {
         MyHashSet<String> set = new MyHashSet<>(1, new HashFuncStub<String>());
