@@ -52,6 +52,7 @@ public class MultiClassPerceptron {
 
                 if (indexLargest != trainingData.getOutput(i)[0]) {
                     weights[indexLargest].substract(v);
+                    
                     weights[(int) trainingData.getOutput(i)[0]].add(v);
                     errors++;
                 }
@@ -59,9 +60,10 @@ public class MultiClassPerceptron {
             }
         }
     }
+    
     /**
      * After learning we can use the perceptron to check other vectors.
-     * @param d
+     * @param d input array
      * @return 
      */
     public int classify(double[] d) {

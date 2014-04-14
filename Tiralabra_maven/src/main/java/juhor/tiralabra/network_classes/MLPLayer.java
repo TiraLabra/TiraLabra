@@ -13,6 +13,7 @@ public class MLPLayer {
     
     private MLPNeuron[] neurons;
     double[] errorSignals;
+    double[] lastDeltas;
     Vector inputs;
     Vector outputs;
     int numberOfInputs;

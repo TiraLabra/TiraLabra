@@ -46,14 +46,14 @@ public class Perceptron {
             
             for(int i = 0; i < trainingData.getNumOfVectors(); i++){
                 Vector vec = new Vector(trainingData.getVector(i));
-                //for every vector in training data, calculate the scalar product, and check if get "true" or "false" value
+                //for every vector in training data, calculate the scalar product, and check if the value is "true" or "false"
                 double z = weights.dotProduct(vec);
                 boolean out = classify(z);
                 
                 if(out && trainingData.getOutput(i)[0] == 0){
                     weights.substract(vec);
                     errors++;
-                }else if(!out && trainingData.getOutput(i)[1] == 1){
+                }else if(!out && trainingData.getOutput(i)[0] == 1){
                     weights.add(vec);
                     errors++;
                 }

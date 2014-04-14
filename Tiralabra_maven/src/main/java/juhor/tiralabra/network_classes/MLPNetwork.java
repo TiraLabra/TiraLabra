@@ -28,6 +28,10 @@ public class MLPNetwork {
             layers[i] = new MLPLayer(numOfNeurons[i], numOfNeurons[i - 1]);
         }
     }
+    
+    public MLPLayer getLayer(int i){
+        return layers[i];
+    }
 
     /**
      * This method takes output vector of each layer, and feeds it into next
@@ -78,13 +82,17 @@ public class MLPNetwork {
      * @return returns mean squared error of the output
      */
     public double calculateError(double[][] expected, double[][] out) {
+        
+        
         double error = 0;
         for (int j = 0; j < expected.length; j++) {
+            double sum = 0;
             for (int i = 0; i < expected[0].length; i++) {
-                error = error + 0.5 * Math.pow( out[j][i]-expected[j][i], 2);
+                sum = sum+ Math.pow(expected[j][i] - out[j][i], 2);
+                
             }
+            error = error+ 0.5*sum;
         }
-
         return error;
     }
 
@@ -98,19 +106,19 @@ public class MLPNetwork {
             for (int j = 0; j < layers[i].getSize(); j++) {
 
                 for (int k = 0; k < layers[i].numberOfInputs; k++) {
-
-                    weightDeltas[k] = learningRate * layers[i].errorSignals[j] * layers[i].inputs.getValue(j);
+                    
+                    weightDeltas[k] = learningRate * layers[i].errorSignals[j] * layers[i].inputs.getValue(k)+ 0.01*layers[i].getNeuron(j).lastDeltas.getValue(k);
 
                 }
                 Vector deltas = new Vector(weightDeltas);
-
+                layers[i].getNeuron(j).lastDeltas = deltas;
                 layers[i].getNeuron(j).addToWeigths(deltas);
             }
         }
 
     }
     /**
-     * Attempt to learn the training data using backpropagation based learning.
+     * Attempts to learn the training data using backpropagation based learning.
      */
     public void learn() {
         int i = 0;
@@ -136,14 +144,10 @@ public class MLPNetwork {
      * @param input
      * @return 
      */
-    public int BinaryClassify(double[] input){
+    public double BinaryClassify(double[] input){
         Vector in = new Vector(input);
         Vector v = feedForward(in);
-        if(v.getValue(0) > 0.5){
-            return 1;
-        }else{
-            return 0;
-        }
+        return (double) v.getValue(0);
     }
 
 }
