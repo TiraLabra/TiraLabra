@@ -4,16 +4,14 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.ui;
+package sanapuuro;
 
 /**
  *
  * @author skaipio
  */
-public interface Controller {
-    int getSubmissionStartX();
-    int getSubmissionStartY();
-    int getSubmissionDeltaX();
-    int getSubmissionDeltaY();
-    String getSubmission();
+public interface ControllerListener {
+    boolean letterAdded(char c, int x, int y);
+    boolean letterSelected(int x, int y); 
+    void clearLettersFromSubmission();
 }

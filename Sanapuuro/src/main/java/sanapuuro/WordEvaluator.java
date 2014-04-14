@@ -34,17 +34,17 @@ public class WordEvaluator {
      * @return An evaluation result that holds whether the word was valid and a
      * positive score if it was.
      */
-    public EvaluationResult evalute(Submission submission) {
-        List<LetterContainer> letterContainers = submission.letterContainers;
-        int deltaX = submission.deltaX;
-        int deltaY = submission.deltaY;
-
-        if (letterContainers == null || letterContainers.isEmpty()) {
+    public EvaluationResult evalute(List<LetterContainer> submission) {
+        if (submission == null || submission.isEmpty()) {
             throw new IllegalArgumentException("No letters were given for validation.");
         }
-        if (letterContainers.size() < wordLengthMinimum) {
+        if (submission.size() < wordLengthMinimum) {
             return new EvaluationResult(false, "Word must be at least " + this.wordLengthMinimum + " characters long");
         }
+        
+        int deltaX = submission.get(1).getX() - submission.get(0).getX();
+        int deltaY = submission.get(1).getY() - submission.get(0).getY();
+        
         if (deltaX == 0 && deltaY == 0) {
             throw new IllegalArgumentException("Either deltaX or deltaY must be other than zero.");
         }
@@ -52,16 +52,16 @@ public class WordEvaluator {
         deltaX = this.getUnit(deltaX);
         deltaY = this.getUnit(deltaY);
 
-        if (this.wordHasGaps(letterContainers, deltaX, deltaY)) {
+        if (this.wordHasGaps(submission, deltaX, deltaY)) {
             return new EvaluationResult(false, "The word must not have gaps.");
-        } else if (this.allLettersHaveBeenUsedPreviously(letterContainers)) {
+        } else if (this.allLettersHaveBeenUsedPreviously(submission)) {
             return new EvaluationResult(false, "Word must have at least one letter not used before.");
         }
 
-        String word = this.getWordFromContainers(letterContainers);
+        String word = this.getWordFromContainers(submission);
 
         if (this.words.contains(word)) {
-            int score = this.evaluteLetters(letterContainers);
+            int score = this.evaluteLetters(submission);
             return new EvaluationResult(true, "Score for word " + word.toUpperCase() + ": " + score, score);
         } else {
             return new EvaluationResult(false, word.toUpperCase() + " is not a valid English word.");
@@ -154,33 +154,6 @@ public class WordEvaluator {
 
         public int getScore() {
             return this.score;
-        }
-    }
-
-    /**
-     * A simple container class to hold the letter containers to be evaluated
-     * and the intended reading direction of the submission.
-     *
-     * @author skaipio
-     */
-    public static class Submission {
-
-        public final List<LetterContainer> letterContainers;
-        public final int deltaX;
-        public final int deltaY;
-
-        /**
-         * @param letterContainers Containers to evaluate. Evaluated in the
-         * order they are given.
-         * @param deltaX The horizontal direction of the word. Positive if from
-         * left to right, negative if from right to left.
-         * @param deltaY The vertical direction of the word. Positive if from
-         * left to right, negative if from right to left.
-         */
-        public Submission(List<LetterContainer> letterContainers, int deltaX, int deltaY) {
-            this.letterContainers = letterContainers;
-            this.deltaX = deltaX;
-            this.deltaY = deltaY;
         }
     }
 }

@@ -72,7 +72,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.setContainerAt(container, 3, 0);
         validHorizontalWord.add(container);
-        assertTrue(this.wordEvaluator.evalute(new WordEvaluator.Submission(validHorizontalWord, 1, 0)).succeeded);
+        assertTrue(this.wordEvaluator.evalute(validHorizontalWord).succeeded);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 3);
         validVerticalWord.add(container);
-        assertTrue(this.wordEvaluator.evalute(new WordEvaluator.Submission(validVerticalWord, 0, 1)).succeeded);
+        assertTrue(this.wordEvaluator.evalute(validVerticalWord).succeeded);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 4);
         wordWithGaps.add(container);
-        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordWithGaps, 1, 0)).succeeded);
+        assertFalse(this.wordEvaluator.evalute(wordWithGaps).succeeded);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.setContainerAt(container, 0, 3);
         wordNotOnSameRow.add(container);
-        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordNotOnSameRow, 1, 0)).succeeded);
+        assertFalse(this.wordEvaluator.evalute(wordNotOnSameRow).succeeded);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.setContainerAt(container, 0, 1);
         wordTooShort.add(container);
-        assertFalse(this.wordEvaluator.evalute(new WordEvaluator.Submission(wordTooShort, 1, 0)).succeeded);
+        assertFalse(this.wordEvaluator.evalute(wordTooShort).succeeded);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.setContainerAt(container, 3, 0);
         validHorizontalWord.add(container);
-        int score = this.wordEvaluator.evalute(new WordEvaluator.Submission(validHorizontalWord, 1, 0)).getScore();
+        int score = this.wordEvaluator.evalute(validHorizontalWord).getScore();
         assertEquals(1 + 2 + 3 + 4, score);
     }
 }

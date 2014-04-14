@@ -7,6 +7,8 @@
 package sanapuuro.utils;
 
 import java.util.List;
+import sanapuuro.datastructures.HashFuncs;
+import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.letters.LetterContainer;
 
 /**
@@ -20,5 +22,20 @@ public class Util {
             letters.append(container.letter.character);
         }
         return letters.toString();
+    }
+
+    /**
+     * Creates a new MyHashSet from the objects in the given list.
+     * @param <T> Type of objects.
+     * @param objs List of objects to add to the set.
+     * @param hashFunc Hash function for the set.
+     * @return A new MyHashSet of type T.
+     */
+    public static <T> MyHashSet<T> convertListToMyHashSet(List<T> objs, HashFuncs<T> hashFunc){
+        MyHashSet<T> set = new MyHashSet<>(objs.size(), hashFunc);
+        for (T obj : objs){
+            set.add(obj);
+        }
+        return set;
     }
 }

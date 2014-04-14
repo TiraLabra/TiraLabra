@@ -4,15 +4,14 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.ui;
-
-import sanapuuro.ui.Controller;
+package sanapuuro;
 
 /**
  *
  * @author skaipio
  */
-public interface View {
-    void updateView(Controller controller);
-    void showMessage(String msg);
+public interface Controller {
+    ControllerListener getControlled();
+    void setControlled(ControllerListener player);
+    void makeMove();
 }

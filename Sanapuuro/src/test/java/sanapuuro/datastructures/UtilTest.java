@@ -39,24 +39,24 @@ public class UtilTest {
     
     @Test
     public void picksNumberThatIsFarthestFromPowerOfTwo(){
-        assertEquals(20, Util.pickNumberThatIsFarthestFromPowerOfTwo(new int[]{5,10,20}));
+        assertEquals(20, PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(new int[]{5,10,20}));
     }
     
     @Test
     public void findsClosestPowerOfTwoToANumber(){
-        assertEquals(4, Util.findClosestPowerOfTwoTo(5));
-        assertEquals(16, Util.findClosestPowerOfTwoTo(14));
+        assertEquals(4, PrimeNumberUtils.findClosestPowerOfTwoTo(5));
+        assertEquals(16, PrimeNumberUtils.findClosestPowerOfTwoTo(14));
     }
 
     @Test
     public void findsPrimesCloseToAGivenNumber() {
-        int[] twoPrimes = Util.findPrimesCloseTo(360);
+        int[] twoPrimes = PrimeNumberUtils.findPrimesCloseTo(360);
         assertEquals(359, twoPrimes[0]);
         assertEquals(367, twoPrimes[1]);
     }
     
     @Test
     public void detectsPrimesCorrectly() {
-        assertFalse(Util.isPrime(361));
+        assertFalse(PrimeNumberUtils.isPrime(361));
     }
 }

@@ -149,16 +149,4 @@ public class Grid {
     public boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
-
-//     public enum Size {
-//
-//        SMALL(8, 8), MEDIUM(10, 10), LARGE(12, 12);
-//
-//        public final int Width, Height;
-//
-//        private Size(int width, int height) {
-//            this.Width = width;
-//            this.Height = height;
-//        }
-//    }
 }

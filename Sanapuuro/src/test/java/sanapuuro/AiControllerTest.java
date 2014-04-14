@@ -8,6 +8,7 @@ package sanapuuro;
 import sanapuuro.utils.Util;
 import sanapuuro.letters.LetterPool;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,17 +18,17 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.Letter;
-import sanapuuro.WordEvaluator.Submission;
 
 /**
  *
  * @author skaipio
  */
-public class AiPlayerTest {
-    private AiPlayer ai;
+public class AiControllerTest {
+    private Player player;
+    private AiController ai;
     private final Set<String> words = new HashSet<>();
 
-    public AiPlayerTest() {
+    public AiControllerTest() {
         this.words.add("nipsuli");
         this.words.add("hipsu");
         this.words.add("nipsu");
@@ -45,23 +46,28 @@ public class AiPlayerTest {
 
     @Before
     public void setUp() {
-        ai = new AiPlayer(new LetterPoolStub(), new Grid(8,8), "Hessu", this.words);
+        LetterPool lpstub = new LetterPoolStub();
+        Grid grid = new Grid(8, 8);
+        this.player = new Player(lpstub , grid, "Hessu");
+        this.ai = new AiController(lpstub, grid, "Hessu", this.words);
+        this.ai.setControlled(player);
     }
 
     @After
     public void tearDown() {
     }
 
-    @Test
-    public void scoreRaisedOnSuccessfulSubmission() {
-        this.ai.successfulSubmission(10);
-        assertEquals(10, this.ai.getScore());       
-    }
+//    @Test
+//    public void scoreRaisedOnSuccessfulSubmission() {
+//        this.ai.successfulSubmission(10);
+//        assertEquals(10, this.ai.getScore());       
+//    }
     
     @Test
     public void submitsBestWord() {
-        Submission submission = this.ai.getSubmission();
-        assertEquals("hipsu", Util.stringFromLetterContainers(submission.letterContainers));      
+        this.ai.makeMove();
+        List<LetterContainer> submission = this.player.getSubmission();
+        assertEquals("hipsu", Util.stringFromLetterContainers(submission));      
     }
 
 

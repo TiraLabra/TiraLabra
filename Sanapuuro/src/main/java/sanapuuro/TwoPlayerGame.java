@@ -5,13 +5,14 @@
  */
 package sanapuuro;
 
-import sanapuuro.utils.Util;
-import sanapuuro.ui.View;
 import java.util.List;
-import sanapuuro.letters.LetterContainer;
+import java.util.Set;
+import sanapuuro.utils.Util;
 import sanapuuro.letters.Letters;
 import sanapuuro.WordEvaluator.EvaluationResult;
-import sanapuuro.WordEvaluator.Submission;
+import sanapuuro.letters.LetterContainer;
+import sanapuuro.letters.LetterPool;
+import sanapuuro.letters.PlayerLetterPool;
 
 /**
  *
@@ -20,41 +21,44 @@ import sanapuuro.WordEvaluator.Submission;
 public class TwoPlayerGame {
 
     private final WordEvaluator evaluator;
-    private Player playerWithTurn;
-    private Player playerWaiting;
+    private Controller controllerWithTurn;
+    private Controller controllerWaiting;
     private final Grid grid;
     private int successiveSkips = 0;
+    private GameListener listener;
 
-    private final View view;
-
-    public TwoPlayerGame(Grid grid, Player playerOne, Player playerTwo, Letters letters, WordEvaluator evaluator, View view) {
+    public TwoPlayerGame(Grid grid, Controller playerOne, Controller playerTwo, Set<String> words) {
         this.grid = grid;
-        this.playerWithTurn = playerOne;
-        this.playerWaiting = playerTwo;
-        this.evaluator = evaluator;
-        this.view = view;
+        this.controllerWithTurn = playerOne;
+        this.controllerWaiting = playerTwo;
+        this.evaluator = new WordEvaluator(words);
+    }
+    
+    public void setGameListener(GameListener listener){
+        this.listener = listener;
     }
 
     public void startGame() {
         while (true) {
-            this.view.updateView(this.playerWithTurn.getController());
-            this.view.showMessage(this.playerWithTurn + "'s turn: ");
-            Submission submission = this.playerWithTurn.getSubmission();
+            if (this.listener != null){
+                this.listener.turnStarted(this.controllerWithTurn);
+            }
+            this.controllerWithTurn.makeMove();
+            Player playerWithTurn = (Player)this.controllerWithTurn.getControlled();
             
-            if (!submission.letterContainers.isEmpty()) {
-                String submissionStr = Util.stringFromLetterContainers(submission.letterContainers).toUpperCase();
-                this.view.showMessage(this.playerWithTurn + " submitted the word " + submissionStr);
+            List<LetterContainer> submission = playerWithTurn.getSubmission();
+            if (!submission.isEmpty()) {
+                String submissionStr = Util.stringFromLetterContainers(submission).toUpperCase();               
                 EvaluationResult result = this.evaluator.evalute(submission);
                 if (result.succeeded) {
-                    System.out.println(this.playerWithTurn + " was awarded " + result.getScore() + " points");
-                    this.playerWithTurn.successfulSubmission(result.getScore());
+                    playerWithTurn.successfulSubmission(result.getScore());
                 }else{
-                    System.out.println(submissionStr + " is not a valid word");
-                    this.playerWithTurn.unsuccessfulSubmission();
+                    playerWithTurn.unsuccessfulSubmission();
                 }
+                this.listener.wordSubmitted(playerWithTurn, submissionStr, result.succeeded, result.reason, result.getScore());
                 successiveSkips = 0;              
             }else{
-                this.view.showMessage(this.playerWithTurn + " skips their turn");
+                this.listener.playerSkipsTurn(playerWithTurn);
                 successiveSkips++;
             }
             
@@ -67,8 +71,8 @@ public class TwoPlayerGame {
     }
 
     private void swapTurn() {
-        Player temp = this.playerWithTurn;
-        this.playerWithTurn = this.playerWaiting;
-        this.playerWaiting = temp;
+        Controller temp = this.controllerWithTurn;
+        this.controllerWithTurn = this.controllerWaiting;
+        this.controllerWaiting = temp;
     }
 }

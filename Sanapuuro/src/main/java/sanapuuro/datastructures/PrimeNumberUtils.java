@@ -5,13 +5,11 @@
  */
 package sanapuuro.datastructures;
 
-import java.util.List;
-
 /**
  *
  * @author skaipio
  */
-public class Util {
+public class PrimeNumberUtils {
     
     public static int pickNumberThatIsFarthestFromPowerOfTwo(int[] numbers){
         int numberFarthest = 0;
@@ -91,18 +89,5 @@ public class Util {
         return true;
     }
     
-    /**
-     * Creates a new MyHashSet from the objects in the given list.
-     * @param <T> Type of objects.
-     * @param objs List of objects to add to the set.
-     * @param hashFunc Hash function for the set.
-     * @return A new MyHashSet of type T.
-     */
-    public static <T> MyHashSet<T> convertListToMyHashSet(List<T> objs, HashFuncs<T> hashFunc){
-        MyHashSet<T> set = new MyHashSet<>(objs.size(), hashFunc);
-        for (T obj : objs){
-            set.add(obj);
-        }
-        return set;
-    }
+    
 }

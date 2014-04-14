@@ -51,7 +51,7 @@ public class StringHashFuncs implements HashFuncs<String> {
     @Override
     public int calculateM(int numberOfKeys, double desiredLoadRate) {
         int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
-        int[] primesCloseToTableSize = Util.findPrimesCloseTo(estimatedTableSize);
-        return Util.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
+        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
+        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
     }
 }

@@ -6,52 +6,51 @@
 package sanapuuro;
 
 import java.util.List;
-import sanapuuro.ui.GameView;
-import sanapuuro.ui.ConsoleController;
+import sanapuuro.ui.ConsoleView;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
-import sanapuuro.datastructures.HashFuncs;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.datastructures.StringHashFuncs;
-import sanapuuro.datastructures.Util;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;
+import sanapuuro.letters.LetterPool;
 import sanapuuro.letters.PlayerLetterPool;
+import sanapuuro.ui.HumanConsoleController;
 
 /**
  *
  * @author skaipio
  */
 public class Game {
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {   
+    public static void main(String[] args) {
         FileIO fileIO = new FileIO();
         Random rnd = new Random();
-        
+
         List<String> words = fileIO.readInWordsFromFile("words/english_words");
-        MyHashSet<String> wordSet = Util.convertListToMyHashSet(words, new StringHashFuncs());
-        WordEvaluator evaluator = new WordEvaluator(wordSet);
-        GameLetters letterReader = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
-        PlayerLetterPool letterPoolOne = new PlayerLetterPool(letterReader);
-        PlayerLetterPool letterPoolTwo = new PlayerLetterPool(letterReader);
-        
+        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new StringHashFuncs());
+        GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
+
         Scanner scanner = new Scanner(System.in);
-        ConsoleController controllerOne = new ConsoleController(scanner, 8, 8);
-        ConsoleController controllerTwo = new ConsoleController(scanner, 8, 8);
-        
         Grid grid = new Grid(8, 8);
-        
-        HumanPlayer playerOne = new HumanPlayer(controllerOne, letterPoolOne, grid, "Hessu");
-        AiPlayer playerTwo = new AiPlayer(letterPoolTwo, grid, "Mikki", wordSet);
-        
-        GameView view = new GameView(grid, playerOne, playerTwo, letterReader);
-        controllerOne.addListener(view);
-        controllerTwo.addListener(view);
-        
-        TwoPlayerGame game = new TwoPlayerGame(grid, playerOne, playerTwo, letterReader, evaluator, view);
+
+        LetterPool poolOne = new PlayerLetterPool(letters);
+        LetterPool poolTwo = new PlayerLetterPool(letters);
+        Player playerOne = new Player(poolOne, grid, "Hessu");
+        Player playerTwo = new Player(poolTwo, grid, "Mikki");
+        HumanConsoleController controllerOne = new HumanConsoleController(scanner, 8, 8);
+        AiController controllerTwo = new AiController(poolTwo, grid, "Mikki", wordSet);
+        controllerOne.setControlled(playerOne);
+        controllerTwo.setControlled(playerTwo);
+
+        ConsoleView view = new ConsoleView(grid, controllerOne, controllerTwo, letters);
+        controllerOne.addConsoleListener(view);
+
+        TwoPlayerGame game = new TwoPlayerGame(grid, controllerOne, controllerTwo, wordSet);
+        game.setGameListener(view);
         game.startGame();
     }
 }

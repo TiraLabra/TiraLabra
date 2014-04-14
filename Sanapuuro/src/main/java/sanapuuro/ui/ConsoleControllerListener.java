@@ -6,10 +6,14 @@
 
 package sanapuuro.ui;
 
+import sanapuuro.Controller;
+
 /**
  *
  * @author skaipio
  */
-interface ControllerListener {
+public interface ConsoleControllerListener {
     void selectorMoved(Controller controller);
+    void failedToPlaceLetters();
+    void makingMove(Controller controller);
 }
