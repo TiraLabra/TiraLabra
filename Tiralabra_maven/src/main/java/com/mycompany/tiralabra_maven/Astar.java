@@ -16,11 +16,20 @@ public class Astar {
     
     ArrayList openList = new ArrayList();
     ArrayList closedList = new ArrayList();
-    int[][] map = Wall.getMap();
-    //hiiren sijainti kartalla. eli algoritmin eteneminen
-    Node current = new Node();
+    ArrayList reitti = new ArrayList(); 
     
+    private Wall tiili = new Wall();
+    private Hiiri maus = new Hiiri(tiili);
     
+    int[][] map = tiili.getMap();
     
-    
+    public void star(){
+        //hiiren sijainti kartalla. eli algoritmin eteneminen
+        Node current = new Node(maus.getXcoord(), maus.getYcoord());
+        Node goal = new Node(tiili.getMap().length -1, tiili.getMap().length-1);
+
+        int manhattanDist = (goal.lev - current.lev) + (goal.kor - current.kor);
+        current.setH(manhattanDist);
+        
+    }
 }

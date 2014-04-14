@@ -17,21 +17,22 @@ public class Hiiri {
     
     private String hii = "maus.png";
 
-    private static int dx;
-    private static int dy;
-    private static int x, x_coord = 0;
-    private static int y, y_coord = 0;
+    private  int dx;
+    private  int dy;
+    private  int x, x_coord = 0;
+    private  int y, y_coord = 0;
     private Image image;
+    private Wall wall;
 
     /**
      *Konstruktori. Luo hiiren kuvan ja alkusijainnin Boardilla.
      */
-    public Hiiri(){
+    public Hiiri(Wall wall){
         ImageIcon ii = new ImageIcon("maus.png");
         image = ii.getImage();
         x = 0;
         y = 0;
-
+        this.wall = wall;
     }
 
     /**
@@ -105,7 +106,7 @@ public class Hiiri {
      *
      * @return
      */
-    public static int getX() {
+    public  int getX() {
       return x;
     }
 
@@ -113,7 +114,7 @@ public class Hiiri {
      *
      * @return
      */
-    public static int getY() {
+    public  int getY() {
         return y;
     }
     
@@ -121,7 +122,7 @@ public class Hiiri {
      *
      * @return
      */
-    public static int getXcoord(){
+    public  int getXcoord(){
         return x_coord;
     }
     
@@ -129,7 +130,7 @@ public class Hiiri {
      *
      * @return
      */
-    public static int getYcoord(){
+    public  int getYcoord(){
         return y_coord;
     }
 
@@ -145,12 +146,12 @@ public class Hiiri {
      *
      * @param e
      */
-    public static void keyPressed(KeyEvent e) {
+    public  void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
                  
         if (key == KeyEvent.VK_LEFT) {
-            if(Wall.getMap()[x_coord -1][y_coord]==1){
+            if(wall.getMap()[x_coord -1][y_coord]==1){
                 dx = 0;
                 dy = 0;
             }else{
@@ -161,7 +162,7 @@ public class Hiiri {
         
 
         if (key == KeyEvent.VK_RIGHT) {
-            if(Wall.getMap()[x_coord +1][y_coord]==1){
+            if(wall.getMap()[x_coord +1][y_coord]==1){
                 dx = 0;
                 dy = 0;
             }else{
@@ -180,7 +181,7 @@ public class Hiiri {
         }
 
         if (key == KeyEvent.VK_UP ) {
-            if(Wall.getMap()[x_coord][y_coord-1]==1){
+            if(wall.getMap()[x_coord][y_coord-1]==1){
                 dx = 0;
                 dy = 0;
             }else{
@@ -196,7 +197,7 @@ public class Hiiri {
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            if(Wall.getMap()[x_coord][y_coord + 1]==1){
+            if(wall.getMap()[x_coord][y_coord + 1]==1){
                 dx = 0;
                 dy = 0;
             }else{

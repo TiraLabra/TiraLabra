@@ -13,7 +13,7 @@ package com.mycompany.tiralabra_maven;
 public class Node {
  
     private Node next = null;
-    static int value, kor, lev;
+     int value, kor, lev;
     //astar muuttujat.
     private int f, h, g;
 
@@ -38,9 +38,15 @@ public class Node {
     /**
      *Pitää mielessään hiiren sijaintia (koordinaatteja) kartalla. 
      */
-    public Node(){
-        this.kor = Hiiri.getXcoord();
-        this.lev = Hiiri.getYcoord();
+//    public Node(){
+//        this.kor = Hiiri.getXcoord();
+//        this.lev = Hiiri.getYcoord();
+//    }
+    
+    public Node(int lev, int kor){
+        this.lev = lev;
+        this.kor = kor;
+        
     }
  
     /**

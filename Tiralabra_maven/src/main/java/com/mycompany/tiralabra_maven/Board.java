@@ -55,10 +55,11 @@ public class Board extends JPanel implements ActionListener{
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         setBackground(Color.green);
-        maus = new Hiiri();
+        
         timer = new Timer(DELAY, this);
         timer.start();
         tiili = new Wall();
+        maus = new Hiiri(tiili);
     }
 
     /**
@@ -92,8 +93,8 @@ public class Board extends JPanel implements ActionListener{
             y_map = 0;
             x_map = 0;
 
-        g2d.drawString(Hiiri.getXcoord()+"", 20, 20);
-        g2d.drawString(Hiiri.getYcoord()+"", 60, 60);
+        g2d.drawString(maus.getXcoord()+"", 20, 20);
+        g2d.drawString(maus.getYcoord()+"", 60, 60);
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }

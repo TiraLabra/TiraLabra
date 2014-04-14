@@ -43,7 +43,7 @@ public class Wall {
      *map-taulukkoon merkitään seinät ykkösillä.
      * @return
      */
-        public static int[][] getMap(){
+   public static int[][] getMap(){
         korkeus = (Hiirestys.kor - 40) / 50;
         leveys = Hiirestys.lev / 50;
         int [][] map= {
@@ -63,6 +63,7 @@ public class Wall {
     return map;
     }
     
+   
     /**
      *
      * @return
