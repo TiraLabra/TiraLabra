@@ -16,9 +16,11 @@ public:
 	/// Right tree node.
 	Node* Right;
 	/// Character frequency.
-	const int Frequency;
+	int Frequency;
 	/// Node character.
-	const char Character;
+	char Character;
+	/// Node huffman code.
+	int Code;
 
 	/// Class constructor.
 	/// \param pLeft Left tree node.
@@ -52,6 +54,31 @@ struct NodeCmp
 	}
 };
 
+struct HuffmanNode
+{
+	HuffmanNode* Parent;
+	HuffmanNode* Left;
+	HuffmanNode* Right;
+	unsigned int Frequency;
+	unsigned int Code;
+	unsigned int CodeLength;
+	unsigned char Character;
+};
+
+int nodeCmpCharacter(const void* pNode1, const void* pNode2);
+int nodeCmpFrequency(const void* pNode1, const void* pNode2);
+
+void setNodeCode(HuffmanNode* pNode);
+HuffmanNode* popNode(HuffmanNode** pNodes, int pIndex, bool pRight);
+
+int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes = true);
+
+bool huffmanEncode(char* pSrc, int pSrcLength, char* pDst, int pDstLength);
+bool huffmanDecode(char* pSrc, int pSrcLength, char* pDst, int pDstLength);
+
+//bool huffmanEncode(FILE* pDst, FILE* pSrc);
+//bool huffmanDecode(FILE* pDst, FILE* pSrc);
+
 /// Builds a huffman tree.
 /// \param pFrequencies List of frequencies.
 /// \param pFrequenciesCount Frequencies count.
@@ -63,5 +90,9 @@ Node* buildTree(const int* pFrequencies, const unsigned int& pFrequenciesCount);
 /// \param pPrefix Code prefix.
 /// \param pOutCodes Map to output huffman codes to.
 void generateCodes(const Node* pNode, const HuffmanCode& pPrefix, HuffmanCodeMap& pOutCodes);
+
+void writeTreeToFile(FILE* pFile, const HuffmanCodeMap& pCodes);
+
+void decodeTree(FILE* pFile, HuffmanCodeMap& pCodes);
 
 #endif

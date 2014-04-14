@@ -26,28 +26,33 @@ void printBytes(const c_uint& pBytes, const bool& pSi)
 int main(int argc, char** argv)
 {
 	const char* str = "00112233455556678899955";
-	c_uint length = strlen(str);
-	bool inclusive = true;
+	int length = strlen(str);
 
-	int frequencies[256] = {0};
-	const char* ptr = str;
-	while(*ptr != '\0')
-		++frequencies[*ptr++];
+	char* s = new char[length];
+	memcpy(s, str, length);
+	char* d = new char[length * 2];
+	memset(d, 0, length * 2);
+	char* r = new char[length * 2];
+	memset(r, 0, length * 4);
 
-	Node* root = buildTree(frequencies, 255);
+	std::cout << "Original:" << std::endl;
+	for(int i = 0; i < length; ++i)
+		std::cout << s[i];
+	std::cout << std::endl;
 
-	HuffmanCodeMap codes;
-	generateCodes(root, HuffmanCode(), codes);
-	
-	delete root;
+	huffmanEncode(s, length, d, length * 2);
 
-	for(HuffmanCodeMap::const_iterator it = codes.begin(); it != codes.end(); ++it)
-	{
-		std::cout << it->first << " ";
-		for(unsigned int i=0; i<it->second.size(); ++i)
-			std::cout << it->second[i];
-		std::cout << std::endl;
-	}
+	std::cout << "Encoded:" << std::endl;
+	for(int i = 0; i < length * 2; ++i)
+		std::cout << d[i];
+	std::cout << std::endl;
+
+	huffmanDecode(d, length * 2, r, length * 4);
+
+	std::cout << "Decoded:" << std::endl;
+	for(int i = 0; i < length * 4; ++i)
+		std::cout << r[i];
+	std::cout << std::endl;
 
 	return 0;
 }
