@@ -2,6 +2,7 @@ package blokus.logiikka;
 
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.conf.LaattojenMuodot;
+import hashMap.OmaHashMap;
 import java.util.HashMap;
 
 /**
@@ -12,9 +13,9 @@ import java.util.HashMap;
  */
 public class PelaajanLaatat {
 
-    private HashMap<Integer, Laatta> laatat;
-    private HashMap<Integer, Laatta> jaljellaLaatat;
-    private HashMap<Integer, Laatta> pelatutLaatat;
+    private OmaHashMap<Integer, Laatta> laatat;
+    private OmaHashMap<Integer, Laatta> jaljellaLaatat;
+    private OmaHashMap<Integer, Laatta> pelatutLaatat;
     private int pelaajanID;
     private int[][] laattaValitsin;
 
@@ -25,9 +26,9 @@ public class PelaajanLaatat {
      *
      */
     public PelaajanLaatat(int pelaajanID) {
-        laatat = new HashMap<Integer, Laatta>();
-        pelatutLaatat = new HashMap<Integer, Laatta>();
-        jaljellaLaatat = new HashMap<Integer, Laatta>();
+        laatat = new OmaHashMap<Integer, Laatta>();
+        pelatutLaatat = new OmaHashMap<Integer, Laatta>();
+        jaljellaLaatat = new OmaHashMap<Integer, Laatta>();
         this.pelaajanID = pelaajanID;
         laattaValitsin = getLaattaValitimenAlkuTilanne();
         alustaLaatat();
@@ -54,7 +55,7 @@ public class PelaajanLaatat {
     public Laatta getSeuraavaLaatta() {
         if (!laatat.isEmpty()) {
             for (int i = 21; i > 0; i--) {
-                if (!pelatutLaatat.containsKey(i)) {
+                if (!pelatutLaatat.sisaltaaAvaimen(i)) {
                     poistaLaattaValitsemesta(i);
                     return getLaattaById(i);
                 }
@@ -102,7 +103,7 @@ public class PelaajanLaatat {
      */
     public void palautaLaattaValitsimeen(int laatanID) {
         int[][] alkuperainen = getLaattaValitimenAlkuTilanne();
-        if (pelatutLaatat.containsKey(laatanID)) {
+        if (pelatutLaatat.sisaltaaAvaimen(laatanID)) {
             pelatutLaatat.remove(laatanID);
             jaljellaLaatat.put(laatanID, getLaattaByIdIlmanPoistoa(laatanID));
         }
@@ -146,11 +147,11 @@ public class PelaajanLaatat {
         jaljellaLaatat.put(laatanID, asetettava);
     }
 
-    public HashMap<Integer, Laatta> getLaatat() {
+    public OmaHashMap<Integer, Laatta> getLaatat() {
         return laatat;
     }
 
-    public HashMap<Integer, Laatta> getPelatutLaatat() {
+    public OmaHashMap<Integer, Laatta> getPelatutLaatat() {
         return pelatutLaatat;
     }
 
@@ -162,12 +163,12 @@ public class PelaajanLaatat {
         return pelaajanID;
     }
 
-    public HashMap<Integer, Laatta> getJaljellaLaatat() {
+    public OmaHashMap<Integer, Laatta> getJaljellaLaatat() {
         return jaljellaLaatat;
     }
     
     public void setJaljellaLaatatTyhjaksi() {
-        jaljellaLaatat.clear();
+        jaljellaLaatat.tyhjenna();
     }
     
     

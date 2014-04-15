@@ -25,7 +25,7 @@ public class PelaajanLaatatTest extends TestCase  {
 
     public void testalustusToimii() {
         
-        assertEquals(21, laatat.getJaljellaLaatat().size());
-        assertEquals(0, laatat.getPelatutLaatat().size());
+        assertEquals(21, laatat.getJaljellaLaatat().getKoko());
+        assertEquals(0, laatat.getPelatutLaatat().getKoko());
     }
 }

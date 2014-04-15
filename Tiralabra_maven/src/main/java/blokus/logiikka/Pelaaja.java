@@ -3,6 +3,7 @@ package blokus.logiikka;
 import blokus.AI.PelaajaAI;
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.conf.LaattojenMuodot;
+import hashMap.OmaHashMap;
 import java.util.HashMap;
 
 /**
@@ -79,9 +80,9 @@ public class Pelaaja  {
      * @return sen hetkinen pistemäärä
      */
     public int getPisteet() {
-        HashMap<Integer, Laatta> apu = laatat.getPelatutLaatat();
+        OmaHashMap<Integer, Laatta> apu = laatat.getPelatutLaatat();
         int pisteet = 0;
-        for (Laatta laatta : apu.values()) {
+        for (Laatta laatta : apu.getDatas()) {
             pisteet += laatta.getKoko();
 
         }

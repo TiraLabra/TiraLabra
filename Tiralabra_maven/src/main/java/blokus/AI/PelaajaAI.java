@@ -4,7 +4,7 @@ import blokus.conf.GlobaalitMuuttujat;
 import blokus.logiikka.Laatta;
 import blokus.logiikka.Pelaaja;
 import blokus.logiikka.PeliLauta;
-import java.util.HashMap;
+import hashMap.OmaHashMap;
 import linkitettyLista.Lista;
 
 /**
@@ -137,9 +137,8 @@ public class PelaajaAI {
     private void haeParasSiirto(Laatta la, Sijainti s, int[][] l) {
         for (int i = 0; i < la.getMuoto().length; i++) {
             for (int j = 0; j < la.getMuoto().length; j++) {
-                if (la.getMuoto()[i][j] == 3) {
+                if (la.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA) {
                     if (voikoLisata(la, s.getI() - (i - 3), s.getJ() - (j - 3), l)) {
-
                         Siirto si = new Siirto(s.getI() - (i - 3), s.getJ() - (j - 3), la, l,laudanMahdolliset.getListanKoko());
                         if (parasSiirto == null || parasSiirto.getHyvyys() < si.getHyvyys()) {
                             parasSiirto = si;
@@ -157,9 +156,10 @@ public class PelaajaAI {
 
     private void kayLaatatLapi() {
         int[][] l = omaTilanne.getTarkastusLauta().getLauta();
-        HashMap<Integer, Laatta> jaljella = omaTilanne.getLaatat().getJaljellaLaatat();
+        OmaHashMap<Integer, Laatta> jaljella = omaTilanne.getLaatat().getJaljellaLaatat();
+        
         for (Sijainti s : laudanMahdolliset) {
-            for (Laatta la : jaljella.values()) {
+            for (Laatta la : jaljella.getDatas()) {
                 la.palautaAlkuperainenAsento();
                 haeParasSiirto(la, s, l);
                 la.kaannaOikeaan();

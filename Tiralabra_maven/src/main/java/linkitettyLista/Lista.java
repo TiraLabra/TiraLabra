@@ -41,6 +41,10 @@ public class Lista<T> implements Iterable<T> {
     public int getListanKoko() {
         return koko;
     }
+    
+    public boolean isEmpty() {
+        return koko == 0;
+    }
 
 
 

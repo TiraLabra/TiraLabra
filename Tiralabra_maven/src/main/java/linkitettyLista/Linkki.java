@@ -1,6 +1,5 @@
 package linkitettyLista;
 
-import java.util.Iterator;
 
 /**
  * Listan solmu
