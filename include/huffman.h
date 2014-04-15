@@ -56,25 +56,25 @@ struct NodeCmp
 
 struct HuffmanNode
 {
+	unsigned int Frequency;
+	unsigned char Character;
+	unsigned int Code;
+	unsigned int CodeLength;
 	HuffmanNode* Parent;
 	HuffmanNode* Left;
 	HuffmanNode* Right;
-	unsigned int Frequency;
-	unsigned int Code;
-	unsigned int CodeLength;
-	unsigned char Character;
 };
 
 int nodeCmpCharacter(const void* pNode1, const void* pNode2);
 int nodeCmpFrequency(const void* pNode1, const void* pNode2);
 
 void setNodeCode(HuffmanNode* pNode);
-HuffmanNode* popNode(HuffmanNode** pNodes, int pIndex, bool pRight);
+HuffmanNode* popNode(HuffmanNode** pNodes, unsigned int pIndex, bool pRight);
 
-int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes = true);
+unsigned int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes = true);
 
-bool huffmanEncode(char* pSrc, int pSrcLength, char* pDst, int pDstLength);
-bool huffmanDecode(char* pSrc, int pSrcLength, char* pDst, int pDstLength);
+bool huffmanEncode(char* pSrc, unsigned int pSrcLength, char* pDst, unsigned int pDstLength);
+bool huffmanDecode(char* pSrc, unsigned int pSrcLength, char* pDst, unsigned int pDstLength);
 
 //bool huffmanEncode(FILE* pDst, FILE* pSrc);
 //bool huffmanDecode(FILE* pDst, FILE* pSrc);

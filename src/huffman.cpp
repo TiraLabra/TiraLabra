@@ -130,7 +130,7 @@ void setNodeCode(HuffmanNode* pNode)
 	}
 }
 
-HuffmanNode* popNode(HuffmanNode** pNodes, int pIndex, bool pRight)
+HuffmanNode* popNode(HuffmanNode** pNodes, unsigned int pIndex, bool pRight)
 {
 	HuffmanNode* node = pNodes[pIndex];
 	
@@ -140,18 +140,18 @@ HuffmanNode* popNode(HuffmanNode** pNodes, int pIndex, bool pRight)
 	return node;
 }
 
-int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes)
+unsigned int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes)
 {
 	HuffmanNode* nodes[256];
 	HuffmanNode* node;
 
-	int nodeCount = 0;
-	for(int i = 0; i < 256 && pNodes[i].Frequency; ++i)
+	unsigned int nodeCount = 0;
+	for(unsigned int i = 0; i < 256 && pNodes[i].Frequency; ++i)
 	{
 		nodes[nodeCount++] = &pNodes[i];
 	}
 
-	int parentNode = nodeCount;
+	unsigned int parentNode = nodeCount;
 	int backNode = nodeCount - 1;
 	while(backNode > 0)
 	{
@@ -171,14 +171,14 @@ int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes)
 				break;
 		}
 
-		memmove(nodes + i + 2, nodes + i + 1, (backNode - i) * sizeof(int));
+		memmove(nodes + i + 2, nodes + i + 1, (backNode - i) * sizeof(unsigned int));
 		nodes[i + 1] = node;
 		++backNode;
 	}
 
 	if(pSetCodes)
 	{
-		for(int i = 0; i < nodeCount; ++i)
+		for(unsigned int i = 0; i < nodeCount; ++i)
 		{
 			setNodeCode(&pNodes[i]);
 		}
@@ -187,18 +187,18 @@ int getHuffmanTree(HuffmanNode* pNodes, bool pSetCodes)
 	return nodeCount;
 }
 
-bool huffmanEncode(char* pSrc, int pSrcLength, char* pDst, int pDstLength)
+bool huffmanEncode(char* pSrc, unsigned int pSrcLength, char* pDst, unsigned int pDstLength)
 {
 	HuffmanNode nodes[512];
 	memset(nodes, 0, 512 * sizeof(HuffmanNode));
 
-	for(int i = 0; i < 256; ++i)
+	for(unsigned int i = 0; i < 256; ++i)
 	{
 		nodes[i].Character = i;
 	}
 
 	//int c;
-	for(int i = 0; i < pSrcLength; ++i)
+	for(unsigned int i = 0; i < pSrcLength; ++i)
 	{
 		++nodes[pSrc[i]].Frequency;
 	}
@@ -212,31 +212,33 @@ bool huffmanEncode(char* pSrc, int pSrcLength, char* pDst, int pDstLength)
 
 	qsort(nodes, 256, sizeof(HuffmanNode), nodeCmpFrequency);
 
-	int nodeCount = getHuffmanTree(nodes, true);
+	unsigned int nodeCount = getHuffmanTree(nodes, true);
 	//int nodeSize = sizeof(int) + sizeof(char);
-	int nodeSize = sizeof(HuffmanNode);
+	unsigned int nodeSize = sizeof(unsigned int) + sizeof(unsigned char);
 
 	memset(pDst, 0, pDstLength);
 
-	*((int*)pDst) = nodeCount;
-	pDst += sizeof(int*);
+	*((unsigned int*)pDst) = pSrcLength;
+	pDst += sizeof(unsigned int);
+	*pDst = nodeCount;
+	pDst += sizeof(unsigned char);
 	//fwrite(&nodeCount, 1, 1, pDst);
 
-	for(int i = 0; i < nodeCount; ++i)
+	for(unsigned int i = 0; i < nodeCount; ++i)
 	{
-		memcpy(pDst, &nodes[i], sizeof(HuffmanNode));
-		pDst += sizeof(HuffmanCode);
+		memcpy(pDst, &nodes[i], nodeSize);
+		pDst += nodeSize;
 		//fwrite(&nodes[i], sizeof(HuffmanNode), 1, pDst);
 	}
 
 	qsort(nodes, 256, sizeof(HuffmanNode), nodeCmpCharacter);
 
-	int code = 0;
-	int dstIndex = 0;
+	unsigned int code = 0;
+	unsigned int dstIndex = 0;
 	//while((c = fgetc(pSrc)) != EOF)
-	for(int i = 0; i < pSrcLength; ++i)
+	for(unsigned int i = 0; i < pSrcLength; ++i)
 	{
-		*(int*)(pDst + (dstIndex >> 3)) |= nodes[pSrc[i]].Code << (dstIndex & 7);
+		*(unsigned int*)(pDst + (dstIndex >> 3)) |= nodes[pSrc[i]].Code << (dstIndex & 7);
 		dstIndex += nodes[pSrc[i]].CodeLength;
 		//code |= nodes[c].Code << (dstIndex & 7);
 		//dstIndex += nodes[c].CodeLength;
@@ -257,26 +259,22 @@ bool huffmanEncode(char* pSrc, int pSrcLength, char* pDst, int pDstLength)
 	return true;
 }
 
-bool huffmanDecode(char* pSrc, int pSrcLength, char* pDst, int pDstLength)
+bool huffmanDecode(char* pSrc, unsigned int pSrcLength, char* pDst, unsigned int pDstLength)
 {
 	HuffmanNode nodes[512];
 	memset(nodes, 0, 512 * sizeof(HuffmanNode));
 	
-	int nodeCount = *((int*)pSrc);
-	pSrc += sizeof(int*);
+	unsigned int dstLength = *(unsigned int*)pSrc;
+	unsigned int nodeCount = *(pSrc + sizeof(unsigned int));
 	//int nodeCount = fgetc(pSrc);
 	//int nodeSize = sizeof(int) + sizeof(char);
-	int nodeSize = sizeof(HuffmanNode);
+	unsigned int nodeSize = sizeof(unsigned int) + sizeof(unsigned char);
 
-	for(int i = 0; i < nodeCount; ++i)
+	unsigned int srcIndex = nodeSize;
+	for(unsigned int i = 0; i < nodeCount; ++i)
 	{
-		memcpy(&nodes[i], pSrc, sizeof(HuffmanNode));
-		pSrc += sizeof(HuffmanNode);
-		nodes[i].Parent = 0;
-		nodes[i].Left = 0;
-		nodes[i].Right = 0;
-		nodes[i].Code = 0;
-		nodes[i].CodeLength = 0;
+		memcpy(&nodes[i], pSrc + srcIndex, nodeSize);
+		srcIndex += nodeSize;
 
 		//fread(&nodes[i], sizeof(HuffmanNode), 1, pSrc);
 	} 
@@ -287,17 +285,17 @@ bool huffmanDecode(char* pSrc, int pSrcLength, char* pDst, int pDstLength)
 	while(root->Parent)
 		root = root->Parent;
 
-	int code;
+	unsigned int code;
 	//int c;
-	int srcIndex = nodeSize << 3;
-	int dstIndex = 0;
+	srcIndex <<= 3;
+	unsigned int dstIndex = 0;
 	//while(!feof(pSrc))
 	while(dstIndex < pDstLength)
 	{
 		//fread(&c, sizeof(int), 1, pSrc);
 		//code = c >> (srcIndex & 7);
 
-		code = (*(int*)(pSrc + (srcIndex >> 3))) >> (srcIndex & 7);
+		code = (*(unsigned int*)(pSrc + (srcIndex >> 3))) >> (srcIndex & 7);
 		
  		HuffmanNode* node = root;
 		while(node->Left)
