@@ -43,6 +43,10 @@ public class DESTest {
      * Test of generateKeys method, of class DES.
      */
     @Test
-    public void testGenerateKeys() {
+    public void testGenerateSubkeys() {
+        byte[] test = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        byte[][] result = des.generateSubkeys(test);
+        for (int i = 0; i < 3; i++)
+            System.out.println(new String(result[i]));
     }
 }

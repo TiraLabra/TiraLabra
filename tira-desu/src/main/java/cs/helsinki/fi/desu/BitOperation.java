@@ -112,7 +112,7 @@ public class BitOperation {
         byte[] output = new byte[numBytes];
         for (int i = 0; i < numBytes; i++) {
             for (int j = 0; j < len; j++) {
-                int val = extractBit(input, (len * i) + j);
+                int val = extractBit(input, len * i + j);
                 setBit(output, 8 * i + j, val);
             }
         }
