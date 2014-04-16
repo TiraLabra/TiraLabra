@@ -1,4 +1,3 @@
-
 package cs.helsinki.fi.desu;
 
 import java.security.InvalidKeyException;
@@ -96,17 +95,15 @@ public class EncryptionTest {
     public void testEncrypt64Block() {
         fail("Not Implemented Yet.");
     }
-
+    
     /**
      * Test of insertPadding method, of class Encryption.
      */
     @Test
     public void testInsertPadding() {
-        byte[] test = enc.insertPadding(64);
-        byte[] result = new byte[64];
-        result[0] = -128;
-        for (int i = 1; i < 64; i++)
-            result[i] = 0;
+        byte[] test = {0, 1, 2, 3};
+        byte[] result = {0, 1, 2, 3, 4, 4, 4, 4};
+        byte[] test = enc.insertPadding();
         assertTrue(Arrays.equals(result, test));
     }
 }
