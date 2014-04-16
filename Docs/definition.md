@@ -4,11 +4,11 @@ The purpose of this laboratory project is to implement the Data Encryption Stand
 
 Implementation
 ==============
-The application I am developing should be a working command-line application, taking a message, either encrypted or not, and running necessary algorithms for it and producing the wanted result: either a decrypted or encrypted message. The main algorithm itself is a symmetric block cipher (both encryption and decryption keys are the same), of which there have been defined several different modes.
+The application I am developing should be a working command-line application, taking a message, either encrypted or not, and running necessary algorithms for it and producing the wanted result: either a decrypted or encrypted message. The main algorithm itself is a symmetric block cipher (both encryption and decryption keys are the same), of which there have been defined several different modes. This project implements the Cymmetric Block Cipher mode, which is more secure than the simpler Electronic Code Book.
 
 Input and output
 ----------------
-The application accepts a number of parameters and flags from the command line, including flags for encryption or decryption (specified in [manual file] (https://github.com/Julppu/Tira-DESu/blob/master/Docs/man.md).
+The application accepts a number of parameters and flags from the command line, including flags for encryption or decryption (specified in [manual file] (https://github.com/Julppu/Tira-DESu/blob/master/Docs/man.md)).
 
 Algorithms
 ----------
@@ -16,7 +16,7 @@ DES chops the data under encryption/decryption into blocks of standard size, 64 
 
 The Feistel F-function operates on 32 bits of data, which it expands to 48 bits with an expansion table. This data is mixed with a key by XOR-ing it with data from the previous round. The resulting 8x6 bits are run through eight substitution boxes (S-Box) and finally permuted once with a fixed table.
 
-Other required algorithms are the Feistel s-function, which permutes the data through eight arrays of bits. Other algorithms are either implementations of different modes or methods for handling the data.
+Other required algorithms are the Feistel s-function, which permutes the data through eight arrays of bits, and the padding algorithm PCKS#5 (also known as PBKDF2), which adds bytes to the end of a block equal in value to the number of empty bytes until the block is full 64 bits. The rest of the algorithms are either implementations of different modes or methods for handling the data.
 
 Data Structures
 ---------------
@@ -24,9 +24,10 @@ The algorithm for DES does not require data structures besides normal arrays, si
 
 Complexity
 ----------
-As this implementation requires only looping through arrays using a non variable amount of variables, space complexity is constant, O(1). All algorithms use only singular for-loops and a singular block is of standard size, so time complexity remains O(1), unless data is being handled in a series, in which case the complexity is O(n), where n equals the number of blocks.
+As this implementation requires only looping through arrays using a constant amount of variables, space complexity is constant, O(1). All algorithms use only singular for-loops and a singular block is of standard size, so time complexity remains O(1), unless data is being handled in a series, in which case the complexity is O(n), where n equals the number of blocks.
 
 Sources
 =======
-* [Data Encryption Standard] (http://csrc.nist.gov/publications/fips/fips46-3/fips46-3.pdf): FIPS Publication 46-3, Oct. 1995.
-* [Data Encryption Standard] (http://en.wikipedia.org/wiki/Data_Encryption_Standard): Wikipedia, fetched 14.3.2014
+* [Data Encryption Standard] (http://csrc.nist.gov/publications/fips/fips46-3/fips46-3.pdf): FIPS Publication 46-3, Oct. 1995 (fetched 14.3.2014).
+* [Data Encryption Standard] (http://en.wikipedia.org/wiki/Data_Encryption_Standard): Wikipedia (fetched 14.3.2014).
+* [RFC 2898] (http://tools.ietf.org/html/rfc2898): Internet Engineering Task Force, Sept. 2000 (fetched 16.4.2014).
