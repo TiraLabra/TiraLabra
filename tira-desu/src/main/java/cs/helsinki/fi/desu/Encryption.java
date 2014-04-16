@@ -100,19 +100,20 @@ public class Encryption {
      * Pads a block under 64 bits to 64 with bytes equal in value to bytes required.
      * Implements standard PCKS#5.
      * 
-     * @param block block requiring padding
-     * @return      padded block
+     * @param data block requiring padding
+     * @return     padded block
      */
     public byte[] insertPadding(byte[] data) {
-        int padding = 8 - data.length - 1;
+        int count = data.length % 8;
+        if (count == 0)
+            return data;
+        
         byte[] temp = new byte[8];
         for (int i = 0; i < 8; i++) {
-            // if data[i] exists use that
-            if (i < padding - 1)
+            if (i < data.length)
                 temp[i] = data[i];
-            // otherwise use the number of required bytes
             else
-                temp[i] = padding;
+                temp[i] = (byte) count;
         }
         return temp;
     }
