@@ -48,7 +48,7 @@ public class Encryption {
         int length = 8 - data.length % 8;
         byte[] output = new byte[data.length + length];
         byte[] block = new byte[8];
-        byte[] padding = insertPadding(length);
+        data = this.insertPadding(data);
         K = des.generateSubkeys(key);
         int count = 0;
         int i;
@@ -61,7 +61,7 @@ public class Encryption {
             if (i < data.length)
                 block[i % 8] = data[i];
             else {														
-                block[i % 8] = padding[count % 8];
+                block[i % 8] = data[count % 8];
                 count++;
             }
         }
