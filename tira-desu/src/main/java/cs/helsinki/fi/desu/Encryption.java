@@ -97,17 +97,23 @@ public class Encryption {
     }
     
     /**
-     * Creates a padding byte array to fill an incomplete block. First byte is "-128"
-     * followed by necessary number of "0".
+     * Pads a block under 64 bits to 64 with bytes equal in value to bytes required.
+     * Implements standard PCKS#5.
      * 
-     * @param  length length of required padding
-     * @return        padded block
+     * @param block block requiring padding
+     * @return      padded block
      */
-    public byte[] insertPadding(int length) {
-        byte[] padding = new byte[length];
-        padding[0] = -128;
-        for (int i = 1; i < length; i++)
-            padding[i] = 0;
-        return padding;
+    public byte[] insertPadding(byte[] data) {
+        int padding = 8 - data.length - 1;
+        byte[] temp = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            // if data[i] exists use that
+            if (i < padding - 1)
+                temp[i] = data[i];
+            // otherwise use the number of required bytes
+            else
+                temp[i] = padding;
+        }
+        return temp;
     }
 }
