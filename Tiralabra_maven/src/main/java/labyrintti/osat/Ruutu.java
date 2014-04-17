@@ -125,15 +125,15 @@ public class Ruutu {
     public void setIndeksi(int indeksi) {
         this.indeksi = indeksi;
     }
-
-    /**
-     *
-     * @return ruudun arvo
-     */
-    @Override
-    public String toString() {
-        return "" + arvo;
-    }
+//
+//    /**
+//     *
+//     * @return ruudun arvo
+//     */
+//    @Override
+//    public String toString() {
+//        return "" + arvo;
+//    }
 
     /**
      *

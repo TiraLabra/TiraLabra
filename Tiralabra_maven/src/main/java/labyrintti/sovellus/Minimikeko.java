@@ -73,7 +73,7 @@ public class Minimikeko {
     private void heapify(int solmu) {
         while (true) {
             int vasen = vasenLapsi(solmu);
-            if(vasen>=keonKoko){
+            if (vasen >= keonKoko) {
                 break;
             }
             int oikea = oikeaLapsi(solmu);
@@ -93,34 +93,6 @@ public class Minimikeko {
             }
         }
     }
-
-//    /**
-//     * Apumetodi suorituskykytestaukseen
-//     * @param solmu 
-//     */
-//    private void heapify1(int solmu) {
-//         while (true) {
-//            int vasen = vasenLapsi(solmu);
-//            if(vasen>=keonKoko){
-//                break;
-//            }
-//            int oikea = oikeaLapsi(solmu);
-//            if (oikea < keonKoko) { // jos solmulla on oikea lapsi
-//                int pienin = etsiPienin(vasen, oikea);
-//                if (ruudut[solmu].getArvo() > ruudut[pienin].getArvo()) {
-//                    vaihdaSolmujenPaikkaa(solmu, pienin);
-//                    solmu = pienin;
-//                } else {
-//                    break;
-//                }
-//            } else if (vasen == keonKoko - 1 && ruudut[solmu].getArvo() > ruudut[vasen].getArvo()) {
-//                vaihdaSolmujenPaikkaa(solmu, vasen);
-//                break;
-//            } else {
-//                break;
-//            }
-//        }
-//    }
 
     /**
      * Palauttaa indeksin, jonka solmun alun ja lopun etäisyyksien summa on
@@ -235,4 +207,31 @@ public class Minimikeko {
     public Ruutu[] getRuudut() {
         return ruudut;
     }
+//    /**
+//     * Apumetodi suorituskykytestaukseen.
+//     * @param solmu 
+//     */
+//    private void heapify1(int solmu) {
+//         while (true) {
+//            int vasen = vasenLapsi(solmu);
+//            if(vasen>=keonKoko){
+//                break;
+//            }
+//            int oikea = oikeaLapsi(solmu);
+//            if (oikea < keonKoko) { // jos solmulla on oikea lapsi
+//                int pienin = etsiPienin(vasen, oikea);
+//                if (ruudut[solmu].getArvo() > ruudut[pienin].getArvo()) {
+//                    vaihdaSolmujenPaikkaa(solmu, pienin);
+//                    solmu = pienin;
+//                } else {
+//                    break;
+//                }
+//            } else if (vasen == keonKoko - 1 && ruudut[solmu].getArvo() > ruudut[vasen].getArvo()) {
+//                vaihdaSolmujenPaikkaa(solmu, vasen);
+//                break;
+//            } else {
+//                break;
+//            }
+//        }
+//    }
 }

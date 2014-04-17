@@ -84,19 +84,6 @@ public class Pohja {
         }
     }
 
-    /**
-     * Laskee taulukolle korkeuden.
-     *
-     * @param lukija lukee tiedostoa
-     */
-    private void laskeKorkeus(Scanner lukija) {
-        korkeus = 1;
-        while (lukija.hasNextLine()) { //selvitetään, kuinka monta riviä pohjataulukkoon tulee
-            lukija.nextLine();
-            korkeus++;
-        }
-    }
-
     public Ruutu[][] getKartta() {
         return kartta;
     }
