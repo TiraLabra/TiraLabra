@@ -1,46 +1,47 @@
 package labyrintti.osat;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author heidvill@cs
+ * @author heidvill
  */
 public class PohjaTest {
+
+    /**
+     * Testattava pohja.
+     */
     private Pohja pohja;
-    
-    public PohjaTest() {
-    }
-    
+    /**
+     * Testikartta.
+     */
+    private String esim;
+
     @Before
     public void setUp() {
-        pohja = new Pohja();
-        pohja.alustaPohja1("src/main/java/labyrintti/osat/kartta2.txt");
-    }
-    
-    @After
-    public void tearDown() {
+        esim = "L11"
+            + "111"
+            + "11M";
+        pohja = new Pohja(3, 3, esim);
     }
 
     @Test
     public void pohjaLuodaanOikein() {
-        assertEquals(2, pohja.getKorkeus());
-        assertEquals(4, pohja.getLeveys());
+        assertEquals(3, pohja.getKorkeus());
+        assertEquals(3, pohja.getLeveys());
     }
-    
+
     @Test
-    public void lahtoOikein(){
+    public void lahtoOikein() {
         assertEquals(0, pohja.getLahtoX());
-        assertEquals(3, pohja.getLahtoY());
+        assertEquals(0, pohja.getLahtoY());
     }
-    
+
     @Test
-    public void maaliOikein(){
-        assertEquals(1, pohja.getMaaliX());
-        assertEquals(0, pohja.getMaaliY());
+    public void maaliOikein() {
+        assertEquals(2, pohja.getMaaliX());
+        assertEquals(2, pohja.getMaaliY());
     }
-    
 }

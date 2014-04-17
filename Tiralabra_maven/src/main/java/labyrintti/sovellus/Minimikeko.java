@@ -71,18 +71,56 @@ public class Minimikeko {
      * voimassa
      */
     private void heapify(int solmu) {
-        int vasen = vasenLapsi(solmu);
-        int oikea = oikeaLapsi(solmu);
-        if (oikea < keonKoko) { // jos solmulla on oikea lapsi
-            int pienin = etsiPienin(vasen, oikea);
-            if (ruudut[solmu].getEtaisyyksienSumma() > ruudut[pienin].getEtaisyyksienSumma()) {
-                vaihdaSolmujenPaikkaa(solmu, pienin);
-                heapify(pienin);
+        while (true) {
+            int vasen = vasenLapsi(solmu);
+            if(vasen>=keonKoko){
+                break;
             }
-        } else if (vasen == keonKoko - 1 && ruudut[solmu].getEtaisyyksienSumma() > ruudut[vasen].getEtaisyyksienSumma()) {
-            vaihdaSolmujenPaikkaa(solmu, vasen);
+            int oikea = oikeaLapsi(solmu);
+            if (oikea < keonKoko) { // jos solmulla on oikea lapsi
+                int pienin = etsiPienin(vasen, oikea);
+                if (ruudut[solmu].getEtaisyyksienSumma() > ruudut[pienin].getEtaisyyksienSumma()) {
+                    vaihdaSolmujenPaikkaa(solmu, pienin);
+                    solmu = pienin;
+                } else {
+                    break;
+                }
+            } else if (vasen == keonKoko - 1 && ruudut[solmu].getEtaisyyksienSumma() > ruudut[vasen].getEtaisyyksienSumma()) {
+                vaihdaSolmujenPaikkaa(solmu, vasen);
+                break;
+            } else {
+                break;
+            }
         }
     }
+
+//    /**
+//     * Apumetodi suorituskykytestaukseen
+//     * @param solmu 
+//     */
+//    private void heapify1(int solmu) {
+//         while (true) {
+//            int vasen = vasenLapsi(solmu);
+//            if(vasen>=keonKoko){
+//                break;
+//            }
+//            int oikea = oikeaLapsi(solmu);
+//            if (oikea < keonKoko) { // jos solmulla on oikea lapsi
+//                int pienin = etsiPienin(vasen, oikea);
+//                if (ruudut[solmu].getArvo() > ruudut[pienin].getArvo()) {
+//                    vaihdaSolmujenPaikkaa(solmu, pienin);
+//                    solmu = pienin;
+//                } else {
+//                    break;
+//                }
+//            } else if (vasen == keonKoko - 1 && ruudut[solmu].getArvo() > ruudut[vasen].getArvo()) {
+//                vaihdaSolmujenPaikkaa(solmu, vasen);
+//                break;
+//            } else {
+//                break;
+//            }
+//        }
+//    }
 
     /**
      * Palauttaa indeksin, jonka solmun alun ja lopun etäisyyksien summa on
@@ -95,6 +133,7 @@ public class Minimikeko {
     private int etsiPienin(int vasen, int oikea) {
         int pienin = oikea;
         if (ruudut[vasen].getEtaisyyksienSumma() < ruudut[oikea].getEtaisyyksienSumma()) {
+//        if (ruudut[vasen].getArvo() < ruudut[oikea].getArvo()) {
             pienin = vasen;
         }
         return pienin;
@@ -109,7 +148,9 @@ public class Minimikeko {
     private void vaihdaSolmujenPaikkaa(int eka, int toka) {
         Ruutu r = ruudut[eka];
         ruudut[eka] = ruudut[toka];
+        ruudut[eka].setIndeksi(eka);
         ruudut[toka] = r;
+        ruudut[toka].setIndeksi(toka);
     }
 
     /**
@@ -136,13 +177,14 @@ public class Minimikeko {
         for (int i = 0; i < pohja.getKorkeus(); i++) {
             for (int j = 0; j < pohja.getLeveys(); j++) {
                 ruudut[i * pohja.getLeveys() + j] = pohja.getRuutu(i, j);
+                pohja.getRuutu(i, j).setIndeksi(i * pohja.getLeveys() + j);
             }
         }
     }
 
     /**
-     * Tulostaa keon alkiot. Huom, taulukossa voi olla enemmän alkioita, kuin
-     * keossa.
+     * Tulostaa keon alkioiden koordinaatit. Huom, taulukossa voi olla enemmän
+     * alkioita, kuin keossa.
      */
     public void tulosta() {
         for (int i = 0; i < keonKoko; i++) {
@@ -152,7 +194,7 @@ public class Minimikeko {
 
     /**
      *
-     * @return merkkinon, johon on tallennettu keon alkiot
+     * @return merkkijono, johon on tallennettu keon alkiot
      */
     public String getAlkiot() {
         String koordinaatit = "";
@@ -169,6 +211,7 @@ public class Minimikeko {
     public void rakennaKeko() {
         for (int i = keonKoko / 2 - 1; i >= 0; i--) {
             heapify(i);
+//            heapify1(i);
         }
     }
 
@@ -178,13 +221,7 @@ public class Minimikeko {
      * @param paivitettava ruutu jonka etäisyysarvio on muuttunut.
      */
     public void paivitaRuutuKekoon(Ruutu paivitettava) {
-        int solmu = 0;
-        for (int i = 0; i < ruudut.length; i++) {
-            if (ruudut[i].equals(paivitettava)) {
-                solmu = i;
-                break;
-            }
-        }
+        int solmu = paivitettava.getIndeksi();
         while (solmu > 0 && ruudut[vanhempi(solmu)].getEtaisyyksienSumma() > ruudut[solmu].getEtaisyyksienSumma()) {
             vaihdaSolmujenPaikkaa(solmu, vanhempi(solmu));
             solmu = vanhempi(solmu);

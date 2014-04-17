@@ -83,7 +83,7 @@ public class Piirtoalusta extends JPanel {
      */
     private void piirraReitti(Graphics g, int x, int y) {
         if (kaynnistys.getEtsija().getReitti() != null && kaynnistys.getEtsija().onkoRuutuReitilla(x, y)) {
-            g.setColor(Color.YELLOW);
+            g.setColor(Color.RED);
             g.fillOval(y * sivu + sivu / 2, x * sivu + sivu / 2, sivu / 4, sivu / 4);
         }
     }
@@ -97,17 +97,11 @@ public class Piirtoalusta extends JPanel {
      */
     private void piirraKaydyt(Graphics g, int x, int y) {
         if (pohja.getRuutu(x, y).onkoKayty()) {
-            g.setColor(new Color(255, 255, 240));
+            g.setColor(Color.YELLOW);
             g.fillOval(y * sivu + sivu / 2, x * sivu + sivu / 2, sivu / 4, sivu / 4);
         }
     }
 
-//    private void piirraKaydyt(Graphics g, int x, int y) {
-//        if (kaynnistys.getEtsija().getReitti() != null && !kaynnistys.getEtsija().onkoRuutuReitilla(x, y) && pohja.getRuutu(x, y).onkoKayty()) {
-//            g.setColor(new Color(255, 255, 240));
-//            g.fillOval(y * sivu + 15, x * sivu + 15, 10, 10);
-//        }
-//    }
     /**
      * Tarkistaa, onko annetuissa koordinaateissa oleva ruutu lähtö tai maali.
      *

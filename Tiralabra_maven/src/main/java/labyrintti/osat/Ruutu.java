@@ -2,9 +2,10 @@ package labyrintti.osat;
 
 /**
  * Ruutu on karttapohjan taulukon alkio.
+ *
  * @author heidvill
  */
-public class Ruutu implements Comparable<Ruutu> {
+public class Ruutu {
 
     /**
      * Ruudun arvo.
@@ -35,6 +36,10 @@ public class Ruutu implements Comparable<Ruutu> {
      * reitin.
      */
     private Ruutu edellinen;
+    /**
+     * Ruudun indeksi minimikeossa.
+     */
+    private int indeksi;
 
     public Ruutu(int arvo, int x, int y) {
         this.arvo = arvo;
@@ -94,7 +99,7 @@ public class Ruutu implements Comparable<Ruutu> {
     }
 
     /**
-     * 
+     *
      * @return ruutu, josta tähän ruutuun on tultu.
      */
     public Ruutu getEdellinen() {
@@ -113,8 +118,16 @@ public class Ruutu implements Comparable<Ruutu> {
         this.kayty = kayty;
     }
 
+    public int getIndeksi() {
+        return indeksi;
+    }
+
+    public void setIndeksi(int indeksi) {
+        this.indeksi = indeksi;
+    }
+
     /**
-     * 
+     *
      * @return ruudun arvo
      */
     @Override
@@ -123,18 +136,19 @@ public class Ruutu implements Comparable<Ruutu> {
     }
 
     /**
-     * 
+     *
      * @return ruudun koordinaatit (x,y)
      */
     public String koordinaatit() {
         return "(" + x + "," + y + ")";
     }
 
-    @Override
-    public int compareTo(Ruutu r) {
-        return getEtaisyyksienSumma() - r.getEtaisyyksienSumma();
-    }
-
+    /**
+     * Ruudut ovat samat, jos niillä on samat koordinatit.
+     *
+     * @param o verrattava objekti
+     * @return true, jos ruuduilla on samat koordinaatit, muuten false
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) {

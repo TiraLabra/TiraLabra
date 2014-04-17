@@ -29,7 +29,6 @@ public class Etsija {
      * Reitti tallennetaan 2-ulotteiseen taulukkoon.
      */
     private int[][] reitti;
-    private Piirtoalusta alusta;
 
     public Etsija(Pohja p) {
         pohja = p;
@@ -37,12 +36,8 @@ public class Etsija {
         reitti = null;
     }
 
-    public void setPiirtoalusta(Piirtoalusta alusta) {
-        this.alusta = alusta;
-    }
-    
     /**
-     * Alustaa pohjan ruutujen arvot.
+     * Alustaa pohjan ruutujen arvot ja järjestää keon.
      */
     public void alustus() {
         for (int i = 0; i < pohja.getKorkeus(); i++) {

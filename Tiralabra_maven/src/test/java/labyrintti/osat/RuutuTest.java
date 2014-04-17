@@ -5,7 +5,6 @@
  */
 package labyrintti.osat;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,18 +15,14 @@ import static org.junit.Assert.*;
  */
 public class RuutuTest {
 
+    /**
+     * Testattava ruutu.
+     */
     private Ruutu ruutu;
-
-    public RuutuTest() {
-    }
 
     @Before
     public void setUp() {
         ruutu = new Ruutu(0, 0, 0);
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test
@@ -60,20 +55,5 @@ public class RuutuTest {
         assertEquals(false, ruutu.equals(verrattava1));
         Ruutu verrattava2 = new Ruutu(0, 0, 0);
         assertEquals(true, ruutu.equals(verrattava2));
-    }
-
-    @Test
-    public void compareToimii() {
-        Ruutu verrattava = new Ruutu(0, 0, 0);
-        int palautus = ruutu.compareTo(verrattava);
-        assertEquals(true, palautus == 0);
-
-        verrattava.setEtaisyysAlkuun(4);
-        palautus = ruutu.compareTo(verrattava);
-        assertEquals(true, palautus > 0);
-
-//        verrattava.setEtaisyysAlkuun(-5);
-//        palautus = ruutu.compareTo(verrattava);
-//        assertEquals(true, palautus>0);
     }
 }

@@ -56,6 +56,12 @@ public class Kaynnistys {
             + "111111111111111111"
             + "9L9999999999999999";
     /**
+     * Testisyöte.
+     */
+    private String esim4 = "L11"
+            + "111"
+            + "11M";
+    /**
      * Etsii kartasta lyhimmän reitin.
      */
     private Etsija etsija;
@@ -68,15 +74,11 @@ public class Kaynnistys {
      */
     private Pohja pohja;
     /**
-     * Käyttäjän syötteen lukija
+     * Käyttäjän syötteen lukija.
      */
     private Scanner lukija;
 
     public Kaynnistys() {
-        pohja = new Pohja();
-//        pohja.alustaPohja1("src/main/java/labyrintti/osat/kartta1.txt");
-//        etsija = new Etsija(pohja);
-//        kali = new Kayttoliittyma(this, 40);
         lukija = new Scanner(System.in);
     }
 
@@ -94,31 +96,11 @@ public class Kaynnistys {
             pohja = new Pohja(korkeus, leveys, syote);
         }
         etsija = new Etsija(pohja);
-//        testipohjat();
+//        testipohjat(); //suorituskykytestausta
+//        testaaMinimikeko(); // suorituskykytestausta
         kaynnistaGui();
     }
 
-//    /**
-//     * Metodi A*:n suorituskyvyn testaamiseen.
-//     */
-//    private void testipohjat() {
-//        String syote = "";
-//        for (int i = 2; i < 130; i++) {
-//            for (int j = 0; j < i * i; j++) {
-//                syote += "1";
-//            }
-//            syote = syote.substring(2);
-//            syote = "L" + syote + "M";
-//            pohja = new Pohja(i, i, syote);
-//            etsija = new Etsija(pohja);
-//            long aikaAlussa = System.currentTimeMillis();
-//            etsija.aStar();
-//            long aikaLopussa = System.currentTimeMillis();
-//            System.out.println("i = " + i + " Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-//            syote = "";          
-//        }
-//    }
-    
     /**
      * Käynnistää käyttöliittymän.
      */
@@ -175,12 +157,10 @@ public class Kaynnistys {
      * Asettaa valmiin kartan Pohja-oliolle.
      */
     private void valmisPohja() {
-//        String syote = esim3;
-//        pohja = new Pohja(10, 18, syote);
-//        String syote = esim2;
-//        pohja = new Pohja(5, 5, syote);
-        String syote = esim1;
-        pohja = new Pohja(9, 10, syote);
+//        pohja = new Pohja(10, 18, esim3);
+//        pohja = new Pohja(5, 5, esim2);
+//        pohja = new Pohja(9, 10, esim1);
+        pohja = new Pohja(3, 3, esim4);
     }
 
     public Pohja getPohja() {
@@ -258,4 +238,47 @@ public class Kaynnistys {
             return false;
         }
     }
+//    /**
+//     * Metodi A*:n suorituskyvyn testaamiseen.
+//     */
+//    private void testipohjat() {
+//        String syote = "";
+//        for (int i = 2; i < 300; i++) {
+//            for (int j = 0; j < i * i; j++) {
+//                syote += "1";
+//            }
+//            syote = syote.substring(2);
+//            syote = "L" + syote + "M";
+//            pohja = new Pohja(i, i, syote);
+//            etsija = new Etsija(pohja);
+//            long aikaAlussa = System.currentTimeMillis();
+//            etsija.aStar();
+//            long aikaLopussa = System.currentTimeMillis();
+//            System.out.println("i = " + i + " Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+////            System.out.println(aikaLopussa - aikaAlussa);
+//            syote = "";          
+//        }
+//    }
+//    /**
+//     * Apumetodi suorituskyvyn testaukseen.
+//     */
+//    private void testaaMinimikeko() {
+//        for (int k = 1; k < 1651; k++) {
+//            Ruutu[][] kartta = new Ruutu[k][k];
+//            for (int i = 0; i < k; i++) {
+//                for (int j = 0; j < k; j++) {
+//                    kartta[k-1-i][k-1-j] = new Ruutu(i * k + j, 0, 0);
+//                }
+//            }
+//            Minimikeko keko = new Minimikeko(k*k);
+//            pohja = new Pohja();
+//            pohja.setKartta(kartta, k);
+//            keko.alustaTaulukko(pohja);
+//            long aikaAlussa = System.currentTimeMillis();
+//            keko.rakennaKeko();
+//            long aikaLopussa = System.currentTimeMillis();
+//            System.out.println("k = " + k + " Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+////            System.out.println(aikaLopussa - aikaAlussa);
+//        }
+//    }
 }
