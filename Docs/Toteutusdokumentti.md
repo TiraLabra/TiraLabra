@@ -107,6 +107,7 @@ Minimikekoon alustetaan koko pohjakartta, siispä keon koko on aluksi (ja suurim
 - Solmun päivittäminen O(log V)
 - Poll O(log V)
 
+Aikavaativuuden analysointi pseudokoodista:
 	
 	Heapify(solmu)
 		while vasen(solmu)<keonKoko					// O(log V)
