@@ -86,55 +86,59 @@ pollaaPienin()
 </code></pre>
 
 <h3>Aikavaativuus</h3>
+Astar algoritmin reitin selvittämisen aikavaativuus on O(n+nlogn).
+
 <pre><code>Astar(A, a, b) 
 	//A pelialusta, a lahtö, b maali
 
-	lisaaSopivatSolmut(A, B)  //O(V)
-	muunnaSopivatListaKaymattomatTaulukoksi(B) //O(1)
-	alustus(b)  //O(1)
+	lisaaSopivatSolmut(A, B)  //O(n)
+	muunnaSopivatListaKaymattomatTaulukoksi(B) //O(n)
+	alustus(b)  //O(n)
 	alkuun[a] = 0  //O(1)
 
 
 	//liiku(maali, alusta)
-	while ei olla maalissa
-		jarjestetaan joukko K //O(nlogn)
+	while ei olla maalissa // ehdon tarkistaminen //O(1)
+				// while toistetaan O(n) kertaa
+	
+		jarjestetaan joukko K //O(nlogn), n on lomitettavan taulukon koko
 		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin  //O(1)
 		
-		pollaaPienin()
+		pollaaPienin() //O(n)
 		S = S+{u}
 
-		for jokainen suunta // oikea, vasen, alas, ylös
-			if ruutu ei ole seinä lisataan naapurit listaan
+		for jokainen suunta //O(1)
+			if ruutu ei ole seinä lisataan naapurit listaan //O(1)
 
 		
-		for jokainen solmu v joka kuuluu naapureihin
-			if alkuun[v] > alkuun[u] + w(u,v)
-				alkuun[v] = alkuun[u] + w(u,v)
-				edellinen[v] = u
+		for jokainen solmu v joka kuuluu naapureihin  //O(1), koska naapureita korkeintaan neljä
+			if alkuun[v] > alkuun[u] + w(u,v)  //O(1)
+				alkuun[v] = alkuun[u] + w(u,v)  //O(1)
+				edellinen[v] = u  //O(1)
 	
 	
 
 
 lisaaSopivatSolmut(A, B)
 	// B on sopivat solmut
-	for kaikille pelialustan solmuille //O(V)
+	for kaikille pelialustan solmuille //O(n)
 		if ruuduntyyppi != seina  //O(1)
 			lisataan sopiviin ruutuihin joukkoon M  //O(1)
 
 
 muunnaSopivatListaKaymattomatTaulukoksi(B)
-	for kaikille sopiville solmuille  //O(1)
+	for kaikille sopiville solmuille  //O(n)
 		lisataan m joukkoon kayttamattomat K  //O(1)
 
 
 alustus(b)
-	for kaikille somuille kaymattomille solmuille  //O(1)
+	for kaikille somuille kaymattomille solmuille  //O(n)
 		alkuun[k] = aareton  //O(1)
 		loppuun[k] = arvioi suora etaisyys k~>b  //O(1)
 		edellinen[k] = NIL  //O(1)
 
 pollaaPienin()
-	for uusi kaymättamat joukko N // N.lenght = K.lenght-1  //O(1)
+	for uusi kaymättamat joukko N // N.lenght = K.lenght-1  //O(n)
 		N[i] = K[i+1]  //O(1)
 		K = N  //O(1)
 </code></pre>
