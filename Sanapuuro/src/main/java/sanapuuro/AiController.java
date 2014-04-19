@@ -57,19 +57,12 @@ public class AiController implements Controller {
      * @param k The index to start permuting from.
      */
     public void tryPermutations(LetterContainer[] containers, int k) {
-        if (this.bestAnagram != null) {
-//            for (LetterContainer letterContainer : this.bestAnagram.containers) {
-//                System.out.print(letterContainer.letter);
-//            }
-//            System.out.println("");
-            return;
-        }
         if (k == containers.length) {
             this.tryPermutationToGrid(containers);
-//            this.permutationsHandled++;
-//            if (this.permutationsHandled % 2000 == 0) {
-//                System.out.print(40000 - permutationsHandled + "... ");
-//            }
+            this.permutationsHandled++;
+            if (this.permutationsHandled % 2000 == 0) {
+                System.out.print(40000 - permutationsHandled + "... ");
+            }
         }
         for (int i = k; i < containers.length; i++) {
             LetterContainer temp = containers[i];
@@ -92,49 +85,75 @@ public class AiController implements Controller {
     }
 
     private void tryPermutationAt(int x, int y, LetterContainer[] permutation) {
-        this.calculateBestScoreForPlacement(x, y, 1, 0, permutation);
-        this.calculateBestScoreForPlacement(x, y, -1, 0, permutation);
-        this.calculateBestScoreForPlacement(x, y, 0, 1, permutation);
-        this.calculateBestScoreForPlacement(x, y, 0, -1, permutation);
+        this.fitPermutationAt(x, y, 1, 0, permutation);
+        this.fitPermutationAt(x, y, -1, 0, permutation);
+        this.fitPermutationAt(x, y, 0, 1, permutation);
+        this.fitPermutationAt(x, y, 0, -1, permutation);
     }
 
-    private void calculateBestScoreForPlacement(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
-        int i = 0, j = 0;
-        int score = 0;
-        int lettersAdded = 0;
-        // assuming grid is square
-        List<LetterContainer> anagramContainers = new ArrayList<>(this.grid.width);
-        while (i < this.grid.width) {
-            int x_ = x + (deltaX * i);
-            int y_ = y + (deltaY * i);
-            if (!this.grid.isWithinGrid(x_, y_)) {
-                break;
-            }
-            if (this.grid.hasContainerAt(x_, y_)) {
-                anagramContainers.add(this.grid.getContainerAt(x_, y_));
-                score += this.grid.getContainerAt(x_, y_).letter.score;
-            } else {
-                anagramContainers.add(permutation[j]);
-                score += permutation[j].letter.score;
-                lettersAdded++;
-                j++;
-            }
+    public void fitPermutationAt(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
+        List<LetterContainer> containers = this.getFullFit(x, y, deltaX, deltaY, permutation);
+        int score = this.getScoreFromContainers(containers);
+        int lettersAdded = this.getCountOfLettersAdded(containers);   
 
-            i++;
+        if (this.bestAnagram != null && score <= this.bestAnagram.score) {
+            return;
         }
-        i = anagramContainers.size() - 1;
+
+        int i = containers.size() - 1;
+        // must have added at least one letter since all letters only from grid is not accepted
+        // i >= 2 because words must be at three letters long
         while (i >= 2 && lettersAdded > 0) {
-            String anagram = Util.stringFromLetterContainers(anagramContainers);
+            String anagram = Util.stringFromLetterContainers(containers);
             if (this.words.contains(anagram) && (this.bestAnagram == null || score > this.bestAnagram.score)) {
-                this.bestAnagram = new Anagram(x, y, deltaX, deltaY, score, anagramContainers);
+                this.bestAnagram = new Anagram(x, y, deltaX, deltaY, score, containers);
                 break;
             }
-            if (!anagramContainers.get(i).isPermanent()) {
+            if (!containers.get(i).isPermanent()) {
                 lettersAdded--;
             }
-            anagramContainers.remove(i);
+            score-=containers.get(i).letter.score;
+            containers.remove(i);           
             i--;
         }
+    }
+
+    public List<LetterContainer> getFullFit(int startX, int startY, int deltaX, int deltaY, LetterContainer[] permutation) {
+        int i = 0, j = 0;
+        List<LetterContainer> containers = new ArrayList<>(this.grid.width);
+        while (true) {
+            int x = startX + (deltaX * i);
+            int y = startY + (deltaY * i);
+            if (!this.grid.isWithinGrid(x, y)) {
+                break;
+            }
+            if (this.grid.hasContainerAt(x, y)) {
+                containers.add(this.grid.getContainerAt(x, y));
+            } else {
+                containers.add(permutation[j]);
+                j++;
+            }
+            i++;
+        }
+        return containers;
+    }
+
+    public int getScoreFromContainers(List<LetterContainer> containers) {
+        int score = 0;
+        for (LetterContainer letterContainer : containers) {
+            score += letterContainer.letter.score;
+        }
+        return score;
+    }
+
+    public int getCountOfLettersAdded(List<LetterContainer> containers) {
+        int lettersAdded = 0;
+        for (LetterContainer letterContainer : containers) {
+            if (!letterContainer.isPermanent()) {
+                lettersAdded++;
+            }
+        }
+        return lettersAdded;
     }
 
     private void placeSubmission() {
@@ -147,10 +166,10 @@ public class AiController implements Controller {
             int y = this.bestAnagram.y + i * this.bestAnagram.deltaY;
             LetterContainer container = containers.get(i);
             if (container.isPermanent()) {
-                System.out.println("selecting " + container.letter + " at " + "(" + container.getX() + "," + container.getY() + ")");
+                //System.out.println("selecting " + container.letter + " at " + "(" + container.getX() + "," + container.getY() + ")");
                 this.getControlled().letterSelected(container.getX(), container.getY());
             } else {
-                System.out.println("adding " + container.letter + " at " + "(" + x + "," + y + ")");
+                //System.out.println("adding " + container.letter + " at " + "(" + x + "," + y + ")");
                 this.getControlled().letterAdded(container.letter.character, x, y);
             }
         }
