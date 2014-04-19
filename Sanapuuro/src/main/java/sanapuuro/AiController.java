@@ -17,8 +17,6 @@ import sanapuuro.utils.Util;
 public class AiController implements Controller {
 
     private int permutationsHandled = 0;
-    private long totalMillisTaken = 0;
-    private LetterContainer[] fitting = new LetterContainer[8];
     private final Grid grid;
     private final LetterPool letterPool;    // Pool for picking letters from.
     private ControllerListener controlled;
@@ -35,7 +33,9 @@ public class AiController implements Controller {
     public void makeMove() {
         this.permutationsHandled = 0;
         this.bestAnagram = null;
+        System.out.print("permutations to handle: ");
         this.tryPermutations(this.letterPool.getLetters(), 0);
+        System.out.println("");
         this.placeSubmission();
     }
 
@@ -57,12 +57,19 @@ public class AiController implements Controller {
      * @param k The index to start permuting from.
      */
     public void tryPermutations(LetterContainer[] containers, int k) {
+        if (this.bestAnagram != null) {
+//            for (LetterContainer letterContainer : this.bestAnagram.containers) {
+//                System.out.print(letterContainer.letter);
+//            }
+//            System.out.println("");
+            return;
+        }
         if (k == containers.length) {
             this.tryPermutationToGrid(containers);
-            this.permutationsHandled++;
-            if (this.permutationsHandled % 2000 == 0) {
-                System.out.println("permutations to handle: " + (40000 - permutationsHandled));
-            }
+//            this.permutationsHandled++;
+//            if (this.permutationsHandled % 2000 == 0) {
+//                System.out.print(40000 - permutationsHandled + "... ");
+//            }
         }
         for (int i = k; i < containers.length; i++) {
             LetterContainer temp = containers[i];
@@ -86,15 +93,17 @@ public class AiController implements Controller {
 
     private void tryPermutationAt(int x, int y, LetterContainer[] permutation) {
         this.calculateBestScoreForPlacement(x, y, 1, 0, permutation);
-        //this.calculateBestScoreForPlacement(x, y, -1, 0, permutation);
+        this.calculateBestScoreForPlacement(x, y, -1, 0, permutation);
         this.calculateBestScoreForPlacement(x, y, 0, 1, permutation);
-        //this.calculateBestScoreForPlacement(x, y, 0, -1, permutation);
+        this.calculateBestScoreForPlacement(x, y, 0, -1, permutation);
     }
 
     private void calculateBestScoreForPlacement(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
         int i = 0, j = 0;
         int score = 0;
+        int lettersAdded = 0;
         // assuming grid is square
+        List<LetterContainer> anagramContainers = new ArrayList<>(this.grid.width);
         while (i < this.grid.width) {
             int x_ = x + (deltaX * i);
             int y_ = y + (deltaY * i);
@@ -102,79 +111,30 @@ public class AiController implements Controller {
                 break;
             }
             if (this.grid.hasContainerAt(x_, y_)) {
-                this.fitting[i] = this.grid.getContainerAt(x_, y_);
+                anagramContainers.add(this.grid.getContainerAt(x_, y_));
+                score += this.grid.getContainerAt(x_, y_).letter.score;
             } else {
-                this.fitting[i] = permutation[j];
+                anagramContainers.add(permutation[j]);
+                score += permutation[j].letter.score;
+                lettersAdded++;
                 j++;
             }
-            score += fitting[i].letter.score;
-            if (i >= 2) {
-                String anagram = Util.getStringFromFirstNLetterContainers(fitting, i+1);
-                if (this.words.contains(anagram) && (this.bestAnagram == null || score > this.bestAnagram.score)) {
-                    List<LetterContainer> anagramContainers = new ArrayList<>(i + 1);
-                    for (int k = 0; k <= i; k++) {
-                        anagramContainers.add(this.fitting[k]);
-                    }
-                    this.bestAnagram = new Anagram(x, y, deltaX, deltaY, score, anagramContainers);
-                }
 
-            }
             i++;
         }
-    }
-
-    private void getPermutationThatFitsAt(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
-        int i = 0, j = 0;
-        int x_ = x, y_ = y;
-        while (this.grid.isWithinGrid(x_, y_)) {
-            if (this.grid.hasContainerAt(x_, y_)) {
-                fitting[j] = this.grid.getContainerAt(x_, y_);
-            } else {
-                fitting[j] = permutation[i];
-                i++;
+        i = anagramContainers.size() - 1;
+        while (i >= 2 && lettersAdded > 0) {
+            String anagram = Util.stringFromLetterContainers(anagramContainers);
+            if (this.words.contains(anagram) && (this.bestAnagram == null || score > this.bestAnagram.score)) {
+                this.bestAnagram = new Anagram(x, y, deltaX, deltaY, score, anagramContainers);
+                break;
             }
-            x_ += deltaX;
-            y_ += deltaY;
-            j++;
+            if (!anagramContainers.get(i).isPermanent()) {
+                lettersAdded--;
+            }
+            anagramContainers.remove(i);
+            i--;
         }
-        if (j < fitting.length - 1) {
-            fitting[j + 1] = null;
-        }
-    }
-
-    /**
-     * Requires length != 0.
-     *
-     * @param startX
-     * @param startY
-     * @param deltaX
-     * @param deltaY
-     * @param length
-     * @return
-     */
-    private boolean lineNotOccupied(int startX, int startY, int deltaX, int deltaY, int length) {
-        if (deltaX != 0) {
-            int lastX = startX + deltaX * (length - 1);
-            if (lastX < 0 || lastX > this.grid.width) {
-                return false;
-            }
-            for (int x = startX, i = 0; i < length; x += deltaX, i++) {
-                if (!this.grid.isWithinGrid(x, startY) || this.grid.hasContainerAt(x, startY)) {
-                    return false;
-                }
-            }
-        } else if (deltaY != 0) {
-            int lastY = startY + deltaY * length;
-            if (lastY < -1 || lastY > this.grid.width) {
-                return false;
-            }
-            for (int y = startY, i = 0; i < length; y += startY, i++) {
-                if (!this.grid.isWithinGrid(y, startX) || this.grid.hasContainerAt(y, startX)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     private void placeSubmission() {
@@ -187,8 +147,10 @@ public class AiController implements Controller {
             int y = this.bestAnagram.y + i * this.bestAnagram.deltaY;
             LetterContainer container = containers.get(i);
             if (container.isPermanent()) {
+                System.out.println("selecting " + container.letter + " at " + "(" + container.getX() + "," + container.getY() + ")");
                 this.getControlled().letterSelected(container.getX(), container.getY());
             } else {
+                System.out.println("adding " + container.letter + " at " + "(" + x + "," + y + ")");
                 this.getControlled().letterAdded(container.letter.character, x, y);
             }
         }

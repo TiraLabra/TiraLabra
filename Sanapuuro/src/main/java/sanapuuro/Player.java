@@ -76,6 +76,7 @@ public class Player implements ControllerListener {
     public void successfulSubmission(int score) {
         this.score += score;
         this.letterPool.replacePickedLetters();
+        this.grid.setLettersToGridPermanently(addedContainers);
         this.clearSelectionsAndAdditions();
     }
 
@@ -96,9 +97,7 @@ public class Player implements ControllerListener {
     @Override
     public boolean letterSelected(int x, int y) {
         return this.selectLetterAt(x, y);
-    }
-
-    
+    } 
 
     /**
      * Clears selected and added letters
