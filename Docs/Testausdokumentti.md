@@ -5,3 +5,5 @@ Ohjelmaa on testattu käyttäen JUnitia. Jokaisen luokan koodia on testattu erik
 Pelin toimintaa on myös testattu pelaamalla peliä paljon, useampi koekäyttäjä on testannut pelin toimintaa.
 
 Testit voidaan suorittaa normaalisti, kuten tavallinen ohjelma koodi, valitsee vain oikean testi tiedoston ajettavaksi. Testit sijaitsevat tiedostopolun /Tiralabra/test/Pacman/ takaa. Hakemistossa Pacman on hakemistot pakkausten mukaan ja näiden alta löytyy luokka kohtaiset testit.
+
+<h2> Koodin empiirinen testaus </h2>
