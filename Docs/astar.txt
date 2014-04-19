@@ -1,23 +1,19 @@
 Astar(A, a, b) 
 	//A pelialusta, a lahtö, b maali
 
-	for kaikille solmuille v?V //kaikki alustaan kuuluvat ruudut
-		if ruuduntyyppi != seina
-			lisataan sopiviin ruutuihin joukkoon M
+	lisaaSopivatSolmut(A, B)
 
-	for kaikille solmuille m?M
-		lisataan m joukkoon kayttamattomat K
+	muunnaSopivatListaKaymattomatTaulukoksi(B)
 
-	for kaikille somuille k?K
-		alkuun[k] = 8
-		loppuun[k] = arvioi suora etaisyys k~>b
-		edellinen[k] = NIL
+	alustus(b)
 
 	alkuun[a] = 0
-	
+
+
+	//liiku(maali, alusta)
 	while(solmu b ei ole viela joukossa S)
 		jarjestetaan joukko K // kaymattomat
-		valitaan solmu u?K\S, jolla alkuun[u]+loppuun[u] on pienin
+		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin
 		
 		// poistetaan pienin alkio joukosta K
 		for uusi kaymättamat joukko N // N.lenght = K.lenght-1
@@ -34,4 +30,22 @@ Astar(A, a, b)
 			if alkuun[v] > alkuun[u] + w(u,v)
 				alkuun[v] = alkuun[u] + w(u,v)
 				edellinen[v] = u
-		
+
+
+lisaaSopivatSolmut(A, B)
+	// B on sopivat solmut
+	for kaikille pelialustan solmuille
+		if ruuduntyyppi != seina
+			lisataan sopiviin ruutuihin joukkoon M
+
+
+muunnaSopivatListaKaymattomatTaulukoksi(B)
+	for kaikille sopiville solmuille
+		lisataan m joukkoon kayttamattomat K
+
+
+alustus(b)
+	for kaikille somuille kaymattomille solmuille
+		alkuun[k] = aareton
+		loppuun[k] = arvioi suora etaisyys k~>b
+		edellinen[k] = NIL
