@@ -143,3 +143,4 @@ pollaaPienin()
 		K = N  //O(1)
 </code></pre>
 <h3>Tilavaativuus</h3>
+Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut. 
