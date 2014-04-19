@@ -35,11 +35,8 @@ Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten
 	//A pelialusta, a lahtö, b maali
 
 	lisaaSopivatSolmut(A, B)
-
 	muunnaSopivatListaKaymattomatTaulukoksi(B)
-
 	alustus(b)
-
 	alkuun[a] = 0
 
 
@@ -48,11 +45,7 @@ Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten
 		jarjestetaan joukko K // kaymattomat
 		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin
 		
-		// poistetaan pienin alkio joukosta K
-		for uusi kaymättamat joukko N // N.lenght = K.lenght-1
-			N[i] = K[i+1]
-			K = N
-
+		pollaaPienin()
 		S = S+{u}
 
 		for jokainen suunta // oikea, vasen, alas, ylös
@@ -82,4 +75,9 @@ alustus(b)
 		alkuun[k] = aareton
 		loppuun[k] = arvioi suora etaisyys k~>b
 		edellinen[k] = NIL
+
+pollaaPienin()
+	for uusi kaymättamat joukko N // N.lenght = K.lenght-1
+		N[i] = K[i+1]
+		K = N
 </code></pre>
