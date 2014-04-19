@@ -30,6 +30,7 @@ Järjestäjä luokka on toteutettu toimimaan lomitusjärjestämisen mukaisesti j
 Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten mukaisesti, mutta pakkausten nimen päätteenä on testi (esim. pacman.alusta.test). Jokaisessa pakkauksessa on jokaista pakkauksen luokkaa vastaava testiluokka, jossa on pyritty testaamaan pelin koodiluokkaa mahdollisimman kattavasti.
 
 <h2>Saavutetut aika- ja tilavaativuudet</h2>
+Pelialusta on kaksiulotteinen taulukko, jonka leveys on aina 19 peliruutua ja korkeus on 21 peliruutua. Merkitään pelialustan kaikkia solmuja V:llä.
 
 <pre><code>Astar(A, a, b) 
 	//A pelialusta, a lahtö, b maali
@@ -56,6 +57,8 @@ Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten
 			if alkuun[v] > alkuun[u] + w(u,v)
 				alkuun[v] = alkuun[u] + w(u,v)
 				edellinen[v] = u
+	
+	
 
 
 lisaaSopivatSolmut(A, B)
@@ -81,3 +84,58 @@ pollaaPienin()
 		N[i] = K[i+1]
 		K = N
 </code></pre>
+
+<h3>Aikavaativuus</h3>
+<pre><code>Astar(A, a, b) 
+	//A pelialusta, a lahtö, b maali
+
+	lisaaSopivatSolmut(A, B)  //O(V)
+	muunnaSopivatListaKaymattomatTaulukoksi(B) //O(1)
+	alustus(b)  //O(1)
+	alkuun[a] = 0  //O(1)
+
+
+	//liiku(maali, alusta)
+	while ei olla maalissa
+		jarjestetaan joukko K //O(nlogn)
+		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin  //O(1)
+		
+		pollaaPienin()
+		S = S+{u}
+
+		for jokainen suunta // oikea, vasen, alas, ylös
+			if ruutu ei ole seinä lisataan naapurit listaan
+
+		
+		for jokainen solmu v joka kuuluu naapureihin
+			if alkuun[v] > alkuun[u] + w(u,v)
+				alkuun[v] = alkuun[u] + w(u,v)
+				edellinen[v] = u
+	
+	
+
+
+lisaaSopivatSolmut(A, B)
+	// B on sopivat solmut
+	for kaikille pelialustan solmuille //O(V)
+		if ruuduntyyppi != seina  //O(1)
+			lisataan sopiviin ruutuihin joukkoon M  //O(1)
+
+
+muunnaSopivatListaKaymattomatTaulukoksi(B)
+	for kaikille sopiville solmuille  //O(1)
+		lisataan m joukkoon kayttamattomat K  //O(1)
+
+
+alustus(b)
+	for kaikille somuille kaymattomille solmuille  //O(1)
+		alkuun[k] = aareton  //O(1)
+		loppuun[k] = arvioi suora etaisyys k~>b  //O(1)
+		edellinen[k] = NIL  //O(1)
+
+pollaaPienin()
+	for uusi kaymättamat joukko N // N.lenght = K.lenght-1  //O(1)
+		N[i] = K[i+1]  //O(1)
+		K = N  //O(1)
+</code></pre>
+<h3>Tilavaativuus</h3>
