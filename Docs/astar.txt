@@ -1,0 +1,37 @@
+Astar(A, a, b) 
+	//A pelialusta, a lahtö, b maali
+
+	for kaikille solmuille v?V //kaikki alustaan kuuluvat ruudut
+		if ruuduntyyppi != seina
+			lisataan sopiviin ruutuihin joukkoon M
+
+	for kaikille solmuille m?M
+		lisataan m joukkoon kayttamattomat K
+
+	for kaikille somuille k?K
+		alkuun[k] = 8
+		loppuun[k] = arvioi suora etaisyys k~>b
+		edellinen[k] = NIL
+
+	alkuun[a] = 0
+	
+	while(solmu b ei ole viela joukossa S)
+		jarjestetaan joukko K // kaymattomat
+		valitaan solmu u?K\S, jolla alkuun[u]+loppuun[u] on pienin
+		
+		// poistetaan pienin alkio joukosta K
+		for uusi kaymättamat joukko N // N.lenght = K.lenght-1
+			N[i] = K[i+1]
+			K = N
+
+		S = S?{u}
+
+		for jokainen suunta // oikea, vasen, alas, ylös
+			if ruutu ei ole seinä lisataan naapurit listaan
+
+		
+		for jokainen solmu v joka kuuluu naapureihin
+			if alkuun[v] > alkuun[u] + w(u,v)
+				alkuun[v] = alkuun[u] + w(u,v)
+				edellinen[v] = u
+		
