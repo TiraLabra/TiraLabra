@@ -24,4 +24,4 @@ Suurempi selkeä heilahdus metodin suorituskerralla 38 selittyy sillä, että ha
 Suuri heilahdus kohdassa 127 johtuu siitä, että tässä vaiheessa haamu oli heikkona ja Man liikkui nopeasti kauas haamusta, joten seuraavan liikahduksen selvittämiseen meni huomattavasti aikaan.
 Pääosin kuitenkin haamun liikuttamismetodi toimii nopeudella 0ms tai 1ms. Tämä johtuu siitä, että pääosan pelistä haamu kulkee vain muutaman ruudun Manin perässä, joten lyhin reitti haamun ruudusta Manin ruutuun ei kuluta juurikaan aikaa.
 
-[id]: https://github.com/hhkopper/TiraLabra/blob/master/Docs/red.png
+![alt text](red.png "Red")
