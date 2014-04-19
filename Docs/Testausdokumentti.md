@@ -7,3 +7,5 @@ Pelin toimintaa on myös testattu pelaamalla peliä paljon, useampi koekäyttäj
 Testit voidaan suorittaa normaalisti, kuten tavallinen ohjelma koodi, valitsee vain oikean testi tiedoston ajettavaksi. Testit sijaitsevat tiedostopolun /Tiralabra/test/Pacman/ takaa. Hakemistossa Pacman on hakemistot pakkausten mukaan ja näiden alta löytyy luokka kohtaiset testit.
 
 <h2> Koodin empiirinen testaus </h2>
+
+![alt tag](http://cyan.png)
