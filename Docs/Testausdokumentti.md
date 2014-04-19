@@ -8,4 +8,4 @@ Testit voidaan suorittaa normaalisti, kuten tavallinen ohjelma koodi, valitsee v
 
 <h2> Koodin empiirinen testaus </h2>
 
-[red]: red.png  "Red"
+[red]: /hhkopper/TiraLabra/master/Docs/red.png  "Red"
