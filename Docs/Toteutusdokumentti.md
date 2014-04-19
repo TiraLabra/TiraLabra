@@ -30,3 +30,56 @@ Järjestäjä luokka on toteutettu toimimaan lomitusjärjestämisen mukaisesti j
 Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten mukaisesti, mutta pakkausten nimen päätteenä on testi (esim. pacman.alusta.test). Jokaisessa pakkauksessa on jokaista pakkauksen luokkaa vastaava testiluokka, jossa on pyritty testaamaan pelin koodiluokkaa mahdollisimman kattavasti.
 
 <h2>Saavutetut aika- ja tilavaativuudet</h2>
+
+<pre><code>Astar(A, a, b) 
+	//A pelialusta, a lahtö, b maali
+
+	lisaaSopivatSolmut(A, B)
+
+	muunnaSopivatListaKaymattomatTaulukoksi(B)
+
+	alustus(b)
+
+	alkuun[a] = 0
+
+
+	//liiku(maali, alusta)
+	while(solmu b ei ole viela joukossa S)
+		jarjestetaan joukko K // kaymattomat
+		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin
+		
+		// poistetaan pienin alkio joukosta K
+		for uusi kaymättamat joukko N // N.lenght = K.lenght-1
+			N[i] = K[i+1]
+			K = N
+
+		S = S+{u}
+
+		for jokainen suunta // oikea, vasen, alas, ylös
+			if ruutu ei ole seinä lisataan naapurit listaan
+
+		
+		for jokainen solmu v joka kuuluu naapureihin
+			if alkuun[v] > alkuun[u] + w(u,v)
+				alkuun[v] = alkuun[u] + w(u,v)
+				edellinen[v] = u
+
+
+lisaaSopivatSolmut(A, B)
+	// B on sopivat solmut
+	for kaikille pelialustan solmuille
+		if ruuduntyyppi != seina
+			lisataan sopiviin ruutuihin joukkoon M
+
+
+muunnaSopivatListaKaymattomatTaulukoksi(B)
+	for kaikille sopiville solmuille
+		lisataan m joukkoon kayttamattomat K
+
+
+alustus(b)
+	for kaikille somuille kaymattomille solmuille
+		alkuun[k] = aareton
+		loppuun[k] = arvioi suora etaisyys k~>b
+		edellinen[k] = NIL
+</code></pre>
