@@ -6,15 +6,17 @@
 package sanapuuro;
 
 import java.util.List;
-import sanapuuro.ui.ConsoleView;
 import java.util.Random;
 import java.util.Scanner;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.datastructures.StringHashFuncs;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;
+import sanapuuro.letters.Letter;
+import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.LetterPool;
 import sanapuuro.letters.PlayerLetterPool;
+import sanapuuro.ui.ConsoleView;
 import sanapuuro.ui.HumanConsoleController;
 
 /**
@@ -52,5 +54,11 @@ public class Game {
         TwoPlayerGame game = new TwoPlayerGame(grid, controllerOne, controllerTwo, wordSet);
         game.setGameListener(view);
         game.startGame();
+        
+//        LetterContainer[] containers = new LetterContainer[]{
+//            new LetterContainer(new Letter('a', 0, 0)),
+//            new LetterContainer(new Letter('b', 0, 0)),
+//            new LetterContainer(new Letter('c', 0, 0))};
+//        controllerTwo.tryPermutations(containers, 0);
     }
 }

@@ -17,7 +17,6 @@ import java.util.Random;
  * @author skaipio
  */
 public class GameLetters implements Letters {
-    private final String englishLettersPath = "../../letters/english_letters";
     private final Random random;
     private final List<Letter> letters;
 
