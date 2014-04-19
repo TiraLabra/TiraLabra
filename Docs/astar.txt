@@ -20,7 +20,7 @@ Astar(A, a, b)
 			N[i] = K[i+1]
 			K = N
 
-		S = S?{u}
+		S = S+{u}
 
 		for jokainen suunta // oikea, vasen, alas, ylös
 			if ruutu ei ole seinä lisataan naapurit listaan
