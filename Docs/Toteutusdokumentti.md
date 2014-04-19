@@ -28,3 +28,5 @@ Järjestäjä luokka on toteutettu toimimaan lomitusjärjestämisen mukaisesti j
 
 <h3>Testit</h3>
 Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten mukaisesti, mutta pakkausten nimen päätteenä on testi (esim. pacman.alusta.test). Jokaisessa pakkauksessa on jokaista pakkauksen luokkaa vastaava testiluokka, jossa on pyritty testaamaan pelin koodiluokkaa mahdollisimman kattavasti.
+
+<h2>Saavutetut aika- ja tilavaativuudet</h2>
