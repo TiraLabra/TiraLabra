@@ -176,3 +176,41 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 		mergeSort(keski+1, oikea)
 		merge(vasen, keski, oikea)
 </code></pre>
+
+<h4>Aikavaativuus</h4>
+Merkitään, että järjestettävän taulukon koko on n. Metodin Merge aikavaativuus on O(n). Tiran prujusta tutun todistuksen perusteella (s.377) todetaan, että varsinaisen lomitusjärjestämisen MergeSort:in aikavaativuus on O(nlogn).
+
+<pre><code>merge(vasen, keski, oikea)
+	//solmut taulukko sisältää kaikki järjestettävät
+	//luodaan aputaulukko
+	
+	for vasen to oikea   // for toistetaan n kertaa, O(n)
+		apu[i]=solmut[i]  //O(1)
+	
+	i=vasen  //O(1)
+	j=keski+1  //O(1)
+	k=vasen  //O(1)
+	
+	while vasen reuna ei yli keskikohdan ja keskikohta ei yli oikean reunan  // O(n)
+		if apu[j]: etäisyysarvio > apu[i]: etäisyysarvio  //O(1)
+			solmut[k]=apu[i]  //O(1)
+			i++  //O(1)
+		else
+			solmut[k]=apu[j]  //O(1)
+			j++  //O(1)
+		k++  //O(1)
+	
+	while keski > i  O(n)
+		solmut[k]=apu[i]  //O(1)
+		k++  //O(1)
+		i++  //O(1)
+</code></pre>
+<pre><code>mergeSort(vasen, oikea)
+	if(oikea > vasen)  //O(1)
+		keski=vasen+(oikea-vasen)/2  //O(1)
+		mergeSort(vasen, keski)  //O(1)
+		mergeSort(keski+1, oikea)  //O(1)
+		merge(vasen, keski, oikea)  //O(n)
+</code></pre>
+<h4>Tilavaativuus</h4>
+Lomitusjärjestämisen tilavaativuus on O(n), missä n on järjestettävän taulukon koko.
