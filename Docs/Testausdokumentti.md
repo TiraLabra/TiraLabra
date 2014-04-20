@@ -44,3 +44,5 @@ Magenta liikkuu siten, että se arpoo alussa itselleen kohteen johon se pyrkii. 
 
 Kaaviosta näkee selkeästi, että kun haamu arpoo itselleen uuden maalin ja liikahtaa ensimmäisen kerran aikaa kuluu eniten reitin selvittämiseen. Tämän jälkeen aika vähenee tasaisesti mitä lähemmäksi haamu pääsee kohdettaan. Aika on noin 0ms tai 1ms aivan maalin vieressä tai kun haamu saavuttaa maalin. Jos uusi maali, jonka haamu arpoo itselleen, on lähellä, ei ajassa näy niin suurta piikkiä.
 
+<h4>Yleiset huomiot</h4>
+Kaaviosta pystyy selkeästi havaitsemaan (varsinkin Magentan kaaviosta), että hakualgoritmi menee funktion f(n) = n+logn mukaisesti, kun etäisyys maalin ja lähdön välillä kasvaa.
