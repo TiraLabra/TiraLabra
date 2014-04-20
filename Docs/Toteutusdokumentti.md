@@ -7,7 +7,6 @@ Ohjelma muodostuu kuudesta paketista. Paketit ovat nimetty selkeästi, jotta on 
 
 <h4>pacman</h4>
 Paketti pacman sisältää vain Pelin aloittavan Main luokan. 
-pacman.alusta
 pacman.alusta paketti sisältää pelialustaan olennaisesti liittyvät luokat; Peliruudun ja Pelialustan. Pelialusta on yksinkertaisuudessaan kaksiulotteinen taulukko, joka muodostuu peliruuduista. Jokainen peliruutu tietää muun muassa omat koordinaattinsa, tiedon siitä onko ruudussa haamu tai Man, pistepallo tai ekstrapallo ja tiedon siitä mitä tyyppiä ruutu on (seinä, käytävä). 
 Parhaiden reittien selvittämistä varten ruutu tietää myös etäisyysarvion maaliin ja lähtöruutuun sekä sen ruudun, josta ruutuun on siirrytty lyhimmässä reitissä. Pelialusta luokan tarkoitus on luoda pelialusta ja peliruudun tarkoitus on kertoa pelille tietoja itsestään. pacman.alusta paketti sisältää myös tekstitiedoston, johon on kirjattu pelialusta numeroin.
 
