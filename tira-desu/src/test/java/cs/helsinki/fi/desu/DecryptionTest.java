@@ -69,9 +69,6 @@ public class DecryptionTest {
     @Test
     public void testDecryptSingleDES() {
         byte[] test = null;
-        secKey = keygen.generateKey();
-        byte[] testKey = secKey.getEncoded();
-        encryptedTest = new Encryption().encryptSingleDES("test string".getBytes(), testKey);
         
         try {
             keygen = KeyGenerator.getInstance("DES");
@@ -84,6 +81,10 @@ public class DecryptionTest {
         } catch (IllegalBlockSizeException ibse) { fail("Illegal Block Size");
         } catch (BadPaddingException bpe)        { fail("Bad padding");
         }
+                
+        secKey = keygen.generateKey();
+        byte[] testKey = secKey.getEncoded();
+        encryptedTest = new Encryption().encryptSingleDES("test string".getBytes(), testKey);
         
         assertTrue(Arrays.equals("test string".getBytes(), test));
     }
@@ -101,11 +102,21 @@ public class DecryptionTest {
      */
     @Test
     public void testDeletePadding() {
-        byte[] test = {2, 7, 4, 8, 5, -128, 0, 0, 0, 0};
-        byte[] result = {2, 7, 4, 8, 5};
+        byte[] test = {2, 7, 4, 8, 4, 4, 4, 4};
+        byte[] result = {2, 7, 4, 8};
         
         test = dec.deletePadding(test);
         assertTrue(Arrays.equals(test, result));
     }
     
+    /**
+     * Test of deletePadding method, of class Decryption.
+     */
+    @Test
+    public void testDeletePaddingReturnsNullIfFullyPadded() {
+        byte[] test = {8,8,8,8,8,8,8,8};
+        test = dec.deletePadding(test);
+        byte[] result = {};
+        assertTrue(Arrays.equals(result, test));
+    }
 }
