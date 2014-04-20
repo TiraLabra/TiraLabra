@@ -217,3 +217,6 @@ Lomitusjärjestämisen tilavaativuus on O(n), missä n on järjestettävän taul
 
 <h2>Puutteet & Parannus ehdotukset</h2>
 Peliä pystyy vielä kehittämään lisäämällä toiminnallisuuden, että sivuseinistä, samasta kohdasta, jossa alkuperäisessä pelissä, pystyisi pääsemään seinän läpi toiselle puolelle pelialustaa.
+
+<h2>Lähteet</h2>
+1. http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
