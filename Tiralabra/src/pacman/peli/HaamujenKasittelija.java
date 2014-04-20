@@ -98,10 +98,6 @@ public class HaamujenKasittelija {
     public void heikennaHaamu(Haamu haamu) {
         haamu.setTyyppi("heikko");
         haamu.setHeikkous(30);
-        if (haamu.getNimi().equals("cyan")) {
-            System.out.println("heikennetään");
-        }
-
     }
 
     /**
@@ -115,10 +111,6 @@ public class HaamujenKasittelija {
             if (haamu.getHeikkous() == 0) {
                 haamu.setTyyppi("vahva");
                 peli.setHeikko(false);
-                if (haamu.getNimi().equals("cyan")) {
-                    System.out.println("vahvaksi");
-                }
-
             } else {
                 haamu.vahennaHeikkous();
             }
@@ -132,12 +124,7 @@ public class HaamujenKasittelija {
 
         liikutaHaamu(red);
         liikutaHaamu(green);
-        
-        long aikaAlussa = System.currentTimeMillis();
-        liikutaHaamu(cyan);
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");   
-        
+        liikutaHaamu(cyan);      
         liikutaHaamu(magenta);       
 
         tarkistaHaamujenRuudut();
@@ -235,7 +222,6 @@ public class HaamujenKasittelija {
             while (magenta.getX() == magentaMaali.getX() && magenta.getY() == magentaMaali.getY()) {
                 magentaMaali = magenta.selvitaMaaliMagenta(arpoja);
             }
-            System.out.println("uusi");
         }
 
         haku.astar(peli.getAlusta(), peli.getAlusta().getPeliruutu(magenta.getX(), magenta.getY()), magentaMaali);

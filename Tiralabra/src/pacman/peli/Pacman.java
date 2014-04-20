@@ -115,7 +115,7 @@ public class Pacman extends Timer implements ActionListener {
     public Man getMan() {
         return this.man;
     }
-    
+
     public void setMan(Man man) {
         this.man = man;
     }
@@ -178,7 +178,8 @@ public class Pacman extends Timer implements ActionListener {
 
     /**
      * Metodi katsoo kumpi hahmoista kuolee kun ne päätyvät samaan ruutuun.
-     * @param haamu 
+     *
+     * @param haamu
      */
     private void tarkistaKumpiKuolee(Haamu haamu) {
         if (haamu.olenkoSamassaRuudussaManinKanssa(man)) {
@@ -186,10 +187,10 @@ public class Pacman extends Timer implements ActionListener {
                 haamu.palaaAlkuun();
                 haamu.setTyyppi("vahva");
                 laskuri.kasvata(80);
-                if(haamu.getNimi().equals("cyan")) {
-                   System.out.println("vahvaksi"); 
+                if (haamu.getNimi().equals("cyan")) {
+                    System.out.println("vahvaksi");
                 }
-                
+
             } else {
                 man.palaaAlkuun();
                 man.vahennaElama();
@@ -207,10 +208,18 @@ public class Pacman extends Timer implements ActionListener {
     public void asetaSeina() {
         for (int y = 8; y < 11; y++) {
             for (int x = 8; x < 11; x++) {
-                if(tarkistaOnkoHaamua(kasittelija.getRed(), x, y)) return;
-                if(tarkistaOnkoHaamua(kasittelija.getGreen(), x, y)) return;
-                if(tarkistaOnkoHaamua(kasittelija.getCyan(), x, y)) return;
-                if(tarkistaOnkoHaamua(kasittelija.getMagenta(), x, y)) return;
+                if (tarkistaOnkoHaamua(kasittelija.getRed(), x, y)) {
+                    return;
+                }
+                if (tarkistaOnkoHaamua(kasittelija.getGreen(), x, y)) {
+                    return;
+                }
+                if (tarkistaOnkoHaamua(kasittelija.getCyan(), x, y)) {
+                    return;
+                }
+                if (tarkistaOnkoHaamua(kasittelija.getMagenta(), x, y)) {
+                    return;
+                }
                 if (alusta.getPeliruutu(x, y).getOnkoMan()) {
                     alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
                     return;
@@ -221,7 +230,7 @@ public class Pacman extends Timer implements ActionListener {
         alusta.getPeliruutu(9, 8).setRuudunTyyppi(0);
     }
 
-    private boolean tarkistaOnkoHaamua(Haamu haamu,int x, int y) {
+    private boolean tarkistaOnkoHaamua(Haamu haamu, int x, int y) {
         if (alusta.getPeliruutu(x, y).equals(alusta.getPeliruutu(haamu.getX(), haamu.getY()))) {
             alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
             return true;
@@ -335,6 +344,8 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        long aikaAlussa = System.currentTimeMillis();
+
         kasittelija.liikutaHaamut();
         kuoleekoHaamuTaiMan();
         asetaHeikkous();
@@ -350,7 +361,8 @@ public class Pacman extends Timer implements ActionListener {
         setDelay(300);
         paataPeli();
         
-
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
     /**
