@@ -46,3 +46,6 @@ Kaaviosta näkee selkeästi, että kun haamu arpoo itselleen uuden maalin ja lii
 
 <h4>Yleiset huomiot</h4>
 Kaaviosta pystyy selkeästi havaitsemaan (varsinkin Magentan kaaviosta), että hakualgoritmi menee funktion f(n) = n+logn mukaisesti, kun etäisyys maalin ja lähdön välillä kasvaa.
+
+<h2>Puutteet & Parannus ehdotukset</h2>
+Peliä pystyy vielä kehittämään lisäämällä toiminnallisuuden, että sivuseinistä, samasta kohdasta, jossa alkuperäisessä pelissä, pystyisi pääsemään seinän läpi toiselle puolelle pelialustaa.
