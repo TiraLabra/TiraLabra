@@ -156,7 +156,7 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 	k=vasen
 	
 	while vasen reuna ei yli keskikohdan ja keskikohta ei yli oikean reunan
-		if apu[i]:n etäisyysarvio '<'  apu[j]: etäisyysarvio
+		if apu[j]: etäisyysarvio > apu[i]: etäisyysarvio
 			solmut[k]=apu[i]
 			i++
 		else
@@ -164,7 +164,7 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 			j++
 		k++
 	
-	while i < keski
+	while keski > i
 		solmut[k]=apu[i]
 		k++
 		i++
