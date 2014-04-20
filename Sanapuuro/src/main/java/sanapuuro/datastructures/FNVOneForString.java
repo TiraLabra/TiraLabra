@@ -6,33 +6,32 @@
 
 package sanapuuro.datastructures;
 
-import java.math.BigInteger;
-
 /**
- *
+ * A hash function that is based on the FNV-1 algorithm.
  * @author skaipio
  */
-public class StringHashFuncs implements HashFuncs<String> {
+public class FNVOneForString implements HashFuncs<String> {
+    //http://www.isthe.com/chongo/tech/comp/fnv/index.html   
+    private final int fnvOffsetBasis = 16777619;
+    private final int s = 4;
+    private final int b = 0b00110111;
+    // http://www.isthe.com/chongo/tech/comp/fnv/index.html#fnv-prime
+    private final int fnvPrime = (int)Math.pow(256, (5+(int)Math.pow(2,s))/12)+(int)Math.pow(2,8)+b;
     /**
      * Calculates normal hash value for a string.
      * @param s String to calculate a hash for.
+     * @param m Modulo i.e. max hash size.
      * @return The hash value of string s.
      */
     @Override
     public int getNormalHash(String s, int m){
-        BigInteger hash = new BigInteger("0");
+        int hash = fnvOffsetBasis;
         for (int i = 0; i < s.length(); i++){
             int charVal = s.charAt(i);
-            BigInteger ascii = new BigInteger(charVal + "");
-            //System.out.println("ascii = " + ascii);
-            BigInteger multiplier = new BigInteger("128");           
-            multiplier = multiplier.pow(i);
-            //System.out.println("multiplier = " + multiplier);
-            hash = hash.add(ascii.multiply(multiplier));
-            //System.out.println("hash = " + hash);
+            hash = hash ^ charVal;
+            hash = (hash * fnvPrime);
         }
-        BigInteger remainder = hash.mod(new BigInteger(m+""));
-        return remainder.intValue();
+        return Math.abs(hash % m);
     }
     
     /**

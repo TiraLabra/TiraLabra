@@ -63,8 +63,7 @@ public class AiControllerTest {
         List<LetterContainer> submission = this.player.getSubmission();
         assertEquals("hipsu", Util.stringFromLetterContainers(submission));      
     }
-
-
+    
     public static class LetterPoolStub implements LetterPool {
 
         private final LetterContainer[] containers = new LetterContainer[8];

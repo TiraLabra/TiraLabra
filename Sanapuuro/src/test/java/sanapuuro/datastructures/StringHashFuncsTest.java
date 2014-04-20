@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class StringHashFuncsTest {
 
-    private StringHashFuncs func = new StringHashFuncs();
+    private HashFuncWithBigIntsForString func = new HashFuncWithBigIntsForString();
 
     public StringHashFuncsTest() {
     }

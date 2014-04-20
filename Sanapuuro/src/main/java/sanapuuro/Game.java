@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import sanapuuro.datastructures.MyHashSet;
-import sanapuuro.datastructures.StringHashFuncs;
+import sanapuuro.datastructures.FNVOneForString;
+import sanapuuro.datastructures.HashFuncWithBigIntsForString;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;
 import sanapuuro.letters.Letter;
@@ -33,7 +34,7 @@ public class Game {
         Random rnd = new Random();
 
         List<String> words = fileIO.readInWordsFromFile("words/english_words");
-        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new StringHashFuncs());
+        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new FNVOneForString());
         GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
 
         Scanner scanner = new Scanner(System.in);
