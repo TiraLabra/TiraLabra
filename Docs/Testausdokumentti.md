@@ -26,4 +26,16 @@ Suurempi selkeä heilahdus metodin suorituskerralla 38 selittyy sillä, että ha
 Suuri heilahdus kohdassa 127 johtuu siitä, että tässä vaiheessa haamu oli heikkona ja Man liikkui nopeasti kauas haamusta, joten seuraavan liikahduksen selvittämiseen meni huomattavasti aikaan.
 Pääosin kuitenkin haamun liikuttamismetodi toimii nopeudella 0ms tai 1ms. Tämä johtuu siitä, että pääosan pelistä haamu kulkee vain muutaman ruudun Manin perässä, joten lyhin reitti haamun ruudusta Manin ruutuun ei kuluta juurikaan aikaa.
 
+<h4>Cyan</h4>
+![alt text](cyan.png "Cyan")
+
+Cyan liikkuu siten, että sen kohteena on joko muutama ruutu Manin edellä oleva ruutu tai, jos tämä ruutu ei ole mahdollinen kohteena on Man itse.
+
+Cyanin liikettä kuuvavasta kaaviosta voi huomata sen, että alussa aikaa haamun liikuttamiseen kuluu enemmän. Tämä johtunee siitä, että haamu ei ole saanut Mania tässä vaiheessa vielä kiinni, joten on mahdollista, että Man voi niin sanotusti huijata haamua, siten että haamu säntäilee ympäriinsä yrittäen ennakoida Manin liikkeitä.
+
+Myöhemmin, kun haamu on saanut Manin kiinni, on liike samantyyppistä Redin liikkeen kanssa. Tämä johtuu siitä, että Cyan samalla lailla ollessaan heikko, muuttaa suuntaansa kuten Red; alkuperäisen kohteensa peilikuvaksi vastakkaiselle puolelle alustaa. Jos haamun ollessa heikkona, haamu on siinä ruudussa, jonka kuuluisi olla sen kohde, kohde on tällöin Manin ruutu. 
+
+Erona kuitenkin Redin liikkumisen kaavioon on se, että yleisemmin aikaa kuluu noin 1ms, kun taas Red oli niin nopea, että yleensä kului aikaa vain 0ms. Tämä ero johtuu todennäköisesti siitä, että kohde ruutu on Cyanilla aina hieman kauempani kuin Redillä haamujen kulkiessa Manin perässä. 
+
+
 
