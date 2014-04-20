@@ -214,3 +214,6 @@ Merkitään, että järjestettävän taulukon koko on n. Metodin Merge aikavaati
 </code></pre>
 <h4>Tilavaativuus</h4>
 Lomitusjärjestämisen tilavaativuus on O(n), missä n on järjestettävän taulukon koko.
+
+<h2>Puutteet & Parannus ehdotukset</h2>
+Peliä pystyy vielä kehittämään lisäämällä toiminnallisuuden, että sivuseinistä, samasta kohdasta, jossa alkuperäisessä pelissä, pystyisi pääsemään seinän läpi toiselle puolelle pelialustaa.
