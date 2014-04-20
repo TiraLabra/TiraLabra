@@ -168,8 +168,8 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 		solmut[k]=apu[i]
 		k++
 		i++
-
-mergeSort(vasen, oikea)
+</code></pre>
+<pre><code>mergeSort(vasen, oikea)
 	if(vasen < oikea)
 		keski=vasen+(oikea-vasen)/2
 		mergeSort(vasen, keski)
