@@ -144,5 +144,35 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 
 <h3>Järjestäminen</h3>
 
-<pre><code>merge()
+<pre><code>merge(vasen, keski, oikea)
+	// solmut taulukko sisältää kaikki järjestettävät
+	//luodaan aputaulukko
+
+	for vasen to oikea
+		apu[i]=solmut[i]
+
+	i=vasen
+	j=keski+1
+	k=vasen
+
+	while vasen reuna ei ylitä keskikohtaa ja keskikohta ei ylitä oikeaa reunaa
+		if apu[i]:n etäisyysarvio <= apu[j]:n etäisyysarvio
+			solmut[k]=apu[i];
+			i++
+		else
+			solmut[k]=apu[j]
+			j++
+		k++
+
+	while i<keski
+		solmut[k]=apu[i]
+		k++
+		i++
+
+mergeSort(vasen, oikea)
+	if(vasen < oikea)
+		keski=vasen+(oikea-vasen)/2
+		mergeSort(vasen, keski)
+		mergeSort(keski+1, oikea)
+		merge(vasen, keski, oikea)
 </code></pre>
