@@ -1,12 +1,14 @@
-<h1>Määrittelydokumentti</h1>
+<h1>Mï¿½ï¿½rittelydokumentti</h1>
 
-Harjoitustyöni tarkoituksena on jatkokehittää ohjelmoinnin harjoitustyönä tekemääni Pacman-peliä. Tämän hetkisessä versiossa haamut liikkuvat käytäviä pitkin satunnaisesti minne sattuu, aion muokata peliä siten, että jokaisella haamulla on oma tavoitteensa; eli ruutu johon ne jokaisella vuorollaan aina pyrkivät. Jokaisella haamulla vaihtuu tavoite ruutu, joka liikkumiskerralla, sillä ruutu riippuu Pacmanin sijainnista alustalla. Tämän takia paras reitti haluttuun ruutuun täytyy laskea ennen jokaista liikkumiskertaa. 
+Harjoitustyï¿½ni tarkoituksena on jatkokehittï¿½ï¿½ ohjelmoinnin harjoitustyï¿½nï¿½ tekemï¿½ï¿½ni Pacman-peliï¿½. Tï¿½mï¿½n hetkisessï¿½ versiossa haamut liikkuvat kï¿½ytï¿½viï¿½ pitkin satunnaisesti minne sattuu, aion muokata peliï¿½ siten, ettï¿½ jokaisella haamulla on oma tavoitteensa; eli ruutu johon ne jokaisella vuorollaan aina pyrkivï¿½t. Jokaisella haamulla vaihtuu tavoite ruutu, joka liikkumiskerralla, sillï¿½ ruutu riippuu Pacmanin sijainnista alustalla. Tï¿½mï¿½n takia paras reitti haluttuun ruutuun tï¿½ytyy laskea ennen jokaista liikkumiskertaa. 
 
-Aion parhaimman mahdollisimman reitin selvittämiseen käyttää A*-algoritmia, koska algoritmi löytää varmasti lyhimmän reitin haluttuun ruutuun tehokkaasti.
+Aion parhaimman mahdollisimman reitin selvittï¿½miseen kï¿½yttï¿½ï¿½ A*-algoritmia, koska algoritmi lï¿½ytï¿½ï¿½ varmasti lyhimmï¿½n reitin haluttuun ruutuun tehokkaasti.
 
-Käyttäjä ei anna ohjelmalle syötteitä, mutta ohjelma saa pelialustan tekstitiedostona, jonka perusteella pelialusta luodaan. Tekstitiedostossa pelialustan eri ominaisuudet on merkitty eri tunnuksin, mitkä koodi sitten tunnistaa ja asettaa ominaisuudet alustalle.
+Teen omina tietorakenteina myÃ¶s ArrayList:ia simuloivat Listan ja hakualgoritmi kÃ¤yttÃ¤Ã¤ apunaan lomitusjÃ¤rjestÃ¤mistÃ¤.
 
-A*-algoritmin aikavaativuuden tavoite on tässä ohjelmassa O(|E|+|V|log|V|) ja tilavaativuuden tavoite on O(n^2).
+KÃ¤yttÃ¤jÃ¤ ei anna ohjelmalle syÃ¶tteitÃ¤, mutta ohjelma saa pelialustan tekstitiedostona, jonka perusteella pelialusta luodaan. Tekstitiedostossa pelialustan eri ominaisuudet on merkitty eri tunnuksin, mitkÃ¤ koodi sitten tunnistaa ja asettaa ominaisuudet alustalle.
 
-Lähteet:
+A*-algoritmin aikavaativuuden tavoite on tÃ¤ssÃ¤ ohjelmassa O(|E|+|V|log|V|) ja tilavaativuuden tavoite on O(n^2).
+
+LÃ¤hteet:
 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
