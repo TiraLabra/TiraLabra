@@ -32,6 +32,8 @@ Testit muodostuvat pakkauksista, jotka on nimetty samaan tapaan pelin pakkausten
 <h2>Saavutetut aika- ja tilavaativuudet</h2>
 Pelialusta on kaksiulotteinen taulukko, jonka leveys on aina 19 peliruutua ja korkeus on 21 peliruutua. Merkitään pelialustan kaikkia solmuja V:llä.
 
+<h3>Hakualgoritmi</h3>
+
 <pre><code>Astar(A, a, b) 
 	//A pelialusta, a lahtö, b maali
 
@@ -85,12 +87,10 @@ pollaaPienin()
 		K = N
 </code></pre>
 
-<h3>Aikavaativuus</h3>
+<h4>Aikavaativuus</h4>
 Astar algoritmin reitin selvittämisen aikavaativuus on O(n+nlogn).
 
-<pre><code>Astar(A, a, b) 
-	//A pelialusta, a lahtö, b maali
-
+<pre><code>Astar(A, a, b)
 	lisaaSopivatSolmut(A, B)  //O(n)
 	muunnaSopivatListaKaymattomatTaulukoksi(B) //O(n)
 	alustus(b)  //O(n)
@@ -105,7 +105,7 @@ Astar algoritmin reitin selvittämisen aikavaativuus on O(n+nlogn).
 		valitaan solmu u kuuluu joukkoon K\S, jolla alkuun[u]+loppuun[u] on pienin  //O(1)
 		
 		pollaaPienin() //O(n)
-		S = S+{u}
+		S = S+{u}  //O(1)
 
 		for jokainen suunta //O(1)
 			if ruutu ei ole seinä lisataan naapurit listaan //O(1)
@@ -115,12 +115,9 @@ Astar algoritmin reitin selvittämisen aikavaativuus on O(n+nlogn).
 			if alkuun[v] > alkuun[u] + w(u,v)  //O(1)
 				alkuun[v] = alkuun[u] + w(u,v)  //O(1)
 				edellinen[v] = u  //O(1)
-	
-	
 
 
 lisaaSopivatSolmut(A, B)
-	// B on sopivat solmut
 	for kaikille pelialustan solmuille //O(n)
 		if ruuduntyyppi != seina  //O(1)
 			lisataan sopiviin ruutuihin joukkoon M  //O(1)
@@ -142,5 +139,10 @@ pollaaPienin()
 		N[i] = K[i+1]  //O(1)
 		K = N  //O(1)
 </code></pre>
-<h3>Tilavaativuus</h3>
+<h4>Tilavaativuus</h4>
 Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut. 
+
+<h3>Järjestäminen</h3>
+
+<pre><code>merge()
+</code></pre>
