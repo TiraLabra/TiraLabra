@@ -37,5 +37,10 @@ Myöhemmin, kun haamu on saanut Manin kiinni, on liike samantyyppistä Redin lii
 
 Erona kuitenkin Redin liikkumisen kaavioon on se, että yleisemmin aikaa kuluu noin 1ms, kun taas Red oli niin nopea, että yleensä kului aikaa vain 0ms. Tämä ero johtuu todennäköisesti siitä, että kohde ruutu on Cyanilla aina hieman kauempani kuin Redillä haamujen kulkiessa Manin perässä. 
 
+<h4>Magenta</h4>
+![alt text](magenta.png "Magenta")
 
+Magenta liikkuu siten, että se arpoo alussa itselleen kohteen johon se pyrkii. Kun haamu saavuttaa maalinsa, se arpoo itselleen uudelleen maalin. Tällä tavoin haamu jatkaa koko pelin ajan, Magenta ei liiku erilailla ollessaan heikko.
+
+Kaaviosta näkee selkeästi, että kun haamu arpoo itselleen uuden maalin ja liikahtaa ensimmäisen kerran aikaa kuluu eniten reitin selvittämiseen. Tämän jälkeen aika vähenee tasaisesti mitä lähemmäksi haamu pääsee kohdettaan. Aika on noin 0ms tai 1ms aivan maalin vieressä tai kun haamu saavuttaa maalin. Jos uusi maali, jonka haamu arpoo itselleen, on lähellä, ei ajassa näy niin suurta piikkiä.
 
