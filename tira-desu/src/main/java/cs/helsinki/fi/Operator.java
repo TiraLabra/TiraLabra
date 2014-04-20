@@ -67,7 +67,7 @@ public class Operator {
         if (mode.equals("des"))
             decrypted = dec.decryptSingleDES(this.readFile(input), this.readFile(key));
         else if (mode.equals("3des"))
-            decrypted = enc.encryptTripleDES(this.readFile(input), null);
+            decrypted = dec.decryptTripleDES(this.readFile(input), null);
         else {
             System.out.println("Error: Bad arguments\n  Unrecognized mode.");
             return;
@@ -83,16 +83,17 @@ public class Operator {
      */
     public byte[] readFile(File file) {
         byte[] data = null;
-        Scanner scanner = null;
         
         try {
-            scanner = new Scanner(input);
-            data = scanner.next().getBytes();
+            String contents = "";
+            Scanner scanner = new Scanner(input);
+            while (scanner.hasNextLine()) {
+                contents += scanner.nextLine();
+            }
+            data = contents.getBytes();
         } catch (FileNotFoundException fnfe) {
             System.out.println("Error: No such file");
             return data;
-        } finally {
-            scanner.close();
         }
         return data;
     }
@@ -124,19 +125,14 @@ public class Operator {
      * @param file file to write data to
      */
     public void writeFile(byte[] data, File file) {
-        FileWriter fw = null;
         try {
             if (!file.exists())
                 file.createNewFile();
-            fw = new FileWriter(file);
+            FileWriter fw = new FileWriter(file);
             fw.write(new String(data, "UTF-8"));
         } catch (IOException ioe) {
             System.out.println("ERROR: ");
             ioe.printStackTrace();
-        } finally {
-            try {
-                fw.close();
-            } catch (IOException e) {}
         }
     }
 }
