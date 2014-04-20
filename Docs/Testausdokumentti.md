@@ -11,7 +11,7 @@ Testit voidaan suorittaa normaalisti, kuten tavallinen ohjelma koodi, valitsee v
 <h3>Suorituskykytestaus</h3>
 Suorituskyky testauksessa on tarkasteltu kuinka kauan tärkeimpien osa-alueiden, kuten hakualgoritmin, järjestämisen ja pelin kokonaisvaltainen suorittaminen, kuluttaa aikaa.
 
-<h4>Haamut</h4>
+<h3>Haamut</h3>
 Ensimmäiseksi tarkasteltavana on hakualgoritmin toiminta eri haamujen liikuttamisessa. Haamuista Red, Magenta ja Cyan käyttävät liikkumiseensa hakualgoritmia.
 
 <h4>Red</h4>
@@ -47,3 +47,6 @@ Kaaviosta näkee selkeästi, että kun haamu arpoo itselleen uuden maalin ja lii
 <h4>Yleiset huomiot</h4>
 Kaaviosta pystyy selkeästi havaitsemaan (varsinkin Magentan kaaviosta), että hakualgoritmi menee funktion f(n) = n+logn mukaisesti, kun etäisyys maalin ja lähdön välillä kasvaa.
 
+<h3>Peli</h3>
+Mielenkiinnosta tutkin myös pelin kokonaisvaltaiseen suoritukseen kuluvaa aikaa. ActionPerformed on metodi, joka pyörittää pelin toiminta logiikkaa.
+![alt text](action.png "Action")
