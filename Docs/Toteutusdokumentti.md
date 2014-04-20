@@ -169,3 +169,10 @@ Tilavaativuus on O(V) eli kaksiulotteisen taulukon kaikki ruudut.
 		k++
 		i++
 </code></pre>
+<pre><code>mergeSort(vasen, oikea)
+	if(oikea > vasen)
+		keski=vasen+(oikea-vasen)/2
+		mergeSort(vasen, keski)
+		mergeSort(keski+1, oikea)
+		merge(vasen, keski, oikea)
+</code></pre>
