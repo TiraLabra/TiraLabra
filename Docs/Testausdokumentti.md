@@ -49,4 +49,7 @@ Kaaviosta pystyy selkeästi havaitsemaan (varsinkin Magentan kaaviosta), että h
 
 <h3>Peli</h3>
 Mielenkiinnosta tutkin myös pelin kokonaisvaltaiseen suoritukseen kuluvaa aikaa. ActionPerformed on metodi, joka pyörittää pelin toiminta logiikkaa.
+
 ![alt text](action.png "Action")
+
+Alussa kuluu eniten aikaa, koska haamuille selvitettävät matkat ovat tässä vaiheessa ainakin Redillä ja Cyanilla pisimmät. Huomattavat piikit pelin suorituksessa ovat kohdat, joissa esimerkiksi, joillekin haamuille selvitetään uusia pidempiä reittejä, hedelmä arvotaan pelialustalle tai, kun haamut asetetaan heikoiksi.
