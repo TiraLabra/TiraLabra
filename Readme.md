@@ -1,25 +1,17 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+## Sanapuuro
 
+### Yleiskuva
 
+Tämä projekti on jatkoa Sanapuuro-pelille, jonka tein JavaLabraa varten. Tämä versio on karumpi, ts. siinä ei ole graafista käyttöliittymää, vaan interaktio hoidetaan terminaalissa. Yksinpeliä ei enää ole vaan se on korvattu kaksinpelillä. Toistaiseksi peliä pelataan lokaalisti tietokonetta vastaan.
 
+#### Toteutuksesta
 
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
+TiraLabran aiheena on tekoälyn toteutus toiseksi pelaajaksi kaksinpelissä. Tekoälyä vaatii tietorakenteen, jonka avulla sanojen haku hoituu nopeasti. Toteutettavaksi tietorakenteeksi on valittu hajautustaulukko. Hajautustaulukolle toteutetaan hajautusfunktio, joka laskee hajautusarvon String-objekteille. Toteutettava hajautusfunktion on yksinkertainen. Jokaisen kirjaimen ascii-arvo kerrotaan numerolla, joka on jokin vakio potenssiin kirjaimen paikkaindeksi merkkijonossa, ja lopuksi tulot summataan. Tulosta otetaan vielä jakojäännös, joka jää kun jaetaan taulukon koolla. Taulukon koko on myös valittava hyvin. Suositus on, että m on alkuluku, joka ei ole lähellä 2:n potenssia.
 
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
+Lähde: http://www.cs.helsinki.fi/u/floreen/tira2014/tira.pdf
 
 * * *
 
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
+### Käyttöohjeet
 
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
-
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
-
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
-
+Pelissä on kursori, jota voi liikutella 'w', 'a', 's' ja 'd' komentojen avulla. Kun halutaan syöttää sana kursorin osoittamasta kohdasta alkaen, annetaan komento 'q'. Peli pyytää sen jälkeen suunnan ja syötettävät kirjaimet. Pelaaja voi skipata vuoronsa syöttämällä tyhjän merkkijonon. Pelaajan pisteet sekä käytettävissä olevat kirjaimet ovat näkyvissä konsolitulosteessa. Peliä on paljon mielekkäämpää kokeilla terminaalissa, kuin esim. NetBeansissa. Ajettava jar löytyy [täältä](http://www.cs.helsinki.fi/u/skaipio/jars/Sanapuuro-1.0-SNAPSHOT.jar). Poistumiseen pelistä ei ole erillistä komentoa, vaan sen voi pysäyttää terminaalissa komennolla Ctrl+C.
