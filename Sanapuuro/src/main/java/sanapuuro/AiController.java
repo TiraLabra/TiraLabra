@@ -60,7 +60,7 @@ public class AiController implements Controller {
      * @param k The index (level) to start permuting from.
      * @param freeCells The number of free cells to use for letters from permutation.
      */
-    public void tryPermutationsAt(int x, int y, int deltaX, int deltaY, LetterContainer[] containers, int k, int freeCells) {
+    private void tryPermutationsAt(int x, int y, int deltaX, int deltaY, LetterContainer[] containers, int k, int freeCells) {
         // Because we try only the first n = (freeCells on row/column from (x,y))
         // letters of the permutation, we don't need to permute the tail indices
         // i.e. indices that are greater than or equal to k when k==freeCells.
@@ -111,7 +111,7 @@ public class AiController implements Controller {
      * @param deltaY The vertical direction of the word.
      * @param permutation The given permutation to take letters from.
      */
-    public void fitPermutationAt(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
+    private void fitPermutationAt(int x, int y, int deltaX, int deltaY, LetterContainer[] permutation) {
         // Get containers that fit to the given coordinates and direction.
         List<LetterContainer> containers = this.getFullFit(x, y, deltaX, deltaY, permutation);
         
@@ -129,7 +129,7 @@ public class AiController implements Controller {
         if (betterWord != null) this.bestWord = betterWord;
     }
     
-    public Word getBetterValidWord(int x, int y, int deltaX, int deltaY, Word bestWord,
+    private Word getBetterValidWord(int x, int y, int deltaX, int deltaY, Word bestWord,
             List<LetterContainer> containers, int scoreOfContainers){
         // Number of containers that were added from permutation containers.
         int lettersAdded = this.getCountOfLettersAdded(containers);
@@ -169,7 +169,7 @@ public class AiController implements Controller {
      * @param permutation The permutation to use containers from.
      * @return A list of containers that has containers from the grid if there were any and from the permutation.
      */
-    public List<LetterContainer> getFullFit(int startX, int startY, int deltaX, int deltaY, LetterContainer[] permutation) {
+    private List<LetterContainer> getFullFit(int startX, int startY, int deltaX, int deltaY, LetterContainer[] permutation) {
         int i = 0, j = 0;
         List<LetterContainer> containers = new ArrayList<>(this.grid.width);
         while (true) {
@@ -194,7 +194,7 @@ public class AiController implements Controller {
      * @param containers Containers to get score from.
      * @return The total score of the given containers.
      */
-    public int getScoreFromContainers(List<LetterContainer> containers) {
+    private int getScoreFromContainers(List<LetterContainer> containers) {
         int score = 0;
         for (LetterContainer letterContainer : containers) {
             score += letterContainer.letter.score;
@@ -206,7 +206,7 @@ public class AiController implements Controller {
      * @param containers Containers to use for calculating added letters.
      * @return The count of letters to be added in given containers.
      */
-    public int getCountOfLettersAdded(List<LetterContainer> containers) {
+    private int getCountOfLettersAdded(List<LetterContainer> containers) {
         int lettersAdded = 0;
         for (LetterContainer letterContainer : containers) {
             if (!letterContainer.isPermanent()) {
@@ -265,7 +265,7 @@ public class AiController implements Controller {
      * A helper class for holding details about the best word
      * for submission.
      */
-    public static class Word {
+    private static class Word {
 
         public final int x;
         public final int y;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.datastructures;
+package sanapuuro.benchmarks;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import java.util.List;
@@ -16,6 +16,12 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+import sanapuuro.datastructures.DJB2ForStrings;
+import sanapuuro.datastructures.FNVOneForStrings;
+import sanapuuro.datastructures.GeneralHashFuncForStrings;
+import sanapuuro.datastructures.GeneralHashFuncForStrings2;
+import sanapuuro.datastructures.MurmurHash3ForStrings;
+import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.utils.Util;
 

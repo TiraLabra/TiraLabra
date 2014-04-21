@@ -1,4 +1,4 @@
-package sanapuuro;
+package sanapuuro.benchmarks;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +17,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+import sanapuuro.AiController;
+import sanapuuro.Grid;
+import sanapuuro.Player;
 import sanapuuro.datastructures.DJB2ForStrings;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;

@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import sanapuuro.AiController.Word;
 import sanapuuro.letters.Letter;
 import sanapuuro.letters.LetterContainer;
 import sanapuuro.letters.LetterPool;
