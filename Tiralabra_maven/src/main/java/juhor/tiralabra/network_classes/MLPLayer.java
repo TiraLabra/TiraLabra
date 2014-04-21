@@ -1,5 +1,3 @@
-
-
 package juhor.tiralabra.network_classes;
 
 import java.util.Random;
@@ -10,52 +8,98 @@ import juhor.tiralabra.data_structures.Vector;
  * @author juhorim
  */
 public class MLPLayer {
-    
+
+    private int numOfNeurons, prevNumOfNeurons;
     private MLPNeuron[] neurons;
-    double[] errorSignals;
-    double[] lastDeltas;
-    Vector inputs;
-    Vector outputs;
-    int numberOfInputs;
-    
+    private double[] outputs;
+
     /**
-     * Main constructor
-     * @param numOfNeurons number of neurons in this layer
-     * @param numOfInput number of input values (number of neurons in previous layer)
+     * The main constructor
+     *
+     * @param numOfInput Size of the input for this layer (number of nodes in
+     * previous layer)
+     * @param size number of nodes in this layer
+     * @param rand Random for generating initial weights
      */
-    public MLPLayer(int numOfNeurons, int numOfInput){
+    public MLPLayer(int numOfInput, int size, Random rand) {
+        numOfNeurons = size + 1;
+        prevNumOfNeurons = numOfInput + 1;
         neurons = new MLPNeuron[numOfNeurons];
-        errorSignals = new double[numOfNeurons];
-        numberOfInputs = numOfInput;
-        Random rand = new Random();
-        for(int i = 0; i < neurons.length; i++){
-            neurons[i] = new MLPNeuron(numOfInput, rand);
+        outputs = new double[numOfNeurons];
+
+        for (int i = 0; i < numOfNeurons; ++i) {
+            neurons[i] = new MLPNeuron(prevNumOfNeurons, rand);
         }
     }
+
+    public double getOutput(int i) {
+        return outputs[i];
+    }
+
+    public int getSize() {
+        return numOfNeurons;
+    }
+
+    public double getWeight(int i, int j) {
+        return neurons[i].getWeight(j);
+    }
+    
+    public MLPNeuron getNeuron(int i){
+        return neurons[i];
+    }
+
+    public double[] getWeights(int i) {
+        return neurons[i].getWeights();
+    }
+
+    public void setWeight(int i, int j, double v) {
+        neurons[i].setWeight(j, v);
+    }
+
+    public double getDerivative(int i) {
+        return neurons[i].derivative();
+    }
+
     /**
-     * This method creates a vector from outputs of neurons. 
-     * @param input
-     * @return 
+     * Add bias to the input. Bias can be thought as an extra input. To make it
+     * easier for the user, we add it here, so that user doesn't have to think
+     * about it.
+     *
+     * @param in the input vector
+     * @return input vector with bias
      */
-    public Vector layerOutputs(Vector input){
-        inputs = input;
-        Vector output = new Vector(neurons.length);
-        for(int i = 0; i < neurons.length; i++){
-            double val = neurons[i].calculateOutput(input);
-            output.setValue(i, val);
+    public double[] addInputBias(double[] in) {
+        if (in.length < getWeights(0).length) {
+            double newInput[] = new double[in.length + 1];
+            for (int i = 0; i < in.length; ++i) {
+                newInput[i + 1] = in[i];
+            }
+            newInput[0] = 1.0;
+            return newInput;
+        } else { //if bias was already added
+            return in;
         }
-        outputs = output;
-        return output;
+
     }
-    
-    public MLPNeuron getNeuron(int index){
-        return neurons[index];
+
+    /**
+     * Evaluate output of this layer
+     *
+     * @param in
+     * @return
+     */
+    public double[] calculateLayerOutput(double[] in) {
+        double inputs[];
+
+        inputs = addInputBias(in);
+
+        for (int i = 1; i < numOfNeurons; ++i) {
+            outputs[i] = neurons[i].calculateOutput(inputs);
+        }
+
+        outputs[0] = 1.0;
+
+        return outputs;
     }
-    
-    public int getSize(){
-        return neurons.length;
-    }
-    
-    
-    
+
 }

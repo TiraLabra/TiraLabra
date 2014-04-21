@@ -17,19 +17,40 @@ public class App {
 
     public static void main(String[] args) {
 
-        //Testataan perseptronin toimintaa oppimalla AND-operaatio:
-        double[][] inputVectors = {{1, 0, 0}, {1, 1, 0}, {1, 0, 1}, {1, 1, 1}};
-        double[][] outputs = {{0}, {0}, {0}, {1}};
-        TrainingData data = new TrainingData(inputVectors, outputs);
-        int[] numofneurons = {2, 1};
-        MLPNetwork nw = new MLPNetwork(2, numofneurons, 0.9, 1000, 0.1, data);
-        nw.learn();
+        Random rand = new Random();
 
-        double[] vec = {1, 0, 0};
-        Vector v = new Vector(vec);
-        double troo = nw.BinaryClassify(vec);
+        double[][] outputs = new double[1000][1];
 
-        System.out.println(troo); //tulostetaan tulos
+        //class 0: 500 random doubles from interval [0.001,2[ 
+        double[][] class0 = new double[500][2];
+        for (int i = 0; i < class0.length; i++) {
+            double x = 0.001 + 2 * rand.nextDouble();
+            double[] xset = {1, x};
+            class0[i] = xset;
+            outputs[i][0] = 0;
+        }
+
+        //class 1: 500 random doubles from interval ]-2, -0.001]
+        double[][] class1 = new double[500][2];
+        for (int i = 0; i < class1.length; i++) {
+            double x = -0.001 - 2 * rand.nextDouble();
+            double[] xset = {1, x};
+            class1[i] = xset;
+            outputs[500 + i][0] = 1;
+        }
+
+        double[][] inputs = new double[1000][2];
+        System.arraycopy(class0, 0, inputs, 0, class0.length);
+        System.arraycopy(class1, 0, inputs, class0.length, class1.length);
+
+        TrainingData data = new TrainingData(inputs, outputs);
+
+        Perceptron tron = new Perceptron(data, 0.5);
+        long start = System.currentTimeMillis();
+        tron.learn();
+        long stop = System.currentTimeMillis();
+
+        System.out.println(stop - start);
 
     }
 }

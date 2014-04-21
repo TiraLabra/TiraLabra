@@ -44,9 +44,9 @@ public class MLPNeuronTest {
         MLPNeuron n = new MLPNeuron(5, new Random());
 
         double[] in = {0, 0, 0, 0, 0};
-        Vector v = new Vector(in);
 
-        assertTrue(n.calculateOutput(v) == 0.5);
+
+        assertTrue(n.calculateOutput(in) == 0.5);
     }
 
     @Test
@@ -58,9 +58,9 @@ public class MLPNeuronTest {
         }
 
         double[] in = {1, 2, 3, 4, 5};
-        Vector v = new Vector(in);
 
-        assertTrue(n.calculateOutput(v) == 0.999999694097773);
+
+        assertTrue(n.calculateOutput(in) == 0.999999694097773);
     }
 
     @Test
@@ -74,8 +74,7 @@ public class MLPNeuronTest {
             for (int j = 0; j < size; j++) {
                 r[j] = 100 * rand.nextDouble() - 100;
             }
-            Vector v = new Vector(r);
-            assertTrue(n.calculateOutput(v) >= 0);
+            assertTrue(n.calculateOutput(r) >= 0);
         }
 
     }
@@ -91,8 +90,7 @@ public class MLPNeuronTest {
             for (int j = 0; j < size; j++) {
                 r[j] = 100 * rand.nextDouble() - 100;
             }
-            Vector v = new Vector(r);
-            assertTrue(n.calculateOutput(v) <= 1);
+            assertTrue(n.calculateOutput(r) <= 1);
         }
     }
 }
