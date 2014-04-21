@@ -1,0 +1,20 @@
+Aihe: (Monitasoinen) perseptroni
+
+Toteutan työssäni perseptroni-neuroneista koostuvan neuroverkon ja sen tarvitsemat algoritmit ja toiminallisuudet (esim. takaisinvirtausalgoritmi). Aloitan projektini yksitasoisesta perseptronista ja laajennan asteittain kohti monitasoisia verkkoja. 
+
+Perseptroni on yksinkertainen algoritmi joka pyrkii jakamaan sille syötetyn datajoukon (vektorimuodossa, voidaan ajatella avaruuden pisteinä) lineaarisesti osiin, esimerkiksi joukon kuvioita ympyröihin ja muihin kuvioihin. Perseptroni löytää tälläiset joukot, päätösrajapinnan, vain jos datapisteet ovat lineaarisesti eroteltavissa, eli datapisteet eivät ole sekoittuneet kovinkaan monimutkaisesti. Monitasoinen perseptroni (MLP: multilayered perceptron) on kaikessa yksinkertaisuudessaan joukko perseptroneja jotka on kytketty toisiinsa rakenteeksi (eteenpäin syöttävä neuroverkko) joka kykenee jakamaan epälineaarisesti jakautuvat datajoukot tiettyihin luokkiin.
+
+Mahdollisia ongelmia verkon ratkaistavaksi: Jonkin kuvion tai muodon löytäminen pikselimuotoisesta datasta (object detection), objektin, esimerkiksi kuvion tunnistaminen (pattern recognition), laadunvalvonta: järjestelmä voisi esimerkiksi tunnistaa onko kuvassa oleva kuvio virheellinen, toisinsanoen poikkeaako se liikaa ennalta määrätystä tasosta. 
+Lopullinen ratkaistava ongelma selviää tarkemmin kun olen taustatutkimukseni saanut pidemmälle.
+
+Pyrin kirjoittamaan toteutusdokumenttiin jonkinasteista vertailua (oppimisnopeus, ratkaistavat ongelmat ja vastauksen tarkkuus) ainakin yksitasoisen perseptronin, moniluokkaisen perseptronin ja monitasoisen perseptronin välillä.
+
+lähteet:
+https://www.cs.helsinki.fi/u/ttonteri/ai/2013/slides08.pdf
+http://en.wikipedia.org/wiki/Perceptron
+http://en.wikipedia.org/wiki/Multilayer_perceptron
+http://en.wikipedia.org/wiki/Feedforward_neural_network
+http://en.wikipedia.org/wiki/Artificial_neural_network
+http://www.youtube.com/watch?v=dyDdNtr9Q48
+http://www.youtube.com/watch?feature=player_detailpage&v=MeFpNzqjkQw#t=941
+
