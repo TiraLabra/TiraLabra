@@ -117,9 +117,6 @@ public class AiController implements Controller {
         
         // Potential score of containers that could be fitted.
         int score = this.getScoreFromContainers(containers);
-        
-        // Number of containers that were added from permutation containers.
-        int lettersAdded = this.getCountOfLettersAdded(containers);
 
         // If the potential score with the given permutation and letters from the grid
         // are less than the current best word's score, then there is no
@@ -128,8 +125,16 @@ public class AiController implements Controller {
             return;
         }
 
-        int i = containers.size() - 1;
+        Word betterWord = this.getBetterValidWord(x, y, deltaX, deltaY, bestWord, containers, score);
+        if (betterWord != null) this.bestWord = betterWord;
+    }
+    
+    public Word getBetterValidWord(int x, int y, int deltaX, int deltaY, Word bestWord,
+            List<LetterContainer> containers, int scoreOfContainers){
+        // Number of containers that were added from permutation containers.
+        int lettersAdded = this.getCountOfLettersAdded(containers);
         
+        int i = containers.size() - 1;
         // Must have added at least one container from permutation containers
         // since all letters selected only from grid is not accepted
         // i >= 2 because words must be at three letters long
@@ -137,19 +142,19 @@ public class AiController implements Controller {
             String anagram = Util.stringFromLetterContainers(containers);
             // Check if the containers form a valid word and it has higher score than
             // the current best word.
-            if (this.words.contains(anagram) && (this.bestWord == null || score > this.bestWord.score)) {
-                this.bestWord = new Word(x, y, deltaX, deltaY, score, containers);
-                break;
+            if ((bestWord == null || scoreOfContainers > bestWord.score) && this.words.contains(anagram)) {
+                return new Word(x, y, deltaX, deltaY, scoreOfContainers, containers);
             }
             // If the container was not from grid then it was from the permutation
             // containers, therefore there are less added letters in the list of containers.
             if (!containers.get(i).isPermanent()) {
                 lettersAdded--;
             }
-            score -= containers.get(i).letter.score;
+            scoreOfContainers -= containers.get(i).letter.score;
             containers.remove(i);
             i--;
         }
+        return null;
     }
 
     /**
@@ -260,7 +265,7 @@ public class AiController implements Controller {
      * A helper class for holding details about the best word
      * for submission.
      */
-    private static class Word {
+    public static class Word {
 
         public final int x;
         public final int y;

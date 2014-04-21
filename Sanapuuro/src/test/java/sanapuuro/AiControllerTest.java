@@ -5,19 +5,20 @@
  */
 package sanapuuro;
 
-import sanapuuro.utils.Util;
-import sanapuuro.letters.LetterPool;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import sanapuuro.letters.LetterContainer;
+import sanapuuro.AiController.Word;
 import sanapuuro.letters.Letter;
+import sanapuuro.letters.LetterContainer;
+import sanapuuro.letters.LetterPool;
+import sanapuuro.utils.Util;
 
 /**
  *
@@ -30,6 +31,8 @@ public class AiControllerTest {
 
     public AiControllerTest() {
         this.words.add("nipsuli");
+        this.words.add("nipdsul");
+        this.words.add("nihdsulx");
         this.words.add("hipsu");
         this.words.add("nipsu");
     }
@@ -62,6 +65,60 @@ public class AiControllerTest {
         this.ai.makeMove();
         List<LetterContainer> submission = this.player.getSubmission();
         assertEquals("hipsu", Util.stringFromLetterContainers(submission));      
+    }
+    
+    @Test
+    public void submitsBestWordWithLettersAlreadyInGrid1() {
+        LetterPool lpstub = new LetterPoolStub();
+        Grid grid = new Grid(8, 8);
+        LetterContainer lc = new LetterContainer(new Letter('d', 10, 0));
+        grid.setContainerAt(lc, 3, 3);
+        lc.setToGridPermanently();       
+        this.player = new Player(lpstub , grid, "Hessu");
+        this.ai = new AiController(lpstub, grid, "Hessu", this.words);
+        this.ai.setControlled(player);
+        this.ai.makeMove();
+        List<LetterContainer> submission = this.player.getSubmission();
+        assertEquals("nipdsul", Util.stringFromLetterContainers(submission));      
+    }
+    
+    @Test
+    public void submitsBestWordWithLettersAlreadyInGrid2() {
+        LetterPool lpstub = new LetterPoolStub();
+        Grid grid = new Grid(8, 8);
+        LetterContainer lc = new LetterContainer(new Letter('d', 10, 0));
+        grid.setContainerAt(lc, 3, 3);
+        lc.setToGridPermanently();    
+        LetterContainer lc1 = new LetterContainer(new Letter('h', 10, 0));
+        grid.setContainerAt(lc1, 3, 3);
+        lc1.setToGridPermanently();       
+        this.player = new Player(lpstub , grid, "Hessu");
+        this.ai = new AiController(lpstub, grid, "Hessu", this.words);
+        this.ai.setControlled(player);
+        this.ai.makeMove();
+        List<LetterContainer> submission = this.player.getSubmission();
+        assertEquals("nipdsul", Util.stringFromLetterContainers(submission));      
+    }
+    
+    @Test
+    public void submitsBestWordWithLettersAlreadyInGrid3() {
+        LetterPool lpstub = new LetterPoolStub();
+        Grid grid = new Grid(8, 8);
+        LetterContainer lc = new LetterContainer(new Letter('d', 10, 0));
+        grid.setContainerAt(lc, 3, 3);
+        lc.setToGridPermanently();    
+        LetterContainer lc1 = new LetterContainer(new Letter('h', 1, 0));
+        grid.setContainerAt(lc1, 3, 3);
+        lc1.setToGridPermanently();    
+        LetterContainer lc2 = new LetterContainer(new Letter('x', 5, 0));
+        grid.setContainerAt(lc2, 7, 3);
+        lc2.setToGridPermanently();       
+        this.player = new Player(lpstub , grid, "Hessu");
+        this.ai = new AiController(lpstub, grid, "Hessu", this.words);
+        this.ai.setControlled(player);
+        this.ai.makeMove();
+        List<LetterContainer> submission = this.player.getSubmission();
+        assertEquals("nihdsulx", Util.stringFromLetterContainers(submission));      
     }
     
     public static class LetterPoolStub implements LetterPool {

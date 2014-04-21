@@ -11,7 +11,6 @@ import java.util.Set;
 import sanapuuro.datastructures.DJB2ForStrings;
 import sanapuuro.datastructures.FNVOneForStrings;
 import sanapuuro.datastructures.GeneralHashFuncForStrings;
-import sanapuuro.datastructures.GeneralHashFuncForStrings2;
 import sanapuuro.datastructures.HashFunction;
 import sanapuuro.datastructures.MurmurHash3ForStrings;
 import sanapuuro.fileio.FileIO;
