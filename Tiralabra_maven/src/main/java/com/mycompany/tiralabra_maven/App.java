@@ -1,13 +1,18 @@
 package com.mycompany.tiralabra_maven;
 
+import java.util.List;
+
 /**
- * Hello world!
+ * Sovelluksen pääluokka.
  *
  */
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Maze maze = new Maze(10, 10, new State(), new State(2, 5));
+        Searcher s = new Searcher(maze);
+        List<State> list = s.findOptimalPath();
+        System.out.println(list);
     }
 }
