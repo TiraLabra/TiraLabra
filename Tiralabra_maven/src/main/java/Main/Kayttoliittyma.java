@@ -6,7 +6,10 @@
 package Main;
 
 import Sorters.*;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,27 +33,14 @@ public class Kayttoliittyma {
     }
 
     public void kaynnista() {
-        System.out.println("SATUNNAISTAULUKKO -----------");
-        System.out.println("Järjestetään pieni taulukko...");
-        jarjestaSatunnaisTaulukko(small);
-        System.out.println("Järjestetään keskikokoinen taulukko...");
-        jarjestaSatunnaisTaulukko(medium);
-        System.out.println("Järjestetään suuri taulukko...");
-        jarjestaSatunnaisTaulukko(large);
-        System.out.println("JÄRJESTYKSESSÄ OLEVA TAULUKKO -----------");
-        System.out.println("Järjestetään pieni taulukko...");
-        jarjestaJarjestyksessaOlevaTaulukko(small);
-        System.out.println("Järjestetään keskikokoinen taulukko...");
-        jarjestaJarjestyksessaOlevaTaulukko(medium);
-        System.out.println("Järjestetään suuri taulukko...");
-        jarjestaJarjestyksessaOlevaTaulukko(large);
-        System.out.println("KAIKKI LUVUT SAMOJA -TAULUKKO -----------");
-        System.out.println("Järjestetään pieni taulukko...");
-        jarjestaKaikkiSamojaTaulukko(small);
-        System.out.println("Järjestetään keskikokoinen taulukko...");
-        jarjestaKaikkiSamojaTaulukko(medium);
-        System.out.println("Järjestetään suuri taulukko...");
-        jarjestaKaikkiSamojaTaulukko(large);
+        SorterReporter reportteri = new SorterReporter("raportti.txt");
+        reportteri.testSorters();
+        try {
+            reportteri.exportReport();
+        } catch (IOException ex) {
+            System.out.println("Tiedostoon kirjoittaessa tapahtui virhe");
+            Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
