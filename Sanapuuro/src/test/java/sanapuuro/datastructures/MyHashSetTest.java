@@ -42,21 +42,6 @@ public class MyHashSetTest {
     public void tearDown() {
     }
 
-//    @Test
-//    public void testSpeed() {
-//        FileIO fileIO = new FileIO();
-//        List<String> words = fileIO.readInWordsFromFile("words/english_words");
-//        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new StringHashFuncs());
-//        
-//        long before = System.currentTimeMillis();
-//        for(int i = 0; i < 40000; i++){
-//            wordSet.contains(words.get(i));
-//        }
-//        long after = System.currentTimeMillis();
-//        
-//        System.out.println("Took time: " + (after-before));
-//    }
-
     @Test
     public void hashSetSetsTableSizeToMValueOfHashFunc() {
         MyHashSet<String> set = new MyHashSet<>(1, new HashFuncStub<String>());
@@ -169,7 +154,7 @@ public class MyHashSetTest {
         assertFalse(this.mySet.add(inSet));
     }
 
-    private class HashFuncStub<String> implements HashFunction<String> {
+    private class HashFuncStub<String> extends HashFunction<String> {
 
         @Override
         public int getHash(String o, int m, int numberOfTry) {
