@@ -36,7 +36,7 @@ Max collisions for same hash: 6
 
 Toiseksi on testattu hajautustaulukkoon lisäämisen nopeutta. Sanoja lisätään n. 260000. Alla olevien tuloksien perusteella djb2 ja FNV-1a ovat nopeimmat hajautusfunktiot. Kummallakin sanojen lisäämiseen menee n. 0.03s. Hajautusfunktio BigInteillä vaatii aikaa jo pelkästään roskien keräämiseen ja onkin nopeudeltaan huonoin.
 
-<b>eneral hash function using BigInts (10 rounds)</b>  
+<b>General hash function using BigInts (10 rounds)</b>  
 round: 0.38 [+- 0.09], GC.calls: 32, GC.time: 0.18, time.bench: 3.58
 
 <b>General hash function using longs (10 rounds)</b>  
