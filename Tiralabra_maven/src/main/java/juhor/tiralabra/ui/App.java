@@ -54,9 +54,9 @@ public class App {
             double[] in = {r};
             double out = tron.feedForward(in)[1];
             if(out < 0.5){
-                System.out.println("Input: " + r + " was classified to group 1 (negative)");
-            }else{
                 System.out.println("Input: " + r + " was classified to group 0 (positive)");
+            }else{
+                System.out.println("Input: " + r + " was classified to group 1 (negative)");
             }
         }
     }
