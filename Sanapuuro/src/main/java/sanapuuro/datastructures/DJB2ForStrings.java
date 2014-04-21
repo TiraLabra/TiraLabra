@@ -7,10 +7,11 @@
 package sanapuuro.datastructures;
 
 /**
- * A hash function that is based on the FNV-1 algorithm.
+ * A java implementation of the djb2 algorithm.
+ * http://www.cse.yorku.ca/~oz/hash.html
  * @author skaipio
  */
-public class DJB2ForStrings implements HashFunction<String> {
+public class DJB2ForStrings extends HashFunction<String> {
     /**
      * Calculates normal hash value for a string.
      * @param s String to calculate a hash for.
@@ -30,20 +31,13 @@ public class DJB2ForStrings implements HashFunction<String> {
     /**
      * Calculates hash value for a string with number of tries taken into account.
      * @param s String to calculate a hash for.
-     * @param m
-     * @param numberOfTry
+     * @param m The m value, i.e. modulo or hash table size.
+     * @param i The ith try to take into account.
      * @return The hash value of string s.
      */
     @Override
-    public int getHash(String s, int m, int numberOfTry){
+    public int getHash(String s, int m, int i){
        int hash = this.getNormalHash(s, m);
-       return (hash + numberOfTry) % m;
-    }
-    
-    @Override
-    public int calculateM(int numberOfKeys, double desiredLoadRate) {
-        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
-        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
-        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
+       return (hash + i) % m;
     }
 }

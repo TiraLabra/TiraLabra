@@ -14,7 +14,7 @@ import java.math.BigInteger;
  * due to having to instantiate numerous BigInteger-objects.
  * @author skaipio
  */
-public class GeneralHashFuncForStrings2 implements HashFunction<String> {
+public class GeneralHashFuncForStrings2 extends HashFunction<String> {
     /**
      * Calculates normal hash value for a string.
      * @param s String to calculate a hash for.
@@ -38,27 +38,14 @@ public class GeneralHashFuncForStrings2 implements HashFunction<String> {
     /**
      * Calculates hash value for a string with number of tries taken into account.
      * @param s String to calculate a hash for.
-     * @param m
-     * @param numberOfTry
+     * @param m The m value, i.e. modulo or hash table size.
+     * @param i The ith try to take into account.
      * @return The hash value of string s.
      */
     @Override
-    public int getHash(String s, int m, int numberOfTry){
+    public int getHash(String s, int m, int i){
        int hash = this.getNormalHash(s, m);
-       return (hash + numberOfTry) % m;
+       return (hash + i) % m;
     }
     
-    /**
-     * Calculates the optimal M value based on the number of keys and desired
-     * load or fill rate of the hash table.
-     * @param numberOfKeys Max number of keys the hash table will be holding. 
-     * @param desiredLoadRate Desired fill or load rate. Generally a smaller fill rate leads to less collisions.
-     * @return A suitable value for hash table size.
-     */
-    @Override
-    public int calculateM(int numberOfKeys, double desiredLoadRate) {
-        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
-        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
-        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
-    }
 }

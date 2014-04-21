@@ -12,7 +12,7 @@ package sanapuuro.datastructures;
  * quite a bit faster.
  * @author skaipio
  */
-public class GeneralHashFuncForStrings implements HashFunction<String> {
+public class GeneralHashFuncForStrings extends HashFunction<String> {
     /**
      * Calculates normal hash value for a string.
      * @param s String to calculate a hash for.
@@ -33,20 +33,13 @@ public class GeneralHashFuncForStrings implements HashFunction<String> {
     /**
      * Calculates hash value for a string with number of tries taken into account.
      * @param s String to calculate a hash for.
-     * @param m
-     * @param numberOfTry
+     * @param m The m value, i.e. modulo or hash table size.
+     * @param i The ith try to take into account.
      * @return The hash value of string s.
      */
     @Override
-    public int getHash(String s, int m, int numberOfTry){
+    public int getHash(String s, int m, int i){
        int hash = this.getNormalHash(s, m);
-       return (hash + numberOfTry) % m;
-    }
-    
-    @Override
-    public int calculateM(int numberOfKeys, double desiredLoadRate) {
-        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
-        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
-        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
+       return (hash + i) % m;
     }
 }
