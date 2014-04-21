@@ -1,22 +1,23 @@
 package com.mycompany.tiralabra_maven;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * File handler
+ * File handler that reads the input files.
  *
  * @author Jari Haavisto
  */
 public class InputReader {
     
+    /**
+     * Checks what characters are present in given String.
+     * 
+     * @param sequences 
+     * @return 
+     */
     private static char[] parseAlphabet(String sequences) {
         return sequences.replaceAll("(.)(?=.*\\1)", "").toCharArray();
     }

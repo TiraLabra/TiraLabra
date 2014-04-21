@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sequencealgorithms;
 
 import com.mycompany.tiralabra_maven.InputReader;
@@ -36,7 +31,13 @@ abstract class PSA implements Problem {
      * The alignment that solves the problem.
      */
     char[][] solution;
+    /**
+     * A value that represents negative infinity.
+     */
     protected final double NEGINF = -1E100;
+    /**
+     * Debugging boolean. If set to true, prints all sorts of information while executing.
+     */
     private boolean verbose;
 
     public PSA(String filename) {
@@ -125,6 +126,10 @@ abstract class PSA implements Problem {
         return maxIndex;
     }
 
+    /**
+     * Finds a correct solution from the completed alignment matrix. The found solution is stored to
+     * the class variable 'solution'.
+     */
     public void findSolution() {
         if (verbose) {
             System.out.println("Finding solution from alignment matrix:");
@@ -163,12 +168,31 @@ abstract class PSA implements Problem {
         setSolution(preSolution, length);
     }
 
+    /**
+     * Finds the x-coordinate of the beginning of the solution from the alignment matrix.
+     * @return 
+     */
     protected abstract int findSolutionStartX();
 
+    /**
+     * Finds the y-coordinate of the beginning of the solution from the alignment matrix.
+     * @return 
+     */
     protected abstract int findSolutionStartY();
 
+    /**
+     * Condition that gives 'false' when the end of the solution is found.
+     * @param p Coordinate of the examined element.
+     * @param q Coordinate of the examined element.
+     * @return 
+     */
     protected abstract boolean solutionContinueCondition(int p, int q);
 
+    /**
+     * Constructs and formats the final solution from the presolution.
+     * @param preSolution
+     * @param length 
+     */
     protected abstract void setSolution(char[][] preSolution, int length);
 
     /**

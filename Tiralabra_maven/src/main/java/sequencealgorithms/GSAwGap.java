@@ -6,8 +6,9 @@
 package sequencealgorithms;
 
 /**
+ * Global Sequence Alignment problem with affine gap penalties.
  *
- * @author riha
+ * @author Jari Haavisto
  */
 public class GSAwGap extends GSA {
 
@@ -28,14 +29,6 @@ public class GSAwGap extends GSA {
             vertical.setScore(0, j, NEGINF);
         }
     }
-
-//    @Override
-//    public void setUpScoringMatrix() {
-//        s.setMatchBonus(10);
-//        s.setIndelPenalty(-15);
-//        s.setMismatchPenalty(-2);
-//        s.setGapPenalty(-7);
-//    }
 
     @Override
     public double[] possibleScores(int i, int j) {

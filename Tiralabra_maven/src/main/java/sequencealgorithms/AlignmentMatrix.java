@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sequencealgorithms;
 
 /**
@@ -77,6 +72,13 @@ public class AlignmentMatrix {
         path[m][n] = previous;
     }
 
+    /**
+     * Getter for the alignment score. Returns the score from the given element.
+     * 
+     * @param m
+     * @param n
+     * @return 
+     */
     public double get(int m, int n) {
         return matrix[m][n];
     }
@@ -93,18 +95,33 @@ public class AlignmentMatrix {
         return path[m][n];
     }
 
+    /**
+     * Getter for the best alignment score.
+     * @return 
+     */
     public double getBestScore() {
         return bestAlignmentScore;
     }
 
+    /**
+     * Getter for the x-coordinate of the best alignment score.
+     * @return 
+     */
     public int getBestScoreX() {
         return bestScoreX;
     }
 
+    /**
+     * Getter for the y-coordinate of the best alignment score.
+     * @return 
+     */
     public int getBestScoreY() {
         return bestScoreY;
     }
 
+    /**
+     * Prints the alignment matrix to stdout.
+     */
     public void print() {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven;
 
 import java.util.Scanner;
@@ -13,8 +8,9 @@ import sequencealgorithms.LSA;
 import sequencealgorithms.Problem;
 
 /**
+ * User interface for the program. 
  *
- * @author riha
+ * @author Jari Haavisto
  */
 public class SeqAlgUI {
 
@@ -50,8 +46,6 @@ public class SeqAlgUI {
 
     /**
      * Problem selector. Asks input and sets up the problem to be solved.
-     *
-     * @return The
      */
     private void selectProblem() {
         switch (readProblemSelection()) {

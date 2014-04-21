@@ -104,11 +104,17 @@ public class ScoringMatrix {
         }
     }
     
-    public void setUp(double match, double mismatch, double indel) {
-        setMatchBonus(match);
-        setMismatchPenalty(mismatch);
-        setIndelPenalty(indel);
-    }
+//    /**
+//     * Sets up all three 
+//     * @param match
+//     * @param mismatch
+//     * @param indel 
+//     */
+//    public void setUp(double match, double mismatch, double indel) {
+//        setMatchBonus(match);
+//        setMismatchPenalty(mismatch);
+//        setIndelPenalty(indel);
+//    }
 
     private int indexOf(char c) {
         int i = 0;

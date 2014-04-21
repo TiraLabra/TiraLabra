@@ -72,12 +72,4 @@ public class ScoringMatrixTest {
         assertEquals(-0.75, s.getScore('g', 'c'), 0.00001);
     }
     
-    @Test
-    public void setUpTest() {
-        s.setUp(5, -0.75, -1);
-        setIndelPenaltyTest();
-        setMatchBonusTest();
-        setMismatchPenaltyTest();
-    }
-    
 }

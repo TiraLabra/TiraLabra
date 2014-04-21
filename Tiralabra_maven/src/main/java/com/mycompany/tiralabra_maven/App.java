@@ -3,7 +3,7 @@ package com.mycompany.tiralabra_maven;
 import sequencealgorithms.*;
 
 /**
- * Hello world!
+ * Main class to run the program.
  *
  */
 public class App {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sequencealgorithms;
 
 import com.mycompany.tiralabra_maven.InputReader;
@@ -19,12 +14,7 @@ public class LSA extends PSA {
 //        super(filename, alphabet);
         super(filename);
     }
-        
-//        s.setMatchBonus(2);
-//        s.setIndelPenalty(-1);
-//        s.setMismatchPenalty(-1);
     
-
     /**
      * Extends the superclass method by adding the option zero to all score
      * possibilities.

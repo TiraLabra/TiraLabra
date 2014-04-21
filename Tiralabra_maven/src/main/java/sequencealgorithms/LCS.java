@@ -12,12 +12,10 @@ public class LCS extends PSA {
 
     public LCS(String filename) {
         super(filename);
-        s.setUp(1, -1E100, 0);
+        s.setMatchBonus(1);
+        s.setMismatchPenalty(NEGINF);
+        s.setIndelPenalty(0);
     }
-
-//    public void setUpScoringMatrix() {
-//        s.setUp(1, -1E100, 0);  // -1E300 ~ negative infinity
-//    }
 
     /**
      * LCS algorithm uses constant scoring and hence does not use this method.

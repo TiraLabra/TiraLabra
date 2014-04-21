@@ -3,7 +3,7 @@ package sequencealgorithms;
 import com.mycompany.tiralabra_maven.InputReader;
 
 /**
- * Global Sequence Alignment problem.
+ * Global Sequence Alignment problem. Finds a best global alignment for two sequences.
  *
  * @author Jari Haavisto
  */
@@ -12,13 +12,6 @@ public class GSA extends PSA {
     public GSA(String filename) {
         super(filename);
     }
-
-//    @Override
-//    public void setUpScoringMatrix() {
-//        s.setMatchBonus(1);
-//        s.setIndelPenalty(-2);
-//        s.setMismatchPenalty(-1);
-//    }
 
     @Override
     public int findSolutionStartX() {
