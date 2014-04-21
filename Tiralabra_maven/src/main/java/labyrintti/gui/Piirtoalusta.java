@@ -2,8 +2,6 @@ package labyrintti.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 import labyrintti.Kaynnistys;
 import labyrintti.osat.Pohja;

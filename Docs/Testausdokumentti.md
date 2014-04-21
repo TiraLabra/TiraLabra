@@ -10,7 +10,7 @@ Labyrintti/sovellus
 - EtsijäTest
 - MinimikekoTest
 
-Paketissa labyrintti/gui olevia graafisen käyttöliittymän luokkia ei testata ollenkaan, samoin ei testata App-luokkaa, joka on ohjelman Main. Toistaiseksi puuttuu Käynnistyksen testaus.
+Paketissa labyrintti/gui olevia graafisen käyttöliittymän luokkia ei testata ollenkaan, samoin ei testata App-luokkaa, joka on ohjelman Main. Käynnistys-luokan testaus on aika vähäinen.
 
 Testit on kirjoitettu JUnit-testeinä. Testien rivikattavuutta on valvottu coberturalla.
 Testit voidaan toistaa ajamalla testiluokat.

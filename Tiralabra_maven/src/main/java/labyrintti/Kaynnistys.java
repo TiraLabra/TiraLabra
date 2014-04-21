@@ -86,16 +86,19 @@ public class Kaynnistys {
      * Kysyy käyttäjältä kartan ja käynnistää käyttöliittymän.
      */
     public void kaynnista() {
-        System.out.println("Paina pelkkä Enter käyttääksesi valmista karttaa, muuten anna korkeus.");
-        int korkeus = kysyKayttajalta("Anna kartan korkeus: ");
+        System.out.println("Paina pelkkä Enter käyttääksesi valmista karttaa, muuten anna korkeus.\nHuom! Kartan on oltava vähintään kahden ruudun kokoinen.");
+        int korkeus = kysyKayttajalta("Anna kartan korkeus 1-30: ");
         if (korkeus == 0) {
             valmisPohja();
         } else {
-            int leveys = kysyKayttajalta("Anna kartan leveys: ");
+            int leveys = kysyKayttajalta("Anna kartan leveys 1-30: ");
             String syote = kartanSyottaminen(leveys, korkeus, "", 0);
+            if(syote.isEmpty()){
+                return;
+            }
             pohja = new Pohja(korkeus, leveys, syote);
+            etsija = new Etsija(pohja);
         }
-        etsija = new Etsija(pohja);
 //        testipohjat(); //suorituskykytestausta
 //        testaaMinimikeko(); // suorituskykytestausta
         kaynnistaGui();
@@ -138,7 +141,7 @@ public class Kaynnistys {
     }
 
     /**
-     * Tarkista että luku on sallituissa rajoissa.
+     * Tarkistaa, että luku on sallituissa rajoissa.
      *
      * @param sana muutetaan luvuksi
      * @return true, jos luku on sallitulla välillä, muuten false.
@@ -156,11 +159,12 @@ public class Kaynnistys {
     /**
      * Asettaa valmiin kartan Pohja-oliolle.
      */
-    private void valmisPohja() {
+    public void valmisPohja() {
 //        pohja = new Pohja(10, 18, esim3);
 //        pohja = new Pohja(5, 5, esim2);
 //        pohja = new Pohja(9, 10, esim1);
         pohja = new Pohja(3, 3, esim4);
+        etsija = new Etsija(pohja);
     }
 
     public Pohja getPohja() {
@@ -182,9 +186,12 @@ public class Kaynnistys {
      */
     private String kartanSyottaminen(int leveys, int korkeus, String syote, int mones) {
         // metodi liian pitkä, mistä lyhentää..?
-        System.out.println("Syötä kartta: \nMerkitse lähtö kirjaimella L ja maali kirjaimella M");
+        System.out.println("Syötä kartta: \nMerkitse lähtö kirjaimella L ja maali kirjaimella M\nVoit lopettaa ohjelman kirjoittamalla 'exit'");
         while (true) {
             String rivi = lukija.nextLine();
+            if(rivi.equals("exit")){
+                return "";
+            }
             mones++;
             if (rivi.length() != leveys) {
                 mones = riviEiOikeanMittainen(mones, syote, leveys);
