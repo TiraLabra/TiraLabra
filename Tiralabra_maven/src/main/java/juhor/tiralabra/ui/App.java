@@ -45,12 +45,19 @@ public class App {
 
         TrainingData data = new TrainingData(inputs, outputs);
 
-        Perceptron tron = new Perceptron(data, 0.5);
-        long start = System.currentTimeMillis();
-        tron.learn();
-        long stop = System.currentTimeMillis();
-
-        System.out.println(stop - start);
-
+        int[] nodes = {1, 3, 1};
+        MLPNetwork tron = new MLPNetwork(nodes);
+        System.out.println("Training MLP (this might take a while...)");
+        tron.train(inputs, outputs, 0.3, 0.01, 40000);
+        for (int i = 0; i < 100; i++) {
+            double r = 2 * rand.nextDouble() - 2; //random double from interval [-2, 2[
+            double[] in = {r};
+            double out = tron.feedForward(in)[1];
+            if(out < 0.5){
+                System.out.println("Input: " + r + " was classified to group 1 (negative)");
+            }else{
+                System.out.println("Input: " + r + " was classified to group 0 (positive)");
+            }
+        }
     }
 }
