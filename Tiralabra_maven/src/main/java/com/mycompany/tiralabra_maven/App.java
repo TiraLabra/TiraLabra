@@ -1,13 +1,16 @@
 package com.mycompany.tiralabra_maven;
 
+import sequencealgorithms.*;
+
 /**
- * Hello world!
+ * Main class to run the program.
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+public class App {
+
+    public static void main(String[] args) {
+        SeqAlgUI ui = new SeqAlgUI();
+        ui.run();
+        
     }
 }
