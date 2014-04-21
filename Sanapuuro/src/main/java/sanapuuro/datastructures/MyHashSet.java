@@ -21,7 +21,7 @@ public class MyHashSet<T> implements Set<T>{
 
     private Object[] table;
     public final int tableSize;
-    private final HashFuncs<T> hashFunction;
+    private final HashFunction<T> hashFunction;
     private int numberOfItems = 0;
 
     /**
@@ -31,7 +31,7 @@ public class MyHashSet<T> implements Set<T>{
      * hold.
      * @param hashFunction Function used to determine hash value for an object.
      */
-    public MyHashSet(int numberOfKeys, HashFuncs<T> hashFunction) {
+    public MyHashSet(int numberOfKeys, HashFunction<T> hashFunction) {
         this.hashFunction = hashFunction;
         this.tableSize = this.hashFunction.calculateM(numberOfKeys, 0.33);
         this.table = new Object[this.tableSize];

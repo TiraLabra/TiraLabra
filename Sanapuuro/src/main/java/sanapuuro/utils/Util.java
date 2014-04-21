@@ -7,7 +7,7 @@
 package sanapuuro.utils;
 
 import java.util.List;
-import sanapuuro.datastructures.HashFuncs;
+import sanapuuro.datastructures.HashFunction;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.letters.LetterContainer;
 
@@ -39,7 +39,7 @@ public class Util {
      * @param hashFunc Hash function for the set.
      * @return A new MyHashSet of type T.
      */
-    public static <T> MyHashSet<T> convertListToMyHashSet(List<T> objs, HashFuncs<T> hashFunc){
+    public static <T> MyHashSet<T> convertListToMyHashSet(List<T> objs, HashFunction<T> hashFunc){
         MyHashSet<T> set = new MyHashSet<>(objs.size(), hashFunc);
         for (T obj : objs){
             set.add(obj);

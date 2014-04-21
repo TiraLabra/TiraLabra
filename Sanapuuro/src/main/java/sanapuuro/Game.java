@@ -8,9 +8,11 @@ package sanapuuro;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import sanapuuro.datastructures.DJB2ForStrings;
 import sanapuuro.datastructures.MyHashSet;
-import sanapuuro.datastructures.FNVOneForString;
-import sanapuuro.datastructures.HashFuncWithBigIntsForString;
+import sanapuuro.datastructures.FNVOneForStrings;
+import sanapuuro.datastructures.GeneralHashFuncForStrings2;
+import sanapuuro.datastructures.MurmurHash3ForStrings;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;
 import sanapuuro.letters.Letter;
@@ -33,8 +35,8 @@ public class Game {
         FileIO fileIO = new FileIO();
         Random rnd = new Random();
 
-        List<String> words = fileIO.readInWordsFromFile("words/english_words");
-        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new FNVOneForString());
+        List<String> words = fileIO.readInWordsFromFile("words/english_words", 8);
+        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new DJB2ForStrings());
         GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
 
         Scanner scanner = new Scanner(System.in);
@@ -55,11 +57,5 @@ public class Game {
         TwoPlayerGame game = new TwoPlayerGame(grid, controllerOne, controllerTwo, wordSet);
         game.setGameListener(view);
         game.startGame();
-        
-//        LetterContainer[] containers = new LetterContainer[]{
-//            new LetterContainer(new Letter('a', 0, 0)),
-//            new LetterContainer(new Letter('b', 0, 0)),
-//            new LetterContainer(new Letter('c', 0, 0))};
-//        controllerTwo.tryPermutations(containers, 0);
     }
 }

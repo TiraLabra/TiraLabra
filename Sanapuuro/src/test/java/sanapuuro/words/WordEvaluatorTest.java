@@ -33,7 +33,7 @@ public class WordEvaluatorTest {
 
     public WordEvaluatorTest() {
         FileIO fileIO = new FileIO();
-        this.words = new HashSet(fileIO.readInWordsFromFile("words/english_words"));
+        this.words = new HashSet(fileIO.readInWordsFromFile("words/english_words", 8));
     }
 
     @BeforeClass

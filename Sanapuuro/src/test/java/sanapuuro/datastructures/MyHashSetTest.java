@@ -169,7 +169,7 @@ public class MyHashSetTest {
         assertFalse(this.mySet.add(inSet));
     }
 
-    private class HashFuncStub<String> implements HashFuncs<String> {
+    private class HashFuncStub<String> implements HashFunction<String> {
 
         @Override
         public int getHash(String o, int m, int numberOfTry) {

@@ -6,17 +6,15 @@
 
 package sanapuuro.datastructures;
 
+import java.math.BigInteger;
+
 /**
- * A hash function that is based on the FNV-1 algorithm.
+ * Hash function implementation based on TirA-material.
+ * Uses BigIntegers which makes a long series of lookups very slow
+ * due to having to instantiate numerous BigInteger-objects.
  * @author skaipio
  */
-public class FNVOneForString implements HashFuncs<String> {
-    //http://www.isthe.com/chongo/tech/comp/fnv/index.html   
-    private final int fnvOffsetBasis = 16777619;
-    private final int s = 4;
-    private final int b = 0b00110111;
-    // http://www.isthe.com/chongo/tech/comp/fnv/index.html#fnv-prime
-    private final int fnvPrime = (int)Math.pow(256, (5+(int)Math.pow(2,s))/12)+(int)Math.pow(2,8)+b;
+public class GeneralHashFuncForStrings2 implements HashFunction<String> {
     /**
      * Calculates normal hash value for a string.
      * @param s String to calculate a hash for.
@@ -25,13 +23,16 @@ public class FNVOneForString implements HashFuncs<String> {
      */
     @Override
     public int getNormalHash(String s, int m){
-        int hash = fnvOffsetBasis;
+        BigInteger hash = new BigInteger("0");
         for (int i = 0; i < s.length(); i++){
             int charVal = s.charAt(i);
-            hash = hash ^ charVal;
-            hash = (hash * fnvPrime);
+            BigInteger ascii = new BigInteger(charVal + "");
+            BigInteger multiplier = new BigInteger("128");           
+            multiplier = multiplier.pow(i);
+            hash = hash.add(ascii.multiply(multiplier));
         }
-        return Math.abs(hash % m);
+        BigInteger remainder = hash.mod(new BigInteger(m+""));
+        return remainder.intValue();
     }
     
     /**
@@ -47,6 +48,13 @@ public class FNVOneForString implements HashFuncs<String> {
        return (hash + numberOfTry) % m;
     }
     
+    /**
+     * Calculates the optimal M value based on the number of keys and desired
+     * load or fill rate of the hash table.
+     * @param numberOfKeys Max number of keys the hash table will be holding. 
+     * @param desiredLoadRate Desired fill or load rate. Generally a smaller fill rate leads to less collisions.
+     * @return A suitable value for hash table size.
+     */
     @Override
     public int calculateM(int numberOfKeys, double desiredLoadRate) {
         int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);

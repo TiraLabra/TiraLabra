@@ -43,14 +43,15 @@ public class FileIO {
      * @param path
      * @return All valid English words given by a file.
      */
-    public List<String> readInWordsFromFile(String path) {
+    public List<String> readInWordsFromFile(String path, int maxLength) {
         List<String> scannedWords = new ArrayList<>();
         try {
             InputStream file = ClassLoader.getSystemResourceAsStream(path);
             Scanner reader = new Scanner(file);            
             while (reader.hasNext()) {
                 String word = reader.nextLine();
-                scannedWords.add(word);
+                if (word.length() <= maxLength)
+                    scannedWords.add(word);
             }
         } catch (Exception e) {
             System.out.println("Words could not be read from " + path);

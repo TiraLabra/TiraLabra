@@ -10,7 +10,7 @@ package sanapuuro.datastructures;
  *
  * @author skaipio
  */
-public interface HashFuncs<T> {
+public interface HashFunction<T> {
 
     /**
      * Calculates hash value for an object with number of tries taken into account.
