@@ -12,27 +12,27 @@ Ensimmäiseksi on testattu hajautusfunktioiden yhteentörmäysten määrää, yh
 <b>General hash function using BigInts</b>  
 Total collisions: 33124  
 Average collision chain length for hash: 1.8461872  
-Max collisions for same hash: 7  
+Longest collision chain: 7  
 
 <b>General hash function using longs</b>  
 Total collisions: 33124  
 Average collision chain length for hash: 1.8461872  
-Max collisions for same hash: 7  
+Longest collision chain: 7  
 
 <b>djb2</b>  
 Total collisions: 32813  
 Average collision chain length for hash: 1.8349258  
-Max collisions for same hash: 6  
+Longest collision chain: 6  
 
 <b>FNV-1a</b>  
 Total collisions: 32930  
 Average collision chain length for hash: 1.839152  
-Max collisions for same hash: 7  
+Longest collision chain: 7  
 
 <b>MurmurHash3</b>  
 Total collisions: 32926  
 Average collision chain length for hash: 1.8390073  
-Max collisions for same hash: 6  
+Longest collision chain: 6  
 
 Toiseksi on testattu hajautustaulukkoon lisäämisen nopeutta. Sanoja lisätään n. 260000. Alla olevien tuloksien perusteella djb2 ja FNV-1a ovat nopeimmat hajautusfunktiot. Kummallakin sanojen lisäämiseen menee n. 0.03s. Hajautusfunktio BigInteillä vaatii aikaa jo pelkästään roskien keräämiseen ja onkin nopeudeltaan huonoin.
 
