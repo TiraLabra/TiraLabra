@@ -3,6 +3,17 @@
 
 #include "huffman.h"
 
+struct HuffmanNode
+{
+	uint32_t Frequency;
+	uint8_t Character;
+	uint32_t Code;
+	uint32_t CodeLength;
+	HuffmanNode* Parent;
+	HuffmanNode* Left;
+	HuffmanNode* Right;
+};
+
 int nodeCmpCharacter(const void* pNode1, const void* pNode2)
 {
 	const HuffmanNode* node1 = (const HuffmanNode*)pNode1;
@@ -175,6 +186,47 @@ bool huffmanDecode(uint8_t* pSrc, unsigned int pSrcLength, uint8_t*& pDst, unsig
 			++srcIndex;
 		}
 		pDst[dstIndex++] = node->Character;
+	}
+
+	return true;
+}
+
+bool huffmanEncodeFile(FILE* pSrc, FILE* pDst)
+{
+	const unsigned int BUFFER_SIZE = 1024;
+	uint8_t buffer[BUFFER_SIZE];
+
+	size_t r;
+	while(r = fread(buffer, 1, BUFFER_SIZE, pSrc))
+	{
+		uint8_t* dstBuffer;
+		unsigned int dstLength;
+		
+		huffmanEncode(buffer, r, dstBuffer, dstLength);
+		
+		fwrite(&dstLength, sizeof(uint32_t), 1, pDst);
+		fwrite(dstBuffer, 1, dstLength, pDst);
+	}
+
+	return true;
+}
+
+bool huffmanDecodeFile(FILE* pSrc, FILE* pDst)
+{
+	const unsigned int BUFFER_SIZE = 1024;
+	uint8_t buffer[BUFFER_SIZE];
+
+	uint32_t srcLength;
+	while(fread(&srcLength, sizeof(uint32_t), 1, pSrc))
+	{
+		uint8_t* dstBuffer;
+		unsigned int dstLength;
+		
+		fread(buffer, 1, srcLength, pSrc);
+
+		huffmanDecode(buffer, srcLength, dstBuffer, dstLength);
+		
+		fwrite(dstBuffer, 1, dstLength, pDst);
 	}
 
 	return true;

@@ -54,6 +54,21 @@ int main(int argc, char** argv)
 		std::cout << c[i];
 	std::cout << std::endl;
 
+	FILE* sig = fopen("testers.txt", "rb");
+	FILE* sigo = fopen("testers.txt.huf", "wb");
+
+	huffmanEncodeFile(sig, sigo);
+	
+	fclose(sig);
+	fclose(sigo);
+
+	sig = fopen("testers.txt.huf", "rb");
+	sigo = fopen("testerstest.txt", "wb");
+
+	huffmanDecodeFile(sig, sigo);
+	
+	fclose(sig);
+	fclose(sigo);
 
 	return 0;
 }
