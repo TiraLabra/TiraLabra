@@ -26,33 +26,34 @@ void printBytes(const c_uint& pBytes, const bool& pSi)
 int main(int argc, char** argv)
 {
 	const char* str = "00112233455556678899955";
-	int length = strlen(str);
+	unsigned int length = strlen(str);
 
-	char* s = new char[length];
-	memcpy(s, str, length);
-	char* d = new char[length * 2];
-	memset(d, 0, length * 2);
-	char* r = new char[length * 2];
-	memset(r, 0, length * 4);
+	uint8_t* a = new uint8_t[length];
+	memcpy(a, str, length);
 
 	std::cout << "Original:" << std::endl;
-	for(int i = 0; i < length; ++i)
-		std::cout << s[i];
+	for(unsigned int i = 0; i < length; ++i)
+		std::cout << a[i];
 	std::cout << std::endl;
 
-	huffmanEncode(s, length, d, length * 2);
+	uint8_t* b;
+	unsigned int dstLength;
+	huffmanEncode(a, length, b, dstLength);
 
 	std::cout << "Encoded:" << std::endl;
-	for(int i = 0; i < length * 2; ++i)
-		std::cout << d[i];
+	for(unsigned int i = 0; i < dstLength; ++i)
+		std::cout << b[i];
 	std::cout << std::endl;
 
-	huffmanDecode(d, length * 2, r, length * 4);
+	uint8_t* c;
+	unsigned int dlen;
+	huffmanDecode(b, dstLength, c, dlen);
 
 	std::cout << "Decoded:" << std::endl;
-	for(int i = 0; i < length * 4; ++i)
-		std::cout << r[i];
+	for(unsigned int i = 0; i < dlen; ++i)
+		std::cout << c[i];
 	std::cout << std::endl;
+
 
 	return 0;
 }
