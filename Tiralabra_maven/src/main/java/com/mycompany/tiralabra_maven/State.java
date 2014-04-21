@@ -33,12 +33,18 @@ public class State implements Comparable<State> {
         return parent;
     }
 
+    public State setParent(State parent) {
+        this.parent = parent;
+        return this;
+    }
+
     public int getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public State setCost(int cost) {
         this.cost = cost;
+        return this;
     }
 
     @Override
@@ -52,7 +58,7 @@ public class State implements Comparable<State> {
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ")";
+        return "(" + x + ", " + y + "){" + cost + "}";
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.mycompany.tiralabra_maven;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -12,13 +10,13 @@ import org.junit.Before;
  *
  * @author Yessergire Mohamed
  */
-public class MazeTest {
+public class SimpleMazeTest {
 
-    Maze maze;
+    SimpleMaze maze;
 
     @Before
     public void setup() {
-        maze = new Maze(10, 10, new State(), new State(1, 2));
+        maze = new SimpleMaze(10, 10, new State(), new State(1, 2));
     }
 
     /**
@@ -26,18 +24,8 @@ public class MazeTest {
      */
     @Test
     public void testAccessors() {
-        assertEquals(new State(), maze.getStartState());
         assertEquals(10, maze.getWidth());
         assertEquals(10, maze.getHeight());
-    }
-
-    /**
-     * Testaa Maze-luokan isGoal-metodia.
-     */
-    @Test
-    public void testIsGoal() {
-        assertFalse(maze.isGoal(new State(1, 1)));
-        assertTrue(maze.isGoal(new State(1, 2)));
     }
 
     /**

@@ -1,54 +1,40 @@
 package com.mycompany.tiralabra_maven;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Maze {
+public interface Maze {
 
-    private final int width, height;
-    private final State start;
-    private final State goal;
+    char START_CHAR = 'S';
+    char GOAL_CHAR = 'G';
+    char PATH_CHAR = '¤';
+    char CELL_CHAR = '.';
+    char WALL_CHAR = '#';
 
-    public Maze(int width, int height, State start, State goal) {
-        this.width = width;
-        this.height = height;
-        this.start = start;
-        this.goal = goal;
-    }
+    int getHeight();
 
-    public boolean isGoal(State g) {
-        return goal.equals(g);
-    }
+    int getWidth();
 
-    public State getStartState() {
-        return start;
-    }
+    State getStartState();
 
-    public int getWidth() {
-        return width;
-    }
+    boolean isGoalState(State g);
 
-    public int getHeight() {
-        return height;
-    }
+    boolean isGoalState(int x, int y);
 
-    public List<State> getSuccessors(State s) {
-        int x = s.getX();
-        int y = s.getY();
-        ArrayList<State> list = new ArrayList<>();
+    State getState(int x, int y);
 
-        if (x > 0) {
-            list.add(new State(x - 1, y, s));
-        }
-        if (y > 0) {
-            list.add(new State(x, y - 1, s));
-        }
-        if (x < width - 1) {
-            list.add(new State(x + 1, y, s));
-        }
-        if (y < height - 1) {
-            list.add(new State(x, y + 1, s));
-        }
-        return list;
-    }
+    List<State> getSuccessors(State s);
+
+    int distance(State from, State to);
+
+    int distanceFromStart(State state);
+
+    int distanceToGoal(State state);
+
+    int getExpandedStates();
+
+    String toString(LinkedList<State> states);
+
+    public int movementCost(State successor);
+
 }
