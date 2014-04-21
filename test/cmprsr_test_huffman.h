@@ -1,3 +1,5 @@
+#include "stdlib.h"
+
 #include <cxxtest/TestSuite.h>
 
 #include "huffman.h"
