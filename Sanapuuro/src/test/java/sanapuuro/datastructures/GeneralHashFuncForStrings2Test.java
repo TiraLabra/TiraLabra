@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
  *
  * @author skaipio
  */
-public class StringHashFuncsTest {
+public class GeneralHashFuncForStrings2Test {
 
     private GeneralHashFuncForStrings2 func = new GeneralHashFuncForStrings2();
 
-    public StringHashFuncsTest() {
+    public GeneralHashFuncForStrings2Test() {
     }
 
     @BeforeClass
