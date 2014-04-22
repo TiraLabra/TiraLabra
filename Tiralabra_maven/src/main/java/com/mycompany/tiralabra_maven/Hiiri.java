@@ -19,8 +19,8 @@ public class Hiiri {
 
     private  int dx;
     private  int dy;
-    private  int x, x_coord = 0;
-    private  int y, y_coord = 0;
+    private  int x, x_coord;
+    private  int y, y_coord;
     private Image image;
     private Wall wall;
 
@@ -132,6 +132,23 @@ public class Hiiri {
      */
     public  int getYcoord(){
         return y_coord;
+    }
+    
+    public void setXcoord(int x_coord){
+        this.x_coord = x_coord;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public void setYcoord(int y_coord){
+        this.y_coord = y_coord;
+    }
+    
+    public void setCoord(int x_coord, int y_coord){
+        this.x_coord = x_coord;
+        this.y_coord = y_coord;
     }
 
     /**

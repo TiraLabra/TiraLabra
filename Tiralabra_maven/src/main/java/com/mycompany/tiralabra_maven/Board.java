@@ -29,7 +29,7 @@ public class Board extends JPanel implements ActionListener{
 //    private final int B_HEIGHT = 350;
 //    private final int INITIAL_X = -40;
 //    private final int INITIAL_Y = -40;
-    private final int DELAY = 50;
+    private final int DELAY = 500;
 
     /**
      *
@@ -44,6 +44,7 @@ public class Board extends JPanel implements ActionListener{
     private Hiiri maus;
     private Timer timer;
     private Wall tiili;
+    private Astar a;
     //private int x, y;
 
     /**
@@ -60,6 +61,8 @@ public class Board extends JPanel implements ActionListener{
         timer.start();
         tiili = new Wall();
         maus = new Hiiri(tiili);
+        a = new Astar();
+        
     }
 
     /**
@@ -92,9 +95,16 @@ public class Board extends JPanel implements ActionListener{
             
             y_map = 0;
             x_map = 0;
+            
+            for(int k = a.reitti.size()-1; k >= 0; k--){
+                a.reitti.get(k);
+                g2d.drawImage(maus.getImage(), a.reitti.get(k).lev*50, a.reitti.get(k).kor*50, this);
+            }
+            
+            
 
-        g2d.drawString(maus.getXcoord()+"", 20, 20);
-        g2d.drawString(maus.getYcoord()+"", 60, 60);
+        //g2d.drawString(maus.getXcoord()+"", 20, 20);
+        //g2d.drawString(maus.getYcoord()+"", 60, 60);
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }

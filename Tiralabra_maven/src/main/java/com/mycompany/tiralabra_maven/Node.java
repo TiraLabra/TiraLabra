@@ -12,7 +12,7 @@ package com.mycompany.tiralabra_maven;
  */
 public class Node {
  
-    private Node next = null;
+    
      int value, kor, lev;
     //astar muuttujat.
     private int f, h, g;
@@ -22,18 +22,16 @@ public class Node {
      * @param value
      * @param next
      */
-    public Node(int value, Node next) {
-        this.next=next;
-        this.value=value;        
-    }
+//    public Node(int value, Node next) {
+//        this.next=next;
+//        this.value=value;        
+//    }
  
     /**
      *
      * @param value
      */
-    public Node(int value) {
-        this.value=value;
-    }
+
     
     /**
      *Pitää mielessään hiiren sijaintia (koordinaatteja) kartalla. 
@@ -48,6 +46,14 @@ public class Node {
         this.kor = kor;
         
     }
+    
+    public Node(int lev, int kor, int h){
+        this.lev = lev;
+        this.kor = kor;
+        this.h = h;
+        //this.g = g;
+    }
+ 
  
     /**
      *
@@ -109,17 +115,17 @@ public class Node {
      *
      * @return
      */
-    public Node getNext() {
-        return next;
-    }
+//    public Node getNext() {
+//        return next;
+//    }
  
     /**
      *
      * @param next
      */
-    public void setNext(Node next) {
-        this.next = next;
-    }
+//    public void setNext(Node next) {
+//        this.next = next;
+//    }
  
     /**
      *
@@ -133,12 +139,12 @@ public class Node {
      *
      * @return
      */
-    public String toString() {
-        String n="null";
- 
-        if (next != null)
-            n = next.toString();
- 
-        return "Node["+value+", "+n+"]";
-    }
+//    public String toString() {
+//        String n="null";
+// 
+//        if (next != null)
+//            n = next.toString();
+// 
+//        return "Node["+value+", "+n+"]";
+//    }
 }
