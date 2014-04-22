@@ -30,6 +30,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultCaret;
+import minimiKeko.Keko;
+import minimiKeko.Solmu;
+import linkitettyLista.Lista;
 
 /**
  * Nimensä mukaisesti luo käyttöliittymän ja siihen tarvittavat komponentit.
@@ -194,33 +197,33 @@ public class Kayttoliittyma extends JFrame {
      * Päivittää muitten pelaajien jäljellä olevia laattoja esittävät valitsimet
      */
     private void paivitaPienetValitsimet() {
-        Queue<Pelaaja> jono = blokus.getPelaajat();
+        Lista<Pelaaja> jono = blokus.getPelaajat();
 
-        if (jono.size() == 3) {
+        if (jono.getListanKoko() == 3) {
             Pelaaja p1 = jono.poll();
             Pelaaja p2 = jono.poll();
             Pelaaja p3 = jono.poll();
             miniLaattaKuva1.setImage(laatat.muodostaPieniKuvaValitsimesta(p1.getLaatat()));
             miniLaattaKuva2.setImage(laatat.muodostaPieniKuvaValitsimesta(p2.getLaatat()));
             miniLaattaKuva3.setImage(laatat.muodostaPieniKuvaValitsimesta(p3.getLaatat()));
-            jono.add(p1);
-            jono.add(p2);
-            jono.add(p3);
-        } else if (jono.size() == 2) {
+            jono.lisaaListaan(p1);
+            jono.lisaaListaan(p2);
+            jono.lisaaListaan(p3);
+        } else if (jono.getListanKoko() == 2) {
             Pelaaja p1 = jono.poll();
             Pelaaja p2 = jono.poll();
             miniLaattaKuva1.setImage(laatat.muodostaPieniKuvaValitsimesta(p1.getLaatat()));
             miniLaattaKuva2.setImage(laatat.muodostaPieniKuvaValitsimesta(p2.getLaatat()));
             miniLaattaKuva3.setImage(laatat.muodostaTyhjaKuva(getBackground()));
-            jono.add(p1);
-            jono.add(p2);
+            jono.lisaaListaan(p1);
+            jono.lisaaListaan(p2);
 
-        } else if (jono.size() == 1) {
+        } else if (jono.getListanKoko() == 1) {
             Pelaaja p1 = jono.poll();
             miniLaattaKuva1.setImage(laatat.muodostaPieniKuvaValitsimesta(p1.getLaatat()));
             miniLaattaKuva2.setImage(laatat.muodostaTyhjaKuva(getBackground()));
             miniLaattaKuva3.setImage(laatat.muodostaTyhjaKuva(getBackground()));
-            jono.add(p1);
+            jono.lisaaListaan(p1);
         } else {
             miniLaattaKuva1.setImage(laatat.muodostaTyhjaKuva(getBackground()));
             miniLaattaKuva2.setImage(laatat.muodostaTyhjaKuva(getBackground()));
@@ -242,32 +245,34 @@ public class Kayttoliittyma extends JFrame {
         loppuTulokset.setLayout(new GridLayout(0, 4, 0, 0));
         JLabel loppu = new JLabel("LOPPUTULOKSET", JLabel.CENTER);
         loppu.setFont(new Font("Arial", Font.BOLD, 30));
-        TreeMap<Integer, Integer> tulokset = blokus.getLopputulokset();
+        //TreeMap<Integer, Integer> tulokset = blokus.getLopputulokset();
+        Keko<Integer> keko = blokus.getLopputulokset();
         int sija = 0;
         int edellinen = 100;
         JLabel sijoitus;
         JLabel pelaaja;
         JLabel tulos;
-
-        for (Map.Entry<Integer, Integer> entry : tulokset.entrySet()) {
-            if (entry.getValue() != edellinen) {
+        Solmu<Integer> s = keko.poll();
+        while (s != null) {
+            if (s.getKey() != edellinen) {
                 sija++;
                 sijoitus = new JLabel(sija + ".");
             } else {
                 sijoitus = new JLabel("");
             }
-            pelaaja = new JLabel(blokus.getIDVariTekstina(entry.getKey()));
-            tulos = new JLabel("" + entry.getValue());
+            pelaaja = new JLabel(blokus.getIDVariTekstina(s.getData()));
+            tulos = new JLabel("" + s.getKey());
             tulos.setFont(new Font("Arial", Font.BOLD, 18));
             pelaaja.setFont(new Font("Arial", Font.BOLD, 18));
             sijoitus.setFont(new Font("Arial", Font.BOLD, 18));
-            tulos.setForeground(getVari(entry.getKey()));
-            pelaaja.setForeground(getVari(entry.getKey()));
+            tulos.setForeground(getVari(s.getData()));
+            pelaaja.setForeground(getVari(s.getData()));
             loppuTulokset.add(sijoitus);
             loppuTulokset.add(pelaaja);
             loppuTulokset.add(new JLabel("   "));
             loppuTulokset.add(tulos);
-            edellinen = entry.getValue();
+            edellinen = s.getKey();
+            s = keko.poll();
         }
         JPanel loppuTuloksetMaster = new JPanel();
         loppuTuloksetMaster.setLayout(new GridLayout(2, 1, 0, 0));

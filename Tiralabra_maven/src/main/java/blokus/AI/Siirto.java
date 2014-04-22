@@ -2,6 +2,10 @@ package blokus.AI;
 
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.logiikka.Laatta;
+import blokus.logiikka.PeliLauta;
+import blokus.logiikka.TarkastusLauta;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Kuvaa laudalle mahdollisesti asetettavaa siirtoa ja sen hyvyyttä
@@ -16,6 +20,7 @@ public class Siirto {
     private Laatta laatta;
     private int[][] tlauta;
     private int hyvyys;
+    private PeliLauta p;
 
     /**
      * Luo halutun siirron
@@ -23,13 +28,14 @@ public class Siirto {
      * @param kohdeJ
      * @param laatta
      */
-    public Siirto(int kohdeI, int kohdeJ, Laatta laatta, int[][] tlauta, int alkuperäisetSiirrot) {
+    public Siirto(int kohdeI, int kohdeJ, Laatta laatta, int[][] tlauta, int alkuperäisetSiirrot, PeliLauta p) {
         this.kohdeI = kohdeI;
         this.kohdeJ = kohdeJ;
         this.laatta = laatta;
         ympari = laatta.getYmpari();
         asento = laatta.getAsento();
         this.tlauta = tlauta;
+        this.p = p;
 
         pisteytaSiirto(alkuperäisetSiirrot);
     }
@@ -39,7 +45,7 @@ public class Siirto {
      * Pisteyttää halutun siirron
      */
     private void pisteytaSiirto(int aS) {
-        hyvyys = laatta.getKoko() + laskeuudetPaikat(aS);
+        hyvyys = laatta.getKoko() + laskeuudetPaikat(aS) + laskeTorppaukset()/2;
     }
 
     /*
@@ -54,7 +60,7 @@ public class Siirto {
        
     }
 
-    private void testaaLaatta(int[][] l, int y, int x) {
+    private int[][] testaaLaatta(int[][] l, int y, int x) {
         for (int i = 0; i < GlobaalitMuuttujat.RUUDUKON_KOKO; i++) {
             for (int j = 0; j < GlobaalitMuuttujat.RUUDUKON_KOKO; j++) {
 
@@ -70,6 +76,19 @@ public class Siirto {
                 }
             }
         }
+        return l;
+    }
+    
+        private int[][] testaaVainLaattaa(int[][] l, int y, int x) {
+        for (int i = 0; i < GlobaalitMuuttujat.RUUDUKON_KOKO; i++) {
+            for (int j = 0; j < GlobaalitMuuttujat.RUUDUKON_KOKO; j++) {
+
+                if (laatta.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA) {
+                    l[y + i - 3][x + j - 3] = 3;
+                }
+            }
+        }
+        return l;
     }
 
     private boolean onkoLaudalla(int y, int x, int i, int j) {
@@ -88,6 +107,19 @@ public class Siirto {
             
         }
         return paikat;
+    }
+    
+    private int laskeTorppaukset(){
+        HashMap<Integer,TarkastusLauta> tarLaudat = p.getTarkastusLaudat();
+        int torppaus = 0;
+        for (TarkastusLauta l : tarLaudat.values()) {
+           int apu = laskeMaara(l.getLauta(), 1);
+           int [][] kopio = kopioiLauta(l.getLauta());
+           int[][] mahdol = testaaVainLaattaa(kopio, kohdeI, kohdeJ);
+           int apu2 = laskeMaara(mahdol, 1);
+           torppaus += apu -apu2;
+        }
+      return torppaus;
     }
     
     private int[][] kopioiLauta(int[][] l) {

@@ -25,13 +25,13 @@ public class BlokusTest extends TestCase {
 
     
     public void testpelaajiaOikeaMaaraJaYksiVuorossa() {
-        assertEquals(3, blokus.getPelaajat().size());
+        assertEquals(3, blokus.getPelaajat().getListanKoko());
         assertTrue(blokus.getVuorossa() != null);
     }
 
     public void testvuoronLoppumisenJalkeenSamanverranPelaajiaJonossa() {
         blokus.lopetaVuoro(false, false);
-        assertEquals(3, blokus.getPelaajat().size());
+        assertEquals(3, blokus.getPelaajat().getListanKoko());
         assertTrue(blokus.getVuorossa() != null);
     }
 

@@ -55,6 +55,8 @@ public class Linkki<T> {
     public void setSeuraava(Linkki<T> l) {
         seuraava = l;
     }
+    
+    
 
     /**
      *

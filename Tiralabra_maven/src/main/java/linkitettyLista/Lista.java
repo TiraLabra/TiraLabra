@@ -29,9 +29,33 @@ public class Lista<T> implements Iterable<T> {
             while (seuraava.getSeuraava() != null) {
                 seuraava = seuraava.getSeuraava();
             }
-            seuraava.setSeuraava(new Linkki(o));
+            Linkki<T> lisattava = new Linkki<T>(o);
+            lisattava.setEdellinen(seuraava);
+            seuraava.setSeuraava(lisattava);
         
         koko++;
+    }
+    
+    
+    public T poll() {
+        Linkki<T> palautettava = ensimmainen.getSeuraava();
+        
+        if (palautettava != null) {
+            if (palautettava.getSeuraava() != null) {
+                palautettava.getSeuraava().setEdellinen(ensimmainen);
+            }
+            
+            ensimmainen.setSeuraava(palautettava.getSeuraava());
+        }
+        
+        if (palautettava == null) {
+            return null;
+        } else {
+            koko--;
+            return palautettava.getData();
+        }
+        
+        
     }
 
     /**

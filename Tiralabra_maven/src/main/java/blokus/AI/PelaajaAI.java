@@ -15,9 +15,9 @@ import linkitettyLista.Lista;
 public class PelaajaAI {
 
     Pelaaja omaTilanne;
-    //ArrayList<Sijainti> laudanMahdolliset;
     Lista<Sijainti> laudanMahdolliset;
     Siirto parasSiirto;
+    PeliLauta p;
    
 
     /**
@@ -37,13 +37,13 @@ public class PelaajaAI {
      * @param peliLauta
      */
     public void aloitaVuoro(PeliLauta peliLauta) {
+        p = peliLauta;
         parasSiirto = null;
         listaaMahdollisetAsettamisPaikat();
         kayLaatatLapi();
         if (parasSiirto != null) {
             parasSiirto.getLaatta().kaannaTiettyynAsentoon(parasSiirto.getAsento(), parasSiirto.getYmpari());
             peliLauta.lisaaLaattaLaudalle(omaTilanne.getPelaajantID(), parasSiirto.getLaatta(), parasSiirto.getKohdeI(), parasSiirto.getKohdeJ());
-            kuvaalauta(omaTilanne.getTarkastusLauta().getLauta());
             omaTilanne.getLaatat().getLaattaById(parasSiirto.getLaatta().getId());
             omaTilanne.getLaatat().poistaLaattaValitsemesta(parasSiirto.getLaatta().getId());
         } else {
@@ -139,7 +139,7 @@ public class PelaajaAI {
             for (int j = 0; j < la.getMuoto().length; j++) {
                 if (la.getMuoto()[i][j] == GlobaalitMuuttujat.LAATTA) {
                     if (voikoLisata(la, s.getI() - (i - 3), s.getJ() - (j - 3), l)) {
-                        Siirto si = new Siirto(s.getI() - (i - 3), s.getJ() - (j - 3), la, l,laudanMahdolliset.getListanKoko());
+                        Siirto si = new Siirto(s.getI() - (i - 3), s.getJ() - (j - 3), la, l,laudanMahdolliset.getListanKoko(), p);
                         if (parasSiirto == null || parasSiirto.getHyvyys() < si.getHyvyys()) {
                             parasSiirto = si;
                         }
