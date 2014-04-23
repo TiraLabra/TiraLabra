@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>HTML5 Node Diagram</title>
+    <!--<script src="lib/jquery-1.7.2.min.js"></script>-->
+    <script src="lib/jquery-2.1.0.min.js"></script>
+    <script src="lib/models.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    
+    <link rel="stylesheet" href="css/diagram.css" type="text/css" media="screen">
+  </head>
+  <body>
+    <div id="stage">
+    </div>
+    <div id="ctrl">
+    	<p>Choose Start and End Nodes by Clicking</p>
+    	<div id="error"></div>
+    	<span class="start bold">Start: </span><span id="start"></span><br />
+    	<span class="end">End: </span><span id="end"></span><br /><br />
+    	<button class="btn" id="search">Search</button> <button class="btn" id="initialize">Initialize</button> <button class="btn" id="randomize">Randomize</button>
+    	<div id="results">
+    		<ul id="result"></ul>
+    	</div>
+    </div>
+    <script src="js/d2.js"></script>
+  </body>
+</html>
