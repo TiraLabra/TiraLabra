@@ -90,3 +90,7 @@ body {
 .bold {
 	font-weight: bold;	
 }
+#error {
+	color: red;
+	margin: 10px 0;
+}

@@ -190,6 +190,22 @@
 						"nodeG": 25						
 					}
 								
+			},
+			"nodeL": 
+				{
+				"title": "Node L",
+				"location": 
+					{
+						"x": 850,
+						"y": 350
+					}
+				,
+				"neighbours": 
+					{
+						"nodeK": 13,
+						"nodeH": 25						
+					}
+								
 			}
 			
 		}

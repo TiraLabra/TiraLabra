@@ -92,6 +92,8 @@
 		openNodes = new Array;
 		closedNodes = new Array;
 		minDistanceToEnd = 0;
+		$("#randomize, #search").removeAttr("disabled");
+		$("#error").html("");
 	});    
   }  	
 		// version of A* search
@@ -188,7 +190,7 @@
 	    	else {
 	    		if (minDistanceToEnd == 0) {
 		    		window.console.log("Unreachable");
-		    		alert("Unreachable");
+		    		$("#error").html("Unreachable");
 		    	}
 		    	else {
 		    		path = new Array;
@@ -329,14 +331,16 @@
   		 	var start = $("#start").text();
   		 	var end = $("#end").text();
   		 	if (start != '' && end != '') {
+  		 		$("#error").html("");
 	  			nodeSearch(""+start+"", ""+end+"");
+	  			$("#randomize, #search").attr("disabled", "disabled");	  				  			 
 	  		}
 	  		else {
 	  			if (start == '') {
-	  				alert("Choose Start and End Nodes");
+	  				$("#error").html("Choose Start and End Nodes");	  				
 	  			}
 	  			else {
-	  				alert("Choose End Node");
+	  				$("#error").html("Choose End Node");
 	  			}
 	  		}
   		});
