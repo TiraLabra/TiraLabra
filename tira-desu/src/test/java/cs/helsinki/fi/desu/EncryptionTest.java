@@ -68,8 +68,10 @@ public class EncryptionTest {
     @Test
     public void testEncryptSingleDES() {
         byte[] test = null;
-        try {
+        try {                
             keygen = KeyGenerator.getInstance("DES");
+            secKey = keygen.generateKey();
+            test = secKey.getEncoded();
             desCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
             desCipher.init(Cipher.ENCRYPT_MODE, secKey);
             test = desCipher.doFinal("test string".getBytes());
@@ -80,11 +82,9 @@ public class EncryptionTest {
         } catch (BadPaddingException bpe)        { fail("Bad padding");
         }
         
-        secKey = keygen.generateKey();
-        byte[] testKey = secKey.getEncoded();
-        byte[] result = enc.encryptSingleDES("test string".getBytes(), testKey);
+        byte[] result = enc.encryptSingleDES("test string".getBytes(), test);
         
-        assertTrue(Arrays.equals(test, result));
+        assertTrue(Arrays.equals(result, test));
     }
     
     /**
@@ -104,6 +104,9 @@ public class EncryptionTest {
         byte[] result = {0, 1, 2, 3, 4, 4, 4, 4};
         
         test = enc.insertPadding(test);
+        
+        for (byte adsf: test)
+            System.out.println(adsf);
         assertTrue(Arrays.equals(result, test));
     }
     
@@ -111,11 +114,14 @@ public class EncryptionTest {
      * Test of insertPadding method, of class Encryption.
      */
     @Test
-    public void testInsertPaddingDoesntInsertToFullBlock() {
+    public void testInsertPaddingInsertsCorrectlyToFullBlock() {
         byte[] test = {0, 1, 2, 3, 4, 5, 6, 7};
-        byte[] result = {0, 1, 2, 3, 4, 5, 6, 7};
-        
+        byte[] result = {0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8};
+                
         test = enc.insertPadding(test);
+        
+        for (byte adsf: test)
+            System.out.println(adsf);
         assertTrue(Arrays.equals(result, test));
     }
 }

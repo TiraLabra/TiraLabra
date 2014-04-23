@@ -50,7 +50,6 @@ public class Encryption {
         byte[] block = new byte[8];
         data = this.insertPadding(data);
         K = des.generateSubkeys(key);
-        int count = 0;
         int i;
 
         for (i = 0; i < data.length + length; i++) {
@@ -60,11 +59,8 @@ public class Encryption {
             }
             if (i < data.length)
                 block[i % 8] = data[i];
-            else {														
-                block[i % 8] = data[count % 8];
-                count++;
-            }
         }
+        
         if (block.length == 8){
             block = encrypt64Block(block,K);
             System.arraycopy(block, 0, output, i - 8, block.length);
@@ -97,24 +93,21 @@ public class Encryption {
     }
     
     /**
-     * Pads a block under 64 bits to 64 with bytes equal in value to bytes required.
-     * Implements standard PCKS#5.
+     * Pads the byte array of data to be encrypted. If all blocks are full, inserts
+     * a block of 0x08, otherwise 0x0n, where n is the number of empty bytes in
+     * last block. Implements standard PCKS#5.
      * 
-     * @param data block requiring padding
-     * @return     padded block
+     * @param data data to be padded
+     * @return     padded data
      */
     public byte[] insertPadding(byte[] data) {
-        int count = data.length % 8;
-        if (count == 0)
-            return data;
+        int count = (byte) (8 - data.length % 8);
+        byte[] temp = new byte[data.length + count];
         
-        byte[] temp = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            if (i < data.length)
-                temp[i] = data[i];
-            else
-                temp[i] = (byte) count;
-        }
+        System.arraycopy(data, 0, temp, 0, data.length);
+        for (int i = data.length; i < temp.length; i++)
+            temp[i] = (byte) count;
+        
         return temp;
     }
 }
