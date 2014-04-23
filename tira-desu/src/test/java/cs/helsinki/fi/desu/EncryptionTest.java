@@ -34,19 +34,14 @@ public class EncryptionTest {
      */
     @Test
     public void testEncryptTripleDES() {
-        
-        fail("Not Implemented Yet.");
-        
         byte[] test = null;
-        byte[][] testKey = null;
-                
+        byte[][] testKey = new byte[3][56];
+        
         try {
             keygen = KeyGenerator.getInstance("DESede");
             secKey = keygen.generateKey();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++)
                 testKey[i] = secKey.getEncoded();
-            }
-            
             desCipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             desCipher.init(Cipher.ENCRYPT_MODE, secKey);
             test = desCipher.doFinal();
@@ -104,9 +99,6 @@ public class EncryptionTest {
         byte[] result = {0, 1, 2, 3, 4, 4, 4, 4};
         
         test = enc.insertPadding(test);
-        
-        for (byte adsf: test)
-            System.out.println(adsf);
         assertTrue(Arrays.equals(result, test));
     }
     
@@ -119,9 +111,6 @@ public class EncryptionTest {
         byte[] result = {0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8};
                 
         test = enc.insertPadding(test);
-        
-        for (byte adsf: test)
-            System.out.println(adsf);
         assertTrue(Arrays.equals(result, test));
     }
 }

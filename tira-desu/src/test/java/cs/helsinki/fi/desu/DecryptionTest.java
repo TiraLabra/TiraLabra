@@ -24,12 +24,10 @@ public class DecryptionTest {
     private KeyGenerator keygen;
     private SecretKey secKey;
     private Cipher desCipher;
-    private byte[] encryptedTest;
     
     public DecryptionTest() {
         dec = new Decryption();
         des = new DES();
-        encryptedTest = null;
     }
     
     /**
@@ -37,30 +35,26 @@ public class DecryptionTest {
      */
     @Test
     public void testDecryptTripleDES() {
-        
-        fail("Not Implemented Yet.");
-        
-        byte[] test = null;
-        byte[][] testKey = null;
+        byte[] result = null;
+        byte[][] testKey = new byte[3][56];
                 
         try {
             keygen = KeyGenerator.getInstance("DESede");
             secKey = keygen.generateKey();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++)
                 testKey[i] = secKey.getEncoded();
-            }
-            encryptedTest = new Encryption().encryptTripleDES("test string".getBytes(), testKey);
             desCipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             desCipher.init(Cipher.DECRYPT_MODE, secKey);
-            test = desCipher.doFinal();
+            result = desCipher.doFinal();
         } catch (NoSuchAlgorithmException nsae)  { fail("No such algorithm available");
         } catch (NoSuchPaddingException nspe)    { fail("No such padding available");
         } catch (InvalidKeyException ike)        { fail("Invalid key");
         } catch (IllegalBlockSizeException ibse) { fail("Illegal Block Size");
         } catch (BadPaddingException bpe)        { fail("Bad padding");
         }
-                
-        assertTrue(Arrays.equals("test string".getBytes(), test));
+
+        byte[] test = new Encryption().encryptTripleDES("test string".getBytes(), testKey);
+        assertTrue(Arrays.equals(result, test));
     }
         
     /**
@@ -68,24 +62,25 @@ public class DecryptionTest {
      */
     @Test
     public void testDecryptSingleDES() {
-        byte[] test = null;
+        byte[] test;
+        byte[] result = null;
+        byte[] testKey;
         
         try {
             keygen = KeyGenerator.getInstance("DES");
             desCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-            desCipher.init(Cipher.DECRYPT_MODE, secKey);
-            test = desCipher.doFinal(encryptedTest);
+            secKey = keygen.generateKey();
+            testKey = secKey.getEncoded();
+            desCipher.init(Cipher.ENCRYPT_MODE, secKey);
+            result = desCipher.doFinal("test string".getBytes());
         } catch (NoSuchAlgorithmException nsae)  { fail("No such algorithm available");
         } catch (NoSuchPaddingException nspe)    { fail("No such padding available");
         } catch (InvalidKeyException ike)        { fail("Invalid key");
         } catch (IllegalBlockSizeException ibse) { fail("Illegal Block Size");
         } catch (BadPaddingException bpe)        { fail("Bad padding");
         }
-                
-        secKey = keygen.generateKey();
-        byte[] testKey = secKey.getEncoded();
-        encryptedTest = new Encryption().encryptSingleDES("test string".getBytes(), testKey);
-        
+               
+        test = new Encryption().encryptSingleDES("test string".getBytes(), result);
         assertTrue(Arrays.equals("test string".getBytes(), test));
     }
     

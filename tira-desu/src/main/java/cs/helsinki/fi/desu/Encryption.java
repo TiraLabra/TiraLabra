@@ -30,11 +30,26 @@ public class Encryption {
      * @return      encrypted data
      */
     public byte[] encryptTripleDES(byte[] data, byte[][] keys) {
-        K = des.generateSubkeys(keys[0]);
-        K1 = des.generateSubkeys(keys[1]);
-        K2 = des.generateSubkeys(keys[2]);
+        int length = 8 - data.length % 8;
+        byte[] output = insertPadding(data);
+        byte[] bloc = new byte[8];
+        int i = 0;
+
+        this.K = des.generateSubkeys(keys[0]);
+        this.K1 = des.generateSubkeys(keys[1]);
+        this.K2 = des.generateSubkeys(keys[2]);
+		
+        for (i = 0; i < data.length + length; i++) {
+            if (i > 0 && i % 8 == 0) {
+                bloc = encrypt64Block(bloc, this.K);						
+                bloc = encrypt64Block(bloc, this.K1);		
+                bloc = encrypt64Block(bloc, this.K2);
+                System.arraycopy(bloc, 0, output, i - 8, bloc.length);
+            }
+            bloc[i % 8] = data[i];
+        }
         
-        return null;
+        return output;
     }
     
     /**
@@ -46,25 +61,19 @@ public class Encryption {
      */
     public byte[] encryptSingleDES(byte[] data, byte[] key) {
         int length = 8 - data.length % 8;
-        byte[] output = new byte[data.length + length];
+        byte[] output = this.insertPadding(data);
         byte[] block = new byte[8];
-        data = this.insertPadding(data);
         K = des.generateSubkeys(key);
         int i;
 
-        for (i = 0; i < data.length + length; i++) {
+        for (i = 0; i < data.length; i++) {
             if (i > 0 && i % 8 == 0) {
-                block = encrypt64Block(block,K);
+                block = encrypt64Block(block, K);
                 System.arraycopy(block, 0, output, i - 8, block.length);
             }
-            if (i < data.length)
-                block[i % 8] = data[i];
+            block[i % 8] = data[i];
         }
         
-        if (block.length == 8){
-            block = encrypt64Block(block,K);
-            System.arraycopy(block, 0, output, i - 8, block.length);
-        }
         return output;
     }
     

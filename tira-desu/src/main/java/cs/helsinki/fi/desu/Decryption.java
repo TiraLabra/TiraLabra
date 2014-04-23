@@ -29,11 +29,31 @@ public class Decryption {
      * @return     decrypted data
      */
     public byte[] decryptTripleDES(byte[] data, byte[][] keys) {
-        K = des.generateSubkeys(keys[0]);
-        K1 = des.generateSubkeys(keys[1]);
-        K2 = des.generateSubkeys(keys[2]);
+        int i;
+        byte[] output = new byte[data.length];
+        byte[] block = new byte[8];
 
-        return null;
+        this.K = des.generateSubkeys(keys[0]);
+        this.K1 = des.generateSubkeys(keys[1]);
+        this.K2 = des.generateSubkeys(keys[2]);
+
+        for (i = 0; i < data.length; i++) {
+            if (i > 0 && i % 8 == 0) {
+                block = decrypt64Block(block, K2);
+                block = decrypt64Block(block, K1);
+                block = decrypt64Block(block, K);
+                System.arraycopy(block, 0, output, i - 8, block.length);
+            }
+            block[i % 8] = data[i];
+        }
+        
+        block = decrypt64Block(block, K2);
+        block = decrypt64Block(block, K1);
+        block = decrypt64Block(block, K);
+        System.arraycopy(block, 0, output, i - 8, block.length);
+
+        output = this.deletePadding(output);
+        return output;
     }
 
     /**
@@ -54,9 +74,7 @@ public class Decryption {
                 block = decrypt64Block(block, K);
                 System.arraycopy(block, 0, output, i - 8, block.length);
             }
-            if (i < data.length) {
-                block[i % 8] = data[i];
-            }
+            block[i % 8] = data[i];
         }
 
         block = decrypt64Block(block, K);
