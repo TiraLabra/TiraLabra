@@ -6,4 +6,4 @@ Man liikkuu käyttämällä nuolinäppäimiä. Voittaakseen pelaajan on kerätt�
 
 Lisäpisteitä pelaaja voi kerätä syömällä hedelmiä tai syömällä ekstrapistepalloja, jotka muuttavat haamut heikoiksi(sininen väri). Kun haamut ovat heikkoja, Man pystyy syömään haamun kerran, minkä jälkeen haamu palaa karsinaansa ja lähtee kiertämään jälleen vahvana.
 
-Pelin .jar tiedosto sijaitsee TiraLabra-projektin juuressa. Peli alkaa suoraan, kun ohjelman käynnistää. Peliin liittyvä ennätykset tekstitiedosto tallentuu sen luontivaiheessa samaaan hakemistoon pelin kanssa.
+Pelin .jar tiedosto sijaitsee TiraLabra-projektin juuressa. Peli alkaa suoraan, kun ohjelman käynnistää. Peliin liittyvä ennätykset-tekstitiedosto tallentuu sen luontivaiheessa samaaan hakemistoon pelin kanssa.
