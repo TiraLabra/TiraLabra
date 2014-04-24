@@ -87,7 +87,7 @@ pollaaPienin()
 </code></pre>
 
 <h4>Aikavaativuus</h4>
-Astar algoritmin reitin selvittämisen aikavaativuus on O(n+nlogn).
+Astar algoritmin reitin selvittämisen aikavaativuus on O(n^2*log n).
 
 <pre><code>Astar(A, a, b)
 	lisaaSopivatSolmut(A, B)  //O(n)
