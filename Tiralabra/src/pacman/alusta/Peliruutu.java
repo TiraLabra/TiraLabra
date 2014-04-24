@@ -37,9 +37,17 @@ public class Peliruutu implements Comparable<Peliruutu>{
      */
     private boolean onkoExtraPallo;
     
+    /**
+     * Kertoo etäisyyden alkuun.
+     */
     private int etaisyysAlkuun;
-    
+    /**
+     * Kertoo etäisyyden maaliin.
+     */
     private int etaisyysMaaliin;
+    /**
+     * Kertoo edellisen peliruudun.
+     */
     private Peliruutu edellinen;
 
     /**
@@ -125,6 +133,11 @@ public class Peliruutu implements Comparable<Peliruutu>{
         return this.onkoExtraPallo;
     }
     
+    /**
+     * Equals metodi peliruuduille.
+     * @param olio
+     * @return 
+     */
     @Override
     public boolean equals(Object olio) {
         if(olio == null) {
@@ -143,6 +156,10 @@ public class Peliruutu implements Comparable<Peliruutu>{
         return true;
     }
 
+    /**
+     * Peliruudulle lasketaan oman hajautusarvon.
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
