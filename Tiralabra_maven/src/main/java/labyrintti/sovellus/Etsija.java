@@ -95,8 +95,8 @@ public class Etsija {
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
      */
     private void relax(Ruutu kasiteltava, Ruutu viereinen) {
-        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
-            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1 && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
+            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1);
             viereinen.setEdellinen(kasiteltava);
             kaymattomat.paivitaRuutuKekoon(viereinen);
 //            kaymattomat.rakennaKeko();

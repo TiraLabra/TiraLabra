@@ -51,7 +51,7 @@ public class Kayttoliittyma implements Runnable {
     public void run() {
         Pohja p = kaynnistys.getPohja();
         frame = new JFrame("Labyrintti");
-        frame.setPreferredSize(new Dimension((p.getLeveys() + 1) * (sivu+2) + 80, (p.getKorkeus() + 1) * (sivu+2)));
+        frame.setPreferredSize(new Dimension((p.getLeveys() + 2) * (sivu+2) + 80, (p.getKorkeus() + 1) * (sivu+2)));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         luoKomponentit(frame.getContentPane());

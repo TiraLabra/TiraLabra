@@ -78,7 +78,7 @@ public class Minimikeko {
             }
             int oikea = oikeaLapsi(solmu);
             if (oikea < keonKoko) { // jos solmulla on oikea lapsi
-                int pienin = etsiPienin(vasen, oikea);
+                int pienin = etsiPienempiLapsi(vasen, oikea);
                 if (ruudut[solmu].getEtaisyyksienSumma() > ruudut[pienin].getEtaisyyksienSumma()) {
                     vaihdaSolmujenPaikkaa(solmu, pienin);
                     solmu = pienin;
@@ -102,7 +102,7 @@ public class Minimikeko {
      * @param oikea solmun oikean lapsen indeksi
      * @return indeksi, jonka solmun arvo on pienempi
      */
-    private int etsiPienin(int vasen, int oikea) {
+    private int etsiPienempiLapsi(int vasen, int oikea) {
         int pienin = oikea;
         if (ruudut[vasen].getEtaisyyksienSumma() < ruudut[oikea].getEtaisyyksienSumma()) {
 //        if (ruudut[vasen].getArvo() < ruudut[oikea].getArvo()) {
