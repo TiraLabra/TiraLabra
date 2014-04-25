@@ -42,7 +42,7 @@ public class SimpleMaze extends AbstractMaze {
         if (y < height - 1) {
             list.add(new State(x, y + 1, s));
         }
-        expanded += list.size();
+        expanded += 1;
         return list;
     }
 
@@ -71,10 +71,5 @@ public class SimpleMaze extends AbstractMaze {
             sb.append('\n');
         }
         return sb.toString();
-    }
-
-    @Override
-    public int distanceFromStart(State to) {
-        return 1;
     }
 }

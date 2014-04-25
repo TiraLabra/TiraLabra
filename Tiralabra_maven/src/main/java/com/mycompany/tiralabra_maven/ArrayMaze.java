@@ -6,12 +6,13 @@ import java.util.List;
 
 public class ArrayMaze extends AbstractMaze {
 
+    public static final int WALL = 0;
     public static final int START = -1;
     public static final int GOAL = -2;
 
     private final int[][] maze;
 
-    public ArrayMaze(int[][] maze, State start, State goal) {
+    private ArrayMaze(int[][] maze, State start, State goal) {
         super(start, goal);
         this.maze = maze;
     }
@@ -28,7 +29,6 @@ public class ArrayMaze extends AbstractMaze {
                 }
             }
         }
-        System.out.println("s: " + start + ", g: " + goal);
         return new ArrayMaze(maze, start, goal);
     }
 
@@ -66,7 +66,7 @@ public class ArrayMaze extends AbstractMaze {
             if (state.getCost() != 0)
                 copy.add(state);
         }
-        expanded += copy.size();
+        expanded += 1;
         return copy;
     }
 
@@ -97,11 +97,6 @@ public class ArrayMaze extends AbstractMaze {
             sb.append('\n');
         }
         return sb.toString();
-    }
-
-    @Override
-    public int distanceFromStart(State state) {
-        return Math.abs(start.getX() - state.getX()) + Math.abs(start.getY() - state.getY());
     }
 
 }

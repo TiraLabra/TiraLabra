@@ -42,8 +42,8 @@ abstract public class AbstractMaze implements Maze {
     }
 
     @Override
-    public int distanceToGoal(State from) {
-        return distance(from, goal);
+    public int distanceToGoal(State to) {
+        return distance(to, goal);
     }
 
     @Override

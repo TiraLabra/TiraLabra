@@ -1,22 +1,21 @@
 package com.mycompany.tiralabra_maven;
 
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ArrayMazeTest {
 
-    private ArrayMaze maze;
+    private Maze maze;
     private int[][] array;
 
     @Before
     public void setUp() {
         array = new int[][]{
+            new int[]{ArrayMaze.START, 0, 0},
             new int[]{1, 0, 0},
-            new int[]{1, 0, 0},
-            new int[]{1, 1, 1}};
-        maze = new ArrayMaze(array, new State(), new State(2, 2));
+            new int[]{1, 1, ArrayMaze.GOAL}};
+        maze = ArrayMaze.create(array);
     }
 
     /**
@@ -33,7 +32,7 @@ public class ArrayMazeTest {
      */
     @Test
     public void testGetSuccessors() {
-        assertEquals(1, maze.getSuccessors(maze.getStartState()).size());
+        assertEquals(maze.getSuccessors(maze.getStartState()).toString(), 1, maze.getSuccessors(maze.getStartState()).size());
         assertEquals(2, maze.getSuccessors(new State(1, 0)).size());
         assertEquals(2, maze.getSuccessors(new State(2, 0)).size());
         assertEquals(2, maze.getSuccessors(new State(2, 1)).size());
