@@ -1,4 +1,7 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.algorithm;
+
+import com.mycompany.tiralabra_maven.Maze;
+import com.mycompany.tiralabra_maven.State;
 
 class BreathFirstSearch extends SearchStategy {
 

@@ -1,6 +1,9 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.algorithm;
 
-class AStartSearch extends SearchStategy {
+import com.mycompany.tiralabra_maven.Maze;
+import com.mycompany.tiralabra_maven.State;
+
+public class AStartSearch extends SearchStategy {
 
     public AStartSearch(Maze maze) {
         super(maze);
