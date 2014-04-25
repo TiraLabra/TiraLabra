@@ -3,7 +3,7 @@ package com.mycompany.tiralabra_maven.algorithm;
 import com.mycompany.tiralabra_maven.data.Maze;
 import com.mycompany.tiralabra_maven.data.State;
 
-class BreathFirstSearch extends SearchStategy {
+public class BreathFirstSearch extends SearchStategy {
 
     public BreathFirstSearch(Maze maze) {
         super(maze);

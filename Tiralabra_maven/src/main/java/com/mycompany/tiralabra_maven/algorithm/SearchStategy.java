@@ -41,7 +41,8 @@ public abstract class SearchStategy {
                     open.remove(successor);
                 }*/
                 if (!open.contains(successor) && !closed.contains(successor)) {
-                    successor.setCost(cost + heuristicValue(successor));
+                    successor.setCost(cost);
+                    successor.setRank(heuristicValue(successor));
                     open.add(successor);
                 }
             }

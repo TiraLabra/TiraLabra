@@ -1,7 +1,7 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.data;
 
-import com.mycompany.tiralabra_maven.data.State;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class StateTest {

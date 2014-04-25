@@ -4,6 +4,7 @@ public class State implements Comparable<State> {
 
     private State parent;
     private int cost;
+    private int rank;
     private final int x, y;
 
     public State(int x, int y, State parent) {
@@ -63,7 +64,15 @@ public class State implements Comparable<State> {
 
     @Override
     public int compareTo(State s) {
-        return cost - s.cost;
+        return (rank + cost) - (s.rank + s.cost);
     }
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 
 }

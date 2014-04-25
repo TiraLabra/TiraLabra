@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven.data;
 
-import com.mycompany.tiralabra_maven.data.State;
 import java.util.LinkedList;
 import java.util.List;
 

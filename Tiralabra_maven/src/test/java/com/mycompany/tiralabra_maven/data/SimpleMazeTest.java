@@ -1,16 +1,15 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.data;
 
-import com.mycompany.tiralabra_maven.data.SimpleMaze;
-import com.mycompany.tiralabra_maven.data.State;
 import java.util.List;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 
 /**
  * Maze-luokan testit
- *
- * @author Yessergire Mohamed
  */
 public class SimpleMazeTest {
 
@@ -35,7 +34,7 @@ public class SimpleMazeTest {
      */
     @Test(expected = NullPointerException.class)
     public void testGetSuccessorsNullThrowsException() {
-        List<State> successors = maze.getSuccessors(null);
+        maze.getSuccessors(null);
     }
 
     /**

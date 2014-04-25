@@ -1,8 +1,5 @@
 package com.mycompany.tiralabra_maven.data;
 
-import com.mycompany.tiralabra_maven.data.Maze;
-import com.mycompany.tiralabra_maven.data.State;
-
 abstract public class AbstractMaze implements Maze {
 
     protected final State start;

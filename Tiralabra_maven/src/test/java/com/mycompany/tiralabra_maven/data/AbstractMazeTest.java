@@ -1,11 +1,11 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.data;
 
-import com.mycompany.tiralabra_maven.data.AbstractMaze;
-import com.mycompany.tiralabra_maven.data.State;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class AbstractMazeTest {
