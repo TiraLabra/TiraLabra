@@ -1,5 +1,6 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.data;
 
+import com.mycompany.tiralabra_maven.data.State;
 import java.util.LinkedList;
 
 public class Path {

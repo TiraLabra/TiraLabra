@@ -1,5 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
+import com.mycompany.tiralabra_maven.data.ArrayMaze;
+import com.mycompany.tiralabra_maven.data.Maze;
+import com.mycompany.tiralabra_maven.data.State;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

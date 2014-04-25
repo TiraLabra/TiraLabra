@@ -1,5 +1,6 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.data;
 
+import com.mycompany.tiralabra_maven.data.State;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,8 +8,8 @@ public interface Maze {
 
     char START_CHAR = 'S';
     char GOAL_CHAR = 'G';
-    char PATH_CHAR = '¤';
-    char CELL_CHAR = '.';
+    char PATH_CHAR = '*';
+    char CELL_CHAR = ' ';
     char WALL_CHAR = '#';
 
     int getHeight();

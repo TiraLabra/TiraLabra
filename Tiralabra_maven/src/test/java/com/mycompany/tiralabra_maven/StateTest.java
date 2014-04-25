@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import com.mycompany.tiralabra_maven.data.State;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

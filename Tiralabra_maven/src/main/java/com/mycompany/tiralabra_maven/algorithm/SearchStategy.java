@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven.algorithm;
 
-import com.mycompany.tiralabra_maven.Maze;
-import com.mycompany.tiralabra_maven.Path;
-import com.mycompany.tiralabra_maven.State;
+import com.mycompany.tiralabra_maven.data.Maze;
+import com.mycompany.tiralabra_maven.data.Path;
+import com.mycompany.tiralabra_maven.data.State;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
