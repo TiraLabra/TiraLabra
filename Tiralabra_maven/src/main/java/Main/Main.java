@@ -2,7 +2,7 @@ package Main;
 
 /**
  * Ohjelman pääluokka.
- * 
+ *
  * @author nkostiai
  */
 public class Main {
@@ -11,8 +11,6 @@ public class Main {
         Kayttoliittyma kali = new Kayttoliittyma();
         kali.kaynnista();
 
-        
     }
-    
 
 }

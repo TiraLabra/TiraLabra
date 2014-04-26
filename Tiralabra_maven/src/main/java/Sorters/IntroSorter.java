@@ -3,32 +3,38 @@ package Sorters;
 /**
  *
  * @author nkostiai
- * 
- * Introsort on hybridi-järjestämisealgoritmi, joka käyttää hyväkseen sekä quicksortia, että heapsortia.
- * Introsort aloitetaan quicksortilla ja rekursiosyvyyden noustessa tarpeeksi korkealle algoritmi vaihtaa heapsorttiin.
- * Algoritmi implementoi myös insertionsortin, jota käytetään taulukon ollessa tarpeeksi pieni.
- * 
+ *
+ * Introsort on hybridi-järjestämisealgoritmi, joka käyttää hyväkseen sekä
+ * quicksortia, että heapsortia. Introsort aloitetaan quicksortilla ja
+ * rekursiosyvyyden noustessa tarpeeksi korkealle algoritmi vaihtaa
+ * heapsorttiin. Algoritmi implementoi myös insertionsortin, jota käytetään
+ * taulukon ollessa tarpeeksi pieni.
+ *
  */
 public class IntroSorter {
-    
+
     /**
-     * Taulukon minimikoko. Taulukon ollessa pienempi järjestäminen hoidetaan insertion sortilla.
+     * Taulukon minimikoko. Taulukon ollessa pienempi järjestäminen hoidetaan
+     * insertion sortilla.
      */
     private final int sizeThreshold = 16;
-    
-    
+
     /**
-     * Introsortin aloitusmetodi. Metodi laskee taulukon pituuden perusteella quicksortin rekursiosyvyyden.
+     * Introsortin aloitusmetodi. Metodi laskee taulukon pituuden perusteella
+     * quicksortin rekursiosyvyyden.
+     *
      * @param arrayToSort Taulukko joka järjestetään.
      */
     public void introSort(int[] arrayToSort) {
         int depthLimit = (int) Math.floor((Math.log(arrayToSort.length) / Math.log(2)));
         intro_QuickSort(arrayToSort, 0, arrayToSort.length, depthLimit);
     }
-    
-    
+
     /**
-     * Quicksortin päämetodi. Järjestää taulukkoa quicksortilla niin kauan kunnes rekursiosyvyys menee yli määritellyn rajan. Tämän jälkeen loput taulukosta järjestetään lisäysjärjestämisellä. 
+     * Quicksortin päämetodi. Järjestää taulukkoa quicksortilla niin kauan
+     * kunnes rekursiosyvyys menee yli määritellyn rajan. Tämän jälkeen loput
+     * taulukosta järjestetään lisäysjärjestämisellä.
+     *
      * @param arrayToSort Taulukko joka järjestetään.
      * @param first Järjestämisen aloitusindeksi.
      * @param last Järjestämisen lopetusindeksi.
@@ -49,10 +55,12 @@ public class IntroSorter {
         }
         intro_InsertionSort(arrayToSort, first, last);
     }
-    
+
     /**
-     * Quicksortin pivotin määrittelymetodi.
-     * Jakaa taulukon alkiot niin, että mediaania pienemmät alkiot ovat järjestettävän alueen toisella puolella ja suuremmat toisella puolella.
+     * Quicksortin pivotin määrittelymetodi. Jakaa taulukon alkiot niin, että
+     * mediaania pienemmät alkiot ovat järjestettävän alueen toisella puolella
+     * ja suuremmat toisella puolella.
+     *
      * @param array Taulukko, jota järjestetään.
      * @param first Järjestettävän osuuden ensimmäinen alkio.
      * @param last Järjestettävän osuuden viimeinen alkio.
@@ -64,19 +72,25 @@ public class IntroSorter {
         i = first;
         j = last;
         while (true) {
-            while (array[i] < median) i++;
-	    j=j-1;
-	    while (median < array[j]) j=j-1;
-	    if(!(i < j))
-	      return i;
-	    GlobalMethods.exchange(array,i,j);
-	    i++;
+            while (array[i] < median) {
+                i++;
+            }
+            j = j - 1;
+            while (median < array[j]) {
+                j = j - 1;
+            }
+            if (!(i < j)) {
+                return i;
+            }
+            GlobalMethods.exchange(array, i, j);
+            i++;
 
         }
     }
-    
+
     /**
      * Heapsortin päämetodi
+     *
      * @param array Järjestettävä taulukko.
      * @param first Järjestettävän osuuden ensimmäinen indeksi.
      * @param last Järjestettävän osuuden viimeinen indeksi.
@@ -91,10 +105,12 @@ public class IntroSorter {
             heapify(array, 1, i - 1, first);
         }
     }
-    
+
     /**
-     * Heapsortin apumetodi, joka rakentaa olemassaolevasta taulukosta kekoehdon toteuttavan taulukon.
-     * Metodi toimii kutsumalla toistuvasti Heapify -metodia jokaiselle tarvittavalle alkiolle.
+     * Heapsortin apumetodi, joka rakentaa olemassaolevasta taulukosta kekoehdon
+     * toteuttavan taulukon. Metodi toimii kutsumalla toistuvasti Heapify
+     * -metodia jokaiselle tarvittavalle alkiolle.
+     *
      * @param array Taulukko josta keko rakennetaan.
      * @param last Järjestettävän osuuden viimeinen indeksi.
      * @param first Järjestettävän osuuden ensimmäinen indeksi.
@@ -104,9 +120,11 @@ public class IntroSorter {
             heapify(array, i, last, first);
         }
     }
+
     /**
-     * Heapsortin heapify -metodi. Metodi järjestää taulukon alkiot niin, että alkioiden järjestys noudattaa kekoehtoa.
-     * 
+     * Heapsortin heapify -metodi. Metodi järjestää taulukon alkiot niin, että
+     * alkioiden järjestys noudattaa kekoehtoa.
+     *
      * @param array Taulukko, jonka alkioita järjestetään.
      * @param index Taulukon kohta, josta lähdetään liikkeelle.
      * @param last Järjestettävän alueen viimeinen indeksi.
@@ -131,7 +149,7 @@ public class IntroSorter {
 
     /**
      * Quicksortin apuna käytettävän lisäysjärjestämismetodi.
-     * 
+     *
      * @param arrayToSort Järjestettävä taulukko.
      * @param first Järjestettävän osuuden ensimmäinen alkio.
      * @param last Järjestettävän osuuden viimeinen alkio.
@@ -148,9 +166,10 @@ public class IntroSorter {
             arrayToSort[j] = temp;
         }
     }
-    
+
     /**
      * Metodi joka laskee taulukon arvojen perusteella kolmen arvon mediaanin.
+     *
      * @param array Taulukko josta mediaani lasketaan.
      * @param first Ensimmäinen indeksi, josta mediaani lasketaan.
      * @param mid Keskimmäinen indeksi, josta mediaani lasketaan.

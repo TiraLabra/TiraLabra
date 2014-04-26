@@ -1,46 +1,52 @@
 package Sorters;
 
 /**
- * 
- * Smoothsort on vertailujärjestämisealgoritmi joka käyttää aputietorakenteenaan kekoa.
- * Smoothsort on kekojärjestämisen variaatio, jolla saavutetaan parempi aikavaativuus lähes järjestetyillä taulukoilla perinteiseen kekojärjestämiseen verrattuna.
- * Smoothsortin periaatteena on muodostaa yhden keon sijasta useiden kekojen "metsä" käyttäen apuna leonardon sarjan numeroita. 
- * 
+ *
+ * Smoothsort on vertailujärjestämisealgoritmi joka käyttää aputietorakenteenaan
+ * kekoa. Smoothsort on kekojärjestämisen variaatio, jolla saavutetaan parempi
+ * aikavaativuus lähes järjestetyillä taulukoilla perinteiseen
+ * kekojärjestämiseen verrattuna. Smoothsortin periaatteena on muodostaa yhden
+ * keon sijasta useiden kekojen "metsä" käyttäen apuna leonardon sarjan
+ * numeroita.
+ *
  * @author nkostiai
  */
 public final class SmoothSorter {
-    
+
     /**
-     * Taulukko johon talletetaan ensimmäiset 40 numeroa Leonardon sarjasta. Numeroita käytetään määrittelemään osakekojen kokoja.
+     * Taulukko johon talletetaan ensimmäiset 40 numeroa Leonardon sarjasta.
+     * Numeroita käytetään määrittelemään osakekojen kokoja.
      */
     private final int[] leonardoNumbers;
-    
-    
+
     public SmoothSorter() {
         leonardoNumbers = formLeonardoSequence();
     }
-    
+
     /**
      * Smoothsortin päämetodi.
+     *
      * @param arrayToSort Järjestettävä taulukko.
      */
     public void smoothSort(int[] arrayToSort) {
-        if(arrayToSort.length > 1){
-        int length = arrayToSort.length;
-        int orderLength = countOrderLength(length);
-        int[] orders = new int[orderLength];
+        if (arrayToSort.length > 1) {
+            int length = arrayToSort.length;
+            int orderLength = countOrderLength(length);
+            int[] orders = new int[orderLength];
 
-        int trees = formLeonardoHeap(arrayToSort, orders, 0);
+            int trees = formLeonardoHeap(arrayToSort, orders, 0);
 
-        breakDown(arrayToSort, orders, trees);
+            breakDown(arrayToSort, orders, trees);
         }
 
     }
-    
+
     /**
      * Muodostetaan taulukosta leonardo-heap.
+     *
      * @param arrayToSort Taulukko, jota järjestetään.
-     * @param orders Taulukko johon talletetaan muodostuvien sisäisten kekojen koot.
+     * @param orders Taulukko johon talletetaan muodostuvien sisäisten kekojen
+     * koot.
      * @param trees Sisäisten kekojen määrä.
      * @return Muodostuneiden puiden määrä.
      */
@@ -58,10 +64,12 @@ public final class SmoothSorter {
         }
         return trees;
     }
-    
+
     /**
-     * Suoritetaan lopullinen järjestäminen. Leonardo-heapista otetaan suurin elementti, asetetaan se taulukkoon ja pienennetään heapin kokoa.
-     * Tämän jälkeen korjataan jäljelle jääneen heapin kekoehto.
+     * Suoritetaan lopullinen järjestäminen. Leonardo-heapista otetaan suurin
+     * elementti, asetetaan se taulukkoon ja pienennetään heapin kokoa. Tämän
+     * jälkeen korjataan jäljelle jääneen heapin kekoehto.
+     *
      * @param arrayToSort Taulukko, jota järjestettään.
      * @param orders Taulukko, johon on talletettu sisäisten puiden koot.
      * @param trees Sisäisten puiden määrä.
@@ -83,9 +91,11 @@ public final class SmoothSorter {
             }
         }
     }
+
     /**
-     * Apumetodi, jonka avulla pidetään yllä kekoehtoa.
-     * Metodi etsii seuraavaksi suurimman alkion taulukosta ja asettaa sen heapin päällimmäiseksi.
+     * Apumetodi, jonka avulla pidetään yllä kekoehtoa. Metodi etsii seuraavaksi
+     * suurimman alkion taulukosta ja asettaa sen heapin päällimmäiseksi.
+     *
      * @param arrayToSort Taulukko, jota järjestetään.
      * @param index Kohta, josta taulukkoa käydään läpi.
      * @param tree Monennettako puuta käsitellään.
@@ -112,8 +122,10 @@ public final class SmoothSorter {
         arrayToSort[index] = value;
         siftDown(arrayToSort, index, orders[tree]);
     }
+
     /**
      * Apumetodi, joka korjaa annetun sisäisen keon kekoehdon.
+     *
      * @param arrayToSort Taulukko, jota järjestetään.
      * @param index Taulukon indeksi.
      * @param order Sisäisen keon koko.
@@ -137,19 +149,21 @@ public final class SmoothSorter {
         }
         arrayToSort[index] = value;
     }
-    
+
     /**
      * Lasketaan montako leonardon puuta kekoon muodostuu maksimissaan.
+     *
      * @param n Järjestettävän taulukon pituus
      * @return Laskettu määrä.
      */
     public int countOrderLength(int n) {
         return (int) (Math.log(n) / Math.log(2)) * 2;
-       
+
     }
-    
+
     /**
      * Lasketaan ensimmäiset neljäkymmentä leonardon lukua taulukkoon.
+     *
      * @return 40 ensimmäisen leonardon luvun taulukko.
      */
     public int[] formLeonardoSequence() {

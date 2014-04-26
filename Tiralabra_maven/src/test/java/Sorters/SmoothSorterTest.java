@@ -90,7 +90,7 @@ public class SmoothSorterTest extends TestCase {
     }
 
     public void testSmoothSortWithALargeArray() {
-        
+
         int[] arrayToSort = cmethods.giveLargeArrayOfRandomNumbers();
         int[] sortedArray = arrayToSort.clone();
         Arrays.sort(sortedArray);
@@ -98,8 +98,8 @@ public class SmoothSorterTest extends TestCase {
         assertTrue(Arrays.equals(arrayToSort, sortedArray));
 
     }
-    
-    public void testSmoothSortWithHardCodedArray(){
+
+    public void testSmoothSortWithHardCodedArray() {
         int[] arrayToSort = cmethods.giveAHardCodedArray();
         int[] sortedArray = cmethods.giveAHardCodedArraySolution();
         sorterToTest.smoothSort(arrayToSort);

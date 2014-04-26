@@ -5,9 +5,8 @@
  */
 package Main;
 
-import Sorters.*;
 import java.io.IOException;
-import java.util.Random;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,19 +16,23 @@ import java.util.logging.Logger;
  */
 public class Kayttoliittyma {
 
-    
     public Kayttoliittyma() {
     }
 
     public void kaynnista() {
         SorterReporter reportteri = new SorterReporter("raportti.html");
+        System.out.println("Järjestetään taulukoita...");
         reportteri.testSorters();
         try {
+            System.out.println("Generoidaan raporttia...");
             reportteri.exportReport();
+            System.out.println("Raportti generoitu!");
+
         } catch (IOException ex) {
             System.out.println("Tiedostoon kirjoittaessa tapahtui virhe");
             Logger.getLogger(Kayttoliittyma.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
-    
+
 }
