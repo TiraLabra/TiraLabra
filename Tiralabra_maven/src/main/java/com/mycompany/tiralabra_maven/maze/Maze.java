@@ -1,8 +1,7 @@
 package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.State;
-import java.util.LinkedList;
-import java.util.List;
 
 public interface Maze {
 
@@ -34,7 +33,7 @@ public interface Maze {
 
     int getExpandedStates();
 
-    String toString(LinkedList<State> states);
+    String toString(List<State> states);
 
     public int movementCost(State successor);
 

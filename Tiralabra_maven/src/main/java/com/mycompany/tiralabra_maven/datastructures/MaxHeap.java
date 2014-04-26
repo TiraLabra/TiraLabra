@@ -33,7 +33,6 @@ public class MaxHeap extends Heap {
         while(i > 0 && array[parent(i)] < array[i]) {
             swap(i, parent(i));
             i = parent(i);
-            System.out.println(i);
         }
     }
 }

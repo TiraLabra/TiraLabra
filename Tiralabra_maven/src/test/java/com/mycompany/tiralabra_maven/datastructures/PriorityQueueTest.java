@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-import com.mycompany.tiralabra_maven.datastructures.PriorityQueue;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -1,9 +1,7 @@
 package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.State;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ArrayMaze extends AbstractMaze {
 
@@ -47,25 +45,25 @@ public class ArrayMaze extends AbstractMaze {
     public List<State> getSuccessors(State s) {
         int x = s.getX();
         int y = s.getY();
-        ArrayList<State> list = new ArrayList<>();
+        List<State> list = new List<>();
 
         if (x > 0) {
-            list.add(getState(x - 1, y).setParent(s));
+            list.insertLast(getState(x - 1, y).setParent(s));
         }
         if (y > 0) {
-            list.add(getState(x, y - 1).setParent(s));
+            list.insertLast(getState(x, y - 1).setParent(s));
         }
         if (x < getHeight() - 1) {
-            list.add(getState(x + 1, y).setParent(s));
+            list.insertLast(getState(x + 1, y).setParent(s));
         }
         if (y < getWidth() - 1) {
-            list.add(getState(x, y + 1).setParent(s));
+            list.insertLast(getState(x, y + 1).setParent(s));
         }
 
-        ArrayList<State> copy = new ArrayList<>();
+        List<State> copy = new List<>();
         for (State state : list) {
             if (state.getCost() != 0)
-                copy.add(state);
+                copy.insertLast(state);
         }
         expanded += 1;
         return copy;
@@ -79,7 +77,7 @@ public class ArrayMaze extends AbstractMaze {
     }
 
     @Override
-    public String toString(LinkedList<State> states) {
+    public String toString(List<State> states) {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < getHeight(); x++) {
             for (int y = 0; y < getWidth(); y++) {

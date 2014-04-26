@@ -1,9 +1,7 @@
 package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.State;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class SimpleMaze extends AbstractMaze {
 
@@ -29,19 +27,19 @@ public class SimpleMaze extends AbstractMaze {
     public List<State> getSuccessors(State s) {
         int x = s.getX();
         int y = s.getY();
-        ArrayList<State> list = new ArrayList<>();
+        List<State> list = new List<>();
 
         if (x > 0) {
-            list.add(new State(x - 1, y, s));
+            list.insertLast(new State(x - 1, y, s));
         }
         if (y > 0) {
-            list.add(new State(x, y - 1, s));
+            list.insertLast(new State(x, y - 1, s));
         }
         if (x < width - 1) {
-            list.add(new State(x + 1, y, s));
+            list.insertLast(new State(x + 1, y, s));
         }
         if (y < height - 1) {
-            list.add(new State(x, y + 1, s));
+            list.insertLast(new State(x, y + 1, s));
         }
         expanded += 1;
         return list;
@@ -53,7 +51,7 @@ public class SimpleMaze extends AbstractMaze {
     }
 
     @Override
-    public String toString(LinkedList<State> states) {
+    public String toString(List<State> states) {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < getHeight(); x++) {
             for (int y = 0; y < getWidth(); y++) {

@@ -1,13 +1,9 @@
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.algorithm.*;
+import com.mycompany.tiralabra_maven.algorithm.AStarSearch;
 import com.mycompany.tiralabra_maven.maze.ArrayMaze;
 import com.mycompany.tiralabra_maven.maze.Maze;
 import com.mycompany.tiralabra_maven.datastructures.Path;
-import com.mycompany.tiralabra_maven.io.AsciiWithTabsParser;
-import com.mycompany.tiralabra_maven.io.FileParser;
-
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -28,7 +24,7 @@ public class App {
     	};
         Maze maze = ArrayMaze.create(array);
         System.out.println(maze.getWidth() + ", " + maze.getHeight());
-        SearchStategy search = new AStartSearch(maze);
+        AStarSearch search = new AStarSearch(maze);
         Path path = search.findOptimalPath();
         System.out.println(maze.getExpandedStates());
         System.out.println(path);

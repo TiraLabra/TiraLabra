@@ -1,15 +1,11 @@
 package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.State;
-import com.mycompany.tiralabra_maven.datastructures.State;
-import com.mycompany.tiralabra_maven.maze.AbstractMaze;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AbstractMazeTest {
 
@@ -59,7 +55,7 @@ public class AbstractMazeTest {
         }
 
         @Override
-        public String toString(LinkedList<State> states) {
+        public String toString(List<State> states) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }

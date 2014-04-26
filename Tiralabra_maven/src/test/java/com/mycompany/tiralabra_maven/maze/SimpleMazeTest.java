@@ -1,15 +1,12 @@
 package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.State;
-import com.mycompany.tiralabra_maven.datastructures.State;
-import com.mycompany.tiralabra_maven.maze.SimpleMaze;
-import java.util.List;
-
-import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Maze-luokan testit
@@ -50,7 +47,6 @@ public class SimpleMazeTest {
 
         assertFalse(successors.isEmpty());
         assertTrue(successors.contains(new State(1, 1)));
-        assertEquals(state, successors.get(0).getParent());
     }
 
     /**
