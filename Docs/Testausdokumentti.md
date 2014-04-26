@@ -52,4 +52,7 @@ Mielenkiinnosta tutkin myös pelin kokonaisvaltaiseen suoritukseen kuluvaa aikaa
 
 ![alt text](action.png "Action")
 
-Alussa kuluu eniten aikaa, koska haamuille selvitettävät matkat ovat tässä vaiheessa ainakin Redillä ja Cyanilla pisimmät. Huomattavat piikit pelin suorituksessa ovat kohdat, joissa esimerkiksi, joillekin haamuille selvitetään uusia pidempiä reittejä, hedelmä arvotaan pelialustalle tai, kun haamut asetetaan heikoiksi.
+Alussa kuluu eniten aikaa, koska haamuille selvitettävät matkat ovat tässä vaiheessa ainakin Redillä ja Cyanilla pisimmät. Huomattavat piikit pelin suorituksessa ovat kohdat, joissa esimerkiksi, joillekin haamuille selvitetään uusia pidempiä reittejä, hedelmä arvotaan pelialustalle tai, kun haamut asetetaan heikoiksi
+
+<h3>Järjestäminen</h3>
+Järjestämistä en tutkinut tässä yhteydessä tarkemmin, koska pelialusta on aina samankokoinen, joten jokaisella järjestämiskerralla maksimi solmujen määrä on 169. Koska järjestäminen on vain osa hakualgoritmia ei hajontaa tulisi juuri ollenkaan, toten diagrammi ei tuottaisi merkittävää tutkimustulosta.
