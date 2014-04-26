@@ -5,13 +5,12 @@ import static org.junit.Assert.*;
 
 public class HeapTest {
 
-    Heap heap = new Heap() {
+    AbstractHeap heap = new AbstractHeap() {
         protected void heapify(int i) {
         }
 
         @Override
-        protected void increaseKey(int i, int key) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        protected void increaseKey(int i, Object key) {
         }
     };
 

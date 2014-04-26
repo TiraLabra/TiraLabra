@@ -1,11 +1,30 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-public class PriorityQueue {
+public class PriorityQueue<T> {
 
-    public void enqueue(int i) {
+    private final AbstractHeap<T> heap;
+
+    public PriorityQueue(AbstractHeap heap) {
+        this.heap = heap;
     }
 
-    public int dequeue() {
-        return 1;
+    public void enqueue(T t) {
+        heap.insert(t);
+    }
+
+    public T dequeue() {
+        return heap.extractTop();
+    }
+
+    public int size() {
+        return heap.heapsize();
+    }
+
+    public boolean contains(T t) {
+        return heap.contains(t);
+    }
+
+    public void remove(T t) {
+        heap.remove(t);
     }
 }

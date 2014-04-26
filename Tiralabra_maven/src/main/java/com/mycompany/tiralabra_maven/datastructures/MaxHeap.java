@@ -1,12 +1,12 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-public class MaxHeap extends Heap {
+public class MaxHeap extends AbstractHeap {
 
     public MaxHeap() {
-        array = new int[DEFAULT_SIZE];
+        array = new Comparable[DEFAULT_SIZE];
     }
 
-    public MaxHeap(int[] array) {
+    public MaxHeap(Comparable[] array) {
         this.array = array;
         heapsize = array.length;
     }
@@ -16,10 +16,10 @@ public class MaxHeap extends Heap {
         int largest;
         int left = left(i);
         int right = right(i);
-        if (left < heapsize && array[left] > array[i])
+        if (left < heapsize && array[left].hashCode() > array[i].hashCode())
             largest = left;
         else largest = i;
-        if (right < heapsize && array[right] > array[largest])
+        if (right < heapsize && array[right].hashCode() > array[largest].hashCode())
             largest = right;
         if (largest != i) {
             swap(i, largest);
@@ -28,9 +28,9 @@ public class MaxHeap extends Heap {
     }
 
     @Override
-    protected void increaseKey(int i, int key) {
+    protected void increaseKey(int i, Object key) {
         array[i] = key;
-        while(i > 0 && array[parent(i)] < array[i]) {
+        while(i > 0 && array[parent(i)].hashCode() < array[i].hashCode()) {
             swap(i, parent(i));
             i = parent(i);
         }

@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-public abstract class Heap {
+public abstract class AbstractHeap<T> {
 
-    protected int[] array;
+    protected Object[] array;
     protected static final int DEFAULT_SIZE = 10;
     protected int heapsize;
 
@@ -14,8 +14,8 @@ public abstract class Heap {
         return heapsize;
     }
 
-    public int top() {
-        return array[0];
+    public T top() {
+        return (T) array[0];
     }
 
     protected int parent(int i) {
@@ -31,7 +31,7 @@ public abstract class Heap {
     }
 
     protected void swap(int i, int j) {
-        int tmp = array[i];
+        Object tmp = array[i];
         array[i] = array[j];
         array[j] = tmp;
     }
@@ -42,19 +42,19 @@ public abstract class Heap {
             heapify(i);
     }
 
-    public int extractTop() {
-        int top = top();
+    public T extractTop() {
+        T top = top();
         array[0] = array[heapsize-1];
         heapsize--;
         heapify(0);
         return top;
     }
 
-    abstract protected void increaseKey(int i, int key);
+    abstract protected void increaseKey(int i, Object key);
 
     abstract protected void heapify(int i);
 
-    public void insert(int key) {
+    public void insert(Object key) {
         heapsize++;
         if (heapsize > size()) {
             createNewArray();
@@ -63,14 +63,34 @@ public abstract class Heap {
     }
 
     private void createNewArray() {
-        int[] newArray = new int[size()*2];
-        for(int i = 0; i < size(); i++) {
-            newArray[i] = array[i];
-        }
+        Object[] newArray = new Object[size() * 2];
+        System.arraycopy(array, 0, newArray, 0, size());
         array = newArray;
     }
 
-    protected int[] getArray() {
+    protected Object[] getArray() {
         return array;
+    }
+
+    public boolean contains(T t) {
+        return search(t) != -1;
+    }
+
+    private int search(T t) {
+        for (int i = 0; i < heapsize; i++)
+            if (t.equals(array[i])) return i;
+        return -1;
+    }
+    
+    public void remove(T t) {
+        int i = search(t);
+        if (i == -1) return;
+        moveTo(i);
+        heapsize--;
+    }
+
+    private void moveTo(int index) {
+        for (int i = index + 1; i < heapsize; i++)
+            array[i - 1] = array[i];
     }
 }

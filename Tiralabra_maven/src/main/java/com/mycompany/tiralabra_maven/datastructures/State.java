@@ -67,12 +67,12 @@ public class State implements Comparable<State> {
         return (rank + cost) - (s.rank + s.cost);
     }
 
-	public int getRank() {
-		return rank;
-	}
+    public int getRank() {
+        return rank;
+    }
 
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 
 }
