@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven.algorithm;
 
-import com.mycompany.tiralabra_maven.datastructures.Path;
+import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.Set;
 import com.mycompany.tiralabra_maven.datastructures.State;
 import com.mycompany.tiralabra_maven.maze.Maze;
@@ -14,9 +14,14 @@ public class AStarSearch {
         this.maze = maze;
     }
 
-    public Path findOptimalPath() {
+    public List<State> findOptimalPath() {
+        List<State> states = new List<>();
         State state = getOptimalPath();
-        return new Path(maze, state);
+        while (state != null) {
+            states.insertLast(state);
+            state = state.getParent();
+        }
+        return states;
     }
 
     private State getOptimalPath() {

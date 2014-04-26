@@ -76,26 +76,4 @@ public class ArrayMaze extends AbstractMaze {
         return s;
     }
 
-    @Override
-    public String toString(List<State> states) {
-        StringBuilder sb = new StringBuilder();
-        for (int x = 0; x < getHeight(); x++) {
-            for (int y = 0; y < getWidth(); y++) {
-                if (getStartState().equals(getState(x, y))) {
-                    sb.append(Maze.START_CHAR);
-                } else if (isGoalState(x, y)) {
-                    sb.append(Maze.GOAL_CHAR);
-                } else if (states.contains(getState(x, y))) {
-                    sb.append(Maze.PATH_CHAR);
-                } else if (getState(x, y).getCost() > 0) {
-                    sb.append(Maze.CELL_CHAR);
-                } else {
-                    sb.append(Maze.WALL_CHAR);
-                }
-            }
-            sb.append('\n');
-        }
-        return sb.toString();
-    }
-
 }

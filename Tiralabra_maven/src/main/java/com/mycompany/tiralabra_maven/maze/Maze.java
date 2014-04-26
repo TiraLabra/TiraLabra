@@ -5,12 +5,6 @@ import com.mycompany.tiralabra_maven.datastructures.State;
 
 public interface Maze {
 
-    char START_CHAR = 'S';
-    char GOAL_CHAR = 'G';
-    char PATH_CHAR = '*';
-    char CELL_CHAR = ' ';
-    char WALL_CHAR = '#';
-
     int getHeight();
 
     int getWidth();
@@ -32,8 +26,6 @@ public interface Maze {
     int distanceToGoal(State state);
 
     int getExpandedStates();
-
-    String toString(List<State> states);
 
     public int movementCost(State successor);
 

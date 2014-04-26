@@ -23,11 +23,11 @@ public class AsciiParser implements Parser {
         int[] result = new int[row.length()];
         for (int i = 0; i < row.length(); i++) {
             result[i] = Character.getNumericValue(chars[i]);
-            if (chars[i] == Maze.START_CHAR) {
+            if (chars[i] == MazePrinter.START_CHAR) {
                 result[i] = ArrayMaze.START;
-            } else if (chars[i] == Maze.GOAL_CHAR) {
+            } else if (chars[i] == MazePrinter.GOAL_CHAR) {
                 result[i] = ArrayMaze.GOAL;
-            } else if (chars[i] == Maze.WALL_CHAR) {
+            } else if (chars[i] == MazePrinter.WALL_CHAR) {
                 result[i] = ArrayMaze.WALL;
             }
         }

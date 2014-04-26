@@ -1,7 +1,6 @@
 package com.mycompany.tiralabra_maven.io;
 
 import com.mycompany.tiralabra_maven.maze.ArrayMaze;
-import com.mycompany.tiralabra_maven.maze.Maze;
 
 public class AsciiWithTabsParser implements Parser {
 
@@ -22,11 +21,11 @@ public class AsciiWithTabsParser implements Parser {
         String[] array = row.trim().split("\\s");
         int[] result = new int[array.length];
         for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(Maze.START_CHAR + "")) {
+            if (array[i].equalsIgnoreCase(MazePrinter.START_CHAR + "")) {
                 result[i] = ArrayMaze.START;
-            } else if (array[i].equalsIgnoreCase(Maze.GOAL_CHAR + "")) {
+            } else if (array[i].equalsIgnoreCase(MazePrinter.GOAL_CHAR + "")) {
                 result[i] = ArrayMaze.GOAL;
-            } else if (array[i].equalsIgnoreCase(Maze.WALL_CHAR + "")) {
+            } else if (array[i].equalsIgnoreCase(MazePrinter.WALL_CHAR + "")) {
                 result[i] = ArrayMaze.WALL;
             } else {
                 result[i] = Integer.parseInt(array[i]);

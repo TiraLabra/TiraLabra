@@ -22,7 +22,7 @@ public class AStarSearchTest {
             new int[]{1, 1, G}
         };
         searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath().getStates();
+        List<State> path = searcher.findOptimalPath();
         assertEquals(5, path.size());
     }
 
@@ -34,7 +34,7 @@ public class AStarSearchTest {
             new int[]{2, 2, G}
         };
         searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath().getStates();
+        List<State> path = searcher.findOptimalPath();
         State[] correctPath = new State[]{
             new State(), new State(0, 1), new State(0, 2), new State(1, 2),
             new State(2, 2)};
@@ -52,7 +52,7 @@ public class AStarSearchTest {
             new int[]{1, 1, 1, 5, G}
         };
         searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath().getStates();
+        List<State> path = searcher.findOptimalPath();
         State[] correctPath = new State[]{
             new State(0, 0), new State(1, 0), new State(2, 0),
             new State(3, 0), new State(4, 0), new State(4, 1),
