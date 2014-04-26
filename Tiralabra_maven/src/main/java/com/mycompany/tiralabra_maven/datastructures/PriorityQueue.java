@@ -4,7 +4,7 @@ public class PriorityQueue<T> {
 
     private final AbstractHeap<T> heap;
 
-    public PriorityQueue(AbstractHeap heap) {
+    public PriorityQueue(AbstractHeap<T> heap) {
         this.heap = heap;
     }
 
@@ -26,5 +26,17 @@ public class PriorityQueue<T> {
 
     public void remove(T t) {
         heap.remove(t);
+    }
+    
+    public static PriorityQueue createMinPriorityQueue() {
+        return new PriorityQueue(new MinHeap());
+    }
+    
+    public static PriorityQueue createMaxPriorityQueue() {
+        return new PriorityQueue(new MaxHeap());
+    }
+
+    public boolean isEmpty() {
+        return heap.heapsize == 0;
     }
 }

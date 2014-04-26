@@ -75,4 +75,10 @@ public class State implements Comparable<State> {
         this.rank = rank;
     }
 
+    @Override
+    public int hashCode() {
+        return cost + rank;
+    }
+    
+
 }

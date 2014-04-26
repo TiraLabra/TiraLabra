@@ -27,4 +27,15 @@ public class StateTest {
         assertNotSame(new State(), new State(0, 1));
     }
 
+    /**
+     * Test of equals method, of class State.
+     */
+    @Test
+    public void testHashcode() {
+        State s = new State();
+        s.setCost(10);
+        s.setRank(5);
+        assertEquals(15, s.hashCode());
+    }
+
 }

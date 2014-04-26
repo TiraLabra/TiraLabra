@@ -10,7 +10,7 @@ public class PriorityQueueTest {
 
     @Before
     public void setUp() {
-        //queue = new PriorityQueue();
+        queue = PriorityQueue.createMinPriorityQueue();
     }
 
     @Test
