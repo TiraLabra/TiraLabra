@@ -160,10 +160,7 @@ public abstract class Haamu extends Hahmo {
      * @return Palauttaa true, jos ruutu on huono.
      */
     private boolean onkoHuonoRuutu(int testiX, int testiY) {
-        if (onkoAlustanSisalla(testiX, testiY) == false || kielletytRuudut.sisaltaa(alusta.getPeliruutu(testiX, testiY))) {
-            return true;
-        }
-        return false;
+        return onkoAlustanSisalla(testiX, testiY) == false || kielletytRuudut.sisaltaa(alusta.getPeliruutu(testiX, testiY));
     }
 
     /**
@@ -174,10 +171,7 @@ public abstract class Haamu extends Hahmo {
      * @return palauttaa totuusarvon.
      */
     public boolean onkoAlustanSisalla(int x, int y) {
-        if (x <= 17 && x > 1 && y <= 19 && y > 1) {
-            return true;
-        }
-        return false;
+        return x <= 17 && x > 1 && y <= 19 && y > 1;
     }
 
     /**
@@ -186,11 +180,7 @@ public abstract class Haamu extends Hahmo {
      * @return 
      */
     public boolean olenkoSamassaRuudussaManinKanssa(Man man) {
-        if (man.getX() == this.x && man.getY() == this.y) {
-            return true;
-        }
-
-        return false;
+        return man.getX() == this.x && man.getY() == this.y;
     }
 
 }

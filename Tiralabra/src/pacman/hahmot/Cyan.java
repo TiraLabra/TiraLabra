@@ -104,13 +104,23 @@ public class Cyan extends Haamu {
     private Peliruutu tarkistaOnkoSeina(Peliruutu maali, Man man) {
         if (maali.getRuudunTyyppi() == 0) {
             Peliruutu uusiMaali = selvitaMaaliSuunnista(maali, man);
-            if (uusiMaali.getX() == this.x && uusiMaali.getY() == this.y) {
-                return selvitaMaaliSuunnista(uusiMaali, man);
-            } else {
-                return uusiMaali;
-            }
+            return tarkistaEttaMaaliEiOleHaamunOmaRuutu(uusiMaali, man);
         } else {
             return maali;
+        }
+    }
+
+    /**
+     * Tarkistetaan, että uusi maaliruutu ei ole haamun oma ruutu. Jos ruutu on haamun oma ruutu täytyy etsiä uusi maaliruutu.
+     * @param uusiMaali
+     * @param man
+     * @return 
+     */
+    private Peliruutu tarkistaEttaMaaliEiOleHaamunOmaRuutu(Peliruutu uusiMaali, Man man) {
+        if (uusiMaali.getX() == this.x && uusiMaali.getY() == this.y) {
+            return selvitaMaaliSuunnista(uusiMaali, man);
+        } else {
+            return uusiMaali;
         }
     }
 

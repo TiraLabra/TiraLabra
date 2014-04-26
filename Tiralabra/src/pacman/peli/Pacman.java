@@ -187,14 +187,9 @@ public class Pacman extends Timer implements ActionListener {
                 haamu.palaaAlkuun();
                 haamu.setTyyppi("vahva");
                 laskuri.kasvata(80);
-                if (haamu.getNimi().equals("cyan")) {
-                    System.out.println("vahvaksi");
-                }
-
             } else {
                 man.palaaAlkuun();
                 man.vahennaElama();
-                System.out.println("man kuoli");
             }
         }
     }
@@ -208,28 +203,78 @@ public class Pacman extends Timer implements ActionListener {
     public void asetaSeina() {
         for (int y = 8; y < 11; y++) {
             for (int x = 8; x < 11; x++) {
-                if (tarkistaOnkoHaamua(kasittelija.getRed(), x, y)) {
-                    return;
-                }
-                if (tarkistaOnkoHaamua(kasittelija.getGreen(), x, y)) {
-                    return;
-                }
-                if (tarkistaOnkoHaamua(kasittelija.getCyan(), x, y)) {
-                    return;
-                }
-                if (tarkistaOnkoHaamua(kasittelija.getMagenta(), x, y)) {
-                    return;
-                }
-                if (alusta.getPeliruutu(x, y).getOnkoMan()) {
-                    alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
-                    return;
-                }
+                if (tarkistaOnkoRedKarsinassa(x, y)) return;
+                if (tarkistaOnkoGreenKarsinassa(x, y)) return;
+                if (tarkistaOnkoCyanKarsinassa(x, y)) return;
+                if (tarkistaOnkoMagentaKarsinassa(x, y)) return;
+                if (tarkistaOnkoManKarsinassa(x, y)) return;
             }
         }
 
         alusta.getPeliruutu(9, 8).setRuudunTyyppi(0);
     }
 
+    /**
+     * Tarkistetaan onko Man haamujen karsinassa vai ei, jos Man on karsinassa, muutetaan portti käytäväksi.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean tarkistaOnkoManKarsinassa(int x, int y) {
+        if (alusta.getPeliruutu(x, y).getOnkoMan()) {
+            alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Tarkistetaan onko Magenta haamujen karsinassa.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean tarkistaOnkoMagentaKarsinassa(int x, int y) {
+        return tarkistaOnkoHaamua(kasittelija.getMagenta(), x, y);
+    }
+
+    /**
+     * Tarkistetaan onko Cyan haamujen karsinassa.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean tarkistaOnkoCyanKarsinassa(int x, int y) {
+        return tarkistaOnkoHaamua(kasittelija.getCyan(), x, y);
+    }
+
+    /**
+     * Tarkistetaan onko Green haamujen karsinassa.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean tarkistaOnkoGreenKarsinassa(int x, int y) {
+        return tarkistaOnkoHaamua(kasittelija.getGreen(), x, y);
+    }
+
+    /**
+     * Tarkistetaan onko Red haamujen karsinassa.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean tarkistaOnkoRedKarsinassa(int x, int y) {
+        return tarkistaOnkoHaamua(kasittelija.getRed(), x, y);
+    }
+
+    /**
+     * Tarkistetaan vastaako peliruutu, jossa haamu on annettua peliruutua.
+     * @param haamu
+     * @param x
+     * @param y
+     * @return 
+     */
     private boolean tarkistaOnkoHaamua(Haamu haamu, int x, int y) {
         if (alusta.getPeliruutu(x, y).equals(alusta.getPeliruutu(haamu.getX(), haamu.getY()))) {
             alusta.getPeliruutu(9, 8).setRuudunTyyppi(3);
@@ -344,8 +389,6 @@ public class Pacman extends Timer implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        long aikaAlussa = System.currentTimeMillis();
-
         kasittelija.liikutaHaamut();
         kuoleekoHaamuTaiMan();
         asetaHeikkous();
@@ -360,9 +403,6 @@ public class Pacman extends Timer implements ActionListener {
         this.paivitettava.paivita();
         setDelay(300);
         paataPeli();
-        
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
     /**

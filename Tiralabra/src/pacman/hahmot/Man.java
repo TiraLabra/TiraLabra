@@ -67,7 +67,16 @@ public class Man extends Hahmo {
         } else {
             siirraMan();
         }
+        heikkousVoimassa(heikkous, peli);
 
+    }
+
+    /**
+     * Tarkistetaan onko heikkous voimassa ja jos on liikutetaan mania kaksi ruutua kerrallaan eteenpäin voitaessa.
+     * @param heikkous
+     * @param peli 
+     */
+    private void heikkousVoimassa(boolean heikkous, Pacman peli) {
         if (heikkous != false) {
             if (katsoVoikoLiikkuaSivuille() == false) {
                 peli.manSyoPistepallo();
@@ -80,7 +89,6 @@ public class Man extends Hahmo {
                 siirraMan();
             }
         }
-
     }
 
     /**

@@ -5,10 +5,12 @@ import pacman.alusta.Peliruutu;
 /**
  * Järjestäjä luokka, järjestää taulukon, etäisyysarvioiden perusteella.
  * Järjestäminen tapahtuu lomitusjärjestämisen idealla.
- * @author Hanna
  */
 public class Jarjestaja {
 
+    /**
+     * Taulukko, johon tallennettuna kaikki solmut, jotka tulee järjestää.
+     */
     private Peliruutu[] solmut;
 
     /**
@@ -36,12 +38,10 @@ public class Jarjestaja {
         int k = vasenReuna;
 
         while (i <= keskikohta && j <= oikeaReuna) {
-            if(apu[i].getEtaisyysAlkuun()+apu[i].getEtaisyysMaaliin() <= apu[j].getEtaisyysAlkuun()+apu[j].getEtaisyysMaaliin()) {
-                solmut[k] = apu[i];
-                i++;
+            if(tarkistaKumpiSuurempi(apu, i, j)) {
+                i = taydennaSolmu(k, apu, i);
             } else {
-                solmut[k] = apu[j];
-                j++;
+                j = taydennaSolmu(k, apu, j);
             }
             k++;
         }
@@ -49,6 +49,29 @@ public class Jarjestaja {
 
     }
 
+    private boolean tarkistaKumpiSuurempi(Peliruutu[] apu, int i, int j) {
+        return apu[i].getEtaisyysAlkuun()+apu[i].getEtaisyysMaaliin() <= apu[j].getEtaisyysAlkuun()+apu[j].getEtaisyysMaaliin();
+    }
+
+    /**
+     * Lisätään solmuihin seuraavana tuleva solmu, kun ollaan muodostamassa järjestystä.
+     * @param k
+     * @param apu
+     * @param i
+     * @return 
+     */
+    private int taydennaSolmu(int k, Peliruutu[] apu, int i) {
+        solmut[k] = apu[i];
+        i++;
+        return i;
+    }
+
+    /**
+     * Kopioidaan solmut taulukon alku aputaulukkoon.
+     * @param vasenReuna
+     * @param oikeaReuna
+     * @param apu 
+     */
     private void kopioAlku(int vasenReuna, int oikeaReuna, Peliruutu[] apu) {
         for (int i = vasenReuna; i <= oikeaReuna; i++) {
             apu[i] = solmut[i];

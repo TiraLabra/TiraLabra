@@ -1,17 +1,26 @@
 package pacman.tietorakenteet;
 
 import pacman.alusta.Peliruutu;
+
 /**
  * Lista on luokka, joka kuvaa ArrayListin toimintaa.
+ *
  * @author Hanna
  */
 public class Lista {
 
+    /**
+     * Taulukko, johon on tallennettuna olennainen data.
+     */
     private Object[] ruudut;
+    /**
+     * Taulukon koko
+     */
     private int koko;
 
     /**
-     * Konstruktori, jossa määritellään, että lista on aluksi tyhjä taulukko ja sen koko on 0.
+     * Konstruktori, jossa määritellään, että lista on aluksi tyhjä taulukko ja
+     * sen koko on 0.
      */
     public Lista() {
         ruudut = new Peliruutu[0];
@@ -20,15 +29,13 @@ public class Lista {
 
     /**
      * Lisää metodi lisää listaan uuden alkion.
-     * @param alkio 
+     *
+     * @param alkio
      */
     public void lisaa(Object alkio) {
         koko++;
         Object[] taulukko = new Object[koko];
-
-        for (int i = 0; i < ruudut.length; i++) {
-            taulukko[i] = ruudut[i];
-        }
+        System.arraycopy(ruudut, 0, taulukko, 0, ruudut.length);
         taulukko[taulukko.length - 1] = alkio;
 
         ruudut = taulukko;
@@ -37,7 +44,8 @@ public class Lista {
 
     /**
      * Metodi palauttaa listan koon.
-     * @return 
+     *
+     * @return
      */
     public int koko() {
         return ruudut.length;
@@ -45,8 +53,9 @@ public class Lista {
 
     /**
      * Metodi tarkistaa sisältääkö lista parametrina annetun alkion.
+     *
      * @param alkio
-     * @return 
+     * @return
      */
     public boolean sisaltaa(Object alkio) {
         for (int i = 0; i < ruudut.length; i++) {
@@ -56,7 +65,7 @@ public class Lista {
         }
         return false;
     }
-    
+
     /**
      * Metodi tulostaa kaikki listan jäsenet.
      */
@@ -65,24 +74,23 @@ public class Lista {
             System.out.println(ruudut[i]);
         }
     }
-    
+
     /**
      * Metodi hakee listasta alkion, jonka indeksi on annettu parametrinä.
+     *
      * @param indeksi
-     * @return 
+     * @return
      */
     public Object getAlkio(int indeksi) {
         return ruudut[indeksi];
     }
-    
+
     /**
      * Metodi kertoo onko lista tyhjä.
-     * @return 
+     *
+     * @return
      */
     public boolean onkoTyhja() {
-        if(ruudut.length == 0) {
-            return true;
-        }
-        return false;
+        return ruudut.length == 0;
     }
 }

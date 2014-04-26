@@ -22,8 +22,17 @@ public class HaamujenKasittelija {
     private Cyan cyan;
     private Green green;
     private Magenta magenta;
+    /**
+     * Ruutu, joka kuvastaa haamun Magenta kohdetta.
+     */
     private Peliruutu magentaMaali;
+    /**
+     * Hakualgoritmi
+     */
     private AStar haku;
+    /**
+     * Random tyyppinen arpoja.
+     */
     private Random arpoja;
     private Pacman peli;
 
@@ -47,6 +56,9 @@ public class HaamujenKasittelija {
         this.peli = peli;
     }
 
+    /**
+     * Luodaan haamut alustalle, eli asetetaan jokaiselle ruudulle tietohaamusta, jossa haamu alussa on.
+     */
     private void luoHaamutAlustalle() {
         red.luoHaamuAlustalle();
         green.luoHaamuAlustalle();

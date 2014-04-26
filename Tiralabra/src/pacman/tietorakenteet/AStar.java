@@ -10,8 +10,17 @@ import pacman.hahmot.Suunta;
  */
 public class AStar {
 
+    /**
+     * Taulukko johon kerätään parasreitti.
+     */
     private Peliruutu[] reitti;
+    /**
+     * Taulukko, johon kerätään kaikki käydyt ruudut.
+     */
     private Peliruutu[] kaydyt;
+    /**
+     * Taulukko, johon on kerättynä kaikki käymättömät ruudut, jotko eivät ole seiniä.
+     */
     private Peliruutu[] kaymattomat;
 
     public Peliruutu[] getReitti() {
