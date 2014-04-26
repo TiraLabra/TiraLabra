@@ -1,5 +1,8 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.maze.SimpleMaze;
 import java.util.List;
 
 import org.junit.Test;

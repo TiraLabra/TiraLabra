@@ -1,5 +1,6 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.datastructures;
 
+import com.mycompany.tiralabra_maven.maze.Maze;
 import java.util.LinkedList;
 
 public class Path {

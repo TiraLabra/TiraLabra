@@ -1,5 +1,8 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.maze;
 
+import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.maze.AbstractMaze;
 import java.util.LinkedList;
 import java.util.List;
 

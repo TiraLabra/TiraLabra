@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.io;
 
-import com.mycompany.tiralabra_maven.data.ArrayMaze;
-import com.mycompany.tiralabra_maven.data.Maze;
+import com.mycompany.tiralabra_maven.maze.ArrayMaze;
+import com.mycompany.tiralabra_maven.maze.Maze;
 
 public class AsciiWithTabsParser implements Parser {
 

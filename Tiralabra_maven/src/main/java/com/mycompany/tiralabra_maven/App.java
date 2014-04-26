@@ -1,9 +1,9 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.algorithm.*;
-import com.mycompany.tiralabra_maven.data.ArrayMaze;
-import com.mycompany.tiralabra_maven.data.Maze;
-import com.mycompany.tiralabra_maven.data.Path;
+import com.mycompany.tiralabra_maven.maze.ArrayMaze;
+import com.mycompany.tiralabra_maven.maze.Maze;
+import com.mycompany.tiralabra_maven.datastructures.Path;
 import com.mycompany.tiralabra_maven.io.AsciiWithTabsParser;
 import com.mycompany.tiralabra_maven.io.FileParser;
 

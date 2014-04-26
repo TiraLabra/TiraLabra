@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.datastructures;
 
 public class State implements Comparable<State> {
 

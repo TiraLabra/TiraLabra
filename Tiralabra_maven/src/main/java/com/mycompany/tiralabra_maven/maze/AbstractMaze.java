@@ -1,4 +1,6 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.maze;
+
+import com.mycompany.tiralabra_maven.datastructures.State;
 
 abstract public class AbstractMaze implements Maze {
 

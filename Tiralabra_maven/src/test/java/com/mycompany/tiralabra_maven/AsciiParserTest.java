@@ -2,7 +2,7 @@ package com.mycompany.tiralabra_maven;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static com.mycompany.tiralabra_maven.data.ArrayMaze.*;
+import static com.mycompany.tiralabra_maven.maze.ArrayMaze.*;
 import com.mycompany.tiralabra_maven.io.AsciiParser;
 
 public class AsciiParserTest {

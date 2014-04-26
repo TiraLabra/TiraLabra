@@ -1,5 +1,6 @@
-package com.mycompany.tiralabra_maven.data;
+package com.mycompany.tiralabra_maven.datastructures;
 
+import com.mycompany.tiralabra_maven.datastructures.State;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
-import static com.mycompany.tiralabra_maven.data.ArrayMaze.GOAL;
-import static com.mycompany.tiralabra_maven.data.ArrayMaze.START;
-import static com.mycompany.tiralabra_maven.data.ArrayMaze.WALL;
+import static com.mycompany.tiralabra_maven.maze.ArrayMaze.GOAL;
+import static com.mycompany.tiralabra_maven.maze.ArrayMaze.START;
+import static com.mycompany.tiralabra_maven.maze.ArrayMaze.WALL;
 import com.mycompany.tiralabra_maven.io.AsciiWithTabsParser;
 import org.junit.Test;
 import static org.junit.Assert.*;

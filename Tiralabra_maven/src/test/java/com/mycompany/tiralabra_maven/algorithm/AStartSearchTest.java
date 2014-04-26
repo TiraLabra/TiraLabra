@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mycompany.tiralabra_maven.data.ArrayMaze;
-import com.mycompany.tiralabra_maven.data.State;
+import com.mycompany.tiralabra_maven.maze.ArrayMaze;
+import com.mycompany.tiralabra_maven.datastructures.State;
 import java.util.LinkedList;
 
 public class AStartSearchTest {
