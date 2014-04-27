@@ -1,9 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.algorithm.AStarSearch;
-import com.mycompany.tiralabra_maven.io.MazePrinter;
+import com.mycompany.tiralabra_maven.maze.ArrayMazeDrawer;
+import com.mycompany.tiralabra_maven.gui.Window;
 import com.mycompany.tiralabra_maven.maze.ArrayMaze;
-import com.mycompany.tiralabra_maven.maze.Maze;
 import java.io.IOException;
 
 /**
@@ -13,19 +12,40 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
+
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                
         int s = ArrayMaze.START;
         int g = ArrayMaze.GOAL;
         int[][] array = new int[][]{
-            new int[]{s, 0, 7, 6, 5, 4},
-            new int[]{8, 0, 6, 5, 4, 3},
-            new int[]{7, 0, 5, 4, 3, 2},
-            new int[]{6, 0, 4, 1, 1, 1},
-            new int[]{5, 4, 3, 2, 8, g}
+            new int[]{s, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            new int[]{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1},
+            new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            new int[]{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
+            new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            new int[]{2, 0, 2, 0, 1, 0, 2, 0, 2, 0, 2},
+            new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            new int[]{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
+            new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            new int[]{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
+            new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, g},
         };
-        Maze maze = ArrayMaze.create(array);
-        System.out.println(maze.getWidth() + ", " + maze.getHeight());
-        AStarSearch search = new AStarSearch(maze, maze.getHeuristic());
-        MazePrinter printer = new MazePrinter(maze);
-        printer.print(search.findOptimalPath());
+                ArrayMaze maze = new ArrayMaze(array);
+                ArrayMazeDrawer drawer = new ArrayMazeDrawer(maze);
+                new Window(drawer).setVisible(true);
+            }
+        });
     }
 }

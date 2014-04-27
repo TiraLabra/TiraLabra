@@ -19,6 +19,7 @@ public class MazeNodeTest {
     public void testEquals() {
         assertEquals(new MazeNode(), new MazeNode());
         assertNotSame(new MazeNode(), new MazeNode(0, 1));
+        assertEquals(new MazeNode(0, 1), new MazeNode(0, 1));
     }
 
 }

@@ -42,9 +42,13 @@ public class AStarSearch implements Search {
 
             for (Node successor : graph.getSuccessors(current)) {
                 int cost = current.getCost() +  graph.weight(current, successor);
-                /*if (open.contains(successor) && cost < successor.getCost()) {
-                    open.remove(successor);
-                }*/
+                if (open.contains(successor) && cost < successor.getCost()) {
+                    open.remove(successor); // new path is better
+                }
+                // This should never happen if you have an monotone admissible heuristic
+                if (closed.contains(successor) && cost < successor.getCost()) {
+                    closed.remove(successor);
+                }
                 if (!open.contains(successor) && !closed.contains(successor)) {
                     successor.setCost(cost);
                     successor.setRank(heuristic.value(successor));

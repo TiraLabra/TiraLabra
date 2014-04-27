@@ -16,7 +16,7 @@ public class ArrayMazeTest {
             new int[]{ArrayMaze.START, 0, 0},
             new int[]{1, 0, 0},
             new int[]{1, 1, ArrayMaze.GOAL}};
-        maze = ArrayMaze.create(array);
+        maze = new ArrayMaze(array);
     }
 
     /**

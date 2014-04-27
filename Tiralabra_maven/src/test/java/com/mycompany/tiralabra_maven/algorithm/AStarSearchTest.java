@@ -17,9 +17,10 @@ public class AStarSearchTest {
     private Maze maze;
 
     private void setUp(int[][] array) {
-        maze = ArrayMaze.create(array);
+        maze = new ArrayMaze(array);
         searcher = new AStarSearch(maze, maze.getHeuristic());
     }
+
     @Test
     public void testSimple() {
         int[][] array = new int[][]{
@@ -69,8 +70,9 @@ public class AStarSearchTest {
     }
 
     private void testEquals(Node[] correctPath, List<Node> path) {
-        for(Node state:correctPath)
+        for (Node state : correctPath) {
             assertTrue(path.contains(state));
+        }
     }
 
 }

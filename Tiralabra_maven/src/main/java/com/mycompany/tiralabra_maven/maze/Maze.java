@@ -20,4 +20,6 @@ public interface Maze extends Graph {
 
     int movementCost(MazeNode node);
 
+    public int getMaxKey();
+
 }

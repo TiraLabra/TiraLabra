@@ -51,4 +51,9 @@ public class SimpleMaze extends AbstractMaze {
         return new MazeNode(x, y);
     }
 
+    @Override
+    public int getMaxKey() {
+        return 1;
+    }
+
 }

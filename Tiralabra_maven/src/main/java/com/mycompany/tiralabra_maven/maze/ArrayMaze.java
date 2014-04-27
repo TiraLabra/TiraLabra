@@ -2,33 +2,40 @@ package com.mycompany.tiralabra_maven.maze;
 
 import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.algorithm.Node;
+import java.util.Random;
 
 public class ArrayMaze extends AbstractMaze {
 
     public static final int WALL = 0;
     public static final int START = -1;
     public static final int GOAL = -2;
+    private static final Random r = new Random();
 
     private final int[][] maze;
+    private int max;
 
-    private ArrayMaze(int[][] maze, MazeNode start, MazeNode goal) {
+    public ArrayMaze(int[][] intMaze, MazeNode start, MazeNode goal) {
         super(start, goal);
-        this.maze = maze;
-    }
-
-    public static Maze create(int[][] maze) {
-        MazeNode start = null;
-        MazeNode goal = null;
-        for (int x = 0; x < maze.length; x++) {
-            for (int y = 0; y < maze[0].length; y++) {
-                if (maze[x][y] == START) {
-                    start = new MazeNode(x, y);
-                } else if (maze[x][y] == GOAL) {
-                    goal = new MazeNode(x, y);
-                }
+        maze = intMaze;
+        for (int[] row : intMaze) {
+            for (int i = 0; i < intMaze[0].length; i++) {
+                max = (max < row[i]) ? row[i] : max;
             }
         }
-        return new ArrayMaze(maze, start, goal);
+    }
+
+    public ArrayMaze(int[][] intMaze) {
+        maze = intMaze;
+        for (int x = 0; x < intMaze.length; x++) {
+            for (int y = 0; y < intMaze[0].length; y++) {
+                if (intMaze[x][y] == START) {
+                    start = new MazeNode(x, y);
+                } else if (intMaze[x][y] == GOAL) {
+                    goal = new MazeNode(x, y);
+                }
+                max = (max < intMaze[x][y]) ? intMaze[x][y] : max;
+            }
+        }
     }
 
     @Override
@@ -86,4 +93,22 @@ public class ArrayMaze extends AbstractMaze {
         return s;
     }
 
+    @Override
+    public int getMaxKey() {
+        return max;
+    }
+
+    public static ArrayMaze randomMaze(int width, int height, int max) {
+        int[][] array = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                array[i][j] = r.nextInt(max);
+            }
+        }
+        array[0][0] = START;
+        array[width - 1][height - 1] = GOAL;
+        ArrayMaze maze = new ArrayMaze(array, new MazeNode(), new MazeNode(width - 1, height - 1));
+        maze.max = max - 1;
+        return maze;
+    }
 }

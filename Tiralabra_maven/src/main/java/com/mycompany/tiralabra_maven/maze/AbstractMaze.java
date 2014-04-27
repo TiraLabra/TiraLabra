@@ -5,13 +5,16 @@ import com.mycompany.tiralabra_maven.algorithm.Node;
 
 abstract public class AbstractMaze implements Maze {
 
-    protected final MazeNode start;
-    protected final MazeNode goal;
+    protected MazeNode start;
+    protected MazeNode goal;
     protected int expanded;
 
     public AbstractMaze(MazeNode start, MazeNode goal) {
         this.start = start;
         this.goal = goal;
+    }
+
+    public AbstractMaze() {
     }
 
     @Override

@@ -53,6 +53,11 @@ public class AbstractMazeTest {
         public MazeNode getMazeNode(int x, int y) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
+
+        @Override
+        public int getMaxKey() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
 
 }
