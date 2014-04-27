@@ -1,10 +1,7 @@
 package labyrintti.osat;
 
-import java.io.File;
-import java.util.Scanner;
-
 /**
- * Karttapohja, jossa on ruudut. Erityisesti pohja tietää lähtö ja maaliruudun.
+ * Karttapohja, jossa on ruudut. Erityisesti pohja tietää lähtö- ja maaliruudun.
  *
  * @author heidvill
  */
@@ -39,6 +36,12 @@ public class Pohja {
      */
     private int maaliY;
 
+    /**
+     *
+     * @param korkeus kartan korkeus = rivien määrä
+     * @param leveys kartan leveys = sarakkeiden määrä
+     * @param syote kartta merkkijonona
+     */
     public Pohja(int korkeus, int leveys, String syote) {
         kartta = new Ruutu[korkeus][leveys];
         this.korkeus = korkeus;
@@ -59,7 +62,6 @@ public class Pohja {
                 kartta[i][j] = new Ruutu(arvo, i, j);
             }
         }
-//        tulostaPohja();
     }
 
     /**
@@ -79,6 +81,8 @@ public class Pohja {
             maaliX = x;
             maaliY = j;
             return 0;
+        } else if (Integer.parseInt("" + merkki) == 0) {
+            return 1;
         } else {
             return Integer.parseInt("" + merkki);
         }
@@ -88,6 +92,12 @@ public class Pohja {
         return kartta;
     }
 
+    /**
+     *
+     * @param i ruudun rivi
+     * @param j ruudun sarake
+     * @return Ruutu annetuissa koordinaateissa
+     */
     public Ruutu getRuutu(int i, int j) {
         return kartta[i][j];
     }

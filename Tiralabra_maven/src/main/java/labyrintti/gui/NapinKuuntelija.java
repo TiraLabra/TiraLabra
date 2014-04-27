@@ -26,7 +26,8 @@ public class NapinKuuntelija implements ActionListener {
 
     /**
      * Napinpainalluksesta piirtää lyhimmän reitin.
-     * @param ae 
+     *
+     * @param ae
      */
     @Override
     public void actionPerformed(ActionEvent ae) {

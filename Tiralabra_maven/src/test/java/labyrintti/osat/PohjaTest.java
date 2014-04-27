@@ -22,8 +22,8 @@ public class PohjaTest {
     @Before
     public void setUp() {
         esim = "L11"
-            + "111"
-            + "11M";
+                + "111"
+                + "11M";
         pohja = new Pohja(3, 3, esim);
     }
 
@@ -37,11 +37,13 @@ public class PohjaTest {
     public void lahtoOikein() {
         assertEquals(0, pohja.getLahtoX());
         assertEquals(0, pohja.getLahtoY());
+        assertEquals(0, pohja.getLahto().getArvo());
     }
 
     @Test
     public void maaliOikein() {
         assertEquals(2, pohja.getMaaliX());
         assertEquals(2, pohja.getMaaliY());
+        assertEquals(0, pohja.getMaali().getArvo());
     }
 }

@@ -37,6 +37,8 @@ public class EtsijaTest {
         Pohja p = etsija.getPohja();
         assertEquals(0, p.getLahto().getArvo());
         assertEquals(0, p.getMaali().getArvo());
+        assertEquals(null, etsija.getReitti());
+        assertEquals(0, etsija.getReitinPituus());
     }
 
     @Test

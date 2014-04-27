@@ -24,7 +24,7 @@ public class Ruutu {
      */
     private int etaisyysLoppuun;
     /**
-     * Ruudn etäisyys alkuun, polun pituus + ruudun arvo.
+     * Ruudn etäisyys alkuun = polun pituus + ruudun arvo.
      */
     private int etaisyysAlkuun;
     /**
@@ -41,6 +41,12 @@ public class Ruutu {
      */
     private int indeksi;
 
+    /**
+     *
+     * @param arvo ruudun arvo
+     * @param x x-koordinaatti, rivi
+     * @param y y-koordinaatti, sarake
+     */
     public Ruutu(int arvo, int x, int y) {
         this.arvo = arvo;
         this.x = x;
@@ -58,7 +64,7 @@ public class Ruutu {
      * @param maaliY Maaliruudun y-koordinaatti
      */
     public void laskeEtaisyysMaaliin(int maaliX, int maaliY) {
-        etaisyysLoppuun = Math.abs((x - maaliX)) + Math.abs((y - maaliY));
+        etaisyysLoppuun = Math.abs(x - maaliX) + Math.abs(y - maaliY);
     }
 
     public int getArvo() {
@@ -125,15 +131,6 @@ public class Ruutu {
     public void setIndeksi(int indeksi) {
         this.indeksi = indeksi;
     }
-//
-//    /**
-//     *
-//     * @return ruudun arvo
-//     */
-//    @Override
-//    public String toString() {
-//        return "" + arvo;
-//    }
 
     /**
      *
@@ -144,7 +141,7 @@ public class Ruutu {
     }
 
     /**
-     * Ruudut ovat samat, jos niillä on samat koordinatit.
+     * Ruudut ovat samat, jos niillä on samat koordinaatit.
      *
      * @param o verrattava objekti
      * @return true, jos ruuduilla on samat koordinaatit, muuten false
@@ -158,7 +155,7 @@ public class Ruutu {
             return false;
         }
         Ruutu verrattava = (Ruutu) o;
-        if (x == verrattava.getX() && y == verrattava.getY()) { // && arvo==verrattava.getArvo()
+        if (x == verrattava.getX() && y == verrattava.getY()) {
             return true;
         }
         return false;

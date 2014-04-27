@@ -11,6 +11,7 @@ import labyrintti.osat.Pohja;
 
 /**
  * Sovelluksen käyttöliittymä.
+ *
  * @author heidvill
  */
 public class Kayttoliittyma implements Runnable {
@@ -33,15 +34,14 @@ public class Kayttoliittyma implements Runnable {
     private int sivu;
 
     /**
-     * 
+     *
      * @param kaynnistys
-     * @param sivu 
+     * @param sivu ruudun sivun pituus pikseleinä
      */
     public Kayttoliittyma(Kaynnistys kaynnistys, int sivu) {
         this.alusta = new Piirtoalusta(kaynnistys, sivu);
         this.kaynnistys = kaynnistys;
         this.sivu = sivu;
-//        kaynnistys.getEtsija().setPiirtoalusta(alusta);
     }
 
     /**
@@ -51,7 +51,7 @@ public class Kayttoliittyma implements Runnable {
     public void run() {
         Pohja p = kaynnistys.getPohja();
         frame = new JFrame("Labyrintti");
-        frame.setPreferredSize(new Dimension((p.getLeveys() + 2) * (sivu+2) + 80, (p.getKorkeus() + 1) * (sivu+2)));
+        frame.setPreferredSize(new Dimension((p.getLeveys() + 2) * (sivu + 2) + 80, (p.getKorkeus() + 1) * (sivu + 2)));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         luoKomponentit(frame.getContentPane());
@@ -62,7 +62,8 @@ public class Kayttoliittyma implements Runnable {
 
     /**
      * Liittää ikkunaan tarvittavat komponentit.
-     * @param container 
+     *
+     * @param container
      */
     private void luoKomponentit(Container container) {
         container.add(alusta);

@@ -66,6 +66,7 @@ public class Minimikeko {
 
     /**
      * Huolehtii, että minimikeon ehto on voimassa annetusta solmusta alaspäin.
+     * Olettaa että annetun solmun lapsista lähtevät keot toteuttavat kekoehdon.
      *
      * @param solmu jota siirretään alaspäin keossa, kunnes kekoehto on taas
      * voimassa
@@ -73,7 +74,7 @@ public class Minimikeko {
     private void heapify(int solmu) {
         while (true) {
             int vasen = vasenLapsi(solmu);
-            if (vasen >= keonKoko) {
+            if (vasen >= keonKoko) { // solmulla ei ole vasenta lasta
                 break;
             }
             int oikea = oikeaLapsi(solmu);
@@ -95,17 +96,16 @@ public class Minimikeko {
     }
 
     /**
-     * Palauttaa indeksin, jonka solmun alun ja lopun etäisyyksien summa on
+     * Palauttaa indeksin, jonka ruudun alun ja lopun etäisyyksien summa on
      * pienempi.
      *
      * @param vasen solmun vasemman lapsen indeksi
      * @param oikea solmun oikean lapsen indeksi
-     * @return indeksi, jonka solmun arvo on pienempi
+     * @return indeksi, jonka ruudun arvo on pienempi
      */
     private int etsiPienempiLapsi(int vasen, int oikea) {
         int pienin = oikea;
         if (ruudut[vasen].getEtaisyyksienSumma() < ruudut[oikea].getEtaisyyksienSumma()) {
-//        if (ruudut[vasen].getArvo() < ruudut[oikea].getArvo()) {
             pienin = vasen;
         }
         return pienin;
@@ -178,19 +178,19 @@ public class Minimikeko {
     }
 
     /**
-     * Rakentaa minimikeon niin että kekoehto tulee voimaan.
+     * Rakentaa minimikeon niin, että kekoehto tulee voimaan.
      */
     public void rakennaKeko() {
         for (int i = keonKoko / 2 - 1; i >= 0; i--) {
             heapify(i);
-//            heapify1(i);
+//            heapify1(i); // suorituskykytestausta
         }
     }
 
     /**
      * Päivittää keon, kun jonkin ruudun etäisyysarvio muuttuu.
      *
-     * @param paivitettava ruutu jonka etäisyysarvio on muuttunut.
+     * @param paivitettava ruutu, jonka etäisyysarvio on muuttunut.
      */
     public void paivitaRuutuKekoon(Ruutu paivitettava) {
         int solmu = paivitettava.getIndeksi();

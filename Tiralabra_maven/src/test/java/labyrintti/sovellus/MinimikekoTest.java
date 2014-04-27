@@ -2,7 +2,6 @@ package labyrintti.sovellus;
 
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -38,7 +37,7 @@ public class MinimikekoTest {
 
     @Test
     public void kekoAlustetaanOikein() {
-        Ruutu[] tarkistus = luoTarkistustalukko();
+        Ruutu[] tarkistus = luoTarkistustaulukko();
         Ruutu[] ruudut = keko.getRuudut();
         assertEquals(9, keko.getKeonKoko());
         for (int i = 0; i < 9; i++) {
@@ -68,10 +67,14 @@ public class MinimikekoTest {
             assertEquals("(" + i / 3 + "," + i % 3 + ")", keko.pollPienin().koordinaatit());
         }
         assertEquals(0, keko.getKeonKoko());
-
     }
 
-    private Ruutu[] luoTarkistustalukko() {
+    /**
+     * Tehdään vertailtava taulukko testeihin.
+     *
+     * @return tarkistuskeko
+     */
+    private Ruutu[] luoTarkistustaulukko() {
         Ruutu[] tarkistus = new Ruutu[9];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -81,6 +84,10 @@ public class MinimikekoTest {
         return tarkistus;
     }
 
+    /**
+     * Asetetaan ruutujen etäisyys alkuun. Huom, ei noudata pohjakartan
+     * etäisyyksiä.
+     */
     private void asetaAlkuetaisyydet() {
         for (int i = 0; i < keko.getKeonKoko(); i++) {
             keko.getRuudut()[i].setEtaisyysAlkuun(keko.getKeonKoko() - i);

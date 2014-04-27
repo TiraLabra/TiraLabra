@@ -28,24 +28,15 @@ public class Kaynnistys {
     /**
      * Testisyöte.
      */
-    private String esim2 = "L0000"
-            + "99990"
-            + "00000"
-            + "09999"
-            + "0000M";
+    private String esim2 = "L1111"
+            + "33331"
+            + "11111"
+            + "13333"
+            + "1111M";
     /**
      * Testisyöte.
      */
     private String esim3 = "9999999999999999M9"
-//                        + "000000000000000900"
-//                        + "000000000000000900"
-//                        + "000000000000000000"
-//                        + "000000999990000000"
-//                        + "000000000090000000"
-//                        + "000000000090000000"
-//                        + "000000000090000000"
-//                        + "000000000000000000"
-//                        + "9L9999999999999999";
             + "111111111111111911"
             + "111111111111111911"
             + "111111111111111111"
@@ -78,6 +69,9 @@ public class Kaynnistys {
      */
     private Scanner lukija;
 
+    /**
+     * Alustaa Scannerin, joka lukee käyttäjän syötteitä.
+     */
     public Kaynnistys() {
         lukija = new Scanner(System.in);
     }
@@ -86,17 +80,20 @@ public class Kaynnistys {
      * Kysyy käyttäjältä kartan ja käynnistää käyttöliittymän.
      */
     public void kaynnista() {
-        System.out.println("Paina pelkkä Enter käyttääksesi valmista karttaa, muuten anna korkeus.\nHuom! Kartan on oltava vähintään kahden ruudun kokoinen.");
+        System.out.println("Paina pelkkä Enter käyttääksesi valmista karttaa, muuten anna korkeus.\n"
+                + "Huom! Kartan on oltava vähintään kahden ruudun kokoinen.");
+
         int korkeus = kysyKayttajalta("Anna kartan korkeus 1-30: ");
+
         if (korkeus == 0) {
             valmisPohja();
         } else {
             int leveys = kysyKayttajalta("Anna kartan leveys 1-30: ");
-            String syote = kartanSyottaminen(leveys, korkeus, "", 0);
-            if(syote.isEmpty()){
+
+            if (!kartanSyottaminen(leveys, korkeus, "", 0)) {
                 return;
             }
-            pohja = new Pohja(korkeus, leveys, syote);
+
             etsija = new Etsija(pohja);
         }
 //        testipohjat(); //suorituskykytestausta
@@ -126,7 +123,7 @@ public class Kaynnistys {
      *
      * @param kysymys
      * @return 0 jos käyttäjä haluaa käyttää valmista karttaa, muuten luku
-     * väliltä 1-30
+     * väliltä 1-30.
      */
     private int kysyKayttajalta(String kysymys) {
         System.out.print(kysymys);
@@ -163,7 +160,7 @@ public class Kaynnistys {
 //        pohja = new Pohja(10, 18, esim3);
 //        pohja = new Pohja(5, 5, esim2);
 //        pohja = new Pohja(9, 10, esim1);
-        pohja = new Pohja(3, 3, esim4);
+        pohja = new Pohja(3, 3, esim4); // testeissä käytetty kartta
         etsija = new Etsija(pohja);
     }
 
@@ -181,52 +178,54 @@ public class Kaynnistys {
      * @param leveys kartan leveys
      * @param korkeus kartan korkeus
      * @param syote kartta merkkijonona
-     * @param mones monta riviä käyttäjä on syöttänyt
-     * @return kartta merkkijonona
+     * @param syotettavanRivinNro monta riviä käyttäjä on syöttänyt
+     * @return true, jos kartta luotiin onnistuneesti, false jos käyttäjä haluaa
+     * keskeyttää ohjelman.
      */
-    private String kartanSyottaminen(int leveys, int korkeus, String syote, int mones) {
+    private boolean kartanSyottaminen(int leveys, int korkeus, String syote, int syotettavanRivinNro) {
         // metodi liian pitkä, mistä lyhentää..?
-        System.out.println("Syötä kartta: \nMerkitse lähtö kirjaimella L ja maali kirjaimella M\nVoit lopettaa ohjelman kirjoittamalla 'exit'");
+        System.out.println("Merkitse lähtö kirjaimella L ja maali kirjaimella M\n"
+                + "Muuten ruudun arvo on väliltä 1-9\n"
+                + "Voit lopettaa ohjelman kirjoittamalla 'exit'\n"
+                + "Syötä kartta:");
         while (true) {
             String rivi = lukija.nextLine();
-            if(rivi.equals("exit")){
-                return "";
+            if (rivi.equals("exit")) { // käyttäjä haluaa keskeyttää ohjelman.
+                return false;
             }
-            mones++;
-            if (rivi.length() != leveys) {
-                mones = riviEiOikeanMittainen(mones, syote, leveys);
+            if (rivi.length() != leveys) { // jos rivi vääränmittainen
+                riviEiOikeanMittainen(syotettavanRivinNro, syote, leveys);
             } else {
+                syotettavanRivinNro++;
                 syote += rivi;
             }
             if (syote.length() == korkeus * leveys) {
-                if (tarkistaOnkoLahtoJaMaali(syote)) {
+                if (tarkistaOnkoLahtoJaMaali(syote)) { // kartassa kaikki ok
                     break;
                 } else {
                     syote = "";
-                    mones = 0;
+                    syotettavanRivinNro = 0;
                 }
             }
         }
-        return syote;
+        pohja = new Pohja(korkeus, leveys, syote);
+        return true;
     }
 
     /**
      * Ohjeistaa käyttäjää, jos syötetty rivi ei ole oikean mittainen.
      *
-     * @param mones monta riviä käyttäjä on syöttänyt.
+     * @param syotettavanRivinNro monta riviä käyttäjä on syöttänyt.
      * @param syote tähän asti annettu syöte
      * @param leveys kartan leveys
-     * @return mones-1 eli sallittujen rivien määrä
      */
-    private int riviEiOikeanMittainen(int mones, String syote, int leveys) {
-        mones--;
-        System.out.println("Rivi on liian lyhyt/pitkä, olet syöttänyt tähän mennessä " + mones + " riviä, jotka ovat");
+    private void riviEiOikeanMittainen(int syotettavanRivinNro, String syote, int leveys) {
+        System.out.println("Rivi on liian lyhyt/pitkä, olet syöttänyt tähän mennessä " + syotettavanRivinNro + " riviä, jotka ovat");
         System.out.println("(Jatka rivien syöttöä tästä)");
-        for (int i = 0; i < mones; i++) {
+        for (int i = 0; i < syotettavanRivinNro; i++) {
             String mj = syote.substring(i * leveys, i * leveys + leveys);
             System.out.println(mj);
         }
-        return mones;
     }
 
     /**

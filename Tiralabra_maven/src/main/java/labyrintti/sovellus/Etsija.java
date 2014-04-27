@@ -1,6 +1,5 @@
 package labyrintti.sovellus;
 
-import labyrintti.gui.Piirtoalusta;
 import labyrintti.osat.Pohja;
 import labyrintti.osat.Ruutu;
 
@@ -10,7 +9,6 @@ import labyrintti.osat.Ruutu;
  * @author heidvill
  */
 public class Etsija {
-    //tira pruju s. 613 http://www.cs.helsinki.fi/u/floreen/tira2013/tira.pdf
 
     /**
      * Minimikeko käymättömistä ruuduista. Ensimmäisenä on ruutu, jolla alun ja
@@ -30,10 +28,15 @@ public class Etsija {
      */
     private int[][] reitti;
 
+    /**
+     *
+     * @param p Pohjakartta
+     */
     public Etsija(Pohja p) {
         pohja = p;
         kaymattomat = new Minimikeko(p.getKorkeus() * p.getLeveys());
         reitti = null;
+        reitinPituus = 0;
     }
 
     /**
@@ -58,12 +61,11 @@ public class Etsija {
         alustus();
         while (!pohja.getMaali().onkoKayty()) {
             Ruutu kasiteltava = kaymattomat.pollPienin();
-            while(kasiteltava.getArvo()==9){
+            while (kasiteltava.getArvo() == 9) {
                 kasiteltava = kaymattomat.pollPienin();
             }
             kasiteltava.setKayty(true);
             kayLapiViereisetRuudut(kasiteltava);
-//            alusta.paivita();
         }
     }
 
@@ -78,7 +80,7 @@ public class Etsija {
                 if ((i == 0 && j != 0) || (i != 0 && j == 0)) { //käydään läpi viereiset ruudut pysty- ja vaakasuunnassa
                     int x = kasiteltava.getX() + i;
                     int y = kasiteltava.getY() + j;
-                    if (ruutuPohjansisalla(x, y)) {
+                    if (ruutuPohjanSisalla(x, y)) {
                         Ruutu viereinen = pohja.getRuutu(x, y);
                         relax(kasiteltava, viereinen);
                     }
@@ -95,11 +97,10 @@ public class Etsija {
      * @param viereinen yksi käsittelyssä olevan ruudun viereisistä ruuduista
      */
     private void relax(Ruutu kasiteltava, Ruutu viereinen) {
-        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1 && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
-            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo()+1);
+        if (viereinen.getEtaisyysAlkuun() > kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo() && viereinen.getArvo() != 9) { // Ysin arvoiseen ruutuun ei mennä
+            viereinen.setEtaisyysAlkuun(kasiteltava.getEtaisyysAlkuun() + viereinen.getArvo());
             viereinen.setEdellinen(kasiteltava);
             kaymattomat.paivitaRuutuKekoon(viereinen);
-//            kaymattomat.rakennaKeko();
         }
     }
 
@@ -110,7 +111,7 @@ public class Etsija {
      * @param y Kertoo ruudun sarakkeen.
      * @return false, jos ruutu on ulkopuolella, muuten true.
      */
-    private boolean ruutuPohjansisalla(int x, int y) {
+    private boolean ruutuPohjanSisalla(int x, int y) {
         if (x < 0 || y < 0) {
             return false;
         }
@@ -127,17 +128,18 @@ public class Etsija {
      */
     public String getReittiMerkkijonona() {
         Ruutu kasiteltava = pohja.getMaali();
-        String reitti = "";
+        String polku = "";
         while (!kasiteltava.equals(pohja.getLahto())) {
-            reitti = " " + kasiteltava.koordinaatit() + reitti;
+            polku = " " + kasiteltava.koordinaatit() + polku;
             kasiteltava = kasiteltava.getEdellinen();
         }
-        reitti = pohja.getLahto().koordinaatit() + reitti;
-        return reitti;
+        polku = pohja.getLahto().koordinaatit() + polku;
+        return polku;
     }
 
     /**
-     * Tallentaa löydetyn reitin 2-ulotteiseen taulukkoon.
+     * Tallentaa löydetyn reitin 2-ulotteiseen taulukkoon. Vasemmassa
+     * sarakkeessa on ruudun x-koordinaatti ja oikeassa y-koordinaatti.
      */
     public void tallennaReittiTaulukkoon() {
         laskeReitinPituus();

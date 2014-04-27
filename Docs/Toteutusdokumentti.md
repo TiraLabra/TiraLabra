@@ -19,7 +19,10 @@ Labyrintti/gui
 - Napin kuuntelija: Käynnistää reitin etsimisen
 - Piirtoalusta: Piirtää kartan ja reitin
 
-### A*
+Saavutetut aika- ja tilavaativuudet
+------------------------------------
+
+## A*
 
 talukko n riviä * m saraketta, m*n = V solmua, E kpl kaaria
 
@@ -78,7 +81,7 @@ aStarin aikavaativuus kaiken kaikkiaan on O((V+E) log V). Koska jokaisesta solmu
 
 2-ulotteinen pohjataulukko, samoin kuin 1-ulotteinen minimikeko vie tilaa O(V), koska sinne tallennetaan kaikki solmut, siispä aStarin tilavaativuus on O(V).
 
-###Minimikeko
+##Minimikeko
 
 Minimikeolla tärkeä metodi on Heapify, joka huolehtii siitä että kekoehto on voimassa koko ajan.
 
@@ -146,8 +149,24 @@ Aikavaativuuden analysointi pseudokoodista:
 
 Minimikeon tilavaativuus on O(V), koska talukossa on kaikki kartan ruudut.
 
+Puutteet ja parannusehdotukset
+------------------------------
+- Käyttäjälle suuren kartan syöttäminen on aika vaivalloista, tähän olisi voinut ehkä keksiä jonkun toisen ratkaisun.
+- Taulukon koko on rajattu 30 x 30 ruutua, koska GUI:n aukeavassa ikkunassa ruudun pikseleiksi on määritelty 25, suurempi kartta ei mahtuisi tällöin näytölle. Vaihtoehtona tähän olisi voinut tehdä kiinteänkokoisen ikkunan, joka skaalaa ruutujen koon käyttäjän antamien leveyden ja korkeuden mukaan. Halusin kuitenkin, että ruudut ovat neliönmuitoisia, joten päädyin tähän tapaan.
+- Kaynnistysluokan testaus on puutteellinen käyttäjän syötteiden osalta luokan toteutustavan takia, mutta kattavat käyttöohjeet korvaavat osittain tämän.
+- Reitin etenemisen visualisoinnin olisi voinut ajastaa sen sijaan että ohjelma piirtää kerralla koko lopputuloksen.
+- Ohjelma hyväksyy ruudun arvoksi nollan. Tämä aiheuttaa reitin laskuun virheitä, koska ohjelma ei ymmärrä, että nolla-reittiä pitkin pääsisi "kevyemmin", vaikka etäisyysarvio loppuun olisikin nolla-ruudussa suurempi kuin virheellisen reitin ruuduilla. Ongelma on ratkaistu niin, että vaikka käyttäjä syöttäisi nollan, ohjelma muuttaa sen ykköseksi.
+
+Esim.
+
+	//kartta	// virheellinen		// oikea
+	L0000			Lxxxx			Lxxxx
+	33330			3333x			3333x
+	00000			0000x			xxxxx
+	03333			0333x			x3333
+	0000M			0000M			xxxxM
+
 Lähteet
 ---------
 http://www.cs.helsinki.fi/u/floreen/tira2014/tira.pdf
-
 

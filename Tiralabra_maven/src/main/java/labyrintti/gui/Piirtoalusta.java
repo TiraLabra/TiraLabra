@@ -30,7 +30,7 @@ public class Piirtoalusta extends JPanel {
     /**
      *
      * @param kaynnistys
-     * @param sivu
+     * @param sivu ruudun sivun pituus pikseleinä
      */
     public Piirtoalusta(Kaynnistys kaynnistys, int sivu) {
         this.kaynnistys = kaynnistys;
@@ -41,7 +41,7 @@ public class Piirtoalusta extends JPanel {
     /**
      * Piirtää kartan.
      *
-     * @param g
+     * @param g Graphics
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -67,7 +67,7 @@ public class Piirtoalusta extends JPanel {
         } else if (lahtoTaiMaali(r.getX(), r.getY())) {
             g.setColor(Color.RED);
         } else {
-            g.setColor(new Color(r.getArvo() * 20, 255 - r.getArvo() * 30, 0));
+            g.setColor(new Color((r.getArvo() - 1) * 20, 255 - (r.getArvo() - 1) * 30, 0));
         }
         g.fill3DRect(r.getY() * sivu, r.getX() * sivu, sivu, sivu, true);
     }
@@ -89,7 +89,7 @@ public class Piirtoalusta extends JPanel {
     /**
      * Piirtää ruudun, jossa on pitänyt käydä reitin löytymiseksi.
      *
-     * @param g
+     * @param g Graphics
      * @param x ruudun rivi
      * @param y ruudun sarake
      */
