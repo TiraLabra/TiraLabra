@@ -2,7 +2,7 @@ Käyttöohje
 ==========
 
 Käyttäjä voi syöttää oman kartan tai käyttää valmista karttaa, johon on asetettu lähtö- ja maaliruutu.
-Ohjelma laskee lyhimmän reitin lähdöstä maaliin. Lisäksi se näyttää reitin (punaiset pisteet) ja ruudut (keltaiset pisteet), joissa piti käydä lyhimmän reitin löytämikseksi.
+Ohjelma laskee lyhimmän reitin lähdöstä maaliin. Lisäksi se näyttää reitin (punaiset pisteet) ja ruudut (keltaiset pisteet), joissa piti käydä lyhimmän reitin löytämiseksi.
 
 Ohjelma neuvoo käyttäjää sallituissa syötteissä ja kuinka ohjelmassa edetään.
 
@@ -18,8 +18,8 @@ Kartan syöttämisen ja samalla koko ohjelman voi keskeyttää kirjoittamalla 'e
 
 *Huom!* Mahdollisia käyttäjän virhetilanteita, joihin ei ole ohjeistusta:
 - Useampi lähtö tai maali. Ohjelma lukee karttaa riveittän ja ottaa lähdöksi/maaliksi ruudun, joka on merkitty viimeisimpänä.
-- Kartta, jonka koko on 1 x 1. Tämä ei ole sallittu tilanne, koska lähtö ja maali eivät mahdu tämänkokoiseen karttaan. Lähdön ja maalin on siis oltava eri ruuduissa. Ohjelman voi keskeyttää, kirjoittamalla 'exit'.
-- Leveydeksi annetaan tyhjä merkkijono. Ohjelma luulee leveyttä nollaksi, jolloin kartan syöttäminen on mahdotonta. Ohjelman voi keskeyttää, kirjoittamalla 'exit'.
+- Kartta, jonka koko on 1 x 1. Tämä ei ole sallittu tilanne, koska lähtö ja maali eivät mahdu tämänkokoiseen karttaan. Lähdön ja maalin on siis oltava eri ruuduissa. Ohjelman voi keskeyttää kirjoittamalla 'exit'.
+- Leveydeksi annetaan tyhjä merkkijono. Ohjelma luulee leveyttä nollaksi, jolloin kartan syöttäminen on mahdotonta. Ohjelman voi keskeyttää kirjoittamalla 'exit'.
 
 *Huom!* Ohjelma kaatuu, jos:
 - Korkeus tai leveys ei ole luku.
