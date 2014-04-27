@@ -3,20 +3,21 @@ package com.mycompany.tiralabra_maven.algorithm;
 import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.PriorityQueue;
 import com.mycompany.tiralabra_maven.datastructures.Set;
-import com.mycompany.tiralabra_maven.datastructures.State;
-import com.mycompany.tiralabra_maven.maze.Maze;
 
-public class AStarSearch {
+public class AStarSearch implements Search {
 
-    protected final Maze maze;
+    private final Graph graph;
+    private Heuristic heuristic;
 
-    public AStarSearch(Maze maze) {
-        this.maze = maze;
+    public AStarSearch(Graph graph, Heuristic heuristic) {
+        this.graph = graph;
+        this.heuristic = heuristic;
     }
 
-    public List<State> findOptimalPath() {
-        List<State> states = new List<>();
-        State state = getOptimalPath();
+    @Override
+    public List<Node> findOptimalPath() {
+        List<Node> states = new List<>();
+        Node state = getOptimalPath();
         while (state != null) {
             states.insertLast(state);
             state = state.getParent();
@@ -24,29 +25,29 @@ public class AStarSearch {
         return states;
     }
 
-    private State getOptimalPath() {
+    private Node getOptimalPath() {
 
-        PriorityQueue<State> open = PriorityQueue.createMinPriorityQueue();
-        Set<State> closed = new Set<>();
-        open.enqueue(maze.getStartState());
+        PriorityQueue open = PriorityQueue.createMinPriorityQueue();
+        Set<Node> closed = new Set<>();
+        open.enqueue(graph.getStartNode());
 
         while (!open.isEmpty()) {
-            State current = open.dequeue();
+            Node current = (Node) open.dequeue();
 
-            if (maze.isGoalState(current)) {
+            if (graph.isGoalNode(current)) {
                 return current;
             }
 
             closed.add(current);
 
-            for (State successor : maze.getSuccessors(current)) {
-                int cost = current.getCost() +  maze.movementCost(successor);
+            for (Node successor : graph.getSuccessors(current)) {
+                int cost = current.getCost() +  graph.weight(current, successor);
                 /*if (open.contains(successor) && cost < successor.getCost()) {
                     open.remove(successor);
                 }*/
                 if (!open.contains(successor) && !closed.contains(successor)) {
                     successor.setCost(cost);
-                    successor.setRank(heuristicValue(successor));
+                    successor.setRank(heuristic.value(successor));
                     open.enqueue(successor);
                 }
             }
@@ -54,8 +55,12 @@ public class AStarSearch {
         return null;
     }
 
-    public int heuristicValue(State state) {
-        return maze.distanceToGoal(state);
+    public Heuristic getHeuristic() {
+        return heuristic;
     }
-    
+
+    public void setHeuristic(Heuristic heuristic) {
+        this.heuristic = heuristic;
+    }
+
 }

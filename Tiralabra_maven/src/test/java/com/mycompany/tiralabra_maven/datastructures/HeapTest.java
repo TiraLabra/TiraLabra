@@ -3,16 +3,9 @@ package com.mycompany.tiralabra_maven.datastructures;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class HeapTest {
+public abstract class HeapTest {
 
-    AbstractHeap heap = new AbstractHeap() {
-        protected void heapify(int i) {
-        }
-
-        @Override
-        protected void increaseKey(int i, Object key) {
-        }
-    };
+    protected AbstractHeap heap;
 
     @Test
     public void testParent() {
@@ -36,6 +29,23 @@ public class HeapTest {
 
         assertEquals(5, heap.left(2));
         assertEquals(6, heap.right(2));
+    }
+
+    protected Valuable[] toNodeList(Integer... integers) {
+        return toNodeList(integers.length, integers);
+    }
+
+    protected Valuable[] toNodeList(int length, Integer... integers) {
+        Node[] nodes = new Node[length];
+        int max = (length < integers.length) ? length : integers.length;
+        for (int i = 0; i < max; i++) {
+            nodes[i] = new Node(integers[i]);
+        }
+        return nodes;
+    }
+
+    protected void assertOk(Integer[] integers) {
+        assertArrayEquals(toNodeList(integers), heap.getArray());
     }
 
 }

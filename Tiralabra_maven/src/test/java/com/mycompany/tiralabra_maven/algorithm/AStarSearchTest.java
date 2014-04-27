@@ -5,15 +5,21 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.mycompany.tiralabra_maven.maze.ArrayMaze;
-import com.mycompany.tiralabra_maven.datastructures.State;
 import com.mycompany.tiralabra_maven.datastructures.List;
+import com.mycompany.tiralabra_maven.maze.Maze;
+import com.mycompany.tiralabra_maven.maze.MazeNode;
 
 public class AStarSearchTest {
 
     int S = ArrayMaze.START;
     int G = ArrayMaze.GOAL;
     AStarSearch searcher;
+    private Maze maze;
 
+    private void setUp(int[][] array) {
+        maze = ArrayMaze.create(array);
+        searcher = new AStarSearch(maze, maze.getHeuristic());
+    }
     @Test
     public void testSimple() {
         int[][] array = new int[][]{
@@ -21,8 +27,8 @@ public class AStarSearchTest {
             new int[]{1, 1, 1},
             new int[]{1, 1, G}
         };
-        searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath();
+        setUp(array);
+        List<Node> path = searcher.findOptimalPath();
         assertEquals(5, path.size());
     }
 
@@ -33,11 +39,11 @@ public class AStarSearchTest {
             new int[]{2, 2, 1},
             new int[]{2, 2, G}
         };
-        searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath();
-        State[] correctPath = new State[]{
-            new State(), new State(0, 1), new State(0, 2), new State(1, 2),
-            new State(2, 2)};
+        setUp(array);
+        List<Node> path = searcher.findOptimalPath();
+        Node[] correctPath = new Node[]{
+            new MazeNode(), new MazeNode(0, 1), new MazeNode(0, 2), new MazeNode(1, 2),
+            new MazeNode(2, 2)};
         assertEquals(5, path.size());
         testEquals(correctPath, path);
     }
@@ -51,19 +57,19 @@ public class AStarSearchTest {
             new int[]{1, 3, 1, 1, 1},
             new int[]{1, 1, 1, 5, G}
         };
-        searcher = new AStarSearch(ArrayMaze.create(array));
-        List<State> path = searcher.findOptimalPath();
-        State[] correctPath = new State[]{
-            new State(0, 0), new State(1, 0), new State(2, 0),
-            new State(3, 0), new State(4, 0), new State(4, 1),
-            new State(4, 2), new State(3, 2), new State(3, 3),
-            new State(3, 4), new State(4, 4)};
+        setUp(array);
+        List<Node> path = searcher.findOptimalPath();
+        Node[] correctPath = new Node[]{
+            new MazeNode(0, 0), new MazeNode(1, 0), new MazeNode(2, 0),
+            new MazeNode(3, 0), new MazeNode(4, 0), new MazeNode(4, 1),
+            new MazeNode(4, 2), new MazeNode(3, 2), new MazeNode(3, 3),
+            new MazeNode(3, 4), new MazeNode(4, 4)};
         assertEquals(11, path.size());
         testEquals(correctPath, path);
     }
 
-    private void testEquals(State[] correctPath, List<State> path) {
-        for(State state:correctPath)
+    private void testEquals(Node[] correctPath, List<Node> path) {
+        for(Node state:correctPath)
             assertTrue(path.contains(state));
     }
 

@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.maze;
 
 import com.mycompany.tiralabra_maven.datastructures.List;
-import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.algorithm.Node;
 
 import static org.junit.Assert.*;
 
@@ -17,7 +17,7 @@ public class SimpleMazeTest {
 
     @Before
     public void setup() {
-        maze = new SimpleMaze(10, 10, new State(), new State(1, 2));
+        maze = new SimpleMaze(10, 10, new MazeNode(), new MazeNode(1, 2));
     }
 
     /**
@@ -42,11 +42,11 @@ public class SimpleMazeTest {
      */
     @Test
     public void testGetSuccessors() {
-        State state = new State(1, 0);
-        List<State> successors = maze.getSuccessors(state);
+        Node state = new MazeNode(1, 0);
+        List<Node> successors = maze.getSuccessors(state);
 
         assertFalse(successors.isEmpty());
-        assertTrue(successors.contains(new State(1, 1)));
+        assertTrue(successors.contains(new MazeNode(1, 1)));
     }
 
     /**
@@ -54,14 +54,14 @@ public class SimpleMazeTest {
      */
     @Test
     public void testGetSuccessorsCorners() {
-        State[] corners = new State[]{
-            new State(),
-            new State(0, maze.getHeight() - 1),
-            new State(maze.getWidth() - 1, 0),
-            new State(maze.getWidth() - 1, maze.getHeight() - 1)
+        Node[] corners = new Node[]{
+            new MazeNode(),
+            new MazeNode(0, maze.getHeight() - 1),
+            new MazeNode(maze.getWidth() - 1, 0),
+            new MazeNode(maze.getWidth() - 1, maze.getHeight() - 1)
         };
-        for (State state : corners) {
-            List<State> successors = maze.getSuccessors(state);
+        for (Node state : corners) {
+            List<Node> successors = maze.getSuccessors(state);
             assertEquals(2, successors.size());
         }
     }

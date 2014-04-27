@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.maze;
 
 import com.mycompany.tiralabra_maven.datastructures.List;
-import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.algorithm.Node;
 
 public class ArrayMaze extends AbstractMaze {
 
@@ -11,20 +11,20 @@ public class ArrayMaze extends AbstractMaze {
 
     private final int[][] maze;
 
-    private ArrayMaze(int[][] maze, State start, State goal) {
+    private ArrayMaze(int[][] maze, MazeNode start, MazeNode goal) {
         super(start, goal);
         this.maze = maze;
     }
 
     public static Maze create(int[][] maze) {
-        State start = null;
-        State goal = null;
+        MazeNode start = null;
+        MazeNode goal = null;
         for (int x = 0; x < maze.length; x++) {
             for (int y = 0; y < maze[0].length; y++) {
                 if (maze[x][y] == START) {
-                    start = new State(x,y);
+                    start = new MazeNode(x, y);
                 } else if (maze[x][y] == GOAL) {
-                    goal = new State(x,y);
+                    goal = new MazeNode(x, y);
                 }
             }
         }
@@ -42,36 +42,46 @@ public class ArrayMaze extends AbstractMaze {
     }
 
     @Override
-    public List<State> getSuccessors(State s) {
+    public List<Node> getSuccessors(Node node) {
+        MazeNode s = (MazeNode) node;
         int x = s.getX();
         int y = s.getY();
-        List<State> list = new List<>();
+        List<Node> list = new List<>();
 
         if (x > 0) {
-            list.insertLast(getState(x - 1, y).setParent(s));
+            MazeNode n = getMazeNode(x - 1, y);
+            n.setParent(node);
+            list.insertLast(n);
         }
         if (y > 0) {
-            list.insertLast(getState(x, y - 1).setParent(s));
+            MazeNode n = getMazeNode(x, y - 1);
+            n.setParent(node);
+            list.insertLast(n);
         }
         if (x < getHeight() - 1) {
-            list.insertLast(getState(x + 1, y).setParent(s));
+            MazeNode n = getMazeNode(x + 1, y);
+            n.setParent(node);
+            list.insertLast(n);
         }
         if (y < getWidth() - 1) {
-            list.insertLast(getState(x, y + 1).setParent(s));
+            MazeNode n = getMazeNode(x, y + 1);
+            n.setParent(node);
+            list.insertLast(n);
         }
 
-        List<State> copy = new List<>();
-        for (State state : list) {
-            if (state.getCost() != 0)
+        List<Node> copy = new List<>();
+        for (Node state : list) {
+            if (state.getCost() != 0) {
                 copy.insertLast(state);
+            }
         }
         expanded += 1;
         return copy;
     }
 
     @Override
-    public State getState(int x, int y) {
-        State s = new State(x, y);
+    public MazeNode getMazeNode(int x, int y) {
+        MazeNode s = new MazeNode(x, y);
         s.setCost(maze[x][y]);
         return s;
     }

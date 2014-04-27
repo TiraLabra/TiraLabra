@@ -1,32 +1,23 @@
 package com.mycompany.tiralabra_maven.maze;
 
-import com.mycompany.tiralabra_maven.datastructures.List;
-import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.algorithm.Graph;
 
-public interface Maze {
+public interface Maze extends Graph {
 
     int getHeight();
 
     int getWidth();
 
-    State getStartState();
+    boolean isGoalNode(int x, int y);
 
-    boolean isGoalState(State g);
+    MazeNode getMazeNode(int x, int y);
 
-    boolean isGoalState(int x, int y);
+    int distance(MazeNode from, MazeNode to);
 
-    State getState(int x, int y);
+    int distanceFromStart(MazeNode node);
 
-    List<State> getSuccessors(State s);
+    int distanceToGoal(MazeNode node);
 
-    int distance(State from, State to);
-
-    int distanceFromStart(State state);
-
-    int distanceToGoal(State state);
-
-    int getExpandedStates();
-
-    public int movementCost(State successor);
+    int movementCost(MazeNode node);
 
 }

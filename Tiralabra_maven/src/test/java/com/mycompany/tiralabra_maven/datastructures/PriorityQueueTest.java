@@ -15,8 +15,8 @@ public class PriorityQueueTest {
 
     @Test
     public void testAddAndRemoveWithOneElement() {
-        queue.enqueue(1);
-        assertEquals(1, queue.dequeue());
+        queue.enqueue(new Node(1));
+        assertEquals(new Node(1), queue.dequeue());
     }
 
 }

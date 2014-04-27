@@ -1,55 +1,74 @@
 package com.mycompany.tiralabra_maven.maze;
 
-import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.algorithm.Heuristic;
+import com.mycompany.tiralabra_maven.algorithm.Node;
 
 abstract public class AbstractMaze implements Maze {
 
-    protected final State start;
-    protected final State goal;
+    protected final MazeNode start;
+    protected final MazeNode goal;
     protected int expanded;
 
-    public AbstractMaze(State start, State goal) {
+    public AbstractMaze(MazeNode start, MazeNode goal) {
         this.start = start;
         this.goal = goal;
     }
 
     @Override
-    public boolean isGoalState(State g) {
+    public boolean isGoalNode(Node g) {
         return goal.equals(g);
     }
 
     @Override
-    public boolean isGoalState(int x, int y) {
-        return isGoalState(getState(x, y));
+    public boolean isGoalNode(int x, int y) {
+        return isGoalNode(getMazeNode(x, y));
     }
 
     @Override
-    public State getStartState() {
+    public Node getStartNode() {
         return start;
     }
 
     @Override
-    public int getExpandedStates() {
-        return expanded;
-    }
-
-    @Override
-    public int distance(State from, State to) {
+    public int distance(MazeNode from, MazeNode to) {
         return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
     }
 
     @Override
-    public int distanceFromStart(State from) {
+    public int distanceFromStart(MazeNode from) {
         return distance(from, start);
     }
 
     @Override
-    public int distanceToGoal(State to) {
+    public int distanceToGoal(MazeNode to) {
         return distance(to, goal);
     }
 
     @Override
-    public int movementCost(State state) {
-        return getState(state.getX(), state.getY()).getCost();
+    public int movementCost(MazeNode node) {
+        return getMazeNode(node.getX(), node.getY()).getCost();
     }
+
+    /**
+     * @param from
+     * @param to
+     * @return movementCost(to) if to is a successor of from MAX_VALUE else
+     */
+    @Override
+    public int weight(Node from, Node to) {
+        if (distance((MazeNode)from, (MazeNode)to) <= 1) {
+            return movementCost((MazeNode)to);
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public Heuristic getHeuristic() {
+        return new Heuristic() {
+            public int value(Node node) {
+                return distanceToGoal((MazeNode)node);
+            }
+        };
+    }
+
 }

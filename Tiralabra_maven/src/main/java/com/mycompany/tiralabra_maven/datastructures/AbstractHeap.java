@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-public abstract class AbstractHeap<T> {
+public abstract class AbstractHeap {
 
-    protected Object[] array;
+    protected Valuable[] array;
     protected static final int DEFAULT_SIZE = 10;
     protected int heapsize;
 
@@ -14,8 +14,8 @@ public abstract class AbstractHeap<T> {
         return heapsize;
     }
 
-    public T top() {
-        return (T) array[0];
+    public Valuable top() {
+        return array[0];
     }
 
     protected int parent(int i) {
@@ -31,7 +31,7 @@ public abstract class AbstractHeap<T> {
     }
 
     protected void swap(int i, int j) {
-        Object tmp = array[i];
+        Valuable tmp = array[i];
         array[i] = array[j];
         array[j] = tmp;
     }
@@ -42,19 +42,19 @@ public abstract class AbstractHeap<T> {
             heapify(i);
     }
 
-    public T extractTop() {
-        T top = top();
+    public Valuable extractTop() {
+        Valuable top = top();
         array[0] = array[heapsize-1];
         heapsize--;
         heapify(0);
         return top;
     }
 
-    abstract protected void increaseKey(int i, Object key);
+    abstract protected void increaseKey(int i, Valuable n);
 
     abstract protected void heapify(int i);
 
-    public void insert(Object key) {
+    public void insert(Valuable key) {
         heapsize++;
         if (heapsize > size()) {
             createNewArray();
@@ -63,27 +63,27 @@ public abstract class AbstractHeap<T> {
     }
 
     private void createNewArray() {
-        Object[] newArray = new Object[size() * 2];
+        Valuable[] newArray = new Valuable[size() * 2];
         System.arraycopy(array, 0, newArray, 0, size());
         array = newArray;
     }
 
-    protected Object[] getArray() {
+    protected Valuable[] getArray() {
         return array;
     }
 
-    public boolean contains(T t) {
-        return search(t) != -1;
+    public boolean contains(Valuable n) {
+        return search(n) != -1;
     }
 
-    private int search(T t) {
+    private int search(Valuable n) {
         for (int i = 0; i < heapsize; i++)
-            if (t.equals(array[i])) return i;
+            if (n.equals(array[i])) return i;
         return -1;
     }
     
-    public void remove(T t) {
-        int i = search(t);
+    public void remove(Valuable n) {
+        int i = search(n);
         if (i == -1) return;
         moveTo(i);
         heapsize--;

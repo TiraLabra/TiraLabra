@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.io;
 
 import com.mycompany.tiralabra_maven.datastructures.List;
-import com.mycompany.tiralabra_maven.datastructures.State;
+import com.mycompany.tiralabra_maven.algorithm.Node;
 import com.mycompany.tiralabra_maven.maze.Maze;
 
 public class MazePrinter {
@@ -18,17 +18,17 @@ public class MazePrinter {
         this.maze = maze;
     }
 
-    public String toString(List<State> states) {
+    public String toString(List<Node> states) {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < maze.getHeight(); x++) {
             for (int y = 0; y < maze.getWidth(); y++) {
-                if (maze.getStartState().equals(maze.getState(x, y))) {
+                if (maze.getStartNode().equals(maze.getMazeNode(x, y))) {
                     sb.append(START);
-                } else if (maze.isGoalState(x, y)) {
+                } else if (maze.isGoalNode(x, y)) {
                     sb.append(GOAL);
-                } else if (states.contains(maze.getState(x, y))) {
+                } else if (states.contains(maze.getMazeNode(x, y))) {
                     sb.append(PATH);
-                } else if (maze.getState(x, y).getCost() > 0) {
+                } else if (maze.getMazeNode(x, y).getCost() > 0) {
                     sb.append(CELL);
                 } else {
                     sb.append(WALL);
@@ -39,7 +39,7 @@ public class MazePrinter {
         return sb.toString();
     }
 
-    public void print(List<State> path) {
+    public void print(List<Node> path) {
         System.out.println(toString(path));
     }
 

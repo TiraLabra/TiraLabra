@@ -5,10 +5,10 @@ import static com.mycompany.tiralabra_maven.datastructures.AbstractHeap.DEFAULT_
 public class MinHeap extends AbstractHeap {
 
     public MinHeap() {
-        array = new Comparable[DEFAULT_SIZE];
+        array = new Valuable[DEFAULT_SIZE];
     }
 
-    public MinHeap(Comparable[] array) {
+    public MinHeap(Valuable[] array) {
         this.array = array;
         heapsize = array.length;
     }
@@ -18,10 +18,10 @@ public class MinHeap extends AbstractHeap {
         int smallest;
         int left = left(i);
         int right = right(i);
-        if (left < heapsize && array[left].hashCode() < array[i].hashCode())
+        if (left < heapsize && array[left].key() < array[i].key())
             smallest = left;
         else smallest = i;
-        if (right < heapsize && array[right].hashCode() < array[smallest].hashCode())
+        if (right < heapsize && array[right].key() < array[smallest].key())
             smallest = right;
         if (smallest != i) {
             swap(i, smallest);
@@ -30,9 +30,9 @@ public class MinHeap extends AbstractHeap {
     }
 
     @Override
-    protected void increaseKey(int i, Object key) {
+    protected void increaseKey(int i, Valuable key) {
         array[i] = key;
-        while(i > 0 && array[parent(i)].hashCode() > array[i].hashCode()) {
+        while(i > 0 && array[parent(i)].key() > array[i].key()) {
             swap(i, parent(i));
             i = parent(i);
         }
