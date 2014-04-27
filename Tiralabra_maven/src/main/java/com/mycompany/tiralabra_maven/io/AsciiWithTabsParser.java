@@ -1,36 +1,21 @@
 package com.mycompany.tiralabra_maven.io;
 
-import com.mycompany.tiralabra_maven.maze.ArrayMaze;
-
-public class AsciiWithTabsParser implements Parser {
+public class AsciiWithTabsParser extends Parser {
+    private String[] strings;
 
     @Override
-    public int[][] parse(String ascii) {
-        String[] rows = ascii.split("\n");
-
-        int[][] result = new int[rows.length][];
-
-        for (int i = 0; i < rows.length; i++) {
-            result[i] = parseRow(rows[i]);
-        }
-        return result;
+    protected Object objectAt(int i) {
+        return strings[i];
     }
 
     @Override
-    public int[] parseRow(String row) {
-        String[] array = row.trim().split("\\s");
-        int[] result = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(MazePrinter.START_CHAR + "")) {
-                result[i] = ArrayMaze.START;
-            } else if (array[i].equalsIgnoreCase(MazePrinter.GOAL_CHAR + "")) {
-                result[i] = ArrayMaze.GOAL;
-            } else if (array[i].equalsIgnoreCase(MazePrinter.WALL_CHAR + "")) {
-                result[i] = ArrayMaze.WALL;
-            } else {
-                result[i] = Integer.parseInt(array[i]);
-            }
-        }
-        return result;
+    protected int parseIntAt(int i) {
+        return Integer.parseInt(strings[i]);
+    }
+
+    @Override
+    protected void init(String row) {
+        strings = row.trim().split("\\s");
+        length = strings.length;
     }
 }

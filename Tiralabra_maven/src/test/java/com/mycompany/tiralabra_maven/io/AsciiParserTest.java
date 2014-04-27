@@ -1,9 +1,8 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.io;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static com.mycompany.tiralabra_maven.maze.ArrayMaze.*;
-import com.mycompany.tiralabra_maven.io.AsciiParser;
 
 public class AsciiParserTest {
 

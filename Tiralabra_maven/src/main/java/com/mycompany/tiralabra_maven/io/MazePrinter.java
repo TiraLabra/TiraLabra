@@ -6,11 +6,11 @@ import com.mycompany.tiralabra_maven.maze.Maze;
 
 public class MazePrinter {
 
-    public static final char START_CHAR = 'S';
-    public static final char GOAL_CHAR = 'G';
-    public static final char PATH_CHAR = '*';
-    public static final char CELL_CHAR = ' ';
-    public static final char WALL_CHAR = '#';
+    public static final String START = "S";
+    public static final String GOAL = "G";
+    public static final String PATH = "*";
+    public static final String CELL = " ";
+    public static final String WALL = "#";
 
     private final Maze maze;
 
@@ -23,15 +23,15 @@ public class MazePrinter {
         for (int x = 0; x < maze.getHeight(); x++) {
             for (int y = 0; y < maze.getWidth(); y++) {
                 if (maze.getStartState().equals(maze.getState(x, y))) {
-                    sb.append(START_CHAR);
+                    sb.append(START);
                 } else if (maze.isGoalState(x, y)) {
-                    sb.append(GOAL_CHAR);
+                    sb.append(GOAL);
                 } else if (states.contains(maze.getState(x, y))) {
-                    sb.append(PATH_CHAR);
+                    sb.append(PATH);
                 } else if (maze.getState(x, y).getCost() > 0) {
-                    sb.append(CELL_CHAR);
+                    sb.append(CELL);
                 } else {
-                    sb.append(WALL_CHAR);
+                    sb.append(WALL);
                 }
             }
             sb.append('\n');

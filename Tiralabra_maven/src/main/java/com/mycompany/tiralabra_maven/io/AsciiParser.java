@@ -1,37 +1,22 @@
 package com.mycompany.tiralabra_maven.io;
 
-import com.mycompany.tiralabra_maven.maze.ArrayMaze;
-import com.mycompany.tiralabra_maven.maze.Maze;
-
-public class AsciiParser implements Parser {
+public class AsciiParser extends Parser {
+    private char[] chars;
 
     @Override
-    public int[][] parse(String ascii) {
-        String[] rows = ascii.split("\n");
+    protected int parseIntAt(int i) {
+        return Character.getNumericValue(chars[i]);
+    }
 
-        int[][] result = new int[rows.length][];
 
-        for (int i = 0; i < rows.length; i++) {
-            result[i] = parseRow(rows[i]);
-        }
-        return result;
+    @Override
+    protected Object objectAt(int i) {
+        return chars[i];
     }
 
     @Override
-    public int[] parseRow(String row) {
-        char[] chars = row.toCharArray();
-        int[] result = new int[row.length()];
-        for (int i = 0; i < row.length(); i++) {
-            result[i] = Character.getNumericValue(chars[i]);
-            if (chars[i] == MazePrinter.START_CHAR) {
-                result[i] = ArrayMaze.START;
-            } else if (chars[i] == MazePrinter.GOAL_CHAR) {
-                result[i] = ArrayMaze.GOAL;
-            } else if (chars[i] == MazePrinter.WALL_CHAR) {
-                result[i] = ArrayMaze.WALL;
-            }
-        }
-        return result;
+    protected void init(String row) {
+        chars = row.toCharArray();
+        length = chars.length;
     }
-
 }
