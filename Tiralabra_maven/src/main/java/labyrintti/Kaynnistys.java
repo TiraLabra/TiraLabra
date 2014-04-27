@@ -160,16 +160,7 @@ public class Kaynnistys {
 //        pohja = new Pohja(10, 18, esim3);
 //        pohja = new Pohja(5, 5, esim2);
 //        pohja = new Pohja(9, 10, esim1);
-//        pohja = new Pohja(3, 3, esim4); // testeissä käytetty kartta
-        String syote = "";
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 30; j++) {
-                syote+="1";
-            }
-        }
-        syote= syote.substring(2);
-        syote = "L"+syote+"M";
-        pohja = new Pohja(30, 30, syote);
+        pohja = new Pohja(3, 3, esim4); // testeissä käytetty kartta
         etsija = new Etsija(pohja);
     }
 
