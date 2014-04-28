@@ -29,9 +29,10 @@ S # # # # # # # # #
 ```S``` merkitsee lähtöruutua, ```#``` estettä ja ```G``` maaliruutua.
 Ruudut on eroteltu toisistaan välilyönnein. Ruutuun on kirjoitettu sen paino.
 
-![Alt Kuva tiedoston avaamisesta](gui3.png)
+![Alt Kuva satunnaisesta sokkelosta](gui3.png)
 Kuva satunnaisesta sokkelosta.
 
-![Alt Kuva tiedoston avaamisesta](gui4.png)
+
+![Alt Kuva satunnaisesta sokkelosta ratkaistuna](gui4.png)
 Kuva satunnaisesta sokkelosta ratkaistuna.
 
