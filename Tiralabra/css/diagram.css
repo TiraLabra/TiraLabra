@@ -94,3 +94,8 @@ body {
 	color: red;
 	margin: 10px 0;
 }
+.segment.animate {
+    -webkit-transition: .2s ease-in-out;
+    -moz-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}

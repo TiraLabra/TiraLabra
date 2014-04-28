@@ -50,9 +50,6 @@
 				    		$(".end").addClass("bold");
 				    		
 				    	}
-				    	else {
-    						//alert("Start can't be the same as End");
-    					}
 			    	}
 				    else {
 				    	if (selectedStart != this.id) {
@@ -60,10 +57,7 @@
 				    		click = 0;
 				    		$(".end").removeClass("bold");
 				    		$(".start").addClass("bold");
-				    	}
-				    	else {
-				    		//alert("End can't be the same as Start");
-				    	}    	
+				    	}				    	   	
     				}
     	    	}
       		}
@@ -243,6 +237,7 @@
   			}  			
   		}
   	function randomize() {
+  		$(".time").html("");
   		for (x in node) {
     		nodex = node[''+x+''];
     	    nodex.el.on('webkitTransitionEnd transitionend', (function(n) {

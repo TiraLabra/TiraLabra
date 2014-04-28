@@ -15,7 +15,7 @@ describe('Pathfinder', function() {
   		expect(error.getText()).toBe("Choose Start and End Nodes");
   		prot.sleep(2000);
   	});
-  	xit('should not execute search if End Node is not selected', function() {
+  	it('should not execute search if End Node is not selected', function() {
   		
   		browser.get("http://localhost/~el/Tiralabra/");
   		element(by.xpath("//div[@id='stage']//div[.='Node B']")).click();
@@ -57,7 +57,7 @@ describe('Pathfinder', function() {
     	expect(error.getText()).toBe('Unreachable');
   	});
   	
-  	it('function randomize should change nodes location', function() {
+  	it('function randomize should change nodes locations', function() {
   		
   		browser.get("http://localhost/~el/Tiralabra/");
   		
