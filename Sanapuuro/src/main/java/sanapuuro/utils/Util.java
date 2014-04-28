@@ -7,7 +7,7 @@
 package sanapuuro.utils;
 
 import java.util.List;
-import sanapuuro.datastructures.HashFunction;
+import sanapuuro.hashfunctions.HashFunction;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.letters.LetterContainer;
 

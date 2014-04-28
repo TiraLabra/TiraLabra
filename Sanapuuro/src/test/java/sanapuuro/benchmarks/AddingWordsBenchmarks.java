@@ -16,13 +16,15 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-import sanapuuro.datastructures.DJB2ForStrings;
-import sanapuuro.datastructures.FNVOneForStrings;
-import sanapuuro.datastructures.GeneralHashFuncForStrings;
-import sanapuuro.datastructures.GeneralHashFuncForStrings2;
-import sanapuuro.datastructures.MurmurHash3ForStrings;
+import sanapuuro.hashfunctions.DJB2ForStrings;
+import sanapuuro.hashfunctions.FNVOneForStrings;
+import sanapuuro.hashfunctions.GeneralHashFuncForStrings;
+import sanapuuro.hashfunctions.GeneralHashFuncForStrings2;
+import sanapuuro.hashfunctions.MurmurHash3ForStrings;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;
+import sanapuuro.hashfunctions.CRC32ForStrings;
+import sanapuuro.hashfunctions.JavaHashForStrings;
 import sanapuuro.utils.Util;
 
 /**
@@ -58,6 +60,11 @@ public class AddingWordsBenchmarks {
     }
     
     @Test
+    public void addingWordsSpeedTestWithJavaHash() {
+        MyHashSet<String> set = Util.convertListToMyHashSet(words, new JavaHashForStrings());
+    }
+    
+    @Test
     public void addingWordsSpeedTestWithGeneralHashWithBigInts() {
         MyHashSet<String> set = Util.convertListToMyHashSet(words, new GeneralHashFuncForStrings2());
     }
@@ -80,5 +87,10 @@ public class AddingWordsBenchmarks {
     @Test
     public void addingWordsSpeedTestWithMurmurHash3() {
         MyHashSet<String> set = Util.convertListToMyHashSet(words, new MurmurHash3ForStrings());
+    }
+    
+    @Test
+    public void addingWordsSpeedTestWithCRC32() {
+        MyHashSet<String> set = Util.convertListToMyHashSet(words, new CRC32ForStrings());
     }
 }

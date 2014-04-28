@@ -5,6 +5,7 @@
  */
 package sanapuuro.datastructures;
 
+import sanapuuro.hashfunctions.HashFunction;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -157,18 +158,8 @@ public class MyHashSetTest {
     private class HashFuncStub<String> extends HashFunction<String> {
 
         @Override
-        public int getHash(String o, int m, int numberOfTry) {
-            return (o.toString().length() + numberOfTry) % m;
-        }
-
-        @Override
-        public int getNormalHash(String o, int m) {
-            return o.hashCode();
-        }
-
-        @Override
-        public int calculateM(int numberOfKeys, double desiredLoadRate) {
-            return numberOfKeys * 3;
+        public int getHash(String o) {
+            return (o.toString().length());
         }
     }
 }

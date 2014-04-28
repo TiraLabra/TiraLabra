@@ -20,7 +20,7 @@ import org.junit.rules.TestRule;
 import sanapuuro.AiController;
 import sanapuuro.Grid;
 import sanapuuro.Player;
-import sanapuuro.datastructures.DJB2ForStrings;
+import sanapuuro.hashfunctions.DJB2ForStrings;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.Letter;

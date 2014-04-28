@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import sanapuuro.datastructures.PrimeNumberUtils;
 import sanapuuro.hashfunctions.DJB2ForStrings;
 import sanapuuro.hashfunctions.FNVOneForStrings;
 import sanapuuro.hashfunctions.GeneralHashFuncForStrings;
@@ -27,10 +28,10 @@ import sanapuuro.hashfunctions.JavaHashForStrings;
  *
  * @author skaipio
  */
-public class HashCollisions { 
+public class HashCollisionsWithModuloAndAbs { 
     private final List<String> words;
 
-    public HashCollisions() {
+    public HashCollisionsWithModuloAndAbs() {
         FileIO fileIO = new FileIO();
         this.words = fileIO.readInWordsFromFile("words/english_words", 8);
     }
@@ -109,11 +110,11 @@ public class HashCollisions {
 
     private float[] getCollisionsWithFunction(List<String> words, HashFunction<String> function){
         
-        //int m = function.calculateM(words.size(), 0.75);
+        int m = this.getM(words.size(), 0.75);
         
         Map<Integer, Integer> collisionCounts = new HashMap<>();
         for (String word : words) {
-            int hash = function.getHash(word);
+            int hash = Math.abs(function.getHash(word)%m);
             if (!collisionCounts.containsKey(hash)) {
                 collisionCounts.put(hash, 0);
             } else {
@@ -129,5 +130,11 @@ public class HashCollisions {
         }
         float average = 1.0f*(collisions+words.size())/collisionCounts.size();
         return new float[]{collisions, average, max};
+    }
+    
+    private int getM(int numberOfKeys, double desiredLoadRate){
+        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
+        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
+        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
     }
 }

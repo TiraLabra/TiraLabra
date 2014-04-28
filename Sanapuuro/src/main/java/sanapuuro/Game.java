@@ -8,7 +8,7 @@ package sanapuuro;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import sanapuuro.datastructures.DJB2ForStrings;
+import sanapuuro.hashfunctions.DJB2ForStrings;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;
 import sanapuuro.letters.GameLetters;

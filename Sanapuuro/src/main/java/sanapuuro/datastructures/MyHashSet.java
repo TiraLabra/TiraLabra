@@ -5,6 +5,7 @@
  */
 package sanapuuro.datastructures;
 
+import sanapuuro.hashfunctions.HashFunction;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -23,18 +24,33 @@ public class MyHashSet<T> implements Set<T>{
     public final int tableSize;
     private final HashFunction<T> hashFunction;
     private int numberOfItems = 0;
+    private int maxNumberOfItems;
 
     /**
-     * Creates a fixed size hash set.
+     * Creates a fixed size hash set with the desired load rate.
+     *
+     * @param numberOfKeys Minimum number of keys this set should be able to
+     * hold.
+     * @param hashFunction Function used to determine hash value for an object of type T.
+     * @param desiredLoadRate Desired load rate of the table, the smaller the value is the less there will be conflicts.
+     */
+    public MyHashSet(int numberOfKeys, HashFunction<T> hashFunction, double desiredLoadRate) {
+        this.hashFunction = hashFunction;
+        this.tableSize = this.calculateM(numberOfKeys, desiredLoadRate);
+        this.table = new Object[this.tableSize];
+        this.maxNumberOfItems = numberOfKeys;
+    }
+    
+    /**
+     * Creates a fixed size hash set with an approximate load rate of 0.33 when
+     * filled with maximum amount of objects.
      *
      * @param numberOfKeys Minimum number of keys this set should be able to
      * hold.
      * @param hashFunction Function used to determine hash value for an object.
      */
     public MyHashSet(int numberOfKeys, HashFunction<T> hashFunction) {
-        this.hashFunction = hashFunction;
-        this.tableSize = this.hashFunction.calculateM(numberOfKeys, 0.33);
-        this.table = new Object[this.tableSize];
+        this(numberOfKeys, hashFunction, 0.33);
     }
 
     @Override
@@ -55,7 +71,7 @@ public class MyHashSet<T> implements Set<T>{
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
+            int hash = this.getHash((T)obj, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -89,13 +105,13 @@ public class MyHashSet<T> implements Set<T>{
      */
     @Override
     public boolean add(Object obj) {
-        if (obj == null || this.numberOfItems == this.tableSize) {
+        if (obj == null || this.numberOfItems == this.maxNumberOfItems) {
             return false;
         }
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
+            int hash = this.getHash((T)obj, numberOfTries);
             if (this.table[hash] == null || this.table[hash] == Del.DEL) {
                 this.table[hash] = obj;
                 this.numberOfItems++;
@@ -121,7 +137,7 @@ public class MyHashSet<T> implements Set<T>{
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.hashFunction.getHash((T)obj, this.tableSize, numberOfTries);
+            int hash = this.getHash((T)obj, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -138,8 +154,9 @@ public class MyHashSet<T> implements Set<T>{
     /**
      * Replaces the hash table with a new empty table with the same size.
      */
+    @Override
     public void clear() {
-        this.table = new String[tableSize];
+        this.table = new Object[tableSize];
     }
 
     @Override
@@ -208,6 +225,24 @@ public class MyHashSet<T> implements Set<T>{
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
+    }
+    
+    private int getHash(T o, int i) {
+        return Math.abs(this.hashFunction.getHash(o, i)%this.tableSize);
+    }
+    
+    /**
+     * Calculates the optimal M value based on the number of keys and desired
+     * load or fill rate of the hash table.
+     *
+     * @param numberOfKeys Max number of keys the hash table will be holding.
+     * @param desiredLoadRate Desired fill or load rate. Generally a smaller fill rate leads to less collisions.
+     * @return A suitable value for hash table size.
+     */
+    private int calculateM(int numberOfKeys, double desiredLoadRate) {
+        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
+        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
+        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
     }
 
     /**
