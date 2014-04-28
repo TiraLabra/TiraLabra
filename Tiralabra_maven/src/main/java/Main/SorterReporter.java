@@ -141,13 +141,21 @@ public class SorterReporter {
         }
         this.report += "</tr>\n";
     }
-
+    
+    /**
+     * Kirjoittaa generoidun raportin filePathissa määrättyyn tiedostoon.
+     * @throws IOException 
+     */
     public void exportReport() throws IOException {
         PrintWriter kirjoittaja = new PrintWriter(filePath, "UTF-8");
         kirjoittaja.write(report);
         kirjoittaja.close();
     }
-
+    /**
+     * palauttaa halutunpituisen ja määrätynmuotoisen arrayn
+     * @param length Haluttu pituus
+     * @return Haluttu taulukko
+     */
     private int[] getArray(int length) {
         if (currentType.equals("random")) {
             return getRandomArray(length);
