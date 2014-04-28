@@ -1,9 +1,15 @@
+#ifdef _WIN32
+#include <direct.h>
+#define getcwd _getcwd
+#define DIR_SLASH "\\"
+#else
+#define DIR_SLASH "/"
+#endif
+
 #include <math.h>
 #include <string.h>
 
 #include <iostream>
-
-#include <direct.h>
 
 #include "cmprsrlib.h"
 
@@ -51,14 +57,17 @@ int main(int argc, char** argv)
 	char archivePath[256];
 	char filePath[256];
 
-	_getcwd(archivePath, 256);
-	_getcwd(filePath, 256);
+	getcwd(archivePath, 256);
+	getcwd(filePath, 256);
 
-	strcat(archivePath, "\\");
+	strcat(archivePath, DIR_SLASH);
 	strcat(archivePath, argv[2]);
 
-	strcat(filePath, "\\");
+	strcat(filePath, DIR_SLASH);
 	strcat(filePath, argv[3]);
+
+	printf("%s\n", archivePath);
+	printf("%s\n", filePath);
 
 	if(strcmp(argv[1], "a") == 0)
 	{
