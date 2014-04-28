@@ -38,3 +38,6 @@ Lopuksi testataan vielä pelin tekoälyn nopeutta löytää paras sana kirjaimis
  round: 1.09 [+- 0.01], GC.calls: 135, GC.time: 0.09, time.bench: 10.88
 
 AI on melko hidas. Sillä kestää n. 1.09s löytää oikea sana "xeroxing", mutta ottaen huomioon, että ihmisvastustajalla kestäisi huomattavan paljon kauemmin löytää edes jokin sana kirjaimistaan, on tulos ihan kohtuullinen.
+
+### Testien toisto omalla koneella
+Performanssi- ja törmäystestit löytyvät kansiosta Sanapuuro/src/test/java/sanapuuro/benchmarks JUnit-testeinä, eli ne ovat ajettavissa NetBeansin tai jonkin muun IDE:n kautta omalla koneella.
