@@ -1,8 +1,10 @@
 package com.mycompany.tiralabra_maven.io;
 
+import com.mycompany.tiralabra_maven.maze.Maze;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.PrintWriter;
 
 /**
  *
@@ -12,6 +14,7 @@ public class FileParser {
 
     private final Parser parser;
     private String ascii;
+    private FileInputStream fileReader;
 
     /**
      *
@@ -29,16 +32,27 @@ public class FileParser {
      */
     public FileParser(Parser parser, File file) throws IOException {
         this.parser = parser;
-        ascii = new String(Files.readAllBytes(file.toPath()));
+        readFile(file);
     }
-    
+
     /**
      *
      * @param filename
      * @throws IOException
      */
-    public void readFile(File filename) throws IOException{
-        ascii = new String(Files.readAllBytes(filename.toPath()));
+    public void readFile(File filename) throws IOException {
+        fileReader = new FileInputStream(filename);
+        byte[] bytes = new byte[1024];
+        StringBuilder sb = new StringBuilder();
+        while (fileReader.available() > 0) {
+            int read = fileReader.read(bytes);
+            if (read < 1024)
+                sb.append(new String(bytes, 0, read));
+            else 
+                sb.append(new String(bytes));
+        }
+        fileReader.close();
+        ascii = sb.toString();
     }
 
     /**
@@ -48,7 +62,7 @@ public class FileParser {
     public int[][] parse() {
         return parser.parse(ascii);
     }
-    
+
     /**
      *
      * @param file
@@ -56,7 +70,21 @@ public class FileParser {
      * @throws IOException
      */
     public static int[][] parseAsciiWithTabsFile(File file) throws IOException {
-        return new AsciiWithTabsParser().parse(new String(Files.readAllBytes(file.toPath())));
+        FileParser parser = new FileParser(new AsciiWithTabsParser(), file);
+        return parser.parse();
+    }
+    /**
+     * 
+     * @param file
+     * @param maze
+     * @throws IOException 
+     */
+    public static void saveAsciiWithTabsFile(File file, Maze maze) throws IOException {
+        MazePrinter mp = new MazePrinter(maze);
+        PrintWriter pw = new PrintWriter(file);
+        pw.print(mp);
+        pw.flush();
+        pw.close();
     }
 
 }

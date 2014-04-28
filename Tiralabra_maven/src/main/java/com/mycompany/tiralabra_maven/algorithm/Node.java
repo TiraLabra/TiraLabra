@@ -1,7 +1,6 @@
 package com.mycompany.tiralabra_maven.algorithm;
 
 import com.mycompany.tiralabra_maven.datastructures.Valuable;
-import java.util.Objects;
 
 /** Node of the graph
  *
@@ -78,10 +77,10 @@ public class Node implements Valuable {
 
     /**
      * 
-     * @return Objects.hashCode(state)
+     * @return state.hashCode()
      */
     @Override
     public int hashCode() {
-        return Objects.hashCode(state);
+        return state.hashCode();
     }
 }

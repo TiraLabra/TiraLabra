@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.io;
 import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.algorithm.Node;
 import com.mycompany.tiralabra_maven.maze.Maze;
+import com.mycompany.tiralabra_maven.maze.MazeNode;
 
 /**
  *
@@ -54,17 +55,41 @@ public class MazePrinter {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < maze.getHeight(); x++) {
             for (int y = 0; y < maze.getWidth(); y++) {
-                if (maze.getStartNode().equals(maze.getMazeNode(x, y))) {
+                MazeNode node = maze.getMazeNode(x, y);
+                if (maze.getStartNode().equals(node)) {
                     sb.append(START);
-                } else if (maze.getGoalNode().equals(maze.getMazeNode(x, y))) {
+                } else if (maze.getGoalNode().equals(node)) {
                     sb.append(GOAL);
-                } else if (states.contains(maze.getMazeNode(x, y))) {
+                } else if (states.contains(node)) {
                     sb.append(PATH);
-                } else if (maze.getMazeNode(x, y).getCost() > 0) {
-                    sb.append(CELL);
+                } else if (node.getCost() > 0) {
+                    sb.append(node.getCost());
                 } else {
                     sb.append(WALL);
                 }
+                sb.append(" ");
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < maze.getHeight(); x++) {
+            for (int y = 0; y < maze.getWidth(); y++) {
+                MazeNode node = maze.getMazeNode(x, y);
+                if (maze.getStartNode().equals(node)) {
+                    sb.append(START);
+                } else if (maze.getGoalNode().equals(node)) {
+                    sb.append(GOAL);
+                } else if (node.getCost() > 0) {
+                    sb.append(node.getCost());
+                } else {
+                    sb.append(WALL);
+                }
+                sb.append(" ");
             }
             sb.append('\n');
         }

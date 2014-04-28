@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 
 /**
  * The main window.
+ *
  * @author Yessergire Mohamed
  */
 public class Window extends JFrame {
@@ -29,6 +30,7 @@ public class Window extends JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -44,6 +46,14 @@ public class Window extends JFrame {
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem5.setText("save");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
 
         jMenuItem4.setText("new maze");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -102,9 +112,17 @@ public class Window extends JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION)
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             drawer.readFile(fc.getSelectedFile());
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        int returnVal = fc.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            drawer.safeToFile(fc.getSelectedFile());
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void makeRandomMaze() {
         drawer.drawRandom();
@@ -117,5 +135,6 @@ public class Window extends JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }

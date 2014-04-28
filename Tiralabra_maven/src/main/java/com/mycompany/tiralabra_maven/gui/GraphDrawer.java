@@ -30,4 +30,11 @@ public abstract class GraphDrawer extends JPanel {
      * @param file
      */
     public abstract void readFile(File file);
+
+    /**
+     * Stores a graph to a file.
+     * @param file
+     */
+    public abstract void safeToFile(File file);
+
 }

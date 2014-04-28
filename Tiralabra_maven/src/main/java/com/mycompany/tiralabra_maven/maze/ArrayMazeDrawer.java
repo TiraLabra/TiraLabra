@@ -121,4 +121,13 @@ public class ArrayMazeDrawer extends GraphDrawer {
         }
     }
 
+    @Override
+    public void safeToFile(File file) {
+        try {
+            FileParser.saveAsciiWithTabsFile(file, maze);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage() + ": " + file, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }
