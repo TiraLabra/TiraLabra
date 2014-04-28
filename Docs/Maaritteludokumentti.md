@@ -1,11 +1,11 @@
 #Määrittelydokumentti
 Harjoitustyön aiheena on verkot ja polunesintä.
 
-Ratkaistava ongelma on miten löytää tehokkaasti nopein reitti kahden joukkoliikenteen pysäkin välillä. Sovellus käyttää A*-algoritmia nopeimman reitin löytämiseksi. 
+Ratkaistava ongelma on miten löytää tehokkaasti nopein reitti kahden verkon solmun välillä. Sovellus käyttää A*-algoritmia nopeimman reitin löytämiseksi. 
 
-Sovellus lukee pysäkkien tiedot XML-tiedostosta ja siihen syötetään lähtö- ja kohdepysäkin nimet, joilloin se tulostaa nopeimman reitin lähtöpysäkistä kohdepysäkkiin.
+Sovellus lukee pysäkkien tiedot ascii-tiedostosta ja siihen syötetään lähtö- ja kohdesolmut, joilloin se tulostaa nopeimman reitin.
 
-Sovelluksen tavoitteellinen aikavaativuus on O((|E| + |V|) log |V|) ja tilavaativuus O(|E| + |V|), missä V on pysäkkien joukko ja E on rietit pysäkkien välillä.
+Sovelluksen tavoitteellinen aikavaativuus on O((|E| + |V|) log |V|) ja tilavaativuus O(|E| + |V|), missä V on solmujen joukko ja E on rietit solmujen välillä.
 
 ##Lähteet
 - [A*-algoritmi](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html)
