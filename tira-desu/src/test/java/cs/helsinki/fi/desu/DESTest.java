@@ -43,7 +43,7 @@ public class DESTest {
      */
     @Test
     public void testGenerateSubkeys() {
-        byte[] test = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        byte[] test = {1, 2, 3, 4, 5, 6, 7, 8};
         byte[][] result = des.generateSubkeys(test);
     }
 }

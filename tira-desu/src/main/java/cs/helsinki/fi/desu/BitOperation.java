@@ -42,8 +42,7 @@ public class BitOperation {
         int posByte = pos / 8;
         int posBit = pos % 8;
         byte temp = input[posByte];
-        int bit = temp >> (8 - (posBit + 1)) & 0x0001;
-        return bit;
+        return temp >> (8 - (posBit + 1)) & 0x0001;
     }
     
     /**

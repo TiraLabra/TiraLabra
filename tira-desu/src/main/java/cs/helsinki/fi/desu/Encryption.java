@@ -36,13 +36,12 @@ public class Encryption {
         int length = 8 - data.length % 8;
         byte[] output = insertPadding(data);
         byte[] block = new byte[8];
-        int i = 0;
 
         this.K1 = des.generateSubkeys(keys[0]);
         this.K2 = des.generateSubkeys(keys[1]);
         this.K3 = des.generateSubkeys(keys[2]);
 		
-        for (i = 0; i < data.length + length; i++) {
+        for (int i = 0; i < data.length + length; i++) {
             if (i > 0 && i % 8 == 0) {
                 block = encrypt64Block(block, this.K1);
                 block = dec.decrypt64Block(block, this.K2);

@@ -135,7 +135,7 @@ public class DES {
                 18, 19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26,
                 27, 28, 29, 28, 29, 30, 31, 32, 1};
 
-    // instance for opreating bits
+    // instance for operating bits
     private BitOperation bitOps;
 
     public DES() {
@@ -163,9 +163,9 @@ public class DES {
     /**
      * Main Feistel function for structuring block ciphers.
      *
-     * @param R
+     * @param R array of bytes to
      * @param K array of subkeys
-     * @return subsitution-permuted array
+     * @return substitution-permuted array
      */
     public byte[] feistelF(byte[] R, byte[] K) {
         byte[] output = permute(R, expandTable);

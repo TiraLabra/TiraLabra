@@ -88,7 +88,7 @@ public class Operator {
         
         try {
             String contents = "";
-            fr = new Scanner(input);
+            fr = new Scanner(file);
             while (fr.hasNextLine()) {
                 contents += fr.nextLine();
             }

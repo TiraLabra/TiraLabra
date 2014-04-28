@@ -64,10 +64,11 @@ public class EncryptionTest {
     public void testEncryptSingleDES() {
         byte[] result = null;
         byte[] test = null;
+        byte[] testKey = null;
         try {                
             keygen = KeyGenerator.getInstance("DES");
             secKey = keygen.generateKey();
-            result = secKey.getEncoded();
+            testKey = secKey.getEncoded();
             desCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
             desCipher.init(Cipher.ENCRYPT_MODE, secKey);
             result = desCipher.doFinal("test string".getBytes());
@@ -78,7 +79,7 @@ public class EncryptionTest {
         } catch (BadPaddingException bpe)        { fail("Bad padding");
         }
         
-        test = enc.encryptSingleDES("test string".getBytes(), test);
+        test = enc.encryptSingleDES("test string".getBytes(), testKey);
 
         assertArrayEquals(result, test);
     }
