@@ -72,7 +72,7 @@ public class List<E> implements Iterable<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new ListIterator<>(this);
+        return new ListIterator<E>(this);
     }
 
     public int size() {

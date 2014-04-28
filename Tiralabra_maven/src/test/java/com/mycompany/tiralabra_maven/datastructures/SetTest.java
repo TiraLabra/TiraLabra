@@ -14,7 +14,7 @@ public class SetTest {
 
     @Before
     public void setUp() {
-        set = new Set<>();
+        set = new Set<Integer>();
     }
 
     /**

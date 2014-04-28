@@ -11,7 +11,7 @@ public class Set<E> implements Iterable<E> {
     private final List<E> list;
 
     public Set() {
-        this.list = new List<>();
+        this.list = new List<E>();
     }
 
     @Override

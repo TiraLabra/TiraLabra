@@ -11,7 +11,7 @@ public class ListTest {
 
     @Before
     public void setUp() {
-        list = new List<>();
+        list = new List<Integer>();
     }
 
     @Test

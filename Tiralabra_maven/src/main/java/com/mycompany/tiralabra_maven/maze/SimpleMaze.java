@@ -63,7 +63,7 @@ public class SimpleMaze extends AbstractMaze {
         MazeNode n = (MazeNode) node;
         int x = n.getX();
         int y = n.getY();
-        List<Node> list = new List<>();
+        List<Node> list = new List<Node>();
 
         if (x > 0) {
             list.insertLast(new MazeNode(x - 1, y, n));

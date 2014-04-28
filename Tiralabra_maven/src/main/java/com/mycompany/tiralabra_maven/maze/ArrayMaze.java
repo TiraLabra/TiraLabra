@@ -91,7 +91,7 @@ public class ArrayMaze extends AbstractMaze {
         MazeNode s = (MazeNode) node;
         int x = s.getX();
         int y = s.getY();
-        List<Node> list = new List<>();
+        List<Node> list = new List<Node>();
 
         if (x > 0) {
             MazeNode n = getMazeNode(x - 1, y);
@@ -114,7 +114,7 @@ public class ArrayMaze extends AbstractMaze {
             list.insertLast(n);
         }
 
-        List<Node> copy = new List<>();
+        List<Node> copy = new List<Node>();
         for (Node state : list) {
             if (state.getCost() != 0) {
                 copy.insertLast(state);

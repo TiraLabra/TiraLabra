@@ -12,7 +12,7 @@ public class ListIteratorTest {
      */
     @Test
     public void testHasNext() {
-        List<Integer> list = new List<>();
+        List<Integer> list = new List<Integer>();
         assertFalse(list.iterator().hasNext());
         list.insertLast(1);
         assertTrue(list.iterator().hasNext());
@@ -23,7 +23,7 @@ public class ListIteratorTest {
      */
     @Test
     public void testNext() {
-        List<Integer> list = new List<>();
+        List<Integer> list = new List<Integer>();
         list.insertLast(3);
         list.insertLast(2);
         list.insertLast(1);
@@ -40,7 +40,7 @@ public class ListIteratorTest {
      */
     @Test
     public void testRemove() {
-        List<Integer> list = new List<>();
+        List<Integer> list = new List<Integer>();
         list.insertLast(3);
         list.insertLast(2);
         list.insertLast(1);

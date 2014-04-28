@@ -23,7 +23,7 @@ public class Stats {
     }
 
     private static void calcSearchTime() {
-        list = new ArrayList<>();
+        list = new ArrayList<String>();
         for (int i = 10; i < 300; i++) {
             long time = timeSearch(i);
             list.add(i + ", " + time);

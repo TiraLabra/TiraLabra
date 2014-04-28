@@ -27,7 +27,7 @@ public class AStarSearch implements Search {
      */
     @Override
     public List<Node> findPath(Node start, Node goal) {
-        List<Node> states = new List<>();
+        List<Node> states = new List<Node>();
         Node state = getPath(start, goal);
         while (state != null) {
             states.insertLast(state);
@@ -39,7 +39,7 @@ public class AStarSearch implements Search {
     private Node getPath(Node start, Node goal) {
 
         PriorityQueue open = PriorityQueue.createMinPriorityQueue();
-        Set<Node> closed = new Set<>();
+        Set<Node> closed = new Set<Node>();
         open.enqueue(start);
 
         while (!open.isEmpty()) {
