@@ -27,9 +27,9 @@ public class OperatorTest {
     private Decryption dec;
     
     public OperatorTest() throws IOException {
-        String args[] = {"", "", "src/test/resources/testkey.txt", "", "", "", ""};
+        String args[] = {"", "", "", "", "", "", ""};
         op = new Operator(args);
-        keyfile = new File("src/test/resources/testkey.txt");
+        keyfile = new File(args[2]);
         tripleKeyfile = new File("src/test/resources/tripletestkey.txt");
         writeTest = new File("src/test/resources/writetest.txt");
         fr = null;
@@ -85,6 +85,35 @@ public class OperatorTest {
     }
 
     /**
+     * Test of chopKey method, of class Operator.
+     */
+    @Test
+    public void testChopKey() {
+        byte[] test = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        byte[] result = {1, 2, 3, 4, 5, 6, 7};
+        test = op.chopKey(test);
+
+        assertArrayEquals(result, test);
+    }
+
+    /**
+     * Test of readSingleKey method, of class Operator.
+     */
+    @Test
+    public void testReadSingleKey() {
+        try {
+            fr = new Scanner(tripleKeyfile);
+        } catch (FileNotFoundException fnfe) {
+            fail("File not found.");
+            return;
+        }
+        byte[] result = op.chopKey(fr.nextLine().getBytes());
+        byte[] test = op.readFile(keyfile);
+
+        assertArrayEquals(result, test);
+    }
+
+    /**
      * Test of readTripleKey method, of class Operator.
      */
     @Test
@@ -95,9 +124,9 @@ public class OperatorTest {
             fail("File not found.");
             return;
         }
-        byte[][] tripleKey = null;
+        byte[][] tripleKey = new byte[3][56];
         for (int i = 0; i < 3; i++) {
-            tripleKey[i] = fr.nextLine().getBytes();
+            tripleKey[i] = op.chopKey(fr.nextLine().getBytes());
         }
         byte[] result = fr.nextLine().getBytes();
         byte[] test = op.readFile(keyfile);

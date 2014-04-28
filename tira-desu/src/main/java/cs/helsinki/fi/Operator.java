@@ -167,6 +167,13 @@ public class Operator {
         } catch (IOException ioe) {
             System.out.println("ERROR: ");
             ioe.printStackTrace();
+        } finally {
+            try {
+                fw.close();
+            } catch (IOException ioe) {
+                System.out.println("ERROR: ");
+                ioe.printStackTrace();
+            }
         }
     }
 }
