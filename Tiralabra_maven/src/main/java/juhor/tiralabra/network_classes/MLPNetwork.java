@@ -15,12 +15,13 @@ public class MLPNetwork {
     private double[][][] dWeights;
     private double[][] gradients;
 
-    public MLPNetwork(int[] numOfNeurons) {
+    public MLPNetwork(int[] numOfNeurons, int numOfInput) {
         Random rand = new Random();
         
         layers = new MLPLayer[numOfNeurons.length];
+        
         for (int i = 0; i < numOfNeurons.length; ++i) {
-            layers[i] = new MLPLayer(i == 0 ? numOfNeurons[i] : numOfNeurons[i - 1], numOfNeurons[i], rand);
+            layers[i] = new MLPLayer(i == 0 ? numOfInput : numOfNeurons[i-1], numOfNeurons[i], rand);
 
         }
 
@@ -104,7 +105,7 @@ public class MLPNetwork {
 
 
         double e = 0;
-        for (int i = 0; i < realOutput.length; ++i) {
+        for (int i = 0; i < realOutput.length; i++) {
             e += Math.pow(realOutput[i] - d[i], 2);
         }
 
@@ -123,7 +124,7 @@ public class MLPNetwork {
 
         double e = 0;
 
-        for (int i = 0; i < samples.length; ++i) {
+        for (int i = 0; i < samples.length; i++) {
             e += error(feedForward(samples[i]), expected[i]);
         }
         return e;
@@ -133,10 +134,10 @@ public class MLPNetwork {
      * Sets delta values to zero
      */
     private void resetDeltas() {
-        for (int i = 0; i < layers.length; ++i) {
-            for (int j = 0; j < layers[i].getSize(); ++j) {
+        for (int i = 0; i < layers.length; i++) {
+            for (int j = 0; j < layers[i].getSize(); j++) {
                 double weights[] = layers[i].getWeights(j);
-                for (int k = 0; k < weights.length; ++k) {
+                for (int k = 0; k < weights.length; k++) {
                     dWeights[i][j][k] = 0;
                 }
             }
@@ -148,10 +149,10 @@ public class MLPNetwork {
      */
     private void evaluateDeltas() {
 
-        for (int i = 1; i < layers.length; ++i) {
-            for (int j = 0; j < layers[i].getSize(); ++j) {
+        for (int i = 1; i < layers.length; i++) {
+            for (int j = 0; j < layers[i].getSize(); j++) {
                 double weights[] = layers[i].getWeights(j);
-                for (int k = 0; k < weights.length; ++k) {
+                for (int k = 0; k < weights.length; k++) {
                     dWeights[i][j][k] += gradients[i][j] * layers[i - 1].getOutput(k);
                 }
             }
@@ -210,7 +211,7 @@ public class MLPNetwork {
      * @param maxError Maximum acceptable value of error function
      * @param maxIterations
      */
-    public void train(double[][] samples, double[][] expected, double learnRate, double maxError, int maxIterations) {
+    public double train(double[][] samples, double[][] expected, double learnRate, double maxError, int maxIterations) {
 
         double e = Double.POSITIVE_INFINITY;
         int numOfIterations = 0;
@@ -222,6 +223,8 @@ public class MLPNetwork {
             e = calculateError(samples, expected);
             numOfIterations++;
         }
+        
+        return e;
     }
 
 }

@@ -51,6 +51,8 @@ public class MLPNeuron {
         lastActivation = 0.0;
 
         for (int i = 0; i < inputs.length; ++i) {
+            System.out.println(weights[i]);
+            System.out.println(inputs[i]);
             lastActivation += inputs[i] * weights[i];
         }
         return sigmoid(lastActivation);
