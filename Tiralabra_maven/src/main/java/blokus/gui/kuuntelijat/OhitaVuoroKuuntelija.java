@@ -32,7 +32,7 @@ public class OhitaVuoroKuuntelija implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         liittyma.lisaaTeksti(" " + blokus.getIDVariTekstina(blokus.getVuorossa().getPelaajantID()) + " ohitti vuoron.");
-        blokus.lopetaVuoro(GlobaalitMuuttujat.OHITA_VUORO,false);    
+        blokus.vuorojenHallitsija(GlobaalitMuuttujat.OHITA_VUORO,false);    
         liittyma.vuoroVaihtuu();
     }
     

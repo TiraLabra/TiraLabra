@@ -13,7 +13,7 @@ public class BlokusTest extends TestCase {
     @Override
     public void setUp() {
         blokus = new Blokus(false, false, false, false);
-        blokus.aloitaVuoro();
+        blokus.tarkastaAI();
     }
 
     @Override
@@ -31,13 +31,13 @@ public class BlokusTest extends TestCase {
 
     public void testvuoronLoppumisenJalkeenSamanverranPelaajiaJonossa() {
         blokus.lopetaVuoro(false, false);
-        assertEquals(3, blokus.getPelaajat().getListanKoko());
+        assertEquals(4, blokus.getPelaajat().getListanKoko());
         assertTrue(blokus.getVuorossa() != null);
     }
 
     public void testpelaajiaVastaaOikeaMaaraTarkastusLautoja() {
 
-        assertEquals(4, blokus.getPeliLauta().getTarkastusLaudat().size());
+        assertEquals(4, blokus.getPeliLauta().getTarkastusLaudat().getKoko());
 
     }
 

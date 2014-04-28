@@ -4,7 +4,6 @@ import blokus.AI.PelaajaAI;
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.conf.LaattojenMuodot;
 import hashMap.OmaHashMap;
-import java.util.HashMap;
 
 /**
  * Pelaaja luokka hallitsee pelaajan komponentteja. Ja laskee pelaajan sen

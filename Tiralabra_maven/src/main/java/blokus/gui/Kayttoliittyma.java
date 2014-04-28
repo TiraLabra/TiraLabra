@@ -16,9 +16,6 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Label;
 import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.Queue;
-import java.util.TreeMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -37,7 +34,7 @@ import linkitettyLista.Lista;
 /**
  * Nimensä mukaisesti luo käyttöliittymän ja siihen tarvittavat komponentit.
  * Päivittää myös käyttöliittymää tarpeen mukaan.
- * 
+ *
  * @author Simo Auvinen
  */
 public class Kayttoliittyma extends JFrame {
@@ -127,6 +124,7 @@ public class Kayttoliittyma extends JFrame {
         pack();
         setResizable(false);
         setVisible(true);
+        paintAll(getGraphics());
     }
 
     /**
@@ -134,7 +132,7 @@ public class Kayttoliittyma extends JFrame {
      */
     public void paivitaLauta() {
         laudanKuva.setImage(lauta.muodostaLaudastaKuva());
-        lautaLabel.repaint();
+        lautaLabel.update(lautaLabel.getGraphics());
     }
 
     /**
@@ -142,7 +140,9 @@ public class Kayttoliittyma extends JFrame {
      */
     public void paivitaLaatat() {
         laattaKuva.setImage(laatat.muodostaValitsimestaKuva());
-        laattaLabel.repaint();
+        laattaLabel.update(laattaLabel.getGraphics());
+
+
     }
 
     /**
@@ -160,13 +160,6 @@ public class Kayttoliittyma extends JFrame {
             lisaaTeksti("--------------------------------------------");
             lisaaTeksti(" " + blokus.getIDVariTekstina(blokus.getVuorossa().getPelaajantID()) + " pelaaja on vuorossa.");
         }
-        
-        if (blokus.getVuorossa().getOlenkoAi()) {
-            vuoroVaihtuu();
-            
-            
-        }
-
     }
 
     /**
@@ -230,9 +223,9 @@ public class Kayttoliittyma extends JFrame {
             miniLaattaKuva3.setImage(laatat.muodostaTyhjaKuva(getBackground()));
         }
 
-        miniLaattaLabel1.repaint();
-        miniLaattaLabel2.repaint();
-        miniLaattaLabel3.repaint();
+        miniLaattaLabel1.update(miniLaattaLabel1.getGraphics());
+        miniLaattaLabel2.update(miniLaattaLabel2.getGraphics());
+        miniLaattaLabel3.update(miniLaattaLabel3.getGraphics());
 
     }
 
@@ -240,12 +233,19 @@ public class Kayttoliittyma extends JFrame {
      * Pelin loppuessa purkaa komponentit jo tuo esiin lopputulokset.
      */
     private void peliLoppuu() {
-        getContentPane().removeAll();
+        vasenPaneeli.remove(laattaPaneeli);
+        vasenPaneeli.repaint();
+        oikeaPaneeli.removeAll();
+        lautaLabel.removeMouseListener(lautaLabel.getMouseListeners()[0]);
+        lautaLabel.removeMouseMotionListener(lautaLabel.getMouseMotionListeners()[0]);
+        pack();
+        repaint();
+        JFrame pisteet = new JFrame("Pisteet");
+        pisteet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel loppuTulokset = new JPanel();
         loppuTulokset.setLayout(new GridLayout(0, 4, 0, 0));
         JLabel loppu = new JLabel("LOPPUTULOKSET", JLabel.CENTER);
         loppu.setFont(new Font("Arial", Font.BOLD, 30));
-        //TreeMap<Integer, Integer> tulokset = blokus.getLopputulokset();
         Keko<Integer> keko = blokus.getLopputulokset();
         int sija = 0;
         int edellinen = 100;
@@ -279,10 +279,10 @@ public class Kayttoliittyma extends JFrame {
         loppuTuloksetMaster.add(loppu);
         loppuTuloksetMaster.add(loppuTulokset);
         loppuTuloksetMaster.setPreferredSize(new Dimension(350, 300));
-        getContentPane().add(loppuTuloksetMaster);
-        repaint();
-        pack();
-        setVisible(true);
+        pisteet.add(loppuTuloksetMaster);
+        pisteet.repaint();
+        pisteet.pack();
+        pisteet.setVisible(true);
 
     }
 

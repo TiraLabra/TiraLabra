@@ -37,6 +37,10 @@ public class Lista<T> implements Iterable<T> {
     }
     
     
+    /**
+     *
+     * @return
+     */
     public T poll() {
         Linkki<T> palautettava = ensimmainen.getSeuraava();
         
@@ -66,6 +70,10 @@ public class Lista<T> implements Iterable<T> {
         return koko;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isEmpty() {
         return koko == 0;
     }

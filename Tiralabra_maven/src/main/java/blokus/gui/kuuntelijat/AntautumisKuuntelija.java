@@ -28,7 +28,7 @@ public class AntautumisKuuntelija implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         liittyma.lisaaTeksti(" " + blokus.getIDVariTekstina(blokus.getVuorossa().getPelaajantID()) + " pelaaja antautui!");
-        blokus.lopetaVuoro(GlobaalitMuuttujat.OHITA_VUORO, GlobaalitMuuttujat.ANTAUDU);
+        blokus.vuorojenHallitsija(GlobaalitMuuttujat.OHITA_VUORO, GlobaalitMuuttujat.ANTAUDU);
         liittyma.vuoroVaihtuu();
     }
 }

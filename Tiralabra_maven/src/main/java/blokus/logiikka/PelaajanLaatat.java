@@ -3,7 +3,6 @@ package blokus.logiikka;
 import blokus.conf.GlobaalitMuuttujat;
 import blokus.conf.LaattojenMuodot;
 import hashMap.OmaHashMap;
-import java.util.HashMap;
 
 /**
  * PelaajanLaatat luo pelaajalle alussa kaikki käytössä olevat laatat ja pitää
@@ -117,7 +116,6 @@ public class PelaajanLaatat {
     }
 
     private void alustaLaatat() {
-        // lisaaUusiLaatta(laatanKoko, laatanMuoto, laatanID);
         lisaaUusiLaatta(1, LaattojenMuodot.MALLI1, 1);
         lisaaUusiLaatta(2, LaattojenMuodot.MALLI2, 2);
         lisaaUusiLaatta(3, LaattojenMuodot.MALLI3, 3);

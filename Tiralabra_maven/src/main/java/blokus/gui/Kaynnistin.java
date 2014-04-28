@@ -1,7 +1,6 @@
 package blokus.gui;
 
 import blokus.logiikka.Blokus;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -27,7 +26,6 @@ public class Kaynnistin extends JFrame {
      */
     public Kaynnistin() {
         super("Blokus");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         valmisteleValikko();
 
     }
@@ -36,14 +34,8 @@ public class Kaynnistin extends JFrame {
         pohja = new JPanel();
         JLabel teksti1 = new JLabel("Valitkaa tietokonepelaajat:");
         pelaaja1 = new JCheckBox("Pelaaja 1");
-
-        JLabel teksti2 = new JLabel("Pelaaja 2:");
         pelaaja2 = new JCheckBox("Pelaaja 2");
-
-        JLabel teksti3 = new JLabel("Pelaaja 3:");
         pelaaja3 = new JCheckBox("Pelaaja 3");
-
-        JLabel teksti4 = new JLabel("Pelaaja 4:");
         pelaaja4 = new JCheckBox("Pelaaja 4");
         
         JButton aloita = new JButton("Aloita peli");
@@ -51,9 +43,14 @@ public class Kaynnistin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 Blokus peli = new Blokus(pelaaja1.isSelected(), pelaaja2.isSelected(),pelaaja3.isSelected(),pelaaja4.isSelected());
-                 peli.aloitaVuoro();
-                Kayttoliittyma g = new Kayttoliittyma(peli);
                 
+                Kayttoliittyma g = new Kayttoliittyma(peli);
+                peli.setGUI(g);
+                
+                if (peli.getVuorossa().getOlenkoAi()) {
+                    peli.vuorojenHallitsija(false, false);
+                }
+                setVisible(false);
             }         
         });
 
@@ -67,6 +64,6 @@ public class Kaynnistin extends JFrame {
         repaint();
         pack();
         setVisible(true);
-
+        
     }
 }

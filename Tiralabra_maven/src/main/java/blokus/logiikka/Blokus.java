@@ -1,11 +1,9 @@
 package blokus.logiikka;
 
 import blokus.conf.GlobaalitMuuttujat;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.TreeMap;
-import minimiKeko.Keko;
+import blokus.gui.Kayttoliittyma;
 import linkitettyLista.Lista;
+import minimiKeko.Keko;
 
 /**
  * Luo peliin tarvittavat komponentit. Hallinnoi vuoronvaihtoa ja välittää
@@ -19,6 +17,7 @@ public class Blokus {
     private Lista<Pelaaja> pelaajat;
     private Pelaaja vuorossa;
     private Keko<Integer> pelaajienPisteet;
+    private Kayttoliittyma gui;
     /**
      * Boolean arvo, joka kertoo onko peli vielä käynnissä
      */
@@ -40,28 +39,59 @@ public class Blokus {
         pelaajienPisteet = new Keko<Integer>(20);
         lisaaPelaajat(pelaaja1, pelaaja2, pelaaja3, pelaaja4);
         alustaPelaajienPisteet();
-
+        vuorossa = pelaajat.poll();
 
     }
 
     /**
-     * Metodi aloittaa uuden vuoron ottamalla jonosta seurraavan pelaajan,
-     * kunhan jono ei ole tyhjä.
+     * Hallitsee vuoron vaihtamista ja tekoälyjen vuoroja
+     * @param ohita
+     * @param antautuu
      */
-    public void aloitaVuoro() {
-        if (!pelaajat.isEmpty()) {
-
-            vuorossa = pelaajat.poll();
-            if (vuorossa.getOlenkoAi()) {
-                vuorossa.getPelaajaAI().aloitaVuoro(peliLauta);
-                if (vuorossa.getLaatat().getJaljellaLaatat().isEmpty()) {
+    public void vuorojenHallitsija(Boolean ohita, Boolean antautuu) {
+        if (!vuorossa.getOlenkoAi()) {
+            lopetaVuoro(ohita, antautuu);
+            if (!pelaajat.isEmpty()) {
+                vuorossa = pelaajat.poll();
+            }
+        }
+        if (vuorossa.getOlenkoAi()) {
+            while (vuorossa.getOlenkoAi()) {
+                if (tarkastaAI()) {
                     lopetaVuoro(false, true);
                 } else {
                     lopetaVuoro(false, false);
                 }
-
+                if (!pelaajat.isEmpty()) {
+                    vuorossa = pelaajat.poll();
+                }
+                gui.vuoroVaihtuu();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                if (onkoPeliOhi) {
+                    break;
+                }
             }
         }
+    }
+
+    /**
+     * Tarjastaa pitääkö tekoälyn luovuttaa peli.
+     * @return 
+     */
+    public boolean tarkastaAI() {
+        if (vuorossa.getOlenkoAi()) {
+            vuorossa.getPelaajaAI().aloitaVuoro(peliLauta);
+            if (vuorossa.getLaatat().getJaljellaLaatat().isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
@@ -91,8 +121,6 @@ public class Blokus {
         }
         if (pelaajat.isEmpty()) {
             onkoPeliOhi = true;
-        } else {
-            aloitaVuoro();
         }
 
     }
@@ -101,7 +129,6 @@ public class Blokus {
      * Päivittää HashMappiin pelaajan sen hetkiset pisteet.
      */
     public void paivitaVuoroaLopettavanPisteet() {
-        // pelaajienPisteet.put(vuorossa.getPelaajantID(), vuorossa.getPisteet());
         pelaajienPisteet.laskeAvaimenArvoa(pelaajienPisteet.dataIndeksi(vuorossa.getPelaajantID()), vuorossa.getPisteet());
     }
 
@@ -147,7 +174,6 @@ public class Blokus {
         }
     }
 
-    
     public Keko<Integer> getLopputulokset() {
         return pelaajienPisteet;
     }
@@ -174,6 +200,8 @@ public class Blokus {
         pelaajienPisteet.lisaaKekoon(89, 3);
         pelaajienPisteet.lisaaKekoon(89, 4);
     }
+
+    public void setGUI(Kayttoliittyma k) {
+        gui = k;
+    }
 }
-
-

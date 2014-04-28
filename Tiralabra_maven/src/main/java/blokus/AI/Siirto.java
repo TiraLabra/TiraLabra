@@ -4,8 +4,7 @@ import blokus.conf.GlobaalitMuuttujat;
 import blokus.logiikka.Laatta;
 import blokus.logiikka.PeliLauta;
 import blokus.logiikka.TarkastusLauta;
-import java.util.HashMap;
-import java.util.Map;
+import hashMap.OmaHashMap;
 
 /**
  * Kuvaa laudalle mahdollisesti asetettavaa siirtoa ja sen hyvyyttä
@@ -27,6 +26,9 @@ public class Siirto {
      * @param kohdeI
      * @param kohdeJ
      * @param laatta
+     * @param tlauta 
+     * @param alkuperäisetSiirrot
+     * @param p  
      */
     public Siirto(int kohdeI, int kohdeJ, Laatta laatta, int[][] tlauta, int alkuperäisetSiirrot, PeliLauta p) {
         this.kohdeI = kohdeI;
@@ -45,7 +47,7 @@ public class Siirto {
      * Pisteyttää halutun siirron
      */
     private void pisteytaSiirto(int aS) {
-        hyvyys = laatta.getKoko() + laskeuudetPaikat(aS) + laskeTorppaukset()/2;
+        hyvyys = laatta.getKoko() + laskeuudetPaikat(aS) *3 + laskeTorppaukset()*2;
     }
 
     /*
@@ -110,9 +112,9 @@ public class Siirto {
     }
     
     private int laskeTorppaukset(){
-        HashMap<Integer,TarkastusLauta> tarLaudat = p.getTarkastusLaudat();
+        OmaHashMap<Integer,TarkastusLauta> tarLaudat = p.getTarkastusLaudat();
         int torppaus = 0;
-        for (TarkastusLauta l : tarLaudat.values()) {
+        for (TarkastusLauta l : tarLaudat.getDatas()) {
            int apu = laskeMaara(l.getLauta(), 1);
            int [][] kopio = kopioiLauta(l.getLauta());
            int[][] mahdol = testaaVainLaattaa(kopio, kohdeI, kohdeJ);

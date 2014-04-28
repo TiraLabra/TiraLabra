@@ -104,6 +104,11 @@ public class Laatta {
         asento = 1;
     }
 
+    /**
+     *
+     * @param as
+     * @param ym
+     */
     public void kaannaTiettyynAsentoon(int as, int ym) {
         palautaAlkuperainenAsento();
         if (ympari != ym) {

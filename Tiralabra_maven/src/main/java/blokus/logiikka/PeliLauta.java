@@ -1,8 +1,7 @@
 package blokus.logiikka;
 
 import blokus.conf.GlobaalitMuuttujat;
-import java.util.HashMap;
-import java.util.Map;
+import hashMap.OmaHashMap;
 
 /**
  * Pelilaudalle sijoitetaan laatat. Pelilauta esittää laattojen omistajat.
@@ -13,7 +12,7 @@ import java.util.Map;
 public class PeliLauta {
 
     private int[][] lauta;
-    private HashMap<Integer, TarkastusLauta> tarkastusLaudat;
+    private OmaHashMap<Integer, TarkastusLauta> tarkastusLaudat;
     private String tuoreinVirheTeksti;
 
     /**
@@ -23,7 +22,7 @@ public class PeliLauta {
         this.tuoreinVirheTeksti = "";
         lauta = new int[GlobaalitMuuttujat.LAUDAN_KOKO][GlobaalitMuuttujat.LAUDAN_KOKO];
         alusta(lauta);
-        tarkastusLaudat = new HashMap<Integer, TarkastusLauta>();
+        tarkastusLaudat = new OmaHashMap<Integer, TarkastusLauta>();
 
     }
 
@@ -106,9 +105,8 @@ public class PeliLauta {
     }
 
     private void lisaaLaattaTarkastusLautoihin(int y, int x) {
-        for (Map.Entry<Integer, TarkastusLauta> entry : tarkastusLaudat.entrySet()) {
-            TarkastusLauta tarkastusLauta = entry.getValue();
-            tarkastusLauta.lisaaLaatta(GlobaalitMuuttujat.LAATTA, y, x);
+        for (TarkastusLauta tl : tarkastusLaudat.getDatas()) {
+            tl.lisaaLaatta(GlobaalitMuuttujat.LAATTA, y, x);
 
         }
     }
@@ -125,7 +123,7 @@ public class PeliLauta {
         }
     }
 
-    public HashMap<Integer, TarkastusLauta> getTarkastusLaudat() {
+    public OmaHashMap<Integer, TarkastusLauta> getTarkastusLaudat() {
         return tarkastusLaudat;
     }
 

@@ -52,7 +52,7 @@ public class LaudanHiiriKuuntelija implements MouseListener, MouseMotionListener
                     liittyma.paivitaLauta();
                     liittyma.lisaaTeksti(" " + blokus.getIDVariTekstina(blokus.getVuorossa().getPelaajantID()) 
                             + " ansaitsi " +blokus.getVuorossa().getValittuna().getKoko() +" pistettä!");
-                    blokus.lopetaVuoro(false, false);
+                    blokus.vuorojenHallitsija(false, false);
                     liittyma.vuoroVaihtuu();
                 } else {
                     liittyma.lisaaTeksti(blokus.getPeliLauta().getVirheTeksti());

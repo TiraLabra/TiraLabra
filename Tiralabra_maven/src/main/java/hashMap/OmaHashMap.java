@@ -162,6 +162,11 @@ public class OmaHashMap<A, B> {
      * @return true jos avain löytyy mapista
      */
 
+    /**
+     *
+     * @param avain
+     * @return
+     */
     public boolean sisaltaaAvaimen(A avain) {
         int index = hajautusFunktio(avain);
         Entry<A, B> tulos = map[index];

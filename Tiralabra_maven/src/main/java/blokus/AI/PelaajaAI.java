@@ -111,21 +111,6 @@ public class PelaajaAI {
     private boolean onkoLaudalla(int y, int x, int i, int j) {
         return y + i - 3 >= 0 && y + i - 3 < GlobaalitMuuttujat.LAUDAN_KOKO && x + j - 3 >= 0 && x + j - 3 < GlobaalitMuuttujat.LAUDAN_KOKO;
     }
-
-    /**
-     *
-     * @param l
-     */
-    public void kuvaalauta(int[][] l) {
-        for (int i = 0; i < l.length; i++) {
-            for (int j = 0; j < l.length; j++) {
-                System.out.print(l[i][j]);
-
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-    }
     
     
     
