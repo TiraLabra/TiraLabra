@@ -20,6 +20,8 @@ public class Operator {
     private DES des;
     private Encryption enc;
     private Decryption dec;
+    private Scanner fr;
+    private FileWriter fw;
     private File input;
     private File output;
     private File key;
@@ -44,9 +46,9 @@ public class Operator {
         byte[] encrypted;
         
         if (mode.equals("des"))
-            encrypted = enc.encryptSingleDES(this.readFile(input), this.readFile(key));
+            encrypted = enc.encryptSingleDES(this.readFile(input), this.readKey(key));
         else if (mode.equals("3des"))
-            encrypted = enc.encryptTripleDES(this.readFile(input), null);
+            encrypted = enc.encryptTripleDES(this.readFile(input), this.readTripleKey(key));
         else {
             System.out.println("Error: Bad arguments\n  Unrecognized mode.");
             return;
@@ -67,7 +69,7 @@ public class Operator {
         if (mode.equals("des"))
             decrypted = dec.decryptSingleDES(this.readFile(input), this.readFile(key));
         else if (mode.equals("3des"))
-            decrypted = dec.decryptTripleDES(this.readFile(input), null);
+            decrypted = dec.decryptTripleDES(this.readFile(input), this.readTripleKey(key));
         else {
             System.out.println("Error: Bad arguments\n  Unrecognized mode.");
             return;
@@ -82,40 +84,72 @@ public class Operator {
      * @return      contents of file in byte form
      */
     public byte[] readFile(File file) {
-        byte[] data = null;
+        byte[] data;
         
         try {
             String contents = "";
-            Scanner scanner = new Scanner(input);
-            while (scanner.hasNextLine()) {
-                contents += scanner.nextLine();
+            fr = new Scanner(input);
+            while (fr.hasNextLine()) {
+                contents += fr.nextLine();
             }
             data = contents.getBytes();
         } catch (FileNotFoundException fnfe) {
             System.out.println("Error: No such file");
-            return data;
+            return null;
         }
         return data;
+    }
+
+    /**
+     * Reads keyfile for single DES algorithm.
+     *
+     * @param  file file for key
+     * @return      key read from file in a byte array
+     */
+    public byte[] readKey(File file) {
+        byte[] key;
+        try {
+            fr = new Scanner(file);
+            key = fr.nextLine().getBytes();
+            key = this.chopKey(key);
+        } catch (FileNotFoundException fnfe) {
+            System.out.println("Error: file not found.");
+            return null;
+        }
+        return key;
     }
     
     /**
      * Reads keyfile for triple DES algorithm.
      * 
      * @param  file file for keys
-     * @return      three keys read from file
+     * @return      three keys read from file in byte arrays
      */
     public byte[][] readTripleKey(File file) {
         byte[][] tripleKey = new byte[3][56];
         try {
-            Scanner scanner = new Scanner(file);
+            fr = new Scanner(file);
             for (int i = 0; i < 3; i++) {
-                tripleKey[i] = scanner.nextLine().getBytes();
+                tripleKey[i] = fr.nextLine().getBytes();
+                tripleKey[i] = chopKey(tripleKey[i]);
             }
         } catch (FileNotFoundException fnfe) {
             System.out.println("Error: No such file");
             return null;
         }
         return tripleKey;
+    }
+
+    /**
+     * Chops key bytes to length of 56 bits and returns it.
+     *
+     * @param key key of arbitrary size to chop to 56 bits
+     * @return    correct length key
+     */
+    public byte[] chopKey(byte[] key) {
+        byte[] newKey = new byte[7];
+        System.arraycopy(key, 0, newKey, 0, 7);
+        return newKey;
     }
     
     /**
@@ -128,7 +162,7 @@ public class Operator {
         try {
             if (!file.exists())
                 file.createNewFile();
-            FileWriter fw = new FileWriter(file);
+            fw = new FileWriter(file);
             fw.write(new String(data, "UTF-8"));
         } catch (IOException ioe) {
             System.out.println("ERROR: ");
