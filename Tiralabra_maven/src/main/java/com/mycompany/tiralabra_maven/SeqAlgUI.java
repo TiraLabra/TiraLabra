@@ -41,7 +41,6 @@ public class SeqAlgUI {
             System.out.println("Solution:");
             printSolution(problem.getSolution());
         }
-
     }
 
     /**
