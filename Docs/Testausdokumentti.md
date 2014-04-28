@@ -45,13 +45,15 @@ Testaukseen on käytetty JUnitia.
 
 Testauksessa luotiin ArrayMaze-olio, jonka taulukon arvot ovat satunnaisesti generoituja.
 Näissä sokkelossa ei ole esteitä.
+
 ![Alt aStar](algo1.jpg)
 
 
 Testauksessa luotiin ArrayMaze-olio, jonka taulukon arvot ovat satunnaisesti generoituja.
 Näissä sokkelossa on satunnaisesti generoituja esteitä.
+
 ![Alt aStar](algo2.jpg)
 
-
+##Testien suoritus
 JUnit testit voidaan toistaa suorittamalla testiluokat.
 Empiirisen testauksen voi suorittaa käyttämällä Stats-luokka.
