@@ -14,10 +14,58 @@ struct HuffmanNode
 	HuffmanNode* Right;
 };
 
+void memSwap(void* pData1, void* pData2, size_t pSize)
+{
+	char* data1 = (char*)pData1;
+	char* data2 = (char*)pData2;
+	char t;
+	for(unsigned int i = 0; i < pSize; ++i)
+	{
+		t = data1[i];
+		data1[i] = data2[i];
+		data2[i] = t;
+	}
+}
+
+void quickSort(void* pData, unsigned int pElementCount, size_t pElementSize, int (*pComparisonFunc)(const void*, const void*))
+{
+	if(pElementCount < 2)
+	{
+		return;
+	}
+
+	char* data = (char*)pData + (pElementCount / 2) * pElementSize;
+	char* left = (char*)pData;
+	char* right = (char*)pData + (pElementCount - 1) * pElementSize;
+	while(left <= right)
+	{
+		if(pComparisonFunc(left, data) < 0)
+		{
+			left += pElementSize;
+			continue;
+		}
+		if(pComparisonFunc(right, data) > 0)
+		{
+			right -= pElementSize;
+			continue;
+		}
+
+		memSwap(left, right, pElementSize);
+		left += pElementSize;
+		right -= pElementSize;
+	}
+
+	quickSort(pData, ((right - (char*)pData) / pElementSize) + 1, pElementSize, pComparisonFunc);
+	quickSort(left, ((char*)pData + (pElementCount * pElementSize) - left) / pElementSize, pElementSize, pComparisonFunc);
+}
+
 int nodeCmpCharacter(const void* pNode1, const void* pNode2)
 {
 	const HuffmanNode* node1 = (const HuffmanNode*)pNode1;
 	const HuffmanNode* node2 = (const HuffmanNode*)pNode2;
+
+	if(node1->Character == node2->Character)
+		return 0;
 	
 	return node1->Character > node2->Character ? 1 : -1;
 }
@@ -193,7 +241,7 @@ bool huffmanDecode(uint8_t* pSrc, unsigned int pSrcLength, uint8_t*& pDst, unsig
 
 bool huffmanEncodeFile(FILE* pSrc, FILE* pDst)
 {
-	const unsigned int BUFFER_SIZE = 1024;
+	const unsigned int BUFFER_SIZE = 65536;
 	uint8_t buffer[BUFFER_SIZE];
 
 	size_t r;
@@ -206,6 +254,8 @@ bool huffmanEncodeFile(FILE* pSrc, FILE* pDst)
 		
 		fwrite(&dstLength, sizeof(uint32_t), 1, pDst);
 		fwrite(dstBuffer, 1, dstLength, pDst);
+
+		free(dstBuffer);
 	}
 
 	return true;
@@ -213,7 +263,7 @@ bool huffmanEncodeFile(FILE* pSrc, FILE* pDst)
 
 bool huffmanDecodeFile(FILE* pSrc, FILE* pDst)
 {
-	const unsigned int BUFFER_SIZE = 1024;
+	const unsigned int BUFFER_SIZE = 65536;
 	uint8_t buffer[BUFFER_SIZE];
 
 	uint32_t srcLength;
@@ -227,6 +277,8 @@ bool huffmanDecodeFile(FILE* pSrc, FILE* pDst)
 		huffmanDecode(buffer, srcLength, dstBuffer, dstLength);
 		
 		fwrite(dstBuffer, 1, dstLength, pDst);
+
+		free(dstBuffer);
 	}
 
 	return true;

@@ -3,9 +3,21 @@
 
 #include <iostream>
 
+#include <direct.h>
+
 #include "cmprsrlib.h"
 
 #include "huffman.h"
+
+long getFileSize(FILE* pFile)
+{
+	long position = ftell(pFile);
+	fseek(pFile, 0, SEEK_END);
+	long size = ftell(pFile);
+	fseek(pFile, position, SEEK_SET);
+
+	return size;
+}
 
 void printBytes(const c_uint& pBytes, const bool& pSi)
 {
@@ -23,52 +35,101 @@ void printBytes(const c_uint& pBytes, const bool& pSi)
 	std::cout << (pBytes / pow((float)unit, (float)exp)) << " " << pre.c_str();
 }
 
+void printUsage()
+{
+	printf("Usage: cmprsr (command) (archive_name) (file_name)\n");
+}
+
 int main(int argc, char** argv)
 {
-	const char* str = "00112233455556678899955";
-	unsigned int length = strlen(str);
+	if(argc < 4)
+	{
+		printUsage();
+		return 0;
+	}
 
-	uint8_t* a = new uint8_t[length];
-	memcpy(a, str, length);
+	char archivePath[256];
+	char filePath[256];
 
-	std::cout << "Original:" << std::endl;
-	for(unsigned int i = 0; i < length; ++i)
-		std::cout << a[i];
-	std::cout << std::endl;
+	_getcwd(archivePath, 256);
+	_getcwd(filePath, 256);
 
-	uint8_t* b;
-	unsigned int dstLength;
-	huffmanEncode(a, length, b, dstLength);
+	strcat(archivePath, "\\");
+	strcat(archivePath, argv[2]);
 
-	std::cout << "Encoded:" << std::endl;
-	for(unsigned int i = 0; i < dstLength; ++i)
-		std::cout << b[i];
-	std::cout << std::endl;
+	strcat(filePath, "\\");
+	strcat(filePath, argv[3]);
 
-	uint8_t* c;
-	unsigned int dlen;
-	huffmanDecode(b, dstLength, c, dlen);
+	if(strcmp(argv[1], "a") == 0)
+	{
+		FILE* archive = fopen(archivePath, "wb");
+		FILE* file = fopen(filePath, "rb");
 
-	std::cout << "Decoded:" << std::endl;
-	for(unsigned int i = 0; i < dlen; ++i)
-		std::cout << c[i];
-	std::cout << std::endl;
+		if(archive == 0)
+		{
+			printf("Error opening archive\n");
+			return 0;
+		}
 
-	FILE* sig = fopen("testers.txt", "rb");
-	FILE* sigo = fopen("testers.txt.huf", "wb");
+		if(file == 0)
+		{
+			printf("Error opening file\n");
+			return 0;
+		}
 
-	huffmanEncodeFile(sig, sigo);
-	
-	fclose(sig);
-	fclose(sigo);
+		huffmanEncodeFile(file, archive);
 
-	sig = fopen("testers.txt.huf", "rb");
-	sigo = fopen("testerstest.txt", "wb");
+		fclose(archive);
+		
+		long fileSize = getFileSize(file);
+		fclose(file);
+		
+		archive = fopen(archivePath, "rb");
+		
+		long archiveSize = getFileSize(archive);
+		fclose(archive);
 
-	huffmanDecodeFile(sig, sigo);
-	
-	fclose(sig);
-	fclose(sigo);
+		printf("Packed ");
+		printBytes(fileSize, false);
+		printf(" to ");
+		printBytes(archiveSize, false);
+		printf("\n");
+	}else if(strcmp(argv[1], "e") == 0)
+	{
+		FILE* archive = fopen(archivePath, "rb");
+		FILE* file = fopen(filePath, "wb");
+
+		if(archive == 0)
+		{
+			printf("Error opening archive\n");
+			return 0;
+		}
+
+		if(file == 0)
+		{
+			printf("Error opening file\n");
+			return 0;
+		}
+
+		huffmanDecodeFile(archive, file);
+
+		fclose(file);
+
+		long archiveSize = getFileSize(archive);
+		fclose(archive);
+
+		file = fopen(filePath, "rb");
+		long fileSize = getFileSize(file);
+		fclose(file);
+
+		printf("Unpacked ");
+		printBytes(archiveSize, false);
+		printf(" to ");
+		printBytes(fileSize, false);
+		printf("\n");
+	}else{
+		printUsage();
+	}
 
 	return 0;
 }
