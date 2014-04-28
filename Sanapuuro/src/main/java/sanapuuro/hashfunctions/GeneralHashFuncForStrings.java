@@ -22,8 +22,9 @@ public class GeneralHashFuncForStrings extends HashFunction<String> {
     public int getHash(String s) {
         int hash = 0;
         for (int i = 0; i < s.length(); i++){
-            int charVal = s.charAt(i);
-            hash += charVal*(int)Math.pow(128, i);   
+            int charVal = s.charAt(i)-97;
+            // smaller multiplier (though at least 26) = less overflow = less collisions, 26 because 26 characters  
+            hash += charVal*(int)Math.pow(26, i);   
         }
         return hash;
     }

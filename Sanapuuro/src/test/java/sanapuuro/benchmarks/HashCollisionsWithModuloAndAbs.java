@@ -126,7 +126,7 @@ public class HashCollisionsWithModuloAndAbs {
         int collisions = 0;
         for (int count : collisionCounts.values()) {
             collisions += count;
-            max = Math.max(count, max);
+            max = Math.max(count+1, max);
         }
         float average = 1.0f*(collisions+words.size())/collisionCounts.size();
         return new float[]{collisions, average, max};

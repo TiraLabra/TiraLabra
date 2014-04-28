@@ -23,6 +23,8 @@ import sanapuuro.hashfunctions.GeneralHashFuncForStrings2;
 import sanapuuro.hashfunctions.MurmurHash3ForStrings;
 import sanapuuro.datastructures.MyHashSet;
 import sanapuuro.fileio.FileIO;
+import sanapuuro.hashfunctions.CRC32ForStrings;
+import sanapuuro.hashfunctions.JavaHashForStrings;
 import sanapuuro.utils.Util;
 
 /**
@@ -36,6 +38,8 @@ public class LookingupWordsBenchmarks {
     private final MyHashSet<String> djb2Set;
     private final MyHashSet<String> fnvoneSet;
     private final MyHashSet<String> murmur3Set;
+    private final MyHashSet<String> javaHashSet;
+    private final MyHashSet<String> crc32Set;
     
     @Rule
     public TestRule benchmarkRun = new BenchmarkRule();
@@ -49,6 +53,8 @@ public class LookingupWordsBenchmarks {
         this.djb2Set = Util.convertListToMyHashSet(words, new DJB2ForStrings());
         this.fnvoneSet = Util.convertListToMyHashSet(words, new FNVOneForStrings());
         this.murmur3Set = Util.convertListToMyHashSet(words, new MurmurHash3ForStrings());
+        this.javaHashSet = Util.convertListToMyHashSet(words, new JavaHashForStrings());
+        this.crc32Set = Util.convertListToMyHashSet(words, new CRC32ForStrings());
     }
     
     @BeforeClass
@@ -90,6 +96,16 @@ public class LookingupWordsBenchmarks {
     @Test
     public void lookingupSpeedTestWithMurmurHash3() {
         lookupWords(words, murmur3Set);
+    }
+    
+    @Test
+    public void lookingupSpeedTestWithJavaHash() {
+        lookupWords(words, this.javaHashSet);
+    }
+    
+    @Test
+    public void lookingupSpeedTestWithCRC32() {
+        lookupWords(words, this.crc32Set);
     }
     
     private void lookupWords(List<String> words, MyHashSet<String> set){
