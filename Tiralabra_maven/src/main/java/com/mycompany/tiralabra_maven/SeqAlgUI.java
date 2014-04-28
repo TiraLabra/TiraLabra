@@ -8,7 +8,7 @@ import sequencealgorithms.LSA;
 import sequencealgorithms.Problem;
 
 /**
- * User interface for the program. 
+ * User interface for the program.
  *
  * @author Jari Haavisto
  */
@@ -16,6 +16,8 @@ public class SeqAlgUI {
 
     Problem problem;
     Scanner reader;
+    final String DEFAULT_INPUT_FILE = "input.txt";
+    final String DEFAULT_OUTPUT_FILE = "output.txt";
 
     /**
      * Sets up a new user interface.
@@ -37,9 +39,10 @@ public class SeqAlgUI {
             long startTime = System.currentTimeMillis();
             problem.solve();
             long endTime = System.currentTimeMillis();
-            System.out.println("Solve time: " + (endTime - startTime));
+            System.out.println("Solve time: " + (endTime - startTime) + "\n");
             System.out.println("Solution:");
             printSolution(problem.getSolution());
+            writeSolution(problem.getSolution(), readFilename(true));
         }
     }
 
@@ -49,18 +52,18 @@ public class SeqAlgUI {
     private void selectProblem() {
         switch (readProblemSelection()) {
             case 1:
-                problem = new LCS(readFilename());
+                problem = new LCS(readFilename(false));
                 break;
             case 2:
-                problem = new GSA(readFilename());
+                problem = new GSA(readFilename(false));
                 setUpScoring(false);
                 break;
             case 3:
-                problem = new LSA(readFilename());
+                problem = new LSA(readFilename(false));
                 setUpScoring(false);
                 break;
             case 4:
-                problem = new GSAwGap(readFilename());
+                problem = new GSAwGap(readFilename(false));
                 setUpScoring(true);
                 break;
             default:
@@ -76,11 +79,13 @@ public class SeqAlgUI {
      * @return
      */
     public int readProblemSelection() {
-        System.out.println("Select problem type:");
+        System.out.println("\nSelect problem type:");
         System.out.println("1 - Longest Common Substring");
         System.out.println("2 - Global Sequence Alignment");
         System.out.println("3 - Local Sequence Alignment");
         System.out.println("4 - Global Sequence Alignment with gap penalties");
+        System.out.println("0 - Quit");
+        System.out.print(">");
         int selection = 0;
         try {
             selection = Integer.parseInt(reader.nextLine());
@@ -107,11 +112,13 @@ public class SeqAlgUI {
     /**
      * Reads user input and returns the selection. If the input is invalid,
      * returns 0.
-     * @return 
+     *
+     * @return
      */
     private int readScoringSelection() {
         System.out.println("0 - Use default scoring");
         System.out.println("1 - Use simple scoring scheme");
+        System.out.print(">");
         int selection = 0;
         try {
             selection = Integer.parseInt(reader.nextLine());
@@ -130,14 +137,18 @@ public class SeqAlgUI {
      */
     private void readUserScoring(boolean withGap) {
         System.out.println("Enter match bonus:");
+        System.out.print(">");
         double matchBonus = readDouble();
         System.out.println("Enter mismatch penalty (negative):");
+        System.out.print(">");
         double mismatchPenalty = readDouble();
         System.out.println("Enter indel penalty (negative):");
+        System.out.print(">");
         double indelPenalty = readDouble();
         double gapPenalty = 0;
         if (withGap) {
             System.out.println("Enter gap penalty (negative):");
+        System.out.print(">");
             gapPenalty = readDouble();
         }
         problem.setUpScoring(matchBonus, mismatchPenalty, indelPenalty, gapPenalty);
@@ -163,17 +174,37 @@ public class SeqAlgUI {
             }
             System.out.println("");
         }
+        System.out.println("");
+    }
+    
+    private void writeSolution(char[][] solution, String filename) {
+        String solutionStr = new String(solution[0]) + "\n" + new String(solution[1]);
+        InputReader.writeOutput(solutionStr, filename);
     }
 
     /**
      * Reads user input and returns a file name. Does not test the validity of
-     * the input in any way.
-     *
-     * @return
+     * the input in any way. If user input is empty, returns default value.
+     * 
+     * @param output true, if used to read output file name.
+     * @return 
      */
-    public String readFilename() {
-        System.out.println("Enter input file name:");
+    public String readFilename(boolean output) {
+        String defaultFile = DEFAULT_INPUT_FILE;
+        if (output) {
+            defaultFile = DEFAULT_OUTPUT_FILE;
+        }
+        
+        System.out.println("Enter file name (default: "+ defaultFile + "):");
+        System.out.print(">");
         String filename = reader.nextLine();
+        if (filename.equals("")) {
+            return defaultFile;
+        }
+        while (!output && !InputReader.fileExists(filename)) {
+            System.out.println("File not found, please try again:");
+            filename = reader.nextLine();
+        }
         return filename;
     }
 
