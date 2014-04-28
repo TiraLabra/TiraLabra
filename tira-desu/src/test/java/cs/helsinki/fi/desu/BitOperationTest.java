@@ -1,7 +1,6 @@
 
 package cs.helsinki.fi.desu;
 
-import java.util.Arrays;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -28,7 +27,7 @@ public class BitOperationTest {
         bitOp.setBit(test, 31, 0);
         
         byte[] result = "testing".getBytes();
-        assertTrue(Arrays.equals(result, test));
+        assertArrayEquals(result, test);
     }
     
     /**
@@ -45,7 +44,7 @@ public class BitOperationTest {
         }
         
         byte[] result = "bbbb".getBytes();
-        assertTrue(Arrays.equals(result, test));
+        assertArrayEquals(result, test);
     }
 
     /**
@@ -69,8 +68,8 @@ public class BitOperationTest {
         byte[] result = "b".getBytes();
         
         //extract letter b from array
-        byte[] extraction = bitOp.extractMultipleBits(test, 5 * 8, 8);
-        assertTrue(Arrays.equals(extraction, result));
+        test = bitOp.extractMultipleBits(test, 5 * 8, 8);
+        assertArrayEquals(result, test);
     }
 
     /**
@@ -93,9 +92,9 @@ public class BitOperationTest {
     public void testXor() {
         byte a[] = { 1 }; // 01 in binary
         byte b[] = { 2 }; // 10 in binary
-        byte arr = 3;     // 11 in binary
-        byte resArr[] = bitOp.xor(a, b);
-        assertEquals(Byte.toString(arr), Byte.toString(resArr[0]));
+        byte result[] = { 3 };     // 11 in binary
+        byte test[] = bitOp.xor(a, b);
+        assertArrayEquals(result, test);
     }
     
     /**
@@ -138,7 +137,7 @@ public class BitOperationTest {
         byte[] testB = { 0, -1 };
         byte[] result = { -1, 0 };
         byte[] test = bitOp.concatBits(testA, 8, testB, 8);
-        
-        assertTrue(Arrays.equals(result, test));
+
+        assertArrayEquals(result, test);
     }
 }

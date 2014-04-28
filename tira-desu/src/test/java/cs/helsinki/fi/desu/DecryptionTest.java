@@ -3,7 +3,6 @@ package cs.helsinki.fi.desu;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -40,9 +39,10 @@ public class DecryptionTest {
                 
         try {
             keygen = KeyGenerator.getInstance("DESede");
-            secKey = keygen.generateKey();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) {
+                secKey = keygen.generateKey();
                 testKey[i] = secKey.getEncoded();
+            }
             desCipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             desCipher.init(Cipher.DECRYPT_MODE, secKey);
             result = desCipher.doFinal();
@@ -54,7 +54,7 @@ public class DecryptionTest {
         }
 
         byte[] test = new Encryption().encryptTripleDES("test string".getBytes(), testKey);
-        assertTrue(Arrays.equals(result, test));
+        assertArrayEquals(result, test);
     }
         
     /**
@@ -64,13 +64,11 @@ public class DecryptionTest {
     public void testDecryptSingleDES() {
         byte[] test;
         byte[] result = null;
-        byte[] testKey;
         
         try {
             keygen = KeyGenerator.getInstance("DES");
             desCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
             secKey = keygen.generateKey();
-            testKey = secKey.getEncoded();
             desCipher.init(Cipher.ENCRYPT_MODE, secKey);
             result = desCipher.doFinal("test string".getBytes());
         } catch (NoSuchAlgorithmException nsae)  { fail("No such algorithm available");
@@ -81,7 +79,7 @@ public class DecryptionTest {
         }
                
         test = new Encryption().encryptSingleDES("test string".getBytes(), result);
-        assertTrue(Arrays.equals("test string".getBytes(), test));
+        assertArrayEquals(result, test);
     }
     
     /**
@@ -101,7 +99,7 @@ public class DecryptionTest {
         byte[] result = {2, 7, 4, 8};
         
         test = dec.deletePadding(test);
-        assertTrue(Arrays.equals(test, result));
+        assertArrayEquals(result, test);
     }
     
     /**
@@ -110,8 +108,9 @@ public class DecryptionTest {
     @Test
     public void testDeletePaddingReturnsNullIfFullyPadded() {
         byte[] test = {8,8,8,8,8,8,8,8};
-        test = dec.deletePadding(test);
         byte[] result = {};
-        assertTrue(Arrays.equals(result, test));
+
+        test = dec.deletePadding(test);
+        assertArrayEquals(result, test);
     }
 }

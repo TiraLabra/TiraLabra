@@ -10,20 +10,23 @@ public class Encryption {
     
     private DES des;
     private BitOperation bitOps;
+    private Decryption dec;
     
     // three keys for triple DES, only K is used for single
-    private byte[][] K;
     private byte[][] K1;
     private byte[][] K2;
+    private byte[][] K3;
     
     public Encryption() {
         this.des = new DES();
         this.bitOps = new BitOperation();
+        this.dec = new Decryption();
     }
     
     /**
      * Encrypts data by cycling through DES three times with three separate
-     * keys.
+     * keys. Each block is first encrypted with key 1, decrypted with key 2 and
+     * finally encrypted with key 3.
      * 
      * @param  data data to be encrypted
      * @param  keys three keys to be used in each cycle of encryption
@@ -32,21 +35,21 @@ public class Encryption {
     public byte[] encryptTripleDES(byte[] data, byte[][] keys) {
         int length = 8 - data.length % 8;
         byte[] output = insertPadding(data);
-        byte[] bloc = new byte[8];
+        byte[] block = new byte[8];
         int i = 0;
 
-        this.K = des.generateSubkeys(keys[0]);
-        this.K1 = des.generateSubkeys(keys[1]);
-        this.K2 = des.generateSubkeys(keys[2]);
+        this.K1 = des.generateSubkeys(keys[0]);
+        this.K2 = des.generateSubkeys(keys[1]);
+        this.K3 = des.generateSubkeys(keys[2]);
 		
         for (i = 0; i < data.length + length; i++) {
             if (i > 0 && i % 8 == 0) {
-                bloc = encrypt64Block(bloc, this.K);						
-                bloc = encrypt64Block(bloc, this.K1);		
-                bloc = encrypt64Block(bloc, this.K2);
-                System.arraycopy(bloc, 0, output, i - 8, bloc.length);
+                block = encrypt64Block(block, this.K1);
+                block = dec.decrypt64Block(block, this.K2);
+                block = encrypt64Block(block, this.K3);
+                System.arraycopy(block, 0, output, i - 8, block.length);
             }
-            bloc[i % 8] = data[i];
+            block[i % 8] = data[i];
         }
         
         return output;
@@ -63,12 +66,12 @@ public class Encryption {
         int length = 8 - data.length % 8;
         byte[] output = this.insertPadding(data);
         byte[] block = new byte[8];
-        K = des.generateSubkeys(key);
+        K1 = des.generateSubkeys(key);
         int i;
 
         for (i = 0; i < data.length; i++) {
             if (i > 0 && i % 8 == 0) {
-                block = encrypt64Block(block, K);
+                block = encrypt64Block(block, K1);
                 System.arraycopy(block, 0, output, i - 8, block.length);
             }
             block[i % 8] = data[i];

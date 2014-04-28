@@ -188,14 +188,13 @@ public class DES {
         int half = 0;
         for (int i = 0; i < input.length; i++) {
             byte valueByte = input[i];
-            int r = 2 * (valueByte >> 7 & 0x0001) + (valueByte >> 2 & 0x0001);
-            int c = valueByte >> 3 & 0x000F;
+            int r = 2 * (valueByte >> 7 & 0x01) + (valueByte >> 2 & 0x01);
+            int c = valueByte >> 3 & 0x0F;
             int value = sBox[i][r][c];
-            if (i % 2 == 0) {
+            if (i % 2 == 0)
                 half = value;
-            } else {
+            else
                 output[i / 2] = (byte) (16 * half + value);
-            }
         }
         return output;
     }

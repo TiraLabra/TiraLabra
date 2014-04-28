@@ -8,21 +8,24 @@ package cs.helsinki.fi.desu;
 public class Decryption {
 
     private BitOperation bitOps;
+    private Encryption enc;
     private DES des;
 
     // three keys for triple DES, only K is used for single
-    private byte[][] K;
     private byte[][] K1;
     private byte[][] K2;
+    private byte[][] K3;
 
     public Decryption() {
         this.des = new DES();
         this.bitOps = new BitOperation();
+        this.enc = new Encryption();
     }
 
     /**
      * Decrypts data by cycling through three layers of DES with three separate
-     * keys.
+     * keys. Each block is first decrypted with key 1, encrypted with key 2 and
+     * finally decrypted with key 3.
      *
      * @param data data to be decrypted
      * @param keys set of keys to use
@@ -33,23 +36,23 @@ public class Decryption {
         byte[] output = new byte[data.length];
         byte[] block = new byte[8];
 
-        this.K = des.generateSubkeys(keys[0]);
-        this.K1 = des.generateSubkeys(keys[1]);
-        this.K2 = des.generateSubkeys(keys[2]);
+        this.K1 = des.generateSubkeys(keys[0]);
+        this.K2 = des.generateSubkeys(keys[1]);
+        this.K3 = des.generateSubkeys(keys[2]);
 
         for (i = 0; i < data.length; i++) {
             if (i > 0 && i % 8 == 0) {
-                block = decrypt64Block(block, K2);
+                block = decrypt64Block(block, K3);
+                block = enc.encrypt64Block(block, K2);
                 block = decrypt64Block(block, K1);
-                block = decrypt64Block(block, K);
                 System.arraycopy(block, 0, output, i - 8, block.length);
             }
             block[i % 8] = data[i];
         }
         
+        block = decrypt64Block(block, K3);
         block = decrypt64Block(block, K2);
         block = decrypt64Block(block, K1);
-        block = decrypt64Block(block, K);
         System.arraycopy(block, 0, output, i - 8, block.length);
 
         output = this.deletePadding(output);
@@ -66,18 +69,18 @@ public class Decryption {
     public byte[] decryptSingleDES(byte[] data, byte[] key) {
         byte[] output = new byte[data.length];
         byte[] block = new byte[8];
-        K = des.generateSubkeys(key);
+        K1 = des.generateSubkeys(key);
         int i;
 
         for (i = 0; i < data.length; i++) {
             if (i > 0 && i % 8 == 0) {
-                block = decrypt64Block(block, K);
+                block = decrypt64Block(block, K1);
                 System.arraycopy(block, 0, output, i - 8, block.length);
             }
             block[i % 8] = data[i];
         }
 
-        block = decrypt64Block(block, K);
+        block = decrypt64Block(block, K1);
         System.arraycopy(block, 0, output, i - 8, block.length);
         output = deletePadding(output);
 
