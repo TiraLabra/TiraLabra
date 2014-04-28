@@ -1,0 +1,3 @@
+### Käyttöohjeet
+
+Pelissä on kursori, jota voi liikutella 'w', 'a', 's' ja 'd' komentojen avulla. Kun halutaan syöttää sana kursorin osoittamasta kohdasta alkaen, annetaan komento 'q'. Peli pyytää sen jälkeen suunnan ja syötettävät kirjaimet. Pelaaja voi skipata vuoronsa syöttämällä tyhjän merkkijonon. Pelaajan pisteet sekä käytettävissä olevat kirjaimet ovat näkyvissä konsolitulosteessa. Peliä on paljon mielekkäämpää kokeilla terminaalissa, kuin esim. NetBeansissa. Ajettava jar löytyy [täältä](http://www.cs.helsinki.fi/u/skaipio/jars/Sanapuuro-1.0-SNAPSHOT.jar). Poistumiseen pelistä ei ole erillistä komentoa, vaan sen voi pysäyttää terminaalissa komennolla Ctrl+C.
