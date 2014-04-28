@@ -68,6 +68,7 @@
                     <instrumentation>
                         <excludes>
                             <exclude>sanapuuro/ui/*.class</exclude>
+                            <exclude>sanapuuro/hashfunctions/*.class</exclude>
                             <exclude>sanapuuro/Controller.class</exclude>
                             <exclude>sanapuuro/ControllerListener.class</exclude>
                             <exclude>sanapuuro/Game.class</exclude>

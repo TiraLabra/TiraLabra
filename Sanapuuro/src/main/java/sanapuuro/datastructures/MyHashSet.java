@@ -71,7 +71,7 @@ public class MyHashSet<T> implements Set<T>{
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.getHash((T)obj, numberOfTries);
+            int hash = this.getTableIndex((T)obj, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -111,7 +111,7 @@ public class MyHashSet<T> implements Set<T>{
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.getHash((T)obj, numberOfTries);
+            int hash = this.getTableIndex((T)obj, numberOfTries);
             if (this.table[hash] == null || this.table[hash] == Del.DEL) {
                 this.table[hash] = obj;
                 this.numberOfItems++;
@@ -137,7 +137,7 @@ public class MyHashSet<T> implements Set<T>{
 
         int numberOfTries = 0;
         while (numberOfTries < this.tableSize) {
-            int hash = this.getHash((T)obj, numberOfTries);
+            int hash = this.getTableIndex((T)obj, numberOfTries);
             if (this.table[hash] == null) {
                 return false;
             } else if (this.table[hash].equals(obj)) {
@@ -159,6 +159,7 @@ public class MyHashSet<T> implements Set<T>{
         this.table = new Object[tableSize];
     }
 
+    // The rest of these methods are not mandatory for TiraLabra datastructure implementation.
     @Override
     public Object[] toArray() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -189,6 +190,34 @@ public class MyHashSet<T> implements Set<T>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Helper method for getting the index position of an object in the hash table.
+     * @param o Object to calculate an index position for.
+     * @param i The ith number of try.
+     * @return The index position of object o.
+     */
+    private int getTableIndex(T o, int i) {
+        return Math.abs(this.hashFunction.getHash(o, i)%this.tableSize);
+    }
+    
+    /**
+     * Calculates the optimal M value based on the number of keys and desired
+     * load or fill rate of the hash table.
+     *
+     * @param numberOfKeys Max number of keys the hash table will be holding.
+     * @param desiredLoadRate Desired fill or load rate. Generally a smaller fill rate leads to less collisions.
+     * @return A suitable value for hash table size.
+     */
+    private int calculateM(int numberOfKeys, double desiredLoadRate) {
+        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
+        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
+        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
+    }
+    
+    /**
+     * Iterator for iterating over all the elements of this set.
+     * @param <T> The type of the iterator which will be the same as the set's.
+     */
     private class Iter<T> implements Iterator<T> {
 
         private int i = 0;
@@ -227,23 +256,7 @@ public class MyHashSet<T> implements Set<T>{
 
     }
     
-    private int getHash(T o, int i) {
-        return Math.abs(this.hashFunction.getHash(o, i)%this.tableSize);
-    }
     
-    /**
-     * Calculates the optimal M value based on the number of keys and desired
-     * load or fill rate of the hash table.
-     *
-     * @param numberOfKeys Max number of keys the hash table will be holding.
-     * @param desiredLoadRate Desired fill or load rate. Generally a smaller fill rate leads to less collisions.
-     * @return A suitable value for hash table size.
-     */
-    private int calculateM(int numberOfKeys, double desiredLoadRate) {
-        int estimatedTableSize = (int) (numberOfKeys / desiredLoadRate);
-        int[] primesCloseToTableSize = PrimeNumberUtils.findPrimesCloseTo(estimatedTableSize);
-        return PrimeNumberUtils.pickNumberThatIsFarthestFromPowerOfTwo(primesCloseToTableSize);
-    }
 
     /**
      * Special Del value for marking hash table slots where an object has been removed from.

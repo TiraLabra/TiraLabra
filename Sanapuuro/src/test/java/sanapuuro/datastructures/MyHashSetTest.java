@@ -5,15 +5,18 @@
  */
 package sanapuuro.datastructures;
 
-import sanapuuro.hashfunctions.HashFunction;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import sanapuuro.fileio.FileIO;
+import sanapuuro.hashfunctions.HashFunction;
 
 /**
  *
@@ -36,7 +39,7 @@ public class MyHashSetTest {
 
     @Before
     public void setUp() {
-        this.mySet = new MyHashSet(5, new HashFuncStub<String>());
+        this.mySet = new MyHashSet(3, new HashFuncStub<String>());
     }
 
     @After
@@ -104,6 +107,26 @@ public class MyHashSetTest {
         assertTrue(this.mySet.remove(inSet));
         assertFalse(this.mySet.contains(inSet));
     }
+    
+    @Test
+    public void hashSetDoesNotContainNullObjects() {
+        String inSet = "abc";
+        this.mySet.add(inSet);
+        assertFalse(this.mySet.contains(null));
+    }
+    
+    @Test
+    public void hashSetIsEmptyWhenAllItemsAreRemoved() {
+        assertTrue(this.mySet.isEmpty());
+        String inSet = "abc";
+        String inSet2 = "cba";
+        this.mySet.add(inSet);
+        this.mySet.add(inSet);       
+        assertFalse(this.mySet.isEmpty());
+        this.mySet.remove(inSet);
+        this.mySet.remove(inSet2);
+        assertTrue(this.mySet.isEmpty());
+    }
 
     @Test
     public void hashSetContainsSecondObjectAfterRemovingFirstObjectWithSameHash() {
@@ -136,7 +159,7 @@ public class MyHashSetTest {
 
     @Test
     public void hashSetDoesNotAddToAFullTable() {
-        MyHashSet<String> set = new MyHashSet<>(1, new HashFuncStub<String>());
+        MyHashSet<String> set = new MyHashSet<>(3, new HashFuncStub<String>());
         String inSet = "abc";
         String inSet2 = "cba";
         String inSet3 = "hhh";
@@ -147,12 +170,34 @@ public class MyHashSetTest {
         assertFalse(set.add(notInSet));
         assertFalse(set.contains(notInSet));
     }
+    
+    @Test
+    public void hashSetDoesNotAddNullObjects() {
+        assertFalse(this.mySet.add(null));
+    }
 
     @Test
     public void hashSetShouldNotAnObjectItAlreadyContains() {
         String inSet = "abc";
         assertTrue(this.mySet.add(inSet));
         assertFalse(this.mySet.add(inSet));
+    }
+    
+    @Test
+    public void hashSetIteratorIteratesThroughAllAddedItems() {
+        Set<String> javaSet = new HashSet<>();
+        String inSet = "abc";
+        String inSet2 = "cba";
+        javaSet.add(inSet);
+        javaSet.add(inSet2);
+        this.mySet.add(inSet);
+        this.mySet.add(inSet2);
+        Iterator<String> iter = this.mySet.iterator();
+        while(iter.hasNext()){
+            String s = iter.next();
+            javaSet.remove(s);
+        }
+        assertEquals(0, javaSet.size());
     }
 
     private class HashFuncStub<String> extends HashFunction<String> {

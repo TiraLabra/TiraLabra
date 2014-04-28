@@ -7,7 +7,7 @@
 package sanapuuro.hashfunctions;
 
 /**
- *
+ * Uses Java's own .hashCode() method for getting hash values for string objects.
  * @author skaipio
  */
 public class JavaHashForStrings extends HashFunction<String> {

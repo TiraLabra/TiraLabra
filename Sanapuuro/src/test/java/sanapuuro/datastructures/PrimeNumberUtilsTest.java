@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author skaipio
  */
-public class UtilTest {
+public class PrimeNumberUtilsTest {
 
-    public UtilTest() {
+    public PrimeNumberUtilsTest() {
     }
 
     @BeforeClass
