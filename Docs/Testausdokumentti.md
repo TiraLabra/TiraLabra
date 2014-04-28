@@ -19,8 +19,6 @@ Ylläolevasta kuvasta näkyy, että Tira-kalvojen suosittelema algoritmi ei toim
 
 Ns. real-life skenaariona testasin englanninkielisille sanoille onko sana MyHashSet-tietorakenteessa käyttäen contains()-metodia. Erona on, että hajautusfunktoiden arvoja ei voi sinällään käyttää hajautustaulukoiden indekseinä. Modulona käytetään taulukon kokoa, joka tässä tapauksessa on n 1.33*111414., jolloin hajautustaulukon loadrate on enintään 0.75 (Javan HashSetin loadrate). Yhteentörmäyksiä sattuu paljon, niin kuin ylläolevassa kuvassa näkyy. Testeissä kaikilla hajautusfunktioilla pisin törmäysketju oli 7-8 törmäystä. Tässäkin kohtaa CRC32 vaikuttaa toimivan parhaiten.
 
-Ensimmäiseksi on testattu hajautusfunktioiden yhteentörmäysten määrää, yhteentörmäysketjuiden keskivertopituutta ja pisintä yhteentörmäysketjua. Syötteenä käytetään enintään kahdeksan kirjaimen pituisia englannin kielisiä sanoja, joita on yhteensä 111 414. M-arvona eli hajautustaulukon kokona on käytetty alkulukua, joka on noin 1.33 kertainen hajautettavien objektien lukumäärään nähden. Hajautustaulukon täyttösuhde on siis 0.75. Tulokset eivät hirveästi eroa toisistaan. Alla kuitenkin näkyy, että parhain tulos on djb2-hajautusfunktiolla.
-
 #### Nopeus
 
 Toiseksi on testattu hajautustaulukosta löytymisen nopeutta. Sanoja lisätään 111 414 MyHashSet-hajautustaulukkoon.
