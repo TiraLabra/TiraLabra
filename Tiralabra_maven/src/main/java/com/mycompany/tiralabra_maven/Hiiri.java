@@ -10,7 +10,8 @@ import javax.swing.ImageIcon;
 /**
  *Hiiri-luokka 
  * 
- *Hiiren piirtämistä ja liikuttamista varten. 
+ *Hiiren piirtämistä ja sijaintia varten. Lisätty myös mahdollisuus liikuttaa 
+ * hiirtä näppäimistöllä mutta sitä ei ohjelmassa tällä hetkellä käytetä.
  * 
  */
 public class Hiiri {
@@ -26,6 +27,7 @@ public class Hiiri {
 
     /**
      *Konstruktori. Luo hiiren kuvan ja alkusijainnin Boardilla.
+     * @param wall
      */
     public Hiiri(Wall wall){
         ImageIcon ii = new ImageIcon("maus.png");
@@ -89,13 +91,7 @@ public class Hiiri {
         }
         if(x <= 0){
            x = 0;
-        }
-        
-        //ei toimi... hiiri ei pysähdy jos on seinä.
-//        if(Wall.getMap()[x_coord][y_coord]==1){
-//            dx = 0;
-//            dy = 0;
-//        }     
+        }   
         //hiiri liikkuu aina 50 kerrallaan.
         x += dx;
         y += dy;
@@ -103,7 +99,8 @@ public class Hiiri {
    }
 
     /**
-     *
+     *Palauttaa arvonaan hiiren x-koordinaatin taustalla (boardilla). Hiiri 
+     * piirretään tähän kohtaan.
      * @return
      */
     public  int getX() {
@@ -111,7 +108,8 @@ public class Hiiri {
     }
 
     /**
-     *
+     *Palauttaa arvonaan hiiren y-koordinaatin taustalla (boardilla). HIiri 
+     * piirretään tähän kohtaan.
      * @return
      */
     public  int getY() {
@@ -119,7 +117,7 @@ public class Hiiri {
     }
     
     /**
-     *
+     *Palauttaa arvonaan hiiren x-koordinaatin taulukossa
      * @return
      */
     public  int getXcoord(){
@@ -127,25 +125,34 @@ public class Hiiri {
     }
     
     /**
-     *
+     *Palauttaa arvonaan hiiren y-koordinaatin taulukossa
      * @return
      */
     public  int getYcoord(){
         return y_coord;
     }
     
+    /**
+     * Asettaa hiiren x-koordinaatin taulukossa
+     * @param x_coord
+     */
     public void setXcoord(int x_coord){
         this.x_coord = x_coord;
     }
     
     /**
-     *
-     * @return
+     * Asettaa hiiren y-koordinaatin taulukossa
+     * @param y_coord
      */
     public void setYcoord(int y_coord){
         this.y_coord = y_coord;
     }
     
+    /**
+     * Asettaa koordinaatit x ja y taulukon arvoina (Wall luokan taulukko)
+     * @param x_coord
+     * @param y_coord
+     */
     public void setCoord(int x_coord, int y_coord){
         this.x_coord = x_coord;
         this.y_coord = y_coord;
@@ -160,7 +167,8 @@ public class Hiiri {
     }
 
     /**
-     *
+     * Tätä luokkaa ei ohjelmassa tarvita mutta on valmiina jatkoa varten
+     * jos hiiri pääsee lopulta liikkumaan myös näppäimistöllä.
      * @param e
      */
     public  void keyPressed(KeyEvent e) {
@@ -230,7 +238,8 @@ public class Hiiri {
     }
 
     /**
-     *
+     * Tätä luokkaa ei ohjelmassa tarvita mutta on valmiina jatkoa varten
+     * jos hiiri pääsee lopulta liikkumaan myös näppäimistöllä.
      * @param e
      */
     public void keyReleased(KeyEvent e) {

@@ -13,14 +13,14 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Tiina
+ * Luokassa määritellään seinien paikat ja haetaan kuva tiilelle.
  */
 public class Wall {
     
-    private int dx;
-    private int dy;
-    private int x;
-    private int y;
+//    private int dx;
+//    private int dy;
+//    private int x;
+//    private int y;
     private Image image;
     static int leveys, korkeus;
 
@@ -40,7 +40,7 @@ public class Wall {
 //          int[][] map2 = new int[leveys][korkeus];
 
     /**
-     *map-taulukkoon merkitään seinät ykkösillä.
+     * map-taulukkoon merkitään labyrinttiin halutut seinien paikat ykkösillä.
      * @return
      */
    public static int[][] getMap(){
@@ -53,7 +53,7 @@ public class Wall {
                  {0,0,0,1,0,0,0,1,1,1,},
                  {0,0,0,1,0,0,0,1,0,0,},
                  {0,0,0,1,0,0,0,1,0,0,},
-                 {0,0,0,1,1,0,1,1,0,0,},
+                 {0,0,0,1,1,1,0,1,0,0,},
                  {0,0,0,0,0,0,0,0,0,0,},
                  {0,0,0,0,0,0,0,0,0,0,},
                  {0,0,0,0,0,0,0,0,0,0,}
@@ -69,20 +69,20 @@ public class Wall {
      * @return
      */
         
-    public int getX() {
-        return x;
-    }
+//    public int getX() {
+//        return x;
+//    }
 
     /**
      *
      * @return
-     */
-    public int getY() {
-        return y;
-    }
+//     */
+//    public int getY() {
+//        return y;
+//    }
 
     /**
-     *
+     * Palauttaa arvonaan tiilen kuvan.
      * @return
      */
     public Image getImage() {

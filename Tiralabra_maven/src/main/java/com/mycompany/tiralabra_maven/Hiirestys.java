@@ -81,6 +81,7 @@ public class Hiirestys extends JFrame{
 //        System.out.println("testiä" + Node.kor);
         System.out.println("kor " + Wall.korkeus + " lev " + Wall.leveys);
         System.out.println(Wall.getMap()[2][1]);
+        
     }
 
 

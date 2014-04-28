@@ -7,64 +7,55 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- *
- * @author Tiina
+ * Node luokka. Nodeja käytetään apuna hiiren sijainnin muistamisessa ja 
+ * Astar-algoritmin toteutuksessa.
+ * 
  */
 public class Node {
  
     
      int value, kor, lev;
     //astar muuttujat.
-    private int f, h, g;
+    private int h, matka;
+    private Node prevNode;
+    private Node node;
+    private Wall tiili = new Wall(); 
+    private int[][] map = Wall.getMap();
 
     /**
-     *
-     * @param value
-     * @param next
+     * Luo uuden Noden antaen sille leveyden ja korkeuden. 
+     * @param lev
+     * @param kor
      */
-//    public Node(int value, Node next) {
-//        this.next=next;
-//        this.value=value;        
-//    }
- 
-    /**
-     *
-     * @param value
-     */
-
-    
-    /**
-     *Pitää mielessään hiiren sijaintia (koordinaatteja) kartalla. 
-     */
-//    public Node(){
-//        this.kor = Hiiri.getXcoord();
-//        this.lev = Hiiri.getYcoord();
-//    }
-    
     public Node(int lev, int kor){
         this.lev = lev;
         this.kor = kor;
         
     }
     
-    public Node(int lev, int kor, int h){
-        this.lev = lev;
-        this.kor = kor;
-        this.h = h;
-        //this.g = g;
-    }
+    /**
+     *
+     * @param lev
+     * @param kor
+     * @param h
+     */
+//    public Node(int lev, int kor, int h){
+//        this.lev = lev;
+//        this.kor = kor;
+//        this.h = h;
+//    }
  
  
     /**
      *
      * @return
      */
-    public int getValue() {
-        return value;
-    }
+//    public int getValue() {
+//        return value;
+//    }
     
     /**
-     *
+     * Palauttaa noden heuristisen arvon.
      * @return
      */
     public int getH() {
@@ -72,79 +63,70 @@ public class Node {
     }
  
     /**
-     *
-     * @param next
+     * Asettaa Nodelle heuristiikan.
+     * @param h 
      */
     public void setH(int h) {
         this.h = h;
     }
- 
-    /**
-     *
-     * @return
-     */
-    public int getG() {
-        return g;
-    }
- 
-    /**
-     *
-     * @param next
-     */
-    public void setG(int g) {
-        this.g = g;
-    }    
     
     /**
-     *
+     * Tarkistaa onko Node seinä, jolloin siitä ei voi mennä läpi.
+     * @param node
      * @return
      */
-    public int getF() {
-        return f;
+    public boolean onkoSeina(Node node){
+        this.node = node;
+        if(map[node.lev][node.kor] == 1){
+            return true;
+        }else return false;
     }
  
     /**
-     *
-     * @param next
+     * Asettaa Nodelle edellisen Noden.
+     * @param prevNode
      */
-    public void setF(int f) {
-        this.f = f;
-    }    
+    public void setPrevNode(Node prevNode){
+        this.prevNode = prevNode;
+    }
     
     /**
-     *
+     * Palauttaa arvonaan Nodea edeltävän Noden.
      * @return
      */
-//    public Node getNext() {
-//        return next;
-//    }
- 
-    /**
-     *
-     * @param next
-     */
-//    public void setNext(Node next) {
-//        this.next = next;
-//    }
- 
-    /**
-     *
-     * @param value
-     */
-    public void setValue(int value) {
-        this.value = value;
+    public Node getPrevNode(){
+        return this.prevNode;
     }
-  
+    
+    
     /**
-     *
+     * Palauttaa arvonaan tähän asti kuljetun matkan.
      * @return
      */
-//    public String toString() {
-//        String n="null";
-// 
-//        if (next != null)
-//            n = next.toString();
-// 
-//        return "Node["+value+", "+n+"]";
-//    }
+    public int getMatka() {
+        return this.matka;
+    }
+ 
+    /**
+     * Laskee matkaa aloitusNodesta alkaen. Jokainen asken lisää matkaa yhdellä.
+     */
+    public void setMatka() {
+        this.matka = this.prevNode.getMatka() + 1;
+    }   
+    
+    
+
+    /**
+     * Asettaa matkan. Tämä metodi on ekaa nodea varten, asetetaan nollaksi 
+     * koska ei ole olemassa prevnodea.
+     * @param matka
+     */
+        public void setMatka(int matka) {
+        if(this.prevNode == null){
+            this.matka = 1;
+        }else
+            this.matka = this.prevNode.getMatka() + 1;
+    }
+    
+
 }

@@ -17,8 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- *
- * @author Tiina
+ * Luokka hoitaa piirtämisen JPanelille. Piirtää Wall-luokassa määritellyt 
+ * seinät ja hiiren reitin.
+ * 
  */
 public class Board extends JPanel implements ActionListener{
 
@@ -31,14 +32,8 @@ public class Board extends JPanel implements ActionListener{
 //    private final int INITIAL_Y = -40;
     private final int DELAY = 500;
 
-    /**
-     *
-     */
-    public static int x_map = 0;
 
-    /**
-     *
-     */
+    public static int x_map = 0;
     public static int y_map = 0;
     
     private Hiiri maus;
@@ -56,7 +51,7 @@ public class Board extends JPanel implements ActionListener{
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         setBackground(Color.green);
-        
+        //timer näppäimistöllä liikkuvaa hiirtä varten.
         timer = new Timer(DELAY, this);
         timer.start();
         tiili = new Wall();
@@ -66,7 +61,7 @@ public class Board extends JPanel implements ActionListener{
     }
 
     /**
-     *Piirtää hiiren ja seinät.
+     *Piirtää hiiren, seinän sekä reitin.
      * @param g
      */
     public void paint(Graphics g) {
@@ -81,7 +76,7 @@ public class Board extends JPanel implements ActionListener{
         g2d.drawImage(maus.getImage(), maus.getX(), maus.getY(), this);
             
             int [][] map = Wall.getMap();            
-            
+            //piirretään seinät
             for(int i = 0; i < 10; i++){
                 for(int j = 0; j < 10; j++){
                     if(map[i][j] == 1){
@@ -96,9 +91,10 @@ public class Board extends JPanel implements ActionListener{
             y_map = 0;
             x_map = 0;
             
+            //piirtää reitin hiirinä, jonka astar-luokka tekee lähdöstä maaliin
             for(int k = a.reitti.size()-1; k >= 0; k--){
                 a.reitti.get(k);
-                g2d.drawImage(maus.getImage(), a.reitti.get(k).lev*50, a.reitti.get(k).kor*50, this);
+                g2d.drawImage(maus.getImage(), a.reitti.get(k).kor*50, a.reitti.get(k).lev*50, this);
             }
             
             
@@ -117,7 +113,7 @@ public class Board extends JPanel implements ActionListener{
         maus.move();
         repaint();  
     }
-
+    //näppiksen painamiselle mutta ei käytetä. tulevaisuutta varten jätetään kuitenkin tänne.
     private class TAdapter extends KeyAdapter {
         public void keyReleased(KeyEvent e) {
             maus.keyReleased(e);
