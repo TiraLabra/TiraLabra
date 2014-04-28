@@ -15,6 +15,11 @@ import java.util.zip.CRC32;
 public class CRC32ForStrings extends HashFunction<String> {
     private final CRC32 crc = new CRC32();
 
+    /**
+     * Calculates normal hash value without number of tries taken into account.
+     * @param o String to calculate a hash for.
+     * @return The hash value of string s.
+     */
     @Override
     public int getHash(String o) {
         crc.update(o.getBytes());
