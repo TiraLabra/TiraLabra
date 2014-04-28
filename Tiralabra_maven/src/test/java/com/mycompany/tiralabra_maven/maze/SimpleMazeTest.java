@@ -11,9 +11,7 @@ import org.junit.Test;
 /**
  * Maze-luokan testit
  */
-public class SimpleMazeTest {
-
-    SimpleMaze maze;
+public class SimpleMazeTest extends AbstractMazeTest{
 
     @Before
     public void setup() {
@@ -34,7 +32,7 @@ public class SimpleMazeTest {
      */
     @Test(expected = NullPointerException.class)
     public void testGetSuccessorsNullThrowsException() {
-        maze.getSuccessors(null);
+        maze.getAdjacent(null);
     }
 
     /**
@@ -43,7 +41,7 @@ public class SimpleMazeTest {
     @Test
     public void testGetSuccessors() {
         Node state = new MazeNode(1, 0);
-        List<Node> successors = maze.getSuccessors(state);
+        List<Node> successors = maze.getAdjacent(state);
 
         assertFalse(successors.isEmpty());
         assertTrue(successors.contains(new MazeNode(1, 1)));
@@ -61,7 +59,7 @@ public class SimpleMazeTest {
             new MazeNode(maze.getWidth() - 1, maze.getHeight() - 1)
         };
         for (Node state : corners) {
-            List<Node> successors = maze.getSuccessors(state);
+            List<Node> successors = maze.getAdjacent(state);
             assertEquals(2, successors.size());
         }
     }

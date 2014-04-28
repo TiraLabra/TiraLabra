@@ -1,17 +1,31 @@
 package com.mycompany.tiralabra_maven.datastructures;
 
-
+/**
+ * A max heap.
+ * @author Yessergire Mohamed
+ */
 public class MaxHeap extends AbstractHeap {
 
+    /**
+     *
+     */
     public MaxHeap() {
         array = new Valuable[DEFAULT_SIZE];
     }
 
+    /**
+     *
+     * @param array
+     */
     public MaxHeap(Valuable[] array) {
         this.array = array;
         heapsize = array.length;
     }
 
+    /**
+     *
+     * @param i
+     */
     @Override
     protected void heapify(int i) {
         int largest;
@@ -28,6 +42,11 @@ public class MaxHeap extends AbstractHeap {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @param key
+     */
     @Override
     protected void increaseKey(int i, Valuable key) {
         array[i] = key;

@@ -4,6 +4,10 @@ import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.datastructures.PriorityQueue;
 import com.mycompany.tiralabra_maven.datastructures.Set;
 
+/**
+ *
+ * @author Yessergire Mohamed
+ */
 public class AStarSearch implements Search {
 
     private final Graph graph;
@@ -14,10 +18,17 @@ public class AStarSearch implements Search {
         this.heuristic = heuristic;
     }
 
+    /**
+     * Tries to find the optimal path for start node to goal node.
+     * @param start start node
+     * @param goal goal node
+     * @return a list of nodes representing find the optimal from start
+     * to goal it exists.
+     */
     @Override
-    public List<Node> findOptimalPath() {
+    public List<Node> findPath(Node start, Node goal) {
         List<Node> states = new List<>();
-        Node state = getOptimalPath();
+        Node state = getPath(start, goal);
         while (state != null) {
             states.insertLast(state);
             state = state.getParent();
@@ -25,22 +36,22 @@ public class AStarSearch implements Search {
         return states;
     }
 
-    private Node getOptimalPath() {
+    private Node getPath(Node start, Node goal) {
 
         PriorityQueue open = PriorityQueue.createMinPriorityQueue();
         Set<Node> closed = new Set<>();
-        open.enqueue(graph.getStartNode());
+        open.enqueue(start);
 
         while (!open.isEmpty()) {
             Node current = (Node) open.dequeue();
 
-            if (graph.isGoalNode(current)) {
+            if (goal.equals(current)) {
                 return current;
             }
 
             closed.add(current);
 
-            for (Node successor : graph.getSuccessors(current)) {
+            for (Node successor : graph.getAdjacent(current)) {
                 int cost = current.getCost() +  graph.weight(current, successor);
                 if (open.contains(successor) && cost < successor.getCost()) {
                     open.remove(successor); // new path is better

@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ArrayMazeTest {
+public class ArrayMazeTest extends AbstractMazeTest {
 
-    private Maze maze;
     private int[][] array;
 
     @Before
@@ -33,11 +32,11 @@ public class ArrayMazeTest {
      */
     @Test
     public void testGetSuccessors() {
-        assertEquals(maze.getSuccessors(maze.getStartNode()).toString(), 1, maze.getSuccessors(maze.getStartNode()).size());
-        assertEquals(2, maze.getSuccessors(new MazeNode(1, 0)).size());
-        assertEquals(2, maze.getSuccessors(new MazeNode(2, 0)).size());
-        assertEquals(2, maze.getSuccessors(new MazeNode(2, 1)).size());
-        assertEquals(1, maze.getSuccessors(new MazeNode(2, 2)).size());
+        assertEquals(maze.getAdjacent(maze.getStartNode()).toString(), 1, maze.getAdjacent(maze.getStartNode()).size());
+        assertEquals(2, maze.getAdjacent(new MazeNode(1, 0)).size());
+        assertEquals(2, maze.getAdjacent(new MazeNode(2, 0)).size());
+        assertEquals(2, maze.getAdjacent(new MazeNode(2, 1)).size());
+        assertEquals(1, maze.getAdjacent(new MazeNode(2, 2)).size());
     }
 
 }

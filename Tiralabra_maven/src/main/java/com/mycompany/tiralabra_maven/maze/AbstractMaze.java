@@ -3,50 +3,97 @@ package com.mycompany.tiralabra_maven.maze;
 import com.mycompany.tiralabra_maven.algorithm.Heuristic;
 import com.mycompany.tiralabra_maven.algorithm.Node;
 
-abstract public class AbstractMaze implements Maze {
+/**
+ *
+ * @author yessergire
+ */
+abstract public class AbstractMaze implements Maze, Heuristic {
 
+    /**
+     *
+     */
     protected MazeNode start;
+
+    /**
+     *
+     */
     protected MazeNode goal;
+
+    /**
+     *
+     */
     protected int expanded;
 
+    /**
+     *
+     * @param start
+     * @param goal
+     */
     public AbstractMaze(MazeNode start, MazeNode goal) {
         this.start = start;
         this.goal = goal;
     }
 
+    /**
+     *
+     */
     public AbstractMaze() {
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
-    public boolean isGoalNode(Node g) {
-        return goal.equals(g);
-    }
-
-    @Override
-    public boolean isGoalNode(int x, int y) {
-        return isGoalNode(getMazeNode(x, y));
-    }
-
-    @Override
-    public Node getStartNode() {
+    public MazeNode getStartNode() {
         return start;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
+    public MazeNode getGoalNode() {
+        return goal;
+    }
+
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @Override
     public int distance(MazeNode from, MazeNode to) {
         return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
     }
 
+    /**
+     *
+     * @param from
+     * @return
+     */
     @Override
     public int distanceFromStart(MazeNode from) {
         return distance(from, start);
     }
 
+    /**
+     *
+     * @param to
+     * @return
+     */
     @Override
     public int distanceToGoal(MazeNode to) {
         return distance(to, goal);
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     public int movementCost(MazeNode node) {
         return getMazeNode(node.getX(), node.getY()).getCost();
@@ -65,13 +112,13 @@ abstract public class AbstractMaze implements Maze {
         return Integer.MAX_VALUE;
     }
 
-    @Override
-    public Heuristic getHeuristic() {
-        return new Heuristic() {
-            public int value(Node node) {
-                return distanceToGoal((MazeNode)node);
-            }
-        };
+    /**
+     * 
+     * @param node
+     * @return 
+     */
+    public int value(Node node) {
+        return distanceToGoal((MazeNode)node);
     }
 
 }

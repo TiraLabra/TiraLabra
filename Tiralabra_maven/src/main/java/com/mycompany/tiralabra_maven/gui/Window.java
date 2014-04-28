@@ -1,11 +1,20 @@
 package com.mycompany.tiralabra_maven.gui;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+/**
+ * The main window.
+ * @author Yessergire Mohamed
+ */
 public class Window extends JFrame {
 
     private GraphDrawer drawer;
 
+    /**
+     *
+     * @param drawer
+     */
     public Window(GraphDrawer drawer) {
         initComponents();
         this.drawer = drawer;
@@ -19,6 +28,7 @@ public class Window extends JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -26,6 +36,14 @@ public class Window extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("File");
+
+        jMenuItem3.setText("open");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("new maze");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -82,15 +100,22 @@ public class Window extends JFrame {
         drawer.updateUI();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+            drawer.readFile(fc.getSelectedFile());
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     private void makeRandomMaze() {
         drawer.drawRandom();
     }
-
+    private final JFileChooser fc = new JFileChooser();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }

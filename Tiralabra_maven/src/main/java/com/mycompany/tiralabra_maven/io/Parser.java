@@ -2,10 +2,22 @@ package com.mycompany.tiralabra_maven.io;
 
 import com.mycompany.tiralabra_maven.maze.ArrayMaze;
 
+/**
+ *
+ * @author yessergire
+ */
 public abstract class Parser {
 
+    /**
+     *
+     */
     protected int length;
 
+    /**
+     *
+     * @param row
+     * @return
+     */
     public int[] parseRow(String row) {
         init(row);
         int[] result = new int[length];
@@ -21,6 +33,11 @@ public abstract class Parser {
         return result;
     }
 
+    /**
+     *
+     * @param ascii
+     * @return
+     */
     public int[][] parse(String ascii) {
         String[] rows = ascii.split("\n");
 
@@ -32,9 +49,23 @@ public abstract class Parser {
         return result;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     protected abstract Object objectAt(int i);
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     protected abstract int parseIntAt(int i);
 
+    /**
+     *
+     * @param str
+     */
     protected abstract void init(String str);
 }

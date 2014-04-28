@@ -1,5 +1,14 @@
 package com.mycompany.tiralabra_maven.algorithm;
 
+/**
+ *
+ * @author Yessergire Mohamed
+ */
 public interface Heuristic {
-    int value(Node state);
+
+    /**
+     *
+     * @return heuristic value of node.
+     */
+    int value(Node node);
 }

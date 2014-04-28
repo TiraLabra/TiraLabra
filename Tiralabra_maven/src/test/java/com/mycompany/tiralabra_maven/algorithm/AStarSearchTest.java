@@ -15,10 +15,14 @@ public class AStarSearchTest {
     int G = ArrayMaze.GOAL;
     AStarSearch searcher;
     private Maze maze;
+    private MazeNode start;
+    private MazeNode goal;
 
     private void setUp(int[][] array) {
         maze = new ArrayMaze(array);
-        searcher = new AStarSearch(maze, maze.getHeuristic());
+        searcher = new AStarSearch(maze, maze);
+        start = maze.getStartNode();
+        goal = maze.getGoalNode();
     }
 
     @Test
@@ -29,7 +33,7 @@ public class AStarSearchTest {
             new int[]{1, 1, G}
         };
         setUp(array);
-        List<Node> path = searcher.findOptimalPath();
+        List<Node> path = searcher.findPath(start, goal);
         assertEquals(5, path.size());
     }
 
@@ -41,7 +45,7 @@ public class AStarSearchTest {
             new int[]{2, 2, G}
         };
         setUp(array);
-        List<Node> path = searcher.findOptimalPath();
+        List<Node> path = searcher.findPath(start, goal);
         Node[] correctPath = new Node[]{
             new MazeNode(), new MazeNode(0, 1), new MazeNode(0, 2), new MazeNode(1, 2),
             new MazeNode(2, 2)};
@@ -59,7 +63,7 @@ public class AStarSearchTest {
             new int[]{1, 1, 1, 5, G}
         };
         setUp(array);
-        List<Node> path = searcher.findOptimalPath();
+        List<Node> path = searcher.findPath(start, goal);
         Node[] correctPath = new Node[]{
             new MazeNode(0, 0), new MazeNode(1, 0), new MazeNode(2, 0),
             new MazeNode(3, 0), new MazeNode(4, 0), new MazeNode(4, 1),

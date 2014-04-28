@@ -3,15 +3,22 @@ package com.mycompany.tiralabra_maven.algorithm;
 
 import com.mycompany.tiralabra_maven.datastructures.List;
 
+/**
+ * Graph interface
+ * @author Yessergire Mohamed
+ */
 public interface Graph {
 
-    Node getStartNode();
+    /**
+     * 
+     * @return adjacent nodes of s
+     */
+    List<Node> getAdjacent(Node s);
 
-    boolean isGoalNode(Node g);
+    /**
+     *
+     * @return the weight of the path a and b.
+     */
+    int weight(Node a, Node b);
 
-    List<Node> getSuccessors(Node s);
-
-    int weight(Node from, Node to);
-
-    Heuristic getHeuristic();
 }

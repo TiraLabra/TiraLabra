@@ -2,17 +2,32 @@ package com.mycompany.tiralabra_maven.datastructures;
 
 import static com.mycompany.tiralabra_maven.datastructures.AbstractHeap.DEFAULT_SIZE;
 
+/**
+ * A min heap.
+ * @author Yessergire Mohamed
+ */
 public class MinHeap extends AbstractHeap {
 
+    /**
+     *
+     */
     public MinHeap() {
         array = new Valuable[DEFAULT_SIZE];
     }
 
+    /**
+     *
+     * @param array
+     */
     public MinHeap(Valuable[] array) {
         this.array = array;
         heapsize = array.length;
     }
 
+    /**
+     *
+     * @param i
+     */
     @Override
     protected void heapify(int i) {
         int smallest;
@@ -29,6 +44,11 @@ public class MinHeap extends AbstractHeap {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @param key
+     */
     @Override
     protected void increaseKey(int i, Valuable key) {
         array[i] = key;

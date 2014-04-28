@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Doubly linked list
  *
- * @author Yessergire
+ * @author Yessergire Mohamed
  * @param <E> The type of elements that this list contains.
  */
 public class List<E> implements Iterable<E> {
@@ -61,6 +61,10 @@ public class List<E> implements Iterable<E> {
         Node prev;
         E elem;
 
+        /**
+         *
+         * @param elem
+         */
         public Node(E elem) {
             this.elem = elem;
         }

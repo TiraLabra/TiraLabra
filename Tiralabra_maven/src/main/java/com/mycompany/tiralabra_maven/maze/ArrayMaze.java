@@ -4,16 +4,37 @@ import com.mycompany.tiralabra_maven.datastructures.List;
 import com.mycompany.tiralabra_maven.algorithm.Node;
 import java.util.Random;
 
+/**
+ * 
+ * @author  Yessergire Mohamed
+ */
 public class ArrayMaze extends AbstractMaze {
 
+    /**
+     *
+     */
     public static final int WALL = 0;
+
+    /**
+     *
+     */
     public static final int START = -1;
+
+    /**
+     *
+     */
     public static final int GOAL = -2;
     private static final Random r = new Random();
 
     private final int[][] maze;
     private int max;
 
+    /**
+     *
+     * @param intMaze
+     * @param start
+     * @param goal
+     */
     public ArrayMaze(int[][] intMaze, MazeNode start, MazeNode goal) {
         super(start, goal);
         maze = intMaze;
@@ -24,6 +45,10 @@ public class ArrayMaze extends AbstractMaze {
         }
     }
 
+    /**
+     *
+     * @param intMaze
+     */
     public ArrayMaze(int[][] intMaze) {
         maze = intMaze;
         for (int x = 0; x < intMaze.length; x++) {
@@ -38,18 +63,31 @@ public class ArrayMaze extends AbstractMaze {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getHeight() {
         return maze.length;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getWidth() {
         return maze[0].length;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
-    public List<Node> getSuccessors(Node node) {
+    public List<Node> getAdjacent(Node node) {
         MazeNode s = (MazeNode) node;
         int x = s.getX();
         int y = s.getY();
@@ -86,6 +124,12 @@ public class ArrayMaze extends AbstractMaze {
         return copy;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     @Override
     public MazeNode getMazeNode(int x, int y) {
         MazeNode s = new MazeNode(x, y);
@@ -93,11 +137,22 @@ public class ArrayMaze extends AbstractMaze {
         return s;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getMaxKey() {
         return max;
     }
 
+    /**
+     *
+     * @param width
+     * @param height
+     * @param max
+     * @return
+     */
     public static ArrayMaze randomMaze(int width, int height, int max) {
         int[][] array = new int[width][height];
         for (int i = 0; i < width; i++) {
@@ -109,6 +164,26 @@ public class ArrayMaze extends AbstractMaze {
         array[width - 1][height - 1] = GOAL;
         ArrayMaze maze = new ArrayMaze(array, new MazeNode(), new MazeNode(width - 1, height - 1));
         maze.max = max - 1;
+        return maze;
+    }
+
+    /**
+     *
+     * @param width
+     * @param height
+     * @return
+     */
+    public static ArrayMaze emptyMaze(int width, int height) {
+        int[][] array = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                array[i][j] = 1;
+            }
+        }
+        array[0][0] = START;
+        array[width-1][height - 1] = GOAL;
+        ArrayMaze maze = new ArrayMaze(array, new MazeNode(0,0), new MazeNode(width-1, height - 1));
+        maze.max = 1;
         return maze;
     }
 }
