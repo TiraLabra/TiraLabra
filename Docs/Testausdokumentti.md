@@ -11,7 +11,9 @@ Projektissa on testattu performanssin osalta sekä hajautusfunktioiden nopeutta 
 
 Yhteentörmäyksiä testasin sekä suoraan hajautusfunktioista saaduilla int32-arvoilla että arvoilla, joita lopulta käytetään hajautustaulukon indeksin määrittämisessä (ts. hajautusarvon itseisarvo modulo taulukon koko). Jälkimmäisen testaukseen käytin 111 414 sanan listaa, jossa sanojen maksimipituus on 8 merkkiä.
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Total collisions for int32 hash values")
+![Alt text](/Docs/collisions-int32.jpg?raw=true "Total collisions for int32 hash values")
+
+Ylläolevasta kuvasta näkyy, että Tira-kalvojen suosittelema algoritmi ei toimi ainakaan int32-arvoja käyttämällä kovin hyvin. Algoritmissa joudutaan kertomaan isoilla potensseilla, joten osa biteistä katoaa. Testauksessa sama algoritmi, mutta BigIntegereillä, tuottaa 0 yhteentörmäystä, mikä on melko yllättävää, koska myös BigInteger on muutettava takaisin int32-arvoksi. Testauksessa myös huomasin, että jos character-tyyppien arvoja offsettaa -97 sijaan luvulla -96, niin yhteentörmäykset kasvavat monella sadalla em. hajautusfunktiossa. Java...
 
 Ensimmäiseksi on testattu hajautusfunktioiden yhteentörmäysten määrää, yhteentörmäysketjuiden keskivertopituutta ja pisintä yhteentörmäysketjua. Syötteenä käytetään enintään kahdeksan kirjaimen pituisia englannin kielisiä sanoja, joita on yhteensä 111 414. M-arvona eli hajautustaulukon kokona on käytetty alkulukua, joka on noin 1.33 kertainen hajautettavien objektien lukumäärään nähden. Hajautustaulukon täyttösuhde on siis 0.75. Tulokset eivät hirveästi eroa toisistaan. Alla kuitenkin näkyy, että parhain tulos on djb2-hajautusfunktiolla.
 
