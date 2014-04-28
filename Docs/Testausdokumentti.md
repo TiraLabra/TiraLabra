@@ -1,7 +1,5 @@
 ### JUnit-testaus
-JUnit-testejä on kirjoitettu kattavasti MyHashSet-luokalle. Testeissä on erityisesti pyritty ottamaan huomioon objektien, jotka saavat samoja hasharvoja, lisäys, haku ja poisto. Syötteinä on käytetty sekä String-arvoja, jotka saavat eri hajautusarvoja, että String-arvoja, jotka saavat samoja hajautusarvoja. Hajautusarvot lasketaan testejä varten tehdyllä HashFunctionStubilla. AI:n testauksessa keskitytään lähinnä siihen, että se löytää parhaimman tuloksen kirjaimistaan tyhjällä laudalla ja laudalla, jossa on jo valmiina kirjaimia. Testausta varten AI:lle on annettu LetterPoolStub-instanssi, josta AI saa syötteenä ennaltamäärätyt kirjaimet.
-
-Yritin generoida cobertura-raportteja, mutta jostain syystä Maven ei lataa versiota 2.6 repositoriosta ja vanhempi versio 2.5.2 ei generoi raportteja oikein, vaan jättää testejä huomiotta. Tesit ovat puutteellisia lähinnä eri HashFunktioiden osalta.
+JUnit-testejä on kirjoitettu kattavasti MyHashSet-luokalle. Cobertura tosin näyttää punaista muutamalle metodille, jotka on implementoitava Set-perinnän takia. Testeissä on erityisesti pyritty ottamaan huomioon objektien, jotka saavat samoja hasharvoja, lisäys, haku ja poisto. Syötteinä on käytetty sekä String-arvoja, jotka saavat eri hajautusarvoja, että String-arvoja, jotka saavat samoja hajautusarvoja. Hajautusarvot lasketaan testejä varten tehdyllä HashFunctionStubilla. AI:n testauksessa keskitytään lähinnä siihen, että se löytää parhaimman tuloksen kirjaimistaan tyhjällä laudalla ja laudalla, jossa on jo valmiina kirjaimia. Testausta varten AI:lle on annettu LetterPoolStub-instanssi, josta AI saa syötteenä ennaltamäärätyt kirjaimet.
 
 ### Performanssitestaus
 
