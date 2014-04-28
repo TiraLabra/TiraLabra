@@ -29,8 +29,6 @@ Toiseksi on testattu hajautustaulukosta löytymisen nopeutta. Sanoja lisätään
 
 TirA-kalvon esimerkkien toteutukset pärjäsivät huonoiten. Integer-versiossa joutuu käyttämään potenssiin korotusta ja castamaan double-tyypistä int-tyyppiin joka kirjaimen kohdalla, joka osittain selittänee hitautta. Kaikki muut algoritmit toimivat kiitettävällä nopeudella, tosin CRC32 näyttää olevan raskain näistä.
 
-Alla olevien tuloksien perusteella djb2 ja FNV-1a ovat nopeimmat hajautusfunktiot. Kummallakin sanojen lisäämiseen menee n. 0.03s. Hajautusfunktio BigInteillä vaatii aikaa jo pelkästään roskien keräämiseen ja onkin nopeudeltaan huonoin.
-
 #### Yhteenveto
 
 Testien perusteella CRC32 vaikuttaisi tuottavan vähiten yhteentörmäyksiä. Se on hieman hitaampi kuin muut algoritmit, lukuunottamatta TirA-toteutuksia, mutta nopeusero ei useimmissa tapauksissa ole merkittävä ellei prosessoitavana ole aivan valtava määrä dataa.
