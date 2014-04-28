@@ -6,7 +6,8 @@ Ohjelmaa voidaan käynnistää komennolla ```java -jar Tiralabra_maven-1.0-SNAPS
 
 Kuva sovelluksen komennoista
 
- - ```open``` avaa ascii tiedoston.
+ - ```open``` avaa sokkeloa sisältävän tiedoston.
+ - ```save``` tallentaa sokkelon tiedostoon.
  - ```new``` maze piirtää satunnaisesti generoidun sokkelon.
  - ```findPath``` piirtää lähtöruudusta maaliruutuun vievän reitin, jos sellaista löytyy.
  - ```exit``` sulkee sovelluksen.
@@ -29,7 +30,7 @@ S # # # # # # # # #
 ```S``` merkitsee lähtöruutua, ```#``` estettä ja ```G``` maaliruutua.
 Ruudut on eroteltu toisistaan välilyönnein. Ruutuun on kirjoitettu sen paino.
 
-![Alt Kuva satunnaisesta sokkelosta](gui3.png)
+![Alt Kuva satunnaisesta sokkelosta](gui2.png)
 Kuva satunnaisesta sokkelosta.
 
 
