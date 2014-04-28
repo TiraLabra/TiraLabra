@@ -8,7 +8,6 @@ package cs.helsinki.fi.desu;
 public class Decryption {
 
     private BitOperation bitOps;
-    private Encryption enc;
     private DES des;
 
     // three keys for triple DES, only K is used for single
@@ -19,7 +18,6 @@ public class Decryption {
     public Decryption() {
         this.des = new DES();
         this.bitOps = new BitOperation();
-        this.enc = new Encryption();
     }
 
     /**
@@ -32,9 +30,10 @@ public class Decryption {
      * @return     decrypted data
      */
     public byte[] decryptTripleDES(byte[] data, byte[][] keys) {
-        int i;
+        Encryption enc = new Encryption();
         byte[] output = new byte[data.length];
         byte[] block = new byte[8];
+        int i;
 
         this.K1 = des.generateSubkeys(keys[0]);
         this.K2 = des.generateSubkeys(keys[1]);

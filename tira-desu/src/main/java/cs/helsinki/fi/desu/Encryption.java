@@ -10,7 +10,6 @@ public class Encryption {
     
     private DES des;
     private BitOperation bitOps;
-    private Decryption dec;
     
     // three keys for triple DES, only K is used for single
     private byte[][] K1;
@@ -20,7 +19,6 @@ public class Encryption {
     public Encryption() {
         this.des = new DES();
         this.bitOps = new BitOperation();
-        this.dec = new Decryption();
     }
     
     /**
@@ -33,6 +31,7 @@ public class Encryption {
      * @return      encrypted data
      */
     public byte[] encryptTripleDES(byte[] data, byte[][] keys) {
+        Decryption dec = new Decryption();
         int length = 8 - data.length % 8;
         byte[] output = insertPadding(data);
         byte[] block = new byte[8];
