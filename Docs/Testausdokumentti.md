@@ -9,78 +9,34 @@ Projektissa on testattu performanssin osalta sekä hajautusfunktioiden nopeutta 
 
 #### Yhteentörmäykset
 
-Yhteentörmäyksiä testasin sekä suoraan hajautusfunktioista saaduilla int32-arvoilla että arvoilla, joita lopulta käytetään hajautustaulukon indeksin määrittämisessä (ts. hajautusarvon itseisarvo modulo taulukon koko). Jälkimmäisen testaukseen käytin 111 414 sanan listaa, jossa sanojen maksimipituus on 8 merkkiä.
+Yhteentörmäyksiä testasin sekä suoraan hajautusfunktioista saaduilla int32-arvoilla englanninkielisille sanoille että arvoilla, joita lopulta käytetään hajautustaulukon indeksin määrittämisessä (ts. hajautusarvon itseisarvo modulo taulukon koko). Jälkimmäisen testaukseen käytin 111 414 sanan listaa, jossa sanojen maksimipituus on 8 merkkiä.
 
 ![Alt text](/Docs/collisions-int32.jpg?raw=true "Total collisions for int32 hash values")
 
-Ylläolevasta kuvasta näkyy, että Tira-kalvojen suosittelema algoritmi ei toimi ainakaan int32-arvoja käyttämällä kovin hyvin. Algoritmissa joudutaan kertomaan isoilla potensseilla, joten osa biteistä katoaa. Testauksessa sama algoritmi, mutta BigIntegereillä, tuottaa 0 yhteentörmäystä, mikä on melko yllättävää, koska myös BigInteger on muutettava takaisin int32-arvoksi. Testauksessa myös huomasin, että jos character-tyyppien arvoja offsettaa -97 sijaan luvulla -96, niin yhteentörmäykset kasvavat monella sadalla em. hajautusfunktiossa. Java...
+Ylläolevasta kuvasta näkyy, että Tira-kalvojen suosittelema algoritmi ei toimi ainakaan int32-arvoja käyttämällä kovin hyvin. Algoritmissa kertoimet kasvavat hyvin isoiksi, joten osa biteistä katoaa. Testauksessa sama algoritmi, mutta BigIntegereillä, tuottaa 0 yhteentörmäystä, mikä on melko yllättävää, koska myös BigInteger on muutettava takaisin int32-arvoksi. Testauksessa myös huomasin, että jos character-tyyppien arvoja offsettaa -97 sijaan luvulla -96, niin yhteentörmäykset kasvavat monella sadalla em. hajautusfunktiossa. Javan oma .hashCode()-metodi näkyy toimivan yhtä mallikkaasti kuin djb2 ja MurmurHash3. Ei ehkä yllättävää, että CRC32:lla ei ole yhtään törmäystä.
 
-Ensimmäiseksi on testattu hajautusfunktioiden yhteentörmäysten määrää, yhteentörmäysketjuiden keskivertopituutta ja pisintä yhteentörmäysketjua. Syötteenä käytetään enintään kahdeksan kirjaimen pituisia englannin kielisiä sanoja, joita on yhteensä 111 414. M-arvona eli hajautustaulukon kokona on käytetty alkulukua, joka on noin 1.33 kertainen hajautettavien objektien lukumäärään nähden. Hajautustaulukon täyttösuhde on siis 0.75. Tulokset eivät hirveästi eroa toisistaan. Alla kuitenkin näkyy, että parhain tulos on djb2-hajautusfunktiolla.
+![Alt text](/Docs/collisions-words.jpg?raw=true "Total collisions for int32 hash values")
 
-<b>General hash function using BigInts</b>  
-Total collisions: 33124  
-Average collision chain length for hash: 1.8461872  
-Longest collision chain: 7  
+Ns. real-life skenaariona testasin englanninkielisille sanoille onko sana MyHashSet-tietorakenteessa käyttäen contains()-metodia. Erona on, että hajautusfunktoiden arvoja ei voi sinällään käyttää hajautustaulukoiden indekseinä. Modulona käytetään taulukon kokoa, joka tässä tapauksessa on n 1.33*111414., jolloin hajautustaulukon loadrate on enintään 0.75 (Javan HashSetin loadrate). Yhteentörmäyksiä sattuu paljon, niin kuin ylläolevassa kuvassa näkyy. Testeissä kaikilla hajautusfunktioilla pisin törmäysketju oli 7-8 törmäystä. Tässäkin kohtaa CRC32 vaikuttaa toimivan parhaiten.
 
-<b>General hash function using longs</b>  
-Total collisions: 33124  
-Average collision chain length for hash: 1.8461872  
-Longest collision chain: 7  
+#### Nopeus
 
-<b>djb2</b>  
-Total collisions: 32813  
-Average collision chain length for hash: 1.8349258  
-Longest collision chain: 6  
+Toiseksi on testattu hajautustaulukosta löytymisen nopeutta. Sanoja lisätään 111 414 MyHashSet-hajautustaulukkoon.
 
-<b>FNV-1a</b>  
-Total collisions: 33005  
-Average collision chain length for hash: 1.8418677  
-Longest collision chain: 6  
+![Alt text](/Docs/benchmarks.jpg?raw=true "Total collisions for int32 hash values")
 
-<b>MurmurHash3</b>  
-Total collisions: 32926  
-Average collision chain length for hash: 1.8390073  
-Longest collision chain: 6  
+TirA-kalvon esimerkkien toteutukset pärjäsivät huonoiten. Integer-versiossa joutuu käyttämään potenssiin korotusta ja castamaan double-tyypistä int-tyyppiin joka kirjaimen kohdalla, joka osittain selittänee hitautta. Kaikki muut algoritmit toimivat kiitettävällä nopeudella, tosin CRC32 näyttää olevan raskain näistä.
 
-Toiseksi on testattu hajautustaulukkoon lisäämisen nopeutta. Sanoja lisätään n. 260000. Alla olevien tuloksien perusteella djb2 ja FNV-1a ovat nopeimmat hajautusfunktiot. Kummallakin sanojen lisäämiseen menee n. 0.03s. Hajautusfunktio BigInteillä vaatii aikaa jo pelkästään roskien keräämiseen ja onkin nopeudeltaan huonoin.
+#### Yhteenveto
 
-<b>General hash function using BigInts (10 rounds)</b>  
-round: 0.38 [+- 0.09], GC.calls: 32, GC.time: 0.18, time.bench: 3.58
+Testien perusteella CRC32 vaikuttaisi tuottavan vähiten yhteentörmäyksiä. Se on hieman hitaampi kuin muut algoritmit, lukuunottamatta TirA-toteutuksia, mutta nopeusero ei useimmissa tapauksissa ole merkittävä ellei prosessoitavana ole aivan valtava määrä dataa.
 
-<b>General hash function using longs (10 rounds)</b>  
- round: 0.11 [+- 0.01], GC.calls: 0, GC.time: 0.00, time.bench: 1.12
 
-<b>djb2 (10 rounds)</b>  
- round: 0.03 [+- 0.00], GC.calls: 0, GC.time: 0.00, time.bench: 0.34
+#### Pelin tekoäly
 
-<b>FNV-1a (10 rounds)</b>  
- round: 0.03 [+- 0.00], GC.calls: 0, GC.time: 0.00, time.bench: 0.34
-
-<b>MurmurHash3 (10 rounds)</b>  
- round: 0.04 [+- 0.01], GC.calls: 1, GC.time: 0.00, time.bench: 0.44
-
-Myös objektien hakeminen hajautustaulukosta on testattu. Tulokset eivät juurikaan eroa objektien lisäysajoista. Parhaimmiksi erottuvat jälleen kerran djb2 ja FNV-1a.
-
-<b>General hash function using BigInts (10 rounds)</b>  
- round: 0.31 [+- 0.00], GC.calls: 31, GC.time: 0.08, time.bench: 3.06
-
-<b>General hash function using longs (10 rounds)</b>  
- round: 0.08 [+- 0.00], GC.calls: 0, GC.time: 0.00, time.bench: 0.81
-
-<b>djb2 (10 rounds)</b>  
- round: 0.01 [+- 0.00], GC.calls: 0, GC.time: 0.00, time.bench: 0.08
-
-<b>FNV-1a (10 rounds)</b>  
- round: 0.01 [+- 0.00], GC.calls: 0, GC.time: 0.00, time.bench: 0.08
-
-<b>MurmurHash3 (10 rounds)</b>  
- round: 0.02 [+- 0.00], GC.calls: 1, GC.time: 0.01, time.bench: 0.18
-
-Testien perusteella djb2-hajautusfunktio toimii parhaiten sekä yhteentörmäyksien määrien että nopeuden puolesta.
-
-Lopuksi testataan vielä pelin tekoälyn nopeutta löytää paras sana kirjaimistaan, kun ruudukko on tyhjä, jolloin etsittävää on eniten. Kirjaimiksi annetaan rxinxoge, joista on mahdollista muodostaa vain yksi validi sana "xeroxing". Testissä AI:lla kestää n. 1.09s löytää oikea sana "xeroxing".
+Lopuksi testataan vielä pelin tekoälyn nopeutta löytää paras sana kirjaimistaan, kun 8x8 ruudukko on tyhjä, jolloin etsittävää on eniten. Kirjaimiksi annetaan rxinxoge, joista on mahdollista muodostaa vain yksi validi sana "xeroxing". 
 
 <b>AiBenchmark (10 rounds)</b>  
  round: 1.09 [+- 0.01], GC.calls: 135, GC.time: 0.09, time.bench: 10.88
 
-
+AI on melko hidas. Sillä kestää n. 1.09s löytää oikea sana "xeroxing", mutta ottaen huomioon, että ihmisvastustajalla kestäisi huomattavan paljon kauemmin löytää edes jokin sana kirjaimistaan, on tulos ihan kohtuullinen.
