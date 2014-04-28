@@ -19,11 +19,6 @@ public class JavaHashForStrings extends HashFunction<String> {
      */
     @Override
     public int getHash(String s) {
-        int hash = 0;
-        for (int i = 0; i < s.length(); i++){
-            int charVal = s.charAt(i);
-            hash += charVal*(int)Math.pow(31, s.length()-1-i);          
-        }
-        return hash;
+        return s.hashCode();
     }
 }
