@@ -44,11 +44,45 @@ Paketit ja luokat:
     - FileParser parseraa ascii tiedoston taulukoksi.
     - MazePrinter tulostaa sokkelon.
 
-##Saavutetut aika- ja tilavaativuudet
 
-##Suorituskyky- ja O-analyysivertailu
+Saavutetut aika- ja tilavaativuudet
+-----------------------------------
+###A*-algoritmi
 
-##Työn mahdolliset puutteet ja parannusehdotukset
+```
+OPEN = priority queue containing START
+CLOSED = empty set
+while lowest rank in OPEN is not the GOAL:
+  current = remove lowest rank item from OPEN
+  add current to CLOSED
+  for successor of current:
+    cost = g(current) + movementcost(current, successor)
+    if successor in OPEN and cost less than g(successor):
+      remove successor from OPEN, because new path is better
+    if successor in CLOSED and cost less than g(successor): **
+      remove successor from CLOSED
+    if successor not in OPEN and neighbor not in CLOSED:
+      set g(successor) to cost
+      add neighbor to OPEN
+      set priority queue rank to g(successor) + h(successor)
+      successor.parent = current
+
+reconstruct reverse path from goal to start
+by following parent pointers
+```
+
+Algoritmin aikavaativuus riippuu käytetystä heuristiikkafunktiosta.
+Paras tapaus on O(|E| + |V|). Jos olettaa, että heuristiikkafunktio on 
+laskettavissa vakioajassa, niin pahin tapaus on O((|E| + |V|) log |V|).
+
+Algoritmin tilavaativuus riippuu käytetystä heuristiikkafunktiosta.
+Paras tapaus on O(|E| + |V|). Jos olettaa, että heuristiikkafunktio on 
+laskettavissa vakioajassa, niin pahin tapaus on O((|E| + |V|) log |V|).
+
+##Työn parannusehdotukset
+ - Sovelluksen käyttöliittymä kaipaa parantamista.
+ - Sovellukseen voisi lisätä mahdollisuus editoida ja tallentaa sokkeloita.
+
 
 ##Lähteet
 - [A*-algoritmi](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html)
