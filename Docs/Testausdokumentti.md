@@ -1,7 +1,5 @@
 ### JUnit-testaus
-JUnit-testejä on kirjoitettu kattavasti MyHashSet-luokalle. Testeissä on erityisesti pyritty ottamaan huomioon objektien, jotka saavat samoja hasharvoja, lisäys, haku ja poisto. Syötteinä on käytetty sekä String-arvoja, jotka saavat eri hajautusarvoja, että String-arvoja, jotka saavat samoja hajautusarvoja. Hajautusarvot lasketaan testejä varten tehdyllä HashFunctionStubilla. AI:n testauksessa keskitytään lähinnä siihen, että se löytää parhaimman tuloksen kirjaimistaan tyhjällä laudalla ja laudalla, jossa on jo valmiina kirjaimia. Testausta varten AI:lle on annettu LetterPoolStub-instanssi, josta AI saa syötteenä ennaltamäärätyt kirjaimet.
-
-Yritin generoida cobertura-raportteja, mutta jostain syystä Maven ei lataa versiota 2.6 repositoriosta ja vanhempi versio 2.5.2 ei generoi raportteja oikein, vaan jättää testejä huomiotta. Tesit ovat puutteellisia lähinnä eri HashFunktioiden osalta.
+JUnit-testejä on kirjoitettu kattavasti MyHashSet-luokalle. Cobertura tosin näyttää punaista muutamalle metodille, jotka on implementoitava Set-perinnän takia. Testeissä on erityisesti pyritty ottamaan huomioon objektien, jotka saavat samoja hasharvoja, lisäys, haku ja poisto. Syötteinä on käytetty sekä String-arvoja, jotka saavat eri hajautusarvoja, että String-arvoja, jotka saavat samoja hajautusarvoja. Hajautusarvot lasketaan testejä varten tehdyllä HashFunctionStubilla. AI:n testauksessa keskitytään lähinnä siihen, että se löytää parhaimman tuloksen kirjaimistaan tyhjällä laudalla ja laudalla, jossa on jo valmiina kirjaimia. Testausta varten AI:lle on annettu LetterPoolStub-instanssi, josta AI saa syötteenä ennaltamäärätyt kirjaimet.
 
 ### Performanssitestaus
 
@@ -40,3 +38,6 @@ Lopuksi testataan vielä pelin tekoälyn nopeutta löytää paras sana kirjaimis
  round: 1.09 [+- 0.01], GC.calls: 135, GC.time: 0.09, time.bench: 10.88
 
 AI on melko hidas. Sillä kestää n. 1.09s löytää oikea sana "xeroxing", mutta ottaen huomioon, että ihmisvastustajalla kestäisi huomattavan paljon kauemmin löytää edes jokin sana kirjaimistaan, on tulos ihan kohtuullinen.
+
+### Testien toisto omalla koneella
+Performanssi- ja törmäystestit löytyvät kansiosta Sanapuuro/src/test/java/sanapuuro/benchmarks JUnit-testeinä, eli ne ovat ajettavissa NetBeansin tai jonkin muun IDE:n kautta omalla koneella.
