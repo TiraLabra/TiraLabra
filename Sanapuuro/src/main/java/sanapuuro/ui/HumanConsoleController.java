@@ -27,7 +27,7 @@ public class HumanConsoleController implements Controller {
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
     }
-    
+
     public int getX() {
         return this.x;
     }
@@ -35,24 +35,24 @@ public class HumanConsoleController implements Controller {
     public int getY() {
         return this.y;
     }
-    
+
     @Override
     public ControllerListener getControlled() {
         return this.controlled;
     }
-    
+
     @Override
     public void setControlled(ControllerListener controlled) {
         this.controlled = controlled;
     }
-    
-    public void addConsoleListener(ConsoleControllerListener listener){
+
+    public void addConsoleListener(ConsoleControllerListener listener) {
         this.listeners.add(listener);
     }
 
     @Override
     public void makeMove() {
-        Player player = (Player)this.getControlled();
+        Player player = (Player) this.getControlled();
         this.notifyMakingMove();
         System.out.print(player + "'s turn: ");
         String input = scanner.nextLine();
@@ -74,85 +74,84 @@ public class HumanConsoleController implements Controller {
                 this.makeMove();
                 break;
             case "q":
-                System.out.print("Give direction to add letters (wasd): ");
-                input = scanner.nextLine();
-                while (input.isEmpty() || !"wasd".contains(input.charAt(0) + "")) {
-                    System.out.print("Give direction to add letters (wasd): ");
-                    input = scanner.nextLine();
-                }
-                this.direction = input.charAt(0);
-                System.out.print("Give characters to add or space to select: ");
-                input = scanner.nextLine();
-                while (!this.placeLetters(input)){
-                    this.notifyFailedToPlaceLetters();
-                    this.makeMove();
+                boolean lettersQueried = this.queryLetters();
+                while (!lettersQueried) {
+                    lettersQueried = this.queryLetters();
                 }
                 break;
             default:
         }
     }
-    
-    private void notifyFailedToPlaceLetters(){
-        for(ConsoleControllerListener listener : this.listeners){
+
+    private void notifyFailedToPlaceLetters() {
+        for (ConsoleControllerListener listener : this.listeners) {
             listener.failedToPlaceLetters();
         }
     }
-    
+
     private void notifyMakingMove() {
-        for(ConsoleControllerListener listener : this.listeners){
+        for (ConsoleControllerListener listener : this.listeners) {
             listener.makingMove(this);
         }
     }
-    
+
     /**
      * Attempts to place the given letters on the grid.
-     * @param letters 
+     *
+     * @param letters
      */
-    private boolean placeLetters(String letters){
+    private boolean placeLetters(String letters) {
         int x_ = this.x;
         int y_ = this.y;
         int deltaX = 0;
-        if (this.direction == 'd') deltaX = 1;
-        if (this.direction == 'a') deltaX = -1;
+        if (this.direction == 'd') {
+            deltaX = 1;
+        }
+        if (this.direction == 'a') {
+            deltaX = -1;
+        }
         int deltaY = 0;
-        if (this.direction == 's') deltaY = 1;
-        if (this.direction == 'w') deltaY = -1;
-        
-        for (int i = 0; i < letters.length(); i++){
+        if (this.direction == 's') {
+            deltaY = 1;
+        }
+        if (this.direction == 'w') {
+            deltaY = -1;
+        }
+
+        for (int i = 0; i < letters.length(); i++) {
             char c = letters.charAt(i);
-            if (c != ' '){
-                if (!this.controlled.letterAdded(c, x_, y_)){
+            if (c != ' ') {
+                if (!this.controlled.letterAdded(c, x_, y_)) {
+                    this.controlled.clearLettersFromSubmission();
+                    return false;
+                }
+            } else {
+                if (!this.controlled.letterSelected(x_, y_)) {
                     this.controlled.clearLettersFromSubmission();
                     return false;
                 }
             }
-            else {
-                if (!this.controlled.letterSelected(x_, y_)){
-                    this.controlled.clearLettersFromSubmission();
-                    return false;
-                }
-            }
-            x_+=deltaX;
-            y_+=deltaY;
+            x_ += deltaX;
+            y_ += deltaY;
         }
         return true;
     }
-    
+
     private boolean canMoveTo(int x, int y) {
         return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
     }
-    
+
     private boolean setLocation(int x, int y) {
         if (canMoveTo(x, y)) {
             this.x = x;
             this.y = y;
-            for(ConsoleControllerListener listener : this.listeners){
+            for (ConsoleControllerListener listener : this.listeners) {
                 listener.selectorMoved(this);
             }
         }
         return true;
     }
-    
+
     private boolean moveUp() {
         return this.setLocation(x, this.y - 1);
     }
@@ -170,9 +169,21 @@ public class HumanConsoleController implements Controller {
 
     }
 
-    
+    private boolean queryLetters() {
+        System.out.print("Give direction to add letters (wasd): ");
+        String input = scanner.nextLine();
+        while (input.isEmpty() || !"wasd".contains(input.charAt(0) + "")) {
+            System.out.print("Give direction to add letters (wasd): ");
+            input = scanner.nextLine();
+        }
+        this.direction = input.charAt(0);
+        System.out.print("Give characters to add or space to select: ");
+        input = scanner.nextLine();
+        if (!this.placeLetters(input)) {
+            this.notifyFailedToPlaceLetters();
+            return false;
+        }
+        return true;
+    }
 
-    
-
-    
 }
