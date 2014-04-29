@@ -215,7 +215,6 @@ public class MLPNetwork {
 
         double e = Double.POSITIVE_INFINITY;
         int numOfIterations = 0;
-
         while (e > maxError && numOfIterations < maxIterations) {
 
             backpropagation(samples, expected, learnRate);

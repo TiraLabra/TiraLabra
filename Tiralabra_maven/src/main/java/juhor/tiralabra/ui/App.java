@@ -16,92 +16,156 @@ import juhor.tiralabra.network_classes.MultiClassPerceptron;
 import juhor.tiralabra.network_classes.Perceptron;
 
 /**
- * Hello world!
- *
+ * This is the user interface class.
+ * @author juhorim
  */
 public class App {
 
-    /**
-     * private static void measureLearning(int numOfInput, int[] numOfNodes,
-     * double distance) { Random rand = new Random();
-     *
-     * double[][] outputs = new double[numOfInput][1];
-     *
-     * double[][] class0 = new double[numOfInput / 2][2]; for (int i = 0; i <
-     * class0.length; i++) { double x = distance / 2 + 3 * rand.nextDouble();
-     * double[] xset = {x}; class0[i] = xset; outputs[i][0] = 0; }
-     *
-     * double[][] class1 = new double[numOfInput / 2][2]; for (int i = 0; i <
-     * class1.length; i++) { double x = -distance / 2 - 3 * rand.nextDouble();
-     * double[] xset = {x}; class1[i] = xset; outputs[numOfInput / 2 + i][0] =
-     * 1; }
-     *
-     * double[][] inputs = new double[numOfInput][2]; System.arraycopy(class0,
-     * 0, inputs, 0, class0.length); System.arraycopy(class1, 0, inputs,
-     * class0.length, class1.length);
-     *
-     * trainMLP(outputs, inputs, numOfNodes); //perceptronTraining(outputs,
-     * inputs); //MCPTraining(outputs, inputs);
-     *
-     * }
-     *
-     * private static void trainMLP(double[][] outs, double[][] ins, int[]
-     * numOfNodes) { MLPNetwork tron = new MLPNetwork(numOfNodes);
-     *
-     * long start = System.currentTimeMillis(); tron.train(ins, outs, 0.01,
-     * 0.01, 100000); long end = System.currentTimeMillis();
-     *
-     * System.out.println("MLP training took: " + (end - start)); }
-     *
-     * private static void perceptronTraining(double[][] outs, double[][] ins) {
-     * TrainingData data = new TrainingData(ins, outs); Perceptron tron = new
-     * Perceptron(data, 0.5);
-     *
-     * long start = System.currentTimeMillis(); tron.learn(); long end =
-     * System.currentTimeMillis();
-     *
-     * System.out.println("Perceptron training took: " + (end - start)); }
-     *
-     * private static void MCPTraining(double[][] outs, double[][] ins) {
-     * TrainingData data = new TrainingData(ins, outs); MultiClassPerceptron
-     * tron = new MultiClassPerceptron(data, 2);
-     *
-     * long start = System.currentTimeMillis(); tron.learn(); long end =
-     * System.currentTimeMillis();
-     *
-     * System.out.println("Multi Class Perceptron training took: " + (end -
-     * start));
-     *
-     * }
-     */
     private static MLPNetwork mlp;
     private static FileManager fm;
     private static double[][] inputs;
     private static double[][] outputs;
-
+    
+    /**
+     * Here we train the MLP, and measure the time training took.
+     * @param ins
+     * @param outs
+     * @param learnRate
+     * @param maxError
+     * @param maxIterations 
+     */
     public static void trainMLP(double[][] ins, double[][] outs, double learnRate, double maxError, int maxIterations) {
-        System.out.println("Training the multi-layered perceptron, this might take a while... ");
+        System.out.println("Training the multilayered perceptron, this might take a while... ");
         long begin = System.currentTimeMillis();
-        double e = mlp.train(outs, outs, learnRate, maxError, maxIterations);
+        mlp.train(ins, outs, learnRate, maxError, maxIterations);
         long end = System.currentTimeMillis();
-        System.out.println("Training complete, it took " + (end - begin) + "ms. Final value of error function: " + e);
+        System.out.println("Training complete, it took " + (end - begin) + "ms.");
 
     }
-
-    public static void run() {
-        fm = new FileManager();
+    
+    /**
+     * When user chooses perceptron this one is fired
+     */
+    public static void tron() {
         try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Number of layers: ");
-            int numOfLayers = scanner.nextInt();
+            TrainingData data = new TrainingData(inputs, outputs);
+            Perceptron tron = new Perceptron(data, 0.5);
+            System.out.println("Training perceptron, this might take a while");
+            
+            long start = System.currentTimeMillis();
+            tron.learn();
+            long end = System.currentTimeMillis();
+            System.out.println("Training completed it took " + (end-start) + "ms");
+            System.out.println("Now we try to classify the remaining images...");
+            File dirFalse = new File("images/false");
+            File dirTrue = new File("images/true");
 
-            int[] nodes = new int[numOfLayers];
-            for (int i = 0; i < numOfLayers; i++) {
-                System.out.println("Number of nodes in " + (i + 1) + ". layer: ");
-                nodes[i] = scanner.nextInt();
+            File[] filesF = dirFalse.listFiles();
+            File[] filesT = dirTrue.listFiles();
+
+            int numOfErrors = 0;
+            int i = 0;
+            for (File file : filesF) {
+                double[] in = fm.readImage(file);
+
+                boolean out = tron.test(in);
+
+                if (out == true) {
+                    numOfErrors++;
+                }
+                i++;
             }
 
+            for (File file : filesT) {
+                double[] in = fm.readImage(file);
+
+                boolean out = tron.test(in);
+
+                if (out == false) {
+                    numOfErrors++;
+                }
+            }
+
+            System.out.println("Done. I counted " + numOfErrors + " false classifications");
+        } catch (IOException e) {
+
+        }
+
+    }
+    
+    /**
+     * When user chooses MLP, this method is fired
+     * @param scanner 
+     */
+    public static void MLPtron(Scanner scanner) {
+        try {
+            System.out.println("Number of hidden layers: ");
+            int numOfLayers = scanner.nextInt()+1;
+
+            int[] nodes = new int[numOfLayers];
+            for (int i = 1; i < numOfLayers; i++) {
+                System.out.println("Number of nodes in " + (i ) + ". hidden layer: ");
+                nodes[i] = scanner.nextInt();
+            }
+            nodes[numOfLayers-1] = 1;
+
             mlp = new MLPNetwork(nodes, 27*27);
+
+            System.out.println("Enter the rate of learning: ");
+            double learnRate = scanner.nextDouble();
+            System.out.println("Enter the maximum error: ");
+            double maxError = scanner.nextDouble();
+            System.out.println("Enter number of iterations: ");
+            int numOfIterations = scanner.nextInt();
+
+            trainMLP(inputs, outputs, learnRate, maxError, numOfIterations);
+
+            System.out.println("Now we try to classify the remaining images...");
+            File dirFalse = new File("images/false");
+            File dirTrue = new File("images/true");
+
+            File[] filesF = dirFalse.listFiles();
+            File[] filesT = dirTrue.listFiles();
+
+            int numOfErrors = 0;
+            int i = 0;
+            for (File file : filesF) {
+                double[] in = fm.readImage(file);
+
+                double[] out = mlp.feedForward(in);
+
+                if (out[1] > 0.5) {
+                    numOfErrors++;
+                }
+                i++;
+            }
+
+            for (File file : filesT) {
+                double[] in = fm.readImage(file);
+
+                double[] out = mlp.feedForward(in);
+
+                if (out[1] < 0.5) {
+                    numOfErrors++;
+                }
+            }
+
+            System.out.println("Done. I counted " + numOfErrors + " false classifications");
+        } catch (IOException e) {
+
+        }
+    }
+    
+    /**
+     * method that runs the whole show = creates the datasets for training.
+     */
+    public static void run() {
+        fm = new FileManager();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("MLP or perceptron? (M or P): ");
+        String MorP = scanner.nextLine();
+
+        try {
 
             System.out.println("Enter the number of 'false' samples (0-850): ");
             int numOfFalseSamples = scanner.nextInt();
@@ -109,12 +173,11 @@ public class App {
             System.out.println("Enter the number of 'true' samples (0-120): ");
             int numOfTrueSamples = scanner.nextInt();
             double[][] t;
-            
-            f = fm.readImagesFromDirectory(new File("images/false"),0, numOfFalseSamples);
-            t = fm.readImagesFromDirectory(new File("images/true"),0, numOfTrueSamples);
+
+            f = fm.readImagesFromDirectory(new File("images/false"), 0, numOfFalseSamples);
+            t = fm.readImagesFromDirectory(new File("images/true"), 0, numOfTrueSamples);
             inputs = new double[f.length + t.length][27 * 27];
             outputs = new double[f.length + t.length][1];
-
             System.arraycopy(f, 0, inputs, 0, f.length);
             for (int i = 0; i < f.length; i++) {
                 double[] val = {0};
@@ -127,50 +190,13 @@ public class App {
             }
 
             shuffle();
-            
-            System.out.println("Enter the rate of learning: ");
-            double learnRate = scanner.nextDouble();
-            System.out.println("Enter the maximum error: ");
-            double maxError = scanner.nextDouble();
-            System.out.println("Enter number of iterations: ");
-            int numOfIterations = scanner.nextInt();
-            
-            trainMLP(inputs, outputs, learnRate, maxError, numOfIterations);
-            
-            System.out.println("Now we try to classify the remaining images...");
-            File dirFalse = new File("images/false");
-            File dirTrue = new File("images/true");
-            f = new double[dirFalse.listFiles().length - numOfFalseSamples][27*27];
-            t = new double[dirTrue.listFiles().length - numOfTrueSamples][27*27];
-            
-            File[] filesF = dirFalse.listFiles();
-            File[] filesT = dirTrue.listFiles();
-            
-            int numOfErrors = 0;
-            int i = 0;
-            for(File file: filesF){
-                double[] in = fm.readImage(file);
-                System.out.println(i);
-                double[] out = mlp.feedForward(in);
-                
-                if(out[1] > 0.5){
-                    numOfErrors++;
-                }
-                i++;
-            } 
-            
-            for(File file: filesT){
-                double[] in = fm.readImage(file);
-                
-                double[] out = mlp.feedForward(in);
-                
-                if(out[1] < 0.5){
-                    numOfErrors++;
-                }
+
+            if (MorP.equals("M")) {
+                MLPtron(scanner);
+            } else if (MorP.equals("P")) {
+                tron();
             }
-            
-            System.out.println("Done. I counted " + numOfErrors + " false classifications");
-            
+
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -194,24 +220,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        /**
-         * int[] numOfInputs = {3 ,6, 1}; System.out.println("Testing with
-         * constant distance 3"); for(int i = 1; i < 10; i++){
-         * measureLearning(i*1000, numOfInputs, 0.02); }
-         */
-        /**
-        double[] imArray = new double[27 * 27];
 
-        FileManager fm = new FileManager();
-        try {
-            imArray = fm.readImage(new File("im1.png"));
-        } catch (IOException e) {
-            System.out.println("Could not read file");
-        }
 
-        System.out.println(Arrays.toString(imArray));
-        */
-        
         run();
     }
 }

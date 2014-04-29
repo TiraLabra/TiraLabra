@@ -16,7 +16,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Very simple class for all file managing
  * @author JuhoRim
  */
 public class FileManager {
@@ -26,7 +26,14 @@ public class FileManager {
 
     public FileManager() {}
 
-
+    /**
+     * Like the name suggests, this one reads a folder full of images and creates 2d double arrays
+     * @param dir
+     * @param startingIndex
+     * @param endIndex
+     * @return
+     * @throws IOException 
+     */
     public double[][] readImagesFromDirectory(File dir, int startingIndex,  int endIndex) throws IOException {
         double[][] returnVal = new double[endIndex-startingIndex][27 * 27];
         FilenameFilter imgFilter = new FilenameFilter() {
@@ -57,11 +64,22 @@ public class FileManager {
         }
         return null;
     }
-
+    /**
+     * This one reads one image and creates a double array out of it.
+     * @param f
+     * @return
+     * @throws IOException 
+     */
     public double[] readImage(File f) throws IOException {
         BufferedImage im = ImageIO.read(f);
         Raster r = im.getData();
-        return r.getPixels(0, 0, r.getWidth(), r.getHeight(), (double[]) null);
+        int[] rbgarray = im.getRGB(0, 0, im.getWidth(), im.getHeight(), (int[])null, 0, im.getWidth());
+        double[] returnVal = new double[rbgarray.length];
+        for(int i =0; i < rbgarray.length;i++){
+            returnVal[i] = rbgarray[i];
+        }
+        
+        return  returnVal;
     }
 
 }

@@ -1,9 +1,0 @@
-Testaustilanne 14.4.2014
-
-JUnit-testejä on toteutettu ainakin muutamia lähes kaikille luokille.
-
-Perceptron-luokkaa testataan loogisilla operaatioilla AND, OR ja NOT. Lisäksi hyödynnän satunnaisgeneroitua, 500 positiivista lukua ja 500 negatiivista lukua sisältävää opetusdataa (luvut pyritään siis jakamaan positiivisiin ja negatiivisiin), testaan opetuksen toimintaa 100:lla satunnaisesti valitulla luvulla. Ongelmaksi muodostuvat todennäköisyydet; välillä 1000 opetusdatan pistettä ovat sellaiset, että päätösrajapinta ei kulje tarpeeksi lähellä lukua nolla, jolloin 100 testauspisteen joukossa voi olla luku joka luokitellaan väärin. Todennäköisyyttä voidaan pienentää joko lisäämällä opetusdatan määrää esimerkiksi 2000 lukuun, koettamalla kaventaa opetusdatan pistejoukkojen välistä etäisyyttä, tai hylkäämällä osa testipisteistä (jotka liian lähellä nollaa). Tällä hetkellä testit käyttävät viimeistä tapaa. Testi epäonnistuu silti aina silloin tällöin, johtuen algoritmin normaalista toiminnasta.
-
-MultiClassPerceptron luokkaa testataan hyvin samalla tavoin kuin Perceptron luokkaa. Tällä kertaa opetusdatan pisteet ovat tason R^2 pisteitä, ja ne koetetaan jakaa neljään ryhmään koordinaattiakselien jakamana. Tällä hetkellä pisteitä on yhteensä 1000, jokaisessa ryhmässä 250. Ongelmaksi muodostuu jälleen päätösrajapintojen kaltevuus. Jälleen JUnit testissä hylkään testipisteet jotka ovat liian lähellä koordinaattiakseleita, jotta vältettäisiin edes osa algoritmin normaalista toiminnasta johtuvista testien epäonnistumisista. Testi luonnollisesti epäonnistuu aina silloin tällöin.
-
-MLP: Tätä kokonaisuutta on hankala testata osittain satunnaisuuden takia. Testaan MLP:tä tällä hetkellä samalla tavoin kuin Perceptron-luokkaa. Olen myös tarkistanut että se kykenee luokittelemaan ei-lineaarisia tapauksia XOR-operaation avulla. Olen myös toteuttanut muutamia testejä yksittäisille metodeille, mutta ne ovat varsin yksinkertaisia. 

@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.mycompany</groupId>
+  <groupId>juhor.tiralabra</groupId>
   <artifactId>Tiralabra_maven</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -22,4 +22,21 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+ <build>
+   <plugins>
+     <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <configuration>
+    <archive>
+      <manifest>
+      <addClasspath>true</addClasspath>
+      <classpathPrefix>lib/</classpathPrefix>
+          <mainClass>juhor.tiralabra.ui.App</mainClass>
+      </manifest>
+    </archive>
+     </configuration>
+    </plugin>
+    </plugins>
+    </build>
 </project>

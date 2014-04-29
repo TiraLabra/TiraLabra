@@ -41,7 +41,7 @@ public class MLPNetworkTest {
         TrainingData data = new TrainingData(inputVectors, outputs);
         int[] neurons = {3, 2, 1};
 
-        net = new MLPNetwork(neurons);
+        net = new MLPNetwork(neurons, 2);
     }
 
     @After
@@ -53,7 +53,7 @@ public class MLPNetworkTest {
         double[][] trainDat = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
         double[][] expected = {{0}, {1}, {1}, {0}};
 
-        net.train(trainDat, expected, 0.3, 0.01, 100000);
+        net.train(trainDat, expected, 0.3, 0.001, 100000);
         double[] i1 = {0, 0};
         double[] i2 = {1, 0};
         double[] i3 = {0, 1};
@@ -70,7 +70,7 @@ public class MLPNetworkTest {
         double[][] trainDat = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
         double[][] expected = {{0}, {1}, {1}, {1}};
 
-        net.train(trainDat, expected, 0.3, 0.01, 100000);
+        net.train(trainDat, expected, 0.3, 0.001, 100000);
         double[] i1 = {0, 0};
         double[] i2 = {1, 0};
         double[] i3 = {0, 1};
@@ -112,10 +112,10 @@ public class MLPNetworkTest {
 
         TrainingData data = new TrainingData(inputs, outputs);
         
-        int[] nodes = {1, 3,1};
-        MLPNetwork tron = new MLPNetwork(nodes);
+        int[] nodes = {3,1};
+        MLPNetwork tron = new MLPNetwork(nodes, 1);
 
-        tron.train(inputs, outputs, 0.3, 0.01, 40000);
+        tron.train(inputs, outputs, 0.3, 0.001, 100000);
         for (int i = 0; i < 100; i++) {
             double r = 2 * rand.nextDouble() - 2; //random double from interval [-2, 2[
             double[] in = {1, r};
