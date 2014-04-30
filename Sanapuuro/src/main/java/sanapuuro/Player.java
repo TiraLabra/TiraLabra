@@ -29,6 +29,10 @@ public class Player implements ControllerListener {
         this.grid = grid;
         this.name = name;
     }
+    
+    public String getName(){
+        return this.name;
+    }
 
     public int getScore() {
         return this.score;
@@ -67,6 +71,22 @@ public class Player implements ControllerListener {
         this.selectedContainers.add(container);
         this.submissionContainers.add(container);
         return true;
+    }
+    
+    public LetterContainer removeLastSelection(){
+        if (!this.submissionContainers.isEmpty()){
+            LetterContainer cont = this.submissionContainers.get(this.submissionContainers.size()-1);
+            if (cont.isPermanent()){
+                this.selectedContainers.remove(cont);
+            }else{
+                this.addedContainers.remove(cont);
+                this.grid.removeContainer(cont);
+                this.letterPool.unpickLetter(cont.letter.character);
+            }
+            this.submissionContainers.remove(cont);
+            return cont;
+        }
+        return null;
     }
 
     public LetterPool getLetterPool() {

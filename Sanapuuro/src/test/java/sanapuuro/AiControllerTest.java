@@ -178,6 +178,11 @@ public class AiControllerTest {
         public void replacePickedLetters() {
             
         }
+
+        @Override
+        public boolean letterAtIndexIsFree(int i) {
+            return this.containersFree[i];
+        }
     }
     
     

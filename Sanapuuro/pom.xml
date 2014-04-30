@@ -48,7 +48,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>sanapuuro.Game</mainClass>
+                            <mainClass>sanapuuro.ui.SanapuuroSwingApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

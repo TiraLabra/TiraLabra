@@ -6,9 +6,7 @@ package sanapuuro.benchmarks;
  * and open the template in the editor.
  */
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -132,6 +130,11 @@ public class AiBenchmark {
         @Override
         public void replacePickedLetters() {
 
+        }
+        
+        @Override
+        public boolean letterAtIndexIsFree(int i) {
+            return this.containersFree[i];
         }
     }
 }

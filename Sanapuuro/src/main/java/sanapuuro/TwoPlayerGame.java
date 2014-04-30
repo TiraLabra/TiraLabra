@@ -8,11 +8,8 @@ package sanapuuro;
 import java.util.List;
 import java.util.Set;
 import sanapuuro.utils.Util;
-import sanapuuro.letters.Letters;
 import sanapuuro.WordEvaluator.EvaluationResult;
 import sanapuuro.letters.LetterContainer;
-import sanapuuro.letters.LetterPool;
-import sanapuuro.letters.PlayerLetterPool;
 
 /**
  *

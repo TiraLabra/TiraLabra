@@ -15,6 +15,7 @@ public interface LetterPool {
 
     LetterContainer[] getLetters();
     boolean letterIsFree(char c);
+    boolean letterAtIndexIsFree(int i);
     /**
      * Marks an index as used and returns the LetterContainer it was pointing
      * at.

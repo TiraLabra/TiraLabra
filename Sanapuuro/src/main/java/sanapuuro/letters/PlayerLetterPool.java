@@ -105,4 +105,9 @@ public class PlayerLetterPool implements LetterPool {
         }
         return false;
     }
+
+    @Override
+    public boolean letterAtIndexIsFree(int i) {
+        return this.lettersFree[i];
+    }
 }

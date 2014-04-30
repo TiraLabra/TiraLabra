@@ -5,6 +5,7 @@
  */
 package sanapuuro;
 
+import java.util.ArrayList;
 import sanapuuro.letters.LetterContainer;
 import java.util.List;
 
@@ -17,11 +18,16 @@ public class Grid {
 
     public final int width, height;     // Grid height and width by cells, preferably square.
     private final LetterContainer[][] containers;   // The actual grid as 2d-array.
+    private final List<GridListener> gridListeners = new ArrayList<>();
 
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
         this.containers = new LetterContainer[width][height];
+    }
+    
+    public void addListener(GridListener listener) {
+        this.gridListeners.add(listener);
     }
 
     /**
@@ -93,6 +99,7 @@ public class Grid {
             this.containers[x][y] = container;
             container.setX(x);
             container.setY(y);
+            this.notifyContainerSet(container, x, y);
             return true;
         }
         return false;
@@ -148,5 +155,11 @@ public class Grid {
      */
     public boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+    private void notifyContainerSet(LetterContainer container, int x, int y) {
+        for (GridListener listener : this.gridListeners) {
+            listener.containerSetToGrid(container,x,y);
+        }
     }
 }

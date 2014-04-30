@@ -85,7 +85,7 @@ public class AiController implements Controller {
      * @param containers Containers to permute.
      */
     private void tryPermutationsToGrid(LetterContainer[] containers) {
-        System.out.println("Cells handled: ");
+        System.out.print("AI looking for a word: ");
         for (int x = 0; x < this.grid.width; x++) {
             for (int y = 0; y < this.grid.height; y++) {
                 this.tryPermutationsAt(x, y, 1, 0, containers, 0, this.countOfFreeCellsFrom(x, y, 1, 0));
@@ -93,10 +93,10 @@ public class AiController implements Controller {
                 this.tryPermutationsAt(x, y, 0, 1, containers, 0, this.countOfFreeCellsFrom(x, y, 0, 1));
                 this.tryPermutationsAt(x, y, 0, -1, containers, 0, this.countOfFreeCellsFrom(x, y, 0, -1));
                 this.cellsHandled++;     
-                System.out.print(this.cellsHandled + "... ");
-            }
-            System.out.println("");
-        }      
+                System.out.print(".");
+            }           
+        }   
+        System.out.println("");
     }
 
     
