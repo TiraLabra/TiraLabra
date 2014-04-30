@@ -324,7 +324,7 @@ public class SanapuuroSwingApp extends javax.swing.JFrame {
     private class GridCells extends JPanel implements GridListener, ActionListener, KeyListener {
 
         private final GridButton[][] buttons = new GridButton[8][8];
-        private final Color btnDefaultColour = Color.LIGHT_GRAY;
+        private final Color btnDefaultColour = Color.DARK_GRAY;
         private final Color btnCursorColour = new Color(180, 220, 240);
         private final Color btnSelected = new Color(0, 200, 255);
         private boolean choosingDirection = false;

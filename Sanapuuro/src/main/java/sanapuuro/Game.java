@@ -28,16 +28,16 @@ public class Game {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        FileIO fileIO = new FileIO();
-        Random rnd = new Random();
-
-        List<String> words = fileIO.readInWordsFromFile("words/english_words", 8);
-        MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new DJB2ForStrings());
-        GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
-
         if (args.length > 0 && args[0].equals("-w")) {
             SanapuuroSwingApp.main(args);
         } else {
+            FileIO fileIO = new FileIO();
+            Random rnd = new Random();
+
+            List<String> words = fileIO.readInWordsFromFile("words/english_words", 8);
+            MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new DJB2ForStrings());
+            GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
+
             Scanner scanner = new Scanner(System.in);
             Grid grid = new Grid(8, 8);
 
