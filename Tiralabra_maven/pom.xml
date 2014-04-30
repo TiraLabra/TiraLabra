@@ -13,7 +13,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.main>com.mycompany.tiralabra_maven.App</project.main>
-        <yworks.doclet>/home/yessergire/yworks-uml-doclet-3/</yworks.doclet>
     </properties>
 
     <reporting>
@@ -37,15 +36,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <doclet>ydoc.doclets.YStandard</doclet>
-                    <docletPath>${yworks.doclet}/lib/ydoc.jar:${yworks.doclet}/lib/class2svg.jar:${yworks.doclet}/resources</docletPath>
-                    <additionalparam>-link http://docs.oracle.com/javase/6/docs/api/ -umlautogen</additionalparam>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
