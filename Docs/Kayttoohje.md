@@ -1,0 +1,11 @@
+Blokus-pelin käyttoohjeet 
+- Blokusta voi pelata neljä pelaajaa. 
+- Pelin käynnistyessä valitaan tietokonepelaajat ja käynnistetään peli. Sininen pelaaja aloittaa.  
+- Voit vaihtaa laattaa valitsemalla uuden laatta valitsimesta. 
+- Aloita omasta nurkastasi, joka on merkitty väriäsi vastaavalla neliöllä. 
+- Voit asettaa laatan vain niin että se koskettaa jo laittamiasi laattoja vain kulmista. ?
+- Vuorosi loppuu, kun asetat laatan hyväksytysti. 
+- Jos laattaa ei voi asettaa, näkyy syy tapahtuma laatikossa 
+- Voit ohittaa vuorosi, jos et keksi mitä voit tehdä. 
+- Jos olet aivan jumissa, antaudu niin peli loppuu osaltasi. 
+- Peli loppuu kun kaikki ovat antautuneet. Se voittaa jolla on vähiten laattoja jäljellä kädessä. 
