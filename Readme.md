@@ -2,7 +2,7 @@
 
 ### Yleiskuva
 
-Tämä projekti on jatkoa Sanapuuro-pelille, jonka tein JavaLabraa varten. Tämä versio on karumpi, ts. siinä ei ole graafista käyttöliittymää, vaan interaktio hoidetaan terminaalissa. Yksinpeliä ei enää ole vaan se on korvattu kaksinpelillä. Toistaiseksi peliä pelataan lokaalisti tietokonetta vastaan. Pelissä ei voi vielä valita nimeä, joten ohjattavana on "Hessu" ja tietokonevastustajana on "Mikki".
+Tämä projekti on jatkoa Sanapuuro-pelille, jonka tein JavaLabraa varten. Yksinpeliä ei enää ole vaan se on korvattu kaksinpelillä. Toistaiseksi peliä pelataan lokaalisti tietokonetta vastaan. Pelissä ei voi vielä valita nimeä, joten ohjattavana on "Hessu" ja tietokonevastustajana on "Mikki".
 
 Pelin ajettava jar löytyy [täältä](http://www.cs.helsinki.fi/u/skaipio/jars/sanapuuro.jar). -w argumentilla pääsee pelin Swing-versioon, joka on mukavampi käyttää kuin terminaaliversio.
 
