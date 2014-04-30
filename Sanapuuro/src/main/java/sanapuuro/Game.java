@@ -16,6 +16,7 @@ import sanapuuro.letters.LetterPool;
 import sanapuuro.letters.PlayerLetterPool;
 import sanapuuro.ui.ConsoleView;
 import sanapuuro.ui.HumanConsoleController;
+import sanapuuro.ui.SanapuuroSwingApp;
 
 /**
  *
@@ -34,23 +35,27 @@ public class Game {
         MyHashSet<String> wordSet = sanapuuro.utils.Util.convertListToMyHashSet(words, new DJB2ForStrings());
         GameLetters letters = new GameLetters(rnd, fileIO.readInLettersFromFile("letters/english_letters"));
 
-        Scanner scanner = new Scanner(System.in);
-        Grid grid = new Grid(8, 8);
+        if (args.length > 0 && args[0].equals("-w")) {
+            SanapuuroSwingApp.main(args);
+        } else {
+            Scanner scanner = new Scanner(System.in);
+            Grid grid = new Grid(8, 8);
 
-        LetterPool poolOne = new PlayerLetterPool(letters);
-        LetterPool poolTwo = new PlayerLetterPool(letters);
-        Player playerOne = new Player(poolOne, grid, "Hessu");
-        Player playerTwo = new Player(poolTwo, grid, "Mikki");
-        HumanConsoleController controllerOne = new HumanConsoleController(scanner, 8, 8);
-        AiController controllerTwo = new AiController(poolTwo, grid, "Mikki", wordSet);
-        controllerOne.setControlled(playerOne);
-        controllerTwo.setControlled(playerTwo);
+            LetterPool poolOne = new PlayerLetterPool(letters);
+            LetterPool poolTwo = new PlayerLetterPool(letters);
+            Player playerOne = new Player(poolOne, grid, "Hessu");
+            Player playerTwo = new Player(poolTwo, grid, "Mikki");
+            HumanConsoleController controllerOne = new HumanConsoleController(scanner, 8, 8);
+            AiController controllerTwo = new AiController(poolTwo, grid, "Mikki", wordSet);
+            controllerOne.setControlled(playerOne);
+            controllerTwo.setControlled(playerTwo);
 
-        ConsoleView view = new ConsoleView(grid, controllerOne, controllerTwo, letters);
-        controllerOne.addConsoleListener(view);
+            ConsoleView view = new ConsoleView(grid, controllerOne, controllerTwo, letters);
+            controllerOne.addConsoleListener(view);
 
-        TwoPlayerGame game = new TwoPlayerGame(grid, controllerOne, controllerTwo, wordSet);
-        game.setGameListener(view);
-        game.startGame();
+            TwoPlayerGame game = new TwoPlayerGame(grid, controllerOne, controllerTwo, wordSet);
+            game.setGameListener(view);
+            game.startGame();
+        }
     }
 }
