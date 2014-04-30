@@ -53,81 +53,43 @@ public class HashCollisions {
     
     @Test
     public void duplicatesWithJavaHash() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new JavaHashForStrings());
-        System.out.println("java hash");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new JavaHashForStrings());
+        Util.printCollisionData("java hash", collisionData);
     }
     
     @Test
     public void duplicatesWithGeneralHashFunctionWithBigInts() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new GeneralHashFuncForStrings2());
-        System.out.println("General hash function using BigInts");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new GeneralHashFuncForStrings2());
+        Util.printCollisionData("General hash function using BigInts", collisionData);
     }
     
     @Test
     public void duplicatesWithGeneralHashFunctionWithInts() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new GeneralHashFuncForStrings());
-        System.out.println("General hash function using integers");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new GeneralHashFuncForStrings());
+        Util.printCollisionData("General hash function using integers", collisionData);
     }
     
     @Test
     public void duplicatesWithDJB2() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new DJB2ForStrings());
-        System.out.println("djb2");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new DJB2ForStrings());
+        Util.printCollisionData("djb2", collisionData);
     }
     
     @Test
     public void duplicatesWithFNVOne() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new FNVOneForStrings());
-        System.out.println("FNV-1a");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new FNVOneForStrings());
+        Util.printCollisionData("FNV-1a", collisionData);
     }
     
     @Test
     public void duplicatesWithMurmurHash3() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new MurmurHash3ForStrings());
-        System.out.println("MurmurHash3");
-        this.printCollisionData(collisionData);
+        float[] collisionData = Util.getCollisionsWithFunction(words, new MurmurHash3ForStrings());
+        Util.printCollisionData("MurmurHash3", collisionData);
     }
     
     @Test
     public void duplicatesWithCRC32() {
-        float[] collisionData = this.getCollisionsWithFunction(words, new CRC32ForStrings());
-        System.out.println("CRC32");
-        this.printCollisionData(collisionData);
-    }
-    
-    private void printCollisionData(float[] collisionData){
-        System.out.println("Total collisions: " + (int)collisionData[0]);
-        System.out.println("Average collision chain length: " + collisionData[1]);
-        System.out.println("Max collisions for same hash: " + (int)collisionData[2]);
-        System.out.println("");
-    }
-
-    private float[] getCollisionsWithFunction(List<String> words, HashFunction<String> function){
-        
-        //int m = function.calculateM(words.size(), 0.75);
-        
-        Map<Integer, Integer> collisionCounts = new HashMap<>();
-        for (String word : words) {
-            int hash = function.getHash(word);
-            if (!collisionCounts.containsKey(hash)) {
-                collisionCounts.put(hash, 0);
-            } else {
-                int count = collisionCounts.get(hash);
-                collisionCounts.put(hash, count+1);
-            }
-        }
-        int max = 0;
-        int collisions = 0;
-        for (int count : collisionCounts.values()) {
-            collisions += count;
-            max = Math.max(count+1, max);
-        }
-        float average = 1.0f*(collisions+words.size())/collisionCounts.size();
-        return new float[]{collisions, average, max};
+        float[] collisionData = Util.getCollisionsWithFunction(words, new CRC32ForStrings());
+        Util.printCollisionData("CRC32", collisionData);
     }
 }

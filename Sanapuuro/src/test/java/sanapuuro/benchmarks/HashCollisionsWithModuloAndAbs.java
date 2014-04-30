@@ -55,57 +55,43 @@ public class HashCollisionsWithModuloAndAbs {
     @Test
     public void duplicatesWithJavaHash() {
         float[] collisionData = this.getCollisionsWithFunction(words, new JavaHashForStrings());
-        System.out.println("java hash");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("java hash", collisionData);
     }
     
     @Test
     public void duplicatesWithGeneralHashFunctionWithBigInts() {
         float[] collisionData = this.getCollisionsWithFunction(words, new GeneralHashFuncForStrings2());
-        System.out.println("General hash function using BigInts");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("General hash function using BigInts", collisionData);
     }
     
     @Test
     public void duplicatesWithGeneralHashFunctionWithInts() {
         float[] collisionData = this.getCollisionsWithFunction(words, new GeneralHashFuncForStrings());
-        System.out.println("General hash function using integers");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("General hash function using integers", collisionData);
     }
     
     @Test
     public void duplicatesWithDJB2() {
         float[] collisionData = this.getCollisionsWithFunction(words, new DJB2ForStrings());
-        System.out.println("djb2");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("djb2", collisionData);
     }
     
     @Test
     public void duplicatesWithFNVOne() {
         float[] collisionData = this.getCollisionsWithFunction(words, new FNVOneForStrings());
-        System.out.println("FNV-1a");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("FNV-1a", collisionData);
     }
     
     @Test
     public void duplicatesWithMurmurHash3() {
         float[] collisionData = this.getCollisionsWithFunction(words, new MurmurHash3ForStrings());
-        System.out.println("MurmurHash3");
-        this.printCollisionData(collisionData);
+        Util.printCollisionData("MurmurHash3", collisionData);
     }
     
     @Test
     public void duplicatesWithCRC32() {
         float[] collisionData = this.getCollisionsWithFunction(words, new CRC32ForStrings());
-        System.out.println("CRC32");
-        this.printCollisionData(collisionData);
-    }
-    
-    private void printCollisionData(float[] collisionData){
-        System.out.println("Total collisions: " + (int)collisionData[0]);
-        System.out.println("Average collision chain length: " + collisionData[1]);
-        System.out.println("Max collisions for same hash: " + (int)collisionData[2]);
-        System.out.println("");
+        Util.printCollisionData("CRC32", collisionData);
     }
 
     private float[] getCollisionsWithFunction(List<String> words, HashFunction<String> function){
