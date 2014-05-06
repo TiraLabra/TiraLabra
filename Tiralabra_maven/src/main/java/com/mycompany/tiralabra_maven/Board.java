@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -69,7 +70,7 @@ public class Board extends JPanel implements ActionListener{
         Graphics2D g2d = (Graphics2D)g;
         g2d.setColor(Color.YELLOW);
         g2d.fillRect(0, 0, 50, 50);
-        g2d.setColor(Color.orange);
+        g2d.setColor(Color.RED);
         g2d.fillRect(450, 450, 500, 500);
 
         
@@ -92,9 +93,13 @@ public class Board extends JPanel implements ActionListener{
             x_map = 0;
             
             //piirtää reitin hiirinä, jonka astar-luokka tekee lähdöstä maaliin
+            
             for(int k = a.reitti.size()-1; k >= 0; k--){
                 a.reitti.get(k);
                 g2d.drawImage(maus.getImage(), a.reitti.get(k).kor*50, a.reitti.get(k).lev*50, this);
+                g2d.drawString(a.reitti.get(k).getH()+"", a.reitti.get(k).kor*50, a.reitti.get(k).lev*50+10);
+                g2d.drawString(a.reitti.get(k).getMatka()+"", a.reitti.get(k).kor*50, a.reitti.get(k).lev*50 + 40);
+                //g2d.drawString(a.reitti.get(k).get()+"", a.reitti.get(k).kor*50, a.reitti.get(k).lev*50 + 40);
             }
             
             
@@ -111,6 +116,7 @@ public class Board extends JPanel implements ActionListener{
      */
     public void actionPerformed(ActionEvent e) {
         maus.move();
+        
         repaint();  
     }
     //näppiksen painamiselle mutta ei käytetä. tulevaisuutta varten jätetään kuitenkin tänne.

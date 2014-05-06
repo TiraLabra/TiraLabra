@@ -14,7 +14,7 @@ package com.mycompany.tiralabra_maven;
 public class Node {
  
     
-     int value, kor, lev;
+    int value, kor, lev;
     //astar muuttujat.
     private int h, matka;
     private Node prevNode;
@@ -50,9 +50,9 @@ public class Node {
      *
      * @return
      */
-//    public int getValue() {
-//        return value;
-//    }
+    public int getValue() {
+        return value;
+    }
     
     /**
      * Palauttaa noden heuristisen arvon.
@@ -114,6 +114,13 @@ public class Node {
         this.matka = this.prevNode.getMatka() + 1;
     }   
     
+    public int getXCoord(){
+         return this.lev;
+    }
+    
+    public int getYCoord(){
+        return this.kor;
+    }
     
 
     /**

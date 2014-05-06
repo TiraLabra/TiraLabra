@@ -45,9 +45,9 @@ public class Astar {
         current.setH(manhattanDist);
         current.setMatka(matka);
         openList.add(current);
-        reitti.add(current);
+        //reitti.add(current);
         seuraavaNode(current);
-        //reitin_lapikaynti(reitti);
+        //this.reitti = reitin_lapikaynti();
     }
         
     
@@ -65,10 +65,17 @@ public class Astar {
             Node vasen = new Node(current.lev - 1, current.kor);
             if(!closedList.contains(vasen)){
                 if(!vasen.onkoSeina(vasen)){
+                    for(Node n : openList){
+                        if(Contains(n, vasen))
+                    {
+                        if(vasen.getMatka() > current.getMatka()+1){
+                            vasen.setPrevNode(current);
+                        }}}else{
                     vasen.setPrevNode(current);
                     vasen.setH(Heuristics(vasen));
                     vasen.setMatka();
                     openList.add(vasen);
+                        } 
                 }else vasen.setH(5000);
            }
         }
@@ -77,10 +84,15 @@ public class Astar {
             Node oikea = new Node(current.lev + 1, current.kor);
             if(!closedList.contains(oikea)){            
                 if(!oikea.onkoSeina(oikea)){
+                   if(openList.contains(oikea)){
+                        if(oikea.getMatka() > current.getMatka()+1){
+                            oikea.setPrevNode(current);
+                    }}else {
                     oikea.setPrevNode(current);
                     oikea.setH(Heuristics(oikea));
                     oikea.setMatka();
                     openList.add(oikea);
+                        }
                 }else oikea.setH(5000);
             }
         }
@@ -89,10 +101,15 @@ public class Astar {
             Node yla = new Node(current.lev, current.kor -1);
             if(!closedList.contains(yla)){
                 if(!yla.onkoSeina(yla)){
+                                        if(openList.contains(yla)){
+                        if(yla.getMatka() > current.getMatka()+1){
+                            yla.setPrevNode(current);
+                        }}else{
                     yla.setPrevNode(current);
                     yla.setH(Heuristics(yla));
                     yla.setMatka();
                     openList.add(yla);
+                        }
                 }else yla.setH(5000);
             }
         }
@@ -102,10 +119,15 @@ public class Astar {
             //System.out.println(tiili.korkeus);
             if(!closedList.contains(ala)){
                 if(!ala.onkoSeina(ala)){
+                    if(openList.contains(ala)){
+                        if(ala.getMatka() > current.getMatka()+1){
+                            ala.setPrevNode(current);
+                    }}else{
                     ala.setPrevNode(current);
                     ala.setH(Heuristics(ala));
                     ala.setMatka();
                     openList.add(ala);
+                        }
                 }else {ala.setH(5000);
                        //closedList.add(ala);
                 }
@@ -118,12 +140,26 @@ public class Astar {
             openList.remove(current);
             lista.sorttaa(openList);
             next = openList.get(0);
-            //if(next.getPrevNode() == null){
-                next.setPrevNode(current);
-                reitti.add(next);
+//            if(next.getPrevNode() != current){
+//                int i = reitti.size()-1;
+//                while(reitti.get(i) != next.getPrevNode()){
+//                    reitti.remove(i);
+//                    i = i-1;
+//                }
+//            }
+            
+                //next.setPrevNode(current);
+                //reitti.add(next);
             
             
-            
+            if(next.getH() == 0){
+                goal = next;
+                while(goal.getPrevNode() != null){
+                    reitti.add(goal);
+                    
+                    goal = goal.getPrevNode();
+                }
+            }
             
         while(next.getH()>0){ 
         //maus.setCoord(next.lev*50, next.kor*50);             
@@ -137,13 +173,16 @@ public class Astar {
      * 
      * @param reitti
      */
-//    public void reitin_lapikaynti(ArrayList<Node> reitti){
-//        int i;
-//        for(int k = reitti.size()-1; k >= 0; k--){
-//            //maus.setCoord(reitti.get(k).lev+50, reitti.get(k).kor+50);   
-//        }
-//    }
-//    
+    public ArrayList<Node> reitin_lapikaynti(){
+        int i;
+        Node eka = goal;
+        while (eka.getPrevNode() == start){
+            reitti.add(eka);
+            eka = eka.getPrevNode();
+        }
+        return reitti;
+    }
+    
         
     /**
      * Laskee heuristiikan nodelle.
@@ -159,4 +198,16 @@ public class Astar {
         return manh + matka;
     }
     
-}
+   
+    public boolean Contains(Node node,Node seur)
+    {
+            if (node.kor == seur.kor && node.lev == seur.lev)
+            return true;
+        
+
+            else return false;
+    }
+    }
+
+    
+

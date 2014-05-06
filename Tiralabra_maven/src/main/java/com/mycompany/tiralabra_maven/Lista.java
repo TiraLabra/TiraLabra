@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Tähän luokkaan pitäisi tulla myös Nodelista kokonaisuudessaan.
+ * Tähän luokkaan pitäisi tulla myös Nodelista kokonaisuudessaan
  * 
  */
 public class Lista {
