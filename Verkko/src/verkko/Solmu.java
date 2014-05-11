@@ -5,19 +5,16 @@
  */
 package verkko;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-/**
- *
- * @author Arvoitusmies
- */
 public class Solmu {
 
-    private ArrayList<HashMap<Solmu, Integer>> naapurit;
+    private final Solmu[] naapurit;
+    private final Integer[] etaisyydet;
 
-    public ArrayList<HashMap<Solmu, Integer>> getNaapurit() {
-        return naapurit;
+    public Solmu(Solmu[] naapurit, Integer[] etaisyydet) {
+        this.naapurit = naapurit;
+        this.etaisyydet = etaisyydet;
     }
+    
 
 }
