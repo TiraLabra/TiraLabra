@@ -1,4 +1,3 @@
-
 package util;
 
 import java.util.Collection;
@@ -6,6 +5,7 @@ import java.util.Comparator;
 
 /**
  * Binäärikeko, keon huippu kohdassa 1.
+ *
  * @author Arvoitusmies
  * @param <E> Luokka jota laitetaan kekoon
  */
@@ -18,6 +18,7 @@ public class Keko<E> {
 
     /**
      * Lisää yhden elementin kekoon
+     *
      * @param lisattava
      */
     public void lisaa(E lisattava) {
@@ -38,7 +39,8 @@ public class Keko<E> {
 
     /**
      * Poistaa keon ensimmäisen elementin
-     * @return 
+     *
+     * @return
      */
     public E poista() {
         if (koko < 1) {
@@ -53,19 +55,21 @@ public class Keko<E> {
     }
 
     private void siftUp(int indeksi) {
-        if (comparator.compare(taulukko[parent(indeksi)], taulukko[indeksi]) > 0
-                && indeksi > 1) {
-            swap(parent(indeksi), indeksi);
-            siftUp(parent(indeksi));
+        if (indeksi > 1) {
+            if (comparator.compare(taulukko[parent(indeksi)], taulukko[indeksi]) > 0) {
+                swap(parent(indeksi), indeksi);
+                siftUp(parent(indeksi));
+            }
         }
     }
 
     private void siftDown(int indeksi) {
-        throw new UnsupportedOperationException("TODO");
+        if(indeksi<koko)
     }
 
     /**
      * Uusi keko collectionista
+     *
      * @param collection
      * @param comparator
      */
@@ -77,6 +81,7 @@ public class Keko<E> {
 
     /**
      * Uusi tyhjä keko
+     *
      * @param comparator
      */
     public Keko(Comparator<E> comparator) {
@@ -87,6 +92,7 @@ public class Keko<E> {
 
     /**
      * Uusi keko taulukosta
+     *
      * @param taulukko
      * @param comparator
      */
@@ -108,19 +114,20 @@ public class Keko<E> {
         }
         return i >> 1;
     }
-    
-    private int left(int i){
-        int a = i<<1;
-        if(a>koko){
+
+    private int left(int i) {
+        int a = i << 1;
+        if (a > koko) {
             return 0;
         }
         return a;
     }
-    private int right(int i){
+
+    private int right(int i) {
         final int left = left(i);
-        if(left==0){
+        if (left == 0) {
             return 0;
         }
-        return left+1;
+        return left + 1;
     }
 }

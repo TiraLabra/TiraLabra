@@ -15,7 +15,7 @@ public class Solmu {
      *
      */
     public Solmu(){
-        this(new HashMap<>());
+        this(new HashMap<Solmu, Integer>());
     }
     
     /**
