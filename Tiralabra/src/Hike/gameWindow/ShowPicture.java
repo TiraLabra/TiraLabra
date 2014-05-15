@@ -27,7 +27,6 @@ public class ShowPicture extends JPanel {
         
         try {
             image = ImageIO.read(this.getClass().getResource(file));
-            System.out.println("");
         } catch (IOException ex) {
             Logger.getLogger(ShowPicture.class.getName()).log(Level.SEVERE, null, ex);
         }
