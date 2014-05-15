@@ -4,16 +4,16 @@ package Hike;
 
 
 
-import Hike.gameWindow.gameWindow;
+import Hike.gameWindow.GameWindow;
 import javax.swing.SwingUtilities;
 
 class Main {
 
     public static void main(String[] args) {
-        gameWindow game = new gameWindow();
+        System.out.println(System.getProperty("user.dir"));
+        GameWindow game = new GameWindow();
         game.run();
-        System.out.println("");
-        System.out.println("");
+
         
     }
 }
