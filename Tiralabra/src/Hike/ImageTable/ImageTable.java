@@ -41,6 +41,8 @@ public class ImageTable {
 
                 } else if (red == 255 && green == 255 && blue == 0) {
                     table[y][x] = Values.DESERT;
+                } else {
+                    table[y][x] = 1000;
                 }
             }
         }

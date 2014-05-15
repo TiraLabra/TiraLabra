@@ -2,11 +2,12 @@ package Hike.gameWindow;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-public class GameWindow extends JPanel {
+public class GameWindow implements Runnable {
 
     private JFrame frame;
     private GameScreen menu;
@@ -17,7 +18,8 @@ public class GameWindow extends JPanel {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        createStartMenu(frame.getContentPane());
+        createComponents(frame.getContentPane());
+
 
 
         frame.pack();
@@ -28,7 +30,8 @@ public class GameWindow extends JPanel {
 
     }
 
-    private void createStartMenu(Container container) {
+
+    private void createComponents(Container container) {
         this.menu = new GameScreen();
         container.add(menu);
     }

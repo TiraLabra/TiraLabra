@@ -3,8 +3,10 @@ package Hike.gameWindow;
 import Hike.Algorithms.Dijkstra;
 import Hike.ImageTable.ImageTable;
 import Hike.controls.ClickListener;
+import java.awt.Color;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 
 
@@ -13,9 +15,15 @@ import javax.swing.*;
 public class GameScreen extends JPanel {
 
     private ShowPicture picture;
+    private ShowPicture pixel;
+    private int pixelX;
+    private int pixelY;
     private ActionListener listener;
     private ImageTable table;
     private Dijkstra droute;
+    private Graphics gra;
+    private Object bimage;
+    private MapGraphic map;
 
     public GameScreen() {
         setBackground(Color.gray);
@@ -42,13 +50,39 @@ public class GameScreen extends JPanel {
 
     public void createPlayingField(String file) {
         removeAll();
+        pixel = new ShowPicture("../pixel.png");
         picture = new ShowPicture(file);
         table = new ImageTable(picture);
         droute = new Dijkstra(table);
         
-        
+
+
         picture.setBounds(50, 50, 800, 500);
         add(picture);
         repaint();
+
     }
+
+    public void paintPixel(int y, int x) {
+        pixel = new ShowPicture("../pixel.png");
+        pixel.setBackground(Color.RED);
+        pixel.setBounds(y, x, 1, 1);
+
+        add(pixel);
+        System.out.println("done");
+
+
+
+
+
+
+    }
+
+    public void openMap() {
+        map = new MapGraphic();
+        map.run();
+    }
+    
+
+
 }

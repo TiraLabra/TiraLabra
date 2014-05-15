@@ -34,7 +34,8 @@ public class ClickListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == Actions.STARTGAME.name()) {
-            screen.createPlayingField("../map1.png");
+            screen.openMap();
+            
             
         }
     }

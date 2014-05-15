@@ -6,6 +6,7 @@ package Hike.Algorithms;
 
 import Hike.ImageTable.ImageTable;
 import Hike.Values;
+import Hike.gameWindow.GameScreen;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Stack;
@@ -24,6 +25,7 @@ public class Dijkstra {
     private int goalx = 799;
     private int goaly = 499;
     private final int max = 2000000;
+    private ArrayDeque<Character> stack;
 
     public Dijkstra(ImageTable table) {
         this.table = table.getTable();
@@ -39,11 +41,12 @@ public class Dijkstra {
         for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
             for (int x = 0; x < Values.IMAGEWIDTH; x++) {
                 d[y][x] = max;
-                previous[y][x] = 'S';
+
 
             }
         }
         d[0][0] = 0;
+        previous[0][0] = 'S';
 
     }
 
@@ -87,9 +90,9 @@ public class Dijkstra {
 
 
         }
+        printPath();
         printDistances();
-//        printPrevious();
-        printPath(Values.IMAGEHEIGHT - 1, Values.IMAGEWIDTH - 1);
+        System.out.println("");
     }
 
     private void relaxNeighbours(int y, int x) {
@@ -133,8 +136,10 @@ public class Dijkstra {
         }
     }
 
-    public void printPath(int ty, int tx) {
-        Deque<Character> stack = new ArrayDeque<Character>();
+    public void printPath() {
+        int ty = 499;
+        int tx = 799;
+        stack = new ArrayDeque<Character>();
         char u = previous[ty][tx];
         while (u != 'S') {
             stack.addFirst(u);
@@ -157,14 +162,22 @@ public class Dijkstra {
             }
         }
 
-        System.out.println("Ready to print!");
-        int laskuri = 0;
-        while (stack.size() > 0)  {
-            u = stack.pop();
-            System.out.print(u);
-            laskuri++;
-        }
-        System.out.print(laskuri);
+
+
+
+    }
+    public ArrayDeque<Character> getDeque() {
+        return this.stack;
+    
+}
+
+    public char printStack() {
+        if (stack.size() > 0) {
+        return stack.pop(); }
+        return 'S';
+        
+
+
 
 
 
