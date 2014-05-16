@@ -10,13 +10,14 @@ kurssin aikataulussa suorituksen kannalta, valitsin helpommin lähestyttävän v
 
 Tarkoitus on siis toteuttaa ainakin A star - etsintä, ja toivottavasti rinnalle myös joitakin vaihtoehtoisia, tai variaatioita, jotta näiden suorituskykyä voi vertailla.
 
-
+Tarkoitus ei ole panostaa ohjelman hienoon ulkoasuun tai käytettävyyteen, vaan pyrkiä käyttämään resursseja nimenomaan algoritmisen puolen
+oppimiseen, mikä tarkoittaa tekstipohjaista käyttöliittymää. Epäselvää on vielä, että olisiko mahdollista käyttää jotain graafista muotoa verkon ja lyhyimmän reitin esitykseen, sopivalla vaivalla.
 
 
 Toteutettavat algoritmit
 ------------------------
 * A Star
-* perus-Dijkstara
+* perus-Dijkstra
 
 * plus näiden tarvitsemat apurakenteet
 
