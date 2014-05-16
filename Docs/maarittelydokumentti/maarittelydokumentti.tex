@@ -1,0 +1,117 @@
+\documentclass[a4paper,12pt, titlepage]{article}
+\usepackage{amssymb,amsthm,amsmath} %ams
+\usepackage[finnish]{babel} %suomenkielinen tavutus
+\usepackage[T1]{fontenc} %skanditavutus
+\usepackage[utf8]{inputenc} % skandit utf-8 koodauksella
+
+\usepackage{graphicx} %dokumentti sisältää eps-muotoisia kuvia
+
+\usepackage{changepage}
+\usepackage{array}
+\usepackage{tabularx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\usepackage{float}
+\restylefloat{table}
+
+
+\linespread{1.24} %riviväli 1.5
+\sloppy % Vähentää tavutuksen tarvetta, "leventämällä" rivin keskellä olevia välilyöntejä.
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \LARGE
+        \textbf{Määrittelydokumentti}
+        
+        \vspace{0.5cm}
+        \Large
+        Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit (alkukesä)
+        
+        \vspace{1.5cm}
+        
+        \large
+        \textbf{Sami Korhonen} \\
+        \text{014021868} \\
+        \text{sami.korhonen@helsinki.fi}
+        
+		\vfill        
+        \normalsize
+        Tietojenkäsittelytieteen laitos\\
+        Helsingin yliopisto\\
+		\large        
+        \today
+        
+    \end{center}
+\end{titlepage}
+
+
+%\tableofcontents
+%\newpage
+
+\section*{Työn aihe}
+\subsection*{Ongelma ja tavoite}
+Rahtifirma NopsaToimitus haluaa optimoida konttikuljetuksissa käytettävän tilan. Oletettavasti kontin tila on käytetty mahdollisimman tehokkaasti kun \newline
+a) kontin lattian pinta-alaa on käytetty mahdollisimman vähän \newline
+b) kontin, tai täytetyn lattia-alueen tilavuudessa on mahdollisimman vähän tyhjää\newline
+
+\noindent
+Tavoitteena on kehittää mahdollisimman nopea ja pätevä algoritmi, joka selvittää sopivan tavan pakata annetut laatikot annettuun konttiin.
+
+\subsection*{Määritelmiä}
+\subsubsection*{Yksiköt ja koordinaatisto}
+Työssä käytetään yksikköinä kokonaisluvuiksi pyöristettyjä senttimetrejä, sillä todellisuudessa laatikoiden mitat eivät ole esimerkiksi puristuvuuden vuoksi tämän tarkempia. \newline
+
+\noindent
+Koska kontti ja laatikot ovat suorakulmaisia särmiöitä, voidaan käyttä kolmiulotteista karteesista koordinaatistoa. Tässä työssä koordinaatiston akseleita merkitään kirjaimin x, y ja z.
+
+\subsubsection*{Laatikot}
+Laatikoiden asettamiseen liittyy muutamia sääntöjä:
+\begin{enumerate}
+	\item Laatikon tulee olla kokonaan kontin sisäpuolella
+	\item Laatikot eivät saa olla limittäin toistensa kanssa
+	\item Laatikon tulee olla kontin seinien suuntaisesti
+	\item Laatikko tulee olla tuettu koko pohjaltaan
+\end{enumerate}
+
+
+\subsubsection*{Pakkaaminen}
+Toistaiseksi työssä ei kiinnitetä huomiota seuraaviin seikkoihin:
+
+\begin{enumerate}
+	\item Samaa tavaraa sisältävät laatikot tulisi asettaa vierekkäin
+	\item Rahdin tulisi olla mahdollisimman helppo pakata ja purkaa
+\end{enumerate}
+
+\section*{Ratkaisu}
+\subsection*{Algoritmit ja tietorakenteet}
+
+\section*{Syötteet ja käyttäminen}
+\subsection*{Syötteet}
+Ohjelmalle syötetään kontin mitat alustavasti komentorivipohjaisella käyttöliittymällä, mutta ohjelmaan voidaan toteuttaa myöhemmin graafinen käyttöliittymä. Laatikoiden koot ja lukumäärät voidaan syöttää käyttöliittymän kautta tai lukemalla tiedot tiedostosta.
+
+\subsection*{Käyttäminen}
+Ohjelman käyttö tapahtuu yksinkertaisen komentorivipohjaisen tai graafisen käyttöliittymän avulla. Lisäksi ohjelma esittää mahdollisesti tuotetun lastausjärjestelmän kuvina ja/tai kenties 3D-graafisesti.
+
+\section*{Aika- ja tilavaativuudet}
+
+\section*{Lähteet}
+
+
+
+
+
+
+Määrittele mikä on tavote
+- käyttää mahdollisimman vähän lavametrejä ? 
+- mahollisimman vähän hukkakuutioita ?
+
+
+\end{document}
