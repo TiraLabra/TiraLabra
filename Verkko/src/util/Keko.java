@@ -3,7 +3,6 @@ package util;
 import java.util.Collection;
 import java.util.Comparator;
 
-
 public class Keko<E> {
 
     private E[] taulukko;
@@ -43,8 +42,8 @@ public class Keko<E> {
         }
         E paluu = taulukko[1];
         swap(1, koko);
-        siftDown(1);
         koko--;
+        siftDown(1);
         return paluu;
 
     }
@@ -59,7 +58,22 @@ public class Keko<E> {
     }
 
     private void siftDown(int indeksi) {
+        final int kokoMiinusRight = koko - right(indeksi);
         int valittu = indeksi;
+        if (kokoMiinusRight >= 0) {
+            if (comparator.compare(taulukko[right(indeksi)], taulukko[valittu]) < 0) {
+                valittu = right(indeksi);
+            }
+            if (kokoMiinusRight > 0) {
+                if (comparator.compare(taulukko[left(indeksi)], taulukko[valittu]) < 0) {
+                    valittu = left(indeksi);
+                }
+            }
+            if(valittu!=indeksi){
+                swap(indeksi,valittu);
+            }
+        }
+        
     }
 
     /**
@@ -69,7 +83,7 @@ public class Keko<E> {
      * @param comparator
      */
     public Keko(Collection<E> collection, Comparator<E> comparator) {
-        this((E[]) collection.toArray(),comparator);
+        this((E[]) collection.toArray(), comparator);
     }
 
     /**
@@ -109,19 +123,19 @@ public class Keko<E> {
         return i >> 1;
     }
 
+    /**
+     * Vasen lapsi. Ei testaa onko se olemassa.
+     *
+     * @param i
+     * @return
+     */
     private int left(int i) {
         int a = i << 1;
-        if (a > koko) {
-            return 0;
-        }
         return a;
     }
 
     private int right(int i) {
         final int left = left(i);
-        if (left == 0) {
-            return 0;
-        }
         return left + 1;
     }
 
