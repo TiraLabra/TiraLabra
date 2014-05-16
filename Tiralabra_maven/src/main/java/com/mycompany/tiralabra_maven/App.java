@@ -1,13 +1,12 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- * Hello world!
- *
+ *  Starting class
  */
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println("Tiralabra-projekti" );
     }
 }
