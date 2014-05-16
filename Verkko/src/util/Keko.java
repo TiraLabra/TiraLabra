@@ -3,12 +3,7 @@ package util;
 import java.util.Collection;
 import java.util.Comparator;
 
-/**
- * Binäärikeko, keon huippu kohdassa 1.
- *
- * @author Arvoitusmies
- * @param <E> Luokka jota laitetaan kekoon
- */
+
 public class Keko<E> {
 
     private E[] taulukko;
@@ -64,7 +59,7 @@ public class Keko<E> {
     }
 
     private void siftDown(int indeksi) {
-        if(indeksi<koko)
+        int valittu = indeksi;
     }
 
     /**
@@ -74,9 +69,7 @@ public class Keko<E> {
      * @param comparator
      */
     public Keko(Collection<E> collection, Comparator<E> comparator) {
-        taulukko = (E[]) collection.toArray();
-        this.comparator = comparator;
-        koko = collection.size();
+        this((E[]) collection.toArray(),comparator);
     }
 
     /**
@@ -100,6 +93,7 @@ public class Keko<E> {
         this.taulukko = taulukko;
         this.comparator = comparator;
         koko = taulukko.length;
+        buildHeap();
     }
 
     private void swap(int a, int b) {
@@ -129,5 +123,9 @@ public class Keko<E> {
             return 0;
         }
         return left + 1;
+    }
+
+    private void buildHeap() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

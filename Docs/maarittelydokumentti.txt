@@ -18,3 +18,4 @@ gui jos aikaa jää
 
 myös:
 Kauppamiehen ongelma ant colony optimizationilla olisi jees jos aikaa jää.
+Roguelike peli libjcsi grafiikoilla jossa voi mennä a*:lla haluttuun pisteeseen.
