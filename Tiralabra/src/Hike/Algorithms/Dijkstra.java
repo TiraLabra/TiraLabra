@@ -78,21 +78,12 @@ public class Dijkstra {
 
         for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
             for (int x = 0; x < Values.IMAGEWIDTH; x++) {
-
                 relaxNeighbours(y, x);
-
-
-
-
-
             }
-
-
-
         }
         printPath();
         printDistances();
-        System.out.println("");
+
     }
 
     private void relaxNeighbours(int y, int x) {

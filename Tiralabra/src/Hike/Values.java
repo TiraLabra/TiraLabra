@@ -11,7 +11,7 @@ package Hike;
 public class Values {
     public static final int IMAGEHEIGHT = 500;
     public static final int IMAGEWIDTH = 800;
-    public static final int NORMALGROUND = 1;
+    public static final int NORMALGROUND = 0;
     public static final int WOODS = 40;
     public static final int DESERT = 80;
     
