@@ -38,13 +38,22 @@ abstract class LabyrinthGenerator {
 
     /**
      * Tyhjentää labyrintin, jos se ei ole tyhjä.
-     * 
+     *
      * @see main.Labyrinth
      */
     public void CreateEmptyLabyrinthIfNeeded() {
         if (labyrinth.labyrinth[0][0] == 0) {
             labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
         }
+    }
+
+    /**
+     * Päivittää generointialgoritmille uudenkokoisen labyrintin.
+     *
+     * @param l Labyrintti, joksi päivitetään.
+     */
+    public void newLabyrinth(Labyrinth l) {
+        labyrinth = l;
     }
 
     /**
