@@ -12,7 +12,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Maskit kaaren suunnille. 1 = NORTH, 2 = EAST, 4 = SOUTH, 8 = WEST.
      */
-    public final byte[] masks = {1, 2, 4, 8};
+    private final byte[] masks = {1, 2, 4, 8};
 
     /**
      * @param l Labyrintti, jolle algoritmi ajetaan.
@@ -40,17 +40,17 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Joukon ID.
          */
-        private final int id;
+        final int id;
         /**
          * Reitti joukon juureen.
          */
-        private SetElement root;
+        SetElement root;
         /**
          * Kuinka monta alkiota on yhdistettynä tähän joukkoon, kun tämä alkio
          * on juuri. Saadakseen oikean luvun, täytyy ensin mennä koko joukon
          * juureen.
          */
-        private int elementsJoinedByRoot;
+        int elementsJoinedByRoot;
 
         /**
          * Konstruktori asettaa joukon ID:ksi annetun arvon, tämän alkion
@@ -58,7 +58,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          *
          * @param value Joukon ID.
          */
-        public SetElement(int value) {
+        SetElement(int value) {
             id = value;
             root = this;
             elementsJoinedByRoot = 1;
@@ -70,7 +70,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          *
          * @return Koko joukon juuri.
          */
-        public SetElement getRoot() {
+        SetElement getRoot() {
             if (this.root == this) {
                 return this;
             }
@@ -84,7 +84,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          *
          * @return Palauttaa koko joukon ID:n.
          */
-        public int getId() {
+        int getId() {
             return getRoot().id;
         }
 
@@ -94,7 +94,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          *
          * @return Palauttaa koko joukon koon.
          */
-        public int getNumOfElements() {
+        int getNumOfElements() {
             return getRoot().elementsJoinedByRoot;
         }
 
@@ -105,7 +105,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          *
          * @param se2 Annettu, toisen joukon alkio.
          */
-        public void joinTwoSets(SetElement se2) {
+        void joinTwoSets(SetElement se2) {
             SetElement rt = getRoot();
             SetElement rt2 = se2.getRoot();
             rt.elementsJoinedByRoot += rt2.elementsJoinedByRoot;
@@ -128,6 +128,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
+        CreateEmptyLabyrinthIfNeeded();
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
@@ -173,7 +174,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param edges Tämän solun kaaret kokonaislukuna.
      * @return Palauttaa sen maskin, jolla arvottu kaari saadaan luettua.
      */
-    public byte randomEdge(int coordinate, int edges) {
+    private byte randomEdge(int coordinate, int edges) {
         int rand = random.nextInt(4);
         while ((edges & masks[rand]) == 0) {
             rand = (rand + 1) % 4;
@@ -189,6 +190,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param orig Tämän solun joukkoalkio.
      * @param elements Joukkoalkioiden array.
      * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
+     *
+     * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     private boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) {
         if (edges[1] == 0) {
@@ -213,7 +216,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param coordinate Koordinaatti, jossa solu on.
      * @param edges Solun array, johon kaaret tallennetaan.
      */
-    public void addEdgesToNeighbors(int coordinate, int[] edges) {
+    private void addEdgesToNeighbors(int coordinate, int[] edges) {
 
         /*
          NORTH

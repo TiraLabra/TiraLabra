@@ -43,6 +43,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
+        CreateEmptyLabyrinthIfNeeded();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         visited[0][0] = 2;  // Start at (0, 0)
         /*
@@ -136,7 +137,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      *
      * @see main.MyList
      */
-    public MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
+    private MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
         MyList listOfNeighbours = new MyList(4);
 
         /*

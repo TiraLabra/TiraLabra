@@ -25,19 +25,19 @@ public class Labyrinth {
     /**
      * Maski pohjoissuunnalle.
      */
-    public final byte NORTH = 1;
+    private final byte NORTH = 1;
     /**
      * Maski itäsuunnalle.
      */
-    public final byte EAST = 2;
+    private final byte EAST = 2;
     /**
      * Maski eteläsuunnalle.
      */
-    public final byte SOUTH = 4;
+    private final byte SOUTH = 4;
     /**
      * Maski länsisuunnalle.
      */
-    public final byte WEST = 8;
+    private final byte WEST = 8;
 
     /**
      *
@@ -48,19 +48,6 @@ public class Labyrinth {
         width = w;
         height = h;
         labyrinth = new byte[height][width];
-        RecursiveBacktracker rb = new RecursiveBacktracker(this);
-        rb.routine();
-        //print();
-
-        labyrinth = new byte[height][width];
-        PrimsAlgorithm pa = new PrimsAlgorithm(this);
-        pa.routine();
-        //print();
-
-        labyrinth = new byte[height][width];
-        KruskalsAlgorithm ka = new KruskalsAlgorithm(this);
-        ka.routine();
-        //print();
     }
 
     /**

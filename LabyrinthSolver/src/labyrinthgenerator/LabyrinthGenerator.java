@@ -9,16 +9,16 @@ import main.MyList;
  *
  * @author Juri Kuronen
  */
-public abstract class LabyrinthGenerator {
+abstract class LabyrinthGenerator {
 
     /**
      * Labyrintti, jolle algoritmit ajetaan.
      */
-    public Labyrinth labyrinth;
+    protected Labyrinth labyrinth;
     /**
      * Random-olio, jota käytetään satunnaisalgoritmeissa.
      */
-    public Random random;
+    protected Random random;
 
     /**
      * Ottaa syötteenä labyrintin ja alustaa Random-olion.
@@ -34,7 +34,18 @@ public abstract class LabyrinthGenerator {
     /**
      * Labyrintin generoiva metodi.
      */
-    public abstract void generateLabyrinth();
+    abstract void generateLabyrinth();
+
+    /**
+     * Tyhjentää labyrintin, jos se ei ole tyhjä.
+     * 
+     * @see main.Labyrinth
+     */
+    public void CreateEmptyLabyrinthIfNeeded() {
+        if (labyrinth.labyrinth[0][0] == 0) {
+            labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
+        }
+    }
 
     /**
      * Tulostusrutiini.
@@ -55,7 +66,7 @@ public abstract class LabyrinthGenerator {
      *
      * @see main.MyList
      */
-    public MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
+    protected MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
         MyList listOfNeighbours = new MyList(4);
 
         /*

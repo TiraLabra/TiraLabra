@@ -17,18 +17,18 @@ public class MyStack {
         /**
          * Pinoalkion arvo.
          */
-        public int value;
+        int value;
         /**
          * Tämän pinoalkion alla oleva pinoalkio.
          */
-        public StackItem next;
+        StackItem next;
 
         /**
          * Luo uuden pinoalkion, jolle asetetaan annettu arvo.
          *
          * @param v Pinoalkion arvo.
          */
-        public StackItem(int v) {
+        StackItem(int v) {
             value = v;
         }
     }
