@@ -1,13 +1,18 @@
 package labyrinthsolver;
 
-/**
- * Tietorakenteet ja algoritmit harjoitustyö. Kesä 2014.
- *
- * @author Juri Kuronen
- */
-public class LabyrinthSolver {
+import java.util.Random;
+import main.Labyrinth;
 
-    public static void main(String[] args) {
+public abstract class LabyrinthSolver {
+
+    public Labyrinth labyrinth;
+    public Random random;
+
+    public LabyrinthSolver(Labyrinth l) {
+        labyrinth = l;
+        random = new Random();
     }
+    
+    public abstract void solveLabyrinth();
 
 }
