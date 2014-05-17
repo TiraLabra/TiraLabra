@@ -137,7 +137,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      *
      * @see main.MyList
      */
-    public MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
+    MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
         MyList listOfNeighbours = new MyList(4);
 
         /*
