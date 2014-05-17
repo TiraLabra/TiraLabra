@@ -12,7 +12,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Maskit kaaren suunnille. 1 = NORTH, 2 = EAST, 4 = SOUTH, 8 = WEST.
      */
-    private final byte[] masks = {1, 2, 4, 8};
+    final byte[] masks = {1, 2, 4, 8};
 
     /**
      * @param l Labyrintti, jolle algoritmi ajetaan.
@@ -35,7 +35,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Joukkoalkion olio Kruskalin algoritmia varten.
      */
-    private class SetElement {
+    static class SetElement {
 
         /**
          * Joukon ID.
@@ -133,7 +133,6 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
         SetElement[] elements = new SetElement[labyrinthSize];
-
         for (int i = 0; i < labyrinthSize; i++) {
             elements[i] = new SetElement(i);
             edges[i] = new int[2];
@@ -163,7 +162,6 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
                 edges[rand] = edges[verticesLeft - 1];
                 verticesLeft--;
             }
-
         }
     }
 
@@ -174,7 +172,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param edges Tämän solun kaaret kokonaislukuna.
      * @return Palauttaa sen maskin, jolla arvottu kaari saadaan luettua.
      */
-    private byte randomEdge(int coordinate, int edges) {
+    byte randomEdge(int coordinate, int edges) {
         int rand = random.nextInt(4);
         while ((edges & masks[rand]) == 0) {
             rand = (rand + 1) % 4;
@@ -193,7 +191,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      *
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
-    private boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) {
+    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) {
         if (edges[1] == 0) {
             return false;
         }
@@ -216,7 +214,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param coordinate Koordinaatti, jossa solu on.
      * @param edges Solun array, johon kaaret tallennetaan.
      */
-    private void addEdgesToNeighbors(int coordinate, int[] edges) {
+    void addEdgesToNeighbors(int coordinate, int[] edges) {
 
         /*
          NORTH
