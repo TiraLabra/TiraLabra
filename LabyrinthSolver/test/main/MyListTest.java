@@ -4,10 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Zet
- */
 public class MyListTest {
 
     public MyList testList;
