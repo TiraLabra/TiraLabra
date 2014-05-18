@@ -10,7 +10,7 @@ PROJECT_DIR=Tiralabra
 
 # Mikäli käytät pohjassa mukana tullutta ant projektia poista
 # kommentit
-PROJECT_DIR=Tiralabra_maven
+PROJECT_DIR=SwagCompressing
 
 # Mikäli käytät muun nimistä kansiota, korvaa <kansiosi_nimi>
 # alla olevalta riviltä kansiosi nimeksi, ja poista sen rivin
