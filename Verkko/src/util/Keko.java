@@ -58,19 +58,20 @@ public class Keko<E> {
     }
 
     private void siftDown(int indeksi) {
-        final int kokoMiinusRight = koko - right(indeksi);
+        final int kokoMiinusLeft = koko - left(indeksi);
         int valittu = indeksi;
-        if (kokoMiinusRight >= 0) {
-            if (comparator.compare(taulukko[right(indeksi)], taulukko[valittu]) < 0) {
-                valittu = right(indeksi);
+        if (kokoMiinusLeft >= 0) {
+            if (comparator.compare(taulukko[left(indeksi)], taulukko[valittu]) < 0) {
+                valittu = left(indeksi);
             }
-            if (kokoMiinusRight > 0) {
-                if (comparator.compare(taulukko[left(indeksi)], taulukko[valittu]) < 0) {
-                    valittu = left(indeksi);
+            if (kokoMiinusLeft > 0) {
+                if (comparator.compare(taulukko[left(indeksi)+1], taulukko[valittu]) < 0) {
+                    valittu = left(indeksi)+1;
                 }
             }
             if(valittu!=indeksi){
                 swap(indeksi,valittu);
+                siftDown(valittu);
             }
         }
         

@@ -28,14 +28,15 @@ public class Verkko {
         };
         // TODO code application logic here
         Keko<Integer> k = new Keko<Integer>(comparator);
-        Integer[] lisattavat = {4,7,1,6};
+        Integer[] lisattavat = {4, 7, 1, 6,0,10,15,2,20,-1,-2};
         for (Integer integer : lisattavat) {
             k.lisaa(integer);
         }
         for (int i = 0; i < lisattavat.length; i++) {
-            System.out.println(k.poista());
+            final Integer poista = k.poista();
+            System.out.println(poista);
         }
-        
+
     }
     private static Comparator<Integer> comparator;
 
