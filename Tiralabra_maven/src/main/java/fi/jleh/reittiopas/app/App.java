@@ -1,6 +1,7 @@
 package fi.jleh.reittiopas.app;
 
 import fi.jleh.reittiopas.parser.ReittiopasXMLParser;
+import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.Unzipper;
 
 /**
@@ -11,6 +12,8 @@ public class App {
 	
     public static void main( String[] args ) {   
         String file = Unzipper.unzipTimetableData();
-        ReittiopasXMLParser.parseXML(file);
+        DataStructuresDto data = ReittiopasXMLParser.parseXML(file);
+        
+        System.out.println(data.getStationList().get(0));
     }
 }

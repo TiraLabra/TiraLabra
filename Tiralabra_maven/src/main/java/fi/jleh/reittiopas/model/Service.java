@@ -69,4 +69,10 @@ public class Service {
 		this.stops = stops;
 	}
 
+	@Override
+	public String toString() {
+		return "Service [id=" + id + ", company=" + company + ", lineNumber="
+				+ lineNumber + ", name=" + name + "]";
+	}
+
 }

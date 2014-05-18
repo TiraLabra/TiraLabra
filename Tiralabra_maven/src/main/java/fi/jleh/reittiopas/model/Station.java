@@ -68,4 +68,10 @@ public class Station {
 	public List<Stop> getStops() {
 		return stops;
 	}
+
+	@Override
+	public String toString() {
+		return "Station [id=" + id + ", name=" + name + ", stops=" + stops
+				+ "]";
+	}
 }

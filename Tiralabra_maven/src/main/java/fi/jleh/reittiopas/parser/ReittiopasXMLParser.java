@@ -15,28 +15,31 @@ import fi.jleh.reittiopas.exception.XMLParsingException;
 import fi.jleh.reittiopas.model.Service;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.model.Stop;
+import fi.jleh.reittiopas.utils.DataStructuresDto;
 
 
 public class ReittiopasXMLParser {
 
 	/**
 	 * Parses timetable XML file and creates Java objects for timetable data.
+	 * Returns object that can be used to access parsed data.
 	 * @param pathToFile
+	 * @return
 	 * @throws XMLParsingException
 	 */
-	public static void parseXML(String pathToFile) throws XMLParsingException {
+	public static DataStructuresDto parseXML(String pathToFile) throws XMLParsingException {
 		System.out.println("Started XML parsing");
 		long start = System.currentTimeMillis();
+		
+		final List<Station> stationList = new ArrayList<Station>();
+		final TreeMap<Integer, Station> stationMap = new TreeMap<>();
+		final List<Service> services = new ArrayList<>();
 		
 		try {
 			File xmlFile = new java.io.File(pathToFile);
 			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			
-			final List<Station> stationList = new ArrayList<Station>();
-			final TreeMap<Integer, Station> stationMap = new TreeMap<>();
-			final List<Service> services = new ArrayList<>();
 			
 			DefaultHandler handler = new DefaultHandler() {
 
@@ -83,7 +86,7 @@ public class ReittiopasXMLParser {
 						Station station = stationMap.get(Integer.parseInt(attr.getValue("StationId")));
 						
 						Stop stop = new Stop(station, attr.getValue("Arrival"), 
-								Integer.parseInt(attr.getValue("Ix")));
+								Integer.parseInt(attr.getValue("Ix")), currentService);
 						
 						currentService.getStops().add(stop);
 						// Add stop to station so we can access lines stopping at station through it
@@ -111,5 +114,12 @@ public class ReittiopasXMLParser {
 		} catch (Exception e) {
 			throw new XMLParsingException("XML parsing failed", e);
 		}
+		
+		DataStructuresDto dto = new DataStructuresDto();
+		dto.setServices(services);
+		dto.setStationList(stationList);
+		dto.setStationMap(stationMap);
+		
+		return dto;
 	}
 }
