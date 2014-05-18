@@ -10,7 +10,7 @@ Koska Huffman koodaus on yksinkertainen ja nopea, sekä minkään tekstitiedosto
 
 Ohjelma saa syötteenään tekstitiedoston ja tiedon siitä, minkä kielinen tekstitiedosto on. Tämän jälkeen valitaan oikea kieli ja otetaan käyttöön kyseisen kielen merkkien frekvenssit binääripuussa. Koska binääripuussa eteneminen muuttaa jokaisen merkin yksikäsitteiseksi binääriesitykseksi, voidaan teksti pakata binäärimuotoon alusta loppuun merkki kerrallaan. Pakatun tiedoston purkamisessa käännetään binääriesitykset kirjaimiksi yksi kerrallaan alusta loppuun.
 
-Binääripuun luomisen aikavaativuus on luokkaa O(n) ja tietyn merkin etsiminen puusta vie aikaa O(log n). Koska jokaiselle eri kielelle luodaan oma binääripuu, menee näihin kerran aikaa O(n). Koska näitä kuitenkin tämän jälkeen käytetään valmiina tietorakenteina ohjelmassa, voidaan sanoa, että uuden tiedoston pakkaamiseen (jos kieli tiedetään), menee O(log n) aikaa.
+Binääripuun luomisen aikavaativuus on luokkaa O(n) ja tietyn merkin etsiminen puusta vie aikaa O(log n). Koska jokaiselle eri kielelle luodaan oma binääripuu, menee näihin kerran aikaa O(n). Koska näitä kuitenkin tämän jälkeen käytetään valmiina tietorakenteina ohjelmassa, voidaan sanoa, että uuden tiedoston pakkaamiseen (jos kieli tiedetään), menee O(nlog n) aikaa.
 
 Tilavaativuus on luokkaa O(n), koska merkit tallennetaan taulukkoon, jonka koko on merkkien yhteismäärä.
 
