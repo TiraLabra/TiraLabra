@@ -23,7 +23,7 @@ if [ -d Tiralabra_maven ]
 fi
 if [ -d Tiralabra ]
 	then
-	PROJECT_DIR=Tiralabra
+	
 fi
 
 if [ -f $PROJECT_DIR/pom.xml ]
