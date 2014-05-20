@@ -72,4 +72,11 @@ public class MatrixTest {
         String expected = "1\t2\t3\n4\t5\t6";
         assertEquals(expected, matrix.toString());
     }
+    
+    @Test
+    public void twoMatricesWithTheSameElementsAreEqual(){
+        double[][] values = {{1,2,3},{4,5,6}};
+        Matrix matrixB = new Matrix(values);
+        assertEquals(matrix, matrixB);
+    }
 }
