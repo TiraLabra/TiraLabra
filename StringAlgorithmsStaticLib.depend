@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1400274819 source:d:\stringalgorithmsstaticlib\main.cpp
+	<iostream>
+	"string_slib.hpp"
+
+1400280497 d:\stringalgorithmsstaticlib\string_slib.hpp
+	"algorithms/naive.hpp"
+
+1400280442 source:d:\stringalgorithmsstaticlib\algorithms\naive.cpp
+	"naive.hpp"
+
+1400280503 d:\stringalgorithmsstaticlib\algorithms\naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+	<iostream>
+
+1400273277 d:\stringalgorithmsstaticlib\constants.hpp
+
