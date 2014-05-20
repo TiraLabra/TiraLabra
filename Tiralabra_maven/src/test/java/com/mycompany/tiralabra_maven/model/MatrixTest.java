@@ -28,11 +28,43 @@ public class MatrixTest {
     public void correctNumberOfRowsReturned(){
         
         assertEquals("Rows: ", 2, matrix.rows());
-    }
+    }   
     
     @Test
     public void correctNumberOfColumnsReturned(){
         assertEquals("Columns: ", 3, matrix.cols());
+    }
+    
+    @Test
+    public void correctNumberOfRowsReturnerAfterCreatingZeroMatrix(){
+        matrix = new Matrix(7, 9);
+        assertEquals("Rows: ", 7, matrix.rows());
+    }
+    
+    @Test
+    public void correctNumberOfColumnsReturnedAfterCreatingZeroMatrix(){
+        matrix = new Matrix(7, 9);
+        assertEquals("Columns: ", 9, matrix.cols());
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToCreateMatrixWithNegativeNumberOfRows(){
+        matrix = new Matrix(-5, 2);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToCreateMatrixWithNegativeNumberOfColumns(){
+        matrix = new Matrix(5, -2);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToCreateMatrixWithZeroRows(){
+        matrix = new Matrix(0, 2);
+    }
+    
+     @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToCreateMatrixWithZeroColumns(){
+        matrix = new Matrix(5, 0);
     }
     
     @Test

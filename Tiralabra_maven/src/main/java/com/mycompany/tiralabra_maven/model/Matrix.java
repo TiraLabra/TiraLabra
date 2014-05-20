@@ -21,6 +21,19 @@ public class Matrix {
         this.rows = this.values.length;
         this.cols = this.values[0].length;
     }
+    
+    /**
+     * Constructs a zero matrix with the specified dimensions.
+     * @param rows the number of rows
+     * @param cols the number of columns
+     * @throws IllegalArgumentException if the number of rows or columns is less than one
+     */
+    public Matrix(int rows, int cols){
+        if (rows <= 0 || cols <= 0) throw new IllegalArgumentException("The number of rows and columns must be positive.");
+        this.rows = rows;
+        this.cols = cols;
+        this.values = new double[rows][cols];
+    }
 
     /**
      * Returns the number of rows in the matrix.
@@ -52,9 +65,6 @@ public class Matrix {
         }
         
         return returnString;                
-    }
-    
-    
-    
+    }            
     
 }
