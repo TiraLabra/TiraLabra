@@ -17,3 +17,54 @@
 
 1400273277 d:\stringalgorithmsstaticlib\constants.hpp
 
+1400587394 source:d:\stringalgorithmsfork\codeblocks project\algorithms\naive.cpp
+	"naive.hpp"
+
+1400588695 d:\stringalgorithmsfork\codeblocks project\algorithms\naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1400595818 d:\stringalgorithmsfork\codeblocks project\constants.hpp
+
+1400274819 source:d:\stringalgorithmsfork\codeblocks project\main.cpp
+	<iostream>
+	"string_slib.hpp"
+
+1400280497 d:\stringalgorithmsfork\codeblocks project\string_slib.hpp
+	"algorithms/naive.hpp"
+
+1400589684 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing.cpp
+	"hashing.hpp"
+
+1400589575 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing.hpp
+	<string>
+	<cstring>
+
+1400595991 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.cpp
+	"bernstein.hpp"
+
+1400596026 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1400591316 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\hashing.cpp
+	"hashing.hpp"
+
+1400591299 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1400596046 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1400591254 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\sum_hashing.cpp
+	"sum_hashing.hpp"
+
