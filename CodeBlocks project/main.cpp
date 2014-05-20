@@ -4,6 +4,9 @@ using namespace std;
 
 int main()
 {
-    cout << naive_search("varna ma", "arn");
+    cout << rabin_karp_search("vnraaaarnaaa", "arn");
+
+
+
     return 0;
 }

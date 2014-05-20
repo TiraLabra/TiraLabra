@@ -27,12 +27,13 @@
 
 1400595818 d:\stringalgorithmsfork\codeblocks project\constants.hpp
 
-1400274819 source:d:\stringalgorithmsfork\codeblocks project\main.cpp
+1400607427 source:d:\stringalgorithmsfork\codeblocks project\main.cpp
 	<iostream>
 	"string_slib.hpp"
 
-1400280497 d:\stringalgorithmsfork\codeblocks project\string_slib.hpp
+1400602896 d:\stringalgorithmsfork\codeblocks project\string_slib.hpp
 	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
 
 1400589684 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing.cpp
 	"hashing.hpp"
@@ -41,10 +42,10 @@
 	<string>
 	<cstring>
 
-1400595991 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.cpp
+1400606652 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.cpp
 	"bernstein.hpp"
 
-1400596026 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.hpp
+1400602607 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.hpp
 	<string>
 	<cstring>
 	<vector>
@@ -67,4 +68,14 @@
 
 1400591254 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\sum_hashing.cpp
 	"sum_hashing.hpp"
+
+1400607875 source:d:\stringalgorithmsfork\codeblocks project\algorithms\rabin_karp.cpp
+	"rabin_karp.hpp"
+
+1400602814 d:\stringalgorithmsfork\codeblocks project\algorithms\rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	"../constants.hpp"
+	"hashing/hashing.hpp"
 

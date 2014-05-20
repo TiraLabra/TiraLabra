@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <string>
+#include <iostream>
 #include "../constants.hpp"
 #include "hashing/hashing.hpp"
 using namespace std;

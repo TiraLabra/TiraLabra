@@ -39,5 +39,5 @@ ULL bernstein_hasher::next_bernstein_hash(const char * str, int index, ULL curre
 ULL bernstein_hasher::remove_prefix_from_hash(const char * str, int index, int length, ULL current_hash) {
     if (length > powers.size()) return NO_HASH;
     if (length < 1) return NO_HASH;
-    return current_hash - str[index]*powers[length-1];
+    return (current_hash - str[index]*powers[length-1]);
 }
