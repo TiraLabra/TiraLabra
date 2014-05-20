@@ -29,42 +29,40 @@ public class HuffmanKoodi {
     }
 
     private Minimikeko merkitJarjestykseen(int[] merkit) {
-        Minimikeko q = new Minimikeko();
+        Minimikeko keko = new Minimikeko();
         
         for (int i = 0; i < merkit.length; i++) {
             if (merkit[i] > 0) {
                 //merkki, esiintymiskerrat, vasen, oikea
                 HuffmanSolmu s = new HuffmanSolmu(i, merkit[i], null, null);
                 
-                q.lisaa(s);
+                keko.lisaa(s);
                 
             }
         }
-        return q;
+        return keko;
     }
 
     public Map muodostaKoodit(HuffmanSolmu juuri) {
            if (juuri == null || (juuri.getVasen() == null && juuri.getOikea() == null)) {
                return null;
            }
-           
-           String bitit = "";
-           
-           koodit(bitit, juuri);
+
+           koodisanat("", juuri);
            
            return koodit;
     
     }
     
-    public void koodit(String bitit, HuffmanSolmu solmu) {
+    public void koodisanat(String bitit, HuffmanSolmu solmu) {
 
         if (solmu.getVasen() == null && solmu.getOikea() == null) {
             koodit.put((char) solmu.getMerkki(), bitit);
             return;
         }
         
-        koodit(bitit + "0", solmu.getVasen());
-        koodit(bitit + "1", solmu.getOikea());
+        koodisanat(bitit + "0", solmu.getVasen());
+        koodisanat(bitit + "1", solmu.getOikea());
 
     }
     

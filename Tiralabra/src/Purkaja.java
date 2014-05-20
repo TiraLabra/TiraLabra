@@ -5,6 +5,6 @@ public class Purkaja {
     }
     
     public void pura(String pakattu) {
-        
+
     }
 }

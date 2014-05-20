@@ -8,13 +8,9 @@ public class Pakkaaja {
     }
     
     public String pakkaa(String teksti) {
-        int[] merkit = new int[256];
-        
-        for (int i = 0; i < teksti.length(); i++) {
-            merkit[teksti.charAt(i)]++;
-        }
-        
         HuffmanKoodi h = new HuffmanKoodi();
+        
+        int[] merkit = merkkienEsiintymiskerrat(teksti);
         
         Map<Character, String> koodisanat = h.muodostaKoodit(h.muodostaPuu(merkit));
         
@@ -30,6 +26,14 @@ public class Pakkaaja {
         
         return pakattu;
         
+    }
+
+    private int[] merkkienEsiintymiskerrat(String teksti) {
+        int[] merkit = new int[256];
+        for (int i = 0; i < teksti.length(); i++) {
+            merkit[teksti.charAt(i)]++;
+        }
+        return merkit;
     }
     
 }
