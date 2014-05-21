@@ -48,7 +48,8 @@ public class Main {
         bfs = new BFS(l);
         //testCase();
         pa.generateLabyrinth();
-        Gui gui = new Gui(l);
+        wf.routine();
+        Gui gui = new Gui(l, wf);
         SwingUtilities.invokeLater(gui);
     }
 }
