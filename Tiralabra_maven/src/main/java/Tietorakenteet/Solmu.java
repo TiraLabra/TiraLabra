@@ -12,12 +12,20 @@ public class Solmu {
         this.esiintymiskerrat = esiintymiskerrat;
     }
     
+    public Solmu(int esiintymiskerrat) {
+        this.esiintymiskerrat = esiintymiskerrat;
+    }
+    
     public String getAvain() {
         return this.avain;
     }
     
     public int getEsiintymat() {
         return this.esiintymiskerrat;
+    }
+    
+    public void setEsiintymat(int esiintymat) {
+        this.esiintymiskerrat = esiintymat;
     }
     
     public void setVanh(Solmu solmu) {

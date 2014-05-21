@@ -28,9 +28,10 @@ public class TiedostonPakkaaja {
         }
         
         MinKeko keko = muodostaKeko();
+        yhdistaKeonSolmut(keko);
     }
     
-    public void haeTeksti(String polku) throws FileNotFoundException {
+    private void haeTeksti(String polku) throws FileNotFoundException {
         Scanner lukija = new Scanner(new File(polku));
         
         while (lukija.hasNextLine()) {
@@ -76,7 +77,22 @@ public class TiedostonPakkaaja {
             keko.lisaa(new Solmu(avain, hash.get(avain)));
         }
         
-        keko.paivitaSolmujenOsoittimet();
         return keko;
+    }
+    
+    private void yhdistaKeonSolmut(MinKeko keko) {
+        while (keko.getKoko() > 1) {
+            Solmu oikea = keko.poistaHuippuSolmu();
+            Solmu vasen = keko.poistaHuippuSolmu();
+            
+            Solmu yhdistetty = new Solmu(oikea.getEsiintymat() + vasen.getEsiintymat());
+            
+            yhdistetty.setVasen(vasen);
+            yhdistetty.setOikea(oikea);
+            vasen.setVanh(yhdistetty);
+            oikea.setVanh(yhdistetty);
+            
+            keko.lisaa(yhdistetty);
+        }
     }
 }

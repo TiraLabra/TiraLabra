@@ -9,22 +9,30 @@ public class MinKeko {
         this.koko = 0;
     }
     
+    public Solmu[] getKeko() {
+        return this.keko;
+    }
+    
+    public int getKoko() {
+        return this.koko;
+    }
+
     public int vanh(int i) {
-        return (i/2);
+        return (i - 1) / 2;
     }
     
     public int vasen(int i) {
-        return 2 * i;
+        return 2 * i + 1;
     }
     
     public int oikea(int i) {
-        return 2 * i + 1;
+        return vasen(i) + 1;
     }
     
     public void lisaa(Solmu solmu) {
         this.koko++;
         if (this.koko > this.keko.length) { 
-            tuplaaKoko();                   // ei pitäisi koskaan tapahtua
+            tuplaaKoko();                   // ei pitäisi koskaan tapahtua Huffman-algoritmin yhteydessä
         }
         
         int i = this.koko - 1;
@@ -36,25 +44,68 @@ public class MinKeko {
         keko[i] = solmu;
     }
     
-    public void paivitaSolmujenOsoittimet() {
-        for (int i = 0; i < koko; i++) {
-            paivitaOsoittimet(i);
+    public Solmu poistaHuippuSolmu() {
+        Solmu poistettava = new Solmu(keko[0].getAvain(), keko[0].getEsiintymat());
+        poistettava.setVanh(keko[0].getVanh());
+        poistettava.setVasen(keko[0].getVasen());
+        poistettava.setOikea(keko[0].getOikea());
+        
+        this.koko--;
+        keko[0] = keko[this.koko];
+        heapify(0);
+        
+        return poistettava;
+    }
+    
+    private void heapify(int i) {
+        int vasen = vasen(i);
+        int oikea = oikea(i);
+        
+        if (oikea <= koko) {
+            int pienempi = vasen;
+            
+            if (keko[oikea].getEsiintymat() < keko[vasen].getEsiintymat()) {
+                pienempi = oikea;
+            }
+            
+            if (keko[i].getEsiintymat() > keko[pienempi].getEsiintymat()) {
+                vaihda(i, pienempi);
+                heapify(pienempi); 
+            }
+        }
+        
+        else if (vasen == koko && keko[i].getEsiintymat() > keko[vasen].getEsiintymat()) {
+            vaihda(i, vasen);
         }
     }
     
-    private void paivitaOsoittimet(int i) {
-        Solmu solmu = keko[i];
+    private void vaihda(int i, int j) {
+        int k = keko[i].getEsiintymat();
         
-        if (i > 0) {
-            solmu.setVanh(keko[vanh(i)]);
-        }
-        if (vasen(i) < koko) {
-            solmu.setVasen(keko[vasen(i)]);
-        }
-        if (oikea(i) < koko) {
-            solmu.setOikea(keko[oikea(i)]);
-        }
+        keko[i].setEsiintymat(keko[j].getEsiintymat());
+        keko[j].setEsiintymat(k);
     }
+    
+    
+//    public void paivitaSolmujenOsoittimet() {
+//        for (int i = 0; i < koko; i++) {
+//            paivitaOsoittimet(i);
+//        }
+//    }
+//    
+//    private void paivitaOsoittimet(int i) {
+//        Solmu solmu = keko[i];
+//        
+//        if (i > 0) {
+//            solmu.setVanh(keko[vanh(i)]);
+//        }
+//        if (vasen(i) < koko) {
+//            solmu.setVasen(keko[vasen(i)]);
+//        }
+//        if (oikea(i) < koko) {
+//            solmu.setOikea(keko[oikea(i)]);
+//        }
+//    }
     
     private void tuplaaKoko() {
         Solmu[] uusi = new Solmu[this.keko.length * 2];
