@@ -1,7 +1,6 @@
 package labyrinthgenerator;
 
 import labyrinthgenerator.KruskalsAlgorithm.SetElement;
-import main.Labyrinth;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -60,8 +59,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
                 elements[i] = new SetElement(1);
             }
         }
-        labyrinth = new Labyrinth(3, 3);
-        ka.newLabyrinth(labyrinth);
+        labyrinth.updateLabyrinth(3, 3);
         int[] edges = new int[2];
         edges[0] = 4;
         edges[1] = 15;
@@ -74,8 +72,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
         for (int i = 0; i < 9; i++) {
             elements[i] = new SetElement(i);
         }
-        labyrinth = new Labyrinth(3, 3);
-        ka.newLabyrinth(labyrinth);
+        labyrinth.updateLabyrinth(3, 3);
         int[] edges = new int[2];
         edges[0] = 4;
         edges[1] = 15;
