@@ -143,4 +143,17 @@ public class MyQueueTest {
             assertEquals(null, testQueue.items[i]);
         }
     }
+
+    @Test
+    public void dequeueFromMuchUsedList() {
+        headAndTailPastMaxSize();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(5 - i, testQueue.size());
+            assertEquals(i + 1, (int) testQueue.dequeue());
+            assertEquals(5, testQueue.tail);
+            assertEquals(i + 1, testQueue.head);
+        }
+        assertTrue(testQueue.empty());
+        assertEquals(5, testQueue.head);
+    }
 }
