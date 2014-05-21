@@ -18,7 +18,7 @@ public class Service {
 
 	public Service(int id) {
 		this.id = id;
-		this.stops = new ArrayList<>();
+		this.stops = new ArrayList<Stop>();
 	}
 	
 	public int getId() {

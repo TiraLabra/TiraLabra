@@ -28,7 +28,7 @@ public class QuadTree {
 	 */
 	public QuadTree(BoundingBox boundingBox) {
 		this.boundingBox = boundingBox;
-		this.points = new ArrayList<>();
+		this.points = new ArrayList<QuadtreePoint>();
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class QuadTree {
 	}
 	
 	public List<QuadtreePoint> queryRange(BoundingBox queryBox) {
-		List<QuadtreePoint> list = new ArrayList<>();
+		List<QuadtreePoint> list = new ArrayList<QuadtreePoint>();
 		
 		// This node is not in range. Return empty list
 		if (!queryBox.intersects(this.boundingBox)) {

@@ -14,6 +14,7 @@ public class XMLParsingTest {
 		// This test could be made faster if we use smaller 
 		// set of timetables and stations in XML
 		String filePath = Unzipper.unzipTimetableData();
-		ReittiopasXMLParser.parseXML(filePath);
+		
+		new ReittiopasXMLParser().parseXML(filePath);
 	}
 }

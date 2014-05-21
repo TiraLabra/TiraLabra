@@ -17,12 +17,12 @@ public class App {
 	
     public static void main( String[] args ) {   
         String file = Unzipper.unzipTimetableData();
-        DataStructuresDto data = ReittiopasXMLParser.parseXML(file);
+        DataStructuresDto data = new ReittiopasXMLParser().parseXML(file);
         
         List<Station> stationList = data.getStationList();
 
         Scanner scanner = new Scanner(System.in);
-        Router router = new Router();
+        Router router = new Router(data);
 
         int id1 = 0;
         int id2;

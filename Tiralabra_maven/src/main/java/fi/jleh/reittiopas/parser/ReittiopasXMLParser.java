@@ -12,9 +12,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import fi.jleh.reittiopas.exception.XMLParsingException;
+import fi.jleh.reittiopas.model.QuadtreePoint;
 import fi.jleh.reittiopas.model.Service;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.model.Stop;
+import fi.jleh.reittiopas.quadtree.BoundingBox;
+import fi.jleh.reittiopas.quadtree.QuadTree;
 import fi.jleh.reittiopas.utils.DataStructuresDto;
 
 
@@ -27,13 +30,13 @@ public class ReittiopasXMLParser {
 	 * @return
 	 * @throws XMLParsingException
 	 */
-	public static DataStructuresDto parseXML(String pathToFile) throws XMLParsingException {
+	public DataStructuresDto parseXML(String pathToFile) throws XMLParsingException {
 		System.out.println("Started XML parsing");
 		long start = System.currentTimeMillis();
 		
 		final List<Station> stationList = new ArrayList<Station>();
-		final TreeMap<Integer, Station> stationMap = new TreeMap<>();
-		final List<Service> services = new ArrayList<>();
+		final TreeMap<Integer, Station> stationMap = new TreeMap<Integer, Station>();
+		final List<Service> services = new ArrayList<Service>();
 		
 		try {
 			File xmlFile = new java.io.File(pathToFile);
@@ -119,7 +122,23 @@ public class ReittiopasXMLParser {
 		dto.setServices(services);
 		dto.setStationList(stationList);
 		dto.setStationMap(stationMap);
+		dto.setStationSpatial(createStationQuadtree(stationList));
 		
 		return dto;
+	}
+	
+	private QuadTree createStationQuadtree(List<Station> stationList) {
+		BoundingBox boundingBox = new BoundingBox(23.6041, 25.706741, 60.988, 59.90);
+		QuadTree quadTree = new QuadTree(boundingBox);
+		
+		for (QuadtreePoint point : stationList) {
+			boolean insert = quadTree.insert(point);
+			
+			if (!insert) {
+				throw new RuntimeException("Insert of a point " + point + " failed!");
+			}
+		}
+		
+		return quadTree;
 	}
 }

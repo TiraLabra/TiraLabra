@@ -10,6 +10,7 @@ import java.util.Set;
 import fi.jleh.reittiopas.exception.RoutingFailureException;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.model.Stop;
+import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.GeomertyUtils;
 
 /**
@@ -18,6 +19,11 @@ import fi.jleh.reittiopas.utils.GeomertyUtils;
  */
 public class Router {
 
+	private DataStructuresDto dataStructures;
+	
+	public Router(DataStructuresDto dto) {
+		this.dataStructures = dto;
+	}
 
 	/**
 	 * Finds route between two stations.
@@ -27,14 +33,14 @@ public class Router {
 	 * @throws RoutingFailureException
 	 */
 	public void findRoute(Station start, Station end) throws RoutingFailureException {
-		Set<Station> visitedNodes = new HashSet<>();
-		List<Station> openNodes = new ArrayList<>();
+		Set<Station> visitedNodes = new HashSet<Station>();
+		List<Station> openNodes = new ArrayList<Station>();
 		
-		Map<Station, Station> cameFrom = new HashMap<>();
-		Map<Station, Stop> cameFromStop = new HashMap<>();
+		Map<Station, Station> cameFrom = new HashMap<Station, Station>();
+		Map<Station, Stop> cameFromStop = new HashMap<Station, Stop>();
 		
-		Map<Station, Double> costFromStart = new HashMap<>();
-		Map<Station, Double> estimatedCost = new HashMap<>();
+		Map<Station, Double> costFromStart = new HashMap<Station, Double>();
+		Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
 		
 		// Values for start node
 		costFromStart.put(start, 0.0);

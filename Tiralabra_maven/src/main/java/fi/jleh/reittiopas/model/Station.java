@@ -22,7 +22,7 @@ public class Station implements QuadtreePoint {
 		this.x = x;
 		this.y = y;
 		this.city = city;
-		this.stops = new ArrayList<>();
+		this.stops = new ArrayList<Stop>();
 	}
 
 	public int getId() {
