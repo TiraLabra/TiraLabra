@@ -10,7 +10,7 @@ import labyrinthsolver.*;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Labyrinth labyrinth = new Labyrinth(10, 10);
         PrimsAlgorithm pa = new PrimsAlgorithm(labyrinth);
         KruskalsAlgorithm ka = new KruskalsAlgorithm(labyrinth);

@@ -50,7 +50,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
     }
 
     @Test
-    public void dontSaveBadVertice() {
+    public void dontSaveBadVertice() throws Exception {
         SetElement[] elements = new SetElement[9];
         for (int i = 0; i < 9; i++) {
             if (i != 4 && i % 2 == 0) {
@@ -67,7 +67,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
     }
 
     @Test
-    public void saveGoodVertice() {
+    public void saveGoodVertice() throws Exception {
         SetElement[] elements = new SetElement[9];
         for (int i = 0; i < 9; i++) {
             elements[i] = new SetElement(i);

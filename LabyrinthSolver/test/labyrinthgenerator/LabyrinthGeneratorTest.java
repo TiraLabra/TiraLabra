@@ -67,7 +67,7 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void algorithmAddsAllCellsToLabyrinth() {
+    public void algorithmAddsAllCellsToLabyrinth() throws Exception {
         Assume.assumeNotNull(lg);
         lg.generateLabyrinth();
         for (int i = 0; i < labyrinth.height; i++) {
@@ -78,7 +78,7 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void allCellsAreVisitableInGeneratedLabyrinth() {
+    public void allCellsAreVisitableInGeneratedLabyrinth() throws Exception {
         Assume.assumeNotNull(lg);
         if (labyrinth.labyrinth[0][0] == 0) {
             algorithmAddsAllCellsToLabyrinth();
@@ -93,7 +93,7 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void regeneratingLabyrinthCreatesANewLabyrinth() {
+    public void regeneratingLabyrinthCreatesANewLabyrinth() throws Exception {
         Assume.assumeNotNull(lg);
         algorithmAddsAllCellsToLabyrinth();
         int checksum = 0;
@@ -122,7 +122,7 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void creatingBigLabyrinth() {
+    public void creatingBigLabyrinth() throws Exception {
         Assume.assumeNotNull(lg);
         labyrinth.updateLabyrinth(100, 100);
         long startTime = System.currentTimeMillis();
@@ -132,7 +132,7 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void labyrinthIsSpanningTree() {
+    public void labyrinthIsSpanningTree() throws Exception {
         Assume.assumeNotNull(lg);
         lg.generateLabyrinth();
         /*

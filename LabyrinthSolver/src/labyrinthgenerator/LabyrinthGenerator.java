@@ -32,7 +32,7 @@ public abstract class LabyrinthGenerator {
     /**
      * Labyrintin generoiva metodi.
      */
-    abstract void generateLabyrinth();
+    abstract void generateLabyrinth() throws Exception;
 
     /**
      * Tyhjentää labyrintin, jos se ei ole tyhjä.
@@ -48,7 +48,7 @@ public abstract class LabyrinthGenerator {
     /**
      * Tulostusrutiini.
      */
-    public void routine() {
+    public void routine() throws Exception {
         System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
         createEmptyLabyrinthIfNeeded();
         long startTime = System.nanoTime() / 1000;

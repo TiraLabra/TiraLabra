@@ -27,7 +27,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
-    public void routine() {
+    public void routine() throws Exception {
         System.out.print("Kruskal's Algorithm");
         super.routine();
     }
@@ -127,7 +127,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     @Override
-    public void generateLabyrinth() {
+    public void generateLabyrinth() throws Exception {
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
@@ -190,7 +190,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      *     
 * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
-    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) {
+    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
         if (edges[1] == 0) {
             return false;
         }

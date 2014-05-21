@@ -24,7 +24,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      * @see labyrinthgenerator.LabyrinthGenerator#routine
      */
     @Override
-    public void routine() {
+    public void routine() throws Exception {
         System.out.print("Recursive Backtracker");
         super.routine();
     }

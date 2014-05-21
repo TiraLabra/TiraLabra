@@ -1,5 +1,7 @@
 package labyrinthsolver;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.Labyrinth;
 
 /**
@@ -59,10 +61,14 @@ public class WallFollower extends LabyrinthSolver {
                     walkDirection /= 2;
                 }
             }
-            /*
-             Update coordinate.
-             */
-            coordinate = labyrinth.getTargetCoordinate(coordinate, walkDirection);
+            try {
+                /*
+                 Update coordinate.
+                 */
+                coordinate = labyrinth.getTargetCoordinate(coordinate, walkDirection);
+            } catch (Exception ex) {
+                System.out.println("For some reason the target coordinate was not in labyrinth.");
+            }
         }
         return true;
     }
@@ -103,7 +109,14 @@ public class WallFollower extends LabyrinthSolver {
             /*
              Update coordinate.
              */
-            coordinate = labyrinth.getTargetCoordinate(coordinate, walkDirection);
+            try {
+                /*
+                 Update coordinate.
+                 */
+                coordinate = labyrinth.getTargetCoordinate(coordinate, walkDirection);
+            } catch (Exception ex) {
+                System.out.println("For some reason the target coordinate was not in labyrinth.");
+            }
             visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
         }
         super.getExploredCells();

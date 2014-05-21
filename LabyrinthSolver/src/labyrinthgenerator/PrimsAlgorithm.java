@@ -22,7 +22,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
-    public void routine() {
+    public void routine() throws Exception {
         System.out.print("Prim's Algorithm");
         super.routine();
     }

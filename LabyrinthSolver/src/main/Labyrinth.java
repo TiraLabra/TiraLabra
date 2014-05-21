@@ -66,17 +66,31 @@ public class Labyrinth {
      *
      * @param coordinateOrig Solun koordinaatti.
      * @param mask Suunnan maski.
-     * @return
+     * @return Palauttaa kohteen koordinaatin.
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos kohteen
+     * koordinaatti ei ole labyrintin sisällä.
      */
-    public int getTargetCoordinate(int coordinateOrig, byte mask) {
+    public int getTargetCoordinate(int coordinateOrig, byte mask) throws Exception {
         if (mask == 1) {
+            if (coordinateOrig / width - 1 < 0) {
+                throw new Exception("Target coordinate not in labyrinth.");
+            }
             return coordinateOrig - width;
         }
         if (mask == 2) {
+            if (coordinateOrig % width + 1 >= width) {
+                throw new Exception("Target coordinate not in labyrinth.");
+            }
             return coordinateOrig + 1;
         }
         if (mask == 4) {
+            if (coordinateOrig / width + 1 >= height) {
+                throw new Exception("Target coordinate not in labyrinth.");
+            }
             return coordinateOrig + width;
+        }
+        if (coordinateOrig % width - 1 < 0) {
+            throw new Exception("Target coordinate not in labyrinth.");
         }
         return coordinateOrig - 1;
     }
