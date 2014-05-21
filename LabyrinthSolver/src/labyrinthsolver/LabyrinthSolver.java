@@ -50,48 +50,17 @@ public abstract class LabyrinthSolver {
     public abstract boolean solveLabyrinth();
 
     /**
-     * Palauttaa kokonaisluvun tekstimuodossa ### ### ###.
-     *
-     * @param integerPart Kokonaislukuosa.
-     * @return Palauttaa formatoidun kokonaislukuosan.
-     */
-    private String formatIntegerPart(long integerPart) {
-        String timeFormat;
-        if (integerPart / 1000000 > 0) {
-            timeFormat = (integerPart / 1000000) + " " + (integerPart / 1000) + " " + (integerPart % 1000);
-        } else if (integerPart / 1000 > 0) {
-            timeFormat = (integerPart / 1000) + " " + (integerPart % 1000);
-        } else {
-            timeFormat = integerPart + "";
-        }
-        return timeFormat;
-    }
-
-    /**
-     * Formatoi ajan tekstimuotoon ### ### ###,### ms.
-     *
-     * @param startTime Algoritmin suorituksen aloitusaika.
-     * @param finishTime Algoritmin suorituksen lopetusaika.
-     * @return Palauttaa formatoidun ajan.
-     */
-    private String timeFormat(long startTime, long finishTime) {
-        long microTime = finishTime - startTime;
-        String timeFormat = "," + (microTime % 1000) + " ms";
-        return formatIntegerPart(microTime / 1000) + timeFormat;
-    }
-    
-    /**
      * Tulostusrutiini.
      */
     public void routine() {
         long startTime = System.nanoTime() / 1000;
         boolean solved = solveLabyrinth();
         long finishTime = System.nanoTime() / 1000;
-        String timeFormat = timeFormat(startTime, finishTime);
+        String timeFormat = labyrinth.formatTime(finishTime - startTime);
         if (solved) {
             System.out.print("  ::  Solution found in " + timeFormat);
             getExploredCells();
-            String exploredCellsFormat = formatIntegerPart(exploredCells);
+            String exploredCellsFormat = labyrinth.formatNumber(exploredCells);
             System.out.println("  ::  Cells explored: " + exploredCellsFormat);
         } else {
             System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");

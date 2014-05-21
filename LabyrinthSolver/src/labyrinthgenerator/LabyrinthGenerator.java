@@ -53,15 +53,9 @@ public abstract class LabyrinthGenerator {
         createEmptyLabyrinthIfNeeded();
         long startTime = System.nanoTime() / 1000;
         generateLabyrinth();
-        long microTime = System.nanoTime() / 1000 - startTime;
-        String timeFormat = "," + (microTime % 1000) + " ms";
-        if (microTime / 1000 >= 1000) {
-            timeFormat = (microTime / 1000000) + " " + ((microTime / 1000) % 1000) + timeFormat;
-        } else {
-            timeFormat = (microTime / 1000) + timeFormat;
-        }
+        long finishTime = System.nanoTime() / 1000;
+        String timeFormat = labyrinth.formatTime(finishTime - startTime);
         System.out.println("Generation time: " + timeFormat);
     }
 
-    
 }
