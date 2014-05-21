@@ -243,7 +243,8 @@ public class Labyrinth {
     /**
      * @param coordinate Koordinaatti, jossa solu on.
      * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
-     * @return
+     * @return Palauttaa listan annetun koordinaatin vierailemattomista
+     * naapureista, jos niihin kulkee kaari lähtökoordinaatista.
      *
      * @see main.MyList
      */
@@ -294,6 +295,8 @@ public class Labyrinth {
      *
      * @param coordinate Koordinaatti, jossa solu on.
      * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
+     * @return Palauttaa listan annetun koordinaatin naapureista, jotka ovat
+     * osana labyrinttia, ja joihin kulki kaari lähtökoordinaatista.
      *
      * @see main.MyList
      */
@@ -339,13 +342,21 @@ public class Labyrinth {
         return listOfNeighbours;
     }
 
+    /**
+     * Formatoi ajan. Millisekuntiosa formatoidaan muotoon "### " + ... "###",
+     * ja mikrosekuntiosa muotoon ",### ms".
+     *
+     * @param time Aika joka halutaan formatoida.
+     * @return Palauttaa formatoidun ajan.
+     * @see formatNumber
+     */
     public String formatTime(long time) {
         DecimalFormat df = new DecimalFormat("000");
         return formatNumber(time / 1000) + "," + df.format(time % 1000) + " ms";
     }
 
     /**
-     * Formatoi luvun muotoon "### " + "### " + ... + "### ".
+     * Formatoi luvun muotoon "### " + "### " + ... + "###".
      *
      * @param number Luku joka halutaan formatoida.
      * @return Palauttaa formatoidun luvun.

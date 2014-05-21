@@ -1,5 +1,11 @@
 package main;
 
+/**
+ * Jonotietorakenne.
+ *
+ * @author Juri Kuronen
+ * @param <E> Alkion tietotyyppi.
+ */
 public class MyQueue<E> {
 
     /**
@@ -65,6 +71,12 @@ public class MyQueue<E> {
         }
     }
 
+    /**
+     * Pyrkii palauttamaan listan päässä olevan alkion.
+     *
+     * @return Palauttaa listan päässä olevan alkion. Jos lista on tyhjä,
+     * palauttaa null.
+     */
     public E dequeue() {
         if (empty()) {
             return null;
@@ -74,18 +86,34 @@ public class MyQueue<E> {
         return value;
     }
 
+    /**
+     * Tarkastaa, onko lista tyhjä.
+     *
+     * @return Palauttaa true, jos lista on tyhjä.
+     */
     public boolean empty() {
         return head == tail;
     }
 
-    int increment(int i) {
-        i++;
-        if (i == maxsize) {
-            i = 0;
+    /**
+     * Lisää annettua indeksiä yhdellä. Jos indeksi saavutti jonon aputaulukon
+     * maksimikoon, siirtyy indeksi jonon aputaulukon alkuun.
+     *
+     * @param key Annettu indeksi.
+     * @return Palauttaa jonon seuraavan kohdan indeksin.
+     */
+    int increment(int key) {
+        key++;
+        if (key == maxsize) {
+            key = 0;
         }
-        return i;
+        return key;
     }
 
+    /**
+     * Palauttaa listan koon.
+     * @return Palauttaa listan koon.
+     */
     public int size() {
         if (head <= tail) {
             return tail - head;

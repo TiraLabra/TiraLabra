@@ -21,6 +21,9 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
     }
 
     /**
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      * @see labyrinthgenerator.LabyrinthGenerator#routine
      */
     @Override
@@ -39,6 +42,9 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      * <br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      * @see labyrinthgenerator.LabyrinthGenerator#getListOfUnvisitedNeighbors
      * @see main.MyStack
      * @see main.MyList

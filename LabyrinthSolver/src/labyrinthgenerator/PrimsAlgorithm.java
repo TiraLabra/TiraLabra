@@ -19,6 +19,9 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
@@ -37,6 +40,9 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      *
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      * @see main.MyList
      * @see main.Labyrinth#addPassage(int, int)
      */

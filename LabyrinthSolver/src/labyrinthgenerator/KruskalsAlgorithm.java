@@ -24,6 +24,9 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
@@ -122,8 +125,11 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * labyrintti on generoitu.
      * <br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
-     *     
-* @see main.Labyrinth#addPassage(int, int)
+     *
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
+     * @see main.Labyrinth#addPassage(int, int)
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     @Override

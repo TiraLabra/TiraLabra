@@ -47,6 +47,10 @@ public abstract class LabyrinthGenerator {
 
     /**
      * Tulostusrutiini.
+     *
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
+     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
+     * pitäisi koskaan käydä.
      */
     public void routine() throws Exception {
         System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
