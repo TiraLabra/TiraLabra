@@ -4,8 +4,8 @@ import main.Labyrinth;
 
 /**
  * Modifioitu satunnaistettu Kruskalin algoritmi labyrintin generoimiseen.
- *
- * @author Juri Kuronen
+ * 
+* @author Juri Kuronen
  */
 public class KruskalsAlgorithm extends LabyrinthGenerator {
 
@@ -28,7 +28,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void routine() {
-        System.out.println("Kruskal's Algorithm");
+        System.out.print("Kruskal's Algorithm");
         super.routine();
     }
 
@@ -55,8 +55,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Konstruktori asettaa joukon ID:ksi annetun arvon, tämän alkion
          * juureksi, ja alkioiden lukumäärän yhdeksi.
-         *
-         * @param value Joukon ID.
+         *         
+* @param value Joukon ID.
          */
         SetElement(int value) {
             id = value;
@@ -67,8 +67,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Hakee koko joukon juuren rekursiivisesti ja korjaa matkalla olleiden
          * alkioiden juuren koko joukon juureksi.
-         *
-         * @return Koko joukon juuri.
+         *         
+* @return Koko joukon juuri.
          */
         SetElement getRoot() {
             if (this.root == this) {
@@ -81,8 +81,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
 
         /**
          * Hakee rekursiivisesti koko joukon juuren ja katsoo sen ID:n.
-         *
-         * @return Palauttaa koko joukon ID:n.
+         *         
+* @return Palauttaa koko joukon ID:n.
          */
         int getId() {
             return getRoot().id;
@@ -91,8 +91,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Hakee rekursiivisesti koko joukon juuren, jonka joukon koko on
          * ajantasalla.
-         *
-         * @return Palauttaa koko joukon koon.
+         *         
+* @return Palauttaa koko joukon koon.
          */
         int getNumOfElements() {
             return getRoot().elementsJoinedByRoot;
@@ -102,8 +102,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          * Hakee rekursiivisesti tämän joukon juuren, sekä annetun toisen joukon
          * alkion juuren. Päivittää juuren koon ja asettaa toisen joukon
          * juureksi tämän joukon juuren.
-         *
-         * @param se2 Annettu, toisen joukon alkio.
+         *         
+* @param se2 Annettu, toisen joukon alkio.
          */
         void joinTwoSets(SetElement se2) {
             SetElement rt = getRoot();
@@ -122,13 +122,13 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * labyrintti on generoitu.
      * <br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
-     *
-     * @see main.Labyrinth#addPassage(int, int)
+     *     
+* @see main.Labyrinth#addPassage(int, int)
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     @Override
     public void generateLabyrinth() {
-        CreateEmptyLabyrinthIfNeeded();
+        createEmptyLabyrinthIfNeeded();
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
@@ -167,8 +167,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
 
     /**
      * Arpoo kaaren annetun solun kaarilistasta.
-     *
-     * @param coordinate Koordinaatti, jossa solu on.
+     *     
+* @param coordinate Koordinaatti, jossa solu on.
      * @param edges Tämän solun kaaret kokonaislukuna.
      * @return Palauttaa sen maskin, jolla arvottu kaari saadaan luettua.
      */
@@ -183,13 +183,13 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Tämä apumetodi tarkistaa, lähteekö solusta enää kaaria, jotka
      * yhdistäisivät solun muihin joukkoihin.
-     *
-     * @param edges Tämän solun kaaret kokonaislukuna.
+     *     
+* @param edges Tämän solun kaaret kokonaislukuna.
      * @param orig Tämän solun joukkoalkio.
      * @param elements Joukkoalkioiden array.
      * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
-     *
-     * @see main.Labyrinth#getTargetCoordinate(int, byte)
+     *     
+* @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) {
         if (edges[1] == 0) {
@@ -210,8 +210,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Tallentaa alussa kaikki mahdolliset kaaret, mitä annetulla solulla voisi
      * olla.
-     *
-     * @param coordinate Koordinaatti, jossa solu on.
+     *     
+* @param coordinate Koordinaatti, jossa solu on.
      * @param edges Solun array, johon kaaret tallennetaan.
      */
     void addEdgesToNeighbors(int coordinate, int[] edges) {
