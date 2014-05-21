@@ -17,8 +17,8 @@ public class PrimsAlgorithmTest extends LabyrinthGeneratorTest {
     public void listingVisitedNeighbors() {
         PrimsAlgorithm pa = new PrimsAlgorithm(labyrinth);
         int[][] visited = new int[labyrinth.height][labyrinth.width];
-        assertEquals(0, pa.getListOfVisitedNeighbors(0, visited).size());
-        assertEquals(0, pa.getListOfVisitedNeighbors(labyrinth.width / 2, visited).size());
-        assertEquals(0, pa.getListOfVisitedNeighbors(labyrinth.width + 5, visited).size());
+        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(0, visited).size());
+        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(labyrinth.width / 2, visited).size());
+        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(labyrinth.width + 5, visited).size());
     }
 }
