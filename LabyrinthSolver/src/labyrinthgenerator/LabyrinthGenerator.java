@@ -2,14 +2,13 @@ package labyrinthgenerator;
 
 import java.util.Random;
 import main.Labyrinth;
-import main.MyList;
 
 /**
  * Labyrintin generointialgoritmien yliluokka.
  *
  * @author Juri Kuronen
  */
-abstract class LabyrinthGenerator {
+public abstract class LabyrinthGenerator {
 
     /**
      * Labyrintti, jolle algoritmit ajetaan.
@@ -27,7 +26,6 @@ abstract class LabyrinthGenerator {
      */
     public LabyrinthGenerator(Labyrinth l) {
         labyrinth = l;
-        //if(labyrinth is not empty) { abort and give warning}
         random = new Random();
     }
 
@@ -41,80 +39,28 @@ abstract class LabyrinthGenerator {
      *
      * @see main.Labyrinth
      */
-    public void CreateEmptyLabyrinthIfNeeded() {
-        if (labyrinth.labyrinth[0][0] == 0) {
+    public void createEmptyLabyrinthIfNeeded() {
+        if (labyrinth.labyrinth[0][0] != 0) {
             labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
         }
-    }
-
-    /**
-     * Päivittää generointialgoritmille uudenkokoisen labyrintin.
-     *
-     * @param l Labyrintti, joksi päivitetään.
-     */
-    public void newLabyrinth(Labyrinth l) {
-        labyrinth = l;
     }
 
     /**
      * Tulostusrutiini.
      */
     public void routine() {
-        long startTime = System.currentTimeMillis();
+        System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
+        long startTime = System.nanoTime() / 1000;
         generateLabyrinth();
-        System.out.println("Time elapsed: " + (System.currentTimeMillis() - startTime) + "ms");
+        long microTime = System.nanoTime() / 1000 - startTime;
+        String timeFormat = "," + (microTime % 1000) + " ms";
+        if (microTime / 1000 >= 1000) {
+            timeFormat = (microTime / 1000000) + " " + ((microTime / 1000) % 1000) + timeFormat;
+        } else {
+            timeFormat = (microTime / 1000) + timeFormat;
+        }
+        System.out.println("Generation time: " + timeFormat);
     }
 
-    /**
-     * Annetun koordinaatin vierailemattomat naapurit.
-     *
-     * @param coordinate Koordinaatti, jossa solu on.
-     * @param visited Array, jossa on tietoa labyrintin solujen tilasta.
-     * @return Palauttaa listan annetun koordinaatin vierailemattomista
-     * naapureista.
-     *
-     * @see main.MyList
-     */
-    protected MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
-        MyList listOfNeighbours = new MyList(4);
-
-        /*
-         NORTH
-         */
-        if (coordinate / labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] == 0) {
-                listOfNeighbours.add(coordinate - labyrinth.width);
-            }
-        }
-
-        /*
-         EAST
-         */
-        if (coordinate % labyrinth.width + 1 < labyrinth.width) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width + 1] == 0) {
-                listOfNeighbours.add(coordinate + 1);
-            }
-        }
-
-        /*
-         SOUTH
-         */
-        if (coordinate / labyrinth.width + 1 < labyrinth.height) {
-            if (visited[coordinate / labyrinth.width + 1][coordinate % labyrinth.width] == 0) {
-                listOfNeighbours.add(coordinate + labyrinth.width);
-            }
-        }
-
-        /*
-         WEST
-         */
-        if (coordinate % labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] == 0) {
-                listOfNeighbours.add(coordinate - 1);
-            }
-        }
-
-        return listOfNeighbours;
-    }
-
+    
 }
