@@ -46,4 +46,15 @@ public class MyStackTest {
             assertEquals(i, testStack.size());
         }
     }
+    
+    @Test
+    public void differentDataTypes() {
+        testStack = new MyStack<String>();
+        testStack.push("test");
+        testStack.push("testing");
+        testStack.push("testingtesting");
+        assertEquals(3, testStack.size());
+        assertEquals("testingtesting", testStack.pop());
+        assertEquals("testing", testStack.pop());
+    }
 }
