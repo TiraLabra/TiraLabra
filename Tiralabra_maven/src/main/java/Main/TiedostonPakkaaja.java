@@ -1,5 +1,7 @@
 package Main;
 
+import Tietorakenteet.MinKeko;
+import Tietorakenteet.Solmu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ public class TiedostonPakkaaja {
             return;
         }
         
-        
+        MinKeko keko = muodostaKeko();
     }
     
     public void haeTeksti(String polku) throws FileNotFoundException {
@@ -57,14 +59,24 @@ public class TiedostonPakkaaja {
         }
     }
     
-    private void lisaaMerkki(String lisattava) {
+    private void lisaaMerkki(String merkki) {
         int maara = 1;
         
-        if (hash.containsKey(lisattava)) {
-            maara += hash.get(lisattava);
+        if (hash.containsKey(merkki)) {
+            maara += hash.get(merkki);
         }
         
-        hash.put(lisattava, maara);
-        teksti += lisattava;
+        hash.put(merkki, maara);
+        teksti += merkki;
+    }
+    
+    private MinKeko muodostaKeko() {
+        MinKeko keko = new MinKeko(hash.keySet().size());
+        for (String avain : hash.keySet()) {
+            keko.lisaa(new Solmu(avain, hash.get(avain)));
+        }
+        
+        keko.paivitaSolmujenOsoittimet();
+        return keko;
     }
 }
