@@ -6,8 +6,9 @@ import java.util.EmptyStackException;
  * Pinotietorakenne.
  *
  * @author Juri Kuronen
+ * @param <E> Alkion tietotyyppi.
  */
-public class MyStack {
+public class MyStack<E> {
 
     /**
      * Pinoalkio.
@@ -15,21 +16,21 @@ public class MyStack {
     private class StackItem {
 
         /**
-         * Pinoalkion arvo.
+         * Pinoalkion tieto.
          */
-        int value;
+        Object data;
         /**
          * Tämän pinoalkion alla oleva pinoalkio.
          */
         StackItem next;
 
         /**
-         * Luo uuden pinoalkion, jolle asetetaan annettu arvo.
+         * Luo uuden pinoalkion, jolle asetetaan annettu tieto.
          *
-         * @param v Pinoalkion arvo.
+         * @param dt Pinoalkion tieto.
          */
-        StackItem(int v) {
-            value = v;
+        StackItem(Object dt) {
+            data = dt;
         }
     }
 
@@ -50,13 +51,13 @@ public class MyStack {
     }
 
     /**
-     * Luo uuden pinoalkion, jonka arvo annettu, ja asettaa sen pinon
+     * Luo uuden pinoalkion, jonka tieto annettu, ja asettaa sen pinon
      * päällimmäiseksi.
      *
-     * @param value Pinoalkion arvo.
+     * @param data Pinoalkion tieto.
      */
-    public void push(int value) {
-        StackItem si = new StackItem(value);
+    public void push(Object data) {
+        StackItem si = new StackItem(data);
         if (top == null) {
             top = si;
         } else {
@@ -67,15 +68,15 @@ public class MyStack {
     }
 
     /**
-     * Palauttaa pinon päällimmäisen alkion.
+     * Palauttaa pinon päällimmäisen alkion tiedon.
      *
-     * @return Palauttaa pinon päällimmäisen alkion.
+     * @return Palauttaa pinon päällimmäisen alkion tiedon.
      */
-    public int pop() {
+    public E pop() {
         if (size == 0) {
             throw new EmptyStackException();
         }
-        int value = top.value;
+        E value = (E) top.data;
         top = top.next;
         size--;
         return value;
