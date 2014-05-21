@@ -29,6 +29,10 @@ public class TiedostonPakkaaja {
         
         MinKeko keko = muodostaKeko();
         yhdistaKeonSolmut(keko);
+        System.out.println(keko.getKeko()[0].getEsiintymat());
+        
+        // seuraavaksi puun rekursiivinen läpikäynti, bittijonojen muodostus jokaista String merkkijonoa varten.
+        // tämän jälkeen voidaan luoda uusi tiedosto, kelata teksti läpi, kirjoittaa tähän tiedostoon tarvittava bittijono ja homma selvä
     }
     
     private void haeTeksti(String polku) throws FileNotFoundException {

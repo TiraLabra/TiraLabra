@@ -6,10 +6,18 @@ import static org.junit.Assert.*;
 
 public class MinKekoTest {
     private MinKeko keko;
+    private MinKeko keko2;
     
     @Before
     public void setUp() {
         this.keko = new MinKeko(10);
+        this.keko2 = new MinKeko(7);
+        
+        keko2.lisaa(new Solmu("a", 7));
+        keko2.lisaa(new Solmu("b", 8));
+        keko2.lisaa(new Solmu("c", 5));
+        keko2.lisaa(new Solmu("d", 4));
+        keko2.lisaa(new Solmu("e", 7));
     }
     
     @Test
@@ -54,5 +62,14 @@ public class MinKekoTest {
         keko.lisaa(new Solmu("d", 4));
         keko.lisaa(new Solmu("e", 7));
         assertEquals("d", keko.getKeko()[0].getAvain());
+    }
+    
+    @Test
+    public void alkioidenPoistoKeosta() {
+        Solmu poistettu = keko2.poistaHuippuSolmu();
+        assertEquals("d", poistettu.getAvain());
+        Solmu seuraava = keko2.poistaHuippuSolmu();
+        assertEquals("c", seuraava.getAvain());
+        assertEquals(3, keko2.getKoko());
     }
 }

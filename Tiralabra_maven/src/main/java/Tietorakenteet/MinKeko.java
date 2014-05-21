@@ -45,10 +45,7 @@ public class MinKeko {
     }
     
     public Solmu poistaHuippuSolmu() {
-        Solmu poistettava = new Solmu(keko[0].getAvain(), keko[0].getEsiintymat());
-        poistettava.setVanh(keko[0].getVanh());
-        poistettava.setVasen(keko[0].getVasen());
-        poistettava.setOikea(keko[0].getOikea());
+        Solmu poistettava = keko[0];
         
         this.koko--;
         keko[0] = keko[this.koko];
@@ -80,10 +77,10 @@ public class MinKeko {
     }
     
     private void vaihda(int i, int j) {
-        int k = keko[i].getEsiintymat();
+        Solmu k = keko[i];
         
-        keko[i].setEsiintymat(keko[j].getEsiintymat());
-        keko[j].setEsiintymat(k);
+        keko[i] = keko[j];
+        keko[j] = k;
     }
     
     
