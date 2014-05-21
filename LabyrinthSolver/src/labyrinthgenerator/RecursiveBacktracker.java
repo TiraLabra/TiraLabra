@@ -9,7 +9,6 @@ import main.MyStack;
  *
  * @author Juri Kuronen
  */
-
 public class RecursiveBacktracker extends LabyrinthGenerator {
 
     /**
@@ -26,7 +25,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      */
     @Override
     public void routine() {
-        System.out.println("Recursive Backtracker");
+        System.out.print("Recursive Backtracker");
         super.routine();
     }
 
@@ -47,21 +46,21 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
-        CreateEmptyLabyrinthIfNeeded();
-        MyStack stack = new MyStack();
+        createEmptyLabyrinthIfNeeded();
+        MyStack<Integer> stack = new MyStack();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         int coordinate = 0; // Start at (0, 0)
         stack.push(coordinate);
         visited[0][0] = 2;
         while (!stack.empty()) {
-            MyList list = getListOfUnvisitedNeighbors(coordinate, visited);
+            MyList<Integer> list = labyrinth.getListOfUnvisitedNeighbors(coordinate, visited);
             while (!list.empty()) {
                 int oldCoordinate = coordinate;
                 coordinate = list.get(random.nextInt(list.size()));
                 stack.push(coordinate);
                 visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
                 labyrinth.addPassage(oldCoordinate, coordinate);
-                list = getListOfUnvisitedNeighbors(coordinate, visited);
+                list = labyrinth.getListOfUnvisitedNeighbors(coordinate, visited);
             }
             coordinate = stack.pop();
         }
