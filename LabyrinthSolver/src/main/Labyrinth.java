@@ -1,5 +1,7 @@
 package main;
 
+import java.text.DecimalFormat;
+
 /**
  * Labyrintti-olio.
  *
@@ -303,6 +305,29 @@ public class Labyrinth {
         }
 
         return listOfNeighbours;
+    }
+
+    public String formatTime(long time) {
+        return formatNumber(time / 1000) + "," + formatNumber(time % 1000) + " ms";
+    }
+
+    /**
+     * Formatoi luvun muotoon "### " + "### " + ... + "### ".
+     *
+     * @param number Luku joka halutaan formatoida.
+     * @return Palauttaa formatoidun luvun.
+     */
+    public String formatNumber(long number) {
+        DecimalFormat df = new DecimalFormat("000");
+        if (number / 1000 == 0) {
+            return number + "";
+        }
+        String timeFormat = "";
+        while (number / 1000 != 0) {
+            timeFormat = df.format(number % 1000) + " " + timeFormat;
+            number /= 1000;
+        }
+        return number + " " + timeFormat;
     }
 
 }
