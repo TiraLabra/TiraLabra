@@ -322,12 +322,13 @@ public class Labyrinth {
         if (number / 1000 == 0) {
             return number + "";
         }
-        String timeFormat = "";
+        String numberFormat = df.format(number % 1000);
+        number /= 1000;
         while (number / 1000 != 0) {
-            timeFormat = df.format(number % 1000) + " " + timeFormat;
+            numberFormat = df.format(number % 1000) + " " + numberFormat;
             number /= 1000;
         }
-        return number + " " + timeFormat;
+        return number + " " + numberFormat;
     }
 
 }
