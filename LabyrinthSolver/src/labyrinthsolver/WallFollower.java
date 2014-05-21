@@ -73,6 +73,7 @@ public class WallFollower extends LabyrinthSolver {
      */
     @Override
     protected void getExploredCells() {
+        visited = new int[labyrinth.height][labyrinth.width];
         int coordinate = 0;
         visited[0][0] = 2;
         int targetCoordinate = labyrinth.width * labyrinth.height - 1;
