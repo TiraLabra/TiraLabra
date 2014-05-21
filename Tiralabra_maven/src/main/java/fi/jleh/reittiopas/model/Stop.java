@@ -13,6 +13,10 @@ public class Stop {
 		this.order = order;
 		this.service = service;
 	}
+	
+	public Stop(Station station) {
+		this.station = station;
+	}
 
 	public Station getStation() {
 		return station;

@@ -8,8 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import fi.jleh.reittiopas.exception.RoutingFailureException;
+import fi.jleh.reittiopas.model.QuadtreePoint;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.model.Stop;
+import fi.jleh.reittiopas.quadtree.BoundingBox;
 import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.GeomertyUtils;
 
@@ -19,6 +21,10 @@ import fi.jleh.reittiopas.utils.GeomertyUtils;
  */
 public class Router {
 
+	private static final int LINE_CHANGE_PENALTY = 1000;
+	private final double WALK_DISTANCE = 200;
+	private final double WALK_PENALTY = 50; // Walk penalty per meter
+	
 	private DataStructuresDto dataStructures;
 	
 	public Router(DataStructuresDto dto) {
@@ -80,10 +86,13 @@ public class Router {
 						cameFrom.put(station, current);
 						cameFromStop.put(station, stop);
 						
+						// We give some penalty for changing line
 						double linePenalty = 0;
-						if (cameFromStop.get(current) != null 
+						if (cameFromStop.get(current) != null
+								&& stop.getService() != null // When walk to other station service is null
+								&& cameFromStop.get(current).getService() != null // When walk to other station service is null
 								&& stop.getService().getId() != cameFromStop.get(current).getService().getId())
-							linePenalty = 1000;
+							linePenalty = LINE_CHANGE_PENALTY;
 						
 						costFromStart.put(station, tentativeScore);
 						estimatedCost.put(station, tentativeScore + linePenalty); // TODO: Add heuristics
@@ -94,6 +103,38 @@ public class Router {
 					}
 				} else {
 					continue;
+				}
+			}
+			
+			// Because all transportation modes or lines doesn't stop at same stations
+			// (eg. trains don't stop at bus stops) we need to check nearest stations
+			// where user can walk, to get better results.
+			
+			BoundingBox boundingBox = new BoundingBox(current.getX(), current.getY(), WALK_DISTANCE);
+			List<QuadtreePoint> nearbyStations = dataStructures.getStationSpatial().queryRange(boundingBox);
+			
+			for (QuadtreePoint point : nearbyStations) {
+				Station nearbyStation = (Station) point;
+				
+				// Station already checked
+				if (visitedNodes.contains(nearbyStation))
+					continue;
+				
+				double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
+				double tentativeScore = estimatedCost.get(current) + walkDistance;
+				
+				// TODO: Refactor this to use same code with few lines above
+				if (!openNodes.contains(nearbyStation) 
+						|| tentativeScore < costFromStart.get(nearbyStation)) {
+					cameFrom.put(nearbyStation, current);
+					cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
+					
+					costFromStart.put(nearbyStation, tentativeScore);
+					estimatedCost.put(nearbyStation, tentativeScore + WALK_PENALTY * walkDistance);
+					
+					if (!openNodes.contains(nearbyStation)) {
+						openNodes.add(nearbyStation);
+					}
 				}
 			}
 		}
@@ -124,8 +165,14 @@ public class Router {
 	private void printPath(Map<Station, Station> cameFrom, Map<Station, Stop> stops, 
 			Station station) {
 		if (station != null) {
-			if (stops.get(station) != null)
-				System.out.println(station.getName() + " " + stops.get(station).getService().getLineNumber());
+			if (stops.get(station) != null) {
+				String lineNumber = "Walk";
+				
+				if (stops.get(station).getService() != null)
+					lineNumber = stops.get(station).getService().getLineNumber();
+				
+				System.out.println(station.getName() + " " + lineNumber);
+			}
 			else
 				System.out.println(station.getName());
 			

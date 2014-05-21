@@ -1,6 +1,5 @@
 package fi.jleh.reittiopas.app;
 
-import java.util.List;
 import java.util.Scanner;
 
 import fi.jleh.reittiopas.model.Station;
@@ -18,8 +17,6 @@ public class App {
     public static void main( String[] args ) {   
         String file = Unzipper.unzipTimetableData();
         DataStructuresDto data = new ReittiopasXMLParser().parseXML(file);
-        
-        List<Station> stationList = data.getStationList();
 
         Scanner scanner = new Scanner(System.in);
         Router router = new Router(data);
@@ -29,12 +26,14 @@ public class App {
         
         System.out.println("Give station ids");
         
+        // 1431129 1464135
+        
         while (id1 != -1) {
         	id1 = scanner.nextInt();
             id2 = scanner.nextInt();
             
-            Station station1 = stationList.get(id1);
-            Station station2 = stationList.get(id2);
+            Station station1 = data.getStationMap().get(id1);
+            Station station2 = data.getStationMap().get(id2);
             
             System.out.println(station1.getName());
             System.out.println(station2.getName());
