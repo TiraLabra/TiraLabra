@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import labyrinthsolver.LabyrinthSolver;
 import main.Labyrinth;
 
 /**
@@ -16,14 +17,38 @@ import main.Labyrinth;
  */
 public class Gui extends MouseAdapter implements Runnable {
 
+    /**
+     * Frame.
+     */
     JFrame frame;
+    /**
+     * Labyrintti, jolle gui luodaan.
+     */
     Labyrinth labyrinth;
+    /**
+     * Labyrintinratkaisija, joka ratkaisi labyrintin. (Labyrintinratkaisijan
+     * voisi lisätä Labyrintti-luokkaan.)
+     */
+    LabyrinthSolver solver;
+    /**
+     * Piirtoalusta.
+     */
     Canvas canvas;
 
-    public Gui(Labyrinth l) {
+    /**
+     * Alustaa labyrintillä ja labyrintinratkaisijalla.
+     *
+     * @param l Labyrintti, jolle gui luodaan.
+     * @param ls Labyrintinratkaisija, joka ratkaisi labyrintin.
+     */
+    public Gui(Labyrinth l, LabyrinthSolver ls) {
         labyrinth = l;
+        solver = ls;
     }
 
+    /**
+     * Alustaa ja käynnistää guin.
+     */
     @Override
     public void run() {
         frame = new JFrame("Labyrinth solver");
@@ -53,9 +78,15 @@ public class Gui extends MouseAdapter implements Runnable {
         frame.setVisible(true);
     }
 
+    /**
+     * Lisää piirtoalustan frameen.
+     *
+     * @param container Container, mihin piirtoalusta lisätään.
+     * @throws Exception Heittää poikkeuksen, jos labyrintin koko on liian iso!
+     */
     void addCanvas(Container container) throws Exception {
         int cellSize = 500 / labyrinth.height;
-        canvas = new Canvas(labyrinth, cellSize);
+        canvas = new Canvas(labyrinth, solver, cellSize);
         if (labyrinth.height > 50 || labyrinth.width > 50) {
             throw new Exception("Gui can only handle up to 50x50 labyrinths!");
         }
@@ -63,6 +94,10 @@ public class Gui extends MouseAdapter implements Runnable {
         container.add(canvas);
     }
 
+    /**
+     * Myöhemmin lisättävä hiirenkuuntelija...
+     * @param e Hiirieventti.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
     }

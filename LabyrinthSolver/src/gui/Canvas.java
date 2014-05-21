@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import labyrinthsolver.LabyrinthSolver;
 import main.Labyrinth;
+import main.MyList;
 
 /**
  * Graafisen käyttöliittymän piirtoalusta.
@@ -11,15 +14,95 @@ import main.Labyrinth;
  */
 class Canvas extends JPanel {
 
+    /**
+     * Labyrintti, jolle gui luodaan.
+     */
     Labyrinth labyrinth;
+    /**
+     * Labyrintinratkaisija, joka ratkaisi labyrintin. (Labyrintinratkaisijan
+     * voisi lisätä Labyrintti-luokkaan.)
+     */
+    LabyrinthSolver solver;
+    /**
+     * Labyrintin solun koko.
+     */
     int cellSize;
+    /**
+     * Muurin väri. (Musta)
+     */
+    Color wallColor;
+    /**
+     * Visited-solun väri. (~Pinkki)
+     */
+    Color visitedCellColor;
+    /**
+     * Reitin väri. (Punainen)
+     */
+    Color pathColor;
 
-    public Canvas(Labyrinth l, int cs) {
+    /**
+     * Alustaa labyrintillä ja labyrintinratkaisijalla ja alustaa
+     * koko-/väritiedot.
+     *
+     * @param l Labyrintti, jolle gui luodaan.
+     * @param ls Labyrintinratkaisija, joka ratkaisi labyrintin.
+     * @param cs Labyrintin solun koko.
+     */
+    public Canvas(Labyrinth l, LabyrinthSolver ls, int cs) {
         labyrinth = l;
         cellSize = cs;
+        solver = ls;
+        wallColor = new Color(0, 0, 0);
+        visitedCellColor = new Color(255, 174, 201);
+        pathColor = new Color(255, 0, 0);
     }
 
-    void paintCells(Graphics g) {
+    /**
+     * Piirtää polun.
+     *
+     * @param g Grafiikka.
+     */
+    void paintPath(Graphics g) {
+        g.setColor(pathColor);
+        MyList<Integer> path = solver.getPath();
+        int coordinate = path.get(0);
+        for (int i = 1; i < path.size(); i++) {
+            int oldCoordinate = coordinate;
+            coordinate = path.get(i);
+            int x1 = oldCoordinate % labyrinth.width;
+            int y1 = oldCoordinate / labyrinth.width;
+            int x2 = coordinate % labyrinth.width;
+            int y2 = coordinate / labyrinth.width;
+            g.drawLine((int) (cellSize * (x1 + 1.5)), (int) (cellSize * (y1 + 1.5)),
+                    (int) (cellSize * (x2 + 1.5)), (int) (cellSize * (y2 + 1.5)));
+        }
+    }
+
+    /**
+     * Piirtää vieraillut solut.
+     *
+     * @param g Grafiikka.
+     */
+    void paintVisitedCells(Graphics g) {
+        g.setColor(visitedCellColor);
+        int[][] visited = solver.getVisitedCells();
+        for (int i = 0; i < labyrinth.height; i++) {
+            for (int j = 0; j < labyrinth.width; j++) {
+                if (visited[i][j] == 2) {
+                    g.fillRect(cellSize * (j + 1), cellSize * (i + 1),
+                            cellSize, cellSize);
+                }
+            }
+        }
+    }
+
+    /**
+     * Piirtää muurit.
+     *
+     * @param g Grafiikka.
+     */
+    void paintWalls(Graphics g) {
+        g.setColor(wallColor);
         for (int i = 0; i < labyrinth.height; i++) {
             for (int j = 0; j < labyrinth.width; j++) {
                 if (i == 0 && j == 0) {
@@ -45,15 +128,21 @@ class Canvas extends JPanel {
     }
 
     /**
+     * Piirtäjä.
      *
      * @param g Grafiikka.
      */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        paintCells(g);
+        paintVisitedCells(g);
+        paintPath(g);
+        paintWalls(g);
     }
 
+    /**
+     * Päivittää.
+     */
     void update() {
         repaint();
     }

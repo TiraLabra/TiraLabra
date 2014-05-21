@@ -3,6 +3,7 @@ package labyrinthsolver;
 import java.util.Random;
 import main.Labyrinth;
 import main.MyList;
+import main.MyStack;
 
 /**
  * Labyrintin ratkoja-algoritmien yliluokka.
@@ -24,7 +25,7 @@ public abstract class LabyrinthSolver {
      */
     protected int exploredCells;
     /**
-     * Algoritmin lyhin löytämä reitti maaliin.
+     * Reitti maaliin.
      */
     protected MyList<Integer> path;
     /**
@@ -65,6 +66,14 @@ public abstract class LabyrinthSolver {
         } else {
             System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
         }
+        /*
+         * Purkkaa...
+         */
+        int[][] vstd = new int[labyrinth.height][labyrinth.width];
+        for (int i = 0; i < labyrinth.height; i++) {
+            System.arraycopy(visited[i], 0, vstd[i], 0, labyrinth.width);
+        }
+        findPath(vstd);
     }
 
     /**
@@ -79,45 +88,78 @@ public abstract class LabyrinthSolver {
         }
     }
 
-//    private class TreeNode {
-//
-//        TreeNode parent;
-//        int coordinate;
-//
-//        TreeNode(TreeNode p, int c) {
-//            parent = p;
-//            coordinate = c;
-//        }
-//    }
-//
-//    /**
-//     * Etsii polun, jota pitkin kuljettiin..
-//     *
-//     * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
-//     */
-//    protected void findPath(int[][] visited) {
-//        path = new MyList<>();
-//        MyStack<TreeNode> stack = new MyStack<>();
-//        stack.push(new TreeNode(null, 0));
-//        int target = labyrinth.height * labyrinth.width - 1;
-//        while (!stack.empty()) {
-//            TreeNode node = stack.pop();
-//            if (visited[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] == 0) {
-//                continue;
-//            }
-//            visited[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] = 0;
-//            if (node.coordinate == target) {
-//                while (node != null) {
-//                    path.add(node.coordinate);
-//                    node = node.parent;
-//                }
-//                path.reverseList();
-//                return;
-//            }
-//            MyList neighbors = labyrinth.getListOfEdgesToVisitedNeighbors(node.coordinate, visited);
-//            for (int i = 0; i < neighbors.size(); i++) {
-//                stack.push(new TreeNode(node, (int) neighbors.get(i)));
-//            }
-//        }
-//    }
+    /**
+     * Palauttaa vierailtujen solujen arrayn.
+     *
+     * @return Palauttaa vierailtujen solujen arrayn.
+     */
+    public int[][] getVisitedCells() {
+        return visited;
+    }
+
+    /**
+     * Palauttaa listan reitistä maaliin.
+     *
+     * @return Palauttaa listan reitistä maaliin.
+     */
+    public MyList<Integer> getPath() {
+        return path;
+    }
+
+    /**
+     * Polunetsijän käyttämä treenode-apuluokka. (Vähän purkkaa...)
+     */
+    private class TreeNode {
+
+        /**
+         * Parent-alkio.
+         */
+        TreeNode parent;
+        /**
+         * Tämän noden koordinaatti.
+         */
+        int coordinate;
+
+        /**
+         * Alustaa parentilla ja koordinaatilla.
+         *
+         * @param p Parent node.
+         * @param c Koordinaatti.
+         */
+        TreeNode(TreeNode p, int c) {
+            parent = p;
+            coordinate = c;
+        }
+    }
+
+    /**
+     * Etsii polun maaliin kulkemalla visited-arraytä pitkin.
+     *
+     * @param vsted Array, jossa on tietoa labyrintin solujen tilasta.
+     */
+    protected void findPath(int[][] vsted) {
+        path = new MyList<>();
+        MyStack<TreeNode> stack = new MyStack<>();
+        stack.push(new TreeNode(null, 0));
+        int target = labyrinth.height * labyrinth.width - 1;
+        while (!stack.empty()) {
+            TreeNode node = stack.pop();
+            if (vsted[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] == 0) {
+                continue;
+            }
+            vsted[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] = 0;
+            if (node.coordinate == target) {
+                while (node != null) {
+                    path.add(node.coordinate);
+                    node = node.parent;
+                }
+                path.reverseList();
+                return;
+            }
+            MyList neighbors = labyrinth.getListOfEdgesToVisitedNeighbors(node.coordinate, vsted);
+            for (int i = 0; i < neighbors.size(); i++) {
+                stack.push(new TreeNode(node, (int) neighbors.get(i)));
+            }
+        }
+    }
 }
