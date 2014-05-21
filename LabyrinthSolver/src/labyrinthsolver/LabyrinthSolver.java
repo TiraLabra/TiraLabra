@@ -3,7 +3,6 @@ package labyrinthsolver;
 import java.util.Random;
 import main.Labyrinth;
 import main.MyList;
-import main.MyStack;
 
 /**
  * Labyrintin ratkoja-algoritmien yliluokka.
@@ -41,7 +40,6 @@ public abstract class LabyrinthSolver {
     public LabyrinthSolver(Labyrinth l) {
         labyrinth = l;
         random = new Random();
-        visited = new int[labyrinth.height][labyrinth.width];
     }
 
     /**
@@ -81,7 +79,7 @@ public abstract class LabyrinthSolver {
         String timeFormat = "," + (microTime % 1000) + " ms";
         return formatIntegerPart(microTime / 1000) + timeFormat;
     }
-
+    
     /**
      * Tulostusrutiini.
      */
