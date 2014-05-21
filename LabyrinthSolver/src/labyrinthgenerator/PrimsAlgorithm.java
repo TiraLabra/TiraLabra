@@ -8,7 +8,6 @@ import main.MyList;
  *
  * @author Juri Kuronen
  */
-
 public class PrimsAlgorithm extends LabyrinthGenerator {
 
     /**
@@ -20,11 +19,11 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * @see labyrinthgenerator.LabyrinthGenerator
+     * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
     public void routine() {
-        System.out.println("Prim's Algorithm");
+        System.out.print("Prim's Algorithm");
         super.routine();
     }
 
@@ -43,27 +42,27 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
-        CreateEmptyLabyrinthIfNeeded();
+        createEmptyLabyrinthIfNeeded();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         visited[0][0] = 2;  // Start at (0, 0)
         /*
          List could be initialized with labyrinth size / 2.
          */
-        MyList list = getListOfUnvisitedNeighbors(0, visited);
+        MyList<Integer> list = getListOfUnvisitedNeighbors(0, visited);
         while (!list.empty()) {
             int key = random.nextInt(list.size());
             int coordinate = list.get(key);
-            list.remove(key);
+            list.removeByIndex(key);
             visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
-            MyList possibleConnectionsToLabyrinth = getListOfVisitedNeighbors(coordinate, visited);
+            MyList<Integer> possibleConnectionsToLabyrinth = labyrinth.getListOfVisitedNeighbors(coordinate, visited);
             labyrinth.addPassage(coordinate, possibleConnectionsToLabyrinth.get(random.nextInt(possibleConnectionsToLabyrinth.size())));
-            MyList newAdjacentUnvisitedCells = getListOfUnvisitedNeighbors(coordinate, visited);
+            MyList<Integer> newAdjacentUnvisitedCells = getListOfUnvisitedNeighbors(coordinate, visited);
             list.join(newAdjacentUnvisitedCells);
         }
     }
 
     /**
-     * Modifioitu versio yliluokan algoritmista. Tässä versiossa on 3
+     * Modifioitu versio labyrintti-luokan algoritmista. Tässä versiossa on 3
      * 'visited'-tilaa:
      * <br>
      * 0 - Solu ei ole labyrintin polkujen lähettyvillä.<br>
@@ -76,23 +75,10 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      * tilassa 0.
      *
      * @see main.MyList
-     * @see
-     * labyrinthgenerator.LabyrinthGenerator#getListOfUnvisitedNeighbors(int,
-     * int[][])
+     * @see main.Labyrinth#getListOfUnvisitedNeighbors(int, int[][])
      */
-    @Override
-    public MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
-        MyList listOfNeighbours = new MyList(4);
-
-        /*
-         NORTH
-         */
-        if (coordinate / labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] == 0) {
-                visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] = 1;
-                listOfNeighbours.add(coordinate - labyrinth.width);
-            }
-        }
+    MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
+        MyList<Integer> listOfNeighbours = new MyList(4);
 
         /*
          EAST
@@ -115,63 +101,21 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
         }
 
         /*
-         WEST
-         */
-        if (coordinate % labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] == 0) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] = 1;
-                listOfNeighbours.add(coordinate - 1);
-            }
-        }
-
-        return listOfNeighbours;
-    }
-
-    /**
-     * Hakee annetun solun naapurit, jotka ovat osana labyrinttia.
-     *
-     * @param coordinate Koordinaatti, jossa solu on.
-     * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
-     * @return Palauttaa listan annetun koordinaatin naapureista, jotka ovat
-     * osana labyrinttia.
-     *
-     * @see main.MyList
-     */
-    MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
-        MyList listOfNeighbours = new MyList(4);
-
-        /*
          NORTH
          */
         if (coordinate / labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] == 2) {
+            if (visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] == 0) {
+                visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] = 1;
                 listOfNeighbours.add(coordinate - labyrinth.width);
             }
         }
 
         /*
-         EAST
-         */
-        if (coordinate % labyrinth.width + 1 < labyrinth.width) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width + 1] == 2) {
-                listOfNeighbours.add(coordinate + 1);
-            }
-        }
-
-        /*
-         SOUTH
-         */
-        if (coordinate / labyrinth.width + 1 < labyrinth.height) {
-            if (visited[coordinate / labyrinth.width + 1][coordinate % labyrinth.width] == 2) {
-                listOfNeighbours.add(coordinate + labyrinth.width);
-            }
-        }
-
-        /*
          WEST
          */
         if (coordinate % labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] == 2) {
+            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] == 0) {
+                visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] = 1;
                 listOfNeighbours.add(coordinate - 1);
             }
         }
