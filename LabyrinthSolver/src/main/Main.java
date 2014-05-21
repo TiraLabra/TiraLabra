@@ -1,8 +1,7 @@
 package main;
 
-import labyrinthgenerator.KruskalsAlgorithm;
-import labyrinthgenerator.PrimsAlgorithm;
-import labyrinthgenerator.RecursiveBacktracker;
+import labyrinthgenerator.*;
+import labyrinthsolver.*;
 
 /**
  * Tietorakenteet ja algoritmit harjoitustyö. Kesä 2014.
@@ -12,14 +11,22 @@ import labyrinthgenerator.RecursiveBacktracker;
 public class Main {
 
     public static void main(String[] args) {
-        Labyrinth labyrinth = new Labyrinth(100, 100);
-        RecursiveBacktracker rb = new RecursiveBacktracker(labyrinth);
-        rb.routine();
-
+        Labyrinth labyrinth = new Labyrinth(1000, 1000);
         PrimsAlgorithm pa = new PrimsAlgorithm(labyrinth);
-        pa.routine();
-
         KruskalsAlgorithm ka = new KruskalsAlgorithm(labyrinth);
-        ka.routine();
+        RecursiveBacktracker rb = new RecursiveBacktracker(labyrinth);
+        WallFollower wf = new WallFollower(labyrinth);
+        DFS dfs = new DFS(labyrinth);
+        LabyrinthGenerator[] generators = {pa, ka, rb};
+        LabyrinthSolver[] solvers = {wf, dfs};
+        for (LabyrinthGenerator lg : generators) {
+            System.out.println("- - - - - - - - - - - - - - - - - - - - ");
+            lg.routine();
+            System.out.println("");
+            for (LabyrinthSolver ls : solvers) {
+                ls.routine();
+            }
+            System.out.println("");
+        }
     }
 }
