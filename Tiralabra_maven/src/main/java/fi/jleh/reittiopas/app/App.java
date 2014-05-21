@@ -1,6 +1,7 @@
 package fi.jleh.reittiopas.app;
 
 import java.util.List;
+import java.util.Scanner;
 
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.parser.ReittiopasXMLParser;
@@ -20,16 +21,31 @@ public class App {
         
         List<Station> stationList = data.getStationList();
 
-        Station station1 = stationList.get(2000);
-        Station station2 = stationList.get(4500);
+        Scanner scanner = new Scanner(System.in);
+        Router router = new Router();
+
+        int id1 = 0;
+        int id2;
         
-        System.out.println(station1.getName());
-        System.out.println(station2.getName());
+        System.out.println("Give station ids");
         
-        try {
-        	new Router().findRoute(station1, station2);
-        } catch (Exception e) {
-        	e.printStackTrace();
+        while (id1 != -1) {
+        	id1 = scanner.nextInt();
+            id2 = scanner.nextInt();
+            
+            Station station1 = stationList.get(id1);
+            Station station2 = stationList.get(id2);
+            
+            System.out.println(station1.getName());
+            System.out.println(station2.getName());
+            
+            try {
+            	router.findRoute(station1, station2);
+            } catch (Exception e) {
+            	e.printStackTrace();
+            }
         }
+        
+        scanner.close();
     }
 }

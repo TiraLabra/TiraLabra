@@ -7,7 +7,7 @@ import java.util.List;
  * Model class for station in public transport.
  *
  */
-public class Station {
+public class Station implements QuadtreePoint {
 
 	private int id;
 	private String name;

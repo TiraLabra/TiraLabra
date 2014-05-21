@@ -74,8 +74,13 @@ public class Router {
 						cameFrom.put(station, current);
 						cameFromStop.put(station, stop);
 						
+						double linePenalty = 0;
+						if (cameFromStop.get(current) != null 
+								&& stop.getService().getId() != cameFromStop.get(current).getService().getId())
+							linePenalty = 1000;
+						
 						costFromStart.put(station, tentativeScore);
-						estimatedCost.put(station, tentativeScore); // TODO: Add heuristics
+						estimatedCost.put(station, tentativeScore + linePenalty); // TODO: Add heuristics
 						
 						if (!openNodes.contains(station)) {
 							openNodes.add(station);
