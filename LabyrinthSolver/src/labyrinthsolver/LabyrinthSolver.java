@@ -57,14 +57,14 @@ public abstract class LabyrinthSolver {
      * @param integerPart Kokonaislukuosa.
      * @return Palauttaa formatoidun kokonaislukuosan.
      */
-    String formatIntegerPart(long integerPart) {
+    private String formatIntegerPart(long integerPart) {
         String timeFormat;
-        if (integerPart / 1000000 >= 1000) {
-            timeFormat = (integerPart / 1000000000) + " " + (integerPart / 1000000) + " " + ((integerPart / 1000) % 1000);
-        } else if (integerPart / 1000 >= 1000) {
-            timeFormat = (integerPart / 1000000) + " " + ((integerPart / 1000) % 1000);
+        if (integerPart / 1000000 > 0) {
+            timeFormat = (integerPart / 1000000) + " " + (integerPart / 1000) + " " + (integerPart % 1000);
+        } else if (integerPart / 1000 > 0) {
+            timeFormat = (integerPart / 1000) + " " + (integerPart % 1000);
         } else {
-            timeFormat = (integerPart / 1000) + "";
+            timeFormat = integerPart + "";
         }
         return timeFormat;
     }
@@ -76,7 +76,7 @@ public abstract class LabyrinthSolver {
      * @param finishTime Algoritmin suorituksen lopetusaika.
      * @return Palauttaa formatoidun ajan.
      */
-    String timeFormat(long startTime, long finishTime) {
+    private String timeFormat(long startTime, long finishTime) {
         long microTime = finishTime - startTime;
         String timeFormat = "," + (microTime % 1000) + " ms";
         return formatIntegerPart(microTime / 1000) + timeFormat;
