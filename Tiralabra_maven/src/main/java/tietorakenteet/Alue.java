@@ -1,7 +1,7 @@
 package tietorakenteet;
 
 /**
- *
+ * Koko hakualuetta kuvaava luokka
  */
 public class Alue {
     
@@ -11,11 +11,14 @@ public class Alue {
 
     public Alue(int koko) {
         intit = new int[koko][koko];
+        nodet = new Node[koko][koko];
     }
     
+    
+    /**
+     * Metodi, joka luo esimerkkitaulukon
+     */
     public void luoEsimerkkiTaulukko() {
-        
-        int[][] uusi = new int[20][20];
         
         int[][] uusi2 = {
             { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ,
@@ -45,19 +48,16 @@ public class Alue {
             
         }
         
-                
-        
-        
-        
-        
-        
     }
     
+    /**
+     * Palauttaa halutuista koordinaateista noden tiedot
+     * @param x
+     * @param y
+     * @return 
+     */
+    public Node getnode(int x, int y) {
+        return this.nodet[x][y];
+    }
     
-    
-    
-    
-    
-    
-
 }

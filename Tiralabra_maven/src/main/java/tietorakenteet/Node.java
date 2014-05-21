@@ -23,13 +23,16 @@ public class Node implements Comparable<Node> {
      * Konstruktori, joka ottaa parametrainaan x- ja y-koordinaatit.
      * @param x
      * @param y 
+     * @param kustannus nodeen kulkemisen kustannus, oletus 0
      */
     public Node(int x, int y, int kustannus) {
         this.x = x;
         this.y = y;
         this.kustannus = kustannus;
-        
-        
+    }
+    
+    public Node(int x, int y) {
+        this(x, y, 0);
     }
 
     public Node getEdellinen() {
@@ -52,6 +55,14 @@ public class Node implements Comparable<Node> {
         return y;
     }
 
+    public int getKustannus() {
+        return kustannus;
+    }
+
+    public void setKustannus(int kustannus) {
+        this.kustannus = kustannus;
+    }
+    
     public void setEtaisyysAlusta(int etaisyysAlusta) {
         this.etaisyysAlusta = etaisyysAlusta;
     }
@@ -71,7 +82,7 @@ public class Node implements Comparable<Node> {
      */    
     public int compareTo(Node node) {
         
-        return (this.etaisyysAlusta+this.etaisyysMaaliin) - (n.etaisyysAlusta+n.etaisyysMaaliin);
+        return (this.etaisyysAlusta+this.etaisyysMaaliin) - (node.etaisyysAlusta+node.etaisyysMaaliin);
     }
     
     
