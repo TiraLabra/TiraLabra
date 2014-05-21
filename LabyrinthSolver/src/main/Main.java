@@ -1,5 +1,7 @@
 package main;
 
+import gui.Gui;
+import javax.swing.SwingUtilities;
 import labyrinthgenerator.*;
 import labyrinthsolver.*;
 
@@ -37,13 +39,16 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        l = new Labyrinth(10, 10);
+        l = new Labyrinth(30, 30);
         pa = new PrimsAlgorithm(l);
         ka = new KruskalsAlgorithm(l);
         rb = new RecursiveBacktracker(l);
         wf = new WallFollower(l);
         dfs = new DFS(l);
         bfs = new BFS(l);
-        testCase();
+        //testCase();
+        pa.generateLabyrinth();
+        Gui gui = new Gui(l);
+        SwingUtilities.invokeLater(gui);
     }
 }
