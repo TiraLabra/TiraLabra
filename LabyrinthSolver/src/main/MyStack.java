@@ -13,7 +13,7 @@ public class MyStack<E> {
     /**
      * Pinoalkio.
      */
-    private class StackItem {
+    class StackItem {
 
         /**
          * Pinoalkion tieto.
@@ -37,11 +37,11 @@ public class MyStack<E> {
     /**
      * Pinon päällimmäinen alkio.
      */
-    private StackItem top;
+    StackItem top;
     /**
      * Pinon koko.
      */
-    private int size;
+    int size;
 
     /**
      * Luo uuden tyhjän pinon.

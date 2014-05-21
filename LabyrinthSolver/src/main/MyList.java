@@ -11,15 +11,15 @@ public class MyList<E> {
     /**
      * Listan alkiot tallennetaan aputaulukkoon.
      */
-    private Object[] items;
+    Object[] items;
     /**
      * Listan aputaulukon koko.
      */
-    private int maxsize;
+    int maxsize;
     /**
      * Listan koko.
      */
-    private int size;
+    int size;
 
     /**
      * Luo tyhjän listan, jonka aputaulukon kooksi asetetaan oletuksena 16.
