@@ -17,9 +17,10 @@ public class Main {
         RecursiveBacktracker rb = new RecursiveBacktracker(labyrinth);
         WallFollower wf = new WallFollower(labyrinth);
         DFS dfs = new DFS(labyrinth);
+        BFS bfs = new BFS(labyrinth);
         LabyrinthGenerator[] generators = {pa, ka, rb};
-        LabyrinthSolver[] solvers = {wf, dfs};
-        int[] tests = {10, 50, 100, 250, 500, 1000, 2000};
+        LabyrinthSolver[] solvers = {wf, dfs, bfs};
+        int[] tests = {10, 50, 100, 250, 500, 1000, 2000, 3000};
         for (Integer t : tests) {
             labyrinth.updateLabyrinth(t, t);
             for (LabyrinthGenerator lg : generators) {
