@@ -68,13 +68,13 @@ public class WallFollower extends LabyrinthSolver {
     }
 
     /**
-     * Laskee visited-solujen määrän. Käytännössä ajaa solveLabyrinthin
-     * uudelleen, niin että laskee samalla vieraillut solut.
+     * Ajaa käytännössä solveLabyrinthin uudelleen, mutta täydentää samalla
+     * visited-arrayn.
      */
     @Override
     protected void getExploredCells() {
         int coordinate = 0;
-        exploredCells = 1;
+        visited[0][0] = 2;
         int targetCoordinate = labyrinth.width * labyrinth.height - 1;
         /*
          Set initially wall direction to WEST and walk direction to SOUTH.   
@@ -103,8 +103,9 @@ public class WallFollower extends LabyrinthSolver {
              Update coordinate.
              */
             coordinate = labyrinth.getTargetCoordinate(coordinate, walkDirection);
-            exploredCells++;
+            visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
         }
+        super.getExploredCells();
     }
 
 }
