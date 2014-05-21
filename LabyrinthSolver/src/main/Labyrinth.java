@@ -62,6 +62,19 @@ public class Labyrinth {
     }
 
     /**
+     * Tarkastaa, onko annettu koordinaatti validi.
+     *
+     * @param coordinate Annettu koordinaatti.
+     * @return Palauttaa true, jos annettu koordinaatti on validi.
+     */
+    boolean validCoordinate(int coordinate) {
+        return coordinate / width >= 0
+                && coordinate / height >= 0
+                && coordinate / width < width
+                && coordinate / height < height;
+    }
+
+    /**
      * Palauttaa koordinaatin kohteeseen.
      *
      * @param coordinateOrig Solun koordinaatti.
@@ -72,24 +85,24 @@ public class Labyrinth {
      */
     public int getTargetCoordinate(int coordinateOrig, byte mask) throws Exception {
         if (mask == 1) {
-            if (coordinateOrig / width - 1 < 0) {
+            if (!validCoordinate(coordinateOrig - width)) {
                 throw new Exception("Target coordinate not in labyrinth.");
             }
             return coordinateOrig - width;
         }
         if (mask == 2) {
-            if (coordinateOrig % width + 1 >= width) {
+            if (!validCoordinate(coordinateOrig + 1)) {
                 throw new Exception("Target coordinate not in labyrinth.");
             }
             return coordinateOrig + 1;
         }
         if (mask == 4) {
-            if (coordinateOrig / width + 1 >= height) {
+            if (!validCoordinate(coordinateOrig + width)) {
                 throw new Exception("Target coordinate not in labyrinth.");
             }
             return coordinateOrig + width;
         }
-        if (coordinateOrig % width - 1 < 0) {
+        if (!validCoordinate(coordinateOrig - 1)) {
             throw new Exception("Target coordinate not in labyrinth.");
         }
         return coordinateOrig - 1;
@@ -100,8 +113,13 @@ public class Labyrinth {
      *
      * @param coordinateOrig Solun koordinaatti.
      * @param coordinateTarget Kohteen koordinaatti.
+     * @throws java.lang.Exception Palauttaa poikkeuksen, jos jokin annetuista
+     * koordinaateista ei ollut labyrintin sisällä.
      */
-    public void addPassage(int coordinateOrig, int coordinateTarget) {
+    public void addPassage(int coordinateOrig, int coordinateTarget) throws Exception {
+        if (!(validCoordinate(coordinateOrig) && validCoordinate(coordinateTarget))) {
+            throw new Exception("Invalid coordinates given.");
+        }
         if (coordinateOrig - width == coordinateTarget) {
             labyrinth[coordinateOrig / width][coordinateOrig % width] |= 1;
             labyrinth[coordinateTarget / width][coordinateTarget % width] |= 4;
@@ -111,7 +129,7 @@ public class Labyrinth {
         } else if (coordinateOrig + width == coordinateTarget) {
             labyrinth[coordinateOrig / width][coordinateOrig % width] |= 4;
             labyrinth[coordinateTarget / width][coordinateTarget % width] |= 1;
-        } else {
+        } else if (coordinateOrig - 1 == coordinateTarget) {
             labyrinth[coordinateOrig / width][coordinateOrig % width] |= 8;
             labyrinth[coordinateTarget / width][coordinateTarget % width] |= 2;
         }
@@ -322,7 +340,8 @@ public class Labyrinth {
     }
 
     public String formatTime(long time) {
-        return formatNumber(time / 1000) + "," + formatNumber(time % 1000) + " ms";
+        DecimalFormat df = new DecimalFormat("000");
+        return formatNumber(time / 1000) + "," + df.format(time % 1000) + " ms";
     }
 
     /**
