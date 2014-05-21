@@ -39,7 +39,7 @@ public abstract class LabyrinthGenerator {
      *
      * @see main.Labyrinth
      */
-    public void createEmptyLabyrinthIfNeeded() {
+    private void createEmptyLabyrinthIfNeeded() {
         if (labyrinth.labyrinth[0][0] != 0) {
             labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
         }
@@ -50,6 +50,7 @@ public abstract class LabyrinthGenerator {
      */
     public void routine() {
         System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
+        createEmptyLabyrinthIfNeeded();
         long startTime = System.nanoTime() / 1000;
         generateLabyrinth();
         long microTime = System.nanoTime() / 1000 - startTime;

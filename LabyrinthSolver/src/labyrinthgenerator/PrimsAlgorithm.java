@@ -42,7 +42,6 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
-        createEmptyLabyrinthIfNeeded();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         visited[0][0] = 2;  // Start at (0, 0)
         /*

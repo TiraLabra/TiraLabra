@@ -128,7 +128,6 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() {
-        createEmptyLabyrinthIfNeeded();
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
