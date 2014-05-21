@@ -22,7 +22,6 @@ public class DFS extends LabyrinthSolver {
      */
     public DFS(Labyrinth l) {
         super(l);
-        stack = new MyStack<>();
     }
 
     /**
@@ -44,6 +43,7 @@ public class DFS extends LabyrinthSolver {
     public boolean solveLabyrinth() {
         int targetCoordinate = labyrinth.width * labyrinth.height - 1;
         visited = new int[labyrinth.height][labyrinth.width];
+        stack = new MyStack<>();
         stack.push(0);
         while (!stack.empty()) {
             int coordinate = stack.pop();
