@@ -4,13 +4,14 @@ package main;
  * Listatietorakenne.
  *
  * @author Juri Kuronen
+ * @param <E> Alkion tietotyyppi.
  */
-public class MyList {
+public class MyList<E> {
 
     /**
      * Listan alkiot tallennetaan aputaulukkoon.
      */
-    private int[] items;
+    private Object[] items;
     /**
      * Listan aputaulukon koko.
      */
@@ -26,7 +27,7 @@ public class MyList {
     public MyList() {
         size = 0;
         maxsize = 16;
-        items = new int[16];
+        items = new Object[16];
     }
 
     /**
@@ -37,7 +38,7 @@ public class MyList {
     public MyList(int ms) {
         size = 0;
         maxsize = ms;
-        items = new int[ms];
+        items = new Object[ms];
     }
 
     /**
@@ -45,13 +46,13 @@ public class MyList {
      * luodaan uusi kaksi kertaa isompi aputaulukko ja kopioidaan vanhat alkiot
      * siihen.
      *
-     * @param value Alkion arvo, joka lisätään listaan.
+     * @param item Alkio, joka lisätään listaan.
      */
-    public void add(int value) {
-        items[size] = value;
+    public void add(Object item) {
+        items[size] = item;
         size++;
         if (size == maxsize) {
-            int[] newItems = new int[maxsize * 2];
+            Object[] newItems = new Object[maxsize * 2];
             System.arraycopy(items, 0, newItems, 0, maxsize);
             items = newItems;
             maxsize *= 2;
@@ -61,26 +62,49 @@ public class MyList {
     /**
      * Poistaa listan viimeisimmän alkion.
      *
+     * @return Palauttaa listan viimeisimmän alkion.
      */
-    public void remove() {
+    public E removeLast() {
         if (size == 0) {
-            return;
+            return null;
         }
         size--;
+        return (E) items[size];
     }
 
     /**
-     * Vaihtaa annettuun indeksiin listan päädyn alkion ja vähentää listan kokoa
-     * yhdellä. Tämä operaatio poisti listasta alkion annetusta indeksistä.
+     * Poistaa alkion annetusta indeksistä. (Listan päädyn alkio vaihdetaan
+     * tähän kohtaan ja sen jälkeen listan kokoa vähennetään yhdellä.)
      *
      * @param key Poistettavan alkion indeksi.
+     * @return Palauttaa poistettavan alkion.
      */
-    public void remove(int key) {
-        if (key >= size) {
-            return;
+    public E removeByIndex(int key) {
+        if (key >= size || key < 0) {
+            return null;
         }
-        items[key] = items[size - 1];
+        swap(key, size - 1);
         size--;
+        return (E) items[size];
+    }
+
+    /**
+     * Etsii ja poistaa annetun alkion, jos se löytyy. (Listan päädyn alkio
+     * vaihdetaan tähän kohtaan ja sen jälkeen listan kokoa vähennetään
+     * yhdellä.)
+     *
+     * @param item Poistettava alkio.
+     * @return Palauttaa poistettavan alkion.
+     */
+    public E removeByValue(Object item) {
+        for (int i = 0; i < size; i++) {
+            if (items[i].equals(item)) {
+                swap(i, size - 1);
+                size--;
+                return (E) items[size];
+            }
+        }
+        return null;
     }
 
     /**
@@ -89,11 +113,11 @@ public class MyList {
      * @param key Haettavan alkion indeksi.
      * @return Palauttaa alkion arvon annetusta indeksistä.
      */
-    public int get(int key) {
+    public E get(int key) {
         if (key >= size) {
             throw new IndexOutOfBoundsException();
         }
-        return items[key];
+        return (E) items[key];
     }
 
     /**
@@ -116,12 +140,50 @@ public class MyList {
 
     /**
      * Yhdistää annetun listan alkiot tähän listaan.
-     * 
+     *
      * @param list Lista, joka yhdistetään tähän listaan.
      */
     public void join(MyList list) {
         for (int i = 0; i < list.size; i++) {
             add(list.get(i));
+        }
+    }
+
+    /**
+     * Vaihtaa kahden indeksin alkioiden paikat.
+     *
+     * @param index1 Alkion 1 indeksi.
+     * @param index2 Alkion 2 indeksi.
+     */
+    public void swap(int index1, int index2) {
+        if (index1 < 0 || index2 < 0 || index1 >= size || index2 >= size) {
+            return;
+        }
+        Object temp = items[index1];
+        items[index1] = items[index2];
+        items[index2] = temp;
+    }
+
+    /**
+     * Kääntää listan alkioiden järjestyksen.
+     */
+    public void reverseList() {
+        for (int i = 0; i < size / 2; i++) {
+            swap(i, size - 1 - i);
+        }
+    }
+
+    /**
+     * Kopioi toisen listan sisällön.
+     *
+     * @param list2 Lista, josta kopioidaan.
+     */
+    public void copy(MyList<E> list2) {
+        size = list2.size();
+        maxsize = list2.maxsize;
+        items = new Object[list2.maxsize];
+        for (int i = 0; i < list2.size; i++) {
+            items[i] = list2.get(i);
         }
     }
 }
