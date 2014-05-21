@@ -48,23 +48,63 @@ public class MatrixTest {
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void exceptionIsThrownIfTryingToCreateMatrixWithNegativeNumberOfRows(){
+    public void tryingToCreateMatrixWithNegativeNumberOfRowsCausesException(){
         matrix = new Matrix(-5, 2);
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void exceptionIsThrownIfTryingToCreateMatrixWithNegativeNumberOfColumns(){
+    public void tryingToCreateMatrixWithNegativeNumberOfColumnsCausesException(){
         matrix = new Matrix(5, -2);
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void exceptionIsThrownIfTryingToCreateMatrixWithZeroRows(){
+    public void tryingToCreateMatrixWithZeroRowsCausesException(){
         matrix = new Matrix(0, 2);
     }
     
-     @Test (expected = IllegalArgumentException.class)
-    public void exceptionIsThrownIfTryingToCreateMatrixWithZeroColumns(){
+    @Test (expected = IllegalArgumentException.class)
+    public void tryingToCreateMatrixWithZeroColumnsCausesException(){
         matrix = new Matrix(5, 0);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void insertingAtNegativeRowIndexCausesException(){
+        matrix.setElement(10, -1, 0);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void insertingAtRowIndexEqualToRowLengthCausesException(){
+        matrix.setElement(10, matrix.rows(), 0);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void insertingAtNegativeColumnIndexCausesException(){
+        matrix.setElement(10, 0, -1);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void insertingAtColumnIndexEqualToColumnLengthCausesException(){
+        matrix.setElement(10, 0, matrix.cols());
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void gettingElementAtNegativeRowIndexCausesException(){
+        matrix.getElement(-1, 0);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void gettingElementAtRowIndexEqualToRowLengthCausesException(){
+        matrix.getElement(matrix.rows(), 0);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void gettingElementAtNegativeColumnIndexCausesException(){
+        matrix.getElement(0, -1);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void gettingElementAtColumnIndexEqualToColumnLengthCausesException(){
+        matrix.getElement(0, matrix.cols());
     }
     
     @Test

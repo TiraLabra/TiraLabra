@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class Matrix {
 
-    private double[][] values;
+    private double[][] elements;
     private int rows;
     private int cols;
 
@@ -20,9 +20,9 @@ public class Matrix {
      * @param values a 2d double array containing the elements of the matrix
      */
     public Matrix(double[][] values) {
-        this.values = values;
-        this.rows = this.values.length;
-        this.cols = this.values[0].length;
+        this.elements = values;
+        this.rows = this.elements.length;
+        this.cols = this.elements[0].length;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Matrix {
         }
         this.rows = rows;
         this.cols = cols;
-        this.values = new double[rows][cols];
+        this.elements = new double[rows][cols];
     }
 
     /**
@@ -59,6 +59,46 @@ public class Matrix {
     public int cols() {
         return cols;
     }
+    
+    /**
+     * Returns the element at the specified position in this matrix.
+     * @param row the row index of the element to return
+     * @param col the column index of the element to return
+     * @return the element at the specified position
+     * @throws IllegalArgumentException if the row or column index is out of range (row < 0 || row >= rows() || col < 0 || col >= cols())
+     */
+    public double getElement(int row, int col){
+        if(indexOutOfRange(row, 0, rows)){
+            int maxIndex = rows-1;
+            throw new IllegalArgumentException("Row index must be in the range 0... " + maxIndex + " but was " + row);
+        }
+        if (indexOutOfRange(col, 0, cols)){
+            int maxIndex = cols-1;
+            throw new IllegalArgumentException("Column index must be in the range 0... " + maxIndex + " but was " + row);
+        }
+        return elements[row][col];
+    }
+
+    
+    
+    /**
+     * Replaces the element at the specified position in this matrix with the specified element.
+     * @param value the element to be inserted at the specified position
+     * @param row the row index of the element to replace
+     * @param col the column index of the element to replace
+     * @throws IllegalArgumentException if the row or column index is out of range (row < 0 || row >= rows() || col < 0 || col >= cols())
+     */
+    public void setElement(double value, int row, int col){
+        if(indexOutOfRange(row, 0, rows)){
+            int maxIndex = rows-1;
+            throw new IllegalArgumentException("Row index must be in the range 0... " + maxIndex + " but was " + row);
+        }
+        if (indexOutOfRange(col, 0, cols)){
+            int maxIndex = cols-1;
+            throw new IllegalArgumentException("Column index must be in the range 0... " + maxIndex + " but was " + row);
+        }
+        elements[row][col] = value;
+    }
 
     @Override
     public String toString() {
@@ -67,7 +107,7 @@ public class Matrix {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                returnString += format.format(values[i][j]);
+                returnString += format.format(elements[i][j]);
                 if (j != cols - 1) {
                     returnString += "\t";
                 }
@@ -93,25 +133,41 @@ public class Matrix {
         }
         Matrix other = (Matrix) otherObject;
         if (this.rows() != other.rows || this.cols != other.cols) return false;
-        return allElementsEqual(this, other);
+        return allElementsEqual(other);
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + Arrays.deepHashCode(this.values);
+        hash = 29 * hash + Arrays.deepHashCode(this.elements);
         return hash;
     }
 
-    private boolean allElementsEqual(Matrix matrixA, Matrix matrixB) {
-        for (int i = 0; i < matrixA.rows; i++){
-            for (int j = 0; j < matrixA.cols; j++){
-                if (matrixA.values[i][j] != matrixB.values[i][j]){
+    /**
+     * Indicates whether all elements in corresponding positions are equal in this matrix and the other matrix.
+     * @param other the matrix to which this matrix is compared
+     * @return true if all elements in corresponding positions of this and the other matrix are equal; false otherwise 
+     */
+    private boolean allElementsEqual(Matrix other) {
+        for (int i = 0; i < this.rows; i++){
+            for (int j = 0; j < this.cols; j++){
+                if (this.elements[i][j] != other.elements[i][j]){
                     return false;
                 }
             }
         }
         return true;
+    }
+    
+    /**
+     * Evaluates whether the specified index is within the specified range.
+     * @param index the index to be evaluated
+     * @param min the range minimum (included)
+     * @param max the range maximum (excluded)
+     * @return true if the index is out of the specified range (index < min || index >= max); false otherwise
+     */
+    private boolean indexOutOfRange(int index, int min, int max) {
+        return index < min || index >= max;
     }
 
 }
