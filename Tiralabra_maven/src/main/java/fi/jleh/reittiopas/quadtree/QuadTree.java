@@ -78,8 +78,31 @@ public class QuadTree {
 				boundingBox.getCenterY(), boundingBox.getMinY()));
 	}
 	
-	public List<QuadtreePoint> queryRange(BoundingBox boundingBox) {
-		return null;
+	public List<QuadtreePoint> queryRange(BoundingBox queryBox) {
+		List<QuadtreePoint> list = new ArrayList<>();
+		
+		// This node is not in range. Return empty list
+		if (!queryBox.intersects(this.boundingBox)) {
+			return list;
+		}
+		
+		// Collect points that are in range
+		for (QuadtreePoint point : this.points) {
+			if (queryBox.containsPoint(point)) {
+				list.add(point);
+			}
+		}
+		
+		// There is no more children
+		if (northWest == null)
+			return list;
+		
+		list.addAll(northWest.queryRange(queryBox));
+		list.addAll(northEast.queryRange(queryBox));
+		list.addAll(southWest.queryRange(queryBox));
+		list.addAll(southEast.queryRange(queryBox));
+		
+		return list;
 	}
 	
 	public BoundingBox getBoundingBox() {
