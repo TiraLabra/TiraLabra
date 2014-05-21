@@ -45,7 +45,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      * @see main.Labyrinth#addPassage(int, int)
      */
     @Override
-    public void generateLabyrinth() {
+    public void generateLabyrinth() throws Exception {
         MyStack<Integer> stack = new MyStack();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         int coordinate = 0; // Start at (0, 0)
