@@ -4,39 +4,40 @@ package verkko;
 import java.util.HashMap;
 
 /**
- *
+ * Verkon solmu joka ei sisällä mitään tietoa paitsi siihen liitettyjen muiden solmujen viitteet ja painot
  * @author Arvoitusmies
  */
 public class Solmu {
 
-    private HashMap<Solmu,Integer> naapurit;
+    private HashMap<Solmu,Double> naapurit;
     
     /**
-     *
+     * Alustaa hajautustaulun naapureille
      */
     public Solmu(){
-        this(new HashMap<Solmu, Integer>());
+        this(new HashMap<Solmu, Double>());
     }
     
     /**
-     *
+     * Käyttää olemassaolevaa naapuri hajautustaulua sellaisenaan
      * @param naapurit
      */
-    public Solmu(HashMap<Solmu, Integer> naapurit){
+    public Solmu(HashMap<Solmu, Double> naapurit){
         this.naapurit=naapurit;
     }
     
     /**
-     *
-     * @param s
+     * Lisää solmun painolla paino naapureihin.
+	 * Huom: ei lisää tätä solmua solmun s naapureihin!
+     * @param s lisättävä solmu
      * @param paino
      */
-    public void lisaaNaapuri(Solmu s, Integer paino){
+    public void lisaaNaapuri(Solmu s, Double paino){
         naapurit.put(s, paino);
     }
     
     /**
-     *
+     * Kyselee onko annettu solmu naapuri
      * @param s
      * @return
      */
@@ -45,19 +46,19 @@ public class Solmu {
     }
     
     /**
-     *
+     * Palauttaa painon solmulle s. Ei tarkistele mitään.
      * @param s
      * @return
      */
-    public Integer paino(Solmu s){
+    public Double paino(Solmu s){
         return naapurit.get(s);
     }
     
     /**
-     *
+     * Palauttaa naapurit ja painot
      * @return
      */
-    public HashMap<Solmu, Integer> getNaapurit(){
+    public HashMap<Solmu, Double> getNaapurit(){
         return naapurit;
     }
 }

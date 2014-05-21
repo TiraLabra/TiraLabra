@@ -5,11 +5,14 @@
 package labyrintti;
 
 import verkko.KoordinoituSolmu;
-
+/**
+ * Luokka kaksiulotteisille labyrinteille
+ */
 public class Labyrintti2D {
 
     private KoordinoituSolmu[][] solmut;
 
+	
     public Labyrintti2D(int i, int j) {
         this.solmut = new KoordinoituSolmu[i][j];
         for (int k = 0; k < solmut.length; k++) {

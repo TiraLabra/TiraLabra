@@ -3,6 +3,9 @@ package util;
 import java.util.Collection;
 import java.util.Comparator;
 
+/**
+ * Binäärikeko jossa olioita järjestettynä annetun Comparatorin mukaan
+ */
 public class Keko<E> {
 
     private E[] taulukko;
