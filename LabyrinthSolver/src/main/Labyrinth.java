@@ -1,7 +1,5 @@
 package main;
 
-import labyrinthgenerator.*;
-
 /**
  * Labyrintti-olio.
  *
@@ -10,7 +8,7 @@ import labyrinthgenerator.*;
 public class Labyrinth {
 
     /**
-     * Labyrintti on tallennettu height * width -kokoiseen arrayhun.
+     * Labyrintti on tallennettu korkeus*leveys-kokoiseen arrayhun.
      */
     public byte[][] labyrinth;
     /**
@@ -21,23 +19,6 @@ public class Labyrinth {
      * Labyrintin korkeus.
      */
     public int height;
-
-    /**
-     * Maski pohjoissuunnalle.
-     */
-    private final byte NORTH = 1;
-    /**
-     * Maski itäsuunnalle.
-     */
-    private final byte EAST = 2;
-    /**
-     * Maski eteläsuunnalle.
-     */
-    private final byte SOUTH = 4;
-    /**
-     * Maski länsisuunnalle.
-     */
-    private final byte WEST = 8;
 
     /**
      *
@@ -51,12 +32,27 @@ public class Labyrinth {
     }
 
     /**
+     * Päivittää labyrintin koko.
+     *
+     * @param w Labyrintin leveys.
+     * @param h Labyrintin korkeus.
+     */
+    public void updateLabyrinth(int w, int h) {
+        width = w;
+        height = h;
+        labyrinth = new byte[height][width];
+    }
+
+    /**
      * (TEMP) Tulostusrutiini.
      */
     public void print() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                System.out.printf("%d%d%d%d ", labyrinth[i][j] & NORTH, labyrinth[i][j] & EAST, labyrinth[i][j] & SOUTH, labyrinth[i][j] & WEST);
+                System.out.print(((labyrinth[i][j] & 1) > 0) ? "N" : "0");
+                System.out.print(((labyrinth[i][j] & 2) > 0) ? "E" : "0");
+                System.out.print(((labyrinth[i][j] & 4) > 0) ? "S" : "0");
+                System.out.print(((labyrinth[i][j] & 8) > 0) ? "W " : "0 ");
             }
             System.out.println("");
         }
@@ -91,18 +87,222 @@ public class Labyrinth {
      */
     public void addPassage(int coordinateOrig, int coordinateTarget) {
         if (coordinateOrig - width == coordinateTarget) {
-            labyrinth[coordinateOrig / width][coordinateOrig % width] |= NORTH;
-            labyrinth[coordinateTarget / width][coordinateTarget % width] |= SOUTH;
+            labyrinth[coordinateOrig / width][coordinateOrig % width] |= 1;
+            labyrinth[coordinateTarget / width][coordinateTarget % width] |= 4;
         } else if (coordinateOrig + 1 == coordinateTarget) {
-            labyrinth[coordinateOrig / width][coordinateOrig % width] |= EAST;
-            labyrinth[coordinateTarget / width][coordinateTarget % width] |= WEST;
+            labyrinth[coordinateOrig / width][coordinateOrig % width] |= 2;
+            labyrinth[coordinateTarget / width][coordinateTarget % width] |= 8;
         } else if (coordinateOrig + width == coordinateTarget) {
-            labyrinth[coordinateOrig / width][coordinateOrig % width] |= SOUTH;
-            labyrinth[coordinateTarget / width][coordinateTarget % width] |= NORTH;
+            labyrinth[coordinateOrig / width][coordinateOrig % width] |= 4;
+            labyrinth[coordinateTarget / width][coordinateTarget % width] |= 1;
         } else {
-            labyrinth[coordinateOrig / width][coordinateOrig % width] |= WEST;
-            labyrinth[coordinateTarget / width][coordinateTarget % width] |= EAST;
+            labyrinth[coordinateOrig / width][coordinateOrig % width] |= 8;
+            labyrinth[coordinateTarget / width][coordinateTarget % width] |= 2;
         }
+    }
+
+    /**
+     * Annetun koordinaatin vierailemattomat naapurit.
+     *
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param visited Array, jossa on tietoa labyrintin solujen tilasta.
+     * @return Palauttaa listan annetun koordinaatin vierailemattomista
+     * naapureista.
+     *
+     * @see main.MyList
+     */
+    public MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
+        MyList<Integer> listOfNeighbours = new MyList(4);
+
+        /*
+         EAST
+         */
+        if (coordinate % width + 1 < width) {
+            if (visited[coordinate / width][coordinate % width + 1] == 0) {
+                listOfNeighbours.add(coordinate + 1);
+            }
+        }
+
+        /*
+         SOUTH
+         */
+        if (coordinate / width + 1 < height) {
+            if (visited[coordinate / width + 1][coordinate % width] == 0) {
+                listOfNeighbours.add(coordinate + width);
+            }
+        }
+
+        /*
+         NORTH
+         */
+        if (coordinate / width - 1 >= 0) {
+            if (visited[coordinate / width - 1][coordinate % width] == 0) {
+                listOfNeighbours.add(coordinate - width);
+            }
+        }
+
+        /*
+         WEST
+         */
+        if (coordinate % width - 1 >= 0) {
+            if (visited[coordinate / width][coordinate % width - 1] == 0) {
+                listOfNeighbours.add(coordinate - 1);
+            }
+        }
+
+        return listOfNeighbours;
+    }
+
+    /**
+     * Annetun koordinaatin naapurit, joissa on vierailtu. Eli naapurit, jotka
+     * ovat osana labyrinttia.
+     *
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param visited Array, jossa on tietoa labyrintin solujen tilasta.
+     * @return Palauttaa listan annetun koordinaatin naapureista, jotka ovat
+     * osana labyrinttia.
+     *
+     * @see main.MyList
+     */
+    public MyList getListOfVisitedNeighbors(int coordinate, int[][] visited) {
+        MyList<Integer> listOfNeighbours = new MyList(4);
+
+        /*
+         EAST
+         */
+        if (coordinate % width + 1 < width) {
+            if (visited[coordinate / width][coordinate % width + 1] == 2) {
+                listOfNeighbours.add(coordinate + 1);
+            }
+        }
+
+        /*
+         SOUTH
+         */
+        if (coordinate / width + 1 < height) {
+            if (visited[coordinate / width + 1][coordinate % width] == 2) {
+                listOfNeighbours.add(coordinate + width);
+            }
+        }
+
+        /*
+         NORTH
+         */
+        if (coordinate / width - 1 >= 0) {
+            if (visited[coordinate / width - 1][coordinate % width] == 2) {
+                listOfNeighbours.add(coordinate - width);
+            }
+        }
+
+        /*
+         WEST
+         */
+        if (coordinate % width - 1 >= 0) {
+            if (visited[coordinate / width][coordinate % width - 1] == 2) {
+                listOfNeighbours.add(coordinate - 1);
+            }
+        }
+
+        return listOfNeighbours;
+    }
+
+    /**
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
+     * @return
+     *
+     * @see main.MyList
+     */
+    public MyList getListOfEdgesToUnvisitedNeighbors(int coordinate, int[][] visited) {
+        MyList<Integer> listOfNeighbours = new MyList(4);
+
+        /*
+         EAST
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 2) > 0) {
+            if (visited[coordinate / width][coordinate % width + 1] == 0) {
+                listOfNeighbours.add(coordinate + 1);
+            }
+        }
+
+        /*
+         SOUTH
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 4) > 0) {
+            if (visited[coordinate / width + 1][coordinate % width] == 0) {
+                listOfNeighbours.add(coordinate + width);
+            }
+        }
+
+        /*
+         NORTH
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 1) > 0) {
+            if (visited[coordinate / width - 1][coordinate % width] == 0) {
+                listOfNeighbours.add(coordinate - width);
+            }
+        }
+
+        /*
+         WEST
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 8) > 0) {
+            if (visited[coordinate / width][coordinate % width - 1] == 0) {
+                listOfNeighbours.add(coordinate - 1);
+            }
+        }
+
+        return listOfNeighbours;
+    }
+
+    /**
+     *
+     *
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param visited Array, jossa on tietoa labyrintin solujen tiloista.
+     *
+     * @see main.MyList
+     */
+    public MyList getListOfEdgesToVisitedNeighbors(int coordinate, int[][] visited) {
+        MyList<Integer> listOfNeighbours = new MyList(4);
+
+        /*
+         EAST
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 2) > 0) {
+            if (visited[coordinate / width][coordinate % width + 1] == 2) {
+                listOfNeighbours.add(coordinate + 1);
+            }
+        }
+
+        /*
+         SOUTH
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 4) > 0) {
+            if (visited[coordinate / width + 1][coordinate % width] == 2) {
+                listOfNeighbours.add(coordinate + width);
+            }
+        }
+
+        /*
+         NORTH
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 1) > 0) {
+            if (visited[coordinate / width - 1][coordinate % width] == 2) {
+                listOfNeighbours.add(coordinate - width);
+            }
+        }
+
+        /*
+         WEST
+         */
+        if ((labyrinth[coordinate / width][coordinate % width] & 8) > 0) {
+            if (visited[coordinate / width][coordinate % width - 1] == 2) {
+                listOfNeighbours.add(coordinate - 1);
+            }
+        }
+
+        return listOfNeighbours;
     }
 
 }
