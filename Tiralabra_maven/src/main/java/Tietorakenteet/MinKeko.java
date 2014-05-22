@@ -48,9 +48,9 @@ public class MinKeko {
         Solmu poistettava = keko[0];
         
         this.koko--;
-        keko[0] = keko[this.koko];
-        heapify(0);
-        
+        keko[0] = keko[this.koko];                      //    1
+        heapify(0);                                     //  2   3
+                                                        // 5 6 7 8
         return poistettava;
     }
     
@@ -58,7 +58,7 @@ public class MinKeko {
         int vasen = vasen(i);
         int oikea = oikea(i);
         
-        if (oikea <= koko) {
+        if (oikea < koko) {
             int pienempi = vasen;
             
             if (keko[oikea].getEsiintymat() < keko[vasen].getEsiintymat()) {
@@ -71,7 +71,7 @@ public class MinKeko {
             }
         }
         
-        else if (vasen == koko && keko[i].getEsiintymat() > keko[vasen].getEsiintymat()) {
+        else if (vasen == koko - 1 && keko[i].getEsiintymat() > keko[vasen].getEsiintymat()) {
             vaihda(i, vasen);
         }
     }

@@ -1,0 +1,11 @@
+abcdeabcdabcaba
+--------------------------------------
+Keon yhdistämisen jälkeen Huffman puu:
+
+a --> 11	(3)
+b --> 10	(2)
+c --> 00	(0)
+d --> 011	(3)
+e --> 010	(2)
+
+Nyt merkit saavat "saman" binääriesityksen. Virhe?

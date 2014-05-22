@@ -56,20 +56,21 @@ public class MinKekoTest {
     
     @Test
     public void lisatytSolmutMenevatKekoonSitenEttaPieninEkana() {
-        keko.lisaa(new Solmu("a", 7));
-        keko.lisaa(new Solmu("b", 8));
-        keko.lisaa(new Solmu("c", 5));
-        keko.lisaa(new Solmu("d", 4));
-        keko.lisaa(new Solmu("e", 7));
-        assertEquals("d", keko.getKeko()[0].getAvain());
+        assertEquals("d", keko2.getKeko()[0].getAvain());
     }
     
     @Test
     public void alkioidenPoistoKeosta() {
         Solmu poistettu = keko2.poistaHuippuSolmu();
         assertEquals("d", poistettu.getAvain());
-        Solmu seuraava = keko2.poistaHuippuSolmu();
-        assertEquals("c", seuraava.getAvain());
+        poistettu = keko2.poistaHuippuSolmu();
+        assertEquals("c", poistettu.getAvain());
+        
         assertEquals(3, keko2.getKoko());
+        
+        keko2.poistaHuippuSolmu();
+        keko2.poistaHuippuSolmu();
+        poistettu = keko2.poistaHuippuSolmu();
+        assertEquals("b", poistettu.getAvain());
     }
 }

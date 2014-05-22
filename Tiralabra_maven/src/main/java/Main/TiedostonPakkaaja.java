@@ -4,19 +4,22 @@ import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class TiedostonPakkaaja {
-    private HashMap<String, Integer> hash;
+    private HashMap<String, Integer> esiintymat;
+    private HashMap<String, String> bittijonot;
     private String teksti;
     
     public TiedostonPakkaaja() {
-        this.hash = new HashMap<String, Integer>();
+        this.esiintymat = new HashMap<String, Integer>();
         this.teksti = "";
     }
     
-    public void pakkaa(String polku) {
+    public void pakkaa(String polku) throws IOException {
         
         try {
             haeTeksti(polku);
@@ -29,10 +32,11 @@ public class TiedostonPakkaaja {
         
         MinKeko keko = muodostaKeko();
         yhdistaKeonSolmut(keko);
-        System.out.println(keko.getKeko()[0].getEsiintymat());
+        bittijonot = new HashMap<String, String>();
         
-        // seuraavaksi puun rekursiivinen läpikäynti, bittijonojen muodostus jokaista String merkkijonoa varten.
-        // tämän jälkeen voidaan luoda uusi tiedosto, kelata teksti läpi, kirjoittaa tähän tiedostoon tarvittava bittijono ja homma selvä
+        muodostaMerkeilleBittiEsitykset(keko.getKeko()[0], "");
+        
+        luoUusiTiedosto(keko, polku);
     }
     
     private void haeTeksti(String polku) throws FileNotFoundException {
@@ -67,18 +71,18 @@ public class TiedostonPakkaaja {
     private void lisaaMerkki(String merkki) {
         int maara = 1;
         
-        if (hash.containsKey(merkki)) {
-            maara += hash.get(merkki);
+        if (esiintymat.containsKey(merkki)) {
+            maara += esiintymat.get(merkki);
         }
         
-        hash.put(merkki, maara);
+        esiintymat.put(merkki, maara);
         teksti += merkki;
     }
     
     private MinKeko muodostaKeko() {
-        MinKeko keko = new MinKeko(hash.keySet().size());
-        for (String avain : hash.keySet()) {
-            keko.lisaa(new Solmu(avain, hash.get(avain)));
+        MinKeko keko = new MinKeko(esiintymat.keySet().size());
+        for (String avain : esiintymat.keySet()) {
+            keko.lisaa(new Solmu(avain, esiintymat.get(avain)));
         }
         
         return keko;
@@ -86,10 +90,10 @@ public class TiedostonPakkaaja {
     
     private void yhdistaKeonSolmut(MinKeko keko) {
         while (keko.getKoko() > 1) {
-            Solmu oikea = keko.poistaHuippuSolmu();
             Solmu vasen = keko.poistaHuippuSolmu();
+            Solmu oikea = keko.poistaHuippuSolmu();
             
-            Solmu yhdistetty = new Solmu(oikea.getEsiintymat() + vasen.getEsiintymat());
+            Solmu yhdistetty = new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());
             
             yhdistetty.setVasen(vasen);
             yhdistetty.setOikea(oikea);
@@ -98,5 +102,59 @@ public class TiedostonPakkaaja {
             
             keko.lisaa(yhdistetty);
         }
+    }
+
+    private void muodostaMerkeilleBittiEsitykset(Solmu huippu, String bittijono) {
+//        if (huippu == null) {
+//            return;
+//        }
+        
+        if (huippu.getAvain() != null) {
+            bittijonot.put(huippu.getAvain(), bittijono);
+            return;
+        }
+        
+        muodostaMerkeilleBittiEsitykset(huippu.getVasen(), bittijono + "0");
+        muodostaMerkeilleBittiEsitykset(huippu.getOikea(), bittijono + "1");
+    }
+
+//    private int kokonaisluvuksi(String bittijono) {
+//        int luku = 0;
+//        
+//        for (int i = 0; i < bittijono.length(); i++) {
+//            if (bittijono.charAt(i) == '1') {
+//                luku += Math.pow(2, bittijono.length() - i - 1);    // 1001010
+//            }
+//        }
+//        return luku;
+//    }
+
+    private void luoUusiTiedosto(MinKeko keko, String polku) throws IOException {
+        File tiedosto = new File(polku + ".mihu");
+        if (! tiedosto.exists()) {
+            tiedosto.createNewFile();
+        }
+        else {
+            System.out.print("Tiedostoa vastaava pakkaus on jo olemassa. Tiedostoa ei pakata uudestaan.");
+            return;
+        }
+        
+        tiedosto.setWritable(true);
+        kirjoitaTiedostoon(keko, tiedosto);
+    }
+    
+    private void kirjoitaTiedostoon(MinKeko keko, File tiedosto) throws IOException {
+        FileWriter kirjoittaja = new FileWriter(tiedosto);
+        
+        for (int i = 0; i < teksti.length(); i++) {
+            String merkki = teksti.charAt(i) + "";
+            String binary = bittijonot.get(merkki);
+            
+            kirjoittaja.append(binary);
+        }
+        
+        // Huffman puu (eli keko) täytyy jollain lailla kirjoittaa tekstitiedostoon mukaan siten että sitä voidaan käyttää purkuvaiheessa järkevästi.
+        
+        kirjoittaja.close();
     }
 }
