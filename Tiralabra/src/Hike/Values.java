@@ -5,14 +5,16 @@
 package Hike;
 
 /**
- *
+ *  Contains essential values for the application.
  * @author petri
  */
 public class Values {
     public static final int IMAGEHEIGHT = 500;
     public static final int IMAGEWIDTH = 800;
-    public static final int NORMALGROUND = 0;
-    public static final int WOODS = 40;
-    public static final int DESERT = 80;
+    public static final int NORMALGROUND = 1;
+    public static final int WOODS = 10;
+    public static final int DESERT = 20;
+    public static final int WATER = 200;
+    public static final int MOUNTAIN = 400;
     
 }

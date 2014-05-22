@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Hike.controls;
 
 import Hike.gameWindow.*;
@@ -9,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- *
- * @author petri
+ * Listens to mouse clicks.
+ * 
  */
 public class ClickListener implements ActionListener {
     

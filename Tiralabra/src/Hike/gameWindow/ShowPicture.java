@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- *
+ *  Class for showing pictures.
  * @author petri
  */
 public class ShowPicture extends JPanel {

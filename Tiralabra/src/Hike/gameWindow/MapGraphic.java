@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 /**
- *
+ *  Opens the map and route in a new window
  * @author petri
  */
 public class MapGraphic extends JPanel implements Runnable {
@@ -21,10 +21,10 @@ public class MapGraphic extends JPanel implements Runnable {
     private DrawMap map;
 
     public void run() {
-        frame = new JFrame("Hike");
+        frame = new JFrame("Dijkstra");
         frame.setPreferredSize(new Dimension(900, 600));
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         createComponents(frame.getContentPane());
 
@@ -40,7 +40,4 @@ public class MapGraphic extends JPanel implements Runnable {
         container.add(map);
     }
 
-    public void paint(Graphics g) {
-        g.draw3DRect(30, 60, 80, 80, true);
-    }
 }

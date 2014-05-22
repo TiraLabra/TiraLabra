@@ -1,188 +1,170 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Hike.Algorithms;
 
+import Hike.Graph.Node;
 import Hike.ImageTable.ImageTable;
 import Hike.Values;
 import Hike.gameWindow.GameScreen;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.Stack;
 
 /**
- *
- * @author petri
+ * This class calculates distances to nodes using Dijkstra's algorithm.
+ * nodeTable contains the table that has been set up in class Node
+ * Checked and Unchecked contain nodes that are being examined in the algorithm
+ * Neighbours contains the neighbours of a node
+ * Que is a stack used to print the shortest path
  */
+
 public class Dijkstra {
 
-    private int[][] table;
-    private int[][] d;
-    private char[][] previous;
-    private int startx = 0;
-    private int starty = 0;
-    private int goalx = 799;
-    private int goaly = 499;
-    private final int max = 2000000;
-    private ArrayDeque<Character> stack;
+    private Node[][] nodeTable;
+    private Set<Node> checked;
+    private Set<Node> unchecked;
+    private LinkedList<Node> neighbours;
+    private Deque<Node> que;
+    private double c;   // Will be used to count something
+    
+    /**
+     * Constructor, sets variables and runs the search.
+     * 
+     * @param nodeTable Table containing all Nodes that are used
+     */
 
-    public Dijkstra(ImageTable table) {
-        this.table = table.getTable();
-        d = new int[Values.IMAGEHEIGHT][Values.IMAGEWIDTH];
-        previous = new char[Values.IMAGEHEIGHT][Values.IMAGEWIDTH];
+    public Dijkstra(Node[][] nodeTable) {
+        
+        c = 0;
+        this.que = new ArrayDeque<Node>();
+        this.nodeTable = nodeTable;
+        this.checked = new HashSet<Node>();
+        this.unchecked = new HashSet<Node>();
         initialize();
-        distances();
+        findDijkstra();
+//        nodeTable[0][0].printTable();
+        System.out.println("Calculations: " + (long) c + " plus varmaan miljardi lisää jossain, tää ei ole valmis vielä");
+        System.out.println("Square root: " + Math.sqrt(c));
+    }
+    
+    /**
+     * Starts the Dijkstra algorithm. Always starts from position 0,0 in the grid.
+     * Node is placed into the unchecked list, the unchecked list is checked for the node containing the smallest distance,
+     * that node is then placed to the checked list and the distances to it's neighbours is calculated.
+     * 
+     */
+
+    private void findDijkstra() {
+        Node eval = nodeTable[0][0];
+        unchecked.add(eval);
+
+        while (unchecked.isEmpty() == false) {
+
+            eval = getLowestDistance();
+            unchecked.remove(eval);
+            checked.add(eval);
+            checkNeighbours(eval);
+
+
+        }
+    }
+    
+    /**
+     * Relaxes all neighbours that have not yet been checked.
+     * @param eval The node whose neighbours are relaxed
+     */
+
+    private void checkNeighbours(Node eval) {
+        neighbours = eval.getNeighbours();
+        for (Node node : neighbours) {
+            if (checked.contains(node) == false) {
+                relax(eval, node);
+
+            }
+        }
 
 
     }
+    
+    /**
+     * Finds the smallest distance node from the unchecked list
+     * @return node with smallest distance value
+     */
+
+    private Node getLowestDistance() {
+        int smallest = 2100000;
+        Node small = new Node(1, 1, smallest);
+        for (Node node : unchecked) {
+            if (node.getDistance() < small.getDistance()) {
+                small = node;
+            }
+
+        }
+        return small;
+
+    }
+    
+    /**
+     * Sets the distance of the starting point to 0.
+     */
 
     private void initialize() {
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
-                d[y][x] = max;
-
-
-            }
-        }
-        d[0][0] = 0;
-        previous[0][0] = 'S';
-
-    }
-
-    private void relax(int sy, int sx, int ty, int tx) {
-        if (d[ty][tx] > d[sy][sx] + w(sx, sy, tx, ty)) {
-            d[ty][tx] = d[sy][sx] + w(sx, sy, tx, ty);
-            if (sy < ty) {
-                previous[ty][tx] = 'D';
-            }
-            if (sy > ty) {
-                previous[ty][tx] = 'U';
-            }
-            if (sx < tx) {
-                previous[ty][tx] = 'R';
-            }
-            if (sx > tx) {
-                previous[ty][tx] = 'L';
-            }
-
-
-        }
-    }
-
-    private int w(int sx, int sy, int tx, int ty) {
-        return table[ty][tx];
-    }
-
-    private void distances() {
-
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
-                relaxNeighbours(y, x);
-            }
-        }
-        printPath();
-        printDistances();
-
-    }
-
-    private void relaxNeighbours(int y, int x) {
-        if (x == 0 && y == 0) {
-            relax(y, x, y, x + 1);
-            relax(y, x, y + 1, x);
-        } else if ((x != 0 && x != Values.IMAGEWIDTH - 1) && (y != 0 && y != Values.IMAGEHEIGHT - 1)) {
-            relax(y, x, y, x + 1);
-            relax(y, x, y, x - 1);
-            relax(y, x, y + 1, x);
-            relax(y, x, y - 1, x);
-        } else if (x == 0 && y < Values.IMAGEHEIGHT - 1) {
-            relax(y, x, y, x + 1);
-            relax(y, x, y + 1, x);
-            relax(y, x, y - 1, x);
-        } else if (x == 0 && y == Values.IMAGEHEIGHT - 1) {
-            relax(y, x, y, x + 1);
-            relax(y, x, y - 1, x);
-        } else if (x < Values.IMAGEWIDTH - 1 && y == 0) {
-            relax(y, x, y, x + 1);
-            relax(y, x, y + 1, x);
-        } else if (x == Values.IMAGEWIDTH - 1 && y < Values.IMAGEHEIGHT - 1) {
-            relax(y, x, y, x - 1);
-            relax(y, x, y + 1, x);
-        } else if (x == Values.IMAGEWIDTH && y == Values.IMAGEHEIGHT) {
-            relax(y, x, y, x - 1);
-            relax(y, x, y - 1, x);
-        }
-
-    }
-
-    public void printDistances() {
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
-            System.out.println("");
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
-                System.out.print(d[y][x] + " ");
-
-            }
-
-
-        }
-    }
-
-    public void printPath() {
-        int ty = 499;
-        int tx = 799;
-        stack = new ArrayDeque<Character>();
-        char u = previous[ty][tx];
-        while (u != 'S') {
-            stack.addFirst(u);
-            if (u == 'D') {
-                ty--;
-                u = previous[ty][tx];
-
-            } else if (u == 'U') {
-                ty++;
-                u = previous[ty][tx];
-
-            } else if (u == 'L') {
-                tx++;
-                u = previous[ty][tx];
-
-            } else if (u == 'R') {
-                tx--;
-                u = previous[ty][tx];
-
-            }
-        }
-
-
+        nodeTable[0][0].setDistance(0);
 
 
     }
-    public ArrayDeque<Character> getDeque() {
-        return this.stack;
     
-}
+    
+   /**
+    * Checks if distance to a goal is shorter by travelling through start
+    * @param start 
+    * @param goal
+    */
 
-    public char printStack() {
-        if (stack.size() > 0) {
-        return stack.pop(); }
-        return 'S';
-        
-
-
-
-
-
-    }
-
-    private void printPrevious() {
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
-            System.out.println("");
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
-                System.out.print(previous[y][x]);
-
-            }
+    private void relax(Node start, Node goal) {
+        if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
+            goal.setDistance(start.getDistance() + goal.getWeight());
+            goal.setPrevious(start);
+            unchecked.add(goal);
 
 
         }
+
+    }
+    
+    /**
+     * Places the nodes previous node in a stack to find shortest route from y,x to 0,0.
+     * @param y
+     * @param x 
+     */
+
+    public void buildPath(int y, int x) {
+        Node u = nodeTable[y][x].getPrevious();
+        while (u != null) {
+            que.push(u);
+            u = u.getPrevious();
+
+        }
+
+    }
+    
+    /**
+     * Pops a value from the stack
+     * @return 
+     */
+
+    public Node nextPath() {
+        if (que.size() > 0) {
+
+
+            return que.poll();
+        }
+        return null;
+
+
+
+
     }
 }
