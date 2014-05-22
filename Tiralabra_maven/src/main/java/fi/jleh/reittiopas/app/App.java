@@ -26,11 +26,12 @@ public class App {
         
         System.out.println("Give station ids");
         
-        // 1431129 1464135
+        // 1113127 1465552 0700
         
         while (id1 != -1) {
         	id1 = scanner.nextInt();
             id2 = scanner.nextInt();
+            String startTime = scanner.next();
             
             Station station1 = data.getStationMap().get(id1);
             Station station2 = data.getStationMap().get(id2);
@@ -39,7 +40,7 @@ public class App {
             System.out.println(station2.getName());
             
             try {
-            	router.findRoute(station1, station2);
+            	router.findRoute(station1, station2, startTime);
             } catch (Exception e) {
             	e.printStackTrace();
             }

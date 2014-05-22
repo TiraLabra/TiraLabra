@@ -14,6 +14,7 @@ import fi.jleh.reittiopas.model.Stop;
 import fi.jleh.reittiopas.quadtree.BoundingBox;
 import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.GeomertyUtils;
+import fi.jleh.reittiopas.utils.TimeUtils;
 
 /**
  * Class to find best route between stops.
@@ -21,9 +22,11 @@ import fi.jleh.reittiopas.utils.GeomertyUtils;
  */
 public class Router {
 
-	private static final int LINE_CHANGE_PENALTY = 1000;
-	private final double WALK_DISTANCE = 200;
-	private final double WALK_PENALTY = 50; // Walk penalty per meter
+	private static final int LINE_CHANGE_PENALTY = 10000;
+	private final double WALK_DISTANCE = 100;
+	private final double WALK_PENALTY = 50000; // Walk penalty per meter
+	private final double WALKING_SPEED = 1.5; // In m/s
+	private final double TIME_MODIFIER = 200;
 	
 	private DataStructuresDto dataStructures;
 	
@@ -39,11 +42,23 @@ public class Router {
 	 * @throws RoutingFailureException
 	 */
 	public void findRoute(Station start, Station end) throws RoutingFailureException {
+		findRoute(start, end, null);
+	}
+	
+	/**
+	 * Finds routes between two stations on given start time.
+	 * @param start
+	 * @param end
+	 * @param startTime
+	 * @throws RoutingFailureException
+	 */
+	public void findRoute(Station start, Station end, String startTime) throws RoutingFailureException {
 		Set<Station> visitedNodes = new HashSet<Station>();
 		List<Station> openNodes = new ArrayList<Station>();
 		
 		Map<Station, Station> cameFrom = new HashMap<Station, Station>();
 		Map<Station, Stop> cameFromStop = new HashMap<Station, Stop>();
+		Map<Station, String> timeAtStation = new HashMap<Station, String>();
 		
 		Map<Station, Double> costFromStart = new HashMap<Station, Double>();
 		Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
@@ -52,13 +67,14 @@ public class Router {
 		costFromStart.put(start, 0.0);
 		estimatedCost.put(start, GeomertyUtils.calculateDistance(start, end));
 		openNodes.add(start);
+		timeAtStation.put(start, startTime);
 		
 		while (!openNodes.isEmpty()) {
 			Station current = getBestStation(openNodes, estimatedCost);
 			
 			if (current == end) {
 				System.out.println("Route found");
-				printPath(cameFrom, cameFromStop, current);
+				printPath(cameFrom, cameFromStop, timeAtStation, current);
 				
 				return;
 			}
@@ -81,21 +97,41 @@ public class Router {
 					double tentativeScore = estimatedCost.get(current) 
 							+ GeomertyUtils.calculateDistance(current, station);
 					
-					if (!openNodes.contains(station) 
-							|| tentativeScore < costFromStart.get(station)) {
+					if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
+						// Do time check
+						// Ignore if start time is not set
+						double timeScore = 0;
+						if (startTime != null ) {
+							Integer time1 = Integer.parseInt(timeAtStation.get(current));
+							Integer time2 = Integer.parseInt(stop.getArrival());
+							
+							// Can't go back in time
+							if (time2 <= time1)
+								continue;
+							
+							timeScore = Math.abs(time2 - time1) * TIME_MODIFIER;
+							
+							// Time from start
+							tentativeScore += time2 - Integer.parseInt(startTime);
+						}
+						
 						cameFrom.put(station, current);
 						cameFromStop.put(station, stop);
+						timeAtStation.put(station, stop.getArrival());
 						
 						// We give some penalty for changing line
 						double linePenalty = 0;
 						if (cameFromStop.get(current) != null
 								&& stop.getService() != null // When walk to other station service is null
-								&& cameFromStop.get(current).getService() != null // When walk to other station service is null
-								&& stop.getService().getId() != cameFromStop.get(current).getService().getId())
-							linePenalty = LINE_CHANGE_PENALTY;
+								&& cameFromStop.get(current).getService() != null) { // As above
+							if (stop.getService().getId() != cameFromStop.get(current).getService().getId())
+								linePenalty = LINE_CHANGE_PENALTY;
+							else
+								timeScore = 0; // Reset time score, no need to change the vehicle
+						}
 						
-						costFromStart.put(station, tentativeScore);
-						estimatedCost.put(station, tentativeScore + linePenalty); // TODO: Add heuristics
+						costFromStart.put(station, tentativeScore + timeScore);
+						estimatedCost.put(station, tentativeScore + linePenalty + timeScore);
 						
 						if (!openNodes.contains(station)) {
 							openNodes.add(station);
@@ -122,6 +158,7 @@ public class Router {
 				
 				double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
 				double tentativeScore = estimatedCost.get(current) + walkDistance;
+				int walkTime = (int) ((walkDistance * WALKING_SPEED) / 60);
 				
 				// TODO: Refactor this to use same code with few lines above
 				if (!openNodes.contains(nearbyStation) 
@@ -129,8 +166,13 @@ public class Router {
 					cameFrom.put(nearbyStation, current);
 					cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
 					
-					costFromStart.put(nearbyStation, tentativeScore);
-					estimatedCost.put(nearbyStation, tentativeScore + WALK_PENALTY * walkDistance);
+					String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
+					timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
+					
+					int timeScore = Integer.parseInt(timeAfterWalk) - Integer.parseInt(startTime);
+					
+					costFromStart.put(nearbyStation, tentativeScore + timeScore);
+					estimatedCost.put(nearbyStation, tentativeScore + timeScore + WALK_PENALTY * walkDistance);
 					
 					if (!openNodes.contains(nearbyStation)) {
 						openNodes.add(nearbyStation);
@@ -163,20 +205,31 @@ public class Router {
 	}
 	
 	private void printPath(Map<Station, Station> cameFrom, Map<Station, Stop> stops, 
-			Station station) {
-		if (station != null) {
+			Map<Station, String> timeAtStation, Station station) {
+		
+		StringBuilder wkt = new StringBuilder("LINESTRING (");
+		
+		while (station != null) {
 			if (stops.get(station) != null) {
 				String lineNumber = "Walk";
 				
 				if (stops.get(station).getService() != null)
 					lineNumber = stops.get(station).getService().getLineNumber();
 				
-				System.out.println(station.getName() + " " + lineNumber);
+				System.out.println(station.getName() + " " + timeAtStation.get(station) 
+						+ " " + lineNumber);
 			}
 			else
 				System.out.println(station.getName());
 			
-			printPath(cameFrom, stops, cameFrom.get(station));
+			wkt.append(station.getX());
+			wkt.append(" ");
+			wkt.append(station.getY());
+			wkt.append(", ");
+			
+			station = cameFrom.get(station);
 		}
+		
+		System.out.println(wkt);
 	}
 }
