@@ -33,13 +33,23 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="StringAlgorithmsStaticLib.cbp" />
+		<Unit filename="algorithms/hashing/bernstein.cpp" />
+		<Unit filename="algorithms/hashing/bernstein.hpp" />
+		<Unit filename="algorithms/hashing/hashing.cpp" />
+		<Unit filename="algorithms/hashing/hashing.hpp" />
+		<Unit filename="algorithms/hashing/sum_hashing.cpp" />
+		<Unit filename="algorithms/hashing/sum_hashing.hpp" />
 		<Unit filename="algorithms/knuth_morris_pratt.hpp" />
 		<Unit filename="algorithms/naive.cpp" />
 		<Unit filename="algorithms/naive.hpp" />
+		<Unit filename="algorithms/rabin_karp.cpp" />
+		<Unit filename="algorithms/rabin_karp.hpp" />
 		<Unit filename="algorithms/z_algorithm.hpp" />
 		<Unit filename="constants.hpp" />
+		<Unit filename="friends.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="string_slib.hpp" />
+		<Unit filename="structures/knuth_morris_pratt.hpp" />
 		<Unit filename="structures/suffix_tree.hpp" />
 		<Extensions>
 			<code_completion />
