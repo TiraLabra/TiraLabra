@@ -28,6 +28,7 @@ A suffix tree can be built in O(n) time where n is the length of string we are b
 - I have an idea to implement a fast data structure for string matching using hashing and a binary indexed tree. Generally, 
 there will be preprocessing of the string in O(n * logn) time and answering queries whether a substring from start_index to
 end_index matches another string.
+The basic idea in my head right now is that I will be using a binary index tree which can answer queries in the type q(a,b) and return the sum of all elements of the array S from a to b in logN time where N is the size of the string (array). Since the array could get quite big then it makes sense to use a hashing function so that there aren't any overflows. Then check whether the hash of [a,b] equals the hash of the string we are searching for. If we are fine with errors and the hashing function is good enough, supports rolling hashing and there aren't too many collisions, then we can answer queries in just logN time with not too many errors.
 - Search for consistent data structures for string searching/pattern matching or for something similar to B+ trees, but for strings.
 
 
