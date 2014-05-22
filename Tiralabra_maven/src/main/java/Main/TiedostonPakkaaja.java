@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+// Hajauta koodi useisiin luokkiin ja kirjoita niille testit. hajauta myös metodeja pienemmiksi.
+
 public class TiedostonPakkaaja {
     private HashMap<String, Integer> esiintymat;
     private HashMap<String, String> bittijonot;
