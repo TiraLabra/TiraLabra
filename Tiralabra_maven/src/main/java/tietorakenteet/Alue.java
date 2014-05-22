@@ -20,7 +20,7 @@ public class Alue {
      */
     public void luoEsimerkkiTaulukko() {
         
-        int[][] uusi2 = {
+        int[][] numeroina = {
             { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ,
             { 0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0} ,
             { 0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0} ,
@@ -42,7 +42,7 @@ public class Alue {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
 
-                Node n = new Node(i, j, uusi2[i][j]);
+                Node n = new Node(i, j, numeroina[i][j]);
                 nodet[i][j] = n;
             }
             

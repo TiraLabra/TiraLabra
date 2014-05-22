@@ -14,6 +14,7 @@ public class Node implements Comparable<Node> {
     
     private Node edellinen;
     
+    //tarvitaankohan...
     private int syvyys;
     
     private int kustannus;
