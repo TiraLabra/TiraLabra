@@ -2,33 +2,38 @@ package tiralabra.app;
 
 import java.util.Scanner;
 import tiralabra.game.Board;
+import tiralabra.game.Game;
 
 /**
- * Hello world!
+ * Used for manual debugging and testing.
  *
  */
 public class App {
 
-    public static void main(String[] args) {
-        Board game = new Board();
-
+    public static void main(String[] args) throws InterruptedException {
+        Game othello = new Game(false, true);
         Scanner scanner = new Scanner(System.in);
-        int turn = 1;
+        
         while (true) {
             System.out.println("------------");
-            printBoard(game.getBoard());
+            printBoard(othello.getBoard());
             System.out.println("");
             System.out.print("y: ");
             int y = Integer.parseInt(scanner.nextLine());
             System.out.print("x: ");
             int x = Integer.parseInt(scanner.nextLine());
-            if (game.put(x, y, turn)) {
-                turn = turn == 1 ? 2 : 1;
-            }
+            
+            othello.playHumanTurn(Board.point(x, y));
+            
+            printBoard(othello.getBoard());
+            
+            Thread.sleep(1000);
+            
+            othello.playAITurn();
         }
     }
 
-    public static void printBoard(int[][] game) {
+    public static void printBoard(byte[][] game) {
         System.out.print(" ");
         for (int x = 0; x < game.length; x++) {
             System.out.print(x);

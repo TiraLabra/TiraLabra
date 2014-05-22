@@ -8,7 +8,8 @@ package tiralabra.game;
 import java.util.ArrayList;
 
 /**
- * The game board.
+ * The game board. Responsible only for holding the pieces and placing them on
+ * the board.
  *
  * @author atte
  */
@@ -17,18 +18,30 @@ public class Board {
     /**
      * Integer matrix of the board. 0 == Empty, 1 == WHITE, 2 == BLACK.
      */
-    private int[][] board;
+    private byte[][] board;
+    public static byte WHITE = 1;
+    public static byte BLACK = 2;
 
     public Board() {
-        this.board = new int[8][8];
+        this.board = new byte[8][8];
 
-        board[3][3] = 1;
-        board[3][4] = 2;
-        board[4][3] = 2;
-        board[4][4] = 1;
+        board[3][3] = WHITE;
+        board[3][4] = BLACK;
+        board[4][3] = BLACK;
+        board[4][4] = WHITE;
     }
 
-    public boolean put(int x, int y, int team) {
+    /**
+     * Checks whether the piece can be placed in the given position, and places
+     * it there, flipping all applicable pieces.
+     *
+     * @param x
+     * @param y
+     * @param team
+     * @return true, if the piece was successfully placed on the board, false if
+     * the move was illegal
+     */
+    public boolean put(int x, int y, byte team) {
         if (!checkPointForLegal(x, y, team)) {
             return false;
         }
@@ -39,14 +52,18 @@ public class Board {
         return true;
     }
 
+    public boolean put(long point, byte team) {
+        return put(x(point), y(point), team);
+    }
+
     /**
      * Finds and lists all the legal moves on the board.
      *
      * @param team
      * @return
      */
-    public ArrayList<Long> findLegalMoves(int team) {
-        ArrayList<Long> legalMoves = new ArrayList<Long>();
+    public ArrayList<Long> findLegalMoves(byte team) {
+        ArrayList<Long> legalMoves = new ArrayList<>();
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[0].length; x++) {
                 if (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team)) {
@@ -58,8 +75,8 @@ public class Board {
         return legalMoves;
     }
 
-    private boolean checkPointForLegal(int x, int y, int team) {
-        return board[y][x] == 0 && checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team);
+    private boolean checkPointForLegal(int x, int y, byte team) {
+        return board[y][x] == 0 && (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team));
     }
 
     /**
@@ -67,27 +84,27 @@ public class Board {
      *
      * @param x
      * @param y
-     * @return
+     * @return x and y coordinates converted to a single long variable
      */
-    private static long point(int x, int y) {
+    public static long point(int x, int y) {
         return (((long) x) << 32) | y;
     }
 
     /**
-     * Extracts the x coordinate from a point long.
+     * Extracts the x coordinate from a long.
      *
      * @param point
-     * @return
+     * @return integer x-coordinate converted from a given long variable.
      */
     public static int x(long point) {
         return (int) (point >> 32);
     }
 
     /**
-     * Extracts the y coordinate from a point long.
+     * Extracts the y coordinate from a long.
      *
      * @param point
-     * @return
+     * @return integer y-coordinate converted from a given long variable
      */
     public static int y(long point) {
         return (int) point;
@@ -99,9 +116,10 @@ public class Board {
      * @param x
      * @param y
      * @param team
-     * @return
+     * @return true if the piece is the opponent's, false if there is no piece
+     * or the piece is mine
      */
-    private boolean checkForOpponent(int x, int y, int team) {
+    private boolean checkForOpponent(int x, int y, byte team) {
         if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
             return false;
         }
@@ -109,29 +127,34 @@ public class Board {
     }
 
     /**
-     * Checks whether the given coordinates contain my piece.
+     * Checks whether the given coordinates contain my piece, eg. piece of the
+     * given team,
      *
      * @param x
      * @param y
      * @param team
-     * @return
+     * @return true if the piece is mine, false if there is no piece or the
+     * piece is the opponent's
      */
-    private boolean checkForMyPiece(int x, int y, int team) {
-        if ((x >= 0 && x < board[0].length && y >= 0 && y < board.length)) {
-            return board[y][x] != 0 && board[y][x] == team;
+    private boolean checkForMyPiece(int x, int y, byte team) {
+        if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
+            return false;
         }
-        return false;
+        return board[y][x] != 0 && board[y][x] == team;
     }
 
     /**
-     * Checks whether the move is legal when considering only diagonal pieces.
+     * Checks whether the move is legal when considering only pieces aligned
+     * diagonally with this piece.
      *
      * @param x
      * @param y
      * @param team
-     * @return
+     * @return true if the move is legal, false if the move can't be determined
+     * to be legal when considering pieces aligned diagonally with the given
+     * coordinates
      */
-    private boolean checkDiagonalLegal(int x, int y, int team) {
+    private boolean checkDiagonalLegal(int x, int y, byte team) {
         return (checkDirection(x, y, 1, 1, team)
                 || checkDirection(x, y, 1, -1, team)
                 || checkDirection(x, y, -1, 1, team)
@@ -140,14 +163,15 @@ public class Board {
 
     /**
      * Checks whether the move is legal when considering only pieces in the same
-     * column
+     * column.
      *
      * @param x
      * @param y
      * @param team
-     * @return
+     * @return true if the move is legal, false if the move can't be determined
+     * to be legal when considering this column.
      */
-    private boolean checkHorizontalLegal(int x, int y, int team) {
+    private boolean checkHorizontalLegal(int x, int y, byte team) {
         return (checkDirection(x, y, 0, 1, team)
                 || checkDirection(x, y, 0, -1, team));
     }
@@ -159,23 +183,27 @@ public class Board {
      * @param x
      * @param y
      * @param team
-     * @return
+     * @return true if the move is legal, false if the move can't be determined
+     * to be legal when considering this row.
      */
-    private boolean checkVerticalLegal(int x, int y, int team) {
+    private boolean checkVerticalLegal(int x, int y, byte team) {
         return (checkDirection(x, y, 1, 0, team)
                 || checkDirection(x, y, -1, 0, team));
     }
 
     /**
-     * Checks whether the given direction would make the coordinates a legal move.
+     * Checks whether the given direction would make the coordinates a legal
+     * move.
+     *
      * @param x
      * @param y
      * @param dx
      * @param dy
      * @param team
-     * @return 
+     * @return true if the move is legal, false if the move can't be determined
+     * to be legal when considering only this direction from the given piece
      */
-    private boolean checkDirection(int x, int y, int dx, int dy, int team) {
+    private boolean checkDirection(int x, int y, int dx, int dy, byte team) {
         int inBetween = 0;
         while (checkForOpponent(x + dx, y + dy, team)) {
             inBetween++;
@@ -185,24 +213,58 @@ public class Board {
         return inBetween > 0 && checkForMyPiece(x + dx, y + dy, team);
     }
 
-    private void flipDiagonally(int x, int y, int team) {
+    /**
+     * Flips all applicable pieces between the given coordinates and the pieces
+     * of this player that are aligned diagonally.
+     *
+     * @param x
+     * @param y
+     * @param team
+     */
+    private void flipDiagonally(int x, int y, byte team) {
         flipDirection(x, y, 1, 1, team);
         flipDirection(x, y, 1, -1, team);
         flipDirection(x, y, -1, 1, team);
         flipDirection(x, y, -1, -1, team);
     }
 
-    private void flipHorizontally(int x, int y, int team) {
+    /**
+     * Flips all applicable pieces between the given coordinates and the pieces
+     * of this player that are in the same column.
+     *
+     * @param x
+     * @param y
+     * @param team
+     */
+    private void flipHorizontally(int x, int y, byte team) {
         flipDirection(x, y, 0, 1, team);
         flipDirection(x, y, 0, -1, team);
     }
 
-    private void flipVertically(int x, int y, int team) {
+    /**
+     * Flips all applicable pieces between the given coordinates and the pieces
+     * of this player that are in the same row.
+     *
+     * @param x
+     * @param y
+     * @param team
+     */
+    private void flipVertically(int x, int y, byte team) {
         flipDirection(x, y, 1, 0, team);
         flipDirection(x, y, -1, 0, team);
     }
 
-    private void flipDirection(int x, int y, int dx, int dy, int team) {
+    /**
+     * Flips all the pieces in a given direction from the given coordinates,
+     * when applicable
+     *
+     * @param x
+     * @param y
+     * @param dx
+     * @param dy
+     * @param team
+     */
+    private void flipDirection(int x, int y, int dx, int dy, byte team) {
         if (!checkDirection(x, y, dx, dy, team)) {
             return;
         }
@@ -213,15 +275,43 @@ public class Board {
         }
     }
 
+    /**
+     * Flips the piece to the opposing color in the given coordinates.
+     *
+     * @param x
+     * @param y
+     */
     private void flip(int x, int y) {
-        board[y][x] = board[y][x] == 1 ? 2 : 1;
+        board[y][x] = board[y][x] == WHITE ? BLACK : WHITE;
     }
 
-    public int[][] getBoard() {
+    /**
+     * Sets the board 2d array to the given 2d array. Used for testing purposes.
+     *
+     * @param board
+     */
+    public void setBoard(byte[][] board) {
+        this.board = board;
+    }
+
+    /**
+     * Gets the board 2d array.
+     *
+     * @return the board 2d array
+     */
+    public byte[][] getBoard() {
         return board;
     }
-    
-    public void setBoard(int[][] board) {
-        this.board = board;
+
+    public int getNumberOfPieces(byte team) {
+        int count = 0;
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                if (board[y][x] == team) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
