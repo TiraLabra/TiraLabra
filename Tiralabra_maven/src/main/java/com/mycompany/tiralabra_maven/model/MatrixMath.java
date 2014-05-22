@@ -17,8 +17,8 @@ public class MatrixMath {
      * @throws IllegalStateException if either parameter is null
      */
     public static Matrix add(Matrix matrixA, Matrix matrixB){
-        requireNonNull(matrixB);
-        requireNonNull(matrixB);
+        Objects.requireNonNull(matrixA, "matrixA must not be null");
+        Objects.requireNonNull(matrixB, "matrixB must not be null");
         Matrix resultingMatrix = new Matrix(matrixA.rows(), matrixA.cols());
         for (int i = 0; i < resultingMatrix.rows(); i++){
             for (int j = 0; j < resultingMatrix.cols(); j++){
@@ -26,14 +26,6 @@ public class MatrixMath {
             }
         }
         return resultingMatrix;
-    }
-    
-    /**
-     * Throws NullPointerException if the specified object is null.
-     * @param arg the object to be tested
-     */
-    private static void requireNonNull(Object arg) {
-      if (arg == null) throw new NullPointerException("Argument must not be null.");
-};
+    }    
 
 }

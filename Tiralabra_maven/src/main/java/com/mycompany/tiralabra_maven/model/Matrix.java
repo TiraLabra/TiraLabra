@@ -10,8 +10,17 @@ import java.util.Arrays;
  */
 public class Matrix {
 
+    /**
+     * The elements in the matrix.
+     */
     private double[][] elements;
+    /**
+     * The number of rows in the matrix. This variable must be positive.
+     */
     private int rows;
+    /**
+     * The number of columns in the matrix. This variable must be positive.
+     */
     private int cols;
 
     /**
@@ -78,9 +87,7 @@ public class Matrix {
         }
         return elements[row][col];
     }
-
-    
-    
+        
     /**
      * Replaces the element at the specified position in this matrix with the specified element.
      * @param value the element to be inserted at the specified position
