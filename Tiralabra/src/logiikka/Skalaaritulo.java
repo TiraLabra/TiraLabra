@@ -10,21 +10,20 @@ public class Skalaaritulo {
 
     /**
      * Metodi, joka kertoo annetun matriisin alkiot reaaliluvulla ja palauttaa
-     * kerrotun matriisin. Kertolaskun yhteydessä lisätään alkioon 0, jotta
-     * arvoa -0.0 ei esiintyisi.
+     * kerrotun matriisin.
      * 
      * @param A Matriisi, jonka alkiot halutaan kertoa reaaliluvulla
      * @param c Reaaliluku, jolla kerrotaan matriisin alkiot
      * @return Palauttaa reaaliluvulla kerrotun matriisin
      */
     public double[][] kerro(double[][] A, double c) {
-        double[][] C = new double[A.length][A[0].length];
+        double[][] tulomatriisi = new double[A.length][A[0].length];
         
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < A[0].length; j++) {
-                C[i][j] = c * A[i][j] + 0;
+        for (int rivi = 0; rivi < A.length; rivi++) {
+            for (int sarake = 0; sarake < A[0].length; sarake++) {
+                tulomatriisi[rivi][sarake] += c * A[rivi][sarake];
             }
         }
-        return C;
+        return tulomatriisi;
     }
 }

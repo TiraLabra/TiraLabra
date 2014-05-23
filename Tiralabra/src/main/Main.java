@@ -11,41 +11,79 @@ public class Main {
 
     public static void main(String[] args) {
         Matriisilaskin laskin = new Matriisilaskin();
-        double[][] A = new double[3][2];
-        double[][] B = new double[3][2];
-
-        A[0][0] = 0;
-        A[0][1] = 1;
-        A[1][0] = 2;
-        A[1][1] = 3;
-        A[2][0] = 4;
-        A[2][1] = 5;
-
-        B[0][0] = 1;
-        B[0][1] = 1;
-        B[1][0] = 1;
-        B[1][1] = 1;
-        B[2][0] = 1;
-        B[2][1] = 1;
+        double[][] A = new double[][]{
+            {0, 1},
+            {2, 3},
+            {4, 5}
+        };
+        double[][] B = new double[][]{
+            {1, 1},
+            {1, 1},
+            {1, 1}
+        };
+        double[][] H = new double[][]{
+            {2, -1, 2},
+            {3, -1, 3},
+            {0, 4, 0}
+        };
+        double[][] X = new double[][]{
+            {1, 2, 3},
+            {4, 5, 6}
+        };
+        double[][] sym = new double[][]{
+            {1, 3},
+            {3, 4}  
+        };     
+        double[][] testi = new double[][]{
+            {1, 1, 1},
+            {2, 2, 2},
+            {3, 3, 3}
+        };
 
         double[][] C = laskin.summaa(A, B);
 
-        for (int rivit = 0; rivit < C.length; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < C[0].length; sarakkeet++) {
-                System.out.print(C[rivit][sarakkeet] + " ");
-            }
-            System.out.println("");
-        }
-        
-        System.out.println("");
-        
+        System.out.println("Summa C = A + B");
+        tulosta(C);
+
         double[][] D = laskin.kerro(C, 0.1);
+
+        System.out.println("Skalaaritulo D = C * 0.1");
+        tulosta(D);      
         
-        for (int rivit = 0; rivit < D.length; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < D[0].length; sarakkeet++) {
-                System.out.print(D[rivit][sarakkeet] + " ");
+        double[][] E = laskin.kerro(X, D);
+
+        System.out.println("Kertolasku E = X * D");
+        tulosta(E);
+        
+        double[][] F = laskin.kerroStrassenilla(testi, H);
+
+        System.out.println("Kertolasku Strassenilla F = testi * H");
+        tulosta(F);
+        
+        double[][] G = laskin.kerro(testi, H);
+
+        System.out.println("Kertolasku G = testi * H");
+        tulosta(G);
+        
+        System.out.println("Transpoosi A^T");
+        double[][] tA = laskin.transpoosaa(A);
+        tulosta(tA);
+        
+        System.out.println("Transpoosi (A^T)^T");
+        double[][] tAt = laskin.transpoosaa(tA);
+        tulosta(tAt);
+        
+        System.out.println(laskin.onkoSymmetrinen(sym));
+        System.out.println(laskin.onkoNeliomatriisi(A));        
+    }
+    
+    public static void tulosta(double[][] matriisi){
+        for (int rivi = 0; rivi < matriisi.length; rivi++) {
+            for (int sarake = 0; sarake < matriisi[0].length; sarake++) {
+                System.out.print(matriisi[rivi][sarake] + " ");
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 }

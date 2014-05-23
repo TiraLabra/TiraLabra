@@ -5,16 +5,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class YhteenlaskuTest {
+public class VahennyslaskuTest {
 
     double[][] A;
     double[][] B;
     double[][] X;
-    Yhteenlasku yhteenlasku;
+    Vahennyslasku vahennyslasku;
 
     @Before
     public void setUp() {
-        yhteenlasku = new Yhteenlasku();
+        vahennyslasku = new Vahennyslasku();
 
         A = new double[][]{
             {0, 1},
@@ -36,30 +36,8 @@ public class YhteenlaskuTest {
     }
 
     @Test
-    public void yhteenlaskuToimii() {
-        double[][] C = yhteenlasku.summaa(A, B);
-        double[][] D = new double[][]{
-            {1, 2},
-            {3, 4},
-            {5, 6}
-        };
-        assertTrue(Arrays.deepEquals(C, D));
-    }
-
-    @Test
-    public void yhteenlaskuToimii2() {
-        double[][] C = yhteenlasku.summaa(A, B);
-        double[][] D = new double[][]{
-            {1, 2},
-            {3, 4},
-            {5, 99}
-        };
-        assertFalse(Arrays.deepEquals(C, D));
-    }
-
-    @Test
-    public void yhteenlaskuToimii3() {
-        double[][] C = yhteenlasku.summaa(A, X);
+    public void vahennyslaskuToimii() {
+        double[][] C = vahennyslasku.vahenna(A, B);
         double[][] D = new double[][]{
             {-1, 0},
             {1, 2},
@@ -68,9 +46,31 @@ public class YhteenlaskuTest {
         assertTrue(Arrays.deepEquals(C, D));
     }
 
+    @Test
+    public void vahennyslaskuToimii2() {
+        double[][] C = vahennyslasku.vahenna(A, B);
+        double[][] D = new double[][]{
+            {-1, 0},
+            {1, 2},
+            {3, 99}
+        };
+        assertFalse(Arrays.deepEquals(C, D));
+    }
+
+    @Test
+    public void vahennyslaskuToimii3() {
+        double[][] C = vahennyslasku.vahenna(A, X);
+        double[][] D = new double[][]{
+            {1, 2},
+            {3, 4},
+            {5, 6}
+        };
+        assertTrue(Arrays.deepEquals(C, D));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void poikkeusToimii() {
         double[][] C = new double[4][2];
-        yhteenlasku.summaa(A, C);
+        vahennyslasku.vahenna(A, C);
     }
 }

@@ -7,59 +7,48 @@ import static org.junit.Assert.*;
 
 public class SkalaarituloTest {
 
-    double[][] A = new double[3][2];
-    Matriisilaskin laskin;
+    double[][] A;
+    double[][] D;
+    Skalaaritulo skalaaritulo;
 
     @Before
     public void setUp() {
-        laskin = new Matriisilaskin();
-        A[0][0] = 0;
-        A[0][1] = 1;
-        A[1][0] = 2;
-        A[1][1] = 3;
-        A[2][0] = 4;
-        A[2][1] = 5;
+        skalaaritulo = new Skalaaritulo();
+
+        A = new double[][]{
+            {0, 1},
+            {2, 3},
+            {4, 5}
+        };
+
+        D = new double[][]{
+            {0, 5},
+            {10, 15},
+            {20, 25}
+        };
     }
 
     @Test
     public void skalaarituloToimii() {
-        double[][] C = laskin.kerro(A, 5);
-        double[][] D = new double[3][2];
-
-        D[0][0] = 0;
-        D[0][1] = 5;
-        D[1][0] = 10;
-        D[1][1] = 15;
-        D[2][0] = 20;
-        D[2][1] = 25;
+        double[][] C = skalaaritulo.kerro(A, 5);
         assertTrue(Arrays.deepEquals(C, D));
     }
 
     @Test
     public void skalaarituloToimii2() {
-        double[][] C = laskin.kerro(A, 5);
-        double[][] D = new double[3][2];
-
-        D[0][0] = 0;
-        D[0][1] = 5;
-        D[1][0] = 10;
-        D[1][1] = 15;
-        D[2][0] = 20;
+        double[][] C = skalaaritulo.kerro(A, 5);
         D[2][1] = 99;
         assertFalse(Arrays.deepEquals(C, D));
     }
-    
+
     @Test
     public void skalaarituloToimii3() {
-        double[][] C = laskin.kerro(A, -1);
-        double[][] D = new double[3][2];
-
-        D[0][0] = 0;
-        D[0][1] = -1;
-        D[1][0] = -2;
-        D[1][1] = -3;
-        D[2][0] = -4;
-        D[2][1] = -5;
+        double[][] C = skalaaritulo.kerro(A, -1);
+        D = new double[][]{
+            {0, -1},
+            {-2, -3},
+            {-4, -5}
+        };
         assertTrue(Arrays.deepEquals(C, D));
     }
 }
