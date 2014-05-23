@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package tiralabra;
+package tiralabra.utilities;
 
 /**
  *
@@ -12,10 +12,10 @@ package tiralabra;
  */
 public class Utilities {
     
-    public static byte[][] copy2dArray(byte[][] array) {
-        byte[][] copy = new byte[array.length][array[0].length];
+    public static int[][] copy2dArray(int[][] array) {
+        int[][] copy = new int[array.length][array[0].length];
         
-        for (byte y = 0; y < array.length; y++) {
+        for (int y = 0; y < array.length; y++) {
             copy[y] = array[y].clone();
         }
         return copy;

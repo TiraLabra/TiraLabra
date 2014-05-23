@@ -18,12 +18,12 @@ public class Board {
     /**
      * Integer matrix of the board. 0 == Empty, 1 == WHITE, 2 == BLACK.
      */
-    private byte[][] board;
-    public static byte WHITE = 1;
-    public static byte BLACK = 2;
+    private int[][] board;
+    public static int WHITE = 1;
+    public static int BLACK = 2;
 
     public Board() {
-        this.board = new byte[8][8];
+        this.board = new int[8][8];
 
         board[3][3] = WHITE;
         board[3][4] = BLACK;
@@ -41,7 +41,7 @@ public class Board {
      * @return true, if the piece was successfully placed on the board, false if
      * the move was illegal
      */
-    public boolean put(int x, int y, byte team) {
+    public boolean put(int x, int y, int team) {
         if (!checkPointForLegal(x, y, team)) {
             return false;
         }
@@ -52,7 +52,7 @@ public class Board {
         return true;
     }
 
-    public boolean put(long point, byte team) {
+    public boolean put(long point, int team) {
         return put(x(point), y(point), team);
     }
 
@@ -62,11 +62,11 @@ public class Board {
      * @param team
      * @return
      */
-    public ArrayList<Long> findLegalMoves(byte team) {
+    public ArrayList<Long> findLegalMoves(int team) {
         ArrayList<Long> legalMoves = new ArrayList<>();
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[0].length; x++) {
-                if (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team)) {
+                if (checkPointForLegal(x, y, team)) {
                     legalMoves.add(point(x, y));
                 }
             }
@@ -75,7 +75,7 @@ public class Board {
         return legalMoves;
     }
 
-    private boolean checkPointForLegal(int x, int y, byte team) {
+    private boolean checkPointForLegal(int x, int y, int team) {
         return board[y][x] == 0 && (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team));
     }
 
@@ -119,7 +119,7 @@ public class Board {
      * @return true if the piece is the opponent's, false if there is no piece
      * or the piece is mine
      */
-    private boolean checkForOpponent(int x, int y, byte team) {
+    private boolean checkForOpponent(int x, int y, int team) {
         if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
             return false;
         }
@@ -136,7 +136,7 @@ public class Board {
      * @return true if the piece is mine, false if there is no piece or the
      * piece is the opponent's
      */
-    private boolean checkForMyPiece(int x, int y, byte team) {
+    private boolean checkForMyPiece(int x, int y, int team) {
         if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
             return false;
         }
@@ -154,7 +154,7 @@ public class Board {
      * to be legal when considering pieces aligned diagonally with the given
      * coordinates
      */
-    private boolean checkDiagonalLegal(int x, int y, byte team) {
+    private boolean checkDiagonalLegal(int x, int y, int team) {
         return (checkDirection(x, y, 1, 1, team)
                 || checkDirection(x, y, 1, -1, team)
                 || checkDirection(x, y, -1, 1, team)
@@ -171,7 +171,7 @@ public class Board {
      * @return true if the move is legal, false if the move can't be determined
      * to be legal when considering this column.
      */
-    private boolean checkHorizontalLegal(int x, int y, byte team) {
+    private boolean checkHorizontalLegal(int x, int y, int team) {
         return (checkDirection(x, y, 0, 1, team)
                 || checkDirection(x, y, 0, -1, team));
     }
@@ -186,7 +186,7 @@ public class Board {
      * @return true if the move is legal, false if the move can't be determined
      * to be legal when considering this row.
      */
-    private boolean checkVerticalLegal(int x, int y, byte team) {
+    private boolean checkVerticalLegal(int x, int y, int team) {
         return (checkDirection(x, y, 1, 0, team)
                 || checkDirection(x, y, -1, 0, team));
     }
@@ -203,7 +203,7 @@ public class Board {
      * @return true if the move is legal, false if the move can't be determined
      * to be legal when considering only this direction from the given piece
      */
-    private boolean checkDirection(int x, int y, int dx, int dy, byte team) {
+    private boolean checkDirection(int x, int y, int dx, int dy, int team) {
         int inBetween = 0;
         while (checkForOpponent(x + dx, y + dy, team)) {
             inBetween++;
@@ -221,7 +221,7 @@ public class Board {
      * @param y
      * @param team
      */
-    private void flipDiagonally(int x, int y, byte team) {
+    private void flipDiagonally(int x, int y, int team) {
         flipDirection(x, y, 1, 1, team);
         flipDirection(x, y, 1, -1, team);
         flipDirection(x, y, -1, 1, team);
@@ -236,7 +236,7 @@ public class Board {
      * @param y
      * @param team
      */
-    private void flipHorizontally(int x, int y, byte team) {
+    private void flipHorizontally(int x, int y, int team) {
         flipDirection(x, y, 0, 1, team);
         flipDirection(x, y, 0, -1, team);
     }
@@ -249,7 +249,7 @@ public class Board {
      * @param y
      * @param team
      */
-    private void flipVertically(int x, int y, byte team) {
+    private void flipVertically(int x, int y, int team) {
         flipDirection(x, y, 1, 0, team);
         flipDirection(x, y, -1, 0, team);
     }
@@ -264,7 +264,7 @@ public class Board {
      * @param dy
      * @param team
      */
-    private void flipDirection(int x, int y, int dx, int dy, byte team) {
+    private void flipDirection(int x, int y, int dx, int dy, int team) {
         if (!checkDirection(x, y, dx, dy, team)) {
             return;
         }
@@ -290,7 +290,7 @@ public class Board {
      *
      * @param board
      */
-    public void setBoard(byte[][] board) {
+    public void setBoard(int[][] board) {
         this.board = board;
     }
 
@@ -299,11 +299,11 @@ public class Board {
      *
      * @return the board 2d array
      */
-    public byte[][] getBoard() {
+    public int[][] getBoard() {
         return board;
     }
 
-    public int getNumberOfPieces(byte team) {
+    public int getNumberOfPieces(int team) {
         int count = 0;
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[0].length; x++) {

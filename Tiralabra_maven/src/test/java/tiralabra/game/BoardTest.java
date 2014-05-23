@@ -6,6 +6,8 @@
 package tiralabra.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,10 +22,10 @@ import static org.junit.Assert.*;
 public class BoardTest {
 
     Board board = new Board();
-    byte[][] verticalTestBoard;
-    byte[][] horizontalTestBoard;
-    byte[][] diagonalTestBoard1;
-    byte[][] diagonalTestBoard2;
+    int[][] verticalTestBoard;
+    int[][] horizontalTestBoard;
+    int[][] diagonalTestBoard1;
+    int[][] diagonalTestBoard2;
 
     public BoardTest() {
     }
@@ -38,13 +40,13 @@ public class BoardTest {
 
     @Before
     public void setUp() {
-        verticalTestBoard = new byte[][]{{0, 1, 2, 0, 0, 2, 1, 0}};
-        horizontalTestBoard = new byte[][]{{0}, {1}, {2}, {0}, {0}, {2}, {1}, {0}};
-        diagonalTestBoard1 = new byte[][]{{0, 0, 0, 0},
+        verticalTestBoard = new int[][]{{0, 1, 2, 0, 0, 2, 1, 0}};
+        horizontalTestBoard = new int[][]{{0}, {1}, {2}, {0}, {0}, {2}, {1}, {0}};
+        diagonalTestBoard1 = new int[][]{{0, 0, 0, 0},
         {0, 1, 1, 0},
         {0, 2, 2, 0},
         {0, 0, 0, 0}};
-        diagonalTestBoard2 = new byte[][]{{0, 0, 0, 0},
+        diagonalTestBoard2 = new int[][]{{0, 0, 0, 0},
         {0, 2, 2, 0},
         {0, 1, 1, 0},
         {0, 0, 0, 0}};
@@ -247,5 +249,17 @@ public class BoardTest {
 
         assertTrue(toCompare.contains(Board.point(0, 0)));
         assertTrue(toCompare.contains(Board.point(3, 0)));
+    }
+    
+    @Test
+    public void noLegalMovesFoundOnAFullBoard() {
+        int[][] test = new int[8][8];
+        for (int y = 0; y < test.length; y++) {
+            for (int x = 0; x < test[0].length; x++) {
+                test[y][x] = new Random().nextInt(2) + 1;
+            }
+        }
+        assertTrue(board.findLegalMoves(Board.WHITE).isEmpty());
+        assertTrue(board.findLegalMoves(Board.BLACK).isEmpty());
     }
 }

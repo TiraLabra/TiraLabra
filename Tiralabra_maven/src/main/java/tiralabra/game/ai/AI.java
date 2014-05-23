@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import tiralabra.Utilities;
+import tiralabra.utilities.Utilities;
 import tiralabra.game.Board;
 
 /**
@@ -17,14 +17,6 @@ import tiralabra.game.Board;
  * @author atte
  */
 public class AI {
-
-    private final Board board;
-    private final byte team;
-
-    public AI(Board board, byte team) {
-        this.team = team;
-        this.board = board;
-    }
 
     public static class MoveSorter implements Comparator<Long> {
 
@@ -43,18 +35,32 @@ public class AI {
 
     }
 
-    public long greedyBeginnerMove() {
+    private final Board board;
+    private static final int[][] pieceValues = new int[][]{{65, -3, 6, 4, 4, 6, -3, 66},
+    {-3, -29, 1, 1, 1, 3, -29, -3},
+    {6, 3, 5, 3, 3, 5, 3, 6},
+    {4, 1, 3, 1, 1, 3, 1, 4},
+    {4, 1, 3, 1, 1, 3, 1, 4},
+    {6, 3, 5, 3, 3, 5, 3, 6},
+    {-3, -29, 3, 1, 1, 3, -29, -3},
+    {65, -3, 6, 4, 4, 6, -3, 65}};
+
+    public AI(Board board) {
+        this.board = board;
+    }
+
+    public long greedyBeginnerMove(int team) {
         ArrayList<Long> moves = board.findLegalMoves(team);
-        byte[][] originalBoard = board.getBoard();
+        int[][] originalBoard = board.getBoard();
         board.setBoard(Utilities.copy2dArray(originalBoard));
         HashMap<Long, Integer> piecesOwned = new HashMap<>();
-        
+
         for (long move : moves) {
             board.put(move, team);
-            
+
             int pieces = board.getNumberOfPieces(team);
             piecesOwned.put(move, pieces);
-            
+
             board.setBoard(Utilities.copy2dArray(originalBoard));
         }
         Collections.sort(moves, new MoveSorter(team, piecesOwned));

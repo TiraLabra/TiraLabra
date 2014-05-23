@@ -1,7 +1,6 @@
 package tiralabra.app;
 
 import java.util.Scanner;
-import tiralabra.game.Board;
 import tiralabra.game.Game;
 
 /**
@@ -11,29 +10,21 @@ import tiralabra.game.Game;
 public class App {
 
     public static void main(String[] args) throws InterruptedException {
-        Game othello = new Game(false, true);
+        Game othello = new Game(true, true);
         Scanner scanner = new Scanner(System.in);
-        
-        while (true) {
+        printBoard(othello.getBoard());
+        while (!othello.gameOver()) {
+            othello.nextTurn();
             System.out.println("------------");
             printBoard(othello.getBoard());
             System.out.println("");
-            System.out.print("y: ");
-            int y = Integer.parseInt(scanner.nextLine());
-            System.out.print("x: ");
-            int x = Integer.parseInt(scanner.nextLine());
             
-            othello.playHumanTurn(Board.point(x, y));
             
-            printBoard(othello.getBoard());
-            
-            Thread.sleep(1000);
-            
-            othello.playAITurn();
+                        
         }
     }
 
-    public static void printBoard(byte[][] game) {
+    public static void printBoard(int[][] game) {
         System.out.print(" ");
         for (int x = 0; x < game.length; x++) {
             System.out.print(x);
