@@ -33,10 +33,8 @@ public class Addition implements Command {
         this.io = io;
         this.matrixReader = new MatrixReader(io);
     }
-    
-    
-
-    public void execute() {
+        
+    public void execute() {        
         io.printLine("Enter the first matrix:\n");
         Matrix matrixA = matrixReader.readMatrix();
         io.printLine("Enter the second matrix:\n");
@@ -50,4 +48,10 @@ public class Addition implements Command {
         io.printLine(result + "\n");
     }
 
+    @Override
+    public String toString() {
+        return "Addition";        
+    }
+    
+    
 }

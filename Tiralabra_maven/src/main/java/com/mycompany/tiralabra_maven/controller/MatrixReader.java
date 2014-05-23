@@ -33,11 +33,11 @@ public class MatrixReader {
      */    
     public Matrix readMatrix() {
         int rows = readMatrixDimension("Number of rows: ");
-        int cols = readMatrixDimension("Number of cols: ");
+        int cols = readMatrixDimension("Number of columns: ");
         Matrix matrix = new Matrix(rows, cols);
         for (int i = 0; i < rows; i++) {
             double[] row = readMatrixRow(i + 1, cols);
-            for (int j = 0; j < rows; j++) {
+            for (int j = 0; j < cols; j++) {
                 matrix.setElement(row[j], i, j);
             }
         }
@@ -70,7 +70,7 @@ public class MatrixReader {
         String[] stringElements = rowString.split(" ");
         double[] elements = new double[rowLength];
         if(!convertStringArrayToDoubleArray(stringElements, elements)){
-            io.printLine("You entered an invalid row. Please enter the elements of the row, separated by whitespace\n");
+            io.printLine("You entered an invalid row. Please all the elements of the row, separated by whitespace\n");
             return readMatrixRow(rowNumber, rowLength);
         }
         return elements;
