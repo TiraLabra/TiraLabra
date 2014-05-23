@@ -14,8 +14,13 @@ public class Pakkaaja {
         
         Map<Character, String> koodisanat = h.muodostaKoodit(h.muodostaPuu(merkit));
         
-        h.tulosta();
+        //h.tulosta();
         
+        return enkoodaa(teksti, koodisanat);
+        
+    }
+
+    private String enkoodaa(String teksti, Map<Character, String> koodisanat) {
         String pakattu = "";
         
         for (int i = 0; i < teksti.length(); i++) {
@@ -25,7 +30,6 @@ public class Pakkaaja {
         }
         
         return pakattu;
-        
     }
 
     private int[] merkkienEsiintymiskerrat(String teksti) {

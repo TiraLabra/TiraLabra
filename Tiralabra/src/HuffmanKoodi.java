@@ -5,16 +5,16 @@ import java.util.PriorityQueue;
 
 public class HuffmanKoodi {
 
-    private HashMap<Character, String> koodit;
+    private HashMap<Character, String> koodisanat;
 
     public HuffmanKoodi() {
-        this.koodit = new HashMap();
+        this.koodisanat = new HashMap();
     }
 
     public HuffmanSolmu muodostaPuu(int[] merkit) {
       Minimikeko keko = merkitJarjestykseen(merkit);
 
-        System.out.println(keko.koko());
+        //System.out.println(keko.koko());
 
         while (keko.koko() > 1) {
             HuffmanSolmu eka = keko.pienin();
@@ -44,20 +44,20 @@ public class HuffmanKoodi {
     }
 
     public Map muodostaKoodit(HuffmanSolmu juuri) {
-           if (juuri == null || (juuri.getVasen() == null && juuri.getOikea() == null)) {
+           if (juuri == null) {
                return null;
            }
 
            koodisanat("", juuri);
            
-           return koodit;
+           return koodisanat;
     
     }
     
-    public void koodisanat(String bitit, HuffmanSolmu solmu) {
+    private void koodisanat(String bitit, HuffmanSolmu solmu) {
 
         if (solmu.getVasen() == null && solmu.getOikea() == null) {
-            koodit.put((char) solmu.getMerkki(), bitit);
+            koodisanat.put((char) solmu.getMerkki(), bitit);
             return;
         }
         
@@ -67,8 +67,8 @@ public class HuffmanKoodi {
     }
     
     public void tulosta () {
-        for (char merkki : koodit.keySet()) {
-            System.out.println(merkki + " - " + koodit.get(merkki));
+        for (char merkki : koodisanat.keySet()) {
+            System.out.println(merkki + " - " + koodisanat.get(merkki));
         }
     }
 
