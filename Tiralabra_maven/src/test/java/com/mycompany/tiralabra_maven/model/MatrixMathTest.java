@@ -44,4 +44,10 @@ public class MatrixMathTest {
         MatrixMath.add(matrixA, matrixB);
     }
     
+    @Test (expected = IllegalArgumentException.class)
+    public void matricesOfDifferentSizeLeadsToException(){
+        matrixB = new Matrix(3,2);
+        MatrixMath.add(matrixA, matrixB);
+    }
+    
 }
