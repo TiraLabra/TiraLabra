@@ -1,15 +1,28 @@
 package Tietorakenteet;
 
+/**
+ * Tietorakenne kuvaa nimensä mukaisesti tietorakennetta "Minimikeko".
+ * Keko on järjestetty siten että keon huipulla on se solmu, joka esiintyi luetussa tekstitiedostossa vähiten.
+ * 
+ * Keko liittyy Huffman -algoritmin toteutuksessa etenkin HuffmanPuuhun.
+ */
+
 public class MinKeko {
     private Solmu[] keko;
     private int koko;
+    
+    /**
+     * Keolle annetaan solmutaulukon pituudeksi se, kuinka monta erilaista merkkiä luetussa (teksti)-tiedostossa
+     * on ollut.
+     * @param hashSize 
+     */
     
     public MinKeko(int hashSize) {
         this.keko = new Solmu[hashSize];
         this.koko = 0;
     }
     
-    public Solmu[] getKeko() {
+    public Solmu[] getSolmut() {
         return this.keko;
     }
     
@@ -29,6 +42,14 @@ public class MinKeko {
         return vasen(i) + 1;
     }
     
+    /**
+     * Metodi joka lisää uuden solmun minimikekoon.
+     * Solmu sijoitetaan keon viimeiseksi alkioksi, jos sen esiintymien määrä (tekstitiedostossa) on suurempi kuin
+     * viimeisen paikan vanhemman solmun esiintymien määrä. Muussa tapauksessa solmua tulee "valuttaa" ylöspäin
+     * kohti keon huippua (koska kyseessä minimikeko solmujen esiintymismäärien suhteen).
+     * 
+     * @param solmu 
+     */
     public void lisaa(Solmu solmu) {
         this.koko++;
         if (this.koko > this.keko.length) { 
@@ -44,15 +65,29 @@ public class MinKeko {
         keko[i] = solmu;
     }
     
+    /**
+     * Poistaa keosta sen huippusolmun pienentäen samalla keon kokoa.
+     * Tämän jälkeen kutsutaan heapify-operaatiota,
+     * jotta saadaan tietorakenne pidettynä minimikekona poiston jälkeenkin.
+     
+     * @return "huippusolmu"
+     */
+    
     public Solmu poistaHuippuSolmu() {
         Solmu poistettava = keko[0];
         
         this.koko--;
-        keko[0] = keko[this.koko];                      //    1
-        heapify(0);                                     //  2   3
-                                                        // 5 6 7 8
+        keko[0] = keko[this.koko];
+        heapify(0);
+
         return poistettava;
     }
+    
+    /**
+     * heapify -operaatio joka valuttaa indekssä i olevaa alkiota alaspäin, jos sen lapsista ainakin toisella on pienempi
+     * esiintymien määrä. Funktio toimii rekursiivisesti.
+     * @param i 
+     */
     
     private void heapify(int i) {
         int vasen = vasen(i);
@@ -82,27 +117,6 @@ public class MinKeko {
         keko[i] = keko[j];
         keko[j] = k;
     }
-    
-    
-//    public void paivitaSolmujenOsoittimet() {
-//        for (int i = 0; i < koko; i++) {
-//            paivitaOsoittimet(i);
-//        }
-//    }
-//    
-//    private void paivitaOsoittimet(int i) {
-//        Solmu solmu = keko[i];
-//        
-//        if (i > 0) {
-//            solmu.setVanh(keko[vanh(i)]);
-//        }
-//        if (vasen(i) < koko) {
-//            solmu.setVasen(keko[vasen(i)]);
-//        }
-//        if (oikea(i) < koko) {
-//            solmu.setOikea(keko[oikea(i)]);
-//        }
-//    }
     
     private void tuplaaKoko() {
         Solmu[] uusi = new Solmu[this.keko.length * 2];

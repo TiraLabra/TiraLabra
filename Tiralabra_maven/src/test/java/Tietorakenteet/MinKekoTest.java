@@ -50,13 +50,13 @@ public class MinKekoTest {
     @Test
     public void ekaLisattavaSolmuMeneeKeonAlkuun() {
         keko.lisaa(new Solmu("a", 0));
-        Solmu[] solmut = keko.getKeko();
+        Solmu[] solmut = keko.getSolmut();
         assertEquals("a", solmut[0].getAvain());
     }
     
     @Test
     public void lisatytSolmutMenevatKekoonSitenEttaPieninEkana() {
-        assertEquals("d", keko2.getKeko()[0].getAvain());
+        assertEquals("d", keko2.getSolmut()[0].getAvain());
     }
     
     @Test

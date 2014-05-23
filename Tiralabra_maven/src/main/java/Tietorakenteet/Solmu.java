@@ -1,5 +1,14 @@
 package Tietorakenteet;
 
+/**
+ * Luokka kuvaa keon solmua, jolla on "vanhempi" sekä oikea- että vasen lapsi.
+ * Solmulla on avain (käytännössä yksi merkki, mutta mahdollisesti myös "\n" -rivinvaihtomerkkijono.
+ * 
+ * En ole kirjoittanut tätä luokkaa varten testejä laisinkaan, sillä sen metodit ovat täysin triviaaleja.
+ * Piti vaan pitää huolta että niissä ei ole turhia bugeja (esim. "getVanh() olisikin palauttanut vasemman lapsen
+ * vanhemman sijaan).
+ */
+
 public class Solmu {
     private String avain;
     private int esiintymiskerrat;
