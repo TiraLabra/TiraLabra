@@ -1,15 +1,23 @@
+/*
+ * Saa käyttää ihan vapasti
+ * Public domain
+ */
 package verkko;
 
 /**
  * Kuin Solmu mutta sisältää sisällään vektorin liukulukuisia koordinaatteja.
+ *
  * @author Arvoitusmies
  */
 public class KoordinoituSolmu extends Solmu {
 
+    /**
+     * Koordinaatit
+     */
     private final Double[] koordinaatit;
 
     /**
-     *
+     * Konstruktori...
      * @param koordinaatit
      */
     public KoordinoituSolmu(Double[] koordinaatit) {
@@ -18,6 +26,7 @@ public class KoordinoituSolmu extends Solmu {
 
     /**
      * Kuinka "uloitteinen" solmu voi olla.
+     *
      * @return
      */
     public Integer dimensio() {
@@ -26,6 +35,7 @@ public class KoordinoituSolmu extends Solmu {
 
     /**
      * Koordinaatti ulottuvuudelle i (lasketaan 0:sta).
+     *
      * @param i
      * @return
      */
@@ -34,7 +44,8 @@ public class KoordinoituSolmu extends Solmu {
     }
 
     /**
-     * Palauttaa "normi" etäisyyden. 
+     * Palauttaa "normi" etäisyyden.
+     *
      * @param ks
      * @return
      */
@@ -57,11 +68,12 @@ public class KoordinoituSolmu extends Solmu {
         return Math.sqrt(summa);
     }
 
-	/**
-	 * Etäisyys kulkien vain yksikkövektoreita pitkin.
-	 * @param ks toinen koord.solmu
-	 * @return
-	 */
+    /**
+     * Etäisyys kulkien vain ns. akseleita pitkin.
+     *
+     * @param ks toinen koord.solmu
+     * @return
+     */
     public Double taksimiehenEtaisyys(KoordinoituSolmu ks) {
         Double summa = 0.0;
         int pienempi = koordinaatit.length < ks.dimensio() ? koordinaatit.length : ks.dimensio();

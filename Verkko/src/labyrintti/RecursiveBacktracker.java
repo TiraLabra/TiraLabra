@@ -1,105 +1,118 @@
 /*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Saa käyttää ihan vapasti
+ * Public domain
  */
 package labyrintti;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import util.Taulukko;
 import verkko.KoordinoituSolmu;
 
 /**
  *
  * @author Arvoitusmies
  */
-public class RecursiveBacktracker {
+public class RecursiveBacktracker extends Labyrintitin {
 
-    private KoordinoituSolmu[][] asdf;
+    /**
+     * Tämä taulukko vastaa solmut taulukon kohtia ja merkkaa onko kyseinen
+     * solmu jo käsitelty.
+     */
     private Boolean[][] kayty;
-    private ArrayList<KoordinoituSolmu> kasiteltavat;
+
+    /**
+     * RNG eli Random Number God.
+     */
     private Random r;
 
-    public RecursiveBacktracker(KoordinoituSolmu[][] asdf) {
-        this.asdf = asdf;
-        kayty = new Boolean[asdf.length][asdf[0].length];
-        for (int i = 0; i < asdf.length; i++) {
-            for (int j = 0; j < asdf[0].length; j++) {
+    /**
+     * Kutsuu Labyrintitinin konstruktorin. Initialisoi käyty taulukon oikean
+     * kokoiseksi ja falseksi. Luo myös randomin.
+     *
+     * @param solmut
+     */
+    public RecursiveBacktracker(KoordinoituSolmu[][] solmut) {
+        super(solmut);
+        kayty = new Boolean[solmut.length][solmut[0].length];
+        for (int i = 0; i < solmut.length; i++) {
+            for (int j = 0; j < solmut[0].length; j++) {
                 kayty[i][j] = false;
             }
         }
         r = new Random();
     }
 
+    /**
+     * Tämä kutsutaan kun halutaan suorittaa se mitä tämä luokka tekee. Eli
+     * labyrintittää labyrintin recursive backtrackingilla.
+     *
+     * @return
+     */
+    @Override
     public KoordinoituSolmu[][] labyrintitaLabyrintti() {
         recur(0, 0);
-        return asdf;
+        return solmut;
     }
 
+    /**
+     * Tätä kutsitaan rekursiivisesti. Toiminta:
+     *
+     * 1. Merkkaa käydyksi
+     *
+     * 2. ottaa naapurit ja sekoittaa ne
+     *
+     * 3. jokainen naapuri vuorollaan, jollei ole käyty,
+     *
+     * a) luodaan x,y solmun ja naapurin väliin sivu (labyrintin käytävä)
+     *
+     * b) kutsutaan naapurille recur.
+     *
+     * @param x x-koordinaatti (solmut[x][y])
+     * @param y y-koordinaatti
+     */
     private void recur(int x, int y) {
         kayty[x][y] = true;
         KoordinoituSolmu[] naapurit = naapurit(x, y);
-        naapurit = poistaNullit(naapurit);
         if (naapurit.length > 0) {
-            //sekoita naapurit
-            sekoita(naapurit);
+            //sekoitetaan niin valitaan randomisti jokin naapuri.
+            Taulukko.sekoita(naapurit);
             for (int i = 0; i < naapurit.length; i++) {
                 KoordinoituSolmu naapuri = naapurit[i];
                 int ksx = (int) Math.round(naapuri.koordinaatti(0));
                 int ksy = (int) Math.round(naapuri.koordinaatti(1));
                 if (!kayty[ksx][ksy]) {
-                    asdf[x][y].lisaaNaapuri(naapuri, 1);
-                    naapuri.lisaaNaapuri(asdf[x][y], 1);
+                    solmut[x][y].lisaaNaapuri(naapuri, 1.0);
+                    naapuri.lisaaNaapuri(solmut[x][y], 1.0);
                     recur(ksx, ksy);
                 }
             }
-            //foreach jossei ole käyty niin
-            //  1.tee yhteys 2. kutsu recur
         }
     }
 
-    private void sekoita(KoordinoituSolmu[] ks) {
-        for (int i = 0; i < ks.length - 1; i++) {
-            int swapattavaIndeksi = r.nextInt(ks.length - 1) + 1;
-            if (i != swapattavaIndeksi) {
-                KoordinoituSolmu tmp = ks[i];
-                ks[i] = ks[swapattavaIndeksi];
-                ks[swapattavaIndeksi] = tmp;
-            }
-        }
-    }
-
-    private KoordinoituSolmu[] poistaNullit(KoordinoituSolmu[] ks) {
-        int nulleja = 0;
-        for (int i = 0; i < ks.length; i++) {
-            if (ks[i] == null) {
-                nulleja++;
-            }
-        }
-        KoordinoituSolmu[] uus = new KoordinoituSolmu[ks.length - nulleja];
-        int i = 0;
-        for (KoordinoituSolmu koordinoituSolmu : ks) {
-            if (koordinoituSolmu != null) {
-                uus[i] = koordinoituSolmu;
-                i++;
-            }
-        }
-        return uus;
-    }
-
+    /**
+     * Palauttaa naapurit, eli neljäsä pääilmansuunnassa olevat solmut.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     private KoordinoituSolmu[] naapurit(int x, int y) {
-        KoordinoituSolmu[] paluu = new KoordinoituSolmu[4];
+        KoordinoituSolmu[] naapurit = new KoordinoituSolmu[4];
         if (x > 0) {
-            paluu[0] = asdf[x - 1][y];
+            naapurit[0] = solmut[x - 1][y];
         }
         if (y > 0) {
-            paluu[1] = asdf[x][y - 1];
+            naapurit[1] = solmut[x][y - 1];
         }
-        if (x < asdf.length - 1) {
-            paluu[2] = asdf[x + 1][y];
+        if (x < solmut.length - 1) {
+            naapurit[2] = solmut[x + 1][y];
         }
-        if (y < asdf[0].length - 1) {
-            paluu[3] = asdf[x][y + 1];
+        if (y < solmut[0].length - 1) {
+            naapurit[3] = solmut[x][y + 1];
         }
+        final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
+        KoordinoituSolmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, KoordinoituSolmu[].class);
         return paluu;
     }
 

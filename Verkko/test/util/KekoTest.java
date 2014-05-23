@@ -1,6 +1,6 @@
 /*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Saa käyttää ihan vapasti
+ * Public domain
  */
 package util;
 
@@ -20,18 +20,34 @@ import static org.junit.Assert.*;
  */
 public class KekoTest {
 
+    /**
+     *
+     */
     public KekoTest() {
     }
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
+
+    /**
+     *
+     */
     Keko<Integer> keko;
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
         comparator = new Comparator<Integer>() {
@@ -50,8 +66,15 @@ public class KekoTest {
         keko = new Keko<>(comparator);
 
     }
+
+    /**
+     *
+     */
     private Comparator<Integer> comparator;
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }

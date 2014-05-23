@@ -1,4 +1,7 @@
-
+/*
+ * Saa käyttää ihan vapasti
+ * Public domain
+ */
 package verkko;
 
 import java.util.HashMap;
@@ -9,6 +12,9 @@ import java.util.HashMap;
  */
 public class Solmu {
 
+    /**
+     * Naapurit avaimena, painot arvona.
+     */
     private HashMap<Solmu,Double> naapurit;
     
     /**

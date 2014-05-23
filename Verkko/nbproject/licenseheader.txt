@@ -1,8 +1,8 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Here comes the text of your license
-${licensePrefix}Each line should be prefixed with ${licensePrefix}
+${licensePrefix}Saa käyttää ihan vapasti
+${licensePrefix}Public domain
 <#if licenseLast??>
 ${licenseLast}
 </#if>
