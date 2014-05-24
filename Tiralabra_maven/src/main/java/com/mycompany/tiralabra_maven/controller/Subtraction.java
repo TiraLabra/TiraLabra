@@ -6,16 +6,16 @@ import com.mycompany.tiralabra_maven.model.MatrixMath;
 import com.mycompany.tiralabra_maven.view.Io;
 
 /**
- * Enables the user to add two matrices.
+ * Enables the user to subtract one matrix from another.
  * @author gabriel
  */
-public class Addition extends AbstractCommand {       
+public class Subtraction extends AbstractCommand {       
 
     /**
-     * Constructs an addition command using the specified io.
+     * Constructs a subtraction command using the specified io.
      * @param io the specified io
      */
-    public Addition(Io io) {
+    public Subtraction(Io io) {
         super(io);
     }           
 
@@ -23,16 +23,16 @@ public class Addition extends AbstractCommand {
     protected String performMatrixOperation(Matrix matrixA, Matrix matrixB) {
         String result;
         if (!MatrixMath.sameSize(matrixA, matrixB)){
-            result = "The sum is not defined, since the matrices have different sizes";
+            result = "The difference is not defined, since the matrices have different sizes";
         } else{
-            result = MatrixMath.add(matrixA, matrixB).toString();
+            result = MatrixMath.subtract(matrixA, matrixB).toString();
         }
         return result;
     }
     
      @Override
     public String toString() {
-        return "Addition";        
+        return "Subtraction";        
     }
     
 }

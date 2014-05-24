@@ -45,9 +45,35 @@ public class MatrixMathTest {
     }
     
     @Test (expected = IllegalArgumentException.class)
-    public void matricesOfDifferentSizeLeadsToException(){
+    public void addingMatricesOfDifferentSizeLeadsToException(){
         matrixB = new Matrix(3,2);
         MatrixMath.add(matrixA, matrixB);
+    }
+    
+    @Test
+    public void subtractionWorks(){
+        double[][] valuesC = {{-1,-1},{-1,-1}};
+        Matrix matrixC = new Matrix(valuesC);
+        
+        assertEquals(matrixC, MatrixMath.subtract(matrixA, matrixB));
+    }
+    
+     @Test (expected = NullPointerException.class)
+    public void subtractingWhenFirstMatrixIsNullLeadsToException(){
+        matrixA = null;
+        MatrixMath.subtract(matrixA, matrixB);
+    }
+    
+    @Test (expected = NullPointerException.class)
+    public void subtractingWhenSecondMatrixIsNullLeadsToException(){
+        matrixB = null;
+        MatrixMath.subtract(matrixA, matrixB);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void subtractingMatricesOfDifferentSizeLeadsToException(){
+        matrixB = new Matrix(3,2);
+        MatrixMath.subtract(matrixA, matrixB);
     }
     
 }
