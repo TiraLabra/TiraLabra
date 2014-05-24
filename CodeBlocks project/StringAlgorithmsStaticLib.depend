@@ -3,17 +3,25 @@
 	<iostream>
 	"string_slib.hpp"
 
+1400607919 ib.hpp"
+
 1400280497 d:\stringalgorithmsstaticlib\string_slib.hpp
 	"algorithms/naive.hpp"
 
+1400280497 s/naive.hpp"
+
 1400280442 source:d:\stringalgorithmsstaticlib\algorithms\naive.cpp
 	"naive.hpp"
+
+1400587394 "
 
 1400280503 d:\stringalgorithmsstaticlib\algorithms\naive.hpp
 	"../constants.hpp"
 	<cstring>
 	<string>
 	<iostream>
+
+1400589575 
 
 1400273277 d:\stringalgorithmsstaticlib\constants.hpp
 
@@ -35,8 +43,12 @@
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 
+1400602896 s/rabin_karp.hpp"
+
 1400589684 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing.cpp
 	"hashing.hpp"
+
+1400591316 pp"
 
 1400589575 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing.hpp
 	<string>
@@ -45,12 +57,16 @@
 1400606652 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.cpp
 	"bernstein.hpp"
 
+1400606652 .hpp"
+
 1400602607 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\bernstein.hpp
 	<string>
 	<cstring>
 	<vector>
 	<climits>
 	"../../constants.hpp"
+
+1400596046 stants.hpp"
 
 1400591316 source:d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\hashing.cpp
 	"hashing.hpp"
@@ -60,6 +76,8 @@
 	<cstring>
 	"bernstein.hpp"
 	"sum_hashing.hpp"
+
+1400591254 ng.hpp"
 
 1400596046 d:\stringalgorithmsfork\codeblocks project\algorithms\hashing\sum_hashing.hpp
 	<string>
@@ -72,10 +90,84 @@
 1400607875 source:d:\stringalgorithmsfork\codeblocks project\algorithms\rabin_karp.cpp
 	"rabin_karp.hpp"
 
+1400607875 p.hpp"
+
 1400602814 d:\stringalgorithmsfork\codeblocks project\algorithms\rabin_karp.hpp
 	<cstring>
 	<string>
 	<iostream>
 	"../constants.hpp"
 	"hashing/hashing.hpp"
+
+1400602814 ashing.hpp"
+
+1400968590 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+	"bernstein.hpp"
+
+1400602608 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1400595820 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+
+1400591318 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.cpp
+	"hashing.hpp"
+
+1400591300 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1400596048 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1400591256 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.cpp
+	"sum_hashing.hpp"
+
+1400587396 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.cpp
+	"naive.hpp"
+
+1400588696 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1400607876 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
+	"rabin_karp.hpp"
+
+1400602816 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	"../constants.hpp"
+	"hashing/hashing.hpp"
+
+1400968941 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/main.cpp
+	<iostream>
+	"string_slib.hpp"
+
+1400968316 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
+	"algorithms/z_algorithm.hpp"
+
+1400969368 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+	"z_algorithm.hpp"
+
+1400969009 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+	<cstring>
+	<string>
+	<vector>
+
+1400972545 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
+
+1400974274 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.cpp
+	<gtest/gtest.h>
+	<math.h>
 

@@ -44,6 +44,7 @@
 		<Unit filename="algorithms/naive.hpp" />
 		<Unit filename="algorithms/rabin_karp.cpp" />
 		<Unit filename="algorithms/rabin_karp.hpp" />
+		<Unit filename="algorithms/z_algorithm.cpp" />
 		<Unit filename="algorithms/z_algorithm.hpp" />
 		<Unit filename="constants.hpp" />
 		<Unit filename="friends.hpp" />
