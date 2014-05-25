@@ -27,14 +27,16 @@ public class MatrixCalculator {
     public MatrixCalculator(Io io) {
         Objects.requireNonNull(io, "The io parameter must not be null.");
         this.io = io;
-        commands = new Command[3];
+        commands = new Command[5];
         commands[0] = new Exit();
         commands[1] = new Addition(io);
-        commands[2] = new Menu(commands, io);
+        commands[2] = new Subtraction(io);
+        commands[3] = new Multiplication(io);
+        commands[commands.length-1] = new Menu(commands, io);
     }  
     
     /**
-     * Starts the calculator. 
+     * Launches the calculator. 
      */
     public void run(){
         io.printLine("Select a choice, then press Enter.\n");

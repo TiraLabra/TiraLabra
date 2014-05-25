@@ -10,11 +10,11 @@ import java.util.Objects;
 public class MatrixMath {
 
     /**
-     * Adds two matrices of the same size and returns the resulting matrix.
+     * Returns the sum of two specified matrices.
      *
      * @param matrixA the first matrix of the matrices to be added
      * @param matrixB the second matrix of the matrices added
-     * @return the matrix resulting of the addition
+     * @return the sum of the specified matrices.
      * @throws IllegalArgumentException if the matrices have different sizes
      * @throws NullPointerException if either parameter is null
      */
@@ -23,10 +23,12 @@ public class MatrixMath {
     }    
     
     /**
-     * 
-     * @param matrixA
-     * @param matrixB
-     * @return 
+     * Returns the difference of two matrices.
+     * @param matrixA the matrix subtracted from
+     * @param matrixB the matrix subtracted from the first matrix
+     * @return the difference of the specified matrices
+     * @throws IllegalArgumentException if the matrices have different sizes
+     * @throws NullPointerException if either parameter is null 
      */
     public static Matrix subtract(Matrix matrixA, Matrix matrixB) {
         return performMatrixOperation(matrixA, matrixB, "subtraction");
@@ -86,6 +88,8 @@ public class MatrixMath {
      * @param term2 the second term of the operation
      * @param operation the specified operation; addition or subtraction
      * @return the result of the operation
+     * @throws IllegalArgumentException if the matrices are not multipliable
+     * @throws NullPointerException if either parameter is null
      */
     private static double computeElement(double term1, double element2, String operation) {
         double newElement;
@@ -98,8 +102,37 @@ public class MatrixMath {
         return newElement;
     }
 
-   
+    /**
+     * Returns the product of two specified matrices.
+     * @param matrixA the first matrix of the product
+     * @param matrixB the second matrix of the product
+     * @return the product of the specified matrices
+     */
+    public static Matrix multiply(Matrix matrixA, Matrix matrixB) {
+        checkIfMatricesAreNull(matrixA, matrixB);
+        if (!areMultipliable(matrixA, matrixB)){
+            throw new IllegalArgumentException("The inner dimensions must match.");
+        }
+        double[][] values = new double[matrixA.rows()][matrixB.cols()];
+        for (int i = 0; i < values.length; i++){
+            for (int j = 0; j < values[0].length; j++){
+                for (int k = 0; k < matrixA.cols(); k++){
+                    values[i][j] += matrixA.getElement(i, k)*matrixB.getElement(k, j);
+                }
+            }
+        }
+        return new Matrix(values);
+    }           
 
-    
-
+    /**
+     * Evaluated if the specified matrices are multipliable, that is that their inner dimensions match.
+     * @param matrixA the first matrix of the product
+     * @param matrixB the second matrix of the product
+     * @return true if the matrices are multipliable; otherwise false
+     * @throws NullPointerException is either parameter is null
+     */
+    public static boolean areMultipliable(Matrix matrixA, Matrix matrixB) {
+        checkIfMatricesAreNull(matrixA, matrixB);
+        return (matrixA.cols() == matrixB.rows());
+    }
 }
