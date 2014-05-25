@@ -1,8 +1,0 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-""" Tässä moduulissa lasketaan gridiin liittyviä energiatermejä.
-Atomiytimien aiheuttama potentiaali V_ext*n(r)
-Elektronien kineettinen energia T(n(r))
-VAihtokorrelaatioenergia E_xc
-"""
