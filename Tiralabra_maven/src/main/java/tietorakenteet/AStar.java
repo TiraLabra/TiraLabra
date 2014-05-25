@@ -1,6 +1,7 @@
 package tietorakenteet;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -10,17 +11,19 @@ import java.util.TreeSet;
  */
 public class AStar {
     
-    
-    // A-starin rakenteita, oikeat tyypit inttien tilalle määriteltävä...
+    // A-starin allustavia rakenteita, tyypit tulevat muuttumaan
     private ArrayList kaydyt;
     
     private PriorityQueue<Node> kaymatta;
     private SortedSet<Node> kaymatta2;
     
-    private int[] kuljettuReitti;
+    private Node[] kuljettuReitti;
 
     public AStar() {
         kaydyt = new ArrayList();
+        
+        Comparator<Node> comparator = new NodeComparator();
+        kaymatta = new PriorityQueue<Node>(10, comparator);
     }
     
     /**
@@ -49,6 +52,7 @@ public class AStar {
             // Nykyisen naapurien päivitys:
             for (Node naapuri : selvitaNaapurit(a, tarkastettava)) {
                 
+                //TODO: Oikea laskenta:
                 int uusiG = 999;
                 
                 if (kaydyt.contains(naapuri) && uusiG < naapuri.getEtaisyysAlusta()) {
@@ -72,6 +76,13 @@ public class AStar {
     }
     
     //KESKEN
+    /**
+     * Selvittää annetun noden naapurit.
+     * Käytännössä siis myös diagonaaliset siirtymät ruudukossa.
+     * @param a
+     * @param n
+     * @return 
+     */
     public ArrayList<Node> selvitaNaapurit(Alue a, Node n) {
         ArrayList<Node> naapurit = new ArrayList<Node>();
         
@@ -86,7 +97,8 @@ public class AStar {
     }
 
     /**
-     * 
+     * Tilapäinen heuristiikkametodi, todennäköisesti voi tulla omaksi
+     * luokakseen ja palauttamaan järkeviä arvoja joka tapauksessa.
      * @param naapuri
      * @param loppu
      * @return 
