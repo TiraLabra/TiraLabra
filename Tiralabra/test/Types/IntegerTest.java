@@ -9,8 +9,8 @@ public class IntegerTest {
     
     @Before
     public void setUp() {
-        two = new Integer(2);
         one = new Integer(1);
+        two = new Integer(2);
         four = new Integer(4);
     }
 

@@ -21,10 +21,10 @@ public class Integer implements Number<Integer> {
         this.integer = BigInteger.valueOf(integer);
     }
 
-    public Integer(String string) {
-        integer = new BigInteger(string);
-    }
-    
+    /**
+     * Luo luvun BigIntegerista
+     * @param integer BigInteger-kokonaisluku
+     */
     public Integer(BigInteger integer) {
         this.integer = integer;
     }

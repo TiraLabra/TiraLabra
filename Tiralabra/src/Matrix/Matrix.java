@@ -49,18 +49,10 @@ public class Matrix<T extends Types.Number<T>> {
     }
 
     public T get(int i, int j) {
-        if (i < 0 || i >= N || j < 0 || j >= M) {
-            return null;
-        }
-
         return (T) matrix[i][j];
     }
     
     public void set(int i, int j, T v) {
-        if (i < 0 || i >= N || j < 0 || j >= M) {
-            return;
-        }
-        
         matrix[i][j] = v;
     }
     
@@ -72,7 +64,7 @@ public class Matrix<T extends Types.Number<T>> {
      */
     public void set(int i0, int j0, T... elements) {
         if (i0 < 0 || i0 >= N || j0 < 0 || j0 >= M) {
-            return;
+            throw new IndexOutOfBoundsException();
         }
         
         int e = 0;
@@ -95,7 +87,7 @@ public class Matrix<T extends Types.Number<T>> {
      */
     private void add(int i, int j, T v) {
         if (i < 0 || i >= N || j < 0 || j >= M) {
-            return;
+            throw new IndexOutOfBoundsException();
         }
         
         if (matrix[i][j] == null) {
@@ -157,13 +149,13 @@ public class Matrix<T extends Types.Number<T>> {
     
     /**
      * Laskee matriisin determinantin
-     * @return 
+     * @return determinantti
      */
     public T determinant() {
         if (M != N) {
-            return null; // Tää pitäis olla super-nulli.
+            throw new UnsupportedOperationException("Not a square matrix");
         }
         
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
