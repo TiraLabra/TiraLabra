@@ -24,11 +24,11 @@ public class GeomertyUtils {
 	 * @return
 	 */
 	public static double calculateDistance(double x1, double x2, double y1, double y2) {
-		double dx = x1 - x2;
-		double dy = y1 - y2;
+		double dx = Math.toRadians(x1 - x2);
+		double dy = Math.toRadians(y1 - y2);
 		
-		double x = dx * Math.cos(dy / 2);
+		double x = dx * Math.cos((y1 + y2) / 2);
 		
-		return Math.sqrt(x * x + dy * dy) * 6371;
+		return Math.sqrt(x * x + dy * dy) * 6371009;
 	}
 }

@@ -24,9 +24,9 @@ public class Router {
 
 	private final int LINE_CHANGE_PENALTY = 10000;
 	private final double WALK_DISTANCE = 100;
-	private final double WALK_PENALTY = 50000; // Walk penalty per meter
+	private final double WALK_PENALTY = 5000; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
-	private final double TIME_MODIFIER = 200;
+	private final double TIME_MODIFIER = 10000;
 	
 	private DataStructuresDto dataStructures;
 	
@@ -177,7 +177,7 @@ public class Router {
 			
 			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
 			double tentativeScore = estimatedCost.get(current) + walkDistance;
-			int walkTime = (int) ((walkDistance * WALKING_SPEED) / 60);
+			int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
 			
 			if (!openNodes.contains(nearbyStation) 
 					|| tentativeScore < costFromStart.get(nearbyStation)) {
@@ -224,7 +224,7 @@ public class Router {
 	private void printPath(Map<Station, Station> cameFrom, Map<Station, Stop> stops, 
 			Map<Station, String> timeAtStation, Station station) {
 		
-		StringBuilder wkt = new StringBuilder("LINESTRING (");
+		StringBuilder wkt = new StringBuilder();
 		
 		while (station != null) {
 			if (stops.get(station) != null) {
@@ -239,14 +239,20 @@ public class Router {
 			else
 				System.out.println(station.getName());
 			
+			// Create geometry of the route as WKT Linestring
+			if (wkt.length() == 0)
+				wkt.append("LINESTRING (");
+			else
+				wkt.append(", ");
+			
 			wkt.append(station.getX());
 			wkt.append(" ");
 			wkt.append(station.getY());
-			wkt.append(", ");
 			
 			station = cameFrom.get(station);
 		}
 		
+		wkt.append(")");
 		System.out.println(wkt);
 	}
 }

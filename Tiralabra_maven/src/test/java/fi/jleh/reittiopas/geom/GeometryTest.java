@@ -9,6 +9,7 @@ import org.junit.Test;
 import fi.jleh.reittiopas.model.QuadtreePoint;
 import fi.jleh.reittiopas.quadtree.BoundingBox;
 import fi.jleh.reittiopas.quadtree.QuadTree;
+import fi.jleh.reittiopas.utils.GeomertyUtils;
 
 public class GeometryTest {
 
@@ -114,5 +115,14 @@ public class GeometryTest {
 		assertTrue(result.contains(point2));
 		assertTrue(result.contains(point3));
 		assertTrue(result.contains(point4));
+	}
+	
+	@Test
+	public void distanceCalculatorTest() {
+		double distance = GeomertyUtils.calculateDistance(24.95715, 24.96554, 60.20397, 60.18247);
+		
+		// Function is not performing accurate calculations. Real value is 2435 m but formula
+		// we are using gives 2526 m which is close enough. Difference < 100 m.
+		assertEquals(2435, distance, 100);
 	}
 }
