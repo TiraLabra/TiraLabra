@@ -1,0 +1,156 @@
+\documentclass[a4paper,12pt, titlepage]{article}
+\usepackage{amssymb,amsthm,amsmath} %ams
+\usepackage[finnish]{babel} %suomenkielinen tavutus
+\usepackage[T1]{fontenc} %skanditavutus
+\usepackage[utf8]{inputenc} % skandit utf-8 koodauksella
+
+\usepackage{graphicx} %dokumentti sisältää eps-muotoisia kuvia
+
+\usepackage{changepage}
+\usepackage{array}
+\usepackage{tabularx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\usepackage{float}
+\restylefloat{table}
+
+
+\linespread{1.24} %riviväli 1.5
+\sloppy % Vähentää tavutuksen tarvetta, "leventämällä" rivin keskellä olevia välilyöntejä.
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \LARGE
+        \textbf{Määrittelydokumentti}
+        
+        \vspace{0.5cm}
+        \Large
+        Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit (alkukesä)
+        
+        \vspace{1.5cm}
+        
+        \large
+        \textbf{Sami Korhonen} \\
+        \text{014021868} \\
+        \text{sami.korhonen@helsinki.fi}
+        
+		\vfill        
+        \normalsize
+        Tietojenkäsittelytieteen laitos\\
+        Helsingin yliopisto\\
+		\large        
+        \today
+        
+    \end{center}
+\end{titlepage}
+
+
+%\tableofcontents
+%\newpage
+
+\section*{Työn aihe}
+\subsection*{Ongelma ja tavoite}
+Rahtifirma NopsaToimitus haluaa optimoida konttikuljetuksissa käytettävän tilan. Oletettavasti kontin tila on käytetty mahdollisimman tehokkaasti kun kontin lattian pinta-alaa on käytetty mahdollisimman vähän ja kontin, tai täytetyn lattia-alueen tilavuudessa on mahdollisimman vähän tyhjää. \newline
+
+\noindent
+Tavoitteena on kehittää mahdollisimman nopea ja pätevä algoritmi, joka selvittää sopivan tavan pakata annetut laatikot annettuun konttiin. Ongelmaan ei ole toistaiseksi löydetty ratkaisua, joka antaisi parhaan mahdollisen ratkaisun kaikissa tilanteissa siedettävässä ajassa, eikä sitä luultavasti tule löytymään tämän harjoitustyön tuloksenakaan. Ongelman luonteesta johtuen algoritmin tarkoitus on löytää ongelmaan sopiva ratkaisu tietyllä tarkkuudella sopivassa ajassa. Tämä tarkkuus voidaan määritellä tyhjän tilan avulla.
+
+\subsection*{Määritelmiä}
+\subsubsection*{Yksiköt ja koordinaatisto}
+Työssä käytetään yksikköinä kokonaisluvuiksi pyöristettyjä senttimetrejä, sillä todellisuudessa laatikoiden mitat eivät ole esimerkiksi puristuvuuden vuoksi tämän tarkempia. \newline
+
+\noindent
+Koska kontti ja laatikot ovat suorakulmaisia särmiöitä, voidaan käyttä kolmiulotteista karteesista koordinaatistoa. Tässä työssä koordinaatiston akseleita merkitään kirjaimin x, y ja z.
+
+\subsubsection*{Laatikot}
+Laatikoiden asettamiseen liittyy muutamia sääntöjä:
+\begin{enumerate}
+	\item Laatikon tulee olla kokonaan kontin sisäpuolella
+	\item Laatikot eivät saa olla limittäin toistensa kanssa
+	\item Laatikon tulee olla kontin seinien suuntaisesti
+	\item Laatikko tulee olla tuettu koko pohjaltaan
+\end{enumerate}
+
+
+\subsubsection*{Pakkaaminen}
+Toistaiseksi työssä ei kiinnitetä huomiota seuraaviin seikkoihin:
+
+\begin{enumerate}
+	\item Samaa tavaraa sisältävät laatikot tulisi asettaa vierekkäin
+	\item Rahdin tulisi olla mahdollisimman helppo pakata ja purkaa
+\end{enumerate}
+
+\section*{Ratkaisu}
+\subsection*{Tietueet ja tietorakenteet}
+\subsubsection*{Palkki}
+Palkki koostuu yhdestä tai useammasta laatikosta ja se on muodoltaan suorakulmainen särmiö. Kaikista jäljellä olevista laatikoista koostuvat palkit kasataan listaan. Tätä varten tarvittaessa toteuttaa sopiva tietorakenne.
+\subsubsection*{Pakkaussuunnitelma}
+Pakkaussuunnitelma on lista asetetuista palkeista. Jokaista setettua pakettia varten talletetaan koordinaatiston piste, johon palkin referenssikulma asetetaan. Listauksen suunnittelu on vielä kehittämättä.
+\subsubsection*{Tilapalkki}
+Kontissa vapaana oleva eli tyhjä tila koostuu suorakulmaisista särmiöistä, joita kutsun tässä työssä tilapalkeiksi.
+\subsubsection*{Tila}
+Tämä pitää tietoa pakkauksen tämänhetkisestä tilasta esimerkiksi sisältäen pakkaussuunnitelman, käytetyn tilavuuden, listan vapaista laatikoista sekä pinon vapaista tilapalkeista.
+\subsection*{Algoritmit ja funktiot}
+\subsubsection*{Pääalgoritmi}
+Kontin pakkaaminen perustuu seuraavaan algoritmiin:
+\begin{verbatim}
+function pakkaaKontti(kontti, laatikot) 
+    paras = new PakkausSuunnitelma
+    generoiListaPalkeista() // lista generoidaan nykyisen tilan mukaan         
+    haunTarkkuus = 1 // määrittelee haun tarkkuuden iteraatiossa
+    // tehdään uusia pakkaussuunnitelmia kunnes aikaraja umpeutuu
+    while (aika < aikaraja)
+        tila = Tila.initialisoi() // aloitetaan tyhjästä kontista
+        // tilapalkkiPino:ssa on tilapalkit, eli kontin vapaana olevat tilat
+        while (tila.tilapalkkiPino != null)
+        	    tilapalkki = tila.tilapalkkiPino.pop()
+            palkki = haeParasPalkki(tila, haunTarkkuus)
+            lisaaPalkki(tila, palkki)
+        endwhile
+        if (parempi(tila.pakkausSuunnitelma,paras))
+            paras = tila.pakkausSuunnitelma
+        // update search effort for next iteration                  	
+        haunTarkkuus *= 2
+    endwhile
+return paras
+\end{verbatim}
+
+\noindent
+Tässä generoidaan useita, toinen toistaan parempia pakkaussuunnitelmia, kunnes aikaraja umpeutuu. Kutsun nyt iteraatioksi yhden pakkaussuunnitelman luomista. HaunTarkkuus on parametri, jolla määritetään kuinka hyvin soveltuva palkki halutaan löytää tiettyyn vapaaseen tilaan. Tätä kasvatetaan iteraatioiden välillä, jolloin saadaan aina entistä parempi pakkaussuunnitelma. Iteraation aluksi initialisoidaan tila, jonka tilapalkkiPino sisältää koko kontin kokoisen vapaan tilapalkin. Tämä tilapalkki jaetaan palkkeja lisätessä pienemmiksi tilapalkeiksi, joita tulee aina kolme kappaletta. Mikäli tilapalkkiin löytyy siihvoisi tutkia en mahtuva palkki, se lisätään pakkaussuunnitelmaan.
+
+\subsubsection*{haeParasPalkki(tila, tilapalkki, haunTarkkuus)}
+Tämä funktio hakee haunTarkkuuden tarkkuudella sopivan laatikon tilapalkkiin Kun haunTarkkuus on pieni, tulee palkin löytyä hyvin nopeasti. Toteutan tämän haun siksi hakupuuna, josta erään version ovat tehneet Fanslau Tobias ja Bortfeldt Andreas \cite{fanslau-bortfeldt}.
+
+\subsubsection*{lisaaPalkki(tila, tilapalkki, palkki)}
+Mikäli palkki on null, ei ole löytynyt tilaan sopivaa palkkia, jolloin tilapalkki poistetaan. Muutoin palkki lisätään pakkaussuunnitelmaan, tilapalkki poistetaan, ja tilapalkkiPinoon asetetaan kolme uutta tilapalkkia.
+
+\section*{Syötteet ja käyttäminen}
+\subsection*{Syötteet}
+Ohjelmalle syötetään kontin mitat alustavasti komentorivipohjaisella käyttöliittymällä, mutta ohjelmaan voidaan toteuttaa myöhemmin graafinen käyttöliittymä. Laatikoiden koot ja lukumäärät voidaan syöttää käyttöliittymän kautta tai lukemalla tiedot tiedostosta.
+
+\subsection*{Käyttäminen}
+Ohjelman käyttö tapahtuu yksinkertaisen komentorivipohjaisen tai graafisen käyttöliittymän avulla. Lisäksi ohjelma esittää mahdollisesti tuotetun lastausjärjestelmän kuvina ja/tai kenties 3D-graafisesti.
+
+\section*{Aika- ja tilavaativuudet}
+\subsection*{Aikavaativuus}
+Algoritmin käyttämä aika riippuu hyvin pitkälti sille määritellystä aikarajasta, eikä konttiin pakattavien laatikoiden määrästä. Ilman aikarajaa algoritmi laajentaisi hakuaan kunnes jokin muistialue käy liian pieneksi. Koska ongelmaan ei löydetä varsinaisesti oikeaa ratkaisua, on jokseenkin mielivaltaista tutkia aikavaativuutta perinteisin tavoin. Enkä näe tavotteellisten aikavaativuuksien määrittelemistä miellekkäänä. Aikavaativuuksia voisi tutkia sen mukaan, kuinka kauan on tarvittu aikaa tietyllä tarkkuudella optimaalisen pakkaussuunnitelman löytymiseen tietyllä laatikkomäärällä. 
+
+\begin{thebibliography}{9}
+
+\bibitem{fanslau-bortfeldt}
+  Tobias Fanslau, Andreas Bortfeldt, 2008 \newline
+  \emph{A Tree Search Algorithm for Solving the Container Loading Problem }\newline
+  http://www.fernuni-hagen.de/wirtschaftswissenschaft/download/beitraege/db426.pdf\newline
+  viitattu 18. toukokuuta 2014
+
+\end{thebibliography}
+
+\end{document}
