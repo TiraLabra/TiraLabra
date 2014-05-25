@@ -104,6 +104,8 @@ public class Matrix<T extends ASDNumber<T>> {
         return res;
     }
     
+    // Tarvii jonkun kiinnostavan ratkasun geneerisen identiteettimatriisin
+    // luomiseen.
     /*public Matrix<T> pow(int n) {
         Matrix<T> res = new Matrix<>(N, M);
 
