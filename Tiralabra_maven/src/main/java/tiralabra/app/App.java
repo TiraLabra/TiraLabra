@@ -15,9 +15,8 @@ public class App {
         printBoard(othello.getBoard());
         while (!othello.gameOver()) {
             othello.nextTurn();
-            System.out.println("------------");
             printBoard(othello.getBoard());
-            System.out.println("");       
+            System.out.println("");
         }
     }
 

@@ -16,13 +16,20 @@ import java.util.ArrayList;
 public class Board {
 
     /**
-     * Integer matrix of the board. 0 == Empty, 1 == WHITE, 2 == BLACK.
+     * Integer 2d array of the board. 0 == Empty, 1 == WHITE, 2 == BLACK.
      */
     private int[][] board;
     public static int WHITE = 1;
     public static int BLACK = 2;
-    private int pieceNumber = 0;
-    private ArrayList<Operation> undoList;
+    /**
+     * Keeps track of the number of moves made thus far and is used to identify
+     * all operations caused by a move.
+     */
+    private int moveNumber = 0;
+    /**
+     * ArrayList which holds all the operations done during this game.
+     */
+    private ArrayList<Operation> operationList;
 
     public Board() {
         this.board = new int[8][8];
@@ -32,9 +39,9 @@ public class Board {
         board[4][3] = BLACK;
         board[4][4] = WHITE;
 
-        undoList = new ArrayList<>();
+        operationList = new ArrayList<>();
     }
-    
+
     /**
      * Converts coordinates to a single long-type number.
      *
@@ -104,19 +111,26 @@ public class Board {
         if (board[y][x] != 0) {
             return 0;
         }
-        
+
         board[y][x] = team;
-        pieceNumber++;
-        undoList.add(new Operation(x, y, pieceNumber, 0));
+        moveNumber++;
+        operationList.add(new Operation(x, y, moveNumber, 0));
 
         int nmbOfFlips = 0;
 
-        nmbOfFlips += flipDiagonally(x, y, team);
-        nmbOfFlips += flipHorizontally(x, y, team);
-        nmbOfFlips += flipVertically(x, y, team);
-        
-        if (nmbOfFlips == 0) undo();
-        
+        nmbOfFlips += flipDirection(x, y, 1, 0, team);
+        nmbOfFlips += flipDirection(x, y, -1, 0, team);
+        nmbOfFlips += flipDirection(x, y, 0, 1, team);
+        nmbOfFlips += flipDirection(x, y, 0, -1, team);
+        nmbOfFlips += flipDirection(x, y, 1, 1, team);
+        nmbOfFlips += flipDirection(x, y, 1, -1, team);
+        nmbOfFlips += flipDirection(x, y, -1, 1, team);
+        nmbOfFlips += flipDirection(x, y, -1, -1, team);
+
+        if (nmbOfFlips == 0) {
+            undo();
+        }
+
         return nmbOfFlips;
     }
 
@@ -330,27 +344,28 @@ public class Board {
     }
 
     /**
-     * Flips the piece to the opposing color in the given coordinates.
+     * Flips the piece to the opposing color in the given coordinates + adds the
+     * flip to the list of operations.
      *
      * @param x
      * @param y
      */
     private void flip(int x, int y) {
-        undoList.add(new Operation(x, y, pieceNumber, board[y][x]));
+        operationList.add(new Operation(x, y, moveNumber, board[y][x]));
         board[y][x] = board[y][x] == WHITE ? BLACK : WHITE;
     }
 
     /**
-     * Undoes the last move and subtracts one from the undoCount.
+     * Undoes the last move and subtracts one from the moveNumber.
      */
     public void undo() {
-        for (int j = undoList.size() - 1; j >= 0 && undoList.get(j).undoCount == pieceNumber; j--) {
-            Operation operation = undoList.get(j);
+        for (int j = operationList.size() - 1; j >= 0 && operationList.get(j).undoCount == moveNumber; j--) {
+            Operation operation = operationList.get(j);
             board[operation.y][operation.x] = operation.original;
 
-            undoList.remove(j);
+            operationList.remove(j);
         }
-        pieceNumber--;
+        moveNumber--;
     }
 
     /**
@@ -395,10 +410,15 @@ public class Board {
      * @return number of pieces placed
      */
     public int getPieceNumber() {
-        return pieceNumber;
+        return moveNumber;
     }
 
+    /**
+     * Whether the board is full.
+     *
+     * @return true, if all the pieces have been set on the board.
+     */
     public boolean isFull() {
-        return pieceNumber == 60;
+        return moveNumber == 60;
     }
 }

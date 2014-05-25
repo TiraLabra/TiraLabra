@@ -15,12 +15,12 @@ import tiralabra.game.ai.AI;
 public class Game {
 
     /**
-     * Which team is in turn. Defined in Board's static variables. 1 == WHITE, 2
-     * == BLACK
+     * Which team is in turn. Integers for each side defined in Board's static
+     * variables.
      */
     private int turn;
     /**
-     * The board, which contains the pieces and is responsible for flipping them
+     * The board which contains the pieces and is responsible for flipping them
      * and placing them.
      */
     private Board board;
@@ -119,10 +119,28 @@ public class Game {
     /**
      * Check whether it's an AI's turn
      *
-     * @return boolean on whether it's an AI's turn.
+     * @return whether it's an AI's turn.
      */
     private boolean isAITurn() {
         return (turn == Board.WHITE && whiteai) || (turn == Board.BLACK && blackai);
+    }
+
+    /**
+     * Gets the game's status concerning user input.
+     *
+     * @return Whether the game is waiting for user to make his turn.
+     */
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    /**
+     * Gets the game's status on whether the game is over or not.
+     *
+     * @return
+     */
+    public boolean gameOver() {
+        return gameOver;
     }
 
     /**
@@ -153,21 +171,10 @@ public class Game {
     }
 
     /**
-     * Gets the game's status concerning user input.
-     *
-     * @return Whether the game is waiting for user to make his turn.
+     * Sets the board to the given Board-object. For testing purposes.
+     * @param board 
      */
-    public boolean isWaiting() {
-        return waiting;
+    public void setBoard(Board board) {
+        this.board = board;
     }
-
-    /**
-     * Gets the game's status on whether the game is over or not.
-     *
-     * @return
-     */
-    public boolean gameOver() {
-        return gameOver;
-    }
-
 }

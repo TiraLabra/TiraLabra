@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import tiralabra.utilities.Utilities;
 import tiralabra.game.Board;
 
 /**
+ * The AI which calculates which move the AI Should take in any given situation.
  *
  * @author atte
  */
 public class AI {
 
     /**
-     * Comparator that compares moves based on how many pieces they flip.
+     * Comparator that compares moves based on values given in a HashMap.
      */
     public static class MoveSorter implements Comparator<Long> {
 
@@ -36,10 +36,13 @@ public class AI {
 
     }
 
+    /**
+     * The board used for this ai.
+     */
     private final Board board;
     /**
      * A table that is used to store the hypothetical value of holding any one
-     * place.
+     * point.
      */
     private static final int[][] pieceValues = new int[][]{{65, -3, 6, 4, 4, 6, -3, 65},
     {-3, -29, 1, 1, 1, 3, -29, -3},
@@ -54,36 +57,43 @@ public class AI {
         this.board = board;
     }
 
+//    /**
+//     * The way a beginner would play. Always choose the move which brings the
+//     * most new pieces.
+//     *
+//     * @param team
+//     * @return the move which brings the most new pieces, stores a long
+//     * variable.
+//     */
+//    public long greedyBeginnerMove(int team) {
+//        ArrayList<Long> moves = board.findLegalMoves(team);
+//        HashMap<Long, Integer> piecesOwned = new HashMap<>();
+//
+//        for (long move : moves) {
+//            int nmbOfFlips = board.place(move, team);
+//
+//            piecesOwned.put(move, nmbOfFlips);
+//
+//            board.undo();
+//        }
+//        Collections.sort(moves, new MoveSorter(team, piecesOwned));
+//
+//        return moves.get(0);
+//    }
     /**
-     * The way a beginner would play. Always choose the move which brings the
-     * most new pieces.
+     * The starting node where the
      *
      * @param team
-     * @return the move which brings the most new pieces, stores a long
-     * variable.
+     * @return
      */
-    public long greedyBeginnerMove(int team) {
-        ArrayList<Long> moves = board.findLegalMoves(team);
-        HashMap<Long, Integer> piecesOwned = new HashMap<>();
-
-        for (long move : moves) {
-            int nmbOfFlips = board.place(move, team);
-
-            piecesOwned.put(move, nmbOfFlips);
-
-            board.undo();
-        }
-        Collections.sort(moves, new MoveSorter(team, piecesOwned));
-
-        return moves.get(0);
-    }
-
     public long search(int team) {
-        ArrayList<Long> moves = getAllPossibleMovesInOrder(team);
+        ArrayList<Long> moves = board.findLegalMoves(team);
 
         int alpha = Integer.MIN_VALUE;
         long best = moves.get(0);
+        long startTime = System.currentTimeMillis();
         for (Long move : moves) {
+
             int compare = search(move, 8, alpha, Integer.MAX_VALUE, Board.getOpposingTeam(team), false);
 
             if (compare > alpha) {
@@ -91,20 +101,37 @@ public class AI {
                 alpha = compare;
             }
         }
+        long time = System.currentTimeMillis() - startTime;
+        System.out.println("time: " + time);
 
         return best;
     }
 
+    /**
+     * Min-max-algorithm with alpha-beta-pruning. First the given move of this
+     * node is placed on the board, which is undone when we return from this
+     * node. Then, using alpha-beta-pruning, we prune the obviously worse nodes.
+     * The value of a given board is calculated with the
+     * calculateValueOfBoardBasedOnPiecesHeld -method.
+     *
+     * @param move
+     * @param depth
+     * @param alpha
+     * @param beta
+     * @param team
+     * @param max
+     * @return the alpha or beta value of this node.
+     */
     public int search(long move, int depth, int alpha, int beta, int team, boolean max) {
         board.place(move, Board.getOpposingTeam(team));
 
         if (depth == 0 || board.isFull()) {
-            int heuristic = calculateHeuristic(team);
+            int heuristic = calculateValueOfBoardBasedOnPiecesHeld(team);
             board.undo();
             return heuristic;
         }
 
-        ArrayList<Long> moves = getAllPossibleMovesInOrder(team);
+        ArrayList<Long> moves = board.findLegalMoves(team);
 
         if (moves.isEmpty()) {
             return search(move, depth - 1, alpha, beta, Board.getOpposingTeam(team), !max);
@@ -133,6 +160,13 @@ public class AI {
         }
     }
 
+    /**
+     * Returns all moves for current board in a order from most pieces flipped
+     * to least flipped.
+     *
+     * @param team
+     * @return moves
+     */
     public ArrayList<Long> getAllPossibleMovesInOrder(int team) {
         ArrayList<Long> moves = new ArrayList<>();
         HashMap<Long, Integer> piecesOwned = new HashMap<>();
@@ -140,7 +174,7 @@ public class AI {
         for (int y = 0; y < board.getBoard().length; y++) {
             for (int x = 0; x < board.getBoard()[0].length; x++) {
                 int flipped = board.put(x, y, team);
-                
+
                 if (flipped > 0) {
                     long move = Board.point(x, y);
                     moves.add(move);
@@ -149,13 +183,19 @@ public class AI {
                 }
             }
         }
-        
-        
+
         Collections.sort(moves, new MoveSorter(team, piecesOwned));
         return moves;
     }
 
-    public int calculateHeuristic(int team) {
+    /**
+     * Calculates value of the current board based on the pieces the given team
+     * and their opponent hold.
+     *
+     * @param team
+     * @return value of a board.
+     */
+    public int calculateValueOfBoardBasedOnPiecesHeld(int team) {
         int heuristic = 0;
         for (int y = 0; y < board.getBoard().length; y++) {
             for (int x = 0; x < board.getBoard()[0].length; x++) {
