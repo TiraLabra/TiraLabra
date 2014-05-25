@@ -48,10 +48,15 @@
 		<Unit filename="algorithms/z_algorithm.hpp" />
 		<Unit filename="constants.hpp" />
 		<Unit filename="friends.hpp" />
-		<Unit filename="main.cpp" />
 		<Unit filename="string_slib.hpp" />
 		<Unit filename="structures/knuth_morris_pratt.hpp" />
 		<Unit filename="structures/suffix_tree.hpp" />
+		<Unit filename="tests/test_suite.cpp" />
+		<Unit filename="tests/test_util.cpp" />
+		<Unit filename="tests/test_util.hpp" />
+		<Unit filename="tests/z_algorithm_tests" />
+		<Unit filename="tests/z_algorithm_tests.cpp" />
+		<Unit filename="tests/z_algorithm_tests.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

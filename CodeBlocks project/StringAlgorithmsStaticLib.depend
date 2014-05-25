@@ -165,9 +165,24 @@
 	<string>
 	<vector>
 
-1400972545 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
+1400977594 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
+	"z_algorithm_tests.hpp"
+	<iostream>
 
-1400974274 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.cpp
+1400977330 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.cpp
 	<gtest/gtest.h>
-	<math.h>
+	"z_algorithm_tests.hpp"
+
+1400977939 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.hpp
+	<gtest/gtest.h>
+	"test_util.hpp"
+	"../algorithms/z_algorithm.hpp"
+
+1400977698 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_util.cpp
+	"test_util.hpp"
+
+1400977258 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_util.hpp
+	<string>
+	<ctime>
+	<cstdlib>
 
