@@ -22,13 +22,23 @@ import fi.jleh.reittiopas.utils.TimeUtils;
  */
 public class Router {
 
-	private static final int LINE_CHANGE_PENALTY = 10000;
+	private final int LINE_CHANGE_PENALTY = 10000;
 	private final double WALK_DISTANCE = 100;
 	private final double WALK_PENALTY = 50000; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
 	private final double TIME_MODIFIER = 200;
 	
 	private DataStructuresDto dataStructures;
+	
+	private Set<Station> visitedNodes = new HashSet<Station>();
+	private List<Station> openNodes = new ArrayList<Station>();
+	
+	private Map<Station, Station> cameFrom = new HashMap<Station, Station>();
+	private Map<Station, Stop> cameFromStop = new HashMap<Station, Stop>();
+	private Map<Station, String> timeAtStation = new HashMap<Station, String>();
+	
+	private Map<Station, Double> costFromStart = new HashMap<Station, Double>();
+	private Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
 	
 	public Router(DataStructuresDto dto) {
 		this.dataStructures = dto;
@@ -53,15 +63,15 @@ public class Router {
 	 * @throws RoutingFailureException
 	 */
 	public void findRoute(Station start, Station end, String startTime) throws RoutingFailureException {
-		Set<Station> visitedNodes = new HashSet<Station>();
-		List<Station> openNodes = new ArrayList<Station>();
+		visitedNodes = new HashSet<Station>();
+		openNodes = new ArrayList<Station>();
 		
-		Map<Station, Station> cameFrom = new HashMap<Station, Station>();
-		Map<Station, Stop> cameFromStop = new HashMap<Station, Stop>();
-		Map<Station, String> timeAtStation = new HashMap<Station, String>();
+		cameFrom = new HashMap<Station, Station>();
+		cameFromStop = new HashMap<Station, Stop>();
+		timeAtStation = new HashMap<Station, String>();
 		
-		Map<Station, Double> costFromStart = new HashMap<Station, Double>();
-		Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
+		costFromStart = new HashMap<Station, Double>();
+		estimatedCost = new HashMap<Station, Double>();
 		
 		// Values for start node
 		costFromStart.put(start, 0.0);
@@ -83,105 +93,112 @@ public class Router {
 			visitedNodes.add(current);
 			
 			// We can access lines and next stations through stops 
-			for (Stop stop : current.getStops()) {
-				int stopNumber = stop.getOrder();
-				
-				if (stopNumber + 1 < stop.getService().getStops().size()) {
-					// Get next station on line
-					Station station = stop.getService().getStops().get(stopNumber + 1).getStation();
-					
-					// If station is already checked, ignore it
-					if (visitedNodes.contains(station))
-						continue;
-					
-					double tentativeScore = estimatedCost.get(current) 
-							+ GeomertyUtils.calculateDistance(current, station);
-					
-					if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
-						// Do time check
-						// Ignore if start time is not set
-						double timeScore = 0;
-						if (startTime != null ) {
-							Integer time1 = Integer.parseInt(timeAtStation.get(current));
-							Integer time2 = Integer.parseInt(stop.getArrival());
-							
-							// Can't go back in time
-							if (time2 <= time1)
-								continue;
-							
-							timeScore = Math.abs(time2 - time1) * TIME_MODIFIER;
-							
-							// Time from start
-							tentativeScore += time2 - Integer.parseInt(startTime);
-						}
-						
-						cameFrom.put(station, current);
-						cameFromStop.put(station, stop);
-						timeAtStation.put(station, stop.getArrival());
-						
-						// We give some penalty for changing line
-						double linePenalty = 0;
-						if (cameFromStop.get(current) != null
-								&& stop.getService() != null // When walk to other station service is null
-								&& cameFromStop.get(current).getService() != null) { // As above
-							if (stop.getService().getId() != cameFromStop.get(current).getService().getId())
-								linePenalty = LINE_CHANGE_PENALTY;
-							else
-								timeScore = 0; // Reset time score, no need to change the vehicle
-						}
-						
-						costFromStart.put(station, tentativeScore + timeScore);
-						estimatedCost.put(station, tentativeScore + linePenalty + timeScore);
-						
-						if (!openNodes.contains(station)) {
-							openNodes.add(station);
-						}
-					}
-				} else {
-					continue;
-				}
-			}
+			processStops(current.getStops(), current, startTime);
 			
 			// Because all transportation modes or lines doesn't stop at same stations
 			// (eg. trains don't stop at bus stops) we need to check nearest stations
 			// where user can walk, to get better results.
+			processNearbyStations(current, timeAtStation.get(current));
+		}
+		
+		throw new RoutingFailureException("Routing has failed");
+	}
+	
+	private void processStops(List<Stop> stops, Station current, String startTime) {
+		for (Stop stop : stops) {
+			int stopNumber = stop.getOrder();
 			
-			BoundingBox boundingBox = new BoundingBox(current.getX(), current.getY(), WALK_DISTANCE);
-			List<QuadtreePoint> nearbyStations = dataStructures.getStationSpatial().queryRange(boundingBox);
-			
-			for (QuadtreePoint point : nearbyStations) {
-				Station nearbyStation = (Station) point;
+			// We can go only one direction with one line
+			if (stopNumber + 1 < stop.getService().getStops().size()) {
+				// Get next station on line
+				Station station = stop.getService().getStops().get(stopNumber + 1).getStation();
 				
-				// Station already checked
-				if (visitedNodes.contains(nearbyStation))
+				// If station is already checked, ignore it
+				if (visitedNodes.contains(station))
 					continue;
 				
-				double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
-				double tentativeScore = estimatedCost.get(current) + walkDistance;
-				int walkTime = (int) ((walkDistance * WALKING_SPEED) / 60);
+				double tentativeScore = estimatedCost.get(current) 
+						+ GeomertyUtils.calculateDistance(current, station);
 				
-				// TODO: Refactor this to use same code with few lines above
-				if (!openNodes.contains(nearbyStation) 
-						|| tentativeScore < costFromStart.get(nearbyStation)) {
-					cameFrom.put(nearbyStation, current);
-					cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
+				if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
+					// Do time check
+					// Ignore if start time is not set
+					double timeScore = 0;
+					if (startTime != null ) {
+						Integer time1 = Integer.parseInt(timeAtStation.get(current));
+						Integer time2 = Integer.parseInt(stop.getArrival());
+						
+						// Can't go back in time
+						if (time2 <= time1)
+							continue;
+						
+						timeScore = Math.abs(time2 - time1) * TIME_MODIFIER;
+						
+						// Time from start
+						tentativeScore += time2 - Integer.parseInt(startTime);
+					}
 					
-					String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-					timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
+					cameFrom.put(station, current);
+					cameFromStop.put(station, stop);
+					timeAtStation.put(station, stop.getArrival());
 					
-					int timeScore = Integer.parseInt(timeAfterWalk) - Integer.parseInt(startTime);
+					// We give some penalty for changing line
+					double linePenalty = 0;
+					if (cameFromStop.get(current) != null
+							&& stop.getService() != null // When walk to other station service is null
+							&& cameFromStop.get(current).getService() != null) { // As above
+						if (stop.getService().getId() != cameFromStop.get(current).getService().getId())
+							linePenalty = LINE_CHANGE_PENALTY;
+						else
+							timeScore = 0; // Reset time score, no need to change the vehicle
+					}
 					
-					costFromStart.put(nearbyStation, tentativeScore + timeScore);
-					estimatedCost.put(nearbyStation, tentativeScore + timeScore + WALK_PENALTY * walkDistance);
+					costFromStart.put(station, tentativeScore + timeScore);
+					estimatedCost.put(station, tentativeScore + linePenalty + timeScore);
 					
-					if (!openNodes.contains(nearbyStation)) {
-						openNodes.add(nearbyStation);
+					if (!openNodes.contains(station)) {
+						openNodes.add(station);
 					}
 				}
 			}
 		}
+	}
+	
+	private void processNearbyStations(Station current, String startTime) {
+		BoundingBox boundingBox = new BoundingBox(current.getX(), current.getY(), WALK_DISTANCE);
+		List<QuadtreePoint> nearbyStations = dataStructures.getStationSpatial().queryRange(boundingBox);
 		
-		throw new RoutingFailureException("Routing has failed");
+		for (QuadtreePoint point : nearbyStations) {
+			Station nearbyStation = (Station) point;
+			
+			// Station already checked
+			if (visitedNodes.contains(nearbyStation))
+				continue;
+			
+			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
+			double tentativeScore = estimatedCost.get(current) + walkDistance;
+			int walkTime = (int) ((walkDistance * WALKING_SPEED) / 60);
+			
+			if (!openNodes.contains(nearbyStation) 
+					|| tentativeScore < costFromStart.get(nearbyStation)) {
+				cameFrom.put(nearbyStation, current);
+				cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
+				
+				int timeScore = 0;
+				if (startTime != null) {
+					String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
+					timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
+					timeScore = Integer.parseInt(timeAfterWalk) - Integer.parseInt(startTime);
+				}
+				
+				costFromStart.put(nearbyStation, tentativeScore + timeScore);
+				estimatedCost.put(nearbyStation, tentativeScore + timeScore + WALK_PENALTY * walkDistance);
+				
+				if (!openNodes.contains(nearbyStation)) {
+					openNodes.add(nearbyStation);
+				}
+			}
+		}
 	}
 	
 	/*
