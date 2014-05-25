@@ -10,14 +10,16 @@ package huffman;
  *
  * @author robertvalta
  */
-public abstract class Node {
-    private int frequency;
+public class Leaf extends Node{
     
-    public Node(int frequency) {
-        this.frequency = frequency;
+    private int symbol;
+
+    public Leaf(int frequency, int symbol) {
+        super(frequency);
+        this.symbol = symbol;
     }
     
-    public int getFrequency() {
-        return this.frequency;
+    public int getSymbol() {
+        return this.symbol;
     }
 }

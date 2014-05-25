@@ -10,14 +10,6 @@ package huffman;
  *
  * @author robertvalta
  */
-public abstract class Node {
-    private int frequency;
+public class FrequencyHeap {
     
-    public Node(int frequency) {
-        this.frequency = frequency;
-    }
-    
-    public int getFrequency() {
-        return this.frequency;
-    }
 }
