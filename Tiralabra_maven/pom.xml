@@ -18,8 +18,50 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.10</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+<build>
+    <plugins>
+        <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-javadoc-plugin</artifactId>
+             <version>2.9.1</version>
+        </plugin> 
+        
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.7</source>
+                <target>1.7</target>
+            </configuration>
+            <version>2.5</version>
+        </plugin>
+        
+        <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>0.30</version>
+            <configuration>
+                <targetClasses>
+                    <param>Tietorakenteet.MinKeko</param>
+                    <param>Toteutus.BittiEsitykset</param>
+                    <param>Toteutus.HuffmanPuu</param>
+                    <param>Toteutus.TekstinLukija</param>                    
+                </targetClasses>
+                <targetTests>
+                    <param>Tietorakenteet.MinKekoTest</param>
+                    <param>Toteutus.BittiEsityksetTest</param>
+                    <param>Toteutus.HuffmanPuuTest</param>
+                    <param>Toteutus.TekstinLukijaTest</param>
+                </targetTests>
+            </configuration>
+        </plugin>
+        
+    </plugins>
+</build>  
+  
+  
 </project>

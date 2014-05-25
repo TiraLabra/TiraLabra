@@ -1,0 +1,48 @@
+package Toteutus;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class TekstinLukijaTest {
+    private TekstinLukija lukija;
+    
+    @Before
+    public void setUp() {
+        this.lukija = new TekstinLukija();
+        try {
+            lukija.lueTiedosto("TekstinLukijaTest.txt");
+        }
+        catch (FileNotFoundException e){
+        }
+    }
+
+    @Test
+    public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
+        assertTrue(this.lukija.getTeksti().equals("Tämä on testi -teksti, mikä luetaan\n" +
+                                                  "TekstinLukijaTestin\n" +
+                                                  "kautta."));
+    }
+    
+    @Test
+    public void merkkienEsiintymienMaaraTasmaa() {
+        HashMap<String, Integer> esiintymat = lukija.getEsiintymat();
+        
+        int luku = esiintymat.get("T");
+        assertEquals(3, luku);
+        
+        luku = esiintymat.get(" ");
+        assertEquals(5, luku);        
+        
+        luku = esiintymat.get("ä");
+        assertEquals(3, luku);
+        
+        luku = esiintymat.get("\n");
+        assertEquals(2, luku);
+        
+        luku = esiintymat.get("n");
+        assertEquals(4, luku); 
+    }
+}
