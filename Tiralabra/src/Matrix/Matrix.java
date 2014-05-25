@@ -1,13 +1,11 @@
 package Matrix;
 
-import Types.ASDNumber;
-
 /**
  * Geneerinen matriisi
  * @author riku
  * @param <T> skalaarityyppi
  */
-public class Matrix<T extends ASDNumber<T>> {
+public class Matrix<T extends Types.Number<T>> {
     public final int N, M;
     private final Object matrix[][];
     

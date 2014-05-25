@@ -5,7 +5,7 @@ package Types;
  * @author riku
  * @param <T> 
  */
-public interface ASDNumber<T> {
+public interface Number<T> {
     /**
      * Yhteenlasku
      * @param other toinen luku

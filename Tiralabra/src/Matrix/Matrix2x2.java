@@ -1,13 +1,11 @@
 package Matrix;
 
-import Types.ASDNumber;
-
 /**
  * 2x2 matriisi
  * @author riku
  * @param <T> 
  */
-public class Matrix2x2<T extends ASDNumber<T>> extends Matrix<T> {
+public class Matrix2x2<T extends Types.Number<T>> extends Matrix<T> {
     public Matrix2x2(T[][] values) {
         super(values);
     }
