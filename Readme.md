@@ -4,7 +4,7 @@ StringAlgorithmsStaticLib
 A C++ library containing commercial and non-commercial string algorithms for processing, searching, etc
 
 #Commerical algorithms:
-- Z algorithm
+- Z algorithm 
 Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt)
 - Knuth-morris-pratt algorithm
 - Rabin-karp algorithm.
