@@ -1,5 +1,6 @@
 #include "z_algorithm.hpp"
-
+#include <iostream>
+using namespace std;
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length) {
     char a,b;

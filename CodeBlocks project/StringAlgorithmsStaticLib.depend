@@ -157,15 +157,16 @@
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
 
-1401058106 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+1401059459 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
 	"z_algorithm.hpp"
+	<iostream>
 
 1400969009 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
 
-1401058131 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
+1401060405 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
 	"z_algorithm_tests.hpp"
 	<iostream>
 

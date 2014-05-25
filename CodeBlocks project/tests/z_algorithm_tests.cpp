@@ -10,6 +10,9 @@ TEST(Z_ALGORITHM_TEST,NORMAL_TEST) {
         vector<int> ans = mqt.ans;
         vector<int> z_ans = z_algo_get_positions(haystack, needle);
         EXPECT_EQ((int)ans.size(), (int)z_ans.size());
+        for (int i = 0; i < (int)ans.size();++i) {
+            EXPECT_EQ(ans[i], z_ans[i]);
+        }
     }
 
 }
