@@ -2,6 +2,10 @@ package Types;
 
 import java.math.BigInteger;
 
+/**
+ * Mielivaltaisen kokoinen kokonaisluku
+ * @author riku
+ */
 public class ASDInteger implements ASDNumber<ASDInteger> {
     public static final ASDInteger ONE = new ASDInteger(BigInteger.ONE);
     public static final ASDInteger ZERO = new ASDInteger(BigInteger.ZERO);
@@ -9,10 +13,14 @@ public class ASDInteger implements ASDNumber<ASDInteger> {
     
     public final BigInteger integer;
     
+    /**
+     * Luo luvun kokonaisluvusta
+     * @param integer kokonaisluku
+     */
     public ASDInteger(int integer) {
         this.integer = BigInteger.valueOf(integer);
     }
-    
+
     public ASDInteger(String string) {
         integer = new BigInteger(string);
     }

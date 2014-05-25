@@ -57,4 +57,19 @@ public class MatrixTest {
         assertEquals(matrix.get(1, 0), ASDInteger.ONE);
         assertEquals(matrix.get(1, 1), ASDInteger.ONE);
     }
+    
+    @Test
+    public void emptyMatrix() {
+        Matrix<ASDInteger> a = new Matrix<>(3, 0);
+        Matrix<ASDInteger> b = new Matrix<>(0, 3);
+        
+        Matrix<ASDInteger> ab = a.multiply(b);
+        Matrix<ASDInteger> ba = b.multiply(a);
+        
+        assertEquals(ab.N, 3);
+        assertEquals(ab.M, 3);
+        
+        assertEquals(ba.N, 0);
+        assertEquals(ba.M, 0);
+    }
 }
