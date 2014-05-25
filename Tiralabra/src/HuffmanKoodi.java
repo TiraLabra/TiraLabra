@@ -3,18 +3,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+/**
+ *Luokka toteuttaa Huffmanin algoritmin.
+ */
 public class HuffmanKoodi {
-
+    /**
+     * Huffmanin algoritmin tuloksena muodostuvat koodisanat.
+     */
     private HashMap<Character, String> koodisanat;
 
+    /**
+     *
+     */
     public HuffmanKoodi() {
         this.koodisanat = new HashMap();
     }
 
+    /**
+     *Muodostetaan Huffman-puu annetusta merkeistä.
+     * @param merkit Merkistön eri merkkien esiintymiskerrat tiedostossa.
+     * @return Viite Huffman-puun juureen.
+     */
     public HuffmanSolmu muodostaPuu(int[] merkit) {
       Minimikeko keko = merkitJarjestykseen(merkit);
-
-        //System.out.println(keko.koko());
 
         while (keko.koko() > 1) {
             HuffmanSolmu eka = keko.pienin();
@@ -27,7 +38,12 @@ public class HuffmanKoodi {
 
         return keko.pienin();
     }
-
+    
+    /**
+     *Luo solmut annetuista merkeistä ja järjestää nämä minimikeon avulla.
+     * @param merkit Merkistön eri merkkien esiintymiskerrat tiedostossa.
+     * @return Minimikeko, joka sisältää tiedoston eri merkit solmuiksi muutettuina.
+     */
     private Minimikeko merkitJarjestykseen(int[] merkit) {
         Minimikeko keko = new Minimikeko();
         
@@ -43,9 +59,19 @@ public class HuffmanKoodi {
         return keko;
     }
 
+    /**
+     *Kutsuu rekursiivista koodisanat()-metodia ja palauttaa muodostetut koodisanat.
+     * @param juuri Viite Huffmanin puun juuren.
+     * @return Merkit ja niitä vastaavat koodisanat.
+     */
     public Map muodostaKoodit(HuffmanSolmu juuri) {
            if (juuri == null) {
                return null;
+           }
+           
+           if (juuri.getVasen() == null && juuri.getOikea() == null) {
+               koodisanat("0", juuri);
+               return koodisanat;
            }
 
            koodisanat("", juuri);
@@ -54,6 +80,12 @@ public class HuffmanKoodi {
     
     }
     
+    /**
+     * Kulkee Huffmanin puuta pitkin rekursiivisesti etsien lehdet ja muodostaen samalla lehdessä olevia
+     * merkkejä vastaavat koodisanat.
+     * @param bitit Merkkiä vastaava rakenteilla oleva koodisana.
+     * @param solmu Solmu, jonka kohdalla ollaan puussa.
+     */
     private void koodisanat(String bitit, HuffmanSolmu solmu) {
 
         if (solmu.getVasen() == null && solmu.getOikea() == null) {
@@ -66,10 +98,18 @@ public class HuffmanKoodi {
 
     }
     
-    public void tulosta () {
+    /**
+     *Palauttaa muodostetut koodisanat.
+     * @return Merkkijonoesitys koodisanoista muodossa "merkki - koodisana"
+     */
+    public String palautaKoodisanat() {
+        String merkkijono = "";
+        
         for (char merkki : koodisanat.keySet()) {
-            System.out.println(merkki + " - " + koodisanat.get(merkki));
+            merkkijono += merkki + " - " + koodisanat.get(merkki) + "\n";
         }
+        
+        return merkkijono;
     }
 
 }

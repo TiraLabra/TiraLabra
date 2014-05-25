@@ -5,7 +5,7 @@ public class Main {
         String testi = "ababcdddda";
         Pakkaaja p = new Pakkaaja();
         String pakattu = p.pakkaa(testi);
-        
+       
         System.out.println(pakattu);
         
         //Purkaja pur = new Purkaja();
