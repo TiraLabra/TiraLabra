@@ -4,10 +4,8 @@
  */
 package verkko;
 
-import java.util.Arrays;
 import labyrintti.Labyrintti2D;
 import labyrintti.RecursiveBacktracker;
-import util.Taulukko;
 
 /**
  *
@@ -20,7 +18,7 @@ public class Verkko {
      */
     public static void main(String[] args) {
 
-         Labyrintti2D l = new Labyrintti2D(10, 10);
+         Labyrintti2D l = new Labyrintti2D(20, 80);
          l.setLabyrintitin(new RecursiveBacktracker(l.getSolmut()));
          l.labyrintitaLabyrintti();
          System.out.println(l.toString());
