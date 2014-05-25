@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * A Star -reitinhaun luokka.
@@ -12,12 +11,23 @@ import java.util.TreeSet;
 public class AStar {
     
     // A-starin allustavia rakenteita, tyypit tulevat muuttumaan
+    /**
+     * Tietorakenne joka sisältää haun kaikki jo käymät Nodet.
+     */
     private ArrayList kaydyt;
     
+    /**
+     * Tietorakenne, joka sisältää haussa käymättä olevat Nodet.
+     */
     private PriorityQueue<Node> kaymatta;
+    
+    //tilapäiskokeilua...
     private SortedSet<Node> kaymatta2;
     
-    private Node[] kuljettuReitti;
+    /**
+     * Tietorakenne, johon tallennetaan haun löytämä optimaalisin reitti.
+     */
+    private ArrayList<Node> kuljettuReitti;
 
     public AStar() {
         kaydyt = new ArrayList();
@@ -52,8 +62,8 @@ public class AStar {
             // Nykyisen naapurien päivitys:
             for (Node naapuri : selvitaNaapurit(a, tarkastettava)) {
                 
-                //TODO: Oikea laskenta:
-                int uusiG = 999;
+                //Lasketaan naapurin etäisyys tätä tarkastelukautta
+                int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
                 
                 if (kaydyt.contains(naapuri) && uusiG < naapuri.getEtaisyysAlusta()) {
                     naapuri.setEtaisyysAlusta(uusiG);
@@ -75,10 +85,10 @@ public class AStar {
         }
     }
     
-    //KESKEN
     /**
      * Selvittää annetun noden naapurit.
      * Käytännössä siis myös diagonaaliset siirtymät ruudukossa.
+     * TODO: Ei huomioi läpipääsemättömiksi merkittyjä nodeja vielä...
      * @param a
      * @param n
      * @return 
@@ -107,5 +117,17 @@ public class AStar {
         
         //TODO, palauttaa vain Dijkstran mukaisen nollan
         return 0;
+    }
+    
+    /**
+     * Metodi, joka laskee kahden noden välisen kustannuksen.
+     * TODO: Palauttaa toistaiseksi vain aina ykkösen... naapurikäyttöä ajatellen.
+     * Otettava huomioon Noden kustannusarvo...
+     * @param tarkastettava
+     * @param naapuri
+     * @return 
+     */
+    private int laskeKustannus(Node tarkastettava, Node naapuri) {
+        return 1;
     }
 }
