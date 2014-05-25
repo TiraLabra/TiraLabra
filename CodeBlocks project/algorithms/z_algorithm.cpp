@@ -3,8 +3,10 @@
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length) {
     char a,b;
-    if (index_a >= needle_length) {
+    if (index_a > needle_length) {
         a = haystack[index_a - needle_length];
+    } else if (index_a == needle_length) {
+        a = (char)224;
     } else {
         a = needle[index_a];
     }
@@ -32,7 +34,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
         needle_length = strlen(needle);
     }
     if (needle_length == 0) return positions;
-    int total_length = haystack_length + needle_length;
+    int total_length = haystack_length + needle_length+1;
     int * z_array = new int[total_length];
     int left=0, right=0;
     for (int i = 0; i < total_length && upper_bound_cnt!=0; ++i) {
@@ -56,7 +58,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
                 --right;
             }
         }
-        if (z_array[i]==needle_length) {
+        if (z_array[i]>=needle_length && i>=needle_length) {
             positions.push_back(i-needle_length);
             --upper_bound_cnt;
         }

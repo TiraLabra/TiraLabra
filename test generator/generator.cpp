@@ -120,9 +120,6 @@ void write_test_mq(const string & haystack, const string & needle) {
         pos.push_back((int)pos_idx);
         ++pos_idx;
     }
-    if (0 == (int)pos.size()) {
-        pos.push_back(-1);
-    }
     fprintf(answers, "%d ", (int)pos.size());
     for (int i = 0; i < (int)pos.size(); ++i) {
         fprintf(answers, "%d ", pos[i]);
