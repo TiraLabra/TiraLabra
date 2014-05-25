@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tiralabra.utilities.Utilities;
 
 /**
  *
@@ -58,82 +59,82 @@ public class BoardTest {
 
     @Test
     public void puttingAWhitePiecePutsAPieceAtTheRightSpot() {
-        assertTrue(board.put(5, 3, Board.WHITE));
+        assertTrue(board.put(5, 3, Board.WHITE) > 0);
         assertEquals(Board.WHITE, board.getBoard()[3][5]);
     }
 
     @Test
     public void puttingABlackPiecePutsAPieceAtTheRightSpot() {
-        assertTrue(board.put(2, 3, Board.BLACK));
+        assertTrue(board.put(2, 3, Board.BLACK) > 0);
         assertEquals(Board.BLACK, board.getBoard()[3][2]);
     }
 
     @Test
     public void puttingAtInvalidPositionDoesNothing() {
-        board.setBoard(verticalTestBoard.clone());
-        assertFalse(board.put(0, 0, Board.WHITE));
+        board.setBoard(Utilities.copy2dArray(verticalTestBoard));
+        assertEquals(0, board.put(0, 0, Board.WHITE));
         assertArrayEquals(verticalTestBoard, board.getBoard());
     }
 
     @Test
     public void verticalFlippingToWhiteWorksRight() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         board.put(3, 0, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[0][2]);
     }
 
     @Test
     public void verticalFlippingToWhiteWorksLeft() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         board.put(4, 0, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[0][5]);
     }
 
     @Test
     public void verticalFlippingToBlackWorksRight() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         board.put(0, 0, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[0][0]);
     }
 
     @Test
     public void verticalFlippingToBlackWorksLeft() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         board.put(7, 0, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[0][6]);
     }
 
     @Test
     public void horizontalFlippingToWhiteWorksUp() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         board.put(0, 3, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[2][0]);
     }
 
     @Test
     public void horizontalFlippingToWhiteWorksDown() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         board.put(0, 4, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[5][0]);
     }
 
     @Test
     public void horizontalFlippingToBlackWorksUp() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         board.put(0, 7, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[6][0]);
     }
 
     @Test
     public void horizontalFlippingToBlackWorksDown() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         board.put(0, 0, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[1][0]);
     }
 
     @Test
     public void diagonalFlippingToWhiteWorksDown() {
-        board.setBoard(diagonalTestBoard1.clone());
+        board.setBoard(diagonalTestBoard1);
         board.put(0, 3, Board.WHITE);
         board.put(3, 3, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[2][1]);
@@ -142,7 +143,7 @@ public class BoardTest {
 
     @Test
     public void diagonalFlippingToWhiteWorksUp() {
-        board.setBoard(diagonalTestBoard2.clone());
+        board.setBoard(diagonalTestBoard2);
         board.put(0, 0, Board.WHITE);
         board.put(3, 0, Board.WHITE);
         assertEquals(Board.WHITE, board.getBoard()[1][1]);
@@ -151,7 +152,7 @@ public class BoardTest {
 
     @Test
     public void diagonalFlippingToBlackWorksDown() {
-        board.setBoard(diagonalTestBoard2.clone());
+        board.setBoard(diagonalTestBoard2);
         board.put(0, 3, Board.BLACK);
         board.put(3, 3, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[2][1]);
@@ -160,7 +161,7 @@ public class BoardTest {
 
     @Test
     public void diagonalFlippingToBlackWorksUp() {
-        board.setBoard(diagonalTestBoard1.clone());
+        board.setBoard(diagonalTestBoard1);
         board.put(0, 0, Board.BLACK);
         board.put(3, 0, Board.BLACK);
         assertEquals(Board.BLACK, board.getBoard()[1][1]);
@@ -177,7 +178,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyWhiteVertical() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
 
         ArrayList<Long> assertion
@@ -187,7 +188,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyBlackVertical() {
-        board.setBoard(verticalTestBoard.clone());
+        board.setBoard(verticalTestBoard);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
 
         ArrayList<Long> assertion
@@ -197,7 +198,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyWhiteHorizontal() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
 
         ArrayList<Long> assertion
@@ -207,7 +208,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyBlackHorizontal() {
-        board.setBoard(horizontalTestBoard.clone());
+        board.setBoard(horizontalTestBoard);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
 
         ArrayList<Long> assertion
@@ -217,7 +218,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyWhiteDiagonalUp() {
-        board.setBoard(diagonalTestBoard1.clone());
+        board.setBoard(diagonalTestBoard1);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
 
         assertTrue(toCompare.contains(Board.point(0, 3)));
@@ -226,7 +227,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyWhiteDiagonalDown() {
-        board.setBoard(diagonalTestBoard2.clone());
+        board.setBoard(diagonalTestBoard2);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
 
         assertTrue(toCompare.contains(Board.point(0, 0)));
@@ -235,7 +236,7 @@ public class BoardTest {
     
     @Test
     public void legalMovesFoundCorrectlyBlackDiagonalUp() {
-        board.setBoard(diagonalTestBoard2.clone());
+        board.setBoard(diagonalTestBoard2);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
 
         assertTrue(toCompare.contains(Board.point(0, 3)));
@@ -244,7 +245,7 @@ public class BoardTest {
 
     @Test
     public void legalMovesFoundCorrectlyBlackDiagonalDown() {
-        board.setBoard(diagonalTestBoard1.clone());
+        board.setBoard(diagonalTestBoard1);
         ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
 
         assertTrue(toCompare.contains(Board.point(0, 0)));
@@ -259,7 +260,19 @@ public class BoardTest {
                 test[y][x] = new Random().nextInt(2) + 1;
             }
         }
-        assertTrue(board.findLegalMoves(Board.WHITE).isEmpty());
-        assertTrue(board.findLegalMoves(Board.BLACK).isEmpty());
+        
+        board.setBoard(test);
+        
+        assertEquals(0, board.findLegalMoves(Board.WHITE).size());
+        assertEquals(0, board.findLegalMoves(Board.BLACK).size());
+    }
+    
+    @Test
+    public void undoingTheLastMoveWorks() {
+        board.setBoard(Utilities.copy2dArray(verticalTestBoard));
+        board.put(3, 0, Board.WHITE);
+        board.undo();
+     
+        assertArrayEquals(verticalTestBoard, board.getBoard());
     }
 }

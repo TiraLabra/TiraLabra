@@ -17,10 +17,7 @@ public class App {
             othello.nextTurn();
             System.out.println("------------");
             printBoard(othello.getBoard());
-            System.out.println("");
-            
-            
-                        
+            System.out.println("");       
         }
     }
 

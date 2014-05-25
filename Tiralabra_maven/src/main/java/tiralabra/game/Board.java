@@ -21,6 +21,8 @@ public class Board {
     private int[][] board;
     public static int WHITE = 1;
     public static int BLACK = 2;
+    private int pieceNumber = 0;
+    private ArrayList<Operation> undoList;
 
     public Board() {
         this.board = new int[8][8];
@@ -29,56 +31,10 @@ public class Board {
         board[3][4] = BLACK;
         board[4][3] = BLACK;
         board[4][4] = WHITE;
+
+        undoList = new ArrayList<>();
     }
-
-    /**
-     * Checks whether the piece can be placed in the given position, and places
-     * it there, flipping all applicable pieces.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true, if the piece was successfully placed on the board, false if
-     * the move was illegal
-     */
-    public boolean put(int x, int y, int team) {
-        if (!checkPointForLegal(x, y, team)) {
-            return false;
-        }
-        board[y][x] = team;
-        flipDiagonally(x, y, team);
-        flipHorizontally(x, y, team);
-        flipVertically(x, y, team);
-        return true;
-    }
-
-    public boolean put(long point, int team) {
-        return put(x(point), y(point), team);
-    }
-
-    /**
-     * Finds and lists all the legal moves on the board.
-     *
-     * @param team
-     * @return
-     */
-    public ArrayList<Long> findLegalMoves(int team) {
-        ArrayList<Long> legalMoves = new ArrayList<>();
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length; x++) {
-                if (checkPointForLegal(x, y, team)) {
-                    legalMoves.add(point(x, y));
-                }
-            }
-        }
-
-        return legalMoves;
-    }
-
-    private boolean checkPointForLegal(int x, int y, int team) {
-        return board[y][x] == 0 && (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team));
-    }
-
+    
     /**
      * Converts coordinates to a single long-type number.
      *
@@ -108,6 +64,87 @@ public class Board {
      */
     public static int y(long point) {
         return (int) point;
+    }
+
+    /**
+     * Returns the opposing team.
+     *
+     * @return the opposing team.
+     */
+    public static int getOpposingTeam(int team) {
+        return (team == Board.WHITE) ? Board.BLACK : Board.WHITE;
+    }
+
+    public class Operation {
+
+        int x;
+        int y;
+        int undoCount;
+        int original;
+
+        public Operation(int x, int y, int undoCount, int original) {
+            this.x = x;
+            this.y = y;
+            this.undoCount = undoCount;
+            this.original = original;
+        }
+
+    }
+
+    /**
+     * Checks whether the piece can be placed in the given position, and places
+     * it there, flipping all applicable pieces.
+     *
+     * @param x
+     * @param y
+     * @param team
+     * @return number of flipped pieces
+     */
+    public int put(int x, int y, int team) {
+        if (board[y][x] != 0) {
+            return 0;
+        }
+        
+        board[y][x] = team;
+        pieceNumber++;
+        undoList.add(new Operation(x, y, pieceNumber, 0));
+
+        int nmbOfFlips = 0;
+
+        nmbOfFlips += flipDiagonally(x, y, team);
+        nmbOfFlips += flipHorizontally(x, y, team);
+        nmbOfFlips += flipVertically(x, y, team);
+        
+        if (nmbOfFlips == 0) undo();
+        
+        return nmbOfFlips;
+    }
+
+    public int place(long point, int team) {
+        return put(x(point), y(point), team);
+    }
+
+    /**
+     * Finds and lists all the legal moves on the board.
+     *
+     * @param team
+     * @return
+     */
+    public ArrayList<Long> findLegalMoves(int team) {
+        ArrayList<Long> legalMoves = new ArrayList<>();
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                if (checkPointForLegal(x, y, team)) {
+                    legalMoves.add(point(x, y));
+                }
+            }
+        }
+
+        return legalMoves;
+    }
+
+    private boolean checkPointForLegal(int x, int y, int team) {
+        return board[y][x] == 0 && (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team));
     }
 
     /**
@@ -220,12 +257,16 @@ public class Board {
      * @param x
      * @param y
      * @param team
+     * @return number of flipped pieces.
      */
-    private void flipDiagonally(int x, int y, int team) {
-        flipDirection(x, y, 1, 1, team);
-        flipDirection(x, y, 1, -1, team);
-        flipDirection(x, y, -1, 1, team);
-        flipDirection(x, y, -1, -1, team);
+    private int flipDiagonally(int x, int y, int team) {
+        int nmbOfFlips = 0;
+        nmbOfFlips += flipDirection(x, y, 1, 1, team);
+        nmbOfFlips += flipDirection(x, y, 1, -1, team);
+        nmbOfFlips += flipDirection(x, y, -1, 1, team);
+        nmbOfFlips += flipDirection(x, y, -1, -1, team);
+
+        return nmbOfFlips;
     }
 
     /**
@@ -235,10 +276,14 @@ public class Board {
      * @param x
      * @param y
      * @param team
+     * @return number of flipped pieces.
      */
-    private void flipHorizontally(int x, int y, int team) {
-        flipDirection(x, y, 0, 1, team);
-        flipDirection(x, y, 0, -1, team);
+    private int flipHorizontally(int x, int y, int team) {
+        int nmbOfFlips = 0;
+        nmbOfFlips += flipDirection(x, y, 0, 1, team);
+        nmbOfFlips += flipDirection(x, y, 0, -1, team);
+
+        return nmbOfFlips;
     }
 
     /**
@@ -248,10 +293,13 @@ public class Board {
      * @param x
      * @param y
      * @param team
+     * @return number of flipped pieces.
      */
-    private void flipVertically(int x, int y, int team) {
-        flipDirection(x, y, 1, 0, team);
-        flipDirection(x, y, -1, 0, team);
+    private int flipVertically(int x, int y, int team) {
+        int nmbOfFlips = 0;
+        nmbOfFlips += flipDirection(x, y, 1, 0, team);
+        nmbOfFlips += flipDirection(x, y, -1, 0, team);
+        return nmbOfFlips;
     }
 
     /**
@@ -263,16 +311,22 @@ public class Board {
      * @param dx
      * @param dy
      * @param team
+     * @return number of flipped pieces.
      */
-    private void flipDirection(int x, int y, int dx, int dy, int team) {
+    private int flipDirection(int x, int y, int dx, int dy, int team) {
+        int nmbOfFlips = 0;
         if (!checkDirection(x, y, dx, dy, team)) {
-            return;
+            return 0;
         }
         while (checkForOpponent(x + dx, y + dy, team)) {
             flip(x + dx, y + dy);
+
+            nmbOfFlips++;
+
             dx = dx > 0 ? dx + 1 : dx < 0 ? dx - 1 : dx;
             dy = dy > 0 ? dy + 1 : dy < 0 ? dy - 1 : dy;
         }
+        return nmbOfFlips;
     }
 
     /**
@@ -282,7 +336,21 @@ public class Board {
      * @param y
      */
     private void flip(int x, int y) {
+        undoList.add(new Operation(x, y, pieceNumber, board[y][x]));
         board[y][x] = board[y][x] == WHITE ? BLACK : WHITE;
+    }
+
+    /**
+     * Undoes the last move and subtracts one from the undoCount.
+     */
+    public void undo() {
+        for (int j = undoList.size() - 1; j >= 0 && undoList.get(j).undoCount == pieceNumber; j--) {
+            Operation operation = undoList.get(j);
+            board[operation.y][operation.x] = operation.original;
+
+            undoList.remove(j);
+        }
+        pieceNumber--;
     }
 
     /**
@@ -303,6 +371,12 @@ public class Board {
         return board;
     }
 
+    /**
+     * Returns how many pieces this team has on the board,
+     *
+     * @param team
+     * @return number of pieces
+     */
     public int getNumberOfPieces(int team) {
         int count = 0;
         for (int y = 0; y < board.length; y++) {
@@ -313,5 +387,18 @@ public class Board {
             }
         }
         return count;
+    }
+
+    /**
+     * Returns how many pieces have been placed on the board.
+     *
+     * @return number of pieces placed
+     */
+    public int getPieceNumber() {
+        return pieceNumber;
+    }
+
+    public boolean isFull() {
+        return pieceNumber == 60;
     }
 }

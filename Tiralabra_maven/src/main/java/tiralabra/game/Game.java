@@ -56,28 +56,26 @@ public class Game {
         this.waiting = false;
     }
 
+    class Flip {
+
+        int x;
+        int y;
+        int undoIndex;
+    };
+
     /**
      * Changes the turn. Further changes the turn if the player in turn can't
      * make any move. If neither player can make a move, the game is set to be
      * over.
      */
     public void adjustTurn() {
-        turn = opposingTurn();
+        turn = Board.getOpposingTeam(turn);
         if (board.findLegalMoves(turn).isEmpty()) {
-            turn = opposingTurn();
+            turn = Board.getOpposingTeam(turn);
             if (board.findLegalMoves(turn).isEmpty()) {
                 gameOver = true;
             }
         }
-    }
-
-    /**
-     * Changes the turn to the opposing team.
-     *
-     * @return the opposing team.
-     */
-    private int opposingTurn() {
-        return (turn == Board.WHITE) ? Board.BLACK : Board.WHITE;
     }
 
     /**
@@ -86,7 +84,7 @@ public class Game {
      * @param point
      */
     public void playHumanTurn(long point) {
-        board.put(point, turn);
+        board.place(point, turn);
         waiting = false;
         adjustTurn();
     }
@@ -96,14 +94,14 @@ public class Game {
      * placing it on the board.
      */
     public void playAITurn() {
-        long point = ai.greedyBeginnerMove(turn);
-        board.put(point, turn);
+        long point = ai.search(turn);
+        board.place(point, turn);
         adjustTurn();
     }
 
     /**
-     * If it's a human player's turn, set the waiting variable
-     * to true and return, else play the next AI turn.
+     * If it's a human player's turn, set the waiting variable to true and
+     * return, else play the next AI turn.
      */
     public void nextTurn() {
         if (gameOver || waiting) {
