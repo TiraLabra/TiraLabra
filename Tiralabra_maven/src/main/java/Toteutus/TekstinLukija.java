@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Luokka jotka käytetään (teksti)tiedoston lukemiseen ja samanaikaisesti eri merkkien
+ * esiintymismäärien kirjaamiseen.
+ */
+
 public class TekstinLukija {
     private HashMap<String, Integer> esiintymat;
     private String teksti;
@@ -22,6 +27,12 @@ public class TekstinLukija {
         return this.teksti;
     }
     
+    /**
+     * Metodi jota kutsutaan lukemaan tiedosto ja laskemaan siinä esiintyneet merkit.
+     * @param polku - tiedoston polku
+     * @throws FileNotFoundException - mikäli polku on virheellinen, heittää ko. poikkeuksen
+     */
+    
     public void lueTiedosto(String polku)  throws FileNotFoundException {
         Scanner lukija = new Scanner(new File(polku));
         
@@ -34,6 +45,12 @@ public class TekstinLukija {
             }
         }
     }
+    
+    /**
+     * Lisää seuraavan rivin merkit "tekstiin" (johon luetaan koko teksti) ja kasvatetaan taas siinä olevien
+     * merkkien esiintymismääriä.
+     * @param rivi
+     */
     
     private void lisaaRivi(String rivi) {
         Scanner rivinLukija = new Scanner(rivi);
@@ -50,6 +67,11 @@ public class TekstinLukija {
             }
         }
     }
+    
+    /**
+     * Lisää merkin "tekstin" päähän ja kasvattaa ko. merkin esiintymismääriä haj.taulussa.
+     * @param merkki 
+     */
     
     private void lisaaMerkki(String merkki) {
         int maara = 1;
