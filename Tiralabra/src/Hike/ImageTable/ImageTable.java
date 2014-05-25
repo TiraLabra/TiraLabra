@@ -52,7 +52,7 @@ public class ImageTable {
                 if (red == 255 && green == 255 && blue == 255) { //white
                     tab[y][x] = new Node(y, x, Values.NORMALGROUND);
                 } else if (red == 0 && green == 255 && blue == 0) {
-                    tab[y][x] = new Node(y, x, Values.WOODS);
+                    tab[y][x] = new Node(y, x, Values.GRASS);
 
                 } else if (red == 255 && green == 255 && blue == 0) {
                     tab[y][x] = new Node(y, x, Values.DESERT);
