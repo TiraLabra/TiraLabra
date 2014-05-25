@@ -7,7 +7,7 @@
 package huffman;
 
 /**
- *
+ * Binary tree's leaf that has a symbol and a frequency
  * @author robertvalta
  */
 public class Leaf extends Node{
@@ -19,6 +19,10 @@ public class Leaf extends Node{
         this.symbol = symbol;
     }
     
+    /**
+     * 
+     * @return returns the symbol of the leaf
+     */
     public int getSymbol() {
         return this.symbol;
     }

@@ -7,7 +7,7 @@
 package huffman;
 
 /**
- *
+ * Simple class that knows it's left and right node in the binary tree
  * @author robertvalta
  */
 public class NodeWithFrequency extends Node {
@@ -19,11 +19,19 @@ public class NodeWithFrequency extends Node {
         this.left = left;
         this.right = right;
     }
+    /**
+     * 
+     * @return returns left child
+     */
     
     public Node getLeft() {
         return this.left;
     }
     
+    /**
+     * 
+     * @return returns right child
+     */
     public Node getRight() {
         return this.right;
     }

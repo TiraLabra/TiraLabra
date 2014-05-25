@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Responsible for binary presentation of a symbol
  * @author robertvalta
  */
 public class CodeTree {
@@ -25,6 +25,12 @@ public class CodeTree {
         this.table = new HashMap<Integer,List<Integer>>();
         this.symbols = symbols;
     }
+    
+    /**
+     * Uses nodes and adds '1' or '0' to the prefix list, which constructs the binary presentation of the symbol
+     * @param node abstract class Node used for instances of NodeWithFrequency and Leaf
+     * @param prefix is the symbol for the binary presentation
+     */
     
     public void buildBinarySymbol(Node node, List<Integer> prefix) {
         for (int i = 0; i < this.symbols; i++) {
@@ -47,6 +53,12 @@ public class CodeTree {
             table.put(leaf.getSymbol(), new ArrayList<Integer>(prefix));
         }
     }
+    
+    /**
+     * 
+     * @param symbol Map's key
+     * @return get the binary presentation of the symbol
+     */
     
     public List<Integer> getBinarySymbol(int symbol) {
         return this.table.get(symbol);

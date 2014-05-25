@@ -7,7 +7,7 @@
 package huffman;
 
 /**
- *
+ * Abstract class for combining Leafs and NodeWithFrequency classes
  * @author robertvalta
  */
 public abstract class Node {
@@ -17,6 +17,10 @@ public abstract class Node {
         this.frequency = frequency;
     }
     
+    /**
+     * 
+     * @return returns the frequency of the node
+     */
     public int getFrequency() {
         return this.frequency;
     }
