@@ -6,8 +6,12 @@ package com.mycompany.tiralabra_maven;
  */
 public class App 
 {
+
+    /**
+     *
+     * @param args
+     */
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
     }
 }
