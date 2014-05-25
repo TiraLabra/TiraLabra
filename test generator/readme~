@@ -34,5 +34,4 @@ output:
 ...
 [number of positions] [pos1] [pos2] ... [posN]
 
-where N=[number of positions] means that needle1 has been found N times in haystack1. Note that if N=0 then the needle has not been found
-in the haystack.
+where N=[number of positions] means that needle1 has been found N times in haystack1. Note that if N=1 and the following integer is -1, means that it has not been found at all.
