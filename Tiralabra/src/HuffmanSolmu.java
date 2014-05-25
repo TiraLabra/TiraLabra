@@ -20,11 +20,11 @@ class HuffmanSolmu implements Comparable<HuffmanSolmu>{
     private int maara;
 
     /**
-     * Luo uuden solmun.
-     * @param merkkikoodi
-     * @param maara
-     * @param vasen
-     * @param oikea 
+     * Luo uuden solmun. Jos vasen ja oikea ovat null, on kyseessä lehti. Sisäsolmuilla merkkikoodi alustetaan negatiiviseksi.
+     * @param merkkikoodi Merkin ASCII-koodi.
+     * @param maara Merkin määrä tiedostossa.
+     * @param vasen Solmun vasen lapsi.
+     * @param oikea  Solmun oikea lapsi.
      */
     public HuffmanSolmu(int merkkikoodi, int maara, HuffmanSolmu vasen, HuffmanSolmu oikea) {
         this.merkki = merkkikoodi;
@@ -48,6 +48,10 @@ class HuffmanSolmu implements Comparable<HuffmanSolmu>{
     public HuffmanSolmu getOikea() {
         return this.oikea;
     }
+    
+    /**
+     * Verrataan solmuja ensin merkkien määrän suhteen, jos nämä samat sitten merkin ASCII-koodin suhteen. 
+     */
 
     @Override
     public int compareTo(HuffmanSolmu o) {

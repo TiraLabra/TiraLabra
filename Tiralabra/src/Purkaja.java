@@ -1,21 +1,11 @@
 
+//under construction
 
-/**
- *
- */
 public class Purkaja {
-    //under construction
 
-    /**
-     *
-     */
-        public Purkaja() {
+    public Purkaja() {
     }
-    
-    /**
-     *
-     * @param pakattu
-     */
+
     public void pura(String pakattu) {
 
     }

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
- *Luokka toteuttaa Huffmanin algoritmin.
+ *Luokka sisältää Huffmanin algoritmin.
  */
 public class HuffmanKoodi {
     /**
@@ -20,7 +20,7 @@ public class HuffmanKoodi {
     }
 
     /**
-     *Muodostetaan Huffman-puu annetusta merkeistä.
+     *Muodostetaan Huffman-puu annetusta merkeistä minimikeon avulla.
      * @param merkit Merkistön eri merkkien esiintymiskerrat tiedostossa.
      * @return Viite Huffman-puun juureen.
      */
@@ -31,6 +31,7 @@ public class HuffmanKoodi {
             HuffmanSolmu eka = keko.pienin();
             HuffmanSolmu toka = keko.pienin();
 
+            //TODO: taikanumero korjattava...
             HuffmanSolmu juuri = new HuffmanSolmu(-1, eka.getMaara() + toka.getMaara(), eka, toka);
 
             keko.lisaa(juuri);
@@ -40,7 +41,7 @@ public class HuffmanKoodi {
     }
     
     /**
-     *Luo solmut annetuista merkeistä ja järjestää nämä minimikeon avulla.
+     *Luo solmut annetuista merkeistä ja lisää nämä minimikekoon.
      * @param merkit Merkistön eri merkkien esiintymiskerrat tiedostossa.
      * @return Minimikeko, joka sisältää tiedoston eri merkit solmuiksi muutettuina.
      */
@@ -99,7 +100,7 @@ public class HuffmanKoodi {
     }
     
     /**
-     *Palauttaa muodostetut koodisanat.
+     *Palauttaa muodostetut koodisanat merkkijonona.
      * @return Merkkijonoesitys koodisanoista muodossa "merkki - koodisana"
      */
     public String palautaKoodisanat() {
