@@ -40,3 +40,24 @@ TEST(Z_ALGORITHM_TEST, TEST_DYNAMIC_CHAR_ARRAY) {
         EXPECT_EQ(ans[i], z_ans[i]);
     }
 }
+
+TEST(Z_ALGORITHM_TEST, TEST_BIGGER_NEEDLE_THAN_HAYSTACK) {
+    string haystack = "asdasda";
+    string needle = "aaaaaaaaaaaaaaaaaassssssssssssssssssssss";
+    vector<int> z_ans = z_algo_get_positions(haystack, needle);
+    EXPECT_EQ(0, (int)z_ans.size());
+}
+
+TEST(Z_ALGORITHM_TEST, TEST_DYNAMIC_CHAR_ARRAY_AFTER) {
+    string haystack = "varnamaikavarnabbebivar,varna";
+    string needle = "varna";
+    const char * haystack_dyn_arr = haystack.c_str();
+    const char * needle_dyn_arr = needle.c_str();
+    int ans_arr[] = {10,24};
+    vector<int> ans(ans_arr, ans_arr+2);
+    vector<int> z_ans = z_algo_get_positions(haystack_dyn_arr, needle_dyn_arr, 7);
+    EXPECT_EQ((int)ans.size(), (int)z_ans.size());
+    for (int i = 0; i < (int)ans.size();++i) {
+        EXPECT_EQ(ans[i], z_ans[i]);
+    }
+}

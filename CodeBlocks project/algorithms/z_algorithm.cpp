@@ -36,6 +36,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
         needle_length = strlen(needle);
     }
     if (needle_length == 0) return positions;
+    if (needle_length > haystack_length) return positions;
     int total_length = haystack_length + needle_length+1-start;
     int left=0, right=0;
     for (int i = 0; i < total_length && upper_bound_cnt!=0; ++i) {
@@ -60,7 +61,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
             }
         }
         if (z_array[i]>=needle_length && i>=needle_length) {
-            positions.push_back(i-needle_length);
+            positions.push_back(i+start-needle_length);
             --upper_bound_cnt;
         }
     }

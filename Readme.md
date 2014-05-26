@@ -5,8 +5,8 @@ A C++ library containing commercial and non-commercial string algorithms for pro
 
 #Commerical algorithms:
 - Z algorithm
-The algorithm produces an array of length N (where N is the length of the given string). Accordingly, z[i] contains the length of the longest substring starting at i which is equal to the prefix of the string. The computation of that array can be done in O(n) time. The algorithm can be used for string matching in the following way:
-Given a string A and B where B is the string we will search for in A, we can generate a string C where C = BpA where p is some character which is not in B and A. Since in c++ characters in ANSII have values between 0 and 255, then we could pick some value bigger than let us say 200 since it would rarely appear in a string. Then run the algorithm and find the matches. This runs in O(n+m) time.
+
+Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt)
 - Knuth-morris-pratt algorithm
 - Rabin-karp algorithm.
 This algorithm is relatively good in practise. It is similar to the naive approach. Given strings A and B where B is the string which we are searching for in A, it checks for all i (i>=0 i and i <len(A) - len(B)) whether the substring A[i,i+len(B)] equals B. The algorithm is faster in comparison to the naive approach since it can be implemented to rely on hashing the string A[i,i+len(B)] and B. If the h(A[i,i+len(B)]) != h(B), then the strings are surely different. If both hashes are equal, then we have to check whether the string are actually equal and return the index. Computed the hash is a costly sequence of operations. However knowing h1, we could compute h2 in O(1) time.
