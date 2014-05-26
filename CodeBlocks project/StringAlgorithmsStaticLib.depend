@@ -157,20 +157,20 @@
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
 
-1401059459 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+1401121157 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
 	"z_algorithm.hpp"
 	<iostream>
 
-1400969009 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+1401121141 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
 
-1401060405 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
+1401120448 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.cpp
 	"z_algorithm_tests.hpp"
 	<iostream>
 
-1401055370 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.cpp
+1401120954 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.cpp
 	"test_suite.hpp"
 
 1401054400 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/z_algorithm_tests.hpp
@@ -186,15 +186,14 @@
 	<ctime>
 	<cstdlib>
 
-1401054416 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.hpp
-	<gtest/gtest.h>
+1401118403 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/test_suite.hpp
 	<string>
 	<vector>
 	<fstream>
 	"definitions.hpp"
 	"z_algorithm_tests.hpp"
 
-1401055470 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/definitions.hpp
+1401121475 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/tests/definitions.hpp
 	<string>
 	<vector>
 

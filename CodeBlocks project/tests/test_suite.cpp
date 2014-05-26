@@ -1,7 +1,7 @@
 #include "test_suite.hpp"
 
-#define ONE_Q_TEST_FILE_NAME test_files/tests1q
-#define MULTI_Q_TEST_FILE_NAME test_files/testsmq
+#define ONE_Q_TEST_FILE_NAME tests/test_files/tests1q
+#define MULTI_Q_TEST_FILE_NAME tests/test_files/testsmq
 
 vector<one_query_test> one_query_tests_v;
 vector<multi_query_test> multi_query_tests_v;
@@ -24,8 +24,8 @@ multi_query_test make_mqt(const string & haystack, const string & needle, vector
 
 vector<one_query_test> load_one_q_tests() {
     vector<one_query_test> tests;
-    ifstream in("tests/test_files/tests1q.in");
-    ifstream ans("tests/test_files/tests1q.out");
+    ifstream in("ONE_Q_TEST_FILE_NAME.in");
+    ifstream ans("ONE_Q_TEST_FILE_NAME.out");
     int n;
     in >> n;
     for (int i = 0; i < n; ++i) {
@@ -42,8 +42,8 @@ vector<one_query_test> load_one_q_tests() {
 
 vector<multi_query_test> load_multi_q_tests() {
     vector<multi_query_test> tests;
-    ifstream in("tests/test_files/testsmq.in");
-    ifstream ans("tests/test_files/testsmq.out");
+    ifstream in("MULTI_Q_TEST_FILE_NAME.in");
+    ifstream ans("MULTI_Q_TEST_FILE_NAME.out");
     int n;
     in >> n;
     for (int i = 0; i < n; ++i) {

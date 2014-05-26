@@ -5,6 +5,9 @@
 #include <vector>
 using namespace std;
 
+const int Z_ARRAY_MAXIMUM_LENGTH=1000000;
+
+
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length);
 

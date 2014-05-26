@@ -1,18 +1,19 @@
 #include "z_algorithm.hpp"
 #include <iostream>
 using namespace std;
+
+int z_array[Z_ARRAY_MAXIMUM_LENGTH];
+
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
-int index_b, int haystack_length, int needle_length) {
+int index_b, int haystack_length, int needle_length, int start) {
     char a,b;
-    if (index_a > needle_length) {
+    if (index_a >= needle_length) {
         a = haystack[index_a - needle_length];
-    } else if (index_a == needle_length) {
-        a = (char)224;
     } else {
         a = needle[index_a];
     }
     if (index_b >= needle_length) {
-        b = haystack[index_b - needle_length];
+        b = haystack[index_b+start - needle_length];
     } else {
         b = needle[index_b];
     }
@@ -35,15 +36,14 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
         needle_length = strlen(needle);
     }
     if (needle_length == 0) return positions;
-    int total_length = haystack_length + needle_length+1;
-    int * z_array = new int[total_length];
+    int total_length = haystack_length + needle_length+1-start;
     int left=0, right=0;
     for (int i = 0; i < total_length && upper_bound_cnt!=0; ++i) {
         if (right < i) {
             left = right = i;
             for (; right < total_length &&
                 z_algo_compare(haystack, needle,
-                    right-left, right, haystack_length, needle_length); ++right);
+                    right-left, right, haystack_length, needle_length, start); ++right);
             z_array[i] = right-left;
             --right;
         } else {
@@ -54,7 +54,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
                 left = i;
                 for (; right < total_length &&
                 z_algo_compare(haystack, needle,
-                    right-left, right, haystack_length, needle_length); ++right);
+                    right-left, right, haystack_length, needle_length, start); ++right);
                 z_array[i] = right-left;
                 --right;
             }
