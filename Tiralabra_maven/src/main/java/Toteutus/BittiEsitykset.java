@@ -32,6 +32,7 @@ public class BittiEsitykset {
     public void muodostaMerkeilleBittiEsitykset(Solmu huippu, String bittijono) {
         if (huippu.getAvain() != null) {
             esitykset.put(huippu.getAvain(), bittijono);
+            
             return;
         }
         
