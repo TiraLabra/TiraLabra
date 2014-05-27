@@ -8,6 +8,7 @@ public class MatriisilaskinTest {
 
     double[][] sym;
     double[][] A;
+    double[][] antisym;
     Matriisilaskin laskin;
 
     @Before
@@ -24,6 +25,12 @@ public class MatriisilaskinTest {
             {2, 3},
             {4, 5}
         };
+        
+        antisym = new double[][]{
+            {0, 4, -5},
+            {-4, 0, -6},
+            {5, 6, 0}
+        };
     }
 
     @Test
@@ -33,8 +40,7 @@ public class MatriisilaskinTest {
 
     @Test
     public void symmetrisyysToimii2() {
-        sym[0][1] = 2;
-        assertFalse(laskin.onkoSymmetrinen(sym));
+        assertFalse(laskin.onkoSymmetrinen(antisym));
     }
 
     @Test
@@ -45,5 +51,15 @@ public class MatriisilaskinTest {
     @Test
     public void neliomatriisiToimii2() {
         assertFalse(laskin.onkoNeliomatriisi(A));
+    }
+    
+    @Test
+    public void antisymmetrisyysToimii() {
+        assertTrue(laskin.onkoAntisymmetrinen(antisym));
+    }
+    
+    @Test
+    public void antisymmetrisyysToimii2() {
+        assertFalse(laskin.onkoAntisymmetrinen(sym));
     }
 }

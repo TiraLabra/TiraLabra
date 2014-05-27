@@ -45,20 +45,17 @@ public class Strassen {
     public double[][] kerro(double[][] eka, double[][] toka) {
         tarkasta(eka, toka);
         if (eka.length == 1) {
-            double[][] tulomatriisi = new double[1][1];
-            tulomatriisi[0][0] += eka[0][0] * toka[0][0];
-            return tulomatriisi;
+            return kerroYksiot(eka[0][0], toka[0][0]);
         }
 
         double[][] ekaFull = tayta(eka);
         double[][] tokaFull = tayta(toka);
-
         double[][] koottu = rekursioAlgo(ekaFull, tokaFull);
 
         if (koottu.length != eka.length) {
             koottu = tayteNollatPois(koottu, eka.length);
         }
-        
+       
         return koottu;
     }
 
@@ -77,6 +74,20 @@ public class Strassen {
                     + "samankokoisia neliömatriiseja, joten Strassenia "
                     + "ei voida käyttää");
         }
+    }
+
+    /**
+     * Metodi, joka kertoo matriisien luvut keskenään, jos matriisit koostuvat
+     * vain yhdestä alkiosta. Palauttaa yksiömatriisin.
+     * 
+     * @param eka Vasemmalta luettuna ensimmäinen matriisi muotoa 1 x 1
+     * @param toka Vasemmalta luettuna toinen matriisi muotoa 1 x 1
+     * @return Palauttaa yksiömatriisin muotoa 1 x 1
+     */
+    private double[][] kerroYksiot(double eka, double toka){
+        double[][] yksio = new double[1][1];
+        yksio[0][0] += eka * toka;
+        return yksio;
     }
 
     /**
@@ -106,7 +117,8 @@ public class Strassen {
     /**
      * Metodi, joka pilkkoo annetut neliömatriisit neljäksi yhtäsuureksi lohko-
      * matriisiksi, laskee niiden avulla rekursiivisesti 7 tulomatriisia joiden
-     * avulla saadaan lopuksi koottua haluttu tulomatriisi, joka palautetaan. 
+     * avulla saadaan lopuksi koottua vastauksena annettava tulomatriisi, joka 
+     * palautetaan. 
      * 
      * Puolittaa aluksi neliömatriisin koon (ei neliömatriisia), jonka jälkeen 
      * tarkastaa mennäänkö alle yhden, jolloin palauttaa yhden alkion 
@@ -116,9 +128,9 @@ public class Strassen {
      * 
      * Tämän jälkeen laskee rekursiivisesti sopivien lohkomatriisien summien
      * ja erotusten avulla 7 eri tulomatriisia, joita summaamalla ja
-     * vähentämällä saadaan muodostettua halutun tulomatriisin lohkomatriisi-
-     * esitys. Lopuksi kasataan lohkomatriiseista haluttu tulomatriisi ja
-     * palautetaan se.
+     * vähentämällä saadaan muodostettua vastauksena annettavan tulomatriisin 
+     * lohkomatriisiesitys. Lopuksi kootaan lohkomatriiseista vastauksena
+     * annettava tulomatriisi ja palautetaan se.
      * 
      * @param eka Vasemmalta luettuna ensimmäinen neliömatriisi muotoa n x n
      * @param toka Vasemmalta luettuna toinen neliömatriisi muotoa n x n
@@ -128,67 +140,133 @@ public class Strassen {
         int puolet = eka.length / 2;
 
         if (puolet == 0) {
-            double[][] C = new double[1][1];
-            C[0][0] += eka[0][0] * toka[0][0];
-            return C;
+            return kerroYksiot(eka[0][0], toka[0][0]);
         }
+        
+        double[] lohkot [][] = new double[8][puolet][puolet];
+        double[] tulomatriisit [][] = new double[7][][];
+        double[] vastauslohkot [][] = new double[4][][];
 
-        double[][] eka11 = new double[puolet][puolet];
-        double[][] eka12 = new double[puolet][puolet];
-        double[][] eka21 = new double[puolet][puolet];
-        double[][] eka22 = new double[puolet][puolet];
-
-        double[][] toka11 = new double[puolet][puolet];
-        double[][] toka12 = new double[puolet][puolet];
-        double[][] toka21 = new double[puolet][puolet];
-        double[][] toka22 = new double[puolet][puolet];
-
+        ositaLohkoihin(eka, toka, lohkot, puolet);       
+        laskeTulomatriisit(lohkot, tulomatriisit);       
+        laskeVastauslohkot(tulomatriisit, vastauslohkot);      
+        return kokoaVastaus(vastauslohkot, puolet, eka.length);
+    }
+    
+    /**
+     * Metodi, joka osittaa kerrottavat neliömatriisit keskenään samankokoisiksi 
+     * lohkomatriiseiksi. Lohkot[0] - [3] pitävät sisällään vasemmalta luettuna 
+     * ensimmäisen kerrottavan matriisin osituksen ja lohkot[4] - [7] toisen 
+     * kerrottavan matriisin osituksen.
+     * 
+     * @param eka Vasemmalta luettuna ensimmäinen neliömatriisi muotoa n x n
+     * @param toka Vasemmalta luettuna toinen neliömatriisi muotoa n x n
+     * @param lohkot Matriisi, joka pitää sisällään kerrottavien neliömatriisien
+     *               lohkomatriisit
+     * @param puolet Reaaliluku, joka pitää kirjaa siitä missä vaiheessa ositus
+     *               vaihtuu
+     */
+    private void ositaLohkoihin(double[][] eka, double[][] toka, 
+                                double[][][] lohkot, int puolet){
         for (int rivi = 0; rivi < puolet; rivi++) {
             for (int sarake = 0; sarake < puolet; sarake++) {
-                eka11[rivi][sarake] = eka[rivi][sarake];
-                eka12[rivi][sarake] = eka[rivi][sarake + puolet];
-                eka21[rivi][sarake] = eka[rivi + puolet][sarake];
-                eka22[rivi][sarake] = eka[rivi + puolet][sarake + puolet];
+                lohkot[0][rivi][sarake] = eka[rivi][sarake];
+                lohkot[1][rivi][sarake] = eka[rivi][sarake + puolet];
+                lohkot[2][rivi][sarake] = eka[rivi + puolet][sarake];
+                lohkot[3][rivi][sarake] = eka[rivi + puolet][sarake + puolet];
 
-                toka11[rivi][sarake] = toka[rivi][sarake];
-                toka12[rivi][sarake] = toka[rivi][sarake + puolet];
-                toka21[rivi][sarake] = toka[rivi + puolet][sarake];
-                toka22[rivi][sarake] = toka[rivi + puolet][sarake + puolet];
+                lohkot[4][rivi][sarake] = toka[rivi][sarake];
+                lohkot[5][rivi][sarake] = toka[rivi][sarake + puolet];
+                lohkot[6][rivi][sarake] = toka[rivi + puolet][sarake];
+                lohkot[7][rivi][sarake] = toka[rivi + puolet][sarake + puolet];
             }
         }
+    }
+    
+    /**
+     * Metodi, joka laskee tulomatriisit rekursiivisesti lohkomatriisien summien 
+     * ja erotusten avulla.
+     * 
+     * @param lohkot Matriisi, joka pitää sisällään kerrottavien neliömatriisien
+     *               lohkomatriisit
+     * @param tulomatriisit Matriisi, joka pitää sisällään rekursiivisesti
+     *                      muodostetut tulomatriisit
+     */
+    private void laskeTulomatriisit(double[][][] lohkot, 
+                                    double[][][] tulomatriisit){
+        tulomatriisit[0] = rekursioAlgo(this.yhteenlasku.summaa(
+                                        lohkot[0], lohkot[3]),
+                                        this.yhteenlasku.summaa(
+                                        lohkot[4], lohkot[7]));
+        tulomatriisit[1] = rekursioAlgo(this.yhteenlasku.summaa(
+                                        lohkot[2], lohkot[3]), lohkot[4]);
+        tulomatriisit[2] = rekursioAlgo(lohkot[0], this.vahennyslasku.vahenna(
+                                        lohkot[5], lohkot[7]));
+        tulomatriisit[3] = rekursioAlgo(lohkot[3], this.vahennyslasku.vahenna(
+                                        lohkot[6], lohkot[4]));
+        tulomatriisit[4] = rekursioAlgo(this.yhteenlasku.summaa(
+                                        lohkot[0], lohkot[1]), lohkot[7]);
+        tulomatriisit[5] = rekursioAlgo(this.vahennyslasku.vahenna(
+                                        lohkot[2], lohkot[0]),
+                                        this.yhteenlasku.summaa(
+                                        lohkot[4], lohkot[5]));
+        tulomatriisit[6] = rekursioAlgo(this.vahennyslasku.vahenna(
+                                        lohkot[1], lohkot[3]),
+                                        this.yhteenlasku.summaa(
+                                        lohkot[6], lohkot[7]));
+    }
 
-        double[][] P1 = rekursioAlgo(this.yhteenlasku.summaa(eka11, eka22),
-                                     this.yhteenlasku.summaa(toka11, toka22));
-        double[][] P2 = rekursioAlgo(this.yhteenlasku.summaa(eka21, eka22),
-                                     toka11);
-        double[][] P3 = rekursioAlgo(eka11,
-                                     this.vahennyslasku.vahenna(toka12, toka22));
-        double[][] P4 = rekursioAlgo(eka22,
-                                     this.vahennyslasku.vahenna(toka21, toka11));
-        double[][] P5 = rekursioAlgo(this.yhteenlasku.summaa(eka11, eka12),
-                                     toka22);
-        double[][] P6 = rekursioAlgo(this.vahennyslasku.vahenna(eka21, eka11),
-                                     this.yhteenlasku.summaa(toka11, toka12));
-        double[][] P7 = rekursioAlgo(this.vahennyslasku.vahenna(eka12, eka22),
-                                     this.yhteenlasku.summaa(toka21, toka22));
-
-        double[][] C11 = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
-                         this.yhteenlasku.summaa(P1, P4), P7), P5);
-        double[][] C12 = this.yhteenlasku.summaa(P3, P5);
-        double[][] C21 = this.yhteenlasku.summaa(P2, P4);
-        double[][] C22 = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
-                         this.yhteenlasku.summaa(P1, P3), P6), P2);
-
-        double[][] C = new double[eka.length][eka.length];
+    /**
+     * Metodi, joka laskee tulomatriisien summien ja erotusten avulla 
+     * vastauksena annettavan tulomatriisin lohkomatriisit, jotka muodostavat
+     * tulomatriisin osituksen.
+     * 
+     * @param tulomatriisit Matriisi, joka pitää sisällään rekursiivisesti
+     *                      muodostetut tulomatriisit
+     * @param vastauslohkot Matriisi, joka pitää sisällään vastauksena
+     *                      annettavan tulomatriisin lohkomatriisit
+     */
+    private void laskeVastauslohkot(double[][][] tulomatriisit, 
+                                    double[][][] vastauslohkot){
+        vastauslohkot[0] = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
+                           this.yhteenlasku.summaa(tulomatriisit[0], 
+                           tulomatriisit[3]), tulomatriisit[6]), 
+                           tulomatriisit[4]);
+        vastauslohkot[1] = this.yhteenlasku.summaa(tulomatriisit[2], 
+                           tulomatriisit[4]);
+        vastauslohkot[2] = this.yhteenlasku.summaa(tulomatriisit[1], 
+                           tulomatriisit[3]);
+        vastauslohkot[3] = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
+                           this.yhteenlasku.summaa(tulomatriisit[0], 
+                           tulomatriisit[2]), tulomatriisit[5]), 
+                           tulomatriisit[1]);
+    }
+    
+    /**
+     * Metodi, joka kokoaa vastauksena annettavan tulomatriisin sen osituksen
+     * muodostavista lohkomatriiseista. Palauttaa vastauksena annettavan
+     * tulomatriisin.
+     * 
+     * @param vastauslohkot Matriisi, joka pitää sisällään vastauksena
+     *                      annettavan tulomatriisin lohkomatriisit
+     * @param puolet Reaaliluku, joka pitää kirjaa siitä missä vaiheessa ositus
+     *               vaihtuu
+     * @param koko Vastauksena annettavan tulomatriisin alkuperäinen koko
+     * @return Palauttaa vastauksena annettavan tulomatriisin muotoa n x n
+     */
+    private double[][] kokoaVastaus(double[][][] vastauslohkot, 
+                                    int puolet, int koko){
+        double[][] vastaus = new double[koko][koko];
         for (int rivi = 0; rivi < puolet; rivi++) {
             for (int sarake = 0; sarake < puolet; sarake++) {
-                C[rivi][sarake] = C11[rivi][sarake];
-                C[rivi][sarake + puolet] = C12[rivi][sarake];
-                C[rivi + puolet][sarake] = C21[rivi][sarake];
-                C[rivi + puolet][sarake + puolet] = C22[rivi][sarake];
+                vastaus[rivi][sarake] = vastauslohkot[0][rivi][sarake];
+                vastaus[rivi][sarake + puolet] = vastauslohkot[1][rivi][sarake];
+                vastaus[rivi + puolet][sarake] = vastauslohkot[2][rivi][sarake];
+                vastaus[rivi + puolet][sarake + puolet] = vastauslohkot[3][rivi]
+                                                                       [sarake];
             }
         }
-        return C;
+        return vastaus;
     }
     
     /**

@@ -131,4 +131,15 @@ public class Matriisilaskin {
     public boolean onkoSymmetrinen(double[][] A) {
         return Arrays.deepEquals(A, transpoosaa(A));
     }
+    
+    /**
+     * Metodi, joka selvittää onko annettu matriisi antisymmetrinen. Matriisi
+     * on antisymmetrinen, jos sen transpoosi on itsensä negaatio.
+     * 
+     * @param A Matriisi, jonka antisymmetrisyys halutaan selvittää
+     * @return Palauttaa true, jos matriisi on antisymmetrinen
+     */
+    public boolean onkoAntisymmetrinen(double[][] A){
+        return Arrays.deepEquals(kerro(A, -1), transpoosaa(A));
+    }
 }

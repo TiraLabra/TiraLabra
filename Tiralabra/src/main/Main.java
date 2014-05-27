@@ -33,7 +33,12 @@ public class Main {
         double[][] sym = new double[][]{
             {1, 3},
             {3, 4}  
-        };     
+        };
+        double[][] antisym = new double[][]{
+            {0, 4, -5},
+            {-4, 0, -6},
+            {5, 6, 0}
+        };
         double[][] testi = new double[][]{
             {1, 1, 1},
             {2, 2, 2},
@@ -74,7 +79,8 @@ public class Main {
         tulosta(tAt);
         
         System.out.println(laskin.onkoSymmetrinen(sym));
-        System.out.println(laskin.onkoNeliomatriisi(A));        
+        System.out.println(laskin.onkoNeliomatriisi(A));
+        System.out.println(laskin.onkoAntisymmetrinen(antisym));
     }
     
     public static void tulosta(double[][] matriisi){
