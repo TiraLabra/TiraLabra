@@ -9,19 +9,20 @@ import util.Lista;
 public class Solmu {
 
     /**
-     * Naapurit avaimena, painot arvona.
+     * Naapurit
      */
-    //private HashMap<Solmu,Double> naapurit;
     private Lista<Solmu> naapuriSolmut;
+    /**
+     * Naapureja vastaavat painot
+     */
     private Lista<Double> naapuripainot;
 
     /**
-     * Alustaa hajautustaulun naapureille
+     * Alustaa Listat naapureille
      */
     public Solmu() {
         naapuriSolmut = new Lista<>();
         naapuripainot = new Lista<>();
-        //naapurit = new HashMap<>();
     }
 
     /**
@@ -32,7 +33,6 @@ public class Solmu {
      * @param paino
      */
     public void lisaaNaapuri(Solmu s, Double paino) {
-        //naapurit.put(s, paino);
         naapuriSolmut.lisaa(s);
         naapuripainot.lisaa(paino);
     }
@@ -44,14 +44,24 @@ public class Solmu {
      * @return
      */
     public Boolean onkoNaapuri(Solmu s) {
-        //return naapurit.containsKey(s);
+
         return naapuriSolmut.onxNagyny(s);
     }
 
+    /**
+     * getteri
+     *
+     * @return
+     */
     public Lista<Solmu> getNaapuriSolmut() {
         return naapuriSolmut;
     }
 
+    /**
+     * getteri
+     *
+     * @return
+     */
     public Lista<Double> getNaapuripainot() {
         return naapuripainot;
     }
