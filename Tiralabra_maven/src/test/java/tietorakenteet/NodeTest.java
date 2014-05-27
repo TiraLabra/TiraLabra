@@ -48,4 +48,11 @@ public class NodeTest extends TestCase {
         boolean onkoNeg = vertailu < 0;
         assertEquals(true, onkoNeg);
     }
+    
+    public void testToimiikoToString() {
+        Node n = new Node(2,3,4);
+        String tulos = n.toString();
+        
+        assertEquals("2, 3", tulos);
+    }
 }

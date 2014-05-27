@@ -85,7 +85,11 @@ public class Node implements Comparable<Node> {
         
         return (this.etaisyysAlusta+this.etaisyysMaaliin) - (node.etaisyysAlusta+node.etaisyysMaaliin);
     }
-    
+
+    @Override
+    public String toString() {
+        return this.x+", " + this.y;
+    }
     
     
     
