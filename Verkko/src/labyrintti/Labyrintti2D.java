@@ -4,12 +4,9 @@
  */
 package labyrintti;
 
-import verkko.KoordinoituSolmu;
+import java.util.Map;
+import verkko.Solmu;
 
-/**
- *
- * @author Arvoitusmies
- */
 public class Labyrintti2D {
 
     /**
@@ -24,7 +21,7 @@ public class Labyrintti2D {
     /**
      * 2D taulukko KoordinoituSolmu olioille jotka tässä labyrintissä on.
      */
-    private KoordinoituSolmu[][] solmut;
+    private Solmu[][] solmut;
 
     /**
      *
@@ -39,11 +36,11 @@ public class Labyrintti2D {
      * @param leveys
      */
     public Labyrintti2D(int korkeus, int leveys) {
-        this.solmut = new KoordinoituSolmu[korkeus][leveys];
+        this.solmut = new Solmu[korkeus][leveys];
         for (int k = 0; k < solmut.length; k++) {
             for (int l = 0; l < solmut[0].length; l++) {
                 Double[] koord = {k * 1.0, l * 1.0};
-                solmut[k][l] = new KoordinoituSolmu(koord);
+                solmut[k][l] = new Solmu(koord);
             }
         }
     }
@@ -62,7 +59,7 @@ public class Labyrintti2D {
      *
      * @return solmut
      */
-    public KoordinoituSolmu[][] getSolmut() {
+    public Solmu[][] getSolmut() {
         return solmut;
     }
 
@@ -87,8 +84,8 @@ public class Labyrintti2D {
         if (y == solmut.length - 1) {
             return false;
         }
-        KoordinoituSolmu solmu = solmut[x][y];
-        KoordinoituSolmu oikeaSolmu = solmut[x][y + 1];
+        Solmu solmu = solmut[x][y];
+        Solmu oikeaSolmu = solmut[x][y + 1];
         if (solmu.onkoNaapuri(oikeaSolmu)) {
             return true;
         }
@@ -106,8 +103,8 @@ public class Labyrintti2D {
         if (x == solmut[0].length - 1) {
             return false;
         }
-        KoordinoituSolmu solmu = solmut[x][y];
-        KoordinoituSolmu alaSolmu = solmut[x + 1][y];
+        Solmu solmu = solmut[x][y];
+        Solmu alaSolmu = solmut[x + 1][y];
         if (solmu.onkoNaapuri(alaSolmu)) {
             return true;
         }
@@ -116,8 +113,16 @@ public class Labyrintti2D {
 
     @Override
     public String toString() {
-        char[][] merkkiTauluEsitys = new char[solmut.length * 2 + 1][solmut[0].length * 2 + 1];
+        char[][] merkkiTauluEsitys = merkkitauluesitys();
+        String paluu = "";
+        for (int i = 0; i < merkkiTauluEsitys.length; i++) {
+            paluu += (charArrayToString(merkkiTauluEsitys[i]) + "\n");
+        }
+        return paluu;
+    }
 
+    private char[][] merkkitauluesitys() {
+        char[][] merkkiTauluEsitys = new char[solmut.length * 2 + 1][solmut[0].length * 2 + 1];
         //ylä ja alareuna
         for (int i = 0; i < merkkiTauluEsitys[0].length; i++) {
             merkkiTauluEsitys[0][i] = WALL;
@@ -150,15 +155,11 @@ public class Labyrintti2D {
                     }
                 } else {
                     //should never happen
-                    throw new Error("jotain pahasti pielessä");
+                    System.out.println("jotain pielessä");
                 }
             }
         }
-        String paluu = "";
-        for (int i = 0; i < merkkiTauluEsitys.length; i++) {
-            paluu += (charArrayToString(merkkiTauluEsitys[i]) + "\n");
-        }
-        return paluu;
+        return merkkiTauluEsitys;
     }
 
     /**
@@ -173,6 +174,23 @@ public class Labyrintti2D {
             paluu += c;
         }
         return paluu;
+    }
+
+    public void printtaaReittiLabyrintissa(Map<Solmu, Solmu> reitti) {
+        char[][] merkkitauluesitys = merkkitauluesitys();
+        Solmu s = reitti.get(solmut[solmut.length - 1][solmut[0].length - 1]);
+        while (true) {
+            if (s == null) {
+                break;
+            }
+            int x = (int) Math.round(s.koordinaatti(0))*2+1;
+            int y = (int) Math.round(s.koordinaatti(1))*2+1;
+            merkkitauluesitys[x][y] = '.';
+            s = reitti.get(s);
+        }
+        for (int i = 0; i < merkkitauluesitys.length; i++) {
+            System.out.println(charArrayToString(merkkitauluesitys[i]));
+        }
     }
 
 }

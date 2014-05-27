@@ -5,12 +5,12 @@
 
 package polunetsinta;
 
-import verkko.KoordinoituSolmu;
+import verkko.Solmu;
 
 /**
  *
  * @author Arvoitusmies
  */
 public interface Heuristiikka {
-    public Double dist(KoordinoituSolmu ks1, KoordinoituSolmu ks2);
+    public Double dist(Solmu ks1, Solmu ks2);
 }

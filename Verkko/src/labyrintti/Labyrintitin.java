@@ -4,7 +4,7 @@
  */
 package labyrintti;
 
-import verkko.KoordinoituSolmu;
+import verkko.Solmu;
 
 /**
  *
@@ -15,20 +15,20 @@ public abstract class Labyrintitin {
     /**
      *
      */
-    KoordinoituSolmu[][] solmut;
+    Solmu[][] solmut;
 
     /**
      * "Labyrintittää"
      *
      * @return
      */
-    public abstract KoordinoituSolmu[][] labyrintitaLabyrintti();
+    public abstract Solmu[][] labyrintitaLabyrintti();
 
     /**
      * Asettaa kenttään.
      * @param solmut
      */
-    public Labyrintitin(KoordinoituSolmu[][] solmut) {
+    public Labyrintitin(Solmu[][] solmut) {
         this.solmut = solmut;
     }
 

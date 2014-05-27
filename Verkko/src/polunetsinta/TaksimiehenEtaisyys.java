@@ -5,13 +5,13 @@
 
 package polunetsinta;
 
-import verkko.KoordinoituSolmu;
+import verkko.Solmu;
 
 
 public class TaksimiehenEtaisyys implements Heuristiikka{
 
     @Override
-    public Double dist(KoordinoituSolmu ks1, KoordinoituSolmu ks2) {
+    public Double dist(Solmu ks1, Solmu ks2) {
         return ks1.taksimiehenEtaisyys(ks2);
     }
     

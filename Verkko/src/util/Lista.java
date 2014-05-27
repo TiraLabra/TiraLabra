@@ -34,15 +34,19 @@ public class Lista<E> {
     public Lista() {
         this(ALKUKOKO);
     }
-
+    
     /**
      * Alustaa annetulla alkukoolla
      *
      * @param alkukoko
      */
-    public Lista(int alkukoko) {
+    public Lista(int alkukoko){
         this.a = (E[]) new Object[alkukoko];
         koko = 0;
+    }
+
+    public int koko() {
+        return koko;
     }
 
     /**
@@ -97,7 +101,7 @@ public class Lista<E> {
      * @param o
      * @return true jos listalta löytyy equals o, muutoin false.
      */
-    public boolean onxNagyny(E o) {
+    public boolean contains(E o) {
         for (int i = 0; i < koko; i++) {
             if (o.equals(a[i])) {
                 return true;

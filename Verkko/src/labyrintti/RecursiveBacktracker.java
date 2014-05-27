@@ -7,7 +7,7 @@ package labyrintti;
 import java.util.Arrays;
 import java.util.Random;
 import util.Taulukko;
-import verkko.KoordinoituSolmu;
+import verkko.Solmu;
 
 /**
  *
@@ -32,7 +32,7 @@ public class RecursiveBacktracker extends Labyrintitin {
      *
      * @param solmut
      */
-    public RecursiveBacktracker(KoordinoituSolmu[][] solmut) {
+    public RecursiveBacktracker(Solmu[][] solmut) {
         super(solmut);
         kayty = new Boolean[solmut.length][solmut[0].length];
         for (int i = 0; i < solmut.length; i++) {
@@ -50,7 +50,7 @@ public class RecursiveBacktracker extends Labyrintitin {
      * @return
      */
     @Override
-    public KoordinoituSolmu[][] labyrintitaLabyrintti() {
+    public Solmu[][] labyrintitaLabyrintti() {
         recur(0, 0);
         return solmut;
     }
@@ -73,12 +73,12 @@ public class RecursiveBacktracker extends Labyrintitin {
      */
     private void recur(int x, int y) {
         kayty[x][y] = true;
-        KoordinoituSolmu[] naapurit = naapurit(x, y);
+        Solmu[] naapurit = naapurit(x, y);
         if (naapurit.length > 0) {
             //sekoitetaan niin valitaan randomisti jokin naapuri.
             Taulukko.sekoita(naapurit);
             for (int i = 0; i < naapurit.length; i++) {
-                KoordinoituSolmu naapuri = naapurit[i];
+                Solmu naapuri = naapurit[i];
                 int ksx = (int) Math.round(naapuri.koordinaatti(0));
                 int ksy = (int) Math.round(naapuri.koordinaatti(1));
                 if (!kayty[ksx][ksy]) {
@@ -97,8 +97,8 @@ public class RecursiveBacktracker extends Labyrintitin {
      * @param y
      * @return
      */
-    private KoordinoituSolmu[] naapurit(int x, int y) {
-        KoordinoituSolmu[] naapurit = new KoordinoituSolmu[4];
+    private Solmu[] naapurit(int x, int y) {
+        Solmu[] naapurit = new Solmu[4];
         if (x > 0) {
             naapurit[0] = solmut[x - 1][y];
         }
@@ -112,7 +112,7 @@ public class RecursiveBacktracker extends Labyrintitin {
             naapurit[3] = solmut[x][y + 1];
         }
         final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
-        KoordinoituSolmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, KoordinoituSolmu[].class);
+        Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
         return paluu;
     }
 

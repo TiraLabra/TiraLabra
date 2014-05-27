@@ -6,6 +6,7 @@ package util;
 
 import java.util.Collection;
 import java.util.Comparator;
+import polunetsinta.AstarKekoEntry;
 
 /**
  * Binäärikeko jossa olioita järjestettynä annetun Comparatorin mukaan.
@@ -67,6 +68,13 @@ public class Keko<E> {
         this.comparator = comparator;
         koko = taulukko.length;
         buildHeap();
+    }
+
+    public boolean empty() {
+        if (koko > 0) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -182,10 +190,33 @@ public class Keko<E> {
         return left + 1;
     }
 
+    public boolean contains(E o) {
+        for (int i = 1; i <= koko; i++) {
+            if (taulukko[i].equals(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      */
-    private void buildHeap() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void buildHeap() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public E poista(E o) {
+        E paluu = null;
+        for (int i = 1; i <= koko; i++) {
+            if (taulukko[i].equals(o)) {
+                Taulukko.swap(taulukko, i, koko);
+                paluu = taulukko[koko];
+                koko--;
+                siftDown(i);
+                break;
+            }
+        }
+        return paluu;
     }
 }
