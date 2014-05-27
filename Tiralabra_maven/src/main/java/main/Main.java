@@ -1,7 +1,7 @@
 package main;
 
 import tietorakenteet.Alue;
-import tietorakenteet.Node;
+import tietorakenteet.*;
 
 /**
  *
@@ -24,5 +24,9 @@ public class Main {
         Alue a = new Alue(16);
         a.luoEsimerkkiTaulukko();
         System.out.println(a.toString());
+        
+        AStar as = new AStar();
+        
+        as.AStarHaku(a, a.getnode(0, 0), a.getnode(14, 14));
     }
 }

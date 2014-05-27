@@ -48,8 +48,15 @@ public class AStar {
         // Alustetaan 
         kaymatta.add(alku);
         
+        alku.setEtaisyysAlusta(0);
+        alku.setEtaisyysMaaliin(0 + heuristiikkaArvio(alku, loppu));
+        
+        
         while (!kaymatta.isEmpty()) {
             Node tarkastettava = kaymatta.poll();
+            
+            //Debug-tulostusta
+            System.out.println(tarkastettava.toString());
             
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
@@ -69,7 +76,7 @@ public class AStar {
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEdellinen(tarkastettava);
                 }
-                if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
+                else if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaArvio(naapuri, loppu));
@@ -78,9 +85,9 @@ public class AStar {
                 }
                     
                 
-                if ( !kaymatta.contains(naapuri) ) {
-                    naapuri.setEdellinen(tarkastettava);
-                }
+                //if ( !kaymatta.contains(naapuri) ) {
+                //    naapuri.setEdellinen(tarkastettava);
+                //}
             }
         }
     }
@@ -98,8 +105,10 @@ public class AStar {
         
         for (int i = n.getX()-1; i <= n.getX()+1; i++) {
             for (int j = n.getY()-1; j <= n.getY()+1; j++) {
-                if (i >= 0 && j >= 0) {
-                    naapurit.add(a.getnode(j, j));
+                if ( (i >= 0 && j >= 0) && !(i==n.getX() && j==n.getY()) ) {
+                    
+                    naapurit.add(a.getnode(i, j));
+                    //System.out.println(n.getX()+", "+ n.getY() + "naapuri: " + i + "," + j);
                 }
             }
         }

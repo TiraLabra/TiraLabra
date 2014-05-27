@@ -88,7 +88,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return this.x+", " + this.y;
+        return this.x+", " + this.y + " alusta: " + this.etaisyysAlusta;
     }
     
     
