@@ -7,11 +7,15 @@ public class Alue {
     
     private int[][] intit;
     
+    private int x;
+    private int y;
+    
     private Node[][] nodet;
 
     public Alue(int koko) {
         intit = new int[koko][koko];
         nodet = new Node[koko][koko];
+        x = y = koko;
     }
     
     
@@ -59,6 +63,19 @@ public class Alue {
      */
     public Node getnode(int x, int y) {
         return this.nodet[x][y];
+    }
+    
+    @Override
+    public String toString() {
+        String tuloste = "";
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                tuloste = tuloste + nodet[i][j].getKustannus();
+            }
+            tuloste = tuloste + "\n";
+        }
+        
+        return tuloste;
     }
     
 }
