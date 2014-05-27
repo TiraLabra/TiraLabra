@@ -18,6 +18,7 @@ public class KoordinoituSolmu extends Solmu {
 
     /**
      * Konstruktori...
+     *
      * @param koordinaatit
      */
     public KoordinoituSolmu(Double[] koordinaatit) {

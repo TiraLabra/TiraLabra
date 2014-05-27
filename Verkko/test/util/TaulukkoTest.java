@@ -74,23 +74,22 @@ public class TaulukkoTest {
         Integer a = 123;
         Integer b = 456;
         Integer c = 789;
-        System.out.println("sekoita");
         Integer[] taulukko = {a, b, c};
         Taulukko.sekoita(taulukko);
         int aFreq = 0, bFreq = 0, cFreq = 0;
         for (Integer i : taulukko) {
             if (i.equals(a)) {
                 aFreq++;
-            } else if(i.equals(b)){
+            } else if (i.equals(b)) {
                 bFreq++;
-            } else if(i.equals(c)){
+            } else if (i.equals(c)) {
                 cFreq++;
             }
         }
         assertEquals(aFreq, 1);
         assertEquals(bFreq, 1);
         assertEquals(cFreq, 1);
-        assertEquals(taulukko, 3);
+        assertEquals(taulukko.length, 3);
     }
 
 }

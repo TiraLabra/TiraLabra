@@ -13,12 +13,21 @@ import verkko.KoordinoituSolmu;
 public class Labyrintti2D {
 
     /**
+     * Merkki käytävälle
+     */
+    private static final char CORRIDOR = ' ';
+    /**
+     * Merkki seinälle
+     */
+    private static final char WALL = '#';
+
+    /**
      * 2D taulukko KoordinoituSolmu olioille jotka tässä labyrintissä on.
      */
     private KoordinoituSolmu[][] solmut;
 
     /**
-     * 
+     *
      */
     private Labyrintitin labyrintitin;
 
@@ -154,6 +163,7 @@ public class Labyrintti2D {
 
     /**
      * Tällänen apumetodi tuohon tulostukseen.
+     *
      * @param ca
      * @return
      */
@@ -165,13 +175,4 @@ public class Labyrintti2D {
         return paluu;
     }
 
-    /**
-     * Merkki käytävälle
-     */
-    private static final char CORRIDOR = ' ';
-
-    /**
-     * Merkki seinälle
-     */
-    private static final char WALL = '#';
 }

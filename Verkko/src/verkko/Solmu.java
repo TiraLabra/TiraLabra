@@ -4,67 +4,56 @@
  */
 package verkko;
 
-import java.util.HashMap;
+import util.Lista;
 
-/**
- * Verkon solmu joka ei sisällä mitään tietoa paitsi siihen liitettyjen muiden solmujen viitteet ja painot
- * @author Arvoitusmies
- */
 public class Solmu {
 
     /**
      * Naapurit avaimena, painot arvona.
      */
-    private HashMap<Solmu,Double> naapurit;
-    
+    //private HashMap<Solmu,Double> naapurit;
+    private Lista<Solmu> naapuriSolmut;
+    private Lista<Double> naapuripainot;
+
     /**
      * Alustaa hajautustaulun naapureille
      */
-    public Solmu(){
-        this(new HashMap<Solmu, Double>());
+    public Solmu() {
+        naapuriSolmut = new Lista<>();
+        naapuripainot = new Lista<>();
+        //naapurit = new HashMap<>();
     }
-    
+
     /**
-     * Käyttää olemassaolevaa naapuri hajautustaulua sellaisenaan
-     * @param naapurit
-     */
-    public Solmu(HashMap<Solmu, Double> naapurit){
-        this.naapurit=naapurit;
-    }
-    
-    /**
-     * Lisää solmun painolla paino naapureihin.
-	 * Huom: ei lisää tätä solmua solmun s naapureihin!
+     * Lisää solmun painolla paino naapureihin. Huom: ei lisää tätä solmua
+     * solmun s naapureihin!
+     *
      * @param s lisättävä solmu
      * @param paino
      */
-    public void lisaaNaapuri(Solmu s, Double paino){
-        naapurit.put(s, paino);
+    public void lisaaNaapuri(Solmu s, Double paino) {
+        //naapurit.put(s, paino);
+        naapuriSolmut.lisaa(s);
+        naapuripainot.lisaa(paino);
     }
-    
+
     /**
      * Kyselee onko annettu solmu naapuri
+     *
      * @param s
      * @return
      */
-    public Boolean onkoNaapuri(Solmu s){
-        return naapurit.containsKey(s);
+    public Boolean onkoNaapuri(Solmu s) {
+        //return naapurit.containsKey(s);
+        return naapuriSolmut.onxNagyny(s);
     }
-    
-    /**
-     * Palauttaa painon solmulle s. Ei tarkistele mitään.
-     * @param s
-     * @return
-     */
-    public Double paino(Solmu s){
-        return naapurit.get(s);
+
+    public Lista<Solmu> getNaapuriSolmut() {
+        return naapuriSolmut;
     }
-    
-    /**
-     * Palauttaa naapurit ja painot
-     * @return
-     */
-    public HashMap<Solmu, Double> getNaapurit(){
-        return naapurit;
+
+    public Lista<Double> getNaapuripainot() {
+        return naapuripainot;
     }
+
 }
