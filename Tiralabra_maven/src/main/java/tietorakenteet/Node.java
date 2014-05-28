@@ -6,6 +6,8 @@ package tietorakenteet;
  */
 public class Node implements Comparable<Node> {
 
+    private static int MAKSIMIARVO_KULJETTAVUUDELLE = 5;
+    
     private int x;
     private int y;
     
@@ -76,6 +78,17 @@ public class Node implements Comparable<Node> {
         this.edellinen = edellinen;
     }
     
+    /**
+     * Kertoo, onko kyseinen node kuljettavissa.
+     * Tosin sanoen palauttaa false, kun kyseessä on seinä tms.
+     * @return 
+     */
+    public boolean kuljettavissa() {
+        if (kustannus > MAKSIMIARVO_KULJETTAVUUDELLE )
+            return false;
+        else
+            return true;
+    }
     /**
      * Nodejen välisen suuruusvertailut toteuttava metodi
      * @param node vertailtava toinen node

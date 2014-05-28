@@ -53,6 +53,14 @@ public class NodeTest extends TestCase {
         Node n = new Node(2,3,4);
         String tulos = n.toString();
         
-        assertEquals("2, 3", tulos);
+        assertEquals("2, 3 alusta: 0", tulos);
+    }
+    
+    public void testToimiikoSeinatestaus() {
+        Node n1 = new Node(1,2,5);
+        Node n2 = new Node(8,7,6);
+        
+        assertEquals(true, n1.kuljettavissa());
+        assertEquals(false, n2.kuljettavissa());
     }
 }
