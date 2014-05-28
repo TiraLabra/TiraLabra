@@ -28,5 +28,7 @@ public class Main {
         AStar as = new AStar();
         
         as.AStarHaku(a, a.getnode(0, 0), a.getnode(14, 14));
+        
+        System.out.println(as.getAskelia() + " askelta.");
     }
 }

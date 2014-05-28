@@ -28,6 +28,12 @@ public class AStar {
      * Tietorakenne, johon tallennetaan haun löytämä optimaalisin reitti.
      */
     private ArrayList<Node> kuljettuReitti;
+    
+    /**
+     * Tieto, kuinka monta askelta haussa otettiin.
+     * Käytössä lähinnä algoritmin toiminnan tarkastelua varten.
+     */
+    private int askelia;
 
     public AStar() {
         kaydyt = new ArrayList();
@@ -54,6 +60,7 @@ public class AStar {
         
         while (!kaymatta.isEmpty()) {
             Node tarkastettava = kaymatta.poll();
+            askelia++;
             
             //Debug-tulostusta
             System.out.println(tarkastettava.toString());
@@ -151,4 +158,10 @@ public class AStar {
     private int laskeKustannus(Node tarkastettava, Node naapuri) {
         return 1;
     }
+
+    public int getAskelia() {
+        return askelia;
+    }
+    
+    
 }
