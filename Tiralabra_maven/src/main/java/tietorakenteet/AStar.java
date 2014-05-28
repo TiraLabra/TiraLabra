@@ -79,7 +79,11 @@ public class AStar {
                 else if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
-                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaArvio(naapuri, loppu));
+                    
+                    // TODO: Heuristiikan valinta järkevämmäksi
+                    //naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaArvio(naapuri, loppu));
+                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaManhattan(naapuri, loppu));
+                    
                     if (!kaymatta.contains(naapuri))
                         kaymatta.add(naapuri);
                 }
@@ -106,8 +110,8 @@ public class AStar {
         for (int i = n.getX()-1; i <= n.getX()+1; i++) {
             for (int j = n.getY()-1; j <= n.getY()+1; j++) {
                 if ( (i >= 0 && j >= 0) && !(i==n.getX() && j==n.getY()) ) {
-                    
-                    naapurit.add(a.getnode(i, j));
+                    if (a.getnode(i, j).kuljettavissa())
+                        naapurit.add(a.getnode(i, j));
                     //System.out.println(n.getX()+", "+ n.getY() + "naapuri: " + i + "," + j);
                 }
             }
@@ -127,6 +131,14 @@ public class AStar {
         //TODO, palauttaa vain Dijkstran mukaisen nollan
         return 0;
     }
+    
+    private int heuristiikkaManhattan(Node naapuri, Node loppu) {
+        int tulos = 0;
+        tulos = Math.abs(naapuri.getX()-loppu.getX()) + Math.abs(naapuri.getY()-loppu.getY());
+        
+        return tulos;
+    }
+    
     
     /**
      * Metodi, joka laskee kahden noden välisen kustannuksen.
