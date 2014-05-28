@@ -116,7 +116,7 @@ public class AStar {
         
         for (int i = n.getX()-1; i <= n.getX()+1; i++) {
             for (int j = n.getY()-1; j <= n.getY()+1; j++) {
-                if ( (i >= 0 && j >= 0) && !(i==n.getX() && j==n.getY()) ) {
+                if ( (i >= 0 && j >= 0 && i <= a.getKorkeus() && j < a.getLeveys()) && !(i==n.getX() && j==n.getY()) ) {
                     if (a.getnode(i, j).kuljettavissa())
                         naapurit.add(a.getnode(i, j));
                     //System.out.println(n.getX()+", "+ n.getY() + "naapuri: " + i + "," + j);

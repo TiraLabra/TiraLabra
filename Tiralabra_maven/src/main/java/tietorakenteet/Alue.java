@@ -11,7 +11,7 @@ public class Alue {
     private int y;
     
     private Node[][] nodet;
-
+    
     public Alue(int koko) {
         intit = new int[koko][koko];
         nodet = new Node[koko][koko];
@@ -32,7 +32,7 @@ public class Alue {
             { 0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0} , // 3
             { 0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0} , // 4
             { 0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0} , // 5
-            { 0,9,9,9,9,9,9,9,9,9,0,0,0,0,0,0} , // 6
+            { 0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0} , // 6
             { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} , // 7
             { 0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0} , // 8
             { 0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0} , // 9
@@ -76,6 +76,14 @@ public class Alue {
         }
         
         return tuloste;
+    }
+
+    public int getKorkeus() {
+        return x;
+    }
+
+    public int getLeveys() {
+        return y;
     }
     
 }
