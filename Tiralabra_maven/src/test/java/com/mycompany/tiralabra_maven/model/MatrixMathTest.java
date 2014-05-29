@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
  */
 public class MatrixMathTest {
     
+    private static final double DELTA = 0.001;
+    
     private Matrix matrixA;
     private Matrix matrixB;
     
@@ -112,6 +114,27 @@ public class MatrixMathTest {
     public void multiplyingWhenSecondMatrixIsNullLeadsToException(){
         matrixB = null;
         MatrixMath.multiply(matrixA, matrixB);
+    }
+    
+    @Test
+    public void determinantCorrectlyCalculated(){
+        double[][] values = {{1,2,3,0},{0,1,0,-1},{0,0,-1,0},{2,1,-4,-1}};
+        matrixA = new Matrix(values);
+        assertEquals(4, MatrixMath.det(matrixA), DELTA);
+    }
+    
+    @Test 
+    public void determinantOfOneByOneMatrixIsCorrect(){
+        double[][] values = {{666}};
+        matrixA = new Matrix(values);
+        assertEquals(666, MatrixMath.det(matrixA), DELTA);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void determinantOfNonSquareMatrixLeadsToException(){
+        double[][] values = {{1},{2}};
+        matrixA = new Matrix(values);
+        MatrixMath.det(matrixA);
     }
     
 }

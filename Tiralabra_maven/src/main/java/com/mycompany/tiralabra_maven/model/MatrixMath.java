@@ -88,8 +88,6 @@ public class MatrixMath {
      * @param term2 the second term of the operation
      * @param operation the specified operation; addition or subtraction
      * @return the result of the operation
-     * @throws IllegalArgumentException if the matrices are not multipliable
-     * @throws NullPointerException if either parameter is null
      */
     private static double computeElement(double term1, double element2, String operation) {
         double newElement;
@@ -107,6 +105,8 @@ public class MatrixMath {
      * @param matrixA the first matrix of the product
      * @param matrixB the second matrix of the product
      * @return the product of the specified matrices
+     * @throws IllegalArgumentException if the matrices are not multipliable
+     * @throws NullPointerException if either parameter is null
      */
     public static Matrix multiply(Matrix matrixA, Matrix matrixB) {
         checkIfMatricesAreNull(matrixA, matrixB);
@@ -134,5 +134,53 @@ public class MatrixMath {
     public static boolean areMultipliable(Matrix matrixA, Matrix matrixB) {
         checkIfMatricesAreNull(matrixA, matrixB);
         return (matrixA.cols() == matrixB.rows());
+    }
+
+    /**
+     * Calculates the determinant of the specified matrix.
+     * @param matrix the matrix for which the determinant is to be calculated
+     * @return the determinant of the specified matrix
+     * @throws IllegalArgumentException if the specified matrix is not a square matrix
+     * @throws NullPointerException if the specified matrix is null
+     */
+    public static double det(Matrix matrix) {
+        Objects.requireNonNull(matrix, "matrix must not be null");
+        if (!matrix.isSquareMatrix()){
+            throw new IllegalArgumentException("The matrix must be a square matrix.");
+        }
+        if(matrix.rows() == 1) return matrix.getElement(0, 0);
+        double det = 0;
+        for (int j = 0; j < matrix.rows(); j++){
+            det += matrix.getElement(0, j)*sign(j)*det(formSubmatrix(matrix, j));
+        }
+        return det;
+    }        
+    
+    /**
+     * Returns the correct sign of the cofactor when expanding along the first row.
+     * @param col the column number of the entry
+     * @return 1 if the column number is even; -1 otherwise
+     */
+    private static int sign(int col) {
+        return col % 2 == 0 ? 1:-1;
+    }
+
+    /**
+     * Returns the submatrix formed by deleting the first row and the specified column of the specified matrix.
+     * @param matrix the specified matrix from which the submatrix is formed
+     * @param deletedCol the column which is to be deleted from the specified matrix 
+     * @return the submatrix obtained by deleting the first row and the specified column of the specified matrix
+     */
+    private static Matrix formSubmatrix(Matrix matrix, int deletedCol) {
+        int size = matrix.rows()-1;
+        Matrix submatrix = new Matrix(size, size);
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                int col = j;
+                if (col >= deletedCol) col++;
+                submatrix.setElement(matrix.getElement(i+1, col), i, j);
+            }
+        }
+        return submatrix;
     }
 }

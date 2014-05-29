@@ -119,4 +119,16 @@ public class MatrixTest {
         Matrix matrixB = new Matrix(values);
         assertEquals(matrix, matrixB);
     }
+    
+    @Test
+    public void isSquareMatrixReturnsTrueForSquareMatrix(){
+        double[][] values = {{1,2},{3,4}};
+        matrix = new Matrix(values);
+        assertTrue(matrix.isSquareMatrix());
+    }
+    
+    @Test
+    public void isSquareMatrixReturnsFalseForNonSquareMatrix(){
+        assertFalse(matrix.isSquareMatrix());
+    }
 }

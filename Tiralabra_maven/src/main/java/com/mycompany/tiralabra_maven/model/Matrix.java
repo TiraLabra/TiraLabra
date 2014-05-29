@@ -106,6 +106,10 @@ public class Matrix {
         }
         elements[row][col] = value;
     }
+    
+    public boolean isSquareMatrix(){
+        return rows == cols;
+    }
 
     @Override
     public String toString() {
