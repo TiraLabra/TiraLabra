@@ -3,10 +3,12 @@ package fi.jleh.reittiopas.routing;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import fi.jleh.reittiopas.exception.RoutingFailureException;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.parser.ReittiopasXMLParser;
 import fi.jleh.reittiopas.router.Router;
+import fi.jleh.reittiopas.router.RouterResult;
 import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.Unzipper;
 
@@ -22,19 +24,67 @@ public class RoutingTest {
 	}
 	
 	@Test
-	public void testRouting() throws RoutingFailureException {
-		Router router = new Router(dataStructures);
-		Station start = dataStructures.getStationMap().get(1113127);
-		Station end = dataStructures.getStationMap().get(1465552);
-		
-		router.findRoute(start, end);
-	}
-	
 	public void testRoutingWithStartTime() throws RoutingFailureException {
 		Router router = new Router(dataStructures);
 		Station start = dataStructures.getStationMap().get(1113127);
 		Station end = dataStructures.getStationMap().get(1465552);
 		
-		router.findRoute(start, end, "0700");
+		RouterResult route = router.findRoute(start, end, "0700");
+		assertNotNull(route);
+	}
+	
+	@Test
+	public void testRoutingResultTime() throws RoutingFailureException {
+		Router router = new Router(dataStructures);
+		Station start = dataStructures.getStationMap().get(1113127);
+		Station end = dataStructures.getStationMap().get(1465552);
+		
+		RouterResult route = router.findRoute(start, end, "0000");
+		Integer time = Integer.parseInt(route.calculateRouteTime());
+		
+		assertNotNull(time);
+		assertTrue(time > 0);
+	}
+	
+	/**
+	 * While improving algorithm, make sure that routing is not going worse.
+	 * @throws RoutingFailureException
+	 */
+	@Test
+	public void routingIsNotGoingWorse1() throws RoutingFailureException {
+		Router router = new Router(dataStructures);
+		Station start = dataStructures.getStationMap().get(1113127);
+		Station end = dataStructures.getStationMap().get(1465552);
+		
+		RouterResult route = router.findRoute(start, end, "0700");
+		Integer time = Integer.parseInt(route.calculateRouteTime());
+		
+		int previousBestForRoute = 338;
+		
+		assertTrue(time <= previousBestForRoute);
+		
+		if (time < previousBestForRoute) {
+			System.out.println("BETTER ROUTE FOUND");
+			route.printPath();
+		}
+	}
+	
+	@Test
+	public void routingIsNotGoingWorse2() throws RoutingFailureException {
+		Router router = new Router(dataStructures);
+		Station start = dataStructures.getStationMap().get(1230109);
+		Station end = dataStructures.getStationMap().get(2611249);
+		
+		RouterResult route = router.findRoute(start, end, "1200");
+		Integer time = Integer.parseInt(route.calculateRouteTime());
+		
+		int previousBestForRoute = 225;
+		
+		assertTrue(time <= previousBestForRoute);
+		
+		if (time < previousBestForRoute) {
+			System.out.println("BETTER ROUTE FOUND");
+			route.printPath();
+		}
 	}
 }

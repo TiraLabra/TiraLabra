@@ -40,19 +40,10 @@ public class Router {
 	private Map<Station, Double> costFromStart = new HashMap<Station, Double>();
 	private Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
 	
+	private long processStart;
+	
 	public Router(DataStructuresDto dto) {
 		this.dataStructures = dto;
-	}
-
-	/**
-	 * Finds route between two stations.
-	 * This implementation ignores time data.
-	 * @param start
-	 * @param end
-	 * @throws RoutingFailureException
-	 */
-	public void findRoute(Station start, Station end) throws RoutingFailureException {
-		findRoute(start, end, null);
 	}
 	
 	/**
@@ -62,16 +53,9 @@ public class Router {
 	 * @param startTime
 	 * @throws RoutingFailureException
 	 */
-	public void findRoute(Station start, Station end, String startTime) throws RoutingFailureException {
-		visitedNodes = new HashSet<Station>();
-		openNodes = new ArrayList<Station>();
-		
-		cameFrom = new HashMap<Station, Station>();
-		cameFromStop = new HashMap<Station, Stop>();
-		timeAtStation = new HashMap<Station, String>();
-		
-		costFromStart = new HashMap<Station, Double>();
-		estimatedCost = new HashMap<Station, Double>();
+	public RouterResult findRoute(Station start, Station end, String startTime) throws RoutingFailureException {
+		processStart = System.currentTimeMillis();
+		initializeDataStructures();
 		
 		// Values for start node
 		costFromStart.put(start, 0.0);
@@ -83,10 +67,10 @@ public class Router {
 			Station current = getBestStation(openNodes, estimatedCost);
 			
 			if (current == end) {
-				System.out.println("Route found");
-				printPath(cameFrom, cameFromStop, timeAtStation, current);
+				long time = System.currentTimeMillis() - processStart;
+				System.out.println("Route found " + time + " ms");
 				
-				return;
+				return new RouterResult(cameFrom, cameFromStop, timeAtStation, start, end);
 			}
 			
 			openNodes.remove(current);
@@ -122,21 +106,15 @@ public class Router {
 				
 				if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
 					// Do time check
-					// Ignore if start time is not set
-					double timeScore = 0;
-					if (startTime != null ) {
-						Integer time1 = Integer.parseInt(timeAtStation.get(current));
-						Integer time2 = Integer.parseInt(stop.getArrival());
-						
-						// Can't go back in time
-						if (time2 <= time1)
-							continue;
-						
-						timeScore = Math.abs(time2 - time1) * TIME_MODIFIER;
-						
-						// Time from start
-						tentativeScore += time2 - Integer.parseInt(startTime);
-					}
+					double timeScore = calculateTimeScore(timeAtStation.get(current), stop.getArrival());
+					
+					// Can't go back in time
+					if (timeScore < 0)
+						continue;
+					
+					// Time from start
+					tentativeScore += Integer.parseInt(stop.getArrival()) - Integer.parseInt(startTime);
+				
 					
 					cameFrom.put(station, current);
 					cameFromStop.put(station, stop);
@@ -164,6 +142,22 @@ public class Router {
 		}
 	}
 	
+	private double calculateTimeScore(String strTime1, String strTime2) {
+		Integer time1 = Integer.parseInt(strTime1);
+		Integer time2 = Integer.parseInt(strTime2);
+
+		if (time2 <= time1)
+			return -1;
+		
+		int time = Integer.parseInt(TimeUtils.calculateTimeDifference(strTime1, strTime2));
+		
+		// Waiting is not so bad if it isn't too long
+		if (time < 5)
+			return 0;
+		
+		return time * TIME_MODIFIER;
+	}
+	
 	private void processNearbyStations(Station current, String startTime) {
 		BoundingBox boundingBox = new BoundingBox(current.getX(), current.getY(), WALK_DISTANCE);
 		List<QuadtreePoint> nearbyStations = dataStructures.getStationSpatial().queryRange(boundingBox);
@@ -184,12 +178,11 @@ public class Router {
 				cameFrom.put(nearbyStation, current);
 				cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
 				
-				int timeScore = 0;
-				if (startTime != null) {
-					String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-					timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
-					timeScore = Integer.parseInt(timeAfterWalk) - Integer.parseInt(startTime);
-				}
+				double timeScore = 0;
+				String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
+				timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
+				timeScore = calculateTimeScore(timeAfterWalk, startTime);
+				
 				
 				costFromStart.put(nearbyStation, tentativeScore + timeScore);
 				estimatedCost.put(nearbyStation, tentativeScore + timeScore + WALK_PENALTY * walkDistance);
@@ -199,6 +192,18 @@ public class Router {
 				}
 			}
 		}
+	}
+	
+	private void initializeDataStructures() {
+		visitedNodes = new HashSet<Station>();
+		openNodes = new ArrayList<Station>();
+		
+		cameFrom = new HashMap<Station, Station>();
+		cameFromStop = new HashMap<Station, Stop>();
+		timeAtStation = new HashMap<Station, String>();
+		
+		costFromStart = new HashMap<Station, Double>();
+		estimatedCost = new HashMap<Station, Double>();
 	}
 	
 	/*
@@ -219,40 +224,5 @@ public class Router {
 		}
 		
 		return bestStation;
-	}
-	
-	private void printPath(Map<Station, Station> cameFrom, Map<Station, Stop> stops, 
-			Map<Station, String> timeAtStation, Station station) {
-		
-		StringBuilder wkt = new StringBuilder();
-		
-		while (station != null) {
-			if (stops.get(station) != null) {
-				String lineNumber = "Walk";
-				
-				if (stops.get(station).getService() != null)
-					lineNumber = stops.get(station).getService().getLineNumber();
-				
-				System.out.println(station.getName() + " " + timeAtStation.get(station) 
-						+ " " + lineNumber);
-			}
-			else
-				System.out.println(station.getName());
-			
-			// Create geometry of the route as WKT Linestring
-			if (wkt.length() == 0)
-				wkt.append("LINESTRING (");
-			else
-				wkt.append(", ");
-			
-			wkt.append(station.getX());
-			wkt.append(" ");
-			wkt.append(station.getY());
-			
-			station = cameFrom.get(station);
-		}
-		
-		wkt.append(")");
-		System.out.println(wkt);
 	}
 }

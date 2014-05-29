@@ -5,6 +5,7 @@ import java.util.Scanner;
 import fi.jleh.reittiopas.model.Station;
 import fi.jleh.reittiopas.parser.ReittiopasXMLParser;
 import fi.jleh.reittiopas.router.Router;
+import fi.jleh.reittiopas.router.RouterResult;
 import fi.jleh.reittiopas.utils.DataStructuresDto;
 import fi.jleh.reittiopas.utils.Unzipper;
 
@@ -27,6 +28,7 @@ public class App {
         System.out.println("Give station ids");
         
         // 1113127 1465552 0700
+        // 1230109 2611249 1200
         
         while (id1 != -1) {
         	id1 = scanner.nextInt();
@@ -40,7 +42,9 @@ public class App {
             System.out.println(station2.getName());
             
             try {
-            	router.findRoute(station1, station2, startTime);
+            	RouterResult route = router.findRoute(station1, station2, startTime);
+            	route.printPath();
+            	System.out.println("Route time " + route.calculateRouteTime());
             } catch (Exception e) {
             	e.printStackTrace();
             }
