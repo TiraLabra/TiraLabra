@@ -9,7 +9,7 @@ public class TiedostonPakkaaja {
 
     public void pakkaaTiedosto(TekstinLukija lukija, HuffmanPuu puu, BittiEsitykset esitykset, String polku) throws IOException {
         File tiedosto = luoUusiTiedosto(polku);
-        kirjoitaTiedostoon(tiedosto, esitykset.getEsitykset(), lukija.getTeksti());
+        kirjoitaTiedostoon(tiedosto, esitykset.getEsitykset(), puu, lukija.getTeksti());
     }
     
     protected File luoUusiTiedosto(String polku) throws IOException {
@@ -24,18 +24,18 @@ public class TiedostonPakkaaja {
         throw new IOException("Tiedostoa vastaava pakkaus on jo olemassa. Tiedostoa ei pakata uudestaan.");
     }
     
-    protected void kirjoitaTiedostoon(File tiedosto, HashMap<String, String> bittijonot, String teksti) throws IOException {
+    protected void kirjoitaTiedostoon(File tiedosto, HashMap<String, String> bittijonot, HuffmanPuu puu, String teksti) throws IOException {
         FileWriter kirjoittaja = new FileWriter(tiedosto);
         String ykkosinaJaNollina = ykkosinaJaNollina(teksti, bittijonot);
-        String pakattuna = pakatuksiTekstiksi(kirjoittaja, ykkosinaJaNollina);
-        
-        // Huffman puu (eli keko) täytyy jollain lailla kirjoittaa tekstitiedostoon mukaan siten että sitä voidaan käyttää purkuvaiheessa järkevästi.
-        // Purkuohjeet pakattavan tiedoston alkuun.
-        
+        String pakattuna = pakatuksiTekstiksi(ykkosinaJaNollina);
+
+        int puuOsoitin = 4 + pakattuna.length();    // huffmanpuun talletussijainti, int 32-bit arvo = 4 tavua
+
+        kirjoittaja.append(Integer.toString(puuOsoitin) + pakattuna + puu.puunTekstiEsitys());
         kirjoittaja.close();
     }
     
-    protected String pakatuksiTekstiksi(FileWriter kirjoittaja, String ykkosinaJaNollina) throws IOException {
+    protected String pakatuksiTekstiksi(String ykkosinaJaNollina) {
         String pakattuna = "";
         
         for (int i = 0; i < ykkosinaJaNollina.length() / 8; i++) {

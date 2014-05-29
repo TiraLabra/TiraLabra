@@ -30,6 +30,7 @@ public class TiedostonPakkaajaTest {
     public void uudenTiedostonLuontiOnnistuu() {
         try {
             File file = pakkaaja.luoUusiTiedosto("TiedostonPakkaajaTest.txt");
+            assertTrue(file.exists());
             assertTrue(file.canWrite());
         }
         catch (IOException e) {
@@ -82,5 +83,12 @@ public class TiedostonPakkaajaTest {
         
         merkki = pakkaaja.seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 8);
         assertTrue((int) merkki == 204);
+    }
+    
+    @Test
+    public void tekstinPakkaaminenTavuiksiToimii() {
+        assertEquals(pakkaaja.pakatuksiTekstiksi(""), "");
+        assertEquals(pakkaaja.pakatuksiTekstiksi("01100110"), "f");
+        assertEquals(pakkaaja.pakatuksiTekstiksi("011011010110111101101001"), "moi");
     }
 }

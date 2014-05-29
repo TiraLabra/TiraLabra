@@ -1,6 +1,7 @@
 package Toteutus;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Tee yksikkötestejä lisää (kaikkia metodeja testataan 3:ssa eri tapauksessa)
@@ -18,11 +19,11 @@ public class Main {
         try {
             ohjaaja.suoritaPakkaaminen("huffman.txt");
         }
-        catch (Exception e) {
-            if (e.getClass() == FileNotFoundException.class) {
-                System.out.print("Tiedoston luku ei onnistunut. Annoit sen polun väärin.\nOhjelma suljetaan.");
-            }
+        catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } 
+        catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        
     }
 }

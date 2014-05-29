@@ -2,6 +2,7 @@ package Toteutus;
 
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 
 /**
@@ -67,5 +68,39 @@ public class HuffmanPuu {
         yhdistetty.setOikea(oikea);
         vasen.setVanh(yhdistetty);
         oikea.setVanh(yhdistetty);
+    }
+    
+        
+    // Pitääkö viedä solmut jonoon ja poistaa sieltä yksi kerrallaan??
+    // -> Näin saataisiin solmut tekstitiedostoon järjestykseen siten että huippusolmu ensin, lapset sitten jne.
+    // --> Decompression toimisi varmaankin tällä tavoin.
+    
+    public String puunTekstiEsitys() {
+        if (this.getKeko().getSolmut().length <= 0) {
+            return null;
+        }
+        
+        String teksti = "";
+        ArrayDeque jono = new ArrayDeque(this.getKeko().getSolmut().length);
+        
+        Solmu solmu = this.getKeko().getSolmut()[0];
+        jono.add(solmu);
+        
+        while (! jono.isEmpty()) {
+            
+            if (solmu != null) {
+                if (solmu.getVasen() != null) {
+                    jono.add(solmu.getVasen());
+                }   
+                if (solmu.getOikea() != null) {
+                    jono.add(solmu.getOikea());
+                }
+
+                teksti += solmu.getAvain(); // osa avaimista "null". Ei pitäisi olla ongelma.
+            }
+            solmu = (Solmu) jono.pollFirst();
+        }
+        
+        return teksti;
     }
 }

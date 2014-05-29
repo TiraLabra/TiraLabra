@@ -33,16 +33,21 @@ public class TekstinLukija {
      * @throws FileNotFoundException - mikäli polku on virheellinen, heittää ko. poikkeuksen
      */
     
-    public void lueTiedosto(String polku)  throws FileNotFoundException {
-        Scanner lukija = new Scanner(new File(polku));
-        
-        while (lukija.hasNextLine()) {
-            String rivi = lukija.nextLine();
-            lisaaRivi(rivi);
+    public void lueTiedosto(String polku) throws FileNotFoundException {
+        try {
+            Scanner lukija = new Scanner(new File(polku));
+            
+            while (lukija.hasNextLine()) {
+                String rivi = lukija.nextLine();
+                lisaaRivi(rivi);
 
-            if (lukija.hasNextLine()) {
-                lisaaMerkki("\n");
-            }
+                if (lukija.hasNextLine()) {
+                    lisaaMerkki("\n");
+                }
+            }            
+        }
+        catch (FileNotFoundException e) {
+            throw new FileNotFoundException("Annoit tiedoston polun väärin.\nOhjelma suljetaan..");
         }
     }
     
