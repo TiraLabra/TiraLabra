@@ -1,7 +1,7 @@
 package fi.jleh.reittiopas.utils;
 
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 import fi.jleh.reittiopas.model.Service;
 import fi.jleh.reittiopas.model.Station;
@@ -13,7 +13,7 @@ import fi.jleh.reittiopas.quadtree.QuadTree;
 public class DataStructuresDto {
 
 	private List<Station> stationList;
-	private TreeMap<Integer, Station> stationMap;
+	private Map<Integer, Station> stationMap;
 	private List<Service> services;
 	private QuadTree stationSpatial;
 
@@ -25,11 +25,11 @@ public class DataStructuresDto {
 		this.stationList = stationList;
 	}
 
-	public TreeMap<Integer, Station> getStationMap() {
+	public Map<Integer, Station> getStationMap() {
 		return stationMap;
 	}
 
-	public void setStationMap(TreeMap<Integer, Station> stationMap) {
+	public void setStationMap(Map<Integer, Station> stationMap) {
 		this.stationMap = stationMap;
 	}
 
