@@ -49,13 +49,15 @@
                     <param>Tietorakenteet.MinKeko</param>
                     <param>Toteutus.BittiEsitykset</param>
                     <param>Toteutus.HuffmanPuu</param>
-                    <param>Toteutus.TekstinLukija</param>                    
+                    <param>Toteutus.TekstinLukija</param>     
+                    <param>Toteutus.TiedostonPakkaaja</param>                
                 </targetClasses>
                 <targetTests>
                     <param>Tietorakenteet.MinKekoTest</param>
                     <param>Toteutus.BittiEsityksetTest</param>
                     <param>Toteutus.HuffmanPuuTest</param>
                     <param>Toteutus.TekstinLukijaTest</param>
+                    <param>Toteutus.TiedostonPakkaajaTest</param>
                 </targetTests>
             </configuration>
         </plugin>

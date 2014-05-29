@@ -59,6 +59,12 @@ public class MinKekoTest {
         assertEquals("d", keko2.getSolmut()[0].getAvain());
     }
     
+    @Test (expected = ArrayIndexOutOfBoundsException.class)
+    public void tyhjastaKeostaEiVoiPoistaaAlkiota() {
+        MinKeko keko3 = new MinKeko(5);
+        keko3.poistaHuippuSolmu();
+    }
+    
     @Test
     public void keonSolmuKokoTuplaantuuKunKekoonAsetetaanEnemmanSolmujaKuinMahtuisi() {
         MinKeko keko3 = luoKekoJossaSolmujenMaaraOnTuplattu();
@@ -78,5 +84,67 @@ public class MinKekoTest {
         keko3.lisaa(new Solmu(1));
         keko3.lisaa(new Solmu(2));
         return keko3;
+    }
+    
+    @Test
+    public void lisattavanPaikanIndeksi() {
+        Solmu solmu = new Solmu(3);
+        assertEquals(0, keko.selvitaLisattavanPaikanIdeksi(0, solmu));
+        keko.lisaa(solmu);
+        
+        Solmu solmu2 = new Solmu(5);
+        assertEquals(1, keko.selvitaLisattavanPaikanIdeksi(1, solmu2));
+        keko.lisaa(solmu2);
+        
+        Solmu solmu3 = new Solmu(1);
+        assertEquals(0, keko.selvitaLisattavanPaikanIdeksi(2, solmu3));
+        keko.lisaa(solmu3);
+        
+        Solmu solmu4 = new Solmu(1);
+        assertEquals(1, keko.selvitaLisattavanPaikanIdeksi(3, solmu4));
+    }
+    
+    @Test
+    public void heapify() {
+        MinKeko keko3 = new MinKeko(5);
+        keko3.lisaa(new Solmu(2));
+        
+        kunVasenPienempiKuinKokoEiTehdaMitaan(keko3);
+        kunVasenYhtaSuuriKuinKokoVaihdetaanJosTarve(keko3); // keossa "3 5"
+        kunOikeaVahintaanYhtaSuuriKuinKoko(keko3);
+    }
+    
+    private void kunVasenPienempiKuinKokoEiTehdaMitaan(MinKeko keko3) {
+        keko3.heapify(0);
+        assertEquals(2, keko3.getSolmut()[0].getEsiintymat());
+    }
+    
+    private void kunVasenYhtaSuuriKuinKokoVaihdetaanJosTarve(MinKeko keko3) {
+        keko3.lisaa(new Solmu(3));
+        keko3.heapify(0);
+        assertEquals(2, keko3.getSolmut()[0].getEsiintymat());
+        
+        keko3.getSolmut()[0].setEsiintymat(5);
+        keko3.heapify(0);
+        assertEquals(3, keko3.getSolmut()[0].getEsiintymat());
+    }
+    
+    private void kunOikeaVahintaanYhtaSuuriKuinKoko(MinKeko keko3) {
+        keko3.lisaa(new Solmu(6));  // nyt keossa "3 5 6"
+        testaaPienempi(keko3, 0);
+        
+        keko3.heapify(0);
+        assertEquals(3, keko3.getSolmut()[0].getEsiintymat());
+        
+        keko3.getSolmut()[0].setEsiintymat(10);
+        
+        keko3.heapify(0);
+        assertEquals(5, keko3.getSolmut()[0].getEsiintymat());
+        assertEquals(10, keko3.getSolmut()[1].getEsiintymat());
+    }
+    
+    private void testaaPienempi(MinKeko keko3, int i) {
+        assertEquals(1, keko3.pienempi(1,2));
+        assertEquals(1, keko3.pienempi(2,1));
     }
 }

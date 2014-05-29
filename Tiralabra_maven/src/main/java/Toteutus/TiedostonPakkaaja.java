@@ -12,8 +12,8 @@ public class TiedostonPakkaaja {
         kirjoitaTiedostoon(tiedosto, esitykset.getEsitykset(), lukija.getTeksti());
     }
     
-    private File luoUusiTiedosto(String polku) throws IOException {
-        File tiedosto = new File(polku + ".mihu");
+    protected File luoUusiTiedosto(String polku) throws IOException {
+        File tiedosto = new File(polku + ".hemi");
         
         if (! tiedosto.exists()) {
             tiedosto.createNewFile();
@@ -21,14 +21,13 @@ public class TiedostonPakkaaja {
             return tiedosto;
         }
 
-        System.out.print("Tiedostoa vastaava pakkaus on jo olemassa. Tiedostoa ei pakata uudestaan.");
-        throw new IOException();
+        throw new IOException("Tiedostoa vastaava pakkaus on jo olemassa. Tiedostoa ei pakata uudestaan.");
     }
     
-    private void kirjoitaTiedostoon(File tiedosto, HashMap<String, String> bittijonot, String teksti) throws IOException {
+    protected void kirjoitaTiedostoon(File tiedosto, HashMap<String, String> bittijonot, String teksti) throws IOException {
         FileWriter kirjoittaja = new FileWriter(tiedosto);
-        String binary = ykkosinaJaNollina(teksti, bittijonot);
-        kirjoitaBittiEsitys(kirjoittaja, binary);
+        String ykkosinaJaNollina = ykkosinaJaNollina(teksti, bittijonot);
+        String pakattuna = pakatuksiTekstiksi(kirjoittaja, ykkosinaJaNollina);
         
         // Huffman puu (eli keko) täytyy jollain lailla kirjoittaa tekstitiedostoon mukaan siten että sitä voidaan käyttää purkuvaiheessa järkevästi.
         // Purkuohjeet pakattavan tiedoston alkuun.
@@ -36,40 +35,58 @@ public class TiedostonPakkaaja {
         kirjoittaja.close();
     }
     
-    private void kirjoitaBittiEsitys(FileWriter kirjoittaja, String binary) throws IOException {
-        for (int i = 0; i < binary.length() / 8; i++) {
-            int alku = 8 * i;
-            int loppu = alku + 8;
-            String bittijono = binary.substring(alku, loppu);
-            kirjoittaja.append(asciiMerkkina(bittijono));
+    protected String pakatuksiTekstiksi(FileWriter kirjoittaja, String ykkosinaJaNollina) throws IOException {
+        String pakattuna = "";
+        
+        for (int i = 0; i < ykkosinaJaNollina.length() / 8; i++) {
+            pakattuna += seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 8 * i);
         }
+        
+        return pakattuna;
     }
     
-    private char asciiMerkkina(String bittijono) {
+    protected char seuraavaTavuAsciiMerkkina(String ykkosinaJaNollina, int alku) {
+        String tavu = ykkosinaJaNollina.substring(alku, alku + 8);
+        return asciiMerkkina(tavu);
+    }
+    
+    protected char asciiMerkkina(String bittijono) {
         int luku = 0;
+        int suurin = bittijono.length();
         
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < suurin; i++) {
             if (bittijono.charAt(i) == '1') {
-                luku += Math.pow(2, 7 - i);
+                luku += Math.pow(2, suurin - i - 1);
             }
         }
             
         return (char) luku;
     }
 
-    private String ykkosinaJaNollina(String teksti, HashMap<String, String> bittijonot) {
+    protected String ykkosinaJaNollina(String teksti, HashMap<String, String> bittijonot) {
+        String ilmanEtuNollia = ilmanEtuNollia(teksti, bittijonot);
+        return lisaaEtuNollat(ilmanEtuNollia) + ilmanEtuNollia;
+    }
+    
+    protected String lisaaEtuNollat(String ilmanEtuNollia) {
         String ykkosinaJaNollina = "";
-        String binary = "";
+        
+        if (ilmanEtuNollia.length() % 8 != 0) {
+            for (int i = 0; i < (8 - ilmanEtuNollia.length() % 8); i++) {
+                ykkosinaJaNollina+= "0";
+            }
+        }
+
+        return ykkosinaJaNollina;
+    }
+    
+    protected String ilmanEtuNollia(String teksti, HashMap<String, String> bittijonot) {
+        String ilmanEtuNollia = "";
         
         for (int i = 0; i < teksti.length(); i++) {
             String merkki = teksti.charAt(i) + "";
-            binary += bittijonot.get(merkki);     // 11
+            ilmanEtuNollia += bittijonot.get(merkki);     // 11
         }
-
-        for (int i = 0; i < (8 - binary.length() % 8); i++) {
-            ykkosinaJaNollina+= "0";
-        }
-        ykkosinaJaNollina += binary;
-        return ykkosinaJaNollina;
+        return ilmanEtuNollia;
     }
 }

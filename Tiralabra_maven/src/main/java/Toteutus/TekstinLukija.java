@@ -56,27 +56,6 @@ public class TekstinLukija {
             lisaaMerkki(rivi.charAt(i) + "");
         }
     }
-//        Scanner rivinLukija = new Scanner(rivi);
-//        int merkkeja = rivi.length();
-//        
-//        while (rivinLukija.hasNext()) {
-//            String sana = rivinLukija.next();
-//            merkkeja -= sana.length();
-//            
-//            for (int i = 0; i < sana.length(); i++) {
-//                lisaaMerkki(sana.charAt(i) + "");
-//            }
-//            
-//            if (rivinLukija.hasNext()) {
-//                lisaaMerkki(" ");
-//                merkkeja--;
-//            }
-//        }
-//        for (int i = 0; i < merkkeja; i++) {    // jos rivin lopussa on välilyöntejä, lisätään ne tekstiin.
-//            lisaaMerkki(" ");
-//            merkkeja--;
-//        }
-//    }
     
     /**
      * Lisää merkin "tekstin" päähän ja kasvattaa ko. merkin esiintymismääriä haj.taulussa.

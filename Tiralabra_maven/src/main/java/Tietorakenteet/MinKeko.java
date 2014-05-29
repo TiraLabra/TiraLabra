@@ -56,13 +56,16 @@ public class MinKeko {
             tuplaaMahtuvienSolmujenMaara();                   // ei pitäisi koskaan tapahtua Huffman-algoritmin yhteydessä
         }
         
-        int i = this.koko - 1;
-        
+        int i = selvitaLisattavanPaikanIdeksi(this.koko-1, solmu);
+        keko[i] = solmu;
+    }
+    
+    protected int selvitaLisattavanPaikanIdeksi(int i, Solmu solmu) {
         while (i > 0 && keko[vanh(i)].getEsiintymat() > solmu.getEsiintymat()) {
             keko[i] = keko[vanh(i)];
             i = vanh(i);
         }
-        keko[i] = solmu;
+        return i;
     }
     
     /**
@@ -74,6 +77,10 @@ public class MinKeko {
      */
     
     public Solmu poistaHuippuSolmu() {
+        if (keko.length == 0) {
+            throw new ArrayIndexOutOfBoundsException("Tyhjästä keosta ei voi poistaa alkiota.");
+        }
+        
         Solmu poistettava = keko[0];
         
         this.koko--;
@@ -94,21 +101,25 @@ public class MinKeko {
         int oikea = oikea(i);
         
         if (oikea < koko) {
-            int pienempi = vasen;
-            
-            if (keko[oikea].getEsiintymat() < keko[vasen].getEsiintymat()) {
-                pienempi = oikea;
-            }
-            
+            int pienempi = pienempi(vasen, oikea);
+
             if (keko[i].getEsiintymat() > keko[pienempi].getEsiintymat()) {
                 vaihda(i, pienempi);
-                heapify(pienempi); 
+                heapify(pienempi);
             }
         }
         
         else if (vasen == koko - 1 && keko[i].getEsiintymat() > keko[vasen].getEsiintymat()) {
             vaihda(i, vasen);
         }
+    }
+    
+    protected int pienempi(int vasen, int oikea) {
+        int pienempi = vasen;
+        if (keko[oikea].getEsiintymat() < keko[vasen].getEsiintymat()) {
+            pienempi = oikea;
+        }
+        return pienempi;
     }
     
     protected void vaihda(int i, int j) {
