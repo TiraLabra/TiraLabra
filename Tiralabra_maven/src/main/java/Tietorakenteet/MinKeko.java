@@ -53,7 +53,7 @@ public class MinKeko {
     public void lisaa(Solmu solmu) {
         this.koko++;
         if (this.koko > this.keko.length) { 
-            tuplaaKoko();                   // ei pitäisi koskaan tapahtua Huffman-algoritmin yhteydessä
+            tuplaaMahtuvienSolmujenMaara();                   // ei pitäisi koskaan tapahtua Huffman-algoritmin yhteydessä
         }
         
         int i = this.koko - 1;
@@ -89,7 +89,7 @@ public class MinKeko {
      * @param i 
      */
     
-    private void heapify(int i) {
+    protected void heapify(int i) {
         int vasen = vasen(i);
         int oikea = oikea(i);
         
@@ -111,14 +111,14 @@ public class MinKeko {
         }
     }
     
-    private void vaihda(int i, int j) {
+    protected void vaihda(int i, int j) {
         Solmu k = keko[i];
         
         keko[i] = keko[j];
         keko[j] = k;
     }
     
-    private void tuplaaKoko() {
+    protected void tuplaaMahtuvienSolmujenMaara() {
         Solmu[] uusi = new Solmu[this.keko.length * 2];
         System.arraycopy(keko, 0, uusi, 0, this.keko.length);
         keko = uusi;

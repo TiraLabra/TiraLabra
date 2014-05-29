@@ -26,7 +26,7 @@ public class HuffmanPuu {
      * @param esiintymat 
      */
     
-    private void luoKeko(HashMap<String, Integer> esiintymat) {
+    protected void luoKeko(HashMap<String, Integer> esiintymat) {
         this.keko = new MinKeko(esiintymat.keySet().size());
         for (String avain : esiintymat.keySet()) {
             keko.lisaa(new Solmu(avain, esiintymat.get(avain)));
@@ -43,12 +43,12 @@ public class HuffmanPuu {
      * päälimmäistä solmua apuna.
      */
     
-    private void yhdistaKeonSolmutPuuksi() {
+    protected void yhdistaKeonSolmutPuuksi() {
         while (keko.getKoko() > 1) {
             Solmu vasen = keko.poistaHuippuSolmu();
             Solmu oikea = keko.poistaHuippuSolmu();
             
-            Solmu yhdistetty = new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());            
+            Solmu yhdistetty = new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());
             linkitaSolmut(yhdistetty, vasen, oikea);
 
             keko.lisaa(yhdistetty);
@@ -62,7 +62,7 @@ public class HuffmanPuu {
      * @param oikea 
      */
     
-    private void linkitaSolmut(Solmu yhdistetty, Solmu vasen, Solmu oikea) {
+    protected void linkitaSolmut(Solmu yhdistetty, Solmu vasen, Solmu oikea) {
         yhdistetty.setVasen(vasen);
         yhdistetty.setOikea(oikea);
         vasen.setVanh(yhdistetty);

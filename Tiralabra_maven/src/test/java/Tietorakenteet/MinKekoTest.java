@@ -60,17 +60,23 @@ public class MinKekoTest {
     }
     
     @Test
-    public void alkioidenPoistoKeosta() {
-        Solmu poistettu = keko2.poistaHuippuSolmu();
-        assertEquals("d", poistettu.getAvain());
-        poistettu = keko2.poistaHuippuSolmu();
-        assertEquals("c", poistettu.getAvain());
+    public void keonSolmuKokoTuplaantuuKunKekoonAsetetaanEnemmanSolmujaKuinMahtuisi() {
+        MinKeko keko3 = luoKekoJossaSolmujenMaaraOnTuplattu();
+        assertEquals(2, keko3.getSolmut().length);
+    }
+    
+    @Test
+    public void solmuKoonTuplaamisenJalkeenKeossaSailyvatSamatSolmutSamassaJarjestyksessa() {
+        MinKeko keko3 = luoKekoJossaSolmujenMaaraOnTuplattu();
+        assertEquals(1, keko3.getSolmut()[0].getEsiintymat());
+        assertEquals(2, keko3.getSolmut()[1].getEsiintymat());
+    }  
+    
+    private MinKeko luoKekoJossaSolmujenMaaraOnTuplattu() {
+        MinKeko keko3 = new MinKeko(1);
         
-        assertEquals(3, keko2.getKoko());
-        
-        keko2.poistaHuippuSolmu();
-        keko2.poistaHuippuSolmu();
-        poistettu = keko2.poistaHuippuSolmu();
-        assertEquals("b", poistettu.getAvain());
+        keko3.lisaa(new Solmu(1));
+        keko3.lisaa(new Solmu(2));
+        return keko3;
     }
 }

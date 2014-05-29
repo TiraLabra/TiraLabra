@@ -47,40 +47,43 @@ public class TekstinLukija {
     }
     
     /**
-     * Lisää seuraavan rivin merkit "tekstiin" (johon luetaan koko teksti) ja kasvatetaan taas siinä olevien
-     * merkkien esiintymismääriä.
+     * Lisää seuraavan rivin merkit "tekstiin" ja kasvatetaan taas siinä olevien merkkien esiintymismääriä.
      * @param rivi
      */
     
-    private void lisaaRivi(String rivi) {
-        Scanner rivinLukija = new Scanner(rivi);
-        int merkkeja = rivi.length();
-        
-        while (rivinLukija.hasNext()) {
-            String sana = rivinLukija.next();
-            merkkeja -= sana.length();
-            
-            for (int i = 0; i < sana.length(); i++) {
-                lisaaMerkki(sana.charAt(i) + "");
-            }
-            
-            if (rivinLukija.hasNext()) {
-                lisaaMerkki(" ");
-                merkkeja--;
-            }
-        }
-        for (int i = 0; i < merkkeja; i++) {    // jos rivin lopussa on välilyöntejä, lisätään ne tekstiin.
-            lisaaMerkki(" ");
-            merkkeja--;
+    protected void lisaaRivi(String rivi) {
+        for (int i = 0; i < rivi.length(); i++) {
+            lisaaMerkki(rivi.charAt(i) + "");
         }
     }
+//        Scanner rivinLukija = new Scanner(rivi);
+//        int merkkeja = rivi.length();
+//        
+//        while (rivinLukija.hasNext()) {
+//            String sana = rivinLukija.next();
+//            merkkeja -= sana.length();
+//            
+//            for (int i = 0; i < sana.length(); i++) {
+//                lisaaMerkki(sana.charAt(i) + "");
+//            }
+//            
+//            if (rivinLukija.hasNext()) {
+//                lisaaMerkki(" ");
+//                merkkeja--;
+//            }
+//        }
+//        for (int i = 0; i < merkkeja; i++) {    // jos rivin lopussa on välilyöntejä, lisätään ne tekstiin.
+//            lisaaMerkki(" ");
+//            merkkeja--;
+//        }
+//    }
     
     /**
      * Lisää merkin "tekstin" päähän ja kasvattaa ko. merkin esiintymismääriä haj.taulussa.
      * @param merkki 
      */
     
-    private void lisaaMerkki(String merkki) {
+    protected void lisaaMerkki(String merkki) {
         int maara = 1;
         
         if (esiintymat.containsKey(merkki)) {

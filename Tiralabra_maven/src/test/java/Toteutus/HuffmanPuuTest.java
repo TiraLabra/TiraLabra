@@ -1,5 +1,7 @@
 package Toteutus;
 
+import Tietorakenteet.MinKeko;
+import Tietorakenteet.Solmu;
 import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +9,8 @@ import static org.junit.Assert.*;
 
 public class HuffmanPuuTest {
     private HuffmanPuu puu;
+    private HuffmanPuu puu2;
+    private HashMap<String, Integer> esiintymat;
     private BittiEsitykset esitykset;
     
     @Before
@@ -88,5 +92,52 @@ public class HuffmanPuuTest {
             }
         }
         assertTrue(patee);
+    }
+    
+    @Test
+    public void luoKekoLuoMinKeon() {
+        puu2 = new HuffmanPuu();
+        esiintymat = new HashMap<String, Integer>();
+        esiintymat.put(("a"), 1);
+        puu2.luoKeko(esiintymat);
+        
+        assertTrue(puu2.getKeko().getClass() == MinKeko.class);
+    }
+    
+    @Test
+    public void luodussaKeossaOnSinneLaitettavatAvaimet() {
+        puu2 = new HuffmanPuu();
+        esiintymat = new HashMap<String, Integer>();
+        esiintymat.put(("a"), 1);
+        esiintymat.put(("b"), 2);
+        puu2.luoKeko(esiintymat);
+        
+        assertEquals("a", puu2.getKeko().getSolmut()[0].getAvain());
+        assertEquals("b", puu2.getKeko().getSolmut()[1].getAvain());
+    }    
+    
+    @Test
+    public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() {
+        puu2 = new HuffmanPuu();
+        esiintymat = new HashMap<String, Integer>();
+        esiintymat.put("a", 3);
+        esiintymat.put("b", 2);
+        puu2.luoKeko(esiintymat);
+        
+        puu2.yhdistaKeonSolmutPuuksi();
+        assertEquals(puu2.getKeko().getSolmut()[0].getEsiintymat(), 5);
+    }
+    
+    @Test
+    public void solmujenLinkitysOnnistuu() {
+        Solmu vanh = new Solmu("a", 2);
+        Solmu vasen = new Solmu("b", 3);
+        Solmu oikea = new Solmu("c", 4);
+        puu.linkitaSolmut(vanh, vasen, oikea);
+        
+        assertEquals(vasen, vanh.getVasen());
+        assertEquals(oikea, vanh.getOikea());
+        assertEquals(vanh, vasen.getVanh());
+        assertEquals(vanh, oikea.getVanh());
     }
 }

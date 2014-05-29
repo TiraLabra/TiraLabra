@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 
 public class TekstinLukijaTest {
     private TekstinLukija lukija;
+    private TekstinLukija lukija2;
     
     @Before
     public void setUp() {
@@ -15,10 +16,16 @@ public class TekstinLukijaTest {
         try {
             lukija.lueTiedosto("TekstinLukijaTest.txt");
         }
-        catch (FileNotFoundException e){
+        catch (FileNotFoundException e) {
         }
     }
 
+    @Test
+    public void alussaTekstiOnTyhja() {
+        lukija2 = new TekstinLukija();
+        assertTrue(lukija2.getTeksti().isEmpty());
+    }
+    
     @Test
     public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
         assertTrue(this.lukija.getTeksti().equals("Tämä on testi -teksti, mikä luetaan\n" +
@@ -44,5 +51,26 @@ public class TekstinLukijaTest {
         
         luku = esiintymat.get("n");
         assertEquals(4, luku); 
+    }
+    
+    @Test
+    public void rivinLisaaminenOnnistuu() {
+        lukija2 = new TekstinLukija();
+        String rivi = "abcdefg";
+        lukija2.lisaaRivi(rivi);
+        assertEquals(lukija2.getTeksti(), rivi);
+    }
+    
+    @Test
+    public void merkinLisaaminenKasvattaaSenEsiintymia() {
+        lukija2 = new TekstinLukija();
+
+        lukija2.lisaaMerkki("a");
+        int maara = lukija2.getEsiintymat().get("a");
+        assertEquals(maara, 1);
+        
+        lukija2.lisaaMerkki("a");
+        maara = lukija2.getEsiintymat().get("a");
+        assertEquals(maara, 2);
     }
 }
