@@ -83,19 +83,19 @@ public class Matrix {
         }
         if (indexOutOfRange(col, 0, cols)){
             int maxIndex = cols-1;
-            throw new IllegalArgumentException("Column index must be in the range 0... " + maxIndex + " but was " + row);
+            throw new IllegalArgumentException("Column index must be in the range 0... " + maxIndex + " but was " + col);
         }
         return elements[row][col];
     }
         
     /**
      * Replaces the element at the specified position in this matrix with the specified element.
-     * @param value the element to be inserted at the specified position
      * @param row the row index of the element to replace
      * @param col the column index of the element to replace
+     * @param value the element to be inserted at the specified position
      * @throws IllegalArgumentException if the row or column index is out of range (row < 0 || row >= rows() || col < 0 || col >= cols())
      */
-    public void setElement(double value, int row, int col){
+    public void setElement(int row, int col, double value){
         if(indexOutOfRange(row, 0, rows)){
             int maxIndex = rows-1;
             throw new IllegalArgumentException("Row index must be in the range 0... " + maxIndex + " but was " + row);

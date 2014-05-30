@@ -137,4 +137,45 @@ public class MatrixMathTest {
         MatrixMath.det(matrixA);
     }
     
+    @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToStrassenMultiplyAndFirstMatrixIsNonSquare(){
+        double[][] values = {{1,2},{3,4},{5,6}};
+        matrixA = new Matrix(values);
+        MatrixMath.strassenMultiply(matrixA, matrixB);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void exceptionIsThrownIfTryingToStrassenMultiplyAndSecondMatrixIsNonSquare(){
+        double[][] values = {{1,2},{3,4},{5,6}};
+        matrixB = new Matrix(values);
+        MatrixMath.strassenMultiply(matrixA, matrixB);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void strassenMultiplicationWhenMatricesAreOfUnequlSizeLeadsToException(){
+        double[][] values = {{1,2,3},{3,4,5},{5,6,7}};
+        matrixB = new Matrix(values);
+        MatrixMath.strassenMultiply(matrixA, matrixB);
+    }
+       
+    @Test
+    public void strassenMultiplicationProducesTheCorrectResult(){
+        double[][] values = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
+        double[][] valuesExpected = {{90,100,110,120},{202,228,254,280},{314,356,398,440},{426,484,542,600}};
+        matrixA = new Matrix(values);
+        matrixB = new Matrix(values);
+        Matrix expectedMatrix = new Matrix(valuesExpected);
+        assertEquals(expectedMatrix, MatrixMath.strassenMultiply(matrixA, matrixB));
+    }
+    
+    @Test
+    public void strassenMultiplicationWorksWithMatricesWhereNisNotPowerOfTwo(){
+        double[][] valuesA = {{1,5,-2},{2,3,-4},{1,4,2}};
+        double[][] valuesB = {{3,-2,2},{5,-1,-2},{5,5,0}};
+        double[][] valuesExpected = {{18,-17,-8},{1,-27,-2},{33,4,-6}};
+        matrixA = new Matrix(valuesA);
+        matrixB = new Matrix(valuesB);
+        Matrix expectedMatrix = new Matrix(valuesExpected);
+        assertEquals(expectedMatrix, MatrixMath.strassenMultiply(matrixA, matrixB));
+    }
 }

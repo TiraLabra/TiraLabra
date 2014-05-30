@@ -25,7 +25,8 @@ public class Multiplication extends AbstractCommand {
         if (!MatrixMath.areMultipliable(matrixA, matrixB)){
             result = "The matrices are not multipliable, since their inner dimensions do not match.";
         } else{
-            result = MatrixMath.multiply(matrixA, matrixB).toString();
+            
+            result = multiplyMatrices(matrixA, matrixB);
         }
         return result;
     }
@@ -33,6 +34,22 @@ public class Multiplication extends AbstractCommand {
     @Override
     public String toString() {
         return "Multiplication";        
+    }
+
+    /**
+     * Multiplies the specified matrices using the appropriate algorithm.
+     * @param matrixA the first matrix
+     * @param matrixB the second matrix
+     * @return the string representation of the product of the specified matrices
+     */
+    private String multiplyMatrices(Matrix matrixA, Matrix matrixB) {
+        Matrix matrixC;
+        if (matrixA.isSquareMatrix() && MatrixMath.sameSize(matrixA, matrixB)){
+            matrixC = MatrixMath.strassenMultiply(matrixA, matrixB);
+        } else{
+            matrixC = MatrixMath.multiply(matrixA, matrixB);
+        }      
+        return matrixC.toString();
     }
     
 }

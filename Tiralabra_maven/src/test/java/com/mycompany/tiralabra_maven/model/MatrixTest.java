@@ -69,22 +69,22 @@ public class MatrixTest {
     
     @Test (expected = IllegalArgumentException.class)
     public void insertingAtNegativeRowIndexCausesException(){
-        matrix.setElement(10, -1, 0);
+        matrix.setElement(-1, 0, 10);
     }
     
     @Test (expected = IllegalArgumentException.class)
     public void insertingAtRowIndexEqualToRowLengthCausesException(){
-        matrix.setElement(10, matrix.rows(), 0);
+        matrix.setElement(matrix.rows(), 0, 10);
     }
     
     @Test (expected = IllegalArgumentException.class)
     public void insertingAtNegativeColumnIndexCausesException(){
-        matrix.setElement(10, 0, -1);
+        matrix.setElement(0, -1, 10);
     }
     
     @Test (expected = IllegalArgumentException.class)
     public void insertingAtColumnIndexEqualToColumnLengthCausesException(){
-        matrix.setElement(10, 0, matrix.cols());
+        matrix.setElement(0, matrix.cols(), 10);
     }
     
     @Test (expected = IllegalArgumentException.class)

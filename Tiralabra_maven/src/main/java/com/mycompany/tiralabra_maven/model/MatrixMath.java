@@ -76,7 +76,7 @@ public class MatrixMath {
         Matrix resultingMatrix = new Matrix(matrixA.rows(), matrixA.cols());
         for (int i = 0; i < resultingMatrix.rows(); i++) {
             for (int j = 0; j < resultingMatrix.cols(); j++) {
-                resultingMatrix.setElement(computeElement(matrixA.getElement(i, j), matrixB.getElement(i, j), operation), i, j);
+                resultingMatrix.setElement(i, j, computeElement(matrixA.getElement(i, j), matrixB.getElement(i, j), operation));
             }
         }
         return resultingMatrix;
@@ -178,9 +178,176 @@ public class MatrixMath {
             for (int j = 0; j < size; j++){
                 int col = j;
                 if (col >= deletedCol) col++;
-                submatrix.setElement(matrix.getElement(i+1, col), i, j);
+                submatrix.setElement(i, j, matrix.getElement(i+1, col));
             }
         }
         return submatrix;
     }
+
+    /**
+     * Multiplies the specified square matrices using the Strassen algorithm.
+     * @param matrixA the first matrix
+     * @param matrixB the second matrix
+     * @return the product of the specified matrices
+     * @throws IllegalArgumentException if the matrices are not square matrices or if they are of different size
+     * @throws NullPointerException if either parameter is null
+     */
+    public static Matrix strassenMultiply(Matrix matrixA, Matrix matrixB) {
+        checkIfMatricesAreNull(matrixA, matrixB);
+        if (!matrixA.isSquareMatrix() || !matrixB.isSquareMatrix()){
+            throw new IllegalArgumentException("The matrices must be square matrices");
+        }
+        if (!sameSize(matrixA, matrixB)){
+            throw new IllegalArgumentException("The matrices must be of same size.");
+        }
+        int n = matrixA.rows();
+        if (n > 2){
+            int newOrder = nextPowerOfTwo(n, 4);
+            matrixA = createMatrixAugmentedWithZeros(matrixA, newOrder);
+            matrixB = createMatrixAugmentedWithZeros(matrixB, newOrder);
+        }
+        Matrix matrixC = strassenRecursive(matrixA, matrixB);
+        return extractMatrixFromAugmentedMatrix(matrixC, n);
+    }
+
+    /**
+     * Recursively multiplies the specified matrices using the Strassen algorithm.
+     * @param matrixA the first matrix
+     * @param matrixB the second matrix
+     * @return the product of the specified matrices
+     */
+    private static Matrix strassenRecursive(Matrix matrixA, Matrix matrixB) {
+        int n = matrixA.rows();
+        if (n == 1){
+            return multiply(matrixA, matrixB);
+        }
+        Matrix a11 = new Matrix(n/2,n/2);
+        Matrix a12 = new Matrix(n/2,n/2);
+        Matrix a21 = new Matrix(n/2,n/2);
+        Matrix a22 = new Matrix(n/2,n/2);
+        Matrix b11 = new Matrix(n/2,n/2);
+        Matrix b12 = new Matrix(n/2,n/2);
+        Matrix b21 = new Matrix(n/2,n/2);
+        Matrix b22 = new Matrix(n/2,n/2);
+        partition(matrixA, a11, a12, a21, a22);
+        partition(matrixB, b11, b12, b21, b22);
+        
+        Matrix s1 = subtract(b12,b22);
+        Matrix s2 = add(a11,a12);
+        Matrix s3 = add(a21,a22);
+        Matrix s4 = subtract(b21, b11);
+        Matrix s5 = add(a11,a22);
+        Matrix s6 = add(b11,b22);
+        Matrix s7 = subtract(a12,a22);
+        Matrix s8 = add(b21,b22);
+        Matrix s9 = subtract(a11, a21);
+        Matrix s10 = add(b11,b12);
+        
+        Matrix p1 = strassenRecursive(a11, s1);
+        Matrix p2 = strassenRecursive(s2, b22);
+        Matrix p3 = strassenRecursive(s3, b11);
+        Matrix p4 = strassenRecursive(a22, s4);
+        Matrix p5 = strassenRecursive(s5, s6);
+        Matrix p6 = strassenRecursive(s7, s8);
+        Matrix p7 = strassenRecursive(s9, s10);
+        
+        // c11 = p5 + p4 - p2 + p6
+        Matrix c11 = add(add(p5, p6), subtract(p4, p2));
+        Matrix c12 = add(p1, p2);
+        Matrix c21 = add(p3, p4);
+        // c22 = p5 + p1 -p3 -p7
+        Matrix c22 = add(subtract(p5, p3), subtract(p1, p7));
+        
+        return joinSubmatrices(c11, c12, c21, c22);
+    }
+
+    /**
+     * Divides the specified matrix into four specified matrices of equal size.
+     * @param matrixA the matrix to be divided
+     * @param a11 the matrix corresponding to the upper left quadrant of the matrix to be divided
+     * @param a12 the matrix corresponding to the upper right quadrant of the matrix to be divided
+     * @param a21 the matrix corresponding to the lower left quadrant of the matrix to be divided
+     * @param a22 the matrix corresponding to the lower right quadrant of the matrix to be divided
+     */
+    private static void partition(Matrix matrixA, Matrix a11, Matrix a12, Matrix a21, Matrix a22) {
+        int n = matrixA.rows()/2;
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                a11.setElement(i, j, matrixA.getElement(i, j));
+                a12.setElement(i, j, matrixA.getElement(i, j+n));
+                a21.setElement(i, j, matrixA.getElement(i+n, j));
+                a22.setElement(i, j, matrixA.getElement(i+n, j+n));
+            }
+        }
+    }
+    
+    /**
+     * Combines four submatrices into one matrix.
+     * @param c11 the matrix corresponding to the upper left quadrant of the joint matrix
+     * @param c12 the matrix corresponding to the upper right quadrant of the joint matrix
+     * @param c21 the matrix corresponding to the lower left quadrant of the joint matrix
+     * @param c22 the matrix corresponding to the lower right quadrant of the joint matrix
+     * @return the matrix created by combining the four submatrices
+     */
+    private static Matrix joinSubmatrices(Matrix c11, Matrix c12, Matrix c21, Matrix c22) {
+        int n = c11.rows();
+        Matrix matrix = new Matrix(2*n, 2*n);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                matrix.setElement(i, j, c11.getElement(i, j));
+                matrix.setElement(i, j+n, c12.getElement(i, j));
+                matrix.setElement(i+n, j, c21.getElement(i, j));
+                matrix.setElement(i+n, j+n, c22.getElement(i, j));
+            }
+        }
+        return matrix;
+    }
+
+    /**
+     * Returns the smallest power of two that is greater or equal to the specified number.
+     * @param n the number to compare to the next power of two
+     * @param powerOfTwo the next power of two
+     * @return the smallest power of two that is greater or equal to the specified number
+     */
+    private static int nextPowerOfTwo(int n, int powerOfTwo) {
+        if (powerOfTwo >= n) return powerOfTwo;
+        return nextPowerOfTwo(n, 2*powerOfTwo);
+    }
+
+    /**
+     * Creates an n x n matrix from a specified m * m matrix, where n is a power of two.
+     * The specified matrix is augmented with rows and columns of zero to create a matrix of the desired order.
+     * @param matrix the matrix which is to be augmented
+     * @param n the order of the augmented matrix
+     * @return the augmented matrix
+     */
+    private static Matrix createMatrixAugmentedWithZeros(Matrix matrix, int n) {
+        if (matrix.rows() == n){
+            return matrix;
+        }
+        Matrix augmentedMatrix = new Matrix(n, n);
+        for (int i = 0; i < matrix.rows(); i++){
+            for (int j = 0; j < matrix.rows(); j++){
+                augmentedMatrix.setElement(i, j, matrix.getElement(i, j));
+            }
+        }
+        return augmentedMatrix;
+    }
+
+    /**
+     * Extracts an n x n matrix from the specified matrix.
+     * @param augmentedMatrix the matrix from which the n x n matrix is extracted
+     * @param n the order of the desired matrix
+     * @return the matrix extracted from the specified augmented matrix
+     */
+    private static Matrix extractMatrixFromAugmentedMatrix(Matrix augmentedMatrix, int n) {
+        if (n == augmentedMatrix.rows()) return augmentedMatrix;
+        Matrix matrix = new Matrix(n, n);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                matrix.setElement(i, j, augmentedMatrix.getElement(i, j));
+            }
+        }
+        return matrix;
+    }    
 }

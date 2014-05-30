@@ -38,7 +38,7 @@ public class MatrixReader {
         for (int i = 0; i < rows; i++) {
             double[] row = readMatrixRow(i + 1, cols);
             for (int j = 0; j < cols; j++) {
-                matrix.setElement(row[j], i, j);
+                matrix.setElement(i, j, row[j]);
             }
         }
         return matrix;
