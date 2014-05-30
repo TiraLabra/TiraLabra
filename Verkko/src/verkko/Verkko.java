@@ -9,7 +9,6 @@ import labyrintti.RecursiveBacktracker;
 import polunetsinta.Astar;
 import polunetsinta.TaksimiehenEtaisyys;
 
-
 public class Verkko {
 
     /**
@@ -22,10 +21,10 @@ public class Verkko {
         l.labyrintitaLabyrintti();
         System.out.println(l.toString());
         Solmu alku = l.getSolmut()[0][0];
-        Solmu maali = l.getSolmut()[KORKEUS-1][LEVEYS-1];
+        Solmu maali = l.getSolmut()[KORKEUS - 1][LEVEYS - 1];
         Astar astar = new Astar(alku, maali, new TaksimiehenEtaisyys());
-        astar.printtaaReitti(maali);
-        l.printtaaReittiLabyrintissa(astar.getReitti());
+        astar.printtaaReittiSolmutVaarinpain(maali);
+        System.out.println(l.printtaaReittiLabyrintissa(astar.getReitti()));
     }
     private static final int LEVEYS = 30;
     private static final int KORKEUS = 12;

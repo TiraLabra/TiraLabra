@@ -12,6 +12,11 @@ public class AstarKekoEntry {
     private Solmu solmu;
     private Double priority;
 
+    public AstarKekoEntry(Solmu solmu, Double priority) {
+        this.solmu = solmu;
+        this.priority = priority;
+    }
+
     public Solmu getSolmu() {
         return solmu;
     }
@@ -28,11 +33,6 @@ public class AstarKekoEntry {
         this.priority = priority;
     }
 
-    public AstarKekoEntry(Solmu solmu, Double priority) {
-        this.solmu = solmu;
-        this.priority = priority;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -42,12 +42,14 @@ public class AstarKekoEntry {
             return false;
         }
         final AstarKekoEntry other = (AstarKekoEntry) obj;
-        if (!Objects.equals(this.solmu, other.solmu)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.solmu, other.getSolmu());
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.solmu);
+        return hash;
+    }
 
-    
 }

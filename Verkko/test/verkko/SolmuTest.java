@@ -6,21 +6,21 @@ package verkko;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Arvoitusmies
  */
-public class KoordinoituSolmuTest {
+public class SolmuTest {
 
     /**
      *
      */
-    public KoordinoituSolmuTest() {
+    public SolmuTest() {
     }
 
     /**
@@ -80,13 +80,13 @@ public class KoordinoituSolmuTest {
      */
     @Test
     public void testEuklidinenEtaisyys() {
-        Double[] koord = {0.0,0.0};
-        Double[] koord2 = {3.0,4.0};
+        Double[] koord = {0.0, 0.0};
+        Double[] koord2 = {3.0, 4.0};
         Solmu ks = new Solmu(koord);
         Solmu instance = new Solmu(koord2);
         Double expResult = 5.0;
         Double result = instance.euklidinenEtaisyys(ks);
-        assertEquals(expResult, result,0.01);
+        assertEquals(expResult, result, 0.01);
     }
 
     /**
@@ -94,13 +94,13 @@ public class KoordinoituSolmuTest {
      */
     @Test
     public void testTaksimiehenEtaisyys() {
-        Double[] koord = {0.0,0.0};
-        Double[] koord2 = {3.0,4.0};
+        Double[] koord = {0.0, 0.0};
+        Double[] koord2 = {3.0, 4.0};
         Solmu ks = new Solmu(koord);
         Solmu instance = new Solmu(koord2);
         Double expResult = 7.0;
         Double result = instance.taksimiehenEtaisyys(ks);
-        assertEquals(expResult, result,0.01);
+        assertEquals(expResult, result, 0.01);
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Taulukko {
 
-    private static Random r = new Random();
+    private static final Random r = new Random();
 
     /**
      * Poistaa kaikki null arvoiset solut ja lyhentää taulukon koon niin, että
@@ -24,8 +24,8 @@ public class Taulukko {
      */
     public static Object[] poistaNullit(Object[] ks) {
         int nulleja = 0;
-        for (int i = 0; i < ks.length; i++) {
-            if (ks[i] == null) {
+        for (Object k : ks) {
+            if (k == null) {
                 nulleja++;
             }
         }

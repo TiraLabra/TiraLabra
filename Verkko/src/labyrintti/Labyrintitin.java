@@ -13,9 +13,18 @@ import verkko.Solmu;
 public abstract class Labyrintitin {
 
     /**
-     *
+     * Tähän talletetaan solmut.
      */
-    Solmu[][] solmut;
+    final Solmu[][] solmut;
+
+    /**
+     * Asettaa kenttään.
+     *
+     * @param solmut
+     */
+    public Labyrintitin(Solmu[][] solmut) {
+        this.solmut = solmut.clone();
+    }
 
     /**
      * "Labyrintittää"
@@ -23,13 +32,5 @@ public abstract class Labyrintitin {
      * @return
      */
     public abstract Solmu[][] labyrintitaLabyrintti();
-
-    /**
-     * Asettaa kenttään.
-     * @param solmut
-     */
-    public Labyrintitin(Solmu[][] solmut) {
-        this.solmut = solmut;
-    }
 
 }

@@ -4,13 +4,6 @@
  */
 package util;
 
-/**
- * Tällänen listarakenne josta ei voi poistaa (koska sellaista toiminnalisuutta
- * en tarvitse). Auromaattisesti kasvava.
- *
- * @author Arvoitusmies
- * @param <E>
- */
 public class Lista<E> {
 
     /**
@@ -34,13 +27,14 @@ public class Lista<E> {
     public Lista() {
         this(ALKUKOKO);
     }
-    
+
     /**
      * Alustaa annetulla alkukoolla
      *
      * @param alkukoko
      */
-    public Lista(int alkukoko){
+    @SuppressWarnings("unchecked")
+    public Lista(int alkukoko) {
         this.a = (E[]) new Object[alkukoko];
         koko = 0;
     }
@@ -65,6 +59,7 @@ public class Lista<E> {
     /**
      * Tuplaa sisäisen taulukon koon.
      */
+    @SuppressWarnings("unchecked")
     private void kasvataTaulukko() {
         E[] vanha = a;
         a = (E[]) new Object[a.length * 2];
@@ -77,9 +72,7 @@ public class Lista<E> {
      * @return Alkio kohdassa indeksi
      */
     public E get(int indeksi) {
-        if (indeksi >= koko || indeksi < 0) {
-            throw new IllegalArgumentException("Indeksi listan ulkopuolella");
-        }
+        tsekkaaIndeksi(indeksi);
         return a[indeksi];
     }
 
@@ -90,10 +83,14 @@ public class Lista<E> {
      * @param uusiArvo
      */
     public void muuta(int indeksi, E uusiArvo) {
+        tsekkaaIndeksi(indeksi);
+        a[indeksi] = uusiArvo;
+    }
+
+    private void tsekkaaIndeksi(int indeksi) throws IllegalArgumentException {
         if (indeksi >= koko || indeksi < 0) {
             throw new IllegalArgumentException("Indeksi listan ulkopuolella");
         }
-        a[indeksi] = uusiArvo;
     }
 
     /**
@@ -102,9 +99,17 @@ public class Lista<E> {
      * @return true jos listalta löytyy equals o, muutoin false.
      */
     public boolean contains(E o) {
-        for (int i = 0; i < koko; i++) {
-            if (o.equals(a[i])) {
-                return true;
+        if (o != null) {
+            for (E e : a) {
+                if (o.equals(e)) {
+                    return true;
+                }
+            }
+        } else {
+            for (E e : a) {
+                if (o == e) {
+                    return true;
+                }
             }
         }
         return false;

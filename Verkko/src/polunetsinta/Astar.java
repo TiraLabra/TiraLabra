@@ -4,7 +4,7 @@
  */
 package polunetsinta;
 
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,42 +15,31 @@ import verkko.Solmu;
 
 public class Astar {
 
-    private Heuristiikka h;
-    private Set<Solmu> kasitelty;
-    private Map<Solmu, Solmu> reitti;
-    private Keko<AstarKekoEntry> keko;
+    private final Heuristiikka h;
+    private final Set<Solmu> kasitelty;
+    private final Map<Solmu, Solmu> reitti;
+    private final Keko<AstarKekoEntry> keko;
     private final Solmu maali;
-    private Map<Solmu, Double> matka;
+    private final Map<Solmu, Double> matka;
 
     public Astar(Solmu alku, Solmu maali, Heuristiikka heuristiikka) {
         this.maali = maali;
         h = heuristiikka;
-        kasitelty = new HashSet<>();
-        reitti = new HashMap<>();
-        matka = new HashMap<>();
-        keko = new Keko<>(new Comparator<AstarKekoEntry>() {
-
-            @Override
-            public int compare(AstarKekoEntry o1, AstarKekoEntry o2) {
-                if (o1.getPriority() < o2.getPriority()) {
-                    return -1;
-                } else if (o1.getPriority() > o2.getPriority()) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
+        kasitelty = new HashSet<>(8);
+        reitti = new HashMap<>(8);
+        matka = new HashMap<>(8);
+        keko = new Keko<>(new PriorityComparator());
         suorita(alku);
     }
 
     public Map<Solmu, Solmu> getReitti() {
-        return reitti;
+        return Collections.unmodifiableMap(reitti);
     }
 
     private void suorita(Solmu alku) {
         matka.put(alku, 0.0);
         keko.lisaa(new AstarKekoEntry(alku, h.dist(alku, maali)));
-        while (!keko.empty()) {
+        while (!keko.isEmpty()) {
             Solmu kasiteltavana = keko.poista().getSolmu();
             if (kasiteltavana == maali) {
                 return;
@@ -81,13 +70,14 @@ public class Astar {
         }
     }
 
-    public void printtaaReitti(Solmu maali) {
+    public void printtaaReittiSolmutVaarinpain(Solmu maali) {
+        Solmu s = maali;
         while (true) {
-            maali = reitti.get(maali);
-            if (maali == null) {
+            s = reitti.get(s);
+            if (s == null) {
                 break;
             }
-            System.out.println(maali);
+            System.out.println(s);
         }
     }
 }

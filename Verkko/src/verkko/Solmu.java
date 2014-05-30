@@ -7,17 +7,22 @@ package verkko;
 import java.util.Arrays;
 import util.Lista;
 
+/**
+ * Luokka kuvaa verkon solmua jolla on jotkut koordinaatit ja painotettuja
+ * naapureita
+ *
+ * @author Arvoitusmies
+ */
 public class Solmu {
-
 
     /**
      * Naapurit
      */
-    private Lista<Solmu> naapuriSolmut;
+    private final Lista<Solmu> naapuriSolmut;
     /**
      * Naapureja vastaavat painot
      */
-    private Lista<Double> naapuripainot;
+    private final Lista<Double> naapuripainot;
     /**
      * Koordinaatit
      */
@@ -29,7 +34,7 @@ public class Solmu {
      * @param koordinaatit
      */
     public Solmu(Double[] koordinaatit) {
-        this.koordinaatit = koordinaatit;
+        this.koordinaatit = koordinaatit.clone();
         naapuriSolmut = new Lista<>();
         naapuripainot = new Lista<>();
     }

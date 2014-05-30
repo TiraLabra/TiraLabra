@@ -5,7 +5,6 @@
 package labyrintti;
 
 import java.util.Arrays;
-import java.util.Random;
 import util.Taulukko;
 import verkko.Solmu;
 
@@ -19,12 +18,7 @@ public class RecursiveBacktracker extends Labyrintitin {
      * Tämä taulukko vastaa solmut taulukon kohtia ja merkkaa onko kyseinen
      * solmu jo käsitelty.
      */
-    private Boolean[][] kayty;
-
-    /**
-     * RNG eli Random Number God.
-     */
-    private Random r;
+    protected final Boolean[][] kayty;
 
     /**
      * Kutsuu Labyrintitinin konstruktorin. Initialisoi käyty taulukon oikean
@@ -40,7 +34,6 @@ public class RecursiveBacktracker extends Labyrintitin {
                 kayty[i][j] = false;
             }
         }
-        r = new Random();
     }
 
     /**
@@ -71,7 +64,7 @@ public class RecursiveBacktracker extends Labyrintitin {
      * @param x x-koordinaatti (solmut[x][y])
      * @param y y-koordinaatti
      */
-    private void recur(int x, int y) {
+    protected void recur(int x, int y) {
         kayty[x][y] = true;
         Solmu[] naapurit = naapurit(x, y);
         if (naapurit.length > 0) {
@@ -97,7 +90,7 @@ public class RecursiveBacktracker extends Labyrintitin {
      * @param y
      * @return
      */
-    private Solmu[] naapurit(int x, int y) {
+    protected Solmu[] naapurit(int x, int y) {
         Solmu[] naapurit = new Solmu[4];
         if (x > 0) {
             naapurit[0] = solmut[x - 1][y];

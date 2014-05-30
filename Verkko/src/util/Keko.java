@@ -4,27 +4,30 @@
  */
 package util;
 
-import java.util.Collection;
 import java.util.Comparator;
-import polunetsinta.AstarKekoEntry;
 
 /**
- * Binäärikeko jossa olioita järjestettynä annetun Comparatorin mukaan.
- * Indeksointi alkaa 1:stä, taulukon 0:s solu on aina null.
+ * Binäärikeko ja sillee...
  *
- * @param <E> säilöttävä olio
+ * @author Arvoitusmies
+ * @param <E>
  */
 public class Keko<E> {
 
     /**
      * Defaultti alkukoko sisäiselle taulukolle jota kasvatetaan tarvittaessa
      */
-    private static final int ALKUKOKO = 10;
+    protected static final int ALKUKOKO = 10;
+
+    /**
+     * Kuinkakertaiseksi kasvatetaan taulukko kun tila loppuu
+     */
+    protected static final int KASVUKERROIN = 2;
 
     /**
      * Taulu olioille. Kasvatetaan tarvittaessa
      */
-    private E[] taulukko;
+    protected E[] taulukko;
 
     /**
      * Olioiden määrä keossa, samalla myös keon alimman indeksi.
@@ -32,25 +35,16 @@ public class Keko<E> {
     private int koko;
 
     /**
-     *
+     * Comparator jota käytetään järjestämään kekoa.
      */
-    private Comparator<E> comparator;
-
-    /**
-     * Uusi keko collectionista
-     *
-     * @param collection
-     * @param comparator
-     */
-    public Keko(Collection<E> collection, Comparator<E> comparator) {
-        this((E[]) collection.toArray(), comparator);
-    }
+    private final Comparator<E> comparator;
 
     /**
      * Uusi tyhjä keko
      *
      * @param comparator
      */
+    @SuppressWarnings("unchecked")
     public Keko(Comparator<E> comparator) {
         taulukko = (E[]) new Object[ALKUKOKO];
         koko = 0;
@@ -64,17 +58,20 @@ public class Keko<E> {
      * @param comparator
      */
     public Keko(E[] taulukko, Comparator<E> comparator) {
-        this.taulukko = taulukko;
+        this.taulukko = taulukko.clone();
+        koko = taulukko.length-1;
         this.comparator = comparator;
-        koko = taulukko.length;
+        tarkistaOnkoNollaNull();//tämä siksi että jos ei ole null niin taulukon ensimäinen "katoaa" keosta.
         buildHeap();
     }
 
-    public boolean empty() {
-        if (koko > 0) {
-            return false;
-        }
-        return true;
+    /**
+     * true jos tyhjä.
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        return koko <= 0;
     }
 
     /**
@@ -95,12 +92,17 @@ public class Keko<E> {
     /**
      * Tuplaa taulukon koon.
      */
-    private void kasvataTaulukko() {
+    @SuppressWarnings({"unchecked"})
+    protected void kasvataTaulukko() {
         E[] vanha = taulukko;
-        taulukko = (E[]) new Object[taulukko.length * 2];
+        taulukko = (E[]) new Object[taulukko.length * KASVUKERROIN];
         System.arraycopy(vanha, 0, taulukko, 0, vanha.length);
     }
 
+    public int getTaulukonLenght(){
+        return taulukko.length;
+    }
+    
     /**
      * Poistaa keon ensimmäisen elementin
      *
@@ -123,7 +125,7 @@ public class Keko<E> {
      *
      * @param indeksi
      */
-    private void siftUp(int indeksi) {
+    protected void siftUp(int indeksi) {
         if (indeksi > 1) {
             if (comparator.compare(taulukko[parent(indeksi)], taulukko[indeksi]) > 0) {
                 Taulukko.swap(taulukko, parent(indeksi), indeksi);
@@ -137,7 +139,7 @@ public class Keko<E> {
      *
      * @param indeksi
      */
-    private void siftDown(int indeksi) {
+    protected void siftDown(int indeksi) {
         final int kokoMiinusLeft = koko - left(indeksi);
         int valittu = indeksi;
         if (kokoMiinusLeft >= 0) {
@@ -162,7 +164,7 @@ public class Keko<E> {
      * @param i
      * @return
      */
-    private int parent(int i) {
+    protected int parent(int i) {
         if (i < 2) {
             return 0;
         }
@@ -175,21 +177,16 @@ public class Keko<E> {
      * @param i
      * @return
      */
-    private int left(int i) {
+    protected int left(int i) {
         int a = i << 1;
         return a;
     }
 
     /**
      *
-     * @param i
+     * @param o
      * @return
      */
-    private int right(int i) {
-        final int left = left(i);
-        return left + 1;
-    }
-
     public boolean contains(E o) {
         for (int i = 1; i <= koko; i++) {
             if (taulukko[i].equals(o)) {
@@ -200,12 +197,19 @@ public class Keko<E> {
     }
 
     /**
-     *
+     * kutsutaan siftdown kaikille paitsi lehdille.
      */
-    public void buildHeap() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void buildHeap() {
+        for (int i = parent(koko); i > 0; i--) {
+            siftDown(i);
+        }
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     public E poista(E o) {
         E paluu = null;
         for (int i = 1; i <= koko; i++) {
@@ -218,5 +222,17 @@ public class Keko<E> {
             }
         }
         return paluu;
+    }
+
+    /**
+     * jossei [0] ole null niin tehdään siitä null!
+     */
+    private void tarkistaOnkoNollaNull() {
+        if (taulukko[0] != null) {
+            kasvataTaulukko();
+            taulukko[koko] = taulukko[0];
+            taulukko[0] = null;
+            siftUp(koko);
+        }
     }
 }

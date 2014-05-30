@@ -60,7 +60,7 @@ public class Labyrintti2D {
      * @return solmut
      */
     public Solmu[][] getSolmut() {
-        return solmut;
+        return solmut.clone();
     }
 
     /**
@@ -80,16 +80,13 @@ public class Labyrintti2D {
      * @param y
      * @return
      */
-    private boolean onkoOikeaNaapuri(int x, int y) {
+    protected boolean onkoOikeaNaapuri(int x, int y) {
         if (y == solmut.length - 1) {
             return false;
         }
         Solmu solmu = solmut[x][y];
         Solmu oikeaSolmu = solmut[x][y + 1];
-        if (solmu.onkoNaapuri(oikeaSolmu)) {
-            return true;
-        }
-        return false;
+        return solmu.onkoNaapuri(oikeaSolmu);
     }
 
     /**
@@ -99,29 +96,26 @@ public class Labyrintti2D {
      * @param y
      * @return
      */
-    private boolean onkoAlaNaapuri(int x, int y) {
+    protected boolean onkoAlaNaapuri(int x, int y) {
         if (x == solmut[0].length - 1) {
             return false;
         }
         Solmu solmu = solmut[x][y];
         Solmu alaSolmu = solmut[x + 1][y];
-        if (solmu.onkoNaapuri(alaSolmu)) {
-            return true;
-        }
-        return false;
+        return solmu.onkoNaapuri(alaSolmu);
     }
 
     @Override
     public String toString() {
         char[][] merkkiTauluEsitys = merkkitauluesitys();
-        String paluu = "";
-        for (int i = 0; i < merkkiTauluEsitys.length; i++) {
-            paluu += (charArrayToString(merkkiTauluEsitys[i]) + "\n");
+        StringBuilder buffer = new StringBuilder();
+        for (char[] merkkiTauluEsity : merkkiTauluEsitys) {
+            buffer.append(charArrayToString(merkkiTauluEsity)).append("\n");
         }
-        return paluu;
+        return buffer.toString();
     }
 
-    private char[][] merkkitauluesitys() {
+    protected char[][] merkkitauluesitys() {
         char[][] merkkiTauluEsitys = new char[solmut.length * 2 + 1][solmut[0].length * 2 + 1];
         //ylä ja alareuna
         for (int i = 0; i < merkkiTauluEsitys[0].length; i++) {
@@ -129,10 +123,9 @@ public class Labyrintti2D {
             merkkiTauluEsitys[merkkiTauluEsitys.length - 1][i] = WALL;
         }
 
-        //oikea ja vasen reuna
-        for (int i = 0; i < merkkiTauluEsitys.length; i++) {
-            merkkiTauluEsitys[i][0] = WALL;
-            merkkiTauluEsitys[i][merkkiTauluEsitys[0].length - 1] = WALL;
+        for (char[] merkkiTauluEsity : merkkiTauluEsitys) {
+            merkkiTauluEsity[0] = WALL;
+            merkkiTauluEsity[merkkiTauluEsitys[0].length - 1] = WALL;
         }
 
         for (int i = 1; i < merkkiTauluEsitys.length - 1; i++) {
@@ -155,7 +148,6 @@ public class Labyrintti2D {
                     }
                 } else {
                     //should never happen
-                    System.out.println("jotain pielessä");
                 }
             }
         }
@@ -168,29 +160,34 @@ public class Labyrintti2D {
      * @param ca
      * @return
      */
-    private String charArrayToString(char[] ca) {
-        String paluu = "";
+    protected String charArrayToString(char[] ca) {
+        StringBuilder builder = new StringBuilder();
         for (char c : ca) {
-            paluu += c;
+            builder.append(c);
         }
-        return paluu;
+        return builder.toString();
     }
 
-    public void printtaaReittiLabyrintissa(Map<Solmu, Solmu> reitti) {
+    public String printtaaReittiLabyrintissa(Map<Solmu, Solmu> reitti) {
         char[][] merkkitauluesitys = merkkitauluesitys();
         Solmu s = reitti.get(solmut[solmut.length - 1][solmut[0].length - 1]);
         while (true) {
             if (s == null) {
                 break;
             }
-            int x = (int) Math.round(s.koordinaatti(0))*2+1;
-            int y = (int) Math.round(s.koordinaatti(1))*2+1;
+            int x = (int) Math.round(s.koordinaatti(0)) * 2 + 1;
+            int y = (int) Math.round(s.koordinaatti(1)) * 2 + 1;
             merkkitauluesitys[x][y] = '.';
             s = reitti.get(s);
         }
-        for (int i = 0; i < merkkitauluesitys.length; i++) {
-            System.out.println(charArrayToString(merkkitauluesitys[i]));
+        //String paluu = "";
+        StringBuilder build = new StringBuilder();
+        for (char[] merkkitauluesity : merkkitauluesitys) {
+            //paluu += (charArrayToString(merkkitauluesity) + "\n");
+            build.append(charArrayToString(merkkitauluesity)).append("\n");
         }
+        //return paluu;
+        return build.toString();
     }
 
 }
