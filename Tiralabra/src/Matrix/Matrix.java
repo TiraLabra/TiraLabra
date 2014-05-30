@@ -44,8 +44,8 @@ public class Matrix {
     }
     
     /**
-     * 
-     * @param n
+     * Luo NxM identiteettimatriisin
+     * @param n 
      * @param m
      * @param type
      * @return 
@@ -109,15 +109,34 @@ public class Matrix {
     }
     
     /**
-     * 
-     * @param n
-     * @return 
+     * Naiivi matriisin potenssiin korotus
+     * @param n eksponentti
+     * @return uusi matriisi
      */
-    public Matrix pow(int n) {
+    public Matrix pow_naive(int n) {
         Matrix res = identity(N, M, Types.Impl.Integer.class);
-        
         for (int i = 0; i < n; i++) {
             res = res.multiply(this);
+        }
+        
+        return res;
+    }
+    
+    /**
+     * Nopea matriisin potenssiin korotus
+     * @param n eksponentti
+     * @return uusi matriisi
+     */
+    public Matrix pow(int n) {
+        Matrix m = this;
+        Matrix res = Matrix.identity(2, 2, Types.Impl.Integer.class);
+        while (n > 0) {
+            if ((n % 2) == 1) {
+                res = res.multiply(m);
+            }
+            
+            m = m.multiply(m);
+            n /= 2;
         }
         
         return res;

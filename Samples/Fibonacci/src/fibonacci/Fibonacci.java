@@ -1,35 +1,37 @@
 package fibonacci;
 
 import Matrix.Matrix;
-import Types.Integer;
+import Types.Impl.Integer;
 
 public class Fibonacci {
-    public static int fibonacci(int n) {
-        Integer values[][] =                
+    private static String fibonacci(int n, boolean naive) {
+        Integer values[][] =
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
         
-        Matrix<Integer> matrix = new Matrix<>(values);
-
-        /* ********************************************** */
-        // Ei kuulu tänne; pitäis kutsuu potenssi metodia.
-        Integer identity[][] =
-            {{Integer.ONE, Integer.ZERO},
-             {Integer.ZERO, Integer.ONE}};
-        Matrix<Integer> m2 = new Matrix<>(identity);
-        for (int i = 0; i < n; i++) {
-            m2 = m2.multiply(matrix);
+        Matrix matrix = new Matrix(values);
+        if (naive) {
+            matrix = matrix.pow_naive(n);
+        } else {
+            matrix = matrix.pow(n);
         }
-        matrix = m2;
-        /* ********************************************** */
         
-        // matrix = matrix.pow(n);
+        Types.Number fib = matrix.get(0, 1);
+        return fib.toString();
+    }
+    
+    private static void timeit(boolean naive) {
+        long aikaAlussa = System.currentTimeMillis();
         
-        Integer fib = matrix.get(0, 1);
-        return fib.integer.intValue();
+        System.out.println("Fibonacci(4096), " + (naive ? "naive" : "fast")
+                + ": " + fibonacci(4096, naive));
+        
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println((aikaLopussa - aikaAlussa) + "ms\n");
     }
     
     public static void main(String[] args) {
-        System.out.println("Fibonacci(25): " + fibonacci(25));
+        timeit(true);
+        timeit(false);
     }
 }
