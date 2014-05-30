@@ -23,7 +23,7 @@ public class AStar {
     private PriorityQueue<Node> kaymatta;
     
     //tilapäiskokeilua...
-    private SortedSet<Node> kaymatta2;
+    //private SortedSet<Node> kaymatta2;
     
     /**
      * Tietorakenne, johon tallennetaan haun löytämä optimaalisin reitti.
@@ -73,7 +73,7 @@ public class AStar {
             askelia++;
             
             //Debug-tulostusta
-            System.out.println(tarkastettava.toString());
+            System.out.println("Tark: " + tarkastettava.toString());
             
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
@@ -86,14 +86,32 @@ public class AStar {
             // Nykyisen naapurien päivitys:
             for (Node naapuri : selvitaNaapurit(a, tarkastettava)) {
                 
+                System.out.println("  Naapuri: " + naapuri);
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
                 
+                if (kaydyt.contains(naapuri)) {
+                    System.out.println("  on jo käyty, ei lisätä.");
+                    continue;
+                }
+                
+                if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
+                    naapuri.setEdellinen(tarkastettava);
+                    naapuri.setEtaisyysAlusta(uusiG);
+                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
+                    if (!kaymatta.contains(naapuri)) {
+                        kaymatta.add(naapuri);
+                    }
+                }
+                
+                /*
                 if (kaydyt.contains(naapuri) && uusiG < naapuri.getEtaisyysAlusta()) {
+                    System.out.println("    löytyi naapureista, " + uusiG + " < " + naapuri.getEtaisyysAlusta());
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEdellinen(tarkastettava);
                 }
                 else if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
+                    System.out.println("    ei vielä openlistissa");
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
                     
@@ -103,7 +121,9 @@ public class AStar {
                     
                     if (!kaymatta.contains(naapuri))
                         kaymatta.add(naapuri);
+                        System.out.println("      lisätään openlistiin");
                 }
+                */
                     
                 
                 //if ( !kaymatta.contains(naapuri) ) {
