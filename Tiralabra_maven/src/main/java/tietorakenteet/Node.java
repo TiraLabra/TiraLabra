@@ -12,13 +12,23 @@ public class Node implements Comparable<Node> {
     private int y;
     
     private int etaisyysAlusta;
+    
+    /**
+     * 
+     */
     private int etaisyysMaaliin;
     
+    /**
+     * AStar-hakua varten tieto edellisestä nodesta, josta tähän tultu.
+     */
     private Node edellinen;
     
     //tarvitaankohan...
     private int syvyys;
     
+    /**
+     * Nodeen siirtymisen kustannus.
+     */
     private int kustannus;
     
     
@@ -101,7 +111,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return this.x+", " + this.y + " alusta: " + this.etaisyysAlusta;
+        return this.x+", " + this.y + " alusta: " + this.etaisyysAlusta + " maaliin: " + this.etaisyysMaaliin;
     }
     
     
