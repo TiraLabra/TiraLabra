@@ -22,8 +22,12 @@ public class Main {
 //        
 //        System.out.println(vertailu);
         
-        Alue a = new Alue(16);
-        a.luoEsimerkkiTaulukko();
+        //Alue a = new Alue(16);
+        //a.luoEsimerkkiTaulukko();
+        Alue a = new Alue(8);
+        a.luoPieniTestitaulukko();
+        
+        
         System.out.println(a.toString());
         
         
@@ -32,7 +36,7 @@ public class Main {
         
         AStar as = new AStar(h);
         
-        as.AStarHaku(a, a.getnode(0, 0), a.getnode(14, 14));
+        as.AStarHaku(a, a.getnode(0, 0), a.getnode(6,6));
         
         System.out.println(as.getAskelia() + " askelta.");
     }

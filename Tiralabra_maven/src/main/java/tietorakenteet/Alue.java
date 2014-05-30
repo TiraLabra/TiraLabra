@@ -56,6 +56,34 @@ public class Alue {
     }
     
     /**
+     * Pieni testitaulukko jolla helpompi tutkia algoritmin perustoimintaa.
+     * 
+     */
+    public void luoPieniTestitaulukko() {
+        int[][] numeroina = {
+            //0 1 2 3 4 5 6 7
+            { 0,0,0,0,0,0,0,0} , // 0
+            { 0,0,0,9,9,9,9,0} , // 1
+            { 0,9,9,9,0,0,0,0} , // 2
+            { 0,0,0,0,0,0,0,0} , // 3
+            { 0,0,0,9,0,0,0,0} , // 4
+            { 0,0,0,9,0,0,0,0} , // 5
+            { 0,0,0,9,0,0,0,0} , // 6
+            { 0,0,0,0,0,0,0,0}   // 7
+        };
+        
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                Node n = new Node(i, j, numeroina[i][j]);
+                nodet[i][j] = n;
+            }
+            
+        }
+        
+    }
+    
+    /**
      * Palauttaa halutuista koordinaateista noden tiedot
      * @param x
      * @param y
