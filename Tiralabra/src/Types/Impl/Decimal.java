@@ -12,26 +12,26 @@ public class Decimal extends Number {
     public static final Decimal ZERO = new Decimal(BigDecimal.ZERO);
     public static final Decimal TEN = new Decimal(BigDecimal.TEN);
     
-    public final BigDecimal integer;
+    public final BigDecimal decimal;
     
     /**
      * Luo luvun kokonaisluvusta
-     * @param integer kokonaisluku
+     * @param decimal kokonaisluku
      */
-    public Decimal(int integer) {
-        this.integer = BigDecimal.valueOf(integer);
+    public Decimal(int decimal) {
+        this.decimal = BigDecimal.valueOf(decimal);
     }
 
     /**
      * Luo luvun BigDecimalista
-     * @param integer BigDecimal-kokonaisluku
+     * @param decimal BigDecimal-kokonaisluku
      */
-    public Decimal(BigDecimal integer) {
-        this.integer = integer;
+    public Decimal(BigDecimal decimal) {
+        this.decimal = decimal;
     }
 
-    public static Decimal valueOf(int integer) {
-        return new Decimal(integer);
+    public static Decimal valueOf(int decimal) {
+        return new Decimal(decimal);
     }
 
     private static BigDecimal toDecimal(Number other) {
@@ -40,32 +40,32 @@ public class Decimal extends Number {
     
     @Override
     public Number add(Number other) {
-        return new Decimal(integer.add(toDecimal(other)));
+        return new Decimal(decimal.add(toDecimal(other)));
     }
 
     @Override
     public Number subtract(Number other) {
-        return new Decimal(integer.subtract(toDecimal(other)));
+        return new Decimal(decimal.subtract(toDecimal(other)));
     }
 
     @Override
     public Number multiply(Number other) {
-        return new Decimal(integer.multiply(toDecimal(other)));
+        return new Decimal(decimal.multiply(toDecimal(other)));
     }
 
     @Override
     public Number divide(Number other) {
-        return new Decimal(integer.divide(toDecimal(other)));
+        return new Decimal(decimal.divide(toDecimal(other)));
     }
 
     @Override
     public Number pow(int n) {
-        return new Decimal(integer.pow(n));
+        return new Decimal(decimal.pow(n));
     }
     
     @Override
     public String toString() {
-        return integer.toString();
+        return decimal.toString();
     }
 
     @Override
@@ -74,6 +74,6 @@ public class Decimal extends Number {
             return false;
         }
         final Decimal other = (Decimal) obj;
-        return this.integer.equals(other.integer);
+        return this.decimal.equals(other.decimal);
     }
 }
