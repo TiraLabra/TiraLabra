@@ -4,20 +4,22 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import Types.Impl.Integer;
+
 public class Matrix2x2Test {
-    private Matrix2x2<Types.Integer> matrix;
+    private Matrix2x2 matrix;
 
     @Before
     public void setUp() {
-        Types.Integer values[][] =                
-            {{Types.Integer.ONE, Types.Integer.ONE},
-             {Types.Integer.ONE, Types.Integer.ZERO}};
+        Integer values[][] =                
+            {{Integer.ONE, Integer.ONE},
+             {Integer.ONE, Integer.ZERO}};
 
-        matrix = new Matrix2x2<>(values);
+        matrix = new Matrix2x2(values);
     }
 
     @Test
     public void determinant() {
-        assertEquals(matrix.determinant(), new Types.Integer(-1));
+        assertEquals(matrix.determinant(), new Integer(-1));
     }
 }

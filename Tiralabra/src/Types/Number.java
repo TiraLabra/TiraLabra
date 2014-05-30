@@ -1,43 +1,42 @@
 package Types;
 
 /**
- * Operaattoreita geneerisille luvuille
+ * Operaattoreita luvuille
  * @author riku
- * @param <T> 
  */
-public interface Number<T> {
+public abstract class Number {
     /**
      * Yhteenlasku
      * @param other toinen luku
      * @return summa
      */
-    public T add(T other);
+    public abstract Number add(Number other);
     
     /**
      * Vähennyslasku
      * @param other toinen luku
      * @return 
      */
-    public T subtract(T other);
+    public abstract Number subtract(Number other);
     
     /**
      * Kertolasku
      * @param other toinen luku
      * @return 
      */
-    public T multiply(T other);
+    public abstract Number multiply(Number other);
     
     /**
      * Jakolasku
      * @param other toinen luku
      * @return 
      */
-    public T divide(T other);
+    public abstract Number divide(Number other);
     
     /**
      * Potenssi
-     * @param other toinen luku
+     * @param n
      * @return 
      */
-    public T pow(T other);
+    public abstract Number pow(int n);
 }

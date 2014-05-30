@@ -1,13 +1,16 @@
 package Matrix;
 
+import java.lang.reflect.InvocationTargetException;
+
+import Types.Number;
+
 /**
- * Geneerinen matriisi
+ * Matriisi
  * @author riku
- * @param <T> skalaarityyppi
  */
-public class Matrix<T extends Types.Number<T>> {
+public class Matrix {
     public final int N, M;
-    private final Object matrix[][];
+    private final Number matrix[][];
     
     /**
      * Luo tyhjän 0x0 matriisin.
@@ -21,9 +24,9 @@ public class Matrix<T extends Types.Number<T>> {
      * Luo matriisin 2-uloitteisesta taulukosta
      * @param elements 
      */
-    public Matrix(T[][] elements) {
+    public Matrix(Number[][] elements) {
         N = elements.length;
-        M = elements[0].length;
+        M = (N > 0) ? elements[0].length : 0;
         
         matrix = elements;
     }
@@ -37,64 +40,37 @@ public class Matrix<T extends Types.Number<T>> {
         this.N = n;
         this.M = m;
 
-        matrix = new Object[n][m];
-        
-        // Pitäis pystyä tekemään identiteettimatriisi, muuten tästä
-        // tulee turha ja tyhjä matriisi.
-        /*for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                matrix[i][j] = (i == j) ? 1 : 0;
-            }
-        }*/
-    }
-
-    public T get(int i, int j) {
-        return (T) matrix[i][j];
-    }
-    
-    public void set(int i, int j, T v) {
-        matrix[i][j] = v;
+        matrix = new Number[n][m];
     }
     
     /**
-     * Setteri monelle elementille samaan aikaan, asettaa A[i0][j0] eteenpäin
-     * @param i0 i-indeksin lähtöpaikka
-     * @param j0 j-indeksin lähtöpaikka
-     * @param elements skalaareita
+     * 
+     * @param n
+     * @param m
+     * @param type
+     * @return 
      */
-    public void set(int i0, int j0, T... elements) {
-        if (i0 < 0 || i0 >= N || j0 < 0 || j0 >= M) {
-            throw new IndexOutOfBoundsException();
-        }
-        
-        int e = 0;
-        for (int i = i0; i < N; i++) {
-            for (int j = j0; j < M; j++) {
-                matrix[i][j] = elements[e++];
+    public static Matrix identity(int n, int m, Class<? extends Number> type) {
+        Number[][] val = new Number[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int k = (i == j) ? 1 : 0;
 
-                if (e >= elements.length) {
-                    return;
+                try {
+                    val[i][j] = type.getConstructor(int.class).newInstance(k);
+                } catch (InstantiationException | IllegalAccessException |
+                        IllegalArgumentException | InvocationTargetException |
+                        NoSuchMethodException | SecurityException ex ) {
+                    throw new IllegalArgumentException();
                 }
             }
         }
-    }
 
-    /**
-     * Wrapperi skalaarityypin add-metodille
-     * @param i
-     * @param j
-     * @param v 
-     */
-    private void add(int i, int j, T v) {
-        if (i < 0 || i >= N || j < 0 || j >= M) {
-            throw new IndexOutOfBoundsException();
-        }
-        
-        if (matrix[i][j] == null) {
-            matrix[i][j] = v;
-        } else {
-            matrix[i][j] = ((T) matrix[i][j]).add(v);
-        }
+        return new Matrix(val);
+    }
+    
+    public Number get(int i, int j) {
+        return matrix[i][j];
     }
     
     /**
@@ -102,17 +78,15 @@ public class Matrix<T extends Types.Number<T>> {
      * @param scalar skalaari
      * @return uusi matriisi
      */
-    public Matrix<T> multiply(T scalar) {
-        Matrix<T> res = new Matrix<>(N, M);
-        
+    public Matrix multiply(Number scalar) {
+        Number[][] val = new Number[N][M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                T value = scalar.multiply(this.get(i, j));
-                res.set(i, j, value);
+                val[i][j] = matrix[i][j].multiply(scalar);
             }
         }
         
-        return res;
+        return new Matrix(val);
     }
     
     /**
@@ -120,38 +94,40 @@ public class Matrix<T extends Types.Number<T>> {
      * @param other toinen matriisi
      * @return uusi matriisi
      */
-    public Matrix<T> multiply(Matrix<T> other) {
-        Matrix<T> res = new Matrix<>(N, other.M);
-        
+    public Matrix multiply(Matrix other) {
+        Number[][] val = new Number[N][other.M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 for (int k = 0; k < other.M; k++) {
-                    T value = this.get(i, k).multiply(other.get(k, j));
-                    res.add(i, j, value);
+                    final Number v = matrix[i][k].multiply(other.get(k, j));
+                    val[i][j] = (val[i][j] == null) ? v : val[i][j].add(v);
                 }
             }
         }
         
-        return res;
+        return new Matrix(val);
     }
     
-    // Tarvii jonkun kiinnostavan ratkasun geneerisen identiteettimatriisin
-    // luomiseen.
-    /*public Matrix<T> pow(int n) {
-        Matrix<T> res = new Matrix<>(N, M);
-
+    /**
+     * 
+     * @param n
+     * @return 
+     */
+    public Matrix pow(int n) {
+        Matrix res = identity(N, M, Types.Impl.Integer.class);
+        
         for (int i = 0; i < n; i++) {
             res = res.multiply(this);
         }
         
         return res;
-    }*/
+    }
     
     /**
      * Laskee matriisin determinantin
      * @return determinantti
      */
-    public T determinant() {
+    public Number determinant() {
         if (M != N) {
             throw new UnsupportedOperationException("Not a square matrix");
         }

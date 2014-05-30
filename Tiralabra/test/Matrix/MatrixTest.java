@@ -4,16 +4,18 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import Types.Impl.Integer;
+
 public class MatrixTest {
-    private Matrix<Types.Integer> matrix;
+    private Matrix matrix;
 
     @Before
     public void setUp() {
-        Types.Integer values[][] =                
-            {{Types.Integer.ONE, Types.Integer.ONE},
-             {Types.Integer.ONE, Types.Integer.ZERO}};
+        Integer values[][] =                
+            {{Integer.ONE, Integer.ONE},
+             {Integer.ONE, Integer.ZERO}};
 
-        matrix = new Matrix<>(values);
+        matrix = new Matrix(values);
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
@@ -35,40 +37,34 @@ public class MatrixTest {
     public void getOverJ() {
         matrix.get(0, 3);
     }
-    
-    @Test
-    public void setAndGet() {
-        matrix.set(0, 0, Types.Integer.TEN);
-        assertEquals(matrix.get(0, 0), Types.Integer.TEN);
-    }
-    
+
     @Test
     public void multiplyScalar() {
-        matrix = matrix.multiply(Types.Integer.TEN);
+        matrix = matrix.multiply(Integer.TEN);
         
-        assertEquals(matrix.get(0, 0), Types.Integer.TEN);
-        assertEquals(matrix.get(0, 1), Types.Integer.TEN);
-        assertEquals(matrix.get(1, 0), Types.Integer.TEN);
-        assertEquals(matrix.get(1, 1), Types.Integer.ZERO);
+        assertEquals(matrix.get(0, 0), Integer.TEN);
+        assertEquals(matrix.get(0, 1), Integer.TEN);
+        assertEquals(matrix.get(1, 0), Integer.TEN);
+        assertEquals(matrix.get(1, 1), Integer.ZERO);
     }
     
     @Test
     public void multiplyMatrix() {
         matrix = matrix.multiply(matrix);
 
-        assertEquals(matrix.get(0, 0), new Types.Integer(2));
-        assertEquals(matrix.get(0, 1), Types.Integer.ONE);
-        assertEquals(matrix.get(1, 0), Types.Integer.ONE);
-        assertEquals(matrix.get(1, 1), Types.Integer.ONE);
+        assertEquals(matrix.get(0, 0), new Integer(2));
+        assertEquals(matrix.get(0, 1), Integer.ONE);
+        assertEquals(matrix.get(1, 0), Integer.ONE);
+        assertEquals(matrix.get(1, 1), Integer.ONE);
     }
     
     @Test
     public void multiplyEmptyMatrix() {
-        Matrix<Types.Integer> a = new Matrix<>(3, 0);
-        Matrix<Types.Integer> b = new Matrix<>(0, 3);
+        Matrix a = new Matrix(3, 0);
+        Matrix b = new Matrix(0, 3);
         
-        Matrix<Types.Integer> ab = a.multiply(b);
-        Matrix<Types.Integer> ba = b.multiply(a);
+        Matrix ab = a.multiply(b);
+        Matrix ba = b.multiply(a);
         
         assertEquals(ab.N, 3);
         assertEquals(ab.M, 3);
@@ -79,7 +75,27 @@ public class MatrixTest {
     
     @Test(expected=UnsupportedOperationException.class)
     public void determinantOnNonSquareMatrix() {
-        Matrix<Types.Integer> m = new Matrix<>(1, 2);
+        Matrix m = new Matrix(1, 2);
         m.determinant();
+    }
+    
+    @Test
+    public void identityMatrix() {
+        Matrix m = Matrix.identity(2, 2, Integer.class);
+        
+        assertEquals(m.get(0, 0), Integer.ONE);
+        assertEquals(m.get(0, 1), Integer.ZERO);
+        assertEquals(m.get(1, 0), Integer.ZERO);
+        assertEquals(m.get(1, 1), Integer.ONE);
+    }
+    
+    @Test
+    public void exponentiation() {
+        matrix = matrix.pow(2);
+        
+        assertEquals(matrix.get(0, 0), new Integer(2));
+        assertEquals(matrix.get(0, 1), Integer.ONE);
+        assertEquals(matrix.get(1, 0), Integer.ONE);
+        assertEquals(matrix.get(1, 1), Integer.ONE);
     }
 }
