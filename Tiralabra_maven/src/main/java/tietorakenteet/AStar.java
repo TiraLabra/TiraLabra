@@ -1,5 +1,6 @@
 package tietorakenteet;
 
+import heuristiikat.Heuristiikka;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -30,16 +31,25 @@ public class AStar {
     private ArrayList<Node> kuljettuReitti;
     
     /**
+     * Heuristiikka, jota haun optimoinnissa käytetään.
+     */
+    private Heuristiikka heuristiikka;
+    
+    
+    /**
      * Tieto, kuinka monta askelta haussa otettiin.
      * Käytössä lähinnä algoritmin toiminnan tarkastelua varten.
      */
     private int askelia;
 
-    public AStar() {
+    public AStar(Heuristiikka heuristiikka) {
         kaydyt = new ArrayList();
         
         Comparator<Node> comparator = new NodeComparator();
         kaymatta = new PriorityQueue<Node>(10, comparator);
+        
+        this.heuristiikka = heuristiikka;
+        
     }
     
     /**
@@ -55,7 +65,7 @@ public class AStar {
         kaymatta.add(alku);
         
         alku.setEtaisyysAlusta(0);
-        alku.setEtaisyysMaaliin(0 + heuristiikkaArvio(alku, loppu));
+        alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
         
         
         while (!kaymatta.isEmpty()) {
@@ -89,7 +99,7 @@ public class AStar {
                     
                     // TODO: Heuristiikan valinta järkevämmäksi
                     //naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaArvio(naapuri, loppu));
-                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaManhattan(naapuri, loppu));
+                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
                     
                     if (!kaymatta.contains(naapuri))
                         kaymatta.add(naapuri);
@@ -116,7 +126,7 @@ public class AStar {
         
         for (int i = n.getX()-1; i <= n.getX()+1; i++) {
             for (int j = n.getY()-1; j <= n.getY()+1; j++) {
-                if ( (i >= 0 && j >= 0 && i <= a.getKorkeus() && j < a.getLeveys()) && !(i==n.getX() && j==n.getY()) ) {
+                if ( (i >= 0 && j >= 0 && i < a.getKorkeus() && j < a.getLeveys()) && !(i==n.getX() && j==n.getY()) ) {
                     if (a.getnode(i, j).kuljettavissa())
                         naapurit.add(a.getnode(i, j));
                     //System.out.println(n.getX()+", "+ n.getY() + "naapuri: " + i + "," + j);
@@ -125,26 +135,26 @@ public class AStar {
         }
         return naapurit;
     }
-
-    /**
-     * Tilapäinen heuristiikkametodi, todennäköisesti voi tulla omaksi
-     * luokakseen ja palauttamaan järkeviä arvoja joka tapauksessa.
-     * @param naapuri
-     * @param loppu
-     * @return 
-     */
-    private int heuristiikkaArvio(Node naapuri, Node loppu) {
-        
-        //TODO, palauttaa vain Dijkstran mukaisen nollan
-        return 0;
-    }
     
-    private int heuristiikkaManhattan(Node naapuri, Node loppu) {
-        int tulos = 0;
-        tulos = Math.abs(naapuri.getX()-loppu.getX()) + Math.abs(naapuri.getY()-loppu.getY());
-        
-        return tulos;
-    }
+//    /**
+//     * Tilapäinen heuristiikkametodi, todennäköisesti voi tulla omaksi
+//     * luokakseen ja palauttamaan järkeviä arvoja joka tapauksessa.
+//     * @param naapuri
+//     * @param loppu
+//     * @return 
+//     */
+//    private int heuristiikkaArvio(Node naapuri, Node loppu) {
+//        
+//        //TODO, palauttaa vain Dijkstran mukaisen nollan
+//        return 0;
+//    }
+//    
+//    private int heuristiikkaManhattan(Node naapuri, Node loppu) {
+//        int tulos = 0;
+//        tulos = Math.abs(naapuri.getX()-loppu.getX()) + Math.abs(naapuri.getY()-loppu.getY());
+//        
+//        return tulos;
+//    }
     
     
     /**
@@ -162,6 +172,7 @@ public class AStar {
     public int getAskelia() {
         return askelia;
     }
+
     
     
 }

@@ -1,6 +1,7 @@
 package main;
 
-import tietorakenteet.Alue;
+import heuristiikat.*;
+import tietorakenteet.*;
 import tietorakenteet.*;
 
 /**
@@ -25,7 +26,11 @@ public class Main {
         a.luoEsimerkkiTaulukko();
         System.out.println(a.toString());
         
-        AStar as = new AStar();
+        
+        Heuristiikka h = new Manhattan();
+        //Heuristiikka h = new Dijkstra();
+        
+        AStar as = new AStar(h);
         
         as.AStarHaku(a, a.getnode(0, 0), a.getnode(14, 14));
         
