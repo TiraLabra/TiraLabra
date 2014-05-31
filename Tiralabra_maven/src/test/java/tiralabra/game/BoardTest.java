@@ -6,7 +6,6 @@
 package tiralabra.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,221 +57,108 @@ public class BoardTest {
     }
 
     @Test
-    public void puttingAWhitePiecePutsAPieceAtTheRightSpot() {
-        assertTrue(board.put(5, 3, Board.WHITE) > 0);
-        assertEquals(Board.WHITE, board.getBoard()[3][5]);
+    public void placingABlackPiecePutsAPieceAtTheRightSpot() {
+        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.BLACK);
+
+        assertTrue(board.place(3, 0, Player.BLACK, true) > 0);
+        assertEquals(Player.BLACK, board.getTile(3, 0));
     }
 
     @Test
-    public void puttingABlackPiecePutsAPieceAtTheRightSpot() {
-        assertTrue(board.put(2, 3, Board.BLACK) > 0);
-        assertEquals(Board.BLACK, board.getBoard()[3][2]);
+    public void placingAWhitePiecePutsAPieceAtTheRightSpot() {
+        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+
+        assertTrue(board.place(0, 0, Player.WHITE, true) > 0);
+        assertEquals(Player.WHITE, board.getTile(0, 0));
     }
 
     @Test
-    public void puttingAtInvalidPositionDoesNothing() {
-        board.setBoard(Utilities.copy2dArray(verticalTestBoard));
-        assertEquals(0, board.put(0, 0, Board.WHITE));
-        assertArrayEquals(verticalTestBoard, board.getBoard());
+    public void placingBlacksFlipsPiecesVertically() {
+        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+
+        assertEquals(1, board.place(3, 0, Player.BLACK, true));
+        assertEquals(1, board.place(4, 0, Player.BLACK, true));
+
+        assertEquals(6, board.blackPieces());
+        assertEquals(0, board.whitePieces());
     }
 
     @Test
-    public void verticalFlippingToWhiteWorksRight() {
-        board.setBoard(verticalTestBoard);
-        board.put(3, 0, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[0][2]);
+    public void placingWhitesFlipsPiecesVertically() {
+        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+
+        assertEquals(1, board.place(0, 0, Player.WHITE, true));
+        assertEquals(1, board.place(7, 0, Player.WHITE, true));
+        assertEquals(6, board.whitePieces());
+        assertEquals(0, board.blackPieces());
     }
 
     @Test
-    public void verticalFlippingToWhiteWorksLeft() {
-        board.setBoard(verticalTestBoard);
-        board.put(4, 0, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[0][5]);
+    public void placingBlacksFlipsPiecesHorizontally() {
+        board.setBoard(Utilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
+
+        assertEquals(1, board.place(0, 3, Player.BLACK, true));
+        assertEquals(1, board.place(0, 4, Player.BLACK, true));
+        assertEquals(6, board.blackPieces());
+        assertEquals(0, board.whitePieces());
     }
 
     @Test
-    public void verticalFlippingToBlackWorksRight() {
-        board.setBoard(verticalTestBoard);
-        board.put(0, 0, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[0][0]);
-    }
+    public void placingWhitesFlipsPiecesHorizontally() {
+        board.setBoard(Utilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
 
-    @Test
-    public void verticalFlippingToBlackWorksLeft() {
-        board.setBoard(verticalTestBoard);
-        board.put(7, 0, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[0][6]);
-    }
-
-    @Test
-    public void horizontalFlippingToWhiteWorksUp() {
-        board.setBoard(horizontalTestBoard);
-        board.put(0, 3, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[2][0]);
-    }
-
-    @Test
-    public void horizontalFlippingToWhiteWorksDown() {
-        board.setBoard(horizontalTestBoard);
-        board.put(0, 4, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[5][0]);
-    }
-
-    @Test
-    public void horizontalFlippingToBlackWorksUp() {
-        board.setBoard(horizontalTestBoard);
-        board.put(0, 7, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[6][0]);
-    }
-
-    @Test
-    public void horizontalFlippingToBlackWorksDown() {
-        board.setBoard(horizontalTestBoard);
-        board.put(0, 0, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[1][0]);
-    }
-
-    @Test
-    public void diagonalFlippingToWhiteWorksDown() {
-        board.setBoard(diagonalTestBoard1);
-        board.put(0, 3, Board.WHITE);
-        board.put(3, 3, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[2][1]);
-        assertEquals(Board.WHITE, board.getBoard()[2][2]);
-    }
-
-    @Test
-    public void diagonalFlippingToWhiteWorksUp() {
-        board.setBoard(diagonalTestBoard2);
-        board.put(0, 0, Board.WHITE);
-        board.put(3, 0, Board.WHITE);
-        assertEquals(Board.WHITE, board.getBoard()[1][1]);
-        assertEquals(Board.WHITE, board.getBoard()[1][2]);
-    }
-
-    @Test
-    public void diagonalFlippingToBlackWorksDown() {
-        board.setBoard(diagonalTestBoard2);
-        board.put(0, 3, Board.BLACK);
-        board.put(3, 3, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[2][1]);
-        assertEquals(Board.BLACK, board.getBoard()[2][2]);
-    }
-
-    @Test
-    public void diagonalFlippingToBlackWorksUp() {
-        board.setBoard(diagonalTestBoard1);
-        board.put(0, 0, Board.BLACK);
-        board.put(3, 0, Board.BLACK);
-        assertEquals(Board.BLACK, board.getBoard()[1][1]);
-        assertEquals(Board.BLACK, board.getBoard()[1][2]);
-    }
-
-    private ArrayList<Long> buildLegalMovesAssertionList(long... moves) {
-        ArrayList<Long> legalMoves = new ArrayList<>();
-        for (long l : moves) {
-            legalMoves.add(l);
-        }
-        return legalMoves;
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyWhiteVertical() {
-        board.setBoard(verticalTestBoard);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
-
-        ArrayList<Long> assertion
-                = buildLegalMovesAssertionList(Board.point(3, 0), Board.point(4, 0));
-        assertEquals(assertion, toCompare);
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyBlackVertical() {
-        board.setBoard(verticalTestBoard);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
-
-        ArrayList<Long> assertion
-                = buildLegalMovesAssertionList(Board.point(0, 0), Board.point(7, 0));
-        assertEquals(assertion, toCompare);
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyWhiteHorizontal() {
-        board.setBoard(horizontalTestBoard);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
-
-        ArrayList<Long> assertion
-                = buildLegalMovesAssertionList(Board.point(0, 3), Board.point(0, 4));
-        assertEquals(assertion, toCompare);
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyBlackHorizontal() {
-        board.setBoard(horizontalTestBoard);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
-
-        ArrayList<Long> assertion
-                = buildLegalMovesAssertionList(Board.point(0, 0), Board.point(0, 7));
-        assertEquals(assertion, toCompare);
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyWhiteDiagonalUp() {
-        board.setBoard(diagonalTestBoard1);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
-
-        assertTrue(toCompare.contains(Board.point(0, 3)));
-        assertTrue(toCompare.contains(Board.point(3, 3)));
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyWhiteDiagonalDown() {
-        board.setBoard(diagonalTestBoard2);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.WHITE);
-
-        assertTrue(toCompare.contains(Board.point(0, 0)));
-        assertTrue(toCompare.contains(Board.point(3, 0)));
+        assertEquals(1, board.place(0, 0, Player.WHITE, true));
+        assertEquals(1, board.place(0, 7, Player.WHITE, true));
+        assertEquals(6, board.whitePieces());
+        assertEquals(0, board.blackPieces());
     }
     
     @Test
-    public void legalMovesFoundCorrectlyBlackDiagonalUp() {
-        board.setBoard(diagonalTestBoard2);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
+    public void placingBlacksFlipsPiecesDiagonally1() {
+        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.BLACK);
 
-        assertTrue(toCompare.contains(Board.point(0, 3)));
-        assertTrue(toCompare.contains(Board.point(3, 3)));
-    }
-
-    @Test
-    public void legalMovesFoundCorrectlyBlackDiagonalDown() {
-        board.setBoard(diagonalTestBoard1);
-        ArrayList<Long> toCompare = board.findLegalMoves(Board.BLACK);
-
-        assertTrue(toCompare.contains(Board.point(0, 0)));
-        assertTrue(toCompare.contains(Board.point(3, 0)));
-    }
+        assertEquals(1, board.place(0, 3, Player.BLACK, true));
+        assertEquals(1, board.place(3, 3, Player.BLACK, true));
+        assertEquals(6, board.blackPieces());
+        assertEquals(0, board.whitePieces());
+    } 
     
     @Test
-    public void noLegalMovesFoundOnAFullBoard() {
-        int[][] test = new int[8][8];
-        for (int y = 0; y < test.length; y++) {
-            for (int x = 0; x < test[0].length; x++) {
-                test[y][x] = new Random().nextInt(2) + 1;
-            }
-        }
+    public void placingBlacksFlipsPiecesDiagonally2() {
+        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard2), Player.BLACK);
+
+        assertEquals(1, board.place(0, 0, Player.BLACK, true));
+        assertEquals(1, board.place(3, 0, Player.BLACK, true));
+        assertEquals(6, board.blackPieces());
+        assertEquals(0, board.whitePieces());
+    } 
+    
+    @Test
+    public void placingWhitesFlipsPiecesDiagonally1() {
+        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard2), Player.WHITE);
+
+        assertEquals(1, board.place(0, 3, Player.WHITE, true));
+        assertEquals(1, board.place(3, 3, Player.WHITE, true));
+        assertEquals(6, board.whitePieces());
+        assertEquals(0, board.blackPieces());
+    } 
+    
+    @Test
+    public void placingWhitesFlipsPiecesDiagonally2() {
+        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
+
+        assertEquals(1, board.place(0, 0, Player.WHITE, true));
+        assertEquals(1, board.place(3, 0, Player.WHITE, true));
+        assertEquals(6, board.whitePieces());
+        assertEquals(0, board.blackPieces());
+    } 
+    
+    @Test
+    public void undoingFlipsWorks() {
+        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
         
-        board.setBoard(test);
-        
-        assertEquals(0, board.findLegalMoves(Board.WHITE).size());
-        assertEquals(0, board.findLegalMoves(Board.BLACK).size());
-    }
-    
-    @Test
-    public void undoingTheLastMoveWorks() {
-        board.setBoard(Utilities.copy2dArray(verticalTestBoard));
-        board.put(3, 0, Board.WHITE);
+        board.place(0, 0, Player.WHITE, true);
         board.undo();
-     
-        assertArrayEquals(verticalTestBoard, board.getBoard());
+        assertArrayEquals(Utilities.createPlayerTable(diagonalTestBoard1), board.getBoard());
     }
 }

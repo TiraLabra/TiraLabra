@@ -16,30 +16,114 @@ import java.util.ArrayList;
 public class Board {
 
     /**
-     * Integer 2d array of the board. 0 == Empty, 1 == WHITE, 2 == BLACK.
+     * Holds information of each made move, to be stored in the stack.
+     * Alternatively, stores the number of flips for each move.
      */
-    private int[][] board;
-    public static int WHITE = 1;
-    public static int BLACK = 2;
+    public class Flip {
+
+        public int x;
+        public int y;
+        public int flipsToClear;
+        public Player player;
+
+        public Flip(int x, int y, Player player) {
+            this.x = x;
+            this.y = y;
+            this.player = player;
+        }
+
+        public Flip(int movesToClear, Player player) {
+            this.x = -1;
+            this.y = -1;
+            this.flipsToClear = movesToClear;
+            this.player = player;
+        }
+    }
+
     /**
-     * Keeps track of the number of moves made thus far and is used to identify
-     * all operations caused by a move.
+     * Holds information of made moves for undoing.
      */
-    private int moveNumber = 0;
+    public class FlipStack {
+
+        /**
+         * Array which holds the stack. 1344 is the worst case in which each
+         * move flips 20 pieces (impossible)
+         */
+        private Flip[] stack;
+        private int index;
+
+        public FlipStack() {
+            stack = new Flip[1344];
+            index = 0;
+        }
+
+        public void push(int x, int y, Player player) {
+            stack[index] = new Flip(x, y, player);
+            index++;
+        }
+
+        public void push(int movesToClear, Player player) {
+            stack[index] = new Flip(movesToClear, player);
+            index++;
+        }
+
+        public Flip peek() {
+            if (index == 0) {
+                throw new IndexOutOfBoundsException("Peeked an empty OperationStack.");
+            }
+
+            return stack[index - 1];
+        }
+
+        public boolean isEmpty() {
+            return index == 0;
+        }
+
+        public Flip pop() {
+            if (index == 0) {
+                throw new IndexOutOfBoundsException("Popped an empty OperationStack.");
+            }
+            index--;
+            System.out.println(stack[index].x + ", " + stack[index].y);
+            return stack[index];
+        }
+    }
+
+    /**
+     * Player 2d-array of the board.
+     */
+    private Player[][] board;
     /**
      * ArrayList which holds all the operations done during this game.
      */
-    private ArrayList<Operation> operationList;
+    private FlipStack flipStack;
+    private Player playerInTurn;
+
+    public int width() {
+        return board[0].length;
+    }
+
+    public int height() {
+        return board.length;
+    }
 
     public Board() {
-        this.board = new int[8][8];
+        this.board = new Player[8][8];
 
-        board[3][3] = WHITE;
-        board[3][4] = BLACK;
-        board[4][3] = BLACK;
-        board[4][4] = WHITE;
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                board[y][x] = Player.NONE;
+            }
+        }
 
-        operationList = new ArrayList<>();
+        setTile(3, 3, Player.BLACK);
+        setTile(3, 4, Player.WHITE);
+        setTile(4, 3, Player.WHITE);
+        setTile(4, 4, Player.BLACK);
+
+        flipStack = new FlipStack();
+
+        playerInTurn = Player.BLACK;
     }
 
     /**
@@ -74,329 +158,15 @@ public class Board {
     }
 
     /**
-     * Returns the opposing team.
+     * Returns how many pieces there are on the board.
      *
-     * @return the opposing team.
-     */
-    public static int getOpposingTeam(int team) {
-        return (team == Board.WHITE) ? Board.BLACK : Board.WHITE;
-    }
-
-    public class Operation {
-
-        int x;
-        int y;
-        int undoCount;
-        int original;
-
-        public Operation(int x, int y, int undoCount, int original) {
-            this.x = x;
-            this.y = y;
-            this.undoCount = undoCount;
-            this.original = original;
-        }
-
-    }
-
-    /**
-     * Checks whether the piece can be placed in the given position, and places
-     * it there, flipping all applicable pieces.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return number of flipped pieces
-     */
-    public int put(int x, int y, int team) {
-        if (board[y][x] != 0) {
-            return 0;
-        }
-
-        board[y][x] = team;
-        moveNumber++;
-        operationList.add(new Operation(x, y, moveNumber, 0));
-
-        int nmbOfFlips = 0;
-
-        nmbOfFlips += flipDirection(x, y, 1, 0, team);
-        nmbOfFlips += flipDirection(x, y, -1, 0, team);
-        nmbOfFlips += flipDirection(x, y, 0, 1, team);
-        nmbOfFlips += flipDirection(x, y, 0, -1, team);
-        nmbOfFlips += flipDirection(x, y, 1, 1, team);
-        nmbOfFlips += flipDirection(x, y, 1, -1, team);
-        nmbOfFlips += flipDirection(x, y, -1, 1, team);
-        nmbOfFlips += flipDirection(x, y, -1, -1, team);
-
-        if (nmbOfFlips == 0) {
-            undo();
-        }
-
-        return nmbOfFlips;
-    }
-
-    public int place(long point, int team) {
-        return put(x(point), y(point), team);
-    }
-
-    /**
-     * Finds and lists all the legal moves on the board.
-     *
-     * @param team
-     * @return
-     */
-    public ArrayList<Long> findLegalMoves(int team) {
-        ArrayList<Long> legalMoves = new ArrayList<>();
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length; x++) {
-                if (checkPointForLegal(x, y, team)) {
-                    legalMoves.add(point(x, y));
-                }
-            }
-        }
-
-        return legalMoves;
-    }
-
-    private boolean checkPointForLegal(int x, int y, int team) {
-        return board[y][x] == 0 && (checkDiagonalLegal(x, y, team) || checkHorizontalLegal(x, y, team) || checkVerticalLegal(x, y, team));
-    }
-
-    /**
-     * Checks whether the given coordinates contain an opponents piece.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true if the piece is the opponent's, false if there is no piece
-     * or the piece is mine
-     */
-    private boolean checkForOpponent(int x, int y, int team) {
-        if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
-            return false;
-        }
-        return board[y][x] != 0 && board[y][x] != team;
-    }
-
-    /**
-     * Checks whether the given coordinates contain my piece, eg. piece of the
-     * given team,
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true if the piece is mine, false if there is no piece or the
-     * piece is the opponent's
-     */
-    private boolean checkForMyPiece(int x, int y, int team) {
-        if (x < 0 || x > board[0].length - 1 || y < 0 || y > board.length - 1) {
-            return false;
-        }
-        return board[y][x] != 0 && board[y][x] == team;
-    }
-
-    /**
-     * Checks whether the move is legal when considering only pieces aligned
-     * diagonally with this piece.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true if the move is legal, false if the move can't be determined
-     * to be legal when considering pieces aligned diagonally with the given
-     * coordinates
-     */
-    private boolean checkDiagonalLegal(int x, int y, int team) {
-        return (checkDirection(x, y, 1, 1, team)
-                || checkDirection(x, y, 1, -1, team)
-                || checkDirection(x, y, -1, 1, team)
-                || checkDirection(x, y, -1, -1, team));
-    }
-
-    /**
-     * Checks whether the move is legal when considering only pieces in the same
-     * column.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true if the move is legal, false if the move can't be determined
-     * to be legal when considering this column.
-     */
-    private boolean checkHorizontalLegal(int x, int y, int team) {
-        return (checkDirection(x, y, 0, 1, team)
-                || checkDirection(x, y, 0, -1, team));
-    }
-
-    /**
-     * Checks whether the move is legal when considering only the pieces in the
-     * same row
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return true if the move is legal, false if the move can't be determined
-     * to be legal when considering this row.
-     */
-    private boolean checkVerticalLegal(int x, int y, int team) {
-        return (checkDirection(x, y, 1, 0, team)
-                || checkDirection(x, y, -1, 0, team));
-    }
-
-    /**
-     * Checks whether the given direction would make the coordinates a legal
-     * move.
-     *
-     * @param x
-     * @param y
-     * @param dx
-     * @param dy
-     * @param team
-     * @return true if the move is legal, false if the move can't be determined
-     * to be legal when considering only this direction from the given piece
-     */
-    private boolean checkDirection(int x, int y, int dx, int dy, int team) {
-        int inBetween = 0;
-        while (checkForOpponent(x + dx, y + dy, team)) {
-            inBetween++;
-            dx = dx > 0 ? dx + 1 : dx < 0 ? dx - 1 : dx;
-            dy = dy > 0 ? dy + 1 : dy < 0 ? dy - 1 : dy;
-        }
-        return inBetween > 0 && checkForMyPiece(x + dx, y + dy, team);
-    }
-
-    /**
-     * Flips all applicable pieces between the given coordinates and the pieces
-     * of this player that are aligned diagonally.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return number of flipped pieces.
-     */
-    private int flipDiagonally(int x, int y, int team) {
-        int nmbOfFlips = 0;
-        nmbOfFlips += flipDirection(x, y, 1, 1, team);
-        nmbOfFlips += flipDirection(x, y, 1, -1, team);
-        nmbOfFlips += flipDirection(x, y, -1, 1, team);
-        nmbOfFlips += flipDirection(x, y, -1, -1, team);
-
-        return nmbOfFlips;
-    }
-
-    /**
-     * Flips all applicable pieces between the given coordinates and the pieces
-     * of this player that are in the same column.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return number of flipped pieces.
-     */
-    private int flipHorizontally(int x, int y, int team) {
-        int nmbOfFlips = 0;
-        nmbOfFlips += flipDirection(x, y, 0, 1, team);
-        nmbOfFlips += flipDirection(x, y, 0, -1, team);
-
-        return nmbOfFlips;
-    }
-
-    /**
-     * Flips all applicable pieces between the given coordinates and the pieces
-     * of this player that are in the same row.
-     *
-     * @param x
-     * @param y
-     * @param team
-     * @return number of flipped pieces.
-     */
-    private int flipVertically(int x, int y, int team) {
-        int nmbOfFlips = 0;
-        nmbOfFlips += flipDirection(x, y, 1, 0, team);
-        nmbOfFlips += flipDirection(x, y, -1, 0, team);
-        return nmbOfFlips;
-    }
-
-    /**
-     * Flips all the pieces in a given direction from the given coordinates,
-     * when applicable
-     *
-     * @param x
-     * @param y
-     * @param dx
-     * @param dy
-     * @param team
-     * @return number of flipped pieces.
-     */
-    private int flipDirection(int x, int y, int dx, int dy, int team) {
-        int nmbOfFlips = 0;
-        if (!checkDirection(x, y, dx, dy, team)) {
-            return 0;
-        }
-        while (checkForOpponent(x + dx, y + dy, team)) {
-            flip(x + dx, y + dy);
-
-            nmbOfFlips++;
-
-            dx = dx > 0 ? dx + 1 : dx < 0 ? dx - 1 : dx;
-            dy = dy > 0 ? dy + 1 : dy < 0 ? dy - 1 : dy;
-        }
-        return nmbOfFlips;
-    }
-
-    /**
-     * Flips the piece to the opposing color in the given coordinates + adds the
-     * flip to the list of operations.
-     *
-     * @param x
-     * @param y
-     */
-    private void flip(int x, int y) {
-        operationList.add(new Operation(x, y, moveNumber, board[y][x]));
-        board[y][x] = board[y][x] == WHITE ? BLACK : WHITE;
-    }
-
-    /**
-     * Undoes the last move and subtracts one from the moveNumber.
-     */
-    public void undo() {
-        for (int j = operationList.size() - 1; j >= 0 && operationList.get(j).undoCount == moveNumber; j--) {
-            Operation operation = operationList.get(j);
-            board[operation.y][operation.x] = operation.original;
-
-            operationList.remove(j);
-        }
-        moveNumber--;
-    }
-
-    /**
-     * Sets the board 2d array to the given 2d array. Used for testing purposes.
-     *
-     * @param board
-     */
-    public void setBoard(int[][] board) {
-        this.board = board;
-    }
-
-    /**
-     * Gets the board 2d array.
-     *
-     * @return the board 2d array
-     */
-    public int[][] getBoard() {
-        return board;
-    }
-
-    /**
-     * Returns how many pieces this team has on the board,
-     *
-     * @param team
      * @return number of pieces
      */
-    public int getNumberOfPieces(int team) {
+    public int getNumberOfPieces() {
         int count = 0;
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length; x++) {
-                if (board[y][x] == team) {
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                if (board[y][x] != Player.NONE) {
                     count++;
                 }
             }
@@ -405,20 +175,227 @@ public class Board {
     }
 
     /**
-     * Returns how many pieces have been placed on the board.
+     * Number of black pieces on the board.
      *
-     * @return number of pieces placed
+     * @return
      */
-    public int getPieceNumber() {
-        return moveNumber;
+    public int blackPieces() {
+        return countPieces(Player.BLACK);
     }
 
     /**
-     * Whether the board is full.
+     * Number of white pieces on the board.
      *
-     * @return true, if all the pieces have been set on the board.
+     * @return
      */
-    public boolean isFull() {
-        return moveNumber == 60;
+    public int whitePieces() {
+        return countPieces(Player.WHITE);
     }
+
+    /**
+     * Whether the given tile is on the board or not.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    private boolean isValidTile(int x, int y) {
+        return x >= 0 && x < width() && y >= 0 && y < height();
+    }
+
+    /**
+     * Number of pieces the given player has on the board.
+     *
+     * @param player
+     * @return
+     */
+    private int countPieces(Player player) {
+        int count = 0;
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                if (board[y][x] == player) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * The player currently in turn.
+     *
+     * @return
+     */
+    public Player getPlayerInTurn() {
+        return playerInTurn;
+    }
+
+    /**
+     * Sets the tile to the desired color.
+     *
+     * @param x
+     * @param y
+     * @param player
+     */
+    public void setTile(int x, int y, Player player) {
+        board[y][x] = player;
+    }
+
+    public Player getTile(int x, int y) {
+        if (!isValidTile(x, y)) {
+            return Player.NONE;
+        }
+        return board[y][x];
+    }
+
+    /**
+     * Checks whether the piece can be placed in the given position, and places
+     * it there, flipping all applicable pieces.
+     *
+     * @param x
+     * @param y
+     * @param player
+     * @param realMove whether the move should be done, or just tried
+     * @return number of flipped pieces
+     */
+    public int place(int x, int y, Player player, boolean realMove) {
+        if (!isValidTile(x, y) || getTile(x, y) != Player.NONE) {
+            return 0;
+        }
+
+        setTile(x, y, player);
+
+        int nmbOfFlips = 0;
+        nmbOfFlips += flipDirection(x, y, 1, 0, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, 0, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 0, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 0, -1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 1, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 1, -1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, -1, player, realMove);
+        if (realMove && (nmbOfFlips > 0)) {
+            flipStack.push(nmbOfFlips + 1, player);
+        }
+
+        return nmbOfFlips;
+    }
+
+    public int place(long point, Player player, boolean realMove) {
+        return place(x(point), y(point), player, realMove);
+    }
+
+    /**
+     * Flips all the pieces in a given direction from the given coordinates,
+     * when applicable.
+     *
+     * @param x
+     * @param y
+     * @param dx
+     * @param dy
+     * @param player
+     * @param realMove
+     * @return number of flipped pieces.
+     */
+    private int flipDirection(int x, int y, int dx, int dy, Player player, boolean realMove) {
+        int nmbOfFlips = 0;
+
+        int xt = x + dx;
+        int yt = y + dy;
+        while (isValidTile(xt, yt)) {
+            if (getTile(xt, yt) != Player.opposing(player)) {
+                break;
+            }
+            nmbOfFlips++;
+
+            xt += dx;
+            yt += dy;
+        }
+
+        if (nmbOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
+            return 0;
+        }
+
+        if (realMove) {
+            for (int i = 0; i <= nmbOfFlips; i++) {
+                flip(x + i * dx, y + i * dy, player);
+            }
+        }
+
+        return nmbOfFlips;
+    }
+
+    /**
+     * Flips the piece to the opposing color in the given coordinates + adds the
+     * flip to the stack of operations done.
+     *
+     * @param x
+     * @param y
+     * @param player
+     */
+    private void flip(int x, int y, Player player) {
+        flipStack.push(x, y, Player.opposing(player));
+        setTile(x, y, player);
+    }
+
+    /**
+     * Checks whether the given tile is empty or off the board.
+     *
+     * @param x
+     * @param y
+     * @return boolean
+     */
+    public boolean isEmpty(int x, int y) {
+        if (!isValidTile(x, y) || getTile(x, y) == Player.NONE) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Undoes the last move and subtracts one from the moveNumber.
+     */
+    public void undo() {
+        if (flipStack.isEmpty()) {
+            return;
+        }
+        
+        int flipsToClear = flipStack.pop().flipsToClear;
+        System.out.println(flipsToClear);
+        for (int i = 0; i < flipsToClear; i++) {
+            Flip flip = flipStack.pop();
+
+            int x = flip.x;
+            int y = flip.y;
+            Player player = flip.player;
+            setTile(x, y, player);
+        }
+
+        if (playerInTurn == Player.WHITE) {
+            playerInTurn = Player.BLACK;
+        } else {
+            playerInTurn = Player.WHITE;
+        }
+    }
+
+    /**
+     * Sets the board 2d array to the given 2d array. Used for testing purposes.
+     *
+     * @param board
+     * @param inTurn
+     */
+    public void setBoard(Player[][] board, Player inTurn) {
+        this.board = board;
+        this.playerInTurn = inTurn;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Player[][] getBoard() {
+        return board;
+    }
+
 }
