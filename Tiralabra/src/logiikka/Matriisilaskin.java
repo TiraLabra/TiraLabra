@@ -1,6 +1,6 @@
 package logiikka;
 
-import java.util.Arrays;
+import apuneuvot.MatriisienVertailu;
 
 /**
  * Matriisilaskin-luokka, joka kapseloi sisäänsä kaikki laskuoperaatiot.
@@ -15,10 +15,12 @@ public class Matriisilaskin {
     private Kertolasku kertolasku;
     private Transpoosi transpoosi;
     private Strassen strassen;
+    private Determinantti determinantti;
+    private MatriisienVertailu vertailu;
 
     /**
-     * Konstruktori, joka luo uudet ilmentymät laskuoperaatio-luokista. 
-     * Ilmentymät asetetaan niiden private muuttujiin.
+     * Konstruktori, joka luo uudet ilmentymät vertailu- ja laskuoperaatio-
+     * luokista. Ilmentymät asetetaan niiden private muuttujiin.
      *
      */
     public Matriisilaskin() {
@@ -28,10 +30,12 @@ public class Matriisilaskin {
         kertolasku = new Kertolasku();
         transpoosi = new Transpoosi();
         strassen = new Strassen(yhteenlasku, vahennyslasku);
+        determinantti = new Determinantti();
+        vertailu = new MatriisienVertailu();
     }
 
     /**
-     * Metodi, joka kutsuu Yhteenlasku-luokan summaa metodia parametreinaan
+     * Metodi, joka kutsuu Yhteenlasku-luokan summaa -metodia parametreinaan
      * kaksi summattavaa matriisia. Huom. matriisien oltava samankokoisia!
      *
      * @param A Ensimmäinen yhteenlaskettava matriisi muotoa m x n
@@ -43,7 +47,7 @@ public class Matriisilaskin {
     }
 
     /**
-     * Metodi, joka kutsuu Vahennyslasku-luokan vahenna metodia parametreinaan
+     * Metodi, joka kutsuu Vahennyslasku-luokan vahenna -metodia parametreinaan
      * kaksi toistaan vähennettävää matriisia. Huom. matriisien oltava
      * samankokoisia!
      *
@@ -58,7 +62,7 @@ public class Matriisilaskin {
     }
 
     /**
-     * Metodi, joka kutsuu Skalaaritulo-luokan kerro metodia parametreinaan
+     * Metodi, joka kutsuu Skalaaritulo-luokan kerro -metodia parametreinaan
      * matriisi sekä reaaliluku, jolla kyseistä matriisia kerrotaan.
      *
      * @param A Matriisi, jonka alkiot halutaan kertoa reaaliluvulla
@@ -70,7 +74,7 @@ public class Matriisilaskin {
     }
 
     /**
-     * Metodi, joka kutsuu Kertolasku-luokan kerro metodia parametreinaan kaksi
+     * Metodi, joka kutsuu Kertolasku-luokan kerro -metodia parametreinaan kaksi
      * toisiinsa kerrottavaa matriisia. Toteuttaa yhtälön tulomatriisi = eka *
      * toka. Huom. matriisien kertolasku ei ole vaihdannainen, joten
      * laskujärjestyksellä on väliä! Huom2. ensimmäisen matriisin sarakkeiden
@@ -85,7 +89,7 @@ public class Matriisilaskin {
     }
 
     /**
-     * Metodi, joka kutsuu Transpoosi-luokan transpoosaa metodia parametrinaan
+     * Metodi, joka kutsuu Transpoosi-luokan transpoosaa -metodia parametrinaan
      * matriisi, jonka transpoosi halutaan.
      *
      * @param A Matriisi, jonka transpoosi halutaan
@@ -96,7 +100,7 @@ public class Matriisilaskin {
     }
 
     /**
-     * Metodi, joka kutsuu Strassen-luokan kerro metodia parametrinaan kaksi
+     * Metodi, joka kutsuu Strassen-luokan kerro -metodia parametrinaan kaksi
      * toisiinsa kerrottavaa matriisia. Totetuttaa yhtälön tulomatriisi = eka *
      * toka. Huom. matriisien kertolasku ei ole vaihdannainen, joten
      * laskujärjestyksellä on väliä! Huom2. matriisien oltava samankokoisia
@@ -109,12 +113,24 @@ public class Matriisilaskin {
     public double[][] kerroStrassenilla(double[][] eka, double[][] toka) {
         return strassen.kerro(eka, toka);
     }
+    
+    /**
+     * Metodi, joka kutsuu Determinantti-luokan laskeDeterminantti -metodia
+     * parametrinaan matriisi, jonka determinantti halutaan laskea.
+     * Determinantin laskemisessa käytetään osittaistuettua LU-hajotelmaa.
+     * 
+     * @param A Matriisi, jonka determinantti halutaan laskea, muotoa n x n
+     * @return Palauttaa determinantin arvon
+     */
+    public double laskeDeterminantti(double[][] A) {
+        return determinantti.laskeDeterminantti(A);
+    }
 
     /**
      * Metodi, joka selvittää onko annettu matriisi neliömatriisi. Matriisi on
      * neliömatriisi, jos sen rivien ja sarakkeiden lukumäärät ovat samat.
      *
-     * @param A Matriisi, josta halutaan tieto onko neliömatriisi
+     * @param A Matriisi, josta halutaan tieto onko neliömatriisi, muotoa m x n
      * @return Palauttaa true, jos matriisi on neliömatriisi
      */
     public boolean onkoNeliomatriisi(double[][] A) {
@@ -125,21 +141,37 @@ public class Matriisilaskin {
      * Metodi, joka selvittää onko annettu matriisi symmetrinen. Matriisi on
      * symmetrinen, jos sen transpoosi on matriisi itse.
      *
-     * @param A Matriisi, jonka symmetrisyys halutaan selvittää
+     * @param A Matriisi, jonka symmetrisyys halutaan selvittää, muotoa m x n
      * @return Palauttaa true, jos matriisi on symmetrinen
      */
     public boolean onkoSymmetrinen(double[][] A) {
-        return Arrays.deepEquals(A, transpoosaa(A));
+        return vertailu.vertaile(A, transpoosaa(A));
     }
     
     /**
      * Metodi, joka selvittää onko annettu matriisi antisymmetrinen. Matriisi
      * on antisymmetrinen, jos sen transpoosi on itsensä negaatio.
      * 
-     * @param A Matriisi, jonka antisymmetrisyys halutaan selvittää
+     * @param A Matriisi, jonka antisymmetrisyys halutaan selvittää, muotoa m x n
      * @return Palauttaa true, jos matriisi on antisymmetrinen
      */
-    public boolean onkoAntisymmetrinen(double[][] A){
-        return Arrays.deepEquals(kerro(A, -1), transpoosaa(A));
+    public boolean onkoAntisymmetrinen(double[][] A) {
+        return vertailu.vertaile(kerro(A, -1), transpoosaa(A));
+    }
+    
+    /**
+     * Metodi, joka selvittää onko annettu matriisi kääntyvä eli onko sille
+     * olemassa käänteismatriisi. Matriisi on kääntyvä, jos sen determinantti on
+     * eri kuin nolla.
+     * 
+     * @param A Matriisi, jonka kääntyvyys halutaan selvittää, muotoa n x n
+     * @return Palauttaa true, jos matriisi on kääntyvä
+     */
+    public boolean onkoKaantyva(double[][] A) {
+        if(determinantti.laskeDeterminantti(A) == 0){
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -77,10 +77,12 @@ public class Main {
         System.out.println("Transpoosi (A^T)^T");
         double[][] tAt = laskin.transpoosaa(tA);
         tulosta(tAt);
-        
+
         System.out.println(laskin.onkoSymmetrinen(sym));
         System.out.println(laskin.onkoNeliomatriisi(A));
         System.out.println(laskin.onkoAntisymmetrinen(antisym));
+        System.out.println(laskin.laskeDeterminantti(sym));
+        System.out.println(laskin.onkoKaantyva(sym));
     }
     
     public static void tulosta(double[][] matriisi){

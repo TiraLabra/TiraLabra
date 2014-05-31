@@ -62,4 +62,14 @@ public class MatriisilaskinTest {
     public void antisymmetrisyysToimii2() {
         assertFalse(laskin.onkoAntisymmetrinen(sym));
     }
+    
+    @Test
+    public void kaantyvyysToimii() {
+        assertTrue(laskin.onkoKaantyva(sym));
+    }
+    
+    @Test
+    public void kaantyvyysToimii2() {
+        assertFalse(laskin.onkoKaantyva(antisym));
+    }
 }
