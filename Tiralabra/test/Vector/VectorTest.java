@@ -31,7 +31,7 @@ public class VectorTest {
 
     private void vectorEquals(int... values) {
         for (int i = 0; i < values.length; i++) {
-            assertEquals(vector.get(i), new Integer(values[i]));
+            assertEquals(new Integer(values[i]), vector.get(i));
         }
     }
     
@@ -83,7 +83,19 @@ public class VectorTest {
     }
     
     @Test(expected=UnsupportedOperationException.class)
-    public void crossProduct() {
+    public void generalizedCrossProduct() {
         Vector product = vector.cross(vector);
+    }
+    
+    @Test
+    public void crossProduct() {
+        Integer v1[] = {new Integer(1), new Integer(2), new Integer(3)};
+        Integer v2[] = {new Integer(3), new Integer(2), new Integer(1)};
+        
+        Vector a = new Vector(v1);
+        Vector b = new Vector(v2);
+        
+        vector = a.cross(b);
+        vectorEquals(-4, 8, -4);
     }
 }
