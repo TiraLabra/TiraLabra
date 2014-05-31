@@ -1,0 +1,89 @@
+package Vector;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import Types.Impl.Integer;
+import Types.Impl.Decimal;
+
+public class VectorTest {
+    private Vector vector;
+
+    @Before
+    public void setUp() {
+        Integer values[] = {
+            new Integer(1), new Integer(2), new Integer(3), new Integer(4)
+        };
+
+        vector = new Vector(values);
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getUnder() {
+        vector.get(-1);
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getOver() {
+        vector.get(5);
+    }
+
+    private void vectorEquals(int... values) {
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(vector.get(i), new Integer(values[i]));
+        }
+    }
+    
+    @Test
+    public void multiplyScalar() {
+        vector = vector.multiply(Integer.TEN);
+        vectorEquals(10, 20, 30, 40);
+    }
+    
+    @Test
+    public void divideScalar() {
+        vector = vector.multiply(Integer.TEN);
+        
+        vector = vector.divide(Integer.TEN);
+        vectorEquals(1, 2, 3, 4);
+    }
+    
+    @Test
+    public void multiplyVector() {
+        vector = vector.multiply(vector);
+        vectorEquals(1, 4, 9, 16);
+    }
+    
+    @Test
+    public void subtractVector() {
+        vector = vector.subtract(vector);
+        vectorEquals(0, 0, 0, 0);
+    }
+    
+    @Test
+    public void addVector() {
+        vector = vector.add(vector);
+        vectorEquals(2, 4, 6, 8);
+    }
+    
+    @Test
+    public void length() {
+        assertEquals(new Integer(5), vector.length());
+    }
+    
+    @Test
+    public void normalization() {
+        Decimal values[] = {
+            new Decimal(2), new Decimal(2), new Decimal(2), new Decimal(2)
+        };
+        
+        vector = new Vector(values).normalize();
+        assertEquals(Decimal.ONE, vector.length());
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void crossProduct() {
+        Vector product = vector.cross(vector);
+    }
+}
