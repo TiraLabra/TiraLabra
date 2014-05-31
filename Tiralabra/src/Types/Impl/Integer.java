@@ -30,10 +30,6 @@ public class Integer extends Number {
         this.integer = integer;
     }
 
-    public static Integer valueOf(int integer) {
-        return new Integer(integer);
-    }
-
     private static BigInteger toInt(Number other) {
         return new BigInteger(other.toString());
     }

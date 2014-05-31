@@ -12,6 +12,14 @@ public abstract class NumberTests {
     public abstract void setUp();
 
     @Test
+    public void equalsWorks() {
+        assertTrue(one.equals(one));
+        assertFalse(one.equals(two));
+        assertFalse(one.equals(""));
+        assertFalse(one.equals(null));
+    }
+    
+    @Test
     public void addition() {
         assertEquals(two, one.add(one));
     }
@@ -32,8 +40,12 @@ public abstract class NumberTests {
     }
     
     @Test
+    public void exponentiation() {
+        assertEquals(four, two.pow(2));
+    }
+    
+    @Test
     public void squareRoot() {
         assertEquals(two, four.sqrt());
     }
-    
 }

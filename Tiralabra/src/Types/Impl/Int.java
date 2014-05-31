@@ -56,12 +56,10 @@ public class Int extends Number {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+        
         final Int other = (Int) obj;
         return this.integer == other.integer;
     }
