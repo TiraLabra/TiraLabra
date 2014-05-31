@@ -9,7 +9,7 @@ import com.mycompany.tiralabra_maven.view.Io;
  * Enables the user to multiply two matrices.
  * @author gabriel
  */
-public class Multiplication extends AbstractCommand {       
+public class Multiplication extends TwoParameterCommand {       
 
     /**
      * Constructs a multiplication command using the specified io.

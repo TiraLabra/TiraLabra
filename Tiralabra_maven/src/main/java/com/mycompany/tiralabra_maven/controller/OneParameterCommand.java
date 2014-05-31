@@ -11,7 +11,7 @@ import java.util.Objects;
  * The user is asked to enter two matrices, the specified operation is performed, and the result is displayed.
  * @author gabriel
  */
-public abstract class AbstractCommand implements Command {
+public abstract class OneParameterCommand implements Command {
     
     /**
      * The io used for reading input from the user and outputting the result.
@@ -24,26 +24,24 @@ public abstract class AbstractCommand implements Command {
     private MatrixReader matrixReader;
         
     /**
-     * Constructs an abstract command using the specified io.
+     * Constructs an abstract command, which reads one matrix from the user, using the specified io.
      * @param io the specified io
      * @throws NullPointerException if the io parameter is null
      */
-    public AbstractCommand(Io io) {
+    public OneParameterCommand(Io io) {
         Objects.requireNonNull(io, "io must not be null");
         this.io = io;
         this.matrixReader = new MatrixReader(io);
     }
         
     public void execute() {        
-        io.printLine("Enter the first matrix:\n");
-        Matrix matrixA = matrixReader.readMatrix();
-        io.printLine("Enter the second matrix:\n");
-        Matrix matrixB = matrixReader.readMatrix();
-        String result = performMatrixOperation(matrixA, matrixB);        
+        io.printLine("Enter the matrix:\n");
+        Matrix matrix = matrixReader.readMatrix();
+        String result = performMatrixOperation(matrix);        
         io.printLine(result + "\n");
     }
     
     
-    protected abstract String performMatrixOperation(Matrix matrixA, Matrix matrixB);
+    protected abstract String performMatrixOperation(Matrix matrix);
     
 }

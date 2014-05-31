@@ -9,7 +9,7 @@ import com.mycompany.tiralabra_maven.view.Io;
  * Enables the user to add two matrices.
  * @author gabriel
  */
-public class Addition extends AbstractCommand {       
+public class Addition extends TwoParameterCommand {       
 
     /**
      * Constructs an addition command using the specified io.

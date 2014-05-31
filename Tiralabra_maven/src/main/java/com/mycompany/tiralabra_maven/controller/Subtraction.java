@@ -9,7 +9,7 @@ import com.mycompany.tiralabra_maven.view.Io;
  * Enables the user to subtract one matrix from another.
  * @author gabriel
  */
-public class Subtraction extends AbstractCommand {       
+public class Subtraction extends TwoParameterCommand {       
 
     /**
      * Constructs a subtraction command using the specified io.

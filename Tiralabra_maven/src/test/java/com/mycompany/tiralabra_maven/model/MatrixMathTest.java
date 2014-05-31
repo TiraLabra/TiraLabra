@@ -178,4 +178,41 @@ public class MatrixMathTest {
         Matrix expectedMatrix = new Matrix(valuesExpected);
         assertEquals(expectedMatrix, MatrixMath.strassenMultiply(matrixA, matrixB));
     }
+    
+    @Test
+    public void strassenMultiplicationWorksWith1x1Matrix(){
+        matrixA = new Matrix(1,1);
+        matrixB = new Matrix(1,1);        
+        matrixA.setElement(0, 0, 2);
+        matrixB.setElement(0, 0, -3);
+        Matrix expectedMatrix = new Matrix(1,1);
+        expectedMatrix.setElement(0, 0, -6);
+        assertEquals(expectedMatrix, MatrixMath.strassenMultiply(matrixA, matrixB));
+    }
+    
+    @Test
+    public void matrixTranspositionProducesCorrectResult(){
+        double[][] valuesA = {{1, 3, 2}, {5, 0, 1}};
+        double[][] valuesExpected = {{1, 5}, {3, 0}, {2, 1}};
+        matrixA = new Matrix(valuesA);
+        Matrix matrixExpected = new Matrix(valuesExpected);
+        assertEquals(matrixExpected, MatrixMath.transpose(matrixA));
+    }
+    
+    @Test
+    public void sameSizeReturnsTrueWhenDimensionsMatch(){
+        assertTrue(MatrixMath.sameSize(matrixA, matrixB));
+    }
+    
+    @Test
+    public void sameSizeReturnsFalseWhenRowDimensionsDiffer(){
+        matrixB = new Matrix(3,2);
+        assertFalse(MatrixMath.sameSize(matrixA, matrixB));
+    }
+    
+    @Test
+    public void sameSizeReturnsFalseWhenColDimensionsDiffer(){
+        matrixB = new Matrix(2,3);
+        assertFalse(MatrixMath.sameSize(matrixA, matrixB));
+    }
 }
