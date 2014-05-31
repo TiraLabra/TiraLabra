@@ -1,0 +1,68 @@
+# depslib dependency file v1.0
+1400968590 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+	"bernstein.hpp"
+
+1400602608 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1400595820 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+
+1400591318 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.cpp
+	"hashing.hpp"
+
+1400591300 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1400596048 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1400591256 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.cpp
+	"sum_hashing.hpp"
+
+1400587396 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.cpp
+	"naive.hpp"
+
+1400588696 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1401272957 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
+	"rabin_karp.hpp"
+
+1400602816 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	"../constants.hpp"
+	"hashing/hashing.hpp"
+
+1401397736 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+	"z_algorithm.hpp"
+	<iostream>
+
+1401398892 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+	<cstring>
+	<string>
+	<vector>
+	<cstdlib>
+
+1401409868 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/main.cpp
+	<iostream>
+	<cstdio>
+	"string_slib.hpp"
+
+1400968316 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
+	"algorithms/z_algorithm.hpp"
+

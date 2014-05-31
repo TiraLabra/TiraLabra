@@ -2,8 +2,6 @@
 #include <iostream>
 using namespace std;
 
-int z_array[Z_ARRAY_MAXIMUM_LENGTH];
-
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length, int start) {
     char a,b;
@@ -37,7 +35,8 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
     }
     if (needle_length == 0) return positions;
     if (needle_length > haystack_length) return positions;
-    int total_length = haystack_length + needle_length+1-start;
+    int total_length = haystack_length + needle_length-start;
+    int * z_array = (int *) calloc(total_length, sizeof(int));
     int left=0, right=0;
     for (int i = 0; i < total_length && upper_bound_cnt!=0; ++i) {
         if (right < i) {

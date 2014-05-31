@@ -14,13 +14,13 @@ int rabin_karp_search(const char * haystack, const char * needle, int start, int
     if (needle_length == 0) return NOT_FOUND;
     bernstein_hasher * hasher = new bernstein_hasher(33);
     ULL temp_hash = 0;
-    ULL needle_hash = hasher->bernstein_hash((const char *)needle, needle_length);
+    ULL needle_hash = hasher->bernstein_hash(needle, needle_length);
     for (int i = start; i < haystack_length; ++i) {
         if (i-start >= needle_length) {
             // remove prefix character from hash
-            temp_hash = hasher->remove_prefix_from_hash((const char *)haystack,i-needle_length,needle_length,temp_hash);
+            temp_hash = hasher->remove_prefix_from_hash(haystack,i-needle_length,needle_length,temp_hash);
         }
-        temp_hash = hasher->next_bernstein_hash((const char *)haystack,i,temp_hash);
+        temp_hash = hasher->next_bernstein_hash(haystack,i,temp_hash);
         if (temp_hash == needle_hash) {
             return i+1-needle_length;
         }
