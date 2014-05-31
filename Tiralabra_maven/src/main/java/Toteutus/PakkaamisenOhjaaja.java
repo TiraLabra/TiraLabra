@@ -8,7 +8,7 @@ import java.io.IOException;
  * muita luokkia ja olioita tekemään asiat sen puolesta.
  * 
  * Ensin luetaan tiedosto, sitten muodostetaan Huffman puu, määritetään esiintyneille merkeille bittiesitykset ja
- * luodaan uusi tiedosto (pakkaus). Tiedoston pakkaaminen ei ole vielä toteutettu.
+ * luodaan uusi tiedosto (pakkaus).
  */
 
 public class PakkaamisenOhjaaja {

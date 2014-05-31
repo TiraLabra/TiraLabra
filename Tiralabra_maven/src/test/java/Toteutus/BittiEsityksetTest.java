@@ -16,9 +16,9 @@ public class BittiEsityksetTest {
     }
     
     private void alustaBittiEsitykset() {
-        this.solmu = new Solmu(null, 6);
+        this.solmu = new Solmu(6);
         solmu.setVasen(new Solmu("a", 3));
-        solmu.setOikea(new Solmu(null, 3));
+        solmu.setOikea(new Solmu(3));
         
         Solmu oikea = solmu.getOikea();
         oikea.setVasen(new Solmu("b", 2));

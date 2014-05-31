@@ -22,15 +22,12 @@ public class HuffmanPuuTest {
     }
 
     private HashMap<String, Integer> alustaEsiintymat() {
-        HashMap<String, Integer> esiintymat = new HashMap<String, Integer>();
+        HashMap<String, Integer> esiintymat = new HashMap<>();
         esiintymat.put("A", 8);
         esiintymat.put("B", 2); // b = g
         esiintymat.put("C", 4);
         esiintymat.put("D", 1);
-        esiintymat.put("E", 5); // e = h
-        esiintymat.put("F", 3);
-        esiintymat.put("G", 2);
-        esiintymat.put("H", 5); // yht 8 kpl
+        esiintymat.put("E", 2);
         
         return esiintymat;
     }
@@ -39,10 +36,10 @@ public class HuffmanPuuTest {
     public void merkillaALyhinBinaariEsitys() {
         String verr = esitykset.getEsitykset().get("A");
         String A = esitykset.getEsitykset().get("A");
-       
+        String nul = (char) 0 + "";
         
         for (String merkki : esitykset.getEsitykset().keySet()) {
-            if (merkki != null) {
+            if (! merkki.equals(nul)) {
                 String bittiesitys = esitykset.getEsitykset().get(merkki);
                 
                 if (bittiesitys.length() < verr.length()) {
@@ -58,9 +55,10 @@ public class HuffmanPuuTest {
     public void merkillaDPisinBinaariEsitys() {
         String verr = esitykset.getEsitykset().get("D");
         String D = esitykset.getEsitykset().get("D");
+        String nul = "" + (char) 0;
         
         for (String merkki : esitykset.getEsitykset().keySet()) {
-            if (merkki != null) {
+            if (! merkki.equals(nul)) {
                 String bittiesitys = esitykset.getEsitykset().get(merkki);
                 
                 if (bittiesitys.length() > verr.length()) {
@@ -97,7 +95,7 @@ public class HuffmanPuuTest {
     @Test
     public void luoKekoLuoMinKeon() {
         puu2 = new HuffmanPuu();
-        esiintymat = new HashMap<String, Integer>();
+        esiintymat = new HashMap<>();
         esiintymat.put(("a"), 1);
         puu2.luoKeko(esiintymat);
         
@@ -106,23 +104,15 @@ public class HuffmanPuuTest {
     
     @Test
     public void luodussaKeossaOnSinneLaitettavatAvaimet() {
-        puu2 = new HuffmanPuu();
-        esiintymat = new HashMap<String, Integer>();
-        esiintymat.put(("a"), 1);
-        esiintymat.put(("b"), 2);
-        puu2.luoKeko(esiintymat);
+        muodostaTestiPuuJaKeko();
         
-        assertEquals("a", puu2.getKeko().getSolmut()[0].getAvain());
-        assertEquals("b", puu2.getKeko().getSolmut()[1].getAvain());
+        assertEquals("b", puu2.getKeko().getSolmut()[0].getAvain());
+        assertEquals("a", puu2.getKeko().getSolmut()[1].getAvain());
     }    
     
     @Test
     public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() {
-        puu2 = new HuffmanPuu();
-        esiintymat = new HashMap<String, Integer>();
-        esiintymat.put("a", 3);
-        esiintymat.put("b", 2);
-        puu2.luoKeko(esiintymat);
+        muodostaTestiPuuJaKeko();
         
         puu2.yhdistaKeonSolmutPuuksi();
         assertEquals(puu2.getKeko().getSolmut()[0].getEsiintymat(), 5);
@@ -139,5 +129,41 @@ public class HuffmanPuuTest {
         assertEquals(oikea, vanh.getOikea());
         assertEquals(vanh, vasen.getVanh());
         assertEquals(vanh, oikea.getVanh());
+    }
+    
+    @Test
+    public void puunTekstiEsitys() {
+        puu2 = new HuffmanPuu();
+        esiintymat = new HashMap<>();
+        puu2.luoKeko(esiintymat);
+        tyhjaKekoPalauttaaNull();
+        
+        luoTestiEsiintymat();
+        puu2.muodostaHuffmanPuu(esiintymat);
+        
+        char nul = (char) 0;
+        puu2.puunTekstiEsitys();
+        assertEquals(nul + "ab", puu2.puunTekstiEsitys());
+        assertEquals(nul + "" + nul + "A" + nul + "C" + nul + "B" + "E" + "D", puu.puunTekstiEsitys());
+    }
+    
+    private void tyhjaKekoPalauttaaNull() {
+        assertNull(puu2.puunTekstiEsitys());
+    }
+    
+    private void muodostaTestiPuuJaKeko() {
+        luoTyhjaPuu();
+        luoTestiEsiintymat();
+        puu2.luoKeko(esiintymat);
+    }
+    
+    private void luoTyhjaPuu() {
+        puu2 = new HuffmanPuu();
+    }
+    
+    private void luoTestiEsiintymat() {
+        esiintymat = new HashMap<>();
+        esiintymat.put("a", 3);
+        esiintymat.put("b", 2);
     }
 }

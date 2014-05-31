@@ -89,19 +89,19 @@ public class MinKekoTest {
     @Test
     public void lisattavanPaikanIndeksi() {
         Solmu solmu = new Solmu(3);
-        assertEquals(0, keko.selvitaLisattavanPaikanIdeksi(0, solmu));
+        assertEquals(0, keko.selvitaLisattavanPaikanIndeksi(0, solmu));
         keko.lisaa(solmu);
         
         Solmu solmu2 = new Solmu(5);
-        assertEquals(1, keko.selvitaLisattavanPaikanIdeksi(1, solmu2));
+        assertEquals(1, keko.selvitaLisattavanPaikanIndeksi(1, solmu2));
         keko.lisaa(solmu2);
         
         Solmu solmu3 = new Solmu(1);
-        assertEquals(0, keko.selvitaLisattavanPaikanIdeksi(2, solmu3));
+        assertEquals(0, keko.selvitaLisattavanPaikanIndeksi(2, solmu3));
         keko.lisaa(solmu3);
         
         Solmu solmu4 = new Solmu(1);
-        assertEquals(1, keko.selvitaLisattavanPaikanIdeksi(3, solmu4));
+        assertEquals(1, keko.selvitaLisattavanPaikanIndeksi(3, solmu4));
     }
     
     @Test

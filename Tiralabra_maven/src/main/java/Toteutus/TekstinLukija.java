@@ -15,7 +15,7 @@ public class TekstinLukija {
     private String teksti;
     
     public TekstinLukija() {
-        this.esiintymat = new HashMap<String, Integer>();
+        this.esiintymat = new HashMap<>();
         this.teksti = "";
     }
     

@@ -46,8 +46,8 @@ public class HuffmanPuu {
     
     protected void yhdistaKeonSolmutPuuksi() {
         while (keko.getKoko() > 1) {
-            Solmu vasen = keko.poistaHuippuSolmu();
             Solmu oikea = keko.poistaHuippuSolmu();
+            Solmu vasen = keko.poistaHuippuSolmu();
             
             Solmu yhdistetty = new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());
             linkitaSolmut(yhdistetty, vasen, oikea);
@@ -70,37 +70,64 @@ public class HuffmanPuu {
         oikea.setVanh(yhdistetty);
     }
     
-        
-    // Pitääkö viedä solmut jonoon ja poistaa sieltä yksi kerrallaan??
-    // -> Näin saataisiin solmut tekstitiedostoon järjestykseen siten että huippusolmu ensin, lapset sitten jne.
-    // --> Decompression toimisi varmaankin tällä tavoin.
+    /**
+     * Palauttaa Huffman -puusta tekstiesityksen siten että tekstiin lisätään aina solmun avain, jonka jälkeen solmun
+     * lapset laitetaan jonoon.
+     * @return - puun tekstiesitys
+     */
     
     public String puunTekstiEsitys() {
         if (this.getKeko().getSolmut().length <= 0) {
             return null;
         }
-        
-        String teksti = "";
-        ArrayDeque jono = new ArrayDeque(this.getKeko().getSolmut().length);
-        
-        Solmu solmu = this.getKeko().getSolmut()[0];
-        jono.add(solmu);
-        
-        while (! jono.isEmpty()) {
-            
-            if (solmu != null) {
-                if (solmu.getVasen() != null) {
-                    jono.add(solmu.getVasen());
-                }   
-                if (solmu.getOikea() != null) {
-                    jono.add(solmu.getOikea());
-                }
 
-                teksti += solmu.getAvain(); // osa avaimista "null". Ei pitäisi olla ongelma.
-            }
-            solmu = (Solmu) jono.pollFirst();
+        return muodostaTekstiEsitys("", this.getKeko().getSolmut()[0], new ArrayDeque(this.getKeko().getSolmut().length));
+    }
+    
+    /**
+     * Teksti on alussa tyhjä ja siihen aletaan latoa solmujen avaimia järjestyksessä laittamalla jokaisen solmun lapset
+     * aina jonoon ja poistaen jonosta sitten aina seuraava.
+     * @param teksti
+     * @param solmu - alussa huippusolmu
+     * @param jono - tyhjä jono
+     * @return - puun tekstiesitys
+     */
+    
+    protected String muodostaTekstiEsitys(String teksti, Solmu solmu, ArrayDeque jono) {
+        while (solmu != null) {
+            lisaaLapsetJonoon(solmu, jono);
+            teksti += solmu.getAvain();
+            solmu = seuraava(jono);
         }
         
         return teksti;
+    }
+    
+    /**
+     * Lisää ko. solmun lapset jonoon siten että vasen ensin.
+     * @param solmu
+     * @param jono 
+     */
+    
+    protected void lisaaLapsetJonoon(Solmu solmu, ArrayDeque jono) {
+        if (solmu.getVasen() != null) {
+            jono.add(solmu.getVasen());
+        }   
+        if (solmu.getOikea() != null) {
+            jono.add(solmu.getOikea());
+        }
+    }
+   
+    /**
+     * Ottaa jononsta seuraavan lapsen tai palauttaa null jos se on tyhjä.
+     * @param jono
+     * @return 
+     */
+    
+    protected Solmu seuraava(ArrayDeque jono) {
+        if (jono.isEmpty()) {
+            return null;
+        }
+        return (Solmu) jono.pollFirst();
     }
 }

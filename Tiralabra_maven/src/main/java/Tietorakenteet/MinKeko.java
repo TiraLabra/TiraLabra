@@ -50,17 +50,18 @@ public class MinKeko {
      * 
      * @param solmu 
      */
+    
     public void lisaa(Solmu solmu) {
         this.koko++;
         if (this.koko > this.keko.length) { 
             tuplaaMahtuvienSolmujenMaara();                   // ei pitäisi koskaan tapahtua Huffman-algoritmin yhteydessä
         }
         
-        int i = selvitaLisattavanPaikanIdeksi(this.koko-1, solmu);
+        int i = selvitaLisattavanPaikanIndeksi(this.koko-1, solmu);
         keko[i] = solmu;
     }
     
-    protected int selvitaLisattavanPaikanIdeksi(int i, Solmu solmu) {
+    protected int selvitaLisattavanPaikanIndeksi(int i, Solmu solmu) {
         while (i > 0 && keko[vanh(i)].getEsiintymat() > solmu.getEsiintymat()) {
             keko[i] = keko[vanh(i)];
             i = vanh(i);
@@ -114,6 +115,14 @@ public class MinKeko {
         }
     }
     
+    /**
+     * Valitsee pienemmäksi joko indeksin vasen tai oikea riippuen siitä, kummassa paikassa kekoa
+     * solmun esiintymien määrä on pienempi.
+     * @param vasen
+     * @param oikea
+     * @return - solmun indeksi jonka esiintymien määrä pienempi
+     */
+    
     protected int pienempi(int vasen, int oikea) {
         int pienempi = vasen;
         if (keko[oikea].getEsiintymat() < keko[vasen].getEsiintymat()) {
@@ -121,6 +130,12 @@ public class MinKeko {
         }
         return pienempi;
     }
+    
+    /**
+     * Vaihtaa solmut päittäin.
+     * @param i
+     * @param j 
+     */
     
     protected void vaihda(int i, int j) {
         Solmu k = keko[i];

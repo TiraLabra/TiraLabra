@@ -2,7 +2,8 @@ package Tietorakenteet;
 
 /**
  * Luokka kuvaa keon solmua, jolla on "vanhempi" sekä oikea- että vasen lapsi.
- * Solmulla on avain (käytännössä yksi merkki, mutta mahdollisesti myös "\n" -rivinvaihtomerkkijono.
+ * Jokaisella solmulla on merkin mittainen avain, joka talletaan vielä String -formaatissa, sillä
+ * tarvitsen sitä javan valmiissa hajautustaulussa tässä muodossa.
  * 
  * En ole kirjoittanut tätä luokkaa varten testejä laisinkaan, sillä sen metodit ovat täysin triviaaleja.
  * Piti vaan pitää huolta että niissä ei ole turhia bugeja (esim. "getVanh() olisikin palauttanut vasemman lapsen
@@ -21,7 +22,14 @@ public class Solmu {
         this.esiintymiskerrat = esiintymiskerrat;
     }
     
+    /**
+     * Luo uuden solmun, jonka avaimeksi tulee ascii -merkki "00" (vastaa null-avainta, mutta ei ole "null").
+     * Käytetään Huffman -puun keossa solmuille, jotka yhdistävät kaksi lasta.
+     * @param esiintymiskerrat 
+     */
+    
     public Solmu(int esiintymiskerrat) {
+        this.avain = "" + (char) 0;
         this.esiintymiskerrat = esiintymiskerrat;
     }
     

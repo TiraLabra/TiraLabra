@@ -46,6 +46,7 @@
             <version>0.30</version>
             <configuration>
                 <targetClasses>
+                    <param>Apuvalineet.BinaariMuuntaja</param>
                     <param>Tietorakenteet.MinKeko</param>
                     <param>Toteutus.BittiEsitykset</param>
                     <param>Toteutus.HuffmanPuu</param>
@@ -53,6 +54,7 @@
                     <param>Toteutus.TiedostonPakkaaja</param>                
                 </targetClasses>
                 <targetTests>
+                    <param>Apuvalineet.BinaariMuuntajaTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
                     <param>Toteutus.BittiEsityksetTest</param>
                     <param>Toteutus.HuffmanPuuTest</param>

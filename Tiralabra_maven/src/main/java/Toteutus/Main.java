@@ -3,13 +3,12 @@ package Toteutus;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/**
- * Tee yksikkötestejä lisää (kaikkia metodeja testataan 3:ssa eri tapauksessa)
- * 
- * 1) Oikeanlainen toimiva syöte
- * 2) Vääränlainen syöte (esim. keko joutuu tuplaantumaan tms.)
- * 3) Rajatapaukset
- */
+//
+// Tee yksikkötestejä lisää (kaikkia metodeja testataan 3:ssa eri tapauksessa)
+
+// 1) Oikeanlainen toimiva syöte
+// 2) Vääränlainen syöte (esim. keko joutuu tuplaantumaan tms.)
+// 3) Rajatapaukset
 
 public class Main {
     
