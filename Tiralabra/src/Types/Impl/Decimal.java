@@ -18,7 +18,7 @@ public class Decimal extends Number {
      * Luo luvun kokonaisluvusta
      * @param decimal kokonaisluku
      */
-    public Decimal(int decimal) {
+    public Decimal(double decimal) {
         this.decimal = BigDecimal.valueOf(decimal);
     }
 
@@ -28,10 +28,6 @@ public class Decimal extends Number {
      */
     public Decimal(BigDecimal decimal) {
         this.decimal = decimal;
-    }
-
-    public static Decimal valueOf(int decimal) {
-        return new Decimal(decimal);
     }
 
     private static BigDecimal toDecimal(Number other) {
@@ -64,6 +60,12 @@ public class Decimal extends Number {
     }
     
     @Override
+    public Number sqrt() {
+        double root = Math.sqrt(decimal.doubleValue()); // !!
+        return new Decimal(root);
+    }
+    
+    @Override
     public String toString() {
         return decimal.toString();
     }
@@ -74,6 +76,8 @@ public class Decimal extends Number {
             return false;
         }
         final Decimal other = (Decimal) obj;
-        return this.decimal.equals(other.decimal);
+        //return this.decimal.equals(other.decimal);
+        
+        return (decimal.doubleValue() == other.decimal.doubleValue());
     }
 }

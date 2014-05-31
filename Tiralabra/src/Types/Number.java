@@ -39,4 +39,10 @@ public abstract class Number {
      * @return 
      */
     public abstract Number pow(int n);
+    
+    /**
+     * Neliöjuuri
+     * @return 
+     */
+    public abstract Number sqrt();
 }

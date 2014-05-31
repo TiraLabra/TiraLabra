@@ -44,6 +44,12 @@ public class Int extends Number {
     }
     
     @Override
+    public Number sqrt() {
+        int root = (int) Math.sqrt(integer);
+        return new Int(root);
+    }
+    
+    @Override
     public String toString() {
         return "" + integer;
     }

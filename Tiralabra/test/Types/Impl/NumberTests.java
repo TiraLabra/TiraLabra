@@ -13,25 +13,27 @@ public abstract class NumberTests {
 
     @Test
     public void addition() {
-        Number onePlusOne = one.add(one);
-        assertEquals(two, onePlusOne);
+        assertEquals(two, one.add(one));
     }
 
     @Test
     public void subtraction() {
-        Number twoMinusOne = two.subtract(one);
-        assertEquals(one, twoMinusOne);
+        assertEquals(one, two.subtract(one));
     }
 
     @Test
     public void multiplication() {
-        Number twoTimesTwo = two.multiply(two);
-        assertEquals(four, twoTimesTwo);
+        assertEquals(four, two.multiply(two));
     }
     
     @Test
     public void division() {
-        Number fourOverTwo = four.divide(two);
-        assertEquals(two, fourOverTwo);
+        assertEquals(two, four.divide(two));
     }
+    
+    @Test
+    public void squareRoot() {
+        assertEquals(two, four.sqrt());
+    }
+    
 }
