@@ -37,25 +37,30 @@ public class MatrixTest {
     public void getOverJ() {
         matrix.get(0, 3);
     }
+    
+    private void matrixEquals(int... values) {
+        if (values.length != (matrix.M * matrix.N)) {
+            throw new IllegalArgumentException();
+        }
+        
+        for (int i = 0; i < matrix.N; i++) {
+            for (int j = 0; j < matrix.M; j++) {
+                assertEquals(new Integer(values[i*matrix.M + j]),
+                        matrix.get(i, j));
+            }
+        }
+    }
 
     @Test
     public void multiplyScalar() {
         matrix = matrix.multiply(Integer.TEN);
-        
-        assertEquals(matrix.get(0, 0), Integer.TEN);
-        assertEquals(matrix.get(0, 1), Integer.TEN);
-        assertEquals(matrix.get(1, 0), Integer.TEN);
-        assertEquals(matrix.get(1, 1), Integer.ZERO);
+        matrixEquals(10, 10, 10, 0);
     }
     
     @Test
     public void multiplyMatrix() {
         matrix = matrix.multiply(matrix);
-
-        assertEquals(matrix.get(0, 0), new Integer(2));
-        assertEquals(matrix.get(0, 1), Integer.ONE);
-        assertEquals(matrix.get(1, 0), Integer.ONE);
-        assertEquals(matrix.get(1, 1), Integer.ONE);
+        matrixEquals(2, 1, 1, 1);
     }
     
     @Test
@@ -81,21 +86,19 @@ public class MatrixTest {
     
     @Test
     public void identityMatrix() {
-        Matrix m = Matrix.identity(2, 2, Integer.class);
-        
-        assertEquals(m.get(0, 0), Integer.ONE);
-        assertEquals(m.get(0, 1), Integer.ZERO);
-        assertEquals(m.get(1, 0), Integer.ZERO);
-        assertEquals(m.get(1, 1), Integer.ONE);
+        matrix = Matrix.identity(2, 2, Integer.class);
+        matrixEquals(1, 0, 0, 1);
+    }
+    
+    @Test
+    public void exponentiationNaive() {
+        matrix = matrix.pow_naive(2);
+        matrixEquals(2, 1, 1, 1);
     }
     
     @Test
     public void exponentiation() {
         matrix = matrix.pow(2);
-        
-        assertEquals(matrix.get(0, 0), new Integer(2));
-        assertEquals(matrix.get(0, 1), Integer.ONE);
-        assertEquals(matrix.get(1, 0), Integer.ONE);
-        assertEquals(matrix.get(1, 1), Integer.ONE);
+        matrixEquals(2, 1, 1, 1);
     }
 }

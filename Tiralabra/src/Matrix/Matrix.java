@@ -13,14 +13,6 @@ public class Matrix {
     private final Number matrix[][];
     
     /**
-     * Luo tyhjän 0x0 matriisin.
-     */
-    public Matrix() {
-        N = M = 0;
-        matrix = null;
-    }
-    
-    /**
      * Luo matriisin 2-uloitteisesta taulukosta
      * @param elements 
      */
