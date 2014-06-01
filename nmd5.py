@@ -3,6 +3,8 @@ import linkedlist
 class nmd5:
     """MD5 implementation for strings"""
 
+_list = linkedlist.LinkedList(None)
+
 A = "67452301"
 B = "EFCDAB89"
 C = "98BADCFE"
@@ -30,7 +32,7 @@ def pad(bstring):
 	messageLength = len(bstring)
 
 	amount = 448 - (messageLength % 512)
-	if amount <= 0:
+	if amount <= 0: # edge cases between 448-512
 		amount = (512 - messageLength) + 448 
 
 	padding = "1"
@@ -40,7 +42,7 @@ def pad(bstring):
 
 	return padded
 
-## Public methods ##
+## Public methods TBI ##
 
 def digest_size():
 	return 16

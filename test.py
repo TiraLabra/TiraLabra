@@ -40,17 +40,36 @@ class TestPadding(unittest.TestCase):
 	def setUp(self):
 		self.TH = TestHelper()
 
-	def test_random(self):		
-		for x in range(0, 1000):
+	def test_random(self): 		
+		for x in range(0, 1000): # make sure edge cases are tested
 			s = self.TH.generate_random_binary()
-
-			if (len(nmd5.pad(s)) % 512 != 448):
-				print(str(len(s)) + "failed with padded result" + str(len(nmd5.pad(s))))
-			#self.assertTrue(len(nmd5.pad(s)) % 512 == 448)
+			self.assertTrue(len(nmd5.pad(s)) % 512 == 448)
 
 	def test_fixed(self):
 		s = '011000010111001101100100' #asd
 		self.assertEqual(len(nmd5.pad(s)), 448)
+
+
+class TestLinkedList(unittest.TestCase):
+
+	def setUp(self):
+		self.emptyList = linkedlist.LinkedList(None)
+		self.initList = linkedlist.LinkedList(linkedlist.Node("Test", None))
+
+	def test_empty_list(self):
+		self.assertEqual("", self.emptyList.toString())
+
+	def test_addition(self):
+		self.emptyList.add(linkedlist.Node("Abc", None))
+		self.assertEqual("Abc", self.emptyList.toString())
+
+	def test_add_many(self):
+		self.emptyList.add(linkedlist.Node("Abc", linkedlist.Node("def", linkedlist.Node("ghi", linkedlist.Node("klm", None)))))
+		self.assertEqual("Abcdefghiklm", self.emptyList.toString())
+
+	def test_init_list(self):
+		self.assertEqual("Test", self.initList.toString())
+
 
 
 if __name__ == '__main__':

@@ -1,5 +1,9 @@
 class LinkedList:
-	"""Simple linked list implementation for our MD5"""
+	"""Simple linked list implementation for our MD5. 
+	To conform to the 2.5 MD5 module specification, this list doesn't need
+	anything else than addition and a traversed catenated representation
+	of itself."""
+
 	def __init__(self, root):
 		self.root = root
 		self.tail = root
@@ -7,6 +11,10 @@ class LinkedList:
 	def toString(self):
 		s = ""
 		root = self.root
+
+		if root == None:
+			return s
+
 		while (root != None):
 			s += root.value
 			root = root.next
@@ -14,12 +22,14 @@ class LinkedList:
 
 
 	def add(self, node):
-		self.tail.next = node
-		self.tail = node
+		if self.root == None:
+			self.root = node
+		else:
+			self.tail.next = node
 
 
 class Node:
-	"""A simple node"""
+	"""A simple node for the list"""
 	def __init__(self, value, next):
 		self.value = value
 		self.next = next
