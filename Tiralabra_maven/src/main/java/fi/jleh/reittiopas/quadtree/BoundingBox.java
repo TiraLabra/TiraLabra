@@ -8,7 +8,7 @@ import fi.jleh.reittiopas.model.QuadtreePoint;
  */
 public class BoundingBox {
 
-	private final double EARTH_RADIUS = 637101;
+	private final double EARTH_RADIUS = 6371010;
 	
 	private double centerX;
 	private double centerY;

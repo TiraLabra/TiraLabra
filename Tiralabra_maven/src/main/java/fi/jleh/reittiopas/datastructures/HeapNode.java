@@ -26,4 +26,9 @@ public class HeapNode<T> {
 		else
 			return 0;
 	}
+	
+	@Override
+	public String toString() {
+		return this.score + " " + this.object;
+	}
 }

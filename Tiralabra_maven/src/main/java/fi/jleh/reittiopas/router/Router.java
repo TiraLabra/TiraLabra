@@ -28,6 +28,7 @@ public class Router {
 	private final double WALK_PENALTY = 5000; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
 	private final double TIME_MODIFIER = 55000;
+	private final double BUS_COST = 1000; // It is better to travel with rails 
 	
 	private DataStructuresDto dataStructures;
 	
@@ -40,6 +41,8 @@ public class Router {
 	
 	private Map<Station, Double> costFromStart;
 	private Map<Station, Double> estimatedCost;
+
+	private String routeStartTime;
 	
 	private long processStart;
 	
@@ -58,6 +61,8 @@ public class Router {
 		processStart = System.currentTimeMillis();
 		initializeDataStructures();
 		
+		routeStartTime = startTime;
+		
 		// Values for start node
 		costFromStart.put(start, 0.0);
 		estimatedCost.put(start, GeomertyUtils.calculateDistance(start, end));
@@ -66,6 +71,8 @@ public class Router {
 		
 		while (!openNodes.isEmpty()) {
 			Station current = openNodes.getAndRemoveMin();
+			
+			//debugPrint(current);
 			
 			if (current == end) {
 				long time = System.currentTimeMillis() - processStart;
@@ -111,11 +118,7 @@ public class Router {
 					// Can't go back in time
 					if (timeScore < 0)
 						continue;
-					
-					// Time from start
-					tentativeScore += Integer.parseInt(stop.getArrival()) - Integer.parseInt(startTime);
 				
-					
 					cameFrom.put(station, current);
 					cameFromStop.put(station, stop);
 					timeAtStation.put(station, stop.getArrival());
@@ -131,8 +134,9 @@ public class Router {
 							timeScore = 0; // Reset time score, no need to change the vehicle
 					}
 
-					double cost = tentativeScore + linePenalty + timeScore;
+					double cost = tentativeScore + linePenalty + timeScore + BUS_COST;
 					
+					//costFromStart.put(station, tentativeScore + timeScore);
 					costFromStart.put(station, tentativeScore + timeScore);
 					estimatedCost.put(station, cost);
 					
@@ -154,7 +158,7 @@ public class Router {
 		int time = Integer.parseInt(TimeUtils.calculateTimeDifference(strTime1, strTime2));
 		
 		// Waiting is not so bad if it isn't too long
-		if (time < 5)
+		if (time < 10)
 			return 0;
 		
 		return time * TIME_MODIFIER;
@@ -182,9 +186,8 @@ public class Router {
 				
 				double timeScore = 0;
 				String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-				timeAtStation.put(nearbyStation, timeAfterWalk); // Walking time not yet checked
+				timeAtStation.put(nearbyStation, timeAfterWalk);
 				timeScore = calculateTimeScore(timeAfterWalk, startTime);
-				
 				
 				costFromStart.put(nearbyStation, tentativeScore + timeScore);
 				double cost = tentativeScore + timeScore + WALK_PENALTY * walkDistance;
@@ -207,5 +210,13 @@ public class Router {
 		
 		costFromStart = new HashMap<Station, Double>();
 		estimatedCost = new HashMap<Station, Double>();
+	}
+	
+	private void debugPrint(Station current) {
+		String lineNumber = "Walk";
+		if (cameFromStop.get(current) != null && cameFromStop.get(current).getService() != null)
+			lineNumber = cameFromStop.get(current).getService().getLineNumber();
+		
+		System.out.println(estimatedCost.get(current) + " " + current.getName() + " " + lineNumber);
 	}
 }

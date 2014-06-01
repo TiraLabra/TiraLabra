@@ -19,7 +19,7 @@ public class GeometryTest {
 		
 		System.out.println(boundingBox);
 		
-		QuadtreePoint point1 = new SimplePoint(24.95, 59.999);
+		QuadtreePoint point1 = new SimplePoint(24.995, 59.999);
 		QuadtreePoint point2 = new SimplePoint(27.95, 50.999);
 		
 		assertTrue(boundingBox.containsPoint(point1));
@@ -124,5 +124,14 @@ public class GeometryTest {
 		// Function is not performing accurate calculations. Real value is 2435 m but formula
 		// we are using gives 2526 m which is close enough. Difference < 100 m.
 		assertEquals(2435, distance, 100);
+	}
+	
+	@Test
+	public void boundingBoxTest() {
+		BoundingBox box = new BoundingBox(24.86048, 60.22315, 100);
+		double distance = GeomertyUtils.calculateDistance(box.getMaxX(), 24.86048, box.getCenterY(), 60.22315);
+		
+		System.out.println(distance);
+		assertEquals(100, distance, 10);
 	}
 }
