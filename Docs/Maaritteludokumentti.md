@@ -1,4 +1,4 @@
-#Aihemäärittely#
+﻿#Aihemäärittely#
 
 ##Aihe: Tiedostonpakkaus##
 
@@ -12,9 +12,14 @@ Ensimmäistä kertaa tiedostossa esiintyvää tavua ei tietenkään voida koodat
 
 Koska hakuja tehdään paljon, pakkaaminen LZ77:llä voi olla aikavievää. Sen sijaan purkaminen sujuu nopeasti, sillä purkajan ei tarvitse koostaa erikseen hakemistoa. 
 
+Purkualgoritmi saadaan vakioaikaiseksi käyttämällä päällekirjoittavaa taulukkoa. Tallentamalla viimeisen lisäyksen indeksi, voidaan siihen suhteuttamalla oikeat merkkijonot hakea taulukosta vakioajassa. Taulukon koko on sama kuin liukuikkunan koko. Tilavaativuus suhteutuu siis käytetyn ikkunan kokoon. Koko algoritmin aikavaativuus suhteessa tiedoston kokoon on tällöin lineaarinen ja tilavaativuus vakio.  
+
+Liukuvan ikkunan toteutukseen käytettävän tietorakenteet tulee tarjoita tehokkaita hakuja. Yhden haun pahimman tapauksen aikavaativuutta ei käytännössä saada alle ikkunan koon kerrottuna suurimmalla osuman pituudella. Hajautustaulu paisuisi kohtuuttoman suureksi. Hakuja voidaan kuitenkin optimoida paljonkin. Yksi tapa tähän on pitää yllä linkitettyjä listoja jokaisen yksittäisen merkin esiintymistä. Tällöin voidaan etsiä osumia vain oikealla merkillä alkavista merkkijonoista.      
+
 ###LZW###
 
 Lempel-Ziw-Welch -algoritmi on Terry Welchin 1984 esittämä LZ78-algoritmin parannus. LZW käyttää hakemistoa toistuvien merkkijonojen koodaamiseen. Suorituksen alussa hakemistoon alustetaan kaikki yksittäiset merkit. Alkuperäisessä Welchin versiossa hakemistossa on 4096 paikkaa, jolloin viite vie siis 12 bittiä. Pakkaus suoritetaan seuraavasti: tallenetaan edellinen hakemistosta löytyvä merkkijono osoittimeen w. Luetaan seuraava merkki k. jos merkkijono w+k löytyy hakemistosta, asetetaan w:ksi w+k. Muutoin lisätään w+k hakemistoon, tulostetaan w, ja asetetaan w:ksi k.   
   
 Purettaessa hakemisto pystytään rakentamaan uudelleen viitteistä. Tällöin osoittimen merkkijono tulostetaan, ja lisätään hakemistoon w ja seuraava merkki k, paitsi jos k on vielä tuntematon viite, lisätään pelkkä w. Tällöin on k:n viitteen oltava nyt lisättyyn hakemistomerkintään. 
 
+Myös LZW:ssä hakujen on oltava tehokkaita. Toisin kuin LZ77:ssa, hajautustauluja voi käyttää kätevästi. Pitäisi siis toteuttaa javan HashMapin kaltainen tietorakenne. Toinen vaihtoehto on binäärihakupuu. Tätä edelleen optimoida samaan tapaan kuin LZ77:n hakuja, luomalla jokaiselle yksittäiselle merkille oman hakupuun.    

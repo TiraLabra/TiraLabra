@@ -1,5 +1,6 @@
 package lib.io;
 
+import lib.utils.ByteAsBits;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,7 +37,7 @@ public class IO {
      * @throws IOException 
      */
     public void write(ByteAsBits b) throws IOException{
-        output.write(b.getByte()+128);
+        output.write(b.getInt());
     }
     /**
      * Lukee tavun lähdetiedostosta.
@@ -51,4 +52,9 @@ public class IO {
         }
         return null;
     }
+    
+    public void close() throws IOException{
+        input.close();
+        output.close();
+    } 
 }

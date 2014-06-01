@@ -1,5 +1,6 @@
-package lib.io;
+package lib.utils;
 
+import lib.utils.ByteAsBits;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

@@ -1,6 +1,7 @@
 
 package lib.io;
 
+import lib.utils.ByteAsBits;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

@@ -1,19 +1,20 @@
 package lib.compressors;
 
+import lib.utils.ByteAsBits;
+import lib.utils.ArrayUtils;
 import java.io.IOException;
 import java.util.LinkedList;
-import lib.io.ByteAsBits;
-import lib.io.IO;
+import lib.io.*;
 
 /** Pakkaa tiedoston käyttäen Lempel-Ziv 77 -algoritmia.
  */
 public class CompressorLZ77 {
-    private IO io;
-    private int windowSize = 4096;  
-    private int bufferSize = 16;
-    private LinkedList<Byte> window; //Liukuva ikkuna, jo käsiteltyjä, osoitinta edeltäviä tavuja.
-    private LinkedList<Byte> buffer; //Osoittimen jälkeen tulevia tavuja. 
-    private LinkedList<Boolean> outputStream; //Ulostulotiedostoon kirjoitettava bittivirta.
+    private final IO io;
+    private final int windowSize = 4096;  
+    private final int bufferSize = 15;
+    private final LinkedList<Byte> window; //Liukuva ikkuna, jo käsiteltyjä, osoitinta edeltäviä tavuja.
+    private final LinkedList<Byte> buffer; //Osoittimen jälkeen tulevia tavuja. 
+    private final OutputBuffer outputBuffer;
     
     /**
      * 
@@ -25,7 +26,7 @@ public class CompressorLZ77 {
         io = new IO(input, output);
         window = new LinkedList<Byte>();
         buffer = new LinkedList<Byte>();;
-        outputStream = new LinkedList<Boolean>();
+        outputBuffer = new OutputBuffer(io);
         
     }
     /**
@@ -50,7 +51,8 @@ public class CompressorLZ77 {
                 movePointer(pair[1]);
             }            
         }
-        finalWrite();
+        outputBuffer.finalWrite();
+        io.close();
     }
     /**
      * Etsii ikkunasta pisimmän puskurin kanssa täsmäävän merkkijonon.
@@ -62,20 +64,28 @@ public class CompressorLZ77 {
         for(int i = 0; i < window.size(); i++){
             if(buffer.peek() == window.get(i)){
                 int l = 1;
-                int j = 1;
-                while(j < buffer.size()&& i+j < window.size() && buffer.get(j) == window.get(i+j)){                    
+                
+                for(int j = 1; j < buffer.size(); j++){
+                    if(i+j >= window.size()){
+                        break;
+                    } if(buffer.get(j) != window.get(i+j)){
+                        break;
+                    } 
                     l++;
-                    j++;
-                }
+                }                
+                
                 if (l > bestLength){
                     bestLength = l;
                     bestOffset = i;
+                } if(bestLength >= 15){
+                    break;
                 }
+                i += l;
             }
             
         }
-        if(bestLength > 0){
-            return new int[]{windowSize+1-bestOffset, bestLength};
+        if(bestLength > 1){
+            return new int[]{bestOffset, bestLength};
         }   
         return null;
     }
@@ -114,31 +124,19 @@ public class CompressorLZ77 {
      * @throws IOException 
      */
     private void output(int distance, int length) throws IOException{
-        outputStream.add(true);
+        outputBuffer.addBit(true);
         
-        String str = Integer.toBinaryString(distance);
-        while(str.length() < 12){
-            str = "0" + str;
+        boolean[] bits = ArrayUtils.intToBooleanArray(distance, 12);
+        for(boolean b : bits){
+            outputBuffer.addBit(b);
         }
         
-        for(char c : str.toCharArray()){
-            if(c == '1'){
-                outputStream.add(true);
-            } else {outputStream.add(false);}
+        boolean[] bits2 = ArrayUtils.intToBooleanArray(length, 4);
+        for(boolean b : bits2){
+            outputBuffer.addBit(b);
         }
         
-        str = Integer.toBinaryString(length);
-        while(str.length() < 4){
-            str = "0" + str;
-        }
-        
-        for(char c : str.toCharArray()){
-            if(c == '1'){
-                outputStream.add(true);
-            } else {outputStream.add(false);}
-        }
-        
-        write();
+        outputBuffer.write();
     }
     /**
      * Lisää tavun sellaisenaan outputStreamiin.
@@ -146,35 +144,10 @@ public class CompressorLZ77 {
      * @throws IOException 
      */
     private void output(byte b) throws IOException{
-        outputStream.add(false);
-        ByteAsBits bits = new ByteAsBits(b);
-        for(boolean bit: bits.getAllBits()){
-            outputStream.add(bit);
-        }      
-        write();
+        outputBuffer.addBit(false);
+        outputBuffer.addByte(b);
+        outputBuffer.write();
     }
-    /**
-     * Kirjoittaa outputStreamista tiedostoon tavuttain. 
-     * @throws IOException 
-     */
-    private void write() throws IOException{
-        while(outputStream.size() >= 8){
-            boolean[] bits = new boolean[8];
-            for(int i = 0; i < 8; i++){
-                bits[i] = outputStream.poll();
-            }
-            ByteAsBits b = new ByteAsBits(bits);
-            io.write(b);
-        }
-    }
-    /**
-     * Kirjoittaa "ylijäämäbitit" tiedostoon. Tavu täydennetään nollilla.
-     * @throws IOException 
-     */
-    private void finalWrite() throws IOException{
-        while(outputStream.size()<8){
-            outputStream.add(false);
-        }
-        write();
-    }
+
+
 }

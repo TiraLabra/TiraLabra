@@ -1,4 +1,6 @@
-package lib.io;
+package lib.utils;
+
+import lib.utils.ArrayUtils;
 
 /** Tavujen muuntamiseksi biteiksi ja toisinpäin.
  *
@@ -25,15 +27,9 @@ public class ByteAsBits {
     public ByteAsBits(boolean[] bits){
         if(bits.length > 8){
             throw new IllegalArgumentException();
-        }
-        
-        String str = "";
-        for(boolean b: bits){
-            if(b){ str = str + "1";} 
-            else { if(!str.isEmpty()) str = str + "0";}
-        }
-        if(str == ""){str = "0";}
-        this.b = (byte)(Integer.parseInt(str,2)-128);
+        }        
+        int k = ArrayUtils.booleanArrayToInt(bits);
+        this.b = (byte)(k-128);
 
     }
     /**
@@ -84,4 +80,7 @@ public class ByteAsBits {
         return b;
     }
     
+    public int getInt(){
+        return b+128;
+    }
 }
