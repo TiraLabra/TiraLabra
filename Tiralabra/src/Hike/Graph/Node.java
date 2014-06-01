@@ -6,13 +6,12 @@ package Hike.Graph;
 
 import Hike.Structures.LinkyList;
 import Hike.Values;
-import java.util.LinkedList;
 
 /**
- *  Class containing a cell in the table created in ImageTable.
- * Nodes have a y and x coordinate, weight based on the terrain,
- * list of neighbours (3-8 neighbours), link to a previous node and distance for Dijkstra.
- * 
+ * Class containing a cell in the table created in ImageTable. Nodes have a y
+ * and x coordinate, weight based on the terrain, list of neighbours (3-8
+ * neighbours), link to a previous node and distance for Dijkstra.
+ *
  * @author petri
  */
 public class Node {
@@ -32,14 +31,14 @@ public class Node {
     private Node E = null;
     private Node previous;
     private int distance;
-    
+
     /**
      * Creates a node
+     *
      * @param y
      * @param x
      * @param w weight of node
      */
-
     public Node(int y, int x, int w) {
 
         this.neighbours = new LinkyList();
@@ -64,21 +63,21 @@ public class Node {
 
         this.previous = prev;
     }
-    
+
     /**
-     * Goes through the whole table and sets links to adjacent cells. Diagonal links can be turned off by commenting their statements out.
-     * 
+     * Goes through the whole table and sets links to adjacent cells. Diagonal
+     * links can be turned off by commenting their statements out.
+     *
      * @param table A table of nodes sent from ImageTable class
      */
-
-    public void setNeighbours(Node[][] table) {
+    public void setNeighbours(Node[][] table, int h, int w) {
         this.table = table;
 
-        for (int py = 0; py < Values.IMAGEHEIGHT; py++) {
-            for (int px = 0; px < Values.IMAGEWIDTH; px++) {
+        for (int py = 0; py < h; py++) {
+            for (int px = 0; px < w; px++) {
 
 
-                if (px + 1 < Values.IMAGEWIDTH) {
+                if (px + 1 < w) {
                     table[py][px].E = table[py][px + 1];
                     table[py][px].getNeighbours().add(table[py][px + 1]);
                 }
@@ -88,7 +87,7 @@ public class Node {
                     table[py][px].getNeighbours().add(table[py - 1][px]);
                 }
 
-                if (py + 1 < Values.IMAGEHEIGHT) {
+                if (py + 1 < h) {
                     table[py][px].S = table[py + 1][px];
                     table[py][px].getNeighbours().add(table[py + 1][px]);
                 }
@@ -96,12 +95,12 @@ public class Node {
                     table[py][px].W = table[py][px - 1];
                     table[py][px].getNeighbours().add(table[py][px - 1]);
                 }
-                if (py + 1 < Values.IMAGEHEIGHT && px - 1 >= 0) {
+                if (py + 1 < h && px - 1 >= 0) {
                     table[py][px].SW = table[py + 1][px - 1];
                     table[py][px].getNeighbours().add(table[py + 1][px - 1]);
                 }
 
-                if (py + 1 < Values.IMAGEHEIGHT && px + 1 < Values.IMAGEWIDTH) {
+                if (py + 1 < h && px + 1 < w) {
                     table[py][px].SE = table[py + 1][px + 1];
                     table[py][px].getNeighbours().add(table[py + 1][px + 1]);
                 }
@@ -112,7 +111,7 @@ public class Node {
                     table[py][px].getNeighbours().add(table[py - 1][px - 1]);
                 }
 
-                if (py - 1 >= 0 && px + 1 < Values.IMAGEWIDTH) {
+                if (py - 1 >= 0 && px + 1 < w) {
                     table[py][px].NE = table[py - 1][px + 1];
                     table[py][px].getNeighbours().add(table[py - 1][px + 1]);
                 }
@@ -177,15 +176,15 @@ public class Node {
     public void setDistance(int i) {
         this.distance = i;
     }
-    
-    /**
-     * Prints the table with various details, used for checking if the values are valid.
-     */
 
+    /**
+     * Prints the table with various details, used for checking if the values
+     * are valid.
+     */
     public void printTable() {
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) {
+        for (int y = 0; y < table.length; y++) {
             System.out.println("");
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
+            for (int x = 0; x < table[0].length; x++) {
                 System.out.print("| " + table[y][x].getY() + " " + table[y][x].getX() + " D: " + table[y][x].getDistance() + " W: " + table[y][x].getWeight() + " P: " + table[y][x].getPrevious());
             }
 
@@ -202,9 +201,11 @@ public class Node {
         return this.distance;
     }
 
-
-
     public LinkyList getNeighbours() {
         return this.neighbours;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }

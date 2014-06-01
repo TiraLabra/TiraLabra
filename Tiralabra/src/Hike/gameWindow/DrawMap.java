@@ -7,6 +7,7 @@ package Hike.gameWindow;
 import Hike.Algorithms.Dijkstra;
 import Hike.Graph.Node;
 import Hike.ImageTable.ImageTable;
+import Hike.Values;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Deque;
@@ -40,6 +41,8 @@ class DrawMap extends JPanel {
 //        Node[][] nTable= table.getNodeTable();
 //        nTable[0][0].printNeighbours();
         drawPath(g);
+//        droute.getDijkstraTable()[0][0].printTable();
+        
 
 
 

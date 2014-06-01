@@ -37,7 +37,7 @@ public class Dijkstra {
         this.nodeTable = nodeTable;
         this.checked = new HashSet<Node>();
         this.unchecked = new HashSet<Node>();
-        small = new Node(1, 1, 21000000);
+        
         long aikaAlussa = System.currentTimeMillis();
         initialize();
         findDijkstra();
@@ -96,7 +96,7 @@ public class Dijkstra {
      * @return node with smallest distance value
      */
     private Node getLowestDistance() {
-        small.setDistance(21000000);
+        small = new Node(0, 0, 21000000);
         for (Node node : unchecked) {
             c++;
             if (node.getDistance() < small.getDistance()) {
@@ -168,5 +168,10 @@ public class Dijkstra {
 
 
 
+    }
+    
+    public Node[][] getDijkstraTable() {
+        return nodeTable;
+        
     }
 }

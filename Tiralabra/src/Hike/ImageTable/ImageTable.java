@@ -27,7 +27,7 @@ public class ImageTable {
         tab = new Node[Values.IMAGEHEIGHT][Values.IMAGEWIDTH];
 
 
-        convertImage();
+        convertImage(Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
 
 
 
@@ -37,10 +37,9 @@ public class ImageTable {
      * Creates a table based on the picture. Method checks the image pixel by pixel and creates a node with the same location and weight.
      */
 
-    private void convertImage() {
-        int pixelcount = 0;
-        for (int y = 0; y < Values.IMAGEHEIGHT; y++) { // Y = height, X == width  
-            for (int x = 0; x < Values.IMAGEWIDTH; x++) {
+    private void convertImage(int h, int w) {
+        for (int y = 0; y < h; y++) { // Y = height, X == width  
+            for (int x = 0; x < w; x++) {
 
                 Color color = new Color(image.getRGB(x, y));
                 int red = color.getRed();
@@ -66,7 +65,7 @@ public class ImageTable {
                 }
             }
         }
-        tab[0][0].setNeighbours(tab);
+        tab[0][0].setNeighbours(tab, Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
         nodetable = tab[0][0].getTable();
 
 
