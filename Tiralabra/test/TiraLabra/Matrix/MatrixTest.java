@@ -44,9 +44,7 @@ public class MatrixTest {
     private Number makeNumber(Class<? extends Number> type, int value) {
         try {
             return type.getConstructor(int.class).newInstance(value);
-        } catch (InstantiationException | IllegalAccessException |
-                IllegalArgumentException | InvocationTargetException |
-                NoSuchMethodException | SecurityException ex ) {
+        } catch (Exception ex ) {
             throw new IllegalArgumentException();
         }
     }

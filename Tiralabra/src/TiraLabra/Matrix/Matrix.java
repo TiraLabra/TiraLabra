@@ -51,9 +51,7 @@ public class Matrix {
 
                 try {
                     val[i][j] = type.getConstructor(int.class).newInstance(k);
-                } catch (InstantiationException | IllegalAccessException |
-                        IllegalArgumentException | InvocationTargetException |
-                        NoSuchMethodException | SecurityException ex ) {
+                } catch (Exception ex ) {
                     throw new IllegalArgumentException();
                 }
             }
