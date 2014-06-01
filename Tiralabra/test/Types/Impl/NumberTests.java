@@ -70,4 +70,9 @@ public abstract class NumberTests {
     public void absoluteValue() {
         assertEquals(one, one.subtract(two).abs());
     }
+    
+    @Test
+    public void negation() {
+        assertEquals(one.subtract(two), one.negate());
+    }
 }

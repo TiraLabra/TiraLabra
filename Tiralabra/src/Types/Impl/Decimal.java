@@ -24,6 +24,14 @@ public class Decimal extends Number {
     public Decimal(double decimal) {
         this.decimal = BigDecimal.valueOf(decimal);
     }
+    
+    /**
+     * Luo luvun kokonaisluvusta
+     * @param integer
+     */
+    public Decimal(int integer) {
+        this.decimal = BigDecimal.valueOf(integer);
+    }
 
     /**
      * Luo luvun BigDecimalista

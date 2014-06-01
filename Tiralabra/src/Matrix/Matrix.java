@@ -24,14 +24,14 @@ public class Matrix {
     }
 
     /**
-     * Luo NxM matriisin
+     * Luo tyhjän NxM matriisin
      * @param n
      * @param m 
      */
     public Matrix(int n, int m) {
         this.N = n;
         this.M = m;
-
+        
         matrix = new Number[n][m];
     }
     
@@ -124,7 +124,7 @@ public class Matrix {
         Matrix res = Matrix.identity(2, 2, Types.Impl.Integer.class);
         while (n > 0) {
             if ((n % 2) == 1) {
-                res = res.multiply(m);
+                res = m.multiply(res);
             }
             
             m = m.multiply(m);
@@ -147,10 +147,10 @@ public class Matrix {
             return matrix[0][0];
         }
         
-        Number det = matrix[0][0].multiply(submatrix(0, 0).determinant());
-        for (int i = 1; i < M; i++) {
+        Number det = null;
+        for (int i = 0; i < N; i++) {
             final Number n = matrix[0][i].multiply(submatrix(0, i).determinant());
-            det = det.add((i % 2 == 1) ? n.negate() : n);
+            det = (det == null) ? n : det.add((i % 2 == 1) ? n.negate() : n);
         }
         return det;
     }
@@ -165,18 +165,13 @@ public class Matrix {
         Number res[][] = new Number[N-1][M-1];
         
         for (int k = 0; k < N; k++) {
-            if (k == i) {
-                continue;
-            }
-            
+            if (k == i) continue;            
             for (int l = 0; l < M; l++) {
-                if (l == j) {
-                    continue;
-                }
-                
+                if (l == j) continue;
+                // !!
                 res[k - ((k > i) ? 1 : 0)][l - ((l > j) ? 1 : 0)] = matrix[k][l];
             }
-        }
+         }
         
         return new Matrix(res);
     }
