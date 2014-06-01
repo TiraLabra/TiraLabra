@@ -36,19 +36,13 @@ public class Utilities {
             System.out.println("");
         }
     }
-    
+
     public static Player[][] createPlayerTable(int[][] table) {
         Player[][] board = new Player[table.length][table[0].length];
 
         for (int y = 0; y < table.length; y++) {
             for (int x = 0; x < table[0].length; x++) {
-                if (table[y][x] == 0) {
-                    board[y][x] = Player.NONE;
-                } else if (table[y][x] == 1) {
-                    board[y][x] = Player.BLACK;
-                } else {
-                    board[y][x] = Player.WHITE;
-                }
+                board[y][x] = Player.player(table[y][x]);
             }
         }
         return board;

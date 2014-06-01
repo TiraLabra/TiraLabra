@@ -6,6 +6,7 @@
 package tiralabra.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * The game board. Responsible only for holding the pieces and placing them on
@@ -41,7 +42,7 @@ public class Board {
     }
 
     /**
-     * Holds information of made moves for undoing.
+     * A stack which holds information of made moves for undoing.
      */
     public class FlipStack {
 
@@ -84,7 +85,6 @@ public class Board {
                 throw new IndexOutOfBoundsException("Popped an empty OperationStack.");
             }
             index--;
-            System.out.println(stack[index].x + ", " + stack[index].y);
             return stack[index];
         }
     }
@@ -241,11 +241,72 @@ public class Board {
         board[y][x] = player;
     }
 
+    /**
+     * Returns the color of the given tile.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Player getTile(int x, int y) {
         if (!isValidTile(x, y)) {
             return Player.NONE;
         }
         return board[y][x];
+    }
+
+    public boolean gameOver() {
+        return (!canMove(Player.BLACK) && !canMove(Player.WHITE));
+    }
+
+    /**
+     * Making a move is possible.
+     *
+     * @param player
+     * @return
+     */
+    public boolean canMove(Player player) {
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                if (canPlace(x, y, player)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Can place a piece on this tile.
+     *
+     * @param x
+     * @param y
+     * @param player
+     * @return
+     */
+    public boolean canPlace(int x, int y, Player player) {
+        return !(place(x, y, player, false).isEmpty());
+    }
+
+    public ArrayList<Long> placeTile(int x, int y) {
+        ArrayList<Long> flips = place(x, y, playerInTurn, true);
+
+        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+        Collections.sort(flips);
+        return flips;
+    }
+
+    public ArrayList<Long> placeTile(long point) {
+        return placeTile(x(point), y(point));
+    }
+
+    /**
+     * Changes the turn and puts a marker that a turn consisted of no flips to
+     * the flipStack, for undoing.
+     */
+    public void pass() {
+        flipStack.push(0, playerInTurn);
+        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
     }
 
     /**
@@ -255,34 +316,29 @@ public class Board {
      * @param x
      * @param y
      * @param player
-     * @param realMove whether the move should be done, or just tried
+     * @param realMove whether the move should be done or just tried
      * @return number of flipped pieces
      */
-    public int place(int x, int y, Player player, boolean realMove) {
+    public ArrayList<Long> place(int x, int y, Player player, boolean realMove) {
         if (!isValidTile(x, y) || getTile(x, y) != Player.NONE) {
-            return 0;
+            return new ArrayList<>();
         }
 
-        setTile(x, y, player);
+        ArrayList<Long> flips = new ArrayList<>();
 
-        int nmbOfFlips = 0;
-        nmbOfFlips += flipDirection(x, y, 1, 0, player, realMove);
-        nmbOfFlips += flipDirection(x, y, -1, 0, player, realMove);
-        nmbOfFlips += flipDirection(x, y, 0, 1, player, realMove);
-        nmbOfFlips += flipDirection(x, y, 0, -1, player, realMove);
-        nmbOfFlips += flipDirection(x, y, 1, 1, player, realMove);
-        nmbOfFlips += flipDirection(x, y, 1, -1, player, realMove);
-        nmbOfFlips += flipDirection(x, y, -1, 1, player, realMove);
-        nmbOfFlips += flipDirection(x, y, -1, -1, player, realMove);
-        if (realMove && (nmbOfFlips > 0)) {
-            flipStack.push(nmbOfFlips + 1, player);
+        flipDirection(x, y, 1, 0, player, flips, realMove);
+        flipDirection(x, y, -1, 0, player, flips, realMove);
+        flipDirection(x, y, 0, 1, player, flips, realMove);
+        flipDirection(x, y, 0, -1, player, flips, realMove);
+        flipDirection(x, y, 1, 1, player, flips, realMove);
+        flipDirection(x, y, 1, -1, player, flips, realMove);
+        flipDirection(x, y, -1, 1, player, flips, realMove);
+        flipDirection(x, y, -1, -1, player, flips, realMove);
+        if (realMove && (!flips.isEmpty())) {
+            flipStack.push(flips.size(), player);
         }
 
-        return nmbOfFlips;
-    }
-
-    public int place(long point, Player player, boolean realMove) {
-        return place(x(point), y(point), player, realMove);
+        return flips;
     }
 
     /**
@@ -294,10 +350,10 @@ public class Board {
      * @param dx
      * @param dy
      * @param player
-     * @param realMove
-     * @return number of flipped pieces.
+     * @param flips
+     * @param realMove whether to apply the effects of the move
      */
-    private int flipDirection(int x, int y, int dx, int dy, Player player, boolean realMove) {
+    private void flipDirection(int x, int y, int dx, int dy, Player player, ArrayList<Long> flips, boolean realMove) {
         int nmbOfFlips = 0;
 
         int xt = x + dx;
@@ -313,28 +369,28 @@ public class Board {
         }
 
         if (nmbOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
-            return 0;
+            return;
         }
 
-        if (realMove) {
-            for (int i = 0; i <= nmbOfFlips; i++) {
-                flip(x + i * dx, y + i * dy, player);
+        for (int i = 0; i <= nmbOfFlips; i++) {
+            if (realMove) {
+                flip(x + (i * dx), y + (i * dy), player);
             }
+            flips.add(point(x + (i * dx), y + (i * dy)));
         }
-
-        return nmbOfFlips;
     }
 
     /**
-     * Flips the piece to the opposing color in the given coordinates + adds the
-     * flip to the stack of operations done.
+     * Flips the piece to the opposing color (or places a new piece in a empty
+     * tile) in the given coordinates + adds the flip to the stack of operations
+     * done.
      *
      * @param x
      * @param y
      * @param player
      */
     private void flip(int x, int y, Player player) {
-        flipStack.push(x, y, Player.opposing(player));
+        flipStack.push(x, y, getTile(x, y));
         setTile(x, y, player);
     }
 
@@ -354,15 +410,15 @@ public class Board {
     }
 
     /**
-     * Undoes the last move and subtracts one from the moveNumber.
+     * Undoes the last move by popping all operations caused by the move from
+     * the FlipStack.
      */
     public void undo() {
         if (flipStack.isEmpty()) {
             return;
         }
-        
+
         int flipsToClear = flipStack.pop().flipsToClear;
-        System.out.println(flipsToClear);
         for (int i = 0; i < flipsToClear; i++) {
             Flip flip = flipStack.pop();
 

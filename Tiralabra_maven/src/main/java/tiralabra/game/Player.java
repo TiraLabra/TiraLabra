@@ -45,6 +45,7 @@ public enum Player {
      */
     public static Player opposing(Player player) {
         if (player == BLACK) return WHITE;
-        else return BLACK;
+        else if (player == WHITE) return BLACK;
+        else return NONE;
     }
 }
