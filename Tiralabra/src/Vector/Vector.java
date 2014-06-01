@@ -2,10 +2,22 @@ package Vector;
 
 import Types.Number;
 
+/**
+ * N-ulotteinen vektori
+ * @author riku
+ */
 public class Vector {
+    /**
+     * Vektorin pituus
+     */
     public final int N;
+    
     private final Number[] vector;
     
+    /**
+     * 
+     * @param elements 
+     */
     public Vector(Number[] elements) {
         N = elements.length;
         vector = elements;
@@ -15,6 +27,11 @@ public class Vector {
         return vector[i];
     }
     
+    /**
+     * Kertoo vektorin skalaarilla
+     * @param scalar
+     * @return this * scalar
+     */
     public Vector multiply(Number scalar) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
@@ -23,6 +40,11 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Jakaa vektorin skalaarilla
+     * @param scalar
+     * @return this / scalar
+     */
     public Vector divide(Number scalar) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
@@ -31,6 +53,11 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Kertoo kaksi vektoria yhteen
+     * @param other
+     * @return this * other
+     */
     public Vector multiply(Vector other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
@@ -39,6 +66,11 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Kahden vektorin erotus
+     * @param other
+     * @return this - other
+     */
     public Vector subtract(Vector other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
@@ -47,6 +79,11 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Kahden vektorin summa
+     * @param other
+     * @return this + other
+     */
     public Vector add(Vector other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
@@ -55,6 +92,11 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Kahden vektorin pistetulo
+     * @param other
+     * @return 
+     */
     public Number dot(Vector other) {
         Number res = vector[0].multiply(other.get(0));
         for (int i = 1; i < N; i++) {
@@ -63,15 +105,28 @@ public class Vector {
         return res;
     }
     
+    /**
+     * Vektorin pituus
+     * @return 
+     */
     public Number length() {
         Number square = this.dot(this);
         return square.sqrt();
     }
     
+    /**
+     * 
+     * @return 
+     */
     public Vector normalize() {
         return this.divide(length());
     }
     
+    /**
+     * Kahden vektorin ristitulo
+     * @param other
+     * @return this x other
+     */
     public Vector cross(Vector other) {
         if (N != 3 || other.N != 3) {
             throw new UnsupportedOperationException();
@@ -94,6 +149,10 @@ public class Vector {
         return new Vector(res);
     }
     
+    /**
+     * Vektorin suurin luku
+     * @return 
+     */
     public Number max() {
         Number max = vector[0];
         for (int i = 1; i < N; i++) {
