@@ -41,9 +41,8 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
     for (int i = 0; i < total_length && upper_bound_cnt!=0; ++i) {
         if (right < i) {
             left = right = i;
-            for (; right < total_length &&
-                z_algo_compare(haystack, needle,
-                    right-left, right, haystack_length, needle_length, start); ++right);
+            extend_right(
+                    right, left, total_length, haystack, needle, haystack_length, needle_length,start);
             z_array[i] = right-left;
             --right;
         } else {
@@ -52,9 +51,8 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
                 z_array[i] = z_array[k];
             } else {
                 left = i;
-                for (; right < total_length &&
-                z_algo_compare(haystack, needle,
-                    right-left, right, haystack_length, needle_length, start); ++right);
+                extend_right(
+                    right, left, total_length, haystack, needle, haystack_length, needle_length,start);
                 z_array[i] = right-left;
                 --right;
             }
@@ -67,3 +65,12 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
     free(z_array);
     return positions;
  }
+
+void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
+int haystack_length, int needle_length, int start) {
+    for (; right < total_length &&
+                z_algo_compare(haystack, needle,
+                    right-left, right, haystack_length, needle_length, start); ++right);
+}
+
+

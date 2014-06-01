@@ -15,3 +15,6 @@ int upper_bound_cnt=-1);
 
 vector<int> z_algo_get_positions(const char * haystack, const char * needle,
  int start=0, int haystack_length=-1, int needle_length=-1, int upper_bound_cnt=-1);
+
+void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
+int haystack_length, int needle_length, int start);
