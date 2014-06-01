@@ -17,14 +17,14 @@ import tiralabra.game.Player;
  *
  * @author atte
  */
-public class ZobristHashMap {
+public class ZobristHash {
 
     /**
      * Holds the randomly generated numbers which determine a board's hashing.
      */
     private BigInteger[][] table;
 
-    public ZobristHashMap() {
+    public ZobristHash() {
         table = new BigInteger[64][3];
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 2; j++) {
