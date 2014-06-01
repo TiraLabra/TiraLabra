@@ -98,4 +98,10 @@ public class VectorTest {
         vector = a.cross(b);
         vectorEquals(-4, 8, -4);
     }
+    
+    @Test
+    public void maximum() {
+        Types.Number max = vector.max();
+        assertEquals(vector.get(3), max);
+    }
 }

@@ -93,4 +93,15 @@ public class Vector {
         
         return new Vector(res);
     }
+    
+    public Number max() {
+        Number max = vector[0];
+        for (int i = 1; i < N; i++) {
+            if (vector[i].compareTo(max) > 0) {
+                max = vector[i];
+            }
+        }
+        
+        return max;
+    }
 }
