@@ -4,7 +4,7 @@ import Types.Number;
 import java.math.BigDecimal;
 
 /**
- * Mielivaltaisen kokoinen kokonaisluku
+ * Mielivaltaisen kokoinen desimaaliluku
  * @author riku
  */
 public class Decimal extends Number {
@@ -12,11 +12,14 @@ public class Decimal extends Number {
     public static final Decimal ZERO = new Decimal(BigDecimal.ZERO);
     public static final Decimal TEN = new Decimal(BigDecimal.TEN);
     
+    // Tarpeettoman isot epsilonit sulla
+    public final static Decimal EPSILON = new Decimal(1e-2);
+    
     public final BigDecimal decimal;
     
     /**
-     * Luo luvun kokonaisluvusta
-     * @param decimal kokonaisluku
+     * Luo luvun doublesta
+     * @param decimal
      */
     public Decimal(double decimal) {
         this.decimal = BigDecimal.valueOf(decimal);
@@ -24,7 +27,7 @@ public class Decimal extends Number {
 
     /**
      * Luo luvun BigDecimalista
-     * @param decimal BigDecimal-kokonaisluku
+     * @param decimal BigDecimal-desimaaliluku
      */
     public Decimal(BigDecimal decimal) {
         this.decimal = decimal;
@@ -76,8 +79,21 @@ public class Decimal extends Number {
             return false;
         }
         final Decimal other = (Decimal) obj;
-        //return this.decimal.equals(other.decimal);
-        
-        return (decimal.doubleValue() == other.decimal.doubleValue());
+        return (this.subtract(other).abs().compareTo(EPSILON) < 0);
+    }
+    
+    @Override
+    public boolean isNegative() {
+        return (decimal.doubleValue() < 0.);
+    }
+    
+    @Override
+    public int compareTo(Number other) {
+        return decimal.compareTo(toDecimal(other));
+    }
+    
+    @Override
+    public Number abs() {
+        return new Decimal(decimal.abs());
     }
 }

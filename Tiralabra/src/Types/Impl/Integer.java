@@ -78,4 +78,19 @@ public class Integer extends Number {
         final Integer other = (Integer) obj;
         return this.integer.equals(other.integer);
     }
+    
+    @Override
+    public boolean isNegative() {
+        return (integer.intValue() < 0);
+    }
+    
+    @Override
+    public int compareTo(Number other) {
+        return integer.compareTo(toInt(other));
+    }
+    
+    @Override
+    public Number abs() {
+        return new Integer(integer.abs());
+    }
 }

@@ -48,4 +48,26 @@ public abstract class NumberTests {
     public void squareRoot() {
         assertEquals(two, four.sqrt());
     }
+    
+    /*@Test
+    public void newtonsqrt() {
+        assertEquals(two, four.sqrt(one, 3));
+        assertEquals(four, four.multiply(four).sqrt(one, 5));
+    }*/
+    
+    @Test
+    public void comparision() {
+        assertTrue(four.compareTo(one) > 0);
+    }
+    
+    @Test
+    public void negative() {
+        assertTrue(one.subtract(two).isNegative());
+        assertFalse(two.subtract(one).isNegative());
+    }
+    
+    @Test
+    public void absoluteValue() {
+        assertEquals(one, one.subtract(two).abs());
+    }
 }
