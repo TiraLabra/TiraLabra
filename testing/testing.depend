@@ -8,10 +8,11 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1400968316 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1401655360 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
+	"algorithms/knuth_morris_pratt.hpp"
 
 1400588696 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
 	"../constants.hpp"
@@ -58,7 +59,7 @@
 1401496921 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.cpp
 	"test_suite.hpp"
 
-1401573753 /home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.hpp
+1401654926 /home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.hpp
 	<string>
 	<vector>
 	<fstream>
@@ -66,6 +67,7 @@
 	"definitions.hpp"
 	"z_algorithm_tests.hpp"
 	"rabin_karp_test.hpp"
+	"knuth_morris_pratt_tests.hpp"
 	"naive.hpp"
 
 1401573853 /home/martin/C++ projects/StringAlgorithmsFork/testing/z_algorithm_tests.hpp
@@ -92,4 +94,16 @@
 	<gtest/gtest.h>
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
+
+1401654982 /home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.hpp
+	<cstring>
+	<string>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1401655473 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+	<cstdlib>
+	<cstring>
+	<string>
 

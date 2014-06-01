@@ -7,6 +7,7 @@
 #include "definitions.hpp"
 #include "z_algorithm_tests.hpp"
 #include "rabin_karp_test.hpp"
+#include "knuth_morris_pratt_tests.hpp"
 #include "naive.hpp"
 using namespace std;
 

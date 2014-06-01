@@ -62,8 +62,20 @@
 	<cstdio>
 	"string_slib.hpp"
 
-1400968316 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1401655360 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
+	"algorithms/knuth_morris_pratt.hpp"
+
+1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
+
+1401655473 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+
+1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
 
