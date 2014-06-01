@@ -3,7 +3,7 @@ StringAlgorithmsStaticLib
 
 A C++ library containing commercial and non-commercial string algorithms for processing, searching, etc
 
-#Commerical algorithms:
+#Pattern searching
 - Z algorithm
 
 Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt)
@@ -11,13 +11,17 @@ Description of the algorithm in ODT format: [link](https://github.com/martinrade
 - Rabin-karp algorithm.
  
 Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/rabin%20karp.odt?raw=true)
-- ...
 
-#Commercial data-structures:
 - Suffix tree
 A suffix tree can be built in O(n) time where n is the length of string we are building the tree for. Accordingly, if we are searching for a string with length m, then the search can be done in O(m) time.
 - Aho–Corasick string matching (Trie)
 - ...
+
+#Hashing
+- different hashing algorithms
+
+#Other
+- Levenhstein distance using dynamic programming. Will check whether there are approximation algorithms or ways to reduce space complexity
 
 #My idea
 - I have an idea to implement a fast data structure for string matching using hashing and a binary indexed tree. Generally, 
@@ -31,7 +35,10 @@ The basic idea in my head right now is that I will be using a binary index tree 
 The project will be developed using CodeBlocks with the GNU GCC compiler.
 
 #Automated testing
-Boost will be added as a helpful library in this case.
+GoogleTest c++ library is used.
 
 #Documentation
 For now, Doxys will be used.
+
+#Installation
+
