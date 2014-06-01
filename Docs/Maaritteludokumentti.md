@@ -16,11 +16,20 @@ oppimiseen, mikä tarkoittaa tekstipohjaista käyttöliittymää. Epäselvää o
 Toteutettavat algoritmit
 ------------------------
 * A Star
+
+A Star -algoritmi on tarkoitettu lyhimmän reitin etsimiseen annetussa tietorakenteessa (verkko, kartta). Siinä tarkastellaan alkusolmusta alkaen lähimpiä solmuja niin, että valitaan tarkasteltavaksi aina pienimmän arvon saava funktiosta f=g+h, jossa g on kuljettu matka alusta, ja h jonkinlainen heuristiikka-arvio solmun ja maalisolmun välillä. Haku siis "suuntautuu" oikeaan suuntaan, eikä evaluoi kovin paljon huonoon suuntaan johtavia solmuja.
+
 * perus-Dijkstra
 
-* mahdollisesti joitain erilaisia heuristiikkoja A stariin
+Voidaan ajatella A Starin erikoistapauksena, jossa heuristiikan h arvo on aina nolla. 
+
+* mahdollisesti joitain erilaisia heuristiikkoja A stariin 
+
+Ainakin Manhattan-heuristiikka yhtenä päävaihtoehtona.
 
 * plus näiden tarvitsemat apurakenteet
+
+Alustavasti oma toteutus ArrayListista ja Keosta.
 
 
 Ohjelman syötteet
