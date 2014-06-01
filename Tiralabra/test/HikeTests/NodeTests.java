@@ -5,6 +5,7 @@
 package HikeTests;
 
 import Hike.Graph.Node;
+import Hike.Structures.LinkyList;
 import Hike.Values;
 import java.util.List;
 import org.junit.After;
@@ -56,7 +57,7 @@ public class NodeTests {
         table[0][0].setNeighbours(table);
         table = table[0][0].getTable();
 
-        List neighbours = table[0][0].getNeighbours();
+        LinkyList neighbours = table[0][0].getNeighbours();
         assertEquals(3, neighbours.size());
         
         neighbours = table[10][10].getNeighbours();

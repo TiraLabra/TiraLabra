@@ -24,7 +24,6 @@ class DrawMap extends JPanel {
     private ImageTable table;
     private Dijkstra droute;
     private Deque stack;
-    private Timer time;
 
     public DrawMap() {
     }
@@ -38,7 +37,8 @@ class DrawMap extends JPanel {
 
         table = new ImageTable(pic);
         droute = new Dijkstra(table.getNodeTable());
-
+//        Node[][] nTable= table.getNodeTable();
+//        nTable[0][0].printNeighbours();
         drawPath(g);
 
 

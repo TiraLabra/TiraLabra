@@ -5,7 +5,7 @@ import Hike.Values;
 import Hike.gameWindow.ShowPicture;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
+
 
 /**
  * Creates a 2d integer array based on the image.

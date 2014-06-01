@@ -1,6 +1,7 @@
 package Hike.Algorithms;
 
 import Hike.Graph.Node;
+import Hike.Structures.LinkyList;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class Dijkstra {
     private Node[][] nodeTable;
     private Set<Node> checked;
     private Set<Node> unchecked;
-    private LinkedList<Node> neighbours;
+    private LinkyList neighbours;
     private Deque<Node> que;
     private double c;   // Will be used to count something
     private Node small;
@@ -54,13 +55,13 @@ public class Dijkstra {
      * checked for the node containing the smallest distance, that node is then
      * placed to the checked list and the distances to it's neighbours is
      * calculated.
-     *
      */
     private void findDijkstra() {
         Node eval = nodeTable[0][0];
         unchecked.add(eval);
 
         while (unchecked.isEmpty() == false) {
+            c++;
 
             eval = getLowestDistance();
             unchecked.remove(eval);
@@ -79,6 +80,7 @@ public class Dijkstra {
     private void checkNeighbours(Node eval) {
         neighbours = eval.getNeighbours();
         for (Node node : neighbours) {
+            c++;
             if (checked.contains(node) == false) {
                 relax(eval, node);
 
@@ -96,6 +98,7 @@ public class Dijkstra {
     private Node getLowestDistance() {
         small.setDistance(21000000);
         for (Node node : unchecked) {
+            c++;
             if (node.getDistance() < small.getDistance()) {
                 small = node;
             }
@@ -121,6 +124,7 @@ public class Dijkstra {
      * @param goal
      */
     private void relax(Node start, Node goal) {
+
         if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
             goal.setDistance(start.getDistance() + goal.getWeight());
             goal.setPrevious(start);

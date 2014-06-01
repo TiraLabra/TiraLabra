@@ -4,6 +4,7 @@
  */
 package Hike.Graph;
 
+import Hike.Structures.LinkyList;
 import Hike.Values;
 import java.util.LinkedList;
 
@@ -20,7 +21,7 @@ public class Node {
     private int y;
     private int weight;
     private Node[][] table;
-    private LinkedList<Node> neighbours;
+    private LinkyList neighbours;
     private Node S = null;  // All the compass directions are currently unused
     private Node SW = null;
     private Node SE = null;
@@ -41,16 +42,14 @@ public class Node {
 
     public Node(int y, int x, int w) {
 
-        this.neighbours = new LinkedList<Node>();
+        this.neighbours = new LinkyList();
 
         this.y = y;
         this.x = x;
         this.weight = w;
         this.distance = 2000000;
 
-        if (this.table == null) {
-            this.table = table;
-        }
+
 
 
 
@@ -67,7 +66,7 @@ public class Node {
     }
     
     /**
-     * Goes through the whole table and sets links to adjecent cells. Diagonal links can be turned off by commenting their statements out.
+     * Goes through the whole table and sets links to adjacent cells. Diagonal links can be turned off by commenting their statements out.
      * 
      * @param table A table of nodes sent from ImageTable class
      */
@@ -205,7 +204,7 @@ public class Node {
 
 
 
-    public LinkedList<Node> getNeighbours() {
+    public LinkyList getNeighbours() {
         return this.neighbours;
     }
 }
