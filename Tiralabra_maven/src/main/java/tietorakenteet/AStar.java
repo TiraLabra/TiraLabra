@@ -39,6 +39,7 @@ public class AStar {
     /**
      * Tieto, kuinka monta askelta haussa otettiin.
      * Käytössä lähinnä algoritmin toiminnan tarkastelua varten.
+     * Ei ole ratkaisun askelmäärä, vaan tarkasteltujen nodejen määrä.
      */
     private int askelia;
 
@@ -67,6 +68,13 @@ public class AStar {
         alku.setEtaisyysAlusta(0);
         alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
         
+        
+        // HUOM!!
+        // Tätä ei ehditty vielä siistimään, logiikkaongelman vuoksi
+        // tämän kimpussa meni kauemmin kuin oletin... Jatkossa koodi
+        // tulee refaktoroitua selkeämmäksi. Nyt vielä mukana debuggausta
+        // helpottavia tulostuksiakin, jotka lähtevät pois.
+        //
         
         while (!kaymatta.isEmpty()) {
             Node tarkastettava = kaymatta.poll();
@@ -155,27 +163,6 @@ public class AStar {
         }
         return naapurit;
     }
-    
-//    /**
-//     * Tilapäinen heuristiikkametodi, todennäköisesti voi tulla omaksi
-//     * luokakseen ja palauttamaan järkeviä arvoja joka tapauksessa.
-//     * @param naapuri
-//     * @param loppu
-//     * @return 
-//     */
-//    private int heuristiikkaArvio(Node naapuri, Node loppu) {
-//        
-//        //TODO, palauttaa vain Dijkstran mukaisen nollan
-//        return 0;
-//    }
-//    
-//    private int heuristiikkaManhattan(Node naapuri, Node loppu) {
-//        int tulos = 0;
-//        tulos = Math.abs(naapuri.getX()-loppu.getX()) + Math.abs(naapuri.getY()-loppu.getY());
-//        
-//        return tulos;
-//    }
-    
     
     /**
      * Metodi, joka laskee kahden noden välisen kustannuksen.
