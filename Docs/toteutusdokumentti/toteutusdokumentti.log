@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.5.18)  2 JUN 2014 00:55
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.5.18)  2 JUN 2014 00:46
 entering extended mode
  %&-line parsing enabled.
-**maarittelydokumentti.tex
-(./maarittelydokumentti.tex
+**toteutusdokumentti.tex
+(./toteutusdokumentti.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
 yphenation, finnish, loaded.
@@ -514,8 +514,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 )
 \@float@every@table=\toks34
 
-(./maarittelydokumentti.aux)
-\openout1 = `maarittelydokumentti.aux'.
+No file toteutusdokumentti.aux.
+\openout1 = `toteutusdokumentti.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
@@ -531,7 +531,6 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
-
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count111
@@ -556,92 +555,46 @@ Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
 LaTeX Info: Redefining \ref on input line 25.
 LaTeX Info: Redefining \pageref on input line 25.
-
-(./maarittelydokumentti.out) (./maarittelydokumentti.out)
 \@outlinefile=\write3
-\openout3 = `maarittelydokumentti.out'.
+\openout3 = `toteutusdokumentti.out'.
 
 \AtBeginShipoutBox=\box31
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 61--62
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 68--69
-
+Overfull \hbox (66.83406pt too wide) in paragraph at lines 77--81
+\T1/cmr/m/n/12 http://www.fernuni-hagen.de/wirtschaftswissenschaft/download/bei
+traege/db426.pdf 
  []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.79 	\item L
-             aatikko tulee olla tuettu koko pohjaltaan [1] [2]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 104.
+l.84 \end{document}
+                    [1] (./toteutusdokumentti.aux)
 
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-(/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]    \T1/cmtt/m/n/12 haunVaativuus = 1 // m‰‰rittelee haun tarkkuuden iteraati
-ossa[] 
- []
-
-
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]    \T1/cmtt/m/n/12 // tehd‰‰n uusia pakkaussuunnitelmia kunnes aikaraja umpe
-utuu[] 
- []
-
-
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]        \T1/cmtt/m/n/12 tila = Tila.initialisoi() // aloitetaan tyhj‰st‰ kont
-ista[] 
- []
-
-
-Overfull \hbox (79.18542pt too wide) in paragraph at lines 123--123
-[]        \T1/cmtt/m/n/12 // tilapalkkiPino:ssa on tilapalkit, eli kontin vapaa
-na olevat tilat[] 
- []
-
-
-Overfull \hbox (29.79749pt too wide) in paragraph at lines 123--123
-[]            \T1/cmtt/m/n/12 palkki = haeParasPalkki(tila, tilapalkki, haunVaa
-tivuus)[] 
- []
-
-[3] [4]
-Overfull \hbox (66.83406pt too wide) in paragraph at lines 148--152
-\T1/cmr/m/n/12 http://www.fernuni-hagen.de/wirtschaftswissenschaft/download/bei
-traege/db426.pdf 
- []
-
-[5] (./maarittelydokumentti.aux) ) 
+ ) 
 Here is how much of TeX's memory you used:
- 5927 strings out of 495046
- 79920 string characters out of 1181966
- 155417 words of memory out of 3000000
- 8971 multiletter control sequences out of 15000+50000
- 11113 words of font info for 25 fonts, out of 3000000 for 9000
+ 5881 strings out of 495046
+ 78985 string characters out of 1181966
+ 149378 words of memory out of 3000000
+ 8955 multiletter control sequences out of 15000+50000
+ 10800 words of font info for 24 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 38i,4n,24p,788b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
- </home/szetk/.texmf-var/fonts/pk/ljfour/jkna
-ppen/ec/ecti1200.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ect
-t1200.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk
-> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/sz
-etk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/szetk/.texmf-
-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/szetk/.texmf-var/fonts/p
-k/ljfour/jknappen/ec/ecbx1440.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jk
-nappen/ec/ecrm1728.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/e
-cbx2074.600pk>
-Output written on maarittelydokumentti.pdf (6 pages, 110989 bytes).
+ 38i,4n,24p,275b,319s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.600pk> </home/s
+zetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/szetk/.texmf
+-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/szetk/.texmf-var/fonts/
+pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/j
+knappen/ec/ecrm1440.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/
+ecbx1440.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.60
+0pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk>
+Output written on toteutusdokumentti.pdf (2 pages, 69622 bytes).
 PDF statistics:
- 361 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
+ 232 PDF objects out of 1000 (max. 8388607)
+ 15 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

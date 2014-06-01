@@ -103,28 +103,27 @@ Tämä pitää tietoa pakkauksen tämänhetkisestä tilasta esimerkiksi sisält�
 Kontin pakkaaminen perustuu seuraavaan algoritmiin:
 \begin{verbatim}
 function pakkaaKontti(kontti, laatikot) 
-    paras = new PakkausSuunnitelma
-    generoiListaPalkeista() // lista generoidaan nykyisen tilan mukaan         
-    haunTarkkuus = 1 // määrittelee haun tarkkuuden iteraatiossa
+    paras = new PakkausSuunnitelma        
+    haunVaativuus = 1 // määrittelee haun tarkkuuden iteraatiossa
     // tehdään uusia pakkaussuunnitelmia kunnes aikaraja umpeutuu
     while (aika < aikaraja)
         tila = Tila.initialisoi() // aloitetaan tyhjästä kontista
         // tilapalkkiPino:ssa on tilapalkit, eli kontin vapaana olevat tilat
-        while (tila.tilapalkkiPino != null)
+        while (tila.tilapalkkiPino != empty)
         	    tilapalkki = tila.tilapalkkiPino.pop()
-            palkki = haeParasPalkki(tila, haunTarkkuus)
+            palkki = haeParasPalkki(tila, tilapalkki, haunVaativuus)
             lisaaPalkki(tila, palkki)
         endwhile
         if (parempi(tila.pakkausSuunnitelma,paras))
             paras = tila.pakkausSuunnitelma
         // update search effort for next iteration                  	
-        haunTarkkuus *= 2
+        haunVaativuus *= 2
     endwhile
 return paras
 \end{verbatim}
 
 \noindent
-Tässä generoidaan useita, toinen toistaan parempia pakkaussuunnitelmia, kunnes aikaraja umpeutuu. Kutsun nyt iteraatioksi yhden pakkaussuunnitelman luomista. HaunTarkkuus on parametri, jolla määritetään kuinka hyvin soveltuva palkki halutaan löytää tiettyyn vapaaseen tilaan. Tätä kasvatetaan iteraatioiden välillä, jolloin saadaan aina entistä parempi pakkaussuunnitelma. Iteraation aluksi initialisoidaan tila, jonka tilapalkkiPino sisältää koko kontin kokoisen vapaan tilapalkin. Tämä tilapalkki jaetaan palkkeja lisätessä pienemmiksi tilapalkeiksi, joita tulee aina kolme kappaletta. Mikäli tilapalkkiin löytyy siihvoisi tutkia en mahtuva palkki, se lisätään pakkaussuunnitelmaan.
+Tässä generoidaan useita, toinen toistaan parempia pakkaussuunnitelmia, kunnes aikaraja umpeutuu. Kutsun nyt iteraatioksi yhden pakkaussuunnitelman luomista. HaunVaativuus on parametri, jolla määritetään kuinka hyvin soveltuva palkki halutaan löytää tiettyyn vapaaseen tilaan. Tätä kasvatetaan iteraatioiden välillä, jolloin saadaan aina entistä parempi pakkaussuunnitelma. Iteraation aluksi initialisoidaan tila, jonka tilapalkkiPino sisältää koko kontin kokoisen vapaan tilapalkin. Tämä tilapalkki jaetaan palkkeja lisätessä pienemmiksi tilapalkeiksi, joita tulee aina kolme kappaletta lisää kun asetetaan uusi palkki pakkaussuunnitelmaan. Mikäli tilapalkkiin löytyy siihen mahtuva palkki, se lisätään pakkaussuunnitelmaan.
 
 \subsubsection*{haeParasPalkki(tila, tilapalkki, haunTarkkuus)}
 Tämä funktio hakee haunTarkkuuden tarkkuudella sopivan laatikon tilapalkkiin Kun haunTarkkuus on pieni, tulee palkin löytyä hyvin nopeasti. Toteutan tämän haun siksi hakupuuna, josta erään version ovat tehneet Fanslau Tobias ja Bortfeldt Andreas \cite{fanslau-bortfeldt}.
