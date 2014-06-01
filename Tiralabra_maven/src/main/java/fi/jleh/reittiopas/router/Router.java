@@ -1,12 +1,13 @@
 package fi.jleh.reittiopas.router;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fi.jleh.reittiopas.datastructures.BinaryHeap;
+import fi.jleh.reittiopas.datastructures.Heap;
 import fi.jleh.reittiopas.exception.RoutingFailureException;
 import fi.jleh.reittiopas.model.QuadtreePoint;
 import fi.jleh.reittiopas.model.Station;
@@ -26,19 +27,19 @@ public class Router {
 	private final double WALK_DISTANCE = 100;
 	private final double WALK_PENALTY = 5000; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
-	private final double TIME_MODIFIER = 10000;
+	private final double TIME_MODIFIER = 55000;
 	
 	private DataStructuresDto dataStructures;
 	
-	private Set<Station> visitedNodes = new HashSet<Station>();
-	private List<Station> openNodes = new ArrayList<Station>();
+	private Set<Station> visitedNodes;
+	private Heap<Station> openNodes;
 	
-	private Map<Station, Station> cameFrom = new HashMap<Station, Station>();
-	private Map<Station, Stop> cameFromStop = new HashMap<Station, Stop>();
-	private Map<Station, String> timeAtStation = new HashMap<Station, String>();
+	private Map<Station, Station> cameFrom;
+	private Map<Station, Stop> cameFromStop;
+	private Map<Station, String> timeAtStation;
 	
-	private Map<Station, Double> costFromStart = new HashMap<Station, Double>();
-	private Map<Station, Double> estimatedCost = new HashMap<Station, Double>();
+	private Map<Station, Double> costFromStart;
+	private Map<Station, Double> estimatedCost;
 	
 	private long processStart;
 	
@@ -60,11 +61,11 @@ public class Router {
 		// Values for start node
 		costFromStart.put(start, 0.0);
 		estimatedCost.put(start, GeomertyUtils.calculateDistance(start, end));
-		openNodes.add(start);
+		openNodes.insert(GeomertyUtils.calculateDistance(start, end), start);
 		timeAtStation.put(start, startTime);
 		
 		while (!openNodes.isEmpty()) {
-			Station current = getBestStation(openNodes, estimatedCost);
+			Station current = openNodes.getAndRemoveMin();
 			
 			if (current == end) {
 				long time = System.currentTimeMillis() - processStart;
@@ -73,7 +74,6 @@ public class Router {
 				return new RouterResult(cameFrom, cameFromStop, timeAtStation, start, end);
 			}
 			
-			openNodes.remove(current);
 			visitedNodes.add(current);
 			
 			// We can access lines and next stations through stops 
@@ -130,12 +130,14 @@ public class Router {
 						else
 							timeScore = 0; // Reset time score, no need to change the vehicle
 					}
+
+					double cost = tentativeScore + linePenalty + timeScore;
 					
 					costFromStart.put(station, tentativeScore + timeScore);
-					estimatedCost.put(station, tentativeScore + linePenalty + timeScore);
+					estimatedCost.put(station, cost);
 					
 					if (!openNodes.contains(station)) {
-						openNodes.add(station);
+						openNodes.insert(cost, station);
 					}
 				}
 			}
@@ -185,10 +187,11 @@ public class Router {
 				
 				
 				costFromStart.put(nearbyStation, tentativeScore + timeScore);
-				estimatedCost.put(nearbyStation, tentativeScore + timeScore + WALK_PENALTY * walkDistance);
+				double cost = tentativeScore + timeScore + WALK_PENALTY * walkDistance;
+				estimatedCost.put(nearbyStation, cost);
 				
 				if (!openNodes.contains(nearbyStation)) {
-					openNodes.add(nearbyStation);
+					openNodes.insert(cost, nearbyStation);
 				}
 			}
 		}
@@ -196,7 +199,7 @@ public class Router {
 	
 	private void initializeDataStructures() {
 		visitedNodes = new HashSet<Station>();
-		openNodes = new ArrayList<Station>();
+		openNodes = new BinaryHeap<Station>();
 		
 		cameFrom = new HashMap<Station, Station>();
 		cameFromStop = new HashMap<Station, Stop>();
@@ -204,25 +207,5 @@ public class Router {
 		
 		costFromStart = new HashMap<Station, Double>();
 		estimatedCost = new HashMap<Station, Double>();
-	}
-	
-	/*
-	 * Helper method to get stations from open list in order.
-	 * Should be convert into data structure.
-	 */
-	private Station getBestStation(List<Station> stations, Map<Station, Double> estimatedCost) {
-		double bestValue = Double.MAX_VALUE;
-		Station bestStation = null;
-		
-		for (Station station : stations) {
-			double value = estimatedCost.get(station);
-			
-			if (value < bestValue) {
-				bestStation = station;
-				bestValue = value;
-			}
-		}
-		
-		return bestStation;
 	}
 }
