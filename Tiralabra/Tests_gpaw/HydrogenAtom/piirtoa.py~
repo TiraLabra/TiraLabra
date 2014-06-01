@@ -15,7 +15,6 @@ def plot2d(gridi, dx, dy, nx, ny):
     x=np.arange(0, nx*dx, dx)
     y=np.arange(0, ny*dy, dy)
     X, Y = np.meshgrid(x, y)
-    print X,Y
 
     plt.figure()
     CS = plt.contour(X, Y, gridi)

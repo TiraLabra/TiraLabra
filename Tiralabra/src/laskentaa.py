@@ -11,6 +11,9 @@ def tee_gauss_seidel_yksi_askel(gridi, varaus, dx, dy, dz):
     Ratkaisun pitäisi olla Hartree potentiaali.
     Käytetään Gauss-Seidel iteraatiota:
     http://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method
+
+    xxx: parannus ks.
+    http://wiki.scipy.org/PerformancePython
     """
     from math import pi
     imax = gridi.shape[0]
@@ -19,8 +22,8 @@ def tee_gauss_seidel_yksi_askel(gridi, varaus, dx, dy, dz):
     #2d
     if kmax < 2:
         k=0
-        for i in range(0, imax-1):
-            for j in range(0, jmax-1):
+        for i in range(1, imax-1):
+            for j in range(1, jmax-1):
                 gridi[i,j,k] = \
                     gridi[i-1,j,k]*0.25 + \
                     gridi[i+1,j,k]*0.25 + \
@@ -30,9 +33,10 @@ def tee_gauss_seidel_yksi_askel(gridi, varaus, dx, dy, dz):
     #3d
     #3d
     else:
-        for i in range(0, imax-1):
-            for j in range(0, jmax-1):
-                for k in range(0, kmax-1):
+        #print "3d", varaus
+        for i in range(1, imax-1):
+            for j in range(1, jmax-1):
+                for k in range(1, kmax-1):
                     gridi[i,j,k] = \
                         gridi[i,j,k-1]/6 + \
                         gridi[i,j,k+1]/6 + \
@@ -40,5 +44,5 @@ def tee_gauss_seidel_yksi_askel(gridi, varaus, dx, dy, dz):
                         gridi[i+1,j,k]/6 + \
                         gridi[i,j-1,k]/6 + \
                         gridi[i,j+1,k]/6 + \
-                        2 / 3 * pi * varaus[i,j,k] * dx * dy * dz
+                        2. / 3. * pi * varaus[i,j,k] * dx * dy * dz
 

@@ -11,6 +11,7 @@ def tee_gridi(nx, ny, nz):
 
 def aseta_gridin_alkuarvo(arvo, gridi):
     """ asetetaan gridiin vakioarvo """
-    gridi[:, :, :] = arvo
-
+    tmp = gridi.copy()
+    tmp[:, :, :] = arvo
+    return tmp
 
