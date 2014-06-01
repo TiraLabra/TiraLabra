@@ -1,8 +1,8 @@
 package Matrix;
 
-import Types.Impl.Decimal;
-import Types.Impl.Integer;
-import Types.Number;
+import Number.Real;
+import Number.Integer;
+import Number.Number;
 import java.lang.reflect.InvocationTargetException;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -121,8 +121,8 @@ public class MatrixTest {
     
     @Test
     public void decimalExponentiation() {
-        matrix = makeMatrix(Decimal.class, 2, 2, 1, 1, 1, 0).pow(2);
-        matrixEquals(Decimal.class, 2, 1, 1, 1);
+        matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2);
+        matrixEquals(Real.class, 2, 1, 1, 1);
     }
     
     @Test

@@ -1,5 +1,7 @@
 package Types.Impl;
 
+import Number.Integer;
+
 public class IntegerTest extends NumberTests {
     @Override
     public void setUp() {

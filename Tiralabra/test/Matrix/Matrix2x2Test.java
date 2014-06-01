@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Types.Impl.Integer;
+import Number.Integer;
 
 public class Matrix2x2Test {
     private Matrix2x2 matrix;

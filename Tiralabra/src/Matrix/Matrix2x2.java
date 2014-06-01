@@ -1,6 +1,6 @@
 package Matrix;
 
-import Types.Number;
+import Number.Number;
 
 /**
  * 2x2 matriisi

@@ -1,7 +1,8 @@
 package fibonacci;
 
 import Matrix.Matrix;
-import Types.Impl.Integer;
+import Number.Number;
+import Number.Integer;
 
 public class Fibonacci {
     private static String fibonacci(int n, boolean naive) {
@@ -16,7 +17,7 @@ public class Fibonacci {
             matrix = matrix.pow(n);
         }
         
-        Types.Number fib = matrix.get(0, 1);
+        Number fib = matrix.get(0, 1);
         return fib.toString();
     }
     

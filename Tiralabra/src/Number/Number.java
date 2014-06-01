@@ -1,4 +1,4 @@
-package Types;
+package Number;
 
 /**
  * Operaattoreita luvuille

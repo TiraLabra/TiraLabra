@@ -2,7 +2,8 @@ package Matrix;
 
 import java.lang.reflect.InvocationTargetException;
 
-import Types.Number;
+import Number.Number;
+import Number.Integer32;
 
 /**
  * Matriisi
@@ -106,9 +107,9 @@ public class Matrix {
      * @return uusi matriisi
      */
     public Matrix pow_naive(int n) {
-        Matrix res = identity(N, M, Types.Impl.Integer.class);
+        Matrix res = identity(N, M, Integer32.class);
         for (int i = 0; i < n; i++) {
-            res = res.multiply(this);
+            res = this.multiply(res);
         }
         
         return res;
@@ -121,7 +122,7 @@ public class Matrix {
      */
     public Matrix pow(int n) {
         Matrix m = this;
-        Matrix res = Matrix.identity(2, 2, Types.Impl.Integer.class);
+        Matrix res = Matrix.identity(2, 2, Integer32.class);
         while (n > 0) {
             if ((n % 2) == 1) {
                 res = m.multiply(res);

@@ -1,6 +1,6 @@
 package Vector;
 
-import Types.Number;
+import Number.Number;
 
 /**
  * N-ulotteinen vektori

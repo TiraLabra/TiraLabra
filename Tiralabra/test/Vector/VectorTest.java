@@ -4,8 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Types.Impl.Integer;
-import Types.Impl.Decimal;
+import Number.Number;
+import Number.Integer;
+import Number.Real;
 
 public class VectorTest {
     private Vector vector;
@@ -74,12 +75,12 @@ public class VectorTest {
     
     @Test
     public void normalization() {
-        Decimal values[] = {
-            new Decimal(2), new Decimal(2), new Decimal(2), new Decimal(2)
+        Real values[] = {
+            new Real(2), new Real(2), new Real(2), new Real(2)
         };
         
         vector = new Vector(values).normalize();
-        assertEquals(Decimal.ONE, vector.length());
+        assertEquals(Real.ONE, vector.length());
     }
     
     @Test(expected=UnsupportedOperationException.class)
@@ -101,7 +102,7 @@ public class VectorTest {
     
     @Test
     public void maximum() {
-        Types.Number max = vector.max();
+        Number max = vector.max();
         assertEquals(vector.get(3), max);
     }
 }

@@ -1,6 +1,6 @@
-package Types.Impl;
+package Number;
 
-import Types.Number;
+import Number.Number;
 
 /**
  * Käärö Javan double-luvuille

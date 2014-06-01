@@ -1,19 +1,18 @@
-package Types.Impl;
+package Number;
 
-import Types.Number;
 import java.math.BigDecimal;
 
 /**
- * Mielivaltaisen kokoinen desimaaliluku
+ * Mielivaltaisen tarkka reaaliluku
  * @author riku
  */
-public class Decimal extends Number {
-    public static final Decimal ONE = new Decimal(BigDecimal.ONE);
-    public static final Decimal ZERO = new Decimal(BigDecimal.ZERO);
-    public static final Decimal TEN = new Decimal(BigDecimal.TEN);
+public class Real extends Number {
+    public static final Real ONE = new Real(BigDecimal.ONE);
+    public static final Real ZERO = new Real(BigDecimal.ZERO);
+    public static final Real TEN = new Real(BigDecimal.TEN);
     
     // Tarpeettoman isot epsilonit sulla
-    public final static Decimal EPSILON = new Decimal(1e-2);
+    public final static Real EPSILON = new Real(1e-2);
     
     public final BigDecimal decimal;
     
@@ -21,7 +20,7 @@ public class Decimal extends Number {
      * Luo luvun doublesta
      * @param decimal
      */
-    public Decimal(double decimal) {
+    public Real(double decimal) {
         this.decimal = BigDecimal.valueOf(decimal);
     }
     
@@ -29,7 +28,7 @@ public class Decimal extends Number {
      * Luo luvun kokonaisluvusta
      * @param integer
      */
-    public Decimal(int integer) {
+    public Real(int integer) {
         this.decimal = BigDecimal.valueOf(integer);
     }
 
@@ -37,7 +36,7 @@ public class Decimal extends Number {
      * Luo luvun BigDecimalista
      * @param decimal BigDecimal-desimaaliluku
      */
-    public Decimal(BigDecimal decimal) {
+    public Real(BigDecimal decimal) {
         this.decimal = decimal;
     }
 
@@ -47,33 +46,33 @@ public class Decimal extends Number {
     
     @Override
     public Number add(Number other) {
-        return new Decimal(decimal.add(toDecimal(other)));
+        return new Real(decimal.add(toDecimal(other)));
     }
 
     @Override
     public Number subtract(Number other) {
-        return new Decimal(decimal.subtract(toDecimal(other)));
+        return new Real(decimal.subtract(toDecimal(other)));
     }
 
     @Override
     public Number multiply(Number other) {
-        return new Decimal(decimal.multiply(toDecimal(other)));
+        return new Real(decimal.multiply(toDecimal(other)));
     }
 
     @Override
     public Number divide(Number other) {
-        return new Decimal(decimal.divide(toDecimal(other)));
+        return new Real(decimal.divide(toDecimal(other)));
     }
 
     @Override
     public Number pow(int n) {
-        return new Decimal(decimal.pow(n));
+        return new Real(decimal.pow(n));
     }
     
     @Override
     public Number sqrt() {
         double root = Math.sqrt(decimal.doubleValue()); // !!
-        return new Decimal(root);
+        return new Real(root);
     }
     
     @Override
@@ -86,7 +85,7 @@ public class Decimal extends Number {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final Decimal other = (Decimal) obj;
+        final Real other = (Real) obj;
         return (this.subtract(other).abs().compareTo(EPSILON) < 0);
     }
     
@@ -102,11 +101,11 @@ public class Decimal extends Number {
     
     @Override
     public Number abs() {
-        return new Decimal(decimal.abs());
+        return new Real(decimal.abs());
     }
     
     @Override
     public Number negate() {
-        return new Decimal(decimal.negate());
+        return new Real(decimal.negate());
     }
 }

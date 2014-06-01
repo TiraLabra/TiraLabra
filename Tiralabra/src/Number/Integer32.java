@@ -1,15 +1,17 @@
-package Types.Impl;
+package Number;
 
-import Types.Number;
-
-public class Int extends Number {
-    public static final Int ONE = new Int(1);
-    public static final Int ZERO = new Int(0);
-    public static final Int TEN = new Int(10);
+/**
+ * 32-bittinen kokonaisluku
+ * @author riku
+ */
+public class Integer32 extends Number {
+    public static final Integer32 ONE = new Integer32(1);
+    public static final Integer32 ZERO = new Integer32(0);
+    public static final Integer32 TEN = new Integer32(10);
     
     public final int integer;
     
-    public Int(int integer) {
+    public Integer32(int integer) {
         this.integer = integer;
     }
     
@@ -19,34 +21,34 @@ public class Int extends Number {
     
     @Override
     public Number add(Number other) {
-        return new Int(this.integer + toInt(other));
+        return new Integer32(this.integer + toInt(other));
     }
 
     @Override
     public Number subtract(Number other) {
-        return new Int(integer - toInt(other));
+        return new Integer32(integer - toInt(other));
     }
 
     @Override
     public Number multiply(Number other) {
         
-        return new Int(integer * toInt(other));
+        return new Integer32(integer * toInt(other));
     }
 
     @Override
     public Number divide(Number other) {
-        return new Int(integer / toInt(other));
+        return new Integer32(integer / toInt(other));
     }
 
     @Override
     public Number pow(int n) {
-        return new Int((int) Math.pow(integer, n));
+        return new Integer32((int) Math.pow(integer, n));
     }
     
     @Override
     public Number sqrt() {
         int root = (int) Math.sqrt(integer);
-        return new Int(root);
+        return new Integer32(root);
     }
     
     @Override
@@ -60,7 +62,7 @@ public class Int extends Number {
             return false;
         }
         
-        final Int other = (Int) obj;
+        final Integer32 other = (Integer32) obj;
         return this.integer == other.integer;
     }
     
@@ -76,11 +78,11 @@ public class Int extends Number {
     
     @Override
     public Number abs() {
-        return new Int((int) Math.abs(integer));
+        return new Integer32((int) Math.abs(integer));
     }
     
     @Override
     public Number negate() {
-        return new Int(integer * -1);
+        return new Integer32(integer * -1);
     }
 }
