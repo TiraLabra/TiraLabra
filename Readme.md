@@ -9,13 +9,8 @@ A C++ library containing commercial and non-commercial string algorithms for pro
 Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt)
 - Knuth-morris-pratt algorithm
 - Rabin-karp algorithm.
-This algorithm is relatively good in practise. It is similar to the naive approach. Given strings A and B where B is the string which we are searching for in A, it checks for all i (i>=0 i and i <len(A) - len(B)) whether the substring A[i,i+len(B)] equals B. The algorithm is faster in comparison to the naive approach since it can be implemented to rely on hashing the string A[i,i+len(B)] and B. If the h(A[i,i+len(B)]) != h(B), then the strings are surely different. If both hashes are equal, then we have to check whether the string are actually equal and return the index. Computed the hash is a costly sequence of operations. However knowing h1, we could compute h2 in O(1) time.
-For example, let h() be the Bernstein hashing function defined as
-h2(A) = base*h1(A) + A[2] where base is usually 33
-Now, let H be the hash for the string from 1 to 5. 
-We could find the hash from 2 to 5 in the following manner. H(2,5) = (H(1,5) - A[1]*base^3).
-If we have all of the powers of base, then we could do relatively fast searches on the string since it takes O(1) time to compute the next hash.
-Generally, the algorithm runs in O(nm) time in the worst case where n is the length of A and m is the length of B. The algorithm is prefered for multiple search in a string. For example, check for many strings in a given string.
+ 
+Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/rabin%20karp.odt?raw=true)
 - ...
 
 #Commercial data-structures:
