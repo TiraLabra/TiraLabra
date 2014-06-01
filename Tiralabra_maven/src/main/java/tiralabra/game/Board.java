@@ -288,6 +288,12 @@ public class Board {
         return !(place(x, y, player, false).isEmpty());
     }
 
+    /**
+     * Places a tile in the given position.
+     * @param x
+     * @param y
+     * @return 
+     */
     public ArrayList<Long> placeTile(int x, int y) {
         ArrayList<Long> flips = place(x, y, playerInTurn, true);
 
@@ -296,6 +302,11 @@ public class Board {
         return flips;
     }
 
+    /**
+     * Places a tile in the given position.
+     * @param point
+     * @return 
+     */
     public ArrayList<Long> placeTile(long point) {
         return placeTile(x(point), y(point));
     }
@@ -447,7 +458,7 @@ public class Board {
     }
 
     /**
-     *
+     * Returns the 2d Player-array of this board.
      * @return
      */
     public Player[][] getBoard() {

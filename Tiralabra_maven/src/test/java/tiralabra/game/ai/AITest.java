@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tiralabra.utilities.Utilities;
-import tiralabra.utilities.ZobristHash;
+import tiralabra.utilities.ZobristHashMap;
 
 /**
  *
@@ -25,13 +25,13 @@ public class AITest {
 
     private AI ai;
     private Board board;
-    private ZobristHash hasher;
+    private ZobristHashMap hasher;
 
     @Before
     public void setUp() {
         board = new Board();
         ai = new AI(board);
-        hasher = new ZobristHash();
+        hasher = new ZobristHashMap();
     }
 
     @Test

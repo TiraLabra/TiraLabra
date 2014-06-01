@@ -82,8 +82,7 @@ public class AI {
 //        return moves.get(0);
 //    }
     /**
-     *
-     * @param player
+     * Searches for the most optimal move by using alpha-beta-pruning.
      * @return
      */
     public long search() {

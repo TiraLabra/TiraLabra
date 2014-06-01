@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tiralabra.utilities.Utilities;
-import tiralabra.utilities.ZobristHash;
+import tiralabra.utilities.ZobristHashMap;
 
 /**
  *
@@ -177,7 +177,7 @@ public class BoardTest {
     @Test
     public void undoingWorksAgainstPasses() {
         board.placeTile(3, 5);
-        ZobristHash hasher = new ZobristHash();
+        ZobristHashMap hasher = new ZobristHashMap();
         long hash = hasher.hash(board.getBoard());
         assertEquals(hash, hasher.hash(board.getBoard()));
         Utilities.printBoard(board.getBoard());

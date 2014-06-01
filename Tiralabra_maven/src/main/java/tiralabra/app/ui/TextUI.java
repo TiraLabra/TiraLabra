@@ -14,6 +14,7 @@ import tiralabra.game.ai.AI;
 import tiralabra.utilities.Utilities;
 
 /**
+ * Terminal UI for the game.
  *
  * @author atte
  */
@@ -32,6 +33,10 @@ public class TextUI extends Thread {
         this.ai = new AI(board);
     }
 
+    /**
+     * Transmit moves from the AI to the game. Print the board at the beginning
+     * of each turn.
+     */
     @Override
     public synchronized void run() {
         while (!game.gameOver()) {

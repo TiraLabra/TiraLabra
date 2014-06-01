@@ -5,7 +5,7 @@ import tiralabra.game.Board;
 import tiralabra.game.Game;
 import tiralabra.app.ui.TextUI;
 import tiralabra.utilities.Utilities;
-import tiralabra.utilities.ZobristHash;
+import tiralabra.utilities.ZobristHashMap;
 
 /**
  * Used for manual debugging and testing.

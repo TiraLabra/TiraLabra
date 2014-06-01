@@ -11,18 +11,20 @@ import tiralabra.game.Player;
 
 /**
  * This class can hash a board using Zobristic hashing:
- * http://en.wikipedia.org/wiki/Zobrist_hashing
+ * http://en.wikipedia.org/wiki/Zobrist_hashing . In the future, will also work
+ * as a HashMap for 2d Player-arrays to hold the calculated board-values, best
+ * moves, etc.
  *
  * @author atte
  */
-public class ZobristHash {
+public class ZobristHashMap {
 
     /**
      * Holds the randomly generated numbers which determine a board's hashing.
      */
     private BigInteger[][] table;
 
-    public ZobristHash() {
+    public ZobristHashMap() {
         table = new BigInteger[64][3];
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 2; j++) {

@@ -12,7 +12,7 @@ package tiralabra.utilities;
  */
 public class ZobristHashTest {
     
-    private ZobristHash hasher;
+    private ZobristHashMap hasher;
     
     
 }
