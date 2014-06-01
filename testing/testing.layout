@@ -6,14 +6,24 @@
 			<Cursor1 position="363" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="z_algorithm_tests.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="test_suite.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="366" topLine="0" />
+			<Cursor1 position="253" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="rabin_karp_test.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="476" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="test_suite.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1091" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="z_algorithm_tests.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="529" topLine="18" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="testing" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/testing" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/bin/Debug/libStringAlgorithmsStaticLib.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/testing" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="definitions.hpp" />
+		<Unit filename="naive.cpp" />
+		<Unit filename="naive.hpp" />
+		<Unit filename="rabin_karp_test.cpp" />
+		<Unit filename="rabin_karp_test.hpp" />
+		<Unit filename="test_suite.cpp" />
+		<Unit filename="test_suite.hpp" />
+		<Unit filename="z_algorithm_tests.cpp" />
+		<Unit filename="z_algorithm_tests.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

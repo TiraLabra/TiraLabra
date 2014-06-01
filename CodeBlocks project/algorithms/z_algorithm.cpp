@@ -64,5 +64,6 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
             --upper_bound_cnt;
         }
     }
+    free(z_array);
     return positions;
  }

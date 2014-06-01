@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1400968590 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+1401626609 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
 	"bernstein.hpp"
+	<iostream>
 
-1400602608 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+1401619221 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
 	<string>
 	<cstring>
 	<vector>
@@ -36,17 +37,17 @@
 	<cstring>
 	<string>
 
-1401272957 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
+1401646092 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
 	"rabin_karp.hpp"
 
-1401570973 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+1401646882 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
 	<cstring>
 	<string>
 	<iostream>
+	<cstdlib>
 	"../constants.hpp"
-	"hashing/hashing.hpp"
 
-1401496958 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+1401643746 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
 	"z_algorithm.hpp"
 	<iostream>
 
