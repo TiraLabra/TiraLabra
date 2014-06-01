@@ -1,8 +1,8 @@
-language: java
-jdk:
-  - oraclejdk7
-  - openjdk6
+language: python
+python:
+  - "3.4"
+
 notifications:
   email: false
 
-script: "./run_tests.sh"
+script: python test.py
