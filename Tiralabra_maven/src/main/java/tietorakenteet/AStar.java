@@ -51,6 +51,8 @@ public class AStar {
         
         this.heuristiikka = heuristiikka;
         
+        this.kuljettuReitti = new ArrayList<Node>();
+        
     }
     
     /**
@@ -71,8 +73,7 @@ public class AStar {
         
         // HUOM!!
         // Tätä ei ehditty vielä siistimään, logiikkaongelman vuoksi
-        // tämän kimpussa meni kauemmin kuin oletin... Jatkossa koodi
-        // tulee refaktoroitua selkeämmäksi. Nyt vielä mukana debuggausta
+        // tämän kimpussa meni kauemmin kuin oletin... Jatkossa koodi        // tulee refaktoroitua selkeämmäksi. Nyt vielä mukana debuggausta
         // helpottavia tulostuksiakin, jotka lähtevät pois.
         //
         
@@ -85,6 +86,7 @@ public class AStar {
             
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
+                rakennaReitti(loppu);
                 return;
             }
             
@@ -179,7 +181,33 @@ public class AStar {
     public int getAskelia() {
         return askelia;
     }
-
     
+    /**
+     * Reitin rakentava metodi.
+     * Nopea alustava toteutus, pitäisi tutkia voiko tehdä fiksummin ja siistiä tätä vielä.
+     * @param loppu 
+     */
+    private void rakennaReitti(Node loppu) {
+        ArrayList<Node> invert = new ArrayList<Node>();
+        Node n = loppu;
+        while (n.getEdellinen() != null) {
+            invert.add(n);
+            n = n.getEdellinen();
+        }
+        
+        //Käännetään 
+        for (int i = invert.size(); i>0; i--) {
+            kuljettuReitti.add(invert.get(i-1));
+        }
+    }
+    
+    /**
+     * Palauttaa ratkaisun jälkeen löydetyn reitin.
+     * Palauttaa null, jos reittiä ei löytynyt tai kutsutaan ennen hakua.
+     * @return 
+     */
+    public ArrayList<Node> kerroKuljettuReitti() {
+        return this.kuljettuReitti;
+    }
     
 }

@@ -1,7 +1,7 @@
 package main;
 
 import heuristiikat.*;
-import tietorakenteet.*;
+import java.util.ArrayList;
 import tietorakenteet.*;
 
 /**
@@ -22,22 +22,34 @@ public class Main {
 //        
 //        System.out.println(vertailu);
         
-        //Alue a = new Alue(16);
-        //a.luoEsimerkkiTaulukko();
-        Alue a = new Alue(8);
-        a.luoPieniTestitaulukko();
+        //16x16-testialue
+        Alue a1 = new Alue(16);
+        a1.luoEsimerkkiTaulukko();
         
+        //8x8-testialue
+        Alue a2 = new Alue(8);
+        a2.luoPieniTestitaulukko();
         
-        System.out.println(a.toString());
+        // Mitä aluetta tarkastellaan...
+        Alue hakualue = a2;
         
+        System.out.println(hakualue.toString());
         
         Heuristiikka h = new Manhattan();
         //Heuristiikka h = new Dijkstra();
         
         AStar as = new AStar(h);
         
-        as.AStarHaku(a, a.getnode(0, 0), a.getnode(6,6));
+        as.AStarHaku(hakualue, hakualue.getnode(0, 0), hakualue.getnode(6,6));
         
-        System.out.println(as.getAskelia() + " askelta.");
+        System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
+        
+        ArrayList<Node> reitti = as.kerroKuljettuReitti();
+        System.out.println("\nKuljettu reitti: ("+ reitti.size() + " kpl)");
+        for (Node n : reitti) {
+            System.out.println(n.toString());
+            n.toString();
+        }
+        System.out.println(hakualue.toString());
     }
 }
