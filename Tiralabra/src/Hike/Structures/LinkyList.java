@@ -4,8 +4,9 @@ import Hike.Graph.Node;
 import java.util.Iterator;
 
 /**
- * A singly linked list.
- *
+ * A singly linked list. 
+ * New nodes are linked with LinkElement and placed at the top of the list.
+ * Implements Iterable to enable for-loops.
  */
 public class LinkyList implements Iterable<Node> {
 
@@ -19,7 +20,10 @@ public class LinkyList implements Iterable<Node> {
 
 
     }
-
+/**
+ * If list is empty, sets the first node as top.
+ * @param node 
+ */
     public void add(Node node) {
         if (this.top == null) {
             this.top = new LinkElement(node);
@@ -32,6 +36,11 @@ public class LinkyList implements Iterable<Node> {
         current = this.top;
 
     }
+    
+    /**
+     * Counts elements until it finds one without a child.
+     * @return 
+     */
 
     public int size() {
         int count = 0;
@@ -50,7 +59,7 @@ public class LinkyList implements Iterable<Node> {
 }
 
     /**
-     * Method needed for for-looping.
+     * Method needed for for-looping. Iterable.
      *
      * @return Node for for-loops
      */

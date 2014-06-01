@@ -8,8 +8,8 @@ import Hike.Graph.Node;
 import java.util.Iterator;
 
 /**
+ *  Used by LinkyList to link nodes in a list.
  *
- * @author petri
  */
 public class LinkElement {
 
