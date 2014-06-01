@@ -83,4 +83,9 @@ public class Double extends Number {
     public Number abs() {
         return new Double(Math.abs(decimal));
     }
+    
+    @Override
+    public Number negate() {
+        return new Double(decimal * -1.);
+    }
 }

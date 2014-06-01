@@ -78,4 +78,9 @@ public class Int extends Number {
     public Number abs() {
         return new Int((int) Math.abs(integer));
     }
+    
+    @Override
+    public Number negate() {
+        return new Int(integer * -1);
+    }
 }

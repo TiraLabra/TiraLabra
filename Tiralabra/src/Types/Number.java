@@ -73,4 +73,10 @@ public abstract class Number implements Comparable<Number> {
      * @return |this|
      */
     public abstract Number abs();
+    
+    /**
+     * Vastaluku
+     * @return -this
+     */
+    public abstract Number negate();
 }

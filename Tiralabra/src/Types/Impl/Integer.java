@@ -93,4 +93,9 @@ public class Integer extends Number {
     public Number abs() {
         return new Integer(integer.abs());
     }
+    
+    @Override
+    public Number negate() {
+        return new Integer(integer.negate());
+    }
 }

@@ -96,4 +96,9 @@ public class Decimal extends Number {
     public Number abs() {
         return new Decimal(decimal.abs());
     }
+    
+    @Override
+    public Number negate() {
+        return new Decimal(decimal.negate());
+    }
 }

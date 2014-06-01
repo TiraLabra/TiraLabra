@@ -38,10 +38,20 @@ public class MatrixTest {
         matrix.get(0, 3);
     }
     
-    private void matrixEquals(int... values) {
-        if (values.length != (matrix.M * matrix.N)) {
-            throw new IllegalArgumentException();
+    private Matrix makeMatrix(int n, int m, int... values) {
+        Integer elements[][] = new Integer[n][m];
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                elements[i][j] = new Integer(values[i*m + j]);
+            }
         }
+        
+        return new Matrix(elements);
+    }
+    
+    private void matrixEquals(int... values) {
+        assertEquals(values.length, matrix.M * matrix.N);
         
         for (int i = 0; i < matrix.N; i++) {
             for (int j = 0; j < matrix.M; j++) {
@@ -77,13 +87,7 @@ public class MatrixTest {
         assertEquals(ba.N, 0);
         assertEquals(ba.M, 0);
     }
-    
-    @Test(expected=UnsupportedOperationException.class)
-    public void determinantOnNonSquareMatrix() {
-        Matrix m = new Matrix(1, 2);
-        m.determinant();
-    }
-    
+
     @Test
     public void identityMatrix() {
         matrix = Matrix.identity(2, 2, Integer.class);
@@ -100,5 +104,35 @@ public class MatrixTest {
     public void exponentiation() {
         matrix = matrix.pow(2);
         matrixEquals(2, 1, 1, 1);
+    }
+    
+    @Test
+    public void submatrix() {
+        matrix = matrix.submatrix(0, 0);
+        matrixEquals(0);
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void determinantOnNonSquareMatrix() {
+        Matrix m = new Matrix(1, 2);
+        m.determinant();
+    }
+    
+    @Test
+    public void determinantOn1x1Matrix() {
+        Matrix m = makeMatrix(1, 1, 1);
+        assertEquals(Integer.ONE, m.determinant());
+    }
+    
+    @Test
+    public void determinantOn2x2Matrix() {
+        assertEquals(new Integer(-1), matrix.determinant());
+    }
+    
+    @Test
+    public void determinantOn4x4Matrix() {
+        Matrix m = makeMatrix(4, 4,
+                1,2,3,4, 1,2,3,4, 1,2,3,4, 1,2,3,4);
+        assertEquals(Integer.ZERO, m.determinant());
     }
 }
