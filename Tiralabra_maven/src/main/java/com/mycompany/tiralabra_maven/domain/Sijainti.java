@@ -14,6 +14,12 @@ public class Sijainti {
     private int posX;
     private int posY;
     private int posZ;
+    
+    public Sijainti(){
+        this.posX = 0;
+        this.posY = 0;
+        this.posZ = 0;
+    }
 
     public Sijainti(int posX, int posY, int posZ) {
         this.posX = posX;
@@ -21,6 +27,10 @@ public class Sijainti {
         this.posZ = posZ;
     }
     
+    /**
+     * Tämä lisää kahden sijainnin komponentit yhteen. Tätä hyödynnetään esimerkiksi palkkien referenssikulkmien käytössä.
+     * @param sijainti Lisättävä sijainti
+     */
     public void plus(Sijainti sijainti){
         this.posX += sijainti.getPosX();
         this.posY += sijainti.getPosY();

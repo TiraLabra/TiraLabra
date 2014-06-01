@@ -10,10 +10,42 @@ package com.mycompany.tiralabra_maven.domain;
  *
  * @author szetk
  */
-public class Laatikko extends Sarmio{
+public class Laatikko{
+    
+    private Laatikkotyyppi tyyppi;
+    private Sijainti sijainti;
+    private int orientaatio;
 
-    public Laatikko(int x, int y, int z) {
-        super(x, y, z);
+    public Laatikko(Laatikkotyyppi tyyppi, Sijainti sijainti, int orientaatio){
+        this.tyyppi = tyyppi;
+        this.sijainti = sijainti;
+        this.orientaatio = orientaatio;
     }
+
+    public Laatikkotyyppi getTyyppi() {
+        return tyyppi;
+    }
+
+    public void setTyyppi(Laatikkotyyppi tyyppi) {
+        this.tyyppi = tyyppi;
+    }
+
+    public Sijainti getSijainti() {
+        return sijainti;
+    }
+
+    public void setSijainti(Sijainti sijainti) {
+        this.sijainti = sijainti;
+    }
+
+    public int getOrientaatio() {
+        return orientaatio;
+    }
+
+    public void setOrientaatio(int orientaatio) {
+        this.orientaatio = orientaatio;
+    }
+    
+    
     
 }

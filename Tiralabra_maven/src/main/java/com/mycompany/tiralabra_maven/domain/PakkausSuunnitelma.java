@@ -3,35 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
  * @author szetk
  */
 public class PakkausSuunnitelma {
-    
-    private HashMap<Laatikko, Sijainti> laatikot;
 
-    public PakkausSuunnitelma(HashMap<Laatikko, Sijainti> laatikot) {
-        this.laatikot = laatikot;
+    private ArrayList<Palkki> palkit;
+
+    public PakkausSuunnitelma(ArrayList<Palkki> palkit) {
+        this.palkit = palkit;
     }
 
     public PakkausSuunnitelma() {
-        this.laatikot = new HashMap<Laatikko, Sijainti>();
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.palkit = new ArrayList<Palkki>();
     }
 
-    public HashMap<Laatikko, Sijainti> getLaatikot() {
-        return laatikot;
+    public ArrayList<Palkki> getPalkit() {
+        return palkit;
     }
 
-    public void setLaatikot(HashMap<Laatikko, Sijainti> laatikot) {
-        this.laatikot = laatikot;
+    public void setPalkit(ArrayList<Palkki> palkit) {
+        this.palkit = palkit;
     }
-    
+
     
 }

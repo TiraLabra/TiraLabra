@@ -20,6 +20,10 @@ public class Sarmio {
         this.y = y;
         this.z = z;
     }
+    
+    public int getTilavuus(){
+        return this.x * this.y * this.z;
+    }
 
     public int getX() {
         return x;

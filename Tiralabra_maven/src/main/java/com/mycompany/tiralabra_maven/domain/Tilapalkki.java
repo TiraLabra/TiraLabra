@@ -14,6 +14,11 @@ public class Tilapalkki extends Sarmio{
     
     private Sijainti sijainti;
 
+    public Tilapalkki(int x, int y, int z) {
+        super(x, y, z);	
+        this.sijainti = null;
+    }
+
     public Tilapalkki(int x, int y, int z, int posX, int posY, int posZ) {
         super(x, y, z);
         this.sijainti = new Sijainti(posX, posY, posZ);
