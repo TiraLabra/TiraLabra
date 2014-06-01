@@ -1,6 +1,6 @@
-package Number;
+package TiraLabra.Number;
 
-import Number.Number;
+import TiraLabra.Number.Number;
 
 /**
  * Käärö Javan double-luvuille

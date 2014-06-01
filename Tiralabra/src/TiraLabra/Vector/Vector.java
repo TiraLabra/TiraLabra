@@ -1,6 +1,6 @@
-package Vector;
+package TiraLabra.Vector;
 
-import Number.Number;
+import TiraLabra.Number.Number;
 
 /**
  * N-ulotteinen vektori

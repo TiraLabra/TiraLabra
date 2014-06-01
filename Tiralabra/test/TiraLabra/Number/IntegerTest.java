@@ -1,6 +1,4 @@
-package Types.Impl;
-
-import Number.Integer;
+package TiraLabra.Number;
 
 public class IntegerTest extends NumberTests {
     @Override

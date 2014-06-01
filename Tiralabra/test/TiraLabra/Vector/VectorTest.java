@@ -1,12 +1,12 @@
-package Vector;
+package TiraLabra.Vector;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Number.Number;
-import Number.Integer;
-import Number.Real;
+import TiraLabra.Number.Number;
+import TiraLabra.Number.Integer;
+import TiraLabra.Number.Real;
 
 public class VectorTest {
     private Vector vector;

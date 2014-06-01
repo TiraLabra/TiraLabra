@@ -1,9 +1,9 @@
-package Matrix;
+package TiraLabra.Matrix;
 
 import java.lang.reflect.InvocationTargetException;
 
-import Number.Number;
-import Number.Integer32;
+import TiraLabra.Number.Number;
+import TiraLabra.Number.Integer32;
 
 /**
  * Matriisi

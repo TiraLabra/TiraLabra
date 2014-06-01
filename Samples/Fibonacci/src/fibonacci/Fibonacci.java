@@ -1,8 +1,9 @@
 package fibonacci;
 
-import Matrix.Matrix;
-import Number.Number;
-import Number.Integer;
+import TiraLabra.Matrix.Matrix;
+
+import TiraLabra.Number.Number;
+import TiraLabra.Number.Integer;
 
 public class Fibonacci {
     private static String fibonacci(int n, boolean naive) {

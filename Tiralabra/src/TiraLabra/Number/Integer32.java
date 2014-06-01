@@ -1,4 +1,4 @@
-package Number;
+package TiraLabra.Number;
 
 /**
  * 32-bittinen kokonaisluku

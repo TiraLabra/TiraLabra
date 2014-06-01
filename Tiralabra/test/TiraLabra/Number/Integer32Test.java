@@ -1,8 +1,6 @@
-package Types.Impl;
+package TiraLabra.Number;
 
-import Number.Integer32;
-
-public class IntTest extends NumberTests {
+public class Integer32Test extends NumberTests {
     @Override
     public void setUp() {
         one = new Integer32(1);

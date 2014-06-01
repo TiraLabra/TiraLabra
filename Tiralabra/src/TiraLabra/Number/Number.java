@@ -1,4 +1,4 @@
-package Number;
+package TiraLabra.Number;
 
 /**
  * Operaattoreita luvuille

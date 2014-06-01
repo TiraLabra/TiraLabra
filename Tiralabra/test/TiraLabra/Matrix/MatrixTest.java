@@ -1,12 +1,13 @@
-package Matrix;
+package TiraLabra.Matrix;
 
-import Number.Real;
-import Number.Integer;
-import Number.Number;
 import java.lang.reflect.InvocationTargetException;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import TiraLabra.Number.Real;
+import TiraLabra.Number.Integer;
+import TiraLabra.Number.Number;
 
 public class MatrixTest {
     private Matrix matrix;

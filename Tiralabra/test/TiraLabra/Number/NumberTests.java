@@ -1,6 +1,5 @@
-package Types.Impl;
+package TiraLabra.Number;
 
-import Number.Number;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

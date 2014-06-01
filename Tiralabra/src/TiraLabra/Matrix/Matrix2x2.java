@@ -1,6 +1,6 @@
-package Matrix;
+package TiraLabra.Matrix;
 
-import Number.Number;
+import TiraLabra.Number.Number;
 
 /**
  * 2x2 matriisi

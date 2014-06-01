@@ -1,6 +1,4 @@
-package Types.Impl;
-
-import Number.Real;
+package TiraLabra.Number;
 
 public class DecimalTest extends NumberTests {
     @Override

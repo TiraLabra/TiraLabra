@@ -1,6 +1,4 @@
-package Types.Impl;
-
-import Number.Double;
+package TiraLabra.Number;
 
 public class DoubleTest extends NumberTests {
     @Override

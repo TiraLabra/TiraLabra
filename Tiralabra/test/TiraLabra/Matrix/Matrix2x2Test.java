@@ -1,10 +1,10 @@
-package Matrix;
+package TiraLabra.Matrix;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Number.Integer;
+import TiraLabra.Number.Integer;
 
 public class Matrix2x2Test {
     private Matrix2x2 matrix;
