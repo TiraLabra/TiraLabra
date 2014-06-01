@@ -33,8 +33,6 @@ def pad(bstring):
 	if amount <= 0:
 		amount = (512 - messageLength) + 448 
 
-
-
 	padding = "1"
 	padding += "0" * (amount - 1)
 
