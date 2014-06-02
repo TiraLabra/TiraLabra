@@ -1,0 +1,91 @@
+# depslib dependency file v1.0
+1401626609 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+	"bernstein.hpp"
+	<iostream>
+
+1401619221 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1400595820 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+
+1400591318 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.cpp
+	"hashing.hpp"
+
+1400591300 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1400596048 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1400591256 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.cpp
+	"sum_hashing.hpp"
+
+1400587396 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.cpp
+	"naive.hpp"
+
+1400588696 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1401647535 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
+	"rabin_karp.hpp"
+
+1401646882 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	<cstdlib>
+	"../constants.hpp"
+
+1401648330 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+	"z_algorithm.hpp"
+	<iostream>
+
+1401648245 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+	<cstring>
+	<string>
+	<vector>
+	<cstdlib>
+
+1401409868 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/main.cpp
+	<iostream>
+	<cstdio>
+	"string_slib.hpp"
+
+1401739091 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
+	"algorithms/z_algorithm.hpp"
+	"algorithms/knuth_morris_pratt.hpp"
+	"algorithms/edit_distance.hpp"
+
+1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
+
+1401655473 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+
+1401655468 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
+
+1401743206 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+
+1401741267 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.cpp
+	"edit_distance.hpp"
+	<iostream>
+
