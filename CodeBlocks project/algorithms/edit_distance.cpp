@@ -9,8 +9,8 @@ edit_distance::edit_distance(int add_cost, int remove_cost, int replace_cost) {
 
 edit_distance::~edit_distance() {
     if (dynamic_programming_array!=NULL) {
-        free(*dynamic_programming_array);
-        free(dynamic_programming_array);
+        free(*this->dynamic_programming_array);
+        free(this->dynamic_programming_array);
     }
 }
 
@@ -27,47 +27,47 @@ int edit_distance::get_levenstein_distance(const char * str_a, const char * str_
         str_b_len = strlen(str_b);
     }
 
-    if (dynamic_programming_array!=NULL) {
-        free(*dynamic_programming_array);
-        free(dynamic_programming_array);
+    if (this->dynamic_programming_array!=NULL) {
+        free(*this->dynamic_programming_array);
+        free(this->dynamic_programming_array);
     }
     // initiliaze dynamic programming matrix
-    dynamic_programming_array = (int **)calloc(str_a_len+1, sizeof(int*));
+    this->dynamic_programming_array = (int **)calloc(str_a_len+1, sizeof(int*));
     for (int i = 0; i <= str_a_len; ++i) {
-        dynamic_programming_array[i] = (int*)calloc(str_b_len+1, sizeof(int));
+        this->dynamic_programming_array[i] = (int*)calloc(str_b_len+1, sizeof(int));
     }
     // compute array
     // compute simple case
     for (int i = 0; i<=str_a_len; ++i) {
-        dynamic_programming_array[i][0] = i*this->remove_cost;
+        this->dynamic_programming_array[i][0] = i*this->remove_cost;
     }
     for (int i = 0; i<=str_b_len; ++i) {
-        dynamic_programming_array[0][i] = i*this->add_cost;
+        this->dynamic_programming_array[0][i] = i*this->add_cost;
     }
     for (int i = 1; i<= str_a_len; ++i) {
         for (int j = 1; j<= str_b_len; ++j) {
             if (str_a[i-1] == str_b[j-1]) {
-                dynamic_programming_array[i][j] = dynamic_programming_array[i-1][j-1];
+                this->dynamic_programming_array[i][j] = this->dynamic_programming_array[i-1][j-1];
             } else {
-                int to_insert = dynamic_programming_array[i-1][j] + this->add_cost;
-                int to_remove = dynamic_programming_array[i][j-1] + this->remove_cost;
-                int to_replace = dynamic_programming_array[i-1][j-1] + this->replace_cost;
+                int to_insert = this->dynamic_programming_array[i-1][j] + this->add_cost;
+                int to_remove = this->dynamic_programming_array[i][j-1] + this->remove_cost;
+                int to_replace = this->dynamic_programming_array[i-1][j-1] + this->replace_cost;
                 if (to_insert < to_remove) {
                     if (to_insert < to_replace) {
-                        dynamic_programming_array[i][j] = to_insert;
+                        this->dynamic_programming_array[i][j] = to_insert;
                     } else {
-                        dynamic_programming_array[i][j] = to_replace;
+                        this->dynamic_programming_array[i][j] = to_replace;
                     }
                 } else if (to_remove <= to_insert) {
                     if (to_remove < to_replace) {
-                        dynamic_programming_array[i][j] = to_remove;
+                        this->dynamic_programming_array[i][j] = to_remove;
                     } else {
-                        dynamic_programming_array[i][j] = to_replace;
+                        this->dynamic_programming_array[i][j] = to_replace;
                     }
                 }
             }
         }
     }
-    return dynamic_programming_array[str_a_len][str_b_len];
+    return this->dynamic_programming_array[str_a_len][str_b_len];
 }
 

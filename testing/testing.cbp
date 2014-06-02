@@ -36,6 +36,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="definitions.hpp" />
+		<Unit filename="edit_distance_tests.cpp" />
+		<Unit filename="edit_distance_tests.hpp" />
 		<Unit filename="knuth_morris_pratt_tests.cpp" />
 		<Unit filename="knuth_morris_pratt_tests.hpp" />
 		<Unit filename="naive.cpp" />

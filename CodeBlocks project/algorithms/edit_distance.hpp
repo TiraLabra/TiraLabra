@@ -12,8 +12,7 @@ class edit_distance {
     int add_cost;
     int remove_cost;
     int replace_cost;
-    //int dynamic_programming_array[100][100];
-    int ** dynamic_programming_array=NULL;
+    int ** dynamic_programming_array;
     public:
     edit_distance(int add_cost, int remove_cost, int replace_cost);
     ~edit_distance();
