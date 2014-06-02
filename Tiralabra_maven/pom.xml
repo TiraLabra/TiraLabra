@@ -48,18 +48,20 @@
                 <targetClasses>
                     <param>Apuvalineet.BinaariMuuntaja</param>
                     <param>Tietorakenteet.MinKeko</param>
-                    <param>Toteutus.BittiEsitykset</param>
-                    <param>Toteutus.HuffmanPuu</param>
+                    <param>Toteutus.Huffman.BittiEsitykset</param>
+                    <param>Toteutus.Huffman.HuffmanPuu</param>
                     <param>Toteutus.TekstinLukija</param>     
-                    <param>Toteutus.TiedostonPakkaaja</param>                
+                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaaja</param>     
+                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkaja</param>           
                 </targetClasses>
                 <targetTests>
                     <param>Apuvalineet.BinaariMuuntajaTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
-                    <param>Toteutus.BittiEsityksetTest</param>
-                    <param>Toteutus.HuffmanPuuTest</param>
-                    <param>Toteutus.TekstinLukijaTest</param>
-                    <param>Toteutus.TiedostonPakkaajaTest</param>
+                    <param>Toteutus.Huffman.BittiEsityksetTest</param>
+                    <param>Toteutus.Huffman.HuffmanPuuTest</param>
+                    <param>Toteutus.TekstinLukijaTest</param>     
+                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaajaTest</param>     
+                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkajaTest</param>   
                 </targetTests>
             </configuration>
         </plugin>

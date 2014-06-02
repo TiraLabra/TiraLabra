@@ -1,5 +1,8 @@
-package Toteutus;
+package Toteutus.Huffman.Pakkaaminen;
 
+import Toteutus.Huffman.BittiEsitykset;
+import Toteutus.Huffman.HuffmanPuu;
+import Toteutus.TekstinLukija;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

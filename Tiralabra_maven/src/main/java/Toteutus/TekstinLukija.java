@@ -12,11 +12,18 @@ import java.util.Scanner;
 
 public class TekstinLukija {
     private HashMap<String, Integer> esiintymat;
-    private String teksti;
+    private StringBuilder teksti;
+    private boolean keraaEsiintymat;
     
     public TekstinLukija() {
         this.esiintymat = new HashMap<>();
-        this.teksti = "";
+        this.teksti = new StringBuilder();
+        this.keraaEsiintymat = true;
+    }
+    
+    public TekstinLukija(boolean keraaEsiintymat) {
+        this.teksti = new StringBuilder();
+        this.keraaEsiintymat = keraaEsiintymat;
     }
     
     public HashMap<String, Integer> getEsiintymat() {
@@ -24,7 +31,7 @@ public class TekstinLukija {
     }
     
     public String getTeksti() {
-        return this.teksti;
+        return this.teksti.toString();
     }
     
     /**
@@ -68,13 +75,19 @@ public class TekstinLukija {
      */
     
     protected void lisaaMerkki(String merkki) {
+        if (keraaEsiintymat) {
+            lisaaEsiintyma(merkki);
+        }
+        teksti.append(merkki);
+    }
+    
+    protected void lisaaEsiintyma(String merkki) {
         int maara = 1;
-        
+            
         if (esiintymat.containsKey(merkki)) {
             maara += esiintymat.get(merkki);
         }
         
-        esiintymat.put(merkki, maara);
-        teksti += merkki;
+        esiintymat.put(merkki, maara); 
     }
 }

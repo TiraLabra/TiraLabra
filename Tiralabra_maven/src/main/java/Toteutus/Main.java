@@ -1,6 +1,6 @@
 package Toteutus;
 
-import java.io.FileNotFoundException;
+import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
 
 //
@@ -12,17 +12,8 @@ import java.io.IOException;
 
 public class Main {
     
-    public static void main(String[] args) {
-        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
-        
-        try {
-            ohjaaja.suoritaPakkaaminen("huffman.txt");
-        }
-        catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } 
-        catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    public static void main(String[] args) throws IOException {
+        TiedostonPurkaja purkaja = new TiedostonPurkaja();
+        purkaja.pura("arrow.txt.hemi");
     }
 }

@@ -1,4 +1,4 @@
-package Toteutus;
+package Toteutus.Huffman;
 
 import Tietorakenteet.Solmu;
 import java.util.HashMap;

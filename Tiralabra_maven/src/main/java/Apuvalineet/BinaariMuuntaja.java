@@ -8,6 +8,11 @@ import java.util.HashMap;
  */
 
 public class BinaariMuuntaja {
+    private int lisatytEtuNollat;
+    
+    public int getLisatytEtuNollat() {
+        return this.lisatytEtuNollat;
+    }
     
     /**
      * Palauttaa pakatun tiedoston alkuun asetettavan 4-tavun mittaisen osoittimen.
@@ -16,22 +21,23 @@ public class BinaariMuuntaja {
      */
     
     public String muodostaOsoitin(int tekstinPituus) {
-        int arvo = 4 + tekstinPituus;
-        String osoitin = lisaaEtuNollatOsoittimeen("", Integer.numberOfLeadingZeros(arvo));
+        int arvo = 5 + tekstinPituus;
+        StringBuilder osoitin = lisaaEtuNollatOsoittimeen(Integer.numberOfLeadingZeros(arvo));
+        osoitin.append(binaariEsitys(arvo));
         
-        return pakatuksiTekstiksi(osoitin + binaariEsitys(arvo));
+        return pakatuksiTekstiksi(osoitin.toString());
     }
     
     /**
      * Lisää osoittimen alkuun etunollia "maaran" verran.
-     * @param osoitin
      * @param maara
      * @return 
      */
     
-    protected String lisaaEtuNollatOsoittimeen(String osoitin, int maara) {
+    protected StringBuilder lisaaEtuNollatOsoittimeen(int maara) {
+        StringBuilder osoitin = new StringBuilder();
         while (maara > 0) {
-            osoitin += "0";
+            osoitin.append("0");
             maara--;
         }
         return osoitin;
@@ -47,7 +53,7 @@ public class BinaariMuuntaja {
         if (arvo == 0) {
             return "0";
         }
-        return binaariEsitys("", false, arvo);
+        return binaariEsitys(new StringBuilder(), false, arvo);
     }
     
     /**
@@ -60,18 +66,18 @@ public class BinaariMuuntaja {
      * @param arvo
      * @return 
      */
-    protected String binaariEsitys(String esitys, boolean bitti1Loydetty, int arvo) {
+    protected String binaariEsitys(StringBuilder esitys, boolean bitti1Loydetty, int arvo) {
         for (int i = 30; i >= 0; i--) {
             if (arvo >= Math.pow(2, i)) {
                 arvo -= Math.pow(2, i);
-                esitys += "1";
+                esitys.append("1");
                 bitti1Loydetty = true;
             }
             else if (bitti1Loydetty) {
-                esitys += "0";
+                esitys.append("0");
             }
         }
-        return esitys;
+        return esitys.toString();
     }
     
     /**
@@ -81,13 +87,13 @@ public class BinaariMuuntaja {
      */
     
     public String pakatuksiTekstiksi(String ykkosinaJaNollina) {
-        String pakattuna = "";
+        StringBuilder pakkaaja = new StringBuilder();
         
         for (int i = 0; i < ykkosinaJaNollina.length() / 8; i++) {
-            pakattuna += seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 8 * i);
+            pakkaaja.append(seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 8 * i));
         }
         
-        return pakattuna;
+        return pakkaaja.toString();
     }
 
     protected char seuraavaTavuAsciiMerkkina(String ykkosinaJaNollina, int alku) {
@@ -103,6 +109,17 @@ public class BinaariMuuntaja {
      */
     
     protected char asciiMerkkina(String bittijono) {
+        int luku = kokonaislukuna(bittijono);
+        
+        if (luku > 127) {
+            String unicode = new String(new byte[] { (byte) luku });
+            return unicode.charAt(0);   // eikä toimi vieläkään oikein vaikka pitäisi...
+        }
+         
+        return (char) luku;         // ei osaa kääntää merkkejä joiden kokonaislukuesitys > 127 oikein.
+    }
+    
+    protected int kokonaislukuna(String bittijono) {
         int luku = 0;
         int suurin = bittijono.length();
         
@@ -111,8 +128,7 @@ public class BinaariMuuntaja {
                 luku += Math.pow(2, suurin - i - 1);
             }
         }
-            
-        return (char) luku;
+        return luku;
     }
 
     /**
@@ -123,6 +139,7 @@ public class BinaariMuuntaja {
      */
     
     public String ykkosinaJaNollina(String teksti, HashMap<String, String> bittijonot) {
+        this.lisatytEtuNollat = 0;
         String ilmanEtuNollia = ilmanEtuNollia(teksti, bittijonot);
         return lisaaEtuNollat(ilmanEtuNollia);
     }
@@ -134,15 +151,17 @@ public class BinaariMuuntaja {
      */
     
     protected String lisaaEtuNollat(String ilmanEtuNollia) {
-        String ykkosinaJaNollina = "";
+        StringBuilder ykkosinaJaNollina = new StringBuilder();
         
         if (ilmanEtuNollia.length() % 8 != 0) {
             for (int i = 0; i < (8 - ilmanEtuNollia.length() % 8); i++) {
-                ykkosinaJaNollina+= "0";
+                ykkosinaJaNollina.append("0");
+                this.lisatytEtuNollat++;
             }
         }
 
-        return ykkosinaJaNollina + ilmanEtuNollia;
+        ykkosinaJaNollina.append(ilmanEtuNollia);
+        return ykkosinaJaNollina.toString();
     }
     
     /**
@@ -153,12 +172,24 @@ public class BinaariMuuntaja {
      */
     
     protected String ilmanEtuNollia(String teksti, HashMap<String, String> bittijonot) {
-        String ilmanEtuNollia = "";
+        StringBuilder ilmanEtuNollia = new StringBuilder();
         
         for (int i = 0; i < teksti.length(); i++) {
             String merkki = teksti.charAt(i) + "";
-            ilmanEtuNollia += bittijonot.get(merkki);
+            ilmanEtuNollia.append(bittijonot.get(merkki));
         }
-        return ilmanEtuNollia;
+        return ilmanEtuNollia.toString();
+    }
+    
+    public int osoitinKokonaisLukuna(String osoitinString) {
+        return 16777216 * osoitinString.charAt(0) + 65536 * osoitinString.charAt(1) + 256 * osoitinString.charAt(2) + osoitinString.charAt(3);
+    }
+    
+    public String poistaEtuNollat(String teksti, int maara) {
+        StringBuilder ilmanEtuNollia = new StringBuilder();
+        for (int i = maara; i < teksti.length(); i++) {
+            ilmanEtuNollia.append(teksti.charAt(i));
+        }
+        return ilmanEtuNollia.toString();
     }
 }
