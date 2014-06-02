@@ -62,11 +62,12 @@
 	<cstdio>
 	"string_slib.hpp"
 
-1401655360 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1401739091 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
 	"algorithms/knuth_morris_pratt.hpp"
+	"algorithms/edit_distance.hpp"
 
 1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
@@ -76,6 +77,11 @@
 	<cstring>
 	<string>
 
-1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
+1401655468 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
+
+1401741198 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
+	<cstring>
+	<string>
+	<cstdlib>
 

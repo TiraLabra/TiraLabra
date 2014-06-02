@@ -40,6 +40,7 @@
 		<Unit filename="algorithms/hashing/hashing.hpp" />
 		<Unit filename="algorithms/hashing/sum_hashing.cpp" />
 		<Unit filename="algorithms/hashing/sum_hashing.hpp" />
+		<Unit filename="algorithms/knuth_morris_pratt.cpp" />
 		<Unit filename="algorithms/knuth_morris_pratt.hpp" />
 		<Unit filename="algorithms/naive.cpp" />
 		<Unit filename="algorithms/naive.hpp" />

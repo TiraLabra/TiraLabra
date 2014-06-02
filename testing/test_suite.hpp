@@ -9,6 +9,7 @@
 #include "rabin_karp_test.hpp"
 #include "knuth_morris_pratt_tests.hpp"
 #include "naive.hpp"
+#include "edit_distance_tests.hpp"
 using namespace std;
 
 #endif
