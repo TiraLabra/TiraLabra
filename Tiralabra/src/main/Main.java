@@ -44,6 +44,23 @@ public class Main {
             {2, 2, 2},
             {3, 3, 3}
         };
+        double[][] kaanteis = new double[][]{
+            {2, -1, 0},
+            {-1, 2, -1},
+            {0, -1, 2}
+        };
+        double[][] kaanteis2 = new double[][]{
+            {1, 3, -1},
+            {1, 2, 0},
+            {2, 4, 1}
+        };
+        double[][] kaanteis3 = new double[][]{
+            {2, 3, 1, 4, 1}, 
+            {2, 2, -1, 1, -2},
+            {4, 4, 5, 1, 2},
+            {1, -1, 1, -1, 1},
+            {0, -1, -2, -3, -4}
+        };
 
         double[][] C = laskin.summaa(A, B);
 
@@ -83,6 +100,10 @@ public class Main {
         System.out.println(laskin.onkoAntisymmetrinen(antisym));
         System.out.println(laskin.laskeDeterminantti(sym));
         System.out.println(laskin.onkoKaantyva(sym));
+        System.out.println("");
+        
+        double[][] symKaanteis = laskin.invertoi(kaanteis2);
+        tulosta(symKaanteis);
     }
     
     public static void tulosta(double[][] matriisi){

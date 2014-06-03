@@ -1,5 +1,6 @@
 package logiikka;
 
+import apuneuvot.MatriisienKopioija;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,7 +17,7 @@ public class DeterminanttiTest {
     
     @Before
     public void setUp() {
-        determinantti = new Determinantti();
+        determinantti = new Determinantti(new MatriisienKopioija());
         
         sym = new double[][]{
             {1, 3},

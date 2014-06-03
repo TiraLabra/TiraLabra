@@ -1,5 +1,7 @@
 package logiikka;
 
+import apuneuvot.MatriisienKopioija;
+
 /**
  * Determinantti-luokka, jossa osittaistuetun LU-hajotelman avulla saadaan 
  * laskettua neliömatriisin determinantti.
@@ -8,6 +10,7 @@ package logiikka;
  */
 public class Determinantti {
 
+    private MatriisienKopioija kopioija;
     /**
      * Muuttuja, joka pitää kirjaa vaihdettavan rivin indeksistä.
      */
@@ -17,6 +20,15 @@ public class Determinantti {
      * määrästä.
      */
     private int rivinvaihdot;
+    
+    /**
+     * Konstruktori, joka luo uuden ilmentymän MatriisienKopioija-luokasta, joka
+     * asetetaan sen private muuttujaan.
+     *
+     */
+    public Determinantti(MatriisienKopioija kopioija) {
+        this.kopioija = kopioija;
+    }
 
     /**
      * Metodi, joka laskee parametrina annetun neliömatriisin determinantin.
@@ -42,13 +54,13 @@ public class Determinantti {
         tarkasta(matriisi);
         rivinvaihdot = 0;
         
-        double[][] LU = kopioi(matriisi);
+        double[][] LU = kopioija.kopioiNeliomatriisi(matriisi);
         boolean onnistui = muodostaLU(LU);
 
         if (!onnistui) {
             return 0;
         }
-
+        
         double det = laskeLavistajatulo(LU);
 
         return etumerkitse(det);
@@ -66,24 +78,6 @@ public class Determinantti {
             throw new IllegalArgumentException("Matriisi ei ole neliömatriisi,"
                     + "joten sen determinanttia ei voida laskea");
         }
-    }
-
-    /**
-     * Metodi, joka kopioi annetun matriisin sisällön LU-matriisin sisällöksi ja
-     * lopuksi palauttaa vastakopioidun matriisin.
-     * 
-     * @param matriisi Matriisi, jonka sisältö kopioidaan LU-matriisin
-     *                 sisällöksi, muotoa n x n
-     * @return Palauttaa parametrina annetun matriisin kopion muotoa n x n
-     */
-    private double[][] kopioi(double[][] matriisi) {
-        double[][] LU = new double[matriisi.length][matriisi.length];
-        for (int rivi = 0; rivi < matriisi.length; rivi++) {
-            for (int sarake = 0; sarake < matriisi[0].length; sarake++) {
-                LU[rivi][sarake] = matriisi[rivi][sarake];
-            }
-        }
-        return LU;
     }
 
     /**

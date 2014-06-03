@@ -1,6 +1,6 @@
 package logiikka;
 
-import apuneuvot.MatriisienVertailu;
+import apuneuvot.*;
 
 /**
  * Matriisilaskin-luokka, joka kapseloi sisäänsä kaikki laskuoperaatiot.
@@ -9,6 +9,8 @@ import apuneuvot.MatriisienVertailu;
  */
 public class Matriisilaskin {
 
+    private MatriisienKopioija kopioija;
+    private MatriisienVertailu vertailu;
     private Yhteenlasku yhteenlasku;
     private Vahennyslasku vahennyslasku;
     private Skalaaritulo skalaaritulo;
@@ -16,22 +18,25 @@ public class Matriisilaskin {
     private Transpoosi transpoosi;
     private Strassen strassen;
     private Determinantti determinantti;
-    private MatriisienVertailu vertailu;
+    private Kaanteismatriisi kaanteismatriisi;
 
     /**
-     * Konstruktori, joka luo uudet ilmentymät vertailu- ja laskuoperaatio-
+     * Konstruktori, joka luo uudet ilmentymät apuneuvo- ja laskuoperaatio-
      * luokista. Ilmentymät asetetaan niiden private muuttujiin.
      *
      */
     public Matriisilaskin() {
+        kopioija = new MatriisienKopioija();
+        vertailu = new MatriisienVertailu();
+        
         yhteenlasku = new Yhteenlasku();
         vahennyslasku = new Vahennyslasku();
         skalaaritulo = new Skalaaritulo();
         kertolasku = new Kertolasku();
         transpoosi = new Transpoosi();
         strassen = new Strassen(yhteenlasku, vahennyslasku);
-        determinantti = new Determinantti();
-        vertailu = new MatriisienVertailu();
+        determinantti = new Determinantti(kopioija);
+        kaanteismatriisi = new Kaanteismatriisi(kopioija);     
     }
 
     /**
@@ -126,6 +131,24 @@ public class Matriisilaskin {
         return determinantti.laskeDeterminantti(A);
     }
 
+    /**
+     * Metodi, joka kutsuu Kaanteismatriisi-luokan invertoi -metodia
+     * parametrinaan matriisi, jonka käänteismatriisi halutaan approksimoida. 
+     * Käänteismatriisin laskemisessa käytetään Gaussin eliminointi-menetelmää 
+     * ja takaisinsijoitusta.
+     * 
+     * @param A Matriisi, jonka käänteismatriisi halutaan approksimoida,
+     *          muotoa n x n
+     * @return Palauttaa käänteismatriisin approksimaation
+     */
+    public double[][] invertoi(double[][] A) {
+        if(!onkoKaantyva(A)){
+            throw new IllegalArgumentException("Matriisi ei ole kääntyvä,"
+                    + "joten sen käänteismatriisia ei voida muodostaa");
+        }
+        return kaanteismatriisi.invertoi(A);
+    }
+    
     /**
      * Metodi, joka selvittää onko annettu matriisi neliömatriisi. Matriisi on
      * neliömatriisi, jos sen rivien ja sarakkeiden lukumäärät ovat samat.

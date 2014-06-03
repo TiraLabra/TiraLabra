@@ -194,26 +194,20 @@ public class Strassen {
      */
     private void laskeTulomatriisit(double[][][] lohkot, 
                                     double[][][] tulomatriisit){
-        tulomatriisit[0] = rekursioAlgo(this.yhteenlasku.summaa(
-                                        lohkot[0], lohkot[3]),
-                                        this.yhteenlasku.summaa(
-                                        lohkot[4], lohkot[7]));
-        tulomatriisit[1] = rekursioAlgo(this.yhteenlasku.summaa(
-                                        lohkot[2], lohkot[3]), lohkot[4]);
-        tulomatriisit[2] = rekursioAlgo(lohkot[0], this.vahennyslasku.vahenna(
+        tulomatriisit[0] = rekursioAlgo(yhteenlasku.summaa(lohkot[0], lohkot[3]),
+                                        yhteenlasku.summaa(lohkot[4], lohkot[7]));
+        tulomatriisit[1] = rekursioAlgo(yhteenlasku.summaa(lohkot[2], lohkot[3]), 
+                                        lohkot[4]);
+        tulomatriisit[2] = rekursioAlgo(lohkot[0], vahennyslasku.vahenna(
                                         lohkot[5], lohkot[7]));
-        tulomatriisit[3] = rekursioAlgo(lohkot[3], this.vahennyslasku.vahenna(
+        tulomatriisit[3] = rekursioAlgo(lohkot[3], vahennyslasku.vahenna(
                                         lohkot[6], lohkot[4]));
-        tulomatriisit[4] = rekursioAlgo(this.yhteenlasku.summaa(
-                                        lohkot[0], lohkot[1]), lohkot[7]);
-        tulomatriisit[5] = rekursioAlgo(this.vahennyslasku.vahenna(
-                                        lohkot[2], lohkot[0]),
-                                        this.yhteenlasku.summaa(
-                                        lohkot[4], lohkot[5]));
-        tulomatriisit[6] = rekursioAlgo(this.vahennyslasku.vahenna(
-                                        lohkot[1], lohkot[3]),
-                                        this.yhteenlasku.summaa(
-                                        lohkot[6], lohkot[7]));
+        tulomatriisit[4] = rekursioAlgo(yhteenlasku.summaa(lohkot[0], lohkot[1]), 
+                                        lohkot[7]);
+        tulomatriisit[5] = rekursioAlgo(vahennyslasku.vahenna(lohkot[2], lohkot[0]),
+                                        yhteenlasku.summaa(lohkot[4], lohkot[5]));
+        tulomatriisit[6] = rekursioAlgo(vahennyslasku.vahenna(lohkot[1], lohkot[3]),
+                                        yhteenlasku.summaa(lohkot[6], lohkot[7]));
     }
 
     /**
@@ -228,18 +222,14 @@ public class Strassen {
      */
     private void laskeVastauslohkot(double[][][] tulomatriisit, 
                                     double[][][] vastauslohkot){
-        vastauslohkot[0] = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
-                           this.yhteenlasku.summaa(tulomatriisit[0], 
-                           tulomatriisit[3]), tulomatriisit[6]), 
-                           tulomatriisit[4]);
-        vastauslohkot[1] = this.yhteenlasku.summaa(tulomatriisit[2], 
-                           tulomatriisit[4]);
-        vastauslohkot[2] = this.yhteenlasku.summaa(tulomatriisit[1], 
-                           tulomatriisit[3]);
-        vastauslohkot[3] = this.vahennyslasku.vahenna(this.yhteenlasku.summaa(
-                           this.yhteenlasku.summaa(tulomatriisit[0], 
-                           tulomatriisit[2]), tulomatriisit[5]), 
-                           tulomatriisit[1]);
+        vastauslohkot[0] = vahennyslasku.vahenna(yhteenlasku.summaa(
+                           yhteenlasku.summaa(tulomatriisit[0], tulomatriisit[3]), 
+                           tulomatriisit[6]), tulomatriisit[4]);
+        vastauslohkot[1] = yhteenlasku.summaa(tulomatriisit[2], tulomatriisit[4]);
+        vastauslohkot[2] = yhteenlasku.summaa(tulomatriisit[1], tulomatriisit[3]);
+        vastauslohkot[3] = vahennyslasku.vahenna(yhteenlasku.summaa(
+                           yhteenlasku.summaa(tulomatriisit[0], tulomatriisit[2]), 
+                           tulomatriisit[5]), tulomatriisit[1]);
     }
     
     /**
