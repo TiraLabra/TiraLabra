@@ -102,7 +102,7 @@ public class Main {
         System.out.println(laskin.onkoKaantyva(sym));
         System.out.println("");
         
-        double[][] symKaanteis = laskin.invertoi(kaanteis2);
+        double[][] symKaanteis = laskin.invertoi(sym);
         tulosta(symKaanteis);
     }
     
