@@ -9,6 +9,8 @@ public class MatriisienVertailuTest {
     double[][] sym;
     double[][] eisym;
     double[][] A;
+    double[][] epatarkka;
+    double[][] epatarkka2;
     MatriisienVertailu vertailu;
     
     @Before
@@ -30,6 +32,16 @@ public class MatriisienVertailuTest {
             {2, 3},
             {4, 5}
         };
+        
+        epatarkka = new double[][]{
+            {0.99999999999, 3},
+            {3, 4}
+        };
+        
+        epatarkka2 = new double[][]{
+            {0.9999999999, 3},
+            {3, 4}
+        };
     }
     
     @Test
@@ -45,5 +57,15 @@ public class MatriisienVertailuTest {
     @Test
     public void vertailuToimii3() {
         assertFalse(vertailu.vertaile(sym, eisym));
+    }
+    
+    @Test
+    public void vertailuToimii4() {
+        assertTrue(vertailu.vertaile(sym, epatarkka));
+    }
+    
+    @Test
+    public void vertailuToimii5() {
+        assertFalse(vertailu.vertaile(sym, epatarkka2));
     }
 }

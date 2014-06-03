@@ -9,6 +9,7 @@ public class MatriisilaskinTest {
     double[][] sym;
     double[][] A;
     double[][] antisym;
+    double[][] orto;
     Matriisilaskin laskin;
 
     @Before
@@ -30,6 +31,12 @@ public class MatriisilaskinTest {
             {0, 4, -5},
             {-4, 0, -6},
             {5, 6, 0}
+        };
+        
+        orto = new double[][]{
+            {(double)2/3, (double)-2/3, (double)1/3},
+            {(double)1/3, (double)2/3, (double)2/3},
+            {(double)2/3, (double)1/3, (double)-2/3}
         };
     }
 
@@ -71,5 +78,15 @@ public class MatriisilaskinTest {
     @Test
     public void kaantyvyysToimii2() {
         assertFalse(laskin.onkoKaantyva(antisym));
+    }
+    
+    @Test
+    public void ortogonaalisuusToimii() {
+        assertTrue(laskin.onkoOrtogonaalinen(orto));
+    }
+    
+    @Test
+    public void ortogonaalisuusToimii2() {
+        assertFalse(laskin.onkoOrtogonaalinen(sym));
     }
 }

@@ -61,6 +61,11 @@ public class Main {
             {1, -1, 1, -1, 1},
             {0, -1, -2, -3, -4}
         };
+        double[][] orto = new double[][]{
+            {(double)2/3, (double)-2/3, (double)1/3},
+            {(double)1/3, (double)2/3, (double)2/3},
+            {(double)2/3, (double)1/3, (double)-2/3}
+        };
 
         double[][] C = laskin.summaa(A, B);
 
@@ -100,6 +105,7 @@ public class Main {
         System.out.println(laskin.onkoAntisymmetrinen(antisym));
         System.out.println(laskin.laskeDeterminantti(sym));
         System.out.println(laskin.onkoKaantyva(sym));
+        System.out.println(laskin.onkoOrtogonaalinen(orto));
         System.out.println("");
         
         double[][] symKaanteis = laskin.invertoi(sym);

@@ -197,4 +197,19 @@ public class Matriisilaskin {
             return true;
         }
     }
+    
+    /**
+     * Metodi, joka selvittää onko annettu neliömatriisi ortogonaalinen eli onko 
+     * sen transpoosi sama kuin sen käänteismatriisi.
+     * 
+     * @param A Matriisi, jonka ortogonaalisuus halutaan selvittää, muotoa n x n
+     * @return Palauttaa true, jos matriisi on ortogonaalinen
+     */
+    public boolean onkoOrtogonaalinen(double[][] A) {
+        if(vertailu.vertaile(invertoi(A), transpoosaa(A))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
