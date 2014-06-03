@@ -43,19 +43,22 @@ public class TekstinLukija {
     public void lueTiedosto(String polku) throws FileNotFoundException {
         try {
             Scanner lukija = new Scanner(new File(polku));
-            
-            while (lukija.hasNextLine()) {
-                String rivi = lukija.nextLine();
-                lisaaRivi(rivi);
-
-                if (lukija.hasNextLine()) {
-                    lisaaMerkki("\n");
-                }
-            }            
+            lue(lukija);
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException("Annoit tiedoston polun väärin.\nOhjelma suljetaan..");
         }
+    }
+    
+    protected void lue(Scanner lukija) {
+        while (lukija.hasNextLine()) {
+            String rivi = lukija.nextLine();
+            lisaaRivi(rivi);
+
+            if (lukija.hasNextLine()) {
+                lisaaMerkki("\n");
+            }
+        }    
     }
     
     /**

@@ -49,41 +49,57 @@ public class TiedostonPurkaja {
     protected void puraTiedosto(File pakkaus, File tiedosto) throws FileNotFoundException, IOException {
         String teksti = lueTeksti(pakkaus);
         int puunOsoite = puunOsoite(teksti);
-
-        StringBuilder ykkosinaJaNollina = new StringBuilder();
-        ykkosinaJaNollina.append(kuudesTavuIlmanEtuNollia(teksti));
-        ykkosinaJaNollina.append(lisaaMuuTeksti(teksti, puunOsoite));
-        
-        FileWriter kirjoittaja = new FileWriter(tiedosto);
-        
+        String tekstiBinaarina = tekstiBinaarina(teksti, puunOsoite);
+        kirjoitaTiedostoon(teksti, puunOsoite, tekstiBinaarina, new FileWriter(tiedosto));
+    }
+    
+    protected void kirjoitaTiedostoon(String teksti, int puunOsoite, String tekstiBinaarina, FileWriter kirjoittaja) throws IOException {
         int osoite = puunOsoite;
+        int pituus = tekstiBinaarina.length();
         
-        for (int i = 0; i < ykkosinaJaNollina.toString().length(); i++) {
-            if (teksti.charAt(osoite) != (char) 0) {
-                kirjoittaja.append(teksti.charAt(osoite));
-                osoite = puunOsoite;
+        for (int i = 0; i < pituus; i++) {
+            char merkki = teksti.charAt(osoite);
+
+            if (merkki == (char) 0) {
+                osoite = seuraavaOsoite(osoite, puunOsoite, tekstiBinaarina, i);
                 continue;
             }
             
-            osoite += osoite - puunOsoite + 1;
-            if (ykkosinaJaNollina.toString().charAt(i) == '1') {
-                osoite += 1;
-            }
+            kirjoittaja.append(merkki);
+            osoite = puunOsoite;
         }
         
         kirjoittaja.close();
     }
     
+    protected int seuraavaOsoite(int osoite, int puunOsoite, String tekstiBinaarina, int i) {
+        osoite += osoite - puunOsoite + 1;
+        if (tekstiBinaarina.charAt(i) == '1') {
+            osoite += 1;
+        }
+        
+        return osoite;
+    }
+    
+    protected String tekstiBinaarina(String teksti, int puunOsoite)  {
+        StringBuilder binaarina = new StringBuilder();
+        binaarina.append(kuudesTavuIlmanEtuNollia(teksti));
+        binaarina.append(lisaaMuuTeksti(teksti, puunOsoite));       
+        
+        return binaarina.toString();
+    }
+    
     protected String kuudesTavuIlmanEtuNollia(String teksti) {
-        String binaarina = muuntaja.binaariEsitys(teksti.charAt(5));
-        return muuntaja.poistaEtuNollat(binaarina, teksti.charAt(4));
+        String binaarina = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.charAt(5));
+        return muuntaja.poistaEtuMerkkeja(binaarina, teksti.charAt(4));
     }
     
     protected String lisaaMuuTeksti(String teksti, int puunOsoite) {
         StringBuilder lisaaja = new StringBuilder();
         
         for (int i = 6; i < puunOsoite; i++) {
-            lisaaja.append(muuntaja.binaariEsitys(teksti.charAt(i)));
+            String lisattava = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.charAt(i));
+            lisaaja.append(lisattava);
         }
         return lisaaja.toString();
     }
@@ -108,15 +124,4 @@ public class TiedostonPurkaja {
         }
         return puretunPolku.toString();
     }
-    
-//    /**
-//     * Palauttaa osoitteen (ajateltuna yhtä siirtymää 0/1 :nä), josta tekstin binääriesitys alkaa.
-//     * 40 lisätään koska edessä ensin 5 tavua (5*8) ja näistä viimeinen tavu kertoo, kuinka monta etunollaa
-//     * tekstin alkuun on lisätty.
-//     * @param teksti
-//     * @return 
-//     */
-//    protected int alkuOsoite(String teksti) {
-//        return 40 + teksti.charAt(4);
-//    }
 }

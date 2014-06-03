@@ -82,4 +82,43 @@ public class TiedostonPurkajaTest {
         polku = ".hemi";
         assertEquals("", purkaja.luotavanTiedostonPolku(polku));
     }
+    
+    @Test
+    public void seuraavaOsoitePalauttaaOsoitteenOikein() {
+        String tekstiBinaarina = "01011010";
+        int puunOsoite = 13;
+        assertEquals(14, purkaja.seuraavaOsoite(13, puunOsoite, tekstiBinaarina, 0));
+        assertEquals(15, purkaja.seuraavaOsoite(13, puunOsoite, tekstiBinaarina, 1));
+        
+        puunOsoite = 46;
+        
+        assertEquals(65, purkaja.seuraavaOsoite(55, puunOsoite, tekstiBinaarina, 2));
+        assertEquals(74, purkaja.seuraavaOsoite(59, puunOsoite, tekstiBinaarina, 3));
+    }
+    
+    @Test
+    public void tekstiBinaarinaToimii() {
+        assertEquals("101111" + "0110111001110011", purkaja.tekstiBinaarina(kuudesTavu(), 8));
+    }
+    
+    @Test
+    public void kuudesTavuIlmanEtuNollia() {
+        assertEquals("101111", purkaja.kuudesTavuIlmanEtuNollia(kuudesTavu()));
+    }
+    
+    private String kuudesTavu() {
+        char nul = (char) 0;
+        String pointer = nul + "" + nul + (char) 2 + "" + "b";
+        char etuNollia = (char) 2;
+        
+        return pointer + etuNollia + "/ns438fd54fgä'ä";
+    }
+    
+    @Test
+    public void muunTekstinLisaysOnnistuu() {
+        String teksti = "012345ö5¤$!";
+        assertEquals("", purkaja.lisaaMuuTeksti(teksti, 6));
+        assertEquals("11110110", purkaja.lisaaMuuTeksti(teksti, 7));        // "ö:n pitäisi olla dec 148, ei dec 246..."
+        assertEquals("1111011000110101", purkaja.lisaaMuuTeksti(teksti, 8));
+    }
 }

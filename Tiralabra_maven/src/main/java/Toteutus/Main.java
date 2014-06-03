@@ -1,5 +1,6 @@
 package Toteutus;
 
+import Toteutus.Huffman.Pakkaaminen.PakkaamisenOhjaaja;
 import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
 
@@ -13,7 +14,11 @@ import java.io.IOException;
 public class Main {
     
     public static void main(String[] args) throws IOException {
-        TiedostonPurkaja purkaja = new TiedostonPurkaja();
-        purkaja.pura("arrow.txt.hemi");
+        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
+        ohjaaja.suoritaPakkaaminen("abcdef.txt");
+        
+        
+//        TiedostonPurkaja purkaja = new TiedostonPurkaja();
+//        purkaja.pura("abcd.txt.hemi");
     }
 }

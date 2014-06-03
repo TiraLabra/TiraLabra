@@ -23,7 +23,7 @@ public class BinaariMuuntaja {
     public String muodostaOsoitin(int tekstinPituus) {
         int arvo = 5 + tekstinPituus;
         StringBuilder osoitin = lisaaEtuNollatOsoittimeen(Integer.numberOfLeadingZeros(arvo));
-        osoitin.append(binaariEsitys(arvo));
+        osoitin.append(BinaariMuuntaja.this.binaariEsitysIlmanEtuNollia(arvo, 30));
         
         return pakatuksiTekstiksi(osoitin.toString());
     }
@@ -43,17 +43,33 @@ public class BinaariMuuntaja {
         return osoitin;
     }
     
+    public String binaariEsitysEtuNollilla8Bit(int arvo) {
+        StringBuilder esitys = new StringBuilder();
+        
+        for (int i = 7; i >= 0; i--) {
+            if (arvo >= Math.pow(2, i)) {
+                arvo -= Math.pow(2, i);
+                esitys.append("1");
+            }
+            else {
+                esitys.append("0");
+            }
+        }
+        return esitys.toString();
+    }
+    
     /**
      * Muodostaa String -formaatissa binääriesityksen ko. arvosta.
      * @param arvo
+     * @param bitteja
      * @return 
      */
     
-    public String binaariEsitys(int arvo) {
+    public String binaariEsitysIlmanEtuNollia(int arvo, int bitteja) {
         if (arvo == 0) {
             return "0";
         }
-        return binaariEsitys(new StringBuilder(), false, arvo);
+        return binaariEsitysIlmanEtuNollia(new StringBuilder(), false, arvo, bitteja);
     }
     
     /**
@@ -64,10 +80,11 @@ public class BinaariMuuntaja {
      * @param esitys
      * @param bitti1Loydetty
      * @param arvo
+     * @param bitteja
      * @return 
      */
-    protected String binaariEsitys(StringBuilder esitys, boolean bitti1Loydetty, int arvo) {
-        for (int i = 30; i >= 0; i--) {
+    protected String binaariEsitysIlmanEtuNollia(StringBuilder esitys, boolean bitti1Loydetty, int arvo, int bitteja) {
+        for (int i = bitteja; i >= 0; i--) {
             if (arvo >= Math.pow(2, i)) {
                 arvo -= Math.pow(2, i);
                 esitys.append("1");
@@ -185,11 +202,11 @@ public class BinaariMuuntaja {
         return 16777216 * osoitinString.charAt(0) + 65536 * osoitinString.charAt(1) + 256 * osoitinString.charAt(2) + osoitinString.charAt(3);
     }
     
-    public String poistaEtuNollat(String teksti, int maara) {
-        StringBuilder ilmanEtuNollia = new StringBuilder();
+    public String poistaEtuMerkkeja(String teksti, int maara) {
+        StringBuilder ilmanEtuMerkkeja = new StringBuilder();
         for (int i = maara; i < teksti.length(); i++) {
-            ilmanEtuNollia.append(teksti.charAt(i));
+            ilmanEtuMerkkeja.append(teksti.charAt(i));
         }
-        return ilmanEtuNollia.toString();
+        return ilmanEtuMerkkeja.toString();
     }
 }

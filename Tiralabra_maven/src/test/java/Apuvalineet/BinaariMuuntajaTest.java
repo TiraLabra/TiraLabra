@@ -81,11 +81,11 @@ public class BinaariMuuntajaTest {
     
     @Test
     public void testaaArvojenBinaariEsitykset() {
-        assertEquals("0", muuntaja.binaariEsitys(0));
-        assertEquals("1", muuntaja.binaariEsitys(1));
-        assertEquals("10", muuntaja.binaariEsitys(2));
-        assertEquals("101", muuntaja.binaariEsitys(5));
-        assertEquals("1000111010111011111011111001010", muuntaja.binaariEsitys(1197340618));
+        assertEquals("0", muuntaja.binaariEsitysIlmanEtuNollia(0, 7));
+        assertEquals("1", muuntaja.binaariEsitysIlmanEtuNollia(1, 7));
+        assertEquals("10", muuntaja.binaariEsitysIlmanEtuNollia(2, 7));
+        assertEquals("101", muuntaja.binaariEsitysIlmanEtuNollia(5,7));
+        assertEquals("1000111010111011111011111001010", muuntaja.binaariEsitysIlmanEtuNollia(1197340618, 30));
     }
     
     @Test
@@ -112,5 +112,13 @@ public class BinaariMuuntajaTest {
         
         osoitin = "1>=2";
         assertEquals(822083584 + 4063232 + 15616 + 50, muuntaja.osoitinKokonaisLukuna(osoitin));
+    }
+    
+    @Test
+    public void etuMerkkienPoistoToimii() {
+        String sana = "sana";
+        assertEquals("sana", muuntaja.poistaEtuMerkkeja(sana, 0));
+        assertEquals("", muuntaja.poistaEtuMerkkeja(sana, sana.length()));
+        
     }
 }

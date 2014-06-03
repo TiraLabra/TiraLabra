@@ -26,6 +26,13 @@ public class TekstinLukijaTest {
         assertTrue(lukija2.getTeksti().isEmpty());
     }
     
+    @Test (expected = FileNotFoundException.class) 
+    public void lukeminenHeittaaPoikkeuksenJosTiedostoaEiLoydy() throws FileNotFoundException {
+        lukija2 = new TekstinLukija();
+        lukija2.lueTiedosto("");
+    }
+    
+    
     @Test
     public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
         assertTrue(this.lukija.getTeksti().equals("Tämä on testi -teksti, mikä luetaan\n" +
