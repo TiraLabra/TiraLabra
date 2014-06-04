@@ -42,6 +42,22 @@ def pad(bstring):
 
 	return padded
 
+def pad64B(length):
+	s = bin(length)
+	if len(s) == 9:
+			s = s.replace('b', '')
+	else:
+			s = s.replace('b', '0')
+
+	padded = ''
+	#asd += (64 - length) * "0"
+	#wew = asd + s
+
+
+	padded = "0" * (64 - len(s))
+	padded += s
+	return padded
+
 ## Public methods TBI ##
 
 def digest_size():
