@@ -10,6 +10,10 @@ import java.util.HashMap;
 public class BinaariMuuntaja {
     private int lisatytEtuNollat;
     
+    public BinaariMuuntaja() {
+        this.lisatytEtuNollat = 0;
+    }
+    
     public int getLisatytEtuNollat() {
         return this.lisatytEtuNollat;
     }
@@ -23,7 +27,7 @@ public class BinaariMuuntaja {
     public String muodostaOsoitin(int tekstinPituus) {
         int arvo = 5 + tekstinPituus;
         StringBuilder osoitin = lisaaEtuNollatOsoittimeen(Integer.numberOfLeadingZeros(arvo));
-        osoitin.append(BinaariMuuntaja.this.binaariEsitysIlmanEtuNollia(arvo, 30));
+        osoitin.append(binaariEsitysIlmanEtuNollia(arvo, 30));
         
         return pakatuksiTekstiksi(osoitin.toString());
     }

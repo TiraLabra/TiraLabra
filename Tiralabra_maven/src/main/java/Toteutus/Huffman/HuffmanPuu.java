@@ -77,8 +77,8 @@ public class HuffmanPuu {
      */
     
     public String puunTekstiEsitys() {
-        if (this.getKeko().getSolmut().length <= 0) {
-            return null;
+        if (this.getKeko() == null || this.getKeko().getSolmut().length <= 0) {
+            return "";
         }
 
         return muodostaTekstiEsitys(new StringBuilder(), this.getKeko().getSolmut()[0], new ArrayDeque(this.getKeko().getSolmut().length));

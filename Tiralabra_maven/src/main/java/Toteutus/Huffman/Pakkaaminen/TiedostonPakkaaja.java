@@ -1,6 +1,7 @@
 package Toteutus.Huffman.Pakkaaminen;
 
 import Apuvalineet.BinaariMuuntaja;
+import Apuvalineet.Kirjoittaja;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
 import Toteutus.TekstinLukija;
@@ -64,10 +65,8 @@ public class TiedostonPakkaaja {
      */
     
     protected void kirjoitaTiedostoon(File tiedosto, String teksti) throws IOException {
-        FileWriter kirjoittaja = new FileWriter(tiedosto);
-        kirjoittaja.write(teksti);
-        
-        kirjoittaja.close();
+        Kirjoittaja kirjoittaja = new Kirjoittaja(tiedosto.getPath());
+        kirjoittaja.kirjoita(teksti);
     }
     
     /**
@@ -104,14 +103,14 @@ public class TiedostonPakkaaja {
      * Ensin tulee pointer Huffman -puuta varten (4 tavua). Sitten 1 tavu joka kertoo, kuinka monta
      * etunollaa tekstin binääriesityksen eteen lisättiin. Sitten tulee tekstin binääriesitys ja lopuksi Huffman puu.
      * @param kirjoitettava
-     * @param lisattava
+     * @param pakattuna
      * @param puu 
      */
     
-    protected void lisaaTeksti(StringBuilder kirjoitettava, String lisattava, HuffmanPuu puu) {
-        kirjoitettava.append(muuntaja.muodostaOsoitin(lisattava.length()));
+    protected void lisaaTeksti(StringBuilder kirjoitettava, String pakattuna, HuffmanPuu puu) {
+        kirjoitettava.append(muuntaja.muodostaOsoitin(pakattuna.length()));
         kirjoitettava.append((char) muuntaja.getLisatytEtuNollat());
-        kirjoitettava.append(lisattava);
+        kirjoitettava.append(pakattuna);
         kirjoitettava.append(puu.puunTekstiEsitys());
     }
 }

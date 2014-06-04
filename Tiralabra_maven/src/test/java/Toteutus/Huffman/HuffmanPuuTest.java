@@ -136,7 +136,7 @@ public class HuffmanPuuTest {
         puu2 = new HuffmanPuu();
         esiintymat = new HashMap<>();
         puu2.luoKeko(esiintymat);
-        tyhjaKekoPalauttaaNull();
+        tyhjaKekoPalauttaaTyhjanStringOlion();
         
         luoTestiEsiintymat();
         puu2.muodostaHuffmanPuu(esiintymat);
@@ -144,11 +144,17 @@ public class HuffmanPuuTest {
         char nul = (char) 0;
         puu2.puunTekstiEsitys();
         assertEquals(nul + "ab", puu2.puunTekstiEsitys());
+        
+//        assertEquals(nul + "" +
+//                     nul + "A" + 
+//                     nul + "C" + nul + "" + nul + "" + 
+//                     nul + "B")
         assertEquals(nul + "" + nul + "A" + nul + "C" + nul + "B" + "E" + "D", puu.puunTekstiEsitys());
     }
     
-    private void tyhjaKekoPalauttaaNull() {
-        assertNull(puu2.puunTekstiEsitys());
+    private void tyhjaKekoPalauttaaTyhjanStringOlion() {
+        assertTrue(new HuffmanPuu().puunTekstiEsitys().isEmpty());
+        assertTrue(puu2.puunTekstiEsitys().isEmpty());
     }
     
     private void muodostaTestiPuuJaKeko() {

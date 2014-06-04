@@ -1,5 +1,6 @@
 package Toteutus.Huffman.Purkaminen;
 
+import Apuvalineet.BinaariMuuntaja;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -120,5 +121,23 @@ public class TiedostonPurkajaTest {
         assertEquals("", purkaja.lisaaMuuTeksti(teksti, 6));
         assertEquals("11110110", purkaja.lisaaMuuTeksti(teksti, 7));        // "ö:n pitäisi olla dec 148, ei dec 246..."
         assertEquals("1111011000110101", purkaja.lisaaMuuTeksti(teksti, 8));
+    }
+    
+    @Test
+    public void tiedostoonKirjoitusOnnistuu() {
+        char nul = (char) 0;
+        String puu = nul + "" + nul + "o" + "M" + nul + "" + nul + "" + nul + "" + nul + "" + nul + "r!";
+        
+        String binaariEsitys = "0000000010101011";
+        
+        BinaariMuuntaja muuntaja = new BinaariMuuntaja();
+        String pakattuna = muuntaja.pakatuksiTekstiksi(binaariEsitys);
+        
+        String teksti = nul + "" + nul + "" + nul + "" + (char) 7 + (char) 6 + pakattuna + puu;
+
+        int puunOsoite = purkaja.puunOsoite(teksti);
+        
+        String kirjoitettava = purkaja.kirjoitettavaTeksti(teksti, puunOsoite, purkaja.tekstiBinaarina(teksti, puunOsoite));
+        assertEquals("Moro!", kirjoitettava);
     }
 }

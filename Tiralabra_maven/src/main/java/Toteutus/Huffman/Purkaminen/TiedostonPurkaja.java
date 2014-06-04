@@ -1,6 +1,7 @@
 package Toteutus.Huffman.Purkaminen;
 
 import Apuvalineet.BinaariMuuntaja;
+import Apuvalineet.Kirjoittaja;
 import Toteutus.TekstinLukija;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,18 +47,22 @@ public class TiedostonPurkaja {
         return tiedosto;
     }
     
-    protected void puraTiedosto(File pakkaus, File tiedosto) throws FileNotFoundException, IOException {
+    protected void puraTiedosto(File pakkaus, File tiedosto) throws IOException {
         String teksti = lueTeksti(pakkaus);
         int puunOsoite = puunOsoite(teksti);
         String tekstiBinaarina = tekstiBinaarina(teksti, puunOsoite);
-        kirjoitaTiedostoon(teksti, puunOsoite, tekstiBinaarina, new FileWriter(tiedosto));
+        
+        String kirjoitettava = kirjoitettavaTeksti(teksti, puunOsoite, tekstiBinaarina);
+        new Kirjoittaja(tiedosto.getPath()).kirjoita(kirjoitettava);
     }
-    
-    protected void kirjoitaTiedostoon(String teksti, int puunOsoite, String tekstiBinaarina, FileWriter kirjoittaja) throws IOException {
+
+    protected String kirjoitettavaTeksti(String teksti, int puunOsoite, String tekstiBinaarina) {
+        StringBuilder kirjoitettava = new StringBuilder();
+        
         int osoite = puunOsoite;
         int pituus = tekstiBinaarina.length();
         
-        for (int i = 0; i < pituus; i++) {
+        for (int i = 0; i < pituus + 1; i++) {
             char merkki = teksti.charAt(osoite);
 
             if (merkki == (char) 0) {
@@ -65,11 +70,15 @@ public class TiedostonPurkaja {
                 continue;
             }
             
-            kirjoittaja.append(merkki);
+            kirjoitettava.append(merkki);
             osoite = puunOsoite;
+            
+            if (i < pituus) {
+                i--;
+            }
         }
         
-        kirjoittaja.close();
+        return kirjoitettava.toString();
     }
     
     protected int seuraavaOsoite(int osoite, int puunOsoite, String tekstiBinaarina, int i) {
@@ -113,7 +122,6 @@ public class TiedostonPurkaja {
     }
     
     protected int puunOsoite(String teksti) {
-        BinaariMuuntaja muuntaja = new BinaariMuuntaja();
         return muuntaja.osoitinKokonaisLukuna(teksti.substring(0, 4));
     }
     
