@@ -8,13 +8,12 @@ public class Fibonacci {
         Integer values[][] =
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
-        
-        Matrix<Integer> identity = Matrix.identity(2, 2, Integer.class);
-        Matrix<Integer> matrix = new Matrix<Integer>(values);
+
+        Matrix<Integer> matrix = new Matrix<Integer>(values, Integer.class);
         if (naive) {
-            matrix = matrix.pow_naive(n, identity);
+            matrix = matrix.pow_naive(n);
         } else {
-            matrix = matrix.pow(n, identity);
+            matrix = matrix.pow(n);
         }
         
         Integer fib = matrix.get(0, 1);

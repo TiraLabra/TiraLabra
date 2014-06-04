@@ -10,16 +10,20 @@ import TiraLabra.Number.Number;
 public class Matrix<T extends Number<T>> {
     public final int N, M;
     private final T matrix[][];
+    private final Class<? extends Number> type;
     
     /**
      * Luo matriisin 2-uloitteisesta taulukosta
      * @param elements 
+     * @param type 
      */
-    public Matrix(T[][] elements) {
+    public Matrix(T[][] elements, Class<? extends Number> type) {
         N = elements.length;
         M = (N > 0) ? elements[0].length : 0;
         
         matrix = elements;
+        
+        this.type = type;
     }
 
     /**
@@ -32,6 +36,7 @@ public class Matrix<T extends Number<T>> {
         this.M = m;
         
         matrix = null;
+        type = null;
     }
     
     /**
@@ -49,7 +54,7 @@ public class Matrix<T extends Number<T>> {
             }
         }
 
-        return new Matrix(val);
+        return new Matrix(val, type);
     }
     
     public T get(int i, int j) {
@@ -69,7 +74,7 @@ public class Matrix<T extends Number<T>> {
             }
         }
         
-        return new Matrix(val);
+        return new Matrix(val, type);
     }
     
     /**
@@ -88,17 +93,16 @@ public class Matrix<T extends Number<T>> {
             }
         }
         
-        return new Matrix(val);
+        return new Matrix(val, type);
     }
     
     /**
      * Naiivi matriisin potenssiin korotus
      * @param n eksponentti
-     * @param identity
      * @return uusi matriisi
      */
-    public Matrix pow_naive(int n, Matrix identity) {
-        Matrix res = identity;
+    public Matrix pow_naive(int n) {
+        Matrix res = identity(N, type);
         for (int i = 0; i < n; i++) {
             res = this.multiply(res);
         }
@@ -109,12 +113,11 @@ public class Matrix<T extends Number<T>> {
     /**
      * Nopea matriisin potenssiin korotus
      * @param n eksponentti
-     * @param identity
      * @return uusi matriisi
      */
-    public Matrix pow(int n, Matrix identity) {
+    public Matrix pow(int n) {
         Matrix m = this;
-        Matrix res = identity;
+        Matrix res = identity(N, type);
         while (n > 0) {
             if ((n % 2) == 1) {
                 res = m.multiply(res);
@@ -166,6 +169,6 @@ public class Matrix<T extends Number<T>> {
             }
          }
         
-        return new Matrix(res);
+        return new Matrix(res, type);
     }
 }

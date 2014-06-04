@@ -1,6 +1,5 @@
 package TiraLabra.Matrix;
 
-import java.lang.reflect.InvocationTargetException;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class MatrixTest {
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
 
-        matrix = new Matrix(values);
+        matrix = new Matrix(values, Integer.class);
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
@@ -51,7 +50,7 @@ public class MatrixTest {
             }
         }
         
-        return new Matrix(elements);
+        return new Matrix(elements, type);
     }
     
     private void matrixEquals(Class<? extends Number> type, int... values) {
@@ -100,22 +99,19 @@ public class MatrixTest {
     
     @Test
     public void exponentiationNaive() {
-        Matrix identity = Matrix.identity(2, Integer.class);
-        matrix = matrix.pow_naive(2, identity);
+        matrix = matrix.pow_naive(2);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void exponentiation() {
-        Matrix identity = Matrix.identity(2, Integer.class);
-        matrix = matrix.pow(2, identity);
+        matrix = matrix.pow(2);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void decimalExponentiation() {
-        Matrix identity = Matrix.identity(2, Real.class);
-        matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2, identity);
+        matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2);
         matrixEquals(Real.class, 2, 1, 1, 1);
     }
     

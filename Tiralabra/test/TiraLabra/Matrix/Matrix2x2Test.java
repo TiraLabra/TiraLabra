@@ -15,7 +15,7 @@ public class Matrix2x2Test {
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
 
-        matrix = new Matrix2x2(values);
+        matrix = new Matrix2x2(values, Integer.class);
     }
 
     @Test
