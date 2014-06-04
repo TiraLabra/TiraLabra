@@ -97,6 +97,26 @@ public class Matrix<T extends Number<T>> {
     }
     
     /**
+     * Matriisien yhteenlasku
+     * @param other
+     * @return 
+     */
+    public Matrix<T> add(Matrix<T> other) {
+        if (other.N != this.N || other.M != this.M) {
+            throw new UnsupportedOperationException();
+        }
+        
+        Number[][] val = new Number[N][M];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                val[i][j] = matrix[i][j].add(other.get(i, j));
+            }
+        }
+        
+        return new Matrix(val, type);
+    }
+    
+    /**
      * Naiivi matriisin potenssiin korotus
      * @param n eksponentti
      * @return uusi matriisi
@@ -128,6 +148,21 @@ public class Matrix<T extends Number<T>> {
         }
         
         return res;
+    }
+    
+    /**
+     * Luo transpoosimatriisi
+     * @return
+     */
+    public Matrix<T> transpose() {
+        Number[][] val = new Number[M][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                val[j][i] = matrix[i][j];
+            }
+        }
+        
+        return new Matrix(val, type);
     }
     
     /**

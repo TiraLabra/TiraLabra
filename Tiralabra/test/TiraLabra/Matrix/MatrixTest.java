@@ -144,4 +144,23 @@ public class MatrixTest {
                 1,2,3,4, 1,2,3,4, 1,2,3,4, 1,2,3,4);
         assertEquals(Integer.ZERO, m.determinant());
     }
+    
+    @Test
+    public void addMatrices() {
+        matrix = matrix.add(matrix);
+        matrixEquals(Integer.class, 2, 2, 2, 0);
+    }
+    
+    @Test
+    public void transposeSquare() {
+        matrix = matrix.transpose();
+        matrixEquals(Integer.class, 1, 1, 1, 0);
+    }
+    
+    @Test
+    public void transposeNonSquare() {
+        matrix = makeMatrix(Integer.class, 2, 3,
+                1,2,3, 0,-6,7).transpose();
+        matrixEquals(Integer.class, 1, 0, 2, -6, 3, 7);
+    }
 }

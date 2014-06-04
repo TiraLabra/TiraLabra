@@ -160,6 +160,12 @@ public abstract class NumberTests<T extends Number> {
     }
     
     @Test
+    public void zeroings() {
+        assertTrue(zero.isZero());
+        assertFalse(one.isZero());
+    }
+    
+    @Test
     public void absoluteValue() {
         assertEquals(one, one.subtract(two).abs());
     }

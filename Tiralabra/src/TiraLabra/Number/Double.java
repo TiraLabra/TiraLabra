@@ -17,6 +17,10 @@ public class Double extends Number<Number> {
         this.decimal = decimal;
     }
     
+    public Double(int integer) {
+        this.decimal = (double) integer;
+    }
+    
     private double toDecimal(Number o) {
         return java.lang.Double.parseDouble(o.toString());
     }
