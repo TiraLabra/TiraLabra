@@ -24,8 +24,10 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void overflowCompares() {
-        assertEquals(-1, zero.compareTo(radix));
-        assertEquals(1, radix.compareTo(one));
+        assertTrue(zero.compareTo(radix) < 0);
+        assertTrue(radix.compareTo(one) > 0);
+        assertTrue(oneOverOverflow.compareTo(one) > 0);
+        assertTrue(oneOverOverflow.compareTo(overflow) > 0);
     }
     
     @Test

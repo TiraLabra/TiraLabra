@@ -1,7 +1,6 @@
 package fibonacci;
 
 import TiraLabra.Matrix.Matrix;
-import TiraLabra.Number.Number;
 import TiraLabra.Number.Integer;
 
 public class Fibonacci {
@@ -10,15 +9,15 @@ public class Fibonacci {
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
         
-        Matrix identity = Matrix.identity(2, 2, Integer.class);
-        Matrix matrix = new Matrix(values);
+        Matrix<Integer> identity = Matrix.identity(2, 2, Integer.class);
+        Matrix<Integer> matrix = new Matrix<Integer>(values);
         if (naive) {
             matrix = matrix.pow_naive(n, identity);
         } else {
             matrix = matrix.pow(n, identity);
         }
         
-        Number fib = matrix.get(0, 1);
+        Integer fib = matrix.get(0, 1);
         return fib.toString();
     }
     

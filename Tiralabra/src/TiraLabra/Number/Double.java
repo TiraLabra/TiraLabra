@@ -38,6 +38,9 @@ public class Double extends Number<Number> {
 
     @Override
     public Number divide(Number other) {
+        if (other.isZero()) {
+            throw new ArithmeticException();
+        }
         return new Double(decimal / toDecimal(other));
     }
 
@@ -55,6 +58,11 @@ public class Double extends Number<Number> {
     @Override
     public boolean isNegative() {
         return (decimal < 0);
+    }
+    
+    @Override
+    public boolean isZero() {
+        return (decimal == 0);
     }
     
     @Override

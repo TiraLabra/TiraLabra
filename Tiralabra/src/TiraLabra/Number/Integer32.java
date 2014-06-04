@@ -66,6 +66,11 @@ public class Integer32 extends Number<Number> {
     }
     
     @Override
+    public boolean isZero() {
+        return (integer == 0);
+    }
+    
+    @Override
     public String toString() {
         return "" + integer;
     }

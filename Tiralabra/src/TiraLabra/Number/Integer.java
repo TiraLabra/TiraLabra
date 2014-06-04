@@ -179,7 +179,7 @@ public class Integer extends Number<Integer> {
     public Integer divide(Integer other) {
         if (this.isZero()) return this;
         if (other.isZero()) {
-            throw new IllegalArgumentException("Division by zero");
+            throw new ArithmeticException("Division by zero");
         }
         
         int res[] = new int[integer.length];

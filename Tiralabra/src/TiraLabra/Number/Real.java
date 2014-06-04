@@ -91,6 +91,11 @@ public class Real extends Number<Number> {
     }
     
     @Override
+    public boolean isZero() {
+        return this.equals(ZERO);
+    }
+    
+    @Override
     public String toString() {
         return decimal.toString();
     }

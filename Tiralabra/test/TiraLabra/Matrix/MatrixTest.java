@@ -94,27 +94,27 @@ public class MatrixTest {
 
     @Test
     public void identityMatrix() {
-        matrix = Matrix.identity(2, 2, Integer.class);
+        matrix = Matrix.identity(2, Integer.class);
         matrixEquals(Integer.class, 1, 0, 0, 1);
     }
     
     @Test
     public void exponentiationNaive() {
-        Matrix identity = Matrix.identity(2, 2, Integer.class);
+        Matrix identity = Matrix.identity(2, Integer.class);
         matrix = matrix.pow_naive(2, identity);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void exponentiation() {
-        Matrix identity = Matrix.identity(2, 2, Integer.class);
+        Matrix identity = Matrix.identity(2, Integer.class);
         matrix = matrix.pow(2, identity);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void decimalExponentiation() {
-        Matrix identity = Matrix.identity(2, 2, Real.class);
+        Matrix identity = Matrix.identity(2, Real.class);
         matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2, identity);
         matrixEquals(Real.class, 2, 1, 1, 1);
     }

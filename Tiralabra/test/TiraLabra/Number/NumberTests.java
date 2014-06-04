@@ -14,8 +14,17 @@ public abstract class NumberTests<T extends Number> {
     public void equalsWorks() {
         assertTrue(one.equals(one));
         assertFalse(one.equals(two));
+        
         assertFalse(one.equals(""));
         assertFalse(one.equals(null));
+        
+        assertFalse(zero.equals(one));
+        assertFalse(one.equals(zero));
+        assertTrue(zero.equals(zero));
+        
+        assertFalse(one.equals(one.negate()));
+        assertFalse(one.negate().equals(one));
+        assertTrue(one.negate().equals(one.negate()));
     }
     
     @Test
@@ -110,8 +119,23 @@ public abstract class NumberTests<T extends Number> {
     }
     
     @Test
-    public void division() {
+    public void divideZero() {
+        assertEquals(zero, zero.divide(two));
+    }
+    
+    @Test(expected=ArithmeticException.class)
+    public void divideByZero() {
+        one.divide(zero);
+    }
+    
+    @Test
+    public void dividePositive() {
         assertEquals(two, four.divide(two));
+    }
+    
+    @Test
+    public void divideNegative() {
+        assertEquals(two.negate(), four.negate().divide(two));
     }
     
     @Test
@@ -143,5 +167,29 @@ public abstract class NumberTests<T extends Number> {
     @Test
     public void negation() {
         assertEquals(one.subtract(two), one.negate());
+    }
+    
+    @Test
+    public void stringifying() {
+        assertEquals("0", zero.toString());
+        assertEquals("1", one.toString());
+        assertEquals("-1", one.negate().toString());
+    }
+    
+    @Test
+    public void compareToZero() {
+        assertTrue(zero.compareTo(one) < 0);
+        assertTrue(zero.compareTo(zero) == 0);
+        assertTrue(one.compareTo(zero) > 0);
+    }
+    
+    @Test
+    public void compareNegatives() {
+        assertTrue(zero.compareTo(one.negate()) > 0);
+        assertTrue(one.negate().compareTo(zero) < 0);
+        
+        assertTrue(one.negate().compareTo(one) < 0);
+        assertTrue(one.negate().compareTo(one.negate()) == 0);
+        assertTrue(one.compareTo(one.negate()) > 0);
     }
 }
