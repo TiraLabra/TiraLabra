@@ -61,6 +61,10 @@ public abstract class Number<T extends Number> implements Comparable<T> {
      */
     public abstract boolean isNegative();
     
+    /**
+     * Onko luku nolla
+     * @return this == 0
+     */
     public abstract boolean isZero();
     
     /**

@@ -4,7 +4,7 @@ package TiraLabra.Number;
  * Käärö Javan double-luvuille
  * @author riku
  */
-public class Double extends Number<Number> {
+public class Double extends Number<Double> {
     public static final Double ONE = new Double(1.);
     public static final Double ZERO = new Double(0.);
     public static final Double TEN = new Double(10.);
@@ -20,41 +20,37 @@ public class Double extends Number<Number> {
     public Double(int integer) {
         this.decimal = (double) integer;
     }
-    
-    private double toDecimal(Number o) {
-        return java.lang.Double.parseDouble(o.toString());
-    }
-    
+
     @Override
-    public Number add(Number other) {
-        return new Double(this.decimal + toDecimal(other));
+    public Double add(Double other) {
+        return new Double(this.decimal + other.decimal);
     }
 
     @Override
-    public Number subtract(Number other) {
-        return new Double(decimal - toDecimal(other));
+    public Double subtract(Double other) {
+        return new Double(decimal - other.decimal);
     }
 
     @Override
-    public Number multiply(Number other) {
-        return new Double(decimal * toDecimal(other));
+    public Double multiply(Double other) {
+        return new Double(decimal * other.decimal);
     }
 
     @Override
-    public Number divide(Number other) {
+    public Double divide(Double other) {
         if (other.isZero()) {
             throw new ArithmeticException();
         }
-        return new Double(decimal / toDecimal(other));
+        return new Double(decimal / other.decimal);
     }
 
     @Override
-    public Number pow(int n) {
+    public Double pow(int n) {
         return new Double(Math.pow(decimal, n));
     }
     
     @Override
-    public Number sqrt() {
+    public Double sqrt() {
         double root = Math.sqrt(decimal);
         return new Double(root);
     }
@@ -70,12 +66,12 @@ public class Double extends Number<Number> {
     }
     
     @Override
-    public Number abs() {
+    public Double abs() {
         return new Double(Math.abs(decimal));
     }
     
     @Override
-    public Number negate() {
+    public Double negate() {
         return new Double(decimal * -1.);
     }
     
@@ -95,7 +91,7 @@ public class Double extends Number<Number> {
     }
     
     @Override
-    public int compareTo(Number other) {
-        return new java.lang.Double(decimal).compareTo(toDecimal(other));
+    public int compareTo(Double other) {
+        return new java.lang.Double(decimal).compareTo(other.decimal);
     }
 }

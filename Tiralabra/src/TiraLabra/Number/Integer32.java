@@ -4,7 +4,7 @@ package TiraLabra.Number;
  * 32-bittinen kokonaisluku
  * @author riku
  */
-public class Integer32 extends Number<Number> {
+public class Integer32 extends Number<Integer32> {
     public static final Integer32 ONE = new Integer32(1);
     public static final Integer32 ZERO = new Integer32(0);
     public static final Integer32 TEN = new Integer32(10);
@@ -15,48 +15,44 @@ public class Integer32 extends Number<Number> {
         this.integer = integer;
     }
     
-    private int toInt(Number o) {
-        return java.lang.Integer.parseInt(o.toString());
-    }
-    
     @Override
-    public Number add(Number other) {
-        return new Integer32(this.integer + toInt(other));
+    public Integer32 add(Integer32 other) {
+        return new Integer32(this.integer + other.integer);
     }
 
     @Override
-    public Number subtract(Number other) {
-        return new Integer32(integer - toInt(other));
+    public Integer32 subtract(Integer32 other) {
+        return new Integer32(integer - other.integer);
     }
 
     @Override
-    public Number multiply(Number other) {
-        return new Integer32(integer * toInt(other));
+    public Integer32 multiply(Integer32 other) {
+        return new Integer32(integer * other.integer);
     }
 
     @Override
-    public Number divide(Number other) {
-        return new Integer32(integer / toInt(other));
+    public Integer32 divide(Integer32 other) {
+        return new Integer32(integer / other.integer);
     }
 
     @Override
-    public Number pow(int n) {
+    public Integer32 pow(int n) {
         return new Integer32((int) Math.pow(integer, n));
     }
     
     @Override
-    public Number sqrt() {
+    public Integer32 sqrt() {
         int root = (int) Math.sqrt(integer);
         return new Integer32(root);
     }
     
     @Override
-    public Number abs() {
+    public Integer32 abs() {
         return new Integer32((int) Math.abs(integer));
     }
     
     @Override
-    public Number negate() {
+    public Integer32 negate() {
         return new Integer32(integer * -1);
     }
     
@@ -86,7 +82,7 @@ public class Integer32 extends Number<Number> {
     }
     
     @Override
-    public int compareTo(Number other) {
-        return new java.lang.Integer(integer).compareTo(toInt(other));
+    public int compareTo(Integer32 other) {
+        return new java.lang.Integer(integer).compareTo(other.integer);
     }
 }

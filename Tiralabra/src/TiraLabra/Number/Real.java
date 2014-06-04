@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Mielivaltaisen tarkka reaaliluku
  * @author riku
  */
-public class Real extends Number<Number> {
+public class Real extends Number<Real> {
     public static final Real ONE = new Real(BigDecimal.ONE);
     public static final Real ZERO = new Real(BigDecimal.ZERO);
     public static final Real TEN = new Real(BigDecimal.TEN);
@@ -40,48 +40,45 @@ public class Real extends Number<Number> {
         this.decimal = decimal;
     }
 
-    private static BigDecimal toDecimal(Number other) {
-        return new BigDecimal(other.toString());
-    }
     
     @Override
-    public Number add(Number other) {
-        return new Real(decimal.add(toDecimal(other)));
+    public Real add(Real other) {
+        return new Real(decimal.add(other.decimal));
     }
 
     @Override
-    public Number subtract(Number other) {
-        return new Real(decimal.subtract(toDecimal(other)));
+    public Real subtract(Real other) {
+        return new Real(decimal.subtract(other.decimal));
     }
 
     @Override
-    public Number multiply(Number other) {
-        return new Real(decimal.multiply(toDecimal(other)));
+    public Real multiply(Real other) {
+        return new Real(decimal.multiply(other.decimal));
     }
 
     @Override
-    public Number divide(Number other) {
-        return new Real(decimal.divide(toDecimal(other)));
+    public Real divide(Real other) {
+        return new Real(decimal.divide(other.decimal));
     }
 
     @Override
-    public Number pow(int n) {
+    public Real pow(int n) {
         return new Real(decimal.pow(n));
     }
     
     @Override
-    public Number sqrt() {
+    public Real sqrt() {
         double root = Math.sqrt(decimal.doubleValue()); // !!
         return new Real(root);
     }
 
     @Override
-    public Number abs() {
+    public Real abs() {
         return new Real(decimal.abs());
     }
     
     @Override
-    public Number negate() {
+    public Real negate() {
         return new Real(decimal.negate());
     }
     
@@ -110,7 +107,7 @@ public class Real extends Number<Number> {
     }
     
     @Override
-    public int compareTo(Number other) {
-        return decimal.compareTo(toDecimal(other));
+    public int compareTo(Real other) {
+        return decimal.compareTo(other.decimal);
     }
 }
