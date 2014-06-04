@@ -34,4 +34,18 @@ public class BittiEsityksetTest {
         assertEquals(esitykset.getEsitykset().get("b"), "10");
         assertEquals(esitykset.getEsitykset().get("c"), "11");
     }
+    
+    @Test
+    public void huffmanPuunTekstiEsitys() {
+        StringBuilder teksti = new StringBuilder();
+        for (String avain : esitykset.getEsitykset().keySet()) {
+            teksti.append(avain);
+            teksti.append(esitykset.getEsitykset().get(avain));
+        }
+        
+        teksti.append((char) 127);
+        teksti.append((char) 127);
+        
+        assertEquals(teksti.toString(), esitykset.huffmanPuunTekstiEsitys());
+    }
 }

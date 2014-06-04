@@ -15,12 +15,11 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
 //        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
-//        ohjaaja.suoritaPakkaaminen("abcdaa.txt");
-        
+//        ohjaaja.suoritaPakkaaminen("abcd.txt");
         
         TiedostonPurkaja purkaja = new TiedostonPurkaja();
-        purkaja.pura("abcdaa.txt");
-    }
+        purkaja.pura("abcd.txt.hemi");
+    }   
 }
 
 

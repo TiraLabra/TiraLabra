@@ -18,35 +18,6 @@ public class BinaariMuuntaja {
         return this.lisatytEtuNollat;
     }
     
-    /**
-     * Palauttaa pakatun tiedoston alkuun asetettavan 4-tavun mittaisen osoittimen.
-     * @param tekstinPituus - pakattavan tiedoston tekstin/datan pituus
-     * @return 
-     */
-    
-    public String muodostaOsoitin(int tekstinPituus) {
-        int arvo = 5 + tekstinPituus;
-        StringBuilder osoitin = lisaaEtuNollatOsoittimeen(Integer.numberOfLeadingZeros(arvo));
-        osoitin.append(binaariEsitysIlmanEtuNollia(arvo, 30));
-        
-        return pakatuksiTekstiksi(osoitin.toString());
-    }
-    
-    /**
-     * Lisää osoittimen alkuun etunollia "maaran" verran.
-     * @param maara
-     * @return 
-     */
-    
-    protected StringBuilder lisaaEtuNollatOsoittimeen(int maara) {
-        StringBuilder osoitin = new StringBuilder();
-        while (maara > 0) {
-            osoitin.append("0");
-            maara--;
-        }
-        return osoitin;
-    }
-    
     public String binaariEsitysEtuNollilla8Bit(int arvo) {
         StringBuilder esitys = new StringBuilder();
         
@@ -130,17 +101,13 @@ public class BinaariMuuntaja {
      */
     
     protected char asciiMerkkina(String bittijono) {
-        int luku = kokonaislukuna(bittijono);
+        int luku = kokonaisLukuna(bittijono);
         
-        if (luku > 127) {
-            String unicode = new String(new byte[] { (byte) luku });
-            return unicode.charAt(0);   // eikä toimi vieläkään oikein vaikka pitäisi...
-        }
-         
-        return (char) luku;         // ei osaa kääntää merkkejä joiden kokonaislukuesitys > 127 oikein.
+        char[] kirjain = Character.toChars(luku);
+        return kirjain[0];
     }
     
-    protected int kokonaislukuna(String bittijono) {
+    protected int kokonaisLukuna(String bittijono) {
         int luku = 0;
         int suurin = bittijono.length();
         
@@ -201,11 +168,7 @@ public class BinaariMuuntaja {
         }
         return ilmanEtuNollia.toString();
     }
-    
-    public int osoitinKokonaisLukuna(String osoitinString) {
-        return 16777216 * osoitinString.charAt(0) + 65536 * osoitinString.charAt(1) + 256 * osoitinString.charAt(2) + osoitinString.charAt(3);
-    }
-    
+
     public String poistaEtuMerkkeja(String teksti, int maara) {
         StringBuilder ilmanEtuMerkkeja = new StringBuilder();
         for (int i = maara; i < teksti.length(); i++) {

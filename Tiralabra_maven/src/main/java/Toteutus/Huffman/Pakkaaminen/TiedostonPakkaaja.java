@@ -6,7 +6,6 @@ import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
 import Toteutus.TekstinLukija;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -33,7 +32,7 @@ public class TiedostonPakkaaja {
     
     public void pakkaaTiedosto(TekstinLukija lukija, HuffmanPuu puu, BittiEsitykset esitykset, String polku) throws IOException {
         File tiedosto = luoUusiTiedosto(polku);
-        String teksti = muodostaKirjoitettavaTeksti(esitykset.getEsitykset(), puu, lukija.getTeksti());
+        String teksti = muodostaKirjoitettavaTeksti(esitykset, puu, lukija.getTeksti());
         kirjoitaTiedostoon(tiedosto, teksti);
     }
     
@@ -61,7 +60,7 @@ public class TiedostonPakkaaja {
      * Kirjoittaaa parametrina annettuun tiedostoon parametrina annetun tekstin.
      * @param tiedosto
      * @param teksti
-     * @throws IOException 
+     * @throws IOException
      */
     
     protected void kirjoitaTiedostoon(File tiedosto, String teksti) throws IOException {
@@ -73,16 +72,16 @@ public class TiedostonPakkaaja {
      * Muodostaa tekstin, joka pakattavaan tiedostoon kirjoitetaan (ts. koko pakkauksen sisällön).
      * Ensin muodostetaan tekstistä pakattava "0/1" -versio, jonka jälkeen luodaan StringBuilder- olio, johon
      * lisätään kaikki tarpeellinen yksi kerrallaan.
-     * @param bittijonot
+     * @param esitykset
      * @param puu
      * @param teksti
      * @return 
      */
     
-    protected String muodostaKirjoitettavaTeksti(HashMap<String, String> bittijonot, HuffmanPuu puu, String teksti) {
-        String pakattuna = tekstiPakattuna(bittijonot, teksti);
+    protected String muodostaKirjoitettavaTeksti(BittiEsitykset esitykset, HuffmanPuu puu, String teksti) {
+        String pakattuna = tekstiPakattuna(esitykset.getEsitykset(), teksti);
         StringBuilder kirjoitettava = new StringBuilder();
-        lisaaTeksti(kirjoitettava, pakattuna, puu);
+        lisaaTeksti(kirjoitettava, pakattuna, esitykset);
 
         return kirjoitettava.toString();
     }
@@ -100,17 +99,16 @@ public class TiedostonPakkaaja {
     
     /**
      * Lisää tyhjälle StringBuilder -oliolle koko pakattavan tiedoston sisällön.
-     * Ensin tulee pointer Huffman -puuta varten (4 tavua). Sitten 1 tavu joka kertoo, kuinka monta
-     * etunollaa tekstin binääriesityksen eteen lisättiin. Sitten tulee tekstin binääriesitys ja lopuksi Huffman puu.
+     * Ensin tulee Huffman -puun tekstiesitys. Sitten 1 tavu joka kertoo, kuinka monta
+     * etunollaa tekstin binääriesityksen eteen lisättiin ja lopuksi tekstin pakattu binääriesitys.
      * @param kirjoitettava
      * @param pakattuna
-     * @param puu 
+     * @param esitykset
      */
     
-    protected void lisaaTeksti(StringBuilder kirjoitettava, String pakattuna, HuffmanPuu puu) {
-        kirjoitettava.append(muuntaja.muodostaOsoitin(pakattuna.length()));
+    protected void lisaaTeksti(StringBuilder kirjoitettava, String pakattuna, BittiEsitykset esitykset) {
+        kirjoitettava.append(esitykset.huffmanPuunTekstiEsitys());
         kirjoitettava.append((char) muuntaja.getLisatytEtuNollat());
         kirjoitettava.append(pakattuna);
-        kirjoitettava.append(puu.puunTekstiEsitys());
     }
 }

@@ -22,14 +22,14 @@ public class HuffmanPuuTest {
     }
 
     private HashMap<String, Integer> alustaEsiintymat() {
-        HashMap<String, Integer> esiintymat = new HashMap<>();
-        esiintymat.put("A", 8);
-        esiintymat.put("B", 2); // b = g
-        esiintymat.put("C", 4);
-        esiintymat.put("D", 1);
-        esiintymat.put("E", 2);
+        HashMap<String, Integer> puunEsiintymat = new HashMap<>();
+        puunEsiintymat.put("A", 8);
+        puunEsiintymat.put("B", 2); // b = g
+        puunEsiintymat.put("C", 4);
+        puunEsiintymat.put("D", 1);
+        puunEsiintymat.put("E", 2);
         
-        return esiintymat;
+        return puunEsiintymat;
     }
     
     @Test
@@ -130,32 +130,6 @@ public class HuffmanPuuTest {
         assertEquals(vanh, vasen.getVanh());
         assertEquals(vanh, oikea.getVanh());
     }
-    
-//    @Test
-//    public void puunTekstiEsitys() {
-//        puu2 = new HuffmanPuu();
-//        esiintymat = new HashMap<>();
-//        puu2.luoKeko(esiintymat);
-//        tyhjaKekoPalauttaaTyhjanStringOlion();
-//        
-//        luoTestiEsiintymat();
-//        puu2.muodostaHuffmanPuu(esiintymat);
-//        
-//        char nul = (char) 0;
-//        puu2.puunTekstiEsitys();
-//        assertEquals(nul + "ab", puu2.puunTekstiEsitys());
-//        
-////        assertEquals(nul + "" +
-////                     nul + "A" + 
-////                     nul + "C" + nul + "" + nul + "" + 
-////                     nul + "B")
-//        assertEquals(nul + "" + nul + "A" + nul + "C" + nul + "B" + "E" + "D", puu.puunTekstiEsitys());
-//    }
-//    
-//    private void tyhjaKekoPalauttaaTyhjanStringOlion() {
-//        assertTrue(new HuffmanPuu().puunTekstiEsitys().isEmpty());
-//        assertTrue(puu2.puunTekstiEsitys().isEmpty());
-//    }
     
     private void muodostaTestiPuuJaKeko() {
         luoTyhjaPuu();

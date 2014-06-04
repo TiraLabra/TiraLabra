@@ -5,8 +5,8 @@ import Apuvalineet.Kirjoittaja;
 import Toteutus.TekstinLukija;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class TiedostonPurkaja {
     private BinaariMuuntaja muuntaja;
@@ -49,65 +49,85 @@ public class TiedostonPurkaja {
     
     protected void puraTiedosto(File pakkaus, File tiedosto) throws IOException {
         String teksti = lueTeksti(pakkaus);
-        int puunOsoite = puunOsoite(teksti);
-        String tekstiBinaarina = tekstiBinaarina(teksti, puunOsoite);
+        HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
         
-        String kirjoitettava = kirjoitettavaTeksti(teksti, puunOsoite, tekstiBinaarina);
+        int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
+        String tekstiBinaarina = tekstiBinaarina(teksti, binaariTekstinAlku);
+        
+        String kirjoitettava = kirjoitettavaTeksti(tekstiBinaarina, bittijonotJaMerkit);
         new Kirjoittaja(tiedosto.getPath()).kirjoita(kirjoitettava);
     }
-
-    protected String kirjoitettavaTeksti(String teksti, int puunOsoite, String tekstiBinaarina) {
+    
+    protected String kirjoitettavaTeksti(String tekstiBinaarina, HashMap<String, String> bittijonotJaMerkit) {
         StringBuilder kirjoitettava = new StringBuilder();
+        StringBuilder bittijono = new StringBuilder();
         
-        int osoite = puunOsoite;
-        int pituus = tekstiBinaarina.length();
-        
-        for (int i = 0; i < pituus + 1; i++) {
-            char merkki = teksti.charAt(osoite);
-
-            if (merkki == (char) 0) {
-                osoite = seuraavaOsoite(osoite, puunOsoite, tekstiBinaarina, i);
-                continue;
-            }
+        for (int i = 0; i < tekstiBinaarina.length(); i++) {
+            bittijono.append(tekstiBinaarina.charAt(i));
             
-            kirjoitettava.append(merkki);
-            osoite = puunOsoite;
-            
-            if (i < pituus) {
-                i--;
+            if (bittijonotJaMerkit.containsKey(bittijono.toString())) {
+                kirjoitettava.append(bittijonotJaMerkit.get(bittijono.toString()));
+                bittijono = new StringBuilder();
             }
         }
         
         return kirjoitettava.toString();
     }
     
-    protected int seuraavaOsoite(int osoite, int puunOsoite, String tekstiBinaarina, int i) {
-        osoite += osoite - puunOsoite + 1;
-        if (tekstiBinaarina.charAt(i) == '1') {
-            osoite += 1;
+    protected int kayPuuLapi(String teksti, HashMap<String, String> bittijonotJaMerkit) {
+        StringBuilder bittiEsitys = new StringBuilder();
+        char kirjain = teksti.charAt(0);
+        
+        int i = 1;
+        while (true) {
+            char merkki = teksti.charAt(i);
+            if (merkki == '0' || merkki == '1') {
+                bittiEsitys.append(merkki);
+            }
+            
+            else {
+                if (! bittiEsitys.toString().isEmpty()) {
+                    bittijonotJaMerkit.put(bittiEsitys.toString(), kirjain + "");
+                    kirjain = merkki;
+                    bittiEsitys = new StringBuilder();
+                }
+                
+                if (merkki == (char) 127) {
+                    if (i == 1 || teksti.charAt(i+1) == (char) 127) {
+                        break;
+                    }
+                }
+            }
+
+            i++;
         }
         
-        return osoite;
+        if (i == 1) {
+            return 2;
+        }
+        return i + 2;
     }
     
-    protected String tekstiBinaarina(String teksti, int puunOsoite)  {
+    protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite)  {
         StringBuilder binaarina = new StringBuilder();
-        binaarina.append(kuudesTavuIlmanEtuNollia(teksti));
-        binaarina.append(lisaaMuuTeksti(teksti, puunOsoite));       
+        binaarina.append(tavuIlmanEtuNollia(teksti, poistettavienEtuNollienOsoite));
+        binaarina.append(lisaaMuuTeksti(teksti, poistettavienEtuNollienOsoite));       
         
         return binaarina.toString();
     }
     
-    protected String kuudesTavuIlmanEtuNollia(String teksti) {
-        String binaarina = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.charAt(5));
-        return muuntaja.poistaEtuMerkkeja(binaarina, teksti.charAt(4));
+    protected String tavuIlmanEtuNollia(String teksti, int poistettavienEtuNollienOsoite) {
+        int arvo = teksti.codePointAt(poistettavienEtuNollienOsoite + 1);                               // EI TOIMI
+        
+        String binaarina = muuntaja.binaariEsitysEtuNollilla8Bit(arvo);
+        return muuntaja.poistaEtuMerkkeja(binaarina, teksti.charAt(poistettavienEtuNollienOsoite));
     }
     
-    protected String lisaaMuuTeksti(String teksti, int puunOsoite) {
+    protected String lisaaMuuTeksti(String teksti, int poistettavienEtuNollienOsoite) {
         StringBuilder lisaaja = new StringBuilder();
         
-        for (int i = 6; i < puunOsoite; i++) {
-            String lisattava = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.charAt(i));
+        for (int i = poistettavienEtuNollienOsoite + 2; i < teksti.length(); i++) {
+            String lisattava = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.codePointAt(i));            // EI TOIMI
             lisaaja.append(lisattava);
         }
         return lisaaja.toString();
@@ -120,11 +140,7 @@ public class TiedostonPurkaja {
         
         return lukija.getTeksti();
     }
-    
-    protected int puunOsoite(String teksti) {
-        return muuntaja.osoitinKokonaisLukuna(teksti.substring(0, 4));
-    }
-    
+
     protected String luotavanTiedostonPolku(String polku) {
         StringBuilder puretunPolku = new StringBuilder();
         for (int i = 0; i < polku.length() - 5; i++) {

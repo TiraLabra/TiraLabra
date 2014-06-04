@@ -50,16 +50,22 @@ public class BinaariMuuntajaTest {
     @Test
     public void asciiMerkkinaPalauttaaOikeanMerkin() {
         char merkki = muuntaja.asciiMerkkina("10101");
-        assertTrue((int) merkki == 21);
+        assertTrue(merkki == 21);
         
         merkki = muuntaja.asciiMerkkina("01100110");
-        assertTrue((int) merkki == 102);
+        assertTrue(merkki == 102);
         
         merkki = muuntaja.asciiMerkkina("");
-        assertTrue((int) merkki == 0);
+        assertTrue(merkki == 0);
         
         merkki = muuntaja.asciiMerkkina("1111111");
-        assertTrue((int) merkki == 127);
+        assertTrue(merkki == 127);
+        
+        merkki = muuntaja.asciiMerkkina("10000111");
+        assertTrue(merkki == 135);
+        
+        merkki = muuntaja.asciiMerkkina("10101100");
+        assertTrue(merkki == 172);
     }
     
     @Test
@@ -89,36 +95,9 @@ public class BinaariMuuntajaTest {
     }
     
     @Test
-    public void puuOsoittimenMuodostus() {
-        char nul = (char) 0;
-        assertEquals(nul + "" + nul + "" + nul + "" + (char) 5, muuntaja.muodostaOsoitin(0));
-        assertEquals(nul + "" + nul + "" + (char) 1 + "" + nul, muuntaja.muodostaOsoitin(251));
-        assertEquals(nul + "" + (char) 3 + "" + (char) 254 + "" + (char) 70, muuntaja.muodostaOsoitin(261697));
-        assertEquals((char) 127 + "" + (char) 47 + "" + (char) 5 + "" + nul, muuntaja.muodostaOsoitin(2133787899));
-    }
-    
-    @Test
-    public void osoitinKokonaisLukuna() {
-        char nul = (char) 0;
-        
-        String osoitin = nul + "" + nul + "" + nul + "a";
-        assertEquals(97, muuntaja.osoitinKokonaisLukuna(osoitin));
-        
-        osoitin = nul + "" + nul + "" + " " + "M";
-        assertEquals(8269, muuntaja.osoitinKokonaisLukuna(osoitin));
-        
-        osoitin = nul + "" + "3" + "" + nul + "" + "!";
-        assertEquals(3342369, muuntaja.osoitinKokonaisLukuna(osoitin));
-        
-        osoitin = "1>=2";
-        assertEquals(822083584 + 4063232 + 15616 + 50, muuntaja.osoitinKokonaisLukuna(osoitin));
-    }
-    
-    @Test
     public void etuMerkkienPoistoToimii() {
         String sana = "sana";
         assertEquals("sana", muuntaja.poistaEtuMerkkeja(sana, 0));
         assertEquals("", muuntaja.poistaEtuMerkkeja(sana, sana.length()));
-        
     }
 }

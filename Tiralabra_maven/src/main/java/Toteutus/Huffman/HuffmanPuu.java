@@ -2,7 +2,6 @@ package Toteutus.Huffman;
 
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
-import java.util.ArrayDeque;
 import java.util.HashMap;
 
 /**
@@ -76,25 +75,16 @@ public class HuffmanPuu {
 //     * @return - puun tekstiesitys
 //     */
 //    
-    
-    public String puunTekstiEsitys(HashMap<String, String> bittijonot) {
-        if (this.getKeko() == null || this.getKeko().getSolmut().length <= 0) {
-            return "";
-        }
+//    
+//    public String puunTekstiEsitys(HashMap<String, String> bittijonot) {
+//        if (this.getKeko() == null || this.getKeko().getSolmut().length <= 0) {
+//            return "";
+//        }
+//
+//        return muodostaTekstiEsitys(bittijonot);
+//    }
+//    
 
-        return muodostaTekstiEsitys(bittijonot);
-    }
-    
-    protected String muodostaTekstiEsitys(HashMap<String, String> bittijonot) {
-        StringBuilder teksti = new StringBuilder();
-        
-        for (String lisattava : bittijonot.keySet()) {
-            lisattava += bittijonot.get(lisattava);
-            teksti.append(lisattava);
-        }
-        
-        return teksti.toString();
-    }
 //    
 //    /**
 //     * Teksti on alussa tyhjä ja siihen aletaan latoa solmujen avaimia järjestyksessä laittamalla jokaisen solmun lapset

@@ -1,7 +1,7 @@
 package Toteutus.Huffman.Pakkaaminen;
 
 import Apuvalineet.BinaariMuuntaja;
-import Toteutus.Huffman.HuffmanPuu;
+import Toteutus.Huffman.BittiEsitykset;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,12 +12,10 @@ import org.junit.Test;
 
 public class TiedostonPakkaajaTest {
     private TiedostonPakkaaja pakkaaja;
-    private BinaariMuuntaja muuntaja;
     
     @Before
     public void setUp() {
         this.pakkaaja = new TiedostonPakkaaja();
-        this.muuntaja = new BinaariMuuntaja();
     }
     
     @After
@@ -63,30 +61,22 @@ public class TiedostonPakkaajaTest {
     @Test
     public void lisaaTekstiToimii() {
         StringBuilder kirjoitettava = new StringBuilder();
-        pakkaaja.lisaaTeksti(kirjoitettava, "abc", new HuffmanPuu());
+        BittiEsitykset esitykset = new BittiEsitykset(testattavatBittiEsitykset());
+
+        StringBuilder teksti = new StringBuilder();
+        for (String avain : esitykset.getEsitykset().keySet()) {
+            teksti.append(avain);
+            teksti.append(esitykset.getEsitykset().get(avain));     // a101 b00 c01 (127)(127)
+        }
         
-        char nul = (char) 0;
-        String teksti = nul + "" + nul + "" + nul + (char) 8;
-        teksti += nul + "abc";
+        teksti.append((char) 127);
+        teksti.append((char) 127);
+        teksti.append((char) 0);
+        teksti.append("1010001");
         
-        assertEquals(teksti, kirjoitettava.toString());
+        pakkaaja.lisaaTeksti(kirjoitettava, "1010001", esitykset);
+        assertEquals(teksti.toString(), kirjoitettava.toString());
     }
-    
-//    @Test
-//    public void tekstiPakattunaPalauttaaPakatunTekstin() {
-//        HashMap<String, String> esitykset = testattavatBittiEsitykset();
-//        String teksti = "ebecbdca";
-//
-//        assertEquals("4�", pakkaaja.tekstiPakattuna(esitykset, teksti));
-//    }
-    
-//    @Test
-//    public void kirjoitettavanTekstinMuodostaminen() {
-//        String kirjoitettava = pakkaaja.muodostaKirjoitettavaTeksti(testattavatBittiEsitykset(), new HuffmanPuu(), "ebecbdca");
-//        
-//        char nul = (char) 0;
-//        assertEquals(nul + "" + nul + "" + nul + "" + (char) 7 + "4�", kirjoitettava);
-//    }
     
     private HashMap<String, String> testattavatBittiEsitykset() {
         HashMap<String, String> esitykset = new HashMap<>();
