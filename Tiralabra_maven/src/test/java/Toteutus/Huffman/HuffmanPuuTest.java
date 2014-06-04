@@ -131,31 +131,31 @@ public class HuffmanPuuTest {
         assertEquals(vanh, oikea.getVanh());
     }
     
-    @Test
-    public void puunTekstiEsitys() {
-        puu2 = new HuffmanPuu();
-        esiintymat = new HashMap<>();
-        puu2.luoKeko(esiintymat);
-        tyhjaKekoPalauttaaTyhjanStringOlion();
-        
-        luoTestiEsiintymat();
-        puu2.muodostaHuffmanPuu(esiintymat);
-        
-        char nul = (char) 0;
-        puu2.puunTekstiEsitys();
-        assertEquals(nul + "ab", puu2.puunTekstiEsitys());
-        
-//        assertEquals(nul + "" +
-//                     nul + "A" + 
-//                     nul + "C" + nul + "" + nul + "" + 
-//                     nul + "B")
-        assertEquals(nul + "" + nul + "A" + nul + "C" + nul + "B" + "E" + "D", puu.puunTekstiEsitys());
-    }
-    
-    private void tyhjaKekoPalauttaaTyhjanStringOlion() {
-        assertTrue(new HuffmanPuu().puunTekstiEsitys().isEmpty());
-        assertTrue(puu2.puunTekstiEsitys().isEmpty());
-    }
+//    @Test
+//    public void puunTekstiEsitys() {
+//        puu2 = new HuffmanPuu();
+//        esiintymat = new HashMap<>();
+//        puu2.luoKeko(esiintymat);
+//        tyhjaKekoPalauttaaTyhjanStringOlion();
+//        
+//        luoTestiEsiintymat();
+//        puu2.muodostaHuffmanPuu(esiintymat);
+//        
+//        char nul = (char) 0;
+//        puu2.puunTekstiEsitys();
+//        assertEquals(nul + "ab", puu2.puunTekstiEsitys());
+//        
+////        assertEquals(nul + "" +
+////                     nul + "A" + 
+////                     nul + "C" + nul + "" + nul + "" + 
+////                     nul + "B")
+//        assertEquals(nul + "" + nul + "A" + nul + "C" + nul + "B" + "E" + "D", puu.puunTekstiEsitys());
+//    }
+//    
+//    private void tyhjaKekoPalauttaaTyhjanStringOlion() {
+//        assertTrue(new HuffmanPuu().puunTekstiEsitys().isEmpty());
+//        assertTrue(puu2.puunTekstiEsitys().isEmpty());
+//    }
     
     private void muodostaTestiPuuJaKeko() {
         luoTyhjaPuu();
