@@ -1,12 +1,10 @@
 package TiraLabra.Number;
 
-import TiraLabra.Number.Number;
-
 /**
  * Käärö Javan double-luvuille
  * @author riku
  */
-public class Double extends Number {
+public class Double extends Number<Number> {
     public static final Double ONE = new Double(1.);
     public static final Double ZERO = new Double(0.);
     public static final Double TEN = new Double(10.);
@@ -55,6 +53,21 @@ public class Double extends Number {
     }
     
     @Override
+    public boolean isNegative() {
+        return (decimal < 0);
+    }
+    
+    @Override
+    public Number abs() {
+        return new Double(Math.abs(decimal));
+    }
+    
+    @Override
+    public Number negate() {
+        return new Double(decimal * -1.);
+    }
+    
+    @Override
     public String toString() {
         return "" + decimal;
     }
@@ -70,22 +83,7 @@ public class Double extends Number {
     }
     
     @Override
-    public boolean isNegative() {
-        return (decimal < 0);
-    }
-    
-    @Override
     public int compareTo(Number other) {
         return new java.lang.Double(decimal).compareTo(toDecimal(other));
-    }
-    
-    @Override
-    public Number abs() {
-        return new Double(Math.abs(decimal));
-    }
-    
-    @Override
-    public Number negate() {
-        return new Double(decimal * -1.);
     }
 }

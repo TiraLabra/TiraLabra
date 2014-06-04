@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Mielivaltaisen tarkka reaaliluku
  * @author riku
  */
-public class Real extends Number {
+public class Real extends Number<Number> {
     public static final Real ONE = new Real(BigDecimal.ONE);
     public static final Real ZERO = new Real(BigDecimal.ZERO);
     public static final Real TEN = new Real(BigDecimal.TEN);
@@ -74,6 +74,21 @@ public class Real extends Number {
         double root = Math.sqrt(decimal.doubleValue()); // !!
         return new Real(root);
     }
+
+    @Override
+    public Number abs() {
+        return new Real(decimal.abs());
+    }
+    
+    @Override
+    public Number negate() {
+        return new Real(decimal.negate());
+    }
+    
+    @Override
+    public boolean isNegative() {
+        return (decimal.doubleValue() < 0.);
+    }
     
     @Override
     public String toString() {
@@ -90,22 +105,7 @@ public class Real extends Number {
     }
     
     @Override
-    public boolean isNegative() {
-        return (decimal.doubleValue() < 0.);
-    }
-    
-    @Override
     public int compareTo(Number other) {
         return decimal.compareTo(toDecimal(other));
-    }
-    
-    @Override
-    public Number abs() {
-        return new Real(decimal.abs());
-    }
-    
-    @Override
-    public Number negate() {
-        return new Real(decimal.negate());
     }
 }

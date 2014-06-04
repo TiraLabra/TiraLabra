@@ -1,7 +1,6 @@
 package fibonacci;
 
 import TiraLabra.Matrix.Matrix;
-
 import TiraLabra.Number.Number;
 import TiraLabra.Number.Integer;
 
@@ -11,11 +10,12 @@ public class Fibonacci {
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
         
+        Matrix identity = Matrix.identity(2, 2, Integer.class);
         Matrix matrix = new Matrix(values);
         if (naive) {
-            matrix = matrix.pow_naive(n);
+            matrix = matrix.pow_naive(n, identity);
         } else {
-            matrix = matrix.pow(n);
+            matrix = matrix.pow(n, identity);
         }
         
         Number fib = matrix.get(0, 1);
@@ -25,8 +25,8 @@ public class Fibonacci {
     private static void timeit(boolean naive) {
         long aikaAlussa = System.currentTimeMillis();
         
-        System.out.println("Fibonacci(4096), " + (naive ? "naive" : "fast")
-                + ": " + fibonacci(4096, naive));
+        System.out.println("Fibonacci(25), " + (naive ? "naive" : "fast")
+                + ": " + fibonacci(25, naive));
         
         long aikaLopussa = System.currentTimeMillis();
         System.out.println((aikaLopussa - aikaAlussa) + "ms\n");

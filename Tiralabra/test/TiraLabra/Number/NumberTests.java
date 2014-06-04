@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public abstract class NumberTests {
-    protected Number one, two, four;
+public abstract class NumberTests<T extends Number> {
+    protected T zero, one, two, four;
     
     @Before
     public abstract void setUp();
@@ -19,18 +19,94 @@ public abstract class NumberTests {
     }
     
     @Test
-    public void addition() {
+    public void addZero() {
+        assertEquals(one, one.add(zero));
+    }
+    
+    @Test
+    public void addToZero() {
+        assertEquals(one, zero.add(one));
+    }
+    
+    @Test
+    public void addPositive() {
         assertEquals(two, one.add(one));
     }
-
+    
     @Test
-    public void subtraction() {
+    public void addNegative() {
+        assertEquals(one.subtract(one), one.add(one.negate()));
+    }
+    
+    @Test
+    public void addToNegative() {
+        assertEquals(one.subtract(one), one.negate().add(one));
+    }
+    
+    @Test
+    public void addNegativeToNegative() {
+        assertEquals(two.negate(), one.negate().add(one.negate()));
+    }
+    
+    @Test
+    public void subtractZero() {
+        assertEquals(one, one.subtract(zero));
+    }
+    
+    @Test
+    public void subtractFromZero() {
+        assertEquals(one.negate(), zero.subtract(one));
+    }
+    
+    @Test
+    public void subtractPositive() {
         assertEquals(one, two.subtract(one));
+    }
+    
+    @Test
+    public void subtractNegative() {
+        assertEquals(one.add(two), two.subtract(one.negate()));
+    }
+    
+    @Test
+    public void subtractFromNegative() {
+        assertEquals(two.add(one).negate(), two.negate().subtract(one));
     }
 
     @Test
-    public void multiplication() {
+    public void subtractNegativeFromNegative() {
+        assertEquals(one.negate(), two.negate().subtract(one.negate()));
+        assertEquals(zero, one.negate().subtract(one.negate()));
+    }
+    
+    @Test
+    public void subtractToNegative() {
+        assertEquals(one.negate(), one.subtract(two));
+    }
+    
+    @Test
+    public void multiplyByZero() {
+        assertEquals(zero, two.multiply(zero));
+    }
+    
+    @Test
+    public void multiplyZero() {
+        assertEquals(zero, zero.multiply(two));
+    }
+    
+    @Test
+    public void multiplyByPositive() {
         assertEquals(four, two.multiply(two));
+    }
+    
+    @Test
+    public void multiplyByNegative() {
+        assertEquals(four.negate(), two.multiply(two.negate()));
+    }
+    
+    @Test
+    public void multiplyNegativeByNegative() {
+        assertEquals(four, two.negate().multiply(two.negate()));
     }
     
     @Test
@@ -47,12 +123,6 @@ public abstract class NumberTests {
     public void squareRoot() {
         assertEquals(two, four.sqrt());
     }
-    
-    /*@Test
-    public void newtonsqrt() {
-        assertEquals(two, four.sqrt(one, 3));
-        assertEquals(four, four.multiply(four).sqrt(one, 5));
-    }*/
     
     @Test
     public void comparision() {

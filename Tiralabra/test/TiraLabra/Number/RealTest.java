@@ -1,9 +1,11 @@
 package TiraLabra.Number;
 
-public class DecimalTest extends NumberTests {
+public class RealTest extends NumberTests<Real> {
     @Override
     public void setUp() {
-        one = new Real(1.0);
+        zero = Real.ZERO;
+        one = Real.ONE;
+        
         two = new Real(2.0);
         four = new Real(4.0);
     }

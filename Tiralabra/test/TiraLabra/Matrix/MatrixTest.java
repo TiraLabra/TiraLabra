@@ -41,21 +41,13 @@ public class MatrixTest {
         matrix.get(0, 3);
     }
     
-    private Number makeNumber(Class<? extends Number> type, int value) {
-        try {
-            return type.getConstructor(int.class).newInstance(value);
-        } catch (Exception ex ) {
-            throw new IllegalArgumentException();
-        }
-    }
-    
     private Matrix makeMatrix(Class<? extends Number> type,
             int n, int m, int... values) {
         Number elements[][] = new Number[n][m];
         
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                elements[i][j] = makeNumber(type, values[i*m + j]);
+                elements[i][j] = Number.make(type, values[i*m + j]);
             }
         }
         
@@ -67,7 +59,7 @@ public class MatrixTest {
         
         for (int i = 0; i < matrix.N; i++) {
             for (int j = 0; j < matrix.M; j++) {
-                assertEquals(makeNumber(type, values[i*matrix.M + j]),
+                assertEquals(Number.make(type, values[i*matrix.M + j]),
                         matrix.get(i, j));
             }
         }
@@ -108,19 +100,22 @@ public class MatrixTest {
     
     @Test
     public void exponentiationNaive() {
-        matrix = matrix.pow_naive(2);
+        Matrix identity = Matrix.identity(2, 2, Integer.class);
+        matrix = matrix.pow_naive(2, identity);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void exponentiation() {
-        matrix = matrix.pow(2);
+        Matrix identity = Matrix.identity(2, 2, Integer.class);
+        matrix = matrix.pow(2, identity);
         matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
     public void decimalExponentiation() {
-        matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2);
+        Matrix identity = Matrix.identity(2, 2, Real.class);
+        matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2, identity);
         matrixEquals(Real.class, 2, 1, 1, 1);
     }
     

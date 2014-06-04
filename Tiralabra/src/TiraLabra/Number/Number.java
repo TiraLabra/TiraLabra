@@ -3,58 +3,51 @@ package TiraLabra.Number;
 /**
  * Operaattoreita luvuille
  * @author riku
+ * @param <T>
  */
-public abstract class Number implements Comparable<Number> {
+public abstract class Number<T extends Number> implements Comparable<T> {
+    public static Number make(Class<? extends Number> type, int k) {
+        try {
+            return type.getConstructor(int.class).newInstance(k);
+        } catch (Exception ex ) {
+            throw new IllegalArgumentException();
+        }
+    }
+    
     /**
      * Yhteenlasku
      * @param other toinen luku
      * @return this + other
      */
-    public abstract Number add(Number other);
+    public abstract T add(T other);
     
     /**
      * Vähennyslasku
      * @param other toinen luku
      * @return this - other
      */
-    public abstract Number subtract(Number other);
+    public abstract T subtract(T other);
     
     /**
      * Kertolasku
      * @param other toinen luku
      * @return this * other
      */
-    public abstract Number multiply(Number other);
+    public abstract T multiply(T other);
     
     /**
      * Jakolasku
      * @param other toinen luku
      * @return this / other
      */
-    public abstract Number divide(Number other);
+    public abstract T divide(T other);
     
     /**
      * Potenssi
      * @param n
      * @return this^n
      */
-    public abstract Number pow(int n);
-    
-    /**
-     * Neliöjuuri Newton-Raphsonin menetelmällä
-     * @param guess
-     * @param iter
-     * @return 
-     */
-    /*public Number sqrt(Number guess, int iter) {
-        Number n = guess;
-        for (int i = 0; i < iter; i++) {
-            Number f = n.multiply(n).subtract(this);
-            Number d = n.add(n);
-            n = n.subtract(f.divide(d));
-        }
-        return n;
-    }*/
+    public abstract T pow(int n);
     
     /**
      * Neliöjuuri
@@ -72,11 +65,14 @@ public abstract class Number implements Comparable<Number> {
      * Itseisarvo
      * @return |this|
      */
-    public abstract Number abs();
+    public abstract T abs();
     
     /**
      * Vastaluku
      * @return -this
      */
-    public abstract Number negate();
+    public abstract T negate();
+
+    @Override
+    public abstract int compareTo(T o);
 }

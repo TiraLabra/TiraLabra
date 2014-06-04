@@ -4,7 +4,7 @@ package TiraLabra.Number;
  * 32-bittinen kokonaisluku
  * @author riku
  */
-public class Integer32 extends Number {
+public class Integer32 extends Number<Number> {
     public static final Integer32 ONE = new Integer32(1);
     public static final Integer32 ZERO = new Integer32(0);
     public static final Integer32 TEN = new Integer32(10);
@@ -31,7 +31,6 @@ public class Integer32 extends Number {
 
     @Override
     public Number multiply(Number other) {
-        
         return new Integer32(integer * toInt(other));
     }
 
@@ -52,6 +51,21 @@ public class Integer32 extends Number {
     }
     
     @Override
+    public Number abs() {
+        return new Integer32((int) Math.abs(integer));
+    }
+    
+    @Override
+    public Number negate() {
+        return new Integer32(integer * -1);
+    }
+    
+    @Override
+    public boolean isNegative() {
+        return (integer < 0);
+    }
+    
+    @Override
     public String toString() {
         return "" + integer;
     }
@@ -67,22 +81,7 @@ public class Integer32 extends Number {
     }
     
     @Override
-    public boolean isNegative() {
-        return (integer < 0);
-    }
-    
-    @Override
     public int compareTo(Number other) {
-        return new Integer(integer).compareTo(new Integer(toInt(other)));
-    }
-    
-    @Override
-    public Number abs() {
-        return new Integer32((int) Math.abs(integer));
-    }
-    
-    @Override
-    public Number negate() {
-        return new Integer32(integer * -1);
+        return new java.lang.Integer(integer).compareTo(toInt(other));
     }
 }

@@ -1,7 +1,5 @@
 package TiraLabra.Matrix;
 
-import java.lang.reflect.InvocationTargetException;
-
 import TiraLabra.Number.Number;
 import TiraLabra.Number.Integer32;
 
@@ -47,13 +45,8 @@ public class Matrix {
         Number[][] val = new Number[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                int k = (i == j) ? 1 : 0;
-
-                try {
-                    val[i][j] = type.getConstructor(int.class).newInstance(k);
-                } catch (Exception ex ) {
-                    throw new IllegalArgumentException();
-                }
+                final int k = (i == j) ? 1 : 0;
+                val[i][j] = Number.make(type, k);
             }
         }
 
@@ -104,8 +97,8 @@ public class Matrix {
      * @param n eksponentti
      * @return uusi matriisi
      */
-    public Matrix pow_naive(int n) {
-        Matrix res = identity(N, M, Integer32.class);
+    public Matrix pow_naive(int n, Matrix identity) {
+        Matrix res = identity;
         for (int i = 0; i < n; i++) {
             res = this.multiply(res);
         }
@@ -118,9 +111,9 @@ public class Matrix {
      * @param n eksponentti
      * @return uusi matriisi
      */
-    public Matrix pow(int n) {
+    public Matrix pow(int n, Matrix identity) {
         Matrix m = this;
-        Matrix res = Matrix.identity(2, 2, Integer32.class);
+        Matrix res = identity;
         while (n > 0) {
             if ((n % 2) == 1) {
                 res = m.multiply(res);
