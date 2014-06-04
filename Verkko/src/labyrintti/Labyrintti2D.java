@@ -4,6 +4,7 @@
  */
 package labyrintti;
 
+import java.util.Arrays;
 import java.util.Map;
 import verkko.Solmu;
 
@@ -24,7 +25,8 @@ public class Labyrintti2D {
     private Solmu[][] solmut;
 
     /**
-     *
+     * Labyrintitin jota käytetään labyrintin solmujen välisten yhteyksien eli
+     * labyrintin käytävien generointiin.
      */
     private Labyrintitin labyrintitin;
 
@@ -48,10 +50,10 @@ public class Labyrintti2D {
     /**
      * Asettaa käytettävän labyrintingeneroimisalgoritmin.
      *
-     * @param l
+     * @param labyrintitin
      */
-    public void setLabyrintitin(Labyrintitin l) {
-        labyrintitin = l;
+    public void setLabyrintitin(Labyrintitin labyrintitin) {
+        this.labyrintitin = labyrintitin;
     }
 
     /**
@@ -64,7 +66,7 @@ public class Labyrintti2D {
     }
 
     /**
-     *
+     * Labyrintittää labyrintin labyrintittimen avulla.
      */
     public void labyrintitaLabyrintti() {
         if (labyrintitin == null) {
@@ -117,60 +119,89 @@ public class Labyrintti2D {
 
     protected char[][] merkkitauluesitys() {
         char[][] merkkiTauluEsitys = new char[solmut.length * 2 + 1][solmut[0].length * 2 + 1];
-        //ylä ja alareuna
-        for (int i = 0; i < merkkiTauluEsitys[0].length; i++) {
-            merkkiTauluEsitys[0][i] = WALL;
-            merkkiTauluEsitys[merkkiTauluEsitys.length - 1][i] = WALL;
-        }
-
-        for (char[] merkkiTauluEsity : merkkiTauluEsitys) {
-            merkkiTauluEsity[0] = WALL;
-            merkkiTauluEsity[merkkiTauluEsitys[0].length - 1] = WALL;
-        }
+        merkkitauluReunat(merkkiTauluEsitys);
 
         for (int i = 1; i < merkkiTauluEsitys.length - 1; i++) {
             for (int j = 1; j < merkkiTauluEsitys[0].length - 1; j++) {
-                if (i % 2 == 1 && j % 2 == 1) {
-                    merkkiTauluEsitys[i][j] = CORRIDOR;
-                } else if (j % 2 == 0 && i % 2 == 0) {
+                if (j % 2 == 0 && i % 2 == 0) {
                     merkkiTauluEsitys[i][j] = WALL;
                 } else if (j % 2 == 0 && i % 2 == 1) {
-                    if (onkoOikeaNaapuri(i >> 1, (j >> 1) - 1)) {
-                        merkkiTauluEsitys[i][j] = CORRIDOR;
-                    } else {
-                        merkkiTauluEsitys[i][j] = WALL;
-                    }
+                    merkkitauluKaytavaVasemmalleJosOn(i, j, merkkiTauluEsitys);
                 } else if (j % 2 == 1 && i % 2 == 0) {
-                    if (onkoAlaNaapuri((i >> 1) - 1, j >> 1)) {
-                        merkkiTauluEsitys[i][j] = CORRIDOR;
-                    } else {
-                        merkkiTauluEsitys[i][j] = WALL;
-                    }
+                    merkkitauluKaytavaYlosJosOn(i, j, merkkiTauluEsitys);
                 } else {
-                    //should never happen
+                    merkkiTauluEsitys[i][j] = CORRIDOR;
                 }
             }
         }
         return merkkiTauluEsitys;
     }
 
+    protected void merkkitauluKaytavaVasemmalleJosOn(int i, int j, char[][] merkkiTauluEsitys) {
+        if (onkoOikeaNaapuri(i >> 1, (j >> 1) - 1)) {
+            merkkiTauluEsitys[i][j] = CORRIDOR;
+        } else {
+            merkkiTauluEsitys[i][j] = WALL;
+        }
+    }
+
+    protected void merkkitauluKaytavaYlosJosOn(int i, int j, char[][] merkkiTauluEsitys) {
+        if (onkoAlaNaapuri((i >> 1) - 1, j >> 1)) {
+            merkkiTauluEsitys[i][j] = CORRIDOR;
+        } else {
+            merkkiTauluEsitys[i][j] = WALL;
+        }
+    }
+
     /**
-     * Tällänen apumetodi tuohon tulostukseen.
+     * Merkkitauluesitykseen reunat=WALL.
+     *
+     * @param merkkiTauluEsitys
+     */
+    protected void merkkitauluReunat(char[][] merkkiTauluEsitys) {
+        char[] yläJaAla = new char[merkkiTauluEsitys[0].length];
+        Arrays.fill(yläJaAla, WALL);
+        merkkiTauluEsitys[0] = yläJaAla.clone();
+        merkkiTauluEsitys[merkkiTauluEsitys.length - 1] = yläJaAla.clone();
+
+        for (char[] merkkiTauluEsity : merkkiTauluEsitys) {
+            merkkiTauluEsity[0] = WALL;
+            merkkiTauluEsity[merkkiTauluEsitys[0].length - 1] = WALL;
+        }
+    }
+
+    /**
+     * Tällänen apumetodi tuohon tulostukseen. Tökkää char taulukon alkiot
+     * pötköön stringiksi.
      *
      * @param ca
      * @return
      */
     protected String charArrayToString(char[] ca) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(ca.length);
         for (char c : ca) {
             builder.append(c);
         }
         return builder.toString();
     }
 
-    public String printtaaReittiLabyrintissa(Map<Solmu, Solmu> reitti) {
+    /**
+     * Printtaa reitin labyrintissa käyttäen pistettä ( . ) merkkinä, mistä
+     * annetun reitin reitti (joka on saatu polunetsintäalgoritmilta kuten
+     * Astar) menee solmut -kentän "alakulmaan" jos ajatellaan x indeksin
+     * kasvavan oikealle ja y indeksin alas mentäessä. Polunetsintä algoritmille
+     * on tietysti pitänyt antaa tämän labyrintin solmut ja sama maalisolmu
+     *
+     * @param reitti
+     * @param maali
+     * @return
+     */
+    public String printtaaReittiLabyrintissa(Map<Solmu, Solmu> reitti, Solmu maali) {
         char[][] merkkitauluesitys = merkkitauluesitys();
-        Solmu s = reitti.get(solmut[solmut.length - 1][solmut[0].length - 1]);
+        Solmu s = reitti.get(maali);
+        if (s == null) {
+            throw new IllegalArgumentException("Annettua maalisolmua ei löytynyt reitistä");
+        }
         while (true) {
             if (s == null) {
                 break;
@@ -180,13 +211,10 @@ public class Labyrintti2D {
             merkkitauluesitys[x][y] = '.';
             s = reitti.get(s);
         }
-        //String paluu = "";
-        StringBuilder build = new StringBuilder();
+        StringBuilder build = new StringBuilder(merkkitauluesitys[0].length * merkkitauluesitys.length);
         for (char[] merkkitauluesity : merkkitauluesitys) {
-            //paluu += (charArrayToString(merkkitauluesity) + "\n");
             build.append(charArrayToString(merkkitauluesity)).append("\n");
         }
-        //return paluu;
         return build.toString();
     }
 

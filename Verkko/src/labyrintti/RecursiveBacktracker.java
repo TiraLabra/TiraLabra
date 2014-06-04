@@ -8,10 +8,6 @@ import java.util.Arrays;
 import util.Taulukko;
 import verkko.Solmu;
 
-/**
- *
- * @author Arvoitusmies
- */
 public class RecursiveBacktracker extends Labyrintitin {
 
     /**
@@ -45,7 +41,7 @@ public class RecursiveBacktracker extends Labyrintitin {
     @Override
     public Solmu[][] labyrintitaLabyrintti() {
         recur(0, 0);
-        return solmut;
+        return solmut.clone();
     }
 
     /**
@@ -69,18 +65,27 @@ public class RecursiveBacktracker extends Labyrintitin {
         Solmu[] naapurit = naapurit(x, y);
         if (naapurit.length > 0) {
             //sekoitetaan niin valitaan randomisti jokin naapuri.
-            Taulukko.sekoita(naapurit);
-            for (int i = 0; i < naapurit.length; i++) {
-                Solmu naapuri = naapurit[i];
-                int ksx = (int) Math.round(naapuri.koordinaatti(0));
-                int ksy = (int) Math.round(naapuri.koordinaatti(1));
-                if (!kayty[ksx][ksy]) {
-                    solmut[x][y].lisaaNaapuri(naapuri, 1.0);
-                    naapuri.lisaaNaapuri(solmut[x][y], 1.0);
-                    recur(ksx, ksy);
+            for (Solmu naapuri : naapurit) {
+                int naapuriX = naapuri.kokonaislukuKoordinaatti(0);
+                int naapuriY = naapuri.kokonaislukuKoordinaatti(1);
+                if (!kayty[naapuriX][naapuriY]) {
+                    Solmu nyt = solmut[x][y];
+                    luoNaapuruudet(nyt, naapuri);
+                    recur(naapuriX, naapuriY);
                 }
             }
         }
+    }
+
+    /**
+     * Lisää toinen toisensa naapureiksi.
+     *
+     * @param nyt
+     * @param naapuri
+     */
+    protected void luoNaapuruudet(Solmu nyt, Solmu naapuri) {
+        nyt.lisaaNaapuri(naapuri, 1.0);
+        naapuri.lisaaNaapuri(nyt, 1.0);
     }
 
     /**
@@ -92,20 +97,25 @@ public class RecursiveBacktracker extends Labyrintitin {
      */
     protected Solmu[] naapurit(int x, int y) {
         Solmu[] naapurit = new Solmu[4];
+        //"vasen"
         if (x > 0) {
             naapurit[0] = solmut[x - 1][y];
         }
+        //"ylä"
         if (y > 0) {
             naapurit[1] = solmut[x][y - 1];
         }
+        //"oikea"
         if (x < solmut.length - 1) {
             naapurit[2] = solmut[x + 1][y];
         }
+        //"ala"
         if (y < solmut[0].length - 1) {
             naapurit[3] = solmut[x][y + 1];
         }
         final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
         Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
+        Taulukko.sekoita(paluu);
         return paluu;
     }
 

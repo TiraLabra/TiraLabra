@@ -105,6 +105,17 @@ public class Solmu {
     }
 
     /**
+     * Koordinaatti ulottuvuudelle i (lasketaan 0:sta), pyöristettynä
+     * kokonaisluvuksi!
+     *
+     * @param i
+     * @return
+     */
+    public int kokonaislukuKoordinaatti(Integer i) {
+        return (int) Math.round(koordinaatit[i]);
+    }
+
+    /**
      * Palauttaa "normi" etäisyyden.
      *
      * @param ks

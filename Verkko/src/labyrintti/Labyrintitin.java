@@ -7,6 +7,7 @@ package labyrintti;
 import verkko.Solmu;
 
 /**
+ * Abstrakti luokka Labyrintti2D labyrintittäville algoritmeille
  *
  * @author Arvoitusmies
  */

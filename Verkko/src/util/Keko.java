@@ -206,7 +206,7 @@ public class Keko<E> {
     }
 
     /**
-     *
+     * Poistaa kyseisen olion keosta käyden läpi keon alkioita yksitellen alusta loppuun
      * @param o
      * @return
      */
@@ -222,6 +222,29 @@ public class Keko<E> {
             }
         }
         return paluu;
+    }
+    
+    /**
+     * 
+     * @param korvattava
+     * @param uusi
+     */
+    public void muuta(E korvattava, E uusi) {
+        for (int i = 1; i <= koko; i++) {
+            if (taulukko[i].equals(korvattava)) {
+                taulukko[i]=uusi;
+                int parent = parent(i);
+                if(parent>0){
+                    if(comparator.compare(taulukko[parent], taulukko[i])>0){
+                        siftUp(i);
+                    } else {
+                        siftDown(i);
+                    }
+                }
+                break;
+            }
+        }
+
     }
 
     /**

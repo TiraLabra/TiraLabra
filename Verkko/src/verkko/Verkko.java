@@ -11,11 +11,13 @@ import polunetsinta.TaksimiehenEtaisyys;
 
 public class Verkko {
 
+    private static final int LEVEYS = 30;
+    private static final int KORKEUS = 12;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
         Labyrintti2D l = new Labyrintti2D(KORKEUS, LEVEYS);
         l.setLabyrintitin(new RecursiveBacktracker(l.getSolmut()));
         l.labyrintitaLabyrintti();
@@ -24,9 +26,7 @@ public class Verkko {
         Solmu maali = l.getSolmut()[KORKEUS - 1][LEVEYS - 1];
         Astar astar = new Astar(alku, maali, new TaksimiehenEtaisyys());
         astar.printtaaReittiSolmutVaarinpain(maali);
-        System.out.println(l.printtaaReittiLabyrintissa(astar.getReitti()));
+        System.out.println(l.printtaaReittiLabyrintissa(astar.getReitti(), maali));
     }
-    private static final int LEVEYS = 30;
-    private static final int KORKEUS = 12;
 
 }
