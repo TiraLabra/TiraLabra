@@ -1,0 +1,9 @@
+#pragma once
+
+/**
+ * NOT_FOUND precompilation code change
+ * returned by string matching methods if a needle is not found
+**/
+#define NOT_FOUND -1
+#define NO_HASH -1
+typedef unsigned long long ULL;

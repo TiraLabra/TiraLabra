@@ -1,0 +1,39 @@
+\hypertarget{classedit__distance}{\section{edit\+\_\+distance Class Reference}
+\label{classedit__distance}\index{edit\+\_\+distance@{edit\+\_\+distance}}
+}
+
+
+{\ttfamily \#include $<$edit\+\_\+distance.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classedit__distance_a6aacfb46e57db524db243234ed349bff}{edit\+\_\+distance} (int add\+\_\+cost, int remove\+\_\+cost, int replace\+\_\+cost)
+\item 
+\hypertarget{classedit__distance_afee05eeeefaa9d657d247f05530b51c4}{int {\bfseries get\+\_\+levenstein\+\_\+distance} (const string \&str\+\_\+a, const string \&str\+\_\+b)}\label{classedit__distance_afee05eeeefaa9d657d247f05530b51c4}
+
+\item 
+\hypertarget{classedit__distance_a2f059d1dfb3d76e8938376ba907c952c}{int {\bfseries get\+\_\+levenstein\+\_\+distance} (const char $\ast$str\+\_\+a, const char $\ast$str\+\_\+b, int str\+\_\+a\+\_\+len=-\/1, int str\+\_\+b\+\_\+len=-\/1)}\label{classedit__distance_a2f059d1dfb3d76e8938376ba907c952c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The {\itshape edit\+\_\+dinstance} class keeps costs for adding, removing and replacing a character for the edit distance algorithm. It also stores a dynamic array which is used to keep best values for a a smaller solution space. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classedit__distance_a6aacfb46e57db524db243234ed349bff}{\index{edit\+\_\+distance@{edit\+\_\+distance}!edit\+\_\+distance@{edit\+\_\+distance}}
+\index{edit\+\_\+distance@{edit\+\_\+distance}!edit\+\_\+distance@{edit\+\_\+distance}}
+\subsubsection[{edit\+\_\+distance}]{\setlength{\rightskip}{0pt plus 5cm}edit\+\_\+distance\+::edit\+\_\+distance (
+\begin{DoxyParamCaption}
+\item[{int}]{add\+\_\+cost, }
+\item[{int}]{remove\+\_\+cost, }
+\item[{int}]{replace\+\_\+cost}
+\end{DoxyParamCaption}
+)}}\label{classedit__distance_a6aacfb46e57db524db243234ed349bff}
+it intiliazes the {\itshape \hyperlink{classedit__distance}{edit\+\_\+distance}} class with a given {\itshape add\+\_\+cost}, {\itshape remove\+\_\+cost} and {\itshape replace} cost 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+algorithms/\hyperlink{edit__distance_8hpp}{edit\+\_\+distance.\+hpp}\item 
+algorithms/edit\+\_\+distance.\+cpp\end{DoxyCompactItemize}
