@@ -40,7 +40,7 @@ public class LabyrinthSolverTest {
         Assume.assumeNotNull(l.ls);
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
-            lg[j].generateLabyrinth();
+            l.generateLabyrinth();
             runLabyrinthSolver();
             MyList path = l.ls.getPath();
             assertTrue(path != null);
@@ -52,7 +52,7 @@ public class LabyrinthSolverTest {
         Assume.assumeNotNull(l.ls);
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
-            lg[j].generateLabyrinth();
+            l.generateLabyrinth();
             runLabyrinthSolver();
             MyList path = l.ls.getPath();
             assertTrue(path != null);
@@ -69,7 +69,7 @@ public class LabyrinthSolverTest {
         Assume.assumeNotNull(l.ls);
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
-            lg[j].generateLabyrinth();
+            l.generateLabyrinth();
             runLabyrinthSolver();
             assertTrue(l.ls.exploredCells > 0);
         }
@@ -80,7 +80,7 @@ public class LabyrinthSolverTest {
         Assume.assumeNotNull(l.ls);
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
-            lg[j].generateLabyrinth();
+            l.generateLabyrinth();
             runLabyrinthSolver();
             assertTrue(l.ls.exploredCells >= l.ls.getPath().size());
         }

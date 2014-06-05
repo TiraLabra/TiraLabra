@@ -124,9 +124,9 @@ public class LabyrinthGeneratorTest {
     public void listingUnvisitedNeighbors() {
         Assume.assumeNotNull(l.lg);
         int[][] visited = new int[l.height][l.width];
-        assertEquals(2, l.getListOfUnvisitedNeighbors(0, visited).size());
-        assertEquals(3, l.getListOfUnvisitedNeighbors(l.width / 2, visited).size());
-        assertEquals(4, l.getListOfUnvisitedNeighbors(l.width + 5, visited).size());
+        assertEquals(2, l.getListOfNeighbors(0, visited, 0).size());
+        assertEquals(3, l.getListOfNeighbors(l.width / 2, visited, 0).size());
+        assertEquals(4, l.getListOfNeighbors(l.width + 5, visited, 0).size());
     }
 
     @Test
