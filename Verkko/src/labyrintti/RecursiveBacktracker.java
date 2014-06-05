@@ -8,32 +8,33 @@ import java.util.Arrays;
 import util.Taulukko;
 import verkko.Solmu;
 
-public abstract class AbstractRecursiveBacktracker extends Labyrintitin2D {
+/**
+ * Palaava syvyyssuuntainen haku Labyrintti2D labyrintittämiseen.
+ *
+ * @author Arvoitusmies
+ */
+public class RecursiveBacktracker extends Labyrintitin {
 
     /**
      * Kutsuu Labyrintitinin konstruktorin. Initialisoi käyty taulukon oikean
-     * kokoiseksi ja falseksi. Luo myös randomin.
+     * kokoiseksi ja falseksi.
      *
      * @param solmut
      */
-    public AbstractRecursiveBacktracker(Solmu[][] solmut) {
+    public RecursiveBacktracker(Solmu[][] solmut) {
         super(solmut);
+
     }
 
     /**
      * Tämä kutsutaan kun halutaan suorittaa se mitä tämä luokka tekee. Eli
      * labyrintittää labyrintin recursive backtrackingilla.
      *
-     * @return
      */
     @Override
     public void labyrintita() {
         recur(0, 0);
     }
-    
-    abstract boolean onkoKayty(Solmu s);
-    
-    abstract void kayty(Solmu s);
 
     /**
      * Tätä kutsitaan rekursiivisesti. Toiminta:
@@ -69,22 +70,4 @@ public abstract class AbstractRecursiveBacktracker extends Labyrintitin2D {
         }
     }
 
-    /**
-     * Lisää toinen toisensa naapureiksi.
-     *
-     * @param nyt
-     * @param naapuri
-     */
-    protected void luoNaapuruudet(Solmu nyt, Solmu naapuri) {
-        nyt.lisaaNaapuri(naapuri, 1.0);
-        naapuri.lisaaNaapuri(nyt, 1.0);
-    }
-
-    /**
-     *
-     * @param s
-     * @return
-     */
-    abstract Solmu[] naapurit(Solmu s);
-    
 }

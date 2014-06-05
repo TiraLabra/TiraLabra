@@ -9,12 +9,16 @@ import util.Taulukko;
 import verkko.Solmu;
 
 /**
- * Labyrintti2D labyrintitintoteutus palaavalla syvyyssuuntaisella haulla.
+ * Abstrakti luokka Labyrintti2D labyrintittäville algoritmeille
  *
  * @author Arvoitusmies
  */
-public class RecursiveBacktracker2D extends AbstractRecursiveBacktracker {
+public abstract class Labyrintitin {
 
+    /**
+     * Tähän talletetaan solmut.
+     */
+    final Solmu[][] solmut;
     /**
      * Tämä taulukko vastaa solmut taulukon kohtia ja merkkaa onko kyseinen
      * solmu jo käsitelty.
@@ -22,13 +26,13 @@ public class RecursiveBacktracker2D extends AbstractRecursiveBacktracker {
     protected final Boolean[][] kayty;
 
     /**
-     * Kutsuu Labyrintitinin konstruktorin. Initialisoi käyty taulukon oikean
-     * kokoiseksi ja falseksi. Luo myös randomin.
+     * Asettaa solmut kenttään, initialisoi käyty taulukon oikean kokoiseksi ja
+     * falseksi.
      *
      * @param solmut
      */
-    public RecursiveBacktracker2D(Solmu[][] solmut) {
-        super(solmut);
+    public Labyrintitin(Solmu[][] solmut) {
+        this.solmut = solmut;
         kayty = new Boolean[solmut.length][solmut[0].length];
         for (int i = 0; i < solmut.length; i++) {
             for (int j = 0; j < solmut[0].length; j++) {
@@ -37,23 +41,19 @@ public class RecursiveBacktracker2D extends AbstractRecursiveBacktracker {
         }
     }
 
-    @Override
-    boolean onkoKayty(Solmu s) {
-        int x = s.kokonaislukuKoordinaatti(0);
-        int y = s.kokonaislukuKoordinaatti(1);
-        return kayty[x][y];
-    }
+    /**
+     * "Labyrintittää"
+     *
+     */
+    public abstract void labyrintita();
 
-    @Override
-    void kayty(Solmu s) {
-        int x = s.kokonaislukuKoordinaatti(0);
-        int y = s.kokonaislukuKoordinaatti(1);
-        kayty[x][y] = true;
-    }
-
-    @Override
+    /**
+     * Tämän labyrintinkohdan mahdolliset naapurit.
+     *
+     * @param s
+     * @return
+     */
     Solmu[] naapurit(Solmu s) {
-
         int x = s.kokonaislukuKoordinaatti(0);
         int y = s.kokonaislukuKoordinaatti(1);
         Solmu[] naapurit = new Solmu[4];
@@ -76,6 +76,40 @@ public class RecursiveBacktracker2D extends AbstractRecursiveBacktracker {
         final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
         Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
         return paluu;
-
     }
+
+    /**
+     * Asettaa solmun s käydyksi
+     *
+     * @param s
+     */
+    void kayty(Solmu s) {
+        int x = s.kokonaislukuKoordinaatti(0);
+        int y = s.kokonaislukuKoordinaatti(1);
+        kayty[x][y] = true;
+    }
+
+    /**
+     * Lisää toinen toisensa naapureiksi.
+     *
+     * @param nyt
+     * @param naapuri
+     */
+    protected void luoNaapuruudet(Solmu nyt, Solmu naapuri) {
+        nyt.lisaaNaapuri(naapuri, 1.0);
+        naapuri.lisaaNaapuri(nyt, 1.0);
+    }
+
+    /**
+     * True jos käyty
+     *
+     * @param s
+     * @return
+     */
+    boolean onkoKayty(Solmu s) {
+        int x = s.kokonaislukuKoordinaatti(0);
+        int y = s.kokonaislukuKoordinaatti(1);
+        return kayty[x][y];
+    }
+
 }

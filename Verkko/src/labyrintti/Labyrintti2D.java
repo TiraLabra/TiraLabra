@@ -33,7 +33,7 @@ public class Labyrintti2D {
      * Labyrintitin jota käytetään labyrintin solmujen välisten yhteyksien eli
      * labyrintin käytävien generointiin.
      */
-    private Labyrintitin2D labyrintitin;
+    private Labyrintitin labyrintitin;
 
     /**
      * Initialisoi solmut kentän tyhjillä, naapurittomilla,
@@ -57,7 +57,7 @@ public class Labyrintti2D {
      *
      * @param labyrintitin
      */
-    public void setLabyrintitin(Labyrintitin2D labyrintitin) {
+    public void setLabyrintitin(Labyrintitin labyrintitin) {
         this.labyrintitin = labyrintitin;
     }
 
@@ -88,7 +88,7 @@ public class Labyrintti2D {
      * @return
      */
     protected boolean onkoOikeaNaapuri(int x, int y) {
-        if (y == solmut.length - 1) {
+        if (y == solmut[0].length - 1) {
             return false;
         }
         Solmu solmu = solmut[x][y];
@@ -104,7 +104,7 @@ public class Labyrintti2D {
      * @return
      */
     protected boolean onkoAlaNaapuri(int x, int y) {
-        if (x == solmut[0].length - 1) {
+        if (x == solmut.length - 1) {
             return false;
         }
         Solmu solmu = solmut[x][y];
@@ -213,7 +213,7 @@ public class Labyrintti2D {
             }
             int x = (int) Math.round(s.koordinaatti(0)) * 2 + 1;
             int y = (int) Math.round(s.koordinaatti(1)) * 2 + 1;
-            merkkitauluesitys[x][y] = '.';
+            merkkitauluesitys[x][y] = 'O';
             s = reitti.get(s);
         }
         StringBuilder build = new StringBuilder(merkkitauluesitys[0].length * merkkitauluesitys.length);
