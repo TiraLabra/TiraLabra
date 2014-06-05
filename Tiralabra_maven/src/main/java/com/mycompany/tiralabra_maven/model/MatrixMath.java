@@ -8,6 +8,12 @@ import java.util.Objects;
  * @author gabriel
  */
 public class MatrixMath {
+    
+    /**
+     * Recursion stops and regular matrix multiplication is used in the Strassen algorithm when the input matrices are 
+     * equal to or less than this size.
+     */
+    private static final int RECURSION_ENDPOINT = 64;
 
     /**
      * Returns the sum of two specified matrices.
@@ -242,7 +248,7 @@ public class MatrixMath {
      */
     private static Matrix strassenRecursive(Matrix matrixA, Matrix matrixB) {
         int n = matrixA.rows();
-        if (n == 1) {
+        if (n <= RECURSION_ENDPOINT) {
             return multiply(matrixA, matrixB);
         }
         Matrix a11 = new Matrix(n / 2, n / 2);
