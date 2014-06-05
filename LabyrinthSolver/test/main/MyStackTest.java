@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class MyStackTest {
 
-    public MyStack testStack;
+    MyStack testStack;
 
     @Before
     public void setUp() {
