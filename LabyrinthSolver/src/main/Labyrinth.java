@@ -58,6 +58,7 @@ public class Labyrinth {
         }
         if (ls != null) {
             ls.labyrinth = this;
+            ls.reset();
         }
     }
 
