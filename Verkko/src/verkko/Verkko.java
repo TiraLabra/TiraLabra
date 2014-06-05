@@ -9,6 +9,11 @@ import labyrintti.RecursiveBacktracker;
 import polunetsinta.Astar;
 import polunetsinta.TaksimiehenEtaisyys;
 
+/**
+ * Main luokka
+ *
+ * @author Arvoitusmies
+ */
 public class Verkko {
 
     private static final int LEVEYS = 30;

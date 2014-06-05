@@ -8,6 +8,11 @@ import java.util.Arrays;
 import java.util.Map;
 import verkko.Solmu;
 
+/**
+ * Kaksiulotteinen labyrintti.
+ *
+ * @author Arvoitusmies
+ */
 public class Labyrintti2D {
 
     /**

@@ -13,6 +13,11 @@ import util.Keko;
 import util.Lista;
 import verkko.Solmu;
 
+/**
+ * A* -haku kahden solmun välillä käyttäen annettua heuristiikkaa.
+ *
+ * @author Arvoitusmies
+ */
 public class Astar {
 
     private final Heuristiikka heuristiikka;

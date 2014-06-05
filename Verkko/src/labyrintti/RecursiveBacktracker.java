@@ -8,6 +8,11 @@ import java.util.Arrays;
 import util.Taulukko;
 import verkko.Solmu;
 
+/**
+ * Labyrintti2D labyrintitintoteutus palaavalla syvyyssuuntaisella haulla.
+ *
+ * @author Arvoitusmies
+ */
 public class RecursiveBacktracker extends Labyrintitin {
 
     /**
