@@ -67,4 +67,3 @@ public class IntegerTest extends NumberTests<Integer> {
         assertEquals(overflow, oneOverOverflow.subtract(one));
     }
 }
-

@@ -116,26 +116,36 @@ public class Integer extends Number<Integer> {
         }
         
         if (this.isNegative()) {
-            if (other.isNegative()) { // -2 - (-1) = -2 + 1 = 1 - 2
+            if (other.isNegative()) {
+                // -2 - (-1) = -2 + 1 = 1 - 2
                 return other.negate().subtract(this.negate());
-            } else { // -1 - 1 = -(1 + 1)
+            } else {
+                // -1 - 1 = -(1 + 1)
                 return this.negate().add(other).negate();
             }
-        } else if (other.isNegative()) { // 1 - (-1) = 1 + 1
+        } else if (other.isNegative()) {
+            // 1 - (-1) = 1 + 1
             return this.add(other.negate());
         }
 
-        if (this.compareTo(other) < 0) { // 1 - 2 = -(2 - 1)
+        if (this.compareTo(other) < 0) {
+            // 1 - 2 = -(2 - 1)
             return other.subtract(this).negate();
         }
         
         int words[][] = padZeroes(integer, other.integer);
         
         int res[] = new int[words[0].length], k = 0;
-        for (int i = words[0].length-1; i >= 0; i--) {
+        for (int i = 0; i < words[0].length; i++) {
             final int sum = words[0][i] - words[1][i] + k;
-            k = sum / radix;
-            res[i] = sum % radix;
+            
+            if (sum < 0) {
+                k = -1;
+                res[i] = radix + sum;
+            } else {
+                k = 0;
+                res[i] = sum % radix;
+            }
         }
         
         return new Integer(res, false);
