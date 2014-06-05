@@ -6,6 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Scanner;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 import labyrinthsolver.LabyrinthSolver;
 import main.Labyrinth;
@@ -26,11 +29,6 @@ public class Gui extends MouseAdapter implements Runnable {
      */
     Labyrinth labyrinth;
     /**
-     * Labyrintinratkaisija, joka ratkaisi labyrintin. (Labyrintinratkaisijan
-     * voisi lisätä Labyrintti-luokkaan.)
-     */
-    LabyrinthSolver solver;
-    /**
      * Piirtoalusta.
      */
     Canvas canvas;
@@ -39,11 +37,9 @@ public class Gui extends MouseAdapter implements Runnable {
      * Alustaa labyrintillä ja labyrintinratkaisijalla.
      *
      * @param l Labyrintti, jolle gui luodaan.
-     * @param ls Labyrintinratkaisija, joka ratkaisi labyrintin.
      */
-    public Gui(Labyrinth l, LabyrinthSolver ls) {
+    public Gui(Labyrinth l) {
         labyrinth = l;
-        solver = ls;
     }
 
     /**
@@ -73,6 +69,7 @@ public class Gui extends MouseAdapter implements Runnable {
             run();
             return;
         }
+        addMenuBar();
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -86,16 +83,62 @@ public class Gui extends MouseAdapter implements Runnable {
      */
     void addCanvas(Container container) throws Exception {
         int cellSize = 500 / labyrinth.height;
-        canvas = new Canvas(labyrinth, solver, cellSize);
+        canvas = new Canvas(labyrinth, cellSize);
         if (labyrinth.height > 50 || labyrinth.width > 50) {
             throw new Exception("Gui can only handle up to 50x50 labyrinths!");
         }
-        canvas.setPreferredSize(new Dimension((2 + labyrinth.height) * cellSize, (2 + labyrinth.width) * cellSize));
+        canvas.setPreferredSize(new Dimension((2 + labyrinth.width) * cellSize, (2 + labyrinth.height) * cellSize));
         container.add(canvas);
+    }
+
+    void addMenuBar() {
+        JMenuBar menubar = new JMenuBar();
+
+        /*
+         Menu labyrintin editoimiseen.
+         */
+        JMenu lMenu = new JMenu("Labyrinth");
+        JMenuItem lSetSize = new JMenuItem("Set size");
+        lMenu.add(lSetSize);
+
+        /*
+         * Menu labyrintin generoijan valitsemiseen.
+         */
+        JMenu lgMenu = new JMenu("Generator");
+        JMenuItem ka = new JMenuItem("Kruskal's Algorithm");
+        JMenuItem pa = new JMenuItem("Prim's Algorithm");
+        JMenuItem rb = new JMenuItem("Recursive Backtracker");
+        lgMenu.add(ka);
+        lgMenu.add(pa);
+        lgMenu.add(rb);
+
+        /*
+         Menu labyrintin ratkaisijan valitsemiseen.
+         */
+        JMenu lsMenu = new JMenu("Solver");
+        JMenuItem dfs = new JMenuItem("DFS");
+        JMenuItem bfs = new JMenuItem("BFS");
+        JMenuItem wf = new JMenuItem("Wall follower");
+        lsMenu.add(dfs);
+        lsMenu.add(bfs);
+        lsMenu.add(wf);
+
+        /*
+         * Add menu items.
+         */
+        menubar.add(lMenu);
+        menubar.add(lgMenu);
+        menubar.add(lsMenu);
+
+        /*
+         Add menubar to frame.
+         */
+        frame.setJMenuBar(menubar);
     }
 
     /**
      * Myöhemmin lisättävä hiirenkuuntelija...
+     *
      * @param e Hiirieventti.
      */
     @Override
