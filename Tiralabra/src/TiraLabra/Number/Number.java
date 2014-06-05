@@ -53,7 +53,7 @@ public abstract class Number<T extends Number> implements Comparable<T> {
      * Neliöjuuri
      * @return 
      */
-    public abstract Number sqrt();
+    public abstract T sqrt();
     
     /**
      * Kertoo onko luku negatiivinen

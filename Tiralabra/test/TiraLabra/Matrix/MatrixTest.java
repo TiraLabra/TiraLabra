@@ -10,35 +10,6 @@ import TiraLabra.Number.Number;
 
 public class MatrixTest {
     private Matrix matrix;
-
-    @Before
-    public void setUp() {
-        Integer values[][] =                
-            {{Integer.ONE, Integer.ONE},
-             {Integer.ONE, Integer.ZERO}};
-
-        matrix = new Matrix(values, Integer.class);
-    }
-
-    @Test(expected=IndexOutOfBoundsException.class)
-    public void getUnderI() {
-        matrix.get(-1, 0);
-    }
-    
-    @Test(expected=IndexOutOfBoundsException.class)
-    public void getUnderJ() {
-        matrix.get(0, -1);
-    }
-    
-    @Test(expected=IndexOutOfBoundsException.class)
-    public void getOverI() {
-        matrix.get(3, 0);
-    }
-    
-    @Test(expected=IndexOutOfBoundsException.class)
-    public void getOverJ() {
-        matrix.get(0, 3);
-    }
     
     private Matrix makeMatrix(Class<? extends Number> type,
             int n, int m, int... values) {
@@ -62,6 +33,31 @@ public class MatrixTest {
                         matrix.get(i, j));
             }
         }
+    }
+    
+    @Before
+    public void setUp() {
+        matrix = makeMatrix(Integer.class, 2, 2, 1,1, 1,0);
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getUnderI() {
+        matrix.get(-1, 0);
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getUnderJ() {
+        matrix.get(0, -1);
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getOverI() {
+        matrix.get(3, 0);
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void getOverJ() {
+        matrix.get(0, 3);
     }
 
     @Test

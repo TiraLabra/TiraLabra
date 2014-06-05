@@ -9,15 +9,27 @@ import TiraLabra.Number.Integer;
 import TiraLabra.Number.Real;
 
 public class VectorTest {
-    private Vector vector;
+    private Vector<Integer> vector;
 
+    private Vector makeVector(Class<? extends Number> type, int... values) {
+        Number elements[] = new Number[values.length];
+        
+        for (int i = 0; i < values.length; i++) {
+            elements[i] = Number.make(type, values[i]);
+        }
+        
+        return new Vector(elements);
+    }
+    
+    private void vectorEquals(Class<? extends Number> type, int... values) {
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(Number.make(type, values[i]), vector.get(i));
+        }
+    }
+    
     @Before
     public void setUp() {
-        Integer values[] = {
-            new Integer(1), new Integer(2), new Integer(3), new Integer(4)
-        };
-
-        vector = new Vector(values);
+        vector = makeVector(Integer.class, 1, 2, 3, 4);
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
@@ -29,17 +41,11 @@ public class VectorTest {
     public void getOver() {
         vector.get(5);
     }
-
-    private void vectorEquals(int... values) {
-        for (int i = 0; i < values.length; i++) {
-            assertEquals(new Integer(values[i]), vector.get(i));
-        }
-    }
     
     @Test
     public void multiplyScalar() {
         vector = vector.multiply(Integer.TEN);
-        vectorEquals(10, 20, 30, 40);
+        vectorEquals(Integer.class, 10, 20, 30, 40);
     }
     
     @Test
@@ -47,25 +53,25 @@ public class VectorTest {
         vector = vector.multiply(Integer.TEN);
         
         vector = vector.divide(Integer.TEN);
-        vectorEquals(1, 2, 3, 4);
+        vectorEquals(Integer.class, 1, 2, 3, 4);
     }
     
     @Test
     public void multiplyVector() {
         vector = vector.multiply(vector);
-        vectorEquals(1, 4, 9, 16);
+        vectorEquals(Integer.class, 1, 4, 9, 16);
     }
     
     @Test
     public void subtractVector() {
         vector = vector.subtract(vector);
-        vectorEquals(0, 0, 0, 0);
+        vectorEquals(Integer.class, 0, 0, 0, 0);
     }
     
     @Test
     public void addVector() {
         vector = vector.add(vector);
-        vectorEquals(2, 4, 6, 8);
+        vectorEquals(Integer.class, 2, 4, 6, 8);
     }
     
     @Test
@@ -75,34 +81,35 @@ public class VectorTest {
     
     @Test
     public void normalization() {
-        Real values[] = {
-            new Real(2), new Real(2), new Real(2), new Real(2)
-        };
-        
-        vector = new Vector(values).normalize();
-        assertEquals(Real.ONE, vector.length());
+        Vector v = makeVector(Real.class, 2, 2, 2, 2).normalize();
+        assertEquals(Real.ONE, v.length());
     }
     
     @Test(expected=UnsupportedOperationException.class)
     public void generalizedCrossProduct() {
-        Vector product = vector.cross(vector);
+        vector.cross(vector);
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void mismatchedCrossProduct() {
+        Vector a = makeVector(Integer.class, 1, 2);
+        Vector b = makeVector(Integer.class, 1, 2, 3);
+        
+        b.cross(a);
     }
     
     @Test
     public void crossProduct() {
-        Integer v1[] = {new Integer(1), new Integer(2), new Integer(3)};
-        Integer v2[] = {new Integer(3), new Integer(2), new Integer(1)};
-        
-        Vector a = new Vector(v1);
-        Vector b = new Vector(v2);
+        Vector a = makeVector(Integer.class, 1, 2, 3);
+        Vector b = makeVector(Integer.class, 3, 2, 1);
         
         vector = a.cross(b);
-        vectorEquals(-4, 8, -4);
+        vectorEquals(Integer.class, -4, 8, -4);
     }
     
     @Test
     public void maximum() {
-        Number max = vector.max();
-        assertEquals(vector.get(3), max);
+        Vector<Integer> v = makeVector(Integer.class, 1, 3, 2, 4);
+        assertEquals(new Integer(4), v.max());
     }
 }

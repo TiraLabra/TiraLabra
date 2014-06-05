@@ -5,25 +5,26 @@ import TiraLabra.Number.Number;
 /**
  * N-ulotteinen vektori
  * @author riku
+ * @param <T>
  */
-public class Vector {
+public class Vector<T extends Number<T>> {
     /**
      * Vektorin pituus
      */
     public final int N;
     
-    private final Number[] vector;
+    private final T[] vector;
     
     /**
      * 
      * @param elements 
      */
-    public Vector(Number[] elements) {
+    public Vector(T[] elements) {
         N = elements.length;
         vector = elements;
     }
     
-    public Number get(int i) {
+    public T get(int i) {
         return vector[i];
     }
     
@@ -32,7 +33,7 @@ public class Vector {
      * @param scalar
      * @return this * scalar
      */
-    public Vector multiply(Number scalar) {
+    public Vector multiply(T scalar) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].multiply(scalar);
@@ -45,7 +46,7 @@ public class Vector {
      * @param scalar
      * @return this / scalar
      */
-    public Vector divide(Number scalar) {
+    public Vector divide(T scalar) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].divide(scalar);
@@ -58,7 +59,7 @@ public class Vector {
      * @param other
      * @return this * other
      */
-    public Vector multiply(Vector other) {
+    public Vector multiply(Vector<T> other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].multiply(other.get(i));
@@ -71,7 +72,7 @@ public class Vector {
      * @param other
      * @return this - other
      */
-    public Vector subtract(Vector other) {
+    public Vector subtract(Vector<T> other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].subtract(other.get(i));
@@ -84,7 +85,7 @@ public class Vector {
      * @param other
      * @return this + other
      */
-    public Vector add(Vector other) {
+    public Vector add(Vector<T> other) {
         Number[] res = new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].add(other.get(i));
@@ -97,8 +98,8 @@ public class Vector {
      * @param other
      * @return 
      */
-    public Number dot(Vector other) {
-        Number res = vector[0].multiply(other.get(0));
+    public T dot(Vector<T> other) {
+        T res = vector[0].multiply(other.get(0));
         for (int i = 1; i < N; i++) {
             res = res.add(vector[i].multiply(other.get(i)));
         }
@@ -109,8 +110,8 @@ public class Vector {
      * Vektorin pituus
      * @return 
      */
-    public Number length() {
-        Number square = this.dot(this);
+    public T length() {
+        T square = this.dot(this);
         return square.sqrt();
     }
     
@@ -127,7 +128,7 @@ public class Vector {
      * @param other
      * @return this x other
      */
-    public Vector cross(Vector other) {
+    public Vector cross(Vector<T> other) {
         if (N != 3 || other.N != 3) {
             throw new UnsupportedOperationException();
         }
@@ -153,8 +154,8 @@ public class Vector {
      * Vektorin suurin luku
      * @return 
      */
-    public Number max() {
-        Number max = vector[0];
+    public T max() {
+        T max = vector[0];
         for (int i = 1; i < N; i++) {
             if (vector[i].compareTo(max) > 0) {
                 max = vector[i];
