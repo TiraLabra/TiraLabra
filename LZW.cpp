@@ -89,7 +89,6 @@ void LZW::writeCode( unsigned int code ) {
   }
   toWriteEnc.put(word1);
   toWriteEnc.put(word2);
-  //printAsBinary( bittiesitys );
   delete bittiesitys; 
 }
 
@@ -117,9 +116,6 @@ std::vector<unsigned int>* LZW::codeToBits( unsigned int code ) {
       asBinary->insert( asBinary->begin(), 0);
     }
   }
-//  for( std::vector<int>::iterator it = asBinary->begin(); it != asBinary->end(); ++it ) {
-//    std::cout << (*it) ;
-//  }
   return asBinary;
 }
 void LZW::printAsBinary( std::vector<unsigned int>* bin ) {
@@ -139,12 +135,6 @@ int LZW::decode() {
     return -1;
   }
 
-/*  for( int i = 0; i < 4; i++ ) {
-    std::cout << readCode() << " ";
-  }
-  std::cout << std::endl;
-*/
- 
   unsigned int k = readCode(); 
   std::string entry("");
   std::string w( revdict[k] ); 
@@ -175,16 +165,7 @@ int LZW::decode() {
   toReadEnc.close(); 
   toWriteDec.close();
   
-  /*
-  unsigned int a = readCode();
-  unsigned int b = readCode();
-  unsigned int c = readCode();
-
-  std::cout << revdict[a] << std::endl;
-  std::cout << revdict[b] << std::endl;
-  std::cout << revdict[c] << std::endl;
-  */
-
+  
 }
 
 unsigned int LZW::bitsToCode( unsigned int first, unsigned int second ) {
