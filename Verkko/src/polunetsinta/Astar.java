@@ -13,11 +13,6 @@ import util.Keko;
 import util.Lista;
 import verkko.Solmu;
 
-/**
- * A* -haku kahden solmun välillä käyttäen annettua heuristiikkaa.
- *
- * @author Arvoitusmies
- */
 public class Astar {
 
     private final Heuristiikka heuristiikka;
@@ -44,7 +39,7 @@ public class Astar {
 
     public boolean suorita() {
         matka.put(alku, 0.0);
-        keko.lisaa(new AstarKekoEntry(alku, heuristiikka.dist(alku, maali)));
+        keko.lisaa(new AstarKekoEntry(alku, heuristiikkaMaaliin(alku)));
         boolean onnistuks = false;
         do {
             Solmu seuraava = keko.poista().getSolmu();
@@ -80,13 +75,16 @@ public class Astar {
                 matkaNaapuriin = Double.POSITIVE_INFINITY;
             }
             Double matkaTamanKautta = matka.get(solmu) + naapuripainot.get(i);
-            if (!keko.contains(new AstarKekoEntry(naapuri, 0.0)) || matkaTamanKautta < matkaNaapuriin) {
+            final boolean onKeossa = keko.contains(new AstarKekoEntry(naapuri, 0.0));
+            if (!onKeossa || matkaTamanKautta < matkaNaapuriin) {
                 reitti.put(naapuri, solmu);
                 matka.put(naapuri, matkaTamanKautta);
-                if (keko.contains(new AstarKekoEntry(naapuri, 0.0))) {
-                    keko.muuta(new AstarKekoEntry(naapuri, 0.0), new AstarKekoEntry(naapuri, matkaTamanKautta + heuristiikka.dist(naapuri, maali)));
+                final AstarKekoEntry naapuriKekoEntry = new AstarKekoEntry(naapuri,
+                        matkaTamanKautta + heuristiikkaMaaliin(naapuri));
+                if (onKeossa) {
+                    keko.muuta(new AstarKekoEntry(naapuri, 0.0), naapuriKekoEntry);
                 } else {
-                    keko.lisaa(new AstarKekoEntry(naapuri, matkaTamanKautta + heuristiikka.dist(naapuri, maali)));
+                    keko.lisaa(naapuriKekoEntry);
                 }
             }
 
@@ -94,14 +92,12 @@ public class Astar {
         return false;
     }
 
-//    public void printtaaReittiSolmutVaarinpain(Solmu maali) {
-//        Solmu s = maali;
-//        while (true) {
-//            s = reitti.get(s);
-//            if (s == null) {
-//                break;
-//            }
-//            System.out.println(s);
-//        }
-//    }
+    /**
+     *
+     * @param naapuri
+     * @return
+     */
+    private Double heuristiikkaMaaliin(final Solmu naapuri) {
+        return heuristiikka.dist(naapuri, maali);
+    }
 }
