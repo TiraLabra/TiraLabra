@@ -14,7 +14,7 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-        l = new Labyrinth(85, 95);
+        l = new Labyrinth(50, 50);
         Gui gui = new Gui(l);
         SwingUtilities.invokeLater(gui);
     }
