@@ -4,7 +4,7 @@
 
 int main() {
  
-  LZW testi("trivial.txt");
+  LZW testi("helppotesti.txt");
   if( testi.encode() == -1 ){
     std::cout << "erhe\n";
     return 0;
@@ -14,7 +14,7 @@ int main() {
     std::cout << "shit\n";
     return 0;
   }
-  testi.printDict();  
+  //testi.printDict();  
   //testi.printDict();
 /*  if( testi.encode() == -1 ) {
     std::cout << "dict full, aborting\n";

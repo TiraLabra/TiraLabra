@@ -9,10 +9,14 @@
 
 class LZW {
   private:
+    
     std::map<std::string, unsigned int> dict;
     std::map<unsigned int, std::string> revdict;
-    std::ifstream file;
-    std::fstream outfile;
+    std::fstream toEncode;
+    std::fstream toWriteEnc;
+    std::fstream toReadEnc;
+    std::fstream toWriteDec;
+    char* filename;
     char* data; 
     int filelength;
     unsigned int currentCode;

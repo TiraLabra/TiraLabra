@@ -9,11 +9,10 @@
 #include "LZW.h"
 
 LZW::LZW( char * file_par ) {
-  
+ 
+  filename = file_par;
   writeIndex = 0;
   currentCode = 0;
-  file.open( file_par, std::ifstream::in );
-  outfile.open( "enco.ded", std::fstream::in | std::fstream::out );
   readFile();
   makeInitialDict();
   
@@ -33,17 +32,19 @@ void LZW::printDict() {
   }
 }
 void LZW::readFile() {
-  file.seekg(0, file.end);
-  filelength = file.tellg();
-  file.seekg(0, file.beg);
+  toEncode.open( filename );  
+  
+  toEncode.seekg(0, toEncode.end);
+  filelength = toEncode.tellg();
+  toEncode.seekg(0, toEncode.beg);
 
   data = new char[filelength];
-  file.read( data, filelength );
-  file.close();
+  toEncode.read( data, filelength);
+  toEncode.close();
 }
 
 int LZW::encode() {
-  
+  toWriteEnc.open( "enco.ded", std::fstream::trunc | std::fstream::in | std::fstream::out ); 
   std::string w(""); 
   for( int i = 0; i < filelength; i++ ) {
     char c = data[i];
@@ -63,7 +64,7 @@ int LZW::encode() {
       return -1;
     }
   }
-  outfile.close();
+  toWriteEnc.close();
   return 0;
 }
 
@@ -86,8 +87,8 @@ void LZW::writeCode( unsigned int code ) {
       }
     }
   }
-  outfile.put(word1);
-  outfile.put(word2);
+  toWriteEnc.put(word1);
+  toWriteEnc.put(word2);
   //printAsBinary( bittiesitys );
   delete bittiesitys; 
 }
@@ -128,22 +129,34 @@ void LZW::printAsBinary( std::vector<unsigned int>* bin ) {
   std::cout << "\n";
 }
 int LZW::decode() {
-  outfile.open("enco.ded"); 
-  if( !outfile.good() ) {
+ 
+  currentCode = 256;
+  toReadEnc.open( "enco.ded" );
+  toWriteDec.open( "deco.ded", std::fstream::in | std::fstream::out | std::fstream::trunc ); 
+
+  if( !toReadEnc.good() || !toWriteDec.good() ) {
+    std::cout << "shit\n";
     return -1;
   }
-  outfile.seekg(0);
-  std::ofstream deco("deco.ded");
+
+/*  for( int i = 0; i < 4; i++ ) {
+    std::cout << readCode() << " ";
+  }
+  std::cout << std::endl;
+*/
  
   unsigned int k = readCode(); 
   std::string entry("");
   std::string w( revdict[k] ); 
-  while( outfile.good() ) {
+  toWriteDec << w;
+  while( toReadEnc.good() ) {
     k = readCode();
-    std::cout << revdict[k] << std::endl;
+    if( !toReadEnc.good() ) {
+      return 0;
+    }
     if( revdict.count( k ) ) {
       entry = revdict[k];
-      deco << entry;
+      toWriteDec << entry;
       std::string toInsert;
       toInsert = w + (std::string(1,entry[0]));
       revdict.insert( std::pair<unsigned int, std::string>( currentCode, toInsert ));
@@ -151,14 +164,16 @@ int LZW::decode() {
       w = entry;
     } else {
       entry = w + w[0];
-      deco << entry;
+      toWriteDec << entry;
       revdict.insert( std::pair<unsigned int,std::string>( currentCode, entry ));
       currentCode++;
       w = entry;
     }
   }
   
-  outfile.close(); 
+  //toWriteDec. << "\0";
+  toReadEnc.close(); 
+  toWriteDec.close();
   
   /*
   unsigned int a = readCode();
@@ -182,8 +197,8 @@ unsigned int LZW::bitsToCode( unsigned int first, unsigned int second ) {
 
 }
 unsigned int LZW::readCode() {
-  unsigned int first = outfile.get();
-  unsigned int second = outfile.get();
+  unsigned int first = toReadEnc.get();
+  unsigned int second = toReadEnc.get();
 
   unsigned int code = bitsToCode( first, second ); 
 
