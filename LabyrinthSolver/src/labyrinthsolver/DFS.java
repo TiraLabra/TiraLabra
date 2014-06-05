@@ -17,20 +17,19 @@ public class DFS extends LabyrinthSolver {
     MyStack<Integer> stack;
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver(main.Labyrinth)
+     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver()
      */
-    public DFS(Labyrinth l) {
-        super(l);
+    public DFS() {
+        super();
     }
 
     /**
      * @see labyrinthsolver.LabyrinthSolver#routine()
      */
     @Override
-    public void routine() {
+    public void printRoutine() {
         System.out.print("Randomized depth-first search");
-        super.routine();
+        super.printRoutine();
     }
 
     /**

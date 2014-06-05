@@ -17,20 +17,19 @@ public class BFS extends LabyrinthSolver {
     MyQueue<Integer> queue;
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver(main.Labyrinth)
+     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver()
      */
-    public BFS(Labyrinth l) {
-        super(l);
+    public BFS() {
+        super();
     }
 
     /**
      * @see labyrinthsolver.LabyrinthSolver#routine()
      */
     @Override
-    public void routine() {
+    public void printRoutine() {
         System.out.print("Randomized breadth-first search");
-        super.routine();
+        super.printRoutine();
     }
 
     /**

@@ -1,7 +1,5 @@
 package labyrinthsolver;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import main.Labyrinth;
 
 /**
@@ -12,20 +10,19 @@ import main.Labyrinth;
 public class WallFollower extends LabyrinthSolver {
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver(main.Labyrinth)
+     * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver()
      */
-    public WallFollower(Labyrinth l) {
-        super(l);
+    public WallFollower() {
+        super();
     }
 
     /**
      * @see labyrinthsolver.LabyrinthSolver#routine()
      */
     @Override
-    public void routine() {
+    public void printRoutine() {
         System.out.print("Wall Follower");
-        super.routine();
+        super.printRoutine();
     }
 
     /**
