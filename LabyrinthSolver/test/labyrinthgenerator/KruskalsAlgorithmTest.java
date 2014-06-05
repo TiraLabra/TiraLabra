@@ -13,8 +13,11 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
     @Override
     public void setUp() {
         super.setUp();
-        ka = new KruskalsAlgorithm(labyrinth);
-        lg = ka;
+        ka = new KruskalsAlgorithm();
+        try {
+            l.setLabyrinthGenerator(ka);
+        } catch (Exception ex) {
+        }
     }
 
     @Test
@@ -59,7 +62,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
                 elements[i] = new SetElement(1);
             }
         }
-        labyrinth.updateLabyrinth(3, 3);
+        l.updateLabyrinth(3, 3);
         int[] edges = new int[2];
         edges[0] = 4;
         edges[1] = 15;
@@ -72,7 +75,7 @@ public class KruskalsAlgorithmTest extends LabyrinthGeneratorTest {
         for (int i = 0; i < 9; i++) {
             elements[i] = new SetElement(i);
         }
-        labyrinth.updateLabyrinth(3, 3);
+        l.updateLabyrinth(3, 3);
         int[] edges = new int[2];
         edges[0] = 4;
         edges[1] = 15;

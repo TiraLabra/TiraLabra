@@ -10,15 +10,17 @@ public class PrimsAlgorithmTest extends LabyrinthGeneratorTest {
     @Override
     public void setUp() {
         super.setUp();
-        lg = new PrimsAlgorithm(labyrinth);
+        try {
+            l.setLabyrinthGenerator(new PrimsAlgorithm());
+        } catch (Exception ex) {
+        }
     }
 
     @Test
     public void listingVisitedNeighbors() {
-        PrimsAlgorithm pa = new PrimsAlgorithm(labyrinth);
-        int[][] visited = new int[labyrinth.height][labyrinth.width];
-        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(0, visited).size());
-        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(labyrinth.width / 2, visited).size());
-        assertEquals(0, pa.labyrinth.getListOfVisitedNeighbors(labyrinth.width + 5, visited).size());
+        int[][] visited = new int[l.height][l.width];
+        assertEquals(0, l.getListOfVisitedNeighbors(0, visited).size());
+        assertEquals(0, l.getListOfVisitedNeighbors(l.width / 2, visited).size());
+        assertEquals(0, l.getListOfVisitedNeighbors(l.width + 5, visited).size());
     }
 }
