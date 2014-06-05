@@ -3,7 +3,6 @@ package gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
-import labyrinthsolver.LabyrinthSolver;
 import main.Labyrinth;
 import main.MyList;
 
@@ -18,11 +17,6 @@ class Canvas extends JPanel {
      * Labyrintti, jolle gui luodaan.
      */
     Labyrinth labyrinth;
-    /**
-     * Labyrintinratkaisija, joka ratkaisi labyrintin. (Labyrintinratkaisijan
-     * voisi lisätä Labyrintti-luokkaan.)
-     */
-    LabyrinthSolver solver;
     /**
      * Labyrintin solun koko.
      */
@@ -48,12 +42,11 @@ class Canvas extends JPanel {
      * @param ls Labyrintinratkaisija, joka ratkaisi labyrintin.
      * @param cs Labyrintin solun koko.
      */
-    public Canvas(Labyrinth l, LabyrinthSolver ls, int cs) {
+    public Canvas(Labyrinth l, int cs) {
         labyrinth = l;
         cellSize = cs;
-        solver = ls;
         wallColor = new Color(0, 0, 0);
-        visitedCellColor = new Color(255, 174, 201);
+        visitedCellColor = new Color(255, 235, 235);
         pathColor = new Color(255, 0, 0);
     }
 
@@ -64,8 +57,10 @@ class Canvas extends JPanel {
      */
     void paintPath(Graphics g) {
         g.setColor(pathColor);
-        MyList<Integer> path = solver.getPath();
+        MyList<Integer> path = labyrinth.ls.getPath();
         int coordinate = path.get(0);
+        g.drawLine((int) (cellSize * 1.5), cellSize,
+                (int) (cellSize * 1.5), (int) (cellSize * 1.5));
         for (int i = 1; i < path.size(); i++) {
             int oldCoordinate = coordinate;
             coordinate = path.get(i);
@@ -76,6 +71,8 @@ class Canvas extends JPanel {
             g.drawLine((int) (cellSize * (x1 + 1.5)), (int) (cellSize * (y1 + 1.5)),
                     (int) (cellSize * (x2 + 1.5)), (int) (cellSize * (y2 + 1.5)));
         }
+        g.drawLine((int) (cellSize * (0.5 + labyrinth.width)), (int) (cellSize * (0.5 + labyrinth.height)),
+                (int) (cellSize * (1 + labyrinth.width)), (int) (cellSize * (0.5 + labyrinth.height)));
     }
 
     /**
@@ -85,7 +82,7 @@ class Canvas extends JPanel {
      */
     void paintVisitedCells(Graphics g) {
         g.setColor(visitedCellColor);
-        int[][] visited = solver.getVisitedCells();
+        int[][] visited = labyrinth.ls.getVisitedCells();
         for (int i = 0; i < labyrinth.height; i++) {
             for (int j = 0; j < labyrinth.width; j++) {
                 if (visited[i][j] == 2) {
@@ -135,9 +132,13 @@ class Canvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        paintVisitedCells(g);
-        paintPath(g);
-        paintWalls(g);
+        if (labyrinth.labyrinth[0][0] != 0) {
+            paintWalls(g);
+        }
+        if (labyrinth.ls != null && labyrinth.ls.getPath() != null) {
+            paintVisitedCells(g);
+            paintPath(g);
+        }
     }
 
     /**
