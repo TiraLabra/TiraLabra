@@ -15,7 +15,7 @@ public abstract class LabyrinthSolver {
     /**
      * Labyrintti, jolle algoritmit ajetaan.
      */
-    protected Labyrinth labyrinth;
+    public Labyrinth labyrinth;
     /**
      * Random-olio, jota käytetään satunnaisalgoritmeissa.
      */
@@ -35,11 +35,9 @@ public abstract class LabyrinthSolver {
 
     /**
      * Ottaa syötteenä labyrintin ja alustaa Random-olion..
-     *
-     * @param l Labyrintti, jolle algoritmi ajetaan.
+     * 
      */
-    public LabyrinthSolver(Labyrinth l) {
-        labyrinth = l;
+    public LabyrinthSolver() {
         random = new Random();
     }
 
@@ -53,7 +51,7 @@ public abstract class LabyrinthSolver {
     /**
      * Tulostusrutiini.
      */
-    public void routine() {
+    public void printRoutine() {
         long startTime = System.nanoTime() / 1000;
         boolean solved = solveLabyrinth();
         long finishTime = System.nanoTime() / 1000;
@@ -66,14 +64,6 @@ public abstract class LabyrinthSolver {
         } else {
             System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
         }
-        /*
-         * Purkkaa...
-         */
-        int[][] vstd = new int[labyrinth.height][labyrinth.width];
-        for (int i = 0; i < labyrinth.height; i++) {
-            System.arraycopy(visited[i], 0, vstd[i], 0, labyrinth.width);
-        }
-        findPath(vstd);
     }
 
     /**
@@ -103,13 +93,23 @@ public abstract class LabyrinthSolver {
      * @return Palauttaa listan reitistä maaliin.
      */
     public MyList<Integer> getPath() {
+        if (path == null) {
+            if (visited == null) {
+                return null;
+            }
+            int[][] vstd = new int[labyrinth.height][labyrinth.width];
+            for (int i = 0; i < labyrinth.height; i++) {
+                System.arraycopy(visited[i], 0, vstd[i], 0, labyrinth.width);
+            }
+            findPath(vstd);
+        }
         return path;
     }
 
     /**
      * Polunetsijän käyttämä treenode-apuluokka. (Vähän purkkaa...)
      */
-    private class TreeNode {
+    static class TreeNode {
 
         /**
          * Parent-alkio.
