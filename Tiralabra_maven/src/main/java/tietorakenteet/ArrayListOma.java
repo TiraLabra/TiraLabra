@@ -62,8 +62,18 @@ public class ArrayListOma {
         
     }
     
-    //TODO
+    /**
+     * Poistaa annetun objektin.
+     * @param o 
+     */
     public void poista(Object o) {
+        int sijainti = sijainti(o);
+        if (sijainti >= 0) {
+            for (int i = sijainti; i < elementteja-1; i++) {
+                sisalto[i] = sisalto[i+1];
+            }
+            elementteja--;
+        }
         
     }
     
@@ -73,11 +83,25 @@ public class ArrayListOma {
      * @return 
      */
     public boolean sisaltaako(Object o) {
+        if (sijainti(o) < 0)
+            return false;
+        else
+            return true;
+    }
+    
+    /**
+     * Kertoo, mistä indeksistä löytyy haluttu objekti.
+     * Jos ei löydy, palautuksena on -1.
+     * @param o
+     * @return 
+     */
+    public int sijainti(Object o) {
         for (int i = 0; i<elementteja; i++) {
             if (sisalto[i] == o)
-                return true;
+                return i;
         }
-        return false;
+        return -1;      // jos ei löytynyt
+        
     }
 
     /**

@@ -71,4 +71,44 @@ public class ArrayListOmaTest extends TestCase {
         
     }
     
+    public void testToimiikoPoisto() {
+        ArrayListOma ao = new ArrayListOma();
+        Node n1 = new Node(1,1,1);
+        ao.lisaa(n1);
+        assertEquals(true, ao.sisaltaako(n1));
+        assertEquals(1, ao.koko());
+        
+        ao.poista(n1);
+        assertEquals(false, ao.sisaltaako(n1));
+        assertEquals(0, ao.koko());
+        
+    }
+    
+    public void testToimiikoUseammanPoisto() {
+        ArrayListOma ao = new ArrayListOma();
+        Node n1 = new Node(1,1,1);
+        Node n2 = new Node(2,2,2);
+        Node n3 = new Node(3,3,3);
+        Node n4 = new Node(4,4,4);
+        ao.lisaa(n1);
+        ao.lisaa(n2);
+        ao.lisaa(n3);
+        ao.lisaa(n4);
+        
+        assertEquals(true, ao.sisaltaako(n1));
+        assertEquals(true, ao.sisaltaako(n4));
+        assertEquals(4, ao.koko());
+        
+        
+        ao.poista(n1);
+        ao.poista(n4);
+        
+        assertEquals(false, ao.sisaltaako(n1));
+        assertEquals(false, ao.sisaltaako(n4));
+        assertEquals(true, ao.sisaltaako(n2));
+        assertEquals(true, ao.sisaltaako(n3));
+        assertEquals(2, ao.koko());
+
+    }
+    
 }
