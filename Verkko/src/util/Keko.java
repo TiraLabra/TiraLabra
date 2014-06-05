@@ -27,7 +27,7 @@ public class Keko<E> {
     /**
      * Taulu olioille. Kasvatetaan tarvittaessa
      */
-    protected E[] taulukko;
+    private E[] taulukko;
 
     /**
      * Olioiden määrä keossa, samalla myös keon alimman indeksi.
@@ -59,7 +59,7 @@ public class Keko<E> {
      */
     public Keko(E[] taulukko, Comparator<E> comparator) {
         this.taulukko = taulukko.clone();
-        koko = taulukko.length-1;
+        koko = taulukko.length - 1;
         this.comparator = comparator;
         tarkistaOnkoNollaNull();//tämä siksi että jos ei ole null niin taulukon ensimäinen "katoaa" keosta.
         buildHeap();
@@ -99,10 +99,10 @@ public class Keko<E> {
         System.arraycopy(vanha, 0, taulukko, 0, vanha.length);
     }
 
-    public int getTaulukonLenght(){
+    public int getTaulukonLenght() {
         return taulukko.length;
     }
-    
+
     /**
      * Poistaa keon ensimmäisen elementin
      *
@@ -206,7 +206,9 @@ public class Keko<E> {
     }
 
     /**
-     * Poistaa kyseisen olion keosta käyden läpi keon alkioita yksitellen alusta loppuun
+     * Poistaa kyseisen olion keosta käyden läpi keon alkioita yksitellen alusta
+     * loppuun
+     *
      * @param o
      * @return
      */
@@ -223,19 +225,19 @@ public class Keko<E> {
         }
         return paluu;
     }
-    
+
     /**
-     * 
+     *
      * @param korvattava
      * @param uusi
      */
     public void muuta(E korvattava, E uusi) {
         for (int i = 1; i <= koko; i++) {
             if (taulukko[i].equals(korvattava)) {
-                taulukko[i]=uusi;
+                taulukko[i] = uusi;
                 int parent = parent(i);
-                if(parent>0){
-                    if(comparator.compare(taulukko[parent], taulukko[i])>0){
+                if (parent > 0) {
+                    if (comparator.compare(taulukko[parent], taulukko[i]) > 0) {
                         siftUp(i);
                     } else {
                         siftDown(i);

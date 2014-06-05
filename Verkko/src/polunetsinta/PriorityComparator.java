@@ -7,10 +7,11 @@ package polunetsinta;
 import java.util.Comparator;
 
 /**
+ * Järjestetään astarkekoentryjä astarin keossa.
  *
  * @author Arvoitusmies
  */
-class PriorityComparator implements Comparator<AstarKekoEntry> {
+public class PriorityComparator implements Comparator<AstarKekoEntry> {
 
     @Override
     public int compare(AstarKekoEntry o1, AstarKekoEntry o2) {

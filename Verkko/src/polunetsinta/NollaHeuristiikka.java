@@ -7,15 +7,15 @@ package polunetsinta;
 import verkko.Solmu;
 
 /**
- * Hyvä heuristiikka tapauksiin jossa voi liikkua vain ylös,alas,oikea&vasen.
+ * Heuristiikka joka palauttaa aina 0.0
  *
  * @author Arvoitusmies
  */
-public class TaksimiehenEtaisyys implements Heuristiikka {
+public class NollaHeuristiikka implements Heuristiikka {
 
     @Override
     public Double dist(Solmu ks1, Solmu ks2) {
-        return ks1.taksimiehenEtaisyys(ks2);
+        return 0.0;
     }
 
 }

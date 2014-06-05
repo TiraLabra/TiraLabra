@@ -16,6 +16,37 @@ import util.Lista;
 public class Solmu {
 
     /**
+     * Luo listan solmuja joilla koordinaattitaulukon mukaiset koordinaatit ja
+     * naapuripainotaulukon mukaiset naapuruuspainot
+     *
+     * @param koordinaattitaulukko NxM kokoinen taulukko koordinaatteja
+     * @param naapuripainotaulukko NxN kokoinen taulukko sivujen painoja, solu
+     * voi olla null niin ei ole sivua
+     * @return Lista kokoa N, jossa solmuja dimensiolla M
+     */
+    public static Lista<Solmu> luoSolmutTaulukoista(Double[][] koordinaattitaulukko, Double[][] naapuripainotaulukko) {
+        if (koordinaattitaulukko.length != naapuripainotaulukko.length) {
+            throw new IllegalArgumentException("Taulukoiden pituudet eivät vastaa");
+        }
+        if (naapuripainotaulukko.length != naapuripainotaulukko[0].length) {
+            throw new IllegalArgumentException("naapuripainotaulukko ei ole neliö");
+        }
+        Lista<Solmu> paluu = new Lista<>(koordinaattitaulukko.length);
+        for (Double[] koord : koordinaattitaulukko) {
+            paluu.lisaa(new Solmu(koord));
+        }
+        for (int solmuIndeksi = 0; solmuIndeksi < naapuripainotaulukko.length; solmuIndeksi++) {
+            for (int naapuriIndeksi = 0; naapuriIndeksi < naapuripainotaulukko[0].length; naapuriIndeksi++) {
+                final Double paino = naapuripainotaulukko[solmuIndeksi][naapuriIndeksi];
+                if (paino != null) {
+                    paluu.get(solmuIndeksi).lisaaNaapuri(paluu.get(naapuriIndeksi), paino);
+                }
+            }
+        }
+        return paluu;
+    }
+
+    /**
      * Naapurit
      */
     private final Lista<Solmu> naapuriSolmut;

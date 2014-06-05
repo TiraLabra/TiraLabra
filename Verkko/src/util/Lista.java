@@ -107,7 +107,7 @@ public class Lista<E> {
             }
         } else {
             for (E e : a) {
-                if (o == e) {
+                if (e == null) {
                     return true;
                 }
             }

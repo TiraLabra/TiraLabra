@@ -7,30 +7,51 @@ package polunetsinta;
 import java.util.Objects;
 import verkko.Solmu;
 
+/**
+ * Astar luokka käyttää näitä tallettaakseen solmuja kekoon.
+ *
+ * @see Astar
+ * @author Arvoitusmies
+ */
 public class AstarKekoEntry {
 
-    private Solmu solmu;
-    private Double priority;
+    /**
+     * solmu
+     */
+    private final Solmu solmu;
 
+    /**
+     * Astar käyttää tätä kenttää matka+heuristiikka arvon talletukseen.
+     */
+    private final Double priority;
+
+    /**
+     * Perus asettaja-konstruktori
+     *
+     * @param solmu
+     * @param priority
+     */
     public AstarKekoEntry(Solmu solmu, Double priority) {
         this.solmu = solmu;
         this.priority = priority;
     }
 
+    /**
+     * getteri
+     *
+     * @return
+     */
     public Solmu getSolmu() {
         return solmu;
     }
 
-    public void setSolmu(Solmu s) {
-        this.solmu = s;
-    }
-
+    /**
+     * getteri
+     *
+     * @return
+     */
     public Double getPriority() {
         return priority;
-    }
-
-    public void setPriority(Double priority) {
-        this.priority = priority;
     }
 
     @Override
