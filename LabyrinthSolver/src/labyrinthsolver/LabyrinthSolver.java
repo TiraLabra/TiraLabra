@@ -35,10 +35,19 @@ public abstract class LabyrinthSolver {
 
     /**
      * Ottaa syötteenä labyrintin ja alustaa Random-olion..
-     * 
+     *
      */
     public LabyrinthSolver() {
         random = new Random();
+    }
+
+    /**
+     * Resetoi olion.
+     */
+    public void reset() {
+        visited = null;
+        exploredCells = 0;
+        path = null;
     }
 
     /**
@@ -47,24 +56,6 @@ public abstract class LabyrinthSolver {
      * @return Palauttaa true, jos labyrintti ratkaistiin.
      */
     public abstract boolean solveLabyrinth();
-
-    /**
-     * Tulostusrutiini.
-     */
-    public void printRoutine() {
-        long startTime = System.nanoTime() / 1000;
-        boolean solved = solveLabyrinth();
-        long finishTime = System.nanoTime() / 1000;
-        String timeFormat = labyrinth.formatTime(finishTime - startTime);
-        if (solved) {
-            System.out.print("  ::  Solution found in " + timeFormat);
-            getExploredCells();
-            String exploredCellsFormat = labyrinth.formatNumber(exploredCells);
-            System.out.println("  ::  Cells explored: " + exploredCellsFormat);
-        } else {
-            System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
-        }
-    }
 
     /**
      * Laskee visited-solujen määrän.
@@ -137,7 +128,7 @@ public abstract class LabyrinthSolver {
      *
      * @param vsted Array, jossa on tietoa labyrintin solujen tilasta.
      */
-    protected void findPath(int[][] vsted) {
+    void findPath(int[][] vsted) {
         path = new MyList<>();
         MyStack<TreeNode> stack = new MyStack<>();
         stack.push(new TreeNode(null, 0));
@@ -156,7 +147,7 @@ public abstract class LabyrinthSolver {
                 path.reverseList();
                 return;
             }
-            MyList neighbors = labyrinth.getListOfEdgesToVisitedNeighbors(node.coordinate, vsted);
+            MyList neighbors = labyrinth.getListOfEdges(node.coordinate, vsted, 2);
             for (int i = 0; i < neighbors.size(); i++) {
                 stack.push(new TreeNode(node, (int) neighbors.get(i)));
             }

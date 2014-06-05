@@ -1,7 +1,5 @@
 package labyrinthsolver;
 
-import main.Labyrinth;
-
 /**
  * "Oikean käden sääntö" -algoritmi labyrintin ratkaisemiseen.
  *
@@ -14,15 +12,6 @@ public class WallFollower extends LabyrinthSolver {
      */
     public WallFollower() {
         super();
-    }
-
-    /**
-     * @see labyrinthsolver.LabyrinthSolver#routine()
-     */
-    @Override
-    public void printRoutine() {
-        System.out.print("Wall Follower");
-        super.printRoutine();
     }
 
     /**

@@ -1,6 +1,5 @@
 package labyrinthgenerator;
 
-import main.Labyrinth;
 import main.MyList;
 
 /**
@@ -15,17 +14,6 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     public PrimsAlgorithm() {
         super();
-    }
-
-    /**
-     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
-     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
-     * @see labyrinthgenerator.LabyrinthGenerator#routine()
-     */
-    @Override
-    public void printRoutine() throws Exception {
-        System.out.print("Prim's Algorithm");
-        super.printRoutine();
     }
 
     /**
@@ -45,7 +33,6 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() throws Exception {
-        createEmptyLabyrinthIfNeeded();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         visited[0][0] = 2;  // Start at (0, 0)
         /*
@@ -57,7 +44,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
             int coordinate = list.get(key);
             list.removeByIndex(key);
             visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
-            MyList<Integer> possibleConnectionsToLabyrinth = labyrinth.getListOfVisitedNeighbors(coordinate, visited);
+            MyList<Integer> possibleConnectionsToLabyrinth = labyrinth.getListOfNeighbors(coordinate, visited, 2);
             labyrinth.addPassage(coordinate, possibleConnectionsToLabyrinth.get(random.nextInt(possibleConnectionsToLabyrinth.size())));
             MyList<Integer> newAdjacentUnvisitedCells = getListOfUnvisitedNeighbors(coordinate, visited);
             list.join(newAdjacentUnvisitedCells);
@@ -82,48 +69,36 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
         MyList<Integer> listOfNeighbours = new MyList(4);
-
+        int x = coordinate % labyrinth.width;
+        int y = coordinate / labyrinth.width;
         /*
          EAST
          */
-        if (coordinate % labyrinth.width + 1 < labyrinth.width) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width + 1] == 0) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width + 1] = 1;
-                listOfNeighbours.add(coordinate + 1);
-            }
+        if (labyrinth.validCoordinate(x + 1, y, visited, 0)) {
+            visited[y][x + 1] = 1;
+            listOfNeighbours.add(coordinate + 1);
         }
-
         /*
          SOUTH
          */
-        if (coordinate / labyrinth.width + 1 < labyrinth.height) {
-            if (visited[coordinate / labyrinth.width + 1][coordinate % labyrinth.width] == 0) {
-                visited[coordinate / labyrinth.width + 1][coordinate % labyrinth.width] = 1;
-                listOfNeighbours.add(coordinate + labyrinth.width);
-            }
+        if (labyrinth.validCoordinate(x, y + 1, visited, 0)) {
+            visited[y + 1][x] = 1;
+            listOfNeighbours.add(coordinate + labyrinth.width);
         }
-
         /*
          NORTH
          */
-        if (coordinate / labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] == 0) {
-                visited[coordinate / labyrinth.width - 1][coordinate % labyrinth.width] = 1;
-                listOfNeighbours.add(coordinate - labyrinth.width);
-            }
+        if (labyrinth.validCoordinate(x, y - 1, visited, 0)) {
+            visited[y - 1][x] = 1;
+            listOfNeighbours.add(coordinate - labyrinth.width);
         }
-
         /*
          WEST
          */
-        if (coordinate % labyrinth.width - 1 >= 0) {
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] == 0) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width - 1] = 1;
-                listOfNeighbours.add(coordinate - 1);
-            }
+        if (labyrinth.validCoordinate(x - 1, y, visited, 0)) {
+            visited[y][x - 1] = 1;
+            listOfNeighbours.add(coordinate - 1);
         }
-
         return listOfNeighbours;
     }
-
 }

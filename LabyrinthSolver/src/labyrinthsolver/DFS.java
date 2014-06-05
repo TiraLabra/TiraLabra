@@ -1,6 +1,5 @@
 package labyrinthsolver;
 
-import main.Labyrinth;
 import main.MyList;
 import main.MyStack;
 
@@ -24,15 +23,6 @@ public class DFS extends LabyrinthSolver {
     }
 
     /**
-     * @see labyrinthsolver.LabyrinthSolver#routine()
-     */
-    @Override
-    public void printRoutine() {
-        System.out.print("Randomized depth-first search");
-        super.printRoutine();
-    }
-
-    /**
      * Etsii maalia syvyyssuuntaisella haulla siten, että kunkin solun naapurit
      * tallennetaan pinoon satunnaisessa järjetyksessä.
      *
@@ -52,7 +42,7 @@ public class DFS extends LabyrinthSolver {
             }
             if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width] == 0) {
                 visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
-                MyList neighbors = labyrinth.getListOfEdgesToUnvisitedNeighbors(coordinate, visited);
+                MyList neighbors = labyrinth.getListOfEdges(coordinate, visited, 0);
                 while (!neighbors.empty()) {
                     stack.push(neighbors.removeByIndex(random.nextInt(neighbors.size())));
                 }

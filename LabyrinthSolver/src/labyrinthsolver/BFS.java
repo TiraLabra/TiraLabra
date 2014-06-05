@@ -1,6 +1,5 @@
 package labyrinthsolver;
 
-import main.Labyrinth;
 import main.MyList;
 import main.MyQueue;
 
@@ -24,15 +23,6 @@ public class BFS extends LabyrinthSolver {
     }
 
     /**
-     * @see labyrinthsolver.LabyrinthSolver#routine()
-     */
-    @Override
-    public void printRoutine() {
-        System.out.print("Randomized breadth-first search");
-        super.printRoutine();
-    }
-
-    /**
      * Etsii maalia leveyssuuntaisella haulla siten, että kunkin solun naapurit
      * tallennetaan jonoon satunnaisessa järjetyksessä.
      *
@@ -52,7 +42,7 @@ public class BFS extends LabyrinthSolver {
             }
             if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width] == 0) {
                 visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
-                MyList neighbors = labyrinth.getListOfEdgesToUnvisitedNeighbors(coordinate, visited);
+                MyList neighbors = labyrinth.getListOfEdges(coordinate, visited, 0);
                 while (!neighbors.empty()) {
                     queue.enqueue(neighbors.removeByIndex(random.nextInt(neighbors.size())));
                 }

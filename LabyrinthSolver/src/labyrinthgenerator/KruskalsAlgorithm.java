@@ -20,17 +20,6 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
-     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
-     * @see labyrinthgenerator.LabyrinthGenerator#routine()
-     */
-    @Override
-    public void printRoutine() throws Exception {
-        System.out.print("Kruskal's Algorithm");
-        super.printRoutine();
-    }
-
-    /**
      * Joukkoalkion olio Kruskalin algoritmia varten.
      */
     static class SetElement {
@@ -128,17 +117,11 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() throws Exception {
-        createEmptyLabyrinthIfNeeded();
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
         SetElement[] elements = new SetElement[labyrinthSize];
-        for (int i = 0; i < labyrinthSize; i++) {
-            elements[i] = new SetElement(i);
-            edges[i] = new int[2];
-            edges[i][0] = i;
-            addEdgesToNeighbors(i, edges[i]);
-        }
+        initialize(edges, elements);
         while (true) {
             int rand = random.nextInt(verticesLeft);
             int coordinate = edges[rand][0];
@@ -183,13 +166,13 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Tämä apumetodi tarkistaa, lähteekö solusta enää kaaria, jotka
      * yhdistäisivät solun muihin joukkoihin.
-     *     
-* @param edges Tämän solun kaaret kokonaislukuna.
+     *
+     * @param edges Tämän solun kaaret kokonaislukuna.
      * @param orig Tämän solun joukkoalkio.
      * @param elements Joukkoalkioiden array.
      * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
-     *     
-* @see main.Labyrinth#getTargetCoordinate(int, byte)
+     *
+     * @see main.Labyrinth#getTargetCoordinate(nt, bytei)
      */
     boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
         if (edges[1] == 0) {
@@ -208,40 +191,32 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * Tallentaa alussa kaikki mahdolliset kaaret, mitä annetulla solulla voisi
-     * olla.
-     *     
-* @param coordinate Koordinaatti, jossa solu on.
-     * @param edges Solun array, johon kaaret tallennetaan.
+     * Initialisoi kaari- ja elements-arrayt.
+     *
+     * @param edges
+     * @param elements
+     * @param labyrinthSize
      */
-    void addEdgesToNeighbors(int coordinate, int[] edges) {
-
-        /*
-         NORTH
-         */
-        if (coordinate / labyrinth.width - 1 >= 0) {
-            edges[1] |= 1;
-        }
-
-        /*
-         EAST
-         */
-        if (coordinate % labyrinth.width + 1 < labyrinth.width) {
-            edges[1] |= 2;
-        }
-
-        /*
-         SOUTH
-         */
-        if (coordinate / labyrinth.width + 1 < labyrinth.height) {
-            edges[1] |= 4;
-        }
-
-        /*
-         WEST
-         */
-        if (coordinate % labyrinth.width - 1 >= 0) {
-            edges[1] |= 8;
+    void initialize(int[][] edges, SetElement[] elements) {
+        int labyrinthSize = labyrinth.height * labyrinth.width;
+        for (int i = 0; i < labyrinthSize; i++) {
+            elements[i] = new SetElement(i);
+            edges[i] = new int[2];
+            edges[i][0] = i;
+            int x = i % labyrinth.width;
+            int y = i / labyrinth.width;
+            if (y - 1 >= 0) {
+                edges[i][1] |= 1;
+            }
+            if (x + 1 < labyrinth.width) {
+                edges[i][1] |= 2;
+            }
+            if (y + 1 < labyrinth.height) {
+                edges[i][1] |= 4;
+            }
+            if (x - 1 >= 0) {
+                edges[i][1] |= 8;
+            }
         }
     }
 
