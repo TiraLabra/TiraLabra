@@ -1,7 +1,5 @@
 package labyrinthgenerator;
 
-import main.Labyrinth;
-
 /**
  * Modifioitu satunnaistettu Kruskalin algoritmi labyrintin generoimiseen.
  * 
@@ -15,24 +13,21 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     final byte[] masks = {1, 2, 4, 8};
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see
-     * labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator(main.Labyrinth)
+     * @see labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator()
      */
-    public KruskalsAlgorithm(Labyrinth l) {
-        super(l);
+    public KruskalsAlgorithm() {
+        super();
     }
 
     /**
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
-    public void routine() throws Exception {
+    public void printRoutine() throws Exception {
         System.out.print("Kruskal's Algorithm");
-        super.routine();
+        super.printRoutine();
     }
 
     /**
@@ -70,8 +65,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Hakee koko joukon juuren rekursiivisesti ja korjaa matkalla olleiden
          * alkioiden juuren koko joukon juureksi.
-         *         
-* @return Koko joukon juuri.
+         *
+         * @return Koko joukon juuri.
          */
         SetElement getRoot() {
             if (this.root == this) {
@@ -84,8 +79,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
 
         /**
          * Hakee rekursiivisesti koko joukon juuren ja katsoo sen ID:n.
-         *         
-* @return Palauttaa koko joukon ID:n.
+         *
+         * @return Palauttaa koko joukon ID:n.
          */
         int getId() {
             return getRoot().id;
@@ -94,8 +89,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         /**
          * Hakee rekursiivisesti koko joukon juuren, jonka joukon koko on
          * ajantasalla.
-         *         
-* @return Palauttaa koko joukon koon.
+         *
+         * @return Palauttaa koko joukon koon.
          */
         int getNumOfElements() {
             return getRoot().elementsJoinedByRoot;
@@ -105,8 +100,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
          * Hakee rekursiivisesti tämän joukon juuren, sekä annetun toisen joukon
          * alkion juuren. Päivittää juuren koon ja asettaa toisen joukon
          * juureksi tämän joukon juuren.
-         *         
-* @param se2 Annettu, toisen joukon alkio.
+         *
+         * @param se2 Annettu, toisen joukon alkio.
          */
         void joinTwoSets(SetElement se2) {
             SetElement rt = getRoot();
@@ -126,14 +121,14 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * <br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see main.Labyrinth#addPassage(int, int)
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
     @Override
     public void generateLabyrinth() throws Exception {
+        createEmptyLabyrinthIfNeeded();
         int labyrinthSize = labyrinth.height * labyrinth.width;
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];

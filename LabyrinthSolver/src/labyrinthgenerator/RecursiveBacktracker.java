@@ -1,7 +1,6 @@
 package labyrinthgenerator;
 
 import main.MyList;
-import main.Labyrinth;
 import main.MyStack;
 
 /**
@@ -12,24 +11,21 @@ import main.MyStack;
 public class RecursiveBacktracker extends LabyrinthGenerator {
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see
-     * labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator(main.Labyrinth)
+     * @see labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator()
      */
-    public RecursiveBacktracker(Labyrinth l) {
-        super(l);
+    public RecursiveBacktracker() {
+        super();
     }
 
     /**
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see labyrinthgenerator.LabyrinthGenerator#routine
      */
     @Override
-    public void routine() throws Exception {
+    public void printRoutine() throws Exception {
         System.out.print("Recursive Backtracker");
-        super.routine();
+        super.printRoutine();
     }
 
     /**
@@ -42,9 +38,8 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      * <br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see labyrinthgenerator.LabyrinthGenerator#getListOfUnvisitedNeighbors
      * @see main.MyStack
      * @see main.MyList
@@ -52,6 +47,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() throws Exception {
+        createEmptyLabyrinthIfNeeded();
         MyStack<Integer> stack = new MyStack();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         int coordinate = 0; // Start at (0, 0)

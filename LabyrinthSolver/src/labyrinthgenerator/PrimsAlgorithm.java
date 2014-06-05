@@ -11,23 +11,21 @@ import main.MyList;
 public class PrimsAlgorithm extends LabyrinthGenerator {
 
     /**
-     * @param l Labyrintti, jolle algoritmi ajetaan.
-     * @see labyrinthgenerator.LabyrinthGenerator
+     * @see labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator()
      */
-    public PrimsAlgorithm(Labyrinth l) {
-        super(l);
+    public PrimsAlgorithm() {
+        super();
     }
 
     /**
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see labyrinthgenerator.LabyrinthGenerator#routine()
      */
     @Override
-    public void routine() throws Exception {
+    public void printRoutine() throws Exception {
         System.out.print("Prim's Algorithm");
-        super.routine();
+        super.printRoutine();
     }
 
     /**
@@ -40,14 +38,14 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      *
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
+     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
      * @see main.MyList
      * @see main.Labyrinth#addPassage(int, int)
      */
     @Override
     public void generateLabyrinth() throws Exception {
+        createEmptyLabyrinthIfNeeded();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
         visited[0][0] = 2;  // Start at (0, 0)
         /*
