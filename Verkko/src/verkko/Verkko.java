@@ -21,11 +21,10 @@ public class Verkko {
         Labyrintti2D l = new Labyrintti2D(KORKEUS, LEVEYS);
         l.setLabyrintitin(new RecursiveBacktracker(l.getSolmut()));
         l.labyrintitaLabyrintti();
-        System.out.println(l.toString());
         Solmu alku = l.getSolmut()[0][0];
         Solmu maali = l.getSolmut()[KORKEUS - 1][LEVEYS - 1];
         Astar astar = new Astar(alku, maali, new TaksimiehenEtaisyys());
-        astar.printtaaReittiSolmutVaarinpain(maali);
+        astar.suorita();
         System.out.println(l.printtaaReittiLabyrintissa(astar.getReitti(), maali));
     }
 

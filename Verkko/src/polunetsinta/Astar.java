@@ -20,6 +20,7 @@ public class Astar {
     private final Map<Solmu, Solmu> reitti;
     private final Keko<AstarKekoEntry> keko;
     private final Solmu maali;
+    private final Solmu alku;
     private final Map<Solmu, Double> matka;
 
     public Astar(Solmu alku, Solmu maali, Heuristiikka heuristiikka) {
@@ -29,17 +30,14 @@ public class Astar {
         reitti = new HashMap<>(8);
         matka = new HashMap<>(8);
         keko = new Keko<>(new PriorityComparator());
-        long aika = System.currentTimeMillis();
-        suorita(alku);
-        System.out.println(String.format("Aikaa kului reitin etsimiseen: %dms. \n"
-                + "Käsiteltyjen solmujen lukumäärä: %d", System.currentTimeMillis() - aika, kasitelty.size()));
+        this.alku = alku;
     }
 
     public Map<Solmu, Solmu> getReitti() {
         return Collections.unmodifiableMap(reitti);
     }
 
-    private boolean suorita(Solmu alku) {
+    public boolean suorita() {
         matka.put(alku, 0.0);
         keko.lisaa(new AstarKekoEntry(alku, heuristiikka.dist(alku, maali)));
         boolean onnistuks = false;
@@ -91,14 +89,14 @@ public class Astar {
         return false;
     }
 
-    public void printtaaReittiSolmutVaarinpain(Solmu maali) {
-        Solmu s = maali;
-        while (true) {
-            s = reitti.get(s);
-            if (s == null) {
-                break;
-            }
-            System.out.println(s);
-        }
-    }
+//    public void printtaaReittiSolmutVaarinpain(Solmu maali) {
+//        Solmu s = maali;
+//        while (true) {
+//            s = reitti.get(s);
+//            if (s == null) {
+//                break;
+//            }
+//            System.out.println(s);
+//        }
+//    }
 }

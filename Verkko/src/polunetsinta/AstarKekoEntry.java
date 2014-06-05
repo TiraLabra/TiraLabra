@@ -54,6 +54,14 @@ public class AstarKekoEntry {
         return priority;
     }
 
+    /**
+     * Huom! Vertaa vain solmuja keskenään, priorityllä ei väliä. Tämä on
+     * kätevää koska silloin on helpompi etsiä tiettyä solmua keossa luokassa
+     * Astar.
+     *
+     * @param obj
+     * @return true jos solmut equals, muulloin false.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
