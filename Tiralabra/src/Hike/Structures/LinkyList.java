@@ -38,7 +38,7 @@ public class LinkyList implements Iterable<Node> {
     }
     
     /**
-     * Counts elements until it finds one without a child.
+     * Counts elements until it finds one without a child.s
      * @return 
      */
 

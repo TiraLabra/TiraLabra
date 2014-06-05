@@ -7,7 +7,6 @@ package HikeTests;
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
 import Hike.Values;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -98,6 +97,8 @@ public class ImageTableTests {
         LinkyList neighbours = table[0][Values.IMAGEWIDTH - 1].getNeighbours();
 
         assertEquals(3, neighbours.size());
+
+
 
     }
 }

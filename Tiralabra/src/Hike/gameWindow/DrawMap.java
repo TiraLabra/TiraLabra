@@ -22,7 +22,6 @@ class DrawMap extends JPanel {
     private ShowPicture pic;
     private ImageTable table;
     private Dijkstra droute;
-    private Deque stack;
 
     public DrawMap() {
     }
@@ -32,16 +31,23 @@ class DrawMap extends JPanel {
         super.paint(g);
 
         pic = new ShowPicture("../map1.png");
+
         g.drawImage(pic.getImage(), 50, 50, this);
 
+
+        long startTime = System.currentTimeMillis();
         table = new ImageTable(pic);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Converting image took: " + (endTime - startTime) + "ms.");
+
         droute = new Dijkstra(table.getNodeTable());
+
+//        droute.getDijkstraTable()[0][0].printTable();
 //        Node[][] nTable= table.getNodeTable();
 //        nTable[0][0].printNeighbours();
-        drawPath(g);
-//        droute.getDijkstraTable()[0][0].printTable();
-        
 
+
+        drawPath(g);
 
 
     }

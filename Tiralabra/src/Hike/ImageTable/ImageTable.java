@@ -65,8 +65,9 @@ public class ImageTable {
                 }
             }
         }
-        tab[0][0].setNeighbours(tab, Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
+        tab[0][0].setNeighbours(tab, h, w);
         nodetable = tab[0][0].getTable();
+        
 
 
 

@@ -2,10 +2,10 @@ package Hike.Algorithms;
 
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
+import Hike.Structures.MinHeap;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -17,6 +17,7 @@ import java.util.Set;
  */
 public class Dijkstra {
 
+    private MinHeap heap;
     private Node[][] nodeTable;
     private Set<Node> checked;
     private Set<Node> unchecked;
@@ -33,13 +34,15 @@ public class Dijkstra {
     public Dijkstra(Node[][] nodeTable) {
 
         c = 0;
+        this.heap = new MinHeap(nodeTable.length * nodeTable[0].length + 1);
         this.que = new ArrayDeque<Node>();
         this.nodeTable = nodeTable;
         this.checked = new HashSet<Node>();
         this.unchecked = new HashSet<Node>();
-        
+
+
         long aikaAlussa = System.currentTimeMillis();
-        initialize();
+
         findDijkstra();
         long aikaLopussa = System.currentTimeMillis();
         System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
@@ -57,14 +60,18 @@ public class Dijkstra {
      * calculated.
      */
     private void findDijkstra() {
-        Node eval = nodeTable[0][0];
-        unchecked.add(eval);
+        for (int i = 0; i < nodeTable.length; i++) {
+            for (int e = 0; e < nodeTable[0].length; e++) {
+                heap.insert(nodeTable[i][e]);
+            }
 
-        while (unchecked.isEmpty() == false) {
+        }
+        initialize();
+
+
+        while (heap.empty() == false) {
+            Node eval = heap.removeMin().getNode();
             c++;
-
-            eval = getLowestDistance();
-            unchecked.remove(eval);
             checked.add(eval);
             checkNeighbours(eval);
 
@@ -128,7 +135,7 @@ public class Dijkstra {
         if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
             goal.setDistance(start.getDistance() + goal.getWeight());
             goal.setPrevious(start);
-            unchecked.add(goal);
+
 
 
         }
@@ -169,9 +176,9 @@ public class Dijkstra {
 
 
     }
-    
+
     public Node[][] getDijkstraTable() {
         return nodeTable;
-        
+
     }
 }

@@ -5,7 +5,7 @@
 package Hike.Graph;
 
 import Hike.Structures.LinkyList;
-import Hike.Values;
+
 
 /**
  * Class containing a cell in the table created in ImageTable. Nodes have a y
@@ -31,6 +31,7 @@ public class Node {
     private Node E = null;
     private Node previous;
     private int distance;
+    private int heapIndex;
 
     /**
      * Creates a node
@@ -41,15 +42,14 @@ public class Node {
      */
     public Node(int y, int x, int w) {
 
+
         this.neighbours = new LinkyList();
 
         this.y = y;
         this.x = x;
         this.weight = w;
-        this.distance = 2000000;
-
-
-
+        this.distance = Integer.MAX_VALUE;
+        this.heapIndex = 0;
 
 
 
@@ -115,26 +115,20 @@ public class Node {
                     table[py][px].NE = table[py - 1][px + 1];
                     table[py][px].getNeighbours().add(table[py - 1][px + 1]);
                 }
-
-
-
-
-
-
             }
         }
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public Node[][] getTable() {
-        return table;
+        return this.table;
     }
 
     public Node getS() {
@@ -182,10 +176,10 @@ public class Node {
      * are valid.
      */
     public void printTable() {
-        for (int y = 0; y < table.length; y++) {
+        for (int h = 0; h < table.length; h++) {
             System.out.println("");
-            for (int x = 0; x < table[0].length; x++) {
-                System.out.print("| " + table[y][x].getY() + " " + table[y][x].getX() + " D: " + table[y][x].getDistance() + " W: " + table[y][x].getWeight() + " P: " + table[y][x].getPrevious());
+            for (int w = 0; w < table[0].length; w++) {
+                System.out.print("| " + this.table[h][w].x + " " + this.table[h][w].y + " D: " + table[h][w].getDistance() + " W: " + table[h][w].getWeight() + " P: " + table[h][w].getPrevious());
             }
 
         }
@@ -207,5 +201,13 @@ public class Node {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public void setHeapIndex(int index) {
+        this.heapIndex = index;
+    }
+
+    public int getHeapIndex() {
+        return this.heapIndex;
     }
 }

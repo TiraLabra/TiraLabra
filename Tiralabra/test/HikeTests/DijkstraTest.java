@@ -6,6 +6,7 @@ package HikeTests;
 
 import Hike.Algorithms.Dijkstra;
 import Hike.Graph.Node;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,8 +71,11 @@ public class DijkstraTest {
 
     @Test
     public void ShortestRouteInTableWithIdenticalValues() { // Straight Diagonally, 5+5+5.
+        t[0][0].printTable();
         Dijkstra route = new Dijkstra(t);
+        System.out.println("");
         t = route.getDijkstraTable();
+        t[0][0].printTable();
         assertEquals(15, t[3][3].getDistance());
 
     }
@@ -87,6 +91,7 @@ public class DijkstraTest {
         t[3][3].setWeight(1);
         Dijkstra route = new Dijkstra(t);
         t = route.getDijkstraTable();
+        t[0][0].printTable();
         assertEquals(5, t[3][3].getDistance());
 
     }
@@ -107,7 +112,7 @@ public class DijkstraTest {
     }
 
     @Test
-    public void correctPathPrinting() { //Uses the simple 
+    public void correctPathPrinting() { //Uses the simple table. Should be diagonally up and left from 3,3.
         Dijkstra route = new Dijkstra(t);
         t = route.getDijkstraTable();
         route.buildPath(3, 3);
@@ -121,6 +126,28 @@ public class DijkstraTest {
         assertEquals(t[0][0].getX(), test.getX());
         assertEquals(t[0][0].getY(), test.getY());
 
+
+    }
+
+    @Test
+    public void ShortestRouteInLargeMap() {
+        int v = 6;
+        int v2 = 6;
+        t = new Node[v][v2];
+        for (int i = 0; i < v; i++) {
+            for (int z = 0; z < v2; z++) {
+                Node test = new Node(1,1,z);
+                t[i][z] = test;
+                
+            }
+        }
+        t[0][0].setNeighbours(t, v, v2);
+        Dijkstra route = new Dijkstra(t);
+        System.out.println(route.nextPath());
+        t[0][0].getNeighbours();
+        route.getDijkstraTable()[0][0].printTable();
+        
+        
 
     }
 }
