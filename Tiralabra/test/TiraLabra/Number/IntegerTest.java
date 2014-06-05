@@ -4,8 +4,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class IntegerTest extends NumberTests<Integer> {
-    private static final Integer radix = new Integer(java.lang.Integer.MAX_VALUE);
-    private Integer overflow, oneOverOverflow;
+    private static final Integer overflow =
+            new Integer(java.lang.Integer.MAX_VALUE);
+
+    private static final Integer oneToOverflow =
+            new Integer(java.lang.Integer.MAX_VALUE - 1);
+    
+    private Integer oneOverOverflow;
     
     @Override
     public void setUp() {
@@ -15,17 +20,23 @@ public class IntegerTest extends NumberTests<Integer> {
         two = new Integer(2);
         four = new Integer(4);
         
-        int v[] = {0, 1};
-        overflow = new Integer(v, false);
-        
-        int v2[] = {1, 1};
-        oneOverOverflow = new Integer(v2, false);
+        final int v[] = {1, 1};
+        oneOverOverflow = new Integer(v, false);
+    }
+    
+    @Test
+    public void overflowEquals() {
+        assertFalse(overflow.equals(one));
+        assertFalse(one.equals(overflow));
     }
     
     @Test
     public void overflowCompares() {
-        assertTrue(zero.compareTo(radix) < 0);
-        assertTrue(radix.compareTo(one) > 0);
+        assertTrue(zero.compareTo(overflow) < 0);
+        assertTrue(one.compareTo(overflow) < 0);
+        
+        assertTrue(overflow.compareTo(one) > 0);
+        
         assertTrue(oneOverOverflow.compareTo(one) > 0);
         assertTrue(oneOverOverflow.compareTo(overflow) > 0);
     }
@@ -33,21 +44,12 @@ public class IntegerTest extends NumberTests<Integer> {
     @Test
     public void overflowToString() {
         assertEquals("2147483647", overflow.toString());
-    }
-    
-    @Test
-    public void overOverflowToString() {
         assertEquals("2147483648", oneOverOverflow.toString());
     }
     
     @Test
-    public void overflowEquals() {
-        assertEquals(overflow, overflow);
-    }
-    
-    @Test
     public void overflowFromAddition() {
-        assertEquals(overflow, radix.add(one));
+        assertEquals(overflow, oneToOverflow.add(one));
     }
     
     @Test
@@ -57,7 +59,7 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void subtractFromOverflow() {
-        assertEquals("2147483646", radix.subtract(one).toString());
+        assertEquals("2147483646", overflow.subtract(one).toString());
     }
     
     @Test
@@ -65,3 +67,4 @@ public class IntegerTest extends NumberTests<Integer> {
         assertEquals(overflow, oneOverOverflow.subtract(one));
     }
 }
+

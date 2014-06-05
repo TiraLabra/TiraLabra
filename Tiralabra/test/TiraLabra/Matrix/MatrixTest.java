@@ -151,6 +151,12 @@ public class MatrixTest {
         matrixEquals(Integer.class, 2, 2, 2, 0);
     }
     
+    @Test(expected=UnsupportedOperationException.class)
+    public void addMatricesFail() {
+        Matrix m = makeMatrix(Integer.class, 1, 1, 1);
+        matrix = matrix.add(m);
+    }
+    
     @Test
     public void transposeSquare() {
         matrix = matrix.transpose();

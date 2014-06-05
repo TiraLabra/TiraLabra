@@ -23,13 +23,13 @@ public class Integer extends Number<Integer> {
         
         if (integer == 0) {
             this.integer = null;
+        } else if (integer == radix){
+            this.integer = new int[2];
+            this.integer[0] = 0;
+            this.integer[1] = 1;
         } else {
             this.integer = new int[1];
-            if (integer == radix) {
-                this.integer[0] = 0;
-            } else {
-                this.integer[0] = (negative) ? -integer : integer;
-            }
+            this.integer[0] = (negative) ? -integer : integer;
         }
     }
     
@@ -50,19 +50,24 @@ public class Integer extends Number<Integer> {
         return -1;
     }
     
-    public Integer(int[] integer, boolean negative) {
-        this.negative = negative;
-        
-        int zeroes = leadingZeroes(integer);
+    private static int[] removeLeadingZeroes(int[] words) {
+        int zeroes = leadingZeroes(words);
         if (zeroes == -1){
-            this.integer = null;
+            return null;
         } else if (zeroes > 0) {
-            int int2[] = new int[integer.length - zeroes];
-            System.arraycopy(integer, 0, int2, 0, zeroes);
-            this.integer = int2;
+            int int2[] = new int[words.length - zeroes];
+            System.arraycopy(words, 0, int2, 0, words.length - zeroes);
+            return int2;
         } else {
-            this.integer = integer;
+            return words;
         }
+    }
+    
+    protected Integer(int[] integer, boolean negative) {
+        this.negative = negative;
+        //this.integer = integer;
+        
+        this.integer = removeLeadingZeroes(integer);
     }
     
     private static int[][] padZeroes(int a[], int b[]) {
@@ -75,15 +80,12 @@ public class Integer extends Number<Integer> {
         int max = (a.length > b.length) ? 0 : 1;
         int min = (max + 1) % 2;
         
-        res[min] = new int[res[max].length];
+        int newMin[] = new int[res[max].length];
         for (int i = 0; i < res[max].length; i++) {
-            if (min == 0) {
-                res[min][i] = (i < a.length) ? a[i] : 0;
-            } else {
-                res[min][i] = (i < b.length) ? b[i] : 0;
-            }
+            newMin[i] = (i < res[min].length) ? res[min][i] : 0;
         }
         
+        res[min] = newMin;
         return res;
     }
     
@@ -92,20 +94,21 @@ public class Integer extends Number<Integer> {
         if (this.isZero()) return other;
         if (other.isZero()) return this;
         
-        if (this.isNegative()) { // -1 + 2 = 2 - 1
+        if (this.isNegative()) {
             return other.subtract(this.negate());
-        } else if (other.isNegative()) { // 1 + (-2) = 1 - 2
+        } else if (other.isNegative()) {
             return this.subtract(other.negate());
         }
 
         int words[][] = padZeroes(integer, other.integer);
         
-        int res[] = new int[words[0].length], k = 0;
+        int res[] = new int[words[0].length+1], k = 0;
         for (int i = 0; i < words[0].length; i++) {
             final int sum = words[0][i] + words[1][i] + k;
-            k = (sum) / radix;
+            k = sum / radix;
             res[i] = sum % radix;
         }
+        res[res.length-1] = k;
         
         return new Integer(res, false);
     }
@@ -193,7 +196,7 @@ public class Integer extends Number<Integer> {
 
     @Override
     public Integer pow(int n) {
-        Integer res = Integer.ONE;
+        Integer res = ONE;
         for (int i = 0; i < n; i++) {
             res = this.multiply(res);
         }
@@ -221,6 +224,7 @@ public class Integer extends Number<Integer> {
         return new Integer(integer, !negative);
     }
     
+    @Override
     public boolean isZero() {
         return (integer == null);
     }
@@ -276,6 +280,7 @@ public class Integer extends Number<Integer> {
             }
             res = add(res, c);
         }
+        
         return (isNegative() ? "-"+res : res);
     }
     
@@ -301,12 +306,6 @@ public class Integer extends Number<Integer> {
         }
         
         for (int i = 0; i < integer.length; i++) {
-            if (integer[i] == 0 && other.integer[i] != 0) {
-                return 1;
-            } else if (other.integer[i] == 0 && integer[i] != 0) {
-                return -1;
-            }
-            
             if (integer[i] > other.integer[i]) {
                 return 1;
             } else if (integer[i] < other.integer[i]) {
