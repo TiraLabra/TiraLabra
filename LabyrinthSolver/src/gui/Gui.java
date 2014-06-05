@@ -6,11 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSlider;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import labyrinthgenerator.*;
 import labyrinthsolver.*;
 import main.Labyrinth;
@@ -83,6 +89,13 @@ public class Gui implements Runnable {
         frame.setVisible(true);
     }
 
+    public int getCellSize() {
+        if (labyrinth.height > labyrinth.width) {
+            return 500 / labyrinth.height;
+        }
+        return 500 / labyrinth.width;
+    }
+
     /**
      * Lisää piirtoalustan frameen.
      *
@@ -90,12 +103,7 @@ public class Gui implements Runnable {
      * @throws Exception Heittää poikkeuksen, jos labyrintin koko on liian iso!
      */
     void addCanvas(Container container) throws Exception {
-        int cellSize;
-        if (labyrinth.height > labyrinth.width) {
-            cellSize = 500 / labyrinth.height;
-        } else {
-            cellSize = 500 / labyrinth.width;
-        }
+        int cellSize = getCellSize();
         canvas = new Canvas(labyrinth, cellSize);
         if (labyrinth.height > sizeLimit || labyrinth.width > sizeLimit) {
             throw new Exception("Gui can only handle up to 100x100 labyrinths!");
@@ -111,8 +119,7 @@ public class Gui implements Runnable {
          Menu labyrintin editoimiseen.
          */
         JMenu lMenu = new JMenu("Labyrinth");
-        JMenuItem lSetSize = new JMenuItem("Set size");
-        lMenu.add(lSetSize);
+        lMenu.add(setSizeSelection());
 
         /*
          * Menu labyrintin generoijan valitsemiseen.
@@ -151,13 +158,51 @@ public class Gui implements Runnable {
         frame.setJMenuBar(menubar);
     }
 
-    ActionListener changeLabyrinthGenerator(final LabyrinthGenerator lg) {
-        return new ActionListener() {
+    JSlider createSlider(final JLabel label, final String labelText) {
+        JSlider slider = new JSlider();
+        slider.setMinimum(5);
+        slider.setMaximum(95);
+        slider.setMajorTickSpacing(10);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                JSlider thisSlider = (JSlider) changeEvent.getSource();
+                if (thisSlider.getValueIsAdjusting()) {
+                    label.setText(labelText + ": " + thisSlider.getValue());
+                }
+            }
+        });
+        return slider;
+    }
+
+    JMenuItem setSizeSelection() {
+        JMenuItem item = new JMenuItem("Set size");
+        item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                labyrinth.setLabyrinthGenerator(lg);
+                JOptionPane optionPane = new JOptionPane();
+                JLabel widthLabel = new JLabel();
+                widthLabel.setText("width: 50");
+                JLabel heightLabel = new JLabel();
+                heightLabel.setText("height: 50");
+                JSlider widthSlider = createSlider(widthLabel, "width");
+                JSlider heightSlider = createSlider(heightLabel, "height");
+                Object[] objects = {widthLabel, widthSlider, heightLabel, heightSlider};
+                optionPane.setMessage(objects);
+                JDialog dialog = optionPane.createDialog(frame, "Set labyrinth size");
+                dialog.setVisible(true);
+                if (!dialog.isVisible()) {
+                    int newWidth = widthSlider.getValue();
+                    int newHeight = heightSlider.getValue();
+                    labyrinth.updateLabyrinth(newWidth, newHeight);
+                    frame.dispose();
+                    run();
+                }
             }
-        };
+        });
+        return item;
     }
 
     JMenuItem createLabyrinthGenerator(final LabyrinthGenerator lg, final String title) {
