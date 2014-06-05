@@ -59,6 +59,7 @@ public abstract class LabyrinthGenerator {
      */
     public void printRoutine() throws Exception {
         System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
+        createEmptyLabyrinthIfNeeded();
         long startTime = System.nanoTime() / 1000;
         generateLabyrinth();
         long finishTime = System.nanoTime() / 1000;
