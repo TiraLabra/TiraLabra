@@ -11,7 +11,7 @@ import verkko.Solmu;
  *
  * @author Arvoitusmies
  */
-public abstract class Labyrintitin {
+public abstract class Labyrintitin2D {
 
     /**
      * Tähän talletetaan solmut.
@@ -23,15 +23,14 @@ public abstract class Labyrintitin {
      *
      * @param solmut
      */
-    public Labyrintitin(Solmu[][] solmut) {
+    public Labyrintitin2D(Solmu[][] solmut) {
         this.solmut = solmut.clone();
     }
 
     /**
      * "Labyrintittää"
      *
-     * @return
      */
-    public abstract Solmu[][] labyrintitaLabyrintti();
+    public abstract void labyrintita();
 
 }

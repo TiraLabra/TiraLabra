@@ -27,7 +27,7 @@ public class Keko<E> {
     /**
      * Taulu olioille. Kasvatetaan tarvittaessa
      */
-    private E[] taulukko;
+    protected E[] taulukko;
 
     /**
      * Olioiden määrä keossa, samalla myös keon alimman indeksi.

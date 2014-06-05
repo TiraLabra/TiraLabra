@@ -5,7 +5,7 @@
 package verkko;
 
 import labyrintti.Labyrintti2D;
-import labyrintti.RecursiveBacktracker;
+import labyrintti.RecursiveBacktracker2D;
 import polunetsinta.Astar;
 import polunetsinta.TaksimiehenEtaisyys;
 
@@ -24,7 +24,7 @@ public class Verkko {
      */
     public static void main(String[] args) {
         Labyrintti2D l = new Labyrintti2D(KORKEUS, LEVEYS);
-        l.setLabyrintitin(new RecursiveBacktracker(l.getSolmut()));
+        l.setLabyrintitin(new RecursiveBacktracker2D(l.getSolmut()));
         l.labyrintitaLabyrintti();
         Solmu alku = l.getSolmut()[0][0];
         Solmu maali = l.getSolmut()[KORKEUS - 1][LEVEYS - 1];

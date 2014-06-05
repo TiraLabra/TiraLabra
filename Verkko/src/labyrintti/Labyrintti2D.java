@@ -33,7 +33,7 @@ public class Labyrintti2D {
      * Labyrintitin jota käytetään labyrintin solmujen välisten yhteyksien eli
      * labyrintin käytävien generointiin.
      */
-    private Labyrintitin labyrintitin;
+    private Labyrintitin2D labyrintitin;
 
     /**
      * Initialisoi solmut kentän tyhjillä, naapurittomilla,
@@ -57,7 +57,7 @@ public class Labyrintti2D {
      *
      * @param labyrintitin
      */
-    public void setLabyrintitin(Labyrintitin labyrintitin) {
+    public void setLabyrintitin(Labyrintitin2D labyrintitin) {
         this.labyrintitin = labyrintitin;
     }
 
@@ -77,7 +77,7 @@ public class Labyrintti2D {
         if (labyrintitin == null) {
             throw new IllegalStateException("Aseta labyrintitin ensin (setLabyrintitin)");
         }
-        solmut = labyrintitin.labyrintitaLabyrintti();
+        labyrintitin.labyrintita();
     }
 
     /**

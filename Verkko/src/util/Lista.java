@@ -4,6 +4,8 @@
  */
 package util;
 
+import java.util.Arrays;
+
 public class Lista<E> {
 
     /**
@@ -37,6 +39,11 @@ public class Lista<E> {
     public Lista(int alkukoko) {
         this.a = (E[]) new Object[alkukoko];
         koko = 0;
+    }
+    
+    public E[] toArray(){
+        E[] paluu=Arrays.copyOfRange(a, 0, koko);
+        return paluu;
     }
 
     public int koko() {
