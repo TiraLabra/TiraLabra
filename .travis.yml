@@ -1,8 +1,10 @@
-language: java
-jdk:
-  - oraclejdk7
-  - openjdk6
-notifications:
-  email: false
-
+language: cpp
+compiler: gcc
+install:
+sudo apt-get install libgtest-dev
+sudo apt-get install cmake
+cd /usr/src/gtest
+sudo cmake CMakeLists.txt
+sudo make
+sudo cp *.a /usr/lib
 script: "./run_tests.sh"
