@@ -13,25 +13,25 @@ import labyrinthsolver.*;
 public class Main {
 
     public static Labyrinth l;
-    public static PrimsAlgorithm pa;
-    public static KruskalsAlgorithm ka;
-    public static RecursiveBacktracker rb;
-    public static WallFollower wf;
-    public static DFS dfs;
-    public static BFS bfs;
 
     public static void testCase() throws Exception {
-        LabyrinthGenerator[] generators = {pa, ka, rb};
-        LabyrinthSolver[] solvers = {wf, dfs, bfs};
+        LabyrinthGenerator[] generators = {new PrimsAlgorithm(),
+            new KruskalsAlgorithm(),
+            new RecursiveBacktracker()};
+        LabyrinthSolver[] solvers = {new WallFollower(),
+            new DFS(),
+            new BFS()};
         int[] tests = {10, 50, 100, 250, 500, 1000, 2000, 3000};
         for (Integer t : tests) {
             l.updateLabyrinth(t, t);
             for (LabyrinthGenerator lg : generators) {
                 System.out.println("- - - - - - - - - - - - - - - - - - - - ");
-                lg.routine();
+                l.setLabyrinthGenerator(lg);
+                l.lg.printRoutine();
                 System.out.println("");
                 for (LabyrinthSolver ls : solvers) {
-                    ls.routine();
+                    l.setLabyrinthSolver(ls);
+                    l.ls.printRoutine();
                 }
                 System.out.println("");
             }
@@ -39,17 +39,9 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        l = new Labyrinth(30, 30);
-        pa = new PrimsAlgorithm(l);
-        ka = new KruskalsAlgorithm(l);
-        rb = new RecursiveBacktracker(l);
-        wf = new WallFollower(l);
-        dfs = new DFS(l);
-        bfs = new BFS(l);
+        l = new Labyrinth(50, 50);
         //testCase();
-        pa.generateLabyrinth();
-        wf.routine();
-        Gui gui = new Gui(l, wf);
+        Gui gui = new Gui(l);
         SwingUtilities.invokeLater(gui);
     }
 }
