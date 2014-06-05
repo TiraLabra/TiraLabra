@@ -5,10 +5,7 @@
  */
 package main;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class MyQueueTest {
 
-    public MyQueue<Integer> testQueue;
+    MyQueue<Integer> testQueue;
 
     @Before
     public void setUp() {
@@ -66,7 +63,7 @@ public class MyQueueTest {
     }
 
     @Test
-    public void headAndTailMoveCorrectly() {
+    public void headAndTailMoveCorrectlyWhenEnqueuing() {
         testQueue = new MyQueue<>(5);
         // [X X X X X]
         assertEquals(0, testQueue.head);
@@ -95,6 +92,11 @@ public class MyQueueTest {
         assertEquals(9, (int) testQueue.items[1]);
         assertEquals(7, (int) testQueue.items[2]);
         assertEquals(null, testQueue.items[3]);
+    }
+
+    @Test
+    public void headAndTailMoveCorrectlyWhenDequeing() {
+        headAndTailMoveCorrectlyWhenEnqueuing();
         int dequeue = testQueue.dequeue();
         // [X H 7 T X]
         assertEquals(1, testQueue.head);
@@ -108,6 +110,11 @@ public class MyQueueTest {
         testQueue.dequeue();
         // [X X X HT X]
         assertTrue(testQueue.empty());
+    }
+
+    @Test
+    public void headAndTailMoveCorrectlyWhenEnqueuingPastQueueSize() {
+        headAndTailMoveCorrectlyWhenDequeing();
         testQueue.enqueue(1);
         testQueue.enqueue(2);
         // [T X X H 2]
@@ -129,8 +136,8 @@ public class MyQueueTest {
     }
 
     @Test
-    public void headAndTailPastMaxSize() {
-        headAndTailMoveCorrectly();
+    public void headAndTailMoveCorrectlyWhenQueueuingPastQueueMaxSize() {
+        headAndTailMoveCorrectlyWhenEnqueuingPastQueueSize();
         testQueue.enqueue(5);
         // [3 4 5 HT 2]! --> [H 2 3 4 5 T X X X X]
         assertEquals(0, testQueue.head);
@@ -146,7 +153,7 @@ public class MyQueueTest {
 
     @Test
     public void dequeueFromMuchUsedList() {
-        headAndTailPastMaxSize();
+        headAndTailMoveCorrectlyWhenQueueuingPastQueueMaxSize();
         for (int i = 0; i < 5; i++) {
             assertEquals(5 - i, testQueue.size());
             assertEquals(i + 1, (int) testQueue.dequeue());
