@@ -20,13 +20,11 @@ public class Integer extends Number<Integer> {
      */
     public Integer(int integer) {
         negative = (integer < 0);
-        
-        if (integer == 0) {
-            this.integer = null;
-        } else if (integer == radix){
+
+        if (Math.abs(integer) == radix) {
             this.integer = new int[2];
             this.integer[0] = 0;
-            this.integer[1] = 1;
+            this.integer[1] = (negative) ? -1 : 1;
         } else {
             this.integer = new int[1];
             this.integer[0] = (negative) ? -integer : integer;
@@ -34,10 +32,6 @@ public class Integer extends Number<Integer> {
     }
     
     private static int leadingZeroes(int integer[]) {
-        if (integer == null) {
-            return -1;
-        }
-        
         int leading = 0;
         for (int i = integer.length-1; i >= 0; i--) {
             if (integer[i] > 0) {
@@ -52,8 +46,9 @@ public class Integer extends Number<Integer> {
     
     private static int[] removeLeadingZeroes(int[] words) {
         int zeroes = leadingZeroes(words);
-        if (zeroes == -1){
-            return null;
+        if (zeroes == -1) {
+            int int2[] = {0};
+            return int2;
         } else if (zeroes > 0) {
             int int2[] = new int[words.length - zeroes];
             System.arraycopy(words, 0, int2, 0, words.length - zeroes);
@@ -139,14 +134,10 @@ public class Integer extends Number<Integer> {
         int res[] = new int[words[0].length], k = 0;
         for (int i = words[0].length-1; i >= 0; i--) {
             final int sum = words[0][i] - words[1][i] + k;
-            
-            if (sum < 0) {
-                throw new IllegalArgumentException();
-            }
-            
-            k = (int) Math.floor(sum / radix);
+            k = sum / radix;
             res[i] = sum % radix;
         }
+        
         return new Integer(res, false);
     }
     
@@ -226,7 +217,7 @@ public class Integer extends Number<Integer> {
     
     @Override
     public boolean isZero() {
-        return (integer == null);
+        return (integer.length == 1 && integer[0] == 0);
     }
     
     @Override
@@ -286,13 +277,6 @@ public class Integer extends Number<Integer> {
     
     @Override
     public int compareTo(Integer other) {
-        if (this.isZero()) {
-            if (other.isZero()) return 0;
-            return other.isNegative() ? 1 : -1;
-        } else if (other.isZero()) {
-            return this.isNegative() ? -1 : 1;
-        }
-        
         if (this.isNegative() && !other.isNegative()) {
             return -1;
         } else if (!this.isNegative() && other.isNegative()) {
@@ -323,13 +307,12 @@ public class Integer extends Number<Integer> {
         }
         
         final Integer other = (Integer) obj;
-        
+
         if (this.isZero() || other.isZero()) {
             return (this.isZero() == other.isZero());
         }
         
-        if (integer.length != other.integer.length ||
-                this.isNegative() != other.isNegative()) {
+        if (this.isNegative() != other.isNegative()) {
             return false;
         }
         
