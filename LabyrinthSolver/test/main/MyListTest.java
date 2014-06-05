@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class MyListTest {
 
-    public MyList testList;
+    MyList testList;
 
     @Before
     public void setUp() {
