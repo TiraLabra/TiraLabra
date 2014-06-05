@@ -1,6 +1,8 @@
 package main;
 
 import java.text.DecimalFormat;
+import labyrinthgenerator.LabyrinthGenerator;
+import labyrinthsolver.LabyrinthSolver;
 
 /**
  * Labyrintti-olio.
@@ -21,6 +23,14 @@ public class Labyrinth {
      * Labyrintin korkeus.
      */
     public int height;
+    /**
+     * Labyrintin generointialgoritmi.
+     */
+    public LabyrinthGenerator lg;
+    /**
+     * Labyrintin ratkaisualgoritmi.
+     */
+    public LabyrinthSolver ls;
 
     /**
      *
@@ -43,6 +53,32 @@ public class Labyrinth {
         width = w;
         height = h;
         labyrinth = new byte[height][width];
+        if (lg != null) {
+            lg.labyrinth = this;
+        }
+        if (ls != null) {
+            ls.labyrinth = this;
+        }
+    }
+
+    /**
+     * Asettaa tälle labyrintille uuden generoijan.
+     *
+     * @param newLG Labyrintin generoija, mikä asetetaan.
+     */
+    public void setLabyrinthGenerator(LabyrinthGenerator newLG) {
+        lg = newLG;
+        lg.labyrinth = this;
+    }
+
+    /**
+     * Asettaa tälle labyrintille uuden ratkojan.
+     *
+     * @param newLS Labyrintin ratkoja, mikä asetetaan.
+     */
+    public void setLabyrinthSolver(LabyrinthSolver newLS) {
+        ls = newLS;
+        ls.labyrinth = this;
     }
 
     /**
