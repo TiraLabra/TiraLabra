@@ -7,15 +7,15 @@ public class Alue {
     
     private int[][] intit;
     
-    private int x;
-    private int y;
+    private int korkeus;
+    private int leveys;
     
     private Node[][] nodet;
     
     public Alue(int koko) {
         intit = new int[koko][koko];
         nodet = new Node[koko][koko];
-        x = y = koko;
+        korkeus = leveys = koko;
     }
     
     /**
@@ -24,8 +24,8 @@ public class Alue {
      */
     public Alue(Node[][] nodetaulukko, int korkeus, int leveys) {
         this.nodet = nodetaulukko;
-        this.x = korkeus;
-        this.y = leveys;
+        this.korkeus = korkeus;
+        this.leveys = leveys;
     }
     
     
@@ -111,8 +111,8 @@ public class Alue {
     @Override
     public String toString() {
         String tuloste = "";
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
+        for (int i = 0; i < korkeus; i++) {
+            for (int j = 0; j < leveys; j++) {
                 String kustannus = "";
                 // char estemerkki = '\u275A';
                 char estemerkki = '\u2588';
@@ -129,11 +129,11 @@ public class Alue {
     }
 
     public int getKorkeus() {
-        return x;
+        return korkeus;
     }
 
     public int getLeveys() {
-        return y;
+        return leveys;
     }
     
 }

@@ -12,7 +12,7 @@ public class Manhattan implements Heuristiikka {
 
     public int laskeArvio(Node alku, Node loppu) {
         int tulos = 0;
-        tulos = Math.abs(alku.getX()-loppu.getX()) + Math.abs(alku.getY()-loppu.getY());
+        tulos = Math.abs(alku.getRivi()-loppu.getRivi()) + Math.abs(alku.getSarake()-loppu.getSarake());
         
         return tulos;
     }

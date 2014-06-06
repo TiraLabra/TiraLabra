@@ -160,12 +160,12 @@ public class AStar {
     public ArrayList<Node> selvitaNaapurit(Alue a, Node n) {
         ArrayList<Node> naapurit = new ArrayList<Node>();
         
-        for (int i = n.getX()-1; i <= n.getX()+1; i++) {
-            for (int j = n.getY()-1; j <= n.getY()+1; j++) {
-                if ( (i >= 0 && j >= 0 && i < a.getKorkeus() && j < a.getLeveys()) && !(i==n.getX() && j==n.getY()) ) {
+        for (int i = n.getRivi()-1; i <= n.getRivi()+1; i++) {
+            for (int j = n.getSarake()-1; j <= n.getSarake()+1; j++) {
+                if ( (i >= 0 && j >= 0 && i < a.getKorkeus() && j < a.getLeveys()) && !(i==n.getRivi() && j==n.getSarake()) ) {
                     if (a.getnode(i, j).kuljettavissa())
                         naapurit.add(a.getnode(i, j));
-                    //System.out.println(n.getX()+", "+ n.getY() + "naapuri: " + i + "," + j);
+                    //System.out.println(n.getRivi()+", "+ n.getSarake() + "naapuri: " + i + "," + j);
                 }
             }
         }

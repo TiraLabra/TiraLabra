@@ -8,8 +8,8 @@ public class Node implements Comparable<Node> {
 
     private static int MAKSIMIARVO_KULJETTAVUUDELLE = 5;
     
-    private int x;
-    private int y;
+    private int rivi;
+    private int sarake;
     
     private int etaisyysAlusta;
     
@@ -33,19 +33,19 @@ public class Node implements Comparable<Node> {
     
     
     /**
-     * Konstruktori, joka ottaa parametrainaan x- ja y-koordinaatit.
-     * @param x
-     * @param y 
+     * Konstruktori, joka ottaa parametrinaan noden koordinaatit.
+     * @param rivi
+     * @param sarake 
      * @param kustannus nodeen kulkemisen kustannus, oletus 0
      */
-    public Node(int x, int y, int kustannus) {
-        this.x = x;
-        this.y = y;
+    public Node(int rivi, int sarake, int kustannus) {
+        this.rivi = rivi;
+        this.sarake = sarake;
         this.kustannus = kustannus;
     }
     
-    public Node(int x, int y) {
-        this(x, y, 0);
+    public Node(int rivi, int sarake) {
+        this(rivi, sarake, 0);
     }
 
     public Node getEdellinen() {
@@ -60,12 +60,12 @@ public class Node implements Comparable<Node> {
         return etaisyysMaaliin;
     }
 
-    public int getX() {
-        return x;
+    public int getRivi() {
+        return rivi;
     }
 
-    public int getY() {
-        return y;
+    public int getSarake() {
+        return sarake;
     }
 
     public int getKustannus() {
@@ -111,7 +111,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return this.x+", " + this.y + " alusta: " + this.etaisyysAlusta + " maaliin: " + this.etaisyysMaaliin;
+        return this.rivi+", " + this.sarake + " alusta: " + this.etaisyysAlusta + " maaliin: " + this.etaisyysMaaliin;
     }
     
     

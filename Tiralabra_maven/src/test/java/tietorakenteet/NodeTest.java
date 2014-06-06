@@ -33,8 +33,8 @@ public class NodeTest extends TestCase {
     public void testToimiikoLuonti() {
         Node n = new Node(1,2,3);
         
-        assertEquals(1, n.getX());
-        assertEquals(2, n.getY());
+        assertEquals(1, n.getRivi());
+        assertEquals(2, n.getSarake());
         assertEquals(3, n.getKustannus());
     }
     
