@@ -9,7 +9,6 @@ import Hike.Graph.Node;
 import Hike.ImageTable.ImageTable;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Deque;
 import javax.swing.JPanel;
 
 /**
@@ -34,18 +33,15 @@ class DrawMap extends JPanel {
 
         g.drawImage(pic.getImage(), 50, 50, this);
 
-
         long startTime = System.currentTimeMillis();
         table = new ImageTable(pic);
         long endTime = System.currentTimeMillis();
-        System.out.println("Converting image took: " + (endTime - startTime) + "ms.");
+
 
         droute = new Dijkstra(table.getNodeTable());
 
-//        droute.getDijkstraTable()[0][0].printTable();
-//        Node[][] nTable= table.getNodeTable();
-//        nTable[0][0].printNeighbours();
-
+        g.drawString("Operation took: 0" + (int) droute.getTotalTime() + "ms " 
+                + ". Calculations: " + (int) droute.getC() + " (at least...)", 20, 20);
 
         drawPath(g);
 

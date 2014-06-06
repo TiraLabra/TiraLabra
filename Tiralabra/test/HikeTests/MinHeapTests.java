@@ -57,18 +57,18 @@ public class MinHeapTests {
 
     @Test
     public void minHeapCorrectOrder() {
-        assertTrue(atLeast(heap.getElement(0).getNode().getDistance(), heap.getElement(3).getNode().getDistance()));
-        assertTrue(atLeast(heap.getElement(3).getNode().getDistance(), heap.getElement(10).getNode().getDistance()));
-        assertTrue(atLeast(heap.getElement(2).getNode().getDistance(), heap.getElement(6).getNode().getDistance()));
+        assertTrue(atLeast(heap.getNode(0).getDistance(), heap.getNode(3).getDistance()));
+        assertTrue(atLeast(heap.getNode(3).getDistance(), heap.getNode(10).getDistance()));
+        assertTrue(atLeast(heap.getNode(2).getDistance(), heap.getNode(6).getDistance()));
     }
 
     @Test
     public void minHeapPopCorrectly() {
-        int value = heap.getElement(0).getNode().getDistance();
-        Node popped = heap.removeMin().getNode();
+        int value = heap.getNode(0).getDistance();
+        Node popped = heap.removeMin();
         assertEquals(value, popped.getDistance());
-        value = heap.getElement(0).getNode().getDistance();
-        popped = heap.removeMin().getNode();
+        value = heap.getNode(0).getDistance();
+        popped = heap.removeMin();
         assertEquals(value, popped.getDistance());
         assertEquals(17, heap.getLast());
     }
@@ -85,13 +85,11 @@ public class MinHeapTests {
         node = new Node(1, 1, 1);
         node.setDistance(5);
         heap.insert(node);
-        heap.insert(node);
-        heap.insert(node);
-        heap.insert(node);
-        heap.decHeap(0, 1);
-        heap.printHeap();
-        assertEquals(0, heap.getElement(0).getNode().getDistance());
-        heap.printHeap();
+
+        heap.decHeap(2, 1);
+
+        assertEquals(1, heap.getNode(0).getDistance());
+
 
 
 

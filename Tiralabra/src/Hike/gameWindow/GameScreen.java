@@ -1,12 +1,9 @@
 package Hike.gameWindow;
 
-import Hike.Algorithms.Dijkstra;
 import Hike.ImageTable.ImageTable;
 import Hike.controls.ClickListener;
 import java.awt.Color;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 
 
@@ -14,9 +11,8 @@ import javax.swing.*;
 
 /**
  * Shows the welcome screen
- * 
+ *
  */
-
 public class GameScreen extends JPanel {
 
     private ShowPicture picture;
@@ -29,10 +25,11 @@ public class GameScreen extends JPanel {
         setBackground(Color.gray);
         setLayout(null);
 
-        JTextArea teksti = new JTextArea("Instruction, instructions. ");
+        JTextArea teksti = new JTextArea("Finds the shortest route in a drawn image.");
         teksti.setBackground(Color.gray);
+        teksti.setWrapStyleWord(true);
         teksti.setLineWrap(true);
-        teksti.setBounds(50, 50, 200, 50);
+        teksti.setBounds(50, 50, 200, 500);
 
         JButton ok = new JButton("Dijkstra");
         listener = new ClickListener(this);
@@ -40,26 +37,22 @@ public class GameScreen extends JPanel {
         ok.setBounds(600, 50, 100, 50);
         ok.addActionListener(listener);
 
-        picture = new ShowPicture("../help.png");
-        picture.setBounds(200, 200, 500, 300);
+
         add(teksti);
         add(ok);
-        add(picture);
+// Image is out of date.
+//        helpfulImage = new ShowPicture("../help.png");
+//        picture.setBounds(200, 200, 500, 300);
+//        add(helpfulImage);
 
     }
-   
 
     /**
      * Open the map screen to show path.
-     * 
+     *
      */
-    
-
     public void openMap() {
         map = new MapGraphic();
         map.run();
     }
-    
-
-
 }

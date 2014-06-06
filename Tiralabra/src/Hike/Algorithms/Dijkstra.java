@@ -5,26 +5,20 @@ import Hike.Structures.LinkyList;
 import Hike.Structures.MinHeap;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This class calculates distances to nodes using Dijkstra's algorithm.
- * nodeTable contains the table that has been set up in class Node Checked and
- * Unchecked contain nodes that are being examined in the algorithm Neighbours
- * contains the neighbours of a node Que is a stack used to print the shortest
- * path
+ * nodeTable contains the table that has been set up in class Node. All nodes are added to
+ * MinHeap and the one with smallest distance has it's neighbours checked and MinHeap is updated.
  */
 public class Dijkstra {
 
-    private MinHeap heap;
     private Node[][] nodeTable;
-    private Set<Node> checked;
-    private Set<Node> unchecked;
     private LinkyList neighbours;
     private Deque<Node> que;
     private double c;   // Will be used to count something
-    private Node small;
+    private MinHeap heap;
+    private long totalTime;
 
     /**
      * Constructor, sets variables and runs the search.
@@ -34,53 +28,35 @@ public class Dijkstra {
     public Dijkstra(Node[][] nodeTable) {
 
         c = 0;
-        this.heap = new MinHeap(nodeTable.length * nodeTable[0].length + 1);
         this.que = new ArrayDeque<Node>();
         this.nodeTable = nodeTable;
-        this.checked = new HashSet<Node>();
-        this.unchecked = new HashSet<Node>();
 
-
-        long aikaAlussa = System.currentTimeMillis();
-
+        long timeStart = System.currentTimeMillis();
+        initialize();
         findDijkstra();
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-
-//        nodeTable[0][0].printTable();
-        System.out.println("Calculations: " + (long) c + " plus varmaan miljardi lisää jossain, tää ei ole valmis vielä");
-        System.out.println("Square root: " + Math.sqrt(c));
+        long timeEnd = System.currentTimeMillis();
+        totalTime = (timeEnd - timeStart);
+        
+        
+//        System.out.println("Operation took: " + (timeEnd - timeStart) + "ms.");
+//        System.out.println("Calculations: " + (long) c );
     }
 
     /**
      * Starts the Dijkstra algorithm. Always starts from position 0,0 in the
-     * grid. Node is placed into the unchecked list, the unchecked list is
-     * checked for the node containing the smallest distance, that node is then
-     * placed to the checked list and the distances to it's neighbours is
-     * calculated.
+     * grid. All nodes are in the MinHeap in the beginning.
      */
     private void findDijkstra() {
-        for (int i = 0; i < nodeTable.length; i++) {
-            for (int e = 0; e < nodeTable[0].length; e++) {
-                heap.insert(nodeTable[i][e]);
-            }
-
-        }
-        initialize();
-
-
+        Node eval = heap.removeMin();
         while (heap.empty() == false) {
-            Node eval = heap.removeMin().getNode();
-            c++;
-            checked.add(eval);
+            c = c+2;
             checkNeighbours(eval);
-
-
+            eval = heap.removeMin();
         }
     }
 
     /**
-     * Relaxes all neighbours that have not yet been checked.
+     * Relaxes all neighbours.
      *
      * @param eval The node whose neighbours are relaxed
      */
@@ -88,38 +64,23 @@ public class Dijkstra {
         neighbours = eval.getNeighbours();
         for (Node node : neighbours) {
             c++;
-            if (checked.contains(node) == false) {
-                relax(eval, node);
-
-            }
+            relax(eval, node);
         }
-
-
-    }
-
-    /**
-     * Finds the smallest distance node from the unchecked list
-     *
-     * @return node with smallest distance value
-     */
-    private Node getLowestDistance() {
-        small = new Node(0, 0, 21000000);
-        for (Node node : unchecked) {
-            c++;
-            if (node.getDistance() < small.getDistance()) {
-                small = node;
-            }
-
-        }
-        return small;
-
     }
 
     /**
      * Sets the distance of the starting point to 0.
+     * Puts all nodes to MinHeap.
      */
     private void initialize() {
         nodeTable[0][0].setDistance(0);
+        heap = new MinHeap(nodeTable.length * nodeTable[0].length + 1);
+        for (int h = 0; h < nodeTable.length; h++) {
+            for (int w = 0; w < nodeTable[0].length; w++) {
+                heap.insert(nodeTable[h][w]);
+                c++;
+            }
+        }
 
 
     }
@@ -133,9 +94,10 @@ public class Dijkstra {
     private void relax(Node start, Node goal) {
 
         if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
+            c = c+3;
             goal.setDistance(start.getDistance() + goal.getWeight());
             goal.setPrevious(start);
-
+            heap.decHeap(goal.getHeapIndex(), goal.getDistance());
 
 
         }
@@ -150,7 +112,7 @@ public class Dijkstra {
      * @param x
      */
     public void buildPath(int y, int x) {
-        Node u = nodeTable[y][x].getPrevious();
+        Node u = nodeTable[y][x];
         while (u != null) {
             que.push(u);
             u = u.getPrevious();
@@ -180,5 +142,13 @@ public class Dijkstra {
     public Node[][] getDijkstraTable() {
         return nodeTable;
 
+    }
+
+    public double getC() {
+        return c;
+    }
+
+    public long getTotalTime() {
+        return totalTime;
     }
 }

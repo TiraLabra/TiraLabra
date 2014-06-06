@@ -8,50 +8,74 @@ import Hike.Graph.Node;
 
 /**
  *
- * @author petri
+ * MinHeap containing Nodes. Nodes also contain a index value, so that nodes 
+ * can be found in constant time. In this Heap, index 0 is used by the first node.
  */
 public class MinHeap {
 
-    private HeapElement[] table;
+    private Node[] table;
     private int last;
+    
+    /*
+     * Last is the index of the last node, -1 when list is empty.
+     */
 
     public MinHeap(int area) {
         last = -1;
-        table = new HeapElement[area + 1];
+        table = new Node[area + 1];
 
 
 
     }
+    
+    /**
+     * Inserts a node into the heap and fixed the heap. Also changed the index values of the node.
+     * @param node 
+     */
 
     public void insert(Node node) {
         last++;
-        table[last] = new HeapElement(node, last);
+        node.setHeapIndex(last);
+        table[last] = node;
         int i = last;
-        while (i > 0 && table[parent(i)].getNode().getDistance() > node.getDistance()) {
+        while (i > 0 && table[parent(i)].getDistance() > node.getDistance()) {
+            int indexI = table[i].getHeapIndex();
+            int indexP = table[parent(i)].getHeapIndex();
+            table[i].setHeapIndex(indexP);
+            table[parent(i)].setHeapIndex(indexI);
             table[i] = table[parent(i)];
+            
             i = parent(i);
+            table[i] = node;
+            
         }
-        table[i].setNode(node);
+        table[i] = node;
+
 
 
 
     }
+    
+    /**
+     * Fixed the heap rules if they have been broken.
+     * @param i 
+     */
 
     public void heapify(int i) {
         int r = right(i);
         int l = left(i);
         int smallest;
 
-        if (r >= last) {
-            if (table[l].getNode().getDistance() > table[r].getNode().getDistance()) {
+        if (r <= last) {
+            if (table[l].getDistance() > table[r].getDistance()) {
                 smallest = r;
             } else {
                 smallest = l;
             }
-            if (table[i].getNode().getDistance() > table[smallest].getNode().getDistance()) {
+            if (table[i].getDistance() > table[smallest].getDistance()) {
                 swap(i, smallest);
                 heapify(smallest);
-            } else if (l == last && table[i].getNode().getDistance() > table[l].getNode().getDistance()) {
+            } else if (l == last && table[i].getDistance() > table[l].getDistance()) {
                 swap(i, l);
             }
         }
@@ -68,31 +92,59 @@ public class MinHeap {
     private int parent(int i) {
         return (i - 1) / 2;
     }
+    
+    /**
+     * Swaps two nodes in the heap. Also swaps the index value of the nodes.
+     * @param i
+     * @param smallest 
+     */
 
     private void swap(int i, int smallest) {
-        HeapElement temp = table[i];
+        int indexi = table[smallest].getHeapIndex();
+        int indexs = table[i].getHeapIndex();
+        Node temp = table[i];
+
         table[i] = table[smallest];
         table[smallest] = temp;
+        table[i].setHeapIndex(indexs);
+        table[smallest].setHeapIndex(indexi);
     }
 
     public void printHeap() {
         for (int i = 0; i <= last; i++) {
-            System.out.println(table[i].getNode().getDistance());
+            System.out.println("D: " + table[i].getDistance() + " I: " + table[i].getHeapIndex());
         }
     }
+    
+    /**
+     * Pops the smallest value and removes it from heap. 
+     * @return 
+     */
 
-    public HeapElement removeMin() {
-        HeapElement min = table[0];
+    public Node removeMin() {
+        Node min = table[0];
         table[0] = table[last];
+        table[0].setHeapIndex(0);
         last--;
         heapify(0);
         return min;
     }
+    
+    /**
+     * Decreases the distance value of a node, if the new value is smaller than the old one.
+     * Node's heapIndex can be used to quickly find a nodes position in heap.
+     * @param i
+     * @param newValue 
+     */
 
-    public void decHeap(int newValue, int i) {
-        if (newValue < table[i].getNode().getDistance()) {
-            table[i].getNode().setDistance(newValue);
-            while (i > 0 && table[parent(i)].getNode().getDistance() > table[i].getNode().getDistance()) {
+    public void decHeap(int i, int newValue) {
+        if (i > last) {
+            
+            return;
+        }
+        if (newValue <= table[i].getDistance()) {
+            table[i].setDistance(newValue);
+            while (i > 0 && table[parent(i)].getDistance() > table[i].getDistance()) {
                 swap(i, parent(i));
                 i = parent(i);
             }
@@ -100,7 +152,7 @@ public class MinHeap {
 
     }
 
-    public HeapElement getElement(int i) {
+    public Node getNode(int i) {
         return table[i];
     }
 

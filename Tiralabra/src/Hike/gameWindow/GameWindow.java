@@ -2,9 +2,7 @@ package Hike.gameWindow;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.*;
 
 /**

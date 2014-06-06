@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author petri
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({HikeTests.DijkstraTest.class, HikeTests.LinkyListTests.class, HikeTests.MinHeapTests.class, })
+@Suite.SuiteClasses({HikeTests.DijkstraTest.class, HikeTests.LinkyListTests.class, HikeTests.MinHeapTests.class, HikeTests.ImageTableTests.class })
 public class HikeTestSuite {
 
     @BeforeClass

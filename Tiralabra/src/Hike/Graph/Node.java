@@ -6,7 +6,6 @@ package Hike.Graph;
 
 import Hike.Structures.LinkyList;
 
-
 /**
  * Class containing a cell in the table created in ImageTable. Nodes have a y
  * and x coordinate, weight based on the terrain, list of neighbours (3-8
@@ -32,6 +31,7 @@ public class Node {
     private Node previous;
     private int distance;
     private int heapIndex;
+    private boolean checked;
 
     /**
      * Creates a node
@@ -48,8 +48,9 @@ public class Node {
         this.y = y;
         this.x = x;
         this.weight = w;
-        this.distance = Integer.MAX_VALUE;
-        this.heapIndex = 0;
+        this.distance = 2000000;
+        this.heapIndex = -1;
+        this.checked = false;
 
 
 
@@ -209,5 +210,13 @@ public class Node {
 
     public int getHeapIndex() {
         return this.heapIndex;
+    }
+
+    public void setChecked() {
+        this.checked = true;
+    }
+
+    public boolean getChecked() {
+        return this.checked;
     }
 }
