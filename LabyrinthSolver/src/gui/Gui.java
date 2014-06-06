@@ -288,9 +288,9 @@ public class Gui implements Runnable {
             public void actionPerformed(ActionEvent e) {
                 try {
                     labyrinth.generateLabyrinth();
+                    canvas.update();
                 } catch (Exception ex) {
                 }
-                canvas.repaint();
             }
         });
         return gen;
@@ -309,7 +309,7 @@ public class Gui implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 labyrinth.solveLabyrinth();
-                canvas.repaint();
+                canvas.update();
             }
         });
         return solve;
