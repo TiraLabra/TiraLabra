@@ -32,6 +32,7 @@ public class RunTimeTesting {
      */
     public void runTests() throws Exception {
         LabyrinthGenerator[] generators = getGenerators();
+        WallFollower wf = new WallFollower();
         LabyrinthSolver[] solvers = getSolvers();
         int[] tests = getTestSizes();
         for (Integer t : tests) {
@@ -47,6 +48,7 @@ public class RunTimeTesting {
                     System.out.print(ls.getName());
                     lsPrintRoutine();
                 }
+                optimizedWfRoutine(wf);
                 System.out.println("");
             }
         }
@@ -87,6 +89,27 @@ public class RunTimeTesting {
         long finishTime = System.nanoTime() / 1000;
         String timeFormat = formatTime(finishTime - startTime);
         System.out.println("Generation time: " + timeFormat);
+    }
+
+    /**
+     * Tulostusrutiini wall followerille.
+     */
+    void optimizedWfRoutine(WallFollower wf) {
+        labyrinth.setLabyrinthSolver(wf);
+        System.out.print(wf.getName() + " (Optimized)");
+        long startTime = System.nanoTime() / 1000;
+        boolean solved = wf.minorlySpedUpSolver();
+        long finishTime = System.nanoTime() / 1000;
+        String timeFormat = formatTime(finishTime - startTime);
+        if (solved) {
+            System.out.print("  ::  Solution found in " + timeFormat);
+            wf.solveLabyrinth();
+            int exploredCells = labyrinth.ls.getExploredCells();
+            String exploredCellsFormat = formatNumber(exploredCells);
+            System.out.println("  ::  Cells explored: " + exploredCellsFormat);
+        } else {
+            System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
+        }
     }
 
     /**
