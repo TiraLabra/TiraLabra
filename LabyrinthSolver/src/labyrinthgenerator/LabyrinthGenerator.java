@@ -20,7 +20,7 @@ public abstract class LabyrinthGenerator {
     protected Random random;
 
     /**
-     * Ottaa syötteenä labyrintin ja alustaa Random-olion.
+     * Alustaa Random-olion.
      */
     public LabyrinthGenerator() {
         random = new Random();
@@ -29,9 +29,8 @@ public abstract class LabyrinthGenerator {
     /**
      * Labyrintin generoiva metodi.
      *
-     * @throws java.lang.Exception Palauttaa poikkeuksen, jos labyrintin
-     * käsittelyssä käytettiin labyrintin ulkopuolista koordinaattia. (Näin ei
-     * pitäisi koskaan käydä.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
     public abstract void generateLabyrinth() throws Exception;
 

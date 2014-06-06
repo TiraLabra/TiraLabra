@@ -26,7 +26,7 @@ class Canvas extends JPanel {
      */
     Color wallColor;
     /**
-     * Visited-solun väri. (~Pinkki)
+     * Visited-solun väri. (Vaalean punainen)
      */
     Color visitedCellColor;
     /**
@@ -35,13 +35,13 @@ class Canvas extends JPanel {
     Color pathColor;
     /**
      * Jos labyrintin leveys on hyvin pieni, labyrintti piirtyy reunaan. Tämä
-     * kokonaisluku keskittää labyrintin.
+     * kokonaisluku auttaa keskittämään labyrintin.
      */
     int fixPosition;
 
     /**
-     * Alustaa labyrintillä ja labyrintinratkaisijalla ja alustaa
-     * koko-/väritiedot.
+     * Asettaa labyrintin ja solunkoon. Alustaa värit. Laskee tarvitseeko
+     * labyrintti keskittää.
      *
      * @param l Labyrintti, jolle gui luodaan.
      * @param cs Labyrintin solun koko.
@@ -60,7 +60,8 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Piirtää polun.
+     * Jos labyrintin ratkaisija on ratkaissut labyrintin, piirretään löydetty
+     * polku.
      *
      * @param g Grafiikka.
      */
@@ -91,7 +92,8 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Piirtää vieraillut solut.
+     * Jos labyrintin ratkaisija on ratkaissut labyrintin, väritetään vieraillut
+     * solut.
      *
      * @param g Grafiikka.
      */
@@ -111,7 +113,8 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Piirtää muurit.
+     * Jos labyrintin generoija on generoinut labyrintin, piirretään labyrintin
+     * muurit.
      *
      * @param g Grafiikka.
      */
@@ -152,7 +155,7 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Piirtäjä.
+     * Piirtää labyrintin.
      *
      * @param g Grafiikka.
      */
@@ -169,7 +172,9 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Päivittää.
+     * Kutsuu uudelleen repaint()-metodia, mikä uudelleenpiirtää labyrintin.
+     * 
+     * @see paintComponent(Graphics g)
      */
     void update() {
         repaint();

@@ -34,15 +34,14 @@ public abstract class LabyrinthSolver {
     protected int[][] visited;
 
     /**
-     * Ottaa syötteenä labyrintin ja alustaa Random-olion..
-     *
+     * Alustaa Random-olion..
      */
     public LabyrinthSolver() {
         random = new Random();
     }
 
     /**
-     * Resetoi olion.
+     * Resetoi ratkaisun.
      */
     public void reset() {
         visited = null;
@@ -79,9 +78,11 @@ public abstract class LabyrinthSolver {
     }
 
     /**
-     * Palauttaa listan reitistä maaliin.
+     * Palauttaa listan reitistä maaliin. Jos listaa ei ole vielä luotu, hakee
+     * reitin mikäli labyrintti on ratkaistu.
      *
      * @return Palauttaa listan reitistä maaliin.
+     * @see findPath(int[][])
      */
     public MyList<Integer> getPath() {
         if (path == null) {
@@ -98,23 +99,23 @@ public abstract class LabyrinthSolver {
     }
 
     /**
-     * Polunetsijän käyttämä treenode-apuluokka. (Vähän purkkaa...)
+     * Polunetsijän käyttämä TreeNode-apuluokka.
      */
     static class TreeNode {
 
         /**
-         * Parent-alkio.
+         * Tämän alkion vanhempi.
          */
         TreeNode parent;
         /**
-         * Tämän noden koordinaatti.
+         * Tämän solmun koordinaatti.
          */
         int coordinate;
 
         /**
-         * Alustaa parentilla ja koordinaatilla.
+         * Alustaa vanhemmalla ja solmun koordinaatilla.
          *
-         * @param p Parent node.
+         * @param p Vanhempi solmu.
          * @param c Koordinaatti.
          */
         TreeNode(TreeNode p, int c) {
@@ -125,20 +126,30 @@ public abstract class LabyrinthSolver {
 
     /**
      * Etsii polun maaliin kulkemalla visited-arraytä pitkin.
+     * <br><br>
+     * <u>Toiminta:</u><br>
+     * Lisää lähtökoordinaatin, TreeNodena, pinoon. Pinossa on aina
+     * täsmällisesti juuri nyt kuljettu polku, sillä peruuttaessa pinosta
+     * poistuu peruutetut alkiot. Kun löydetään maali, pinon sisältö
+     * tyhjennetään polun listaan.
      *
      * @param vsted Array, jossa on tietoa labyrintin solujen tilasta.
+     * @see main.MyList
+     * @see TreeNode
      */
     void findPath(int[][] vsted) {
         path = new MyList<>();
         MyStack<TreeNode> stack = new MyStack<>();
         stack.push(new TreeNode(null, 0));
-        int target = labyrinth.height * labyrinth.width - 1;
+        int height = labyrinth.height;
+        int width = labyrinth.width;
+        int target = height * width - 1;
         while (!stack.empty()) {
             TreeNode node = stack.pop();
-            if (vsted[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] == 0) {
+            if (vsted[node.coordinate / width][node.coordinate % width] == 0) {
                 continue;
             }
-            vsted[node.coordinate / labyrinth.width][node.coordinate % labyrinth.width] = 0;
+            vsted[node.coordinate / width][node.coordinate % width] = 0;
             if (node.coordinate == target) {
                 while (node != null) {
                     path.add(node.coordinate);
@@ -147,9 +158,9 @@ public abstract class LabyrinthSolver {
                 path.reverseList();
                 return;
             }
-            MyList neighbors = labyrinth.getListOfEdges(node.coordinate, vsted, 2);
-            for (int i = 0; i < neighbors.size(); i++) {
-                stack.push(new TreeNode(node, (int) neighbors.get(i)));
+            MyList edges = labyrinth.getListOfEdges(node.coordinate, vsted, 2);
+            for (int i = 0; i < edges.size(); i++) {
+                stack.push(new TreeNode(node, (int) edges.get(i)));
             }
         }
     }

@@ -44,7 +44,8 @@ public class Labyrinth {
     }
 
     /**
-     * Päivittää labyrintin koko.
+     * Päivittää labyrintin koon. Tämän jälkeen asettaa uuden labyrintin
+     * labyrintingeneroijaan ja -ratkaisijaan.
      *
      * @param w Labyrintin leveys.
      * @param h Labyrintin korkeus.
@@ -83,8 +84,11 @@ public class Labyrinth {
     }
 
     /**
+     * Jos labyrintingeneroija on asetettu, generoi labyrintin. Uuden labyrintin
+     * generoitua resetoi labyrintin ratkaisijan.
      *
-     * @throws java.lang.Exception
+     * @throws java.lang.Exception Heittää poikkeuksen, jos algoritmi yrittää
+     * käsitellä labyrintin ulkopuolista koordinaattia.
      */
     public void generateLabyrinth() throws Exception {
         if (lg != null) {
@@ -95,7 +99,8 @@ public class Labyrinth {
     }
 
     /**
-     *
+     * Jos labyrintinratkaisija on asetettu, ja labyrintti generoitu, ratkaisee
+     * labyrintin.
      */
     public void solveLabyrinth() {
         if (ls != null) {
@@ -163,10 +168,27 @@ public class Labyrinth {
         }
     }
 
+    /**
+     * Tarkastaa, ovatko annetut x ja y labyrintin sisällä.
+     *
+     * @param x X-koordinaatti.
+     * @param y Y-koordinaatti.
+     * @return Palauttaa true, jos koordinaatit ovat labyrintin sisällä.
+     */
     public boolean validCoordinate(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    /**
+     * Tarkastaa, ovatko annetut x ja y labyrintin sisällä. Tämän jälkeen
+     * tarkastaa, onko x- ja y-koordinaatissa oleva solu halutussa tilassa.
+     *
+     * @param x X-koordinaatti.
+     * @param y Y-koordinaatti.
+     * @param visited Array, jossa on tietoa labyrintin solujen tilasta.
+     * @param state Naapurien haluttu tila.
+     * @return Palauttaa true, jos koordinaatit ovat labyrintin sisällä.
+     */
     public boolean validCoordinate(int x, int y, int[][] visited, int state) {
         if (x < 0 || x >= width || y < 0 || y >= height) {
             return false;
@@ -260,39 +282,6 @@ public class Labyrinth {
             listOfNeighbours.add(coordinate - 1);
         }
         return listOfNeighbours;
-    }
-
-    /**
-     * Formatoi ajan. Millisekuntiosa formatoidaan muotoon "### " + ... "###",
-     * ja mikrosekuntiosa muotoon ",### ms".
-     *
-     * @param time Aika joka halutaan formatoida.
-     * @return Palauttaa formatoidun ajan.
-     * @see formatNumber
-     */
-    public String formatTime(long time) {
-        DecimalFormat df = new DecimalFormat("000");
-        return formatNumber(time / 1000) + "," + df.format(time % 1000) + " ms";
-    }
-
-    /**
-     * Formatoi luvun muotoon "### " + "### " + ... + "###".
-     *
-     * @param number Luku joka halutaan formatoida.
-     * @return Palauttaa formatoidun luvun.
-     */
-    public String formatNumber(long number) {
-        DecimalFormat df = new DecimalFormat("000");
-        if (number / 1000 == 0) {
-            return number + "";
-        }
-        String numberFormat = df.format(number % 1000);
-        number /= 1000;
-        while (number / 1000 != 0) {
-            numberFormat = df.format(number % 1000) + " " + numberFormat;
-            number /= 1000;
-        }
-        return number + " " + numberFormat;
     }
 
 }

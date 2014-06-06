@@ -11,11 +11,8 @@ import main.MyQueue;
 public class BFS extends LabyrinthSolver {
 
     /**
-     * BFS käyttää jonoa naapureiden tallentamiseen.
-     */
-    MyQueue<Integer> queue;
-
-    /**
+     * Yliluokka alustaa random-olion.
+     *
      * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver()
      */
     public BFS() {
@@ -23,25 +20,38 @@ public class BFS extends LabyrinthSolver {
     }
 
     /**
-     * Etsii maalia leveyssuuntaisella haulla siten, että kunkin solun naapurit
-     * tallennetaan jonoon satunnaisessa järjetyksessä.
+     * <u>Alustus:</u><br>
+     * Alustaa visited-arrayn ja jonon. Lisää aluksi jonoon lähtökoordinaatin.
+     * <br><br>
+     * <u>Toiminta:</u><br>
+     * Poista jonosta alkio. Jos alkio on maalikoordinaatti, labyrintin ratkaisu
+     * löydettiin ja algoritmi päättyy. Muutoin, lisää tästä alkiosta lähtevät
+     * kaaret (ei vierailtuihin soluihin) satunnaisessa järjestyksessä jonoon.
+     * Jatka kunnes maalikoordinaatti löytyy.
+     * <br><br>
+     * Jonoa käyttämällä saavutetaan leveyssuuntainen haku.
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
+     * @see main.Labyrinth#getListOfEdges(int, int[][], int)
+     * @see main.MyQueue
+     * @see main.myList
      */
     @Override
     public boolean solveLabyrinth() {
-        int targetCoordinate = labyrinth.width * labyrinth.height - 1;
-        visited = new int[labyrinth.height][labyrinth.width];
-        queue = new MyQueue<>();
+        int width = labyrinth.width;
+        int height = labyrinth.height;
+        int targetCoordinate = width * height - 1;
+        visited = new int[height][width];
+        MyQueue queue = new MyQueue<>(width * height / 4);
         queue.enqueue(0);
         while (!queue.empty()) {
-            int coordinate = queue.dequeue();
+            int coordinate = (int) queue.dequeue();
             if (coordinate == targetCoordinate) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
+                visited[coordinate / width][coordinate % width] = 2;
                 return true;
             }
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width] == 0) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
+            if (visited[coordinate / width][coordinate % width] == 0) {
+                visited[coordinate / width][coordinate % width] = 2;
                 MyList neighbors = labyrinth.getListOfEdges(coordinate, visited, 0);
                 while (!neighbors.empty()) {
                     queue.enqueue(neighbors.removeByIndex(random.nextInt(neighbors.size())));

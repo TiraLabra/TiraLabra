@@ -11,6 +11,8 @@ import main.MyStack;
 public class RecursiveBacktracker extends LabyrinthGenerator {
 
     /**
+     * Yliluokka alustaa random-olion.
+     *
      * @see labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator()
      */
     public RecursiveBacktracker() {
@@ -18,27 +20,31 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
     }
 
     /**
+     * <u>Alustus:</u><br>
+     * Alustetaan pino ja visited-array. 
+     * <br><br>
+     * <u>Toiminta:</u><br>
      * Lähtee liikkeelle lähtösolusta. Siirtyy satunnaiseen vierailemattomaan
      * soluun, ja asettaa liikkuessa edellisen solun pinon päällimmäiseksi.
      * Toistaa tätä niin kauan, kunnes tullaan soluun, jolla ei enää ole
      * vierailemattomia naapureita. Tällöin algoritmi peruuttaa palaamalla pinon
      * päällimmäiseen soluun niin kauan, kunnes löytyy solu, jolla on
      * vierailemattomia naapureita. Pinon tyhjetessä labyrintti on generoitu.
-     * <br>
+     * <br><br>
      * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
-     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
-     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
-     * @see labyrinthgenerator.LabyrinthGenerator#getListOfUnvisitedNeighbors
-     * @see main.MyStack
-     * @see main.MyList
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     * @see main.Labyrinth#getListOfNeighbors(int, int[][], int) 
      * @see main.Labyrinth#addPassage(int, int)
+     * @see main.MyList
+     * @see main.MyStack
      */
     @Override
     public void generateLabyrinth() throws Exception {
         MyStack<Integer> stack = new MyStack();
         int[][] visited = new int[labyrinth.height][labyrinth.width];
-        int coordinate = 0; // Start at (0, 0)
+        int coordinate = 0;
         stack.push(coordinate);
         visited[0][0] = 2;
         while (!stack.empty()) {

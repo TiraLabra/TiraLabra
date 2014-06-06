@@ -13,6 +13,8 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     final byte[] masks = {1, 2, 4, 8};
 
     /**
+     * Yliluokka alustaa random-olion.
+     *
      * @see labyrinthgenerator.LabyrinthGenerator#LabyrinthGenerator()
      */
     public KruskalsAlgorithm() {
@@ -40,10 +42,10 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
         int elementsJoinedByRoot;
 
         /**
-         * Konstruktori asettaa joukon ID:ksi annetun arvon, tämän alkion
-         * juureksi, ja alkioiden lukumäärän yhdeksi.
-         *         
-* @param value Joukon ID.
+         * Konstruktori asettaa joukon ID:ksi annetun arvon, itsensä omaksi
+         * juurekseen, ja alkioiden lukumäärän yhdeksi.
+         *
+         * @param value Joukon ID.
          */
         SetElement(int value) {
             id = value;
@@ -101,17 +103,21 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * Alustaa joka solun omaan joukkoonsa. Alustaa joka solun arrayhun, missä
-     * array[0] on solun koordinaatti ja array[1] on solun mahdolliset kaaret.
-     * <br>
-     * Arpoo solun ja solusta kaaren. Jos tämä kaari erottaa kaksi eri joukkoa,
-     * yhdistä joukot. Toista tätä. Kun kaikki alkiot kuuluvat samaan joukkoon,
-     * labyrintti on generoitu.
-     * <br>
-     * Labyrintin toiminnasta löytyy tietoa myös määrittelydokumentista.
+     * <u>Alustus:</u><br>
+     * Luo joukko-arrayn ja arrayn kaarille. Joka solulle oma joukkoonsa.
+     * Kaari-arrayssä array[0] on solun koordinaatti ja array[1] on solun
+     * mahdolliset kaaret - alussa kaikki mahdolliset.
+     * <br><br>
+     * <u>Toiminta:</u><br>
+     * Arpoo solun ja solusta kaaren. Jos tämän kaaren erottamat solut kuuluvat
+     * eri joukkoihin, yhdistä joukot. Toista tätä, kunnes kaikki alkiot
+     * kuuluvat samaan joukkoon, jolloin labyrintti on generoitu.
+     * <br><br>
+     * Algoritmin toiminnasta löytyy tietoa myös määrittelydokumentista.
      *
-     * @throws java.lang.Exception Heittää poikkeuksen, jos labyrinttia ei ole
-     * asetettu tai käsiteltiin jotain labyrintin ulkopuolista koordinaattia.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     * @see initialize(int[][], SetElement[])
      * @see main.Labyrinth#addPassage(int, int)
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
@@ -149,53 +155,10 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * Arpoo kaaren annetun solun kaarilistasta.
-     *     
-* @param coordinate Koordinaatti, jossa solu on.
-     * @param edges Tämän solun kaaret kokonaislukuna.
-     * @return Palauttaa sen maskin, jolla arvottu kaari saadaan luettua.
-     */
-    byte randomEdge(int coordinate, int edges) {
-        int rand = random.nextInt(4);
-        while ((edges & masks[rand]) == 0) {
-            rand = (rand + 1) % 4;
-        }
-        return masks[rand];
-    }
-
-    /**
-     * Tämä apumetodi tarkistaa, lähteekö solusta enää kaaria, jotka
-     * yhdistäisivät solun muihin joukkoihin.
+     * Initialisoi kaari- ja joukko-arrayt.
      *
-     * @param edges Tämän solun kaaret kokonaislukuna.
-     * @param orig Tämän solun joukkoalkio.
-     * @param elements Joukkoalkioiden array.
-     * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
-     *
-     * @see main.Labyrinth#getTargetCoordinate(nt, bytei)
-     */
-    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
-        if (edges[1] == 0) {
-            return false;
-        }
-        for (int i = 0; i < 4; i++) {
-            if ((edges[1] & masks[i]) > 0) {
-                int targetCoordinate = labyrinth.getTargetCoordinate(edges[0], masks[i]);
-                SetElement target = elements[targetCoordinate];
-                if (orig.getId() == target.getId()) {
-                    edges[1] ^= masks[i];
-                }
-            }
-        }
-        return edges[1] != 0;
-    }
-
-    /**
-     * Initialisoi kaari- ja elements-arrayt.
-     *
-     * @param edges
-     * @param elements
-     * @param labyrinthSize
+     * @param edges Kaari-array.
+     * @param elements Joukko-array.
      */
     void initialize(int[][] edges, SetElement[] elements) {
         int labyrinthSize = labyrinth.height * labyrinth.width;
@@ -218,6 +181,51 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
                 edges[i][1] |= 8;
             }
         }
+    }
+
+    /**
+     * Arpoo kaaren annetun solun kaarilistasta.
+     *
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param edges Tämän solun kaaret kokonaislukuna.
+     * @return Palauttaa sen maskin, jolla arvottu kaari saadaan luettua.
+     */
+    byte randomEdge(int coordinate, int edges) {
+        int rand = random.nextInt(4);
+        while ((edges & masks[rand]) == 0) {
+            rand = (rand + 1) % 4;
+        }
+        return masks[rand];
+    }
+
+    /**
+     * Tämä apumetodi tarkistaa, lähteekö solusta enää kaaria, jotka
+     * yhdistäisivät solun muihin joukkoihin. Hoitaa siivoamistoimenpiteitä.
+     *
+     * @param edges Tämän solun kaaret kokonaislukuna.
+     * @param orig Tämän solun joukkoalkio.
+     * @param elements Joukkoalkioiden array.
+     * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
+     *
+     * @see main.Labyrinth#getTargetCoordinate(int, byte)
+     */
+    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
+        if (edges[1] == 0) {
+            return false;
+        }
+        for (int i = 0; i < 4; i++) {
+            if ((edges[1] & masks[i]) > 0) {
+                int targetCoordinate = labyrinth.getTargetCoordinate(edges[0], masks[i]);
+                SetElement target = elements[targetCoordinate];
+                if (orig.getId() == target.getId()) {
+                    /*
+                     Poistaa kaaren, joka yhdistäisi samoja joukkoja.
+                     */
+                    edges[1] ^= masks[i];
+                }
+            }
+        }
+        return edges[1] != 0;
     }
 
 }

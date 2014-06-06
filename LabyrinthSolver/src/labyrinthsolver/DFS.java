@@ -11,11 +11,8 @@ import main.MyStack;
 public class DFS extends LabyrinthSolver {
 
     /**
-     * DFS käyttää pinoa naapureiden tallentamiseen.
-     */
-    MyStack<Integer> stack;
-
-    /**
+     * Yliluokka alustaa random-olion.
+     *
      * @see labyrinthsolver.LabyrinthSolver#LabyrinthSolver()
      */
     public DFS() {
@@ -23,25 +20,38 @@ public class DFS extends LabyrinthSolver {
     }
 
     /**
-     * Etsii maalia syvyyssuuntaisella haulla siten, että kunkin solun naapurit
-     * tallennetaan pinoon satunnaisessa järjetyksessä.
+     * <u>Alustus:</u><br>
+     * Alustaa visited-arrayn ja pinon. Lisää aluksi pinoon lähtökoordinaatin.
+     * <br><br>
+     * <u>Toiminta:</u><br>
+     * Poista pinosta alkio. Jos alkio on maalikoordinaatti, labyrintin ratkaisu
+     * löydettiin ja algoritmi päättyy. Muutoin, lisää tästä alkiosta lähtevät
+     * kaaret (ei vierailtuihin soluihin) satunnaisessa järjestyksessä pinoon.
+     * Jatka kunnes maalikoordinaatti löytyy.
+     * <br><br>
+     * Pinoa käyttämällä saavutetaan syvyyssuuntainen haku.
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
+     * @see main.Labyrinth#getListOfEdges(int, int[][], int)
+     * @see main.MyStack
+     * @see main.myList
      */
     @Override
     public boolean solveLabyrinth() {
-        int targetCoordinate = labyrinth.width * labyrinth.height - 1;
-        visited = new int[labyrinth.height][labyrinth.width];
-        stack = new MyStack<>();
+        int width = labyrinth.width;
+        int height = labyrinth.height;
+        int targetCoordinate = width * height - 1;
+        visited = new int[height][width];
+        MyStack stack = new MyStack<>();
         stack.push(0);
         while (!stack.empty()) {
-            int coordinate = stack.pop();
+            int coordinate = (int) stack.pop();
             if (coordinate == targetCoordinate) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
+                visited[coordinate / width][coordinate % width] = 2;
                 return true;
             }
-            if (visited[coordinate / labyrinth.width][coordinate % labyrinth.width] == 0) {
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
+            if (visited[coordinate / width][coordinate % width] == 0) {
+                visited[coordinate / width][coordinate % width] = 2;
                 MyList neighbors = labyrinth.getListOfEdges(coordinate, visited, 0);
                 while (!neighbors.empty()) {
                     stack.push(neighbors.removeByIndex(random.nextInt(neighbors.size())));

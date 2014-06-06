@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -29,7 +28,7 @@ import main.Labyrinth;
 public class Gui implements Runnable {
 
     /**
-     * Frame.
+     * Ikkuna.
      */
     JFrame frame;
     /**
@@ -41,18 +40,23 @@ public class Gui implements Runnable {
      */
     Canvas canvas;
     /**
-     * Maksimikoko, jonka GUI hyväksyy.
+     * Labyrintin korkeuden tai leveyden maksimikoko, minkä GUI hyväksyy.
      */
-    int sizeLimit;
+    int maxSize;
+    /**
+     * Labyrintin korkeuden tai leveyden minimikoko, minkä GUI hyväksyy.
+     */
+    int minSize;
 
     /**
-     * Alustaa labyrintillä ja labyrintinratkaisijalla.
+     * Asettaa labyrintin ja maksimikoon.
      *
      * @param l Labyrintti, jolle gui luodaan.
      */
     public Gui(Labyrinth l) {
         labyrinth = l;
-        sizeLimit = 100;
+        maxSize = 100;
+        minSize = 2;
     }
 
     /**
@@ -66,21 +70,7 @@ public class Gui implements Runnable {
         try {
             addCanvas(frame.getContentPane());
         } catch (Exception e) {
-            System.out.println("Gui can only handle up to " + sizeLimit + "x" + sizeLimit + " labyrinths!");
-            Scanner sc = new Scanner(System.in);
-            int width = -1;
-            while (width < 0 || width > sizeLimit) {
-                System.out.println("Please insert new width: ");
-                width = sc.nextInt();
-            }
-            int height = -1;
-            while (height < 0 || height > sizeLimit) {
-                System.out.println("Please insert new height: ");
-                height = sc.nextInt();
-            }
-            sc.close();
-            labyrinth.updateLabyrinth(width, width);
-            run();
+            openSetSizeWindow();
             return;
         }
         addMenuBar();
@@ -89,6 +79,12 @@ public class Gui implements Runnable {
         frame.setVisible(true);
     }
 
+    /**
+     * Laskee solukoon piirtoalustaa varten. Solukoko on 500 jaettuna
+     * max(labyrintin korkeus, labyrintin leveys).
+     *
+     * @return Palauttaa solukoon piirtoalustaa varten.
+     */
     public int getCellSize() {
         if (labyrinth.height > labyrinth.width) {
             return 500 / labyrinth.height;
@@ -97,48 +93,54 @@ public class Gui implements Runnable {
     }
 
     /**
-     * Lisää piirtoalustan frameen.
+     * Lisää piirtoalustan ikkunaan.
      *
      * @param container Container, mihin piirtoalusta lisätään.
-     * @throws Exception Heittää poikkeuksen, jos labyrintin koko on liian iso!
+     * @throws Exception Heittää poikkeuksen, jos labyrintin koko ei ole
+     * hyväksyttävä.
      */
     void addCanvas(Container container) throws Exception {
         int cellSize = getCellSize();
         canvas = new Canvas(labyrinth, cellSize);
-        if (labyrinth.height > sizeLimit || labyrinth.width > sizeLimit) {
-            throw new Exception("Gui can only handle up to 100x100 labyrinths!");
+        int width = labyrinth.width;
+        int height = labyrinth.height;
+        if (height > maxSize || height < minSize || width > maxSize || width < minSize) {
+            throw new Exception("Gui can only handle up to 95x95 labyrinths!");
         }
-        canvas.setPreferredSize(new Dimension((2 + labyrinth.width) * cellSize, (2 + labyrinth.height) * cellSize));
+        canvas.setPreferredSize(new Dimension((2 + width) * cellSize, (2 + height) * cellSize));
         container.add(canvas);
     }
 
+    /**
+     * Lisää ikkunaan menun.
+     */
     void addMenuBar() {
         JMenuBar menubar = new JMenuBar();
 
         /*
-         Menu labyrintin editoimiseen.
+         Menu-valinta labyrintin editoimiseen.
          */
         JMenu lMenu = new JMenu("Labyrinth");
-        lMenu.add(setSizeSelection());
+        lMenu.add(createSetSizeMenuItem());
 
         /*
-         * Menu labyrintin generoijan valitsemiseen.
+         * Menu-valinnat labyrintin generoijan valitsemiseen.
          */
         JMenu lgMenu = new JMenu("Choose generator");
-        lgMenu.add(createLabyrinthGenerator(new KruskalsAlgorithm(), "Kruskal's Algorithm"));
-        lgMenu.add(createLabyrinthGenerator(new PrimsAlgorithm(), "Prim's Algorithm"));
-        lgMenu.add(createLabyrinthGenerator(new RecursiveBacktracker(), "Recursive Backtracker"));
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new KruskalsAlgorithm(), "Kruskal's Algorithm"));
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new PrimsAlgorithm(), "Prim's Algorithm"));
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new RecursiveBacktracker(), "Recursive Backtracker"));
 
         /*
-         Menu labyrintin ratkaisijan valitsemiseen.
+         Menu-valinnat labyrintin ratkaisijan valitsemiseen.
          */
-        JMenu lsMenu = new JMenu("Solver");
-        lsMenu.add(createLabyrinthSolver(new DFS(), "DFS"));
-        lsMenu.add(createLabyrinthSolver(new BFS(), "BFS"));
-        lsMenu.add(createLabyrinthSolver(new WallFollower(), "Wall follower"));
+        JMenu lsMenu = new JMenu("Choose solver");
+        lsMenu.add(createLabyrinthSolverMenuItem(new DFS(), "DFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new BFS(), "BFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new WallFollower(), "Wall follower"));
 
         /*
-         Luo päävalinta ja lisää se menubariin.
+         Luo päämenu, lisää menuvalinnat ja lisää lopuksi päämenu menubariin.
          */
         JMenu main = new JMenu("Modify labyrinth");
         main.add(lMenu);
@@ -153,11 +155,18 @@ public class Gui implements Runnable {
         menubar.add(createSolveButton());
 
         /*
-         Add menubar to frame.
+         Lisää menubar ikkunaan.
          */
         frame.setJMenuBar(menubar);
     }
 
+    /**
+     * Luo sliderin labyrintin kokotiedon säätämiseen.
+     *
+     * @param label JLabel, johon kirjoitetaan sliderin kokotieto.
+     * @param labelText Teksti, joka ilmaisee mitä kokotietoa muutetaan.
+     * @return Palauttaa uuden sliderin labyrintin kokotiedon säätämiseen.
+     */
     JSlider createSlider(final JLabel label, final String labelText) {
         JSlider slider = new JSlider();
         slider.setMinimum(5);
@@ -177,35 +186,63 @@ public class Gui implements Runnable {
         return slider;
     }
 
-    JMenuItem setSizeSelection() {
+    /**
+     * Luo menu-valinnan kokotietojen asettamiseen, ja lisää menu-valintaan
+     * tapahtuman kuuntelijan, joka avaa säätelyikkunan.
+     *
+     * @return Palauttaa menu-valinnan labyrintin kokotietojen asettamiseen.
+     *
+     * @see openSetSizeWindow()
+     */
+    JMenuItem createSetSizeMenuItem() {
         JMenuItem item = new JMenuItem("Set size");
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane optionPane = new JOptionPane();
-                JLabel widthLabel = new JLabel();
-                widthLabel.setText("width: 50");
-                JLabel heightLabel = new JLabel();
-                heightLabel.setText("height: 50");
-                JSlider widthSlider = createSlider(widthLabel, "width");
-                JSlider heightSlider = createSlider(heightLabel, "height");
-                Object[] objects = {widthLabel, widthSlider, heightLabel, heightSlider};
-                optionPane.setMessage(objects);
-                JDialog dialog = optionPane.createDialog(frame, "Set labyrinth size");
-                dialog.setVisible(true);
-                if (!dialog.isVisible()) {
-                    int newWidth = widthSlider.getValue();
-                    int newHeight = heightSlider.getValue();
-                    labyrinth.updateLabyrinth(newWidth, newHeight);
-                    frame.dispose();
-                    run();
-                }
+                openSetSizeWindow();
             }
         });
         return item;
     }
 
-    JMenuItem createLabyrinthGenerator(final LabyrinthGenerator lg, final String title) {
+    /**
+     * Avaa ikkunan, jolla voi säädellä labyrintin kokotietoja.
+     *
+     * @see createSlider
+     */
+    void openSetSizeWindow() {
+        JOptionPane optionPane = new JOptionPane();
+        JLabel widthLabel = new JLabel();
+        widthLabel.setText("width: 50");
+        JLabel heightLabel = new JLabel();
+        heightLabel.setText("height: 50");
+        JSlider widthSlider = createSlider(widthLabel, "width");
+        JSlider heightSlider = createSlider(heightLabel, "height");
+        Object[] objects = {widthLabel, widthSlider, heightLabel, heightSlider};
+        optionPane.setMessage(objects);
+        JDialog dialog = optionPane.createDialog(frame, "Set labyrinth size");
+        dialog.setVisible(true);
+        if (!dialog.isVisible()) {
+            int newWidth = widthSlider.getValue();
+            int newHeight = heightSlider.getValue();
+            labyrinth.updateLabyrinth(newWidth, newHeight);
+            frame.dispose();
+            run();
+        }
+    }
+
+    /**
+     * Luo menu-valinnan annetun labyrintin generoijan valinnalle, ja lisää
+     * menu-valintaan tapahtuman kuuntelijan.
+     *
+     * @param lg Annettu labyrintin generoija.
+     * @param title Menu-valinnan otsikko.
+     * @return Palauttaa menu-valinnan annetun labyrintin generoijan valinnalle.
+     *
+     * @see
+     * main.Labyrinth#setLabyrinthGenerator(labyrinthgenerator.LabyrinthGenerator)
+     */
+    JMenuItem createLabyrinthGeneratorMenuItem(final LabyrinthGenerator lg, final String title) {
         JMenuItem item = new JMenuItem(title);
         item.addActionListener(new ActionListener() {
             @Override
@@ -216,7 +253,18 @@ public class Gui implements Runnable {
         return item;
     }
 
-    JMenuItem createLabyrinthSolver(final LabyrinthSolver ls, final String title) {
+    /**
+     * Luo menu-valinnan annetun labyrintin ratkaisijan valinnalle, ja lisää
+     * menu-valintaan tapahtuman kuuntelijan.
+     *
+     * @param ls Annettu labyrintin ratkaisija.
+     * @param title Menu-valinnan otsikko.
+     * @return Palauttaa menu-valinnan annetun labyrintin ratkaisijan
+     * valinnalle.
+     *
+     * @see main.Labyrinth#setLabyrinthSolver(labyrinthsolver.LabyrinthSolver)
+     */
+    JMenuItem createLabyrinthSolverMenuItem(final LabyrinthSolver ls, final String title) {
         JMenuItem item = new JMenuItem(title);
         item.addActionListener(new ActionListener() {
             @Override
@@ -227,6 +275,12 @@ public class Gui implements Runnable {
         return item;
     }
 
+    /**
+     * Luo 'Generate!'-nappulan ja lisää siihen tapahtuman kuuntelijan.
+     *
+     * @return Palauttaa 'Generate!'-nappulan.
+     * @see main.Labyrinth#generateLabyrinth()
+     */
     JButton createGenerateButton() {
         JButton gen = new JButton("Generate!");
         gen.addActionListener(new ActionListener() {
@@ -242,6 +296,13 @@ public class Gui implements Runnable {
         return gen;
     }
 
+    /**
+     * Luo 'Solve!'-nappulan ja lisää siihen tapahtuman kuuntelijan.
+     *
+     * @return Palauttaa 'Solve!'-nappulan.
+     *
+     * @see main.Labyrinth#solveLabyrinth()
+     */
     JButton createSolveButton() {
         JButton solve = new JButton("Solve!");
         solve.addActionListener(new ActionListener() {
