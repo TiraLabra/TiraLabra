@@ -10,6 +10,24 @@ import javax.swing.SwingUtilities;
  */
 public class Main {
 
+    /**
+     * Ajaa suoritusaikatestejä labyrintin ratkaisu- ja generointialgoritmeille.
+     *
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     */
+    public static void runTests() throws Exception {
+        RunTimeTesting rtt = new RunTimeTesting();
+        rtt.runTests();
+    }
+
+    /**
+     * Luo alustavan labyrintin ja käynnistää guin
+     *
+     * @param args Mainin argumentit.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     */
     public static void main(String[] args) throws Exception {
         Labyrinth l = new Labyrinth(50, 50);
         Gui gui = new Gui(l);
