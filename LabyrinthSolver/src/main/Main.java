@@ -10,11 +10,8 @@ import javax.swing.SwingUtilities;
  */
 public class Main {
 
-    public static Labyrinth l;
-
-
     public static void main(String[] args) throws Exception {
-        l = new Labyrinth(50, 50);
+        Labyrinth l = new Labyrinth(50, 50);
         Gui gui = new Gui(l);
         SwingUtilities.invokeLater(gui);
     }
