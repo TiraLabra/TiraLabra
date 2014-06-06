@@ -93,7 +93,9 @@ public class Labyrinth {
         if (lg != null) {
             lg.createEmptyLabyrinthIfNeeded();
             lg.generateLabyrinth();
-            ls.reset();
+            if (ls != null) {
+                ls.reset();
+            }
         }
     }
 
