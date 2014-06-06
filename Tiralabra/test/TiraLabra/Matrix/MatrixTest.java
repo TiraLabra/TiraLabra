@@ -11,7 +11,7 @@ import TiraLabra.Number.Number;
 public class MatrixTest {
     private Matrix matrix;
     
-    private Matrix makeMatrix(Class<? extends Number> type,
+    private static Matrix makeMatrix(Class<? extends Number> type,
             int n, int m, int... values) {
         Number elements[][] = new Number[n][m];
         
@@ -148,8 +148,14 @@ public class MatrixTest {
     }
     
     @Test(expected=UnsupportedOperationException.class)
-    public void addMatricesFail() {
-        Matrix m = makeMatrix(Integer.class, 1, 1, 1);
+    public void addMatricesFailOnN() {
+        Matrix m = makeMatrix(Integer.class, 1, 2, 1, 1);
+        matrix = matrix.add(m);
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void addMatricesFailOnM() {
+        Matrix m = makeMatrix(Integer.class, 2, 1, 1, 1);
         matrix = matrix.add(m);
     }
     

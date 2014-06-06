@@ -9,8 +9,8 @@ import TiraLabra.Number.Number;
  */
 public class Matrix<T extends Number<T>> {
     public final int N, M;
-    private final T matrix[][];
-    private final Class<? extends Number> type;
+    protected final T matrix[][];
+    protected final Class<? extends Number> type;
     
     /**
      * Luo matriisin 2-uloitteisesta taulukosta
