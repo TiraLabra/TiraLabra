@@ -43,11 +43,11 @@ class TestPadding(unittest.TestCase):
 	def test_random(self): 		
 		for x in range(0, 1000): # make sure edge cases are tested
 			s = self.TH.generate_random_binary()
-			self.assertTrue(len(nmd5.pad(s)) % 512 == 448)
+			self.assertTrue(len(nmd5.pad(s)) % 512 == 0)
 
 	def test_fixed(self):
 		s = '011000010111001101100100' #asd
-		self.assertEqual(len(nmd5.pad(s)), 448)
+		self.assertEqual(len(nmd5.pad(s)), 512)
 
 
 class TestLinkedList(unittest.TestCase):
@@ -69,6 +69,29 @@ class TestLinkedList(unittest.TestCase):
 
 	def test_init_list(self):
 		self.assertEqual("Test", self.initList.toString())
+
+class TestBlockSplit(unittest.TestCase):
+
+	def setUp(self):
+		self.t1 = nmd5.pad(nmd5.toBinaryString("test1"))
+		self.t2 = nmd5.pad(nmd5.toBinaryString("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+
+	def test_one_block(self):
+		self.assertEqual(len(self.t1), 512)
+
+	def test_another_block(self):
+		self.assertEqual(len(self.t2), 1024)
+
+	def test_split_32(self):
+		self.assertEqual(len(nmd5.splitToBlocks(self.t1, 512)), 1)
+
+	def test_split_32_2(self):
+		self.assertEqual(len(nmd5.splitToBlocks(self.t2, 512)), 2)
+
+	def test_split_32_3(self):
+		split = nmd5.splitToBlocks(self.t1, 16)
+
+		self.assertEqual(len(split), 32)
 
 
 
