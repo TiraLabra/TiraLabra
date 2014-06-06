@@ -100,4 +100,11 @@ public class BinaariMuuntajaTest {
         assertEquals("sana", muuntaja.poistaEtuMerkkeja(sana, 0));
         assertEquals("", muuntaja.poistaEtuMerkkeja(sana, sana.length()));
     }
+    
+    @Test
+    public void binaariEsitys8BitEtuNollilla() {
+        assertEquals("00000000", muuntaja.binaariEsitysEtuNollilla8Bit(0));
+        assertEquals("00000010", muuntaja.binaariEsitysEtuNollilla8Bit(2));
+        assertEquals("11111111", muuntaja.binaariEsitysEtuNollilla8Bit(255));
+    }
 }

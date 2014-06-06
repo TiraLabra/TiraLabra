@@ -56,7 +56,7 @@
                     <param>Tietorakenteet.MinKekoTest</param>
                     <param>Toteutus.Huffman.BittiEsityksetTest</param>
                     <param>Toteutus.Huffman.HuffmanPuuTest</param>
-                    <param>Toteutus.TekstinLukijaTest</param>     
+    
                     <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaajaTest</param>     
                     <param>Toteutus.Huffman.Purkaminen.TiedostonPurkajaTest</param>   
                 </targetTests>
