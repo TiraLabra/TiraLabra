@@ -1,8 +1,7 @@
 package Toteutus.Huffman.Purkaminen;
 
+import Apuvalineet.Kirjoittaja;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import static org.junit.Assert.*;
@@ -23,9 +22,8 @@ public class TiedostonPurkajaTest {
         if (! testi.exists()) {
             testi.createNewFile();
             
-            FileWriter kirjoittaja = new FileWriter(testi);
-            kirjoittaja.write("jaflsdjvöjsd gjfgdf");
-            kirjoittaja.close();
+            Kirjoittaja kirjoittaja = new Kirjoittaja(testi.getPath());
+            kirjoittaja.kirjoita("jaflsdjvöjsd gjfgdf");
         }
     }
     
@@ -116,5 +114,76 @@ public class TiedostonPurkajaTest {
         bittijonotJaMerkit.put("111", "d");
         
         return bittijonotJaMerkit;
+    }
+    
+    @Test
+    public void kayPuuLapi() {
+        puunLapiKayntiTyhjallaTekstilla();
+        puunLapiKayntiTekstillaJossaTavallisiaAsciiMerkkeja();
+        
+        josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun();
+        lisaaMerkkiJosSeOn0Tai1();
+        puuOnKelattuLoppuun();
+    }
+    
+    private void puunLapiKayntiTyhjallaTekstilla() {
+        HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
+        String teksti = (char) 127 + "" + (char) 127;
+        
+        assertEquals(2, purkaja.kayPuuLapi(teksti, bittijonotJaMerkit));
+        assertTrue(bittijonotJaMerkit.isEmpty());
+    }
+    
+    private void puunLapiKayntiTekstillaJossaTavallisiaAsciiMerkkeja() {
+        HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
+        String teksti = "c000b001a010d011f11e10" + (char) 127 + "" + (char) 127 + "_abcdef";
+        
+        assertEquals(teksti.length() - 7, purkaja.kayPuuLapi(teksti, bittijonotJaMerkit));
+        
+        HashMap<String, String> verrattava = puunLapiKayntiaVerrattavaHajTaulu();
+        
+        assertTrue(bittijonotJaMerkit.size() == verrattava.size());
+        
+        for (String bittijono : bittijonotJaMerkit.keySet()) {
+            assertTrue(bittijonotJaMerkit.get(bittijono).equals(verrattava.get(bittijono)));
+        }
+    }
+    
+    private HashMap<String, String> puunLapiKayntiaVerrattavaHajTaulu() {
+        HashMap<String, String> verrattava = new HashMap<>();
+        
+        verrattava.put("010", "a");
+        verrattava.put("001", "b");
+        verrattava.put("000", "c");
+        verrattava.put("011", "d");
+        verrattava.put("10", "e");
+        verrattava.put("11", "f");
+        
+        return verrattava;
+    }
+
+    private void josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun() {
+        HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
+        purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('a', "100", bittijonotJaMerkit);
+        
+        assertTrue(bittijonotJaMerkit.containsKey("100"));
+        assertTrue(bittijonotJaMerkit.get("100").equals("a"));
+        assertFalse(purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('b', "", bittijonotJaMerkit));
+    }
+    
+    private void lisaaMerkkiJosSeOn0Tai1() {
+        StringBuilder bittiEsitys = new StringBuilder();
+        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1('0', bittiEsitys));
+        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1('1', bittiEsitys));
+        assertEquals("01", bittiEsitys.toString());
+        
+        assertFalse(purkaja.lisaaMerkkiJosSeOn0Tai1('d', bittiEsitys));
+    }
+    
+    private void puuOnKelattuLoppuun() {
+        String teksti = "abcd" + (char) 127 + "" + (char) 127;
+        assertFalse(purkaja.puuOnKelattuLoppuun(teksti, 2));
+        assertFalse(purkaja.puuOnKelattuLoppuun(teksti, 3));
+        assertTrue(purkaja.puuOnKelattuLoppuun(teksti, 4));
     }
 }

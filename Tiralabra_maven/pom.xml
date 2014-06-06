@@ -44,6 +44,7 @@
             <configuration>
                 <targetClasses>
                     <param>Apuvalineet.BinaariMuuntaja</param>
+                    <param>Apuvalineet.Kirjoittaja</param>
                     <param>Tietorakenteet.MinKeko</param>
                     <param>Toteutus.Huffman.BittiEsitykset</param>
                     <param>Toteutus.Huffman.HuffmanPuu</param>
@@ -53,6 +54,7 @@
                 </targetClasses>
                 <targetTests>
                     <param>Apuvalineet.BinaariMuuntajaTest</param>
+                    <param>Apuvalineet.KirjoittajaTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
                     <param>Toteutus.Huffman.BittiEsityksetTest</param>
                     <param>Toteutus.Huffman.HuffmanPuuTest</param>

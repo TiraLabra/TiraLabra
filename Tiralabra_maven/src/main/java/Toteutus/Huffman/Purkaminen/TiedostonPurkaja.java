@@ -15,7 +15,7 @@ public class TiedostonPurkaja {
         this.muuntaja = new BinaariMuuntaja();
     }
     
-    public void pura(String polku) throws FileNotFoundException, IOException {
+    public void pura(String polku) throws IOException {
         tarkistaOnkoPolkuValidi(polku);
         File pakkaus = haePakkaus(polku);
         File tiedosto = muodostaTiedosto(polku);
@@ -74,38 +74,63 @@ public class TiedostonPurkaja {
         return kirjoitettava.toString();
     }
     
+    /**
+     * Miten hoidetaan merkkien '0' ja '1' pakkaaminen? *Tavut 00 ja 01 ??
+     * @param teksti
+     * @param bittijonotJaMerkit
+     * @return 
+     */
+    
     protected int kayPuuLapi(String teksti, HashMap<String, String> bittijonotJaMerkit) {
+        if (puuOnKelattuLoppuun(teksti, 0)) {
+            return 2;
+        }
+        
+        return kelaaPuuLapi(teksti, bittijonotJaMerkit);
+    }
+    
+    private int kelaaPuuLapi(String teksti, HashMap<String, String> bittijonotJaMerkit) {
         StringBuilder bittiEsitys = new StringBuilder();
         char kirjain = teksti.charAt(0);
-        
+
         int i = 1;
         while (true) {
-            char merkki = teksti.charAt(i);
-            if (merkki == '0' || merkki == '1') {
-                bittiEsitys.append(merkki);
-            }
-            
-            else {
-                if (! bittiEsitys.toString().isEmpty()) {
-                    bittijonotJaMerkit.put(bittiEsitys.toString(), kirjain + "");
-                    kirjain = merkki;
+            char seuraava = teksti.charAt(i);
+            if (! lisaaMerkkiJosSeOn0Tai1(seuraava, bittiEsitys)) {
+                
+                if (josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(kirjain, bittiEsitys.toString(), bittijonotJaMerkit)) {
+                    kirjain = seuraava;
                     bittiEsitys = new StringBuilder();
                 }
                 
-                if (merkki == (char) 127) {
-                    if (i == 1 || teksti.charAt(i+1) == (char) 127) {
-                        break;
-                    }
+                if (puuOnKelattuLoppuun(teksti, i)) {
+                    return i + 2;
                 }
             }
 
             i++;
         }
-        
-        if (i == 1) {
-            return 2;
+    }
+    
+    protected boolean josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(char kirjain, String bittiEsitys, HashMap<String, String> bittijonotJaMerkit) {
+        if (bittiEsitys.isEmpty()) {
+            return false;
         }
-        return i + 2;
+        
+        bittijonotJaMerkit.put(bittiEsitys, kirjain + "");
+        return true;
+    }
+    
+    protected boolean lisaaMerkkiJosSeOn0Tai1(char merkki, StringBuilder bittiEsitys) {
+        if (merkki == '0' || merkki == '1') {
+            bittiEsitys.append(merkki);
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean puuOnKelattuLoppuun(String teksti, int i) {
+        return teksti.charAt(i) == (char) 127 && teksti.charAt(i + 1) == (char) 127;
     }
     
     protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite) {
