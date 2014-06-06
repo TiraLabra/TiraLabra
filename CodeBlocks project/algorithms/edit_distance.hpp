@@ -35,10 +35,20 @@ class edit_distance {
     edit_distance(int add_cost, int remove_cost, int replace_cost);
 
     /*!
-
+        destroys the object by destroying the dp array
     */
     ~edit_distance();
+
+    /*!
+        returns the levenstein distance between string \a str_a and \a str_b
+    */
     int get_levenstein_distance(const string & str_a, const string & str_b);
+
+    /*!
+        returns the levenstein distance between string \a str_a having length
+        \a str_a_len and \a str_b having length \a str_b_len.
+        If \a str_a_len and \a str_b_len are not set, then they are computed.
+    */
     int get_levenstein_distance(const char * str_a, const char * str_b, int str_a_len=-1, int str_b_len=-1);
 };
 
