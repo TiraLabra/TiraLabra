@@ -1,8 +1,8 @@
-import linkedlist
+from lib.linkedlist import *
 
 class NMD5:
 	"""MD5 implementation for strings"""
-	list = linkedlist.LinkedList(None)
+	list = LinkedList(None)
 	A = 0x67452301
 	B = 0xEFCDAB89
 	C = 0x98BADCFE
@@ -25,7 +25,7 @@ class NMD5:
 		return y ^ (x | (~z))
 
 	def update(arg):
-		list.add(linkedlist.Node(arg, None))
+		list.add(Node(arg, None))
 
 
     # Main hashing function
@@ -50,7 +50,7 @@ class NMD5:
 	## Private methods ##
 	## Keeping them public for the time being to enable testing ##
 
-	def toBinaryString(string):
+	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
 		bstring = ' '.join(bin(ord(x)) for x in string).split(' ')
 
@@ -63,7 +63,7 @@ class NMD5:
 				bstring[i] = b.replace('b', '0')
 		return ''.join(bstring)
 
-	def pad(bstring):
+	def pad(self, bstring):
 		"""Adds padding to binary string be congruent to 448 mod 512"""
 		padded = ''
 		messageLength = len(bstring)
@@ -76,11 +76,11 @@ class NMD5:
 		padding += "0" * (amount - 1)
 
 		padded += bstring + padding
-		padded += pad64B(messageLength)
+		padded += self.pad64B(messageLength)
 
 		return padded
 
-	def pad64B(length):
+	def pad64B(self, length):
 		"""Adds a 64-bit representation of the message length to the message"""
 		s = bin(length)
 		if len(s) == 9:
@@ -95,7 +95,7 @@ class NMD5:
 		return padded
 
 
-	def splitToBlocks(message, n):
+	def splitToBlocks(self, message, n):
 		"""Helper method to split a message into equal sized parts.
 		Use for 512-bit sized 'blocks' or 16-bit sized 'words'."""
 		if n<1:
