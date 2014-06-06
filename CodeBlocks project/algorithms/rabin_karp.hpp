@@ -7,6 +7,7 @@
 #include "../constants.hpp"
 using namespace std;
 
+/*! \file */
 
 /*!
     \a rabin_karp_searcher creates a searcher with precomputed powers of a given number.
@@ -38,8 +39,22 @@ class rabin_karp_searcher {
     precomputes the powers of the array to a given power given \a power.
     */
     void compute_powers(int power);
+    /*!
+    return found index of \a needle in \a haystack where the search starts at index \a start. By default,
+    \a start is 0.
+    */
     int rabin_karp_search(const string & haystack, const string & needle, int start = 0);
+    /*!
+    return found index of \a needle in \a haystack where the search starts at index \a start. By default,
+    \a start is 0. \a haystack_length is the length of the \a haystack and \a needle_length is the length of
+    \a needle. If \a haystack_length and \a needle_length are equal, then they are computed.
+    */
     int rabin_karp_search(const char * haystack, const char * needle,
                       int start = 0, int haystack_length = -1, int needle_length = -1);
+
+    /*!
+    checks whether the substring starting at \a index of \a haystack, of length \a needle_length is equal
+    to \a needle.
+    */
     bool check_equals(const char * haystack, const char * needle, int index, int needle_length);
 };

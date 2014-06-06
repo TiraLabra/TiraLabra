@@ -98,22 +98,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classbernstein__hasher.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classbernstein__hasher.html">bernstein_hasher</a> {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">int</span> base;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    vector&lt;ULL&gt; powers;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    vector&lt;long long&gt; powers;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">void</span> compute_powers(<span class="keywordtype">int</span> maximum_power);</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">const</span> <span class="keyword">static</span> <span class="keywordtype">int</span> MOD=101;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classbernstein__hasher.html">bernstein_hasher</a>(<span class="keywordtype">int</span> base = 33,<span class="keywordtype">int</span> maximum_needle_length=1000);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> length = -1);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> next_bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> index, <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> current_hash);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> remove_prefix_from_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> index, <span class="keywordtype">int</span> length, <a class="code" href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a> current_hash);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">long</span> <span class="keywordtype">long</span> bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">long</span> <span class="keywordtype">long</span> bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> length = -1);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">long</span> <span class="keywordtype">long</span> next_bernstein_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> index, <span class="keywordtype">long</span> <span class="keywordtype">long</span> current_hash);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">long</span> <span class="keywordtype">long</span> remove_prefix_from_hash(<span class="keyword">const</span> <span class="keywordtype">char</span> * str, <span class="keywordtype">int</span> index, <span class="keywordtype">int</span> length, <span class="keywordtype">long</span> <span class="keywordtype">long</span> current_hash);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
 <div class="ttc" id="classbernstein__hasher_html"><div class="ttname"><a href="classbernstein__hasher.html">bernstein_hasher</a></div><div class="ttdef"><b>Definition:</b> bernstein.hpp:9</div></div>
-<div class="ttc" id="constants_8hpp_html_a114b7183aabd6c95ddb1f1cb7882cb9f"><div class="ttname"><a href="constants_8hpp.html#a114b7183aabd6c95ddb1f1cb7882cb9f">ULL</a></div><div class="ttdeci">unsigned long long ULL</div><div class="ttdef"><b>Definition:</b> constants.hpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jun 5 2014 15:57:10 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 6 2014 16:04:08 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
