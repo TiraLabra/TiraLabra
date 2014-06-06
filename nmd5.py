@@ -8,7 +8,7 @@ class NMD5:
 	C = 0x98BADCFE
 	D = 0x10325476
 
-	def F(x, y, z):
+	def F(self, x, y, z):
 		"""XY v not(X) Z"""
 		return (x & y) | ((~x) & z)
 
@@ -24,31 +24,32 @@ class NMD5:
 		"""Y xor (X v not(Z))"""
 		return y ^ (x | (~z))
 
+	def R1(self, a, b, c, d, X, s, sine):
+		a = b + ((a + self.F(b,c,d) + X + sine << s))
+
 	def update(arg):
 		list.add(Node(arg, None))
 
 
     # Main hashing function
 	def hash(self, message):
-		AA = self.A
-		BB = self.B
-		CC = self.C
-		DD = self.D
+		a = self.A
+		b = self.B
+		c = self.C
+		d = self.D
 
-		words = splitToBlocks(pad(toBinaryString(message)), 16)
+		words = self.splitToBlocks(self.pad(self.toBinaryString(message)), 16)
 
 		for word in words:
-			pass
+
+			self.R1(a,b,c,d,int(words[0], 2),7,0xD76AA478);
+			#print(word)
 			# Round 1
 			# Round 2
 			# Round 3
 			# Round 4
 		#return AA + BB + CC + DD
-		return message
-
-
-	## Private methods ##
-	## Keeping them public for the time being to enable testing ##
+		return a
 
 	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
