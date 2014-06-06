@@ -1,194 +1,194 @@
 run:
 - - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (10x10)
-Generation time: 2,36 ms
+Prim's algorithm (10x10)
+Generation time: 3,076 ms
 
-Wall Follower  ::  Solution found in 0,45 ms  ::  Cells explored: 69
-Randomized depth-first search  ::  Solution found in 4,824 ms  ::  Cells explored: 63
-Randomized breadth-first search  ::  Solution found in 1,816 ms  ::  Cells explored: 98
+Randomized depth-first search  ::  Solution found in 1,984 ms  ::  Cells explored: 32
+Randomized breadth-first search  ::  Solution found in 1,034 ms  ::  Cells explored: 99
+Wall follower  ::  Solution found in 0,067 ms  ::  Cells explored: 67
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (10x10)
-Generation time: 1,800 ms
+Kruskal's algorithm (10x10)
+Generation time: 1,644 ms
 
-Wall Follower  ::  Solution found in 0,37 ms  ::  Cells explored: 82
-Randomized depth-first search  ::  Solution found in 0,336 ms  ::  Cells explored: 88
-Randomized breadth-first search  ::  Solution found in 0,664 ms  ::  Cells explored: 81
+Randomized depth-first search  ::  Solution found in 0,257 ms  ::  Cells explored: 72
+Randomized breadth-first search  ::  Solution found in 0,278 ms  ::  Cells explored: 89
+Wall follower  ::  Solution found in 0,041 ms  ::  Cells explored: 66
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (10x10)
-Generation time: 0,497 ms
+Generation time: 0,577 ms
 
-Wall Follower  ::  Solution found in 0,8 ms  ::  Cells explored: 23
-Randomized depth-first search  ::  Solution found in 0,218 ms  ::  Cells explored: 63
-Randomized breadth-first search  ::  Solution found in 0,90 ms  ::  Cells explored: 24
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (50x50)
-Generation time: 19,322 ms
-
-Wall Follower  ::  Solution found in 0,376 ms  ::  Cells explored: 843
-Randomized depth-first search  ::  Solution found in 4,914 ms  ::  Cells explored: 1 385
-Randomized breadth-first search  ::  Solution found in 8,321 ms  ::  Cells explored: 2 500
+Randomized depth-first search  ::  Solution found in 0,152 ms  ::  Cells explored: 43
+Randomized breadth-first search  ::  Solution found in 0,176 ms  ::  Cells explored: 53
+Wall follower  ::  Solution found in 0,030 ms  ::  Cells explored: 53
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (50x50)
-Generation time: 16,753 ms
+Prim's algorithm (25x25)
+Generation time: 4,756 ms
 
-Wall Follower  ::  Solution found in 0,564 ms  ::  Cells explored: 1 344
-Randomized depth-first search  ::  Solution found in 3,87 ms  ::  Cells explored: 1 352
-Randomized breadth-first search  ::  Solution found in 4,748 ms  ::  Cells explored: 2 456
+Randomized depth-first search  ::  Solution found in 1,585 ms  ::  Cells explored: 359
+Randomized breadth-first search  ::  Solution found in 2,764 ms  ::  Cells explored: 625
+Wall follower  ::  Solution found in 0,269 ms  ::  Cells explored: 349
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (25x25)
+Generation time: 6,992 ms
+
+Randomized depth-first search  ::  Solution found in 0,844 ms  ::  Cells explored: 214
+Randomized breadth-first search  ::  Solution found in 2,523 ms  ::  Cells explored: 619
+Wall follower  ::  Solution found in 0,319 ms  ::  Cells explored: 434
+
+- - - - - - - - - - - - - - - - - - - - 
+Recursive Backtracker (25x25)
+Generation time: 5,344 ms
+
+Randomized depth-first search  ::  Solution found in 1,611 ms  ::  Cells explored: 430
+Randomized breadth-first search  ::  Solution found in 1,691 ms  ::  Cells explored: 464
+Wall follower  ::  Solution found in 0,249 ms  ::  Cells explored: 412
+
+- - - - - - - - - - - - - - - - - - - - 
+Prim's algorithm (50x50)
+Generation time: 16,383 ms
+
+Randomized depth-first search  ::  Solution found in 3,854 ms  ::  Cells explored: 1 887
+Randomized breadth-first search  ::  Solution found in 5,757 ms  ::  Cells explored: 2 500
+Wall follower  ::  Solution found in 1,277 ms  ::  Cells explored: 1 612
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (50x50)
+Generation time: 17,528 ms
+
+Randomized depth-first search  ::  Solution found in 2,949 ms  ::  Cells explored: 2 080
+Randomized breadth-first search  ::  Solution found in 3,081 ms  ::  Cells explored: 1 403
+Wall follower  ::  Solution found in 0,264 ms  ::  Cells explored: 569
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (50x50)
-Generation time: 6,218 ms
+Generation time: 6,428 ms
 
-Wall Follower  ::  Solution found in 0,555 ms  ::  Cells explored: 1 603
-Randomized depth-first search  ::  Solution found in 2,981 ms  ::  Cells explored: 1 597
-Randomized breadth-first search  ::  Solution found in 3,158 ms  ::  Cells explored: 622
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (100x100)
-Generation time: 50,345 ms
-
-Wall Follower  ::  Solution found in 2,795 ms  ::  Cells explored: 4 524
-Randomized depth-first search  ::  Solution found in 1,557 ms  ::  Cells explored: 893
-Randomized breadth-first search  ::  Solution found in 14,728 ms  ::  Cells explored: 9 995
+Randomized depth-first search  ::  Solution found in 34,804 ms  ::  Cells explored: 999
+Randomized breadth-first search  ::  Solution found in 38,928 ms  ::  Cells explored: 1 098
+Wall follower  ::  Solution found in 0,409 ms  ::  Cells explored: 978
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (100x100)
-Generation time: 38,32 ms
+Prim's algorithm (100x100)
+Generation time: 39,873 ms
 
-Wall Follower  ::  Solution found in 2,408 ms  ::  Cells explored: 5 658
-Randomized depth-first search  ::  Solution found in 8,78 ms  ::  Cells explored: 8 047
-Randomized breadth-first search  ::  Solution found in 8,612 ms  ::  Cells explored: 8 920
+Randomized depth-first search  ::  Solution found in 1,228 ms  ::  Cells explored: 7 786
+Randomized breadth-first search  ::  Solution found in 1,750 ms  ::  Cells explored: 9 999
+Wall follower  ::  Solution found in 19,719 ms  ::  Cells explored: 4 260
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (100x100)
+Generation time: 35,619 ms
+
+Randomized depth-first search  ::  Solution found in 1,064 ms  ::  Cells explored: 5 830
+Randomized breadth-first search  ::  Solution found in 1,697 ms  ::  Cells explored: 9 511
+Wall follower  ::  Solution found in 0,394 ms  ::  Cells explored: 5 631
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (100x100)
-Generation time: 22,913 ms
+Generation time: 13,674 ms
 
-Wall Follower  ::  Solution found in 2,192 ms  ::  Cells explored: 6 002
-Randomized depth-first search  ::  Solution found in 5,902 ms  ::  Cells explored: 6 017
-Randomized breadth-first search  ::  Solution found in 2,152 ms  ::  Cells explored: 2 100
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (250x250)
-Generation time: 345,981 ms
-
-Wall Follower  ::  Solution found in 2,589 ms  ::  Cells explored: 33 044
-Randomized depth-first search  ::  Solution found in 5,768 ms  ::  Cells explored: 34 612
-Randomized breadth-first search  ::  Solution found in 10,700 ms  ::  Cells explored: 62 500
+Randomized depth-first search  ::  Solution found in 0,289 ms  ::  Cells explored: 1 717
+Randomized breadth-first search  ::  Solution found in 0,359 ms  ::  Cells explored: 2 112
+Wall follower  ::  Solution found in 0,583 ms  ::  Cells explored: 8 990
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (250x250)
-Generation time: 105,727 ms
+Prim's algorithm (250x250)
+Generation time: 80,079 ms
 
-Wall Follower  ::  Solution found in 1,861 ms  ::  Cells explored: 28 879
-Randomized depth-first search  ::  Solution found in 10,737 ms  ::  Cells explored: 48 627
-Randomized breadth-first search  ::  Solution found in 7,656 ms  ::  Cells explored: 49 642
+Randomized depth-first search  ::  Solution found in 7,707 ms  ::  Cells explored: 51 482
+Randomized breadth-first search  ::  Solution found in 10,737 ms  ::  Cells explored: 62 500
+Wall follower  ::  Solution found in 2,454 ms  ::  Cells explored: 36 200
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (250x250)
+Generation time: 110,043 ms
+
+Randomized depth-first search  ::  Solution found in 2,753 ms  ::  Cells explored: 19 312
+Randomized breadth-first search  ::  Solution found in 9,296 ms  ::  Cells explored: 60 583
+Wall follower  ::  Solution found in 2,920 ms  ::  Cells explored: 42 392
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (250x250)
-Generation time: 20,765 ms
+Generation time: 24,855 ms
 
-Wall Follower  ::  Solution found in 1,340 ms  ::  Cells explored: 26 339
-Randomized depth-first search  ::  Solution found in 3,808 ms  ::  Cells explored: 18 556
-Randomized breadth-first search  ::  Solution found in 5,204 ms  ::  Cells explored: 32 019
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (500x500)
-Generation time: 104,409 ms
-
-Wall Follower  ::  Solution found in 9,354 ms  ::  Cells explored: 138 180
-Randomized depth-first search  ::  Solution found in 44,458 ms  ::  Cells explored: 205 705
-Randomized breadth-first search  ::  Solution found in 43,366 ms  ::  Cells explored: 249 994
+Randomized depth-first search  ::  Solution found in 6,809 ms  ::  Cells explored: 55 140
+Randomized breadth-first search  ::  Solution found in 4,976 ms  ::  Cells explored: 34 999
+Wall follower  ::  Solution found in 1,407 ms  ::  Cells explored: 26 215
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (500x500)
-Generation time: 553,94 ms
+Prim's algorithm (500x500)
+Generation time: 89,836 ms
 
-Wall Follower  ::  Solution found in 9,127 ms  ::  Cells explored: 143 683
-Randomized depth-first search  ::  Solution found in 29,155 ms  ::  Cells explored: 137 803
-Randomized breadth-first search  ::  Solution found in 40,341 ms  ::  Cells explored: 226 428
+Randomized depth-first search  ::  Solution found in 28,809 ms  ::  Cells explored: 213 430
+Randomized breadth-first search  ::  Solution found in 49,609 ms  ::  Cells explored: 249 997
+Wall follower  ::  Solution found in 10,066 ms  ::  Cells explored: 137 448
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (500x500)
+Generation time: 487,081 ms
+
+Randomized depth-first search  ::  Solution found in 11,367 ms  ::  Cells explored: 83 751
+Randomized breadth-first search  ::  Solution found in 35,594 ms  ::  Cells explored: 197 546
+Wall follower  ::  Solution found in 12,278 ms  ::  Cells explored: 173 960
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (500x500)
-Generation time: 64,705 ms
+Generation time: 81,666 ms
 
-Wall Follower  ::  Solution found in 9,453 ms  ::  Cells explored: 174 796
-Randomized depth-first search  ::  Solution found in 34,105 ms  ::  Cells explored: 127 486
-Randomized breadth-first search  ::  Solution found in 36,788 ms  ::  Cells explored: 231 407
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (1000x1000)
-Generation time: 426,36 ms
-
-Wall Follower  ::  Solution found in 27,437 ms  ::  Cells explored: 436 893
-Randomized depth-first search  ::  Solution found in 89,569 ms  ::  Cells explored: 511 907
-Randomized breadth-first search  ::  Solution found in 196,49 ms  ::  Cells explored: 1 000 000
+Randomized depth-first search  ::  Solution found in 32,549 ms  ::  Cells explored: 219 192
+Randomized breadth-first search  ::  Solution found in 13,971 ms  ::  Cells explored: 101 184
+Wall follower  ::  Solution found in 4,277 ms  ::  Cells explored: 76 669
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (1000x1000)
-Generation time: 2 724,470 ms
+Prim's algorithm (1000x1000)
+Generation time: 380,340 ms
 
-Wall Follower  ::  Solution found in 27,650 ms  ::  Cells explored: 429 145
-Randomized depth-first search  ::  Solution found in 53,234 ms  ::  Cells explored: 302 642
-Randomized breadth-first search  ::  Solution found in 165,211 ms  ::  Cells explored: 880 771
+Randomized depth-first search  ::  Solution found in 121,213 ms  ::  Cells explored: 864 411
+Randomized breadth-first search  ::  Solution found in 216,554 ms  ::  Cells explored: 999 998
+Wall follower  ::  Solution found in 37,293 ms  ::  Cells explored: 528 971
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (1000x1000)
+Generation time: 2 392,502 ms
+
+Randomized depth-first search  ::  Solution found in 86,449 ms  ::  Cells explored: 623 243
+Randomized breadth-first search  ::  Solution found in 213,279 ms  ::  Cells explored: 942 446
+Wall follower  ::  Solution found in 35,049 ms  ::  Cells explored: 481 982
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (1000x1000)
-Generation time: 395,632 ms
+Generation time: 245,698 ms
 
-Wall Follower  ::  Solution found in 10,374 ms  ::  Cells explored: 201 347
-Randomized depth-first search  ::  Solution found in 30,831 ms  ::  Cells explored: 174 557
-Randomized breadth-first search  ::  Solution found in 37,3 ms  ::  Cells explored: 233 528
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (2000x2000)
-Generation time: 1 885,417 ms
-
-Wall Follower  ::  Solution found in 119,32 ms  ::  Cells explored: 1 896 491
-Randomized depth-first search  ::  Solution found in 744,161 ms  ::  Cells explored: 3 734 548
-Randomized breadth-first search  ::  Solution found in 707,282 ms  ::  Cells explored: 3 999 978
+Randomized depth-first search  ::  Solution found in 54,465 ms  ::  Cells explored: 311 713
+Randomized breadth-first search  ::  Solution found in 78,486 ms  ::  Cells explored: 538 700
+Wall follower  ::  Solution found in 33,261 ms  ::  Cells explored: 537 641
 
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (2000x2000)
-Generation time: 12 653,189 ms
+Prim's algorithm (2000x2000)
+Generation time: 1 763,002 ms
 
-Wall Follower  ::  Solution found in 127,475 ms  ::  Cells explored: 1 943 806
-Randomized depth-first search  ::  Solution found in 452,3 ms  ::  Cells explored: 2 329 902
-Randomized breadth-first search  ::  Solution found in 722,847 ms  ::  Cells explored: 3 546 635
+Randomized depth-first search  ::  Solution found in 367,814 ms  ::  Cells explored: 2 489 581
+Randomized breadth-first search  ::  Solution found in 1 440,261 ms  ::  Cells explored: 4 000 000
+Wall follower  ::  Solution found in 148,830 ms  ::  Cells explored: 2 068 345
+
+- - - - - - - - - - - - - - - - - - - - 
+Kruskal's algorithm (2000x2000)
+Generation time: 12 085,625 ms
+
+Randomized depth-first search  ::  Solution found in 325,434 ms  ::  Cells explored: 1 781 999
+Randomized breadth-first search  ::  Solution found in 1 446,199 ms  ::  Cells explored: 3 801 408
+Wall follower  ::  Solution found in 154,469 ms  ::  Cells explored: 2 095 083
 
 - - - - - - - - - - - - - - - - - - - - 
 Recursive Backtracker (2000x2000)
-Generation time: 1 997,258 ms
+Generation time: 1 747,698 ms
 
-Wall Follower  ::  Solution found in 167,279 ms  ::  Cells explored: 2 670 901
-Randomized depth-first search  ::  Solution found in 651,399 ms  ::  Cells explored: 3 527 453
-Randomized breadth-first search  ::  Solution found in 377,676 ms  ::  Cells explored: 1 578 249
+Randomized depth-first search  ::  Solution found in 137,926 ms  ::  Cells explored: 1 006 712
+Randomized breadth-first search  ::  Solution found in 256,051 ms  ::  Cells explored: 1 327 214
+Wall follower  ::  Solution found in 211,243 ms  ::  Cells explored: 3 135 737
 
-- - - - - - - - - - - - - - - - - - - - 
-Prim's Algorithm (3000x3000)
-Generation time: 5 544,100 ms
-
-Wall Follower  ::  Solution found in 290,940 ms  ::  Cells explored: 4 546 835
-Randomized depth-first search  ::  Solution found in 1 467,834 ms  ::  Cells explored: 7 390 360
-Randomized breadth-first search  ::  Solution found in 2 045,360 ms  ::  Cells explored: 8 999 998
-
-- - - - - - - - - - - - - - - - - - - - 
-Kruskal's Algorithm (3000x3000)
-Generation time: 52 803,669 ms
-
-Wall Follower  ::  Solution found in 374,615 ms  ::  Cells explored: 5 663 732
-Randomized depth-first search  ::  Solution found in 1 773,260 ms  ::  Cells explored: 4 015 763
-Randomized breadth-first search  ::  Solution found in 1 501,815 ms  ::  Cells explored: 7 858 935
-
-- - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (3000x3000)
-Generation time: 3 379,396 ms
-
-Wall Follower  ::  Solution found in 302,726 ms  ::  Cells explored: 5 237 893
-Randomized depth-first search  ::  Solution found in 1 055,950 ms  ::  Cells explored: 4 253 695
-Randomized breadth-first search  ::  Solution found in 1 330,66 ms  ::  Cells explored: 8 214 244
-
-BUILD SUCCESSFUL (total time: 1 minute 41 seconds)
+BUILD SUCCESSFUL (total time: 26 seconds)
