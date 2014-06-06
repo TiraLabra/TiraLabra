@@ -18,6 +18,16 @@ public class Alue {
         x = y = koko;
     }
     
+    /**
+     * Luo alueen annetun Node-taulukon perusteella.
+     * @param nodetaulukko 
+     */
+    public Alue(Node[][] nodetaulukko, int korkeus, int leveys) {
+        this.nodet = nodetaulukko;
+        this.x = korkeus;
+        this.y = leveys;
+    }
+    
     
     /**
      * Metodi, joka luo esimerkkitaulukon
@@ -93,14 +103,26 @@ public class Alue {
         return this.nodet[x][y];
     }
     
+    /**
+     * Tulostaa alueen merkistönä.
+     * estemerkki-muuttujassa määritellään miten ei-kuljettava alue tulostuu.
+     * @return 
+     */
     @Override
     public String toString() {
         String tuloste = "";
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                tuloste = tuloste + nodet[i][j].getKustannus();
+                String kustannus = "";
+                // char estemerkki = '\u275A';
+                char estemerkki = '\u2588';
+                if (nodet[i][j].getKustannus() < 9)
+                    kustannus += nodet[i][j].getKustannus();
+                else
+                    kustannus += estemerkki;
+                tuloste += kustannus;
             }
-            tuloste = tuloste + "\n";
+            tuloste += "\n";
         }
         
         return tuloste;

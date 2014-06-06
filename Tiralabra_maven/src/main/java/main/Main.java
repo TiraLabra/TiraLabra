@@ -1,6 +1,8 @@
 package main;
 
+import apurakenteet.Kuvalukija;
 import heuristiikat.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import tietorakenteet.*;
 
@@ -30,8 +32,13 @@ public class Main {
         Alue a2 = new Alue(8);
         a2.luoPieniTestitaulukko();
         
+        //Alue kuvasta:
+        Kuvalukija kl = new Kuvalukija();
+        Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
+        
+        
         // Mitä aluetta tarkastellaan...
-        Alue hakualue = a2;
+        Alue hakualue = kuvaAlue;
         
         System.out.println(hakualue.toString());
         
@@ -51,5 +58,9 @@ public class Main {
             n.toString();
         }
         System.out.println(hakualue.toString());
+        
+        System.out.println("-------");
+        
+        
     }
 }
