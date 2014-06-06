@@ -19,6 +19,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     public KruskalsAlgorithm() {
         super();
+        name = "Kruskal's algorithm";
     }
 
     /**

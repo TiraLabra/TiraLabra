@@ -18,12 +18,25 @@ public abstract class LabyrinthGenerator {
      * Random-olio, jota käytetään satunnaisalgoritmeissa.
      */
     protected Random random;
+    /**
+     * Algoritmin nimi.
+     */
+    public String name;
 
     /**
      * Alustaa Random-olion.
      */
     public LabyrinthGenerator() {
         random = new Random();
+    }
+
+    /**
+     * Palauttaa algoritmin nimen.
+     *
+     * @return Palauttaa algoritmin nimen.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -39,7 +52,7 @@ public abstract class LabyrinthGenerator {
      *
      * @see main.Labyrinth
      */
-    public void createEmptyLabyrinthIfNeeded()  {
+    public void createEmptyLabyrinthIfNeeded() {
         if (labyrinth.labyrinth[0][0] != 0) {
             labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
         }

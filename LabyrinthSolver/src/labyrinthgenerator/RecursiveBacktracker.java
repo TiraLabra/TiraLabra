@@ -17,6 +17,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      */
     public RecursiveBacktracker() {
         super();
+        name = "Recursive Backtracker";
     }
 
     /**

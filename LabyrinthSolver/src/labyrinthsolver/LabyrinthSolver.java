@@ -32,12 +32,25 @@ public abstract class LabyrinthSolver {
      * Array, jossa on tietoa labyrintin solujen tiloista.
      */
     protected int[][] visited;
+    /**
+     * Algoritmin nimi.
+     */
+    public String name;
 
     /**
      * Alustaa Random-olion..
      */
     public LabyrinthSolver() {
         random = new Random();
+    }
+
+    /**
+     * Palauttaa algoritmin nimen.
+     *
+     * @return Palauttaa algoritmin nimen.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -58,14 +71,17 @@ public abstract class LabyrinthSolver {
 
     /**
      * Laskee visited-solujen määrän.
+     *
+     * @return Palauttaa visited-solujen määrän.
      */
-    protected void getExploredCells() {
+    public int getExploredCells() {
         exploredCells = 0;
         for (int i = 0; i < labyrinth.height * labyrinth.width; i++) {
             if (visited[i / labyrinth.width][i % labyrinth.width] == 2) {
                 exploredCells++;
             }
         }
+        return exploredCells;
     }
 
     /**

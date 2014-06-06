@@ -17,6 +17,7 @@ public class BFS extends LabyrinthSolver {
      */
     public BFS() {
         super();
+        name = "Randomized breadth-first search";
     }
 
     /**

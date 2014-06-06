@@ -17,6 +17,7 @@ public class DFS extends LabyrinthSolver {
      */
     public DFS() {
         super();
+        name = "Randomized depth-first search";
     }
 
     /**

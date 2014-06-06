@@ -16,6 +16,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     public PrimsAlgorithm() {
         super();
+        name = "Prim's algorithm";
     }
 
     /**

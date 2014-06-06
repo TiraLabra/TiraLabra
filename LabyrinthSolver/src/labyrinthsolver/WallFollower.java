@@ -14,6 +14,7 @@ public class WallFollower extends LabyrinthSolver {
      */
     public WallFollower() {
         super();
+        name = "Wall follower";
     }
 
     /**
