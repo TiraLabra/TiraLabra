@@ -31,7 +31,8 @@ public class IOTest {
     }
     
     @After
-    public void tearDown() {
+    public void tearDown() throws IOException {
+        io.close();
         File out = new File("out.txt");
         out.delete();
         File in = new File("in.txt");
