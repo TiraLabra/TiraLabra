@@ -38,8 +38,8 @@ public class Dijkstra {
         totalTime = (timeEnd - timeStart);
         
         
-//        System.out.println("Operation took: " + (timeEnd - timeStart) + "ms.");
-//        System.out.println("Calculations: " + (long) c );
+        System.out.println("Dijkstra took: " + (timeEnd - timeStart) + "ms.");
+        System.out.println("Calculations: " + (long) c );
     }
 
     /**

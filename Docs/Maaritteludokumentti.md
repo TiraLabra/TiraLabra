@@ -6,8 +6,25 @@ Tavoitteena on tehdä ohjelma, joka etsii nopeimman reitin käyttäjän piirtäm
 
 Ohjelmaan tulee ainakin Dijkstran algoritmi ja siihen tarvittavat tietorakenteet kuten stack. Ajattelin myös toteuttaa A*-algoritmin ja mahdollisesti tutkia Jump Point Searchia ja vertailla algoritmien käyttämää aikaa ja laskutoimituksia.
 
-Dijkstran toteutan ilman prioriteettijonoa, eli tavoitteena toimia O(V^2) ajassa.
-A* ja JPS pyrin toteuttamaan lähteissä annetussa ajassa, mutta en vielä tunne niitä tarpeeksi arvioidakseni paremmin.
+Dijkstra toteutetaan minimikeolla. Minimikeon solmut tietävät myös oman indeksinsä, tietty solmu löydetään keosta tarvittaessa vakioajassa.
+
+Käytettävät rakenteet:
+
+Dijkstra:
+Minimikeolla, tavoitteena aikavaatimus O( (E+V) log V). Tilavaativuus O(v).
+
+A*: 
+Aikavaatimus on pahimmassa tapauksessa sama kuin Dijkstrassa. Heuristiikan valinta vielä mietinnässä.
+
+Minimikeko:
+Tarvitaan Dijkstran nopeuttamiseen. O(N log N).
+Teen minimikekoon vakioaikaisen ominaisuuden, jolla keossa olevat verkon solmut tietävät oman indeksinsä keossa, jotta reitinhakualgoritmit pystyisivät nopeasti muuttamaan solmujen naapureiden etäisyyksiä. Tilavaativuus O(n).
+
+Linkitetty lista:
+Solmujen naapurit ovat talletettuina linkitettyihin listoihin. Hitaimmat operaatiot ovat luokka O(n). Tilavaativuus O(n).
+
+Pino:
+Yksinkertainen pino jota käytetään valmiin reitin tulostukseen. Tilavaativuus O(n).
 
 
 

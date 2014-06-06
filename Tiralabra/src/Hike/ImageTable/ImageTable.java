@@ -6,37 +6,38 @@ import Hike.gameWindow.ShowPicture;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-
 /**
  * Creates a 2d integer array based on the image.
+ *
  * @author petri
  */
-
 public class ImageTable {
 
     private ShowPicture picture;
     private Node[][] tab;
     private Node[][] nodetable;
     private BufferedImage image;
-    
-    
 
     public ImageTable(ShowPicture pic) {
         picture = pic;
         image = picture.getImage();
         tab = new Node[Values.IMAGEHEIGHT][Values.IMAGEWIDTH];
 
+        long aikaAlussa = System.currentTimeMillis();
 
         convertImage(Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
+
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Conversion of image to table took: " + (aikaLopussa - aikaAlussa) + "ms.");
 
 
 
     }
-    
-    /**
-     * Creates a table based on the picture. Method checks the image pixel by pixel and creates a node with the same location and weight.
-     */
 
+    /**
+     * Creates a table based on the picture. Method checks the image pixel by
+     * pixel and creates a node with the same location and weight.
+     */
     private void convertImage(int h, int w) {
         for (int y = 0; y < h; y++) { // Y = height, X == width  
             for (int x = 0; x < w; x++) {
@@ -67,7 +68,7 @@ public class ImageTable {
         }
         tab[0][0].setNeighbours(tab, h, w);
         nodetable = tab[0][0].getTable();
-        
+
 
 
 
