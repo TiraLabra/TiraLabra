@@ -9,7 +9,9 @@ public class Integer extends Number<Integer> {
     public static final Integer ZERO = new Integer(0);
     public static final Integer TEN = new Integer(10);
     
-    private static final int radix = java.lang.Integer.MAX_VALUE;
+    // radix^2 < 2^32 / 2
+    // radix = ~46340
+    private static final int radix = 46340;
     
     protected final boolean negative;
     protected final int[] integer;
@@ -99,9 +101,9 @@ public class Integer extends Number<Integer> {
         
         int res[] = new int[words[0].length+1], k = 0;
         for (int i = 0; i < words[0].length; i++) {
-            final int sum = words[0][i] + words[1][i] + k;
-            k = sum / radix;
-            res[i] = sum % radix;
+            final int t = words[0][i] + words[1][i] + k;
+            k = t / radix;
+            res[i] = t % radix;
         }
         res[res.length-1] = k;
         
@@ -137,14 +139,14 @@ public class Integer extends Number<Integer> {
         
         int res[] = new int[words[0].length], k = 0;
         for (int i = 0; i < words[0].length; i++) {
-            final int sum = words[0][i] - words[1][i] + k;
+            final int t = words[0][i] - words[1][i] + k;
             
-            if (sum < 0) {
+            if (t < 0) {
                 k = -1;
-                res[i] = radix + sum;
+                res[i] = radix + t;
             } else {
                 k = 0;
-                res[i] = sum % radix;
+                res[i] = t % radix;
             }
         }
         
@@ -157,18 +159,20 @@ public class Integer extends Number<Integer> {
             return ZERO;
         }
         
-        final int m = other.integer.length-1;
+        final int n = integer.length;
+        final int m = other.integer.length;
         
-        int res[] = new int[integer.length + m + 1];
-        for (int i = 0; i < integer.length; i++) {
-            res[i+m] = 0;
+        int res[] = new int[n+m];
+        for (int i = m+1; i < n+m; i++) {
+            res[i] = 0;
         }
         
-        for (int j = m; j >= 0; j--) {
+        for (int j = m-1; j >= 0; j--) {
             int k = 0;
-            for (int i = integer.length-1; i >= 0; i--) {
+            for (int i = n-1; i >= 0; i--) {
                 final int u = this.integer[i];
                 final int v = other.integer[j];
+
                 final int t = (u * v) + res[i+j] + k;
                 res[i+j] = t % radix;
                 k = t / radix;
@@ -259,9 +263,13 @@ public class Integer extends Number<Integer> {
             final int sa = java.lang.Integer.parseInt(""+s[0].charAt(i));
             final int sb = java.lang.Integer.parseInt(""+s[1].charAt(i));
             
-            final int sum = sa + sb + k;
-            k = sum / 9;
-            res += sum % 9;
+            final int t = sa + sb + k;
+            k = t / 10;
+            res += t % 10;
+        }
+        
+        if (k != 0) {
+            res += k;
         }
         
         return res;
@@ -275,10 +283,7 @@ public class Integer extends Number<Integer> {
 
         String res = "";
         for (int i = 0; i < integer.length; i++) {
-            String c = "" + integer[i];
-            for (int j = 0; j < i; j++) {
-                c = add(c, "" + (radix - 1));
-            }
+            String c = "" + (integer[i] * ((i > 0) ? radix * i : 1));
             res = add(res, c);
         }
         

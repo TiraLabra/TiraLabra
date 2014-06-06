@@ -4,11 +4,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class IntegerTest extends NumberTests<Integer> {
-    private static final Integer overflow =
-            new Integer(java.lang.Integer.MAX_VALUE);
-
-    private static final Integer oneToOverflow =
-            new Integer(java.lang.Integer.MAX_VALUE - 1);
+    private static final Integer overflow = new Integer(46340);
+    private static final Integer oneToOverflow = new Integer(46339);
     
     private Integer oneOverOverflow;
     
@@ -43,8 +40,8 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void overflowToString() {
-        assertEquals("2147483647", overflow.toString());
-        assertEquals("2147483648", oneOverOverflow.toString());
+        assertEquals("46340", overflow.toString());
+        assertEquals("46341", oneOverOverflow.toString());
     }
     
     @Test
@@ -59,11 +56,22 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void subtractFromOverflow() {
-        assertEquals("2147483646", overflow.subtract(one).toString());
+        assertEquals(oneToOverflow, overflow.subtract(one));
     }
     
     @Test
     public void subtractToOverflow() {
         assertEquals(overflow, oneOverOverflow.subtract(one));
+    }
+    
+    @Test
+    public void multiplyToOverflow() {
+        Integer halfRadix = new Integer(23170);
+        assertEquals(overflow, halfRadix.multiply(two));
+    }
+    
+    @Test
+    public void multiplyOverflow() {
+        assertEquals("92680", overflow.multiply(two).toString());
     }
 }

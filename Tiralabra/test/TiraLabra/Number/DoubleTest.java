@@ -13,14 +13,14 @@ public class DoubleTest extends NumberTests<Double> {
     }
     
     @Override
-    public void stringifying() {
+    public void toStringWorks() {
         assertEquals("0.0", zero.toString());
         assertEquals("1.0", one.toString());
         assertEquals("-1.0", one.negate().toString());
     }
     
     @Test
-    public void numberMakerings() {
+    public void numberMaker() {
         Number n = Number.make(Double.class, 1);
         assertEquals(n, one);
     }

@@ -160,7 +160,7 @@ public abstract class NumberTests<T extends Number> {
     }
     
     @Test
-    public void zeroings() {
+    public void isZeroWorks() {
         assertTrue(zero.isZero());
         assertFalse(one.isZero());
     }
@@ -176,7 +176,7 @@ public abstract class NumberTests<T extends Number> {
     }
     
     @Test
-    public void stringifying() {
+    public void toStringWorks() {
         assertEquals("0", zero.toString());
         assertEquals("1", one.toString());
         assertEquals("-1", one.negate().toString());

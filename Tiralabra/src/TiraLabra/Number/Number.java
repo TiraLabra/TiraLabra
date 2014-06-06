@@ -6,6 +6,12 @@ package TiraLabra.Number;
  * @param <T>
  */
 public abstract class Number<T extends Number> implements Comparable<T> {
+    /**
+     * Luo 
+     * @param type luokka
+     * @param k arvo
+     * @return new type(k)
+     */
     public static Number make(Class<? extends Number> type, int k) {
         try {
             return type.getConstructor(int.class).newInstance(k);
