@@ -15,7 +15,8 @@ public class AStar {
     /**
      * Tietorakenne joka sisältää haun kaikki jo käymät Nodet.
      */
-    private ArrayList kaydyt;
+    //private ArrayList kaydyt;
+    private ArrayListOma kaydyt;
     
     /**
      * Tietorakenne, joka sisältää haussa käymättä olevat Nodet.
@@ -29,12 +30,12 @@ public class AStar {
      * Tietorakenne, johon tallennetaan haun löytämä optimaalisin reitti.
      */
     private ArrayList<Node> kuljettuReitti;
+    //private ArrayListOma kuljettuReitti;
     
     /**
      * Heuristiikka, jota haun optimoinnissa käytetään.
      */
     private Heuristiikka heuristiikka;
-    
     
     /**
      * Tieto, kuinka monta askelta haussa otettiin.
@@ -44,7 +45,8 @@ public class AStar {
     private int askelia;
 
     public AStar(Heuristiikka heuristiikka) {
-        kaydyt = new ArrayList();
+        //kaydyt = new ArrayList();     // Javan oma ArrayList
+        kaydyt = new ArrayListOma();
         
         Comparator<Node> comparator = new NodeComparator();
         kaymatta = new PriorityQueue<Node>(10, comparator);
@@ -52,6 +54,7 @@ public class AStar {
         this.heuristiikka = heuristiikka;
         
         this.kuljettuReitti = new ArrayList<Node>();
+        //this.kuljettuReitti = new ArrayListOma();
         
     }
     
@@ -91,7 +94,8 @@ public class AStar {
             }
             
             kaymatta.remove(tarkastettava);
-            kaydyt.add(tarkastettava);
+            //kaydyt.add(tarkastettava);  // Javan oma ArrayList
+            kaydyt.lisaa(tarkastettava);
             
             // Nykyisen naapurien päivitys:
             for (Node naapuri : selvitaNaapurit(a, tarkastettava)) {
@@ -100,7 +104,9 @@ public class AStar {
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
                 
-                if (kaydyt.contains(naapuri)) {
+                //if (kaydyt.contains(naapuri)) {   // Javan oma ArrayList
+                if (kaydyt.sisaltaako(naapuri)) {
+                    
                     System.out.println("  on jo käyty, ei lisätä.");
                     continue;
                 }
