@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public class BinaariMuuntaja {
     private int lisatytEtuNollat;
+    private HashMap<String, Integer> kaannokset;
     
     public BinaariMuuntaja() {
         this.lisatytEtuNollat = 0;
@@ -17,6 +18,18 @@ public class BinaariMuuntaja {
     public int getLisatytEtuNollat() {
         return this.lisatytEtuNollat;
     }
+    
+//    public void luoKaannokset() throws FileNotFoundException {
+//        this.kaannokset = new HashMap<>();
+//        TekstinLukija lukija = new TekstinLukija(false);
+//        lukija.lueTiedosto("kaannokset.txt");
+//        String teksti = lukija.getTeksti();
+//        
+//        for (int i = 0; i < teksti.length(); i++) {
+//            Character merkki = teksti.charAt(i);
+//            kaannokset.put(merkki + "", i + 128);
+//        }
+//    }
     
     public String binaariEsitysEtuNollilla8Bit(int arvo) {
         StringBuilder esitys = new StringBuilder();
@@ -106,6 +119,20 @@ public class BinaariMuuntaja {
         char[] kirjain = Character.toChars(luku);
         return kirjain[0];
     }
+    
+//    public int kokonaisLukuna(String teksti, int osoite) throws FileNotFoundException {
+//        char[] kirjain = teksti.substring(osoite, osoite + 1).toCharArray();
+//        Character asciiMerkki = kirjain[0];
+//        
+//        if (kaannokset == null) {
+//            luoKaannokset();
+//        }
+//        
+//        if (asciiMerkki > 127) {
+//            return kaannokset.get(asciiMerkki + "");
+//        }
+//        return asciiMerkki;
+//    }
     
     protected int kokonaisLukuna(String bittijono) {
         int luku = 0;

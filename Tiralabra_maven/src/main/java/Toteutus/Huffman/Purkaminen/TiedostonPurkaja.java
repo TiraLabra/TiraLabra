@@ -108,7 +108,7 @@ public class TiedostonPurkaja {
         return i + 2;
     }
     
-    protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite)  {
+    protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite) {
         StringBuilder binaarina = new StringBuilder();
         binaarina.append(tavuIlmanEtuNollia(teksti, poistettavienEtuNollienOsoite));
         binaarina.append(lisaaMuuTeksti(teksti, poistettavienEtuNollienOsoite));       
