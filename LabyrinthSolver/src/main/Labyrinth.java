@@ -1,6 +1,5 @@
 package main;
 
-import java.text.DecimalFormat;
 import labyrinthgenerator.LabyrinthGenerator;
 import labyrinthsolver.LabyrinthSolver;
 
