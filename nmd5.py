@@ -1,14 +1,39 @@
 import linkedlist
 
-class nmd5:
+class NMD5:
     """MD5 implementation for strings"""
+    list = linkedlist.LinkedList(None)
+    A = 0x67452301
+    B = 0xEFCDAB89
+    C = 0x98BADCFE
+    D = 0x10325476
 
-_list = linkedlist.LinkedList(None)
+    def F(x, y, z):
+    	return (x & y) | ((~x) & z)
 
-A = "67452301"
-B = "EFCDAB89"
-C = "98BADCFE"
-D = "10325476b"
+    def G(x, y, z):
+    	return (x & z) | (y & (~z))
+
+    def H(x, y, z):
+    	return x ^ y ^ z
+
+    def I(x, y, z):
+    	return y ^ (x | (~z))
+
+
+    def update(arg):
+    	list.add(linkedlist.Node(arg, None))
+
+
+    # Main hashing function
+    def calc(self):
+    	AA = self.A
+    	BB = self.B
+    	CC = self.C
+    	DD = self.D		
+
+    
+    
 
 ## Private methods ##
 ## Keeping them public for the time being to enable testing ##
@@ -39,6 +64,7 @@ def pad(bstring):
 	padding += "0" * (amount - 1)
 
 	padded += bstring + padding
+	padded += pad64B(messageLength)
 
 	return padded
 
@@ -64,7 +90,7 @@ def digest_size():
 	return 16
 
 def new():
-	return
+	return NMD5()
 
 def update(arg):
 	return
