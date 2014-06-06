@@ -70,5 +70,32 @@ public class SlidingTable {
             }
             return ret;
         }
+        /**
+         * Palauttaa todellisen indeksin suhteellisen indeksin verrattuna viimeeksi lisättyyn. 
+         * @param index
+         * @return 
+         */
+        public int relativeIndex(int index){
+            int ret = 0;
+            int zero = lastIndex + 1;
+            if(zero == length){zero = 0;}
+            ret = index - zero;
+            if(ret < 0){
+                ret = length + ret;
+            }
+            if(index >= length){
+                throw new IndexOutOfBoundsException();
+            }
+            return ret;            
+        }
+        
+        public int getLastIndex(){
+            return lastIndex;
+        }
+
+        public int getLength() {
+            return length;
+        }
+        
         
 }

@@ -55,4 +55,20 @@ public class SlidingTableTest {
         assertTrue(bytes[0] == 1 && bytes[1] == 2 && bytes[2] == 3);
     }
     
+    @Test
+    public void testRelativeIndex(){
+        SlidingTable table = new SlidingTable(3);
+        table.add((byte)1);
+        table.add((byte)2);
+        table.add((byte)3);
+        int i = table.relativeIndex(0);
+        assertTrue("Oikea: 0, Palautit :"+i,i == 0);        
+        table.add((byte)4);
+        i = table.relativeIndex(0);
+        assertTrue("Oikea: 2, Palautit :"+i,i == 2);
+        table.add((byte)5);
+        i = table.relativeIndex(0);
+        assertTrue("Oikea: 1, Palautit :"+i,i == 1);
+    }
+    
 }

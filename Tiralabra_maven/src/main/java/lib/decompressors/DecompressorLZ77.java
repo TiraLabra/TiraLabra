@@ -14,7 +14,7 @@ import lib.io.*;
  */
 public class DecompressorLZ77 {
     private final IO io;
-    private final int windowSize = 4095;
+    private final int windowSize = 4096;
     private final SlidingTable window;
     private final InputBuffer inputStream;
     
