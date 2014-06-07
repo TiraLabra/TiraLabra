@@ -6,14 +6,15 @@
 package tiralabra.utilities;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * A generic Stack to hold objects in.
  *
  * @author atte
- * @param <E> Object
+ * @param <T> Object
  */
-public class Stack<E> {
+public class Stack<T> implements Collection<T> {
 
     /**
      * Array which holds the stack.
@@ -43,14 +44,14 @@ public class Stack<E> {
     /**
      * Pushes an object to the top of the stack.
      *
-     * @param e
+     * @param t
      */
-    public void push(E e) {
+    public void push(T t) {
         if (size == stack.length) {
             growCapacity();
         }
 
-        stack[size] = e;
+        stack[size] = t;
         size++;
     }
 
@@ -59,12 +60,12 @@ public class Stack<E> {
      *
      * @return Object stored at the top the stack.
      */
-    public E peek() {
+    public T peek() {
         if (size == 0) {
             throw new IndexOutOfBoundsException("Peeked an empty OperationStack.");
         }
 
-        return (E) stack[size - 1];
+        return (T) stack[size - 1];
     }
 
     /**
@@ -72,6 +73,7 @@ public class Stack<E> {
      *
      * @return
      */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -82,14 +84,14 @@ public class Stack<E> {
      *
      * @return
      */
-    public E pop() {
+    public T pop() {
         if (size == 0) {
             throw new IndexOutOfBoundsException("Popped an empty OperationStack.");
         }
         size--;
-        E e = (E) stack[size];
+        T t = (T) stack[size];
         stack[size] = null;
-        return e;
+        return t;
     }
 
     /**
@@ -98,6 +100,7 @@ public class Stack<E> {
      *
      * @return size
      */
+    @Override
     public int size() {
         return size;
     }
@@ -105,12 +108,40 @@ public class Stack<E> {
     /**
      * Grows the size of the stack to double of the original value.
      */
-    private void growCapacity() {
+    @Override
+    public void growCapacity() {
         int newSize = size() * 2;
         stack = Arrays.copyOf(stack, newSize);
     }
 
-    private void clear() {
+    @Override
+    public void clear() {
         this.stack = new Object[initialCapacity];
     }
+
+    @Override
+    public void add(T t) {
+        push(t);
+    }
+
+    @Override
+    public boolean remove(T t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean contains(T t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public T[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

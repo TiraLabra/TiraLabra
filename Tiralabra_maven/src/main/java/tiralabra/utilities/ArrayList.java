@@ -14,7 +14,7 @@ import java.util.Iterator;
  * @author atte
  * @param <T>
  */
-public class ArrayList<T> implements Iterable<T> {
+public class ArrayList<T> implements Collection<T> {
 
     private Object[] list;
     private int size;
@@ -34,35 +34,37 @@ public class ArrayList<T> implements Iterable<T> {
     /**
      * Adds an object to the list.
      *
-     * @param e
+     * @param t
      */
-    public void add(T e) {
+    @Override
+    public void add(T t) {
         if (size == list.length) {
             growCapacity();
         }
 
-        list[size++] = e;
+        list[size++] = t;
     }
 
     /**
      * Removes an object from the list.
      *
-     * @param e
+     * @param t
      * @return whether a removal was done
      */
-    public boolean remove(T e) {
+    @Override
+    public boolean remove(T t){
         if (size == list.length) {
             return false;
         }
 
-        if (e == null) {
+        if (t == null) {
             return false;
         }
 
         boolean removed = false;
         int i = 0;
         while (true) {
-            if (list[i].equals(e)) {
+            if (list[i].equals(t)) {
                 removed = true;
                 break;
             }
@@ -84,6 +86,7 @@ public class ArrayList<T> implements Iterable<T> {
      *
      * @return
      */
+    @Override
     public int size() {
         return size;
     }
@@ -93,6 +96,7 @@ public class ArrayList<T> implements Iterable<T> {
      *
      * @return
      */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -100,16 +104,17 @@ public class ArrayList<T> implements Iterable<T> {
     /**
      * Checks whether the list contains the given object.
      *
-     * @param e
+     * @param t
      * @return
      */
-    public boolean contains(T e) {
-        if (e == null) {
+    @Override
+    public boolean contains(T t) {
+        if (t == null) {
             return false;
         }
 
         for (T l : (T[]) list) {
-            if (l.equals(e)) {
+            if (l.equals(t)) {
                 return true;
             }
         }
@@ -122,18 +127,25 @@ public class ArrayList<T> implements Iterable<T> {
      *
      * @return
      */
+    @Override
     public T[] toArray() {
         return (T[]) Arrays.copyOf(list, size);
     }
 
     /**
-     *
+     * Replaces the list with an empty array, effectively wiping out data stored
+     * in the array.
      */
+    @Override
     public void clear() {
         list = new Object[initialCapacity];
     }
 
-    private void growCapacity() {
+    /**
+     * Grows the capacity of the array.
+     */
+    @Override
+    public void growCapacity() {
         int newSize = size() * 2;
         list = Arrays.copyOf(list, newSize);
     }
