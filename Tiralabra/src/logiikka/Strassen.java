@@ -134,7 +134,7 @@ public class Strassen {
     private double[][] rekursioAlgo(double[][] eka, double[][] toka) {
         int puolet = eka.length / 2;
 
-        if (puolet <= 1) {
+        if (puolet <= 32) {
             return kertolasku.kerro(eka, toka);
         }
         
