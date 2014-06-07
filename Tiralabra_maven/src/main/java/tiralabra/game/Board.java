@@ -5,7 +5,7 @@
  */
 package tiralabra.game;
 
-import java.util.ArrayList;
+import tiralabra.utilities.ArrayList;
 import java.util.Collections;
 import tiralabra.utilities.Stack;
 
@@ -272,7 +272,6 @@ public class Board {
     public ArrayList<Long> tryTile(int x, int y) {
         ArrayList<Long> flips = place(x, y, playerInTurn, false);
 
-        Collections.sort(flips);
         return flips;
     }
 
@@ -287,7 +286,6 @@ public class Board {
         ArrayList<Long> flips = place(x, y, playerInTurn, true);
 
         changeTurn();
-        Collections.sort(flips);
         return flips;
     }
 

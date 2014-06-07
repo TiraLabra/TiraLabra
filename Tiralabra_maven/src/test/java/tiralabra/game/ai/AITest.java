@@ -6,7 +6,7 @@
 package tiralabra.game.ai;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import tiralabra.utilities.ArrayList;
 import tiralabra.game.Board;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -57,7 +57,7 @@ public class AITest {
     }
 
     @Test
-    public void foundLegalMovesAreLegal() {
+    public void allFoundLegalMovesAreLegal() {
         ArrayList<Move> moves = ai.getAllPossibleMovesInOrder();
         
         for (Move move : moves) {

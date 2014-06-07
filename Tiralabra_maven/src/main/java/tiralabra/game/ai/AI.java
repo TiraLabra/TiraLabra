@@ -5,10 +5,7 @@
  */
 package tiralabra.game.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import tiralabra.utilities.ArrayList;
 import tiralabra.game.Board;
 import tiralabra.game.Player;
 

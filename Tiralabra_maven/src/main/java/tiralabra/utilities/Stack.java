@@ -6,8 +6,6 @@
 package tiralabra.utilities;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * A generic Stack to hold objects in.
@@ -30,7 +28,7 @@ public class Stack<E> {
      * pieces (impossible).
      */
     private static final int defaultCapacity = 1344;
-    private int initialCapacity;
+    private final int initialCapacity;
 
     public Stack(int initialCapacity) {
         stack = new Object[initialCapacity];
