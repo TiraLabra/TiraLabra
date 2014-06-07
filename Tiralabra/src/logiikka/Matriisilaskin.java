@@ -11,6 +11,7 @@ public class Matriisilaskin {
 
     private MatriisienKopioija kopioija;
     private MatriisienVertailu vertailu;
+    private MatriisienGeneroija generoija;
     private Yhteenlasku yhteenlasku;
     private Vahennyslasku vahennyslasku;
     private Skalaaritulo skalaaritulo;
@@ -28,15 +29,16 @@ public class Matriisilaskin {
     public Matriisilaskin() {
         kopioija = new MatriisienKopioija();
         vertailu = new MatriisienVertailu();
+        generoija = new MatriisienGeneroija();
         
         yhteenlasku = new Yhteenlasku();
         vahennyslasku = new Vahennyslasku();
         skalaaritulo = new Skalaaritulo();
         kertolasku = new Kertolasku();
         transpoosi = new Transpoosi();
-        strassen = new Strassen(yhteenlasku, vahennyslasku);
+        strassen = new Strassen(yhteenlasku, vahennyslasku, kertolasku);
         determinantti = new Determinantti(kopioija);
-        kaanteismatriisi = new Kaanteismatriisi(kopioija);     
+        kaanteismatriisi = new Kaanteismatriisi(kopioija, generoija);     
     }
 
     /**

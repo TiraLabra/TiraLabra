@@ -1,5 +1,6 @@
 package main;
 
+import apuneuvot.MatriisienGeneroija;
 import logiikka.Matriisilaskin;
 
 /**
@@ -110,6 +111,15 @@ public class Main {
         
         double[][] symKaanteis = laskin.invertoi(sym);
         tulosta(symKaanteis);
+
+        MatriisienGeneroija generoija = new MatriisienGeneroija();
+        double[][] gene = generoija.luoYksikkomatriisi(256);
+        long aikaAlussa = System.currentTimeMillis();
+        double genenDeterminantti = laskin.laskeDeterminantti(gene);
+//        double[][] genenPotenssi = laskin.kerro(gene, gene);
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println(genenDeterminantti);
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
     
     public static void tulosta(double[][] matriisi){

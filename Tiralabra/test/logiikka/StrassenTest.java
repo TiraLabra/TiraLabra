@@ -14,7 +14,8 @@ public class StrassenTest {
     
     @Before
     public void setUp() {
-        strassen = new Strassen(new Yhteenlasku(), new Vahennyslasku());
+        strassen = new Strassen(new Yhteenlasku(), new Vahennyslasku(),
+                                new Kertolasku());
         
         A = new double[][]{
             {1, 3},

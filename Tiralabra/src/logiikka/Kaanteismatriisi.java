@@ -1,5 +1,6 @@
 package logiikka;
 
+import apuneuvot.MatriisienGeneroija;
 import apuneuvot.MatriisienKopioija;
 
 /**
@@ -12,14 +13,17 @@ import apuneuvot.MatriisienKopioija;
 public class Kaanteismatriisi {
 
     private MatriisienKopioija kopioija;
+    private MatriisienGeneroija generoija;
 
     /**
      * Konstruktori, joka luo uuden ilmentymän MatriisienKopioija-luokasta, joka
      * asetetaan sen private muuttujaan.
      *
      */
-    public Kaanteismatriisi(MatriisienKopioija kopioija) {
+    public Kaanteismatriisi(MatriisienKopioija kopioija, 
+                            MatriisienGeneroija generoija) {
         this.kopioija = kopioija;
+        this.generoija = generoija;
     }
 
     /**
@@ -51,7 +55,7 @@ public class Kaanteismatriisi {
         tarkasta(matriisi);
 
         double[][] A = kopioija.kopioiNeliomatriisi(matriisi);
-        double[][] I = luoYksikkomatriisi(matriisi.length);
+        double[][] I = generoija.luoYksikkomatriisi(matriisi.length);
 
         muodostaLU(A, I);
         suhteuta(A, I);
@@ -70,22 +74,6 @@ public class Kaanteismatriisi {
             throw new IllegalArgumentException("Matriisi ei ole neliömatriisi,"
                     + "joten sen käänteismatriisia ei voida muodostaa");
         }
-    }
-
-    /**
-     * Metodi, joka luo uuden yksikkömatriisin parametrina annetun koon
-     * mukaisesti. Yksikkömatriisi on siis neliömatriisi, jonka päälävistäjän
-     * alkiot ovat ykkösiä ja muut alkiot ovat nollia.
-     *
-     * @param koko Yksikkömatriisin koko
-     * @return Palauttaa luodun yksikkömatriisin, muotoa koko x koko
-     */
-    private double[][] luoYksikkomatriisi(int koko) {
-        double[][] I = new double[koko][koko];
-        for (int lavistaja = 0; lavistaja < koko; lavistaja++) {
-            I[lavistaja][lavistaja] = 1;
-        }
-        return I;
     }
 
     /**

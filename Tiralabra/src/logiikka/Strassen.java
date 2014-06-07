@@ -10,20 +10,26 @@ public class Strassen {
          
     private Yhteenlasku yhteenlasku;
     private Vahennyslasku vahennyslasku;
+    private Kertolasku kertolasku;
 
     /**
-     * Konstruktori, jolle annetaan parametrina Yhteenlasku- ja Vahennyslasku-
-     * luokan ilmentymät. Ilmentymät asetetaan niiden private muuttujiin. 
-     * 
+     * Konstruktori, jolle annetaan parametrina Yhteenlasku-, Vahennyslasku-
+     * ja Kertolasku-luokan ilmentymät. Ilmentymät asetetaan niiden private 
+     * muuttujiin. 
+
      * @param yhteenlasku Yhteenlasku-luokan ilmentymä, joka pitää sisällään
      *                    samankokoisten matriisien yhteenlaskuoperaatiot
      * @param vahennyslasku Vahennyslasku-luokan ilmentymä, joka pitää
      *                      sisällään samankokoisten matriisien vähennyslasku-
      *                      operaatiot
+     * @param kertolasku Kertolasku-luokan ilmentymä, joka pitää sisällään
+     *                   matriisin kertolaskun tavallisella tavalla
      */
-    public Strassen(Yhteenlasku yhteenlasku, Vahennyslasku vahennyslasku) {
+    public Strassen(Yhteenlasku yhteenlasku, Vahennyslasku vahennyslasku,
+                    Kertolasku kertolasku) {
         this.yhteenlasku = yhteenlasku;
         this.vahennyslasku = vahennyslasku;
+        this.kertolasku = kertolasku;
     }
 
     /**
@@ -45,7 +51,7 @@ public class Strassen {
     public double[][] kerro(double[][] eka, double[][] toka) {
         tarkasta(eka, toka);
         if (eka.length == 1) {
-            return kerroYksiot(eka[0][0], toka[0][0]);
+            return kertolasku.kerro(eka, toka);
         }
 
         double[][] ekaFull = tayta(eka);
@@ -74,20 +80,6 @@ public class Strassen {
                     + "samankokoisia neliömatriiseja, joten Strassenia "
                     + "ei voida käyttää");
         }
-    }
-
-    /**
-     * Metodi, joka kertoo matriisien luvut keskenään, jos matriisit koostuvat
-     * vain yhdestä alkiosta. Palauttaa yksiömatriisin.
-     * 
-     * @param eka Vasemmalta luettuna ensimmäinen matriisi muotoa 1 x 1
-     * @param toka Vasemmalta luettuna toinen matriisi muotoa 1 x 1
-     * @return Palauttaa yksiömatriisin muotoa 1 x 1
-     */
-    private double[][] kerroYksiot(double eka, double toka){
-        double[][] yksio = new double[1][1];
-        yksio[0][0] += eka * toka;
-        return yksio;
     }
 
     /**
@@ -121,10 +113,13 @@ public class Strassen {
      * palautetaan. 
      * 
      * Puolittaa aluksi neliömatriisin koon (ei neliömatriisia), jonka jälkeen 
-     * tarkastaa mennäänkö alle yhden, jolloin palauttaa yhden alkion 
-     * tulomatriisin. Tämän jälkeen alustaa neliömatriisien lohkomatriisit 
-     * puolitetulla koolla ja sopivilla alkioilla, jotta muodostuu ositus 
-     * neliömatriisin vasemmalle ja oikealle ylä- ja alanurkalle.
+     * tarkastaa mennäänkö 32:een tai sen alle, jolloin palauttaa tavallisella
+     * matriisikertolaskulla lasketun tulomatriisin. Tämä optimointi johtuu
+     * siitä, että pienillä matriiseilla Strassen paljon hitaampi kuin
+     * tavallinen matriisikertolasku. Tämän jälkeen alustaa neliömatriisien 
+     * lohkomatriisit puolitetulla koolla ja sopivilla alkioilla, jotta 
+     * muodostuu ositus neliömatriisin vasemmalle ja oikealle ylä- ja ala-
+     * nurkalle.
      * 
      * Tämän jälkeen laskee rekursiivisesti sopivien lohkomatriisien summien
      * ja erotusten avulla 7 eri tulomatriisia, joita summaamalla ja
@@ -139,8 +134,8 @@ public class Strassen {
     private double[][] rekursioAlgo(double[][] eka, double[][] toka) {
         int puolet = eka.length / 2;
 
-        if (puolet == 0) {
-            return kerroYksiot(eka[0][0], toka[0][0]);
+        if (puolet <= 1) {
+            return kertolasku.kerro(eka, toka);
         }
         
         double[] lohkot [][] = new double[8][puolet][puolet];

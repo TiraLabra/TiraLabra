@@ -1,5 +1,6 @@
 package logiikka;
 
+import apuneuvot.MatriisienGeneroija;
 import apuneuvot.MatriisienKopioija;
 import java.util.Arrays;
 import org.junit.Before;
@@ -15,7 +16,8 @@ public class KaanteismatriisiTest {
     
     @Before
     public void setUp() {
-        kaanteismatriisi = new Kaanteismatriisi(new MatriisienKopioija());
+        kaanteismatriisi = new Kaanteismatriisi(new MatriisienKopioija(), 
+                                                new MatriisienGeneroija());
         
         A = new double[][]{
             {1, 3, -1},
