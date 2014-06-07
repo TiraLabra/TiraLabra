@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * Measures the performance of the algorithms in the MatrixMath class.
+ *
  * @see MatrixMath
  * @author gabriel
  */
@@ -23,7 +24,7 @@ public class Test {
      * The random number generator.
      */
     private Random random;
-    
+
     /**
      * The first matrix used in testing matrix operations.
      */
@@ -58,7 +59,9 @@ public class Test {
     }
 
     /**
-     * Measures the time required to perform addition, subtraction and transposition of matrices of different sizes and saves the results to file.
+     * Measures the time required to perform addition, subtraction and
+     * transposition of matrices of different sizes and saves the results to
+     * file.
      */
     private void printAdditionSubtractionaAndTranspositionTimesToFile() {
         out.printf("%14s %14s %14s %14s \n", "Koko/Algoritmi", "Yhteenlasku", "Vähennyslasku", "Transpoosi");
@@ -74,7 +77,8 @@ public class Test {
     }
 
     /**
-     * Measures the time required to calculate the determinants of matrices of varying sizes and saves the results to file.
+     * Measures the time required to calculate the determinants of matrices of
+     * varying sizes and saves the results to file.
      */
     private void printDeterminantTimesToFile() {
         out.printf("%14s %14s \n", "Koko/Algoritmi", "Determinantti");
@@ -86,7 +90,9 @@ public class Test {
     }
 
     /**
-     * Measures the time required to multiply matrices of varying sizes using the naive algorithm and Strassen's algorithm, and saves the results to file.
+     * Measures the time required to multiply matrices of varying sizes using
+     * the naive algorithm and Strassen's algorithm, and saves the results to
+     * file.
      */
     private void printMultiplicationTimesToFile() {
         out.printf("%14s %14s %14s \n", "Koko/Algoritmi", "Kertolasku", "Strassen");
@@ -100,7 +106,9 @@ public class Test {
     }
 
     /**
-     * Creates a square matrix of the specified size and initializes it with random number in the range -100...100.
+     * Creates a square matrix of the specified size and initializes it with
+     * random number in the range -100...100.
+     *
      * @param n the size of the square matrix
      * @return the matrix of the specified size initialized with random numbers
      */
@@ -117,97 +125,108 @@ public class Test {
 
     /**
      * Returns the time required to add matrixA and matrixB.
+     *
      * @return the time it took to add matrixA and matrixB
      */
     private long additionTime() {
-        class AdditionTimer extends Timer{
+        class AdditionTimer extends Timer {
 
             @Override
             protected void timedOperation() {
                 MatrixMath.add(matrixA, matrixB);
             }
-            
+
         }
-        return new AdditionTimer().computeTime();        
+        return new AdditionTimer().computeTime();
     }
 
     /**
      * Returns the time required to subtract matrixB from matrixA.
+     *
      * @return the time it took to subtract matrixB from matrixA
      */
     private long subtractionTime() {
-        class SubtractionTimer extends Timer{
+
+        Timer timer = new Timer() {
 
             @Override
             protected void timedOperation() {
                 MatrixMath.subtract(matrixA, matrixB);
             }
-            
-        }
-        return new SubtractionTimer().computeTime();        
+
+        };
+        return timer.computeTime();
     }
 
     /**
      * Returns the time required to transpose matrixA.
+     *
      * @return the time it took to transpose matrixA
      */
     private long transpositionTime() {
-        class TranspositionTimer extends Timer{
+        Timer timer = new Timer() {
 
             @Override
             protected void timedOperation() {
                 MatrixMath.transpose(matrixA);
             }
-            
-        }
-        return new TranspositionTimer().computeTime();
+
+        };
+        return timer.computeTime();
     }
 
     /**
      * Returns the time required to calculate the determinant of matrixA.
+     *
      * @return the time it took to calculate the determinant of matrixA.
      */
     private long determinantTime() {
-        class DeterminantTimer extends Timer{
+        Timer timer = new Timer() {
 
             @Override
             protected void timedOperation() {
                 MatrixMath.det(matrixA);
             }
-            
-        }
-        return new DeterminantTimer().computeTime();
+
+        };
+        return timer.computeTime();
     }
 
     /**
-     * Returns the time required to multiply matrixA and matrixB using the naive approach.
+     * Returns the time required to multiply matrixA and matrixB using the naive
+     * approach.
+     *
      * @return the time it took to multiply matrixA and matrixB
      */
     private long multiplicationTime() {
-        class MultiplicationTimer extends Timer {
-            
+        Timer timer = new Timer() {
+
             @Override
             protected void timedOperation() {
                 MatrixMath.multiply(matrixA, matrixB);
             }
 
-        }
-        return new MultiplicationTimer().computeTime();       
+        };
+        return timer.computeTime();
     }
 
     /**
-     * Returns the time required to multiply matrixA and matrixB using Strassen's algorithm.
-     * @return the time it took to multiply matrixA and matrixB using Strassen's algorithm
+     * Returns the time required to multiply matrixA and matrixB using
+     * Strassen's algorithm.
+     *
+     * @return the time it took to multiply matrixA and matrixB using Strassen's
+     * algorithm
      */
     private long strassenTime() {
-        class StrassenTimer extends Timer{
-           
+        Timer timer = new Timer() {
+
             @Override
             protected void timedOperation() {
                 MatrixMath.strassenMultiply(matrixA, matrixB);
-            }           
-        }
-        return new StrassenTimer().computeTime();                
+            }
+
+        };
+        return timer.computeTime();
     }
 
     public static void main(String[] args) {
