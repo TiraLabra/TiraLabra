@@ -10,7 +10,7 @@ import java.util.Random;
 import tiralabra.game.Player;
 
 /**
- * This class can hash a board using Zobristic hashing:
+ * This class can hash a board using Zobrist hashing:
  * http://en.wikipedia.org/wiki/Zobrist_hashing . In the future, will also work
  * as a HashMap for 2d Player-arrays to hold the calculated board-values, best
  * moves, etc.
@@ -20,7 +20,7 @@ import tiralabra.game.Player;
 public class ZobristHash {
 
     /**
-     * Holds the randomly generated numbers which determine a board's hashing.
+     * Holds the randomly generated numbers which determine a boards hashing.
      */
     private BigInteger[][] table;
 

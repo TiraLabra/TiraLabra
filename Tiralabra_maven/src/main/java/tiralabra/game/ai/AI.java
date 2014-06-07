@@ -20,21 +20,20 @@ import tiralabra.game.Player;
 public class AI {
 
     /**
-     * Comparator that compares moves based on values given in a HashMap.
+     * Used to store the coordinates of each evaluated move and flips caused by
+     * that move.
      */
-    public static class MoveSorter implements Comparator<Long> {
+    public class Move {
 
-        private final HashMap<Long, Integer> values;
+        public int x;
+        public int y;
+        public ArrayList<Long> flips;
 
-        public MoveSorter(HashMap<Long, Integer> pieces) {
-            this.values = pieces;
+        public Move(int x, int y, ArrayList<Long> flips) {
+            this.x = x;
+            this.y = y;
+            this.flips = flips;
         }
-
-        @Override
-        public int compare(Long o1, Long o2) {
-            return values.get(o2) - values.get(o1);
-        }
-
     }
 
     /**
@@ -83,25 +82,21 @@ public class AI {
 //    }
     /**
      * Searches for the most optimal move by using alpha-beta-pruning.
-     * @return
+     *
+     * @return move as a long value
      */
-    public long search() {
-        ArrayList<Long> moves = getAllPossibleMovesInOrder();
+    public long move() {
 
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
-        long best = moves.get(0);
-        for (Long move : moves) {
+        Move move = new Move(-1, -1, null);
 
-            int compare = search(move, 8, alpha, beta, false);
+        long alussa = System.currentTimeMillis();
+        search(move, 8, alpha, beta, true);
+        long lopussa = System.currentTimeMillis();
+        System.out.println("Aika: " + (lopussa - alussa) + "ms");
 
-            if (compare > alpha) {
-                best = move;
-                alpha = compare;
-            }
-        }
-
-        return best;
+        return Board.point(move.x, move.y);
     }
 
     /**
@@ -117,46 +112,50 @@ public class AI {
      * @param max
      * @return the alpha or beta value of this node.
      */
-    public int search(long move, int depth, int alpha, int beta, boolean max) {
-        if (move == -1) {
-            board.pass();
-        } else {
-            board.placeTile(move);
-        }
-
+    public int search(Move move, int depth, int alpha, int beta, boolean max) {
         //Reached maximum depth or end of the game, return value of the board.
         if (depth == 0 || board.gameOver()) {
-            int heuristic = boardValue();
-            board.undo();
-            return heuristic;
+            return boardValue();
         }
 
-        ArrayList<Long> moves = getAllPossibleMovesInOrder();
+        ArrayList<Move> moves = getAllPossibleMovesInOrder();
 
-        //No moves found, pass. If the other player has no moves either, return the tile difference.
-        if (moves.isEmpty()) {
-            moves.add((long) -1);
+        for (Move child : moves) {
+            if (child.flips == null) {
+                board.pass();
+            } else {
+                board.placeTile(child.x, child.y);
+            }
+
+            if (max) {
+                Move newMove = new Move(-1, -1, null);
+
+                int newAlpha = search(newMove, depth - 1, alpha, beta, !max);
+                if (newAlpha > alpha) {
+                    alpha = newAlpha;
+                    move.x = child.x;
+                    move.y = child.y;
+                }
+            } else {
+                Move newMove = new Move(-1, -1, null);
+
+                int newBeta = search(newMove, depth - 1, alpha, beta, !max);
+                if (newBeta < beta) {
+                    beta = newBeta;
+                    move.x = child.x;
+                    move.y = child.y;
+                }
+            }
+            board.undo();
+
+            if (beta <= alpha) {
+                break;
+            }
         }
 
         if (max) {
-            for (Long child : moves) {
-                alpha = Math.max(alpha, search(child, depth - 1, alpha, beta, !max));
-
-                if (beta <= alpha) {
-                    break;
-                }
-            }
-            board.undo();
             return alpha;
         } else {
-            for (Long child : moves) {
-                beta = Math.min(beta, search(child, depth - 1, alpha, beta, !max));
-
-                if (beta <= alpha) {
-                    break;
-                }
-            }
-            board.undo();
             return beta;
         }
     }
@@ -167,15 +166,23 @@ public class AI {
      *
      * @return moves
      */
-    public ArrayList<Long> getAllPossibleMovesInOrder() {
-        ArrayList<Long> moves = new ArrayList<>();
+    public ArrayList<Move> getAllPossibleMovesInOrder() {
+        ArrayList<Move> moves = new ArrayList<>();
 
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
-                if (board.canPlace(x, y, board.getPlayerInTurn())) {
-                    moves.add(Board.point(x, y));
+                ArrayList<Long> flipsFromPlacingHere = board.tryTile(x, y);
+                if (flipsFromPlacingHere.size() > 0) {
+                    Move move = new Move(x, y, flipsFromPlacingHere);
+
+                    moves.add(move);
                 }
             }
+        }
+        //No moves found pass.
+        if (moves.isEmpty()) {
+            Move pass = new Move(-1, -1, null);
+            moves.add(pass);
         }
 
         return moves;
@@ -183,7 +190,7 @@ public class AI {
 
     /**
      * Return the value of a board based on the difference between tiles and the
-     * presumed value of held pieces.
+     * determined value of held pieces.
      *
      * @return value of board.
      */
@@ -203,20 +210,24 @@ public class AI {
      * @return value of a board.
      */
     public int calculateValueOfBoardBasedOnPiecesHeld() {
+//        long aikaAlussa = System.currentTimeMillis();
+
         int heuristic = 0;
-        for (int y = 0; y < board.getBoard().length; y++) {
-            for (int x = 0; x < board.getBoard()[0].length; x++) {
+        for (int y = 0; y < board.height(); y++) {
+            for (int x = 0; x < board.width(); x++) {
                 int value = 0;
-                if (board.getBoard()[y][x] != Player.NONE) {
+                if (board.getTile(x, y) != Player.NONE) {
                     value = pieceValues[y][x] + around(x, y);
                 }
-                if (board.getBoard()[y][x] == Player.opposing(board.getPlayerInTurn())) {
+                if (board.getTile(x, y) == Player.opposing(board.getPlayerInTurn())) {
                     value = -value;
                 }
 
                 heuristic += value;
             }
         }
+//        long aikaLopussa = System.currentTimeMillis();
+//        System.out.println("Aikaa kului: " + (aikaLopussa - aikaAlussa) + " ms");
 
         return heuristic;
     }

@@ -1,5 +1,6 @@
 package tiralabra.app;
 
+import java.util.Collections;
 import java.util.Scanner;
 import tiralabra.game.Board;
 import tiralabra.game.Game;
@@ -20,6 +21,7 @@ public class App {
         Utilities.printBoard(game.getBoard().getBoard());
         game.start();
         ui.start();
+        
 //        ZobristHash lel = new ZobristHash();
 //        Board board = new Board();
 //

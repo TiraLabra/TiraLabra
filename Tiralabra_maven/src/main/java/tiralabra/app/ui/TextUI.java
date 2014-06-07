@@ -44,9 +44,9 @@ public class TextUI extends Thread {
 
             long move;
             if (game.inTurn() == Player.BLACK) {
-                move = ai.search();
+                move = ai.move();
             } else {
-                move = ai.search();
+                move = ai.move();
             }
 
             try {

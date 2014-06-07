@@ -7,6 +7,7 @@ package tiralabra.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import tiralabra.utilities.Stack;
 
 /**
  * The game board. Responsible only for holding the pieces and placing them on
@@ -42,67 +43,32 @@ public class Board {
     }
 
     /**
-     * A stack which holds information of made moves for undoing.
-     */
-    public class FlipStack {
-
-        /**
-         * Array which holds the stack. 1344 is the worst case in which each
-         * move flips 20 pieces (impossible)
-         */
-        private Flip[] stack;
-        private int index;
-
-        public FlipStack() {
-            stack = new Flip[1344];
-            index = 0;
-        }
-
-        public void push(int x, int y, Player player) {
-            stack[index] = new Flip(x, y, player);
-            index++;
-        }
-
-        public void push(int movesToClear, Player player) {
-            stack[index] = new Flip(movesToClear, player);
-            index++;
-        }
-
-        public Flip peek() {
-            if (index == 0) {
-                throw new IndexOutOfBoundsException("Peeked an empty OperationStack.");
-            }
-
-            return stack[index - 1];
-        }
-
-        public boolean isEmpty() {
-            return index == 0;
-        }
-
-        public Flip pop() {
-            if (index == 0) {
-                throw new IndexOutOfBoundsException("Popped an empty OperationStack.");
-            }
-            index--;
-            return stack[index];
-        }
-    }
-
-    /**
      * Player 2d-array of the board.
      */
     private Player[][] board;
     /**
-     * ArrayList which holds all the operations done during this game.
+     * Stack which holds all the operations done during this game. For undoing.
      */
-    private FlipStack flipStack;
+    private Stack<Flip> flipStack;
+    /**
+     * The player whose turn is next.
+     */
     private Player playerInTurn;
 
+    /**
+     * Width of the board.
+     *
+     * @return int
+     */
     public int width() {
         return board[0].length;
     }
 
+    /**
+     * Height of the board.
+     *
+     * @return int
+     */
     public int height() {
         return board.length;
     }
@@ -121,7 +87,7 @@ public class Board {
         setTile(4, 3, Player.WHITE);
         setTile(4, 4, Player.BLACK);
 
-        flipStack = new FlipStack();
+        flipStack = new Stack();
 
         playerInTurn = Player.BLACK;
     }
@@ -222,6 +188,13 @@ public class Board {
     }
 
     /**
+     * Changes the turn to the opposing player from the current one in turn.
+     */
+    private void changeTurn() {
+        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+    }
+
+    /**
      * The player currently in turn.
      *
      * @return
@@ -289,23 +262,40 @@ public class Board {
     }
 
     /**
-     * Places a tile in the given position.
+     * Tries to place a tile into the given position and returns all the pieces
+     * placing it there would flip, without flipping anything.
+     *
      * @param x
      * @param y
-     * @return 
+     * @return
+     */
+    public ArrayList<Long> tryTile(int x, int y) {
+        ArrayList<Long> flips = place(x, y, playerInTurn, false);
+
+        Collections.sort(flips);
+        return flips;
+    }
+
+    /**
+     * Places a tile in the given position and returns all the flipped tiles.
+     *
+     * @param x
+     * @param y
+     * @return
      */
     public ArrayList<Long> placeTile(int x, int y) {
         ArrayList<Long> flips = place(x, y, playerInTurn, true);
 
-        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+        changeTurn();
         Collections.sort(flips);
         return flips;
     }
 
     /**
      * Places a tile in the given position.
+     *
      * @param point
-     * @return 
+     * @return
      */
     public ArrayList<Long> placeTile(long point) {
         return placeTile(x(point), y(point));
@@ -316,7 +306,7 @@ public class Board {
      * the flipStack, for undoing.
      */
     public void pass() {
-        flipStack.push(0, playerInTurn);
+        flipStack.push(new Flip(0, playerInTurn));
         playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
     }
 
@@ -346,7 +336,7 @@ public class Board {
         flipDirection(x, y, -1, 1, player, flips, realMove);
         flipDirection(x, y, -1, -1, player, flips, realMove);
         if (realMove && (!flips.isEmpty())) {
-            flipStack.push(flips.size(), player);
+            flipStack.push(new Flip(flips.size(), player));
         }
 
         return flips;
@@ -365,7 +355,7 @@ public class Board {
      * @param realMove whether to apply the effects of the move
      */
     private void flipDirection(int x, int y, int dx, int dy, Player player, ArrayList<Long> flips, boolean realMove) {
-        int nmbOfFlips = 0;
+        int nmbrOfFlips = 0;
 
         int xt = x + dx;
         int yt = y + dy;
@@ -373,17 +363,21 @@ public class Board {
             if (getTile(xt, yt) != Player.opposing(player)) {
                 break;
             }
-            nmbOfFlips++;
+            nmbrOfFlips++;
 
             xt += dx;
             yt += dy;
         }
 
-        if (nmbOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
+        if (nmbrOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
             return;
         }
 
-        for (int i = 0; i <= nmbOfFlips; i++) {
+        flipPieces(x, y, dx, dy, player, nmbrOfFlips, flips, realMove);
+    }
+
+    private void flipPieces(int x, int y, int dx, int dy, Player player, int nmbrOfFlips, ArrayList<Long> flips, boolean realMove) {
+        for (int i = 0; i <= nmbrOfFlips; i++) {
             if (realMove) {
                 flip(x + (i * dx), y + (i * dy), player);
             }
@@ -401,7 +395,7 @@ public class Board {
      * @param player
      */
     private void flip(int x, int y, Player player) {
-        flipStack.push(x, y, getTile(x, y));
+        flipStack.push(new Flip(x, y, getTile(x, y)));
         setTile(x, y, player);
     }
 
@@ -459,6 +453,7 @@ public class Board {
 
     /**
      * Returns the 2d Player-array of this board.
+     *
      * @return
      */
     public Player[][] getBoard() {

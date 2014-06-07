@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tiralabra.game.Player;
+import tiralabra.game.ai.AI.Move;
 import tiralabra.utilities.Utilities;
 import tiralabra.utilities.ZobristHash;
 
@@ -40,7 +42,7 @@ public class AITest {
             long originalHash = hasher.hash(board.getBoard());
             Utilities.printBoard(board.getBoard());
             
-            long move = ai.search();
+            long move = ai.move();
             long newHash = hasher.hash(board.getBoard());
             Utilities.printBoard(board.getBoard());
             assertEquals("i: " + i, originalHash, newHash);
@@ -51,8 +53,16 @@ public class AITest {
     
     @Test
     public void findingLegalMovesFindsMoves() {
-        ArrayList<Long> moves = ai.getAllPossibleMovesInOrder();
-        assertFalse(moves.isEmpty());
+        assertFalse(ai.getAllPossibleMovesInOrder().isEmpty());
     }
 
+    @Test
+    public void foundLegalMovesAreLegal() {
+        ArrayList<Move> moves = ai.getAllPossibleMovesInOrder();
+        
+        for (Move move : moves) {
+            assertTrue(board.canPlace(move.x, move.y, board.getPlayerInTurn()));
+        }
+    }
+    
 }
