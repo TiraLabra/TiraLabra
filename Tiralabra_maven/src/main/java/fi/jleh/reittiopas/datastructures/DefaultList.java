@@ -92,7 +92,7 @@ public class DefaultList<E> implements List<E> {
 
 	@Override
 	public Iterator<E> iterator() {
-		return new DefaultListIterator<>(array);
+		return new DefaultListIterator<E>(array);
 	}
 
 	@Override
