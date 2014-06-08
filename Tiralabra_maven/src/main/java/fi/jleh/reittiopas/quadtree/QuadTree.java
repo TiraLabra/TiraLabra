@@ -1,8 +1,9 @@
 package fi.jleh.reittiopas.quadtree;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import fi.jleh.reittiopas.datastructures.DefaultList;
 import fi.jleh.reittiopas.model.QuadtreePoint;
 
 /**
@@ -28,7 +29,7 @@ public class QuadTree {
 	 */
 	public QuadTree(BoundingBox boundingBox) {
 		this.boundingBox = boundingBox;
-		this.points = new ArrayList<QuadtreePoint>();
+		this.points = new DefaultList<QuadtreePoint>();
 	}
 
 	/**
@@ -79,19 +80,13 @@ public class QuadTree {
 	}
 	
 	public List<QuadtreePoint> queryRange(BoundingBox queryBox) {
-		List<QuadtreePoint> list = new ArrayList<QuadtreePoint>();
-		
 		// This node is not in range. Return empty list
 		if (!queryBox.intersects(this.boundingBox)) {
-			return list;
+			return Collections.emptyList();
 		}
 		
 		// Collect points that are in range
-		for (QuadtreePoint point : this.points) {
-			if (queryBox.containsPoint(point)) {
-				list.add(point);
-			}
-		}
+		List<QuadtreePoint> list = getPoints(queryBox);
 		
 		// There is no more children
 		if (northWest == null)
@@ -101,6 +96,18 @@ public class QuadTree {
 		list.addAll(northEast.queryRange(queryBox));
 		list.addAll(southWest.queryRange(queryBox));
 		list.addAll(southEast.queryRange(queryBox));
+		
+		return list;
+	}
+	
+	private List<QuadtreePoint> getPoints(BoundingBox queryBox) {
+		List<QuadtreePoint> list = new DefaultList<QuadtreePoint>();
+		
+		for (QuadtreePoint point : this.points) {
+			if (queryBox.containsPoint(point)) {
+				list.add(point);
+			}
+		}
 		
 		return list;
 	}

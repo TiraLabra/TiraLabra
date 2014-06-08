@@ -1,7 +1,8 @@
 package fi.jleh.reittiopas.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import fi.jleh.reittiopas.datastructures.DefaultList;
 
 /**
  * Model class for station in public transport.
@@ -22,7 +23,7 @@ public class Station implements QuadtreePoint {
 		this.x = x;
 		this.y = y;
 		this.city = city;
-		this.stops = new ArrayList<Stop>();
+		this.stops = new DefaultList<Stop>();
 	}
 
 	public int getId() {

@@ -2,7 +2,6 @@ package fi.jleh.reittiopas.parser;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,6 +10,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import fi.jleh.reittiopas.datastructures.DefaultList;
 import fi.jleh.reittiopas.exception.XMLParsingException;
 import fi.jleh.reittiopas.model.QuadtreePoint;
 import fi.jleh.reittiopas.model.Service;
@@ -33,9 +33,9 @@ public class ReittiopasXMLParser {
 		System.out.println("Started XML parsing");
 		long start = System.currentTimeMillis();
 		
-		final List<Station> stationList = new ArrayList<Station>();
+		final List<Station> stationList = new DefaultList<Station>();
 		final Map<Integer, Station> stationMap = new TreeMap<Integer, Station>();
-		final List<Service> services = new ArrayList<Service>();
+		final List<Service> services = new DefaultList<Service>();
 		
 		try {
 			InputStream is = new FileInputStream(pathToFile);

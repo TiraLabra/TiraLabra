@@ -1,7 +1,8 @@
 package fi.jleh.reittiopas.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import fi.jleh.reittiopas.datastructures.DefaultList;
 
 /**
  * Model class for transportation line.
@@ -18,7 +19,7 @@ public class Service {
 
 	public Service(int id) {
 		this.id = id;
-		this.stops = new ArrayList<Stop>();
+		this.stops = new DefaultList<Stop>();
 	}
 	
 	public int getId() {
