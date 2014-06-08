@@ -37,8 +37,18 @@ public interface Collection<E> extends Iterable<E> {
      */
     public boolean contains(E e);
 
+    /**
+     * Gets the object at the given index.
+     * @return Object at the given index.
+     */
+    public E get(int i);
+    
+    /**
+     * Returns the number of objects currently stored in the collection.
+     * @return size
+     */
     public int size();
-
+    
     /**
      * Whether the Collection is empty.
      *

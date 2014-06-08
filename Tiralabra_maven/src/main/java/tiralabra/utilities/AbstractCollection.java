@@ -93,6 +93,11 @@ public abstract class AbstractCollection<E> implements Collection<E> {
 
         return false;
     }
+    
+    @Override
+    public E get(int i) {
+        return (E) array[i];
+    }
 
     @Override
     public int size() {
@@ -141,6 +146,10 @@ public abstract class AbstractCollection<E> implements Collection<E> {
             @Override
             public E next() {
                 return (E) array[i++];
+            }
+            
+            public <E extends Comparable<? super E>> void  set(E e) {
+                array[i] = e;
             }
 
             @Override

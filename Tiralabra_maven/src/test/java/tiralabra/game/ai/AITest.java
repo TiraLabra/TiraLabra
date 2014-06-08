@@ -6,16 +6,17 @@
 package tiralabra.game.ai;
 
 import java.math.BigInteger;
-import tiralabra.utilities.ArrayList;
-import tiralabra.game.Board;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import tiralabra.game.Board;
 import tiralabra.game.Player;
 import tiralabra.game.ai.AI.Move;
+import tiralabra.game.ai.AI.Strategy;
+import tiralabra.utilities.ArrayList;
 import tiralabra.utilities.BoardUtilities;
 import tiralabra.utilities.ZobristHash;
 
@@ -52,15 +53,22 @@ public class AITest {
     
     @Test
     public void findingLegalMovesFindsMoves() {
-        assertFalse(ai.getAllPossibleMovesInOrder().isEmpty());
+        assertFalse(ai.getAllPossibleMovesInOrder(Strategy.MAXIMIZEPIECES, false).isEmpty());
     }
 
     @Test
     public void allFoundLegalMovesAreLegal() {
-        ArrayList<Move> moves = ai.getAllPossibleMovesInOrder();
+        ArrayList<Move> moves = ai.getAllPossibleMovesInOrder(Strategy.MAXIMIZEPIECES, false);
         
         for (Move move : moves) {
             assertTrue(board.canPlace(move.x, move.y, board.getPlayerInTurn()));
+        }
+    }
+    
+    @Test
+    public void legalMovesFindingProcessingTimeTest() {
+        for (int i = 0; i < 10; i++) {
+            
         }
     }
     

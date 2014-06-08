@@ -7,13 +7,9 @@
 package tiralabra.utilities;
 
 /**
- *
+ * TODO
  * @author atte
  */
-public class HashMap<E> {
-    
-    private Object[] hashMap;
-    private int size;
-    
+public class TranspositionTable {
     
 }
