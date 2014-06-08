@@ -76,10 +76,9 @@ public class SlidingTable {
          * @return 
          */
         public int relativeIndex(int index){
-            int ret = 0;
             int zero = lastIndex + 1;
             if(zero == length){zero = 0;}
-            ret = index - zero;
+            int ret = index - zero;
             if(ret < 0){
                 ret = length + ret;
             }

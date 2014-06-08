@@ -64,7 +64,7 @@ public class DecompressorLZ77 {
         boolean[] lenbits = inputStream.nextBits(4);
         if(osbits != null && lenbits != null){            
             int offset = ArrayUtils.booleanArrayToInt(osbits);
-            int length = ArrayUtils.booleanArrayToInt(lenbits);
+            int length = ArrayUtils.booleanArrayToInt(lenbits)+1;
             ByteAsBits[] bytes = new ByteAsBits[length];
             for(int i = 0; i < length; i++){
                 byte b = window.get(offset + i);
