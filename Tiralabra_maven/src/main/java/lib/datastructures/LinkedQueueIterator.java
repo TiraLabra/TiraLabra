@@ -29,4 +29,9 @@ public class LinkedQueueIterator<E> implements Iterator<E> {
         return key;
     }
     
+    @Override
+    public void remove(){
+        throw new UnsupportedOperationException();
+    }
+    
 }
