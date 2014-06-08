@@ -61,6 +61,15 @@ public class Labyrinth {
     }
 
     /**
+     * Tarkastaa, onko labyrintti generoitu.
+     *
+     * @return Palauttaa true, jos labyrintti on generoitu.
+     */
+    public boolean isGenerated() {
+        return labyrinth[0][0] == 0;
+    }
+
+    /**
      * Päivittää labyrintin koon. Tämän jälkeen asettaa uuden labyrintin
      * labyrintingeneroijaan ja -ratkaisijaan.
      *
