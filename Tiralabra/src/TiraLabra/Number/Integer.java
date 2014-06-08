@@ -10,11 +10,11 @@ public class Integer extends Number<Integer> {
     public static final Integer TEN = new Integer(10);
     
     // radix^2 < 2^32 / 2
-    // radix = ~46340
+    // radix = 46340
     private static final int radix = 46340;
     
     protected final boolean negative;
-    protected final int[] integer;
+    public final int[] integer;
 
     /**
      * Luo luvun kokonaisluvusta
@@ -23,6 +23,10 @@ public class Integer extends Number<Integer> {
     public Integer(int integer) {
         negative = (integer < 0);
 
+        if (Math.abs(integer) > radix) {
+            throw new IllegalArgumentException();
+        }
+        
         if (Math.abs(integer) == radix) {
             this.integer = new int[2];
             this.integer[0] = 0;
@@ -33,25 +37,38 @@ public class Integer extends Number<Integer> {
         }
     }
     
+    protected Integer(int[] integer, boolean negative) {
+        this.negative = negative;
+        this.integer = integer;
+    }
+    
+    /**
+     * Laskee merkitsemättömien nollien määrän
+     * @param integer
+     * @return 
+     */
     private static int leadingZeroes(int integer[]) {
         int leading = 0;
         for (int i = integer.length-1; i >= 0; i--) {
             if (integer[i] > 0) {
                 return leading;
-            } else if (integer[i] == 0) {
-                leading++;
             }
+            
+            leading++;
         }
         
         return -1;
     }
     
+    /**
+     * Poistaa sanataulukosta merkitsemättömät nollat
+     * @param words
+     * @return 
+     */
     private static int[] removeLeadingZeroes(int[] words) {
         int zeroes = leadingZeroes(words);
-        if (zeroes == -1) {
-            int int2[] = {0};
-            return int2;
-        } else if (zeroes > 0) {
+        
+        if (zeroes > 0) {
             int int2[] = new int[words.length - zeroes];
             System.arraycopy(words, 0, int2, 0, words.length - zeroes);
             return int2;
@@ -60,14 +77,13 @@ public class Integer extends Number<Integer> {
         }
     }
     
-    protected Integer(int[] integer, boolean negative) {
-        this.negative = negative;
-        //this.integer = integer;
-        
-        this.integer = removeLeadingZeroes(integer);
-    }
-    
-    private static int[][] padZeroes(int a[], int b[]) {
+    /**
+     * Lisää nollien lyhyempään
+     * @param a
+     * @param b
+     * @return 
+     */
+    public static int[][] padZeroes(int a[], int b[]) {
         int res[][] = {a, b};
         
         if (a.length == b.length) {
@@ -87,7 +103,7 @@ public class Integer extends Number<Integer> {
     }
     
     @Override
-    public Integer add(Integer other) {
+    public Integer add(final Integer other) {
         if (this.isZero()) return other;
         if (other.isZero()) return this;
         
@@ -111,7 +127,7 @@ public class Integer extends Number<Integer> {
     }
 
     @Override
-    public Integer subtract(Integer other) {
+    public Integer subtract(final Integer other) {
         if (other.isZero()) return this;
         if (this.isZero()) {
             return other.negate();
@@ -152,47 +168,97 @@ public class Integer extends Number<Integer> {
         
         return new Integer(res, false);
     }
+
+    /**
+     * Ylemmät sanat kokonaisuluvusta
+     * @param n
+     * @return 
+     */
+    private Integer highWords(int n) {
+        int words[] = new int[n], j = 0;
+        for (int i = integer.length - n; i < integer.length; i++) {
+            words[j++] = integer[i];
+        }
+        
+        return new Integer(words, negative);
+    }
     
+    /**
+     * Alemmat sanat kokonaisuluvusta
+     * @param n
+     * @return 
+     */
+    private Integer lowWords(int n) {
+        int words[] = new int[n];
+        for (int i = 0; i < n; i++) {
+            words[i] = integer[i];
+        }
+        
+        return new Integer(words, negative);
+    }
+    
+    /**
+     * Siirtää lukua vasemmalle
+     * @param count
+     * @return 
+     */
+    private Integer shiftLeft(int count) {
+        int words[] = new int[integer.length + count];
+        for (int i = 0; i < count; i++) {
+            words[i] = 0;
+        }
+        System.arraycopy(integer, 0, words, count, integer.length);
+        return new Integer(words, negative);
+    }
+    
+    /**
+     * Kertolasku toteutettu Karatsuban algoritmilla.
+     * @param other
+     * @return 
+     */
     @Override
-    public Integer multiply(Integer other) {
+    public Integer multiply(final Integer other) {
         if (other.isZero() || this.isZero()) {
             return ZERO;
         }
         
-        final int n = integer.length;
-        final int m = other.integer.length;
-        
-        int res[] = new int[n+m];
-        for (int i = m+1; i < n+m; i++) {
-            res[i] = 0;
-        }
-        
-        for (int j = m-1; j >= 0; j--) {
-            int k = 0;
-            for (int i = n-1; i >= 0; i--) {
-                final int u = this.integer[i];
-                final int v = other.integer[j];
-
-                final int t = (u * v) + res[i+j] + k;
-                res[i+j] = t % radix;
-                k = t / radix;
-            }
-        }
-        
         final boolean neg = (this.isNegative() != other.isNegative());
-        return new Integer(res, neg);
+        
+        final int words[][] = padZeroes(integer, other.integer);
+        final int m = words[0].length, m2 = m / 2;
+        if (m == 1) {
+            int t = integer[0] * other.integer[0];
+            int res[] = {t % radix, t / radix};
+            return new Integer(res, neg);
+        }
+        
+        Integer a = new Integer(words[0], false),
+                b = new Integer(words[1], false);
+
+        Integer x1 = a.highWords(m2), x0 = a.lowWords(m2);
+        Integer y1 = b.highWords(m2), y0 = b.lowWords(m2);
+        
+        Integer z2 = x1.multiply(y1);
+        Integer z1 = x1.multiply(y0).add(x0.multiply(y1));
+        Integer z0 = x0.multiply(y0);
+        
+        Integer res = z2.shiftLeft(m).add(z1.shiftLeft(m2)).add(z0);
+        
+        return res;
     }
 
     @Override
-    public Integer divide(Integer other) {
+    public Integer divide(final Integer other) {
         if (this.isZero()) return this;
         if (other.isZero()) {
             throw new ArithmeticException("Division by zero");
         }
         
-        int res[] = new int[integer.length];
-        for (int i = 0; i < integer.length; i++) {
-            res[i] = integer[i] / other.integer[i];
+        final int words[][] = padZeroes(integer, other.integer);
+        
+        int res[] = new int[words[0].length];
+        for (int i = 0; i < words[0].length; i++) {
+            res[i] = words[0][i] / words[1][i];
         }
         
         final boolean neg = (this.isNegative() != other.isNegative());
@@ -201,10 +267,16 @@ public class Integer extends Number<Integer> {
 
     @Override
     public Integer pow(int n) {
-        Integer res = ONE;
-        for (int i = 0; i < n; i++) {
-            res = this.multiply(res);
+        Integer m = this, res = ONE;
+        while (n > 0) {
+            if ((n % 2) == 1) {
+                res = m.multiply(res);
+            }
+            
+            m = m.multiply(m);
+            n /= 2;
         }
+        
         return res;
     }
     
@@ -231,7 +303,13 @@ public class Integer extends Number<Integer> {
     
     @Override
     public boolean isZero() {
-        return (integer.length == 1 && integer[0] == 0);
+        for (int i = 0; i < integer.length; i++) {
+            if (integer[i] != 0) {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     @Override
@@ -239,6 +317,12 @@ public class Integer extends Number<Integer> {
         return negative;
     }
     
+    /**
+     * 
+     * @param a
+     * @param b
+     * @return 
+     */
     private static String[] pad(String a, String b) {
         String[] res = {a, b};
         
@@ -253,40 +337,97 @@ public class Integer extends Number<Integer> {
         return res;
     }
     
+    /**
+     * 
+     * @param a
+     * @param b
+     * @return 
+     */
     private static String add(String a, String b) {
         String res = "";
 
         String s[] = pad(a, b);
         
         int k = 0;
-        for (int i = 0; i < s[0].length(); i++) {
-            final int sa = java.lang.Integer.parseInt(""+s[0].charAt(i));
-            final int sb = java.lang.Integer.parseInt(""+s[1].charAt(i));
+        for (int i = s[0].length()-1; i >= 0; i--) {
+            final int sa = java.lang.Integer.parseInt(s[0].substring(i, i+1));
+            final int sb = java.lang.Integer.parseInt(s[1].substring(i, i+1));
             
             final int t = sa + sb + k;
             k = t / 10;
-            res += t % 10;
-        }
-        
-        if (k != 0) {
-            res += k;
+            res = t % 10 + res;
         }
         
         return res;
     }
     
+    /**
+     * 
+     * @param a
+     * @param b
+     * @return 
+     */
+    private static String multiply(String a, String b) {
+        String s[] = pad(a, b);
+        
+        String res = "";
+        for (int i = s[0].length()-1; i >= 0; i--) {
+            int sa = java.lang.Integer.parseInt(""+s[0].charAt(i));
+            
+            String l = "";
+            
+            int k = 0;
+            for (int j = s[0].length()-1; j >= 0; j--) {
+                int sb = java.lang.Integer.parseInt(""+s[1].charAt(j));
+                
+                int t = (sa * sb) + k;
+                k = t / 10;
+                l = t % 10 + l;
+            }
+            l = k + l;
+            
+            for (int j = 0; j < s[0].length()-i-1; j++) {
+                l = l + "0";
+            }
+            
+            res = add(res, l);
+        }
+        
+        return res;
+    }
+    
+    /**
+     * 
+     * @param s
+     * @return 
+     */
+    private static int leading(String s) {
+        int l = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != '0') {
+                return l;
+            }
+            
+            l++;
+        }
+        
+        return 0;
+    }
+    
     @Override
     public String toString() {
-        if (isZero()) {
-            return "0";
-        }
-
         String res = "";
         for (int i = 0; i < integer.length; i++) {
-            String c = "" + (integer[i] * ((i > 0) ? radix * i : 1));
+            String c = "" + integer[i];
+            
+            for (int j = 0; j < i; j++) {
+                c = multiply(c, ""+radix);
+            }
+            
             res = add(res, c);
         }
         
+        res = res.substring(leading(res));
         return (isNegative() ? "-"+res : res);
     }
     
@@ -298,16 +439,19 @@ public class Integer extends Number<Integer> {
             return 1;
         }
         
-        if (integer.length > other.integer.length) {
+        final int thisWords[] = removeLeadingZeroes(this.integer);
+        final int otherWords[] = removeLeadingZeroes(other.integer);
+        
+        if (thisWords.length > otherWords.length) {
             return 1;
-        } else if (integer.length < other.integer.length) {
+        } else if (thisWords.length < otherWords.length) {
             return -1;
         }
         
-        for (int i = 0; i < integer.length; i++) {
-            if (integer[i] > other.integer[i]) {
+        for (int i = 0; i < thisWords.length; i++) {
+            if (thisWords[i] > otherWords[i]) {
                 return 1;
-            } else if (integer[i] < other.integer[i]) {
+            } else if (thisWords[i] < otherWords[i]) {
                 return -1;
             }
         }
@@ -319,10 +463,11 @@ public class Integer extends Number<Integer> {
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
+        
         }
         
         final Integer other = (Integer) obj;
-
+        
         if (this.isZero() || other.isZero()) {
             return (this.isZero() == other.isZero());
         }
@@ -331,8 +476,15 @@ public class Integer extends Number<Integer> {
             return false;
         }
         
-        for (int i = 0; i < integer.length; i++) {
-            if (integer[i] != other.integer[i]) {
+        final int thisWords[] = removeLeadingZeroes(this.integer);
+        final int otherWords[] = removeLeadingZeroes(other.integer);
+        
+        if (thisWords.length != otherWords.length) {
+            return false;
+        }
+
+        for (int i = 0; i < thisWords.length; i++) {
+            if (thisWords[i] != otherWords[i]) {
                 return false;
             }
         }

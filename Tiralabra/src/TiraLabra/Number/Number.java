@@ -5,14 +5,15 @@ package TiraLabra.Number;
  * @author riku
  * @param <T>
  */
-public abstract class Number<T extends Number> implements Comparable<T> {
+public abstract class Number<T extends Number<T>> implements Comparable<T> {
     /**
      * Luo 
+     * @param <T>
      * @param type luokka
      * @param k arvo
      * @return new type(k)
      */
-    public static Number make(Class<? extends Number> type, int k) {
+    public static <T extends Number<T>> T make(Class<T> type, int k) {
         try {
             return type.getConstructor(int.class).newInstance(k);
         } catch (Exception ex ) {

@@ -146,6 +146,7 @@ public abstract class NumberTests<T extends Number> {
     @Test
     public void squareRoot() {
         assertEquals(two, four.sqrt());
+        assertEquals(four, four.pow(2).sqrt());
     }
     
     @Test

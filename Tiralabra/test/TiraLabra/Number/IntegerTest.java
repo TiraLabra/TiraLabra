@@ -72,6 +72,22 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void multiplyOverflow() {
+        assertEquals("92681", one.add(overflow).add(overflow).toString());
+        assertEquals("92681", one.add(overflow.add(overflow)).toString());
+        assertEquals("92681", overflow.add(overflow).add(one).toString());
+        
         assertEquals("92680", overflow.multiply(two).toString());
+        assertEquals("2147395600", overflow.multiply(overflow).toString());
+        
+        assertEquals("99510312104000", overflow.multiply(overflow)
+                .multiply(overflow).toString());
+        
+        assertEquals("92680", two.multiply(overflow).toString());
+    }
+    
+    @Test
+    public void powOverflow() {
+        assertEquals("1073741824", two.pow(30).toString());
+        assertEquals("99510312104000", overflow.pow(3).toString());
     }
 }
