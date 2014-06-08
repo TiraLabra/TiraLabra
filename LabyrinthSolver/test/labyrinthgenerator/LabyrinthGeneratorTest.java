@@ -9,6 +9,7 @@ import org.junit.Test;
 public class LabyrinthGeneratorTest {
 
     Labyrinth l;
+    byte[][] labyrinth;
     int width;
     int height;
 
@@ -18,10 +19,19 @@ public class LabyrinthGeneratorTest {
         width = l.getWidth();
         height = l.getHeight();
     }
-
+    
+    byte[][] generateByteArray(Labyrinth lab) {
+        byte[][] array = new byte[lab.getHeight()][lab.getWidth()];
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                array[i][j] = lab.getEdges(i * width + j);
+            }
+        }
+        return array;
+    }
+    
     public void traverseLabyrinth(byte[][] l, boolean[][] visited, int coordinate, int width) {
         visited[coordinate / width][coordinate % width] = true;
-
         if ((l[coordinate / width][coordinate % width] & 2) > 0
                 && !visited[coordinate / width][coordinate % width + 1]) {
             traverseLabyrinth(l, visited, coordinate + 1, width);
@@ -42,7 +52,6 @@ public class LabyrinthGeneratorTest {
 
     public void traverseLabyrinthAndSaveEdges(byte[][] lab, byte[][] testLab, boolean[][] visited, int coordinate) {
         visited[coordinate / width][coordinate % width] = true;
-
         if ((lab[coordinate / width][coordinate % width] & 2) > 0
                 && !visited[coordinate / width][coordinate % width + 1]) {
             testLab[coordinate / width][coordinate % width] |= 2;
@@ -74,16 +83,18 @@ public class LabyrinthGeneratorTest {
         Assume.assumeNotNull(l.lg);
         l.lg.generateLabyrinth();
         l.lg.createEmptyLabyrinthIfNeeded();
-        assertTrue(l.labyrinth[0][0] == 0);
+        labyrinth = generateByteArray(l);
+        assertTrue(labyrinth[0][0] == 0);
     }
 
     @Test
     public void AlgorithmAddsAllCellsToLabyrinth() throws Exception {
         Assume.assumeNotNull(l.lg);
         l.lg.generateLabyrinth();
+        labyrinth = generateByteArray(l);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                assertTrue(l.labyrinth[i][j] > 0);
+                assertTrue(labyrinth[i][j] > 0);
             }
         }
     }
@@ -91,11 +102,9 @@ public class LabyrinthGeneratorTest {
     @Test
     public void allCellsAreVisitableInGeneratedLabyrinth() throws Exception {
         Assume.assumeNotNull(l.lg);
-        if (l.labyrinth[0][0] == 0) {
-            AlgorithmAddsAllCellsToLabyrinth();
-        }
+        AlgorithmAddsAllCellsToLabyrinth();
         boolean[][] visited = new boolean[height][width];
-        traverseLabyrinth(l.labyrinth, visited, 0, width);
+        traverseLabyrinth(labyrinth, visited, 0, width);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 assertTrue(visited[i][j]);
@@ -110,7 +119,7 @@ public class LabyrinthGeneratorTest {
         int checksum = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                checksum = checksum + (l.labyrinth[i][j] + i) * j;
+                checksum = checksum + (labyrinth[i][j] + i) * j;
             }
         }
         l.lg.createEmptyLabyrinthIfNeeded();
@@ -118,7 +127,7 @@ public class LabyrinthGeneratorTest {
         int checksum2 = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                checksum2 = checksum + (l.labyrinth[i][j] + i) * j;
+                checksum2 = checksum + (labyrinth[i][j] + i) * j;
             }
         }
         assertTrue(checksum != checksum2);
@@ -149,17 +158,19 @@ public class LabyrinthGeneratorTest {
     public void labyrinthIsSpanningTree() throws Exception {
         Assume.assumeNotNull(l.lg);
         l.lg.generateLabyrinth();
+        labyrinth = generateByteArray(l);
         /*
          Start somewhere in the middle.
          */
         int coordinate = width * height / 2 + width / 2;
-        Labyrinth testLabyrinth = new Labyrinth(width, height);
-        traverseLabyrinthAndSaveEdges(l.labyrinth, testLabyrinth.labyrinth, new boolean[width][height], coordinate);
+        Labyrinth testL = new Labyrinth(width, height);
+        byte[][] testLabyrinth = generateByteArray(testL);
+        traverseLabyrinthAndSaveEdges(labyrinth, testLabyrinth, new boolean[width][height], coordinate);
         int checksum1 = 0, checksum2 = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                checksum1 += l.labyrinth[i][j];
-                checksum2 += testLabyrinth.labyrinth[i][j];
+                checksum1 += labyrinth[i][j];
+                checksum2 += testLabyrinth[i][j];
             }
         }
         assertTrue(checksum1 == checksum2);

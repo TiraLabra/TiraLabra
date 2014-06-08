@@ -16,22 +16,33 @@ import org.junit.Test;
 public class LabyrinthTest {
 
     Labyrinth l;
+    byte[][] labyrinth;
     int width;
     int height;
 
     @Before
     public void setUp() throws Exception {
         l = new Labyrinth(10, 10);
+        labyrinth = generateByteArray(l);
         width = l.getWidth();
         height = l.getHeight();
     }
-
+    
+    byte[][] generateByteArray(Labyrinth lab) {
+        byte[][] array = new byte[lab.getHeight()][lab.getWidth()];
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                array[i][j] = lab.getEdges(i * width + j);
+            }
+        }
+        return array;
+    }
     @Test
     public void settingUp() {
         assertEquals(10, width);
         assertEquals(10, height);
-        assertEquals(10, l.labyrinth.length);
-        assertEquals(10, l.labyrinth[0].length);
+        assertEquals(10, labyrinth.length);
+        assertEquals(10, labyrinth[0].length);
     }
 
     @Test
@@ -39,10 +50,11 @@ public class LabyrinthTest {
         l.updateLabyrinth(4, 9);
         width = l.getWidth();
         height = l.getHeight();
+        labyrinth = generateByteArray(l);
         assertEquals(4, width);
         assertEquals(9, height);
-        assertEquals(9, l.labyrinth.length);
-        assertEquals(4, l.labyrinth[0].length);
+        assertEquals(9, labyrinth.length);
+        assertEquals(4, labyrinth[0].length);
     }
 
     @Test(expected = Exception.class)
@@ -74,18 +86,20 @@ public class LabyrinthTest {
     @Test
     public void addImpossiblePassages() throws Exception {
         l.addPassage(0, 4);
-        assertEquals(0, l.labyrinth[0][0]);
-        assertEquals(0, l.labyrinth[0][4]);
+        assertEquals(0, labyrinth[0][0]);
+        assertEquals(0, labyrinth[0][4]);
     }
 
     @Test
     public void addWorkingPassages() throws Exception {
         l.addPassage(0, 1);
-        assertEquals(2, l.labyrinth[0][0]);
-        assertEquals(8, l.labyrinth[0][1]);
+        labyrinth = generateByteArray(l);
+        assertEquals(2, labyrinth[0][0]);
+        assertEquals(8, labyrinth[0][1]);
         l.addPassage(0, width);
-        assertEquals(2 + 4, l.labyrinth[0][0]);
-        assertEquals(1, l.labyrinth[1][0]);
+        labyrinth = generateByteArray(l);
+        assertEquals(2 + 4, labyrinth[0][0]);
+        assertEquals(1, labyrinth[1][0]);
     }
 
     @Test(expected = Exception.class)
