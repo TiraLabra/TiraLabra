@@ -199,7 +199,7 @@ public class Board {
      *
      * @return
      */
-    public Player getPlayerInTurn() {
+    public Player playerInTurn() {
         return playerInTurn;
     }
 
@@ -334,7 +334,7 @@ public class Board {
         flipDirection(x, y, -1, 1, player, flips, realMove);
         flipDirection(x, y, -1, -1, player, flips, realMove);
         
-        if (realMove && (!flips.isEmpty())) {
+        if (realMove && !flips.isEmpty()) {
             flipStack.push(new Flip(flips.size(), player));
         }
 
@@ -375,6 +375,17 @@ public class Board {
         flipPieces(x, y, dx, dy, player, nmbrOfFlips, flips, realMove);
     }
 
+    /**
+     * Flips the pieces
+     * @param x
+     * @param y
+     * @param dx
+     * @param dy
+     * @param player
+     * @param nmbrOfFlips
+     * @param flips
+     * @param realMove 
+     */
     private void flipPieces(int x, int y, int dx, int dy, Player player, int nmbrOfFlips, ArrayList<Long> flips, boolean realMove) {
         for (int i = 0; i <= nmbrOfFlips; i++) {
             if (realMove) {
@@ -415,7 +426,7 @@ public class Board {
 
     /**
      * Undoes the last move by popping all operations caused by the move from
-     * the FlipStack.
+     * the FlipStack and placing them on the board.
      */
     public void undo() {
         if (flipStack.isEmpty()) 
@@ -442,7 +453,7 @@ public class Board {
     }
 
     /**
-     * Returns the 2d Player-array of this board.
+     * Returns the 2d Player array of this board.
      *
      * @return
      */

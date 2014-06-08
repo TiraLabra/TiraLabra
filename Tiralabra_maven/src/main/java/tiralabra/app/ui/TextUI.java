@@ -24,7 +24,6 @@ public class TextUI extends Thread {
     private Board board;
     private Scanner scanner;
     private AI ai;
-    private Vector vector;
 
     public TextUI(Game game, Scanner scanner) {
         this.game = game;
@@ -42,18 +41,22 @@ public class TextUI extends Thread {
         while (!game.gameOver()) {
             BoardUtilities.printBoard(board.getBoard());
 
+            long time = System.currentTimeMillis();
             long move;
             if (game.inTurn() == Player.BLACK) {
                 move = ai.move();
             } else {
                 move = ai.move();
             }
+            System.out.println("Time: " + (System.currentTimeMillis() - time) + "ms");
 
             try {
                 game.addMove(move);
+                sleep(200);
             } catch (InterruptedException ex) {
             }
         }
+        BoardUtilities.printBoard(board.getBoard());
     }
 
 }

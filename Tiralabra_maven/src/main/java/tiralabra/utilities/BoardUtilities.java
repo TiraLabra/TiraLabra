@@ -23,18 +23,22 @@ public class BoardUtilities {
     }
 
     public static void printBoard(Player[][] board) {
-        System.out.print(" ");
+        StringBuilder sb = new StringBuilder();
+                
+        sb.append(" ");
         for (int x = 0; x < board[0].length; x++) {
-            System.out.print(x);
+            sb.append(x);
         }
-        System.out.println("");
+        
+        sb.append('\n');
         for (int y = 0; y < board.length; y++) {
-            System.out.print(y);
+            sb.append(y);
             for (int x = 0; x < board[0].length; x++) {
-                System.out.print(board[y][x] == Player.NONE ? '.' : board[y][x] == Player.BLACK ? 'X' : 'O');
+                sb.append(board[y][x] == Player.NONE ? '.' : board[y][x] == Player.BLACK ? 'X' : 'O');
             }
-            System.out.println("");
+            sb.append('\n');
         }
+        System.out.println(sb.toString());
     }
 
     public static Player[][] createPlayerTable(int[][] table) {

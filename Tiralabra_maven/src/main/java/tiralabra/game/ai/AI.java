@@ -27,11 +27,17 @@ public class AI {
         public int x;
         public int y;
         public int value;
+        public boolean pass;
 
         public Move(int x, int y, int value) {
             this.x = x;
             this.y = y;
             this.value = value;
+            this.pass = false;
+        }
+
+        public Move(boolean pass) {
+            this.pass = true;
         }
 
         @Override
@@ -39,16 +45,9 @@ public class AI {
             return m.value - this.value;
         }
     }
-    
-    /**
-     * Used to store information of an evaluated node in the algorithm.
-     */
-    public class BoardStatistic {
-        private int value;
-        private int depth;
-    }
 
     public enum Strategy {
+
         MAXIMIZEVALUE, MAXIMIZEPIECES
     }
 
@@ -70,15 +69,17 @@ public class AI {
     {65, -3, 6, 4, 4, 6, -3, 65}};
 
     /**
-     * 
-     * @param board 
+     *
+     * @param board
      */
     public AI(Board board) {
         this.board = board;
     }
 
     /**
-     * Searches for the most optimal move by using alpha-beta-pruning.
+     * Searches for the most optimal move by using alpha-beta-pruning. If the
+     * game is in the beginning, choose a random move to avoid having the same
+     * game play out every time.
      *
      * @return move as a long value
      */
@@ -89,14 +90,7 @@ public class AI {
         }
 
         Move move = new Move(-1, -1, 0);
-
-        long start = System.currentTimeMillis();
-
-        Strategy strategy = determineStrategy();
-        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, true);
-
-        long end = System.currentTimeMillis();
-        System.out.println("Aika: " + (end - start) + "ms");
+        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, determineStrategy(), true);
 
         return Board.point(move.x, move.y);
     }
@@ -107,7 +101,7 @@ public class AI {
      * @return
      */
     private Move selectRandomMove() {
-        ArrayList<Move> moves = getAllPossibleMovesInOrder(Strategy.MAXIMIZEPIECES, false);
+        ArrayList<Move> moves = getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false);
         return moves.get(new Random().nextInt(moves.size()));
     }
 
@@ -133,11 +127,13 @@ public class AI {
      * node. Then, using alpha-beta-pruning, we prune the obviously worse nodes.
      * The value of a given board is calculated with the boardValue -method.
      *
-     * @param move
+     * @param move keeps track of which is the best move by current evaluation.
+     * the 'real' return value in a way as this object holds the optimal move
+     * for the original caller.
      * @param depth
      * @param alpha
      * @param beta
-     * @param max
+     * @param max maximizing player or minimizing player
      * @param strategy
      * @param orderMoves Whether moves should be ordered by conducting a 2-depth
      * search. Used to avoid stack overflow.
@@ -148,39 +144,35 @@ public class AI {
         if (depth == 0 || board.gameOver()) {
             return boardValue(strategy);
         }
-                
-        ArrayList<Move> moves = getAllPossibleMovesInOrder(strategy, orderMoves);
 
-        for (Move child : moves) {
-            if (child.value == 0) {
-                board.pass();
-            } else {
-                board.placeTile(child.x, child.y);
-            }
-            
-            //Maximizing player
+        ArrayList<Move> moves = getAllLegalMovesInOrder(strategy, orderMoves);
+
+        return prune(moves, depth, alpha, beta, max, strategy, move);
+    }
+
+    /**
+     * Go through each of the children of this node and maximize alpha or
+     * minimize beta accordingly.
+     *
+     * @param moves
+     * @param depth
+     * @param alpha
+     * @param beta
+     * @param max
+     * @param strategy
+     * @param move
+     * @return
+     */
+    private int prune(ArrayList<Move> moves, int depth, int alpha, int beta, boolean max, Strategy strategy, Move move) {
+        for (Move node : moves) {
+            placeMove(node);
+
             if (max) {
-                Move newMove = new Move(-1, -1, 0);
-
-                int newAlpha = search(newMove, depth - 1, alpha, beta, !max, strategy, false);
-                if (newAlpha > alpha) {
-                    alpha = newAlpha;
-                    move.x = child.x;
-                    move.y = child.y;
-                }
-            } 
-            //Minimizing player
-            else {
-                Move newMove = new Move(-1, -1, 0);
-
-                int newBeta = search(newMove, depth - 1, alpha, beta, !max, strategy, false);
-                if (newBeta < beta) {
-                    beta = newBeta;
-                    move.x = child.x;
-                    move.y = child.y;
-                }
+                alpha = maximizingPlayer(depth, alpha, beta, max, strategy, move, node);
+            } else {
+                beta = minimizingPlayer(depth, alpha, beta, max, strategy, move, node);
             }
-            
+
             board.undo();
 
             if (beta <= alpha) {
@@ -196,6 +188,67 @@ public class AI {
     }
 
     /**
+     * Places the given move on the board, or passes, if the value is zero.
+     *
+     * @param node
+     */
+    private void placeMove(Move node) {
+        if (node.pass) {
+            board.pass();
+        } else {
+            board.placeTile(node.x, node.y);
+        }
+    }
+
+    /**
+     * Minimize the value of beta. Changes the values of move each time a
+     * smaller beta is found.
+     *
+     * @param depth
+     * @param alpha
+     * @param beta
+     * @param max
+     * @param strategy
+     * @param move
+     * @param child
+     * @return
+     */
+    private int minimizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node) {
+        int newBeta = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false);
+
+        if (newBeta < beta) {
+            beta = newBeta;
+            move.x = node.x;
+            move.y = node.y;
+        }
+        return beta;
+    }
+
+    /**
+     * Maximize the value of alpha. Changes the values of move each time a
+     * larger beta is found.
+     *
+     * @param depth
+     * @param alpha
+     * @param beta
+     * @param max
+     * @param strategy
+     * @param move
+     * @param node
+     * @return
+     */
+    private int maximizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node) {
+        int newAlpha = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false);
+
+        if (newAlpha > alpha) {
+            alpha = newAlpha;
+            move.x = node.x;
+            move.y = node.y;
+        }
+        return alpha;
+    }
+
+    /**
      * Returns all moves for the current board in order by value after a 2-depth
      * search.
      *
@@ -204,23 +257,18 @@ public class AI {
      * or not just ordered by pieces flipped. Prevents stack overflow.
      * @return moves
      */
-    public ArrayList<Move> getAllPossibleMovesInOrder(Strategy strategy, boolean orderMoves) {
+    public ArrayList<Move> getAllLegalMovesInOrder(Strategy strategy, boolean orderMoves) {
         ArrayList<Move> moves = new ArrayList<>();
 
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
                 ArrayList<Long> flips = board.tryTile(x, y);
-                if (flips.size() > 0) {
-                    int value = determineValue(orderMoves, x, y, strategy, flips.size());
-                    Move move = new Move(x, y, value);
-                    moves.add(move);
-                }
+                addMove(orderMoves, x, y, strategy, flips, moves);
             }
         }
-        //No moves found, pass.
+
         if (moves.isEmpty()) {
-            Move pass = new Move(-1, -1, 0);
-            moves.add(pass);
+            moves.add(new Move(true));
         }
 
         Collections.sort(moves);
@@ -229,11 +277,29 @@ public class AI {
     }
 
     /**
+     * Adds the move to the list of legal moves if the move flips 1 or more
+     * pieces.
+     *
+     * @param orderMoves
+     * @param x
+     * @param y
+     * @param strategy
+     * @param flips
+     * @param moves
+     */
+    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, ArrayList<Long> flips, ArrayList<Move> moves) {
+        if (flips.size() > 0) {
+            int value = determineValue(orderMoves, x, y, strategy, flips.size());
+            Move move = new Move(x, y, value);
+            moves.add(move);
+        }
+    }
+
+    /**
      * Determines the value of a given move by using a 2-depth search to find
      * the best move by looking ahead 2 turns.
      *
-     * @param orderMoves if false, just return the number of flips as a
-     * value.
+     * @param orderMoves if false, just return the number of flips as a value.
      * @param x
      * @param y
      * @param strategy
@@ -261,7 +327,7 @@ public class AI {
      */
     public int boardValue(Strategy strategy) {
         int pieceDifference = board.blackPieces() - board.whitePieces();
-        if (board.getPlayerInTurn() == Player.WHITE) {
+        if (board.playerInTurn() == Player.WHITE) {
             pieceDifference = -pieceDifference;
         }
 
@@ -274,31 +340,27 @@ public class AI {
     }
 
     /**
-     * Calculates value of the current board based on the pieces the given team
-     * and their opponent hold.
+     * Calculates value of the current board based on the pieces the given
+     * player and their opponent hold.
      *
      * @return value of a board.
      */
     public int calculateValueOfBoardBasedOnPiecesHeld() {
-//        long aikaAlussa = System.currentTimeMillis();
-
         int heuristic = 0;
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
                 int value = 0;
-                
+
                 if (board.getTile(x, y) != Player.NONE) {
                     value = pieceValues[y][x] + around(x, y);
                 }
-                if (board.getTile(x, y) == Player.opposing(board.getPlayerInTurn())) {
+                if (board.getTile(x, y) == Player.opposing(board.playerInTurn())) {
                     value = -value;
                 }
 
                 heuristic += value;
             }
         }
-//        long aikaLopussa = System.currentTimeMillis();
-//        System.out.println("Aikaa kului: " + (aikaLopussa - aikaAlussa) + " ms");
 
         return heuristic;
     }

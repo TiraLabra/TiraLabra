@@ -53,15 +53,15 @@ public class AITest {
     
     @Test
     public void findingLegalMovesFindsMoves() {
-        assertFalse(ai.getAllPossibleMovesInOrder(Strategy.MAXIMIZEPIECES, false).isEmpty());
+        assertFalse(ai.getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false).isEmpty());
     }
 
     @Test
     public void allFoundLegalMovesAreLegal() {
-        ArrayList<Move> moves = ai.getAllPossibleMovesInOrder(Strategy.MAXIMIZEPIECES, false);
+        ArrayList<Move> moves = ai.getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false);
         
         for (Move move : moves) {
-            assertTrue(board.canPlace(move.x, move.y, board.getPlayerInTurn()));
+            assertTrue(board.canPlace(move.x, move.y, board.playerInTurn()));
         }
     }
     

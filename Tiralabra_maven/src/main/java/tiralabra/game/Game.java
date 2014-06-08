@@ -74,7 +74,7 @@ public class Game extends Thread {
      * @return 
      */
     public Player inTurn() {
-        return board.getPlayerInTurn();
+        return board.playerInTurn();
     }
 
     /**

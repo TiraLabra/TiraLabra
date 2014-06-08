@@ -22,7 +22,7 @@ public class BoardUtilitiesTest {
 
     @Test
     public void convertingIntegerTablesToPlayerTablesWorks() {
-        int[][] table = initalizeARandomGeneratedBoardWithIntegers();
+        int[][] table = initalizeARandomlyGeneratedBoardWithIntegers();
 
         Player[][] board = BoardUtilities.createPlayerTable(table);
 
@@ -39,7 +39,7 @@ public class BoardUtilitiesTest {
         }
     }
 
-    public int[][] initalizeARandomGeneratedBoardWithIntegers() {
+    public int[][] initalizeARandomlyGeneratedBoardWithIntegers() {
         int[][] table = new int[8][8];
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {

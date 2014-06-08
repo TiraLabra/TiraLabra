@@ -195,10 +195,10 @@ public class BoardTest {
     public void placingATileChangesTurn() {
         board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.BLACK);
         board.placeTile(3, 0);
-        assertEquals(Player.WHITE, board.getPlayerInTurn());
+        assertEquals(Player.WHITE, board.playerInTurn());
 
         board.placeTile(7, 0);
-        assertEquals(Player.BLACK, board.getPlayerInTurn());
+        assertEquals(Player.BLACK, board.playerInTurn());
 
     }
 }
