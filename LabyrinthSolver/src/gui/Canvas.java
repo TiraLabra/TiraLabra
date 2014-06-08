@@ -38,7 +38,7 @@ class Canvas extends JPanel {
      * kokonaisluku auttaa keskittämään labyrintin.
      */
     int fixPosition;
-    
+
     /**
      * Asettaa labyrintin ja solunkoon. Alustaa värit. Laskee tarvitseeko
      * labyrintti keskittää.
@@ -135,13 +135,13 @@ class Canvas extends JPanel {
                             cellSize * (i + 2));
                     continue;
                 }
-                if ((labyrinth.labyrinth[i][j] & 8) == 0) {
+                if (!labyrinth.hasEdge(i * width + j, (byte) 8)) {
                     g.drawLine(fixPosition + cellSize * (j + 1),
                             cellSize * (i + 1),
                             fixPosition + cellSize * (j + 1),
                             cellSize * (i + 2));
                 }
-                if ((labyrinth.labyrinth[i][j] & 1) == 0) {
+                if (!labyrinth.hasEdge(i * width + j, (byte) 1)) {
                     g.drawLine(fixPosition + cellSize * (j + 1),
                             cellSize * (i + 1),
                             fixPosition + cellSize * (j + 2),
@@ -172,7 +172,7 @@ class Canvas extends JPanel {
             paintVisitedCells(g);
             paintPath(g);
         }
-        if (labyrinth.labyrinth[0][0] != 0) {
+        if (labyrinth.isGenerated()) {
             paintWalls(g);
         }
     }
