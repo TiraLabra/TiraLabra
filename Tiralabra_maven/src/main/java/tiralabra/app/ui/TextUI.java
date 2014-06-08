@@ -11,7 +11,7 @@ import tiralabra.game.Board;
 import tiralabra.game.Game;
 import tiralabra.game.Player;
 import tiralabra.game.ai.AI;
-import tiralabra.utilities.Utilities;
+import tiralabra.utilities.BoardUtilities;
 
 /**
  * Terminal UI for the game.
@@ -40,7 +40,7 @@ public class TextUI extends Thread {
     @Override
     public synchronized void run() {
         while (!game.gameOver()) {
-            Utilities.printBoard(board.getBoard());
+            BoardUtilities.printBoard(board.getBoard());
 
             long move;
             if (game.inTurn() == Player.BLACK) {

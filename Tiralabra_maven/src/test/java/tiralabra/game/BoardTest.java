@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import tiralabra.utilities.Utilities;
+import tiralabra.utilities.BoardUtilities;
 import tiralabra.utilities.ZobristHash;
 
 /**
@@ -57,7 +57,7 @@ public class BoardTest {
 
     @Test
     public void placingABlackPiecePutsAPieceAtTheRightSpot() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.BLACK);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.BLACK);
 
         assertFalse(board.place(3, 0, Player.BLACK, true).isEmpty());
         assertEquals(Player.BLACK, board.getTile(3, 0));
@@ -65,7 +65,7 @@ public class BoardTest {
 
     @Test
     public void placingAWhitePiecePutsAPieceAtTheRightSpot() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.WHITE);
 
         assertFalse(board.place(0, 0, Player.WHITE, true).isEmpty());
         assertEquals(Player.WHITE, board.getTile(0, 0));
@@ -73,7 +73,7 @@ public class BoardTest {
 
     @Test
     public void placingBlacksFlipsPiecesVertically() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.WHITE);
 
         assertEquals(2, board.place(3, 0, Player.BLACK, true).size());
         assertEquals(2, board.place(4, 0, Player.BLACK, true).size());
@@ -84,7 +84,7 @@ public class BoardTest {
 
     @Test
     public void placingWhitesFlipsPiecesVertically() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.WHITE);
 
         assertEquals(2, board.place(0, 0, Player.WHITE, true).size());
         assertEquals(2, board.place(7, 0, Player.WHITE, true).size());
@@ -94,7 +94,7 @@ public class BoardTest {
 
     @Test
     public void placingBlacksFlipsPiecesHorizontally() {
-        board.setBoard(Utilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
 
         assertEquals(2, board.place(0, 3, Player.BLACK, true).size());
         assertEquals(2, board.place(0, 4, Player.BLACK, true).size());
@@ -104,7 +104,7 @@ public class BoardTest {
 
     @Test
     public void placingWhitesFlipsPiecesHorizontally() {
-        board.setBoard(Utilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(horizontalTestBoard), Player.WHITE);
 
         assertEquals(2, board.place(0, 0, Player.WHITE, true).size());
         assertEquals(2, board.place(0, 7, Player.WHITE, true).size());
@@ -114,7 +114,7 @@ public class BoardTest {
 
     @Test
     public void placingBlacksFlipsPiecesDiagonally1() {
-        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.BLACK);
+        board.setBoard(BoardUtilities.createPlayerTable(diagonalTestBoard1), Player.BLACK);
 
         assertEquals(2, board.place(0, 3, Player.BLACK, true).size());
         assertEquals(2, board.place(3, 3, Player.BLACK, true).size());
@@ -124,7 +124,7 @@ public class BoardTest {
 
     @Test
     public void placingBlacksFlipsPiecesDiagonally2() {
-        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard2), Player.BLACK);
+        board.setBoard(BoardUtilities.createPlayerTable(diagonalTestBoard2), Player.BLACK);
 
         assertEquals(2, board.place(0, 0, Player.BLACK, true).size());
         assertEquals(2, board.place(3, 0, Player.BLACK, true).size());
@@ -134,7 +134,7 @@ public class BoardTest {
 
     @Test
     public void placingWhitesFlipsPiecesDiagonally1() {
-        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard2), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(diagonalTestBoard2), Player.WHITE);
 
         assertEquals(2, board.place(0, 3, Player.WHITE, true).size());
         assertEquals(2, board.place(3, 3, Player.WHITE, true).size());
@@ -144,7 +144,7 @@ public class BoardTest {
 
     @Test
     public void placingWhitesFlipsPiecesDiagonally2() {
-        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
+        board.setBoard(BoardUtilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
 
         assertEquals(2, board.place(0, 0, Player.WHITE, true).size());
         assertEquals(2, board.place(3, 0, Player.WHITE, true).size());
@@ -154,16 +154,18 @@ public class BoardTest {
 
     @Test
     public void undoingFlipsWorks() {
-        board.setBoard(Utilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
+        board.setBoard( BoardUtilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
 
+        ZobristHash hasher = new ZobristHash();
+        long originalHash = hasher.hash(board.getBoard());
         board.placeTile(0, 0);
         board.undo();
-        assertArrayEquals(Utilities.createPlayerTable(diagonalTestBoard1), board.getBoard());
+        assertEquals(originalHash, hasher.hash(board.getBoard()));
     }
 
     @Test
     public void checkingWhetherYouCanPlaceAPieceWorks() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.BLACK);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.BLACK);
         assertTrue(board.canPlace(0, 0, Player.WHITE));
         assertTrue(board.canPlace(3, 0, Player.BLACK));
     }
@@ -177,22 +179,21 @@ public class BoardTest {
     @Test
     public void undoingWorksAgainstPasses() {
         board.placeTile(3, 5);
+        
         ZobristHash hasher = new ZobristHash();
         long hash = hasher.hash(board.getBoard());
         assertEquals(hash, hasher.hash(board.getBoard()));
-        Utilities.printBoard(board.getBoard());
 
         board.pass();
         board.undo();
 
-        Utilities.printBoard(board.getBoard());
 
-        assertEquals(hash, hasher.hash(board.getBoard()));
+        assertEquals("Undoing passes should keep the board the same", hash, hasher.hash(board.getBoard()));
     }
 
     @Test
     public void placingATileChangesTurn() {
-        board.setBoard(Utilities.createPlayerTable(verticalTestBoard), Player.BLACK);
+        board.setBoard(BoardUtilities.createPlayerTable(verticalTestBoard), Player.BLACK);
         board.placeTile(3, 0);
         assertEquals(Player.WHITE, board.getPlayerInTurn());
 

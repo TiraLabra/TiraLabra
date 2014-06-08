@@ -23,12 +23,31 @@ public class ZobristHash {
      * Holds the randomly generated numbers which determine a boards hashing.
      */
     private BigInteger[][] table;
-
-    public ZobristHash() {
+    /**
+     * The height of boards hashed.
+     */
+    private int height;
+    /**
+     * The width of boards hashed.
+     */
+    private int width;
+    
+    public ZobristHash(int height, int width) {
         table = new BigInteger[64][3];
-        for (int i = 0; i < 64; i++) {
+        this.height = height;
+        this.width = width;
+        
+        initializeTable();
+    }
+    
+    /**
+     * Initialize the table which is used for hashing.
+     */
+    private void initializeTable() {
+        Random random = new Random();
+        for (int i = 0; i < height * width; i++) {
             for (int j = 0; j < 2; j++) {
-                table[i][j] = new BigInteger(64, new Random());
+                table[i][j] = new BigInteger(64, random);
             }
         }
     }
@@ -42,7 +61,8 @@ public class ZobristHash {
     public long hash(Player[][] board) {
         BigInteger hash = new BigInteger("0");
 
-        for (int i = 0; i < 64; i++) {
+
+        for (int i = 0; i < height * width; i++) {
             int j = board[i / 8][i % 8].value() - 1;
             if (j >= 0) {
                 if (hash.intValue() == 0) {

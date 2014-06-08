@@ -16,7 +16,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import tiralabra.game.Player;
 import tiralabra.game.ai.AI.Move;
-import tiralabra.utilities.Utilities;
+import tiralabra.utilities.BoardUtilities;
 import tiralabra.utilities.ZobristHash;
 
 /**
@@ -33,19 +33,18 @@ public class AITest {
     public void setUp() {
         board = new Board();
         ai = new AI(board);
-        hasher = new ZobristHash();
+        hasher = new ZobristHash(8, 8);
     }
 
     @Test
     public void searchDoesntPlaceOrRemoveAnyPiecesOnTheBoard() {
         for (int i = 0; i < 5; i++) {
             long originalHash = hasher.hash(board.getBoard());
-            Utilities.printBoard(board.getBoard());
             
             long move = ai.move();
             long newHash = hasher.hash(board.getBoard());
-            Utilities.printBoard(board.getBoard());
-            assertEquals("i: " + i, originalHash, newHash);
+
+            assertEquals("Searching for a move should leave the board unchanged.", originalHash, newHash);
 
             board.placeTile(move);
         }

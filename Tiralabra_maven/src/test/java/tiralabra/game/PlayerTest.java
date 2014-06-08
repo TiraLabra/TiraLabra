@@ -20,12 +20,6 @@ import static org.junit.Assert.*;
  */
 public class PlayerTest {
     
-    @Before
-    public void setUp() {
-        
-    }
-    
-    
     @Test
     public void threePlayerEnumerablesWithTheseValuesExist() {
         assertEquals(Player.NONE, Player.player(0));

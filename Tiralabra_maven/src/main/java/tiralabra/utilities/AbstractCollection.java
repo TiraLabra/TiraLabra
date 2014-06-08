@@ -9,14 +9,29 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
+ * Abstract class which implements most of the methods specified in the
+ * Collection interface. Most data structures should extend this.
  *
  * @author atte
  */
 public abstract class AbstractCollection<E> implements Collection<E> {
 
+    /**
+     * Holds all the objects stored in the collection.
+     */
     protected Object[] array;
+    /**
+     * Number of objects currently stored in the collection.
+     */
     protected int size;
+    /**
+     * The initial capacity for the array. When clear() is used, the new array's
+     * length will be this.
+     */
     protected final int initialCapacity;
+    /**
+     * The default initial capacity for the array, if none was specified.
+     */
     protected static final int DEFAULTCAPACITY = 12;
 
     public AbstractCollection(int initialCapacity) {
@@ -88,7 +103,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     public boolean isEmpty() {
         return size == 0;
     }
-    
+
     @Override
     public E[] toArray() {
         return (E[]) Arrays.copyOf(array, size);

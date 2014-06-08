@@ -11,27 +11,27 @@ import tiralabra.game.Player;
  *
  * @author atte
  */
-public class Utilities {
+public class BoardUtilities {
 
-    public static int[][] copy2dArray(int[][] array) {
-        int[][] copy = new int[array.length][array[0].length];
+    public static Object[][] copy2dArray(Object[][] array) {
+        Object[][] copy = new Object[array.length][array[0].length];
 
         for (int y = 0; y < array.length; y++) {
             copy[y] = array[y].clone();
         }
-        return copy;
+        return array.getClass().cast(copy);
     }
 
-    public static void printBoard(Player[][] game) {
+    public static void printBoard(Player[][] board) {
         System.out.print(" ");
-        for (int x = 0; x < game[0].length; x++) {
+        for (int x = 0; x < board[0].length; x++) {
             System.out.print(x);
         }
         System.out.println("");
-        for (int y = 0; y < game.length; y++) {
+        for (int y = 0; y < board.length; y++) {
             System.out.print(y);
-            for (int x = 0; x < game[0].length; x++) {
-                System.out.print(game[y][x] == Player.NONE ? '.' : game[y][x] == Player.BLACK ? 'X' : 'O');
+            for (int x = 0; x < board[0].length; x++) {
+                System.out.print(board[y][x] == Player.NONE ? '.' : board[y][x] == Player.BLACK ? 'X' : 'O');
             }
             System.out.println("");
         }
@@ -39,6 +39,7 @@ public class Utilities {
 
     public static Player[][] createPlayerTable(int[][] table) {
         Player[][] board = new Player[table.length][table[0].length];
+        
 
         for (int y = 0; y < table.length; y++) {
             for (int x = 0; x < table[0].length; x++) {

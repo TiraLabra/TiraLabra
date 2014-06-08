@@ -6,7 +6,7 @@ import java.util.Stack;
 import tiralabra.game.Board;
 import tiralabra.game.Game;
 import tiralabra.app.ui.TextUI;
-import tiralabra.utilities.Utilities;
+import tiralabra.utilities.BoardUtilities;
 import tiralabra.utilities.ZobristHash;
 
 
@@ -20,7 +20,7 @@ public class App {
         Game game = new Game();
         Scanner scanner = new Scanner(System.in);
         TextUI ui = new TextUI(game, scanner);
-        Utilities.printBoard(game.getBoard().getBoard());
+        BoardUtilities.printBoard(game.getBoard().getBoard());
         game.start();
         ui.start();
         
