@@ -52,8 +52,8 @@ class Canvas extends JPanel {
         wallColor = new Color(0, 0, 0);
         visitedCellColor = new Color(255, 235, 235);
         pathColor = new Color(255, 0, 0);
-        if ((2 + l.getWidth()) * cellSize < 125) {
-            fixPosition = (125 - (2 + l.getWidth()) * cellSize) / 2;
+        if ((2 + l.getWidth()) * cellSize < 250) {
+            fixPosition = (250 - (2 + l.getWidth()) * cellSize) / 2;
         } else {
             fixPosition = 0;
         }
