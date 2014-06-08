@@ -45,7 +45,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     }
 
     @Override
-    public abstract void add(E e);
+    public abstract boolean add(E e);
 
     @Override
     public boolean remove(E e) {
@@ -73,10 +73,9 @@ public abstract class AbstractCollection<E> implements Collection<E> {
         while (i < size) {
             array[i] = array[++i];
         }
-        array[size++] = null;
-
+        array[size] = null;
+        
         return removed;
-
     }
 
     @Override
@@ -85,8 +84,8 @@ public abstract class AbstractCollection<E> implements Collection<E> {
             return false;
         }
 
-        for (E l : (E[]) array) {
-            if (l.equals(e)) {
+        for (Object l : array) {
+            if (e.equals(l)) {
                 return true;
             }
         }
@@ -121,6 +120,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     @Override
     public void clear() {
         array = new Object[initialCapacity];
+        size = 0;
     }
 
     /**
@@ -146,10 +146,6 @@ public abstract class AbstractCollection<E> implements Collection<E> {
             @Override
             public E next() {
                 return (E) array[i++];
-            }
-            
-            public <E extends Comparable<? super E>> void  set(E e) {
-                array[i] = e;
             }
 
             @Override

@@ -26,13 +26,14 @@ public class Stack<E> extends AbstractCollection<E> {
      *
      * @param e
      */
-    public void push(E e) {
+    public E push(E e) {
         if (size == array.length) {
             growCapacity();
         }
 
         array[size] = e;
         size++;
+        return e;
     }
 
     /**
@@ -65,8 +66,8 @@ public class Stack<E> extends AbstractCollection<E> {
     }
 
     @Override
-    public void add(E e) {
-        push(e);
+    public boolean add(E e) {
+        return push(e) != null;
     }
 
 }

@@ -16,8 +16,9 @@ public interface Collection<E> extends Iterable<E> {
      * Appends the object to the last position in the Collection.
      *
      * @param e
+     * @return true - if the operation was succesful.
      */
-    public void add(E e);
+    public boolean add(E e);
 
     /**
      * Removes the object from the Collection and moves each object after the

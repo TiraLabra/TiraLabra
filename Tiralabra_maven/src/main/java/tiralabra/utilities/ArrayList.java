@@ -11,7 +11,7 @@ import java.util.ListIterator;
 import tiralabra.game.ai.AI;
 
 /**
- * Implementation of list data-structure stored in an array.
+ * Implementation of list data structure, stored in an array.
  *
  * @author atte
  * @param <T>
@@ -21,25 +21,21 @@ public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
     public ArrayList() {
         super();
     }
-    
+
     public ArrayList(int initialCapacity) {
         super(initialCapacity);
     }
-    
-    /**
-     * Adds an object to the list.
-     *
-     * @param t
-     */
+
     @Override
-    public void add(T t) {
+    public boolean add(T t) {
+        array[size++] = t;
+
         if (size == array.length) {
             growCapacity();
         }
-
-        array[size++] = t;
+        
+        return true;
     }
-    
 
     @Override
     public ListIterator<T> listIterator() {
@@ -54,12 +50,12 @@ public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 
             @Override
             public T next() {
-                T t = (T) array[i];
-                i++;
+                T t = (T) array[i++];
                 return t;
             }
-            
-            public <T extends Comparable<? super T>> void  set(T t) {
+
+            @Override
+            public void set(T t) {
                 array[i] = t;
             }
 
@@ -86,11 +82,6 @@ public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
             @Override
             public int previousIndex() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void set(T t) {
-                array[i] = t;
             }
 
             @Override
