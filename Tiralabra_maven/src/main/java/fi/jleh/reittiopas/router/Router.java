@@ -23,12 +23,12 @@ import fi.jleh.reittiopas.utils.TimeUtils;
  */
 public class Router {
 
-	private final int LINE_CHANGE_PENALTY = 10000;
+	private final int LINE_CHANGE_PENALTY = 100;
 	private final double WALK_DISTANCE = 100;
-	private final double WALK_PENALTY = 5000; // Walk penalty per meter
+	private final double WALK_PENALTY = 20; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
-	private final double TIME_MODIFIER = 55000;
-	private final double BUS_COST = 1000; // It is better to travel with rails 
+	private final double TIME_MODIFIER = 100;
+	private final double BUS_COST = 10; // It is better to travel with rails 
 	
 	private DataStructuresDto dataStructures;
 	
@@ -109,42 +109,40 @@ public class Router {
 					continue;
 				
 				double tentativeScore = estimatedCost.get(current) 
-						+ GeomertyUtils.calculateDistance(current, station);
+						+ GeomertyUtils.calculateDistance(current, station) + timeFromStart(stop.getArrival());
 				
 				if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
-					// Do time check
-					double timeScore = calculateTimeScore(timeAtStation.get(current), stop.getArrival());
-					
-					// Can't go back in time
-					if (timeScore < 0)
-						continue;
-				
-					cameFrom.put(station, current);
-					cameFromStop.put(station, stop);
-					timeAtStation.put(station, stop.getArrival());
-					
-					// We give some penalty for changing line
-					double linePenalty = 0;
-					if (cameFromStop.get(current) != null
-							&& stop.getService() != null // When walk to other station service is null
-							&& cameFromStop.get(current).getService() != null) { // As above
-						if (stop.getService().getId() != cameFromStop.get(current).getService().getId())
-							linePenalty = LINE_CHANGE_PENALTY;
-						else
-							timeScore = 0; // Reset time score, no need to change the vehicle
-					}
-
-					double cost = tentativeScore + linePenalty + timeScore + BUS_COST;
-					
-					//costFromStart.put(station, tentativeScore + timeScore);
-					costFromStart.put(station, tentativeScore + timeScore);
-					estimatedCost.put(station, cost);
-					
-					if (!openNodes.contains(station)) {
-						openNodes.insert(cost, station);
-					}
+					addStopToOpenSet(station, current, stop, tentativeScore);
 				}
 			}
+		}
+	}
+	
+	private void addStopToOpenSet(Station station, Station current, Stop stop, double tentativeScore) {
+		// Do time check
+		double timeScore = calculateTimeScore(timeAtStation.get(current), stop.getArrival());
+		
+		// Can't go back in time
+		if (timeScore < 0)
+			return;
+
+		// We give some penalty for changing line
+		double linePenalty = 0;
+		if (timeScore != 0)
+			linePenalty = calculateLineChangePenalty(current, stop);
+		
+		cameFrom.put(station, current);
+		cameFromStop.put(station, stop);
+		timeAtStation.put(station, stop.getArrival());
+		
+		double cost = tentativeScore + linePenalty + timeScore + BUS_COST;
+		
+		//costFromStart.put(station, tentativeScore + timeScore);
+		costFromStart.put(station, tentativeScore);
+		estimatedCost.put(station, cost);
+		
+		if (!openNodes.contains(station)) {
+			openNodes.insert(cost, station);
 		}
 	}
 	
@@ -164,6 +162,27 @@ public class Router {
 		return time * TIME_MODIFIER;
 	}
 	
+	private int timeFromStart(String timeNow) {
+		try {
+			return Integer.parseInt(TimeUtils.calculateTimeDifference(routeStartTime, timeNow));
+		} catch (NumberFormatException e) { // Time now is before route start time
+			return 5000000;
+		}
+		
+	}
+	
+	private double calculateLineChangePenalty(Station current, Stop stop) {
+		double linePenalty = 0;
+		if (cameFromStop.get(current) != null
+				&& stop.getService() != null // When walk to other station service is null
+				&& cameFromStop.get(current).getService() != null) { // As above
+			if (stop.getService().getId() != cameFromStop.get(current).getService().getId())
+				linePenalty = LINE_CHANGE_PENALTY;
+		}
+		
+		return linePenalty;
+	}
+	
 	private void processNearbyStations(Station current, String startTime) {
 		BoundingBox boundingBox = new BoundingBox(current.getX(), current.getY(), WALK_DISTANCE);
 		List<QuadtreePoint> nearbyStations = dataStructures.getStationSpatial().queryRange(boundingBox);
@@ -176,16 +195,15 @@ public class Router {
 				continue;
 			
 			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
-			double tentativeScore = estimatedCost.get(current) + walkDistance;
 			int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
+			String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
+			double tentativeScore = GeomertyUtils.calculateDistance(current, nearbyStation) + timeFromStart(timeAfterWalk);
 			
-			if (!openNodes.contains(nearbyStation) 
-					|| tentativeScore < costFromStart.get(nearbyStation)) {
+			if (!openNodes.contains(nearbyStation) || tentativeScore < costFromStart.get(nearbyStation)) {
 				cameFrom.put(nearbyStation, current);
 				cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
 				
 				double timeScore = 0;
-				String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
 				timeAtStation.put(nearbyStation, timeAfterWalk);
 				timeScore = calculateTimeScore(timeAfterWalk, startTime);
 				
@@ -210,13 +228,5 @@ public class Router {
 		
 		costFromStart = new DefaultHashMap<Station, Double>(2000);
 		estimatedCost = new DefaultHashMap<Station, Double>(2000);
-	}
-	
-	private void debugPrint(Station current) {
-		String lineNumber = "Walk";
-		if (cameFromStop.get(current) != null && cameFromStop.get(current).getService() != null)
-			lineNumber = cameFromStop.get(current).getService().getLineNumber();
-		
-		System.out.println(estimatedCost.get(current) + " " + current.getName() + " " + lineNumber);
 	}
 }
