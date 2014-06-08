@@ -31,7 +31,20 @@ public class TiedostonPurkaja {
         File pakkaus = haePakkaus(polku);
         File tiedosto = muodostaTiedosto(polku);
         
-        puraTiedosto(pakkaus, tiedosto);
+        String kirjoitettava = puretunTiedostonSisalto(pakkaus, tiedosto);
+        kirjoitaTeksti(polku, kirjoitettava);
+    }
+    
+    /**
+     * Kirjoittaa puretun tiedoston sisällön.
+     * @param polku
+     * @param teksti
+     * @throws IOException
+     */
+    
+    protected void kirjoitaTeksti(String polku, String teksti) throws IOException {
+        Kirjoittaja kirjoittaja = new Kirjoittaja(polku);
+        kirjoittaja.kirjoita(teksti);
     }
     
     /**
@@ -87,15 +100,14 @@ public class TiedostonPurkaja {
      * @param tiedosto
      * @throws IOException 
      */
-    protected void puraTiedosto(File pakkaus, File tiedosto) throws IOException {
+    protected String puretunTiedostonSisalto(File pakkaus, File tiedosto) throws IOException {
         String teksti = lueTeksti(pakkaus);
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
         
         int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
         String tekstiBinaarina = tekstiBinaarina(teksti, binaariTekstinAlku);
         
-        String kirjoitettava = kirjoitettavaTeksti(tekstiBinaarina, bittijonotJaMerkit);
-        new Kirjoittaja(tiedosto.getPath()).kirjoita(kirjoitettava);
+        return kirjoitettavaTeksti(tekstiBinaarina, bittijonotJaMerkit);
     }
     
     /**
@@ -174,7 +186,7 @@ public class TiedostonPurkaja {
     }
     
     protected boolean lisaaMerkkiJosSeOn0Tai1(char merkki, StringBuilder bittiEsitys) {
-        if (merkki == '0' || merkki == '1') {
+        if (merkki == 0 || merkki == 1) {
             bittiEsitys.append(merkki);
             return true;
         }

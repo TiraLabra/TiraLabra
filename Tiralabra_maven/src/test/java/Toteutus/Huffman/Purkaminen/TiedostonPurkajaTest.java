@@ -174,9 +174,9 @@ public class TiedostonPurkajaTest {
     
     private void lisaaMerkkiJosSeOn0Tai1() {
         StringBuilder bittiEsitys = new StringBuilder();
-        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1('0', bittiEsitys));
-        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1('1', bittiEsitys));
-        assertEquals("01", bittiEsitys.toString());
+        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1((char) 0, bittiEsitys));
+        assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1((char) 1, bittiEsitys));
+        assertEquals((char) 0 + "" + (char) 1 + "", bittiEsitys.toString());
         
         assertFalse(purkaja.lisaaMerkkiJosSeOn0Tai1('d', bittiEsitys));
     }

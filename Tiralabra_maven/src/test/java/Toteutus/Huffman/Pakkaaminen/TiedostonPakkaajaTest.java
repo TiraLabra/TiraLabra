@@ -87,4 +87,10 @@ public class TiedostonPakkaajaTest {
         
         return esitykset;
     }
+    
+    @Test
+    public void pakatuksiTekstiksi() {
+        String pakattuna = pakkaaja.tekstiPakattuna(testattavatBittiEsitykset(), "cbe");
+        assertEquals((char) 19 + "", pakattuna);
+    }
 }
