@@ -5,6 +5,7 @@
  */
 package tiralabra.game.ai;
 
+import java.awt.Point;
 import tiralabra.utilities.ArrayList;
 import tiralabra.game.Board;
 import tiralabra.game.Player;
@@ -31,6 +32,10 @@ public class AI {
             this.y = y;
             this.flips = flips;
         }
+    }
+    
+    public enum Strategy {
+        MAXIMIZEPOINTS, MAXIMIZEPIECES
     }
 
     /**
@@ -83,17 +88,27 @@ public class AI {
      * @return move as a long value
      */
     public long move() {
-
-        int alpha = Integer.MIN_VALUE;
-        int beta = Integer.MAX_VALUE;
         Move move = new Move(-1, -1, null);
 
-        long alussa = System.currentTimeMillis();
-        search(move, 8, alpha, beta, true);
-        long lopussa = System.currentTimeMillis();
-        System.out.println("Aika: " + (lopussa - alussa) + "ms");
+        long start = System.currentTimeMillis();
+        
+        Strategy strategy = determineStrategy();
+        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy);
+        
+        long end = System.currentTimeMillis();
+        System.out.println("Aika: " + (end - start) + "ms");
 
         return Board.point(move.x, move.y);
+    }
+    
+    private Strategy determineStrategy() {
+        int movesLeft = 64 - board.getNumberOfPieces();
+        
+        if(movesLeft < 20) {
+            return Strategy.MAXIMIZEPIECES;
+        } else {
+            return Strategy.MAXIMIZEPOINTS;
+        }
     }
 
     /**
@@ -109,10 +124,10 @@ public class AI {
      * @param max
      * @return the alpha or beta value of this node.
      */
-    public int search(Move move, int depth, int alpha, int beta, boolean max) {
+    public int search(Move move, int depth, int alpha, int beta, boolean max, Strategy strategy) {
         //Reached maximum depth or end of the game, return value of the board.
         if (depth == 0 || board.gameOver()) {
-            return boardValue();
+            return boardValue(strategy);
         }
 
         ArrayList<Move> moves = getAllPossibleMovesInOrder();
@@ -127,7 +142,7 @@ public class AI {
             if (max) {
                 Move newMove = new Move(-1, -1, null);
 
-                int newAlpha = search(newMove, depth - 1, alpha, beta, !max);
+                int newAlpha = search(newMove, depth - 1, alpha, beta, !max, strategy);
                 if (newAlpha > alpha) {
                     alpha = newAlpha;
                     move.x = child.x;
@@ -136,7 +151,7 @@ public class AI {
             } else {
                 Move newMove = new Move(-1, -1, null);
 
-                int newBeta = search(newMove, depth - 1, alpha, beta, !max);
+                int newBeta = search(newMove, depth - 1, alpha, beta, !max, strategy);
                 if (newBeta < beta) {
                     beta = newBeta;
                     move.x = child.x;
@@ -189,15 +204,21 @@ public class AI {
      * Return the value of a board based on the difference between tiles and the
      * determined value of held pieces.
      *
+     * @param strategy
      * @return value of board.
      */
-    public int boardValue() {
+    public int boardValue(Strategy strategy) {
         int pieceDifference = board.blackPieces() - board.whitePieces();
         if (board.getPlayerInTurn() == Player.WHITE) {
             pieceDifference = -pieceDifference;
         }
-
-        return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld();
+        
+        switch(strategy) {
+            case MAXIMIZEPOINTS:
+                return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld();
+            default:
+                return pieceDifference;
+        }
     }
 
     /**

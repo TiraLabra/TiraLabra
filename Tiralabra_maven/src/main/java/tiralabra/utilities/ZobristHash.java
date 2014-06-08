@@ -39,7 +39,7 @@ public class ZobristHash {
      * @param board
      * @return hash of the board
      */
-    public int hash(Player[][] board) {
+    public long hash(Player[][] board) {
         BigInteger hash = new BigInteger("0");
 
         for (int i = 0; i < 64; i++) {
@@ -53,6 +53,6 @@ public class ZobristHash {
             }
         }
 
-        return hash.intValue();
+        return hash.longValue();
     }
 }

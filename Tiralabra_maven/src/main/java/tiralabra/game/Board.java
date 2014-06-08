@@ -333,6 +333,7 @@ public class Board {
         flipDirection(x, y, 1, -1, player, flips, realMove);
         flipDirection(x, y, -1, 1, player, flips, realMove);
         flipDirection(x, y, -1, -1, player, flips, realMove);
+        
         if (realMove && (!flips.isEmpty())) {
             flipStack.push(new Flip(flips.size(), player));
         }
@@ -358,9 +359,9 @@ public class Board {
         int xt = x + dx;
         int yt = y + dy;
         while (isValidTile(xt, yt)) {
-            if (getTile(xt, yt) != Player.opposing(player)) {
+            if (getTile(xt, yt) != Player.opposing(player)) 
                 break;
-            }
+            
             nmbrOfFlips++;
 
             xt += dx;
@@ -417,25 +418,16 @@ public class Board {
      * the FlipStack.
      */
     public void undo() {
-        if (flipStack.isEmpty()) {
+        if (flipStack.isEmpty()) 
             return;
-        }
 
         int flipsToClear = flipStack.pop().flipsToClear;
         for (int i = 0; i < flipsToClear; i++) {
             Flip flip = flipStack.pop();
-
-            int x = flip.x;
-            int y = flip.y;
-            Player player = flip.player;
-            setTile(x, y, player);
+            setTile(flip.x, flip.y, flip.player);
         }
 
-        if (playerInTurn == Player.WHITE) {
-            playerInTurn = Player.BLACK;
-        } else {
-            playerInTurn = Player.WHITE;
-        }
+        changeTurn();
     }
 
     /**
