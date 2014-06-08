@@ -68,7 +68,7 @@ public class Labyrinth {
      * @return Palauttaa true, jos labyrintti on generoitu.
      */
     public boolean isGenerated() {
-        return labyrinth[0][0] == 0;
+        return labyrinth[0][0] != 0;
     }
 
     /**
