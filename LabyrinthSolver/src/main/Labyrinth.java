@@ -17,11 +17,11 @@ public class Labyrinth {
     /**
      * Labyrintin leveys.
      */
-    public int width;
+    private int width;
     /**
      * Labyrintin korkeus.
      */
-    public int height;
+    private int height;
     /**
      * Labyrintin generointialgoritmi.
      */
@@ -39,7 +39,25 @@ public class Labyrinth {
     public Labyrinth(int w, int h) {
         width = w;
         height = h;
-        labyrinth = new byte[height][width];
+        labyrinth = new byte[h][w];
+    }
+
+    /**
+     * Palauttaa labyrintin leveyden.
+     *
+     * @return Palauttaa labyrintin leveyden.
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Palauttaa labyrintin korkeuden.
+     *
+     * @return Palauttaa labyrintin korkeuden.
+     */
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -50,6 +68,9 @@ public class Labyrinth {
      * @param h Labyrintin korkeus.
      */
     public void updateLabyrinth(int w, int h) {
+        if (w < 2 || h < 2 || w > 5000 || h > 5000) {
+            return;
+        }
         width = w;
         height = h;
         labyrinth = new byte[height][width];
