@@ -122,10 +122,13 @@ public class AI {
     }
 
     /**
-     * Min-max-algorithm with alpha-beta-pruning. First the given move of this
-     * node is placed on the board, which is undone when we return from this
-     * node. Then, using alpha-beta-pruning, we prune the obviously worse nodes.
-     * The value of a given board is calculated with the boardValue -method.
+     * Min-max-algorithm with alpha-beta-pruning. Firstly, we find all legal
+     * moves in the current position. If the recursion level is zero, the moves
+     * are sorted by performing a 2-depth search. Else, they're sorted by the
+     * number of pieces they flip, to prevent stack overflow. Then we evaluate
+     * each of them, stopping if the branch is plainly worse than a previously
+     * evaluated branch. The ideal move is stored in the move - object, which is
+     * given as a parameter.
      *
      * @param move keeps track of which is the best move by current evaluation.
      * the 'real' return value in a way as this object holds the optimal move
@@ -152,7 +155,8 @@ public class AI {
 
     /**
      * Go through each of the children of this node and maximize alpha or
-     * minimize beta accordingly.
+     * minimize beta accordingly. Stop evaluation if this branch has clearly
+     * worse values than a previously evaluated branch.
      *
      * @param moves
      * @param depth
