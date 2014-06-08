@@ -2,6 +2,8 @@ from lib.linkedlist import *
 
 class NMD5:
 	"""MD5 implementation for strings"""
+
+	digest_size = 16
 	list = LinkedList(None)
 	A = 0x67452301
 	B = 0xEFCDAB89
@@ -104,9 +106,6 @@ class NMD5:
 		return [message[i:i+n] for i in range(0, len(message), n)]
 
 ## Public methods TBI ##
-
-def digest_size():
-	return 16
 
 def new():
 	return NMD5()
