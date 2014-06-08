@@ -124,7 +124,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() throws Exception {
-        int labyrinthSize = labyrinth.height * labyrinth.width;
+        int labyrinthSize = labyrinth.getHeight() * labyrinth.getWidth();
         int verticesLeft = labyrinthSize;
         int[][] edges = new int[verticesLeft][];
         SetElement[] elements = new SetElement[labyrinthSize];
@@ -162,20 +162,22 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      * @param elements Joukko-array.
      */
     void initialize(int[][] edges, SetElement[] elements) {
-        int labyrinthSize = labyrinth.height * labyrinth.width;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
+        int labyrinthSize = height * width;
         for (int i = 0; i < labyrinthSize; i++) {
             elements[i] = new SetElement(i);
             edges[i] = new int[2];
             edges[i][0] = i;
-            int x = i % labyrinth.width;
-            int y = i / labyrinth.width;
+            int x = i % width;
+            int y = i / width;
             if (y - 1 >= 0) {
                 edges[i][1] |= 1;
             }
-            if (x + 1 < labyrinth.width) {
+            if (x + 1 < width) {
                 edges[i][1] |= 2;
             }
-            if (y + 1 < labyrinth.height) {
+            if (y + 1 < height) {
                 edges[i][1] |= 4;
             }
             if (x - 1 >= 0) {

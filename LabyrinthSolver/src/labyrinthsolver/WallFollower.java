@@ -29,8 +29,8 @@ public class WallFollower extends LabyrinthSolver {
      */
     @Override
     public boolean solveLabyrinth() {
-        int width = labyrinth.width;
-        int height = labyrinth.height;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         visited = new int[height][width];
         int coordinate = 0;
         visited[0][0] = 2;
@@ -79,8 +79,8 @@ public class WallFollower extends LabyrinthSolver {
      * @see solveLabyrinth()
      */
     public boolean minorlySpedUpSolver() {
-        int width = labyrinth.width;
-        int height = labyrinth.height;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         int coordinate = 0;
         int targetCoordinate = width * height - 1;
         /*

@@ -9,10 +9,14 @@ import org.junit.Test;
 public class LabyrinthGeneratorTest {
 
     Labyrinth l;
+    int width;
+    int height;
 
     @Before
     public void setUp() {
         l = new Labyrinth(20, 20);
+        width = l.getWidth();
+        height = l.getHeight();
     }
 
     public void traverseLabyrinth(byte[][] l, boolean[][] visited, int coordinate, int width) {
@@ -37,30 +41,30 @@ public class LabyrinthGeneratorTest {
     }
 
     public void traverseLabyrinthAndSaveEdges(byte[][] lab, byte[][] testLab, boolean[][] visited, int coordinate) {
-        visited[coordinate / l.width][coordinate % l.width] = true;
+        visited[coordinate / width][coordinate % width] = true;
 
-        if ((lab[coordinate / l.width][coordinate % l.width] & 2) > 0
-                && !visited[coordinate / l.width][coordinate % l.width + 1]) {
-            testLab[coordinate / l.width][coordinate % l.width] |= 2;
-            testLab[coordinate / l.width][coordinate % l.width + 1] |= 8;
+        if ((lab[coordinate / width][coordinate % width] & 2) > 0
+                && !visited[coordinate / width][coordinate % width + 1]) {
+            testLab[coordinate / width][coordinate % width] |= 2;
+            testLab[coordinate / width][coordinate % width + 1] |= 8;
             traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate + 1);
         }
-        if ((lab[coordinate / l.width][coordinate % l.width] & 4) > 0
-                && !visited[coordinate / l.width + 1][coordinate % l.width]) {
-            testLab[coordinate / l.width][coordinate % l.width] |= 4;
-            testLab[coordinate / l.width + 1][coordinate % l.width] |= 1;
-            traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate + l.width);
+        if ((lab[coordinate / width][coordinate % width] & 4) > 0
+                && !visited[coordinate / width + 1][coordinate % width]) {
+            testLab[coordinate / width][coordinate % width] |= 4;
+            testLab[coordinate / width + 1][coordinate % width] |= 1;
+            traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate + width);
         }
-        if ((lab[coordinate / l.width][coordinate % l.width] & 1) > 0
-                && !visited[coordinate / l.width - 1][coordinate % l.width]) {
-            testLab[coordinate / l.width][coordinate % l.width] |= 1;
-            testLab[coordinate / l.width - 1][coordinate % l.width] |= 4;
-            traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate - l.width);
+        if ((lab[coordinate / width][coordinate % width] & 1) > 0
+                && !visited[coordinate / width - 1][coordinate % width]) {
+            testLab[coordinate / width][coordinate % width] |= 1;
+            testLab[coordinate / width - 1][coordinate % width] |= 4;
+            traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate - width);
         }
-        if ((lab[coordinate / l.width][coordinate % l.width] & 8) > 0
-                && !visited[coordinate / l.width][coordinate % l.width - 1]) {
-            testLab[coordinate / l.width][coordinate % l.width] |= 8;
-            testLab[coordinate / l.width][coordinate % l.width - 1] |= 2;
+        if ((lab[coordinate / width][coordinate % width] & 8) > 0
+                && !visited[coordinate / width][coordinate % width - 1]) {
+            testLab[coordinate / width][coordinate % width] |= 8;
+            testLab[coordinate / width][coordinate % width - 1] |= 2;
             traverseLabyrinthAndSaveEdges(lab, testLab, visited, coordinate - 1);
         }
     }
@@ -77,8 +81,8 @@ public class LabyrinthGeneratorTest {
     public void AlgorithmAddsAllCellsToLabyrinth() throws Exception {
         Assume.assumeNotNull(l.lg);
         l.lg.generateLabyrinth();
-        for (int i = 0; i < l.height; i++) {
-            for (int j = 0; j < l.width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 assertTrue(l.labyrinth[i][j] > 0);
             }
         }
@@ -90,10 +94,10 @@ public class LabyrinthGeneratorTest {
         if (l.labyrinth[0][0] == 0) {
             AlgorithmAddsAllCellsToLabyrinth();
         }
-        boolean[][] visited = new boolean[l.height][l.width];
-        traverseLabyrinth(l.labyrinth, visited, 0, l.width);
-        for (int i = 0; i < l.height; i++) {
-            for (int j = 0; j < l.width; j++) {
+        boolean[][] visited = new boolean[height][width];
+        traverseLabyrinth(l.labyrinth, visited, 0, width);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 assertTrue(visited[i][j]);
             }
         }
@@ -104,16 +108,16 @@ public class LabyrinthGeneratorTest {
         Assume.assumeNotNull(l.lg);
         AlgorithmAddsAllCellsToLabyrinth();
         int checksum = 0;
-        for (int i = 0; i < l.height; i++) {
-            for (int j = 0; j < l.width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 checksum = checksum + (l.labyrinth[i][j] + i) * j;
             }
         }
         l.lg.createEmptyLabyrinthIfNeeded();
         AlgorithmAddsAllCellsToLabyrinth();
         int checksum2 = 0;
-        for (int i = 0; i < l.height; i++) {
-            for (int j = 0; j < l.width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 checksum2 = checksum + (l.labyrinth[i][j] + i) * j;
             }
         }
@@ -123,10 +127,10 @@ public class LabyrinthGeneratorTest {
     @Test
     public void listingUnvisitedNeighbors() {
         Assume.assumeNotNull(l.lg);
-        int[][] visited = new int[l.height][l.width];
+        int[][] visited = new int[height][width];
         assertEquals(2, l.getListOfNeighbors(0, visited, 0).size());
-        assertEquals(3, l.getListOfNeighbors(l.width / 2, visited, 0).size());
-        assertEquals(4, l.getListOfNeighbors(l.width + 5, visited, 0).size());
+        assertEquals(3, l.getListOfNeighbors(width / 2, visited, 0).size());
+        assertEquals(4, l.getListOfNeighbors(width + 5, visited, 0).size());
     }
 
     @Test
@@ -146,12 +150,12 @@ public class LabyrinthGeneratorTest {
         /*
          Start somewhere in the middle.
          */
-        int coordinate = l.width * l.height / 2 + l.width / 2;
-        Labyrinth testLabyrinth = new Labyrinth(l.width, l.height);
-        traverseLabyrinthAndSaveEdges(l.labyrinth, testLabyrinth.labyrinth, new boolean[l.width][l.height], coordinate);
+        int coordinate = width * height / 2 + width / 2;
+        Labyrinth testLabyrinth = new Labyrinth(width, height);
+        traverseLabyrinthAndSaveEdges(l.labyrinth, testLabyrinth.labyrinth, new boolean[width][height], coordinate);
         int checksum1 = 0, checksum2 = 0;
-        for (int i = 0; i < l.height; i++) {
-            for (int j = 0; j < l.width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 checksum1 += l.labyrinth[i][j];
                 checksum2 += testLabyrinth.labyrinth[i][j];
             }

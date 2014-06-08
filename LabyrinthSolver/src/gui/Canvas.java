@@ -38,7 +38,7 @@ class Canvas extends JPanel {
      * kokonaisluku auttaa keskittämään labyrintin.
      */
     int fixPosition;
-
+    
     /**
      * Asettaa labyrintin ja solunkoon. Alustaa värit. Laskee tarvitseeko
      * labyrintti keskittää.
@@ -52,8 +52,8 @@ class Canvas extends JPanel {
         wallColor = new Color(0, 0, 0);
         visitedCellColor = new Color(255, 235, 235);
         pathColor = new Color(255, 0, 0);
-        if ((2 + l.width) * cellSize < 125) {
-            fixPosition = (125 - (2 + l.width) * cellSize) / 2;
+        if ((2 + l.getWidth()) * cellSize < 125) {
+            fixPosition = (125 - (2 + l.getWidth()) * cellSize) / 2;
         } else {
             fixPosition = 0;
         }
@@ -73,22 +73,24 @@ class Canvas extends JPanel {
                 cellSize,
                 fixPosition + (int) (cellSize * 1.5),
                 (int) (cellSize * 1.5));
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         for (int i = 1; i < path.size(); i++) {
             int oldCoordinate = coordinate;
             coordinate = path.get(i);
-            int x1 = oldCoordinate % labyrinth.width;
-            int y1 = oldCoordinate / labyrinth.width;
-            int x2 = coordinate % labyrinth.width;
-            int y2 = coordinate / labyrinth.width;
+            int x1 = oldCoordinate % width;
+            int y1 = oldCoordinate / width;
+            int x2 = coordinate % width;
+            int y2 = coordinate / width;
             g.drawLine(fixPosition + (int) (cellSize * (x1 + 1.5)),
                     (int) (cellSize * (y1 + 1.5)),
                     fixPosition + (int) (cellSize * (x2 + 1.5)),
                     (int) (cellSize * (y2 + 1.5)));
         }
-        g.drawLine(fixPosition + (int) (cellSize * (0.5 + labyrinth.width)),
-                (int) (cellSize * (0.5 + labyrinth.height)),
-                fixPosition + (int) (cellSize * (1 + labyrinth.width)),
-                (int) (cellSize * (0.5 + labyrinth.height)));
+        g.drawLine(fixPosition + (int) (cellSize * (0.5 + width)),
+                (int) (cellSize * (0.5 + height)),
+                fixPosition + (int) (cellSize * (1 + width)),
+                (int) (cellSize * (0.5 + height)));
     }
 
     /**
@@ -100,8 +102,10 @@ class Canvas extends JPanel {
     void paintVisitedCells(Graphics g) {
         g.setColor(visitedCellColor);
         int[][] visited = labyrinth.ls.getVisitedCells();
-        for (int i = 0; i < labyrinth.height; i++) {
-            for (int j = 0; j < labyrinth.width; j++) {
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 if (visited[i][j] == 2) {
                     g.fillRect(fixPosition + cellSize * (j + 1),
                             cellSize * (i + 1),
@@ -120,8 +124,10 @@ class Canvas extends JPanel {
      */
     void paintWalls(Graphics g) {
         g.setColor(wallColor);
-        for (int i = 0; i < labyrinth.height; i++) {
-            for (int j = 0; j < labyrinth.width; j++) {
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 if (i == 0 && j == 0) {
                     g.drawLine(fixPosition + cellSize * (j + 1),
                             cellSize * (i + 1),
@@ -145,13 +151,13 @@ class Canvas extends JPanel {
             }
         }
         g.drawLine(fixPosition + cellSize,
-                cellSize * (labyrinth.height + 1),
-                fixPosition + cellSize * (labyrinth.width + 1),
-                cellSize * (labyrinth.height + 1));
-        g.drawLine(fixPosition + cellSize * (labyrinth.width + 1),
+                cellSize * (height + 1),
+                fixPosition + cellSize * (width + 1),
+                cellSize * (height + 1));
+        g.drawLine(fixPosition + cellSize * (width + 1),
                 cellSize,
-                fixPosition + cellSize * (labyrinth.width + 1),
-                cellSize * labyrinth.height);
+                fixPosition + cellSize * (width + 1),
+                cellSize * height);
     }
 
     /**
@@ -173,7 +179,7 @@ class Canvas extends JPanel {
 
     /**
      * Kutsuu uudelleen repaint()-metodia, mikä uudelleenpiirtää labyrintin.
-     * 
+     *
      * @see paintComponent(Graphics g)
      */
     void update() {

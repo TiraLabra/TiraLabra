@@ -39,8 +39,8 @@ public class BFS extends LabyrinthSolver {
      */
     @Override
     public boolean solveLabyrinth() {
-        int width = labyrinth.width;
-        int height = labyrinth.height;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         int targetCoordinate = width * height - 1;
         visited = new int[height][width];
         MyQueue queue = new MyQueue<>(width * height / 4);

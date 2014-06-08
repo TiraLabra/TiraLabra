@@ -53,8 +53,8 @@ public abstract class LabyrinthGenerator {
      * @see main.Labyrinth
      */
     public void createEmptyLabyrinthIfNeeded() {
-        if (labyrinth.labyrinth[0][0] != 0) {
-            labyrinth.labyrinth = new byte[labyrinth.height][labyrinth.width];
+        if (!labyrinth.isGenerated()) {
+            labyrinth.updateLabyrinth(labyrinth.getWidth(), labyrinth.getHeight());
         }
     }
 

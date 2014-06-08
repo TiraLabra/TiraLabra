@@ -41,8 +41,8 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      */
     @Override
     public void generateLabyrinth() throws Exception {
-        int width = labyrinth.width;
-        int height = labyrinth.height;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         int[][] visited = new int[height][width];
         visited[0][0] = 2;
         /*
@@ -79,7 +79,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      * @see main.MyList
      */
     MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
-        int width = labyrinth.width;
+        int width = labyrinth.getWidth();
         MyList<Integer> listOfNeighbours = new MyList(4);
         int x = coordinate % width;
         int y = coordinate / width;

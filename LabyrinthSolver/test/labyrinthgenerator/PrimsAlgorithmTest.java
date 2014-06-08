@@ -18,9 +18,11 @@ public class PrimsAlgorithmTest extends LabyrinthGeneratorTest {
 
     @Test
     public void listingVisitedNeighbors() {
-        int[][] visited = new int[l.height][l.width];
+        int width = l.getWidth();
+        int height = l.getHeight();
+        int[][] visited = new int[height][width];
         assertEquals(0, l.getListOfNeighbors(0, visited, 2).size());
-        assertEquals(0, l.getListOfNeighbors(l.width / 2, visited, 2).size());
-        assertEquals(0, l.getListOfNeighbors(l.width + 5, visited, 2).size());
+        assertEquals(0, l.getListOfNeighbors(width / 2, visited, 2).size());
+        assertEquals(0, l.getListOfNeighbors(width + 5, visited, 2).size());
     }
 }

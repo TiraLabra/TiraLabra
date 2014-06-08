@@ -16,16 +16,20 @@ import org.junit.Test;
 public class LabyrinthTest {
 
     Labyrinth l;
+    int width;
+    int height;
 
     @Before
     public void setUp() throws Exception {
         l = new Labyrinth(10, 10);
+        width = l.getWidth();
+        height = l.getHeight();
     }
 
     @Test
     public void settingUp() {
-        assertEquals(10, l.width);
-        assertEquals(10, l.height);
+        assertEquals(10, width);
+        assertEquals(10, height);
         assertEquals(10, l.labyrinth.length);
         assertEquals(10, l.labyrinth[0].length);
     }
@@ -33,8 +37,8 @@ public class LabyrinthTest {
     @Test
     public void updating() {
         l.updateLabyrinth(4, 9);
-        assertEquals(4, l.width);
-        assertEquals(9, l.height);
+        assertEquals(4, width);
+        assertEquals(9, height);
         assertEquals(9, l.labyrinth.length);
         assertEquals(4, l.labyrinth[0].length);
     }
@@ -43,7 +47,7 @@ public class LabyrinthTest {
     public void targetCoordinates() throws Exception {
         for (int i = 0; i < 100; i++) {
             try {
-                assertEquals(i - l.width, l.getTargetCoordinate(i, (byte) 1));
+                assertEquals(i - width, l.getTargetCoordinate(i, (byte) 1));
             } catch (Exception e) {
                 throw e;
             }
@@ -53,7 +57,7 @@ public class LabyrinthTest {
                 throw e;
             }
             try {
-                assertEquals(i + l.width, l.getTargetCoordinate(i, (byte) 4));
+                assertEquals(i + width, l.getTargetCoordinate(i, (byte) 4));
             } catch (Exception e) {
                 throw e;
             }
@@ -77,7 +81,7 @@ public class LabyrinthTest {
         l.addPassage(0, 1);
         assertEquals(2, l.labyrinth[0][0]);
         assertEquals(8, l.labyrinth[0][1]);
-        l.addPassage(0, l.width);
+        l.addPassage(0, width);
         assertEquals(2 + 4, l.labyrinth[0][0]);
         assertEquals(1, l.labyrinth[1][0]);
     }
@@ -93,57 +97,57 @@ public class LabyrinthTest {
 
     @Test
     public void getListOfUnvisitedNeighbors() throws Exception {
-        int[][] visited = new int[l.height][l.width];
-        assertEquals(4, l.getListOfNeighbors(l.width + 3, visited, 0).size());
+        int[][] visited = new int[height][width];
+        assertEquals(4, l.getListOfNeighbors(width + 3, visited, 0).size());
         assertEquals(3, l.getListOfNeighbors(3, visited, 0).size());
-        assertEquals(3, l.getListOfNeighbors(l.width * l.height - 5, visited, 0).size());
+        assertEquals(3, l.getListOfNeighbors(width * height - 5, visited, 0).size());
         assertEquals(2, l.getListOfNeighbors(0, visited, 0).size());
-        assertEquals(2, l.getListOfNeighbors(l.width * l.height - 1, visited, 0).size());
+        assertEquals(2, l.getListOfNeighbors(width * height - 1, visited, 0).size());
     }
 
     @Test
     public void getListOfVisitedNeighbors() throws Exception {
-        int[][] visited = new int[l.height][l.width];
+        int[][] visited = new int[height][width];
         visited[3][3] = 2;
         visited[4][3] = 2;
         visited[2][3] = 2;
         visited[3][2] = 2;
-        assertEquals(3, l.getListOfNeighbors(l.width * 3 + 3, visited, 2).size());
-        assertEquals(1, l.getListOfNeighbors(l.width * 3 + 4, visited, 2).size());
-        assertEquals(1, l.getListOfNeighbors(l.width * 3 + 2, visited, 2).size());
-        assertEquals(1, l.getListOfNeighbors(l.width * 4 + 3, visited, 2).size());
+        assertEquals(3, l.getListOfNeighbors(width * 3 + 3, visited, 2).size());
+        assertEquals(1, l.getListOfNeighbors(width * 3 + 4, visited, 2).size());
+        assertEquals(1, l.getListOfNeighbors(width * 3 + 2, visited, 2).size());
+        assertEquals(1, l.getListOfNeighbors(width * 4 + 3, visited, 2).size());
     }
 
     @Test
     public void getListOfEdgesToUnvisitedNeighbors() throws Exception {
-        l.addPassage(l.width + 3, l.width + 2);
-        l.addPassage(l.width + 3, l.width + 4);
-        l.addPassage(l.width + 3, 3);
-        int[][] visited = new int[l.height][l.width];
-        assertEquals(3, l.getListOfEdges(l.width + 3, visited, 0).size());
-        assertEquals(1, l.getListOfEdges(l.width + 4, visited, 0).size());
-        assertEquals(1, l.getListOfEdges(l.width + 2, visited, 0).size());
+        l.addPassage(width + 3, width + 2);
+        l.addPassage(width + 3, width + 4);
+        l.addPassage(width + 3, 3);
+        int[][] visited = new int[height][width];
+        assertEquals(3, l.getListOfEdges(width + 3, visited, 0).size());
+        assertEquals(1, l.getListOfEdges(width + 4, visited, 0).size());
+        assertEquals(1, l.getListOfEdges(width + 2, visited, 0).size());
         assertEquals(1, l.getListOfEdges(3, visited, 0).size());
     }
 
     @Test
     public void getListOfEdgesToVisitedNeighbors() throws Exception {
         getListOfEdgesToUnvisitedNeighbors();
-        int[][] visited = new int[l.height][l.width];
+        int[][] visited = new int[height][width];
         visited[1][2] = 2;
         visited[1][3] = 2;
         visited[1][4] = 2;
         visited[0][3] = 2;
-        assertEquals(3, l.getListOfEdges(l.width + 3, visited, 2).size());
-        assertEquals(1, l.getListOfEdges(l.width + 4, visited, 2).size());
-        assertEquals(1, l.getListOfEdges(l.width + 2, visited, 2).size());
+        assertEquals(3, l.getListOfEdges(width + 3, visited, 2).size());
+        assertEquals(1, l.getListOfEdges(width + 4, visited, 2).size());
+        assertEquals(1, l.getListOfEdges(width + 2, visited, 2).size());
         assertEquals(1, l.getListOfEdges(3, visited, 2).size());
 
         assertEquals(0, l.getListOfEdges(2, visited, 2).size());
         assertEquals(0, l.getListOfEdges(4, visited, 2).size());
-        assertEquals(0, l.getListOfEdges(l.width + 5, visited, 2).size());
-        assertEquals(0, l.getListOfEdges(l.width + 1, visited, 2).size());
-        assertEquals(0, l.getListOfEdges(l.width * 2 + 3, visited, 2).size());
+        assertEquals(0, l.getListOfEdges(width + 5, visited, 2).size());
+        assertEquals(0, l.getListOfEdges(width + 1, visited, 2).size());
+        assertEquals(0, l.getListOfEdges(width * 2 + 3, visited, 2).size());
     }
 
 }

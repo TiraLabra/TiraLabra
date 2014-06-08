@@ -86,10 +86,10 @@ public class Gui implements Runnable {
      * @return Palauttaa solukoon piirtoalustaa varten.
      */
     public int getCellSize() {
-        if (labyrinth.height > labyrinth.width) {
-            return 500 / labyrinth.height;
+        if (labyrinth.getHeight() > labyrinth.getWidth()) {
+            return 500 / labyrinth.getHeight();
         }
-        return 500 / labyrinth.width;
+        return 500 / labyrinth.getWidth();
     }
 
     /**
@@ -102,8 +102,8 @@ public class Gui implements Runnable {
     void addCanvas(Container container) throws Exception {
         int cellSize = getCellSize();
         canvas = new Canvas(labyrinth, cellSize);
-        int width = labyrinth.width;
-        int height = labyrinth.height;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         if (height > maxSize || height < minSize || width > maxSize || width < minSize) {
             throw new Exception("Gui can only handle up to 95x95 labyrinths!");
         }

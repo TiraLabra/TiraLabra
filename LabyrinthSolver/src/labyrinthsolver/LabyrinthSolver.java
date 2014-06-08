@@ -75,9 +75,11 @@ public abstract class LabyrinthSolver {
      * @return Palauttaa visited-solujen määrän.
      */
     public int getExploredCells() {
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         exploredCells = 0;
-        for (int i = 0; i < labyrinth.height * labyrinth.width; i++) {
-            if (visited[i / labyrinth.width][i % labyrinth.width] == 2) {
+        for (int i = 0; i < height * width; i++) {
+            if (visited[i / width][i % width] == 2) {
                 exploredCells++;
             }
         }
@@ -105,9 +107,11 @@ public abstract class LabyrinthSolver {
             if (visited == null) {
                 return null;
             }
-            int[][] vstd = new int[labyrinth.height][labyrinth.width];
-            for (int i = 0; i < labyrinth.height; i++) {
-                System.arraycopy(visited[i], 0, vstd[i], 0, labyrinth.width);
+            int width = labyrinth.getWidth();
+            int height = labyrinth.getHeight();
+            int[][] vstd = new int[height][width];
+            for (int i = 0; i < height; i++) {
+                System.arraycopy(visited[i], 0, vstd[i], 0, width);
             }
             findPath(vstd);
         }
@@ -157,8 +161,8 @@ public abstract class LabyrinthSolver {
         path = new MyList<>();
         MyStack<TreeNode> stack = new MyStack<>();
         stack.push(new TreeNode(null, 0));
-        int height = labyrinth.height;
-        int width = labyrinth.width;
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
         int target = height * width - 1;
         while (!stack.empty()) {
             TreeNode node = stack.pop();

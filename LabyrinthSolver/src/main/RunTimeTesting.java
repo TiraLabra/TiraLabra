@@ -82,7 +82,7 @@ public class RunTimeTesting {
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
     void lgPrintRoutine() throws Exception {
-        System.out.println(" (" + labyrinth.width + "x" + labyrinth.height + ")");
+        System.out.println(" (" + labyrinth.getWidth() + "x" + labyrinth.getHeight() + ")");
         labyrinth.lg.createEmptyLabyrinthIfNeeded();
         long startTime = System.nanoTime() / 1000;
         labyrinth.lg.generateLabyrinth();

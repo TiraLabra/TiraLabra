@@ -56,7 +56,7 @@ public class LabyrinthSolverTest {
             runLabyrinthSolver();
             MyList path = l.ls.getPath();
             assertTrue(path != null);
-            int target = l.height * l.width - 1;
+            int target = l.getHeight() * l.getWidth() - 1;
             for (int i = 0; i < path.size() - 1; i++) {
                 assertTrue((int) path.get(i) != target);
             }

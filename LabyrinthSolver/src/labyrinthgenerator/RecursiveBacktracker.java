@@ -44,7 +44,9 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
     @Override
     public void generateLabyrinth() throws Exception {
         MyStack<Integer> stack = new MyStack();
-        int[][] visited = new int[labyrinth.height][labyrinth.width];
+        int width = labyrinth.getWidth();
+        int height = labyrinth.getHeight();
+        int[][] visited = new int[height][width];
         int coordinate = 0;
         stack.push(coordinate);
         visited[0][0] = 2;
@@ -54,7 +56,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
                 int oldCoordinate = coordinate;
                 coordinate = list.get(random.nextInt(list.size()));
                 stack.push(coordinate);
-                visited[coordinate / labyrinth.width][coordinate % labyrinth.width] = 2;
+                visited[coordinate / width][coordinate % width] = 2;
                 labyrinth.addPassage(oldCoordinate, coordinate);
                 list = labyrinth.getListOfNeighbors(coordinate, visited, 0);
             }
