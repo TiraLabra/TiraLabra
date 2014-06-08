@@ -11,9 +11,9 @@ import TiraLabra.Number.Number;
 public class MatrixTest {
     private Matrix matrix;
     
-    private static Matrix makeMatrix(Class<? extends Number> type,
+    private static <T extends Number<T>> Matrix<T> makeMatrix(Class<T> type,
             int n, int m, int... values) {
-        Number elements[][] = new Number[n][m];
+        T elements[][] = (T[][]) new Number[n][m];
         
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -21,7 +21,7 @@ public class MatrixTest {
             }
         }
         
-        return new Matrix(elements, type);
+        return new Matrix<T>(elements, type);
     }
     
     private void matrixEquals(Class<? extends Number> type, int... values) {
@@ -101,12 +101,18 @@ public class MatrixTest {
     
     @Test
     public void exponentiation() {
-        matrix = matrix.pow(2);
-        matrixEquals(Integer.class, 2, 1, 1, 1);
+        //matrix = matrix.pow(2);
+        //matrixEquals(Integer.class, 2, 1, 1, 1);
+        
+        assertEquals("{{2178309, 1346269}, {1346269, 832040}}",
+                matrix.pow(31).toString());
+        
+        assertEquals("{{165580141, 102334155}, {102334155, 63245986}}",
+                matrix.pow(40).toString());
     }
     
     @Test
-    public void decimalExponentiation() {
+    public void realExponentiation() {
         matrix = makeMatrix(Real.class, 2, 2, 1, 1, 1, 0).pow(2);
         matrixEquals(Real.class, 2, 1, 1, 1);
     }

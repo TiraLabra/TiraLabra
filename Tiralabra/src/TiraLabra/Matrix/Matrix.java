@@ -8,7 +8,11 @@ import TiraLabra.Number.Number;
  * @param <T>
  */
 public class Matrix<T extends Number<T>> {
+    /**
+     * Matriisin koot
+     */
     public final int N, M;
+    
     protected final T matrix[][];
     protected final Class<T> type;
     
@@ -86,6 +90,7 @@ public class Matrix<T extends Number<T>> {
      */
     public Matrix<T> multiply(Matrix<T> other) {
         T[][] val = (T[][]) new Number[N][other.M];
+        
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 val[i][j] = Number.make(type, 0);
@@ -184,7 +189,13 @@ public class Matrix<T extends Number<T>> {
         T det = Number.make(type, 0);
         for (int i = 0; i < N; i++) {
             final T n = matrix[0][i].multiply(submatrix(0, i).determinant());
-            det = det.add((i % 2 == 1) ? n.negate() : n);
+            
+            if ((i % 2) == 0) {
+                det = det.add(n);
+            } else {
+                det = det.subtract(n);
+            }
+            
         }
         
         return det;
@@ -209,5 +220,29 @@ public class Matrix<T extends Number<T>> {
          }
         
         return new Matrix<T>(res, type);
+    }
+    
+    @Override
+    public String toString() {
+        String res = "{";
+        for (int i = 0; i < N; i++) {
+            res += "{";
+            for (int j = 0; j < M; j++) {
+                res += matrix[i][j];
+                
+                if (j < M-1) {
+                    res += ", ";
+                }
+            }
+            
+            res += "}";
+            
+            if (i < N-1) {
+                res += ", ";
+            }
+        }
+        res += "}";
+        
+        return res;
     }
 }

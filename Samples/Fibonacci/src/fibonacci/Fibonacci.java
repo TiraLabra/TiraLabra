@@ -10,14 +10,8 @@ public class Fibonacci {
              {Integer.ONE, Integer.ZERO}};
 
         Matrix<Integer> matrix = new Matrix<Integer>(values, Integer.class);
-        if (naive) {
-            matrix = matrix.pow_naive(n);
-        } else {
-            matrix = matrix.pow(n);
-        }
-        
-        Integer fib = matrix.get(0, 1);
-        return fib.toString();
+        matrix = naive ? matrix.pow_naive(n) : matrix.pow(n);
+        return matrix.get(0, 1).toString();
     }
     
     private static void timeit(boolean naive) {

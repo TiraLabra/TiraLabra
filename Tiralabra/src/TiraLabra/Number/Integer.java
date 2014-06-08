@@ -14,7 +14,7 @@ public class Integer extends Number<Integer> {
     private static final int radix = 46340;
     
     protected final boolean negative;
-    public final int[] integer;
+    protected final int[] integer;
 
     /**
      * Luo luvun kokonaisluvusta
@@ -23,10 +23,6 @@ public class Integer extends Number<Integer> {
     public Integer(int integer) {
         negative = (integer < 0);
 
-        if (Math.abs(integer) > radix) {
-            throw new IllegalArgumentException();
-        }
-        
         if (Math.abs(integer) == radix) {
             this.integer = new int[2];
             this.integer[0] = 0;
@@ -37,6 +33,11 @@ public class Integer extends Number<Integer> {
         }
     }
     
+    /**
+     * Luo luvun sanoista
+     * @param integer
+     * @param negative 
+     */
     protected Integer(int[] integer, boolean negative) {
         this.negative = negative;
         this.integer = integer;
@@ -69,9 +70,9 @@ public class Integer extends Number<Integer> {
         int zeroes = leadingZeroes(words);
         
         if (zeroes > 0) {
-            int int2[] = new int[words.length - zeroes];
-            System.arraycopy(words, 0, int2, 0, words.length - zeroes);
-            return int2;
+            int res[] = new int[words.length - zeroes];
+            System.arraycopy(words, 0, res, 0, words.length - zeroes);
+            return res;
         } else {
             return words;
         }
@@ -83,7 +84,7 @@ public class Integer extends Number<Integer> {
      * @param b
      * @return 
      */
-    public static int[][] padZeroes(int a[], int b[]) {
+    private static int[][] padZeroes(int a[], int b[]) {
         int res[][] = {a, b};
         
         if (a.length == b.length) {
@@ -239,8 +240,13 @@ public class Integer extends Number<Integer> {
         Integer y1 = b.highWords(m2), y0 = b.lowWords(m2);
         
         Integer z2 = x1.multiply(y1);
-        Integer z1 = x1.multiply(y0).add(x0.multiply(y1));
         Integer z0 = x0.multiply(y0);
+        Integer z1 = x1.add(x0).multiply(y1.add(y0))
+                .subtract(z2.add(z0));
+        
+        if (z1.isNegative()) {
+            throw new UnsupportedOperationException();
+        }
         
         Integer res = z2.shiftLeft(m).add(z1.shiftLeft(m2)).add(z0);
         
@@ -254,12 +260,7 @@ public class Integer extends Number<Integer> {
             throw new ArithmeticException("Division by zero");
         }
         
-        final int words[][] = padZeroes(integer, other.integer);
-        
-        int res[] = new int[words[0].length];
-        for (int i = 0; i < words[0].length; i++) {
-            res[i] = words[0][i] / words[1][i];
-        }
+        int res[] = {integer[0] / other.integer[0]};
         
         final boolean neg = (this.isNegative() != other.isNegative());
         return new Integer(res, neg);
@@ -318,12 +319,12 @@ public class Integer extends Number<Integer> {
     }
     
     /**
-     * 
+     * Täyttää kaksi merkkijonoa nollilla saman pituisiksi
      * @param a
      * @param b
      * @return 
      */
-    private static String[] pad(String a, String b) {
+    private static String[] pad(final String a, final String b) {
         String[] res = {a, b};
         
         int max = (a.length() > b.length()) ? 0 : 1;
@@ -338,12 +339,12 @@ public class Integer extends Number<Integer> {
     }
     
     /**
-     * 
-     * @param a
+     * Laskee yhteen merkkijonoa täynnä numeroita
+     * @param a 
      * @param b
      * @return 
      */
-    private static String add(String a, String b) {
+    private static String add(final String a, final String b) {
         String res = "";
 
         String s[] = pad(a, b);
@@ -362,23 +363,23 @@ public class Integer extends Number<Integer> {
     }
     
     /**
-     * 
+     * Laskee kahden numeroita sisältävän merkkijonon tulon
      * @param a
      * @param b
      * @return 
      */
-    private static String multiply(String a, String b) {
-        String s[] = pad(a, b);
+    private static String multiply(final String a, final String b) {
+        final String s[] = pad(a, b);
         
         String res = "";
         for (int i = s[0].length()-1; i >= 0; i--) {
-            int sa = java.lang.Integer.parseInt(""+s[0].charAt(i));
+            final int sa = java.lang.Integer.parseInt(s[0].substring(i, i+1));
             
             String l = "";
             
             int k = 0;
             for (int j = s[0].length()-1; j >= 0; j--) {
-                int sb = java.lang.Integer.parseInt(""+s[1].charAt(j));
+                int sb = java.lang.Integer.parseInt(s[1].substring(j, j+1));
                 
                 int t = (sa * sb) + k;
                 k = t / 10;
@@ -397,18 +398,18 @@ public class Integer extends Number<Integer> {
     }
     
     /**
-     * 
+     * Laskee nollien määrän merkkijonon alussa
      * @param s
      * @return 
      */
-    private static int leading(String s) {
-        int l = 0;
+    private static int leading(final String s) {
+        int leading = 0;
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) != '0') {
-                return l;
+                return leading;
             }
             
-            l++;
+            leading++;
         }
         
         return 0;
@@ -463,7 +464,6 @@ public class Integer extends Number<Integer> {
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
-        
         }
         
         final Integer other = (Integer) obj;

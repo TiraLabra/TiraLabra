@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public abstract class NumberTests<T extends Number> {
+public abstract class NumberTests<T extends Number<T>> {
     protected T zero, one, two, four;
     
     @Before
