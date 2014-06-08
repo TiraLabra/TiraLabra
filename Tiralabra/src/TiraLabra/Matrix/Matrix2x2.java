@@ -23,6 +23,10 @@ public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
         return det;
     }
     
+    /**
+     * Laskee matriisin ominaisarvot
+     * @return 
+     */
     public T[] eigenvalues() {
         final T t = get(0, 0).add(get(1, 1));
         

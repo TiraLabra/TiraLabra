@@ -244,10 +244,6 @@ public class Integer extends Number<Integer> {
         Integer z1 = x1.add(x0).multiply(y1.add(y0))
                 .subtract(z2.add(z0));
         
-        if (z1.isNegative()) {
-            throw new UnsupportedOperationException();
-        }
-        
         Integer res = z2.shiftLeft(m).add(z1.shiftLeft(m2)).add(z0);
         
         return res;

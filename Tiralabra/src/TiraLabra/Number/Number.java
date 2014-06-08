@@ -7,9 +7,9 @@ package TiraLabra.Number;
  */
 public abstract class Number<T extends Number<T>> implements Comparable<T> {
     /**
-     * Luo 
-     * @param <T>
-     * @param type luokka
+     * Luo numeron
+     * @param <T> luokka
+     * @param type T.class
      * @param k arvo
      * @return new type(k)
      */
