@@ -21,7 +21,9 @@ A suffix tree can be built in O(n) time where n is the length of string we are b
 - different hashing algorithms
 
 #Other
-- Levenhstein distance using dynamic programming. Will check whether there are approximation algorithms or ways to reduce space complexity
+- Levenhstein distance using dynamic programming.
+
+Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/edit%20distance.odt)
 
 #My idea
 - I have an idea to implement a fast data structure for string matching using hashing and a binary indexed tree. Generally, 
