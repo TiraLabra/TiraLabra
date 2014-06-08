@@ -154,9 +154,9 @@ public class AI {
     }
 
     /**
-     * Go through each of the children of this node and maximize alpha or
-     * minimize beta accordingly. Stop evaluation if this branch has clearly
-     * worse values than a previously evaluated branch.
+     * Go through each of the children of this node, placing them on the board,
+     * and maximize alpha or minimize beta accordingly. Stop evaluation if this
+     * branch has clearly worse values than a previously evaluated branch.
      *
      * @param moves
      * @param depth
