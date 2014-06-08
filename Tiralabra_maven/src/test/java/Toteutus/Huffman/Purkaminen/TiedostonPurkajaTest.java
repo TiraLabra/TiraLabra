@@ -137,7 +137,11 @@ public class TiedostonPurkajaTest {
     
     private void puunLapiKayntiTekstillaJossaTavallisiaAsciiMerkkeja() {
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
-        String teksti = "c000b001a010d011f11e10" + (char) 127 + "" + (char) 127 + "_abcdef";
+        String n = (char) 0 + "";
+        String y = (char) 1 + "";
+        
+        String teksti = "c" + n + n + n + "b" + n + n + y + "a" + n + y + n + "d" + n + y + y + "f" + y + y + "e" + y + n + 
+                        (char) 127 + "" + (char) 127 + "_abcdef";
         
         assertEquals(teksti.length() - 7, purkaja.kayPuuLapi(teksti, bittijonotJaMerkit));
         
@@ -152,23 +156,27 @@ public class TiedostonPurkajaTest {
     
     private HashMap<String, String> puunLapiKayntiaVerrattavaHajTaulu() {
         HashMap<String, String> verrattava = new HashMap<>();
+        String n = (char) 0 + "";
+        String y = (char) 1 + "";
         
-        verrattava.put("010", "a");
-        verrattava.put("001", "b");
-        verrattava.put("000", "c");
-        verrattava.put("011", "d");
-        verrattava.put("10", "e");
-        verrattava.put("11", "f");
+        verrattava.put(n+y+n, "a");
+        verrattava.put(n+n+y, "b");
+        verrattava.put(n+n+n, "c");
+        verrattava.put(n+y+y, "d");
+        verrattava.put(y+n, "e");
+        verrattava.put(y+y, "f");
         
         return verrattava;
     }
 
     private void josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun() {
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
-        purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('a', "100", bittijonotJaMerkit);
+        String sata = (char) 1 + "" + (char) 0 + "" + (char) 0 + "";
         
-        assertTrue(bittijonotJaMerkit.containsKey("100"));
-        assertTrue(bittijonotJaMerkit.get("100").equals("a"));
+        purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('a', sata, bittijonotJaMerkit);
+        
+        assertTrue(bittijonotJaMerkit.containsKey(sata));
+        assertTrue(bittijonotJaMerkit.get(sata).equals("a"));
         assertFalse(purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('b', "", bittijonotJaMerkit));
     }
     

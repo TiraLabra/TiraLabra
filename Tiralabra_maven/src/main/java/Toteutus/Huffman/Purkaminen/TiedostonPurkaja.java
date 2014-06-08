@@ -99,6 +99,7 @@ public class TiedostonPurkaja {
      * @param pakkaus
      * @param tiedosto
      * @throws IOException 
+     * @return
      */
     protected String puretunTiedostonSisalto(File pakkaus, File tiedosto) throws IOException {
         String teksti = lueTeksti(pakkaus);
@@ -139,7 +140,6 @@ public class TiedostonPurkaja {
      * 1) Puuta seuraavan alkion osoitteen
      * 2) Bin‰‰riesitykset kutakin ascii -merkki‰ varten.
      
-     * Miten hoidetaan merkkien '0' ja '1' pakkaaminen? *Tavut 00 ja 01 ??
      * @param teksti
      * @param bittijonotJaMerkit
      * @return 

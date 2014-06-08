@@ -30,9 +30,9 @@ public class BittiEsityksetTest {
     
     @Test
     public void esityksetTasmaavatPuussa() {
-        assertEquals(esitykset.getEsitykset().get("a"), "0");
-        assertEquals(esitykset.getEsitykset().get("b"), "10");
-        assertEquals(esitykset.getEsitykset().get("c"), "11");
+        assertEquals(esitykset.getEsitykset().get("a"), (char) 0 + "");
+        assertEquals(esitykset.getEsitykset().get("b"), (char) 1 + "" + (char) 0);
+        assertEquals(esitykset.getEsitykset().get("c"), (char) 1 + "" + (char) 1);
     }
     
     @Test

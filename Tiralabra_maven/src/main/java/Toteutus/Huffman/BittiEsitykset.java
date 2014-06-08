@@ -39,13 +39,13 @@ public class BittiEsitykset {
             return;
         }
         
-        muodostaMerkeilleBittiEsitykset(huippu.getVasen(), bittijono + "0");
-        muodostaMerkeilleBittiEsitykset(huippu.getOikea(), bittijono + "1");
+        muodostaMerkeilleBittiEsitykset(huippu.getVasen(), bittijono + (char) 0);
+        muodostaMerkeilleBittiEsitykset(huippu.getOikea(), bittijono + (char) 1);
     }
     
     /**
      * Palauttaa String -olion, joka sis‰lt‰‰ tiedon jokaisesta tiedostossa esiintyneest‰ merkist‰ sek‰
-     * niiden bin‰‰riesityksist‰‰n. Tyyppi‰: "b001c10a1d011(0x7F)(0x7F)".
+     * niiden bin‰‰riesityksist‰‰n. Tyyppi‰: "b001c10a1d011(0x7F)(0x7F)", jossa 0 = "00" ja 1 = "01".
      * Lopussa kaksi tavua, jotka kertovat ett‰ tekstiesitys p‰‰ttyy.
      * @return 
      */
