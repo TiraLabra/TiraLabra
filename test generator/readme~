@@ -1,0 +1,37 @@
+The file generator.cpp must be compiled. After running it, 2 types of tests will be generated:
+- single query test files which will have the following format
+
+input:
+[number of tests]
+[haystack1]
+[needle1]
+...
+[haystackN]
+[needleN]
+
+which means that needle1 will be the substring we are searching for in haystack1.
+
+output:
+[ans1]
+[ans2]
+...
+[ansN]
+
+where [ans1] is equal to the index where needle1 is found in haystack1. If it is not found, then [ans1] will have value -1.
+
+- multiple query tests:
+
+input:
+[number of tests]
+[haystack1]
+[needle1]
+...
+[haystackN]
+[needleN]
+
+output:
+[number of positions] [pos1] [pos2] ... [posN]
+...
+[number of positions] [pos1] [pos2] ... [posN]
+
+where N=[number of positions] means that needle1 has been found N times in haystack1. Note that if N=1 and the following integer is -1, means that it has not been found at all.

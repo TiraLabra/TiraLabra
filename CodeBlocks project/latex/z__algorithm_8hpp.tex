@@ -1,0 +1,70 @@
+\hypertarget{z__algorithm_8hpp}{\section{algorithms/z\+\_\+algorithm.hpp File Reference}
+\label{z__algorithm_8hpp}\index{algorithms/z\+\_\+algorithm.\+hpp@{algorithms/z\+\_\+algorithm.\+hpp}}
+}
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{z__algorithm_8hpp_af7c7f1543758fd971c84df769efaca2a}{z\+\_\+algo\+\_\+compare} (const char $\ast$haystack, const char $\ast$needle, int index\+\_\+a, int index\+\_\+b, int haystack\+\_\+length, int needle\+\_\+length)
+\item 
+vector$<$ int $>$ \hyperlink{z__algorithm_8hpp_a6e993244fe95494de6686ee986f36503}{z\+\_\+algo\+\_\+get\+\_\+positions} (const string \&haystack, const string \&needle, int start=0, int upper\+\_\+bound\+\_\+cnt=-\/1)
+\item 
+vector$<$ int $>$ \hyperlink{z__algorithm_8hpp_ac4a25bd217172483c570b87b5cb9a86b}{z\+\_\+algo\+\_\+get\+\_\+positions} (const char $\ast$haystack, const char $\ast$needle, int start=0, int haystack\+\_\+length=-\/1, int needle\+\_\+length=-\/1, int upper\+\_\+bound\+\_\+cnt=-\/1)
+\item 
+void \hyperlink{z__algorithm_8hpp_a273289996997b353d250953ac4d288ec}{extend\+\_\+right} (int \&right, int left, int total\+\_\+length, const char $\ast$haystack, const char $\ast$needle, int haystack\+\_\+length, int needle\+\_\+length, int start)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{z__algorithm_8hpp_a273289996997b353d250953ac4d288ec}{\index{z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}!extend\+\_\+right@{extend\+\_\+right}}
+\index{extend\+\_\+right@{extend\+\_\+right}!z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}}
+\subsubsection[{extend\+\_\+right}]{\setlength{\rightskip}{0pt plus 5cm}void extend\+\_\+right (
+\begin{DoxyParamCaption}
+\item[{int \&}]{right, }
+\item[{int}]{left, }
+\item[{int}]{total\+\_\+length, }
+\item[{const char $\ast$}]{haystack, }
+\item[{const char $\ast$}]{needle, }
+\item[{int}]{haystack\+\_\+length, }
+\item[{int}]{needle\+\_\+length, }
+\item[{int}]{start}
+\end{DoxyParamCaption}
+)}}\label{z__algorithm_8hpp_a273289996997b353d250953ac4d288ec}
+Since the main point of the algorithm is to keep an invariant-\/bound \mbox{[}left;right\mbox{]}, this method extends the bound to the right. Accordingly {\itshape total\+\_\+length} is the length of the z array, {\itshape haystack} is the text we are searching in, {\itshape needle} is the string we are searching for, {\itshape haystack\+\_\+length} is the length of the {\itshape haystack}, {\itshape needle\+\_\+length} is the length of the {\itshape needle}, {\itshape start} is the the offset index we start the search from. The {\itshape start} is needed since the z array is dependent on it. \hypertarget{z__algorithm_8hpp_af7c7f1543758fd971c84df769efaca2a}{\index{z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}!z\+\_\+algo\+\_\+compare@{z\+\_\+algo\+\_\+compare}}
+\index{z\+\_\+algo\+\_\+compare@{z\+\_\+algo\+\_\+compare}!z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}}
+\subsubsection[{z\+\_\+algo\+\_\+compare}]{\setlength{\rightskip}{0pt plus 5cm}bool z\+\_\+algo\+\_\+compare (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{haystack, }
+\item[{const char $\ast$}]{needle, }
+\item[{int}]{index\+\_\+a, }
+\item[{int}]{index\+\_\+b, }
+\item[{int}]{haystack\+\_\+length, }
+\item[{int}]{needle\+\_\+length}
+\end{DoxyParamCaption}
+)}}\label{z__algorithm_8hpp_af7c7f1543758fd971c84df769efaca2a}
+Compares the characters in z array at index {\itshape index\+\_\+a} and {\itshape index\+\_\+b}. The z array is not generated, but rather using offset to choose which character in {\itshape haystack} and {\itshape needle} to use. The {\itshape haystack\+\_\+length} and {\itshape the} needle\+\_\+length represent the length of the {\itshape haystack} and the {\itshape needle}. \hypertarget{z__algorithm_8hpp_a6e993244fe95494de6686ee986f36503}{\index{z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}!z\+\_\+algo\+\_\+get\+\_\+positions@{z\+\_\+algo\+\_\+get\+\_\+positions}}
+\index{z\+\_\+algo\+\_\+get\+\_\+positions@{z\+\_\+algo\+\_\+get\+\_\+positions}!z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}}
+\subsubsection[{z\+\_\+algo\+\_\+get\+\_\+positions}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$int$>$ z\+\_\+algo\+\_\+get\+\_\+positions (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{haystack, }
+\item[{const string \&}]{needle, }
+\item[{int}]{start = {\ttfamily 0}, }
+\item[{int}]{upper\+\_\+bound\+\_\+cnt = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)}}\label{z__algorithm_8hpp_a6e993244fe95494de6686ee986f36503}
+The function returns the found positions of the string {\itshape needle} in {\itshape haystack}, starting with an offset {\itshape start} (by default 0) and counting at most {\itshape upper\+\_\+bound\+\_\+cnt} (default -\/1) positions. If {\itshape upper\+\_\+bound\+\_\+cnt} is smaller than 0, then it will find all positions of the {\itshape needle}. \hypertarget{z__algorithm_8hpp_ac4a25bd217172483c570b87b5cb9a86b}{\index{z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}!z\+\_\+algo\+\_\+get\+\_\+positions@{z\+\_\+algo\+\_\+get\+\_\+positions}}
+\index{z\+\_\+algo\+\_\+get\+\_\+positions@{z\+\_\+algo\+\_\+get\+\_\+positions}!z\+\_\+algorithm.\+hpp@{z\+\_\+algorithm.\+hpp}}
+\subsubsection[{z\+\_\+algo\+\_\+get\+\_\+positions}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$int$>$ z\+\_\+algo\+\_\+get\+\_\+positions (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{haystack, }
+\item[{const char $\ast$}]{needle, }
+\item[{int}]{start = {\ttfamily 0}, }
+\item[{int}]{haystack\+\_\+length = {\ttfamily -\/1}, }
+\item[{int}]{needle\+\_\+length = {\ttfamily -\/1}, }
+\item[{int}]{upper\+\_\+bound\+\_\+cnt = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)}}\label{z__algorithm_8hpp_ac4a25bd217172483c570b87b5cb9a86b}
+The function returns the found positions of the string {\itshape needle} in {\itshape haystack}, starting with an offset {\itshape start} (by default 0) and counting at most {\itshape upper\+\_\+bound\+\_\+cnt} (default -\/1) positions. If {\itshape upper\+\_\+bound\+\_\+cnt} is smaller than 0, then it will find all positions of the {\itshape needle}. 
