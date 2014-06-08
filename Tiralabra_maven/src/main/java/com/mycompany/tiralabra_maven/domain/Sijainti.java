@@ -11,20 +11,20 @@ package com.mycompany.tiralabra_maven.domain;
  * @author szetk
  */
 public class Sijainti {
-    private int posX;
-    private int posY;
-    private int posZ;
+    private int x;
+    private int y;
+    private int z;
     
     public Sijainti(){
-        this.posX = 0;
-        this.posY = 0;
-        this.posZ = 0;
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
     }
 
     public Sijainti(int posX, int posY, int posZ) {
-        this.posX = posX;
-        this.posY = posY;
-        this.posZ = posZ;
+        this.x = posX;
+        this.y = posY;
+        this.z = posZ;
     }
     
     /**
@@ -32,34 +32,34 @@ public class Sijainti {
      * @param sijainti Lisättävä sijainti
      */
     public void plus(Sijainti sijainti){
-        this.posX += sijainti.getPosX();
-        this.posY += sijainti.getPosY();
-        this.posZ += sijainti.getPosZ();
+        this.x += sijainti.getX();
+        this.y += sijainti.getY();
+        this.z += sijainti.getZ();
         
     }
 
-    public int getPosX() {
-        return posX;
+    public int getX() {
+        return x;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
+    public void setX(int posX) {
+        this.x = posX;
     }
 
-    public int getPosY() {
-        return posY;
+    public int getY() {
+        return y;
     }
 
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public void setY(int posY) {
+        this.y = posY;
     }
 
-    public int getPosZ() {
-        return posZ;
+    public int getZ() {
+        return z;
     }
 
-    public void setPosZ(int posZ) {
-        this.posZ = posZ;
+    public void setZ(int posZ) {
+        this.z = posZ;
     }
     
     

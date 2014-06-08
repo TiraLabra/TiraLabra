@@ -27,7 +27,7 @@ public class TilaTest {
     public TilaTest() {
         s = new Sijainti();
         k = new Kontti(100, 100, 100);
-        t = new Tila(k, teeLaatikkotyyppeja(100, 100, 100, 10));
+        t = new Tila(k, teeLaatikoita(100, 100, 100, 10));
     }
 
     @BeforeClass
@@ -46,18 +46,7 @@ public class TilaTest {
     public void tearDown() {
     }
 
-    public ArrayList<Laatikko> teeLaatikoita(int x, int y, int z, int n) {
-        ArrayList<Laatikko> laatikot = new ArrayList<Laatikko>();
-        Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
-        for (int i = 0; i < n; i++) {
-            Laatikko laatikko = new Laatikko(l, new Sijainti(), 0);
-            l.getLaatikot().add(laatikko);
-            laatikot.add(laatikko);
-        }
-        return laatikot;
-    }
-
-    public ArrayList<Laatikkotyyppi> teeLaatikkotyyppeja(int x, int y, int z, int n){
+   public ArrayList<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n){
         ArrayList<Laatikkotyyppi> laatikot = new ArrayList<Laatikkotyyppi>();
         Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
         for (int i = 0; i < n; i++){
@@ -67,21 +56,41 @@ public class TilaTest {
         laatikot.add(l);
         return laatikot;
     }
-    
+
     @Test
     public void testLisataanTilapalkkeja() {
-        Palkki p = new Palkki(50, 50, 50, teeLaatikoita(50, 50, 50, 10));
-        assertEquals(t.getVapaatTilapalkit().size(), 1);
+        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 3, 1, 1);
+        assertEquals(t.getTilapalkit().size(), 1);
         t.lisaaTilapalkit(k, p, s);
-        assertEquals(t.getVapaatTilapalkit().size(), 4);
+        assertEquals(t.getTilapalkit().size(), 4);
     }
-    
+
     @Test
     public void testLisaaOikeatTilapalkit() {
-        Palkki p = new Palkki(50, 50, 50, teeLaatikoita(50, 50, 50, 10));
+        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 1, 1, 1);
         t.lisaaTilapalkit(k, p, s);
-        assertEquals(t.getVapaatTilapalkit().pop().getX(), k.getX());
-        assertEquals(t.getVapaatTilapalkit().pop().getX(), k.getX() - 50);
-        
+        Tilapalkki tp = t.getTilapalkit().pop();
+
+        assertEquals(p.getX(), tp.getX());
+        assertEquals(p.getY(), tp.getY());
+        assertEquals(k.getZ() - p.getZ() - s.getZ(), tp.getZ());
+
+        tp = t.getTilapalkit().pop();
+        assertEquals(k.getX() - p.getX() - s.getX(), tp.getX());
+        assertEquals(p.getY(), tp.getY());
+        assertEquals(k.getZ() - s.getX(), tp.getZ());
+ 
+
+        tp = t.getTilapalkit().pop();
+        assertEquals(k.getX() - s.getX(), tp.getX());
+        assertEquals(k.getY() - p.getX() - s.getX(), tp.getY());
+        assertEquals(k.getZ() - s.getX(), tp.getZ());
+
+    }
+
+    @Test
+    public void testPoistaVapaistaLaatikoista() {
+        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 3, 1, 1);
+//	t.setVapaatTilapalkit();
     }
 }

@@ -21,6 +21,11 @@ public class Sarmio {
         this.z = z;
     }
     
+    @Override
+    public String toString(){
+        return "x = " + this.x + ", y = " + this.y + ", z = " + this.z;
+    }
+    
     public int getTilavuus(){
         return this.x * this.y * this.z;
     }

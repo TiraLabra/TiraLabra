@@ -18,19 +18,20 @@ public class Tila {
     private PakkausSuunnitelma pakkausSuunnitelma;
     private int tilavuus;
     private ArrayList<Laatikkotyyppi> vapaatLaatikot;
-    private Deque<Tilapalkki> vapaatTilapalkit;
+    private Deque<Tilapalkki> tilapalkit;
 
     public Tila(Kontti kontti, ArrayList<Laatikkotyyppi> laatikot) {
         this.pakkausSuunnitelma = new PakkausSuunnitelma();
         this.tilavuus = 0;
         this.vapaatLaatikot = laatikot;
-        this.vapaatTilapalkit = new ArrayDeque<Tilapalkki>();
-        this.vapaatTilapalkit.push(new Tilapalkki(kontti.getX(), kontti.getY(), kontti.getZ(), 0, 0, 0));
+        this.tilapalkit = new ArrayDeque<Tilapalkki>();
+        this.tilapalkit.push(new Tilapalkki(kontti.getX(), kontti.getY(), kontti.getZ(), 0, 0, 0));
     }
 
     /**
-     * Päivittää tilan kun lisätään uusi palkki pakkaussuunnitelmaan. Tämä kutsuu muita metodeja, jotka tekevät suurimman osan työstä
-     * 
+     * Päivittää tilan kun lisätään uusi palkki pakkaussuunnitelmaan. Tämä
+     * kutsuu muita metodeja, jotka tekevät suurimman osan työstä
+     *
      * @param palkki Uusi, lisättävä palkki
      * @param tilapalkki Tilapalkki, johon palkki asetetaan
      * @param kontti Kontti, jonka mukaan luodaan uudet tilapalkit
@@ -39,24 +40,26 @@ public class Tila {
 
         lisaaTilapalkit(kontti, palkki, tilapalkki.getSijainti());
         palkki.setSijainti(tilapalkki.getSijainti());
-        this.pakkausSuunnitelma.getPalkit().add(palkki);
+        this.pakkausSuunnitelma.getPalkit();
         poistaVapaistaLaatikoista(palkki);
     }
 
     /**
-     * Tämä poistaa parametrina saadun palkin sisältämät laatikot vapaiden laatikoiden listasta.
-     * @param palkki Palkki, jonka sisältämät laatikot poistetaan vapaiden laatikoiden listasta
+     * Tämä poistaa parametrina saadun palkin sisältämät laatikot vapaiden
+     * laatikoiden listasta.
+     *
+     * @param palkki Palkki, jonka sisältämät laatikot poistetaan vapaiden
+     * laatikoiden listasta
      */
     public void poistaVapaistaLaatikoista(Palkki palkki) {
         for (Laatikkotyyppi tyyppi : this.vapaatLaatikot) {
-            for (Laatikko laatikko : palkki.getLaatikot()) {
-                if (laatikko.getTyyppi() == tyyppi) {
+            if (tyyppi == palkki.getTyyppi()) {
+                for (int i = 0; i < palkki.laatikoita(); i++) {
                     tyyppi.getLaatikot().remove(tyyppi.getLaatikot().size() - 1);
                 }
             }
         }
     }
-
 
     /**
      * Tämä lisää tilaan uudet tilapalkit sen jälkeen kun pakkaussuunnitelmaan
@@ -67,10 +70,21 @@ public class Tila {
      * @param sijainti Palkin sijainti
      */
     public void lisaaTilapalkit(Kontti kontti, Palkki palkki, Sijainti sijainti) {
-        this.vapaatTilapalkit.push(new Tilapalkki(palkki.getX(), palkki.getY(), kontti.getZ() - palkki.getZ() - sijainti.getPosZ(), sijainti.getPosX(), sijainti.getPosY(), sijainti.getPosZ() + palkki.getZ()));
-        this.vapaatTilapalkit.push(new Tilapalkki(kontti.getX() - palkki.getX() - sijainti.getPosX(), palkki.getY(), kontti.getZ() - sijainti.getPosZ(), sijainti.getPosX() + palkki.getX(), sijainti.getPosY(), sijainti.getPosZ()));
-        this.vapaatTilapalkit.push(new Tilapalkki(kontti.getX() - sijainti.getPosX(), kontti.getY() - palkki.getY() - sijainti.getPosY(), kontti.getZ() - sijainti.getPosZ(), sijainti.getPosX(), sijainti.getPosY() + palkki.getY(), sijainti.getPosZ()));
+// palkki eteen:
+        this.tilapalkit.push(new Tilapalkki(kontti.getX() - sijainti.getX(), kontti.getY() - palkki.getY() - sijainti.getY(), kontti.getZ() - sijainti.getZ(), sijainti.getX(), sijainti.getY() + palkki.getY(), sijainti.getZ()));
+// palkki viereen:
+        this.tilapalkit.push(new Tilapalkki(kontti.getX() - palkki.getX() - sijainti.getX(), palkki.getY(), kontti.getZ() - sijainti.getZ(), sijainti.getX() + palkki.getX(), sijainti.getY(), sijainti.getZ()));
+// palkki yläpuolelle:
+        this.tilapalkit.push(new Tilapalkki(palkki.getX(), palkki.getY(), kontti.getZ() - palkki.getZ() - sijainti.getZ(), sijainti.getX(), sijainti.getY(), sijainti.getZ() + palkki.getZ()));
 
+    }
+
+    public int vapaitaLaatikoita() {
+        int sum = 0;
+        for (Laatikkotyyppi laatikkotyyppi : this.vapaatLaatikot) {
+            sum += laatikkotyyppi.getLaatikot().size();
+        }
+        return sum;
     }
 
     public PakkausSuunnitelma getPakkausSuunnitelma() {
@@ -97,12 +111,12 @@ public class Tila {
         this.vapaatLaatikot = vapaatLaatikot;
     }
 
-    public Deque<Tilapalkki> getVapaatTilapalkit() {
-        return vapaatTilapalkit;
+    public Deque<Tilapalkki> getTilapalkit() {
+        return tilapalkit;
     }
 
-    public void setVapaatTilapalkit(Deque<Tilapalkki> vapaatTilapalkit) {
-        this.vapaatTilapalkit = vapaatTilapalkit;
+    public void setTilapalkit(Deque<Tilapalkki> vapaatTilapalkit) {
+        this.tilapalkit = vapaatTilapalkit;
     }
 
 }

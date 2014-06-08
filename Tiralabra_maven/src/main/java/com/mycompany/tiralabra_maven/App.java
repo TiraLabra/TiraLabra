@@ -17,7 +17,8 @@ public class App {
     public static void main(String[] args) {
         //        intti = 1;
         Kontti kontti = new Kontti(1000, 1000, 200);
-        ArrayList<Laatikkotyyppi> laatikot = generoiLaatikoita(100, 1);
+        System.out.println("kontti: " + kontti);
+        ArrayList<Laatikkotyyppi> laatikot = generoiLaatikoita(132, 3);
         System.out.println("laatikkotyyppejä: " + laatikot.size());
         PakkausSuunnitelma pakkausSuunnitelma = pakkaaKontti(kontti, laatikot, 10000);
         //        if (boksit == null){
@@ -48,17 +49,16 @@ public class App {
 
         PakkausSuunnitelma paras = new PakkausSuunnitelma();
 
-        int haunVaativuus = 1; // määrittelee haun tarkkuuden iteraatiossa
         // tehdään uusia pakkaussuunnitelmia kunnes aikaraja umpeutuu
         int i = 0;
         while (i < 1) { // tähän toistaiseksi vain yksi pakkaussuunnitelma
             Tila tila = new Tila(kontti, laatikot); // aloitetaan tyhjästä kontista
-            while (tila.getVapaatTilapalkit().size() > 0) {
-                Tilapalkki tilapalkki = tila.getVapaatTilapalkit().pop();
-//                Palkki palkki = haeParasPalkkiPalkeista(tilapalkki, palkit, haunVaativuus);
-                Palkki palkki = haeParasPalkkiLaatikoista(tilapalkki, laatikot, haunVaativuus);
+            while (tila.vapaitaLaatikoita() > 0) {
+                System.out.println("vapaita bokseja: " + tila.vapaitaLaatikoita());
+                Tilapalkki tilapalkki = tila.getTilapalkit().pop();
+//                Palkki palkki = haeParasPalkkiPalkeista(tilapalkki, palkit;
+                Palkki palkki = haeParasPalkkiLaatikoista(tilapalkki, tila.getVapaatLaatikot());
                 if (palkki != null) {
-//                    System.out.println("palkki on olemassa");
                     tila.paivita(palkki, tilapalkki, kontti);
                 }
             }
@@ -66,7 +66,6 @@ public class App {
             paras = tila.getPakkausSuunnitelma();
 
 //            }
-            haunVaativuus *= 2;
             i++;
         }
 
@@ -78,11 +77,10 @@ public class App {
      *
      * @param tilapalkki Tilapalkki, joka halutaan täyttää
      * @param palkit Lista palkeista, joista paras palkki etsitään
-     * @param haunVaativuus Parametri, jota käytetään haun syvyyden
      * määrittelemiseen
      * @return Paras löydetty palkki
      */
-    public static Palkki haeParasPalkkiPalkeista(Tilapalkki tilapalkki, ArrayList<Palkki> palkit, int haunVaativuus) {
+    public static Palkki haeParasPalkkiPalkeista(Tilapalkki tilapalkki, ArrayList<Palkki> palkit) {
         Palkki paras = null;
         for (Palkki palkki : palkit) {
             if (mahtuu(tilapalkki, palkki)) {
@@ -94,23 +92,32 @@ public class App {
 
         return paras;
     }
-/**
- * Tämä tekee parhaan mahdollisen palkin annetulle tilapalkille annetun laatikkolistan mukaan.
- * 
- * @param tilapalkki Tilapalkki, johon sopiva palkki luodaan
- * @param laatikot Lista laatikoista, joista palkki voidaan koota
- * @param haunVaativuus Parametrin haun vaativuuden määrittelemiseen
- * @return Palautetaan paras löydetty palkki
- */
-    public static Palkki haeParasPalkkiLaatikoista(Tilapalkki tilapalkki, ArrayList<Laatikkotyyppi> laatikot, int haunVaativuus) {
-        int nx = 1, ny = 1, nz = 1;
-        int suurinTilavuus = 0;
-        Laatikkotyyppi paras = null;
 
+    /**
+     * Tämä tekee parhaan mahdollisen palkin annetulle tilapalkille annetun
+     * laatikkolistan mukaan.
+     *
+     * @param tilapalkki Tilapalkki, johon sopiva palkki luodaan
+     * @param laatikot Lista laatikoista, joista palkki voidaan koota
+     * @return Palautetaan paras löydetty palkki
+     */
+    public static Palkki haeParasPalkkiLaatikoista(Tilapalkki tilapalkki, ArrayList<Laatikkotyyppi> laatikot) {
+        int nx = 1, ny = 1, nz = 1;
+        int n;
+        int suurinTilavuus = 0;
+        Palkki paras = null;
+        System.out.println("Etsitään paras palkki tilapalkille: " + tilapalkki);
+
+        // orientaatiot pitäisi vielä käydä läpi
         for (Laatikkotyyppi tyyppi : laatikot) {
-            // kolmelle orientaatiolle tämä:
-            System.out.println("tilapalkki: " + tilapalkki.getX() + " " + tilapalkki.getY() + " " + tilapalkki.getZ() + " ");
-            int n = tyyppi.getLaatikot().size();
+            n = tyyppi.getLaatikot().size();
+            System.out.println("etsitään laatikkotyypille: " + tyyppi);
+            if (tyyppi.getX() > tilapalkki.getX() || tyyppi.getY() > tilapalkki.getY() || tyyppi.getZ() > tilapalkki.getZ()) {
+                System.out.println("Laatikko ei mahdu");
+                continue;
+            }
+            System.out.println("laatikoita käytettävänä: " + n);
+
             nz = tilapalkki.getZ() / tyyppi.getZ();
             if (nz > n) {
                 nz = n;
@@ -124,20 +131,25 @@ public class App {
                 ny = n / (nz * nx);
             }
 
-            if (nx * tyyppi.getX() * ny * tyyppi.getY() * nz * tyyppi.getZ() > suurinTilavuus) {
-                suurinTilavuus = nx * tyyppi.getX() * ny * tyyppi.getY() * nz * tyyppi.getZ();
-                paras = tyyppi;
+            System.out.println("kokeiltava: nx, ny, nz: " + nx + " " + ny + " " + nz);
+            int tilavuus = nx * tyyppi.getX() * ny * tyyppi.getY() * nz * tyyppi.getZ();
+
+            if (tilavuus > suurinTilavuus) {
+                suurinTilavuus = tilavuus;
+                paras = new Palkki(tyyppi, nx, ny, nz);
             }
         }
-        System.out.println("nx, ny, nz: " + nx + " " + ny + " " + nz);
 
         if (paras == null) {
             return null;
         }
 
-        Palkki palkki = new Palkki(nx*paras.getX(), ny*paras.getY(), nz*paras.getZ());
-        palkki.lisaaLaatikot(paras, nx, ny, nz);
-        return palkki;
+        System.out.println("Paras palkki: " + paras);
+        System.out.println("laatikoita akseleittain nx, ny, nz: " + paras.getNx() + " " + paras.getNy() + " " + paras.getNz());
+        System.out.println("palkin koko, x, y, z: " + paras.getNx() * paras.getTyyppi().getX() + " " + paras.getNy() * paras.getTyyppi().getY() + " " + paras.getNz() * paras.getTyyppi().getZ());
+        System.out.println("palkkiin menee " + paras.getNx() * paras.getNy() * paras.getNz() + " laatikkoa");
+
+        return paras;
     }
 
     /**
@@ -163,16 +175,29 @@ public class App {
 //        Tarkasta syötteet
         Random random = new Random();
         ArrayList<Laatikkotyyppi> laatikot = new ArrayList<Laatikkotyyppi>();
-        Laatikkotyyppi laatikkotyyppi = null;
+        System.out.println("Generoidaan laatikoita:");
+
         for (int i = 0; i < tyyppienMaara; i++) {
-            laatikkotyyppi = new Laatikkotyyppi(random.nextInt(99) + 1, random.nextInt(99) + 1, random.nextInt(99) + 1);
-            for (int j = 0; j < laatikoidenMaara / tyyppienMaara; j++) {
-                Laatikko laatikko = new Laatikko(laatikkotyyppi, null, 0);
-                laatikkotyyppi.getLaatikot().add(laatikko);
+            laatikot.add(new Laatikkotyyppi(random.nextInt(99) + 1, random.nextInt(99) + 1, random.nextInt(99) + 1));
+        }
+
+        int i = 0;
+        outerloop:
+        while (true) {
+            for (Laatikkotyyppi tyyppi : laatikot) {
+                if (i == laatikoidenMaara){
+                    break outerloop;
+                }
+                Laatikko laatikko = new Laatikko(tyyppi, null, 0);
+                tyyppi.getLaatikot().add(laatikko);
+                i++;
+                
             }
-            laatikot.add(laatikkotyyppi);
-            System.out.println("laatikoita: " + laatikkotyyppi.getLaatikot().size());
-            System.out.println("laatikkotyyppi, x,y,z: " + laatikkotyyppi.getX() + " " + laatikkotyyppi.getY() + " " + laatikkotyyppi.getZ());
+        }
+
+        for (Laatikkotyyppi tyyppi : laatikot) {
+            System.out.println("laatikkotyyppi: " + tyyppi);
+            System.out.println("laatikoita: " + tyyppi.getLaatikot().size());
         }
 
         return laatikot;

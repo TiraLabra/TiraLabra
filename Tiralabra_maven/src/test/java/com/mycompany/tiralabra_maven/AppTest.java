@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.domain.*;
@@ -22,27 +21,27 @@ import static org.junit.Assert.*;
  * @author szetk
  */
 public class AppTest {
-    
+
     private Tilapalkki t;
     private ArrayList<Laatikkotyyppi> laatikot;
-    
+
     public AppTest() {
-        t = new Tilapalkki(1000,1000,1000);
+        t = new Tilapalkki(1000, 1000, 1000);
         laatikot = new ArrayList<Laatikkotyyppi>();
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -52,15 +51,13 @@ public class AppTest {
     //
     // @Test
     // public void hello() {}
-    
     @Test
     public void testMahtuuko() {
         t = new Tilapalkki(10, 10, 10);
         Palkki p = new Palkki(10, 10, 10);
-	Palkki p2 = new Palkki(2, 2, 2);
+        Palkki p2 = new Palkki(2, 2, 2);
         assertTrue(App.mahtuu(t, p));
         assertTrue(App.mahtuu(t, p2));
-        
 
         p.setX(15);
         assertFalse(App.mahtuu(t, p));
@@ -83,10 +80,10 @@ public class AppTest {
 
     @Test
     public void testGeneroiLaatikoita() {
-        ArrayList<Laatikkotyyppi> laatikot = App.generoiLaatikoita(50, 3);
-        assertTrue(laatikot.size() == 3);
+        ArrayList<Laatikkotyyppi> boksit = App.generoiLaatikoita(50, 3);
+        assertEquals(3, boksit.size());
         int i = 0;
-        for (Laatikkotyyppi tyyppi : laatikot) {
+        for (Laatikkotyyppi tyyppi : boksit) {
             i += tyyppi.getLaatikot().size();
             assertTrue(tyyppi.getX() <= 100);
             assertTrue(tyyppi.getX() > 0);
@@ -95,34 +92,53 @@ public class AppTest {
             assertTrue(tyyppi.getZ() <= 100);
             assertTrue(tyyppi.getZ() > 0);
         }
-        assertTrue(i == 50);
+        assertEquals(50, i);
     }
-    
-    public ArrayList<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n){
+
+    public ArrayList<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n) {
         laatikot = new ArrayList<Laatikkotyyppi>();
         Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             Laatikko laatikko = new Laatikko(l, new Sijainti(), 0);
             l.getLaatikot().add(laatikko);
         }
         laatikot.add(l);
         return laatikot;
     }
-    
+
     @Test
-    public void testHaeParasPalkkiLaatikoista(){
-        laatikot = teeLaatikoita(100,100,100,0);
-        t = new Tilapalkki(100,100,100);
-        Palkki p = App.haeParasPalkkiLaatikoista(t, laatikot, 1);
-        assertEquals(p.getX(), 100);
-        assertEquals(p.getY(), 100);
-        assertEquals(p.getZ(), 100);
-        
-        t = new Tilapalkki(200,100,100);
-        p = App.haeParasPalkkiLaatikoista(t, laatikot, 1);
-        assertEquals(p.getX(), 200);
-        assertEquals(p.getY(), 100);
-        assertEquals(p.getZ(), 100);
+    public void testHaeParasPalkkiLaatikoista() {
+        laatikot = teeLaatikoita(80, 1, 100, 1);
+        t = new Tilapalkki(100, 100, 100);
+        Palkki p = App.haeParasPalkkiLaatikoista(t, laatikot);
+        assertEquals(80, p.getX());
+        assertEquals(1, p.getY());
+        assertEquals(100, p.getZ());
+
+        t = new Tilapalkki(200, 100, 100);
+        p = App.haeParasPalkkiLaatikoista(t, laatikot);
+        assertEquals(80, p.getX());
+        assertEquals(1, p.getY());
+        assertEquals(100, p.getZ());
+
+        t = new Tilapalkki(100, 100, 100);
+        laatikot = teeLaatikoita(10, 10, 10, 10000);
+        p = App.haeParasPalkkiLaatikoista(t, laatikot);
+        assertEquals(100, p.getX());
+        assertEquals(100, p.getY());
+        assertEquals(100, p.getZ());
+        assertEquals(10, p.getNx());
+        assertEquals(10, p.getNy());
+        assertEquals(10, p.getNz());
+
+        laatikot = teeLaatikoita(10, 100, 100, 100);
+        p = App.haeParasPalkkiLaatikoista(t, laatikot);
+        assertEquals(100, p.getX());
+        assertEquals(100, p.getY());
+        assertEquals(100, p.getZ());
+        assertEquals(10, p.getNx());
+        assertEquals(1, p.getNy());
+        assertEquals(1, p.getNz());
     }
 
 // kesken

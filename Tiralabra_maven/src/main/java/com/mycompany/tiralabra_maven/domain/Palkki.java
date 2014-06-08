@@ -13,46 +13,66 @@ import java.util.ArrayList;
  */
 public class Palkki extends Sarmio {
 
-    private ArrayList<Laatikko> laatikot;
+    private Laatikkotyyppi tyyppi;
+    private int nx;
+    private int ny;
+    private int nz;
     private Sijainti sijainti;
 
-    public Palkki(int x, int y, int z, ArrayList<Laatikko> laatikot) {
-        super(x, y, z);
-        this.laatikot = laatikot;
+    public Palkki(Laatikkotyyppi tyyppi, int nx, int ny, int nz) {
+        super(nx * tyyppi.getX(), ny * tyyppi.getY(), nz * tyyppi.getZ());
+        this.tyyppi = tyyppi;
+        this.nx = nx;
+        this.ny = ny;
+        this.nz = nz;
         this.sijainti = new Sijainti(0, 0, 0);
     }
 
     public Palkki(int x, int y, int z) {
         super(x, y, z);
-        this.laatikot = new ArrayList<Laatikko>();
+        this.tyyppi = null;
         this.sijainti = new Sijainti(0, 0, 0);
     }
 
-    /**
-     * Lisää yhden tyyppisiä laatikoita palkkiin kolmelle akseleille parametrien mukaan.
-     * @param tyyppi Lisättävän laatikon tyyppi
-     * @param nx Määrittää kuinka monta laatikkoa laitetaan x-akselin suuntaan
-     * @param ny Määrittää kuinka monta laatikkoa laitetaan y-akselin suuntaan
-     * @param nz Määrittää kuinka monta laatikkoa laitetaan z-akselin suuntaan
-     */
-    public void lisaaLaatikot(Laatikkotyyppi tyyppi, int nx, int ny, int nz) {
-        for (int x = 0; x < nx; x++) {
-            for (int y = 0; y < ny; y++) {
-                for (int z = 0; z < nz; z++) {
-                    Sijainti sij = new Sijainti(x * tyyppi.getX(), y * tyyppi.getY(), z * tyyppi.getZ());
-                    Laatikko laatikko = new Laatikko(tyyppi, sij, 0);
-                    this.laatikot.add(laatikko);
-                }
-            }
-        }
+    public int laatikoita() {
+        return this.nx * this.ny * this.nz;
     }
 
-    public ArrayList<Laatikko> getLaatikot() {
-        return laatikot;
+    @Override
+    public String toString() {
+        return "Tyyppi: " + this.tyyppi + ", määrät: nx = " + this.nx + ", ny = " + this.ny + ", nz = " + this.nz;
     }
 
-    public void setLaatikot(ArrayList<Laatikko> laatikot) {
-        this.laatikot = laatikot;
+    public Laatikkotyyppi getTyyppi() {
+        return tyyppi;
+    }
+
+    public void setTyyppi(Laatikkotyyppi tyyppi) {
+        this.tyyppi = tyyppi;
+    }
+
+    public int getNx() {
+        return nx;
+    }
+
+    public void setNx(int nx) {
+        this.nx = nx;
+    }
+
+    public int getNy() {
+        return ny;
+    }
+
+    public void setNy(int ny) {
+        this.ny = ny;
+    }
+
+    public int getNz() {
+        return nz;
+    }
+
+    public void setNz(int nz) {
+        this.nz = nz;
     }
 
     public Sijainti getSijainti() {

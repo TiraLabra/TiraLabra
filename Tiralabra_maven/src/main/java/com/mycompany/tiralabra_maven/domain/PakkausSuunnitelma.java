@@ -24,7 +24,7 @@ public class PakkausSuunnitelma {
     }
 
     public ArrayList<Palkki> getPalkit() {
-        return palkit;
+        return this.palkit;
     }
 
     public void setPalkit(ArrayList<Palkki> palkit) {
