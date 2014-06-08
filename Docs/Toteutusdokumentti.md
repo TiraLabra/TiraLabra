@@ -19,4 +19,4 @@ tulostaa kartan ASCII -muodossa.
 
 Node
 
-Solmun tarjoava tietorakenne. Mahdollistaa solmun tietosisällön ylläpidon, tarkastelemisen, sekä tarkastelun.
+Solmun tarjoava tietorakenne. Mahdollistaa solmun tietosisällön ylläpidon ja tarkastelemisen.
