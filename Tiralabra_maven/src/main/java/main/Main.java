@@ -61,6 +61,31 @@ public class Main {
         
         System.out.println("-------");
         
+        Node n0 = new Node(0,0,1);
+        Node n1 = new Node(1,0,1);
+        Node n2 = new Node(2,0,1);
+        Node n3 = new Node(3,0,1);
+        Node n4 = new Node(4,0,1);
+        Node n5 = new Node(5,0,1);
+
+        Node [] nodeTaulukko = { n0, n1, n2, n3, n4, n5 };
+
+        nodeTaulukko[0].setEtaisyysMaaliin(1);
+        nodeTaulukko[1].setEtaisyysMaaliin(3);
+        nodeTaulukko[2].setEtaisyysMaaliin(5);
+        nodeTaulukko[3].setEtaisyysMaaliin(7);
+        nodeTaulukko[4].setEtaisyysMaaliin(9);
+        nodeTaulukko[5].setEtaisyysMaaliin(15);
+        
+        Keko k = new Keko(nodeTaulukko);
+        Node nu = new Node(8,8,1);
+        nu.setEtaisyysMaaliin(2);
+        //System.out.println(k.koko());
+        System.out.println(k.toString());
+        k.lisaa(nu);
+        
+        System.out.println(k.toString());
+        System.out.println(Math.log(4)/Math.log(2));
         
     }
 }
