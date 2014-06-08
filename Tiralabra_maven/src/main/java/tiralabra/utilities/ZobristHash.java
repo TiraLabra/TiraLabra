@@ -31,15 +31,15 @@ public class ZobristHash {
      * The width of boards hashed.
      */
     private int width;
-    
+
     public ZobristHash(int height, int width) {
         table = new BigInteger[64][3];
         this.height = height;
         this.width = width;
-        
+
         initializeTable();
     }
-    
+
     /**
      * Initialize the table which is used for hashing.
      */
@@ -56,19 +56,21 @@ public class ZobristHash {
      * Hashes a board.
      *
      * @param board
-     * @return hash of the board
+     * @return long - 64-bit hash of the board
      */
     public long hash(Player[][] board) {
         BigInteger hash = new BigInteger("0");
 
-
-        for (int i = 0; i < height * width; i++) {
-            int j = board[i / 8][i % 8].value() - 1;
-            if (j >= 0) {
-                if (hash.intValue() == 0) {
-                    hash = table[i][j];
-                } else {
-                    hash = hash.xor(table[i][j]);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int i = y + x;
+                int j = board[y][x].value() - 1;
+                if (j >= 0) {
+                    if (hash.intValue() == 0) {
+                        hash = table[i][j];
+                    } else {
+                        hash = hash.xor(table[i][j]);
+                    }
                 }
             }
         }

@@ -156,7 +156,7 @@ public class BoardTest {
     public void undoingFlipsWorks() {
         board.setBoard( BoardUtilities.createPlayerTable(diagonalTestBoard1), Player.WHITE);
 
-        ZobristHash hasher = new ZobristHash();
+        ZobristHash hasher = new ZobristHash(4, 4);
         long originalHash = hasher.hash(board.getBoard());
         board.placeTile(0, 0);
         board.undo();
@@ -180,7 +180,7 @@ public class BoardTest {
     public void undoingWorksAgainstPasses() {
         board.placeTile(3, 5);
         
-        ZobristHash hasher = new ZobristHash();
+        ZobristHash hasher = new ZobristHash(8, 8);
         long hash = hasher.hash(board.getBoard());
         assertEquals(hash, hasher.hash(board.getBoard()));
 
