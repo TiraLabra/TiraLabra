@@ -187,7 +187,8 @@ public class TiedostonPurkaja {
     
     protected boolean lisaaMerkkiJosSeOn0Tai1(char merkki, StringBuilder bittiEsitys) {
         if (merkki == 0 || merkki == 1) {
-            bittiEsitys.append(merkki);
+            String lisattava = merkki + "";
+            bittiEsitys.append(lisattava);
             return true;
         }
         return false;
