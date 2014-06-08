@@ -1,7 +1,5 @@
 package apuneuvot;
 
-import java.util.Random;
-
 /**
  * MatriisienGeneroija-luokka, jonka avulla voidaan luoda halutun tyyppisiä
  * matriiseja. Sopii hyvin suorituskykytestauksien eri tarpeisiin.
@@ -9,16 +7,6 @@ import java.util.Random;
  * @author Eversor
  */
 public class MatriisienGeneroija {
-    
-    private Random random;
-
-    /**
-     * Konstrukstori, joka luo uuden Random-luokan ilmentymän ja tallettaa sen
-     * private-muuttujaan.
-     */
-    public MatriisienGeneroija(){
-        random = new Random();
-    }
     
     /**
      * Metodi, joka luo uuden yksikkömatriisin parametrina annetun koon
