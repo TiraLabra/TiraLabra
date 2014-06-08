@@ -1,6 +1,7 @@
 package TiraLabra.Matrix;
 
 import TiraLabra.Number.Number;
+import TiraLabra.Vector.Vector;
 
 /**
  * 2x2 matriisi
@@ -8,7 +9,7 @@ import TiraLabra.Number.Number;
  * @param <T> 
  */
 public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
-    public Matrix2x2(T[][] values, Class<? extends Number> type) {
+    public Matrix2x2(T[][] values, Class<T> type) {
         super(values, type);
     }
     
@@ -23,7 +24,7 @@ public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
     }
     
     public T[] eigenvalues() {
-        T t = get(0, 0).add(get(1, 1));
+        final T t = get(0, 0).add(get(1, 1));
         
         final T two = (T) Number.make(type, 2), four = two.add(two);
         final T det = t.multiply(t).subtract(determinant().multiply(four))
@@ -34,4 +35,6 @@ public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
         res[1] = t.subtract(det).divide(two);
         return res;
     }
+    
+    // public Vector<T>[] eigenvectors() {}
 }

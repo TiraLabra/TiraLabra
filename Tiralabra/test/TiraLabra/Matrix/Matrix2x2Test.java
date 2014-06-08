@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import TiraLabra.Number.Number;
 import TiraLabra.Number.Integer;
+import TiraLabra.Number.Integer32;
 
 public class Matrix2x2Test {
     private Matrix2x2<Integer> matrix;
@@ -35,9 +36,9 @@ public class Matrix2x2Test {
     
     @Test
     public void eigenvalues() {
-        matrix = makeMatrix(Integer.class, 4, 1, 6, 3);
-        Number eigenvalues[] = matrix.eigenvalues();
-        assertEquals(new Integer(1), eigenvalues[1]);
-        assertEquals(new Integer(6), eigenvalues[0]);
+        Matrix2x2<Integer32> m = makeMatrix(Integer32.class, 4, 1, 6, 3);
+        Number eigenvalues[] = m.eigenvalues();
+        assertEquals(new Integer32(1), eigenvalues[1]);
+        assertEquals(new Integer32(6), eigenvalues[0]);
     }
 }

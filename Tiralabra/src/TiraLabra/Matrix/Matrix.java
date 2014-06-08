@@ -10,14 +10,14 @@ import TiraLabra.Number.Number;
 public class Matrix<T extends Number<T>> {
     public final int N, M;
     protected final T matrix[][];
-    protected final Class<? extends Number> type;
+    protected final Class<T> type;
     
     /**
      * Luo matriisin 2-uloitteisesta taulukosta
      * @param elements 
      * @param type 
      */
-    public Matrix(T[][] elements, Class<? extends Number> type) {
+    public Matrix(T[][] elements, Class<T> type) {
         N = elements.length;
         M = (N > 0) ? elements[0].length : 0;
         
@@ -41,12 +41,14 @@ public class Matrix<T extends Number<T>> {
     
     /**
      * Luo NxM identiteettimatriisin
+     * @param <T>
      * @param n
      * @param type
      * @return 
      */
-    public static Matrix identity(int n, Class<? extends Number> type) {
-        Number[][] val = new Number[n][n];
+    public static <T extends Number<T>> Matrix<T> identity(int n,
+            Class<T> type) {
+        T[][] val = (T[][]) new Number[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 final int k = (i == j) ? 1 : 0;
@@ -54,7 +56,7 @@ public class Matrix<T extends Number<T>> {
             }
         }
 
-        return new Matrix(val, type);
+        return new Matrix<T>(val, type);
     }
     
     public T get(int i, int j) {
@@ -66,15 +68,15 @@ public class Matrix<T extends Number<T>> {
      * @param scalar skalaari
      * @return uusi matriisi
      */
-    public Matrix multiply(T scalar) {
-        Number[][] val = new Number[N][M];
+    public Matrix<T> multiply(T scalar) {
+        T[][] val = (T[][]) new Number[N][M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 val[i][j] = matrix[i][j].multiply(scalar);
             }
         }
         
-        return new Matrix(val, type);
+        return new Matrix<T>(val, type);
     }
     
     /**
@@ -82,18 +84,20 @@ public class Matrix<T extends Number<T>> {
      * @param other toinen matriisi
      * @return uusi matriisi
      */
-    public Matrix multiply(Matrix<T> other) {
-        Number[][] val = new Number[N][other.M];
+    public Matrix<T> multiply(Matrix<T> other) {
+        T[][] val = (T[][]) new Number[N][other.M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
+                val[i][j] = Number.make(type, 0);
+                
                 for (int k = 0; k < other.M; k++) {
-                    T v = matrix[i][k].multiply(other.get(k, j));
-                    val[i][j] = (val[i][j] == null) ? v : val[i][j].add(v);
+                    final T v = matrix[i][k].multiply(other.matrix[k][j]);
+                    val[i][j] = val[i][j].add(v);
                 }
             }
         }
         
-        return new Matrix(val, type);
+        return new Matrix<T>(val, type);
     }
     
     /**
@@ -106,14 +110,14 @@ public class Matrix<T extends Number<T>> {
             throw new UnsupportedOperationException();
         }
         
-        Number[][] val = new Number[N][M];
+        T[][] val = (T[][]) new Number[N][M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                val[i][j] = matrix[i][j].add(other.get(i, j));
+                val[i][j] = matrix[i][j].add(other.matrix[i][j]);
             }
         }
         
-        return new Matrix(val, type);
+        return new Matrix<T>(val, type);
     }
     
     /**
@@ -121,8 +125,8 @@ public class Matrix<T extends Number<T>> {
      * @param n eksponentti
      * @return uusi matriisi
      */
-    public Matrix pow_naive(int n) {
-        Matrix res = identity(N, type);
+    public Matrix<T> pow_naive(int n) {
+        Matrix<T> res = identity(N, type);
         for (int i = 0; i < n; i++) {
             res = this.multiply(res);
         }
@@ -131,13 +135,12 @@ public class Matrix<T extends Number<T>> {
     }
     
     /**
-     * Nopea matriisin potenssiin korotus
+     * Nopeampi matriisin potenssiin korotus
      * @param n eksponentti
      * @return uusi matriisi
      */
-    public Matrix pow(int n) {
-        Matrix m = this;
-        Matrix res = identity(N, type);
+    public Matrix<T> pow(int n) {
+        Matrix<T> m = this, res = identity(N, type);
         while (n > 0) {
             if ((n % 2) == 1) {
                 res = m.multiply(res);
@@ -155,14 +158,14 @@ public class Matrix<T extends Number<T>> {
      * @return
      */
     public Matrix<T> transpose() {
-        Number[][] val = new Number[M][N];
+        T[][] val = (T[][]) new Number[M][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 val[j][i] = matrix[i][j];
             }
         }
         
-        return new Matrix(val, type);
+        return new Matrix<T>(val, type);
     }
     
     /**
@@ -178,11 +181,12 @@ public class Matrix<T extends Number<T>> {
             return matrix[0][0];
         }
         
-        T det = null;
+        T det = Number.make(type, 0);
         for (int i = 0; i < N; i++) {
             final T n = matrix[0][i].multiply(submatrix(0, i).determinant());
-            det = (det == null) ? n : det.add((i % 2 == 1) ? n.negate() : n);
+            det = det.add((i % 2 == 1) ? n.negate() : n);
         }
+        
         return det;
     }
     
@@ -193,7 +197,7 @@ public class Matrix<T extends Number<T>> {
      * @return uusi matriisi
      */
     public Matrix<T> submatrix(int i, int j) {
-        Number res[][] = new Number[N-1][M-1];
+        T res[][] = (T[][]) new Number[N-1][M-1];
         
         for (int k = 0; k < N; k++) {
             if (k == i) continue;            
@@ -204,6 +208,6 @@ public class Matrix<T extends Number<T>> {
             }
          }
         
-        return new Matrix(res, type);
+        return new Matrix<T>(res, type);
     }
 }
