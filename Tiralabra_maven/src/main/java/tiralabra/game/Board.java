@@ -228,6 +228,10 @@ public class Board {
         return board[y][x];
     }
 
+    /**
+     * Whether the game is over.
+     * @return 
+     */
     public boolean gameOver() {
         return (!canMove(Player.BLACK) && !canMove(Player.WHITE));
     }
