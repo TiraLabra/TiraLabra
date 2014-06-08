@@ -1,0 +1,10 @@
+.txt 5,92 kt.
+
+LZW: pakkaus: 0,764s
+     purku: 0,858s 
+     koko: 3,23kt
+
+LZ77: pakkaus: 12,807s
+      purku: 0.764s
+      koko: 2,58kt
+		
