@@ -4,12 +4,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import fi.jleh.reittiopas.datastructures.DefaultHashMap;
 import fi.jleh.reittiopas.datastructures.DefaultList;
 import fi.jleh.reittiopas.exception.XMLParsingException;
 import fi.jleh.reittiopas.model.QuadtreePoint;
@@ -34,7 +34,7 @@ public class ReittiopasXMLParser {
 		long start = System.currentTimeMillis();
 		
 		final List<Station> stationList = new DefaultList<Station>();
-		final Map<Integer, Station> stationMap = new TreeMap<Integer, Station>();
+		final Map<Integer, Station> stationMap = new DefaultHashMap<Integer, Station>();
 		final List<Service> services = new DefaultList<Service>();
 		
 		try {

@@ -1,11 +1,11 @@
 package fi.jleh.reittiopas.router;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import fi.jleh.reittiopas.datastructures.BinaryHeap;
+import fi.jleh.reittiopas.datastructures.DefaultHashMap;
 import fi.jleh.reittiopas.datastructures.DefaultSet;
 import fi.jleh.reittiopas.datastructures.Heap;
 import fi.jleh.reittiopas.exception.RoutingFailureException;
@@ -204,12 +204,12 @@ public class Router {
 		visitedNodes = new DefaultSet<Station>();
 		openNodes = new BinaryHeap<Station>();
 		
-		cameFrom = new HashMap<Station, Station>();
-		cameFromStop = new HashMap<Station, Stop>();
-		timeAtStation = new HashMap<Station, String>();
+		cameFrom = new DefaultHashMap<Station, Station>(2000);
+		cameFromStop = new DefaultHashMap<Station, Stop>(2000);
+		timeAtStation = new DefaultHashMap<Station, String>(2000);
 		
-		costFromStart = new HashMap<Station, Double>();
-		estimatedCost = new HashMap<Station, Double>();
+		costFromStart = new DefaultHashMap<Station, Double>(2000);
+		estimatedCost = new DefaultHashMap<Station, Double>(2000);
 	}
 	
 	private void debugPrint(Station current) {
