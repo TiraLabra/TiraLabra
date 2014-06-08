@@ -1,12 +1,12 @@
 package fi.jleh.reittiopas.router;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import fi.jleh.reittiopas.datastructures.BinaryHeap;
+import fi.jleh.reittiopas.datastructures.DefaultSet;
 import fi.jleh.reittiopas.datastructures.Heap;
 import fi.jleh.reittiopas.exception.RoutingFailureException;
 import fi.jleh.reittiopas.model.QuadtreePoint;
@@ -201,7 +201,7 @@ public class Router {
 	}
 	
 	private void initializeDataStructures() {
-		visitedNodes = new HashSet<Station>();
+		visitedNodes = new DefaultSet<Station>();
 		openNodes = new BinaryHeap<Station>();
 		
 		cameFrom = new HashMap<Station, Station>();

@@ -1,6 +1,5 @@
 package fi.jleh.reittiopas.datastructures;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class BinaryHeap<T> implements Heap<T> {
@@ -19,7 +18,7 @@ public class BinaryHeap<T> implements Heap<T> {
 		this.length = lenght;
 		this.heapArray = new HeapNode[this.length];
 		this.position = 0;
-		this.objects = new HashSet<T>();
+		this.objects = new DefaultSet<T>();
 	}
 
 	public boolean insert(double key, T object) {
