@@ -4,21 +4,29 @@ import Toteutus.Huffman.Pakkaaminen.PakkaamisenOhjaaja;
 import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
 
-//
-// Tee yksikk√∂testej√§ lis√§√§ (kaikkia metodeja testataan 3:ssa eri tapauksessa)
 
-// 1) Oikeanlainen toimiva sy√∂te
-// 2) V√§√§r√§nlainen sy√∂te (esim. keko joutuu tuplaantumaan tms.)
+// "Character encoding" saatava toimimaan. Muuten ohjelmalla ei voi tehd‰ yhtik‰s mit‰‰n...
+
+//
+// Tee yksikkˆtestej‰ lis‰‰ (kaikkia metodeja testataan 3:ssa eri tapauksessa)
+
+// 1) Oikeanlainen toimiva syˆte
+// 2) V‰‰r‰nlainen (esim. keko joutuu tuplaantumaan tms.)
 // 3) Rajatapaukset
 
 public class Main {
     
     public static void main(String[] args) throws IOException {
-//        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
-//        ohjaaja.suoritaPakkaaminen("abcd.txt");
         
-        TiedostonPurkaja purkaja = new TiedostonPurkaja();
-        purkaja.pura("abcd.txt.hemi");
+        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
+        ohjaaja.suoritaPakkaaminen("abcd.txt");
+        
+        
+        
+//        TiedostonPurkaja purkaja = new TiedostonPurkaja();
+//        purkaja.pura("abcd.txt.hemi");
+    
+    
     }   
 }
 

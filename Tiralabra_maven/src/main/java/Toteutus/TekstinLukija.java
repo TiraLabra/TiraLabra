@@ -46,7 +46,7 @@ public class TekstinLukija {
             lue(lukija);
         }
         catch (FileNotFoundException e) {
-            throw new FileNotFoundException("Annoit tiedoston polun v√§√§rin.\nOhjelma suljetaan..");
+            throw new FileNotFoundException("Annoit tiedoston polun v‰‰rin.\nOhjelma suljetaan..");
         }
     }
     

@@ -1,6 +1,5 @@
-package Toteutus;
+package Toteutus.Huffman;
 
-import Toteutus.Huffman.BittiEsitykset;
 import Tietorakenteet.Solmu;
 import org.junit.Before;
 import org.junit.Test;

@@ -39,8 +39,8 @@ public class BittiEsitykset {
             return;
         }
         
-        muodostaMerkeilleBittiEsitykset(huippu.getVasen(), bittijono + (char) 0);
-        muodostaMerkeilleBittiEsitykset(huippu.getOikea(), bittijono + (char) 1);
+        muodostaMerkeilleBittiEsitykset(huippu.getVasen(), bittijono + (char) 0 + "");
+        muodostaMerkeilleBittiEsitykset(huippu.getOikea(), bittijono + (char) 1 + "");
     }
     
     /**
