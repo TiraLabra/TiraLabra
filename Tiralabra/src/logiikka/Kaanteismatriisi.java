@@ -42,10 +42,10 @@ public class Kaanteismatriisi {
      *
      * Seuraavaksi (mahdollisesti) rivimuunneltuun yksikkömatriisiin I tehdään
      * suhteessa samat muutokset kuin mitä matriisiin A tehtiin LU-hajotelman
-     * osalta käyttäen apuna A:n alakolmiomatriisin arvoja. Tämän jälkeen 
-     * Gaussin eliminointi on saatu päätökseen ja voidaan takaisinsijoittamalla 
-     * laskea palautettava käänteismatriisi A:n yläkolmiomatriisin ja I:n 
-     * sarakkeiden avulla.
+     * osalta käyttäen apuna A:n alakolmiomatriisin arvoja ja eteenpäin
+     * sijoitusta. Tämän jälkeen Gaussin eliminointi on saatu päätökseen ja 
+     * voidaan takaisinsijoittamalla laskea palautettava käänteismatriisi A:n 
+     * yläkolmiomatriisin ja I:n sarakkeiden avulla.
      *
      * @param matriisi Matriisi, jonka käänteismatriisi halutaan laskea, 
      *                 muotoa m x n
@@ -205,7 +205,8 @@ public class Kaanteismatriisi {
     /**
      * Metodi, joka tekee parametrina annettuun (mahdollisesti) rivimuunneltuun 
      * yksikkömatriisiin I suhteessa ne muutokset, jotka ovat tehty matriisiin A 
-     * sen LU-hajotelman aikana, käyttäen hyväksi A:n alakolmiomatriisin arvoja.
+     * sen LU-hajotelman aikana, käyttäen hyväksi A:n alakolmiomatriisin arvoja
+     * ja eteenpäin sijoitusta.
      * 
      * @param A Matriisi, joka on muutettu LU-muotoon, muotoa n x n
      * @param I Matriisi, joka halutaan suhteuttaa A:n muutoksiin nähden, 
