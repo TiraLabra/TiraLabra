@@ -43,14 +43,14 @@ public class WallFollower extends LabyrinthSolver {
             /*
              Jos asetettuun muurin suuntaan voi alkaa kävellä, vaihdetaan kävelysuunta sinne.
              */
-            if ((labyrinth.labyrinth[coordinate / width][coordinate % width] & wallDirection) != 0) {
+            if (labyrinth.hasEdge(coordinate, wallDirection)) {
                 walkDirection = wallDirection;
                 wallDirection = (byte) ((wallDirection * 2) % 15);
             }
             /*
              Jos kävelysuunnassa on muuri, etsitään uusi kävelysuunta.
              */
-            while ((labyrinth.labyrinth[coordinate / width][coordinate % width] & walkDirection) == 0) {
+            while (!labyrinth.hasEdge(coordinate, walkDirection)) {
                 wallDirection = walkDirection;
                 if (walkDirection == 1) {
                     walkDirection = 8;
@@ -91,14 +91,14 @@ public class WallFollower extends LabyrinthSolver {
             /*
              Jos asetettuun muurin suuntaan voi alkaa kävellä, vaihdetaan kävelysuunta sinne.
              */
-            if ((labyrinth.labyrinth[coordinate / width][coordinate % width] & wallDirection) != 0) {
+            if (labyrinth.hasEdge(coordinate, wallDirection)) {
                 walkDirection = wallDirection;
                 wallDirection = (byte) ((wallDirection * 2) % 15);
             }
             /*
              Jos kävelysuunnassa on muuri, etsitään uusi kävelysuunta.
              */
-            while ((labyrinth.labyrinth[coordinate / width][coordinate % width] & walkDirection) == 0) {
+            while (!labyrinth.hasEdge(coordinate, walkDirection)) {
                 wallDirection = walkDirection;
                 if (walkDirection == 1) {
                     walkDirection = 8;
