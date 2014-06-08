@@ -47,6 +47,7 @@ public class CompressorLZW {
             } 
         }
         outputBuffer.finalWrite();
+        io.close();
     }
     /**
      * Kirjoittaa tiedostoon tavujonoa vastaavan hakemistoindeksin.

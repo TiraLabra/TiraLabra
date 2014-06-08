@@ -1,7 +1,6 @@
 package lib.compressors;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import lib.datastructures.LinkedQueue;
 import lib.datastructures.SlidingWindow;
 import lib.io.*;
@@ -13,7 +12,7 @@ import lib.utils.ByteAsBits;
 public class CompressorLZ77 {
     private final IO io;
     private final int windowSize = 4096;  
-    private final int bufferSize = 15;
+    private final int bufferSize = 16;
     private final SlidingWindow window; //Liukuva ikkuna, jo käsiteltyjä, osoitinta edeltäviä tavuja.
     private final LinkedQueue<Byte> buffer; //Osoittimen jälkeen tulevia tavuja. 
     private final OutputBuffer outputBuffer;
@@ -96,7 +95,7 @@ public class CompressorLZ77 {
             outputBuffer.addBit(b);
         }
         
-        boolean[] bits2 = ArrayUtils.intToBooleanArray(length, 4);
+        boolean[] bits2 = ArrayUtils.intToBooleanArray(length-1, 4);
         for(boolean b : bits2){
             outputBuffer.addBit(b);
         }

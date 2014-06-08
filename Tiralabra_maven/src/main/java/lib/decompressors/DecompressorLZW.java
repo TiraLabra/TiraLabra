@@ -38,7 +38,7 @@ public class DecompressorLZW {
             w = entry;          
             inputBuffer.read();
         }
-        
+       io.close();
     }
     /**
      * Lukee seuraavan hakemistomerkinnän.

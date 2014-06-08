@@ -3,7 +3,7 @@ package lib.datastructures;
 import lib.utils.ByteAsBits;
 
 /**
- * LZ77 -pakkaajan käyttämä liukunikkuna. 
+ * LZ77 -pakkaajan käyttämä liukuikkuna. 
  * @author Iiro
  */
 public class SlidingWindow{
