@@ -37,6 +37,8 @@ public class LabyrinthTest {
     @Test
     public void updating() {
         l.updateLabyrinth(4, 9);
+        width = l.getWidth();
+        height = l.getHeight();
         assertEquals(4, width);
         assertEquals(9, height);
         assertEquals(9, l.labyrinth.length);

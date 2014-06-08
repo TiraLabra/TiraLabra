@@ -137,6 +137,8 @@ public class LabyrinthGeneratorTest {
     public void creatingBigLabyrinth() throws Exception {
         Assume.assumeNotNull(l.lg);
         l.updateLabyrinth(100, 100);
+        width = l.getWidth();
+        height = l.getHeight();
         long startTime = System.currentTimeMillis();
         AlgorithmAddsAllCellsToLabyrinth();
         assertTrue(System.currentTimeMillis() - startTime < 1000);
