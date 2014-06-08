@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Luokka jotka k√§ytet√§√§n (teksti)tiedoston lukemiseen ja samanaikaisesti eri merkkien
- * esiintymism√§√§rien kirjaamiseen.
+ * Luokka jota k‰ytet‰‰n (teksti)tiedoston lukemiseen ja samanaikaisesti eri merkkien
+ * esiintymism‰‰rien kirjaamiseen.
  */
 
 public class TekstinLukija {
@@ -35,9 +35,9 @@ public class TekstinLukija {
     }
     
     /**
-     * Metodi jota kutsutaan lukemaan tiedosto ja laskemaan siin√§ esiintyneet merkit.
+     * Metodi jota kutsutaan lukemaan tiedosto ja laskemaan siin‰ esiintyneet merkit.
      * @param polku - tiedoston polku
-     * @throws FileNotFoundException - mik√§li polku on virheellinen, heitt√§√§ ko. poikkeuksen
+     * @throws FileNotFoundException - mik‰li polku on virheellinen, heitt‰‰ ko. poikkeuksen
      */
     
     public void lueTiedosto(String polku) throws FileNotFoundException {
@@ -62,7 +62,7 @@ public class TekstinLukija {
     }
     
     /**
-     * Lis√§√§ seuraavan rivin merkit "tekstiin" ja kasvatetaan taas siin√§ olevien merkkien esiintymism√§√§ri√§.
+     * Lis‰‰ seuraavan rivin merkit "tekstiin" ja kasvatetaan taas siin‰ olevien merkkien esiintymism‰‰ri‰.
      * @param rivi
      */
     
@@ -73,7 +73,7 @@ public class TekstinLukija {
     }
     
     /**
-     * Lis√§√§ merkin "tekstin" p√§√§h√§n ja kasvattaa ko. merkin esiintymism√§√§ri√§ haj.taulussa.
+     * Lis‰‰ merkin "tekstin" p‰‰h‰n ja kasvattaa ko. merkin esiintymism‰‰ri‰ haj.taulussa.
      * @param merkki 
      */
     

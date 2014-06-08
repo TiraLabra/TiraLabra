@@ -8,12 +8,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Luokka suorittaa tiedoston purkamisen k‰ytt‰en BinaariMuuntaja luokkaa apuna.
+ */
+
 public class TiedostonPurkaja {
     private BinaariMuuntaja muuntaja;
     
     public TiedostonPurkaja() {
         this.muuntaja = new BinaariMuuntaja();
     }
+    
+    /**
+     * Tarkistaa onko tiedoston polku validi. Jos on, hakee pakkauksen ja muodostaa sit‰ vastaavan tiedoston (ilman
+     * pakkauksen loppup‰‰tett‰). T‰m‰n j‰lkeen purkaa pakkauksen.
+     * @param polku
+     * @throws IOException 
+     */
     
     public void pura(String polku) throws IOException {
         tarkistaOnkoPolkuValidi(polku);
@@ -23,11 +34,24 @@ public class TiedostonPurkaja {
         puraTiedosto(pakkaus, tiedosto);
     }
     
+    /**
+     * Tarkistaa onko pakkauksen p‰‰te ".hemi".
+     * @param polku
+     * @throws IOException 
+     */
+    
     protected void tarkistaOnkoPolkuValidi(String polku) throws IOException {
         if (! polku.toLowerCase().endsWith(".hemi")) {
-            throw new IOException("Tiedosto ei ole tyyppi√§ '.hemi' ja sit√§ ei voida t√§ll√§ ohjelmalla purkaa.\nOhjelma suljetaan.");
+            throw new IOException("Tiedosto ei ole tyyppi‰ '.hemi' ja sit‰ ei voida t‰ll‰ ohjelmalla purkaa.\nOhjelma suljetaan.");
         }
     }
+    
+    /**
+     * Hakee pakkauksen ja heitt‰‰ poikkeuksen jos se ei ole olemassa.
+     * @param polku
+     * @return
+     * @throws IOException 
+     */
     
     protected File haePakkaus(String polku) throws IOException {
         File pakkaus = new File(polku);
@@ -38,6 +62,14 @@ public class TiedostonPurkaja {
         return pakkaus;
     }
     
+    /**
+     * Hakee pakkauksta vastaavan tiedoston (ilman .hemi p‰‰tett‰). Jos tiedosto on jo olemassa,
+     * heitt‰‰ poikkeuksen.
+     * @param polku
+     * @return
+     * @throws IOException 
+     */
+    
     protected File muodostaTiedosto(String polku) throws IOException {
         File tiedosto = new File(luotavanTiedostonPolku(polku));
         if (tiedosto.exists()) {
@@ -47,6 +79,14 @@ public class TiedostonPurkaja {
         return tiedosto;
     }
     
+    /**
+     * Purkaa pakkauksen sis‰llˆn tiedostoon hakemalla ensin pakkauksen sis‰llˆn (ascii merkkein‰), k‰yden t‰st‰
+     * Huffman puun l‰pi ja ker‰ten siit‰ "bittijonot ja niit‰ vastaavat merkit", muodostaen String -olion, jossa
+     * on sis‰llˆn bin‰‰ritekstiosa ja muodostaen t‰st‰ sitten puretun tiedoston sis‰llˆn.
+     * @param pakkaus
+     * @param tiedosto
+     * @throws IOException 
+     */
     protected void puraTiedosto(File pakkaus, File tiedosto) throws IOException {
         String teksti = lueTeksti(pakkaus);
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
@@ -57,6 +97,14 @@ public class TiedostonPurkaja {
         String kirjoitettava = kirjoitettavaTeksti(tekstiBinaarina, bittijonotJaMerkit);
         new Kirjoittaja(tiedosto.getPath()).kirjoita(kirjoitettava);
     }
+    
+    /**
+     * Muodostaa bin‰‰ritekstist‰ (010110010...) ja haj. taulusta, jossa on bittijonoja ja niit‰ vastaavia ascii -merkkej‰,
+     * puretun tiedoston sis‰llˆn.
+     * @param tekstiBinaarina
+     * @param bittijonotJaMerkit
+     * @return 
+     */
     
     protected String kirjoitettavaTeksti(String tekstiBinaarina, HashMap<String, String> bittijonotJaMerkit) {
         StringBuilder kirjoitettava = new StringBuilder();
@@ -75,6 +123,10 @@ public class TiedostonPurkaja {
     }
     
     /**
+     * Kelaa pakatussa tiedostossa olevan Huffman -puun l‰pi ja ker‰‰ siit‰ tietona;
+     * 1) Puuta seuraavan alkion osoitteen
+     * 2) Bin‰‰riesitykset kutakin ascii -merkki‰ varten.
+     
      * Miten hoidetaan merkkien '0' ja '1' pakkaaminen? *Tavut 00 ja 01 ??
      * @param teksti
      * @param bittijonotJaMerkit
@@ -133,6 +185,20 @@ public class TiedostonPurkaja {
         return teksti.charAt(i) == (char) 127 && teksti.charAt(i + 1) == (char) 127;
     }
     
+    /**
+     * 
+     * @param teksti
+     * @param poistettavienEtuNollienOsoite
+     * @return 
+     */
+    
+    /**
+     * Muodostaa bin‰‰riesityksen pakkauksen sis‰llˆst‰ "poistettavienEtuNollienOsoite":een j‰lkeen.
+     * @param teksti
+     * @param poistettavienEtuNollienOsoite
+     * @return 
+     */
+    
     protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite) {
         StringBuilder binaarina = new StringBuilder();
         binaarina.append(tavuIlmanEtuNollia(teksti, poistettavienEtuNollienOsoite));
@@ -141,24 +207,45 @@ public class TiedostonPurkaja {
         return binaarina.toString();
     }
     
+    /**
+     * Poistaa "poistettavienEtuNollienOsoite":tta seuraavasta tavusta ko. osoitteessa olevan
+     * ascii -merkin m‰‰r‰n verran etunollia.
+     * @param teksti
+     * @param poistettavienEtuNollienOsoite
+     * @return 
+     */
+    
     protected String tavuIlmanEtuNollia(String teksti, int poistettavienEtuNollienOsoite) {
-        int arvo = teksti.codePointAt(poistettavienEtuNollienOsoite + 1);                               // EI TOIMI
+        int arvo = teksti.charAt(poistettavienEtuNollienOsoite + 1);
+        int poistettavia = teksti.charAt(poistettavienEtuNollienOsoite);
         
         String binaarina = muuntaja.binaariEsitysEtuNollilla8Bit(arvo);
-        return muuntaja.poistaEtuMerkkeja(binaarina, teksti.charAt(poistettavienEtuNollienOsoite));
+        return binaarina.substring(poistettavia);
     }
+    
+    /**
+     * Palauttaa pakkauksen sis‰llˆst‰ bin‰‰riesityksen os. "poistettavienEtuNollienOsoite + 2" alkaen.
+     * @param teksti
+     * @param poistettavienEtuNollienOsoite
+     * @return 
+     */
     
     protected String lisaaMuuTeksti(String teksti, int poistettavienEtuNollienOsoite) {
         StringBuilder lisaaja = new StringBuilder();
         
         for (int i = poistettavienEtuNollienOsoite + 2; i < teksti.length(); i++) {
-            String lisattava = muuntaja.binaariEsitysEtuNollilla8Bit(teksti.codePointAt(i));            // EI TOIMI
-            lisaaja.append(lisattava);
+            int arvo = teksti.charAt(i);
+            lisaaja.append(muuntaja.binaariEsitysEtuNollilla8Bit(arvo));
         }
         return lisaaja.toString();
     }
-    
-            
+         
+    /**
+     * Palauttaa pakkauksen sis‰llˆn.
+     * @param pakkaus
+     * @return
+     * @throws FileNotFoundException 
+     */
     protected String lueTeksti(File pakkaus) throws FileNotFoundException {
         TekstinLukija lukija = new TekstinLukija(false);
         lukija.lueTiedosto(pakkaus.getPath());
@@ -166,11 +253,13 @@ public class TiedostonPurkaja {
         return lukija.getTeksti();
     }
 
+    /**
+     * Muodostaa polun puretulle tiedostolle (ts. poistaa ".hemi" p‰‰tteen).
+     * @param polku
+     * @return 
+     */
+    
     protected String luotavanTiedostonPolku(String polku) {
-        StringBuilder puretunPolku = new StringBuilder();
-        for (int i = 0; i < polku.length() - 5; i++) {
-            puretunPolku.append(polku.charAt(i));
-        }
-        return puretunPolku.toString();
+        return polku.substring(0, polku.length() - 5);
     }
 }

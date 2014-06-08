@@ -35,7 +35,7 @@ public class TekstinLukijaTest {
     
     @Test
     public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
-        assertTrue(this.lukija.getTeksti().equals("T√§m√§ on testi -teksti, mik√§ luetaan\n" +
+        assertTrue(this.lukija.getTeksti().equals("T‰m‰ on testi -teksti, mik‰ luetaan\n" +
                                                   "TekstinLukijaTestin\n" +
                                                   "kautta."));
     }
@@ -50,7 +50,7 @@ public class TekstinLukijaTest {
         luku = esiintymat.get(" ");
         assertEquals(5, luku);        
         
-        luku = esiintymat.get("√§");
+        luku = esiintymat.get("‰");
         assertEquals(3, luku);
         
         luku = esiintymat.get("\n");

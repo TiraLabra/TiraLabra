@@ -4,7 +4,7 @@ import Tietorakenteet.Solmu;
 import java.util.HashMap;
 
 /**
- * Luokka jolla voidaan muodostaa (Huffman -puun muodostamisen j√§lkeen) String-muotoiset bittiesitykset
+ * Luokka jolla voidaan muodostaa (Huffman -puun muodostamisen j‰lkeen) String-muotoiset bittiesitykset
  * kaikille tiedostossa esiintyneille merkeille.
  */
 
@@ -24,11 +24,11 @@ public class BittiEsitykset {
     }
 
     /**
-     * Metodi toimii rekursiivisesti siten ett√§ sille annetaan ensin Huffman -puun (keon) huippusolmu,
-     * jonka j√§lkeen kelataan ko. solmusta molempiin suuntiin aina niin pitk√§lle kunnes tulee vastaan jokin oikea
-     * merkki. T√§m√§n lapset ovat joka tapauksessa "null", joten voidaan lopettaa siihen.
+     * Metodi toimii rekursiivisesti siten ett‰ sille annetaan ensin Huffman -puun (keon) huippusolmu,
+     * jonka j‰lkeen kelataan ko. solmusta molempiin suuntiin aina niin pitk‰lle kunnes tulee vastaan jokin oikea
+     * merkki. T‰m‰n lapset ovat joka tapauksessa "null", joten voidaan lopettaa siihen.
      * 
-     * Huffman -puussa olevat v√§lisolmut sis√§lt√§v√§t avaimenaan "(char) 0)" arvon ja "bittijono" on alussa tyhj√§ ("").
+     * Huffman -puussa olevat v‰lisolmut sis‰lt‰v‰t avaimenaan "(char) 0)" arvon ja "bittijono" on alussa tyhj‰ ("").
      * @param huippu
      * @param bittijono 
      */
@@ -44,9 +44,9 @@ public class BittiEsitykset {
     }
     
     /**
-     * Palauttaa String -olion, joka sis√§lt√§√§ tiedon jokaisesta tiedostossa esiintyneest√§ merkist√§ sek√§
-     * niiden bin√§√§riesityksist√§√§n. Tyyppi√§: "b001c10a1d011(0x7F)(0x7F)".
-     * Lopussa kaksi tavua, jotka kertovat ett√§ tekstiesitys p√§√§ttyy.
+     * Palauttaa String -olion, joka sis‰lt‰‰ tiedon jokaisesta tiedostossa esiintyneest‰ merkist‰ sek‰
+     * niiden bin‰‰riesityksist‰‰n. Tyyppi‰: "b001c10a1d011(0x7F)(0x7F)".
+     * Lopussa kaksi tavua, jotka kertovat ett‰ tekstiesitys p‰‰ttyy.
      * @return 
      */
     
@@ -62,7 +62,7 @@ public class BittiEsitykset {
     }
     
     /**
-     * Lis√§√§ tekstiesitykseen loppup√§√§tteen.
+     * Lis‰‰ tekstiesitykseen loppup‰‰tteen.
      * @param teksti
      * @return 
      */

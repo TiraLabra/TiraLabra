@@ -3,9 +3,9 @@ package Apuvalineet;
 import java.util.HashMap;
 
 /**
- * Yleisluokka joka suorittaa muunnoksia int -arvojen ja niit√§ vastaavien bin√§√§riesitysten (talletetaan
- * String -formaatissa) v√§lill√§. T√§ll√§ hetkell√§ k√§yt√∂ss√§ ainoastaan tiedoston pakkaamisen aikana. (TiedostonPakkaaja k√§ytt√§√§)
- */
+ * Yleisluokka joka suorittaa muunnoksia int -arvojen ja niit‰ vastaavien bin‰‰riesitysten (talletetaan
+ * String -formaatissa) v‰lill‰.
+*/
 
 public class BinaariMuuntaja {
     private int lisatytEtuNollat;
@@ -19,18 +19,20 @@ public class BinaariMuuntaja {
         return this.lisatytEtuNollat;
     }
     
-//    public void luoKaannokset() throws FileNotFoundException {
+//    public void luoKaannokset() {
 //        this.kaannokset = new HashMap<>();
-//        TekstinLukija lukija = new TekstinLukija(false);
-//        lukija.lueTiedosto("kaannokset.txt");
-//        String teksti = lukija.getTeksti();
 //        
-//        for (int i = 0; i < teksti.length(); i++) {
-//            Character merkki = teksti.charAt(i);
-//            kaannokset.put(merkki + "", i + 128);
+//        for (int i = 128; i < 256; i++) {  
+//            int unicode = (char) i;
+//            kaannokset.put(unicode + "", i);
 //        }
 //    }
     
+    /**
+     * Palauttaa String -olion joka vastaa parametrina annetun arvon bin‰‰riesityst‰ (8bit -luku).
+     * @param arvo
+     * @return 
+     */
     public String binaariEsitysEtuNollilla8Bit(int arvo) {
         StringBuilder esitys = new StringBuilder();
         
@@ -47,7 +49,7 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Muodostaa String -formaatissa bin√§√§riesityksen ko. arvosta.
+     * Muodostaa String -formaatissa bin‰‰riesityksen ko. arvosta.
      * @param arvo
      * @param bitteja
      * @return 
@@ -61,9 +63,9 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Yll√§ olevan alametodi joka toimii siten ett√§ v√§hennet√§√§n aina suurin mahd. kakkosen potenssi arvosta.
-     * Hankala selitt√§√§ miksi se toimii mutta olen t√§llaisia juttuja tehnyt aiemminkin ja heksadesimaali - bin√§√§ri -muunnokset
-     * voi yksinkertaisesti suorittaa n√§in.
+     * Yll‰ olevan alametodi joka toimii siten ett‰ v‰hennet‰‰n aina suurin mahd. kakkosen potenssi arvosta.
+     * Hankala selitt‰‰ miksi se toimii mutta olen t‰llaisia juttuja tehnyt aiemminkin ja heksadesimaali - bin‰‰ri -muunnokset
+     * voi yksinkertaisesti suorittaa n‰in.
      
      * @param esitys
      * @param bitti1Loydetty
@@ -86,7 +88,7 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Muuntaa parametrina saadun merkkiesityksen ykk√∂si√§ ja nollia ascii-koodiksi.
+     * Muuntaa parametrina saadun merkkiesityksen ykkˆsi‰ ja nollia ascii-koodiksi.
      * @param ykkosinaJaNollina
      * @return 
      */
@@ -107,8 +109,8 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Saa parametrina 8 merkin mittaisen jonon ykk√∂si√§ ja nollia, jotka ajatellaan biteiksi.
-     * N√§ist√§ lasketaan kokonaisluku (0-255) ja k√§√§nnet√§√§n asii merkiksi.
+     * Saa parametrina 8 merkin mittaisen jonon ykkˆsi‰ ja nollia, jotka ajatellaan biteiksi.
+     * N‰ist‰ lasketaan kokonaisluku (0-255) ja k‰‰nnet‰‰n ascii -merkiksi.
      * @param bittijono
      * @return - "bittijonon" ascii-koodi
      */
@@ -120,19 +122,24 @@ public class BinaariMuuntaja {
         return kirjain[0];
     }
     
-//    public int kokonaisLukuna(String teksti, int osoite) throws FileNotFoundException {
-//        char[] kirjain = teksti.substring(osoite, osoite + 1).toCharArray();
-//        Character asciiMerkki = kirjain[0];
+//    public int kokonaisLukuna(String teksti, int osoite) {
+//        int asciiMerkki = teksti.charAt(osoite);
+//        
+//        if (asciiMerkki < 128) {
+//            return asciiMerkki;
+//        }
 //        
 //        if (kaannokset == null) {
 //            luoKaannokset();
 //        }
-//        
-//        if (asciiMerkki > 127) {
-//            return kaannokset.get(asciiMerkki + "");
-//        }
-//        return asciiMerkki;
+//        return kaannokset.get(asciiMerkki + "");
 //    }
+    
+    /**
+     * Palauttaa bittijonoa (bin. esitys) vastaavan kokonaisluvun.
+     * @param bittijono
+     * @return 
+     */
     
     protected int kokonaisLukuna(String bittijono) {
         int luku = 0;
@@ -147,7 +154,7 @@ public class BinaariMuuntaja {
     }
 
     /**
-     * Palauttaa alkuper√§isest√§ tekstist√§ bin√§√§riesityksen.
+     * Palauttaa alkuper‰isest‰ tekstist‰ bin‰‰riesityksen.
      * @param teksti
      * @param bittijonot
      * @return 
@@ -160,7 +167,7 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Lis√§√§ luettuun tekstiin etunollia siten ett√§ tekstin pituus on luvun 8 kerrannainen.
+     * Lis‰‰ luettuun tekstiin etunollia siten ett‰ tekstin pituus on luvun 8 kerrannainen.
      * @param ilmanEtuNollia
      * @return 
      */
@@ -180,7 +187,7 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Kelaa koko alkuper√§isen tekstin l√§pi ja muodostaa sit√§ vastaavan "bin√§√§riesityksen" ilman etunollia.
+     * Kelaa koko alkuper‰isen tekstin l‰pi ja muodostaa sit‰ vastaavan "bin‰‰riesityksen" ilman etunollia.
      * @param teksti
      * @param bittijonot
      * @return 
@@ -194,13 +201,5 @@ public class BinaariMuuntaja {
             ilmanEtuNollia.append(bittijonot.get(merkki));
         }
         return ilmanEtuNollia.toString();
-    }
-
-    public String poistaEtuMerkkeja(String teksti, int maara) {
-        StringBuilder ilmanEtuMerkkeja = new StringBuilder();
-        for (int i = maara; i < teksti.length(); i++) {
-            ilmanEtuMerkkeja.append(teksti.charAt(i));
-        }
-        return ilmanEtuMerkkeja.toString();
     }
 }

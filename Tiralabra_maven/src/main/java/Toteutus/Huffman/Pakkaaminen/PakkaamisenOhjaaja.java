@@ -7,10 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Luokka on t√§ll√§ hetkell√§ t√§llainen yleisluokka, joka huolehtii koko pakkausoperaation suorituksesta pyyt√§en
- * muita luokkia ja olioita tekem√§√§n asiat sen puolesta.
+ * Luokka on t‰llainen yleisluokka, joka huolehtii koko pakkausoperaation suorituksesta pyyt‰en
+ * muita luokkia ja olioita tekem‰‰n asiat sen puolesta.
  * 
- * Ensin luetaan tiedosto, sitten muodostetaan Huffman puu, m√§√§ritet√§√§n esiintyneille merkeille bittiesitykset ja
+ * Ensin luetaan tiedosto, sitten muodostetaan Huffman puu, m‰‰ritet‰‰n esiintyneille merkeille bittiesitykset ja
  * luodaan uusi tiedosto (pakkaus).
  */
 

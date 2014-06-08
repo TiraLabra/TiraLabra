@@ -1,8 +1,8 @@
 package Tietorakenteet;
 
 /**
- * Tietorakenne kuvaa nimens√§ mukaisesti tietorakennetta "Minimikeko".
- * Keko on j√§rjestetty siten ett√§ keon huipulla on se solmu, joka esiintyi luetussa tekstitiedostossa v√§hiten.
+ * Tietorakenne kuvaa nimens‰ mukaisesti tietorakennetta "Minimikeko".
+ * Keko on j‰rjestetty siten ett‰ keon huipulla on se solmu, joka esiintyi luetussa tekstitiedostossa v‰hiten.
  * 
  * Keko liittyy Huffman -algoritmin toteutuksessa etenkin HuffmanPuuhun.
  */
@@ -12,7 +12,7 @@ public class MinKeko {
     private int koko;
     
     /**
-     * Keolle annetaan solmutaulukon pituudeksi se, kuinka monta erilaista merkki√§ luetussa (teksti)-tiedostossa
+     * Keolle annetaan solmutaulukon pituudeksi se, kuinka monta erilaista merkki‰ luetussa (teksti)-tiedostossa
      * on ollut.
      * @param hashSize 
      */
@@ -43,10 +43,10 @@ public class MinKeko {
     }
     
     /**
-     * Metodi joka lis√§√§ uuden solmun minimikekoon.
-     * Solmu sijoitetaan keon viimeiseksi alkioksi, jos sen esiintymien m√§√§r√§ (tekstitiedostossa) on suurempi kuin
-     * viimeisen paikan vanhemman solmun esiintymien m√§√§r√§. Muussa tapauksessa solmua tulee "valuttaa" yl√∂sp√§in
-     * kohti keon huippua (koska kyseess√§ minimikeko solmujen esiintymism√§√§rien suhteen).
+     * Metodi joka lis√‰‰ uuden solmun minimikekoon.
+     * Solmu sijoitetaan keon viimeiseksi alkioksi, jos sen esiintymien m‰‰r‰ (tekstitiedostossa) on suurempi kuin
+     * viimeisen paikan vanhemman solmun esiintymien m‰‰r‰. Muussa tapauksessa solmua tulee "valuttaa" ylˆsp‰in
+     * kohti keon huippua (koska kyseess‰ minimikeko solmujen esiintymism‰‰rien suhteen).
      * 
      * @param solmu 
      */
@@ -54,7 +54,7 @@ public class MinKeko {
     public void lisaa(Solmu solmu) {
         this.koko++;
         if (this.koko > this.keko.length) { 
-            tuplaaMahtuvienSolmujenMaara();                   // ei pit√§isi koskaan tapahtua Huffman-algoritmin yhteydess√§
+            tuplaaMahtuvienSolmujenMaara();
         }
         
         int i = selvitaLisattavanPaikanIndeksi(this.koko-1, solmu);
@@ -70,16 +70,16 @@ public class MinKeko {
     }
     
     /**
-     * Poistaa keosta sen huippusolmun pienent√§en samalla keon kokoa.
-     * T√§m√§n j√§lkeen kutsutaan heapify-operaatiota,
-     * jotta saadaan tietorakenne pidettyn√§ minimikekona poiston j√§lkeenkin.
+     * Poistaa keosta sen huippusolmun pienent‰en samalla keon kokoa.
+     * T‰m‰n j‰lkeen kutsutaan heapify-operaatiota,
+     * jotta saadaan tietorakenne pidettyn‰ minimikekona poiston j‰lkeenkin.
      
      * @return "huippusolmu"
      */
     
     public Solmu poistaHuippuSolmu() {
         if (keko.length == 0) {
-            throw new ArrayIndexOutOfBoundsException("Tyhj√§st√§ keosta ei voi poistaa alkiota.");
+            throw new ArrayIndexOutOfBoundsException("Tyhj‰st‰ keosta ei voi poistaa alkiota.");
         }
         
         Solmu poistettava = keko[0];
@@ -92,8 +92,8 @@ public class MinKeko {
     }
     
     /**
-     * heapify -operaatio joka valuttaa indekss√§ i olevaa alkiota alasp√§in, jos sen lapsista ainakin toisella on pienempi
-     * esiintymien m√§√§r√§. Funktio toimii rekursiivisesti.
+     * heapify -operaatio joka valuttaa indekss‰ i olevaa alkiota alasp‰in, jos sen lapsista ainakin toisella on pienempi
+     * esiintymien m‰‰r‰. Funktio toimii rekursiivisesti.
      * @param i 
      */
     
@@ -116,11 +116,11 @@ public class MinKeko {
     }
     
     /**
-     * Valitsee pienemm√§ksi joko indeksin vasen tai oikea riippuen siit√§, kummassa paikassa kekoa
-     * solmun esiintymien m√§√§r√§ on pienempi.
+     * Valitsee pienemm‰ksi joko indeksin vasen tai oikea riippuen siit‰, kummassa paikassa kekoa
+     * solmun esiintymien m‰‰r‰ on pienempi.
      * @param vasen
      * @param oikea
-     * @return - solmun indeksi jonka esiintymien m√§√§r√§ pienempi
+     * @return - solmun indeksi jonka esiintymien m‰‰r‰ pienempi
      */
     
     protected int pienempi(int vasen, int oikea) {
@@ -132,7 +132,7 @@ public class MinKeko {
     }
     
     /**
-     * Vaihtaa solmut p√§itt√§in.
+     * Vaihtaa solmut p‰itt‰in.
      * @param i
      * @param j 
      */

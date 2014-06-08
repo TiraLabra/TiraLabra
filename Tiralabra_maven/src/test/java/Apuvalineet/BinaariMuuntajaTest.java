@@ -95,13 +95,6 @@ public class BinaariMuuntajaTest {
     }
     
     @Test
-    public void etuMerkkienPoistoToimii() {
-        String sana = "sana";
-        assertEquals("sana", muuntaja.poistaEtuMerkkeja(sana, 0));
-        assertEquals("", muuntaja.poistaEtuMerkkeja(sana, sana.length()));
-    }
-    
-    @Test
     public void binaariEsitys8BitEtuNollilla() {
         assertEquals("00000000", muuntaja.binaariEsitysEtuNollilla8Bit(0));
         assertEquals("00000010", muuntaja.binaariEsitysEtuNollilla8Bit(2));

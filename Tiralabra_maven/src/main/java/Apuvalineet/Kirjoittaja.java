@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Luokka toimii "FileWriter" -oliona, jolla ei ole tarkoitus muuta kuin kirjoittaa valittu tiedosto.
+ */
+
 public class Kirjoittaja {
     private FileWriter kirjoittaja;
     

@@ -2,6 +2,7 @@ package Toteutus.Huffman.Purkaminen;
 
 import Apuvalineet.Kirjoittaja;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import static org.junit.Assert.*;
@@ -23,7 +24,7 @@ public class TiedostonPurkajaTest {
             testi.createNewFile();
             
             Kirjoittaja kirjoittaja = new Kirjoittaja(testi.getPath());
-            kirjoittaja.kirjoita("jaflsdjvÃ¶jsd gjfgdf");
+            kirjoittaja.kirjoita("jaflsdjvöjsd gjfgdf");
         }
     }
     
@@ -61,11 +62,11 @@ public class TiedostonPurkajaTest {
         purkaja.muodostaTiedosto("TiedostonPurkajaTest.hemi.hemi");
     }
     
-//    @Test
-//    public void testinLukeminenOnnistuu() throws FileNotFoundException {
-//        File tiedosto = new File("TiedostonPurkajaTest.hemi");
-//        assertEquals("jaflsdjvÃ¶jsd gjfgdf", purkaja.lueTeksti(tiedosto));
-//    }
+    @Test
+    public void testinLukeminenOnnistuu() throws FileNotFoundException  {
+        File tiedosto = new File("TiedostonPurkajaTest.hemi");
+        assertEquals("jaflsdjvöjsd gjfgdf", purkaja.lueTeksti(tiedosto));
+    }
     
     @Test
     public void luotavanTiedostonPolkuPalauttaaPolunOikein() {

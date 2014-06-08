@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * Luokka suorittaa uuden tiedoston (pakkauksen) luomisen.
- * Se k√§ytt√§√§ apuna luokkaa "BinaariMuuntaja", joka tekee muunnoksia int -ja String arvojen v√§lill√§.
+ * Se k‰ytt‰‰ apuna luokkaa "BinaariMuuntaja", joka tekee muunnoksia int -ja String arvojen v‰lill‰.
  */
 
 public class TiedostonPakkaaja {
@@ -22,7 +22,7 @@ public class TiedostonPakkaaja {
     }
     
     /**
-     * Luo pakkauksen sek√§ siihen kirjoitettavan tekstin ja lopuksi kirjoittaa ko. tekstin pakkaukseen.
+     * Luo pakkauksen sek‰ siihen kirjoitettavan tekstin ja lopuksi kirjoittaa ko. tekstin pakkaukseen.
      * @param lukija
      * @param puu
      * @param esitykset
@@ -37,7 +37,7 @@ public class TiedostonPakkaaja {
     }
     
     /**
-     * Luo uuden tyhj√§n tiedoston tai heitt√§√§ poikkeuksen jos samanniminen tiedosto on jo olemassa (ts. haluttu tiedosto
+     * Luo uuden tyhj‰n tiedoston tai heitt‰‰ poikkeuksen jos samanniminen tiedosto on jo olemassa (ts. haluttu tiedosto
      * on jo pakattu).
      * @param polku - pakattavan tiedoston polku
      * @return
@@ -69,9 +69,9 @@ public class TiedostonPakkaaja {
     }
     
     /**
-     * Muodostaa tekstin, joka pakattavaan tiedostoon kirjoitetaan (ts. koko pakkauksen sis√§ll√∂n).
-     * Ensin muodostetaan tekstist√§ pakattava "0/1" -versio, jonka j√§lkeen luodaan StringBuilder- olio, johon
-     * lis√§t√§√§n kaikki tarpeellinen yksi kerrallaan.
+     * Muodostaa tekstin, joka pakattavaan tiedostoon kirjoitetaan (ts. koko pakkauksen sis‰llˆn).
+     * Ensin muodostetaan tekstist‰ pakattava "0/1" -versio, jonka j‰lkeen luodaan StringBuilder- olio, johon
+     * lis‰t‰‰n kaikki tarpeellinen yksi kerrallaan.
      * @param esitykset
      * @param puu
      * @param teksti
@@ -87,7 +87,7 @@ public class TiedostonPakkaaja {
     }
     
     /**
-     * Muodostaa tekstist√§ pakattavan 0/1 -version.
+     * Muodostaa tekstist‰ pakattavan 0/1 -version.
      * @param bittijonot
      * @param teksti
      * @return 
@@ -98,9 +98,9 @@ public class TiedostonPakkaaja {
     }
     
     /**
-     * Lis√§√§ tyhj√§lle StringBuilder -oliolle koko pakattavan tiedoston sis√§ll√∂n.
+     * Lis‰‰ tyhj‰lle StringBuilder -oliolle koko pakattavan tiedoston sis‰llˆn.
      * Ensin tulee Huffman -puun tekstiesitys. Sitten 1 tavu joka kertoo, kuinka monta
-     * etunollaa tekstin bin√§√§riesityksen eteen lis√§ttiin ja lopuksi tekstin pakattu bin√§√§riesitys.
+     * etunollaa tekstin bin‰‰riesityksen eteen lis‰ttiin ja lopuksi tekstin pakattu bin‰‰riesitys.
      * @param kirjoitettava
      * @param pakattuna
      * @param esitykset

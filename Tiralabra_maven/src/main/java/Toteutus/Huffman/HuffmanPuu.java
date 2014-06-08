@@ -5,8 +5,8 @@ import Tietorakenteet.Solmu;
 import java.util.HashMap;
 
 /**
- * Sen j√§lkeen kun tiedoston teksti on luettu ja (samanaikaisesti) kaikkien siin√§ esiintyvien merkkien
- * m√§√§r√§t talletettu hajautustauluun, voidaan t√§t√§ luokkaa k√§ytt√§en muodostaa Huffman -puu.
+ * Sen j‰lkeen kun tiedoston teksti on luettu ja (samanaikaisesti) kaikkien siin‰ esiintyvien merkkien
+ * m‰‰r‰t talletettu hajautustauluun, voidaan t‰t‰ luokkaa k‰ytt‰en muodostaa Huffman -puu.
  */
 
 public class HuffmanPuu {
@@ -22,7 +22,7 @@ public class HuffmanPuu {
     }
     
     /**
-     * Ensin luodaan solmu jokaista merkki√§ varten ja vied√§√§n ne minimikekoon (merkkien esiintymism√§√§rien mukaan).
+     * Ensin luodaan solmu jokaista merkki‰ varten ja vied‰‰n ne minimikekoon (merkkien esiintymism‰‰rien mukaan).
      * @param esiintymat 
      */
     
@@ -34,13 +34,13 @@ public class HuffmanPuu {
     }  
     
     /**
-     * Kun keko on luotu, aletaan solmuja poistaa sielt√§ siten ett√§ otetaan aina kaksi seuraavaa solmua (joilla siis
-     * v√§hiten esiintymism√§√§ri√§), luodaan uusi solmu ja linkitet√§√§n n√§m√§ kolme yhteen siten ett√§ uudesta solmusta tulee
-     * n√§iden kahden vanhempi. Sitten uusi solmu lis√§t√§√§n kekoon. *ja t√§t√§ vaihetta toistetaan..*
+     * Kun keko on luotu, aletaan solmuja poistaa sielt‰ siten ett‰ otetaan aina kaksi seuraavaa solmua (joilla siis
+     * v‰hiten esiintymism‰‰ri‰), luodaan uusi solmu ja linkitet‰‰n n‰m‰ kolme yhteen siten ett‰ uudesta solmusta tulee
+     * n‰iden kahden vanhempi. Sitten uusi solmu lis‰t‰‰n kekoon. *ja t‰t‰ vaihetta toistetaan..*
      * 
-     * Lopulta keon koko on en√§√§ 1 ja algoritmin suoritus p√§√§ttyy (koko kasvaa luonnollisesti lis√§tess√§ ja pienenee
-     * poistaessa). T√§ss√§ vaiheessa Huffman -puu on valmis ja solmujen bittiesitykset voidaan lukea k√§ytt√§en keon
-     * p√§√§limm√§ist√§ solmua apuna.
+     * Lopulta keon koko on en‰‰ 1 ja algoritmin suoritus p‰‰ttyy (koko kasvaa luonnollisesti lis‰tess‰ ja pienenee
+     * poistaessa). T‰ss‰ vaiheessa Huffman -puu on valmis ja solmujen bittiesitykset voidaan lukea k‰ytt‰en keon
+     * p‰‰llimm‰ist‰ solmua apuna.
      */
     
     protected void yhdistaKeonSolmutPuuksi() {
@@ -56,7 +56,7 @@ public class HuffmanPuu {
     }
     
     /**
-     * Muodostaa "yhdistetyst√§" solmusta n√§iden toisten vanhemman.
+     * Muodostaa "yhdistetyst‰" solmusta n‰iden toisten vanhemman.
      * @param yhdistetty
      * @param vasen
      * @param oikea 
@@ -67,8 +67,8 @@ public class HuffmanPuu {
         yhdistetty.setOikea(oikea);
         vasen.setVanh(yhdistetty);
         oikea.setVanh(yhdistetty);
-    }
-    
+    }   
+}
 //    /**
 //     * Palauttaa Huffman -puusta tekstiesityksen siten ett√§ tekstiin lis√§t√§√§n aina solmun avain, jonka j√§lkeen solmun
 //     * lapset laitetaan jonoon.
@@ -132,4 +132,3 @@ public class HuffmanPuu {
 //        }
 //        return (Solmu) jono.pollFirst();
 //    }
-}

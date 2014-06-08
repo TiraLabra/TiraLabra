@@ -1,12 +1,12 @@
 package Tietorakenteet;
 
 /**
- * Luokka kuvaa keon solmua, jolla on "vanhempi" sek√§ oikea- ett√§ vasen lapsi.
- * Jokaisella solmulla on merkin mittainen avain, joka talletaan viel√§ String -formaatissa, sill√§
- * tarvitsen sit√§ javan valmiissa hajautustaulussa t√§ss√§ muodossa.
+ * Luokka kuvaa keon solmua, jolla on "vanhempi" sek‰ oikea- ett‰ vasen lapsi.
+ * Jokaisella solmulla on merkin mittainen avain, joka talletaan viel‰ String -formaatissa, sill‰
+ * tarvitsen sit‰ javan valmiissa hajautustaulussa t‰ss‰ muodossa.
  * 
- * En ole kirjoittanut t√§t√§ luokkaa varten testej√§ laisinkaan, sill√§ sen metodit ovat t√§ysin triviaaleja.
- * Piti vaan pit√§√§ huolta ett√§ niiss√§ ei ole turhia bugeja (esim. "getVanh() olisikin palauttanut vasemman lapsen
+ * En ole kirjoittanut t‰t‰ luokkaa varten testej‰ laisinkaan, sill‰ sen metodit ovat t‰ysin triviaaleja.
+ * Piti vaan pit‰‰ huolta ett‰ niiss‰ ei ole turhia bugeja (esim. "getVanh() olisikin palauttanut vasemman lapsen
  * vanhemman sijaan).
  */
 
@@ -24,7 +24,7 @@ public class Solmu {
     
     /**
      * Luo uuden solmun, jonka avaimeksi tulee ascii -merkki "00" (vastaa null-avainta, mutta ei ole "null").
-     * K√§ytet√§√§n Huffman -puun keossa solmuille, jotka yhdist√§v√§t kaksi lasta.
+     * K‰ytet‰‰n Huffman -puun keossa solmuille, jotka yhdist‰v‰t kaksi lasta.
      * @param esiintymiskerrat 
      */
     
