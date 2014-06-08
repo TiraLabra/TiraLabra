@@ -13,7 +13,7 @@ public class Labyrinth {
     /**
      * Labyrintti on tallennettu korkeus*leveys-kokoiseen arrayhun.
      */
-    public byte[][] labyrinth;
+    private byte[][] labyrinth;
     /**
      * Labyrintin leveys.
      */
@@ -32,6 +32,8 @@ public class Labyrinth {
     public LabyrinthSolver ls;
 
     /**
+     * Luo uuden labyrintin annetulla leveydellä ja korkeudella sekä alustaa
+     * 2-ulotteisen arrayn labyrintin solujen kaaria varten.
      *
      * @param w Labyrintin leveys.
      * @param h Labyrintin korkeus.
@@ -67,6 +69,27 @@ public class Labyrinth {
      */
     public boolean isGenerated() {
         return labyrinth[0][0] == 0;
+    }
+
+    /**
+     * Palauttaa annetusta koordinaatista lähtevät kaaret.
+     *
+     * @param coordinate Annettu koordinaatti.
+     * @return Palauttaa annetusta koordinaatista lähtevät kaaret.
+     */
+    public byte getEdges(int coordinate) {
+        return labyrinth[coordinate / width][coordinate % width];
+    }
+    /**
+     * Tarkastaa, lähteekö annetusta koordinaatista kaari annettuun suuntaan.
+     *
+     * @param coordinate Annettu koordinaatti.
+     * @param direction Suunta.
+     * @return Palauttaa true, jos annetusta koordinaatista lähtee kaari
+     * annettuun suuntaan.
+     */
+    public boolean hasEdge(int coordinate, byte direction) {
+        return (labyrinth[coordinate / width][coordinate % width] & direction) != 0;
     }
 
     /**
