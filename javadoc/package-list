@@ -1,4 +1,5 @@
 com.mycompany.tiralabra_maven.controller
 com.mycompany.tiralabra_maven.main
 com.mycompany.tiralabra_maven.model
+com.mycompany.tiralabra_maven.performance_test
 com.mycompany.tiralabra_maven.view
