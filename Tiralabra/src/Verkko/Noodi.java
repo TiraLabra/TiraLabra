@@ -8,7 +8,7 @@ package Verkko;
  *
  * @author eniirane
  */
-public class Noodi {
+public class Noodi implements Comparable<Noodi> {
     int x;
     int y;
     
@@ -87,5 +87,10 @@ public class Noodi {
     @Override
     public String toString() {
         return x + " " + y;
+    }
+
+    @Override
+    public int compareTo(Noodi noodi) {
+        return this.f - noodi.getF();
     }
 }
