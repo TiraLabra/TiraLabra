@@ -108,7 +108,7 @@ class NMD5:
 
 	def createWordArray(self, message):
 		"""Primes the 16-bit words for the main function"""
-		
+
 		message = self.splitToBlocks(self.pad(self.toBinaryString(message)), 32)
 		wordArray = [0] * 16 # Our 16-word array
 
@@ -118,7 +118,6 @@ class NMD5:
 			bytes = self.splitToBlocks(word, 8)
 			tempByte = 0
 			powers = 0
-			byteI = 0
 
 			for byte in bytes:
 				#print("Wordindex:", wordIndex)
