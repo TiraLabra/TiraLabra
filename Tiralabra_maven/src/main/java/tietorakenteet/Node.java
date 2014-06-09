@@ -31,6 +31,7 @@ public class Node implements Comparable<Node> {
      */
     private int kustannus;
     
+    private boolean onReitilla;
     
     /**
      * Konstruktori, joka ottaa parametrinaan noden koordinaatit.
@@ -42,6 +43,7 @@ public class Node implements Comparable<Node> {
         this.rivi = rivi;
         this.sarake = sarake;
         this.kustannus = kustannus;
+        this.onReitilla = false;
     }
     
     public Node(int rivi, int sarake) {
@@ -71,6 +73,10 @@ public class Node implements Comparable<Node> {
     public int getKustannus() {
         return kustannus;
     }
+    
+    public boolean onReitilla() {
+        return onReitilla;
+    }
 
     public void setKustannus(int kustannus) {
         this.kustannus = kustannus;
@@ -88,6 +94,10 @@ public class Node implements Comparable<Node> {
         this.edellinen = edellinen;
     }
     
+    public void setOnReitilla(boolean onko) {
+        this.onReitilla = onko;
+    }
+    
     /**
      * Kertoo, onko kyseinen node kuljettavissa.
      * Tosin sanoen palauttaa false, kun kyseessä on seinä tms.
@@ -99,6 +109,7 @@ public class Node implements Comparable<Node> {
         else
             return true;
     }
+    
     /**
      * Nodejen välisen suuruusvertailut toteuttava metodi.
      * Jos etäisyys olisi sama, vertailuperusteena käytetään koordinaatteja,

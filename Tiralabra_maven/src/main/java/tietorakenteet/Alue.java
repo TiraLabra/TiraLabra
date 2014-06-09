@@ -116,7 +116,9 @@ public class Alue {
                 String kustannus = "";
                 // char estemerkki = '\u275A';
                 char estemerkki = '\u2588';
-                if (nodet[i][j].getKustannus() < 9)
+                if (nodet[i][j].onReitilla())
+                    kustannus += "-";
+                else if (nodet[i][j].getKustannus() < 9)
                     kustannus += nodet[i][j].getKustannus();
                 else
                     kustannus += estemerkki;

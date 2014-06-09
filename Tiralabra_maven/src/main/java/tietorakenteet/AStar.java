@@ -199,6 +199,7 @@ public class AStar {
         while (n.getEdellinen() != null) {
             invert.add(n);
             n = n.getEdellinen();
+            n.setOnReitilla(true);
         }
         
         //Käännetään 
