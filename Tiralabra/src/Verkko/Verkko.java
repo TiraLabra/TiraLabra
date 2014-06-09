@@ -33,4 +33,8 @@ public class Verkko {
     public int getKorkeus() {
         return this.korkeus;
     }
+    
+    public void setNoodi(int x, int y) {
+        noodit[x][y] = new Noodi(x, y);
+    }
 }

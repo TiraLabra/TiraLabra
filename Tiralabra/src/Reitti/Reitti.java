@@ -6,6 +6,7 @@ package Reitti;
 
 import Verkko.*;
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,6 +14,7 @@ import java.util.PriorityQueue;
  */
 public class Reitti {
     Verkko verkko;
+    ArrayList<Noodi> reitti;
     
     /**
      * @param args the command line arguments
@@ -25,12 +27,13 @@ public class Reitti {
     }
 
     public Reitti(Verkko verkko) {
+        this.reitti = new ArrayList<Noodi>();        
         this.verkko = verkko;
     }
     
     public void AStar(Noodi alku, Noodi loppu) {
         PriorityQueue<Noodi> avoinjoukko = new PriorityQueue<Noodi>(); 
-        PriorityQueue<Noodi> suljettujoukko = new PriorityQueue<Noodi>();
+        ArrayList<Noodi> suljettujoukko = new ArrayList<Noodi>();
         
         // alustetaan verkon h- ja g-arvot
         astarheuristic(alku);
@@ -50,10 +53,17 @@ public class Reitti {
                 }
             }            
         }
+        
+        getReitti(alku, loppu);
+        
     }
 
     public void getReitti(Noodi alku, Noodi loppu) {
-         // while !alku: i = loppu, print i.parent, i = i.parent
+        Noodi i = loppu;
+        while (i != alku) {
+            reitti.add(i.getVanhempi());
+            i = i.getVanhempi();
+        }
     
     }
     
