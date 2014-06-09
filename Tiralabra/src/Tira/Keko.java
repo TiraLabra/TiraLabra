@@ -50,7 +50,7 @@ public class Keko<V> {
     }
     
     public int getIndex(int i) {
-        return -1;
+        return lista.get(i);
     }
     
     public int getParent(int i) {

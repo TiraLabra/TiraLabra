@@ -16,18 +16,9 @@ public class Reitti {
     Verkko verkko;
     ArrayList<Noodi> reitti;
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        Verkko gi = new Verkko();
-        Reitti r = new Reitti(gi);
-        
-    }
-
+ 
     public Reitti(Verkko verkko) {
-        this.reitti = new ArrayList<Noodi>();        
+        this.reitti = new ArrayList<Noodi>();
         this.verkko = verkko;
     }
     
@@ -41,12 +32,12 @@ public class Reitti {
         // laitetaan alkusolmulle oikea g-arvo ja lisätään se tarkastelujoukkoon
         alku.setG(0);
         avoinjoukko.add(alku);
-
+ 
         // käydään läpi avointa joukkoa kunnes loppusolmu on käsitelty
         while (!suljettujoukko.contains(loppu)) {
             Noodi u = avoinjoukko.poll();
             suljettujoukko.add(u);
-            for (Noodi i : u.getNaapurit()) {
+            for (Noodi i : this.verkko.getNaapurit(u) ) { 
                 if (i.getG() > u.getG() + u.getW()) {
                     i.setG(u.getG() + u.getW());
                     i.setVanhempi(u);
@@ -59,8 +50,9 @@ public class Reitti {
     }
 
     public void getReitti(Noodi alku, Noodi loppu) {
+        AStar(alku, loppu);
         Noodi i = loppu;
-        while (i != alku) {
+        while (i.getVanhempi() != null) {
             reitti.add(i.getVanhempi());
             i = i.getVanhempi();
         }
@@ -72,7 +64,7 @@ public class Reitti {
         int loppuX = loppu.getX();
         int loppuY = loppu.getY();
         
-        // alustetaan joka solmulle oikea h-arvo suhteessa loppusolmuun, ja 
+        // alustetaan joka solmulle oikea h-arvo suhteessa loppusolmuun
         for (int x = 0; x < this.verkko.getLeveys(); x++) {
             for (int y = 0; y < this.verkko.getKorkeus(); y++) {
                 this.verkko.getNoodi(x, y).setH(Math.abs(x - loppuX) + Math.abs(y - loppuY));
@@ -81,5 +73,12 @@ public class Reitti {
         }
     }
     
-    
+    @Override
+    public String toString() {
+        String output = "";
+        for (Noodi i : reitti) {
+            output = output + i.toString();
+        }
+        return output;
+    }
 }

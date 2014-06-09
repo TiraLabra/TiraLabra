@@ -16,6 +16,8 @@ public class Noodi {
     int h;
     int f = g + h;
     
+    boolean traversable = true;
+    
     //vakiopaino verkkosiirtymille
     int w = 1;
 
@@ -30,6 +32,7 @@ public class Noodi {
         this.g = -1;
         this.h = -1;
         
+        this.naapurit = new Noodi[8];
         this.vanhempi = null;
     }
     
@@ -73,7 +76,16 @@ public class Noodi {
         return this.vanhempi;
     }
     
-    public Noodi[] getNaapurit() {
-        return this.naapurit;
+    public void setTraversable(boolean arvo) {
+        this.traversable = arvo;
+    }
+    
+    public boolean getTraversable() {
+        return this.traversable;
+    }
+    
+    @Override
+    public String toString() {
+        return x + " " + y;
     }
 }
