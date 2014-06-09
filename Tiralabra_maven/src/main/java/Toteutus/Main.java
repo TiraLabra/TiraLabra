@@ -17,14 +17,14 @@ import java.io.IOException;
 public class Main {
     
     public static void main(String[] args) throws IOException {
+//        
+//        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
+//        ohjaaja.suoritaPakkaaminen("kalevala.txt");
+//        
+//        
         
-        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
-        ohjaaja.suoritaPakkaaminen("abcd.txt");
-        
-        
-        
-//        TiedostonPurkaja purkaja = new TiedostonPurkaja();
-//        purkaja.pura("abcd.txt.hemi");
+        TiedostonPurkaja purkaja = new TiedostonPurkaja();
+        purkaja.pura("kalevala.txt.hemi");
     
     
     }   

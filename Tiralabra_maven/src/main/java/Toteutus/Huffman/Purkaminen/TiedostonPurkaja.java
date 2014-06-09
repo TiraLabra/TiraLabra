@@ -2,10 +2,11 @@ package Toteutus.Huffman.Purkaminen;
 
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
-import Toteutus.TekstinLukija;
+import Toteutus.PakkauksenLukija;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -32,7 +33,7 @@ public class TiedostonPurkaja {
         File tiedosto = muodostaTiedosto(polku);
         
         String kirjoitettava = puretunTiedostonSisalto(pakkaus, tiedosto);
-        kirjoitaTeksti(polku, kirjoitettava);
+        kirjoitaTeksti(tiedosto.getPath(), kirjoitettava);
     }
     
     /**
@@ -259,9 +260,9 @@ public class TiedostonPurkaja {
      * @return
      * @throws FileNotFoundException 
      */
-    protected String lueTeksti(File pakkaus) throws FileNotFoundException {
-        TekstinLukija lukija = new TekstinLukija(false);
-        lukija.lueTiedosto(pakkaus.getPath());
+    protected String lueTeksti(File pakkaus) throws FileNotFoundException, UnsupportedEncodingException, IOException {
+        PakkauksenLukija lukija = new PakkauksenLukija(pakkaus.getPath());
+        lukija.luePakkaus();
         
         return lukija.getTeksti();
     }

@@ -39,10 +39,10 @@ public class BinaariMuuntaja {
         for (int i = 7; i >= 0; i--) {
             if (arvo >= Math.pow(2, i)) {
                 arvo -= Math.pow(2, i);
-                esitys.append("1");
+                esitys.append((char) 1);
             }
             else {
-                esitys.append("0");
+                esitys.append((char) 0);
             }
         }
         return esitys.toString();
@@ -146,7 +146,7 @@ public class BinaariMuuntaja {
         int suurin = bittijono.length();
         
         for (int i = 0; i < suurin; i++) {
-            if (bittijono.charAt(i) == '1') {
+            if (bittijono.charAt(i) == (char) 1) {
                 luku += Math.pow(2, suurin - i - 1);
             }
         }
