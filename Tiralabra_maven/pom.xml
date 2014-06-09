@@ -46,6 +46,7 @@
                     <param>Apuvalineet.BinaariMuuntaja</param>
                     <param>Apuvalineet.Kirjoittaja</param>
                     <param>Apuvalineet.Lukija</param>
+                    <param>Tietorakenteet.HajautusTaulu</param>
                     <param>Tietorakenteet.MinKeko</param>
                     <param>Toteutus.Huffman.BittiEsitykset</param>
                     <param>Toteutus.Huffman.HuffmanPuu</param> 
@@ -56,6 +57,7 @@
                     <param>Apuvalineet.BinaariMuuntajaTest</param>
                     <param>Apuvalineet.KirjoittajaTest</param>
                     <param>Apuvalineet.LukijaTest</param>
+                    <param>Tietorakenteet.HajautusTauluTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
                     <param>Toteutus.Huffman.BittiEsityksetTest</param>
                     <param>Toteutus.Huffman.HuffmanPuuTest</param>

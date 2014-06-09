@@ -11,8 +11,12 @@ public class HajautusTaulu {
     private String[] arvot;
     
     public HajautusTaulu() {
-        this.avaimet = new int[256];
-        this.arvot = new String[256];
+        this(256);
+    }
+    
+    public HajautusTaulu(int avaimia) {
+        this.avaimet = new int[avaimia];
+        this.arvot = new String[avaimia];
         alustaAvaimet(avaimet);
     }
     
@@ -22,12 +26,16 @@ public class HajautusTaulu {
         }
     }
     
-    public void lisaa(String avain, String arvo) {
-        lisaa(Integer.parseInt(avain), arvo, avaimet, arvot);
+    public void lisaa(String avain, String arvo) throws Exception {
+        lisaa(muunnaAvain(avain), arvo, avaimet, arvot);
     }
     
     public void poista(String avain, String arvo) throws Exception {
-        poista(Integer.parseInt(avain), arvo, avaimet, arvot);
+        poista(muunnaAvain(avain), arvo, avaimet, arvot);
+    }
+    
+    public String getArvo(int paikka) {
+        return arvot[paikka];
     }
     
     public int hajauta(int avain) {
@@ -54,7 +62,11 @@ public class HajautusTaulu {
         avaimet[i] = Integer.MIN_VALUE;
         arvot[i] = null;
     }
-
+    
+    public int etsi(String avain) throws Exception {
+        return etsi(muunnaAvain(avain));
+    }
+    
     public int etsi(int avain) throws Exception {
         int i = 0;
         while (true) {
@@ -79,11 +91,13 @@ public class HajautusTaulu {
             if (taulukko[paikka] == Integer.MIN_VALUE) {
                 return paikka;
             }
-            i++;
             
             if (i == taulukko.length - 1) {
                 uudelleenHajautaAvaimet();
+                i = 0;
             }
+            
+            i++;
         }
     }
     
@@ -111,5 +125,23 @@ public class HajautusTaulu {
     protected int paikka(int avain, int i) {
         int maara = avaimet.length;
         return (avain % maara) + i * (1 + avain % (maara - 2));
+    }
+    
+    protected int muunnaAvain(String avain) throws Exception {
+        if (avain.isEmpty()) {
+            throw new Exception("Avain on tyhjä ja sitä ei hajauteta");
+        }
+        return muunna(avain);
+    }
+    
+    protected int muunna(String avain) {
+        int muunnettu = 0;
+        
+        int min = Math.min(avain.length(), 3);
+        for (int i = 0; i < min; i++) {
+            muunnettu += avain.charAt(i);
+        }
+        
+        return muunnettu;
     }
 }

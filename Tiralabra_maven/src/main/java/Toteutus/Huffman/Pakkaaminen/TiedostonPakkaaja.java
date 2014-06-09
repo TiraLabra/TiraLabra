@@ -3,7 +3,6 @@ package Toteutus.Huffman.Pakkaaminen;
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
 import Apuvalineet.Lukija;
-import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
 import java.io.File;
