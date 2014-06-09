@@ -100,13 +100,24 @@ public class Node implements Comparable<Node> {
             return true;
     }
     /**
-     * Nodejen välisen suuruusvertailut toteuttava metodi
+     * Nodejen välisen suuruusvertailut toteuttava metodi.
+     * Jos etäisyys olisi sama, vertailuperusteena käytetään koordinaatteja,
+     * painottaen vasemmasta yläkulmasta olevia arvoja pienemmäksi.
+     * 
      * @param node vertailtava toinen node
      * @return
      */    
     public int compareTo(Node node) {
+        int ero = (this.etaisyysAlusta+this.etaisyysMaaliin) - (node.etaisyysAlusta+node.etaisyysMaaliin);
+        if (ero == 0) {     // Jos sama matka, vertaillaan koordinaatteja
+            ero = ( (this.rivi+this.sarake) - (node.rivi+node.sarake) );
+        }
+        if (ero == 0) {     // Jos vieläkin sama, painotetaan pienintä rivinumeroa
+            ero = ( this.rivi - node.rivi);
+        }
         
-        return (this.etaisyysAlusta+this.etaisyysMaaliin) - (node.etaisyysAlusta+node.etaisyysMaaliin);
+        return ero;
+        
     }
 
     @Override
