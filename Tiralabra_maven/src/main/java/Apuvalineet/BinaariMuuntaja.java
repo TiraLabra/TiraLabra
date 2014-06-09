@@ -9,7 +9,8 @@ import java.util.HashMap;
 
 public class BinaariMuuntaja {
     private int lisatytEtuNollat;
-    private HashMap<String, Integer> kaannokset;
+    private final char n = (char) 0;
+    private final char y = (char) 1;
     
     public BinaariMuuntaja() {
         this.lisatytEtuNollat = 0;
@@ -18,15 +19,6 @@ public class BinaariMuuntaja {
     public int getLisatytEtuNollat() {
         return this.lisatytEtuNollat;
     }
-    
-//    public void luoKaannokset() {
-//        this.kaannokset = new HashMap<>();
-//        
-//        for (int i = 128; i < 256; i++) {  
-//            int unicode = (char) i;
-//            kaannokset.put(unicode + "", i);
-//        }
-//    }
     
     /**
      * Palauttaa String -olion joka vastaa parametrina annetun arvon binääriesitystä (8bit -luku).
@@ -39,49 +31,10 @@ public class BinaariMuuntaja {
         for (int i = 7; i >= 0; i--) {
             if (arvo >= Math.pow(2, i)) {
                 arvo -= Math.pow(2, i);
-                esitys.append((char) 1);
+                esitys.append(y);
             }
             else {
-                esitys.append((char) 0);
-            }
-        }
-        return esitys.toString();
-    }
-    
-    /**
-     * Muodostaa String -formaatissa binääriesityksen ko. arvosta.
-     * @param arvo
-     * @param bitteja
-     * @return 
-     */
-    
-    public String binaariEsitysIlmanEtuNollia(int arvo, int bitteja) {
-        if (arvo == 0) {
-            return "0";
-        }
-        return binaariEsitysIlmanEtuNollia(new StringBuilder(), false, arvo, bitteja);
-    }
-    
-    /**
-     * Yllä olevan alametodi joka toimii siten että vähennetään aina suurin mahd. kakkosen potenssi arvosta.
-     * Hankala selittää miksi se toimii mutta olen tällaisia juttuja tehnyt aiemminkin ja heksadesimaali - binääri -muunnokset
-     * voi yksinkertaisesti suorittaa näin.
-     
-     * @param esitys
-     * @param bitti1Loydetty
-     * @param arvo
-     * @param bitteja
-     * @return 
-     */
-    protected String binaariEsitysIlmanEtuNollia(StringBuilder esitys, boolean bitti1Loydetty, int arvo, int bitteja) {
-        for (int i = bitteja; i >= 0; i--) {
-            if (arvo >= Math.pow(2, i)) {
-                arvo -= Math.pow(2, i);
-                esitys.append("1");
-                bitti1Loydetty = true;
-            }
-            else if (bitti1Loydetty) {
-                esitys.append("0");
+                esitys.append(n);
             }
         }
         return esitys.toString();
@@ -109,7 +62,7 @@ public class BinaariMuuntaja {
     }
     
     /**
-     * Saa parametrina 8 merkin mittaisen jonon ykkösiä ja nollia, jotka ajatellaan biteiksi.
+     * Saa parametrina 8 merkin mittaisen jonon (01) ykkösiä ja (00) nollia, jotka ajatellaan biteiksi.
      * Näistä lasketaan kokonaisluku (0-255) ja käännetään ascii -merkiksi.
      * @param bittijono
      * @return - "bittijonon" ascii-koodi
@@ -122,19 +75,6 @@ public class BinaariMuuntaja {
         return kirjain[0];
     }
     
-//    public int kokonaisLukuna(String teksti, int osoite) {
-//        int asciiMerkki = teksti.charAt(osoite);
-//        
-//        if (asciiMerkki < 128) {
-//            return asciiMerkki;
-//        }
-//        
-//        if (kaannokset == null) {
-//            luoKaannokset();
-//        }
-//        return kaannokset.get(asciiMerkki + "");
-//    }
-    
     /**
      * Palauttaa bittijonoa (bin. esitys) vastaavan kokonaisluvun.
      * @param bittijono
@@ -146,7 +86,7 @@ public class BinaariMuuntaja {
         int suurin = bittijono.length();
         
         for (int i = 0; i < suurin; i++) {
-            if (bittijono.charAt(i) == (char) 1) {
+            if (bittijono.charAt(i) == y) {
                 luku += Math.pow(2, suurin - i - 1);
             }
         }
@@ -177,7 +117,7 @@ public class BinaariMuuntaja {
         
         if (ilmanEtuNollia.length() % 8 != 0) {
             for (int i = 0; i < (8 - ilmanEtuNollia.length() % 8); i++) {
-                ykkosinaJaNollina.append("0");
+                ykkosinaJaNollina.append(n);
                 this.lisatytEtuNollat++;
             }
         }

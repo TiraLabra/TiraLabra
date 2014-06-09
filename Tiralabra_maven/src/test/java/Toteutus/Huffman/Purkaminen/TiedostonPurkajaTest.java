@@ -2,20 +2,28 @@ package Toteutus.Huffman.Purkaminen;
 
 import Apuvalineet.Kirjoittaja;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TiedostonPurkajaTest {
     private TiedostonPurkaja purkaja;
+    private final String n = (char) 0 + "";
+    private final String y = (char) 1 + "";
     
     @Before
     public void setUp() throws IOException {
         this.purkaja = new TiedostonPurkaja();
         luoTestiTiedostoJosTarpeen();
+    }
+    
+    @After
+    public void tuhoaTestiTiedosto() {
+        File testi = new File("TiedostonPurkajaTest.hemi");
+        testi.delete();
     }
     
     private void luoTestiTiedostoJosTarpeen() throws IOException {
@@ -24,7 +32,7 @@ public class TiedostonPurkajaTest {
             testi.createNewFile();
             
             Kirjoittaja kirjoittaja = new Kirjoittaja(testi.getPath());
-            kirjoittaja.kirjoita("jaflsdjvöjsd gjfgdf");
+            kirjoittaja.kirjoita("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135) ;
         }
     }
     
@@ -63,9 +71,10 @@ public class TiedostonPurkajaTest {
     }
     
     @Test
-    public void testinLukeminenOnnistuu() throws FileNotFoundException  {
+    public void testinLukeminenOnnistuu() throws IOException  {
         File tiedosto = new File("TiedostonPurkajaTest.hemi");
-        assertEquals("jaflsdjvöjsd gjfgdf", purkaja.lueTeksti(tiedosto));
+        assertEquals("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135,
+                     purkaja.lueTeksti(tiedosto));
     }
     
     @Test
@@ -80,23 +89,24 @@ public class TiedostonPurkajaTest {
     @Test
     public void tekstiBinaarinaTavallisillaAsciiMerkeilla() {
         String teksti = "8a¤" + (char) 2 + ".?,*)";
-        assertEquals("10111000111111001011000010101000101001", purkaja.tekstiBinaarina(teksti, 3));
+        assertEquals(y+n+y+y+y+n+n+n+y+y+y+y+y+y+n+n+y+n+y+y+n+n+n+n+y+n+y+n+y+n+n+n+y+n+y+n+n+y, 
+                     purkaja.tekstiBinaarina(teksti, 3));
     }
     
     @Test
     public void tavuIlmanEtuNolliaTavallisillaAsciiMerkeilla() {
         String teksti = (char) 0 + "+/";
-        assertEquals("00101011", purkaja.tavuIlmanEtuNollia(teksti, 0));
+        assertEquals(n+n+y+n+y+n+y+y, purkaja.tavuIlmanEtuNollia(teksti, 0));
         
         teksti = "abc" + (char) 5 + "" + (char) 7 + "!D";
-        assertEquals("111", purkaja.tavuIlmanEtuNollia(teksti, 3));
+        assertEquals(y+y+y, purkaja.tavuIlmanEtuNollia(teksti, 3));
     }
     
     @Test
     public void lisaaMuuTekstiTavallisillaAsciiMerkeilla() {
         String teksti = "tty56B4";
         assertTrue(purkaja.lisaaMuuTeksti(teksti, 5).isEmpty());
-        assertEquals("0100001000110100", purkaja.lisaaMuuTeksti(teksti, 3));
+        assertEquals(n+y+n+n+n+n+y+n+n+n+y+y+n+y+n+n, purkaja.lisaaMuuTeksti(teksti, 3));
     }
     
     @Test
@@ -104,15 +114,15 @@ public class TiedostonPurkajaTest {
         HashMap<String, String> bittijonotJaMerkit = bittijonotJaMerkit();
 
         assertTrue(purkaja.kirjoitettavaTeksti("", bittijonotJaMerkit).isEmpty());
-        assertEquals("bcadabc", purkaja.kirjoitettavaTeksti("101100111010110", bittijonotJaMerkit));
+        assertEquals("bcadabc", purkaja.kirjoitettavaTeksti(y+n+y+y+n+n+y+y+y+n+y+n+y+y+n, bittijonotJaMerkit));
     }
     
     private HashMap<String, String> bittijonotJaMerkit() {
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
-        bittijonotJaMerkit.put("0", "a");
-        bittijonotJaMerkit.put("10", "b");
-        bittijonotJaMerkit.put("110", "c");
-        bittijonotJaMerkit.put("111", "d");
+        bittijonotJaMerkit.put(n, "a");
+        bittijonotJaMerkit.put(y+n, "b");
+        bittijonotJaMerkit.put(y+y+n, "c");
+        bittijonotJaMerkit.put(y+y+y, "d");
         
         return bittijonotJaMerkit;
     }
@@ -137,8 +147,6 @@ public class TiedostonPurkajaTest {
     
     private void puunLapiKayntiTekstillaJossaTavallisiaAsciiMerkkeja() {
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
-        String n = (char) 0 + "";
-        String y = (char) 1 + "";
         
         String teksti = "c" + n + n + n + "b" + n + n + y + "a" + n + y + n + "d" + n + y + y + "f" + y + y + "e" + y + n + 
                         (char) 127 + "" + (char) 127 + "_abcdef";
@@ -156,8 +164,6 @@ public class TiedostonPurkajaTest {
     
     private HashMap<String, String> puunLapiKayntiaVerrattavaHajTaulu() {
         HashMap<String, String> verrattava = new HashMap<>();
-        String n = (char) 0 + "";
-        String y = (char) 1 + "";
         
         verrattava.put(n+y+n, "a");
         verrattava.put(n+n+y, "b");
@@ -171,7 +177,7 @@ public class TiedostonPurkajaTest {
 
     private void josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun() {
         HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
-        String sata = (char) 1 + "" + (char) 0 + "" + (char) 0 + "";
+        String sata = y+n+n;
         
         purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('a', sata, bittijonotJaMerkit);
         
@@ -184,7 +190,7 @@ public class TiedostonPurkajaTest {
         StringBuilder bittiEsitys = new StringBuilder();
         assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1((char) 0, bittiEsitys));
         assertTrue(purkaja.lisaaMerkkiJosSeOn0Tai1((char) 1, bittiEsitys));
-        assertEquals((char) 0 + "" + (char) 1 + "", bittiEsitys.toString());
+        assertEquals(n+y, bittiEsitys.toString());
         
         assertFalse(purkaja.lisaaMerkkiJosSeOn0Tai1('d', bittiEsitys));
     }

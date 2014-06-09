@@ -2,9 +2,10 @@ package Toteutus.Huffman.Pakkaaminen;
 
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
+import Apuvalineet.Lukija;
+import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
-import Toteutus.TekstinLukija;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class TiedostonPakkaaja {
      * @throws IOException 
      */
     
-    public void pakkaaTiedosto(TekstinLukija lukija, HuffmanPuu puu, BittiEsitykset esitykset, String polku) throws IOException {
+    public void pakkaaTiedosto(Lukija lukija, HuffmanPuu puu, BittiEsitykset esitykset, String polku) throws IOException {
         File tiedosto = luoUusiTiedosto(polku);
         String teksti = muodostaKirjoitettavaTeksti(esitykset, puu, lukija.getTeksti());
         kirjoitaTiedostoon(tiedosto, teksti);

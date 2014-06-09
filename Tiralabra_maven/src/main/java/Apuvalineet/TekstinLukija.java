@@ -1,4 +1,4 @@
-package Toteutus;
+package Apuvalineet;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,17 +13,10 @@ import java.util.Scanner;
 public class TekstinLukija {
     private HashMap<String, Integer> esiintymat;
     private StringBuilder teksti;
-    private boolean keraaEsiintymat;
     
     public TekstinLukija() {
         this.esiintymat = new HashMap<>();
         this.teksti = new StringBuilder();
-        this.keraaEsiintymat = true;
-    }
-    
-    public TekstinLukija(boolean keraaEsiintymat) {
-        this.teksti = new StringBuilder();
-        this.keraaEsiintymat = keraaEsiintymat;
     }
     
     public HashMap<String, Integer> getEsiintymat() {
@@ -44,6 +37,7 @@ public class TekstinLukija {
         try {
             Scanner lukija = new Scanner(new File(polku));
             lue(lukija);
+            lukija.close();
         }
         catch (FileNotFoundException e) {
             throw new FileNotFoundException("Annoit tiedoston polun v‰‰rin.\nOhjelma suljetaan..");
@@ -58,7 +52,7 @@ public class TekstinLukija {
             if (lukija.hasNextLine()) {
                 lisaaMerkki("\n");
             }
-        }    
+        }
     }
     
     /**
@@ -78,9 +72,7 @@ public class TekstinLukija {
      */
     
     protected void lisaaMerkki(String merkki) {
-        if (keraaEsiintymat) {
-            lisaaEsiintyma(merkki);
-        }
+        lisaaEsiintyma(merkki);
         teksti.append(merkki);
     }
     

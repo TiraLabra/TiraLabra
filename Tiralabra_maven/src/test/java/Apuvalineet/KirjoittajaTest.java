@@ -2,7 +2,6 @@ package Apuvalineet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -20,9 +19,9 @@ public class KirjoittajaTest {
     public void testaaKirjoittaminen() throws IOException {
         kirjoittaja.kirjoita("asdhoashdoas");
         
-        Scanner lukija = new Scanner(new File("KirjoittajaTest.txt"));
-        assertEquals("asdhoashdoas", lukija.nextLine());
-        lukija.close();
+        TekstinLukija lukija = new TekstinLukija();
+        lukija.lueTiedosto("KirjoittajaTest.txt");
+        assertEquals("asdhoashdoas", lukija.getTeksti());
     }
             
     @After

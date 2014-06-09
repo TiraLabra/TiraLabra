@@ -78,12 +78,15 @@ public class TiedostonPakkaajaTest {
     }
     
     private HashMap<String, String> testattavatBittiEsitykset() {
+        String n = (char) 0 + "";
+        String y = (char) 1 + "";
+        
         HashMap<String, String> esitykset = new HashMap<>();
-        esitykset.put("a", "101");
-        esitykset.put("b", "00");
-        esitykset.put("c", "01");
-        esitykset.put("d", "100");
-        esitykset.put("e", "11");
+        esitykset.put("a", y+n+y);
+        esitykset.put("b", n+n);
+        esitykset.put("c", n+y);
+        esitykset.put("d", y+n+n);
+        esitykset.put("e", y+y);
         
         return esitykset;
     }

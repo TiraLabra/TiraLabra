@@ -1,8 +1,9 @@
 package Toteutus.Huffman.Pakkaaminen;
 
+import Apuvalineet.Lukija;
+import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
-import Toteutus.TekstinLukija;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -17,8 +18,8 @@ import java.io.IOException;
 public class PakkaamisenOhjaaja {
     
     public void suoritaPakkaaminen(String polku) throws FileNotFoundException, IOException {
-        TekstinLukija lukija = new TekstinLukija();
-        lukija.lueTiedosto(polku);
+        Lukija lukija = new Lukija(polku, true);
+        lukija.lue();
         
         HuffmanPuu puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(lukija.getEsiintymat());

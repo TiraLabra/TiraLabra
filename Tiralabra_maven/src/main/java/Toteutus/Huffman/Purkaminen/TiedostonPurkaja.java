@@ -2,7 +2,7 @@ package Toteutus.Huffman.Purkaminen;
 
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
-import Toteutus.PakkauksenLukija;
+import Apuvalineet.Lukija;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -259,10 +259,12 @@ public class TiedostonPurkaja {
      * @param pakkaus
      * @return
      * @throws FileNotFoundException 
+     * @throws UnsupportedEncodingException
      */
+    
     protected String lueTeksti(File pakkaus) throws FileNotFoundException, UnsupportedEncodingException, IOException {
-        PakkauksenLukija lukija = new PakkauksenLukija(pakkaus.getPath());
-        lukija.luePakkaus();
+        Lukija lukija = new Lukija(pakkaus.getPath());
+        lukija.lue();
         
         return lukija.getTeksti();
     }
