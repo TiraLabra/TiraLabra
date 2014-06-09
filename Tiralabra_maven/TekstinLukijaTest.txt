@@ -1,3 +1,0 @@
-Tämä on testi -teksti, mikä luetaan
-TekstinLukijaTestin
-kautta.
