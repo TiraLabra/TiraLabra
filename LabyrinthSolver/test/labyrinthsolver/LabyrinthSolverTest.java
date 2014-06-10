@@ -10,17 +10,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class LabyrinthSolverTest {
-    
+
     Labyrinth l;
     LabyrinthGenerator[] lg;
     int lgSize;
-    
+
     @Before
     public void setUp() {
         l = new Labyrinth(20, 20);
         setLabyrinthGenerators();
     }
-    
+
     public void setLabyrinthGenerators() {
         lgSize = 3;
         lg = new LabyrinthGenerator[lgSize];
@@ -28,16 +28,18 @@ public class LabyrinthSolverTest {
         lg[1] = new PrimsAlgorithm();
         lg[2] = new RecursiveBacktracker();
     }
-    
+
     public void runLabyrinthSolver() {
         l.ls.solveLabyrinth();
         l.ls.getExploredCells();
         l.ls.getPath();
     }
-    
+
     @Test
     public void algorithmFindsPath() throws Exception {
-        Assume.assumeNotNull(l.ls);
+        if (l.ls == null) {
+            return;
+        }
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
             l.generateLabyrinth();
@@ -46,10 +48,12 @@ public class LabyrinthSolverTest {
             assertTrue(path != null);
         }
     }
-    
+
     @Test
     public void algorithmFindsValidPath() throws Exception {
-        Assume.assumeNotNull(l.ls);
+        if (l.ls == null) {
+            return;
+        }
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
             l.generateLabyrinth();
@@ -63,10 +67,12 @@ public class LabyrinthSolverTest {
             assertTrue((int) path.get(path.size() - 1) == target);
         }
     }
-    
+
     @Test
     public void gettingExploredCells() throws Exception {
-        Assume.assumeNotNull(l.ls);
+        if (l.ls == null) {
+            return;
+        }
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
             l.generateLabyrinth();
@@ -74,10 +80,12 @@ public class LabyrinthSolverTest {
             assertTrue(l.ls.exploredCells > 0);
         }
     }
-    
+
     @Test
     public void gettingExploredCellsIsEqualOrLargerThanPathSize() throws Exception {
-        Assume.assumeNotNull(l.ls);
+        if (l.ls == null) {
+            return;
+        }
         for (int j = 0; j < lgSize; j++) {
             l.setLabyrinthGenerator(lg[j]);
             l.generateLabyrinth();
@@ -85,7 +93,7 @@ public class LabyrinthSolverTest {
             assertTrue(l.ls.exploredCells >= l.ls.getPath().size());
         }
     }
-    
+
     @Test
     public void treeNodeProperlyLinksNodes() {
         TreeNode tn = new TreeNode(null, 0);
@@ -97,10 +105,12 @@ public class LabyrinthSolverTest {
         assertEquals(tn2, tn3.parent);
         assertEquals(tn, tn4.parent);
     }
-    
+
     @Test
     public void findPathFindsCorrectPath() throws Exception {
-        Assume.assumeNotNull(l.ls);
+        if (l.ls == null) {
+            return;
+        }
         l.updateLabyrinth(2, 4);
         l.addPassage(0, 2);
         l.addPassage(2, 4);
@@ -121,5 +131,5 @@ public class LabyrinthSolverTest {
         assertEquals(6, path.get(3));
         assertEquals(7, path.get(4));
     }
-    
+
 }

@@ -19,17 +19,17 @@ public class LabyrinthGeneratorTest {
         width = l.getWidth();
         height = l.getHeight();
     }
-    
+
     byte[][] generateByteArray(Labyrinth lab) {
         byte[][] array = new byte[lab.getHeight()][lab.getWidth()];
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 array[i][j] = lab.getEdges(i * width + j);
             }
         }
         return array;
     }
-    
+
     public void traverseLabyrinth(byte[][] l, boolean[][] visited, int coordinate, int width) {
         visited[coordinate / width][coordinate % width] = true;
         if ((l[coordinate / width][coordinate % width] & 2) > 0
@@ -80,7 +80,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void creatingNewLabyrinth() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         l.lg.generateLabyrinth();
         l.lg.createEmptyLabyrinthIfNeeded();
         labyrinth = generateByteArray(l);
@@ -89,7 +91,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void AlgorithmAddsAllCellsToLabyrinth() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         l.lg.generateLabyrinth();
         labyrinth = generateByteArray(l);
         for (int i = 0; i < height; i++) {
@@ -101,7 +105,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void allCellsAreVisitableInGeneratedLabyrinth() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         AlgorithmAddsAllCellsToLabyrinth();
         boolean[][] visited = new boolean[height][width];
         traverseLabyrinth(labyrinth, visited, 0, width);
@@ -114,7 +120,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void regeneratingLabyrinthCreatesANewLabyrinth() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         AlgorithmAddsAllCellsToLabyrinth();
         int checksum = 0;
         for (int i = 0; i < height; i++) {
@@ -135,7 +143,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void listingUnvisitedNeighbors() {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         int[][] visited = new int[height][width];
         assertEquals(2, l.getListOfNeighbors(0, visited, 0).size());
         assertEquals(3, l.getListOfNeighbors(width / 2, visited, 0).size());
@@ -144,7 +154,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void creatingBigLabyrinth() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         l.updateLabyrinth(100, 100);
         width = l.getWidth();
         height = l.getHeight();
@@ -156,7 +168,9 @@ public class LabyrinthGeneratorTest {
 
     @Test
     public void labyrinthIsSpanningTree() throws Exception {
-        Assume.assumeNotNull(l.lg);
+        if (l.lg == null) {
+            return;
+        }
         l.lg.generateLabyrinth();
         labyrinth = generateByteArray(l);
         /*
