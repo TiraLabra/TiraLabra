@@ -46,7 +46,7 @@ public class Kuvalukija {
         for (int i =0; i < kuva.getHeight(); i++) {
             for (int j=0; j < kuva.getWidth(); j++) {
                 int kustannus = laskekustannus(kuva.getRGB(j, i));
-                nodet[i][j] = new Node(j, i, kustannus);
+                nodet[i][j] = new Node(i, j, kustannus);
                 //System.out.println("Lisätty node " + i + ", " + j);
             }
         }
