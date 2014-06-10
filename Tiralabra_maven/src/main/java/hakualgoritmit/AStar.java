@@ -47,6 +47,8 @@ public class AStar {
      * Ei ole ratkaisun askelmäärä, vaan tarkasteltujen nodejen määrä.
      */
     private int askelia;
+    
+    private long kokonaisaika;
 
     public AStar(Heuristiikka heuristiikka) {
         //kaydyt = new ArrayList();     // Javan oma ArrayList
@@ -71,6 +73,8 @@ public class AStar {
      */
     public void AStarHaku(Alue a, Node alku, Node loppu) {
         
+        long alkuaika = System.currentTimeMillis();
+        
         // Alustetaan 
         kaymatta.add(alku);
         
@@ -94,6 +98,9 @@ public class AStar {
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
                 rakennaReitti(loppu);
+                
+                long loppuaika = System.currentTimeMillis();
+                kokonaisaika = loppuaika - alkuaika;
                 return;
             }
             
@@ -219,6 +226,20 @@ public class AStar {
      */
     public ArrayList<Node> kerroKuljettuReitti() {
         return this.kuljettuReitti;
+    }
+    
+    /**
+     * Palauttaa yhteenvetotietoja hausta tulostettavaksi.
+     * @return 
+     */
+    public String yhteenveto() {
+        String yv = "";
+        
+        yv += "Laskentaan kulunut aika: " + kokonaisaika + " ms\n";
+        yv += "Laskennassa tutkittuja askelia: " + askelia + "\n";
+        yv += "Toteutuneen polun pituus: " + this.kuljettuReitti.size();
+        
+        return yv;
     }
     
 }
