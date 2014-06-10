@@ -11,14 +11,15 @@ import TiraLabra.Number.Real;
 public class VectorTest {
     private Vector<Integer> vector;
 
-    private Vector makeVector(Class<? extends Number> type, int... values) {
-        Number elements[] = new Number[values.length];
+    private <T extends Number<T>> Vector<T> makeVector(Class<T> type,
+            int... values) {
+        T elements[] = (T[]) new Number[values.length];
         
         for (int i = 0; i < values.length; i++) {
-            elements[i] = Number.make(type, values[i]);
+            elements[i] = T.make(type, values[i]);
         }
         
-        return new Vector(elements);
+        return new Vector<T>(elements);
     }
     
     private void vectorEquals(Class<? extends Number> type, int... values) {
@@ -81,7 +82,10 @@ public class VectorTest {
     
     @Test
     public void normalization() {
-        Vector v = makeVector(Real.class, 2, 2, 2, 2).normalize();
+        Vector<Real> v = makeVector(Real.class, 2, 2, 2, 2);
+        assertEquals(new Real(4), v.length());
+        
+        v = v.normalize();
         assertEquals(Real.ONE, v.length());
     }
     

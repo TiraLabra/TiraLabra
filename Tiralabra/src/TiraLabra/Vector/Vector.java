@@ -33,12 +33,12 @@ public class Vector<T extends Number<T>> {
      * @param scalar
      * @return this * scalar
      */
-    public Vector multiply(T scalar) {
-        Number[] res = new Number[N];
+    public Vector<T> multiply(T scalar) {
+        T[] res = (T[]) new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].multiply(scalar);
         }
-        return new Vector(res);
+        return new Vector<T>(res);
     }
     
     /**
@@ -46,12 +46,12 @@ public class Vector<T extends Number<T>> {
      * @param scalar
      * @return this / scalar
      */
-    public Vector divide(T scalar) {
-        Number[] res = new Number[N];
+    public Vector<T> divide(T scalar) {
+        T[] res = (T[]) new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].divide(scalar);
         }
-        return new Vector(res);
+        return new Vector<T>(res);
     }
     
     /**
@@ -59,12 +59,12 @@ public class Vector<T extends Number<T>> {
      * @param other
      * @return this * other
      */
-    public Vector multiply(Vector<T> other) {
-        Number[] res = new Number[N];
+    public Vector<T> multiply(Vector<T> other) {
+        T[] res = (T[]) new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].multiply(other.get(i));
         }
-        return new Vector(res);
+        return new Vector<T>(res);
     }
     
     /**
@@ -72,8 +72,8 @@ public class Vector<T extends Number<T>> {
      * @param other
      * @return this - other
      */
-    public Vector subtract(Vector<T> other) {
-        Number[] res = new Number[N];
+    public Vector<T> subtract(Vector<T> other) {
+        T[] res = (T[]) new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].subtract(other.get(i));
         }
@@ -85,12 +85,12 @@ public class Vector<T extends Number<T>> {
      * @param other
      * @return this + other
      */
-    public Vector add(Vector<T> other) {
-        Number[] res = new Number[N];
+    public Vector<T> add(Vector<T> other) {
+        T[] res = (T[]) new Number[N];
         for (int i = 0; i < N; i++) {
             res[i] = vector[i].add(other.get(i));
         }
-        return new Vector(res);
+        return new Vector<T>(res);
     }
     
     /**
@@ -119,7 +119,7 @@ public class Vector<T extends Number<T>> {
      * 
      * @return 
      */
-    public Vector normalize() {
+    public Vector<T> normalize() {
         return this.divide(length());
     }
     
@@ -128,12 +128,12 @@ public class Vector<T extends Number<T>> {
      * @param other
      * @return this x other
      */
-    public Vector cross(Vector<T> other) {
+    public Vector<T> cross(Vector<T> other) {
         if (N != 3 || other.N != 3) {
             throw new UnsupportedOperationException();
         }
         
-        Number[] res = new Number[3];
+        T[] res = (T[]) new Number[3];
         
         // x = (this.y * other.z) - (this.z * other.y)
         res[0] = vector[1].multiply(other.get(2)).subtract(
@@ -147,7 +147,7 @@ public class Vector<T extends Number<T>> {
         res[2] = vector[0].multiply(other.get(1)).subtract(
                 vector[1].multiply(other.get(0)));
         
-        return new Vector(res);
+        return new Vector<T>(res);
     }
     
     /**
