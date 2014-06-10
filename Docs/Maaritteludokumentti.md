@@ -16,10 +16,20 @@ This includes the following methods:
 * md5.hexdigest()
 * md5.copy()
 
+# MD5 Overview
+MD5 is a hash function that generates a hash from a given input (message). After taking an input, it performs the following steps:
+<ol>
+	<li>Pad message with bits so it is congruent to 448 mod 512</li>
+	<li>Append a 64-bit representation of the message length (little-endian)</li>
+	<li>Initialize constants A,B,C,D</li>
+	<li>Slice message into 512-bit blocks</li>
+	<li>For each block, slice it into 16 "words"</li>
+	<li>Perform four rounds with functions F,G,H,I on words</li>
+	<li>Save result and give a digest</li>
+</ol>
+
 The module will be deployed as a custom importable class or if possible as a Python egg.
 
-The implementation will likely contain at least a linked list implementation, but mostly - following the RFC - will feature more bitwise operations on strings.
+The implementation uses a linked list structure for storing the input string.
 
 https://docs.python.org/2/library/md5.html includes the detailed specification.
-
-
