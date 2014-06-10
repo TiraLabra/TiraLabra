@@ -1,10 +1,14 @@
-package tietorakenteet;
+package hakualgoritmit;
 
 import heuristiikat.Heuristiikka;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.SortedSet;
+import tietorakenteet.Alue;
+import tietorakenteet.ArrayListOma;
+import tietorakenteet.Node;
+import tietorakenteet.NodeComparator;
 
 /**
  * A Star -reitinhaun luokka.

@@ -1,5 +1,6 @@
 package main;
 
+import hakualgoritmit.AStar;
 import apurakenteet.Kuvalukija;
 import heuristiikat.*;
 import java.io.IOException;
