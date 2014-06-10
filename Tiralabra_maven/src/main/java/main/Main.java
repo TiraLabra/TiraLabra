@@ -41,8 +41,8 @@ public class Main {
         Alue hakualue = kuvaAlue;
         int alkurivi = 0;
         int alkusarake = 0;
-        int loppurivi = 7;
-        int loppusarake = 7;
+        int loppurivi = 70;
+        int loppusarake = 75;
         
         System.out.println(hakualue.toString());
         
