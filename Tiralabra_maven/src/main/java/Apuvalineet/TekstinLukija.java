@@ -50,7 +50,8 @@ public class TekstinLukija {
             lisaaRivi(rivi);
 
             if (lukija.hasNextLine()) {
-                lisaaMerkki("\n");
+                lisaaMerkki((char) 13 + "");
+                lisaaMerkki((char) 10 + "");
             }
         }
     }

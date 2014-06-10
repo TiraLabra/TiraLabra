@@ -1,32 +1,45 @@
 
-
 import Toteutus.Huffman.Pakkaaminen.PakkaamisenOhjaaja;
 import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
-
-
-// "Character encoding" saatava toimimaan. Muuten ohjelmalla ei voi tehdä yhtikäs mitään...
-
-//
-// Tee yksikkötestejä lisää (kaikkia metodeja testataan 3:ssa eri tapauksessa)
-
-// 1) Oikeanlainen toimiva syöte
-// 2) Vääränlainen (esim. keko joutuu tuplaantumaan tms.)
-// 3) Rajatapaukset
+import java.util.Scanner;
 
 public class Main {
     
     public static void main(String[] args) throws IOException {
+        System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
+        System.out.print("Nimi: ");
         
-//        PakkaamisenOhjaaja ohjaaja = new PakkaamisenOhjaaja();
-//        ohjaaja.suoritaPakkaaminen("kalevalaa.txt");
-//        
+        Scanner lukija = new Scanner(System.in);
+        String polku = lukija.nextLine();
         
+        System.out.println("Haluatko pakata vai purkaa tiedoston?\npakkaa(1)\npura(2)");
         
-        TiedostonPurkaja purkaja = new TiedostonPurkaja();
-        purkaja.pura("kalevala.txt.hemi");
+        while (true) {
+            try {
+                int vastaus = Integer.parseInt(lukija.nextLine());
+                if (vastaus == 1 || vastaus == 2) {
+                    if (vastaus == 1) {
+                        pakkaa(polku);
+                    }
+                    else {
+                        pura(polku);
+                    }
+                    break;
+                } 
+            }
+            catch (NumberFormatException e) {}
+            
+            System.out.println("Sinun tulee vastata joko '1' (pakkaa) tai '2' (pura).");
+        }
+    }
     
+    private static void pakkaa(String polku) throws IOException {
+        new PakkaamisenOhjaaja().suoritaPakkaaminen(polku);
+    }
     
+    private static void pura(String polku) throws IOException {
+        new TiedostonPurkaja().pura(polku);
     }   
 }
 
