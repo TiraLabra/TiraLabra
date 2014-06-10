@@ -171,17 +171,45 @@ public abstract class LabyrinthSolver {
             }
             vsted[node.coordinate / width][node.coordinate % width] = 0;
             if (node.coordinate == target) {
-                while (node != null) {
-                    path.add(node.coordinate);
-                    node = node.parent;
-                }
-                path.reverseList();
+                generatePath(node, target);
                 return;
             }
-            MyList edges = labyrinth.getListOfEdges(node.coordinate, vsted, 2);
-            for (int i = 0; i < edges.size(); i++) {
-                stack.push(new TreeNode(node, (int) edges.get(i)));
-            }
+            pushNewEdgesToStack(node, stack, vsted);
         }
+    }
+
+    /**
+     * Lisää annetusta TreeNodesta lähtevien kaarien yhdistämät koordinaatit
+     * pinoon.
+     *
+     * @param node Annettu TreeNode.
+     * @param stack Annettu pino.
+     * @param visited Array, jossa on tietoa labyrintin solujen tilasta.
+     */
+    void pushNewEdgesToStack(TreeNode node, MyStack stack, int[][] visited) {
+        if (node == null || stack == null) {
+            return;
+        }
+        MyList edges = labyrinth.getListOfEdges(node.coordinate, visited, 2);
+        for (int i = 0; i < edges.size(); i++) {
+            stack.push(new TreeNode(node, (int) edges.get(i)));
+        }
+    }
+
+    /**
+     * Kun annetaan maalisolmussa oleva TreeNode, luodaan polku maaliin
+     * kulkemalla TreeNodesta juureen asti.
+     *
+     * @param node Annettu TreeNode.
+     */
+    void generatePath(TreeNode node, int target) {
+        if (node == null || node.coordinate != target) {
+            return;
+        }
+        while (node != null) {
+            path.add(node.coordinate);
+            node = node.parent;
+        }
+        path.reverseList();
     }
 }
