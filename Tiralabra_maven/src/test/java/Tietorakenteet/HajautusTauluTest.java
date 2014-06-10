@@ -19,24 +19,34 @@ public class HajautusTauluTest {
         String arvo = "7230+";
         
         taulu.lisaa(avain, arvo);
-        
-        int paikka = taulu.etsi(avain);
-        assertEquals(arvo, taulu.getArvo(paikka));
+
+        assertEquals(arvo, taulu.getArvo(avain));
         
         taulu.lisaa(avain, "5555");
-        assertEquals("5555", taulu.getArvo(paikka));
+        assertEquals("5555", taulu.getArvo(avain));
+    }
+    
+    @Test
+    public void testaaSamankaltaistenAvaimienLisaaminen() throws Exception {
+        taulu = new HajautusTaulu(3);
+        
+        taulu.lisaa("abcd", (char) 1 + "" + (char) 1 + "");
+        taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
+        taulu.lisaa("abce", (char) 1 + "" + (char) 1 + "");
+        
+        assertEquals(0, laskeNullArvot(taulu.getAvaimet()));
     }
     
     @Test
     public void testaaPoisto() throws Exception {
+        taulu = new HajautusTaulu();
+        
         String avain = "henna<";
         String arvo = "3mika";
         
         taulu.lisaa(avain, arvo);
-        int paikka = taulu.etsi(avain);
-        
         taulu.poista(avain, arvo);
-        assertNull(taulu.getArvo(paikka));
+        assertNull(taulu.getArvo("henna<"));
     }
      
     @Test (expected = Exception.class)
@@ -85,7 +95,7 @@ public class HajautusTauluTest {
     @Test (expected = Exception.class)
     public void etsiminenHeittaaVirheenKunEtsittavaEiLoydy() throws Exception {
         taulu = new HajautusTaulu(3);
-        taulu.etsi(5);
+        taulu.etsi("a");
     }
     
     @Test
@@ -101,21 +111,75 @@ public class HajautusTauluTest {
     }
     
     @Test
-    public void testaaHajauttaminen() {
-        int[] taulukko = {1, 3, 9, Integer.MIN_VALUE, 5};
+    public void testaaHajauttaminenKunPaikkaOlemassa() throws Exception {
+        String[] taulukko = {"aabo", "aaba", "c", null, "e"};
         assertEquals(3, taulu.hajauta(7, taulukko));
+        
+        String[] taulukko2 = {"beef", "bee", "hfdgd", "i", "ksad", "5067", null};
+        assertEquals(6, taulu.hajauta(10, taulukko2));
     }
     
-//    
+    @Test
+    public void testaaHajauttaminenKunTaulukkoOnTaysi() throws Exception {
+        taulu = new HajautusTaulu(1);
+        taulu.lisaa("acv", "fjls");
+        
+    }
+    
+    @Test
+    public void uusienTaulukoidenAlustaminen() throws Exception {
+        String[] uudetAvaimet = new String[7];
+        String[] uudetArvot = new String[7];
+        
+        taulu = new HajautusTaulu(5);
+        
+        String n = (char) 0 + "";
+        String y = (char) 1 + "";
+        
+        taulu.lisaa("a", n+n+n);
+        taulu.lisaa("b", n+n+y);
+        taulu.lisaa("c", n+y+n);
+        taulu.lisaa("d", n+y+y);
+        taulu.lisaa("e", y);
+        
+        taulu.alustaUudetTaulukot(uudetAvaimet, uudetArvot);
+        taulu.setArvot(uudetArvot);
+        taulu.setAvaimet(uudetAvaimet);
+        
+        assertEquals(2, laskeNullArvot(uudetAvaimet));
+    }
+    
+    private int laskeNullArvot(String[] avaimet) {
+        int maara = 0;
+        for (String avain : avaimet) {
+            if (avain == null) {
+                maara++;
+            }
+        }
+        return maara;
+    }
+    
+    @Test
+    public void uudelleenHajautaAvaimet() throws Exception {
+        taulu = new HajautusTaulu(3);
+        taulu.lisaa("abcd", (char) 1 + "" + (char) 1 + "");
+        taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
+        taulu.lisaa("abce", (char) 1 + "" + (char) 1 + "");
+        
+        taulu.uudelleenHajautaAvaimet();
+        
+        assertEquals(518, laskeNullArvot(taulu.getAvaimet()));
+        assertEquals(294, taulu.etsi("abcd"));
+    }
+    
 //    @Test
 //    public void uudelleenHajautaAvaimetKunTauluTuleeTayteen() throws Exception {
-//        taulu = new HajautusTaulu();
-//        for (int i = 0; i < 256; i++) {
+//        taulu = new HajautusTaulu(3);
+//        for (int i = 0; i < 3; i++) {
 //            taulu.lisaa((char) i + "", "");
 //        }
 //        
 //        taulu.lisaa("aapinen", "kukko");
-//        taulu.lisaa("moi", "mö");
-//        assertEquals("mö", taulu.getArvo(31));
+//        assertEquals("kukko", taulu.getArvo("aapinen"));
 //    }
 }
