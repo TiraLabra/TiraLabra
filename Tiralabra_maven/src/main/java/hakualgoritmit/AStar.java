@@ -192,7 +192,14 @@ public class AStar {
      * @return 
      */
     private int laskeKustannus(Node tarkastettava, Node naapuri) {
-        return 1;
+        
+        // Jos on diagonaalinen siirtymä:
+        if (tarkastettava.getRivi() != naapuri.getRivi() && tarkastettava.getSarake() != naapuri.getSarake() ) {
+            return 14;          // pyöristetty arvo sqrt(2);
+        } else {
+            return 10;
+        }
+           
     }
 
     public int getAskelia() {

@@ -43,7 +43,13 @@ public class Main {
         int alkusarake = 0;
         int loppurivi = 70;
         int loppusarake = 75;
-        
+
+//        Alue hakualue = a1;
+//        int alkurivi = 0;
+//        int alkusarake = 0;
+//        int loppurivi = 14;
+//        int loppusarake = 15;
+
         System.out.println(hakualue.toString());
         
         Heuristiikka h = new Manhattan();
