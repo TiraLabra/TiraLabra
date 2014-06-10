@@ -445,7 +445,7 @@ public class Integer extends Number<Integer> {
             return -1;
         }
         
-        for (int i = 0; i < thisWords.length; i++) {
+        for (int i = thisWords.length-1; i >= 0; i--) {
             if (thisWords[i] > otherWords[i]) {
                 return 1;
             } else if (thisWords[i] < otherWords[i]) {
