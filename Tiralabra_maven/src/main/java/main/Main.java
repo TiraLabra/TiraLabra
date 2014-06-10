@@ -38,7 +38,11 @@ public class Main {
         
         
         // Mitä aluetta tarkastellaan...
-        Alue hakualue = a1;
+        Alue hakualue = kuvaAlue;
+        int alkurivi = 0;
+        int alkusarake = 0;
+        int loppurivi = 7;
+        int loppusarake = 7;
         
         System.out.println(hakualue.toString());
         
@@ -47,7 +51,7 @@ public class Main {
         
         AStar as = new AStar(h);
         
-        as.AStarHaku(hakualue, hakualue.getnode(0, 0), hakualue.getnode(7,7));
+        as.AStarHaku(hakualue, hakualue.getnode(alkurivi, alkusarake), hakualue.getnode(loppurivi,loppusarake));
         
         System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
         
