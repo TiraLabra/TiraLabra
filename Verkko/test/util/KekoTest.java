@@ -5,6 +5,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import org.junit.After;
@@ -107,9 +108,9 @@ public class KekoTest {
         final Integer randomi = (int) Math.round(Math.random() * 100);
 
         keko.lisaa(randomi);
-        assertEquals(keko.getTaulukonLenght(),Keko.ALKUKOKO);
+        assertEquals(keko.getTaulukonLenght(), Keko.ALKUKOKO);
         keko.kasvataTaulukko();
-        assertEquals(keko.getTaulukonLenght(),Keko.ALKUKOKO*Keko.KASVUKERROIN);
+        assertEquals(keko.getTaulukonLenght(), Keko.ALKUKOKO * Keko.KASVUKERROIN);
         assertEquals(randomi, keko.poista());
         assertNull(null, keko.poista());
 
@@ -185,10 +186,34 @@ public class KekoTest {
 
 
          */
-        Integer[] alku ={null,63,17,31,45,5,84,69};
-        Integer[] exp ={null,5,17,31,45,63,84,69};
-        keko=new Keko<>(alku,comparator);
+        Integer[] alku = {null, 63, 17, 31, 45, 5, 84, 69};
+        Integer[] exp = {null, 5, 17, 31, 45, 63, 84, 69};
+        keko = new Keko<>(alku, comparator);
         assertArrayEquals(exp, keko.taulukko);
-     }
+    }
+
+    @Test
+    public void testKostruktoriJossaNollaEiOleNull() {
+        comparator = new Comparator<Integer>() {
+
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if (o1 < o2) {
+                    return -1;
+                }
+                if (o1 > o2) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+        Integer[] taulukko = {2, 1};
+        Keko<Integer> k = new Keko<>(taulukko, comparator);
+        Integer[] exp = {null, 1, 2};
+        final Object[] taulukko1 = k.taulukko;
+        int koko = k.getKoko();
+        final Integer[] saatu = Arrays.copyOf(taulukko1, koko + 1, Integer[].class);
+        assertArrayEquals(exp, saatu);
+    }
 
 }

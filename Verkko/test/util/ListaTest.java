@@ -41,7 +41,6 @@ public class ListaTest {
      */
     @Test
     public void testKoko() {
-        System.out.println("koko");
         Lista<Integer> instance = new Lista();
         int expResult = 0;
         int result = instance.koko();
@@ -58,7 +57,6 @@ public class ListaTest {
      */
     @Test
     public void testGet() {
-        System.out.println("get");
         Lista<Integer> instance = new Lista();
         Integer[] a = {1, 5, 9, 7, 3, 0};
         for (Integer integer : a) {
@@ -74,7 +72,6 @@ public class ListaTest {
      */
     @Test
     public void testMuuta() {
-        System.out.println("muuta");
         int indeksi = 0;
         Integer uusiArvo = 123;
         Lista<Integer> instance = new Lista();
@@ -88,7 +85,6 @@ public class ListaTest {
      */
     @Test
     public void testContains() {
-        System.out.println("contains");
         Object o = null;
         Lista<Integer> instance = new Lista();
         instance.lisaa(123);

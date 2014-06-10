@@ -67,7 +67,7 @@ public class Labyrintti2D {
      * @return solmut
      */
     public Solmu[][] getSolmut() {
-        return solmut.clone();
+        return solmut;
     }
 
     /**

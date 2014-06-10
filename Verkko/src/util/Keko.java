@@ -6,12 +6,6 @@ package util;
 
 import java.util.Comparator;
 
-/**
- * Binäärikeko ja sillee...
- *
- * @author Arvoitusmies
- * @param <E>
- */
 public class Keko<E> {
 
     /**
@@ -58,11 +52,15 @@ public class Keko<E> {
      * @param comparator
      */
     public Keko(E[] taulukko, Comparator<E> comparator) {
+        koko=taulukko.length-1;
         this.taulukko = taulukko.clone();
-        koko = taulukko.length - 1;
         this.comparator = comparator;
         tarkistaOnkoNollaNull();//tämä siksi että jos ei ole null niin taulukon ensimäinen "katoaa" keosta.
         buildHeap();
+    }
+
+    public int getKoko() {
+        return koko;
     }
 
     /**
@@ -254,6 +252,7 @@ public class Keko<E> {
      */
     private void tarkistaOnkoNollaNull() {
         if (taulukko[0] != null) {
+            koko++;
             kasvataTaulukko();
             taulukko[koko] = taulukko[0];
             taulukko[0] = null;

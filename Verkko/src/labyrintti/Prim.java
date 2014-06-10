@@ -34,7 +34,7 @@ public class Prim extends Labyrintitin {
      */
     public Prim(Solmu[][] solmut) {
         super(solmut);
-        lisaysehdokkaat = new ArrayList<>();
+        lisaysehdokkaat = new ArrayList<>(solmut.length + solmut[0].length);
         snj = new Random();
     }
 
@@ -42,7 +42,8 @@ public class Prim extends Labyrintitin {
     public void labyrintita() {
         Solmu lisatty = solmut[0][0];
         kayty(lisatty);
-        kaymattomatNaapuritLisaysehdokkaisiin(lisatty);
+        Solmu[] kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
+        lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
         do {
             final int rand = snj.nextInt(lisaysehdokkaat.size());
             Solmu lisattava = lisaysehdokkaat.get(rand);
@@ -57,27 +58,33 @@ public class Prim extends Labyrintitin {
             luoNaapuruudet(lisattava, valittuKayty);
             kayty(lisattava);
             lisatty = lisattava;
-            kaymattomatNaapuritLisaysehdokkaisiin(lisatty);
+            kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
+            lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
 
         } while (!lisaysehdokkaat.isEmpty());
     }
 
     /**
-     * Kuvaava nimi, eikö?
+     *
      * @param s
+     * @return
      */
-    private void kaymattomatNaapuritLisaysehdokkaisiin(Solmu s) {
-        Solmu[] naapurit;
-        naapurit = naapurit(s);
-        for (Solmu solmu : naapurit) {
-            if (!onkoKayty(solmu) && !lisaysehdokkaat.contains(solmu)) {
-                lisaysehdokkaat.add(solmu);
+    private Solmu[] kaymattomatNaapurit(Solmu s) {
+        Solmu[] naapurit = naapurit(s);
+        for (int i = 0; i < naapurit.length; i++) {
+            Solmu solmu = naapurit[i];
+            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
+                naapurit[i] = null;
             }
         }
+        final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
+        naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
+        return naapurit;
     }
 
     /**
      * Palauttaa annetun solmun käydyt naapurit.
+     *
      * @param s
      * @return
      */
