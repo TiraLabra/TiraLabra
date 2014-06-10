@@ -98,4 +98,28 @@ public class LabyrinthSolverTest {
         assertEquals(tn, tn4.parent);
     }
     
+    @Test
+    public void findPathFindsCorrectPath() throws Exception {
+        Assume.assumeNotNull(l.ls);
+        l.updateLabyrinth(2, 4);
+        l.addPassage(0, 2);
+        l.addPassage(2, 4);
+        l.addPassage(4, 6);
+        l.addPassage(6, 7);
+        int[][] visited = new int[4][2];
+        visited[0][0] = 2;
+        visited[1][0] = 2;
+        visited[2][0] = 2;
+        visited[3][0] = 2;
+        visited[3][1] = 2;
+        runLabyrinthSolver();
+        MyList path = l.ls.getPath();
+        assertTrue(!path.empty());
+        assertEquals(0, path.get(0));
+        assertEquals(2, path.get(1));
+        assertEquals(4, path.get(2));
+        assertEquals(6, path.get(3));
+        assertEquals(7, path.get(4));
+    }
+    
 }
