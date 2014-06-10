@@ -15,7 +15,7 @@ public class Integer extends Number<Integer> {
     
     protected final boolean negative;
     protected final int[] integer;
-
+    
     /**
      * Luo luvun kokonaisluvusta
      * @param integer kokonaisluku
@@ -84,14 +84,14 @@ public class Integer extends Number<Integer> {
      * @param b
      * @return 
      */
-    private static int[][] padZeroes(int a[], int b[]) {
-        int res[][] = {a, b};
+    public static int[][] padZeroes(int a[], int b[]) {
+        int res[][] = {removeLeadingZeroes(a), removeLeadingZeroes(b)};
         
-        if (a.length == b.length) {
+        if (res[0].length == res[1].length) {
             return res;
         }
         
-        int max = (a.length > b.length) ? 0 : 1;
+        int max = (res[0].length > res[1].length) ? 0 : 1;
         int min = (max + 1) % 2;
         
         int newMin[] = new int[res[max].length];
@@ -175,10 +175,13 @@ public class Integer extends Number<Integer> {
      * @param n
      * @return 
      */
-    private Integer highWords(int n) {
-        int words[] = new int[n], j = 0;
-        for (int i = integer.length - n; i < integer.length; i++) {
-            words[j++] = integer[i];
+    protected Integer highWords(int n) {
+        int m = n + (integer.length % 2);
+        int words[] = new int[m];
+        System.arraycopy(integer, integer.length - n, words, 0, n);
+        
+        if (integer.length % 2 == 1) {
+            words[m-1] = 0;
         }
         
         return new Integer(words, negative);
@@ -189,11 +192,11 @@ public class Integer extends Number<Integer> {
      * @param n
      * @return 
      */
-    private Integer lowWords(int n) {
-        int words[] = new int[n];
-        for (int i = 0; i < n; i++) {
-            words[i] = integer[i];
-        }
+    protected Integer lowWords(int n) {
+        int m = integer.length - n;
+        
+        int words[] = new int[m];
+        System.arraycopy(integer, 0, words, 0, m);
         
         return new Integer(words, negative);
     }
@@ -203,11 +206,12 @@ public class Integer extends Number<Integer> {
      * @param count
      * @return 
      */
-    private Integer shiftLeft(int count) {
+    protected Integer shiftLeft(int count) {
         int words[] = new int[integer.length + count];
         for (int i = 0; i < count; i++) {
             words[i] = 0;
         }
+        
         System.arraycopy(integer, 0, words, count, integer.length);
         return new Integer(words, negative);
     }
@@ -225,8 +229,8 @@ public class Integer extends Number<Integer> {
         
         final boolean neg = (this.isNegative() != other.isNegative());
         
-        final int words[][] = padZeroes(integer, other.integer);
-        final int m = words[0].length, m2 = m / 2;
+        int words[][] = padZeroes(integer, other.integer);
+        int m = words[0].length, m2 = m / 2;
         if (m == 1) {
             int t = integer[0] * other.integer[0];
             int res[] = {t % radix, t / radix};
@@ -243,6 +247,9 @@ public class Integer extends Number<Integer> {
         Integer z0 = x0.multiply(y0);
         Integer z1 = x1.add(x0).multiply(y1.add(y0))
                 .subtract(z2.add(z0));
+        
+        m2 += m % 2;
+        m += m % 2;
         
         Integer res = z2.shiftLeft(m).add(z1.shiftLeft(m2)).add(z0);
         

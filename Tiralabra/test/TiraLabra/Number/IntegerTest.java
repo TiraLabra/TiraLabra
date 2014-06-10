@@ -1,7 +1,7 @@
 package TiraLabra.Number;
 
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class IntegerTest extends NumberTests<Integer> {
     private static final Integer overflow = new Integer(46340);
@@ -89,5 +89,30 @@ public class IntegerTest extends NumberTests<Integer> {
     public void powOverflow() {
         assertEquals("1073741824", two.pow(30).toString());
         assertEquals("99510312104000", overflow.pow(3).toString());
+        assertEquals("1267650600228229401496703205376",
+            two.pow(100).toString());
+    }
+    
+    @Test
+    public void highWordAndLowWords() {
+        int v[] = {41708, 1, 1};
+        Integer n = new Integer(v, false);
+        
+        Integer x1 = n.highWords(1), x0 = n.lowWords(1);
+        assertEquals(2, x0.integer.length);
+        assertEquals(2, x1.integer.length);
+        
+        assertEquals(41708, x0.integer[0]);
+        assertEquals(1, x0.integer[1]);
+        
+        assertEquals(1, x1.integer[0]);
+        assertEquals(0, x1.integer[1]);
+        
+        n = n.multiply(two);
+        assertEquals(37076, n.integer[0]);
+        assertEquals(3, n.integer[1]);
+        assertEquals(2, n.integer[2]);
+        
+        assertEquals("4294967296", n.toString());
     }
 }
