@@ -11,7 +11,7 @@ public class HajautusTaulu {
     private String[] arvot;
     
     public HajautusTaulu() {
-        this(256);
+        this(257);
     }
     
     public HajautusTaulu(int avaimia) {
@@ -36,10 +36,6 @@ public class HajautusTaulu {
     
     public String getArvo(int paikka) {
         return arvot[paikka];
-    }
-    
-    public int hajauta(int avain) {
-        return hajauta(avain, avaimet);
     }
     
     protected void lisaa(int avain, String arvo, int[] avaimet, String[] arvot) {
@@ -77,7 +73,7 @@ public class HajautusTaulu {
             }
             i++;
             
-            if (i == avaimet.length - 1) {
+            if (i == avaimet.length) {
                 throw new Exception("Avainta ei löytynyt.");
             }
         }
@@ -86,24 +82,23 @@ public class HajautusTaulu {
     protected int hajauta(int avain, int[] taulukko) {
         int i = 0;
         while (true) {
-            int paikka = paikka(avain, i);
+            int paikka = paikka(avain, i, taulukko);
             
             if (taulukko[paikka] == Integer.MIN_VALUE) {
                 return paikka;
             }
+            i++;
             
-            if (i == taulukko.length - 1) {
+            if (i == taulukko.length) {
                 uudelleenHajautaAvaimet();
                 i = 0;
             }
-            
-            i++;
         }
     }
     
     protected void uudelleenHajautaAvaimet() {
-        int[] uudetAvaimet = new int[avaimet.length * 2];
-        String[] uudetArvot = new String[arvot.length * 2];
+        int[] uudetAvaimet = new int[uusiAlkuLuku()];
+        String[] uudetArvot = new String[uusiAlkuLuku()];
         
         alustaUudetTaulukot(uudetAvaimet, uudetArvot);
 
@@ -111,20 +106,27 @@ public class HajautusTaulu {
         this.arvot = uudetArvot;
     }
     
+    protected int uusiAlkuLuku() {
+        return 521;
+    }
+    
     protected void alustaUudetTaulukot(int[] uudetAvaimet, String[] uudetArvot) {
         alustaAvaimet(uudetAvaimet);
         
-        for (int avain : avaimet) {
-            if (avain != Integer.MIN_VALUE) {
-                int i = hajauta(avain, uudetAvaimet);
+        for (int i = 0; i < avaimet.length; i++) {
+            if (avaimet[i] != Integer.MIN_VALUE) {
                 lisaa(avaimet[i], arvot[i], uudetAvaimet, uudetArvot);
             }
         }
     }
     
     protected int paikka(int avain, int i) {
-        int maara = avaimet.length;
-        return (avain % maara) + i * (1 + avain % (maara - 2));
+        return paikka(avain, i, avaimet);
+    }
+    
+    protected int paikka(int avain, int i, int[] taulukko) {
+        int maara = taulukko.length;
+        return ( (avain % maara) + i * (1 + avain % (maara - 2)) ) % maara;
     }
     
     protected int muunnaAvain(String avain) throws Exception {

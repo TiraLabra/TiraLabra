@@ -39,6 +39,11 @@ public class HajautusTauluTest {
         assertNull(taulu.getArvo(paikka));
     }
      
+    @Test (expected = Exception.class)
+    public void muuntaminenHeittaaVirheenJosMuunnettavaTyhja() throws Exception {
+        taulu.muunnaAvain("");
+    }
+    
     @Test
     public void testaaMuuntaminen() {
         int arvo = taulu.muunna("jdsf4");
@@ -52,15 +57,16 @@ public class HajautusTauluTest {
     
     @Test
     public void paikkaToimiiSatunnaisellaSyotteella() {
-        assertEquals(114, taulu.paikka(524, 6));
+        taulu = new HajautusTaulu();
+        assertEquals(100, taulu.paikka(524, 6));
     }
     
     @Test
     public void paikkaMetodiKelaaKaikkiMahdollisetPaikatLapi() throws Exception {
-        taulu = new HajautusTaulu(256);
-        int[] testiTaulu = new int[256];
+        taulu = new HajautusTaulu(251);
+        int[] testiTaulu = new int[251];
         
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 251; i++) {
             String avain = (char) i + "";
             
             taulu.lisaa(avain, avain);
@@ -76,15 +82,40 @@ public class HajautusTauluTest {
         }
     }
     
-    @Test
-    public void uudelleenHajautaAvaimetKunTauluTuleeTayteen() throws Exception {
-        taulu = new HajautusTaulu(16);
-        for (int i = 0; i < 16; i++) {
-            taulu.lisaa((char) i + "", "");
-        }
-        
-        taulu.lisaa("moi", "mö");
-        assertEquals("mö", taulu.getArvo(31));
-        
+    @Test (expected = Exception.class)
+    public void etsiminenHeittaaVirheenKunEtsittavaEiLoydy() throws Exception {
+        taulu = new HajautusTaulu(3);
+        taulu.etsi(5);
     }
+    
+    @Test
+    public void etsiminenPalauttaaAvaimenPaikan() throws Exception {
+        taulu = new HajautusTaulu(7);
+        taulu.lisaa((char) 1 + "", "a");
+        taulu.lisaa((char) 8 + "", "b");
+        taulu.lisaa((char) 43 + "", "c");
+        
+        assertEquals(1, taulu.etsi((char) 1 + ""));
+        assertEquals(5, taulu.etsi((char) 8 + ""));
+        assertEquals(2, taulu.etsi((char) 43 + ""));
+    }
+    
+    @Test
+    public void testaaHajauttaminen() {
+        int[] taulukko = {1, 3, 9, Integer.MIN_VALUE, 5};
+        assertEquals(3, taulu.hajauta(7, taulukko));
+    }
+    
+//    
+//    @Test
+//    public void uudelleenHajautaAvaimetKunTauluTuleeTayteen() throws Exception {
+//        taulu = new HajautusTaulu();
+//        for (int i = 0; i < 256; i++) {
+//            taulu.lisaa((char) i + "", "");
+//        }
+//        
+//        taulu.lisaa("aapinen", "kukko");
+//        taulu.lisaa("moi", "mö");
+//        assertEquals("mö", taulu.getArvo(31));
+//    }
 }
