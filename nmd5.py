@@ -258,13 +258,10 @@ class NMD5:
 			powers = 0
 
 			for byte in bytes:
-				#print("Wordindex:", wordIndex)
 				tempByte = wordArray[wordIndex]
-				#print(tempByte, " | ", int(byte, 2), " << ", powers)
 				tempByte = tempByte | int(byte, 2) << powers
 				powers += 8
 				wordArray[wordIndex] = tempByte
-				#print(wordArray[wordIndex])
 				totalBytes += 1
 			
 			wordIndex += 1
