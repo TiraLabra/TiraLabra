@@ -92,12 +92,9 @@ class NMD5:
 	def __hash(self, message):
 		messageLength = len(message)
 		chunks = self.splitToBlocks(self.pad(self.toBinaryString(message)), 512)
-		#words = self.createWordArray(self.pad(self.toBinaryString(message)), messageLength)
-		#print(words)
 
 		for chunk in chunks:
 			words = self.createWordArray(chunk, messageLength, chunks.index(chunk)==len(chunks)-1)
-			print(words)
 			# Rotation constants
 			R11, R12, R13, R14 = 7, 12, 17, 22
 			R21, R22, R23, R24 = 5, 9, 14, 20
@@ -182,22 +179,11 @@ class NMD5:
 			B = (b + B) % pow(2,32)
 			C = (c + C) % pow(2,32)
 			D = (d + D) % pow(2,32)
-			print((a + A) % pow(2,32))
-			print((b + B) % pow(2,32))
-			print((c + C) % pow(2,32))
-			print((d + D) % pow(2,32))
 
 			self.A = A
 			self.B = B
 			self.C = C
 			self.D = D
-			print("Constants are:")
-			print(self.A)
-			print(self.B)
-			print(self.C)
-			print(self.D)
-
-
 
 	def hexdigest(self):
 		"""Returns hex string of result"""
