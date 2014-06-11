@@ -177,4 +177,76 @@ public class MatrixTest {
                 1,2,3, 0,-6,7).transpose();
         matrixEquals(Integer.class, 1, 0, 2, -6, 3, 7);
     }
+    
+    @Test
+    public void blocks() {
+        Matrix m = makeMatrix(Integer.class, 10, 10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10);
+        Matrix<Integer> blocks[] = m.blockMatrices();
+        
+        matrix = blocks[0];
+        matrixEquals(Integer.class,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5);
+        
+        matrix = blocks[1];
+        matrixEquals(Integer.class,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10);
+        
+        matrix = blocks[2];
+        matrixEquals(Integer.class,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5,
+                1, 2, 3, 4, 5);
+        
+        matrix = blocks[3];
+        matrixEquals(Integer.class,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10,
+                6, 7, 8, 9, 10);
+        
+        matrix = Matrix.fromBlockMatrices(blocks);
+        assertEquals(m.toString(), matrix.toString());
+    }
+    
+    @Test
+    public void strassen() {
+        matrix = matrix.strassen(matrix);
+        matrixEquals(Integer.class, 2, 1, 1, 1);
+        
+        Matrix m = makeMatrix(Integer.class, 10, 10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10,
+                1,2,3,4,5,6,7,8,9,10);
+        
+        assertEquals(m.multiply(m).toString(), m.strassen(m).toString());
+    }
 }
+

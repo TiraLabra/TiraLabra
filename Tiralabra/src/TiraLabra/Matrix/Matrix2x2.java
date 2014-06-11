@@ -40,5 +40,7 @@ public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
         return res;
     }
     
-    // public Vector<T>[] eigenvectors() {}
+    public Vector<T>[] eigenvectors() {
+        return null;
+    }
 }

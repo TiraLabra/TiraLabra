@@ -56,7 +56,7 @@ public class Matrix<T extends Number<T>> {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 final int k = (i == j) ? 1 : 0;
-                val[i][j] = Number.make(type, k);
+                val[i][j] = T.make(type, k);
             }
         }
 
@@ -126,6 +126,26 @@ public class Matrix<T extends Number<T>> {
     }
     
     /**
+     * Matriisien vähennyslasku
+     * @param other
+     * @return 
+     */
+    public Matrix<T> subtract(Matrix<T> other) {
+        if (other.N != this.N || other.M != this.M) {
+            throw new UnsupportedOperationException();
+        }
+        
+        T[][] val = (T[][]) new Number[N][M];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                val[i][j] = matrix[i][j].subtract(other.matrix[i][j]);
+            }
+        }
+        
+        return new Matrix<T>(val, type);
+    }
+    
+    /**
      * Naiivi matriisin potenssiin korotus
      * @param n eksponentti
      * @return uusi matriisi
@@ -186,7 +206,7 @@ public class Matrix<T extends Number<T>> {
             return matrix[0][0];
         }
         
-        T det = Number.make(type, 0);
+        T det = T.make(type, 0);
         for (int i = 0; i < N; i++) {
             final T n = matrix[0][i].multiply(submatrix(0, i).determinant());
             
@@ -244,5 +264,135 @@ public class Matrix<T extends Number<T>> {
         res += "}";
         
         return res;
+    }
+    
+    public Matrix<T>[] blockMatrices() {
+        int n = N / 2;
+        
+        T val[][][] = (T[][][]) new Number[4][n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                val[0][i][j] = matrix[i][j];
+                val[1][i][j] = matrix[i][j + n];
+                val[2][i][j] = matrix[i + n][j];
+                val[3][i][j] = matrix[i + n][j + n];
+            }
+        }
+        
+        Matrix<T> res[] = new Matrix[4];
+        for (int i = 0; i < 4; i++) {
+            res[i] = new Matrix<T>(val[i], type);
+        }
+        
+        return res;
+    }
+    
+    protected static <T extends Number<T>> Matrix<T>
+            fromBlockMatrices(Matrix<T>... blocks) {
+        if (blocks.length != 4) {
+            throw new IllegalArgumentException();
+        }
+        
+        int n2 = blocks[0].N, n = n2 * 2;
+        T[][] val = (T[][]) new Number[n][n];
+        
+        for (int i = 0; i < n2; i++) {
+            for (int j = 0; j < n2; j++) {
+                val[i][j] = blocks[0].matrix[i][j];
+                val[i][j + n2] = blocks[1].matrix[i][j];
+                val[i + n2][j] = blocks[2].matrix[i][j];
+                val[i + n2][j + n2] = blocks[3].matrix[i][j];
+            }
+        }
+        
+        return new Matrix<T>(val, blocks[0].type);
+    }
+
+    protected static <T extends Number<T>> Matrix<T> strassenR(Matrix<T> a,
+            Matrix<T> b) {
+        if (a.N < 8) {
+            return a.multiply(b);
+        }
+        
+        Matrix<T> blockA[] = a.blockMatrices(),
+                blockB[] = b.blockMatrices();
+        
+        // p1 = (a11 + a22) * (b11 + b22)
+        Matrix<T> p1 = strassenR(blockA[0].add(blockA[3]),
+                blockB[0].add(blockB[3]));
+        
+        // p2 = (a21 + a22) * b11
+        Matrix<T> p2 = strassenR(blockA[2].add(blockA[3]), blockB[0]);
+        
+        // p3 = a11 * (b12 - b22)
+        Matrix<T> p3 = strassenR(blockA[0], blockB[1].subtract(blockB[3]));
+        
+        // p4 = a22 * (b21 - b11)
+        Matrix<T> p4 = strassenR(blockA[3], blockB[2].subtract(blockB[0]));
+        
+        // p5 = (a11+a12) * b22
+        Matrix<T> p5 = strassenR(blockA[0].add(blockA[1]), blockB[3]);
+        
+        // p6 = (a21-a11) * (b11+b12)
+        Matrix<T> p6 = strassenR(blockA[2].subtract(blockA[0]),
+                blockB[0].add(blockB[1]));
+        
+        // p7 = (a12-a22) * (b21+b22)
+        Matrix<T> p7 = strassenR(blockA[1].subtract(blockA[3]),
+                blockB[2].add(blockB[3]));
+        
+        Matrix<T> c11 = p1.add(p4).subtract(p5).add(p7),
+                c12 = p3.add(p5),
+                c21 = p2.add(p4),
+                c22 = p1.add(p3).subtract(p2).add(p6);
+                
+        return fromBlockMatrices(c11, c12, c21, c22);
+    }
+    
+    private static int nextPowerOfTwo(int n) {
+        int k = 1;
+        while (k < n) {
+            k *= 2;
+        }
+        return k;
+    }
+    
+    public Matrix<T> strassen(Matrix<T> other) {
+        if (other.N != this.N || other.M != this.M) {
+            throw new UnsupportedOperationException();
+        } else if (N != M || other.N != other.M) {
+            throw new UnsupportedOperationException("Not a square matrix");
+        }
+        
+        final int m = nextPowerOfTwo(N);
+        
+        T[][] a = (T[][]) new Number[m][m],
+                b = (T[][]) new Number[m][m];
+        
+        final T zero = T.make(type, 0);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                a[i][j] = zero;
+                b[i][j] = zero;
+            }
+        }
+        
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {    
+                a[i][j] = this.matrix[i][j];
+                b[i][j] = other.matrix[i][j];
+            }
+        }
+        
+        final Matrix<T> C = strassenR(new Matrix<T>(a, type),
+                new Matrix<T>(b, type));
+        
+        T[][] c = (T[][]) new Number[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                c[i][j] = C.matrix[i][j];
+            }
+        }
+        return new Matrix<T>(c, type);
     }
 }
