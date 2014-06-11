@@ -1,5 +1,6 @@
 package Apuvalineet;
 
+import Tietorakenteet.HajautusTaulu;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,12 +19,12 @@ public class Lukija {
     private Reader lukija;
     private StringBuilder teksti;
     private boolean keraaEsiintymat;
-    private HashMap<String, Integer> esiintymat;
+    private HajautusTaulu esiintymat;
     
     public Lukija(String polku, boolean keraaEsiintymat) throws FileNotFoundException, UnsupportedEncodingException {
         this(polku);
         this.keraaEsiintymat = keraaEsiintymat;
-        this.esiintymat = new HashMap<>();
+        this.esiintymat = new HajautusTaulu();
     }
     
     public Lukija(String polku) throws FileNotFoundException, UnsupportedEncodingException {
@@ -32,7 +33,7 @@ public class Lukija {
         this.keraaEsiintymat = false;
     }
     
-    public HashMap<String, Integer> getEsiintymat() {
+    public HajautusTaulu getEsiintymat() {
         return this.esiintymat;
     }
     
@@ -51,7 +52,7 @@ public class Lukija {
      * @throws IOException 
      */
     
-    public void lue() throws IOException {
+    public void lue() throws IOException, Exception {
         while (true) {
             int arvo = lukija.read();
             if (arvo == -1) {
@@ -67,20 +68,20 @@ public class Lukija {
      * @param merkki 
      */    
     
-    protected void lisaaMerkki(char merkki) {
+    protected void lisaaMerkki(char merkki) throws Exception {
         teksti.append(merkki);
         if (keraaEsiintymat) {
             lisaaEsiintyma(merkki + "");
         }
     }
     
-    protected void lisaaEsiintyma(String merkki) {
+    protected void lisaaEsiintyma(String merkki) throws Exception {
         int maara = 1;
             
-        if (esiintymat.containsKey(merkki)) {
-            maara += esiintymat.get(merkki);
+        if (esiintymat.sisaltaaAvaimen(merkki)) {
+            maara += Integer.parseInt(esiintymat.getArvo(merkki));
         }
         
-        esiintymat.put(merkki, maara); 
+        esiintymat.lisaa(merkki, Integer.toString(maara));
     }
 }

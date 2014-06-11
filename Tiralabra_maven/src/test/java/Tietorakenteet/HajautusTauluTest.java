@@ -34,7 +34,7 @@ public class HajautusTauluTest {
         taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
         taulu.lisaa("abce", (char) 1 + "" + (char) 1 + "");
         
-        assertEquals(0, laskeNullArvot(taulu.getAvaimet()));
+        assertEquals(3, taulu.getKoko());
     }
     
     @Test
@@ -143,20 +143,11 @@ public class HajautusTauluTest {
         taulu.lisaa("e", y);
         
         taulu.alustaUudetTaulukot(uudetAvaimet, uudetArvot);
+
         taulu.setArvot(uudetArvot);
         taulu.setAvaimet(uudetAvaimet);
         
-        assertEquals(2, laskeNullArvot(uudetAvaimet));
-    }
-    
-    private int laskeNullArvot(String[] avaimet) {
-        int maara = 0;
-        for (String avain : avaimet) {
-            if (avain == null) {
-                maara++;
-            }
-        }
-        return maara;
+        assertEquals(5, taulu.getKoko());
     }
     
     @Test
@@ -168,7 +159,7 @@ public class HajautusTauluTest {
         
         taulu.uudelleenHajautaAvaimet();
         
-        assertEquals(518, laskeNullArvot(taulu.getAvaimet()));
+        assertEquals(3, taulu.getKoko());
         assertEquals(294, taulu.etsi("abcd"));
     }
     

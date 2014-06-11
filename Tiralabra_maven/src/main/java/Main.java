@@ -6,7 +6,16 @@ import java.util.Scanner;
 
 public class Main {
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, Exception {
+        long ennen = System.currentTimeMillis();
+        
+        long jalkeen = System.currentTimeMillis();
+        System.out.println("blaa blaa blaa vei aikaa: " + (jalkeen - ennen) + "ms.");
+        
+        // Testaa seuraavaksi purkaminen ja sen jälkeen, miten hajautustaulu suhtautuu HashMapiin ja miten keko
+        // PriorityQueueen.
+        
+
         System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
         System.out.print("Nimi: ");
         
@@ -34,11 +43,11 @@ public class Main {
         }
     }
     
-    private static void pakkaa(String polku) throws IOException {
+    private static void pakkaa(String polku) throws IOException, Exception {
         new PakkaamisenOhjaaja().suoritaPakkaaminen(polku);
     }
     
-    private static void pura(String polku) throws IOException {
+    private static void pura(String polku) throws IOException, Exception {
         new TiedostonPurkaja().pura(polku);
     }   
 }

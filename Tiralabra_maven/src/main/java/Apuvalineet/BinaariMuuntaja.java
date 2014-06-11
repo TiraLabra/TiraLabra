@@ -1,5 +1,6 @@
 package Apuvalineet;
 
+import Tietorakenteet.HajautusTaulu;
 import java.util.HashMap;
 
 /**
@@ -100,7 +101,7 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    public String ykkosinaJaNollina(String teksti, HashMap<String, String> bittijonot) {
+    public String ykkosinaJaNollina(String teksti, HajautusTaulu bittijonot) throws Exception {
         this.lisatytEtuNollat = 0;
         String ilmanEtuNollia = ilmanEtuNollia(teksti, bittijonot);
         return lisaaEtuNollat(ilmanEtuNollia);
@@ -133,12 +134,12 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    protected String ilmanEtuNollia(String teksti, HashMap<String, String> bittijonot) {
+    protected String ilmanEtuNollia(String teksti, HajautusTaulu bittijonot) throws Exception {
         StringBuilder ilmanEtuNollia = new StringBuilder();
         
         for (int i = 0; i < teksti.length(); i++) {
             String merkki = teksti.charAt(i) + "";
-            ilmanEtuNollia.append(bittijonot.get(merkki));
+            ilmanEtuNollia.append(bittijonot.getArvo(merkki));
         }
         return ilmanEtuNollia.toString();
     }

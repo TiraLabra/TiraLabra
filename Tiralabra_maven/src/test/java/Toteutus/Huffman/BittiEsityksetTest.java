@@ -10,12 +10,12 @@ public class BittiEsityksetTest {
     private Solmu solmu;
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         this.esitykset = new BittiEsitykset();
         alustaBittiEsitykset();
     }
     
-    private void alustaBittiEsitykset() {
+    private void alustaBittiEsitykset() throws Exception {
         this.solmu = new Solmu(6);
         solmu.setVasen(new Solmu("a", 3));
         solmu.setOikea(new Solmu(3));
@@ -28,18 +28,18 @@ public class BittiEsityksetTest {
     }
     
     @Test
-    public void esityksetTasmaavatPuussa() {
-        assertEquals(esitykset.getEsitykset().get("a"), (char) 0 + "");
-        assertEquals(esitykset.getEsitykset().get("b"), (char) 1 + "" + (char) 0);
-        assertEquals(esitykset.getEsitykset().get("c"), (char) 1 + "" + (char) 1);
+    public void esityksetTasmaavatPuussa() throws Exception {
+        assertEquals(esitykset.getEsitykset().getArvo("a"), (char) 0 + "");
+        assertEquals(esitykset.getEsitykset().getArvo("b"), (char) 1 + "" + (char) 0);
+        assertEquals(esitykset.getEsitykset().getArvo("c"), (char) 1 + "" + (char) 1);
     }
     
     @Test
-    public void huffmanPuunTekstiEsitys() {
+    public void huffmanPuunTekstiEsitys() throws Exception {
         StringBuilder teksti = new StringBuilder();
-        for (String avain : esitykset.getEsitykset().keySet()) {
+        for (String avain : esitykset.getEsitykset().getAvaimet()) {
             teksti.append(avain);
-            teksti.append(esitykset.getEsitykset().get(avain));
+            teksti.append(esitykset.getEsitykset().getArvo(avain));
         }
         
         teksti.append((char) 127);

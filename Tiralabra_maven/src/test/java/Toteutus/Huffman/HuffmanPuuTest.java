@@ -1,5 +1,6 @@
 package Toteutus.Huffman;
 
+import Tietorakenteet.HajautusTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
 import java.util.HashMap;
@@ -10,37 +11,37 @@ import org.junit.Test;
 public class HuffmanPuuTest {
     private HuffmanPuu puu;
     private HuffmanPuu puu2;
-    private HashMap<String, Integer> esiintymat;
+    private HajautusTaulu esiintymat;
     private BittiEsitykset esitykset;
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         this.puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(alustaEsiintymat());
         esitykset = new BittiEsitykset();
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
     }
 
-    private HashMap<String, Integer> alustaEsiintymat() {
-        HashMap<String, Integer> puunEsiintymat = new HashMap<>();
-        puunEsiintymat.put("A", 8);
-        puunEsiintymat.put("B", 2); // b = g
-        puunEsiintymat.put("C", 4);
-        puunEsiintymat.put("D", 1);
-        puunEsiintymat.put("E", 2);
+    private HajautusTaulu alustaEsiintymat() throws Exception {
+        HajautusTaulu puunEsiintymat = new HajautusTaulu();
+        puunEsiintymat.lisaa("A", Integer.toString(8));
+        puunEsiintymat.lisaa("B", Integer.toString(2)); // b = g
+        puunEsiintymat.lisaa("C", Integer.toString(4));
+        puunEsiintymat.lisaa("D", Integer.toString(1));
+        puunEsiintymat.lisaa("E", Integer.toString(2));
         
         return puunEsiintymat;
     }
     
     @Test
-    public void merkillaALyhinBinaariEsitys() {
-        String verr = esitykset.getEsitykset().get("A");
-        String A = esitykset.getEsitykset().get("A");
+    public void merkillaALyhinBinaariEsitys() throws Exception {
+        String verr = esitykset.getEsitykset().getArvo("A");
+        String A = esitykset.getEsitykset().getArvo("A");
         String nul = (char) 0 + "";
         
-        for (String merkki : esitykset.getEsitykset().keySet()) {
+        for (String merkki : esitykset.getEsitykset().getAvaimet()) {
             if (! merkki.equals(nul)) {
-                String bittiesitys = esitykset.getEsitykset().get(merkki);
+                String bittiesitys = esitykset.getEsitykset().getArvo(merkki);
                 
                 if (bittiesitys.length() < verr.length()) {
                     verr = bittiesitys;
@@ -52,14 +53,14 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void merkillaDPisinBinaariEsitys() {
-        String verr = esitykset.getEsitykset().get("D");
-        String D = esitykset.getEsitykset().get("D");
+    public void merkillaDPisinBinaariEsitys() throws Exception {
+        String verr = esitykset.getEsitykset().getArvo("D");
+        String D = esitykset.getEsitykset().getArvo("D");
         String nul = "" + (char) 0;
         
-        for (String merkki : esitykset.getEsitykset().keySet()) {
+        for (String merkki : esitykset.getEsitykset().getAvaimet()) {
             if (! merkki.equals(nul)) {
-                String bittiesitys = esitykset.getEsitykset().get(merkki);
+                String bittiesitys = esitykset.getEsitykset().getArvo(merkki);
                 
                 if (bittiesitys.length() > verr.length()) {
                     verr = bittiesitys;
@@ -73,10 +74,10 @@ public class HuffmanPuuTest {
     @Test
     public void solmuillaEriBinaariEsitykset() {
         boolean patee = true;
-        String[] bin = new String[esitykset.getEsitykset().size()];
+        String[] bin = new String[esitykset.getEsitykset().getAvaimet().length];
         
         int i = 0;
-        for (String arvo : esitykset.getEsitykset().values()) {
+        for (String arvo : esitykset.getEsitykset().getArvot()) {
             bin[i] = arvo;
             i++;
         }
@@ -93,17 +94,17 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void luoKekoLuoMinKeon() {
+    public void luoKekoLuoMinKeon() throws Exception {
         puu2 = new HuffmanPuu();
-        esiintymat = new HashMap<>();
-        esiintymat.put(("a"), 1);
+        esiintymat = new HajautusTaulu();
+        esiintymat.lisaa(("a"), Integer.toString(1));
         puu2.luoKeko(esiintymat);
         
         assertTrue(puu2.getKeko().getClass() == MinKeko.class);
     }
     
     @Test
-    public void luodussaKeossaOnSinneLaitettavatAvaimet() {
+    public void luodussaKeossaOnSinneLaitettavatAvaimet() throws Exception {
         muodostaTestiPuuJaKeko();
         
         assertEquals("b", puu2.getKeko().getSolmut()[0].getAvain());
@@ -111,7 +112,7 @@ public class HuffmanPuuTest {
     }    
     
     @Test
-    public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() {
+    public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() throws Exception {
         muodostaTestiPuuJaKeko();
         
         puu2.yhdistaKeonSolmutPuuksi();
@@ -131,7 +132,7 @@ public class HuffmanPuuTest {
         assertEquals(vanh, oikea.getVanh());
     }
     
-    private void muodostaTestiPuuJaKeko() {
+    private void muodostaTestiPuuJaKeko() throws Exception {
         luoTyhjaPuu();
         luoTestiEsiintymat();
         puu2.luoKeko(esiintymat);
@@ -141,9 +142,9 @@ public class HuffmanPuuTest {
         puu2 = new HuffmanPuu();
     }
     
-    private void luoTestiEsiintymat() {
-        esiintymat = new HashMap<>();
-        esiintymat.put("a", 3);
-        esiintymat.put("b", 2);
+    private void luoTestiEsiintymat() throws Exception {
+        esiintymat = new HajautusTaulu();
+        esiintymat.lisaa("a", Integer.toString(3));
+        esiintymat.lisaa("b", Integer.toString(2));
     }
 }

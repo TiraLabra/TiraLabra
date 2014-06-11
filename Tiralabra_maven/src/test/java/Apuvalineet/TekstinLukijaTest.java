@@ -11,7 +11,7 @@ public class TekstinLukijaTest {
     private TekstinLukija lukija2;
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         this.lukija = new TekstinLukija();
         try {
             lukija.lueTiedosto("TekstinLukijaTest.txt");
@@ -21,15 +21,15 @@ public class TekstinLukijaTest {
     }
 
     @Test
-    public void merkinLisaaminenKasvattaaSenEsiintymia() {
+    public void merkinLisaaminenKasvattaaSenEsiintymia() throws Exception {
         lukija2 = new TekstinLukija();
 
         lukija2.lisaaMerkki("a");
-        int maara = lukija2.getEsiintymat().get("a");
-        assertEquals(maara, 1);
+        String maara = lukija2.getEsiintymat().getArvo("a");
+        assertEquals(1, Integer.parseInt(maara));
         
         lukija2.lisaaMerkki("a");
-        maara = lukija2.getEsiintymat().get("a");
-        assertEquals(maara, 2);
+        maara = lukija2.getEsiintymat().getArvo("a");
+        assertEquals(2, Integer.parseInt(maara));
     }
 }

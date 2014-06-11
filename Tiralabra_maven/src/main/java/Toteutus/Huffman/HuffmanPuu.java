@@ -1,5 +1,6 @@
 package Toteutus.Huffman;
 
+import Tietorakenteet.HajautusTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class HuffmanPuu {
         return this.keko;
     }
     
-    public void muodostaHuffmanPuu(HashMap<String, Integer> esiintymat) {
+    public void muodostaHuffmanPuu(HajautusTaulu esiintymat) throws Exception {
         luoKeko(esiintymat);
         yhdistaKeonSolmutPuuksi();
     }
@@ -26,10 +27,10 @@ public class HuffmanPuu {
      * @param esiintymat 
      */
     
-    protected void luoKeko(HashMap<String, Integer> esiintymat) {
-        this.keko = new MinKeko(esiintymat.keySet().size());
-        for (String avain : esiintymat.keySet()) {
-            keko.lisaa(new Solmu(avain, esiintymat.get(avain)));
+    protected void luoKeko(HajautusTaulu esiintymat) throws Exception {
+        this.keko = new MinKeko(esiintymat.getKoko());
+        for (String avain : esiintymat.getAvaimet()) {
+            keko.lisaa(new Solmu(avain, Integer.parseInt(esiintymat.getArvo(avain))));
         }
     }  
     

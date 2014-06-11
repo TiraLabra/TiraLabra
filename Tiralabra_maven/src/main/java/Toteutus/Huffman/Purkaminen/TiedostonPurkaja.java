@@ -3,6 +3,7 @@ package Toteutus.Huffman.Purkaminen;
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
 import Apuvalineet.Lukija;
+import Tietorakenteet.HajautusTaulu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,13 +28,12 @@ public class TiedostonPurkaja {
      * @throws IOException 
      */
     
-    public void pura(String polku) throws IOException {
+    public void pura(String polku) throws IOException, Exception {
         tarkistaOnkoPolkuValidi(polku);
         File pakkaus = haePakkaus(polku);
-        File tiedosto = muodostaTiedosto(polku);
         
-        String kirjoitettava = puretunTiedostonSisalto(pakkaus, tiedosto);
-        kirjoitaTeksti(tiedosto.getPath(), kirjoitettava);
+        String kirjoitettava = puretunTiedostonSisalto(pakkaus);
+        kirjoitaTeksti(luotavanTiedostonPolku(polku), kirjoitettava);
     }
     
     /**
@@ -84,27 +84,27 @@ public class TiedostonPurkaja {
      * @throws IOException 
      */
     
-    protected File muodostaTiedosto(String polku) throws IOException {
-        File tiedosto = new File(luotavanTiedostonPolku(polku));
-        if (tiedosto.exists()) {
-            throw new IOException("Purettu tiedosto on jo olemasssa. Pakattua tiedostoa ei pureta uudestaan.\nOhjelma suljetaan.");
-        }
-        
-        return tiedosto;
-    }
+//    protected File muodostaTiedosto(String polku) throws IOException {
+//        File tiedosto = new File(luotavanTiedostonPolku(polku));
+//        if (tiedosto.exists()) {
+//            throw new IOException("Purettu tiedosto on jo olemasssa. Pakattua tiedostoa ei pureta uudestaan.\nOhjelma suljetaan.");
+//        }
+//        
+//        return tiedosto;
+//    }
     
     /**
      * Purkaa pakkauksen sisällön tiedostoon hakemalla ensin pakkauksen sisällön (ascii merkkeinä), käyden tästä
      * Huffman puun läpi ja keräten siitä "bittijonot ja niitä vastaavat merkit", muodostaen String -olion, jossa
      * on sisällön binääritekstiosa ja muodostaen tästä sitten puretun tiedoston sisällön.
      * @param pakkaus
-     * @param tiedosto
      * @throws IOException 
      * @return
      */
-    protected String puretunTiedostonSisalto(File pakkaus, File tiedosto) throws IOException {
+    
+    protected String puretunTiedostonSisalto(File pakkaus) throws IOException, Exception {
         String teksti = lueTeksti(pakkaus);
-        HashMap<String, String> bittijonotJaMerkit = new HashMap<>();
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         
         int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
         String tekstiBinaarina = tekstiBinaarina(teksti, binaariTekstinAlku);
@@ -120,15 +120,15 @@ public class TiedostonPurkaja {
      * @return 
      */
     
-    protected String kirjoitettavaTeksti(String tekstiBinaarina, HashMap<String, String> bittijonotJaMerkit) {
+    protected String kirjoitettavaTeksti(String tekstiBinaarina, HajautusTaulu bittijonotJaMerkit) throws Exception {
         StringBuilder kirjoitettava = new StringBuilder();
         StringBuilder bittijono = new StringBuilder();
         
         for (int i = 0; i < tekstiBinaarina.length(); i++) {
             bittijono.append(tekstiBinaarina.charAt(i));
             
-            if (bittijonotJaMerkit.containsKey(bittijono.toString())) {
-                kirjoitettava.append(bittijonotJaMerkit.get(bittijono.toString()));
+            if (bittijonotJaMerkit.sisaltaaAvaimen(bittijono.toString())) {
+                kirjoitettava.append(bittijonotJaMerkit.getArvo(bittijono.toString()));
                 bittijono = new StringBuilder();
             }
         }
@@ -146,7 +146,7 @@ public class TiedostonPurkaja {
      * @return 
      */
     
-    protected int kayPuuLapi(String teksti, HashMap<String, String> bittijonotJaMerkit) {
+    protected int kayPuuLapi(String teksti, HajautusTaulu bittijonotJaMerkit) throws Exception {
         if (puuOnKelattuLoppuun(teksti, 0)) {
             return 2;
         }
@@ -154,7 +154,7 @@ public class TiedostonPurkaja {
         return kelaaPuuLapi(teksti, bittijonotJaMerkit);
     }
     
-    private int kelaaPuuLapi(String teksti, HashMap<String, String> bittijonotJaMerkit) {
+    private int kelaaPuuLapi(String teksti, HajautusTaulu bittijonotJaMerkit) throws Exception {
         StringBuilder bittiEsitys = new StringBuilder();
         char kirjain = teksti.charAt(0);
 
@@ -177,12 +177,12 @@ public class TiedostonPurkaja {
         }
     }
     
-    protected boolean josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(char kirjain, String bittiEsitys, HashMap<String, String> bittijonotJaMerkit) {
+    protected boolean josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(char kirjain, String bittiEsitys, HajautusTaulu bittijonotJaMerkit) throws Exception {
         if (bittiEsitys.isEmpty()) {
             return false;
         }
         
-        bittijonotJaMerkit.put(bittiEsitys, kirjain + "");
+        bittijonotJaMerkit.lisaa(bittiEsitys, kirjain + "");
         return true;
     }
     
@@ -262,7 +262,7 @@ public class TiedostonPurkaja {
      * @throws UnsupportedEncodingException
      */
     
-    protected String lueTeksti(File pakkaus) throws FileNotFoundException, UnsupportedEncodingException, IOException {
+    protected String lueTeksti(File pakkaus) throws FileNotFoundException, UnsupportedEncodingException, IOException, Exception {
         Lukija lukija = new Lukija(pakkaus.getPath());
         lukija.lue();
         

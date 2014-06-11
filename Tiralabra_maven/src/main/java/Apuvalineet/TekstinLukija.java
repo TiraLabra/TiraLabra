@@ -1,5 +1,6 @@
 package Apuvalineet;
 
+import Tietorakenteet.HajautusTaulu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -11,15 +12,15 @@ import java.util.Scanner;
  */
 
 public class TekstinLukija {
-    private HashMap<String, Integer> esiintymat;
+    private HajautusTaulu esiintymat;
     private StringBuilder teksti;
     
     public TekstinLukija() {
-        this.esiintymat = new HashMap<>();
+        this.esiintymat = new HajautusTaulu();
         this.teksti = new StringBuilder();
     }
     
-    public HashMap<String, Integer> getEsiintymat() {
+    public HajautusTaulu getEsiintymat() {
         return this.esiintymat;
     }
     
@@ -33,7 +34,7 @@ public class TekstinLukija {
      * @throws FileNotFoundException - mik‰li polku on virheellinen, heitt‰‰ ko. poikkeuksen
      */
     
-    public void lueTiedosto(String polku) throws FileNotFoundException {
+    public void lueTiedosto(String polku) throws FileNotFoundException, Exception {
         try {
             Scanner lukija = new Scanner(new File(polku));
             lue(lukija);
@@ -44,7 +45,7 @@ public class TekstinLukija {
         }
     }
     
-    protected void lue(Scanner lukija) {
+    protected void lue(Scanner lukija) throws Exception {
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             lisaaRivi(rivi);
@@ -61,7 +62,7 @@ public class TekstinLukija {
      * @param rivi
      */
     
-    protected void lisaaRivi(String rivi) {
+    protected void lisaaRivi(String rivi) throws Exception {
         for (int i = 0; i < rivi.length(); i++) {
             lisaaMerkki(rivi.charAt(i) + "");
         }
@@ -72,18 +73,18 @@ public class TekstinLukija {
      * @param merkki 
      */
     
-    protected void lisaaMerkki(String merkki) {
+    protected void lisaaMerkki(String merkki) throws Exception {
         lisaaEsiintyma(merkki);
         teksti.append(merkki);
     }
     
-    protected void lisaaEsiintyma(String merkki) {
+    protected void lisaaEsiintyma(String merkki) throws Exception {
         int maara = 1;
             
-        if (esiintymat.containsKey(merkki)) {
-            maara += esiintymat.get(merkki);
+        if (esiintymat.sisaltaaAvaimen(merkki)) {
+            maara += Integer.parseInt(esiintymat.getArvo(merkki));
         }
         
-        esiintymat.put(merkki, maara); 
+        esiintymat.lisaa(merkki, Integer.toString(maara));
     }
 }

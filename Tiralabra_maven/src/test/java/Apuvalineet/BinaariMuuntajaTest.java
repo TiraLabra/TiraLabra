@@ -1,5 +1,6 @@
 package Apuvalineet;
 
+import Tietorakenteet.HajautusTaulu;
 import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -7,27 +8,27 @@ import org.junit.Test;
 
 public class BinaariMuuntajaTest {
     private BinaariMuuntaja muuntaja;
-    private HashMap<String, String> bittijonot;
+    private HajautusTaulu bittijonot;
     private String teksti;
     private final String n = (char) 0 + "";
     private final String y = (char) 1 + "";
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         this.muuntaja = new BinaariMuuntaja();
         
-        this.bittijonot = new HashMap<>();
-        bittijonot.put("a", n+y);
-        bittijonot.put("b", n+n+n);
-        bittijonot.put("c", n+n+y);
-        bittijonot.put("d", y+n);
-        bittijonot.put("e", y+y);
+        this.bittijonot = new HajautusTaulu();
+        bittijonot.lisaa("a", n+y);
+        bittijonot.lisaa("b", n+n+n);
+        bittijonot.lisaa("c", n+n+y);
+        bittijonot.lisaa("d", y+n);
+        bittijonot.lisaa("e", y+y);
         
         this.teksti = "aecdbead";
     }    
     
     @Test
-    public void pakattuTekstiOnOikeanlainen() {
+    public void pakattuTekstiOnOikeanlainen() throws Exception {
         tekstiIlmanEtuNollia();
         assertEquals("01010100", muuntaja.lisaaEtuNollat("01010100"));
         assertEquals(n + "1010100", muuntaja.lisaaEtuNollat("1010100"));
@@ -35,7 +36,7 @@ public class BinaariMuuntajaTest {
         assertEquals(n+n+n+n+n+n + n+y+y+y+n+n+y+y+n+n+n+n+y+y+n+y+y+n, muuntaja.ykkosinaJaNollina(teksti, bittijonot));
     }
 
-    private void tekstiIlmanEtuNollia() {
+    private void tekstiIlmanEtuNollia() throws Exception {
         String ilmanEtuNollia = muuntaja.ilmanEtuNollia(teksti, bittijonot);
         assertEquals(ilmanEtuNollia, n+y+y+y+n+n+y+y+n+n+n+n+y+y+n+y+y+n);
     }
@@ -70,7 +71,7 @@ public class BinaariMuuntajaTest {
     }
     
     @Test
-    public void seuraavanTavunHakuOnnistuu() {
+    public void seuraavanTavunHakuOnnistuu() throws Exception {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
         char merkki = muuntaja.seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 0);
         assertTrue(merkki == 1);

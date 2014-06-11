@@ -1,5 +1,6 @@
 package Toteutus.Huffman.Pakkaaminen;
 
+import Apuvalineet.Kirjoittaja;
 import Apuvalineet.Lukija;
 import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
@@ -17,17 +18,20 @@ import java.io.IOException;
 
 public class PakkaamisenOhjaaja {
     
-    public void suoritaPakkaaminen(String polku) throws FileNotFoundException, IOException {
+    public void suoritaPakkaaminen(String polku) throws FileNotFoundException, IOException, Exception {
         TekstinLukija lukija = new TekstinLukija();
         lukija.lueTiedosto(polku);
-        
+
         HuffmanPuu puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(lukija.getEsiintymat());
-        
+
         BittiEsitykset esitykset = new BittiEsitykset();
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
         
         TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja();
-        pakkaaja.pakkaaTiedosto(lukija.getTeksti(), puu, esitykset, polku);
+        String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), puu, esitykset);
+
+        Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".hemi");
+        kirjoittaja.kirjoita(teksti);
     }
 }

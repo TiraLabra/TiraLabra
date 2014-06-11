@@ -9,6 +9,7 @@ package Tietorakenteet;
 public class HajautusTaulu {
     private String[] avaimet;
     private String[] arvot;
+    private int avaimia;
     
     public HajautusTaulu() {
         this(257);
@@ -17,10 +18,37 @@ public class HajautusTaulu {
     public HajautusTaulu(int avaimia) {
         this.avaimet = new String[avaimia];
         this.arvot = new String[avaimia];
+        this.avaimia = 0;
     }
     
     public String[] getAvaimet() {
-        return this.avaimet;
+        return taulukko(avaimet);
+    }
+
+    public String[] getArvot() {
+        return taulukko(arvot);
+    }
+    
+    public boolean onTyhja() {
+        return this.avaimia == 0;
+    }
+    
+    public int getKoko() {
+        return this.avaimia;
+    }
+
+    protected String[] taulukko(String[] verrattava) {
+        String[] taulukko = new String[this.avaimia];
+        
+        int j = 0;
+        for (int i = 0; i < verrattava.length; i++) {
+            if (verrattava[i] != null) {
+                taulukko[j] = verrattava[i];
+                j++;
+            }
+        }
+        return taulukko;
+        
     }
     
     public void lisaa(String avain, String arvo) throws Exception {
@@ -29,6 +57,10 @@ public class HajautusTaulu {
     
     public void poista(String avain, String arvo) throws Exception {
         poista(avain, arvo, avaimet, arvot);
+    }
+    
+    public boolean sisaltaaAvaimen(String avain) throws Exception {
+        return getArvo(avain) != null;
     }
     
     public String getArvo(String avain) throws Exception {
@@ -66,13 +98,14 @@ public class HajautusTaulu {
         
         avaimet[i] = avain;
         arvot[i] = arvo;        
-        
+        this.avaimia++;
     }
     
     protected int poista(String avain, String arvo, String[] avaimet, String[] arvot) throws Exception {
         int i = etsi(avain, avaimet);
         avaimet[i] = null;
         arvot[i] = null;
+        this.avaimia--;
         
         return i;
     }
@@ -84,8 +117,10 @@ public class HajautusTaulu {
         while (true) {
             int paikka = paikka(muunnos, i);
             
-            if (avaimet[paikka].equals(avain)) {
-                return paikka;
+            if (avaimet[paikka] != null) {
+                if (avaimet[paikka].equals(avain)) {
+                    return paikka;
+                }
             }
             
             i++;
@@ -133,6 +168,7 @@ public class HajautusTaulu {
         for (int i = 0; i < avaimet.length; i++) {
             lisaa(avaimet[i], arvot[i], uudetAvaimet, uudetArvot);
         }
+        this.avaimia -= avaimet.length;
     }
     
     protected int paikka(int avain, int i) {
