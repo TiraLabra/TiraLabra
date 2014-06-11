@@ -58,18 +58,6 @@ public class TiedostonPurkajaTest {
         purkaja.haePakkaus("lol");
     }
     
-//    @Test
-//    public void tiedostonMuodostusOnnistuu() throws IOException {
-//        File tiedosto = purkaja.muodostaTiedosto("TiedostonPurkajaTest.hemi");
-//        assertFalse(tiedosto.exists());
-//        assertEquals("TiedostonPurkajaTest", tiedosto.getPath());
-//    }
-//    
-//    @Test (expected = IOException.class) 
-//    public void tiedostonMuodostusHeittaaPoikkeuksenKunPurettuTiedostoJoOlemassa() throws IOException {
-//        purkaja.muodostaTiedosto("TiedostonPurkajaTest.hemi.hemi");
-//    }
-    
     @Test
     public void testinLukeminenOnnistuu() throws IOException, UnsupportedEncodingException, Exception  {
         File tiedosto = new File("TiedostonPurkajaTest.hemi");

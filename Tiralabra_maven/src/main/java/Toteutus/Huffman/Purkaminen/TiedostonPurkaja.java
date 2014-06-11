@@ -108,8 +108,6 @@ public class TiedostonPurkaja {
      */
     
     protected String kirjoitettavaTeksti(String tekstiBinaarina, HajautusTaulu bittijonotJaMerkit) throws Exception {
-        long ennen = System.currentTimeMillis();
-        
         StringBuilder kirjoitettava = new StringBuilder();
         StringBuilder bittijono = new StringBuilder();
         
@@ -121,9 +119,6 @@ public class TiedostonPurkaja {
                 bittijono = new StringBuilder();
             }
         }
-        
-        long jalkeen = System.currentTimeMillis();
-        System.out.println("Kirjoitettavan tekstin aikaansaamiseen kului " + (jalkeen - ennen) + "ms");
         
         return kirjoitettava.toString();
     }

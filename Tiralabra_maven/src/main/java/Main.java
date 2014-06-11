@@ -7,10 +7,6 @@ import java.util.Scanner;
 public class Main {
     
     public static void main(String[] args) throws IOException, Exception {
-        // Testaa seuraavaksi purkaminen ja sen jälkeen, miten hajautustaulu suhtautuu HashMapiin ja miten keko
-        // PriorityQueueen.
-        
-
         System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
         System.out.print("Nimi: ");
         

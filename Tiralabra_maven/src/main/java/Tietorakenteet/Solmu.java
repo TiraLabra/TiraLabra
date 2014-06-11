@@ -10,7 +10,7 @@ package Tietorakenteet;
  * vanhemman sijaan).
  */
 
-public class Solmu {
+public class Solmu  {
     private String avain;
     private int esiintymiskerrat;
     private Solmu vanh;

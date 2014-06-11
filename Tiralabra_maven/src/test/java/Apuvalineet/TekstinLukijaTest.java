@@ -1,5 +1,6 @@
 package Apuvalineet;
 
+import Tietorakenteet.HajautusTaulu;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import org.junit.Before;
@@ -18,6 +19,34 @@ public class TekstinLukijaTest {
         }
         catch (FileNotFoundException e) {
         }
+    }
+    
+    @Test
+    public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
+        String teksti = lukija.getTeksti();
+        assertTrue(teksti.equals("Tämä on testi -teksti, mikä luetaan\r\n" +
+                                              "TekstinLukijaTestin\r\n" +
+                                              "kautta."));
+    }
+    
+    @Test
+    public void merkkienEsiintymienMaaraTasmaa() throws Exception {
+        HajautusTaulu esiintymat = lukija.getEsiintymat();
+        
+        String avain = esiintymat.getArvo("T");
+        assertEquals(3, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo(" ");
+        assertEquals(5, Integer.parseInt(avain));        
+        
+        avain = esiintymat.getArvo("ä");
+        assertEquals(3, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo("\n");
+        assertEquals(2, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo("n");
+        assertEquals(4, Integer.parseInt(avain)); 
     }
 
     @Test

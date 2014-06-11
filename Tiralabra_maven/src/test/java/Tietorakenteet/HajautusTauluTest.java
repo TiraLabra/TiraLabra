@@ -41,12 +41,12 @@ public class HajautusTauluTest {
     public void testaaPoisto() throws Exception {
         taulu = new HajautusTaulu();
         
-        String avain = "henna<";
-        String arvo = "3mika";
+        String avain = "h<";
+        String arvo = "3m";
         
         taulu.lisaa(avain, arvo);
         taulu.poista(avain, arvo);
-        assertNull(taulu.getArvo("henna<"));
+        assertNull(taulu.getArvo("h<"));
     }
      
     @Test (expected = Exception.class)

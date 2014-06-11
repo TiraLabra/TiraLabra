@@ -44,17 +44,8 @@ public class LukijaTest {
         
         lukija2 = new Lukija("LukijaTest2.txt", true);
         lukija2.lue();
-//        
-//        lopussaTekstiOnTiedostonSisaltamaTeksti();
+        
         merkkienEsiintymienMaaraTasmaa();
-    }
-
-
-    private void lopussaTekstiOnTiedostonSisaltamaTeksti() {
-        String teksti = lukija2.getTeksti();
-        assertTrue(teksti.equals("Tämä on testi -teksti, mikä luetaan\n" +
-                                              "LukijaTestin\n" +
-                                              "kautta."));
     }
     
     private void merkkienEsiintymienMaaraTasmaa() throws Exception {
@@ -65,9 +56,6 @@ public class LukijaTest {
         
         avain = esiintymat.getArvo(" ");
         assertEquals(5, Integer.parseInt(avain));        
-        
-//        luku = esiintymat.get("ä");
-//        assertEquals(3, luku);
         
         avain = esiintymat.getArvo("\n");
         assertEquals(2, Integer.parseInt(avain));
