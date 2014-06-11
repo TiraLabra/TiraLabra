@@ -223,10 +223,11 @@ public class Matriisilaskin {
      * @return Palauttaa true, jos matriisi on ortogonaalinen
      */
     public boolean onkoOrtogonaalinen(double[][] A) {
-        if(vertailu.vertaile(invertoi(A), transpoosaa(A))) {
-            return true;
-        } else {
-            return false;
+        if(onkoKaantyva(A)) {
+            if(vertailu.vertaile(invertoi(A), transpoosaa(A))) {
+                return true;
+            }
         }
+        return false;
     }
 }

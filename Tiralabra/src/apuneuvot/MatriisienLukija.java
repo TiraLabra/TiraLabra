@@ -40,7 +40,6 @@ public class MatriisienLukija {
                 return luettu;
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
         return null;
     }

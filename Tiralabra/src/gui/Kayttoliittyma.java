@@ -1,5 +1,6 @@
 package gui;
 
+import apuneuvot.MatriisienLukija;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logiikka.Matriisilaskin;
@@ -25,8 +26,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private double[][] matriisiB;
     private double[][] matriisiC;
     private Scanner lukija;
+    private MatriisienLukija matriisienlukija;
     private Matriisilaskin laskin;
-
+    
     /**
      * Creates new form Kayttoliittyma
      */
@@ -38,6 +40,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         sarakkeetB = 0;
         sarakkeetC = 0;
 
+        matriisienlukija = new MatriisienLukija();
         laskin = new Matriisilaskin();
 
         initComponents();
@@ -135,6 +138,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinCText = new javax.swing.JTextField();
         tallennaCButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Matriisilaskin");
@@ -193,15 +197,35 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         neliomatriisiATulosLabel.setText("-");
 
         transpoosiAButton.setText("Transpoosi");
+        transpoosiAButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transpoosiAButtonActionPerformed(evt);
+            }
+        });
 
         kaanteismatriisiAButton.setText("Käänteismatriisi");
+        kaanteismatriisiAButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kaanteismatriisiAButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinAButton.setText("Potenssiin");
+        potenssiinAButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                potenssiinAButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinAText.setText("2");
         potenssiinAText.setMinimumSize(new java.awt.Dimension(28, 20));
 
         lataaAButton.setText("Lataa");
+        lataaAButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lataaAButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout matriisiAPanelLayout = new javax.swing.GroupLayout(matriisiAPanel);
         matriisiAPanel.setLayout(matriisiAPanelLayout);
@@ -322,6 +346,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         kerroButton.setText("*");
         kerroButton.setPreferredSize(new java.awt.Dimension(41, 23));
+        kerroButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kerroButtonActionPerformed(evt);
+            }
+        });
 
         matriisiBPanel.setPreferredSize(new java.awt.Dimension(209, 420));
 
@@ -371,15 +400,35 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         neliomatriisiBTulosLabel.setText("-");
 
         transpoosiBButton.setText("Transpoosi");
+        transpoosiBButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transpoosiBButtonActionPerformed(evt);
+            }
+        });
 
         kaanteismatriisiBButton.setText("Käänteismatriisi");
+        kaanteismatriisiBButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kaanteismatriisiBButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinBButton.setText("Potenssiin");
+        potenssiinBButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                potenssiinBButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinBText.setText("2");
         potenssiinBText.setMinimumSize(new java.awt.Dimension(28, 20));
 
         lataaBButton.setText("Lataa");
+        lataaBButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lataaBButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout matriisiBPanelLayout = new javax.swing.GroupLayout(matriisiBPanel);
         matriisiBPanel.setLayout(matriisiBPanelLayout);
@@ -531,10 +580,25 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         neliomatriisiCTulosLabel.setText("-");
 
         transpoosiCButton.setText("Transpoosi");
+        transpoosiCButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transpoosiCButtonActionPerformed(evt);
+            }
+        });
 
         kaanteismatriisiCButton.setText("Käänteismatriisi");
+        kaanteismatriisiCButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kaanteismatriisiCButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinCButton.setText("Potenssiin");
+        potenssiinCButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                potenssiinCButtonActionPerformed(evt);
+            }
+        });
 
         potenssiinCText.setText("2");
         potenssiinCText.setMinimumSize(new java.awt.Dimension(28, 20));
@@ -645,6 +709,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         jLabel1.setText("Vastausmatriisi");
 
+        jLabel2.setText("Kirjoita matriisit matriisimuodossa tai riveittäin, jotta saat haluamasi vastauksen");
+
         javax.swing.GroupLayout alustaPanelLayout = new javax.swing.GroupLayout(alustaPanel);
         alustaPanel.setLayout(alustaPanelLayout);
         alustaPanelLayout.setHorizontalGroup(
@@ -663,9 +729,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, alustaPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(75, 75, 75))
+                .addGap(74, 74, 74))
         );
         alustaPanelLayout.setVerticalGroup(
             alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -679,7 +747,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(kerroButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(alustaPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(matriisiBPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -696,14 +766,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private void summaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_summaaButtonActionPerformed
         if (!lataaMatriisiA() || !lataaMatriisiB()) {
             return;
-        } else if(!tarkastaSumma()){
-            return;
         } else if (!luoMatriisiA() || !luoMatriisiB()) {
             return;
-        }
+        } else if(!tarkastaSumma()){
+            return;
+        } 
 
         matriisiC = laskin.summaa(matriisiA, matriisiB);
-        naytaVastaus();
+        naytaC();
     }//GEN-LAST:event_summaaButtonActionPerformed
 
     private void tiedotAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotAButtonActionPerformed
@@ -714,9 +784,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         symmetrinenATulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiA));
         antisymmetrinenATulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiA));
         try {
-            kaantyvaATulosLabel.setText("" + laskin.onkoKaantyva(matriisiA));
-            ortogonaalinenATulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiA));
             determinanttiATulosLabel.setText("" + laskin.laskeDeterminantti(matriisiA));
+            kaantyvaATulosLabel.setText("" + laskin.onkoKaantyva(matriisiA));
+            ortogonaalinenATulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiA));         
         } catch (Exception e) {
         }
     }//GEN-LAST:event_tiedotAButtonActionPerformed
@@ -729,9 +799,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         symmetrinenBTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiB));
         antisymmetrinenBTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiB));
         try {
+            determinanttiBTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiB));
             kaantyvaBTulosLabel.setText("" + laskin.onkoKaantyva(matriisiB));
             ortogonaalinenBTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiB));
-            determinanttiBTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiB));
         } catch (Exception e) {
         }
     }//GEN-LAST:event_tiedotBButtonActionPerformed
@@ -744,9 +814,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         symmetrinenCTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiC));
         antisymmetrinenCTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiC));
         try {
+            determinanttiCTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiC));
             kaantyvaCTulosLabel.setText("" + laskin.onkoKaantyva(matriisiC));
             ortogonaalinenCTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiC));
-            determinanttiCTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiC));
         } catch (Exception e) {
         }
     }//GEN-LAST:event_tiedotCButtonActionPerformed
@@ -754,15 +824,170 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private void vahennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vahennaButtonActionPerformed
         if (!lataaMatriisiA() || !lataaMatriisiB()) {
             return;
+        } else if (!luoMatriisiA() || !luoMatriisiB()) {
+            return;
         } else if(!tarkastaErotus()){
+            return;
+        } 
+
+        matriisiC = laskin.vahenna(matriisiA, matriisiB);
+        naytaC();
+    }//GEN-LAST:event_vahennaButtonActionPerformed
+
+    private void kerroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kerroButtonActionPerformed
+        if (!lataaMatriisiA() || !lataaMatriisiB()) {
             return;
         } else if (!luoMatriisiA() || !luoMatriisiB()) {
             return;
-        }
+        } else if(!tarkastaKertolasku()){
+            return;
+        } 
+        
+        try {
+            matriisiC = laskin.kerroStrassenilla(matriisiA, matriisiB);
+        } catch (Exception e) {
+            matriisiC = laskin.kerro(matriisiA, matriisiB);
+        }   
+        naytaC();
+    }//GEN-LAST:event_kerroButtonActionPerformed
 
-        matriisiC = laskin.vahenna(matriisiA, matriisiB);
-        naytaVastaus();
-    }//GEN-LAST:event_vahennaButtonActionPerformed
+    private void transpoosiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiAButtonActionPerformed
+        if (!lataaMatriisiA() || !luoMatriisiA()) {
+            return;
+        }
+        matriisiA = laskin.transpoosaa(matriisiA);
+        naytaA();
+    }//GEN-LAST:event_transpoosiAButtonActionPerformed
+
+    private void transpoosiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiBButtonActionPerformed
+        if (!lataaMatriisiB() || !luoMatriisiB()) {
+            return;
+        }
+        matriisiB = laskin.transpoosaa(matriisiB);
+        naytaB();
+    }//GEN-LAST:event_transpoosiBButtonActionPerformed
+
+    private void transpoosiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiCButtonActionPerformed
+        if (!lataaMatriisiC() || !luoMatriisiC()) {
+            return;
+        }
+        matriisiC = laskin.transpoosaa(matriisiC);
+        naytaC();
+    }//GEN-LAST:event_transpoosiCButtonActionPerformed
+
+    private void kaanteismatriisiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiAButtonActionPerformed
+        if (!lataaMatriisiA() || !luoMatriisiA()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiA)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiA = laskin.invertoi(matriisiA);
+        } catch (Exception e) {
+            virheInvertoi();
+        }    
+        naytaA();
+    }//GEN-LAST:event_kaanteismatriisiAButtonActionPerformed
+
+    private void kaanteismatriisiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiBButtonActionPerformed
+        if (!lataaMatriisiB() || !luoMatriisiB()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiB)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiB = laskin.invertoi(matriisiB);
+        } catch (Exception e) {
+            virheInvertoi();
+        }    
+        naytaB();
+    }//GEN-LAST:event_kaanteismatriisiBButtonActionPerformed
+
+    private void kaanteismatriisiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiCButtonActionPerformed
+        if (!lataaMatriisiC() || !luoMatriisiC()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiC)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiC = laskin.invertoi(matriisiC);
+        } catch (Exception e) {
+            virheInvertoi();
+        }    
+        naytaC();
+    }//GEN-LAST:event_kaanteismatriisiCButtonActionPerformed
+
+    private void potenssiinAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinAButtonActionPerformed
+        if (!lataaMatriisiA() || !luoMatriisiA()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiA)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiA = laskin.neliomatriisiPotenssiin(matriisiA, 
+                        Integer.parseInt(potenssiinAText.getText()));
+        } catch (Exception e) {
+            virhePotenssi();
+            return;
+        }
+        naytaA();
+    }//GEN-LAST:event_potenssiinAButtonActionPerformed
+
+    private void potenssiinBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinBButtonActionPerformed
+        if (!lataaMatriisiB() || !luoMatriisiB()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiB)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiB = laskin.neliomatriisiPotenssiin(matriisiB, 
+                        Integer.parseInt(potenssiinBText.getText()));
+        } catch (Exception e) {
+            virhePotenssi();
+            return;
+        }
+        naytaB();
+    }//GEN-LAST:event_potenssiinBButtonActionPerformed
+
+    private void potenssiinCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinCButtonActionPerformed
+        if (!lataaMatriisiC() || !luoMatriisiC()) {
+            return;
+        } else if(!laskin.onkoNeliomatriisi(matriisiC)){
+            virheEiNelio();
+            return;
+        }
+        try {
+            matriisiC = laskin.neliomatriisiPotenssiin(matriisiC, 
+                        Integer.parseInt(potenssiinCText.getText()));
+        } catch (Exception e) {
+            virhePotenssi();
+            return;
+        }
+        naytaC();
+    }//GEN-LAST:event_potenssiinCButtonActionPerformed
+
+    private void lataaAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaAButtonActionPerformed
+        try {
+            matriisiA = matriisienlukija.lue(lataaAText.getText());
+            naytaA();
+        } catch (Exception e) {
+            virheLataus();
+        }
+    }//GEN-LAST:event_lataaAButtonActionPerformed
+
+    private void lataaBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaBButtonActionPerformed
+        try {
+            matriisiB = matriisienlukija.lue(lataaBText.getText());
+            naytaB();
+        } catch (Exception e) {
+            virheLataus();
+        }
+    }//GEN-LAST:event_lataaBButtonActionPerformed
 
     private boolean lataaMatriisiA() {
         try {
@@ -770,6 +995,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             sarakkeetA = Integer.parseInt(sarakkeetAText.getText());
             matriisiAString = matriisiAText.getText();
         } catch (Exception e) {
+            if(e.getClass() == NumberFormatException.class) {
+                virheAKoko();
+                return false;
+            }
             virheLataaA();
             return false;
         }
@@ -782,6 +1011,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             sarakkeetB = Integer.parseInt(sarakkeetBText.getText());
             matriisiBString = matriisiBText.getText();
         } catch (Exception e) {
+            if(e.getClass() == NumberFormatException.class) {
+                virheBKoko();
+                return false;
+            }
             virheLataaB();
             return false;
         }
@@ -794,6 +1027,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             sarakkeetC = Integer.parseInt(sarakkeetCText.getText());
             matriisiCString = matriisiCText.getText();
         } catch (Exception e) {
+            if(e.getClass() == NumberFormatException.class) {
+                virheCKoko();
+                return false;
+            }
             virheLataaC();
             return false;
         }
@@ -801,6 +1038,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }
 
     private boolean luoMatriisiA() {
+        if(!tarkastaAKoko()) {
+            return false;
+        }
         matriisiA = new double[rivitA][sarakkeetA];
 
         if (matriisiAString.length() < 2 * (rivitA - 1) * sarakkeetA) {
@@ -812,6 +1052,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }
 
     private boolean luoMatriisiB() {
+        if(!tarkastaBKoko()) {
+            return false;
+        }
         matriisiB = new double[rivitB][sarakkeetB];
 
         if (matriisiBString.length() < 2 * (rivitB - 1) * sarakkeetB) {
@@ -823,6 +1066,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }
     
     private boolean luoMatriisiC() {
+        if(!tarkastaCKoko()) {
+            return false;
+        }
         matriisiC = new double[rivitC][sarakkeetC];
 
         if (matriisiCString.length() < 2 * (rivitC - 1) * sarakkeetC) {
@@ -880,8 +1126,38 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         lukija.close();
         return true;
     }
+    
+    private void naytaA() {
+        rivitA = matriisiA.length;
+        sarakkeetA = matriisiA[0].length;
+        rivitAText.setText("" + rivitA);
+        sarakkeetAText.setText("" + sarakkeetA);
+        matriisiAString = "";
+        for (int rivit = 0; rivit < rivitA; rivit++) {
+            for (int sarakkeet = 0; sarakkeet < sarakkeetA; sarakkeet++) {
+                matriisiAString += matriisiA[rivit][sarakkeet]+"   ";
+            }
+            matriisiAString += "\n";
+        }
+        matriisiAText.setText(matriisiAString);
+    }
+    
+    private void naytaB() {
+        rivitB = matriisiB.length;
+        sarakkeetB = matriisiB[0].length;
+        rivitBText.setText("" + rivitB);
+        sarakkeetBText.setText("" + sarakkeetB);
+        matriisiBString = "";
+        for (int rivit = 0; rivit < rivitB; rivit++) {
+            for (int sarakkeet = 0; sarakkeet < sarakkeetB; sarakkeet++) {
+                matriisiBString += matriisiB[rivit][sarakkeet]+"   ";
+            }
+            matriisiBString += "\n";
+        }
+        matriisiBText.setText(matriisiBString);
+    }
 
-    private void naytaVastaus() {
+    private void naytaC() {
         rivitC = matriisiC.length;
         sarakkeetC = matriisiC[0].length;
         rivitCText.setText("" + rivitC);
@@ -897,13 +1173,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }
     
     private boolean tarkastaSumma() {
-        if (rivitA <= 0 || sarakkeetA <= 0) {
-            virheAKoko();
-            return false;
-        } else if (rivitB <= 0 || sarakkeetB <= 0) {
-            virheBKoko();
-            return false;
-        } else if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
+        if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
             virheSumma();
             return false;
         }
@@ -911,14 +1181,40 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }
     
     private boolean tarkastaErotus() {
+        if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
+            virheVahennys();
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean tarkastaKertolasku() {
+        if (sarakkeetA != rivitB) {
+            virheKertolasku();
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean tarkastaAKoko() {
         if (rivitA <= 0 || sarakkeetA <= 0) {
             virheAKoko();
             return false;
-        } else if (rivitB <= 0 || sarakkeetB <= 0) {
+        }
+        return true;
+    }
+    
+    private boolean tarkastaBKoko() {
+        if (rivitB <= 0 || sarakkeetB <= 0) {
             virheBKoko();
             return false;
-        } else if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
-            virheVahennys();
+        }
+        return true;
+    }
+    
+    private boolean tarkastaCKoko() {
+        if (rivitC <= 0 || sarakkeetC <= 0) {
+            virheCKoko();
             return false;
         }
         return true;
@@ -932,7 +1228,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
     private void virheLataaB() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nOikean matriisin lataamisessa tapahtui virhe", "Virhe",
+                + "\nKeskimmäisen matriisin lataamisessa tapahtui virhe", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
     
@@ -944,15 +1240,25 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
     private void virheAKoko() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nTarkasta, että vasemman matriisin kokomäärityksissä"
-                + "\nkäytetään vain positiivisia kokonaislukuja", "Virhe",
+                + "\nTarkasta, että vasemmanpuoleisen matriisin kokomäärityksissä"
+                + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
+                + "\nole ylimääräisiä välilyöntejä", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
 
     private void virheBKoko() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nTarkasta, että oikean matriisin kokomäärityksissä"
-                + "\nkäytetään vain positiivisia kokonaislukuja", "Virhe",
+                + "\nTarkasta, että keskimmäisen matriisin kokomäärityksissä"
+                + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
+                + "\nole ylimääräisiä välilyöntejä", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virheCKoko() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nTarkasta, että vastausmatriisin kokomäärityksissä"
+                + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
+                + "\nole ylimääräisiä välilyöntejä", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
 
@@ -969,6 +1275,41 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 + "\nmatriisien koot pitää olla samat", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
+    
+    private void virheKertolasku() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nMatriisien kertolaskussa vasemmanpuoleisen matriisin"
+                + "\nsarakkeiden määrä pitää olla sama kuin oikeanpuoleisen"
+                + "\nmatriisin rivien määrä", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virheEiNelio() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nMatriisin pitää olla neliömatriisi", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virheInvertoi() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nMatriisi ei ole kääntyvä, joten sillä ei ole"
+                + "\nkäänteismatriisia", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virhePotenssi() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nTarkasta, että olet antanut potenssiksi nollaa suuremman"
+                + "\ntai yhtäsuuren arvon", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virheLataus() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nTarkasta, että ladattava tiedosto sijaitsee ohjelman"
+                + "\nkanssa samassa hakemistopolussa", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
 
     private void virheMatriisiA() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
@@ -980,7 +1321,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
     private void virheMatriisiB() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nOikean matriisin syötteessä tapahtui virhe. Tarkasta,"
+                + "\nKeskimmäisen matriisin syötteessä tapahtui virhe. Tarkasta,"
                 + "\nettä se sisältää vain liukulukuja. Tarkasta myös, että"
                 + "\nalkioita on oikea määrä.", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
@@ -1043,6 +1384,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JLabel determinanttiCLabel;
     private javax.swing.JLabel determinanttiCTulosLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton kaanteismatriisiAButton;
     private javax.swing.JButton kaanteismatriisiBButton;
     private javax.swing.JButton kaanteismatriisiCButton;

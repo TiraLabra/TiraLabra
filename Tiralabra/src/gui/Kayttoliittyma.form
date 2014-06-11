@@ -63,9 +63,11 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -82,7 +84,10 @@
                           <Component id="kerroButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="matriisiBPanel" min="-2" max="-2" attributes="0"/>
@@ -346,16 +351,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Transpoosi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiAButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="kaanteismatriisiAButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiAButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="potenssiinAButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Potenssiin"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinAButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="potenssiinAText">
               <Properties>
@@ -369,6 +383,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Lataa"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaAButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -398,6 +415,9 @@
               <Dimension value="[41, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kerroButtonActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="matriisiBPanel">
           <Properties>
@@ -648,16 +668,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Transpoosi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiBButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="kaanteismatriisiBButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiBButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="potenssiinBButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Potenssiin"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinBButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="potenssiinBText">
               <Properties>
@@ -671,6 +700,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Lataa"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaBButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -923,16 +955,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Transpoosi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiCButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="kaanteismatriisiCButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiCButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="potenssiinCButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Potenssiin"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinCButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="potenssiinCText">
               <Properties>
@@ -952,6 +993,11 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Vastausmatriisi"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kirjoita matriisit matriisimuodossa tai riveitt&#xe4;in, jotta saat haluamasi vastauksen"/>
           </Properties>
         </Component>
       </SubComponents>
