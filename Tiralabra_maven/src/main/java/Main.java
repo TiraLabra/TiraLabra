@@ -7,11 +7,6 @@ import java.util.Scanner;
 public class Main {
     
     public static void main(String[] args) throws IOException, Exception {
-        long ennen = System.currentTimeMillis();
-        
-        long jalkeen = System.currentTimeMillis();
-        System.out.println("blaa blaa blaa vei aikaa: " + (jalkeen - ennen) + "ms.");
-        
         // Testaa seuraavaksi purkaminen ja sen jälkeen, miten hajautustaulu suhtautuu HashMapiin ja miten keko
         // PriorityQueueen.
         

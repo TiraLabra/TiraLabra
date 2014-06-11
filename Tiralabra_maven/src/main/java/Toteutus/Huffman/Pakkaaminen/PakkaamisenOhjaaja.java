@@ -29,7 +29,7 @@ public class PakkaamisenOhjaaja {
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
         
         TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja();
-        String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), puu, esitykset);
+        String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), esitykset);
 
         Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".hemi");
         kirjoittaja.kirjoita(teksti);

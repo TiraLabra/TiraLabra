@@ -29,11 +29,16 @@ public class TiedostonPurkaja {
      */
     
     public void pura(String polku) throws IOException, Exception {
+        String kirjoitettava = muodostaTeksti(polku);
+        kirjoitaTeksti(luotavanTiedostonPolku(polku), kirjoitettava);
+    }
+    
+    protected String muodostaTeksti(String polku) throws IOException, Exception {
         tarkistaOnkoPolkuValidi(polku);
         File pakkaus = haePakkaus(polku);
         
-        String kirjoitettava = puretunTiedostonSisalto(pakkaus);
-        kirjoitaTeksti(luotavanTiedostonPolku(polku), kirjoitettava);
+        return puretunTiedostonSisalto(pakkaus);
+        
     }
     
     /**
@@ -77,23 +82,6 @@ public class TiedostonPurkaja {
     }
     
     /**
-     * Hakee pakkauksta vastaavan tiedoston (ilman .hemi päätettä). Jos tiedosto on jo olemassa,
-     * heittää poikkeuksen.
-     * @param polku
-     * @return
-     * @throws IOException 
-     */
-    
-//    protected File muodostaTiedosto(String polku) throws IOException {
-//        File tiedosto = new File(luotavanTiedostonPolku(polku));
-//        if (tiedosto.exists()) {
-//            throw new IOException("Purettu tiedosto on jo olemasssa. Pakattua tiedostoa ei pureta uudestaan.\nOhjelma suljetaan.");
-//        }
-//        
-//        return tiedosto;
-//    }
-    
-    /**
      * Purkaa pakkauksen sisällön tiedostoon hakemalla ensin pakkauksen sisällön (ascii merkkeinä), käyden tästä
      * Huffman puun läpi ja keräten siitä "bittijonot ja niitä vastaavat merkit", muodostaen String -olion, jossa
      * on sisällön binääritekstiosa ja muodostaen tästä sitten puretun tiedoston sisällön.
@@ -108,7 +96,6 @@ public class TiedostonPurkaja {
         
         int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
         String tekstiBinaarina = tekstiBinaarina(teksti, binaariTekstinAlku);
-        
         return kirjoitettavaTeksti(tekstiBinaarina, bittijonotJaMerkit);
     }
     
@@ -121,6 +108,8 @@ public class TiedostonPurkaja {
      */
     
     protected String kirjoitettavaTeksti(String tekstiBinaarina, HajautusTaulu bittijonotJaMerkit) throws Exception {
+        long ennen = System.currentTimeMillis();
+        
         StringBuilder kirjoitettava = new StringBuilder();
         StringBuilder bittijono = new StringBuilder();
         
@@ -132,6 +121,9 @@ public class TiedostonPurkaja {
                 bittijono = new StringBuilder();
             }
         }
+        
+        long jalkeen = System.currentTimeMillis();
+        System.out.println("Kirjoitettavan tekstin aikaansaamiseen kului " + (jalkeen - ennen) + "ms");
         
         return kirjoitettava.toString();
     }

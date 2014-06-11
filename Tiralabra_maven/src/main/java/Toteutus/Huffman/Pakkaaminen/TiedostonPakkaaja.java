@@ -3,7 +3,6 @@ package Toteutus.Huffman.Pakkaaminen;
 import Apuvalineet.BinaariMuuntaja;
 import Tietorakenteet.HajautusTaulu;
 import Toteutus.Huffman.BittiEsitykset;
-import Toteutus.Huffman.HuffmanPuu;
 import java.util.HashMap;
 
 /**
@@ -28,7 +27,7 @@ public class TiedostonPakkaaja {
      * @return 
      */
     
-    protected String muodostaKirjoitettavaTeksti(String teksti, HuffmanPuu puu, BittiEsitykset esitykset) throws Exception {
+    protected String muodostaKirjoitettavaTeksti(String teksti, BittiEsitykset esitykset) throws Exception {
         String pakattuna = tekstiPakattuna(esitykset.getEsitykset(), teksti);
         StringBuilder kirjoitettava = new StringBuilder();
         lisaaTeksti(kirjoitettava, pakattuna, esitykset);
