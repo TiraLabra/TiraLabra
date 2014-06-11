@@ -82,7 +82,11 @@ class NMD5:
 	buffers = [0, 0, 0, 0]
 
 	def update(self, arg):
+		"""Adds a string to our list and calculates the hash.
+		Note that subsequent updates need to reset the registers."""
+		self.A, self.B, self.C, self.D = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
 		self.list.add(Node(arg, None))
+		self.__hash(self.list.toString())
 
 	# Main hashing function
 	def __hash(self, message):
