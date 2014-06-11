@@ -20,6 +20,7 @@ public class Matriisilaskin {
     private Strassen strassen;
     private Determinantti determinantti;
     private Kaanteismatriisi kaanteismatriisi;
+    private Potenssi potenssi;
 
     /**
      * Konstruktori, joka luo uudet ilmentymät apuneuvo- ja laskuoperaatio-
@@ -38,7 +39,8 @@ public class Matriisilaskin {
         transpoosi = new Transpoosi();
         strassen = new Strassen(yhteenlasku, vahennyslasku, kertolasku);
         determinantti = new Determinantti(kopioija);
-        kaanteismatriisi = new Kaanteismatriisi(kopioija, generoija);     
+        kaanteismatriisi = new Kaanteismatriisi(kopioija, generoija);
+        potenssi = new Potenssi(generoija, strassen);
     }
 
     /**
@@ -149,6 +151,19 @@ public class Matriisilaskin {
                     + "joten sen käänteismatriisia ei voida muodostaa");
         }
         return kaanteismatriisi.invertoi(A);
+    }
+    
+    /**
+     * Metodi, joka kutsuu Potenssi-luokan neliomatriisiPotenssiin -metodia
+     * parametrinaan potenssiin korotettava neliömatriisi A ja potenssina
+     * toimiva positiivinen kokonaisluku n, johon A korotetaan.
+     * 
+     * @param A Neliömatriisi, joka halutaan korottaa potenssiin, muotoa n x n
+     * @param n Kokonaisluku, jolla halutaan korottaan neliömatriisi potenssiin
+     * @return Palauttaa potenssiin korotetun neliömatriisin
+     */
+    public double[][] neliomatriisiPotenssiin(double[][] A, int n) {
+        return potenssi.neliomatriisiPotenssiin(A, n);
     }
     
     /**

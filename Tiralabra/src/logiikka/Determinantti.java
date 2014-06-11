@@ -1,6 +1,7 @@
 package logiikka;
 
 import apuneuvot.MatriisienKopioija;
+import java.math.BigDecimal;
 
 /**
  * Determinantti-luokka, jossa osittaistuetun LU-hajotelman avulla saadaan 
@@ -43,8 +44,9 @@ public class Determinantti {
      * syydestä. Tässä tilanteessa boolean-muuttuja 'onnistui' saa arvon false 
      * ja metodi palauttaa determinantin arvoksi nollan. LU-hajotelman
      * onnistuttua determinantti lasketaan LU-matriisin lävistäjäalkioiden
-     * tulona, johon lopuksi lisätään etumerkki rivinvaihtojen parillisuudesta
-     * riippuen. Tämän jälkeen etumerkkitty determinantti palautetaan.
+     * tulona, jonka jälkeen se pyöristetään kahdeksan desimaalin tarkkuuteen.
+     * Lopuksi lisätään etumerkki rivinvaihtojen parillisuudesta riippuen, jonka
+     * jälkeen etumerkkitty ja pyöristetty determinantti palautetaan.
      * 
      * @param matriisi Matriisi, jonka determinantti halutaan laskea, 
      *                 muotoa m x n
@@ -61,9 +63,7 @@ public class Determinantti {
             return 0;
         }
         
-        double det = laskeLavistajatulo(LU);
-
-        return etumerkitse(det);
+        return etumerkitse(pyorista(laskeLavistajatulo(LU)));
     }
 
     /**
@@ -204,6 +204,19 @@ public class Determinantti {
             }
         }
         return tulo;
+    }
+    
+    /**
+     * Metodi, joka pyöristää annetun determinantin kahdeksan desimaalin
+     * tarkkuuteen ja lopuksi palauttaa sen.
+     * 
+     * @param det Determinantti, joka pyöristetään kahdesaan desimaaliin
+     * @return Palauttaa pyöristetyn determinantin
+     */
+    private double pyorista(double det) {
+        BigDecimal bd = new BigDecimal(Double.toString(det));
+        bd = bd.setScale(8,BigDecimal.ROUND_HALF_UP);
+        return bd.doubleValue();
     }
     
     /**

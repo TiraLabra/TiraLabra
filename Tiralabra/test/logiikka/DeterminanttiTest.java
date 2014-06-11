@@ -13,6 +13,7 @@ public class DeterminanttiTest {
     double[][] nolla3;
     double[][] testi;
     double[][] A;
+    double[][] pyoristys;
     Determinantti determinantti;
     
     @Before
@@ -51,6 +52,11 @@ public class DeterminanttiTest {
             {2, 3},
             {4, 5}
         };
+        
+        pyoristys = new double[][]{
+            {0.111111, 0.333333},
+            {0.666666, 0.888888}
+        };
     }
     
     @Test
@@ -76,6 +82,11 @@ public class DeterminanttiTest {
     @Test
     public void determinanttiToimii5() {
         assertEquals(7, determinantti.laskeDeterminantti(testi), 0);
+    }
+    
+    @Test
+    public void pyoristysToimii() {
+        assertEquals(-0.12345654, determinantti.laskeDeterminantti(pyoristys),0);
     }
     
     @Test(expected = IllegalArgumentException.class)
