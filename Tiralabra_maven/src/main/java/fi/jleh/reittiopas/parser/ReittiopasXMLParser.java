@@ -33,9 +33,9 @@ public class ReittiopasXMLParser {
 		System.out.println("Started XML parsing");
 		long start = System.currentTimeMillis();
 		
-		final List<Station> stationList = new DefaultList<Station>();
-		final Map<Integer, Station> stationMap = new DefaultHashMap<Integer, Station>();
-		final List<Service> services = new DefaultList<Service>();
+		final List<Station> stationList = new DefaultList<Station>(10000);
+		final Map<Integer, Station> stationMap = new DefaultHashMap<Integer, Station>(10000);
+		final List<Service> services = new DefaultList<Service>(10000);
 		
 		try {
 			InputStream is = new FileInputStream(pathToFile);

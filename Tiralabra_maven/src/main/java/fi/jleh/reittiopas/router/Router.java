@@ -108,17 +108,17 @@ public class Router {
 				if (visitedNodes.contains(station))
 					continue;
 				
-				double tentativeScore = estimatedCost.get(current) 
+				double costToStart = estimatedCost.get(current) 
 						+ GeomertyUtils.calculateDistance(current, station) + timeFromStart(stop.getArrival());
 				
-				if (!openNodes.contains(station) || tentativeScore < costFromStart.get(station)) {
-					addStopToOpenSet(station, current, stop, tentativeScore);
+				if (!openNodes.contains(station) || costToStart < costFromStart.get(station)) {
+					addStopToOpenSet(station, current, stop, costToStart);
 				}
 			}
 		}
 	}
 	
-	private void addStopToOpenSet(Station station, Station current, Stop stop, double tentativeScore) {
+	private void addStopToOpenSet(Station station, Station current, Stop stop, double costToStart) {
 		// Do time check
 		double timeScore = calculateTimeScore(timeAtStation.get(current), stop.getArrival());
 		
@@ -135,10 +135,10 @@ public class Router {
 		cameFromStop.put(station, stop);
 		timeAtStation.put(station, stop.getArrival());
 		
-		double cost = tentativeScore + linePenalty + timeScore + BUS_COST;
+		double cost = costToStart + linePenalty + timeScore + BUS_COST;
 		
-		//costFromStart.put(station, tentativeScore + timeScore);
-		costFromStart.put(station, tentativeScore);
+		//costFromStart.put(station, costToStart + timeScore);
+		costFromStart.put(station, costToStart);
 		estimatedCost.put(station, cost);
 		
 		if (!openNodes.contains(station)) {
@@ -197,9 +197,9 @@ public class Router {
 			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
 			int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
 			String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-			double tentativeScore = GeomertyUtils.calculateDistance(current, nearbyStation) + timeFromStart(timeAfterWalk);
+			double costToStart = GeomertyUtils.calculateDistance(current, nearbyStation) + timeFromStart(timeAfterWalk);
 			
-			if (!openNodes.contains(nearbyStation) || tentativeScore < costFromStart.get(nearbyStation)) {
+			if (!openNodes.contains(nearbyStation) || costToStart < costFromStart.get(nearbyStation)) {
 				cameFrom.put(nearbyStation, current);
 				cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
 				
@@ -207,8 +207,8 @@ public class Router {
 				timeAtStation.put(nearbyStation, timeAfterWalk);
 				timeScore = calculateTimeScore(timeAfterWalk, startTime);
 				
-				costFromStart.put(nearbyStation, tentativeScore + timeScore);
-				double cost = tentativeScore + timeScore + WALK_PENALTY * walkDistance;
+				costFromStart.put(nearbyStation, costToStart + timeScore);
+				double cost = costToStart + timeScore + WALK_PENALTY * walkDistance;
 				estimatedCost.put(nearbyStation, cost);
 				
 				if (!openNodes.contains(nearbyStation)) {
