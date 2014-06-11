@@ -276,7 +276,7 @@ class NMD5:
 			wordIndex += 1
 			powers = 0
 
-		## correct last two bytes
+		## correct last two bytes if we're on the final block
 		if finalBlock:
 			wordArray[-2] = messageLength << 3
 			wordArray[-1] = messageLength >> 29
