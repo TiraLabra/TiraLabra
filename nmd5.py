@@ -253,11 +253,9 @@ class NMD5:
 		return [message[i:i+n] for i in range(0, len(message), n)]
 
 	def createWordArray(self, message, messageLength, finalBlock):
-		print(finalBlock)
 		"""Primes the 16-bit words for the main function"""
 
 		message = self.splitToBlocks(message, 32)
-		print(messageLength)
 		totalBytes = 0
 		totalWords = 0
 		wordArray = [0] * 16
@@ -280,9 +278,7 @@ class NMD5:
 
 		## correct last two bytes
 		if finalBlock:
-			print("Final block!")
 			wordArray[-2] = messageLength << 3
-			print(messageLength << 3)
 			wordArray[-1] = messageLength >> 29
 
 		return wordArray
