@@ -198,7 +198,27 @@ class NMD5:
 		return res
 
 	def digest(self):
-		pass
+		"""Returns the byte string digest"""
+		res = b''
+		buffers = [self.A, self.B, self.C, self.D]
+		orderedBytes = []
+
+		for buffer in buffers:
+			bufferbytes = []
+			b = bin(buffer)
+
+			bufferbytes.append(int(b[ 2:10],2))
+			bufferbytes.append(int(b[10:18],2))
+			bufferbytes.append(int(b[18:26],2))
+			bufferbytes.append(int(b[26:34],2))
+
+			res += bytes([bufferbytes[3]])
+			res += bytes([bufferbytes[2]])
+			res += bytes([bufferbytes[1]])
+			res += bytes([bufferbytes[0]])
+
+		return res
+
 	
 	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
