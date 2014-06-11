@@ -14,6 +14,8 @@ public class DeterminanttiTest {
     double[][] testi;
     double[][] A;
     double[][] pyoristys;
+    double[][] inf;
+    double[][] singular;
     Determinantti determinantti;
     
     @Before
@@ -57,6 +59,17 @@ public class DeterminanttiTest {
             {0.111111, 0.333333},
             {0.666666, 0.888888}
         };
+        
+        inf = new double[][] {
+            {Double.MAX_VALUE, 0},
+            {0, Double.MAX_VALUE}
+        };
+        
+        singular = new double[][] {
+            {7560.0, 9288.0, 11016.0},   
+            {17118.0, 21033.0, 24948.0},   
+            {26676.0, 32778.0, 38880.0}   
+        };
     }
     
     @Test
@@ -82,6 +95,16 @@ public class DeterminanttiTest {
     @Test
     public void determinanttiToimii5() {
         assertEquals(7, determinantti.laskeDeterminantti(testi), 0);
+    }
+    
+    @Test
+    public void lahesSingulaarinen() {
+        assertEquals(0, determinantti.laskeDeterminantti(singular), 0);
+    }
+    
+    @Test
+    public void aaretonEiPyorista() {
+        assertEquals(Double.POSITIVE_INFINITY, determinantti.laskeDeterminantti(inf), 0);
     }
     
     @Test

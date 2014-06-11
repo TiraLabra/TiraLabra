@@ -46,7 +46,7 @@ public class Determinantti {
      * onnistuttua determinantti lasketaan LU-matriisin lävistäjäalkioiden
      * tulona, jonka jälkeen se pyöristetään kahdeksan desimaalin tarkkuuteen.
      * Lopuksi lisätään etumerkki rivinvaihtojen parillisuudesta riippuen, jonka
-     * jälkeen etumerkkitty ja pyöristetty determinantti palautetaan.
+     * jälkeen etumerkitty ja pyöristetty determinantti palautetaan.
      * 
      * @param matriisi Matriisi, jonka determinantti halutaan laskea, 
      *                 muotoa m x n
@@ -63,7 +63,7 @@ public class Determinantti {
             return 0;
         }
         
-        return etumerkitse(pyorista(laskeLavistajatulo(LU)));
+        return determinoi(LU);
     }
 
     /**
@@ -92,12 +92,13 @@ public class Determinantti {
      * lävistäjäalkion sarakkeelle pivot-alkion. Pivot-alkio on lävistäjä-
      * alkiosta lähtien kyseisen sarakkeen itseisarvoltaan suurin alkio. Pivot-
      * alkion etsintä estää nollalla jakamisen algoritmin myöhemmässä vaiheessa 
-     * ja algoritmi palauttaakin falsen, jos pivot-alkion arvoksi jää nolla.
+     * ja algoritmi palauttaakin falsen, jos pivot-alkion itseisarvoksi jää 
+     * pienempi tai yhtäsuuri kuin 10^(-3).
      * 
-     * Kun löytyy nollasta eroava pivot-alkio, sen rivi ja lävistäjäalkion rivi
-     * vaihtavat paikkaa keskenään ja rivinvaihto-laskurin arvo kasvaa yhdellä,
-     * joka mahdollisesti vaikuttaa LU-matriisista laskettavan determinantin
-     * arvoon.
+     * Kun löytyy itseisarvoltaan 10^(-3):sta suurempi pivot-alkio, sen rivi ja 
+     * lävistäjäalkion rivi vaihtavat paikkaa keskenään ja rivinvaihto-laskurin 
+     * arvo kasvaa yhdellä, joka mahdollisesti vaikuttaa LU-matriisista 
+     * laskettavan determinantin arvoon.
      * 
      * Viimeisessä vaiheessa hajotetaan matriisi kyseessä olevan lävistäjäalkion
      * osalta LU-hajotelmalla. Tämä jakaa lävistäjäalkion sarakkeen alapuoliset
@@ -118,7 +119,8 @@ public class Determinantti {
      */
     private boolean muodostaLU(double[][] LU) {
         for (int lavistaja = 0; lavistaja < LU.length; lavistaja++) {
-            if(etsiPivot(LU, lavistaja) == 0) {
+            double pivot = etsiPivot(LU, lavistaja);
+            if(Math.abs(pivot) <= 0.001) {
                 return false;
             } else if (vaihtorivi != -1 && vaihtorivi !=  lavistaja) {
                 vaihdaRivit(LU, lavistaja);
@@ -204,6 +206,25 @@ public class Determinantti {
             }
         }
         return tulo;
+    }
+    
+    /**
+     * Metodi, joka laskee determinantin LU-matriisin yläkolmiomatriisin
+     * lävistäjäalkioiden tulona ja etumerkitsee sen rivinvaihtojen perusteella.
+     * Lopuksi pyöristää determinantin kahdeksan desimaalin tarkkuuteen, mikäli
+     * se ei ole ääretön.
+     * 
+     * @param LU Matriisi, josta determinantti lasketaan, muotoa n x n
+     * @return Palauttaa etumerkityn ja mahdollisesti pyöristetyn matriisin
+     */
+    private double determinoi(double[][] LU) {
+        double det = laskeLavistajatulo(LU);
+        
+        if(det == Double.POSITIVE_INFINITY || 
+           det == Double.NEGATIVE_INFINITY){
+            return etumerkitse(det);
+        }
+        return etumerkitse(pyorista(det));
     }
     
     /**

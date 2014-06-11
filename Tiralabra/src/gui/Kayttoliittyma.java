@@ -1,6 +1,7 @@
 package gui;
 
 import apuneuvot.MatriisienLukija;
+import apuneuvot.MatriisienTallentaja;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import logiikka.Matriisilaskin;
@@ -27,10 +28,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private double[][] matriisiC;
     private Scanner lukija;
     private MatriisienLukija matriisienlukija;
+    private MatriisienTallentaja tallentaja;
     private Matriisilaskin laskin;
     
     /**
-     * Creates new form Kayttoliittyma
+     * Konstruktori, joka asettaa matriisien rivit ja sarakkeet nolliksi ja
+     * luo uudet ilmentymät MatriisienLukijasta, -Tallentajasta sekä Matriisi-
+     * laskin-luokista niiden private-muuttujiin. Lopuksi initialisoi komponen-
+     * tit.
      */
     public Kayttoliittyma() {
         rivitA = 0;
@@ -41,6 +46,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         sarakkeetC = 0;
 
         matriisienlukija = new MatriisienLukija();
+        tallentaja = new MatriisienTallentaja();
         laskin = new Matriisilaskin();
 
         initComponents();
@@ -143,7 +149,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Matriisilaskin");
         setMinimumSize(new java.awt.Dimension(720, 480));
-        setPreferredSize(new java.awt.Dimension(720, 480));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -546,7 +551,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         matriisiCText.setRows(5);
         matriisiCScroll.setViewportView(matriisiCText);
 
-        tallennaCText.setText("matriisi.txt");
+        tallennaCText.setText("vastaus.txt");
 
         neliomatriisiCLabel.setText("Neliömatriisi");
 
@@ -604,6 +609,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinCText.setMinimumSize(new java.awt.Dimension(28, 20));
 
         tallennaCButton.setText("Tallenna");
+        tallennaCButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tallennaCButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout matriisiCPanelLayout = new javax.swing.GroupLayout(matriisiCPanel);
         matriisiCPanel.setLayout(matriisiCPanelLayout);
@@ -989,6 +999,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lataaBButtonActionPerformed
 
+    private void tallennaCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tallennaCButtonActionPerformed
+        if (!lataaMatriisiC() || !luoMatriisiC()) {
+            return;
+        }
+        try {
+            tallentaja.tallenna(matriisiC, tallennaCText.getText());
+        } catch (Exception e) {
+            virheTallennus();
+        }
+    }//GEN-LAST:event_tallennaCButtonActionPerformed
+
     private boolean lataaMatriisiA() {
         try {
             rivitA = Integer.parseInt(rivitAText.getText());
@@ -1308,6 +1329,13 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nTarkasta, että ladattava tiedosto sijaitsee ohjelman"
                 + "\nkanssa samassa hakemistopolussa", "Virhe",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void virheTallennus() {
+        JOptionPane.showMessageDialog(this, "Virhe:\n"
+                + "\nTarkasta, että tallennettava tiedostonimi sisältää vain"
+                + "\ntavallisia kirjaimia ja/tai yhden pisteen.", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
 
