@@ -22,7 +22,6 @@ class LinkedList:
 
 
 	def add(self, node):
-		print("Adding", node.value, node.next)
 		if self.root == None:
 			self.root = node
 			self.tail = node
