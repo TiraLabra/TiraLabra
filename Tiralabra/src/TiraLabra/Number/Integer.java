@@ -263,10 +263,26 @@ public class Integer extends Number<Integer> {
             throw new ArithmeticException("Division by zero");
         }
         
-        int res[] = {integer[0] / other.integer[0]};
+        Integer divisor = other.abs();
         
-        final boolean neg = (this.isNegative() != other.isNegative());
-        return new Integer(res, neg);
+        Integer q = ZERO, r = this.abs();
+        while (r.compareTo(divisor) >= 0) {
+            q = q.add(ONE);
+            r = r.subtract(divisor);
+        }
+        
+        q = other.isNegative() ? q.negate() : q;
+        
+        if (this.isNegative()) {
+            q = q.negate();
+            if (r.isZero()) {
+                return q;
+            } else {
+                return q.subtract(ONE);
+            }
+        }
+        
+        return q;
     }
 
     @Override

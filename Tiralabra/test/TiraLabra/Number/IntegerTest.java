@@ -6,6 +6,7 @@ import org.junit.Test;
 public class IntegerTest extends NumberTests<Integer> {
     private static final Integer overflow = new Integer(46340);
     private static final Integer oneToOverflow = new Integer(46339);
+    private static final Integer halfRadix = new Integer(23170);
     
     private Integer oneOverOverflow;
     
@@ -66,7 +67,7 @@ public class IntegerTest extends NumberTests<Integer> {
     
     @Test
     public void multiplyToOverflow() {
-        Integer halfRadix = new Integer(23170);
+        
         assertEquals(overflow, halfRadix.multiply(two));
     }
     
@@ -114,5 +115,12 @@ public class IntegerTest extends NumberTests<Integer> {
         assertEquals(2, n.integer[2]);
         
         assertEquals("4294967296", n.toString());
+    }
+    
+    @Test
+    public void divideOverflow() {
+        assertEquals(one, overflow.divide(overflow));
+        assertEquals(halfRadix, overflow.divide(two));
+        assertEquals(overflow, overflow.negate().divide(one.negate()));
     }
 }
