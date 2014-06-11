@@ -198,7 +198,9 @@ class NMD5:
 		return res
 
 	def digest(self):
-		"""Returns the byte string digest"""
+		"""Returns the byte string digest. The idea is to
+		slice every register into 4 bytes and go from the
+		low order bytes of A to the high order bytes of D."""
 		res = b''
 		buffers = [self.A, self.B, self.C, self.D]
 		orderedBytes = []
