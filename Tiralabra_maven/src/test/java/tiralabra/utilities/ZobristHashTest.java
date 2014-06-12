@@ -36,7 +36,7 @@ public class ZobristHashTest {
         
         int y = 0;
         for (Player[] players : board) {
-            board1[y] = Arrays.copyOf(board[y], board[0].length);
+            board1[y] = Arrays.copyOf(players, board[0].length);
             y++;
         }
         

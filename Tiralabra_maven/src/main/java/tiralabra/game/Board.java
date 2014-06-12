@@ -5,9 +5,11 @@
  */
 package tiralabra.game;
 
-import tiralabra.utilities.ArrayList;
+import java.math.BigInteger;
 import java.util.Collections;
+import tiralabra.utilities.ArrayList;
 import tiralabra.utilities.Stack;
+import tiralabra.utilities.ZobristHash;
 
 /**
  * The game board. Responsible only for holding the pieces and placing them on
@@ -54,6 +56,14 @@ public class Board {
      * The player whose turn is next.
      */
     private Player playerInTurn;
+    /**
+     * Capable of hashing the board to an unique 64-bit value.
+     */
+    private ZobristHash hasher;
+    /**
+     * Unique hash of the current board.
+     */
+    private BigInteger hash;
 
     /**
      * Width of the board.
@@ -90,6 +100,9 @@ public class Board {
         flipStack = new Stack();
 
         playerInTurn = Player.BLACK;
+
+        hasher = new ZobristHash(8, 8);
+        hash = hasher.hash(board);
     }
 
     /**
@@ -191,7 +204,7 @@ public class Board {
      * Changes the turn to the opposing player from the current one in turn.
      */
     private void changeTurn() {
-        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+        playerInTurn = Player.opposing(playerInTurn);
     }
 
     /**
@@ -230,7 +243,8 @@ public class Board {
 
     /**
      * Whether the game is over.
-     * @return 
+     *
+     * @return
      */
     public boolean gameOver() {
         return (!canMove(Player.BLACK) && !canMove(Player.WHITE));
@@ -337,7 +351,7 @@ public class Board {
         flipDirection(x, y, 1, -1, player, flips, realMove);
         flipDirection(x, y, -1, 1, player, flips, realMove);
         flipDirection(x, y, -1, -1, player, flips, realMove);
-        
+
         if (realMove && !flips.isEmpty()) {
             flipStack.push(new Flip(flips.size(), player));
         }
@@ -363,9 +377,10 @@ public class Board {
         int xt = x + dx;
         int yt = y + dy;
         while (isValidTile(xt, yt)) {
-            if (getTile(xt, yt) != Player.opposing(player)) 
+            if (getTile(xt, yt) != Player.opposing(player)) {
                 break;
-            
+            }
+
             nmbrOfFlips++;
 
             xt += dx;
@@ -380,7 +395,8 @@ public class Board {
     }
 
     /**
-     * Flips the pieces
+     * Flips the pieces and updates the hash for each piece flipped.
+     *
      * @param x
      * @param y
      * @param dx
@@ -388,19 +404,40 @@ public class Board {
      * @param player
      * @param nmbrOfFlips
      * @param flips
-     * @param realMove 
+     * @param realMove
      */
     private void flipPieces(int x, int y, int dx, int dy, Player player, int nmbrOfFlips, ArrayList<Long> flips, boolean realMove) {
         for (int i = 0; i <= nmbrOfFlips; i++) {
             if (realMove) {
                 flip(x + (i * dx), y + (i * dy), player);
+
+                //Don't XOR the first piece multiple times.
+                if (i > 0) {
+                    updateHash(x + dx, y + dy, player);
+                }
             }
             flips.add(point(x + (i * dx), y + (i * dy)));
         }
     }
 
     /**
-     * Flips the piece to the opposing color (or places a new piece in a empty
+     * Updates the hash of the board by XORing the wanted piece to the hash, and
+     * if applicable, XORs the previous piece in the given coordinates out.
+     *
+     * @param x
+     * @param y
+     * @param player
+     */
+    private void updateHash(int x, int y, Player player) {
+        hash = hasher.xorFlip(x, y, player, hash);
+    }
+    
+    private void updateHashOut(int x, int y) {
+        
+    }
+
+    /**
+     * Flips the piece to the opposing color (or places a new piece in an empty
      * tile) in the given coordinates + adds the flip to the stack of operations
      * done.
      *
@@ -430,16 +467,21 @@ public class Board {
 
     /**
      * Undoes the last move by popping all operations caused by the move from
-     * the FlipStack and placing them on the board.
+     * the FlipStack and placing them on the board. Also calls the updateHash to
+     * XOR out the piece being replaced and XOR in the piece that is placed.
      */
     public void undo() {
-        if (flipStack.isEmpty()) 
+        if (flipStack.isEmpty()) {
             return;
+        }
 
         int flipsToClear = flipStack.pop().flipsToClear;
         for (int i = 0; i < flipsToClear; i++) {
             Flip flip = flipStack.pop();
+
+            updateHash(flip.x, flip.y, getTile(flip.x, flip.y));
             setTile(flip.x, flip.y, flip.player);
+            updateHash(flip.x, flip.y, flip.player);
         }
 
         changeTurn();

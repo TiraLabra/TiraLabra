@@ -12,4 +12,18 @@ package tiralabra.utilities;
  */
 public class TranspositionTable {
     
-}
+    public class BoardValues {
+        int value;
+        int depth;
+        long bestMove;
+    }
+    
+    private BoardValues[] table;
+    private int values;
+    
+    public TranspositionTable() {
+        table = new BoardValues[10000];
+        values = 0;
+    }
+    
+ }

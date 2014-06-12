@@ -22,7 +22,7 @@ public class ZobristHash {
     /**
      * Holds the randomly generated numbers which determine a boards hashing.
      */
-    private BigInteger[][] table;
+    private BigInteger[][][] table;
     /**
      * The height of boards hashed.
      */
@@ -33,7 +33,7 @@ public class ZobristHash {
     private int width;
 
     public ZobristHash(int height, int width) {
-        table = new BigInteger[64][3];
+        table = new BigInteger[height][width][3];
         this.height = height;
         this.width = width;
 
@@ -45,9 +45,11 @@ public class ZobristHash {
      */
     private void initializeTable() {
         Random random = new Random();
-        for (int i = 0; i < height * width; i++) {
-            for (int j = 0; j < 2; j++) {
-                table[i][j] = new BigInteger(64, random);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                for (int j = 0; j < 2; j++) {
+                    table[y][x][j] = new BigInteger(64, random);
+                }
             }
         }
     }
@@ -58,23 +60,39 @@ public class ZobristHash {
      * @param board
      * @return long - 64-bit hash of the board
      */
-    public long hash(Player[][] board) {
+    public BigInteger hash(Player[][] board) {
         BigInteger hash = new BigInteger("0");
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int i = y + x;
                 int j = board[y][x].value() - 1;
                 if (j >= 0) {
                     if (hash.intValue() == 0) {
-                        hash = table[i][j];
+                        hash = table[y][x][j];
                     } else {
-                        hash = hash.xor(table[i][j]);
+                        hash = hash.xor(table[y][x][j]);
                     }
                 }
             }
         }
 
-        return hash.longValue();
+        return hash;
+    }
+
+    /**
+     * XORs a piece in if the piece was not yet included in the hash. Otherwise
+     * XORs it out, removing it from the has.
+     *
+     * @param x
+     * @param y
+     * @param player
+     * @param hash
+     * @return
+     */
+    public BigInteger xorFlip(int x, int y, Player player, BigInteger hash) {
+        int j = player.value() - 1;
+        BigInteger newHash = hash.xor(table[y][x][j]);
+
+        return newHash;
     }
 }

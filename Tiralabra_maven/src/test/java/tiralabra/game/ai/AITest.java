@@ -40,10 +40,10 @@ public class AITest {
     @Test
     public void searchDoesntPlaceOrRemoveAnyPiecesOnTheBoard() {
         for (int i = 0; i < 5; i++) {
-            long originalHash = hasher.hash(board.getBoard());
+            BigInteger originalHash = hasher.hash(board.getBoard());
             
             long move = ai.move();
-            long newHash = hasher.hash(board.getBoard());
+            BigInteger newHash = hasher.hash(board.getBoard());
 
             assertEquals("Searching for a move should leave the board unchanged.", originalHash, newHash);
 

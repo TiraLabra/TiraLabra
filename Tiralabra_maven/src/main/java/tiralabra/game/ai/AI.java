@@ -24,11 +24,29 @@ public class AI {
      */
     public class Move implements Comparable<Move> {
 
+        /**
+         * X coordinate.
+         */
         public int x;
+        /**
+         * Y coordinate.
+         */
         public int y;
+        /**
+         * Value that is used to sort moves.
+         */
         public int value;
+        /**
+         * Move is a pass.
+         */
         public boolean pass;
 
+        /**
+         * 
+         * @param x
+         * @param y
+         * @param value 
+         */
         public Move(int x, int y, int value) {
             this.x = x;
             this.y = y;
@@ -36,6 +54,10 @@ public class AI {
             this.pass = false;
         }
 
+        /**
+         * 
+         * @param pass 
+         */
         public Move(boolean pass) {
             this.pass = true;
         }
@@ -46,8 +68,10 @@ public class AI {
         }
     }
 
+    /**
+     * Enumerable for strategy.
+     */
     public enum Strategy {
-
         MAXIMIZEVALUE, MAXIMIZEPIECES
     }
 
@@ -114,7 +138,7 @@ public class AI {
     private Strategy determineStrategy() {
         int movesLeft = 64 - board.getNumberOfPieces();
 
-        if (movesLeft < 20) {
+        if (movesLeft < 12) {
             return Strategy.MAXIMIZEPIECES;
         } else {
             return Strategy.MAXIMIZEVALUE;
