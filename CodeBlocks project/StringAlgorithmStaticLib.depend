@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1401626609 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+1402059795 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
 	"bernstein.hpp"
 	<iostream>
 
@@ -88,4 +88,36 @@
 1401743226 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.cpp
 	"edit_distance.hpp"
 	<iostream>
+
+1402603245 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.cpp
+	"naive_suffix_tree_builder.hpp"
+
+1402584540 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
+
+1402585240 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.cpp
+	"ukkonen_suffix_tree_builder.hpp"
+
+1402585457 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	"suffix_tree_builder.hpp"
+
+1402603268 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree_builder.hpp
+	<cstring>
+	<string>
+	"suffix_tree.hpp"
+
+1402603409 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	<vector>
+
+1402603122 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	"suffix_tree_builder.hpp"
+	"suffix_tree.hpp"
 
