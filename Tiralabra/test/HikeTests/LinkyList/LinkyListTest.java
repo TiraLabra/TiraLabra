@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package HikeTests;
+package HikeTests.LinkyList;
 
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  *
  * @author petri
  */
-public class LinkyListTests {
+public class LinkyListTest {
 
     private LinkyList list;
 
-    public LinkyListTests() {
+    public LinkyListTest() {
     }
 
     @BeforeClass

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package HikeTests;
+package HikeTests.ImageTable;
 
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
@@ -18,11 +18,11 @@ import static org.junit.Assert.*;
  *
  * @author petri
  */
-public class ImageTableTests {
+public class ImageTableTest {
 
     private Node[][] table;
 
-    public ImageTableTests() {
+    public ImageTableTest() {
     }
 
     @BeforeClass
@@ -42,7 +42,7 @@ public class ImageTableTests {
 
             }
         }
-        table[0][0].setNeighbours(table, Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
+        table[0][0].setNeighbours(table);
         table = table[0][0].getTable();
 
     }

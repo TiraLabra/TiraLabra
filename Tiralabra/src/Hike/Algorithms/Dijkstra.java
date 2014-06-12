@@ -8,8 +8,9 @@ import java.util.Deque;
 
 /**
  * This class calculates distances to nodes using Dijkstra's algorithm.
- * nodeTable contains the table that has been set up in class Node. All nodes are added to
- * MinHeap and the one with smallest distance has it's neighbours checked and MinHeap is updated.
+ * nodeTable contains the table that has been set up in class Node. All nodes
+ * are added to MinHeap and the one with smallest distance has it's neighbours
+ * checked and MinHeap is updated.
  */
 public class Dijkstra {
 
@@ -19,27 +20,31 @@ public class Dijkstra {
     private double c;   // Will be used to count something
     private MinHeap heap;
     private long totalTime;
+    private int targety;
+    private int targetx;
 
     /**
      * Constructor, sets variables and runs the search.
      *
      * @param nodeTable Table containing all Nodes that are used
      */
-    public Dijkstra(Node[][] nodeTable) {
+    public Dijkstra(Node[][] nodeTable, int ty, int tx) {
 
         c = 0;
         this.que = new ArrayDeque<Node>();
         this.nodeTable = nodeTable;
+        this.targety = ty;
+        this.targetx = tx;
 
         long timeStart = System.currentTimeMillis();
         initialize();
         findDijkstra();
         long timeEnd = System.currentTimeMillis();
         totalTime = (timeEnd - timeStart);
-        
-        
+
+
         System.out.println("Dijkstra took: " + (timeEnd - timeStart) + "ms.");
-        System.out.println("Calculations: " + (long) c );
+        System.out.println("Calculations: " + (long) c);
     }
 
     /**
@@ -49,9 +54,14 @@ public class Dijkstra {
     private void findDijkstra() {
         Node eval = heap.removeMin();
         while (heap.empty() == false) {
-            c = c+2;
+            c = c + 2;
             checkNeighbours(eval);
             eval = heap.removeMin();
+
+            // if target found, break loop.
+            if (eval == nodeTable[targety][targetx]) {
+                break;
+            }
         }
     }
 
@@ -69,8 +79,7 @@ public class Dijkstra {
     }
 
     /**
-     * Sets the distance of the starting point to 0.
-     * Puts all nodes to MinHeap.
+     * Sets the distance of the starting point to 0. Puts all nodes to MinHeap.
      */
     private void initialize() {
         nodeTable[0][0].setDistance(0);
@@ -94,7 +103,7 @@ public class Dijkstra {
     private void relax(Node start, Node goal) {
 
         if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
-            c = c+3;
+            c = c + 3;
             goal.setDistance(start.getDistance() + goal.getWeight());
             goal.setPrevious(start);
             heap.decHeap(goal.getHeapIndex(), goal.getDistance());
@@ -150,5 +159,17 @@ public class Dijkstra {
 
     public long getTotalTime() {
         return totalTime;
+    }
+
+    public int getTargety() {
+        return targety;
+    }
+
+    public int getTargetx() {
+        return targetx;
+    }
+
+    public MinHeap getHeap() {
+        return this.heap;
     }
 }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package HikeTests.Suite;
+package HikeTests;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author petri
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({HikeTests.DijkstraTest.class, HikeTests.LinkyListTests.class, HikeTests.MinHeapTests.class, HikeTests.ImageTableTests.class })
+@Suite.SuiteClasses({HikeTests.Dijkstra.DijkstraTest.class, HikeTests.LinkyList.LinkyListTest.class, HikeTests.MinHeap.MinHeapTest.class, HikeTests.ImageTable.ImageTableTest.class })
 public class HikeTestSuite {
 
     @BeforeClass

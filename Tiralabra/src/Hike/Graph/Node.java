@@ -71,8 +71,10 @@ public class Node {
      *
      * @param table A table of nodes sent from ImageTable class
      */
-    public void setNeighbours(Node[][] table, int h, int w) {
+    public void setNeighbours(Node[][] table) {
         this.table = table;
+        int h = table.length;
+        int w = table[0].length;
 
         for (int py = 0; py < h; py++) {
             for (int px = 0; px < w; px++) {

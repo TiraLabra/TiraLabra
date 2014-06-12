@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package HikeTests;
+package HikeTests.MinHeap;
 
 import Hike.Graph.Node;
 import Hike.Structures.MinHeap;
@@ -18,11 +18,11 @@ import static org.junit.Assert.*;
  *
  * @author petri
  */
-public class MinHeapTests {
+public class MinHeapTest {
 
     private MinHeap heap;
 
-    public MinHeapTests() {
+    public MinHeapTest() {
     }
 
     @BeforeClass

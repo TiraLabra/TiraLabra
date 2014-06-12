@@ -14,8 +14,8 @@ public class Values {
 
     public static final int IMAGEHEIGHT = 500;
     public static final int IMAGEWIDTH = 800;
-    public static final int NORMALGROUND = 1;
-    public static final int GRASS = 2;
+    public static final int UNSETGROUND = 1;
+    public static final int GRASS = 1;
     public static final int DESERT = 8;
     public static final int WATER = 200;
     public static final int MOUNTAIN = 1000;
