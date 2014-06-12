@@ -59,7 +59,7 @@ public class RoutingTest {
 		RouterResult route = router.findRoute(start, end, "0700");
 		Integer time = Integer.parseInt(route.calculateRouteTime());
 		
-		int previousBestForRoute = 922;
+		int previousBestForRoute = 1058;
 		printStats(previousBestForRoute, time, route);
 		
 		assertTrue(time <= previousBestForRoute);
@@ -74,7 +74,7 @@ public class RoutingTest {
 		RouterResult route = router.findRoute(start, end, "1200");
 		Integer time = Integer.parseInt(route.calculateRouteTime());
 		
-		int previousBestForRoute = 1415;
+		int previousBestForRoute = 1223;
 		printStats(previousBestForRoute, time, route);
 		
 		assertTrue(time <= previousBestForRoute);
