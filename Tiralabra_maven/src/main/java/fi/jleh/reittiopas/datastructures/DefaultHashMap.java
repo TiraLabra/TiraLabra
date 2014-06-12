@@ -35,26 +35,29 @@ public class DefaultHashMap<K, V> implements Map<K, V> {
 	
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		for (int i = 0; i < array.length; i++) {
+		    array[i] = null;
+		}
 	}
 
 	@Override
 	public boolean containsKey(Object key) {
-		// TODO Auto-generated method stub
-		return false;
+	    for (HashNode<V> node : array) {
+	        if (node.getCode() == key.hashCode())
+	            return true;
+	    }
+	    
+	    return false;
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		// TODO Auto-generated method stub
-		return false;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
@@ -76,14 +79,17 @@ public class DefaultHashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+	    for (HashNode<V> node : array) {
+	        if (node != null)
+	            return false;
+	    }
+	    
+	    return true;
 	}
 
 	@Override
 	public Set<K> keySet() {
-		// TODO Auto-generated method stub
-		return null;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
@@ -108,26 +114,22 @@ public class DefaultHashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		// TODO Auto-generated method stub
-		
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public V remove(Object key) {
-		// TODO Auto-generated method stub
-		return null;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 	@Override
 	public Collection<V> values() {
-		// TODO Auto-generated method stub
-		return null;
+	    throw new UnsupportedOperationException("Method not implemented");
 	}
 
 }

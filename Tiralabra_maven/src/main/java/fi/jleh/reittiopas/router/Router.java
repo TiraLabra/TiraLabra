@@ -40,8 +40,10 @@ public class Router {
 	private Map<Station, String> timeAtStation;
 	
 	private Map<Station, Double> costFromStart;
-	private Map<Station, Double> estimatedCost;
+	private Map<Station, Double> costToEnd;
 
+	private Station endStation;
+	
 	private String routeStartTime;
 	
 	private long processStart;
@@ -61,18 +63,18 @@ public class Router {
 		processStart = System.currentTimeMillis();
 		initializeDataStructures();
 		
+		endStation = end;
+		
 		routeStartTime = startTime;
 		
 		// Values for start node
 		costFromStart.put(start, 0.0);
-		estimatedCost.put(start, GeomertyUtils.calculateDistance(start, end));
+		costToEnd.put(start, GeomertyUtils.calculateDistance(start, end));
 		openNodes.insert(GeomertyUtils.calculateDistance(start, end), start);
 		timeAtStation.put(start, startTime);
 		
 		while (!openNodes.isEmpty()) {
 			Station current = openNodes.getAndRemoveMin();
-			
-			//debugPrint(current);
 			
 			if (current == end) {
 				long time = System.currentTimeMillis() - processStart;
@@ -108,11 +110,11 @@ public class Router {
 				if (visitedNodes.contains(station))
 					continue;
 				
-				double costToStart = estimatedCost.get(current) 
+				double costToStart = costFromStart.get(current) 
 						+ GeomertyUtils.calculateDistance(current, station) + timeFromStart(stop.getArrival());
 				
 				if (!openNodes.contains(station) || costToStart < costFromStart.get(station)) {
-					addStopToOpenSet(station, current, stop, costToStart);
+				    addStopToOpenSet(station, current, stop, costToStart);
 				}
 			}
 		}
@@ -135,14 +137,13 @@ public class Router {
 		cameFromStop.put(station, stop);
 		timeAtStation.put(station, stop.getArrival());
 		
-		double cost = costToStart + linePenalty + timeScore + BUS_COST;
+		double cost = GeomertyUtils.calculateDistance(current, endStation) + linePenalty + timeScore + BUS_COST;
 		
-		//costFromStart.put(station, costToStart + timeScore);
 		costFromStart.put(station, costToStart);
-		estimatedCost.put(station, cost);
+		costToEnd.put(station, cost);
 		
 		if (!openNodes.contains(station)) {
-			openNodes.insert(cost, station);
+			openNodes.insert(cost + costToStart, station);
 		}
 	}
 	
@@ -209,7 +210,7 @@ public class Router {
 				
 				costFromStart.put(nearbyStation, costToStart + timeScore);
 				double cost = costToStart + timeScore + WALK_PENALTY * walkDistance;
-				estimatedCost.put(nearbyStation, cost);
+				costToEnd.put(nearbyStation, cost);
 				
 				if (!openNodes.contains(nearbyStation)) {
 					openNodes.insert(cost, nearbyStation);
@@ -227,6 +228,6 @@ public class Router {
 		timeAtStation = new DefaultHashMap<Station, String>(2000);
 		
 		costFromStart = new DefaultHashMap<Station, Double>(2000);
-		estimatedCost = new DefaultHashMap<Station, Double>(2000);
+		costToEnd = new DefaultHashMap<Station, Double>(2000);
 	}
 }
