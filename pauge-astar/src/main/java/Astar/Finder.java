@@ -11,18 +11,18 @@ public class Finder {
     
     Node current;
     Node neighbor;
-    ArrayList<Node> path;
     Heap accessed;
-    ArrayList<Node> checked;
+    Heap checked;
+    Stack path;
     /**
      * Constructor
      */
     Finder(){
        current = null;
        neighbor = null;
-       path = new ArrayList();
        accessed = new Heap();
-       checked = new ArrayList();
+       checked = new Heap();
+       path = new Stack();
     }
     /**
      * Finds the shortest route from start to goal
@@ -40,7 +40,7 @@ public class Finder {
         while(!accessed.isEmpty()) {
             current = accessed.getHighest();                    //mark node that is checked as current
             accessed.removeNode();                              //remove current from the list of nodes to check
-            checked.add(current);                               //and store it in collection of checked ones
+            path.insertNode(current);                               //and store it in collection of checked ones
             current.setValue('-');
             System.out.println("current: ("+current.getX()+","+current.getY()+")");
             if (current == goal){
@@ -62,6 +62,11 @@ public class Finder {
                 System.out.print(i+":("+accessed.get(i).getX()+","+accessed.get(i).getY()+") "+accessed.get(i).getPrio());
                 System.out.println();
             }
+        }
+        System.out.println("\n\nFound path (goal top):");
+        for(int i = path.size(); i>0; i--) {
+            System.out.print(path.size()+": "+path.removeNode().toString());
+            System.out.println();
         }
     }
     
@@ -91,8 +96,8 @@ public class Finder {
     public void markNeighbour(Map m, Node goal, int y, int x) {
         try{neighbor = m.field[current.getY()+(1*y)][current.getX()+(1*x)];    //fill in the data for neighbors
                 if(neighbor.getValue() == 'X')
-                    checked.add(neighbor);                                     //if a wall, discard
-                if(!checked.contains(neighbor)) {                              //if node hasn't been checked
+                    checked.insertNode(neighbor);                             //if a wall, discard
+                if(!checked.hasNode(neighbor) && !path.hasNode(neighbor)) {                              //if node hasn't been checked
                     if(!accessed.hasNode(neighbor)){
                         accessed.insertNode(neighbor);
                         setNodeVariables(neighbor,goal.getY(),goal.getX());

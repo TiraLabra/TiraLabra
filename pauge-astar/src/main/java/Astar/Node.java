@@ -118,4 +118,8 @@ public class Node {
     public double getPrio() {
         return toStart+Math.sqrt(toGoal)+cost;
     }
+    
+    public String toString() {
+        return "("+this.x+","+this.y+")";
+    }
 }

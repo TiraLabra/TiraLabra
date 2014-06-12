@@ -12,6 +12,9 @@ Heap
 Prioriteettijono (keko), jonka avulla vieraillut solmut pidetään automaattisesti järjestyksessa niin, ettei
 algoritmin itsensä tarvitse tietää jonosta mitään.
 
+Stack
+Pino, johon muodostuu lopullinen polku. Node pusketaan pinoon, kun siihen siirrytään.
+
 Map
 
 Tietosisällöltään kartan rungon mahdollistava matriisi. Konstruktori luo uuden kartan ja printField() -metodi

@@ -60,9 +60,11 @@ public class Heap {
      *  Remove node with highest priority from the heap
      */
     public void removeNode() {
-        t[1] = t[size];         //last to first
-        size--;
-        sortHeap(1);        //re-organize
+        if(size>0) {
+            t[1] = t[size];         //last to first
+            size--;
+            sortHeap(1);        //re-organize
+        }
     }
     
     /**
