@@ -41,39 +41,5 @@ public class LukijaTest {
     public void lueLukeeSisallon() throws IOException, Exception {
         lukija.lue();
         assertEquals("#"+n+n + "å"+n+y + ";"+y+n + "ö"+y+y + (char) 127 + (char) 127 + n + (char) 135, lukija.getTeksti());
-        
-        lukija2 = new Lukija("LukijaTest2.txt", true);
-        lukija2.lue();
-        
-        merkkienEsiintymienMaaraTasmaa();
-    }
-    
-    private void merkkienEsiintymienMaaraTasmaa() throws Exception {
-        HajautusTaulu esiintymat = lukija2.getEsiintymat();
-        
-        String avain = esiintymat.getArvo("T");
-        assertEquals(2, Integer.parseInt(avain));
-        
-        avain = esiintymat.getArvo(" ");
-        assertEquals(5, Integer.parseInt(avain));        
-        
-        avain = esiintymat.getArvo("\n");
-        assertEquals(2, Integer.parseInt(avain));
-        
-        avain = esiintymat.getArvo("n");
-        assertEquals(3, Integer.parseInt(avain)); 
-    }
-    
-    @Test
-    public void merkinLisaaminenKasvattaaSenEsiintymia() throws UnsupportedEncodingException, IOException, Exception {
-        lukija2 = new Lukija("LukijaTest2.txt", true);
-
-        lukija2.lisaaMerkki('a');
-        String maara = lukija2.getEsiintymat().getArvo("a");
-        assertEquals(1, Integer.parseInt(maara));
-        
-        lukija2.lisaaMerkki('a');
-        maara = lukija2.getEsiintymat().getArvo("a");
-        assertEquals(2, Integer.parseInt(maara));
     }
 }

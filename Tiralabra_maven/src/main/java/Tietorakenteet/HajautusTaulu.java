@@ -1,15 +1,18 @@
 package Tietorakenteet;
 
 /**
- * Hajautustaulu joka toimii kahdella taulukolla siten ett‰ ekan perusteella etsit‰‰n aina indeksi jonka kanssa pelataan.
- * Taulukot ovat aina samankokoisia ja projektissa riitt‰‰ koko "256".
- * Mahdollista taulukon koon tuplaamista ja uudelleenhajautusta varten on kuitenkin toiminnallisuus olemassa.
+ * Hajautustaulu joka toimii kahdella taulukolla siten ett‰ "avainten" perusteella
+ * etsit‰‰n aina indeksi, jonka kanssa pelataan.
  */
 
 public class HajautusTaulu {
     private String[] avaimet;
     private String[] arvot;
     private int avaimia;
+    
+    /**
+     * Luo 257-alkioisen hajautustaulun.
+     */
     
     public HajautusTaulu() {
         this(257);
@@ -33,10 +36,22 @@ public class HajautusTaulu {
         return this.avaimia == 0;
     }
     
+    /**
+     * Palauttaa lis‰ttyjen avainten (ja arvojen) lukum‰‰r‰n.
+     * @return 
+     */
+    
     public int getKoko() {
         return this.avaimia;
     }
 
+    /**
+     * Palauttaa taulukon, joka sis‰lt‰‰ joko kaikki "oikeat" (= ei null)
+     * avaimet tai arvot.
+     * @param verrattava
+     * @return 
+     */
+    
     protected String[] taulukko(String[] verrattava) {
         String[] taulukko = new String[this.avaimia];
         
@@ -63,6 +78,13 @@ public class HajautusTaulu {
         return getArvo(avain) != null;
     }
     
+    /**
+     * Palauttaa avainta vastaavan arvon jos avain on hajautustaulussa.
+     * @param avain
+     * @return
+     * @throws Exception 
+     */
+    
     public String getArvo(String avain) throws Exception {
         try {
             int paikka = etsi(avain);
@@ -73,6 +95,14 @@ public class HajautusTaulu {
     }
     
 
+    /**
+     * Etsii indeksin jossa avain on.
+     * Heitt‰‰ poikkeuksen jos avainta ei lˆydy.
+     * @param avain
+     * @return
+     * @throws Exception 
+     */
+    
     protected int etsi(String avain) throws Exception {
         return etsi(avain, avaimet);
     }
@@ -84,6 +114,22 @@ public class HajautusTaulu {
     protected void setArvot(String[] arvot) {
         this.arvot = arvot;
     }
+    
+    /**
+     * Avaimen ja arvon lis‰ys toimii siten ett‰ ensin yritet‰‰n poistaa avain
+     * ja arvo hajautustaulusta. Jos poisto onnistuu, lis‰t‰‰n taulukoiden
+     * indeksiin, josta ne poistettiin, uudet arvot.
+     * 
+     * Jos poisto ei onnistu, etsit‰‰n avaimelle paikka hajautustaulussa ja
+     * lis‰t‰‰n ko. paikkaan avain ja arvo eri taulukoihin.
+     * 
+     * Avaimien m‰‰r‰ kasvaa, jos taulukosta ei poistettu mit‰‰n.
+     * @param avain
+     * @param arvo
+     * @param avaimet
+     * @param arvot
+     * @throws Exception 
+     */
     
     protected void lisaa(String avain, String arvo, String[] avaimet, String[] arvot) throws Exception {
         int i;
@@ -101,6 +147,20 @@ public class HajautusTaulu {
         this.avaimia++;
     }
     
+    /**
+     * Etsii paikan josta avain lˆytyy. Jos ei lˆydy, heitt‰‰ poikkeuksen ja
+     * mit‰‰n ei tapahdu.
+     * 
+     * Jos lˆytyy, poistaa avaimen ja arvon v‰hent‰en samalla avainten lkm.
+     * T‰m‰n j‰lkeen palauttaa indeksin, josta poisto tapahtui.
+     * @param avain
+     * @param arvo
+     * @param avaimet
+     * @param arvot
+     * @return
+     * @throws Exception 
+     */
+    
     protected int poista(String avain, String arvo, String[] avaimet, String[] arvot) throws Exception {
         int i = etsi(avain, avaimet);
         avaimet[i] = null;
@@ -109,6 +169,16 @@ public class HajautusTaulu {
         
         return i;
     }
+    
+    /**
+     * Etsii lˆytyykˆ avain taulukosta avaimet.
+     * Jos lˆytyy, palauttaaa indeksin jossa se on. Jos ei lˆydy, heitt‰‰
+     * poikkeuksen.
+     * @param avain
+     * @param avaimet
+     * @return
+     * @throws Exception 
+     */
     
     protected int etsi(String avain, String[] avaimet) throws Exception {
         int muunnos = muunnaAvain(avain);
@@ -131,6 +201,16 @@ public class HajautusTaulu {
         }
     }
     
+    /**
+     * Etsii paikan, jonne avain voidaan taulukkoon avaimet lis‰t‰.
+     * Jos taulukko on t‰ysi, uudelleenhajautetaan avaimet ja etsit‰‰n
+     * paikka uudelleenhajautetusta taulukosta (jossa nyt siis mukana null-arvoja).
+     * @param avain
+     * @param avaimet
+     * @return
+     * @throws Exception 
+     */
+    
     protected int hajauta(int avain, String[] avaimet) throws Exception {
         int i = 0;
         while (true) {
@@ -149,6 +229,11 @@ public class HajautusTaulu {
         }
     }
     
+    /**
+     * Luo uudet suuremmat hajautustaulukot ja lis‰‰ avaimet ja arvot n‰ihin.
+     * @throws Exception 
+     */
+    
     protected void uudelleenHajautaAvaimet() throws Exception {
         String[] uudetAvaimet = new String[uusiAlkuLuku()];
         String[] uudetArvot = new String[uusiAlkuLuku()];
@@ -159,9 +244,21 @@ public class HajautusTaulu {
         setArvot(uudetArvot);
     }
     
+    /**
+     * Pit‰isi palauttaa seuraava alkuluku. Toiminnallisuus ei kunnossa.
+     * @return 
+     */
     protected int uusiAlkuLuku() {
         return 521;
     }
+    
+    /**
+     * Lis‰‰ alkuper‰iset avaimet ja arvot uusiin taulukoihin. Lis‰yksen aikana
+     * avaimien m‰‰r‰ kasvaa, joten tehd‰‰n v‰hennysoperaatio alustuksen j‰lkeen.
+     * @param uudetAvaimet
+     * @param uudetArvot
+     * @throws Exception 
+     */
     
     protected void alustaUudetTaulukot(String[] uudetAvaimet, String[] uudetArvot) throws Exception {
 
@@ -175,17 +272,39 @@ public class HajautusTaulu {
         return paikka(avain, i, avaimet);
     }
     
+    /**
+     * "Hajautusfunktio" eli m‰‰ritt‰‰ paikan, minne avain
+     * (muunnettuna int-muotoon) sijoitettaisiin hajautustauluun.
+     * @param muunnos
+     * @param i
+     * @param taulukko
+     * @return 
+     */
+    
     protected int paikka(int muunnos, int i, String[] taulukko) {
         int maara = taulukko.length;
         return ( (muunnos % maara) + i * (1 + muunnos % (maara - 2)) ) % maara;
     }
     
+    /**
+     * Muuntaa avaimen int -muotoon paikan hajautusfunktion k‰yttˆ‰ varten.
+     * @param avain
+     * @return
+     * @throws Exception 
+     */
     protected int muunnaAvain(String avain) throws Exception {
         if (avain.isEmpty()) {
             throw new Exception("Avain on tyhj‰ ja sit‰ ei hajauteta");
         }
         return muunna(avain);
     }
+    
+    /**
+     * Muuntaminen tapahtuu tarkastellen max. kolmea ensimm‰ist‰ avaimen merkki‰
+     * ja laskien int-arvon n‰iden perusteella.
+     * @param avain
+     * @return 
+     */
     
     protected int muunna(String avain) {
         int muunnettu = 0;

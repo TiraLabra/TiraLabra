@@ -17,6 +17,14 @@ public class Kirjoittaja {
         this(polku, false);
     }
     
+    /**
+     * Luo uuden tiedoston jos konstruktoria kutsuttiin arvoilla (polku, true) ja t‰m‰n
+     * j‰lkeen luo kirjoittajan.
+     * @param polku
+     * @param tiedostoOlemassa
+     * @throws IOException 
+     */
+    
     public Kirjoittaja(String polku, boolean tiedostoOlemassa) throws IOException {
         if (!tiedostoOlemassa) {
             luoUusiTiedosto(polku);
@@ -31,10 +39,9 @@ public class Kirjoittaja {
     }
     
     /**
-     * Luo uuden tyhj‰n tiedoston tai heitt‰‰ poikkeuksen jos samanniminen tiedosto on jo olemassa (ts. haluttu tiedosto
-     * on jo pakattu).
-     * @param polku - pakattavan tiedoston polku
-     * @throws IOException - pakkaus on jo olemassa 
+     * Luo uuden tyhj‰n tiedoston tai heitt‰‰ poikkeuksen jos samanniminen tiedosto on jo olemassa.
+     * @param polku
+     * @throws IOException
      */
     
     private void luoUusiTiedosto(String polku) throws IOException {

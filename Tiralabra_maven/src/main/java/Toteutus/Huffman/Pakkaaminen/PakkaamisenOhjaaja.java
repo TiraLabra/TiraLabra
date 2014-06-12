@@ -1,7 +1,6 @@
 package Toteutus.Huffman.Pakkaaminen;
 
 import Apuvalineet.Kirjoittaja;
-import Apuvalineet.Lukija;
 import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
@@ -12,8 +11,8 @@ import java.io.IOException;
  * Luokka on t‰llainen yleisluokka, joka huolehtii koko pakkausoperaation suorituksesta pyyt‰en
  * muita luokkia ja olioita tekem‰‰n asiat sen puolesta.
  * 
- * Ensin luetaan tiedosto, sitten muodostetaan Huffman puu, m‰‰ritet‰‰n esiintyneille merkeille bittiesitykset ja
- * luodaan uusi tiedosto (pakkaus).
+ * Ensin luetaan tiedosto, sitten muodostetaan Huffman puu, m‰‰ritet‰‰n esiintyneille merkeille bittiesitykset,
+ * muodostetaan kirjoitettava teksti ja kirjoitetaan se.
  */
 
 public class PakkaamisenOhjaaja {

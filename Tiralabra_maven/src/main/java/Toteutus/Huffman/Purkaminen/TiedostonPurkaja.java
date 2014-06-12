@@ -22,16 +22,24 @@ public class TiedostonPurkaja {
     }
     
     /**
-     * Tarkistaa onko tiedoston polku validi. Jos on, hakee pakkauksen ja muodostaa sit‰ vastaavan tiedoston (ilman
-     * pakkauksen loppup‰‰tett‰). T‰m‰n j‰lkeen purkaa pakkauksen.
+     * Purkaa tiedoston luoden tekstin, joka kirjoitetaan ja kirjoittaen sen.
      * @param polku
-     * @throws IOException 
+     * @throws IOException
+     * @throws Exception 
      */
     
     public void pura(String polku) throws IOException, Exception {
         String kirjoitettava = muodostaTeksti(polku);
         kirjoitaTeksti(luotavanTiedostonPolku(polku), kirjoitettava);
     }
+    
+    /**
+     * Tarkistaa onko tiedoston polku validi. Jos on, hakee pakkauksen ja muodostaa sit‰ vastaavan tiedoston (ilman
+     * pakkauksen loppup‰‰tett‰). T‰m‰n j‰lkeen purkaa pakkauksen.
+     * @param polku
+     * @return
+     * @throws IOException 
+     */
     
     protected String muodostaTeksti(String polku) throws IOException, Exception {
         tarkistaOnkoPolkuValidi(polku);
@@ -104,6 +112,7 @@ public class TiedostonPurkaja {
      * puretun tiedoston sis‰llˆn.
      * @param tekstiBinaarina
      * @param bittijonotJaMerkit
+     * @throws Exception
      * @return 
      */
     
@@ -130,7 +139,8 @@ public class TiedostonPurkaja {
      
      * @param teksti
      * @param bittijonotJaMerkit
-     * @return 
+     * @throws Exception
+     * @return - osoite, jossa puuta seuraavat merkit sijaitsevat
      */
     
     protected int kayPuuLapi(String teksti, HajautusTaulu bittijonotJaMerkit) throws Exception {
@@ -150,7 +160,7 @@ public class TiedostonPurkaja {
             char seuraava = teksti.charAt(i);
             if (! lisaaMerkkiJosSeOn0Tai1(seuraava, bittiEsitys)) {
                 
-                if (josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(kirjain, bittiEsitys.toString(), bittijonotJaMerkit)) {
+                if (bittiEsitysEiTyhjaLisaaMerkki(kirjain, bittiEsitys.toString(), bittijonotJaMerkit)) {
                     kirjain = seuraava;
                     bittiEsitys = new StringBuilder();
                 }
@@ -164,7 +174,16 @@ public class TiedostonPurkaja {
         }
     }
     
-    protected boolean josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun(char kirjain, String bittiEsitys, HajautusTaulu bittijonotJaMerkit) throws Exception {
+    /**
+     * Lis‰‰ hajautustauluun bittijonon ja sit‰ vastaavan merkin, jos bittiesitys ei tyhj‰.
+     * @param kirjain
+     * @param bittiEsitys
+     * @param bittijonotJaMerkit
+     * @return
+     * @throws Exception 
+     */
+    
+    protected boolean bittiEsitysEiTyhjaLisaaMerkki(char kirjain, String bittiEsitys, HajautusTaulu bittijonotJaMerkit) throws Exception {
         if (bittiEsitys.isEmpty()) {
             return false;
         }
@@ -173,6 +192,12 @@ public class TiedostonPurkaja {
         return true;
     }
     
+    /**
+     * Jos merkki on 00 tai 01, lis‰t‰‰n se ja palautetaan t‰st‰ tieto.
+     * @param merkki
+     * @param bittiEsitys
+     * @return 
+     */
     protected boolean lisaaMerkkiJosSeOn0Tai1(char merkki, StringBuilder bittiEsitys) {
         if (merkki == 0 || merkki == 1) {
             String lisattava = merkki + "";
@@ -182,16 +207,16 @@ public class TiedostonPurkaja {
         return false;
     }
     
+    /**
+     * Jos merkit paikoissa i ja (i+1) ovat 0x7F, puu on kelattu loppuun.
+     * @param teksti
+     * @param i
+     * @return 
+     */
+    
     protected boolean puuOnKelattuLoppuun(String teksti, int i) {
         return teksti.charAt(i) == (char) 127 && teksti.charAt(i + 1) == (char) 127;
     }
-    
-    /**
-     * 
-     * @param teksti
-     * @param poistettavienEtuNollienOsoite
-     * @return 
-     */
     
     /**
      * Muodostaa bin‰‰riesityksen pakkauksen sis‰llˆst‰ "poistettavienEtuNollienOsoite":een j‰lkeen.

@@ -167,11 +167,11 @@ public class TiedostonPurkajaTest {
         HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         String sata = y+n+n;
         
-        purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('a', sata, bittijonotJaMerkit);
+        purkaja.bittiEsitysEiTyhjaLisaaMerkki('a', sata, bittijonotJaMerkit);
         
         assertTrue(bittijonotJaMerkit.sisaltaaAvaimen(sata));
         assertTrue(bittijonotJaMerkit.getArvo(sata).equals("a"));
-        assertFalse(purkaja.josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun('b', "", bittijonotJaMerkit));
+        assertFalse(purkaja.bittiEsitysEiTyhjaLisaaMerkki('b', "", bittijonotJaMerkit));
     }
     
     private void lisaaMerkkiJosSeOn0Tai1() {

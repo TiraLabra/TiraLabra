@@ -41,6 +41,7 @@ public class TiedostonPakkaaja {
      * @param teksti
      * @return 
      */
+    
     protected String tekstiPakattuna(HajautusTaulu bittijonot, String teksti) throws Exception {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
         return muuntaja.pakatuksiTekstiksi(ykkosinaJaNollina);

@@ -45,14 +45,20 @@ public class TekstinLukija {
         }
     }
     
+    /**
+     * Lukee seuravan rivin ja jos rivej‰ on lis‰‰, lis‰‰ rivinvaihdon (\r + \n).
+     * @param lukija
+     * @throws Exception 
+     */
+    
     protected void lue(Scanner lukija) throws Exception {
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             lisaaRivi(rivi);
 
             if (lukija.hasNextLine()) {
-                lisaaMerkki((char) 13 + "");
-                lisaaMerkki((char) 10 + "");
+                lisaaMerkki("\r");
+                lisaaMerkki("\n");
             }
         }
     }
@@ -77,6 +83,12 @@ public class TekstinLukija {
         lisaaEsiintyma(merkki);
         teksti.append(merkki);
     }
+    
+    /**
+     * Kasvattaa ko. merkin esiintymien m‰‰r‰‰ yhdell‰.
+     * @param merkki
+     * @throws Exception 
+     */
     
     protected void lisaaEsiintyma(String merkki) throws Exception {
         int maara = 1;
