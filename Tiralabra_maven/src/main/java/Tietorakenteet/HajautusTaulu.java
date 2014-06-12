@@ -15,7 +15,7 @@ public class HajautusTaulu {
      */
     
     public HajautusTaulu() {
-        this(257);
+        this(100003);
     }
     
     public HajautusTaulu(int avaimia) {
@@ -70,11 +70,11 @@ public class HajautusTaulu {
         lisaa(avain, arvo, avaimet, arvot);
     }
     
-    public void poista(String avain, String arvo) throws Exception {
-        poista(avain, arvo, avaimet, arvot);
+    public void poista(String avain) throws Exception {
+        poista(avain, avaimet, arvot);
     }
     
-    public boolean sisaltaaAvaimen(String avain) throws Exception {
+    public boolean sisaltaaAvaimen(String avain) {
         return getArvo(avain) != null;
     }
     
@@ -82,10 +82,9 @@ public class HajautusTaulu {
      * Palauttaa avainta vastaavan arvon jos avain on hajautustaulussa.
      * @param avain
      * @return
-     * @throws Exception 
      */
     
-    public String getArvo(String avain) throws Exception {
+    public String getArvo(String avain) {
         try {
             int paikka = etsi(avain);
             return arvot[paikka];
@@ -135,7 +134,7 @@ public class HajautusTaulu {
         int i;
         
         try {
-            i = poista(avain, arvo, avaimet, arvot);
+            i = poista(avain, avaimet, arvot);
         }
         
         catch (Exception e) {
@@ -154,14 +153,13 @@ public class HajautusTaulu {
      * Jos löytyy, poistaa avaimen ja arvon vähentäen samalla avainten lkm.
      * Tämän jälkeen palauttaa indeksin, josta poisto tapahtui.
      * @param avain
-     * @param arvo
      * @param avaimet
      * @param arvot
      * @return
      * @throws Exception 
      */
     
-    protected int poista(String avain, String arvo, String[] avaimet, String[] arvot) throws Exception {
+    protected int poista(String avain, String[] avaimet, String[] arvot) throws Exception {
         int i = etsi(avain, avaimet);
         avaimet[i] = null;
         arvot[i] = null;
@@ -292,6 +290,7 @@ public class HajautusTaulu {
      * @return
      * @throws Exception 
      */
+    
     protected int muunnaAvain(String avain) throws Exception {
         if (avain.isEmpty()) {
             throw new Exception("Avain on tyhjä ja sitä ei hajauteta");

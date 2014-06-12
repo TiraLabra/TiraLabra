@@ -45,7 +45,7 @@ public class HajautusTauluTest {
         String arvo = "3m";
         
         taulu.lisaa(avain, arvo);
-        taulu.poista(avain, arvo);
+        taulu.poista(avain);
         assertNull(taulu.getArvo("h<"));
     }
      
