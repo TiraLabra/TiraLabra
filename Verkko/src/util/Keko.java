@@ -6,6 +6,11 @@ package util;
 
 import java.util.Comparator;
 
+/**
+ *
+ * @author Arvoitusmies
+ * @param <E>
+ */
 public class Keko<E> {
 
     /**
@@ -52,13 +57,18 @@ public class Keko<E> {
      * @param comparator
      */
     public Keko(E[] taulukko, Comparator<E> comparator) {
-        koko=taulukko.length-1;
+        koko = taulukko.length - 1;
         this.taulukko = taulukko.clone();
         this.comparator = comparator;
         tarkistaOnkoNollaNull();//tämä siksi että jos ei ole null niin taulukon ensimäinen "katoaa" keosta.
         buildHeap();
     }
 
+    /**
+     * getteri
+     *
+     * @return
+     */
     public int getKoko() {
         return koko;
     }
@@ -97,6 +107,11 @@ public class Keko<E> {
         System.arraycopy(vanha, 0, taulukko, 0, vanha.length);
     }
 
+    /**
+     * getteri
+     *
+     * @return
+     */
     public int getTaulukonLenght() {
         return taulukko.length;
     }
@@ -158,6 +173,7 @@ public class Keko<E> {
     }
 
     /**
+     * Indeksin i vanhempi
      *
      * @param i
      * @return
@@ -181,6 +197,7 @@ public class Keko<E> {
     }
 
     /**
+     * True jos löytyy keossa
      *
      * @param o
      * @return
@@ -225,6 +242,7 @@ public class Keko<E> {
     }
 
     /**
+     * Muuttaa solmun
      *
      * @param korvattava
      * @param uusi

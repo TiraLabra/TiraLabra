@@ -6,6 +6,11 @@ package util;
 
 import java.util.Arrays;
 
+/**
+ *
+ * @author Arvoitusmies
+ * @param <E>
+ */
 public class Lista<E> {
 
     /**
@@ -40,13 +45,23 @@ public class Lista<E> {
         this.a = (E[]) new Object[alkukoko];
         koko = 0;
     }
-    
-    public E[] toArray(){
-        E[] paluu=Arrays.copyOfRange(a, 0, koko);
+
+    /**
+     * taulukoksi
+     *
+     * @return
+     */
+    public E[] toArray() {
+        E[] paluu = Arrays.copyOfRange(a, 0, koko);
         return paluu;
     }
 
-    public int koko() {
+    /**
+     * getteri
+     *
+     * @return
+     */
+    public int getKoko() {
         return koko;
     }
 
@@ -74,6 +89,7 @@ public class Lista<E> {
     }
 
     /**
+     * Palauttaa indeksissä olevan olion
      *
      * @param indeksi
      * @return Alkio kohdassa indeksi
@@ -94,6 +110,12 @@ public class Lista<E> {
         a[indeksi] = uusiArvo;
     }
 
+    /**
+     * Keskeytys jos indeksi on väärä
+     *
+     * @param indeksi
+     * @throws IllegalArgumentException
+     */
     private void tsekkaaIndeksi(int indeksi) throws IllegalArgumentException {
         if (indeksi >= koko || indeksi < 0) {
             throw new IllegalArgumentException("Indeksi listan ulkopuolella");
@@ -101,6 +123,7 @@ public class Lista<E> {
     }
 
     /**
+     * true jos listalta löytyy equals o, muutoin false.
      *
      * @param o
      * @return true jos listalta löytyy equals o, muutoin false.

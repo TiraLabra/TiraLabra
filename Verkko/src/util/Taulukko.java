@@ -13,6 +13,9 @@ import java.util.Random;
  */
 public class Taulukko {
 
+    /**
+     * Käytetään sekoitukseen
+     */
     private static final Random r = new Random();
 
     /**
@@ -67,6 +70,9 @@ public class Taulukko {
         }
     }
 
+    /**
+     * Tällänen piti luoda ton jokun vihjeen mukaan
+     */
     private Taulukko() {
     }
 }

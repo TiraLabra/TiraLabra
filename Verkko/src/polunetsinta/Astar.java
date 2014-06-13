@@ -15,14 +15,49 @@ import verkko.Solmu;
 
 public class Astar {
 
+    /**
+     * Käytettävä heuristiikka
+     */
     private final Heuristiikka heuristiikka;
+
+    /**
+     * Joukko jossa käsitellyt solmut
+     */
     private final Set<Solmu> kasitelty;
+
+    /**
+     * Lyhin reitti alkusolmusta avaimena olevaan solmuun kulkee arvona olevan
+     * solmun kautta.
+     */
     private final Map<Solmu, Solmu> reitti;
+
+    /**
+     * Keko.
+     */
     private final Keko<AstarKekoEntry> keko;
+
+    /**
+     * Maalisolmu
+     */
     private final Solmu maali;
+
+    /**
+     * Alkusolmu
+     */
     private final Solmu alku;
+
+    /**
+     * Matka alkusolmu-avain välillä
+     */
     private final Map<Solmu, Double> matka;
 
+    /**
+     * Alustaa.
+     *
+     * @param alku
+     * @param maali
+     * @param heuristiikka
+     */
     public Astar(Solmu alku, Solmu maali, Heuristiikka heuristiikka) {
         this.maali = maali;
         this.heuristiikka = heuristiikka;
@@ -33,10 +68,21 @@ public class Astar {
         this.alku = alku;
     }
 
+    /**
+     * Getteri
+     *
+     * @return
+     */
     public Map<Solmu, Solmu> getReitti() {
         return Collections.unmodifiableMap(reitti);
     }
 
+    /**
+     * Suorittaa A* algoritmin alkusolmusta kunnes löydetään maalisolmu tai keko
+     * on tyhjä.
+     *
+     * @return
+     */
     public boolean suorita() {
         matka.put(alku, 0.0);
         keko.lisaa(new AstarKekoEntry(alku, heuristiikkaMaaliin(alku)));
@@ -65,39 +111,73 @@ public class Astar {
         }
         Lista<Solmu> naapuriSolmut = solmu.getNaapuriSolmut();
         Lista<Double> naapuripainot = solmu.getNaapuripainot();
-        for (int i = 0; i < naapuriSolmut.koko(); i++) {
-            final Solmu naapuri = naapuriSolmut.get(i);
-            if (kasitelty.contains(naapuri)) {
-                continue;
-            }
-            Double matkaNaapuriin = matka.get(naapuri);
-            if (matkaNaapuriin == null) {
-                matkaNaapuriin = Double.POSITIVE_INFINITY;
-            }
-            Double matkaTamanKautta = matka.get(solmu) + naapuripainot.get(i);
-            final boolean onKeossa = keko.contains(new AstarKekoEntry(naapuri, 0.0));
-            if (!onKeossa || matkaTamanKautta < matkaNaapuriin) {
-                reitti.put(naapuri, solmu);
-                matka.put(naapuri, matkaTamanKautta);
-                final AstarKekoEntry naapuriKekoEntry = new AstarKekoEntry(naapuri,
-                        matkaTamanKautta + heuristiikkaMaaliin(naapuri));
-                if (onKeossa) {
-                    keko.muuta(new AstarKekoEntry(naapuri, 0.0), naapuriKekoEntry);
-                } else {
-                    keko.lisaa(naapuriKekoEntry);
-                }
-            }
-
+        for (int i = 0; i < naapuriSolmut.getKoko(); i++) {
+            kasitteleNaapuri(naapuriSolmut, i, solmu, naapuripainot);
         }
         return false;
     }
 
     /**
+     * Käsittelee naapurin
+     *
+     * @param naapuriSolmut
+     * @param i
+     * @param solmu
+     * @param naapuripainot
+     */
+    protected void kasitteleNaapuri(Lista<Solmu> naapuriSolmut, int i, Solmu solmu, Lista<Double> naapuripainot) {
+        final Solmu naapuri = naapuriSolmut.get(i);
+        if (kasitelty.contains(naapuri)) {
+            return;
+        }
+        Double matkaNaapuriin = matka.get(naapuri);
+        if (matkaNaapuriin == null) {
+            matkaNaapuriin = Double.POSITIVE_INFINITY;
+        }
+        Double matkaTamanKautta = matka.get(solmu) + naapuripainot.get(i);
+        final boolean onKeossa = keko.contains(new AstarKekoEntry(naapuri, 0.0));
+        if (!onKeossa || matkaTamanKautta < matkaNaapuriin) {
+            reittiJaMatka(naapuri, solmu, matkaTamanKautta);
+            paivitaTaiLuoKekoentry(naapuri, matkaTamanKautta, onKeossa);
+        }
+    }
+
+    /**
+     * Päivittää reitti ja matka hajautustaulut.
      *
      * @param naapuri
+     * @param solmu
+     * @param matkaTamanKautta
+     */
+    protected void reittiJaMatka(final Solmu naapuri, Solmu solmu, Double matkaTamanKautta) {
+        reitti.put(naapuri, solmu);
+        matka.put(naapuri, matkaTamanKautta);
+    }
+
+    /**
+     * Päivittää tai luo keko-olion solmulle
+     *
+     * @param solmu
+     * @param matka
+     * @param muutetaan
+     */
+    protected void paivitaTaiLuoKekoentry(final Solmu solmu, Double matka, final boolean muutetaan) {
+        final AstarKekoEntry naapuriKekoEntry = new AstarKekoEntry(solmu,
+                matka + heuristiikkaMaaliin(solmu));
+        if (muutetaan) {
+            keko.muuta(new AstarKekoEntry(solmu, 0.0), naapuriKekoEntry);
+        } else {
+            keko.lisaa(naapuriKekoEntry);
+        }
+    }
+
+    /**
+     * Hauristiikka arvo solmusta maalisolmuun
+     *
+     * @param solmu
      * @return
      */
-    private Double heuristiikkaMaaliin(final Solmu naapuri) {
-        return heuristiikka.dist(naapuri, maali);
+    private Double heuristiikkaMaaliin(final Solmu solmu) {
+        return heuristiikka.dist(solmu, maali);
     }
 }

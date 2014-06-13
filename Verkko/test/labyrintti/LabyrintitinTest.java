@@ -18,8 +18,14 @@ import verkko.Solmu;
  */
 public class LabyrintitinTest {
 
+    /**
+     *
+     */
     private Labyrintitin l;
 
+    /**
+     *
+     */
     public LabyrintitinTest() {
         Double[] koord1 = {0.0, 0.0};
         Double[] koord2 = {0.0, 1.0};
@@ -33,49 +39,38 @@ public class LabyrintitinTest {
 
         l = new LabyrintitinImpl(solmut);
     }
+
+    /**
+     *
+     */
     private final Solmu[][] solmut;
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of labyrintita method, of class Labyrintitin.
-     */
-    @Test
-    public void testLabyrintita() {
-        System.out.println("labyrintita");
-        Labyrintitin instance = null;
-        instance.labyrintita();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of naapurit method, of class Labyrintitin.
-     */
-    @Test
-    public void testNaapurit() {
-        System.out.println("naapurit");
-        Solmu s = null;
-        Labyrintitin instance = null;
-        Solmu[] expResult = null;
-        Solmu[] result = instance.naapurit(s);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -100,20 +95,30 @@ public class LabyrintitinTest {
     @Test
     public void testLuoNaapuruudet() {
         System.out.println("luoNaapuruudet");
-        Solmu nyt = null;
-        Solmu naapuri = null;
-        Labyrintitin instance = null;
-        instance.luoNaapuruudet(nyt, naapuri);
+        Solmu nyt = new Solmu(new Double[1]);
+        Solmu naapuri = new Solmu(new Double[1]);
+        Labyrintitin.luoNaapuruudet(nyt, naapuri);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(nyt.onkoNaapuri(naapuri));
+        assertTrue(naapuri.onkoNaapuri(nyt));
     }
 
+    /**
+     *
+     */
     public class LabyrintitinImpl extends Labyrintitin {
 
+        /**
+         *
+         */
         public LabyrintitinImpl() {
             super(null);
         }
 
+        /**
+         *
+         * @param solmut
+         */
         public LabyrintitinImpl(Solmu[][] solmut) {
             super(solmut);
         }

@@ -16,7 +16,14 @@ import polunetsinta.TaksimiehenEtaisyys;
  */
 public class Verkko {
 
+    /**
+     *
+     */
     private static final int LEVEYS = 50;
+
+    /**
+     *
+     */
     private static final int KORKEUS = 20;
 
     /**

@@ -65,7 +65,7 @@ public class Prim extends Labyrintitin {
     }
 
     /**
-     *
+     * Käymättömät naapurit
      * @param s
      * @return
      */

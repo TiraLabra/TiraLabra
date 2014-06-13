@@ -57,19 +57,15 @@ public abstract class Labyrintitin {
         int x = s.kokonaislukuKoordinaatti(0);
         int y = s.kokonaislukuKoordinaatti(1);
         Solmu[] naapurit = new Solmu[4];
-        //"vasen"
         if (x > 0) {
             naapurit[0] = solmut[x - 1][y];
         }
-        //"ylä"
         if (y > 0) {
             naapurit[1] = solmut[x][y - 1];
         }
-        //"oikea"
         if (x < solmut.length - 1) {
             naapurit[2] = solmut[x + 1][y];
         }
-        //"ala"
         if (y < solmut[0].length - 1) {
             naapurit[3] = solmut[x][y + 1];
         }
@@ -95,7 +91,7 @@ public abstract class Labyrintitin {
      * @param nyt
      * @param naapuri
      */
-    protected void luoNaapuruudet(Solmu nyt, Solmu naapuri) {
+    static protected void luoNaapuruudet(Solmu nyt, Solmu naapuri) {
         nyt.lisaaNaapuri(naapuri, 1.0);
         naapuri.lisaaNaapuri(nyt, 1.0);
     }

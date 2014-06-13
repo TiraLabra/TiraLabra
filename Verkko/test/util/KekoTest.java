@@ -103,6 +103,9 @@ public class KekoTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testKasvataTaulukko() {
         final Integer randomi = (int) Math.round(Math.random() * 100);
@@ -116,6 +119,9 @@ public class KekoTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testContains() {
         final Integer randomi = (int) Math.round(Math.random() * 100);
@@ -126,17 +132,26 @@ public class KekoTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testIsEmptyWhenEmpty() {
         assertTrue(keko.isEmpty());
     }
 
+    /**
+     *
+     */
     @Test
     public void testIsEmptyWhenNotEmpty() {
         keko.lisaa(Integer.MIN_VALUE);
         assertFalse(keko.isEmpty());
     }
 
+    /**
+     *
+     */
     @Test
     public void testEttaVoidaanLaittaaMontaSamaa() {
         final Integer randomi = (int) Math.round(Math.random() * 100);
@@ -148,6 +163,9 @@ public class KekoTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void testPoistaTietty() {
         final Integer randomi1 = (int) Math.round(Math.random() * 10);
@@ -167,6 +185,9 @@ public class KekoTest {
         assertEquals(randomi1, keko.poista(randomi1));
     }
 
+    /**
+     *
+     */
     @Test
     public void testBuildHeap() {
         /*
@@ -192,6 +213,9 @@ public class KekoTest {
         assertArrayEquals(exp, keko.taulukko);
     }
 
+    /**
+     *
+     */
     @Test
     public void testKostruktoriJossaNollaEiOleNull() {
         comparator = new Comparator<Integer>() {

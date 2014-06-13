@@ -122,6 +122,10 @@ public class Labyrintti2D {
         return buffer.toString();
     }
 
+    /**
+     * Merkkitauluesitys labyrintistä.
+     * @return
+     */
     protected char[][] merkkitauluesitys() {
         char[][] merkkiTauluEsitys = new char[solmut.length * 2 + 1][solmut[0].length * 2 + 1];
         merkkitauluReunat(merkkiTauluEsitys);
@@ -142,6 +146,12 @@ public class Labyrintti2D {
         return merkkiTauluEsitys;
     }
 
+    /**
+     * 
+     * @param i
+     * @param j
+     * @param merkkiTauluEsitys
+     */
     protected void merkkitauluKaytavaVasemmalleJosOn(int i, int j, char[][] merkkiTauluEsitys) {
         if (onkoOikeaNaapuri(i >> 1, (j >> 1) - 1)) {
             merkkiTauluEsitys[i][j] = CORRIDOR;
@@ -150,6 +160,12 @@ public class Labyrintti2D {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @param j
+     * @param merkkiTauluEsitys
+     */
     protected void merkkitauluKaytavaYlosJosOn(int i, int j, char[][] merkkiTauluEsitys) {
         if (onkoAlaNaapuri((i >> 1) - 1, j >> 1)) {
             merkkiTauluEsitys[i][j] = CORRIDOR;

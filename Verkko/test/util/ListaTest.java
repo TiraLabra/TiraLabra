@@ -17,21 +17,36 @@ import static org.junit.Assert.*;
  */
 public class ListaTest {
 
+    /**
+     *
+     */
     public ListaTest() {
     }
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -43,12 +58,12 @@ public class ListaTest {
     public void testKoko() {
         Lista<Integer> instance = new Lista();
         int expResult = 0;
-        int result = instance.koko();
+        int result = instance.getKoko();
         assertEquals(expResult, result);
         for (int i = 0; i < 3; i++) {
             instance.lisaa(1);
         }
-        assertEquals(3, instance.koko());
+        assertEquals(3, instance.getKoko());
 
     }
 
