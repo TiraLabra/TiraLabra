@@ -34,7 +34,7 @@ public class Kaanteismatriisi {
      *
      * Tarkastaa aluksi onko annettu matriisi neliömatriisi. Tämän jälkeen A-
      * matriisiin kopioidaan neliömatriisin sisältö ja luodaan samankokoinen
-     * yksikkömatriisi I. Seuraavaksi skaalatulla osittaistuennalla toteutun
+     * yksikkömatriisi I. Seuraavaksi skaalatulla osittaistuennalla toteutetun
      * LU-hajotelman avulla muodostetaan A-matriisiin sen ylä- sekä
      * alakolmiomatriisi, missä päälävistäjän alkiot ovat yläkolmiomatriisin
      * päälävistäjän alkiot. Rivinvaihtojen osalta myös I-matriisin rivit
@@ -58,7 +58,7 @@ public class Kaanteismatriisi {
         double[][] I = generoija.luoYksikkomatriisi(matriisi.length);
 
         muodostaLU(A, I);
-        suhteuta(A, I);
+        suhteuta(A, I);        
         return takaisinsijoita(A, I);
     }
 
