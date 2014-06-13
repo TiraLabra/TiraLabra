@@ -32,7 +32,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     /**
      * The default initial capacity for the array, if none was specified.
      */
-    protected static final int DEFAULTCAPACITY = 12;
+    protected static final int DEFAULTCAPACITY = 6;
 
     public AbstractCollection(int initialCapacity) {
         this.array = new Object[initialCapacity];
@@ -60,13 +60,16 @@ public abstract class AbstractCollection<E> implements Collection<E> {
         boolean removed = false;
 
         int i = 0;
-        while (true) {
+        while (i < size) {
             if (array[i].equals(e)) {
                 removed = true;
                 break;
             }
             i++;
         }
+        
+        if (!removed) 
+            return false;
 
         size--;
 
@@ -75,7 +78,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
         }
         array[size] = null;
         
-        return removed;
+        return true;
     }
 
     @Override
@@ -95,6 +98,9 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     
     @Override
     public E get(int i) {
+        if (i >= size) {
+            throw new IndexOutOfBoundsException();
+        }
         return (E) array[i];
     }
 
@@ -156,4 +162,16 @@ public abstract class AbstractCollection<E> implements Collection<E> {
         return it;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        for (Object e : array) {
+            sb.append((E) e).append(", ");
+        }
+        
+        return sb.toString();
+    }
+
+    
 }

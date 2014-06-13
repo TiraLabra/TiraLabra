@@ -21,27 +21,34 @@ public class Board {
 
     /**
      * Holds information of each made move, to be stored in the stack.
-     * Alternatively, stores the number of flips for each move.
      */
     public class Flip {
 
+        /**
+         * X coordinate of the operation.
+         */
         public int x;
+        /**
+         * Y coordinate of the operation.
+         */
         public int y;
-        public int flipsToClear;
+        /**
+         * The color prior to the operation.
+         */
         public Player player;
 
+        /**
+         *
+         * @param x
+         * @param y
+         * @param player
+         */
         public Flip(int x, int y, Player player) {
             this.x = x;
             this.y = y;
             this.player = player;
         }
 
-        public Flip(int movesToClear, Player player) {
-            this.x = -1;
-            this.y = -1;
-            this.flipsToClear = movesToClear;
-            this.player = player;
-        }
     }
 
     /**
@@ -52,6 +59,10 @@ public class Board {
      * Stack which holds all the operations done during this game. For undoing.
      */
     private Stack<Flip> flipStack;
+    /**
+     *
+     */
+    private Stack<Integer> flipsPerMoveStack;
     /**
      * The player whose turn is next.
      */
@@ -70,7 +81,7 @@ public class Board {
      *
      * @return int
      */
-    public int width() {
+    public final int width() {
         return board[0].length;
     }
 
@@ -79,25 +90,30 @@ public class Board {
      *
      * @return int
      */
-    public int height() {
+    public final int height() {
         return board.length;
     }
 
     public Board() {
-        this.board = new Player[8][8];
+        initalizeBoard();
+    }
 
+    private void initalizeBoard() {
+        this.board = new Player[8][8];
+        
         for (int y = 0; y < height(); y++) {
             for (int x = 0; x < width(); x++) {
                 board[y][x] = Player.NONE;
             }
         }
 
-        setTile(3, 3, Player.BLACK);
-        setTile(3, 4, Player.WHITE);
-        setTile(4, 3, Player.WHITE);
-        setTile(4, 4, Player.BLACK);
+        board[3][3] = Player.BLACK;
+        board[3][4] = Player.WHITE;
+        board[4][3] = Player.WHITE;
+        board[4][4] = Player.BLACK;
 
         flipStack = new Stack();
+        flipsPerMoveStack = new Stack();
 
         playerInTurn = Player.BLACK;
 
@@ -222,9 +238,50 @@ public class Board {
      * @param x
      * @param y
      * @param player
+     * @param undoable whether the change is added to the stack of operations
+     * for undoing.
      */
-    public void setTile(int x, int y, Player player) {
+    public void setTile(int x, int y, Player player, boolean undoable) {
+        if (getTile(x, y) == player) {
+            return;
+        }
+
+        if (undoable) {
+            flipStack.push(new Flip(x, y, getTile(x, y)));
+        }
+
+        updateHashCoordinates(x, y, player);
+
         board[y][x] = player;
+    }
+
+    /**
+     * Updates changes to the hash when the color of a tile changes.
+     *
+     * @param x
+     * @param y
+     * @param player
+     */
+    private void updateHashCoordinates(int x, int y, Player player) {
+        if (getTile(x, y) != Player.NONE) {
+            updateHash(x, y, getTile(x, y));
+        }
+
+        if (player != Player.NONE) {
+            updateHash(x, y, player);
+        }
+    }
+
+    /**
+     * Updates the hash of the board by either XORing the wanted piece into the
+     * hash or XORing an existing piece out.
+     *
+     * @param x
+     * @param y
+     * @param player
+     */
+    private void updateHash(int x, int y, Player player) {
+        hash = hasher.xorFlip(x, y, player, hash);
     }
 
     /**
@@ -276,7 +333,7 @@ public class Board {
      * @return
      */
     public boolean canPlace(int x, int y, Player player) {
-        return !(place(x, y, player, false).isEmpty());
+        return place(x, y, player, false) != 0;
     }
 
     /**
@@ -287,10 +344,8 @@ public class Board {
      * @param y
      * @return
      */
-    public ArrayList<Long> tryTile(int x, int y) {
-        ArrayList<Long> flips = place(x, y, playerInTurn, false);
-
-        return flips;
+    public int tryTile(int x, int y) {
+        return place(x, y, playerInTurn, false);
     }
 
     /**
@@ -300,11 +355,11 @@ public class Board {
      * @param y
      * @return
      */
-    public ArrayList<Long> placeTile(int x, int y) {
-        ArrayList<Long> flips = place(x, y, playerInTurn, true);
+    public int placeTile(int x, int y) {
+        int nmbOfFlips = place(x, y, playerInTurn, true);
 
         changeTurn();
-        return flips;
+        return nmbOfFlips;
     }
 
     /**
@@ -313,7 +368,7 @@ public class Board {
      * @param point
      * @return
      */
-    public ArrayList<Long> placeTile(long point) {
+    public int placeTile(long point) {
         return placeTile(x(point), y(point));
     }
 
@@ -322,8 +377,8 @@ public class Board {
      * the flipStack, for undoing.
      */
     public void pass() {
-        flipStack.push(new Flip(0, playerInTurn));
-        playerInTurn = (playerInTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+        flipsPerMoveStack.push(0);
+        changeTurn();
     }
 
     /**
@@ -336,27 +391,29 @@ public class Board {
      * @param realMove whether the move should be done or just tried
      * @return number of flipped pieces
      */
-    public ArrayList<Long> place(int x, int y, Player player, boolean realMove) {
+    public int place(int x, int y, Player player, boolean realMove) {
         if (!isValidTile(x, y) || getTile(x, y) != Player.NONE) {
-            return new ArrayList<>();
+            return 0;
         }
 
-        ArrayList<Long> flips = new ArrayList<>();
+        int nmbOfFlips = 0;
 
-        flipDirection(x, y, 1, 0, player, flips, realMove);
-        flipDirection(x, y, -1, 0, player, flips, realMove);
-        flipDirection(x, y, 0, 1, player, flips, realMove);
-        flipDirection(x, y, 0, -1, player, flips, realMove);
-        flipDirection(x, y, 1, 1, player, flips, realMove);
-        flipDirection(x, y, 1, -1, player, flips, realMove);
-        flipDirection(x, y, -1, 1, player, flips, realMove);
-        flipDirection(x, y, -1, -1, player, flips, realMove);
+        nmbOfFlips += flipDirection(x, y, 1, 0, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, 0, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 0, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 0, -1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 1, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, 1, -1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, 1, player, realMove);
+        nmbOfFlips += flipDirection(x, y, -1, -1, player, realMove);
 
-        if (realMove && !flips.isEmpty()) {
-            flipStack.push(new Flip(flips.size(), player));
+        if (realMove && nmbOfFlips != 0) {
+            setTile(x, y, player, true);
+            nmbOfFlips++;
+            flipsPerMoveStack.push(nmbOfFlips);
         }
 
-        return flips;
+        return nmbOfFlips;
     }
 
     /**
@@ -371,8 +428,8 @@ public class Board {
      * @param flips
      * @param realMove whether to apply the effects of the move
      */
-    private void flipDirection(int x, int y, int dx, int dy, Player player, ArrayList<Long> flips, boolean realMove) {
-        int nmbrOfFlips = 0;
+    private int flipDirection(int x, int y, int dx, int dy, Player player, boolean realMove) {
+        int nmbOfFlips = 0;
 
         int xt = x + dx;
         int yt = y + dy;
@@ -381,17 +438,21 @@ public class Board {
                 break;
             }
 
-            nmbrOfFlips++;
+            nmbOfFlips++;
 
             xt += dx;
             yt += dy;
         }
 
-        if (nmbrOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
-            return;
+        if (nmbOfFlips == 0 || !isValidTile(xt, yt) || getTile(xt, yt) != player) {
+            return 0;
         }
 
-        flipPieces(x, y, dx, dy, player, nmbrOfFlips, flips, realMove);
+        if (realMove) {
+            flipPieces(x, y, dx, dy, player, nmbOfFlips);
+        }
+
+        return nmbOfFlips;
     }
 
     /**
@@ -406,34 +467,10 @@ public class Board {
      * @param flips
      * @param realMove
      */
-    private void flipPieces(int x, int y, int dx, int dy, Player player, int nmbrOfFlips, ArrayList<Long> flips, boolean realMove) {
+    private void flipPieces(int x, int y, int dx, int dy, Player player, int nmbrOfFlips) {
         for (int i = 0; i <= nmbrOfFlips; i++) {
-            if (realMove) {
-                flip(x + (i * dx), y + (i * dy), player);
-
-                //Don't XOR the first piece multiple times.
-                if (i > 0) {
-                    updateHash(x + dx, y + dy, player);
-                }
-            }
-            flips.add(point(x + (i * dx), y + (i * dy)));
+            flip(x + (i * dx), y + (i * dy), player);
         }
-    }
-
-    /**
-     * Updates the hash of the board by XORing the wanted piece to the hash, and
-     * if applicable, XORs the previous piece in the given coordinates out.
-     *
-     * @param x
-     * @param y
-     * @param player
-     */
-    private void updateHash(int x, int y, Player player) {
-        hash = hasher.xorFlip(x, y, player, hash);
-    }
-    
-    private void updateHashOut(int x, int y) {
-        
     }
 
     /**
@@ -446,8 +483,7 @@ public class Board {
      * @param player
      */
     private void flip(int x, int y, Player player) {
-        flipStack.push(new Flip(x, y, getTile(x, y)));
-        setTile(x, y, player);
+        setTile(x, y, player, true);
     }
 
     /**
@@ -467,24 +503,39 @@ public class Board {
 
     /**
      * Undoes the last move by popping all operations caused by the move from
-     * the FlipStack and placing them on the board. Also calls the updateHash to
-     * XOR out the piece being replaced and XOR in the piece that is placed.
+     * the FlipStack and placing them on the board.
      */
     public void undo() {
         if (flipStack.isEmpty()) {
             return;
         }
 
-        int flipsToClear = flipStack.pop().flipsToClear;
+        int flipsToClear = flipsPerMoveStack.pop();
         for (int i = 0; i < flipsToClear; i++) {
             Flip flip = flipStack.pop();
 
-            updateHash(flip.x, flip.y, getTile(flip.x, flip.y));
-            setTile(flip.x, flip.y, flip.player);
-            updateHash(flip.x, flip.y, flip.player);
+            setTile(flip.x, flip.y, flip.player, false);
         }
 
         changeTurn();
+    }
+
+    /**
+     * Returns the hasher used in hashing this board.
+     *
+     * @return
+     */
+    public ZobristHash getHasher() {
+        return hasher;
+    }
+
+    /**
+     * Returns the current hash of the board.
+     *
+     * @return
+     */
+    public BigInteger getHash() {
+        return hash;
     }
 
     /**
@@ -505,6 +556,10 @@ public class Board {
      */
     public Player[][] getBoard() {
         return board;
+    }
+
+    public void reset() {
+        initalizeBoard();
     }
 
 }

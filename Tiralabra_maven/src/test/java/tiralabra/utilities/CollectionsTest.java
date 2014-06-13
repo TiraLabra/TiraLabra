@@ -23,17 +23,19 @@ public class CollectionsTest {
     
     @Test
     public void sortSortsList() {
-        List<Integer> list = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
         Random random = new Random();
         
-        for (int i = 0; i < 100; i++) {
-            list.add(random.nextInt());
+        for (int i = 0; i < 2000; i++) {
+            list.add(random.nextInt(10000));
         }
-        Collections.sort(list);
+        ArrayListSorter.sort(list);
     
+        int i = 0;
         int previous = list.get(0);
-        for (Integer i : list) {
-            assertTrue(previous <= i);
+        for (Integer integer : list) {
+            assertTrue("Wrong order at index: " + i, previous <= integer);
+            previous = integer;
         }
     }
 }

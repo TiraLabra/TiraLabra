@@ -43,7 +43,7 @@ public class Stack<E> extends AbstractCollection<E> {
      */
     public E peek() {
         if (size == 0) {
-            throw new IndexOutOfBoundsException("Peeked an empty OperationStack.");
+            throw new IndexOutOfBoundsException("Peeked an empty Stack.");
         }
 
         return (E) array[size - 1];
@@ -57,12 +57,12 @@ public class Stack<E> extends AbstractCollection<E> {
      */
     public E pop() {
         if (size == 0) {
-            throw new IndexOutOfBoundsException("Popped an empty OperationStack.");
+            throw new IndexOutOfBoundsException("Popped an empty Stack.");
         }
         size--;
-        E t = (E) array[size];
+        E e = (E) array[size];
         array[size] = null;
-        return t;
+        return e;
     }
 
     @Override

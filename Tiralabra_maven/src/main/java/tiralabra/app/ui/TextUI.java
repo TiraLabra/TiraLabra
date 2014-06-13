@@ -8,7 +8,6 @@ package tiralabra.app.ui;
 import java.util.Scanner;
 import java.util.Vector;
 import tiralabra.game.Board;
-import tiralabra.game.Game;
 import tiralabra.game.Player;
 import tiralabra.game.ai.AI;
 import tiralabra.utilities.BoardUtilities;
@@ -20,12 +19,12 @@ import tiralabra.utilities.BoardUtilities;
  */
 public class TextUI extends Thread {
 
-    private Game game;
+    private Runnable game;
     private Board board;
     private Scanner scanner;
     private AI ai;
 
-    public TextUI(Game game, Scanner scanner) {
+    public TextUI(Runnable game, Scanner scanner) {
         this.game = game;
         this.board = game.getBoard();
         this.scanner = scanner;
@@ -41,14 +40,12 @@ public class TextUI extends Thread {
         while (!game.gameOver()) {
             BoardUtilities.printBoard(board.getBoard());
 
-            long time = System.currentTimeMillis();
             long move;
             if (game.inTurn() == Player.BLACK) {
                 move = ai.move();
             } else {
                 move = ai.move();
             }
-            System.out.println("Time: " + (System.currentTimeMillis() - time) + "ms");
 
             try {
                 game.addMove(move);

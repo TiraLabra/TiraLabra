@@ -9,7 +9,7 @@ import java.util.Random;
 import tiralabra.game.Board;
 import tiralabra.game.Player;
 import tiralabra.utilities.ArrayList;
-import tiralabra.utilities.Collections;
+import tiralabra.utilities.ArrayListSorter;
 
 /**
  * The AI which calculates which move the AI Should take in any given situation.
@@ -42,10 +42,10 @@ public class AI {
         public boolean pass;
 
         /**
-         * 
+         *
          * @param x
          * @param y
-         * @param value 
+         * @param value
          */
         public Move(int x, int y, int value) {
             this.x = x;
@@ -55,8 +55,8 @@ public class AI {
         }
 
         /**
-         * 
-         * @param pass 
+         *
+         * @param pass
          */
         public Move(boolean pass) {
             this.pass = true;
@@ -72,6 +72,7 @@ public class AI {
      * Enumerable for strategy.
      */
     public enum Strategy {
+
         MAXIMIZEVALUE, MAXIMIZEPIECES
     }
 
@@ -109,8 +110,7 @@ public class AI {
      */
     public long move() {
         if (board.getNumberOfPieces() < 8) {
-            Move random = selectRandomMove();
-            return Board.point(random.x, random.y);
+            return selectRandomMove();
         }
 
         Move move = new Move(-1, -1, 0);
@@ -124,9 +124,10 @@ public class AI {
      *
      * @return
      */
-    private Move selectRandomMove() {
+    public long selectRandomMove() {
         ArrayList<Move> moves = getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false);
-        return moves.get(new Random().nextInt(moves.size()));
+        Move move = moves.get(new Random().nextInt(moves.size()));
+        return Board.point(move.x, move.y);
     }
 
     /**
@@ -216,7 +217,8 @@ public class AI {
     }
 
     /**
-     * Places the given move on the board, or passes, if the value is zero.
+     * Places the given move on the board, or passes, if move is specified as a
+     * pass.
      *
      * @param node
      */
@@ -290,7 +292,7 @@ public class AI {
 
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
-                ArrayList<Long> flips = board.tryTile(x, y);
+                int flips = board.tryTile(x, y);
                 addMove(orderMoves, x, y, strategy, flips, moves);
             }
         }
@@ -299,7 +301,7 @@ public class AI {
             moves.add(new Move(true));
         }
 
-        Collections.sort(moves);
+        ArrayListSorter.sort(moves);
 
         return moves;
     }
@@ -315,9 +317,9 @@ public class AI {
      * @param flips
      * @param moves
      */
-    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, ArrayList<Long> flips, ArrayList<Move> moves) {
-        if (flips.size() > 0) {
-            int value = determineValue(orderMoves, x, y, strategy, flips.size());
+    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, int flips, ArrayList<Move> moves) {
+        if (flips > 0) {
+            int value = determineValue(orderMoves, x, y, strategy, flips);
             Move move = new Move(x, y, value);
             moves.add(move);
         }
@@ -335,7 +337,7 @@ public class AI {
      * @return
      */
     private int determineValue(boolean orderMoves, int x, int y, Strategy strategy, int flips) {
-        int value;
+        int value = 0;
         if (orderMoves) {
             board.placeTile(x, y);
             value = search(new Move(0, 0, 0), 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, false);
@@ -343,6 +345,7 @@ public class AI {
         } else {
             value = flips;
         }
+
         return value;
     }
 

@@ -3,26 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.game;
+package tiralabra.app.ui;
 
-import java.util.Vector;
+import tiralabra.game.Board;
+import tiralabra.game.Player;
+import tiralabra.utilities.ArrayList;
+;
 
 /**
  * Transmits moves to the Board.
  *
  * @author atte
  */
-public class Game extends Thread {
+public class Runnable extends Thread {
 
     private Board board;
     /**
      * All moves to be transmitted to the board.
      */
-    private Vector<Long> moves;
+    private ArrayList<Long> moves;
 
-    public Game() {
+    public Runnable() {
         board = new Board();
-        moves = new Vector<>();
+        moves = new ArrayList<>();
     }
 
     /**
@@ -50,8 +53,8 @@ public class Game extends Thread {
             wait();
         }
 
-        long move = moves.firstElement();
-        moves.removeElement(move);
+        long move = moves.get(0);
+        moves.remove(move);
         board.placeTile(move);
 
         if (!board.canMove(inTurn())) {
