@@ -311,3 +311,6 @@ class NMD5:
 
 def new():
 	return NMD5()
+
+def md5():
+	return NMD5()

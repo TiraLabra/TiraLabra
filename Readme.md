@@ -22,11 +22,11 @@ This includes the following methods:
 
 - [x] md5.digest_size
 - [x] md5.new([arg])
-- [] md5.md5([arg])
-- [] md5.update(arg)
-- [] md5.digest()
+- [ ] md5.md5([arg])
+- [x] md5.update(arg)
+- [x] md5.digest()
 - [x] md5.hexdigest()
-- [] md5.copy()
+- [ ] md5.copy()
 
 The module will be deployed as a custom importable class or if possible as a Python egg.
 
