@@ -186,14 +186,16 @@ class NMD5:
 			self.D = D
 
 	def hexdigest(self):
-		"""Returns hex string of result. Since"""
+		"""Returns hex string of result. Format each byte of digest 
+		into a hexstring of length 2."""
+
 		res = ""
 		buffers = [self.A, self.B, self.C, self.D]
 
+		digest = bytearray(self.digest())
 
-		for buffer in buffers:
-			for i in range(0,4):
-				res = res + "{:02x}".format((buffer >> i*8) & 255)
+		for byte in digest:
+			res = res + "{:02x}".format(byte)
 
 		return res
 
