@@ -5,6 +5,7 @@
 package Hike.Graph;
 
 import Hike.Structures.LinkyList;
+import Hike.Values;
 
 /**
  * Class containing a cell in the table created in ImageTable. Nodes have a y
@@ -30,7 +31,9 @@ public class Node {
     private Node E = null;
     private Node previous;
     private int distance;
+    private int distanceToGoal;
     private int heapIndex;
+    private int heapValue;
     private boolean checked;
 
     /**
@@ -51,6 +54,7 @@ public class Node {
         this.distance = 2000000;
         this.heapIndex = -1;
         this.checked = false;
+        this.heapValue = distance;
 
 
 
@@ -98,23 +102,23 @@ public class Node {
                     table[py][px].W = table[py][px - 1];
                     table[py][px].getNeighbours().add(table[py][px - 1]);
                 }
-                if (py + 1 < h && px - 1 >= 0) {
+                if (py + 1 < h && px - 1 >= 0 && Values.DIAGONAL == true) {
                     table[py][px].SW = table[py + 1][px - 1];
                     table[py][px].getNeighbours().add(table[py + 1][px - 1]);
                 }
 
-                if (py + 1 < h && px + 1 < w) {
+                if (py + 1 < h && px + 1 < w && Values.DIAGONAL == true) {
                     table[py][px].SE = table[py + 1][px + 1];
                     table[py][px].getNeighbours().add(table[py + 1][px + 1]);
                 }
 
 
-                if (py - 1 >= 0 && px - 1 >= 0) {
+                if (py - 1 >= 0 && px - 1 >= 0 && Values.DIAGONAL == true) {
                     table[py][px].NW = table[py - 1][px - 1];
                     table[py][px].getNeighbours().add(table[py - 1][px - 1]);
                 }
 
-                if (py - 1 >= 0 && px + 1 < w) {
+                if (py - 1 >= 0 && px + 1 < w && Values.DIAGONAL == true) {
                     table[py][px].NE = table[py - 1][px + 1];
                     table[py][px].getNeighbours().add(table[py - 1][px + 1]);
                 }
@@ -172,6 +176,7 @@ public class Node {
 
     public void setDistance(int i) {
         this.distance = i;
+        this.heapValue = this.distance + this.distanceToGoal;
     }
 
     /**
@@ -220,5 +225,18 @@ public class Node {
 
     public boolean getChecked() {
         return this.checked;
+    }
+
+    public void setDistanceToGoal(int distanceToGoal) {
+        this.distanceToGoal = distanceToGoal;
+        this.heapValue = this.distance + this.distanceToGoal;
+    }
+
+    public int getDistanceToGoal() {
+        return distanceToGoal;
+    }
+
+    public int getHeapValue() {
+        return heapValue;
     }
 }

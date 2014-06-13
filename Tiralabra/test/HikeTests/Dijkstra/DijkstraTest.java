@@ -4,7 +4,7 @@
  */
 package HikeTests.Dijkstra;
 
-import Hike.Algorithms.Dijkstra;
+import Hike.Algorithms.Pathfinder;
 import Hike.Graph.Node;
 
 import org.junit.After;
@@ -65,7 +65,7 @@ public class DijkstraTest {
 
     @Test
     public void ShortestRouteInTableWithIdenticalValues() { // Straight Diagonally, 5+5+5.
-        Dijkstra route = new Dijkstra(nodeTable, 3, 3);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
 
         nodeTable = route.getDijkstraTable();
         assertEquals(15, nodeTable[3][3].getDistance());
@@ -81,7 +81,7 @@ public class DijkstraTest {
         nodeTable[1][3].setWeight(1);
         nodeTable[2][3].setWeight(1);
         nodeTable[3][3].setWeight(1);
-        Dijkstra route = new Dijkstra(nodeTable, 3, 3);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
         nodeTable = route.getDijkstraTable();
         assertEquals(5, nodeTable[3][3].getDistance());
 
@@ -96,7 +96,7 @@ public class DijkstraTest {
         nodeTable[3][1].setWeight(1);
         nodeTable[3][2].setWeight(1);
         nodeTable[3][3].setWeight(1);
-        Dijkstra route = new Dijkstra(nodeTable, 3, 3);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
         nodeTable = route.getDijkstraTable();
         assertEquals(5, nodeTable[3][3].getDistance());
 
@@ -104,7 +104,7 @@ public class DijkstraTest {
 
     @Test
     public void correctPathPrinting() { //Uses the simple table. Should be diagonally up and left from 3,3.
-        Dijkstra route = new Dijkstra(nodeTable, 3, 3);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
         nodeTable = route.getDijkstraTable();
         route.buildPath(3, 3);
         Node check = route.nextPath();
@@ -136,7 +136,7 @@ public class DijkstraTest {
 
         }
         nodeTable[0][0].setNeighbours(nodeTable);
-        Dijkstra bigroute = new Dijkstra(nodeTable, 9, 9);
+        Pathfinder bigroute = new Pathfinder(nodeTable, 9, 9,"Dijkstra");
         assertEquals(9 * 50, bigroute.getDijkstraTable()[9][9].getDistance());
 
     }
@@ -152,7 +152,7 @@ public class DijkstraTest {
 
         }
         nodeTable[0][0].setNeighbours(nodeTable);
-        Dijkstra ludicrous = new Dijkstra(nodeTable, 1000 - 1, 1000 - 1);
+        Pathfinder ludicrous = new Pathfinder(nodeTable, 1000 - 1, 1000 - 1,"Dijkstra");
         assertEquals(1000 - 1, nodeTable[1000 - 1][1000 - 1].getDistance());
 
     }

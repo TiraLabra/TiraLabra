@@ -38,7 +38,7 @@ public class MinHeap {
         node.setHeapIndex(last);
         table[last] = node;
         int i = last;
-        while (i > 0 && table[parent(i)].getDistance() > node.getDistance()) {
+        while (i > 0 && table[parent(i)].getHeapValue() > node.getHeapValue()) {
             int indexI = table[i].getHeapIndex();
             int indexP = table[parent(i)].getHeapIndex();
             table[i].setHeapIndex(indexP);
@@ -67,15 +67,15 @@ public class MinHeap {
         int smallest;
 
         if (r <= last) {
-            if (table[l].getDistance() > table[r].getDistance()) {
+            if (table[l].getHeapValue() > table[r].getHeapValue()) {
                 smallest = r;
             } else {
                 smallest = l;
             }
-            if (table[i].getDistance() > table[smallest].getDistance()) {
+            if (table[i].getHeapValue() > table[smallest].getHeapValue()) {
                 swap(i, smallest);
                 heapify(smallest);
-            } else if (l == last && table[i].getDistance() > table[l].getDistance()) {
+            } else if (l == last && table[i].getHeapValue() > table[l].getHeapValue()) {
                 swap(i, l);
             }
         }
@@ -138,14 +138,15 @@ public class MinHeap {
      * @param i
      * @param newValue
      */
-    public void decHeap(int i, int newValue) {
+    public void decHeap(int i, int newValue, int distanceGoal) {
         if (i > last) {
 
             return;
         }
         if (newValue <= table[i].getDistance()) {
             table[i].setDistance(newValue);
-            while (i > 0 && table[parent(i)].getDistance() > table[i].getDistance()) {
+            
+            while (i > 0 && table[parent(i)].getHeapValue() > table[i].getHeapValue()) {
                 swap(i, parent(i));
                 i = parent(i);
             }

@@ -86,7 +86,7 @@ public class MinHeapTest {
         node.setDistance(5);
         heap.insert(node);
 
-        heap.decHeap(2, 1);
+        heap.decHeap(2, 1, 0);
 
         assertEquals(1, heap.getNode(0).getDistance());
 

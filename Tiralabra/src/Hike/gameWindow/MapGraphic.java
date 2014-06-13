@@ -15,16 +15,27 @@ import javax.swing.WindowConstants;
  *  Opens the map and route in a new window
  * @author petri
  */
+
 public class MapGraphic extends JPanel implements Runnable {
 
     private JFrame frame;
     private DrawMap map;
+    private int heur;
+
+    MapGraphic(int i) {
+        heur = i;
+    }
+
+    MapGraphic() {
+      
+    }
 
     public void run() {
-        frame = new JFrame("Dijkstra");
+        frame = new JFrame("Pathfinder");
         frame.setPreferredSize(new Dimension(900, 600));
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
 
         createComponents(frame.getContentPane());
 
@@ -39,5 +50,7 @@ public class MapGraphic extends JPanel implements Runnable {
         this.map = new DrawMap();
         container.add(map);
     }
+
+
 
 }

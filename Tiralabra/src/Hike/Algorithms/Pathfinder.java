@@ -3,6 +3,7 @@ package Hike.Algorithms;
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
 import Hike.Structures.MinHeap;
+import Hike.Values;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -12,7 +13,7 @@ import java.util.Deque;
  * are added to MinHeap and the one with smallest distance has it's neighbours
  * checked and MinHeap is updated.
  */
-public class Dijkstra {
+public class Pathfinder {
 
     private Node[][] nodeTable;
     private LinkyList neighbours;
@@ -22,19 +23,22 @@ public class Dijkstra {
     private long totalTime;
     private int targety;
     private int targetx;
+    private String heuristic;
 
     /**
      * Constructor, sets variables and runs the search.
      *
      * @param nodeTable Table containing all Nodes that are used
      */
-    public Dijkstra(Node[][] nodeTable, int ty, int tx) {
+    public Pathfinder(Node[][] nodeTable, int ty, int tx, String heuristic) {
 
         c = 0;
+        this.heuristic = heuristic;
         this.que = new ArrayDeque<Node>();
         this.nodeTable = nodeTable;
         this.targety = ty;
         this.targetx = tx;
+
 
         long timeStart = System.currentTimeMillis();
         initialize();
@@ -53,9 +57,11 @@ public class Dijkstra {
      */
     private void findDijkstra() {
         Node eval = heap.removeMin();
+
         while (heap.empty() == false) {
-            c = c + 2;
+            c = c + 3;
             checkNeighbours(eval);
+
             eval = heap.removeMin();
 
             // if target found, break loop.
@@ -72,9 +78,13 @@ public class Dijkstra {
      */
     private void checkNeighbours(Node eval) {
         neighbours = eval.getNeighbours();
+        Node checkNext = new Node(0, 0, 0);
+        checkNext.setDistance(Integer.MAX_VALUE);
         for (Node node : neighbours) {
-            c++;
             relax(eval, node);
+
+
+            c++;
         }
     }
 
@@ -101,12 +111,12 @@ public class Dijkstra {
      * @param goal
      */
     private void relax(Node start, Node goal) {
+        goal.setDistanceToGoal(heuristic(goal));
 
         if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
             c = c + 3;
-            goal.setDistance(start.getDistance() + goal.getWeight());
             goal.setPrevious(start);
-            heap.decHeap(goal.getHeapIndex(), goal.getDistance());
+            heap.decHeap(goal.getHeapIndex(), start.getDistance() + goal.getWeight(), goal.getDistanceToGoal());
 
 
         }
@@ -127,6 +137,7 @@ public class Dijkstra {
             u = u.getPrevious();
 
         }
+        System.out.println("Steps in path: " + que.size());
 
     }
 
@@ -171,5 +182,22 @@ public class Dijkstra {
 
     public MinHeap getHeap() {
         return this.heap;
+    }
+
+    private int heuristic(Node goal) {
+        int d = Values.GRASS; //Easiest possible weight
+
+        if (heuristic.contains("Chebyshev")) { //Chebyshev. Should always find shortest route.
+            int x = Math.abs(goal.getX() - targetx);
+            int y = Math.abs(goal.getY() - targety);
+            return d * Math.max(x, y);
+
+        } else if (heuristic.contains("Manhattan")) { //Manhattan, faster but might not find the shortest route.
+            int x = Math.abs(goal.getX() - targetx);
+            int y = Math.abs(goal.getY() - targety);
+            return d * (x + y);
+        } else { // Normal Dijkstra.
+            return 0;
+        }
     }
 }
