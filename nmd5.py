@@ -186,7 +186,7 @@ class NMD5:
 			self.D = D
 
 	def hexdigest(self):
-		"""Returns hex string of result"""
+		"""Returns hex string of result. Since"""
 		res = ""
 		buffers = [self.A, self.B, self.C, self.D]
 
@@ -207,7 +207,8 @@ class NMD5:
 
 		for buffer in buffers:
 			bufferbytes = []
-			b = bin(buffer)
+			b = bin(buffer).replace('b', '0')
+			b = "0"*(34-len(b)) + b # pad leading zero if missing
 
 			bufferbytes.append(int(b[ 2:10],2))
 			bufferbytes.append(int(b[10:18],2))
