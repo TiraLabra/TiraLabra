@@ -155,7 +155,8 @@ class NMD5:
 			a = HH(a, b, c, d, words[ 9], R31, 0xD9D4D039) 
 			d = HH(d, a, b, c, words[12], R32, 0xE6DB99E5) 
 			c = HH(c, d, a, b, words[15], R33, 0x1FA27CF8) 
-			b = HH(b, c, d, a, words[ 2], R34, 0xC4AC5665) 
+			b = HH(b, c, d, a, words[ 2], R34, 0xC4AC5665)
+
 
 			# Round 4
 			a = II(a, b, c, d, words[ 0], R41, 0xF4292244) 
@@ -184,6 +185,7 @@ class NMD5:
 			self.B = B
 			self.C = C
 			self.D = D
+
 
 	def hexdigest(self):
 		"""Returns hex string of result. Format each byte of digest 
@@ -243,15 +245,12 @@ class NMD5:
 		padded = ''
 		messageLength = len(bstring)
 
-		amount = 448 - (messageLength % 512)
-		if amount <= 0: # edge cases between 448-512
-			amount = (512 - messageLength) + 448 
+		bstring+="1"
 
-		padding = "1"
-		padding += "0" * (amount - 1)
+		while (len(bstring) % 512) != 448:
+			bstring+="0"
 
-		padded += bstring + padding
-		padded += self.pad64B(messageLength)
+		padded += bstring + self.pad64B(messageLength)
 
 		return padded
 
