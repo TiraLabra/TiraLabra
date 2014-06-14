@@ -8,7 +8,7 @@ class Main {
 
         GameWindow game = new GameWindow();
         game.run();
-        
+
 
 
     }

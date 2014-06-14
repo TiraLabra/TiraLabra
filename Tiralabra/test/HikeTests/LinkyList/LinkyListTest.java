@@ -4,6 +4,7 @@
  */
 package HikeTests.LinkyList;
 
+import Hike.Graph.Edge;
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
 import org.junit.After;
@@ -53,28 +54,28 @@ public class LinkyListTest {
 
     @Test
     public void OneElementList() {
-        list.add(new Node(2, 2, 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
         assertEquals(1, list.size());
         assertEquals(null, list.getTopElement().next);
     }
 
     @Test
     public void OneElementListNextIsNull() {
-        list.add(new Node(2, 2, 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
         assertNull(list.getTopElement().next);
     }
 
     @Test
     public void TwoElementList() {
-        list.add(new Node(2, 2, 2));
-        list.add(new Node(3, 3, 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
         assertEquals(2, list.size());
     }
 
     @Test
     public void TwoElementListNextIsNotNull() {
-        list.add(new Node(2, 2, 2));
-        list.add(new Node(3, 3, 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
+        list.add(new Edge(new Node(2, 2, 2), new Node(2, 2, 2), 2));
         assertNotNull(list.getTopElement().next);
     }
 }

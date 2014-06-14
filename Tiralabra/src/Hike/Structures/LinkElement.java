@@ -4,27 +4,28 @@
  */
 package Hike.Structures;
 
+import Hike.Graph.Edge;
 import Hike.Graph.Node;
-import java.util.Iterator;
 
 /**
- *  Used by LinkyList to link nodes in a list.
+ * Used by LinkyList to link nodes in a list.
  *
  */
 public class LinkElement {
 
-    public Node node;
+    public Edge edge;
     public LinkElement next;
 
-    LinkElement(Node node) {
-        this.node = node;
+
+    LinkElement(Edge edge) {
+        this.edge = edge;
     }
 
     void setNext(LinkElement old) {
         this.next = old;
     }
 
-    public Node getNode() {
-       return this.node;
+    public Edge getEdge() {
+        return this.edge;
     }
 }

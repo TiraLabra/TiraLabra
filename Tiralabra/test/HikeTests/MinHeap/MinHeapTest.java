@@ -64,12 +64,12 @@ public class MinHeapTest {
 
     @Test
     public void minHeapPopCorrectly() {
-        int value = heap.getNode(0).getDistance();
+        double value = heap.getNode(0).getDistance();
         Node popped = heap.removeMin();
-        assertEquals(value, popped.getDistance());
+        assertEquals((int) value, (int) popped.getDistance());
         value = heap.getNode(0).getDistance();
         popped = heap.removeMin();
-        assertEquals(value, popped.getDistance());
+        assertEquals((int) value, (int) popped.getDistance());
         assertEquals(17, heap.getLast());
     }
 
@@ -88,14 +88,14 @@ public class MinHeapTest {
 
         heap.decHeap(2, 1, 0);
 
-        assertEquals(1, heap.getNode(0).getDistance());
+        assertEquals(1, (int)heap.getNode(0).getDistance());
 
 
 
 
     }
 
-    public boolean atLeast(int x, int y) {
+    public boolean atLeast(double x, double y) {
         if (x <= y) {
             return true;
         }

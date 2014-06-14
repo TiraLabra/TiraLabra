@@ -1,14 +1,14 @@
 package Hike.Structures;
 
-import Hike.Graph.Node;
+import Hike.Graph.Edge;
 import java.util.Iterator;
 
 /**
  * A singly linked list. 
- * New nodes are linked with LinkElement and placed at the top of the list.
+ * New edges are linked with LinkElement and placed at the top of the list.
  * Implements Iterable to enable for-loops.
  */
-public class LinkyList implements Iterable<Node> {
+public class LinkyList implements Iterable<Edge> {
 
     private LinkElement top;
     private LinkElement old;
@@ -24,12 +24,12 @@ public class LinkyList implements Iterable<Node> {
  * If list is empty, sets the first node as top.
  * @param node 
  */
-    public void add(Node node) {
+    public void add(Edge edge) {
         if (this.top == null) {
-            this.top = new LinkElement(node);
+            this.top = new LinkElement(edge);
         } else {
             this.old = this.top;
-            this.top = new LinkElement(node);
+            this.top = new LinkElement(edge);
             this.top.setNext(this.old);
 
         }
@@ -61,22 +61,22 @@ public class LinkyList implements Iterable<Node> {
     /**
      * Method needed for for-looping. Iterable.
      *
-     * @return Node for for-loops
+     * @return Edge for for-loops
      */
     @Override
-    public Iterator<Node> iterator() {
+    public Iterator<Edge> iterator() {
 
-        Iterator<Node> iter = new Iterator<Node>() {
+        Iterator<Edge> iter = new Iterator<Edge>() {
             @Override
             public boolean hasNext() {
                 return current != null;
             }
 
             @Override
-            public Node next() {
+            public Edge next() {
                 old = current;
                 current = current.next;
-                return old.getNode();
+                return old.getEdge();
             }
 
             @Override

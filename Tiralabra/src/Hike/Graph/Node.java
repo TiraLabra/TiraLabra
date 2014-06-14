@@ -20,7 +20,7 @@ public class Node {
     private int y;
     private int weight;
     private Node[][] table;
-    private LinkyList neighbours;
+    private LinkyList connections;
     private Node S = null;  // All the compass directions are currently unused
     private Node SW = null;
     private Node SE = null;
@@ -30,10 +30,10 @@ public class Node {
     private Node W = null;
     private Node E = null;
     private Node previous;
-    private int distance;
-    private int distanceToGoal;
+    private double distance;
+    private double distanceToGoal;
     private int heapIndex;
-    private int heapValue;
+    private double heapValue;
     private boolean checked;
 
     /**
@@ -46,7 +46,7 @@ public class Node {
     public Node(int y, int x, int w) {
 
 
-        this.neighbours = new LinkyList();
+        this.connections = new LinkyList();
 
         this.y = y;
         this.x = x;
@@ -79,48 +79,47 @@ public class Node {
         this.table = table;
         int h = table.length;
         int w = table[0].length;
+        double f = 1.4; //how many time more diagonal movements cost
+
+
+        Node temp;
+        Node parent;
 
         for (int py = 0; py < h; py++) {
             for (int px = 0; px < w; px++) {
+                parent = table[py][px];
 
-
-                if (px + 1 < w) {
-                    table[py][px].E = table[py][px + 1];
-                    table[py][px].getNeighbours().add(table[py][px + 1]);
+                if (px + 1 < w) { // E
+                    temp = table[py][px + 1];
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight()));
                 }
-
-                if (py - 1 >= 0) {
-                    table[py][px].N = table[py - 1][px];
-                    table[py][px].getNeighbours().add(table[py - 1][px]);
+                if (py - 1 >= 0) { //N
+                    temp = table[py - 1][px];
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight()));
                 }
-
-                if (py + 1 < h) {
-                    table[py][px].S = table[py + 1][px];
-                    table[py][px].getNeighbours().add(table[py + 1][px]);
+                if (py + 1 < h) { //S
+                    temp = table[py + 1][px];
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight()));
                 }
-                if (px - 1 >= 0) {
-                    table[py][px].W = table[py][px - 1];
-                    table[py][px].getNeighbours().add(table[py][px - 1]);
+                if (px - 1 >= 0) { //W
+                    temp = table[py][px - 1];
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight()));
                 }
                 if (py + 1 < h && px - 1 >= 0 && Values.DIAGONAL == true) {
-                    table[py][px].SW = table[py + 1][px - 1];
-                    table[py][px].getNeighbours().add(table[py + 1][px - 1]);
+                    temp = table[py + 1][px - 1]; //SW
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
                 }
-
                 if (py + 1 < h && px + 1 < w && Values.DIAGONAL == true) {
-                    table[py][px].SE = table[py + 1][px + 1];
-                    table[py][px].getNeighbours().add(table[py + 1][px + 1]);
+                    temp = table[py + 1][px + 1]; //SE
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
                 }
-
-
                 if (py - 1 >= 0 && px - 1 >= 0 && Values.DIAGONAL == true) {
-                    table[py][px].NW = table[py - 1][px - 1];
-                    table[py][px].getNeighbours().add(table[py - 1][px - 1]);
+                    temp = table[py - 1][px - 1]; //NW
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
                 }
-
                 if (py - 1 >= 0 && px + 1 < w && Values.DIAGONAL == true) {
-                    table[py][px].NE = table[py - 1][px + 1];
-                    table[py][px].getNeighbours().add(table[py - 1][px + 1]);
+                    temp = table[py - 1][px + 1]; //NE
+                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
                 }
             }
         }
@@ -174,7 +173,7 @@ public class Node {
         return this.previous;
     }
 
-    public void setDistance(int i) {
+    public void setDistance(double i) {
         this.distance = i;
         this.heapValue = this.distance + this.distanceToGoal;
     }
@@ -194,17 +193,17 @@ public class Node {
     }
 
     public void printNeighbours() {
-        for (Node node : neighbours) {
-            System.out.println(node);
+        for (Edge edge : connections) {
+            edge.getParent().printNeighbours();
         }
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return this.distance;
     }
 
     public LinkyList getNeighbours() {
-        return this.neighbours;
+        return this.connections;
     }
 
     public void setWeight(int weight) {
@@ -227,16 +226,16 @@ public class Node {
         return this.checked;
     }
 
-    public void setDistanceToGoal(int distanceToGoal) {
+    public void setDistanceToGoal(double distanceToGoal) {
         this.distanceToGoal = distanceToGoal;
         this.heapValue = this.distance + this.distanceToGoal;
     }
 
-    public int getDistanceToGoal() {
+    public double getDistanceToGoal() {
         return distanceToGoal;
     }
 
-    public int getHeapValue() {
+    public double getHeapValue() {
         return heapValue;
     }
 }

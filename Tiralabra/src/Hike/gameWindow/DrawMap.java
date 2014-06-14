@@ -10,6 +10,7 @@ import Hike.ImageTable.ImageTable;
 import Hike.Values;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
 import javax.swing.JPanel;
 
 /**
@@ -29,14 +30,15 @@ class DrawMap extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
         pic = new ShowPicture("../map1.png");
 
 
         g.drawImage(pic.getImage(), 50, 50, this);
 
-            table = new ImageTable(pic);
+        table = new ImageTable(pic);
 
-        
+
 
         //Run normal dijkstra
         route = new Pathfinder(table.getNodeTable(), table.getNodeTable().length - 1, table.getNodeTable()[0].length - 1, Values.HEURISTIC);
@@ -60,6 +62,7 @@ class DrawMap extends JPanel {
      * @param g
      */
     public void drawStats(Graphics g) {
+        DecimalFormat df = new DecimalFormat("#.00"); 
         g.drawString(
                 "Operation took: 0" + (int) route.getTotalTime() + "ms."
                 + " Calculations: " + (int) route.getC() + " (Very approximate!)", 20, 20);
@@ -67,8 +70,8 @@ class DrawMap extends JPanel {
         int max = table.getNodeTable().length * table.getNodeTable()[0].length;
         double percentage = ((double) heapsize / (double) max) * 100;
         g.drawString("Distance to end: "
-                + route.getDijkstraTable()[499][799].getDistance() + ". Nodes left in heap: "
-                + heapsize + "/" + max + " = " + percentage + "%", 20, 40);
+                + Math.ceil(route.getDijkstraTable()[table.getNodeTable().length-1][table.getNodeTable()[0].length-1].getDistance()) + ". Nodes left in heap: "
+                + heapsize + "/" + max + " = " + df.format(percentage) + "%", 20, 40);
 
     }
 

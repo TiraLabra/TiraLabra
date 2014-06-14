@@ -1,11 +1,11 @@
 package Hike.Algorithms;
 
+import Hike.Graph.Edge;
 import Hike.Graph.Node;
 import Hike.Structures.LinkyList;
 import Hike.Structures.MinHeap;
+import Hike.Structures.PathStack;
 import Hike.Values;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 /**
  * This class calculates distances to nodes using Dijkstra's algorithm.
@@ -17,7 +17,7 @@ public class Pathfinder {
 
     private Node[][] nodeTable;
     private LinkyList neighbours;
-    private Deque<Node> que;
+    private PathStack que;
     private double c;   // Will be used to count something
     private MinHeap heap;
     private long totalTime;
@@ -34,7 +34,7 @@ public class Pathfinder {
 
         c = 0;
         this.heuristic = heuristic;
-        this.que = new ArrayDeque<Node>();
+        this.que = new PathStack(nodeTable.length * nodeTable[0].length);
         this.nodeTable = nodeTable;
         this.targety = ty;
         this.targetx = tx;
@@ -80,11 +80,13 @@ public class Pathfinder {
         neighbours = eval.getNeighbours();
         Node checkNext = new Node(0, 0, 0);
         checkNext.setDistance(Integer.MAX_VALUE);
-        for (Node node : neighbours) {
-            relax(eval, node);
+        for (Edge edge : neighbours) {
+            if (!edge.getChild().getChecked()) {
+                relax(edge);
 
 
-            c++;
+                c++;
+            }
         }
     }
 
@@ -105,18 +107,22 @@ public class Pathfinder {
     }
 
     /**
-     * Checks if distance to a goal is shorter by travelling through start
+     * Checks if distance to a goal is shorter by travelling through start.
+     * Check if the goal has been checked already to prevent stack getting too
+     * large in error situations
+     *
      *
      * @param start
      * @param goal
      */
-    private void relax(Node start, Node goal) {
-        goal.setDistanceToGoal(heuristic(goal));
+    private void relax(Edge edge) {
+        edge.getChild().setDistanceToGoal(heuristic(edge.getChild()));
 
-        if (goal.getDistance() > start.getDistance() + goal.getWeight()) {
+        if (edge.getChild().getDistance() > edge.getParent().getDistance() + edge.getCost()) {
             c = c + 3;
-            goal.setPrevious(start);
-            heap.decHeap(goal.getHeapIndex(), start.getDistance() + goal.getWeight(), goal.getDistanceToGoal());
+            edge.getChild().setPrevious(edge.getParent());
+            edge.getChild().setChecked();
+            heap.decHeap(edge.getChild().getHeapIndex(), edge.getParent().getDistance() + edge.getCost(), edge.getChild().getDistanceToGoal());
 
 
         }
@@ -150,7 +156,7 @@ public class Pathfinder {
         if (que.size() > 0) {
 
 
-            return que.poll();
+            return que.pop();
         }
         return null;
 
@@ -184,17 +190,18 @@ public class Pathfinder {
         return this.heap;
     }
 
-    private int heuristic(Node goal) {
-        int d = Values.GRASS; //Easiest possible weight
+    private double heuristic(Node goal) {
+        double d = 1.0; //Easiest possible weight
+        double d2 = 1.4;
 
-        if (heuristic.contains("Chebyshev")) { //Chebyshev. Should always find shortest route.
-            int x = Math.abs(goal.getX() - targetx);
-            int y = Math.abs(goal.getY() - targety);
-            return d * Math.max(x, y);
+        if (heuristic.contains("Diagonalsearch")) { //Diagonal search. 
+            double x = Math.abs(goal.getX() - targetx);
+            double y = Math.abs(goal.getY() - targety);
+            return d * (x + y) + (d2 - 2 * d) * Math.min(x, y);
 
-        } else if (heuristic.contains("Manhattan")) { //Manhattan, faster but might not find the shortest route.
-            int x = Math.abs(goal.getX() - targetx);
-            int y = Math.abs(goal.getY() - targety);
+        } else if (heuristic.contains("Manhattan")) { //Manhattan.
+            double x = Math.abs(goal.getX() - targetx);
+            double y = Math.abs(goal.getY() - targety);
             return d * (x + y);
         } else { // Normal Dijkstra.
             return 0;

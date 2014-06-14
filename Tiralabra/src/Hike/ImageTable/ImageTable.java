@@ -21,11 +21,11 @@ public class ImageTable {
     public ImageTable(ShowPicture pic) {
         picture = pic;
         image = picture.getImage();
-        tab = new Node[Values.IMAGEHEIGHT][Values.IMAGEWIDTH];
+        tab = new Node[pic.getH()][pic.getW()];
 
         long aikaAlussa = System.currentTimeMillis();
 
-        convertImage(Values.IMAGEHEIGHT, Values.IMAGEWIDTH);
+        convertImage(pic.getH(), pic.getW());
 
         long aikaLopussa = System.currentTimeMillis();
         System.out.println("Conversion of image to table took: " + (aikaLopussa - aikaAlussa) + "ms.");

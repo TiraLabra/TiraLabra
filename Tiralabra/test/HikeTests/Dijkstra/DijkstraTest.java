@@ -36,6 +36,7 @@ public class DijkstraTest {
 
     @Before
     public void setUp() {
+
         int h = 4;
         int w = 4;
         t = new Node[h][w];
@@ -64,16 +65,16 @@ public class DijkstraTest {
     }
 
     @Test
-    public void ShortestRouteInTableWithIdenticalValues() { // Straight Diagonally, 5+5+5.
-        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
+    public void ShortestRouteInTableWithIdenticalValues() { // 
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
 
         nodeTable = route.getDijkstraTable();
-        assertEquals(15, nodeTable[3][3].getDistance());
+        assertEquals(30, (int) nodeTable[3][3].getDistance());
 
     }
 
     @Test
-    public void ShortestRouteInTableWithEasyTopRowAndRight() { // Top row and rightmost row easy, should be 1+1+1+1+1 = 5 with diagonal jump in corner;
+    public void ShortestRouteInTableWithEasyTopRowAndRight() { // Top row and rightmost row easy, should be 1+1+1+1+1+1 = 6
         nodeTable[0][0].setWeight(1);
         nodeTable[0][1].setWeight(1);
         nodeTable[0][2].setWeight(1);
@@ -81,14 +82,15 @@ public class DijkstraTest {
         nodeTable[1][3].setWeight(1);
         nodeTable[2][3].setWeight(1);
         nodeTable[3][3].setWeight(1);
-        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
+        nodeTable[0][0].setNeighbours(t);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
         nodeTable = route.getDijkstraTable();
-        assertEquals(5, nodeTable[3][3].getDistance());
+        assertEquals(6, (int) nodeTable[3][3].getDistance());
 
     }
 
     @Test
-    public void ShortestRouteInTableWithEasyBottomRowAndLeft() { //Should be 5;
+    public void ShortestRouteInTableWithEasyBottomRowAndLeft() { //Should be 6;
         nodeTable[0][0].setWeight(1);
         nodeTable[1][0].setWeight(1);
         nodeTable[2][0].setWeight(1);
@@ -96,32 +98,11 @@ public class DijkstraTest {
         nodeTable[3][1].setWeight(1);
         nodeTable[3][2].setWeight(1);
         nodeTable[3][3].setWeight(1);
-        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
+
+        nodeTable[0][0].setNeighbours(t);
+        Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
         nodeTable = route.getDijkstraTable();
-        assertEquals(5, nodeTable[3][3].getDistance());
-
-    }
-
-    @Test
-    public void correctPathPrinting() { //Uses the simple table. Should be diagonally up and left from 3,3.
-        Pathfinder route = new Pathfinder(nodeTable, 3, 3,"Dijkstra");
-        nodeTable = route.getDijkstraTable();
-        route.buildPath(3, 3);
-        Node check = route.nextPath();
-        assertEquals(nodeTable[0][0].getX(), check.getX());
-        assertEquals(nodeTable[0][0].getY(), check.getY());
-        check = route.nextPath();
-        assertEquals(nodeTable[1][1].getX(), check.getX());
-        assertEquals(nodeTable[1][1].getY(), check.getY());
-        check = route.nextPath();
-        assertEquals(nodeTable[2][2].getX(), check.getX());
-        assertEquals(nodeTable[2][2].getY(), check.getY());
-        check = route.nextPath();
-        assertEquals(nodeTable[3][3].getX(), check.getX());
-        assertEquals(nodeTable[3][3].getY(), check.getY());
-        check.getClass();
-
-
+        assertEquals(6, (int) nodeTable[3][3].getDistance());
 
     }
 
@@ -136,8 +117,8 @@ public class DijkstraTest {
 
         }
         nodeTable[0][0].setNeighbours(nodeTable);
-        Pathfinder bigroute = new Pathfinder(nodeTable, 9, 9,"Dijkstra");
-        assertEquals(9 * 50, bigroute.getDijkstraTable()[9][9].getDistance());
+        Pathfinder bigroute = new Pathfinder(nodeTable, 9, 9, "Dijkstra");
+        assertEquals(18 * 50, (int) bigroute.getDijkstraTable()[9][9].getDistance());
 
     }
 
@@ -152,8 +133,8 @@ public class DijkstraTest {
 
         }
         nodeTable[0][0].setNeighbours(nodeTable);
-        Pathfinder ludicrous = new Pathfinder(nodeTable, 1000 - 1, 1000 - 1,"Dijkstra");
-        assertEquals(1000 - 1, nodeTable[1000 - 1][1000 - 1].getDistance());
+        Pathfinder ludicrous = new Pathfinder(nodeTable, 1000 - 1, 1000 - 1, "Dijkstra");
+        assertEquals((1000 - 1 + 1000 - 1), (int) nodeTable[1000 - 1][1000 - 1].getDistance());
 
     }
 }

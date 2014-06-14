@@ -1,9 +1,11 @@
 package Hike.gameWindow;
 
+import Hike.Values;
 import Hike.controls.ClickListener;
 import java.awt.Color;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 import javax.swing.*;
@@ -21,19 +23,22 @@ public class GameScreen extends JPanel {
 
         setLayout(null);
 
-        JTextArea teksti = new JTextArea("Finds the shortest route in a drawn image. Diagonal routes are not penalized, "
-                + "for example going right cost the same amount as going diagonally down and right. Just like in a chess board.\n "
-                + "\n- Dijkstra is slow but is guaranteed to find shortest route. "
-                + "\n- Chebyshev is fast with diagonals allowed."
-                + "\n- Manhattan is fast, but with diagonals allowed it might"
-                + " find a route that is too long."
-                + "\n\n- Green or white are easy to pass. Yellow is desert and harder to pass. "
+        JTextArea teksti = new JTextArea("Finds the shortest route in a drawn image. Diagonal moves are only slightly more expensive, "
+                + "costing 1.4 times the node's terrain difficulty! This leads to diagonal routes being shorter."
+                + "For example, moving on grass or unset terrain diagonally costs 1.4*"
+                + Values.UNSETGROUND + ", but moving into a mountain diagonally will cost 1.4*" + Values.MOUNTAIN
+                + ".\n\nPlease note! Using diagonal movement on maps with lots of special terrain might give unexpected results!"
+                + "\n\n---\n\n- Dijkstra search is slow but is guaranteed to find shortest route. "
+                + "\n- Diagonal search is very fast with diagonals enabled."
+                + "\n- Manhattan search is fast, but with diagonals enabled it might"
+                + " find a route that is much longer."
+                + "\n\n---\n\n- Green or white are easy to pass. Yellow is desert and harder to pass. "
                 + "Blue is water and it is very hard to pass. Black are mountains, and they are nearly impossible to pass,"
                 + " the route search should use them only when no other routes exist.");
 
         teksti.setWrapStyleWord(true);
         teksti.setLineWrap(true);
-        teksti.setBounds(50, 50, 200, 400);
+        teksti.setBounds(50, 20, 220, 530);
 
         JButton Dijkstra = new JButton("Dijkstra");
         listener = new ClickListener(this);
@@ -41,8 +46,8 @@ public class GameScreen extends JPanel {
         Dijkstra.setBounds(600, 60, 100, 50);
         Dijkstra.addActionListener(listener);
 
-        JButton Chebyshev = new JButton("Chebyshev");
-        Chebyshev.setActionCommand(ClickListener.Actions.CHEBYSHEV.name());
+        JButton Chebyshev = new JButton("Diagonal");
+        Chebyshev.setActionCommand(ClickListener.Actions.DIAGONALSEARCH.name());
         Chebyshev.setBounds(600, 120, 100, 50);
         Chebyshev.addActionListener(listener);
 
@@ -62,7 +67,7 @@ public class GameScreen extends JPanel {
         checkedAreas.setBounds(300, 50, 200, 50);
         add(checkedAreas);
 
-        JCheckBox diagonal = new JCheckBox("Disable diagonals");
+        JCheckBox diagonal = new JCheckBox("Enable diagonals");
         diagonal.addActionListener(listener);
         diagonal.setActionCommand(ClickListener.Actions.DIAGONAL.name());
         diagonal.setBounds(300, 100, 200, 50);

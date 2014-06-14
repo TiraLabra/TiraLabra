@@ -138,7 +138,7 @@ public class MinHeap {
      * @param i
      * @param newValue
      */
-    public void decHeap(int i, int newValue, int distanceGoal) {
+    public void decHeap(int i, double newValue, double distanceGoal) {
         if (i > last) {
 
             return;

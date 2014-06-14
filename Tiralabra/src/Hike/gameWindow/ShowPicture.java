@@ -20,6 +20,8 @@ import javax.swing.*;
 public class ShowPicture extends JPanel {
 
     private BufferedImage image;
+    private int h;
+    private int w;
 
 
     public ShowPicture(String file) {
@@ -27,6 +29,8 @@ public class ShowPicture extends JPanel {
         
         try {
             image = ImageIO.read(this.getClass().getResource(file));
+            w = image.getWidth();
+            h = image.getHeight();
         } catch (IOException ex) {
             Logger.getLogger(ShowPicture.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,4 +47,14 @@ public class ShowPicture extends JPanel {
     public BufferedImage getImage() {
         return image;
     }
+
+    public int getH() {
+        return h;
+    }
+
+    public int getW() {
+        return w;
+    }
+    
+    
 }

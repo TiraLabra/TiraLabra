@@ -23,7 +23,7 @@ public class ClickListener implements ActionListener {
         STARTGAME,
         SAVESCORE,
         DIJKSTRA,
-        CHEBYSHEV,
+        DIAGONALSEARCH,
         MANHATTAN,
         DRAWSEARCHED, DIAGONAL
     }
@@ -33,27 +33,27 @@ public class ClickListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == Actions.DIJKSTRA.name()) {
+        if (e.getActionCommand().equals(Actions.DIJKSTRA.name())) {
             Values.setHeuristic("Dijkstra");
             screen.openMap();
 
         }
-        if (e.getActionCommand() == Actions.CHEBYSHEV.name()) {
-            Values.setHeuristic("Chebyshev");
+        if (e.getActionCommand().equals(Actions.DIAGONALSEARCH.name())) {
+            Values.setHeuristic("Diagonalsearch");
             screen.openMap();
 
         }
-        if (e.getActionCommand() == Actions.MANHATTAN.name()) {
+        if (e.getActionCommand().equals(Actions.MANHATTAN.name())) {
             Values.setHeuristic("Manhattan");
             screen.openMap();
 
         }
-        if (e.getActionCommand() == Actions.DRAWSEARCHED.name()) {
+        if (e.getActionCommand().equals(Actions.DRAWSEARCHED.name())) {
             Values.setShowSearched();
 
         }
 
-        if (e.getActionCommand() == Actions.DIAGONAL.name()) {
+        if (e.getActionCommand().equals(Actions.DIAGONAL.name())) {
             Values.setDiagonal();
 
         }

@@ -59,7 +59,7 @@ public class ImageTableTest {
 
         LinkyList neighbours = table[0][0].getNeighbours();
 
-        assertEquals(3, neighbours.size());
+        assertEquals(2, neighbours.size());
 
 
     }
@@ -69,7 +69,7 @@ public class ImageTableTest {
 
         LinkyList neighbours = table[10][10].getNeighbours();
 
-        assertEquals(8, neighbours.size());
+        assertEquals(4, neighbours.size());
 
     }
 
@@ -78,7 +78,7 @@ public class ImageTableTest {
 
         LinkyList neighbours = table[Values.IMAGEHEIGHT - 1][Values.IMAGEWIDTH - 1].getNeighbours();
 
-        assertEquals(3, neighbours.size());
+        assertEquals(2, neighbours.size());
 
     }
 
@@ -87,7 +87,7 @@ public class ImageTableTest {
 
         LinkyList neighbours = table[Values.IMAGEHEIGHT - 1][0].getNeighbours();
 
-        assertEquals(3, neighbours.size());
+        assertEquals(2, neighbours.size());
 
     }
 
@@ -96,7 +96,7 @@ public class ImageTableTest {
 
         LinkyList neighbours = table[0][Values.IMAGEWIDTH - 1].getNeighbours();
 
-        assertEquals(3, neighbours.size());
+        assertEquals(2, neighbours.size());
 
 
 

@@ -21,7 +21,7 @@ public class Values {
     public static final int MOUNTAIN = 1000;
     public static String HEURISTIC;      // 0 = No heuristic, Djikstra. 1 = Diagonal Distance, Chebyshev.
     public static boolean SHOWSEARCHED = false;
-    public static boolean DIAGONAL = true;
+    public static boolean DIAGONAL = false;
 
     public static void setHeuristic(String t) {
         HEURISTIC = t;
