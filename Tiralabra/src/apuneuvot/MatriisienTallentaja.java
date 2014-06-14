@@ -17,15 +17,17 @@ public class MatriisienTallentaja {
 
     /**
      * Metodi, joka tallettaa parametrina annetun matriisin parametrina
-     * annettuun tiedostonimeen. Tarkastaa aluksi ettei matriisi ole null, jonka
-     * jälkeen luo uuden kirjoittajan ja tallentaa matriisin tiedostoksi. Huom!
-     * metodi ylikirjoittaa edellisen samannimisen tiedoston.
+     * annettuun tiedostonimeen. Tarkastaa aluksi ettei matriisi tai tiedosto-
+     * nimi ole null tai tyhjä, jonka jälkeen luo uuden kirjoittajan ja 
+     * tallentaa matriisin tiedostoksi. Huom! metodi ylikirjoittaa edellisen 
+     * samannimisen tiedoston.
      * 
      * @param matriisi Matriisi, joka halutaan tallentaa, muotoa m x n
      * @param tiedostonimi Tiedostonimi, joksi halutaan tallentaa
      */
     public void tallenna(double[][] matriisi, String tiedostonimi) {
-        tarkasta(matriisi);
+        tarkasta(matriisi, tiedostonimi);
+        System.out.println(tiedostonimi);
         BufferedWriter kirjoittaja = null;
 
         try {
@@ -42,15 +44,19 @@ public class MatriisienTallentaja {
     }
     
     /**
-     * Metodi, joka tarkastaa ettei parametrina annettu matriisi ole null.
-     * Heittää poikkeuksen, jos matriisi on null.
+     * Metodi, joka tarkastaa ettei parametrina annettu matriisi tai 
+     * tiedostonimi ole null tai tyhjä. Heittää poikkeuksen, jos näin on.
      * 
      * @param matriisi Matriisi, joka tarkastetaan, muotoa m x n
+     * @param tiedostonimi Merkkijono, joka tarkastetaan
      */
-    private void tarkasta(double[][] matriisi) {
+    private void tarkasta(double[][] matriisi, String tiedostonimi) {
         if(matriisi == null) {
             throw new IllegalArgumentException("Matriisi on null, joten sitä ei"
                     + "tallenneta");
+        } else if(tiedostonimi == null || tiedostonimi.trim().length() == 0){
+            throw new IllegalArgumentException("Tiedostonimi on null, joten"
+                    + "sitä ei tallenneta");
         }
     }
 

@@ -33,4 +33,19 @@ public class MatriisienTallentajaTest {
     public void poikkeusToimii() {
         tallentaja.tallenna(null, "eiole.txt");
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void poikkeusToimii2() {
+        tallentaja.tallenna(testi, null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void poikkeusToimii3() {
+        tallentaja.tallenna(testi, "");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void poikkeusToimii4() {
+        tallentaja.tallenna(testi, "    ");
+    }
 }

@@ -8,7 +8,7 @@ import logiikka.Matriisilaskin;
 
 /**
  * Kayttoliittyma-luokka, joka toimii matriisilaskimen graafisena 
- * käyttöliittymänä.
+ * käyttöliittymänä. Toteutettu Netbeansin GUI-builderilla.
  * 
  * @author Eversor
  */
@@ -1040,6 +1040,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tallennaCButtonActionPerformed
 
+    /**
+     * Metodi, joka tarkastaa onko parametrina annettu matriisi neliömatriisi ja
+     * palauttaa true, jos on. Jos ei ole neliömatriisi, avaa virhe-popupin ja
+     * palauttaa false.
+     * 
+     * @param matriisi Matriisi, josta halutaa tietää onko neliömatriisi, muotoa
+     *                 m x n
+     * @return Palauttaa true, jos on neliömatriisi
+     */
     private boolean tarkastaNelio(double[][] matriisi) {
         if(matriisi == null){
             return false;
@@ -1050,6 +1059,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return true;
     }
     
+    /**
+     * Metodi, joka lataa parametrina annetusta tiedostonimestä matriisin ja
+     * näyttää sen oikeassa kohdassa käyttöliittymässä. Jos tiedostonlukeminen 
+     * epäonnistuu, avaa virhe-popupin.
+     * 
+     * @param tiedostonimi Tiedostonimi, josta matriisi ladataan
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jossa
+     *                 ladattu matriisi näytetään
+     */
     private void lataa(String tiedostonimi, char tunniste) {
         try {
             double[][] matriisi = matriisienlukija.lue(tiedostonimi);
@@ -1063,6 +1081,19 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metodi, joka lataa ja luo matriisin parametrina annettujen tietojen
+     * perusteella. Lataa aluksi rivit ja sarakkeet ja jos tämä epäonnistuu, 
+     * niin palauttaa null. Muutoin palauttaa luoMatriisi-metodin tuottaman 
+     * matriisin.
+     * 
+     * @param rivit Merkkijono, joka sisältää matriisin rivimäärän
+     * @param sarakkeet Merkkijono, joka sisältää matriisin sarakemäärän
+     * @param matriisiS Merkkijono, joka sisältää matriisin alkiot
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jossa
+     *                 ladattu ja luotu matriisi näytetään
+     * @return Palauttaa luoMatriisi-metodin tuottaman matriisin, muotoa m x n
+     */
     private double[][] lataaJaLuoMatriisi(String rivit, String sarakkeet, 
                                           String matriisiS, char tunniste) {
         int rivitM = lataaRivit(rivit, tunniste);
@@ -1072,11 +1103,19 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         int sarakkeetM = lataaSarakkeet(sarakkeet, tunniste);
         if (sarakkeetM == -1) {
             return null;       
-        } else {
-            return luoMatriisi(rivitM, sarakkeetM, matriisiS, tunniste);
         }
+        return luoMatriisi(rivitM, sarakkeetM, matriisiS, tunniste);
     }
     
+    /**
+     * Metodi, joka lataa rivit parametrina annetusta merkkijonosta. Jos rivi-
+     * määrän lukeminen epäonnistuu, avaa virhe-popupin ja palauttaa -1.
+     * 
+     * @param rivit Merkkijono, joka sisältää ladattavan rivimäärän
+     * @param tunniste Tunniste-kirjain käyttöliityymän matriisille, jolle
+     *                 mahdollinen virhe-popup osoitetaan
+     * @return Palauttaa ladatun rivimäärän
+     */
     private int lataaRivit(String rivit, char tunniste) {
         try {
             return Integer.parseInt(rivit);
@@ -1086,6 +1125,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metodi, joka lataa sarakkeet parametrina annetusta merkkijonosta. Jos 
+     * sarakemäärän lukeminen epäonnistuu, avaa virhe-popupin ja palauttaa -1.
+     * 
+     * @param sarakkeet Merkkijono, joka sisältää ladattavan sarakemäärän
+     * @param tunniste Tunniste-kirjain käyttöliityymän matriisille, jolle
+     *                 mahdollinen virhe-popup osoitetaan
+     * @return Palauttaa ladatun sarakemäärän
+     */
     private int lataaSarakkeet(String sarakkeet, char tunniste) {
         try {
             return Integer.parseInt(sarakkeet);
@@ -1095,6 +1143,22 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Metodi, joka luo matriisin parametrina annettujen tietojen perusteella.
+     * Aluksi tarkastaa matriisin koon, eli että rivit ja sarakkeet ovat
+     * positiivisia kokonaislukuja. Tämän jälkeen tarkastaa, että matriisin
+     * alkiot sisältävässä merkkijonossa on vähintään tarvittava määrä merkkejä.
+     * Jos ei ole riittävästi merkkejä, niin avaa virhe-popupin. Tarkastusten
+     * epäonnistuessa palauttaa null. Lopuksi palauttaa lueMatriisi-metodin
+     * tuottaman matriisin.
+     * 
+     * @param rivit Kokonaisluku, joka kertoo matriisin rivimäärän
+     * @param sarakkeet Kokonaisluku, joka kertoo matriisin sarakemäärän
+     * @param matriisiS Merkkijono, joka sisältää matriisin alkiot
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jossa
+     *                 ladattu ja luotu matriisi näytetään
+     * @return Palauttaa lueMatriisi-metodin tuottaman matriisin, muotoa m x n
+     */
     private double[][] luoMatriisi(int rivit, int sarakkeet, 
                                    String matriisiS, char tunniste) {
         if(!tarkastaKoko(rivit, sarakkeet, tunniste)) {
@@ -1106,6 +1170,18 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return lueMatriisi(rivit, sarakkeet, matriisiS, tunniste);
     }
 
+    /**
+     * Metodi, joka lukee parametrina annetuista tiedoista matriisin ja 
+     * palauttaa sen, jos virheitä ei tapahdu. Jos tapahtuu virhe, avaa virhe-
+     * popupin ja palauttaa null.
+     * 
+     * @param rivitM Kokonaisluku, joka kertoo matriisin rivimäärän
+     * @param sarakkeetM Kokonaisluku, joka kertoo matriisin sarakemäärän
+     * @param matriisiS Merkkijono, joka sisältää matriisin alkiot
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jossa
+     *                 ladattu ja luotu matriisi näytetään
+     * @return Palauttaa luetun matriisin, muotoa m x n
+     */
     private double[][] lueMatriisi(int rivitM, int sarakkeetM, String matriisiS, 
                                    char tunniste) {
         lukija = new Scanner(matriisiS);
@@ -1124,24 +1200,46 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return matriisi;
     }
     
+    /**
+     * Metodi, joka näyttää matriisi A:n käyttöliittymän oikeassa kohdassa.
+     * 
+     * @param A Matriisi, joka halutaan näyttää käyttöliittymässä, muotoa m x n
+     */
     private void naytaA(double[][] A) {
         rivitAText.setText("" + A.length);
         sarakkeetAText.setText("" + A[0].length);
         matriisiAText.setText(matriisiStringiksi(A));
     }
     
+    /**
+     * Metodi, joka näyttää matriisi B:n käyttöliittymän oikeassa kohdassa.
+     * 
+     * @param B Matriisi, joka halutaan näyttää käyttöliittymässä, muotoa m x n
+     */
     private void naytaB(double[][] B) {
         rivitBText.setText("" + B.length);
         sarakkeetBText.setText("" + B[0].length);
         matriisiBText.setText(matriisiStringiksi(B));
     }
 
+    /**
+     * Metodi, joka näyttää matriisi C:n käyttöliittymän oikeassa kohdassa.
+     * 
+     * @param C Matriisi, joka halutaa näyttää käyttöliittymässä, muotoa m x n
+     */
     private void naytaC(double[][] C) {
         rivitCText.setText("" + C.length);
         sarakkeetCText.setText("" + C[0].length);
         matriisiCText.setText(matriisiStringiksi(C));
     }
     
+    /**
+     * Metodi, joka muuttaa parametrina annetun matriisin merkkijonoksi.
+     * 
+     * @param matriisi Matriisi, joka halutaan muuttaa merkkijonoksi, 
+     *                 muotoa m x n
+     * @return Palauttaa matriisista luodun merkkijonon
+     */
     private String matriisiStringiksi(double[][] matriisi) {
         String matriisiS = "";
         for (int rivit = 0; rivit < matriisi.length; rivit++) {
@@ -1153,6 +1251,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return matriisiS;
     }
     
+    /**
+     * Metodi, joka tarkastaa toteuttavatko parametrina annetut matriisit
+     * matriisien yhteenlaskusäännön. Avaa virhe-popupin, jos eivät toteuta ja
+     * palauttaa tällöin false.
+     * 
+     * @param A Ensimmäinen yhteenlaskettava matriisi, muotoa m x n
+     * @param B Toinen yhteenlaskettava matriisi, muotoa p x q
+     * @return Palauttaa true, jos matriisit toteuttavat matriisien 
+     *         yhteenlaskusäännön
+     */
     private boolean tarkastaSumma(double[][] A, double[][] B) {
         if (A.length != B.length || A[0].length != B[0].length) {
             virheSumma();
@@ -1161,6 +1269,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return true;
     }
     
+    /**
+     * Metodi, joka tarkastaa toteuttavatko parametrina annetut matriisit
+     * matriisien vähennyslaskusäännön. Avaa virhe-popupin, jos eivät toteuta
+     * ja palauttaa tällöin false.
+     * 
+     * @param A Matriisi, josta vähennetään toinen matriisi, muotoa m x n
+     * @param B Matriisi, joka vähennetään ensimmäisestä matriisista, 
+     *          muotoa p x q
+     * @return Palauttaa true, jos matriisit toteuttavat matriisien 
+     *         yhteenlaskusäännön
+     */
     private boolean tarkastaErotus(double[][] A, double[][] B) {
         if (A.length != B.length || A[0].length != B[0].length) {
             virheVahennys();
@@ -1169,6 +1288,18 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return true;
     }
     
+    /**
+     * Metodi, joka tarkastaa toteuttavatko parametrina annetut matriisit
+     * matriisien kertolaskusäännön. Avaa virhe-popupin, jos eivät toteuta ja
+     * palauttaa tällöin false.
+     * 
+     * @param A Vasemmalta luettuna ensimmäinen matriisi, joka kerrotaan, 
+     *          muotoa m x n
+     * @param B Vasemmalta luettuna toinen matriisi, joka kerrotaan, 
+     *          muotoa p x q
+     * @return Palauttaa true, jos matriisit toteuttavat matriisien 
+     *         kertolaskusäännön
+     */
     private boolean tarkastaKertolasku(double[][] A, double[][] B) {
         if (A[0].length != B.length) {
             virheKertolasku();
@@ -1177,6 +1308,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return true;
     }
     
+    /**
+     * Metodi, joka tarkastaa ovatko parametrina annetut rivit ja sarakkeet 
+     * suurempia kuin nolla. Jos eivät ole, niin avaa virhe-popupin ja palauttaa
+     * false.
+     * 
+     * @param rivit Kokonaisluku, joka kertoo rivimäärän
+     * @param sarakkeet Kokonaisluku, joka kertoo sarakemäärän
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jossa
+     *                 tarkastettu matriisi näytetään 
+     * @return Palauttaa true, jos rivit ja sarakkeet ovat suurempia kuin nolla
+     */
     private boolean tarkastaKoko(int rivit, int sarakkeet, char tunniste) {
         if(rivit <= 0 || sarakkeet <= 0) {
             virheKoko(tunniste);
@@ -1185,6 +1327,12 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         return true;
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisin koon ollessa väärä.
+     * 
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jolle
+     *                 virhe-popup osoitetaan
+     */
     private void virheKoko(char tunniste) {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nTarkasta, että matriisin "+tunniste+" kokomäärityksissä"
@@ -1193,6 +1341,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisien yhteenlaskun
+     * epäonnistuessa.
+     * 
+     */
     private void virheSumma() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisien yhteenlaskussa yhteenlaskettavien matriisien"
@@ -1200,6 +1353,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisien vähennyslaskun
+     * epäonnistuessa.
+     * 
+     */
     private void virheVahennys() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisien vähennyslaskussa toisistaan vähennettävien"
@@ -1207,6 +1365,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisien kertolaskun
+     * epäonnistuessa.
+     * 
+     */
     private void virheKertolasku() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisien kertolaskussa vasemmanpuoleisen matriisin"
@@ -1215,12 +1378,21 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisin ollessa jotain muuta kuin
+     * neliömatriisi.
+     * 
+     */
     private void virheEiNelio() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisin pitää olla neliömatriisi", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisin ollessa singulaarinen.
+     * 
+     */
     private void virheInvertoi() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisi ei ole kääntyvä, joten sillä ei ole"
@@ -1228,6 +1400,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin potenssin ollessa pienempi kuin
+     * nolla.
+     * 
+     */
     private void virhePotenssi() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nTarkasta, että olet antanut potenssiksi nollaa suuremman"
@@ -1235,6 +1412,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin tiedostonlatauksen epäonnistuttua.
+     * 
+     */
     private void virheLataus() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nTarkasta, että ladattava tiedosto sijaitsee ohjelman"
@@ -1242,13 +1423,25 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin tallennuksen epäonnistuttua.
+     * 
+     */
     private void virheTallennus() {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nTarkasta, että tallennettava tiedostonimi sisältää vain"
-                + "\ntavallisia kirjaimia ja/tai yhden pisteen.", "Virhe",
+                + "\ntavallisia tiedostonimessä hyväksyttäviä merkkejä. "
+                + "\nTiedostonimessä täytyy olla edes yksi merkki.", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Metodi, joka toteuttaa virhe-popupin matriisin syötteen ollessa
+     * epäkelvollinen.
+     * 
+     * @param tunniste Tunniste-kirjain käyttöliittymän matriisille, jolle
+     *                 virhe-popup osoitetaan
+     */
     private void virheMatriisi(char tunniste) {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
                 + "\nMatriisin "+tunniste+" syötteessä tapahtui virhe. Tarkasta,"
