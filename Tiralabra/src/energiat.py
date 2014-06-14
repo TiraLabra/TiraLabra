@@ -47,10 +47,18 @@ def E_elektroni_ydin(ydin_tiheys, V_hartree):
     return c*np.sum(ydin_tiheys.gridi * V_hartree.gridi)
 
 
-def get_V_hartree(V_hartree, elektroni_tiheys, n_iter=10):
+def get_V_hartree(V_hartree, elektroni_tiheys, tolerance=0.001):
     """ lasketaan Hartree potentiaali tämänhetkiselle elektronitiheydelle"""
-    for step in range(n_iter):
+    e_vanha = E_elektroni_elektroni(elektroni_tiheys, V_hartree)
+    e_uusi = e_vanha + 100.0
+    counter = 0
+    while (abs (e_uusi - e_vanha) > tolerance ):
         tee_gauss_seidel_yksi_askel(V_hartree, elektroni_tiheys)
+        e_vanha = e_uusi
+        e_uusi = E_elektroni_elektroni(elektroni_tiheys, V_hartree)
+        counter = counter + 1
+        #print "E_vanha, uusi", e_vanha , e_uusi
+    #print "COUNTER", counter
     
 
 def E_tot(elektroni_tiheys, V_hartree, ydin_tiheys):
@@ -58,19 +66,19 @@ def E_tot(elektroni_tiheys, V_hartree, ydin_tiheys):
     otetaan vakioelektronimäärä huomioon lagrangen kertoimen avulla"""
     import numpy as np
     
-    # 100 iteraatiota jotta saadaan hartree potentiaali
-    get_V_hartree(V_hartree, elektroni_tiheys, 10)
+    # xxx iteraatiota jotta saadaan hartree potentiaali
+    get_V_hartree(V_hartree, elektroni_tiheys, 0.001)
 
     ETOT = E_T(elektroni_tiheys)+\
         E_vaihtokorrelaatio(elektroni_tiheys) + \
         E_elektroni_elektroni(elektroni_tiheys, V_hartree) + \
         E_elektroni_ydin(ydin_tiheys, V_hartree)
  
-    print "E_t",E_T(elektroni_tiheys), \
+    print "ETOT", ETOT,\
+        "E_t",E_T(elektroni_tiheys), \
         "E_xc",E_vaihtokorrelaatio(elektroni_tiheys), \
         "E_ee",E_elektroni_elektroni(elektroni_tiheys, V_hartree), \
         "E_ne",E_elektroni_ydin(ydin_tiheys, V_hartree), \
-        "ETOT", ETOT, \
         "NEL", np.sum(elektroni_tiheys.gridi)*V_hartree.get_volume_of_a_box()
     return ETOT
 
