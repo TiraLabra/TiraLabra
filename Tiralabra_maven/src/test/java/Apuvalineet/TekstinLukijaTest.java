@@ -1,6 +1,6 @@
 package Apuvalineet;
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import org.junit.Before;
@@ -12,7 +12,7 @@ public class TekstinLukijaTest {
     private TekstinLukija lukija2;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.lukija = new TekstinLukija();
         try {
             lukija.lueTiedosto("TekstinLukijaTest.txt");
@@ -30,8 +30,8 @@ public class TekstinLukijaTest {
     }
     
     @Test
-    public void merkkienEsiintymienMaaraTasmaa() throws Exception {
-        HajautusTaulu esiintymat = lukija.getEsiintymat();
+    public void merkkienEsiintymienMaaraTasmaa() {
+        HajTaulu esiintymat = lukija.getEsiintymat();
         
         String avain = esiintymat.getArvo("T");
         assertEquals(3, Integer.parseInt(avain));
@@ -50,7 +50,7 @@ public class TekstinLukijaTest {
     }
 
     @Test
-    public void merkinLisaaminenKasvattaaSenEsiintymia() throws Exception {
+    public void merkinLisaaminenKasvattaaSenEsiintymia() {
         lukija2 = new TekstinLukija();
 
         lukija2.lisaaMerkki("a");

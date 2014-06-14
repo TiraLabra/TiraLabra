@@ -36,7 +36,7 @@ public class Lukija {
      * @throws IOException 
      */
     
-    public void lue() throws IOException, Exception {
+    public void lue() throws IOException {
         while (true) {
             int arvo = lukija.read();
             if (arvo == -1) {

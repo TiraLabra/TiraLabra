@@ -1,6 +1,6 @@
 package Toteutus.Huffman;
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import Tietorakenteet.Solmu;
 import java.util.HashMap;
 
@@ -10,17 +10,17 @@ import java.util.HashMap;
  */
 
 public class BittiEsitykset {
-    private HajautusTaulu esitykset;
+    private HajTaulu esitykset;
     
     public BittiEsitykset() {
-        this.esitykset = new HajautusTaulu();
+        this.esitykset = new HajTaulu();
     }
     
-    public BittiEsitykset(HajautusTaulu esitykset) {
+    public BittiEsitykset(HajTaulu esitykset) {
         this.esitykset = esitykset;
     }
     
-    public HajautusTaulu getEsitykset() {
+    public HajTaulu getEsitykset() {
         return this.esitykset;
     }
 
@@ -34,7 +34,7 @@ public class BittiEsitykset {
      * @param bittijono 
      */
     
-    public void muodostaMerkeilleBittiEsitykset(Solmu huippu, String bittijono) throws Exception {
+    public void muodostaMerkeilleBittiEsitykset(Solmu huippu, String bittijono) {
         if (! huippu.getAvain().equals((char) 0 + "")) {
             esitykset.lisaa(huippu.getAvain(), bittijono);
             return;
@@ -51,7 +51,7 @@ public class BittiEsitykset {
      * @return 
      */
     
-    public String huffmanPuunTekstiEsitys() throws Exception {
+    public String huffmanPuunTekstiEsitys() {
         StringBuilder teksti = new StringBuilder();
         
         for (String merkki : esitykset.getAvaimet()) {

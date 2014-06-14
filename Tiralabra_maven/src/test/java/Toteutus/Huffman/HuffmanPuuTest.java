@@ -1,6 +1,6 @@
 package Toteutus.Huffman;
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
 import java.util.HashMap;
@@ -11,19 +11,19 @@ import org.junit.Test;
 public class HuffmanPuuTest {
     private HuffmanPuu puu;
     private HuffmanPuu puu2;
-    private HajautusTaulu esiintymat;
+    private HajTaulu esiintymat;
     private BittiEsitykset esitykset;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(alustaEsiintymat());
         esitykset = new BittiEsitykset();
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
     }
 
-    private HajautusTaulu alustaEsiintymat() throws Exception {
-        HajautusTaulu puunEsiintymat = new HajautusTaulu();
+    private HajTaulu alustaEsiintymat() {
+        HajTaulu puunEsiintymat = new HajTaulu();
         puunEsiintymat.lisaa("A", Integer.toString(8));
         puunEsiintymat.lisaa("B", Integer.toString(2)); // b = g
         puunEsiintymat.lisaa("C", Integer.toString(4));
@@ -34,7 +34,7 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void merkillaALyhinBinaariEsitys() throws Exception {
+    public void merkillaALyhinBinaariEsitys() {
         String verr = esitykset.getEsitykset().getArvo("A");
         String A = esitykset.getEsitykset().getArvo("A");
         String nul = (char) 0 + "";
@@ -53,7 +53,7 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void merkillaDPisinBinaariEsitys() throws Exception {
+    public void merkillaDPisinBinaariEsitys() {
         String verr = esitykset.getEsitykset().getArvo("D");
         String D = esitykset.getEsitykset().getArvo("D");
         String nul = "" + (char) 0;
@@ -94,9 +94,9 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void luoKekoLuoMinKeon() throws Exception {
+    public void luoKekoLuoMinKeon() {
         puu2 = new HuffmanPuu();
-        esiintymat = new HajautusTaulu();
+        esiintymat = new HajTaulu();
         esiintymat.lisaa(("a"), Integer.toString(1));
         puu2.luoKeko(esiintymat);
         
@@ -104,7 +104,7 @@ public class HuffmanPuuTest {
     }
     
     @Test
-    public void luodussaKeossaOnSinneLaitettavatAvaimet() throws Exception {
+    public void luodussaKeossaOnSinneLaitettavatAvaimet() {
         muodostaTestiPuuJaKeko();
         
         assertEquals("b", puu2.getKeko().getSolmut()[0].getAvain());
@@ -112,7 +112,7 @@ public class HuffmanPuuTest {
     }    
     
     @Test
-    public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() throws Exception {
+    public void yhdistetynSolmunEsiintymienMaaraLapsienEsiintymienSumma() {
         muodostaTestiPuuJaKeko();
         
         puu2.yhdistaKeonSolmutPuuksi();
@@ -132,7 +132,7 @@ public class HuffmanPuuTest {
         assertEquals(vanh, oikea.getVanh());
     }
     
-    private void muodostaTestiPuuJaKeko() throws Exception {
+    private void muodostaTestiPuuJaKeko() {
         luoTyhjaPuu();
         luoTestiEsiintymat();
         puu2.luoKeko(esiintymat);
@@ -142,8 +142,8 @@ public class HuffmanPuuTest {
         puu2 = new HuffmanPuu();
     }
     
-    private void luoTestiEsiintymat() throws Exception {
-        esiintymat = new HajautusTaulu();
+    private void luoTestiEsiintymat() {
+        esiintymat = new HajTaulu();
         esiintymat.lisaa("a", Integer.toString(3));
         esiintymat.lisaa("b", Integer.toString(2));
     }

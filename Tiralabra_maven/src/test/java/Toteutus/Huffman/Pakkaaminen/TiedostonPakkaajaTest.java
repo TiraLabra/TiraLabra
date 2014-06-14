@@ -1,6 +1,6 @@
 package Toteutus.Huffman.Pakkaaminen;
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import Toteutus.Huffman.BittiEsitykset;
 import java.util.HashMap;
 import static org.junit.Assert.*;
@@ -16,7 +16,7 @@ public class TiedostonPakkaajaTest {
     }
     
     @Test
-    public void lisaaTekstiToimii() throws Exception {
+    public void lisaaTekstiToimii() {
         StringBuilder kirjoitettava = new StringBuilder();
         BittiEsitykset esitykset = new BittiEsitykset(testattavatBittiEsitykset());
 
@@ -35,11 +35,11 @@ public class TiedostonPakkaajaTest {
         assertEquals(teksti.toString(), kirjoitettava.toString());
     }
     
-    private HajautusTaulu testattavatBittiEsitykset() throws Exception {
+    private HajTaulu testattavatBittiEsitykset() {
         String n = (char) 0 + "";
         String y = (char) 1 + "";
         
-        HajautusTaulu esitykset = new HajautusTaulu();
+        HajTaulu esitykset = new HajTaulu();
         esitykset.lisaa("a", y+n+y);
         esitykset.lisaa("b", n+n);
         esitykset.lisaa("c", n+y);
@@ -50,7 +50,7 @@ public class TiedostonPakkaajaTest {
     }
     
     @Test
-    public void pakatuksiTekstiksi() throws Exception {
+    public void pakatuksiTekstiksi() {
         String pakattuna = pakkaaja.tekstiPakattuna(testattavatBittiEsitykset(), "cbe");
         assertEquals((char) 19 + "", pakattuna);
     }

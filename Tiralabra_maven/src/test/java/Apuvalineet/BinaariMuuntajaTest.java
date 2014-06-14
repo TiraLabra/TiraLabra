@@ -1,6 +1,6 @@
 package Apuvalineet;
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -8,16 +8,16 @@ import org.junit.Test;
 
 public class BinaariMuuntajaTest {
     private BinaariMuuntaja muuntaja;
-    private HajautusTaulu bittijonot;
+    private HajTaulu bittijonot;
     private String teksti;
     private final String n = (char) 0 + "";
     private final String y = (char) 1 + "";
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.muuntaja = new BinaariMuuntaja();
         
-        this.bittijonot = new HajautusTaulu();
+        this.bittijonot = new HajTaulu();
         bittijonot.lisaa("a", n+y);
         bittijonot.lisaa("b", n+n+n);
         bittijonot.lisaa("c", n+n+y);
@@ -28,7 +28,7 @@ public class BinaariMuuntajaTest {
     }    
     
     @Test
-    public void pakattuTekstiOnOikeanlainen() throws Exception {
+    public void pakattuTekstiOnOikeanlainen() {
         tekstiIlmanEtuNollia();
         assertEquals("01010100", muuntaja.lisaaEtuNollat("01010100"));
         assertEquals(n + "1010100", muuntaja.lisaaEtuNollat("1010100"));
@@ -36,7 +36,7 @@ public class BinaariMuuntajaTest {
         assertEquals(n+n+n+n+n+n + n+y+y+y+n+n+y+y+n+n+n+n+y+y+n+y+y+n, muuntaja.ykkosinaJaNollina(teksti, bittijonot));
     }
 
-    private void tekstiIlmanEtuNollia() throws Exception {
+    private void tekstiIlmanEtuNollia() {
         String ilmanEtuNollia = muuntaja.ilmanEtuNollia(teksti, bittijonot);
         assertEquals(ilmanEtuNollia, n+y+y+y+n+n+y+y+n+n+n+n+y+y+n+y+y+n);
     }
@@ -71,7 +71,7 @@ public class BinaariMuuntajaTest {
     }
     
     @Test
-    public void seuraavanTavunHakuOnnistuu() throws Exception {
+    public void seuraavanTavunHakuOnnistuu() {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
         char merkki = muuntaja.seuraavaTavuAsciiMerkkina(ykkosinaJaNollina, 0);
         assertTrue(merkki == 1);

@@ -1,5 +1,5 @@
 
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import Toteutus.Huffman.Pakkaaminen.PakkaamisenOhjaaja;
 import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
@@ -10,11 +10,11 @@ import java.util.Scanner;
 public class Main {
     
     public static void main(String[] args) throws IOException, Exception {
-        if (true) {
-            hajautusAjat();
-            return;
-        }
-        
+//        if (true) {
+//            hajautusAjat();
+//            return;
+//        }
+
         
         System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
         System.out.print("Nimi: ");
@@ -52,14 +52,14 @@ public class Main {
     
     public static void hajautusAjat() throws Exception {
         HashMap<String, String> hashmap = new HashMap<>();
-        HajautusTaulu hajautus = new HajautusTaulu();
+        HajTaulu hajautus = new HajTaulu();
         
-        String[] map = new String[100000];
-        String[] taulu = new String[100000];
+        String[] map = new String[10000];
+        String[] taulu = new String[10000];
         
         long ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             String bittijono = arvoBittijono();
             map[i] = bittijono;
             hashmap.put(bittijono, "");
@@ -71,7 +71,7 @@ public class Main {
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             String bittijono = arvoBittijono();
             taulu[i] = bittijono;
             hajautus.lisaa(bittijono, "");
@@ -86,7 +86,7 @@ public class Main {
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             hashmap.remove(map[i]);
         }
         
@@ -96,7 +96,7 @@ public class Main {
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             try {
                 hajautus.poista(taulu[i]);
             }

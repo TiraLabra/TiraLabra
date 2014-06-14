@@ -1,7 +1,7 @@
 package Toteutus.Huffman.Pakkaaminen;
 
 import Apuvalineet.BinaariMuuntaja;
-import Tietorakenteet.HajautusTaulu;
+import Tietorakenteet.HajTaulu;
 import Toteutus.Huffman.BittiEsitykset;
 import java.util.HashMap;
 
@@ -22,12 +22,11 @@ public class TiedostonPakkaaja {
      * Ensin muodostetaan tekstist‰ pakattava "0/1" -versio, jonka j‰lkeen luodaan StringBuilder- olio, johon
      * lis‰t‰‰n kaikki tarpeellinen yksi kerrallaan.
      * @param esitykset
-     * @param puu
      * @param teksti
      * @return 
      */
     
-    protected String muodostaKirjoitettavaTeksti(String teksti, BittiEsitykset esitykset) throws Exception {
+    protected String muodostaKirjoitettavaTeksti(String teksti, BittiEsitykset esitykset) {
         String pakattuna = tekstiPakattuna(esitykset.getEsitykset(), teksti);
         StringBuilder kirjoitettava = new StringBuilder();
         lisaaTeksti(kirjoitettava, pakattuna, esitykset);
@@ -42,7 +41,7 @@ public class TiedostonPakkaaja {
      * @return 
      */
     
-    protected String tekstiPakattuna(HajautusTaulu bittijonot, String teksti) throws Exception {
+    protected String tekstiPakattuna(HajTaulu bittijonot, String teksti) {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
         return muuntaja.pakatuksiTekstiksi(ykkosinaJaNollina);
     }
@@ -56,7 +55,7 @@ public class TiedostonPakkaaja {
      * @param esitykset
      */
     
-    protected void lisaaTeksti(StringBuilder kirjoitettava, String pakattuna, BittiEsitykset esitykset) throws Exception {
+    protected void lisaaTeksti(StringBuilder kirjoitettava, String pakattuna, BittiEsitykset esitykset) {
         kirjoitettava.append(esitykset.huffmanPuunTekstiEsitys());
         kirjoitettava.append((char) muuntaja.getLisatytEtuNollat());
         kirjoitettava.append(pakattuna);
