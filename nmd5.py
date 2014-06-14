@@ -226,16 +226,7 @@ class NMD5:
 	
 	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
-		bstring = ' '.join(bin(ord(x)) for x in string).split(' ')
-
-		# Cleanup, remove 'b's, add leading zeroes
-		for i in range(0, len(bstring)):
-			b = bstring[i]
-			if len(b) == 9:
-				bstring[i] = b.replace('b', '')
-			else:
-				bstring[i] = b.replace('b', '0')
-		return ''.join(bstring)
+		return ''.join('{:08b}'.format(ord(x)) for x in string)
 
 	def pad(self, bstring):
 		"""Adds padding to binary string be congruent to 448 mod 512"""
