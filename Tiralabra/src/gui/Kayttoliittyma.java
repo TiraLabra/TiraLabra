@@ -14,37 +14,17 @@ import logiikka.Matriisilaskin;
  */
 public class Kayttoliittyma extends javax.swing.JFrame {
 
-    private int rivitA;
-    private int rivitB;
-    private int rivitC;
-    private int sarakkeetA;
-    private int sarakkeetB;
-    private int sarakkeetC;
-    private String matriisiAString;
-    private String matriisiBString;
-    private String matriisiCString;
-    private double[][] matriisiA;
-    private double[][] matriisiB;
-    private double[][] matriisiC;
     private Scanner lukija;
     private MatriisienLukija matriisienlukija;
     private MatriisienTallentaja tallentaja;
     private Matriisilaskin laskin;
     
     /**
-     * Konstruktori, joka asettaa matriisien rivit ja sarakkeet nolliksi ja
-     * luo uudet ilmentymät MatriisienLukijasta, -Tallentajasta sekä Matriisi-
-     * laskin-luokista niiden private-muuttujiin. Lopuksi initialisoi komponen-
-     * tit.
+     * Konstruktori, joka luo uudet ilmentymät MatriisienLukijasta, 
+     * -Tallentajasta sekä Matriisilaskin -luokista niiden private-muuttujiin. 
+     * Lopuksi initialisoi komponentit.
      */
     public Kayttoliittyma() {
-        rivitA = 0;
-        rivitB = 0;
-        rivitC = 0;
-        sarakkeetA = 0;
-        sarakkeetB = 0;
-        sarakkeetC = 0;
-
         matriisienlukija = new MatriisienLukija();
         tallentaja = new MatriisienTallentaja();
         laskin = new Matriisilaskin();
@@ -144,7 +124,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinCText = new javax.swing.JTextField();
         tallennaCButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Matriisilaskin");
@@ -331,7 +312,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addGroup(matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(potenssiinAButton)
                     .addComponent(potenssiinAText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         summaaButton.setText("+");
@@ -534,7 +515,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addGroup(matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(potenssiinBButton)
                     .addComponent(potenssiinBText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         matriisiCPanel.setPreferredSize(new java.awt.Dimension(209, 420));
@@ -714,12 +695,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addGroup(matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(potenssiinCButton)
                     .addComponent(potenssiinCText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("Vastausmatriisi");
+        jLabel1.setText("Vastausmatriisi C");
 
-        jLabel2.setText("Kirjoita matriisit matriisimuodossa tai riveittäin, jotta saat haluamasi vastauksen");
+        jLabel3.setText("Matriisi A");
+
+        jLabel4.setText("Matriisi B");
 
         javax.swing.GroupLayout alustaPanelLayout = new javax.swing.GroupLayout(alustaPanel);
         alustaPanel.setLayout(alustaPanelLayout);
@@ -739,9 +722,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, alustaPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2)
+                .addGap(95, 95, 95)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(131, 131, 131)
                 .addComponent(jLabel1)
                 .addGap(74, 74, 74))
         );
@@ -759,13 +744,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                     .addGroup(alustaPanelLayout.createSequentialGroup()
                         .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(matriisiBPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(matriisiAPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(matriisiCPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                            .addComponent(matriisiAPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+                            .addComponent(matriisiBPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+                            .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))))
+                .addContainerGap())
         );
 
         getContentPane().add(alustaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 480));
@@ -774,510 +760,428 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void summaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_summaaButtonActionPerformed
-        if (!lataaMatriisiA() || !lataaMatriisiB()) {
+        double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                  sarakkeetAText.getText(),
+                                                  matriisiAText.getText(), 'A');
+        double[][] matriisiB = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                  sarakkeetBText.getText(),
+                                                  matriisiBText.getText(), 'B');
+        if(matriisiA == null || matriisiB == null){
             return;
-        } else if (!luoMatriisiA() || !luoMatriisiB()) {
-            return;
-        } else if(!tarkastaSumma()){
+        } else if(!tarkastaSumma(matriisiA, matriisiB)){
+            naytaA(matriisiA);
+            naytaB(matriisiB);
             return;
         } 
 
-        matriisiC = laskin.summaa(matriisiA, matriisiB);
-        naytaC();
+        double[][] matriisiC = laskin.summaa(matriisiA, matriisiB);
+        naytaC(matriisiC);
     }//GEN-LAST:event_summaaButtonActionPerformed
 
     private void tiedotAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotAButtonActionPerformed
-        if (!lataaMatriisiA() || !luoMatriisiA()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                 sarakkeetAText.getText(),
+                                                 matriisiAText.getText(), 'A');
+        if(matriisi == null){
             return;
         }
-        neliomatriisiATulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisiA));
-        symmetrinenATulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiA));
-        antisymmetrinenATulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiA));
+        neliomatriisiATulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisi));
+        symmetrinenATulosLabel.setText("" + laskin.onkoSymmetrinen(matriisi));
+        antisymmetrinenATulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisi));
         try {
-            determinanttiATulosLabel.setText("" + laskin.laskeDeterminantti(matriisiA));
-            kaantyvaATulosLabel.setText("" + laskin.onkoKaantyva(matriisiA));
-            ortogonaalinenATulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiA));         
+            determinanttiATulosLabel.setText("" + laskin.laskeDeterminantti(matriisi));
+            kaantyvaATulosLabel.setText("" + laskin.onkoKaantyva(matriisi));
+            ortogonaalinenATulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisi));         
         } catch (Exception e) {
+            determinanttiATulosLabel.setText("-");
+            kaantyvaATulosLabel.setText("-");
+            ortogonaalinenATulosLabel.setText("-");
         }
+        naytaA(matriisi);
     }//GEN-LAST:event_tiedotAButtonActionPerformed
 
     private void tiedotBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotBButtonActionPerformed
-        if (!lataaMatriisiB() || !luoMatriisiB()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                 sarakkeetBText.getText(),
+                                                 matriisiBText.getText(), 'B');
+        if(matriisi == null){
             return;
-        }
-        neliomatriisiBTulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisiB));
-        symmetrinenBTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiB));
-        antisymmetrinenBTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiB));
+        } 
+        neliomatriisiBTulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisi));
+        symmetrinenBTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisi));
+        antisymmetrinenBTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisi));
         try {
-            determinanttiBTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiB));
-            kaantyvaBTulosLabel.setText("" + laskin.onkoKaantyva(matriisiB));
-            ortogonaalinenBTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiB));
+            determinanttiBTulosLabel.setText("" + laskin.laskeDeterminantti(matriisi));
+            kaantyvaBTulosLabel.setText("" + laskin.onkoKaantyva(matriisi));
+            ortogonaalinenBTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisi));
         } catch (Exception e) {
+            determinanttiBTulosLabel.setText("-");
+            kaantyvaBTulosLabel.setText("-");
+            ortogonaalinenBTulosLabel.setText("-");
         }
+        naytaB(matriisi);
     }//GEN-LAST:event_tiedotBButtonActionPerformed
 
     private void tiedotCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotCButtonActionPerformed
-        if (!lataaMatriisiC() || !luoMatriisiC()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
+                                                 sarakkeetCText.getText(),
+                                                 matriisiCText.getText(), 'C');
+        if(matriisi == null){
             return;
         }
-        neliomatriisiCTulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisiC));
-        symmetrinenCTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisiC));
-        antisymmetrinenCTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisiC));
+        neliomatriisiCTulosLabel.setText("" + laskin.onkoNeliomatriisi(matriisi));
+        symmetrinenCTulosLabel.setText("" + laskin.onkoSymmetrinen(matriisi));
+        antisymmetrinenCTulosLabel.setText("" + laskin.onkoAntisymmetrinen(matriisi));
         try {
-            determinanttiCTulosLabel.setText("" + laskin.laskeDeterminantti(matriisiC));
-            kaantyvaCTulosLabel.setText("" + laskin.onkoKaantyva(matriisiC));
-            ortogonaalinenCTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisiC));
+            determinanttiCTulosLabel.setText("" + laskin.laskeDeterminantti(matriisi));
+            kaantyvaCTulosLabel.setText("" + laskin.onkoKaantyva(matriisi));
+            ortogonaalinenCTulosLabel.setText("" + laskin.onkoOrtogonaalinen(matriisi));
         } catch (Exception e) {
+            determinanttiCTulosLabel.setText("-");
+            kaantyvaCTulosLabel.setText("-");
+            ortogonaalinenCTulosLabel.setText("-");
         }
+        naytaC(matriisi);
     }//GEN-LAST:event_tiedotCButtonActionPerformed
 
     private void vahennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vahennaButtonActionPerformed
-        if (!lataaMatriisiA() || !lataaMatriisiB()) {
+        double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                  sarakkeetAText.getText(),
+                                                  matriisiAText.getText(), 'A');
+        double[][] matriisiB = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                  sarakkeetBText.getText(),
+                                                  matriisiBText.getText(), 'B');
+        if(matriisiA == null || matriisiB == null){
             return;
-        } else if (!luoMatriisiA() || !luoMatriisiB()) {
-            return;
-        } else if(!tarkastaErotus()){
+        } else if(!tarkastaErotus(matriisiA, matriisiB)){
+            naytaA(matriisiA);
+            naytaB(matriisiB);
             return;
         } 
 
-        matriisiC = laskin.vahenna(matriisiA, matriisiB);
-        naytaC();
+        double[][] matriisiC = laskin.vahenna(matriisiA, matriisiB);
+        naytaC(matriisiC);
     }//GEN-LAST:event_vahennaButtonActionPerformed
 
     private void kerroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kerroButtonActionPerformed
-        if (!lataaMatriisiA() || !lataaMatriisiB()) {
+        double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                  sarakkeetAText.getText(),
+                                                  matriisiAText.getText(), 'A');
+        double[][] matriisiB = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                  sarakkeetBText.getText(),
+                                                  matriisiBText.getText(), 'B');
+        if(matriisiA == null || matriisiB == null){
             return;
-        } else if (!luoMatriisiA() || !luoMatriisiB()) {
-            return;
-        } else if(!tarkastaKertolasku()){
+        } else if(!tarkastaKertolasku(matriisiA, matriisiB)){
+            naytaA(matriisiA);
+            naytaB(matriisiB);
             return;
         } 
-        
+        double[][] matriisiC;
         try {
             matriisiC = laskin.kerroStrassenilla(matriisiA, matriisiB);
         } catch (Exception e) {
             matriisiC = laskin.kerro(matriisiA, matriisiB);
         }   
-        naytaC();
+        naytaC(matriisiC);
     }//GEN-LAST:event_kerroButtonActionPerformed
 
     private void transpoosiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiAButtonActionPerformed
-        if (!lataaMatriisiA() || !luoMatriisiA()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                 sarakkeetAText.getText(),
+                                                 matriisiAText.getText(), 'A');
+        if(matriisi == null){
             return;
         }
-        matriisiA = laskin.transpoosaa(matriisiA);
-        naytaA();
+        matriisi = laskin.transpoosaa(matriisi);
+        naytaA(matriisi);
     }//GEN-LAST:event_transpoosiAButtonActionPerformed
 
     private void transpoosiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiBButtonActionPerformed
-        if (!lataaMatriisiB() || !luoMatriisiB()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                 sarakkeetBText.getText(),
+                                                 matriisiBText.getText(), 'B');
+        if(matriisi == null){
             return;
         }
-        matriisiB = laskin.transpoosaa(matriisiB);
-        naytaB();
+        matriisi = laskin.transpoosaa(matriisi);
+        naytaB(matriisi);
     }//GEN-LAST:event_transpoosiBButtonActionPerformed
 
     private void transpoosiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiCButtonActionPerformed
-        if (!lataaMatriisiC() || !luoMatriisiC()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
+                                                 sarakkeetCText.getText(),
+                                                 matriisiCText.getText(), 'C');
+        if(matriisi == null){
             return;
         }
-        matriisiC = laskin.transpoosaa(matriisiC);
-        naytaC();
+        matriisi = laskin.transpoosaa(matriisi);
+        naytaC(matriisi);
     }//GEN-LAST:event_transpoosiCButtonActionPerformed
 
     private void kaanteismatriisiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiAButtonActionPerformed
-        if (!lataaMatriisiA() || !luoMatriisiA()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiA)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                 sarakkeetAText.getText(),
+                                                 matriisiAText.getText(), 'A');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiA = laskin.invertoi(matriisiA);
+            matriisi = laskin.invertoi(matriisi);
         } catch (Exception e) {
             virheInvertoi();
         }    
-        naytaA();
+        naytaA(matriisi);
     }//GEN-LAST:event_kaanteismatriisiAButtonActionPerformed
 
     private void kaanteismatriisiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiBButtonActionPerformed
-        if (!lataaMatriisiB() || !luoMatriisiB()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiB)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                 sarakkeetBText.getText(),
+                                                 matriisiBText.getText(), 'B');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiB = laskin.invertoi(matriisiB);
+            matriisi = laskin.invertoi(matriisi);
         } catch (Exception e) {
             virheInvertoi();
         }    
-        naytaB();
+        naytaB(matriisi);
     }//GEN-LAST:event_kaanteismatriisiBButtonActionPerformed
 
     private void kaanteismatriisiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiCButtonActionPerformed
-        if (!lataaMatriisiC() || !luoMatriisiC()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiC)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
+                                                 sarakkeetCText.getText(),
+                                                 matriisiCText.getText(), 'C');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiC = laskin.invertoi(matriisiC);
+            matriisi = laskin.invertoi(matriisi);
         } catch (Exception e) {
             virheInvertoi();
         }    
-        naytaC();
+        naytaC(matriisi);
     }//GEN-LAST:event_kaanteismatriisiCButtonActionPerformed
 
     private void potenssiinAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinAButtonActionPerformed
-        if (!lataaMatriisiA() || !luoMatriisiA()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiA)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
+                                                 sarakkeetAText.getText(),
+                                                 matriisiAText.getText(), 'A');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiA = laskin.neliomatriisiPotenssiin(matriisiA, 
-                        Integer.parseInt(potenssiinAText.getText()));
+            matriisi = laskin.neliomatriisiPotenssiin(matriisi, 
+                       Integer.parseInt(potenssiinAText.getText()));
         } catch (Exception e) {
             virhePotenssi();
             return;
         }
-        naytaA();
+        naytaA(matriisi);
     }//GEN-LAST:event_potenssiinAButtonActionPerformed
 
     private void potenssiinBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinBButtonActionPerformed
-        if (!lataaMatriisiB() || !luoMatriisiB()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiB)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
+                                                 sarakkeetBText.getText(),
+                                                 matriisiBText.getText(), 'B');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiB = laskin.neliomatriisiPotenssiin(matriisiB, 
-                        Integer.parseInt(potenssiinBText.getText()));
+            matriisi = laskin.neliomatriisiPotenssiin(matriisi, 
+                       Integer.parseInt(potenssiinBText.getText()));
         } catch (Exception e) {
             virhePotenssi();
             return;
         }
-        naytaB();
+        naytaB(matriisi);
     }//GEN-LAST:event_potenssiinBButtonActionPerformed
 
     private void potenssiinCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinCButtonActionPerformed
-        if (!lataaMatriisiC() || !luoMatriisiC()) {
-            return;
-        } else if(!laskin.onkoNeliomatriisi(matriisiC)){
-            virheEiNelio();
+        double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
+                                                 sarakkeetCText.getText(),
+                                                 matriisiCText.getText(), 'C');
+        if(!tarkastaNelio(matriisi)){
             return;
         }
         try {
-            matriisiC = laskin.neliomatriisiPotenssiin(matriisiC, 
-                        Integer.parseInt(potenssiinCText.getText()));
+            matriisi = laskin.neliomatriisiPotenssiin(matriisi, 
+                       Integer.parseInt(potenssiinCText.getText()));
         } catch (Exception e) {
             virhePotenssi();
             return;
         }
-        naytaC();
+        naytaC(matriisi);
     }//GEN-LAST:event_potenssiinCButtonActionPerformed
 
     private void lataaAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaAButtonActionPerformed
-        try {
-            matriisiA = matriisienlukija.lue(lataaAText.getText());
-            naytaA();
-        } catch (Exception e) {
-            virheLataus();
-        }
+        lataa(lataaAText.getText(), 'A');
     }//GEN-LAST:event_lataaAButtonActionPerformed
 
     private void lataaBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaBButtonActionPerformed
-        try {
-            matriisiB = matriisienlukija.lue(lataaBText.getText());
-            naytaB();
-        } catch (Exception e) {
-            virheLataus();
-        }
+        lataa(lataaBText.getText(), 'B');
     }//GEN-LAST:event_lataaBButtonActionPerformed
 
     private void tallennaCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tallennaCButtonActionPerformed
-        if (!lataaMatriisiC() || !luoMatriisiC()) {
+        double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
+                                                 sarakkeetCText.getText(),
+                                                 matriisiCText.getText(), 'C');
+        if(matriisi == null){
             return;
         }
         try {
-            tallentaja.tallenna(matriisiC, tallennaCText.getText());
+            tallentaja.tallenna(matriisi, tallennaCText.getText());
         } catch (Exception e) {
             virheTallennus();
         }
     }//GEN-LAST:event_tallennaCButtonActionPerformed
 
-    private boolean lataaMatriisiA() {
-        try {
-            rivitA = Integer.parseInt(rivitAText.getText());
-            sarakkeetA = Integer.parseInt(sarakkeetAText.getText());
-            matriisiAString = matriisiAText.getText();
-        } catch (Exception e) {
-            if(e.getClass() == NumberFormatException.class) {
-                virheAKoko();
-                return false;
-            }
-            virheLataaA();
+    private boolean tarkastaNelio(double[][] matriisi) {
+        if(matriisi == null){
             return false;
-        }
-        return true;
-    }
-
-    private boolean lataaMatriisiB() {
-        try {
-            rivitB = Integer.parseInt(rivitBText.getText());
-            sarakkeetB = Integer.parseInt(sarakkeetBText.getText());
-            matriisiBString = matriisiBText.getText();
-        } catch (Exception e) {
-            if(e.getClass() == NumberFormatException.class) {
-                virheBKoko();
-                return false;
-            }
-            virheLataaB();
+        } else if(!laskin.onkoNeliomatriisi(matriisi)){
+            virheEiNelio();
             return false;
         }
         return true;
     }
     
-    private boolean lataaMatriisiC() {
+    private void lataa(String tiedostonimi, char tunniste) {
         try {
-            rivitC = Integer.parseInt(rivitCText.getText());
-            sarakkeetC = Integer.parseInt(sarakkeetCText.getText());
-            matriisiCString = matriisiCText.getText();
+            double[][] matriisi = matriisienlukija.lue(tiedostonimi);
+            if(tunniste == 'A') {
+                naytaA(matriisi);
+            } else {
+                naytaB(matriisi);
+            }     
         } catch (Exception e) {
-            if(e.getClass() == NumberFormatException.class) {
-                virheCKoko();
-                return false;
-            }
-            virheLataaC();
-            return false;
+            virheLataus();
         }
-        return true;
-    }
-
-    private boolean luoMatriisiA() {
-        if(!tarkastaAKoko()) {
-            return false;
-        }
-        matriisiA = new double[rivitA][sarakkeetA];
-
-        if (matriisiAString.length() < 2 * (rivitA - 1) * sarakkeetA) {
-            virheMatriisiA();
-            return false;
-        }
-
-        return lueMatriisiA();
-    }
-
-    private boolean luoMatriisiB() {
-        if(!tarkastaBKoko()) {
-            return false;
-        }
-        matriisiB = new double[rivitB][sarakkeetB];
-
-        if (matriisiBString.length() < 2 * (rivitB - 1) * sarakkeetB) {
-            virheMatriisiB();
-            return false;
-        }
-
-        return lueMatriisiB();
     }
     
-    private boolean luoMatriisiC() {
-        if(!tarkastaCKoko()) {
-            return false;
+    private double[][] lataaJaLuoMatriisi(String rivit, String sarakkeet, 
+                                          String matriisiS, char tunniste) {
+        int rivitM = lataaRivit(rivit, tunniste);
+        int sarakkeetM = lataaSarakkeet(sarakkeet, tunniste);
+        if (rivitM == -1 || sarakkeetM == -1) {
+            return null;       
+        } else {
+            return luoMatriisi(rivitM, sarakkeetM, matriisiS, tunniste);
         }
-        matriisiC = new double[rivitC][sarakkeetC];
-
-        if (matriisiCString.length() < 2 * (rivitC - 1) * sarakkeetC) {
-            virheMatriisiC();
-            return false;
+    }
+    
+    private int lataaRivit(String rivit, char tunniste) {
+        try {
+            return Integer.parseInt(rivit);
+        } catch (Exception e) {
+            virheKoko(tunniste);
+            return -1;
         }
-
-        return lueMatriisiC();
+    }
+    
+    private int lataaSarakkeet(String sarakkeet, char tunniste) {
+        try {
+            return Integer.parseInt(sarakkeet);
+        } catch (Exception e) {
+            virheKoko(tunniste);
+            return -1;
+        }
     }
 
-    private boolean lueMatriisiA() {
-        lukija = new Scanner(matriisiAString);
-        for (int rivit = 0; rivit < rivitA; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetA; sarakkeet++) {
+    private double[][] luoMatriisi(int rivit, int sarakkeet, 
+                                   String matriisiS, char tunniste) {
+        if(!tarkastaKoko(rivit, sarakkeet, tunniste)) {
+            return null;
+        } else if(matriisiS.length() < 2 * (rivit - 1) * sarakkeet) {
+            virheMatriisi(tunniste);
+            return null;
+        }  
+        return lueMatriisi(rivit, sarakkeet, matriisiS, tunniste);
+    }
+
+    private double[][] lueMatriisi(int rivitM, int sarakkeetM, String matriisiS, 
+                                   char tunniste) {
+        lukija = new Scanner(matriisiS);
+        double[][] matriisi = new double[rivitM][sarakkeetM];
+        for (int rivit = 0; rivit < rivitM; rivit++) {
+            for (int sarakkeet = 0; sarakkeet < sarakkeetM; sarakkeet++) {
                 try {
-                    matriisiA[rivit][sarakkeet] = Double.parseDouble(lukija.next());
+                    matriisi[rivit][sarakkeet] = Double.parseDouble(lukija.next());
                 } catch (Exception e) {
-                    virheMatriisiA();
-                    return false;
+                    virheMatriisi(tunniste);
+                    return null;
                 }
             }
         }
         lukija.close();
-        return true;
+        return matriisi;
+    }
+    
+    private void naytaA(double[][] A) {
+        rivitAText.setText("" + A.length);
+        sarakkeetAText.setText("" + A[0].length);
+        matriisiAText.setText(matriisiStringiksi(A));
+    }
+    
+    private void naytaB(double[][] B) {
+        rivitBText.setText("" + B.length);
+        sarakkeetBText.setText("" + B[0].length);
+        matriisiBText.setText(matriisiStringiksi(B));
     }
 
-    private boolean lueMatriisiB() {
-        lukija = new Scanner(matriisiBString);
-        for (int rivit = 0; rivit < rivitB; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetB; sarakkeet++) {
-                try {
-                    matriisiB[rivit][sarakkeet] = Double.parseDouble(lukija.next());
-                } catch (Exception e) {
-                    virheMatriisiB();
-                    return false;
-                }
-            }
-        }
-        lukija.close();
-        return true;
+    private void naytaC(double[][] C) {
+        rivitCText.setText("" + C.length);
+        sarakkeetCText.setText("" + C[0].length);
+        matriisiCText.setText(matriisiStringiksi(C));
     }
     
-    private boolean lueMatriisiC() {
-        lukija = new Scanner(matriisiCString);
-        for (int rivit = 0; rivit < rivitC; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetC; sarakkeet++) {
-                try {
-                    matriisiC[rivit][sarakkeet] = Double.parseDouble(lukija.next());
-                } catch (Exception e) {
-                    virheMatriisiC();
-                    return false;
-                }
+    private String matriisiStringiksi(double[][] matriisi) {
+        String matriisiS = "";
+        for (int rivit = 0; rivit < matriisi.length; rivit++) {
+            for (int sarakkeet = 0; sarakkeet < matriisi[0].length; sarakkeet++) {
+                matriisiS += matriisi[rivit][sarakkeet]+"   ";
             }
+            matriisiS += "\n";
         }
-        lukija.close();
-        return true;
+        return matriisiS;
     }
     
-    private void naytaA() {
-        rivitA = matriisiA.length;
-        sarakkeetA = matriisiA[0].length;
-        rivitAText.setText("" + rivitA);
-        sarakkeetAText.setText("" + sarakkeetA);
-        matriisiAString = "";
-        for (int rivit = 0; rivit < rivitA; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetA; sarakkeet++) {
-                matriisiAString += matriisiA[rivit][sarakkeet]+"   ";
-            }
-            matriisiAString += "\n";
-        }
-        matriisiAText.setText(matriisiAString);
-    }
-    
-    private void naytaB() {
-        rivitB = matriisiB.length;
-        sarakkeetB = matriisiB[0].length;
-        rivitBText.setText("" + rivitB);
-        sarakkeetBText.setText("" + sarakkeetB);
-        matriisiBString = "";
-        for (int rivit = 0; rivit < rivitB; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetB; sarakkeet++) {
-                matriisiBString += matriisiB[rivit][sarakkeet]+"   ";
-            }
-            matriisiBString += "\n";
-        }
-        matriisiBText.setText(matriisiBString);
-    }
-
-    private void naytaC() {
-        rivitC = matriisiC.length;
-        sarakkeetC = matriisiC[0].length;
-        rivitCText.setText("" + rivitC);
-        sarakkeetCText.setText("" + sarakkeetC);
-        matriisiCString = "";
-        for (int rivit = 0; rivit < rivitC; rivit++) {
-            for (int sarakkeet = 0; sarakkeet < sarakkeetC; sarakkeet++) {
-                matriisiCString += matriisiC[rivit][sarakkeet]+"   ";
-            }
-            matriisiCString += "\n";
-        }
-        matriisiCText.setText(matriisiCString);
-    }
-    
-    private boolean tarkastaSumma() {
-        if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
+    private boolean tarkastaSumma(double[][] A, double[][] B) {
+        if (A.length != B.length || A[0].length != B[0].length) {
             virheSumma();
             return false;
         }
         return true;
     }
     
-    private boolean tarkastaErotus() {
-        if (rivitA != rivitB || sarakkeetA != sarakkeetB) {
+    private boolean tarkastaErotus(double[][] A, double[][] B) {
+        if (A.length != B.length || A[0].length != B[0].length) {
             virheVahennys();
             return false;
         }
         return true;
     }
     
-    private boolean tarkastaKertolasku() {
-        if (sarakkeetA != rivitB) {
+    private boolean tarkastaKertolasku(double[][] A, double[][] B) {
+        if (A[0].length != B.length) {
             virheKertolasku();
             return false;
         }
         return true;
     }
     
-    private boolean tarkastaAKoko() {
-        if (rivitA <= 0 || sarakkeetA <= 0) {
-            virheAKoko();
+    private boolean tarkastaKoko(int rivit, int sarakkeet, char tunniste) {
+        if(rivit <= 0 || sarakkeet <= 0) {
+            virheKoko(tunniste);
             return false;
         }
         return true;
     }
     
-    private boolean tarkastaBKoko() {
-        if (rivitB <= 0 || sarakkeetB <= 0) {
-            virheBKoko();
-            return false;
-        }
-        return true;
-    }
-    
-    private boolean tarkastaCKoko() {
-        if (rivitC <= 0 || sarakkeetC <= 0) {
-            virheCKoko();
-            return false;
-        }
-        return true;
-    }
-
-    private void virheLataaA() {
+    private void virheKoko(char tunniste) {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nVasemman matriisin lataamisessa tapahtui virhe", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void virheLataaB() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nKeskimmäisen matriisin lataamisessa tapahtui virhe", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void virheLataaC() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nVastausmatriisin lataamisessa tapahtui virhe", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void virheAKoko() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nTarkasta, että vasemmanpuoleisen matriisin kokomäärityksissä"
-                + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
-                + "\nole ylimääräisiä välilyöntejä", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void virheBKoko() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nTarkasta, että keskimmäisen matriisin kokomäärityksissä"
-                + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
-                + "\nole ylimääräisiä välilyöntejä", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void virheCKoko() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nTarkasta, että vastausmatriisin kokomäärityksissä"
+                + "\nTarkasta, että matriisin "+tunniste+" kokomäärityksissä"
                 + "\nkäytetään vain positiivisia kokonaislukuja, eikä siellä"
                 + "\nole ylimääräisiä välilyöntejä", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
@@ -1338,26 +1242,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 + "\ntavallisia kirjaimia ja/tai yhden pisteen.", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
     }
-
-    private void virheMatriisiA() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nVasemman matriisin syötteessä tapahtui virhe. Tarkasta,"
-                + "\nettä se sisältää vain liukulukuja. Tarkasta myös, että"
-                + "\nalkioita on oikea määrä.", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void virheMatriisiB() {
-        JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nKeskimmäisen matriisin syötteessä tapahtui virhe. Tarkasta,"
-                + "\nettä se sisältää vain liukulukuja. Tarkasta myös, että"
-                + "\nalkioita on oikea määrä.", "Virhe",
-                JOptionPane.ERROR_MESSAGE);
-    }
     
-    private void virheMatriisiC() {
+    private void virheMatriisi(char tunniste) {
         JOptionPane.showMessageDialog(this, "Virhe:\n"
-                + "\nVastausmatriisin syötteessä tapahtui virhe. Tarkasta,"
+                + "\nMatriisin "+tunniste+" syötteessä tapahtui virhe. Tarkasta,"
                 + "\nettä se sisältää vain liukulukuja. Tarkasta myös, että"
                 + "\nalkioita on oikea määrä.", "Virhe",
                 JOptionPane.ERROR_MESSAGE);
@@ -1412,7 +1300,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JLabel determinanttiCLabel;
     private javax.swing.JLabel determinanttiCTulosLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JButton kaanteismatriisiAButton;
     private javax.swing.JButton kaanteismatriisiBButton;
     private javax.swing.JButton kaanteismatriisiCButton;
