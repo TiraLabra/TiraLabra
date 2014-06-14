@@ -768,9 +768,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                                   matriisiBText.getText(), 'B');
         if(matriisiA == null || matriisiB == null){
             return;
-        } else if(!tarkastaSumma(matriisiA, matriisiB)){
-            naytaA(matriisiA);
-            naytaB(matriisiB);
+        }
+        naytaA(matriisiA);
+        naytaB(matriisiB);
+        if(!tarkastaSumma(matriisiA, matriisiB)){
             return;
         } 
 
@@ -853,9 +854,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                                   matriisiBText.getText(), 'B');
         if(matriisiA == null || matriisiB == null){
             return;
-        } else if(!tarkastaErotus(matriisiA, matriisiB)){
-            naytaA(matriisiA);
-            naytaB(matriisiB);
+        }
+        naytaA(matriisiA);
+        naytaB(matriisiB);
+        if(!tarkastaErotus(matriisiA, matriisiB)){
             return;
         } 
 
@@ -872,9 +874,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                                   matriisiBText.getText(), 'B');
         if(matriisiA == null || matriisiB == null){
             return;
-        } else if(!tarkastaKertolasku(matriisiA, matriisiB)){
-            naytaA(matriisiA);
-            naytaB(matriisiB);
+        }
+        naytaA(matriisiA);
+        naytaB(matriisiB);
+        if(!tarkastaKertolasku(matriisiA, matriisiB)){
             return;
         } 
         double[][] matriisiC;
@@ -1063,8 +1066,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private double[][] lataaJaLuoMatriisi(String rivit, String sarakkeet, 
                                           String matriisiS, char tunniste) {
         int rivitM = lataaRivit(rivit, tunniste);
+        if(rivitM == -1) {
+            return null;
+        }
         int sarakkeetM = lataaSarakkeet(sarakkeet, tunniste);
-        if (rivitM == -1 || sarakkeetM == -1) {
+        if (sarakkeetM == -1) {
             return null;       
         } else {
             return luoMatriisi(rivitM, sarakkeetM, matriisiS, tunniste);
