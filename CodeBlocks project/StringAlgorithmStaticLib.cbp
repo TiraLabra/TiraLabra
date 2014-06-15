@@ -55,7 +55,17 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="string_slib.hpp" />
 		<Unit filename="structures/knuth_morris_pratt.hpp" />
+		<Unit filename="structures/naive_suffix_tree_builder.cpp" />
+		<Unit filename="structures/naive_suffix_tree_builder.hpp" />
+		<Unit filename="structures/suffix_tree.cpp" />
 		<Unit filename="structures/suffix_tree.hpp" />
+		<Unit filename="structures/suffix_tree_builder.hpp" />
+		<Unit filename="structures/suffix_trie.cpp" />
+		<Unit filename="structures/suffix_trie.hpp" />
+		<Unit filename="structures/suffix_trie_builder.cpp" />
+		<Unit filename="structures/suffix_trie_builder.hpp" />
+		<Unit filename="structures/ukkonen_suffix_tree_builder.cpp" />
+		<Unit filename="structures/ukkonen_suffix_tree_builder.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

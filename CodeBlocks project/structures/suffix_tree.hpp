@@ -18,7 +18,7 @@ class suffix_tree{
         public:
         node(int index);
         int get_index();
-        void add_edge(edge * e);
+        void add_edge(edge * e, char index);
         edge * get_edge(char index);
         bool has_edge(char index);
     };
@@ -31,6 +31,10 @@ class suffix_tree{
         public:
         edge(int substr_start, int substr_len, node * from,
         node * to);
+        int get_start();
+        int get_length();
+        node * get_from();
+        node * get_to();
         //void branch();
     };
     suffix_tree(node * root);

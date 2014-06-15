@@ -8,21 +8,25 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1401739091 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1402841425 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
 	"algorithms/knuth_morris_pratt.hpp"
 	"algorithms/edit_distance.hpp"
+	"structures/suffix_tree_builder.hpp"
+	"structures/suffix_trie.hpp"
+	"structures/suffix_tree.hpp"
+	"structures/suffix_trie_builder.hpp"
 
-1400588696 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+1402053955 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
 	"../constants.hpp"
 	<cstring>
 	<string>
 
-1400595820 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+1401971934 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
 
-1401646882 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+1402059384 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
 	<cstring>
 	<string>
 	<iostream>
@@ -47,7 +51,7 @@
 	<cstring>
 	"../../constants.hpp"
 
-1401648245 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+1401971295 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
@@ -104,12 +108,12 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1401655473 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1401969358 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
 	<string>
 
-1401740941 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/edit_distance_tests.cpp
+1402842565 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/edit_distance_tests.cpp
 	"edit_distance_tests.hpp"
 	<iostream>
 
@@ -120,7 +124,7 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1401741198 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
+1401973662 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
 	<cstring>
 	<string>
 	<cstdlib>
@@ -128,4 +132,39 @@
 1401740349 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
 	"knuth_morris_pratt_tests.hpp"
 	<iostream>
+
+1402603268 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree_builder.hpp
+	<cstring>
+	<string>
+	"suffix_tree.hpp"
+
+1402606892 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	<vector>
+
+1402860825 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
+	<cstring>
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"../constants.hpp"
+
+1402860977 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
+	<cstring>
+	<string>
+	"suffix_trie.hpp"
+
+1402860295 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_trie_tests.cpp
+	"suffix_trie_tests.hpp"
+	<iostream>
+
+1402841272 /home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_trie_tests.hpp
+	<string>
+	<cstring>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
 

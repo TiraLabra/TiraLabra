@@ -62,12 +62,16 @@
 	<cstdio>
 	"string_slib.hpp"
 
-1401739091 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1402841425 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
 	"algorithms/knuth_morris_pratt.hpp"
 	"algorithms/edit_distance.hpp"
+	"structures/suffix_tree_builder.hpp"
+	"structures/suffix_trie.hpp"
+	"structures/suffix_tree.hpp"
+	"structures/suffix_trie_builder.hpp"
 
 1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
@@ -85,14 +89,15 @@
 	<string>
 	<cstdlib>
 
-1401743226 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.cpp
+1402841988 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.cpp
 	"edit_distance.hpp"
 	<iostream>
 
-1402603245 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.cpp
+1402835957 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.cpp
 	"naive_suffix_tree_builder.hpp"
 
-1402584540 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
+1402607129 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
+	"suffix_tree.hpp"
 
 1402585240 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.cpp
 	"ukkonen_suffix_tree_builder.hpp"
@@ -108,16 +113,36 @@
 	<string>
 	"suffix_tree.hpp"
 
-1402603409 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+1402606892 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
 	<cstdlib>
 	<cstring>
 	<string>
 	<vector>
 
-1402603122 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.hpp
+1402609541 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.hpp
 	<cstdlib>
 	<cstring>
 	<string>
 	"suffix_tree_builder.hpp"
 	"suffix_tree.hpp"
+
+1402861177 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.cpp
+	"suffix_trie.hpp"
+	<iostream>
+
+1402860825 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
+	<cstring>
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"../constants.hpp"
+
+1402859649 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.cpp
+	"suffix_trie_builder.hpp"
+
+1402860977 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
+	<cstring>
+	<string>
+	"suffix_trie.hpp"
 

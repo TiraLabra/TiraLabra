@@ -5,6 +5,7 @@ edit_distance::edit_distance(int add_cost, int remove_cost, int replace_cost) {
     this->add_cost = add_cost;
     this->remove_cost = remove_cost;
     this->replace_cost = replace_cost;
+    this->dynamic_programming_array = NULL;
 }
 
 edit_distance::~edit_distance() {
@@ -26,7 +27,6 @@ int edit_distance::get_levenstein_distance(const char * str_a, const char * str_
     if (str_b_len==-1) {
         str_b_len = strlen(str_b);
     }
-
     if (this->dynamic_programming_array!=NULL) {
         free(*this->dynamic_programming_array);
         free(this->dynamic_programming_array);
