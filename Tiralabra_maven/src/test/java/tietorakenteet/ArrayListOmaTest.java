@@ -111,4 +111,23 @@ public class ArrayListOmaTest extends TestCase {
 
     }
     
+    public void testToimiikoPalautusIndeksilla() {
+        ArrayListOma ao = new ArrayListOma();
+        Node n1 = new Node(1,1,1);
+        Node n2 = new Node(2,2,2);
+        Node n3 = new Node(3,3,3);
+        ao.lisaa(n1);
+        ao.lisaa(n2);
+        ao.lisaa(n3);
+        
+        assertEquals(n1, ao.palautaKohdasta(0));
+        assertEquals(n2, ao.palautaKohdasta(1));
+        assertEquals(n3, ao.palautaKohdasta(2));
+        assertEquals(null, ao.palautaKohdasta(6));
+        assertEquals(null, ao.palautaKohdasta(-100));
+        
+        
+        
+    }
+    
 }

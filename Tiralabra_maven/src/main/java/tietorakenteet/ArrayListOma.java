@@ -126,19 +126,26 @@ public class ArrayListOma {
     }
     
     /**
+     * Palauttaa alkion halutusta taulukon kohdasta.
+     * Tuloksena null, jos indeksi on taulukon rajojen ulkopuolella.
+     * @param i
+     * @return 
+     */
+    public Object palautaKohdasta(int i) {
+        if (i < elementteja && i >= 0)
+            return this.sisalto[i];
+        else
+            return null;
+    }
+    
+    /**
      * Kertoo, mikä on tämänhetkinen taulukon sisäinen koko.
      * Ei ole tarkoitus varsinaisesti käytettäväksi, tehty lähinnä testejä
      * varten.
      * @return 
      */
-    public int taulukonSisainenKoko() {
+    protected int taulukonSisainenKoko() {
         return this.taulukonKoko;
     }
     
-    
-    
-    
-    
-    
-
 }
