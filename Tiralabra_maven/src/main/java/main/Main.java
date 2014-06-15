@@ -3,7 +3,6 @@ package main;
 import hakualgoritmit.AStar;
 import apurakenteet.Kuvalukija;
 import heuristiikat.*;
-import java.util.ArrayList;
 import tietorakenteet.*;
 
 /**
@@ -38,17 +37,17 @@ public class Main {
         
         
         // Mitä aluetta tarkastellaan...
-        Alue hakualue = kuvaAlue;
-        int alkurivi = 0;
-        int alkusarake = 0;
-        int loppurivi = 70;
-        int loppusarake = 75;
-
-//        Alue hakualue = a1;
+//        Alue hakualue = kuvaAlue;
 //        int alkurivi = 0;
 //        int alkusarake = 0;
-//        int loppurivi = 14;
-//        int loppusarake = 15;
+//        int loppurivi = 70;
+//        int loppusarake = 75;
+
+        Alue hakualue = a1;
+        int alkurivi = 0;
+        int alkusarake = 0;
+        int loppurivi = 14;
+        int loppusarake = 15;
 
         System.out.println(hakualue.toString());
         
@@ -61,9 +60,11 @@ public class Main {
         
         System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
         
-        ArrayList<Node> reitti = as.kerroKuljettuReitti();
-        System.out.println("\nKuljettu reitti: ("+ reitti.size() + " kpl)");
-        for (Node n : reitti) {
+        ArrayListOma reitti = as.kerroKuljettuReitti();
+        System.out.println("\nKuljettu reitti: ("+ reitti.koko()+ " kpl)");
+        //for (Node n : reitti) {
+        for (int i = 0; i < reitti.koko(); i++) {
+            Node n = (Node)reitti.palautaKohdasta(i);
             System.out.println(n.toString());
             n.toString();
         }
@@ -89,10 +90,16 @@ public class Main {
 //        nodeTaulukko[5].setEtaisyysMaaliin(15);
 //        
 //        Keko k = new Keko(nodeTaulukko);
+//        
 //        Node nu = new Node(8,8,1);
 //        nu.setEtaisyysMaaliin(2);
-//        //System.out.println(k.koko());
+//        System.out.println(k.koko());
 //        System.out.println(k.toString());
+//        System.out.println("Lisätään uusi arvolta 8 tässä...");
+//        k.lisaa(nu);
+//        
+//        nu = new Node(8,8,1);
+//        nu.setEtaisyysMaaliin(4);
 //        k.lisaa(nu);
 //        
 //        System.out.println(k.toString());
