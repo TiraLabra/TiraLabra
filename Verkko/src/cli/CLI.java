@@ -39,17 +39,12 @@ public class CLI {
 
                 System.out.print("Labyrintin korkeus: ");
                 String korkeusInput = s.nextLine();
-                int korkeus = 0;
-                if (lueKoko(korkeus, korkeusInput)) {
-                    continue;
-                }
+                int korkeus = lueKoko(korkeusInput);
 
                 System.out.print("Labyrintin leveys: ");
                 String leveysInput = s.nextLine();
-                int leveys = 0;
-                if (lueKoko(leveys, leveysInput)) {
-                    continue;
-                }
+                int leveys = lueKoko(leveysInput);
+
                 labyrintti = new Labyrintti2D(korkeus, leveys);
                 System.out.print("Läbyrintitin: [R]ecursiveBacktracker, [P]rimin algoritmi: ");
 
@@ -70,7 +65,7 @@ public class CLI {
                 long aika = System.currentTimeMillis();
 
                 labyrintti.labyrintitaLabyrintti();
-                solmut=labyrintti.getSolmut();
+                solmut = labyrintti.getSolmut();
                 long ero = System.currentTimeMillis() - aika;
                 System.out.println("Labyrintitys suoritettu " + ero + "ms");
                 System.out.print("A* vai Djikstra?");
@@ -87,33 +82,41 @@ public class CLI {
                         System.out.println("A tai D !");
                         continue;
                 }
-                as = new Astar(solmut[0][0], solmut[korkeus - 1][leveys - 1], h);
+                final Solmu maali = solmut[korkeus - 1][leveys - 1];
+                as = new Astar(solmut[0][0], maali, h);
                 aika = System.currentTimeMillis();
                 as.suorita();
                 ero = System.currentTimeMillis() - aika;
                 System.out.println("Polunetsintä suoritettu " + ero + "ms");
-                System.out.println(labyrintti);
+                System.out.println(labyrintti.printtaaReittiLabyrintissa(as.getReitti(), maali));
+                break;
             }
 
         }
         System.out.println("Heippa!");
     }
 
-    protected boolean lueKoko(int koko, String korkeusInput) {
-        try {
-            koko = Integer.parseInt(korkeusInput);
-        } catch (NumberFormatException e) {
-            System.out.println("Kokonaisluku, kiitos!");
-            return true;
+    protected int lueKoko(String korkeusInput) {
+        int koko;
+        while (true) {
+            try {
+                koko = Integer.parseInt(korkeusInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Kokonaisluku, kiitos!");
+                korkeusInput = s.nextLine();
+                continue;
+            }
+
+            if (koko < 2) {
+                System.out.println("Liian pieni!");
+                continue;
+            }
+            if (koko > 500) {
+                System.out.println("Liian iso!");
+                continue;
+            }
+            break;
         }
-        if (koko < 2) {
-            System.out.println("Liian pieni!");
-            return true;
-        }
-        if (koko > 500) {
-            System.out.println("Liian iso!");
-            return true;
-        }
-        return false;
+        return koko;
     }
 }
