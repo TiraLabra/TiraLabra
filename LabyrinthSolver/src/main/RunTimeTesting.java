@@ -63,10 +63,11 @@ public class RunTimeTesting {
     }
 
     LabyrinthSolver[] getSolvers() {
-        LabyrinthSolver[] lss = new LabyrinthSolver[3];
+        LabyrinthSolver[] lss = new LabyrinthSolver[4];
         lss[0] = new DFS();
         lss[1] = new BFS();
         lss[2] = new WallFollower();
+        lss[3] = new AStar();
         return lss;
     }
 
