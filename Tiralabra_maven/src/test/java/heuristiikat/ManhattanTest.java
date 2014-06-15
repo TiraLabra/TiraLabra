@@ -34,7 +34,7 @@ public class ManhattanTest extends TestCase {
         Manhattan m = new Manhattan();
         int tulos = m.laskeArvio(n1, n2);
         
-        assertEquals(14, tulos);
+        assertEquals(140, tulos);
         
     }
     
@@ -54,7 +54,7 @@ public class ManhattanTest extends TestCase {
         Manhattan m = new Manhattan();
         int tulos = m.laskeArvio(n1, n2);
         
-        assertEquals(10, tulos);
+        assertEquals(100, tulos);
         
     }
 }
