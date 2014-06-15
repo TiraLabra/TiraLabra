@@ -91,6 +91,12 @@ class NMD5:
 
 	# Main hashing function
 	def __hash(self, message):
+		"""Here we actually implement the MD5 rounds that calculate the 
+		end-result of the registers. We assign a temporary register to be
+		the result of a function. Notice the references to words[], RXX and the
+		mysterious hexadecimal constants as the last parameter: RXX are the shift
+		amounts defined by the RFC and the constants are results from the sine function,
+		which is also defined in the RFC."""
 		messageLength = len(message)
 		chunks = self.splitToBlocks(self.pad(self.toBinaryString(message)), 512)
 
