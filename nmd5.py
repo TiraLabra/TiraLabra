@@ -25,7 +25,7 @@ def FF(a,b,c,d,x,s,ac):
 	r = a + F(b,c,d)
 	r = r + x
 	r = r + ac
-	r = r & 0xffffffff
+	r = r & 0xffffffff # keep r as an unsigned integer
 	r = rotateLeft(r, s)
 	r = r & 0xffffffff
 	r = r + b
