@@ -187,8 +187,7 @@ public class AStar {
     
     /**
      * Selvittää annetun noden naapurit.
-     * Käytännössä siis myös diagonaaliset siirtymät ruudukossa.
-     * TODO: Ei huomioi läpipääsemättömiksi merkittyjä nodeja vielä...
+     * Diagonalisten naapureiden lisäystä määritellään luokkamuuttujassa diagonaalinenSallittu.
      * @param a
      * @param n
      * @return 
@@ -204,7 +203,7 @@ public class AStar {
                         && !(i==n.getRivi() && j==n.getSarake()) ) {                // tarkastus ettei lisätä tarkasteltavaa
                     // Tarkastellaan, ettei lisätä diagonalisia, jos ei ole sallittu
                     if ( (diagonaalinenSallittu || Math.abs((i-n.getRivi())+(j-n.getSarake())) <= 1 ) &&
-                            a.getnode(i, j).kuljettavissa())
+                            a.getnode(i, j).kuljettavissa())          // Varmistetaan ettei ole seinä
                         naapurit.lisaa(a.getnode(i, j));
                     
                     if (debug)
