@@ -29,14 +29,56 @@ def plot2d_color(gridi):
     #plt.title('Potential')
     plt.show()
 
+def grid(x, y, z, resX=100, resY=100):
+    "Convert 3 column data to matplotlib grid"
+    xi = linspace(min(x), max(x), resX)
+    yi = linspace(min(y), max(y), resY)
+    Z = griddata(x, y, z, xi, yi)
+    X, Y = meshgrid(xi, yi)
+    return X, Y, Z
+
+def plot3d(gridi):
+
+    from mpl_toolkits.mplot3d import axes3d
+    import matplotlib.pyplot as plt
+    from matplotlib import cm
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    X, Y, Z = axes3d.get_test_data(0.05)
+    print "axes3d.get_test_data(0.05)",list(axes3d.get_test_data(0.05)).shape
+    cset = ax.contour(X, Y, Z, extend3d=True, cmap=cm.coolwarm)
+    ax.clabel(cset, fontsize=9, inline=1)
+    
+    plt.show()
+
+
 def plot2d_simple(gridi):
     """ 2d contour plot
     """
     plt.figure()
-    CS = plt.contour(gridi.gridi[:,:,0])
+    X = np.arange(0, gridi.gridi.shape[0], 1)
+    Y = np.arange(0, gridi.gridi.shape[1], 1)
+    Z = gridi.gridi[:,:,0]    
+    CS = plt.contour(X,Y,Z)
     plt.clabel(CS, inline=1, fontsize=10)
-    #plt.title('Potential')
-    plt.show()
+    plt.title('Electron density' )
+    plt.show()    
+
+def plot3d_simple(gridi):
+    """ 2d contour plots of 3d data using xy slices
+    """
+    plt.figure()
+    X = np.arange(0, gridi.gridi.shape[0], 1)
+    Y = np.arange(0, gridi.gridi.shape[1], 1)
+    print "gridi.gridi.shape[2]", gridi.gridi.shape[2]
+    for iz in range(gridi.gridi.shape[2]-2):
+        print "iz", iz+1
+        Z = gridi.gridi[:,:,iz+1]    
+        CS = plt.contour(X,Y,Z)
+        plt.clabel(CS, inline=1, fontsize=10)
+        plt.title('Electron density' )
+        plt.show()
 
 
 def plot2d_color(gridi):

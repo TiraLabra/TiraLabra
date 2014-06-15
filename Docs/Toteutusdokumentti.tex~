@@ -23,7 +23,6 @@
 \usepackage[finnish]{babel} %ääkköset
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{listings}
 
 \usepackage[version=3]{mhchem} % Package for chemical equation typesetting
 \usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
@@ -41,7 +40,7 @@
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Käyttöohje: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
+\title{Testausdokumentti: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
 
 \author{Markus \textsc{Kaukonen} % Author name
 }
@@ -62,29 +61,28 @@
 
 %----------------------------------------------------------------------------------------
 
-\section{Käyttöohje}
-Ohjelmaa vaatii toimiakseen pythonin, uudehkon scipy: ja numpy:n sekä
-matplotlibin (http://www.scipy.org/). \\
 
-Testiversion voi käynnistää komennolla test\_mc.py, joka on hakemistossa:
-TiraLabra/Tiralabra/src \\
+\section{Mitä on testattu, miten tämä tehtiin}
+Tehtiin unit testit kaikille funkioille. {\bf Nyt kuiten valmiina vain
+  energialaskuihin liittyvät testit.}
+Testaus toteutettiin Pythonin unittest moduulilla. Sen dokumentaatio on osoitteessa: https://docs.python.org/2/library/unittest.html\#type-specific-methods.
 
-Ohjelma lukee syötteet tiedostosta alkuarvot.txt:\\
-\begin{small}
-\begin{lstlisting}[frame=single]  % Start your code-block
+Yksikkötestit ajetaan suorittamalla ohjelma './testaa\_energiat.py'
+hakemistossa 'TiraLabra/Tiralabra/python\_unit\_tests'.
 
-16         # laskenta gridipisteiden lkm x suunnassa 
-16         # laskenta gridipisteiden lkm y suunnassa 
-0          # laskenta gridipisteiden lkm z suunnassa (0==2d)
-2.0        # elektronien kokonaismaara (> 0)
-2          # atomiydinten lukumaara
-3 3 0 1.0  # ytimen 1 paikka gridissa (x,y,z), varaus (> 0)
-8 2 0 1.0  # ytimen 2 paikka gridissa (x,y,z), varaus (> 0)
-\end{lstlisting}
-\end{small}
-Ohjelma tuottaa päivittyvän matplotlib kuvan elektronitiheydestä. Päivitys etenee kun painat kuvan deletointia (eli 'x' kohtaa kuvan yläreunasta).
 
-%----------------------------------------------------------------------------------------
+\section{Minkälaisilla syötteillä testaus tehtiin (vertailupainotteisissa töissä tärkätä)}
+Testeissä käytettiin 2-dimensionaalista dataa joka luettiin tiedosta
+'alkuarvot.txt\_5x5x0'.
+
+\section{Miten testit voidaan toistaa}
+Testit voidaan toistaa ajamalla komento './testaa\_energiat.py'
+hakemistossa 'TiraLabra/Tiralabra/python\_unit\_tests'.
+
+\section{Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa.}
+Voidaan vaihdella atomiytimien paikkoja tai lisätä niitä tai muuttaa
+niiden varausta ja katsoa että tulokset on kvalitatiivisesti
+ok. {\bf tähän muutama kuva demoamaan}.
 
 
 \end{document}

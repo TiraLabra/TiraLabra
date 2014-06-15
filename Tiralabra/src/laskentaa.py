@@ -108,20 +108,80 @@ def monte_carlo_yksi_askel_kaikki(elektroni_tiheys, V_hartree,
             return False
         else:
             print "MC hyväksytty YLÄMÄKEEN"
-            return False
+            return True
     else:
         print "MC hyväksytty"
         return True
 
 
-def minimoi_monte_carlolla(n_iter=100000, tol=1e-6):
-    
+def minimoi_monte_carlolla(myfile, 
+                           elektroni_tiheys, V_hartree,
+                           ydin_tiheys,
+                           tiheydenmuutos,
+                           n_iter=100000, tol=1e-4):
+    """ minimoidaan monte carlo menetelmällä kunnes n_iter tulee täyteen
+    tai convergenssikriteeri (tol) täyttyy """
+
+    e_vanha = energiat.E_tot(elektroni_tiheys, V_hartree, ydin_tiheys)
+    e_uusi = e_vanha + 100.0
+    converged = False
+    n_hyvaksytty = 0
+    n_hylatty = 0
+
+    for it in range(n_iter):
+        if abs(e_uusi - e_vanha) < tol:
+            converged = True
+            print "converged"
+            break
+        hyvaksytty = monte_carlo_yksi_askel_kaikki(
+            elektroni_tiheys, V_hartree,
+            ydin_tiheys,
+            tiheydenmuutos)
+
+        if hyvaksytty:
+            e_vanha = e_uusi
+            e_uusi = energiat.E_tot(elektroni_tiheys, V_hartree, ydin_tiheys)
+            print "EEEEEEE", e_uusi
+            #myfile.write(str(e_uusi)+
+            #             '  '+str( tiheydenmuutos)+'\n')
+            myfile.write(str(e_uusi)+'\n')
+
+        if hyvaksytty:
+            n_hyvaksytty =n_hyvaksytty+1
+        else:
+            n_hylatty = n_hylatty+1
+        print "hyv/hyl", n_hyvaksytty, n_hylatty
+        if n_hyvaksytty > 5 and n_hylatty==0:
+            #hyvaksytaan liian usein
+            tiheydenmuutos = tiheydenmuutos * 1.1
+            n_hyvaksytty = 0
+            n_hylatty = 0
+        elif n_hylatty > 5 and n_hyvaksytty==0:
+            #hylataan liian usein
+            tiheydenmuutos = tiheydenmuutos * 0.9
+            n_hyvaksytty = 0
+            n_hylatty = 0
+        elif (n_hyvaksytty > 0): 
+            #hylataan liian usein
+            if (n_hylatty/n_hyvaksytty > 10.0):
+                tiheydenmuutos = tiheydenmuutos * 0.9
+                n_hyvaksytty = 0
+                n_hylatty = 0
+        elif (n_hylatty > 0): 
+            #hylataan liian usein
+            if (n_hyvaksytty/n_hylatty > 10.0):
+                tiheydenmuutos = tiheydenmuutos * 1.1
+                n_hyvaksytty = 0
+                n_hylatty = 0
+        else:
+            #ollaan ok alueella
+            pass
+
 
 def yhden_pisteen_derivaatta(elektroni_tiheys, V_hartree,
                              ydin_tiheys, tiheydenmuutos,
                              i, j, k):
     """ lasketaan energian funktionaaliderivaatta gridipisteessä i,j,k """
-
     elektroni_tiheys[i,j,k]=\
         elektroni_tiheys[i,j,k]\
         + tiheydenmuutos

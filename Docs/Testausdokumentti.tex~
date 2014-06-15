@@ -1,0 +1,159 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.1 (25/3/14)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage[finnish]{babel} %ääkköset
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Määrittelydokumentti: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
+
+\author{Markus \textsc{Kaukonen} % Author name
+}
+
+\date{\today} % Date for the report
+
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+\hspace{1cm} \texttt{email: markus.kaukonen@iki.fi, opiskelijanumero: 010974524}
+
+\newpage
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+
+\section{Johdanto}
+Tarkoituksena on ratkaista pienen 2-dimensionaalisen alueen
+elektronien Schrödingerin yhtälö. Ratkaisussa käytetään
+tiheysfunktionaaliteoriaa, jossa kokonaisenergia riippuu vain
+elektronitiheyksistä. Tässä työssä käytetään sellaista
+tiheysfunktionaaliterorian versiota jossa aaltofunktioita ei käytetä
+lainkaan vaan pitäydytään ainoastaan elektronitiheydessä
+[\cite{ke2013angular}]. Menetelmän tarkkuutta on saatu dramaattisesti
+parannetrua aivan viime aikoina jakamalla eletronitiheys elektronin
+kulmaliikemäärän maukaisiin komponentteihin (eli s, p ja d elektronit
+erikseen).
+
+\section{Työssä käytettäviä algoritmeja ja tietorakenteita}
+Energian minimointiin ja elektronitiheyden muuttamiseen käytetään sekä
+steepest descent että Monte Carlo algoritmeja ja niiden tehokkuutta
+vertaillaan. Lisäksi Poissonin yhtälö (yhtälö \ref{poisson}) ratkaistaan
+erikseen muuttamalla yhtälö diskreetiksi ongelmaksi gridissä, eli
+toiselle derivaatan arvot lasketaan gridin naapuripisteiden avulla.
+
+\subsection{Monte Carlo algoritmi energian minimoiseksi}
+
+
+\section{Ratkaistava ongelma. Valittujen algoritmien perustelu.}
+Minimoidaan systeemin kokonaisenergiaa joka riippuu elektronitiheydestä $\rho$ seuraavasti:
+\begin{equation}
+E[\rho] = 
+\int \mathrm{d}^3\vec{r} T_s[\rho(\vec{r})] + 
+\int \mathrm{d}^3\vec{r} E_{xc}[\rho(\vec{r})] + 
+\frac{1}{2} \iint \mathrm{d}^3\vec{r}\mathrm{d}^3\vec{r'}
+\frac{\rho(\vec{r}) \rho(\vec{r'})}{|\vec{r}-\vec{r'}|} +
+\sum^i \int \mathrm{d}^3\vec{r} 
+\frac{\rho(\vec{r}) Z_i }{|\vec{r}-\vec{R_i}|} 
+\end{equation}
+Yhtälön kaksi ensimmäistä termiä ovat elektronien kineettinen energia
+ja vaihtokorrelaatio energia. Ne ovat edelleen tiedeyhteisön
+aktiivisen kehityksen kohteena. Tässä työssä käytetään mahdollisimman
+yksinkertaisia versioita. Otetaan ns. Thomas-Fermi approksimaation
+kineettiselle energialle eli
+\begin{equation}
+T_s[\rho(\vec{r})] = C \int \mathrm{d}^3\vec{r} \rho(\vec{r})^{5/3})
+\end{equation}
+jossa vakio $C=\frac{3}{10}(3\pi^2)^{2/3} = 2.871$
+[\cite{march1957thomas}].  Samoin käytetään mahdollisimman
+yksinkertaista vaihto-korrelaation energia funktionaalia:
+\begin{equation}
+E_{xc}[\rho(\vec{r})] = \frac{-3}{4}(\frac{3}{4})^{1/3}\int
+\mathrm{d}^3\vec{r} \rho(\vec{r})^{4/3}
+\end{equation}.
+Yhtälöt ovat siinä muodossa että on käytetty atomiyksiköitä (atomic
+units).
+
+Yksinkertaisuuden vuoksi tässä työssä ei käytetä periodisia
+reunaehtoja, vaan avaruus loppuu gridin reunaan. Integraalit lasketaan summaamalla gridi-pisteiden ylitse. Mahdollisesti osa elektronitiheyden laskemisesta tehdään ratkaisemalla Poissonin yhtälö:
+\begin{equation}
+\label{poisson}
+\nabla^2 V_h = -4 \pi \rho(\vec{r}),
+\end{equation}
+missä
+\begin{equation}
+V_h (\rho, \vec{r}) = \int \mathrm{d}^3\vec{r'} 
+\frac{\rho(\vec{r'}) }{|\vec{r}-\vec{r'}|}.
+\end{equation}
+
+Jotta elektronien lukumäärä pysyy vakiona, energiaan $E$ täytyy
+modifioida lisätermillä:
+\begin{equation}
+E=E-\mu (\int \mathrm{d}^3\vec{r}\rho(\vec{r})-N_e),
+\end{equation}
+jossa $\mu$ on systeemin kemiallinen potentiaali ja 
+$N_e$ elektronien lukumäärä.
+
+
+\section{Ohjelman saamat syötteet ja miten niitä käytetään}
+Ohjelmalle annetaan syötteenä käytetyn gridin gridipisteiden määrä x-,
+y- ja z- suunnissa. Lisäksi annetaan gridin pituudet atomiyksiköissä
+x-, y- ja z- suunnissa. Lopulta annetaan atomiytimien paikat ja ytimen
+protonien määrä (eli mistä alkuaineesta on kysymys).
+
+\section{Ohjelman tavoitteena olevat aika- ja tilavaativuudet}
+Ohjelman testisysteemistä olisi tarkoitus rakentaa sellainen että
+raskaimmatkin laskut kestäisivät luokkaa 1 CPUh. Tarkoitus on tehdä
+laskenta 2d-systeemissä ja vain testata että ohjelma toimii myös
+kolmessa ulottuvuudessa.
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{apalike}
+
+\bibliography{Maarittelydokumentti}
+
+%----------------------------------------------------------------------------------------
+
+
+\end{document}

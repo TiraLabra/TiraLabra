@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  15 JUN 2014 22:24
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  15 JUN 2014 22:07
 entering extended mode
  %&-line parsing enabled.
-**Kayttoohje.tex
-(./Kayttoohje.tex
+**Testausdokumentti.tex
+(./Testausdokumentti.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
 yphenation, loaded.
@@ -265,35 +265,6 @@ Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
-(/usr/share/texmf-texlive/tex/latex/listings/listings.sty
-(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
-\KV@toks@=\toks16
-)
-\lst@mode=\count88
-\lst@gtempboxa=\box26
-\lst@token=\toks17
-\lst@length=\count89
-\lst@currlwidth=\dimen104
-\lst@column=\count90
-\lst@pos=\count91
-\lst@lostspace=\dimen105
-\lst@width=\dimen106
-\lst@newlines=\count92
-\lst@lineno=\count93
-\lst@maxwidth=\dimen107
-
-(/usr/share/texmf-texlive/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-\c@lstnumber=\count94
-\lst@skipnumbers=\count95
-\lst@framebox=\box27
-)
-(/usr/share/texmf-texlive/tex/latex/listings/listings.cfg
-File: listings.cfg 2007/02/22 1.4 listings configuration
-))
-Package: listings 2007/02/22 1.4 (Carsten Heinz)
-
 (/usr/share/texmf-texlive/tex/latex/mhchem/mhchem.sty
 Package: mhchem 2007/05/19 v3.07 for typesetting chemical formulae
 
@@ -302,15 +273,15 @@ Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 (/usr/share/texmf-texlive/tex/latex/tools/calc.sty
 Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count96
-\calc@Bcount=\count97
-\calc@Adimen=\dimen108
-\calc@Bdimen=\dimen109
+\calc@Acount=\count88
+\calc@Bcount=\count89
+\calc@Adimen=\dimen104
+\calc@Bdimen=\dimen105
 \calc@Askip=\skip43
 \calc@Bskip=\skip44
 LaTeX Info: Redefining \setlength on input line 76.
 LaTeX Info: Redefining \addtolength on input line 77.
-\calc@Ccount=\count98
+\calc@Ccount=\count90
 \calc@Cskip=\skip45
 )
 (/usr/share/texmf-texlive/tex/latex/oberdiek/twoopt.sty
@@ -326,53 +297,57 @@ Package: amstext 2000/06/29 v2.01
 
 (/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
-\@emptytoks=\toks18
-\ex@=\dimen110
+\@emptytoks=\toks16
+\ex@=\dimen106
 ))
 (/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen111
+\pmbraise@=\dimen107
 )
 (/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count99
+\inf@bad=\count91
 LaTeX Info: Redefining \frac on input line 211.
-\uproot@=\count100
-\leftroot@=\count101
+\uproot@=\count92
+\leftroot@=\count93
 LaTeX Info: Redefining \overline on input line 307.
-\classnum@=\count102
-\DOTSCASE@=\count103
+\classnum@=\count94
+\DOTSCASE@=\count95
 LaTeX Info: Redefining \ldots on input line 379.
 LaTeX Info: Redefining \dots on input line 382.
 LaTeX Info: Redefining \cdots on input line 467.
-\Mathstrutbox@=\box28
-\strutbox@=\box29
-\big@size=\dimen112
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen108
 LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
-\macc@depth=\count104
-\c@MaxMatrixCols=\count105
+\macc@depth=\count96
+\c@MaxMatrixCols=\count97
 \dotsspace@=\muskip10
-\c@parentequation=\count106
-\dspbrk@lvl=\count107
-\tag@help=\toks19
-\row@=\count108
-\column@=\count109
-\maxfields@=\count110
-\andhelp@=\toks20
-\eqnshift@=\dimen113
-\alignsep@=\dimen114
-\tagshift@=\dimen115
-\tagwidth@=\dimen116
-\totwidth@=\dimen117
-\lineht@=\dimen118
-\@envbody=\toks21
+\c@parentequation=\count98
+\dspbrk@lvl=\count99
+\tag@help=\toks17
+\row@=\count100
+\column@=\count101
+\maxfields@=\count102
+\andhelp@=\toks18
+\eqnshift@=\dimen109
+\alignsep@=\dimen110
+\tagshift@=\dimen111
+\tagwidth@=\dimen112
+\totwidth@=\dimen113
+\lineht@=\dimen114
+\@envbody=\toks19
 \multlinegap=\skip47
 \multlinetaggap=\skip48
-\mathdisplay@stack=\toks22
+\mathdisplay@stack=\toks20
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks21
 )
 (/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
@@ -387,11 +362,11 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 
 (/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
-\Gread@gobject=\count111
+\Gread@gobject=\count103
 ))
-\tok@mhchem@ce@iii=\toks23
+\tok@mhchem@ce@iii=\toks22
 \mhchem@arrowminlength=\skip49
-\mhchem@arrows@box=\box30
+\mhchem@arrows@box=\box28
 \mhchem@arrowlength@pgf=\skip50
 \mhchem@arrowminlength@pgf=\skip51
 \mhchem@bondwidth=\skip52
@@ -399,12 +374,12 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 \mhchem@smallbondwidth@tmpA=\skip54
 \mhchem@smallbondwidth@tmpB=\skip55
 \mhchem@smallbondwidth=\skip56
-\mhchem@cf@element=\toks24
-\mhchem@cf@number=\toks25
-\mhchem@cf@sup=\toks26
-\tok@mhchem@cf@i=\toks27
-\c@mhchem@cf@length=\count112
-\mhchem@cf@replaceminus@tok=\toks28
+\mhchem@cf@element=\toks23
+\mhchem@cf@number=\toks24
+\mhchem@cf@sup=\toks25
+\tok@mhchem@cf@i=\toks26
+\c@mhchem@cf@length=\count104
+\mhchem@cf@replaceminus@tok=\toks27
 \mhchem@option@minussidebearingleft=\skip57
 \mhchem@option@minussidebearingright=\skip58
 )
@@ -415,33 +390,33 @@ Package: siunitx 2009/09/21 v1.3a A comprehensive (SI) units package
 Package: xkeyval 2008/08/13 v2.6a package option processing (HA)
 
 (/usr/share/texmf-texlive/tex/generic/xkeyval/xkeyval.tex
-\XKV@toks=\toks29
-\XKV@tempa@toks=\toks30
-\XKV@depth=\count113
+\XKV@toks=\toks28
+\XKV@tempa@toks=\toks29
+\XKV@depth=\count105
 File: xkeyval.tex 2008/08/13 v2.6a key=value parser (HA)
 ))
 (/usr/share/texmf-texlive/tex/latex/tools/array.sty
 Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
-\col@sep=\dimen119
-\extrarowheight=\dimen120
-\NC@list=\toks31
+\col@sep=\dimen115
+\extrarowheight=\dimen116
+\NC@list=\toks30
 \extratabsurround=\skip59
 \backup@length=\skip60
 )
 (/usr/share/texmf-texlive/tex/latex/tools/xspace.sty
 Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
 )
-\si@tempboxa=\box31
-\si@tempboxb=\box32
-\si@tempboxc=\box33
-\si@tempboxd=\box34
-\si@temptoks=\toks32
-\si@tab@mantprecnt=\count114
-\si@tab@mantpostcnt=\count115
-\si@tab@expprecnt=\count116
-\si@tab@exppostcnt=\count117
-\si@num@dp=\count118
-\si@num@sf=\count119
+\si@tempboxa=\box29
+\si@tempboxb=\box30
+\si@tempboxc=\box31
+\si@tempboxd=\box32
+\si@temptoks=\toks31
+\si@tab@mantprecnt=\count106
+\si@tab@mantpostcnt=\count107
+\si@tab@expprecnt=\count108
+\si@tab@exppostcnt=\count109
+\si@num@dp=\count110
+\si@num@sf=\count111
 Now handling font encoding TS1 ...
 ... processing UTF-8 mapping file for font encoding TS1
 
@@ -523,26 +498,26 @@ File: ts1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 \si@frc@textlen=\skip64
 \si@frc@suplen=\skip65
 \si@frc@ssuplen=\skip66
-\si@num@rndtarget=\count120
-\si@tab@toks=\toks33
-\si@tab@pretoks=\toks34
-\si@tab@posttoks=\toks35
-\si@tempcnta=\count121
-\si@tempcntb=\count122
-\si@tab@prebox=\box35
-\si@tab@midbox=\box36
-\si@tab@postbox=\box37
-\si@tab@expbox=\box38
-\si@tab@predim=\dimen121
-\si@tab@postdim=\dimen122
-\si@tab@expdim=\dimen123
-\si@tempdima=\dimen124
-\si@tempdimb=\dimen125
-\si@unt@unitcnta=\count123
-\si@unt@unitcntb=\count124
-\si@unt@depthcnt=\count125
-\si@unt@prefixcnt=\count126
-\si@unt@powerdim=\dimen126
+\si@num@rndtarget=\count112
+\si@tab@toks=\toks32
+\si@tab@pretoks=\toks33
+\si@tab@posttoks=\toks34
+\si@tempcnta=\count113
+\si@tempcntb=\count114
+\si@tab@prebox=\box33
+\si@tab@midbox=\box34
+\si@tab@postbox=\box35
+\si@tab@expbox=\box36
+\si@tab@predim=\dimen117
+\si@tab@postdim=\dimen118
+\si@tab@expdim=\dimen119
+\si@tempdima=\dimen120
+\si@tempdimb=\dimen121
+\si@unt@unitcnta=\count115
+\si@unt@unitcntb=\count116
+\si@unt@depthcnt=\count117
+\si@unt@prefixcnt=\count118
+\si@unt@powerdim=\dimen122
 
 (/usr/share/texmf-texlive/tex/latex/siunitx/config/si-prefix.cfg
 File: si-prefix.cfg 2009/09/21 v1.3a siunitx: SI Multiple prefixes
@@ -568,100 +543,106 @@ File: si-abbr.cfg 2009/09/21 v1.3a siunitx: Abbreviated units
 ))
 (/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
-\Gin@req@height=\dimen127
-\Gin@req@width=\dimen128
+\Gin@req@height=\dimen123
+\Gin@req@width=\dimen124
 )
 (/usr/share/texmf-texlive/tex/latex/natbib/natbib.sty
 Package: natbib 2009/07/16 8.31 (PWD, AO)
 \bibhang=\skip67
 \bibsep=\skip68
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count127
-) (./Kayttoohje.aux)
-\openout1 = `Kayttoohje.aux'.
+\c@NAT@ctr=\count119
+) (./Testausdokumentti.aux)
+\openout1 = `Testausdokumentti.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 52.
-
-(/usr/share/texmf-texlive/tex/latex/base/ts1cmr.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 51.
+ (/usr/share/texmf-texlive/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 52.
-\c@lstlisting=\count128
+LaTeX Font Info:    ... okay on input line 51.
 
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count129
-\scratchdimen=\dimen129
-\scratchbox=\box39
-\nofMPsegments=\count130
-\nofMParguments=\count131
-\everyMPshowfont=\toks36
-\MPscratchCnt=\count132
-\MPscratchDim=\dimen130
-\MPnumerator=\count133
-\everyMPtoPDFconversion=\toks37
+\scratchcounter=\count120
+\scratchdimen=\dimen125
+\scratchbox=\box37
+\nofMPsegments=\count121
+\nofMParguments=\count122
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count123
+\MPscratchDim=\dimen126
+\MPnumerator=\count124
+\everyMPtoPDFconversion=\toks36
 )
 Package siunitx Info: xfrac package unavailable
 (siunitx)             using `fraction=sfrac' will fall back on
-(siunitx)             nicefrac-like method on input line 52.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 55.
+(siunitx)             nicefrac-like method on input line 51.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 54.
  (/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 66--68
-
+Overfull \hbox (4.41576pt too wide) in paragraph at lines 66--69
+\T1/cmr/m/n/10 Tehtiin unit testit kaikille funkioille. \T1/cmr/bx/n/10 Nyt kui
+ten valmi-ina vain en-er-gialaskui-
  []
 
 
-Overfull \hbox (1.89195pt too wide) in paragraph at lines 69--71
-[]\T1/cmr/m/n/10 Testiversion voi käyn-nistää komen-nol-la test_mc.py, jo-ka on
- hakemis-tossa: TiraL-
+Overfull \hbox (27.82895pt too wide) in paragraph at lines 66--69
+\T1/cmr/m/n/10 doku-men-taa-tio on os-oit-teessa: https://docs.python.org/2/lib
+rary/unittest.html#type-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 69--71
-
+Overfull \hbox (0.63782pt too wide) in paragraph at lines 70--72
+[]\T1/cmr/m/n/10 Yksikkötestit aje-taan suorit-ta-mal-la ohjel-ma './tes-taa_en
+ergiat.py' hakemis-tossa
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--75
-
+Overfull \hbox (2.09027pt too wide) in paragraph at lines 74--74
+[]\T1/cmr/bx/n/14.4 Minkälaisilla syöt-teil-lä tes-taus tehti-in (ver-tailu-
  []
 
-[2] (./Kayttoohje.aux) ) 
+
+Overfull \hbox (39.15619pt too wide) in paragraph at lines 75--77
+\T1/cmr/m/n/10 Testeissä käytet-ti-in 2-dimensionaalista dataa jo-ka luet-ti-in
+ tiedos-ta 'alkuar-vot.txt_5x5x0'. 
+ []
+
+[2] (./Testausdokumentti.aux) ) 
 Here is how much of TeX's memory you used:
- 6514 strings out of 495061
- 85452 string characters out of 1182621
- 178459 words of memory out of 3000000
- 9603 multiletter control sequences out of 15000+50000
- 15916 words of font info for 48 fonts, out of 3000000 for 9000
+ 4916 strings out of 495061
+ 64628 string characters out of 1182621
+ 148596 words of memory out of 3000000
+ 8017 multiletter control sequences out of 15000+50000
+ 15927 words of font info for 48 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 37i,6n,55p,316b,1080s stack positions out of 5000i,500n,10000p,200000b,50000s
- </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm
-0900.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> <
-/home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/mka/.te
-xmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/mka/.texmf-var/fonts
-/pk/ljfour/jknappen/ec/eccc1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jk
-nappen/ec/ecrm1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecr
-m1728.600pk>
-Output written on Kayttoohje.pdf (2 pages, 56577 bytes).
+ 37i,6n,55p,323b,217s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/
+ec/ecbx1000.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.6
+00pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/
+mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/mka/.texmf-va
+r/fonts/pk/ljfour/jknappen/ec/eccc1200.600pk> </home/mka/.texmf-var/fonts/pk/lj
+four/jknappen/ec/ecrm1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen
+/ec/ecrm1728.600pk>
+Output written on Testausdokumentti.pdf (2 pages, 61236 bytes).
 PDF statistics:
- 189 PDF objects out of 1000 (max. 8388607)
+ 202 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
