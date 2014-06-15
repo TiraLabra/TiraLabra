@@ -45,7 +45,7 @@ public class MatrixCalculator {
         Command command = commands[commands.length-1];
         command.execute();
         while (true){
-            int nextCommand = io.readInt("");
+            int nextCommand = io.readInt("Enter next command: ");
             if (nextCommand == 0){
                 return;
             }
