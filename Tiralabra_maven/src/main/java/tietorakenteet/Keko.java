@@ -1,9 +1,7 @@
-
 package tietorakenteet;
 
 /**
  * Oma versio Keko-tietorakenteen toteutuksesta.
- * Ei toteutettu vielä, aloitettu vasta aivan alustavana runkona...
  */
 public class Keko {
 
@@ -88,6 +86,10 @@ public class Keko {
         }
     }
     
+    /**
+     * Heapify-metodi, joka pitää huolta että pienin alkio on ylimpänä.
+     * @param k 
+     */
     protected void minHeapify(int k) {
 
         int pienin = etsiPienin(k, vasenLapsi(k), oikeaLapsi(k));
@@ -99,6 +101,13 @@ public class Keko {
         
     }
     
+    /**
+     * Apumetodi pienimmän alkion indeksin selvittämiseen annetusta kolmikosta.
+     * @param k
+     * @param vasen
+     * @param oikea
+     * @return 
+     */
     protected int etsiPienin(int k, int vasen, int oikea) {
         int pienin = k;
         if (vasen > 0 && sisalto[k].compareTo(sisalto[vasen]) > 0)
@@ -194,16 +203,15 @@ public class Keko {
         return t;
     }
     
-    public String tulosta() {
-        String t = "";
-        
-        for (int i = 0; i < this.koko; i++) {
-            
-        }
-        return t;
-    }
-    
-    
+    //Kokeilua...
+//    public String tulosta() {
+//        String t = "";
+//        
+//        for (int i = 0; i < this.koko; i++) {
+//            
+//        }
+//        return t;
+//    }
 
     /**
      * Apumetodi joka vaihtaa kahden alkion paikan.

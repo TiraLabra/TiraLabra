@@ -106,9 +106,30 @@ public class KekoTest extends TestCase {
         
         Node n = new Node(8,8,1);
         n.setEtaisyysMaaliin(2);
-        //k.lisaa(n);
+        k.lisaa(n);
         
-        //assertEquals(7, k.koko());
+        assertEquals(7, k.koko());
+    }
+    
+    public void testToimiikoTyhjanTestaus() {
+        alustuksia();
+        
+        //tyhjä:
+        Keko tyhjaKeko = new Keko();
+        assertEquals(true, tyhjaKeko.onTyhja());
+        
+        //ei-tyhjä:
+        Keko eityhjaKeko = new Keko(nodeTaulukko);
+        assertEquals(false, eityhjaKeko.onTyhja());
+        
+    }
+    
+    public void testTulostaaJotain() {
+        alustuksia();
+        Keko k = new Keko(nodeTaulukko);
+        
+        String t = k.toString();
+        assertEquals(true, t.length()>0);
     }
     
     
