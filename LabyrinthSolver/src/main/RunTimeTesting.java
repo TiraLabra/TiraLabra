@@ -14,13 +14,33 @@ public class RunTimeTesting {
     /**
      * Labyrintti, jolle testit ajetaan.
      */
-    public Labyrinth labyrinth;
+    private final Labyrinth labyrinth;
+    /**
+     * Kuinka monta kertaa testit ajetaan kullekin koolle.
+     */
+    private final int n;
+    /**
+     * Labyrintin generoijat.
+     */
+    private final LabyrinthGenerator[] generators;
+    /**
+     * Labyrintin ratkojat.
+     */
+    private final LabyrinthSolver[] solvers;
+    /**
+     * Testikoot.
+     */
+    private final int[] tests;
 
     /**
-     * Luo alustavan labyrintti-olion.
+     * Luo alustavan labyrintti-olion ja asettaa asetukset.
      */
     public RunTimeTesting() {
         labyrinth = new Labyrinth(10, 10);
+        n = 50;
+        generators = getGenerators();
+        solvers = getSolvers();
+        tests = getTestSizes();
     }
 
     /**
@@ -31,30 +51,40 @@ public class RunTimeTesting {
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
     public void runTests() throws Exception {
-        LabyrinthGenerator[] generators = getGenerators();
         WallFollower wf = new WallFollower();
-        LabyrinthSolver[] solvers = getSolvers();
-        int[] tests = getTestSizes();
+        int sLength = solvers.length;
         for (Integer t : tests) {
             labyrinth.updateLabyrinth(t, t);
             for (LabyrinthGenerator lg : generators) {
                 System.out.println("- - - - - - - - - - - - - - - - - - - - ");
                 labyrinth.setLabyrinthGenerator(lg);
                 System.out.print(lg.getName());
-                lgPrintRoutine();
-                System.out.println("");
-                for (LabyrinthSolver ls : solvers) {
-                    labyrinth.setLabyrinthSolver(ls);
-                    System.out.print(ls.getName());
-                    lsPrintRoutine();
+                long generationTime = 0;
+                long[] solvingTimes = new long[sLength + 1];
+                long[] exploredCells = new long[sLength + 1];
+                for (int i = 0; i < n; i++) {
+                    generationTime += generateAndGetTime();
+                    for (int j = 0; j < sLength; j++) {
+                        labyrinth.setLabyrinthSolver(solvers[j]);
+                        solvingTimes[j] += solveAndGetTime();
+                        exploredCells[j] += labyrinth.ls.getExploredCells();
+                    }
+                    labyrinth.setLabyrinthSolver(wf);
+                    solvingTimes[sLength] += solveAndGetTime(wf);
                 }
-                optimizedWfRoutine(wf);
+                lgPrintRoutine(generationTime);
                 System.out.println("");
+                for (int j = 0; j < sLength; j++) {
+                    System.out.print(solvers[j].getName());
+                    lsPrintRoutine(solvingTimes[j], exploredCells[j]);
+                }
+                System.out.print("Wall follower (Optimized)");
+                lsPrintRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
             }
         }
     }
 
-    LabyrinthGenerator[] getGenerators() {
+    private LabyrinthGenerator[] getGenerators() {
         LabyrinthGenerator[] lgs = new LabyrinthGenerator[3];
         lgs[0] = new PrimsAlgorithm();
         lgs[1] = new KruskalsAlgorithm();
@@ -62,17 +92,17 @@ public class RunTimeTesting {
         return lgs;
     }
 
-    LabyrinthSolver[] getSolvers() {
+    private LabyrinthSolver[] getSolvers() {
         LabyrinthSolver[] lss = new LabyrinthSolver[4];
         lss[0] = new DFS();
         lss[1] = new BFS();
-        lss[2] = new WallFollower();
-        lss[3] = new AStar();
+        lss[2] = new AStar();
+        lss[3] = new WallFollower();
         return lss;
     }
 
-    int[] getTestSizes() {
-        int[] sizes = {10, 25, 50, 100, 250, 500, 1000, 2000};
+    private int[] getTestSizes() {
+        int[] sizes = {10, 25, 50, 100, 250, 500};
         return sizes;
     }
 
@@ -82,53 +112,63 @@ public class RunTimeTesting {
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
-    void lgPrintRoutine() throws Exception {
-        System.out.println(" (" + labyrinth.getWidth() + "x" + labyrinth.getHeight() + ")");
-        labyrinth.lg.createEmptyLabyrinthIfNeeded();
-        long startTime = System.nanoTime() / 1000;
-        labyrinth.lg.generateLabyrinth();
-        long finishTime = System.nanoTime() / 1000;
-        String timeFormat = formatTime(finishTime - startTime);
-        System.out.println("Generation time: " + timeFormat);
-    }
-
-    /**
-     * Tulostusrutiini wall followerille.
-     */
-    void optimizedWfRoutine(WallFollower wf) {
-        labyrinth.setLabyrinthSolver(wf);
-        System.out.print(wf.getName() + " (Optimized)");
-        long startTime = System.nanoTime() / 1000;
-        boolean solved = wf.minorlySpedUpSolver();
-        long finishTime = System.nanoTime() / 1000;
-        String timeFormat = formatTime(finishTime - startTime);
-        if (solved) {
-            System.out.print("  ::  Solution found in " + timeFormat);
-            wf.solveLabyrinth();
-            int exploredCells = labyrinth.ls.getExploredCells();
-            String exploredCellsFormat = formatNumber(exploredCells);
-            System.out.println("  ::  Cells explored: " + exploredCellsFormat);
-        } else {
-            System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
-        }
+    private void lgPrintRoutine(long time) throws Exception {
+        System.out.print(" (" + labyrinth.getWidth() + "x" + labyrinth.getHeight() + ")");
+        time /= n; // Average value.
+        time /= 1000; // As Microseconds
+        String timeFormat = formatTime(time);
+        System.out.println("  ::  Average generation time (n=" + n + "): " + timeFormat);
     }
 
     /**
      * Tulostusrutiini labyrintinratkomistesteille.
      */
-    void lsPrintRoutine() {
-        long startTime = System.nanoTime() / 1000;
-        boolean solved = labyrinth.ls.solveLabyrinth();
-        long finishTime = System.nanoTime() / 1000;
-        String timeFormat = formatTime(finishTime - startTime);
-        if (solved) {
-            System.out.print("  ::  Solution found in " + timeFormat);
-            int exploredCells = labyrinth.ls.getExploredCells();
-            String exploredCellsFormat = formatNumber(exploredCells);
-            System.out.println("  ::  Cells explored: " + exploredCellsFormat);
-        } else {
-            System.out.println("TIMEOUT LIMIT EXCEEDED (" + timeFormat + ")");
-        }
+    private void lsPrintRoutine(long time, long exploredCells) {
+        time /= n; // Average value.
+        exploredCells /= n; // Average value.
+        time /= 1000; // As Microseconds
+        String timeFormat = formatTime(time);
+        String exploredCellsFormat = formatNumber(exploredCells);
+        System.out.print("  ::  Solution found on average in " + timeFormat);
+        System.out.println("  ::  Cells explored on average: " + exploredCellsFormat);
+    }
+
+    /**
+     * Generoi labyrintin ja palauttaa kestäneen ajan.
+     *
+     * @return Palauttaa labyrintin generointiin kestäneen ajan.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     */
+    private long generateAndGetTime() throws Exception {
+        labyrinth.lg.createEmptyLabyrinthIfNeeded();
+        long startTime = System.nanoTime();
+        labyrinth.lg.generateLabyrinth();
+        return System.nanoTime() - startTime;
+    }
+
+    /**
+     * Ratkoo labyrintin ja palauttaa kestäneen ajan.
+     *
+     * @return Palauttaa labyrintin ratkaisemiseen kestäneen ajan.
+     */
+    private long solveAndGetTime() {
+        labyrinth.ls.reset();
+        long startTime = System.nanoTime();
+        labyrinth.ls.solveLabyrinth();
+        return System.nanoTime() - startTime;
+    }
+
+    /**
+     * Ratkoo labyrintin ja palauttaa kestäneen ajan.
+     *
+     * @return Palauttaa labyrintin ratkaisemiseen kestäneen ajan.
+     */
+    private long solveAndGetTime(WallFollower wf) {
+        labyrinth.ls.reset();
+        long startTime = System.nanoTime();
+        wf.minorlySpedUpSolver();
+        return System.nanoTime() - startTime;
     }
 
     /**
