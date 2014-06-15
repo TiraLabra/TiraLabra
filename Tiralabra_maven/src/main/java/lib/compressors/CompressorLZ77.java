@@ -41,13 +41,7 @@ public class CompressorLZ77 {
      * @throws IOException 
      */
     public void compress() throws IOException{
-        while(buffer.size() < bufferSize){
-            ByteAsBits b = io.read();
-            if(b == null){
-                break;
-            }
-            buffer.enqueue(b.getByte());
-        }
+        initializeBuffer();
         while(!buffer.isEmpty()){
             int[] pair = window.findBestMatch(buffer);
             if(pair == null){
@@ -60,6 +54,19 @@ public class CompressorLZ77 {
         }
         outputBuffer.finalWrite();
         io.close();
+    }
+    /**
+     * Alustaa puskurin lukemalla siihen bufferSize:n verran tavuja.
+     * @throws IOException 
+     */
+    private void initializeBuffer() throws IOException {
+        while(buffer.size() < bufferSize){
+            ByteAsBits b = io.read();
+            if(b == null){
+                break;
+            }
+            buffer.enqueue(b.getByte());
+        }
     }
    
     /**
