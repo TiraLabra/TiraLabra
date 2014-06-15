@@ -106,7 +106,7 @@ public class Labyrinth {
         }
         width = w;
         height = h;
-        labyrinth = new byte[height][width];
+        labyrinth = new byte[h][w];
         if (lg != null) {
             lg.labyrinth = this;
         }
