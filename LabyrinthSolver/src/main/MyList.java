@@ -43,7 +43,7 @@ public class MyList<E> {
 
     /**
      * Lisää listaan uuden alkion. Tämän jälkeen päivitetään tarpeen tullen
-     * listan koko.
+     * listan aputaulukon koko.
      *
      * @param item Alkio, joka lisätään listaan.
      */

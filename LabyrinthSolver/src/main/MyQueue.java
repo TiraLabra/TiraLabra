@@ -77,7 +77,7 @@ public class MyQueue<E> {
 
     /**
      * Uusi alkio laitetaan jonon perälle. Tämän jälkeen päivitetään tarpeen
-     * tullen jonon koko.
+     * tullen jonon aputaulukon koko.
      *
      * @param item Alkio, joka lisätään listaan.
      */
