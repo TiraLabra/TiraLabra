@@ -78,7 +78,11 @@ public class Labyrinth {
      * @return Palauttaa annetusta koordinaatista lähtevät kaaret.
      */
     public byte getEdges(int coordinate) {
-        return labyrinth[coordinate / width][coordinate % width];
+        if (validCoordinate(coordinate % width, coordinate / width)) {
+            return labyrinth[coordinate / width][coordinate % width];
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -90,7 +94,11 @@ public class Labyrinth {
      * annettuun suuntaan.
      */
     public boolean hasEdge(int coordinate, byte direction) {
-        return (labyrinth[coordinate / width][coordinate % width] & direction) != 0;
+        if (validCoordinate(coordinate % width, coordinate / width)) {
+            return (labyrinth[coordinate / width][coordinate % width] & direction) != 0;
+        } else {
+            return false;
+        }
     }
 
     /**
