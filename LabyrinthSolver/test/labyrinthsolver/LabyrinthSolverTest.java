@@ -61,8 +61,9 @@ public class LabyrinthSolverTest {
             MyList path = l.ls.getPath();
             assertTrue(path != null);
             int target = l.getHeight() * l.getWidth() - 1;
-            for (int i = 0; i < path.size() - 1; i++) {
+            for (int i = 1; i < path.size() - 1; i++) {
                 assertTrue((int) path.get(i) != target);
+                assertEquals(l.getListOfConnectedNeighbors((int) path.get(i - 1), l.ls.visited, 2).removeByValue((int) path.get(i)), (int) path.get(i));
             }
             assertTrue((int) path.get(path.size() - 1) == target);
         }

@@ -27,16 +27,17 @@ public class LabyrinthTest {
         width = l.getWidth();
         height = l.getHeight();
     }
-    
+
     byte[][] generateByteArray(Labyrinth lab) {
         byte[][] array = new byte[lab.getHeight()][lab.getWidth()];
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 array[i][j] = lab.getEdges(i * width + j);
             }
         }
         return array;
     }
+
     @Test
     public void settingUp() {
         assertEquals(10, width);
@@ -164,6 +165,39 @@ public class LabyrinthTest {
         assertEquals(0, l.getListOfConnectedNeighbors(width + 5, visited, 2).size());
         assertEquals(0, l.getListOfConnectedNeighbors(width + 1, visited, 2).size());
         assertEquals(0, l.getListOfConnectedNeighbors(width * 2 + 3, visited, 2).size());
+    }
+
+    @Test
+    public void coordinatesInsideLabyrinthAreValid() {
+        for (int i = 0; i < width * height; i++) {
+            assertTrue(l.validCoordinate(i % width, i / width));
+        }
+    }
+
+    @Test
+    public void coordinatesOutsideLabyrinthAreNotValid() {
+        assertTrue(!l.validCoordinate(0, -1));
+        assertTrue(!l.validCoordinate(-1, 0));
+        assertTrue(!l.validCoordinate(width + 1, 0));
+        assertTrue(!l.validCoordinate(0, height + 1));
+    }
+
+    @Test
+    public void gettingEdgesInsideLabyrinth() throws Exception {
+        l.addPassage(0, 1);
+        byte edge = l.getEdges(0);
+        assertTrue(edge > 0);
+        assertTrue(l.hasEdge(0, edge));
+        edge = l.getEdges(1);
+        assertTrue(edge > 0);
+        assertTrue(l.hasEdge(1, edge));
+    }
+
+    @Test
+    public void cantGetEdgesOutsideLabyrinth() {
+        byte edge = l.getEdges(-1);
+        assertTrue(edge == 0);
+        assertTrue(!l.hasEdge(width + 1, (byte) 5));
     }
 
 }
