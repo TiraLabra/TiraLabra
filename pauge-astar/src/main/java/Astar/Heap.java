@@ -32,16 +32,14 @@ public class Heap {
      * @param n The node to be added 
      */
     public void insertNode(Node n) {
-        if(size<t.length-1) {     //table must not be full
-                size++;
-                int i = size;
-                while(i>1 && t[i/2].getPrio()>n.getPrio()) {
-                        Node tmp =t[i];
-                        t[i] = t[i/2];
-                        t[i/2]=tmp;
-                        i=i/2;
-                }
-                t[i] = n;
+        if(size<t.length-1) {       //table must not be full
+            size = size+1;
+            int i = size;
+            while(i>1 && t[i/2].getPrio()>n.getPrio()) {
+                    t[i]=t[i/2];        //drop parent as child
+                    i=i/2;
+            }
+            t[i] = n;
         }
         else {
             t = increaseHeapSize();
@@ -76,14 +74,10 @@ public class Heap {
         int high =i;
         int left = 2*i;
         int right = 2*i+1;                       
-        if(size>=2*i) {
-           if(t[left].getPrio()<t[i].getPrio())
+        if(left <= size && t[left].getPrio()<t[i].getPrio())
                 high = left;
-        }
-        if(size>=2*i+1){
-            if(t[right].getPrio()< t[high].getPrio()) 
+        if( right <= size && t[right].getPrio()< t[high].getPrio()) 
                 high = right;
-        }
         if(t[high].getPrio()<t[i].getPrio()) {
             Node tmp = t[high];
             t[high] = t[i];
@@ -123,6 +117,24 @@ public class Heap {
     public Node get(int i){
         return t[i];
     }
-   
-
+    
+    /**
+     * Update the priority of a Node and maintain correctness of the Heap
+     * 
+     * @param n
+     * @param i 
+     */
+    public void updateNode(Node n, int i) {
+        n.setToStart(i);            //update
+        for(int j=1;j<=size;j++) {
+            if(t[j]==n) {
+                while(i>1 && t[i/2].getPrio()>n.getPrio()) {
+                    Node tmp = t[i];
+                    t[i] = t[i/2];
+                    t[i/2] = tmp;
+                    i=i/2;
+                }break;
+            }
+        }
+    }
 }

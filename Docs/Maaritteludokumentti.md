@@ -15,6 +15,7 @@ Algoritmit ja tietorakenteet:
 Syötteet ja niiden käyttö:
 
 	Syötteenä on tarkoituksena käyttää ASCII -merkeistä koostettua kenttää (kaksiulotteinen taulukko), josta algoritmi etsii itse toteutettuja tietorakenteita käyttäen optimaalisen reitin lähtösolmusta maalisolmuun.
+	Kartat on annettu ohjelmalle valmiiksi.
 
 
 Aika- ja tilavaativuudet:

@@ -13,7 +13,6 @@ public class Finder {
     Node neighbor;
     Heap accessed;
     Heap checked;
-    Stack path;
     /**
      * Constructor
      */
@@ -22,7 +21,6 @@ public class Finder {
        neighbor = null;
        accessed = new Heap();
        checked = new Heap();
-       path = new Stack();
     }
     /**
      * Finds the shortest route from start to goal
@@ -40,34 +38,20 @@ public class Finder {
         while(!accessed.isEmpty()) {
             current = accessed.getHighest();                    //mark node that is checked as current
             accessed.removeNode();                              //remove current from the list of nodes to check
-            path.insertNode(current);                               //and store it in collection of checked ones
+            checked.insertNode(current);                               //and store it in collection of checked ones
             current.setValue('-');
-            System.out.println("current: ("+current.getX()+","+current.getY()+")");
             if (current == goal){
                 current.setValue('.');
                 break;                                          //route found
             }
-            markNeighbour(m,goal,1,0);              
-            markNeighbour(m,goal,-1,0);
-            markNeighbour(m,goal,0,1);
-            markNeighbour(m,goal,0,-1);
-            markNeighbour(m,goal,1,-1);
-            markNeighbour(m,goal,1,1);
-            markNeighbour(m,goal,-1,-1);
-            markNeighbour(m,goal,-1,1);
             
-            m.printField();
-            System.out.println(accessed.getSize());
-            for(int i = 1; i<=accessed.getSize();i++) {
-                System.out.print(i+":("+accessed.get(i).getX()+","+accessed.get(i).getY()+") "+accessed.get(i).getPrio());
-                System.out.println();
+            for(int i=-1;i<=1;i++) {
+                for(int j=-1;j<=1;j++)
+                    markNeighbour(m,goal,i,j);
             }
         }
-        System.out.println("\n\nFound path (goal top):");
-        for(int i = path.size(); i>0; i--) {
-            System.out.print(path.size()+": "+path.removeNode().toString());
-            System.out.println();
-        }
+        printPath(goal);
+        m.printField();
     }
     
     /**
@@ -94,19 +78,29 @@ public class Finder {
      * @param x used to define a step in x-axis from current node
      */
     public void markNeighbour(Map m, Node goal, int y, int x) {
-        try{neighbor = m.field[current.getY()+(1*y)][current.getX()+(1*x)];    //fill in the data for neighbors
+        try{neighbor = m.field[current.getY()+y][current.getX()+x];    //fill in the data for neighbors
                 if(neighbor.getValue() == 'X')
                     checked.insertNode(neighbor);                             //if a wall, discard
-                if(!checked.hasNode(neighbor) && !path.hasNode(neighbor)) {                              //if node hasn't been checked
+                if(!checked.hasNode(neighbor)) {                              //if node hasn't been checked
                     if(!accessed.hasNode(neighbor)){
-                        accessed.insertNode(neighbor);
                         setNodeVariables(neighbor,goal.getY(),goal.getX());
+                        accessed.insertNode(neighbor);
                     }
                     if(accessed.hasNode(neighbor) && neighbor.getPrio()>((current.getToStart()+1)+neighbor.getToGoal())){
-                          neighbor.setToStart(current.getToStart()+1);
-                          accessed.sortHeap(1);
+                          accessed.updateNode(neighbor,current.getToStart()+1);
                     }
                 }
             }   catch(Exception e) {}
+    }
+    
+    public void printPath(Node n) {
+        while(true){
+            System.out.print(n.toString());
+            n.setValue('P');
+            if(n.getPrev()==n)
+                break;
+            n = n.getPrev();
+        }
+        System.out.println();
     }
 }
