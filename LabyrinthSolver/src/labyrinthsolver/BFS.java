@@ -53,7 +53,7 @@ public class BFS extends LabyrinthSolver {
             }
             if (visited[coordinate / width][coordinate % width] == 0) {
                 visited[coordinate / width][coordinate % width] = 2;
-                MyList neighbors = labyrinth.getListOfEdges(coordinate, visited, 0);
+                MyList neighbors = labyrinth.getListOfConnectedNeighbors(coordinate, visited, 0);
                 while (!neighbors.empty()) {
                     queue.enqueue(neighbors.removeByIndex(random.nextInt(neighbors.size())));
                 }

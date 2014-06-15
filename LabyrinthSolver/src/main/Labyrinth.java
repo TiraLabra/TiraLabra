@@ -80,6 +80,7 @@ public class Labyrinth {
     public byte getEdges(int coordinate) {
         return labyrinth[coordinate / width][coordinate % width];
     }
+
     /**
      * Tarkastaa, lähteekö annetusta koordinaatista kaari annettuun suuntaan.
      *
@@ -295,7 +296,7 @@ public class Labyrinth {
     }
 
     /**
-     * Annetun koordinaatin kaaret, jotka vievät naapureihin, jotka ovat tilassa
+     * Annetun koordinaatin kaarella yhdistetyt naapurit, jotka ovat tilassa
      * state. State = 2 tarkoittaa vierailtua ja state = 0 vierailematonta
      * naapuria.
      *
@@ -307,7 +308,7 @@ public class Labyrinth {
      *
      * @see main.MyList
      */
-    public MyList getListOfEdges(int coordinate, int[][] visited, int state) {
+    public MyList getListOfConnectedNeighbors(int coordinate, int[][] visited, int state) {
         MyList<Integer> listOfNeighbours = new MyList(4);
         int x = coordinate % width;
         int y = coordinate / width;

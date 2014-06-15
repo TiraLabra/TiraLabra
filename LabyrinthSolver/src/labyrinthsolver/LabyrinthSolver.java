@@ -190,7 +190,7 @@ public abstract class LabyrinthSolver {
         if (node == null || stack == null) {
             return;
         }
-        MyList edges = labyrinth.getListOfEdges(node.coordinate, visited, 2);
+        MyList edges = labyrinth.getListOfConnectedNeighbors(node.coordinate, visited, 2);
         for (int i = 0; i < edges.size(); i++) {
             stack.push(new TreeNode(node, (int) edges.get(i)));
         }
