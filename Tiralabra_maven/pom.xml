@@ -10,16 +10,72 @@
   <name>Tiralabra_maven</name>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.10</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+<build>
+    <plugins>
+        <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-javadoc-plugin</artifactId>
+             <version>2.9.1</version>
+        </plugin> 
+        
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.7</source>
+                <target>1.7</target>
+                <encoding>${project.build.sourceEncoding}</encoding>
+            </configuration>
+            <version>2.5</version>
+        </plugin>
+        
+        <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>0.30</version>
+            <configuration>
+                <targetClasses>
+                    <param>Apuvalineet.BinaariMuuntaja</param>
+                    <param>Apuvalineet.Kirjoittaja</param>
+                    <param>Apuvalineet.Lukija</param>
+                    <param>Apuvalineet.TekstinLukija</param>
+                    <param>Tietorakenteet.HajTaulu</param>
+                    <param>Tietorakenteet.MinKeko</param>
+                    <param>Toteutus.Huffman.BittiEsitykset</param>
+                    <param>Toteutus.Huffman.HuffmanPuu</param> 
+                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaaja</param>     
+                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkaja</param>           
+                </targetClasses>
+                <targetTests>
+                    <param>Apuvalineet.BinaariMuuntajaTest</param>
+                    <param>Apuvalineet.KirjoittajaTest</param>
+                    <param>Apuvalineet.LukijaTest</param>
+                    <param>Apuvalineet.TekstinLukijaTest</param>
+                    <param>Tietorakenteet.HajTauluTest</param>
+                    <param>Tietorakenteet.MinKekoTest</param>
+                    <param>Toteutus.Huffman.BittiEsityksetTest</param>
+                    <param>Toteutus.Huffman.HuffmanPuuTest</param>
+                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaajaTest</param>     
+                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkajaTest</param>   
+                </targetTests>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+                <encoding>${project.build.sourceEncoding}</encoding>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 </project>
