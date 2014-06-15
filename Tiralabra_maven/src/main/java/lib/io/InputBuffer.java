@@ -1,7 +1,7 @@
 package lib.io;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import lib.datastructures.LinkedQueue;
 import lib.utils.ByteAsBits;
 
 /**
@@ -9,12 +9,12 @@ import lib.utils.ByteAsBits;
  * @author Iiro
  */
 public class InputBuffer {
-    private final LinkedList<Boolean> list;
+    private final LinkedQueue<Boolean> list;
     private final IO io;
     
     
     public InputBuffer(IO io){
-        list = new LinkedList<Boolean>();
+        list = new LinkedQueue<Boolean>();
         this.io = io;
     }
     /**
@@ -26,7 +26,7 @@ public class InputBuffer {
         if(list.size() >= n){
             boolean[] bits = new boolean[n];
             for(int i = 0; i < n; i++){
-                bits[i] = list.poll();
+                bits[i] = list.dequeue();
             }
             return bits;
         } else return null;
@@ -40,7 +40,7 @@ public class InputBuffer {
             ByteAsBits bits = io.read();
             if(bits == null){ return; } 
             for(boolean b : bits.getAllBits()){
-                list.add(b);
+                list.enqueue(b);
             }
         }
     }

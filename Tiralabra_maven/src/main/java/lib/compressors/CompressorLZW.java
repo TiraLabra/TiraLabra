@@ -14,6 +14,7 @@ public class CompressorLZW {
     private final IO io;
     private final Dictionary dictionary; 
     private final OutputBuffer outputBuffer;
+    private final int dictionarySize = 4096;
     
     /**
      * @param input lähdetiedosto.
@@ -22,7 +23,7 @@ public class CompressorLZW {
      */
     public CompressorLZW(String input, String output) throws IOException{
         io = new IO(input, output);
-        dictionary = new Dictionary(true);
+        dictionary = new Dictionary(dictionarySize);
         outputBuffer = new OutputBuffer(io);
     }
     
@@ -38,17 +39,18 @@ public class CompressorLZW {
             byte[] k = new byte[]{next.getByte()};
             byte[] wk = ArrayUtils.combine(w, k);            
             
-            if(dictionary.contains(wk)){
+            if(dictionary.contains(wk)){             
                 w = wk;
             } else{
                 output(w);
-                dictionary.addToDictionary(wk);      
+                dictionary.add(wk);      
                 w = k;
             } 
         }
         outputBuffer.finalWrite();
         io.close();
     }
+    
     /**
      * Kirjoittaa tiedostoon tavujonoa vastaavan hakemistoindeksin.
      * @param w

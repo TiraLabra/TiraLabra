@@ -9,13 +9,13 @@ public class Main {
     public static void main(String[] args) throws IOException{
             
         String input = "isolorem.txt";
-        String output = "test.lzw";
+        String output = "out.comp";
         String unpacked = "decomp.txt";
         
-        CompressorLZW compressor = new CompressorLZW(input, output);         
+        CompressorLZ77 compressor = new CompressorLZ77(input, output);         
         compressor.compress();    
         
-        DecompressorLZW decompressor = new DecompressorLZW(output, unpacked );
+        DecompressorLZ77 decompressor = new DecompressorLZ77(output, unpacked );
         decompressor.decompress();
         
     }

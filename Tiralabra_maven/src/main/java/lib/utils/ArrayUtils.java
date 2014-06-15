@@ -47,7 +47,7 @@ public class ArrayUtils {
             if(b){ str = str + "1";} 
             else { if(!str.isEmpty()) str = str + "0";}
         }
-        if(str == ""){str = "0";}
+        if("".equals(str)){str = "0";}
         
         return Integer.parseInt(str,2);        
     }

@@ -39,6 +39,7 @@ public class performanceTest {
     
     @After
     public void tearDown(){
+        log.println();
         log.close();
     }
     

@@ -2,3 +2,17 @@
 2014/06/08 23:21:51 LZ77:n pakkausaika: 590
 2014/06/08 23:21:51 LZW:n purkuaika: 830
 2014/06/08 23:21:52 LZ77:n purkuaika: 770
+
+2014/06/15 16:29:53 LZW:n purkuaika: 421
+2014/06/15 16:29:54 LZ77:n purkuaika: 460
+2014/06/15 16:29:54 LZW:n pakkausaika: 378
+2014/06/15 16:29:55 LZ77:n pakkausaika: 443
+
+2014/06/15 17:59:40 LZW:n pakkausaika: 400
+
+2014/06/15 17:59:41 LZ77:n pakkausaika: 480
+
+2014/06/15 17:59:41 LZW:n purkuaika: 750
+
+2014/06/15 17:59:42 LZ77:n purkuaika: 680
+

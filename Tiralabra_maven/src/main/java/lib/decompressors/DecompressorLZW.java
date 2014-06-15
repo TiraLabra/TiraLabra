@@ -16,10 +16,11 @@ public class DecompressorLZW {
     private final IO io;
     private final Dictionary dictionary;
     private final InputBuffer inputBuffer;
+    private final int dictionarySize = 4096;
     
     public DecompressorLZW(String input, String output) throws IOException{
         io = new IO(input, output);
-        dictionary = new Dictionary(false);
+        dictionary = new Dictionary(dictionarySize);
         inputBuffer = new InputBuffer(io);
     }
     
@@ -34,7 +35,7 @@ public class DecompressorLZW {
                 continue;
             }            
             if(entry == null){break;}
-            dictionary.addToDictionary(ArrayUtils.combine(w, new byte[]{entry[0]}));
+            dictionary.add(ArrayUtils.combine(w, new byte[]{entry[0]}));
             w = entry;          
             inputBuffer.read();
         }

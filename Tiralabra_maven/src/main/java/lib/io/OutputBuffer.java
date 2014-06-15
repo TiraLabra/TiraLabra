@@ -2,17 +2,17 @@ package lib.io;
 
 import lib.utils.ByteAsBits;
 import java.io.IOException;
-import java.util.LinkedList;
+import lib.datastructures.LinkedQueue;
 
 /**Ulostulopuskuri, joka kirjoittaa bittivirran tavuittain tiedostoon.   
  * @author Iiro
  */
 public class OutputBuffer {
-    private final LinkedList<Boolean> list;
+    private final LinkedQueue<Boolean> list;
     private final IO io;
     
     public OutputBuffer(IO io){
-        list = new LinkedList<Boolean>();
+        list = new LinkedQueue<Boolean>();
         this.io = io;
     }
     
@@ -24,7 +24,7 @@ public class OutputBuffer {
         while(list.size() >= 8){
             boolean[] bits = new boolean[8];
             for(int i = 0; i < 8; i++){
-                bits[i] = list.poll();
+                bits[i] = list.dequeue();
             }
             ByteAsBits b = new ByteAsBits(bits);
             io.write(b);
@@ -37,7 +37,7 @@ public class OutputBuffer {
     public void addByte(byte b){
         ByteAsBits bits = new ByteAsBits(b);
         for(boolean bit: bits.getAllBits()){
-            list.add(bit);
+            list.enqueue(bit);
         }
     }
     /**
@@ -46,12 +46,12 @@ public class OutputBuffer {
      */
     public void addBits(boolean[] bits){
         for(boolean b: bits){
-            list.add(b);
+            list.enqueue(b);
         }
     }
     
     public void addBit(boolean bit){
-        list.add(bit);
+        list.enqueue(bit);
     }
     
     /**
@@ -60,7 +60,7 @@ public class OutputBuffer {
     */
     public void finalWrite() throws IOException{
         while(list.size()<8){
-            list.add(false);
+            list.enqueue(false);
         }
         write();
     }
