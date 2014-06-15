@@ -13,11 +13,32 @@ m = nmd5.new()
 
 '''
 ```
-
 #### Digests
-Calculating digests is in constant time and space complexity (notice increasing input sizes to update function):
+We begin by analysing digests. This requires a different setup. Calculating digests is in constant time and space complexity (notice increasing input sizes to update function):
 ```
+In [13]: setup = '''
+   ....: import nmd5
+   ....: m = nmd5.new()
+   ....: m.update("a")
+   ....: '''
 
+In [14]: print(min(timeit.Timer('m.digest()', setup=setup).repeat(7, 10000)))
+0.22652548499172553
+
+In [15]: print(min(timeit.Timer('m.hexdigest()', setup=setup).repeat(7, 10000)))
+0.33181199099635705
+
+In [16]: setup = '''
+   ....: import nmd5
+   ....: m = nmd5.new()
+   ....: m.update("a"*5000)
+   ....: '''
+
+In [17]: print(min(timeit.Timer('m.digest()', setup=setup).repeat(7, 10000)))
+0.22879273700527847
+
+In [18]: print(min(timeit.Timer('m.hexdigest()', setup=setup).repeat(7, 10000)))
+0.33244859499973245
 ```
 A digest is always 16 bytes in size, and always calculates the result with registers A, B, C, D which are purposefully kept as 32-bit values. Conversion to digest and hexdigest only ever does the same list iteration for a fixed-length element. This makes the time and space complexity of creating digests `O(1)`.
 
