@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 import logiikka.Matriisilaskin;
 
 /**
- * Kayttoliittyma-luokka, joka toimii matriisilaskimen graafisena 
- * käyttöliittymänä. Toteutettu Netbeansin GUI-builderilla.
+ * Kayttoliittyma-luokka, joka perii JFrame-luokan ja toimii matriisilaskimen 
+ * graafisena käyttöliittymänä. Toteutettu Netbeansin GUI-builderilla.
  * 
  * @author Eversor
  */
@@ -759,6 +759,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodi, joka summaa käyttöliitymän matriisit A ja B keskenään ja näyttää
+     * summamatriisin käyttöliittymän vastausmatriisi C:ssä. Aluksi käyttö-
+     * liittymän tietojen perusteella lataa ja luo matriisit A ja B, jonka
+     * jälkeen päivittää niiden esitysmuodon käyttöliittymään jos eivät ole
+     * null. Tämän jälkeen tarkastaa toteuttavatko matriisit yhteenlaskusäännön,
+     * jonka jälkeen summaa matriisit ja näyttää summamatriisin vastausmatriisi
+     * C:nä, jos kaikki on ok.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void summaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_summaaButtonActionPerformed
         double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                   sarakkeetAText.getText(),
@@ -779,6 +790,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisiC);
     }//GEN-LAST:event_summaaButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin tiedot käyttöliittymän oikeisiin
+     * kohtiin. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee ja päivittää tiedot, jos matriisi ei ole
+     * null. Jos tietoja ei voida määrittää (esim. ei kääntyvä), asettaa
+     * käyttöliittymään niiden tietojen kohdalle viivan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void tiedotAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotAButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                  sarakkeetAText.getText(),
@@ -801,6 +821,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaA(matriisi);
     }//GEN-LAST:event_tiedotAButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin tiedot käyttöliittymän oikeisiin
+     * kohtiin. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee ja päivittää tiedot, jos matriisi ei ole
+     * null. Jos tietoja ei voida määrittää (esim. ei kääntyvä), asettaa
+     * käyttöliittymään niiden tietojen kohdalle viivan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void tiedotBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotBButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
                                                  sarakkeetBText.getText(),
@@ -823,6 +852,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaB(matriisi);
     }//GEN-LAST:event_tiedotBButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin tiedot käyttöliittymän oikeisiin
+     * kohtiin. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee ja päivittää tiedot, jos matriisi ei ole
+     * null. Jos tietoja ei voida määrittää (esim. ei kääntyvä), asettaa
+     * käyttöliittymään niiden tietojen kohdalle viivan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void tiedotCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiedotCButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
                                                  sarakkeetCText.getText(),
@@ -845,6 +883,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisi);
     }//GEN-LAST:event_tiedotCButtonActionPerformed
 
+    /**
+     * Metodi, joka vähentää käyttöliitymän matriisit A ja B keskenään ja 
+     * näyttää erotusmatriisin käyttöliittymän vastausmatriisi C:ssä. Aluksi 
+     * käyttöliittymän tietojen perusteella lataa ja luo matriisit A ja B, jonka
+     * jälkeen päivittää niiden esitysmuodon käyttöliittymään jos eivät ole
+     * null. Tämän jälkeen tarkastaa toteuttavatko matriisit vähennyslasku-
+     * säännön, jonka jälkeen vähentää matriisit keskenään ja näyttää 
+     * erotusmatriisin vastausmatriisi C:nä, jos kaikki on ok.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void vahennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vahennaButtonActionPerformed
         double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                   sarakkeetAText.getText(),
@@ -865,6 +914,19 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisiC);
     }//GEN-LAST:event_vahennaButtonActionPerformed
 
+    /**
+     * Metodi, joka kertoo käyttöliitymän matriisit A ja B keskenään ja 
+     * näyttää tulomatriisin käyttöliittymän vastausmatriisi C:ssä. Aluksi 
+     * käyttöliittymän tietojen perusteella lataa ja luo matriisit A ja B, jonka
+     * jälkeen päivittää niiden esitysmuodon käyttöliittymään jos eivät ole
+     * null. Tämän jälkeen tarkastaa toteuttavatko matriisit kertolaskusäännön, 
+     * jonka jälkeen yrittää kertoa matriisit keskenään käyttäen Strassenia. Jos
+     * matriisit eivät ole samankokoisia neliömatriiseja, kertoo matriisit
+     * keskenään käyttäen tavallista matriisin kertolaskua ja näyttää 
+     * tulomatriisin vastausmatriisi C:nä, jos kaikki on ok.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void kerroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kerroButtonActionPerformed
         double[][] matriisiA = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                   sarakkeetAText.getText(),
@@ -889,6 +951,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisiC);
     }//GEN-LAST:event_kerroButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin transpoosin käyttöliittymässä sen omaan
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen määrittää sen transpoosin, jos matriisi ei ole
+     * null. Lopuksi näyttää transpoosin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void transpoosiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiAButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                  sarakkeetAText.getText(),
@@ -900,6 +970,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaA(matriisi);
     }//GEN-LAST:event_transpoosiAButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin transpoosin käyttöliittymässä sen omaan
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen määrittää sen transpoosin, jos matriisi ei ole
+     * null. Lopuksi näyttää transpoosin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void transpoosiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiBButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
                                                  sarakkeetBText.getText(),
@@ -911,6 +989,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaB(matriisi);
     }//GEN-LAST:event_transpoosiBButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin transpoosin käyttöliittymässä sen omaan
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen määrittää sen transpoosin, jos matriisi ei ole
+     * null. Lopuksi näyttää transpoosin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void transpoosiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transpoosiCButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
                                                  sarakkeetCText.getText(),
@@ -922,6 +1008,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisi);
     }//GEN-LAST:event_transpoosiCButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin käänteismatriisin käyttöliittymässä sen 
+     * omaan kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen käänteismatriisin, jos matriisi on
+     * neliömatriisi. Jos matriisi ei ole kääntyvä, avaa virhe-popupin. Lopuksi 
+     * näyttää käänteismatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void kaanteismatriisiAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiAButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                  sarakkeetAText.getText(),
@@ -937,6 +1032,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaA(matriisi);
     }//GEN-LAST:event_kaanteismatriisiAButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin käänteismatriisin käyttöliittymässä sen 
+     * omaan kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen käänteismatriisin, jos matriisi on
+     * neliömatriisi. Jos matriisi ei ole kääntyvä, avaa virhe-popupin. Lopuksi 
+     * näyttää käänteismatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void kaanteismatriisiBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiBButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
                                                  sarakkeetBText.getText(),
@@ -952,6 +1056,15 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaB(matriisi);
     }//GEN-LAST:event_kaanteismatriisiBButtonActionPerformed
 
+    /**
+     * Metodi, joka määrittää matriisin käänteismatriisin käyttöliittymässä sen 
+     * omaan kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen käänteismatriisin, jos matriisi on
+     * neliömatriisi. Jos matriisi ei ole kääntyvä, avaa virhe-popupin. Lopuksi 
+     * näyttää käänteismatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void kaanteismatriisiCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaanteismatriisiCButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
                                                  sarakkeetCText.getText(),
@@ -967,6 +1080,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisi);
     }//GEN-LAST:event_kaanteismatriisiCButtonActionPerformed
 
+    /**
+     * Metodi, joka laskee matriisin potenssin käyttöliittymässä sen omaan 
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen potenssin, jos matriisi on
+     * neliömatriisi. Jos matriisin potenssi -tekstin muunnoksessa 
+     * kokonaisluvuksi tapahtuu virhe, avaa virhe-popupin. Lopuksi näyttää 
+     * potenssimatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void potenssiinAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinAButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitAText.getText(), 
                                                  sarakkeetAText.getText(),
@@ -984,6 +1107,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaA(matriisi);
     }//GEN-LAST:event_potenssiinAButtonActionPerformed
 
+    /**
+     * Metodi, joka laskee matriisin potenssin käyttöliittymässä sen omaan 
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen potenssin, jos matriisi on
+     * neliömatriisi. Jos matriisin potenssi -tekstin muunnoksessa 
+     * kokonaisluvuksi tapahtuu virhe, avaa virhe-popupin. Lopuksi näyttää 
+     * potenssimatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void potenssiinBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinBButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitBText.getText(), 
                                                  sarakkeetBText.getText(),
@@ -1001,6 +1134,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaB(matriisi);
     }//GEN-LAST:event_potenssiinBButtonActionPerformed
 
+    /**
+     * Metodi, joka laskee matriisin potenssin käyttöliittymässä sen omaan 
+     * kohtaansa. Aluksi käyttöliittymän tietojen perusteella lataa ja luo
+     * matriisin, jonka jälkeen laskee sen potenssin, jos matriisi on
+     * neliömatriisi. Jos matriisin potenssi -tekstin muunnoksessa 
+     * kokonaisluvuksi tapahtuu virhe, avaa virhe-popupin. Lopuksi näyttää 
+     * potenssimatriisin käyttöliittymän omassa kohdassaan.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void potenssiinCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenssiinCButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
                                                  sarakkeetCText.getText(),
@@ -1018,14 +1161,35 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         naytaC(matriisi);
     }//GEN-LAST:event_potenssiinCButtonActionPerformed
 
+    /**
+     * Metodi, joka lataa lataus -tekstin perusteella tiedostosta matriisin ja
+     * päivittää sen käyttöliittymässä omaan kohtaansa.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void lataaAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaAButtonActionPerformed
         lataa(lataaAText.getText(), 'A');
     }//GEN-LAST:event_lataaAButtonActionPerformed
 
+    /**
+     * Metodi, joka lataa lataus -tekstin perusteella tiedostosta matriisin ja
+     * päivittää sen käyttöliittymässä omaan kohtaansa.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void lataaBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaBButtonActionPerformed
         lataa(lataaBText.getText(), 'B');
     }//GEN-LAST:event_lataaBButtonActionPerformed
 
+    /**
+     * Metodi, joka tallentaa käyttöliittymän vastausmatriisi C:ssä olevan 
+     * matriisin tallenna -tekstin perusteella tiedostoon. Aluksi 
+     * käyttöliittymän tietojen perusteella lataa ja luo matriisin, jonka 
+     * jälkeen yrittää tallentaa sen tiedostoon, jos matriisi ei ole null. Jos 
+     * matriisin tallennuksessa tapahtuu virhe, avaa virhe-popupin.
+     * 
+     * @param evt Painikkeen tapahtuma, jota ei hyödynnetä
+     */
     private void tallennaCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tallennaCButtonActionPerformed
         double[][] matriisi = lataaJaLuoMatriisi(rivitCText.getText(), 
                                                  sarakkeetCText.getText(),
