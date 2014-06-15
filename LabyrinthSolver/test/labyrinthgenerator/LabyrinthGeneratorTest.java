@@ -142,17 +142,6 @@ public class LabyrinthGeneratorTest {
     }
 
     @Test
-    public void listingUnvisitedNeighbors() {
-        if (l.lg == null) {
-            return;
-        }
-        int[][] visited = new int[height][width];
-        assertEquals(2, l.getListOfNeighbors(0, visited, 0).size());
-        assertEquals(3, l.getListOfNeighbors(width / 2, visited, 0).size());
-        assertEquals(4, l.getListOfNeighbors(width + 5, visited, 0).size());
-    }
-
-    @Test
     public void creatingBigLabyrinth() throws Exception {
         if (l.lg == null) {
             return;
