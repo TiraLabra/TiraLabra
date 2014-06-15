@@ -55,7 +55,7 @@ public class AStar {
     /**
      * Määritellään, onko diagonaalinen eteneminen sallittu.
      */
-    private boolean diagonaalinenSallittu = false;
+    private boolean diagonaalinenSallittu = true;
     
     /**
      * boolean-muuttuja, jolla kontrolloidaan debug-tarkoitukseen tehtäviä tulostuksia.
@@ -216,21 +216,39 @@ public class AStar {
     
     /**
      * Metodi, joka laskee kahden noden välisen kustannuksen.
-     * TODO: Palauttaa toistaiseksi vain aina ykkösen... naapurikäyttöä ajatellen.
-     * Otettava huomioon Noden kustannusarvo...
+     * Kustannuskertoimeksi on määritelty mielivaltaiset, ei-lineaariset kertoimet.
+     * Näitä voi vielä säätää mielekkääksi jatkossakin...
      * @param tarkastettava
      * @param naapuri
      * @return 
      */
-    private int laskeKustannus(Node tarkastettava, Node naapuri) {
+    public int laskeKustannus(Node tarkastettava, Node naapuri) {
+        
+        double kustannuskerroin;
+        if (naapuri.getKustannus() == 0)
+            kustannuskerroin = 1.0;
+        else if (naapuri.getKustannus() == 1)
+            kustannuskerroin = 1.5;
+        else if (naapuri.getKustannus() == 2)
+            kustannuskerroin = 2.0;
+        else if (naapuri.getKustannus() == 3)
+            kustannuskerroin = 4.0;
+        else if (naapuri.getKustannus() == 4)
+            kustannuskerroin = 8.0;
+        else if (naapuri.getKustannus() == 5)
+            kustannuskerroin = 16.0;
+        else
+            kustannuskerroin = 100.0;
+        
+        int kustannus = (int) (10 * kustannuskerroin);
         
         // Jos on diagonaalinen siirtymä:
-        if (tarkastettava.getRivi() != naapuri.getRivi() && tarkastettava.getSarake() != naapuri.getSarake() ) {
-            return 14;          // pyöristetty arvo sqrt(2);
-        } else {
-            return 10;
+        //if (tarkastettava.getRivi() != naapuri.getRivi() && tarkastettava.getSarake() != naapuri.getSarake() ) {
+        if (Math.abs(tarkastettava.getRivi()-naapuri.getRivi() + tarkastettava.getSarake()-naapuri.getSarake()) > 1 ) {
+            kustannus = (int)(kustannus * Math.sqrt(2));          // sivuttaissiirtymässä kerroin on neliöjuuri(2)
         }
-           
+        
+        return kustannus;
     }
 
     public int getAskelia() {
