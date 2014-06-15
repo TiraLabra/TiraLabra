@@ -132,6 +132,16 @@ public class KekoTest extends TestCase {
         assertEquals(true, t.length()>0);
     }
     
+    public void testSisaltaako() {
+        alustuksia();
+        Keko k = new Keko(nodeTaulukko);
+        
+        Node nt = new Node(9,9,1);
+        assertEquals(false, k.sisaltaa(nt));
+        k.lisaa(nt);
+        assertEquals(true, k.sisaltaa(nt));
+        
+    }
     
     /**
      * Apumetodi testaamiseen, onko keko kelvollinen.

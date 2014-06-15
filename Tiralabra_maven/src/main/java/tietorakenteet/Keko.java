@@ -72,6 +72,20 @@ public class Keko {
         return palautus;
     }
     
+    /**
+     * Kertoo, kuuluuko haluttu alkio jo kekoon.
+     * @param o
+     * @return 
+     */
+    public boolean sisaltaa(Object o) {
+        boolean sisaltaa = false;
+        for (int i = 0; i < this.koko; i++) {
+            if (o == this.sisalto[i])
+                return true;
+        }
+        return sisaltaa;
+    }
+    
     protected void tasapainota(int k) {
         System.out.println("Tasapainotetaan kohta "+ k);
         Comparable tarkasteltava = sisalto[k];
