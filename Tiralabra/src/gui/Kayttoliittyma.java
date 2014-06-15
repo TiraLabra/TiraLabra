@@ -123,9 +123,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinCButton = new javax.swing.JButton();
         potenssiinCText = new javax.swing.JTextField();
         tallennaCButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        vastausmatriisiLabel = new javax.swing.JLabel();
+        matriisiALabel = new javax.swing.JLabel();
+        matriisiBLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Matriisilaskin");
@@ -697,11 +697,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("Vastausmatriisi C");
+        vastausmatriisiLabel.setText("Vastausmatriisi C");
 
-        jLabel3.setText("Matriisi A");
+        matriisiALabel.setText("Matriisi A");
 
-        jLabel4.setText("Matriisi B");
+        matriisiBLabel.setText("Matriisi B");
 
         javax.swing.GroupLayout alustaPanelLayout = new javax.swing.GroupLayout(alustaPanel);
         alustaPanel.setLayout(alustaPanelLayout);
@@ -722,11 +722,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, alustaPanelLayout.createSequentialGroup()
                 .addGap(95, 95, 95)
-                .addComponent(jLabel3)
+                .addComponent(matriisiALabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
+                .addComponent(matriisiBLabel)
                 .addGap(131, 131, 131)
-                .addComponent(jLabel1)
+                .addComponent(vastausmatriisiLabel)
                 .addGap(74, 74, 74))
         );
         alustaPanelLayout.setVerticalGroup(
@@ -742,9 +742,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                         .addComponent(kerroButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(alustaPanelLayout.createSequentialGroup()
                         .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(vastausmatriisiLabel)
+                            .addComponent(matriisiALabel)
+                            .addComponent(matriisiBLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(matriisiAPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
@@ -1670,9 +1670,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JLabel determinanttiBTulosLabel;
     private javax.swing.JLabel determinanttiCLabel;
     private javax.swing.JLabel determinanttiCTulosLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JButton kaanteismatriisiAButton;
     private javax.swing.JButton kaanteismatriisiBButton;
     private javax.swing.JButton kaanteismatriisiCButton;
@@ -1687,9 +1684,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JTextField lataaAText;
     private javax.swing.JButton lataaBButton;
     private javax.swing.JTextField lataaBText;
+    private javax.swing.JLabel matriisiALabel;
     private javax.swing.JPanel matriisiAPanel;
     private javax.swing.JScrollPane matriisiAScroll;
     private javax.swing.JTextArea matriisiAText;
+    private javax.swing.JLabel matriisiBLabel;
     private javax.swing.JPanel matriisiBPanel;
     private javax.swing.JScrollPane matriisiBScroll;
     private javax.swing.JTextArea matriisiBText;
@@ -1742,5 +1741,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JButton transpoosiBButton;
     private javax.swing.JButton transpoosiCButton;
     private javax.swing.JButton vahennaButton;
+    private javax.swing.JLabel vastausmatriisiLabel;
     // End of variables declaration//GEN-END:variables
 }
