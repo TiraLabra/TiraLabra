@@ -32,22 +32,22 @@ public class Main {
         a2.luoPieniTestitaulukko();
         
         //Alue kuvasta:
-        Kuvalukija kl = new Kuvalukija();
+        Kuvalukija kl = new Kuvalukija("100x100.bmp");
         Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
         
         
         // Mitä aluetta tarkastellaan...
-//        Alue hakualue = kuvaAlue;
-//        int alkurivi = 0;
-//        int alkusarake = 0;
-//        int loppurivi = 70;
-//        int loppusarake = 75;
-
-        Alue hakualue = a1;
+        Alue hakualue = kuvaAlue;
         int alkurivi = 0;
         int alkusarake = 0;
-        int loppurivi = 14;
-        int loppusarake = 13;
+        int loppurivi = 88;
+        int loppusarake = 80;
+
+//        Alue hakualue = a1;
+//        int alkurivi = 0;
+//        int alkusarake = 0;
+//        int loppurivi = 14;
+//        int loppusarake = 13;
 
         System.out.println(hakualue.toString());
         
