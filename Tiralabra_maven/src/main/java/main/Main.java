@@ -47,7 +47,7 @@ public class Main {
         int alkurivi = 0;
         int alkusarake = 0;
         int loppurivi = 14;
-        int loppusarake = 15;
+        int loppusarake = 13;
 
         System.out.println(hakualue.toString());
         

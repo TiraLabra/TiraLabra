@@ -51,6 +51,16 @@ public class AStar {
     private int askelia;
     
     private long kokonaisaika;
+    
+    /**
+     * Määritellään, onko diagonaalinen eteneminen sallittu.
+     */
+    private boolean diagonaalinenSallittu = false;
+    
+    /**
+     * boolean-muuttuja, jolla kontrolloidaan debug-tarkoitukseen tehtäviä tulostuksia.
+     */
+    private final static boolean debug = false;
 
     public AStar(Heuristiikka heuristiikka) {
         //kaydyt = new ArrayList();     // Javan oma ArrayList
@@ -100,7 +110,8 @@ public class AStar {
             askelia++;
             
             //Debug-tulostusta
-            System.out.println("Tark: " + tarkastettava.toString());
+            if (debug)
+                System.out.println("Tark: " + tarkastettava.toString());
             
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
@@ -121,14 +132,16 @@ public class AStar {
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
             for (int i = 0; i < naapurit.koko(); i++ ) {
                 Node naapuri = (Node)naapurit.palautaKohdasta(i);
-                System.out.println("  Naapuri: " + naapuri);
+                if (debug)
+                    System.out.println("  Naapuri: " + naapuri);
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
                 
                 //if (kaydyt.contains(naapuri)) {   // Javan oma ArrayList
                 if (kaydyt.sisaltaako(naapuri)) {
                     
-                    System.out.println("  on jo käyty, ei lisätä.");
+                    if (debug)
+                        System.out.println("  on jo käyty, ei lisätä.");
                     continue;
                 }
                 
@@ -187,10 +200,15 @@ public class AStar {
         
         for (int i = n.getRivi()-1; i <= n.getRivi()+1; i++) {
             for (int j = n.getSarake()-1; j <= n.getSarake()+1; j++) {
-                if ( (i >= 0 && j >= 0 && i < a.getKorkeus() && j < a.getLeveys()) && !(i==n.getRivi() && j==n.getSarake()) ) {
-                    if (a.getnode(i, j).kuljettavissa())
+                if ( (i >= 0 && j >= 0 && i < a.getKorkeus() && j < a.getLeveys())  // tarkastukset ettei taulukon ulkopuolelta
+                        && !(i==n.getRivi() && j==n.getSarake()) ) {                // tarkastus ettei lisätä tarkasteltavaa
+                    // Tarkastellaan, ettei lisätä diagonalisia, jos ei ole sallittu
+                    if ( (diagonaalinenSallittu || Math.abs((i-n.getRivi())+(j-n.getSarake())) <= 1 ) &&
+                            a.getnode(i, j).kuljettavissa())
                         naapurit.lisaa(a.getnode(i, j));
-                    //System.out.println(n.getRivi()+", "+ n.getSarake() + "naapuri: " + i + "," + j);
+                    
+                    if (debug)
+                        System.out.println(n.getRivi()+", "+ n.getSarake() + "naapuri: " + i + "," + j);
                 }
             }
         }
