@@ -19,7 +19,7 @@ public class MyPriorityHeapTest {
     @Test
     public void adding() {
         for (int i = 0; i < 15; i++) {
-            testHeap.insert(r.nextInt(50));
+            testHeap.insert(99, r.nextInt(50));
             assertEquals(i + 1, testHeap.size());
         }
     }
@@ -28,7 +28,7 @@ public class MyPriorityHeapTest {
     public void heapPropertyMaintainedOnAdding() {
         for (int i = 0; i < 15; i++) {
             int rand = r.nextInt(50);
-            testHeap.insert(rand);
+            testHeap.insert(99, rand);
             int min = testHeap.get(0);
             assertTrue(min <= rand);
         }
@@ -38,33 +38,33 @@ public class MyPriorityHeapTest {
     public void addingPastHeapSize() {
         for (int j = 0; j < 152; j++) {
             int rand = r.nextInt(50);
-            testHeap.insert(rand);
+            testHeap.insert(99, rand);
             assertTrue(testHeap.size() == j + 1);
         }
     }
 
     @Test
-    public void removingMakesHeapEmpty() throws Exception {
-        testHeap.insert(1);
-        testHeap.insert(2);
-        testHeap.removeMin();
-        testHeap.removeMin();
-        assertTrue(testHeap.empty());
-    }
-
-    @Test(expected = Exception.class)
-    public void removingFromEmptyHeapDoesntWork() throws Exception {
-        removingMakesHeapEmpty();
-        testHeap.removeMin();
+    public void removingMakesHeapEmpty() {
+        testHeap.insert(99, 1);
+        testHeap.insert(99, 2);
+        testHeap.removeMinGetValue();
+        testHeap.removeMinGetValue();
         assertTrue(testHeap.empty());
     }
 
     @Test
-    public void heapPropertyMaintainedOnRemoving() throws Exception {
+    public void removingFromEmptyHeapDoesntWork() {
+        removingMakesHeapEmpty();
+        assertEquals(-1, testHeap.removeMinGetValue());
+        assertTrue(testHeap.empty());
+    }
+
+    @Test
+    public void heapPropertyMaintainedOnRemoving() {
         addingPastHeapSize();
         while (!testHeap.empty()) {
             int min = testHeap.get(0);
-            int removed = testHeap.removeMin();
+            int removed = testHeap.removeMinGetValue();
             assertTrue(min <= removed);
         }
     }
