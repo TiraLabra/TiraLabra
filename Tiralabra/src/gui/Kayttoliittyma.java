@@ -131,7 +131,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         setTitle("Matriisilaskin");
         setMinimumSize(new java.awt.Dimension(720, 480));
         setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         alustaPanel.setPreferredSize(new java.awt.Dimension(720, 480));
 
@@ -754,7 +753,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(alustaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 480));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(alustaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(alustaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
