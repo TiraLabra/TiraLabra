@@ -4,8 +4,8 @@
  */
 package HikeTests.ImageTable;
 
-import Hike.Graph.Node;
-import Hike.Structures.LinkyList;
+import Hike.graph.Node;
+import Hike.structures.LinkyList;
 import Hike.Values;
 import org.junit.After;
 import org.junit.AfterClass;

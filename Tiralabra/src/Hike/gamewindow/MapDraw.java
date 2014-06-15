@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hike.gameWindow;
+package Hike.gamewindow;
 
-import Hike.Algorithms.Pathfinder;
-import Hike.Graph.Node;
-import Hike.ImageTable.ImageTable;
+import Hike.algorithms.Pathfinder;
+import Hike.graph.Node;
+import Hike.imagetable.ImageTable;
 import Hike.Values;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,13 +18,13 @@ import javax.swing.JPanel;
  * Draws the map and path
  *
  */
-class DrawMap extends JPanel {
+class MapDraw extends JPanel {
 
     private ShowPicture pic;
     private ImageTable table;
     private Pathfinder route;
 
-    public DrawMap() {
+    public MapDraw() {
     }
 
     @Override
@@ -55,12 +55,11 @@ class DrawMap extends JPanel {
 
 
     }
+/**
+ * Prints out info on results of search.
+ * @param g 
+ */
 
-    /**
-     * Draws the Dijkstra path with 1 pixel lines.
-     *
-     * @param g
-     */
     public void drawStats(Graphics g) {
         DecimalFormat df = new DecimalFormat("#.00"); 
         g.drawString(
@@ -70,10 +69,16 @@ class DrawMap extends JPanel {
         int max = table.getNodeTable().length * table.getNodeTable()[0].length;
         double percentage = ((double) heapsize / (double) max) * 100;
         g.drawString("Distance to end: "
-                + Math.ceil(route.getDijkstraTable()[table.getNodeTable().length-1][table.getNodeTable()[0].length-1].getDistance()) + ". Nodes left in heap: "
+                + df.format(route.getRouteTable()[table.getNodeTable().length-1][table.getNodeTable()[0].length-1].getDistance()) + ". Nodes left in heap: "
                 + heapsize + "/" + max + " = " + df.format(percentage) + "%", 20, 40);
 
     }
+    
+    /**
+     * Draws the Dijkstra path with 1 pixel lines.
+     *
+     * @param g
+     */
 
     public void drawPath(Graphics g) {
         route.buildPath(route.getTargety(), route.getTargetx());
@@ -86,11 +91,16 @@ class DrawMap extends JPanel {
 
 
     }
+    
+    /**
+     * Uses 1 pixel lines to draw the area that the search considered in a transparent colour. Works quite slowly.
+     * @param g 
+     */
 
     public void drawSearchArea(Graphics g) {
         long timeStart = System.currentTimeMillis();
         Color transparentred = new Color(255, 0, 0, 100);
-        Node[][] t = route.getDijkstraTable();
+        Node[][] t = route.getRouteTable();
         g.setColor(transparentred);
         for (int h = 0; h < t.length; h++) {
 

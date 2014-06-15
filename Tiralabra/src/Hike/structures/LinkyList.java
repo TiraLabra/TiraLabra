@@ -1,6 +1,6 @@
-package Hike.Structures;
+package Hike.structures;
 
-import Hike.Graph.Edge;
+import Hike.graph.Edge;
 import java.util.Iterator;
 
 /**
@@ -13,10 +13,12 @@ public class LinkyList implements Iterable<Edge> {
     private LinkElement top;
     private LinkElement old;
     private LinkElement current;
+    private int size;
 
     public LinkyList() {
 
         this.top = null;
+        size = 0;
 
 
     }
@@ -25,6 +27,7 @@ public class LinkyList implements Iterable<Edge> {
  * @param node 
  */
     public void add(Edge edge) {
+        size++;
         if (this.top == null) {
             this.top = new LinkElement(edge);
         } else {
@@ -38,20 +41,12 @@ public class LinkyList implements Iterable<Edge> {
     }
     
     /**
-     * Counts elements until it finds one without a child.s
+     * Counts elements until it finds one without a child. Used for testing.
      * @return 
      */
 
     public int size() {
-        int count = 0;
-        LinkElement element = this.top;
-        while (element != null) {
-            element = element.next;
-            count++;
-
-        }
-        return count;
-
+        return size;
     }
     
     public LinkElement getTopElement() {

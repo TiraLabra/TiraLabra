@@ -4,8 +4,8 @@
  */
 package HikeTests.MinHeap;
 
-import Hike.Graph.Node;
-import Hike.Structures.MinHeap;
+import Hike.graph.Node;
+import Hike.structures.MinHeap;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;

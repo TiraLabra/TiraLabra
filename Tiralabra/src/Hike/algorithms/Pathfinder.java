@@ -1,14 +1,14 @@
-package Hike.Algorithms;
+package Hike.algorithms;
 
-import Hike.Graph.Edge;
-import Hike.Graph.Node;
-import Hike.Structures.LinkyList;
-import Hike.Structures.MinHeap;
-import Hike.Structures.PathStack;
+import Hike.graph.Edge;
+import Hike.graph.Node;
+import Hike.structures.LinkyList;
+import Hike.structures.MinHeap;
+import Hike.structures.PathStack;
 import Hike.Values;
 
 /**
- * This class calculates distances to nodes using Dijkstra's algorithm.
+ * This class calculates distances to nodes using A* algorithm.
  * nodeTable contains the table that has been set up in class Node. All nodes
  * are added to MinHeap and the one with smallest distance has it's neighbours
  * checked and MinHeap is updated.
@@ -18,7 +18,7 @@ public class Pathfinder {
     private Node[][] nodeTable;
     private LinkyList neighbours;
     private PathStack que;
-    private double c;   // Will be used to count something
+    private double calculations;   // Will be used to count something. Very general estimate used for testing.
     private MinHeap heap;
     private long totalTime;
     private int targety;
@@ -32,7 +32,7 @@ public class Pathfinder {
      */
     public Pathfinder(Node[][] nodeTable, int ty, int tx, String heuristic) {
 
-        c = 0;
+        calculations = 0;
         this.heuristic = heuristic;
         this.que = new PathStack(nodeTable.length * nodeTable[0].length);
         this.nodeTable = nodeTable;
@@ -42,24 +42,24 @@ public class Pathfinder {
 
         long timeStart = System.currentTimeMillis();
         initialize();
-        findDijkstra();
+        findRoute();
         long timeEnd = System.currentTimeMillis();
         totalTime = (timeEnd - timeStart);
 
 
         System.out.println("Dijkstra took: " + (timeEnd - timeStart) + "ms.");
-        System.out.println("Calculations: " + (long) c);
+        System.out.println("Calculations: " + (long) calculations);
     }
 
     /**
-     * Starts the Dijkstra algorithm. Always starts from position 0,0 in the
+     * Starts the algorithm. Always starts from position 0,0 in the
      * grid. All nodes are in the MinHeap in the beginning.
      */
-    private void findDijkstra() {
+    private void findRoute() {
         Node eval = heap.removeMin();
 
         while (heap.empty() == false) {
-            c = c + 3;
+            calculations = calculations + 3;
             checkNeighbours(eval);
 
             eval = heap.removeMin();
@@ -78,14 +78,13 @@ public class Pathfinder {
      */
     private void checkNeighbours(Node eval) {
         neighbours = eval.getNeighbours();
-        Node checkNext = new Node(0, 0, 0);
-        checkNext.setDistance(Integer.MAX_VALUE);
+
         for (Edge edge : neighbours) {
             if (!edge.getChild().getChecked()) {
                 relax(edge);
 
 
-                c++;
+                calculations++;
             }
         }
     }
@@ -99,7 +98,7 @@ public class Pathfinder {
         for (int h = 0; h < nodeTable.length; h++) {
             for (int w = 0; w < nodeTable[0].length; w++) {
                 heap.insert(nodeTable[h][w]);
-                c++;
+                calculations++;
             }
         }
 
@@ -109,17 +108,17 @@ public class Pathfinder {
     /**
      * Checks if distance to a goal is shorter by travelling through start.
      * Check if the goal has been checked already to prevent stack getting too
-     * large in error situations
+     * large in error situations. The A* heuristic is also checked here.
      *
      *
-     * @param start
-     * @param goal
+     * @param edge The edge being checked
+     * 
      */
     private void relax(Edge edge) {
-        edge.getChild().setDistanceToGoal(heuristic(edge.getChild()));
+        edge.getChild().setDistanceToGoal(heuristic(edge));
 
         if (edge.getChild().getDistance() > edge.getParent().getDistance() + edge.getCost()) {
-            c = c + 3;
+            calculations = calculations + 3;
             edge.getChild().setPrevious(edge.getParent());
             edge.getChild().setChecked();
             heap.decHeap(edge.getChild().getHeapIndex(), edge.getParent().getDistance() + edge.getCost(), edge.getChild().getDistanceToGoal());
@@ -165,13 +164,13 @@ public class Pathfinder {
 
     }
 
-    public Node[][] getDijkstraTable() {
+    public Node[][] getRouteTable() {
         return nodeTable;
 
     }
 
     public double getC() {
-        return c;
+        return calculations;
     }
 
     public long getTotalTime() {
@@ -189,15 +188,24 @@ public class Pathfinder {
     public MinHeap getHeap() {
         return this.heap;
     }
+    
+    /**
+     * Heuristic for calculating routes with A*. Value d can be changed to control 
+     * accuracy vs speed, larger is faster and smaller is more accurate.
+     * @param edge
+     * @return 
+     */
 
-    private double heuristic(Node goal) {
-        double d = 1.0; //Easiest possible weight
-        double d2 = 1.4;
+    private double heuristic(Edge edge) {
+        Node goal = edge.getChild();
+        double d = Values.ACCURACY; //Easiest cost. This value can control accuracy vs speed. Higher is faster but more inaccurate.
+        double d2 = Math.sqrt(2)*d; //Diagonal movement cost
+        goal.getWeight();
 
         if (heuristic.contains("Diagonalsearch")) { //Diagonal search. 
             double x = Math.abs(goal.getX() - targetx);
             double y = Math.abs(goal.getY() - targety);
-            return d * (x + y) + (d2 - 2 * d) * Math.min(x, y);
+            return d * (x + y) + (d2 - 2*d) * Math.min(y, x);
 
         } else if (heuristic.contains("Manhattan")) { //Manhattan.
             double x = Math.abs(goal.getX() - targetx);

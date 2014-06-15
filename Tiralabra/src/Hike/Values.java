@@ -22,6 +22,7 @@ public class Values {
     public static String HEURISTIC;      // 0 = No heuristic, Djikstra. 1 = Diagonal Distance, Chebyshev.
     public static boolean SHOWSEARCHED = false;
     public static boolean DIAGONAL = false;
+    public static double ACCURACY = 1;
 
     public static void setHeuristic(String t) {
         HEURISTIC = t;
@@ -42,6 +43,7 @@ public class Values {
         } else {
             DIAGONAL = false;
         }
+    }
 
     }
-}
+

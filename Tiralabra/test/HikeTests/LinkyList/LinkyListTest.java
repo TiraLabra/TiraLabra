@@ -4,9 +4,9 @@
  */
 package HikeTests.LinkyList;
 
-import Hike.Graph.Edge;
-import Hike.Graph.Node;
-import Hike.Structures.LinkyList;
+import Hike.graph.Edge;
+import Hike.graph.Node;
+import Hike.structures.LinkyList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

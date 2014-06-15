@@ -1,12 +1,12 @@
 package Hike;
 
-import Hike.gameWindow.GameWindow;
+import Hike.gamewindow.MenuWindow;
 
 class Main {
 
     public static void main(String[] args) {
 
-        GameWindow game = new GameWindow();
+        MenuWindow game = new MenuWindow();
         game.run();
 
 

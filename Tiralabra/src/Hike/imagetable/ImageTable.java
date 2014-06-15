@@ -1,8 +1,8 @@
-package Hike.ImageTable;
+package Hike.imagetable;
 
-import Hike.Graph.Node;
+import Hike.graph.Node;
 import Hike.Values;
-import Hike.gameWindow.ShowPicture;
+import Hike.gamewindow.ShowPicture;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 

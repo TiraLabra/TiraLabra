@@ -1,4 +1,4 @@
-package Hike.gameWindow;
+package Hike.gamewindow;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -9,10 +9,10 @@ import javax.swing.*;
  * Game window, sets size etc.
  * @author petri
  */
-public class GameWindow implements Runnable {
+public class MenuWindow implements Runnable {
 
     private JFrame frame;
-    private GameScreen menu;
+    private MenuDraw menu;
 
     @Override
     public void run() {
@@ -35,13 +35,13 @@ public class GameWindow implements Runnable {
 
 
     private void createComponents(Container container) {
-        this.menu = new GameScreen();
+        this.menu = new MenuDraw();
         container.add(menu);
     }
 
 
 
-    public GameWindow getGameWindow() {
+    public MenuWindow getGameWindow() {
         return this;
     }
 }

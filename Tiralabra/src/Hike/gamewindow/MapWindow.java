@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hike.gameWindow;
+package Hike.gamewindow;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -16,19 +16,16 @@ import javax.swing.WindowConstants;
  * @author petri
  */
 
-public class MapGraphic extends JPanel implements Runnable {
+public class MapWindow extends JPanel implements Runnable {
 
     private JFrame frame;
-    private DrawMap map;
-    private int heur;
+    private MapDraw map;
 
-    MapGraphic(int i) {
-        heur = i;
+
+    MapWindow() {
     }
 
-    MapGraphic() {
-      
-    }
+
 
     public void run() {
         frame = new JFrame("Pathfinder");
@@ -47,7 +44,7 @@ public class MapGraphic extends JPanel implements Runnable {
     }
 
     private void createComponents(Container container) {
-        this.map = new DrawMap();
+        this.map = new MapDraw();
         container.add(map);
     }
 

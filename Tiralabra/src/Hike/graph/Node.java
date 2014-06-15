@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hike.Graph;
+package Hike.graph;
 
-import Hike.Structures.LinkyList;
+import Hike.structures.LinkyList;
 import Hike.Values;
 
 /**
@@ -18,7 +18,7 @@ public class Node {
 
     private int x;
     private int y;
-    private int weight;
+    private double weight;
     private Node[][] table;
     private LinkyList connections;
     private Node S = null;  // All the compass directions are currently unused
@@ -60,7 +60,7 @@ public class Node {
 
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return this.weight;
     }
 
@@ -79,7 +79,7 @@ public class Node {
         this.table = table;
         int h = table.length;
         int w = table[0].length;
-        double f = 1.4; //how many time more diagonal movements cost
+        double f = Math.sqrt(2); //how many time more diagonal movements cost
 
 
         Node temp;
@@ -107,20 +107,25 @@ public class Node {
                 }
                 if (py + 1 < h && px - 1 >= 0 && Values.DIAGONAL == true) {
                     temp = table[py + 1][px - 1]; //SW
-                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
+                    table[py][px].getNeighbours().add(
+                            new Edge(parent, temp, (temp.getWeight() * f)));
                 }
                 if (py + 1 < h && px + 1 < w && Values.DIAGONAL == true) {
                     temp = table[py + 1][px + 1]; //SE
-                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
+                    table[py][px].getNeighbours().add(
+                            new Edge(parent, temp, (temp.getWeight() * f)));
                 }
                 if (py - 1 >= 0 && px - 1 >= 0 && Values.DIAGONAL == true) {
                     temp = table[py - 1][px - 1]; //NW
-                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
+                    table[py][px].getNeighbours().add(
+                            new Edge(parent, temp, (temp.getWeight() * f)));
                 }
                 if (py - 1 >= 0 && px + 1 < w && Values.DIAGONAL == true) {
                     temp = table[py - 1][px + 1]; //NE
-                    table[py][px].getNeighbours().add(new Edge(parent, temp, temp.getWeight() * f));
+                    table[py][px].getNeighbours().add(
+                            new Edge(parent, temp, (temp.getWeight() * f)));
                 }
+
             }
         }
     }

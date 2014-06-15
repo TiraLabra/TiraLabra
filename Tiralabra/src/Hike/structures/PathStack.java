@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hike.Structures;
+package Hike.structures;
 
-import Hike.Graph.Node;
+import Hike.graph.Node;
 
 /**
  *
@@ -22,7 +22,7 @@ public class PathStack {
         
     }
     /**
-     * Pushed node into stack. Gives some info if the path contains a loop.
+     * Pushed node into stack. Gives some info for debugging if the path contains a loop.
      * @param node 
      */
 

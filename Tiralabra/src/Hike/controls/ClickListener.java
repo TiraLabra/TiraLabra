@@ -1,7 +1,7 @@
 package Hike.controls;
 
+import Hike.gamewindow.MenuDraw;
 import Hike.Values;
-import Hike.gameWindow.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
  */
 public class ClickListener implements ActionListener {
 
-    private GameScreen screen;
+    private MenuDraw screen;
 
-    public ClickListener(GameScreen a) {
+    public ClickListener(MenuDraw a) {
         screen = a;
 
     }
@@ -25,7 +25,8 @@ public class ClickListener implements ActionListener {
         DIJKSTRA,
         DIAGONALSEARCH,
         MANHATTAN,
-        DRAWSEARCHED, DIAGONAL
+        DRAWSEARCHED,
+        DIAGONAL,
     }
 
     public ClickListener() {
@@ -57,5 +58,6 @@ public class ClickListener implements ActionListener {
             Values.setDiagonal();
 
         }
+
     }
 }

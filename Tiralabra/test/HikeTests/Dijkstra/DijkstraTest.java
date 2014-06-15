@@ -4,8 +4,8 @@
  */
 package HikeTests.Dijkstra;
 
-import Hike.Algorithms.Pathfinder;
-import Hike.Graph.Node;
+import Hike.algorithms.Pathfinder;
+import Hike.graph.Node;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -68,7 +68,7 @@ public class DijkstraTest {
     public void ShortestRouteInTableWithIdenticalValues() { // 
         Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
 
-        nodeTable = route.getDijkstraTable();
+        nodeTable = route.getRouteTable();
         assertEquals(30, (int) nodeTable[3][3].getDistance());
 
     }
@@ -84,7 +84,7 @@ public class DijkstraTest {
         nodeTable[3][3].setWeight(1);
         nodeTable[0][0].setNeighbours(t);
         Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
-        nodeTable = route.getDijkstraTable();
+        nodeTable = route.getRouteTable();
         assertEquals(6, (int) nodeTable[3][3].getDistance());
 
     }
@@ -101,7 +101,7 @@ public class DijkstraTest {
 
         nodeTable[0][0].setNeighbours(t);
         Pathfinder route = new Pathfinder(nodeTable, 3, 3, "Dijkstra");
-        nodeTable = route.getDijkstraTable();
+        nodeTable = route.getRouteTable();
         assertEquals(6, (int) nodeTable[3][3].getDistance());
 
     }
@@ -118,7 +118,7 @@ public class DijkstraTest {
         }
         nodeTable[0][0].setNeighbours(nodeTable);
         Pathfinder bigroute = new Pathfinder(nodeTable, 9, 9, "Dijkstra");
-        assertEquals(18 * 50, (int) bigroute.getDijkstraTable()[9][9].getDistance());
+        assertEquals(18 * 50, (int) bigroute.getRouteTable()[9][9].getDistance());
 
     }
 

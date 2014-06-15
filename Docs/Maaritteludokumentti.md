@@ -2,9 +2,9 @@ Määrittelydokumentti: TiraLabra
 
 "Hike"
 
-Tavoitteena on tehdä ohjelma, joka etsii nopeimman reitin käyttäjän piirtämän kuvan ylänurkasta alanurkkaan. Kuvan eri värit ovat vaikeampia ylittää, esimerkiksi valkoisen pikselin ylittäminen maksaa yhden pisteen ja keltaisen ylittäminen 5. Ohjelma siis etsii keveimmän polun suuntaamattomassa painotetussa verkossa. Kuvan kooksi alustavasti tulee 800*500 pikseliä, käyttäjä tallentaa kuvan .png muodossa.
+Tavoitteena on tehdä ohjelma, joka etsii nopeimman reitin käyttäjän piirtämän kuvan ylänurkasta alanurkkaan. Kuvan eri värit ovat vaikeampia ylittää, esimerkiksi valkoisen pikselin ylittäminen maksaa yhden pisteen ja keltaisen ylittäminen 5. Ohjelma siis etsii keveimmän polun suuntaamattomassa painotetussa verkossa. Kuvan kooksi alustavasti tulee 800*500 pikseliä, käyttäjä tallentaa kuvan .png muodossa. Kuva tallennettaan src kansion Hike kansioon nimellä map1.png.
 
-Ohjelmaan tulee ainakin Dijkstran algoritmi ja siihen tarvittavat tietorakenteet kuten stack. Ajattelin myös toteuttaa A*-algoritmin ja mahdollisesti tutkia Jump Point Searchia ja vertailla algoritmien käyttämää aikaa ja laskutoimituksia.
+Ohjelmaan tulee ainakin Dijkstran algoritmi ja siihen tarvittavat tietorakenteet kuten stack. Ajattelin myös toteuttaa A*-algoritmin ja vertailla algoritmien käyttämää aikaa ja laskutoimituksia. Suunnittelin myös Jump Point Search algoritmin tutkimusta, mutta sain selville sen toimivan huonosti painotetussa verkossa.
 
 Dijkstra toteutetaan minimikeolla. Minimikeon solmut tietävät myös oman indeksinsä, tietty solmu löydetään keosta tarvittaessa vakioajassa.
 
@@ -14,7 +14,7 @@ Dijkstra:
 Minimikeolla, tavoitteena aikavaatimus O( (E+V) log V). Tilavaativuus O(v).
 
 A*: 
-Aikavaatimus on pahimmassa tapauksessa sama kuin Dijkstrassa. Heuristiikan valinta vielä mietinnässä.
+Aikavaatimus on pahimmassa tapauksessa sama kuin Dijkstrassa. Heuristiikaksi valitaan Manhattan ja Diagonal Distance.
 
 Minimikeko:
 Tarvitaan Dijkstran nopeuttamiseen. O(N log N).

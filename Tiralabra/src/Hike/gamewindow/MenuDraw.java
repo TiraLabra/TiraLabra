@@ -1,4 +1,4 @@
-package Hike.gameWindow;
+package Hike.gamewindow;
 
 import Hike.Values;
 import Hike.controls.ClickListener;
@@ -14,25 +14,25 @@ import javax.swing.*;
  * Shows the welcome screen
  *
  */
-public class GameScreen extends JPanel {
+public class MenuDraw extends JPanel {
 
     private ActionListener listener;
-    private MapGraphic map;
+    private MapWindow map;
 
-    public GameScreen() {
+    public MenuDraw() {
 
         setLayout(null);
 
-        JTextArea teksti = new JTextArea("Finds the shortest route in a drawn image. Diagonal moves are only slightly more expensive, "
+        JTextArea teksti = new JTextArea("Finds the shortest route from top left to bottom right. Diagonal moves are only slightly more expensive, "
                 + "costing 1.4 times the node's terrain difficulty! This leads to diagonal routes being shorter."
-                + "For example, moving on grass or unset terrain diagonally costs 1.4*"
+                + " For example, moving on grass or unset terrain diagonally costs 1.4*"
                 + Values.UNSETGROUND + ", but moving into a mountain diagonally will cost 1.4*" + Values.MOUNTAIN
-                + ".\n\nPlease note! Using diagonal movement on maps with lots of special terrain might give unexpected results!"
-                + "\n\n---\n\n- Dijkstra search is slow but is guaranteed to find shortest route. "
-                + "\n- Diagonal search is very fast with diagonals enabled."
-                + "\n- Manhattan search is fast, but with diagonals enabled it might"
+                + ".\n\nPlease note! When diagonal movement is enabled, the results often are longer than the best possible route."
+                + "\n\n- Dijkstra search is slow but is guaranteed to find shortest route. "
+                + "\n- Diagonal search is fast with diagonals enabled, but the route it finds might be slightly longer."
+                + "\n- Manhattan search is always fast, but with diagonals enabled it might"
                 + " find a route that is much longer."
-                + "\n\n---\n\n- Green or white are easy to pass. Yellow is desert and harder to pass. "
+                + "\n\n- Green or white are easy to pass. Yellow is desert and harder to pass. "
                 + "Blue is water and it is very hard to pass. Black are mountains, and they are nearly impossible to pass,"
                 + " the route search should use them only when no other routes exist.");
 
@@ -73,10 +73,6 @@ public class GameScreen extends JPanel {
         diagonal.setBounds(300, 100, 200, 50);
         add(diagonal);
 
-// Image is out of date.
-//        helpfulImage = new ShowPicture("../help.png");
-//        picture.setBounds(200, 200, 500, 300);
-//        add(helpfulImage);
 
     }
 
@@ -85,7 +81,7 @@ public class GameScreen extends JPanel {
      *
      */
     public void openMap() {
-        map = new MapGraphic();
+        map = new MapWindow();
         map.run();
     }
 }

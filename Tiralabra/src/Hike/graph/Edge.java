@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hike.Graph;
+package Hike.graph;
 
 /**
- *
- * @author petri
+ *  Edges between nodes. Stored in the neighbours-list of nodes.
+ * 
  */
 public class Edge {
 
