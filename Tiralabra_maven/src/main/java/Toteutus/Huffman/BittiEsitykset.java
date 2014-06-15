@@ -2,7 +2,6 @@ package Toteutus.Huffman;
 
 import Tietorakenteet.HajTaulu;
 import Tietorakenteet.Solmu;
-import java.util.HashMap;
 
 /**
  * Luokka jolla voidaan muodostaa (Huffman -puun muodostamisen jälkeen) String-muotoiset bittiesitykset

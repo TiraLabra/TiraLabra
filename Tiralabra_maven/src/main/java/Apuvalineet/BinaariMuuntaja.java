@@ -1,7 +1,6 @@
 package Apuvalineet;
 
 import Tietorakenteet.HajTaulu;
-import java.util.HashMap;
 
 /**
  * Yleisluokka joka suorittaa muunnoksia int -arvojen ja niit‰ vastaavien bin‰‰riesitysten (talletetaan
@@ -26,6 +25,7 @@ public class BinaariMuuntaja {
      * @param arvo
      * @return 
      */
+    
     public String binaariEsitysEtuNollilla8Bit(int arvo) {
         StringBuilder esitys = new StringBuilder();
         

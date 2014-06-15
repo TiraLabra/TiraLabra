@@ -212,8 +212,8 @@ public class HajTauluTest {
             taulu.lisaa("bac" + (char) i + "", "koas" + (char) i + "");
         }
         
-        String[] taulukko = new String[taulu.avaintenMaara()];
-        String[] taulukko2 = new String[taulu.avaintenMaara()];
+        String[] taulukko = new String[taulu.getKoko()];
+        String[] taulukko2 = new String[taulu.getKoko()];
         
         taulu.lisaaTaulukkoon(taulukko, true);
         taulu.lisaaTaulukkoon(taulukko2, false);
@@ -221,7 +221,7 @@ public class HajTauluTest {
         String[] avaimet = taulu.getAvaimet();
         String[] arvot = taulu.getArvot();
         
-        for (int i = 0; i < taulu.avaintenMaara(); i++) {
+        for (int i = 0; i < taulu.getKoko(); i++) {
             assertEquals(taulukko[i], avaimet[i]);
             assertEquals(taulukko2[i], arvot[i]);
         }

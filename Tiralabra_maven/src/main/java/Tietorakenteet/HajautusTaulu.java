@@ -15,7 +15,7 @@ public class HajautusTaulu {
      */
     
     public HajautusTaulu() {
-        this(100003);
+        this(257);
     }
     
     public HajautusTaulu(int avaimia) {

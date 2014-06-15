@@ -43,7 +43,7 @@ public class MinKeko {
     }
     
     /**
-     * Metodi joka lis√‰‰ uuden solmun minimikekoon.
+     * Metodi joka lis‰‰ uuden solmun minimikekoon.
      * Solmu sijoitetaan keon viimeiseksi alkioksi, jos sen esiintymien m‰‰r‰ (tekstitiedostossa) on suurempi kuin
      * viimeisen paikan vanhemman solmun esiintymien m‰‰r‰. Muussa tapauksessa solmua tulee "valuttaa" ylˆsp‰in
      * kohti keon huippua (koska kyseess‰ minimikeko solmujen esiintymism‰‰rien suhteen).

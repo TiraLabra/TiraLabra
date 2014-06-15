@@ -3,7 +3,6 @@ package Toteutus.Huffman;
 import Tietorakenteet.HajTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
-import java.util.HashMap;
 
 /**
  * Sen j�lkeen kun tiedoston teksti on luettu ja (samanaikaisesti) kaikkien siin� esiintyvien merkkien
@@ -70,66 +69,3 @@ public class HuffmanPuu {
         oikea.setVanh(yhdistetty);
     }   
 }
-//    /**
-//     * Palauttaa Huffman -puusta tekstiesityksen siten että tekstiin lisätään aina solmun avain, jonka jälkeen solmun
-//     * lapset laitetaan jonoon.
-//     * @return - puun tekstiesitys
-//     */
-//    
-//    
-//    public String puunTekstiEsitys(HashMap<String, String> bittijonot) {
-//        if (this.getKeko() == null || this.getKeko().getSolmut().length <= 0) {
-//            return "";
-//        }
-//
-//        return muodostaTekstiEsitys(bittijonot);
-//    }
-//    
-
-//    
-//    /**
-//     * Teksti on alussa tyhjä ja siihen aletaan latoa solmujen avaimia järjestyksessä laittamalla jokaisen solmun lapset
-//     * aina jonoon ja poistaen jonosta sitten aina seuraava.
-//     * @param teksti
-//     * @param solmu - alussa huippusolmu
-//     * @param jono - tyhjä jono
-//     * @return - puun tekstiesitys
-//     */
-//    
-//    protected String muodostaTekstiEsitys(StringBuilder teksti, Solmu solmu, ArrayDeque jono) {
-//        while (solmu != null) {
-//            lisaaLapsetJonoon(solmu, jono);
-//            teksti.append(solmu.getAvain());
-//            solmu = seuraava(jono);
-//        }
-//        
-//        return teksti.toString();
-//    }
-//    
-//    /**
-//     * Lisää ko. solmun lapset jonoon siten että vasen ensin.
-//     * @param solmu
-//     * @param jono 
-//     */
-//    
-//    protected void lisaaLapsetJonoon(Solmu solmu, ArrayDeque jono) {
-//        if (solmu.getVasen() != null) {
-//            jono.add(solmu.getVasen());
-//        }   
-//        if (solmu.getOikea() != null) {
-//            jono.add(solmu.getOikea());
-//        }
-//    }
-//   
-//    /**
-//     * Ottaa jononsta seuraavan lapsen tai palauttaa null jos se on tyhjä.
-//     * @param jono
-//     * @return 
-//     */
-//    
-//    protected Solmu seuraava(ArrayDeque jono) {
-//        if (jono.isEmpty()) {
-//            return null;
-//        }
-//        return (Solmu) jono.pollFirst();
-//    }

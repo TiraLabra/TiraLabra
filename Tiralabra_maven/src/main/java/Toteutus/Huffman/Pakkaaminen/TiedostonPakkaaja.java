@@ -3,7 +3,6 @@ package Toteutus.Huffman.Pakkaaminen;
 import Apuvalineet.BinaariMuuntaja;
 import Tietorakenteet.HajTaulu;
 import Toteutus.Huffman.BittiEsitykset;
-import java.util.HashMap;
 
 /**
  * Luokka suorittaa pakattavan tekstin luomisen.

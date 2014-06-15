@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 
 /**
  * Luokka suorittaa tiedoston purkamisen käyttäen BinaariMuuntaja luokkaa apuna.
@@ -137,7 +136,6 @@ public class TiedostonPurkaja {
      
      * @param teksti
      * @param bittijonotJaMerkit
-     * @throws Exception
      * @return - osoite, jossa puuta seuraavat merkit sijaitsevat
      */
     
