@@ -8,33 +8,6 @@ package main;
 public class MyPriorityHeap {
 
     /**
-     * Kekoalkio.
-     */
-    private class HeapElement {
-
-        /**
-         * Kekoalkiot kuvaavat jotain koordinaattia labyrintissä.
-         */
-        int coordinate;
-        /**
-         * Kekoalkion arvo.
-         */
-        int value;
-
-        /**
-         * Asettaa kekoalkion koordinaatiksi annetun koordinaatin ja arvoksi
-         * annetun arvon.
-         *
-         * @param c Koordinaatti.
-         * @param v Arvo.
-         */
-        public HeapElement(int c, int v) {
-            coordinate = c;
-            value = v;
-        }
-    }
-
-    /**
      * Keon kekoalkiot tallennetaan aputaulukkoon.
      */
     private HeapElement[] items;
@@ -75,17 +48,19 @@ public class MyPriorityHeap {
      *
      * @param coordinate Koordinaatti, joka asetetaan kekoon lisättävälle
      * alkiolle.
-     * @param value Arvo, joka asetetaan kekoon lisättävälle alkiolle.
+     * @param d Kuljettu matka.
+     * @param h Kustannusarvio maaliin.
      * @see heapify()
      */
-    public void insert(int coordinate, int value) {
+    public void insert(int coordinate, int d, int h) {
+        int value = d + h;
         int index = size, parent = parent(index);
-        while (index > 0 && items[parent].value > value) {
+        while (index > 0 && items[parent].getValue() > value) {
             items[index] = items[parent];
             index = parent;
             parent = parent(index);
         }
-        items[index] = new HeapElement(coordinate, value);
+        items[index] = new HeapElement(coordinate, d, h);
         size++;
         updateHeapSize();
     }
@@ -101,37 +76,17 @@ public class MyPriorityHeap {
     }
 
     /**
-     * Poistaa pienimmän arvon alkion (keon päästä) ja palauttaa sen
-     * koordinaatin. Heapify()-apuoperaatiota käytetään kekoehdon
-     * ylläpitämiseksi.
+     * Poistaa pienimmän arvon omaavan kekoalkion (keon päästä) ja palauttaa
+     * sen. Heapify()-apuoperaatiota käytetään kekoehdon ylläpitämiseksi.
      *
-     * @return Palauttaa pienimmän alkion koordinaatin.
-     * @throws java.lang.Exception Heittää poikkeuksen, jos keko on tyhjä.
+     * @return Palauttaa pienimmän arvon omaavan kekoalkion.
      * @see heapify()
      */
-    public int removeMinGetCoordinate() {
+    public HeapElement removeMin() {
         if (empty()) {
-            return -1;
+            return null;
         }
-        int min = items[0].coordinate;
-        items[0] = items[size - 1];
-        size--;
-        heapify(0);
-        return min;
-    }
-
-    /**
-     * Poistaa pienimmän arvon alkion (keon päästä) ja palauttaa sen arvon.
-     * Heapify()-apuoperaatiota käytetään kekoehdon ylläpitämiseksi.
-     *
-     * @return Palauttaa pienimmän alkion arvon.
-     * @see heapify()
-     */
-    public int removeMinGetValue() {
-        if (empty()) {
-            return -1;
-        }
-        int min = items[0].value;
+        HeapElement min = items[0];
         items[0] = items[size - 1];
         size--;
         heapify(0);
@@ -159,7 +114,7 @@ public class MyPriorityHeap {
      * @return Palauttaa alkion annetusta indeksistä.
      */
     public int get(int key) {
-        return items[key].value;
+        return items[key].getValue();
     }
 
     /**
@@ -184,14 +139,14 @@ public class MyPriorityHeap {
         int right = 2 * index + 2;
         if (right < size) {
             int smallest = right;
-            if (items[left].value <= items[right].value) {
+            if (items[left].getValue() <= items[right].getValue()) {
                 smallest = left;
             }
-            if (items[index].value >= items[smallest].value) {
+            if (items[index].getValue() > items[smallest].getValue()) {
                 swap(index, smallest);
                 heapify(smallest);
             }
-        } else if (left == size - 1 && items[index].value >= items[left].value) {
+        } else if (left == size - 1 && items[index].getValue() > items[left].getValue()) {
             swap(index, left);
         }
     }
