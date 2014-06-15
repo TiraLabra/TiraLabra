@@ -75,6 +75,7 @@ class NMD5:
 	digest_size = 16
 	list = LinkedList(None)
 
+	# Registers
 	A = 0x67452301
 	B = 0xEFCDAB89
 	C = 0x98BADCFE
@@ -265,7 +266,9 @@ class NMD5:
 		return [message[i:i+n] for i in range(0, len(message), n)]
 
 	def createWordArray(self, message, messageLength, finalBlock):
-		"""Primes the 16-bit words for the main function"""
+		"""Primes the 16-bit words for the main function and returns as an
+		array. Repeated calls with the finalBlock parameter will determine if we
+		need to put the length and 0 last."""
 
 		message = self.splitToBlocks(message, 32)
 		totalBytes = 0
