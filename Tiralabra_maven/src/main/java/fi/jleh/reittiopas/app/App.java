@@ -25,7 +25,8 @@ public class App {
         int id1 = 0;
         int id2;
         
-        System.out.println("Give station ids");
+        System.out.println("Give two station ids and start time");
+        System.out.println("eg: 1113127 1465552 0700");
         
         // 1113127 1465552 0700
         // 1230109 2611249 1200

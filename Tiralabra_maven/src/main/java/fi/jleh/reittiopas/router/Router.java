@@ -109,8 +109,7 @@ public class Router {
 				if (visitedNodes.contains(station))
 					continue;
 				
-				double costToStart = costFromStart.get(current) 
-						+ GeomertyUtils.calculateDistance(current, station) + timeFromStart(stop.getArrival()) * 100;
+				double costToStart = costFromStart.get(current) + timeFromStart(stop.getArrival());
 				
 				if (!openNodes.contains(station) || costToStart < costFromStart.get(station)) {
 				    addStopToOpenSet(station, current, stop, costToStart);
@@ -136,7 +135,7 @@ public class Router {
 		cameFromStop.put(station, stop);
 		timeAtStation.put(station, stop.getArrival());
 		
-		double cost = GeomertyUtils.calculateDistance(current, endStation) * 100 + linePenalty + timeScore + BUS_COST;
+		double cost = GeomertyUtils.calculateDistance(current, endStation) * 17 + linePenalty + timeScore + BUS_COST;
 		
 		costFromStart.put(station, costToStart);
 		costToEnd.put(station, cost);
@@ -197,24 +196,29 @@ public class Router {
 			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
 			int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
 			String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-			double costToStart = costFromStart.get(current) + walkDistance + timeFromStart(timeAfterWalk);
+			double costToStart = costFromStart.get(current) + timeFromStart(timeAfterWalk);
 			
 			if (!openNodes.contains(nearbyStation) || costToStart < costFromStart.get(nearbyStation)) {
-				cameFrom.put(nearbyStation, current);
-				cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
-				
-				double timeScore = 0;
-				timeAtStation.put(nearbyStation, timeAfterWalk);
-				timeScore = calculateTimeScore(timeAfterWalk, startTime);
-				
-				costFromStart.put(nearbyStation, costToStart + timeScore);
-				double cost = timeScore + WALK_PENALTY * walkDistance;
-				costToEnd.put(nearbyStation, cost);
-				
-				if (!openNodes.contains(nearbyStation)) {
-					openNodes.insert(costToStart + cost, nearbyStation);
-				}
+				addStationToProcessed(nearbyStation, current, timeAfterWalk, startTime, costToStart);
 			}
+		}
+	}
+	
+	private void addStationToProcessed(Station nearbyStation, Station current,
+			String timeAfterWalk, String startTime, double costToStart) {
+		cameFrom.put(nearbyStation, current);
+		cameFromStop.put(nearbyStation, new Stop(current)); // Create pseudo stop for walking
+		
+		double timeScore = 0;
+		timeAtStation.put(nearbyStation, timeAfterWalk);
+		timeScore = calculateTimeScore(timeAfterWalk, startTime);
+		
+		costFromStart.put(nearbyStation, costToStart + timeScore);
+		double cost = timeScore * 17;
+		costToEnd.put(nearbyStation, cost);
+		
+		if (!openNodes.contains(nearbyStation)) {
+			openNodes.insert(costToStart + cost, nearbyStation);
 		}
 	}
 	
