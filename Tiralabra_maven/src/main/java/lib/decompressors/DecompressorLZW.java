@@ -16,17 +16,20 @@ public class DecompressorLZW {
     private final IO io;
     private final Dictionary dictionary;
     private final InputBuffer inputBuffer;
-    private final int dictionarySize = 4096;
+    private final int dictionarySize;
+    private final int entryBits;
     
-    public DecompressorLZW(String input, String output) throws IOException{
+    public DecompressorLZW(String input, String output, int entryBits) throws IOException{
+        this.entryBits = entryBits;
+        dictionarySize = (int)Math.pow(2, entryBits);
         io = new IO(input, output);
         dictionary = new Dictionary(dictionarySize);
-        inputBuffer = new InputBuffer(io);
+        inputBuffer = new InputBuffer(io, entryBits*2+1);
     }
     
     public void decompress() throws IOException{     
         inputBuffer.read();
-         byte[] entry = readNext();
+        byte[] entry = readNext();
         byte[] w = entry;
         while(true){
             try{
@@ -47,7 +50,7 @@ public class DecompressorLZW {
      * @throws IOException 
      */
     private byte[] readNext() throws IOException {
-        boolean[] bits = inputBuffer.nextBits(12);
+        boolean[] bits = inputBuffer.nextBits(entryBits);
         if(bits == null) { return null;}
         int k = ArrayUtils.booleanArrayToInt(bits);
         byte[] entry = dictionary.get(k);

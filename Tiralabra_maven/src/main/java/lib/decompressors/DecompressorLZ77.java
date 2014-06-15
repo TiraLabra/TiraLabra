@@ -4,7 +4,6 @@ package lib.decompressors;
 import lib.utils.ByteAsBits;
 import lib.utils.ArrayUtils;
 import java.io.IOException;
-import java.util.LinkedList;
 import lib.datastructures.SlidingTable;
 import lib.io.*;
 
@@ -13,15 +12,21 @@ import lib.io.*;
  * @author Iiro
  */
 public class DecompressorLZ77 {
+    private final int offsetBits;
+    private final int lengthBits;
     private final IO io;
-    private final int windowSize = 4096;
+    private final int windowSize;
     private final SlidingTable window;
     private final InputBuffer inputStream;
     
-    public DecompressorLZ77(String input, String output) throws IOException{
+    public DecompressorLZ77(String input, String output,int offsetBits, int lengthBits) throws IOException{
+        this.offsetBits = offsetBits;
+        this.lengthBits = lengthBits;        
+        windowSize = (int)Math.pow(2, offsetBits);
+        
         io = new IO(input, output);
         window = new SlidingTable(windowSize);
-        inputStream = new InputBuffer(io);
+        inputStream = new InputBuffer(io, offsetBits + lengthBits +1);
     }
     /**
      * Purkaa tiedoston.
@@ -60,8 +65,8 @@ public class DecompressorLZ77 {
      * @throws IOException 
      */
     private boolean outputEncoded() throws IOException {
-        boolean[] osbits = inputStream.nextBits(12);
-        boolean[] lenbits = inputStream.nextBits(4);
+        boolean[] osbits = inputStream.nextBits(offsetBits);
+        boolean[] lenbits = inputStream.nextBits(lengthBits);
         if(osbits != null && lenbits != null){            
             int offset = ArrayUtils.booleanArrayToInt(osbits);
             int length = ArrayUtils.booleanArrayToInt(lenbits)+1;

@@ -11,9 +11,10 @@ import lib.utils.ByteAsBits;
 public class InputBuffer {
     private final LinkedQueue<Boolean> list;
     private final IO io;
+    private final int minSize;
     
-    
-    public InputBuffer(IO io){
+    public InputBuffer(IO io, int minSize){
+        this.minSize = minSize;
         list = new LinkedQueue<Boolean>();
         this.io = io;
     }
@@ -36,7 +37,7 @@ public class InputBuffer {
      * @throws IOException 
      */
     public void read() throws IOException{
-        while(list.size() < 17){
+        while(list.size() < minSize){
             ByteAsBits bits = io.read();
             if(bits == null){ return; } 
             for(boolean b : bits.getAllBits()){

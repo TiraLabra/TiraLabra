@@ -14,14 +14,17 @@ public class CompressorLZW {
     private final IO io;
     private final Dictionary dictionary; 
     private final OutputBuffer outputBuffer;
-    private final int dictionarySize = 4096;
+    private final int entryBits;
+    private final int dictionarySize;
     
     /**
      * @param input lähdetiedosto.
      * @param output kohdetiedosto.
      * @throws IOException 
      */
-    public CompressorLZW(String input, String output) throws IOException{
+    public CompressorLZW(String input, String output, int entryBits) throws IOException{
+        this.entryBits = entryBits;
+        dictionarySize = (int)Math.pow(2, entryBits);
         io = new IO(input, output);
         dictionary = new Dictionary(dictionarySize);
         outputBuffer = new OutputBuffer(io);
@@ -59,7 +62,7 @@ public class CompressorLZW {
     private void output(byte[] w) throws IOException{
         if(w != null){
             int code = dictionary.get(w);
-            outputBuffer.addBits(ArrayUtils.intToBooleanArray(code, 12));            
+            outputBuffer.addBits(ArrayUtils.intToBooleanArray(code, entryBits));            
             outputBuffer.write();
         }
     }

@@ -39,13 +39,12 @@ public class performanceTest {
     
     @After
     public void tearDown(){
-        log.println();
         log.close();
     }
     
     @Test
     public void testCompressLZW() throws Exception {
-        lzwcomp = new CompressorLZW(input, output);
+        lzwcomp = new CompressorLZW(input, output,12);
         long start = System.currentTimeMillis();
         lzwcomp.compress();
         long end = System.currentTimeMillis();
@@ -55,7 +54,7 @@ public class performanceTest {
     
     @Test
     public void testDecompressLZW() throws Exception {
-        lzwdecomp = new DecompressorLZW(packedlzw, unpacked);
+        lzwdecomp = new DecompressorLZW(packedlzw, unpacked,12);
         long start = System.currentTimeMillis();
         lzwdecomp.decompress();
         long end = System.currentTimeMillis();
@@ -65,7 +64,7 @@ public class performanceTest {
     
     @Test
     public void testCompressLZ77() throws Exception {
-        lz77comp = new CompressorLZ77(input, output);
+        lz77comp = new CompressorLZ77(input, output,12,4);
         long start = System.currentTimeMillis();
         lz77comp.compress();
         long end = System.currentTimeMillis();
@@ -75,7 +74,7 @@ public class performanceTest {
     
     @Test
     public void testDecompressLZ77() throws Exception {
-        lz77decomp = new DecompressorLZ77(packedlz77, unpacked);
+        lz77decomp = new DecompressorLZ77(packedlz77, unpacked,12,4);
         long start = System.currentTimeMillis();
         lz77decomp.decompress();
         long end = System.currentTimeMillis();

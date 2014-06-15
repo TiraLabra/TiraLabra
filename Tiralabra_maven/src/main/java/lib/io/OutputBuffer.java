@@ -40,10 +40,7 @@ public class OutputBuffer {
             list.enqueue(bit);
         }
     }
-    /**
-     * Lisää bitin bittivirtaan. 
-     * @param bit lisättävä bitti. True = 1, False = 0;
-     */
+
     public void addBits(boolean[] bits){
         for(boolean b: bits){
             list.enqueue(b);
