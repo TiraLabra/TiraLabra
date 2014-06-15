@@ -1,7 +1,3 @@
-# Notes
-- use md5.hash("") to calculate a hash for any string, this is yet to be standardized for easy testing
-- hexdigest() now works
-
 # Use
 ```
 import nmd5
