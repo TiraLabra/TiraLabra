@@ -57,27 +57,33 @@ public class AStar extends LabyrinthSolver {
         goalX = width - 1;
         visited = new int[goalY + 1][width];
         ph = new MyPriorityHeap((goalY + 1) * width / 4);
-        findGoal(0, 0);
+        findGoal();
         return true;
     }
 
     /**
-     * Käsittelee koordinaatteja pienimmän kustannusarvion järjestyksessä.
-     * Käsitellyn koordinaatin naapurit lisätään prioriteettilistaan. Kun
-     * käsittelyyn tulee maalikoordinaatti, algoritmi ratkaisi labyrintin.
+     * Aloittaa käsittelyn lähtökoordinaatista. Käsitellyn koordinaatin naapurit
+     * lisätään prioriteettilistaan. Käsittelee koordinaatteja pienimmän
+     * kustannusarvion järjestyksessä. Kun käsittelyyn tulee maalikoordinaatti,
+     * algoritmi ratkaisi labyrintin.
      *
      * @param coordinate Nykyinen koordinaatti.
      * @param currentDistance Kuljettu matka.
      * @see addNeighborsToPriorityHeap
      */
-    private void findGoal(int coordinate, int currentDistance) {
-        visited[coordinate / width][coordinate % width] = 2;
-        if (visited[goalY][goalX] == 2) {
-            return;
+    private void findGoal() {
+        int coordinate = 0;
+        int currentDistance = 0;
+        while (true) {
+            visited[coordinate / width][coordinate % width] = 2;
+            if (visited[goalY][goalX] == 2) {
+                return;
+            }
+            addNeighborsToPriorityHeap(coordinate, currentDistance);
+            HeapElement next = ph.removeMin();
+            coordinate = next.getCoordinate();
+            currentDistance = next.getDistance();
         }
-        addNeighborsToPriorityHeap(coordinate, currentDistance);
-        HeapElement next = ph.removeMin();
-        findGoal(next.getCoordinate(), next.getDistance());
     }
 
     /**
