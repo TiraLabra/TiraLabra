@@ -43,7 +43,11 @@ public class MyQueue<E> {
     public MyQueue(int ms) {
         head = 0;
         tail = 0;
-        maxsize = ms;
+        if (ms > 0) {
+            maxsize = ms;
+        } else {
+            maxsize = 16;
+        }
         items = new Object[maxsize];
     }
 

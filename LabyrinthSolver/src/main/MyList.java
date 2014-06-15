@@ -37,7 +37,11 @@ public class MyList<E> {
      */
     public MyList(int ms) {
         size = 0;
-        maxsize = ms;
+        if (ms > 0) {
+            maxsize = ms;
+        } else {
+            maxsize = 16;
+        }
         items = new Object[ms];
     }
 
