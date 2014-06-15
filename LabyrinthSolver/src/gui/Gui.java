@@ -127,17 +127,13 @@ public class Gui implements Runnable {
          * Menu-valinnat labyrintin generoijan valitsemiseen.
          */
         JMenu lgMenu = new JMenu("Choose generator");
-        lgMenu.add(createLabyrinthGeneratorMenuItem(new KruskalsAlgorithm(), "Kruskal's Algorithm"));
-        lgMenu.add(createLabyrinthGeneratorMenuItem(new PrimsAlgorithm(), "Prim's Algorithm"));
-        lgMenu.add(createLabyrinthGeneratorMenuItem(new RecursiveBacktracker(), "Recursive Backtracker"));
+        addGenerators(lgMenu);
 
         /*
          Menu-valinnat labyrintin ratkaisijan valitsemiseen.
          */
         JMenu lsMenu = new JMenu("Choose solver");
-        lsMenu.add(createLabyrinthSolverMenuItem(new DFS(), "DFS"));
-        lsMenu.add(createLabyrinthSolverMenuItem(new BFS(), "BFS"));
-        lsMenu.add(createLabyrinthSolverMenuItem(new WallFollower(), "Wall follower"));
+        addSolvers(lsMenu);
 
         /*
          Luo päämenu, lisää menuvalinnat ja lisää lopuksi päämenu menubariin.
@@ -167,7 +163,7 @@ public class Gui implements Runnable {
      * @param labelText Teksti, joka ilmaisee mitä kokotietoa muutetaan.
      * @return Palauttaa uuden sliderin labyrintin kokotiedon säätämiseen.
      */
-    JSlider createSlider(final JLabel label, final String labelText) {
+    private JSlider createSlider(final JLabel label, final String labelText) {
         JSlider slider = new JSlider();
         slider.setMinimum(5);
         slider.setMaximum(95);
@@ -194,7 +190,7 @@ public class Gui implements Runnable {
      *
      * @see openSetSizeWindow()
      */
-    JMenuItem createSetSizeMenuItem() {
+    private JMenuItem createSetSizeMenuItem() {
         JMenuItem item = new JMenuItem("Set size");
         item.addActionListener(new ActionListener() {
             @Override
@@ -210,7 +206,7 @@ public class Gui implements Runnable {
      *
      * @see createSlider
      */
-    void openSetSizeWindow() {
+    private void openSetSizeWindow() {
         JOptionPane optionPane = new JOptionPane();
         JLabel widthLabel = new JLabel();
         widthLabel.setText("width: 50");
@@ -231,6 +227,12 @@ public class Gui implements Runnable {
         }
     }
 
+    private void addGenerators(JMenu lgMenu) {
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new KruskalsAlgorithm(), "Kruskal's Algorithm"));
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new PrimsAlgorithm(), "Prim's Algorithm"));
+        lgMenu.add(createLabyrinthGeneratorMenuItem(new RecursiveBacktracker(), "Recursive Backtracker"));
+    }
+    
     /**
      * Luo menu-valinnan annetun labyrintin generoijan valinnalle, ja lisää
      * menu-valintaan tapahtuman kuuntelijan.
@@ -242,7 +244,7 @@ public class Gui implements Runnable {
      * @see
      * main.Labyrinth#setLabyrinthGenerator(labyrinthgenerator.LabyrinthGenerator)
      */
-    JMenuItem createLabyrinthGeneratorMenuItem(final LabyrinthGenerator lg, final String title) {
+    private JMenuItem createLabyrinthGeneratorMenuItem(final LabyrinthGenerator lg, final String title) {
         JMenuItem item = new JMenuItem(title);
         item.addActionListener(new ActionListener() {
             @Override
@@ -253,6 +255,12 @@ public class Gui implements Runnable {
         return item;
     }
 
+    private void addSolvers(JMenu lsMenu) {
+        lsMenu.add(createLabyrinthSolverMenuItem(new DFS(), "DFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new BFS(), "BFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new WallFollower(), "Wall follower"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new AStar(), "A* Search"));
+    }
     /**
      * Luo menu-valinnan annetun labyrintin ratkaisijan valinnalle, ja lisää
      * menu-valintaan tapahtuman kuuntelijan.
@@ -264,7 +272,7 @@ public class Gui implements Runnable {
      *
      * @see main.Labyrinth#setLabyrinthSolver(labyrinthsolver.LabyrinthSolver)
      */
-    JMenuItem createLabyrinthSolverMenuItem(final LabyrinthSolver ls, final String title) {
+    private JMenuItem createLabyrinthSolverMenuItem(final LabyrinthSolver ls, final String title) {
         JMenuItem item = new JMenuItem(title);
         item.addActionListener(new ActionListener() {
             @Override
@@ -281,7 +289,7 @@ public class Gui implements Runnable {
      * @return Palauttaa 'Generate!'-nappulan.
      * @see main.Labyrinth#generateLabyrinth()
      */
-    JButton createGenerateButton() {
+    private JButton createGenerateButton() {
         JButton gen = new JButton("Generate!");
         gen.addActionListener(new ActionListener() {
             @Override
@@ -303,7 +311,7 @@ public class Gui implements Runnable {
      *
      * @see main.Labyrinth#solveLabyrinth()
      */
-    JButton createSolveButton() {
+    private JButton createSolveButton() {
         JButton solve = new JButton("Solve!");
         solve.addActionListener(new ActionListener() {
             @Override
