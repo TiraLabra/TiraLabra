@@ -63,35 +63,63 @@ public class MyQueueTest {
     }
 
     @Test
+    public void cantUpdateQueueSizeWithEmptyQueue() {
+        int size = testQueue.size();
+        testQueue.updateQueueSize();
+        assertTrue(size == testQueue.size());
+        testQueue.enqueue(5);
+        testQueue.dequeue();
+        size = testQueue.size();
+        testQueue.updateQueueSize();
+        assertTrue(size == testQueue.size());
+    }
+
+   @Test
+    public void cantUpdateQueueSizeWithEmptyQueueAfterAdding() {
+        testQueue.enqueue(5);
+        testQueue.dequeue();
+        int size = testQueue.size();
+        testQueue.updateQueueSize();
+        assertTrue(size == testQueue.size());
+    }
+    
+    @Test
+    public void queueCorrectlyEmptyAfterAdding() {
+        testQueue.enqueue(5);
+        testQueue.dequeue();
+        assertTrue(testQueue.empty());
+    }
+
+    @Test
     public void headAndTailMoveCorrectlyWhenEnqueuing() {
         testQueue = new MyQueue<>(5);
         // [X X X X X]
-        assertEquals(0, testQueue.head);
-        assertEquals(0, testQueue.tail);
+        assertEquals(0, testQueue.getHead());
+        assertEquals(0, testQueue.getTail());
         testQueue.enqueue(5);
         // [H T X X X]
-        assertEquals(0, testQueue.head);
-        assertEquals(1, testQueue.tail);
+        assertEquals(0, testQueue.getHead());
+        assertEquals(1, testQueue.getTail());
         assertEquals(1, testQueue.size());
-        assertEquals(5, (int) testQueue.items[0]);
-        assertEquals(null, testQueue.items[1]);
+        assertEquals(5, (int) testQueue.get(0));
+        assertEquals(null, testQueue.get(1));
         testQueue.enqueue(9);
         // [H 9 T X X]
-        assertEquals(0, testQueue.head);
-        assertEquals(2, testQueue.tail);
+        assertEquals(0, testQueue.getHead());
+        assertEquals(2, testQueue.getTail());
         assertEquals(2, testQueue.size());
-        assertEquals(5, (int) testQueue.items[0]);
-        assertEquals(9, (int) testQueue.items[1]);
-        assertEquals(null, testQueue.items[2]);
+        assertEquals(5, (int) testQueue.get(0));
+        assertEquals(9, (int) testQueue.get(1));
+        assertEquals(null, testQueue.get(2));
         testQueue.enqueue(7);
         // [H 9 7 T X]
-        assertEquals(0, testQueue.head);
-        assertEquals(3, testQueue.tail);
+        assertEquals(0, testQueue.getHead());
+        assertEquals(3, testQueue.getTail());
         assertEquals(3, testQueue.size());
-        assertEquals(5, (int) testQueue.items[0]);
-        assertEquals(9, (int) testQueue.items[1]);
-        assertEquals(7, (int) testQueue.items[2]);
-        assertEquals(null, testQueue.items[3]);
+        assertEquals(5, (int) testQueue.get(0));
+        assertEquals(9, (int) testQueue.get(1));
+        assertEquals(7, (int) testQueue.get(2));
+        assertEquals(null, testQueue.get(3));
     }
 
     @Test
@@ -99,13 +127,13 @@ public class MyQueueTest {
         headAndTailMoveCorrectlyWhenEnqueuing();
         int dequeue = testQueue.dequeue();
         // [X H 7 T X]
-        assertEquals(1, testQueue.head);
-        assertEquals(3, testQueue.tail);
+        assertEquals(1, testQueue.getHead());
+        assertEquals(3, testQueue.getTail());
         assertEquals(2, testQueue.size());
         assertEquals(5, dequeue);
-        assertEquals(9, (int) testQueue.items[1]);
-        assertEquals(7, (int) testQueue.items[2]);
-        assertEquals(null, testQueue.items[3]);
+        assertEquals(9, (int) testQueue.get(1));
+        assertEquals(7, (int) testQueue.get(2));
+        assertEquals(null, testQueue.get(3));
         testQueue.dequeue();
         testQueue.dequeue();
         // [X X X HT X]
@@ -118,21 +146,21 @@ public class MyQueueTest {
         testQueue.enqueue(1);
         testQueue.enqueue(2);
         // [T X X H 2]
-        assertEquals(3, testQueue.head);
-        assertEquals(0, testQueue.tail);
+        assertEquals(3, testQueue.getHead());
+        assertEquals(0, testQueue.getTail());
         assertEquals(2, testQueue.size());
-        assertEquals(1, (int) testQueue.items[3]);
-        assertEquals(2, (int) testQueue.items[4]);
+        assertEquals(1, (int) testQueue.get(3));
+        assertEquals(2, (int) testQueue.get(4));
         testQueue.enqueue(3);
         testQueue.enqueue(4);
         // [3 4 T H 2]
-        assertEquals(3, testQueue.head);
-        assertEquals(2, testQueue.tail);
+        assertEquals(3, testQueue.getHead());
+        assertEquals(2, testQueue.getTail());
         assertEquals(4, testQueue.size());
-        assertEquals(1, (int) testQueue.items[3]);
-        assertEquals(2, (int) testQueue.items[4]);
-        assertEquals(3, (int) testQueue.items[0]);
-        assertEquals(4, (int) testQueue.items[1]);
+        assertEquals(1, (int) testQueue.get(3));
+        assertEquals(2, (int) testQueue.get(4));
+        assertEquals(3, (int) testQueue.get(0));
+        assertEquals(4, (int) testQueue.get(1));
     }
 
     @Test
@@ -140,14 +168,14 @@ public class MyQueueTest {
         headAndTailMoveCorrectlyWhenEnqueuingPastQueueSize();
         testQueue.enqueue(5);
         // [3 4 5 HT 2]! --> [H 2 3 4 5 T X X X X]
-        assertEquals(0, testQueue.head);
-        assertEquals(5, testQueue.tail);
+        assertEquals(0, testQueue.getHead());
+        assertEquals(5, testQueue.getTail());
         assertEquals(5, testQueue.size());
         for (int i = 0; i < 5; i++) {
-            assertEquals(i + 1, (int) testQueue.items[i]);
+            assertEquals(i + 1, (int) testQueue.get(i));
         }
         for (int i = 5; i < 10; i++) {
-            assertEquals(null, testQueue.items[i]);
+            assertEquals(null, testQueue.get(i));
         }
     }
 
@@ -157,10 +185,10 @@ public class MyQueueTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(5 - i, testQueue.size());
             assertEquals(i + 1, (int) testQueue.dequeue());
-            assertEquals(5, testQueue.tail);
-            assertEquals(i + 1, testQueue.head);
+            assertEquals(5, testQueue.getTail());
+            assertEquals(i + 1, testQueue.getHead());
         }
         assertTrue(testQueue.empty());
-        assertEquals(5, testQueue.head);
+        assertEquals(5, testQueue.getHead());
     }
 }

@@ -90,6 +90,12 @@ public class MyListTest {
     }
 
     @Test
+    public void joiningNullList() {
+        int size = testList.size();
+        testList.join(null);
+    }
+    
+    @Test
     public void joiningTwoLists() {
         for (int i = 0; i < 4; i++) {
             testList.add(i);
