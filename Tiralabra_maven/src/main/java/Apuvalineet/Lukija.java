@@ -45,5 +45,6 @@ public class Lukija {
             
             teksti.append((char) arvo);
         }
+        lukija.close();
     }
 }

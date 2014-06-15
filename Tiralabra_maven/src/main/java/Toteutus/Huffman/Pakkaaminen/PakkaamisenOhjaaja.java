@@ -4,7 +4,6 @@ import Apuvalineet.Kirjoittaja;
 import Apuvalineet.TekstinLukija;
 import Toteutus.Huffman.BittiEsitykset;
 import Toteutus.Huffman.HuffmanPuu;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -17,7 +16,7 @@ import java.io.IOException;
 
 public class PakkaamisenOhjaaja {
     
-    public void suoritaPakkaaminen(String polku) throws FileNotFoundException, IOException, Exception {
+    public void suoritaPakkaaminen(String polku) throws IOException {
         TekstinLukija lukija = new TekstinLukija();
         lukija.lueTiedosto(polku);
 

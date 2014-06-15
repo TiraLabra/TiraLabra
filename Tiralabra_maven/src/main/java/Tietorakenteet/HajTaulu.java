@@ -67,16 +67,21 @@ public class HajTaulu {
     }
     
     protected void lisaa(Hajautettava lisattava) {
-        int j = hajauta(lisattava);
+        lisaa(lisattava, hajauta(lisattava));
+    }
+    
+    protected void lisaa(Hajautettava lisattava, int j) {
+        int i = 0;
         
-        for (int i = 0; i < this.taulu[j].length; i++) {
+        while (true) {
+            if (i == taulu[j].length) {
+                tuplaaKoko(j);
+            }
             if (taulu[j][i] == null) {
                 taulu[j][i] = lisattava;
+                break;
             }
-            else if (i == taulu[j].length - 1) {
-                tuplaaKoko(j);
-                taulu[j][i] = lisattava;
-            }
+            i++;
         }
     }
     
@@ -87,19 +92,42 @@ public class HajTaulu {
         
         Hajautettava poistettava = new Hajautettava(avain, null);
         int j = hajauta(poistettava);
+        int i = poistettavanIndeksi(poistettava, j);
         
-        int i = 0;
-        while (taulu[j][i] != poistettava && i < taulu[j].length) {
-            i++;
-        }
-        
-        while (i < taulu[j].length - 1) {
-            taulu[j][i] = taulu[j][i+1];
+        poista(i, j);
+    }
+    
+    protected void poista(int i, int j) {
+        while (i < taulu[j].length) {
             
             if (i == taulu[j].length - 1) {
                 taulu[j][i] = null;
             }
+            
+            if (taulu[j][i] == null) {
+                return;
+            }
+
+            taulu[j][i] = taulu[j][i+1];
+            i++;
         }
+    }
+    
+    protected int poistettavanIndeksi(Hajautettava poistettava, int j) {
+        int i = 0;
+        while (i < taulu[j].length) {
+            
+            if (taulu[j][i] == null) {
+                i = taulu[j].length;
+                break;
+            }
+            
+            if (taulu[j][i].getAvain().equals(poistettava.getAvain())) {
+                break;
+            }
+            i++;
+        }
+        return i;
     }
     
     protected void tuplaaKoko(int j) {
@@ -137,7 +165,7 @@ public class HajTaulu {
     
     protected String[] getTaulukko(boolean lisaaAvain) {
         String[] taulukko = new String[avaintenMaara()];
-        lisaaAvaimet(taulukko, lisaaAvain);
+        lisaaTaulukkoon(taulukko, lisaaAvain);
         return taulukko;
     }
     
@@ -154,31 +182,45 @@ public class HajTaulu {
         return maara;
     }
     
-    protected void lisaaAvaimet(String[] taulukko, boolean lisaaAvain) {
+    protected void lisaaTaulukkoon(String[] taulukko, boolean avaimet) {
         int i = 0;
-        while (i < taulukko.length) {
-            
-            for (Hajautettava[] rivi : taulu) {
-                for (Hajautettava hajautettava : rivi) {
-                    if (hajautettava != null) {
-                        
-                        if (lisaaAvain) {
-                            taulukko[i] = hajautettava.getAvain();
-                        }
-                        else {
-                            taulukko[i] = hajautettava.getArvo();
-                        }
-                        i++;
-                    }
+        
+        for (Hajautettava[] rivi : taulu) {
+            for (Hajautettava hajautettava : rivi) {
+                if (lisaaJosEiNull(taulukko, hajautettava, avaimet, i)) {
+                    i++;
+                }
+
+                if (i >= taulukko.length) {
+                    return;
                 }
             }
+        }   
+    }
+    
+    protected boolean lisaaJosEiNull(String[] taulukko, Hajautettava hajautettava, boolean avaimet, int i) {
+        if (hajautettava == null) {
+            return false;
         }
+        
+        if (avaimet) {
+            taulukko[i] = hajautettava.getAvain();
+        }
+        else {
+            taulukko[i] = hajautettava.getArvo();
+        }
+        
+        return true;
     }
     
     protected Paikka etsi(String avain) {
         Hajautettava etsittava = new Hajautettava(avain, null);
         int j = etsittava.hashCode(getKoko());
         
+        return etsi(etsittava, avain, j);
+    }
+    
+    protected Paikka etsi(Hajautettava etsittava, String avain, int j) {
         for (int i = 0; i < taulu[j].length; i++) {
             if (taulu[j][i] != null && taulu[j][i].getAvain().equals(avain)) {
                 return new Paikka(j,i);
@@ -189,5 +231,13 @@ public class HajTaulu {
     
     protected int hajauta(Hajautettava hajautettava) {
         return hajautettava.hashCode(getKoko());
+    }
+    
+    protected Hajautettava hajautettava(String avain, String arvo) {
+        return new Hajautettava(avain, arvo);
+    }
+    
+    protected Hajautettava[] getRivi(int j) {
+        return taulu[j];
     }
 }

@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     
-    public static void main(String[] args) throws IOException, Exception {
+    public static void main(String[] args) throws IOException {
 //        if (true) {
 //            hajautusAjat();
 //            return;
@@ -50,17 +50,19 @@ public class Main {
         }
     }
     
-    public static void hajautusAjat() throws Exception {
+    public static void hajautusAjat() {
         HashMap<String, String> hashmap = new HashMap<>();
         HajTaulu hajautus = new HajTaulu();
         
-        String[] map = new String[10000];
-        String[] taulu = new String[10000];
+        int maara = 100000;
+        
+        String[] map = new String[maara];
+        String[] taulu = new String[maara];
         
         long ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 10000; i++) {
-            String bittijono = arvoBittijono();
+        for (int i = 0; i < maara; i++) {
+            String bittijono = arvoMerkkiJono();
             map[i] = bittijono;
             hashmap.put(bittijono, "");
         }
@@ -71,8 +73,8 @@ public class Main {
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 10000; i++) {
-            String bittijono = arvoBittijono();
+        for (int i = 0; i < maara; i++) {
+            String bittijono = arvoMerkkiJono();
             taulu[i] = bittijono;
             hajautus.lisaa(bittijono, "");
         }
@@ -82,11 +84,31 @@ public class Main {
         
         
         
+        ennen = System.currentTimeMillis();
+        
+        for (int i = 0; i < maara; i++) {
+            hashmap.containsKey(map[i]);
+        }
+        
+        jalkeen = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
         
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < maara; i++) {
+            hajautus.sisaltaaAvaimen(taulu[i]);
+        }
+        
+        jalkeen = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
+        
+        
+        
+        
+        ennen = System.currentTimeMillis();
+        
+        for (int i = 0; i < maara; i++) {
             hashmap.remove(map[i]);
         }
         
@@ -96,11 +118,8 @@ public class Main {
         
         ennen = System.currentTimeMillis();
         
-        for (int i = 0; i < 10000; i++) {
-            try {
-                hajautus.poista(taulu[i]);
-            }
-            catch (Exception e) {}
+        for (int i = 0; i < maara; i++) {
+            hajautus.poista(taulu[i]);
         }
         
         jalkeen = System.currentTimeMillis();
@@ -108,7 +127,7 @@ public class Main {
         
         
         
-        
+
 
         
         
@@ -118,29 +137,24 @@ public class Main {
     }
     
     
-    private static String arvoBittijono() {
+    private static String arvoMerkkiJono() {
         String sana = "";
         Random random = new Random();
         
-        for (int i = 0; i < 8; i++) {
-            if (random.nextInt(3) == 0) {
-                sana += "0";
-            }
-            else {
-                sana += "1";
-            }
+        int pituus = random.nextInt(20);
+        
+        for (int i = 0; i < pituus; i++) {
+            sana += (char) random.nextInt(256);
         }
         return sana;
     }
     
     
-    private static void pakkaa(String polku) throws IOException, Exception {
-        
-        
+    private static void pakkaa(String polku) throws IOException {
         new PakkaamisenOhjaaja().suoritaPakkaaminen(polku);
     }
     
-    private static void pura(String polku) throws IOException, Exception {
+    private static void pura(String polku) throws IOException {
         new TiedostonPurkaja().pura(polku);
     }   
 }
