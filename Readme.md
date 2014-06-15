@@ -6,8 +6,9 @@
 ```
 import nmd5
 m = nmd5.new()
-m.hash("Hello World!")
-m.hexdigest() // 'ed076287532e86365e841e92bfc50d8c'
+m.update("Hello World!")
+m.hexdigest() #'ed076287532e86365e841e92bfc50d8c'
+m.digest() #b'\xed\x07b\x87S.\x866^\x84\x1e\x92\xbf\xc5\r\x8c'
 ```
 
 A reimplementation of the MD5 module for Python 3.x
@@ -21,7 +22,7 @@ The goal is to implement the MD5 digest calculation module for strings in verbat
 This includes the following methods:
 
 - [x] md5.digest_size
-- [x] md5.new([arg])
+- [x] md5.new([arg]) (no arg yet)
 - [ ] md5.md5([arg])
 - [x] md5.update(arg)
 - [x] md5.digest()
