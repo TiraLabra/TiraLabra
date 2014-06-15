@@ -5,11 +5,11 @@
  */
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
+import com.mycompany.tiralabra_maven.structures.*;
 
 /**
+ * Tämä luokka kuvaa ohjelman tietynhetkistä tilaa, joka pitää yllä tärkeitä
+ * parametreja
  *
  * @author szetk
  */
@@ -17,14 +17,20 @@ public class Tila {
 
     private PakkausSuunnitelma pakkausSuunnitelma;
     private int tilavuus;
-    private ArrayList<Laatikkotyyppi> vapaatLaatikot;
-    private Deque<Tilapalkki> tilapalkit;
+    private List<Laatikkotyyppi> vapaatLaatikot;
+    private Stack<Tilapalkki> tilapalkit;
 
-    public Tila(Kontti kontti, ArrayList<Laatikkotyyppi> laatikot) {
+    /**
+     * Tilan konstruktori
+     *
+     * @param kontti Kontti, jota täytetään
+     * @param laatikot Lista laatikoista, jotka täytetään konttiin
+     */
+    public Tila(Kontti kontti, List<Laatikkotyyppi> laatikot) {
         this.pakkausSuunnitelma = new PakkausSuunnitelma();
         this.tilavuus = 0;
         this.vapaatLaatikot = laatikot;
-        this.tilapalkit = new ArrayDeque<Tilapalkki>();
+        this.tilapalkit = new Stack<Tilapalkki>();
         this.tilapalkit.push(new Tilapalkki(kontti.getX(), kontti.getY(), kontti.getZ(), 0, 0, 0));
     }
 
@@ -40,7 +46,8 @@ public class Tila {
 
         lisaaTilapalkit(kontti, palkki, tilapalkki.getSijainti());
         palkki.setSijainti(tilapalkki.getSijainti());
-        this.pakkausSuunnitelma.getPalkit();
+        // laita laatikoiden sijainnit
+        this.pakkausSuunnitelma.lisaaPalkki(palkki);
         poistaVapaistaLaatikoista(palkki);
     }
 
@@ -52,7 +59,8 @@ public class Tila {
      * laatikoiden listasta
      */
     public void poistaVapaistaLaatikoista(Palkki palkki) {
-        for (Laatikkotyyppi tyyppi : this.vapaatLaatikot) {
+        for (int j = 0; j < this.vapaatLaatikot.size(); j++) {
+            Laatikkotyyppi tyyppi = this.vapaatLaatikot.get(j);
             if (tyyppi == palkki.getTyyppi()) {
                 for (int i = 0; i < palkki.laatikoita(); i++) {
                     tyyppi.getLaatikot().remove(tyyppi.getLaatikot().size() - 1);
@@ -79,10 +87,16 @@ public class Tila {
 
     }
 
+    /**
+     * Laskee kuinka monta vapaata laatikkoa tällä hetkellä on
+     *
+     * @return Palauttaa vapaiden laatikoiden määrän
+     */
     public int vapaitaLaatikoita() {
         int sum = 0;
-        for (Laatikkotyyppi laatikkotyyppi : this.vapaatLaatikot) {
-            sum += laatikkotyyppi.getLaatikot().size();
+        for (int j = 0; j < this.vapaatLaatikot.size(); j++) {
+            Laatikkotyyppi tyyppi = this.vapaatLaatikot.get(j);
+            sum += tyyppi.getLaatikot().size();
         }
         return sum;
     }
@@ -103,19 +117,19 @@ public class Tila {
         this.tilavuus = tilavuus;
     }
 
-    public ArrayList<Laatikkotyyppi> getVapaatLaatikot() {
+    public List<Laatikkotyyppi> getVapaatLaatikot() {
         return vapaatLaatikot;
     }
 
-    public void setVapaatLaatikot(ArrayList<Laatikkotyyppi> vapaatLaatikot) {
+    public void setVapaatLaatikot(List<Laatikkotyyppi> vapaatLaatikot) {
         this.vapaatLaatikot = vapaatLaatikot;
     }
 
-    public Deque<Tilapalkki> getTilapalkit() {
+    public Stack<Tilapalkki> getTilapalkit() {
         return tilapalkit;
     }
 
-    public void setTilapalkit(Deque<Tilapalkki> vapaatTilapalkit) {
+    public void setTilapalkit(Stack<Tilapalkki> vapaatTilapalkit) {
         this.tilapalkit = vapaatTilapalkit;
     }
 

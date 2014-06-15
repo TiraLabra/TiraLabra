@@ -6,30 +6,44 @@
 
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
+
 
 /**
- *
+ * Laatikot edustavat aina jotakin tyyppiä. Tyyppi sisältää listan laatikoista, jotka ovat tätä tyyppiä
  * @author szetk
  */
 public class Laatikkotyyppi extends Sarmio{
-    private ArrayList<Laatikko> laatikot;
+    private List<Laatikko> laatikot;
     
+    /**
+     * Konstruktori
+     * @param x Tyypin pituus
+     * @param y Tyypin leveys
+     * @param z Tyypin korkeus
+     */
     public Laatikkotyyppi(int x, int y, int z) {
         super(x, y, z);
-        this.laatikot = new ArrayList<Laatikko>();
+        this.laatikot = new List<Laatikko>();
     }
     
-    public Laatikkotyyppi(int x, int y, int z, ArrayList<Laatikko> laatikot) {
+    /**
+     * Toinen konstruktori
+     * @param x Tyypin pituus
+     * @param y Tyypin leveys
+     * @param z Tyypin korkeus
+     * @param laatikot Lista tyypin laatikoista
+     */
+    public Laatikkotyyppi(int x, int y, int z, List<Laatikko> laatikot) {
         super(x, y, z);
         this.laatikot = laatikot;
     }
 
-    public ArrayList<Laatikko> getLaatikot() {
+    public List<Laatikko> getLaatikot() {
         return laatikot;
     }
 
-    public void setLaatikot(ArrayList<Laatikko> laatikot) {
+    public void setLaatikot(List<Laatikko> laatikot) {
         this.laatikot = laatikot;
     }
     

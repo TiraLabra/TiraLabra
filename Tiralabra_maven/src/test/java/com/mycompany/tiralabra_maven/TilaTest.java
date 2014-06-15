@@ -6,7 +6,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.domain.*;
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,10 +46,10 @@ public class TilaTest {
     public void tearDown() {
     }
 
-   public ArrayList<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n){
-        ArrayList<Laatikkotyyppi> laatikot = new ArrayList<Laatikkotyyppi>();
+    public List<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n) {
+        List<Laatikkotyyppi> laatikot = new List<Laatikkotyyppi>();
         Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             Laatikko laatikko = new Laatikko(l, new Sijainti(), 0);
             l.getLaatikot().add(laatikko);
         }
@@ -79,7 +79,6 @@ public class TilaTest {
         assertEquals(k.getX() - p.getX() - s.getX(), tp.getX());
         assertEquals(p.getY(), tp.getY());
         assertEquals(k.getZ() - s.getX(), tp.getZ());
- 
 
         tp = t.getTilapalkit().pop();
         assertEquals(k.getX() - s.getX(), tp.getX());

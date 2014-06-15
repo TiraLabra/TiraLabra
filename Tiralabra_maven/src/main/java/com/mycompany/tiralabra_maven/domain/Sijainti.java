@@ -7,7 +7,7 @@
 package com.mycompany.tiralabra_maven.domain;
 
 /**
- *
+ * Tämä on minkä tahansa asian sijainti
  * @author szetk
  */
 public class Sijainti {

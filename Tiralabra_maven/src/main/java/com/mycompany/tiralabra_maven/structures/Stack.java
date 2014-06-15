@@ -50,7 +50,7 @@ public class Stack<E> {
      * Tämä palauttaa pinon koon
      * @return Pinon koko
      */
-    private int size() {
+    public int size() {
         return this.size;
     }
 
@@ -58,7 +58,7 @@ public class Stack<E> {
      * Tämä palauttaa true, jos pino on tyhjä, ja muutoin false
      * @return Totuusarvo pinon tyhjyydestä
      */
-    private boolean empty() {
+    public boolean empty() {
         return this.size == 0;
     }
 

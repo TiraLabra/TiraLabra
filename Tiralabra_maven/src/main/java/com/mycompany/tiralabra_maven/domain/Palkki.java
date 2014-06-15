@@ -5,10 +5,11 @@
  */
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
+
 
 /**
- *
+ * Palkki, joka koostuu useammasta samantyyppisestä laatikosta.
  * @author szetk
  */
 public class Palkki extends Sarmio {
@@ -18,7 +19,14 @@ public class Palkki extends Sarmio {
     private int ny;
     private int nz;
     private Sijainti sijainti;
-
+    private List<Laatikko> laatikot;    
+/**
+ * Konstuktori
+ * @param tyyppi Laatikon tyyppi
+ * @param nx Laatikoiden määrä x-akselilla
+ * @param ny Laatikoiden määrä y-akselilla
+ * @param nz Laatikoiden määrä z-akselilla
+ */
     public Palkki(Laatikkotyyppi tyyppi, int nx, int ny, int nz) {
         super(nx * tyyppi.getX(), ny * tyyppi.getY(), nz * tyyppi.getZ());
         this.tyyppi = tyyppi;

@@ -5,31 +5,43 @@
  */
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
 
 /**
+ * Pakkaussuunnitelma on ohjelman tulos, joka sisältää listan konttiin
+ * asetetuista palkeista.
  *
  * @author szetk
  */
 public class PakkausSuunnitelma {
 
-    private ArrayList<Palkki> palkit;
+    private List<Palkki> palkit;
+    private int tilavuus;
 
-    public PakkausSuunnitelma(ArrayList<Palkki> palkit) {
+    public PakkausSuunnitelma(List<Palkki> palkit) {
         this.palkit = palkit;
+        this.tilavuus = 0;
     }
 
     public PakkausSuunnitelma() {
-        this.palkit = new ArrayList<Palkki>();
+        this.palkit = new List<Palkki>();
     }
 
-    public ArrayList<Palkki> getPalkit() {
+    /**
+     * Tämä lisää palkin pakkaussuunnitelmaan. Myös pakkaussuunnitelman tilavuus päivitetään palkin tilavuudella.
+     * @param palkki 
+     */
+    void lisaaPalkki(Palkki palkki) {
+        this.tilavuus += palkki.getTilavuus();
+        this.palkit.add(palkki);
+    }
+
+    public List<Palkki> getPalkit() {
         return this.palkit;
     }
 
-    public void setPalkit(ArrayList<Palkki> palkit) {
+    public void setPalkit(List<Palkki> palkit) {
         this.palkit = palkit;
     }
 
-    
 }
