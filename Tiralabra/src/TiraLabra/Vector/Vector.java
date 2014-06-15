@@ -19,7 +19,7 @@ public class Vector<T extends Number<T>> {
      * 
      * @param elements 
      */
-    public Vector(T[] elements) {
+    public Vector(T... elements) {
         N = elements.length;
         vector = elements;
     }

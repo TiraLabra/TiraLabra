@@ -266,6 +266,14 @@ public class Matrix<T extends Number<T>> {
         return res;
     }
     
+    /**
+     * Palauttaa matriisin arvot neljässä pienemmässä matriisisissa
+     * @return
+     * blockMatrices[0] = A_1,1
+     * blockMatrices[1] = A_1,2
+     * blockMatrices[2] = A_2,1
+     * blockMatrices[3] = A_2,2
+     */
     public Matrix<T>[] blockMatrices() {
         int n = N / 2;
         
@@ -287,6 +295,12 @@ public class Matrix<T extends Number<T>> {
         return res;
     }
     
+    /**
+     * Luo matriisin neljästä lohkomatriisista
+     * @param <T>
+     * @param blocks
+     * @return 
+     */
     protected static <T extends Number<T>> Matrix<T>
             fromBlockMatrices(Matrix<T>... blocks) {
         if (blocks.length != 4) {
@@ -308,6 +322,13 @@ public class Matrix<T extends Number<T>> {
         return new Matrix<T>(val, blocks[0].type);
     }
 
+    /**
+     * Strassenin algoritmin rekursiivinen "sydän"
+     * @param <T>
+     * @param a matriisi
+     * @param b matriisi
+     * @return a * b
+     */
     protected static <T extends Number<T>> Matrix<T> strassenR(Matrix<T> a,
             Matrix<T> b) {
         if (a.N < 8) {
@@ -349,6 +370,11 @@ public class Matrix<T extends Number<T>> {
         return fromBlockMatrices(c11, c12, c21, c22);
     }
     
+    /**
+     * Antaa n:ää seuraavan kahden potenssin
+     * @param n
+     * @return 
+     */
     private static int nextPowerOfTwo(int n) {
         int k = 1;
         while (k < n) {
@@ -357,6 +383,11 @@ public class Matrix<T extends Number<T>> {
         return k;
     }
     
+    /**
+     * Kertoo matriisin toisella käyttäen Strassenin algoritmia
+     * @param other toinen matriisi
+     * @return this * other
+     */
     public Matrix<T> strassen(Matrix<T> other) {
         if (other.N != this.N || other.M != this.M) {
             throw new UnsupportedOperationException();

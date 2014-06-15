@@ -1,7 +1,6 @@
 package TiraLabra.Matrix;
 
 import TiraLabra.Number.Number;
-import TiraLabra.Vector.Vector;
 
 /**
  * 2x2 matriisi
@@ -38,9 +37,5 @@ public class Matrix2x2<T extends Number<T>> extends Matrix<T> {
         res[0] = t.add(det).divide(two);
         res[1] = t.subtract(det).divide(two);
         return res;
-    }
-    
-    public Vector<T>[] eigenvectors() {
-        return null;
     }
 }
