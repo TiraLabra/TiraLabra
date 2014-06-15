@@ -1,218 +1,145 @@
 run:
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (10x10)
-Generation time: 1,874 ms
+Prim's algorithm (10x10)  ::  Average generation time (n=50): 0,890 ms
 
-Randomized depth-first search  ::  Solution found in 2,212 ms  ::  Cells explored: 52
-Randomized breadth-first search  ::  Solution found in 1,371 ms  ::  Cells explored: 93
-Wall follower  ::  Solution found in 0,065 ms  ::  Cells explored: 57
-Wall follower (Optimized)  ::  Solution found in 0,040 ms  ::  Cells explored: 57
-
+Randomized depth-first search  ::  Solution found on average in 0,405 ms  ::  Cells explored on average: 58
+Randomized breadth-first search  ::  Solution found on average in 0,470 ms  ::  Cells explored on average: 98
+A* search  ::  Solution found on average in 0,364 ms  ::  Cells explored on average: 52
+Wall follower  ::  Solution found on average in 0,134 ms  ::  Cells explored on average: 59
+Wall follower (Optimized)  ::  Solution found on average in 0,092 ms  ::  Cells explored on average: 59
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (10x10)
-Generation time: 1,735 ms
+Kruskal's algorithm (10x10)  ::  Average generation time (n=50): 0,975 ms
 
-Randomized depth-first search  ::  Solution found in 0,142 ms  ::  Cells explored: 40
-Randomized breadth-first search  ::  Solution found in 0,208 ms  ::  Cells explored: 63
-Wall follower  ::  Solution found in 0,019 ms  ::  Cells explored: 29
-Wall follower (Optimized)  ::  Solution found in 0,013 ms  ::  Cells explored: 29
-
+Randomized depth-first search  ::  Solution found on average in 0,154 ms  ::  Cells explored on average: 54
+Randomized breadth-first search  ::  Solution found on average in 0,115 ms  ::  Cells explored on average: 79
+A* search  ::  Solution found on average in 0,355 ms  ::  Cells explored on average: 49
+Wall follower  ::  Solution found on average in 0,057 ms  ::  Cells explored on average: 59
+Wall follower (Optimized)  ::  Solution found on average in 0,093 ms  ::  Cells explored on average: 59
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (10x10)
-Generation time: 0,561 ms
+Recursive Backtracker (10x10)  ::  Average generation time (n=50): 0,379 ms
 
-Randomized depth-first search  ::  Solution found in 0,291 ms  ::  Cells explored: 88
-Randomized breadth-first search  ::  Solution found in 0,213 ms  ::  Cells explored: 65
-Wall follower  ::  Solution found in 0,052 ms  ::  Cells explored: 86
-Wall follower (Optimized)  ::  Solution found in 0,045 ms  ::  Cells explored: 86
-
+Randomized depth-first search  ::  Solution found on average in 0,063 ms  ::  Cells explored on average: 60
+Randomized breadth-first search  ::  Solution found on average in 0,037 ms  ::  Cells explored on average: 62
+A* search  ::  Solution found on average in 0,705 ms  ::  Cells explored on average: 54
+Wall follower  ::  Solution found on average in 0,018 ms  ::  Cells explored on average: 63
+Wall follower (Optimized)  ::  Solution found on average in 0,023 ms  ::  Cells explored on average: 63
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (25x25)
-Generation time: 4,720 ms
+Prim's algorithm (25x25)  ::  Average generation time (n=50): 2,553 ms
 
-Randomized depth-first search  ::  Solution found in 1,632 ms  ::  Cells explored: 459
-Randomized breadth-first search  ::  Solution found in 2,035 ms  ::  Cells explored: 625
-Wall follower  ::  Solution found in 0,317 ms  ::  Cells explored: 420
-Wall follower (Optimized)  ::  Solution found in 0,269 ms  ::  Cells explored: 420
-
+Randomized depth-first search  ::  Solution found on average in 0,141 ms  ::  Cells explored on average: 350
+Randomized breadth-first search  ::  Solution found on average in 0,125 ms  ::  Cells explored on average: 623
+A* search  ::  Solution found on average in 0,409 ms  ::  Cells explored on average: 256
+Wall follower  ::  Solution found on average in 0,027 ms  ::  Cells explored on average: 318
+Wall follower (Optimized)  ::  Solution found on average in 0,046 ms  ::  Cells explored on average: 318
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (25x25)
-Generation time: 5,288 ms
+Kruskal's algorithm (25x25)  ::  Average generation time (n=50): 0,576 ms
 
-Randomized depth-first search  ::  Solution found in 0,593 ms  ::  Cells explored: 167
-Randomized breadth-first search  ::  Solution found in 1,805 ms  ::  Cells explored: 548
-Wall follower  ::  Solution found in 0,712 ms  ::  Cells explored: 479
-Wall follower (Optimized)  ::  Solution found in 0,257 ms  ::  Cells explored: 479
-
+Randomized depth-first search  ::  Solution found on average in 0,073 ms  ::  Cells explored on average: 363
+Randomized breadth-first search  ::  Solution found on average in 0,081 ms  ::  Cells explored on average: 511
+A* search  ::  Solution found on average in 1,095 ms  ::  Cells explored on average: 335
+Wall follower  ::  Solution found on average in 0,030 ms  ::  Cells explored on average: 377
+Wall follower (Optimized)  ::  Solution found on average in 0,027 ms  ::  Cells explored on average: 377
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (25x25)
-Generation time: 3,757 ms
+Recursive Backtracker (25x25)  ::  Average generation time (n=50): 0,433 ms
 
-Randomized depth-first search  ::  Solution found in 1,856 ms  ::  Cells explored: 524
-Randomized breadth-first search  ::  Solution found in 1,873 ms  ::  Cells explored: 536
-Wall follower  ::  Solution found in 0,331 ms  ::  Cells explored: 422
-Wall follower (Optimized)  ::  Solution found in 0,170 ms  ::  Cells explored: 422
-
+Randomized depth-first search  ::  Solution found on average in 0,248 ms  ::  Cells explored on average: 396
+Randomized breadth-first search  ::  Solution found on average in 0,063 ms  ::  Cells explored on average: 345
+A* search  ::  Solution found on average in 0,094 ms  ::  Cells explored on average: 312
+Wall follower  ::  Solution found on average in 0,029 ms  ::  Cells explored on average: 363
+Wall follower (Optimized)  ::  Solution found on average in 0,020 ms  ::  Cells explored on average: 363
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (50x50)
-Generation time: 15,917 ms
+Prim's algorithm (50x50)  ::  Average generation time (n=50): 2,552 ms
 
-Randomized depth-first search  ::  Solution found in 4,212 ms  ::  Cells explored: 2 358
-Randomized breadth-first search  ::  Solution found in 4,939 ms  ::  Cells explored: 2 500
-Wall follower  ::  Solution found in 0,693 ms  ::  Cells explored: 1 236
-Wall follower (Optimized)  ::  Solution found in 0,458 ms  ::  Cells explored: 1 236
-
+Randomized depth-first search  ::  Solution found on average in 0,959 ms  ::  Cells explored on average: 1 301
+Randomized breadth-first search  ::  Solution found on average in 0,654 ms  ::  Cells explored on average: 2 495
+A* search  ::  Solution found on average in 0,328 ms  ::  Cells explored on average: 804
+Wall follower  ::  Solution found on average in 0,109 ms  ::  Cells explored on average: 1 300
+Wall follower (Optimized)  ::  Solution found on average in 0,108 ms  ::  Cells explored on average: 1 300
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (50x50)
-Generation time: 18,703 ms
+Kruskal's algorithm (50x50)  ::  Average generation time (n=50): 1,625 ms
 
-Randomized depth-first search  ::  Solution found in 2,428 ms  ::  Cells explored: 1 546
-Randomized breadth-first search  ::  Solution found in 4,575 ms  ::  Cells explored: 2 290
-Wall follower  ::  Solution found in 0,118 ms  ::  Cells explored: 1 605
-Wall follower (Optimized)  ::  Solution found in 0,592 ms  ::  Cells explored: 1 605
-
+Randomized depth-first search  ::  Solution found on average in 0,338 ms  ::  Cells explored on average: 1 441
+Randomized breadth-first search  ::  Solution found on average in 0,407 ms  ::  Cells explored on average: 2 113
+A* search  ::  Solution found on average in 0,371 ms  ::  Cells explored on average: 1 405
+Wall follower  ::  Solution found on average in 0,143 ms  ::  Cells explored on average: 1 281
+Wall follower (Optimized)  ::  Solution found on average in 0,091 ms  ::  Cells explored on average: 1 281
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (50x50)
-Generation time: 6,465 ms
+Recursive Backtracker (50x50)  ::  Average generation time (n=50): 0,812 ms
 
-Randomized depth-first search  ::  Solution found in 38,112 ms  ::  Cells explored: 1 199
-Randomized breadth-first search  ::  Solution found in 34,875 ms  ::  Cells explored: 1 397
-Wall follower  ::  Solution found in 0,133 ms  ::  Cells explored: 2 153
-Wall follower (Optimized)  ::  Solution found in 8,590 ms  ::  Cells explored: 2 153
-
+Randomized depth-first search  ::  Solution found on average in 0,352 ms  ::  Cells explored on average: 1 389
+Randomized breadth-first search  ::  Solution found on average in 0,253 ms  ::  Cells explored on average: 1 427
+A* search  ::  Solution found on average in 0,258 ms  ::  Cells explored on average: 1 353
+Wall follower  ::  Solution found on average in 0,108 ms  ::  Cells explored on average: 1 662
+Wall follower (Optimized)  ::  Solution found on average in 0,099 ms  ::  Cells explored on average: 1 662
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (100x100)
-Generation time: 40,222 ms
+Prim's algorithm (100x100)  ::  Average generation time (n=50): 4,250 ms
 
-Randomized depth-first search  ::  Solution found in 0,505 ms  ::  Cells explored: 2 917
-Randomized breadth-first search  ::  Solution found in 1,688 ms  ::  Cells explored: 9 993
-Wall follower  ::  Solution found in 0,311 ms  ::  Cells explored: 4 186
-Wall follower (Optimized)  ::  Solution found in 0,217 ms  ::  Cells explored: 4 186
-
+Randomized depth-first search  ::  Solution found on average in 1,017 ms  ::  Cells explored on average: 5 030
+Randomized breadth-first search  ::  Solution found on average in 1,684 ms  ::  Cells explored on average: 9 995
+A* search  ::  Solution found on average in 1,013 ms  ::  Cells explored on average: 3 291
+Wall follower  ::  Solution found on average in 0,460 ms  ::  Cells explored on average: 5 035
+Wall follower (Optimized)  ::  Solution found on average in 0,379 ms  ::  Cells explored on average: 5 035
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (100x100)
-Generation time: 30,168 ms
+Kruskal's algorithm (100x100)  ::  Average generation time (n=50): 7,359 ms
 
-Randomized depth-first search  ::  Solution found in 0,452 ms  ::  Cells explored: 2 382
-Randomized breadth-first search  ::  Solution found in 2,069 ms  ::  Cells explored: 9 432
-Wall follower  ::  Solution found in 0,325 ms  ::  Cells explored: 4 335
-Wall follower (Optimized)  ::  Solution found in 0,232 ms  ::  Cells explored: 4 335
-
+Randomized depth-first search  ::  Solution found on average in 1,269 ms  ::  Cells explored on average: 5 054
+Randomized breadth-first search  ::  Solution found on average in 1,620 ms  ::  Cells explored on average: 8 547
+A* search  ::  Solution found on average in 1,867 ms  ::  Cells explored on average: 6 451
+Wall follower  ::  Solution found on average in 0,469 ms  ::  Cells explored on average: 5 101
+Wall follower (Optimized)  ::  Solution found on average in 0,427 ms  ::  Cells explored on average: 5 101
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (100x100)
-Generation time: 20,809 ms
+Recursive Backtracker (100x100)  ::  Average generation time (n=50): 3,298 ms
 
-Randomized depth-first search  ::  Solution found in 0,912 ms  ::  Cells explored: 6 423
-Randomized breadth-first search  ::  Solution found in 0,579 ms  ::  Cells explored: 3 561
-Wall follower  ::  Solution found in 0,357 ms  ::  Cells explored: 5 628
-Wall follower (Optimized)  ::  Solution found in 0,270 ms  ::  Cells explored: 5 628
-
+Randomized depth-first search  ::  Solution found on average in 1,099 ms  ::  Cells explored on average: 6 158
+Randomized breadth-first search  ::  Solution found on average in 0,967 ms  ::  Cells explored on average: 5 623
+A* search  ::  Solution found on average in 1,115 ms  ::  Cells explored on average: 5 404
+Wall follower  ::  Solution found on average in 0,434 ms  ::  Cells explored on average: 6 095
+Wall follower (Optimized)  ::  Solution found on average in 0,436 ms  ::  Cells explored on average: 6 095
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (250x250)
-Generation time: 97,941 ms
+Prim's algorithm (250x250)  ::  Average generation time (n=50): 26,717 ms
 
-Randomized depth-first search  ::  Solution found in 5,566 ms  ::  Cells explored: 43 561
-Randomized breadth-first search  ::  Solution found in 9,620 ms  ::  Cells explored: 62 494
-Wall follower  ::  Solution found in 2,251 ms  ::  Cells explored: 31 679
-Wall follower (Optimized)  ::  Solution found in 1,667 ms  ::  Cells explored: 31 679
-
+Randomized depth-first search  ::  Solution found on average in 7,140 ms  ::  Cells explored on average: 37 069
+Randomized breadth-first search  ::  Solution found on average in 10,892 ms  ::  Cells explored on average: 62 492
+A* search  ::  Solution found on average in 6,071 ms  ::  Cells explored on average: 18 679
+Wall follower  ::  Solution found on average in 2,603 ms  ::  Cells explored on average: 31 209
+Wall follower (Optimized)  ::  Solution found on average in 2,590 ms  ::  Cells explored on average: 31 209
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (250x250)
-Generation time: 109,888 ms
+Kruskal's algorithm (250x250)  ::  Average generation time (n=50): 95,265 ms
 
-Randomized depth-first search  ::  Solution found in 5,079 ms  ::  Cells explored: 41 633
-Randomized breadth-first search  ::  Solution found in 9,200 ms  ::  Cells explored: 55 635
-Wall follower  ::  Solution found in 2,026 ms  ::  Cells explored: 27 788
-Wall follower (Optimized)  ::  Solution found in 1,507 ms  ::  Cells explored: 27 788
-
+Randomized depth-first search  ::  Solution found on average in 6,276 ms  ::  Cells explored on average: 33 248
+Randomized breadth-first search  ::  Solution found on average in 9,389 ms  ::  Cells explored on average: 53 617
+A* search  ::  Solution found on average in 12,271 ms  ::  Cells explored on average: 42 124
+Wall follower  ::  Solution found on average in 2,804 ms  ::  Cells explored on average: 31 276
+Wall follower (Optimized)  ::  Solution found on average in 2,522 ms  ::  Cells explored on average: 31 276
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (250x250)
-Generation time: 27,362 ms
+Recursive Backtracker (250x250)  ::  Average generation time (n=50): 21,014 ms
 
-Randomized depth-first search  ::  Solution found in 6,502 ms  ::  Cells explored: 37 832
-Randomized breadth-first search  ::  Solution found in 8,388 ms  ::  Cells explored: 56 135
-Wall follower  ::  Solution found in 2,299 ms  ::  Cells explored: 41 307
-Wall follower (Optimized)  ::  Solution found in 1,756 ms  ::  Cells explored: 41 307
-
+Randomized depth-first search  ::  Solution found on average in 7,402 ms  ::  Cells explored on average: 37 806
+Randomized breadth-first search  ::  Solution found on average in 6,407 ms  ::  Cells explored on average: 36 855
+A* search  ::  Solution found on average in 7,217 ms  ::  Cells explored on average: 36 088
+Wall follower  ::  Solution found on average in 2,602 ms  ::  Cells explored on average: 36 738
+Wall follower (Optimized)  ::  Solution found on average in 2,410 ms  ::  Cells explored on average: 36 738
 - - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (500x500)
-Generation time: 94,858 ms
+Prim's algorithm (500x500)  ::  Average generation time (n=50): 116,958 ms
 
-Randomized depth-first search  ::  Solution found in 21,350 ms  ::  Cells explored: 170 140
-Randomized breadth-first search  ::  Solution found in 54,153 ms  ::  Cells explored: 249 998
-Wall follower  ::  Solution found in 8,338 ms  ::  Cells explored: 117 608
-Wall follower (Optimized)  ::  Solution found in 6,436 ms  ::  Cells explored: 117 608
-
+Randomized depth-first search  ::  Solution found on average in 23,300 ms  ::  Cells explored on average: 118 365
+Randomized breadth-first search  ::  Solution found on average in 47,543 ms  ::  Cells explored on average: 249 986
+A* search  ::  Solution found on average in 18,633 ms  ::  Cells explored on average: 52 562
+Wall follower  ::  Solution found on average in 11,689 ms  ::  Cells explored on average: 125 347
+Wall follower (Optimized)  ::  Solution found on average in 10,461 ms  ::  Cells explored on average: 125 347
 - - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (500x500)
-Generation time: 483,707 ms
+Kruskal's algorithm (500x500)  ::  Average generation time (n=50): 583,905 ms
 
-Randomized depth-first search  ::  Solution found in 19,809 ms  ::  Cells explored: 150 639
-Randomized breadth-first search  ::  Solution found in 42,282 ms  ::  Cells explored: 235 697
-Wall follower  ::  Solution found in 9,035 ms  ::  Cells explored: 120 732
-Wall follower (Optimized)  ::  Solution found in 6,890 ms  ::  Cells explored: 120 732
-
+Randomized depth-first search  ::  Solution found on average in 25,449 ms  ::  Cells explored on average: 130 794
+Randomized breadth-first search  ::  Solution found on average in 41,152 ms  ::  Cells explored on average: 215 059
+A* search  ::  Solution found on average in 54,228 ms  ::  Cells explored on average: 175 818
+Wall follower  ::  Solution found on average in 10,850 ms  ::  Cells explored on average: 126 151
+Wall follower (Optimized)  ::  Solution found on average in 10,488 ms  ::  Cells explored on average: 126 151
 - - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (500x500)
-Generation time: 78,091 ms
+Recursive Backtracker (500x500)  ::  Average generation time (n=50): 86,582 ms
 
-Randomized depth-first search  ::  Solution found in 8,116 ms  ::  Cells explored: 61 277
-Randomized breadth-first search  ::  Solution found in 17,490 ms  ::  Cells explored: 117 458
-Wall follower  ::  Solution found in 12,450 ms  ::  Cells explored: 178 994
-Wall follower (Optimized)  ::  Solution found in 9,850 ms  ::  Cells explored: 178 994
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (1000x1000)
-Generation time: 404,406 ms
-
-Randomized depth-first search  ::  Solution found in 55,505 ms  ::  Cells explored: 400 078
-Randomized breadth-first search  ::  Solution found in 208,641 ms  ::  Cells explored: 1 000 000
-Wall follower  ::  Solution found in 39,740 ms  ::  Cells explored: 557 763
-Wall follower (Optimized)  ::  Solution found in 30,726 ms  ::  Cells explored: 557 763
-
-- - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (1000x1000)
-Generation time: 2 376,517 ms
-
-Randomized depth-first search  ::  Solution found in 46,149 ms  ::  Cells explored: 347 440
-Randomized breadth-first search  ::  Solution found in 185,337 ms  ::  Cells explored: 983 094
-Wall follower  ::  Solution found in 45,812 ms  ::  Cells explored: 587 064
-Wall follower (Optimized)  ::  Solution found in 32,807 ms  ::  Cells explored: 587 064
-
-- - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (1000x1000)
-Generation time: 260,419 ms
-
-Randomized depth-first search  ::  Solution found in 132,771 ms  ::  Cells explored: 883 170
-Randomized breadth-first search  ::  Solution found in 88,359 ms  ::  Cells explored: 550 344
-Wall follower  ::  Solution found in 31,296 ms  ::  Cells explored: 462 854
-Wall follower (Optimized)  ::  Solution found in 22,905 ms  ::  Cells explored: 462 854
-
-- - - - - - - - - - - - - - - - - - - - 
-Prim's algorithm (2000x2000)
-Generation time: 1 756,791 ms
-
-Randomized depth-first search  ::  Solution found in 127,836 ms  ::  Cells explored: 930 143
-Randomized breadth-first search  ::  Solution found in 1 233,530 ms  ::  Cells explored: 3 999 993
-Wall follower  ::  Solution found in 137,630 ms  ::  Cells explored: 1 849 395
-Wall follower (Optimized)  ::  Solution found in 102,253 ms  ::  Cells explored: 1 849 395
-
-- - - - - - - - - - - - - - - - - - - - 
-Kruskal's algorithm (2000x2000)
-Generation time: 12 176,596 ms
-
-Randomized depth-first search  ::  Solution found in 332,539 ms  ::  Cells explored: 1 733 634
-Randomized breadth-first search  ::  Solution found in 789,259 ms  ::  Cells explored: 3 750 351
-Wall follower  ::  Solution found in 122,315 ms  ::  Cells explored: 1 569 690
-Wall follower (Optimized)  ::  Solution found in 89,652 ms  ::  Cells explored: 1 569 690
-
-- - - - - - - - - - - - - - - - - - - - 
-Recursive Backtracker (2000x2000)
-Generation time: 1 774,681 ms
-
-Randomized depth-first search  ::  Solution found in 326,556 ms  ::  Cells explored: 2 445 868
-Randomized breadth-first search  ::  Solution found in 668,641 ms  ::  Cells explored: 3 437 097
-Wall follower  ::  Solution found in 179,885 ms  ::  Cells explored: 2 764 317
-Wall follower (Optimized)  ::  Solution found in 144,517 ms  ::  Cells explored: 2 764 317
-
-BUILD SUCCESSFUL (total time: 26 seconds)
+Randomized depth-first search  ::  Solution found on average in 29,775 ms  ::  Cells explored on average: 148 781
+Randomized breadth-first search  ::  Solution found on average in 24,810 ms  ::  Cells explored on average: 142 906
+A* search  ::  Solution found on average in 29,065 ms  ::  Cells explored on average: 141 393
+Wall follower  ::  Solution found on average in 9,336 ms  ::  Cells explored on average: 132 685
+Wall follower (Optimized)  ::  Solution found on average in 8,736 ms  ::  Cells explored on average: 132 685
