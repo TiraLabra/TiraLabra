@@ -12,6 +12,7 @@ import tietorakenteet.*;
  */
 public class Kuvalukija {
     
+    private static final String aluehakemisto = "alueet/";
     private static final String oletusnimi = "esim.bmp";
     
     BufferedImage kuva;
@@ -22,7 +23,7 @@ public class Kuvalukija {
      */
     public Kuvalukija(String tiedostonimi) {
         try {
-            kuva = ImageIO.read(new File(tiedostonimi));
+            kuva = ImageIO.read(new File(aluehakemisto + tiedostonimi));
             System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
         }
         catch (IOException e) {
