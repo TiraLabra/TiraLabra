@@ -29,6 +29,9 @@ A* haku koordinoiduissa solmuissa, tilavaatimus O(n), aikavaatimuksesta en tied�
 Recursivebacktracker
 tällä algoritmilla generoidaan kaksiulotteisia labyrinttejä joita voi sitten ratkaista A*:lla esim kulmasta kulmaan. Tilavaatimus O(n) aikavaatimus O(n).
 
+Prim
+Primin algoritmi generoi myös labyrinttejä
+
 Lista
 Lisäys O(1), haku indeksistä O(1), etsintä O(n).
 
