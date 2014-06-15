@@ -9,7 +9,6 @@ import tietorakenteet.Alue;
 import tietorakenteet.ArrayListOma;
 import tietorakenteet.Keko;
 import tietorakenteet.Node;
-//import tietorakenteet.NodeComparator;
 
 /**
  * A Star -reitinhaun luokka.
@@ -20,22 +19,16 @@ public class AStar {
     /**
      * Tietorakenne joka sisältää haun kaikki jo käymät Nodet.
      */
-    //private ArrayList kaydyt;
     private ArrayListOma kaydyt;
     
     /**
      * Tietorakenne, joka sisältää haussa käymättä olevat Nodet.
      */
-    //private PriorityQueue<Node> kaymatta;
     private Keko kaymatta;
-    
-    //tilapäiskokeilua...
-    //private SortedSet<Node> kaymatta2;
     
     /**
      * Tietorakenne, johon tallennetaan haun löytämä optimaalisin reitti.
      */
-    //private ArrayList<Node> kuljettuReitti;     // Javan oma ArrayList
     private ArrayListOma kuljettuReitti;
     
     /**
@@ -63,16 +56,12 @@ public class AStar {
     private final static boolean debug = false;
 
     public AStar(Heuristiikka heuristiikka) {
-        //kaydyt = new ArrayList();     // Javan oma ArrayList
         kaydyt = new ArrayListOma();
         
-        //Comparator<Node> comparator = new NodeComparator();
-        //kaymatta = new PriorityQueue<Node>(10, comparator);  // Javan oma
         kaymatta = new Keko();
         
         this.heuristiikka = heuristiikka;
         
-        //this.kuljettuReitti = new ArrayList<Node>();        // Javan oma ArrayList
         this.kuljettuReitti = new ArrayListOma();
         
     }
@@ -89,12 +78,10 @@ public class AStar {
         long alkuaika = System.currentTimeMillis();
         
         // Alustetaan 
-        //kaymatta.add(alku);                   // Javan oma
         kaymatta.lisaa(alku);
         
         alku.setEtaisyysAlusta(0);
         alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
-        
         
         // HUOM!!
         // Tätä ei ehditty vielä siistimään, logiikkaongelman vuoksi
@@ -103,9 +90,7 @@ public class AStar {
         // helpottavia tulostuksiakin, jotka lähtevät pois.
         //
         
-        //while (!kaymatta.isEmpty()) {         // Javan oma
         while (!kaymatta.onTyhja()) {
-            //Node tarkastettava = kaymatta.poll();     // Javan oma
             Node tarkastettava = (Node)kaymatta.poistaPienin();
             askelia++;
             
@@ -116,28 +101,23 @@ public class AStar {
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
                 rakennaReitti(loppu);
-                
                 long loppuaika = System.currentTimeMillis();
                 kokonaisaika = loppuaika - alkuaika;
                 return;
             }
             
-            //kaymatta.remove(tarkastettava);   // Javan oma
-            
-            //kaydyt.add(tarkastettava);  // Javan oma ArrayList
             kaydyt.lisaa(tarkastettava);
             
             // Nykyisen naapurien päivitys:
-            //for (Node naapuri : selvitaNaapurit(a, tarkastettava)) { // Iteraattorilla..
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
             for (int i = 0; i < naapurit.koko(); i++ ) {
                 Node naapuri = (Node)naapurit.palautaKohdasta(i);
                 if (debug)
                     System.out.println("  Naapuri: " + naapuri);
+                
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
                 
-                //if (kaydyt.contains(naapuri)) {   // Javan oma ArrayList
                 if (kaydyt.sisaltaako(naapuri)) {
                     
                     if (debug)
@@ -145,42 +125,15 @@ public class AStar {
                     continue;
                 }
                 
-                //if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {       // Javan oma
                 if (!kaymatta.sisaltaa(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
-                    //if (!kaymatta.contains(naapuri)) {                    // Javan oma
                     if (!kaymatta.sisaltaa(naapuri)) {
                         kaymatta.lisaa(naapuri);
                     }
                 }
                 
-                /*
-                if (kaydyt.contains(naapuri) && uusiG < naapuri.getEtaisyysAlusta()) {
-                    System.out.println("    löytyi naapureista, " + uusiG + " < " + naapuri.getEtaisyysAlusta());
-                    naapuri.setEtaisyysAlusta(uusiG);
-                    naapuri.setEdellinen(tarkastettava);
-                }
-                else if (!kaymatta.contains(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
-                    System.out.println("    ei vielä openlistissa");
-                    naapuri.setEdellinen(tarkastettava);
-                    naapuri.setEtaisyysAlusta(uusiG);
-                    
-                    // TODO: Heuristiikan valinta järkevämmäksi
-                    //naapuri.setEtaisyysMaaliin(uusiG + heuristiikkaArvio(naapuri, loppu));
-                    naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
-                    
-                    if (!kaymatta.contains(naapuri))
-                        kaymatta.add(naapuri);
-                        System.out.println("      lisätään openlistiin");
-                }
-                */
-                    
-                
-                //if ( !kaymatta.contains(naapuri) ) {
-                //    naapuri.setEdellinen(tarkastettava);
-                //}
             }
         }
     }
@@ -192,8 +145,6 @@ public class AStar {
      * @param n
      * @return 
      */
-    //public ArrayList<Node> selvitaNaapurit(Alue a, Node n) {  // Javan oma
-    //    ArrayList<Node> naapurit = new ArrayList<Node>();     // Javan oma
     public ArrayListOma selvitaNaapurit(Alue a, Node n) {
         ArrayListOma naapurit = new ArrayListOma();
         
@@ -243,7 +194,6 @@ public class AStar {
         int kustannus = (int) (10 * kustannuskerroin);
         
         // Jos on diagonaalinen siirtymä:
-        //if (tarkastettava.getRivi() != naapuri.getRivi() && tarkastettava.getSarake() != naapuri.getSarake() ) {
         if (Math.abs(tarkastettava.getRivi()-naapuri.getRivi() + tarkastettava.getSarake()-naapuri.getSarake()) > 1 ) {
             kustannus = (int)(kustannus * Math.sqrt(2));          // sivuttaissiirtymässä kerroin on neliöjuuri(2)
         }
@@ -261,7 +211,6 @@ public class AStar {
      * @param loppu 
      */
     private void rakennaReitti(Node loppu) {
-        //ArrayList<Node> invert = new ArrayList<Node>();       // Javan oma ArrayList
         ArrayListOma invert = new ArrayListOma();
         Node n = loppu;
         while (n.getEdellinen() != null) {
