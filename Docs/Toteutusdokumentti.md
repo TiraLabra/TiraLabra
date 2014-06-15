@@ -2,52 +2,52 @@
 
 ##Yleisrakenne##
 
-###Sisään- ja ulostulo sekä yleiset työkalut###
+###Sisï¿½ï¿½n- ja ulostulo sekï¿½ yleiset tyï¿½kalut###
 
-Tiedoston lukemiseen ja kirjoittamiseen toteutin kolme luokkaa: Luokka IO lukee ja kirjoittaa tiedostoon tavu kerrallaan käyttäen javan FileInputStream- ja FileOutputStream -luokkia. Koska tavujonon koodatut esitykset ovat LZ77:n tapauksessa 9 tai 17 ja LZW tapauksessa 12 bittiä pitkiä, tarvitaan luokat InputBuffer ja OuputBuffer hallinnoimaan bittijonon "tavuttamista". Luokat pitävät yllä jonoja, joista kirjoitetaan tiedostoon kun seuraava tavu täyttyy. 
+Tiedoston lukemiseen ja kirjoittamiseen toteutin kolme luokkaa: Luokka IO lukee ja kirjoittaa tiedostoon tavu kerrallaan kï¿½yttï¿½en javan FileInputStream- ja FileOutputStream -luokkia. Koska tavujonon koodatut esitykset ovat LZ77:n tapauksessa 9 tai 17 ja LZW tapauksessa 12 bittiï¿½ pitkiï¿½, tarvitaan luokat InputBuffer ja OuputBuffer hallinnoimaan bittijonon "tavuttamista". Luokat pitï¿½vï¿½t yllï¿½ jonoja, joista kirjoitetaan tiedostoon kun seuraava tavu tï¿½yttyy. 
 
-ByteAsBits-luokka hallinnoi tavun erilaisia esityksiä. Ohjelmassa seikkailee kolmenlaisia esityksiä tavulle: javan byte-tietotyyppi(arvoiltaan -128 - 127), integer(0 - 256) sekä 8-paikkainen boolean-taulukko. ByteAsBits on tavua esittävä olio, joka voidaan alustaa millä tahansa kolmesta esityksestä ja joka voi palauttaa tavun kaikissa muodoissa.
+ByteAsBits-luokka hallinnoi tavun erilaisia esityksiï¿½. Ohjelmassa seikkailee kolmenlaisia esityksiï¿½ tavulle: javan byte-tietotyyppi(arvoiltaan -128 - 127), integer(0 - 256) sekï¿½ 8-paikkainen boolean-taulukko. ByteAsBits on tavua esittï¿½vï¿½ olio, joka voidaan alustaa millï¿½ tahansa kolmesta esityksestï¿½ ja joka voi palauttaa tavun kaikissa muodoissa.
 
 
-ArrayUtils sisältää staattisia metodeita byte- ja boolean-taulukkojen muunnoksiin.
+ArrayUtils sisï¿½ltï¿½ï¿½ staattisia metodeita byte- ja boolean-taulukkojen muunnoksiin.
 
-###LZ77### 
+###LZ77 ### 
 
-LZ77-pakkaaja ja -purkaja käyttävät luokkia SlidingTable, LinkedQueue ja SlidingWindow. 
+LZ77-pakkaaja ja -purkaja kï¿½yttï¿½vï¿½t luokkia SlidingTable, LinkedQueue ja SlidingWindow. 
 
-SlidingTable on jonomaisesti toimiva päällekirjoittava taulukko. Taulukolla on maksimikoko, jonka täyttyessä aletaan päällekirjoittaa nollaindeksistä alkaen. Päällekirjoitettava alkio palautetaan. Taulukosta voi hakea alkioita sekä suhteellisella indeksillä, jolla nollaindeksi on viimeisenä lisättyä seuraava, tai todellisella indeksillä, jolloin nollaindeksi on taulukon konkreettinen nollaindeksi. SlidingTablea käytetään purkajassa, sekä pakkaajan apuluokassa SlidingWindow.
+SlidingTable on jonomaisesti toimiva pï¿½ï¿½llekirjoittava taulukko. Taulukolla on maksimikoko, jonka tï¿½yttyessï¿½ aletaan pï¿½ï¿½llekirjoittaa nollaindeksistï¿½ alkaen. Pï¿½ï¿½llekirjoitettava alkio palautetaan. Taulukosta voi hakea alkioita sekï¿½ suhteellisella indeksillï¿½, jolla nollaindeksi on viimeisenï¿½ lisï¿½ttyï¿½ seuraava, tai todellisella indeksillï¿½, jolloin nollaindeksi on taulukon konkreettinen nollaindeksi. SlidingTablea kï¿½ytetï¿½ï¿½n purkajassa, sekï¿½ pakkaajan apuluokassa SlidingWindow.
 
-SlidingWindow on pakkaajan apuluokka, algoritmin liukuvan ikkunan implementaatio. Luokka ylläpitää SlidingTable-taulukkoa sekä jonon jokaista tavun arvoa kohtaan. Kun alkio lisätään liukuikkunan, sen todellinen indeksi SlidingTable-taulukossa tallennetaan sitä vastaavaan jonoon. Kun alkio putoaa ikkunnasta, poistetaan sitä vastaavasta jonosta alkio. Kun haetaan parasta osumaa annetulle merkkijonolle, verrataan vain niitä merkkijonoja, jotka alkavat samalla tavulla.
+SlidingWindow on pakkaajan apuluokka, algoritmin liukuvan ikkunan implementaatio. Luokka yllï¿½pitï¿½ï¿½ SlidingTable-taulukkoa sekï¿½ jonon jokaista tavun arvoa kohtaan. Kun alkio lisï¿½tï¿½ï¿½n liukuikkunan, sen todellinen indeksi SlidingTable-taulukossa tallennetaan sitï¿½ vastaavaan jonoon. Kun alkio putoaa ikkunnasta, poistetaan sitï¿½ vastaavasta jonosta alkio. Kun haetaan parasta osumaa annetulle merkkijonolle, verrataan vain niitï¿½ merkkijonoja, jotka alkavat samalla tavulla.
 
-LinkedQueue on linkitetyllä listalla toteutettu jono. Luokka käyttää solmuja kuvaamaan luokkaa LinkedNode, sekä iteraattoria LinkedQueueIterator. 
+LinkedQueue on linkitetyllï¿½ listalla toteutettu jono. Luokka kï¿½yttï¿½ï¿½ solmuja kuvaamaan luokkaa LinkedNode, sekï¿½ iteraattoria LinkedQueueIterator. 
 
 ###LZW###
 
-LZW käyttää luokkaa Dictionary, joka vastaa algoritmin hakemistoa. Dictionary tallentaa tavujonot taulukkoon, ja viitteet taulukon alkiohin binäärihakupuihin. Binäärihakupuita on jokaista alkumerkkiä vastaan kuten SlidingWindow-luokassa jonoja. Binääripuiden solmuja vastaa luokka BinaryTreeNode. Dictionary-oliosta voi hakea siis sekä tavujonon, että taulukkoindeksin mukaan. Sekä pakkaaja että purkaja käyttävät samaa Dictionary-luokkaa. 
+LZW kï¿½yttï¿½ï¿½ luokkaa Dictionary, joka vastaa algoritmin hakemistoa. Dictionary tallentaa tavujonot taulukkoon, ja viitteet taulukon alkiohin binï¿½ï¿½rihakupuihin. Binï¿½ï¿½rihakupuita on jokaista alkumerkkiï¿½ vastaan kuten SlidingWindow-luokassa jonoja. Binï¿½ï¿½ripuiden solmuja vastaa luokka BinaryTreeNode. Dictionary-oliosta voi hakea siis sekï¿½ tavujonon, ettï¿½ taulukkoindeksin mukaan. Sekï¿½ pakkaaja ettï¿½ purkaja kï¿½yttï¿½vï¿½t samaa Dictionary-luokkaa. 
 
 ##Aika- ja tilavaativuudet##
 
-Koska LZ77:n ikkunan ja LZW:n hakemiston koot ovat kiinteitä, algoritmien aika- ja tilavaativuudet ovat suhteessa tiedoston kokoon aina lineaarisia, on mielekkäämpä verrata niiden vaativuuksia suhteessa ikkunan tai hakemiston kokoon. Tämä on olennaista, sillä pakkaussuhde paranee näitä kasvattaessa. 
+Koska LZ77:n ikkunan ja LZW:n hakemiston koot ovat kiinteitï¿½, algoritmien aika- ja tilavaativuudet ovat suhteessa tiedoston kokoon aina lineaarisia, on mielekkï¿½ï¿½mpï¿½ verrata niiden vaativuuksia suhteessa ikkunan tai hakemiston kokoon. Tï¿½mï¿½ on olennaista, sillï¿½ pakkaussuhde paranee nï¿½itï¿½ kasvattaessa. 
 
 ###Aputietorakenteet###
 
-SlidingTable-luokan add- ja get-metodit ovat vakioaikaisia, sillä ne viittaavat suoraan tiettyyn taulukon indeksiin joka saadaan perustoimituksilla. pollAll-metodi käy kaikki alkiot kerran läpi, siis sen aikavaatimus on lineaarinen suhteessa taulukon kokoon. Tilavaativuudet ovat myös vakiollisia, lukuunottamatta pollAll-metodia, joka luo uuden taulukon, jonka koko on SlidingTablen koko, siis tilavaativuus on tähän suhteessa lineaarinen. 
+SlidingTable-luokan add- ja get-metodit ovat vakioaikaisia, sillï¿½ ne viittaavat suoraan tiettyyn taulukon indeksiin joka saadaan perustoimituksilla. pollAll-metodi kï¿½y kaikki alkiot kerran lï¿½pi, siis sen aikavaatimus on lineaarinen suhteessa taulukon kokoon. Tilavaativuudet ovat myï¿½s vakiollisia, lukuunottamatta pollAll-metodia, joka luo uuden taulukon, jonka koko on SlidingTablen koko, siis tilavaativuus on tï¿½hï¿½n suhteessa lineaarinen. 
 
-LinkedQueuen kaikki operaatiot ovat vakioaikaisia, sillä luokka pitää kirjaa sekä ensimmäisestä että viimeisestä alkiosta. 
+LinkedQueuen kaikki operaatiot ovat vakioaikaisia, sillï¿½ luokka pitï¿½ï¿½ kirjaa sekï¿½ ensimmï¿½isestï¿½ ettï¿½ viimeisestï¿½ alkiosta. 
 
 ###SlidingWindow###
 
-Add-metodi lisää alkion sekä SlidingTable-taulukkoon, että viitteen LinkedQueue-jonoon. Nämä toimitukset ovat molemmat vakioaikaisia, siis metodin aikavaatimus on vakio. 
+Add-metodi lisï¿½ï¿½ alkion sekï¿½ SlidingTable-taulukkoon, ettï¿½ viitteen LinkedQueue-jonoon. Nï¿½mï¿½ toimitukset ovat molemmat vakioaikaisia, siis metodin aikavaatimus on vakio. 
 
-FindBestMatch-metodi suorittaa jokaiselle annetun taulukon alkumerkkiä vastaavan jonon alkiolle metodin matchLength, jonka aikavaatimus on lineaarinen suhteessa annetun taulukon pituuteen. Koska jonon pituus voi pahimmassa tapauksessa olla ikkunan koko, on metodin aikavaativuus siis suuruusluokkaa O(n*m), jossa n on ikkunan koko ja m suurin sallittu koodattavan tavujonon pituus. 
+FindBestMatch-metodi suorittaa jokaiselle annetun taulukon alkumerkkiï¿½ vastaavan jonon alkiolle metodin matchLength, jonka aikavaatimus on lineaarinen suhteessa annetun taulukon pituuteen. Koska jonon pituus voi pahimmassa tapauksessa olla ikkunan koko, on metodin aikavaativuus siis suuruusluokkaa O(n*m), jossa n on ikkunan koko ja m suurin sallittu koodattavan tavujonon pituus. 
 
 ###Dictionary###
 
-Lisättäessä Dictionary-hakemistoon tallennetaan itse tavujono taulukkoon ja indeksi tallennetaan binäärihakupuuhun. Binäärihakupuuhun lisättäessä addToTree-metodilla suoritetaan compareArrays-metodi log n kertaa, jossa n on puun koko. CompareArrays-metodin aikavaativuus on lineaarinen suhteessa lyhyemmän tavujonon pituuteen. Siis addToTree-metodin aikavaativuus on suuruusluokkaa O(log n * s), jossa n on puun koko (pahimmassa tapauksessa koko hakemiston koko) ja s lisättävän tavujonon pituus. SearchFromTree toimii vastaavasti, joten contains- ja get(byte[]) -metodien aikavaativuudet ovat myös O(log n * s), jossa s on haettavan taulukon pituus.   
+Lisï¿½ttï¿½essï¿½ Dictionary-hakemistoon tallennetaan itse tavujono taulukkoon ja indeksi tallennetaan binï¿½ï¿½rihakupuuhun. Binï¿½ï¿½rihakupuuhun lisï¿½ttï¿½essï¿½ addToTree-metodilla suoritetaan compareArrays-metodi log n kertaa, jossa n on puun koko. CompareArrays-metodin aikavaativuus on lineaarinen suhteessa lyhyemmï¿½n tavujonon pituuteen. Siis addToTree-metodin aikavaativuus on suuruusluokkaa O(log n * s), jossa n on puun koko (pahimmassa tapauksessa koko hakemiston koko) ja s lisï¿½ttï¿½vï¿½n tavujonon pituus. SearchFromTree toimii vastaavasti, joten contains- ja get(byte[]) -metodien aikavaativuudet ovat myï¿½s O(log n * s), jossa s on haettavan taulukon pituus.   
 
 ###Yhteenveto###
 
-LZW-purkajan ja -pakkaajan sekä LZ77-pakkaajan aikavaativuudet ovat verrannollisia SlidingWindow:n ja Dictionary:n hakutoimintojen aikavaativuuksiin, ne suorittavat tiedoston kokoon verrannollisen määrän näitä operaatioita. 
+LZW-purkajan ja -pakkaajan sekï¿½ LZ77-pakkaajan aikavaativuudet ovat verrannollisia SlidingWindow:n ja Dictionary:n hakutoimintojen aikavaativuuksiin, ne suorittavat tiedoston kokoon verrannollisen mï¿½ï¿½rï¿½n nï¿½itï¿½ operaatioita. 
 
-LZ77-purkajan aikavaativuus on T(k,n,m) = (k*m)+n , jossa k on tiedoston pituus, n ikkunan pituus ja m suurin sallittu osuman pituus. Koska ennen kuin SlidingTable on täynnä ei tavuja kirjoiteta, täytyy suorittaa lopuksi pollAll, josta tulee ylimääräiset n operaatioita. Muuten ikkunan pituus ei vaikuta purkajan toimintaan, sillä SlidingTablen muut metodit ovat vakioaikaisia.        
+LZ77-purkajan aikavaativuus on T(k,n,m) = (k*m)+n , jossa k on tiedoston pituus, n ikkunan pituus ja m suurin sallittu osuman pituus. Koska ennen kuin SlidingTable on tï¿½ynnï¿½ ei tavuja kirjoiteta, tï¿½ytyy suorittaa lopuksi pollAll, josta tulee ylimï¿½ï¿½rï¿½iset n operaatioita. Muuten ikkunan pituus ei vaikuta purkajan toimintaan, sillï¿½ SlidingTablen muut metodit ovat vakioaikaisia.        
  
