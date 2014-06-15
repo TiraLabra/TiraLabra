@@ -134,8 +134,8 @@ public class SuorituskykyTestaus {
     protected boolean laskutoimitus(int koko, String tunniste, int potenssiin) {
         if(tunniste.equals("Kertolasku")) {
             double[][] tulomatriisi = kertolasku.kerro(
-                             generoija.luoYkkosillaTaytettyMatriisi(koko, koko),
-                             generoija.luoYkkosillaTaytettyMatriisi(koko, koko));
+                           generoija.luoYkkosillaTaytettyMatriisi(koko, koko),
+                           generoija.luoYkkosillaTaytettyMatriisi(koko, koko));
             return tulomatriisi[0][0] == koko;
         } else if(tunniste.equals("Strassen")) {
             double[][] tulomatriisi = strassen.kerro(
@@ -144,14 +144,14 @@ public class SuorituskykyTestaus {
             return tulomatriisi[0][0] == koko;
         } else if(tunniste.equals("Determinantti")) {
             return determinantti.laskeDeterminantti(
-                   generoija.luoYksikkomatriisi(koko)) == 1;
+                           generoija.luoYksikkomatriisi(koko)) == 1;
         } else if(tunniste.equals("Kaanteismatriisi")) {
             double[][] kaanteis = kaanteismatriisi.invertoi(
                            generoija.luoYksikkomatriisi(koko));
             return kaanteis[0][0] == 1;
         } else if(tunniste.equals("Potenssi")) {
             double[][] tulomatriisi = potenssi.neliomatriisiPotenssiin(
-                            generoija.luoYksikkomatriisi(koko), potenssiin);
+                           generoija.luoYksikkomatriisi(koko), potenssiin);
             return tulomatriisi[0][0] == 1;
         }
         return false;
