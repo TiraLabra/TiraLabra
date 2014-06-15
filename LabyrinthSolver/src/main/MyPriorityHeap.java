@@ -46,7 +46,7 @@ public class MyPriorityHeap {
 
     /**
      * Lisää kekoon uuden alkion. Alkio lisätään keon päähän, jonka jälkeen
-     * uutta alkiota vaihdellaan ylöspäin niin kauan, kunnes uudelle alkiolle
+     * uutta alkiota vaihdellaan alkuun päin niin kauan, kunnes uudelle alkiolle
      * löydetään paikka, mikä ei riko keko-ominaisuutta. Tämän jälkeen
      * päivitetään tarpeen tullen keon aputaulukon koko.
      *
