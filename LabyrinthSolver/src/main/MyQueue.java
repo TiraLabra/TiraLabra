@@ -11,19 +11,19 @@ public class MyQueue<E> {
     /**
      * Jonon alkiot tallennetaan aputaulukkoon.
      */
-    Object[] items;
+    private Object[] items;
     /**
      * Jonon taulukon koko.
      */
-    int maxsize;
+    private int maxsize;
     /**
      * Jonon pään paikka.
      */
-    int tail;
+    private int tail;
     /**
      * Jonon ensimmäisen alkion paikka.
      */
-    int head;
+    private int head;
 
     /**
      * Luo tyhjän jonon, jonka aputaulukon kooksi asetetaan oletuksena 16.
@@ -48,31 +48,67 @@ public class MyQueue<E> {
     }
 
     /**
-     * Uusi alkio laitetaan jonon perälle. Jos jonon koko saavutti aputaulukon
-     * koon, luodaan uusi kaksi kertaa isompi aputaulukko ja kopioidaan vanhat
-     * alkiot siihen.
+     * Palauttaa kohdan, missä jonon ensimmäinen alkio on.
+     *
+     * @return Palauttaa kohdan, missä jonon ensimmäinen alkio on.
+     */
+    public int getHead() {
+        return head;
+    }
+
+    /**
+     * Palauttaa kohdan, missä jonon päätyalkio on.
+     *
+     * @return Palauttaa kohdan, missä jonon päätyalkio on.
+     */
+    public int getTail() {
+        return tail;
+    }
+
+    /**
+     * Palauttaa alkion annetusta indeksistä.
+     *
+     * @param key Haettavan alkion indeksi.
+     * @return Palauttaa alkion annetusta indeksistä.
+     */
+    public E get(int key) {
+        return (E) items[key];
+    }
+
+    /**
+     * Uusi alkio laitetaan jonon perälle. Tämän jälkeen päivitetään tarpeen
+     * tullen jonon koko.
      *
      * @param item Alkio, joka lisätään listaan.
      */
     public void enqueue(Object item) {
         items[tail] = item;
         tail = increment(tail);
-        if (tail == head) {
-            Object[] newItems = new Object[maxsize * 2];
-            int counter = 0;
-            while (counter != maxsize) {
-                newItems[counter++] = items[head];
-                head = increment(head);
-            }
-            items = newItems;
-            maxsize *= 2;
-            head = 0;
-            tail = counter;
-        }
+        updateQueueSize();
     }
 
     /**
-     * Pyrkii palauttamaan listan päässä olevan alkion.
+     * Jos jonon koko saavutti aputaulukon koon, luodaan uusi kaksi kertaa
+     * isompi aputaulukko ja kopioidaan vanhat alkiot siihen.
+     */
+    void updateQueueSize() {
+        if (tail != head || (head == tail && items[head] == null)) {
+            return;
+        }
+        Object[] newItems = new Object[maxsize * 2];
+        int counter = 0;
+        while (counter != maxsize) {
+            newItems[counter++] = items[head];
+            head = increment(head);
+        }
+        items = newItems;
+        maxsize *= 2;
+        head = 0;
+        tail = counter;
+    }
+
+    /**
+     * Jos jono ei ole tyhjä, palauttaa jonon päässä olevan alkion.
      *
      * @return Palauttaa listan päässä olevan alkion. Jos lista on tyhjä,
      * palauttaa null.
@@ -92,26 +128,28 @@ public class MyQueue<E> {
      * @return Palauttaa true, jos lista on tyhjä.
      */
     public boolean empty() {
-        return head == tail;
+        return head == tail && items[head] == null;
     }
 
     /**
-     * Lisää annettua indeksiä yhdellä. Jos indeksi saavutti jonon aputaulukon
-     * maksimikoon, siirtyy indeksi jonon aputaulukon alkuun.
+     * Siirtää head:in tai tail:in indeksiä eteenpäin yhdellä. Jos indeksi
+     * saavutti jonon aputaulukon maksimikoon, siirtyy indeksi jonon aputaulukon
+     * alkuun.
      *
-     * @param key Annettu indeksi.
-     * @return Palauttaa jonon seuraavan kohdan indeksin.
+     * @param i Annettu indeksi.
+     * @return Palauttaa seuraavan kohdan indeksin.
      */
-    int increment(int key) {
-        key++;
-        if (key == maxsize) {
-            key = 0;
+    private int increment(int i) {
+        i++;
+        if (i == maxsize) {
+            i = 0;
         }
-        return key;
+        return i;
     }
 
     /**
      * Palauttaa listan koon.
+     *
      * @return Palauttaa listan koon.
      */
     public int size() {

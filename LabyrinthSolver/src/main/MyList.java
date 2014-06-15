@@ -11,15 +11,15 @@ public class MyList<E> {
     /**
      * Listan alkiot tallennetaan aputaulukkoon.
      */
-    Object[] items;
+    private Object[] items;
     /**
      * Listan aputaulukon koko.
      */
-    int maxsize;
+    private int maxsize;
     /**
      * Listan koko.
      */
-    int size;
+    private int size;
 
     /**
      * Luo tyhjän listan, jonka aputaulukon kooksi asetetaan oletuksena 16.
@@ -42,21 +42,29 @@ public class MyList<E> {
     }
 
     /**
-     * Lisää listaan uuden alkion. Jos listan koko saavutti aputaulukon koon,
-     * luodaan uusi kaksi kertaa isompi aputaulukko ja kopioidaan vanhat alkiot
-     * siihen.
+     * Lisää listaan uuden alkion. Tämän jälkeen päivitetään tarpeen tullen
+     * listan koko.
      *
      * @param item Alkio, joka lisätään listaan.
      */
     public void add(Object item) {
         items[size] = item;
         size++;
-        if (size == maxsize) {
-            Object[] newItems = new Object[maxsize * 2];
-            System.arraycopy(items, 0, newItems, 0, maxsize);
-            items = newItems;
-            maxsize *= 2;
+        updateListSize();
+    }
+
+    /**
+     * Jos listan koko saavutti aputaulukon koon, luodaan uusi kaksi kertaa
+     * isompi aputaulukko ja kopioidaan vanhat alkiot siihen.
+     */
+    private void updateListSize() {
+        if (size != maxsize) {
+            return;
         }
+        Object[] newItems = new Object[maxsize * 2];
+        System.arraycopy(items, 0, newItems, 0, maxsize);
+        items = newItems;
+        maxsize *= 2;
     }
 
     /**
@@ -84,8 +92,7 @@ public class MyList<E> {
             return null;
         }
         swap(key, size - 1);
-        size--;
-        return (E) items[size];
+        return (E) removeLast();
     }
 
     /**
@@ -99,19 +106,17 @@ public class MyList<E> {
     public E removeByValue(Object item) {
         for (int i = 0; i < size; i++) {
             if (items[i].equals(item)) {
-                swap(i, size - 1);
-                size--;
-                return (E) items[size];
+                return (E) removeByIndex(i);
             }
         }
         return null;
     }
 
     /**
-     * Palauttaa alkion arvon annetusta indeksistä.
+     * Palauttaa alkion annetusta indeksistä.
      *
      * @param key Haettavan alkion indeksi.
-     * @return Palauttaa alkion arvon annetusta indeksistä.
+     * @return Palauttaa alkion annetusta indeksistä.
      */
     public E get(int key) {
         if (key >= size) {
@@ -144,6 +149,9 @@ public class MyList<E> {
      * @param list Lista, joka yhdistetään tähän listaan.
      */
     public void join(MyList list) {
+        if (list == null) {
+            return;
+        }
         for (int i = 0; i < list.size; i++) {
             add(list.get(i));
         }
@@ -173,17 +181,4 @@ public class MyList<E> {
         }
     }
 
-    /**
-     * Kopioi toisen listan sisällön.
-     *
-     * @param list2 Lista, josta kopioidaan.
-     */
-    public void copy(MyList<E> list2) {
-        size = list2.size();
-        maxsize = list2.maxsize;
-        items = new Object[list2.maxsize];
-        for (int i = 0; i < list2.size; i++) {
-            items[i] = list2.get(i);
-        }
-    }
 }
