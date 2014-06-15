@@ -98,9 +98,12 @@ public class Board {
         initalizeBoard();
     }
 
+    /**
+     * Initialize all the variables with the correct values for Othello.
+     */
     private void initalizeBoard() {
         this.board = new Player[8][8];
-        
+
         for (int y = 0; y < height(); y++) {
             for (int x = 0; x < width(); x++) {
                 board[y][x] = Player.NONE;
@@ -558,6 +561,9 @@ public class Board {
         return board;
     }
 
+    /**
+     * Reset board to it's initial state.
+     */
     public void reset() {
         initalizeBoard();
     }
