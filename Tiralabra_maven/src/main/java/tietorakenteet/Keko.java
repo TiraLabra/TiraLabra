@@ -15,6 +15,11 @@ public class Keko {
     private int koko;
     
     private int taulukonKoko;
+    
+    /**
+     * Debug-boolean jolla määritellään tehdäänkö aputulostusta
+     */
+    private static final boolean debug = false; 
 
     public Keko() {
         this(OLETUSKOKO);
@@ -87,7 +92,8 @@ public class Keko {
     }
     
     protected void tasapainota(int k) {
-        System.out.println("Tasapainotetaan kohta "+ k);
+        if (debug)
+            System.out.println("Tasapainotetaan kohta "+ k);
         Comparable tarkasteltava = sisalto[k];
         int vanhempi = vanhempi(k);
         while ( k > 0 && tarkasteltava.compareTo(sisalto[vanhempi]) < 0) {
