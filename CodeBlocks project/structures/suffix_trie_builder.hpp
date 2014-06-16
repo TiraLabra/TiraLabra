@@ -15,6 +15,7 @@ class suffix_trie_builder {
     \a suffix_trie::node * from and \a suffix_trie::node * to. \a index is the value (weight)
     of the edge meaning that the pointer to the edge will be stored in a map with a key \a index in
     the \a from node.
+    */
     suffix_trie::edge * build_edge(suffix_trie::node * from, suffix_trie::node * to, char index);
     public:
     /*!

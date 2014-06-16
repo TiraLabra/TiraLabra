@@ -12,6 +12,16 @@ TEST(SuffixTrie,BasicTest) {
         delete trie;
 }
 
+TEST(SuffixTrie,NFoundTest) {
+    suffix_trie_builder * builder = new suffix_trie_builder();
+    string haystack = "missisippi";
+    string needle = "basa";
+    suffix_trie * trie = builder->build_trie(haystack);
+    int ans = -1;
+    int rk_ans = trie->find_first(needle);
+    EXPECT_EQ(ans, rk_ans);
+    delete trie;
+}
 
 TEST(SuffixTrie, NormalTest) {
     suffix_trie_builder * builder = new suffix_trie_builder();

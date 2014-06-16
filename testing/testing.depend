@@ -144,7 +144,7 @@
 	<string>
 	<vector>
 
-1402860825 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
+1402916920 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
 	<cstring>
 	<string>
 	<vector>
@@ -152,7 +152,7 @@
 	<iostream>
 	"../constants.hpp"
 
-1402860977 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
+1402948565 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
 	<cstring>
 	<string>
 	"suffix_trie.hpp"
