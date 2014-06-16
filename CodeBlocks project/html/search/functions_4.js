@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['rabin_5fkarp_5fsearch',['rabin_karp_search',['../classrabin__karp__searcher.html#a8e84f35d889d207d2e1d8f1667b096f1',1,'rabin_karp_searcher::rabin_karp_search(const string &amp;haystack, const string &amp;needle, int start=0)'],['../classrabin__karp__searcher.html#a463e7806633823f5e0b337d5751c0941',1,'rabin_karp_searcher::rabin_karp_search(const char *haystack, const char *needle, int start=0, int haystack_length=-1, int needle_length=-1)']]],
-  ['rabin_5fkarp_5fsearcher',['rabin_karp_searcher',['../classrabin__karp__searcher.html#a3c5d7b44ee4f3110107e8fc08ad180dc',1,'rabin_karp_searcher']]]
+  ['get_5fedge',['get_edge',['../classsuffix__trie_1_1node.html#ac4e1886521e0e4140aae9556bdaa5631',1,'suffix_trie::node']]],
+  ['get_5fedges',['get_edges',['../classsuffix__trie_1_1node.html#a740a3d23a9fe2b31e3066393b22ed099',1,'suffix_trie::node']]],
+  ['get_5flevenstein_5fdistance',['get_levenstein_distance',['../classedit__distance.html#afee05eeeefaa9d657d247f05530b51c4',1,'edit_distance::get_levenstein_distance(const string &amp;str_a, const string &amp;str_b)'],['../classedit__distance.html#a2f059d1dfb3d76e8938376ba907c952c',1,'edit_distance::get_levenstein_distance(const char *str_a, const char *str_b, int str_a_len=-1, int str_b_len=-1)']]],
+  ['get_5froot',['get_root',['../classsuffix__trie.html#aaac718aa91f18353d139d1af068e132b',1,'suffix_trie']]]
 ];

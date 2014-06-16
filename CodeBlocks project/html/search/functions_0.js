@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['check_5fequals',['check_equals',['../classrabin__karp__searcher.html#abfdd295c35e50777268b2c93c0d63cf1',1,'rabin_karp_searcher']]],
-  ['compute_5fpowers',['compute_powers',['../classrabin__karp__searcher.html#af87b49667bfaae8aa9e04c40a56ef65d',1,'rabin_karp_searcher']]]
+  ['add_5fedge',['add_edge',['../classsuffix__trie_1_1node.html#adfb2fe365b990b61a1b91db8f5d3749a',1,'suffix_trie::node']]],
+  ['add_5findex',['add_index',['../classsuffix__trie_1_1edge.html#a680b647d002f8bcc652e1c018f0c657b',1,'suffix_trie::edge']]]
 ];

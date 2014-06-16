@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['naive_2ehpp',['naive.hpp',['../naive_8hpp.html',1,'']]],
-  ['naive_5fsearch',['naive_search',['../naive_8hpp.html#a7df3168ae10755c311800c8b2a88385d',1,'naive_search(const string &amp;haystack, const string &amp;needle, int start=0):&#160;naive.cpp'],['../naive_8hpp.html#a88a31f9a8cc8b9a8b2d83b0bc6cedb54',1,'naive_search(const char *haystack, const char *needle, int start=0, int haystack_length=-1, int needle_length=-1):&#160;naive.cpp']]],
-  ['no_5fhash',['NO_HASH',['../constants_8hpp.html#ae6e068d35587d43548f4dff49a7a76a1',1,'constants.hpp']]],
-  ['not_5ffound',['NOT_FOUND',['../constants_8hpp.html#a33bfc1f995233887a0414369c36936b8',1,'constants.hpp']]]
+  ['find_5fall',['find_all',['../classsuffix__trie.html#ab362340e269e59692d4fabe133d15a6c',1,'suffix_trie::find_all(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#a389b5a98d9de10c0ff9fbd2e2ae7b117',1,'suffix_trie::find_all(const string &amp;needle)']]],
+  ['find_5ffirst',['find_first',['../classsuffix__trie.html#aa0b4eb1f5b48c368bab4e7fa092f3397',1,'suffix_trie::find_first(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#ace4532672b5494b16ca6a61ece4253bb',1,'suffix_trie::find_first(const string &amp;needle)']]],
+  ['from',['from',['../classsuffix__trie_1_1edge.html#ae89e6815dd581516c8d4284814334263',1,'suffix_trie::edge']]]
 ];

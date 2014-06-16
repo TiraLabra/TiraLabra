@@ -1,0 +1,124 @@
+\hypertarget{classsuffix__trie}{\section{suffix\+\_\+trie Class Reference}
+\label{classsuffix__trie}\index{suffix\+\_\+trie@{suffix\+\_\+trie}}
+}
+
+
+{\ttfamily \#include $<$suffix\+\_\+trie.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classsuffix__trie_1_1edge}{edge}
+\item 
+class \hyperlink{classsuffix__trie_1_1node}{node}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsuffix__trie_a9abcb4670f7a77310cb99b9bcf793d96}{suffix\+\_\+trie} (\hyperlink{classsuffix__trie_1_1node}{node} $\ast$root)
+\item 
+\hyperlink{classsuffix__trie_ad167499438414cfd39d4348293ce518c}{$\sim$suffix\+\_\+trie} ()
+\item 
+int \hyperlink{classsuffix__trie_aa0b4eb1f5b48c368bab4e7fa092f3397}{find\+\_\+first} (const char $\ast$needle, int needle\+\_\+length=-\/1)
+\item 
+int \hyperlink{classsuffix__trie_ace4532672b5494b16ca6a61ece4253bb}{find\+\_\+first} (const string \&needle)
+\item 
+vector$<$ int $>$ \hyperlink{classsuffix__trie_ab362340e269e59692d4fabe133d15a6c}{find\+\_\+all} (const char $\ast$needle, int needle\+\_\+length=-\/1)
+\item 
+vector$<$ int $>$ \hyperlink{classsuffix__trie_a389b5a98d9de10c0ff9fbd2e2ae7b117}{find\+\_\+all} (const string \&needle)
+\item 
+\hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node} $\ast$ \hyperlink{classsuffix__trie_aaac718aa91f18353d139d1af068e132b}{get\+\_\+root} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const char \hyperlink{classsuffix__trie_a65563ea1279d3fc3353a0806f6a07aad}{S\+T\+O\+P\+\_\+\+C\+H\+A\+R} = 127
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{classsuffix__trie_a01feaa688d57e9a27960b68e168d98ea}{operator$<$$<$} (ostream \&stream, \hyperlink{classsuffix__trie}{suffix\+\_\+trie} \&trie)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\itshape \hyperlink{classsuffix__trie}{suffix\+\_\+trie}} is a tree structure which contains information about a given text. It supports searching in the text. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsuffix__trie_a9abcb4670f7a77310cb99b9bcf793d96}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\index{suffix\+\_\+trie@{suffix\+\_\+trie}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{suffix\+\_\+trie}]{\setlength{\rightskip}{0pt plus 5cm}suffix\+\_\+trie\+::suffix\+\_\+trie (
+\begin{DoxyParamCaption}
+\item[{{\bf node} $\ast$}]{root}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_a9abcb4670f7a77310cb99b9bcf793d96}
+creates a {\itshape \hyperlink{classsuffix__trie}{suffix\+\_\+trie}} with a given {\itshape \hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node}} root pointer \hypertarget{classsuffix__trie_ad167499438414cfd39d4348293ce518c}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!````~suffix\+\_\+trie@{$\sim$suffix\+\_\+trie}}
+\index{````~suffix\+\_\+trie@{$\sim$suffix\+\_\+trie}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{$\sim$suffix\+\_\+trie}]{\setlength{\rightskip}{0pt plus 5cm}suffix\+\_\+trie\+::$\sim$suffix\+\_\+trie (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_ad167499438414cfd39d4348293ce518c}
+destroys the suffix trie and all of its nodes and edges recursively 
+
+\subsection{Member Function Documentation}
+\hypertarget{classsuffix__trie_ab362340e269e59692d4fabe133d15a6c}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!find\+\_\+all@{find\+\_\+all}}
+\index{find\+\_\+all@{find\+\_\+all}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{find\+\_\+all}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$int$>$ suffix\+\_\+trie\+::find\+\_\+all (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{needle, }
+\item[{int}]{needle\+\_\+length = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_ab362340e269e59692d4fabe133d15a6c}
+returns all occurrences of the {\itshape needle} in the preprocessed text. If {\itshape needle\+\_\+length} is ommited, then the length is computed by using strlen(). \hypertarget{classsuffix__trie_a389b5a98d9de10c0ff9fbd2e2ae7b117}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!find\+\_\+all@{find\+\_\+all}}
+\index{find\+\_\+all@{find\+\_\+all}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{find\+\_\+all}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$int$>$ suffix\+\_\+trie\+::find\+\_\+all (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{needle}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_a389b5a98d9de10c0ff9fbd2e2ae7b117}
+returns all occurrences of the {\itshape needle} in the preprocessed text. \hypertarget{classsuffix__trie_aa0b4eb1f5b48c368bab4e7fa092f3397}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!find\+\_\+first@{find\+\_\+first}}
+\index{find\+\_\+first@{find\+\_\+first}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{find\+\_\+first}]{\setlength{\rightskip}{0pt plus 5cm}int suffix\+\_\+trie\+::find\+\_\+first (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{needle, }
+\item[{int}]{needle\+\_\+length = {\ttfamily -\/1}}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_aa0b4eb1f5b48c368bab4e7fa092f3397}
+returns the first occurrence of the {\itshape needle} in the preprocessed text. If {\itshape needle\+\_\+length} is ommited, then the length is computed by using strlen(). \hypertarget{classsuffix__trie_ace4532672b5494b16ca6a61ece4253bb}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!find\+\_\+first@{find\+\_\+first}}
+\index{find\+\_\+first@{find\+\_\+first}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{find\+\_\+first}]{\setlength{\rightskip}{0pt plus 5cm}int suffix\+\_\+trie\+::find\+\_\+first (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{needle}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_ace4532672b5494b16ca6a61ece4253bb}
+returns the first occurrence of the {\itshape needle} in the preprocessed text. \hypertarget{classsuffix__trie_aaac718aa91f18353d139d1af068e132b}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!get\+\_\+root@{get\+\_\+root}}
+\index{get\+\_\+root@{get\+\_\+root}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{get\+\_\+root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf suffix\+\_\+trie\+::node} $\ast$ suffix\+\_\+trie\+::get\+\_\+root (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_aaac718aa91f18353d139d1af068e132b}
+returns the root of the trie 
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classsuffix__trie_a01feaa688d57e9a27960b68e168d98ea}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{stream, }
+\item[{{\bf suffix\+\_\+trie} \&}]{trie}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classsuffix__trie_a01feaa688d57e9a27960b68e168d98ea}
+overrides the $<$$<$ operator to print the {\itshape \hyperlink{classsuffix__trie}{suffix\+\_\+trie}} 
+
+\subsection{Member Data Documentation}
+\hypertarget{classsuffix__trie_a65563ea1279d3fc3353a0806f6a07aad}{\index{suffix\+\_\+trie@{suffix\+\_\+trie}!S\+T\+O\+P\+\_\+\+C\+H\+A\+R@{S\+T\+O\+P\+\_\+\+C\+H\+A\+R}}
+\index{S\+T\+O\+P\+\_\+\+C\+H\+A\+R@{S\+T\+O\+P\+\_\+\+C\+H\+A\+R}!suffix\+\_\+trie@{suffix\+\_\+trie}}
+\subsubsection[{S\+T\+O\+P\+\_\+\+C\+H\+A\+R}]{\setlength{\rightskip}{0pt plus 5cm}const char suffix\+\_\+trie\+::\+S\+T\+O\+P\+\_\+\+C\+H\+A\+R = 127\hspace{0.3cm}{\ttfamily [static]}}}\label{classsuffix__trie_a65563ea1279d3fc3353a0806f6a07aad}
+stop character which is added to the end of the string 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+structures/\hyperlink{suffix__trie_8hpp}{suffix\+\_\+trie.\+hpp}\item 
+structures/suffix\+\_\+trie.\+cpp\end{DoxyCompactItemize}

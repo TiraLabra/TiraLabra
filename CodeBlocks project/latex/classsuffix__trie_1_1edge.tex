@@ -1,0 +1,74 @@
+\hypertarget{classsuffix__trie_1_1edge}{\section{suffix\+\_\+trie\+:\+:edge Class Reference}
+\label{classsuffix__trie_1_1edge}\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+}
+
+
+{\ttfamily \#include $<$suffix\+\_\+trie.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classsuffix__trie_1_1edge_a680b647d002f8bcc652e1c018f0c657b}{add\+\_\+index} (int index)
+\item 
+\hyperlink{classsuffix__trie_1_1edge_aa6f56affb895ee66dc772945a6ebb5ff}{edge} (\hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node} $\ast$\hyperlink{classsuffix__trie_1_1edge_ae89e6815dd581516c8d4284814334263}{from}, \hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node} $\ast$\hyperlink{classsuffix__trie_1_1edge_a356e813f739d3559b031bdcb6da6da76}{to})
+\item 
+\hyperlink{classsuffix__trie_1_1edge_a10c602847a0349ea05d7aff29493d4e7}{$\sim$edge} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ int $>$ \hyperlink{classsuffix__trie_1_1edge_ac5864e7428c08ec02d50039a5dd4eaa6}{s\+\_\+index}
+\item 
+\hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node} $\ast$ \hyperlink{classsuffix__trie_1_1edge_ae89e6815dd581516c8d4284814334263}{from}
+\item 
+\hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node} $\ast$ \hyperlink{classsuffix__trie_1_1edge_a356e813f739d3559b031bdcb6da6da76}{to}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\itshape \hyperlink{classsuffix__trie_1_1edge}{suffix\+\_\+trie\+::edge}} is an edge in the trie. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsuffix__trie_1_1edge_aa6f56affb895ee66dc772945a6ebb5ff}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!edge@{edge}}
+\index{edge@{edge}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{edge}]{\setlength{\rightskip}{0pt plus 5cm}suffix\+\_\+trie\+::edge\+::edge (
+\begin{DoxyParamCaption}
+\item[{{\bf suffix\+\_\+trie\+::node} $\ast$}]{from, }
+\item[{{\bf suffix\+\_\+trie\+::node} $\ast$}]{to}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_1_1edge_aa6f56affb895ee66dc772945a6ebb5ff}
+creates a {\itshape \hyperlink{classsuffix__trie_1_1edge}{suffix\+\_\+trie\+::edge}} with a given starting {\itshape node} and ending {\itshape node} \hypertarget{classsuffix__trie_1_1edge_a10c602847a0349ea05d7aff29493d4e7}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!````~edge@{$\sim$edge}}
+\index{````~edge@{$\sim$edge}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{$\sim$edge}]{\setlength{\rightskip}{0pt plus 5cm}suffix\+\_\+trie\+::edge\+::$\sim$edge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_1_1edge_a10c602847a0349ea05d7aff29493d4e7}
+destroys the edge and the outgoing node recursively 
+
+\subsection{Member Function Documentation}
+\hypertarget{classsuffix__trie_1_1edge_a680b647d002f8bcc652e1c018f0c657b}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!add\+\_\+index@{add\+\_\+index}}
+\index{add\+\_\+index@{add\+\_\+index}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{add\+\_\+index}]{\setlength{\rightskip}{0pt plus 5cm}void suffix\+\_\+trie\+::edge\+::add\+\_\+index (
+\begin{DoxyParamCaption}
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)}}\label{classsuffix__trie_1_1edge_a680b647d002f8bcc652e1c018f0c657b}
+adds a new {\itshape index} to {\itshape s\+\_\+index} 
+
+\subsection{Member Data Documentation}
+\hypertarget{classsuffix__trie_1_1edge_ae89e6815dd581516c8d4284814334263}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!from@{from}}
+\index{from@{from}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{from}]{\setlength{\rightskip}{0pt plus 5cm}{\bf suffix\+\_\+trie\+::node}$\ast$ suffix\+\_\+trie\+::edge\+::from}}\label{classsuffix__trie_1_1edge_ae89e6815dd581516c8d4284814334263}
+starting {\itshape \hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node}} \hypertarget{classsuffix__trie_1_1edge_ac5864e7428c08ec02d50039a5dd4eaa6}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!s\+\_\+index@{s\+\_\+index}}
+\index{s\+\_\+index@{s\+\_\+index}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{s\+\_\+index}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$int$>$ suffix\+\_\+trie\+::edge\+::s\+\_\+index}}\label{classsuffix__trie_1_1edge_ac5864e7428c08ec02d50039a5dd4eaa6}
+stored indeces of all starting points in the text \hypertarget{classsuffix__trie_1_1edge_a356e813f739d3559b031bdcb6da6da76}{\index{suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}!to@{to}}
+\index{to@{to}!suffix\+\_\+trie\+::edge@{suffix\+\_\+trie\+::edge}}
+\subsubsection[{to}]{\setlength{\rightskip}{0pt plus 5cm}{\bf suffix\+\_\+trie\+::node}$\ast$ suffix\+\_\+trie\+::edge\+::to}}\label{classsuffix__trie_1_1edge_a356e813f739d3559b031bdcb6da6da76}
+ending {\itshape \hyperlink{classsuffix__trie_1_1node}{suffix\+\_\+trie\+::node}}; 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+structures/\hyperlink{suffix__trie_8hpp}{suffix\+\_\+trie.\+hpp}\item 
+structures/suffix\+\_\+trie.\+cpp\end{DoxyCompactItemize}
