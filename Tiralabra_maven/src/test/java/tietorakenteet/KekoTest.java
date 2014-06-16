@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package tietorakenteet;
 
 import junit.framework.TestCase;
@@ -141,6 +135,17 @@ public class KekoTest extends TestCase {
         k.lisaa(nt);
         assertEquals(true, k.sisaltaa(nt));
         
+    }
+    
+    public void testOikeaKohta() {
+        alustuksia();
+        Keko k = new Keko(nodeTaulukko);
+        Node nu = new Node(5,5,1);
+        nu.setEtaisyysMaaliin(4);
+        
+        k.lisaa(nu);
+        
+        assertEquals(3, k.missaKohdassa(nu));
     }
     
     /**

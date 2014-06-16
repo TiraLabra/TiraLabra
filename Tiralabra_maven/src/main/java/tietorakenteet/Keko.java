@@ -83,12 +83,24 @@ public class Keko {
      * @return 
      */
     public boolean sisaltaa(Object o) {
-        boolean sisaltaa = false;
+        if (this.missaKohdassa(o) < 0)
+            return false;
+        else
+            return true;
+    }
+    
+    /**
+     * Kertoo mistä kohtaa taulukkoa kyseinen alkio löytyy.
+     * Palauttaa -1, jos ei löydy ollenkaan.
+     * @param o
+     * @return 
+     */
+    public int missaKohdassa(Object o) {
         for (int i = 0; i < this.koko; i++) {
             if (o == this.sisalto[i])
-                return true;
+                return i;
         }
-        return sisaltaa;
+        return -1;  // jos ei löytynyt
     }
     
     protected void tasapainota(int k) {
