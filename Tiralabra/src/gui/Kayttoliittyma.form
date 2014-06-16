@@ -47,9 +47,9 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="matriisiAPanel" pref="213" max="32767" attributes="0"/>
+                  <Component id="matriisiAPanel" pref="204" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="summaaButton" min="-2" max="-2" attributes="0"/>
@@ -59,17 +59,8 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="matriisiBPanel" pref="213" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="matriisiCPanel" pref="215" max="32767" attributes="0"/>
+                  <Component id="matriisiCPanel" pref="224" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
-                  <Component id="matriisiALabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="matriisiBLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
-                  <Component id="vastausmatriisiLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -84,20 +75,11 @@
                           <Component id="vahennaButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="kerroButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="vastausmatriisiLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="matriisiALabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="matriisiBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="matriisiAPanel" alignment="0" pref="449" max="32767" attributes="0"/>
-                              <Component id="matriisiBPanel" pref="449" max="32767" attributes="0"/>
-                              <Component id="matriisiCPanel" alignment="0" pref="449" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="matriisiAPanel" alignment="1" pref="469" max="32767" attributes="0"/>
+                      <Component id="matriisiBPanel" pref="469" max="32767" attributes="0"/>
+                      <Component id="matriisiCPanel" alignment="1" pref="469" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -119,15 +101,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="rivitALabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="rivitAText" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetALabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetAText" min="-2" pref="28" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="matriisiAScroll" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="tiedotAButton" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -161,6 +134,20 @@
                                       <Component id="determinanttiATulosLabel" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitALabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rivitAText" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="matriisiALabel" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="sarakkeetALabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetAText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                           <Component id="transpoosiAButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="kaanteismatriisiAButton" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -170,14 +157,15 @@
                               <Component id="potenssiinAText" min="-2" pref="28" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="61" max="32767" attributes="0"/>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matriisiALabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="rivitALabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rivitAText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
@@ -390,6 +378,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaAButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="matriisiALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Matriisi A"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JButton" name="summaaButton">
@@ -436,15 +429,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="rivitBLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="rivitBText" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetBLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetBText" min="-2" pref="28" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="matriisiBScroll" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="tiedotBButton" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -478,6 +462,20 @@
                                       <Component id="determinanttiBTulosLabel" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitBLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rivitBText" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="matriisiBLabel" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="sarakkeetBLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetBText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                           <Component id="transpoosiBButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="kaanteismatriisiBButton" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -494,7 +492,8 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matriisiBLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="rivitBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rivitBText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
@@ -707,6 +706,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaBButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="matriisiBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Matriisi B"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="matriisiCPanel">
@@ -723,15 +727,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="rivitCLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="rivitCText" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetCLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sarakkeetCText" min="-2" pref="28" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="matriisiCScroll" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="tiedotCButton" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -765,6 +760,23 @@
                                       <Component id="determinanttiCTulosLabel" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitCLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="rivitCText" min="-2" pref="28" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetCLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetCText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="vastausmatriisiLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                           <Component id="transpoosiCButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="kaanteismatriisiCButton" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -774,14 +786,15 @@
                               <Component id="potenssiinCText" min="-2" pref="28" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="vastausmatriisiLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="rivitCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rivitCText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
@@ -994,23 +1007,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tallennaCButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="vastausmatriisiLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Vastausmatriisi C"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="vastausmatriisiLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Vastausmatriisi C"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="matriisiALabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Matriisi A"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="matriisiBLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Matriisi B"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

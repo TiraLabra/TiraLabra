@@ -68,6 +68,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinAButton = new javax.swing.JButton();
         potenssiinAText = new javax.swing.JTextField();
         lataaAButton = new javax.swing.JButton();
+        matriisiALabel = new javax.swing.JLabel();
         summaaButton = new javax.swing.JButton();
         vahennaButton = new javax.swing.JButton();
         kerroButton = new javax.swing.JButton();
@@ -97,6 +98,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinBButton = new javax.swing.JButton();
         potenssiinBText = new javax.swing.JTextField();
         lataaBButton = new javax.swing.JButton();
+        matriisiBLabel = new javax.swing.JLabel();
         matriisiCPanel = new javax.swing.JPanel();
         rivitCLabel = new javax.swing.JLabel();
         rivitCText = new javax.swing.JTextField();
@@ -124,8 +126,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         potenssiinCText = new javax.swing.JTextField();
         tallennaCButton = new javax.swing.JButton();
         vastausmatriisiLabel = new javax.swing.JLabel();
-        matriisiALabel = new javax.swing.JLabel();
-        matriisiBLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Matriisilaskin");
@@ -212,6 +212,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             }
         });
 
+        matriisiALabel.setText("Matriisi A");
+
         javax.swing.GroupLayout matriisiAPanelLayout = new javax.swing.GroupLayout(matriisiAPanel);
         matriisiAPanel.setLayout(matriisiAPanelLayout);
         matriisiAPanelLayout.setHorizontalGroup(
@@ -220,14 +222,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(matriisiAPanelLayout.createSequentialGroup()
-                            .addComponent(rivitALabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(rivitAText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetALabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetAText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(matriisiAScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tiedotAButton)
                         .addGroup(matriisiAPanelLayout.createSequentialGroup()
@@ -253,19 +247,31 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                 .addComponent(antisymmetrinenATulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(kaantyvaATulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ortogonaalinenATulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(determinanttiATulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(determinanttiATulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(matriisiAPanelLayout.createSequentialGroup()
+                            .addComponent(rivitALabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(rivitAText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(matriisiALabel)
+                                .addGroup(matriisiAPanelLayout.createSequentialGroup()
+                                    .addComponent(sarakkeetALabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sarakkeetAText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(transpoosiAButton)
                     .addComponent(kaanteismatriisiAButton)
                     .addGroup(matriisiAPanelLayout.createSequentialGroup()
                         .addComponent(potenssiinAButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(potenssiinAText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         matriisiAPanelLayout.setVerticalGroup(
             matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(matriisiAPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(matriisiALabel)
+                .addGap(17, 17, 17)
                 .addGroup(matriisiAPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rivitALabel)
                     .addComponent(rivitAText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -415,6 +421,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             }
         });
 
+        matriisiBLabel.setText("Matriisi B");
+
         javax.swing.GroupLayout matriisiBPanelLayout = new javax.swing.GroupLayout(matriisiBPanel);
         matriisiBPanel.setLayout(matriisiBPanelLayout);
         matriisiBPanelLayout.setHorizontalGroup(
@@ -423,14 +431,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(matriisiBPanelLayout.createSequentialGroup()
-                            .addComponent(rivitBLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(rivitBText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetBLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetBText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(matriisiBScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tiedotBButton)
                         .addGroup(matriisiBPanelLayout.createSequentialGroup()
@@ -456,7 +456,18 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                 .addComponent(antisymmetrinenBTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(kaantyvaBTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ortogonaalinenBTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(determinanttiBTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(determinanttiBTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(matriisiBPanelLayout.createSequentialGroup()
+                            .addComponent(rivitBLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(rivitBText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(matriisiBLabel)
+                                .addGroup(matriisiBPanelLayout.createSequentialGroup()
+                                    .addComponent(sarakkeetBLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sarakkeetBText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(transpoosiBButton)
                     .addComponent(kaanteismatriisiBButton)
                     .addGroup(matriisiBPanelLayout.createSequentialGroup()
@@ -468,7 +479,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         matriisiBPanelLayout.setVerticalGroup(
             matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(matriisiBPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(matriisiBLabel)
+                .addGap(17, 17, 17)
                 .addGroup(matriisiBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rivitBLabel)
                     .addComponent(rivitBText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -595,6 +607,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             }
         });
 
+        vastausmatriisiLabel.setText("Vastausmatriisi C");
+
         javax.swing.GroupLayout matriisiCPanelLayout = new javax.swing.GroupLayout(matriisiCPanel);
         matriisiCPanel.setLayout(matriisiCPanelLayout);
         matriisiCPanelLayout.setHorizontalGroup(
@@ -603,14 +617,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(matriisiCPanelLayout.createSequentialGroup()
-                            .addComponent(rivitCLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(rivitCText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetCLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(sarakkeetCText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(matriisiCScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tiedotCButton)
                         .addGroup(matriisiCPanelLayout.createSequentialGroup()
@@ -636,19 +642,33 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                 .addComponent(antisymmetrinenCTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(kaantyvaCTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ortogonaalinenCTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(determinanttiCTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(determinanttiCTulosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(matriisiCPanelLayout.createSequentialGroup()
+                            .addComponent(rivitCLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(matriisiCPanelLayout.createSequentialGroup()
+                                    .addComponent(rivitCText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sarakkeetCLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sarakkeetCText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, matriisiCPanelLayout.createSequentialGroup()
+                                    .addComponent(vastausmatriisiLabel)
+                                    .addGap(23, 23, 23)))))
                     .addComponent(transpoosiCButton)
                     .addComponent(kaanteismatriisiCButton)
                     .addGroup(matriisiCPanelLayout.createSequentialGroup()
                         .addComponent(potenssiinCButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(potenssiinCText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         matriisiCPanelLayout.setVerticalGroup(
             matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(matriisiCPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(vastausmatriisiLabel)
+                .addGap(17, 17, 17)
                 .addGroup(matriisiCPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rivitCLabel)
                     .addComponent(rivitCText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -697,19 +717,13 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        vastausmatriisiLabel.setText("Vastausmatriisi C");
-
-        matriisiALabel.setText("Matriisi A");
-
-        matriisiBLabel.setText("Matriisi B");
-
         javax.swing.GroupLayout alustaPanelLayout = new javax.swing.GroupLayout(alustaPanel);
         alustaPanel.setLayout(alustaPanelLayout);
         alustaPanelLayout.setHorizontalGroup(
             alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(alustaPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(matriisiAPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addComponent(matriisiAPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(summaaButton)
@@ -718,16 +732,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(matriisiBPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, alustaPanelLayout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addComponent(matriisiALabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(matriisiBLabel)
-                .addGap(131, 131, 131)
-                .addComponent(vastausmatriisiLabel)
-                .addGap(74, 74, 74))
         );
         alustaPanelLayout.setVerticalGroup(
             alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -739,17 +745,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(vahennaButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(kerroButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(alustaPanelLayout.createSequentialGroup()
-                        .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(vastausmatriisiLabel)
-                            .addComponent(matriisiALabel)
-                            .addComponent(matriisiBLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(alustaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(matriisiAPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
-                            .addComponent(matriisiBPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
-                            .addComponent(matriisiCPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))))
+                        .addComponent(kerroButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(matriisiAPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                    .addComponent(matriisiBPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                    .addComponent(matriisiCPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
