@@ -94,3 +94,25 @@ int suffix_trie::find_first(const string & needle) {
 suffix_trie::node * suffix_trie::get_root() {
     return this->root;
 }
+
+vector<int> suffix_trie::find_all(const string & needle) {
+    return this->find_all(needle.c_str(), needle.length());
+}
+
+vector<int> suffix_trie::find_all(const char * needle, int needle_length) {
+    vector<int> positions;
+    if (needle_length == -1) {
+        needle_length = strlen(needle);
+    }
+    suffix_trie::node * temp_node = this->root;
+    for (int i = 0; i < needle_length; ++i) {
+        if (!temp_node->edge_exists(needle[i])) {
+            return *(new vector<int>);
+        } else {
+            suffix_trie::edge * c_edge = temp_node->get_edge(needle[i]);
+            positions = c_edge->s_index;
+            temp_node = c_edge->to;
+        }
+    }
+    return positions;
+}

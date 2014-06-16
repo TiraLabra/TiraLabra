@@ -52,3 +52,20 @@ TEST(SuffixTrie, NormalTest) {
     }
 }
 
+TEST(SuffixTrie, MultiTest) {
+    suffix_trie_builder * builder = new suffix_trie_builder();
+    for (int i = 0; i < (int)multi_query_tests_v.size(); ++i) {
+        multi_query_test mqt = multi_query_tests_v[i];
+        string haystack = mqt.haystack;
+        string needle = mqt.needle;
+        suffix_trie * trie = builder->build_trie(haystack);
+        vector<int> ans = mqt.ans;
+        vector<int> t_ans = trie->find_all(needle);
+        EXPECT_EQ((int)ans.size(), (int)t_ans.size());
+        for (int i = 0; i < (int)ans.size();++i) {
+            EXPECT_EQ(ans[i], t_ans[ans.size()-1-i]);
+        }
+        delete trie;
+    }
+}
+
