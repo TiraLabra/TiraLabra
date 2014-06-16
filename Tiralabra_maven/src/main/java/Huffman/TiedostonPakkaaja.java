@@ -1,8 +1,7 @@
-package Toteutus.Huffman.Pakkaaminen;
+package Huffman;
 
 import Apuvalineet.BinaariMuuntaja;
 import Tietorakenteet.HajTaulu;
-import Toteutus.Huffman.BittiEsitykset;
 
 /**
  * Luokka suorittaa pakattavan tekstin luomisen.

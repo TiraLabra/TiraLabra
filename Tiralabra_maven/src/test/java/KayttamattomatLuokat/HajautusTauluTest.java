@@ -1,4 +1,4 @@
-package Tietorakenteet;
+package KayttamattomatLuokat;
 
 import java.util.Arrays;
 import static org.junit.Assert.*;
@@ -162,15 +162,4 @@ public class HajautusTauluTest {
         assertEquals(3, taulu.getKoko());
         assertEquals(294, taulu.etsi("abcd"));
     }
-    
-//    @Test
-//    public void uudelleenHajautaAvaimetKunTauluTuleeTayteen() throws Exception {
-//        taulu = new HajautusTaulu(3);
-//        for (int i = 0; i < 3; i++) {
-//            taulu.lisaa((char) i + "", "");
-//        }
-//        
-//        taulu.lisaa("aapinen", "kukko");
-//        assertEquals("kukko", taulu.getArvo("aapinen"));
-//    }
 }

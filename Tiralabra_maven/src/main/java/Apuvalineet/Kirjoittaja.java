@@ -1,17 +1,19 @@
 package Apuvalineet;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 /**
- * Luokka toimii "FileWriter" -oliona, jolla ei ole tarkoitus muuta kuin kirjoittaa valittu tiedosto.
+ * Luokan tarkoituksena on kirjoittaa tiedostoon teksti‰.
+ * Se kapseloi "DataOutputStream" -olion, jonka avulla voidaan kirjoittaa teksti‰
+ * tavuina. Kirjoittaminen on t‰ll‰ tavoin eritt‰in hidasta, mutta se oli ainoa
+ * tapa, jolla sain ohjelmani kirjoittamaan pakkaukseen oikein.
  */
 
 public class Kirjoittaja {
-    private Writer kirjoittaja;
+    private DataOutputStream kirjoittaja;
     
     public Kirjoittaja(String polku) throws IOException {
         this(polku, false);
@@ -30,11 +32,20 @@ public class Kirjoittaja {
             luoUusiTiedosto(polku);
         }
         
-        this.kirjoittaja = new OutputStreamWriter(new FileOutputStream(polku), "UTF-8");
+        this.kirjoittaja = new DataOutputStream(new FileOutputStream(polku));
     }
     
+    /**
+     * Kirjoittaa tekstin tiedostoon tavuina. Jos n‰in ei teht‰isi, osa
+     * kirjoitetuista merkeist‰ k‰‰ntyisi joko 0x3F:ksi ('?') tai tulisi
+     * muita ongelmia. *monet eri mahdollisuudet testattu, ainoa mink‰ olen
+     * saanut toimimaan oikein*
+     * @param teksti
+     * @throws IOException 
+     */
+    
     public void kirjoita(String teksti) throws IOException {
-        kirjoittaja.write(teksti);
+        kirjoittaja.writeBytes(teksti);
         kirjoittaja.close();
     }
     
@@ -50,9 +61,6 @@ public class Kirjoittaja {
         if (! tiedosto.exists()) {
             tiedosto.createNewFile();
             tiedosto.setWritable(true);
-            return;
         }
-
-        throw new IOException("Haluttu tiedosto on jo olemassa. Tiedostoa ei luoda uudestaan");
     }
 }

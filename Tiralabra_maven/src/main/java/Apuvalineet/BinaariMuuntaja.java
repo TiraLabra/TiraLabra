@@ -20,6 +20,23 @@ public class BinaariMuuntaja {
         return this.lisatytEtuNollat;
     }
     
+    public String binaariEsitysEtuNollilla(int arvo) {
+        StringBuilder esitys = new StringBuilder();
+        boolean ykkosBittiLoydetty = false;
+        
+        for (int i = 30; i >= 0; i--) {
+            if (arvo >= Math.pow(2, i)) {
+                arvo -= Math.pow(2, i);
+                esitys.append(y);
+                ykkosBittiLoydetty = true;
+            }
+            else if (ykkosBittiLoydetty) {
+                esitys.append(n);
+            }
+        }
+        return esitys.toString();
+    }
+    
     /**
      * Palauttaa String -olion joka vastaa parametrina annetun arvon bin‰‰riesityst‰ (8bit -luku).
      * @param arvo

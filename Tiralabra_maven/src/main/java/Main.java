@@ -1,55 +1,58 @@
 
+import Huffman.PakkaamisenOhjaaja;
+import Huffman.TiedostonPurkaja;
+import LZW.Pakkaaja;
 import Tietorakenteet.HajTaulu;
-import Toteutus.Huffman.Pakkaaminen.PakkaamisenOhjaaja;
-import Toteutus.Huffman.Purkaminen.TiedostonPurkaja;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-// Testaa että tiedostoon kirjoittamisessa bittijonot kirjoitetaan optimaalisessa muodossa. Bittiesitykset merkeille ovat kuitenkin täysin ok ja Huffman puu toimii niin kuin pitääkin.
-// Taulukoista, jotka sisältävät suorituskykytestejä, saa kivan näköiset graafiset versiot Google Docsin "Spreadsheetiä" käyttäen.
+// Taulukoista, jotka sisältävät suorituskykytestejä,
+// saa kivan näköiset graafiset versiot Google Docsin "Spreadsheetiä" käyttäen.
 
 public class Main {
     
     public static void main(String[] args) throws IOException {
-        if (true) {
-            hajautusAjat();
-            return;
-        }
+        new Pakkaaja().pakkaa("huffman.txt");
 
-        System.out.println("Anna k�sitelt�v�n tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
-        System.out.print("Nimi: ");
-        
-        Scanner lukija = new Scanner(System.in);
-        String polku = lukija.nextLine();
-        
-        System.out.println("Haluatko pakata vai purkaa tiedoston?\npakkaa(1)\npura(2)");
-        
-        while (true) {
-            try {
-                int vastaus = Integer.parseInt(lukija.nextLine());
-                if (vastaus == 1 || vastaus == 2) {
-                    
-                    long ennen = System.currentTimeMillis();
-                    
-                    if (vastaus == 1) {
-                        pakkaa(polku);
-                    }
-                    else {
-                        pura(polku);
-                    }
-                    
-                    long jalkeen = System.currentTimeMillis();
-                    System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
-                    
-                    break;
-                } 
-            }
-            catch (NumberFormatException e) {}
-            
-            System.out.println("Sinun tulee vastata joko '1' (pakkaa) tai '2' (pura).");
-        }
+//        if (true) {
+//            hajautusAjat();
+//            return;
+//        }
+//
+//        System.out.println("Anna k�sitelt�v�n tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
+//        System.out.print("Nimi: ");
+//        
+//        Scanner lukija = new Scanner(System.in);
+//        String polku = lukija.nextLine();
+//        
+//        System.out.println("Haluatko pakata vai purkaa tiedoston?\npakkaa(1)\npura(2)");
+//        
+//        while (true) {
+//            try {
+//                int vastaus = Integer.parseInt(lukija.nextLine());
+//                if (vastaus == 1 || vastaus == 2) {
+//                    
+//                    long ennen = System.currentTimeMillis();
+//                    
+//                    if (vastaus == 1) {
+//                        pakkaa(polku);
+//                    }
+//                    else {
+//                        pura(polku);
+//                    }
+//                    
+//                    long jalkeen = System.currentTimeMillis();
+//                    System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
+//                    
+//                    break;
+//                } 
+//            }
+//            catch (NumberFormatException e) {}
+//            
+//            System.out.println("Sinun tulee vastata joko '1' (pakkaa) tai '2' (pura).");
+//        }
     }
     
     private static void pakkaa(String polku) throws IOException {

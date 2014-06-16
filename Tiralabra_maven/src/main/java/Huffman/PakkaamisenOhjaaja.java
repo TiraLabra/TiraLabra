@@ -1,9 +1,7 @@
-package Toteutus.Huffman.Pakkaaminen;
+package Huffman;
 
 import Apuvalineet.Kirjoittaja;
-import Apuvalineet.TekstinLukija;
-import Toteutus.Huffman.BittiEsitykset;
-import Toteutus.Huffman.HuffmanPuu;
+import Apuvalineet.Lukija;
 import java.io.IOException;
 
 /**
@@ -17,8 +15,8 @@ import java.io.IOException;
 public class PakkaamisenOhjaaja {
     
     public void suoritaPakkaaminen(String polku) throws IOException {
-        TekstinLukija lukija = new TekstinLukija();
-        lukija.lueTiedosto(polku);
+        Lukija lukija = new Lukija(true);
+        lukija.lue(polku);
 
         HuffmanPuu puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(lukija.getEsiintymat());

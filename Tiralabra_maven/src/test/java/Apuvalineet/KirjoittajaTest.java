@@ -16,11 +16,11 @@ public class KirjoittajaTest {
     }
     
     @Test
-    public void testaaKirjoittaminen() throws IOException, Exception {
+    public void testaaKirjoittaminen() throws IOException {
         kirjoittaja.kirjoita("asdhoashdoas");
         
-        TekstinLukija lukija = new TekstinLukija();
-        lukija.lueTiedosto("KirjoittajaTest.txt");
+        Lukija lukija = new Lukija();
+        lukija.lue("KirjoittajaTest.txt");
         assertEquals("asdhoashdoas", lukija.getTeksti());
     }
             

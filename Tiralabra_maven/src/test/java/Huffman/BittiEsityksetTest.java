@@ -1,8 +1,8 @@
-package Toteutus.Huffman;
+package Huffman;
 
-import Apuvalineet.TekstinLukija;
+import Apuvalineet.Lukija;
 import Tietorakenteet.Solmu;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -57,9 +57,9 @@ public class BittiEsityksetTest {
     }
     
     @Test
-    public void bittijonoSamanPituinen() throws FileNotFoundException {
-        TekstinLukija lukija = new TekstinLukija();
-        lukija.lueTiedosto("HuffmanCodingtest.txt");
+    public void bittijonoSamanPituinen() throws IOException {
+        Lukija lukija = new Lukija(true);
+        lukija.lue("HuffmanCodingTest.txt");
         
         HuffmanPuu puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(lukija.getEsiintymat());

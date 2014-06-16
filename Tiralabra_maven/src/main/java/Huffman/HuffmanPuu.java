@@ -1,4 +1,4 @@
-package Toteutus.Huffman;
+package Huffman;
 
 import Tietorakenteet.HajTaulu;
 import Tietorakenteet.MinKeko;

@@ -1,11 +1,9 @@
-package Toteutus.Huffman.Purkaminen;
+package Huffman;
 
 import Apuvalineet.Kirjoittaja;
 import Tietorakenteet.HajTaulu;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -59,7 +57,7 @@ public class TiedostonPurkajaTest {
     }
     
     @Test
-    public void testinLukeminenOnnistuu() throws IOException, UnsupportedEncodingException {
+    public void testinLukeminenOnnistuu() throws IOException {
         File tiedosto = new File("TiedostonPurkajaTest.hemi");
         assertEquals("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135,
                      purkaja.lueTeksti(tiedosto));

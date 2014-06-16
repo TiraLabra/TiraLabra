@@ -110,7 +110,7 @@ public class MinKekoTest {
         keko3.lisaa(new Solmu(2));
         
         kunVasenPienempiKuinKokoEiTehdaMitaan(keko3);
-        kunVasenYhtaSuuriKuinKokoVaihdetaanJosTarve(keko3); // keossa "3 5"
+        kunVasenYhtaSuuriKuinKokoVaihdetaanJosTarve(keko3);
         kunOikeaVahintaanYhtaSuuriKuinKoko(keko3);
     }
     
@@ -130,7 +130,7 @@ public class MinKekoTest {
     }
     
     private void kunOikeaVahintaanYhtaSuuriKuinKoko(MinKeko keko3) {
-        keko3.lisaa(new Solmu(6));  // nyt keossa "3 5 6"
+        keko3.lisaa(new Solmu(6));
         testaaPienempi(keko3, 0);
         
         keko3.heapify(0);

@@ -1,9 +1,8 @@
-package Toteutus.Huffman;
+package Huffman;
 
 import Tietorakenteet.HajTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
-import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;

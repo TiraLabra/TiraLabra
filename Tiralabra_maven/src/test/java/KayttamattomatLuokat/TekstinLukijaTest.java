@@ -1,8 +1,7 @@
-package Apuvalineet;
+package KayttamattomatLuokat;
 
 import Tietorakenteet.HajTaulu;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

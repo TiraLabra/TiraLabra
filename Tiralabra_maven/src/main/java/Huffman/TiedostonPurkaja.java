@@ -1,13 +1,12 @@
-package Toteutus.Huffman.Purkaminen;
+package Huffman;
 
 import Apuvalineet.BinaariMuuntaja;
-import Apuvalineet.Kirjoittaja;
 import Apuvalineet.Lukija;
+import Apuvalineet.Kirjoittaja;
 import Tietorakenteet.HajTaulu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Luokka suorittaa tiedoston purkamisen k‰ytt‰en BinaariMuuntaja luokkaa apuna.
@@ -75,13 +74,13 @@ public class TiedostonPurkaja {
      * Hakee pakkauksen ja heitt‰‰ poikkeuksen jos se ei ole olemassa.
      * @param polku
      * @return
-     * @throws IOException 
+     * @throws FileNotFoundException
      */
     
-    protected File haePakkaus(String polku) throws IOException {
+    protected File haePakkaus(String polku) throws FileNotFoundException {
         File pakkaus = new File(polku);
         if (! pakkaus.exists()) {
-            throw new IOException("Valitsemasi tiedosto ei ole olemassa.\nOhjelma suljetaan.");
+            throw new FileNotFoundException("Valitsemasi tiedosto ei ole olemassa.\nOhjelma suljetaan.");
         }
         
         return pakkaus;
@@ -266,12 +265,11 @@ public class TiedostonPurkaja {
      * @param pakkaus
      * @return
      * @throws FileNotFoundException 
-     * @throws UnsupportedEncodingException
      */
     
-    protected String lueTeksti(File pakkaus) throws FileNotFoundException, UnsupportedEncodingException, IOException {
-        Lukija lukija = new Lukija(pakkaus.getPath());
-        lukija.lue();
+    protected String lueTeksti(File pakkaus) throws IOException {
+        Lukija lukija = new Lukija();
+        lukija.lue(pakkaus.getPath());
         
         return lukija.getTeksti();
     }

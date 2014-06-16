@@ -46,25 +46,34 @@
                     <param>Apuvalineet.BinaariMuuntaja</param>
                     <param>Apuvalineet.Kirjoittaja</param>
                     <param>Apuvalineet.Lukija</param>
-                    <param>Apuvalineet.TekstinLukija</param>
+                    <param>KayttamattomatLuokat.HajautusTaulu</param>
+                    <param>KayttamattomatLuokat.TekstinLukija</param>
                     <param>Tietorakenteet.HajTaulu</param>
                     <param>Tietorakenteet.MinKeko</param>
-                    <param>Toteutus.Huffman.BittiEsitykset</param>
-                    <param>Toteutus.Huffman.HuffmanPuu</param> 
-                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaaja</param>     
-                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkaja</param>           
+                    
+                    <param>Huffman.BittiEsitykset</param>
+                    <param>Huffman.HuffmanPuu</param> 
+                    <param>Huffman.TiedostonPakkaaja</param>     
+                    <param>Huffman.TiedostonPurkaja</param>      
+                    
+                    <param>LZW.LZWLukija</param>
+                              
                 </targetClasses>
                 <targetTests>
                     <param>Apuvalineet.BinaariMuuntajaTest</param>
                     <param>Apuvalineet.KirjoittajaTest</param>
                     <param>Apuvalineet.LukijaTest</param>
-                    <param>Apuvalineet.TekstinLukijaTest</param>
+                    <param>KayttamattomatLuokat.HajautusTauluTest</param>
+                    <param>KayttamattomatLuokat.TekstinLukijaTest</param>
                     <param>Tietorakenteet.HajTauluTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
-                    <param>Toteutus.Huffman.BittiEsityksetTest</param>
-                    <param>Toteutus.Huffman.HuffmanPuuTest</param>
-                    <param>Toteutus.Huffman.Pakkaaminen.TiedostonPakkaajaTest</param>     
-                    <param>Toteutus.Huffman.Purkaminen.TiedostonPurkajaTest</param>   
+                    
+                    <param>Huffman.BittiEsityksetTest</param>
+                    <param>Huffman.HuffmanPuuTest</param>
+                    <param>Huffman.TiedostonPakkaajaTest</param>     
+                    <param>Huffman.TiedostonPurkajaTest</param>   
+                    
+                    <param>LZW.LZWLukijaTest</param>
                 </targetTests>
             </configuration>
         </plugin>

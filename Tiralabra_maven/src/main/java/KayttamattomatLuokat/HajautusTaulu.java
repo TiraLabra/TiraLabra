@@ -1,4 +1,4 @@
-package Tietorakenteet;
+package KayttamattomatLuokat;
 
 /**
  * Hajautustaulu joka toimii kahdella taulukolla siten että "avainten" perusteella
