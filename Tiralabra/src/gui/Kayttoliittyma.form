@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="Matriisilaskin"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[720, 480]"/>
+    </Property>
+    <Property name="resizable" type="boolean" value="false"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="alustaPanel" min="-2" max="-2" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="alustaPanel" min="-2" max="-2" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="alustaPanel">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[720, 480]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="matriisiAPanel" pref="204" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="summaaButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="vahennaButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="kerroButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="matriisiBPanel" pref="213" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="matriisiCPanel" pref="224" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="summaaButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="vahennaButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="kerroButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="matriisiAPanel" alignment="1" pref="469" max="32767" attributes="0"/>
+                      <Component id="matriisiBPanel" pref="469" max="32767" attributes="0"/>
+                      <Component id="matriisiCPanel" alignment="1" pref="469" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="matriisiAPanel">
+          <Properties>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[209, 420]"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="matriisiAScroll" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="tiedotAButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lataaAButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Component id="lataaAText" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="symmetrinenALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="neliomatriisiALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="36" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="neliomatriisiATulosLabel" max="32767" attributes="0"/>
+                                      <Component id="symmetrinenATulosLabel" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="kaantyvaALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ortogonaalinenALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="determinanttiALabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenATulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="kaantyvaATulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="ortogonaalinenATulosLabel" max="32767" attributes="0"/>
+                                      <Component id="determinanttiATulosLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitALabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rivitAText" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="matriisiALabel" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="sarakkeetALabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetAText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="transpoosiAButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaanteismatriisiAButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="potenssiinAButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="potenssiinAText" min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="matriisiALabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rivitALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rivitAText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="sarakkeetALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sarakkeetAText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matriisiAScroll" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lataaAText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lataaAButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="neliomatriisiALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="neliomatriisiATulosLabel" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="symmetrinenALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="symmetrinenATulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="antisymmetrinenALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="antisymmetrinenATulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="kaantyvaALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaantyvaATulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ortogonaalinenALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ortogonaalinenATulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="determinanttiALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="determinanttiATulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tiedotAButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="transpoosiAButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="kaanteismatriisiAButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="potenssiinAButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="potenssiinAText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="rivitALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Rivit"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="rivitAText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="sarakkeetALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Sarakkeet"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="sarakkeetAText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="matriisiAScroll">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="matriisiAText">
+                  <Properties>
+                    <Property name="columns" type="int" value="17"/>
+                    <Property name="rows" type="int" value="5"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JTextField" name="lataaAText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="matriisi.txt"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Neli&#xf6;matriisi"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Symmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Antisymmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;ntyv&#xe4;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ortogonaalinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Determinantti"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="tiedotAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="M&#xe4;&#xe4;rit&#xe4; tiedot"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tiedotAButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiATulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="transpoosiAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Transpoosi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiAButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="kaanteismatriisiAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiAButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="potenssiinAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Potenssiin"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinAButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="potenssiinAText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="2"/>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="lataaAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Lataa"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaAButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="matriisiALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Matriisi A"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JButton" name="summaaButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="+"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="summaaButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="vahennaButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="-"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[41, 23]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vahennaButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="kerroButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="*"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[41, 23]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kerroButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JPanel" name="matriisiBPanel">
+          <Properties>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[209, 420]"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="matriisiBScroll" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="tiedotBButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lataaBButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Component id="lataaBText" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="symmetrinenBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="neliomatriisiBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="36" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="neliomatriisiBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="symmetrinenBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="kaantyvaBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ortogonaalinenBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="determinanttiBLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="kaantyvaBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="ortogonaalinenBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="determinanttiBTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitBLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rivitBText" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="matriisiBLabel" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="sarakkeetBLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetBText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="transpoosiBButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaanteismatriisiBButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="potenssiinBButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="potenssiinBText" min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="61" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="matriisiBLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rivitBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rivitBText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="sarakkeetBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sarakkeetBText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matriisiBScroll" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lataaBText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lataaBButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="neliomatriisiBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="neliomatriisiBTulosLabel" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="symmetrinenBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="symmetrinenBTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="antisymmetrinenBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="antisymmetrinenBTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="kaantyvaBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaantyvaBTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ortogonaalinenBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ortogonaalinenBTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="determinanttiBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="determinanttiBTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tiedotBButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="transpoosiBButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="kaanteismatriisiBButton" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="potenssiinBButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="potenssiinBText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="rivitBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Rivit"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="rivitBText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="sarakkeetBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Sarakkeet"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="sarakkeetBText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="matriisiBScroll">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="matriisiBText">
+                  <Properties>
+                    <Property name="columns" type="int" value="17"/>
+                    <Property name="rows" type="int" value="5"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JTextField" name="lataaBText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="matriisi.txt"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Neli&#xf6;matriisi"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Symmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Antisymmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;ntyv&#xe4;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ortogonaalinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Determinantti"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="tiedotBButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="M&#xe4;&#xe4;rit&#xe4; tiedot"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tiedotBButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiBTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="transpoosiBButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Transpoosi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiBButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="kaanteismatriisiBButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiBButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="potenssiinBButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Potenssiin"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinBButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="potenssiinBText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="2"/>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="lataaBButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Lataa"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lataaBButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="matriisiBLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Matriisi B"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="matriisiCPanel">
+          <Properties>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[209, 420]"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="matriisiCScroll" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="tiedotCButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="tallennaCButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                  <Component id="tallennaCText" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="symmetrinenCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="neliomatriisiCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="36" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="neliomatriisiCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="symmetrinenCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="kaantyvaCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ortogonaalinenCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="determinanttiCLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="antisymmetrinenCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="kaantyvaCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="ortogonaalinenCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="determinanttiCTulosLabel" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rivitCLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="rivitCText" min="-2" pref="28" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetCLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sarakkeetCText" min="-2" pref="28" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="vastausmatriisiLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="transpoosiCButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaanteismatriisiCButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="potenssiinCButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="potenssiinCText" min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="vastausmatriisiLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rivitCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rivitCText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="sarakkeetCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sarakkeetCText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matriisiCScroll" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tallennaCText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tallennaCButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="neliomatriisiCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="neliomatriisiCTulosLabel" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="symmetrinenCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="symmetrinenCTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="antisymmetrinenCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="antisymmetrinenCTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="kaantyvaCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="kaantyvaCTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ortogonaalinenCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ortogonaalinenCTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="determinanttiCLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="determinanttiCTulosLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tiedotCButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="transpoosiCButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="kaanteismatriisiCButton" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="potenssiinCButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="potenssiinCText" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="rivitCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Rivit"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="rivitCText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="sarakkeetCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Sarakkeet"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="sarakkeetCText">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="matriisiCScroll">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="matriisiCText">
+                  <Properties>
+                    <Property name="columns" type="int" value="17"/>
+                    <Property name="rows" type="int" value="5"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JTextField" name="tallennaCText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="vastaus.txt"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Neli&#xf6;matriisi"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Symmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Antisymmetrinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;ntyv&#xe4;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ortogonaalinen"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiCLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Determinantti"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="tiedotCButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="M&#xe4;&#xe4;rit&#xe4; tiedot"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tiedotCButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ortogonaalinenCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="determinanttiCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="antisymmetrinenCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="kaantyvaCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="symmetrinenCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="neliomatriisiCTulosLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="transpoosiCButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Transpoosi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transpoosiCButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="kaanteismatriisiCButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="K&#xe4;&#xe4;nteismatriisi"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kaanteismatriisiCButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="potenssiinCButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Potenssiin"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potenssiinCButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="potenssiinCText">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="2"/>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[28, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="tallennaCButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tallenna"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tallennaCButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="vastausmatriisiLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Vastausmatriisi C"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
