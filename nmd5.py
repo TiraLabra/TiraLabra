@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lib.linkedlist import *
 
 def F(x, y, z):
@@ -97,7 +98,7 @@ class NMD5:
 		mysterious hexadecimal constants as the last parameter: RXX are the shift
 		amounts defined by the RFC and the constants are results from the sine function,
 		which is also defined in the RFC."""
-		messageLength = len(message)
+		messageLength = len(message.encode('utf-8'))
 		chunks = self.splitToBlocks(self.pad(self.toBinaryString(message)), 512)
 
 		for chunk in chunks:
@@ -163,7 +164,6 @@ class NMD5:
 			d = HH(d, a, b, c, words[12], R32, 0xE6DB99E5) 
 			c = HH(c, d, a, b, words[15], R33, 0x1FA27CF8) 
 			b = HH(b, c, d, a, words[ 2], R34, 0xC4AC5665)
-
 
 			# Round 4
 			a = II(a, b, c, d, words[ 0], R41, 0xF4292244) 
@@ -233,7 +233,14 @@ class NMD5:
 	
 	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
-		return ''.join('{:08b}'.format(ord(x)) for x in string)
+		bytes = bytearray(string.encode('utf-8'))
+
+		res = ""
+
+		for byte in bytes:
+			res += "{:08b}".format(byte)
+
+		return res
 
 	def pad(self, bstring):
 		"""Adds padding to binary string be congruent to 448 mod 512"""
