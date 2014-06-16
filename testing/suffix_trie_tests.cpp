@@ -23,6 +23,17 @@ TEST(SuffixTrie,NFoundTest) {
     delete trie;
 }
 
+TEST(SuffixTrie, BiggerNeedleTest) {
+    suffix_trie_builder * builder = new suffix_trie_builder();
+    string haystack = "basa";
+    string needle = "basapa";
+    suffix_trie * trie = builder->build_trie(haystack);
+    int ans = -1;
+    int rk_ans = trie->find_first(needle);
+    EXPECT_EQ(ans, rk_ans);
+    delete trie;
+}
+
 TEST(SuffixTrie, NormalTest) {
     suffix_trie_builder * builder = new suffix_trie_builder();
     for (int i = 0; i < (int)one_query_tests_v.size(); ++i) {
