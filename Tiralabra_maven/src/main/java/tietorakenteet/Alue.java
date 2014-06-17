@@ -1,16 +1,35 @@
 package tietorakenteet;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Koko hakualuetta kuvaava luokka
  */
 public class Alue {
     
+    //ei ehkä tarvita...
     private int[][] intit;
     
+    /**
+     * Alueen korkeus.
+     */
     private int korkeus;
+    
+    /**
+     * alueen leveys.
+     */
     private int leveys;
     
+    /**
+     * Alueen muodostavat alkiot kaksiulotteisena taulukkona.
+     */
     private Node[][] nodet;
+    
+    /**
+     * Jos alue on muodostettu kuvatiedostosta, tähän voi tallentaa kyseisen kuvan.
+     * Tallessa mahdollista reitinmuotoilua ja tulostamista varten.
+     */
+    private BufferedImage alueenKuva;
     
     public Alue(int koko) {
         intit = new int[koko][koko];
@@ -136,6 +155,14 @@ public class Alue {
 
     public int getLeveys() {
         return leveys;
+    }
+
+    public void setAlueenKuva(BufferedImage alueenKuva) {
+        this.alueenKuva = alueenKuva;
+    }
+
+    public BufferedImage getAlueenKuva() {
+        return alueenKuva;
     }
     
 }

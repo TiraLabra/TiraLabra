@@ -35,7 +35,7 @@ public class Main {
         //Alue kuvasta:
         Kuvalukija kl = new Kuvalukija("100x100.bmp");
         Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
-        
+        kuvaAlue.setAlueenKuva(kl.getKuva());
         
         // Mitä aluetta tarkastellaan...
         Alue hakualue = kuvaAlue;

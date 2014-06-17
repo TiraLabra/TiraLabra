@@ -15,7 +15,10 @@ public class Kuvalukija {
     private static final String aluehakemisto = "alueet/";
     private static final String oletusnimi = "esim.bmp";
     
-    BufferedImage kuva;
+    /**
+     * Luettava kuva tallennettu omaan muuttujaansa.
+     */
+    private BufferedImage kuva;
     
     /**
      * Luo Kuvalukijan ja tekee tarvittavat alustukset.
