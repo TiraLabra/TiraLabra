@@ -91,7 +91,7 @@ public class AStar {
         //
         
         while (!kaymatta.onTyhja()) {
-            Node tarkastettava = (Node)kaymatta.poistaPienin();
+            Node tarkastettava = kaymatta.poistaPienin();
             askelia++;
             
             //Debug-tulostusta

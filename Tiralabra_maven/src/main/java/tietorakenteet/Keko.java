@@ -1,7 +1,8 @@
 package tietorakenteet;
 
 /**
- * Oma versio Keko-tietorakenteen toteutuksesta.
+ * Oma versio Prioritettjonon kekototeutuksesta.
+ * Kyseessä on nimenomaan minimiprioriteettijono.
  */
 public class Keko {
 
@@ -10,7 +11,7 @@ public class Keko {
      */
     private static final int OLETUSKOKO = 10;
 
-    private Comparable[] sisalto;
+    private Node[] sisalto;
     
     private int koko;
     
@@ -26,7 +27,7 @@ public class Keko {
     }
 
     public Keko(int koko) {
-        this.sisalto = new Comparable[koko];
+        this.sisalto = new Node[koko];
         this.taulukonKoko = koko;
         this.koko = 0;
     }
@@ -38,8 +39,8 @@ public class Keko {
      * täyttää valmiiksi kekoehdot.
      * @param kokoSisalto 
      */
-    public Keko(Comparable[] kokoSisalto) {
-        sisalto = new Comparable[kokoSisalto.length+10];
+    public Keko(Node[] kokoSisalto) {
+        sisalto = new Node[kokoSisalto.length+10];
         for ( int i = 0; i < kokoSisalto.length; i++ ) {
             sisalto[i] = kokoSisalto[i];
         }
@@ -47,10 +48,10 @@ public class Keko {
         this.koko = kokoSisalto.length;
     }
     
-    public void lisaa(Comparable c) {
+    public void lisaa(Node n) {
         if (koko >= taulukonKoko)
             kasvataTaulukkoa();
-        sisalto[koko] = c;
+        sisalto[koko] = n;
         koko++;
         tasapainota(koko-1);
     }
@@ -60,7 +61,7 @@ public class Keko {
      * Huom, tämä ei poista.
      * @return 
      */
-    public Comparable kerroPienin() {
+    public Node kerroPienin() {
         return sisalto[0];
     }
     
@@ -68,8 +69,8 @@ public class Keko {
      * Palauttaa pienimmän alkion ja poistaa sen keosta.
      * @return 
      */
-    public Comparable poistaPienin() {
-        Comparable palautus = sisalto[0];
+    public Node poistaPienin() {
+        Node palautus = sisalto[0];
         sisalto[0] = sisalto[koko-1];
         koko--;
         minHeapify(0);
@@ -103,18 +104,21 @@ public class Keko {
         return -1;  // jos ei löytynyt
     }
     
+    /**
+     * Pitää huolta, että annetussa kohdassa oleva alkio siirretään keossa
+     * tarpeeksi korkealle, jotta kekoehto säilyy voimassa.
+     * @param k 
+     */
     protected void tasapainota(int k) {
         if (debug)
             System.out.println("Tasapainotetaan kohta "+ k);
-        Comparable tarkasteltava = sisalto[k];
+        Node tarkasteltava = sisalto[k];
         int vanhempi = vanhempi(k);
         while ( k > 0 && tarkasteltava.compareTo(sisalto[vanhempi]) < 0) {
             vaihda(k, vanhempi(k));
             k = vanhempi(k);
             tarkasteltava = sisalto[k];
             vanhempi = vanhempi(k);
-        
-        
         }
     }
     
@@ -199,7 +203,7 @@ public class Keko {
      */
     private void kasvataTaulukkoa() {
         
-        Comparable[] uusiTaulukko = new Comparable[2*taulukonKoko];
+        Node[] uusiTaulukko = new Node[2*taulukonKoko];
         for (int i = 0; i < koko; i++) {
             uusiTaulukko[i] = sisalto[i];
         }
@@ -235,23 +239,13 @@ public class Keko {
         return t;
     }
     
-    //Kokeilua...
-//    public String tulosta() {
-//        String t = "";
-//        
-//        for (int i = 0; i < this.koko; i++) {
-//            
-//        }
-//        return t;
-//    }
-
     /**
      * Apumetodi joka vaihtaa kahden alkion paikan.
      * @param eka
      * @param toka 
      */
     private void vaihda(int eka, int toka) {
-        Comparable temp = sisalto[eka];
+        Node temp = sisalto[eka];
         sisalto[eka] = sisalto[toka];
         sisalto[toka] = temp;
     }
@@ -260,7 +254,7 @@ public class Keko {
      * Palauttaa keon taulukkosisällön, testausta varten.
      * @return 
      */
-    protected Comparable[] sisalto() {
+    protected Node[] sisalto() {
         return this.sisalto;
     }
 
