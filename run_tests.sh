@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT_DIR=Tiralabra
+PROJECT_DIR=pauge-astar
 # Tätä tiedostoa käytetään automatisoituun testien ajamiseen.
 # Tiedoston ajaminen linuxilla ./run_tests.sh tulee aikaansaada
 # ohjelmasi testien suorittaminen.
@@ -17,9 +17,9 @@ PROJECT_DIR=Tiralabra
 # kommentti
 # PROJECT_DIR=<kansiosi_nimi>
 
-if [ -d Tiralabra_maven ]
+if [ -d pauge-astar ]
 	then
-	PROJECT_DIR=Tiralabra_maven
+	PROJECT_DIR=pauge-astar
 fi
 if [ -d Tiralabra ]
 	then

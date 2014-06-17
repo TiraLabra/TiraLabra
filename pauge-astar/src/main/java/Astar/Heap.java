@@ -17,7 +17,8 @@ public class Heap {
     
     /**
      * When heap gets full, double the make a new one of double size and copy content
-     * @return 
+     * 
+     * @return increased table
      */
     public Node[] increaseHeapSize() {
            Node[] tnew = new Node[2*t.length];     
@@ -29,6 +30,7 @@ public class Heap {
     
     /**
      * Adds a new node to priority queue
+     * 
      * @param n The node to be added 
      */
     public void insertNode(Node n) {
@@ -102,6 +104,7 @@ public class Heap {
     }
     /**
      * Returns boolean value describing is the heap empty 
+     * 
      * @return empty or not?
      */
     public boolean isEmpty() {
@@ -121,11 +124,11 @@ public class Heap {
     /**
      * Update the priority of a Node and maintain correctness of the Heap
      * 
-     * @param n
-     * @param i 
+     * @param n node which is to e updated
+     * @param i the new value to start node
      */
     public void updateNode(Node n, int i) {
-        n.setToStart(i);            //update
+        n.setToStart(i);
         for(int j=1;j<=size;j++) {
             if(t[j]==n) {
                 while(i>1 && t[i/2].getPrio()>n.getPrio()) {
