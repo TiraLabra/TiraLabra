@@ -7,13 +7,13 @@
 package com.mycompany.tiralabra_maven.domain;
 
 /**
- *
+ * Tämä on minkä tahansa asian sijainti
  * @author szetk
  */
 public class Sijainti {
-    private int x;
-    private int y;
-    private int z;
+    private long x;
+    private long y;
+    private long z;
     
     public Sijainti(){
         this.x = 0;
@@ -21,7 +21,7 @@ public class Sijainti {
         this.z = 0;
     }
 
-    public Sijainti(int posX, int posY, int posZ) {
+    public Sijainti(long posX, long posY, long posZ) {
         this.x = posX;
         this.y = posY;
         this.z = posZ;
@@ -38,27 +38,27 @@ public class Sijainti {
         
     }
 
-    public int getX() {
+    public long getX() {
         return x;
     }
 
-    public void setX(int posX) {
+    public void setX(long posX) {
         this.x = posX;
     }
 
-    public int getY() {
+    public long getY() {
         return y;
     }
 
-    public void setY(int posY) {
+    public void setY(long posY) {
         this.y = posY;
     }
 
-    public int getZ() {
+    public long getZ() {
         return z;
     }
 
-    public void setZ(int posZ) {
+    public void setZ(long posZ) {
         this.z = posZ;
     }
     

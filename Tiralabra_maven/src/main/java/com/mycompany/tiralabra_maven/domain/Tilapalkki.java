@@ -7,19 +7,24 @@
 package com.mycompany.tiralabra_maven.domain;
 
 /**
- *
+ * Tämä kuvaa suorakulmaisen särmiön muotoista tyhjää tilaa kontissa
  * @author szetk
  */
 public class Tilapalkki extends Sarmio{
     
     private Sijainti sijainti;
-
-    public Tilapalkki(int x, int y, int z) {
+/**
+ * Konstruktori
+ * @param x Tilapalkin pituus
+ * @param y Tilapalkin leveys
+ * @param z Tilapalkin korkeus
+ */
+    public Tilapalkki(long x, long y, long z) {
         super(x, y, z);	
         this.sijainti = null;
     }
 
-    public Tilapalkki(int x, int y, int z, int posX, int posY, int posZ) {
+    public Tilapalkki(long x, long y, long z, long posX, long posY, long posZ) {
         super(x, y, z);
         this.sijainti = new Sijainti(posX, posY, posZ);
     }   

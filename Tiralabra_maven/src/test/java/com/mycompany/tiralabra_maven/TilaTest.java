@@ -6,7 +6,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.domain.*;
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,10 +46,10 @@ public class TilaTest {
     public void tearDown() {
     }
 
-   public ArrayList<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n){
-        ArrayList<Laatikkotyyppi> laatikot = new ArrayList<Laatikkotyyppi>();
+    public List<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n) {
+        List<Laatikkotyyppi> laatikot = new List<Laatikkotyyppi>();
         Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             Laatikko laatikko = new Laatikko(l, new Sijainti(), 0);
             l.getLaatikot().add(laatikko);
         }
@@ -59,7 +59,8 @@ public class TilaTest {
 
     @Test
     public void testLisataanTilapalkkeja() {
-        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 3, 1, 1);
+        Laatikko laatikko = new Laatikko(new Laatikkotyyppi(50, 50, 50), new Sijainti(), 0);
+        Palkki p = new Palkki(new Sijainti(), laatikko, 3, 1, 1);
         assertEquals(t.getTilapalkit().size(), 1);
         t.lisaaTilapalkit(k, p, s);
         assertEquals(t.getTilapalkit().size(), 4);
@@ -67,7 +68,8 @@ public class TilaTest {
 
     @Test
     public void testLisaaOikeatTilapalkit() {
-        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 1, 1, 1);
+        Laatikko laatikko = new Laatikko(new Laatikkotyyppi(50, 50, 50), new Sijainti(), 0);
+        Palkki p = new Palkki(new Sijainti(), laatikko, 3, 1, 1);
         t.lisaaTilapalkit(k, p, s);
         Tilapalkki tp = t.getTilapalkit().pop();
 
@@ -79,18 +81,18 @@ public class TilaTest {
         assertEquals(k.getX() - p.getX() - s.getX(), tp.getX());
         assertEquals(p.getY(), tp.getY());
         assertEquals(k.getZ() - s.getX(), tp.getZ());
- 
 
         tp = t.getTilapalkit().pop();
         assertEquals(k.getX() - s.getX(), tp.getX());
-        assertEquals(k.getY() - p.getX() - s.getX(), tp.getY());
-        assertEquals(k.getZ() - s.getX(), tp.getZ());
+        assertEquals(k.getY() - p.getY() - s.getY(), tp.getY());
+        assertEquals(k.getZ() - s.getZ(), tp.getZ());
 
     }
 
     @Test
     public void testPoistaVapaistaLaatikoista() {
-        Palkki p = new Palkki(new Laatikkotyyppi(50, 50, 50), 3, 1, 1);
+        Laatikko laatikko = new Laatikko(new Laatikkotyyppi(50, 50, 50), new Sijainti(), 0);
+        Palkki p = new Palkki(new Sijainti(), laatikko, 3, 1, 1);
 //	t.setVapaatTilapalkit();
     }
 }

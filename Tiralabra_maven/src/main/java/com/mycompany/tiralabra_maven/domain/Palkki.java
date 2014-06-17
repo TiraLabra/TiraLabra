@@ -5,39 +5,61 @@
  */
 package com.mycompany.tiralabra_maven.domain;
 
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.structures.List;
 
 /**
+ * Palkki, joka koostuu useammasta samantyyppisestä laatikosta.
  *
  * @author szetk
  */
 public class Palkki extends Sarmio {
 
     private Laatikkotyyppi tyyppi;
-    private int nx;
-    private int ny;
-    private int nz;
+    private long nx;
+    private long ny;
+    private long nz;
     private Sijainti sijainti;
+    private List<Laatikko> laatikot;
+    private int orientaatio;
 
-    public Palkki(Laatikkotyyppi tyyppi, int nx, int ny, int nz) {
-        super(nx * tyyppi.getX(), ny * tyyppi.getY(), nz * tyyppi.getZ());
-        this.tyyppi = tyyppi;
+    /**
+     * Konstuktori
+     *
+     * @param sijainti Palkin sijainti
+     * @param laatikko Esimerkki laatikosta, joita palkkiin asetetaan
+     * @param nx Laatikoiden määrä x-akselilla
+     * @param ny Laatikoiden määrä y-akselilla
+     * @param nz Laatikoiden määrä z-akselilla
+     */
+    public Palkki(Sijainti sijainti, Laatikko laatikko, long nx, long ny, long nz) {
+        super(nx * laatikko.getX(), ny * laatikko.getY(), nz * laatikko.getZ());
+        this.tyyppi = laatikko.getTyyppi();
+        this.laatikot = new List<Laatikko>();
         this.nx = nx;
         this.ny = ny;
         this.nz = nz;
-        this.sijainti = new Sijainti(0, 0, 0);
+        lisaaLaatikot(nx, ny, nz);
+        this.sijainti = sijainti;
     }
 
-    public Palkki(int x, int y, int z) {
-        super(x, y, z);
-        this.tyyppi = null;
-        this.sijainti = new Sijainti(0, 0, 0);
+//    public Palkki(long x, long y, long z) {
+//        super(x, y, z);
+//        this.tyyppi = null;
+//        this.sijainti = new Sijainti(0, 0, 0);
+//    }
+    private void lisaaLaatikot(long nx, long ny, long nz) {
+        for (long i = 0; i < nx; i++) {
+            for (long j = 0; j < ny; j++) {
+                for (long k = 0; k < nz; k++) {
+                    Laatikko laatikko = new Laatikko(tyyppi, new Sijainti(), this.orientaatio);
+                    laatikot.add(laatikko);
+                }
+
+            }
+        }
     }
 
-    public int laatikoita() {
-        return this.nx * this.ny * this.nz;
-    }
-
+//    
     @Override
     public String toString() {
         return "Tyyppi: " + this.tyyppi + ", määrät: nx = " + this.nx + ", ny = " + this.ny + ", nz = " + this.nz;
@@ -51,27 +73,27 @@ public class Palkki extends Sarmio {
         this.tyyppi = tyyppi;
     }
 
-    public int getNx() {
+    public long getNx() {
         return nx;
     }
 
-    public void setNx(int nx) {
+    public void setNx(long nx) {
         this.nx = nx;
     }
 
-    public int getNy() {
+    public long getNy() {
         return ny;
     }
 
-    public void setNy(int ny) {
+    public void setNy(long ny) {
         this.ny = ny;
     }
 
-    public int getNz() {
+    public long getNz() {
         return nz;
     }
 
-    public void setNz(int nz) {
+    public void setNz(long nz) {
         this.nz = nz;
     }
 
@@ -81,6 +103,10 @@ public class Palkki extends Sarmio {
 
     public void setSijainti(Sijainti sijainti) {
         this.sijainti = sijainti;
+    }
+
+    public List<Laatikko> getLaatikot() {
+        return laatikot;
     }
 
 }
