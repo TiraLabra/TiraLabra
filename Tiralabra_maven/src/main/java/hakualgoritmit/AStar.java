@@ -53,7 +53,7 @@ public class AStar {
     /**
      * boolean-muuttuja, jolla kontrolloidaan debug-tarkoitukseen tehtäviä tulostuksia.
      */
-    private final static boolean debug = false;
+    private final static boolean debug = true;
 
     public AStar(Heuristiikka heuristiikka) {
         kaydyt = new ArrayListOma();
@@ -75,6 +75,8 @@ public class AStar {
      */
     public void AStarHaku(Alue a, Node alku, Node loppu) {
         
+        if (debug)
+            System.out.println("Alkunode: " + alku + "\n" + "Loppunode: " + loppu);
         long alkuaika = System.currentTimeMillis();
         
         // Alustetaan 
@@ -96,7 +98,7 @@ public class AStar {
             
             //Debug-tulostusta
             if (debug)
-                System.out.println("Tark: " + tarkastettava.toString());
+                System.out.println("---------\nTark: " + tarkastettava.toString());
             
             // Jos löydettiin, poistutaan;
             if (tarkastettava == loppu) {
@@ -107,31 +109,52 @@ public class AStar {
             }
             
             kaydyt.lisaa(tarkastettava);
+            if (debug)
+                System.out.println("Käytyjä tähän asti:" + kaydyt.koko());
             
-            // Nykyisen naapurien päivitys:
+            // Selvitetään tarkasteltavan noden naapurit:
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
+            if (debug)
+                System.out.println("Naapureita " + naapurit.koko() + " kpl.");
+            
+            // Käydään läpi tarkasteltavan kaikki naapurit:
             for (int i = 0; i < naapurit.koko(); i++ ) {
                 Node naapuri = (Node)naapurit.palautaKohdasta(i);
+                naapuri.setLisattyNaapureihin(true);    // Debug-tarkoitukseen tietoa onko nodea otettu naapureihin mukaan..
                 if (debug)
                     System.out.println("  Naapuri: " + naapuri);
                 
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
+                if (debug)
+                    System.out.println("    UusiG = " + uusiG);
                 
-                if (kaydyt.sisaltaako(naapuri)) {
+                
+                if (kaydyt.sisaltaako(naapuri)) {                   // Jos naapuri on jo käydyissä
+                    if (uusiG < naapuri.getEtaisyysAlusta()) {      // ... katsotaan onko uutta kautta pienempi kustannus.
+                        naapuri.setEtaisyysAlusta(uusiG);
+                        naapuri.setEdellinen(tarkastettava);
+                        if (debug)
+                            System.out.println("    Noden kustannusarvoa päivitettiin.");
+                    } else {
+                        if (debug)
+                            System.out.println("    Vanha kustannusarvo oli pienempi...");
+                    }
                     
                     if (debug)
-                        System.out.println("  on jo käyty, ei lisätä.");
-                    continue;
+                        System.out.println("    on jo käyty, ei tehdä mitään.");
+                    continue;                                       // ... muuten skipataan.
                 }
                 
-                if (!kaymatta.sisaltaa(naapuri) || uusiG < naapuri.getEtaisyysAlusta()) {
+                if (!kaymatta.sisaltaa(naapuri)) {
+                    if (debug)
+                        System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
-                    if (!kaymatta.sisaltaa(naapuri)) {
-                        kaymatta.lisaa(naapuri);
-                    }
+                    kaymatta.lisaa(naapuri);
+                    if (debug)
+                        System.out.println(naapuri.toString());
                 }
                 
             }
@@ -157,8 +180,8 @@ public class AStar {
                             a.getnode(i, j).kuljettavissa())          // Varmistetaan ettei ole seinä
                         naapurit.lisaa(a.getnode(i, j));
                     
-                    if (debug)
-                        System.out.println(n.getRivi()+", "+ n.getSarake() + "naapuri: " + i + "," + j);
+                    //if (debug)
+                    //    System.out.println(n.getRivi()+", "+ n.getSarake() + "naapuri: " + i + "," + j);
                 }
             }
         }

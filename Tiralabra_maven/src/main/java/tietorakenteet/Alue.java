@@ -137,6 +137,8 @@ public class Alue {
                 char estemerkki = '\u2588';
                 if (nodet[i][j].onReitilla())
                     kustannus += "-";
+                //else if (nodet[i][j].onLisattyNaapureihin())
+                //    kustannus += "x";
                 else if (nodet[i][j].getKustannus() < 9)
                     kustannus += nodet[i][j].getKustannus();
                 else

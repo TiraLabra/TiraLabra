@@ -37,23 +37,28 @@ public class Main {
         Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
         kuvaAlue.setAlueenKuva(kl.getKuva());
         
+        boolean tulostaKuva = false;
+        
         // Mitä aluetta tarkastellaan...
-        Alue hakualue = kuvaAlue;
-        int alkurivi = 0;
-        int alkusarake = 0;
-        int loppurivi = 88;
-        int loppusarake = 80;
-
-//        Alue hakualue = a1;
+//        Alue hakualue = kuvaAlue;
 //        int alkurivi = 0;
 //        int alkusarake = 0;
-//        int loppurivi = 14;
-//        int loppusarake = 13;
+//        int loppurivi = 88;
+//        int loppusarake = 80;
+//        tulostaKuva = true;
+
+        Alue hakualue = a1;
+        int alkurivi = 0;
+        int alkusarake = 0;
+        int loppurivi = 14;
+        int loppusarake = 13;
 
         System.out.println(hakualue.toString());
         
         Heuristiikka h = new Manhattan();
+        //Heuristiikka h = new Euklidinen();
         //Heuristiikka h = new Dijkstra();
+        
         
         AStar as = new AStar(h);
         
@@ -105,8 +110,10 @@ public class Main {
 //        
 //        System.out.println(k.toString());
         
-        Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
-        kn.muodostaKuvaanPolku(reitti);
-        kn.naytaKuva();
+        if (tulostaKuva) {
+            Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+            kn.muodostaKuvaanPolku(reitti);
+            kn.naytaKuva();
+        }
     }
 }
