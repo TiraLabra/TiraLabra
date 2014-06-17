@@ -1,0 +1,8 @@
+AI
+===
+* Testattu vain, että tekoäly ei aiheuta virheitä ohjelmassa esim, jättämällä tekemiään siirtoja pöydälle. Tämä siksi, että en keksinyt miten tekoälyä voisi parhaiten testata, kun en osaa sanoa objektiivisesti parasta siirtoa.
+
+Board
+=====
+* Testattu, että nappuloiden asettaminen ja kääntäminen toimii moitteetta.
+* Testattu, että siirtojen peruminen toimii moitteetta.
