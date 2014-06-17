@@ -63,6 +63,10 @@ public class Kuvalukija {
         return kuva.getWidth();
     }
 
+    public BufferedImage getKuva() {
+        return kuva;
+    }
+
     /**
      * Laskee halutun rgb-värin perusteella kustannuksen kyseistä pistettä kohden.
      * TODO: Kustannusarvojen rajat ovat vielä vähän summittaisia, voisi säätää kohdalleen...

@@ -2,6 +2,7 @@ package main;
 
 import hakualgoritmit.AStar;
 import apurakenteet.Kuvalukija;
+import apurakenteet.Kuvanayttaja;
 import heuristiikat.*;
 import tietorakenteet.*;
 
@@ -104,5 +105,7 @@ public class Main {
 //        
 //        System.out.println(k.toString());
         
+        Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+        kn.naytaKuva();
     }
 }
