@@ -11,10 +11,17 @@ public class Node implements Comparable<Node> {
     private int rivi;
     private int sarake;
     
+    /**
+     * Noden etäisyys alkupisteestä.
+     * Alustetaan Integer.MAXVALUEksi luodessa.
+     * Vastaa G-arvoa kaavoissa (F=G+H)
+     */
     private int etaisyysAlusta;
     
     /**
-     * 
+     * Arvio noden etäisyydestä maaliin.
+     * Lasketaan AStarin heuristiikan mukaisesti.
+     * Vastaa H-arvoa kaavoissa. (F=G+H)
      */
     private int etaisyysMaaliin;
     
@@ -31,7 +38,17 @@ public class Node implements Comparable<Node> {
      */
     private int kustannus;
     
+    /**
+     * Tieto siitä, jos kyseinen node on toteutuneella reitillä.
+     * Voi olla turha tieto, toistaiseksi kuitenkin kenttä sille.
+     */
     private boolean onReitilla;
+    
+    /**
+     * Tieto siitä, onko kyseistä nodea tarkasteltu AStar-haussa.
+     * Debug-tarkoituksessa oleva tieto, jotta voi tutkia kuinka laajalle haku levinnyt.
+     */
+    private boolean lisattyNaapureihin;
     
     /**
      * Konstruktori, joka ottaa parametrinaan noden koordinaatit.
@@ -44,6 +61,8 @@ public class Node implements Comparable<Node> {
         this.sarake = sarake;
         this.kustannus = kustannus;
         this.onReitilla = false;
+        this.lisattyNaapureihin = false;
+        this.etaisyysAlusta = Integer.MAX_VALUE;
     }
     
     public Node(int rivi, int sarake) {
@@ -78,6 +97,10 @@ public class Node implements Comparable<Node> {
         return onReitilla;
     }
 
+    public boolean onLisattyNaapureihin() {
+        return lisattyNaapureihin;
+    }
+
     public void setKustannus(int kustannus) {
         this.kustannus = kustannus;
     }
@@ -97,6 +120,12 @@ public class Node implements Comparable<Node> {
     public void setOnReitilla(boolean onko) {
         this.onReitilla = onko;
     }
+
+    public void setLisattyNaapureihin(boolean onko) {
+        this.lisattyNaapureihin = onko;
+    }
+    
+    
     
     /**
      * Kertoo, onko kyseinen node kuljettavissa.
