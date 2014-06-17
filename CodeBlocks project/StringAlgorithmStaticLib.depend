@@ -1,0 +1,148 @@
+# depslib dependency file v1.0
+1402059795 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.cpp
+	"bernstein.hpp"
+	<iostream>
+
+1402059836 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1401971934 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+
+1400591318 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.cpp
+	"hashing.hpp"
+
+1400591300 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1402059708 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1400591256 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.cpp
+	"sum_hashing.hpp"
+
+1400587396 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.cpp
+	"naive.hpp"
+
+1402053955 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1401647535 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.cpp
+	"rabin_karp.hpp"
+
+1402059384 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	<cstdlib>
+	"../constants.hpp"
+
+1401648330 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+	"z_algorithm.hpp"
+	<iostream>
+
+1401971295 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+	<cstring>
+	<string>
+	<vector>
+	<cstdlib>
+
+1401409868 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/main.cpp
+	<iostream>
+	<cstdio>
+	"string_slib.hpp"
+
+1402841425 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
+	"algorithms/z_algorithm.hpp"
+	"algorithms/knuth_morris_pratt.hpp"
+	"algorithms/edit_distance.hpp"
+	"structures/suffix_tree_builder.hpp"
+	"structures/suffix_trie.hpp"
+	"structures/suffix_tree.hpp"
+	"structures/suffix_trie_builder.hpp"
+
+1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
+
+1401969358 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+
+1401655468 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
+	"knuth_morris_pratt.hpp"
+
+1401973662 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+
+1402841988 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.cpp
+	"edit_distance.hpp"
+	<iostream>
+
+1402835957 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.cpp
+	"naive_suffix_tree_builder.hpp"
+
+1402607129 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
+	"suffix_tree.hpp"
+
+1402585240 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.cpp
+	"ukkonen_suffix_tree_builder.hpp"
+
+1402585457 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	"suffix_tree_builder.hpp"
+
+1402603268 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree_builder.hpp
+	<cstring>
+	<string>
+	"suffix_tree.hpp"
+
+1402606892 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	<vector>
+
+1402609541 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	"suffix_tree_builder.hpp"
+	"suffix_tree.hpp"
+
+1402861177 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.cpp
+	"suffix_trie.hpp"
+	<iostream>
+
+1402916920 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
+	<cstring>
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"../constants.hpp"
+
+1402861205 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.cpp
+	"suffix_trie_builder.hpp"
+
+1402948565 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
+	<cstring>
+	<string>
+	"suffix_trie.hpp"
+
