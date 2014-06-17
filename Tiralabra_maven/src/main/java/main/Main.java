@@ -106,6 +106,7 @@ public class Main {
 //        System.out.println(k.toString());
         
         Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+        kn.muodostaKuvaanPolku(reitti);
         kn.naytaKuva();
     }
 }
