@@ -11,20 +11,27 @@ import tiralabra.utilities.ArrayList;
 ;
 
 /**
- * Transmits moves to the Board.
+ * Transmits moves to the Board from the user interface.
  *
  * @author atte
  */
-public class Runnable extends Thread {
+public class MoveTransmitter extends Thread {
 
+    /**
+     * Board to transmit moves to.
+     */
     private Board board;
     /**
      * All moves to be transmitted to the board.
      */
     private ArrayList<Long> moves;
-
-    public Runnable() {
-        board = new Board();
+    
+    /**
+     * 
+     * @param board 
+     */
+    public MoveTransmitter(Board board) {
+        this.board = board;
         moves = new ArrayList<>();
     }
 
@@ -33,7 +40,7 @@ public class Runnable extends Thread {
      */
     @Override
     public synchronized void run() {
-        while (!board.gameOver()) {
+        while (true) {
             try {
                 move();
             } catch (InterruptedException ex) {
@@ -48,7 +55,7 @@ public class Runnable extends Thread {
      *
      * @throws InterruptedException
      */
-    public synchronized void move() throws InterruptedException {
+    synchronized void move() throws InterruptedException {
         while (moves.isEmpty()) {
             wait();
         }
@@ -57,7 +64,7 @@ public class Runnable extends Thread {
         moves.remove(move);
         board.placeTile(move);
 
-        if (!board.canMove(inTurn())) {
+        if (!board.canMove(board.playerInTurn())) {
             board.pass();
         }
     }
@@ -67,33 +74,8 @@ public class Runnable extends Thread {
      * @param move
      * @throws InterruptedException 
      */
-    public synchronized void addMove(long move) throws InterruptedException {
+    synchronized void addMove(long move) throws InterruptedException {
         moves.add(move);
         notify();
     }
-
-    /**
-     * Returns the player whose turn it is.
-     * @return 
-     */
-    public Player inTurn() {
-        return board.playerInTurn();
-    }
-
-    /**
-     * Returns the Board of the current game.
-     * @return 
-     */
-    public Board getBoard() {
-        return board;
-    }
-
-    /**
-     * Returns the status of the game.
-     * @return 
-     */
-    public boolean gameOver() {
-        return board.gameOver();
-    }
-
 }

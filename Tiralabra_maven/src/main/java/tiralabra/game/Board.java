@@ -100,7 +100,7 @@ public class Board {
 
     private void initalizeBoard() {
         this.board = new Player[8][8];
-        
+
         for (int y = 0; y < height(); y++) {
             for (int x = 0; x < width(); x++) {
                 board[y][x] = Player.NONE;
@@ -325,7 +325,7 @@ public class Board {
     }
 
     /**
-     * Can place a piece on this tile.
+     * Specified player can place a piece on this tile.
      *
      * @param x
      * @param y
@@ -334,6 +334,17 @@ public class Board {
      */
     public boolean canPlace(int x, int y, Player player) {
         return place(x, y, player, false) != 0;
+    }
+
+    /**
+     * Player in turn can place a piece on this tile.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean canPlace(int x, int y) {
+        return place(x, y, playerInTurn, false) != 0;
     }
 
     /**
