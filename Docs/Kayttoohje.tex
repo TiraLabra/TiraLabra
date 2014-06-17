@@ -1,0 +1,90 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.1 (25/3/14)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage[finnish]{babel} %ääkköset
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Käyttöohje: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
+
+\author{Markus \textsc{Kaukonen} % Author name
+}
+
+\date{\today} % Date for the report
+
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+\hspace{1cm} \texttt{email: markus.kaukonen@iki.fi, opiskelijanumero: 010974524}
+
+\newpage
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+
+\section{Käyttöohje}
+Ohjelmaa vaatii toimiakseen pythonin, uudehkon scipy: ja numpy:n sekä
+matplotlibin (http://www.scipy.org/). \\
+
+Testiversion voi käynnistää komennolla test\_mc.py, joka on hakemistossa:
+TiraLabra/Tiralabra/src \\
+
+Ohjelma lukee syötteet tiedostosta alkuarvot.txt:\\
+\begin{small}
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+16         # laskenta gridipisteiden lkm x suunnassa 
+16         # laskenta gridipisteiden lkm y suunnassa 
+0          # laskenta gridipisteiden lkm z suunnassa (0==2d)
+2.0        # elektronien kokonaismaara (> 0)
+2          # atomiydinten lukumaara
+3 3 0 1.0  # ytimen 1 paikka gridissa (x,y,z), varaus (> 0)
+8 2 0 1.0  # ytimen 2 paikka gridissa (x,y,z), varaus (> 0)
+\end{lstlisting}
+\end{small}
+Ohjelma tuottaa päivittyvän matplotlib kuvan elektronitiheydestä. Päivitys etenee kun painat kuvan deletointia (eli 'x' kohtaa kuvan yläreunasta).
+
+%----------------------------------------------------------------------------------------
+
+
+\end{document}

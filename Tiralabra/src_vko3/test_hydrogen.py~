@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" DFT ilman atomiorbitaaleja. 
+Tässä moduulissa kokeillaan metodien toimivuutta """
+
+from alustus import tee_gridi, aseta_gridin_alkuarvo
+from energiat import E_T, E_vaihtokorrelaatio, E_elektroni_elektroni, \
+    E_elektroni_ydin, E_tot
+from ydin import Ydin
+from piirtoa import plot2d
+import numpy as np
+from scipy.optimize import minimize
+
+#atomiytimet
+ytimet = []
+ytimet.append(Ydin((10,10,10), +1))
+
+nx = 20
+ny = 20
+nz = 20
+dx = 0.2
+dy = 0.2
+dz = 0.2
+V_hartree_init = tee_gridi(nx,ny,nz)
+elektroni_tiheys_init = tee_gridi(nx,ny,nz)
+tasa_tiheys = 1/(20*20*20*0.2*0.2*0.2)
+#aseta_gridin_alkuarvo(tasa_tiheys, elektroni_tiheys)
+V_hartree = aseta_gridin_alkuarvo(0, V_hartree_init)
+elektroni_tiheys = aseta_gridin_alkuarvo(-tasa_tiheys, elektroni_tiheys_init)
+#elektroni_tiheys[2,2,2] = -1
+#elektroni_tiheys[3,3,3] = -1
+
+#print "alku V_hartree", V_hartree
+#print "alku elektroni_tiheys", elektroni_tiheys
+#sys.exit()
+
+
+print "kineettinen energia", E_T(elektroni_tiheys)
+print "vaihtokorrelaatio energia", E_vaihtokorrelaatio(elektroni_tiheys)
+print "elektroni_elektroni energia", \
+    E_elektroni_elektroni(elektroni_tiheys,V_hartree)
+print "elektroni_ydin energia", \
+    E_elektroni_ydin(elektroni_tiheys,ytimet,dx,dy,dz)
+
+print "kokonaisenergia", E_tot(elektroni_tiheys, V_hartree, ytimet, dx, dy, dz)
+res = minimize(fun=E_tot, x0=elektroni_tiheys, \
+                   args = (V_hartree, ytimet, dx, dy, dz),\
+                   method='Powell',options={'ftol': 0.1, 'maxfev': 10})
+print "kokonaisenergia2", E_tot(elektroni_tiheys, V_hartree, ytimet, dx, dy, dz)
+
+
+
+V_hartree_xy = np.sum(V_hartree, axis=2)
+print V_hartree_xy.shape
+print V_hartree_xy
+plot2d(V_hartree_xy, dx, dy, nx, ny)
+
