@@ -12,6 +12,8 @@ Description of the algorithm in ODT format: [link](https://github.com/martinrade
  
 Description of the algorithm in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/rabin%20karp.odt?raw=true)
 
+- Suffix trie
+Description of the data structure in ODT format: [link](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20trie.odt)
 - Suffix tree
 A suffix tree can be built in O(n) time where n is the length of string we are building the tree for. Accordingly, if we are searching for a string with length m, then the search can be done in O(m) time.
 - Aho–Corasick string matching (Trie)
