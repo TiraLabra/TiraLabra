@@ -5,10 +5,10 @@ class NMD5:
 	"""MD5 implementation for strings"""
 
 	def __init__(self, arg=None):
-		self.A = 0x67452301
-		self.B = 0xEFCDAB89
-		self.C = 0x98BADCFE
-		self.D = 0x10325476
+		self.__A = 0x67452301
+		self.__B = 0xEFCDAB89
+		self.__C = 0x98BADCFE
+		self.__D = 0x10325476
 
 		self.list = LinkedList(None)
 		if arg:
@@ -22,13 +22,47 @@ class NMD5:
 	def update(self, arg):
 		"""Adds a string to our list and calculates the hash.
 		Note that subsequent updates need to reset the registers."""
-		self.A, self.B, self.C, self.D = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
+		self.__A, self.__B, self.__C, self.__D = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
 		self.list.add(Node(arg, None))
 		self.__hash(self.list.toString())
 
 	def copy(self):
 		"""Returns a deep copy of this nmd5 object."""
 		return copy.deepcopy(self)
+
+
+	def hexdigest(self):
+		"""Returns hex string of result. Format each byte of digest 
+		into a hexstring of length 2."""
+		buffers = [self.__A, self.__B, self.__C, self.__D]
+		digest = bytearray(self.digest())
+		return ''.join(["{:02x}".format(byte) for byte in digest])
+
+	def digest(self):
+		"""Returns the byte string digest. The idea is to
+		slice every register into 4 bytes and go from the
+		low order bytes of A to the high order bytes of D."""
+		res = b''
+		buffers = [self.__A, self.__B, self.__C, self.__D]
+		orderedBytes = []
+
+		for buffer in buffers:
+			bufferbytes = []
+			b = bin(buffer).replace('b', '0')
+			b = "0"*(34-len(b)) + b # pad leading zero if missing
+
+			bufferbytes.append(int(b[ 2:10],2))
+			bufferbytes.append(int(b[10:18],2))
+			bufferbytes.append(int(b[18:26],2))
+			bufferbytes.append(int(b[26:34],2))
+
+			res += bytes([bufferbytes[3]])
+			res += bytes([bufferbytes[2]])
+			res += bytes([bufferbytes[1]])
+			res += bytes([bufferbytes[0]])
+
+		return res
+
 
 	# Main hashing function
 	def __hash(self, message):
@@ -51,7 +85,7 @@ class NMD5:
 
 		for chunk in chunks:
 			words = self.__createWordArray(chunk, messageLength, chunks.index(chunk)==len(chunks)-1)
-			a, b, c, d = A, B, C, D = self.A, self.B, self.C, self.D
+			a, b, c, d = A, B, C, D = self.__A, self.__B, self.__C, self.__D
 
 			# Round 1
 			a = R(F, a, b, c, d, words[ 0], R11, 0xD76AA478)
@@ -130,47 +164,10 @@ class NMD5:
 			C = (c + C) & 0xffffffff
 			D = (d + D) & 0xffffffff
 
-			self.A = A
-			self.B = B
-			self.C = C
-			self.D = D
-
-
-	def hexdigest(self):
-		"""Returns hex string of result. Format each byte of digest 
-		into a hexstring of length 2."""
-
-
-		buffers = [self.A, self.B, self.C, self.D]
-
-		digest = bytearray(self.digest())
-
-		return ''.join(["{:02x}".format(byte) for byte in digest])
-
-	def digest(self):
-		"""Returns the byte string digest. The idea is to
-		slice every register into 4 bytes and go from the
-		low order bytes of A to the high order bytes of D."""
-		res = b''
-		buffers = [self.A, self.B, self.C, self.D]
-		orderedBytes = []
-
-		for buffer in buffers:
-			bufferbytes = []
-			b = bin(buffer).replace('b', '0')
-			b = "0"*(34-len(b)) + b # pad leading zero if missing
-
-			bufferbytes.append(int(b[ 2:10],2))
-			bufferbytes.append(int(b[10:18],2))
-			bufferbytes.append(int(b[18:26],2))
-			bufferbytes.append(int(b[26:34],2))
-
-			res += bytes([bufferbytes[3]])
-			res += bytes([bufferbytes[2]])
-			res += bytes([bufferbytes[1]])
-			res += bytes([bufferbytes[0]])
-
-		return res
+			self.__A = A
+			self.__B = B
+			self.__C = C
+			self.__D = D
 
 
 	## Private class methods
