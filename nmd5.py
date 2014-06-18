@@ -1,38 +1,6 @@
 # -*- coding: utf-8 -*-
 from lib.linkedlist import *
 
-def F(x, y, z):
-	"""XY v not(X) Z"""
-	return (x & y) | ((~x) & z)
-
-def G(x, y, z):
-	"""XZ v Y not(Z)"""
-	return (x & z) | (y & (~z))
-
-def H(x, y, z):
-	"""X xor Y xor Z"""
-	return x ^ y ^ z
-
-def I(x, y, z):
-	"""Y xor (X v not(Z))"""
-	return y ^ (x | (~z))
-
-def rotateLeft(x, n):
-	return (x << n) | (x >> (32-n))
-
-def R(function,a,b,c,d,x,s,ac):
-	"""Wrapper function for the MD5 rounds"""
-
-	r = a + function(b,c,d)
-	r = r + x
-	r = r + ac
-	r = r & 0xffffffff # keep r as an unsigned integer
-	r = rotateLeft(r, s)
-	r = r & 0xffffffff
-	r = r + b
-
-	return r & 0xffffffff
-
 class NMD5:
 	"""MD5 implementation for strings"""
 
@@ -49,8 +17,7 @@ class NMD5:
 		
 		self.digest_size = 16
 
-	# Registers
-	
+	## Public class methods
 
 	def update(self, arg):
 		"""Adds a string to our list and calculates the hash.
@@ -71,6 +38,7 @@ class NMD5:
 		mysterious hexadecimal constants as the last parameter: RXX are the shift
 		amounts defined by the RFC and the constants are results from the sine function,
 		which is also defined in the RFC."""
+
 		messageLength = len(message.encode('utf-8'))
 		chunks = self.__splitToBlocks(self.__pad(self.__toBinaryString(message)), 512)
 
@@ -79,11 +47,12 @@ class NMD5:
 		R31, R32, R33, R34 = 4, 11, 16, 23
 		R41, R42, R43, R44 = 6, 10, 15, 21
 
+		F, G, H, I, R, = self.__F, self.__G, self.__H, self.__I, self.__R
+
 		for chunk in chunks:
 			words = self.__createWordArray(chunk, messageLength, chunks.index(chunk)==len(chunks)-1)
-			# Rotation constants
-
 			a, b, c, d = A, B, C, D = self.A, self.B, self.C, self.D
+
 			# Round 1
 			a = R(F, a, b, c, d, words[ 0], R11, 0xD76AA478)
 			d = R(F, d, a, b, c, words[ 1], R12, 0xE8C7B756)
@@ -203,7 +172,9 @@ class NMD5:
 
 		return res
 
-	
+
+	## Private class methods
+
 	def __toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
 
@@ -277,6 +248,38 @@ class NMD5:
 			wordArray[-1] = messageLength >> 29
 
 		return wordArray
+
+	def __F(self, x, y, z):
+		"""XY v not(X) Z"""
+		return (x & y) | ((~x) & z)
+
+	def __G(self, x, y, z):
+		"""XZ v Y not(Z)"""
+		return (x & z) | (y & (~z))
+
+	def __H(self, x, y, z):
+		"""X xor Y xor Z"""
+		return x ^ y ^ z
+
+	def __I(self, x, y, z):
+		"""Y xor (X v not(Z))"""
+		return y ^ (x | (~z))
+
+	def __rotateLeft(self, x, n):
+		return (x << n) | (x >> (32-n))
+
+	def __R(self, function,a,b,c,d,x,s,ac):
+		"""Wrapper function for the MD5 rounds"""
+
+		r = a + function(b,c,d)
+		r = r + x
+		r = r + ac
+		r = r & 0xffffffff
+		r = self.__rotateLeft(r, s)
+		r = r & 0xffffffff
+		r = r + b
+
+		return r & 0xffffffff # Keep r unsigned
 
 ## Public methods for module ##
 
