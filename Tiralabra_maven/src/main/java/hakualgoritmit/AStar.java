@@ -255,7 +255,7 @@ public class AStar {
         String yv = "";
         
         yv += "Laskentaan kulunut aika: " + kokonaisaika + " ms\n";
-        //yv += "Laskennassa tutkittuja askelia: " + askelia + "\n";
+        yv += "Laskennassa tutkittuja askelia: " + askelia + "\n";
         yv += "Toteutuneen polun pituus: " + this.kuljettuReitti.koko();
         
         return yv;

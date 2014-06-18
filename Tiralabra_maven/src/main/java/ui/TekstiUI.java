@@ -32,6 +32,8 @@ public class TekstiUI {
     private Kuvalukija kl;
     
     public TekstiUI() {
+        // Oletusheuristiikaksi manhattan
+        heuristiikka = new Manhattan();
     }
     
     public void suorita() {
@@ -76,23 +78,18 @@ public class TekstiUI {
         System.out.println("Lopetetaan.");
     }
 
-    private void suoritaHaku() {
-        astar = new AStar(heuristiikka);
-        astar.AStarHaku(alue, alue.getnode(alkurivi, alkusarake), alue.getnode(loppurivi,loppusarake));
-    }
-
     private void kartanValinta() {
         System.out.println("Anna halutun tiedoston nimi (oletuksena 100x100.bmp):");
         String syote = scanner.nextLine();
         if (syote.equals("")) {
             tiedostonimi = "100x100.bmp";
-            System.out.println("tänne");
         } else {
             tiedostonimi = syote;       // Ei mitään tarkastuksia vielä...
             System.out.println(tiedostonimi);
         }
         kl = new Kuvalukija(tiedostonimi);
         this.alue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
+        System.out.println("Alueen mitat: " + kl.getKorkeus() + "x" + kl.getLeveys());
         
         while (true) {
             System.out.println("Anna alkusolmun rivi:");
@@ -132,7 +129,14 @@ public class TekstiUI {
             } else
                 System.out.println("Virheellinen valinta");
         }
-        
+    }
+
+    private void suoritaHaku() {
+        if (alue != null && heuristiikka != null) {
+            astar = new AStar(heuristiikka);
+            astar.AStarHaku(alue, alue.getnode(alkurivi, alkusarake), alue.getnode(loppurivi,loppusarake));
+        } else
+            System.out.println("Hakua ei voida suorittaa, tarkista että hakualue ja heuristiikka on asetettu!");
         
     }
 
@@ -144,7 +148,7 @@ public class TekstiUI {
         //for (Node n : reitti) {
         for (int i = 0; i < reitti.koko(); i++) {
             Node n = (Node)reitti.palautaKohdasta(i);
-            System.out.println(n.toString());
+            System.out.println(i + ": " + n.toString());
             n.toString();
         }
         System.out.println(alue.toString());

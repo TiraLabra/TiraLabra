@@ -25,8 +25,9 @@ public class Main {
         a2.luoPieniTestitaulukko();
         
         //Alue kuvasta:
-        Kuvalukija kl = new Kuvalukija("100x100.bmp");
+        //Kuvalukija kl = new Kuvalukija("100x100.bmp");
         //Kuvalukija kl = new Kuvalukija("kumpula.bmp");
+        Kuvalukija kl = new Kuvalukija("maastokuva.bmp");
         Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
         kuvaAlue.setAlueenKuva(kl.getKuva());
         
@@ -36,8 +37,8 @@ public class Main {
         Alue hakualue = kuvaAlue;
         int alkurivi = 0;
         int alkusarake = 0;
-        int loppurivi = 80;
-        int loppusarake = 88;
+        int loppurivi = 650;
+        int loppusarake = 650;
         tulostaKuva = true;
 
 //        Alue hakualue = a1;
@@ -46,7 +47,7 @@ public class Main {
 //        int loppurivi = 14;
 //        int loppusarake = 13;
 
-        //System.out.println(hakualue.toString());
+        System.out.println(hakualue.toString());
         
         //Heuristiikka h = new Manhattan();
         Heuristiikka h = new Euklidinen();
@@ -55,11 +56,10 @@ public class Main {
         
         AStar as = new AStar(h);
         
-        //as.AStarHaku(hakualue, hakualue.getnode(alkurivi, alkusarake), hakualue.getnode(loppurivi,loppusarake));
+        as.AStarHaku(hakualue, hakualue.getnode(alkurivi, alkusarake), hakualue.getnode(loppurivi,loppusarake));
         
         
         // Tulostus:
-        /*
         System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
         
         ArrayListOma reitti = as.kerroKuljettuReitti();
@@ -80,13 +80,12 @@ public class Main {
             kn.muodostaKuvaanPolku(reitti);
             kn.naytaKuva();
         }
-        */
         
         // Testauskoodia sekalaiseen debuggaukseen:
         //testausta();
         
-        TekstiUI ui = new TekstiUI();
-        ui.suorita();
+        //TekstiUI ui = new TekstiUI();
+        //ui.suorita();
         
     }
     private void testausta() {
