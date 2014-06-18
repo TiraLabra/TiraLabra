@@ -47,6 +47,7 @@
                     <param>Apuvalineet.BinaariMuuntaja</param>
                     <param>Apuvalineet.Kirjoittaja</param>
                     <param>Apuvalineet.Lukija</param>
+                    <param>Apuvalineet.Purkaja</param>
                     
                     <param>Huffman.BittiEsitykset</param>
                     <param>Huffman.HuffmanPakkaaja</param>
@@ -68,6 +69,7 @@
                     <param>Apuvalineet.BinaariMuuntajaTest</param>
                     <param>Apuvalineet.KirjoittajaTest</param>
                     <param>Apuvalineet.LukijaTest</param>
+                    <param>Apuvalineet.PurkajaTest</param>
                     
                     <param>Huffman.BittiEsityksetTest</param>
                     <param>Huffman.HuffmanPakkaajaTest</param>     

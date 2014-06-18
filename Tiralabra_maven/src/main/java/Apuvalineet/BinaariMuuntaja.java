@@ -169,4 +169,53 @@ public class BinaariMuuntaja {
         }
         return ilmanEtuNollia.toString();
     }
+    
+
+    /**
+     * Muodostaa binääriesityksen pakkauksen sisällöstä "alkuOsoite":en jälkeen.
+     * @param teksti
+     * @param alkuOsoite
+     * @return 
+     */ 
+    
+    public String puraBinaariEsitykseksi(String teksti, int alkuOsoite) {
+        StringBuilder binaarina = new StringBuilder();
+        binaarina.append(tavuIlmanEtuNollia(teksti, alkuOsoite));
+        binaarina.append(lisaaMuuTeksti(teksti, alkuOsoite));       
+        
+        return binaarina.toString();
+    }
+    
+    /**
+     * Poistaa "alkuOsoite":tta seuraavasta tavusta ko. osoitteessa olevan
+     * ascii -merkin määrän verran etunollia.
+     * @param teksti
+     * @param alkuOsoite
+     * @return 
+     */
+    
+    protected String tavuIlmanEtuNollia(String teksti, int alkuOsoite) {
+        int arvo = teksti.charAt(alkuOsoite + 1);
+        int poistettavia = teksti.charAt(alkuOsoite);
+        
+        String binaarina = binaariEsitys8Bit(arvo);
+        return binaarina.substring(poistettavia);
+    }
+    
+    /**
+     * Palauttaa pakkauksen sisällöstä binääriesityksen kohdasta alkuOsoite + 2 alkaen.
+     * @param teksti
+     * @param alkuOsoite
+     * @return 
+     */
+    
+    protected String lisaaMuuTeksti(String teksti, int alkuOsoite) {
+        StringBuilder lisaaja = new StringBuilder();
+        
+        for (int i = alkuOsoite + 2; i < teksti.length(); i++) {
+            int arvo = teksti.charAt(i);
+            lisaaja.append(binaariEsitys8Bit(arvo));
+        }
+        return lisaaja.toString();
+    }
 }

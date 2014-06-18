@@ -99,4 +99,27 @@ public class BinaariMuuntajaTest {
         assertEquals(y+y+y+n+y+n+n+y+y+n+n+y, muuntaja.binaariEsitys(3737));
         assertEquals(y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y, muuntaja.binaariEsitys(2147483647));
     }
+    
+    @Test
+    public void tekstiBinaarinaTavallisillaAsciiMerkeilla() {
+        String text = "8a¤" + (char) 2 + ".?,*)";
+        assertEquals(y+n+y+y+y+n+n+n+y+y+y+y+y+y+n+n+y+n+y+y+n+n+n+n+y+n+y+n+y+n+n+n+y+n+y+n+n+y, 
+                     muuntaja.puraBinaariEsitykseksi(text, 3));
+    }
+    
+    @Test
+    public void tavuIlmanEtuNolliaTavallisillaAsciiMerkeilla() {
+        String text = (char) 0 + "+/";
+        assertEquals(n+n+y+n+y+n+y+y, muuntaja.tavuIlmanEtuNollia(text, 0));
+        
+        text = "abc" + (char) 5 + "" + (char) 7 + "!D";
+        assertEquals(y+y+y, muuntaja.tavuIlmanEtuNollia(text, 3));
+    }
+    
+    @Test
+    public void lisaaMuuTekstiTavallisillaAsciiMerkeilla() {
+        String text = "tty56B4";
+        assertTrue(muuntaja.lisaaMuuTeksti(text, 5).isEmpty());
+        assertEquals(n+y+n+n+n+n+y+n+n+n+y+y+n+y+n+n, muuntaja.lisaaMuuTeksti(text, 3));
+    }
 }

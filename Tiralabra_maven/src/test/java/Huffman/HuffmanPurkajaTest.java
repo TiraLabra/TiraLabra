@@ -33,67 +33,7 @@ public class HuffmanPurkajaTest {
             kirjoittaja.kirjoita("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135) ;
         }
     }
-    
-    @Test
-    public void polkuOnValidi() throws IOException {
-        purkaja.tarkistaOnkoPolkuValidi("abc.hemi");
-        purkaja.tarkistaOnkoPolkuValidi("Tiedosto.HEMI");
-    }
-    
-    @Test (expected = IOException.class)
-    public void eiValidiPolkuHeittaaPoikkeuksen() throws IOException {
-        purkaja.tarkistaOnkoPolkuValidi("abc.hemi2");
-    }
-    
-    @Test
-    public void pakkauksenHakuOnnistuu() throws IOException {
-        File pakkaus = purkaja.haePakkaus("TiedostonPurkajaTest.hemi");
-        assertTrue(pakkaus.isFile());
-    }
-    
-    @Test (expected = IOException.class)
-    public void pakkauksenHaussaHeitetaanPoikkeusJosTiedostoEiOlemassa() throws IOException {
-        purkaja.haePakkaus("lol");
-    }
-    
-    @Test
-    public void testinLukeminenOnnistuu() throws IOException {
-        File tiedosto = new File("TiedostonPurkajaTest.hemi");
-        assertEquals("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135,
-                     purkaja.lueTeksti(tiedosto));
-    }
-    
-    @Test
-    public void luotavanTiedostonPolkuPalauttaaPolunOikein() {
-        String polku = "a.hemi";
-        assertEquals("a", purkaja.luotavanTiedostonPolku(polku));
-        
-        polku = ".hemi";
-        assertEquals("", purkaja.luotavanTiedostonPolku(polku));
-    }
-    
-    @Test
-    public void tekstiBinaarinaTavallisillaAsciiMerkeilla() {
-        String teksti = "8a¤" + (char) 2 + ".?,*)";
-        assertEquals(y+n+y+y+y+n+n+n+y+y+y+y+y+y+n+n+y+n+y+y+n+n+n+n+y+n+y+n+y+n+n+n+y+n+y+n+n+y, 
-                     purkaja.tekstiBinaarina(teksti, 3));
-    }
-    
-    @Test
-    public void tavuIlmanEtuNolliaTavallisillaAsciiMerkeilla() {
-        String teksti = (char) 0 + "+/";
-        assertEquals(n+n+y+n+y+n+y+y, purkaja.tavuIlmanEtuNollia(teksti, 0));
-        
-        teksti = "abc" + (char) 5 + "" + (char) 7 + "!D";
-        assertEquals(y+y+y, purkaja.tavuIlmanEtuNollia(teksti, 3));
-    }
-    
-    @Test
-    public void lisaaMuuTekstiTavallisillaAsciiMerkeilla() {
-        String teksti = "tty56B4";
-        assertTrue(purkaja.lisaaMuuTeksti(teksti, 5).isEmpty());
-        assertEquals(n+y+n+n+n+n+y+n+n+n+y+y+n+y+n+n, purkaja.lisaaMuuTeksti(teksti, 3));
-    }
+ 
     
     @Test
     public void kirjoitettavaTeksti() {

@@ -51,7 +51,8 @@ public class Main {
     }
     
     private static void pakkaa(String polku) throws IOException {
-        new HuffmanOhjaus().suoritaPakkaaminen(polku);
+        new LZWPakkaaja().suoritaPakkaaminen(polku);
+        
     }
     
     private static void pura(String polku) throws IOException {

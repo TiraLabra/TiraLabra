@@ -1,102 +1,28 @@
 package Huffman;
 
-import Apuvalineet.BinaariMuuntaja;
-import Apuvalineet.Lukija;
-import Apuvalineet.Kirjoittaja;
+import Apuvalineet.Purkaja;
 import Tietorakenteet.HajautusTaulu;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Luokka suorittaa tiedoston purkamisen käyttäen BinaariMuuntaja luokkaa apuna.
  */
 
-public class HuffmanPurkaja {
-    private BinaariMuuntaja muuntaja;
+public class HuffmanPurkaja extends Purkaja {
     
     public HuffmanPurkaja() {
-        this.muuntaja = new BinaariMuuntaja();
-    }
-    
-    /**
-     * Purkaa tiedoston luoden tekstin, joka kirjoitetaan ja kirjoittaen sen.
-     * @param polku
-     * @throws IOException
-     */
-    
-    public void pura(String polku) throws IOException {
-        String kirjoitettava = muodostaTeksti(polku);
-        kirjoitaTeksti(luotavanTiedostonPolku(polku), kirjoitettava);
-    }
-    
-    /**
-     * Tarkistaa onko tiedoston polku validi. Jos on, hakee pakkauksen ja muodostaa sitä vastaavan tiedoston (ilman
-     * pakkauksen loppupäätettä). Tämän jälkeen purkaa pakkauksen.
-     * @param polku
-     * @return
-     * @throws IOException 
-     */
-    
-    protected String muodostaTeksti(String polku) throws IOException {
-        tarkistaOnkoPolkuValidi(polku);
-        File pakkaus = haePakkaus(polku);
-        
-        return puretunTiedostonSisalto(pakkaus);
-        
-    }
-    
-    /**
-     * Kirjoittaa puretun tiedoston sisällön.
-     * @param polku
-     * @param teksti
-     * @throws IOException
-     */
-    
-    protected void kirjoitaTeksti(String polku, String teksti) throws IOException {
-        Kirjoittaja kirjoittaja = new Kirjoittaja(polku);
-        kirjoittaja.kirjoita(teksti);
-    }
-    
-    /**
-     * Tarkistaa onko pakkauksen pääte ".hemi".
-     * @param polku
-     * @throws IOException 
-     */
-    
-    protected void tarkistaOnkoPolkuValidi(String polku) throws IOException {
-        if (! polku.toLowerCase().endsWith(".hemi")) {
-            throw new IOException("Tiedosto ei ole tyyppiä '.hemi' ja sitä ei voida tällä ohjelmalla purkaa.\nOhjelma suljetaan.");
-        }
-    }
-    
-    /**
-     * Hakee pakkauksen ja heittää poikkeuksen jos se ei ole olemassa.
-     * @param polku
-     * @return
-     * @throws FileNotFoundException
-     */
-    
-    protected File haePakkaus(String polku) throws FileNotFoundException {
-        File pakkaus = new File(polku);
-        if (! pakkaus.exists()) {
-            throw new FileNotFoundException("Valitsemasi tiedosto ei ole olemassa.\nOhjelma suljetaan.");
-        }
-        
-        return pakkaus;
+        super(".hemi");
     }
     
     /**
      * Purkaa pakkauksen sisällön tiedostoon hakemalla ensin pakkauksen sisällön (ascii merkkeinä), käyden tästä
      * Huffman puun läpi ja keräten siitä "bittijonot ja niitä vastaavat merkit", muodostaen String -olion, jossa
      * on sisällön binääritekstiosa ja muodostaen tästä sitten puretun tiedoston sisällön.
-     * @param pakkaus
-     * @throws IOException 
+     * @param teksti
      * @return
      */
     
-    protected String puretunTiedostonSisalto(File pakkaus) throws IOException {
-        String teksti = lueTeksti(pakkaus);
+    @Override
+    protected String puretunTiedostonSisalto(String teksti) {
         HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         
         int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
@@ -210,77 +136,5 @@ public class HuffmanPurkaja {
     
     protected boolean puuOnKelattuLoppuun(String teksti, int i) {
         return teksti.charAt(i) == (char) 127 && teksti.charAt(i + 1) == (char) 127;
-    }
-    
-    /**
-     * Muodostaa binääriesityksen pakkauksen sisällöstä "poistettavienEtuNollienOsoite":een jälkeen.
-     * @param teksti
-     * @param poistettavienEtuNollienOsoite
-     * @return 
-     */
-    
-    protected String tekstiBinaarina(String teksti, int poistettavienEtuNollienOsoite) {
-        StringBuilder binaarina = new StringBuilder();
-        binaarina.append(tavuIlmanEtuNollia(teksti, poistettavienEtuNollienOsoite));
-        binaarina.append(lisaaMuuTeksti(teksti, poistettavienEtuNollienOsoite));       
-        
-        return binaarina.toString();
-    }
-    
-    /**
-     * Poistaa "poistettavienEtuNollienOsoite":tta seuraavasta tavusta ko. osoitteessa olevan
-     * ascii -merkin määrän verran etunollia.
-     * @param teksti
-     * @param poistettavienEtuNollienOsoite
-     * @return 
-     */
-    
-    protected String tavuIlmanEtuNollia(String teksti, int poistettavienEtuNollienOsoite) {
-        int arvo = teksti.charAt(poistettavienEtuNollienOsoite + 1);
-        int poistettavia = teksti.charAt(poistettavienEtuNollienOsoite);
-        
-        String binaarina = muuntaja.binaariEsitys8Bit(arvo);
-        return binaarina.substring(poistettavia);
-    }
-    
-    /**
-     * Palauttaa pakkauksen sisällöstä binääriesityksen os. "poistettavienEtuNollienOsoite + 2" alkaen.
-     * @param teksti
-     * @param poistettavienEtuNollienOsoite
-     * @return 
-     */
-    
-    protected String lisaaMuuTeksti(String teksti, int poistettavienEtuNollienOsoite) {
-        StringBuilder lisaaja = new StringBuilder();
-        
-        for (int i = poistettavienEtuNollienOsoite + 2; i < teksti.length(); i++) {
-            int arvo = teksti.charAt(i);
-            lisaaja.append(muuntaja.binaariEsitys8Bit(arvo));
-        }
-        return lisaaja.toString();
-    }
-         
-    /**
-     * Palauttaa pakkauksen sisällön.
-     * @param pakkaus
-     * @return
-     * @throws FileNotFoundException 
-     */
-    
-    protected String lueTeksti(File pakkaus) throws IOException {
-        Lukija lukija = new Lukija();
-        lukija.lue(pakkaus.getPath());
-        
-        return lukija.getTeksti();
-    }
-
-    /**
-     * Muodostaa polun puretulle tiedostolle (ts. poistaa ".hemi" päätteen).
-     * @param polku
-     * @return 
-     */
-    
-    protected String luotavanTiedostonPolku(String polku) {
-        return polku.substring(0, polku.length() - 5);
     }
 }

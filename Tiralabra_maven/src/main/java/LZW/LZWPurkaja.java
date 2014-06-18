@@ -1,8 +1,20 @@
 package LZW;
 
-public class LZWPurkaja {
+import Apuvalineet.Purkaja;
+
+public class LZWPurkaja extends Purkaja {
     
-    public void pura(String polku) {
-        
+    public LZWPurkaja() {
+        super(".lzw");
+    }
+    
+    @Override
+    protected String puretunTiedostonSisalto(String teksti) {
+        String tekstiBinaarina = tekstiBinaarina(teksti, 0);
+        return kirjoitettavaTeksti(tekstiBinaarina);
+    }
+    
+    protected String kirjoitettavaTeksti(String binaarina) {
+        return "";
     }
 }
