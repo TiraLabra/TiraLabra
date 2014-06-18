@@ -95,7 +95,7 @@ public class BinaariMuuntaja {
      * @return - "bittijonon" ascii-koodi
      */
     
-    protected char asciiMerkkina(String bittijono) {
+    public char asciiMerkkina(String bittijono) {
         int luku = kokonaisLukuna(bittijono);
         
         char[] kirjain = Character.toChars(luku);

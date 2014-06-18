@@ -58,7 +58,7 @@
                     <param>KayttamattomatLuokat.TekstinLukija</param>
                     
                     <param>LZW.LZWLukija</param>
-                    <param>LZW.LZWPakkaaja</param>
+                    <param>LZW.LZWPakkaamisenOhjaus</param>
                     <param>LZW.LZWPurkaja</param>
                     
                     <param>Tietorakenteet.HajautusTaulu</param>
@@ -80,7 +80,7 @@
                     <param>KayttamattomatLuokat.TekstinLukijaTest</param>
                     
                     <param>LZW.LZWLukijaTest</param>
-                    <param>LZW.LZWPakkaajaTest</param>
+                    <param>LZW.LZWPakkaamisenOhjausTest</param>
                     <param>LZW.LZWPurkajaTest</param>
                     
                     <param>Tietorakenteet.HajautusTauluTest</param>

@@ -10,15 +10,22 @@ public class LZWLukija {
     private BinaariMuuntaja muuntaja;
     private DataInputStream lukija;
     private StringBuilder teksti;
-    private HajautusTaulu asciiKoodisto;
-    private HajautusTaulu laajennettuKoodisto;
-    private int index;
+    private HajautusTaulu ascii;
+    private HajautusTaulu laaj;
     
     public LZWLukija() {
         this.teksti = new StringBuilder();
         this.muuntaja = new BinaariMuuntaja();
-        this.index = 0;
-        alustaHajTaulu();
+        alustaAsciiKoodistot();
+    }
+    
+    private void alustaAsciiKoodistot() {
+        this.ascii = new HajautusTaulu();
+        for (int i = 0; i < 256; i++) {
+            ascii.lisaa((char) i + "", muuntaja.binaariEsitys8Bit(i));
+        }
+        
+        this.laaj = new HajautusTaulu();
     }
     
     public String getTeksti() {
@@ -26,25 +33,11 @@ public class LZWLukija {
     }
     
     protected HajautusTaulu getAsciiKoodisto() {
-        return this.asciiKoodisto;
+        return this.ascii;
     }
     
     protected HajautusTaulu getLaajennettuKoodisto() {
-        return this.laajennettuKoodisto;
-    }
-    
-    protected int getIndex() {
-        return this.index;
-    }
-    
-    private void alustaHajTaulu() {
-        this.asciiKoodisto = new HajautusTaulu();
-        
-        for (int i = 0; i < 256; i++) {
-            asciiKoodisto.lisaa((char) i + "", muuntaja.binaariEsitys8Bit(i));
-            index++;
-        }
-        this.laajennettuKoodisto = new HajautusTaulu();
+        return this.laaj;
     }
     
     public void lue(String polku) throws IOException {
@@ -73,7 +66,7 @@ public class LZWLukija {
         String merkki = (char) arvo + "";
         String seuraava = nykyinen + merkki;
         
-        if (! nykyinen.isEmpty() && ! laajennettuKoodisto.sisaltaaAvaimen(seuraava)) {
+        if (! nykyinen.isEmpty() && ! laaj.sisaltaaAvaimen(seuraava)) {
             lisaaKoodistoon(seuraava);
             lisaaBittijonoTekstiin(nykyinen);
                 
@@ -85,45 +78,26 @@ public class LZWLukija {
     }
     
     protected void lisaaKoodistoon(String avain) {
-        laajennettuKoodisto.lisaa(avain, muuntaja.binaariEsitys(index));
-        index++;
+        int arvoja = new LZWYleisMetodeja().arvoja(ascii, laaj);
+        laaj.lisaa(avain, muuntaja.binaariEsitys(arvoja));
     }
     
     protected void lisaaBittijonoTekstiin(String nykyinen) {
-        if (laajennettuKoodisto.sisaltaaAvaimen(nykyinen)) {
-            lisaaBittijono(laajennettuKoodisto, nykyinen);
+        if (laaj.sisaltaaAvaimen(nykyinen)) {
+            lisaaBittijono(laaj, nykyinen);
         }
         else {
-            lisaaBittijono(asciiKoodisto, nykyinen);
+            lisaaBittijono(ascii, nykyinen);
         }
     }
     
     protected void lisaaBittijono(HajautusTaulu koodisto, String lisattava) {
-        StringBuilder builder = new StringBuilder();
-        String arvo = koodisto.getArvo(lisattava);
-        
-        while (builder.toString().length() + arvo.length() < merkkienPituus()) {
-            builder.append((char) 0);
-        }
-        
-        builder.append(arvo);
-        teksti.append(builder.toString());
+        LZWYleisMetodeja yleis = new LZWYleisMetodeja();
+        String bittijono = yleis.bittijonona(lisattava, ascii, laaj);
+        teksti.append(bittijono);
     }
     
-    
-    protected int  merkkienPituus() {
-        int i = 8;
-        
-        while (true) {
-            double potenssi = Math.pow(2, i);
-            
-            if (potenssi < index) {
-                i++;
-                continue;
-            }
-            return i;
-        }
-    }
+
 //    
 //    protected void lisaaArvojenEteenEtuNolla() {
 //        for (String avain : esitykset.getAvaimet()) {

@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LZWPakkaajaTest {
-    private LZWPakkaaja pakkaaja;
+public class LZWPakkaamisenOhjausTest {
+    private LZWPakkaamisenOhjaus pakkaaja;
     
     @Before
     public void setUp() {
-        this.pakkaaja = new LZWPakkaaja();
+        this.pakkaaja = new LZWPakkaamisenOhjaus();
     }
     
     @Test

@@ -9,12 +9,14 @@ import org.junit.Test;
 
 public class LZWLukijaTest {
     private LZWLukija lukija;
+    private LZWYleisMetodeja yleis;
     private BinaariMuuntaja muuntaja;
     private final String polku = "LZWLukijaTest.txt";
     
     @Before
     public void setUp() {
         this.lukija = new LZWLukija();
+        this.yleis = new LZWYleisMetodeja();
         this.muuntaja = new BinaariMuuntaja();
     }
     
@@ -34,7 +36,7 @@ public class LZWLukijaTest {
             assertEquals((char) i + "", avain);
             assertEquals(muuntaja.binaariEsitys8Bit(i), esitykset.getArvo(avain));
         }
-        assertEquals(256, lukija.getIndex());
+        assertEquals(256, yleis.arvoja(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
     }
     
 //    
@@ -57,7 +59,7 @@ public class LZWLukijaTest {
         lukija = new LZWLukija();
         lukija.lisaaKoodistoon("ab");
         
-        assertEquals(257, lukija.getIndex());
+        assertEquals(257, yleis.arvoja(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
         assertTrue(lukija.getLaajennettuKoodisto().sisaltaaAvaimen("ab"));
     }
     
@@ -151,9 +153,9 @@ public class LZWLukijaTest {
     @Test
     public void merkkienPituus() throws IOException {
         lukija = new LZWLukija();
-        assertEquals(8, lukija.merkkienPituus());
+        assertEquals(8, yleis.merkkienPituus(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
         
         lukija.lue(polku);
-        assertEquals(9, lukija.merkkienPituus());
+        assertEquals(9, yleis.merkkienPituus(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
     }
 }
