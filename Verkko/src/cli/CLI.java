@@ -30,7 +30,7 @@ public class CLI {
             Labyrintti2D labyrintti;
             Heuristiikka h;
             Astar as;
-            System.out.println("Polunetsintä ja labyrintin generointi!\n(Q lopettaa)");
+            System.out.println("Polunetsinta ja labyrintin generointi!\n(Q lopettaa)");
             String nextLine = s.nextLine();
             if (nextLine.toUpperCase().startsWith("Q")) {
                 break;
@@ -46,7 +46,7 @@ public class CLI {
                 int leveys = lueKoko(leveysInput);
 
                 labyrintti = new Labyrintti2D(korkeus, leveys);
-                System.out.print("Läbyrintitin: [R]ecursiveBacktracker, [P]rimin algoritmi: ");
+                System.out.print("Labyrintitin: [R]ecursiveBacktracker, [P]rimin algoritmi: ");
 
                 char eka = s.nextLine().toUpperCase().toCharArray()[0];
                 Solmu[][] solmut = labyrintti.getSolmut();
@@ -68,7 +68,7 @@ public class CLI {
                 solmut = labyrintti.getSolmut();
                 long ero = System.currentTimeMillis() - aika;
                 System.out.println("Labyrintitys suoritettu " + ero + "ms");
-                System.out.print("A* vai Djikstra?");
+                System.out.print("A* vai Djikstra? ");
 
                 eka = s.nextLine().toUpperCase().toCharArray()[0];
                 switch (eka) {

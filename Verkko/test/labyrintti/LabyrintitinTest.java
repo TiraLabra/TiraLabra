@@ -94,11 +94,11 @@ public class LabyrintitinTest {
      */
     @Test
     public void testLuoNaapuruudet() {
-        System.out.println("luoNaapuruudet");
+
         Solmu nyt = new Solmu(new Double[1]);
         Solmu naapuri = new Solmu(new Double[1]);
         Labyrintitin.luoNaapuruudet(nyt, naapuri);
-        // TODO review the generated test code and remove the default call to fail.
+
         assertTrue(nyt.onkoNaapuri(naapuri));
         assertTrue(naapuri.onkoNaapuri(nyt));
     }
