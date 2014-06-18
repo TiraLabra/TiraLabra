@@ -117,17 +117,18 @@ public class AStar {
             
             // Käydään läpi tarkasteltavan kaikki naapurit:
             for (int i = 0; i < naapurit.koko(); i++ ) {
-                if (kasitteleNaapuri( (Node) naapurit.palautaKohdasta(i), tarkastettava)) continue;
+                kasitteleNaapuri( (Node) naapurit.palautaKohdasta(i), tarkastettava);
             }
         }
     }
 
-    private boolean kasitteleNaapuri(Node naapuri, Node tarkastettava) {
+    private void kasitteleNaapuri(Node naapuri, Node tarkastettava) {
         naapuri.setLisattyNaapureihin(true);    // Debug-tarkoitukseen tietoa onko nodea otettu naapureihin mukaan..
         if (debug) System.out.println("  Naapuri: " + naapuri);
-        //Lasketaan naapurin etäisyys tätä tarkastelukautta
-        int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
+        
+        int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);     // Uusi mahdollinen kustannus tähän naapuriin
         if (debug) System.out.println("    UusiG = " + uusiG);
+        
         if (kaydyt.sisaltaako(naapuri)) {
             // Jos naapuri on jo käydyissä
             if (uusiG < naapuri.getEtaisyysAlusta()) {      // ... katsotaan onko uutta kautta pienempi kustannus.
@@ -138,7 +139,7 @@ public class AStar {
                 if (debug) System.out.println("    Vanha kustannusarvo oli pienempi...");
             }
             if (debug) System.out.println("    on jo käyty, ei tehdä mitään.");
-            return true; // ... muuten skipataan.
+            return;
         }
         if (!kaymatta.sisaltaa(naapuri)) {
             if (debug) System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
@@ -148,7 +149,6 @@ public class AStar {
             kaymatta.lisaa(naapuri);
             if (debug) System.out.println(naapuri.toString());
         }
-        return false;
     }
     
     /**
