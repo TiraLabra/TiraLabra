@@ -25,7 +25,6 @@ public class Router {
 
 	private final int LINE_CHANGE_PENALTY = 100;
 	private final double WALK_DISTANCE = 100;
-	private final double WALK_PENALTY = 20; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
 	private final double TIME_MODIFIER = 100;
 	private final double BUS_COST = 10; // It is better to travel with rails 

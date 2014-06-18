@@ -43,8 +43,7 @@ public class RouterResult {
 				if (cameFromStop.get(station).getService() != null)
 					lineNumber = cameFromStop.get(station).getService().getLineNumber();
 				
-				System.out.println(station.getName() + " " + timeAtStation.get(station) 
-						+ " " + lineNumber);
+				System.out.format("%25s%5s%6s\n", new Object[] {station.getName(), timeAtStation.get(station), lineNumber});
 			}
 			else
 				System.out.println(station.getName());
