@@ -33,8 +33,8 @@ public class Main {
         a2.luoPieniTestitaulukko();
         
         //Alue kuvasta:
-        //Kuvalukija kl = new Kuvalukija("100x100.bmp");
-        Kuvalukija kl = new Kuvalukija("kumpula.bmp");
+        Kuvalukija kl = new Kuvalukija("100x100.bmp");
+        //Kuvalukija kl = new Kuvalukija("kumpula.bmp");
         Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
         kuvaAlue.setAlueenKuva(kl.getKuva());
         
