@@ -165,8 +165,8 @@ public class BoardTest {
 
             BigInteger original = hasher.hash(board.getBoard());
 
-            long move = ai.selectRandomMove();
-            board.placeTile(ai.selectRandomMove());
+            long move = ai.selectRandomMove(board.playerInTurn());
+            board.placeTile(ai.selectRandomMove(board.playerInTurn()));
             board.undo();
 
             assertEquals(original, hasher.hash(board.getBoard()));
@@ -210,7 +210,7 @@ public class BoardTest {
         for (int i = 0; i < 40; i++) {
             assertEquals(player, board.playerInTurn());
 
-            board.placeTile(ai.selectRandomMove());
+            board.placeTile(ai.selectRandomMove(board.playerInTurn()));
             player = Player.opposing(player);
         }
     }
@@ -219,7 +219,7 @@ public class BoardTest {
     public void incrementalHashesWork() {
         ZobristHash hasher = board.getHasher();
         for (int i = 0; i < 40; i++) {
-            board.placeTile(ai.selectRandomMove());
+            board.placeTile(ai.selectRandomMove(board.playerInTurn()));
 
             BigInteger excepted = hasher.hash(board.getBoard());
             assertEquals(excepted, board.getHash());

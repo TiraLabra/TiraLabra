@@ -24,7 +24,7 @@ public class AIPerformance {
         long max = Long.MIN_VALUE;
         long min = Long.MAX_VALUE;
         long sum = 0;
-        int operations = 3;
+        int operations = 1;
         int moves = 0;
 
         System.out.println("AI time taken per turn: ");

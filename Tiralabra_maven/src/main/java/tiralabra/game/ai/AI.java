@@ -110,22 +110,22 @@ public class AI {
      */
     public long move() {
         if (board.getNumberOfPieces() < 8) {
-            return selectRandomMove();
+            return selectRandomMove(board.playerInTurn());
         }
 
         Move move = new Move(-1, -1, 0);
-        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, determineStrategy(), true);
+        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, determineStrategy(), true, board.playerInTurn());
 
         return Board.point(move.x, move.y);
     }
 
     /**
-     * Randomly chooses a move from all the available moves and returns it.
-     *
+     * Randomly chooses a move from all the available moves and return
+     * @param playerInTurn
      * @return
      */
-    public long selectRandomMove() {
-        ArrayList<Move> moves = getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false);
+    public long selectRandomMove(Player playerInTurn) {
+        ArrayList<Move> moves = getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, playerInTurn);
         Move move = moves.get(new Random().nextInt(moves.size()));
         return Board.point(move.x, move.y);
     }
@@ -165,17 +165,18 @@ public class AI {
      * @param strategy
      * @param orderMoves Whether moves should be ordered by conducting a 2-depth
      * search. Used to avoid stack overflow.
+     * @param playerInTurn
      * @return the alpha or beta value of this node.
      */
-    public int search(Move move, int depth, int alpha, int beta, boolean max, Strategy strategy, boolean orderMoves) {
+    public int search(Move move, int depth, int alpha, int beta, boolean max, Strategy strategy, boolean orderMoves, Player playerInTurn) {
         //Reached maximum depth or end of the game, return value of the board.
         if (depth == 0 || board.gameOver()) {
-            return boardValue(strategy);
+            return boardValue(strategy, playerInTurn);
         }
 
-        ArrayList<Move> moves = getAllLegalMovesInOrder(strategy, orderMoves);
+        ArrayList<Move> moves = getAllLegalMovesInOrder(strategy, orderMoves, playerInTurn);
 
-        return prune(moves, depth, alpha, beta, max, strategy, move);
+        return prune(moves, depth, alpha, beta, max, strategy, move, playerInTurn);
     }
 
     /**
@@ -192,14 +193,14 @@ public class AI {
      * @param move
      * @return
      */
-    private int prune(ArrayList<Move> moves, int depth, int alpha, int beta, boolean max, Strategy strategy, Move move) {
+    private int prune(ArrayList<Move> moves, int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Player playerInTurn) {
         for (Move node : moves) {
             placeMove(node);
 
             if (max) {
-                alpha = maximizingPlayer(depth, alpha, beta, max, strategy, move, node);
+                alpha = maximizingPlayer(depth, alpha, beta, max, strategy, move, node, playerInTurn);
             } else {
-                beta = minimizingPlayer(depth, alpha, beta, max, strategy, move, node);
+                beta = minimizingPlayer(depth, alpha, beta, max, strategy, move, node, playerInTurn);
             }
 
             board.undo();
@@ -243,8 +244,8 @@ public class AI {
      * @param child
      * @return
      */
-    private int minimizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node) {
-        int newBeta = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false);
+    private int minimizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player playerInTurn) {
+        int newBeta = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false, playerInTurn);
 
         if (newBeta < beta) {
             beta = newBeta;
@@ -267,8 +268,8 @@ public class AI {
      * @param node
      * @return
      */
-    private int maximizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node) {
-        int newAlpha = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false);
+    private int maximizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player playerInTurn) {
+        int newAlpha = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false, playerInTurn);
 
         if (newAlpha > alpha) {
             alpha = newAlpha;
@@ -287,13 +288,13 @@ public class AI {
      * or not just ordered by pieces flipped. Prevents stack overflow.
      * @return moves
      */
-    public ArrayList<Move> getAllLegalMovesInOrder(Strategy strategy, boolean orderMoves) {
+    public ArrayList<Move> getAllLegalMovesInOrder(Strategy strategy, boolean orderMoves, Player playerInTurn) {
         ArrayList<Move> moves = new ArrayList<>();
 
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
                 int flips = board.tryTile(x, y);
-                addMove(orderMoves, x, y, strategy, flips, moves);
+                addMove(orderMoves, x, y, strategy, flips, moves, playerInTurn);
             }
         }
 
@@ -317,9 +318,9 @@ public class AI {
      * @param flips
      * @param moves
      */
-    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, int flips, ArrayList<Move> moves) {
+    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, int flips, ArrayList<Move> moves, Player playerInTurn) {
         if (flips > 0) {
-            int value = determineValue(orderMoves, x, y, strategy, flips);
+            int value = determineValue(orderMoves, x, y, strategy, flips, playerInTurn);
             Move move = new Move(x, y, value);
             moves.add(move);
         }
@@ -336,11 +337,11 @@ public class AI {
      * @param flips
      * @return
      */
-    private int determineValue(boolean orderMoves, int x, int y, Strategy strategy, int flips) {
+    private int determineValue(boolean orderMoves, int x, int y, Strategy strategy, int flips, Player playerInTurn) {
         int value = 0;
         if (orderMoves) {
             board.placeTile(x, y);
-            value = search(new Move(0, 0, 0), 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, false);
+            value = search(new Move(0, 0, 0), 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, false, playerInTurn);
             board.undo();
         } else {
             value = flips;
@@ -354,17 +355,18 @@ public class AI {
      * determined value of held pieces.
      *
      * @param strategy
+     * @param playerInTurn
      * @return value of board.
      */
-    public int boardValue(Strategy strategy) {
+    public int boardValue(Strategy strategy, Player playerInTurn) {
         int pieceDifference = board.blackPieces() - board.whitePieces();
-        if (board.playerInTurn() == Player.WHITE) {
+        if (board.playerInTurn() == Player.opposing(playerInTurn)) {
             pieceDifference = -pieceDifference;
         }
 
         switch (strategy) {
             case MAXIMIZEVALUE:
-                return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld();
+                return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld(playerInTurn);
             default:
                 return pieceDifference;
         }
@@ -374,9 +376,10 @@ public class AI {
      * Calculates value of the current board based on the pieces the given
      * player and their opponent hold.
      *
+     * @param playerInTurn
      * @return value of a board.
      */
-    public int calculateValueOfBoardBasedOnPiecesHeld() {
+    public int calculateValueOfBoardBasedOnPiecesHeld(Player playerInTurn) {
         int heuristic = 0;
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
@@ -385,7 +388,7 @@ public class AI {
                 if (board.getTile(x, y) != Player.NONE) {
                     value = pieceValues[y][x] + around(x, y);
                 }
-                if (board.getTile(x, y) == Player.opposing(board.playerInTurn())) {
+                if (board.getTile(x, y) == Player.opposing(playerInTurn)) {
                     value = -value;
                 }
 
