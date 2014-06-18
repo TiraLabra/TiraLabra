@@ -15,15 +15,6 @@ public class Main {
         
         System.out.println("Tiralabra alpha version");
         
-//        Node n1 = new Node(1,1,0);
-//        Node n2 = new Node(3,3,0);
-//        n1.setEtaisyysAlusta(1);
-//        n2.setEtaisyysAlusta(3);
-//        
-//        int vertailu = n1.compareTo(n2);
-//        
-//        System.out.println(vertailu);
-        
         //16x16-testialue
         Alue a1 = new Alue(16);
         a1.luoEsimerkkiTaulukko();
@@ -80,7 +71,19 @@ public class Main {
         
         System.out.println("-------");
         
-//        Node n0 = new Node(0,0,1);
+        if (tulostaKuva) {
+            Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+            kn.muodostaKuvaanPolku(reitti);
+            kn.naytaKuva();
+        }
+        
+        // Testauskoodia sekalaiseen debuggaukseen:
+        //testausta();
+        
+    }
+    private void testausta() {
+
+        //        Node n0 = new Node(0,0,1);
 //        Node n1 = new Node(1,0,1);
 //        Node n2 = new Node(2,0,1);
 //        Node n3 = new Node(3,0,1);
@@ -110,11 +113,15 @@ public class Main {
 //        k.lisaa(nu);
 //        
 //        System.out.println(k.toString());
+
+//        Node n1 = new Node(1,1,0);
+//        Node n2 = new Node(3,3,0);
+//        n1.setEtaisyysAlusta(1);
+//        n2.setEtaisyysAlusta(3);
+//        
+//        int vertailu = n1.compareTo(n2);
+//        
+//        System.out.println(vertailu);
         
-        if (tulostaKuva) {
-            Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
-            kn.muodostaKuvaanPolku(reitti);
-            kn.naytaKuva();
-        }
     }
 }
