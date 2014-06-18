@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import nmd5
 import unittest
 import random
@@ -95,6 +96,24 @@ class TestBlockSplit(unittest.TestCase):
 		split = self.m.splitToBlocks(self.t1, 16)
 
 		self.assertEqual(len(split), 32)
+
+class TestAgainstHashlib(unittest.TestCase):
+	def setUp(self):
+		import nmd5
+		import hashlib
+		import random
+		self.m = hashlib.md5()
+		self.n = nmd5.new()
+
+	def test_random_strings_digest(self):
+		for i in range(0, 50):
+			s = ('%06x' % random.randrange(16**6))
+			if i % 6 == 0:
+				s += 'öäå'
+			self.m.update(s.encode('utf-8'))
+			self.n.update(s)
+			self.assertEqual(self.m.digest(), self.n.digest())
+			self.assertEqual(self.m.hexdigest(), self.n.hexdigest())
 
 
 
