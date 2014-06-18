@@ -109,10 +109,12 @@ public class CLI {
 
             if (koko < 2) {
                 System.out.println("Liian pieni!");
+                korkeusInput = s.nextLine();
                 continue;
             }
             if (koko > 500) {
                 System.out.println("Liian iso!");
+                korkeusInput = s.nextLine();
                 continue;
             }
             break;
