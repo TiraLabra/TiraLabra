@@ -27,7 +27,7 @@ public class Kuvalukija {
     public Kuvalukija(String tiedostonimi) {
         try {
             kuva = ImageIO.read(new File(aluehakemisto + tiedostonimi));
-            System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
+            //System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
         }
         catch (IOException e) {
             System.out.println("Virhe kuvatiedostoa luettaessa!");

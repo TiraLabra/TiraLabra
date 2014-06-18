@@ -56,7 +56,7 @@ public class AStar {
     /**
      * boolean-muuttuja, jolla kontrolloidaan debug-tarkoitukseen tehtäviä tulostuksia.
      */
-    private final static boolean debug = true;
+    private final static boolean debug = false;
 
     public AStar(Heuristiikka heuristiikka) {
         kaydyt = new ArrayListOma();
@@ -255,7 +255,7 @@ public class AStar {
         String yv = "";
         
         yv += "Laskentaan kulunut aika: " + kokonaisaika + " ms\n";
-        yv += "Laskennassa tutkittuja askelia: " + askelia + "\n";
+        //yv += "Laskennassa tutkittuja askelia: " + askelia + "\n";
         yv += "Toteutuneen polun pituus: " + this.kuljettuReitti.koko();
         
         return yv;

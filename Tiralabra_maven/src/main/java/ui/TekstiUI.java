@@ -174,7 +174,8 @@ public class TekstiUI {
     }
 
     private void tulostaAlueentiedot() {
-        System.out.println("  Alue: Alue on valittu, TODO: parempi muotoilu");
+        System.out.println("  Alue: " + alue.getKorkeus() + "x" + alue.getLeveys());
+        System.out.println("    alku: " + alkurivi+"x"+alkusarake+", loppu: " + loppurivi+"x"+loppusarake);
     }
 
     //TODO:
