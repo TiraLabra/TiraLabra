@@ -71,12 +71,15 @@ public class AStar {
     
     /**
      * Varsinaisen AStar-haun toteuttava metodi.
-     * EI TOIMI, VASTA ALUSTAVA RUNKO
      * @param a
      * @param alku
      * @param loppu 
+     * @return kertoo löytyikö reitti.
      */
-    public void AStarHaku(Alue a, Node alku, Node loppu) {
+    public boolean AStarHaku(Alue a, Node alku, Node loppu) {
+        
+        if (!hakuKelvollinen(a, alku, loppu))
+            return false;
         
         if (debug) System.out.println("Alkunode: " + alku + "\n" + "Loppunode: " + loppu);
         long alkuaika = System.currentTimeMillis();
@@ -89,13 +92,6 @@ public class AStar {
         alku.setEtaisyysAlusta(0);
         alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
         
-        // HUOM!!
-        // Tätä ei ehditty vielä siistimään, logiikkaongelman vuoksi
-        // tämän kimpussa meni kauemmin kuin oletin... Jatkossa koodi        
-        // tulee refaktoroitua selkeämmäksi. Nyt vielä mukana debuggausta
-        // helpottavia tulostuksiakin, jotka lähtevät pois.
-        //
-        
         while (!kaymatta.onTyhja()) {
             Node tarkastettava = kaymatta.poistaPienin();
             askelia++;
@@ -105,7 +101,7 @@ public class AStar {
             if (tarkastettava == loppu) {               // Jos päädyttiin loppualkioon, poistutaan.
                 rakennaReitti(loppu);
                 kokonaisaika = System.currentTimeMillis() - alkuaika;
-                return;
+                return true;
             }
             
             kaydyt.lisaa(tarkastettava);                // Nykyinen lisätään käytyjen joukkoon.
@@ -120,6 +116,7 @@ public class AStar {
                 kasitteleNaapuri( (Node) naapurit.palautaKohdasta(i), tarkastettava);
             }
         }
+        return false;
     }
 
     private void kasitteleNaapuri(Node naapuri, Node tarkastettava) {
@@ -259,6 +256,22 @@ public class AStar {
         yv += "Toteutuneen polun pituus: " + this.kuljettuReitti.koko();
         
         return yv;
+    }
+    
+    private boolean hakuKelvollinen(Alue a, Node alku, Node loppu) {
+        
+        // Tarkastetaan että sekä alku- että loppusolmu ovat kuljettavissa.
+        if (!alku.kuljettavissa() || !loppu.kuljettavissa())
+            return false;
+        
+        // Tarkastetaan että alku ja loppu ovat alueen rajojen sisällä.
+        if (alku.getRivi() > a.getKorkeus() ||
+                alku.getSarake() > a.getLeveys() ||
+                loppu.getRivi() > a.getKorkeus() ||
+                loppu.getSarake() > a.getLeveys())
+            return false;
+        
+        return true;
     }
     
 }
