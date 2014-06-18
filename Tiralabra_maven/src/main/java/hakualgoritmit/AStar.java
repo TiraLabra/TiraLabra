@@ -96,65 +96,52 @@ public class AStar {
             Node tarkastettava = kaymatta.poistaPienin();
             askelia++;
             
-            //Debug-tulostusta
-            if (debug)
-                System.out.println("---------\nTark: " + tarkastettava.toString());
+            if (debug) System.out.println("---------\nTark: " + tarkastettava.toString());
             
-            // Jos löydettiin, poistutaan;
-            if (tarkastettava == loppu) {
+            if (tarkastettava == loppu) {               // Jos päädyttiin loppualkioon, poistutaan.
                 rakennaReitti(loppu);
-                long loppuaika = System.currentTimeMillis();
-                kokonaisaika = loppuaika - alkuaika;
+                kokonaisaika = System.currentTimeMillis() - alkuaika;
                 return;
             }
             
-            kaydyt.lisaa(tarkastettava);
-            if (debug)
-                System.out.println("Käytyjä tähän asti:" + kaydyt.koko());
+            kaydyt.lisaa(tarkastettava);                // Nykyinen lisätään käytyjen joukkoon.
+            if (debug) System.out.println("Käytyjä tähän asti:" + kaydyt.koko());
             
             // Selvitetään tarkasteltavan noden naapurit:
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
-            if (debug)
-                System.out.println("Naapureita " + naapurit.koko() + " kpl.");
+            if (debug) System.out.println("Naapureita " + naapurit.koko() + " kpl.");
             
             // Käydään läpi tarkasteltavan kaikki naapurit:
             for (int i = 0; i < naapurit.koko(); i++ ) {
                 Node naapuri = (Node)naapurit.palautaKohdasta(i);
                 naapuri.setLisattyNaapureihin(true);    // Debug-tarkoitukseen tietoa onko nodea otettu naapureihin mukaan..
-                if (debug)
-                    System.out.println("  Naapuri: " + naapuri);
+                if (debug) System.out.println("  Naapuri: " + naapuri);
                 
                 //Lasketaan naapurin etäisyys tätä tarkastelukautta
                 int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);
-                if (debug)
-                    System.out.println("    UusiG = " + uusiG);
+                if (debug) System.out.println("    UusiG = " + uusiG);
                 
                 
                 if (kaydyt.sisaltaako(naapuri)) {                   // Jos naapuri on jo käydyissä
                     if (uusiG < naapuri.getEtaisyysAlusta()) {      // ... katsotaan onko uutta kautta pienempi kustannus.
                         naapuri.setEtaisyysAlusta(uusiG);
                         naapuri.setEdellinen(tarkastettava);
-                        if (debug)
-                            System.out.println("    Noden kustannusarvoa päivitettiin.");
+                        if (debug) System.out.println("    Noden kustannusarvoa päivitettiin.");
                     } else {
-                        if (debug)
-                            System.out.println("    Vanha kustannusarvo oli pienempi...");
+                        if (debug) System.out.println("    Vanha kustannusarvo oli pienempi...");
                     }
                     
-                    if (debug)
-                        System.out.println("    on jo käyty, ei tehdä mitään.");
+                    if (debug) System.out.println("    on jo käyty, ei tehdä mitään.");
                     continue;                                       // ... muuten skipataan.
                 }
                 
                 if (!kaymatta.sisaltaa(naapuri)) {
-                    if (debug)
-                        System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
+                    if (debug) System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
                     naapuri.setEdellinen(tarkastettava);
                     naapuri.setEtaisyysAlusta(uusiG);
                     naapuri.setEtaisyysMaaliin(uusiG + heuristiikka.laskeArvio(naapuri, loppu));
                     kaymatta.lisaa(naapuri);
-                    if (debug)
-                        System.out.println(naapuri.toString());
+                    if (debug) System.out.println(naapuri.toString());
                 }
                 
             }
