@@ -116,7 +116,7 @@ class TestAgainstHashlib(unittest.TestCase):
 			self.assertEqual(self.m.hexdigest(), self.n.hexdigest())
 
 	def test_long_string_digest(self):
-		string = "abc"*7000
+		string = "abc"*700
 		self.m.update(string.encode('utf-8'))
 		self.n.update(string)
 		self.assertEqual(self.m.digest(), self.n.digest())

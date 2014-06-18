@@ -6,17 +6,7 @@ The structure of the program is as follows:
 * The NMD5 module (which contains the class)
 * The public module methods **new()** and **md5()**
 * The private class methods **__hash()**, **functions FGHI**, **toBinaryString()**, **createWordArray()**, **pad()**, **pad64B()**, **splitToBlocks()**
-* The public class methods **update()**, **digest()**, **copy()**, **hexdigest()**, **digest_size**"""Function for round 1"""
-
-	r = a + F(b,c,d)
-	r = r + x
-	r = r + ac
-	r = r & 0xffffffff # keep r as an unsigned integer
-	r = rotateLeft(r, s)
-	r = r & 0xffffffff
-	r = r + b
-
-	return r & 0xffffffff
+* The public class methods **update()**, **digest()**, **copy()**, **hexdigest()**, **digest_size**
 
 
 Sources used:
