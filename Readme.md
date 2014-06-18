@@ -18,15 +18,15 @@ The goal is to implement the MD5 digest calculation module for strings in verbat
 This includes the following methods:
 
 - [x] md5.digest_size
-- [x] md5.new([arg]) (no arg yet)
-- [ ] md5.md5([arg])
+- [x] md5.new([arg])
+- [x] md5.md5([arg])
 - [x] md5.update(arg)
 - [x] md5.digest()
 - [x] md5.hexdigest()
-- [ ] md5.copy()
+- [x] md5.copy()
 
-The module will be deployed as a custom importable class or if possible as a Python egg.
+The module will be deployed as a custom importable class.
 
 The implementation uses a linked list structure for storing the input string.
 
-https://docs.python.org/2/library/md5.html includes the detailed specification.
+https://docs.python.org/2/library/md5.html includes the more detailed module specification.
