@@ -233,14 +233,8 @@ class NMD5:
 	
 	def toBinaryString(self, string):
 		"""Converts a given string into a binary representation of itself"""
-		bytes = bytearray(string.encode('utf-8'))
 
-		res = ""
-
-		for byte in bytes:
-			res += "{:08b}".format(byte)
-
-		return res
+		return ''.join("{:08b}".format(byte) for byte in bytearray(string.encode('utf-8')))
 
 	def pad(self, bstring):
 		"""Adds padding to binary string be congruent to 448 mod 512"""
