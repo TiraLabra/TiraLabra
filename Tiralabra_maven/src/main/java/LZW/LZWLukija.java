@@ -1,7 +1,7 @@
 package LZW;
 
 import Apuvalineet.BinaariMuuntaja;
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,7 +10,8 @@ public class LZWLukija {
     private BinaariMuuntaja muuntaja;
     private DataInputStream lukija;
     private StringBuilder teksti;
-    private HajTaulu esitykset;
+    private HajautusTaulu asciiKoodisto;
+    private HajautusTaulu laajennettuKoodisto;
     private int index;
     
     public LZWLukija() {
@@ -24,8 +25,12 @@ public class LZWLukija {
         return this.teksti.toString();
     }
     
-    public HajTaulu getEsitykset() {
-        return this.esitykset;
+    protected HajautusTaulu getAsciiKoodisto() {
+        return this.asciiKoodisto;
+    }
+    
+    protected HajautusTaulu getLaajennettuKoodisto() {
+        return this.laajennettuKoodisto;
     }
     
     protected int getIndex() {
@@ -33,12 +38,13 @@ public class LZWLukija {
     }
     
     private void alustaHajTaulu() {
-        this.esitykset = new HajTaulu();
+        this.asciiKoodisto = new HajautusTaulu();
         
         for (int i = 0; i < 256; i++) {
-            esitykset.lisaa((char) i + "", muuntaja.binaariEsitysEtuNollilla8Bit(i));
+            asciiKoodisto.lisaa((char) i + "", muuntaja.binaariEsitys8Bit(i));
             index++;
         }
+        this.laajennettuKoodisto = new HajautusTaulu();
     }
     
     public void lue(String polku) throws IOException {
@@ -46,41 +52,66 @@ public class LZWLukija {
         StringBuilder lisattava = new StringBuilder();
         
         while (true) {
+            lisattava = lisaaMerkki(lukija.read(), lisattava);
             
-            int arvo = lukija.read();
-            
-            if (arvo == -1) {
+            if (lisattava == null) {
                 break;
             }
-            lisattava = lisaaMerkki((char) arvo + "", lisattava);
             
         }
         lukija.close();
     }
     
-    protected StringBuilder lisaaMerkki(String merkki, StringBuilder lisattava) {
-        teksti.append(merkki);
-        lisattava.append(merkki);
+    protected StringBuilder lisaaMerkki(int arvo, StringBuilder lisattava) {
+        String nykyinen = lisattava.toString();
         
-        if (! esitykset.sisaltaaAvaimen(lisattava.toString())) {
-            lisaaAvain(lisattava.toString());
-
-            lisattava = new StringBuilder();
-            lisattava.append(merkki);
+        if (arvo == -1) {
+            lisaaBittijonoTekstiin(nykyinen);
+            return null;
         }
+
+        String merkki = (char) arvo + "";
+        String seuraava = nykyinen + merkki;
+        
+        if (! nykyinen.isEmpty() && ! laajennettuKoodisto.sisaltaaAvaimen(seuraava)) {
+            lisaaKoodistoon(seuraava);
+            lisaaBittijonoTekstiin(nykyinen);
+                
+            lisattava = new StringBuilder();
+        }
+        
+        lisattava.append(merkki);
         return lisattava;
     }
     
-    protected void lisaaAvain(String avain) {
-        esitykset.lisaa(avain, muuntaja.binaariEsitysEtuNollilla(index));
+    protected void lisaaKoodistoon(String avain) {
+        laajennettuKoodisto.lisaa(avain, muuntaja.binaariEsitys(index));
         index++;
-            
-        if (indexKahdenPotenssi()) {
-            lisaaArvojenEteenEtuNolla();
+    }
+    
+    protected void lisaaBittijonoTekstiin(String nykyinen) {
+        if (laajennettuKoodisto.sisaltaaAvaimen(nykyinen)) {
+            lisaaBittijono(laajennettuKoodisto, nykyinen);
+        }
+        else {
+            lisaaBittijono(asciiKoodisto, nykyinen);
         }
     }
     
-    protected boolean indexKahdenPotenssi() {
+    protected void lisaaBittijono(HajautusTaulu koodisto, String lisattava) {
+        StringBuilder builder = new StringBuilder();
+        String arvo = koodisto.getArvo(lisattava);
+        
+        while (builder.toString().length() + arvo.length() < merkkienPituus()) {
+            builder.append((char) 0);
+        }
+        
+        builder.append(arvo);
+        teksti.append(builder.toString());
+    }
+    
+    
+    protected int  merkkienPituus() {
         int i = 8;
         
         while (true) {
@@ -88,16 +119,15 @@ public class LZWLukija {
             
             if (potenssi < index) {
                 i++;
+                continue;
             }
-            else {
-                return potenssi == index;
-            }
+            return i;
         }
     }
-    
-    protected void lisaaArvojenEteenEtuNolla() {
-        for (String avain : esitykset.getAvaimet()) {
-            esitykset.lisaa(avain, (char) 0 + esitykset.getArvo(avain));
-        }
-    }
+//    
+//    protected void lisaaArvojenEteenEtuNolla() {
+//        for (String avain : esitykset.getAvaimet()) {
+//            esitykset.lisaa(avain, (char) 0 + esitykset.getArvo(avain));
+//        }
+//    }
 }

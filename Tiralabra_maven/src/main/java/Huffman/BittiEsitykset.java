@@ -1,6 +1,6 @@
 package Huffman;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import Tietorakenteet.Solmu;
 
 /**
@@ -9,17 +9,17 @@ import Tietorakenteet.Solmu;
  */
 
 public class BittiEsitykset {
-    private HajTaulu esitykset;
+    private HajautusTaulu esitykset;
     
     public BittiEsitykset() {
-        this.esitykset = new HajTaulu();
+        this.esitykset = new HajautusTaulu();
     }
     
-    public BittiEsitykset(HajTaulu esitykset) {
+    public BittiEsitykset(HajautusTaulu esitykset) {
         this.esitykset = esitykset;
     }
     
-    public HajTaulu getEsitykset() {
+    public HajautusTaulu getEsitykset() {
         return this.esitykset;
     }
 

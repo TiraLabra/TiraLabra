@@ -1,6 +1,6 @@
 package KayttamattomatLuokat;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -11,15 +11,15 @@ import java.util.Scanner;
  */
 
 public class TekstinLukija {
-    private HajTaulu esiintymat;
+    private HajautusTaulu esiintymat;
     private StringBuilder teksti;
     
     public TekstinLukija() {
-        this.esiintymat = new HajTaulu();
+        this.esiintymat = new HajautusTaulu();
         this.teksti = new StringBuilder();
     }
     
-    public HajTaulu getEsiintymat() {
+    public HajautusTaulu getEsiintymat() {
         return this.esiintymat;
     }
     

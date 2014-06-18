@@ -1,8 +1,9 @@
 
-import Huffman.PakkaamisenOhjaaja;
-import Huffman.TiedostonPurkaja;
-import LZW.Pakkaaja;
-import Tietorakenteet.HajTaulu;
+import Huffman.HuffmanOhjaus;
+import Huffman.HuffmanPurkaja;
+import LZW.LZWPakkaaja;
+import LZW.LZWPurkaja;
+import Tietorakenteet.HajautusTaulu;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
@@ -14,60 +15,54 @@ import java.util.Scanner;
 public class Main {
     
     public static void main(String[] args) throws IOException {
-        new Pakkaaja().pakkaa("huffman.txt");
 
-//        if (true) {
-//            hajautusAjat();
-//            return;
-//        }
-//
-//        System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
-//        System.out.print("Nimi: ");
-//        
-//        Scanner lukija = new Scanner(System.in);
-//        String polku = lukija.nextLine();
-//        
-//        System.out.println("Haluatko pakata vai purkaa tiedoston?\npakkaa(1)\npura(2)");
-//        
-//        while (true) {
-//            try {
-//                int vastaus = Integer.parseInt(lukija.nextLine());
-//                if (vastaus == 1 || vastaus == 2) {
-//                    
-//                    long ennen = System.currentTimeMillis();
-//                    
-//                    if (vastaus == 1) {
-//                        pakkaa(polku);
-//                    }
-//                    else {
-//                        pura(polku);
-//                    }
-//                    
-//                    long jalkeen = System.currentTimeMillis();
-//                    System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
-//                    
-//                    break;
-//                } 
-//            }
-//            catch (NumberFormatException e) {}
-//            
-//            System.out.println("Sinun tulee vastata joko '1' (pakkaa) tai '2' (pura).");
-//        }
+        System.out.println("Anna käsiteltävän tiedoston nimi joka sij. kansiossa /Tiralabra_maven");
+        System.out.print("Nimi: ");
+        
+        Scanner lukija = new Scanner(System.in);
+        String polku = lukija.nextLine();
+        
+        System.out.println("Haluatko pakata vai purkaa tiedoston?\npakkaa(1)\npura(2)");
+        
+        while (true) {
+            try {
+                int vastaus = Integer.parseInt(lukija.nextLine());
+                if (vastaus == 1 || vastaus == 2) {
+                    
+                    long ennen = System.currentTimeMillis();
+                    
+                    if (vastaus == 1) {
+                        pakkaa(polku);
+                    }
+                    else {
+                        pura(polku);
+                    }
+                    
+                    long jalkeen = System.currentTimeMillis();
+                    System.out.println("Operaatioon kului aikaa " + (jalkeen - ennen) + "ms");
+                    
+                    break;
+                } 
+            }
+            catch (NumberFormatException e) {}
+            
+            System.out.println("Sinun tulee vastata joko '1' (pakkaa) tai '2' (pura).");
+        }
     }
     
     private static void pakkaa(String polku) throws IOException {
-        new PakkaamisenOhjaaja().suoritaPakkaaminen(polku);
+        new HuffmanOhjaus().suoritaPakkaaminen(polku);
     }
     
     private static void pura(String polku) throws IOException {
-        new TiedostonPurkaja().pura(polku);
+        new HuffmanPurkaja().pura(polku);
     }   
 
 
     
     public static void hajautusAjat() {
         HashMap<String, String> hashmap = new HashMap<>();
-        HajTaulu hajautus = new HajTaulu();
+        HajautusTaulu hajautus = new HajautusTaulu();
         
         int maara = 100000;
         

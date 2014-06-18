@@ -12,7 +12,7 @@ import java.io.IOException;
  * muodostetaan kirjoitettava teksti ja kirjoitetaan se.
  */
 
-public class PakkaamisenOhjaaja {
+public class HuffmanOhjaus {
     
     public void suoritaPakkaaminen(String polku) throws IOException {
         Lukija lukija = new Lukija(true);
@@ -24,7 +24,7 @@ public class PakkaamisenOhjaaja {
         BittiEsitykset esitykset = new BittiEsitykset();
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
         
-        TiedostonPakkaaja pakkaaja = new TiedostonPakkaaja();
+        HuffmanPakkaaja pakkaaja = new HuffmanPakkaaja();
         String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), esitykset);
 
         Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".hemi");

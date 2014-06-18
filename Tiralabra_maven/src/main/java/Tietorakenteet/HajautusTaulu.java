@@ -6,14 +6,14 @@ package Tietorakenteet;
  * toinen paikkaa hajautustaulussa.
  */
 
-public class HajTaulu {
+public class HajautusTaulu {
     private Hajautettava[][] taulu;
     
     /**
      * Luo uuden 256-sarakkeisen hajautustaulun.
      */
     
-    public HajTaulu() {
+    public HajautusTaulu() {
         this.taulu = new Hajautettava[256][1];
     }
     

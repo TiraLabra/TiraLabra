@@ -1,7 +1,7 @@
 package Huffman;
 
 import Apuvalineet.Kirjoittaja;
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.File;
 import java.io.IOException;
 import org.junit.After;
@@ -9,14 +9,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TiedostonPurkajaTest {
-    private TiedostonPurkaja purkaja;
+public class HuffmanPurkajaTest {
+    private HuffmanPurkaja purkaja;
     private final String n = (char) 0 + "";
     private final String y = (char) 1 + "";
     
     @Before
     public void setUp() throws IOException {
-        this.purkaja = new TiedostonPurkaja();
+        this.purkaja = new HuffmanPurkaja();
         luoTestiTiedostoJosTarpeen();
     }
     
@@ -97,14 +97,14 @@ public class TiedostonPurkajaTest {
     
     @Test
     public void kirjoitettavaTeksti() {
-        HajTaulu bittijonotJaMerkit = bittijonotJaMerkit();
+        HajautusTaulu bittijonotJaMerkit = bittijonotJaMerkit();
         
         assertTrue(purkaja.kirjoitettavaTeksti("", bittijonotJaMerkit).isEmpty());
         assertEquals("bcadabc", purkaja.kirjoitettavaTeksti(y+n+y+y+n+n+y+y+y+n+y+n+y+y+n, bittijonotJaMerkit));
     }
     
-    private HajTaulu bittijonotJaMerkit() {
-        HajTaulu bittijonotJaMerkit = new HajTaulu();
+    private HajautusTaulu bittijonotJaMerkit() {
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         bittijonotJaMerkit.lisaa(n, "a");
         bittijonotJaMerkit.lisaa(y+n, "b");
         bittijonotJaMerkit.lisaa(y+y+n, "c");
@@ -124,7 +124,7 @@ public class TiedostonPurkajaTest {
     }
     
     private void puunLapiKayntiTyhjallaTekstilla() {
-        HajTaulu bittijonotJaMerkit = new HajTaulu();
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         String teksti = (char) 127 + "" + (char) 127;
         
         assertEquals(2, purkaja.kayPuuLapi(teksti, bittijonotJaMerkit));
@@ -132,14 +132,14 @@ public class TiedostonPurkajaTest {
     }
     
     private void puunLapiKayntiTekstillaJossaTavallisiaAsciiMerkkeja() {
-        HajTaulu bittijonotJaMerkit = new HajTaulu();
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         
         String teksti = "c" + n + n + n + "b" + n + n + y + "a" + n + y + n + "d" + n + y + y + "f" + y + y + "e" + y + n + 
                         (char) 127 + "" + (char) 127 + "_abcdef";
         
         assertEquals(teksti.length() - 7, purkaja.kayPuuLapi(teksti, bittijonotJaMerkit));
         
-        HajTaulu verrattava = puunLapiKayntiaVerrattavaHajTaulu();
+        HajautusTaulu verrattava = puunLapiKayntiaVerrattavaHajTaulu();
         
         assertTrue(bittijonotJaMerkit.getKoko() == verrattava.getKoko());
         
@@ -148,8 +148,8 @@ public class TiedostonPurkajaTest {
         }
     }
     
-    private HajTaulu puunLapiKayntiaVerrattavaHajTaulu() {
-        HajTaulu verrattava = new HajTaulu();
+    private HajautusTaulu puunLapiKayntiaVerrattavaHajTaulu() {
+        HajautusTaulu verrattava = new HajautusTaulu();
         
         verrattava.lisaa(n+y+n, "a");
         verrattava.lisaa(n+n+y, "b");
@@ -162,7 +162,7 @@ public class TiedostonPurkajaTest {
     }
 
     private void josBittiEsitysEpaTyhjaLisataanSeHajautusTauluun() {
-        HajTaulu bittijonotJaMerkit = new HajTaulu();
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         String sata = y+n+n;
         
         purkaja.bittiEsitysEiTyhjaLisaaMerkki('a', sata, bittijonotJaMerkit);

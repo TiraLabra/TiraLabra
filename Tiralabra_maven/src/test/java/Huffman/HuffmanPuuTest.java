@@ -1,6 +1,6 @@
 package Huffman;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import Tietorakenteet.MinKeko;
 import Tietorakenteet.Solmu;
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ import org.junit.Test;
 public class HuffmanPuuTest {
     private HuffmanPuu puu;
     private HuffmanPuu puu2;
-    private HajTaulu esiintymat;
+    private HajautusTaulu esiintymat;
     private BittiEsitykset esitykset;
     
     @Before
@@ -21,8 +21,8 @@ public class HuffmanPuuTest {
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
     }
 
-    private HajTaulu alustaEsiintymat() {
-        HajTaulu puunEsiintymat = new HajTaulu();
+    private HajautusTaulu alustaEsiintymat() {
+        HajautusTaulu puunEsiintymat = new HajautusTaulu();
         puunEsiintymat.lisaa("A", Integer.toString(8));
         puunEsiintymat.lisaa("B", Integer.toString(2)); // b = g
         puunEsiintymat.lisaa("C", Integer.toString(4));
@@ -95,7 +95,7 @@ public class HuffmanPuuTest {
     @Test
     public void luoKekoLuoMinKeon() {
         puu2 = new HuffmanPuu();
-        esiintymat = new HajTaulu();
+        esiintymat = new HajautusTaulu();
         esiintymat.lisaa(("a"), Integer.toString(1));
         puu2.luoKeko(esiintymat);
         
@@ -142,7 +142,7 @@ public class HuffmanPuuTest {
     }
     
     private void luoTestiEsiintymat() {
-        esiintymat = new HajTaulu();
+        esiintymat = new HajautusTaulu();
         esiintymat.lisaa("a", Integer.toString(3));
         esiintymat.lisaa("b", Integer.toString(2));
     }

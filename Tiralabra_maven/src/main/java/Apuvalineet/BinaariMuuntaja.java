@@ -1,6 +1,6 @@
 package Apuvalineet;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 
 /**
  * Yleisluokka joka suorittaa muunnoksia int -arvojen ja niitä vastaavien binääriesitysten (talletetaan
@@ -20,21 +20,16 @@ public class BinaariMuuntaja {
         return this.lisatytEtuNollat;
     }
     
-    public String binaariEsitysEtuNollilla(int arvo) {
-        StringBuilder esitys = new StringBuilder();
-        boolean ykkosBittiLoydetty = false;
-        
-        for (int i = 30; i >= 0; i--) {
-            if (arvo >= Math.pow(2, i)) {
-                arvo -= Math.pow(2, i);
-                esitys.append(y);
-                ykkosBittiLoydetty = true;
-            }
-            else if (ykkosBittiLoydetty) {
-                esitys.append(n);
-            }
+    /**
+     * Palauttaa parametrina saadun luvun binääriesityksen.
+     * @param arvo
+     * @return 
+     */
+    public String binaariEsitys(int arvo) {
+        if (arvo == 0) {
+            return n + "";
         }
-        return esitys.toString();
+        return binaariEsitys(arvo, 30, false);
     }
     
     /**
@@ -43,15 +38,29 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    public String binaariEsitysEtuNollilla8Bit(int arvo) {
+    public String binaariEsitys8Bit(int arvo) {
+        return binaariEsitys(arvo, 7, true);
+    }
+    
+    /**
+     * Palauttaa parametrina annetulle arvolle binääriesityksen, joka on joko
+     * 8- tai 31-bittinen (ainoastaan pos. int-arvoille).
+     * @param arvo
+     * @param alku - alussa 7 tai 30
+     * @param lisaaEtunolla - alussa true tai false
+     * @return - arvon binääriesitys
+     */
+    
+    protected String binaariEsitys(int arvo, int alku, boolean lisaaEtunolla) {
         StringBuilder esitys = new StringBuilder();
         
-        for (int i = 7; i >= 0; i--) {
+        for (int i = alku; i >= 0; i--) {
             if (arvo >= Math.pow(2, i)) {
                 arvo -= Math.pow(2, i);
                 esitys.append(y);
+                lisaaEtunolla = true;
             }
-            else {
+            else if (lisaaEtunolla) {
                 esitys.append(n);
             }
         }
@@ -118,7 +127,7 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    public String ykkosinaJaNollina(String teksti, HajTaulu bittijonot) {
+    public String ykkosinaJaNollina(String teksti, HajautusTaulu bittijonot) {
         this.lisatytEtuNollat = 0;
         String ilmanEtuNollia = ilmanEtuNollia(teksti, bittijonot);
         return lisaaEtuNollat(ilmanEtuNollia);
@@ -130,7 +139,7 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    protected String lisaaEtuNollat(String ilmanEtuNollia) {
+    public String lisaaEtuNollat(String ilmanEtuNollia) {
         StringBuilder ykkosinaJaNollina = new StringBuilder();
         
         if (ilmanEtuNollia.length() % 8 != 0) {
@@ -151,7 +160,7 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    protected String ilmanEtuNollia(String teksti, HajTaulu bittijonot) {
+    protected String ilmanEtuNollia(String teksti, HajautusTaulu bittijonot) {
         StringBuilder ilmanEtuNollia = new StringBuilder();
         
         for (int i = 0; i < teksti.length(); i++) {

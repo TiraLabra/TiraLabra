@@ -1,6 +1,6 @@
 package Apuvalineet;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class Lukija {
     private DataInputStream lukija;
     private StringBuilder teksti;
     private boolean keraaEsiintymat = false;
-    private HajTaulu esiintymat;
+    private HajautusTaulu esiintymat;
     
     public Lukija() {
         this.teksti = new StringBuilder();
@@ -22,7 +22,7 @@ public class Lukija {
     public Lukija(boolean keraaEsiintymat) {
         this();
         this.keraaEsiintymat = keraaEsiintymat;
-        this.esiintymat = new HajTaulu();
+        this.esiintymat = new HajautusTaulu();
     }
     
     /**
@@ -34,7 +34,7 @@ public class Lukija {
         return this.teksti.toString();
     }
     
-    public HajTaulu getEsiintymat() {
+    public HajautusTaulu getEsiintymat() {
         return this.esiintymat;
     }
     

@@ -1,6 +1,6 @@
 package KayttamattomatLuokat;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class TekstinLukijaTest {
     
     @Test
     public void merkkienEsiintymienMaaraTasmaa() {
-        HajTaulu esiintymat = lukija.getEsiintymat();
+        HajautusTaulu esiintymat = lukija.getEsiintymat();
         
         String avain = esiintymat.getArvo("T");
         assertEquals(3, Integer.parseInt(avain));

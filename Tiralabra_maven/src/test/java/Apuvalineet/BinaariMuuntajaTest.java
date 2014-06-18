@@ -1,13 +1,13 @@
 package Apuvalineet;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 public class BinaariMuuntajaTest {
     private BinaariMuuntaja muuntaja;
-    private HajTaulu bittijonot;
+    private HajautusTaulu bittijonot;
     private String teksti;
     private final String n = (char) 0 + "";
     private final String y = (char) 1 + "";
@@ -16,7 +16,7 @@ public class BinaariMuuntajaTest {
     public void setUp() {
         this.muuntaja = new BinaariMuuntaja();
         
-        this.bittijonot = new HajTaulu();
+        this.bittijonot = new HajautusTaulu();
         bittijonot.lisaa("a", n+y);
         bittijonot.lisaa("b", n+n+n);
         bittijonot.lisaa("c", n+n+y);
@@ -88,8 +88,15 @@ public class BinaariMuuntajaTest {
     
     @Test
     public void binaariEsitys8BitEtuNollilla() {
-        assertEquals(n+n+n+n+n+n+n+n, muuntaja.binaariEsitysEtuNollilla8Bit(0));
-        assertEquals(n+n+n+n+n+n+y+n, muuntaja.binaariEsitysEtuNollilla8Bit(2));
-        assertEquals(y+y+y+y+y+y+y+y, muuntaja.binaariEsitysEtuNollilla8Bit(255));
+        assertEquals(n+n+n+n+n+n+n+n, muuntaja.binaariEsitys8Bit(0));
+        assertEquals(n+n+n+n+n+n+y+n, muuntaja.binaariEsitys8Bit(2));
+        assertEquals(y+y+y+y+y+y+y+y, muuntaja.binaariEsitys8Bit(255));
+    }
+    
+    @Test
+    public void binaariEsitys() {
+        assertEquals(n, muuntaja.binaariEsitys(0));
+        assertEquals(y+y+y+n+y+n+n+y+y+n+n+y, muuntaja.binaariEsitys(3737));
+        assertEquals(y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y+y, muuntaja.binaariEsitys(2147483647));
     }
 }

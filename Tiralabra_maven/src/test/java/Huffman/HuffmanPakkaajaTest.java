@@ -1,16 +1,16 @@
 package Huffman;
 
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TiedostonPakkaajaTest {
-    private TiedostonPakkaaja pakkaaja;
+public class HuffmanPakkaajaTest {
+    private HuffmanPakkaaja pakkaaja;
     
     @Before
     public void setUp() {
-        this.pakkaaja = new TiedostonPakkaaja();
+        this.pakkaaja = new HuffmanPakkaaja();
     }
     
     @Test
@@ -33,11 +33,11 @@ public class TiedostonPakkaajaTest {
         assertEquals(teksti.toString(), kirjoitettava.toString());
     }
     
-    private HajTaulu testattavatBittiEsitykset() {
+    private HajautusTaulu testattavatBittiEsitykset() {
         String n = (char) 0 + "";
         String y = (char) 1 + "";
         
-        HajTaulu esitykset = new HajTaulu();
+        HajautusTaulu esitykset = new HajautusTaulu();
         esitykset.lisaa("a", y+n+y);
         esitykset.lisaa("b", n+n);
         esitykset.lisaa("c", n+y);

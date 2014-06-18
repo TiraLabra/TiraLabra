@@ -1,17 +1,17 @@
 package Huffman;
 
 import Apuvalineet.BinaariMuuntaja;
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 
 /**
  * Luokka suorittaa pakattavan tekstin luomisen.
  * Se k‰ytt‰‰ apuna luokkaa "BinaariMuuntaja", joka tekee muunnoksia int -ja String arvojen v‰lill‰.
  */
 
-public class TiedostonPakkaaja {
+public class HuffmanPakkaaja {
     private BinaariMuuntaja muuntaja;
     
-    public TiedostonPakkaaja() {
+    public HuffmanPakkaaja() {
         this.muuntaja = new BinaariMuuntaja();
     }
     
@@ -39,7 +39,7 @@ public class TiedostonPakkaaja {
      * @return 
      */
     
-    protected String tekstiPakattuna(HajTaulu bittijonot, String teksti) {
+    protected String tekstiPakattuna(HajautusTaulu bittijonot, String teksti) {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
         return muuntaja.pakatuksiTekstiksi(ykkosinaJaNollina);
     }

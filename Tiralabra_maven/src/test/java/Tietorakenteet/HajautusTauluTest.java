@@ -1,16 +1,16 @@
 package Tietorakenteet;
 
-import Tietorakenteet.HajTaulu.Hajautettava;
+import Tietorakenteet.HajautusTaulu.Hajautettava;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HajTauluTest {
-    private HajTaulu taulu;
+public class HajautusTauluTest {
+    private HajautusTaulu taulu;
     
     @Before
     public void setUp() {
-        this.taulu = new HajTaulu();
+        this.taulu = new HajautusTaulu();
     }
     
     @Test
@@ -35,7 +35,7 @@ public class HajTauluTest {
     private void rivinKokoTuplaantuuJosSeOnTaysi() {
         int j = 77;
         
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         taulu.lisaa(taulu.hajautettava("a", "b"), j);
         taulu.lisaa(taulu.hajautettava("adds", null), j);
         
@@ -48,7 +48,7 @@ public class HajTauluTest {
     
     @Test
     public void getAvaimetPalauttaaAvaimet() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         
         taulu.lisaa("abcd", (char) 1 + "" + (char) 1 + "");
         taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
@@ -64,7 +64,7 @@ public class HajTauluTest {
     
     @Test
     public void testaaPoisto() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         
         for (int i = 0; i < 5; i++) {
             String avain = (char) i + "";       // 0 1 2 3 4
@@ -106,7 +106,7 @@ public class HajTauluTest {
     }
     
     private void poistaessaHajautettujaSiirretaanEteenpain() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         int j = 7;
         
         for (int i = 0; i < 5; i++) {
@@ -133,13 +133,13 @@ public class HajTauluTest {
     
     @Test
     public void etsiminenPalauttaaNullKunEtsittavaEiLoydy() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         assertNull(taulu.etsi("a"));
     }
     
     @Test
     public void etsiminenPalauttaaAvaimenPaikan() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         taulu.lisaa((char) 1 + "", "a");
         taulu.lisaa((char) 8 + "", "b");
         taulu.lisaa((char) 43 + "", "c");
@@ -151,7 +151,7 @@ public class HajTauluTest {
     
     @Test
     public void getArvo() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         taulu.lisaa("moi", "mö");
         
         assertEquals("mö", taulu.getArvo("moi"));
@@ -160,7 +160,7 @@ public class HajTauluTest {
     
     @Test
     public void tuplaaKokoTuplaaRivinKoon() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         int j = 31;
         taulu.lisaa(taulu.hajautettava(" ", null), j);
         
@@ -184,7 +184,7 @@ public class HajTauluTest {
     
     @Test
     public void onTyhja() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         assertTrue(taulu.onTyhja());
         
         taulu.lisaa("aafsda", "jkojsd");
@@ -196,7 +196,7 @@ public class HajTauluTest {
     
     @Test
     public void sisaltaaAvaimen() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         assertFalse(taulu.sisaltaaAvaimen("abc"));
         
         taulu.lisaa("abc", "def");
@@ -206,7 +206,7 @@ public class HajTauluTest {
     
     @Test
     public void lisaaTaulukkoonToimii() {
-        taulu = new HajTaulu();
+        taulu = new HajautusTaulu();
         
         for (int i = 0; i < 5; i++) {
             taulu.lisaa("bac" + (char) i + "", "koas" + (char) i + "");

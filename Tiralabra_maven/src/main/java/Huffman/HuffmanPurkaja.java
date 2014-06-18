@@ -3,7 +3,7 @@ package Huffman;
 import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Lukija;
 import Apuvalineet.Kirjoittaja;
-import Tietorakenteet.HajTaulu;
+import Tietorakenteet.HajautusTaulu;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import java.io.IOException;
  * Luokka suorittaa tiedoston purkamisen käyttäen BinaariMuuntaja luokkaa apuna.
  */
 
-public class TiedostonPurkaja {
+public class HuffmanPurkaja {
     private BinaariMuuntaja muuntaja;
     
-    public TiedostonPurkaja() {
+    public HuffmanPurkaja() {
         this.muuntaja = new BinaariMuuntaja();
     }
     
@@ -97,7 +97,7 @@ public class TiedostonPurkaja {
     
     protected String puretunTiedostonSisalto(File pakkaus) throws IOException {
         String teksti = lueTeksti(pakkaus);
-        HajTaulu bittijonotJaMerkit = new HajTaulu();
+        HajautusTaulu bittijonotJaMerkit = new HajautusTaulu();
         
         int binaariTekstinAlku = kayPuuLapi(teksti, bittijonotJaMerkit);
         String tekstiBinaarina = tekstiBinaarina(teksti, binaariTekstinAlku);
@@ -112,7 +112,7 @@ public class TiedostonPurkaja {
      * @return 
      */
     
-    protected String kirjoitettavaTeksti(String tekstiBinaarina, HajTaulu bittijonotJaMerkit) {
+    protected String kirjoitettavaTeksti(String tekstiBinaarina, HajautusTaulu bittijonotJaMerkit) {
         StringBuilder kirjoitettava = new StringBuilder();
         StringBuilder bittijono = new StringBuilder();
         
@@ -138,7 +138,7 @@ public class TiedostonPurkaja {
      * @return - osoite, jossa puuta seuraavat merkit sijaitsevat
      */
     
-    protected int kayPuuLapi(String teksti, HajTaulu bittijonotJaMerkit) {
+    protected int kayPuuLapi(String teksti, HajautusTaulu bittijonotJaMerkit) {
         if (puuOnKelattuLoppuun(teksti, 0)) {
             return 2;
         }
@@ -146,7 +146,7 @@ public class TiedostonPurkaja {
         return kelaaPuuLapi(teksti, bittijonotJaMerkit);
     }
     
-    private int kelaaPuuLapi(String teksti, HajTaulu bittijonotJaMerkit) {
+    private int kelaaPuuLapi(String teksti, HajautusTaulu bittijonotJaMerkit) {
         StringBuilder bittiEsitys = new StringBuilder();
         char kirjain = teksti.charAt(0);
 
@@ -177,7 +177,7 @@ public class TiedostonPurkaja {
      * @return
      */
     
-    protected boolean bittiEsitysEiTyhjaLisaaMerkki(char kirjain, String bittiEsitys, HajTaulu bittijonotJaMerkit) {
+    protected boolean bittiEsitysEiTyhjaLisaaMerkki(char kirjain, String bittiEsitys, HajautusTaulu bittijonotJaMerkit) {
         if (bittiEsitys.isEmpty()) {
             return false;
         }
@@ -239,7 +239,7 @@ public class TiedostonPurkaja {
         int arvo = teksti.charAt(poistettavienEtuNollienOsoite + 1);
         int poistettavia = teksti.charAt(poistettavienEtuNollienOsoite);
         
-        String binaarina = muuntaja.binaariEsitysEtuNollilla8Bit(arvo);
+        String binaarina = muuntaja.binaariEsitys8Bit(arvo);
         return binaarina.substring(poistettavia);
     }
     
@@ -255,7 +255,7 @@ public class TiedostonPurkaja {
         
         for (int i = poistettavienEtuNollienOsoite + 2; i < teksti.length(); i++) {
             int arvo = teksti.charAt(i);
-            lisaaja.append(muuntaja.binaariEsitysEtuNollilla8Bit(arvo));
+            lisaaja.append(muuntaja.binaariEsitys8Bit(arvo));
         }
         return lisaaja.toString();
     }

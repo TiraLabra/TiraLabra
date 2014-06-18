@@ -5,7 +5,7 @@ package KayttamattomatLuokat;
  * etsitään aina indeksi, jonka kanssa pelataan.
  */
 
-public class HajautusTaulu {
+public class HajTauluVanha {
     private String[] avaimet;
     private String[] arvot;
     private int avaimia;
@@ -14,11 +14,11 @@ public class HajautusTaulu {
      * Luo 257-alkioisen hajautustaulun.
      */
     
-    public HajautusTaulu() {
+    public HajTauluVanha() {
         this(257);
     }
     
-    public HajautusTaulu(int avaimia) {
+    public HajTauluVanha(int avaimia) {
         this.avaimet = new String[avaimia];
         this.arvot = new String[avaimia];
         this.avaimia = 0;

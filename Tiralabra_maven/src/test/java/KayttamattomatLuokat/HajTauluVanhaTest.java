@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HajautusTauluTest {
-    private HajautusTaulu taulu;
+public class HajTauluVanhaTest {
+    private HajTauluVanha taulu;
     
     @Before
     public void setUp() {
-        this.taulu = new HajautusTaulu();
+        this.taulu = new HajTauluVanha();
     }
     
     @Test
@@ -28,7 +28,7 @@ public class HajautusTauluTest {
     
     @Test
     public void testaaSamankaltaistenAvaimienLisaaminen() throws Exception {
-        taulu = new HajautusTaulu(3);
+        taulu = new HajTauluVanha(3);
         
         taulu.lisaa("abcd", (char) 1 + "" + (char) 1 + "");
         taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
@@ -39,7 +39,7 @@ public class HajautusTauluTest {
     
     @Test
     public void testaaPoisto() throws Exception {
-        taulu = new HajautusTaulu();
+        taulu = new HajTauluVanha();
         
         String avain = "h<";
         String arvo = "3m";
@@ -67,13 +67,13 @@ public class HajautusTauluTest {
     
     @Test
     public void paikkaToimiiSatunnaisellaSyotteella() {
-        taulu = new HajautusTaulu();
+        taulu = new HajTauluVanha();
         assertEquals(100, taulu.paikka(524, 6));
     }
     
     @Test
     public void paikkaMetodiKelaaKaikkiMahdollisetPaikatLapi() throws Exception {
-        taulu = new HajautusTaulu(251);
+        taulu = new HajTauluVanha(251);
         int[] testiTaulu = new int[251];
         
         for (int i = 0; i < 251; i++) {
@@ -94,13 +94,13 @@ public class HajautusTauluTest {
     
     @Test (expected = Exception.class)
     public void etsiminenHeittaaVirheenKunEtsittavaEiLoydy() throws Exception {
-        taulu = new HajautusTaulu(3);
+        taulu = new HajTauluVanha(3);
         taulu.etsi("a");
     }
     
     @Test
     public void etsiminenPalauttaaAvaimenPaikan() throws Exception {
-        taulu = new HajautusTaulu(7);
+        taulu = new HajTauluVanha(7);
         taulu.lisaa((char) 1 + "", "a");
         taulu.lisaa((char) 8 + "", "b");
         taulu.lisaa((char) 43 + "", "c");
@@ -121,7 +121,7 @@ public class HajautusTauluTest {
     
     @Test
     public void testaaHajauttaminenKunTaulukkoOnTaysi() throws Exception {
-        taulu = new HajautusTaulu(1);
+        taulu = new HajTauluVanha(1);
         taulu.lisaa("acv", "fjls");
         
     }
@@ -131,7 +131,7 @@ public class HajautusTauluTest {
         String[] uudetAvaimet = new String[7];
         String[] uudetArvot = new String[7];
         
-        taulu = new HajautusTaulu(5);
+        taulu = new HajTauluVanha(5);
         
         String n = (char) 0 + "";
         String y = (char) 1 + "";
@@ -152,7 +152,7 @@ public class HajautusTauluTest {
     
     @Test
     public void uudelleenHajautaAvaimet() throws Exception {
-        taulu = new HajautusTaulu(3);
+        taulu = new HajTauluVanha(3);
         taulu.lisaa("abcd", (char) 1 + "" + (char) 1 + "");
         taulu.lisaa("abcf", (char) 1 + "" + (char) 1 + "");
         taulu.lisaa("abce", (char) 1 + "" + (char) 1 + "");
