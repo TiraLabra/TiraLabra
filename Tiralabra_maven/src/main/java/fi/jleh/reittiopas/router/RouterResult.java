@@ -48,16 +48,7 @@ public class RouterResult {
 			else
 				System.out.println(station.getName());
 			
-			// Create geometry of the route as WKT Linestring
-			if (wkt.length() == 0)
-				wkt.append("LINESTRING (");
-			else
-				wkt.append(", ");
-			
-			wkt.append(station.getX());
-			wkt.append(" ");
-			wkt.append(station.getY());
-			
+			appendLinestring(wkt, station.getX(), station.getY());
 			station = cameFrom.get(station);
 		}
 		
@@ -65,6 +56,17 @@ public class RouterResult {
 		System.out.println(wkt);
 	}
 
+	private void appendLinestring(StringBuilder wkt, double x, double y) {
+	    if (wkt.length() == 0)
+            wkt.append("LINESTRING (");
+        else
+            wkt.append(", ");
+        
+        wkt.append(x);
+        wkt.append(" ");
+        wkt.append(y);
+	}
+	
 	/**
 	 * Returns time for route.
 	 * @return
