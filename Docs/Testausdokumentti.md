@@ -12,6 +12,15 @@ import nmd5
 m = nmd5.new()
 
 '''
+
+setup = '''
+import hashlib
+import nmd5
+m = nmd5.new()
+n = hashlib.md5()
+string = "a"*200
+string2 = string.encode('utf-8')
+'''
 ```
 #### Digests
 We begin by analysing digests. This requires a different setup. Calculating digests is in constant time and space complexity (notice increasing input sizes to update function):
@@ -148,6 +157,54 @@ we can see a slight improvement in performance.
 
 #### Round function wrapper
 
+The code was quite messy, because every round had its own function. Since functions are first class objects in Python, We can create a function R which takes a function as the first argument, so we don't have to explicitly create the round functions, but instead give the function F/G/H/I to R which it has to run. However, this doesn't impact running time in any meaningful way.
+
+All functions declared explicitly (taken from the top of the page):
+```
+In [3]: print(min(timeit.Timer('m.update("a"*51)', setup=setup).repeat(7, 10)))
+0.011394502012990415
+
+In [5]: print(min(timeit.Timer('m.update("a"*151)', setup=setup).repeat(7, 10)))
+0.02944470100919716 
+
+In [2]: print(min(timeit.Timer('m.update("a"*251)', setup=setup).repeat(7, 10)))
+0.05227168099372648
+```
+
+Using a wrapper function R:
+```
+In [3]: print(min(timeit.Timer('m.update("a"*51)', setup=setup).repeat(7, 10)))
+0.01181726501090452
+
+In [4]: print(min(timeit.Timer('m.update("a"*151)', setup=setup).repeat(7, 10)))
+0.029189961001975462
+
+In [5]: print(min(timeit.Timer('m.update("a"*251)', setup=setup).repeat(7, 10)))
+0.04830886000127066
+```
 
 #### Constants moved to initialisation
 
+The round shift amount constant initialisation were still left to be calculated on every block. By moving this outside the loop. This does not affect running time.
+
+With every block:
+```
+In [3]: print(min(timeit.Timer('m.update("a"*15)', setup=setup).repeat(7, 100)))
+0.24752386000182014
+```
+Only in the __hash function:
+```
+In [3]: print(min(timeit.Timer('m.update("a"*15)', setup=setup).repeat(7, 100)))
+0.2515371789922938
+```
+
+#### Running time compared to hashlib
+
+All in all, this implementation is very slow compared to `hashlib.md5`, which is written in C.
+
+hashlib:
+```
+```
+nmd5:
+```
+```
