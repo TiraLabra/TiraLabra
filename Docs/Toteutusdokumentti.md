@@ -1,6 +1,7 @@
 Ohjelma on toteutettu käyttämällä 5 erillistä luokkaa. Seuraavana lyhyt kuvaus kaikista:
 
 App
+
 	Pääohjelma suoritusta varten. Tarjoaa käyttöliittymän, jonka avulla ohjelmalle voidaan syöttää karttoja.
 	App:n on sisällytetty myös algoritmin läpimenoajan tarkistus (sisältää funktiokutsuja).
 	
