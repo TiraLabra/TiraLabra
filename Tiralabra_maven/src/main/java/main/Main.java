@@ -34,18 +34,18 @@ public class Main {
         boolean tulostaKuva = false;
         
         // Mitä aluetta tarkastellaan...
-//        Alue hakualue = kuvaAlue;
-//        int alkurivi = 0;
-//        int alkusarake = 0;
-//        int loppurivi = 88;
-//        int loppusarake = 88;
-//        tulostaKuva = true;
-
-        Alue hakualue = a1;
+        Alue hakualue = kuvaAlue;
         int alkurivi = 0;
         int alkusarake = 0;
-        int loppurivi = 14;
-        int loppusarake = 13;
+        int loppurivi = 88;
+        int loppusarake = 88;
+        tulostaKuva = true;
+
+//        Alue hakualue = a1;
+//        int alkurivi = 0;
+//        int alkusarake = 0;
+//        int loppurivi = 14;
+//        int loppusarake = 13;
 
         System.out.println(hakualue.toString());
         
@@ -72,7 +72,7 @@ public class Main {
             System.out.println(as.yhteenveto());
 
             System.out.println("-------");
-
+            
             if (tulostaKuva) {
                 Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
                 kn.muodostaKuvaanPolku(reitti);

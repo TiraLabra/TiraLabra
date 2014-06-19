@@ -85,12 +85,7 @@ public class AStar {
         long alkuaika = System.currentTimeMillis();
         
         // Alustetaan
-        this.alkunode = alku;
-        this.loppunode = loppu;
-        kaymatta.lisaa(alku);
-        
-        alku.setEtaisyysAlusta(0);
-        alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
+        alustus(alku, loppu);
         
         while (!kaymatta.onTyhja()) {
             Node tarkastettava = kaymatta.poistaPienin();
@@ -109,7 +104,7 @@ public class AStar {
             
             // Selvitetään tarkasteltavan noden naapurit:
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
-            if (debug) System.out.println("Naapureita " + naapurit.koko() + " kpl.");
+            //if (debug) System.out.println("Naapureita " + naapurit.koko() + " kpl.");
             
             // Käydään läpi tarkasteltavan kaikki naapurit:
             for (int i = 0; i < naapurit.koko(); i++ ) {
@@ -132,11 +127,10 @@ public class AStar {
         int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);     // Uusi mahdollinen kustannus tähän naapuriin
         if (debug) System.out.println("    UusiG = " + uusiG);
         
-        if (kaydyt.sisaltaako(naapuri)) {
+        if (kaydyt.sisaltaako(naapuri) || kaymatta.sisaltaa(naapuri)) {
             // Jos naapuri on jo käydyissä
             if (uusiG < naapuri.getEtaisyysAlusta()) {      // ... katsotaan onko uutta kautta pienempi kustannus.
-                naapuri.setEtaisyysAlusta(uusiG);
-                naapuri.setEdellinen(tarkastettava);
+                paivitaLyhyinYhteys(naapuri, tarkastettava, uusiG);
                 if (debug) System.out.println("    Noden kustannusarvoa päivitettiin.");
             } else {
                 if (debug) System.out.println("    Vanha kustannusarvo oli pienempi...");
@@ -146,12 +140,38 @@ public class AStar {
         }
         if (!kaymatta.sisaltaa(naapuri)) {
             if (debug) System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
-            naapuri.setEdellinen(tarkastettava);
-            naapuri.setEtaisyysAlusta(uusiG);
-            naapuri.setEtaisyysMaaliin(heuristiikka.laskeArvio(naapuri, loppunode));
+            paivitaLyhyinYhteys(naapuri, tarkastettava, uusiG);
             kaymatta.lisaa(naapuri);
             if (debug) System.out.println(naapuri.toString());
         }
+    }
+    
+    /**
+     * Suorittaa haun alkutoimenpiteet.
+     * Päivittää alun ja lopun tiedot luokkamuuttujiin, ja asettaa alkunoden tiedot oikeiksi.
+     * @param alku
+     * @param loppu 
+     */
+    private void alustus(Node alku, Node loppu) {
+        this.alkunode = alku;
+        this.loppunode = loppu;
+        alku.setEtaisyysAlusta(0);
+        alku.setEtaisyysMaaliin(0 + heuristiikka.laskeArvio(alku, loppu));
+        kaymatta.lisaa(alku);
+    }
+    
+    /**
+     * Päivittää halutulle nodelle tiedon lyhimmästä matkasta.
+     * Parametrina annetaan myös naapuri, jonka kautta lyhin matka toteutuu.
+     * @param n
+     * @param edellinen
+     * @param matka 
+     */
+    private void paivitaLyhyinYhteys(Node n, Node edellinen, int matka) {
+        n.setEtaisyysAlusta(matka);
+        n.setEdellinen(edellinen);
+        if (n.getEtaisyysMaaliin() == 0 )
+            n.setEtaisyysMaaliin(heuristiikka.laskeArvio(n, loppunode));
     }
     
     /**
