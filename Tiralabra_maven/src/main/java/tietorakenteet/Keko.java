@@ -83,8 +83,8 @@ public class Keko {
      * @param o
      * @return 
      */
-    public boolean sisaltaa(Object o) {
-        if (this.missaKohdassa(o) < 0)
+    public boolean sisaltaa(Node n) {
+        if (this.missaKohdassa(n) < 0)
             return false;
         else
             return true;
@@ -96,13 +96,53 @@ public class Keko {
      * @param o
      * @return 
      */
-    public int missaKohdassa(Object o) {
+    public int missaKohdassa(Node o) {
         for (int i = 0; i < this.koko; i++) {
             if (o == this.sisalto[i])
                 return i;
         }
         return -1;  // jos ei löytynyt
     }
+    
+    /**
+     * Mahdollistaa noden keon painoarvonpäivittämisen.
+     * Tätä on kutsuttava, jos Noden painoarvoja muutetaan keon ulkopuolella koodissa.
+     * @param n 
+     */
+    public void pienennaPainoarvoa(Node n) {
+        int kohta = missaKohdassa(n);
+        tasapainota(kohta);
+    }
+
+    /**
+     * Kertoo onko keko tyhjä.
+     * @return 
+     */
+    public boolean onTyhja() {
+        if (koko == 0)
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * Kertoo keon koon.
+     * @return 
+     */
+    public int koko() {
+        return this.koko;
+    }
+
+    @Override
+    public String toString() {
+        String t = "";
+        for ( int i = 0; i < this.koko; i++) {
+            t = t + i + ": " + sisalto[i].toString() + "\n";
+        }
+        return t;
+    }
+    
+    //  ------------- Keon sisäiset apumetodit --------------------------
     
     /**
      * Pitää huolta, että annetussa kohdassa oleva alkio siirretään keossa
@@ -209,34 +249,6 @@ public class Keko {
         }
         sisalto = uusiTaulukko;
         taulukonKoko = 2*taulukonKoko;
-    }
-    
-    /**
-     * Kertoo onko keko tyhjä.
-     * @return 
-     */
-    public boolean onTyhja() {
-        if (koko == 0)
-            return true;
-        else
-            return false;
-    }
-    
-    /**
-     * Kertoo keon koon.
-     * @return 
-     */
-    public int koko() {
-        return this.koko;
-    }
-
-    @Override
-    public String toString() {
-        String t = "";
-        for ( int i = 0; i < this.koko; i++) {
-            t = t + i + ": " + sisalto[i].toString() + "\n";
-        }
-        return t;
     }
     
     /**

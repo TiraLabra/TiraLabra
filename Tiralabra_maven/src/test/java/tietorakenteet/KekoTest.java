@@ -148,6 +148,21 @@ public class KekoTest extends TestCase {
         assertEquals(3, k.missaKohdassa(nu));
     }
     
+    public void testPainotuksenMuutos() {
+        alustuksia();
+        Keko k = new Keko(nodeTaulukko);
+        
+        Node nu = new Node(7,7,1);
+        nu.setEtaisyysMaaliin(17);
+        k.lisaa(nu);
+        
+        assertEquals(6, k.missaKohdassa(nu));
+
+        nu.setEtaisyysMaaliin(2);
+        k.pienennaPainoarvoa(nu);
+        assertEquals(1, k.missaKohdassa(nu));
+    }
+    
     /**
      * Apumetodi testaamiseen, onko keko kelvollinen.
      * @param k

@@ -34,18 +34,18 @@ public class Main {
         boolean tulostaKuva = false;
         
         // Mitä aluetta tarkastellaan...
-        Alue hakualue = kuvaAlue;
-        int alkurivi = 0;
-        int alkusarake = 0;
-        int loppurivi = 88;
-        int loppusarake = 88;
-        tulostaKuva = true;
-
-//        Alue hakualue = a1;
+//        Alue hakualue = kuvaAlue;
 //        int alkurivi = 0;
 //        int alkusarake = 0;
-//        int loppurivi = 14;
-//        int loppusarake = 13;
+//        int loppurivi = 88;
+//        int loppusarake = 88;
+//        tulostaKuva = true;
+
+        Alue hakualue = a1;
+        int alkurivi = 0;
+        int alkusarake = 0;
+        int loppurivi = 14;
+        int loppusarake = 13;
 
         System.out.println(hakualue.toString());
         
@@ -92,47 +92,52 @@ public class Main {
         //ui.suorita();
         
     }
-    private void testausta() {
+    
+    private static void testausta() {
 
-        //        Node n0 = new Node(0,0,1);
-//        Node n1 = new Node(1,0,1);
-//        Node n2 = new Node(2,0,1);
-//        Node n3 = new Node(3,0,1);
-//        Node n4 = new Node(4,0,1);
-//        Node n5 = new Node(5,0,1);
-//
-//        Node [] nodeTaulukko = { n0, n1, n2, n3, n4, n5 };
-//
-//        nodeTaulukko[0].setEtaisyysMaaliin(1);
-//        nodeTaulukko[1].setEtaisyysMaaliin(3);
-//        nodeTaulukko[2].setEtaisyysMaaliin(5);
-//        nodeTaulukko[3].setEtaisyysMaaliin(7);
-//        nodeTaulukko[4].setEtaisyysMaaliin(9);
-//        nodeTaulukko[5].setEtaisyysMaaliin(15);
-//        
-//        Keko k = new Keko(nodeTaulukko);
-//        
-//        Node nu = new Node(8,8,1);
-//        nu.setEtaisyysMaaliin(2);
-//        System.out.println(k.koko());
-//        System.out.println(k.toString());
-//        System.out.println("Lisätään uusi arvolta 8 tässä...");
-//        k.lisaa(nu);
-//        
-//        nu = new Node(8,8,1);
-//        nu.setEtaisyysMaaliin(4);
-//        k.lisaa(nu);
-//        
-//        System.out.println(k.toString());
+        Node n0 = new Node(0,0,1);
+        Node n1 = new Node(1,0,1);
+        Node n2 = new Node(2,0,1);
+        Node n3 = new Node(3,0,1);
+        Node n4 = new Node(4,0,1);
+        Node n5 = new Node(5,0,1);
 
-//        Node n1 = new Node(1,1,0);
-//        Node n2 = new Node(3,3,0);
-//        n1.setEtaisyysAlusta(1);
-//        n2.setEtaisyysAlusta(3);
-//        
-//        int vertailu = n1.compareTo(n2);
-//        
-//        System.out.println(vertailu);
+        Node [] nodeTaulukko = { n0, n1, n2, n3, n4, n5 };
+
+        nodeTaulukko[0].setEtaisyysMaaliin(1);
+        nodeTaulukko[1].setEtaisyysMaaliin(3);
+        nodeTaulukko[2].setEtaisyysMaaliin(5);
+        nodeTaulukko[3].setEtaisyysMaaliin(7);
+        nodeTaulukko[4].setEtaisyysMaaliin(9);
+        nodeTaulukko[5].setEtaisyysMaaliin(15);
         
+        Keko k = new Keko(nodeTaulukko);
+        
+        Node nu = new Node(8,8,1);
+        nu.setEtaisyysMaaliin(17);
+        System.out.println(k.koko());
+        System.out.println(k.toString());
+        System.out.println("Lisätään uusi arvolta 17 tässä...");
+        k.lisaa(nu);
+        
+        System.out.println(k.toString());
+        
+        nu.setEtaisyysMaaliin(2);
+        
+//        Node nu2 = new Node(8,8,1);
+//        nu2.setEtaisyysMaaliin(4);
+//        k.lisaa(nu2);
+//        
+//        System.out.println(k.toString());
+//        
+//        k.poistaPienin();
+//        System.out.println(k.toString());
+//        
+//        n4.setEtaisyysMaaliin(1);
+//        k.pienennaPainoarvoa(n4);
+//        
+//        System.out.println(k.toString());
+        
+
     }
 }

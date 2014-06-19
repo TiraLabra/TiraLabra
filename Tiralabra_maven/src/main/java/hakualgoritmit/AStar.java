@@ -118,7 +118,13 @@ public class AStar {
         }
         return false;
     }
-
+    
+    /**
+     * Tarkastelee Astar-haun käsittelyssä naapurin.
+     * Päivittää etäisyyslaskennat, lisää sen tarvittaessa 
+     * @param naapuri
+     * @param tarkastettava 
+     */
     private void kasitteleNaapuri(Node naapuri, Node tarkastettava) {
         naapuri.setLisattyNaapureihin(true);    // Debug-tarkoitukseen tietoa onko nodea otettu naapureihin mukaan..
         if (debug) System.out.println("  Naapuri: " + naapuri);
