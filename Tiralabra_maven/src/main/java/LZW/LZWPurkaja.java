@@ -14,41 +14,45 @@ public class LZWPurkaja extends Purkaja {
     public LZWPurkaja() {
         super(".lzw");
         this.muuntaja = new BinaariMuuntaja();
-        alustaKoodistot();
-        this.pituus = new LZWYleisMetodeja().merkkienPituus(ascii, laaj);
-    }
-    
-    private void alustaKoodistot() {
-        this.ascii = new HajautusTaulu();
-        for (int i = 0; i < 256; i++) {
-            ascii.lisaa((char) i + "", muuntaja.binaariEsitys8Bit(i));
-        }
-        
         this.laaj = new HajautusTaulu();
+        
+        YleisMetodeja y = new YleisMetodeja();
+        this.ascii = y.alustaAscii();
+        this.pituus = y.merkkienPituus(ascii, laaj);
     }
     
-    protected HajautusTaulu getAsciiKoodisto() {
+    protected HajautusTaulu getAscii() {
         return this.ascii;
     }
     
-    protected HajautusTaulu getLaajennettuKoodisto() {
-        return this.laaj;
+    protected HajautusTaulu getLaaj() {
+       return this.laaj; 
+    }
+    
+    protected int getPituus() {
+        return this.pituus;
     }
     
     @Override
     protected String puretunTiedostonSisalto(String teksti) {
-        String tekstiBinaarina = tekstiBinaarina(teksti, 0);
-        return kirjoitettavaTeksti(tekstiBinaarina);
+        String binaarina = tekstiBinaarina(teksti, 0);
+        return kirjoitettavaTeksti(binaarina);
     }
+    
+    /**
+     * Metodi saa tekstin binäärinä juuri niin kuin pitääkin.
+     * @param binaarina
+     * @return 
+     */
     
     protected String kirjoitettavaTeksti(String binaarina) {
         this.teksti = new StringBuilder();
         String nykyinen = "";
         int i = 0;
         
-        while (i < binaarina.length() - pituus) {
-            String bittijono = binaarina.substring(i, i + pituus);
-            nykyinen = lisaaMerkki(nykyinen, asciiMerkki(bittijono));
+        while (i < binaarina.length()) {
+            String merkkijono = seuraavaMerkkiJono(binaarina, i);
+            nykyinen = lisaaMerkki(nykyinen, merkkijono);
             
             i += pituus; 
         }
@@ -73,11 +77,20 @@ public class LZWPurkaja extends Purkaja {
     }
     
     protected void lisaaKoodistoon(String avain) {
-        LZWYleisMetodeja yleis = new LZWYleisMetodeja();
+        YleisMetodeja yleis = new YleisMetodeja();
         int arvoja = yleis.arvoja(ascii, laaj);
         laaj.lisaa(avain, muuntaja.binaariEsitys(arvoja));
 
-        paivitaPituusJosPienempi(new LZWYleisMetodeja().merkkienPituus(ascii, laaj));
+        paivitaPituusJosPienempi(new YleisMetodeja().merkkienPituus(ascii, laaj));
+    }
+    
+    protected String seuraavaMerkkiJono(String binaarina, int i) {
+        String bittijono = seuraavaBittijono(binaarina, i);
+        return asciiMerkki(bittijono);
+    }    
+    
+    protected String seuraavaBittijono(String binaarina, int i) {
+        return binaarina.substring(i, i + pituus);
     }
     
     /**
@@ -90,10 +103,12 @@ public class LZWPurkaja extends Purkaja {
         String loppuosa = bittijono.substring(bittijono.length() - 8);
         return muuntaja.asciiMerkkina(loppuosa) + "";
     }
-    
+
     protected void paivitaPituusJosPienempi(int merkkienPituus) {
         if (merkkienPituus > pituus) {
             pituus = merkkienPituus;
         }
     }
+    
+
 }

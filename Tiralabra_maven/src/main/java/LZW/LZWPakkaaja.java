@@ -4,11 +4,11 @@ import Apuvalineet.BinaariMuuntaja;
 import Apuvalineet.Kirjoittaja;
 import java.io.IOException;
 
-public class LZWPakkaamisenOhjaus {
+public class LZWPakkaaja {
     private BinaariMuuntaja muuntaja;
     private LZWLukija lukija;
     
-    public LZWPakkaamisenOhjaus() {
+    public LZWPakkaaja() {
         this.muuntaja = new BinaariMuuntaja();
         this.lukija = new LZWLukija();  
     }

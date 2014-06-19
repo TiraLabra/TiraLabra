@@ -1,8 +1,9 @@
 package LZW;
 
+import Apuvalineet.BinaariMuuntaja;
 import Tietorakenteet.HajautusTaulu;
 
-public class LZWYleisMetodeja {
+public class YleisMetodeja {
     
     protected int  merkkienPituus(HajautusTaulu ascii, HajautusTaulu laaj) {
         int i = 8;
@@ -10,7 +11,7 @@ public class LZWYleisMetodeja {
         while (true) {
             double potenssi = Math.pow(2, i);
             
-            if (potenssi < arvoja(ascii, laaj)) {
+            if (potenssi <= arvoja(ascii, laaj)) {
                 i++;
                 continue;
             }
@@ -22,15 +23,13 @@ public class LZWYleisMetodeja {
         return ascii.getKoko() + laaj.getKoko();
     }
     
-    protected String bittijonona(String arvo, HajautusTaulu ascii, HajautusTaulu laaj) {
-        StringBuilder builder = new StringBuilder();
-        int merkkienPituus = new LZWYleisMetodeja().merkkienPituus(ascii, laaj);
+    protected HajautusTaulu alustaAscii() {
+        BinaariMuuntaja muuntaja = new BinaariMuuntaja();
         
-        while (builder.toString().length() + arvo.length() < merkkienPituus) {
-            builder.append((char) 0);
+        HajautusTaulu ascii = new HajautusTaulu();
+        for (int i = 0; i < 256; i++) {
+            ascii.lisaa((char) i + "", muuntaja.binaariEsitys8Bit(i));
         }
-        
-        builder.append(arvo);
-        return builder.toString();
+        return ascii;
     }
 }

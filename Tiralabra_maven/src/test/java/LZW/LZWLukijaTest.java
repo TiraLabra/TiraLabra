@@ -9,14 +9,14 @@ import org.junit.Test;
 
 public class LZWLukijaTest {
     private LZWLukija lukija;
-    private LZWYleisMetodeja yleis;
+    private YleisMetodeja yleis;
     private BinaariMuuntaja muuntaja;
     private final String polku = "LZWLukijaTest.txt";
     
     @Before
     public void setUp() {
         this.lukija = new LZWLukija();
-        this.yleis = new LZWYleisMetodeja();
+        this.yleis = new YleisMetodeja();
         this.muuntaja = new BinaariMuuntaja();
     }
     
@@ -25,19 +25,7 @@ public class LZWLukijaTest {
         assertTrue(lukija.getTeksti().isEmpty());
     }
     
-    @Test
-    public void taulunAlustusToimii() {
-        HajautusTaulu esitykset = lukija.getAsciiKoodisto();
-        String[] avaimet = esitykset.getAvaimet();
-        
-        for (int i = 0; i < avaimet.length; i++) {
-            String avain = avaimet[i];
-            
-            assertEquals((char) i + "", avain);
-            assertEquals(muuntaja.binaariEsitys8Bit(i), esitykset.getArvo(avain));
-        }
-        assertEquals(256, yleis.arvoja(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
-    }
+
     
 //    
 //    @Test
@@ -86,7 +74,7 @@ public class LZWLukijaTest {
         HajautusTaulu laaj = lukija.getLaajennettuKoodisto();
         
         lukija.lisaaBittijono(ascii, "c");
-        assertEquals(muuntaja.binaariEsitys8Bit(99), lukija.getTeksti());
+        assertEquals((char) 0 + muuntaja.binaariEsitys8Bit(99), lukija.getTeksti());
         
         lukija.lue(polku);
         String teksti = lukija.getTeksti();
@@ -148,14 +136,5 @@ public class LZWLukijaTest {
             assertTrue(laajKoodisto.sisaltaaAvaimen(avain));
             assertEquals(muuntaja.binaariEsitys(i + 256), laajKoodisto.getArvo(avain));
         }
-    }
-    
-    @Test
-    public void merkkienPituus() throws IOException {
-        lukija = new LZWLukija();
-        assertEquals(8, yleis.merkkienPituus(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
-        
-        lukija.lue(polku);
-        assertEquals(9, yleis.merkkienPituus(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
     }
 }

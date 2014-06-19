@@ -1,7 +1,7 @@
 
 import Huffman.HuffmanOhjaus;
 import Huffman.HuffmanPurkaja;
-import LZW.LZWPakkaamisenOhjaus;
+import LZW.LZWPakkaaja;
 import LZW.LZWPurkaja;
 import Tietorakenteet.HajautusTaulu;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class Main {
     }
     
     private static void pakkaa(String polku) throws IOException {
-        new LZWPakkaamisenOhjaus().suoritaPakkaaminen(polku);
+        new LZWPakkaaja().suoritaPakkaaminen(polku);
         
     }
     

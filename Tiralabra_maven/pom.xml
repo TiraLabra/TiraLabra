@@ -53,13 +53,11 @@
                     <param>Huffman.HuffmanPakkaaja</param>
                     <param>Huffman.HuffmanPurkaja</param> 
                     <param>Huffman.HuffmanPuu</param> 
-                         
-                    <param>KayttamattomatLuokat.HajTauluVanha</param>
-                    <param>KayttamattomatLuokat.TekstinLukija</param>
                     
                     <param>LZW.LZWLukija</param>
-                    <param>LZW.LZWPakkaamisenOhjaus</param>
+                    <param>LZW.LZWPakkaaja</param>
                     <param>LZW.LZWPurkaja</param>
+                    <param>LZW.YleisMetodeja</param>
                     
                     <param>Tietorakenteet.HajautusTaulu</param>
                     <param>Tietorakenteet.MinKeko</param>
@@ -75,13 +73,11 @@
                     <param>Huffman.HuffmanPakkaajaTest</param>     
                     <param>Huffman.HuffmanPurkajaTest</param>                      
                     <param>Huffman.HuffmanPuuTest</param>
-
-                    <param>KayttamattomatLuokat.HajTauluVanhaTest</param>
-                    <param>KayttamattomatLuokat.TekstinLukijaTest</param>
                     
                     <param>LZW.LZWLukijaTest</param>
-                    <param>LZW.LZWPakkaamisenOhjausTest</param>
+                    <param>LZW.LZWPakkaajaTest</param>
                     <param>LZW.LZWPurkajaTest</param>
+                    <param>LZW.YleisMetodejaTest</param>
                     
                     <param>Tietorakenteet.HajautusTauluTest</param>
                     <param>Tietorakenteet.MinKekoTest</param>
