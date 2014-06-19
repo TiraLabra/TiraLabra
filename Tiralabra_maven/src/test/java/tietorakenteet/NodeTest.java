@@ -53,7 +53,7 @@ public class NodeTest extends TestCase {
         Node n = new Node(2,3,4);
         String tulos = n.toString();
         
-        assertEquals("2, 3 alusta: " + Integer.MAX_VALUE + " maaliin: 0", tulos);
+        assertEquals("2, 3 G: " + Integer.MAX_VALUE + " H: 0", tulos);
     }
     
     public void testToimiikoSeinatestaus() {

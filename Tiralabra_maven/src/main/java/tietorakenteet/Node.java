@@ -162,7 +162,11 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return this.rivi+", " + this.sarake + " alusta: " + this.etaisyysAlusta + " maaliin: " + this.etaisyysMaaliin;
+        String tulos = "";
+        tulos = this.rivi+", " + this.sarake + " G: " + this.etaisyysAlusta + " H: " + this.etaisyysMaaliin;
+        if (edellinen != null)
+            tulos += " edel: " + edellinen.rivi+"x"+edellinen.sarake;
+        return tulos;
     }
     
     
