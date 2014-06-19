@@ -15,11 +15,4 @@ public class AppTest
         public void testNullTest() {
             assertTrue(true);
         }
-    
-
-    
-    
-    
-    
-    
 }

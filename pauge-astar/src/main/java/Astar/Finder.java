@@ -13,6 +13,7 @@ public class Finder {
     Node neighbor;
     Heap accessed;
     Heap checked;
+    
     /**
      * Constructor
      */
@@ -23,7 +24,6 @@ public class Finder {
        checked = new Heap();
     }
     
-    
     /**
      * Finds the shortest route from start to goal
      * 
@@ -31,17 +31,16 @@ public class Finder {
      * @param start
      * @param goal 
      */
-    public void findPath(Map2 m, Node start, Node goal) {
+    public void findPath(Map m, Node start, Node goal) {
         initializeStart(start,goal);
         while(!accessed.isEmpty()) {
             handleCurrentNode();
             if (current == goal){
-                current.setValue('.');
                 break;
             }
             for(int i=-1;i<=1;i++) {
-                for(int j=-1;j<=1;j++)
-                    markNeighbour(m,goal,i,j);
+                for(int j=-1;j<=1;j++){
+                    markNeighbour(m,goal,i,j);}
             }}
         printPath(goal);
         m.printField();
@@ -85,7 +84,6 @@ public class Finder {
             n.setValue('*');
     }
     
-    
     /**
      * Goes through the neighbors of current node and marks them 
      * 
@@ -94,7 +92,7 @@ public class Finder {
      * @param y used to define a step in y-axis from current node
      * @param x used to define a step in x-axis from current node
      */
-    public void markNeighbour(Map2 m, Node goal, int y, int x) {
+    public void markNeighbour(Map m, Node goal, int y, int x) {
         try{neighbor = m.field[current.getY()+y][current.getX()+x];    //fill in the data for neighbors
                 if(neighbor.getValue() == 'X')
                     checked.insertNode(neighbor);                             //if a wall, discard

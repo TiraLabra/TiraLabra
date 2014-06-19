@@ -49,6 +49,10 @@ public class Node {
     public int getX() {
           return this.x;
     }
+    
+    public void setCost(int i) {
+        cost = i;
+    }
     /**
      * 
      * @param c change what the node looks like to visualize map
@@ -104,6 +108,7 @@ public class Node {
         if(this.value=='T')
             cost = cost+2;
     }
+    
     /**
      * 
      * @return direct distance to goal
@@ -111,6 +116,7 @@ public class Node {
     public double getToGoal() {
         return Math.sqrt(toGoal)+cost;
     }
+    
     /**
      * 
      * @return direct distance to goal (plus possible extra cost when going trough this node) + traveled distance from start
@@ -119,6 +125,10 @@ public class Node {
         return toStart+Math.sqrt(toGoal)+cost;
     }
     
+    /**
+     * 
+     * @return Nodes location as a textual representation
+     */
     public String toString() {
         return "("+this.x+","+this.y+")";
     }

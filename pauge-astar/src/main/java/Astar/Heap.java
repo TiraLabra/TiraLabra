@@ -16,9 +16,9 @@ public class Heap {
     }
     
     /**
-     * When heap gets full, double the make a new one of double size and copy content
+     * When heap gets full, make a new one double in size and copy content
      * 
-     * @return increased table
+     * @return bigger table with same content
      */
     public Node[] increaseHeapSize() {
            Node[] tnew = new Node[2*t.length];     
@@ -48,6 +48,7 @@ public class Heap {
             insertNode(n);                          //redo insert
         }
     }
+    
     /**
      * Returns Node with highest priority
      * 
@@ -56,6 +57,7 @@ public class Heap {
     public Node getHighest() {
         return t[1];
     }
+    
     /**
      *  Remove node with highest priority from the heap
      */
@@ -114,6 +116,10 @@ public class Heap {
             return false;
     }
     
+    /**
+     * 
+     * @return The size of the current Heap (not the table!)
+     */
     public int getSize(){
         return size;
     }
