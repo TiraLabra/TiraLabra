@@ -6,31 +6,47 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * Luokka joka suorittaa tiedoston lukemisen luoden samanaikaisesti
+ * "laajennetttua sanastoa". Laajennetun sanaston (laaj) k‰yttˆ
+ * mahdollistaa merkkien koodaamisen lyhyemmin kuin "tavu/merkki".
+ */
+
 public class LZWLukija {
     private BinaariMuuntaja muuntaja;
     private DataInputStream lukija;
     private StringBuilder teksti;
     private HajautusTaulu ascii;
     private HajautusTaulu laaj;
+    private int merkkienPituus;
     
     public LZWLukija() {
         this.teksti = new StringBuilder();
         this.muuntaja = new BinaariMuuntaja();
         this.laaj = new HajautusTaulu();
         this.ascii = new YleisMetodeja().alustaAscii();
+        this.merkkienPituus = 9;
     }
     
     public String getTeksti() {
         return this.teksti.toString();
     }
     
-    protected HajautusTaulu getAsciiKoodisto() {
+    protected HajautusTaulu getAscii() {
         return this.ascii;
     }
     
-    protected HajautusTaulu getLaajennettuKoodisto() {
+    protected HajautusTaulu getLaaj() {
         return this.laaj;
     }
+    
+    /**
+     * Lukee tiedoston, jonka polun se saa parametrina.
+     * Tiedostoa luetaan merkki kerrallaan ja samanaikaisesti
+     * kirjoitetaan sen pakattavaa esityst‰ StringBuilder -oliolle teksti.
+     * @param polku
+     * @throws IOException 
+     */
     
     public void lue(String polku) throws IOException {
         this.lukija = new DataInputStream(new FileInputStream(polku));
@@ -47,6 +63,19 @@ public class LZWLukija {
         lukija.close();
     }
     
+    /**
+     * K‰sittelee seuraavan merkin joka on parametrina arvo.
+     * lisattava sis‰lt‰‰ merkkijonon joka on joko tyhj‰ (alussa) tai
+     * sis‰lt‰‰ edelt‰vien luettujen merkkien yhdistelm‰n.
+     * 
+     * Muodostaa yhdistelm‰n merkeist‰ nykyinen + merkki (= luettu) ja
+     * jos t‰m‰ ei ole laajennetussa sanastossa, lis‰‰ sen sinne ja
+     * kirjoittaa nykyisen tekstiin. Sen j‰lkeen k‰sitell‰‰n seuraava merkki.
+     * @param arvo
+     * @param lisattava
+     * @return 
+     */
+    
     protected StringBuilder lisaaMerkki(int arvo, StringBuilder lisattava) {
         String nykyinen = lisattava.toString();
         
@@ -59,8 +88,9 @@ public class LZWLukija {
         String seuraava = nykyinen + merkki;
         
         if (! nykyinen.isEmpty() && ! laaj.sisaltaaAvaimen(seuraava)) {
-            lisaaKoodistoon(seuraava);
+
             lisaaBittijonoTekstiin(nykyinen);
+            lisaaKoodistoon(seuraava);
                 
             lisattava = new StringBuilder();
         }
@@ -69,10 +99,26 @@ public class LZWLukija {
         return lisattava;
     }
     
+    /**
+     * Lis‰‰ koodistoon (laaj) uuden merkkijonon.
+     * "merkkienPituus" kasvatetaan jos lis‰tt‰v‰n merkkijonon arvon pituus on pidempi.
+     * @param avain 
+     */
+    
     protected void lisaaKoodistoon(String avain) {
-        int arvoja = new YleisMetodeja().arvoja(ascii, laaj);
-        laaj.lisaa(avain, muuntaja.binaariEsitys(arvoja));
+        YleisMetodeja yleis = new YleisMetodeja();
+        
+        String arvo = yleis.koodistoonLisattavaArvo(ascii, laaj);
+        merkkienPituus = yleis.merkkienPituus(merkkienPituus, arvo.length());
+        
+        laaj.lisaa(avain, arvo);
     }
+    
+    /**
+     * Kasvattaa teksti‰ lis‰ten siihen uuden bittijonon joka on parametrina
+     * saatavan olion arvo.
+     * @param nykyinen 
+     */
     
     protected void lisaaBittijonoTekstiin(String nykyinen) {
         if (laaj.sisaltaaAvaimen(nykyinen)) {
@@ -83,26 +129,34 @@ public class LZWLukija {
         }
     }
     
+    /**
+     * Ottaa koodistosta arvon merkille/merkkijonolle ja lis‰‰ t‰h‰n
+     * niin monta etunollaa kuin tarvitsee jotta sen pituus on "merkkienPituus".
+     * 
+     * Lis‰‰ t‰m‰n j‰lkeen arvon tekstiin.
+     * @param koodisto
+     * @param avain 
+     */
+    
     protected void lisaaBittijono(HajautusTaulu koodisto, String avain) {
         String arvo = koodisto.getArvo(avain);
         teksti.append(bittijonona(arvo));
     }
     
+    /**
+     * Lis‰‰ arvon eteen 00-tavuja kunnes sen pituus on merkkienPituus. 
+     * @param arvo
+     * @return 
+     */
+    
     protected String bittijonona(String arvo) {
         StringBuilder builder = new StringBuilder();
-        int merkkienPituus = new YleisMetodeja().merkkienPituus(ascii, laaj);
         
-        while (builder.toString().length() + arvo.length() < merkkienPituus) {
+        for (int i = 0; i < merkkienPituus - arvo.length(); i++) {
             builder.append((char) 0);
         }
         
         builder.append(arvo);
         return builder.toString();
     }
-//    
-//    protected void lisaaArvojenEteenEtuNolla() {
-//        for (String avain : esitykset.getAvaimet()) {
-//            esitykset.lisaa(avain, (char) 0 + esitykset.getArvo(avain));
-//        }
-//    }
 }

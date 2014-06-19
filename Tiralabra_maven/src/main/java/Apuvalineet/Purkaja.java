@@ -6,19 +6,21 @@ import java.io.IOException;
 
 /**
  * Luokka suorittaa tiedoston purkamisen k‰ytt‰en BinaariMuuntaja luokkaa apuna.
+ * Luokat "HuffmanPurkaja" ja "LZWPurkaja" periv‰t t‰m‰n luokan.
  */
 
 public abstract class Purkaja {
     private final BinaariMuuntaja muuntaja;
     private String paate;
     
+    /**
+     * Saa parametrinaan tiedoston p‰‰tteen.
+     * @param paate 
+     */
+    
     public Purkaja(String paate) {
         this.paate = paate;
         this.muuntaja = new BinaariMuuntaja();
-    }
-    
-    public BinaariMuuntaja getMuuntaja() {
-        return this.muuntaja;
     }
     
     /**
@@ -89,6 +91,16 @@ public abstract class Purkaja {
         return pakkaus;
     }
     
+    /**
+     * Palauttaa tekstin "bin‰‰riesityksen", joka on muotoa: 00 01 01 00 01...
+     * alkuOsoite viittaa tekstin kohtaan, jossa on tieto siit‰,
+     * kuinka monta etunollaa tekstiin on lis‰tty ja muu teksti
+     * seuraa t‰t‰ osoitetta.
+     * @param teksti
+     * @param alkuOsoite
+     * @return 
+     */
+    
     protected String tekstiBinaarina(String teksti, int alkuOsoite) {
         return muuntaja.puraBinaariEsitykseksi(teksti, alkuOsoite);
     }
@@ -116,6 +128,13 @@ public abstract class Purkaja {
     protected String luotavanTiedostonPolku(String polku) {
         return polku.substring(0, polku.length() - paate.length());
     }
+    
+    /**
+     * Metodi jonka periv‰t luokat toteuttavat ja se palauttaa
+     * ascii -esityksen, joka kirjoitetaan "purettuun" tiedostoon.
+     * @param teksti
+     * @return 
+     */
     
     protected abstract String puretunTiedostonSisalto(String teksti);
 }

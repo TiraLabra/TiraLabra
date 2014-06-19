@@ -26,27 +26,17 @@ public class LZWPurkajaTest {
     }
     
     @Test
-    public void paivitaPituusJosPienempi() {
-        purkaja.paivitaPituusJosPienempi(8);
-        assertEquals(9, purkaja.getPituus());        
-        
-        purkaja.paivitaPituusJosPienempi(9);
-        assertEquals(9, purkaja.getPituus());
-        
-        purkaja.paivitaPituusJosPienempi(10);
-        assertEquals(10, purkaja.getPituus());
-    }
-    
-    @Test
-    public void asciiMerkki() {
+    public void merkkijono() {
+        purkaja = new LZWPurkaja();
         String bittijono = n+y+n+y+n+n+y+n+y;
-        assertEquals((char) 165 + "", purkaja.asciiMerkki(bittijono));
+        
+        assertEquals((char) 165 + "", purkaja.merkkijono(bittijono));
         
         bittijono += y;
-        assertEquals((char) 75 + "", purkaja.asciiMerkki(bittijono));
+        assertEquals((char) 75 + "", purkaja.merkkijono(bittijono));
         
-        bittijono += n;
-        assertEquals((char) 150 + "", purkaja.asciiMerkki(bittijono));
+        purkaja.lisaaKoodistoon("AB");
+        assertEquals("AB", purkaja.merkkijono(y+n+n+n+n+n+n+n+n));
     }
     
     @Test
@@ -57,30 +47,88 @@ public class LZWPurkajaTest {
         assertEquals(n+y+y+y+n+n+y+n+n ,purkaja.seuraavaBittijono(binaarina, 0));
         assertEquals(n+y+n+n+y+n+n+y+y, purkaja.seuraavaBittijono(binaarina, 5));
         
-        purkaja.paivitaPituusJosPienempi(11);
+        purkaja.setPituus(11);
         assertEquals(n+y+y+y+n+n+y+n+n+y+n, purkaja.seuraavaBittijono(binaarina, 0));
         assertEquals(n+y+y+n+n+y+n+n+y+y+n, purkaja.seuraavaBittijono(binaarina, 11));
     }
     
     @Test
-    public void seuraavaMerkki() {
+    public void seuraavaMerkkijono() {
         purkaja = new LZWPurkaja();
         String binaarina = n+y+y+y+n+n+y+n+n+y+n+n+y+y+n+n+y+n+n+y+y+n;
         
         assertEquals((char) 228 + "", purkaja.seuraavaMerkkiJono(binaarina, 0));
-        purkaja.paivitaPituusJosPienempi(10);
+        purkaja.setPituus(10);
         
         assertEquals((char) 147 + "", purkaja.seuraavaMerkkiJono(binaarina, 4));
+        
+        purkaja.lisaaKoodistoon("8i");
+        binaarina = y+n+y+n+n+muuntaja.binaariEsitys(256);
+        
+        assertEquals("8i", purkaja.seuraavaMerkkiJono(binaarina, 5));
     }
     
     @Test
-    public void lisaaAvainKoodistoon() {
+    public void lisaaKoodistoon() {
         purkaja = new LZWPurkaja();
         String avain = "TO";
+        String arvo = muuntaja.binaariEsitys(256);
+        
         purkaja.lisaaKoodistoon(avain);
         
         assertTrue(purkaja.getLaaj().sisaltaaAvaimen(avain));
-        assertEquals(muuntaja.binaariEsitys(256), purkaja.getLaaj().getArvo(avain));
+        assertTrue(purkaja.getKaannettyLaaj().sisaltaaAvaimen(arvo));
+        
+        assertEquals(arvo, purkaja.getLaaj().getArvo(avain));
+        assertEquals(avain, purkaja.getKaannettyLaaj().getArvo(arvo));
         assertEquals(9, purkaja.getPituus());
+    }
+    
+    @Test
+    public void lisaaMerkki() {
+        purkaja = new LZWPurkaja();
+        
+        merkkiaEiLisataNykyinenTyhja();
+        merkkiaEiLisataSeuraavaLoytyyLaajKoodistosta();
+        merkkiJonoLisataanKoodistoon();
+    }
+    
+    private void merkkiaEiLisataNykyinenTyhja() {
+        String teksti = purkaja.getTeksti();
+
+        String nykyinen = purkaja.lisaaMerkki("", "A");
+        assertEquals(teksti, purkaja.getTeksti());
+        assertEquals("A", nykyinen);
+    }
+    
+    private void merkkiaEiLisataSeuraavaLoytyyLaajKoodistosta() {
+        purkaja.lisaaKoodistoon("AB");
+        String nykyinen = purkaja.lisaaMerkki("A", "B");
+        assertEquals("AB", nykyinen);
+    }
+    
+    private void merkkiJonoLisataanKoodistoon() {
+        purkaja = new LZWPurkaja();
+        String teksti = purkaja.getTeksti();
+        
+        purkaja.lisaaKoodistoon("98");
+        String nykyinen = purkaja.lisaaMerkki("98", "7");
+        
+        assertTrue(purkaja.getLaaj().sisaltaaAvaimen("987"));
+        assertEquals(teksti + "98", purkaja.getTeksti());
+        assertEquals("7", nykyinen);
+    }
+    
+    @Test
+    public void lisaaMerkkijono() {
+        purkaja = new LZWPurkaja();
+        String teksti = purkaja.getTeksti();
+        
+        purkaja.lisaaKoodistoon("EO");
+        assertEquals("OB", purkaja.lisaaMerkkijono("OB", ""));
+        assertEquals(teksti, purkaja.getTeksti());
+        
+        assertEquals("EO", purkaja.lisaaMerkkijono("OB", "EO"));
+        assertEquals(teksti + "OB", purkaja.getTeksti());
     }
 }

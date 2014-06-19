@@ -41,7 +41,7 @@ public class HuffmanPakkaaja {
     
     protected String tekstiPakattuna(HajautusTaulu bittijonot, String teksti) {
         String ykkosinaJaNollina = muuntaja.ykkosinaJaNollina(teksti, bittijonot);
-        return muuntaja.pakatuksiTekstiksi(ykkosinaJaNollina);
+        return muuntaja.asciiKoodiksi(ykkosinaJaNollina);
     }
     
     /**

@@ -27,7 +27,7 @@ public class HuffmanOhjaus {
         HuffmanPakkaaja pakkaaja = new HuffmanPakkaaja();
         String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), esitykset);
 
-        Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".hemi");
+        Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".huff");
         kirjoittaja.kirjoita(teksti);
     }
 }

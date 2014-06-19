@@ -25,6 +25,7 @@ public class BinaariMuuntaja {
      * @param arvo
      * @return 
      */
+    
     public String binaariEsitys(int arvo) {
         if (arvo == 0) {
             return n + "";
@@ -73,7 +74,7 @@ public class BinaariMuuntaja {
      * @return 
      */
     
-    public String pakatuksiTekstiksi(String ykkosinaJaNollina) {
+    public String asciiKoodiksi(String ykkosinaJaNollina) {
         StringBuilder pakkaaja = new StringBuilder();
         
         for (int i = 0; i < ykkosinaJaNollina.length() / 8; i++) {

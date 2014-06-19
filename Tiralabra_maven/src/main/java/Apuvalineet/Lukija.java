@@ -19,6 +19,13 @@ public class Lukija {
         this.teksti = new StringBuilder();
     }
     
+    /**
+     * Luokalla on kaksi konstruktoria. Kutsumalla t‰t‰ arvolla "true" voidaan
+     * ker‰t‰ jokaisen luetun merkin esiintymien m‰‰r‰ talteen.
+     * (K‰ytet‰‰n Huffman -puun muodostamista varten.)
+     * @param keraaEsiintymat 
+     */
+    
     public Lukija(boolean keraaEsiintymat) {
         this();
         this.keraaEsiintymat = keraaEsiintymat;
@@ -67,6 +74,12 @@ public class Lukija {
             lisaaEsiintyma(merkki + "");
         }
     }
+    
+    /**
+     * Kasvattaa merkin esiintymism‰‰r‰‰ yhdell‰ jos se on lis‰tty haj. tauluun.
+     * Jos ei ole, lis‰‰ haj. tauluun arvolla 1.
+     * @param merkki 
+     */
     
     protected void lisaaEsiintyma(String merkki) {
         int maara = 1;

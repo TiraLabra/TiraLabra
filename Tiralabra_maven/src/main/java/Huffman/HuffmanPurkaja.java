@@ -10,7 +10,7 @@ import Tietorakenteet.HajautusTaulu;
 public class HuffmanPurkaja extends Purkaja {
     
     public HuffmanPurkaja() {
-        super(".hemi");
+        super(".huff");
     }
     
     /**
@@ -118,6 +118,7 @@ public class HuffmanPurkaja extends Purkaja {
      * @param bittiEsitys
      * @return 
      */
+    
     protected boolean lisaaMerkkiJosSeOn0Tai1(char merkki, StringBuilder bittiEsitys) {
         if (merkki == 0 || merkki == 1) {
             String lisattava = merkki + "";

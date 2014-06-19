@@ -14,11 +14,11 @@ public class MinKeko {
     /**
      * Keolle annetaan solmutaulukon pituudeksi se, kuinka monta erilaista merkkiä luetussa (teksti)-tiedostossa
      * on ollut.
-     * @param hashSize 
+     * @param merkkeja 
      */
     
-    public MinKeko(int hashSize) {
-        this.keko = new Solmu[hashSize];
+    public MinKeko(int merkkeja) {
+        this.keko = new Solmu[merkkeja];
         this.koko = 0;
     }
     

@@ -3,25 +3,45 @@ package LZW;
 import Apuvalineet.BinaariMuuntaja;
 import Tietorakenteet.HajautusTaulu;
 
+/**
+ * Sis‰lt‰‰ muutamia yleismetodeja joita sek‰ LZWLukija ett‰ LZWPurkaja
+ * k‰ytt‰v‰t.
+ */
+
 public class YleisMetodeja {
     
-    protected int  merkkienPituus(HajautusTaulu ascii, HajautusTaulu laaj) {
-        int i = 8;
-        
-        while (true) {
-            double potenssi = Math.pow(2, i);
-            
-            if (potenssi <= arvoja(ascii, laaj)) {
-                i++;
-                continue;
-            }
-            return i;
-        }
+    /**
+     * Palauttaa luettavien/kirjoitettavien bittijonojen pituuden.
+     * @param pituus
+     * @param suurimmanArvonPituus
+     * @return 
+     */
+    
+    protected int merkkienPituus(int pituus, int suurimmanArvonPituus) {
+        return Math.max(pituus, suurimmanArvonPituus);
+    }
+    
+    /**
+     * Selvitt‰‰ arvon, joka on seuraava, mik‰ (laaj-) koodistoon lis‰t‰‰n.
+     * @param ascii
+     * @param laaj
+     * @return 
+     */
+    
+    protected String koodistoonLisattavaArvo(HajautusTaulu ascii, HajautusTaulu laaj) {
+        int arvoja = arvoja(ascii, laaj);
+        return new BinaariMuuntaja().binaariEsitys(arvoja);
     }
     
     protected int arvoja(HajautusTaulu ascii, HajautusTaulu laaj) {
         return ascii.getKoko() + laaj.getKoko();
     }
+    
+    /**
+     * Alustaa ascii -koodiston lis‰‰m‰ll‰ sinne kaikki tavut ja niit‰ vastaavat
+     * 8-bitin esitykset.
+     * @return 
+     */
     
     protected HajautusTaulu alustaAscii() {
         BinaariMuuntaja muuntaja = new BinaariMuuntaja();

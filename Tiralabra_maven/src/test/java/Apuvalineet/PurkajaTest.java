@@ -22,12 +22,12 @@ public class PurkajaTest {
     
     @After
     public void tuhoaTestiTiedosto() {
-        File testi = new File("TiedostonPurkajaTest.hemi");
+        File testi = new File("TiedostonPurkajaTest.huff");
         testi.delete();
     }
     
     private void luoTestiTiedostoJosTarpeen() throws IOException {
-        File testi = new File("TiedostonPurkajaTest.hemi");
+        File testi = new File("TiedostonPurkajaTest.huff");
         if (! testi.exists()) {
             Kirjoittaja kirjoittaja = new Kirjoittaja(testi.getPath());
             kirjoittaja.kirjoita("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135) ;
@@ -36,18 +36,18 @@ public class PurkajaTest {
     
     @Test
     public void polkuOnValidi() throws IOException {
-        purkaja.tarkistaOnkoPolkuValidi("abc.hemi");
-        purkaja.tarkistaOnkoPolkuValidi("Tiedosto.HEMI");
+        purkaja.tarkistaOnkoPolkuValidi("abc.huff");
+        purkaja.tarkistaOnkoPolkuValidi("Tiedosto.HUFF");
     }
     
     @Test (expected = IOException.class)
     public void eiValidiPolkuHeittaaPoikkeuksen() throws IOException {
-        purkaja.tarkistaOnkoPolkuValidi("abc.hemi2");
+        purkaja.tarkistaOnkoPolkuValidi("abc.huff2");
     }
     
     @Test
     public void pakkauksenHakuOnnistuu() throws IOException {
-        File pakkaus = purkaja.haePakkaus("TiedostonPurkajaTest.hemi");
+        File pakkaus = purkaja.haePakkaus("TiedostonPurkajaTest.huff");
         assertTrue(pakkaus.isFile());
     }
     
@@ -58,17 +58,17 @@ public class PurkajaTest {
     
     @Test
     public void testinLukeminenOnnistuu() throws IOException {
-        File tiedosto = new File("TiedostonPurkajaTest.hemi");
+        File tiedosto = new File("TiedostonPurkajaTest.huff");
         assertEquals("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135,
                      purkaja.lueTeksti(tiedosto));
     }
     
     @Test
     public void luotavanTiedostonPolkuPalauttaaPolunOikein() {
-        String polku = "a.hemi";
+        String polku = "a.huff";
         assertEquals("a", purkaja.luotavanTiedostonPolku(polku));
         
-        polku = ".hemi";
+        polku = ".huff";
         assertEquals("", purkaja.luotavanTiedostonPolku(polku));
     }
 }

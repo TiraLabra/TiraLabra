@@ -47,8 +47,8 @@ public class LZWLukijaTest {
         lukija = new LZWLukija();
         lukija.lisaaKoodistoon("ab");
         
-        assertEquals(257, yleis.arvoja(lukija.getAsciiKoodisto(), lukija.getLaajennettuKoodisto()));
-        assertTrue(lukija.getLaajennettuKoodisto().sisaltaaAvaimen("ab"));
+        assertEquals(257, yleis.arvoja(lukija.getAscii(), lukija.getLaaj()));
+        assertTrue(lukija.getLaaj().sisaltaaAvaimen("ab"));
     }
     
     @Test
@@ -70,8 +70,8 @@ public class LZWLukijaTest {
     public void lisaaBittijono() throws IOException {
         lukija = new LZWLukija();
         
-        HajautusTaulu ascii = lukija.getAsciiKoodisto();
-        HajautusTaulu laaj = lukija.getLaajennettuKoodisto();
+        HajautusTaulu ascii = lukija.getAscii();
+        HajautusTaulu laaj = lukija.getLaaj();
         
         lukija.lisaaBittijono(ascii, "c");
         assertEquals((char) 0 + muuntaja.binaariEsitys8Bit(99), lukija.getTeksti());
@@ -112,7 +112,7 @@ public class LZWLukijaTest {
         builder.append("T");
         builder = lukija.lisaaMerkki('R', builder);
         
-        HajautusTaulu laaj = lukija.getLaajennettuKoodisto();
+        HajautusTaulu laaj = lukija.getLaaj();
         assertTrue(laaj.sisaltaaAvaimen("TR"));
         assertEquals(muuntaja.binaariEsitys(271), laaj.getArvo("TR"));
         
@@ -125,7 +125,7 @@ public class LZWLukijaTest {
         lukija = new LZWLukija();
         lukija.lue(polku);
         
-        HajautusTaulu laajKoodisto = lukija.getLaajennettuKoodisto();
+        HajautusTaulu laajKoodisto = lukija.getLaaj();
         
         String[] avaimet = {"TO", "OB", "BE", "EO", "OR", "RN", "NO", "OT", "TT", "TOB", "BEO", "ORT", "TOBE", "EOR", "RNO"};
         assertEquals(avaimet.length, laajKoodisto.getAvaimet().length);

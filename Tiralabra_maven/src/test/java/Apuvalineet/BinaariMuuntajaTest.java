@@ -81,9 +81,9 @@ public class BinaariMuuntajaTest {
     
     @Test
     public void tekstinPakkaaminenTavuiksiToimii() {
-        assertEquals("", muuntaja.pakatuksiTekstiksi(""));
-        assertEquals("f", muuntaja.pakatuksiTekstiksi(n+y+y+n+n+y+y+n));
-        assertEquals("moi", muuntaja.pakatuksiTekstiksi(n+y+y+n+y+y+n+y+n+y+y+n+y+y+y+y+n+y+y+n+y+n+n+y));
+        assertEquals("", muuntaja.asciiKoodiksi(""));
+        assertEquals("f", muuntaja.asciiKoodiksi(n+y+y+n+n+y+y+n));
+        assertEquals("moi", muuntaja.asciiKoodiksi(n+y+y+n+y+y+n+y+n+y+y+n+y+y+y+y+n+y+y+n+y+n+n+y));
     }
     
     @Test
