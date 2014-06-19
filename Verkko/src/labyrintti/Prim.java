@@ -6,7 +6,9 @@ package labyrintti;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
+import util.Lista;
 import util.Taulukko;
 import verkko.Solmu;
 
@@ -42,30 +44,37 @@ public class Prim extends Labyrintitin {
     public void labyrintita() {
         Solmu lisatty = solmut[0][0];
         kayty(lisatty);
-        Solmu[] kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
-        lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
+        Lista<Solmu> kaymattomatNaapurit = kaymattomatNaapuritLista(lisatty);
+//        lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
+        for (Solmu solmu : kaymattomatNaapurit) {
+            lisaysehdokkaat.add(solmu);
+        }
         do {
             final int rand = snj.nextInt(lisaysehdokkaat.size());
             Solmu lisattava = lisaysehdokkaat.get(rand);
             lisaysehdokkaat.remove(rand);
-            Solmu[] kaydytNaapurit = kaydytNaapurit(lisattava);
+            Lista<Solmu> kaydytNaapurit = kaydytNaapuritLista(lisattava);
             Solmu valittuKayty;
-            if (kaydytNaapurit.length > 1) {
-                valittuKayty = kaydytNaapurit[snj.nextInt(kaydytNaapurit.length)];
+            if (kaydytNaapurit.getKoko() > 1) {
+                valittuKayty = kaydytNaapurit.get(snj.nextInt(kaydytNaapurit.getKoko()));
             } else {
-                valittuKayty = kaydytNaapurit[0];
+                valittuKayty = kaydytNaapurit.get(0);//kaydytNaapurit[0];
             }
             luoNaapuruudet(lisattava, valittuKayty);
             kayty(lisattava);
             lisatty = lisattava;
-            kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
-            lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
+            kaymattomatNaapurit = kaymattomatNaapuritLista(lisatty);
+//            lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
+            for (Solmu solmu : kaymattomatNaapurit) {
+                lisaysehdokkaat.add(solmu);
+            }
 
         } while (!lisaysehdokkaat.isEmpty());
     }
 
     /**
      * Käymättömät naapurit
+     *
      * @param s
      * @return
      */
@@ -79,6 +88,30 @@ public class Prim extends Labyrintitin {
         }
         final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
         naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
+        return naapurit;
+    }
+
+    /**
+     * Käymättömät naapurit
+     *
+     * @param s
+     * @return
+     */
+    private Lista<Solmu> kaymattomatNaapuritLista(Solmu s) {
+        Lista<Solmu> naapurit = naapuritLista(s);
+//        for (int i = 0; i < naapurit.length; i++) {
+//            Solmu solmu = naapurit[i];
+//            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
+//                naapurit[i] = null;
+//            }
+//        }
+        Iterator<Solmu> iterator = naapurit.iterator();
+        while (iterator.hasNext()) {
+            Solmu solmu = iterator.next();
+            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
+                iterator.remove();
+            }
+        }
         return naapurit;
     }
 
@@ -97,6 +130,31 @@ public class Prim extends Labyrintitin {
         }
         final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
         naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
+        return naapurit;
+    }
+
+    /**
+     * Palauttaa annetun solmun käydyt naapurit.
+     *
+     * @param s
+     * @return
+     */
+    private Lista<Solmu> kaydytNaapuritLista(Solmu s) {
+        Lista<Solmu> naapurit = naapuritLista(s);
+//        for (int i = 0; i < naapurit.length; i++) {
+//            if (!onkoKayty(naapurit[i])) {
+//                naapurit[i] = null;
+//            }
+//        }
+        Iterator<Solmu> iterator = naapurit.iterator();
+        while (iterator.hasNext()) {
+            Solmu solmu = iterator.next();
+            if (!onkoKayty(solmu)) {
+                iterator.remove();
+            }
+        }
+//        final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
+//        naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
         return naapurit;
     }
 

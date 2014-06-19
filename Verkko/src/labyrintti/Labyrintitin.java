@@ -5,6 +5,7 @@
 package labyrintti;
 
 import java.util.Arrays;
+import util.Lista;
 import util.Taulukko;
 import verkko.Solmu;
 
@@ -47,6 +48,33 @@ public abstract class Labyrintitin {
      */
     public abstract void labyrintita();
 
+    /**
+     * Tämän labyrintinkohdan mahdolliset naapurit.
+     *
+     * @param s
+     * @return
+     */
+    Lista<Solmu> naapuritLista(Solmu s) {
+        int x = s.kokonaislukuKoordinaatti(0);
+        int y = s.kokonaislukuKoordinaatti(1);
+//        Solmu[] naapurit = new Solmu[4];
+        Lista<Solmu> naapurit=new Lista<>(4);
+        if (x > 0) {
+            naapurit.lisaa(solmut[x - 1][y]);
+        }
+        if (y > 0) {
+            naapurit.lisaa(solmut[x][y - 1]);
+        }
+        if (x < solmut.length - 1) {
+            naapurit.lisaa(solmut[x + 1][y]);
+        }
+        if (y < solmut[0].length - 1) {
+            naapurit.lisaa(solmut[x][y + 1]);
+        }
+//        final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
+//        Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
+        return naapurit;
+    }
     /**
      * Tämän labyrintinkohdan mahdolliset naapurit.
      *

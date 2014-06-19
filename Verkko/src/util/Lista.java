@@ -4,14 +4,17 @@
  */
 package util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  *
  * @author Arvoitusmies
  * @param <E>
  */
-public class Lista<E> {
+public class Lista<E> implements Iterable<E> {
 
     /**
      * Defaultti alkukoko
@@ -110,15 +113,23 @@ public class Lista<E> {
         a[indeksi] = uusiArvo;
     }
 
+    public void poista(int indeksi) throws ArrayIndexOutOfBoundsException {
+        tsekkaaIndeksi(indeksi);
+        a[indeksi] = null;
+
+        siftLeft(indeksi);
+        koko--;
+    }
+
     /**
      * Keskeytys jos indeksi on väärä
      *
      * @param indeksi
      * @throws IllegalArgumentException
      */
-    private void tsekkaaIndeksi(int indeksi) throws IllegalArgumentException {
+    private void tsekkaaIndeksi(int indeksi) throws ArrayIndexOutOfBoundsException {
         if (indeksi >= koko || indeksi < 0) {
-            throw new IllegalArgumentException("Indeksi listan ulkopuolella");
+            throw new ArrayIndexOutOfBoundsException("Indeksi listan ulkopuolella");
         }
     }
 
@@ -143,5 +154,56 @@ public class Lista<E> {
             }
         }
         return false;
+    }
+
+    private void siftLeft(int indeksi) {
+        for (int i = indeksi; i < koko - 1; i++) {
+            Taulukko.swap(a, i, i + 1);
+        }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Itr();
+    }
+
+    public void sekoita() {
+        final E[] copyOf = Arrays.copyOf(a, koko);
+        Taulukko.sekoita(copyOf);
+        a=Arrays.copyOf(copyOf, a.length);
+    }
+
+    private class Itr implements Iterator<E> {
+
+        private int seuraava = 0;
+        private int edellinen = -1;
+
+        @Override
+        public boolean hasNext() {
+            return seuraava != koko;
+        }
+
+        @Override
+        public E next() {
+            if (seuraava >= koko) {
+                throw new NoSuchElementException();
+            }
+            edellinen = seuraava;
+            seuraava++;
+            return a[edellinen];
+        }
+
+        @Override
+        public void remove() {
+            if (edellinen < 0) {
+                throw new IllegalStateException();
+            }
+
+            Lista.this.poista(edellinen);
+            seuraava = edellinen;
+            edellinen = -1;
+
+        }
+
     }
 }

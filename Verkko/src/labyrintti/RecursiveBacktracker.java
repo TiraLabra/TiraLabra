@@ -5,6 +5,7 @@
 package labyrintti;
 
 import java.util.Arrays;
+import util.Lista;
 import util.Taulukko;
 import verkko.Solmu;
 
@@ -55,10 +56,10 @@ public class RecursiveBacktracker extends Labyrintitin {
     protected void recur(int x, int y) {
         final Solmu nyt = solmut[x][y];
         kayty(nyt);
-        Solmu[] naapurit = naapurit(nyt);
-        if (naapurit.length > 0) {
+        Lista<Solmu> naapurit = naapuritLista(nyt);
+        if (naapurit.getKoko() > 0) {
             //sekoitetaan niin valitaan randomisti jokin naapuri.
-            Taulukko.sekoita(naapurit);
+            naapurit.sekoita();
             for (Solmu naapuri : naapurit) {
                 if (!onkoKayty(naapuri)) {
                     int naapuriX = naapuri.kokonaislukuKoordinaatti(0);

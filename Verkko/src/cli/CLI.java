@@ -47,8 +47,12 @@ public class CLI {
 
                 labyrintti = new Labyrintti2D(korkeus, leveys);
                 System.out.print("Labyrintitin: [R]ecursiveBacktracker, [P]rimin algoritmi: ");
-
-                char eka = s.nextLine().toUpperCase().toCharArray()[0];
+                char[] toCharArray = s.nextLine().toUpperCase().toCharArray();
+                if (toCharArray.length < 1) {
+                    System.out.println("R tai P, kiitos.");
+                    continue;
+                }
+                char eka = toCharArray[0];
                 Solmu[][] solmut = labyrintti.getSolmut();
                 switch (eka) {
                     case 'R':
@@ -70,7 +74,12 @@ public class CLI {
                 System.out.println("Labyrintitys suoritettu " + ero + "ms");
                 System.out.print("A* vai Djikstra? ");
 
-                eka = s.nextLine().toUpperCase().toCharArray()[0];
+                toCharArray = s.nextLine().toUpperCase().toCharArray();
+                if (toCharArray.length < 1) {
+                    System.out.println("A tai D, kiitos.");
+                    continue;
+                }
+                eka = toCharArray[0];
                 switch (eka) {
                     case 'A':
                         h = new TaksimiehenEtaisyys();
@@ -87,8 +96,9 @@ public class CLI {
                 aika = System.currentTimeMillis();
                 as.suorita();
                 ero = System.currentTimeMillis() - aika;
-                System.out.println("Polunetsintä suoritettu " + ero + "ms");
                 System.out.println(labyrintti.printtaaReittiLabyrintissa(as.getReitti(), maali));
+
+                System.out.println("Polunetsintä suoritettu " + ero + "ms");
                 break;
             }
 
@@ -112,7 +122,7 @@ public class CLI {
                 korkeusInput = s.nextLine();
                 continue;
             }
-            if (koko > 500) {
+            if (koko > 1000) {
                 System.out.println("Liian iso!");
                 korkeusInput = s.nextLine();
                 continue;
