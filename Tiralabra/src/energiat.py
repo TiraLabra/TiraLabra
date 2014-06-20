@@ -10,7 +10,15 @@ Atomiytimien aiheuttama potentiaali V_ext*n(r)
 from sys import exit
 from laskentaa import tee_gauss_seidel_yksi_askel
 
-#from math import abs
+
+def E_penalty(elektroni_tiheys, mylambda):
+    #print "el alku, el_nyt",\
+    #    elektroni_tiheys.get_summa_mennyt(),\
+    #    elektroni_tiheys.get_summa_nykyinen()
+    return mylambda*(\
+            elektroni_tiheys.get_summa_mennyt()-\
+                elektroni_tiheys.get_summa_nykyinen())**2
+
 def E_T(elektroni_tiheys):
     """ Lasketaan elektronikaasun kineettinen energia gridissä.
     """
@@ -47,7 +55,7 @@ def E_elektroni_ydin(ydin_tiheys, V_hartree):
     return c*np.sum(ydin_tiheys.gridi * V_hartree.gridi)
 
 
-def get_V_hartree(V_hartree, elektroni_tiheys, tolerance=0.001):
+def get_V_hartree(V_hartree, elektroni_tiheys, tolerance=1e-5):
     """ lasketaan Hartree potentiaali tämänhetkiselle elektronitiheydelle"""
     e_vanha = E_elektroni_elektroni(elektroni_tiheys, V_hartree)
     e_uusi = e_vanha + 100.0
@@ -67,19 +75,26 @@ def E_tot(elektroni_tiheys, V_hartree, ydin_tiheys):
     import numpy as np
     
     # xxx iteraatiota jotta saadaan hartree potentiaali
-    get_V_hartree(V_hartree, elektroni_tiheys, 0.001)
+    get_V_hartree(V_hartree, elektroni_tiheys)
 
     ETOT = E_T(elektroni_tiheys)+\
         E_vaihtokorrelaatio(elektroni_tiheys) + \
         E_elektroni_elektroni(elektroni_tiheys, V_hartree) + \
         E_elektroni_ydin(ydin_tiheys, V_hartree)
  
-    print "ETOT", ETOT,\
-        "E_t",E_T(elektroni_tiheys), \
-        "E_xc",E_vaihtokorrelaatio(elektroni_tiheys), \
-        "E_ee",E_elektroni_elektroni(elektroni_tiheys, V_hartree), \
-        "E_ne",E_elektroni_ydin(ydin_tiheys, V_hartree), \
-        "NEL", np.sum(elektroni_tiheys.gridi)*V_hartree.get_volume_of_a_box()
+    #print "ETOT", ETOT,\
+    #    "E_t",E_T(elektroni_tiheys), \
+    #    "E_xc",E_vaihtokorrelaatio(elektroni_tiheys), \
+    #    "E_ee",E_elektroni_elektroni(elektroni_tiheys, V_hartree), \
+    #    "E_ne",E_elektroni_ydin(ydin_tiheys, V_hartree), \
+    #    "NEL", np.sum(elektroni_tiheys.gridi)*V_hartree.get_volume_of_a_box()
     return ETOT
 
     
+def E_tot_with_penalty(elektroni_tiheys, V_hartree, ydin_tiheys, mylambda):
+    """ Lasketaan kokonaisenergia jossa on mukana rangaistus poikkeavasta 
+    elektronien lukumäärästä """
+    e_penalty = E_tot(elektroni_tiheys, V_hartree, ydin_tiheys) + \
+        E_penalty(elektroni_tiheys, mylambda)
+    #print "e_penalty", E_penalty(elektroni_tiheys, mylambda)
+    return e_penalty

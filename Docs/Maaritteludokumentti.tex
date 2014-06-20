@@ -23,6 +23,7 @@
 \usepackage[finnish]{babel} %ääkköset
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
 
 \usepackage[version=3]{mhchem} % Package for chemical equation typesetting
 \usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
@@ -80,7 +81,42 @@ vertaillaan. Lisäksi Poissonin yhtälö (yhtälö \ref{poisson}) ratkaistaan
 erikseen muuttamalla yhtälö diskreetiksi ongelmaksi gridissä, eli
 toiselle derivaatan arvot lasketaan gridin naapuripisteiden avulla.
 
+Keskeinen tietorakenne tässä työssä on gridi objekti. Siihen kuuluu
+laskenta gridin määrittely, laskentagridin reunaehdot ja erilaiset
+laskutoimitukset laskentagridissä. Käytännössä gridi esittää pientä
+avaruudellista tilavuutta joka on jaettu pieniin osatilavuuksiin ja
+halututtujen muuttujien arvot lasketaan gridin joka
+pisteessä. Tällaisia gridi-objekteja ovat esim. elektronitiheys ja
+Hartree potentiaali(yhtälö \ref{hartree}).
+
 \subsection{Monte Carlo algoritmi energian minimoiseksi}
+Tässä työssä Monte Carlo algoritmi on tehty seuraavalla tavalla.
+\begin{enumerate}
+\item Lasketaan systeemin kokonaisenergia.
+\item Arvotaan pieni tiheyden muutos jokaiselle gridin
+  sisäpisteelle. Arvonta suoritetaan siten että elektronien
+  kokonaismäärä säilyy.
+\item Lasketaan systeemin kokonaisenergia uudella elektronitiheydellä.
+\item Jos energia on alentunut hyväksytään uusi elektronitiheys ja
+  siirrytään arpomaan uusi elektronitiheys (kohta b).
+\item Jos energia on noussut uusi elektronitiheys hyväksytään
+  todennäköisyydellä joka on otettu Bolztmannin jakaumasta
+  (hyväksymisprofiilia voi muuttaa muuttamalla systeemin lämpötilaa).
+\item Lopetetaan jos konvergoinut, muuten palataan kohtaan b ja
+  arvotaan uusi elektronitiheys.
+\end{enumerate}
+
+\subsection{Steepes Descent algoritmi energian minimoiseksi}
+Tässä työssä Steepest Descent algoritmi on tehty seuraavalla tavalla.
+\begin{enumerate}
+\item Lasketaan systeemin kokonaisenergia.
+\item Lasketaan tiheyden gradientti jokaisessa gridin sisäpisteessä.
+\item Muutetaan tiheyttä gradientin suunnassa kunnes löydetään minimi
+  tässä suunnassa. Minimointi gradientin suunnassa tehdään siten että
+  ensin etsitään minim karkeasti siirtymällä kiinteitä askeleita
+  gradientin suuntaan. Tämän jälkeen minimi haarukoidaan tarkasti
+  (Golden section telescoping [\cite{kiusalaas2013numerical}]
+\end{enumerate}
 
 
 \section{Ratkaistava ongelma. Valittujen algoritmien perustelu.}
@@ -113,16 +149,21 @@ Yhtälöt ovat siinä muodossa että on käytetty atomiyksiköitä (atomic
 units).
 
 Yksinkertaisuuden vuoksi tässä työssä ei käytetä periodisia
-reunaehtoja, vaan avaruus loppuu gridin reunaan. Integraalit lasketaan summaamalla gridi-pisteiden ylitse. Mahdollisesti osa elektronitiheyden laskemisesta tehdään ratkaisemalla Poissonin yhtälö:
+reunaehtoja, vaan avaruus loppuu gridin reunaan. Reunaehdoksi on
+valittu se että elektronitiheys menee nollaan gridin
+reunalla. Integraalit lasketaan summaamalla gridi-pisteiden
+ylitse. Mahdollisesti osa elektronitiheyden laskemisesta tehdään
+ratkaisemalla Poissonin yhtälö:
 \begin{equation}
 \label{poisson}
 \nabla^2 V_h = -4 \pi \rho(\vec{r}),
 \end{equation}
 missä
 \begin{equation}
+\label{hartree}
 V_h (\rho, \vec{r}) = \int \mathrm{d}^3\vec{r'} 
 \frac{\rho(\vec{r'}) }{|\vec{r}-\vec{r'}|}.
-\end{equation}
+\end{equation}.
 
 Jotta elektronien lukumäärä pysyy vakiona, energiaan $E$ täytyy
 modifioida lisätermillä:
@@ -137,7 +178,21 @@ $N_e$ elektronien lukumäärä.
 Ohjelmalle annetaan syötteenä käytetyn gridin gridipisteiden määrä x-,
 y- ja z- suunnissa. Lisäksi annetaan gridin pituudet atomiyksiköissä
 x-, y- ja z- suunnissa. Lopulta annetaan atomiytimien paikat ja ytimen
-protonien määrä (eli mistä alkuaineesta on kysymys).
+protonien määrä (eli mistä alkuaineesta on kysymys). Esimerkki
+syötetiedosto on näytetty alla:
+\begin{small}
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+16         # laskenta gridipisteiden lkm x suunnassa 
+16         # laskenta gridipisteiden lkm y suunnassa 
+0          # laskenta gridipisteiden lkm z suunnassa (0==2d)
+2.0        # elektronien kokonaismaara (> 0)
+2          # atomiydinten lukumaara
+3 3 0 1.0  # ytimen 1 paikka gridissa (x,y,z), varaus (> 0)
+8 2 0 1.0  # ytimen 2 paikka gridissa (x,y,z), varaus (> 0)
+\end{lstlisting}
+\end{small}
+
 
 \section{Ohjelman tavoitteena olevat aika- ja tilavaativuudet}
 Ohjelman testisysteemistä olisi tarkoitus rakentaa sellainen että

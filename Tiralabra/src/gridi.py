@@ -19,9 +19,10 @@ class Gridi(object):
          number of grid points in z direction
      h : float
          grid spacing (in atomic units)
- summa : float
-         summa gridipisteiden arvoista kerrottuna simulaatio laatikon 
-         tilavuudella (antaa esim. elektronien lukumäärän)
+ init_value : float
+         Alkuarvaus jossa sama arvo on jokaisessa gridipisteessä.
+         Summa gridipisteiden arvoista kerrottuna simulaatio laatikon 
+         tilavuudella antaa esim. elektronien lukumäärän.
     """
 
     def __init__(self, nx=20, ny=20, nz=0, h=0.1, init_value=0.0):

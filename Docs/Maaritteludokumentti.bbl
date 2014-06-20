@@ -5,6 +5,11 @@ Ke, Y., Libisch, F., Xia, J., Wang, L.-W., and Carter, E.~A. (2013).
 \newblock Angular-momentum-dependent orbital-free density functional theory.
 \newblock {\em Physical review letters}, 111(6):066402.
 
+\bibitem[Kiusalaas, 2013]{kiusalaas2013numerical}
+Kiusalaas, J. (2013).
+\newblock {\em Numerical Methods in Engineering with Python 3}.
+\newblock Cambridge University Press.
+
 \bibitem[March, 1957]{march1957thomas}
 March, N. (1957).
 \newblock The thomas-fermi approximation in quantum mechanics.

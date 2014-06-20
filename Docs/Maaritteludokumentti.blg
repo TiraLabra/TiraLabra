@@ -2,44 +2,44 @@ This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: Maaritteludokumentti.aux
 The style file: apalike.bst
 Database file #1: Maarittelydokumentti.bib
-You've used 2 entries,
+You've used 3 entries,
             1935 wiz_defined-function locations,
-            488 strings with 4039 characters,
-and the built_in function-call counts, 835 in all, are:
-= -- 78
-> -- 35
-< -- 1
-+ -- 14
-- -- 12
-* -- 76
-:= -- 151
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 16
-chr.to.int$ -- 2
-cite$ -- 2
-duplicate$ -- 28
-empty$ -- 58
-format.name$ -- 14
-if$ -- 156
+            492 strings with 4148 characters,
+and the built_in function-call counts, 1110 in all, are:
+= -- 103
+> -- 42
+< -- 2
++ -- 16
+- -- 14
+* -- 93
+:= -- 202
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 21
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 42
+empty$ -- 81
+format.name$ -- 17
+if$ -- 210
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 2
-newline$ -- 13
-num.names$ -- 6
-pop$ -- 11
+missing$ -- 4
+newline$ -- 18
+num.names$ -- 9
+pop$ -- 19
 preamble$ -- 1
-purify$ -- 16
+purify$ -- 22
 quote$ -- 0
-skip$ -- 22
+skip$ -- 32
 stack$ -- 0
-substring$ -- 63
-swap$ -- 2
+substring$ -- 75
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 16
 warning$ -- 0
-while$ -- 7
+while$ -- 9
 width$ -- 0
-write$ -- 28
+write$ -- 40
