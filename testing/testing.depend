@@ -51,7 +51,7 @@
 	<cstring>
 	"../../constants.hpp"
 
-1401971295 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+1403303232 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
@@ -108,9 +108,10 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1401969358 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1403304969 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
+	<vector>
 	<string>
 
 1402842565 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/edit_distance_tests.cpp
@@ -129,7 +130,7 @@
 	<string>
 	<cstdlib>
 
-1401740349 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
+1403307412 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
 	"knuth_morris_pratt_tests.hpp"
 	<iostream>
 
@@ -138,7 +139,7 @@
 	<string>
 	"suffix_tree.hpp"
 
-1402606892 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+1403303066 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
 	<cstdlib>
 	<cstring>
 	<string>

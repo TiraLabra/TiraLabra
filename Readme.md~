@@ -11,6 +11,9 @@ The library covers the following algorithms:
 - Knutt-Morris-Pratt algorithm ( [doc]() )
 - Edit distance ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/edit%20distance.odt?raw=true))
 
+
+Data structures:
+
 - Suffix trie ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20trie.odt?raw=true) )
 - Suffix tree (naive building) ([doc]())
 

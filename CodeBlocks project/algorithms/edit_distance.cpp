@@ -27,10 +27,6 @@ int edit_distance::get_levenstein_distance(const char * str_a, const char * str_
     if (str_b_len==-1) {
         str_b_len = strlen(str_b);
     }
-    if (this->dynamic_programming_array!=NULL) {
-        free(*this->dynamic_programming_array);
-        free(this->dynamic_programming_array);
-    }
     // initiliaze dynamic programming matrix
     this->dynamic_programming_array = (int **)calloc(str_a_len+1, sizeof(int*));
     for (int i = 0; i <= str_a_len; ++i) {
@@ -68,6 +64,9 @@ int edit_distance::get_levenstein_distance(const char * str_a, const char * str_
             }
         }
     }
-    return this->dynamic_programming_array[str_a_len][str_b_len];
+    int difference = this->dynamic_programming_array[str_a_len][str_b_len];
+    free(this->dynamic_programming_array);
+    this->dynamic_programming_array = NULL;
+    return difference;
 }
 

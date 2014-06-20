@@ -7,6 +7,7 @@
 #include <vector>
 using namespace std;
 
+
 class suffix_tree{
     public:
     class node;
@@ -14,7 +15,7 @@ class suffix_tree{
     class node {
         private:
         int index;
-        edge * outgoing_edges[256] = {NULL};
+        edge * outgoing_edges[256];
         public:
         node(int index);
         int get_index();
