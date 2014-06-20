@@ -14,10 +14,11 @@ import verkko.Solmu;
 public interface Heuristiikka {
 
     /**
-     * Jonkinlainen laskelma, luultavimmin solmujen koordinaateista. 
+     * Jonkinlainen laskelma, luultavimmin solmujen koordinaateista.
+     *
      * @param ks1
      * @param ks2
-     * @return 
+     * @return
      */
     public Double dist(Solmu ks1, Solmu ks2);
 }

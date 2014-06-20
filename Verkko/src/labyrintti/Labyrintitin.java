@@ -54,11 +54,11 @@ public abstract class Labyrintitin {
      * @param s
      * @return
      */
-    Lista<Solmu> naapuritLista(Solmu s) {
+    Lista<Solmu> naapurit(Solmu s) {
         int x = s.kokonaislukuKoordinaatti(0);
         int y = s.kokonaislukuKoordinaatti(1);
 //        Solmu[] naapurit = new Solmu[4];
-        Lista<Solmu> naapurit=new Lista<>(4);
+        Lista<Solmu> naapurit = new Lista<>(4);
         if (x > 0) {
             naapurit.lisaa(solmut[x - 1][y]);
         }
@@ -74,32 +74,6 @@ public abstract class Labyrintitin {
 //        final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
 //        Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
         return naapurit;
-    }
-    /**
-     * Tämän labyrintinkohdan mahdolliset naapurit.
-     *
-     * @param s
-     * @return
-     */
-    Solmu[] naapurit(Solmu s) {
-        int x = s.kokonaislukuKoordinaatti(0);
-        int y = s.kokonaislukuKoordinaatti(1);
-        Solmu[] naapurit = new Solmu[4];
-        if (x > 0) {
-            naapurit[0] = solmut[x - 1][y];
-        }
-        if (y > 0) {
-            naapurit[1] = solmut[x][y - 1];
-        }
-        if (x < solmut.length - 1) {
-            naapurit[2] = solmut[x + 1][y];
-        }
-        if (y < solmut[0].length - 1) {
-            naapurit[3] = solmut[x][y + 1];
-        }
-        final Object[] nullitPoistettu = Taulukko.poistaNullit(naapurit);
-        Solmu[] paluu = Arrays.copyOf(nullitPoistettu, nullitPoistettu.length, Solmu[].class);
-        return paluu;
     }
 
     /**

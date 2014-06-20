@@ -56,7 +56,7 @@ public class RecursiveBacktracker extends Labyrintitin {
     protected void recur(int x, int y) {
         final Solmu nyt = solmut[x][y];
         kayty(nyt);
-        Lista<Solmu> naapurit = naapuritLista(nyt);
+        Lista<Solmu> naapurit = naapurit(nyt);
         if (naapurit.getKoko() > 0) {
             //sekoitetaan niin valitaan randomisti jokin naapuri.
             naapurit.sekoita();

@@ -92,7 +92,7 @@ public class SolmuTest {
         Double expResult = 5.0;
         Double result = instance.euklidinenEtaisyys(ks);
         assertEquals(expResult, result, 0.01);
-        
+
         Double[] toinenkoord = {-5.1, -1.1};
         Double[] toinenkoord2 = {3.5, 5.5};
         ks = new Solmu(toinenkoord);
@@ -114,7 +114,7 @@ public class SolmuTest {
         Double expResult = 7.0;
         Double result = instance.taksimiehenEtaisyys(ks);
         assertEquals(expResult, result, 0.01);
-        
+
         Double[] toinenkoord = {-5.1, -1.1};
         Double[] toinenkoord2 = {3.5, 5.5};
         ks = new Solmu(toinenkoord);

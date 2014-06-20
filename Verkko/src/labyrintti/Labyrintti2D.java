@@ -124,6 +124,7 @@ public class Labyrintti2D {
 
     /**
      * Merkkitauluesitys labyrintistä.
+     *
      * @return
      */
     protected char[][] merkkitauluesitys() {
@@ -147,7 +148,7 @@ public class Labyrintti2D {
     }
 
     /**
-     * 
+     *
      * @param i
      * @param j
      * @param merkkiTauluEsitys

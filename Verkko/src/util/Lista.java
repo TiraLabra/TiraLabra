@@ -140,6 +140,8 @@ public class Lista<E> implements Iterable<E> {
      * @return true jos listalta löytyy equals o, muutoin false.
      */
     public boolean contains(E o) {
+        ArrayList<Object> al = new ArrayList<>();
+        al.contains(o);
         if (o != null) {
             for (E e : a) {
                 if (o.equals(e)) {
@@ -170,7 +172,11 @@ public class Lista<E> implements Iterable<E> {
     public void sekoita() {
         final E[] copyOf = Arrays.copyOf(a, koko);
         Taulukko.sekoita(copyOf);
-        a=Arrays.copyOf(copyOf, a.length);
+        a = Arrays.copyOf(copyOf, a.length);
+    }
+
+    public boolean tyhja() {
+        return koko < 1;
     }
 
     private class Itr implements Iterator<E> {

@@ -108,7 +108,7 @@ public class Keko<E> {
         taulukko[koko] = lisattava;
         indeksit.put(lisattava, koko);
         siftUp(koko);
-        
+
     }
 
     /**
@@ -146,9 +146,9 @@ public class Keko<E> {
         koko--;
         siftDown(1);
         return paluu;
-        
+
     }
-    
+
     private void paivitaIndeksi(int i) {
         indeksit.put(taulukko[i], i);
     }
@@ -166,7 +166,7 @@ public class Keko<E> {
                 paivitaIndeksi(parent);
                 paivitaIndeksi(indeksi);
                 siftUp(parent);
-                
+
             }
         }
     }
@@ -195,7 +195,7 @@ public class Keko<E> {
                 siftDown(valittu);
             }
         }
-        
+
     }
 
     /**
@@ -314,7 +314,7 @@ public class Keko<E> {
             }
         }
         return true;
-        
+
     }
 
     /**

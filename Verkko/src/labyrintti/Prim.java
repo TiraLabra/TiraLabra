@@ -23,7 +23,8 @@ public class Prim extends Labyrintitin {
      * Ei-käydyt solmut, jotka ovat jo käyneiden naapureita, ja jotka voidaan
      * liittää labyrinttiin.
      */
-    private final ArrayList<Solmu> lisaysehdokkaat;
+    //private final ArrayList<Solmu> lisaysehdokkaat;
+    private final Lista<Solmu> lis;
 
     /**
      * SatunnaisNumero jumala
@@ -36,7 +37,8 @@ public class Prim extends Labyrintitin {
      */
     public Prim(Solmu[][] solmut) {
         super(solmut);
-        lisaysehdokkaat = new ArrayList<>(solmut.length + solmut[0].length);
+        //lisaysehdokkaat = new ArrayList<>();
+        lis = new Lista<>();
         snj = new Random();
     }
 
@@ -44,16 +46,18 @@ public class Prim extends Labyrintitin {
     public void labyrintita() {
         Solmu lisatty = solmut[0][0];
         kayty(lisatty);
-        Lista<Solmu> kaymattomatNaapurit = kaymattomatNaapuritLista(lisatty);
+        Lista<Solmu> kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
 //        lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
         for (Solmu solmu : kaymattomatNaapurit) {
-            lisaysehdokkaat.add(solmu);
+            //lisaysehdokkaat.add(solmu);
+            lis.lisaa(solmu);
         }
         do {
-            final int rand = snj.nextInt(lisaysehdokkaat.size());
-            Solmu lisattava = lisaysehdokkaat.get(rand);
-            lisaysehdokkaat.remove(rand);
-            Lista<Solmu> kaydytNaapurit = kaydytNaapuritLista(lisattava);
+            final int rand = snj.nextInt(lis.getKoko());//lisaysehdokkaat.size());
+            Solmu lisattava = lis.get(rand);//lisaysehdokkaat.get(rand);
+            lis.poista(rand);
+            //lisaysehdokkaat.remove(rand);
+            Lista<Solmu> kaydytNaapurit = kaydytNaapurit(lisattava);
             Solmu valittuKayty;
             if (kaydytNaapurit.getKoko() > 1) {
                 valittuKayty = kaydytNaapurit.get(snj.nextInt(kaydytNaapurit.getKoko()));
@@ -63,13 +67,14 @@ public class Prim extends Labyrintitin {
             luoNaapuruudet(lisattava, valittuKayty);
             kayty(lisattava);
             lisatty = lisattava;
-            kaymattomatNaapurit = kaymattomatNaapuritLista(lisatty);
+            kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
 //            lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
             for (Solmu solmu : kaymattomatNaapurit) {
-                lisaysehdokkaat.add(solmu);
+                //lisaysehdokkaat.add(solmu);
+                lis.lisaa(solmu);
             }
 
-        } while (!lisaysehdokkaat.isEmpty());
+        } while (!lis.tyhja());//!lisaysehdokkaat.isEmpty());
     }
 
     /**
@@ -78,27 +83,8 @@ public class Prim extends Labyrintitin {
      * @param s
      * @return
      */
-    private Solmu[] kaymattomatNaapurit(Solmu s) {
-        Solmu[] naapurit = naapurit(s);
-        for (int i = 0; i < naapurit.length; i++) {
-            Solmu solmu = naapurit[i];
-            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
-                naapurit[i] = null;
-            }
-        }
-        final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
-        naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
-        return naapurit;
-    }
-
-    /**
-     * Käymättömät naapurit
-     *
-     * @param s
-     * @return
-     */
-    private Lista<Solmu> kaymattomatNaapuritLista(Solmu s) {
-        Lista<Solmu> naapurit = naapuritLista(s);
+    private Lista<Solmu> kaymattomatNaapurit(Solmu s) {
+        Lista<Solmu> naapurit = naapurit(s);
 //        for (int i = 0; i < naapurit.length; i++) {
 //            Solmu solmu = naapurit[i];
 //            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
@@ -108,7 +94,9 @@ public class Prim extends Labyrintitin {
         Iterator<Solmu> iterator = naapurit.iterator();
         while (iterator.hasNext()) {
             Solmu solmu = iterator.next();
-            if (onkoKayty(solmu) || lisaysehdokkaat.contains(solmu)) {
+            if (onkoKayty(solmu)) {
+                iterator.remove();
+            } else if (lis.contains(solmu)) {
                 iterator.remove();
             }
         }
@@ -121,26 +109,8 @@ public class Prim extends Labyrintitin {
      * @param s
      * @return
      */
-    private Solmu[] kaydytNaapurit(Solmu s) {
-        Solmu[] naapurit = naapurit(s);
-        for (int i = 0; i < naapurit.length; i++) {
-            if (!onkoKayty(naapurit[i])) {
-                naapurit[i] = null;
-            }
-        }
-        final Object[] poistaNullit = Taulukko.poistaNullit(naapurit);
-        naapurit = Arrays.copyOf(poistaNullit, poistaNullit.length, Solmu[].class);
-        return naapurit;
-    }
-
-    /**
-     * Palauttaa annetun solmun käydyt naapurit.
-     *
-     * @param s
-     * @return
-     */
-    private Lista<Solmu> kaydytNaapuritLista(Solmu s) {
-        Lista<Solmu> naapurit = naapuritLista(s);
+    private Lista<Solmu> kaydytNaapurit(Solmu s) {
+        Lista<Solmu> naapurit = naapurit(s);
 //        for (int i = 0; i < naapurit.length; i++) {
 //            if (!onkoKayty(naapurit[i])) {
 //                naapurit[i] = null;

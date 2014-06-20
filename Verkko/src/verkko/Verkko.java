@@ -40,7 +40,7 @@ public class Verkko {
 //        Astar astar = new Astar(alku, maali, new TaksimiehenEtaisyys());
 //        astar.suorita();
 //        System.out.println(l.printtaaReittiLabyrintissa(astar.getReitti(), maali));
-        
+
         CLI cli = new CLI();
         cli.juokse();
 
