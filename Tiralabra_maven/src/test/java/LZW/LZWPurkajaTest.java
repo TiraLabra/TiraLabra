@@ -8,7 +8,6 @@ import org.junit.Test;
 public class LZWPurkajaTest {
     private BinaariMuuntaja muuntaja;
     private LZWPurkaja purkaja;
-    private YleisMetodeja yleis;
     private final String n = (char) 0 + "";
     private final String y = (char) 1 + "";
     
@@ -16,7 +15,6 @@ public class LZWPurkajaTest {
     @Before
     public void setUp() {
         this.purkaja = new LZWPurkaja();
-        this.yleis = new YleisMetodeja();
         this.muuntaja = new BinaariMuuntaja();
     }
     
@@ -96,14 +94,14 @@ public class LZWPurkajaTest {
     private void merkkiaEiLisataNykyinenTyhja() {
         String teksti = purkaja.getTeksti();
 
-        String nykyinen = purkaja.lisaaMerkki("", "A");
+        String nykyinen = purkaja.kasitteleMerkki("", "A");
         assertEquals(teksti, purkaja.getTeksti());
         assertEquals("A", nykyinen);
     }
     
     private void merkkiaEiLisataSeuraavaLoytyyLaajKoodistosta() {
         purkaja.lisaaKoodistoon("AB");
-        String nykyinen = purkaja.lisaaMerkki("A", "B");
+        String nykyinen = purkaja.kasitteleMerkki("A", "B");
         assertEquals("AB", nykyinen);
     }
     
@@ -112,7 +110,7 @@ public class LZWPurkajaTest {
         String teksti = purkaja.getTeksti();
         
         purkaja.lisaaKoodistoon("98");
-        String nykyinen = purkaja.lisaaMerkki("98", "7");
+        String nykyinen = purkaja.kasitteleMerkki("98", "7");
         
         assertTrue(purkaja.getLaaj().sisaltaaAvaimen("987"));
         assertEquals(teksti + "98", purkaja.getTeksti());
@@ -125,10 +123,10 @@ public class LZWPurkajaTest {
         String teksti = purkaja.getTeksti();
         
         purkaja.lisaaKoodistoon("EO");
-        assertEquals("OB", purkaja.lisaaMerkkijono("OB", ""));
+        assertEquals("OB", purkaja.kasitteleMerkkijono("OB", ""));
         assertEquals(teksti, purkaja.getTeksti());
         
-        assertEquals("EO", purkaja.lisaaMerkkijono("OB", "EO"));
+        assertEquals("EO", purkaja.kasitteleMerkkijono("OB", "EO"));
         assertEquals(teksti + "OB", purkaja.getTeksti());
     }
 }

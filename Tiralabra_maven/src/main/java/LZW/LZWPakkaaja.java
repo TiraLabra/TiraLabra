@@ -18,7 +18,7 @@ public class LZWPakkaaja {
     
     public LZWPakkaaja() {
         this.muuntaja = new BinaariMuuntaja();
-        this.lukija = new LZWLukija();  
+        this.lukija = new LZWLukija();
     }
     
     /**
@@ -57,9 +57,7 @@ public class LZWPakkaaja {
      */
     
     protected String pakattuna(String ilmanEtuNollia) {
-        this.muuntaja = new BinaariMuuntaja();
         String ykkosinaJaNollina = muuntaja.lisaaEtuNollat(ilmanEtuNollia);
-        
         return muuntaja.asciiKoodiksi(ykkosinaJaNollina);
     }
 }

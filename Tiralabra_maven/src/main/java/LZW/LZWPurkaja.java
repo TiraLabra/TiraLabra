@@ -93,7 +93,7 @@ public class LZWPurkaja extends Purkaja {
         
         while (i < binaarina.length()) {
             String merkkijono = seuraavaMerkkiJono(binaarina, i);
-            nykyinen = lisaaMerkkijono(nykyinen, merkkijono);
+            nykyinen = kasitteleMerkkijono(nykyinen, merkkijono);
 
             i += merkkienPituus;
         }
@@ -109,10 +109,10 @@ public class LZWPurkaja extends Purkaja {
      * @return 
      */
     
-    protected String lisaaMerkkijono(String nykyinen, String merkkijono) {
+    protected String kasitteleMerkkijono(String nykyinen, String merkkijono) {
         for (int j = 0; j < merkkijono.length(); j++) {
             String merkki = merkkijono.charAt(j) + "";
-            nykyinen = lisaaMerkki(nykyinen, merkki);
+            nykyinen = kasitteleMerkki(nykyinen, merkki);
         }
         
         return nykyinen;
@@ -131,7 +131,7 @@ public class LZWPurkaja extends Purkaja {
      * @return 
      */
     
-    protected String lisaaMerkki(String nykyinen, String merkki) {
+    protected String kasitteleMerkki(String nykyinen, String merkki) {
         String seuraava = nykyinen + merkki;
         
         if (! nykyinen.isEmpty() && ! laaj.sisaltaaAvaimen(seuraava)) {
