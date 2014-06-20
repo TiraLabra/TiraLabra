@@ -149,6 +149,10 @@ public class Keko<E> {
 
     }
 
+    /**
+     * Päivittää annetun indeksin indeksit-hajautustauluun.
+     * @param i
+     */
     private void paivitaIndeksi(int i) {
         indeksit.put(taulukko[i], i);
     }
@@ -284,6 +288,7 @@ public class Keko<E> {
      *
      * @param korvattava
      * @param uusi
+     * @return 
      */
     public boolean muuta(E korvattava, E uusi) {
 //        for (int i = 1; i <= koko; i++) {

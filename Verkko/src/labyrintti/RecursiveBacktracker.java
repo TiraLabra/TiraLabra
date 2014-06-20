@@ -4,9 +4,7 @@
  */
 package labyrintti;
 
-import java.util.Arrays;
 import util.Lista;
-import util.Taulukko;
 import verkko.Solmu;
 
 /**

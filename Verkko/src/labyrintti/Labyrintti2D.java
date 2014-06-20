@@ -27,7 +27,7 @@ public class Labyrintti2D {
     /**
      * 2D taulukko KoordinoituSolmu olioille jotka tässä labyrintissä on.
      */
-    private Solmu[][] solmut;
+    private final Solmu[][] solmut;
 
     /**
      * Labyrintitin jota käytetään labyrintin solmujen välisten yhteyksien eli
@@ -148,7 +148,7 @@ public class Labyrintti2D {
     }
 
     /**
-     *
+     * 
      * @param i
      * @param j
      * @param merkkiTauluEsitys

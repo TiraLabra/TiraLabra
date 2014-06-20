@@ -4,12 +4,9 @@
  */
 package labyrintti;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 import util.Lista;
-import util.Taulukko;
 import verkko.Solmu;
 
 /**
@@ -24,7 +21,7 @@ public class Prim extends Labyrintitin {
      * liittää labyrinttiin.
      */
     //private final ArrayList<Solmu> lisaysehdokkaat;
-    private final Lista<Solmu> lis;
+    private final Lista<Solmu> lisaysehdokkaat;
 
     /**
      * SatunnaisNumero jumala
@@ -32,31 +29,31 @@ public class Prim extends Labyrintitin {
     private final Random snj;
 
     /**
-     *
-     * @param solmut
+     * Alustaa listan ja randomin.
+     * @param solmut Solmutaulukko joka saatu labyrintiltä
      */
     public Prim(Solmu[][] solmut) {
         super(solmut);
         //lisaysehdokkaat = new ArrayList<>();
-        lis = new Lista<>();
+        lisaysehdokkaat = new Lista<>();
         snj = new Random();
     }
 
     @Override
     public void labyrintita() {
+        //long aika=0;
         Solmu lisatty = solmut[0][0];
         kayty(lisatty);
         Lista<Solmu> kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
 //        lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
         for (Solmu solmu : kaymattomatNaapurit) {
             //lisaysehdokkaat.add(solmu);
-            lis.lisaa(solmu);
+            lisaysehdokkaat.lisaa(solmu);
         }
         do {
-            final int rand = snj.nextInt(lis.getKoko());//lisaysehdokkaat.size());
-            Solmu lisattava = lis.get(rand);//lisaysehdokkaat.get(rand);
-            lis.poista(rand);
-            //lisaysehdokkaat.remove(rand);
+            final int rand = snj.nextInt(lisaysehdokkaat.getKoko());//lisaysehdokkaat.size());
+            Solmu lisattava = lisaysehdokkaat.get(rand);//lisaysehdokkaat.get(rand);
+            lisaysehdokkaat.poista(rand);
             Lista<Solmu> kaydytNaapurit = kaydytNaapurit(lisattava);
             Solmu valittuKayty;
             if (kaydytNaapurit.getKoko() > 1) {
@@ -67,14 +64,17 @@ public class Prim extends Labyrintitin {
             luoNaapuruudet(lisattava, valittuKayty);
             kayty(lisattava);
             lisatty = lisattava;
+            //long t=System.currentTimeMillis();
             kaymattomatNaapurit = kaymattomatNaapurit(lisatty);
+            //aika+=System.currentTimeMillis()-t;
 //            lisaysehdokkaat.addAll(Arrays.asList(kaymattomatNaapurit));
             for (Solmu solmu : kaymattomatNaapurit) {
                 //lisaysehdokkaat.add(solmu);
-                lis.lisaa(solmu);
+                lisaysehdokkaat.lisaa(solmu);
             }
-
-        } while (!lis.tyhja());//!lisaysehdokkaat.isEmpty());
+            
+        } while (!lisaysehdokkaat.tyhja());//!lisaysehdokkaat.isEmpty());
+        //System.out.println(aika);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Prim extends Labyrintitin {
             Solmu solmu = iterator.next();
             if (onkoKayty(solmu)) {
                 iterator.remove();
-            } else if (lis.contains(solmu)) {
+            } else if (lisaysehdokkaat.contains(solmu)) {
                 iterator.remove();
             }
         }

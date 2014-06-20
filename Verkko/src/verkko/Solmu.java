@@ -60,6 +60,12 @@ public class Solmu {
     private final Double[] koordinaatit;
 
     /**
+     * Tähän lasketaan valmiiksi kokonaisluvuiksi pyöristetyt koordinaatit
+     * todellisista koordinaateista.
+     */
+    private final Long[] kokonaislukukoordinaatit;
+
+    /**
      * Konstruktori...
      *
      * @param koordinaatit
@@ -68,6 +74,10 @@ public class Solmu {
         this.koordinaatit = koordinaatit.clone();
         naapuriSolmut = new Lista<>();
         naapuripainot = new Lista<>();
+        kokonaislukukoordinaatit = new Long[koordinaatit.length];
+        for (int i = 0; i < koordinaatit.length; i++) {
+            kokonaislukukoordinaatit[i] = Math.round(koordinaatit[i]);
+        }
     }
 
     @Override
@@ -143,7 +153,7 @@ public class Solmu {
      * @return
      */
     public int kokonaislukuKoordinaatti(Integer i) {
-        return (int) Math.round(koordinaatit[i]);
+        return kokonaislukukoordinaatit[i].intValue();
     }
 
     /**

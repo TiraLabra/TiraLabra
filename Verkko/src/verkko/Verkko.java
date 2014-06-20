@@ -5,10 +5,6 @@
 package verkko;
 
 import cli.CLI;
-import labyrintti.Labyrintti2D;
-import labyrintti.Prim;
-import polunetsinta.Astar;
-import polunetsinta.TaksimiehenEtaisyys;
 
 /**
  * Main luokka
@@ -16,16 +12,6 @@ import polunetsinta.TaksimiehenEtaisyys;
  * @author Arvoitusmies
  */
 public class Verkko {
-
-    /**
-     *
-     */
-    private static final int LEVEYS = 50;
-
-    /**
-     *
-     */
-    private static final int KORKEUS = 20;
 
     /**
      * @param args the command line arguments

@@ -13,6 +13,10 @@ import util.Keko;
 import util.Lista;
 import verkko.Solmu;
 
+/**
+ *
+ * @author Arvoitusmies
+ */
 public class Astar {
 
     /**

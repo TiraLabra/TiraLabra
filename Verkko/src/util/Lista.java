@@ -4,7 +4,6 @@
  */
 package util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -113,12 +112,17 @@ public class Lista<E> implements Iterable<E> {
         a[indeksi] = uusiArvo;
     }
 
-    public void poista(int indeksi) throws ArrayIndexOutOfBoundsException {
+    /**
+     * Poistaa indeksissä olevan olion ja siirtää viimeisen olion sen paikalle.
+     * @param indeksi
+     */
+    public void poista(int indeksi)  {
         tsekkaaIndeksi(indeksi);
         a[indeksi] = null;
-
-        siftLeft(indeksi);
         koko--;
+        Taulukko.swap(a, indeksi, koko);
+        //siftLeft(indeksi);
+
     }
 
     /**
@@ -140,8 +144,6 @@ public class Lista<E> implements Iterable<E> {
      * @return true jos listalta löytyy equals o, muutoin false.
      */
     public boolean contains(E o) {
-        ArrayList<Object> al = new ArrayList<>();
-        al.contains(o);
         if (o != null) {
             for (E e : a) {
                 if (o.equals(e)) {
@@ -158,6 +160,10 @@ public class Lista<E> implements Iterable<E> {
         return false;
     }
 
+    /**
+     * kaikkia olioita yksi "vasemmalle" indeksistä alkaen.
+     * @param indeksi
+     */
     private void siftLeft(int indeksi) {
         for (int i = indeksi; i < koko - 1; i++) {
             Taulukko.swap(a, i, i + 1);
@@ -169,19 +175,36 @@ public class Lista<E> implements Iterable<E> {
         return new Itr();
     }
 
+    /**
+     * Sekoittaa listan.
+     */
     public void sekoita() {
         final E[] copyOf = Arrays.copyOf(a, koko);
         Taulukko.sekoita(copyOf);
         a = Arrays.copyOf(copyOf, a.length);
     }
 
+    /**
+     * True jos tyhjä
+     * @return
+     */
     public boolean tyhja() {
         return koko < 1;
     }
 
+    /**
+     * Iteraattori
+     */
     private class Itr implements Iterator<E> {
 
+        /**
+         * Seuraavan indeksi
+         */
         private int seuraava = 0;
+
+        /**
+         * Viimeksi palautetun indeksi, -1 jos ei ole.
+         */
         private int edellinen = -1;
 
         @Override
