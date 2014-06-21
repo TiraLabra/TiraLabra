@@ -1,8 +1,14 @@
-16
-16
-0
-2.0
-2
-3 3 0 1.0
-8 2 0 1.0
-
+1e4     #mylambda
+1e6     #SD or MC max iter
+1e-2    #tolerance for energy convergence
+100.0   #temperature [K] for MC
+1e-2    #density chance for functional gradient (SD only)
+1e-1    #density chance for MC
+0.01    #initial step for line minimization in SD
+16      #number of grid points in x
+16      #number of grid points in y
+0       #number of grid points in z (0==2d case, no this dimension)
+2.0     #total electron charge (always positive)
+2       #number of nuclei
+3 3 0 1.0  #grid positin of a nucleus and its charge (always positive)
+8 2 0 1.0  #grid positin of a nucleus and its charge (always positive)

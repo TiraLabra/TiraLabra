@@ -23,6 +23,21 @@ class Gridi(object):
          Alkuarvaus jossa sama arvo on jokaisessa gridipisteessä.
          Summa gridipisteiden arvoista kerrottuna simulaatio laatikon 
          tilavuudella antaa esim. elektronien lukumäärän.
+ mylambda: float
+         Penalty (rangaistus) funktion painokerroin. Mitä suurempi tämä on 
+         sitä paremmin elektronien lukumäärä säilyy SD minimoinnissa.
+ n_iter: montako MC tai SD iteraatiota korkeintaan tehdään.
+    tol: float
+         Kokonaisenergian konvergenssikriteeri
+temperature: float
+         Systeemin lämpötila (K), relevantti vain MC laskuissa.
+tiheydenmuutos: float
+         Tiheyden muutos funktionaaliderivaattaa otettaessa
+d_rho  : float 
+         Tiheyden muutos monte carlossa
+   askel:  float
+         Alkuaskel SD minimoinnissa.
+
     """
 
     def __init__(self, nx=20, ny=20, nz=0, h=0.1, init_value=0.0):
@@ -30,6 +45,14 @@ class Gridi(object):
         self.ny = ny
         self.nz = nz
         self.h = h         
+        self.mylambda = None
+        self.n_iter = None
+        self.tol = None
+        self.temperature = None
+        self.tiheydenmuutos = None
+        self.d_rho = None
+        self.askel = None
+        
         self.summa = None
         self.twodx = False; self.twody = False; self.twodz = False
         if (nz == 0): #twodz
@@ -53,8 +76,64 @@ class Gridi(object):
             self.gridi[1:nx-1, 1:ny-1, 1:nz-1] = init_value/self.get_volume()
 
 
-        #print "grid", self.gridi.shape
-        #print self.get_number_of_boxes()
+    def set_mylambda(self, mylambda):
+        """ asetetaan rangaistusparametri mylambda """
+        self.mylambda = mylambda
+
+    def set_n_iter(self, n_iter):
+        """ SD or MC max iteraation max määrä """
+        self.n_iter = n_iter
+
+    def set_tol(self, tol):
+        """ asetetaan energian konvergenssikriteeri  """
+        self.tol = tol
+
+    def set_temperature(self, temperature):
+        """ asetetaan MC lämpötila """
+        self.temperature = temperature
+
+    def set_tiheydenmuutos(self, tiheydenmuutos):
+        """ asetetaan tiheydenmuutos funktionaaliderivaatassa"""
+        self.tiheydenmuutos = tiheydenmuutos
+
+    def set_d_rho(self, d_rho):
+        """ asetetaan d_rho monte carlossa
+        (monte carlo tiheyden muutos gridipisteessä)"""
+        self.d_rho = d_rho
+
+    def set_askel(self, askel):
+        """ asetetaan SD alku askel """
+        self.askel = askel
+
+    def get_mylambda(self):
+        """ otetaan rangaistusparametri mylambda """
+        return self.mylambda
+
+    def get_n_iter(self):
+        """ otetaan SD or MC max iteraation max määrä """
+        return self.n_iter
+
+    def get_tol(self):
+        """ otetaan energian konvergenssikriteeri  """
+        return self.tol
+
+    def get_temperature(self):
+        """ otetetaan MC lämpötila """
+        return self.temperature
+
+    def get_tiheydenmuutos(self):
+        """ otetetaan tiheydenmuutos funktionaaliderivaatassa"""
+        return self.tiheydenmuutos
+
+    def get_d_rho(self):
+        """ otetetaan d_rho (monte carlo tiheyden muutos gridipisteessä)"""
+        return self.d_rho
+
+    def get_askel(self):
+        """ otetetaan SD alku askel """
+        return self.askel
+
+
 
     def to_1d_list(self):
         """ tehdään 3d gridistä 1d lista """
@@ -89,8 +168,6 @@ class Gridi(object):
         """
         import sys
         kaikki_pisteet = list(self.gridi.shape)
-        #print "kaikki_pisteet", kaikki_pisteet
-        #sys.exit()
         sisapisteet = kaikki_pisteet
         if sisapisteet[0] >=3:
             sisapisteet[0] = sisapisteet[0] - 2

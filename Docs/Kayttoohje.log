@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  15 JUN 2014 22:24
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  21 JUN 2014 18:14
 entering extended mode
  %&-line parsing enabled.
 **Kayttoohje.tex
@@ -628,40 +628,67 @@ Underfull \hbox (badness 10000) in paragraph at lines 66--68
  []
 
 
-Overfull \hbox (1.89195pt too wide) in paragraph at lines 69--71
-[]\T1/cmr/m/n/10 Testiversion voi käyn-nistää komen-nol-la test_mc.py, jo-ka on
- hakemis-tossa: TiraL-
+Overfull \hbox (7.64275pt too wide) in paragraph at lines 69--72
+\T1/cmr/m/n/10 la '../s-r-c/ver-taile_nopeuksia.py'. To-teu-tus-doku-men-tis-sä
+ es-ite-tyt tu-lok-set on saatu
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 69--71
+Underfull \hbox (badness 10000) in paragraph at lines 69--72
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--75
+Overfull \hbox (14.85768pt too wide) in paragraph at lines 73--78
+[]\T1/cmr/m/n/10 Ohjelma lu-kee syöt-teet tiedos-toista 'alkuar-vot.txt_5x5x0',
+ 'alkuar-vot.txt_10x10x0'
+ []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 73--78
+
+ []
+
+
+Overfull \hbox (26.76228pt too wide) in paragraph at lines 88--89
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (37.85966pt too wide) in paragraph at lines 91--92
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (37.85966pt too wide) in paragraph at lines 92--93
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (37.85966pt too wide) in paragraph at lines 93--94
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 [2] (./Kayttoohje.aux) ) 
 Here is how much of TeX's memory you used:
- 6514 strings out of 495061
- 85452 string characters out of 1182621
- 178459 words of memory out of 3000000
- 9603 multiletter control sequences out of 15000+50000
- 15916 words of font info for 48 fonts, out of 3000000 for 9000
+ 6526 strings out of 495061
+ 85564 string characters out of 1182621
+ 187459 words of memory out of 3000000
+ 9609 multiletter control sequences out of 15000+50000
+ 17526 words of font info for 54 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 37i,6n,55p,316b,1080s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,6n,55p,316b,1131s stack positions out of 5000i,500n,10000p,200000b,50000s
  </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm
 0900.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> <
 /home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/mka/.te
 xmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/mka/.texmf-var/fonts
 /pk/ljfour/jknappen/ec/eccc1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jk
 nappen/ec/ecrm1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecr
-m1728.600pk>
-Output written on Kayttoohje.pdf (2 pages, 56577 bytes).
+m1728.600pk></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+
+Output written on Kayttoohje.pdf (2 pages, 75108 bytes).
 PDF statistics:
- 189 PDF objects out of 1000 (max. 8388607)
+ 224 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  15 JUN 2014 22:07
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.23)  21 JUN 2014 22:19
 entering extended mode
  %&-line parsing enabled.
 **Testausdokumentti.tex
@@ -596,53 +596,46 @@ File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (4.41576pt too wide) in paragraph at lines 66--69
-\T1/cmr/m/n/10 Tehtiin unit testit kaikille funkioille. \T1/cmr/bx/n/10 Nyt kui
-ten valmi-ina vain en-er-gialaskui-
+Overfull \hbox (30.82489pt too wide) in paragraph at lines 74--77
+[]\T1/cmr/m/n/10 Yksikkötestit aje-taan suorit-ta-mal-la ohjel-mat './tes-taa_e
+nergiat.py' ja 'tes-taa_gridi.py'
  []
 
 
-Overfull \hbox (27.82895pt too wide) in paragraph at lines 66--69
-\T1/cmr/m/n/10 doku-men-taa-tio on os-oit-teessa: https://docs.python.org/2/lib
-rary/unittest.html#type-
- []
-
-
-Overfull \hbox (0.63782pt too wide) in paragraph at lines 70--72
-[]\T1/cmr/m/n/10 Yksikkötestit aje-taan suorit-ta-mal-la ohjel-ma './tes-taa_en
-ergiat.py' hakemis-tossa
- []
-
-
-Overfull \hbox (2.09027pt too wide) in paragraph at lines 74--74
+Overfull \hbox (2.09027pt too wide) in paragraph at lines 79--79
 []\T1/cmr/bx/n/14.4 Minkälaisilla syöt-teil-lä tes-taus tehti-in (ver-tailu-
  []
 
 
-Overfull \hbox (39.15619pt too wide) in paragraph at lines 75--77
+Overfull \hbox (39.15619pt too wide) in paragraph at lines 80--83
 \T1/cmr/m/n/10 Testeissä käytet-ti-in 2-dimensionaalista dataa jo-ka luet-ti-in
- tiedos-ta 'alkuar-vot.txt_5x5x0'. 
+ tiedos-ta 'alkuar-vot.txt_5x5x0'.
+ []
+
+
+Overfull \hbox (69.7876pt too wide) in paragraph at lines 85--87
+\T1/cmr/m/n/10 Testit voidaan tois-taa aja-mal-la ko-men-to './tes-taa_energiat
+.py' ja 'tes-taa_gridi.py',hakemistossa
  []
 
 [2] (./Testausdokumentti.aux) ) 
 Here is how much of TeX's memory you used:
- 4916 strings out of 495061
- 64628 string characters out of 1182621
- 148596 words of memory out of 3000000
- 8017 multiletter control sequences out of 15000+50000
- 15927 words of font info for 48 fonts, out of 3000000 for 9000
+ 4914 strings out of 495061
+ 64606 string characters out of 1182621
+ 149596 words of memory out of 3000000
+ 8016 multiletter control sequences out of 15000+50000
+ 15151 words of font info for 47 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  37i,6n,55p,323b,217s stack positions out of 5000i,500n,10000p,200000b,50000s
  </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/
-ec/ecbx1000.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.6
-00pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/
-mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/mka/.texmf-va
-r/fonts/pk/ljfour/jknappen/ec/eccc1200.600pk> </home/mka/.texmf-var/fonts/pk/lj
-four/jknappen/ec/ecrm1200.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen
-/ec/ecrm1728.600pk>
-Output written on Testausdokumentti.pdf (2 pages, 61236 bytes).
+ec/ecbx1440.600pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.6
+00pk> </home/mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/
+mka/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1200.600pk> </home/mka/.texmf-va
+r/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/mka/.texmf-var/fonts/pk/lj
+four/jknappen/ec/ecrm1728.600pk>
+Output written on Testausdokumentti.pdf (2 pages, 57725 bytes).
 PDF statistics:
- 202 PDF objects out of 1000 (max. 8388607)
+ 187 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

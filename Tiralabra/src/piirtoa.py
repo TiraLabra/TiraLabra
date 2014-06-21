@@ -4,9 +4,6 @@
 """ Tässä moduulissa piirtorutiineja.  """
 
 import numpy as np
-#import matplotlib
-#import matplotlib.cm as cm
-#import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 
 def plot2d_color(gridi):
@@ -19,9 +16,6 @@ def plot2d_color(gridi):
     x=np.arange(0, nx*dx, dx)
     y=np.arange(0, ny*dy, dy)
     X, Y = np.meshgrid(x, y)
-    print np.meshgrid(x, y)
-    print "shape", gridi.get_xy().shape
-    print gridi.get_xy()
 
     plt.figure()
     CS = plt.contour(X, Y, gridi.get_xy())
@@ -46,7 +40,6 @@ def plot3d(gridi):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     X, Y, Z = axes3d.get_test_data(0.05)
-    print "axes3d.get_test_data(0.05)",list(axes3d.get_test_data(0.05)).shape
     cset = ax.contour(X, Y, Z, extend3d=True, cmap=cm.coolwarm)
     ax.clabel(cset, fontsize=9, inline=1)
     

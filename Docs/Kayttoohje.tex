@@ -66,25 +66,39 @@
 Ohjelmaa vaatii toimiakseen pythonin, uudehkon scipy: ja numpy:n sekä
 matplotlibin (http://www.scipy.org/). \\
 
-Testiversion voi käynnistää komennolla test\_mc.py, joka on hakemistossa:
-TiraLabra/Tiralabra/src \\
+Testiversion voi käynnistää hakemistosta 'TiraLabra/Tiralabra/test'
+komennolla '../src/vertaile\_nopeuksia.py'. Toteutusdokumentissä
+esitetyt tulokset on saatu ajamalla tuo ohjelma.  \\
 
-Ohjelma lukee syötteet tiedostosta alkuarvot.txt:\\
+Ohjelma lukee syötteet tiedostoista 'alkuarvot.txt\_5x5x0',
+'alkuarvot.txt\_10x10x0' ja 'alkuarvot.txt\_16x16x0'.
+Esimerkiksi 'alkuarvot.txt\_10x10x0' näyttää seuraavalta:\\
 \begin{small}
 \begin{lstlisting}[frame=single]  % Start your code-block
 
-16         # laskenta gridipisteiden lkm x suunnassa 
-16         # laskenta gridipisteiden lkm y suunnassa 
-0          # laskenta gridipisteiden lkm z suunnassa (0==2d)
-2.0        # elektronien kokonaismaara (> 0)
-2          # atomiydinten lukumaara
-3 3 0 1.0  # ytimen 1 paikka gridissa (x,y,z), varaus (> 0)
-8 2 0 1.0  # ytimen 2 paikka gridissa (x,y,z), varaus (> 0)
+1e4     #mylambda
+1e6     #SD or MC max iter
+1e-2    #tolerance for energy convergence
+100.0   #temperature [K] for MC
+1e-4    #density chance for functional gradient (SD only)
+1e-1    #density chance for MC
+0.01    #initial step for line minimization in SD
+10      #number of grid points in x
+10      #number of grid points in y
+0       #number of grid points in z (0==2d case, no this dimension)
+4.0     #total electron charge (always positive)
+3       #number of nuclei
+2 2 0 1.0 #grid positin of a nucleus and its charge (always positive)
+2 4 0 1.0 #grid positin of a nucleus and its charge (always positive)
+8 7 0 2.0 #grid positin of a nucleus and its charge (always positive)
 \end{lstlisting}
 \end{small}
-Ohjelma tuottaa päivittyvän matplotlib kuvan elektronitiheydestä. Päivitys etenee kun painat kuvan deletointia (eli 'x' kohtaa kuvan yläreunasta).
+Ohjelma tuottaa matplotlib kuvan konvergoituneesta elektronitiheydestä. 
 
 %----------------------------------------------------------------------------------------
 
-
+\section{Javadocia vastaava dokumentaatio}
+Javadocia vastaava dokumentaatio on toteutettu Sphinx:illä.  Se
+käynnistyy selaimella esim. komennolla 'firefox
+TiraLabra/Docs/html/index.html'
 \end{document}

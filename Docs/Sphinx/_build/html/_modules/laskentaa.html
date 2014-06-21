@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>laskentaa &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for laskentaa</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Tässä moduulissa laskentaan liittyviä funktioita. Esim. </span>
+<span class="sd">ratkaistaan hartree potentiaali  &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">energiat</span>
+
+<div class="viewcode-block" id="tee_gauss_seidel_yksi_askel"><a class="viewcode-back" href="../laskentaa.html#laskentaa.tee_gauss_seidel_yksi_askel">[docs]</a><span class="k">def</span> <span class="nf">tee_gauss_seidel_yksi_askel</span><span class="p">(</span><span class="n">V_hartree</span><span class="p">,</span> <span class="n">varaus</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Iteroidaan Poissonin yhtälön (nabla²=-4*pi*rho)</span>
+<span class="sd">    ratkaisua yksi askel:</span>
+<span class="sd">    http://en.wikipedia.org/wiki/Discrete_Poisson_equation</span>
+<span class="sd">    Ratkaisun pitäisi olla Hartree potentiaali.</span>
+<span class="sd">    Käytetään Gauss-Seidel iteraatiota:</span>
+<span class="sd">    http://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method</span>
+
+<span class="sd">    xxx: parannus ks.</span>
+<span class="sd">    http://wiki.scipy.org/PerformancePython</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+    <span class="n">gridi</span> <span class="o">=</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">get_grid_step</span><span class="p">()</span>
+    <span class="n">imax</span> <span class="o">=</span> <span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">jmax</span> <span class="o">=</span> <span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">kmax</span> <span class="o">=</span> <span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c">#2d</span>
+    <span class="k">if</span> <span class="n">kmax</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">imax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">jmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span> \
+                    <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span> \
+                    <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span> \
+                    <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="mf">0.25</span> <span class="o">+</span> \
+                    <span class="n">pi</span> <span class="o">*</span> <span class="n">varaus</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="c">#3d</span>
+    <span class="c">#3d</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c">#print &quot;3d&quot;, varaus</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">imax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">jmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">kmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="mi">6</span> <span class="o">+</span> \
+                        <span class="mf">2.</span> <span class="o">/</span> <span class="mf">3.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">varaus</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">h</span>
+
+
+</div>
+<div class="viewcode-block" id="monte_carlo_yksi_askel_kaikki"><a class="viewcode-back" href="../laskentaa.html#laskentaa.monte_carlo_yksi_askel_kaikki">[docs]</a><span class="k">def</span> <span class="nf">monte_carlo_yksi_askel_kaikki</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                  <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; muutetaan varaustiheyttä ja hyväksytään tai hylätään siirto </span>
+<span class="sd">    hyväksytään siirto== muutetaan uuteen tiheyteen</span>
+<span class="sd">    hylätään siirto== ei muuteta tiheyttä.</span>
+<span class="sd">    Koko varaustiheys muutetaan kerralla (jotta elektronimäärä säilyy)</span>
+<span class="sd">    lämpötilakin (T) on atomiyksiköissä</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="mf">3.1668114e-6</span>  <span class="c">#Bolztmannin vakio atomiyksiköissä</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_temperature</span><span class="p">()</span><span class="o">*</span><span class="mf">0.0000031667908</span>
+    <span class="n">d_rho</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_d_rho</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">onko_pariton</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">num</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c">#lasketaan kokonaisenergia vanhalla elektronitiheydellä</span>
+    <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="c"># alkuvarausmuutos, kerrotaan 1-x ja 1+x jossa x muutos (aluksi 10%)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_sisapisteiden_lkm</span><span class="p">()</span>
+    <span class="n">positiiviset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">d_rho</span><span class="p">)</span>
+    <span class="n">negatiiviset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">d_rho</span><span class="p">)</span>
+    <span class="n">yrite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">positiiviset</span><span class="p">,</span> <span class="n">negatiiviset</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">onko_pariton</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">yksi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">yrite</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">yrite</span><span class="p">,</span> <span class="n">yksi</span><span class="p">])</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">yrite</span><span class="p">)</span>
+    <span class="c">#print &quot;elektronitiheyden muutos&quot;, yrite</span>
+    <span class="n">elektroni_tiheys_vanha</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_sisapisteet</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">yrite</span> <span class="o">=</span> <span class="n">yrite</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">elektroni_tiheys_vanha</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c">#print &quot;elektroni_tiheys_vanha&quot;, elektroni_tiheys_vanha</span>
+    <span class="c">#print &quot;elektroni_tiheys muutos&quot;, yrite</span>
+    <span class="n">elektroni_tiheys_uusi</span> <span class="o">=</span> <span class="n">elektroni_tiheys_vanha</span> <span class="o">*</span> <span class="n">yrite</span>
+    <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">set_sisapisteet</span><span class="p">(</span><span class="n">elektroni_tiheys_uusi</span><span class="p">)</span>
+    <span class="c">#skaalataan elektronien lukumäärä takaisin alkuperäiseen</span>
+    <span class="n">elektroni_tiheys_uusi</span> <span class="o">=</span> <span class="n">elektroni_tiheys_uusi</span> <span class="o">*</span> \
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_mennyt</span><span class="p">()</span> <span class="o">/</span> \
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_nykyinen</span><span class="p">()</span>
+    <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">set_sisapisteet</span><span class="p">(</span><span class="n">elektroni_tiheys_uusi</span><span class="p">)</span>
+    <span class="c">#print &quot;elektroni_tiheys uusi&quot;, elektroni_tiheys.to_1d_list()</span>
+    <span class="c">#print &quot;elektronitiheys uusi&quot;, elektroni_tiheys.gridi</span>
+    <span class="c">#print &quot;uusi&quot;,</span>
+    <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">e_diff</span> <span class="o">=</span> <span class="n">e_uusi</span> <span class="o">-</span> <span class="n">e_vanha</span>
+    <span class="c">#print &quot;ediff&quot;, e_diff</span>
+    <span class="k">if</span> <span class="n">e_uusi</span> <span class="o">&gt;</span> <span class="n">e_vanha</span><span class="p">:</span>
+        <span class="c">#print &quot;eksponenetti&quot;, math.exp(-(e_diff)/(kb*T)), e_diff</span>
+        <span class="c">#print </span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">e_diff</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">kb</span><span class="o">*</span><span class="n">T</span><span class="p">)):</span>
+            <span class="c">#hylätään uusi </span>
+            <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">set_sisapisteet</span><span class="p">(</span><span class="n">elektroni_tiheys_vanha</span><span class="p">)</span>
+            <span class="c">#print &quot;MC hylätty&quot;</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#print &quot;MC hyväksytty YLÄMÄKEEN&quot;</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c">#print &quot;MC hyväksytty&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="minimoi_monte_carlolla"><a class="viewcode-back" href="../laskentaa.html#laskentaa.minimoi_monte_carlolla">[docs]</a><span class="k">def</span> <span class="nf">minimoi_monte_carlolla</span><span class="p">(</span><span class="n">myfile</span><span class="p">,</span> 
+                           <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                           <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; minimoidaan monte carlo menetelmällä kunnes n_iter tulee täyteen</span>
+<span class="sd">    tai convergenssikriteeri (tol) täyttyy &quot;&quot;&quot;</span>
+
+    <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">e_vanha</span> <span class="o">+</span> <span class="mf">100.0</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">d_rho</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_d_rho</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_n_iter</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_uusi</span> <span class="o">-</span> <span class="n">e_vanha</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_tol</span><span class="p">():</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">print</span> <span class="s">&quot;converged&quot;</span>
+            <span class="k">break</span>
+        <span class="n">hyvaksytty</span> <span class="o">=</span> <span class="n">monte_carlo_yksi_askel_kaikki</span><span class="p">(</span>
+            <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+            <span class="n">ydin_tiheys</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hyvaksytty</span><span class="p">:</span>
+            <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">e_uusi</span>
+            <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s">&quot;E_mc&quot;</span><span class="p">,</span><span class="n">e_uusi</span><span class="p">,</span>\
+                <span class="s">&quot;elektronimäärä&quot;</span><span class="p">,</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_number_of_electrons</span><span class="p">()</span>
+            <span class="c">#myfile.write(str(e_uusi)+</span>
+            <span class="c">#             &#39;  &#39;+str( d_rho)+&#39;\n&#39;)</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e_uusi</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hyvaksytty</span><span class="p">:</span>
+            <span class="n">n_hyvaksytty</span> <span class="o">=</span><span class="n">n_hyvaksytty</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_hylatty</span> <span class="o">=</span> <span class="n">n_hylatty</span><span class="o">+</span><span class="mi">1</span>
+        <span class="c">#print &quot;hyv/hyl&quot;, n_hyvaksytty, n_hylatty</span>
+        <span class="k">if</span> <span class="n">n_hyvaksytty</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">n_hylatty</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="c">#hyvaksytaan liian usein</span>
+            <span class="n">d_rho</span> <span class="o">=</span> <span class="n">d_rho</span> <span class="o">*</span> <span class="mf">1.1</span>
+            <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">n_hylatty</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">n_hyvaksytty</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="c">#hylataan liian usein</span>
+            <span class="n">d_rho</span> <span class="o">=</span> <span class="n">d_rho</span> <span class="o">*</span> <span class="mf">0.9</span>
+            <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">n_hyvaksytty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> 
+            <span class="c">#hylataan liian usein</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">n_hylatty</span><span class="o">/</span><span class="n">n_hyvaksytty</span> <span class="o">&gt;</span> <span class="mf">10.0</span><span class="p">):</span>
+                <span class="n">d_rho</span> <span class="o">=</span> <span class="n">d_rho</span> <span class="o">*</span> <span class="mf">0.9</span>
+                <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">n_hylatty</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span> 
+            <span class="c">#hylataan liian usein</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">n_hyvaksytty</span><span class="o">/</span><span class="n">n_hylatty</span> <span class="o">&gt;</span> <span class="mf">10.0</span><span class="p">):</span>
+                <span class="n">d_rho</span> <span class="o">=</span> <span class="n">d_rho</span> <span class="o">*</span> <span class="mf">1.1</span>
+                <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#ollaan ok alueella</span>
+            <span class="k">pass</span>
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">set_d_rho</span><span class="p">(</span><span class="n">d_rho</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">converged</span>
+    
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

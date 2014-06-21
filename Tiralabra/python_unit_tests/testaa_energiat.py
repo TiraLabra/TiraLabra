@@ -16,17 +16,15 @@ class TestEnergyFunctions(unittest.TestCase):
 
     def setUp(self):
         """ alustetaan testeihin liittyvät muuttujat """
-        [ny, nx, nz, elektroni_lkm, elektroni_tiheys,
+        [mylambda, n_iter, tol, temperature,tiheydenmuutos, d_rho, askel,
+         ny, nx, nz, elektroni_lkm, elektroni_tiheys,
          V_hartree, ydin_tiheys, ytimien_lkm, ydin_tiheys] = \
-         read_data.read_data(filename = 'alkuarvot.txt_5x5x0')
+         read_data.read_data(filename = '../test/alkuarvot.txt_5x5x0')
         self.elektroni_tiheys = elektroni_tiheys
         self.V_hartree1 = V_hartree
         self.V_hartree2 = V_hartree
         self.V_hartree3 = V_hartree
         self.ydin_tiheys = ydin_tiheys
-        #energiat.get_V_hartree(
-        #    V_hartree, elektroni_tiheys, tolerance=0.001)
-        #print energiat.E_elektroni_ydin(elektroni_tiheys, V_hartree)
     
     def test_E_T(self):
         """ testataan liike-energia """

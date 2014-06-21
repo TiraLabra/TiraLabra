@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>laskentaa_sd &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for laskentaa_sd</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Tässä moduulissa steepest descent minimointiin  liittyviä funktioita.&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">energiat</span>
+
+
+<div class="viewcode-block" id="yhden_pisteen_derivaatta"><a class="viewcode-back" href="../laskentaa_sd.html#laskentaa_sd.yhden_pisteen_derivaatta">[docs]</a><span class="k">def</span> <span class="nf">yhden_pisteen_derivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                             <span class="n">ydin_tiheys</span><span class="p">,</span> 
+                             <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; lasketaan energian funktionaaliderivaatta gridipisteessä i,j,k &quot;&quot;&quot;</span>
+    <span class="n">tiheydenmuutos</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_tiheydenmuutos</span><span class="p">()</span>
+    <span class="c">#print &quot;tiheydenmuutos&quot;, tiheydenmuutos</span>
+    <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span>\
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
+        <span class="o">+</span> <span class="n">tiheydenmuutos</span>
+    <span class="n">e_plus</span> <span class="o">=</span> \
+        <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>\
+        <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span>\
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
+        <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">tiheydenmuutos</span>
+    <span class="n">e_miinus</span> <span class="o">=</span> \
+        <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>\
+        <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">yhden_pisteen_derivaatta</span> <span class="o">=</span> \
+        <span class="p">(</span><span class="n">e_plus</span> <span class="o">-</span> <span class="n">e_miinus</span><span class="p">)</span> \
+        <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">tiheydenmuutos</span><span class="p">)</span>
+    <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span>\
+        <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
+        <span class="o">+</span> <span class="n">tiheydenmuutos</span>
+    <span class="c">#print &quot;tm&quot;, tiheydenmuutos, yhden_pisteen_derivaatta</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">yhden_pisteen_derivaatta</span>
+</div>
+<div class="viewcode-block" id="funktionaaliderivaatta"><a class="viewcode-back" href="../laskentaa_sd.html#laskentaa_sd.funktionaaliderivaatta">[docs]</a><span class="k">def</span> <span class="nf">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                           <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan kokonaisenergian funktionaaliderivaatta tiheyden suhteen.</span>
+<span class="sd">    ELi lasketaan joka gridi pisteessä</span>
+<span class="sd">    ( [E(n(r_i)+delta n] - [ E(n(r_i)-delta n] / (2*delta n)</span>
+<span class="sd">    Tätä käytetään myöhemmin kun muutetaan tiheyttä Steepest descentillä</span>
+<span class="sd">    siihen suuntaa kuin funktionaaliderivaatta osoittaa </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">copy</span>
+
+    <span class="c"># alustataan funktionaaliderivaatta nollaksi</span>
+    <span class="n">derivaatta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.0</span>
+    <span class="n">imax</span> <span class="o">=</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">jmax</span> <span class="o">=</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">kmax</span> <span class="o">=</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c">#2d</span>
+    <span class="k">if</span> <span class="n">kmax</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">imax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">jmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">derivaatta</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="n">yhden_pisteen_derivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                             <span class="n">ydin_tiheys</span><span class="p">,</span>
+                                             <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+    <span class="c">#3d</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">imax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">jmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">kmax</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">derivaatta</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> \
+                        <span class="n">yhden_pisteen_derivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                                 <span class="n">ydin_tiheys</span><span class="p">,</span>
+                                                 <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+    <span class="c">#print &quot;DV&quot;, derivaatta</span>
+    <span class="k">return</span> <span class="n">derivaatta</span>
+    
+</div>
+<div class="viewcode-block" id="tee_yksi_sd_askel"><a class="viewcode-back" href="../laskentaa_sd.html#laskentaa_sd.tee_yksi_sd_askel">[docs]</a><span class="k">def</span> <span class="nf">tee_yksi_sd_askel</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                      <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Haarukoidaan energian minimi tiheyden gradientin suunnassa</span>
+<span class="sd">    ks. NUMERICAL METHODS IN ENGINEERING WITH Python Jaan Kiusalaas</span>
+<span class="sd">    The Pennsylvania State University (2005)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span>
+    <span class="kn">import</span> <span class="nn">copy</span>
+
+    <span class="k">def</span> <span class="nf">etsi_minimi_karkeasti</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                      <span class="n">ydin_tiheys</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ensin karkea minimi haarukoidaan </span>
+<span class="sd">        (i-1)*tiheyden_muutos ja (i)*tiheyden_muutos väliin</span>
+<span class="sd">        h=askel derivaatan suunnassa</span>
+<span class="sd">        </span>
+<span class="sd">        Palauttaa välin jolta minimi löytyy (a,b,)</span>
+<span class="sd">        ja booleanin löytyikö mimimi (True=löytyi, False=ei löytynyt)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mf">1.618033989</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_askel</span><span class="p">()</span>
+        <span class="c">#tehdään aidosti uudet objektit eikä vain viittauksia</span>
+        <span class="n">tiheys_x1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+        <span class="n">tiheys_x2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+        <span class="n">tiheys_x3</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+            <span class="n">tiheys_x1</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">h</span>
+        <span class="n">tiheys_x2</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+            <span class="n">x2</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                           <span class="n">ydin_tiheys</span><span class="p">)</span>
+        <span class="n">f2</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+            <span class="n">tiheys_x2</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+        
+        <span class="c">#print &quot;A: f1, f2&quot;, f1, f2</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">f2</span> <span class="o">&gt;</span> <span class="n">f1</span><span class="p">):</span>
+            <span class="c">#print &quot;askel liian pitkä tai bugi, pienennä askelta&quot;</span>
+            <span class="c">#print &quot;askel oli&quot;, h</span>
+            <span class="c">#print &quot;Aa: f1, f2&quot;, f1, f2</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;muutos liian pieni&quot;</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">c</span>
+            <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">h</span>
+            <span class="n">tiheys_x3</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+                <span class="n">x3</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                            <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="n">f3</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+                <span class="n">tiheys_x3</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="c">#print &quot;f1, f2, f3,x1-3&quot;, f1, f2, f3,x1,x2,x3</span>
+            <span class="k">if</span> <span class="n">f3</span> <span class="o">&gt;</span> <span class="n">f2</span><span class="p">:</span> 
+                <span class="k">print</span> <span class="s">&quot;löytyi minimi&quot;</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">x3</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="n">f3</span>
+                <span class="k">return</span> <span class="n">x1</span><span class="p">,</span><span class="n">x3</span><span class="p">,</span> <span class="bp">True</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">x2</span><span class="p">;</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x3</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">f2</span><span class="p">;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">f3</span>
+
+
+        <span class="k">print</span> <span class="s">&quot;ei löytynyt minimiä, kasvata tiheys askelta (tiheyden_muutos)&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="bp">False</span>
+        <span class="c">#sys.exit()</span>
+
+    <span class="c"># etsitään karkea minimi: minimi on välillä [a, b]</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">while</span> <span class="ow">not</span><span class="p">(</span><span class="n">found</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">found</span><span class="p">]</span> <span class="o">=</span>    <span class="n">etsi_minimi_karkeasti</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                                 <span class="n">ydin_tiheys</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">found</span><span class="p">):</span>
+            <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">set_askel</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="c">#nyt tiedetään että minimi on välillä [a,b]</span>
+    <span class="c">#haarukoidaan kultaisella haarukoinnilla</span>
+    <span class="n">tol2</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_tol</span><span class="p">()</span><span class="o">*</span><span class="mf">0.01</span>
+    <span class="n">nIter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="mf">2.078087</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">tol2</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)))</span><span class="o">+</span><span class="mi">1</span> 
+    <span class="c">#golden search konvergoituu nIter ask.</span>
+    <span class="c">#print &quot;a,b&quot;, a,b</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mf">0.618033989</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">R</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">R</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">b</span><span class="p">;</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">C</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">R</span><span class="o">*</span><span class="n">b</span>
+    <span class="c">#x1=a; x2=b</span>
+    <span class="c">#print &quot;x1, x2&quot;, x1, x2</span>
+
+    <span class="c">#tehdään aidot kopiot, ettei kopioida vain viittausta</span>
+    <span class="n">tiheys_x1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+    <span class="n">tiheys_x2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+
+    <span class="n">tiheys_x1</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span>  <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+        <span class="n">x1</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                    <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>\
+        <span class="n">tiheys_x1</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">tiheys_x2</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span>  <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+        <span class="n">x2</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                    <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>\
+        <span class="n">tiheys_x2</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="c">#print &quot;B: x1,f1, x2,f2&quot;, x1,f1, x2,f2</span>
+
+    <span class="c"># Etsintä luuppi</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nIter</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">f1</span> <span class="o">&gt;</span> <span class="n">f2</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">x1</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">x2</span><span class="p">;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">f2</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">C</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">R</span><span class="o">*</span><span class="n">b</span>
+            <span class="n">tiheys_x2</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+                <span class="n">x2</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                            <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="n">f2</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+                <span class="n">tiheys_x2</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+            
+            <span class="c">#print &quot;F2&quot;, f2, x2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">x2</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span><span class="p">;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">f1</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">R</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">b</span>
+            <span class="n">tiheys_x1</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span>  <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">+</span> \
+                <span class="n">x1</span> <span class="o">*</span> <span class="n">funktionaaliderivaatta</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                                            <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+                <span class="n">tiheys_x1</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+            <span class="c">#print &quot;F1&quot;, f1, x1</span>
+        <span class="c">#print &quot;x1, f1(x1), x2, f2(x2)&quot;,x1, f1, x2, f2 </span>
+        <span class="c">#print &quot;Nel(x1), Nel(x2)&quot;,\</span>
+        <span class="c">#    tiheys_x1.get_summa_nykyinen(), tiheys_x2.get_summa_nykyinen()</span>
+    <span class="k">if</span> <span class="n">f1</span> <span class="o">&lt;</span> <span class="n">f2</span><span class="p">:</span> 
+        <span class="c">#print &quot;f1&lt; f2&quot;</span>
+        <span class="k">return</span> <span class="n">f1</span><span class="p">,</span> <span class="n">tiheys_x1</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="c">#print &quot;f2&lt; f1&quot;</span>
+        <span class="k">return</span> <span class="n">f2</span><span class="p">,</span> <span class="n">tiheys_x2</span>
+</div>
+<div class="viewcode-block" id="minimoi_steepest_descentilla"><a class="viewcode-back" href="../laskentaa_sd.html#laskentaa_sd.minimoi_steepest_descentilla">[docs]</a><span class="k">def</span> <span class="nf">minimoi_steepest_descentilla</span><span class="p">(</span><span class="n">myfile</span><span class="p">,</span> 
+                           <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+                           <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; minimoidaan steepest descent menetelmällä kunnes n_iter tulee täyteen</span>
+<span class="sd">    tai convergenssikriteeri (tol) täyttyy &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">copy</span>
+
+    <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+        <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+    <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">e_vanha</span> <span class="o">+</span> <span class="mf">100.0</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">n_hyvaksytty</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_hylatty</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">askel</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_askel</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_n_iter</span><span class="p">()):</span>
+        <span class="c">#print &quot;error&quot;, abs(e_uusi - e_vanha)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_uusi</span> <span class="o">-</span> <span class="n">e_vanha</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_tol</span><span class="p">():</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">print</span> <span class="s">&quot;converged&quot;</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e_tot</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>            
+            <span class="k">break</span>
+        <span class="p">[</span><span class="n">energia</span><span class="p">,</span> <span class="n">uusi_tiheys</span><span class="p">]</span> <span class="o">=</span> <span class="n">tee_yksi_sd_askel</span><span class="p">(</span>
+            <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span>
+            <span class="n">ydin_tiheys</span><span class="p">)</span>
+        <span class="c">#print uusi_tiheys</span>
+        <span class="n">elektroni_tiheys_vanha</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+        <span class="n">elektroni_tiheys</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">uusi_tiheys</span><span class="p">)</span>
+        <span class="c">#de = abs(elektroni_tiheys.get_summa_mennyt()-\</span>
+        <span class="c">#             uusi_tiheys.get_summa_nykyinen())</span>
+        <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">e_uusi</span>
+        <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot_with_penalty</span><span class="p">(</span>
+            <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+        <span class="c">#print &quot;Kemiallinen potentiaali&quot;,abs(e_tot-</span>
+        <span class="c">#                                    energiat.E_tot(</span>
+        <span class="c">#        elektroni_tiheys_oikea, V_hartree, ydin_tiheys))/\</span>
+        <span class="c">#        de</span>
+
+        <span class="k">print</span> <span class="s">&quot;EP, ETOT, uusi_askel&quot;</span><span class="p">,</span><span class="n">e_uusi</span><span class="p">,</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_askel</span><span class="p">()</span>
+        <span class="c">#elektronimäärää pitää kontrolloitda tarkemmin jos ei meinaa </span>
+        <span class="c"># konvergoida</span>
+        <span class="k">if</span> <span class="n">e_uusi</span> <span class="o">&gt;</span> <span class="n">e_vanha</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;probleemi, euusi&gt; evanha&quot;</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">print</span> <span class="s">&quot;converged&quot;</span>
+            <span class="n">elektroni_tiheys</span> <span class="o">=</span> <span class="n">elektroni_tiheys_vanha</span>
+            <span class="k">break</span>
+        <span class="c">#skaalataan elektronien jotta saadaan oikea E_tot</span>
+        <span class="n">elektroni_tiheys_oikea</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+        <span class="n">elektroni_tiheys_oikea</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">*</span> \
+            <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_mennyt</span><span class="p">()</span> <span class="o">/</span> \
+            <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_nykyinen</span><span class="p">()</span>
+        <span class="n">e_tot</span> <span class="o">=</span> <span class="n">energiat</span><span class="o">.</span><span class="n">E_tot</span><span class="p">(</span>
+            <span class="n">elektroni_tiheys_oikea</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span>
+
+
+        <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e_tot</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="c">#myfile.write(str(e_uusi)+&#39;\n&#39;)</span>
+    <span class="k">return</span> <span class="n">converged</span><span class="p">,</span> <span class="n">elektroni_tiheys_oikea</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
