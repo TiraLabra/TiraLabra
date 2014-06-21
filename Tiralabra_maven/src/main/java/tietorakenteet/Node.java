@@ -6,9 +6,20 @@ package tietorakenteet;
  */
 public class Node implements Comparable<Node> {
 
+    /**
+     * Arvo, jolla määritellään mistä eteenpäin noden katsotaan olevan
+     * kulkukelvotonta seinäaluetta.
+     */
     private static int MAKSIMIARVO_KULJETTAVUUDELLE = 5;
     
+    /**
+     * Node tietää oman sijantinsa rivin.
+     */
     private int rivi;
+    
+    /**
+     * Node tietää oman sijaintinsa sarakkeen.
+     */
     private int sarake;
     
     /**
@@ -30,9 +41,6 @@ public class Node implements Comparable<Node> {
      */
     private Node edellinen;
     
-    //tarvitaankohan...
-    private int syvyys;
-    
     /**
      * Nodeen siirtymisen kustannus.
      */
@@ -51,9 +59,10 @@ public class Node implements Comparable<Node> {
     private boolean lisattyNaapureihin;
     
     /**
-     * Konstruktori, joka ottaa parametrinaan noden koordinaatit.
+     * Konstruktori, joka ottaa parametrinaan noden koordinaatit ja kustannuksen.
      * @param rivi
      * @param sarake 
+     * @param kustannus
      * @param kustannus nodeen kulkemisen kustannus, oletus 0
      */
     public Node(int rivi, int sarake, int kustannus) {
@@ -65,6 +74,12 @@ public class Node implements Comparable<Node> {
         this.etaisyysAlusta = Integer.MAX_VALUE;
     }
     
+    /**
+     * Konstruktori, joka ottaa paramatreinaan noden koordinaatit.
+     * Kustannukseksi asetetaan
+     * @param rivi
+     * @param sarake 
+     */
     public Node(int rivi, int sarake) {
         this(rivi, sarake, 0);
     }
@@ -125,7 +140,7 @@ public class Node implements Comparable<Node> {
         this.lisattyNaapureihin = onko;
     }
     
-    
+    // -------------------------------------------------------------------------
     
     /**
      * Kertoo, onko kyseinen node kuljettavissa.
@@ -155,9 +170,7 @@ public class Node implements Comparable<Node> {
         if (ero == 0) {     // Jos vieläkin sama, painotetaan pienintä rivinumeroa
             ero = ( this.rivi - node.rivi);
         }
-        
         return ero;
-        
     }
 
     @Override
@@ -168,7 +181,5 @@ public class Node implements Comparable<Node> {
             tulos += " edel: " + edellinen.rivi+"x"+edellinen.sarake;
         return tulos;
     }
-    
-    
     
 }
