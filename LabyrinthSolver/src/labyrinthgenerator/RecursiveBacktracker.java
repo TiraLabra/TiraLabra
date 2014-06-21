@@ -22,7 +22,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
 
     /**
      * <u>Alustus:</u><br>
-     * Alustetaan pino ja visited-array. 
+     * Alustetaan pino ja visited-array.
      * <br><br>
      * <u>Toiminta:</u><br>
      * Lähtee liikkeelle lähtösolusta. Siirtyy satunnaiseen vierailemattomaan
@@ -36,7 +36,7 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
-     * @see main.Labyrinth#getListOfNeighbors(int, int[][], int) 
+     * @see main.Labyrinth#getListOfNeighbors(int, int[][], int)
      * @see main.Labyrinth#addPassage(int, int)
      * @see util.MyList
      * @see util.MyStack
