@@ -1,6 +1,19 @@
 Testing
 =========
 
+####Testing framework
+
+Google Test C++ framework has been used to do the unit testing. If you do not have the framework installed, then you would have to install it.
+On Ubuntu you would have to run the following command:
+
+`sudo apt-get install libgtest0 libgtest-dev`
+
+Once you have it installed, you can run the tests by calling
+
+`sh run_tests.sh`.
+
+####Info
+
 All of the algorithms are tested using random precomputed tests by a test generator written by me. It is available in the 'testing' folder. Also, some specific tests were done like "not found test", "found at begining test", "found at end test", "only one character haystack tests", etc. All in all to cover cases when things may go wrong if the algorithm is not implemented correctly. This actually helped since due to not a proper offset (+-1), the answer was not correct if the found substring was at the end.
 
 Given the algorithms, different tests have been generated - either single answer or multi answer tests.
@@ -23,4 +36,4 @@ All 17 tests have been run in 2.5 seconds where as some strings are relatively b
 The z algorithm and the edit distance were tested online using online judges - Codeforces and SPOJ. Both algorithms passed the tests in a reasonable time. The problem with the edit distance was it scored 2 times poorer than my original solution which didn't use objects.
 
 ####Running tests
-Tests can be run by running the command "sh run_tests.sh" when you are rnd the tests again, a new make file must be created in order to link different files and the main static library. This means that if the project gets updated additional work is needed for the shell scripts. To make sure that the tests are up-to-date, then it is best to load the tests projects using codeblocks, link the static library found in "Codeblocks project/bin/", compile and run. This also makes sure that you would be able to do changes so that you actually can compile it on your system if there are some differences like using a different compiler and having to change some stuff.
+Tests can be run by running the command `sh run_tests.sh` when you are rnd the tests again, a new make file must be created in order to link different files and the main static library. This means that if the project gets updated additional work is needed for the shell scripts. To make sure that the tests are up-to-date, then it is best to load the tests projects using codeblocks, link the static library found in "Codeblocks project/bin/", compile and run. This also makes sure that you would be able to do changes so that you actually can compile it on your system if there are some differences like using a different compiler and having to change some stuff.
