@@ -86,30 +86,7 @@ public class Determinantti {
      * lävistäjän alkiot ovat yläkolmiomatriisin päälävistäjän alkiot. Palauttaa
      * true, jos LU-matriisin muodostaminen onnistui, ja false, jos jouduttiin
      * tilanteeseen missä pivot-alkion arvo on nolla eli olisimme joutuneet
-     * jakamaan nollalla.
-     * 
-     * Algoritmi käy järjestyksessä matriisin lävistäjäalkiot läpi etsien aluksi
-     * lävistäjäalkion sarakkeelle pivot-alkion. Pivot-alkio on lävistäjä-
-     * alkiosta lähtien kyseisen sarakkeen itseisarvoltaan suurin alkio. Pivot-
-     * alkion etsintä estää nollalla jakamisen algoritmin myöhemmässä vaiheessa 
-     * ja algoritmi palauttaakin falsen, jos pivot-alkion itseisarvoksi jää 
-     * pienempi tai yhtäsuuri kuin 10^(-3).
-     * 
-     * Kun löytyy itseisarvoltaan 10^(-3):sta suurempi pivot-alkio, sen rivi ja 
-     * lävistäjäalkion rivi vaihtavat paikkaa keskenään ja rivinvaihto-laskurin 
-     * arvo kasvaa yhdellä, joka mahdollisesti vaikuttaa LU-matriisista 
-     * laskettavan determinantin arvoon.
-     * 
-     * Viimeisessä vaiheessa hajotetaan matriisi kyseessä olevan lävistäjäalkion
-     * osalta LU-hajotelmalla. Tämä jakaa lävistäjäalkion sarakkeen alapuoliset
-     * alkiot lävistäjäalkiolla ja laskee Schurin komplementin arvot. Tähän
-     * mennessä päälävistäjän alapuolelle lävistäjäalkioon asti on löytynyt
-     * alakolmiomatriisin alkiot ja yläpuolelle päälävistäjän ja lävistäjä-
-     * alkion rivin rajaamalle yläosalle yläkolmiomatriisin alkiot.
-     * 
-     * Uusilla iteraatioilla algoritmi toimii edellisen iteraation lopussa
-     * lasketussa Schurin komplementissa eli lohkomatriisissa, joka on 
-     * lävistäjäalkion sarakkeen ja rivin rajaama alue alaoikealla.
+     * jakamaan nollalla. Tarkempi selostus toteutusdokumentissa.
      * 
      * @param LU Matriisi, johon muodostuu sen ylä- ja alakolmiomatriisi, jonka
      *           päälävistäjän alkiot ovat yläkolmiomatriisin päälävistäjän

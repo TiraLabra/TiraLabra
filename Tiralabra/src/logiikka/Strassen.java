@@ -110,22 +110,7 @@ public class Strassen {
      * Metodi, joka pilkkoo annetut neliömatriisit neljäksi yhtäsuureksi lohko-
      * matriisiksi, laskee niiden avulla rekursiivisesti 7 tulomatriisia joiden
      * avulla saadaan lopuksi koottua vastauksena annettava tulomatriisi, joka 
-     * palautetaan. 
-     * 
-     * Puolittaa aluksi neliömatriisin koon (ei neliömatriisia), jonka jälkeen 
-     * tarkastaa mennäänkö 32:een tai sen alle, jolloin palauttaa tavallisella
-     * matriisikertolaskulla lasketun tulomatriisin. Tämä optimointi johtuu
-     * siitä, että pienillä matriiseilla Strassen paljon hitaampi kuin
-     * tavallinen matriisikertolasku. Tämän jälkeen alustaa neliömatriisien 
-     * lohkomatriisit puolitetulla koolla ja sopivilla alkioilla, jotta 
-     * muodostuu ositus neliömatriisin vasemmalle ja oikealle ylä- ja ala-
-     * nurkalle.
-     * 
-     * Tämän jälkeen laskee rekursiivisesti sopivien lohkomatriisien summien
-     * ja erotusten avulla 7 eri tulomatriisia, joita summaamalla ja
-     * vähentämällä saadaan muodostettua vastauksena annettavan tulomatriisin 
-     * lohkomatriisiesitys. Lopuksi kootaan lohkomatriiseista vastauksena
-     * annettava tulomatriisi ja palautetaan se.
+     * palautetaan. Tarkempi selostus toteutusdokumentissa.
      * 
      * @param eka Vasemmalta luettuna ensimmäinen neliömatriisi muotoa n x n
      * @param toka Vasemmalta luettuna toinen neliömatriisi muotoa n x n

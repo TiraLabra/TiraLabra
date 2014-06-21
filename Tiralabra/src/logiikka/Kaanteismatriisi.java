@@ -31,21 +31,7 @@ public class Kaanteismatriisi {
      * Matriisit A ja I muodostavat laajennetun matriisin, johon sovelletaan
      * Gaussin eliminointi-menetelmää ja lopuksi takaisinsijoituksen avulla
      * saadaan muodostettua haluttu käänteismatriisi, joka palautetaan.
-     *
-     * Tarkastaa aluksi onko annettu matriisi neliömatriisi. Tämän jälkeen A-
-     * matriisiin kopioidaan neliömatriisin sisältö ja luodaan samankokoinen
-     * yksikkömatriisi I. Seuraavaksi skaalatulla osittaistuennalla toteutetun
-     * LU-hajotelman avulla muodostetaan A-matriisiin sen ylä- sekä
-     * alakolmiomatriisi, missä päälävistäjän alkiot ovat yläkolmiomatriisin
-     * päälävistäjän alkiot. Rivinvaihtojen osalta myös I-matriisin rivit
-     * vaihdetaan keskenään.
-     *
-     * Seuraavaksi (mahdollisesti) rivimuunneltuun yksikkömatriisiin I tehdään
-     * suhteessa samat muutokset kuin mitä matriisiin A tehtiin LU-hajotelman
-     * osalta käyttäen apuna A:n alakolmiomatriisin arvoja ja eteenpäin
-     * sijoitusta. Tämän jälkeen Gaussin eliminointi on saatu päätökseen ja 
-     * voidaan takaisinsijoittamalla laskea palautettava käänteismatriisi A:n 
-     * yläkolmiomatriisin ja I:n sarakkeiden avulla.
+     * Tarkempi selostus toteutusdokumentissa.
      *
      * @param matriisi Matriisi, jonka käänteismatriisi halutaan laskea, 
      *                 muotoa m x n
@@ -80,27 +66,7 @@ public class Kaanteismatriisi {
      * Metodi, joka muodostaa matriisiin A sen LU-hajotelman skaalatun osittais-
      * tuennan avulla. Lopussa siis matriisiin A muodostuu sen ylä- ja
      * alakolmiomatriisi, jonka päälävistäjän alkiot ovat yläkolmiomatriisin
-     * päälävistäjän alkiot.
-     *
-     * Aluksi etsitään matriisin A skaalaustekijät, jotka ovat sen rivien
-     * itseisarvoltaan suurimmat alkiot. Tämän jälkeen käydään järjestyksessä
-     * matriisin A lävistäjäalkiot läpi etsien aluksi lävistäjäalkion
-     * sarakkeelle pivot-alkion. Pivot-alkio on lävistäjäalkiosta lähtien
-     * kyseisen sarakkeen itseisarvoltaan suurin alkio. Pivot-alkion ja
-     * lävistäjäalkion rivit vaihdetaan keskenään ja sama rivinvaihto tehdään
-     * myös yksikkömatriisi I:lle.
-     *
-     * Viimeisessä vaiheessa hajotetaan matriisi A kyseessä olevan
-     * lävistäjäalkion osalta LU-hajotelmalla. Tämä jakaa lävistäjäalkion
-     * sarakkeen alapuoliset alkiot lävistäjäalkiolla ja laskee Schurin
-     * komplementin arvot. Tähän mennessä päälävistäjän alapuolelle lävistäjä-
-     * alkioon asti on löytynyt alakolmiomatriisin alkiot ja yläpuolelle pää-
-     * lävistäjän ja lävistäjäalkion rivin rajaamalle yläosalle yläkolmio-
-     * matriisin alkiot.
-     *
-     * Uusilla iteraatioilla algoritmi toimii edellisen iteraation lopussa
-     * lasketussa Schurin komplementissa eli lohkomatriisissa, joka on
-     * lävistäjäalkion sarakkeen ja rivin rajaama alue alaoikealla.
+     * päälävistäjän alkiot. Tarkempi selostus toteutusdokumentissa.
      *
      * @param A Matriisi, johon muodostuu sen ylä- ja alakolmiomatriisi, jonka
      *          päälävistäjän alkiot ovat yläkolmiomatriisin päälävistäjän 
