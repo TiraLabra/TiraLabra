@@ -108,7 +108,7 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1403304969 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1403308115 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
 	<vector>
@@ -130,7 +130,7 @@
 	<string>
 	<cstdlib>
 
-1403307412 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
+1403307877 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
 	"knuth_morris_pratt_tests.hpp"
 	<iostream>
 

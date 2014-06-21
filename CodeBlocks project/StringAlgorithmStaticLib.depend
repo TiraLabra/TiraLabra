@@ -76,14 +76,15 @@
 1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
 
-1403304969 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1403308115 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
 	<vector>
 	<string>
 
-1403304212 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
+1403307835 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
+	<iostream>
 
 1401973662 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
 	<cstring>
