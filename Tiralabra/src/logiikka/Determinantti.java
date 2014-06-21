@@ -33,20 +33,14 @@ public class Determinantti {
 
     /**
      * Metodi, joka laskee parametrina annetun neliömatriisin determinantin.
-     * Tarkastaa aluksi onko annettu matriisi neliömatriisi ja alustaa rivin-
-     * vaihtojen määrän nollaksi. Tämän jälkeen LU-matriisiin kopioidaan
-     * annetun matriisin sisältö. Seuraavaksi osittaistuetun LU-hajotelman
-     * avulla muodostetaan LU-matriisiin sen ylä- sekä alakolmiomatriisi, missä
-     * päälävistäjän alkiot ovat yläkolmiomatriisin päälävistäjän alkiot. 
-     * 
-     * Jos LU-hajotelma epäonnistuu, olemme joutuneet tilanteeseen jossa jaetaan
-     * nollalla, joka on seuraus matriisin singulaarisuudesta eli epäsäännölli-
-     * syydestä. Tässä tilanteessa boolean-muuttuja 'onnistui' saa arvon false 
-     * ja metodi palauttaa determinantin arvoksi nollan. LU-hajotelman
-     * onnistuttua determinantti lasketaan LU-matriisin lävistäjäalkioiden
-     * tulona, jonka jälkeen se pyöristetään kahdeksan desimaalin tarkkuuteen.
-     * Lopuksi lisätään etumerkki rivinvaihtojen parillisuudesta riippuen, jonka
-     * jälkeen etumerkitty ja pyöristetty determinantti palautetaan.
+     * Osittaistuetun LU-hajotelman avulla muodostetaan LU-matriisiin sen ylä- 
+     * sekä alakolmiomatriisi, missä päälävistäjän alkiot ovat yläkolmio-
+     * matriisin päälävistäjän alkiot. Jos LU-hajotelma epäonnistuu, olemme 
+     * joutuneet tilanteeseen jossa jaetaan nollalla, joka on seuraus matriisin 
+     * singulaarisuudesta, jolloin matriisin determinantti on nolla. Muulloin 
+     * determinantti lasketaan LU-matriisin lävistäjäalkioiden tulona, jonka 
+     * jälkeen se pyöristetään kahdeksan desimaalin tarkkuuteen. Lopuksi 
+     * lisätään etumerkki rivinvaihtojen parillisuudesta riippuen.
      * 
      * @param matriisi Matriisi, jonka determinantti halutaan laskea, 
      *                 muotoa m x n
