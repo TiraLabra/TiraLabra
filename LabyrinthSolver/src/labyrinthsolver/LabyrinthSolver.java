@@ -4,6 +4,7 @@ import java.util.Random;
 import main.Labyrinth;
 import util.MyList;
 import util.MyStack;
+import util.TreeNode;
 
 /**
  * Labyrintin ratkoja-algoritmien yliluokka.
@@ -119,32 +120,6 @@ public abstract class LabyrinthSolver {
     }
 
     /**
-     * Polunetsijän käyttämä TreeNode-apuluokka.
-     */
-    static class TreeNode {
-
-        /**
-         * Tämän alkion vanhempi.
-         */
-        TreeNode parent;
-        /**
-         * Tämän solmun koordinaatti.
-         */
-        int coordinate;
-
-        /**
-         * Alustaa vanhemmalla ja solmun koordinaatilla.
-         *
-         * @param p Vanhempi solmu.
-         * @param c Koordinaatti.
-         */
-        TreeNode(TreeNode p, int c) {
-            parent = p;
-            coordinate = c;
-        }
-    }
-
-    /**
      * Etsii polun maaliin kulkemalla visited-arraytä pitkin.
      * <br><br>
      * <u>Toiminta:</u><br>
@@ -166,11 +141,11 @@ public abstract class LabyrinthSolver {
         int target = height * width - 1;
         while (!stack.empty()) {
             TreeNode node = stack.pop();
-            if (vsted[node.coordinate / width][node.coordinate % width] == 0) {
+            if (vsted[node.getCoordinate() / width][node.getCoordinate() % width] == 0) {
                 continue;
             }
-            vsted[node.coordinate / width][node.coordinate % width] = 0;
-            if (node.coordinate == target) {
+            vsted[node.getCoordinate() / width][node.getCoordinate() % width] = 0;
+            if (node.getCoordinate() == target) {
                 generatePath(node, target);
                 return;
             }
@@ -190,7 +165,7 @@ public abstract class LabyrinthSolver {
         if (node == null || stack == null) {
             return;
         }
-        MyList edges = labyrinth.getListOfConnectedNeighbors(node.coordinate, visited, 2);
+        MyList edges = labyrinth.getListOfConnectedNeighbors(node.getCoordinate(), visited, 2);
         for (int i = 0; i < edges.size(); i++) {
             stack.push(new TreeNode(node, (int) edges.get(i)));
         }
@@ -203,12 +178,12 @@ public abstract class LabyrinthSolver {
      * @param node Annettu TreeNode.
      */
     void generatePath(TreeNode node, int target) {
-        if (node == null || node.coordinate != target) {
+        if (node == null || node.getCoordinate() != target) {
             return;
         }
         while (node != null) {
-            path.add(node.coordinate);
-            node = node.parent;
+            path.add(node.getCoordinate());
+            node = node.getParent();
         }
         path.reverseList();
     }

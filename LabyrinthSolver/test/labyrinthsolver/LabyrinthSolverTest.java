@@ -1,11 +1,9 @@
 package labyrinthsolver;
 
 import labyrinthgenerator.*;
-import labyrinthsolver.LabyrinthSolver.TreeNode;
 import main.Labyrinth;
 import util.MyList;
 import static org.junit.Assert.*;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,18 +91,6 @@ public class LabyrinthSolverTest {
             runLabyrinthSolver();
             assertTrue(l.ls.exploredCells >= l.ls.getPath().size());
         }
-    }
-
-    @Test
-    public void treeNodeProperlyLinksNodes() {
-        TreeNode tn = new TreeNode(null, 0);
-        TreeNode tn2 = new TreeNode(tn, 0);
-        TreeNode tn3 = new TreeNode(tn2, 0);
-        TreeNode tn4 = new TreeNode(tn, 0);
-        assertEquals(null, tn.parent);
-        assertEquals(tn, tn2.parent);
-        assertEquals(tn2, tn3.parent);
-        assertEquals(tn, tn4.parent);
     }
 
     @Test
