@@ -8,7 +8,7 @@ The library covers the following algorithms:
 - naive search (no doc needed)
 - standard Rabin Karp implementation using roll hashing ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/rabin%20karp.odt?raw=true) )
 - Z algorithm ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt?raw=true))
-- Knutt-Morris-Pratt algorithm ( [doc]() )
+- Knutt-Morris-Pratt algorithm ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/kmp.odt?raw=true) )
 - Edit distance ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/edit%20distance.odt?raw=true))
 
 
