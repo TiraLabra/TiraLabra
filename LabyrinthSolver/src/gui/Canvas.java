@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 import main.Labyrinth;
-import main.MyList;
+import util.MyList;
 
 /**
  * Graafisen käyttöliittymän piirtoalusta.

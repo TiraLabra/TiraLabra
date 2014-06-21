@@ -2,8 +2,8 @@ package labyrinthsolver;
 
 import java.util.Random;
 import main.Labyrinth;
-import main.MyList;
-import main.MyStack;
+import util.MyList;
+import util.MyStack;
 
 /**
  * Labyrintin ratkoja-algoritmien yliluokka.

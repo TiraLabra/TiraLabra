@@ -1,7 +1,7 @@
 package labyrinthsolver;
 
-import main.MyList;
-import main.MyStack;
+import util.MyList;
+import util.MyStack;
 
 /**
  * Satunnaistettu syvyyssuuntainen hakualgoritmi labyrintin ratkaisemiseen.

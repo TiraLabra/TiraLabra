@@ -1,8 +1,8 @@
 package labyrinthsolver;
 
-import main.MyList;
-import main.MyPriorityHeap;
-import main.HeapElement;
+import util.MyList;
+import util.MyPriorityHeap;
+import util.HeapElement;
 
 /**
  * A*-hakualgoritmi labyrintin ratkaisemiseen.

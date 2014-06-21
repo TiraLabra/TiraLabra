@@ -1,7 +1,7 @@
 package labyrinthgenerator;
 
-import main.MyList;
-import main.MyStack;
+import util.MyList;
+import util.MyStack;
 
 /**
  * Satunnaistettu rekursiivinen peruuttava haku labyrintin generoimiseen.

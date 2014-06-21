@@ -1,6 +1,6 @@
 package labyrinthgenerator;
 
-import main.MyList;
+import util.MyList;
 
 /**
  * Modifioitu satunnaistettu Primin algoritmi labyrintin generoimiseen.

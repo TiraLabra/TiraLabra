@@ -1,5 +1,6 @@
 package main;
 
+import util.MyList;
 import labyrinthgenerator.LabyrinthGenerator;
 import labyrinthsolver.LabyrinthSolver;
 

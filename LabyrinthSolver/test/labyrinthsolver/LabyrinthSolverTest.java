@@ -3,7 +3,7 @@ package labyrinthsolver;
 import labyrinthgenerator.*;
 import labyrinthsolver.LabyrinthSolver.TreeNode;
 import main.Labyrinth;
-import main.MyList;
+import util.MyList;
 import static org.junit.Assert.*;
 import org.junit.Assume;
 import org.junit.Before;

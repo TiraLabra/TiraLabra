@@ -1,7 +1,7 @@
 package labyrinthsolver;
 
-import main.MyList;
-import main.MyQueue;
+import util.MyList;
+import util.MyQueue;
 
 /**
  * Satunnaistettu leveyssuuntainen hakualgoritmi labyrintin ratkaisemiseen.
