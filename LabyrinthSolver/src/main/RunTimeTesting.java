@@ -35,9 +35,9 @@ public class RunTimeTesting {
      */
     private final int[] tests;
     /**
-     * Tiedosto, johon testitulokset tallennetaan.
+     * Tiedosto, johon testitulokset kirjoitetaan.
      */
-    private File file;
+    private final File file;
     /**
      * Tiedostoonkirjoittaja.
      */
@@ -62,7 +62,7 @@ public class RunTimeTesting {
 
     /**
      * Generoi labyrintin eri ko'oilla, ja ratkaisee jokaisen generoidun
-     * labyrintin eri ratkaisualgoritmilla. Kunkin tulostetaan.
+     * labyrintin eri ratkaisualgoritmilla.
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
@@ -106,14 +106,14 @@ public class RunTimeTesting {
                 /*
                  Tulostetaan tämän testiko'on tulokset tälle generointialgoritmille.
                  */
-                printResults(generationTime, solvingTimes, exploredCells, sLength);
+                writeResults(generationTime, solvingTimes, exploredCells, sLength);
             }
         }
         fw.close();
     }
 
     /**
-     * Tulostaa yhden testikoon tulokset yhdelle generointialgoritmille.
+     * Kirjoittaa tiedostoon yhden testikoon tulokset.
      *
      * @param generationTime Generointeihin kulunut aika.
      * @param solvingTimes Ratkomisiin kulunut aika.
@@ -122,15 +122,15 @@ public class RunTimeTesting {
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
-    private void printResults(long generationTime, long[] solvingTimes, long[] exploredCells, int sLength) throws Exception {
-        lgPrintRoutine(generationTime);
+    private void writeResults(long generationTime, long[] solvingTimes, long[] exploredCells, int sLength) throws Exception {
+        lgWriteRoutine(generationTime);
         fw.append("\r\n");
         for (int j = 0; j < sLength; j++) {
             fw.append(solvers[j].getName());
-            lsPrintRoutine(solvingTimes[j], exploredCells[j]);
+            lsWriteRoutine(solvingTimes[j], exploredCells[j]);
         }
         fw.append("Wall follower (Optimized)");
-        lsPrintRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
+        lsWriteRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
     }
 
     /**
@@ -171,13 +171,13 @@ public class RunTimeTesting {
     }
 
     /**
-     * Tulostusrutiini labyrintingeneroimistesteille.
+     * Kirjoitusrutiini labyrintingeneroimistesteille.
      *
      * @param time Generointeihin kulunut aika.
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
-    private void lgPrintRoutine(long time) throws Exception {
+    private void lgWriteRoutine(long time) throws Exception {
         fw.append(" (" + labyrinth.getWidth() + "x" + labyrinth.getHeight() + ")");
         time /= n; // Keskiarvo.
         time /= 1000; // Muunnos mikrosekunneiksi.
@@ -186,12 +186,12 @@ public class RunTimeTesting {
     }
 
     /**
-     * Tulostusrutiini labyrintinratkomistesteille.
+     * Kirjoitusrutiini labyrintinratkomistesteille.
      *
      * @param time Ratkomisiin kulunut aika.
      * @param exploredCells Vieraillut solut.
      */
-    private void lsPrintRoutine(long time, long exploredCells) {
+    private void lsWriteRoutine(long time, long exploredCells) {
         exploredCells /= n; // Keskiarvo.
         time /= n; // Keskiarvo.
         time /= 1000; // Muunnos mikrosekunneiksi.
