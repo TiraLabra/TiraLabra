@@ -12,7 +12,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     /**
      * Maskit kaaren suunnille. 1 = NORTH, 2 = EAST, 4 = SOUTH, 8 = WEST.
      */
-    final byte[] masks = {1, 2, 4, 8};
+    private final byte[] masks = {1, 2, 4, 8};
 
     /**
      * Yliluokka alustaa random-olion.
@@ -47,29 +47,28 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     public void generateLabyrinth() throws Exception {
         int labyrinthSize = labyrinth.getHeight() * labyrinth.getWidth();
         int verticesLeft = labyrinthSize;
-        int[][] edges = new int[verticesLeft][];
+        int[][] edges = new int[labyrinthSize][];
         SetElement[] elements = new SetElement[labyrinthSize];
         initialize(edges, elements);
         while (true) {
             int rand = random.nextInt(verticesLeft);
             int coordinate = edges[rand][0];
             byte edge = randomEdge(coordinate, edges[rand][1]);
-            int targetCoordinate = labyrinth.getTargetCoordinate(coordinate, edge);
-            SetElement orig = elements[coordinate];
-            SetElement target = elements[targetCoordinate];
-            if (orig.getId() != target.getId()) {
-                orig.joinTwoSets(target);
-                labyrinth.addPassage(coordinate, targetCoordinate);
-                if (orig.getNumOfElements() == labyrinthSize) {
-                    break;
-                }
-            }
-            edges[rand][1] ^= edge; // Käytetyn kaaren poisto
             /*
-             * Apumetodi, joka hankkiutuu eroon soluista sitä mukaa kun niitä
-             * ei enää voisi käyttää.
+             Yhdistää kaaren erottamat solut samaksi joukoksi, jos
+             mahdollista. Jos solut yhdistettiin, tarkastaa kuuluvatko kaikki
+             solut jo samaan joukkoon, mikä tarkoittaisi, että labyrintti on
+             generoitu.
              */
-            if (!saveVertice(edges[rand], orig, elements)) {
+            if (unionPerformed(elements, coordinate, edge)
+                    && elements[0].getNumOfElements() == labyrinthSize) {
+                return;
+            }
+            /*
+             Tämän jälkeen siivoaa arvotun solun kaarilistaa. Jos solun
+             kaarilista tyhjeni, poistetaan solu solulistasta.
+             */
+            if (removeUselessEdges(edges[rand], elements[coordinate], elements)) {
                 edges[rand] = edges[verticesLeft - 1];
                 verticesLeft--;
             }
@@ -108,6 +107,27 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
+     * Yhdistää kaaren erottamat solut samaksi joukoksi, jos mahdollista.
+     * Tällöin lisää myös labyrinttiin tämän kaaren.
+     *
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @param edge Arvottu kaari.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     */
+    boolean unionPerformed(SetElement[] elements, int coordinate, byte edge) throws Exception {
+        int targetCoordinate = labyrinth.getTargetCoordinate(coordinate, edge);
+        SetElement orig = elements[coordinate];
+        SetElement target = elements[targetCoordinate];
+        if (elements[coordinate].getId() != elements[targetCoordinate].getId()) {
+            orig.joinTwoSets(target);
+            labyrinth.addPassage(coordinate, targetCoordinate);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Arpoo kaaren annetun solun kaarilistasta.
      *
      * @param coordinate Koordinaatti, jossa solu on.
@@ -123,20 +143,17 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
     }
 
     /**
-     * Tämä apumetodi tarkistaa, lähteekö solusta enää kaaria, jotka
-     * yhdistäisivät solun muihin joukkoihin. Hoitaa siivoamistoimenpiteitä.
+     * Tämä apumetodi siistii solun kaarilistasta ne kaaret pois, jotka
+     * yhdistäisivät solun muihin joukkoihin.
      *
      * @param edges Tämän solun kaaret kokonaislukuna.
      * @param orig Tämän solun joukkoalkio.
      * @param elements Joukkoalkioiden array.
-     * @return Palauttaa totuusarvon joka kertoo kannattaako solua enää pitää.
+     * @return Palauttaa totuusarvon joka kertoo onko solulla enää kaaria.
      *
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */
-    boolean saveVertice(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
-        if (edges[1] == 0) {
-            return false;
-        }
+    boolean removeUselessEdges(int[] edges, SetElement orig, SetElement[] elements) throws Exception {
         for (int i = 0; i < 4; i++) {
             if ((edges[1] & masks[i]) > 0) {
                 int targetCoordinate = labyrinth.getTargetCoordinate(edges[0], masks[i]);
@@ -149,7 +166,7 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
                 }
             }
         }
-        return edges[1] != 0;
+        return edges[1] == 0;
     }
 
 }
