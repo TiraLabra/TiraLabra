@@ -8,6 +8,7 @@ package Tietorakenteet;
 
 public class HajautusTaulu {
     private Hajautettava[][] taulu;
+    private int koko;
     
     /**
      * Luo uuden 256-sarakkeisen hajautustaulun.
@@ -15,6 +16,7 @@ public class HajautusTaulu {
     
     public HajautusTaulu() {
         this.taulu = new Hajautettava[256][1];
+        this.koko = 0;
     }
     
     /**
@@ -80,16 +82,7 @@ public class HajautusTaulu {
      */
     
     public int getKoko() {
-        int maara = 0;
-        
-        for (Hajautettava[] rivi : taulu) {
-            for (Hajautettava hajautettava : rivi) {
-                if (hajautettava != null) {
-                    maara++;
-                }
-            }
-        }
-        return maara;
+        return this.koko;
     }
     
     /**
@@ -105,6 +98,7 @@ public class HajautusTaulu {
         if (paikka == null) {
             Hajautettava lisattava = new Hajautettava(avain, arvo);
             lisaa(lisattava, hajauta(lisattava));
+            koko++;
         }
         else {
             taulu[paikka.getJ()][paikka.getI()].setArvo(arvo);
@@ -166,6 +160,7 @@ public class HajautusTaulu {
         while (i < taulu[j].length) {
             
             if (i == taulu[j].length - 1) {
+                koko--;
                 taulu[j][i] = null;
             }
             
@@ -260,7 +255,7 @@ public class HajautusTaulu {
      */
     
     protected String[] getTaulukko(boolean avaimet) {
-        String[] taulukko = new String[getKoko()];
+        String[] taulukko = new String[koko];
         lisaaTaulukkoon(taulukko, avaimet);
         return taulukko;
     }

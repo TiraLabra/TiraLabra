@@ -19,7 +19,7 @@ public class LukijaTest {
     }
     
     private void kirjoitaTiedostonSisalto() throws IOException {
-        Kirjoittaja kirjoittaja = new Kirjoittaja(polku, true);
+        Kirjoittaja kirjoittaja = new Kirjoittaja(polku);
         kirjoittaja.kirjoita("#"+n+n + "å"+n+y + ";"+y+n + "ö"+y+y + (char) 127 + (char) 127 + n + (char) 135);
     }
     

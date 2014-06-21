@@ -25,23 +25,6 @@ public class LZWLukijaTest {
         assertTrue(lukija.getTeksti().isEmpty());
     }
     
-
-    
-//    
-//    @Test
-//    public void lisaaArvojenEteenEtuNolla() {
-//        lukija = new LZWLukija();
-//        String[] arvot = new String[lukija.getEsitykset().getKoko()];
-//        System.arraycopy(lukija.getEsitykset().getArvot(), 0, arvot, 0, arvot.length);
-//        
-//        lukija.lisaaArvojenEteenEtuNolla();
-//        String[] uudetArvot = lukija.getEsitykset().getArvot();
-//        
-//        for (int i = 0; i < arvot.length; i++) {
-//            assertEquals((char) 0 + arvot[i], uudetArvot[i]);
-//        }
-//    }
-    
     @Test
     public void lisaaAvain() {
         lukija = new LZWLukija();
@@ -92,6 +75,7 @@ public class LZWLukijaTest {
         builderOnTyhja(new StringBuilder(), lukija.getTeksti());
         laajennettuKoodistoSisaltaaAvaimen(new StringBuilder(), lukija.getTeksti());
         avainEiOleKummassakaanKoodistossa(new StringBuilder(), lukija.getTeksti());
+        viimeinenArvoLuetaan(new StringBuilder(), lukija.getTeksti());
     }
     
     private void builderOnTyhja(StringBuilder builder, String teksti) {
@@ -118,6 +102,12 @@ public class LZWLukijaTest {
         
         assertEquals("R", builder.toString());
         assertEquals(teksti + (char) 0 + muuntaja.binaariEsitys8Bit('T'), lukija.getTeksti());
+    }
+    
+    private void viimeinenArvoLuetaan(StringBuilder builder, String teksti) {
+        builder.append("a");
+        lukija.lisaaMerkki(-1, builder);
+        assertEquals(teksti + (char) 0 + muuntaja.binaariEsitys8Bit('a'), lukija.getTeksti());
     }
     
     @Test

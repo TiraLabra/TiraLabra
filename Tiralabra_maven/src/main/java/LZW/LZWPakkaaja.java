@@ -31,17 +31,19 @@ public class LZWPakkaaja {
         lukija.lue(polku);
 
         Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".lzw");
-        kirjoittaja.kirjoita(pakattavaTeksti());
+        String kirjoitettava = kirjoitettava(lukija.getTeksti());
+        kirjoittaja.kirjoita(kirjoitettava);
     }
     
     /**
      * Muuntaa binäärimuotoisen tekstin ascii -koodiksi.
+     * @param ilmanEtuNollia
      * @return 
      */
     
-    public String pakattavaTeksti() {
+    public String kirjoitettava(String ilmanEtuNollia) {
         StringBuilder pakattavaTeksti = new StringBuilder();
-        String pakattuna = pakattuna(lukija.getTeksti());
+        String pakattuna = pakattuna(ilmanEtuNollia);
         
         pakattavaTeksti.append((char) muuntaja.getLisatytEtuNollat());
         pakattavaTeksti.append(pakattuna);
