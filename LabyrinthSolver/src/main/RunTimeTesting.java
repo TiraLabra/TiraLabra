@@ -106,7 +106,7 @@ public class RunTimeTesting {
                 /*
                  Tulostetaan tämän testiko'on tulokset tälle generointialgoritmille.
                  */
-                writeResults(generationTime, solvingTimes, exploredCells, sLength);
+                writeResults(generationTime, solvingTimes, exploredCells, sLength, t);
             }
         }
         fw.close();
@@ -119,18 +119,19 @@ public class RunTimeTesting {
      * @param solvingTimes Ratkomisiin kulunut aika.
      * @param exploredCells Vieraillut solut.
      * @param sLength Ratkoja-algoritmien määrä.
+     * @param testSize Testin koko.
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */
-    private void writeResults(long generationTime, long[] solvingTimes, long[] exploredCells, int sLength) throws Exception {
+    private void writeResults(long generationTime, long[] solvingTimes, long[] exploredCells, int sLength, int testSize) throws Exception {
         lgWriteRoutine(generationTime);
         fw.append("\r\n");
         for (int j = 0; j < sLength; j++) {
             fw.append(solvers[j].getName());
-            lsWriteRoutine(solvingTimes[j], exploredCells[j]);
+            lsWriteRoutine(solvingTimes[j], exploredCells[j], testSize);
         }
         fw.append("Wall follower (Optimized)");
-        lsWriteRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
+        lsWriteRoutine(solvingTimes[sLength], exploredCells[sLength - 1], testSize);
     }
 
     /**
@@ -190,16 +191,20 @@ public class RunTimeTesting {
      *
      * @param time Ratkomisiin kulunut aika.
      * @param exploredCells Vieraillut solut.
+     * @param testSize Testin koko.
      */
-    private void lsWriteRoutine(long time, long exploredCells) {
-        exploredCells /= n; // Keskiarvo.
+    private void lsWriteRoutine(long time, long exploredCells, int testSize) {
+        /*
+         Muunnos keskiarvoksi ja prosentiksi.
+         */
+        exploredCells = exploredCells / (long) ((double) n * testSize * testSize / 100);
         time /= n; // Keskiarvo.
         time /= 1000; // Muunnos mikrosekunneiksi.
         String timeFormat = formatTime(time);
         String exploredCellsFormat = formatNumber(exploredCells);
         try {
             fw.append("  ::  Solution found on average in " + timeFormat);
-            fw.append("  ::  Cells explored on average: " + exploredCellsFormat + "\r\n");
+            fw.append("  ::  Cells explored on average: " + exploredCellsFormat + "%\r\n");
         } catch (IOException e) {
         }
     }
