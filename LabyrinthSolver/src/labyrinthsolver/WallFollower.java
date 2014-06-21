@@ -76,7 +76,7 @@ public class WallFollower extends LabyrinthSolver {
      * se ylläpidä visited-arraytä.
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
-     * @see solveLabyrinth()
+     * @see labyrinthsolver.WallFollower#solveLabyrinth()
      */
     public boolean minorlySpedUpSolver() {
         int width = labyrinth.getWidth();

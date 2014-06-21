@@ -12,7 +12,7 @@ import labyrinthsolver.LabyrinthSolver;
 public class Labyrinth {
 
     /**
-     * Labyrintti on tallennettu korkeus*leveys-kokoiseen arrayhun.
+     * Labyrintin solut on tallennettu "korkeus x leveys"-kokoiseen array:hin.
      */
     private byte[][] labyrinth;
     /**
@@ -73,10 +73,11 @@ public class Labyrinth {
     }
 
     /**
-     * Palauttaa annetusta koordinaatista lähtevät kaaret.
+     * Palauttaa annetun koordinaatin solusta lähtevät kaaret.
      *
-     * @param coordinate Annettu koordinaatti.
-     * @return Palauttaa annetusta koordinaatista lähtevät kaaret.
+     * @param coordinate Koordinaatti, jossa solu on.
+     * @return Palauttaa annetun koordinaatin solusta lähtevät kaaret.
+     * @see main.Labyrinth#validCoordinate(int, int)
      */
     public byte getEdges(int coordinate) {
         if (validCoordinate(coordinate % width, coordinate / width)) {
@@ -87,12 +88,14 @@ public class Labyrinth {
     }
 
     /**
-     * Tarkastaa, lähteekö annetusta koordinaatista kaari annettuun suuntaan.
+     * Tarkastaa, lähteekö annetun koordinaatin solusta kaari annettuun
+     * suuntaan.
      *
-     * @param coordinate Annettu koordinaatti.
+     * @param coordinate Koordinaatti, jossa solu on.
      * @param direction Suunta.
-     * @return Palauttaa true, jos annetusta koordinaatista lähtee kaari
+     * @return Palauttaa true, jos annetun koordinaatin solusta lähtee kaari
      * annettuun suuntaan.
+     * @see main.Labyrinth#validCoordinate(int, int)
      */
     public boolean hasEdge(int coordinate, byte direction) {
         if (validCoordinate(coordinate % width, coordinate / width)) {
@@ -103,8 +106,8 @@ public class Labyrinth {
     }
 
     /**
-     * Päivittää labyrintin koon. Tämän jälkeen asettaa uuden labyrintin
-     * labyrintingeneroijaan ja -ratkaisijaan.
+     * Luo uuden annetun kokoisen labyrintin. Tämän jälkeen asettaa labyrintin
+     * generoijalle ja -ratkojalle tämän uuden labyrintin.
      *
      * @param w Labyrintin leveys.
      * @param h Labyrintin korkeus.
@@ -146,11 +149,14 @@ public class Labyrinth {
     }
 
     /**
-     * Jos labyrintingeneroija on asetettu, generoi labyrintin. Uuden labyrintin
-     * generoitua resetoi labyrintin ratkaisijan.
+     * Jos labyrintingeneroija on asetettu, generoi labyrintin. Resetoi
+     * labyrintin ratkojan.
      *
      * @throws java.lang.Exception Heittää poikkeuksen, jos algoritmi yrittää
      * käsitellä labyrintin ulkopuolista koordinaattia.
+     * @see labyrinthgenerator.LabyrinthGenerator#createEmptyLabyrinthIfNeeded()
+     * @see labyrinthgenerator.LabyrinthGenerator#generateLabyrinth()
+     * @see labyrinthsolver.LabyrinthSolver#reset()
      */
     public void generateLabyrinth() throws Exception {
         if (lg != null) {
@@ -163,8 +169,10 @@ public class Labyrinth {
     }
 
     /**
-     * Jos labyrintinratkaisija on asetettu, ja labyrintti generoitu, ratkaisee
+     * Jos labyrintin ratkoja on asetettu, ja labyrintti generoitu, ratkaisee
      * labyrintin.
+     *
+     * @see labyrinthsolver.LabyrinthSolver#solveLabyrinth()
      */
     public void solveLabyrinth() {
         if (ls != null) {
@@ -175,9 +183,10 @@ public class Labyrinth {
     }
 
     /**
-     * Palauttaa koordinaatin kohteeseen.
+     * Palauttaa sen koordinaatin, mikä on annetussa suunnassa siitä solusta,
+     * joka on annettu.
      *
-     * @param coordinateOrig Solun koordinaatti.
+     * @param coordinateOrig Koordinaatti, jossa solu on.
      * @param mask Suunnan maski.
      * @return Palauttaa kohteen koordinaatin.
      * @throws java.lang.Exception Palauttaa poikkeuksen, jos kohteen
@@ -186,15 +195,27 @@ public class Labyrinth {
     public int getTargetCoordinate(int coordinateOrig, byte mask) throws Exception {
         int x = coordinateOrig % width;
         int y = coordinateOrig / width;
+        /*
+         NORTH 
+         */
         if (mask == 1 && validCoordinate(x, y - 1)) {
             return coordinateOrig - width;
         }
+        /*
+         EAST
+         */
         if (mask == 2 && validCoordinate(x + 1, y)) {
             return coordinateOrig + 1;
         }
+        /*
+         SOUTH
+         */
         if (mask == 4 && validCoordinate(x, y + 1)) {
             return coordinateOrig + width;
         }
+        /*
+         WEST
+         */
         if (validCoordinate(x - 1, y)) {
             return coordinateOrig - 1;
         }
@@ -217,15 +238,27 @@ public class Labyrinth {
         if (!(validCoordinate(x, y) && validCoordinate(dx, dy))) {
             throw new Exception("Invalid coordinates given.");
         }
+        /*
+         NORTH
+         */
         if (y - 1 == dy) {
             labyrinth[y][x] |= 1;
             labyrinth[dy][dx] |= 4;
+            /*
+             EAST
+             */
         } else if (x + 1 == dx) {
             labyrinth[y][x] |= 2;
             labyrinth[dy][dx] |= 8;
+            /*
+             SOUTH
+             */
         } else if (y + 1 == dy) {
             labyrinth[y][x] |= 4;
             labyrinth[dy][dx] |= 1;
+            /*
+             WEST
+             */
         } else if (x - 1 == dx) {
             labyrinth[y][x] |= 8;
             labyrinth[dy][dx] |= 2;
@@ -270,7 +303,7 @@ public class Labyrinth {
      * @return Palauttaa listan annetun koordinaatin naapureista, jotka ovat
      * osana labyrinttia ja tilassa state.
      *
-     * @see main.MyList
+     * @see util.MyList
      * @see validCoordinate
      */
     public MyList getListOfNeighbors(int coordinate, int[][] visited, int state) {
@@ -315,7 +348,7 @@ public class Labyrinth {
      * @return Palauttaa listan annetun koordinaatin vierailemattomista
      * naapureista, jos niihin kulkee kaari lähtökoordinaatista.
      *
-     * @see main.MyList
+     * @see util.MyList
      */
     public MyList getListOfConnectedNeighbors(int coordinate, int[][] visited, int state) {
         MyList<Integer> listOfNeighbours = new MyList(4);

@@ -36,7 +36,9 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
-     * @see main.MyList
+     * @see labyrinthgenerator.PrimsAlgorithm#getListOfUnvisitedNeighbors(int,
+     * int[][])
+     * @see util.MyList
      * @see main.Labyrinth#addPassage(int, int)
      */
     @Override
@@ -76,7 +78,7 @@ public class PrimsAlgorithm extends LabyrinthGenerator {
      * tilassa 0.
      *
      * @see main.Labyrinth#getListOfNeighbors(int, int[][], int)
-     * @see main.MyList
+     * @see util.MyList
      */
     MyList getListOfUnvisitedNeighbors(int coordinate, int[][] visited) {
         int width = labyrinth.getWidth();

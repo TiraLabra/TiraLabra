@@ -14,11 +14,11 @@ import util.MyList;
 class Canvas extends JPanel {
 
     /**
-     * Labyrintti, jolle gui luodaan.
+     * Labyrintti-olio.
      */
     Labyrinth labyrinth;
     /**
-     * Labyrintin solun koko.
+     * Labyrintin solun koko piirtämistä varten.
      */
     int cellSize;
     /**
@@ -43,14 +43,14 @@ class Canvas extends JPanel {
      * Asettaa labyrintin ja solunkoon. Alustaa värit. Laskee tarvitseeko
      * labyrintti keskittää.
      *
-     * @param l Labyrintti, jolle gui luodaan.
-     * @param cs Labyrintin solun koko.
+     * @param l Labyrintti-olio.
+     * @param cs Labyrintin solun koko piirtämistä varten.
      */
     public Canvas(Labyrinth l, int cs) {
         labyrinth = l;
         cellSize = cs;
         wallColor = new Color(0, 0, 0);
-        visitedCellColor = new Color(255, 235, 235);
+        visitedCellColor = new Color(255, 225, 225);
         pathColor = new Color(255, 0, 0);
         if ((2 + l.getWidth()) * cellSize < 250) {
             fixPosition = (250 - (2 + l.getWidth()) * cellSize) / 2;
@@ -60,7 +60,7 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Jos labyrintin ratkaisija on ratkaissut labyrintin, piirretään löydetty
+     * Jos labyrintin ratkoja on ratkaissut labyrintin, piirretään löydetty
      * polku.
      *
      * @param g Grafiikka.
@@ -94,7 +94,7 @@ class Canvas extends JPanel {
     }
 
     /**
-     * Jos labyrintin ratkaisija on ratkaissut labyrintin, väritetään vieraillut
+     * Jos labyrintin ratkoja on ratkaissut labyrintin, väritetään vieraillut
      * solut.
      *
      * @param g Grafiikka.

@@ -39,7 +39,13 @@ public class KruskalsAlgorithm extends LabyrinthGenerator {
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
-     * @see initialize(int[][], SetElement[])
+     * @see labyrinthgenerator.KruskalsAlgorithm#initialize(int[][],
+     * util.SetElement[])
+     * @see labyrinthgenerator.KruskalsAlgorithm#removeUselessEdges(int[],
+     * util.SetElement, util.SetElement[])
+     * @see
+     * labyrinthgenerator.KruskalsAlgorithm#unionPerformed(util.SetElement[],
+     * int, byte)
      * @see main.Labyrinth#addPassage(int, int)
      * @see main.Labyrinth#getTargetCoordinate(int, byte)
      */

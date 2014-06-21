@@ -32,26 +32,28 @@ public class Gui implements Runnable {
      */
     JFrame frame;
     /**
-     * Labyrintti, jolle gui luodaan.
+     * Labyrintti-olio.
      */
     Labyrinth labyrinth;
     /**
-     * Piirtoalusta.
+     * Piirtoalusta-olio.
      */
     Canvas canvas;
     /**
-     * Labyrintin korkeuden tai leveyden maksimikoko, minkä GUI hyväksyy.
+     * Labyrintin korkeuden tai leveyden maksimikoko, minkä graafinen
+     * käyttöliittymä hyväksyy.
      */
     int maxSize;
     /**
-     * Labyrintin korkeuden tai leveyden minimikoko, minkä GUI hyväksyy.
+     * Labyrintin korkeuden tai leveyden minimikoko, minkä graafinen
+     * käyttöliittymä hyväksyy.
      */
     int minSize;
 
     /**
      * Asettaa labyrintin ja maksimikoon.
      *
-     * @param l Labyrintti, jolle gui luodaan.
+     * @param l Labyrintti-olio.
      */
     public Gui(Labyrinth l) {
         labyrinth = l;
@@ -60,7 +62,7 @@ public class Gui implements Runnable {
     }
 
     /**
-     * Alustaa ja käynnistää guin.
+     * Alustaa ja käynnistää graafisen käyttöliittymän.
      */
     @Override
     public void run() {
@@ -184,7 +186,7 @@ public class Gui implements Runnable {
 
     /**
      * Luo menu-valinnan kokotietojen asettamiseen, ja lisää menu-valintaan
-     * tapahtuman kuuntelijan, joka avaa säätelyikkunan.
+     * tapahtumankuuntelijan, joka avaa säätelyikkunan.
      *
      * @return Palauttaa menu-valinnan labyrintin kokotietojen asettamiseen.
      *
@@ -227,22 +229,24 @@ public class Gui implements Runnable {
         }
     }
 
+    /**
+     * Lisää generointialgoritmit menuun.
+     *
+     * @param lgMenu Generoijien JMenu.
+     */
     private void addGenerators(JMenu lgMenu) {
         lgMenu.add(createLabyrinthGeneratorMenuItem(new KruskalsAlgorithm(), "Kruskal's Algorithm"));
         lgMenu.add(createLabyrinthGeneratorMenuItem(new PrimsAlgorithm(), "Prim's Algorithm"));
         lgMenu.add(createLabyrinthGeneratorMenuItem(new RecursiveBacktracker(), "Recursive Backtracker"));
     }
-    
+
     /**
      * Luo menu-valinnan annetun labyrintin generoijan valinnalle, ja lisää
-     * menu-valintaan tapahtuman kuuntelijan.
+     * menu-valintaan tapahtumankuuntelijan.
      *
      * @param lg Annettu labyrintin generoija.
      * @param title Menu-valinnan otsikko.
      * @return Palauttaa menu-valinnan annetun labyrintin generoijan valinnalle.
-     *
-     * @see
-     * main.Labyrinth#setLabyrinthGenerator(labyrinthgenerator.LabyrinthGenerator)
      */
     private JMenuItem createLabyrinthGeneratorMenuItem(final LabyrinthGenerator lg, final String title) {
         JMenuItem item = new JMenuItem(title);
@@ -255,22 +259,26 @@ public class Gui implements Runnable {
         return item;
     }
 
+    /**
+     * Lisää ratkoja-algoritmit menuun.
+     *
+     * @param lgMenu Ratkojien JMenu.
+     */
     private void addSolvers(JMenu lsMenu) {
-        lsMenu.add(createLabyrinthSolverMenuItem(new DFS(), "DFS"));
-        lsMenu.add(createLabyrinthSolverMenuItem(new BFS(), "BFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new DFS(), "Randomized DFS"));
+        lsMenu.add(createLabyrinthSolverMenuItem(new BFS(), "Randomized BFS"));
         lsMenu.add(createLabyrinthSolverMenuItem(new WallFollower(), "Wall follower"));
         lsMenu.add(createLabyrinthSolverMenuItem(new AStar(), "A* Search"));
     }
+
     /**
      * Luo menu-valinnan annetun labyrintin ratkaisijan valinnalle, ja lisää
-     * menu-valintaan tapahtuman kuuntelijan.
+     * menu-valintaan tapahtumankuuntelijan.
      *
      * @param ls Annettu labyrintin ratkaisija.
      * @param title Menu-valinnan otsikko.
      * @return Palauttaa menu-valinnan annetun labyrintin ratkaisijan
      * valinnalle.
-     *
-     * @see main.Labyrinth#setLabyrinthSolver(labyrinthsolver.LabyrinthSolver)
      */
     private JMenuItem createLabyrinthSolverMenuItem(final LabyrinthSolver ls, final String title) {
         JMenuItem item = new JMenuItem(title);
@@ -284,10 +292,9 @@ public class Gui implements Runnable {
     }
 
     /**
-     * Luo 'Generate!'-nappulan ja lisää siihen tapahtuman kuuntelijan.
+     * Luo 'Generate!'-nappulan ja lisää siihen tapahtumankuuntelijan.
      *
      * @return Palauttaa 'Generate!'-nappulan.
-     * @see main.Labyrinth#generateLabyrinth()
      */
     private JButton createGenerateButton() {
         JButton gen = new JButton("Generate!");
@@ -305,11 +312,9 @@ public class Gui implements Runnable {
     }
 
     /**
-     * Luo 'Solve!'-nappulan ja lisää siihen tapahtuman kuuntelijan.
+     * Luo 'Solve!'-nappulan ja lisää siihen tapahtumankuuntelijan.
      *
      * @return Palauttaa 'Solve!'-nappulan.
-     *
-     * @see main.Labyrinth#solveLabyrinth()
      */
     private JButton createSolveButton() {
         JButton solve = new JButton("Solve!");

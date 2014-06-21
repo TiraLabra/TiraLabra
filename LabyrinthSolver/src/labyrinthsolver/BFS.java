@@ -34,8 +34,8 @@ public class BFS extends LabyrinthSolver {
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
      * @see main.Labyrinth#getListOfEdges(int, int[][], int)
-     * @see main.MyQueue
-     * @see main.myList
+     * @see util.MyQueue
+     * @see util.myList
      */
     @Override
     public boolean solveLabyrinth() {
@@ -51,15 +51,12 @@ public class BFS extends LabyrinthSolver {
                 visited[coordinate / width][coordinate % width] = 2;
                 return true;
             }
-            if (visited[coordinate / width][coordinate % width] == 0) {
-                visited[coordinate / width][coordinate % width] = 2;
-                MyList neighbors = labyrinth.getListOfConnectedNeighbors(coordinate, visited, 0);
-                while (!neighbors.empty()) {
-                    queue.enqueue(neighbors.removeByIndex(random.nextInt(neighbors.size())));
-                }
+            visited[coordinate / width][coordinate % width] = 2;
+            MyList neighbors = labyrinth.getListOfConnectedNeighbors(coordinate, visited, 0);
+            while (!neighbors.empty()) {
+                queue.enqueue(neighbors.removeByIndex(random.nextInt(neighbors.size())));
             }
         }
         return false;
     }
-
 }

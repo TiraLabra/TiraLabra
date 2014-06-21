@@ -11,9 +11,23 @@ import util.HeapElement;
  */
 public class AStar extends LabyrinthSolver {
 
+    /**
+     * Algoritmin käyttämä prioriteettikeko.
+     *
+     * @see util.MyPriorityHeap
+     */
     private MyPriorityHeap ph;
+    /**
+     * Labyrintin leveys.
+     */
     private int width;
+    /**
+     * Maalisolun x-koordinaatti.
+     */
     private int goalX;
+    /**
+     * Maalisolun y-koordinaatti.
+     */
     private int goalY;
 
     /**
@@ -69,7 +83,7 @@ public class AStar extends LabyrinthSolver {
      *
      * @param coordinate Nykyinen koordinaatti.
      * @param currentDistance Kuljettu matka.
-     * @see addNeighborsToPriorityHeap
+     * @see labyrinthsolver.AStar#addNeighborsToPriorityHeap(int, int)
      */
     private void findGoal() {
         int coordinate = 0;
@@ -91,7 +105,7 @@ public class AStar extends LabyrinthSolver {
      *
      * @param coordinate Annettu koordinaatti.
      * @param currentDistance Kuljettu matka.
-     * @see heuristic()
+     * @see labyrinthsolver.AStar#heuristic(int)
      */
     private void addNeighborsToPriorityHeap(int coordinate, int currentDistance) {
         MyList neighbors = labyrinth.getListOfConnectedNeighbors(coordinate, visited, 0);

@@ -22,9 +22,9 @@ public class LabyrinthGeneratorTest {
 
     byte[][] generateByteArray(Labyrinth lab) {
         byte[][] array = new byte[lab.getHeight()][lab.getWidth()];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                array[i][j] = lab.getEdges(i * width + j);
+        for (int i = 0; i < lab.getHeight(); i++) {
+            for (int j = 0; j < lab.getWidth(); j++) {
+                array[i][j] = lab.getEdges(i * lab.getWidth() + j);
             }
         }
         return array;

@@ -38,8 +38,8 @@ public class RecursiveBacktracker extends LabyrinthGenerator {
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      * @see main.Labyrinth#getListOfNeighbors(int, int[][], int) 
      * @see main.Labyrinth#addPassage(int, int)
-     * @see main.MyList
-     * @see main.MyStack
+     * @see util.MyList
+     * @see util.MyStack
      */
     @Override
     public void generateLabyrinth() throws Exception {

@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 public class Main {
 
     /**
-     * Ajaa suoritusaikatestejä labyrintin ratkaisu- ja generointialgoritmeille.
+     * Ajaa suoritusaikatestejä labyrintin ratkoja- ja generointialgoritmeille.
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
@@ -24,7 +24,7 @@ public class Main {
     /**
      * Luo alustavan labyrintin ja käynnistää guin
      *
-     * @param args Mainin argumentit.
+     * @param args Komentorivin argumentit.
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
      */

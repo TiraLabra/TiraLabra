@@ -64,7 +64,7 @@ public abstract class LabyrinthSolver {
     }
 
     /**
-     * Labyrintin ratkova metodi.
+     * Labyrintin ratkova metodi, jonka kaikkien aliluokkien on toteutettava.
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
      */

@@ -5,14 +5,14 @@ import labyrinthgenerator.*;
 import labyrinthsolver.*;
 
 /**
- * Suorityskykytestailua.
+ * Luokka suorituskykytesteille.
  *
  * @author Juri Kuronen
  */
 public class RunTimeTesting {
 
     /**
-     * Labyrintti, jolle testit ajetaan.
+     * Labyrintti-olio.
      */
     private final Labyrinth labyrinth;
     /**
@@ -53,8 +53,14 @@ public class RunTimeTesting {
     public void runTests() throws Exception {
         WallFollower wf = new WallFollower();
         int sLength = solvers.length;
+        /*
+         Testit ajetaan kaikille testiko'oille.
+         */
         for (Integer t : tests) {
             labyrinth.updateLabyrinth(t, t);
+            /*
+             Joka testi ajetaan kaikille generoijille.
+             */
             for (LabyrinthGenerator lg : generators) {
                 System.out.println("- - - - - - - - - - - - - - - - - - - - ");
                 labyrinth.setLabyrinthGenerator(lg);
@@ -62,8 +68,14 @@ public class RunTimeTesting {
                 long generationTime = 0;
                 long[] solvingTimes = new long[sLength + 1];
                 long[] exploredCells = new long[sLength + 1];
+                /*
+                 Testejä ajetaan n kappaletta.
+                 */
                 for (int i = 0; i < n; i++) {
                     generationTime += generateAndGetTime();
+                    /*
+                     Joka generoitu labyrintti ratkotaan joka ratkojalla.
+                     */
                     for (int j = 0; j < sLength; j++) {
                         labyrinth.setLabyrinthSolver(solvers[j]);
                         solvingTimes[j] += solveAndGetTime();
@@ -72,18 +84,40 @@ public class RunTimeTesting {
                     labyrinth.setLabyrinthSolver(wf);
                     solvingTimes[sLength] += solveAndGetTime(wf);
                 }
-                lgPrintRoutine(generationTime);
-                System.out.println("");
-                for (int j = 0; j < sLength; j++) {
-                    System.out.print(solvers[j].getName());
-                    lsPrintRoutine(solvingTimes[j], exploredCells[j]);
-                }
-                System.out.print("Wall follower (Optimized)");
-                lsPrintRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
+                /*
+                 Tulostetaan tämän testiko'on tulokset tälle generointialgoritmille.
+                 */
+                printResults(generationTime, solvingTimes, exploredCells, sLength);
             }
         }
     }
 
+    /**
+     * Tulostaa yhden testikoon tulokset yhdelle generointialgoritmille.
+     *
+     * @param generationTime Generointeihin kulunut aika.
+     * @param solvingTimes Ratkomisiin kulunut aika.
+     * @param exploredCells Vieraillut solut.
+     * @param sLength Ratkoja-algoritmien määrä.
+     * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
+     * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
+     */
+    private void printResults(long generationTime, long[] solvingTimes, long[] exploredCells, int sLength) throws Exception {
+        lgPrintRoutine(generationTime);
+        System.out.println("");
+        for (int j = 0; j < sLength; j++) {
+            System.out.print(solvers[j].getName());
+            lsPrintRoutine(solvingTimes[j], exploredCells[j]);
+        }
+        System.out.print("Wall follower (Optimized)");
+        lsPrintRoutine(solvingTimes[sLength], exploredCells[sLength - 1]);
+    }
+
+    /**
+     * Labyrintin generoijat arrayssä.
+     *
+     * @return Palauttaa labyrintin generoijat arrayssä.
+     */
     private LabyrinthGenerator[] getGenerators() {
         LabyrinthGenerator[] lgs = new LabyrinthGenerator[3];
         lgs[0] = new PrimsAlgorithm();
@@ -92,6 +126,11 @@ public class RunTimeTesting {
         return lgs;
     }
 
+    /**
+     * Labyrintin ratkojat arrayssä.
+     *
+     * @return Palauttaa labyrintin ratkojat arrayssä.
+     */
     private LabyrinthSolver[] getSolvers() {
         LabyrinthSolver[] lss = new LabyrinthSolver[4];
         lss[0] = new DFS();
@@ -101,6 +140,11 @@ public class RunTimeTesting {
         return lss;
     }
 
+    /**
+     * Testikoot arrayssa.
+     *
+     * @return Palauttaa testikoot arrayssa.
+     */
     private int[] getTestSizes() {
         int[] sizes = {10, 25, 50, 100, 250, 500};
         return sizes;
@@ -114,8 +158,8 @@ public class RunTimeTesting {
      */
     private void lgPrintRoutine(long time) throws Exception {
         System.out.print(" (" + labyrinth.getWidth() + "x" + labyrinth.getHeight() + ")");
-        time /= n; // Average value.
-        time /= 1000; // As Microseconds
+        time /= n; // Keskiarvo.
+        time /= 1000; // Muunnos mikrosekunneiksi.
         String timeFormat = formatTime(time);
         System.out.println("  ::  Average generation time (n=" + n + "): " + timeFormat);
     }
@@ -124,9 +168,9 @@ public class RunTimeTesting {
      * Tulostusrutiini labyrintinratkomistesteille.
      */
     private void lsPrintRoutine(long time, long exploredCells) {
-        time /= n; // Average value.
-        exploredCells /= n; // Average value.
-        time /= 1000; // As Microseconds
+        exploredCells /= n; // Keskiarvo.
+        time /= n; // Keskiarvo.
+        time /= 1000; // Muunnos mikrosekunneiksi.
         String timeFormat = formatTime(time);
         String exploredCellsFormat = formatNumber(exploredCells);
         System.out.print("  ::  Solution found on average in " + timeFormat);

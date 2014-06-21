@@ -11,7 +11,7 @@ import main.Labyrinth;
 public abstract class LabyrinthGenerator {
 
     /**
-     * Labyrintti, jolle algoritmit ajetaan.
+     * Labyrintti-olio.
      */
     public Labyrinth labyrinth;
     /**
@@ -40,7 +40,7 @@ public abstract class LabyrinthGenerator {
     }
 
     /**
-     * Labyrintin generoiva metodi.
+     * Labyrintin generoiva metodi, jonka kaikkien aliluokkien on toteutettava.
      *
      * @throws java.lang.Exception Labyrintti-luokka heittää poikkeuksen, jos
      * algoritmi yrittää käsitellä labyrintin ulkopuolista koordinaattia.
@@ -50,7 +50,7 @@ public abstract class LabyrinthGenerator {
     /**
      * Tyhjentää labyrintin, jos se ei ole tyhjä.
      *
-     * @see main.Labyrinth
+     * @see main.Labyrinth#updateLabyrinth(int, int)
      */
     public void createEmptyLabyrinthIfNeeded() {
         if (labyrinth.isGenerated()) {
