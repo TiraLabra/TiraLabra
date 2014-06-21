@@ -16,3 +16,5 @@ When the library is linked, then you just have to include the headers to your pr
 ####Documentation
 Documentation is generated using Doxygen. The documentaion is in html format and is available in the `documentation` folder. You have to open the `index.html` file with the browser.
 All working algorithms are documented.
+
+If you believe that the html generated documentation is deprecated, then you can generate it yourself by copying the doxygen executable into the "Code Blocks project" folder and then running `./doxygen`. This will generate folders `html` and `latex` which will contain the newly generated documentation.
