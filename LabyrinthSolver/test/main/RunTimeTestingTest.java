@@ -1,5 +1,8 @@
 package main;
 
+import java.io.File;
+import java.io.IOException;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,10 +14,32 @@ import static org.junit.Assert.*;
 public class RunTimeTestingTest {
 
     RunTimeTesting rtt;
+    static File f;
 
     @Before
     public void setUp() throws Exception {
-        rtt = new RunTimeTesting();
+        rtt = new RunTimeTesting(1);
+        f = new File("suoritusaikaesimerkkeja.txt");
+    }
+
+    @AfterClass
+    public static void removeFile() throws IOException {
+        f.createNewFile();
+        f.delete();
+    }
+
+    @Test
+    public void constructorCreatesFileCorrectly() throws IOException {
+        assertTrue(f.exists());
+        new RunTimeTesting(1);
+        assertTrue(f.exists());
+    }
+
+    @Test
+    public void runTestsWritesFileCorrectly() throws Exception {
+        rtt.runTests();
+        System.out.println(f.length());
+        assertTrue(f.length() != 0);
     }
 
     @Test
