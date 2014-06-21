@@ -33,9 +33,9 @@ public class BFS extends LabyrinthSolver {
      * Jonoa käyttämällä saavutetaan leveyssuuntainen haku.
      *
      * @return Palauttaa true, jos labyrintti ratkaistiin.
-     * @see main.Labyrinth#getListOfEdges(int, int[][], int)
+     * @see main.Labyrinth#getListOfConnectedNeighbors(int, int[][], int)
      * @see util.MyQueue
-     * @see util.myList
+     * @see util.MyList
      */
     @Override
     public boolean solveLabyrinth() {

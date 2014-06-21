@@ -190,7 +190,7 @@ public class Gui implements Runnable {
      *
      * @return Palauttaa menu-valinnan labyrintin kokotietojen asettamiseen.
      *
-     * @see openSetSizeWindow()
+     * @see gui.Gui#openSetSizeWindow()
      */
     private JMenuItem createSetSizeMenuItem() {
         JMenuItem item = new JMenuItem("Set size");

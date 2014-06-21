@@ -304,7 +304,7 @@ public class Labyrinth {
      * osana labyrinttia ja tilassa state.
      *
      * @see util.MyList
-     * @see validCoordinate
+     * @see main.Labyrinth#validCoordinate(int, int, int[][], int)
      */
     public MyList getListOfNeighbors(int coordinate, int[][] visited, int state) {
         MyList<Integer> listOfNeighbours = new MyList(4);

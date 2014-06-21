@@ -101,7 +101,7 @@ public abstract class LabyrinthSolver {
      * reitin mikäli labyrintti on ratkaistu.
      *
      * @return Palauttaa listan reitistä maaliin.
-     * @see findPath(int[][])
+     * @see labyrinthsolver.LabyrinthSolver#findPath(int[][])
      */
     public MyList<Integer> getPath() {
         if (path == null) {

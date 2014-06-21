@@ -56,7 +56,7 @@ public class MyPriorityHeap {
      * alkiolle.
      * @param d Kuljettu matka.
      * @param h Kustannusarvio maaliin.
-     * @see heapify()
+     * @see util.MyPriorityHeap#heapify(int)
      */
     public void insert(int coordinate, int d, int h) {
         int value = d + h;
@@ -86,7 +86,7 @@ public class MyPriorityHeap {
      * sen. Heapify()-apuoperaatiota käytetään kekoehdon ylläpitämiseksi.
      *
      * @return Palauttaa pienimmän arvon omaavan kekoalkion.
-     * @see heapify()
+     * @see util.MyPriorityHeap#heapify(int)
      */
     public HeapElement removeMin() {
         if (empty()) {
