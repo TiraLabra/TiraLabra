@@ -92,7 +92,6 @@ O(1) time and space - the same explanation as above. It only ever takes a bytear
 			a, b, c, d = A, B, C, D = self.__A, self.__B, self.__C, self.__D
 
 			# perform 64 operations
-
 ```
 
 
@@ -100,10 +99,55 @@ O(1) time and space - the same explanation as above. It only ever takes a bytear
 
 ##### F, G, H, I, rotateLeft, R
 
+```
+
+```
+
 ##### createWordArray
 
+
+```
+
+```
+
 ##### pad
+
+```
+
+```
+
 ##### pad64B
+
+```
+
+```
+
+##### splitToBlocks
+
+```
+
+```
+
+##### toBinaryString
+
+```
+	def __toBinaryString(self, string):
+
+		return ''.join("{:08b}".format(byte) for byte in bytearray(string.encode('utf-8')))
+```
+
+Creating a binary string is O(n) time and space. We can see that message is encoded into a UTF-8 bytearray and formatted into a binary representation of the byte. Even though it needs to encode the string into UTF-8, empirically testing we can see that it is actually O(n):
+
+```
+In [11]: print(min(timeit.Timer('tos("a"*100)', setup="import nmd5; m = nmd5.new(); tos=m._NMD5__toBinaryString").repeat(7, 10000)))
+0.6207964479981456
+
+In [12]: print(min(timeit.Timer('tos("a"*1000)', setup="import nmd5; m = nmd5.new(); tos=m._NMD5__toBinaryString").repeat(7, 10000)))
+6.000566751026781
+
+```
+Here the running time increase is tenfold, as well as the message length.
+
 
 
 ### LinkedList class
@@ -117,8 +161,7 @@ def add(self, node):
 			self.tail = node
 		else:
 			self.tail.next = node
-			self.tail = node
-			
+			self.tail = node			
 ```
 
 Only variable assignment is in this method, making it O(1) in time and space complexity.
@@ -143,7 +186,8 @@ If there are any elements in the list, `toString` is in O(n) time iterating all 
 
 
 
-Sources used:
+### Sources
+
 Wikipedia
 [http://en.wikipedia.org/wiki/MD5](http://en.wikipedia.org/wiki/MD5)
 
