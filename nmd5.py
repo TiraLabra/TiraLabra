@@ -29,11 +29,13 @@ class NMD5:
 
 	def copy(self):
 		"""Returns a deep copy of this nmd5 object."""
+
 		return copy.deepcopy(self)
 
 	def hexdigest(self):
 		"""Returns hex string of result. Format each byte of digest 
 		into a hexstring of length 2."""
+
 		return ''.join(["{:02x}".format(byte) for byte in bytearray(self.digest())])
 
 	def digest(self):
