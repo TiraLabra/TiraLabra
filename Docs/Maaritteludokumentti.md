@@ -28,8 +28,12 @@ MD5 is a hash function that generates a hash from a given input (message). After
 	<li>Save result and give a digest</li>
 </ol>
 
-The module will be deployed as a custom importable class or if possible as a Python egg.
+# Implementation goals
 
-The implementation uses a linked list structure for storing the input string.
+This implementation will focus on code clarity and the internals workings on MD5 - speed is not a primary concern. Because Python is a high level language and as such is clearly a lot slower than many other languages.
 
-https://docs.python.org/2/library/md5.html includes the detailed specification.
+With this implementation, data is mostly represented as a string of binary numbers. This helps with the abstraction of the algorithm, but will probably be slower compared to using Python's byte literals for example. 
+
+Mostly the MD5 algorithm is a linear time algorithm, because with increasing message length the running time increases (albeit slowly). A custom linked list structure is used to store all added strings of the NMD5 object.
+
+Like the original `md5` module, this class is meant to be imported into a project as a library, and has a corresponding API to what the original has.

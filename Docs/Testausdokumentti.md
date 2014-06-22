@@ -11,7 +11,19 @@ The module method is verified with a more strict test to create a binary represe
 
 * Padding
 
-Padding is tested so it gives the correct length.
+Padding is tested so it gives the correct length. Overflow cases are extremely likely to happen, but a maximum 64-bit value is returned if it does.
+
+* Splitting blocks
+
+Testing this recursive function is critical to partitioning the message into correct sized blocks.
+
+* Copy testing
+
+Simple test to verify if copying nmd5 objects work.
+
+* Testing against hashlib
+
+Generate a random string to verify that the `nmd5` module works and gives the correct digest and hexdigest.
 
 ### Performance testing
 

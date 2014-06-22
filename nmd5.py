@@ -276,7 +276,7 @@ class NMD5:
 
 		return r & 0xffffffff # Keep r unsigned
 
-## Public methods for module ##
+## Public methods for module
 
 def new(arg=None):
 	"""Create a new nmd5 object"""
