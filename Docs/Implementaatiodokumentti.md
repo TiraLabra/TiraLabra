@@ -10,10 +10,29 @@ The structure of the program is as follows:
 * The public field **digest_size**
 
 
+### Complexity analysis
 
 #### NMD5 class
 
-##### Complexity analysis
+##### digest_size
+
+This is a field with the value `16` and as such is O(1) space and time.
+
+##### update
+
+```
+	def update(self, arg):
+
+		self.__A, self.__B, self.__C, self.__D = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
+		self.__list.add(Node(arg, None))
+		self.__hash(self.__list.toString())
+
+```
+Only three O(1) operations are performed which makes this algorithm O(1) time and space.
+
+##### new, md5, copy
+
+These three do not perfrom any looping, and always only return a new NMD5 object. Thus it has O(1) time and space complexity.
 
 ##### digest
 
@@ -87,17 +106,20 @@ O(1) time and space - the same explanation as above. It only ever takes a bytear
 ##### pad64B
 
 
-#### LinkedList class
+### LinkedList class
 
 ##### add
 
-```	def add(self, node):
+```	
+def add(self, node):
 		if self.root == None:
 			self.root = node
 			self.tail = node
 		else:
 			self.tail.next = node
-			self.tail = node```
+			self.tail = node
+			
+```
 
 Only variable assignment is in this method, making it O(1) in time and space complexity.
 
@@ -117,7 +139,7 @@ Only variable assignment is in this method, making it O(1) in time and space com
 		return s
 ```
 
-If there are any elements in the list, `toString` is clearly in O(n) time iterating all elements. Since a concatenated string is returned O(n) is also the space complexity of `toString`.
+If there are any elements in the list, `toString` is in O(n) time iterating all elements. Since a concatenated string of all elements is returned O(n) is also the space complexity.
 
 
 
