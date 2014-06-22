@@ -19,4 +19,28 @@ TODO: Tähän voisi liittää esimerkkikuvia ohjelman suorittamasta reitinratkai
 
 ##Suorituskykytestaus
 
-Tulossa viimeisellä viikolla. Suunnitelmaa löytyy Suunnitteludokumentti.md-tiedostosta.
+Suorituskykytesta
+
+
+
+#### ArrayListOma
+
+Labtool-palautteessa toivottiin jotain suorituskykytestausta ArrayListOma-luokalle. Testasin tätä hyvin yksinkertaisella int-lukujen lisäämisellä. Mittauksista ei ole yhtä tarkkaa tallennettua dataa kuin AStar-mittauksista, mutta yhteenvetona seuraava. Kestomittaukset ovat jälleen viiden kerran keskiarvoja.
+
+alkukoko 10, määrä 10 000:       8ms       
+alkukoko 1000, määrä 10 000:     7ms
+
+alkukoko 10, määrä 1 000 000:    kesto 29ms
+alkukoko 1000, määrä 1 000 000:  kesto 26ms
+
+alkukoko 10, määrä 10 000 000:   kesto 1646ms
+alkukoko 1000, määrä 10 000 000: kesto 2409ms
+
+Edellisten tulkitsemisena voisi todeta, että pienemmillä syötemäärillä suuri alkukoko suoriutuu hieman nopeammin tehtävästä. Joskin täytyy muistaa, että näin pienillä otoskoilla erot voivat johtua osaltaan myös sattumasta.
+
+Mielenkiintoinen ero tuli 10 miljoonan yksilön lisäyksessä. Siinä suuri alkukoko ilmeisesti aiheuttaa sen, että jossain vaiheessa joudutaan tekemään huonossa kohtaa turhan iso taulukon kopiointi, mistä aiheutuu ylikuormaa verrattuna pienempään. Tästä siis huomaa, että kun ei voida ennalta tietää syötteen kokoa, on hieman sattumasta kiinni, millainen taulukon alkukoko tuottaa tehokkaimpaa lopputulosta.
+
+
+
+
+
