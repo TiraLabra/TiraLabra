@@ -1,4 +1,3 @@
-
 package tietorakenteet;
 
 import java.util.Comparator;
@@ -6,6 +5,8 @@ import java.util.Comparator;
 /**
  * Comparator-tyypin luokka, joka vertailee kahden Noden välistä 
  * kustannusarviota.
+ * Tämä jäi itseasiassa turhaksi, oli käytössä vain alustavassa
+ * testauksessa Javan vakiokaluston kanssa.
  */
 public class NodeComparator implements Comparator<Node> {
     

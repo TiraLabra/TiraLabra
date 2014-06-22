@@ -7,7 +7,10 @@ import java.awt.image.BufferedImage;
  */
 public class Alue {
     
-    //ei ehkä tarvita...
+    /**
+     * Alueen nodet int-arvoina tallennettuna.
+     * Ei välttämättä tarvita, voitaisiin ehkä käyttää tulostukseen tms.
+     */
     private int[][] intit;
     
     /**
@@ -31,6 +34,10 @@ public class Alue {
      */
     private BufferedImage alueenKuva;
     
+    /**
+     * Oletuskonstruktori, joka saa parametrinaan alueen koon.
+     * @param koko 
+     */
     public Alue(int koko) {
         intit = new int[koko][koko];
         nodet = new Node[koko][koko];
@@ -39,6 +46,7 @@ public class Alue {
     
     /**
      * Luo alueen annetun Node-taulukon perusteella.
+     * Tämä on pääasiallisin tapa luoda uusi alue, esim. kuvan tietojen perusteella.
      * @param nodetaulukko 
      */
     public Alue(Node[][] nodetaulukko, int korkeus, int leveys) {
@@ -46,7 +54,6 @@ public class Alue {
         this.korkeus = korkeus;
         this.leveys = leveys;
     }
-    
     
     /**
      * Metodi, joka luo esimerkkitaulukon
