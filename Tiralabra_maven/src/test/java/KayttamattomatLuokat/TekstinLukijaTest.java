@@ -1,0 +1,63 @@
+package KayttamattomatLuokat;
+
+import Tietorakenteet.HajautusTaulu;
+import java.io.FileNotFoundException;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class TekstinLukijaTest {
+    private TekstinLukija lukija;
+    private TekstinLukija lukija2;
+    
+    @Before
+    public void setUp() {
+        this.lukija = new TekstinLukija();
+        try {
+            lukija.lueTiedosto("TekstinLukijaTest.txt");
+        }
+        catch (FileNotFoundException e) {
+        }
+    }
+    
+    @Test
+    public void lopussaTekstiOnTiedostonSisaltamaTeksti() {
+        String teksti = lukija.getTeksti();
+        assertTrue(teksti.equals("Tämä on testi -teksti, mikä luetaan\r\n" +
+                                              "TekstinLukijaTestin\r\n" +
+                                              "kautta."));
+    }
+    
+    @Test
+    public void merkkienEsiintymienMaaraTasmaa() {
+        HajautusTaulu esiintymat = lukija.getEsiintymat();
+        
+        String avain = esiintymat.getArvo("T");
+        assertEquals(3, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo(" ");
+        assertEquals(5, Integer.parseInt(avain));        
+        
+        avain = esiintymat.getArvo("ä");
+        assertEquals(3, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo("\n");
+        assertEquals(2, Integer.parseInt(avain));
+        
+        avain = esiintymat.getArvo("n");
+        assertEquals(4, Integer.parseInt(avain)); 
+    }
+
+    @Test
+    public void merkinLisaaminenKasvattaaSenEsiintymia() {
+        lukija2 = new TekstinLukija();
+
+        lukija2.lisaaMerkki("a");
+        String maara = lukija2.getEsiintymat().getArvo("a");
+        assertEquals(1, Integer.parseInt(maara));
+        
+        lukija2.lisaaMerkki("a");
+        maara = lukija2.getEsiintymat().getArvo("a");
+        assertEquals(2, Integer.parseInt(maara));
+    }
+}

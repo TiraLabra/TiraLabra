@@ -1,0 +1,59 @@
+If it's a text file, for example, it will open in your word-processing program.
+Jos kyseessä on esimerkiksi tekstitiedosto, tiedosto avataan tekstinkäsittelyohjelmassa.
+
+This last file appears as a result because text inside the file matches the search term.
+Viimeinen tiedosto on tulosluettelossa, koska se sisältää etsityn tekstin.
+
+A cookie is a small text file placed on device by a web server.
+Eväste on pieni tekstitiedosto, jonka verkkopalvelin tallentaa laitteeseen.
+
+For example, a text file will open in your word-processing app.
+Esimerkiksi tekstitiedosto aukeaa tekstinkäsittelysovelluksessa.
+
+For example, a text file will open in your word-processing program.
+Esimerkiksi tekstitiedosto aukeaa tekstinkäsittelyohjelmassa.
+
+This example might look like a text file because of the .txt
+Tämä esimerkkitiedosto saattaa näyttää tekstitiedostolta.txt-tiedostotunnisteen
+
+The search looks for text in the file name and contents; and in the file properties, such as in tags.
+Hakutoiminto etsii tekstiä tiedostojen nimistä, sisällöstä ja ominaisuuksista, kuten tunnisteista.
+
+This example might look like a text file, but it's actually an executable file.
+Esimerkissä kuvattu tiedosto saattaa vaikuttaa tekstitiedostolta, vaikka todellisuudessa se on suoritettava tiedosto.
+
+Opens the Documents folder, where you can store and open text files, spreadsheets, presentations, and other kinds of documents.
+Voit avata linkistä Tiedostot-kansion, johon voit tallentaa tekstitiedostoja, laskentataulukkoja, esityksiä ja muita tiedostoja.
+
+The search results are based on text in the file name, text in the file, tags, and other file properties.
+Hakutulokset perustuvat tiedoston nimessä ja itse tiedostossa olevaan tekstiin, tunnisteisiin ja muihin tiedoston ominaisuuksiin.
+
+If you select an e-mail message, text file, or picture, for example, you can see its contents without opening it in a program.
+Jos esimerkiksi valitset sähköpostiviestin, tekstitiedoston tai kuvan, voit tarkastella sen sisältöä avaamatta kohdetta ohjelmassa.
+
+If your recipient's e-mail program doesn't support HTML, the message will appear as plain text with an HTML file attached.
+Jos viestisi vastaanottajan sähköpostiohjelma ei tue HTML-muotoa, viesti näkyy vain teksti -muodossa ja sen liitteenä on HTML-tiedosto.
+
+Opens the Documents library, where you can access and open text files, spreadsheets, presentations, and other kinds of documents.
+Voit avata linkistä tiedostokirjaston, josta voit käyttää ja avata tekstitiedostoja, laskentataulukkoja, esityksiä ja muita tiedostoja.
+
+The Search box finds files based on text in the file name, text within the file, tags, and other common file properties that are attached to the file.
+Etsi-ruutu etsii tiedostoja tarkastamalla tiedoston nimessä ja itse tiedostossa olevan tekstin, tunnisteet ja muut tiedostoon liittyvät yleiset tiedosto-ominaisuudet.
+
+A file is an item that contains information—for example, text or images or music.
+Tiedosto on kohde, joka sisältää tietoja – esimerkiksi tekstiä, kuvia tai musiikkia.
+
+This last file appears as a result because text inside the file matches the search term.
+Viimeinen tiedosto on tulosluettelossa, koska se sisältää etsityn tekstin.
+
+In the text box, type all or part of the file name that you want to play in compact mode.
+Kirjoita tekstiruutuun suppeassa tilassa toistettavan tiedoston nimi tai nimen osa.
+
+Enter the file type in the text box, and then click Add new extension.
+Kirjoita tiedostotyyppi muokkausruutuun ja valitse Lisää uusi tunniste.
+
+For example, to find all of your text, spreadsheet, and presentation files, type Document.
+Voit etsiä esimerkiksi kaikki teksti-, laskentataulukko- ja esitystiedostot kirjoittamalla Tiedosto.
+
+For example, we recommend that you save such files as text files, spreadsheets, and presentations in Documents.
+On esimerkiksi suositeltavaa tallentaa tekstitiedostot, laskentataulukot ja esitykset Tiedostot-kansioon.
