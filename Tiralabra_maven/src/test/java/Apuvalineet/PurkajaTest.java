@@ -71,4 +71,12 @@ public class PurkajaTest {
         polku = ".huff";
         assertEquals("", purkaja.luotavanTiedostonPolku(polku));
     }
+    
+    @Test
+    public void tekstiBinaarina() {
+        String teksti = "8a¤" + (char) 2 + ".?,*)";
+        assertEquals(y+n+y+y+y+n+n+n+y+y+y+y+y+y+n+n+y+n+y+y+n+n+n+n+y+n+y+n+y+n+n+n+y+n+y+n+n+y, 
+                     purkaja.tekstiBinaarina(teksti, 3));
+    
+    }
 }
