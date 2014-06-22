@@ -4,6 +4,7 @@ import tietorakenteet.ArrayListOma;
 
 /**
  * Luokka jolla voi testailla hieman ArrayListOma-luokan suorituskykyä.
+ * Tarkoitettu muokattavaksi kooditasolla ja Netbeansista ajettavaksi.
  */
 public class ArrayListOmaSuorituskyky {
     
