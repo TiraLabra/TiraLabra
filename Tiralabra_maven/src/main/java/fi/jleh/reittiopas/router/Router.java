@@ -23,7 +23,8 @@ import fi.jleh.reittiopas.utils.TimeUtils;
  */
 public class Router {
 
-	private final int LINE_CHANGE_PENALTY = 100;
+	private static final int AVERAGE_SPEED = 17;
+    private final int LINE_CHANGE_PENALTY = 100;
 	private final double WALK_DISTANCE = 100;
 	private final double WALKING_SPEED = 1.5; // In m/s
 	private final double TIME_MODIFIER = 100;
@@ -141,8 +142,8 @@ public class Router {
 			lineChanges.put(station, lineChanges.get(current) + 1);
 		else
 			lineChanges.put(station, lineChanges.get(current));
-		
-		double cost = GeomertyUtils.calculateDistance(current, endStation) * 17 + linePenalty  + BUS_COST;
+
+		double cost = GeomertyUtils.calculateDistance(current, endStation) * AVERAGE_SPEED + linePenalty + timeScore + BUS_COST;
 		
 		costFromStart.put(station, costToStart + lineChanges.get(station) * 50);
 		costToEnd.put(station, cost);
