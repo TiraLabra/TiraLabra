@@ -14,7 +14,7 @@ using namespace std;
     \a haystack and \a needle to use. The \a haystack_length and \a the needle_length
     represent the length of the \a haystack and the \a needle.
 */
-static bool z_algo_compare(const char * haystack, const char * needle, int index_a,
+bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length, int start);
 
 /*!
@@ -41,5 +41,5 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
     \a haystack, \a needle_length is the length of the \a needle, \a start is the the offset index we start the search
     from. The \a start is needed since the z array is dependent on it.
 */
-static void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
+void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
 int haystack_length, int needle_length, int start);

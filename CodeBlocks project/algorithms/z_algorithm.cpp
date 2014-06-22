@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-static bool z_algo_compare(const char * haystack, const char * needle, int index_a,
+bool z_algo_compare(const char * haystack, const char * needle, int index_a,
 int index_b, int haystack_length, int needle_length, int start) {
     char a,b;
     if (index_a >= needle_length) {
@@ -66,7 +66,7 @@ vector<int> z_algo_get_positions(const char * haystack, const char * needle,
     return positions;
  }
 
-static void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
+void extend_right(int &right, int left, int total_length, const char * haystack, const char * needle,
 int haystack_length, int needle_length, int start) {
     for (; right < total_length &&
                 z_algo_compare(haystack, needle,

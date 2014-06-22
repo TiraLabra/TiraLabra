@@ -56,6 +56,10 @@
 		<Unit filename="structures/knuth_morris_pratt.hpp" />
 		<Unit filename="structures/naive_suffix_tree_builder.cpp" />
 		<Unit filename="structures/naive_suffix_tree_builder.hpp" />
+		<Unit filename="structures/suffix_array.cpp" />
+		<Unit filename="structures/suffix_array.hpp" />
+		<Unit filename="structures/suffix_array_buider.cpp" />
+		<Unit filename="structures/suffix_array_builder.hpp" />
 		<Unit filename="structures/suffix_tree.cpp" />
 		<Unit filename="structures/suffix_tree.hpp" />
 		<Unit filename="structures/suffix_tree_builder.hpp" />

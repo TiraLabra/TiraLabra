@@ -44,6 +44,8 @@
 		<Unit filename="naive.hpp" />
 		<Unit filename="rabin_karp_test.cpp" />
 		<Unit filename="rabin_karp_test.hpp" />
+		<Unit filename="suffix_array_test.cpp" />
+		<Unit filename="suffix_array_test.hpp" />
 		<Unit filename="suffix_trie_tests.cpp" />
 		<Unit filename="suffix_trie_tests.hpp" />
 		<Unit filename="test_suite.cpp" />

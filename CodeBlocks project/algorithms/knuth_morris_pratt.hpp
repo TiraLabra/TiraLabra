@@ -13,7 +13,7 @@ using namespace std;
     builds a transition array for the kmp algorithm. No checks are done for the length of the needle. The
     functions is module-private.
 */
-static int * build_transition_array(const char * needle, int needle_length);
+int * build_transition_array(const char * needle, int needle_length);
 
 /*!
     returns a vector which contains all positions of \a needle in \a haystack. You can add an \a upper_limit

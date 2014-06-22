@@ -47,11 +47,11 @@
 	<cstdlib>
 	"../constants.hpp"
 
-1403303117 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
+1403455784 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.cpp
 	"z_algorithm.hpp"
 	<iostream>
 
-1403303232 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+1403455747 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
@@ -76,7 +76,7 @@
 1401654787 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knut_morris_pratt.cpp
 	"knuth_morris_pratt.hpp"
 
-1403308115 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1403455732 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
 	<vector>
@@ -98,7 +98,7 @@
 1402835957 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/naive_suffix_tree_builder.cpp
 	"naive_suffix_tree_builder.hpp"
 
-1402607129 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
+1403456010 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.cpp
 	"suffix_tree.hpp"
 
 1402585240 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/ukkonen_suffix_tree_builder.cpp
@@ -147,4 +147,23 @@
 	<cstring>
 	<string>
 	"suffix_trie.hpp"
+
+1403455508 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.cpp
+	"suffix_array.hpp"
+
+1403455482 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+	<vector>
+
+1403455445 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_buider.cpp
+	"suffix_array_builder.hpp"
+
+1403455289 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp
+	<cstring>
+	<string>
+	"suffix_array.hpp"
+	<cstdlib>
+	<algorithm>
 

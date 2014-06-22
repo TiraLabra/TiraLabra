@@ -8,7 +8,7 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1402841425 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+1403451277 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
 	"algorithms/naive.hpp"
 	"algorithms/rabin_karp.hpp"
 	"algorithms/z_algorithm.hpp"
@@ -18,6 +18,8 @@
 	"structures/suffix_trie.hpp"
 	"structures/suffix_tree.hpp"
 	"structures/suffix_trie_builder.hpp"
+	"structures/suffix_array.hpp"
+	"structures/suffix_array_builder.hpp"
 
 1402053955 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
 	"../constants.hpp"
@@ -51,7 +53,7 @@
 	<cstring>
 	"../../constants.hpp"
 
-1403303232 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+1403455747 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
 	<cstring>
 	<string>
 	<vector>
@@ -108,7 +110,7 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1403308115 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+1403455732 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
 	<cstdlib>
 	<cstring>
 	<vector>
@@ -163,6 +165,30 @@
 	<iostream>
 
 1402841272 /home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_trie_tests.hpp
+	<string>
+	<cstring>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1403455482 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+	<vector>
+
+1403455289 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp
+	<cstring>
+	<string>
+	"suffix_array.hpp"
+	<cstdlib>
+	<algorithm>
+
+1403456190 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.cpp
+	"suffix_array_test.hpp"
+	<iostream>
+
+1403455612 /home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.hpp
 	<string>
 	<cstring>
 	<gtest/gtest.h>
