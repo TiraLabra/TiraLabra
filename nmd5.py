@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from lib.linkedlist import *
+import copy
 
 class NMD5:
 	"""MD5 implementation for strings"""
@@ -10,10 +11,10 @@ class NMD5:
 		self.__C = 0x98BADCFE
 		self.__D = 0x10325476
 
-		self.list = LinkedList(None)
+		self.__list = LinkedList(None)
 		if arg:
-			self.list.add(Node(arg, None))
-			self.__hash(self.list.toString())
+			self.__list.add(Node(arg, None))
+			self.__hash(self.__list.toString())
 		
 		self.digest_size = 16
 
@@ -23,13 +24,12 @@ class NMD5:
 		"""Adds a string to our list and calculates the hash.
 		Note that subsequent updates need to reset the registers."""
 		self.__A, self.__B, self.__C, self.__D = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
-		self.list.add(Node(arg, None))
-		self.__hash(self.list.toString())
+		self.__list.add(Node(arg, None))
+		self.__hash(self.__list.toString())
 
 	def copy(self):
 		"""Returns a deep copy of this nmd5 object."""
 		return copy.deepcopy(self)
-
 
 	def hexdigest(self):
 		"""Returns hex string of result. Format each byte of digest 
