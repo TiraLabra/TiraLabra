@@ -15,3 +15,6 @@ This includes the following methods:
 * md5.digest()
 * md5.hexdigest()
 * md5.copy()
+
+
+https://docs.python.org/2/library/md5.html includes the more detailed module specification.
