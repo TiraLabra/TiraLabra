@@ -13,3 +13,5 @@ Joitain pysäkki-id:tä:
 |1541603| Vuosaari        |
 |2611208| Espoon keskus   |
 |5020553| Lahti           |
+
+Reittien visualisointia voi tarkastella esimerkiksi tällä työkalulla: http://arthur-e.github.io/Wicket/sandbox-gmaps3.html
