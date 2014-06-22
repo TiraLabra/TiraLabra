@@ -189,7 +189,7 @@ class NMD5:
 		return padded
 
 	def __pad64B(self, length):
-		"""Adds a 64-bit representation of the message length to the message"""
+		"""Creates a little-endian 64-bit representation of the message length"""
 		s = bin(length)
 		if len(s) == 9:
 				s = s.replace('b', '')
