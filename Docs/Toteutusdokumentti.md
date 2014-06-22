@@ -50,6 +50,8 @@ Kuvanluvussa kuljettavuusarvojen tulkintaa voisi viilailla paremmaksi. Nyt oli h
 
 Olisi ollut mielenkiintoista tehdä myös esim. fibonacci-toteutus kekoon, ja tehdä suorituskykyvertailuja sen kanssa.
 
+Koodissa olisi voinut kerätä erinäisiä vakioarvoja yhteen paikkaan. 
+
 ## Lähteet
 
 Määrittelydokementissa oli lähteitä, joita käytetty suunnitteluvaiheessa. Tässä listattu lisäksi joitain, jotka olivat apuna toteutusvaiheessa.
