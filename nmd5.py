@@ -217,8 +217,6 @@ class NMD5:
 		need to put the length and 0 last."""
 
 		message = self.__splitToBlocks(message, 32)
-		totalBytes = 0
-		totalWords = 0
 		wordArray = [0] * 16
 
 		wordIndex = 0
@@ -232,7 +230,6 @@ class NMD5:
 				tempByte = tempByte | int(byte, 2) << powers
 				powers += 8
 				wordArray[wordIndex] = tempByte
-				totalBytes += 1
 			
 			wordIndex += 1
 			powers = 0
