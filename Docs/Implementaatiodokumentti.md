@@ -6,7 +6,7 @@ The structure of the program is as follows:
 * The private class methods **hash()**, **functions FGHI**, **toBinaryString()**, **createWordArray()**, **pad()**, **pad64B()**, **splitToBlocks()**
 * The public class methods **update()**, **digest()**, **copy()**, **hexdigest()**
 * The public field **digest_size**
-
+* The linked list methods **add**, **toString**
 
 ### Complexity analysis
 
