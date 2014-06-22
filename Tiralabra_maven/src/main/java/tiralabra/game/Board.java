@@ -94,6 +94,9 @@ public class Board {
         return board.length;
     }
 
+    /**
+     * 
+     */
     public Board() {
         initalizeBoard();
     }
@@ -209,8 +212,8 @@ public class Board {
      */
     private int countPieces(Player player) {
         int count = 0;
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length; x++) {
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
                 if (board[y][x] == player) {
                     count++;
                 }
@@ -244,7 +247,7 @@ public class Board {
      * @param undoable whether the change is added to the stack of operations
      * for undoing.
      */
-    public void setTile(int x, int y, Player player, boolean undoable) {
+    private void setTile(int x, int y, Player player, boolean undoable) {
         if (getTile(x, y) == player) {
             return;
         }

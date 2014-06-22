@@ -13,11 +13,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import tiralabra.game.Board;
-import tiralabra.game.Player;
 import tiralabra.game.ai.AI.Move;
 import tiralabra.game.ai.AI.Strategy;
 import tiralabra.utilities.ArrayList;
-import tiralabra.utilities.BoardUtilities;
 import tiralabra.utilities.ZobristHash;
 
 /**
@@ -39,12 +37,12 @@ public class AITest {
 
     @Test
     public void searchDoesntPlaceOrRemoveAnyPiecesOnTheBoard() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             BigInteger originalHash = board.getHash();
             
             long move = ai.move();
 
-            assertEquals("Searching for a move should leave the board unchanged.", originalHash, board.getHash());
+            assertEquals("Searching for a move should leave the board unchanged!", originalHash, board.getHash());
 
             board.placeTile(move);
         }
@@ -52,22 +50,15 @@ public class AITest {
     
     @Test
     public void findingLegalMovesFindsMoves() {
-        assertFalse(ai.getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, board.playerInTurn()).isEmpty());
+        assertFalse(ai.getLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, board.playerInTurn()).isEmpty());
     }
 
     @Test
     public void allFoundLegalMovesAreLegal() {
-        ArrayList<Move> moves = ai.getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, board.playerInTurn());
+        ArrayList<Move> moves = ai.getLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, board.playerInTurn());
         
         for (Move move : moves) {
             assertTrue(board.canPlace(move.x, move.y, board.playerInTurn()));
-        }
-    }
-    
-    @Test
-    public void legalMovesFindingProcessingTimeTest() {
-        for (int i = 0; i < 10; i++) {
-            
         }
     }
     

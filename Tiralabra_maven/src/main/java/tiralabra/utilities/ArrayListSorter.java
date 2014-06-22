@@ -5,15 +5,23 @@
  */
 package tiralabra.utilities;
 
-import java.util.Arrays;
 import java.util.ListIterator;
 
 /**
+ * Sorts objects of an ArrayList by using compareTo() - method.
  *
  * @author atte
  */
 public class ArrayListSorter {
 
+    /**
+     * Sorts the given ArrayList using merge sort. The objects are set in place
+     * using the ListIterator class. The objects that the ArrayList holds must
+     * implement the Comparable class.
+     *
+     * @param <T>
+     * @param list
+     */
     public static <T extends Comparable<? super T>> void sort(ArrayList<T> list) {
         ArrayList<T> result = mergeSort(list);
         ListIterator<T> it = list.listIterator();

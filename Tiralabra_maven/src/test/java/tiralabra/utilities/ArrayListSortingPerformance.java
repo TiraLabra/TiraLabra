@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.performance;
+package tiralabra.utilities;
 
 import java.util.Random;
-import tiralabra.utilities.ArrayList;
-import tiralabra.utilities.ArrayListSorter;
 
 /**
  *
  * @author atte
  */
-public class SortingPerformance {
+public class ArrayListSortingPerformance {
 
     /**
      * @param args the command line arguments

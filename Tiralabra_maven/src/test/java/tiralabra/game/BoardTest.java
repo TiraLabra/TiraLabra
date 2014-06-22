@@ -209,8 +209,11 @@ public class BoardTest {
 
         for (int i = 0; i < 40; i++) {
             assertEquals(player, board.playerInTurn());
+            long move = ai.selectRandomMove(board.playerInTurn());
 
-            board.placeTile(ai.selectRandomMove(board.playerInTurn()));
+            if (move == -1) board.pass();
+            else board.placeTile(move);
+            
             player = Player.opposing(player);
         }
     }
@@ -219,10 +222,31 @@ public class BoardTest {
     public void incrementalHashesWork() {
         ZobristHash hasher = board.getHasher();
         for (int i = 0; i < 40; i++) {
-            board.placeTile(ai.selectRandomMove(board.playerInTurn()));
+            long move = ai.selectRandomMove(board.playerInTurn());
+            
+            if (move == -1) board.pass();
+            else board.placeTile(move);
 
             BigInteger excepted = hasher.hash(board.getBoard());
             assertEquals(excepted, board.getHash());
+        }
+    }
+
+    @Test
+    public void countingPiecesWorks() {
+        AI ai = new AI(board);
+        assertEquals(4, board.getNumberOfPieces());
+        int i = 0;
+        while (!board.gameOver()) {
+            assertEquals(4 + i, board.getNumberOfPieces());
+
+            long move = ai.selectRandomMove(board.playerInTurn());
+            if (move == - 1) {
+                board.pass();
+            } else {
+                board.placeTile(move);
+                i++;
+            }
         }
     }
 

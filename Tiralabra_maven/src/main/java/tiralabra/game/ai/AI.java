@@ -71,7 +71,7 @@ public class AI {
     /**
      * Enumerable for strategy.
      */
-    public enum Strategy {
+    public static enum Strategy {
 
         MAXIMIZEVALUE, MAXIMIZEPIECES
     }
@@ -84,7 +84,7 @@ public class AI {
      * A table that is used to store the hypothetical value of holding any one
      * point.
      */
-    private static final int[][] pieceValues = new int[][]{{65, -3, 6, 4, 4, 6, -3, 65},
+    public static final int[][] PIECEVALUES = new int[][]{{65, -3, 6, 4, 4, 6, -3, 65},
     {-3, -29, 1, 1, 1, 3, -29, -3},
     {6, 3, 5, 3, 3, 5, 3, 6},
     {4, 1, 3, 1, 1, 3, 1, 4},
@@ -92,6 +92,10 @@ public class AI {
     {6, 3, 5, 3, 3, 5, 3, 6},
     {-3, -29, 3, 1, 1, 3, -29, -3},
     {65, -3, 6, 4, 4, 6, -3, 65}};
+    /**
+     * Search to what depth.
+     */
+    private static final int SEARCHDEPTH = 8;
 
     /**
      *
@@ -103,7 +107,7 @@ public class AI {
 
     /**
      * Searches for the most optimal move by using alpha-beta-pruning. If the
-     * game is in the beginning, choose a random move to avoid having the same
+     * it's the first 2 turns, choose a random move to avoid having the same
      * game play out every time.
      *
      * @return move as a long value
@@ -114,19 +118,26 @@ public class AI {
         }
 
         Move move = new Move(-1, -1, 0);
-        search(move, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true, determineStrategy(), true, board.playerInTurn());
+        search(move, SEARCHDEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true, determineStrategy(), board.playerInTurn());
 
         return Board.point(move.x, move.y);
     }
 
     /**
-     * Randomly chooses a move from all the available moves and return
-     * @param playerInTurn
-     * @return
+     * Randomly chooses a move from all the legal moves and returns it.
+     *
+     * @param turn
+     * @return coordinates as long. If the move was a pass return -1 (should not
+     * happen normally as this method is only called for the first 2 turns, so
+     * this is for testing)
      */
-    public long selectRandomMove(Player playerInTurn) {
-        ArrayList<Move> moves = getAllLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, playerInTurn);
+    public long selectRandomMove(Player turn) {
+        ArrayList<Move> moves = getLegalMovesInOrder(Strategy.MAXIMIZEPIECES, false, turn);
         Move move = moves.get(new Random().nextInt(moves.size()));
+        if (move.pass) {
+            return -1;
+        }
+
         return Board.point(move.x, move.y);
     }
 
@@ -163,20 +174,18 @@ public class AI {
      * @param beta
      * @param max maximizing player or minimizing player
      * @param strategy
-     * @param orderMoves Whether moves should be ordered by conducting a 2-depth
-     * search. Used to avoid stack overflow.
-     * @param playerInTurn
+     * @param turn
      * @return the alpha or beta value of this node.
      */
-    public int search(Move move, int depth, int alpha, int beta, boolean max, Strategy strategy, boolean orderMoves, Player playerInTurn) {
+    public int search(Move move, int depth, int alpha, int beta, boolean max, Strategy strategy, Player turn) {
         //Reached maximum depth or end of the game, return value of the board.
         if (depth == 0 || board.gameOver()) {
-            return boardValue(strategy, playerInTurn);
+            return boardValue(strategy, turn);
         }
 
-        ArrayList<Move> moves = getAllLegalMovesInOrder(strategy, orderMoves, playerInTurn);
+        ArrayList<Move> moves = getLegalMovesInOrder(strategy, (depth == SEARCHDEPTH), turn);
 
-        return prune(moves, depth, alpha, beta, max, strategy, move, playerInTurn);
+        return prune(moves, depth, alpha, beta, max, strategy, move, turn);
     }
 
     /**
@@ -193,14 +202,14 @@ public class AI {
      * @param move
      * @return
      */
-    private int prune(ArrayList<Move> moves, int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Player playerInTurn) {
+    private int prune(ArrayList<Move> moves, int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Player turn) {
         for (Move node : moves) {
             placeMove(node);
 
             if (max) {
-                alpha = maximizingPlayer(depth, alpha, beta, max, strategy, move, node, playerInTurn);
+                alpha = maximizingPlayer(depth, alpha, beta, max, strategy, move, node, turn);
             } else {
-                beta = minimizingPlayer(depth, alpha, beta, max, strategy, move, node, playerInTurn);
+                beta = minimizingPlayer(depth, alpha, beta, max, strategy, move, node, turn);
             }
 
             board.undo();
@@ -244,8 +253,8 @@ public class AI {
      * @param child
      * @return
      */
-    private int minimizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player playerInTurn) {
-        int newBeta = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false, playerInTurn);
+    private int minimizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player turn) {
+        int newBeta = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, turn);
 
         if (newBeta < beta) {
             beta = newBeta;
@@ -268,8 +277,8 @@ public class AI {
      * @param node
      * @return
      */
-    private int maximizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player playerInTurn) {
-        int newAlpha = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, false, playerInTurn);
+    private int maximizingPlayer(int depth, int alpha, int beta, boolean max, Strategy strategy, Move move, Move node, Player turn) {
+        int newAlpha = search(new Move(-1, -1, 0), depth - 1, alpha, beta, !max, strategy, turn);
 
         if (newAlpha > alpha) {
             alpha = newAlpha;
@@ -284,20 +293,17 @@ public class AI {
      * search.
      *
      * @param strategy
-     * @param orderMoves Whether moves should be ordered with a 2-depth search
-     * or not just ordered by pieces flipped. Prevents stack overflow.
+     * @param search Whether moves should be ordered with a 2-depth search or
+     * not just ordered by pieces flipped. Prevents stack overflow.
+     * @param turn
      * @return moves
      */
-    public ArrayList<Move> getAllLegalMovesInOrder(Strategy strategy, boolean orderMoves, Player playerInTurn) {
+    public ArrayList<Move> getLegalMovesInOrder(Strategy strategy, boolean search, Player turn) {
         ArrayList<Move> moves = new ArrayList<>();
 
-        for (int y = 0; y < board.height(); y++) {
-            for (int x = 0; x < board.width(); x++) {
-                int flips = board.tryTile(x, y);
-                addMove(orderMoves, x, y, strategy, flips, moves, playerInTurn);
-            }
-        }
+        addAllMoves(search, strategy, moves, turn);
 
+        //No moves found, add a pass.
         if (moves.isEmpty()) {
             moves.add(new Move(true));
         }
@@ -308,19 +314,37 @@ public class AI {
     }
 
     /**
+     * Tries placing a piece at each coordinate in the board, also adding them
+     * to the list of moves.
+     *
+     * @param search
+     * @param strategy
+     * @param moves
+     * @param turn
+     */
+    private void addAllMoves(boolean search, Strategy strategy, ArrayList<Move> moves, Player turn) {
+        for (int y = 0; y < board.height(); y++) {
+            for (int x = 0; x < board.width(); x++) {
+                int flips = board.tryTile(x, y);
+                addMove(search, x, y, strategy, flips, moves, turn);
+            }
+        }
+    }
+
+    /**
      * Adds the move to the list of legal moves if the move flips 1 or more
      * pieces.
      *
-     * @param orderMoves
+     * @param search
      * @param x
      * @param y
      * @param strategy
      * @param flips
      * @param moves
      */
-    private void addMove(boolean orderMoves, int x, int y, Strategy strategy, int flips, ArrayList<Move> moves, Player playerInTurn) {
+    private void addMove(boolean search, int x, int y, Strategy strategy, int flips, ArrayList<Move> moves, Player turn) {
         if (flips > 0) {
-            int value = determineValue(orderMoves, x, y, strategy, flips, playerInTurn);
+            int value = determineValueOfPlacingMove(search, x, y, strategy, flips, turn);
             Move move = new Move(x, y, value);
             moves.add(move);
         }
@@ -328,20 +352,22 @@ public class AI {
 
     /**
      * Determines the value of a given move by using a 2-depth search to find
-     * the best move by looking ahead 2 turns.
+     * the best move by looking ahead 2 turns if search is true. Else, just
+     * return number of flipped pieces as the value.
      *
-     * @param orderMoves if false, just return the number of flips as a value.
+     * @param search if false, just return the number of flips as a value.
      * @param x
      * @param y
      * @param strategy
      * @param flips
      * @return
      */
-    private int determineValue(boolean orderMoves, int x, int y, Strategy strategy, int flips, Player playerInTurn) {
+    private int determineValueOfPlacingMove(boolean search, int x, int y, Strategy strategy, int flips, Player turn) {
         int value = 0;
-        if (orderMoves) {
+
+        if (search) {
             board.placeTile(x, y);
-            value = search(new Move(0, 0, 0), 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, false, playerInTurn);
+            value = search(new Move(0, 0, 0), 2, Integer.MIN_VALUE, Integer.MAX_VALUE, true, strategy, turn);
             board.undo();
         } else {
             value = flips;
@@ -355,18 +381,18 @@ public class AI {
      * determined value of held pieces.
      *
      * @param strategy
-     * @param playerInTurn
+     * @param turn
      * @return value of board.
      */
-    public int boardValue(Strategy strategy, Player playerInTurn) {
+    public int boardValue(Strategy strategy, Player turn) {
         int pieceDifference = board.blackPieces() - board.whitePieces();
-        if (board.playerInTurn() == Player.WHITE) {
+        if (turn == Player.WHITE) {
             pieceDifference = -pieceDifference;
         }
 
         switch (strategy) {
             case MAXIMIZEVALUE:
-                return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld(playerInTurn);
+                return pieceDifference + calculateValueOfBoardBasedOnPiecesHeld(turn);
             default:
                 return pieceDifference;
         }
@@ -376,19 +402,19 @@ public class AI {
      * Calculates value of the current board based on the pieces the given
      * player and their opponent hold.
      *
-     * @param playerInTurn
+     * @param turn
      * @return value of a board.
      */
-    public int calculateValueOfBoardBasedOnPiecesHeld(Player playerInTurn) {
+    public int calculateValueOfBoardBasedOnPiecesHeld(Player turn) {
         int heuristic = 0;
         for (int y = 0; y < board.height(); y++) {
             for (int x = 0; x < board.width(); x++) {
                 int value = 0;
 
                 if (board.getTile(x, y) != Player.NONE) {
-                    value = pieceValues[y][x] + around(x, y);
+                    value = PIECEVALUES[y][x] + around(x, y);
                 }
-                if (board.getTile(x, y) == Player.opposing(playerInTurn)) {
+                if (board.getTile(x, y) == Player.opposing(turn)) {
                     value = -value;
                 }
 

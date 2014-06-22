@@ -5,10 +5,7 @@
  */
 package tiralabra.utilities;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.ListIterator;
-import tiralabra.game.ai.AI;
 
 /**
  * Implementation of list data structure, stored in an array.
@@ -18,10 +15,17 @@ import tiralabra.game.ai.AI;
  */
 public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 
+    /**
+     * 
+     */
     public ArrayList() {
         super();
     }
 
+    /**
+     * 
+     * @param initialCapacity 
+     */
     public ArrayList(int initialCapacity) {
         super(initialCapacity);
     }
