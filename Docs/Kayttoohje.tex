@@ -1,0 +1,104 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.1 (25/3/14)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage[finnish]{babel} %ääkköset
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Käyttöohje: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
+
+\author{Markus \textsc{Kaukonen} % Author name
+}
+
+\date{\today} % Date for the report
+
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+\hspace{1cm} \texttt{email: markus.kaukonen@iki.fi, opiskelijanumero: 010974524}
+
+\newpage
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+
+\section{Käyttöohje}
+Ohjelmaa vaatii toimiakseen pythonin, uudehkon scipy: ja numpy:n sekä
+matplotlibin (http://www.scipy.org/). \\
+
+Testiversion voi käynnistää hakemistosta 'TiraLabra/Tiralabra/test'
+komennolla '../src/vertaile\_nopeuksia.py'. Toteutusdokumentissä
+esitetyt tulokset on saatu ajamalla tuo ohjelma.  \\
+
+Ohjelma lukee syötteet tiedostoista 'alkuarvot.txt\_5x5x0',
+'alkuarvot.txt\_10x10x0' ja 'alkuarvot.txt\_16x16x0'.
+Esimerkiksi 'alkuarvot.txt\_10x10x0' näyttää seuraavalta:\\
+\begin{small}
+\begin{lstlisting}[frame=single]  % Start your code-block
+
+1e4     #mylambda
+1e6     #SD or MC max iter
+1e-2    #tolerance for energy convergence
+100.0   #temperature [K] for MC
+1e-4    #density chance for functional gradient (SD only)
+1e-1    #density chance for MC
+0.01    #initial step for line minimization in SD
+10      #number of grid points in x
+10      #number of grid points in y
+0       #number of grid points in z (0==2d case, no this dimension)
+4.0     #total electron charge (always positive)
+3       #number of nuclei
+2 2 0 1.0 #grid positin of a nucleus and its charge (always positive)
+2 4 0 1.0 #grid positin of a nucleus and its charge (always positive)
+8 7 0 2.0 #grid positin of a nucleus and its charge (always positive)
+\end{lstlisting}
+\end{small}
+Ohjelma tuottaa matplotlib kuvan konvergoituneesta elektronitiheydestä. 
+
+%----------------------------------------------------------------------------------------
+
+\section{Javadocia vastaava dokumentaatio}
+Javadocia vastaava dokumentaatio on toteutettu Sphinx:illä.  Se
+käynnistyy selaimella esim. komennolla 'firefox
+TiraLabra/Docs/html/index.html'
+\end{document}

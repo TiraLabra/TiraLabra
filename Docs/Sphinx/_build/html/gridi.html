@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gridi Module &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">tira 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-gridi">
+<span id="gridi-module"></span><h1>gridi Module<a class="headerlink" href="#module-gridi" title="Permalink to this headline">¶</a></h1>
+<p>Density functional theory (DFT) without orbitals.
+In this module we define a computational grids and some of its functions</p>
+<dl class="class">
+<dt id="gridi.Gridi">
+<em class="property">class </em><tt class="descclassname">gridi.</tt><tt class="descname">Gridi</tt><big>(</big><em>nx=20</em>, <em>ny=20</em>, <em>nz=0</em>, <em>h=0.1</em>, <em>init_value=0.0</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Laskentagridiä esittävä luokka</p>
+<blockquote>
+<div><blockquote>
+<div><p>Parametrit:</p>
+<dl class="docutils">
+<dt>nx <span class="classifier-delimiter">:</span> <span class="classifier">int </span></dt>
+<dd>number of grid points in x direction</dd>
+<dt>ny <span class="classifier-delimiter">:</span> <span class="classifier">int </span></dt>
+<dd>number of grid points in y direction</dd>
+<dt>nz <span class="classifier-delimiter">:</span> <span class="classifier">int </span></dt>
+<dd><blockquote class="first">
+<div>number of grid points in z direction</div></blockquote>
+<dl class="last docutils">
+<dt>h <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>grid spacing (in atomic units)</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>init_value <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Alkuarvaus jossa sama arvo on jokaisessa gridipisteessä.
+Summa gridipisteiden arvoista kerrottuna simulaatio laatikon 
+tilavuudella antaa esim. elektronien lukumäärän.</dd>
+<dt>mylambda: float</dt>
+<dd>Penalty (rangaistus) funktion painokerroin. Mitä suurempi tämä on 
+sitä paremmin elektronien lukumäärä säilyy SD minimoinnissa.</dd>
+<dt>n_iter: montako MC tai SD iteraatiota korkeintaan tehdään.</dt>
+<dd><dl class="first last docutils">
+<dt>tol: float</dt>
+<dd>Kokonaisenergian konvergenssikriteeri</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>temperature: float</dt>
+<dd>Systeemin lämpötila (K), relevantti vain MC laskuissa.</dd>
+<dt>tiheydenmuutos: float</dt>
+<dd>Tiheyden muutos funktionaaliderivaattaa otettaessa</dd>
+<dt>d_rho <span class="classifier-delimiter">:</span> <span class="classifier">float </span></dt>
+<dd><blockquote class="first">
+<div>Tiheyden muutos monte carlossa</div></blockquote>
+<dl class="last docutils">
+<dt>askel:  float</dt>
+<dd>Alkuaskel SD minimoinnissa.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="gridi.Gridi.get_askel">
+<tt class="descname">get_askel</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_askel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_askel" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetetaan SD alku askel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_d_rho">
+<tt class="descname">get_d_rho</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_d_rho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_d_rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetetaan d_rho (monte carlo tiheyden muutos gridipisteessä)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_grid_step">
+<tt class="descname">get_grid_step</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_grid_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_grid_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>saadaan gridiväli atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_mylambda">
+<tt class="descname">get_mylambda</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_mylambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_mylambda" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan rangaistusparametri mylambda</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_n_iter">
+<tt class="descname">get_n_iter</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_n_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_n_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan SD or MC max iteraation max määrä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_number_of_boxes">
+<tt class="descname">get_number_of_boxes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_number_of_boxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_number_of_boxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>lasketaan montako laatikkoa laskenta-alueessa on</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_number_of_electrons">
+<tt class="descname">get_number_of_electrons</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_number_of_electrons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_number_of_electrons" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan kokonaiselektronimäärä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_sisapisteet">
+<tt class="descname">get_sisapisteet</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_sisapisteet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_sisapisteet" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan gridi jossa on vain sisäpisteet</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_sisapisteiden_lkm">
+<tt class="descname">get_sisapisteiden_lkm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_sisapisteiden_lkm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_sisapisteiden_lkm" title="Permalink to this definition">¶</a></dt>
+<dd><p>lasketaan montako sisäpistettä gridissä on
+esim 5x5x5 gridissä on 3x3x3 sisäpistettä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_summa_mennyt">
+<tt class="descname">get_summa_mennyt</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_summa_mennyt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_summa_mennyt" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan aiemmin laskettu elektronien lukumäärä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_summa_nykyinen">
+<tt class="descname">get_summa_nykyinen</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_summa_nykyinen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_summa_nykyinen" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan elektronien nykyinen lukumäärä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_temperature">
+<tt class="descname">get_temperature</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetetaan MC lämpötila</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_tiheydenmuutos">
+<tt class="descname">get_tiheydenmuutos</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_tiheydenmuutos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_tiheydenmuutos" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetetaan tiheydenmuutos funktionaaliderivaatassa</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_tol">
+<tt class="descname">get_tol</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_tol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan energian konvergenssikriteeri</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_volume">
+<tt class="descname">get_volume</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>lasketaan laskenta-alueen tilavuus</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_volume_of_a_box">
+<tt class="descname">get_volume_of_a_box</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_volume_of_a_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_volume_of_a_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>laskentaan yhden laskentakuution tilavuus</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.get_xy">
+<tt class="descname">get_xy</tt><big>(</big><em>i=0</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.get_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.get_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>otetaan i:s xy taso 3d matriisista esim. piirtoa varten</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.maxx">
+<tt class="descname">maxx</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.maxx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.maxx" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin maksimi x arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.maxy">
+<tt class="descname">maxy</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.maxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.maxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin maksimi y arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.maxz">
+<tt class="descname">maxz</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.maxz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.maxz" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin maksimi z arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.minx">
+<tt class="descname">minx</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.minx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.minx" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin minimi x arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.miny">
+<tt class="descname">miny</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.miny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.miny" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin minimi y arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.minz">
+<tt class="descname">minz</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.minz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.minz" title="Permalink to this definition">¶</a></dt>
+<dd><p>gridin minimi z arvo reaaliavaruudessa atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_askel">
+<tt class="descname">set_askel</tt><big>(</big><em>askel</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_askel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_askel" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan SD alku askel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_d_rho">
+<tt class="descname">set_d_rho</tt><big>(</big><em>d_rho</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_d_rho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_d_rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan d_rho monte carlossa
+(monte carlo tiheyden muutos gridipisteessä)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_mylambda">
+<tt class="descname">set_mylambda</tt><big>(</big><em>mylambda</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_mylambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_mylambda" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan rangaistusparametri mylambda</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_n_iter">
+<tt class="descname">set_n_iter</tt><big>(</big><em>n_iter</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_n_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_n_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>SD or MC max iteraation max määrä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_sisapisteet">
+<tt class="descname">set_sisapisteet</tt><big>(</big><em>gridi</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_sisapisteet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_sisapisteet" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan gridin sisäpisteiden arvot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_summa">
+<tt class="descname">set_summa</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_summa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_summa" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan elektronien lukumäärä</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_temperature">
+<tt class="descname">set_temperature</tt><big>(</big><em>temperature</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan MC lämpötila</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_tiheydenmuutos">
+<tt class="descname">set_tiheydenmuutos</tt><big>(</big><em>tiheydenmuutos</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_tiheydenmuutos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_tiheydenmuutos" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan tiheydenmuutos funktionaaliderivaatassa</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.set_tol">
+<tt class="descname">set_tol</tt><big>(</big><em>tol</em><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.set_tol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.set_tol" title="Permalink to this definition">¶</a></dt>
+<dd><p>asetetaan energian konvergenssikriteeri</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gridi.Gridi.to_1d_list">
+<tt class="descname">to_1d_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gridi.html#Gridi.to_1d_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gridi.Gridi.to_1d_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>tehdään 3d gridistä 1d lista</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gridi.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">tira 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

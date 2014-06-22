@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gridi &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gridi</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Density functional theory (DFT) without orbitals.</span>
+<span class="sd">In this module we define a computational grids and some of its functions</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="viewcode-block" id="Gridi"><a class="viewcode-back" href="../gridi.html#gridi.Gridi">[docs]</a><span class="k">class</span> <span class="nc">Gridi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Laskentagridiä esittävä luokka</span>
+<span class="sd">    </span>
+<span class="sd">    Parametrit:</span>
+<span class="sd">    </span>
+<span class="sd">    nx : int </span>
+<span class="sd">         number of grid points in x direction</span>
+<span class="sd">    ny : int </span>
+<span class="sd">         number of grid points in y direction</span>
+<span class="sd">    nz : int </span>
+<span class="sd">         number of grid points in z direction</span>
+<span class="sd">     h : float</span>
+<span class="sd">         grid spacing (in atomic units)</span>
+<span class="sd"> init_value : float</span>
+<span class="sd">         Alkuarvaus jossa sama arvo on jokaisessa gridipisteessä.</span>
+<span class="sd">         Summa gridipisteiden arvoista kerrottuna simulaatio laatikon </span>
+<span class="sd">         tilavuudella antaa esim. elektronien lukumäärän.</span>
+<span class="sd"> mylambda: float</span>
+<span class="sd">         Penalty (rangaistus) funktion painokerroin. Mitä suurempi tämä on </span>
+<span class="sd">         sitä paremmin elektronien lukumäärä säilyy SD minimoinnissa.</span>
+<span class="sd"> n_iter: montako MC tai SD iteraatiota korkeintaan tehdään.</span>
+<span class="sd">    tol: float</span>
+<span class="sd">         Kokonaisenergian konvergenssikriteeri</span>
+<span class="sd">temperature: float</span>
+<span class="sd">         Systeemin lämpötila (K), relevantti vain MC laskuissa.</span>
+<span class="sd">tiheydenmuutos: float</span>
+<span class="sd">         Tiheyden muutos funktionaaliderivaattaa otettaessa</span>
+<span class="sd">d_rho  : float </span>
+<span class="sd">         Tiheyden muutos monte carlossa</span>
+<span class="sd">   askel:  float</span>
+<span class="sd">         Alkuaskel SD minimoinnissa.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">nz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">init_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="n">ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="n">nz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>         
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylambda</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tiheydenmuutos</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_rho</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">askel</span> <span class="o">=</span> <span class="bp">None</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">summa</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">twodx</span> <span class="o">=</span> <span class="bp">False</span><span class="p">;</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span> <span class="o">=</span> <span class="bp">False</span><span class="p">;</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodz</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nz</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="c">#twodz</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">twodz</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c"># zero boundary condition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">ny</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="c">#twody</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">twody</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nz</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c"># zero boundary condition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">nx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="c">#twodx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">twodx</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="p">,</span><span class="n">nz</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c"># zero boundary condition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c">#3d</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">,</span><span class="n">nz</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c"># zero boundary condition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span>
+
+
+        <span class="c">#print &quot;grid&quot;, self.gridi.shape</span>
+        <span class="c">#print self.get_number_of_boxes()</span>
+
+<div class="viewcode-block" id="Gridi.set_mylambda"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_mylambda">[docs]</a>    <span class="k">def</span> <span class="nf">set_mylambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mylambda</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan rangaistusparametri mylambda &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylambda</span> <span class="o">=</span> <span class="n">mylambda</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_n_iter"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_n_iter">[docs]</a>    <span class="k">def</span> <span class="nf">set_n_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_iter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; SD or MC max iteraation max määrä &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">n_iter</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_tol"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_tol">[docs]</a>    <span class="k">def</span> <span class="nf">set_tol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan energian konvergenssikriteeri  &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_temperature"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">set_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan MC lämpötila &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_tiheydenmuutos"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_tiheydenmuutos">[docs]</a>    <span class="k">def</span> <span class="nf">set_tiheydenmuutos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tiheydenmuutos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan tiheydenmuutos funktionaaliderivaatassa&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tiheydenmuutos</span> <span class="o">=</span> <span class="n">tiheydenmuutos</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_d_rho"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_d_rho">[docs]</a>    <span class="k">def</span> <span class="nf">set_d_rho</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_rho</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan d_rho monte carlossa</span>
+<span class="sd">        (monte carlo tiheyden muutos gridipisteessä)&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_rho</span> <span class="o">=</span> <span class="n">d_rho</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_askel"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_askel">[docs]</a>    <span class="k">def</span> <span class="nf">set_askel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">askel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan SD alku askel &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">askel</span> <span class="o">=</span> <span class="n">askel</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_mylambda"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_mylambda">[docs]</a>    <span class="k">def</span> <span class="nf">get_mylambda</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan rangaistusparametri mylambda &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mylambda</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_n_iter"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_n_iter">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan SD or MC max iteraation max määrä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_tol"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_tol">[docs]</a>    <span class="k">def</span> <span class="nf">get_tol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan energian konvergenssikriteeri  &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_temperature"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetetaan MC lämpötila &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_tiheydenmuutos"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_tiheydenmuutos">[docs]</a>    <span class="k">def</span> <span class="nf">get_tiheydenmuutos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetetaan tiheydenmuutos funktionaaliderivaatassa&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiheydenmuutos</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_d_rho"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_d_rho">[docs]</a>    <span class="k">def</span> <span class="nf">get_d_rho</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetetaan d_rho (monte carlo tiheyden muutos gridipisteessä)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_rho</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_askel"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_askel">[docs]</a>    <span class="k">def</span> <span class="nf">get_askel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetetaan SD alku askel &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">askel</span>
+
+
+</div>
+<div class="viewcode-block" id="Gridi.to_1d_list"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.to_1d_list">[docs]</a>    <span class="k">def</span> <span class="nf">to_1d_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; tehdään 3d gridistä 1d lista &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_sisapisteet"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_sisapisteet">[docs]</a>    <span class="k">def</span> <span class="nf">get_sisapisteet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan gridi jossa on vain sisäpisteet &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodz</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_sisapisteet"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_sisapisteet">[docs]</a>    <span class="k">def</span> <span class="nf">set_sisapisteet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gridi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan gridin sisäpisteiden arvot &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodz</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridi</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridi</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodx</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridi</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridi</span>
+
+</div>
+<div class="viewcode-block" id="Gridi.get_sisapisteiden_lkm"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_sisapisteiden_lkm">[docs]</a>    <span class="k">def</span> <span class="nf">get_sisapisteiden_lkm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lasketaan montako sisäpistettä gridissä on</span>
+<span class="sd">        esim 5x5x5 gridissä on 3x3x3 sisäpistettä</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">sys</span>
+        <span class="n">kaikki_pisteet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="c">#print &quot;kaikki_pisteet&quot;, kaikki_pisteet</span>
+        <span class="c">#sys.exit()</span>
+        <span class="n">sisapisteet</span> <span class="o">=</span> <span class="n">kaikki_pisteet</span>
+        <span class="k">if</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;=</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">sisapisteet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">sisapisteet</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sisapisteet</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    </div>
+<div class="viewcode-block" id="Gridi.get_number_of_boxes"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_number_of_boxes">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_boxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lasketaan montako laatikkoa laskenta-alueessa on &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodz</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">twodx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_volume_of_a_box"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_volume_of_a_box">[docs]</a>    <span class="k">def</span> <span class="nf">get_volume_of_a_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; laskentaan yhden laskentakuution tilavuus &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">twodx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">twodz</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_volume"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_volume">[docs]</a>    <span class="k">def</span> <span class="nf">get_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lasketaan laskenta-alueen tilavuus &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">twodx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">twody</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">twodz</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_boxes</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_boxes</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_grid_step"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_grid_step">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; saadaan gridiväli atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_number_of_electrons"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_number_of_electrons">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_electrons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan kokonaiselektronimäärä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume_of_a_box</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_xy"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_xy">[docs]</a>    <span class="k">def</span> <span class="nf">get_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; otetaan i:s xy taso 3d matriisista esim. piirtoa varten &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Gridi.set_summa"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.set_summa">[docs]</a>    <span class="k">def</span> <span class="nf">set_summa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; asetetaan elektronien lukumäärä &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume_of_a_box</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_summa_mennyt"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_summa_mennyt">[docs]</a>    <span class="k">def</span> <span class="nf">get_summa_mennyt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;otetaan aiemmin laskettu elektronien lukumäärä&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">summa</span>
+</div>
+<div class="viewcode-block" id="Gridi.get_summa_nykyinen"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.get_summa_nykyinen">[docs]</a>    <span class="k">def</span> <span class="nf">get_summa_nykyinen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;otetaan elektronien nykyinen lukumäärä&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">get_volume_of_a_box</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Gridi.minx"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.minx">[docs]</a>    <span class="k">def</span> <span class="nf">minx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin minimi x arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+</div>
+<div class="viewcode-block" id="Gridi.miny"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.miny">[docs]</a>    <span class="k">def</span> <span class="nf">miny</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin minimi y arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+</div>
+<div class="viewcode-block" id="Gridi.minz"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.minz">[docs]</a>    <span class="k">def</span> <span class="nf">minz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin minimi z arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    </div>
+<div class="viewcode-block" id="Gridi.maxx"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.maxx">[docs]</a>    <span class="k">def</span> <span class="nf">maxx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin maksimi x arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+</div>
+<div class="viewcode-block" id="Gridi.maxy"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.maxy">[docs]</a>    <span class="k">def</span> <span class="nf">maxy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin maksimi y arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+</div>
+<div class="viewcode-block" id="Gridi.maxz"><a class="viewcode-back" href="../gridi.html#gridi.Gridi.maxz">[docs]</a>    <span class="k">def</span> <span class="nf">maxz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; gridin maksimi z arvo reaaliavaruudessa atomiyksiköissä &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

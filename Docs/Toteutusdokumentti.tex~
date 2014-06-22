@@ -1,0 +1,88 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.1 (25/3/14)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage[finnish]{babel} %ääkköset
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[version=3]{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} and \si{} command for typesetting SI units
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Testausdokumentti: elektronirakenteen optimointi atomiorbitaalittomaan tiheysfunktionaaliteorian avulla} % Title
+
+\author{Markus \textsc{Kaukonen} % Author name
+}
+
+\date{\today} % Date for the report
+
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+\hspace{1cm} \texttt{email: markus.kaukonen@iki.fi, opiskelijanumero: 010974524}
+
+\newpage
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+
+
+\section{Mitä on testattu, miten tämä tehtiin}
+Tehtiin unit testit kaikille funkioille. {\bf Nyt kuiten valmiina vain
+  energialaskuihin liittyvät testit.}
+Testaus toteutettiin Pythonin unittest moduulilla. Sen dokumentaatio on osoitteessa: https://docs.python.org/2/library/unittest.html\#type-specific-methods.
+
+Yksikkötestit ajetaan suorittamalla ohjelma './testaa\_energiat.py'
+hakemistossa 'TiraLabra/Tiralabra/python\_unit\_tests'.
+
+
+\section{Minkälaisilla syötteillä testaus tehtiin (vertailupainotteisissa töissä tärkätä)}
+Testeissä käytettiin 2-dimensionaalista dataa joka luettiin tiedosta
+'alkuarvot.txt\_5x5x0'.
+
+\section{Miten testit voidaan toistaa}
+Testit voidaan toistaa ajamalla komento './testaa\_energiat.py'
+hakemistossa 'TiraLabra/Tiralabra/python\_unit\_tests'.
+
+\section{Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa.}
+Voidaan vaihdella atomiytimien paikkoja tai lisätä niitä tai muuttaa
+niiden varausta ja katsoa että tulokset on kvalitatiivisesti
+ok. {\bf tähän muutama kuva demoamaan}.
+
+
+\end{document}

@@ -1,0 +1,12 @@
+ - Mitä opin tällä viikolla
+    Sain muisteltua python koodausta ja fysiikan tiheysfunktionaaliteoriaa.
+    -Missä onnistuin, mitä sain aikaiseksi?
+    Ohjelman keskeistä materiaalia on kasassa: laskenta gridi ja kokonaisenergian laskenta
+    Mikä jäi epäselväksi? Vastaa tähän kohtaan rehellisesti, koska tarjoamme sinulle tarvittaessa apua tämän kohdan perusteella.
+    - Testaus jäi täysin tekemättä. Pitää ensi viikolla testata jossain systeemissä josta on testidataa, eli että tuleeko oikeita lukuja. Sekä opetella tekemään pythonin PUNIT testejä. 
+    Miten ohjelma on edistynyt?
+    Runko on hyvin kasassa. Etenkin hartree potentiaalin laskenta.
+    Mitä teen seuraavaksi?
+    Testaan ja laitan energian minimointialgoritmia kehiin.
+
+OHJELMAA VOI AJAA test.py palikalla.

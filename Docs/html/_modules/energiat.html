@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>energiat &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for energiat</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Tässä moduulissa lasketaan gridiin liittyviä energiatermejä:</span>
+<span class="sd">Elektronien kineettinen energia T(n(r))</span>
+<span class="sd">Vaihtokorrelaatioenergia E_xc</span>
+<span class="sd">Elektronien Coulombin energia.</span>
+<span class="sd">Atomiytimien aiheuttama potentiaali V_ext*n(r)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="nb">exit</span>
+<span class="kn">from</span> <span class="nn">laskentaa</span> <span class="kn">import</span> <span class="n">tee_gauss_seidel_yksi_askel</span>
+
+
+<div class="viewcode-block" id="E_penalty"><a class="viewcode-back" href="../energiat.html#energiat.E_penalty">[docs]</a><span class="k">def</span> <span class="nf">E_penalty</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">):</span>
+    <span class="c">#print &quot;el alku, el_nyt&quot;,\</span>
+    <span class="c">#    elektroni_tiheys.get_summa_mennyt(),\</span>
+    <span class="c">#    elektroni_tiheys.get_summa_nykyinen()</span>
+    <span class="c">#print &quot;elektroni_tiheys.get_mylambda()&quot;, elektroni_tiheys.get_mylambda()</span>
+    <span class="k">return</span> <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_mylambda</span><span class="p">()</span><span class="o">*</span><span class="p">(</span>\
+            <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_mennyt</span><span class="p">()</span><span class="o">-</span>\
+                <span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">get_summa_nykyinen</span><span class="p">())</span><span class="o">**</span><span class="mi">2</span>
+</div>
+<div class="viewcode-block" id="E_T"><a class="viewcode-back" href="../energiat.html#energiat.E_T">[docs]</a><span class="k">def</span> <span class="nf">E_T</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan elektronikaasun kineettinen energia gridissä.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">2.871</span>
+    <span class="c">#print c*np.sum(np.power(elektroni_tiheys.gridi,1.66666666))</span>
+    <span class="c">#print elektroni_tiheys.gridi</span>
+    <span class="n">et</span> <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">,(</span><span class="mf">5.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">et</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">1e+5</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">et</span> 
+</div>
+<div class="viewcode-block" id="E_vaihtokorrelaatio"><a class="viewcode-back" href="../energiat.html#energiat.E_vaihtokorrelaatio">[docs]</a><span class="k">def</span> <span class="nf">E_vaihtokorrelaatio</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan elektronikaasun vaihtokorrelaatio energia gridissä.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.681420222312</span>
+    <span class="n">exc</span> <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span><span class="p">,(</span><span class="mf">4.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">1e+5</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">exc</span> 
+</div>
+<div class="viewcode-block" id="E_elektroni_elektroni"><a class="viewcode-back" href="../energiat.html#energiat.E_elektroni_elektroni">[docs]</a><span class="k">def</span> <span class="nf">E_elektroni_elektroni</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan elektronikaasun Coulombin energia gridissä.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">*</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="E_elektroni_ydin"><a class="viewcode-back" href="../energiat.html#energiat.E_elektroni_ydin">[docs]</a><span class="k">def</span> <span class="nf">E_elektroni_ydin</span><span class="p">(</span><span class="n">ydin_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan ytien ja elektronien vuorovaikutusenergia</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    
+    <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="c">#print &quot;YTT&quot;,ydin_tiheys.to_1d_list()</span>
+    <span class="c">#print &quot;HT&quot;,V_hartree.to_1d_list()</span>
+    <span class="c">#print ydin_tiheys.gridi * V_hartree.gridi</span>
+    <span class="c">#sys.exit()</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ydin_tiheys</span><span class="o">.</span><span class="n">gridi</span> <span class="o">*</span> <span class="n">V_hartree</span><span class="o">.</span><span class="n">gridi</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_V_hartree"><a class="viewcode-back" href="../energiat.html#energiat.get_V_hartree">[docs]</a><span class="k">def</span> <span class="nf">get_V_hartree</span><span class="p">(</span><span class="n">V_hartree</span><span class="p">,</span> <span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; lasketaan Hartree potentiaali tämänhetkiselle elektronitiheydelle&quot;&quot;&quot;</span>
+    <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">E_elektroni_elektroni</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">)</span>
+    <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">e_vanha</span> <span class="o">+</span> <span class="mf">100.0</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="n">e_uusi</span> <span class="o">-</span> <span class="n">e_vanha</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tolerance</span> <span class="p">):</span>
+        <span class="n">tee_gauss_seidel_yksi_askel</span><span class="p">(</span><span class="n">V_hartree</span><span class="p">,</span> <span class="n">elektroni_tiheys</span><span class="p">)</span>
+        <span class="n">e_vanha</span> <span class="o">=</span> <span class="n">e_uusi</span>
+        <span class="n">e_uusi</span> <span class="o">=</span> <span class="n">E_elektroni_elektroni</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">)</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c">#print &quot;E_vanha, uusi&quot;, e_vanha , e_uusi</span>
+    <span class="c">#print &quot;COUNTER&quot;, counter</span>
+    
+</div>
+<div class="viewcode-block" id="E_tot"><a class="viewcode-back" href="../energiat.html#energiat.E_tot">[docs]</a><span class="k">def</span> <span class="nf">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;lasketaan elektronien kokonaisenergia </span>
+<span class="sd">    otetaan vakioelektronimäärä huomioon lagrangen kertoimen avulla&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    
+    <span class="c"># xxx iteraatiota jotta saadaan hartree potentiaali</span>
+    <span class="n">get_V_hartree</span><span class="p">(</span><span class="n">V_hartree</span><span class="p">,</span> <span class="n">elektroni_tiheys</span><span class="p">)</span>
+
+    <span class="n">ETOT</span> <span class="o">=</span> <span class="n">E_T</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span><span class="o">+</span>\
+        <span class="n">E_vaihtokorrelaatio</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span> <span class="o">+</span> \
+        <span class="n">E_elektroni_elektroni</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">)</span> <span class="o">+</span> \
+        <span class="n">E_elektroni_ydin</span><span class="p">(</span><span class="n">ydin_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">)</span>
+ 
+    <span class="c">#print &quot;ETOT&quot;, ETOT,\</span>
+    <span class="c">#    &quot;E_t&quot;,E_T(elektroni_tiheys), \</span>
+    <span class="c">#    &quot;E_xc&quot;,E_vaihtokorrelaatio(elektroni_tiheys), \</span>
+    <span class="c">#    &quot;E_ee&quot;,E_elektroni_elektroni(elektroni_tiheys, V_hartree), \</span>
+    <span class="c">#    &quot;E_ne&quot;,E_elektroni_ydin(ydin_tiheys, V_hartree), \</span>
+    <span class="c">#    &quot;NEL&quot;, np.sum(elektroni_tiheys.gridi)*V_hartree.get_volume_of_a_box()</span>
+    <span class="k">return</span> <span class="n">ETOT</span>
+
+    </div>
+<div class="viewcode-block" id="E_tot_with_penalty"><a class="viewcode-back" href="../energiat.html#energiat.E_tot_with_penalty">[docs]</a><span class="k">def</span> <span class="nf">E_tot_with_penalty</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Lasketaan kokonaisenergia jossa on mukana rangaistus poikkeavasta </span>
+<span class="sd">    elektronien lukumäärästä &quot;&quot;&quot;</span>
+    <span class="n">e_penalty</span> <span class="o">=</span> <span class="n">E_tot</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">,</span> <span class="n">V_hartree</span><span class="p">,</span> <span class="n">ydin_tiheys</span><span class="p">)</span> <span class="o">+</span> \
+        <span class="n">E_penalty</span><span class="p">(</span><span class="n">elektroni_tiheys</span><span class="p">)</span>
+    <span class="c">#print &quot;e_penalty&quot;, E_penalty(elektroni_tiheys)</span>
+    <span class="c">#print &quot;etot, ep&quot;, E_tot(elektroni_tiheys, V_hartree, ydin_tiheys),E_penalty(elektroni_tiheys)</span>
+    <span class="k">return</span> <span class="n">e_penalty</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">tira 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
