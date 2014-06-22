@@ -12,7 +12,7 @@ public class Fibonacci {
             j = tmp;
         }
         
-        return i.toString();
+        return ""; //i.toString();
     }
     
     private static String fibonacci(int n) {
@@ -22,7 +22,7 @@ public class Fibonacci {
 
         Matrix<Integer> matrix = new Matrix<Integer>(values, Integer.class);
         matrix = matrix.pow(n);
-        return matrix.get(0, 1).toString();
+        return ""; //matrix.get(0, 1).toString();
     }
     
     private static void timeit(int i, boolean hidas) {
@@ -36,10 +36,7 @@ public class Fibonacci {
     }
     
     public static void main(String[] args) {
-        timeit(250, false);
-        //timeit(200, true);
-        /*for (int i = 1000; i < 1100; i += 20) {
-            
-        }*/
+        timeit(100000, false);
+        timeit(100000, true);
     }
 }

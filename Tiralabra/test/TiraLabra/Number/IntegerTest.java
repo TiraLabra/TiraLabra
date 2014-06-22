@@ -100,19 +100,19 @@ public class IntegerTest extends NumberTests<Integer> {
         Integer n = new Integer(v, false);
         
         Integer x1 = n.highWords(1), x0 = n.lowWords(1);
-        assertEquals(2, x0.integer.length);
-        assertEquals(2, x1.integer.length);
+        assertEquals(2, x0.words.length);
+        assertEquals(2, x1.words.length);
         
-        assertEquals(41708, x0.integer[0]);
-        assertEquals(1, x0.integer[1]);
+        assertEquals(41708, x0.words[0]);
+        assertEquals(1, x0.words[1]);
         
-        assertEquals(1, x1.integer[0]);
-        assertEquals(0, x1.integer[1]);
+        assertEquals(1, x1.words[0]);
+        assertEquals(0, x1.words[1]);
         
         n = n.multiply(two);
-        assertEquals(37076, n.integer[0]);
-        assertEquals(3, n.integer[1]);
-        assertEquals(2, n.integer[2]);
+        assertEquals(37076, n.words[0]);
+        assertEquals(3, n.words[1]);
+        assertEquals(2, n.words[2]);
         
         assertEquals("4294967296", n.toString());
     }
