@@ -42,8 +42,6 @@ public class Router {
 	private Map<Station, Double> costFromStart;
 	private Map<Station, Double> costToEnd;
 	
-	private Map<Station, Integer> lineChanges;
-	
 	private Station endStation;	
 	private String routeStartTime;
 	
@@ -73,7 +71,6 @@ public class Router {
 		costToEnd.put(start, GeomertyUtils.calculateDistance(start, end));
 		openNodes.insert(GeomertyUtils.calculateDistance(start, end), start);
 		timeAtStation.put(start, startTime);
-		lineChanges.put(start, 0);
 		
 		while (!openNodes.isEmpty()) {
 			Station current = openNodes.getAndRemoveMin();
@@ -138,14 +135,9 @@ public class Router {
 		cameFromStop.put(station, stop);
 		timeAtStation.put(station, stop.getArrival());
 		
-		if (linePenalty != 0)
-			lineChanges.put(station, lineChanges.get(current) + 1);
-		else
-			lineChanges.put(station, lineChanges.get(current));
-
 		double cost = GeomertyUtils.calculateDistance(current, endStation) * AVERAGE_SPEED + linePenalty + timeScore + BUS_COST;
 		
-		costFromStart.put(station, costToStart + lineChanges.get(station) * 50);
+		costFromStart.put(station, costToStart);
 		costToEnd.put(station, cost);
 		
 		if (!openNodes.contains(station)) {
@@ -244,7 +236,5 @@ public class Router {
 		
 		costFromStart = new DefaultHashMap<Station, Double>(2000);
 		costToEnd = new DefaultHashMap<Station, Double>(2000);
-		
-		lineChanges = new DefaultHashMap<Station, Integer>(2000);
 	}
 }
