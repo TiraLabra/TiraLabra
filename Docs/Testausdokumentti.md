@@ -15,7 +15,44 @@ Luonnollisesti kaikki JUnit-testaus on automaattisesti toistettavassa muodossa k
 
 Oma kokonaisuutensa on AStar-luokka, jonka kattava testaus JUnit-testeillä on haastavaa. Tässä olen automaattisten testien lisäksi suorittanut toistuvasti käsin testaamista, ja tulosten ja ohjelman etenemisen tutkimista mm. aputulosteiden ja debuggerin avulla, jotta olen voinut varmistua algoritmin oikeasta toiminnallisuudesta.
 
-TODO: Tähän voisi liittää esimerkkikuvia ohjelman suorittamasta reitinratkaisusta (pienillä alueilla tehtynä)
+Esimerkkinä tästä käsin tehdystä tarkastelusta eräs käyttämäni esimerkkiratkaisu.
+
+Alue:
+0000000000000000
+000000000█000000
+500000000█000000
+000000000█000000
+000000000█000000
+000000000█000000
+05█3███████████0
+0000000000█0█000
+00000█0000███000
+00000█0000000000
+00000█0000000000
+00000█0000000000
+00000█0000000000
+0000000000000000
+0000000000000000
+0000000000000000
+
+Reitti:
+-000000000000000
+0-0000000█000000
+5-0000000█000000
+0-0000000█000000
+0-0000000█000000
+0-0000000█000000
+-5█3███████████0
+0-00000000█0█000
+00-00█0000███000
+000-0█0000000000
+0000-█0000000000
+0000-█0000000000
+0000-█0000000000
+00000-0000000000
+000000-000000000
+0000000--------0
+
 
 ##Suorituskykytestaus
 
@@ -39,8 +76,4 @@ alkukoko 1000, määrä 10 000 000: kesto 2409ms
 Edellisten tulkitsemisena voisi todeta, että pienemmillä syötemäärillä suuri alkukoko suoriutuu hieman nopeammin tehtävästä. Joskin täytyy muistaa, että näin pienillä otoskoilla erot voivat johtua osaltaan myös sattumasta.
 
 Mielenkiintoinen ero tuli 10 miljoonan yksilön lisäyksessä. Siinä suuri alkukoko ilmeisesti aiheuttaa sen, että jossain vaiheessa joudutaan tekemään huonossa kohtaa turhan iso taulukon kopiointi, mistä aiheutuu ylikuormaa verrattuna pienempään. Tästä siis huomaa, että kun ei voida ennalta tietää syötteen kokoa, on hieman sattumasta kiinni, millainen taulukon alkukoko tuottaa tehokkaimpaa lopputulosta.
-
-
-
-
 
