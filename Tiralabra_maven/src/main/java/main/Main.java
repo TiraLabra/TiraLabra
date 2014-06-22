@@ -16,7 +16,7 @@ public class Main {
     
     public static void main( String[] args ) {
         
-        System.out.println("Tiralabra - AStar-reitinhaku");
+        System.out.println("Tiralabra - AStar-reitinhaku\n");
         
         TekstiUI ui = new TekstiUI();
         ui.suorita();

@@ -39,7 +39,7 @@ public class Kuvanayttaja {
     public void naytaKuva() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
+        frame.setLocationRelativeTo(null);
         frame.getContentPane().add(new JLabel(new ImageIcon(kuva)));
         frame.pack();
         frame.setVisible(true);
