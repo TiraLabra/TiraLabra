@@ -26,11 +26,14 @@ public class Kuvalukija {
      */
     public Kuvalukija(String tiedostonimi) {
         try {
+            //System.out.println("Nykyinen hakemisto: " + System.getProperty("user.dir"));
+            //System.out.println("Polku: " + aluehakemisto + tiedostonimi);
             kuva = ImageIO.read(new File(aluehakemisto + tiedostonimi));
+            //kuva = ImageIO.read(getClass().getResourceAsStream(aluehakemisto + tiedostonimi));
             //System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
         }
         catch (IOException e) {
-            System.out.println("Virhe kuvatiedostoa luettaessa!");
+            System.out.println("Virhe kuvatiedostoa luettaessa! Polku: " + aluehakemisto + tiedostonimi);
         }
     }
     
