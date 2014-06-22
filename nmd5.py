@@ -257,6 +257,7 @@ class NMD5:
 		return y ^ (x | (~z))
 
 	def __rotateLeft(self, x, n):
+		"""Rotates x left by n (note that Python bitshift is arithmetic)"""
 		return (x << n) | (x >> (32-n))
 
 	def __R(self, function,a,b,c,d,x,s,ac):
@@ -275,7 +276,9 @@ class NMD5:
 ## Public methods for module ##
 
 def new(arg=None):
+	"""Create a new nmd5 object"""
 	return NMD5(arg)
 
 def md5(arg=None):
+	"""Create a new nmd5 object"""
 	return NMD5(arg)
