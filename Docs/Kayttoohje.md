@@ -16,6 +16,8 @@ Q sulkee ohjelman.
 
 Käyttöliittymässä on valittuna oletuksena 100x100.bmp, koortinaateilla 0x0 ja 88x88. Jos siis haluaa nopeasti nähdä miten haku toimii, riittää että komentaa ensin '3', ja sen jälkeen '4'.
 
+Suositeltava kartta kaikenlaiseen testailuun on maasto1.bmp. Se sisältää kohtalaisen tasapainoisesti erilaisia alueita. Toki myös omia bmp-kuvia voi kokeilla lisätä ja testailla, lopputulos voi olla tosin vaihteleva.
+
 ## Syötteet ja ohjelman käyttöönotto.
 
 Ohjelman JAR löytyy repositorion juuresta erikseen tallennettuna, ilman että erikseen kääntää.
