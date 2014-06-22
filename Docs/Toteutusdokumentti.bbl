@@ -1,0 +1,13 @@
+\begin{thebibliography}{}
+
+\bibitem[Jones et~al., 2001]{jones2001scipy}
+Jones, E., Oliphant, T., and Peterson, P. (2001).
+\newblock Scipy: Open source scientific tools for python.
+\newblock {\em http://www. scipy. org/}.
+
+\bibitem[Ke et~al., 2013]{ke2013angular}
+Ke, Y., Libisch, F., Xia, J., Wang, L.-W., and Carter, E.~A. (2013).
+\newblock Angular-momentum-dependent orbital-free density functional theory.
+\newblock {\em Physical review letters}, 111(6):066402.
+
+\end{thebibliography}

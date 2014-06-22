@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>laskentaa Module &mdash; tira 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tira 1.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">tira 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-laskentaa">
+<span id="laskentaa-module"></span><h1>laskentaa Module<a class="headerlink" href="#module-laskentaa" title="Permalink to this headline">¶</a></h1>
+<p>Tässä moduulissa laskentaan liittyviä funktioita. Esim. 
+ratkaistaan hartree potentiaali</p>
+<dl class="function">
+<dt id="laskentaa.minimoi_monte_carlolla">
+<tt class="descclassname">laskentaa.</tt><tt class="descname">minimoi_monte_carlolla</tt><big>(</big><em>myfile</em>, <em>elektroni_tiheys</em>, <em>V_hartree</em>, <em>ydin_tiheys</em><big>)</big><a class="reference internal" href="_modules/laskentaa.html#minimoi_monte_carlolla"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#laskentaa.minimoi_monte_carlolla" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimoidaan monte carlo menetelmällä kunnes n_iter tulee täyteen
+tai convergenssikriteeri (tol) täyttyy</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="laskentaa.monte_carlo_yksi_askel_kaikki">
+<tt class="descclassname">laskentaa.</tt><tt class="descname">monte_carlo_yksi_askel_kaikki</tt><big>(</big><em>elektroni_tiheys</em>, <em>V_hartree</em>, <em>ydin_tiheys</em><big>)</big><a class="reference internal" href="_modules/laskentaa.html#monte_carlo_yksi_askel_kaikki"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#laskentaa.monte_carlo_yksi_askel_kaikki" title="Permalink to this definition">¶</a></dt>
+<dd><p>muutetaan varaustiheyttä ja hyväksytään tai hylätään siirto 
+hyväksytään siirto== muutetaan uuteen tiheyteen
+hylätään siirto== ei muuteta tiheyttä.
+Koko varaustiheys muutetaan kerralla (jotta elektronimäärä säilyy)
+lämpötilakin (T) on atomiyksiköissä</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="laskentaa.tee_gauss_seidel_yksi_askel">
+<tt class="descclassname">laskentaa.</tt><tt class="descname">tee_gauss_seidel_yksi_askel</tt><big>(</big><em>V_hartree</em>, <em>varaus</em><big>)</big><a class="reference internal" href="_modules/laskentaa.html#tee_gauss_seidel_yksi_askel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#laskentaa.tee_gauss_seidel_yksi_askel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteroidaan Poissonin yhtälön (nabla²=-4*pi*rho)
+ratkaisua yksi askel:
+<a class="reference external" href="http://en.wikipedia.org/wiki/Discrete_Poisson_equation">http://en.wikipedia.org/wiki/Discrete_Poisson_equation</a>
+Ratkaisun pitäisi olla Hartree potentiaali.
+Käytetään Gauss-Seidel iteraatiota:
+<a class="reference external" href="http://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method">http://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method</a></p>
+<p>xxx: parannus ks.
+<a class="reference external" href="http://wiki.scipy.org/PerformancePython">http://wiki.scipy.org/PerformancePython</a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/laskentaa.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">tira 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, kaukonen.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
