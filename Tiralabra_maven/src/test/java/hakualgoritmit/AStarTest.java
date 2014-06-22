@@ -48,6 +48,16 @@ public class AStarTest extends TestCase {
         assertEquals(28, a.laskeKustannus(n1, n4));
     }
     
+    public void testVirheellisenKustannus() {
+        AStar as = new AStar(new Manhattan());
+        Node alku = new Node(1,1,1);
+        Node loppu = new Node (5,5,6);
+        
+        int kustannus = as.laskeKustannus(alku, loppu);
+        
+        assertEquals(1414, kustannus);
+    }
+    
     public void testPerushaku() {
         AStar as = new AStar(new Manhattan());
         Alue a = new Alue(16);
