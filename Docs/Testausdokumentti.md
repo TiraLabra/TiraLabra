@@ -59,9 +59,26 @@ Reitti:
 
 ##Suorituskykytestaus
 
-Suorituskykytesta
+#### AStar
 
+AStarin suorituskykyä eri heuristiikoilla tarkasteltiin tekemällä muutamista eri hakualueista mittauksia. Jokaisella heuristiikalla suoritus ajettiin viisi kertaa, ja suoritusajoista laskettiin keskiarvo. Mukaan taulukoitiin myös kyseisellä heuristiikalla tapahtuneet laskenta-askeleet ja toteutuneen reitin pituus. Laskenta-askeleiksi siis lasketaan jokainen node, johon haku etenee.
 
+Mittaustulokset ja niitä kuvaava graafi löytyy pfd:nä tästä dokumenttihakemistosta tiedostosta suorituskykymittaukset.pdf.
+
+Päädyin laskemaan eri heuristiikkojen suhteellisia suoritusaikoja. Tässä lähtökohdaksi valittiin joka kohdassa hitain Dijkstra, johon muita verrataan. Dijkstran suoritusaika siis saa arvon 100%, ja muiden siihen verrattuja prosenttiarvoja, kussakin hakutilanteessa. 
+
+Yhteensä testitilanteita tehtiin neljä. Kolme ensimmäistä samasta maastokartasta, erilaisine reitteineen, ja lisäksi vielä yksi melko yksinkertainen pieni reittihaku. Kuvaajassa nämä hakutilanteet ovat vaaka-akselilla samassa järjestyksessä kun ne on taulukoitu.
+
+* Tapaus 1: Laaja lähes diagonaalisesti ylänurkasta alanurkkaan ulottuva haku. Tarkoitettu kuvaamaan perustapausta haun etsimisessä.
+* Tapaus 2: Samalla kartalla tehty lyhyempi hakureitti. Valittu edustamaan hieman pienempää hakua hyvällä kartta-aineistolla.
+* Tapaus 3: Reitti alkaen vasemmasta alakulmasta yläviistoon. Valittu siksi, että reitin suuntaisesti on hyvin paljon seinämää, ja haku ei olisi kovinkaan suoraviivainen.
+* Tapaus 4: Vertailukohtana melko yksinkertainen hakualue, ja lyhyt reitti.
+
+##### Tulosten tulkinta:
+
+Kaiken kaikkiaan Dijkstra vs. muut -asetelma toteutuu aika oletetusti. Kun hakualue on yksinkertainen ja suoraviivainen (tapaus 4), kunnon heuristiikkaa sisältävät versiot päihittävät Dijkstran selkeästi, sillä käymättä jää huomatttavan iso osa alueesta. Sen sijaan kun hakupolku sisältää paljon seinämiä ja vaikuttaa vaikealta (tapaus 3), ero Dijkstran ja tehokkaampien heuristiikkojen välillä kutistuu. Molemmat toteutetut heuristiikat ovat alle neljäsosan nopeampia tässä tapauksessa, kun yksinkertaisessa tapauksessa paras tulos kutistui vain alle 20 prosenttiin suoritusajasta.
+
+Tarkkoja O-luokituksia on tästä aineistosta hankala laskea, sillä kuten huomataan, hakualueen muoto ja yksityiskohdat vaikuttavat läpikäyntiin aika huomattavasti.
 
 #### ArrayListOma
 
