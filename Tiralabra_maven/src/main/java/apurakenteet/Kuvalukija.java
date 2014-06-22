@@ -30,7 +30,7 @@ public class Kuvalukija {
             //System.out.println("Polku: " + aluehakemisto + tiedostonimi);
             kuva = ImageIO.read(new File(aluehakemisto + tiedostonimi));
             //kuva = ImageIO.read(getClass().getResourceAsStream(aluehakemisto + tiedostonimi));
-            //System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
+            System.out.println("Kuva luettu, kooltaan: " + kuva.getHeight() + "x" + kuva.getWidth());
         }
         catch (IOException e) {
             System.out.println("Virhe kuvatiedostoa luettaessa! Polku: " + aluehakemisto + tiedostonimi);
