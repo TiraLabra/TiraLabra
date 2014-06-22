@@ -1,9 +1,9 @@
 # Käyttöohje
 
 Ohjelma käännetään Mavenilla komennolla mvn clean install
-Hae aikataulutiedot JAR tiedostosta tai lataa https://github.com/jleh/TiraLabra/raw/master/Tiralabra_maven/src/main/resources/all.zip
-Sijoita zip tiedosto samaan hakemistoon JAR tiedoston kanssa.
-Ohjelma käynnistetään komennolla java -jar reittiopas.jar
+Ohjelma käynnistetään komennolla java -jar reittiopas-jar-with-dependencies.jar
 
 Ohjelmalle annetaan syötteenä lähtö ja päätepysäkin id sekä lähtöhetken kellonaika.
 Esimerkiksi 1113127 1465552 0700
+
+Tulosteena tulevan LINESTRING alkuisen rivin voi syöttää esimerkiksi [tälle](http://arthur-e.github.io/Wicket/sandbox-gmaps3.html) sivulle, jolloin saadaan reitin visualisointi kartalle.
