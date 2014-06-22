@@ -46,6 +46,9 @@ public class AStar {
      */
     private int askelia;
     
+    /**
+     * Kokonaisajan tallentava muuttuja.
+     */
     private long kokonaisaika;
     
     /**
@@ -53,11 +56,6 @@ public class AStar {
      */
     private boolean diagonaalinenSallittu = true;
     
-    /**
-     * boolean-muuttuja, jolla kontrolloidaan debug-tarkoitukseen tehtäviä tulostuksia.
-     */
-    private final static boolean debug = false;
-
     public AStar(Heuristiikka heuristiikka) {
         kaydyt = new ArrayListOma();
         
@@ -81,7 +79,6 @@ public class AStar {
         if (!hakuKelvollinen(a, alku, loppu))
             return false;
         
-        if (debug) System.out.println("Alkunode: " + alku + "\n" + "Loppunode: " + loppu);
         long alkuaika = System.currentTimeMillis();
         
         // Alustetaan
@@ -91,8 +88,6 @@ public class AStar {
             Node tarkastettava = kaymatta.poistaPienin();
             askelia++;
             
-            if (debug) System.out.println("---------\nTark: " + tarkastettava.toString());
-            
             if (tarkastettava == loppu) {               // Jos päädyttiin loppualkioon, poistutaan.
                 rakennaReitti(loppu);
                 kokonaisaika = System.currentTimeMillis() - alkuaika;
@@ -100,11 +95,9 @@ public class AStar {
             }
             
             kaydyt.lisaa(tarkastettava);                // Nykyinen lisätään käytyjen joukkoon.
-            if (debug) System.out.println("Käytyjä tähän asti:" + kaydyt.koko());
-            
+
             // Selvitetään tarkasteltavan noden naapurit:
             ArrayListOma naapurit = selvitaNaapurit(a, tarkastettava);
-            //if (debug) System.out.println("Naapureita " + naapurit.koko() + " kpl.");
             
             // Käydään läpi tarkasteltavan kaikki naapurit:
             for (int i = 0; i < naapurit.koko(); i++ ) {
@@ -122,27 +115,19 @@ public class AStar {
      */
     private void kasitteleNaapuri(Node naapuri, Node tarkastettava) {
         naapuri.setLisattyNaapureihin(true);    // Debug-tarkoitukseen tietoa onko nodea otettu naapureihin mukaan..
-        if (debug) System.out.println("  Naapuri: " + naapuri);
         
         int uusiG = tarkastettava.getEtaisyysAlusta() + laskeKustannus(tarkastettava, naapuri);     // Uusi mahdollinen kustannus tähän naapuriin
-        if (debug) System.out.println("    UusiG = " + uusiG);
         
         if (kaydyt.sisaltaako(naapuri) || kaymatta.sisaltaa(naapuri)) {
             // Jos naapuri on jo käydyissä
             if (uusiG < naapuri.getEtaisyysAlusta()) {      // ... katsotaan onko uutta kautta pienempi kustannus.
                 paivitaLyhyinYhteys(naapuri, tarkastettava, uusiG);
-                if (debug) System.out.println("    Noden kustannusarvoa päivitettiin.");
-            } else {
-                if (debug) System.out.println("    Vanha kustannusarvo oli pienempi...");
             }
-            if (debug) System.out.println("    on jo käyty, ei tehdä mitään.");
             return;
         }
         if (!kaymatta.sisaltaa(naapuri)) {
-            if (debug) System.out.print("    Ei ole vielä lisätty käymättä-joukkoon, lisätään uutena: ");
             paivitaLyhyinYhteys(naapuri, tarkastettava, uusiG);
             kaymatta.lisaa(naapuri);
-            if (debug) System.out.println(naapuri.toString());
         }
     }
     

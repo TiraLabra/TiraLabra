@@ -1,17 +1,15 @@
 package ui;
 
-import apurakenteet.Kuvalukija;
-import apurakenteet.Kuvanayttaja;
+import apurakenteet.*;
 import hakualgoritmit.AStar;
-import heuristiikat.Dijkstra;
-import heuristiikat.Euklidinen;
-import heuristiikat.Heuristiikka;
-import heuristiikat.Manhattan;
+import heuristiikat.*;
 import java.util.Scanner;
 import tietorakenteet.*;
 
 /**
- *
+ * Yksinkertainen tekstikäyttöliittymä.
+ * Ei ole tarkoitettu kovin massiiviseen käyttöön, tai toteutettu käytettävyyttä miettien.
+ * Ydintarkoitus on vain mahdollistaa AStar-hakujen tekeminen jollain käyttöliittymällä ilman koodin muokkaamista.
  */
 public class TekstiUI {
     
@@ -48,9 +46,7 @@ public class TekstiUI {
     }
     
     public void suorita() {
-//        alkuvalikko();
-//        
-//        String syote = scanner.nextLine();
+
         String syote;
         
         boolean jatketaan = true;
@@ -199,7 +195,11 @@ public class TekstiUI {
         System.out.println("    alku: " + alkurivi+"x"+alkusarake+", loppu: " + loppurivi+"x"+loppusarake);
     }
 
-    //TODO:
+    /**
+     * Metodirunko jos myöhemmin halutaan tarkastaa koordinaatit.
+     * Ei ole toteutettu vielä varsinaista tarkastusta, palauttaa aina true.
+     * @return 
+     */
     private boolean tarkastaKoordinaatit() {
         return true;
     }
