@@ -13,5 +13,8 @@ Hakuehdon tarkastus solmukohtaisesti sujuu ajassa O(1). Pahimmassa tapauksessa k
 
 Koska tämä haku suoritetaan jokaiselle pysäkille tulee A*-algoritmin aikavaativuudeksi O (n ((|E| + |V|) log |V|))
 
+## Muut tietorakenteet
+Sovelluksessa on omat toteutukset Keolle (Binääripuun avulla), Hajautustaululle, Listalle ja joukolle (binääripuu).
+
 ## Puuttet
 Reititys ei toimi aivan parhaimmalla tavalla aikataulujen kanssa, vaan ehdotettu reitti saattaa kestää useita tunteja kauemmin kuin oikeasti järkevin reitti kestäisi.
