@@ -74,8 +74,8 @@ public class MatrixTest {
     
     @Test
     public void multiplyEmptyMatrix() {
-        Matrix a = new Matrix(3, 0);
-        Matrix b = new Matrix(0, 3);
+        Matrix a = new Matrix(3, 0, Integer.class);
+        Matrix b = new Matrix(0, 3, Integer.class);
         
         Matrix ab = a.multiply(b);
         Matrix ba = b.multiply(a);
@@ -91,12 +91,6 @@ public class MatrixTest {
     public void identityMatrix() {
         matrix = Matrix.identity(2, Integer.class);
         matrixEquals(Integer.class, 1, 0, 0, 1);
-    }
-    
-    @Test
-    public void exponentiationNaive() {
-        matrix = matrix.pow_naive(2);
-        matrixEquals(Integer.class, 2, 1, 1, 1);
     }
     
     @Test
@@ -125,7 +119,7 @@ public class MatrixTest {
     
     @Test(expected=UnsupportedOperationException.class)
     public void determinantOnNonSquareMatrix() {
-        Matrix m = new Matrix(1, 2);
+        Matrix m = new Matrix(1, 2, Integer.class);
         m.determinant();
     }
     

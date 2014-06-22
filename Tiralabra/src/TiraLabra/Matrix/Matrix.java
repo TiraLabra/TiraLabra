@@ -35,12 +35,12 @@ public class Matrix<T extends Number<T>> {
      * @param n
      * @param m 
      */
-    public Matrix(int n, int m) {
+    public Matrix(int n, int m, Class<T> type) {
         this.N = n;
         this.M = m;
         
         matrix = null;
-        type = null;
+        this.type = type;
     }
     
     /**
@@ -53,6 +53,7 @@ public class Matrix<T extends Number<T>> {
     public static <T extends Number<T>> Matrix<T> identity(int n,
             Class<T> type) {
         T[][] val = (T[][]) new Number[n][n];
+        
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 final int k = (i == j) ? 1 : 0;
@@ -91,9 +92,10 @@ public class Matrix<T extends Number<T>> {
     public Matrix<T> multiply(Matrix<T> other) {
         T[][] val = (T[][]) new Number[N][other.M];
         
+        final T zero = Number.make(type, 0);
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                val[i][j] = Number.make(type, 0);
+                val[i][j] = zero;
                 
                 for (int k = 0; k < other.M; k++) {
                     final T v = matrix[i][k].multiply(other.matrix[k][j]);
@@ -146,21 +148,7 @@ public class Matrix<T extends Number<T>> {
     }
     
     /**
-     * Naiivi matriisin potenssiin korotus
-     * @param n eksponentti
-     * @return uusi matriisi
-     */
-    public Matrix<T> pow_naive(int n) {
-        Matrix<T> res = identity(N, type);
-        for (int i = 0; i < n; i++) {
-            res = this.multiply(res);
-        }
-        
-        return res;
-    }
-    
-    /**
-     * Nopeampi matriisin potenssiin korotus
+     * Matriisin potenssiin korotus
      * @param n eksponentti
      * @return uusi matriisi
      */
@@ -172,7 +160,7 @@ public class Matrix<T extends Number<T>> {
             }
             
             m = m.multiply(m);
-            n /= 2;
+            n = n >> 1;
         }
         
         return res;

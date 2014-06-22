@@ -135,6 +135,11 @@ public class Real extends Number<Real> {
     }
 
     @Override
+    public Real inverse() {
+        return ONE.divide(this);
+    }
+    
+    @Override
     public int compareTo(Real other) {
         if (this.exponent < other.exponent) {
             return -other.compareTo(this);

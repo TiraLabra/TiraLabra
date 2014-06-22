@@ -85,4 +85,9 @@ public class Integer32 extends Number<Integer32> {
     public int compareTo(Integer32 other) {
         return new java.lang.Integer(integer).compareTo(other.integer);
     }
+
+    @Override
+    public Integer32 inverse() {
+        return ZERO;
+    }
 }

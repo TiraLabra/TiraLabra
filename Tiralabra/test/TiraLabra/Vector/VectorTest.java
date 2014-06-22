@@ -1,14 +1,15 @@
 package TiraLabra.Vector;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import TiraLabra.Number.Number;
 import TiraLabra.Number.Integer;
 import TiraLabra.Number.Real;
 
-public class VectorTest {
+import TiraLabra.Number.NumberTests;
+
+public class VectorTest extends NumberTests<Vector<Integer>> {
     private Vector<Integer> vector;
 
     private <T extends Number<T>> Vector<T> makeVector(Class<T> type,
@@ -28,9 +29,14 @@ public class VectorTest {
         }
     }
     
-    @Before
+    @Override
     public void setUp() {
         vector = makeVector(Integer.class, 1, 2, 3, 4);
+        
+        zero = makeVector(Integer.class, 0, 0, 0, 0);
+        one = makeVector(Integer.class, 1, 1, 1, 1);
+        two = makeVector(Integer.class, 2, 2, 2, 2);
+        four = makeVector(Integer.class, 4, 4, 4, 4);
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
@@ -45,16 +51,8 @@ public class VectorTest {
     
     @Test
     public void multiplyScalar() {
-        vector = vector.multiply(Integer.TEN);
+        vector = vector.scale(Integer.TEN);
         vectorEquals(Integer.class, 10, 20, 30, 40);
-    }
-    
-    @Test
-    public void divideScalar() {
-        vector = vector.multiply(Integer.TEN);
-        
-        vector = vector.divide(Integer.TEN);
-        vectorEquals(Integer.class, 1, 2, 3, 4);
     }
     
     @Test
@@ -115,5 +113,10 @@ public class VectorTest {
     public void maximum() {
         Vector<Integer> v = makeVector(Integer.class, 1, 3, 2, 4);
         assertEquals(new Integer(4), v.max());
+    }
+    
+    @Override
+    public void toStringWorks() {
+        
     }
 }

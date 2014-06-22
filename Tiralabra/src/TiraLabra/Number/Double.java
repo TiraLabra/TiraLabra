@@ -10,6 +10,8 @@ public class Double extends Number<Double> {
     public static final Double TEN = new Double(10.);
     
     public final static Double EPSILON = new Double(1e-2);
+    public final static Double INFINITY =
+            new Double(java.lang.Double.POSITIVE_INFINITY);
     
     public final double decimal;
     
@@ -93,5 +95,18 @@ public class Double extends Number<Double> {
     @Override
     public int compareTo(Double other) {
         return new java.lang.Double(decimal).compareTo(other.decimal);
+    }
+    
+    public Double cos() {
+        return new Double(Math.cos(decimal));
+    }
+    
+    public Double sin() {
+        return new Double(Math.sin(decimal));
+    }
+
+    @Override
+    public Double inverse() {
+        return new Double(1. / decimal);
     }
 }

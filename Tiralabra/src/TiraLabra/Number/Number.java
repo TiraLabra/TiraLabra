@@ -86,6 +86,12 @@ public abstract class Number<T extends Number<T>> implements Comparable<T> {
      */
     public abstract T negate();
 
+    /**
+     * Käänteisluku
+     * @return 1/this
+     */
+    public abstract T inverse();
+    
     @Override
     public abstract int compareTo(T o);
 }
