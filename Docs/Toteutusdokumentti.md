@@ -32,11 +32,11 @@ Toinen kokonaan tehty oma tietorakenne Keko. Käytännössä nimestä huolimatta
 
 ## Saavutetut aika- ja tilavaatimukset, suorituskyky- ja O-analyysivertailu
 
-
-
 Keon operaatioiden pitäisi noudattaa teoreettisia binäärikeon aikavaatimuksia. Minimin lukeminen on vakioaikaista. Minimin poisto, uuden syöttäminen, ja alkion prioriteerin pienentäminen pitäisi suoriutua O(log(n))-ajassa. Pienenä miinuksena on operaatio jossa etsitään halutun noden kohta indeksinä. Tämä tuli tehtyä aluksi vain taulukon läpikäyntinä, enkä ehtinyt muuttaa sitä mahdollisesti keko-ominaisuuksia hyödyntäväksi. Sen aikavaatimus taitaa olla siis O(n).
 
-Suorituskykyvertailusta löytyy konkretiaa parhaiten testausdokumentista.
+AStarin kohdalla Dijkstran aikavaatimushan pitäisi olla O(|E| + |V| log |V|), kuten määrittelydokumentissa on todettu. Heuristiikkaa käyttävien AStar-hakujen analysointi on hankalampaa, sillä hakualueen ominaisuudet vaikuttavat huomattavasti toteutuneeseen suoritusaikaan. Huonoimmassa tapauksessa ollaan samassa kuin Dijkstra, mutta esteettömässä kartassa päästäisiin aika lailla optimaaliseen etenemiseen, jossa aikavaatimus olisi O(n), jossa n on alku- ja loppupisteen välinen erotus.
+
+Suorituskykyvertailusta löytyy konkretiaa parhaiten testausdokumentista. Siellä pohdintaosuudessa on käsitelty erilaisten karttojen vaikutusta eri heuristiikkojen toimintaan.
 
 
 
