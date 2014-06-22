@@ -1,3 +1,5 @@
+All auxiliary components are in **lib/**. The module and tests are in the project root.
+
 # Use
 Either install it in a Python project you use, or open up a Python shell in the directory where nmd5.py is.
 From there, you can import the class and use it. Give any input string to the methods listed below to use this module.
