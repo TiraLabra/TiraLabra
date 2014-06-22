@@ -234,6 +234,10 @@ If there are any elements in the list, `toString` is in O(n) time iterating all 
 
 
 
+### Misc
+
+There are some cases where the the Python builtin functions could have perhaps been used more cleverly, such as binary string replacements and such. There was no time to implement these however, and it is uncertain whether this would have affected performance.
+
 ### Sources
 
 Wikipedia
