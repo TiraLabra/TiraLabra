@@ -29,11 +29,22 @@ public class TekstiUI {
     private int loppurivi;
     private int loppusarake;
     
+    private boolean hakuTehty;
+    
+    private static final String oletustiedosto = "100x100.bmp";
+    
     private Kuvalukija kl;
     
     public TekstiUI() {
         // Oletusheuristiikaksi manhattan
         heuristiikka = new Manhattan();
+        
+        //Oletusalueeksi jotain pohjalle:
+        kl = new Kuvalukija(oletustiedosto);
+        alue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
+        alkurivi = alkusarake = 0;
+        loppurivi = loppusarake = 88;
+        hakuTehty = false;
     }
     
     public void suorita() {
@@ -134,32 +145,35 @@ public class TekstiUI {
     private void suoritaHaku() {
         if (alue != null && heuristiikka != null) {
             astar = new AStar(heuristiikka);
-            astar.AStarHaku(alue, alue.getnode(alkurivi, alkusarake), alue.getnode(loppurivi,loppusarake));
+            hakuTehty = astar.AStarHaku(alue, alue.getnode(alkurivi, alkusarake), alue.getnode(loppurivi,loppusarake));
         } else
             System.out.println("Hakua ei voida suorittaa, tarkista että hakualue ja heuristiikka on asetettu!");
         
     }
 
     private void tulostaHakutulos() {
-        System.out.println("Yhteensä " + astar.getAskelia() + " laskenta-askelta.");
-        
-        ArrayListOma reitti = astar.kerroKuljettuReitti();
-        System.out.println("\nKuljettu reitti: ("+ reitti.koko()+ " kpl)");
-        //for (Node n : reitti) {
-        for (int i = 0; i < reitti.koko(); i++) {
-            Node n = (Node)reitti.palautaKohdasta(i);
-            System.out.println(i + ": " + n.toString());
-            n.toString();
+        if (hakuTehty) {
+            System.out.println("Yhteensä " + astar.getAskelia() + " laskenta-askelta.");
+
+            ArrayListOma reitti = astar.kerroKuljettuReitti();
+            System.out.println("\nKuljettu reitti: ("+ reitti.koko()+ " kpl)");
+            //for (Node n : reitti) {
+            for (int i = 0; i < reitti.koko(); i++) {
+                Node n = (Node)reitti.palautaKohdasta(i);
+                System.out.println(i + ": " + n.toString());
+                n.toString();
+            }
+            System.out.println(alue.toString());
+            System.out.println(astar.yhteenveto());
+
+            System.out.println("-------");
+
+            Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+            kn.muodostaKuvaanPolku(reitti);
+            kn.naytaKuva();
+        } else {
+            System.out.println("Suorita ensin haku ennen reitin tulostamista!");
         }
-        System.out.println(alue.toString());
-        System.out.println(astar.yhteenveto());
-        
-        System.out.println("-------");
-        
-        Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
-        kn.muodostaKuvaanPolku(reitti);
-        kn.naytaKuva();
-        
     }
 
     private void tulostaValitut() {
@@ -172,8 +186,11 @@ public class TekstiUI {
         if (alue != null)
             tulostaAlueentiedot();
         else
-            System.out.println("  Aluetta ei vielä valittu");
+            System.out.println("  Aluetta ei vielä valittu.");
         
+        if (!hakuTehty) {
+            System.out.println("  Hakua ei ole vielä suoritettu.");
+        }
         System.out.println("---");
     }
 
