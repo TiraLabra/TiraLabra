@@ -52,6 +52,8 @@ Olisi ollut mielenkiintoista tehdä myös esim. fibonacci-toteutus kekoon, ja te
 
 Koodissa olisi voinut kerätä erinäisiä vakioarvoja yhteen paikkaan. 
 
+Omat tietorakenteet olisi voinut laittaa toteuttamaan Iterable-rajapintaa, helpomman läpikäynnin mahdollistamiseksi, mutta for-loopilla sama toki hoituu nytkin ongelmitta.
+
 ## Lähteet
 
 Määrittelydokementissa oli lähteitä, joita käytetty suunnitteluvaiheessa. Tässä listattu lisäksi joitain, jotka olivat apuna toteutusvaiheessa.
