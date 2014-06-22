@@ -24,7 +24,7 @@ public class AIPerformance {
         long max = Long.MIN_VALUE;
         long min = Long.MAX_VALUE;
         long sum = 0;
-        int operations = 1;
+        int operations = 5;
         int moves = 0;
 
         System.out.println("AI time taken per turn: ");
@@ -34,24 +34,26 @@ public class AIPerformance {
 
             while (!board.gameOver()) {
                 long start = System.currentTimeMillis();
-                
+
                 long move = ai.move();
-                
+
                 long timeTaken = System.currentTimeMillis() - start;
 
                 board.placeTile(move);
-                
-                sum += timeTaken;
 
-                if (timeTaken > max) {
-                    max = timeTaken;
+                if (timeTaken > 5) {
+                    sum += timeTaken;
+
+                    if (timeTaken > max) {
+                        max = timeTaken;
+                    }
+
+                    if (timeTaken < min) {
+                        min = timeTaken;
+                    }
+
+                    moves++;
                 }
-
-                if (timeTaken < min) {
-                    min = timeTaken;
-                }
-
-                moves++;
                 System.out.print("=");
             }
             System.out.print("=");

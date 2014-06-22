@@ -360,7 +360,7 @@ public class AI {
      */
     public int boardValue(Strategy strategy, Player playerInTurn) {
         int pieceDifference = board.blackPieces() - board.whitePieces();
-        if (board.playerInTurn() == Player.opposing(playerInTurn)) {
+        if (board.playerInTurn() == Player.WHITE) {
             pieceDifference = -pieceDifference;
         }
 

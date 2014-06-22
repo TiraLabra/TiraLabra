@@ -38,14 +38,10 @@ public class ArrayListSorter {
 
         ArrayList<T> left = new ArrayList<>();
         ArrayList<T> right = new ArrayList<>();
-        int middle = list.size() / 2;
 
-        for (int i = 0; i < middle; i++) {
-            left.add(list.get(i));
-        }
-        for (int i = middle; i < list.size(); i++) {
-            right.add(list.get(i));
-        }
+        int middle = list.size() / 2;
+        appendToSublist(list, left, 0, middle);
+        appendToSublist(list, right, middle, list.size());
 
         left = mergeSort(left);
         right = mergeSort(right);
@@ -54,7 +50,33 @@ public class ArrayListSorter {
     }
 
     /**
-     * Merges the two arrays, left and right, to one.
+     * Appends all objects from the primary list to the given sublist from a
+     * given range.
+     *
+     * @param <T>
+     * @param primary
+     * @param sublist
+     * @param start
+     * @param end
+     */
+    public static <T extends Comparable<? super T>> void appendToSublist(ArrayList<T> primary, ArrayList<T> sublist, int start, int end) {
+        for (int i = start; i < end; i++) {
+            sublist.add(primary.get(i));
+        }
+    }
+
+    /**
+     * Used in merge().
+     */
+    private static int i;
+    /**
+     * Used in merge().
+     */
+    private static int j;
+
+    /**
+     * Merges the two arrays, left and right, to one. This is intentionally long
+     * as java can't do pointers.
      *
      * @param <T>
      * @param left
@@ -64,17 +86,11 @@ public class ArrayListSorter {
     private static <T extends Comparable<? super T>> ArrayList<T> merge(ArrayList<T> left, ArrayList<T> right) {
         ArrayList<T> result = new ArrayList<>();
 
-        int j = 0;
-        int i = 0;
+        i = 0;
+        j = 0;
         while (i < left.size() || j < right.size()) {
-            if ((i < left.size() && j < right.size())) {
-                if (left.get(i).compareTo(right.get(j)) <= 0) {
-                    result.add(left.get(i));
-                    i++;
-                } else {
-                    result.add(right.get(j));
-                    j++;
-                }
+            if (i < left.size() && j < right.size()) {
+                compareValuesAndAppend(left, right, result);
             } else if (i < left.size()) {
                 result.add(left.get(i));
                 i++;
@@ -85,4 +101,24 @@ public class ArrayListSorter {
         }
         return result;
     }
+
+    /**
+     * Add the object that compares more favorably between the objects at i and
+     * j in their respective lists to the result.
+     *
+     * @param <T>
+     * @param left
+     * @param right
+     * @param result
+     */
+    private static <T extends Comparable<? super T>> void compareValuesAndAppend(ArrayList<T> left, ArrayList<T> right, ArrayList<T> result) {
+        if (left.get(i).compareTo(right.get(j)) <= 0) {
+            result.add(left.get(i));
+            i++;
+        } else {
+            result.add(right.get(j));
+            j++;
+        }
+    }
+
 }
