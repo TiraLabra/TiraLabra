@@ -52,7 +52,6 @@
 		<Unit filename="algorithms/z_algorithm.hpp" />
 		<Unit filename="constants.hpp" />
 		<Unit filename="friends.hpp" />
-		<Unit filename="main.cpp" />
 		<Unit filename="string_slib.hpp" />
 		<Unit filename="structures/knuth_morris_pratt.hpp" />
 		<Unit filename="structures/naive_suffix_tree_builder.cpp" />
