@@ -66,6 +66,9 @@
                     <param>Huffman.HuffmanPurkaja</param> 
                     <param>Huffman.HuffmanPuu</param> 
                     
+                    <param>KayttamattomatLuokat.HajTauluVanha</param>
+                    <param>KayttamattomatLuokat.TekstinLukija</param>
+                    
                     <param>LZW.LZWLukija</param>
                     <param>LZW.LZWPakkaaja</param>
                     <param>LZW.LZWPurkaja</param>
@@ -85,6 +88,9 @@
                     <param>Huffman.HuffmanPakkaajaTest</param>     
                     <param>Huffman.HuffmanPurkajaTest</param>                      
                     <param>Huffman.HuffmanPuuTest</param>
+                    
+                    <param>KayttamattomatLuokat.HajTauluVanhaTest</param>
+                    <param>KayttamattomatLuokat.TekstinLukijaTest</param>
                     
                     <param>LZW.LZWLukijaTest</param>
                     <param>LZW.LZWPakkaajaTest</param>

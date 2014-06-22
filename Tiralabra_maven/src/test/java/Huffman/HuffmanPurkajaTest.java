@@ -22,12 +22,12 @@ public class HuffmanPurkajaTest {
     
     @After
     public void tuhoaTestiTiedosto() {
-        File testi = new File("TiedostonPurkajaTest.hemi");
+        File testi = new File("TiedostonPurkajaTest.huff");
         testi.delete();
     }
     
     private void luoTestiTiedostoJosTarpeen() throws IOException {
-        File testi = new File("TiedostonPurkajaTest.hemi");
+        File testi = new File("TiedostonPurkajaTest.huff");
         if (! testi.exists()) {
             Kirjoittaja kirjoittaja = new Kirjoittaja(testi.getPath());
             kirjoittaja.kirjoita("a"+n+n + "b"+n+y + "c"+y+n + "d"+y+y + (char) 127 + (char) 127 + n + (char) 135) ;

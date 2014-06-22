@@ -4,7 +4,7 @@ package Tietorakenteet;
  * Tietorakenne kuvaa nimensä mukaisesti tietorakennetta "Minimikeko".
  * Keko on järjestetty siten että keon huipulla on se solmu, joka esiintyi luetussa tekstitiedostossa vähiten.
  * 
- * Keko liittyy Huffman -algoritmin toteutuksessa etenkin HuffmanPuuhun.
+ * Keko liittyy ohjelmakoodissa HuffmanPuuhun.
  */
 
 public class MinKeko {

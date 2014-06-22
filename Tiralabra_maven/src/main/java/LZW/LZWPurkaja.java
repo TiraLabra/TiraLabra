@@ -156,7 +156,6 @@ public class LZWPurkaja extends Purkaja {
         YleisMetodeja yleis = new YleisMetodeja();
         
         String arvo = yleis.koodistoonLisattavaArvo(ascii, laaj);
-        
         merkkienPituus = yleis.merkkienPituus(merkkienPituus, arvo.length());
         
         laaj.lisaa(avain, arvo);

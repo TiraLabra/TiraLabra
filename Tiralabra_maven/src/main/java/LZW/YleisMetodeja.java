@@ -33,6 +33,14 @@ public class YleisMetodeja {
         return new BinaariMuuntaja().binaariEsitys(arvoja);
     }
     
+    /**
+     * Palauttaa parametrina annetuissa haj.tauluissa olevien avainten määrän.
+     * (Ohjelmassa: 256 + laaj.getKoko()).
+     * @param ascii
+     * @param laaj
+     * @return 
+     */
+    
     protected int arvoja(HajautusTaulu ascii, HajautusTaulu laaj) {
         return ascii.getKoko() + laaj.getKoko();
     }

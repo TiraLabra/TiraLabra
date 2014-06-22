@@ -79,14 +79,14 @@ public class LZWLukijaTest {
     }
     
     private void builderOnTyhja(StringBuilder builder, String teksti) {
-        builder = lukija.lisaaMerkki('*', builder);
+        builder = lukija.kasitteleArvo('*', builder);
         assertEquals("*", builder.toString());
         assertEquals(teksti, lukija.getTeksti());
     }
     
     private void laajennettuKoodistoSisaltaaAvaimen(StringBuilder builder, String teksti) {
         builder.append("R");
-        builder = lukija.lisaaMerkki('N', builder);
+        builder = lukija.kasitteleArvo('N', builder);
         
         assertEquals("RN", builder.toString());
         assertEquals(teksti, lukija.getTeksti());
@@ -94,7 +94,7 @@ public class LZWLukijaTest {
     
     private void avainEiOleKummassakaanKoodistossa(StringBuilder builder, String teksti) {
         builder.append("T");
-        builder = lukija.lisaaMerkki('R', builder);
+        builder = lukija.kasitteleArvo('R', builder);
         
         HajautusTaulu laaj = lukija.getLaaj();
         assertTrue(laaj.sisaltaaAvaimen("TR"));
@@ -106,7 +106,7 @@ public class LZWLukijaTest {
     
     private void viimeinenArvoLuetaan(StringBuilder builder, String teksti) {
         builder.append("a");
-        lukija.lisaaMerkki(-1, builder);
+        lukija.kasitteleArvo(-1, builder);
         assertEquals(teksti + (char) 0 + muuntaja.binaariEsitys8Bit('a'), lukija.getTeksti());
     }
     

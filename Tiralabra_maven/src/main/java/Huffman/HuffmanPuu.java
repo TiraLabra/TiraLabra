@@ -48,7 +48,7 @@ public class HuffmanPuu {
             Solmu oikea = keko.poistaHuippuSolmu();
             Solmu vasen = keko.poistaHuippuSolmu();
             
-            Solmu yhdistetty = new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());
+            Solmu yhdistetty = yhdistettySolmu(vasen, oikea);
             linkitaSolmut(yhdistetty, vasen, oikea);
 
             keko.lisaa(yhdistetty);
@@ -67,5 +67,9 @@ public class HuffmanPuu {
         yhdistetty.setOikea(oikea);
         vasen.setVanh(yhdistetty);
         oikea.setVanh(yhdistetty);
-    }   
+    }
+    
+    protected Solmu yhdistettySolmu(Solmu vasen, Solmu oikea) {
+        return new Solmu(vasen.getEsiintymat() + oikea.getEsiintymat());
+    }
 }

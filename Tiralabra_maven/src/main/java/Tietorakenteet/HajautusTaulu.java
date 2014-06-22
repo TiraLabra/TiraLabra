@@ -88,6 +88,7 @@ public class HajautusTaulu {
     /**
      * Lis‰‰ hajautustauluun avaimen ja sille arvon.
      * Jos avain on jo hajautustaulussa, korvaa sen arvon annetulla arvolla.
+     * Lopuksi kasvattaa kokoa mik‰li uusi avain lis‰ttiin.
      * @param avain
      * @param arvo 
      */
@@ -148,7 +149,7 @@ public class HajautusTaulu {
     /**
      * Poistaa sarakkeesta j i:nnen alkion siirt‰en sen j‰lkeen olevat avaimet
      * yhdell‰ paikalla eteenp‰in kunnes tulee eka null-paikka vastaan. Jos
-     * null -paikkaa ei ole, se tulee per‰lle.
+     * null -paikkaa ei ole, se tulee per‰lle. Lopuksi pienent‰‰ kokoa yhdell‰.
      * 
      * Huom: metodi ei tee mit‰‰n jos i == taulu[j].length ja t‰m‰ tapaus tulee
      * vastaan kun poistettavaa avainta ei taulusssa ollut.

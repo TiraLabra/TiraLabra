@@ -84,6 +84,14 @@ public class BinaariMuuntaja {
         return pakkaaja.toString();
     }
 
+    /**
+     * Muuntaa kohdasta "alku" alkaen seuraavan 8 merkin (00 01 01 00...) jonon
+     * asciimerkiksi.
+     * @param ykkosinaJaNollina
+     * @param alku
+     * @return 
+     */
+    
     protected char seuraavaTavuAsciiMerkkina(String ykkosinaJaNollina, int alku) {
         String tavu = ykkosinaJaNollina.substring(alku, alku + 8);
         return asciiMerkkina(tavu);

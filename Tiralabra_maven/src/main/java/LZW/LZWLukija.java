@@ -53,7 +53,7 @@ public class LZWLukija {
         StringBuilder lisattava = new StringBuilder();
         
         while (true) {
-            lisattava = lisaaMerkki(lukija.read(), lisattava);
+            lisattava = kasitteleArvo(lukija.read(), lisattava);
             
             if (lisattava == null) {
                 break;
@@ -65,18 +65,14 @@ public class LZWLukija {
     
     /**
      * K‰sittelee seuraavan merkin joka on parametrina arvo.
-     * lisattava sis‰lt‰‰ merkkijonon joka on joko tyhj‰ (alussa) tai
-     * sis‰lt‰‰ edelt‰vien luettujen merkkien yhdistelm‰n.
-     * 
-     * Muodostaa yhdistelm‰n merkeist‰ nykyinen + merkki (= luettu) ja
-     * jos t‰m‰ ei ole laajennetussa sanastossa, lis‰‰ sen sinne ja
-     * kirjoittaa nykyisen tekstiin. Sen j‰lkeen k‰sitell‰‰n seuraava merkki.
+     * Jos arvo = -1, on koko luettava teksti jo kelattu l‰pi ja muodostettavaan
+     * tekstiin lis‰t‰‰n ainoastaan nykyinen. Muuten lis‰t‰‰n uusi merkki.
      * @param arvo
      * @param lisattava
      * @return 
      */
     
-    protected StringBuilder lisaaMerkki(int arvo, StringBuilder lisattava) {
+    protected StringBuilder kasitteleArvo(int arvo, StringBuilder lisattava) {
         String nykyinen = lisattava.toString();
         
         if (arvo == -1) {
@@ -84,7 +80,23 @@ public class LZWLukija {
             return null;
         }
 
-        String merkki = (char) arvo + "";
+        return kasitteleMerkki((char) arvo + "", nykyinen, lisattava);
+    }
+    
+    /**
+     * lisattava sis‰lt‰‰ merkkijonon joka on joko tyhj‰ (alussa) tai
+     * sis‰lt‰‰ edelt‰vien luettujen merkkien yhdistelm‰n.
+     * 
+     * Metodi palauttaa joko lisattavan arvona "merkki" tai "seuraava" riippuen
+     * siit‰, sis‰lt‰‰kˆ laajennettu sanasto jo "seuraavan" vai ei. Jos ei
+     * sis‰ll‰, tekstiin lis‰t‰‰n nykyinen ja seuraava vied‰‰n aakkostoon.
+     * @param merkki
+     * @param nykyinen
+     * @param lisattava
+     * @return 
+     */
+    
+    protected StringBuilder kasitteleMerkki(String merkki, String nykyinen, StringBuilder lisattava) {
         String seuraava = nykyinen + merkki;
         
         if (! nykyinen.isEmpty() && ! laaj.sisaltaaAvaimen(seuraava)) {

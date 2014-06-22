@@ -15,19 +15,25 @@ import java.io.IOException;
 public class HuffmanOhjaus {
     
     public void suoritaPakkaaminen(String polku) throws IOException {
+        Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".huff");
+        kirjoittaja.kirjoita(kirjoitettavaTeksti(polku));
+    }
+    
+    protected String kirjoitettavaTeksti(String polku) throws IOException {
         Lukija lukija = new Lukija(true);
         lukija.lue(polku);
 
+        BittiEsitykset esitykset = muodostaBittiEsitykset(lukija);
+        return new HuffmanPakkaaja().muodostaKirjoitettavaTeksti(lukija.getTeksti(), esitykset);
+    }
+    
+    protected BittiEsitykset muodostaBittiEsitykset(Lukija lukija) {
+        BittiEsitykset esitykset = new BittiEsitykset();
+        
         HuffmanPuu puu = new HuffmanPuu();
         puu.muodostaHuffmanPuu(lukija.getEsiintymat());
-
-        BittiEsitykset esitykset = new BittiEsitykset();
         esitykset.muodostaMerkeilleBittiEsitykset(puu.getKeko().getSolmut()[0], "");
         
-        HuffmanPakkaaja pakkaaja = new HuffmanPakkaaja();
-        String teksti = pakkaaja.muodostaKirjoitettavaTeksti(lukija.getTeksti(), esitykset);
-
-        Kirjoittaja kirjoittaja = new Kirjoittaja(polku + ".huff");
-        kirjoittaja.kirjoita(teksti);
+        return esitykset;
     }
 }
