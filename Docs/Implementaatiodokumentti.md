@@ -28,7 +28,7 @@ This is a field with the value `16` and as such is O(1) space and time.
 		self.__hash(self.__list.toString())
 
 ```
-Only three O(1) operations are performed which makes this algorithm O(1) time and space.
+Two O(1) operations are performed. `hash` by default is a O(n) algorithm, which makes `update` a O(n) one as well in time, O(1) in space.
 
 ##### new, md5, copy
 
@@ -94,39 +94,91 @@ O(1) time and space - the same explanation as above. It only ever takes a bytear
 			# perform 64 operations
 ```
 
-
+The most important algorithm in the module. We can see that it has one for loop which cycles through 512-bit chunks. Judging by that, it increases every time the length has to be padded over the current multiple of 512 bits - which implies a O(n) algorithm in time and space complexity.  Creating the split chunks also increases in O(n) time. Creating the word array is in constant time, because it is the same for every block (not affected by message length).
 
 
 ##### F, G, H, I, rotateLeft, R
 
-```
-
-```
+All of these algorithms are simple blocks of code which are performed the same way every time, and are not affected by the length of the message, making them O(1) in space and time complexity.
 
 ##### createWordArray
 
 
 ```
+	def __createWordArray(self, message, messageLength, finalBlock):
 
+		message = self.__splitToBlocks(message, 32)
+		wordArray = [0] * 16
+
+		wordIndex = 0
+		for word in message:
+			bytes = self.__splitToBlocks(word, 8)
+			tempByte = 0
+			powers = 0
+
+			for byte in bytes:
+				tempByte = wordArray[wordIndex]
+				tempByte = tempByte | int(byte, 2) << powers
+				powers += 8
+				wordArray[wordIndex] = tempByte
+			
+			wordIndex += 1
+			powers = 0
+
+		if finalBlock:
+			wordArray[-2] = messageLength << 3
+			wordArray[-1] = messageLength >> 29
+
+		return wordArray
 ```
+Splitting the message into blocks always happen with the same parameters, which makes them constant time for this algorithm. Considering that `createWordArray` only works with a 512-bit block, it is not affected by increased message length. As such this algorithm is in constant O(1) time and space complexity.
 
 ##### pad
 
 ```
+	def __pad(self, bstring):
+		"""Adds padding to binary string be congruent to 448 mod 512"""
+		padded = ''
+		messageLength = len(bstring)
 
+		bstring+="1"
+
+		while (len(bstring) % 512) != 448:
+			bstring+="0"
+
+		padded += bstring + self.__pad64B(messageLength)
+
+		return padded
 ```
+Getting a len() from a string is constant time in Python. In the worst case, the while loop will iterate 512 times (when the length is one above 448). From there on, it has an inverse increase in running time, since it needs to append one less element each time.
 
 ##### pad64B
 
 ```
+	def __pad64B(self, length):
+		s = bin(length).replace('b', '0')
+		
+		# If we reach 64-bit overflow
+		if len(s) > 64:
+			return '0' + '1'*63
 
+		padded = ''
+
+		padded = "0" * (64 - len(s))
+		padded += s[::-1]
+		return padded[::-1]
 ```
+This algorithm works with an integer denoting message length. Above a certain point where it reaches 64-bit integer overflow, it is in constant time. Padding at most 63 zeroes also suggests that this is done in constant time and space as well.
+
 
 ##### splitToBlocks
 
 ```
+	def __splitToBlocks(self, message, n):
 
+		return [message[i:i+n] for i in range(0, len(message), n)]
 ```
+
 
 ##### toBinaryString
 
@@ -136,7 +188,7 @@ O(1) time and space - the same explanation as above. It only ever takes a bytear
 		return ''.join("{:08b}".format(byte) for byte in bytearray(string.encode('utf-8')))
 ```
 
-Creating a binary string is O(n) time and space. We can see that message is encoded into a UTF-8 bytearray and formatted into a binary representation of the byte. Even though it needs to encode the string into UTF-8, empirically testing we can see that it is actually O(n):
+Creating a binary string is O(n) time and space. We can see that message is encoded into a UTF-8 bytearray and formatted into a binary representation of the byte. In Python, encoding to UTF-8 seems to be in constant time, and empirically testing we can prove it:
 
 ```
 In [11]: print(min(timeit.Timer('tos("a"*100)', setup="import nmd5; m = nmd5.new(); tos=m._NMD5__toBinaryString").repeat(7, 10000)))
@@ -147,8 +199,6 @@ In [12]: print(min(timeit.Timer('tos("a"*1000)', setup="import nmd5; m = nmd5.ne
 
 ```
 Here the running time increase is tenfold, as well as the message length.
-
-
 
 ### LinkedList class
 
