@@ -19,3 +19,5 @@ Nelipuu tietorakenteelle on JUnit testi, jolla nähdään että se toimii nopeam
 Listalle on vertailu ArrayListin kanssa listalle lisäämisestä. Oma toteutus on ArrayListiä 10 kertaa nopeampi lisäyksen suhteen.
 
 Hajautustaululle on vertailu HashMapin kanssa. Oma toteutus on lisäämisen suhteen huomattavasti hitaampi kuin Javan valmis, mutta haun suhteen ero ei ole yhtä dramaattinen.
+
+Joukolle on vertailu TreeSetin kanssa. Oma toteutus on hitaampi. Omaa toteutusta voisi todennäköisesti nopeuttaa käyttämällä rakenteena omaa hajautustaulua.
