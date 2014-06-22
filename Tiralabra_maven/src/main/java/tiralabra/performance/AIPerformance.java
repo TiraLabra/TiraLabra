@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.game.ai;
+package tiralabra.performance;
 
 import tiralabra.game.Board;
+import tiralabra.game.ai.AI;
 import tiralabra.utilities.ArrayList;
 
 /**
@@ -31,6 +32,7 @@ public class AIPerformance {
         System.out.println("Running tests...");
         System.out.print("[=");
         for (int i = 0; i < operations; i++) {
+            times.add((long) -1);
             board.reset();
 
             while (!board.gameOver()) {
@@ -53,7 +55,7 @@ public class AIPerformance {
                 }
                 times.add(timeTaken);
                 moves++;
-                
+
                 System.out.print("=");
             }
             System.out.print("=");
@@ -64,7 +66,12 @@ public class AIPerformance {
         System.out.println("Average time taken: " + ((double) sum / moves) + "ms");
         System.out.println("All times:");
         for (Long time : times) {
+            if (time == -1) {
+                System.out.println("");
+                continue;
+            }
             System.out.print(time + ";");
+
         }
     }
 

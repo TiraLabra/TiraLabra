@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.utilities;
+package tiralabra.performance;
 
 import java.util.Random;
+import tiralabra.utilities.ArrayList;
+import tiralabra.utilities.ArrayListSorter;
 
 /**
  *

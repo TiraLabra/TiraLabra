@@ -23,6 +23,6 @@ utilities
 * Testattu ArrayListin operaatioiden ja järjestämisen tehokkuus. Miljoonalla satunnaisella luvulla järjestämiseen menee keskimäärin sekunti.
 * ZobristHashista testattu, että sama pelilauta saa aina saman BigInteger -avaimen.
 
-MoveTransmitter ja TextUI -luokat
-=================================
+app/app.ui
+==========
 * Ei testattu, mutta toistuva ajaminen osoittaa toimiviksi. Luokkien tehtävä on yksinkertainen eikä niitä ole tarkoitusta missään vaiheessa laajentaa, vaan pikemminkin ehkä korvata kunnollisella käyttöliittymällä, joten testejä ei tehty.

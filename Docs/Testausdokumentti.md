@@ -1,5 +1,7 @@
-Kaikki testit testipakkauksissa. Testit suurimmaksi osaksi JUnit-testejä, suorituskykytestit ovat ajettavia main-luokkia.
-
+Kaikki JUnit testit testipakkauksissa. Suorituskykytestit ovat ajettavia main-luokkia, jotka löytyvät tiralabra.performance hakemistossa. Suorituskykytestien ajaminen: 
+''' 
+java -cp Tiralabra_maven tiralabra.performance.testiluokka
+'''
 game.ai
 =======
 * Mutaatiotestiprosentti: 28%
