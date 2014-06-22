@@ -226,9 +226,13 @@ All in all, this implementation is very slow compared to `hashlib.md5`, which is
 
 hashlib:
 ```
-
+In [16]: print(min(timeit.Timer('m.hexdigest()', setup="import hashlib; m=hashlib.md5(('a'*500).encode('utf-8'));").repeat(7, 10000)))
+0.005698510998627171
 ```
 nmd5:
 ```
-
+In [17]: print(min(timeit.Timer('m.hexdigest()', setup="import nmd5; m=nmd5.new('a'*500);").repeat(7, 10000)))
+0.3479038219957147
 ```
+
+The conclusion is that `nmd5` is somewhere near 100 times slower than the `hashlib` module.

@@ -186,7 +186,7 @@ This algorithm works with an integer denoting message length. Above a certain po
 		return ''.join("{:08b}".format(byte) for byte in bytearray(string.encode('utf-8')))
 ```
 
-Creating a binary string is O(n) time and space. We can see that message is encoded into a UTF-8 bytearray and formatted into a binary representation of the byte. In Python, encoding to UTF-8 seems to be in constant time, and empirically testing we can prove it:
+Creating a binary string is O(n) time and space. We can see that message is encoded into a UTF-8 bytearray and formatted into a binary representation of the byte. In Python, encoding to UTF-8 seems to be in constant time(average case), and empirically testing we can prove it:
 
 ```
 In [11]: print(min(timeit.Timer('tos("a"*100)', setup="import nmd5; m = nmd5.new(); tos=m._NMD5__toBinaryString").repeat(7, 10000)))
