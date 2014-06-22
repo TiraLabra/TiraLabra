@@ -97,6 +97,15 @@ class TestBlockSplit(unittest.TestCase):
 
 		self.assertEqual(len(split), 32)
 
+class TestCopy(unittest.TestCase):
+	def setUp(self):
+		self.m = nmd5.new("asd")
+		self.n = self.m.copy()
+
+	def test_copy_digests(self):
+		self.assertEqual(self.m.digest(), self.n.digest())
+		self.assertEqual(self.m.hexdigest(), self.n.hexdigest())
+
 class TestAgainstHashlib(unittest.TestCase):
 	def setUp(self):
 		import nmd5
