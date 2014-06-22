@@ -1,3 +1,4 @@
+###Rakenne
 Kirjaston voi helposti jakaa (ja paketit jakavatkin) kolmeen osaan:
 - Matriiseihin, jotka sisältävät N*M numeroa. Niille on toteuttu kaikenlaista
 operaatiota ja algoritmia, kuten Strassenin kertolaskualgoritmi.
@@ -12,19 +13,22 @@ ovat myös käytännössä numeroita ja voivat tallettaa itseään.
 Mitään kuvaa edes on tarpeeton piirtää, koska kaikki kolme ovat erillisiä, eikä
 edes sisäisesti ole toisistaan riippuvaisia.
 
-O-analyysiä:
+###O-analyysiä
 
 Fibonacci-esimerkkiohjelma vertailee fibonacci lukujen laskemista matriisien
 potenssiin korotuksella ja tavallisella iteratiivisella menetelmällä laskemista.
 Ohjelma kuitenkin ennemminki tuo esille kaksi kiinnostaavaa piirrettä kirjaston
 käytöstä:
-1. Integerien toString() kestää huomattavasti enemmän kuin itse sarjan laskeminen.
+
+####Integerien toString() kestää huomattavasti enemmän kuin itse sarjan laskeminen.
 Merkkijonoksi muuttaminen tapahtuu jotakuinkin näin:
 
+```
 res = ""
 for i = 0 -> words.length:
 	res += words[i] * (radix ^ i)
 return res
+```
 
 Mistä ensinnäkin näkyy että metodi on lineaarinen luvun sanojen määrän suhteen.
 Yhteenlaskut ovat O(n), missä n on lukujen määrä sanassa, kertolaskut ovat
@@ -42,7 +46,7 @@ laskiessa ovat kaikki 2. Aikavaativuus täten on O(16 * log(n))).
 1000:nennen luvun laskiessa aikaa kuluu ensin 60.9 ms ja merkkijonoksi
 muuttamiseen kuluu 1365 ms. Eli huomattavasti kauemmin.
 
-2. Iteratiivinen ratkaisu on jostain syystä nopeampi.
+####Iteratiivinen ratkaisu on jostain syystä nopeampi.
 
 Vaikka yhteenlaskuja iteroimalla aikavaativuus on O(n) ja matriisien
 potensseilla O(16 * log(n)), missä n on molemmissa halutun fibonacci luvun
@@ -50,7 +54,7 @@ indeksi.
 Fibonacci(100000) vie matriiseilla 4272 ms ja yhteenlaskuilla 1296 ms.
 Eli jostain syystä väärä metodi on nopeampi.
 
-Puutteita:
+###Puutteita
 
 Olisi ollut kiva luoda myös luokka symbolisille numeroille. Toimisivat
 ulkopuolelle kuin kaikki muut numerot, mutta toString() palauttaisi tarkan
