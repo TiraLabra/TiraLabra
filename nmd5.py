@@ -42,7 +42,7 @@ class NMD5:
 		"""Returns the byte string digest. The idea is to
 		slice every register into 4 bytes and go from the
 		low order bytes of A to the high order bytes of D."""
-		
+
 		res = b''
 		buffers = [self.__A, self.__B, self.__C, self.__D]
 
@@ -194,6 +194,10 @@ class NMD5:
 	def __pad64B(self, length):
 		"""Creates a little-endian 64-bit representation of the message length"""
 		s = bin(length).replace('b', '0')
+		
+		# If we reach 64-bit overflow
+		if len(s) > 64:
+			return '0' + '1'*63
 
 		padded = ''
 

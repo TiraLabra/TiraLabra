@@ -1,6 +1,17 @@
 
 ### Unit testing
 
+* LinkedList
+
+The list object is tested for addition and printing the string stored within.
+
+* Binary string conversion
+
+The module method is verified with a more strict test to create a binary representation string without using list comprehension.
+
+* Padding
+
+Padding is tested so it gives the correct length.
 
 ### Performance testing
 
@@ -10,7 +21,6 @@ Python's `timeit` is a useful tool for performance testing, and provides an easy
 setup = '''
 import nmd5
 m = nmd5.new()
-
 '''
 
 setup = '''
@@ -204,7 +214,9 @@ All in all, this implementation is very slow compared to `hashlib.md5`, which is
 
 hashlib:
 ```
+
 ```
 nmd5:
 ```
+
 ```
