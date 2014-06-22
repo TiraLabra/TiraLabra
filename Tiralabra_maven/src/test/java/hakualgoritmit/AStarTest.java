@@ -121,7 +121,7 @@ public class AStarTest extends TestCase {
         as.AStarHaku(alue, alue.getnode(0, 0), alue.getnode(88, 88));
         ArrayListOma reitti = as.kerroKuljettuReitti();
         
-        assertEquals(116, reitti.koko());
+        assertEquals(117, reitti.koko());
         
     }
     
