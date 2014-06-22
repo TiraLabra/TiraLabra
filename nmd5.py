@@ -42,7 +42,6 @@ class NMD5:
 		low order bytes of A to the high order bytes of D."""
 		res = b''
 		buffers = [self.__A, self.__B, self.__C, self.__D]
-		orderedBytes = []
 
 		for buffer in buffers:
 			bufferbytes = []
