@@ -209,8 +209,7 @@ class NMD5:
 	def __splitToBlocks(self, message, n):
 		"""Helper method to split a message into equal sized parts.
 		Use for 512-bit sized 'blocks' or 16-bit sized 'words'."""
-		if n<1:
-			n=1
+
 		return [message[i:i+n] for i in range(0, len(message), n)]
 
 	def __createWordArray(self, message, messageLength, finalBlock):
