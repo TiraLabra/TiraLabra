@@ -25,7 +25,6 @@ public class Router {
 
 	private final int LINE_CHANGE_PENALTY = 100;
 	private final double WALK_DISTANCE = 100;
-	private final double WALK_PENALTY = 20; // Walk penalty per meter
 	private final double WALKING_SPEED = 1.5; // In m/s
 	private final double TIME_MODIFIER = 100;
 	private final double BUS_COST = 10; // It is better to travel with rails 
@@ -41,6 +40,8 @@ public class Router {
 	
 	private Map<Station, Double> costFromStart;
 	private Map<Station, Double> costToEnd;
+	
+	private Map<Station, Integer> lineChanges;
 	
 	private Station endStation;	
 	private String routeStartTime;
@@ -71,6 +72,7 @@ public class Router {
 		costToEnd.put(start, GeomertyUtils.calculateDistance(start, end));
 		openNodes.insert(GeomertyUtils.calculateDistance(start, end), start);
 		timeAtStation.put(start, startTime);
+		lineChanges.put(start, 0);
 		
 		while (!openNodes.isEmpty()) {
 			Station current = openNodes.getAndRemoveMin();
@@ -135,9 +137,14 @@ public class Router {
 		cameFromStop.put(station, stop);
 		timeAtStation.put(station, stop.getArrival());
 		
-		double cost = GeomertyUtils.calculateDistance(current, endStation) * 17 + linePenalty + timeScore + BUS_COST;
+		if (linePenalty != 0)
+			lineChanges.put(station, lineChanges.get(current) + 1);
+		else
+			lineChanges.put(station, lineChanges.get(current));
 		
-		costFromStart.put(station, costToStart);
+		double cost = GeomertyUtils.calculateDistance(current, endStation) * 17 + linePenalty  + BUS_COST;
+		
+		costFromStart.put(station, costToStart + lineChanges.get(station) * 50);
 		costToEnd.put(station, cost);
 		
 		if (!openNodes.contains(station)) {
@@ -193,14 +200,18 @@ public class Router {
 			if (visitedNodes.contains(nearbyStation))
 				continue;
 			
-			double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
-			int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
-			String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
-			double costToStart = costFromStart.get(current) + timeFromStart(timeAfterWalk);
-			
-			if (!openNodes.contains(nearbyStation) || costToStart < costFromStart.get(nearbyStation)) {
-				addStationToProcessed(nearbyStation, current, timeAfterWalk, startTime, costToStart);
-			}
+			processNearbyStation(current, nearbyStation, startTime);
+		}
+	}
+	
+	private void processNearbyStation(Station current, Station nearbyStation, String startTime) {
+		double walkDistance = GeomertyUtils.calculateDistance(current, nearbyStation);
+		int walkTime = (int) Math.round(((walkDistance * WALKING_SPEED) / 60));
+		String timeAfterWalk = TimeUtils.getTimeAfterWalk(timeAtStation.get(current), walkTime);
+		double costToStart = costFromStart.get(current) + timeFromStart(timeAfterWalk);
+		
+		if (!openNodes.contains(nearbyStation) || costToStart < costFromStart.get(nearbyStation)) {
+			addStationToProcessed(nearbyStation, current, timeAfterWalk, startTime, costToStart);
 		}
 	}
 	
@@ -232,5 +243,7 @@ public class Router {
 		
 		costFromStart = new DefaultHashMap<Station, Double>(2000);
 		costToEnd = new DefaultHashMap<Station, Double>(2000);
+		
+		lineChanges = new DefaultHashMap<Station, Integer>(2000);
 	}
 }

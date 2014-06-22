@@ -79,6 +79,11 @@ public class BinaryHeap<T> implements Heap<T> {
 		return objects.contains(object);
 	}
 	
+	@Override
+	public double getMinValue() {
+		return heapArray[0].getScore();
+	}
+	
 	private void removeMin() {
 		heapArray[0] = heapArray[--position];
 		minHeapify();

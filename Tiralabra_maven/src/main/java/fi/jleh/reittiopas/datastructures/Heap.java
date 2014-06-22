@@ -39,4 +39,10 @@ public interface Heap<T> {
 	 * @return
 	 */
 	boolean contains(T object);
+	
+	/**
+	 * Returns value of top node.
+	 * @return
+	 */
+	double getMinValue();
 }
