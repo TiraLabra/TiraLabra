@@ -70,9 +70,7 @@ public class SlidingWindow{
         int l = 0;
         int j = 0;
         for(byte m: bytes){
-            if(index+j >= window.getLength()){
-                break;
-            } if(m != window.get(index+j)){
+            if(m != window.get(index+j)){
                 break;
             } else {
                 l++;

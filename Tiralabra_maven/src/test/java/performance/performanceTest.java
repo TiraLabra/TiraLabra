@@ -16,7 +16,7 @@ import org.junit.Test;
 
 
 public class performanceTest {
-    String input = "isolorem.txt";
+    String input = "iso.txt";
     String output = "testout.comp";
     String packedlzw = "test.lzw";
     String packedlz77 = "test.lz77";

@@ -24,7 +24,7 @@ public class DecompressorLZW {
         dictionarySize = (int)Math.pow(2, entryBits);
         io = new IO(input, output);
         dictionary = new Dictionary(dictionarySize);
-        inputBuffer = new InputBuffer(io, entryBits*2+1);
+        inputBuffer = new InputBuffer(io, entryBits*3+1);
     }
     
     public void decompress() throws IOException{     
@@ -35,6 +35,11 @@ public class DecompressorLZW {
             try{
                 entry = readNext();
             } catch(RuntimeException e){
+                entry = ArrayUtils.combine(w,new byte[]{w[0]});
+                for(byte b : entry){io.write(new ByteAsBits(b));}
+                dictionary.add(entry);
+                w = entry;
+                inputBuffer.read();
                 continue;
             }            
             if(entry == null){break;}
@@ -53,6 +58,7 @@ public class DecompressorLZW {
         boolean[] bits = inputBuffer.nextBits(entryBits);
         if(bits == null) { return null;}
         int k = ArrayUtils.booleanArrayToInt(bits);
+        
         byte[] entry = dictionary.get(k);
         if(entry == null) {throw new RuntimeException();}
         for(byte b : entry){

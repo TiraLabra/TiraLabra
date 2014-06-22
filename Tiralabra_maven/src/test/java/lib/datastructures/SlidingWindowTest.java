@@ -43,4 +43,20 @@ public class SlidingWindowTest {
         assertTrue(match[0] == 0 && match[1] == 2);
     }
     
+    @Test
+    public void testFindBestMatch2() {
+        w.add((byte)1);
+        w.add((byte)2);
+        w.add((byte)3);
+        w.add((byte)4);
+        w.add((byte)5);
+        w.add((byte)6);
+        LinkedQueue<Byte> q = new LinkedQueue<Byte>();
+        q.enqueue((byte)4);
+        q.enqueue((byte)5);
+        q.enqueue((byte)6);
+        int[] match = w.findBestMatch(q);
+        assertTrue(match[0]+ ", " + match[1],match[0] == 2 && match[1] == 3);
+    }
+    
 }

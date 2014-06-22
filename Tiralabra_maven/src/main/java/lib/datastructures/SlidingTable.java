@@ -48,7 +48,7 @@ public class SlidingTable {
          */
         public byte get(int offset){
             int index = lastIndex+1 + offset;
-            if (index >= length){
+            while (index >= length){
                 index = index-length ;
             }
             return table[index];

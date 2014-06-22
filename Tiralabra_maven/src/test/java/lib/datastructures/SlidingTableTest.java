@@ -44,7 +44,18 @@ public class SlidingTableTest {
         table.add((byte) 5);
         assertTrue(table.get(0) == (byte)3);
     }
-    
+    @Test
+    public void testGet2() {
+        SlidingTable table = new SlidingTable(5);
+        byte a = 1;
+        table.add(a);
+        table.add((byte) (a+1));
+        table.add((byte) (a+2));
+        table.add((byte) (a+3));
+        table.add((byte) (a+4));
+        byte ret = table.get(6);
+        assertTrue(String.valueOf(ret),ret == a+1);
+    }
     @Test
     public void testPollAll(){
         SlidingTable table = new SlidingTable(3);

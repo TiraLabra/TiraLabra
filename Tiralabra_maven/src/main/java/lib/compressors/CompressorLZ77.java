@@ -23,6 +23,8 @@ public class CompressorLZ77 {
      * 
      * @param input lähdetiedosto
      * @param output kohdetiedosto, luodaan suorituksen aluksi.
+     * @param offsetBits etäisyyden koodaamiseen käytettävät bitit.
+     * @param lengthBits pituuden koodaamiseen käytettävät bitit.
      * @throws IOException 
      */
     public CompressorLZ77(String input, String output, int offsetBits, int lengthBits) throws IOException{  

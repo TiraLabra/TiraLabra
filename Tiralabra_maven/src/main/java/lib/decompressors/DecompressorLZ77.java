@@ -26,7 +26,7 @@ public class DecompressorLZ77 {
         
         io = new IO(input, output);
         window = new SlidingTable(windowSize);
-        inputStream = new InputBuffer(io, offsetBits + lengthBits +1);
+        inputStream = new InputBuffer(io, (offsetBits + lengthBits)*2 +1);
     }
     /**
      * Purkaa tiedoston.
