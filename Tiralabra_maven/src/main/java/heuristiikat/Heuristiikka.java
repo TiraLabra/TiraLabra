@@ -1,7 +1,6 @@
 package heuristiikat;
 
 import tietorakenteet.Node;
-import tietorakenteet.Node;
 
 /**
  * Heuristiikan interface.

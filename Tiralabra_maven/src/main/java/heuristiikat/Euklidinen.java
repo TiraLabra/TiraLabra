@@ -1,13 +1,16 @@
-
 package heuristiikat;
 
 import tietorakenteet.Node;
 
 /**
- *
+ * Euklidinen heuristiikka.
+ * Pythagoran lausetta vastaava laskentatapa.
  */
 public class Euklidinen implements Heuristiikka {
 
+    /**
+     * Muuttuja joka kertoo yhden askeleen liikkumakustannuksen.
+     */
     private static final int askel = 10;
 
     public int laskeArvio(Node alku, Node loppu) {

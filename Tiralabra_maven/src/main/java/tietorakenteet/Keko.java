@@ -11,10 +11,20 @@ public class Keko {
      */
     private static final int OLETUSKOKO = 10;
 
+    /**
+     * Keon taulukkosisältö
+     */
     private Node[] sisalto;
     
+    /**
+     * Keon koko, kertoo kuinka monta alkiota keossa on tallennettuna.
+     */
     private int koko;
     
+    /**
+     * Tieto taulukon koosta, on siis aina suurempi tai yhtä suuri
+     * kuin keon koko.
+     */
     private int taulukonKoko;
     
     /**
@@ -48,6 +58,10 @@ public class Keko {
         this.koko = kokoSisalto.length;
     }
     
+    /**
+     * Lisäysmetodi, lisää annetun noden kekoon ja huolehtii sen oikeaan kohtaan.
+     * @param n 
+     */
     public void lisaa(Node n) {
         if (koko >= taulukonKoko)
             kasvataTaulukkoa();
@@ -93,6 +107,8 @@ public class Keko {
     /**
      * Kertoo mistä kohtaa taulukkoa kyseinen alkio löytyy.
      * Palauttaa -1, jos ei löydy ollenkaan.
+     * Tämä jäi toteutetuksi taulukon läpikäyntinä, voisi mahdollisesti hyöydyntää
+     * keon ominaisuuksia.
      * @param o
      * @return 
      */

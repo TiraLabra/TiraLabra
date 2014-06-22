@@ -32,7 +32,14 @@ public class AStar {
      */
     private Heuristiikka heuristiikka;
     
+    /**
+     * Tieto nodesta, josta haku alkaa.
+     */
     private Node alkunode;
+    
+    /**
+     * Tieto nodesta, joka on haun maali.
+     */
     private Node loppunode;
     
     /**
@@ -54,11 +61,9 @@ public class AStar {
     
     public AStar(Heuristiikka heuristiikka) {
         kaydyt = new ArrayListOma();
-        
         kaymatta = new Keko();
         
         this.heuristiikka = heuristiikka;
-        
         this.kuljettuReitti = new ArrayListOma();
         
     }
