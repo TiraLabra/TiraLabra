@@ -49,14 +49,17 @@ public class Kuvalukija {
      * @return 
      */
     public Node[][] muodostaAlue() {
+        System.out.println("Käsitellään kuvatiedosto hakualuemuotoon...");
+        long alkuaika = System.currentTimeMillis();
+
         Node[][] nodet = new Node[kuva.getHeight()][kuva.getWidth()];
         for (int i =0; i < kuva.getHeight(); i++) {
             for (int j=0; j < kuva.getWidth(); j++) {
                 int kustannus = laskekustannus(kuva.getRGB(j, i));
                 nodet[i][j] = new Node(i, j, kustannus);
-                //System.out.println("Lisätty node " + i + ", " + j);
             }
         }
+        System.out.println("Kuvan käsittelyaika: " + (System.currentTimeMillis() - alkuaika) + "ms");
         
         return nodet;
     }
