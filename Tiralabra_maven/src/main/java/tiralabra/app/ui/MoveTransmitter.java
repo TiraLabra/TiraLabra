@@ -6,7 +6,6 @@
 package tiralabra.app.ui;
 
 import tiralabra.game.Board;
-import tiralabra.game.Player;
 import tiralabra.utilities.ArrayList;
 ;
 
@@ -49,7 +48,7 @@ public class MoveTransmitter extends Thread {
     }
 
     /**
-     * Commit the moves added to the vector. While the vector is empty wait for
+     * Commit the moves added to the list. While the list is empty wait for
      * a move to be added there. Additionally, pass a turn, in the case that the
      * player whose turn it is next, can't move.
      *
