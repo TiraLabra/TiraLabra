@@ -4,6 +4,7 @@ import hakualgoritmit.AStar;
 import apurakenteet.Kuvalukija;
 import apurakenteet.Kuvanayttaja;
 import heuristiikat.*;
+import suorituskyky.AStarSuorituskyky;
 import tietorakenteet.*;
 import ui.TekstiUI;
 
@@ -14,86 +15,64 @@ public class Main {
     
     public static void main( String[] args ) {
         
-        System.out.println("Tiralabra alpha version");
+        System.out.println("Tiralabra - AStar-reitinhaku");
         
-        //16x16-testialue
-        Alue a1 = new Alue(16);
-        a1.luoEsimerkkiTaulukko();
-        
-        //8x8-testialue
-        Alue a2 = new Alue(8);
-        a2.luoPieniTestitaulukko();
-        
-        //Alue kuvasta:
-        Kuvalukija kl = new Kuvalukija("100x100.bmp");
-        //Kuvalukija kl = new Kuvalukija("kumpula.bmp");
-        //Kuvalukija kl = new Kuvalukija("maastokuva.bmp");
-        Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
-        kuvaAlue.setAlueenKuva(kl.getKuva());
-        
-        boolean tulostaKuva = false;
-        
-        // Mitä aluetta tarkastellaan...
-        Alue hakualue = kuvaAlue;
-        int alkurivi = 0;
-        int alkusarake = 0;
-        int loppurivi = 88;
-        int loppusarake = 88;
-        tulostaKuva = true;
+//        //16x16-testialue
+//        Alue a1 = new Alue(16);
+//        a1.luoEsimerkkiTaulukko();
 
-//        Alue hakualue = a1;
-//        int alkurivi = 0;
-//        int alkusarake = 0;
-//        int loppurivi = 14;
-//        int loppusarake = 13;
-
-        System.out.println(hakualue.toString());
+        //System.out.println(hakualue.toString());
         
         //Heuristiikka h = new Manhattan();
-        Heuristiikka h = new Euklidinen();
+        //Heuristiikka h = new Euklidinen();
         //Heuristiikka h = new Dijkstra();
         
+        //AStar as = new AStar(h);
         
-        AStar as = new AStar(h);
-        
-        if (as.AStarHaku(hakualue, hakualue.getnode(alkurivi, alkusarake), hakualue.getnode(loppurivi,loppusarake))) {
-            // Tulostus:
-            System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
-
-            ArrayListOma reitti = as.kerroKuljettuReitti();
-            System.out.println("\nKuljettu reitti: ("+ reitti.koko()+ " kpl)");
-            //for (Node n : reitti) {
-            for (int i = 0; i < reitti.koko(); i++) {
-                Node n = (Node)reitti.palautaKohdasta(i);
-                System.out.println(n.toString());
-                n.toString();
-            }
-            System.out.println(hakualue.toString());
-            System.out.println(as.yhteenveto());
-
-            System.out.println("-------");
-            
-            if (tulostaKuva) {
-                Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
-                kn.muodostaKuvaanPolku(reitti);
-                kn.naytaKuva();
-            }
-            
-        } else {
-            System.out.println("Hakua ei voitu suorittaa, tarkasta parametrit!");
-        }
+//        if (as.AStarHaku(hakualue, hakualue.getnode(0, 0), hakualue.getnode(15,15))) {
+//            // Tulostus:
+//            System.out.println("Yhteensä " + as.getAskelia() + " laskenta-askelta.");
+//
+//            ArrayListOma reitti = as.kerroKuljettuReitti();
+//            System.out.println("\nKuljettu reitti: ("+ reitti.koko()+ " kpl)");
+//            //for (Node n : reitti) {
+//            for (int i = 0; i < reitti.koko(); i++) {
+//                Node n = (Node)reitti.palautaKohdasta(i);
+//                System.out.println(n.toString());
+//                n.toString();
+//            }
+//            System.out.println(hakualue.toString());
+//            System.out.println(as.yhteenveto());
+//
+//            System.out.println("-------");
+//            
+//            tulostaKuva = false;
+//            if (tulostaKuva) {
+//                Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+//                kn.muodostaKuvaanPolku(reitti);
+//                kn.naytaKuva();
+//            }
+//            
+//        } else {
+//            System.out.println("Hakua ei voitu suorittaa, tarkasta parametrit!");
+//        }
         
         
         
         // Testauskoodia sekalaiseen debuggaukseen:
-        //testausta();
+        //sekatestausta();
         
         //TekstiUI ui = new TekstiUI();
         //ui.suorita();
         
+        //Kuvatesti("testi.bmp");
+        
+        AStarSuorituskyky testaus = new AStarSuorituskyky();
+        testaus.suorita();
+        
     }
     
-    private static void testausta() {
+    private static void sekatestausta() {
 
         Node n0 = new Node(0,0,1);
         Node n1 = new Node(1,0,1);
@@ -124,20 +103,21 @@ public class Main {
         
         nu.setEtaisyysMaaliin(2);
         
-//        Node nu2 = new Node(8,8,1);
-//        nu2.setEtaisyysMaaliin(4);
-//        k.lisaa(nu2);
-//        
-//        System.out.println(k.toString());
-//        
-//        k.poistaPienin();
-//        System.out.println(k.toString());
-//        
-//        n4.setEtaisyysMaaliin(1);
-//        k.pienennaPainoarvoa(n4);
-//        
-//        System.out.println(k.toString());
+    }
+    
+    /**
+     * Testikäyttöä varten oleva metodi, jolla voi katsoa, millaisen 
+     * @param kuvanimi 
+     */
+    private static void Kuvatesti(String kuvanimi) {
+        Kuvalukija kl = new Kuvalukija(kuvanimi);
+        Alue kuvaAlue = new Alue(kl.muodostaAlue(), kl.getKorkeus(), kl.getLeveys());
+        kuvaAlue.setAlueenKuva(kl.getKuva());
         
-
+        System.out.println(kuvaAlue.toString());
+        Kuvanayttaja kn = new Kuvanayttaja(kl.getKuva());
+        //kn.muodostaKuvaanPolku(reitti);
+        kn.naytaKuva();
+        
     }
 }
