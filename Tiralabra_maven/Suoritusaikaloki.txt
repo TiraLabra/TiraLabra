@@ -1,0 +1,134 @@
+2014/06/08 23:21:50 LZW:n pakkausaika: 570
+2014/06/08 23:21:51 LZ77:n pakkausaika: 590
+2014/06/08 23:21:51 LZW:n purkuaika: 830
+2014/06/08 23:21:52 LZ77:n purkuaika: 770
+
+2014/06/15 16:29:53 LZW:n purkuaika: 421
+2014/06/15 16:29:54 LZ77:n purkuaika: 460
+2014/06/15 16:29:54 LZW:n pakkausaika: 378
+2014/06/15 16:29:55 LZ77:n pakkausaika: 443
+
+2014/06/15 17:59:40 LZW:n pakkausaika: 400
+2014/06/15 17:59:41 LZ77:n pakkausaika: 480
+2014/06/15 17:59:41 LZW:n purkuaika: 750
+2014/06/15 17:59:42 LZ77:n purkuaika: 680
+
+2014/06/15 21:44:18 LZW:n pakkausaika: 451
+2014/06/15 21:44:18 LZ77:n pakkausaika: 523
+2014/06/15 21:44:19 LZW:n purkuaika: 409
+2014/06/15 21:44:19 LZ77:n purkuaika: 685
+
+2014/06/15 21:46:39 LZW:n purkuaika: 780
+2014/06/15 21:46:40 LZ77:n purkuaika: 770
+2014/06/15 21:46:41 LZW:n pakkausaika: 510
+2014/06/15 21:46:41 LZ77:n pakkausaika: 590
+
+2014/06/15 22:53:41 LZW:n pakkausaika: 600
+2014/06/15 22:53:42 LZ77:n pakkausaika: 620
+2014/06/15 22:53:42 LZW:n purkuaika: 760
+2014/06/15 22:53:43 LZ77:n purkuaika: 720
+
+2014/06/15 22:54:14 LZW:n purkuaika: 750
+2014/06/15 22:54:15 LZ77:n purkuaika: 790
+2014/06/15 22:54:15 LZW:n pakkausaika: 520
+2014/06/15 22:54:16 LZ77:n pakkausaika: 590
+
+2014/06/15 23:00:18 LZW:n purkuaika: 422
+2014/06/15 23:00:18 LZ77:n purkuaika: 343
+2014/06/15 23:00:18 LZW:n pakkausaika: 468
+2014/06/15 23:00:19 LZ77:n pakkausaika: 531
+
+2014/06/15 23:00:33 LZW:n purkuaika: 375
+2014/06/15 23:00:34 LZ77:n purkuaika: 343
+2014/06/15 23:00:34 LZW:n pakkausaika: 359
+2014/06/15 23:00:35 LZ77:n pakkausaika: 437
+
+2014/06/15 23:01:12 LZW:n pakkausaika: 499
+2014/06/15 23:01:12 LZ77:n pakkausaika: 546
+2014/06/15 23:01:13 LZW:n purkuaika: 670
+2014/06/15 23:01:14 LZ77:n purkuaika: 656
+
+2014/06/22 15:23:05 LZW:n purkuaika: 622
+2014/06/22 15:23:05 LZW:n purkuaika: 594
+2014/06/22 15:23:06 LZ77:n purkuaika: 460
+
+2014/06/22 15:23:06 LZ77:n purkuaika: 490
+2014/06/22 15:23:06 LZW:n pakkausaika: 500
+2014/06/22 15:23:06 LZ77:n pakkausaika: 600
+2014/06/22 15:23:07 LZ77:n pakkausaika: 570
+
+2014/06/22 15:23:07 LZW:n pakkausaika: 470
+2014/06/22 15:23:14 LZW:n purkuaika: 760
+2014/06/22 15:23:15 LZ77:n purkuaika: 760
+2014/06/22 15:23:15 LZW:n pakkausaika: 540
+
+2014/06/22 15:23:16 LZ77:n pakkausaika: 580
+2014/06/22 15:23:39 LZW:n purkuaika: 770
+2014/06/22 15:23:40 LZ77:n purkuaika: 720
+2014/06/22 15:23:41 LZW:n pakkausaika: 500
+
+2014/06/22 15:23:41 LZ77:n pakkausaika: 580
+2014/06/22 15:58:24 LZW:n purkuaika: 750
+2014/06/22 15:58:25 LZ77:n purkuaika: 680
+2014/06/22 15:58:25 LZW:n pakkausaika: 540
+
+2014/06/22 15:58:26 LZ77:n pakkausaika: 720
+2014/06/22 19:32:48 LZW:n purkuaika: 735
+2014/06/22 19:32:49 LZ77:n purkuaika: 680
+2014/06/22 19:32:49 LZW:n pakkausaika: 412
+
+2014/06/22 19:32:50 LZ77:n pakkausaika: 442
+2014/06/22 19:37:55 LZW:n pakkausaika: 578
+2014/06/22 19:37:56 LZ77:n pakkausaika: 656
+2014/06/22 19:37:56 LZW:n purkuaika: 713
+
+2014/06/22 19:37:57 LZ77:n purkuaika: 685
+2014/06/22 19:39:14 LZW:n purkuaika: 776
+2014/06/22 19:39:15 LZ77:n purkuaika: 685
+2014/06/22 19:39:15 LZ77:n pakkausaika: 600
+2014/06/22 19:39:16 LZW:n pakkausaika: 503
+
+2014/06/22 20:05:53 LZW:n purkuaika: 4380
+2014/06/22 20:05:57 LZ77:n purkuaika: 4350
+2014/06/22 20:06:00 LZW:n pakkausaika: 2960
+2014/06/22 20:06:04 LZ77:n pakkausaika: 3720
+
+2014/06/22 20:07:03 LZW:n purkuaika: 4311
+2014/06/22 20:07:07 LZ77:n purkuaika: 4200
+2014/06/22 20:07:10 LZW:n pakkausaika: 2950
+2014/06/22 20:07:14 LZ77:n pakkausaika: 3730
+
+2014/06/22 20:08:11 LZW:n purkuaika: 4210
+2014/06/22 20:08:15 LZ77:n purkuaika: 4190
+2014/06/22 20:08:18 LZW:n pakkausaika: 2930
+2014/06/22 20:08:21 LZ77:n pakkausaika: 3730
+
+2014/06/22 20:08:43 LZW:n purkuaika: 4250
+2014/06/22 20:08:48 LZ77:n purkuaika: 4190
+2014/06/22 20:08:50 LZW:n pakkausaika: 2970
+2014/06/22 20:08:54 LZ77:n pakkausaika: 3760
+
+2014/06/22 22:12:18 LZW:n purkuaika: 1997
+2014/06/22 22:12:22 LZ77:n purkuaika: 3432
+2014/06/22 22:12:24 LZW:n pakkausaika: 1997
+2014/06/22 22:12:27 LZ77:n pakkausaika: 3572
+
+2014/06/22 22:13:06 LZW:n pakkausaika: 2777
+2014/06/22 22:13:10 LZ77:n pakkausaika: 3588
+2014/06/22 22:13:13 LZW:n purkuaika: 3479
+2014/06/22 22:13:17 LZ77:n purkuaika: 3385
+
+2014/06/22 22:13:38 LZW:n purkuaika: 3525
+2014/06/22 22:13:42 LZ77:n purkuaika: 3385
+2014/06/22 22:13:45 LZW:n pakkausaika: 2902
+2014/06/22 22:13:48 LZ77:n pakkausaika: 3666
+
+2014/06/22 22:31:30 LZW:n purkuaika: 3651
+2014/06/22 22:31:34 LZ77:n purkuaika: 3947
+2014/06/22 22:31:37 LZW:n pakkausaika: 2901
+2014/06/22 22:31:40 LZ77:n pakkausaika: 3604
+
+2014/06/22 22:42:56 LZW:n pakkausaika: 3027
+2014/06/22 22:43:00 LZ77:n pakkausaika: 4041
+2014/06/22 22:43:03 LZW:n purkuaika: 3510
+2014/06/22 22:43:07 LZ77:n purkuaika: 3369
