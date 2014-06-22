@@ -30,18 +30,41 @@ Toinen kokonaan tehty oma tietorakenne Keko. Käytännössä nimestä huolimatta
 
 
 
-## Saavutetut aika- ja tilavaatimukset
-## Suorituskyky- ja O-analyysivertailu
+## Saavutetut aika- ja tilavaatimukset, suorituskyky- ja O-analyysivertailu
 
-tulossa testauksen muodostamisen yhteydessä...
+
+
+Keon operaatioiden pitäisi noudattaa teoreettisia binäärikeon aikavaatimuksia. Minimin lukeminen on vakioaikaista. Minimin poisto, uuden syöttäminen, ja alkion prioriteerin pienentäminen pitäisi suoriutua O(log(n))-ajassa. Pienenä miinuksena on operaatio jossa etsitään halutun noden kohta indeksinä. Tämä tuli tehtyä aluksi vain taulukon läpikäyntinä, enkä ehtinyt muuttaa sitä mahdollisesti keko-ominaisuuksia hyödyntäväksi. Sen aikavaatimus taitaa olla siis O(n).
+
+Suorituskykyvertailusta löytyy konkretiaa parhaiten testausdokumentista.
+
+
 
 ## Työn mahdolliset puutteet ja parannusehdotukset
 
+Harmittavin puute tulee siitä, etten ehtinyt saada JARia toimivaksi kuvien polkujen osalta. Olisi varmaan triviaali korjata, kun tietäisi miten ne pitää määritellä.
+
+Yleisesti ottaen käyttöliittymä on hyvin karu, sitä voisi parannella jos ohjelmasta haluaisi oikeasti käytettävän. Yksinkertainen graafinen käyttöliittymä, jossa voisi kuvasta klikkaamalla valita sekä lähtö- että maalipisteen toisi huimasti lisää käytettävyyttä. Mutta nämä eivät kuuluneet kurssin painopisteisiin, joten niihin en käyttänyt aikaa paljoa.
+
+Kuvanluvussa kuljettavuusarvojen tulkintaa voisi viilailla paremmaksi. Nyt oli hieman haastavaa löytää hyviä valmiita karttakuvia, joissa olisi paljon eri painotuksia, ja riittävästi vaalea alueita, mutta myös selkeitä seiniä jotka pilkkovat hakualuetta.
+
+Olisi ollut mielenkiintoista tehdä myös esim. fibonacci-toteutus kekoon, ja tehdä suorituskykyvertailuja sen kanssa.
+
 ## Lähteet
 
+Määrittelydokementissa oli lähteitä, joita käytetty suunnitteluvaiheessa. Tässä listattu lisäksi joitain, jotka olivat apuna toteutusvaiheessa.
 
 
 Kuvanlukijassa tarvittua algoritmia pikselin "tummuuden" laskemiseksi:
 
 * http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
 * http://en.wikipedia.org/wiki/Luminance_(relative)
+
+AStar-materiaalia mm:
+
+* http://qiao.github.io/PathFinding.js/visual/
+* http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+* http://www.policyalmanac.org/games/aStarTutorial.htm
+* http://wiki.gamegardens.com/Path_Finding_Tutorial
+
+
