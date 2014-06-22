@@ -52,10 +52,6 @@ public class Kuvanayttaja {
      */
     public void muodostaKuvaanPolku(ArrayListOma reitti) {
         muodostaKuvaanPolku(reitti, oletusReittivari);
-//        for (int i = 0; i < reitti.koko(); i++) {
-//            Node n = (Node) reitti.palautaKohdasta(i);
-//            kuva.setRGB(n.getSarake(), n.getRivi(), Color.RED.getRGB());
-//        }
     }
     
     /**
@@ -70,7 +66,5 @@ public class Kuvanayttaja {
                 kuva.setRGB(n.getSarake(), n.getRivi(), Color.RED.getRGB());
             }
         }
-        
     }
-    
 }

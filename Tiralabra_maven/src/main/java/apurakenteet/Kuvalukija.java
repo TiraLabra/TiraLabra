@@ -12,7 +12,14 @@ import tietorakenteet.*;
  */
 public class Kuvalukija {
     
+    /**
+     * Hakemiston nimi, missä aluekuvat sijaitsevat
+     */
     private static final String aluehakemisto = "alueet/";
+    
+    /**
+     * Oletusnimi, mitä tiedostoa käytetään jos muuta ei ole annettu.
+     */
     private static final String oletusnimi = "esim.bmp";
     
     /**
@@ -99,10 +106,6 @@ public class Kuvalukija {
             kustannus = 1;
         else
             kustannus = 0;
-        
-//        if (rgb == Color.BLACK.getRGB()) {
-//            kustannus = 9;
-//        }
         
         return kustannus;
     }
