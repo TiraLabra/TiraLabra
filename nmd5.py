@@ -15,6 +15,8 @@ class NMD5:
 		if arg:
 			self.__list.add(Node(arg, None))
 			self.__hash(self.__list.toString())
+		else:
+			self.__hash(self.__list.toString()) # Generate hash for nullstring
 		
 		self.digest_size = 16
 
