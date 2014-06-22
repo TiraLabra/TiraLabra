@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['_7eedge',['~edge',['../classsuffix__trie_1_1edge.html#a10c602847a0349ea05d7aff29493d4e7',1,'suffix_trie::edge']]],
-  ['_7eedit_5fdistance',['~edit_distance',['../classedit__distance.html#ae2799d0b562cd7e7aacf4719329edda4',1,'edit_distance']]],
-  ['_7enode',['~node',['../classsuffix__trie_1_1node.html#a495615a4cd50f64bc2455d7a8e8d9cbe',1,'suffix_trie::node']]],
-  ['_7erabin_5fkarp_5fsearcher',['~rabin_karp_searcher',['../classrabin__karp__searcher.html#af614ac8b12c025aec3d7fae9ef77002c',1,'rabin_karp_searcher']]],
-  ['_7esuffix_5ftrie',['~suffix_trie',['../classsuffix__trie.html#ad167499438414cfd39d4348293ce518c',1,'suffix_trie']]]
+  ['z_5falgo_5fcompare',['z_algo_compare',['../z__algorithm_8hpp.html#afe402746e17d839887dcfe0dc378f0ef',1,'z_algorithm.cpp']]],
+  ['z_5falgo_5fget_5fpositions',['z_algo_get_positions',['../z__algorithm_8hpp.html#a6e993244fe95494de6686ee986f36503',1,'z_algo_get_positions(const string &amp;haystack, const string &amp;needle, int start=0, int upper_bound_cnt=-1):&#160;z_algorithm.cpp'],['../z__algorithm_8hpp.html#ac4a25bd217172483c570b87b5cb9a86b',1,'z_algo_get_positions(const char *haystack, const char *needle, int start=0, int haystack_length=-1, int needle_length=-1, int upper_bound_cnt=-1):&#160;z_algorithm.cpp']]],
+  ['z_5falgorithm_2ehpp',['z_algorithm.hpp',['../z__algorithm_8hpp.html',1,'']]]
 ];

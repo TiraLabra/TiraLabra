@@ -82,6 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classsuffix__trie__builder-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">suffix_trie_builder Class Reference</div>  </div>
@@ -89,16 +90,69 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="suffix__trie__builder_8hpp_source.html">suffix_trie_builder.hpp</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af0a2117821333522f56902f8f2589575"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsuffix__trie.html">suffix_trie</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsuffix__trie__builder.html#af0a2117821333522f56902f8f2589575">build_trie</a> (const char *str, int length=-1)</td></tr>
+<tr class="separator:af0a2117821333522f56902f8f2589575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56d6f17da2331762f395fa0744d0fee1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsuffix__trie.html">suffix_trie</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsuffix__trie__builder.html#a56d6f17da2331762f395fa0744d0fee1">build_trie</a> (const string &amp;str)</td></tr>
+<tr class="separator:a56d6f17da2331762f395fa0744d0fee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><em><a class="el" href="classsuffix__trie__builder.html">suffix_trie_builder</a></em> has the purpose to build a suffix trie from a given string </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af0a2117821333522f56902f8f2589575"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsuffix__trie.html">suffix_trie</a> * suffix_trie_builder::build_trie </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>returns a pointer to a <em><a class="el" href="classsuffix__trie.html">suffix_trie</a></em>. <em>str</em> is the text which will be processed and <em>length</em> is the length of it. If <em>length</em> is ommited, then <em>strlen</em> is used to compute it. </p>
+
+</div>
+</div>
+<a class="anchor" id="a56d6f17da2331762f395fa0744d0fee1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsuffix__trie.html">suffix_trie</a> * suffix_trie_builder::build_trie </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>build_trie return a pointer to a <em><a class="el" href="classsuffix__trie.html">suffix_trie</a></em>. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>structures/<a class="el" href="suffix__trie__builder_8hpp_source.html">suffix_trie_builder.hpp</a></li>
 <li>structures/suffix_trie_builder.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 16 2014 14:09:27 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 23 2014 00:11:42 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

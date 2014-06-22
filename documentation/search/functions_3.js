@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['find_5fall',['find_all',['../classsuffix__trie.html#ab362340e269e59692d4fabe133d15a6c',1,'suffix_trie::find_all(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#a389b5a98d9de10c0ff9fbd2e2ae7b117',1,'suffix_trie::find_all(const string &amp;needle)']]],
-  ['find_5ffirst',['find_first',['../classsuffix__trie.html#aa0b4eb1f5b48c368bab4e7fa092f3397',1,'suffix_trie::find_first(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#ace4532672b5494b16ca6a61ece4253bb',1,'suffix_trie::find_first(const string &amp;needle)']]]
+  ['edge',['edge',['../classsuffix__trie_1_1edge.html#aa6f56affb895ee66dc772945a6ebb5ff',1,'suffix_trie::edge']]],
+  ['edge_5fexists',['edge_exists',['../classsuffix__trie_1_1node.html#a480aaa8ea25e04ac11a8dd470a957265',1,'suffix_trie::node']]],
+  ['edit_5fdistance',['edit_distance',['../classedit__distance.html#a6aacfb46e57db524db243234ed349bff',1,'edit_distance']]],
+  ['extend_5fright',['extend_right',['../z__algorithm_8hpp.html#a273289996997b353d250953ac4d288ec',1,'z_algorithm.cpp']]]
 ];

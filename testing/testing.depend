@@ -66,7 +66,7 @@
 1401496921 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.cpp
 	"test_suite.hpp"
 
-1401740265 /home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.hpp
+1403470004 /home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.hpp
 	<string>
 	<vector>
 	<fstream>
@@ -77,6 +77,7 @@
 	"knuth_morris_pratt_tests.hpp"
 	"naive.hpp"
 	"edit_distance_tests.hpp"
+	"suffix_array_test.hpp"
 
 1401573853 /home/martin/C++ projects/StringAlgorithmsFork/testing/z_algorithm_tests.hpp
 	<gtest/gtest.h>
@@ -171,7 +172,7 @@
 	"../CodeBlocks project/string_slib.hpp"
 	"definitions.hpp"
 
-1403455482 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+1403464044 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
 	<cstring>
 	<string>
 	<cstdlib>
@@ -184,7 +185,7 @@
 	<cstdlib>
 	<algorithm>
 
-1403456190 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.cpp
+1403469928 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.cpp
 	"suffix_array_test.hpp"
 	<iostream>
 

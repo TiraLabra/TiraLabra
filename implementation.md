@@ -11,6 +11,7 @@ Implementation
 ####Implemented data structures
 - Suffix trie ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20trie.odt?raw=true) )
 - Suffix tree (naive building) ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20tree%20naive.odt?raw=true))
+- Suffix array ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20array.odt?raw=true))
 
 ####Future ideas
 - Improving building the suffix tree using Ukkonen (1995) improvement. Building the tree takes O(n) time.

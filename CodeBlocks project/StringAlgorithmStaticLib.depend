@@ -148,16 +148,17 @@
 	<string>
 	"suffix_trie.hpp"
 
-1403455508 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.cpp
+1403469653 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.cpp
 	"suffix_array.hpp"
+	<iostream>
 
-1403455482 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+1403464044 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
 	<cstring>
 	<string>
 	<cstdlib>
 	<vector>
 
-1403455445 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_buider.cpp
+1403468795 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_buider.cpp
 	"suffix_array_builder.hpp"
 
 1403455289 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp

@@ -80,7 +80,7 @@ suffix_array * suffix_array_builder::build_suffix_array(const char * haystack, i
     // copy the suffix array since the prev array will be deleted eventually
     int * suf_array = new int[length];
     for (int i = 0; i < length; ++i) {
-        suf_array[i] = this->prev[i];
+        suf_array[this->prev[i]] = i;
     }
     return new suffix_array(suf_array, haystack, length);
 }

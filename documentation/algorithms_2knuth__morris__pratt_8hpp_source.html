@@ -87,21 +87,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">knuth_morris_pratt.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef KNUTH_MORRIS_PRATT</span></div>
+<a href="algorithms_2knuth__morris__pratt_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef KNUTH_MORRIS_PRATT</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define KNUTH_MORRIS_PRATT</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">int</span> * precompute_transition(<span class="keyword">const</span> <span class="keywordtype">char</span> * needle, <span class="keywordtype">int</span> needle_length);</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#endif // KNUTH_MORRIS_PRATT</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">int</span> * <a class="code" href="algorithms_2knuth__morris__pratt_8hpp.html#a3ad48a5ef907ce4e6b66d8ead76b4fc6">build_transition_array</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * needle, <span class="keywordtype">int</span> needle_length);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;vector&lt;int&gt; <a class="code" href="algorithms_2knuth__morris__pratt_8hpp.html#ac59a09dfaf7e40d6b1fc5f90fa62e795">kmp_search</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; haystack, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp; needle, <span class="keywordtype">int</span> upper_limit=-1);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;vector&lt;int&gt; <a class="code" href="algorithms_2knuth__morris__pratt_8hpp.html#ac59a09dfaf7e40d6b1fc5f90fa62e795">kmp_search</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * haystack, <span class="keyword">const</span> <span class="keywordtype">char</span> * needle, <span class="keywordtype">int</span> haystack_length=-1,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> needle_length = -1, <span class="keywordtype">int</span> upper_limit = -1);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif // KNUTH_MORRIS_PRATT</span></div>
+<div class="ttc" id="algorithms_2knuth__morris__pratt_8hpp_html_a3ad48a5ef907ce4e6b66d8ead76b4fc6"><div class="ttname"><a href="algorithms_2knuth__morris__pratt_8hpp.html#a3ad48a5ef907ce4e6b66d8ead76b4fc6">build_transition_array</a></div><div class="ttdeci">int * build_transition_array(const char *needle, int needle_length)</div><div class="ttdef"><b>Definition:</b> knuth_morris_pratt.cpp:4</div></div>
+<div class="ttc" id="algorithms_2knuth__morris__pratt_8hpp_html_ac59a09dfaf7e40d6b1fc5f90fa62e795"><div class="ttname"><a href="algorithms_2knuth__morris__pratt_8hpp.html#ac59a09dfaf7e40d6b1fc5f90fa62e795">kmp_search</a></div><div class="ttdeci">vector&lt; int &gt; kmp_search(const string &amp;haystack, const string &amp;needle, int upper_limit=-1)</div><div class="ttdef"><b>Definition:</b> knuth_morris_pratt.cpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 16 2014 14:09:27 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 23 2014 00:11:42 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

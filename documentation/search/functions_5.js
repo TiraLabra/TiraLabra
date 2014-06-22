@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['naive_5fsearch',['naive_search',['../naive_8hpp.html#a7df3168ae10755c311800c8b2a88385d',1,'naive_search(const string &amp;haystack, const string &amp;needle, int start=0):&#160;naive.cpp'],['../naive_8hpp.html#a88a31f9a8cc8b9a8b2d83b0bc6cedb54',1,'naive_search(const char *haystack, const char *needle, int start=0, int haystack_length=-1, int needle_length=-1):&#160;naive.cpp']]]
+  ['get_5fedge',['get_edge',['../classsuffix__trie_1_1node.html#ac4e1886521e0e4140aae9556bdaa5631',1,'suffix_trie::node']]],
+  ['get_5fedges',['get_edges',['../classsuffix__trie_1_1node.html#a740a3d23a9fe2b31e3066393b22ed099',1,'suffix_trie::node']]],
+  ['get_5flevenstein_5fdistance',['get_levenstein_distance',['../classedit__distance.html#afee05eeeefaa9d657d247f05530b51c4',1,'edit_distance::get_levenstein_distance(const string &amp;str_a, const string &amp;str_b)'],['../classedit__distance.html#a2f059d1dfb3d76e8938376ba907c952c',1,'edit_distance::get_levenstein_distance(const char *str_a, const char *str_b, int str_a_len=-1, int str_b_len=-1)']]],
+  ['get_5froot',['get_root',['../classsuffix__trie.html#aaac718aa91f18353d139d1af068e132b',1,'suffix_trie']]],
+  ['get_5fsuffix_5farray',['get_suffix_array',['../classsuffix__array.html#a3a1eba6d34e0196a685cf25779e60220',1,'suffix_array']]]
 ];

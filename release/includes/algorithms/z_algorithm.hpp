@@ -15,7 +15,7 @@ using namespace std;
     represent the length of the \a haystack and the \a needle.
 */
 bool z_algo_compare(const char * haystack, const char * needle, int index_a,
-int index_b, int haystack_length, int needle_length);
+int index_b, int haystack_length, int needle_length, int start);
 
 /*!
     The function returns the found positions of the string \a needle in \a haystack, starting with an offset

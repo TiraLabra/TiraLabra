@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['get_5fedge',['get_edge',['../classsuffix__trie_1_1node.html#ac4e1886521e0e4140aae9556bdaa5631',1,'suffix_trie::node']]],
-  ['get_5fedges',['get_edges',['../classsuffix__trie_1_1node.html#a740a3d23a9fe2b31e3066393b22ed099',1,'suffix_trie::node']]],
-  ['get_5flevenstein_5fdistance',['get_levenstein_distance',['../classedit__distance.html#afee05eeeefaa9d657d247f05530b51c4',1,'edit_distance::get_levenstein_distance(const string &amp;str_a, const string &amp;str_b)'],['../classedit__distance.html#a2f059d1dfb3d76e8938376ba907c952c',1,'edit_distance::get_levenstein_distance(const char *str_a, const char *str_b, int str_a_len=-1, int str_b_len=-1)']]],
-  ['get_5froot',['get_root',['../classsuffix__trie.html#aaac718aa91f18353d139d1af068e132b',1,'suffix_trie']]]
+  ['find_5fall',['find_all',['../classsuffix__array.html#a4d340e40003b554932879f06634fa224',1,'suffix_array::find_all(const char *needle, int length=-1)'],['../classsuffix__array.html#aec9f6c644029faf541913ea90d43ac3c',1,'suffix_array::find_all(const string &amp;needle)'],['../classsuffix__trie.html#a42b2d0b4bd4b1afcf2c22a8eac7e3629',1,'suffix_trie::find_all(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#abb290f66f4683837ef75bf627b8669ae',1,'suffix_trie::find_all(const string &amp;needle)']]],
+  ['find_5ffirst',['find_first',['../classsuffix__trie.html#aa0b4eb1f5b48c368bab4e7fa092f3397',1,'suffix_trie::find_first(const char *needle, int needle_length=-1)'],['../classsuffix__trie.html#ace4532672b5494b16ca6a61ece4253bb',1,'suffix_trie::find_first(const string &amp;needle)']]]
 ];

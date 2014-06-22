@@ -9,3 +9,5 @@
 #include "structures/suffix_trie.hpp"
 #include "structures/suffix_tree.hpp"
 #include "structures/suffix_trie_builder.hpp"
+#include "structures/suffix_array.hpp"
+#include "structures/suffix_array_builder.hpp"
