@@ -294,7 +294,7 @@ public class Integer extends Number<Integer> {
             }
             
             m = m.multiply(m);
-            n /= 2;
+            n = n >> 1;
         }
         
         return res;
@@ -431,20 +431,30 @@ public class Integer extends Number<Integer> {
             leading++;
         }
         
-        return 0;
+        return s.length() - 1;
+    }
+    
+    private static String pow(final String a, int n) {
+        String m = a, res = "1";
+        while (n > 0) {
+            if ((n % 2) == 1) {
+                res = multiply(m, res);
+            }
+            
+            m = multiply(m, m);
+            n = n >> 1;
+        }
+        return res;
     }
     
     @Override
     public String toString() {
+        final String sradix = "" + radix;
+        
         String res = "";
         for (int i = 0; i < integer.length; i++) {
             String c = "" + integer[i];
-            
-            for (int j = 0; j < i; j++) {
-                c = multiply(c, ""+radix);
-            }
-            
-            res = add(res, c);
+            res = add(res, multiply(c, pow(sradix, i)));
         }
         
         res = res.substring(leading(res));
@@ -509,5 +519,10 @@ public class Integer extends Number<Integer> {
         }
         
         return true;
+    }
+
+    @Override
+    public Integer inverse() {
+        return ZERO;
     }
 }

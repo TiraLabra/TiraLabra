@@ -4,30 +4,42 @@ import TiraLabra.Matrix.Matrix;
 import TiraLabra.Number.Integer;
 
 public class Fibonacci {
-    private static String fibonacci(int n, boolean naive) {
+    private static String fibonacci_hidas(int n) {
+        Integer i = Integer.ZERO, j = Integer.ONE;
+        for (int k = 0; k < n; k++) {
+            Integer tmp = i;
+            i = i.add(j);
+            j = tmp;
+        }
+        
+        return i.toString();
+    }
+    
+    private static String fibonacci(int n) {
         Integer values[][] =
             {{Integer.ONE, Integer.ONE},
              {Integer.ONE, Integer.ZERO}};
 
         Matrix<Integer> matrix = new Matrix<Integer>(values, Integer.class);
-        matrix = naive ? matrix.pow_naive(n) : matrix.pow(n);
+        matrix = matrix.pow(n);
         return matrix.get(0, 1).toString();
     }
     
-    private static void timeit(int i, boolean naive) {
+    private static void timeit(int i, boolean hidas) {
         long aikaAlussa = System.currentTimeMillis();
         
-        System.out.println(i + ", " + fibonacci(i, naive));
+        System.out.println(i + ", "
+                + (hidas ? fibonacci_hidas(i) : fibonacci(i)));
         
         long aikaLopussa = System.currentTimeMillis();
         System.out.println((aikaLopussa - aikaAlussa) + "ms\n");
     }
     
     public static void main(String[] args) {
-        //timeit(true);
-        
-        for (int i = 90; i < 200; i += 20) {
-            timeit(i, false);
-        }
+        timeit(250, false);
+        //timeit(200, true);
+        /*for (int i = 1000; i < 1100; i += 20) {
+            
+        }*/
     }
 }
