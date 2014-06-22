@@ -30,7 +30,9 @@ MD5 is a hash function that generates a hash from a given input (message). After
 
 # Implementation goals
 
-This implementation will focus on code clarity and the internals workings on MD5 - speed is not a primary concern. Because Python is a high level language and as such is clearly a lot slower than many other languages.
+The goal of this product was to reimplement the MD5 module deprecated in Python 2.5. I didn't plan anything else beforehand except that it would follow the Python object style which is documented.
+
+This implementation will focus on code clarity and the internal workings on MD5 - speed is not a primary concern. Because Python is a high level language and as such is clearly a lot slower than many other languages.
 
 With this implementation, data is mostly represented as a string of binary numbers. This helps with the abstraction of the algorithm, but will probably be slower compared to using Python's byte literals for example. 
 

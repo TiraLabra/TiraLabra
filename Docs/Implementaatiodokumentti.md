@@ -1,5 +1,3 @@
-The goal of this product was to reimplement the MD5 module deprecated in Python 2.5. I didn't plan anything else beforehand except that it would follow the Python object style which is documented.
-
 The structure of the program is as follows:
 
 * The NMD5 class
