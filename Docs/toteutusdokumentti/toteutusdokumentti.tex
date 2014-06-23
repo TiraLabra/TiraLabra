@@ -1,0 +1,142 @@
+\documentclass[a4paper,12pt, titlepage]{article}
+\usepackage{amssymb,amsthm,amsmath} %ams
+\usepackage[finnish]{babel} %suomenkielinen tavutus
+\usepackage[T1]{fontenc} %skanditavutus
+\usepackage[utf8]{inputenc} % skandit utf-8 koodauksella
+
+\usepackage{graphicx} %dokumentti sisältää eps-muotoisia kuvia
+
+\usepackage{changepage}
+\usepackage{array}
+\usepackage{tabularx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\usepackage{float}
+\restylefloat{table}
+
+
+\linespread{1.24} %riviväli 1.5
+\sloppy % Vähentää tavutuksen tarvetta, "leventämällä" rivin keskellä olevia välilyöntejä.
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \LARGE
+        \textbf{Toteutusdokumentti}
+        
+        \vspace{0.5cm}
+        \Large
+        Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit (alkukesä)
+        
+        \vspace{1.5cm}
+        
+        \large
+        \textbf{Sami Korhonen} \\
+        \text{014021868} \\
+        \text{sami.korhonen@helsinki.fi}
+        
+		\vfill        
+        \normalsize
+        Tietojenkäsittelytieteen laitos\\
+        Helsingin yliopisto\\
+		\large        
+        \today
+        
+    \end{center}
+\end{titlepage}
+
+
+%\tableofcontents
+%\newpage
+
+\section*{Ohjelman yleisrakenne}
+\subsection*{App ja Pakkaaja}
+\subsubsection*{App}
+Tämä luokka sisältää vain main-metodin, joka käynnistää ohjelman suorituksen.
+
+\subsubsection*{Pakkaaja}
+Tämä luokka pyörittää ohjelman toiminnallisuutta ja sisältää algoritmin tärkeimmät metodit. Tämän toiminnallisuudesta on yksinkertaistettu versio määrittelydokumentissa. Ohjelman toiminnallisuus yksityiskohtaisemmalla tasolla tuskin auttaa kokonaisuuden hahmottamista.
+\subsection*{Pakkaus: domain}
+Tästä luokasta löytyy ohjelmassa käytettävien olioiden luokat, joista oleennaisimpia lienevät Kontti, Laatikko, Palkki, Tilapalkki. Myös ohjelman tilaa kuvaava Tila löytyy täältä. Se sisältää Pakkaajan ohella muutamia oleennaisia metodeja, jotka liittyvät tilan ylläpitoon.
+\subsubsection*{Metodit}
+Suuri osa tämän pakkauksen luokista on lähinnä tietueita, joten metodit ovat lähinnä konstruktoreita, gettereita ja settereitä. Monet luokista toteuttavat rajapinnan Sarmio, joka on yksinkertainen suorakulmainen särmiö
+\subsection*{Pakkaus : structures}
+Tästä pakkauksesta löytyy tietorakenteet: lista, ja jono. Myös muita tietorakenteita, kuten LinkedList ja Map tulin toteuttaneeksi, mutta niistä ei ollut hyötyä tässä työssä. 
+\subsection*{Pakkaus: tools}
+Tästä pakkauksesta löytyy käyttäjänsyötteistä vastaava Console sekä tiedostonkäsittelyä varten toteutettu FileHandler.
+\subsection*{Pakkaus: testing}
+Tämän pakkauksen tärkein luokka on Testaus, joka sisältää erilaisten laatikkolistojen generaattoreita ja muuta tarpeellista suorituskykytestausta varten. Testisetti ja SetinOminaisuudet ovat lähinnä tallentamassa muutamia parametreja elämän helpottamiseksi.
+
+
+\section*{Suorituskyky ja tulokset}
+Tarkastellaan pseudokoodin avulla algoritmin aikavaativuutta pahimmassa tapauksessa.
+
+\begin{verbatim}
+function pakkaaKontti(kontti, laatikot) 
+    pakkaussuunnitelma = new PakkausSuunnitelma
+    tila = new Tila     
+    while (tila.tilapalkkipino not empty)
+        	tilapalkki = tila.tilapalkkiPino.pop()
+        palkki = haeParasPalkkiLaatikoista(tilapalkki, tila.vapaatLaatikot)
+        if (palkki not null)
+        		tila.paivita(palkki, tilapalkki)
+    endwhile
+return pakkaussuunnitelma
+\end{verbatim}
+Merkitään tässä laatikoiden lukumäärää $n$:llä, ja laatikkotyyppienmäärää $m$:llä. Metodin pakkaaKontti aikavaativuus pahimmassa tilanteessa riippuu while-silmukan iteraatioista, sekä metodin haeParasPalkkiLaatikoista aikavaativuudesta. Pahimmassa tapauksessa pakattaisiin laatikko kerrallaan, jolloin while-silmukka tulisi suorittaa luokkaa $n$ kertaa, mahdollisesti  $3n$. 
+
+\begin{verbatim}
+function haeParasPalkki(tilapalkki, vapaatLaatikot)
+    paras = new Palkki
+    for each laatikko in vapaatLaatikot
+        Palkki p = valitseOrientaatio(tilapalkki, laatikko)
+        if (parempi(p, paras))
+            paras = p
+    end for
+return paras
+\end{verbatim}
+Metodin haeParasPalkki aikavaativuus määräytyy for-silmukan perusteella. Sen aikavaativuus näyttää pseudokoodissa olevan O($n$), mutta toteutuksessani se on O($m$), sillä tässä käydään läpi vain erityyppiset laatikot, ei jokaista yksittäistä samanlaista laatikkoa. Tällöin metodin aikavaativuus on siis O($m$).
+
+\begin{verbatim}
+function valitseOrientaatio(tilapalkki, laatikko)
+    paras = new Palkki
+    for i = 0 to 6
+        laatikko.asetaOrientaatio(i) // valitaan orientaatio
+        // luodaan nx, ny ja nz
+        if (nx*x*ny*y*nz*z > suurinTilavuus)
+            suurinTilavuus = nx*x*ny*y*nz*z
+            paras = new Palkki(sijainti, laatikko, nx, ny, nz)
+    end for
+return paras
+\end{verbatim}
+
+Metodin valitseOrientaatio aikavaativuus määräytyy for-silmukan perusteella, mutta se on vakioaikainen. Pseudokoodista poiketen toteutukseni joutuu aiemmasta oikaisusta johtuen käymään kerran käymään palkkiin mahtuvat laatikot läpi. Tämä lisää aikavaativuuteen osan $nx*ny*nz$, joka on pahimmassa tapauksessa $n$. Nämä aikavaativuudet yhdessä tuottanevat aikavaativuuden O($mn^2$).
+
+\noindent
+Algoritmin todellisesta suorituksesta on esitetty mittaustuloksia ja kaavioita testausdokumentissa.
+
+\section*{Puutteet ja parannusehdotukset}
+Ohjelman toiminnallisuus oli varsin työlästä toteuttaa ja saada toimimaan edes jotakuinkin tehokkaasti. Tehokkuuden osalta varmasti löytyisi vielä parannettavaa ihan kooditasollakin, mutta muutamia oikoteitä on suunnittelussa jouduttu ottamaan ajan puutteen takia. Alun perin oli tarkoitus lisätä hakuun rajoittavia parametreja ohjelman nopeuttamiseksi. Sopivan palkin etsinnässä olisi voinut käyttää aikarajoitusta, tai algoritmi voisi valita palkin, joka on riittävän tyydyttävä. Nämä olisivat lisänneet suorituskykytestauksen työurakkaa muhkeasti suuremmaksi, ja pääsääntöisesti ohjelma tuntuu riittävän tehokkaalta sellaisenaan. Erilaisia tietorakenteita olisi ollut hyvä kokeilla testaustasolla, mutta ohjelman bugien korjaus on vienyt tähän tarkoitetun ajan. Vielä esiintyy ajoittain muistin ylivuotoa rankimpia testejä ajettaessa. Tämä tosin riippuu hieman tietokoneestakin.
+
+Algoritmi voisi olla myös hienostuneempi määrittelemään milloin mikäkin palkki on toista parempi. Nykyisessä versiossa tilavampi palkki luokitellaan autuaasti pienempää paremmaksi, vaikka tietyissä tilanteissa jäljelle jäävä tila on liian pieni täytettäväksi, mutta kuitenkin merkittävän suuri. Tämä algoritmi on tosin optimoitu kohtalaisen homogenisille laatikkosarjoille. Ohjelman olisi myös mahdollista suorittaa kaksi erityylistä ratkaisua riippuen annetuista laatikoista, joista toinen olisi optimoitu homogenisille sarjoille ja toinen heterogenisille \cite{fanslau-bortfeldt}.
+
+3D-grafiikan rakentaminen jäi niinikään kesken ja se poistettiin lopputuloksesta. Tämäkin osoittautui hieman hankalemmaksi puutteellisten materiaalien vuoksi. Lopputuloksen tarkastelua varten kuva olisi yksinkertainen ja varsin hyödyllinen. Tällä hetkellä on hankala varmistaa ohjelman toimiminen äärirajoillaan, sillä kolmiulotteisten kappaleiden koot ja sijainnit on kohtalaisen hankala ihmisen hahmottaa rivistä numeroita ja kirjaimia. Näitä varten olen tehnyt yksikkötestejä, mutta hankalimpien kohtien testaaminen lienee hieman vajaavaista, eikä integraatiotestejä ole tehty lainkaan.
+
+\begin{thebibliography}{9}
+
+\bibitem{fanslau-bortfeldt}
+  Tobias Fanslau, Andreas Bortfeldt, 2008 \newline
+  \emph{A Tree Search Algorithm for Solving the Container Loading Problem }\newline
+  http://www.fernuni-hagen.de/wirtschaftswissenschaft/download/beitraege/db426.pdf\newline
+  viitattu 22. kesäkuuta 2014
+
+\end{thebibliography}
+
+\end{document}

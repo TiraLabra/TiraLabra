@@ -1,0 +1,79 @@
+\documentclass[a4paper,12pt, titlepage]{article}
+\usepackage{amssymb,amsthm,amsmath} %ams
+\usepackage[finnish]{babel} %suomenkielinen tavutus
+\usepackage[T1]{fontenc} %skanditavutus
+\usepackage[utf8]{inputenc} % skandit utf-8 koodauksella
+
+\usepackage{graphicx} %dokumentti sisältää eps-muotoisia kuvia
+
+\usepackage{changepage}
+\usepackage{array}
+\usepackage{tabularx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\usepackage{float}
+\restylefloat{table}
+
+
+\linespread{1.24} %riviväli 1.5
+\sloppy % Vähentää tavutuksen tarvetta, "leventämällä" rivin keskellä olevia välilyöntejä.
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \LARGE
+        \textbf{Käyttöohje}
+        
+        \vspace{0.5cm}
+        \Large
+        Aineopintojen harjoitustyö: Tietorakenteet ja algoritmit (alkukesä)
+        
+        \vspace{1.5cm}
+        
+        \large
+        \textbf{Sami Korhonen} \\
+        \text{014021868} \\
+        \text{sami.korhonen@helsinki.fi}
+        
+		\vfill        
+        \normalsize
+        Tietojenkäsittelytieteen laitos\\
+        Helsingin yliopisto\\
+		\large        
+        \today
+        
+    \end{center}
+\end{titlepage}
+
+
+%\tableofcontents
+%\newpage
+
+\section*{Ohjelman suorittaminen}
+Ohjelma voidaan suorittaa käynnistämällä hakemistosta Tiralabra\_maven löytyvä .jar-tiedosto ContainerLoader.jar. UNIX-käytöjärjestelmissä käynnistäminen tapahtuu komennolla "java -jar ContainerLoader.jar".
+
+\section*{Syötteet}
+Ohjelmaa käytetään komentorivipohjaisesti, ja sen ymmärtää seuraavat komennot:
+
+\begin{description}
+  \item[1] Pakkaa kontti
+  \item[2] Aja vakiotestit
+  \item[3] Aja satunnaistestit
+  \item[4] Generoi testitiedostot
+  \item[0] Lopeta
+\end{description}
+
+\noindent
+Näiden lisäksi ohjelma saattaa kysyä muita tarvitsemiaan tietojaan käyttäjältä. Vaihtoehdot esitetään käyttäjälle aina kysynnän yhteydessä.
+
+\section*{Tiedostot}
+Hakemistosta listat löytyy vakiotestien ajamat testisetit, jotka generoidaan ohjelman avulla. Näihin ei ole tarpeen tehdä muutoksia manuaalisesti. Hakemistosta testitulokset sen sijaan löytyy testien tulokset, jotka voi avata haluamallaan ohjelmalla. Juurihakemistosta löytyy tiedosto output.txt, joka sisältää ohjelmassa pakatun pakkaussuunnitelman mukaiset laatikot ja niiden sijainnit. Hakemistosta target/site/apidocs löytyy JavaDoc.
+
+\end{document}
