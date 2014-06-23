@@ -38,21 +38,20 @@ public class Palkki extends Sarmio {
         this.nx = nx;
         this.ny = ny;
         this.nz = nz;
-        lisaaLaatikot(nx, ny, nz);
         this.sijainti = sijainti;
+        this.orientaatio = laatikko.getOrientaatio();
+//        lisaaLaatikot();
+
     }
 
-//    public Palkki(long x, long y, long z) {
-//        super(x, y, z);
-//        this.tyyppi = null;
-//        this.sijainti = new Sijainti(0, 0, 0);
-//    }
-    private void lisaaLaatikot(long nx, long ny, long nz) {
-        for (long i = 0; i < nx; i++) {
-            for (long j = 0; j < ny; j++) {
-                for (long k = 0; k < nz; k++) {
-                    Laatikko laatikko = new Laatikko(tyyppi, new Sijainti(), this.orientaatio);
-                    laatikot.add(laatikko);
+    public void lisaaLaatikot() {
+        for (long i = 0; i < this.nx; i++) {
+            for (long j = 0; j < this.ny; j++) {
+                for (long k = 0; k < this.nz; k++) {
+                    Laatikko laatikko = new Laatikko(this.tyyppi, new Sijainti(), this.orientaatio);
+                    Sijainti sij = new Sijainti(this.sijainti.getX() + i*laatikko.getX(), this.sijainti.getY() + j*laatikko.getY(), this.sijainti.getZ() + k*laatikko.getZ());
+                    laatikko.setSijainti(sij);
+                    this.laatikot.add(laatikko);
                 }
 
             }
@@ -62,7 +61,7 @@ public class Palkki extends Sarmio {
 //    
     @Override
     public String toString() {
-        return "Tyyppi: " + this.tyyppi + ", määrät: nx = " + this.nx + ", ny = " + this.ny + ", nz = " + this.nz;
+        return "Tyyppi: " + this.laatikot.get(0) + ", määrät: nx = " + this.nx + ", ny = " + this.ny + ", nz = " + this.nz;
     }
 
     public Laatikkotyyppi getTyyppi() {
@@ -109,4 +108,9 @@ public class Palkki extends Sarmio {
         return laatikot;
     }
 
+    public int getOrientaatio() {
+        return orientaatio;
+    }
+
+    
 }

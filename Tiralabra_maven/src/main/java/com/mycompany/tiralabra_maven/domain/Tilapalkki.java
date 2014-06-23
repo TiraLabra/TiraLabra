@@ -21,7 +21,7 @@ public class Tilapalkki extends Sarmio{
  */
     public Tilapalkki(long x, long y, long z) {
         super(x, y, z);	
-        this.sijainti = null;
+        this.sijainti = new Sijainti();
     }
 
     public Tilapalkki(long x, long y, long z, long posX, long posY, long posZ) {

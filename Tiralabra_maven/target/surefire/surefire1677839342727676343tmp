@@ -1,6 +1,0 @@
-#surefire
-#Sun Jun 08 18:40:19 EEST 2014
-maven.ext.class.path=/home/szetk/netbeans-7.4/java/maven-nblib/netbeans-eventspy.jar
-user.dir=/home/szetk/Documents/TiraLabra/Tiralabra_maven
-localRepository=/home/szetk/.m2/repository
-basedir=/home/szetk/Documents/TiraLabra/Tiralabra_maven

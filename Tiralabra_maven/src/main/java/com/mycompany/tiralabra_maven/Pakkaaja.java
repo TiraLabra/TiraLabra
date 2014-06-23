@@ -14,9 +14,11 @@ import com.mycompany.tiralabra_maven.domain.Sijainti;
 import com.mycompany.tiralabra_maven.domain.Tila;
 import com.mycompany.tiralabra_maven.domain.Tilapalkki;
 import com.mycompany.tiralabra_maven.structures.List;
+import com.mycompany.tiralabra_maven.testing.Testaus;
+import com.mycompany.tiralabra_maven.tools.FileHandler;
 import com.mycompany.tiralabra_maven.tools.Io;
-import com.mycompany.tiralabra_maven.ui.Graphics;
-import java.util.Random;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Tämä luokka toimii ohjelman toiminnallisuuden perustana, ja suorittaa
@@ -27,9 +29,6 @@ import java.util.Random;
 public class Pakkaaja {
 
     private Io io;
-    private int k;
-    private int laatikoita;
-    private int tyyppeja;
     private Kontti kontti;
 
     /**
@@ -42,61 +41,83 @@ public class Pakkaaja {
     }
 
     /**
-     * Tämä metodi aloittaa varsinaisen ohjelman ajamisen
+     * Tämä metodi suorittaa komentojen vastaanottamisen ja niiden ohjaamisen.
      */
-    public void run() {
-        kysySyotteet();
-//        valmiitSyotteet();
+    public void run() throws IOException {
+        Testaus t = new Testaus(this.io, new Kontti(6058, 2438, 2591));
 
-        List<Laatikkotyyppi> laatikot = generoiLaatikoita(laatikoita, tyyppeja);
-        PakkausSuunnitelma pakkausSuunnitelma = pakkaaKontti(kontti, laatikot);
-//        int i = 0;
-//        while (true) {
-//            laatikot = generoiLaatikoita(laatikoita, tyyppeja);
-//            pakkausSuunnitelma = pakkaaKontti(kontti, laatikot);
-//            i++;
-//            if (pakkausSuunnitelma.getTilavuus() > kontti.getTilavuus()) {
-//                System.out.println("laitettu liikaa laatikoita!!! " + i);
-//                break;
-//            }
-//        }
-
-        System.out.println("pakattiin " + pakkausSuunnitelma.getLaatikoita() + " laatikkoa");
-        System.out.println("pakattujen laatikoiden tilavuus: " + pakkausSuunnitelma.getTilavuus());
-        System.out.println("kontin tilavuus: " + kontti.getTilavuus());
-        System.out.println("täyttösuhde: " + pakkausSuunnitelma.getTilavuus() * 100 / kontti.getTilavuus() + "%");
-//        Graphics g = new Graphics();
-//        g.run(1000, 1000);
+        whileloop:
+        while (true) {
+            int komento = this.io.lueLuku("Valitse komento: 1 pakkaa kontti, 2 aja vakiotestit, 3 aja satunnaistestit, 4 generoi testitiedostot, 0 lopeta");
+            switch (komento) {
+                case 0:
+                    break whileloop;
+                case 1:
+                    String tiedostonNimi = kysySyotteet();
+                    List<Laatikkotyyppi> laatikot;
+                    try {
+                        laatikot = FileHandler.lueLaatikot(new File(tiedostonNimi));
+                    } catch (IOException ex) {
+                        this.io.sout("Tiedostoa ei löytynyt!");
+                        break;
+                    }
+                    PakkausSuunnitelma pakkausSuunnitelma = pakkaaKontti(kontti, laatikot);
+                    System.out.println("Pakattiin " + pakkausSuunnitelma.getLaatikoita() + " laatikkoa");
+//                    System.out.println("Pakattujen laatikoiden tilavuus: " + pakkausSuunnitelma.getTilavuus());
+//                    System.out.println("Kontin tilavuus: " + kontti.getTilavuus());
+                    this.io.sout("Täyttösuhde: " + pakkausSuunnitelma.getTilavuus() * 100 / kontti.getTilavuus() + "%");
+                    this.io.sout("Tallennetaan tiedostoon output.txt");
+                    FileHandler.kirjoitaString(new File("output.txt"), pakkausSuunnitelma.toString());
+                    break;
+                case 2:
+                    t.ajaVakiotestit();
+                    break;
+                case 3:
+                    int maara = this.io.lueLuku("Kuinka monta iteraatiota tehdään?");
+                    t.ajaSatunnaistestit(maara);
+//                    System.out.println("Ei käyttössä");
+                    break;
+                case 4:
+                    t.generoiTestitiedostot();
+                    break;
+            }
+        }
 
     }
 
-    private void valmiitSyotteet() {
-        k = 1;
-        if (k == 1) {
-            kontti = new Kontti(6058, 2438, 2591);
+    /**
+     * Tämä metodi kysyy käyttäjältä tarpeellisia tietoja, kun halutaan pakata
+     * kontti. Palauttaa laatikot sisältävän tiedoston nimen
+     *
+     * @return Laatikoiden tiedot sisältävän tiedoston nimi
+     */
+    private String kysySyotteet() {
+        int laatikoita;
+        int tyyppeja;
 
-        } else {
-            kontti = new Kontti(100, 100, 100);
+        whileloop:
+        while (true) {
+            int k = this.io.lueLuku("Valitse kontti: 1 (6058x2438x2591), 2 (100x100x100), 3 (2991x2438x2591), 4 (12192x2438x2591)");
+            switch (k) {
+                case 1:
+                    kontti = new Kontti(6058, 2438, 2591);
+                    break whileloop;
+                case 2:
+                    kontti = new Kontti(100, 100, 100);
+                    break whileloop;
+                case 3:
+                    kontti = new Kontti(2991, 2438, 2591);
+                    break whileloop;
+                case 4:
+                    kontti = new Kontti(12192, 2438, 2591);
+                    break whileloop;
+                default:
+                    break;
+            }
         }
-        laatikoita = 500000;
-        tyyppeja = 15;
-    }
 
-    private void kysySyotteet() {
-        k = this.io.lueLuku("valitse kontti: 1 (6058x2438x2591), 2 (100x100x100)");
-        while (k != 1 && k != 2) {
-            k = this.io.lueLuku("valitse kontti: 1 (6058x2438x2591), 2 (100x100x100)");
-        }
+        return this.io.lueRivi("Anna luettavan tiedoston nimi");
 
-        if (k == 1) {
-            kontti = new Kontti(6058, 2438, 2591);
-
-        } else {
-            kontti = new Kontti(100, 100, 100);
-        }
-        this.io.sout("kontti: " + kontti);
-        laatikoita = this.io.lueLuku("kuinka monta laatikkoa");
-        tyyppeja = this.io.lueLuku("kuinka monta erityyppistä laatikkoa");
     }
 
     /**
@@ -110,12 +131,12 @@ public class Pakkaaja {
         PakkausSuunnitelma pakkausSuunnitelma = new PakkausSuunnitelma();
 
         Tila tila = new Tila(kontti, laatikot);
-        while (tila.vapaitaLaatikoita() > 0 && !tila.getTilapalkit().empty()) {
-            this.io.sout("vapaita bokseja: " + tila.vapaitaLaatikoita());
+        while (!tila.getTilapalkit().empty()) {
+//            this.io.sout("vapaita bokseja: " + tila.vapaitaLaatikoita());
             Tilapalkki tilapalkki = tila.getTilapalkit().pop();
             Palkki palkki = haeParasPalkkiLaatikoista(tilapalkki, tila.getVapaatLaatikot());
             if (palkki != null) {
-                tila.paivita(palkki, tilapalkki, kontti);
+                tila.paivita(palkki, tilapalkki);
             }
             pakkausSuunnitelma = tila.getPakkausSuunnitelma();
 
@@ -125,67 +146,38 @@ public class Pakkaaja {
     }
 
     /**
-     * Tämä tekee parhaan mahdollisen palkin annetulle tilapalkille annetun
-     * laatikkolistan mukaan.
+     * Tämä käy läpi laatikot, ja parhaan mahdollisen palkin.
      *
      * @param tilapalkki Tilapalkki, johon sopiva palkki luodaan
      * @param laatikot Lista laatikoista, joista palkki voidaan koota
      * @return Palautetaan paras löydetty palkki
      */
     public Palkki haeParasPalkkiLaatikoista(Tilapalkki tilapalkki, List<Laatikkotyyppi> laatikot) {
-        long nx = 1, ny = 1, nz = 1;
-        long suurinTilavuus = 0;
-        int n;
         Palkki paras = null;
-        System.out.println("");
+//        System.out.println("");
         this.io.sout("Etsitään paras palkki tilapalkille: " + tilapalkki);
 
         for (int j = 0; j < laatikot.size(); j++) {
             Laatikkotyyppi tyyppi = laatikot.get(j);
-            if (tyyppi.getLaatikot().empty()) {
+            if (tyyppi.getLaatikoita() == 0) {
                 continue;
             }
             if (tyyppi.getTilavuus() > tilapalkki.getTilavuus()) {
-//                System.out.println("laatliian iso");
                 continue;
             }
 
-            this.io.sout("kokeillaan laatikkotyyppiä : " + tyyppi);
-            n = tyyppi.getLaatikot().size();
-//            this.io.sout("laatikoita käytettävänä: " + n);
-
-            Laatikko laatikko = tyyppi.getLaatikot().get(0);
-            for (int i = 0; i < 6; i++) {
-                laatikko.setOrientaatio(i);
-
-//                this.io.sout("orientaatio: " + i);
-//                this.io.sout("" + laatikko);
-                if (laatikko.getX() > tilapalkki.getX() || laatikko.getY() > tilapalkki.getY() || laatikko.getZ() > tilapalkki.getZ()) {
-//                    this.io.sout("Laatikko ei mahdu näin päin");
-                    continue;
-                }
-
-                nz = tilapalkki.getZ() / laatikko.getZ();
-                if (nz > n) {
-                    nz = n;
-                }
-                nx = tilapalkki.getX() / laatikko.getX();
-                if (nz * nx > n) {
-                    nx = n / nz;
-                }
-                ny = tilapalkki.getY() / laatikko.getY();
-                if (nz * nx * ny > n) {
-                    ny = n / (nz * nx);
-                }
-
-//                this.io.sout("kokeiltavaa menisi: nx, ny, nz: " + nx + " " + ny + " " + nz);
-                long tilavuus = nx * laatikko.getX() * ny * laatikko.getY() * nz * laatikko.getZ();
-
-                if (tilavuus > suurinTilavuus) {
-                    suurinTilavuus = tilavuus;
-                    paras = new Palkki(tilapalkki.getSijainti(), laatikko, nx, ny, nz);
-                }
+            Laatikko laatikko = new Laatikko(tyyppi, new Sijainti(), 0);
+//            System.out.println("laatikko " + laatikko);
+            Palkki p = valitseOrientaatio(tilapalkki, laatikko, tyyppi.getLaatikoita());
+            if (p == null) {
+                continue;
             }
+            if (paras == null) {
+                paras = p;
+            } else if (p.getTilavuus() > paras.getTilavuus()) {
+                paras = p;
+            }
+
         }
 
         if (paras == null) {
@@ -196,64 +188,82 @@ public class Pakkaaja {
         }
 
         this.io.sout("Paras palkki: " + paras);
-        this.io.sout("laatikoita akseleittain nx, ny, nz: " + paras.getNx() + " " + paras.getNy() + " " + paras.getNz());
-        this.io.sout("palkin koko, x, y, z: " + paras.getNx() * paras.getTyyppi().getX() + " " + paras.getNy() * paras.getTyyppi().getY() + " " + paras.getNz() * paras.getTyyppi().getZ());
+//        this.io.sout("laatikoita akseleittain nx, ny, nz: " + paras.getNx() + " " + paras.getNy() + " " + paras.getNz());
+        this.io.sout("palkin koko, x, y, z: " + paras.getX() + " " + paras.getY() + " " + paras.getZ());
         this.io.sout("palkkiin menee " + paras.getNx() * paras.getNy() * paras.getNz() + " laatikkoa");
         this.io.sout("-----------------------------------");
         return paras;
     }
 
     /**
-     * Selvittää mahtuuko palkki tilapalkkiin vai ei. True tarkoittaa mahtumista
+     * Tämä selvittää mikä on laatikon paras orientaatio tietylle tilapalkille.
      *
-     * @param tilapalkki Tilapalkki, johon palkki yritetään mahduttaa
-     * @param palkki Palkki, joka yritetään mahduttaa tilapalkkiin
-     * @return Totuusarvo mahtumisesta, true tarkoittaa mahtumista
+     * @param tilapalkki Täytettävä tilapalkki
+     * @param laatikko Laatikko, jonka tyyppisiä laatikoita halutaan laittaa
+     * palkkiin
+     * @param n Laatikoiden lukumäärä
+     * @return Laatikosta tehty paras mahdollinen palkki, joka mahtuu
+     * tilapalkkiin.
      */
-    public boolean mahtuu(Tilapalkki tilapalkki, Palkki palkki) {
-        return tilapalkki.getX() >= palkki.getX() && tilapalkki.getY() >= palkki.getY() && tilapalkki.getZ() >= palkki.getZ();
+    public Palkki valitseOrientaatio(Tilapalkki tilapalkki, Laatikko laatikko, int n) {
+        Palkki paras = null;
+        long suurinTilavuus = 0;
+        long nx, ny, nz;
+//        this.io.sout("laatikoita käytettävänä: " + n);
+
+        for (int i = 0; i < 6; i++) {
+            laatikko.setOrientaatio(i);
+
+            if (laatikko.getX() > tilapalkki.getX() || laatikko.getY() > tilapalkki.getY() || laatikko.getZ() > tilapalkki.getZ()) {
+                // laatikko ei mahdu näin päin
+                continue;
+            }
+            long[] maarat = orientaationMaaratAkseleittain(tilapalkki, laatikko, n);
+            nx = maarat[0];
+            ny = maarat[1];
+            nz = maarat[2];
+//            System.out.println("nn: " + nx * ny * nz);
+
+            long tilavuus = nx * laatikko.getX() * ny * laatikko.getY() * nz * laatikko.getZ();
+
+            if (tilavuus > suurinTilavuus) {
+                suurinTilavuus = tilavuus;
+                paras = new Palkki(tilapalkki.getSijainti(), laatikko, nx, ny, nz);
+            }
+        }
+        if (paras != null) {
+            paras.lisaaLaatikot();
+        }
+        return paras;
     }
 
     /**
-     * Tämä metodi generoi randomisti laatikoita pakattavaksi, annettujen
-     * parametrien puitteissa.
+     * Selvittää kuinka monta laatikkoa kannattaa laittaa minkäkin akselin
+     * mukaan palkkiin, jotta tilapalkki täyttyy mahdollisimman täydellisesti.
      *
-     * @param laatikoidenMaara Haluttu laatikoiden määrä
-     * @param tyyppienMaara Haluttu laatikoiden määrä
-     * @return Lista generoiduista laatikoista
+     * @param tilapalkki Täytettävä tilapalkki
+     * @param laatikko Laatikko, jonka tyyppisiä halutaan laittaa palkkiin
+     * @param n Laatikoiden lukumäärä
+     * @return Taulukko, joka sisältä kolme long-tyyppistä arvoa (nx, ny, nz),
+     * jotka edustavat kullekin akselille mahtuvien laatikoiden lukumäärää.
      */
-    public List<Laatikkotyyppi> generoiLaatikoita(int laatikoidenMaara, int tyyppienMaara) {
-//        Tarkasta syötteet
-        Random random = new Random();
-        List<Laatikkotyyppi> laatikot = new List<Laatikkotyyppi>();
-        this.io.sout("Generoidaan laatikoita:");
-
-        for (int i = 0; i < tyyppienMaara; i++) {
-            laatikot.add(new Laatikkotyyppi(random.nextInt(89) + 11, random.nextInt(89) + 11, random.nextInt(89) + 11));
+    public long[] orientaationMaaratAkseleittain(Tilapalkki tilapalkki, Laatikko laatikko, int n) {
+        long nx, ny, nz;
+//            this.io.sout("laatikoita käytettävänä: " + n);
+        nz = tilapalkki.getZ() / laatikko.getZ();
+        if (nz > n) {
+            nz = n;
         }
-
-        int i = 0;
-        outerloop:
-        while (true) {
-            for (int j = 0; j < laatikot.size(); j++) {
-                Laatikkotyyppi tyyppi = laatikot.get(j);
-                if (i == laatikoidenMaara) {
-                    break outerloop;
-                }
-                Laatikko laatikko = new Laatikko(tyyppi, new Sijainti(), 0);
-                tyyppi.getLaatikot().add(laatikko);
-                i++;
-
-            }
+        nx = tilapalkki.getX() / laatikko.getX();
+        if (nz * nx > n) {
+            nx = n / nz;
         }
-
-        for (int j = 0; j < laatikot.size(); j++) {
-            Laatikkotyyppi tyyppi = laatikot.get(j);
-            this.io.sout("laatikkotyyppi: " + tyyppi);
-            this.io.sout("laatikoita: " + tyyppi.getLaatikot().size());
+        ny = tilapalkki.getY() / laatikko.getY();
+        if (nz * nx * ny > n) {
+            ny = n / (nz * nx);
         }
-
-        return laatikot;
+        long[] taulu = {nx, ny, nz};
+        return taulu;
     }
 
 }

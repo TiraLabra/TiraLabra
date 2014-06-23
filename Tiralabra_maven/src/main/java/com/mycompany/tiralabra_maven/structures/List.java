@@ -12,7 +12,7 @@ package com.mycompany.tiralabra_maven.structures;
 public class List<E> {
 
     private int alkioita = 0;
-    private int size = 50;
+    private int size = 100;
     private Object alkiot[];
 
     public List() {

@@ -15,6 +15,7 @@ import com.mycompany.tiralabra_maven.structures.List;
  */
 public class Laatikkotyyppi extends Sarmio{
     private List<Laatikko> laatikot;
+    private int laatikoita;
     
     /**
      * Konstruktori
@@ -25,6 +26,7 @@ public class Laatikkotyyppi extends Sarmio{
     public Laatikkotyyppi(int x, int y, int z) {
         super(x, y, z);
         this.laatikot = new List<Laatikko>();
+        this.laatikoita = 0;
     }
     
     /**
@@ -37,6 +39,7 @@ public class Laatikkotyyppi extends Sarmio{
     public Laatikkotyyppi(int x, int y, int z, List<Laatikko> laatikot) {
         super(x, y, z);
         this.laatikot = laatikot;
+        this.laatikoita = laatikot.size();
     }
 
     public List<Laatikko> getLaatikot() {
@@ -46,6 +49,16 @@ public class Laatikkotyyppi extends Sarmio{
     public void setLaatikot(List<Laatikko> laatikot) {
         this.laatikot = laatikot;
     }
+
+    public int getLaatikoita() {
+        return laatikoita;
+    }
+
+    public void setLaatikoita(int laatikoita) {
+        this.laatikoita = laatikoita;
+    }
+    
+    
     
     
 }

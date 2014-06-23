@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.5.18)  2 JUN 2014 00:55
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.5.18)  23 JUN 2014 07:23
 entering extended mode
  %&-line parsing enabled.
 **maarittelydokumentti.tex
@@ -580,56 +580,32 @@ been already used, duplicate ignored
                    \relax 
 l.79 	\item L
              aatikko tulee olla tuettu koko pohjaltaan [1] [2]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 104.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 105.
 
 
 (/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]    \T1/cmtt/m/n/12 haunVaativuus = 1 // m‰‰rittelee haun tarkkuuden iteraati
-ossa[] 
+Overfull \hbox (73.01193pt too wide) in paragraph at lines 116--116
+[]        \T1/cmtt/m/n/12 palkki = haeParasPalkkiLaatikoista(tilapalkki, tila.v
+apaatLaatikot)[] 
  []
 
-
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]    \T1/cmtt/m/n/12 // tehd‰‰n uusia pakkaussuunnitelmia kunnes aikaraja umpe
-utuu[] 
- []
-
-
-Overfull \hbox (11.27701pt too wide) in paragraph at lines 123--123
-[]        \T1/cmtt/m/n/12 tila = Tila.initialisoi() // aloitetaan tyhj‰st‰ kont
-ista[] 
- []
-
-
-Overfull \hbox (79.18542pt too wide) in paragraph at lines 123--123
-[]        \T1/cmtt/m/n/12 // tilapalkkiPino:ssa on tilapalkit, eli kontin vapaa
-na olevat tilat[] 
- []
-
-
-Overfull \hbox (29.79749pt too wide) in paragraph at lines 123--123
-[]            \T1/cmtt/m/n/12 palkki = haeParasPalkki(tila, tilapalkki, haunVaa
-tivuus)[] 
- []
-
-[3] [4]
-Overfull \hbox (66.83406pt too wide) in paragraph at lines 148--152
+[3] [4] [5]
+Overfull \hbox (66.83406pt too wide) in paragraph at lines 171--175
 \T1/cmr/m/n/12 http://www.fernuni-hagen.de/wirtschaftswissenschaft/download/bei
 traege/db426.pdf 
  []
 
-[5] (./maarittelydokumentti.aux) ) 
+[6] (./maarittelydokumentti.aux) ) 
 Here is how much of TeX's memory you used:
- 5927 strings out of 495046
- 79920 string characters out of 1181966
- 155417 words of memory out of 3000000
+ 5929 strings out of 495046
+ 79937 string characters out of 1181966
+ 153417 words of memory out of 3000000
  8971 multiletter control sequences out of 15000+50000
  11113 words of font info for 25 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 38i,4n,24p,788b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,4n,24p,709b,421s stack positions out of 5000i,500n,10000p,200000b,50000s
  </home/szetk/.texmf-var/fonts/pk/ljfour/jkna
 ppen/ec/ecti1200.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ect
 t1200.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk
@@ -639,9 +615,9 @@ var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/szetk/.texmf-var/fonts/p
 k/ljfour/jknappen/ec/ecbx1440.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jk
 nappen/ec/ecrm1728.600pk> </home/szetk/.texmf-var/fonts/pk/ljfour/jknappen/ec/e
 cbx2074.600pk>
-Output written on maarittelydokumentti.pdf (6 pages, 110989 bytes).
+Output written on maarittelydokumentti.pdf (7 pages, 113009 bytes).
 PDF statistics:
- 361 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
+ 372 PDF objects out of 1000 (max. 8388607)
+ 37 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

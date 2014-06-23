@@ -55,7 +55,7 @@ public class ListTest {
     @Test
     public void testLisaysYliAlotusKoonToimii() {
         List<Integer> list = new List<Integer>();
-        for (int i = 0; i < 101; i++) {
+        for (int i = 0; i < 106; i++) {
             list.add(i);
         }
         int i = list.get(4);
@@ -64,8 +64,8 @@ public class ListTest {
         assertEquals(50, i);
         i = list.get(51);
         assertEquals(51, i);
-        i = list.get(100);
-        assertEquals(100, i);
+        i = list.get(105);
+        assertEquals(105, i);
     }
 
     @Test
@@ -80,10 +80,10 @@ public class ListTest {
     @Test
     public void testSizeToimiiYliAlotusKoon() {
         List<Integer> list = new List<Integer>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 106; i++) {
             list.add(i);
         }
-        assertEquals(100, list.size());
+        assertEquals(106, list.size());
 
     }
 

@@ -40,10 +40,9 @@ public class Tila {
      *
      * @param palkki Uusi, lisättävä palkki
      * @param tilapalkki Tilapalkki, johon palkki asetetaan
-     * @param kontti Kontti, jonka mukaan luodaan uudet tilapalkit
      */
-    public void paivita(Palkki palkki, Tilapalkki tilapalkki, Kontti kontti) {
-        lisaaTilapalkit(kontti, palkki, tilapalkki.getSijainti());
+    public void paivita(Palkki palkki, Tilapalkki tilapalkki) {
+        lisaaTilapalkit(tilapalkki, palkki);
         this.pakkausSuunnitelma.lisaaPalkki(palkki);
         poistaVapaistaLaatikoista(palkki);
     }
@@ -59,9 +58,7 @@ public class Tila {
         for (int j = 0; j < this.vapaatLaatikot.size(); j++) {
             Laatikkotyyppi tyyppi = this.vapaatLaatikot.get(j);
             if (tyyppi == palkki.getTyyppi()) {
-                for (int i = 0; i < palkki.getLaatikot().size(); i++) {
-                    tyyppi.getLaatikot().remove(tyyppi.getLaatikot().size() - 1);
-                }
+                this.vapaatLaatikot.get(j).setLaatikoita(tyyppi.getLaatikoita() - palkki.getLaatikot().size());
             }
         }
     }
@@ -70,17 +67,17 @@ public class Tila {
      * Tämä lisää tilaan uudet tilapalkit sen jälkeen kun pakkaussuunnitelmaan
      * on lisätty uusi palkki.
      *
-     * @param kontti Kontti, jota pakataan
+     * @param tila Kontti, jota pakataan
      * @param palkki Viimeksi pakattu palkki, jonka ympärille tilapalkit luodaan
-     * @param sijainti Palkin sijainti
      */
-    public void lisaaTilapalkit(Kontti kontti, Palkki palkki, Sijainti sijainti) {
-// palkki eteen:
-        this.tilapalkit.push(new Tilapalkki(kontti.getX() - sijainti.getX(), kontti.getY() - palkki.getY() - sijainti.getY(), kontti.getZ() - sijainti.getZ(), sijainti.getX(), sijainti.getY() + palkki.getY(), sijainti.getZ()));
+    public void lisaaTilapalkit(Tilapalkki tila, Palkki palkki) {
+        Sijainti sijainti = tila.getSijainti();
 // palkki viereen:
-        this.tilapalkit.push(new Tilapalkki(kontti.getX() - palkki.getX() - sijainti.getX(), palkki.getY(), kontti.getZ() - sijainti.getZ(), sijainti.getX() + palkki.getX(), sijainti.getY(), sijainti.getZ()));
+        this.tilapalkit.push(new Tilapalkki(tila.getX() - palkki.getX(), palkki.getY(), tila.getZ(), sijainti.getX() + palkki.getX(), sijainti.getY(), sijainti.getZ()));
+// palkki eteen:
+        this.tilapalkit.push(new Tilapalkki(tila.getX(), tila.getY() - palkki.getY(), tila.getZ(), sijainti.getX(), sijainti.getY() + palkki.getY(), sijainti.getZ()));
 // palkki yläpuolelle:
-        this.tilapalkit.push(new Tilapalkki(palkki.getX(), palkki.getY(), kontti.getZ() - palkki.getZ() - sijainti.getZ(), sijainti.getX(), sijainti.getY(), sijainti.getZ() + palkki.getZ()));
+        this.tilapalkit.push(new Tilapalkki(palkki.getX(), palkki.getY(), tila.getZ() - palkki.getZ(), sijainti.getX(), sijainti.getY(), sijainti.getZ() + palkki.getZ()));
 
     }
 
@@ -93,11 +90,10 @@ public class Tila {
         int sum = 0;
         for (int j = 0; j < this.vapaatLaatikot.size(); j++) {
             Laatikkotyyppi tyyppi = this.vapaatLaatikot.get(j);
-            sum += tyyppi.getLaatikot().size();
+            sum += tyyppi.getLaatikoita();
         }
         return sum;
     }
-
     public PakkausSuunnitelma getPakkausSuunnitelma() {
         return pakkausSuunnitelma;
     }

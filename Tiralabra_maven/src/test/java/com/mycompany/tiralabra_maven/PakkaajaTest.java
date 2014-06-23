@@ -28,6 +28,8 @@ public class PakkaajaTest {
     private Pakkaaja pakkaaja;
 
     public PakkaajaTest() {
+        Io io = new Console(new Scanner(System.in));
+        this.pakkaaja = new Pakkaaja(io);
         t = new Tilapalkki(1000, 1000, 1000);
         laatikot = new List<Laatikkotyyppi>();
     }
@@ -48,43 +50,16 @@ public class PakkaajaTest {
     public void tearDown() {
     }
 
-
-    @Test
-    public void testGeneroiLaatikoita() {
-        Io io = new Console(new Scanner(System.in));
-        this.pakkaaja = new Pakkaaja(io);
-        List<Laatikkotyyppi> boksit = this.pakkaaja.generoiLaatikoita(50, 3);
-        assertEquals(3, boksit.size());
-        int i = 0;
-        for (int j = 0; j < boksit.size(); j++) {
-            Laatikkotyyppi tyyppi = boksit.get(j);
-            i += tyyppi.getLaatikot().size();
-            assertTrue(tyyppi.getX() <= 100);
-            assertTrue(tyyppi.getX() > 0);
-            assertTrue(tyyppi.getY() <= 100);
-            assertTrue(tyyppi.getY() > 0);
-            assertTrue(tyyppi.getZ() <= 100);
-            assertTrue(tyyppi.getZ() > 0);
-        }
-        assertEquals(50, i);
-    }
-
     public List<Laatikkotyyppi> teeLaatikoita(int x, int y, int z, int n) {
         laatikot = new List<Laatikkotyyppi>();
         Laatikkotyyppi l = new Laatikkotyyppi(x, y, z);
-        for (int i = 0; i < n; i++) {
-            Laatikko laatikko = new Laatikko(l, new Sijainti(), 0);
-            l.getLaatikot().add(laatikko);
-        }
+        l.setLaatikoita(n);
         laatikot.add(l);
         return laatikot;
     }
 
     @Test
     public void testHaeParasPalkkiLaatikoista() {
-        Io io = new Console(new Scanner(System.in));
-        this.pakkaaja = new Pakkaaja(io);
-        
         laatikot = teeLaatikoita(80, 1, 100, 1);
         t = new Tilapalkki(100, 100, 100);
         Palkki p = this.pakkaaja.haeParasPalkkiLaatikoista(t, laatikot);
@@ -117,5 +92,96 @@ public class PakkaajaTest {
         assertEquals(1, p.getNy());
         assertEquals(1, p.getNz());
     }
-    
+
+    @Test
+    public void testOrientaationMaaratAkseleittainPysyyRajoissa() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(59, 54, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(6058, 2438, 2591);
+        long[] taulu = this.pakkaaja.orientaationMaaratAkseleittain(tp, l, 1000000);
+
+        assertTrue(tp.getX() >= taulu[0] * 59);
+        assertTrue(tp.getY() >= taulu[1] * 54);
+        assertTrue(tp.getZ() >= taulu[2] * 86);
+
+    }
+
+    @Test
+    public void testOrientaationMaaratOikeinKunPaljonLaatikoita() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(59, 54, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(6058, 2438, 2591);
+        long[] taulu = this.pakkaaja.orientaationMaaratAkseleittain(tp, l, 1000000);
+
+        assertEquals(102, taulu[0]);
+        assertEquals(45, taulu[1]);
+        assertEquals(30, taulu[2]);
+
+    }
+
+    @Test
+    public void testOrientaationMaaratOikeinKunVahemmanLaatikoita() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(59, 54, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(6058, 2438, 2591);
+        long[] taulu = this.pakkaaja.orientaationMaaratAkseleittain(tp, l, 100);
+
+        assertEquals(3, taulu[0]);
+        assertEquals(1, taulu[1]);
+        assertEquals(30, taulu[2]);
+
+    }
+
+    @Test
+    public void testValitseOrientaatioPysyyRajoissa() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(59, 54, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(6058, 2438, 2591);
+        Palkki p = this.pakkaaja.valitseOrientaatio(tp, l, 1000000);
+
+        assertTrue(tp.getX() >= p.getX());
+        assertTrue(tp.getY() >= p.getY());
+        assertTrue(tp.getZ() >= p.getZ());
+    }
+
+    @Test
+    public void testValitseOrientaationMaaratOikeinKunPaljonLaatikoita() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(59, 54, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(6058, 2438, 2591);
+        Palkki p = this.pakkaaja.valitseOrientaatio(tp, l, 1000000);
+
+        assertEquals(112, p.getNx());
+        assertEquals(41, p.getNy());
+        assertEquals(30, p.getNz());
+
+    }
+
+    @Test
+    public void testValitseOrientaationMaaratOikeinKunPaljonLaatikoita2() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(19, 96, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(5100, 19, 2591);
+        Palkki p = this.pakkaaja.valitseOrientaatio(tp, l, 1000000);
+
+        // 2(yxz) tai 5(zxy)
+        assertEquals(2, p.getOrientaatio());
+
+        assertEquals(53, p.getNx()); // 5100/96 = 53
+        assertEquals(1, p.getNy()); // 19/19 = 1
+        assertEquals(30, p.getNz()); // 2591/86 = 30
+
+    }
+
+    @Test
+    public void testValitseOrientaatioNullKunEiMahdu() {
+        Laatikkotyyppi lt = new Laatikkotyyppi(19, 96, 86);
+        Laatikko l = new Laatikko(lt, new Sijainti(), 0);
+        Tilapalkki tp = new Tilapalkki(5, 19, 25);
+        Palkki p = this.pakkaaja.valitseOrientaatio(tp, l, 1000000);
+        
+        assertEquals(null, p);
+
+    }
+
 }

@@ -9,7 +9,7 @@ public class Laatikko {
     private Laatikkotyyppi tyyppi;
     private Sijainti sijainti;
     private int orientaatio;
-    // Nämä luvut ovat laatikon mitat ovat samat kuin tyypin, mutta niiden järjestys riippuu orientaatiosta
+    // Nämä luvut ovat laatikon mitat. Ne on samat kuin tyypin, mutta niiden avulla laatikolla voi olla eri orientaatioita
     private long x;
     private long y;
     private long z;
@@ -37,9 +37,13 @@ public class Laatikko {
         this.z = orientZ[orientaatio];
     }
 
+    public Laatikko(Laatikkotyyppi laatikkotyyppi) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     @Override
     public String toString() {
-        return "Laatikko: x = " + this.x + ", y = " + this.y + ", z = " + this.z + " , orientaatio: " + this.orientaatio;
+        return "Laatikko: x = " + this.tyyppi.getX() + ", y = " + this.tyyppi.getY() + ", z = " + this.tyyppi.getZ() + ", orientaatio: " + this.orientaatio + ", sijainti: " + this.sijainti.toString() + "\n";
     }
 
     public long getX() {
@@ -82,6 +86,10 @@ public class Laatikko {
         this.x = orientX[orientaatio];
         this.y = orientY[orientaatio];
         this.z = orientZ[orientaatio];
+    }
+
+    public long getTilavuus() {
+        return this.x * this.y * this.z;
     }
 
 }

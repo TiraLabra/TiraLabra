@@ -57,4 +57,15 @@ public class PakkausSuunnitelma {
         return laatikoita;
     }
 
+    @Override
+    public String toString() {
+        String tuloste = "";
+        for (int i = 0; i < this.palkit.size(); i++) {
+            for (int j = 0; j < this.palkit.get(i).getLaatikot().size(); j++) {
+                tuloste += this.palkit.get(i).getLaatikot().get(j).toString();
+            }
+        }
+        return tuloste;
+    }
+
 }

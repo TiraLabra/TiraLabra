@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.tiralabra_maven.domain;
 
 /**
  * Tämä on minkä tahansa asian sijainti
+ *
  * @author szetk
  */
 public class Sijainti {
+
     private long x;
     private long y;
     private long z;
-    
-    public Sijainti(){
+
+    public Sijainti() {
         this.x = 0;
         this.y = 0;
         this.z = 0;
@@ -26,16 +27,18 @@ public class Sijainti {
         this.y = posY;
         this.z = posZ;
     }
-    
+
     /**
-     * Tämä lisää kahden sijainnin komponentit yhteen. Tätä hyödynnetään esimerkiksi palkkien referenssikulkmien käytössä.
+     * Tämä lisää kahden sijainnin komponentit yhteen. Tätä hyödynnetään
+     * esimerkiksi palkkien referenssikulkmien käytössä.
+     *
      * @param sijainti Lisättävä sijainti
      */
-    public void plus(Sijainti sijainti){
+    public void plus(Sijainti sijainti) {
         this.x += sijainti.getX();
         this.y += sijainti.getY();
         this.z += sijainti.getZ();
-        
+
     }
 
     public long getX() {
@@ -61,7 +64,10 @@ public class Sijainti {
     public void setZ(long posZ) {
         this.z = posZ;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "x = " + this.x + ", y = " + this.y + ", z = " + this.z;
+    }
+
 }
