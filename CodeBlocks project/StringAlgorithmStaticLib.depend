@@ -152,7 +152,7 @@
 	"suffix_array.hpp"
 	<iostream>
 
-1403464044 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+1403474057 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
 	<cstring>
 	<string>
 	<cstdlib>
@@ -161,10 +161,13 @@
 1403468795 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_buider.cpp
 	"suffix_array_builder.hpp"
 
-1403455289 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp
+1403471220 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp
 	<cstring>
 	<string>
 	"suffix_array.hpp"
 	<cstdlib>
 	<algorithm>
+
+1403736295 source:/home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.cpp
+	"suffix_array_builder.hpp"
 
