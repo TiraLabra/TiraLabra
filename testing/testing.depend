@@ -1,0 +1,198 @@
+# depslib dependency file v1.0
+1401401590 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/naive.cpp
+	"naive.hpp"
+
+1401401941 /home/martin/C++ projects/StringAlgorithmsFork/testing/naive.hpp
+	<string>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1403451277 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/string_slib.hpp
+	"algorithms/naive.hpp"
+	"algorithms/rabin_karp.hpp"
+	"algorithms/z_algorithm.hpp"
+	"algorithms/knuth_morris_pratt.hpp"
+	"algorithms/edit_distance.hpp"
+	"structures/suffix_tree_builder.hpp"
+	"structures/suffix_trie.hpp"
+	"structures/suffix_tree.hpp"
+	"structures/suffix_trie_builder.hpp"
+	"structures/suffix_array.hpp"
+	"structures/suffix_array_builder.hpp"
+
+1402053955 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/naive.hpp
+	"../constants.hpp"
+	<cstring>
+	<string>
+
+1401971934 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/constants.hpp
+
+1402059384 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/rabin_karp.hpp
+	<cstring>
+	<string>
+	<iostream>
+	<cstdlib>
+	"../constants.hpp"
+
+1400591300 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/hashing.hpp
+	<string>
+	<cstring>
+	"bernstein.hpp"
+	"sum_hashing.hpp"
+
+1401619221 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/bernstein.hpp
+	<string>
+	<cstring>
+	<vector>
+	<climits>
+	"../../constants.hpp"
+
+1400596048 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/hashing/sum_hashing.hpp
+	<string>
+	<cstring>
+	"../../constants.hpp"
+
+1403455747 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/z_algorithm.hpp
+	<cstring>
+	<string>
+	<vector>
+	<cstdlib>
+
+1401401960 /home/martin/C++ projects/StringAlgorithmsFork/testing/definitions.hpp
+	<string>
+	<vector>
+
+1401496921 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.cpp
+	"test_suite.hpp"
+
+1403470004 /home/martin/C++ projects/StringAlgorithmsFork/testing/test_suite.hpp
+	<string>
+	<vector>
+	<fstream>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+	"z_algorithm_tests.hpp"
+	"rabin_karp_test.hpp"
+	"knuth_morris_pratt_tests.hpp"
+	"naive.hpp"
+	"edit_distance_tests.hpp"
+	"suffix_array_test.hpp"
+
+1401573853 /home/martin/C++ projects/StringAlgorithmsFork/testing/z_algorithm_tests.hpp
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1401573860 /home/martin/C++ projects/StringAlgorithmsFork/testing/rabin_karp_test.hpp
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1401496900 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/z_algorithm_tests.cpp
+	"z_algorithm_tests.hpp"
+
+1401647583 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/rabin_karp_test.cpp
+	"rabin_karp_test.hpp"
+	<iostream>
+
+1401622745 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/bernstein_hasher_test.cpp
+	"bernstein_hasher_test.hpp"
+
+1401618530 /home/martin/C++ projects/StringAlgorithmsFork/testing/bernstein_hasher_test.hpp
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1401654982 /home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.hpp
+	<cstring>
+	<string>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1403455732 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/knuth_morris_pratt.hpp
+	<cstdlib>
+	<cstring>
+	<vector>
+	<string>
+
+1402842565 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/edit_distance_tests.cpp
+	"edit_distance_tests.hpp"
+	<iostream>
+
+1401740192 /home/martin/C++ projects/StringAlgorithmsFork/testing/edit_distance_tests.hpp
+	<cstring>
+	<string>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1401973662 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/algorithms/edit_distance.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+
+1403307877 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/knuth_morris_pratt_tests.cpp
+	"knuth_morris_pratt_tests.hpp"
+	<iostream>
+
+1402603268 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree_builder.hpp
+	<cstring>
+	<string>
+	"suffix_tree.hpp"
+
+1403303066 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_tree.hpp
+	<cstdlib>
+	<cstring>
+	<string>
+	<vector>
+
+1402916920 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie.hpp
+	<cstring>
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	"../constants.hpp"
+
+1402948565 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_trie_builder.hpp
+	<cstring>
+	<string>
+	"suffix_trie.hpp"
+
+1402955167 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_trie_tests.cpp
+	"suffix_trie_tests.hpp"
+	<iostream>
+
+1402841272 /home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_trie_tests.hpp
+	<string>
+	<cstring>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+
+1403464044 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array.hpp
+	<cstring>
+	<string>
+	<cstdlib>
+	<vector>
+
+1403455289 /home/martin/C++ projects/StringAlgorithmsFork/CodeBlocks project/structures/suffix_array_builder.hpp
+	<cstring>
+	<string>
+	"suffix_array.hpp"
+	<cstdlib>
+	<algorithm>
+
+1403469928 source:/home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.cpp
+	"suffix_array_test.hpp"
+	<iostream>
+
+1403455612 /home/martin/C++ projects/StringAlgorithmsFork/testing/suffix_array_test.hpp
+	<string>
+	<cstring>
+	<gtest/gtest.h>
+	"../CodeBlocks project/string_slib.hpp"
+	"definitions.hpp"
+

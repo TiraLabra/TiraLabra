@@ -1,25 +1,25 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+StringAlgorithmsStaticLib
+=========
+
+StringAlgorithmsStaticLib is a C++ string library which covers a few well-known algorithms and data structures for string searching, string processing and levenstein computation.
+
+The library covers the following algorithms:
+
+- naive search (no doc needed)
+- standard Rabin Karp implementation using roll hashing ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/rabin%20karp.odt?raw=true) )
+- Z algorithm ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/z%20algorithm.odt?raw=true))
+- Knutt-Morris-Pratt algorithm ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/kmp.odt?raw=true) )
+- Edit distance ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/edit%20distance.odt?raw=true))
 
 
+Data structures:
 
+- Suffix trie ( [doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20trie.odt?raw=true) )
+- Suffix tree (naive building) ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20tree%20naive.odt?raw=true))
+- Suffix array ([doc](https://github.com/martinradev/TiraLabra/blob/master/Docs/suffix%20array.odt?raw=true))
 
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
+###[Manual](https://github.com/martinradev/TiraLabra/blob/master/manual.md)
 
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
+###[Implementation](https://github.com/martinradev/TiraLabra/blob/master/implementation.md)
 
-* * *
-
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
-
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
-
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
-
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
-
+###[Testing](https://github.com/martinradev/TiraLabra/blob/master/tests.md)
