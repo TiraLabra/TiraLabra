@@ -23,6 +23,11 @@ public class Scoreboard {
         scores = new int[17];
     }
     
+    public void markScore(int index, int score)
+    {
+        scores[index] = score;
+    }
+    
     
     
     

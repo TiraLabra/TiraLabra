@@ -10,8 +10,38 @@ package smartyahtzee;
  *
  * @author essalmen
  */
-class Die {
+public class Die {
     private boolean locked;
     private int number;
+    
+    public boolean lock()
+    {
+        if (locked) {
+            locked = false;
+        } else {
+            locked = true;
+        }
+        return locked;
+    }
+    
+    public boolean isLocked()
+    {
+        return locked;
+    }
+    
+    public int getNumber()
+    {
+        return number;
+    }
+    
+    public void unlock()
+    {
+        locked = false;
+    }
+    
+    public void setNumber(int number)
+    {
+        this.number = number;
+    }
     
 }

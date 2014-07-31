@@ -7,6 +7,7 @@
 package smartyahtzee;
 
 import java.util.ArrayList;
+import smartyahtzee.scoring.Scores;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  */
 public class Game {
     
+    private final int rows = 17;
     private ArrayList<Player> players;
     
     public Game(int humans, int bots) {
@@ -35,13 +37,23 @@ public class Game {
     
     public void runGame()
     {
-        for (int i = 0; i<16; i++)
+        for (int i = 0; i<rows; i++)
         {
             for (Player player : players)
             {
-                //drawScoreboard();
+                drawScoreboard();
                 player.playTurn();
             }
+            System.out.println("---");
+        }
+    }
+    
+    private void drawScoreboard()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            System.out.print(Scores.scoreDescriptions[i]);
+            System.out.println("");
         }
     }
 
