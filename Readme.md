@@ -1,7 +1,4 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
-
-
+## Tiralabra kesä 2014
 
 
 Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
@@ -19,7 +16,4 @@ Kuitenkin on tärkeää poistaa turha kansio!
 
 Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
 
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
-
+Docs kansioon tulee laittaa kaikki muut dokumentit, 
