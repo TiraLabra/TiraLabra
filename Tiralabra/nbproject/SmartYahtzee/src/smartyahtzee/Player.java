@@ -14,12 +14,26 @@ import smartyahtzee.scoring.Scoreboard;
  */
 public abstract class Player {
     
-    private Scoreboard scores;
+    private int[] scores;
+    private boolean[] markedColumns;
     
     public Player()
     {
-        scores = new Scoreboard();
+        scores = new int[17];
+        markedColumns = new boolean[17];
     }
     
     public abstract void playTurn();
+    
+    public int getScore(int index)
+    {
+        return scores[index];
+    }
+    
+    public void setScore(int index, int score)
+    {
+        scores[index] = score;
+        markedColumns[index] = true;
+    }
+    
 }

@@ -7,6 +7,7 @@
 package smartyahtzee;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -41,7 +42,7 @@ public class DiceSet {
     
     public void toggleLock(int index)
     {
-        dice.get(index).lock();   
+        dice.get(index).lock();
     }
     
     public void unlockAll()
@@ -59,6 +60,7 @@ public class DiceSet {
         {
             dice[i] = this.dice.get(i).getNumber();
         }
+        Arrays.sort(dice);
         return dice;
     }
     

@@ -18,13 +18,12 @@ public class Human extends Player {
     
     Scanner scanner;
     DiceSet dice;
-    Scoreboard scores;
     
     public Human()
     {
         scanner = new Scanner(System.in);
         dice = new DiceSet();
-        scores = new Scoreboard();
+        
     }
     
     @Override
@@ -42,7 +41,7 @@ public class Human extends Player {
         dice.unlockAll();
         dice.throwDice();
         
-        for (int throwsLeft = 2; throwsLeft >= 0; throwsLeft--)
+        for (int throwsLeft = 2; throwsLeft > 0; throwsLeft--)
         {
             //printScoreboardWithScores();
             
@@ -73,16 +72,16 @@ public class Human extends Player {
     
     private void markScore()
     {
+        
+        System.out.println(dice);
         //printScoreBoard();
-        String command = "";
         int parsedNumber = 0;
         while (parsedNumber < 1 || parsedNumber > 17)
         {
             parsedNumber = scanner.nextInt();
         }
         
-        scores.markScore(parsedNumber, Scores.calculateScore(parsedNumber, dice.asArray()));
-            
+        setScore(parsedNumber-1, Scores.calculateScore(parsedNumber-1, dice.asArray()));    //indexing again
             
     }
     

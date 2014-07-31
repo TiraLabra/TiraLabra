@@ -28,6 +28,11 @@ public class Scoreboard {
         scores[index] = score;
     }
     
+    public int getScore(int index)
+    {
+        return scores[index];
+    }
+    
     
     
     

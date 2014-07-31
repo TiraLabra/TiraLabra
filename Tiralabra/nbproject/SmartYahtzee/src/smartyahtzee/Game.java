@@ -53,6 +53,11 @@ public class Game {
         for (int i = 0; i < rows; i++)
         {
             System.out.print(Scores.scoreDescriptions[i]);
+            for (Player player : players)
+            {
+                System.out.print(" | " + player.getScore(i));
+            }
+            
             System.out.println("");
         }
     }

@@ -7,6 +7,7 @@
 package smartyahtzee.scoring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import smartyahtzee.DiceSet;
 import smartyahtzee.Die;
 
@@ -83,46 +84,110 @@ public class Scores {
     
     private static int pairScore(int[] dice)
     {
+        int prev = 0;
+        for (int i = 4; i >= 0; i--)
+        {
+            if (prev == dice[i])
+            {
+                return dice[i]*2;
+            }
+            prev = dice[i];
+        }
+        
         return 0;
     }
     
     private static int twopairsScore(int[] dice)
     {
+        int prev = 0;
+        for (int i = 4; i >= 0; i--)
+        {
+            if (prev == dice[i])
+            {
+                int pair = dice[i]*2;
+                if (i > 1 && dice[i-1] != dice[i] && dice[i-1] == dice[i-2])
+                {
+                    return pair + dice[i-1] * 2;
+                } else if (i > 2 && dice[i] != dice[i-2] && dice[i-2] == dice[i-3])
+                {
+                    return pair + dice[i-2] * 2;
+                }
+            }
+            prev = dice[i];
+        }
+        
         return 0;
     }
     
     private static int threeofakindScore(int[] dice)
     {
+        if (dice[2] == dice[4])
+        {
+            return dice[2]*3;
+        } else if (dice[1] == dice[3])
+        {
+            return dice[1]*3;
+        } else if (dice[0] == dice[2])
+        {
+            return dice[0]*3;
+        }
+        
         return 0;
     }
     
     private static int fourofakindScore(int[] dice)
     {
+        if (dice[1] == dice[4])
+        {
+            return dice[1]*4;
+        } else if (dice[0] == dice[3])
+        {
+            return dice[0]*4;
+        }
+        
         return 0;
     }
     
     private static int smallstraightScore(int[] dice)
     {
+        int[] straight = {1, 2, 3, 4, 5};
+        if (Arrays.equals(dice, straight))
+        {
+            return 15;
+        } 
         return 0;
     }
     
     private static int largestraightScore(int[] dice)
     {
+        int[] straight = {2, 3, 4, 5, 6};
+        if (Arrays.equals(dice, straight))
+        {
+            return 20;
+        } 
         return 0;
     }
     
     private static int fullhouseScore(int[] dice)
     {
+        if ((dice[0] == dice[1] && dice[2] == dice[4]) || (dice[0] == dice[2] && dice[3] == dice[4]))
+        {
+            return dice[0] + dice[1] + dice[2] + dice[3] + dice[4];
+        }
+        
         return 0;
     }
     
     private static int chanceScore(int[] dice)
     {
-        return 0;
+        return dice[0] + dice[1] + dice[2] + dice[3] + dice[4];
     }
     
     private static int yahtzeeScore(int[] dice)
     {
+        if (dice[0] == dice[4]){
+            return 50;
+        }
         return 0;
     }
     
