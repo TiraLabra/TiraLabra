@@ -1,19 +1,16 @@
 
-Tämä dokumentti määrittelee ongelman "mahjong-käden shanten-arvon laskeminen".
-
-Johdanto-kappaleessa kerrotaan minimaaliset taustatiedot ongelman
-ymmärtämiseksi. Lukija joka on sinut (japanilaisen) mahjongin ja muutamien
-termien kanssa (tenpai, shanten) voi haluta ohittaa sen.
-
 # Johdanto
 
-(Riichi) mahjong on neljän ihmisen pokeria muistuttava peli, jota pelataan
-136:lla tiilellä. Jokaista tiiltä on neljä kappaletta, eli erilaisia tiiliä on
-yhteensä 34: kolme maata joissa kussakin numerotiilet 1-9, neljä
-ilmasuuntatiiltä (itä, etelä, länsi, pohjoinen) ja kolme lohikäärmetiiltä.
+Johdannossa kerrotaan minimaaliset taustatiedot ongelman ymmärtämiseksi. Lukija
+joka on sinut (japanilaisen) mahjongin ja muutamien sen termien kanssa (tenpai,
+shanten) voi haluta ohittaa sen.  Mahjongin laajahkoa pelimekaniikkaa ei
+tarvitse tietää ongelman ymmärtämiseksi.
 
-Mahjongin laajahkoa pelimekaniikkaa ei tarvitse osata ongelman ymmärtämiseksi,
-ainoastaan mitä tässä johdannossa kerrotaan kädestä.
+(Riichi) mahjong on neljän ihmisen pokeria muistuttava peli, jota pelataan
+kaikkiaan 136:lla tiilellä. Jokaista tiiltä on pelissä neljä samanlaista.
+Tiilistä muodostuu kolme maata (man, pin, shuu) joista kustakin on edustettuna
+numerotiilet 1-9. Lisäksi on neljä ilmasuuntatiiltä (itä, etelä, länsi,
+pohjoinen) ja kolme lohikäärmetiiltä.
 
 ## Mahjong-käsi
 
@@ -65,21 +62,23 @@ ja pari punaisia lohikäärmeitä.
 
 ## Tenpai
 
-Mahjong muistuttaa hyvin paljon pokeria: pelaajat aloittavat satunnaisella
-kädellä, jossa on 13 tiiltä. Pelaaja muokkaa kättään aina yksi tiili kerrallaan.
-Hän nostaa käteensä yhden tiilen lisää muurista ja heittää yhden tiilen pois
-(voi olla myös juuri nostettu tiili), tavoitteenaan päästä lähemmäs valmista
-kättä.
+Mahjong muistuttaa hyvin paljon pokeria: pelaajat aloittavat kädellä, jossa on
+13 satunnaisesti nostettua tiiltä. Pelaaja muokkaa kättään aina yksi tiili
+kerrallaan.  Vuorollaan hän nostaa käteensä muurista yhden tiilen lisää ja
+heittää yhden tiilen pois (joka voi olla myös nostettu tiili), tavoitteenaan
+päästä lähemmäs valmista kättä. Pelaaja voi myös *huutaa* tiilen, jonka toinen
+pelaaja on juuri heittänyt pois. Tiilen voi huutaa jos se täydentää jonkin
+kolmen tiilen setin. Setti paljastetaan muille huudon yhteydessä.
 
-Valmiiseen käteen vaaditaan 14 tiiltä, mutta pelatessa kädessä on vain 13
-tiiltä. Käsi valmistuu, kun sopiva 14. tiili lisätään ja käsi paljastetaan
-muille. Eli kun pelaaja nostaa (tai huutaa) käden viimeistelevän
-14. tiilen, hän ei heitä sitä pois vaan julistaa voittonsa ja paljastaa kätensä.
+Huomaa, että valmiiseen käteen vaaditaan 14 tiiltä, mutta pelatessa kädessä on
+vain 13 tiiltä. Käsi valmistuu, kun sopiva 14. tiili lisätään ja käsi
+paljastetaan muille. Eli kun pelaaja nostaa (tai huutaa) käden viimeistelevän
+tiilen, hän ei heitä sitä pois vaan julistaa voittonsa ja paljastaa kätensä.
 
-Kun käsi voi valmistua lisäämällä siihen jokin tiili, sanotaan että
-käsi (tai pelaaja) on **tenpai**, yhden päässä voitosta.
+Kun käsi valmistuisi lisäämällä siihen jokin 14. tiili, sanotaan että käsi (tai
+pelaaja) on **tenpai**, yhden päässä voitosta.
 
-Tenpai-käsi, joka voi voittaa joko 4- tai 7-bambulla:
+Esimerkki tenpai-kädestä, joka voi voittaa joko 4- tai 7-bambulla:
 
 ![](http://upload.wikimedia.org/wikipedia/commons/1/1c/MJw1.png)
 ![](http://upload.wikimedia.org/wikipedia/commons/1/1c/MJw1.png)
@@ -100,33 +99,40 @@ Tenpai-käsi, joka voi voittaa joko 4- tai 7-bambulla:
 Kun tenpailla tarkoitetaan, että käsi on yhden päässä voitosta, niin
 ***n*-shanten** tarkoittaa että käsi on *n* tiilen päässä voitosta.
 
+## Odotukset
+
+Tässä työssä *odotuksilla tarkoitetaan mitä vain sellaista tiiltä, jonka
+vaihtamalla jonkin kädessä olevan tiilen tilalle vie kättä lähemmäs tenpaita
+(tai tenpai-käden voittoon). Huomaa, että tämä on yhtäpitävää shanten-arvon
+pienentämisen kanssa.
+
 # Työn tavoitteet
 
-Työn päätavoitteena on toteuttaa, analysoida ja testata algoritmeja, jotka
-selvittävät mielivaltaiselle mahjong-kädelle...
+Tämän työn pääpaino on seuraavien mielivaltaisia mahjong-käsiä käsittelevien
+algoritmien keksiminen ja toteutus:
 
-- sen setit ja mahdolliset setit
-- shanten-arvon
-- odotukset, eli tiilet jotka pienentävät käden shanten-arvoa.
+- Algoritmi `setsOfHand`: käden kaikki setit ja mahdolliset setit (parit)
+- Algoritmi `shanten`: shanten-arvo nk. vähennysmenetelmällä (katso alla)
+- Algoritmi `waitsToWin`: selvitä käden ns. *välittömien odotusten puu* (katso
+  määrittely alta)
 
-Toteutuskohteina ovat nämä algoritmit ja niiden käyttämät tietorakenteet ja
-algoritmit.  Lopuksi saatetaan pohtia odotusten painottamista esim. niiden
-tuovien fu-pisteiden suhteen.
+Työ toteutetaan staattisesti tyypitetyllä, puhtaalla ja funktionaalisella
+ohjelmointikielellä Haskell.
 
-# Asetetut rajoitteet
+Ainoat käytetyt valmiit tietorakenteet ovat primitiivit ja (funktionaalisuuden
+myötä) linkitetyt listat.  Muut (apu)tietorakenteet ja -algoritmit toteutetaan
+itse.
 
-Työ toteutetaan staattisesti tyypitetyllä puhtaalla funktionaalisella
-ohjelmointikielellä Haskell. Kurssin tavoitteiden mukaisesti ainoat käytetyt
-valmiit tietorakenteet ovat primitiivit ja linkitetyt listat. Muut
-(apu)-tietorakenteet ja -algoritmit toteutetaan itse, erityisesti tietotyyppi
-käden esitykselle.
+Mahjong-tiilen esitys on triviaali summatyyppi, ja "varastetaan" tekijän omasta
+[hajong](https://github.com/SimSaladin/hajong)-projektista.  Käsi on joukko n.
+13 tiilestä, joten se voidaan käyttötarkoitus huomioon ottaen esittää listana
+tiiliä.
 
-# Käden tietorakenne
+Työn olennaisin ja mielenkiintoisin tietorakenne on `waitsToWin`-algoritmin
+palauttama **odotuspuu**. Odotuspuu on ruusupuu, ja kurssin tavoitteiden
+mukaisesti implementoidaan työssä.
 
-Käden esitykselle on algoritmien kannalta olennaista, että tiilet voidaan
-eritellä tyypin perusteella ja käydä tehokkaasti läpi järjestyksessä.
-
-# Algoritmi settien ja mahdollisten settien määrittämiseen
+# Algoritmi 1: Setit ja mahdolliset setit
 
 Tämä on shanten-algoritmien (alla) ja odotustiilten määrittämistä varten
 oleellinen algoritmi.
@@ -156,20 +162,17 @@ shuntsu-odotuksen (45):
 ![](http://upload.wikimedia.org/wikipedia/commons/c/cb/MJs6.png)
 ![](http://upload.wikimedia.org/wikipedia/commons/c/cb/MJs6.png)
 
-# Algoritmi shanten-arvon määrittämiseen
+# Algoritmi 2: Shanten-arvo (nk. vähennysmenetelmällä)
 
 **Syöte:** Mielivaltainen mahjong-käsi.
 <br>
 **Tuloste:** Shanten-arvo.
 <br>
-**Avut:** (kandidaatti)-settien määrittäminen.
+**Avut:** (kandidaatti)-settien määrittäminen (Algoritmi 1).
 
-## Vähennysmenetelmä
-
-
-Vähennysmenetelmä on varsin nerokas, ihmiselle nopea ja helppo tapa shantenin
-laskemiseen. Se on kuvattu tässä [StackOverflow-vastauksessa] [vahennys].
-Lyhyesti:
+Vähennysmenetelmä on varsin nerokas, nopea ja kognitiivisestikin helppo tapa
+shantenin laskemiseen. Se on kuvattu tässä [StackOverflow-vastauksessa]
+[vahennys].  Lyhyesti:
 
 > Luvusta 8 vähennetään 2 jokaista valmista settiä kohden ja 1 jokaista yhtä
 > vaille valmista settiä kohden. Jokainen tiili saa liittyä vain yhteen
@@ -181,3 +184,41 @@ Intuitiivisesti menetelmä tuntuu korrektilta.
 
 [vahennys]: http://boardgames.stackexchange.com/questions/11877/how-can-i-quickly-calculate-the-shanten-number-in-mahjong#answer-13592
 [hajong]:   http://github.com/SimSaladin/hajong
+
+# Algoritmi 3: Odotuspuut
+
+**Syöte:** Mielivaltainen mahjong-käsi.
+<br>
+**Tuloste:** Käden odotuspuu.
+
+Odotuspuun määrittäminen on koko työn mielenkiintoisin algoritmi.
+
+Odotuspuu esittää kaikki ne vaihtoehtoiset yhden tiilen vaihdot kädessä, jotka
+pienentävät shantenia. Puu rakentuu seuraavasti:
+
+> Puun alkiot ovat kolmikkoja `(edellinen heitto, nosto, heitettävät)`, missä
+> `edellinen heitto` on edellisellä vuorolla poisheitetty tiili, `nosto`
+> nykyisellä vuorolla nostettu tiili ja `heitettävät` niiden kädessä olevien
+> tiilten joukko, joista mikä vain voidaan korvata nostetulla ja shanten kasvaa
+> (tai pysyy samana).
+> 
+> Alkiot kuvaavat jotain mahjong-kättä: juuressa on kuvattuna alkuperäinen käsi
+> ja jokainen lapsi kuvaa vanhempansa kättä, johon on lisätty tiili `nosto` ja
+> poistettu tiili `edellinen heitto`.
+>
+> Kombinatorillisen räjähdyksen välttämiseksi vaaditaan, että `shanten(n) >=
+> shanten(n+1)`, eli että lapsen shanten ei saa olla isompi kuin sen vanhemman.
+
+Odotuspuu on siis naiivi esitys kaikista niistä yhden tiilen vaihdoista jotka
+vievät kättä valmiimmaksi.
+
+Huomaa, että tästä puusta saadaan ilmaiseksi hyvin yksinkertainen
+mahjong-tekoäly: mikäli nostettu tiili on puun ensimmäisellä tasolla `nosto`:na:
+siirrä nostettu tiili käteen ja heitä satunnaisesti jokin tiili
+`heitettävät`-kokoelmasta. Muuten heitä nostettu tiili pois. Ja kun puussa
+liikkuu syvemmälle voi esimerkiksi määrittää melko halvasti heuristiikkoja kuten
+eri odotusten maksimointi, odotusten todennäköisyydet muiden poisheitoista,
+fu-pisteiden maksimointi jne.
+
+Tekoälyn toteutus on kuitenkin toissijaista ja siihen mennään mikäli tulee
+tylsää.
