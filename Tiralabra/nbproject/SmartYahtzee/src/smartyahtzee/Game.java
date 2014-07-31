@@ -35,9 +35,10 @@ public class Game {
         
     }
     
+    
     public void runGame()
     {
-        for (int i = 0; i<rows; i++)
+        for (int i = 0; i < rows; i++)
         {
             for (Player player : players)
             {
