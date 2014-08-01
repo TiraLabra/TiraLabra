@@ -17,7 +17,7 @@ public class SmartYahtzee {
      */
     public static void main(String[] args) {
         
-        Game newGame = new Game(1, 0);
+        Game newGame = new Game(2, 0);
         newGame.runGame();
     }
     

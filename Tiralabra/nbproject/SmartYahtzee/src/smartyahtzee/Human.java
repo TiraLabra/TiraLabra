@@ -7,7 +7,6 @@
 package smartyahtzee;
 
 import java.util.Scanner;
-import smartyahtzee.scoring.Scoreboard;
 import smartyahtzee.scoring.Scores;
 
 /**
@@ -17,26 +16,19 @@ import smartyahtzee.scoring.Scores;
 public class Human extends Player {
     
     Scanner scanner;
-    DiceSet dice;
+    
     
     public Human()
     {
         scanner = new Scanner(System.in);
-        dice = new DiceSet();
+        
         
     }
+
+    
     
     @Override
-    public void playTurn() {
-        
-        rollDice();
-        markScore();
-        checkForSum();
-            
-    }
-    
-    
-    private void rollDice()
+    protected void rollDice()
     {
         
         dice.unlockAll();
@@ -71,7 +63,8 @@ public class Human extends Player {
         
     }
     
-    private void markScore()
+    @Override
+    protected void markScore()
     {
         
         System.out.println(dice);
@@ -103,5 +96,7 @@ public class Human extends Player {
         return 0;
       
     }
+
+   
     
 }

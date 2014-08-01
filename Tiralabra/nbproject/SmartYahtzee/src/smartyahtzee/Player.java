@@ -6,7 +6,6 @@
 
 package smartyahtzee;
 
-import smartyahtzee.scoring.Scoreboard;
 
 /**
  *
@@ -14,20 +13,30 @@ import smartyahtzee.scoring.Scoreboard;
  */
 public abstract class Player {
     
-    private int[] scores;
-    private boolean[] markedColumns;
+    protected int[] scores;
+    protected boolean[] markedColumns;
+    protected DiceSet dice;
     
     public Player()
     {
         scores = new int[17];
         markedColumns = new boolean[17];
+        dice = new DiceSet();
     }
     
-    public abstract void playTurn();
+    public void playTurn(){
+        rollDice();
+        markScore();
+        checkForSum();
+    }
     
-    public int getScore(int index)
+    public String getScore(int index)
     {
-        return scores[index];
+        if (markedColumns[index])
+        {
+            return "" + scores[index];
+        }
+        return "-";
     }
     
     public void setScore(int index, int score)
@@ -38,6 +47,11 @@ public abstract class Player {
     
     public void checkForSum()
     {
+        if (!markedColumns[8])
+        {
+            return;
+        }
+        
         int sum = 0;
         for (int i = 0; i < 6; i++)
         {
@@ -59,12 +73,16 @@ public abstract class Player {
         
         markedColumns[7] = true;        //not that this is ever used or checked(?)
         markedColumns[8] = true;
-   
+
     }
     
     public boolean marked(int index)
     {
         return markedColumns[index];
     }
+
+    protected abstract void rollDice();
+
+    protected abstract void markScore();
     
 }

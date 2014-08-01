@@ -4,16 +4,35 @@
  * and open the template in the editor.
  */
 
-package smartyahtzee;
+package smartyahtzee.AI;
+
+import smartyahtzee.Player;
 
 /**
  *
  * @author essalmen
  */
 public class Bot extends Player {
+    
+    
 
     @Override
     public void playTurn() {
+        
+        rollDice();
+        markScore();
+        
+    }
+    
+    @Override
+    protected void rollDice()
+    {
+        dice.throwDice();
+        
+    }
+    
+    @Override
+    protected void markScore(){
         
     }
     

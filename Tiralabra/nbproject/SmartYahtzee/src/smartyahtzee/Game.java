@@ -6,6 +6,7 @@
 
 package smartyahtzee;
 
+import smartyahtzee.AI.Bot;
 import java.util.ArrayList;
 import smartyahtzee.scoring.Scores;
 
@@ -53,7 +54,7 @@ public class Game {
     {
         for (int i = 0; i < rows; i++)
         {
-            System.out.print(Scores.scoreDescriptions[i]);
+            System.out.print(i+1 + " | " + Scores.scoreDescriptions[i]);
             for (Player player : players)
             {
                 System.out.print(" | " + player.getScore(i));

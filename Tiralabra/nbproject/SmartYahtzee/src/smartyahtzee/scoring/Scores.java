@@ -18,11 +18,17 @@ import smartyahtzee.Die;
 public class Scores {
     
     public static final String[] scoreDescriptions = {
-        "Ones: ", "Twos: ", "Threes: ", "Fours: ", "Fives: ",
-        "Sixes: ", "Sum: ", "Bonus: ", "Pair: ", "Two pairs: ",
-        "Three of a kind: ", "Four of a kind: ", "Small straight: ",
-        "Large straight: ", "Full house: ", "Chance: ", "Yahtzee: ",
-        "Total: "
+        "Ones:            ", "Twos:            ", "Threes:          ", "Fours:           ",
+        "Fives:           ", "Sixes:           ", "Sum:             ", "Bonus:           ",
+        "Pair:            ", "Two pairs:      ", "Three of a kind:",
+        "Four of a kind: ", "Small straight: ", "Large straight: ",
+        "Full house:     ", "Chance:         ", "Yahtzee:        ",
+        "Total:      "
+    };
+    
+    public static final int[] maxScores = {
+        5, 10, 15, 20, 25, 30, 105, 50,
+        12, 22, 18, 24, 15, 20, 28, 30, 50    
     };
     
     

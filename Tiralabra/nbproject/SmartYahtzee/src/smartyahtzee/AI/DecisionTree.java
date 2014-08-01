@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 
-package smartyahtzee.scoring;
+package smartyahtzee.AI;
 
 /**
  *
- * @author essalmen
+ * @author Essi
  */
-class Score {
-    
-    
-    
-        
+public class DecisionTree {
     
 }
