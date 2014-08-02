@@ -48,6 +48,16 @@ public interface IPolynomial {
     void addTerm(int coefficient, int exponent);
     
     /**
+     * Removes the term at the given exponent from the polynomial.
+     * 
+     * If the polynomial doesn't contain the given term, nothing is done.
+     * 
+     * @param exponent Exponent of term to be removed. Must be non-negative.
+     * @throws IllegalArgumentException if exponent is negative.
+     */
+    void removeTerm(int exponent);    
+    
+    /**
      * Evaluates the polynomial at the given point.
      * 
      * The evaluation will be done in the ring of integers.
