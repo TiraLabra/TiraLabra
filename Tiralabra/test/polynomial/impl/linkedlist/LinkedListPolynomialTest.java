@@ -74,6 +74,83 @@ public class LinkedListPolynomialTest {
         polynomial.addTerm(-2, 0);        
         assertEquals(0, polynomial.getCoefficientAtDegree(0));        
     }
+   
+    @Test
+    public void testAddTerm3() {
+        int characteristic = 6;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        
+        polynomial.addTerm(2, 1);
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(1, polynomial.getNumberOfNonZeroCoefficients());
+        assertEquals(1, polynomial.getDegree());
+        assertEquals(2, polynomial.getCoefficientOfLeadingTerm());
+        
+        polynomial.addTerm(3, 5);
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));        
+        assertEquals(5, polynomial.getDegree());        
+        assertEquals(2, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm()); 
+        
+        polynomial.addTerm(4, 0);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(5, polynomial.getDegree());         
+        assertEquals(3, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm()); 
+        
+        polynomial.addTerm(2, 3);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(2, polynomial.getCoefficientAtDegree(3));         
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(5, polynomial.getDegree());         
+        assertEquals(4, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm());           
+        
+        polynomial.addTerm(5, 3);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(1, polynomial.getCoefficientAtDegree(3));         
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(5, polynomial.getDegree());         
+        assertEquals(4, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm());        
+        
+        polynomial.addTerm(1, 4);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(1, polynomial.getCoefficientAtDegree(3));         
+        assertEquals(1, polynomial.getCoefficientAtDegree(4));          
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(5, polynomial.getDegree());         
+        assertEquals(5, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm());   
+        
+        polynomial.addTerm(2, 7);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(1, polynomial.getCoefficientAtDegree(3));         
+        assertEquals(1, polynomial.getCoefficientAtDegree(4));          
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(2, polynomial.getCoefficientAtDegree(7));         
+        assertEquals(7, polynomial.getDegree());         
+        assertEquals(6, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(2, polynomial.getCoefficientOfLeadingTerm());       
+        
+        polynomial.addTerm(-1, 4);
+        assertEquals(4, polynomial.getCoefficientAtDegree(0));        
+        assertEquals(2, polynomial.getCoefficientAtDegree(1));
+        assertEquals(1, polynomial.getCoefficientAtDegree(3));         
+        assertEquals(0, polynomial.getCoefficientAtDegree(4));          
+        assertEquals(3, polynomial.getCoefficientAtDegree(5));   
+        assertEquals(7, polynomial.getDegree());         
+        assertEquals(5, polynomial.getNumberOfNonZeroCoefficients());        
+        assertEquals(2, polynomial.getCoefficientOfLeadingTerm());          
+        
+    }    
     
     @Test(expected = IllegalArgumentException.class)
     public void testAddTermNegativeDegree() {
@@ -168,13 +245,13 @@ public class LinkedListPolynomialTest {
         assertEquals(0, polynomial.getCoefficientOfLeadingTerm());        
         
         polynomial.addTerm(6, 0);    
-        assertEquals(6, polynomial.getNumberOfNonZeroCoefficients());      
+        assertEquals(6, polynomial.getCoefficientOfLeadingTerm());      
         
         polynomial.addTerm(3, 2);             
-        assertEquals(3, polynomial.getNumberOfNonZeroCoefficients());      
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm());      
         
         polynomial.addTerm(4, 1);     
-        assertEquals(3, polynomial.getNumberOfNonZeroCoefficients());         
+        assertEquals(3, polynomial.getCoefficientOfLeadingTerm());         
     }
     
     @Test
