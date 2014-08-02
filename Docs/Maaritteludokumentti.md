@@ -1,9 +1,12 @@
 # Järjestämisalgoritmien tastaus ja analyysi
+
 ## Työnkuvaus
 
 Tämän työn tavoitteena on ohjelmoida muutamia tunnettuja järjestämisalgoritmeja, ja analysoida näyden toimintaa erilaisissa järjestämistilanteissa. Järjestämisalgoritmien toiminnasta määritellään aika- ja tilavaativuus, sekä mitataan aikaa neljällä järjestysskenaariolla; epäjärjestys, melkein järjestetty, melkein päinvastainen järjestys ja järjestetty, jossa vain viimeiset luvut ovat epäjärjestyksessä. 
 
-Testattavia algoritmeja ovat ainakin Quicksort, Insertion Sort ja Selection Sort. Jos aikaa jää, kasvatetaan testattavien algoritmien määrää. Algoritmit on valittu niiden yleisyyden perustella, sekä tiedetyillä erilaisilla käyttäytymisillä erikokoisilla ja erilaisilla syötteillä. Tämän analyysin tavoitteena on selvittää mikä algoritmi on nopein missäkin järjestämistilanteessa. Tässä analyysissä ei mitata vaativampia arvoja kuten muistin tai prosessorin käyttöä, vaan keskitytään vain nopeuden arviointiin.
+Testattavia algoritmeja ovat ainakin Quicksort, Insertion Sort ja Selection Sort. Jos aikaa jää, kasvatetaan testattavien algoritmien määrää huonommin tunnetuilla algoritmeillä, kuten hitaudestaan tunnetulla Bogo-sortilla. Ensisijaisesti testattavat algoritmit on valittu niiden yleisyyden perustella, sekä tiedetyillä erilaisilla käyttäytymisillä erikokoisilla ja erilaisilla syötteillä. 
+
+Tämän analyysin tavoitteena on selvittää mikä algoritmi on nopein missäkin järjestämistilanteessa. Tässä analyysissä ei mitata vaativampia arvoja, kuten muistin tai prosessorin käyttöä, vaan keskitytään vain nopeuden mittaamiseen. 
 
 ## Testiskenaariot
 
