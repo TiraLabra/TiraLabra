@@ -1,5 +1,3 @@
-% vim:ft=haskell
-\begin{code}
 ------------------------------------------------------------------------------
 -- |
 -- Module         : Shanten.Types
@@ -42,5 +40,3 @@ data Sangenpai = Haku | Hatsu | Chun
 -- From hajong.
 data Kazehai = Ton | Nan | Shaa | Pei
              deriving (Show, Read, Eq, Ord, Enum, Bounded)
-
-\end{code}
