@@ -17,15 +17,19 @@ public class Human extends Player {
     
     Scanner scanner;
     
+   
     
     public Human()
     {
-        scanner = new Scanner(System.in);
-        
-        
+        scanner = new Scanner(System.in);    
     }
 
-    
+    /**
+     * Noppien heitto.
+     * 
+     * Pelaaja voi lukita noppia. Kun heittokerrat loppuvat tai pelaaja
+     * antaa komennon 'm', siirrytään eteenpäin.
+     */
     
     @Override
     protected void rollDice()
@@ -63,6 +67,13 @@ public class Human extends Player {
         
     }
     
+    /**
+     * Pisteiden kirjaus.
+     * 
+     * Näyttää, miten monta pistettä noppatulos antaa kussakin sarakkeessa.
+     * Pelaaja valitsee sarakkeen kirjoittamalla sen numeron.
+     */
+    
     @Override
     protected void markScore()
     {
@@ -78,6 +89,12 @@ public class Human extends Player {
         setScore(parsedNumber-1, Scores.calculateScore(parsedNumber-1, dice.asArray()));    //indexing again
             
     }
+    
+    /**
+     * Apumetodi komennon lukemiselle.
+     * 
+     * Varmistaa että syöte on jokin numeroista 1-6.
+     */
     
     private int parseNumber(String command)
     {

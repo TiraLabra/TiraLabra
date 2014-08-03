@@ -19,6 +19,13 @@ public class Game {
     private final int rows = 17;
     private ArrayList<Player> players;
     
+    
+    /**
+     * Konstruktori.
+     * 
+     * Luo pelaajat.
+     */
+    
     public Game(int humans, int bots) {
         
         players = new ArrayList<Player>();
@@ -36,6 +43,12 @@ public class Game {
         
     }
     
+    /**
+     * Pyörittää peliä.
+     * 
+     * Piirtää pistetaulukon jokaisen vuoron päätteeksi.
+     */
+    
     
     public void runGame()
     {
@@ -49,6 +62,10 @@ public class Game {
             System.out.println("---");
         }
     }
+    
+    /**
+     * Piirtää pistetaulukon.
+     */
     
     private void drawScoreboard()
     {

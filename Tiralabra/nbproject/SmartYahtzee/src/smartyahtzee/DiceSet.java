@@ -18,6 +18,12 @@ public class DiceSet {
     private ArrayList<Die> dice;
     private Random random;
     
+    
+    /**
+     * Konstruktori.
+     * 
+     * Luo viisi noppaa ja random-olion.     * 
+     */
     public DiceSet()
     {
         random = new Random();
@@ -28,6 +34,22 @@ public class DiceSet {
             dice.add(newDie);
         }
     }
+    
+    public Die getDie(int index)
+    {
+        return dice.get(index);
+    }
+    
+    public ArrayList<Die> getDice()
+    {
+        return dice;
+    }
+    
+    /**
+     * Asettaa arvot nopille.
+     * 
+     * Arpoo uuden silmäluvun jokaiselle nopalle, jota ei ole lukittu.
+     */
     
     public void throwDice()
     {
@@ -40,10 +62,23 @@ public class DiceSet {
         }
     }
     
+    /**
+     * Toggle lukolle.
+     * 
+     * Lukitsee lukitsemattoman tai poistaa lukon lukitusta nopasta.
+     * @param index monesko noppa
+     */
+    
     public void toggleLock(int index)
     {
         dice.get(index).lock();
     }
+    
+    /**
+     * Vapauttaa kaikki nopat.
+     * 
+     * Käytetään uuden vuoron alussa.
+     */
     
     public void unlockAll()
     {
@@ -52,6 +87,14 @@ public class DiceSet {
             d.unlock();
         }
     }
+    
+    /**
+     * Muuttaa nopat taulukoksi.
+     * 
+     * Muuttaa noppien silmäluvut taulukoksi ja järjestää ne.
+     * Tällöin on nopeampi tutkia, mitä pisteitä nopat tuottavat.
+     * @return taulukko noppien silmäluvuista
+     */
     
     public int[] asArray()
     {
@@ -63,6 +106,13 @@ public class DiceSet {
         Arrays.sort(dice);
         return dice;
     }
+    
+    /**
+     * to-String.
+     * 
+     * Lukitut nopat on ympäröity sulkumerkeillä.
+     * @return noppien silmäluvut
+     */
     
     @Override
     public String toString()

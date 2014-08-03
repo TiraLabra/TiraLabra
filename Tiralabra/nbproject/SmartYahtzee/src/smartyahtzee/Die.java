@@ -14,6 +14,13 @@ public class Die {
     private boolean locked;
     private int number;
     
+    /**
+     * Toggle nopan valinnalle.
+     * 
+     * Lukitsee lukitsemattoman nopan tai poistaa lukon lukitusta nopasta.
+     * @return tila, johon päädyttiin
+     */
+    
     public boolean lock()
     {
         if (locked) {
@@ -24,6 +31,7 @@ public class Die {
         return locked;
     }
     
+    
     public boolean isLocked()
     {
         return locked;
@@ -33,6 +41,12 @@ public class Die {
     {
         return number;
     }
+    
+    /**
+     * Poistaa lukon nopasta.
+     * 
+     * Käytetään uuden heittovuoron alkaessa.
+     */
     
     public void unlock()
     {

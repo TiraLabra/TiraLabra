@@ -17,6 +17,8 @@ import smartyahtzee.Die;
  */
 public class Scores {
     
+    /** Pistetaulukon tekstit */
+    
     public static final String[] scoreDescriptions = {
         "Ones:            ", "Twos:            ", "Threes:          ", "Fours:           ",
         "Fives:           ", "Sixes:           ", "Sum:             ", "Bonus:           ",
@@ -26,11 +28,21 @@ public class Scores {
         "Total:      "
     };
     
+    /** Maksimitulokset pistekategorioille */
+    
     public static final int[] maxScores = {
         5, 10, 15, 20, 25, 30, 105, 50,
         12, 22, 18, 24, 15, 20, 28, 30, 50    
     };
     
+    /**
+     * Laskee pisteet.
+     * 
+     * Monitulkintaiset tilanteet lasketaan pelaajan eduksi.
+     * @param index monesko rivi
+     * @param dice noppien tulokset
+     * @return 
+     */
     
     public static int calculateScore(int index, int[] dice)
     {
@@ -76,6 +88,13 @@ public class Scores {
         return score;
     }
     
+    /**
+     * Ensimmäisten kuuden rivin pisteytys.
+     * 
+     * @param number rivin numero
+     * @param dice nopat
+     * @return 
+     */
     private static int numbersScore(int number, int[] dice)
     {
         int sum = 0;

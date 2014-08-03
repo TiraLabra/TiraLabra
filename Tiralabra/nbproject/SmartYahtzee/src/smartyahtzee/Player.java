@@ -17,6 +17,13 @@ public abstract class Player {
     protected boolean[] markedColumns;
     protected DiceSet dice;
     
+    
+    /**
+     * Konstruktori.
+     * 
+     * Luo nopat.
+     */
+    
     public Player()
     {
         scores = new int[17];
@@ -24,11 +31,22 @@ public abstract class Player {
         dice = new DiceSet();
     }
     
+    /**
+     * Yhden vuoron kulku.
+     */
+    
     public void playTurn(){
         rollDice();
         markScore();
         checkForSum();
     }
+    
+    /**
+     * Getteri.
+     * 
+     * Käyttämätön rivi on -, ei nolla.
+     * @return pisteet 
+     */
     
     public String getScore(int index)
     {
@@ -39,11 +57,24 @@ public abstract class Player {
         return "-";
     }
     
+    /**
+     * Setteri.
+     * 
+     * Merkitsee myös rivin käytetyksi.
+     */
+    
     public void setScore(int index, int score)
     {
         scores[index] = score;
         markedColumns[index] = true;
     }
+    
+    /**
+     * Summatarkistus.
+     * 
+     * Tarkistaa, onko ensimmäiset kuusi riviä täytetty, ja jos on,
+     * laskee summan ja bonuksen.
+     */
     
     public void checkForSum()
     {
