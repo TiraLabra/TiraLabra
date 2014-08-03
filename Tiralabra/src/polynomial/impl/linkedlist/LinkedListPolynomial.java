@@ -298,21 +298,130 @@ public class LinkedListPolynomial implements IPolynomial {
 
     @Override
     public IPolynomial add(IPolynomial polynomial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        checkCharacteristic(polynomial.getCharacteristic());
+        checkImplementation(polynomial);
+        LinkedListPolynomial toAdd = (LinkedListPolynomial) polynomial;
+        
+        Monomial currentOfThis = highestDegreeTerm;
+        Monomial currentOfOther = toAdd.getHighestDegreeTerm();
+        
+        LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
+        
+        Monomial prevAdded;
+        Monomial currentToAdd = null;
+        boolean currentMonomialIsEmpty;
+        while (currentOfThis != null || currentOfOther != null) {
+            prevAdded = currentToAdd;
+            currentMonomialIsEmpty = false;
+            if (currentOfThis != null && currentOfOther != null) {
+                if (currentOfThis.exponent > currentOfOther.exponent) {
+                    currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
+                    currentOfThis = currentOfThis.lowerMonomial;
+                } else if (currentOfThis.exponent < currentOfOther.exponent) {
+                    currentToAdd = new Monomial(currentOfOther.coefficient, currentOfOther.exponent);                    
+                    currentOfOther = currentOfOther.lowerMonomial;
+                } else {
+                    int newCoefficient = getValueModuloCharacteristic(currentOfThis.coefficient + currentOfOther.coefficient);
+                    if (newCoefficient != 0) {
+                        currentToAdd = new Monomial(newCoefficient, currentOfThis.exponent);
+                    } else {
+                        currentMonomialIsEmpty = true;
+                    }
+                    currentOfThis = currentOfThis.lowerMonomial;
+                    currentOfOther = currentOfOther.lowerMonomial;
+                }
+            } else if (currentOfThis != null) {
+                currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
+                currentOfThis = currentOfThis.lowerMonomial;
+            } else {
+                currentToAdd = new Monomial(currentOfOther.coefficient, currentOfOther.exponent);
+                currentOfOther = currentOfOther.lowerMonomial;
+            }
+            
+            if (!currentMonomialIsEmpty) {
+                currentToAdd.higherMonomial = prevAdded;
+                if (prevAdded != null) {
+                    prevAdded.lowerMonomial = currentToAdd;
+                } else {
+                    result.highestDegreeTerm = currentToAdd;
+                }
+            }
+        }
+        
+        result.lowestDegreeTerm = currentToAdd;
+        
+        return result;
     }
 
     @Override
     public IPolynomial subtract(IPolynomial polynomial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        checkCharacteristic(polynomial.getCharacteristic());  
+        checkImplementation(polynomial);
+        
+        LinkedListPolynomial toAdd = (LinkedListPolynomial) polynomial;
+        
+        Monomial currentOfThis = highestDegreeTerm;
+        Monomial currentOfOther = toAdd.getHighestDegreeTerm();
+        
+        LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
+        
+        Monomial prevAdded;
+        Monomial currentToAdd = null;
+        boolean currentMonomialIsEmpty ;
+        while (currentOfThis != null || currentOfOther != null) {
+            prevAdded = currentToAdd;
+            currentMonomialIsEmpty = false;
+            if (currentOfThis != null && currentOfOther != null) {
+                if (currentOfThis.exponent > currentOfOther.exponent) {
+                    currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
+                    currentOfThis = currentOfThis.lowerMonomial;
+                } else if (currentOfThis.exponent < currentOfOther.exponent) {
+                    currentToAdd = new Monomial(-currentOfOther.coefficient, currentOfOther.exponent);                    
+                    currentOfOther = currentOfOther.lowerMonomial;
+                } else {
+                    int newCoefficient = getValueModuloCharacteristic(currentOfThis.coefficient - currentOfOther.coefficient);
+                    if (newCoefficient != 0) {
+                        currentToAdd = new Monomial(newCoefficient, currentOfThis.exponent);
+                    } else {
+                        currentMonomialIsEmpty = true;
+                    }
+                    currentOfThis = currentOfThis.lowerMonomial;
+                    currentOfOther = currentOfOther.lowerMonomial;
+                }
+            } else if (currentOfThis != null) {
+                currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
+                currentOfThis = currentOfThis.lowerMonomial;
+            } else {
+                currentToAdd = new Monomial(-currentOfOther.coefficient, currentOfOther.exponent);
+                currentOfOther = currentOfOther.lowerMonomial;
+            }
+            
+            if (!currentMonomialIsEmpty) {
+                currentToAdd.higherMonomial = prevAdded;
+                if (prevAdded != null) {
+                    prevAdded.lowerMonomial = currentToAdd;
+                } else {
+                    result.highestDegreeTerm = currentToAdd;
+                }
+            }
+        }
+        
+        result.lowestDegreeTerm = currentToAdd;
+        
+        return result;        
     }
 
     @Override
     public IPolynomial multiply(IPolynomial polynomial) {
+        checkCharacteristic(polynomial.getCharacteristic());      
+        checkImplementation(polynomial);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public DivisionResult divide(IPolynomial polynomial) {
+        checkCharacteristic(polynomial.getCharacteristic());
+        checkImplementation(polynomial);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -353,6 +462,29 @@ public class LinkedListPolynomial implements IPolynomial {
             return value;
         }
         return value % characteristic;
+    }
+    
+    private void checkCharacteristic(int characteristic) {
+        if (this.characteristic != characteristic) {
+            throw new IllegalArgumentException("The characteristic " + this.characteristic 
+                    + " of this polynomial is different than the characteristic " + characteristic 
+                    + " of the other polynomial.");
+        }
+    }
+    
+    private void checkImplementation(IPolynomial polynomial) throws UnsupportedOperationException {
+        if (polynomial.getClass() != LinkedListPolynomial.class) {
+            throw new UnsupportedOperationException("Calculations with implementations of "
+                    + "type " + polynomial.getClass().getName() + " not yet supported.");
+        }
+    }    
+    
+    Monomial getHighestDegreeTerm() {
+        return highestDegreeTerm;
+    }
+    
+    Monomial getLowestDegreeTerm() {
+        return lowestDegreeTerm;
     }
 
 }

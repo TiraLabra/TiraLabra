@@ -330,6 +330,168 @@ public class LinkedListPolynomialTest {
         
         IPolynomial result = polynomial.add(polynomial2);
     }
+   
+    @Test
+    public void testAddZeroPolynomial() {
+        int characteristic = 3;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(2, 0); 
+        polynomial.addTerm(1, 1);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+
+        IPolynomial result = polynomial.add(polynomial2);
+        
+        assertEquals(2, result.getCoefficientAtDegree(0));
+        assertEquals(1, result.getCoefficientAtDegree(1));
+        assertEquals(1, result.getDegree());
+        assertEquals(2, result.getNumberOfNonZeroCoefficients());
+    }
+    
+    @Test
+    public void testAddInverse() {
+        int characteristic = 5;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(3, 0); 
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(2, 3);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(-3, 0); 
+        polynomial.addTerm(-1, 1);
+        polynomial.addTerm(-2, 3);        
+
+        IPolynomial result = polynomial.add(polynomial2);
+        
+        assertEquals(0, result.getDegree());
+        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+    }
+    
+    @Test
+    public void testAdd() {
+        int characteristic = 7;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(2, 0); 
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(3, 4);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(2, 3);
+        polynomial.addTerm(4, 6);
+
+        IPolynomial result = polynomial.add(polynomial2);
+        
+        assertEquals(2, result.getCoefficientAtDegree(0));
+        assertEquals(2, result.getCoefficientAtDegree(1));
+        assertEquals(2, result.getCoefficientAtDegree(3));     
+        assertEquals(3, result.getCoefficientAtDegree(4));  
+        assertEquals(4, result.getCoefficientAtDegree(6));  
+        assertEquals(6, result.getDegree());
+        assertEquals(5, result.getNumberOfNonZeroCoefficients());
+    }
+    
+    @Test
+    public void testAdd2() {
+        int characteristic = 0;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(3, 0); 
+        polynomial.addTerm(2, 2);
+        polynomial.addTerm(11, 11);         
+        polynomial.addTerm(5, 5);
+               
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(4, 6);        
+        polynomial.addTerm(2, 3);
+        polynomial.addTerm(3, 8);        
+
+        IPolynomial result = polynomial.add(polynomial2);
+        
+        assertEquals(3, result.getCoefficientAtDegree(0));
+        assertEquals(1, result.getCoefficientAtDegree(1));
+        assertEquals(2, result.getCoefficientAtDegree(2));     
+        assertEquals(2, result.getCoefficientAtDegree(3));  
+        assertEquals(5, result.getCoefficientAtDegree(5)); 
+        assertEquals(4, result.getCoefficientAtDegree(6)); 
+        assertEquals(3, result.getCoefficientAtDegree(8)); 
+        assertEquals(11, result.getCoefficientAtDegree(11));  
+        assertEquals(11, result.getDegree());
+        assertEquals(8, result.getNumberOfNonZeroCoefficients());
+    }
+   
+    @Test
+    public void testSubtractZeroPolynomial() {
+        int characteristic = 3;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(2, 0); 
+        polynomial.addTerm(1, 1);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+
+        IPolynomial result = polynomial.subtract(polynomial2);
+        
+        assertEquals(2, result.getCoefficientAtDegree(0));
+        assertEquals(1, result.getCoefficientAtDegree(1));
+        assertEquals(1, result.getDegree());
+        assertEquals(2, result.getNumberOfNonZeroCoefficients());
+    }
+   
+    @Test
+    public void testSubtractSelf() {
+        int characteristic = 3;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(2, 1); 
+        polynomial.addTerm(1, 3);
+        
+        IPolynomial result = polynomial.subtract(polynomial);
+        
+        assertEquals(0, result.getDegree());
+        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+    }
+   
+    @Test
+    public void testSubtract() {
+        int characteristic = 7;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(2, 0); 
+        polynomial.addTerm(3, 2);
+        polynomial.addTerm(1, 1);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+        polynomial2.addTerm(1, 0); 
+        polynomial2.addTerm(4, 2);        
+        
+        IPolynomial result = polynomial.subtract(polynomial2);
+        
+        assertEquals(1, result.getCoefficientAtDegree(0));        
+        assertEquals(1, result.getCoefficientAtDegree(1));   
+        assertEquals(-1, result.getCoefficientAtDegree(2));         
+        assertEquals(2, result.getDegree());
+        assertEquals(3, result.getNumberOfNonZeroCoefficients());
+    }
+   
+    @Test
+    public void testSubtract2() {
+        int characteristic = 11;        
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(4, 4); 
+        polynomial.addTerm(2, 0);
+        polynomial.addTerm(3, 3);
+        
+        LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
+        polynomial2.addTerm(2, 1); 
+        polynomial2.addTerm(4, 4);        
+        
+        IPolynomial result = polynomial.subtract(polynomial2);
+        
+        assertEquals(2, result.getCoefficientAtDegree(0));        
+        assertEquals(-2, result.getCoefficientAtDegree(1));   
+        assertEquals(3, result.getCoefficientAtDegree(3));         
+        assertEquals(3, result.getDegree());
+        assertEquals(3, result.getNumberOfNonZeroCoefficients());
+    }
+    
     
     @Test(expected = IllegalArgumentException.class)
     public void testSubtractWithDifferentCharacteristic() {
@@ -353,7 +515,7 @@ public class LinkedListPolynomialTest {
         LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic2);  
         
         IPolynomial result = polynomial.multiply(polynomial2);         
-    }
+    }    
     
     @Test(expected = IllegalArgumentException.class)
     public void testDivideWithDifferentCharacteristic() {
