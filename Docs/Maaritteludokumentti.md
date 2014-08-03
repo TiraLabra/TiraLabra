@@ -48,3 +48,9 @@ Aputietorakenne trie vie haku- ja tallennusoperaatioihin aikaa avaimen pituuden 
 ### Lähteet
 
 - Cavnar, William B. and John M. Trenkle. "N-Gram-Based Text Categorization". Proceedings of SDAIR-94, 3rd Annual Symposium on Document Analysis and Information Retrieval (1994)
+
+## PLAN B
+
+Viterbi on minulle uusi algoritmi, ja se ylittää Tira-kurssin vaatimukset. Sen takia jos aika meinaa loppua kesken, toteutan pelkästään ohjelman osuuden, missä se kerää harjoitteludatasta tilastollisen mallin trie-puuhun.
+
+Tässä osuudessa vaatii siis trien toteuttamisen. Harjoitustyönä vertailen trien tehokkuutta tässä tehtävässä muihin tietorakenteisiin, esimerkiksi normaaliin binäärihakupuuhun ja hajautustauluun.
