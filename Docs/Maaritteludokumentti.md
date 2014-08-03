@@ -17,7 +17,7 @@ Valitsin työn aiheeksi hajautustaulut, koska ne vaikuttivat mielenkiintoisilta 
 
 Ohjelman syötteet
 
-Ohjelman syötteenä on testidataa, joka sijoitetaan hajautustauluihin. Testidata voi olla esimerkiksi tuhat, kymmenentuhatta tai satatuhatta alkiota hajautustauluun generoiva luuppi. Testidatan avulla voimme käyttää hajautustaulun operaatioita, kuten hakuja, ja vertailla niiden nopeutta ja hajautustaulujen muistinkäyttöä. Esimerkiksi pseudorandomilla testidatalla saamme aikaan todennäköisesti jonkin verran yhteentörmäyksiä hajautustaulussa. On varmastikin tarpeen mukaista myös tarkoituksella syöttää testidataa joka aiheuttaa paljon yhteentörmäyksiä, jotta saamme esiin eri yhteentörmäyksenkäsittelymetodien suorituskykyerot. Parhaiten voimme kuitenkin testata eroja säätelemällä taulukon täyttösuhdetta, eli rajoittamalla sen kokoa verrattuna testidataan.
+Ohjelman syötteenä on testidataa, joka sijoitetaan hajautustauluihin. Testidata voi olla esimerkiksi tuhat, kymmenentuhatta tai satatuhatta alkiota hajautustauluun generoiva luuppi. Testidatan avulla voimme käyttää hajautustaulun operaatioita, kuten hakuja, ja vertailla niiden nopeutta ja hajautustaulujen muistinkäyttöä. Esimerkiksi pseudorandomilla testidatalla saamme aikaan todennäköisesti jonkin verran yhteentörmäyksiä hajautustaulussa. On varmastikin tarpeen mukaista myös tarkoituksella syöttää testidataa joka aiheuttaa paljon yhteentörmäyksiä, jotta saamme esiin eri yhteentörmäyksenkäsittelymetodien suorituskykyerot. Voimme kuitenkin testata eroja myös säätelemällä taulukon täyttösuhdetta, eli rajoittamalla sen kokoa verrattuna testidataan.
 
 
 
