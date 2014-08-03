@@ -44,8 +44,13 @@ Lähteet
 ----------
 
 [1] http://fi.wikipedia.org/wiki/Tammi_(peli) (3.8.2014)
+
 [2] http://en.wikipedia.org/wiki/Game_tree (3.8.2014)
+
 [3] http://en.wikipedia.org/wiki/Evaluation_function (3.8.2014)
+
 [4] http://www.scientificamerican.com/article/computers-solve-checkers-its-a-draw/ (3.8.2014)
+
 [5] http://en.wikipedia.org/wiki/Minimax (3.8.2014)
+
 [6] http://en.wikipedia.org/wiki/Alpha-beta_pruning (3.8.2014)
