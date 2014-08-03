@@ -1,5 +1,6 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+﻿## TiraLabra Loppukesä 2014 / Hannu Honkanen
+
+Tätä muokkaan lähitulevaisuudessa...
 
 
 
