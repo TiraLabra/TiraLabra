@@ -81,7 +81,7 @@ public class Human extends Player {
         System.out.println(dice);
         //printScoreBoard();
         int parsedNumber = 0;
-        while (parsedNumber < 1 || parsedNumber > 17 || parsedNumber == 7 || parsedNumber == 8 || marked(parsedNumber-1))      //TODO: error message when trying to mark occupied rows
+        while (markedColumns[parsedNumber-1] || parsedNumber < 1 || parsedNumber > 17 || parsedNumber == 7 || parsedNumber == 8 || marked(parsedNumber-1))      //TODO: error message when trying to mark occupied rows
         {
             parsedNumber = scanner.nextInt();
         }

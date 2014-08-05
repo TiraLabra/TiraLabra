@@ -44,15 +44,45 @@ public class Game {
     }
     
     /**
+     * Simulaatio pistekeskiarvojen laskemiseksi.
+     * 
+     */
+    
+    public void runTests()
+    {
+        int iterations = 1000000;
+        DiceSet dice = new DiceSet();
+        int[] totalScores = new int[17];
+        for (int i = 0; i<iterations; i++)
+        {
+            dice.throwDice();
+            int[] diceArray = dice.asArray();
+            for (int j = 0; j<17; j++)
+            {
+                totalScores[j] += Scores.calculateScore(j, diceArray);
+            }
+        }
+        
+        for (int i = 0; i < 17; i++)
+        {
+            System.out.print(" " + (double) totalScores[i]/iterations);
+        }
+        
+    }
+    
+    
+    /**
      * Pyörittää peliä.
      * 
      * Piirtää pistetaulukon jokaisen vuoron päätteeksi.
      */
     
     
+    
+    
     public void runGame()
     {
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < 16; i++)
         {
             for (Player player : players)
             {
@@ -76,9 +106,15 @@ public class Game {
             {
                 System.out.print(" | " + player.getScore(i));
             }
-            
             System.out.println("");
+            
         }
+        System.out.print("   | Total:           | ");
+        for (Player player : players)
+        {
+            System.out.print(player.totalPoints());
+        }
+        System.out.println("");
     }
 
    

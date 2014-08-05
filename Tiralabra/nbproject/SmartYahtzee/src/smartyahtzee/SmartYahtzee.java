@@ -17,8 +17,10 @@ public class SmartYahtzee {
      */
     public static void main(String[] args) {
         
-        Game newGame = new Game(2, 0);
+        Game newGame = new Game(0, 1);
         newGame.runGame();
+        //newGame.runTests();
+        
     }
     
 }

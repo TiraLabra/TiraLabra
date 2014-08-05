@@ -35,6 +35,10 @@ public class Scores {
         12, 22, 18, 24, 15, 20, 28, 30, 50    
     };
     
+    public static final double[] expectedValues = {           // calculated average scores from 1 000 000 throws
+        0.832511, 1.666188, 2.501655, 3.33348, 4.168105, 5.001114, 0.0, 0.0, 6.986218, 3.78259, 2.233836, 0.280384, 0.23184, 0.3118, 0.690615, 17.503053, 0.04025
+    };
+    
     /**
      * Laskee pisteet.
      * 

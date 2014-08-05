@@ -16,6 +16,7 @@ public abstract class Player {
     protected int[] scores;
     protected boolean[] markedColumns;
     protected DiceSet dice;
+    private int totalPoints;
     
     
     /**
@@ -41,12 +42,18 @@ public abstract class Player {
         checkForSum();
     }
     
+    public int totalPoints()
+    {
+        return totalPoints;
+    }
+    
     /**
      * Getteri.
      * 
      * Käyttämätön rivi on -, ei nolla.
      * @return pisteet 
      */
+    
     
     public String getScore(int index)
     {
@@ -67,6 +74,7 @@ public abstract class Player {
     {
         scores[index] = score;
         markedColumns[index] = true;
+        totalPoints += score;
     }
     
     /**
@@ -76,9 +84,9 @@ public abstract class Player {
      * laskee summan ja bonuksen.
      */
     
-    public void checkForSum()
+    private void checkForSum()
     {
-        if (!markedColumns[8])
+        if (markedColumns[7])
         {
             return;
         }
@@ -93,17 +101,17 @@ public abstract class Player {
             sum += scores[i];
         }
         
-        scores[7] = sum;
+        scores[6] = sum;
         
-        if (scores[7] >= 63)
+        if (scores[6] >= 63)
         {
-            scores[8] = 50;
+            scores[7] = 50;
         } else {
-            scores[8] = 0;
+            scores[7] = 0;
         }
         
-        markedColumns[7] = true;        //not that this is ever used or checked(?)
-        markedColumns[8] = true;
+        markedColumns[6] = true;        //not that this is ever used or checked(?)
+        markedColumns[7] = true;
 
     }
     
