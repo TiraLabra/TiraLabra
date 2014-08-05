@@ -61,11 +61,30 @@ func StreamBytes(dir string) chan byte {
 	return byteStream
 }
 
+type Lang [2]byte
+type LangData map[Lang]int
+
+func TouchLangData(node *trie.Node, lang Lang) {
+	if node.Value == nil {
+		if debug {
+			fmt.Println("Initialising LangData object.")
+		}
+		node.Value = make(LangData)
+	}
+	data := node.Value.(LangData)
+	data[lang]++
+	if debug {
+		fmt.Println("Incremented", string(lang[:]), "to", data[lang])
+	}
+}
+
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
 	for b := range byteStream {
-		dict.Add([]byte{b}, "juu")
+		node := dict.GetOrCreate([]byte{b})
+		lang := [2]byte{'e', 'n'}
+		TouchLangData(node, lang)
 	}
 
 	fmt.Println(dict)

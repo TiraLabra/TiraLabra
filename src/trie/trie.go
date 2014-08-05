@@ -7,7 +7,7 @@ type Node struct {
 	Value    interface{}
 }
 
-const debug = false
+const debug = true
 
 func CreateNode() *Node {
 	if debug {
@@ -31,7 +31,7 @@ func (n *Node) Add(key []byte, object interface{}) {
 
 func (n *Node) GetOrCreate(key []byte) *Node {
 	if debug {
-		fmt.Println("GetOrCreate with key:", key)
+		fmt.Println("GetOrCreate with key:", string(key))
 	}
 	child := &n.Children[key[0]]
 	if *child == nil {
