@@ -1,11 +1,6 @@
-package main
+package trie
 
-import (
-	"fmt"
-	"github.com/golddranks/TiraLabra/src/trie"
-)
-
-func main() {
+func TestBasics(*testing.T) {
 	t := trie.CreateNode()
 	t.Add("hajoo", "HAJOO")
 	t.Add("aakkos", "AAKKOS")
