@@ -165,7 +165,7 @@ public class LinkedListPolynomial implements IPolynomial {
         // If the exponents match, we replace the current monomial with this
         // exponent with one where we sum the coefficients
         if (next.exponent == exponent) {
-            int newCoefficient = (next.coefficient + coefficient) % characteristic;
+            int newCoefficient = getValueModuloCharacteristic(next.coefficient + coefficient);
             Monomial higherTerm = next.higherMonomial;
             // If the new coefficient is 0, we remove the monomial entirely
             Monomial toAdd = null;
@@ -298,6 +298,7 @@ public class LinkedListPolynomial implements IPolynomial {
 
     @Override
     public IPolynomial add(IPolynomial polynomial) {
+        checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
         LinkedListPolynomial toAdd = (LinkedListPolynomial) polynomial;
@@ -355,19 +356,20 @@ public class LinkedListPolynomial implements IPolynomial {
 
     @Override
     public IPolynomial subtract(IPolynomial polynomial) {
+        checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());  
         checkImplementation(polynomial);
         
-        LinkedListPolynomial toAdd = (LinkedListPolynomial) polynomial;
+        LinkedListPolynomial toSubtract = (LinkedListPolynomial) polynomial;
         
         Monomial currentOfThis = highestDegreeTerm;
-        Monomial currentOfOther = toAdd.getHighestDegreeTerm();
+        Monomial currentOfOther = toSubtract.getHighestDegreeTerm();
         
         LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
         
         Monomial prevAdded;
         Monomial currentToAdd = null;
-        boolean currentMonomialIsEmpty ;
+        boolean currentMonomialIsEmpty;
         while (currentOfThis != null || currentOfOther != null) {
             prevAdded = currentToAdd;
             currentMonomialIsEmpty = false;
@@ -413,13 +415,34 @@ public class LinkedListPolynomial implements IPolynomial {
 
     @Override
     public IPolynomial multiply(IPolynomial polynomial) {
+        checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());      
         checkImplementation(polynomial);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        LinkedListPolynomial other = (LinkedListPolynomial) polynomial;
+        
+        Monomial currentOfThis = highestDegreeTerm;
+        Monomial currentStartOfOther = other.getHighestDegreeTerm();        
+        
+        LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
+        
+        while (currentOfThis != null) {
+            Monomial currentOfOther = currentStartOfOther;
+            while (currentOfOther != null) {
+                int coefficient = currentOfThis.coefficient * currentOfOther.coefficient;
+                int exponent = currentOfThis.exponent + currentOfOther.exponent;
+                result.addTerm(coefficient, exponent);
+                currentOfOther = currentOfOther.lowerMonomial;
+            }
+            currentOfThis = currentOfThis.lowerMonomial;
+        }
+     
+        return result;
     }
 
     @Override
     public DivisionResult divide(IPolynomial polynomial) {
+        checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -462,6 +485,12 @@ public class LinkedListPolynomial implements IPolynomial {
             return value;
         }
         return value % characteristic;
+    }
+    
+    private void checkNull(IPolynomial polynomial) {
+        if (polynomial == null) {
+            throw new IllegalArgumentException("The polynomial given is null!");
+        }
     }
     
     private void checkCharacteristic(int characteristic) {

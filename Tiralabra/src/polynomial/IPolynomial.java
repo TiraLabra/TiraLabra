@@ -93,6 +93,7 @@ public interface IPolynomial {
      * @param polynomial The polynomial to add
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
+     * @throws IllegalArgumentException if the polynomial given is null
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial.
      * @return A new polynomial that is the result of the addition.
@@ -107,6 +108,7 @@ public interface IPolynomial {
      * @param polynomial The polynomial to subtract
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
+     * @throws IllegalArgumentException if the polynomial given is null     
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial.
      * @return A new polynomial that is the result of the subtraction.
@@ -121,6 +123,7 @@ public interface IPolynomial {
      * @param polynomial The polynomial to multiply with
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
+     * @throws IllegalArgumentException if the polynomial given is null
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial. 
      * @return A new polynomial that is the result of the multiplication
@@ -133,6 +136,7 @@ public interface IPolynomial {
      * @param polynomial The divisor.
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
+     * @throws IllegalArgumentException if the polynomial given is null
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial. 
      * @return The DivisionResult-tuple that contains the quotient and the remainder.
