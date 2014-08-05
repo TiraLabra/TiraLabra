@@ -1,7 +1,12 @@
 package trie
 
+import (
+	"fmt"
+	"testing"
+)
+
 func TestBasics(*testing.T) {
-	t := trie.CreateNode()
+	t := CreateNode()
 	t.Add("hajoo", "HAJOO")
 	t.Add("aakkos", "AAKKOS")
 	t.Add("aakkosia", "AAKKOSIA")
