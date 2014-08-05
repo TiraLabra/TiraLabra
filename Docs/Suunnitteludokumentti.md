@@ -21,3 +21,5 @@ jolle operaatio on suoritettu.
 
 ## POHDINTOJA
 
+- Projektin dokumentaation kieli voi olla suomi, mutta koodin ja kommenttien kieleksi
+kyllä englanti.
