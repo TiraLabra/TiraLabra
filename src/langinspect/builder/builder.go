@@ -13,10 +13,10 @@ import (
 
 const debug = true
 
-func StreamBytes(dir string) chan byte {
-	byteStream := make(chan byte)
+func GetFileReaders(dir string) chan *bufio.Reader {
+	readerChannel := make(chan *bufio.Reader)
+	files, _ := ioutil.ReadDir(dir)
 	go func() {
-		files, _ := ioutil.ReadDir(dir)
 		for _, f := range files {
 			if f.IsDir() {
 				if debug {
@@ -33,7 +33,19 @@ func StreamBytes(dir string) chan byte {
 				fmt.Println("Opened " + f.Name())
 			}
 			reader := bufio.NewReader(file)
+			readerChannel <- reader
+		}
+		close(readerChannel)
+	}()
+	return readerChannel
+}
 
+func StreamBytes(dir string) chan byte {
+	byteStream := make(chan byte)
+	readerChannel := GetFileReaders(dir)
+	go func() {
+
+		for reader := range readerChannel {
 			for {
 				b, err := reader.ReadByte()
 				if err != nil {
@@ -44,7 +56,6 @@ func StreamBytes(dir string) chan byte {
 				}
 				byteStream <- b
 			}
-
 		}
 		close(byteStream)
 	}()
@@ -55,8 +66,8 @@ func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
 	for b := range byteStream {
-		fmt.Printf("%c\n", int(b))
+		dict.Add([]byte{b}, "juu")
 	}
-	dict.Add("jee", "juu")
-	fmt.Println("output")
+
+	fmt.Println(dict)
 }

@@ -18,9 +18,9 @@ func CreateNode() *Node {
 	return n
 }
 
-func (n *Node) Add(key string, object interface{}) {
+func (n *Node) Add(key []byte, object interface{}) {
 	if debug {
-		fmt.Println("Add with key: " + key)
+		fmt.Println("Add with key:", key)
 	}
 	if len(key) > 0 {
 		child := &n.Children[key[0]]
@@ -31,12 +31,12 @@ func (n *Node) Add(key string, object interface{}) {
 	} else {
 		n.Value = object
 		if debug {
-			fmt.Println("Added object: ", object)
+			fmt.Println("Added object:", object)
 		}
 	}
 }
 
-func (n *Node) Get(key string) interface{} {
+func (n *Node) Get(key []byte) interface{} {
 	if len(key) > 0 {
 		child := n.Children[key[0]]
 		if child == nil {
