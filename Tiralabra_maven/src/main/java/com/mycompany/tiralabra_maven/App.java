@@ -6,8 +6,12 @@ package com.mycompany.tiralabra_maven;
  */
 public class App 
 {
+    
+    
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        
+        Kayttoliittyma kayttis = new Kayttoliittyma();
+        kayttis.run();
     }
 }
