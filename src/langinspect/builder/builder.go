@@ -44,7 +44,6 @@ func StreamBytes(dir string) chan byte {
 	byteStream := make(chan byte)
 	readerChannel := GetFileReaders(dir)
 	go func() {
-
 		for reader := range readerChannel {
 			for {
 				b, err := reader.ReadByte()
