@@ -1,4 +1,5 @@
 package builder
+"Builds a trie-based database of n-gram frequencies in different languages"
 
 import (
 	"fmt"
