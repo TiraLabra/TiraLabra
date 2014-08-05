@@ -81,9 +81,22 @@ func TouchLangData(node *trie.Node, lang Lang) {
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
+	lang := [2]byte{}
 	for b := range byteStream {
+		if b == '@' {
+			b2 := <-byteStream
+			if b2 != '@' {
+				lang[0] = b2
+				lang[1] = <-byteStream
+				if debug {
+					fmt.Println("Changed language to:", string(lang[:]))
+				}
+				b = <-byteStream
+			}
+		}
+
 		node := dict.GetOrCreate([]byte{b})
-		lang := [2]byte{'e', 'n'}
+
 		TouchLangData(node, lang)
 	}
 
