@@ -119,6 +119,6 @@ func Build(dir string) {
 
 	fmt.Println(dict)
 	fmt.Println("Unique nodes: ", trie.NodeCount())
-	fmt.Println("MiB: ", float32(trie.NodeCount()*int(unsafe.Sizeof(trie.Node{})))/1024/1024)
+	fmt.Println("Size: ", float32(trie.NodeCount()*int(unsafe.Sizeof(trie.Node{})))/1024/1024, " MiB, ", unsafe.Sizeof(trie.Node{}), " bytes per node.")
 	fmt.Println("N-grams: ", ngramCount)
 }
