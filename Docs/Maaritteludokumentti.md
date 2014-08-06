@@ -2,7 +2,7 @@
 
 Harjoitustyössäni tulen toteuttamaan tietorakenteena minimikeon sekä algoritmeina Dijkstran algoritmin ja A* -algoritmin.
 
-Tarkoituksena on ratkaista kahden pisteen välinen nopein reitti "ruudukossa", jossa voi siirtyä vaaka- tai pystysuuntaan. Ruudukossa voi olla myös esteitä joiden läpi/yli ei voi kulkea. Siirtymiseen ruudusta toiseen kuluu 1 aikayksikkö. Ensimmäiseksi algoritmiksi valitsin Dijkstran algoritmin koska sillä voi ratkaista kaikki ruudukon kahden pisteen väliseen siirtymiseen kuluvat ajat. Dijkstran algoritmi toimii kaaripainollisille verkoille. Näinollen esteet on toteutettavissa antamalla ruudukon ruuden arvoksi "ääretön" esteiden kohdalla. Mahdollisia ratkaistavan ongelman laajennuksia (ks. alla) varten on myös hyvä että Dijkstran algoritmi toimii suuntaamattomien verkkojen lisäksi suunnatuille verkoille.
+Tarkoituksena on ratkaista kahden pisteen välinen nopein reitti "ruudukossa", jossa voi siirtyä vaaka- tai pystysuuntaan. Ruudukossa voi olla myös esteitä joiden läpi/yli ei voi kulkea. Siirtymiseen ruudusta toiseen kuluu 1 aikayksikkö. Ensimmäiseksi algoritmiksi valitsin Dijkstran algoritmin koska sillä voi ratkaista siirtymiseen kuluvat ajat ruudukon yhdestä pisteestä kaikkiin muihin pisteisiin eikä pelkästään kahden tietyn pisteen väliseen siirtymiseen kuluvaan aikaan tunneta nopeampaa ratkaisua. Dijkstran algoritmi toimii kaaripainollisille verkoille. Näinollen esteet on toteutettavissa antamalla ruudukon ruuden arvoksi "ääretön" esteiden kohdalla. Mahdollisia ratkaistavan ongelman laajennuksia (ks. alla) varten on myös hyvä että Dijkstran algoritmi toimii suuntaamattomien verkkojen lisäksi suunnatuille verkoille.
 
 Dijkstran algoritmin saa toimimaan tehokkaasta käyttämällä aputietorakenteena minimikekoa.
 
