@@ -3,15 +3,24 @@ package trie
 import "fmt"
 
 type Node struct {
-	Children [256]*Node
-	Value    interface{}
+	parent      *Node
+	keyFragment byte
+	Children    [256]*Node
+	Value       interface{}
 }
 
 const debug = true
 
+var nodeCount int
+
+func NodeCount() int {
+	return nodeCount
+}
+
 func CreateNode() *Node {
 	if debug {
 		fmt.Println("Create node")
+		nodeCount++
 	}
 	n := &Node{}
 	n.Children = [256]*Node{}
@@ -31,11 +40,21 @@ func (n *Node) Add(key []byte, object interface{}) {
 
 func (n *Node) GetOrCreate(key []byte) *Node {
 	if debug {
-		fmt.Println("GetOrCreate with key:", string(key))
+		fmt.Print("GetOrCreate with key: ", string(key))
+		m := n
+		for m != nil {
+			fmt.Print(string([]byte{m.keyFragment}))
+			m = m.parent
+		}
+		fmt.Println("/")
 	}
 	child := &n.Children[key[0]]
 	if *child == nil {
 		*child = CreateNode()
+		if debug {
+			(*child).parent = n
+			(*child).keyFragment = key[0]
+		}
 	}
 	if len(key) > 1 {
 		return (*child).GetOrCreate(key[1:])
