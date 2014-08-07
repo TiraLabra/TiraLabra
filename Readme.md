@@ -1,13 +1,17 @@
 # Tiralabra
 
-## Mahjong-käsiin liittyvät algoritmeja (Haskelliksi)
+> Mahjong-käsiin liittyvät algoritmeja (Haskelliksi)
 
-Esivaatimukset: ghc & cabal-install.
+[Määrittely](blob/master/Docs/Määrittelydokumentti.md)
 
-> cabal install
-> cabal test
+[Suunnittelu](blob/master/Docs/Suunnitteludokumentti.md)
 
-Travis konfiguroitu oletus-cabal-projektina (.travis.yml).
+[Testaus](blob/master/Docs/Testausdokumentti.md)
+
+[Haddock-dokumentaatio](http://simsaladin.users.paivola.fi/TiraLabra/)
+
+**Quickstart:** `ghc` ja `cabal-install` asennettuna: aja projektikansiossa `cabal
+install`.
 
 ----
 
