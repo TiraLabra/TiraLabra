@@ -9,7 +9,8 @@ type Node struct {
 	Value       interface{}
 }
 
-const debug = true
+const debug = false
+const stats = true
 
 var nodeCount int
 
@@ -20,6 +21,8 @@ func NodeCount() int {
 func CreateNode() *Node {
 	if debug {
 		fmt.Println("Create node")
+	}
+	if stats {
 		nodeCount++
 	}
 	n := &Node{}

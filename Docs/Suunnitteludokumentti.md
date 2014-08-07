@@ -16,6 +16,7 @@ Muistinkäyttö
 - Harvoin käytettyjen nodejen karsinta
 - Kielitaulukon toteutus tehokkaammin
 
+- Lisää oppimisdataa
 
 ## DONE
 

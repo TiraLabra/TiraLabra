@@ -6,39 +6,38 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/golddranks/TiraLabra/src/trie"
-	"io/ioutil"
 	"os"
-	"path"
+	"path/filepath"
 	"unsafe"
 )
 
-const debug = true
-const maxDepth = 5
+const debug = false
+const stats = true
+const maxDepth = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
 
 var ngramCount int
+var langStat = make(map[Lang]int)
 
 func GetFileReaders(dir string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
-	files, _ := ioutil.ReadDir(dir)
 	go func() {
-		for _, f := range files {
+		filepath.Walk(dir, func(path string, f os.FileInfo, err error) error {
 			if f.IsDir() {
-				if debug {
-					fmt.Println(f.Name() + " is a directory.")
-				}
-				continue
+				fmt.Println("Reading from directory", f.Name())
+				return nil
 			}
-			file, err := os.Open(path.Join(dir, f.Name()))
+			file, err := os.Open(path)
 			if err != nil {
 				fmt.Println("Couldn't open " + f.Name() + "!")
-				continue
+				return err
 			}
 			if debug {
 				fmt.Println("Opened " + f.Name())
 			}
 			reader := bufio.NewReader(file)
 			readerChannel <- reader
-		}
+			return nil
+		})
 		close(readerChannel)
 	}()
 	return readerChannel
@@ -77,8 +76,10 @@ func TouchLangData(node *trie.Node, lang Lang) {
 	}
 	data := node.Value.(LangData)
 	data[lang]++
-	if debug {
+	if stats {
 		ngramCount++
+	}
+	if debug {
 		fmt.Println("Incremented", string(lang[:]), "to", data[lang])
 	}
 }
@@ -86,7 +87,7 @@ func TouchLangData(node *trie.Node, lang Lang) {
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
-	lang := [2]byte{}
+	lang := Lang{}
 	i := 0
 	nodes := make([]*trie.Node, 0, maxDepth)
 	for b := range byteStream {
@@ -101,6 +102,8 @@ func Build(dir string) {
 				b = <-byteStream
 			}
 		}
+
+		langStat[lang]++
 
 		if len(nodes) < maxDepth {
 			nodes = append(nodes, nil)
@@ -117,8 +120,13 @@ func Build(dir string) {
 		i = i % maxDepth
 	}
 
-	fmt.Println(dict)
-	fmt.Println("Unique nodes: ", trie.NodeCount())
-	fmt.Println("Size: ", float32(trie.NodeCount()*int(unsafe.Sizeof(trie.Node{})))/1024/1024, " MiB, ", unsafe.Sizeof(trie.Node{}), " bytes per node.")
-	fmt.Println("N-grams: ", ngramCount)
+	fmt.Println("Max n-gram length:\t", maxDepth)
+	fmt.Println("N-grams read:\t\t", ngramCount)
+	fmt.Println("Unique n-grams:\t\t", trie.NodeCount())
+	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(ngramCount)*100.0)
+	fmt.Println("Size:\t\t\t", float32(trie.NodeCount()*int(unsafe.Sizeof(trie.Node{})))/1024/1024, "MiB,", unsafe.Sizeof(trie.Node{}), " bytes per node.")
+	fmt.Println("Learning data:")
+	for lang, bytes := range langStat {
+		fmt.Println("\t", string(lang[:]), bytes/1000, "Kb")
+	}
 }
