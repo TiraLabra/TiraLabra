@@ -1,42 +1,36 @@
 ------------------------------------------------------------------------------
--- |
--- Module         : Shanten.Types
+-- | 
+-- Module         : Mahjong.Tiles
 -- Copyright      : (C) 2014 Samuli Thomasson
 -- License        : BSD-style (see the file LICENSE)
 -- Maintainer     : Samuli Thomasson <samuli.thomasson@paivola.fi>
 -- Stability      : experimental
 -- Portability    : non-portable
-------------------------------------------------------------------------------
-module Shanten where
-
--- * Tile type
-
--- | Tile represents any (japanese) mahjong tile.
 --
--- From hajong.
-data Tile = Man Number Bool
-          | Pin Number Bool
-          | Sou Number Bool
-          | Sangen Sangenpai
-          | Kaze Kazehai
+-- The tile type practically ripped from *hajong*.
+------------------------------------------------------------------------------
+module Mahjong.Tiles where
+
+-- | A (japanese) mahjong tile.
+data Tile = Man Number Aka
+          | Pin Number Aka
+          | Sou Number Aka
+          | Honor HonorTile
           deriving (Show, Read, Eq, Ord)
 
--- | A custom number type (1-9) for numbered tiles. Constructors are named
--- according to the conventional chinese/japanese names, for fun.
---
--- From hajong.
+-- | Is akadora?
+type Aka = Bool
+
+-- | The number of man, pin and sou tiles.
 data Number = Ii | Ryan | San | Suu | Wu | Rou | Chii | Paa | Chuu
             deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
--- | The three dragon tiles, or sangenpai. The Ord instance obeys the
--- succession order.
---
--- From hajong.
+data HonorTile = Sangenpai Sangenpai
+               | Kazehai Kazehai
+               deriving (Show, Read, Eq, Ord)
+
 data Sangenpai = Haku | Hatsu | Chun
                deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
--- | The four wind tiles, or kazehai.
---
--- From hajong.
 data Kazehai = Ton | Nan | Shaa | Pei
              deriving (Show, Read, Eq, Ord, Enum, Bounded)

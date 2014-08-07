@@ -16,10 +16,17 @@ extra-source-files:  Readme.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Shanten
+  exposed-modules:     Mahjong.Hand
+                     , Mahjong.Hand.DevelopmentTree
+                     , Mahjong.Hand.Value
+                     , Mahjong.Hand.Shanten
+                     , Mahjong.Mentsu
+                     , Mahjong.Tiles
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.7 && <4.8
+                     , containers
+                     -- , dual-tree
   hs-source-dirs:      src
   default-language:    Haskell2010
 
