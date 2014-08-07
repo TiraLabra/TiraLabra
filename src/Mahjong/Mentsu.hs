@@ -15,6 +15,9 @@
 ------------------------------------------------------------------------------
 module Mahjong.Mentsu where
 
+import Data.List (sort)
+import Control.Monad
+import Control.Applicative
 import Mahjong.Tiles
 
 -- * Mentsu types
@@ -37,7 +40,41 @@ data Shout = Pon { shoutedFrom :: Kazehai, shoutedTile :: Tile }
            | Ron { shoutedFrom :: Kazehai, shoutedTile :: Tile, shoutedTo :: [Tile] }
            deriving (Show, Read, Eq)
 
--- * Grouping mentsu from tiles
+shuntsu, koutsu, kantsu, jantou :: Tile -> Mentsu
+shuntsu = Mentsu Shuntsu `flip` Nothing
+koutsu  = Mentsu Koutsu `flip` Nothing
+kantsu  = Mentsu Kantsu `flip` Nothing
+jantou  = Mentsu Jantou `flip` Nothing
+
+-- * Functions that build mentsu
+
+fromShout :: Shout -> Mentsu
+fromShout shout = setShout $ case shout of
+    Pon{} -> koutsu (shoutedTile shout)
+    Kan{} -> kantsu (shoutedTile shout)
+    Chi{} -> shuntsu (minimum $ shoutedTile shout : shoutedTo shout)
+    Ron{}
+        | [_]   <- shoutedTo shout         -> jantou (shoutedTile shout)
+        | [x,y] <- shoutedTo shout, x == y -> koutsu (shoutedTile shout)
+        | otherwise                       -> error "Impossible ron to a kantsu!"
+    where
+        setShout (Mentsu k t _) = Mentsu k t (Just shout)
+
+-- | Get the mentsu kind
+mentsuKind :: Mentsu -> MentsuKind
+mentsuKind (Mentsu k _ _) = k
+
+-- * Functions that operate on tiles
+
+-- | `shuntsuWith tiles` attempts to build a shuntsu from `tiles`. Note
+-- that **`tiles` must be in order**.
+shuntsuWith :: [Tile] -> Maybe Mentsu
+shuntsuWith (x:y:z:[]) = shuntsu x <$ do
+    succMay x >>= guard . (== y)
+    succMay y >>= guard . (== z)
+shuntsuWith          _ = Nothing
+
+-- * Group mentsu from tiles
 
 -- | The type returned by @mentsuFrom@.
 data MentsuLike = MentsuLike MentsuKind Tile -- ^ Missing one (the specified) tile
@@ -45,5 +82,37 @@ data MentsuLike = MentsuLike MentsuKind Tile -- ^ Missing one (the specified) ti
 
 -- | Build all enumerations of possible @MentsuLike@ groupings from given
 -- tiles.
-mentsuFrom :: [Tile] -> [[MentsuLike]]
-mentsuFrom ts = undefined
+--
+-- How the algorithm works:
+--  * First the input tiles are sorted
+--  * 
+mentsuLike :: [Tile] -> [[MentsuLike]]
+mentsuLike ts = go (sort ts)
+    where
+        go _ = undefined
+
+-- Reference thingy from hajong.
+--
+-- | This gets only total mentsu: no orphan tiles are left in the result.
+-- getMentsu :: [Tile] -> [Mentsus]
+-- getMentsu tiles = map fst $ go ([], tiles)
+--     where 
+--         go :: ([Mentsu], [Tile]) -> [([Mentsu], [Tile])] -- (mentsu, leftovers)
+--         go (done, xs@(a:b:es)) = let
+-- 
+--             takingJantou  = if a == b then go (Jantou [a,b] Nothing : done, es) ++ takingKoutsu else []
+--             takingKoutsu  = case es of
+--                 (c:es') | c == a      -> go (Koutsu [a,b,c] Nothing : done, es') ++ takingKantsu
+--                         | otherwise   -> []
+--                 _                     -> []
+--             takingKantsu  = case es of
+--                 (c:d:es') | c == d    -> go (Kantsu [a,b,c,d] Nothing : done, es')
+--                           | otherwise -> []
+--                 _                     -> []
+--             takingShuntsu = case shuntsuOf a xs of
+--                 Just ment   -> go (ment : done, xs L.\\ mentsuPai ment)
+--                 Nothing     -> []
+--             in takingJantou ++ takingShuntsu
+-- 
+--         go (done, []) = [(done, [])]
+--         go (_,  _)    = [] -- branch cannot be complete with one orphan tile

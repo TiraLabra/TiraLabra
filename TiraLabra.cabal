@@ -3,8 +3,6 @@
 
 name:                TiraLabra
 version:             0.1.0.0
--- synopsis:            
--- description:         
 license:             BSD3
 license-file:        LICENSE
 author:              Samuli Thomasson
@@ -14,6 +12,10 @@ maintainer:          simsaladin@paivola.fi
 build-type:          Simple
 extra-source-files:  Readme.md
 cabal-version:       >=1.10
+synopsis:            Mahjong hands
+description:
+   This library implements data structures and algorithms to
+   work with a mahjong hand.
 
 library
   exposed-modules:     Mahjong.Hand
@@ -34,5 +36,9 @@ test-suite test
   type:                exitcode-stdio-1.0
   main-is:             test.hs
   hs-source-dirs:      tests
-  build-depends:       base, TiraLabra
+  build-depends:       base
+                     , TiraLabra
+                     , tasty
+                     , tasty-quickcheck
+                     , tasty-smallcheck
   default-language:    Haskell2010
