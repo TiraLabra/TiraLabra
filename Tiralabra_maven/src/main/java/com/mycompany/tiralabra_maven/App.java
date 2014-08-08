@@ -97,11 +97,13 @@ public class App {
 //        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
         System.out.println("kukkuu");
         try {
-            kuvanlukija.seeBMPImage("bitmaps/testikartta006b-16-color.bmp");
+            kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
+//            kuvanlukija.seeBMPImage("testikartta007-16-color.bmp");
 //            kuvanlukija.seeBMPImage("D:\\Untitled3.bmp");
 //            kuvanlukija.seeBMPImage("D:/Hannun_tiedot/opinnot/2014_kesa/TietorakenteidenJaAlgoritmienHarjoitustyo/Untitled3.bmp");
 //            kuvanlukija.seeBMPImage("D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TietorakenteidenJaAlgoritmienHarjoitustyo\\Untitled3.bmp");
         } catch (IOException ioe) {
+            System.out.println("virhe");
         }
     }
 }

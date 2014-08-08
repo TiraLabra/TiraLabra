@@ -19,20 +19,27 @@ public class Kuvanlukija {
         BufferedImage image = ImageIO.read(BMPFile);
 
         int[][] array2D = new int[image.getWidth()][image.getHeight()];
+        
+        int color=9;
 
         for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
             for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
-                int color = image.getRGB(xPixel, yPixel);
-                if (color == Color.BLACK.getRGB()) {
+                color = image.getRGB(xPixel, yPixel);
+                if (color == Color.white.getRGB()) {
                     array2D[xPixel][yPixel] = 1;
                 }
-                if (color == Color.RED.getRGB()) {
+                else if (color == Color.black.getRGB()) {
                     array2D[xPixel][yPixel] = 2;
+                }
+                else if (color == Color.red.getRGB()) {
+                    array2D[xPixel][yPixel] = 3;
                 } else {
-                    array2D[xPixel][yPixel] = 0; // ?
+                    array2D[xPixel][yPixel] = 8; // ?
                 }
             }
         }
+        
+//        Color.
 
 
         for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
@@ -42,7 +49,7 @@ public class Kuvanlukija {
             System.out.println("");
         }
 
-        Color myBlue = new Color(0, 0, 255); // Color white
+        Color myBlue = new Color(0, 0, 255);
         int rgb = myBlue.getRGB();
 
         try {
@@ -62,7 +69,8 @@ public class Kuvanlukija {
 //            }
 
             // retrieve image
-            File outputfile = new File("bitmaps/testikartta006b-16-color-result.bmp");
+            File outputfile = new File("bitmaps/Result.bmp");
+//            File outputfile = new File("testikartta007-16-color-result.bmp");
             ImageIO.write(image, "bmp", outputfile);
         } catch (IOException e) {
         }
