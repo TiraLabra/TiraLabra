@@ -11,13 +11,32 @@
 ------------------------------------------------------------------------------
 module Mahjong.Tiles where
 
+import Data.String
 import Control.Monad
 import Control.Applicative
+
+-- * Types
 
 -- | A (japanese) mahjong tile.
 data Tile = Suited TileKind Number Aka
           | Honor Honor
           deriving (Show, Read, Eq, Ord)
+
+instance IsString Tile where
+    fromString [a]     = fromString [a, ' ']
+    fromString [k,num] = case k of
+        'G'              -> Honor (Sangenpai Hatsu)
+        'R'              -> Honor (Sangenpai Chun)
+        'W' | num == '!' -> Honor (Sangenpai Haku)
+            | otherwise  -> Honor (Kazehai Shaa)
+        'E'              -> Honor (Kazehai Ton)
+        'N'              -> Honor (Kazehai Pei)
+        'S' | num == ' ' -> Honor (Kazehai Nan)
+            | otherwise  -> Suited SouTile (toEnum $ read [num]) False
+        'M'              -> Suited ManTile (toEnum $ read [num]) False
+        'P'              -> Suited PinTile (toEnum $ read [num]) False
+        _                -> error "no read"
+    fromString _       = error "no read"
 
 data TileKind = ManTile | PinTile | SouTile | HonorTile
               deriving (Show, Read, Eq, Ord)
@@ -39,6 +58,18 @@ data Sangenpai = Haku | Hatsu | Chun
 data Kazehai = Ton | Nan | Shaa | Pei
              deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
+-- * Build
+
+toSuited :: Number -> TileKind -> Tile
+toSuited n tk = Suited tk n False
+
+-- * Functions
+
+(==~) :: Tile -> Tile -> Bool
+Suited tk n _ ==~ Suited tk' n' _ = tk == tk' && n == n'
+Honor x       ==~ Honor y         = x == y
+_             ==~ _               = False
+
 -- | Extract tile kind
 tileKind :: Tile -> TileKind
 tileKind (Suited k _ _) = k
@@ -53,8 +84,11 @@ tileNumber (Honor _)      = Nothing
 suited :: Tile -> Bool
 suited = (/= HonorTile) . tileKind
 
--- | Like @succ@ but fail as nothing if the succession wouldn't make sense
+-- | Like @succ@ and @pred@, but fail as nothing if the succession wouldn't make sense
 -- (i.e the input or output would not be a (defined) suited tile).
-succMay :: Tile -> Maybe Tile
+succMay, predMay :: Tile -> Maybe Tile
 succMay (Suited k n a) = Suited k (succ n) a <$ guard (n /= maxBound)
 succMay _              = Nothing
+
+predMay (Suited k n a) = Suited k (pred n) a <$ guard (n /= minBound)
+predMay _              = Nothing

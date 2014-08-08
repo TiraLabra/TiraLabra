@@ -40,5 +40,5 @@ test-suite test
                      , TiraLabra
                      , tasty
                      , tasty-quickcheck
-                     , tasty-smallcheck
+                     , tasty-hunit
   default-language:    Haskell2010
