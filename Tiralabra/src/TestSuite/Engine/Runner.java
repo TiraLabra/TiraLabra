@@ -5,6 +5,7 @@
 package TestSuite.Engine;
 
 import TestSuite.Algos.Algo;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -28,19 +29,21 @@ public class Runner implements CommandInterface {
 
             sum += timing(array, algo);
         }
-        
+
         //TODO: print to text file
-        
         System.out.println(algo + "´s average runtime is " + (sum / repeat) + " milliseconds");
     }
 
     private static long timing(int[] a, Algo algo) {
 
+        //System.out.println(Arrays.toString(a));
+
         long start = System.currentTimeMillis();
 
         algo.sort(a);
-        
+
         long result = (System.currentTimeMillis() - start);
+        //System.out.println(Arrays.toString(a));
 
         return result;
     }
