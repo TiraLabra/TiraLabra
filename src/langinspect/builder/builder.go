@@ -17,11 +17,16 @@ const maxDepth = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Ch
 
 var ngramCount int
 var langStat = make(map[Lang]int)
+var bytesRead int
 
 func GetFileReaders(dir string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
 	go func() {
 		filepath.Walk(dir, func(path string, f os.FileInfo, err error) error {
+			if err != nil {
+				fmt.Println("Error!", err)
+				return err
+			}
 			if f.IsDir() {
 				fmt.Println("Reading from directory", f.Name())
 				return nil
@@ -84,6 +89,18 @@ func TouchLangData(node *trie.Node, lang Lang) {
 	}
 }
 
+func PrintStats() {
+	fmt.Println("Max n-gram length:\t", maxDepth)
+	fmt.Println("N-grams read:\t\t", ngramCount)
+	fmt.Println("Unique n-grams:\t\t", trie.NodeCount())
+	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(ngramCount)*100.0)
+	fmt.Printf("Size:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
+	fmt.Println("Learning data:")
+	for lang, bytes := range langStat {
+		fmt.Printf("\t%s %d Kb\n", lang, bytes/1000)
+	}
+}
+
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
@@ -103,7 +120,13 @@ func Build(dir string) {
 			}
 		}
 
-		langStat[lang]++
+		if stats {
+			langStat[lang]++
+			bytesRead++
+			if bytesRead%1000 == 0 {
+				fmt.Println(ngramCount, "\t", trie.NodeCount(), "   \t")
+			}
+		}
 
 		if len(nodes) < maxDepth {
 			nodes = append(nodes, nil)
@@ -119,14 +142,5 @@ func Build(dir string) {
 		i++
 		i = i % maxDepth
 	}
-
-	fmt.Println("Max n-gram length:\t", maxDepth)
-	fmt.Println("N-grams read:\t\t", ngramCount)
-	fmt.Println("Unique n-grams:\t\t", trie.NodeCount())
-	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(ngramCount)*100.0)
-	fmt.Println("Size:\t\t\t", float32(trie.NodeCount()*int(unsafe.Sizeof(trie.Node{})))/1024/1024, "MiB,", unsafe.Sizeof(trie.Node{}), " bytes per node.")
-	fmt.Println("Learning data:")
-	for lang, bytes := range langStat {
-		fmt.Println("\t", string(lang[:]), bytes/1000, "Kb")
-	}
+	PrintStats()
 }

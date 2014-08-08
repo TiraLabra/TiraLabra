@@ -43,21 +43,13 @@ func (n *Node) Add(key []byte, object interface{}) {
 
 func (n *Node) GetOrCreate(key []byte) *Node {
 	if debug {
-		fmt.Print("GetOrCreate with key: ", string(key))
-		m := n
-		for m != nil {
-			fmt.Print(string([]byte{m.keyFragment}))
-			m = m.parent
-		}
-		fmt.Println("/")
+		fmt.Println("GetOrCreate with path:", string(n.Prefix()), "+", string(key))
 	}
 	child := &n.Children[key[0]]
 	if *child == nil {
 		*child = CreateNode()
-		if debug {
-			(*child).parent = n
-			(*child).keyFragment = key[0]
-		}
+		(*child).parent = n
+		(*child).keyFragment = key[0]
 	}
 	if len(key) > 1 {
 		return (*child).GetOrCreate(key[1:])
@@ -77,4 +69,18 @@ func (n *Node) TryAndGet(key []byte) interface{} {
 	} else {
 		return n.Value
 	}
+}
+
+func (n *Node) prefix(depth int) []byte {
+	if n.parent != nil {
+		prefix := n.parent.prefix(depth + 1)
+		prefix[len(prefix)-depth-1] = n.keyFragment
+		return prefix
+	} else {
+		return make([]byte, depth, depth)
+	}
+}
+
+func (n *Node) Prefix() []byte {
+	return n.prefix(0)
 }
