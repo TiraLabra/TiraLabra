@@ -1,6 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
-public abstract class AbstractNode {
+import java.io.Serializable;
+
+public abstract class AbstractNode implements Serializable {
 
     private AbstractNode parent;
 
