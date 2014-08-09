@@ -10,7 +10,11 @@
 
 [Haddock-dokumentaatio](http://simsaladin.users.paivola.fi/TiraLabra/)
 
-[hpc-reportti](http://simsaladin.users.paivola.fi/TiraLabra-hpc/hpc_index.html) (testikattavuus)
+[hpc-reportti](http://simsaladin.users.paivola.fi/TiraLabra-hpc/hpc_index.html)
+(testikattavuus)
+
+[criterion-raportti](http://simsaladin.users.paivola.fi/TiraLabra/benchmark_results.html)
+(algojen benchamrkit)
 
 **Quickstart:** `ghc` ja `cabal-install` asennettuna: aja projektikansiossa `cabal
 install`.

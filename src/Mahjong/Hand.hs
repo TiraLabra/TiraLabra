@@ -14,16 +14,16 @@ module Mahjong.Hand where
 
 import Mahjong.Tiles
 import Mahjong.Mentsu
-import Mahjong.Hand.Shanten
+import Mahjong.Algo
 import Mahjong.Hand.DevelopmentTree
 
 data Hand = Hand
           { called :: [Mentsu]
           , concealed :: [Tile]
-          , shanten :: Shanten
+          , handStatus :: Shanten
           , developments :: DevelopmentTree
           }
 
 -- | Build a @"Hand"@ from melded mentsu and concealed tiles.
 fromTiles :: [Mentsu] -> [Tile] -> Hand
-fromTiles ot ct = Hand ot ct (shantenOf ot ct) (buildTree ot ct)
+fromTiles ot ct = Hand ot ct (shanten (ot, ct)) (buildTree ot ct)
