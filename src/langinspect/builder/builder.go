@@ -23,6 +23,7 @@ type LangTable []int
 var amountOfLangs = 1
 var ngramCount int
 var langStat = make(LangTable, amountOfLangs)
+var langTagToIndex *trie.Node
 var bytesRead int
 
 func GetFileReaders(dir string) chan *bufio.Reader {
@@ -114,34 +115,43 @@ func PrintStats() {
 	}
 }
 
+func SetLang(byteStream chan byte) (bool, LangIndex) {
+	bNext := <-byteStream
+	if bNext == '@' {
+		return false, LangIndex(0)
+	} else {
+		langtag := LangTag{bNext, <-byteStream}
+		node := langTagToIndex.GetOrCreate(langtag)
+		if node.Value == nil {
+			node.Value = LangIndex(amountOfLangs)
+			amountOfLangs++
+			if debugSome {
+				fmt.Println("New language! ", string(langtag[:]), node.Value)
+			}
+		}
+		langindex := node.Value.(LangIndex)
+		if debugSome {
+			fmt.Println("Changed language to:", string(langtag[:]))
+		}
+		return true, langindex
+	}
+}
+
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
-	langindex := LangIndex(0)
-	langdata := trie.CreateNode()
-	highestLangIndex := langindex
+	langindex := LangIndex(1)
+	langTagToIndex = trie.CreateNode()
 	i := 0
 	nodes := make([]*trie.Node, 0, maxDepth)
 	for b := range byteStream {
 		if b == '@' {
-			bNext := <-byteStream
-			if bNext != '@' {
-				langtag := LangTag{bNext, <-byteStream}
-				node := langdata.GetOrCreate(langtag)
-				if node.Value == nil {
-					node.Value = LangIndex(highestLangIndex)
-					highestLangIndex++
-					if debugSome {
-						fmt.Println("New language! ", string(langtag[:]), langindex)
-					}
-				}
-				langindex = node.Value.(LangIndex)
-				if debugSome {
-					fmt.Println("Changed language to:", string(langtag[:]))
-				}
+			changed, newLangIndex := SetLang(byteStream)
+			if changed {
+				langindex = newLangIndex
 				nodes = nodes[:0] // Clear the nodes buffer
 				i = 0
-				b = <-byteStream
+				continue
 			}
 		}
 
