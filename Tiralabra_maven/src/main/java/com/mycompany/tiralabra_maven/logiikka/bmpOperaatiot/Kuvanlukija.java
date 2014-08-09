@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.logiikka.bmpOperaatiot;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
