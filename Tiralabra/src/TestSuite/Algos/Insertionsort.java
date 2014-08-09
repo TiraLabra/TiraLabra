@@ -36,5 +36,4 @@ public class Insertionsort extends Algo {
     public String toString() {
         return "Insertion sort";
     }
-
 }

@@ -5,14 +5,14 @@
 package TestSuite.Engine;
 
 import TestSuite.Algos.Algo;
+import TestSuite.Arrays.Arr;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  *
  * @author Marko <markoma@iki.fi>
  */
-public class Runner implements CommandInterface {
+public class Runner {
 
     private final int repeat;
 
@@ -20,29 +20,28 @@ public class Runner implements CommandInterface {
         this.repeat = repeat;
     }
 
-    @Override
-    public void run(int[] array, Algo algo) {
+    public void run(Arr array, Algo algo) {
 
         long sum = 0;
 
         for (int j = 0; j < repeat; j++) {
-
             sum += timing(array, algo);
         }
 
         //TODO: print to text file
-        System.out.println(algo + "´s average runtime is " + (sum / repeat) + " milliseconds");
+        System.out.println("sorting " + array + " array ");
+        System.out.println(algo + "´s average runtime is " + (sum / repeat) + " nanoseconds");
+        System.out.println("");
     }
 
-    private static long timing(int[] a, Algo algo) {
+    private static long timing(Arr array, Algo algo) {
 
         //System.out.println(Arrays.toString(a));
+        long start = System.nanoTime();
 
-        long start = System.currentTimeMillis();
+        algo.sort(array.get());
 
-        algo.sort(a);
-
-        long result = (System.currentTimeMillis() - start);
+        long result = (System.nanoTime() - start);
         //System.out.println(Arrays.toString(a));
 
         return result;
