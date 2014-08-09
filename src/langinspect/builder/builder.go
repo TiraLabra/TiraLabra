@@ -11,20 +11,23 @@ import (
 	"unsafe"
 )
 
-const debugAll = false
-const debugSome = true
-const stats = true
-const maxDepth = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
+// Compile-time settings
+const (
+	debugAll  = false
+	debugSome = true
+	stats     = true
+	maxDepth  = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
+)
 
 type LangTag []byte
 type LangIndex int
 type LangTable []int
 
+const AllLangs = LangIndex(0)
+
 var amountOfLangs = 1
-var ngramCount int
 var langStat = make(LangTable, amountOfLangs)
 var langTagToIndex *trie.Node
-var bytesRead int
 
 func GetFileReaders(dir string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
@@ -76,14 +79,14 @@ func StreamBytes(dir string) chan byte {
 	return byteStream
 }
 
-func IncrementLang(table LangTable, index LangIndex) {
+func IncrementLang(table *LangTable, index LangIndex) {
 	if debugAll {
 		fmt.Println("Increment!")
 	}
-	for len(table) < amountOfLangs+1 {
-		table = append(table, 0)
+	for len(*table) < amountOfLangs+1 {
+		*table = append(*table, 0)
 	}
-	table[index]++
+	(*table)[index]++
 }
 
 func TouchLangData(node *trie.Node, lang LangIndex) {
@@ -94,20 +97,22 @@ func TouchLangData(node *trie.Node, lang LangIndex) {
 		node.Value = make(LangTable, amountOfLangs)
 	}
 	table := node.Value.(LangTable)
-	IncrementLang(table, lang)
+	IncrementLang(&table, AllLangs)
+	IncrementLang(&table, lang)
 	if stats {
-		ngramCount++
+		IncrementLang(&langStat, AllLangs)
+		IncrementLang(&langStat, lang)
 	}
 	if debugAll {
 		fmt.Println("Incremented", string(lang), "to", table[lang])
 	}
-}
+}1
 
 func PrintStats() {
 	fmt.Println("Max n-gram length:\t", maxDepth)
-	fmt.Println("N-grams read:\t\t", ngramCount)
+	fmt.Println("N-grams read:\t\t", langStat[AllLangs])
 	fmt.Println("Unique n-grams:\t\t", trie.NodeCount())
-	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(ngramCount)*100.0)
+	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(langStat[AllLangs])*100.0)
 	fmt.Printf("Size:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
 	fmt.Println("Learning data:")
 	for lang, bytes := range langStat {
@@ -155,11 +160,9 @@ func Build(dir string) {
 			}
 		}
 
-		if stats {
-			IncrementLang(langStat, langindex)
-			bytesRead++
-			if bytesRead%1000 == 0 {
-				fmt.Println(ngramCount, "\t", trie.NodeCount(), "   \t")
+		if debugSome && stats {
+			if langStat[0]%1000 == 0 {
+				fmt.Println(langStat[AllLangs], "\t", trie.NodeCount(), "   \t")
 			}
 		}
 

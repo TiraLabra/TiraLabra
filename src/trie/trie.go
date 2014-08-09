@@ -84,3 +84,22 @@ func (n *Node) prefix(depth int) []byte {
 func (n *Node) Prefix() []byte {
 	return n.prefix(0)
 }
+
+func (n *Node) walk(valueChan chan interface{}) {
+	if n.Value != nil {
+		valueChan <- n.Value
+	}
+	for _, child := range n.Children {
+		if child != nil {
+			child.walk(valueChan)
+		}
+	}
+}
+
+func (n *Node) Walk() chan interface{} {
+	valueChan := make(chan interface{})
+	go func() {
+		n.walk(valueChan)
+	}()
+	return valueChan
+}
