@@ -47,10 +47,13 @@ public class App {
 //        Piste maaliPiste = new Piste(1, 4);
 //        Piste maaliPiste = new Piste(2, 2);
         Piste maaliPiste = new Piste(0, 2);
+//        Piste maaliPiste = new Piste(2, 1);
 
-        System.out.println(DijkstraWithHeap.ratkaise(kartta, lahtoPiste, maaliPiste));
+        DijkstraWithHeap dijkstraWithHeap = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
 
+        System.out.println(dijkstraWithHeap.ratkaise());
 
+        dijkstraWithHeap.shortestPath();
 
     }
 }
