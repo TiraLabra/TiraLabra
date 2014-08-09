@@ -11,24 +11,16 @@ package TestSuite.Algos;
 public class Insertionsort extends Algo {
 
     @Override
-    public void sort(int[] values) {
+    public void sort(int[] a) {
 
-        if (values == null || values.length == 0) {
-            return;
-        }
-
-        insertionSort(values);
-    }
-
-    private static void insertionSort(int[] a) {
         for (int i = 1; i < a.length; i++) {
-            int temp = a[i];
+            int tmp = a[i];
             int j = i;
-            while (j > 0 && a[j - 1] > temp) {
+            while (j > 0 && a[j - 1] > tmp) {
                 a[j] = a[j - 1];
                 j--;
             }
-            a[j] = temp;
+            a[j] = tmp;
         }
     }
 

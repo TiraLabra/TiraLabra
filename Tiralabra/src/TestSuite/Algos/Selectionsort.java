@@ -11,25 +11,19 @@ package TestSuite.Algos;
 public class Selectionsort extends Algo {
 
     @Override
-    public void sort(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return;
-        }
-        selectionSort(arr);
-    }
+    public void sort(int[] a) {
 
-    private static void selectionSort(int[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
+        for (int i = 0; i < a.length - 1; i++) {
             int index = i;
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[j] < arr[index]) {
+            for (int j = i + 1; j < a.length; j++) {
+                if (a[j] < a[index]) {
                     index = j;
                 }
             }
 
-            int smallerNumber = arr[index];
-            arr[index] = arr[i];
-            arr[i] = smallerNumber;
+            int smaller = a[index];
+            a[index] = a[i];
+            a[i] = smaller;
         }
     }
 
