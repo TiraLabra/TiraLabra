@@ -9,7 +9,10 @@ package TestSuite.Algos;
  * @author Marko <markoma@iki.fi>
  */
 public class Insertionsort extends Algo {
-
+    /**
+     * Sorts array with Insertion sort
+     * @param a 
+     */
     @Override
     public void sort(int[] a) {
 
@@ -23,7 +26,11 @@ public class Insertionsort extends Algo {
             a[j] = tmp;
         }
     }
-
+    
+    /**
+     * 
+     * @return name
+     */
     @Override
     public String toString() {
         return "Insertion sort";

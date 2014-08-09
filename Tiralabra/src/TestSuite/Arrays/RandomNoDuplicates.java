@@ -7,6 +7,8 @@ package TestSuite.Arrays;
 import java.util.Random;
 
 /**
+ * produces array woth random numbers from 0..n with no duplicates or missing
+ * numbers.
  *
  * @author Marko <markoma@iki.fi>
  */
@@ -15,11 +17,22 @@ public class RandomNoDuplicates extends Arr {
     private final int size;
     private final Random r;
 
+    /**
+     * initializes size and java random generator
+     *
+     * @param size
+     */
     public RandomNoDuplicates(int size) {
         this.size = size;
         this.r = new Random();
     }
 
+    /**
+     * reproduces a new array with given size. fills wih numbers 0..n, then
+     * inits thrue array and randomizes order.
+     *
+     * @return randomized array
+     */
     @Override
     public int[] get() {
         int[] a = new int[size];
@@ -36,8 +49,13 @@ public class RandomNoDuplicates extends Arr {
         }
         return a;
     }
+
+    /**
+     *
+     * @return name of array
+     */
     @Override
-    public String toString(){
+    public String toString() {
         return "random, no-duplicates";
     }
 }

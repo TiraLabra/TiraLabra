@@ -20,7 +20,7 @@ public class main {
 
     public static void main(String[] args) {
 
-        TestSuite.Engine.Runner runner = new Runner(1000000);
+        TestSuite.Engine.Runner runner = new Runner(1000);
 
         int size = 10;
 

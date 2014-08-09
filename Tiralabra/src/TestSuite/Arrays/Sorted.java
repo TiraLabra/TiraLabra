@@ -5,6 +5,7 @@
 package TestSuite.Arrays;
 
 /**
+ * Fully sorted array (ascending order)
  *
  * @author Marko <markoma@iki.fi>
  */
@@ -12,10 +13,20 @@ public class Sorted extends Arr {
 
     private final int size;
 
+    /**
+     * initializes size of array
+     *
+     * @param size size
+     */
     public Sorted(int size) {
         this.size = size;
     }
 
+    /**
+     * Fills initialized array with ascending numbering 1..n.
+     *
+     * @return array
+     */
     @Override
     public int[] get() {
         int[] arr = new int[size];
@@ -27,8 +38,12 @@ public class Sorted extends Arr {
         return arr;
     }
 
+    /**
+     *
+     * @return name of the array
+     */
     @Override
     public String toString() {
-        return "Sorted";
+        return "sorted";
     }
 }

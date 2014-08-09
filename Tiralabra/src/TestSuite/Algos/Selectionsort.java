@@ -9,7 +9,10 @@ package TestSuite.Algos;
  * @author Marko <markoma@iki.fi>
  */
 public class Selectionsort extends Algo {
-
+    /**
+     * Sorts given array with selection sort
+     * @param a array to sort
+     */
     @Override
     public void sort(int[] a) {
 
@@ -26,9 +29,12 @@ public class Selectionsort extends Algo {
             a[i] = smaller;
         }
     }
-
+    /**
+     * 
+     * @return name of algorithm
+     */
     @Override
     public String toString() {
-        return "selection sort";
+        return "Selection sort";
     }
 }
