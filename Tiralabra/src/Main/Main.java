@@ -1,14 +1,13 @@
 package Main;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import Tietorakenteet.Keko.Iteroitava;
+import Tietorakenteet.Keko.Keko;
+import Tietorakenteet.Solmu;
 
-/**
- *
- * @author Serafim
+/*
+ * 
+ * Toimii tällä hetkellä lähinnä debuggaus metodina
+ * 
  */
 public class Main {
 
@@ -16,7 +15,20 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       System.out.println("test");
+        Keko keko = new Keko();
+        Solmu[] solmut = new Solmu[200];
+        keko.asetaTaulukko(solmut, 99);
+
+        for (int j = 98; j >= 0; j--) {
+            Solmu lisattava = new Solmu(j, j);
+            lisattava.asetaArvo(j);
+            Iteroitava iter = lisattava;
+            keko.Lisaa(iter);
+
+        }
+
+        Solmu[] solmud = (Solmu[]) keko.palautaTaulukko();
+
     }
-    
+
 }

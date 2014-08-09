@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Algoritmit;
 
 /**
  *
- * @author Serafim
+ * Toimii asetusluokkana, tällä hetkellä ei tee mitään.
  */
-public class Main {
+public class Data {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-       System.out.println("test");
-    }
-    
 }
