@@ -11,12 +11,18 @@ import (
 	"unsafe"
 )
 
-const debug = false
+const debugAll = false
+const debugSome = true
 const stats = true
 const maxDepth = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
 
+type LangTag []byte
+type LangIndex int
+type LangTable []int
+
+var amountOfLangs = 1
 var ngramCount int
-var langStat = make(map[Lang]int)
+var langStat = make(LangTable, amountOfLangs)
 var bytesRead int
 
 func GetFileReaders(dir string) chan *bufio.Reader {
@@ -36,7 +42,7 @@ func GetFileReaders(dir string) chan *bufio.Reader {
 				fmt.Println("Couldn't open " + f.Name() + "!")
 				return err
 			}
-			if debug {
+			if debugSome {
 				fmt.Println("Opened " + f.Name())
 			}
 			reader := bufio.NewReader(file)
@@ -56,7 +62,7 @@ func StreamBytes(dir string) chan byte {
 			for {
 				b, err := reader.ReadByte()
 				if err != nil {
-					if debug {
+					if debugSome {
 						fmt.Println("EOF!")
 					}
 					break
@@ -69,23 +75,30 @@ func StreamBytes(dir string) chan byte {
 	return byteStream
 }
 
-type Lang [2]byte
-type LangData map[Lang]int
+func IncrementLang(table LangTable, index LangIndex) {
+	if debugAll {
+		fmt.Println("Increment!")
+	}
+	for len(table) < amountOfLangs+1 {
+		table = append(table, 0)
+	}
+	table[index]++
+}
 
-func TouchLangData(node *trie.Node, lang Lang) {
+func TouchLangData(node *trie.Node, lang LangIndex) {
 	if node.Value == nil {
-		if debug {
+		if debugAll {
 			fmt.Println("Initialising LangData object.")
 		}
-		node.Value = make(LangData)
+		node.Value = make(LangTable, amountOfLangs)
 	}
-	data := node.Value.(LangData)
-	data[lang]++
+	table := node.Value.(LangTable)
+	IncrementLang(table, lang)
 	if stats {
 		ngramCount++
 	}
-	if debug {
-		fmt.Println("Incremented", string(lang[:]), "to", data[lang])
+	if debugAll {
+		fmt.Println("Incremented", string(lang), "to", table[lang])
 	}
 }
 
@@ -104,24 +117,36 @@ func PrintStats() {
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
 	dict := trie.CreateNode()
-	lang := Lang{}
+	langindex := LangIndex(0)
+	langdata := trie.CreateNode()
+	highestLangIndex := langindex
 	i := 0
 	nodes := make([]*trie.Node, 0, maxDepth)
 	for b := range byteStream {
 		if b == '@' {
-			b2 := <-byteStream
-			if b2 != '@' {
-				lang[0] = b2
-				lang[1] = <-byteStream
-				if debug {
-					fmt.Println("Changed language to:", string(lang[:]))
+			bNext := <-byteStream
+			if bNext != '@' {
+				langtag := LangTag{bNext, <-byteStream}
+				node := langdata.GetOrCreate(langtag)
+				if node.Value == nil {
+					node.Value = LangIndex(highestLangIndex)
+					highestLangIndex++
+					if debugSome {
+						fmt.Println("New language! ", string(langtag[:]), langindex)
+					}
 				}
+				langindex = node.Value.(LangIndex)
+				if debugSome {
+					fmt.Println("Changed language to:", string(langtag[:]))
+				}
+				nodes = nodes[:0] // Clear the nodes buffer
+				i = 0
 				b = <-byteStream
 			}
 		}
 
 		if stats {
-			langStat[lang]++
+			IncrementLang(langStat, langindex)
 			bytesRead++
 			if bytesRead%1000 == 0 {
 				fmt.Println(ngramCount, "\t", trie.NodeCount(), "   \t")
@@ -136,11 +161,12 @@ func Build(dir string) {
 		for k := i + len(nodes); k > i; k-- {
 			parent := nodes[k%len(nodes)]
 			child := parent.GetOrCreate([]byte{b})
-			TouchLangData(child, lang)
+			TouchLangData(child, langindex)
 			nodes[k%len(nodes)] = child
 		}
 		i++
 		i = i % maxDepth
+
 	}
 	PrintStats()
 }
