@@ -3,8 +3,8 @@ package com.mycompany.tiralabra_maven.logiikka.dijkstra;
 import com.mycompany.tiralabra_maven.logiikka.Paikka;
 import com.mycompany.tiralabra_maven.logiikka.Piste;
 import com.mycompany.tiralabra_maven.logiikka.keko.JavaKeko;
-import com.mycompany.tiralabra_maven.logiikka.keko.MinimiKeko;
-import java.util.PriorityQueue;
+//import com.mycompany.tiralabra_maven.logiikka.keko.MinimiKeko;
+//import java.util.PriorityQueue;
 import java.util.Stack;
 
 /**
@@ -16,6 +16,7 @@ public class DijkstraWithHeap {
     private Piste lahtoPiste;
     private Piste maaliPiste;
     private int[][] kartta;
+    private int[][] reittiKartta;
     private Paikka[][] paikat;
 
     public DijkstraWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste) {
@@ -23,6 +24,7 @@ public class DijkstraWithHeap {
         this.lahtoPiste = lahtoPiste;
         this.maaliPiste = maaliPiste;
         this.kartta = kartta;
+        this.reittiKartta=kartta;
         this.paikat = new Paikka[kartta.length][kartta[0].length];
 
     }
@@ -128,7 +130,24 @@ public class DijkstraWithHeap {
         while (!pino.empty()) {
             paikkaU = pino.pop();
             System.out.println(paikkaU.i + ", " + paikkaU.j);
+            this.reittiKartta[paikkaU.i][paikkaU.j]=0;
         }
+        
 
+    }
+    
+    public void testiTulostaReittikartta(){
+        System.out.println("reittikartta");
+        for (int i = 0; i < this.reittiKartta.length; i++) {
+            for (int j = 0; j < this.reittiKartta[0].length; j++) {
+                if (j==this.reittiKartta[0].length-1){
+                System.out.print(this.reittiKartta[i][j]);
+                }else{
+                System.out.print(this.reittiKartta[i][j]+" ");
+                }
+            }
+            System.out.println();
+        }
+        
     }
 }

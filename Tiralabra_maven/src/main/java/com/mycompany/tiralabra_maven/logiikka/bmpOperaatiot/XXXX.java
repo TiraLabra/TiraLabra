@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
  *
  * @author Hannu
  */
-public class Kuvanlukija {
+public class XXXX {
 
     public void seeBMPImage(String BMPFileName) throws IOException {
 //    public void seeBMPImage(String BMPFileName) {

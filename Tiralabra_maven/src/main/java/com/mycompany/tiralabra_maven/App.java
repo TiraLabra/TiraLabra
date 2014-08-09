@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.logiikka.Piste;
-import com.mycompany.tiralabra_maven.logiikka.bmpOperaatiot.Kuvanlukija;
+import com.mycompany.tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 public class App {
 
     public static void testaaKuvanlukija() {
-        Kuvanlukija kuvanlukija = new Kuvanlukija();
+        XXXX kuvanlukija = new XXXX();
 
 //        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
         System.out.println("kukkuu");
@@ -30,8 +30,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-//        System.out.println("main");
-//        testaaKuvanlukija();
+        System.out.println("main");
+        testaaKuvanlukija();
 
 //    E on este, jonka yli/ali/läpi ei pääse
 
@@ -54,6 +54,8 @@ public class App {
         System.out.println(dijkstraWithHeap.ratkaise());
 
         dijkstraWithHeap.shortestPath();
+        
+        dijkstraWithHeap.testiTulostaReittikartta();
 
     }
 }
