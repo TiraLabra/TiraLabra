@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT_DIR=MatrixCalc
+PROJECT_DIR=matrixcalc
 
 if [ -d Tiralabra_maven ]
 	then
