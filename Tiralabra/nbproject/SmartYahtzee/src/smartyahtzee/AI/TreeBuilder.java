@@ -12,11 +12,17 @@ package smartyahtzee.AI;
  */
 public class TreeBuilder {
     
+    private int[] dice;
     
     public TreeBuilder(int[] dice)
     {
-        dice = sort(dice);
-        createTrees(dice);
+        this.dice = groupingSort(dice);
+        createTrees(this.dice);
+    }
+    
+    public int[] getDice()
+    {
+        return dice;
     }
 
     private void createTrees(int[] dice)
@@ -36,7 +42,12 @@ public class TreeBuilder {
         
     }
     
-    private int[] sort(int[] dice)
+    /**
+     * Ryhmittelee nopat.
+     * 
+     */
+    
+    private int[] groupingSort(int[] dice)
     {
         dice = descendingSort(dice);
         
@@ -51,7 +62,7 @@ public class TreeBuilder {
         int secondFreq = 0;
         int secondFreqValue = 0;
         
-        for (int i = 0; i < 6; i++)
+        for (int i = 5; i >= 0; i--)
         {
             if (freqDice[i] > greatestFreq)
             {
@@ -59,16 +70,28 @@ public class TreeBuilder {
                 secondFreqValue = greatestFreqValue;
                 greatestFreq = freqDice[i];
                 greatestFreqValue = i+1;
+            } else if (freqDice[i] > secondFreq)
+            {
+                secondFreq = freqDice[i];
+                secondFreqValue = i+1;
             }
             
         }
         
+        System.out.println("Highest: " + greatestFreq + " Second: "+secondFreq);
+        
         if (greatestFreq == 1)          //if no pairs 
         {
+            for (int i = 0; i < 5; i++)
+            {
+                System.out.print(dice[i]);
+            }
             return dice;
         }
         
         int[] sortedDice = new int[5];
+        
+        
         
         for (int i = 0; i < greatestFreq; i++)   //2 to 4 steps
         {
@@ -92,6 +115,7 @@ public class TreeBuilder {
             }
         }
         
+        
         for (int i = 0; i < 5; i++)
         {
             System.out.print(sortedDice[i]);
@@ -99,6 +123,10 @@ public class TreeBuilder {
         
         return sortedDice;
     }
+    
+    /**
+     * Laittaa nopat laskevaan järjestykseen.
+     */
     
     private int[] descendingSort(int[] dice)
     {
