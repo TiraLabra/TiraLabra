@@ -1,0 +1,54 @@
+It's not for everyone, but this tablet stands a fighting chance to win over gamers
+
+Despite its problems, we actually liked Nvidia's original Shield Android gaming handheld. Our biggest issue with it was that it was bulky and heavy. With rumors swirling around about a Shield 2, we were hoping to see a slimmer, lighter design.
+So consider us initially disappointed when we learned that the next iteration of Shield would just be yet another Android tablet. Yawn, right? The fact of the matter is that the Shield Tablet may be playing in an oversaturated market, but it's still great at what it sets out to be.
+Buy NVIDIA SHIELD Tablet at Amazon US for $299.00
+
+At eight inches, the Shield Tablet features a gorgeous 1,900x1,200 display, which shares the same resolution as Google's flagship Nexus 7 tablet. At 13.1 ounces, the Shield Tablet is about three ounces heavier than the Nexus 7 but still a lot lighter than the original's 1 lb. 4.7 ounces.
+Part of the weight increase with the Shield Tablet over the Nexus 7 is due to the extra inch that you're getting from the screen, but also because the Shield Tablet is passively cooled and has an extra thermal shield built inside to dissipate heat. It's a little heavier than we like, but isn't likely to cause any wrist problems.
+Nvidia Shield Tablet
+On the back of the Shield is an anti-slip surface and a 5MP camera, and on the front of the tablet we have a front-facing 5MP camera and two front-facing speakers. While the speakers are not going to blow away dedicated Bluetooth speakers, they sound excellent for a tablet. In addition to the speakers, the Shield Tablet has a 3.5mm headphone jack up at the top.
+Nvidia Shield Tablet
+Other ports include Micro USB, Mini HDMI out, and a MicroSD card slot capable of taking up to 128GB cards. Buttons on the Shield include a volume rocker and a power button which we found to be a little small and shallow for our liking.
+Performance
+
+All of this is running on the latest version of Android KitKat version 4.4. Nvidia says that it will update the tablet to Android L within a few weeks of Google's official release. If Nvidia's original Shield is any indication of how well the company keeps up with OS updates, you should be able to expect to get the latest version of Android but after a couple of weeks if not a months after release.
+Nvidia Shield Tablet
+Regardless, the Shield Tablet is running a pretty stock version of Android to begin with the main difference being that Nvidia has pre-loaded the tablet with its Shield Hub, which is a 10-foot UI for you to purchase, download, and launch your games.
+Arguably the real star of the tablet is Nvidia's new Tegra K1 mobile superchip. The 2.2GHz quad-core A15 SOC features Nvidia's Kepler GPU architecture and 192 CUDA cores along with 2GB of low power DDR3. K1 supports many of the graphical features commonplace in GeForce graphics card including tesselation, HDR lighting, Global illumination, subsurface scattering, and more.
+Nvidia Shield Tablet
+In our performance benchmarks, the K1 killed it. Up until now, the original Shield's actively-cooled Tegra 4 is arguably one of the most if not the most powerful Android SOC on the market, but the K1 slaughters it across the board. In Antutu and GeekBench benchmark, we saw modest gains of 12% to 23% in Shield versus Shield Tablet action.
+But in Passmark and GFX Bench's Trex test, we saw nearly a 50% spread, and in 3DMark's mobile Icestorm Unlimited test, we saw an astounding 90% advantage for the Shield Tablet. This is incredible when you consider that the tablet has no fans and a two-watt TDP. Compared to the second-gen Nexus 7, the Shield Tablet benchmarks anywhere from 77% to 250% faster. This SOC is smoking fast.
+In terms of battery life, Nvidia is claiming you'll get 10 hours watching/surfing the web and about five hours from gaming with its 19.75 Wh battery. This is up 3.75 Wh up from Google's Nexus 7 equivalent and from our experiential tests, we found those figures to be fairly accurate if not a best case scenario. It will pretty much last you all day, but you'll still want to let it sip juice every night.
+
+
+Shield Controller
+
+Of course if you're going to game with it, you're going to need Nvidia's new wireless Shield Controller. Sold separately for $59/£49 (about AU$63), the 11.2-ounce Shield Controller maintains the same button layout as the original Shield controller, but feels a lot like a lighter and more comfortable to hold. While most Android game controllers operate over Bluetooth, Nvidia opted to go with Wi-Fi Direct stating that it offers 2x faster response time and more bandwidth.
+Nvidia Shield Tablet
+The extra bandwidth allows you to plug in a 3.5mm headphone into the controller and also allows you to link up to four controllers to the device, which is an appreciated feature when you hook up the tablet to your HDTV via the Shield Tablet's Console Mode. Other unique features of the controller include capacitive touch buttons for Android's home, back, and play buttons.
+Buy NVIDIA SHIELD Tablet at Amazon US for $299.00
+
+There's also a big green Nvidia button that launches Shield Hub. The controller also has a small triangle shaped clickable touch pad which allows you to navigate your tablet from afar. A quibble we had with it is that we wish the trackpad was more square, to at least mimic the dimensions of the tablet as the triangle shape was a little awkward to interface with.
+Nvidia Shield Tablet
+Another problem that we initially had with the controller was that the + volume button stopped working after a while. We contacted Nvidia about this and the company sent us a new unit which did remedy the issue, however. One noticeable missing feature from the controller is rumble support. Nvidia said this was omitted on the original Shield to keep the weight down, however its omission is a little more glaring this time around since there is no screen attached to the device.
+Extras
+
+The controller isn't the only accessory that you'll need to purchase separately if you want to tap into the full Shield Tablet experience, however. To effectively game with the tablet, you'll need the Shield Tablet cover which also acts as a stand. Like most tablets, a magnet in the cover shuts off the Shield Tablet when closed but setting up the cover and getting it to stand-up is initially pretty confusing.
+The cover currently only comes in black and while we're generally not big on marketing aesthetics, it would be nice to have an Nvidia green option to give the whole look a little more pop. We actually think the cover should just be thrown in too, especially considering that the cheapest 16GB model costs $300.
+Nvidia Shield Tablet
+On the upside though, you do get Nvidia's new passive DirectStylus 2 that stows away nicely in the body of the Shield Tablet. Nvidia has pre-installed note writing software and its own Nvidia Dabbler painting program. The nice thing about Dabbler is that it leverages K1's GPU acceleration so that you can virtually paint and blend colors in real time. There's also a realistic mode where the "paint" slowly drips down the virtual canvas like it would in real life.
+Game features
+
+But that's probably not why you're interested in the Shield Tablet. This device first and foremost is a gaming tablet and even comes with a free Android copy of Trine 2. Trine 2 was originally a PC game and it's made a great transition to the Shield Tablet. While the game was never known to be a polygon pusher, it looks just as good as it ever did on its x86 debut.
+With gaming as the primary driver for Shield Tablet customers you may wonder why Nvidia didn't bundle its new controller. The company likely learned from Microsoft's mistake with Kinect and the Xbox One: Gamers don't like to spend money and getting the price as low as was likely on Nvidia's mind. Of course, not everyone may even want a controller with the general lack of support for it in games. Nvidia says there are now around 400 Android titles that support its controller, but that's only a small percentage of Android games and the straight truth is that the overwhelming majority of these games are garbage.
+Nvidia Shield Tablet
+Nvidia is making a push for Android gaming, however. The company worked with Valve to port over Half Life 2 and Portal to the Shield and they look surprisingly fantastic and are easily the two prettiest games on Android at the moment. Whether Android will ever become a legitimate platform for hardcore gaming is as good as anyone's guess, but at least the Shield Tablet will net you a great front seat if the time ever arises.
+Luckily you won't have to rely solely on the Google Play store to get your gaming fix. Emulators run just as well here as they did on the original Shield and this iteration of Shield is also compatible with Gamestream, which is Nvidia's streaming technology that allows you to stream games from your PC to your Shield. Gamestream, in theory, lets you play your controller-enabled PC games on a Shield.
+Nvidia Shield Tablet
+At this point, Nvidia says Gamestream supports more than 100 games such as Batman: Arkham Origins and Titanfall from EA's Origin and Valve's Steam service. The problem though is there are hundreds more games on Steam and Origin that support controllers but not the Shield Tablet's controller. For example, Final Fantasy VII, a game which we couldn't get working with the original Shield still isn't supported even though it works with an Xbox controller on the PC. When Gamestream does work, however, it's relatively lag-free and kind of wonderful. The one caveat here is that you'll have to get a 5GHz dual-band router to effectively get it working.
+Final verdict
+
+Would we buy the Shield Tablet if we owned the original Shield (now renamed the Shield Portable)? Probably not. If we were looking for a new tablet and top notch gaming performance was on the checklist, the Shield Tablet is easily the top contender today.
+We'd take it over the second-gen Nexus 7 in a heart beat. While we understand why Nvidia decided to separate the cover and controller to keep the prices down and avoid the Kinect factor, we think a bundled package with a small price break as an alternative would have been nice. All things considered though, consider us surprised. The Shield Tablet is pretty dang cool.
+The Shield is out now for $299/£239 (around AU$320) for the 16GB, WiFi-only model, and $399/£299 (around AU$425) for the 32GB LTE variant.
