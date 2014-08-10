@@ -46,9 +46,9 @@
                 <version>2.6</version>
                 <configuration>
                     <instrumentation>
-                        <ignores>
-                            <ignore>main.*</ignore>
-                        </ignores>
+                        <excludes>
+                            <exclude>main/*.class</exclude>
+                        </excludes>
                     </instrumentation>
                 </configuration>
             </plugin>

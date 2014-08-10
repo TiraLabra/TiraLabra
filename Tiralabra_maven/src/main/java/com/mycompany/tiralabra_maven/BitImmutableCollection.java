@@ -47,7 +47,7 @@ public final class BitImmutableCollection {
     /**
      * Get the bit at certain location.
      *
-     * @param index Index of the bit. Must be 0 <= index < size().
+     * @param index Index of the bit. Must be at least 0 and under size().
      * @return The bit at the index.
      */
     public boolean at(int index) {
