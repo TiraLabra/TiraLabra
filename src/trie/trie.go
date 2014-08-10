@@ -19,7 +19,10 @@ type Node struct {
 	Value       interface{}
 }
 
+var nodeCount int
+
 const debug = false
+const stats = true
 
 // Creates a new node that isn't part of any existing trie.
 // Created node can be used as a root node.
@@ -58,6 +61,9 @@ func (n *Node) GetOrCreate(key []byte) *Node {
 		*child = NewNode()
 		(*child).parent = n
 		(*child).keyFragment = key[0]
+	}
+	if stats {
+		nodeCount++
 	}
 	if len(key) > 1 {
 		return (*child).GetOrCreate(key[1:])

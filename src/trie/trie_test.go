@@ -5,16 +5,27 @@ import (
 	"testing"
 )
 
-func TestBasics(*testing.T) {
-	t := NewNode()
-	t.Add([]byte("hajoo"), "HAJOO")
-	t.Add([]byte("aakkos"), "AAKKOS")
-	t.Add([]byte("aakkosia"), "AAKKOSIA")
-	t.Add([]byte("haju"), "HAJU")
-	t.Add([]byte("soppaako"), "SOPPAAKO")
-	fmt.Println(t.TryAndGet([]byte("hajoo")))
-	fmt.Println(t.TryAndGet([]byte("aakkos")))
-	fmt.Println(t.TryAndGet([]byte("aakkosia")))
-	fmt.Println(t.TryAndGet([]byte("haju")))
-	fmt.Println(t.TryAndGet([]byte("soppaako")))
+var flagtests = []struct {
+	in  string
+	out string
+}{
+	{"hajoo", "HAJOO"},
+	{"aakkos", "AAKKOS"},
+	{"aakkosia", "AAKKOSIA"},
+	{"haju", "HAJU"},
+	{"soppaako", "SOPPAAKO"},
+}
+
+func TestBasics(t *testing.T) {
+	trie := NewNode()
+	for _, test := range flagtests {
+		trie.Add([]byte(test.in), test.out)
+	}
+	for _, test := range flagtests {
+		output := trie.TryAndGet([]byte(test.in))
+		if output != test.out {
+			fmt.Println("Should have returned " + test.out + " but returned " + output.(string))
+			t.Fail()
+		}
+	}
 }

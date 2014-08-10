@@ -20,6 +20,13 @@ Muistinkäyttö
 
 ## DONE
 
+### 2014-08-10
+- Koodin sisäiset kommentit kuntoon
+
+### 2014-08-05-10
+- Statistiikkojen duunausta
+- Satunnaista parantelua
+
 ### 2014-08-04
 - Projektin perusrakenne 
 - Trien perustoiminnallisuus
