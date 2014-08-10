@@ -193,7 +193,7 @@ public class LinkedListPolynomialTest {
         int characteristic = 7;
         LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
 
-        assertEquals(0, polynomial.getDegree());
+        assertEquals(-1, polynomial.getDegree());
         polynomial.addTerm(3, 2);
         assertEquals(2, polynomial.getDegree());
         polynomial.addTerm(6, 1);
@@ -365,14 +365,13 @@ public class LinkedListPolynomialTest {
         polynomial.addTerm(2, 3);
 
         LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
-        polynomial.addTerm(-3, 0);
-        polynomial.addTerm(-1, 1);
-        polynomial.addTerm(-2, 3);
+        polynomial2.addTerm(-3, 0);
+        polynomial2.addTerm(-1, 1);
+        polynomial2.addTerm(-2, 3);
 
         IPolynomial result = polynomial.add(polynomial2);
 
-        assertEquals(0, result.getDegree());
-        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+        assertEquals(-1, result.getDegree());
     }
 
     @Test
@@ -384,9 +383,9 @@ public class LinkedListPolynomialTest {
         polynomial.addTerm(3, 4);
 
         LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
-        polynomial.addTerm(1, 1);
-        polynomial.addTerm(2, 3);
-        polynomial.addTerm(4, 6);
+        polynomial2.addTerm(1, 1);
+        polynomial2.addTerm(2, 3);
+        polynomial2.addTerm(4, 6);
 
         IPolynomial result = polynomial.add(polynomial2);
 
@@ -409,10 +408,10 @@ public class LinkedListPolynomialTest {
         polynomial.addTerm(5, 5);
 
         LinkedListPolynomial polynomial2 = new LinkedListPolynomial(characteristic);
-        polynomial.addTerm(1, 1);
-        polynomial.addTerm(4, 6);
-        polynomial.addTerm(2, 3);
-        polynomial.addTerm(3, 8);
+        polynomial2.addTerm(1, 1);
+        polynomial2.addTerm(4, 6);
+        polynomial2.addTerm(2, 3);
+        polynomial2.addTerm(3, 8);
 
         IPolynomial result = polynomial.add(polynomial2);
 
@@ -475,8 +474,7 @@ public class LinkedListPolynomialTest {
 
         IPolynomial result = polynomial.subtract(polynomial);
 
-        assertEquals(0, result.getDegree());
-        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+        assertEquals(-1, result.getDegree());
     }
 
     @Test
@@ -555,8 +553,7 @@ public class LinkedListPolynomialTest {
         
         IPolynomial result = polynomial.multiply(polynomial2);
         
-        assertEquals(0, result.getDegree());
-        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+        assertEquals(-1, result.getDegree());
     }
 
     @Test
@@ -717,8 +714,7 @@ public class LinkedListPolynomialTest {
         
         IPolynomial remainder = result.remainder;
         
-        assertEquals(0, remainder.getDegree());
-        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+        assertEquals(-1, remainder.getDegree());
     }
     
     @Test
@@ -746,8 +742,7 @@ public class LinkedListPolynomialTest {
         
         IPolynomial remainder = result.remainder;
         
-        assertEquals(0, remainder.getDegree());
-        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+        assertEquals(-1, remainder.getDegree());
     }
     
     @Test

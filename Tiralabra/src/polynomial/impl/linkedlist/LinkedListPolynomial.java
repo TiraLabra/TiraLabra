@@ -67,7 +67,7 @@ public class LinkedListPolynomial implements IPolynomial {
         if (highestDegreeTerm != null) {
             return highestDegreeTerm.exponent;
         }
-        return 0;
+        return -1;
     }
 
     @Override
@@ -542,7 +542,7 @@ public class LinkedListPolynomial implements IPolynomial {
     }
 
     private boolean isZeroPolynomial(LinkedListPolynomial polynomial) {
-        return (polynomial.getDegree() == 0 && polynomial.getCoefficientAtDegree(0) == 0);
+        return polynomial.getDegree() == -1;
     }
 
     /**
