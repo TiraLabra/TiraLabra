@@ -66,6 +66,7 @@ public final class Compressor {
             if (readChar == -1) {
                 break;
             }
+            //System.out.println((char) readChar);
             readChar((char) readChar);
         }
         System.out.println("\n\n<-- End of File -->\n\n");
@@ -106,9 +107,12 @@ public final class Compressor {
             writeCharacterBits(new BitImmutableCollection(), nodeQueue.peek());
             final BitSet bits = new BitSet();
             writeDataToBitSet(readText.toString(), bits);
-            final byte[] bitsToBytes = bits.toByteArray();
-            writer.writeInt(bitsToBytes.length);
-            writer.write(bitsToBytes);
+            final int bitCount = bits.length();
+            writer.writeInt(bitCount);
+            System.out.println("bits in file compression " + bitCount);
+            final byte[] bitsAsBytes = bits.toByteArray();
+            writer.write(bitsAsBytes);
+            System.out.println("bytes in file compression " + bitsAsBytes.length);
         } catch (final IOException ex) {
             System.err.println("Check write access before writing...\n" + ex.toString());
         }
@@ -140,6 +144,9 @@ public final class Compressor {
                 bits.set(j + bitsWritten, bitsCollection.at(j));
             }
             bitsWritten += collectionSize;
+            if (i == text.length() - 1) {
+                System.out.println(text.charAt(i));
+            }
         }
     }
 }

@@ -59,16 +59,24 @@ public final class HuffmanDecompressor {
 
     private String readFile(final ObjectInputStream objectReader, final DataInputStream bitReader) throws IOException, ClassNotFoundException {
         final WeightedNode tree = (WeightedNode) objectReader.readObject();
-        final int arrayLenght = bitReader.readInt();
-        final byte[] bits = new byte[arrayLenght - 1];
+        final int bitsInArray = bitReader.readInt();
+        System.out.println("bits in file decompression " + bitsInArray);
+        final int arrayLenghtInBytes = readArrayLenghts(bitsInArray);
+        System.out.println("bytes in file decompression " + arrayLenghtInBytes);
+        final byte[] bits = new byte[arrayLenghtInBytes];
         bitReader.read(bits);
         final BitSet bitsInSet = BitSet.valueOf(bits);
         return decode(bitsInSet, tree);
     }
 
+    private int readArrayLenghts(final int arrayLenghtInBits) {
+        final int arrayLenghtInBytes = arrayLenghtInBits / 8;
+        return arrayLenghtInBytes + 1;
+    }
+
     private String decode(final BitSet bits, final WeightedNode tree) {
         final StringBuilder text = new StringBuilder();
-        while (readBits < bits.size()) {
+        while (readBits < bits.length()) {
             text.append(decodeChar(bits, tree));
         }
         return text.toString();
