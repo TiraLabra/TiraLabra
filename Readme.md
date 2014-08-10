@@ -1,25 +1,28 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+# Tiralabra
 
+> Mahjong-käsiin liittyvät algoritmeja (Haskelliksi)
 
+[Määrittely](blob/master/Docs/Määrittelydokumentti.md)
 
+[Suunnittelu](blob/master/Docs/Suunnitteludokumentti.md)
 
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
+[Testaus](blob/master/Docs/Testausdokumentti.md)
 
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
+[Haddock-dokumentaatio](http://simsaladin.users.paivola.fi/TiraLabra/)
 
-* * *
+[hpc-reportti](http://simsaladin.users.paivola.fi/TiraLabra-hpc/hpc_index.html)
+(testikattavuus)
 
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
+[criterion-raportti](http://simsaladin.users.paivola.fi/TiraLabra/benchmark_results.html)
+(algojen benchamrkit)
 
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
+**Quickstart:** `ghc` ja `cabal-install` asennettuna: aja projektikansiossa `cabal
+install`.
 
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
+----
 
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
+Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi
+olla projektikansiossasi.
 
 Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
 
