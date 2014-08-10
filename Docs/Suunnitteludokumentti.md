@@ -1,11 +1,9 @@
 
 # src/ rakenne
 
-- `Mahjong.Tiles`: Tile-tietorakenne.
-- `Mahjong.Mentsu`: Mentsu- ja relevantit tietorakenteet.
-- `Mahjong.Hand`: Käsi-tietorakenne; exporttaa kaiken olennaisen `Mahjong.Hand.*`.
-   - `Mahjong.Hand.DevelopmentTree`: Kaden rakennuspuu operaatioineen.
-   - `Mahjong.Hand.Shanten`: Shantenin laskeminen.
+- `Mahjong.Hand`: "Hand"-tietorakenne ja rajapinta.
+   - `Mahjong.Hand.Mentsu`: Mentsut.
    - `Mahjong.Hand.Value`: Käden arvon laskeminen.
-- `Mahjong.Algo`: Algoritmeja käsien manipulointiin.
+   - `Mahjong.Hand.Algo`: Mentsuihin jako, shantenin laskeminen, odotuspuu.
+- `Mahjong.Tiles`: "Tile"-tietotyyppi.
 

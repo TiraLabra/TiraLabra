@@ -21,8 +21,8 @@ import Debug.Trace          as Import
 import Test.Tasty           as Import
 import Test.Tasty.QuickCheck
 
-import Mahjong.Algo
-import Mahjong.Mentsu
+import Mahjong.Hand.Algo
+import Mahjong.Hand.Mentsu
 import Mahjong.Tiles
 
 -- | xs .<-- ys succeeds when ys is contained within xs.

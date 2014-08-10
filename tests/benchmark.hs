@@ -19,7 +19,7 @@ import Control.DeepSeq
 import Test.Tasty.QuickCheck (generate, arbitrary)
 
 import Mahjong.Tiles
-import Mahjong.Algo
+import Mahjong.Hand.Algo
 
 main :: IO ()
 main = defaultMain suite

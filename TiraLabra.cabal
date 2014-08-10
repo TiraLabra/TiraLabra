@@ -19,15 +19,15 @@ description:
 
 library
   exposed-modules:     Mahjong.Hand
-                     , Mahjong.Hand.DevelopmentTree
+                     , Mahjong.Hand.Algo
+                     , Mahjong.Hand.Mentsu
                      , Mahjong.Hand.Value
-                     , Mahjong.Algo
-                     , Mahjong.Mentsu
                      , Mahjong.Tiles
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.7 && <4.8
                      , containers
+                     , utility-ht
                      -- , dual-tree
   hs-source-dirs:      src
   default-language:    Haskell2010
