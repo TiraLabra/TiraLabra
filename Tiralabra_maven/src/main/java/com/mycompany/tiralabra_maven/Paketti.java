@@ -7,7 +7,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- *
+ * Jokaisen paketin tiedot tallennetaan Paketti-olioon
  * @author ilkkaporna
  */
 public class Paketti {

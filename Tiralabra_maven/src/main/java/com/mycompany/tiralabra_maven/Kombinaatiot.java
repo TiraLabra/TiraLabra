@@ -9,7 +9,7 @@ package com.mycompany.tiralabra_maven;
 import java.util.ArrayList;
 
 /**
- *
+ * Tämä luokka on hiekkalaatikkokoodia eli ei liity toimivaan koodiin suoraan
  * @author ilkkaporna
  */
 public class Kombinaatiot {

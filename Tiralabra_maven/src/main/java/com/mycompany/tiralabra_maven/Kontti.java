@@ -7,7 +7,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- *
+ * Jokaisen Kontin tiedot tallennetaan Kontti-olioon. Laskee alustuksessa tayttoastetavoitteen kokonaislukuna (eli kuinka monta yksikköä pitää olla vähintään täytettynä) halutun täyttöasteen perusteella
  * @author ilkkaporna
  */
 public class Kontti {
