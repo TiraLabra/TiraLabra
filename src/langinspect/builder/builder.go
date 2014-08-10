@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/golddranks/TiraLabra/src/trie"
+	"math"
 	"os"
 	"path/filepath"
 	"unsafe"
@@ -13,22 +14,32 @@ import (
 
 // Compile-time settings
 const (
-	debugAll  = false
-	debugSome = true
-	stats     = true
-	maxDepth  = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
+	debugAll    = false
+	debugSome   = true
+	stats       = true
+	maxDepth    = 9 // 9-gram as a maximum has space for three 24-bit Japanese/Chinese/Korean characters.
+	freqClasses = FreqClass(30)
 )
 
 type LangTag []byte
 type LangIndex int
 type LangTable []int
+type FreqClass int
 
 const AllLangs = LangIndex(0)
+const AllGrams = int(0)
 
-var amountOfLangs = 1
-var langStat = make(LangTable, amountOfLangs)
+var amountOfLangs = 0
+var ngramStats [maxDepth][freqClasses]LangTable // [n-gram length][frequency class][language index]number of n-grams of that frequency
 var langTagToIndex *trie.Node
+var langIndexToTag [][]byte = [][]byte{nil}
 var dict *trie.Node
+var bytesRead int
+
+// Calculates 1.59-based logarithm and rounds.
+func FreqToFreqClass(x int) FreqClass {
+	return FreqClass((math.Log(float64(x)) / math.Log(1.59)) + 0.5)
+}
 
 func GetFileReaders(dir string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
@@ -81,11 +92,11 @@ func StreamBytes(dir string) chan byte {
 }
 
 func IncrementLang(table *LangTable, index LangIndex) {
-	if debugAll {
-		fmt.Println("Increment!")
-	}
 	for len(*table) < amountOfLangs+1 {
 		*table = append(*table, 0)
+		if debugAll {
+			fmt.Println("Table grew! To", len(*table))
+		}
 	}
 	(*table)[index]++
 }
@@ -93,27 +104,24 @@ func IncrementLang(table *LangTable, index LangIndex) {
 func TouchLangData(node *trie.Node, lang LangIndex) {
 	if node.Value == nil {
 		if debugAll {
-			fmt.Println("Initialising LangData object.")
+			fmt.Println("Initialising LangTable with", amountOfLangs+1, "slots in node: '", string((*node).Prefix()), "'")
 		}
-		node.Value = make(LangTable, amountOfLangs)
+		node.Value = make(LangTable, amountOfLangs+1)
 	}
 	table := node.Value.(LangTable)
 	IncrementLang(&table, AllLangs)
 	IncrementLang(&table, lang)
-	if stats {
-		IncrementLang(&langStat, AllLangs)
-		IncrementLang(&langStat, lang)
-	}
+	node.Value = table
 	if debugAll {
-		fmt.Println("Incremented", string(lang), "to", table[lang])
+		fmt.Println("Incremented node '", string((*node).Prefix()), "' language", string(langIndexToTag[lang]), "to", table[lang], ". The langtable is now:", table)
 	}
 }
 
 func PrintStats() {
 	fmt.Println("Max n-gram length:\t", maxDepth)
-	fmt.Println("N-grams read:\t\t", langStat[AllLangs])
+	//	fmt.Println("N-grams read:\t\t", ngramStats[AllGrams][0][AllLangs])
 	fmt.Println("Unique n-grams:\t\t", trie.NodeCount())
-	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(langStat[AllLangs])*100.0)
+	fmt.Println("N-grams mentioned at least once:\t\t", ngramStats[AllGrams][0][AllLangs])
 	fmt.Printf("Size:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
 	fmt.Println("Learning data:")
 
@@ -122,7 +130,7 @@ func PrintStats() {
 		langindex := LangIndex(0)
 		if node.Value != nil {
 			langindex = node.Value.(LangIndex)
-			fmt.Printf("\t%d %s %d Kb\n", langindex, langTag, langStat[langindex]/1000)
+			fmt.Printf("\t%d %s %d n-grams\n", langindex, langTag, ngramStats[AllGrams][0][langindex]/1000)
 		}
 	}
 }
@@ -135,7 +143,8 @@ func SetLang(byteStream chan byte) (bool, LangIndex) {
 		langtag := LangTag{bNext, <-byteStream}
 		node := langTagToIndex.GetOrCreate(langtag)
 		if node.Value == nil {
-			node.Value = LangIndex(amountOfLangs)
+			node.Value = LangIndex(amountOfLangs + 1)
+			langIndexToTag = append(langIndexToTag, langtag)
 			amountOfLangs++
 			if debugSome {
 				fmt.Println("New language! ", string(langtag[:]), node.Value)
@@ -156,6 +165,11 @@ func Build(dir string) {
 	langTagToIndex = trie.CreateNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
 	i := 0
 	nodes := make([]*trie.Node, 0, maxDepth) // "nodes" is the ring buffer for n-gram-holding trie nodes
+	for n := range ngramStats {
+		for f := range ngramStats[n] {
+			ngramStats[n][f] = make(LangTable, amountOfLangs+1)
+		}
+	}
 	for b := range byteStream {
 		if b == '@' {
 			changed, newLangIndex := SetLang(byteStream)
@@ -168,8 +182,9 @@ func Build(dir string) {
 		}
 
 		if debugSome && stats {
-			if langStat[0]%1000 == 0 {
-				fmt.Println(langStat[AllLangs], "\t", trie.NodeCount(), "   \t")
+			bytesRead++
+			if bytesRead%1000 == 0 {
+				fmt.Println("Nodes:", ngramStats[AllGrams][0][AllLangs])
 			}
 		}
 
@@ -179,10 +194,28 @@ func Build(dir string) {
 		nodes[i] = dict
 
 		for k := i + len(nodes); k > i; k-- {
-			parent := nodes[k%len(nodes)]
+			j := k % len(nodes)
+			parent := nodes[j]
 			child := parent.GetOrCreate([]byte{b})
 			TouchLangData(child, langindex)
-			nodes[k%len(nodes)] = child
+			if stats {
+				// STATS ABOUT ALL N-GRAMS
+				// Increment the amount of n-grams of length for all languages
+				freq := child.Value.(LangTable)[AllLangs]
+				IncrementLang(&(ngramStats[AllGrams][FreqToFreqClass(freq)]), AllLangs)
+				// Increment the amount of n-grams of length for current language
+				freq = child.Value.(LangTable)[langindex]
+				IncrementLang(&ngramStats[AllGrams][FreqToFreqClass(freq)], langindex)
+
+				// STATS ABOUT N-GRAMS OF LENGTH J
+				// Increment the amount of n-grams of length for all languages
+				freq = child.Value.(LangTable)[AllLangs]
+				IncrementLang(&ngramStats[j][FreqToFreqClass(freq)], AllLangs)
+				// Increment the amount of n-grams of length for current language
+				freq = child.Value.(LangTable)[langindex]
+				IncrementLang(&ngramStats[j][FreqToFreqClass(freq)], langindex)
+			}
+			nodes[j] = child
 		}
 		i++
 		i = i % maxDepth
