@@ -47,14 +47,14 @@ tileGroupTiles (GroupLeftover tile)   = [tile]
 -- | `tilesGroupL` simply returns all possible groupings for the tiles
 --
 -- The algorithm goes through the input list of tiles (after sorting it)
--- trying to use the first tile (head of the list) to:
+-- trying to use the first tile (head of the list) to form:
 --
---  1. form an ankan with the first tile,
---  2. an ankou,
---  3. an ankou wait,
---  4. a shuntsu,
---  5. a shuntsu wait with its successor,
---  6. a shuntsu wait the successor's successor (middle wait),
+--  1. an ankan
+--  2. an ankou
+--  3. an ankou wait
+--  4. a shuntsu
+--  5. a shuntsu wait with its successor
+--  6. a shuntsu wait the successor's successor (middle wait), or
 --  7. discard the tile as a `GroupLeftOver`.
 --
 -- Whenever any of these are possible, the result is cons'ed to every
@@ -63,10 +63,10 @@ tileGroupTiles (GroupLeftover tile)   = [tile]
 --
 -- = Performance concerns and optimizations
 --
--- One one level of recursion complete mentsu are preferred over incomplete
--- (and incomplete over leftovers) and are placed at the head of the list
--- /on that level of recursion/.  However, there is no guarentee that
--- minimal groupings couldn't reside in the result's tail.
+-- Complete mentsu are always preferred over incomplete (and incomplete
+-- over leftovers) and are placed at the head of the list /on that level of
+-- recursion/.  However, there is no guarentee that minimal groupings
+-- couldn't reside in the result's tail.
 tilesGroupL :: [Tile] -> [[TileGroup]]
 tilesGroupL = go . sort
     where
@@ -205,6 +205,7 @@ buildGreedyWaitTree' xs = unfoldForest go (devops <$> leftovers <*> waits $ head
     where
         xs' = filter ((== shanten xs) . shanten) xs
 
+        -- | Ugh how ugly sig.. how to read it: (current op, free to discard, necessary waits)
         go :: Maybe (DevOp, [Tile], [[Tile]]) -> (Either DevOp Value, [Maybe (DevOp, [Tile], [[Tile]])])
         go Nothing             = (Right 0, []) -- value
         go (Just (op, lo, wa)) = (Left op, devops lo wa)
