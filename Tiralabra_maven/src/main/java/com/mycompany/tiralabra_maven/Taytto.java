@@ -118,7 +118,11 @@ public class Taytto {
             
         }
     }
+    public void tulostaJono(int i) {
+        System.out.println(jonot[i].toString());
+    }
 
+    
     /**
      *
      */
@@ -127,6 +131,13 @@ public class Taytto {
         for (int i=0; i<jonot.length; i++) {
             System.out.println("Summa: " + summat[i] + ", paketit: " + jonot[i].toString());            
         }
+    }
+    public String annaSummatJaJonotMerkkijonona() {
+        String vastaus="";
+        for (int i=0; i<jonot.length; i++) {
+            vastaus = vastaus + "Summa: " + this.summat[i] + ", paketit: " + this.jonot[i].toString() + "\n";            
+        }
+        return vastaus;
     }
 
 }

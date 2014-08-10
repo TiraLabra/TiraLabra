@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args )
     {
         //anna pakettien koot ja kontin tiedot
-        int[] koot = {17,19,21,23,25,27,29,31,33,35,17};
+        int[] koot = {17,19,21,23,25};
         int KONTINVETOISUUS = 99;
         double KONTINTAYTTOASTETAVOITE = 0.95;
 
@@ -28,9 +28,11 @@ public class App
         taytto.etsiSummatKombinaatioistaRek(new ArrayList(), 0, 0);
 
         //Tulostaa kombinaatiot ja niiden summat
-//        taytto.muodostaKombinaatioRek(jono, 0);
-        taytto.tulostaSummatJaJonot();
+        //taytto.muodostaKombinaatioRek(jono, 0);
 
+        //taytto.tulostaSummatJaJonot();
+
+        System.out.println(taytto.annaSummatJaJonotMerkkijonona());
         
         
     }
