@@ -15,7 +15,10 @@ import org.junit.Test;
  */
 public class RandomNoDuplicatesTest {
 
+    int[] rnd;
+
     public RandomNoDuplicatesTest() {
+        rnd = new RandomNoDuplicates(1000).get();
     }
 
     /**
@@ -23,7 +26,7 @@ public class RandomNoDuplicatesTest {
      */
     @Test
     public void testNoDuplicates() {
-        int[] rnd = new RandomNoDuplicates(100).get();
+
         Set<Integer> lump = new HashSet<Integer>();
         for (int i = 0; i < rnd.length; i++) {
             assertFalse(lump.contains(rnd[i]));
@@ -37,7 +40,7 @@ public class RandomNoDuplicatesTest {
      */
     @Test
     public void testContainsAll() {
-        int[] rnd = new RandomNoDuplicates(1000).get();
+
         Set<Integer> lump = new HashSet<Integer>();
         for (int i = 0; i < rnd.length; i++) {
             lump.add(rnd[i]);
@@ -53,7 +56,6 @@ public class RandomNoDuplicatesTest {
      */
     @Test
     public void testSize() {
-        int[] rnd = new RandomNoDuplicates(100).get();
-        assertTrue(rnd.length == 100);
+        assertTrue(rnd.length == 1000);
     }
 }
