@@ -55,8 +55,8 @@ public final class HuffmanDecompressor {
      *
      * @return Is the name for the decompressed file valid?
      */
-    public boolean validDecompressionName() {
-        return !decompressed.exists();
+    public boolean fileExists() {
+        return decompressed.exists();
     }
 
     /**

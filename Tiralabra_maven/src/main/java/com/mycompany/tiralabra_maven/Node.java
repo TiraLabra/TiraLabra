@@ -1,10 +1,12 @@
 package com.mycompany.tiralabra_maven;
 
+import java.io.Serializable;
+
 /**
  * Trees branches and leaves. Has character symbol, its weight, and left and
  * right nodes.
  */
-public final class Node extends AbstractNode {
+public final class Node implements Serializable, Comparable<Node> {
 
     private final char symbol;
     private final int weight;
@@ -58,39 +60,19 @@ public final class Node extends AbstractNode {
     }
 
     /**
-     * Get the height of the node.
-     *
-     * @return The height of the node.
-     */
-    public int getHeight() {
-        return recursiveGetHeight(getLeft()) + 1;
-    }
-
-    private int recursiveGetHeight(final Node node) {
-        if (!isLeaf()) {
-            return recursiveGetHeight(getLeft()) + 1;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
      * Get the weight of the node.
      *
      * @return The weight of the node.
      */
-    @Override
     public int getWeight() {
         if (isLeaf()) {
             return weight;
         }
-        int w = 0;
-        if (left != null) {
-            w += left.getWeight();
-        }
-        if (right != null) {
-            w += right.getWeight();
-        }
-        return w;
+        return left.getWeight() + right.getWeight();
+    }
+
+    @Override
+    public int compareTo(final Node that) {
+        return this.getWeight() - that.getWeight();
     }
 }

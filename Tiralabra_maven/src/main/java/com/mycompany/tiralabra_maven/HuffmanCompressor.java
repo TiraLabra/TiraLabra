@@ -143,9 +143,7 @@ public final class HuffmanCompressor {
             final Node left = nodeQueue.poll();
             final Node right = nodeQueue.poll();
             final Node parent = new Node('c', 0, left, right);
-
-            left.setParent(parent);
-            right.setParent(parent);
+            
             nodeQueue.add(parent);
         }
     }
