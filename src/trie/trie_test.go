@@ -6,7 +6,7 @@ import (
 )
 
 func TestBasics(*testing.T) {
-	t := CreateNode()
+	t := NewNode()
 	t.Add([]byte("hajoo"), "HAJOO")
 	t.Add([]byte("aakkos"), "AAKKOS")
 	t.Add([]byte("aakkosia"), "AAKKOSIA")
