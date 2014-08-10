@@ -20,6 +20,7 @@ public class Main {
         Pakkaaja packer = new Pakkaaja();
         String paketti = packer.pack(lause);
         
+         System.out.println(paketti);
      }
     
 }

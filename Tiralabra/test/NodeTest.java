@@ -89,7 +89,7 @@ public class NodeTest {
     public void doesCompareToWorkWhenSame() {
         Node node2 = new Node('b', 5);
         
-        assertEquals(1, node.compareTo(node2));
+        assertEquals(0, node.compareTo(node2));
     }
     
 }

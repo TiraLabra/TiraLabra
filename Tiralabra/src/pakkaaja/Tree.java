@@ -66,10 +66,23 @@ public class Tree {
      * @return x
      */
     public String treeWalk(char c, Node root, String x) {
-        if (root != null || root.getChar() != c) {
-            treeWalk(c, root.getLeft(), x + "0");
-            treeWalk(c, root.getRight(), x + "1");   
-        } 
+        if (root == null) {
+            return x;
+        }
+        if (root.getChar() == c) {
+            return x;
+        }
+        if (root.getLeft() != null) {
+            x = treeWalk(c, root.getLeft(), x + "0");
+        }
+        if (root.getRight() != null) {
+            x = treeWalk(c, root.getRight(), x + "1");
+        }
+       
+//        if (root != null || root.getChar() != c) {
+//            treeWalk(c, root.getLeft(), x + "0");
+//            treeWalk(c, root.getRight(), x + "1");   
+//        } 
         return x;
     }
     
