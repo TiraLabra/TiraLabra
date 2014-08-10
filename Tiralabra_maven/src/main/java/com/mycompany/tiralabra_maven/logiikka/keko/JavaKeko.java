@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven.logiikka.keko;
+package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import java.util.PriorityQueue;
 

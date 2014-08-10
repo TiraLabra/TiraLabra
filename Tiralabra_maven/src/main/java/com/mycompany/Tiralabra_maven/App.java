@@ -1,8 +1,8 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.Tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.logiikka.Piste;
-import com.mycompany.tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
-import com.mycompany.tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
+import com.mycompany.Tiralabra_maven.logiikka.Piste;
+import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
+import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

@@ -1,9 +1,9 @@
-package com.mycompany.tiralabra_maven.logiikka.dijkstra;
+package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
 
-import com.mycompany.tiralabra_maven.logiikka.Paikka;
-import com.mycompany.tiralabra_maven.logiikka.Piste;
-import com.mycompany.tiralabra_maven.logiikka.keko.JavaKeko;
-//import com.mycompany.tiralabra_maven.logiikka.keko.MinimiKeko;
+import com.mycompany.Tiralabra_maven.logiikka.Paikka;
+import com.mycompany.Tiralabra_maven.logiikka.Piste;
+import com.mycompany.Tiralabra_maven.logiikka.keko.JavaKeko;
+//import com.mycompany.Tiralabra_maven.logiikka.keko.MinimiKeko;
 //import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -32,9 +32,9 @@ public class DijkstraWithHeap {
     public int ratkaise() {
         // Dijkstra with min-heap
 
-        initialiseSingleSource();
+        this.initialiseSingleSource();
 
-        this.paikat[lahtoPiste.x][lahtoPiste.y].etaisyysAlkuun = 0;
+        this.paikat[this.lahtoPiste.x][this.lahtoPiste.y].etaisyysAlkuun = 0;
 
         JavaKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
 
@@ -65,7 +65,7 @@ public class DijkstraWithHeap {
         System.out.println("");
 
 
-        return this.paikat[maaliPiste.x][maaliPiste.y].etaisyysAlkuun;
+        return this.paikat[this.maaliPiste.x][this.maaliPiste.y].etaisyysAlkuun;
     }
 
     private void initialiseSingleSource() {
@@ -118,7 +118,7 @@ public class DijkstraWithHeap {
 
         Stack<Paikka> pino = new Stack<Paikka>();
 
-        Paikka paikkaU = this.paikat[maaliPiste.x][maaliPiste.y].polku;
+        Paikka paikkaU = this.paikat[this.maaliPiste.x][this.maaliPiste.y].polku;
 
         while (!paikkaU.equals(this.paikat[this.lahtoPiste.x][this.lahtoPiste.y])) {
             pino.push(paikkaU);

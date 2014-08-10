@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven;
+package com.mycompany.Tiralabra_maven;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

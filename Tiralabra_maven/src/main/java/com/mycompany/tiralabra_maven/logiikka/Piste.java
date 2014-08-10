@@ -1,4 +1,4 @@
-package com.mycompany.tiralabra_maven.logiikka;
+package com.mycompany.Tiralabra_maven.logiikka;
 
 /**
  *
