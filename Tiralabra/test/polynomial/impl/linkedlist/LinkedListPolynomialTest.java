@@ -682,6 +682,131 @@ public class LinkedListPolynomialTest {
         
         DivisionResult result = polynomial.divide(null);
     }
+    
+    @Test(expected = IllegalArgumentException.class) 
+    public void testDivideZeroPolynomial() {
+        int characteristic = 5;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 1);
+        
+        LinkedListPolynomial divisor = new LinkedListPolynomial(characteristic);
+        
+        DivisionResult result = polynomial.divide(divisor);
+    }
+    
+    @Test
+    public void testDivideSquare() {
+        int characteristic = 5;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 2);
+        polynomial.addTerm(2, 1);
+        polynomial.addTerm(1, 0);
+        
+        LinkedListPolynomial divisor = new LinkedListPolynomial(characteristic);
+        divisor.addTerm(1, 1);
+        divisor.addTerm(1, 0);        
+        
+        DivisionResult result = polynomial.divide(divisor);
+        
+        IPolynomial quotient = result.quotient;
+                
+        assertEquals(1, quotient.getDegree());
+        assertEquals(2, quotient.getNumberOfNonZeroCoefficients());        
+        assertEquals(1, quotient.getCoefficientAtDegree(0));        
+        assertEquals(1, quotient.getCoefficientAtDegree(1));
+        
+        IPolynomial remainder = result.remainder;
+        
+        assertEquals(0, remainder.getDegree());
+        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+    }
+    
+    @Test
+    public void testDivideCube() {
+        int characteristic = 5;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 3);
+        polynomial.addTerm(1, 2);
+        polynomial.addTerm(2, 1);
+        polynomial.addTerm(-2, 0);
+        
+        LinkedListPolynomial divisor = new LinkedListPolynomial(characteristic);
+        divisor.addTerm(1, 2);
+        divisor.addTerm(-1, 1);        
+        divisor.addTerm(-1, 0);
+        
+        DivisionResult result = polynomial.divide(divisor);
+        
+        IPolynomial quotient = result.quotient;
+                
+        assertEquals(1, quotient.getDegree());
+        assertEquals(2, quotient.getNumberOfNonZeroCoefficients());        
+        assertTrue((2 - quotient.getCoefficientAtDegree(0)) % characteristic == 0);        
+        assertTrue((1 - quotient.getCoefficientAtDegree(1)) % characteristic == 0);
+        
+        IPolynomial remainder = result.remainder;
+        
+        assertEquals(0, remainder.getDegree());
+        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+    }
+    
+    @Test
+    public void testDivide() {
+        int characteristic = 7;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 3);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(1, 0);
+        
+        LinkedListPolynomial divisor = new LinkedListPolynomial(characteristic);
+        divisor.addTerm(2, 1);        
+        divisor.addTerm(2, 0);
+        
+        DivisionResult result = polynomial.divide(divisor);
+        
+        IPolynomial quotient = result.quotient;
+                
+        assertEquals(2, quotient.getDegree());
+        assertEquals(3, quotient.getNumberOfNonZeroCoefficients());        
+        assertTrue((4 - quotient.getCoefficientAtDegree(2)) % characteristic == 0);        
+        assertTrue((3 - quotient.getCoefficientAtDegree(1)) % characteristic == 0);
+        assertTrue((1 - quotient.getCoefficientAtDegree(0)) % characteristic == 0);        
+        
+        IPolynomial remainder = result.remainder;
+        
+        assertEquals(0, remainder.getDegree());
+        assertEquals(1, remainder.getNumberOfNonZeroCoefficients()); 
+        assertTrue((-1 - remainder.getCoefficientAtDegree(0)) % characteristic == 0); 
+    }
+    
+    @Test
+    public void testDivide2() {
+        int characteristic = 2;
+        LinkedListPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 5);
+        polynomial.addTerm(1, 3);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(1, 0);
+        
+        LinkedListPolynomial divisor = new LinkedListPolynomial(characteristic);
+        divisor.addTerm(1, 2);        
+        divisor.addTerm(1, 0);
+        
+        DivisionResult result = polynomial.divide(divisor);
+        
+        IPolynomial quotient = result.quotient;
+                
+        assertEquals(3, quotient.getDegree());
+        assertEquals(1, quotient.getNumberOfNonZeroCoefficients());        
+        assertEquals(1, quotient.getCoefficientAtDegree(3));        
+        
+        IPolynomial remainder = result.remainder;
+        
+        assertEquals(1, remainder.getDegree());
+        assertEquals(2, remainder.getNumberOfNonZeroCoefficients()); 
+        assertEquals(1, remainder.getCoefficientAtDegree(0)); 
+        assertEquals(1, remainder.getCoefficientAtDegree(1)); 
+    }
 
     @Test
     public void testToStringEmptyPolynomial() {

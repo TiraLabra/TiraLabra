@@ -30,7 +30,7 @@ public class LinkedListPolynomial implements IPolynomial {
             this.coefficient = coefficient;
             this.exponent = exponent;
         }
-        
+
         @Override
         public String toString() {
             StringBuilder stringRepr = new StringBuilder();
@@ -302,12 +302,12 @@ public class LinkedListPolynomial implements IPolynomial {
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
         LinkedListPolynomial toAdd = (LinkedListPolynomial) polynomial;
-        
+
         Monomial currentOfThis = highestDegreeTerm;
         Monomial currentOfOther = toAdd.getHighestDegreeTerm();
-        
+
         LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
-        
+
         Monomial prevAdded;
         Monomial currentToAdd = null;
         boolean currentMonomialIsEmpty;
@@ -319,7 +319,7 @@ public class LinkedListPolynomial implements IPolynomial {
                     currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
                     currentOfThis = currentOfThis.lowerMonomial;
                 } else if (currentOfThis.exponent < currentOfOther.exponent) {
-                    currentToAdd = new Monomial(currentOfOther.coefficient, currentOfOther.exponent);                    
+                    currentToAdd = new Monomial(currentOfOther.coefficient, currentOfOther.exponent);
                     currentOfOther = currentOfOther.lowerMonomial;
                 } else {
                     int newCoefficient = getValueModuloCharacteristic(currentOfThis.coefficient + currentOfOther.coefficient);
@@ -338,7 +338,7 @@ public class LinkedListPolynomial implements IPolynomial {
                 currentToAdd = new Monomial(currentOfOther.coefficient, currentOfOther.exponent);
                 currentOfOther = currentOfOther.lowerMonomial;
             }
-            
+
             if (!currentMonomialIsEmpty) {
                 currentToAdd.higherMonomial = prevAdded;
                 if (prevAdded != null) {
@@ -348,25 +348,25 @@ public class LinkedListPolynomial implements IPolynomial {
                 }
             }
         }
-        
+
         result.lowestDegreeTerm = currentToAdd;
-        
+
         return result;
     }
 
     @Override
     public IPolynomial subtract(IPolynomial polynomial) {
         checkNull(polynomial);
-        checkCharacteristic(polynomial.getCharacteristic());  
+        checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        
+
         LinkedListPolynomial toSubtract = (LinkedListPolynomial) polynomial;
-        
+
         Monomial currentOfThis = highestDegreeTerm;
         Monomial currentOfOther = toSubtract.getHighestDegreeTerm();
-        
+
         LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
-        
+
         Monomial prevAdded;
         Monomial currentToAdd = null;
         boolean currentMonomialIsEmpty;
@@ -378,7 +378,7 @@ public class LinkedListPolynomial implements IPolynomial {
                     currentToAdd = new Monomial(currentOfThis.coefficient, currentOfThis.exponent);
                     currentOfThis = currentOfThis.lowerMonomial;
                 } else if (currentOfThis.exponent < currentOfOther.exponent) {
-                    currentToAdd = new Monomial(-currentOfOther.coefficient, currentOfOther.exponent);                    
+                    currentToAdd = new Monomial(-currentOfOther.coefficient, currentOfOther.exponent);
                     currentOfOther = currentOfOther.lowerMonomial;
                 } else {
                     int newCoefficient = getValueModuloCharacteristic(currentOfThis.coefficient - currentOfOther.coefficient);
@@ -397,7 +397,7 @@ public class LinkedListPolynomial implements IPolynomial {
                 currentToAdd = new Monomial(-currentOfOther.coefficient, currentOfOther.exponent);
                 currentOfOther = currentOfOther.lowerMonomial;
             }
-            
+
             if (!currentMonomialIsEmpty) {
                 currentToAdd.higherMonomial = prevAdded;
                 if (prevAdded != null) {
@@ -407,25 +407,25 @@ public class LinkedListPolynomial implements IPolynomial {
                 }
             }
         }
-        
+
         result.lowestDegreeTerm = currentToAdd;
-        
-        return result;        
+
+        return result;
     }
 
     @Override
     public IPolynomial multiply(IPolynomial polynomial) {
         checkNull(polynomial);
-        checkCharacteristic(polynomial.getCharacteristic());      
+        checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        
+
         LinkedListPolynomial other = (LinkedListPolynomial) polynomial;
-        
+
         Monomial currentOfThis = highestDegreeTerm;
-        Monomial currentStartOfOther = other.getHighestDegreeTerm();        
-        
+        Monomial currentStartOfOther = other.getHighestDegreeTerm();
+
         LinkedListPolynomial result = new LinkedListPolynomial(characteristic);
-        
+
         while (currentOfThis != null) {
             Monomial currentOfOther = currentStartOfOther;
             while (currentOfOther != null) {
@@ -436,7 +436,7 @@ public class LinkedListPolynomial implements IPolynomial {
             }
             currentOfThis = currentOfThis.lowerMonomial;
         }
-     
+
         return result;
     }
 
@@ -445,7 +445,28 @@ public class LinkedListPolynomial implements IPolynomial {
         checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        LinkedListPolynomial divisor = (LinkedListPolynomial) polynomial;
+
+        if (isZeroPolynomial(divisor)) {
+            throw new IllegalArgumentException("Divisor is the zero polynomial.");
+        }
+
+        // In the beginning, the remainder is the same as this polynomial and the
+        // quotient is zero.
+        LinkedListPolynomial quotient = new LinkedListPolynomial(characteristic);
+        LinkedListPolynomial remainder = createCopyOfPolynomial(this);
+
+        while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
+            LinkedListPolynomial leadingTermDivision = divideLeadingTerms(remainder, divisor);
+            quotient.addTerm(leadingTermDivision.highestDegreeTerm.coefficient, leadingTermDivision.highestDegreeTerm.exponent);
+            
+            LinkedListPolynomial removeFromRemainder = (LinkedListPolynomial) leadingTermDivision.multiply(divisor);
+            
+            remainder = (LinkedListPolynomial) remainder.subtract(removeFromRemainder);
+        }
+
+        return new DivisionResult(quotient, remainder);
     }
 
     @Override
@@ -486,32 +507,90 @@ public class LinkedListPolynomial implements IPolynomial {
         }
         return value % characteristic;
     }
-    
+
     private void checkNull(IPolynomial polynomial) {
         if (polynomial == null) {
             throw new IllegalArgumentException("The polynomial given is null!");
         }
     }
-    
+
     private void checkCharacteristic(int characteristic) {
         if (this.characteristic != characteristic) {
-            throw new IllegalArgumentException("The characteristic " + this.characteristic 
-                    + " of this polynomial is different than the characteristic " + characteristic 
+            throw new IllegalArgumentException("The characteristic " + this.characteristic
+                    + " of this polynomial is different than the characteristic " + characteristic
                     + " of the other polynomial.");
         }
     }
-    
+
     private void checkImplementation(IPolynomial polynomial) throws UnsupportedOperationException {
         if (polynomial.getClass() != LinkedListPolynomial.class) {
             throw new UnsupportedOperationException("Calculations with implementations of "
                     + "type " + polynomial.getClass().getName() + " not yet supported.");
         }
-    }    
-    
+    }
+
+    private LinkedListPolynomial createCopyOfPolynomial(LinkedListPolynomial polynomial) {
+        Monomial currentToCopy = polynomial.highestDegreeTerm;
+        LinkedListPolynomial copy = new LinkedListPolynomial(polynomial.characteristic);
+
+        while (currentToCopy != null) {
+            copy.addTerm(currentToCopy.coefficient, currentToCopy.exponent);
+            currentToCopy = currentToCopy.lowerMonomial;
+        }
+
+        return copy;
+    }
+
+    private boolean isZeroPolynomial(LinkedListPolynomial polynomial) {
+        return (polynomial.getDegree() == 0 && polynomial.getCoefficientAtDegree(0) == 0);
+    }
+
+    /**
+     * Divides the leading term of the polynomial remainder with the leading
+     * term of the polynomial divisor.
+     *
+     * @param remainder
+     * @param divisor
+     * @throws IllegalArgumentException if the coefficient would be an
+     * non-integer and it can't be represented as an integer modulo the
+     * characteristic.
+     * @return LinkedListPolynomial that is the result of the division. It will contain
+     * only one monomial.
+     */
+    private LinkedListPolynomial divideLeadingTerms(LinkedListPolynomial remainder, LinkedListPolynomial divisor) {
+        Monomial leadingTermRemainder = remainder.highestDegreeTerm;
+        Monomial leadingTermDivisor = divisor.highestDegreeTerm;
+
+        int coefficientRemainder = leadingTermRemainder.coefficient;
+        int coefficientDivisor = leadingTermDivisor.coefficient;
+
+        int coefficientOfResult;
+
+        if (coefficientRemainder % coefficientDivisor == 0) {
+            coefficientOfResult = coefficientRemainder / coefficientDivisor;
+        } else if (remainder.characteristic == 0) {
+            throw new UnsupportedOperationException("Cannot represent non-integer coefficients in characteristic 0");
+        } else {
+            int inverseOfDivisorCoefficient = MathUtil.getInverseModP(coefficientDivisor, remainder.characteristic);
+            if (inverseOfDivisorCoefficient == -1) {
+                throw new UnsupportedOperationException("Cannot represent 1/" + coefficientDivisor + " as an integer modulo " + characteristic);
+            }
+            coefficientOfResult = (inverseOfDivisorCoefficient * coefficientRemainder) % remainder.characteristic;
+        }
+        
+        int exponentOfResult = leadingTermRemainder.exponent - leadingTermDivisor.exponent;
+        
+        LinkedListPolynomial result = new LinkedListPolynomial(remainder.characteristic);
+        
+        result.addTerm(coefficientOfResult, exponentOfResult);
+        
+        return result;
+    }
+
     Monomial getHighestDegreeTerm() {
         return highestDegreeTerm;
     }
-    
+
     Monomial getLowestDegreeTerm() {
         return lowestDegreeTerm;
     }

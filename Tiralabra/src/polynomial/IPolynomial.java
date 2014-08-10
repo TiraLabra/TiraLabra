@@ -139,7 +139,7 @@ public interface IPolynomial {
      * @param polynomial The divisor.
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
-     * @throws IllegalArgumentException if the polynomial given is null
+     * @throws IllegalArgumentException if the polynomial given is null or zero.
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial. 
      * @throws UnsupportedOperationException if the characteristic of the polynomials
