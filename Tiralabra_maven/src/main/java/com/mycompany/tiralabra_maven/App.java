@@ -2,13 +2,26 @@ package com.mycompany.tiralabra_maven;
 
 final class App {
 
+    /**
+     * Käyttö:
+     * 1. Luo testi tekstitiedosto asettamaan polkuun.
+     * 2. Aja ohjelma.
+     * 3. Uusi tiedosto, jonka nimi on sama kuin alkueperäinen + ".pkx", ilmestyy kansioon.
+     * 4. Uudelleen nimeä alkuperäinen tiedosto joksikin muuksi.
+     * 5. Kommentoi compress metodi pois, poista kommentit deCompress metodista
+     * 6. Aja ohjelma
+     * 7. Teksti tiedosto on palautunut kansioon alkuperäisessä muodossa.
+     * 
+     * Huom: kannattaa testata tekstitiedostoa, joka on riittävän suuri. Kehityksessä on käytetty
+     * 90 kt kokoista, jolloin pakattu version on noin 50 kt
+     */
     public static void main(String[] args) {
-        //compress("C:\\Users\\Timo\\Desktop\\test.txt");
-        deCompress("C:\\Users\\Timo\\Desktop\\test.txt.pkx");
+        //compress("C:\\test.txt");
+        deCompress("C:\\test.txt.pkx");
     }
 
     private static void compress(final String path) {
-        final Compressor c = new Compressor(path);
+        final HuffmanCompressor c = new HuffmanCompressor(path);
         if (!c.canBeRead()) {
             System.err.println("Can't access file...");
         } else if (c.fileExists()) {
