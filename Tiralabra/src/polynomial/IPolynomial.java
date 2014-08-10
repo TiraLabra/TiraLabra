@@ -133,12 +133,19 @@ public interface IPolynomial {
     /**
      * Divides this polynomial with the given polynomial.
      * 
+     * The division is not supported for characteristic 0 if the result would
+     * contain non-integer coefficients. 
+     * 
      * @param polynomial The divisor.
      * @throws IllegalArgumentException if the characteristic of the polynomial given
      * differs from the characteristic of this polynomial.
      * @throws IllegalArgumentException if the polynomial given is null
      * @throws UnsupportedOperationException if the implementation of the other
      * polynomial is not supported by this polynomial. 
+     * @throws UnsupportedOperationException if the characteristic of the polynomials
+     * are zero and the result would contain non-integer coefficients.
+     * @throws UnsupportedOperationException if the characteristic of the polynomials
+     * is non-prime and the result would contain coefficients which aren't in the ring.
      * @return The DivisionResult-tuple that contains the quotient and the remainder.
      */
     DivisionResult divide(IPolynomial polynomial);
