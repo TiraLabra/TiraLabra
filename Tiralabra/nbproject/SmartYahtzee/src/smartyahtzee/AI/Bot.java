@@ -24,6 +24,14 @@ public class Bot extends Player {
         dice.throwDice();
         System.out.println(dice);
         TreeBuilder decisions = new TreeBuilder(dice.asArray());
+        int[] lock = decisions.getDiceToLock();
+        if (lock.length == 0)
+        {
+            return;
+        }
+        dice.lockMany(lock);
+        dice.throwDice();
+        
         
     }
     

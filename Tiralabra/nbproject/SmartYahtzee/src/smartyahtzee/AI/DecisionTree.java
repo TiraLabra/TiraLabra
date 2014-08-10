@@ -18,4 +18,9 @@ public class DecisionTree {
     {
         
     }
+    
+    public double getEV()
+    {
+        return 0.0;
+    }
 }

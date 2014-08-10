@@ -69,6 +69,15 @@ public class DiceSet {
      * @param index monesko noppa
      */
     
+    public void lockMany(int[] toLock)
+    {
+        unlockAll();
+        for (int d : toLock)
+        {
+            toggleLock(d);
+        }
+    }
+    
     public void toggleLock(int index)
     {
         dice.get(index).lock();
