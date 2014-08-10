@@ -28,6 +28,7 @@ const AllLangs = LangIndex(0)
 var amountOfLangs = 1
 var langStat = make(LangTable, amountOfLangs)
 var langTagToIndex *trie.Node
+var dict *trie.Node
 
 func GetFileReaders(dir string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
@@ -106,7 +107,7 @@ func TouchLangData(node *trie.Node, lang LangIndex) {
 	if debugAll {
 		fmt.Println("Incremented", string(lang), "to", table[lang])
 	}
-}1
+}
 
 func PrintStats() {
 	fmt.Println("Max n-gram length:\t", maxDepth)
@@ -115,8 +116,14 @@ func PrintStats() {
 	fmt.Printf("Non-unique ratio:\t %.2f%%\n", 100.0-float32(trie.NodeCount())/float32(langStat[AllLangs])*100.0)
 	fmt.Printf("Size:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
 	fmt.Println("Learning data:")
-	for lang, bytes := range langStat {
-		fmt.Printf("\t%s %d Kb\n", lang, bytes/1000)
+
+	for node := range langTagToIndex.Walk() {
+		langTag := node.Prefix()
+		langindex := LangIndex(0)
+		if node.Value != nil {
+			langindex = node.Value.(LangIndex)
+			fmt.Printf("\t%d %s %d Kb\n", langindex, langTag, langStat[langindex]/1000)
+		}
 	}
 }
 
@@ -144,11 +151,11 @@ func SetLang(byteStream chan byte) (bool, LangIndex) {
 
 func Build(dir string) {
 	byteStream := StreamBytes(dir)
-	dict := trie.CreateNode()
+	dict = trie.CreateNode() // "dict" is the trie containing all the n-grams
 	langindex := LangIndex(1)
-	langTagToIndex = trie.CreateNode()
+	langTagToIndex = trie.CreateNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
 	i := 0
-	nodes := make([]*trie.Node, 0, maxDepth)
+	nodes := make([]*trie.Node, 0, maxDepth) // "nodes" is the ring buffer for n-gram-holding trie nodes
 	for b := range byteStream {
 		if b == '@' {
 			changed, newLangIndex := SetLang(byteStream)
@@ -166,7 +173,7 @@ func Build(dir string) {
 			}
 		}
 
-		if len(nodes) < maxDepth {
+		if len(nodes) < maxDepth { // if ringbuffer isn't full yet, append to it
 			nodes = append(nodes, nil)
 		}
 		nodes[i] = dict

@@ -85,21 +85,20 @@ func (n *Node) Prefix() []byte {
 	return n.prefix(0)
 }
 
-func (n *Node) walk(valueChan chan interface{}) {
-	if n.Value != nil {
-		valueChan <- n.Value
-	}
+func (n *Node) walk(nodeChan chan *Node) {
+	nodeChan <- n
 	for _, child := range n.Children {
 		if child != nil {
-			child.walk(valueChan)
+			child.walk(nodeChan)
 		}
 	}
 }
 
-func (n *Node) Walk() chan interface{} {
-	valueChan := make(chan interface{})
+func (n *Node) Walk() chan *Node {
+	nodeChan := make(chan *Node)
 	go func() {
-		n.walk(valueChan)
+		n.walk(nodeChan)
+		close(nodeChan)
 	}()
-	return valueChan
+	return nodeChan
 }
