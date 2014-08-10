@@ -8,16 +8,16 @@ package TestSuite.Algos;
  *
  * @author Marko <markoma@iki.fi>
  */
-public class Quicksort extends Algo{
+public class Quicksort extends Algo {
 
     private static int[] numbers;
     private static int number;
-    
+
     /**
      * Recursive method for Quick sort checks if array is null or lenght 0
+     *
      * @param arr array to sort with Quick sort
      */
-    
     @Override
     public void sort(int[] arr) {
 
@@ -28,8 +28,10 @@ public class Quicksort extends Algo{
         number = arr.length;
         sort(0, number - 1);
     }
+
     /**
      * Quick sort algorithm with low/high divide
+     *
      * @param low low
      * @param high high
      */
@@ -52,7 +54,7 @@ public class Quicksort extends Algo{
                 j--;
             }
         }
-        
+
         // Recursive 
         if (low < j) {
             sort(low, j);
@@ -61,8 +63,10 @@ public class Quicksort extends Algo{
             sort(i, high);
         }
     }
+
     /**
      * Swaps given columns
+     *
      * @param i column to swap
      * @param j column to swap
      */
@@ -71,8 +75,9 @@ public class Quicksort extends Algo{
         numbers[i] = numbers[j];
         numbers[j] = temp;
     }
+
     /**
-     * 
+     *
      * @return name of algorithm
      */
     @Override

@@ -50,7 +50,7 @@ public class Runner {
      *
      * @param array Abstract array to sort
      * @param algo Abstract sorting algorithm
-     * @return result in nanoseconds
+     * @return (long) result in nanoseconds
      */
     private static long timing(Arr array, Algo algo) {
 

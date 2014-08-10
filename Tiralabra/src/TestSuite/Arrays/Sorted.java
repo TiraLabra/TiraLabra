@@ -34,7 +34,6 @@ public class Sorted extends Arr {
         for (int i = 0; i < size; i++) {
             arr[i] = i;
         }
-
         return arr;
     }
 

@@ -7,7 +7,7 @@ package TestSuite.Arrays;
 import java.util.Random;
 
 /**
- * produces array woth random numbers from 0..n with no duplicates or missing
+ * produces array with random numbers from 0..n with no duplicates or missing
  * numbers.
  *
  * @author Marko <markoma@iki.fi>
@@ -29,7 +29,7 @@ public class RandomNoDuplicates extends Arr {
 
     /**
      * reproduces a new array with given size. fills wih numbers 0..n, then
-     * inits thrue array and randomizes order.
+     * inits thru array and randomizes order.
      *
      * @return randomized array
      */

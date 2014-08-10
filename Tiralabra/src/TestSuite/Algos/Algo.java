@@ -5,7 +5,7 @@
 package TestSuite.Algos;
 
 /**
- * Includes abstract method that are required from all extending classes
+ * Includes abstract method that are required from extending classes
  *
  * @author Marko <markoma@iki.fi>
  */

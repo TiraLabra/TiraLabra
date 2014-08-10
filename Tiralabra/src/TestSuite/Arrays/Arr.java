@@ -5,7 +5,7 @@
 package TestSuite.Arrays;
 
 /**
- * Abstract class for arrays
+ * Abstract class for differrent arrays
  *
  * @author Marko <markoma@iki.fi>
  */

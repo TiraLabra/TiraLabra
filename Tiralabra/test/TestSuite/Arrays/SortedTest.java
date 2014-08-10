@@ -22,7 +22,7 @@ public class SortedTest {
     }
 
     /**
-     * Test of get method for duplicates, of class Reversed.
+     * Test of get method for duplicates, of class Sorted.
      */
     @Test
     public void testDuplicates() {
@@ -34,7 +34,7 @@ public class SortedTest {
     }
 
     /**
-     * Test of get method for array size, of class Reversed.
+     * Test of get method for array size, of class Sorted.
      */
     @Test
     public void testSize() {
