@@ -1,5 +1,5 @@
 
-package com.mycompany.tiralabra_maven;
+package lista;
 import jama.*;
 
 public class Solmu {
