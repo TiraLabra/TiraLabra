@@ -12,4 +12,10 @@ package smartyahtzee.AI;
  */
 public class DecisionTree {
     
+    
+    
+    public DecisionTree(int[] dice)
+    {
+        
+    }
 }

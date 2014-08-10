@@ -23,6 +23,7 @@ public class Bot extends Player {
     {
         dice.throwDice();
         System.out.println(dice);
+        TreeBuilder decisions = new TreeBuilder(dice.asArray());
         
     }
     
