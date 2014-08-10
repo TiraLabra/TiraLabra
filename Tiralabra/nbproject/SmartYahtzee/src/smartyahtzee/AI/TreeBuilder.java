@@ -6,6 +6,8 @@
 
 package smartyahtzee.AI;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author essalmen
@@ -13,11 +15,13 @@ package smartyahtzee.AI;
 public class TreeBuilder {
     
     private int[] dice;
+    private ArrayList<DecisionTree> expectedValues;
     
     public TreeBuilder(int[] dice)
     {
         this.dice = groupingSort(dice);
         createTrees(this.dice);
+        this.expectedValues = new ArrayList<>();
     }
     
     public int[] getDice()
@@ -37,6 +41,12 @@ public class TreeBuilder {
             }
             
             combinations[4-j] = combination;
+        }
+        
+        for (int i = 0; i < combinations.length; i++)
+        {
+            DecisionTree tree = new DecisionTree(combinations[i]);
+            expectedValues.add(tree);
         }
         
         
