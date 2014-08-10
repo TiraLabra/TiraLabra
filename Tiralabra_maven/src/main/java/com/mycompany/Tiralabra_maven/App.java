@@ -10,8 +10,9 @@ import java.util.PriorityQueue;
 import javax.imageio.ImageIO;
 
 /**
- * Hello world!
- *
+ * Pääluokka, joka on ohjelman ajettava luokka.
+ * SIISTImistä riittää vielä (ja mahdollisesti käyttöliittymän erottaminen,
+ * jos sellainen tulee).
  */
 public class App {
 

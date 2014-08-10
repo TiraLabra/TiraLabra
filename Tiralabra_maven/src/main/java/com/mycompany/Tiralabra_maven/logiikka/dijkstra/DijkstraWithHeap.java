@@ -8,8 +8,7 @@ import com.mycompany.Tiralabra_maven.logiikka.keko.JavaKeko;
 import java.util.Stack;
 
 /**
- *
- * @author Hannu
+ * Dijkstran algoritmin apufunktiot ja varsinaisen ratkaisun sisältävä luokka.
  */
 public class DijkstraWithHeap {
 

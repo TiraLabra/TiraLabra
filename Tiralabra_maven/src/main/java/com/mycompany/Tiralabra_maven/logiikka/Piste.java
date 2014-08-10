@@ -1,8 +1,7 @@
 package com.mycompany.Tiralabra_maven.logiikka;
 
 /**
- *
- * @author Hannu
+ * Tätä luokkaan käytetään lähtö ja maalipisteen koordinaattien antamiseen.
  */
 public class Piste {
 
