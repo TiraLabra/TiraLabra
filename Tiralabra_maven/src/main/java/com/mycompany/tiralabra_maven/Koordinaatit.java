@@ -6,6 +6,8 @@
 package com.mycompany.tiralabra_maven;
 
 /**
+ * Yksinkertainen immutaabeli luokka, jota käytetään kaksiulotteisten
+ * koordinaattien tallettamiseen.
  *
  * @author mikko
  */
@@ -18,52 +20,77 @@ public class Koordinaatit {
         this.x = x;
         this.y = y;
     }
-    
+
     public int getX() {
         return this.x;
     }
-    
+
     public int getY() {
         return this.y;
     }
-    
+
+    /**
+     * Palauttaa uuden Koordinaatit-olion, joka sijaitsee tämän olion
+     * parametrina annetulla suunnalla olevalla puolella.
+     *
+     * @param suunta
+     * @return uudet koordinaatit
+     */
     public Koordinaatit suuntaan(Suunta suunta) {
         switch (suunta) {
             case YLOS:
-                return new Koordinaatit(this.x, this.y-1);
+                return new Koordinaatit(this.x, this.y - 1);
             case ALAS:
-                return new Koordinaatit(this.x, this.y+1);
+                return new Koordinaatit(this.x, this.y + 1);
             case OIKEA:
-                return new Koordinaatit(this.x+1, this.y);
+                return new Koordinaatit(this.x + 1, this.y);
             case VASEN:
-                return new Koordinaatit(this.x-1, this.y);
+                return new Koordinaatit(this.x - 1, this.y);
         }
         return null;
     }
 
-//    public Koordinaatit ylos() {
-//        return new Koordinaatit(this.x, this.y - 1);
-//    }
-//
-//    public Koordinaatit alas() {
-//        return new Koordinaatit(this.x, this.y + 1);
-//    }
-//
-//    public Koordinaatit oikea() {
-//        return new Koordinaatit(this.x + 1, this.y);
-//    }
-//
-//    public Koordinaatit vasen() {
-//        return new Koordinaatit(this.x - 1, this.y);
-//    }
+    /**
+     * Metodi palauttaa true jos koordinaatit osoittavat samaan pisteeseen ja
+     * false, jos eivät osoita.
+     *
+     * @param obj
+     * @return ovatko koordinaatit samat
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Koordinaatit other = (Koordinaatit) obj;
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        return true;
+    }
 
-    public boolean equals(Koordinaatit koordinaatit) {
-        return this.x == koordinaatit.x && this.y == koordinaatit.y;
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + this.x;
+        hash = 41 * hash + this.y;
+        return hash;
     }
-    
+
+
+
+    /**
+     * Palauttaa merkkijonomuotoisen esityksen koordinaateista, muotoa (x, y).
+     * @return merkkijonoesitys
+     */
     public String toString() {
-        return "("+this.x+", "+this.y+")";
+        return "(" + this.x + ", " + this.y + ")";
     }
-    
-    
+
 }

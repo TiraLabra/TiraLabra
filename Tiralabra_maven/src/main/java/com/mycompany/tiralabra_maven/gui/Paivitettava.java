@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.mycompany.tiralabra_maven;
+package com.mycompany.tiralabra_maven.gui;
 
 /**
- * Suuntaa kuvaava enum. Suunta voi olla YLOS, ALAS, OIKEA tai VASEN.
+ *
  * @author mikko
  */
-public enum Suunta {
-    YLOS, ALAS, OIKEA, VASEN
+public interface Paivitettava {
+    public void paivita();
 }

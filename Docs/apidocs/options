@@ -1,0 +1,24 @@
+-classpath
+'/home/mikko/Documents/programming/tiralabra/TiraLabra/Tiralabra_maven/target/classes'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/mikko/Documents/programming/tiralabra/TiraLabra/Tiralabra_maven/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2014. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/mikko/Documents/programming/tiralabra/TiraLabra/Tiralabra_maven/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Tiralabra_maven 1.0-SNAPSHOT API'
+-linkoffline
+'http://docs.oracle.com/javase/7/docs/api' '/home/mikko/Documents/programming/tiralabra/TiraLabra/Tiralabra_maven/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Tiralabra_maven 1.0-SNAPSHOT API'

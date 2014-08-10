@@ -7,14 +7,14 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Piirtologiikka;
-import com.mycompany.tiralabra_maven.Simulaatio;
+import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- *
+ * Käyttöliittymän ikkunan ja siihen liitettävät komponentit tekevä luokka.
  * @author mikko
  */
 public class Kayttoliittyma implements Runnable{
@@ -49,6 +49,9 @@ public class Kayttoliittyma implements Runnable{
         //Luodaan ensin piirtoalusta, lisätään se container-olioon
         //Sitten luodaan näppäimistönkuuntelija ja annetaan se framelle
         piirtoalusta = new Piirtoalusta(piirtologiikka, sivunPituus);
+        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, piirtologiikka);
+        piirtoalusta.addMouseListener(hiirenkuuntelija);
+        piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
         contentPane.add(piirtoalusta);
     }
     
