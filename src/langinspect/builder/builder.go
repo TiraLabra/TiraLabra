@@ -13,13 +13,16 @@ import (
 )
 
 // Prints annoingly lot of debugging data
-const DebugAll = false
+const DebugAll = true
 
 // Prints some debugging data
-const DebugSome = false
+const DebugSome = true
 
 // Keeps stats of the n-gram frequencies
 const KeepStats = true
+
+// Does some additional runtime checks
+const Assert = true
 
 // Maximum length of n-grams in the database. The size is in bytes.
 //The value 9 is recommended, as it is enough to record three consecutive Japanese/Chinese/Korean characters in UTF-8.
@@ -88,7 +91,7 @@ class 4 = Mentioned at least 6-8 in the data. (freq = 8-6)
 The value, LangTable contains the frecuency data separated by language. Check
 the LangTable for details.
 */
-var NGramStats [MaxDepth][FreqClasses]LangTable
+var NGramStats [MaxDepth + 1][FreqClasses]LangTable
 
 //
 var langTagToIndex *trie.Node
@@ -100,7 +103,6 @@ are saved in type LangTable slices found from Node.Value.(LangTable).
 See the general usage of the Node object in the trie package.
 */
 var Dict *trie.Node
-var bytesRead int
 var startTime time.Time
 
 /*
@@ -109,6 +111,14 @@ In other words: Calculates 1.59-based logarithm of the input frequency and round
 */
 func FreqToFreqClass(x int) FreqClass {
 	return FreqClass((math.Log(float64(x)) / math.Log(1.59)) + 0.5)
+}
+
+/*
+Converts a logarithmically scaled frequency class value to the smallest possible raw appearing frequency in that class.
+Reverse function of FreqToFreqClass() (Not a true bijection, but FreqToFreqClass(FreqClassToFreq(class))) == class works.
+*/
+func FreqClassToMinFreq(x FreqClass) int {
+	return int(math.Pow(1.59, (float64(x)-0.5)) + 1)
 }
 
 /*
@@ -174,6 +184,14 @@ Increments the language data in a LangTable, and grows the LangTable if
 neccessary.
 */
 func incrementLang(table *LangTable, index LangIndex) {
+	if Assert {
+		if table == nil {
+			panic("ASSERT: table is nil!")
+		}
+		if int(index) > AmountOfLangs {
+			panic("ASSERT: Index can't be greater than current amount of languages!")
+		}
+	}
 	for len(*table) < AmountOfLangs+1 {
 		*table = append(*table, 0)
 		if DebugAll {
@@ -202,25 +220,47 @@ func touchLangData(node *trie.Node, lang LangIndex) {
 	}
 }
 
+func printNGramStats() {
+
+	for n := 0; n <= MaxDepth; n++ {
+		for f := FreqClass(0); f < 47; f++ {
+			if NGramStats[n][f][0] == 0 {
+				continue
+			}
+			if n == AllGrams {
+				fmt.Print("n-grams of all lengths ")
+			} else {
+				fmt.Print(n, "-grams ")
+			}
+			fmt.Println("mentioned at least", FreqClassToMinFreq(f), "times")
+			for l := LangIndex(0); l < LangIndex(len(NGramStats[0][f])); l++ {
+				if l == AllLangs {
+					fmt.Println("All languages:", NGramStats[n][f][l])
+				} else {
+					fmt.Println("Language ", string(langIndexToTag[l]), ":", NGramStats[n][f][l])
+				}
+			}
+		}
+	}
+}
+
 /*
 Prints statistics of the data.
 */
 func printStats() {
 	fmt.Printf("Took %.2f seconds.\n", float32(time.Since(startTime).Seconds()))
 	fmt.Println("Max n-gram length:\t", MaxDepth)
-	fmt.Println("N-grams read:\t\t", NGramStats[AllGrams][0][AllLangs])
-	fmt.Println("N-grams mentioned at least once:\t\t", NGramStats[AllGrams][0][AllLangs])
 	//	fmt.Printf("Size in memory:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
 	fmt.Println("Learning data:")
 
-	for node := range langTagToIndex.WalkKeys() {
-		langTag := node.Prefix()
-		langindex := LangIndex(0)
-		if node.Value != nil {
-			langindex = node.Value.(LangIndex)
-			fmt.Printf("\t%d %s %d n-grams\n", langindex, langTag, NGramStats[AllGrams][0][langindex])
+	printNGramStats()
+	/*
+		for node := range Dict.WalkKeys() {
+			if node.Value != nil {
+				fmt.Printf("‘%s’ %v\n", string(node.Prefix()), node.Value)
+			}
 		}
-	}
+	*/
 }
 
 /*
@@ -249,24 +289,32 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 	}
 }
 
-/*
-Builds the database of n-grams. Takes a directory name dir as a parameter.
-Scans the dir and its subdirectories and reads all the files there.
-*/
-func Build(directory string) {
-	startTime = time.Now()
-	byteStream := streamBytes(directory)
-	Dict = trie.NewNode() // "dict" is the trie containing all the n-grams
+func builder(byteStream chan byte) {
+
+	var bytesRead int
+
+	// current language
 	langindex := LangIndex(1)
-	langTagToIndex = trie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
+
+	//"nodes is the ring buffer for trie nodes that represent n-grams
+	nodes := make([]*trie.Node, 0, MaxDepth)
+
+	// i is a ring buffer index that is set to point to the new 1-gram on each loop
 	i := 0
-	nodes := make([]*trie.Node, 0, MaxDepth) // "nodes" is the ring buffer for n-gram-holding trie nodes
+
+	// Init the stats
 	for n := range NGramStats {
 		for f := range NGramStats[n] {
 			NGramStats[n][f] = make(LangTable, AmountOfLangs+1)
 		}
 	}
+
+	// The main loop
 	for b := range byteStream {
+		if DebugAll {
+			fmt.Println("Reading new byte. It is '", string([]byte{b}), "' (i is", i, ")")
+		}
+		// Handle the control sequences for changing the language
 		if b == '@' {
 			changed, newLangIndex := setLang(byteStream)
 			if changed {
@@ -275,6 +323,13 @@ func Build(directory string) {
 				i = 0
 				continue
 			}
+		}
+
+		// NOTE. The exclusion of linefeeds is UTF-8 specific and a bit unneccessary!?
+		if b == '\n' {
+			nodes = nodes[:0] // Clear the nodes buffer
+			i = 0
+			continue
 		}
 
 		if DebugSome && KeepStats {
@@ -287,29 +342,38 @@ func Build(directory string) {
 		if len(nodes) < MaxDepth { // if ringbuffer isn't full yet, append to it
 			nodes = append(nodes, nil)
 		}
+
+		// i is the ringbuffer index that points to the 1-gram. (Here it's yet but a 0-gram / root.)
 		nodes[i] = Dict
 
-		for k := i + len(nodes); k > i; k-- {
+		// n is the "n" of n-grams
+		n := 1
+
+		for k := i + len(nodes); k > i; k-- { // k is used only to calculate j and to loop the right amount of times.
+			// j is the ringbuffer index in this loop
+			// j ranges from i to 0 and then from len(nodes)-1 to i+1.
+			// IN OTHER WORDS: j loops downwards from i and wraps over.
 			j := k % len(nodes)
+
 			parent := nodes[j]
 			child := parent.GetOrCreate([]byte{b})
 			touchLangData(child, langindex)
 			if KeepStats {
-				// STATS ABOUT ALL N-GRAMS
-				// Increment the amount of n-grams of length for all languages
+				if DebugAll {
+					fmt.Println("incrementing NGramStats")
+				}
 				freq := child.Value.(LangTable)[AllLangs]
-				incrementLang(&(NGramStats[AllGrams][FreqToFreqClass(freq)]), AllLangs)
-				// Increment the amount of n-grams of length for current language
-				freq = child.Value.(LangTable)[langindex]
-				incrementLang(&NGramStats[AllGrams][FreqToFreqClass(freq)], langindex)
+				if freq == FreqClassToMinFreq(FreqToFreqClass(freq)) { // Has reached a new frequency class!
+					incrementLang(&(NGramStats[AllGrams][FreqToFreqClass(freq)]), AllLangs)
+					incrementLang(&NGramStats[n][FreqToFreqClass(freq)], AllLangs)
+				}
 
-				// STATS ABOUT N-GRAMS OF LENGTH J
-				// Increment the amount of n-grams of length for all languages
-				freq = child.Value.(LangTable)[AllLangs]
-				incrementLang(&NGramStats[j][FreqToFreqClass(freq)], AllLangs)
-				// Increment the amount of n-grams of length for current language
 				freq = child.Value.(LangTable)[langindex]
-				incrementLang(&NGramStats[j][FreqToFreqClass(freq)], langindex)
+				if freq == FreqClassToMinFreq(FreqToFreqClass(freq)) { // Has reached a new frequency class!
+					incrementLang(&NGramStats[AllGrams][FreqToFreqClass(freq)], langindex)
+					incrementLang(&NGramStats[n][FreqToFreqClass(freq)], langindex)
+				}
+				n++
 			}
 			nodes[j] = child
 		}
@@ -317,5 +381,18 @@ func Build(directory string) {
 		i = i % MaxDepth
 
 	}
+}
+
+/*
+Builds the database of n-grams. Takes a directory name dir as a parameter.
+Scans the dir and its subdirectories and reads all the files there.
+*/
+func Build(directory string) {
+	startTime = time.Now()
+	byteStream := streamBytes(directory)
+	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
+	langTagToIndex = trie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
+	builder(byteStream)
 	printStats()
+
 }

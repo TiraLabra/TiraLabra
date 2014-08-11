@@ -22,6 +22,7 @@ type Node struct {
 var nodeCount int
 
 const debug = false
+const assert = true
 const stats = true
 
 // Creates a new node that isn't part of any existing trie.
@@ -53,23 +54,31 @@ func (n *Node) Add(key []byte, object interface{}) {
 // If the key-value pair doesn't exist, it creates and returns a node representing
 // a key-value pair with a nil value. You can set the value.
 func (n *Node) GetOrCreate(key []byte) *Node {
+	if assert {
+		if n == nil {
+			panic("ASSERT: node should be set!")
+		}
+		if key == nil {
+			panic("ASSERT: key should be set!")
+		}
+	}
 	if debug {
 		fmt.Println("GetOrCreate with path:", string(n.Prefix()), "+", string(key))
 	}
-	child := &n.children[key[0]]
-	if *child == nil {
-		*child = NewNode()
-		(*child).parent = n
-		(*child).keyFragment = key[0]
+	if len(key) == 0 {
+		return n
+	}
+	childIndex := key[0]
+	childField := &n.children[childIndex]
+	if *childField == nil {
+		*childField = NewNode()
+		(*childField).parent = n
+		(*childField).keyFragment = childIndex
 	}
 	if stats {
 		nodeCount++
 	}
-	if len(key) > 1 {
-		return (*child).GetOrCreate(key[1:])
-	} else {
-		return *child
-	}
+	return (*childField).GetOrCreate(key[1:])
 }
 
 // Returns the value by key. Returns nil if key doesn't exist or if the value
