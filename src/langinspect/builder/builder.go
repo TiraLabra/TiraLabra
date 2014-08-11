@@ -9,20 +9,20 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-	//	"unsafe"
+	"unsafe"
 )
 
 // Prints annoingly lot of debugging data
-const DebugAll = true
+const ShowDebug = false
 
 // Prints some debugging data
-const DebugSome = true
+const ShowMessages = true
 
 // Keeps stats of the n-gram frequencies
 const KeepStats = true
 
 // Does some additional runtime checks
-const Assert = true
+const Assert = false
 
 // Maximum length of n-grams in the database. The size is in bytes.
 //The value 9 is recommended, as it is enough to record three consecutive Japanese/Chinese/Korean characters in UTF-8.
@@ -91,7 +91,11 @@ class 4 = Mentioned at least 6-8 in the data. (freq = 8-6)
 The value, LangTable contains the frecuency data separated by language. Check
 the LangTable for details.
 */
-var NGramStats [MaxDepth + 1][FreqClasses]LangTable
+type NGramStatsType [MaxDepth + 1][FreqClasses]LangTable
+
+var NGramStats NGramStatsType
+
+var NGramStatsOverTime = make([]NGramStatsType, 0, 8)
 
 //
 var langTagToIndex *trie.Node
@@ -134,7 +138,9 @@ func getFileReaders(directory string) chan *bufio.Reader {
 				return err
 			}
 			if f.IsDir() {
-				fmt.Println("Reading from directory", f.Name())
+				if ShowMessages {
+					fmt.Println("Reading from directory", f.Name())
+				}
 				return nil
 			}
 			file, err := os.Open(path)
@@ -142,7 +148,7 @@ func getFileReaders(directory string) chan *bufio.Reader {
 				fmt.Println("Couldn't open " + f.Name() + "!")
 				return err
 			}
-			if DebugSome {
+			if ShowMessages {
 				fmt.Println("Opened " + f.Name())
 			}
 			reader := bufio.NewReader(file)
@@ -166,7 +172,7 @@ func streamBytes(directory string) chan byte {
 			for {
 				b, err := reader.ReadByte()
 				if err != nil {
-					if DebugSome {
+					if ShowDebug {
 						fmt.Println("EOF!")
 					}
 					break
@@ -194,7 +200,7 @@ func incrementLang(table *LangTable, index LangIndex) {
 	}
 	for len(*table) < AmountOfLangs+1 {
 		*table = append(*table, 0)
-		if DebugAll {
+		if ShowDebug {
 			fmt.Println("Table grew! To", len(*table))
 		}
 	}
@@ -206,7 +212,7 @@ Updates the frequency data of a single n-gram (represented by trie.Node).
 */
 func touchLangData(node *trie.Node, lang LangIndex) {
 	if node.Value == nil {
-		if DebugAll {
+		if ShowDebug {
 			fmt.Println("Initialising LangTable with", AmountOfLangs+1, "slots in node: '", string((*node).Prefix()), "'")
 		}
 		node.Value = make(LangTable, AmountOfLangs+1)
@@ -215,16 +221,16 @@ func touchLangData(node *trie.Node, lang LangIndex) {
 	incrementLang(&table, AllLangs)
 	incrementLang(&table, lang)
 	node.Value = table
-	if DebugAll {
+	if ShowDebug {
 		fmt.Println("Incremented node '", string((*node).Prefix()), "' language", string(langIndexToTag[lang]), "to", table[lang], ". The langtable is now:", table)
 	}
 }
 
-func printNGramStats() {
+func printNGramStats(stats *NGramStatsType) {
 
 	for n := 0; n <= MaxDepth; n++ {
 		for f := FreqClass(0); f < 47; f++ {
-			if NGramStats[n][f][0] == 0 {
+			if stats[n][f][0] == 0 {
 				continue
 			}
 			if n == AllGrams {
@@ -233,11 +239,11 @@ func printNGramStats() {
 				fmt.Print(n, "-grams ")
 			}
 			fmt.Println("mentioned at least", FreqClassToMinFreq(f), "times")
-			for l := LangIndex(0); l < LangIndex(len(NGramStats[0][f])); l++ {
+			for l := LangIndex(0); l < LangIndex(len(stats[0][f])); l++ {
 				if l == AllLangs {
-					fmt.Println("All languages:", NGramStats[n][f][l])
+					fmt.Println("All languages:", stats[n][f][l])
 				} else {
-					fmt.Println("Language ", string(langIndexToTag[l]), ":", NGramStats[n][f][l])
+					fmt.Println("Language ", string(langIndexToTag[l]), ":", stats[n][f][l])
 				}
 			}
 		}
@@ -250,17 +256,18 @@ Prints statistics of the data.
 func printStats() {
 	fmt.Printf("Took %.2f seconds.\n", float32(time.Since(startTime).Seconds()))
 	fmt.Println("Max n-gram length:\t", MaxDepth)
-	//	fmt.Printf("Size in memory:\t\t\t%d MiB, %d bytes per node.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}))
-	fmt.Println("Learning data:")
+	fmt.Printf("Size in memory:\t\t%d MiB, %d bytes per node, %d nodes.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}), trie.NodeCount())
+	fmt.Println()
+	bytes := 1000
+	for i := range NGramStatsOverTime {
+		fmt.Println("\n\nStats for first", bytes, "bytes of text.")
+		bytes++
+		printNGramStats(&NGramStatsOverTime[i])
+	}
 
-	printNGramStats()
-	/*
-		for node := range Dict.WalkKeys() {
-			if node.Value != nil {
-				fmt.Printf("‘%s’ %v\n", string(node.Prefix()), node.Value)
-			}
-		}
-	*/
+	fmt.Println("\n\nFinal stats.")
+	printNGramStats(&NGramStats)
+
 }
 
 /*
@@ -277,12 +284,12 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 			node.Value = LangIndex(AmountOfLangs + 1)
 			langIndexToTag = append(langIndexToTag, langtag)
 			AmountOfLangs++
-			if DebugSome {
+			if ShowMessages {
 				fmt.Println("New language! ", string(langtag[:]), node.Value)
 			}
 		}
 		langindex := node.Value.(LangIndex)
-		if DebugSome {
+		if ShowMessages {
 			fmt.Println("Changed language to:", string(langtag[:]))
 		}
 		return true, langindex
@@ -311,7 +318,7 @@ func builder(byteStream chan byte) {
 
 	// The main loop
 	for b := range byteStream {
-		if DebugAll {
+		if ShowDebug {
 			fmt.Println("Reading new byte. It is '", string([]byte{b}), "' (i is", i, ")")
 		}
 		// Handle the control sequences for changing the language
@@ -332,10 +339,16 @@ func builder(byteStream chan byte) {
 			continue
 		}
 
-		if DebugSome && KeepStats {
+		if ShowMessages && KeepStats {
 			bytesRead++
 			if bytesRead%1000 == 0 {
-				fmt.Println("Nodes:", NGramStats[AllGrams][0][AllLangs])
+				NGramStatsOverTime = append(NGramStatsOverTime, NGramStatsType{})
+				for n := range NGramStats {
+					for f := range NGramStats[n] {
+						NGramStatsOverTime[len(NGramStatsOverTime)-1][n][f] = make(LangTable, len(NGramStats[n][f]))
+						copy(NGramStatsOverTime[len(NGramStatsOverTime)-1][n][f], NGramStats[n][f])
+					}
+				}
 			}
 		}
 
@@ -359,7 +372,7 @@ func builder(byteStream chan byte) {
 			child := parent.GetOrCreate([]byte{b})
 			touchLangData(child, langindex)
 			if KeepStats {
-				if DebugAll {
+				if ShowDebug {
 					fmt.Println("incrementing NGramStats")
 				}
 				freq := child.Value.(LangTable)[AllLangs]

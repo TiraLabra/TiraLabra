@@ -21,6 +21,10 @@ type Node struct {
 
 var nodeCount int
 
+func NodeCount() int {
+	return nodeCount
+}
+
 const debug = false
 const assert = true
 const stats = true
@@ -30,6 +34,9 @@ const stats = true
 func NewNode() *Node {
 	if debug {
 		fmt.Println("Create node")
+	}
+	if stats {
+		nodeCount++
 	}
 	n := &Node{}
 	n.children = [256]*Node{}
@@ -74,9 +81,6 @@ func (n *Node) GetOrCreate(key []byte) *Node {
 		*childField = NewNode()
 		(*childField).parent = n
 		(*childField).keyFragment = childIndex
-	}
-	if stats {
-		nodeCount++
 	}
 	return (*childField).GetOrCreate(key[1:])
 }
