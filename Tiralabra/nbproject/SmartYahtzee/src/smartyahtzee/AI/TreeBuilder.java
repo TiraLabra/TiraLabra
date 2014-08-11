@@ -7,6 +7,7 @@
 package smartyahtzee.AI;
 
 import java.util.ArrayList;
+import smartyahtzee.scoring.Scores;
 
 /**
  *
@@ -19,16 +20,59 @@ public class TreeBuilder {
     
     public TreeBuilder(int[] dice)
     {
+        this.expectedValues = new ArrayList<>();
         this.dice = groupingSort(dice);
         createTrees(this.dice);
-        this.expectedValues = new ArrayList<>();
+        
     }
     
     public int[] getDice()
     {
         return dice;
     }
+    
+    /**
+     * Etsii puista kannattavimman.
+     * 
+     * Käy läpi luodut puut ja palauttaa sen juuren, eli noppakombinaation, josta
+     * puuta lähdettiin rakentamaan.
+     * 
+     * @return 0-4 pituinen taulukko nopan silmälukuja
+     */
+    
+    public int[] getDiceToLock()
+    {
+        double keepAllEV = Scores.calculateBestScore(dice);
+        double treeEV = 0.0;
+        double biggestEV = 0.0;
+        DecisionTree biggestEVtree = null;
+        
+        for (DecisionTree tree : expectedValues)
+        {
+            treeEV = tree.getEV();
+            System.out.println("TreeEV: " + treeEV);
+            if (treeEV > biggestEV)
+            {
+                biggestEV = treeEV;
+                biggestEVtree = tree;
+            }
+        }
+        
+        if (keepAllEV > biggestEV)  // move straight to marking scores
+        {
+            return dice;
+        }
+        
+        return biggestEVtree.getRoot();
+    }
 
+    /**
+     * Ottaa nopista lupaavimmat kombinaatiot.
+     * 
+     * Oletuksena yksittäiset nopat kannattaa jättää ja parit tai useammat samat luvut
+     * säästää. Myöhemmin lisättävä vielä lisää kombinaatioita.
+     */
+    
     private void createTrees(int[] dice)
     {
         int[][] combinations = new int[4][];
@@ -42,7 +86,7 @@ public class TreeBuilder {
             
             combinations[4-j] = combination;
         }
-        
+        System.out.println("Length: " +combinations.length);
         for (int i = 0; i < combinations.length; i++)
         {
             DecisionTree tree = new DecisionTree(combinations[i]);
@@ -55,6 +99,8 @@ public class TreeBuilder {
     /**
      * Ryhmittelee nopat.
      * 
+     * Useimmin esiintyvä luku ensin ja yhtä usein esiintyvät laskevassa
+     * suuruusjärjestyksessä.
      */
     
     private int[] groupingSort(int[] dice)
@@ -87,9 +133,7 @@ public class TreeBuilder {
             }
             
         }
-        
-        System.out.println("Highest: " + greatestFreq + " Second: "+secondFreq);
-        
+                
         if (greatestFreq == 1)          //if no pairs 
         {
             for (int i = 0; i < 5; i++)

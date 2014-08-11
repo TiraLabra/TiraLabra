@@ -25,18 +25,20 @@ public class Bot extends Player {
         System.out.println(dice);
         TreeBuilder decisions = new TreeBuilder(dice.asArray());
         int[] lock = decisions.getDiceToLock();
-        if (lock.length == 0)
+        if (lock.length == 5)
         {
             return;
         }
         dice.lockMany(lock);
-        dice.throwDice();
+        dice.throwDice();       //todo: second turn, using already created treebuilder
+        System.out.println(dice);
+        dice.unlockAll();
         
         
     }
     
     @Override
-    protected void markScore(){
+    protected void markScore(){         //todo: refactor
         int highestIndex = 0;
         int highestScore = 0;
 

@@ -63,20 +63,33 @@ public class DiceSet {
     }
     
     /**
+     * Lukitsee tekoälyn määräämät nopat.
+     * 
+     * @param toLock lukittavat silmäluvut
+     */ 
+    
+    public void lockMany(int[] toLock)          //todo: optimize
+    {
+        unlockAll();
+        for (int d : toLock)
+        {
+            for (int i = 0; i < dice.size(); i++)
+            {
+                if (!dice.get(i).isLocked() && d == dice.get(i).getNumber())
+                {
+                    toggleLock(i);
+                }
+            }
+            
+        }
+    }
+    
+    /**
      * Toggle lukolle.
      * 
      * Lukitsee lukitsemattoman tai poistaa lukon lukitusta nopasta.
      * @param index monesko noppa
      */
-    
-    public void lockMany(int[] toLock)
-    {
-        unlockAll();
-        for (int d : toLock)
-        {
-            toggleLock(d);
-        }
-    }
     
     public void toggleLock(int index)
     {
