@@ -1,7 +1,17 @@
 package huffmanKoodaaja.kasittely.tietorakenteet;
 
+/**
+ * Puun tai jonon solmu.
+ */
 public class Solmu {
+
+    /**
+     * Tiedostossa esiintyvä tavu taikka null-arvossa solmu ilman merkkiä.
+     */
     private int merkki;
+    /**
+     * Merkin taikka solmun lasten yhteenlaskettu frekvenssi.
+     */
     private int frekvenssi;
 
     public Solmu(int merkki, int frekvenssi) {

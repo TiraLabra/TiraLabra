@@ -1,5 +1,8 @@
 package huffmanKoodaaja.kasittely.tietorakenteet;
 
+/**
+ * Prioriteettijono, jossa pienimmät frekvenssit prioriteettinä.
+ */
 public class Jono {
 
     boolean empty() {
@@ -12,5 +15,5 @@ public class Jono {
 
     void push(Solmu solmu) {
     }
-    
+
 }

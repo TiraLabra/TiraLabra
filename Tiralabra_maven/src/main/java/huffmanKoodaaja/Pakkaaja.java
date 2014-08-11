@@ -3,8 +3,17 @@ package huffmanKoodaaja;
 import huffmanKoodaaja.kasittely.Algoritmi;
 import huffmanKoodaaja.kasittely.Tiedosto;
 
+/**
+ * Pääluokka. Vastaa algoritmin käynnistämisestä.
+ */
 public class Pakkaaja {
 
+    /**
+     * Käynnistää tiedostonkäsittelyn ja algoritmin.
+     *
+     * @param args Pakattavan/purettavan tiedoston tiedostosijainti ja
+     * mahdollisesti myös pakatun/puretun tiedoston tallennussijainnin.
+     */
     public static void main(String[] args) {
         if (args.length > 0) {
             String sijainti = args[0];
@@ -20,5 +29,5 @@ public class Pakkaaja {
             algoritmi.kasittele();
         }
     }
-    
+
 }

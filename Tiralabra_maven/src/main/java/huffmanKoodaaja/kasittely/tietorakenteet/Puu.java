@@ -1,7 +1,10 @@
-
 package huffmanKoodaaja.kasittely.tietorakenteet;
 
+/**
+ * Binääripuu, joka luodaan jonon avulla.
+ */
 public class Puu {
+
     private Solmu juuri;
 
     public void luo(Jono jono) {
@@ -18,5 +21,5 @@ public class Puu {
             jono.push(solmu);
         }
     }
-    
+
 }
