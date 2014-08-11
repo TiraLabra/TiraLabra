@@ -1,6 +1,7 @@
-package huffmanKoodaaja.pakkaus;
+package huffmanKoodaaja.kasittely;
 
-import huffmanKoodaaja.kasittely.Tiedosto;
+import huffmanKoodaaja.kasittely.tietorakenteet.Frekvenssitaulu;
+import huffmanKoodaaja.kasittely.tietorakenteet.Puu;
 
 public class Algoritmi {
     private Tiedosto tiedosto;
@@ -23,7 +24,7 @@ public class Algoritmi {
         Frekvenssitaulu taulukko = new Frekvenssitaulu();
         tiedosto.lueTaulukoksi(taulukko);
         Puu puu = new Puu();
-        puu.luo(taulukko);
+        puu.luo(taulukko.luoJono());
         tiedosto.kirjoitaTaulukko(taulukko);
         tiedosto.kirjoitaPakattu(puu);
     }
@@ -32,7 +33,7 @@ public class Algoritmi {
         Frekvenssitaulu taulukko = new Frekvenssitaulu();
         tiedosto.lueTaulukko(taulukko);
         Puu puu = new Puu();
-        puu.luo(taulukko);
+        puu.luo(taulukko.luoJono());
         tiedosto.kirjoitaPurettu(puu);
     }
     

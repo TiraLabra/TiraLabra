@@ -1,4 +1,4 @@
-package huffmanKoodaajaTest.pakkaus;
+package huffmanKoodaajaTest.kasittely;
 
 import junit.framework.TestCase;
 

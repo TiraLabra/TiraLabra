@@ -1,7 +1,7 @@
 package huffmanKoodaaja;
 
+import huffmanKoodaaja.kasittely.Algoritmi;
 import huffmanKoodaaja.kasittely.Tiedosto;
-import huffmanKoodaaja.pakkaus.Algoritmi;
 
 public class Pakkaaja {
 
