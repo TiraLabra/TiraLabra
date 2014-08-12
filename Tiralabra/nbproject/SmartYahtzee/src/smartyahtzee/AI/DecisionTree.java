@@ -41,13 +41,23 @@ public class DecisionTree {
         
         while (node.getSibling() != null)
         {
-            node = node.getSibling();
-            if (node.getValue().length == 5)
+            
+            TreeNode childnode = node.getChild();
+            while (childnode.getSibling() != null)
             {
-                evs += Scores.calculateBestScore(node.getValue());
-                leavesVisited++;
+                if (childnode.getValue().length == 5)
+                {
+                    evs += Scores.calculateBestScore(childnode.getValue());
+                    leavesVisited++;
+                }
+                childnode = childnode.getSibling();
+                
             }
+            
+            node = node.getSibling();
+            
         }
+        
         
         if (leavesVisited == 0)
         {
