@@ -8,20 +8,12 @@ import TestSuite.Algos.Insertionsort;
 import TestSuite.Algos.Quicksort;
 import TestSuite.Algos.Selectionsort;
 import TestSuite.Arrays.RandomNoDuplicates;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import TestSuite.Arrays.Sorted;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * TestFactory will be responsible for completing the final tests
+ * TestFactory will be responsible for completing the final tests ArrayList is
+ * used to store results
  *
  * @author Marko <markoma@iki.fi>
  */
@@ -32,9 +24,11 @@ public class TestFactory {
     private final int repeat;
     private final int[] small;
     private final int[] big;
+    private final FilePrinter printer;
 
     public TestFactory(int repeat) {
         this.runner = new Runner(repeat);
+        this.printer = new FilePrinter();
         this.repeat = repeat;
         this.results = new ArrayList<String>();
         this.small = new int[]{2, 5, 10, 25, 50, 75, 100, 250, 500};
@@ -58,7 +52,7 @@ public class TestFactory {
             );
         }
         System.out.println("Random small arrays tests succefully completed.");
-        printToFile("results");
+        printer.printToFile("results", results);
     }
 
     /**
@@ -78,52 +72,51 @@ public class TestFactory {
             );
         }
         System.out.println("Random big arrays tests succefully completed.");
-        printToFile("results");
+        printer.printToFile("results", results);
+    }
+
+    /**
+     * Runs tests for small size sorted arrays with all sorting algorithms.
+     * Results will be added to arraylist, which is finally printed to text
+     * file.
+     */
+    public void runSortedSmallArraysTestCycleForAll() {
+        results.add("Sorted small arrays test. Test cycle repeted " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : small) {
+            results.add(r
+                    + ":" + runner.run(new Sorted(r), new Quicksort())
+                    + ":" + runner.run(new Sorted(r), new Insertionsort())
+                    + ":" + runner.run(new Sorted(r), new Selectionsort())
+            );
+        }
+        System.out.println("Sorted small arrays tests succefully completed.");
+        printer.printToFile("results", results);
+    }
+        /**
+     * Runs tests for small size sorted arrays with all sorting algorithms.
+     * Results will be added to arraylist, which is finally printed to text
+     * file.
+     */
+    public void runSortedBigArraysTestCycleForAll() {
+        results.add("Sorted big arrays test. Test cycle repeted " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : big) {
+            results.add(r
+                    + ":" + runner.run(new Sorted(r), new Quicksort())
+                    + ":" + runner.run(new Sorted(r), new Insertionsort())
+                    + ":" + runner.run(new Sorted(r), new Selectionsort())
+            );
+        }
+        System.out.println("Sorted big arrays tests succefully completed.");
+        printer.printToFile("results", results);
     }
 
     public void printResults() {
         for (String s : results) {
             System.out.println(s);
-        }
-    }
-
-    /**
-     * File writer. If file exists, results will be added to the end of the
-     * file.
-     *
-     * @param fileName filename as parameter
-     */
-    public void printToFile(String fileName) {
-        
-        boolean newfile = true;
-        
-        try {
-
-            File f = new File(fileName + ".csv");
-            if (f.exists() && !f.isDirectory()) {
-                System.out.println("Existing file found. ");
-                System.out.print("Overwrite file?(y/n/enter will add res to the end)");
-                String s = new Scanner(System.in).nextLine();
-                if (s.equals("y")) {
-                    newfile = false;
-                } else if (s.equals("n")) {
-                    return;
-                }
-            }
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(f, newfile)));
-
-            for (String result : results) {
-                writer.println(result);
-            }
-
-            writer.close();
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
