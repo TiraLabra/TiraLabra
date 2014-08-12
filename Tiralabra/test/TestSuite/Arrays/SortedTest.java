@@ -18,7 +18,7 @@ public class SortedTest {
     int[] sorted;
 
     public SortedTest() {
-        sorted = new Sorted(1000).get();
+        sorted = new AllmostSorted(1000).get();
     }
 
     /**

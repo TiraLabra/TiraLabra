@@ -4,12 +4,14 @@
  */
 package TestSuite.Arrays;
 
+import java.util.Random;
+
 /**
  * Fully sorted array (ascending order)
  *
  * @author Marko <markoma@iki.fi>
  */
-public class Sorted extends Arr {
+public class AllmostSorted extends Arr {
 
     private final int size;
 
@@ -18,12 +20,13 @@ public class Sorted extends Arr {
      *
      * @param size size
      */
-    public Sorted(int size) {
+    public AllmostSorted(int size) {
         this.size = size;
     }
 
     /**
-     * Fills initialized array with ascending numbering 1..n.
+     * Fills initialized array with ascending numbering 1..n. Then Randomizes
+     * 10%.
      *
      * @return array
      */
@@ -34,7 +37,22 @@ public class Sorted extends Arr {
         for (int i = 0; i < size; i++) {
             arr[i] = i;
         }
+        randomizeTenPercent(arr);
         return arr;
+    }
+    /**
+     * Randomizer
+     * @param arr array to randomize
+     */
+    private void randomizeTenPercent(int[] arr) {
+        Random r = new Random();
+        for (int i = 0; i < size / 10; i++) {
+            int rndNmb1 = r.nextInt(size);
+            int rndNmb2 = r.nextInt(size);
+            int temp = arr[rndNmb1];
+            arr[rndNmb1] = arr[rndNmb2];
+            arr[rndNmb2] = temp;
+        }
     }
 
     /**

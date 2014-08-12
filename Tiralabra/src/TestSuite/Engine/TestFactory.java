@@ -8,12 +8,13 @@ import TestSuite.Algos.Insertionsort;
 import TestSuite.Algos.Quicksort;
 import TestSuite.Algos.Selectionsort;
 import TestSuite.Arrays.RandomNoDuplicates;
-import TestSuite.Arrays.Sorted;
+import TestSuite.Arrays.AllmostSorted;
 import java.util.ArrayList;
 
 /**
- * TestFactory will be responsible for completing the final tests ArrayList is
- * used to store results
+ * TestFactory will be responsible for completing the final tests. ArrayList is
+ * used to store results, which are finally printed to text file using
+ * FilePrinter.
  *
  * @author Marko <markoma@iki.fi>
  */
@@ -31,7 +32,7 @@ public class TestFactory {
         this.printer = new FilePrinter();
         this.repeat = repeat;
         this.results = new ArrayList<String>();
-        this.small = new int[]{2, 5, 10, 25, 50, 75, 100, 250, 500};
+        this.small = new int[]{5, 10, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500};
         this.big = new int[]{500, 750, 1000, 1250, 1500, 2000, 3000, 5000, 7500, 10000};
     }
 
@@ -52,7 +53,6 @@ public class TestFactory {
             );
         }
         System.out.println("Random small arrays tests succefully completed.");
-        printer.printToFile("results", results);
     }
 
     /**
@@ -72,7 +72,6 @@ public class TestFactory {
             );
         }
         System.out.println("Random big arrays tests succefully completed.");
-        printer.printToFile("results", results);
     }
 
     /**
@@ -86,15 +85,15 @@ public class TestFactory {
 
         for (int r : small) {
             results.add(r
-                    + ":" + runner.run(new Sorted(r), new Quicksort())
-                    + ":" + runner.run(new Sorted(r), new Insertionsort())
-                    + ":" + runner.run(new Sorted(r), new Selectionsort())
+                    + ":" + runner.run(new AllmostSorted(r), new Quicksort())
+                    + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
+                    + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
             );
         }
         System.out.println("Sorted small arrays tests succefully completed.");
-        printer.printToFile("results", results);
     }
-        /**
+
+    /**
      * Runs tests for small size sorted arrays with all sorting algorithms.
      * Results will be added to arraylist, which is finally printed to text
      * file.
@@ -105,16 +104,24 @@ public class TestFactory {
 
         for (int r : big) {
             results.add(r
-                    + ":" + runner.run(new Sorted(r), new Quicksort())
-                    + ":" + runner.run(new Sorted(r), new Insertionsort())
-                    + ":" + runner.run(new Sorted(r), new Selectionsort())
+                    + ":" + runner.run(new AllmostSorted(r), new Quicksort())
+                    + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
+                    + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
             );
         }
         System.out.println("Sorted big arrays tests succefully completed.");
-        printer.printToFile("results", results);
+
     }
 
-    public void printResults() {
+    /**
+     * Result Printer. Will Clean array
+     */
+    public void printToFileAndClean() {
+        printer.printToFile("results", results);
+        results.clear();
+    }
+
+    private void printResults() {
         for (String s : results) {
             System.out.println(s);
         }

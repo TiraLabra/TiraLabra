@@ -14,10 +14,9 @@ public class main {
 
     public static void main(String[] args) {
 
-        TestSuite.Engine.TestFactory test1 = new TestFactory(10);
+        TestSuite.Engine.TestFactory test1 = new TestFactory(10000);
         test1.runRandomSmallArraysTestCycleForAll();
-
-        /*TestSuite.Engine.TestFactory test2 = new TestFactory(1000);
-         test2.runRandomBigArraysTestCycleForAll();*/
+        test1.runSortedSmallArraysTestCycleForAll();
+        test1.printToFileAndClean();
     }
 }

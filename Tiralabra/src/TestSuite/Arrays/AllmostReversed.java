@@ -4,12 +4,14 @@
  */
 package TestSuite.Arrays;
 
+import java.util.Random;
+
 /**
  * Full reversed (descending) order array
  *
  * @author Marko <markoma@iki.fi>
  */
-public class Reversed extends Arr {
+public class AllmostReversed extends Arr {
 
     private final int size;
 
@@ -18,7 +20,7 @@ public class Reversed extends Arr {
      *
      * @param size size
      */
-    public Reversed(int size) {
+    public AllmostReversed(int size) {
         this.size = size;
     }
 
@@ -34,7 +36,24 @@ public class Reversed extends Arr {
         for (int j = size - 1, i = 0; j >= 0; j--, i++) {
             arr[j] = i;
         }
+        randomizeTenPercent(arr);
         return arr;
+    }
+
+    /**
+     * Array randomizer
+     *
+     * @param arr array to randomize
+     */
+    private void randomizeTenPercent(int[] arr) {
+        Random r = new Random();
+        for (int i = 0; i < size / 10; i++) {
+            int rndNmb1 = r.nextInt(size);
+            int rndNmb2 = r.nextInt(size);
+            int temp = arr[rndNmb1];
+            arr[rndNmb1] = arr[rndNmb2];
+            arr[rndNmb2] = temp;
+        }
     }
 
     /**
