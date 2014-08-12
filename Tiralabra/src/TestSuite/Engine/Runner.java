@@ -29,8 +29,9 @@ public class Runner {
      *
      * @param array Abstract array to sort
      * @param algo Abstract algorithm to sort with
+     * @return result in nanoseconds
      */
-    public void run(Arr array, Algo algo) {
+    public long run(Arr array, Algo algo) {
 
         long sum = 0;
 
@@ -39,9 +40,12 @@ public class Runner {
         }
 
         //TODO print to text file
+        /*
         System.out.println("sorting " + array + " array ");
         System.out.println(algo + "´s average runtime is " + (sum / repeat) + " nanoseconds");
         System.out.println("");
+        */
+        return sum / repeat;
     }
 
     /**
