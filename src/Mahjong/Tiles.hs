@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 ------------------------------------------------------------------------------
 -- | 
 -- Module         : Mahjong.Tiles
@@ -12,8 +13,10 @@
 module Mahjong.Tiles where
 
 import Data.String
+import Data.Monoid ((<>))
 import Control.Monad
 import Control.Applicative
+import Text.PrettyPrint.ANSI.Leijen (Pretty(..), string)
 
 -- * Types
 
@@ -21,22 +24,6 @@ import Control.Applicative
 data Tile = Suited TileKind Number Aka
           | Honor Honor
           deriving (Show, Read, Eq, Ord)
-
-instance IsString Tile where
-    fromString [a]     = fromString [a, ' ']
-    fromString [k,num] = case k of
-        'G'              -> Honor (Sangenpai Hatsu)
-        'R'              -> Honor (Sangenpai Chun)
-        'W' | num == '!' -> Honor (Sangenpai Haku)
-            | otherwise  -> Honor (Kazehai Shaa)
-        'E'              -> Honor (Kazehai Ton)
-        'N'              -> Honor (Kazehai Pei)
-        'S' | num == ' ' -> Honor (Kazehai Nan)
-            | otherwise  -> Suited SouTile (toEnum $ read [num]) False
-        'M'              -> Suited ManTile (toEnum $ read [num]) False
-        'P'              -> Suited PinTile (toEnum $ read [num]) False
-        _                -> error "no read"
-    fromString _       = error "no read"
 
 data TileKind = ManTile | PinTile | SouTile | HonorTile
               deriving (Show, Read, Eq, Ord)
@@ -58,26 +45,46 @@ data Sangenpai = Haku | Hatsu | Chun
 data Kazehai = Ton | Nan | Shaa | Pei
              deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
--- * Pretty print
+-- Instances
 
-ppTile :: Tile -> String
-ppTile t = case t of
-    Suited ManTile n aka -> (if aka then "m" else "M") ++ ppNumber n
-    Suited PinTile n aka -> (if aka then "p" else "P") ++ ppNumber n
-    Suited SouTile n aka -> (if aka then "s" else "S") ++ ppNumber n
-    Suited{} -> error "No such tile"
-    Honor (Sangenpai sangen) -> case sangen of
-                     Haku    -> "W!"
-                     Hatsu   -> "G!"
-                     Chun    -> "R!"
-    Honor (Kazehai kaze) -> case kaze of
-                     Ton     -> "E "
-                     Nan     -> "S "
-                     Shaa    -> "W "
-                     Pei     -> "N "
+instance IsString Tile where
+    fromString [a]     = fromString [a, ' ']
+    fromString [k,num] = case k of
+        'G'              -> Honor (Sangenpai Hatsu)
+        'R'              -> Honor (Sangenpai Chun)
+        'W' | num == '!' -> Honor (Sangenpai Haku)
+            | otherwise  -> Honor (Kazehai Shaa)
+        'E'              -> Honor (Kazehai Ton)
+        'N'              -> Honor (Kazehai Pei)
+        'S' | num == ' ' -> Honor (Kazehai Nan)
+            | otherwise  -> Suited SouTile (fromString [num]) False
+        'M'              -> Suited ManTile (fromString [num]) False
+        'P'              -> Suited PinTile (fromString [num]) False
+        _                -> error "no read"
+    fromString _       = error "no read"
 
-ppNumber :: Number -> String
-ppNumber = show . fromEnum
+instance Pretty Tile where
+    pretty t = case t of
+        Suited ManTile n aka -> (if aka then "m" else "M") <> pretty n
+        Suited PinTile n aka -> (if aka then "p" else "P") <> pretty n
+        Suited SouTile n aka -> (if aka then "s" else "S") <> pretty n
+        Suited{} -> error "No such tile"
+        Honor (Sangenpai sangen) -> case sangen of
+                         Haku    -> "W!"
+                         Hatsu   -> "G!"
+                         Chun    -> "R!"
+        Honor (Kazehai kaze) -> case kaze of
+                         Ton     -> "E "
+                         Nan     -> "S "
+                         Shaa    -> "W "
+                         Pei     -> "N "
+
+instance IsString Number where
+    fromString = toEnum . (\i -> i - 1 :: Int) . read
+
+instance Pretty Number where
+    pretty = string . show . (+ 1) . fromEnum
+
 
 -- * Build
 

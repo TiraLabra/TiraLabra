@@ -20,6 +20,7 @@ description:
 library
   exposed-modules:     Mahjong.Hand
                      , Mahjong.Hand.Algo
+                     , Mahjong.Hand.Algo.WaitTree
                      , Mahjong.Hand.Mentsu
                      , Mahjong.Hand.Value
                      , Mahjong.Tiles
@@ -27,8 +28,10 @@ library
   -- other-extensions:    
   build-depends:       base >=4.7 && <4.8
                      , containers
+                     , semigroups
+                     , bifunctors
+                     , ansi-wl-pprint
                      , utility-ht
-                     -- , dual-tree
   hs-source-dirs:      src
   default-language:    Haskell2010
 
@@ -37,6 +40,7 @@ test-suite test
   main-is:             test.hs
   hs-source-dirs:      tests
   build-depends:       base
+                     , containers
                      , TiraLabra
                      , tasty
                      , tasty-quickcheck

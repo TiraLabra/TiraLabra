@@ -10,23 +10,45 @@
 --
 -- Algorithms to work with mahjong hands.
 ------------------------------------------------------------------------------
-module Mahjong.Hand.Algo where
+module Mahjong.Hand.Algo
+    (
+    -- * Shanten
+    ShantenOf(..), Shanten,
 
-import Control.Monad
-import Control.Applicative
-import Data.Maybe
+    -- * Waits
+    buildGreedyWaitTree,
+    buildGreedyWaitTree',
+    minDepth, levels,
 
-import Data.List (delete, sort, foldl', find, groupBy)
-import Data.List.HT (removeEach, unzipEithers)
-import Data.Tree
+    -- * Tile grouping
+    tilesGroupL, tilesSplitGroupL,
+    leftovers, waits, tileGroupTiles,
 
+    -- * Types
+    WaitTree, Wait, Grouping,
+    TileGroup(..),
+
+    -- * Misc
+    devops
+    ) where
+
+import           Control.Monad
+import           Control.Applicative
+import           Data.Maybe
+import           Data.Bifunctor
+import           Data.List (delete, sort, foldl', find, groupBy)
+import           Data.List.HT (removeEach)
+import qualified Data.List.NonEmpty as NE
+
+import Mahjong.Hand.Algo.WaitTree as Mahjong.Hand.Algo
 import Mahjong.Hand.Mentsu
 import Mahjong.Hand.Value
 import Mahjong.Tiles
 
--- * Grouping tiles
+-- Types
 
--- ** Types
+-- | Right for shuntsu wait, Left for koutsu wait or ready pair
+type Wait = Either Tile [Tile]
 
 -- | A single grouping variant.
 type Grouping = [TileGroup]
@@ -44,31 +66,16 @@ data TileGroup = GroupWait MentsuKind [Tile] [Tile]
                 -- other tile.
                 deriving (Show, Read, Eq, Ord)
 
--- | Leftover tiles in the hand.
-leftovers :: Grouping -> [Tile]
-leftovers = mapMaybe go
-    where
-        go (GroupLeftover x) = Just x
-        go _                 = Nothing
+-- | A nothing result means that the hand has 14 (or more) tiles but is not
+-- complete. Thus, invalid.
+type Shanten = Maybe Int
 
--- | Right for shuntsu wait, Left for koutsu wait or ready pair
-type Wait = Either Tile [Tile]
+-- | Non-recursive helper type for the unfolder below.
+--
+-- Left for ready with, Right for (discarding, getting, stray tiles, waits).
+type DevOp' = Either Tile (Tile, Tile, [Tile], [Wait])
 
--- | Waits in the hand. Inner lists represent choice.
-waits :: Grouping -> [Wait]
-waits = mapMaybe go
-    where
-        go (GroupWait Koutsu  _ [t]) = Just $ Left t
-        go (GroupWait Shuntsu _ xs)  = Just $ Right xs
-        go _                         = Nothing
-
--- | Get the tiles in hand from a @TileGroup@.
-tileGroupTiles :: TileGroup -> [Tile]
-tileGroupTiles (GroupWait _ tiles _)  = tiles
-tileGroupTiles (GroupComplete mentsu) = mentsuTiles mentsu
-tileGroupTiles (GroupLeftover tile)   = [tile]
-
--- ** Algorithms
+-- Tiles split
 
 -- | `tilesGroupL` simply returns all possible groupings for the tiles
 --
@@ -143,11 +150,7 @@ tilesSplitGroupL = combine . map tilesGroupL . groupBy compareKind . sort
         combine       [] = [[]]
         combine (tk:tks) = [ xs ++ ys | xs <- tk, ys <- combine tks ]
 
--- * Calculating shanten
-
--- | A nothing result means that the hand has 14 (or more) tiles but is not
--- complete. Thus, invalid.
-type Shanten = Maybe Int
+-- Shanten
 
 -- | We use a type class to allow calculating shanten (tiles away from
 -- tenpai) from different representations.
@@ -199,71 +202,48 @@ tgShanten n tgs = case foldl' (\i -> (i -) . tgval) n tgs of
         isKoutsuWait (GroupWait Koutsu _ _) = True
         isKoutsuWait                      _ = False
 
--- * Wait trees
-
--- ** Types and helpers
-
--- | A @WaitTree@ models the development options of an mahjong hand.
---
--- The nodes in a development tree represent either a hand development
--- operation (@DevOp@) (in internal nodes) or value of the hand that is
--- achieved by applying the DevOps on the path to root.
-type WaitTree = Forest (Either DevOp (Tile, Value))
-
--- | An operation that develops the hand: In @(discard, drawn)@ the tile
--- `drawn` is drawn from the wall and sequently the tile `discard` is
--- discarded.
-type DevOp = (Tile, Tile)
-
--- | Left ready with. Right (op, free, waits).
-type DevOp' = Either Tile (DevOp, [Tile], [Wait])
+-- Wait trees
 
 -- | @devops free_discards waits@
-devops :: [Tile] -> [Wait] -> [DevOp']
+--
+-- = Algorithm description
+--
+-- TODO Write me
+devops :: [Tile] -> [Wait] -> NE.NonEmpty DevOp'
 devops f_ts w_ts
-    | []  <- f_ts, [] <- w_ts = error "devops: called with a malformed hand (all mentsu)"
-    | [x] <- f_ts, [] <- w_ts = return (Left x) -- Last pair wait
-    | []  <- f_ts            = breakingWait
-    | otherwise             = withReadyPair ++ withoutReadyPair
+    | []  <- f_ts, []  <- w_ts     = error "devops: called with a malformed hand (all mentsu)"
+    | []  <- f_ts, [x] <- w_ts     = error "devops: called with a malformed hand (one mentsu free only)"
+    | [x] <- f_ts, []  <- w_ts     = return (Left x) -- Last pair wait
+    | []  <- f_ts, twoKoutsu w_ts = tenpaiTwoKoutsu
+    | []  <- f_ts                 = NE.fromList breakingWait
+    |             []  <- w_ts     = NE.fromList leftoversOnly
+    | otherwise                  = NE.fromList meldLeftovers
     where
-        withoutReadyPair = drawing f_ts w_ts
+        twoKoutsu [Left _, Left _] = True
+        twoKoutsu _                = False
 
-        withReadyPair =
-            let (pairs, notPairs) = unzipEithers w_ts
-                in do
-                    (_, w_ps) <- removeEach pairs
-                    drawing f_ts (map Right notPairs ++ map Left w_ps)
+        tenpaiTwoKoutsu = NE.fromList $ map (\(Left t) -> Left t) w_ts
+
+        meldLeftovers = melding f_ts w_ts
 
         breakingWait = do
             (w_b, w_ts') <- removeEach w_ts
             let f_ts' = either (\t -> [t,t]) shuntsuWaitToHandTiles w_b 
-                in drawing f_ts' w_ts'
+                in melding f_ts' w_ts'
+
+        leftoversOnly = do
+            (w_t, f_ts')  <- removeEach f_ts
+            (d_t, f_ts'') <- removeEach f_ts'
+            (draw, wait)  <- buildWaits w_t
+            return $ Right (d_t, draw, f_ts'', [wait])
 
         -- All combinations of discarding from f_all and melding to one of
         -- w_all
-        drawing f_all w_all = do
+        melding f_all w_all = do
             (d_t, f_ts') <- removeEach f_all
             (w_opts, w_ts') <- removeEach w_all
             draw  <- either return id w_opts
-            return $ Right ((d_t, draw), f_ts', w_ts')
-
--- | Get the tiles in hand of the shuntsu wait based on the tiles waited.
-shuntsuWaitToHandTiles :: [Tile] -> [Tile]
-shuntsuWaitToHandTiles [] = error "shuntsuWaitToHandTiles: empty list of waits"
-shuntsuWaitToHandTiles [t] = catMaybes $ case tileNumber t of
-    Just San -> [predMay t, predMay t >>= predMay]
-    Just Chii -> [succMay t, succMay t >>= succMay]
-    _ -> [predMay t, succMay t]
-shuntsuWaitToHandTiles (t:_) = catMaybes [succMay t, succMay t >>= succMay]
-
-drawWaitTree :: WaitTree -> String
-drawWaitTree = drawForest . fmap (fmap pp)
-    where
-        pp :: Either DevOp (Tile, Value) -> String
-        pp = either (\(disc,draw) -> ppTile disc ++ " for " ++ ppTile draw)
-                    (\(draw,val) -> "Tenpai for " ++ ppTile draw ++ " at " ++ show val ++ " fu")
-
--- ** Algorithms
+            return $ Right (d_t, draw, f_ts', w_ts')
 
 -- | In a greedy wait tree every @DevOp@ brings the hand closer to
 -- tenpai/win.
@@ -277,30 +257,83 @@ buildGreedyWaitTree ms ts = buildGreedyWaitTree' (map (map GroupComplete ms ++) 
 -- | @buildGreedyWaitTree' groups@ discards groupings strictly less than
 -- shanten over `groups` before building the tree.
 buildGreedyWaitTree' :: [Grouping] -> WaitTree
-buildGreedyWaitTree' xs = unfoldForest go (devops <$> leftovers <*> waits $ head xs')
+buildGreedyWaitTree' xs =
+    unfoldRootedTree (concatMap (concatMap tileGroupTiles) xs)
+        go (NE.toList $ devops <$> leftovers <*> waits $ head xs')
     where
         xs' = filter ((== shanten xs) . shanten) xs
+        -- 
+        go :: DevOp' -> Either TenpaiOp (DevOp, NE.NonEmpty DevOp')
+        go = bimap (`TenpaiOp` 0)
+                   (\(disc, draw, lo, wa) -> (DevOp disc draw, devops lo wa))
 
-        go :: DevOp' -> (Either DevOp (Tile, Value), [DevOp'])
-        go (Left agari)         = (Right (agari, 0), []) -- value
-        go (Right (op, lo, wa)) = (Left op, devops lo wa)
+-- Auxilary funtions
 
-{- TODO vk3 ja eteenpäin
+-- | Leftover tiles in the hand.
+leftovers :: Grouping -> [Tile]
+leftovers = mapMaybe go
+    where
+        go (GroupLeftover x) = Just x
+        go _                 = Nothing
 
--- * Puu
+-- | Waits in the hand. Inner lists represent choice.
+waits :: Grouping -> [Wait]
+waits = mapMaybe go
+    where
+        go (GroupWait Koutsu  _ [t]) = Just $ Left t
+        go (GroupWait Shuntsu _ xs)  = Just $ Right xs
+        go _                         = Nothing
 
--- | Epätyhjä useahaarainen puu, joka on erikseen parametrinen
--- solmukohtien elementtien (`a`) ja  lehtien (`l` tyypeissä.
-data RoseTree a l = Branch a (NonEmpty (RoseTree a l))
-                  | Leaf l
+-- | Get the tiles in hand from a @TileGroup@.
+tileGroupTiles :: TileGroup -> [Tile]
+tileGroupTiles (GroupWait _ tiles _)  = tiles
+tileGroupTiles (GroupComplete mentsu) = mentsuTiles mentsu
+tileGroupTiles (GroupLeftover tile)   = [tile]
 
-import qualified Data.Tree.DUAL as DUAL
--- |
---  * A path downwards represents a sequence of `(draw, discard)` pairs that
---    greedily get the hand closer to tenpai.
---    First argument to the DUALTree (`[DevSeq]`) gives the discard
---    sequence.
---  * A leaf stores the hand value.
-type DevelopmentTree = DUAL.DUALTree [DevSeq] () DevSeq Value
+-- | Get the tiles in hand of the shuntsu wait based on the tiles waited.
+shuntsuWaitToHandTiles :: [Tile] -> [Tile]
+shuntsuWaitToHandTiles [] = error "shuntsuWaitToHandTiles: empty list of waits"
+shuntsuWaitToHandTiles [t] = catMaybes $ case tileNumber t of
+    Just San -> [predMay t, predMay t >>= predMay]
+    Just Chii -> [succMay t, succMay t >>= succMay]
+    _ -> [predMay t, succMay t]
+shuntsuWaitToHandTiles (t:_) = catMaybes [succMay t, succMay t >>= succMay]
 
--}
+-- | Build possible waits for the tile, always drawing _1
+buildWaits :: Tile -> [(Tile, Wait)]
+buildWaits t = (t, Left t) : catMaybes
+    [ do -- kanchan up
+        nx  <- succMay t
+        nx' <- succMay nx
+        return (nx', Right [nx])
+    , do -- kanchan down
+        pr  <- predMay t
+        pr' <- predMay pr
+        return (pr', Right [pr])
+    , do -- penchan middle down
+        nx <- succMay t
+        pr <- predMay t
+        maybe (Just (nx, Right [pr])) (const Nothing) (succMay nx)
+    , do -- penchan end down
+        pr <- predMay t
+        pr' <- predMay pr
+        maybe (Just (pr, Right [pr'])) (const Nothing) (succMay t)
+    , do -- penchan middle up
+        pr <- predMay t
+        nx <- succMay t
+        maybe (Just (pr, Right [nx])) (const Nothing) (predMay pr)
+    , do -- penchan end up
+        nx <- succMay t
+        nx' <- succMay nx
+        maybe (Just (nx, Right [nx'])) (const Nothing) (predMay t)
+    , do -- ryanmen up
+        nx <- succMay t
+        pr <- predMay t
+        nx' <- succMay nx
+        return (nx, Right [pr, nx'])
+    , do -- ryanmen down
+        pr <- predMay t
+        pr' <- predMay pr
+        nx <- succMay t
+        return (pr, Right [pr', nx])
+    ]

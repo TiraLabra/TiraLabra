@@ -1,0 +1,4 @@
+:set -XOverloadedStrings
+
+import Mahjong.Hand.Algo
+
