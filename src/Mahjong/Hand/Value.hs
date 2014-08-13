@@ -14,5 +14,30 @@
 ------------------------------------------------------------------------------
 module Mahjong.Hand.Value where
 
-type Value = Int
+import Data.Maybe
 
+import Mahjong.Hand.Mentsu
+import Mahjong.Tiles
+
+type Value = Int
+type Fu = Int
+
+-- | Calculate fu points for the mentsu.
+getFu :: [Mentsu] -> Fu
+getFu = sum . map mentsuValue
+
+mentsuValue :: Mentsu -> Fu
+mentsuValue (Mentsu mk t ms) = product [gokind mk, gotile, goshout ms]
+    where
+        gokind Koutsu = 2
+        gokind Kantsu = 8
+        gokind _      = 0
+
+        gotile
+            | not (suited t) ||
+              isNothing (succMay t) || isNothing (predMay t)
+                        = 2
+            | otherwise = 1
+
+        goshout Nothing  = 2
+        goshout (Just _) = 1
