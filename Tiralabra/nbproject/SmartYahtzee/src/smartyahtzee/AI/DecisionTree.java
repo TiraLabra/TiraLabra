@@ -14,7 +14,7 @@ import smartyahtzee.scoring.Scores;
  */
 public class DecisionTree {
     
-    private TreeNode root;
+    private final TreeNode root;
     
     public DecisionTree(int[] dice)
     {
@@ -36,10 +36,10 @@ public class DecisionTree {
     public double getEV()
     {
         TreeNode node = root.getChild();
-        int evs = 0;
+        double evs = 0;
         int leavesVisited = 0;
         
-        while (node.getSibling() != null)
+        while (node.getChild() != null)
         {
             
             TreeNode childnode = node.getChild();
@@ -54,7 +54,7 @@ public class DecisionTree {
                 
             }
             
-            node = node.getSibling();
+            //node = node.getSibling();
             
         }
         

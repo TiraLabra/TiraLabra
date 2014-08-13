@@ -57,6 +57,10 @@ public class TreeNode {
     
     public TreeNode getChild()
     {
+        if (child == null)
+        {
+            return null;
+        }
         return child;
     }
     
