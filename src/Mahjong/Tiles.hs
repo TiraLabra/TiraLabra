@@ -58,6 +58,27 @@ data Sangenpai = Haku | Hatsu | Chun
 data Kazehai = Ton | Nan | Shaa | Pei
              deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
+-- * Pretty print
+
+ppTile :: Tile -> String
+ppTile t = case t of
+    Suited ManTile n aka -> (if aka then "m" else "M") ++ ppNumber n
+    Suited PinTile n aka -> (if aka then "p" else "P") ++ ppNumber n
+    Suited SouTile n aka -> (if aka then "s" else "S") ++ ppNumber n
+    Suited{} -> error "No such tile"
+    Honor (Sangenpai sangen) -> case sangen of
+                     Haku    -> "W!"
+                     Hatsu   -> "G!"
+                     Chun    -> "R!"
+    Honor (Kazehai kaze) -> case kaze of
+                     Ton     -> "E "
+                     Nan     -> "S "
+                     Shaa    -> "W "
+                     Pei     -> "N "
+
+ppNumber :: Number -> String
+ppNumber = show . fromEnum
+
 -- * Build
 
 toSuited :: Number -> TileKind -> Tile

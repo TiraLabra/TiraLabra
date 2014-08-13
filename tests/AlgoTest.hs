@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 ------------------------------------------------------------------------------
 -- | 
 -- Module         : AlgoTest
@@ -9,7 +10,7 @@
 --
 -- Mahjong.Hand.Algo tests
 ------------------------------------------------------------------------------
-module AlgoTest ( algoTests ) where
+module AlgoTest where
 
 import Import
 import Test.Tasty.QuickCheck as QC
@@ -23,7 +24,8 @@ algoTests :: TestTree
 algoTests = testGroup "Algorithm tests"
     [ tgSplitTests "tilesGroupL" tilesGroupL
     , tgSplitTests "tilesSplitGroupL" tilesSplitGroupL
-    , props_shanten
+    , shantenTests
+    , buildGreedyWaitTree'Tests
     ]
 
 tgSplitTests :: TestName -> ([Tile] -> [[TileGroup]]) -> TestTree
@@ -72,13 +74,13 @@ tgSplitTests desc fun = testGroup desc
         length ml <= 5 ==> fun (concatMap tileGroupTiles ml) .<-- [ml]
     ]
 
-props_shanten :: TestTree
-props_shanten = testGroup "`shanten` properties"
-    [ HU.testCase "[TileGroup] complete hand"         $ Just (-1) @=? shanten shallowCompleteHand
-    , HU.testCase "[TileGroup] invalid complete hand" $ Nothing   @=? shanten shallowInvalidCompleteHand
-    , HU.testCase "[TileGroup] tenpai hand"           $ Just 0    @=? shanten shallowTenpaiHand
-    , HU.testCase "[TileGroup] iishanten"             $ Just 1    @=? shanten shallowIishanten
-    , HU.testCase "[[TileGroup]] with a complete hand" $ Just (-1) @=? shanten
+shantenTests :: TestTree
+shantenTests = testGroup "`shanten` properties"
+    [ HU.testCase "Grouping complete hand"          $ Just (-1) @=? shanten shallowCompleteHand
+    , HU.testCase "Grouping invalid complete hand"  $ Nothing   @=? shanten shallowInvalidCompleteHand
+    , HU.testCase "Grouping tenpai hand"            $ Just 0    @=? shanten shallowTenpaiHand
+    , HU.testCase "Grouping iishanten"              $ Just 1    @=? shanten shallowIishanten
+    , HU.testCase "[Grouping] with a complete hand" $ Just (-1) @=? shanten
         [ shallowInvalidCompleteHand
         , shallowCompleteHand
         , shallowTenpaiHand
@@ -86,7 +88,30 @@ props_shanten = testGroup "`shanten` properties"
         ]
     ]
 
+buildGreedyWaitTree'Tests :: TestTree
+buildGreedyWaitTree'Tests = testGroup "`buildGreedyWaitTree'` tests"
+    [ HU.testCase "GWT tenpai" $ do
+        print $ buildGreedyWaitTree' [ [GroupComplete undefined, GroupWait undefined [] ["M3"], GroupLeftover "M1"] ]
+    ]
+
+--  Shallow (*partial*) hands for testing ------------------------------
+
+-- :: Grouping
 shallowInvalidCompleteHand = GroupWait Shuntsu undefined undefined : replicate 4 (GroupComplete undefined)
 shallowCompleteHand = GroupWait Koutsu undefined undefined : replicate 4 (GroupComplete undefined)
 shallowTenpaiHand = GroupLeftover undefined : replicate 4 (GroupComplete undefined)
 shallowIishanten = GroupLeftover undefined : GroupLeftover undefined : GroupWait undefined undefined undefined : replicate 3 (GroupComplete undefined)
+
+iishanten_1 = GroupLeftover "S1"
+            : GroupLeftover "S5"
+            : GroupWait Shuntsu undefined ["M3", "M6"]
+            : replicate 3 (GroupComplete undefined)
+
+iishanten_2 = GroupLeftover "P1"
+            : GroupWait Koutsu undefined ["M3"]
+            : GroupWait Koutsu undefined ["S3"]
+            : GroupWait Shuntsu undefined ["S1", "S4"]
+            : replicate 2 (GroupComplete undefined)
+ 
+tenpai_1 = GroupLeftover "S1"
+         : replicate 4 (GroupComplete undefined)
