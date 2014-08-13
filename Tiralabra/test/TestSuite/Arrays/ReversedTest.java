@@ -19,7 +19,7 @@ public class ReversedTest {
     int[] reversed;
 
     public ReversedTest() {
-        reversed = new AllmostReversed(1000).get();
+        reversed = new Reversed(1000).get();
     }
 
     /**

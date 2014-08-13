@@ -4,17 +4,15 @@
  */
 package TestSuite.Engine;
 
-import TestSuite.Algos.Insertionsort;
-import TestSuite.Algos.Quicksort;
-import TestSuite.Algos.Selectionsort;
-import TestSuite.Arrays.RandomNoDuplicates;
-import TestSuite.Arrays.AllmostSorted;
+import TestSuite.Algos.*;
+import TestSuite.Arrays.*;
 import java.util.ArrayList;
 
 /**
  * TestFactory will be responsible for completing the final tests. ArrayList is
  * used to store results, which are finally printed to text file using
- * FilePrinter.
+ * FilePrinter. Implementation for four array order scenarios with small and big
+ * sizes.
  *
  * @author Marko <markoma@iki.fi>
  */
@@ -42,7 +40,7 @@ public class TestFactory {
      * file.
      */
     public void runRandomSmallArraysTestCycleForAll() {
-        results.add("Random small arrays test. Test cycle repeted " + repeat + " times.");
+        results.add("Random small arrays test. Test cycle repeated " + repeat + " times.");
         results.add(":Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
@@ -52,7 +50,7 @@ public class TestFactory {
                     + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
             );
         }
-        System.out.println("Random small arrays tests succefully completed.");
+        System.out.println("Random small arrays tests completed.");
     }
 
     /**
@@ -61,7 +59,7 @@ public class TestFactory {
      * file.
      */
     public void runRandomBigArraysTestCycleForAll() {
-        results.add("Random big arrays test. Test cycle repeted " + repeat + " times.");
+        results.add("Random big arrays test. Test cycle repeated " + repeat + " times.");
         results.add(":Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
@@ -71,7 +69,7 @@ public class TestFactory {
                     + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
             );
         }
-        System.out.println("Random big arrays tests succefully completed.");
+        System.out.println("Random big arrays tests completed.");
     }
 
     /**
@@ -80,7 +78,7 @@ public class TestFactory {
      * file.
      */
     public void runSortedSmallArraysTestCycleForAll() {
-        results.add("Sorted small arrays test. Test cycle repeted " + repeat + " times.");
+        results.add("Allmost sorted small arrays test. Test cycle repeated " + repeat + " times.");
         results.add(":Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
@@ -90,7 +88,7 @@ public class TestFactory {
                     + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
             );
         }
-        System.out.println("Sorted small arrays tests succefully completed.");
+        System.out.println("Allmost sorted small arrays tests completed.");
     }
 
     /**
@@ -99,7 +97,7 @@ public class TestFactory {
      * file.
      */
     public void runSortedBigArraysTestCycleForAll() {
-        results.add("Sorted big arrays test. Test cycle repeted " + repeat + " times.");
+        results.add("Allmost sorted big arrays test. Test cycle repeated " + repeat + " times.");
         results.add(":Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
@@ -109,7 +107,85 @@ public class TestFactory {
                     + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
             );
         }
-        System.out.println("Sorted big arrays tests succefully completed.");
+        System.out.println("Allmost sorted big arrays tests completed.");
+
+    }
+
+    /**
+     * Runs tests for small size reversed arrays with all sorting algorithms.
+     * Results will be added to arraylist, which is finally printed to text
+     * file.
+     */
+    public void runReversedSmallArraysTestCycleForAll() {
+        results.add("Reversed small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : small) {
+            results.add(r
+                    + ":" + runner.run(new Reversed(r), new Quicksort())
+                    + ":" + runner.run(new Reversed(r), new Insertionsort())
+                    + ":" + runner.run(new Reversed(r), new Selectionsort())
+            );
+        }
+        System.out.println("Reversed small arrays tests completed.");
+    }
+
+    /**
+     * Runs tests for small size reversed arrays with all sorting algorithms.
+     * Results will be added to arraylist, which is finally printed to text
+     * file.
+     */
+    public void runReversedBigArraysTestCycleForAll() {
+        results.add("Reversed big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : big) {
+            results.add(r
+                    + ":" + runner.run(new Reversed(r), new Quicksort())
+                    + ":" + runner.run(new Reversed(r), new Insertionsort())
+                    + ":" + runner.run(new Reversed(r), new Selectionsort())
+            );
+        }
+        System.out.println("Reversed big arrays tests completed.");
+
+    }
+
+    /**
+     * Runs tests for small size Random few Uniques arrays with all sorting
+     * algorithms. Results will be added to arraylist, which is finally printed
+     * to text file.
+     */
+    public void runRandomFewUniquesSmallArraysTestCycleForAll() {
+        results.add("Random few Uniques small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : small) {
+            results.add(r
+                    + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
+                    + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
+                    + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
+            );
+        }
+        System.out.println("Random few Uniques small arrays tests completed.");
+    }
+
+    /**
+     * Runs tests for small size Random few Uniques arrays with all sorting
+     * algorithms. Results will be added to arraylist, which is finally printed
+     * to text file.
+     */
+    public void runRandomFewUniquesBigArraysTestCycleForAll() {
+        results.add("Random few Uniques big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Quick sort:Insertion sort:Selection sort");
+
+        for (int r : big) {
+            results.add(r
+                    + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
+                    + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
+                    + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
+            );
+        }
+        System.out.println("Random few Uniques big arrays tests completed.");
 
     }
 

@@ -23,8 +23,7 @@ import java.util.logging.Logger;
 public class FilePrinter {
 
     /**
-     * File writer. If file exists, results can be added to the end of the
-     * file.
+     * File writer. If file exists, results can be added to the end of the file.
      *
      * @param fileName filename as parameter
      * @param results prints given arraylist to file
@@ -54,6 +53,7 @@ public class FilePrinter {
             }
 
             writer.close();
+            System.out.println("Printed to file: " + fileName + ".csv");
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);

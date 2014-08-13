@@ -15,8 +15,11 @@ public class main {
     public static void main(String[] args) {
 
         TestSuite.Engine.TestFactory test1 = new TestFactory(10000);
+
         test1.runRandomSmallArraysTestCycleForAll();
+        test1.runRandomFewUniquesSmallArraysTestCycleForAll();
         test1.runSortedSmallArraysTestCycleForAll();
+        test1.runReversedSmallArraysTestCycleForAll();
         test1.printToFileAndClean();
     }
 }
