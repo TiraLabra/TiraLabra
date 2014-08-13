@@ -47,4 +47,28 @@ public class TreeBuilderTest {
         assertTrue(Arrays.equals(builder.getDice(), groupedDice));
     }
     
+ 
+
+
+    /**
+     * Test of getDiceToLock method, of class TreeBuilder.
+     */
+    @Test
+    public void testGetDiceToLock() {
+        System.out.println("getDiceToLock");
+        int[] dice = {1, 2, 6, 6, 6}; 
+        TreeBuilder instance = new TreeBuilder(dice);
+        int[] expResult = {6, 6, 6};
+        int[] result = instance.getDiceToLock();
+        assertArrayEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testCreateTrees()
+    {
+        
+    }
+    
 }
