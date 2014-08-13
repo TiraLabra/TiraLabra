@@ -1,27 +1,33 @@
 package tira.tiralabra;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  *
  * @author joonaslaakkonen
  */
 public class Run {
     
-    public static int[][] verkko = new int[][] {
-        {12,4,Integer.MAX_VALUE,4,5},
-        {2,1,3,Integer.MAX_VALUE,6},
-        {3,3,Integer.MAX_VALUE,Integer.MAX_VALUE,9},
-        {4,3,Integer.MAX_VALUE,4,7},
-        {5,7,5,9,6}
-    };
-    //Int max value kuvaa tilannetta, jossa yhteyttä solmujen välillä ei ole.
     
-    
-    public static void main( String[] args ){
-        Star star = new Star(verkko);
-        Dijkstra diks = new Dijkstra(verkko);
+    public static void main( String[] args ) throws FileNotFoundException{
+
+        File map = new File("map.txt");
+        Scanner reader = new Scanner(map);
+        Scanner input = new Scanner(System.in);
+        Mapper grid = new Mapper(reader);
+ 
         
-        diks.tutki();
-        star.tutki();
+        System.out.println("Valitse lähtöpiste ja määränpää antamalla kohteen numero.");
+        grid.initialize();
+        grid.print();
+        
+        System.out.println("Lähtöpaikka:");
+        int start = input.nextInt();
+        
+        System.out.println("Päämäärä:");
+        int end = input.nextInt();
     }
     
 }
