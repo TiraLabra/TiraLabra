@@ -39,7 +39,7 @@ public class DecisionTree {
         double evs = 0;
         int leavesVisited = 0;
         
-        while (node.getChild() != null)
+        while (node.getSibling() != null)
         {
             
             TreeNode childnode = node.getChild();
