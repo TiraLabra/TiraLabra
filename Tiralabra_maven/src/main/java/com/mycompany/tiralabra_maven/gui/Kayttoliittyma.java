@@ -18,7 +18,7 @@ import javax.swing.WindowConstants;
  * @author mikko
  */
 public class Kayttoliittyma implements Runnable{
-    private JFrame frame;
+    private NewJFrame frame;
     private Simulaatio simulaatio;
     private Piirtologiikka piirtologiikka;
     private int sivunPituus;
@@ -31,18 +31,23 @@ public class Kayttoliittyma implements Runnable{
     }
 
     public Piirtoalusta getPiirtoalusta() {
-        return this.piirtoalusta;
+        //return this.piirtoalusta;
+        if (frame == null) {
+            return null;
+        }
+        return frame.getPiirtoalusta();
     }
 
     @Override
     public void run() {
-        frame = new JFrame("Reittialgoritmit");
-        luoKomponentit(frame.getContentPane());
-        piirtoalusta.setPreferredSize(new Dimension(640, 480));
-        frame.pack();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame = new NewJFrame(simulaatio, piirtologiikka, sivunPituus);
+        //frame = new JFrame("Reittialgoritmit");
+        //luoKomponentit(frame.getContentPane());
+        //piirtoalusta.setPreferredSize(new Dimension(640, 480));
+        //frame.pack();
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setResizable(false);
+        //frame.setResizable(false);
     }
 
     private void luoKomponentit(Container contentPane) {
