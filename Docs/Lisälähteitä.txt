@@ -1,0 +1,2 @@
+http://stackoverflow.com/questions/8721406/how-to-determine-if-a-point-is-inside-a-2d-convex-polygon
+http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
