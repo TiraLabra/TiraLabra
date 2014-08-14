@@ -74,6 +74,8 @@ but it's better to set up on compile-time.
 */
 var AmountOfLangs = 0
 
+var bytesRead LangTable
+
 /*
 Contains general statistics of the n-grams read.
 
@@ -95,11 +97,23 @@ type NGramStatsType [MaxDepth + 1][FreqClasses]LangTable
 
 var NGramStats NGramStatsType
 
-var NGramStatsOverTime = make([]NGramStatsType, 0, 8)
+// First index - language. Second index - nth snapshot over time.
+var NGramStatsOverTime = make([][]NGramStatsType, 0, 4)
 
-//
 var langTagToIndex *trie.Node
 var langIndexToTag [][]byte = [][]byte{nil}
+
+func LangTagToIndex(tag string) LangIndex {
+	if tag == "" {
+		return AllLangs
+	} else {
+		return langTagToIndex.TryAndGet([]byte(tag)).(LangIndex)
+	}
+}
+
+func LangIndexToTag(lang LangIndex) string {
+	return string(langIndexToTag[lang])
+}
 
 /*
 A trie container that contains all the n-gram frequency data. The frequency values
@@ -226,28 +240,29 @@ func touchLangData(node *trie.Node, lang LangIndex) {
 	}
 }
 
-func printNGramStats(stats *NGramStatsType) {
-
-	for n := 0; n <= MaxDepth; n++ {
-		for f := FreqClass(0); f < 47; f++ {
-			if stats[n][f][0] == 0 {
-				continue
-			}
+func printNGramStats(stats *NGramStatsType, l LangIndex, n int) {
+	for f := FreqClass(0); f < 47; f++ {
+		if stats[n][f][0] == 0 {
+			continue
+		}
+		/*
 			if n == AllGrams {
 				fmt.Print("n-grams of all lengths ")
 			} else {
 				fmt.Print(n, "-grams ")
 			}
 			fmt.Println("mentioned at least", FreqClassToMinFreq(f), "times")
-			for l := LangIndex(0); l < LangIndex(len(stats[0][f])); l++ {
-				if l == AllLangs {
-					fmt.Println("All languages:", stats[n][f][l])
-				} else {
-					fmt.Println("Language ", string(langIndexToTag[l]), ":", stats[n][f][l])
-				}
-			}
-		}
+		*/
+		fmt.Print(stats[n][f][l], "\t")
+		/*if l == AllLangs {
+			fmt.Println("All languages:", stats[n][f][l])
+		} else {
+			fmt.Println("Language ", string(langIndexToTag[l]), ":", stats[n][f][l])
+		}*/
+
 	}
+	fmt.Println()
+
 }
 
 /*
@@ -258,15 +273,37 @@ func printStats() {
 	fmt.Println("Max n-gram length:\t", MaxDepth)
 	fmt.Printf("Size in memory:\t\t%d MiB, %d bytes per node, %d nodes.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}), trie.NodeCount())
 	fmt.Println()
-	bytes := 1000
-	for i := range NGramStatsOverTime {
-		fmt.Println("\n\nStats for first", bytes, "bytes of text.")
-		bytes++
-		printNGramStats(&NGramStatsOverTime[i])
-	}
+	lang := LangTagToIndex("")
+	for n := 0; n < MaxDepth+1; n++ {
+		bytes := 1000
+		fmt.Print("Stats for ", n, "-grams, ", LangIndexToTag(lang), ".\n")
+		highestFreqClass := FreqClass(0)
+		for f := FreqClass(0); f < 47; f++ {
+			if NGramStats[n][f][AllLangs] == 0 {
+				highestFreqClass = f
+				break
+			}
+		}
+		fmt.Print("Freq at least")
+		for f := FreqClass(0); f < highestFreqClass; f++ {
+			freq := FreqClassToMinFreq(f)
+			if freq < 100000 {
+				fmt.Print("\t", freq)
+			} else {
+				fmt.Printf("\t%fk", float64(freq)/1000)
+			}
+		}
+		fmt.Println()
+		for i := range NGramStatsOverTime[lang] {
+			fmt.Print(bytes, " bytes\t")
+			bytes += 1000
+			printNGramStats(&NGramStatsOverTime[lang][i], lang, n)
+		}
 
-	fmt.Println("\n\nFinal stats.")
-	printNGramStats(&NGramStats)
+		fmt.Println("\nFinal stats.\n")
+		fmt.Print(bytesRead[0], " bytes\t")
+		printNGramStats(&NGramStats, lang, n)
+	}
 
 }
 
@@ -289,6 +326,7 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 			}
 		}
 		langindex := node.Value.(LangIndex)
+		NGramStatsOverTime = append(NGramStatsOverTime, make([]NGramStatsType, 0, 8))
 		if ShowMessages {
 			fmt.Println("Changed language to:", string(langtag[:]))
 		}
@@ -297,8 +335,6 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 }
 
 func builder(byteStream chan byte) {
-
-	var bytesRead int
 
 	// current language
 	langindex := LangIndex(1)
@@ -340,13 +376,14 @@ func builder(byteStream chan byte) {
 		}
 
 		if ShowMessages && KeepStats {
-			bytesRead++
-			if bytesRead%1000 == 0 {
-				NGramStatsOverTime = append(NGramStatsOverTime, NGramStatsType{})
+			incrementLang(&bytesRead, AllLangs)
+			incrementLang(&bytesRead, langindex)
+			if bytesRead[langindex]%1000 == 0 {
+				NGramStatsOverTime[langindex] = append(NGramStatsOverTime[langindex], NGramStatsType{})
 				for n := range NGramStats {
 					for f := range NGramStats[n] {
-						NGramStatsOverTime[len(NGramStatsOverTime)-1][n][f] = make(LangTable, len(NGramStats[n][f]))
-						copy(NGramStatsOverTime[len(NGramStatsOverTime)-1][n][f], NGramStats[n][f])
+						NGramStatsOverTime[langindex][len(NGramStatsOverTime[langindex])-1][n][f] = make(LangTable, len(NGramStats[n][f]))
+						copy(NGramStatsOverTime[langindex][len(NGramStatsOverTime[langindex])-1][n][f], NGramStats[n][f])
 					}
 				}
 			}
