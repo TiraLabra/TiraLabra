@@ -43,7 +43,7 @@ public class DecisionTree {
         {
             
             TreeNode childnode = node.getChild();
-            while (childnode.getSibling() != null)
+            while (childnode != null && childnode.getSibling() != null)
             {
                 if (childnode.getValue().length == 5)
                 {
