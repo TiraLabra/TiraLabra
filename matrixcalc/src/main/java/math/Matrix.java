@@ -177,7 +177,7 @@ public class Matrix {
      * @param row Index of the row to multiplicate with the number.
      * @param number Multiplier.
      */
-    public void rowMultiply(int row, int number) {
+    public void rowMultiply(int row, double number) {
         for (int i = 0; i < cols; i++) {
             array[row][i] *= number;
         }
@@ -207,7 +207,7 @@ public class Matrix {
             for (int j = 0; j < cols; j++) {
                 if (i < row) {
                     deleted.getArray()[i][j] = array[i][j];
-                } else if (i > row) {
+                } else {
                     deleted.getArray()[i][j] = array[i+1][j];
                 }
             }
@@ -226,7 +226,7 @@ public class Matrix {
             for (int j = 0; j < cols-1; j++) {
                 if (j < col) {
                     deleted.getArray()[i][j] = array[i][j];
-                } else if (j > col) {
+                } else {
                     deleted.getArray()[i][j] = array[i][j+1];
                 }
             }
