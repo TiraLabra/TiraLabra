@@ -43,13 +43,12 @@ public class TreeBuilder {
     public int[] getDiceToLock()
     {
         double keepAllEV = Scores.calculateBestScore(dice);
-        double treeEV = 0.0;
         double biggestEV = 0.0;
         DecisionTree biggestEVtree = null;
         
         for (DecisionTree tree : expectedValues)
         {
-            treeEV = tree.getEV();
+            double treeEV = tree.getEV();
             System.out.println("TreeEV: " + treeEV);
             if (treeEV > biggestEV)
             {
@@ -63,7 +62,11 @@ public class TreeBuilder {
             return dice;
         }
         
-        return biggestEVtree.getRoot();
+        if (biggestEVtree != null) {
+            return biggestEVtree.getRoot();
+        }
+        
+        return null;
     }
 
     /**
