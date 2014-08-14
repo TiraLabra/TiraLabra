@@ -11,20 +11,12 @@ import Tietorakenteet.Keko.Iteroitava;
  *
  * @author Serafim
  */
-public interface abstraktiSolmu extends Iteroitava{
+public interface Abstraktisolmu extends Iteroitava {
 
     public void asteaVerkko(Verkko verkko);
 
     public Verkko palautaVerkko();
 
-    public void Varita(int i);
-
-    public int palautaVari();
-    
-    public void asetaEdellinen(abstraktiSolmu solmu);
-    
-    public abstraktiSolmu palautaEdellinen();
-    
-    
+    public SolmuMuisti palautaSolmuMuisti();
 
 }

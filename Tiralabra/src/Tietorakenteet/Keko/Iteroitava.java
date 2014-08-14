@@ -13,7 +13,7 @@ package Tietorakenteet.Keko;
 public interface Iteroitava {
   
   public void asetaArvo(double d);  
-  public double Arvo();
+  public double KekoArvo();
   public int SijaintiKeossa();
   public void asetaSijainti(int i);
 }

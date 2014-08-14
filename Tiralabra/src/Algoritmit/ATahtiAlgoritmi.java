@@ -2,9 +2,9 @@ package Algoritmit;
 
 import Tietorakenteet.Keko.Iteroitava;
 import Tietorakenteet.Keko.Keko;
-import Tietorakenteet.Solmu;
+import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Verkko;
-import Tietorakenteet.abstraktiSolmu;
+import Tietorakenteet.Abstraktisolmu;
 
 /*
  * 
@@ -14,10 +14,11 @@ import Tietorakenteet.abstraktiSolmu;
 class ATahtiAlgoritmi {
 
     private Verkko verkko;
-    private abstraktiSolmu alku;
-    private abstraktiSolmu loppu;
+    private Abstraktisolmu alku;
+    private Abstraktisolmu loppu;
     private Keko laskentaJoukko;
     private int maksimi;
+    
 
     /*
      * 
@@ -52,7 +53,7 @@ class ATahtiAlgoritmi {
      * 
      */
 
-    public void asetaPisteet(abstraktiSolmu alku, abstraktiSolmu loppu) {
+    public void asetaPisteet(Abstraktisolmu alku, Abstraktisolmu loppu) {
         this.alku = alku;
         this.loppu = loppu;
         initKeko();
@@ -65,6 +66,13 @@ class ATahtiAlgoritmi {
      */
     public void Laske() {
         this.laskentaJoukko.Lisaa(alku);
+        this.alku.palautaSolmuMuisti().asetaGScore(0);
+        this.alku.palautaSolmuMuisti().asetaFScore(this.verkko.Etaisyys(alku, loppu));
+        while(this.laskentaJoukko.palautaNykyinenKoko() > 0)
+        {
+        
+        }
+
 
     }
 
@@ -73,6 +81,7 @@ class ATahtiAlgoritmi {
         Iteroitava[] taulukko = new Iteroitava[this.maksimi];
         this.laskentaJoukko.asetaTaulukko(taulukko, 0);
 
+        
     }
 
 }

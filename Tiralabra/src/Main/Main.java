@@ -1,8 +1,10 @@
 package Main;
 
+import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Keko.Iteroitava;
 import Tietorakenteet.Keko.Keko;
-import Tietorakenteet.Solmu;
+import Tietorakenteet.Kordinaatti;
+import java.util.HashMap;
 
 /*
  * 
@@ -15,20 +17,21 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Keko keko = new Keko();
-        Solmu[] solmut = new Solmu[200];
-        keko.asetaTaulukko(solmut, 99);
+        testaaHashMap();
 
-        for (int j = 98; j >= 0; j--) {
-            Solmu lisattava = new Solmu(j, j);
-            lisattava.asetaArvo(j);
-            Iteroitava iter = lisattava;
-            keko.Lisaa(iter);
+    }
 
-        }
-
-        Solmu[] solmud = (Solmu[]) keko.palautaTaulukko();
-
+    public static void testaaHashMap() {
+        
+        HashMap<Kordinaatti, Integer> mappi = new HashMap<Kordinaatti, Integer>();
+        Kordinaatti a = new Kordinaatti(1, 1);
+        Kordinaatti b = new Kordinaatti(1, 2);
+        Kordinaatti c = new Kordinaatti(1, 1);
+        mappi.put(a, 12);
+        
+        System.out.println(mappi.get(c));
+        mappi.put(c, 42);
+        System.out.println(mappi.get(a));
     }
 
 }

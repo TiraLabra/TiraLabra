@@ -15,13 +15,13 @@ import java.util.List;
  */
 public interface Verkko {
 
-    public List<Solmu> Naapurit(Solmu node);
+    public List<Abstraktisolmu> Naapurit(Abstraktisolmu node);
 
-    public boolean Olemassa(Solmu node);
+    public boolean Olemassa(Abstraktisolmu node);
 
-    public double Heurestiikka(Solmu alku, Solmu loppu);
+    public double Heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu);
 
-    public double Etaisyys(Solmu alku, Solmu loppu);
+    public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu);
     
     
 }

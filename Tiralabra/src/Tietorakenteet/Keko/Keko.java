@@ -5,14 +5,13 @@
  */
 package Tietorakenteet.Keko;
 
-import Tietorakenteet.Solmu;
+import Tietorakenteet.DiskreettiSolmu;
 import java.util.HashMap;
 
 /**
- * 
- * 
+ *
+ *
  */
-
 public class Keko {
 
     private int nykyinenkoko;
@@ -28,10 +27,17 @@ public class Keko {
 
     /**
      *
-     * 
+     *
      * Asettaa Keolle taulukon ja sen viimeisen alkion paikan.
-     * 
+     *
      */
+    public boolean onkoTyhja() {
+        if (nykyinenkoko == 0) {
+            return true;
+        }
+        return false;
+    }
+
     public void asetaTaulukko(Iteroitava[] taulukko, int nykyinenkoko) {
         this.taulukko = taulukko;
         this.maksimikoko = taulukko.length;
@@ -49,24 +55,25 @@ public class Keko {
 
     /**
      *
-     * Heapify metodi, jos keon ehto on rikki taulukon kohdassa i tämä metodi korjaa sen
+     * Heapify metodi, jos keon ehto on rikki taulukon kohdassa i tämä metodi
+     * korjaa sen
      */
     public void Korjaa(int i) {
         int vasen = vasen(i);
         int oikea = oikea(i);
         if (oikea <= this.nykyinenkoko - 1) {
             int pienempi = 0;
-            if (this.taulukko[vasen].Arvo() < this.taulukko[oikea].Arvo()) {
+            if (this.taulukko[vasen].KekoArvo() < this.taulukko[oikea].KekoArvo()) {
                 pienempi = vasen;
             } else {
                 pienempi = oikea;
             }
-            if (this.taulukko[i].Arvo() > this.taulukko[pienempi].Arvo()) {
+            if (this.taulukko[i].KekoArvo() > this.taulukko[pienempi].KekoArvo()) {
                 vaihda(i, pienempi);
                 Korjaa(pienempi);
             }
         } else if ((vasen == this.nykyinenkoko - 1)) {
-            if ((taulukko[i].Arvo() > taulukko[vasen].Arvo())) {
+            if ((taulukko[i].KekoArvo() > taulukko[vasen].KekoArvo())) {
                 vaihda(i, vasen);
             }
         }
@@ -95,8 +102,8 @@ public class Keko {
 
     /**
      *
-     * Lisää objektin kekoon. 
-     * 
+     * Lisää objektin kekoon.
+     *
      */
     public boolean Lisaa(Iteroitava objekti) {
         if (this.nykyinenkoko == this.maksimikoko) {
@@ -106,7 +113,7 @@ public class Keko {
         int i = this.nykyinenkoko - 1;
         objekti.asetaSijainti(i);
         this.taulukko[this.nykyinenkoko - 1] = objekti;
-        while ((i > 0) && (this.taulukko[this.vanhempi(i)].Arvo() > objekti.Arvo())) {
+        while ((i > 0) && (this.taulukko[this.vanhempi(i)].KekoArvo() > objekti.KekoArvo())) {
             int vanhempi = this.vanhempi(i);
             vaihda(i, vanhempi);
             i = this.vanhempi(i);
@@ -128,19 +135,17 @@ public class Keko {
      */
     public void Pienennetty(int j) {
         int i = j;
-        while ((i > 0) && (this.taulukko[this.vanhempi(i)].Arvo() > this.taulukko[i].Arvo())) {
+        while ((i > 0) && (this.taulukko[this.vanhempi(i)].KekoArvo() > this.taulukko[i].KekoArvo())) {
             vaihda(i, this.vanhempi(i));
             i = this.vanhempi(i);
 
         }
     }
 
-   
-
     /**
      * Vaihtaa paikassa i ja j olevat alkiot.
      */
-        public void vaihda(int i, int j) {
+    public void vaihda(int i, int j) {
         Iteroitava vaihdettava1 = this.taulukko[i];
         Iteroitava vaihdettava2 = this.taulukko[j];
         vaihdettava1.asetaSijainti(j);
@@ -149,7 +154,7 @@ public class Keko {
         this.taulukko[j] = vaihdettava1;
     }
 
-      /**
+    /**
      * Palauttaa paiakssa i olevan alkion vanhemman
      */
     private int vanhempi(int i) {
@@ -157,17 +162,17 @@ public class Keko {
         j = j / 2;
         return j;
     }
-      /**
+
+    /**
      * Palauttaa paiakssa i olevan alkion vasemman lapsen
      */
-
     private int vasen(int i) {
         return 2 * i + 1;
     }
-     /**
+
+    /**
      * Palauttaa paiakssa i olevan alkion oikean lapsen
      */
-
     private int oikea(int i) {
         return 2 * i + 2;
     }
