@@ -17,12 +17,14 @@ public class TreeBuilder {
     
     private int[] dice;
     private ArrayList<DecisionTree> expectedValues;
+    private boolean[] marked;
     
-    public TreeBuilder(int[] dice)
+    public TreeBuilder(int[] dice, boolean[] marked)
     {
         this.expectedValues = new ArrayList<>();
         this.dice = groupingSort(dice);
         createTrees(this.dice);
+        this.marked = marked;
         
     }
     
@@ -42,7 +44,7 @@ public class TreeBuilder {
     
     public int[] getDiceToLock()
     {
-        double keepAllEV = Scores.calculateBestScore(dice);
+        double keepAllEV = Scores.calculateBestScore(dice, marked);
         double biggestEV = 0.0;
         DecisionTree biggestEVtree = null;
         
@@ -92,7 +94,7 @@ public class TreeBuilder {
         System.out.println("Length: " +combinations.length);
         for (int i = 0; i < combinations.length; i++)
         {
-            DecisionTree tree = new DecisionTree(combinations[i]);
+            DecisionTree tree = new DecisionTree(combinations[i], marked);
             expectedValues.add(tree);
         }
         

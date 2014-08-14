@@ -15,10 +15,14 @@ import smartyahtzee.scoring.Scores;
 public class DecisionTree {
     
     private final TreeNode root;
+    private double evs;
+    private int leavesVisited;
+    private boolean[] marked;
     
-    public DecisionTree(int[] dice)
+    public DecisionTree(int[] dice, boolean[] markedScores)
     {
         root = new TreeNode(dice);
+        this.marked = markedScores;
     }
     
     public int[] getRoot()
@@ -36,28 +40,10 @@ public class DecisionTree {
     public double getEV()
     {
         TreeNode node = root.getChild();
-        double evs = 0;
-        int leavesVisited = 0;
+        evs = 0.0;
+        leavesVisited = 0;
         
-        while (node.getSibling() != null)
-        {
-            
-            TreeNode childnode = node.getChild();
-            while (childnode != null && childnode.getSibling() != null)
-            {
-                if (childnode.getValue().length == 5)
-                {
-                    evs += Scores.calculateBestScore(childnode.getValue());
-                    leavesVisited++;
-                }
-                childnode = childnode.getSibling();
-                
-            }
-            
-            //node = node.getSibling();
-            
-        }
-        
+        countEV(node);
         
         if (leavesVisited == 0)
         {
@@ -65,7 +51,22 @@ public class DecisionTree {
         }
         
         double ev = evs / leavesVisited;
-                
         return ev;
+    }
+    
+    private void countEV(TreeNode node)
+    {
+        if (node.getValue().length == 5)
+        {
+            do {
+                evs += Scores.calculateBestScore(node.getValue(), marked);
+                leavesVisited++;
+                node = node.getSibling();
+            } while (node != null);
+            
+            
+        } else {
+            countEV(node.getChild());
+        }
     }
 }

@@ -42,7 +42,7 @@ public class TreeBuilderTest {
     @Test
     public void testGroupingSort() {
         int[] dice = {1, 6, 3, 6, 3};
-        TreeBuilder builder = new TreeBuilder(dice);
+        TreeBuilder builder = new TreeBuilder(dice, new boolean[17]);
         int[] groupedDice = {6, 6, 3, 3, 1};
         assertTrue(Arrays.equals(builder.getDice(), groupedDice));
     }
@@ -56,8 +56,8 @@ public class TreeBuilderTest {
     @Test
     public void testGetDiceToLock() {
         System.out.println("getDiceToLock");
-        int[] dice = {1, 2, 6, 6, 6}; 
-        TreeBuilder instance = new TreeBuilder(dice);
+        int[] dice = {1, 2, 6, 6, 6};
+        TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
         int[] expResult = {6, 6, 6};
         int[] result = instance.getDiceToLock();
         assertArrayEquals(expResult, result);

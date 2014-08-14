@@ -6,10 +6,8 @@
 
 package smartyahtzee.scoring;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import smartyahtzee.DiceSet;
-import smartyahtzee.Die;
+import smartyahtzee.Player;
 
 /**
  *
@@ -39,12 +37,12 @@ public class Scores {
         0.832511, 1.666188, 2.501655, 3.33348, 4.168105, 5.001114, 0.0, 0.0, 6.986218, 3.78259, 2.233836, 0.280384, 0.23184, 0.3118, 0.690615, 17.503053, 0.04025
     };
     
-    public static double calculateBestScore(int[] dice)
+    public static double calculateBestScore(int[] dice, boolean[] marked)
     {
         double bestScore = 0;
         for (int i = 0; i < 17; i++)
         {
-            if (i == 7 || i == 6)   //wouldn't give an error even if this check wasn't performed
+            if (marked[i] || i == 7 || i == 6)  
             {
                 continue;
             }
