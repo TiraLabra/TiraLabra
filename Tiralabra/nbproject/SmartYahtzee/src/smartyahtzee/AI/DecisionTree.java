@@ -49,7 +49,8 @@ public class DecisionTree {
         {
             return 0;
         }
-        
+        System.out.println("ev sum: " + evs);
+        System.out.println("leaves visited: "+ leavesVisited);
         double ev = evs / leavesVisited;
         return ev;
     }

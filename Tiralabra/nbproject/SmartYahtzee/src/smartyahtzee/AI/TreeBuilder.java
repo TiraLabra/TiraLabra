@@ -21,11 +21,22 @@ public class TreeBuilder {
     
     public TreeBuilder(int[] dice, boolean[] marked)
     {
+        this.marked = marked;
         this.expectedValues = new ArrayList<>();
         this.dice = groupingSort(dice);
         createTrees(this.dice);
-        this.marked = marked;
         
+        
+    }
+    
+    /**
+     * Testausta varten.
+     * @return 
+     */
+    
+    public ArrayList<DecisionTree> getEVs()
+    {
+        return expectedValues;
     }
     
     public int[] getDice()
@@ -61,14 +72,16 @@ public class TreeBuilder {
         
         if (keepAllEV > biggestEV)  // move straight to marking scores
         {
+            System.out.println("Keeping all dice");
             return dice;
         }
         
         if (biggestEVtree != null) {
+            System.out.println("Keeping biggest tree");
             return biggestEVtree.getRoot();
         }
-        
-        return null;
+        System.out.println("Keeping first option");
+        return expectedValues.get(0).getRoot();
     }
 
     /**

@@ -56,19 +56,40 @@ public class TreeBuilderTest {
     @Test
     public void testGetDiceToLock() {
         System.out.println("getDiceToLock");
-        int[] dice = {1, 2, 6, 6, 6};
+        int[] dice = {6, 6, 5, 2, 1};
         TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
-        int[] expResult = {6, 6, 6};
+        int[] expResult = {6, 6, 5};
         int[] result = instance.getDiceToLock();
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testGetDiceToLockKeepingAll() {
+        System.out.println("getDiceToLock");
+        int[] dice = {1, 1, 1, 1, 1};
+        TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
+        int[] expResult = {1, 1, 1, 1, 1};
+        int[] result = instance.getDiceToLock();
+        assertArrayEquals(expResult, result);
+    }
+    
+    @Test
+    public void testGetDiceToLockKeepingFour() {
+        System.out.println("getDiceToLock");
+        int[] dice = {6, 6, 6, 6, 1};
+        TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
+        int[] expResult = {6, 6, 6, 6};
+        int[] result = instance.getDiceToLock();
+        assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testCreateTrees()
     {
-        
+        System.out.println("createTrees");
+        int[] dice = {6, 5, 5, 4, 4};
+        TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
+        assertEquals(instance.getEVs().size(), 4);
     }
     
 }

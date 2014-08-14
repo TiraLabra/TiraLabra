@@ -41,17 +41,15 @@ public class Scores {
     public static double calculateBestScore(int[] dice, boolean[] marked)
     {
         double bestScore = 0;
-        for (int i = 0; i < 17; i++)
+        for (int i = 0; i < 10; i++)
         {
-            System.out.println(marked[i]);
-            if (marked[i] || i == 7 || i == 6)  
+            if (!marked[i] && i != 7 && i != 6)  
             {
-                continue;
-            }
-            double score = calculateScore(i, dice) / maxScores[i] * expectedValues[i];
-            if (score > bestScore)
-            {
-                bestScore = score;
+                double score = calculateScore(i, dice) / maxScores[i] * expectedValues[i];
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                }
             }
         }
         return bestScore;
