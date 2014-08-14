@@ -28,7 +28,7 @@ public abstract class Player {
     public Player()
     {
         scores = new int[17];
-        markedColumns = new boolean[17];
+        markedColumns = new boolean[18];
         dice = new DiceSet();
     }
     
