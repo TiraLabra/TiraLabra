@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
 import java.util.BitSet;
 
 /**
@@ -74,18 +73,20 @@ public final class HuffmanDecompressor {
 
     /**
      * Starts the decompression process.
+     *
+     * @return The decompressed file.
      */
-    public void decompress() {
+    public String decompress() {
         try (final FileInputStream file = new FileInputStream(path);
                 final ObjectInputStream objectReader = new ObjectInputStream(file);
                 final DataInputStream bitReader = new DataInputStream(file)) {
-            final String decoded = readFile(objectReader, bitReader);
-            writeFile(decoded);
+            return readFile(objectReader, bitReader);
         } catch (final IOException ex) {
             System.err.println("Error decompressing files");
         } catch (final ClassNotFoundException ex) {
             System.err.println("Could not read file, it may be corrupted (Missing huffman tree)");
         }
+        return null;
     }
 
     /**
@@ -155,18 +156,5 @@ public final class HuffmanDecompressor {
         readBits++;
         final Node nodeToTurn = turnRight ? node.getRight() : node.getLeft();
         return decodeChar(bits, nodeToTurn);
-    }
-
-    /**
-     * Writes the text back to the file given in the constructor.
-     *
-     * @param text The decompressed text.
-     */
-    private void writeFile(final String text) {
-        try (final PrintWriter writer = new PrintWriter(decompressed)) {
-            writer.write(text);
-        } catch (final IOException ex) {
-            System.err.println("Error writing decompressed file");
-        }
     }
 }

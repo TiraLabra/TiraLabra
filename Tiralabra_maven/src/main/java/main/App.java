@@ -2,6 +2,9 @@ package main;
 
 import com.mycompany.tiralabra_maven.HuffmanCompressor;
 import com.mycompany.tiralabra_maven.HuffmanDecompressor;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 final class App {
 
@@ -60,7 +63,22 @@ final class App {
         } else if (!decompressor.create()) {
             System.err.println("Could not create file");
         } else {
-            decompressor.decompress();
+            final String decompressed = decompressor.decompress();
+            final String pathToDecompressed = removeFileEnding(path);
+            final File file = new File(pathToDecompressed);
+            writeFile(decompressed, file);
         }
+    }
+
+    private static void writeFile(final String text, final File file) {
+        try (final PrintWriter writer = new PrintWriter(file)) {
+            writer.write(text);
+        } catch (final IOException ex) {
+            System.err.println("Error writing decompressed file");
+        }
+    }
+
+    private static String removeFileEnding(final String toRemoveFrom) {
+        return toRemoveFrom.substring(0, toRemoveFrom.length() - 4);
     }
 }
