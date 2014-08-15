@@ -14,8 +14,6 @@ import smartyahtzee.scoring.Scores;
  * @author essalmen
  */
 public class Bot extends Player {
-    
-    
 
     
     @Override
@@ -25,11 +23,12 @@ public class Bot extends Player {
         System.out.println(dice);
         TreeBuilder decisions = new TreeBuilder(dice.asArray(), this.markedColumns);
         int[] lock = decisions.getDiceToLock();
-        if (lock.length == 5)
+        if (lock != null)
         {
+            dice.lockMany(lock);
+        } else if (lock != null && lock.length == 5) {
             return;
         }
-        dice.lockMany(lock);
         dice.throwDice();       //todo: second turn, using already created treebuilder
         System.out.println(dice);
         dice.unlockAll();
@@ -44,7 +43,7 @@ public class Bot extends Player {
 
         for (int i = 0; i < 17; i++)
         {
-            if (markedColumns[i])
+            if (markedColumns[i] || i == 7 || i == 6)
             {
                 continue;
             }
@@ -67,13 +66,13 @@ public class Bot extends Player {
     
     private void markZero()
     {
-        double lowest = 0;
+        double lowest = 200;
         int lowestIndex = 0;
         
         for (int i = 0; i < 17; i++)
         {
-            if (markedColumns[i])
-            {
+            if (markedColumns[i] || i == 6 || i == 7)
+            {   
                 continue;
             }
             double expectedValue = Scores.maxScores[i] * Scores.expectedValues[i];

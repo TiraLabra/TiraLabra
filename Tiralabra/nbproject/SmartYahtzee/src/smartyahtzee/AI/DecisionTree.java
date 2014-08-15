@@ -50,24 +50,22 @@ public class DecisionTree {
             return 0;
         }
         System.out.println("ev sum: " + evs);
-        System.out.println("leaves visited: "+ leavesVisited);
         double ev = evs / leavesVisited;
         return ev;
     }
     
     private void countEV(TreeNode node)
-    {
-        if (node.getValue().length == 5)
-        {
-            do {
+    {        
+        do {
+            if (node.getValue().length == 5)
+            {
                 evs += Scores.calculateBestScore(node.getValue(), marked);
                 leavesVisited++;
-                node = node.getSibling();
-            } while (node != null);
+            } else {
+                countEV(node.getChild());
+            }
+            node = node.getSibling();
+        } while (node != null);
             
-            
-        } else {
-            countEV(node.getChild());
-        }
     }
 }

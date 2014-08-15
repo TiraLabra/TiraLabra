@@ -7,7 +7,6 @@
 package smartyahtzee.scoring;
 
 import java.util.Arrays;
-import smartyahtzee.Player;
 
 /**
  *
@@ -43,8 +42,10 @@ public class Scores {
         double bestScore = 0;
         for (int i = 0; i < 10; i++)
         {
-            if (!marked[i] && i != 7 && i != 6)  
+            if (!marked[i] && i != 7 && i != 6)
             {
+                Arrays.sort(dice);
+                
                 double score = calculateScore(i, dice) / maxScores[i] * expectedValues[i];
                 if (score > bestScore)
                 {

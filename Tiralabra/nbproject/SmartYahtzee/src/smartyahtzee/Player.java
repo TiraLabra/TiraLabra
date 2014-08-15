@@ -28,7 +28,7 @@ public abstract class Player {
     public Player()
     {
         scores = new int[17];
-        markedColumns = new boolean[18];
+        markedColumns = new boolean[17];
         dice = new DiceSet();
     }
     
@@ -72,9 +72,14 @@ public abstract class Player {
     
     public void setScore(int index, int score)
     {
+        if (markedColumns[index])
+        {
+            System.out.println("trying to remark score");
+        } else {
         scores[index] = score;
         markedColumns[index] = true;
         totalPoints += score;
+        }
     }
     
     /**

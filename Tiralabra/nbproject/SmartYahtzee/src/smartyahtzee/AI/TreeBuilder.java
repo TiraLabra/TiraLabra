@@ -80,8 +80,8 @@ public class TreeBuilder {
             System.out.println("Keeping biggest tree");
             return biggestEVtree.getRoot();
         }
-        System.out.println("Keeping first option");
-        return expectedValues.get(0).getRoot();
+        System.out.println("Throwing all dice");
+        return null;
     }
 
     /**
