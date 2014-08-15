@@ -1,10 +1,11 @@
 package Algoritmit;
 
+import Tietorakenteet.Abstraktisolmu;
+import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Keko.Iteroitava;
 import Tietorakenteet.Keko.Keko;
-import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Verkko;
-import Tietorakenteet.Abstraktisolmu;
+import java.util.ArrayList;
 
 /*
  * 
@@ -18,7 +19,7 @@ class ATahtiAlgoritmi {
     private Abstraktisolmu loppu;
     private Keko laskentaJoukko;
     private int maksimi;
-    
+
 
     /*
      * 
@@ -66,13 +67,28 @@ class ATahtiAlgoritmi {
      */
     public void Laske() {
         this.laskentaJoukko.Lisaa(alku);
+        alku.palautaSolmuMuisti().asetaKekoon(true);
         this.alku.palautaSolmuMuisti().asetaGScore(0);
         this.alku.palautaSolmuMuisti().asetaFScore(this.verkko.Etaisyys(alku, loppu));
-        while(this.laskentaJoukko.palautaNykyinenKoko() > 0)
-        {
-        
-        }
+        while (this.laskentaJoukko.palautaNykyinenKoko() > 0) {
+            Abstraktisolmu current = (Abstraktisolmu) this.laskentaJoukko.PoistaMinimi();
+            current.palautaSolmuMuisti().asetaKekoon(false);
+            if (current == loppu) {
+                this.loppu.palautaSolmuMuisti().asetaEdellinen(alku);
+                return;
+            }
+            current.palautaSolmuMuisti().Varita(1);
+            ArrayList<Abstraktisolmu> naapurit = this.verkko.Naapurit(current);
+            for (Abstraktisolmu naapuri : naapurit) {
+                if (naapuri.palautaSolmuMuisti().palautaVari() != 1) {
+                    double gscore = current.palautaSolmuMuisti().palautaGScore() + this.verkko.Etaisyys(current, naapuri);
+                    if ((naapuri.palautaSolmuMuisti().Keossa() == false) || (gscore < naapuri.palautaSolmuMuisti().palautaGScore())) {
+                        
+                    }
+                }
+            }
 
+        }
 
     }
 
@@ -81,7 +97,6 @@ class ATahtiAlgoritmi {
         Iteroitava[] taulukko = new Iteroitava[this.maksimi];
         this.laskentaJoukko.asetaTaulukko(taulukko, 0);
 
-        
     }
 
 }

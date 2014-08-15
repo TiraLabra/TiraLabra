@@ -26,6 +26,7 @@ public class Kordinaatti {
     public double palautaY() {
         return this.y;
     }
+   
 
     @Override
     public int hashCode() {

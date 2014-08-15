@@ -18,5 +18,7 @@ public interface Abstraktisolmu extends Iteroitava {
     public Verkko palautaVerkko();
 
     public SolmuMuisti palautaSolmuMuisti();
+    
+    
 
 }

@@ -15,9 +15,11 @@ public class SolmuMuisti {
     private Abstraktisolmu edellinen;
     private double fscore;
     private double gscore;
+    private boolean keossa;
 
     public SolmuMuisti() {
-
+        this.keossa = false;
+        this.vari = 0;
     }
 
     public void Varita(int i) {
@@ -50,6 +52,14 @@ public class SolmuMuisti {
 
     public double palautaGScore() {
         return this.gscore;
+    }
+
+    public void asetaKekoon(boolean k) {
+        this.keossa = k;
+    }
+
+    public boolean Keossa() {
+        return this.keossa;
     }
 
 }

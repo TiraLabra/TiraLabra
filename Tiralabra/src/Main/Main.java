@@ -17,7 +17,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        testaaHashMap();
+        System.out.println(Math.pow(2, 3));
+      //  testaaHashMap();
 
     }
 

@@ -33,6 +33,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
      public DiskreettiSolmu(double x, double y) {
         this.kordinaatti = new Kordinaatti(x,y);
         this.muisti = new SolmuMuisti();
+        this.muisti.Varita(0);
     }
 
     /**
@@ -117,6 +118,11 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     public boolean palautaKulku()
     {
     return this.kulku;
+    }
+    
+    public Kordinaatti palautaKordinaatit()
+    {
+    return this.kordinaatti;
     }
 
 }

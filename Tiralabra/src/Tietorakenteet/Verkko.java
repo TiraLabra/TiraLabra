@@ -5,7 +5,9 @@
  */
 package Tietorakenteet;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public interface Verkko {
 
-    public List<Abstraktisolmu> Naapurit(Abstraktisolmu node);
+    public ArrayList<Abstraktisolmu> Naapurit(Abstraktisolmu node);
 
     public boolean Olemassa(Abstraktisolmu node);
 
