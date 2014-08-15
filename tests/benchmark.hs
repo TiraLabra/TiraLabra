@@ -15,7 +15,7 @@ module Main where
 
 import Data.Functor
 import Data.List.NonEmpty (toList)
-import Import (replicateM)
+import TestImport (replicateM)
 import Criterion
 import Criterion.Main
 import Control.DeepSeq

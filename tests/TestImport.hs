@@ -1,24 +1,23 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 ------------------------------------------------------------------------------
 -- | 
--- Module         : Import
+-- Module         : TestImport (tests)
 -- Copyright      : (C) 2014 Samuli Thomasson
 -- License        : BSD-style (see the file LICENSE)
 -- Maintainer     : Samuli Thomasson <samuli.thomasson@paivola.fi>
 -- Stability      : experimental
 -- Portability    : non-portable
 ------------------------------------------------------------------------------
-module Import
-    ( module Import ) where
+module TestImport ( module TestImport, module X ) where
 
 import Prelude
-import Control.Monad        as Import
-import Control.Applicative  as Import
+import Control.Monad        as X
+import Control.Applicative  as X
 import Data.List (sort)
-import Data.Maybe           as Import
-import Debug.Trace          as Import
+import Data.Maybe           as X
+import Debug.Trace          as X
 
-import Test.Tasty           as Import
+import Test.Tasty           as X
 import Test.Tasty.QuickCheck
 
 import Mahjong.Hand.Algo

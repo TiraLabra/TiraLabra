@@ -13,9 +13,10 @@ module Main where
 
 import Test.Tasty.QuickCheck as QC
 
-import Import
+import TestImport
 import AlgoTest
 import Mahjong.Hand
+import Mahjong.Hand.Mentsu
 import Mahjong.Tiles
 
 
@@ -27,6 +28,7 @@ tests = testGroup "Tests"
     [ algoTests
     , tilesTests
     , handTests
+    , mentsuTests
     ]
 
 -- | Mahjong.Tiles
@@ -48,4 +50,11 @@ handTests :: TestTree
 handTests = testGroup "Hand"
     [ QC.testProperty "(ms, ts) === (,) <$> called <*> concealed <*> fromTiles ms ts" $ \ms ts ->
         (ms, ts) === ((,) <$> called <*> concealed) (fromTiles ms ts)
+    ]
+
+-- | Mahjong.Hand.Mentsu
+mentsuTests :: TestTree
+mentsuTests = testGroup "Mentsu"
+    [ QC.testProperty "shuntsuWith . mentsuTiles == id for shuntsu" $
+        liftA2 (===) (shuntsuWith . mentsuTiles) Just <$> arbitraryShuntsu
     ]

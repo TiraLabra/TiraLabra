@@ -1,22 +1,20 @@
 # Tiralabra
 
-> Mahjong-käsiin liittyvät algoritmeja (Haskelliksi)
+> Mahjong-käsiin liittyviä algoritmeja Haskelliksi
 
-[Määrittely](blob/master/Docs/Määrittelydokumentti.md)
+Plärinät
+[määrittelystä](blob/master/Docs/Määrittelydokumentti.md),
+[suunnittelusta ja rakenteesta](blob/master/Docs/Suunnitteludokumentti.md) sekä
+[testauksesta](blob/master/Docs/Testausdokumentti.md) `Docs`-kansiossa.
 
-[Suunnittelu](blob/master/Docs/Suunnitteludokumentti.md)
+Tekninen plärinä
+[haddock-dokkareissa](http://simsaladin.users.paivola.fi/TiraLabra/).
 
-[Testaus](blob/master/Docs/Testausdokumentti.md)
+Testikattavuus ja benchmarkit:
+[hpc-reportti](http://simsaladin.users.paivola.fi/TiraLabra-hpc/hpc_index.html),
+[criterion-raportti](http://simsaladin.users.paivola.fi/TiraLabra/benchmark_results.html).
 
-[Haddock-dokumentaatio](http://simsaladin.users.paivola.fi/TiraLabra/)
-
-[hpc-reportti](http://simsaladin.users.paivola.fi/TiraLabra-hpc/hpc_index.html)
-(testikattavuus)
-
-[criterion-raportti](http://simsaladin.users.paivola.fi/TiraLabra/benchmark_results.html)
-(algojen benchamrkit)
-
-**Quickstart:** `ghc` ja `cabal-install` asennettuna: aja projektikansiossa `cabal
+**Quickstart:** `ghc` ja `cabal-install` asennettuna aja projektikansiossa `cabal
 install`.
 
 ----

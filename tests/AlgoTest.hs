@@ -12,7 +12,7 @@
 ------------------------------------------------------------------------------
 module AlgoTest where
 
-import Import
+import TestImport
 import qualified Data.Set as S
 import Test.Tasty.QuickCheck as QC
 import Test.Tasty.HUnit as HU
@@ -101,6 +101,8 @@ buildGreedyWaitTree'Tests = testGroup "GWT: `buildGreedyWaitTree'`"
     , HU.testCase "testHands; No duplicate devops on one level" $
         let test (_, h) = (\l -> hasNoDups (levels l) @? show (levels l)) (buildGreedyWaitTree' [h])
             in mapM_ test testHands
+
+    -- , QC.testProperty "buildGreedyWaitTree [] <<13tiles>> .. is total?"
     ]
 
 hasNoDups :: Ord a => [a] -> Bool
@@ -153,3 +155,8 @@ ryanshanten_1 = GroupLeftover "P1"
               : GroupLeftover "S9"
               : replicate 3 men
 
+ryanshanten_2 = GroupLeftover "P1"
+              : GroupWait Shuntsu ["M1", "M3"] ["M2"]
+              : GroupWait Shuntsu ["M4", "M6"] ["M5"]
+              : GroupWait Shuntsu ["S1", "S3"] ["S2"]
+              : replicate 2 men
