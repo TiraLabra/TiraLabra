@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 ------------------------------------------------------------------------------
 -- | 
@@ -12,6 +13,8 @@
 ------------------------------------------------------------------------------
 module Main where
 
+import Data.Functor
+import Data.List.NonEmpty (toList)
 import Import (replicateM)
 import Criterion
 import Criterion.Main
@@ -20,6 +23,7 @@ import Test.Tasty.QuickCheck (generate, arbitrary)
 
 import Mahjong.Tiles
 import Mahjong.Hand.Algo
+import Mahjong.Hand.Algo.WaitTree
 
 main :: IO ()
 main = defaultMain suite
@@ -27,26 +31,47 @@ main = defaultMain suite
 -- TODO: instead of supplying a single env, randomize the runs themselves
 suite :: [Benchmark]
 suite =
-    [ env randomTiles $ \tiles -> bgroup "tilesGroupL: random tiles"
-        [ bench "13" $ nf tilesGroupL (take 13 tiles)
-        , bench "17" $ nf tilesGroupL (take 17 tiles)
-        , bench "21" $ nf tilesGroupL (take 21 tiles)
-        , bench "25" $ nf tilesGroupL (take 25 tiles)
-        , bench "28" $ nf tilesGroupL (take 28 tiles)
+    [ bgroup "tilesGroupL (random)"
+        [ bench "13" $ nfIO $ tilesGroupL <$> randomTiles 13
+        , bench "19" $ nfIO $ tilesGroupL <$> randomTiles 19
+        , bench "22" $ nfIO $ tilesGroupL <$> randomTiles 22
+        , bench "24" $ nfIO $ tilesGroupL <$> randomTiles 24
+        , bench "26" $ nfIO $ tilesGroupL <$> randomTiles 26
         ]
-    , bgroup "tilesSplitGroupL"
-        [
+    , bgroup "tilesSplitGroupL (random)"
+        [ bench "13" $ nfIO $ tilesSplitGroupL <$> randomTiles 13
+        , bench "19" $ nfIO $ tilesSplitGroupL <$> randomTiles 19
+        , bench "22" $ nfIO $ tilesSplitGroupL <$> randomTiles 22
+        , bench "24" $ nfIO $ tilesSplitGroupL <$> randomTiles 24
+        , bench "26" $ nfIO $ tilesSplitGroupL <$> randomTiles 26
         ]
-    , bgroup "shanten: random 13 tiles"
-        [
+    , bgroup "shanten (random, tiles)"
+        [ bench "13" $ nfIO $ shanten <$> randomTiles 13
+        , bench "22" $ nfIO $ shanten <$> randomTiles 20
+        , bench "24" $ nfIO $ shanten <$> randomTiles 20
+        ]
+
+    , bgroup "buildGreedyWaitTree (random tiles)"
+        [ bench "13" $ nfIO $ buildGreedyWaitTree [] <$> randomTiles 13
         ]
     ]
 
--- randomTiles :: Int -> IO [Tile]
-randomTiles :: IO [Tile]
-randomTiles = replicateM 50 (generate arbitrary)
+randomTiles :: Int -> IO [Tile]
+randomTiles n = replicateM n (generate arbitrary)
 
 ------------------------------------------------------
 
 instance NFData Tile where
 instance NFData TileGroup where
+instance (NFData r, NFData i, NFData l) => NFData (RootedTree r i l) where
+    rnf (RootedTree r bs) = rnf (r, bs)
+
+instance (NFData i, NFData l) => NFData (RootedBranch i l) where
+    rnf (RootedLeaf x) = rnf x
+    rnf (RootedBranch i bs) = rnf (i, toList bs)
+
+instance NFData DevOp where
+    rnf (DevOp x y) = rnf (x,y)
+
+instance NFData TenpaiOp where
+    rnf (TenpaiOp x y) = rnf (x,y)

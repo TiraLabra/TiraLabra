@@ -212,7 +212,7 @@ tgShanten n tgs = case foldl' (\i -> (i -) . tgval) n tgs of
 devops :: [Tile] -> [Wait] -> NE.NonEmpty DevOp'
 devops f_ts w_ts
     | []  <- f_ts, []  <- w_ts     = error "devops: called with a malformed hand (all mentsu)"
-    | []  <- f_ts, [x] <- w_ts     = error "devops: called with a malformed hand (one mentsu free only)"
+    | []  <- f_ts, [_] <- w_ts     = error "devops: called with a malformed hand (one mentsu free only)"
     | [x] <- f_ts, []  <- w_ts     = return (Left x) -- Last pair wait
     | []  <- f_ts, twoKoutsu w_ts = tenpaiTwoKoutsu
     | []  <- f_ts                 = NE.fromList breakingWait
@@ -252,14 +252,14 @@ devops f_ts w_ts
 -- iterating different cases of replacing @GroupLeftover@ with @DevOp@ that
 -- would complete some @GroupWait@.
 buildGreedyWaitTree :: [Mentsu] -> [Tile] -> WaitTree
-buildGreedyWaitTree ms ts = buildGreedyWaitTree' (map (map GroupComplete ms ++) $ tilesGroupL ts)
+buildGreedyWaitTree ms ts = buildGreedyWaitTree' (map (map GroupComplete ms ++) $ tilesSplitGroupL ts)
 
 -- | @buildGreedyWaitTree' groups@ discards groupings strictly less than
 -- shanten over `groups` before building the tree.
 buildGreedyWaitTree' :: [Grouping] -> WaitTree
 buildGreedyWaitTree' xs =
     unfoldRootedTree (concatMap (concatMap tileGroupTiles) xs)
-        go (NE.toList $ devops <$> leftovers <*> waits $ head xs')
+        go (NE.toList $ devops <$> leftovers <*> waits $ head xs') -- TODO considers only head!
     where
         xs' = filter ((== shanten xs) . shanten) xs
         -- 

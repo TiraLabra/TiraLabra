@@ -58,4 +58,5 @@ benchmark algorithms
                      , tasty-quickcheck
                      , criterion >= 1.0 && < 1.1
                      , deepseq
+                     , semigroups
    default-language:   Haskell2010
