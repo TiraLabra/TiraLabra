@@ -1,0 +1,7 @@
+= Docs
+- Haddock
+
+= Testing
+- Code coverage report
+- Unit tests of @mentsuFrom@, @handFrom@ etc.
+- Test laziness properties
