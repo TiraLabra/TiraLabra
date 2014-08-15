@@ -251,6 +251,10 @@ devops f_ts w_ts
 -- The tree is formed by splitting the tiles with @tilesSplitGroupL@ and
 -- iterating different cases of replacing @GroupLeftover@ with @DevOp@ that
 -- would complete some @GroupWait@.
+--
+-- NOTE: This does /not/ check tile count changes if kantsu are found in
+-- input tiles - tree building /will/ fail if there are uncalled kantsu in
+-- input tiles!
 buildGreedyWaitTree :: [Mentsu] -> [Tile] -> WaitTree
 buildGreedyWaitTree ms ts = buildGreedyWaitTree' (map (map GroupComplete ms ++) $ tilesSplitGroupL ts)
 

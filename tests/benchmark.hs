@@ -56,6 +56,8 @@ suite =
         ]
     ]
 
+-- TODO The algos assume no uncalled kantsu - so they should be ignored
+-- here. buildGreedyWaitTree even fails with them (kinda by design)!
 randomTiles :: Int -> IO [Tile]
 randomTiles n = replicateM n (generate arbitrary)
 
