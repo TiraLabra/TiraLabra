@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-import pakkaaja.Pakkaaja;
+import pakkaaja.Packer;
 import pakkaaja.Node;
 import java.util.ArrayList;
 import org.junit.After;
@@ -52,7 +52,7 @@ public class PakkaajaTest {
 
 //     @Test
 //     public void toimiiko() {
-//         Pakkaaja packer = new Pakkaaja();
+//         Packer packer = new Packer();
 //         String paketti = packer.pack(word1);
 //         assertEquals()
 //     }

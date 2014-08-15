@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 
-public class Pakkaaja {
+public class Packer {
     
     
     /**
@@ -22,14 +22,14 @@ public class Pakkaaja {
      * @param word syötetty merkkijono
      * @return pakkaus
      */
-    public String pack( String word ) {
+    public Paketti pack( String word ) {
         
         ArrayList<Node> list = count(word);
         PriorityQueue<Node> que = makeQueue(list);
         Tree tree = makeTree(que);
         String pakkaus = packing(word, tree);
-        
-        return pakkaus;
+        Paketti paketti = new Paketti(tree,pakkaus);
+        return paketti;
         
     }
     
