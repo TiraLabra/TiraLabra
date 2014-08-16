@@ -77,4 +77,61 @@ public final class VectorTest {
         }
         assertTrue(true);
     }
+
+    @Test
+    public void testArraySwitch() {
+        final int first = 255;
+        final int second = 56345;
+        vector.add(first);
+        vector.add(second);
+        vector.switchAtIndex(0, 1);
+        boolean correctOrder = vector.get(0) == second && vector.get(1) == first;
+        assertTrue("Vector switch is incorrect", correctOrder);
+    }
+
+    @Test
+    public void testSetAt() {
+        for (int i = 0; i < 100; i++) {
+            vector.add(i);
+        }
+        final int index = 24;
+        final Integer toSet = 549753;
+        vector.setAtt(index, toSet);
+        assertEquals(toSet, vector.get(index));
+    }
+
+    @Test
+    public void testRemoveLastSizeCorrect() {
+        vector.add(23);
+        vector.removeLast();
+        assertEquals(0, vector.size());
+    }
+
+    @Test
+    public void testRemoveAndRealSize() {
+        final int toAdd = 10;
+        final int toRemove = 3;
+        for (int i = 0; i < toAdd; i++) {
+            vector.add(i);
+        }
+        for (int i = 0; i < toRemove; i++) {
+            vector.removeLast();
+        }
+        vector.add(Integer.SIZE);
+        assertEquals(toAdd - toRemove + 1, vector.size());
+    }
+
+    @Test
+    public void testRemoveArrayOutOfIndex() {
+        final int toAdd = 10;
+        for (int i = 0; i < toAdd; i++) {
+            vector.add(i);
+        }
+        vector.removeLast();
+        try {
+            vector.get(toAdd - 1);
+            fail("Real size is ignored in vector");
+        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
+    }
 }
