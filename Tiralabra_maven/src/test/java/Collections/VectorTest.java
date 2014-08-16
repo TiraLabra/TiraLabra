@@ -107,8 +107,7 @@ public final class VectorTest {
         assertEquals(0, vector.size());
     }
 
-    @Test
-    public void testRemoveAndRealSize() {
+    private int removeAndRealSize() {
         final int toAdd = 10;
         final int toRemove = 3;
         for (int i = 0; i < toAdd; i++) {
@@ -117,8 +116,19 @@ public final class VectorTest {
         for (int i = 0; i < toRemove; i++) {
             vector.removeLast();
         }
-        vector.add(Integer.SIZE);
-        assertEquals(toAdd - toRemove + 1, vector.size());
+        vector.add(Integer.MAX_VALUE);
+        return toAdd - toRemove + 1;
+    }
+
+    @Test
+    public void testRemoveAndRealSize() {
+        assertEquals(removeAndRealSize(), vector.size());
+    }
+
+    @Test
+    public void testRemoveAndRealMember() {
+        final Integer expected = Integer.MAX_VALUE;
+        assertEquals(expected, vector.get(vector.size() - 1));
     }
 
     @Test

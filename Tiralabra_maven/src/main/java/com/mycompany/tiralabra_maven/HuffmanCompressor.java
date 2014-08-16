@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import Collections.PriorityQueue;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.PriorityQueue;
 
 /**
  * Compressor that uses huffman encoding to compress text files.
@@ -31,7 +31,7 @@ public final class HuffmanCompressor {
     public HuffmanCompressor(final String path) {
         pathToFile = new File(path);
         pathToCompressedFile = new File(path + ".pkx");
-        nodeQueue = new PriorityQueue<>();
+        nodeQueue = new PriorityQueue<>(Node.class);
         nodes = new HashMap<>();
         characterEncoding = new HashMap<>();
         readText = new StringBuilder(100);
@@ -131,7 +131,7 @@ public final class HuffmanCompressor {
      */
     private void sortNodes() {
         for (final Node node : nodes.values()) {
-            nodeQueue.add(node);
+            nodeQueue.enqueue(node);
         }
     }
 
@@ -140,11 +140,11 @@ public final class HuffmanCompressor {
      */
     private void createTheHuffmanTree() {
         while (nodeQueue.size() > 1) {
-            final Node left = nodeQueue.poll();
-            final Node right = nodeQueue.poll();
+            final Node left = nodeQueue.dequeue();
+            final Node right = nodeQueue.dequeue();
             final Node parent = new Node('c', 0, left, right);
-            
-            nodeQueue.add(parent);
+
+            nodeQueue.enqueue(parent);
         }
     }
 
@@ -166,8 +166,9 @@ public final class HuffmanCompressor {
         try (final FileOutputStream output = new FileOutputStream(pathToCompressedFile);
                 final DataOutputStream writer = new DataOutputStream(output);
                 final ObjectOutputStream treeWriter = new ObjectOutputStream(output)) {
-            treeWriter.writeObject(nodeQueue.peek());
-            writeCharacterBits(new BitImmutableCollection(), nodeQueue.peek());
+            final Node huffmanTree = nodeQueue.dequeue();
+            treeWriter.writeObject(huffmanTree);
+            writeCharacterBits(new BitImmutableCollection(), huffmanTree);
             final BitSet bits = new BitSet();
             writeDataToBitSet(readText.toString(), bits);
             final int bitCount = bits.length();

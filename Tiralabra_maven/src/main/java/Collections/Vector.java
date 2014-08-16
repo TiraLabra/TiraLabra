@@ -18,7 +18,7 @@ public final class Vector<T> {
     public Vector(final Class<T> holdingType) {
         this.holdingType = holdingType;
         this.array = arrayOfSize(0);
-        this.realSize = 0;
+        this.realSize = array.length;
     }
 
     public void add(final T toAdd) {
@@ -28,10 +28,11 @@ public final class Vector<T> {
         if (realSize == array.length) {
             array = Arrays.copyOf(array, array.length + 1);
             array[array.length - 1] = toAdd;
+            realSize = array.length;
         } else {
-            array[realSize - 1] = toAdd;
+            array[realSize] = toAdd;
+            realSize++;
         }
-        realSize++;
     }
 
     private T[] arrayOfSize(final int size) {
