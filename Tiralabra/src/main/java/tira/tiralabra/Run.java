@@ -17,17 +17,28 @@ public class Run {
         Scanner reader = new Scanner(map);
         Scanner input = new Scanner(System.in);
         Mapper grid = new Mapper(reader);
+        String start = "";
+        String end = "";
  
         
         System.out.println("Valitse lähtöpiste ja määränpää antamalla kohteen numero.");
         grid.initialize();
         grid.print();
         
-        System.out.println("Lähtöpaikka:");
-        int start = input.nextInt();
+        while (!grid.validKeys(start, end)) {
+            System.out.println("Lähtöpaikka:");
+            start = input.nextLine();
+
+            System.out.println("Päämäärä:");
+            end = input.nextLine();
+        }
         
-        System.out.println("Päämäärä:");
-        int end = input.nextInt();
+        Dijkstra d = new Dijkstra(start, end, grid);
+        
+        d.initialize();
+        d.route();
+        
+        System.exit(0);
     }
     
 }

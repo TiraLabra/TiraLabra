@@ -31,7 +31,20 @@ public class Mapper {
     }
     
     public void print() {
-        System.out.println(this.sources.keySet());
+        for (String apu : this.sources.keySet()) {
+            System.out.println(apu);
+        }
+    }
+    
+    public boolean validKeys(String start, String end) {
+        if (this.sources.containsKey(start) && this.sources.containsKey(end)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public HashMap getGrid() {
+        return this.sources;
     }
     
     private void manageLine(String start, String destination, int distance) {
