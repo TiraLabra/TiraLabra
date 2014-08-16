@@ -25,8 +25,8 @@ public class SimulaatioTest {
 
     @Before
     public void setUp() throws Exception {
-        this.piirtologiikka = new Piirtologiikka(10, 10);
-        this.simulaatio = new Simulaatio(piirtologiikka, false);
+        //this.piirtologiikka = new Piirtologiikka(10, 10);
+        this.simulaatio = new Simulaatio(false);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SimulaatioTest {
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
 
-        simulaatio.setRuudukko(ruudukko);
+        //simulaatio.setRuudukko(ruudukko);
         simulaatio.setAlkuPiste(alku);
         simulaatio.setMaali(maali);
 
@@ -74,7 +74,7 @@ public class SimulaatioTest {
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
 
-        simulaatio.setRuudukko(ruudukko);
+        //simulaatio.setRuudukko(ruudukko);
         simulaatio.setAlkuPiste(alku);
         simulaatio.setMaali(maali);
 
@@ -84,7 +84,7 @@ public class SimulaatioTest {
     }
 
     private void suoritaSimulaatio(Simulaatio simulaatio) {
-        simulaatio.start();
+        //simulaatio.start();
         int laskuri = 0;
         while (!simulaatio.onkoValmis()) {
             if (laskuri > 10) {

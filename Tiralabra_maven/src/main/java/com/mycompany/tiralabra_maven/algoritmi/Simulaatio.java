@@ -6,178 +6,110 @@
 package com.mycompany.tiralabra_maven.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.gui.Paivitettava;
 import com.mycompany.tiralabra_maven.Piirtologiikka;
-import com.mycompany.tiralabra_maven.Suunta;
+import com.mycompany.tiralabra_maven.Toiminto;
+import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
+import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 
-/**
- * Simulaatio-luokka sisältää varsinaisen reittialgoritmin suoritettavana
- * säikeenä. Säikeen käynnistäminen (start-metodin kutsu) käynnistää algoritmin
- * suorituksen.
- *
- * @author mikko
- *
- */
-public class Simulaatio extends Thread {
+public class Simulaatio {
 
+    private Ruutu[][] maailma;
     private Koordinaatit alku;
     private Koordinaatit maali;
     private boolean hidaste;
-    private final Piirtologiikka piirtologiikka;
-    private final int leveys;
-    private final int korkeus;
+    private boolean vinottain;
+    private int leveys;
+    private int korkeus;
     //private Paivitettava paivitettava;
     private boolean valmis;
     private int[][] parhaatReitit;
     private Solmu reitti;
     private Heuristiikka heuristiikka;
-    //private Scanner sc;
 
-    private int[][] ruudukko = {
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    //private Scanner sc;
+    private Algoritmi algoritmi;
+
+    //Jonkun toisen luokan asiaa(?):
+    private Koordinaatit hiiri;
+    private boolean hiiriPainettu;
+    private Toiminto toiminto = Toiminto.SEINA;
 
     /**
      * Konstruktorissa annetaan parametrina päivitettävä piirtologiikka ja tieto
      * siitä, halutaanko hidastettu vai nopea simulaatio.
      *
-     * @param piirtologiikka piirtologiikka jota päivitetään simulaation
-     * edetessä.
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
      * simulaation askeleen välillä.
      */
-    public Simulaatio(Piirtologiikka piirtologiikka, boolean hidaste) {
+    public Simulaatio(boolean hidaste) {
+        this.leveys = 24;
+        this.korkeus = 20;
+        alustaMaailma();
+        this.hidaste = hidaste;
         this.alku = new Koordinaatit(0, 0);
         this.maali = new Koordinaatit(9, 5);
-        this.leveys = 10;
-        this.korkeus = 10;
-        this.piirtologiikka = piirtologiikka;
-        this.valmis = false;
-        this.parhaatReitit = new int[korkeus][leveys];
-        this.hidaste = hidaste;
-        this.heuristiikka = new ManhattanHeuristiikka(maali);
-        //this.sc = new Scanner(System.in);
+        this.vinottain = true;
+    }
+
+    private void alustaMaailma() {
+        this.maailma = new Ruutu[korkeus][leveys];
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                maailma[y][x] = Ruutu.LATTIA;
+            }
+        }
+    }
+
+    public void teeUusiRuudukko(int leveys, int korkeus) {
+        lopetaReitinEtsiminen();
+        this.leveys = leveys;
+        this.korkeus = korkeus;
+        alustaMaailma();
+    }
+
+    public Ruutu[][] getRuudukko() {
+        return this.maailma;
+    }
+
+//    public Ruutu getRuutu(int x, int y) {
+//        return this.ruudut[y][x];
+//    }
+    public void setRuutu(int x, int y, Ruutu ruutu) {
+        this.maailma[y][x] = ruutu;
     }
 
     public void setHeuristiikka(Heuristiikka heuristiikka) {
         this.heuristiikka = heuristiikka;
     }
 
-    public void setRuudukko(int[][] ruudukko) {
-        this.ruudukko = ruudukko;
-    }
-
     public void setAlkuPiste(Koordinaatit koord) {
         this.alku = koord;
+    }
+
+    public Koordinaatit getAlkuPiste() {
+        return this.alku;
     }
 
     public void setMaali(Koordinaatit koord) {
         this.maali = koord;
     }
 
-    /**
-     * Käynnistää algoritmin suorituksen.
-     */
-    @Override
-    public void run() {
-        alustaPiirtologiikka();
-        alustaParhaatReitit();
-
-        //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
-        Vertailija vertailija = new Vertailija(this.heuristiikka);
-        PriorityQueue<Solmu> tutkimattomat = new PriorityQueue<Solmu>(100, vertailija);
-
-        Solmu solmu = new Solmu(alku, 0, null);
-
-        System.out.println("alkutilanne: " + solmu);
-
-        while (!solmu.getKoordinaatit().equals(maali)) {
-            //käydään läpi solmun naapurisolmut ja lisätään ne tutkittavien joukkoon.
-            for (Koordinaatit koord : solmunNaapurit(solmu)) {
-
-                int matka = solmu.getKuljettuMatka() + ruudukko[koord.getY()][koord.getX()];
-
-                //jos tähän solmuun ei ole päästy lyhyempää reittiä pitkin
-                if (parhaatReitit[koord.getY()][koord.getX()] == -1 || matka < parhaatReitit[koord.getY()][koord.getX()]) {
-                    parhaatReitit[koord.getY()][koord.getX()] = matka;
-                    //Lisätään tutkittaviin uusi solmu, jonka kuljetuksi matkaksi annetaan tämän solmun kuljettu matka + maaston vaikeustaso
-                    tutkimattomat.add(new Solmu(koord, matka, solmu));
-                    piirtologiikka.setRuutu(koord.getX(), koord.getY(), Ruutu.TUTKIMATON);
-                }
-            }
-            piirtologiikka.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.TUTKITTU);
-            solmu = tutkimattomat.poll();
-            piirtologiikka.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.KASITTELYSSA);
-            if (this.hidaste) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                }
-            }
-        }
-
-        System.out.println("REITTI (lopusta alkuun:");
-        this.reitti = solmu;
-        while (solmu != null) {
-            piirtologiikka.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.REITTI);
-            System.out.println(solmu);
-            solmu = solmu.getEdellinen();
-        }
-        this.valmis = true;
+    public Koordinaatit getMaali() {
+        return this.maali;
     }
 
-    private ArrayList<Koordinaatit> solmunNaapurit(Solmu solmu) {
-        ArrayList<Koordinaatit> palautus = new ArrayList<Koordinaatit>();
-        for (Suunta suunta : Suunta.values()) {
-            Koordinaatit koord = solmu.getKoordinaatit().suuntaan(suunta);
-            if (koordinaatitUlkopuolella(koord)) {
-                continue;
-            }
-            if (ruudukko[koord.getY()][koord.getX()] == 0) {
-                continue;
-            }
-            palautus.add(koord);
-        }
-        return palautus;
+    public void etsiReitti() {
+        this.algoritmi = new Algoritmi(maailma, hidaste, alku, maali, vinottain);
+        this.algoritmi.start();
     }
 
-    private void alustaParhaatReitit() {
-        for (int x = 0; x < this.leveys; x++) {
-            for (int y = 0; y < this.korkeus; y++) {
-                parhaatReitit[y][x] = -1;
-            }
+    public void lopetaReitinEtsiminen() {
+        if (this.algoritmi == null) {
+            return;
         }
-    }
-
-    private void alustaPiirtologiikka() {
-        for (int x = 0; x < this.leveys; x++) {
-            for (int y = 0; y < this.korkeus; y++) {
-                if (this.alku.getX() == x && this.alku.getY() == y) {
-                    this.piirtologiikka.setRuutu(x, y, Ruutu.ALKU);
-                } else if (this.maali.getX() == x && this.maali.getY() == y) {
-                    this.piirtologiikka.setRuutu(x, y, Ruutu.MAALI);
-                } else if (this.ruudukko[y][x] == 0) {
-                    this.piirtologiikka.setRuutu(x, y, Ruutu.SEINA);
-                }
-            }
-        }
-    }
-
-    private boolean koordinaatitUlkopuolella(Koordinaatit koordinaatit) {
-        return koordinaatit.getX() < 0 || koordinaatit.getY() < 0 || koordinaatit.getX() >= ruudukko[0].length || koordinaatit.getY() >= ruudukko.length;
-
+        this.algoritmi.lopeta();
+        this.algoritmi = null;
     }
 
     public int getLeveys() {
@@ -186,6 +118,18 @@ public class Simulaatio extends Thread {
 
     public int getKorkeus() {
         return this.korkeus;
+    }
+
+    public boolean onkoSimulaatioKaynnissa() {
+        return this.algoritmi != null;
+    }
+
+    public void asetaVinottainLiikkuminenSallituksi(boolean sallittu) {
+        this.vinottain = sallittu;
+    }
+
+    public boolean saakoLiikkuaVinottain() {
+        return this.vinottain;
     }
 
     /**
@@ -209,11 +153,93 @@ public class Simulaatio extends Thread {
         return this.reitti;
     }
 
-//    /**
-//     * 
-//     * @param paivitettava 
-//     */
-//    public void setPaivitettava(Paivitettava paivitettava) {
-//        this.paivitettava = paivitettava;
-//    }
+    /**
+     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiri on tällä
+     * hetkellä jonkun ruudukon ruudun päällä. Tätä tietoa voidaan käyttää
+     * avuksi varsinaisessa käyttöliittymäkoodissa.
+     *
+     * @param x
+     * @param y
+     */
+    public void hiiriRuudunPaalla(int x, int y) {
+        if (hiiri == null || x != hiiri.getX() || y != hiiri.getY()) {
+            this.hiiri = new Koordinaatit(x, y);
+            suoritaToimintoJosHiiriPainettu();
+        }
+    }
+
+    /**
+     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiri on
+     * poistunut ruudukon päältä.
+     */
+    public void hiiriPoistunut() {
+        this.hiiri = null;
+    }
+
+    /**
+     * Palauttaa sen ruudun koordinaatit, jonka päällä hiiri on, tai null, jos
+     * hiiri ei ole minkään ruudun päällä.
+     *
+     * @return hiiren koordinaatit
+     */
+    public Koordinaatit hiirenKoordinaatit() {
+        return this.hiiri;
+    }
+
+    /**
+     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiren nappi
+     * on painettu pohjaan tai päästetty irti.
+     */
+    public void hiiriPainettu(boolean painettu) {
+        //System.out.println("painettu: " + painettu);
+        this.hiiriPainettu = painettu;
+        suoritaToimintoJosHiiriPainettu();
+    }
+
+    private void suoritaToimintoJosHiiriPainettu() {
+        if (this.hiiriPainettu) {
+            switch (toiminto) {
+                case SEINA:
+                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.SEINA;
+                    break;
+                case LATTIA:
+                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.LATTIA;
+                    break;
+                case ALKU:
+                    this.alku = new Koordinaatit(hiiri.getX(), hiiri.getY());
+                    break;
+                case MAALI:
+                    this.maali = new Koordinaatit(hiiri.getX(), hiiri.getY());
+            }
+
+        }
+    }
+
+    /**
+     * Palauttaa true jos hiiren nappi on painettuna pohjaan.
+     *
+     * @return onko painettu pohjaan
+     */
+    public boolean onkoHiiriPainettu() {
+        return this.hiiriPainettu;
+    }
+
+    public Toiminto getValittuToiminto() {
+        return this.toiminto;
+    }
+
+    public void setToiminto(Toiminto toiminto) {
+        this.toiminto = toiminto;
+    }
+
+    public PiirrettavaRuutu getRuutu(int x, int y) {
+        if (algoritmi != null) {
+            RuudunTila ruuduntila = algoritmi.getRuudunTila(x, y);
+            if (ruuduntila != null) {
+                return ruuduntila;
+            }
+        }
+        return maailma[y][x];
+    }
+
 }

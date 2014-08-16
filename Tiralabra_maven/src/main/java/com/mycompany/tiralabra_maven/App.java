@@ -2,6 +2,7 @@ package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import com.mycompany.tiralabra_maven.gui.Kayttoliittyma;
+import com.mycompany.tiralabra_maven.tietorakenteet.PrioriteettiKeko;
 import javax.swing.SwingUtilities;
 
 /**
@@ -12,9 +13,21 @@ public class App {
 
     public static void main(String[] args) {
         
-        Piirtologiikka piirtologiikka = new Piirtologiikka(10, 10);
-        Simulaatio simulaatio = new Simulaatio(piirtologiikka, true);
-        Kayttoliittyma gui = new Kayttoliittyma(simulaatio, piirtologiikka, 24);
+//        PrioriteettiKeko<String> keko = new PrioriteettiKeko<>();
+//        keko.lisaa(2);
+//        keko.lisaa(7);
+//        keko.lisaa(0);
+//        keko.lisaa(12);
+//        keko.lisaa(16);
+//        keko.lisaa(3);
+//        keko.lisaa(1);
+//        
+//        for (int i = 0; i<10; i++) {
+//            System.out.println(keko.seuraava());
+//        }
+        
+        Simulaatio simulaatio = new Simulaatio(true);
+        Kayttoliittyma gui = new Kayttoliittyma(simulaatio, 24);
         SwingUtilities.invokeLater(gui);
         while (gui.getPiirtoalusta() == null) {
             try {
@@ -26,7 +39,6 @@ public class App {
         
         Thread piirtoSaie = new Thread(gui.getPiirtoalusta());
         piirtoSaie.start();
-        simulaatio.start();
     }
 
 }

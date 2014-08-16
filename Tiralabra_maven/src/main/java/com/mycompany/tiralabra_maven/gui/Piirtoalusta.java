@@ -6,8 +6,9 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.Piirtologiikka;
+import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
@@ -18,7 +19,7 @@ import javax.swing.JPanel;
  */
 public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
 
-    private Piirtologiikka piirtologiikka;
+    private Simulaatio simulaatio;
     private int sivunPituus;
     private Koordinaatit hiiri;
     boolean alustettu;
@@ -31,14 +32,19 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         this.alustettu = false;
     }
 
-    /**
-     * Konstruktori ottaa parametrina piirtologiikan ja sivun pituuden.
-     *
-     * @param piirtologiikka
-     * @param sivunPituus
-     */
-    public Piirtoalusta(Piirtologiikka piirtologiikka, int sivunPituus) {
-        this.piirtologiikka = piirtologiikka;
+//    /**
+//     * Konstruktori ottaa parametrina piirtologiikan ja sivun pituuden.
+//     *
+//     * @param piirtologiikka
+//     * @param sivunPituus
+//     */
+//    public Piirtoalusta(Piirtologiikka piirtologiikka, int sivunPituus) {
+//        this.piirtologiikka = piirtologiikka;
+//        this.sivunPituus = sivunPituus;
+//        this.alustettu = true;
+//    }
+    public Piirtoalusta(Simulaatio simulaatio, int sivunPituus) {
+        this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
         this.alustettu = true;
     }
@@ -50,46 +56,30 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         if (!alustettu) {
             return;
         }
-        for (int x = 0; x < piirtologiikka.getLeveys(); x++) {
-            for (int y = 0; y < piirtologiikka.getKorkeus(); y++) {
-                Ruutu r = piirtologiikka.getRuutu(x, y);
+        for (int x = 0; x < simulaatio.getLeveys(); x++) {
+            for (int y = 0; y < simulaatio.getKorkeus(); y++) {
+                PiirrettavaRuutu r = simulaatio.getRuutu(x, y);
                 if (r == null) {
-                    r = Ruutu.KOSKEMATON;
+                    throw new IllegalStateException("Ruudukosta löytyi piirrettävä ruutu joka oli null");
                 }
-                switch (r) {
-                    case KOSKEMATON:
-                        g.setColor(Color.LIGHT_GRAY);
-                        break;
-                    case TUTKIMATON:
-                        g.setColor(Color.PINK);
-                        break;
-                    case TUTKITTU:
-                        g.setColor(Color.CYAN);
-                        break;
-                    case REITTI:
-                        g.setColor(Color.YELLOW);
-                        break;
-                    case SEINA:
-                        g.setColor(Color.DARK_GRAY);
-                        break;
-                    case ALKU:
-                        g.setColor(Color.RED);
-                        break;
-                    case MAALI:
-                        g.setColor(Color.GREEN);
-                        break;
-                    case KASITTELYSSA:
-                        g.setColor(Color.ORANGE);
-                }
+                g.setColor(r.getVari());
                 g.fill3DRect(x * sivunPituus, y * sivunPituus, sivunPituus, sivunPituus, true);
 
             }
         }
 
-        hiiri = piirtologiikka.hiirenKoordinaatit();
+        g.setColor(Color.red);
+        Koordinaatit alku = simulaatio.getAlkuPiste();
+        g.fill3DRect(alku.getX() * sivunPituus, alku.getY() * sivunPituus, sivunPituus, sivunPituus, true);
+
+        g.setColor(Color.green);
+        Koordinaatit maali = simulaatio.getMaali();
+        g.fill3DRect(maali.getX() * sivunPituus, maali.getY() * sivunPituus, sivunPituus, sivunPituus, true);
+
+        hiiri = simulaatio.hiirenKoordinaatit();
         if (hiiri != null) {
             g.setColor(Color.magenta);
-            g.draw3DRect(hiiri.getX() * sivunPituus, hiiri.getY() * sivunPituus, sivunPituus, sivunPituus, !piirtologiikka.onkoHiiriPainettu());
+            g.draw3DRect(hiiri.getX() * sivunPituus, hiiri.getY() * sivunPituus, sivunPituus, sivunPituus, !simulaatio.onkoHiiriPainettu());
         }
 
     }
@@ -108,6 +98,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
             }
             repaint();
         }
+    }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(simulaatio.getLeveys()*sivunPituus, simulaatio.getKorkeus()*sivunPituus);
     }
 
 }

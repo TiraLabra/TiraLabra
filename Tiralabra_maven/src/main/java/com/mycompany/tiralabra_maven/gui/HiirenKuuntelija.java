@@ -5,7 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.Piirtologiikka;
+import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,12 +18,12 @@ import java.awt.event.MouseMotionListener;
  */
 public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
-    private final int sivunPituus;
-    private final Piirtologiikka piirtologiikka;
+    private int sivunPituus;
+    private Simulaatio simulaatio;
 
-    public HiirenKuuntelija(int sivunPituus, Piirtologiikka piirtologiikka) {
+    public HiirenKuuntelija(int sivunPituus, Simulaatio simulaatio) {
         this.sivunPituus = sivunPituus;
-        this.piirtologiikka = piirtologiikka;
+        this.simulaatio = simulaatio;
     }
 
     @Override
@@ -33,12 +33,12 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        piirtologiikka.hiiriPainettu(true);
+        simulaatio.hiiriPainettu(true);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        piirtologiikka.hiiriPainettu(false);
+        simulaatio.hiiriPainettu(false);
     }
 
     @Override
@@ -52,12 +52,12 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        simulaatio.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        piirtologiikka.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
+        simulaatio.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
     }
 
 }

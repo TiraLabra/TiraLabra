@@ -6,12 +6,7 @@
 
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.Piirtologiikka;
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
-import java.awt.Container;
-import java.awt.Dimension;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 /**
  * Käyttöliittymän ikkunan ja siihen liitettävät komponentit tekevä luokka.
@@ -20,13 +15,11 @@ import javax.swing.WindowConstants;
 public class Kayttoliittyma implements Runnable{
     private NewJFrame frame;
     private Simulaatio simulaatio;
-    private Piirtologiikka piirtologiikka;
     private int sivunPituus;
     private Piirtoalusta piirtoalusta;
 
-    public Kayttoliittyma(Simulaatio simulaatio, Piirtologiikka piirtologiikka, int sivunPituus) {
+    public Kayttoliittyma(Simulaatio simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
-        this.piirtologiikka = piirtologiikka;
         this.sivunPituus = sivunPituus;
     }
 
@@ -40,7 +33,7 @@ public class Kayttoliittyma implements Runnable{
 
     @Override
     public void run() {
-        frame = new NewJFrame(simulaatio, piirtologiikka, sivunPituus);
+        frame = new NewJFrame(simulaatio, sivunPituus);
         //frame = new JFrame("Reittialgoritmit");
         //luoKomponentit(frame.getContentPane());
         //piirtoalusta.setPreferredSize(new Dimension(640, 480));
@@ -50,14 +43,14 @@ public class Kayttoliittyma implements Runnable{
         //frame.setResizable(false);
     }
 
-    private void luoKomponentit(Container contentPane) {
-        //Luodaan ensin piirtoalusta, lisätään se container-olioon
-        //Sitten luodaan näppäimistönkuuntelija ja annetaan se framelle
-        piirtoalusta = new Piirtoalusta(piirtologiikka, sivunPituus);
-        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, piirtologiikka);
-        piirtoalusta.addMouseListener(hiirenkuuntelija);
-        piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
-        contentPane.add(piirtoalusta);
-    }
+//    private void luoKomponentit(Container contentPane) {
+//        //Luodaan ensin piirtoalusta, lisätään se container-olioon
+//        //Sitten luodaan näppäimistönkuuntelija ja annetaan se framelle
+//        piirtoalusta = new Piirtoalusta(piirtologiikka, sivunPituus);
+//        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, piirtologiikka);
+//        piirtoalusta.addMouseListener(hiirenkuuntelija);
+//        piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
+//        contentPane.add(piirtoalusta);
+//    }
     
 }

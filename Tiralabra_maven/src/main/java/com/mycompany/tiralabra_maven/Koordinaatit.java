@@ -46,6 +46,14 @@ public class Koordinaatit {
                 return new Koordinaatit(this.x + 1, this.y);
             case VASEN:
                 return new Koordinaatit(this.x - 1, this.y);
+            case YLAOIKEA:
+                return new Koordinaatit(this.x+1, this.y-1);
+            case YLAVASEN:
+                return new Koordinaatit(this.x-1, this.y-1);
+            case ALAOIKEA:
+                return new Koordinaatit(this.x+1, this.y+1);
+            case ALAVASEN:
+                return new Koordinaatit(this.x-1, this.y+1);
         }
         return null;
     }
