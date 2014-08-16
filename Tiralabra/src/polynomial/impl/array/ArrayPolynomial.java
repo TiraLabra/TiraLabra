@@ -222,7 +222,7 @@ public class ArrayPolynomial implements IPolynomial {
         ArrayPolynomial other = (ArrayPolynomial) polynomial;
         
         // Multiplication with the zero polynomial results in a zero polynomial.
-        if (other.getDegree() == -1) {
+        if (isZeroPolynomial(other)) {
             return new ArrayPolynomial(characteristic);
         }
         
@@ -252,7 +252,28 @@ public class ArrayPolynomial implements IPolynomial {
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayPolynomial divisor = (ArrayPolynomial) polynomial;
+
+        if (isZeroPolynomial(divisor)) {
+            throw new IllegalArgumentException("Divisor is the zero polynomial.");
+        }        
+        
+        // In the beginning, the remainder is the same as this polynomial and the
+        // quotient is zero.
+        ArrayPolynomial quotient = new ArrayPolynomial(characteristic);
+        ArrayPolynomial remainder = createCopyOfPolynomial(this);        
+        
+        while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
+            ArrayPolynomial leadingTermDivisionResult = divideLeadingTerms(remainder, divisor);
+            // Adding the leading term to the quotient. The leading term is always a monomial.
+            quotient.addTerm(leadingTermDivisionResult.getCoefficientOfLeadingTerm(), leadingTermDivisionResult.getDegree());
+            
+            ArrayPolynomial removeFromRemainder = (ArrayPolynomial) leadingTermDivisionResult.multiply(divisor);
+            // Removing the divided part from the remainder
+            remainder = (ArrayPolynomial) remainder.subtract(removeFromRemainder);
+        }
+
+        return new DivisionResult(quotient, remainder);        
     }
 
     private int getValueModuloCharacteristic(int value) {
@@ -310,5 +331,59 @@ public class ArrayPolynomial implements IPolynomial {
         
         return newCoefficientArray;
     }
+    
+    private boolean isZeroPolynomial(ArrayPolynomial polynomial) {
+        return polynomial.getDegree() == -1;
+    }
+
+    private ArrayPolynomial createCopyOfPolynomial(ArrayPolynomial polynomial) {
+        ArrayPolynomial copy = new ArrayPolynomial(polynomial.characteristic);
+        
+        copy.coefficients = new int[polynomial.coefficients.length];
+        
+        System.arraycopy(polynomial.coefficients, 0, copy.coefficients, 0, copy.coefficients.length);
+        
+        return copy;
+    }
+    
+    /**
+     * Divides the leading term of the polynomial remainder with the leading
+     * term of the polynomial divisor.
+     *
+     * @param remainder
+     * @param divisor
+     * @throws IllegalArgumentException if the coefficient would be an
+     * non-integer and it can't be represented as an integer modulo the
+     * characteristic.
+     * @return ArrayPolynomial that is the result of the division. It will
+     * contain only one non-zero coefficient.
+     */
+    private ArrayPolynomial divideLeadingTerms(ArrayPolynomial remainder, ArrayPolynomial divisor) {
+        int coefficientRemainder = remainder.getCoefficientOfLeadingTerm();
+        int coefficientDivisor = divisor.getCoefficientOfLeadingTerm();
+
+        int coefficientOfResult;
+
+        if (coefficientRemainder % coefficientDivisor == 0) {
+            coefficientOfResult = coefficientRemainder / coefficientDivisor;
+        } else if (remainder.characteristic == 0) {
+            throw new UnsupportedOperationException("Cannot represent non-integer coefficients in characteristic 0");
+        } else {
+            int inverseOfDivisorCoefficient = MathUtil.getInverseModP(coefficientDivisor, remainder.characteristic);
+            if (inverseOfDivisorCoefficient == -1) {
+                throw new UnsupportedOperationException("Cannot represent 1/" + coefficientDivisor + " as an integer modulo " + characteristic);
+            }
+            coefficientOfResult = (inverseOfDivisorCoefficient * coefficientRemainder) % remainder.characteristic;
+        }
+        
+        int exponentOfResult = remainder.getDegree() - divisor.getDegree();
+        
+        ArrayPolynomial result = new ArrayPolynomial(remainder.characteristic);
+        
+        result.coefficients = new int[exponentOfResult + 1];
+        result.coefficients[exponentOfResult] = coefficientOfResult;
+        
+        return result;
+    }    
 
 }

@@ -463,10 +463,10 @@ public class LinkedListPolynomial implements IPolynomial {
         LinkedListPolynomial remainder = createCopyOfPolynomial(this);
 
         while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
-            LinkedListPolynomial leadingTermDivision = divideLeadingTerms(remainder, divisor);
-            quotient.addTerm(leadingTermDivision.highestDegreeTerm.coefficient, leadingTermDivision.highestDegreeTerm.exponent);
+            LinkedListPolynomial leadingTermDivisionResult = divideLeadingTerms(remainder, divisor);
+            quotient.addTerm(leadingTermDivisionResult.highestDegreeTerm.coefficient, leadingTermDivisionResult.highestDegreeTerm.exponent);
             
-            LinkedListPolynomial removeFromRemainder = (LinkedListPolynomial) leadingTermDivision.multiply(divisor);
+            LinkedListPolynomial removeFromRemainder = (LinkedListPolynomial) leadingTermDivisionResult.multiply(divisor);
             
             remainder = (LinkedListPolynomial) remainder.subtract(removeFromRemainder);
         }

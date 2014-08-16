@@ -363,7 +363,6 @@ public class ArrayPolynomialTest {
 
     @Test
     public void testAddInverse() {
-        System.out.println("testAddInverse");
         int characteristic = 5;
         ArrayPolynomial polynomial = new ArrayPolynomial(characteristic);
         polynomial.addTerm(3, 0);
