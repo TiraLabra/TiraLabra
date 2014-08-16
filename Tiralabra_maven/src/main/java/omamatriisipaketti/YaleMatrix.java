@@ -6,7 +6,7 @@ package omamatriisipaketti;
  * on hyvin vähän muita kuin nollia. 
  * @author risto
  */
-public class YaleMatrix {
+public class YaleMatrix implements Matrix {
     /**
      * Non-zero values. Taulukkoon on koottu matriisin arvot, jotka eivät ole nollia.
      */
@@ -117,4 +117,9 @@ public class YaleMatrix {
         
         
     }
+    
+    public YaleMatrix smoni(double skalaari) {
+        return this;
+    }
+    
 }
