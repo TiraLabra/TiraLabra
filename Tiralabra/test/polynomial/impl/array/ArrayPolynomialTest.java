@@ -480,8 +480,7 @@ public class ArrayPolynomialTest {
 
         IPolynomial result = polynomial.subtract(polynomial);
 
-        assertEquals(0, result.getDegree());
-        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+        assertEquals(-1, result.getDegree());
     }
 
     @Test
@@ -560,8 +559,7 @@ public class ArrayPolynomialTest {
         
         IPolynomial result = polynomial.multiply(polynomial2);
         
-        assertEquals(0, result.getDegree());
-        assertEquals(0, result.getNumberOfNonZeroCoefficients());
+        assertEquals(-1, result.getDegree());
     }
 
     @Test
@@ -722,8 +720,7 @@ public class ArrayPolynomialTest {
         
         IPolynomial remainder = result.remainder;
         
-        assertEquals(0, remainder.getDegree());
-        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+        assertEquals(-1, remainder.getDegree());
     }
     
     @Test
@@ -751,8 +748,7 @@ public class ArrayPolynomialTest {
         
         IPolynomial remainder = result.remainder;
         
-        assertEquals(0, remainder.getDegree());
-        assertEquals(0, remainder.getNumberOfNonZeroCoefficients());          
+        assertEquals(-1, remainder.getDegree());
     }
     
     @Test

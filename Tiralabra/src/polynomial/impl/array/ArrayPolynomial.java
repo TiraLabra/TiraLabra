@@ -9,6 +9,8 @@ import polynomial.IPolynomial;
  *
  * The values of the polynomial are kept in an array. The coefficient of degree
  * k is found at the index k in the array.
+ * 
+ * The multiplication is currently done naively in O(n^2) time.
  *
  * @author Sebastian Björkqvist
  */
@@ -51,17 +53,13 @@ public class ArrayPolynomial implements IPolynomial {
         if (exponent < 0) {
             throw new IllegalArgumentException("The exponent " + exponent + " is negative.");
         }
+        if (coefficient == 0) {
+            return;
+        }
         if (exponent < coefficients.length) {
             coefficients[exponent] = getValueModuloCharacteristic(coefficients[exponent] + coefficient);
-            if (exponent == coefficients.length - 1 && coefficients[exponent] == 0) {
-                // Removing unnecessary part of array.
-                int[] oldCoefficients = coefficients;
-                int currentDegree = exponent - 1;
-                while (currentDegree >= 0 && oldCoefficients[currentDegree] == 0) {
-                    currentDegree--;
-                }
-                coefficients = new int[currentDegree + 1];
-                System.arraycopy(oldCoefficients, 0, coefficients, 0, coefficients.length);
+            if (exponent == coefficients.length - 1) {
+                coefficients = shrinkArray(coefficients);
             }
         } else {
             int[] oldCoefficients = coefficients;
@@ -75,33 +73,26 @@ public class ArrayPolynomial implements IPolynomial {
     public void removeTerm(int exponent) {
         if (exponent < 0) {
             throw new IllegalArgumentException("The exponent " + exponent + " is negative.");
-        }        
+        }
         if (exponent >= coefficients.length) {
             return;
         }
+        
         coefficients[exponent] = 0;
-        if (exponent == coefficients.length - 1) {
-            // Checking what the new degree is
-            int[] oldCoefficients = coefficients;
-            int currentDegree = exponent - 1;
-            while (currentDegree >= 0 && oldCoefficients[currentDegree] == 0) {
-                currentDegree--;
-            }
-            coefficients = new int[currentDegree + 1];
-            System.arraycopy(oldCoefficients, 0, coefficients, 0, coefficients.length);
-        }
+        
+        coefficients = shrinkArray(coefficients);
     }
 
     @Override
     public int evaluate(int value) {
         int result = 0;
-        
+
         for (int i = 0; i < coefficients.length; i++) {
             if (coefficients[i] != 0) {
                 result += getValueModuloCharacteristic(coefficients[i] * MathUtil.pow(value, i));
             }
         }
-        
+
         return getValueModuloCharacteristic(result);
     }
 
@@ -123,7 +114,7 @@ public class ArrayPolynomial implements IPolynomial {
         }
         return coefficients[degree];
     }
-    
+
     @Override
     public String toString() {
         StringBuilder stringRepr = new StringBuilder();
@@ -156,7 +147,7 @@ public class ArrayPolynomial implements IPolynomial {
             first = false;
         }
 
-        return stringRepr.toString();        
+        return stringRepr.toString();
     }
 
     @Override
@@ -164,43 +155,34 @@ public class ArrayPolynomial implements IPolynomial {
         checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        
-        ArrayPolynomial other = (ArrayPolynomial) polynomial;
-        
-        int newDegree;
-        
-        if (other.getDegree() > getDegree()) {
-            newDegree = other.getDegree();
+
+        ArrayPolynomial toAdd = (ArrayPolynomial) polynomial;
+
+        int degreeOfResult;
+
+        if (toAdd.getDegree() > getDegree()) {
+            degreeOfResult = toAdd.getDegree();
         } else {
-            newDegree = getDegree();
+            degreeOfResult = getDegree();
         }
-        
+
         ArrayPolynomial result = new ArrayPolynomial(characteristic);
-        
-        result.coefficients = new int[newDegree + 1];
-        
+
+        result.coefficients = new int[degreeOfResult + 1];
+
         for (int i = 0; i < result.coefficients.length; i++) {
             int newValue = 0;
-            if (i < other.coefficients.length) {
-                newValue = getValueModuloCharacteristic(newValue + other.coefficients[i]);
+            if (i < toAdd.coefficients.length) {
+                newValue = getValueModuloCharacteristic(newValue + toAdd.coefficients[i]);
             }
             if (i < coefficients.length) {
                 newValue = getValueModuloCharacteristic(newValue + coefficients[i]);
             }
             result.coefficients[i] = newValue;
         }
-        
-        if (result.coefficients[result.coefficients.length - 1] == 0) {
-            // Checking what the new degree is
-            int[] oldCoefficients = result.coefficients;
-            int currentDegree = result.coefficients.length - 2;
-            while (currentDegree >= 0 && oldCoefficients[currentDegree] == 0) {
-                currentDegree--;
-            }
-            result.coefficients = new int[currentDegree + 1];
-            System.arraycopy(oldCoefficients, 0, result.coefficients, 0, result.coefficients.length);
-        }
-        
+
+        result.coefficients = shrinkArray(result.coefficients);
+
         return result;
     }
 
@@ -209,8 +191,20 @@ public class ArrayPolynomial implements IPolynomial {
         checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        ArrayPolynomial other = (ArrayPolynomial) polynomial;
+
+        // Subtracting is the same as adding the additive inverse, so we just
+        // change the sign of all coefficients and use the add-method.
+        ArrayPolynomial inverse = new ArrayPolynomial(other.characteristic);
+
+        inverse.coefficients = new int[other.coefficients.length];
+
+        for (int i = 0; i < inverse.coefficients.length; i++) {
+            inverse.coefficients[i] = -other.coefficients[i];
+        }
+
+        return add(inverse);
     }
 
     @Override
@@ -218,8 +212,34 @@ public class ArrayPolynomial implements IPolynomial {
         checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
+
+        // This is a naive, O(n^2) implementation of the multiplication.
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayPolynomial other = (ArrayPolynomial) polynomial;
+        
+        // Multiplication with the zero polynomial results in a zero polynomial.
+        if (other.getDegree() == -1) {
+            return new ArrayPolynomial(characteristic);
+        }
+        
+        int degreeOfResult = getDegree() + other.getDegree();
+        
+        ArrayPolynomial result = new ArrayPolynomial(characteristic);
+        
+        result.coefficients = new int[degreeOfResult + 1];
+        
+        for (int indexOfThis = 0; indexOfThis < coefficients.length; indexOfThis++) {
+            for (int indexOfOther = 0; indexOfOther < other.coefficients.length; indexOfOther ++) {
+                int degree = indexOfThis + indexOfOther;
+                int coefficientToAdd = getValueModuloCharacteristic(coefficients[indexOfThis] * other.coefficients[indexOfOther]);
+                
+                result.coefficients[degree] = getValueModuloCharacteristic(coefficientToAdd + result.coefficients[degree]);
+            }
+        }
+        
+        result.coefficients = shrinkArray(result.coefficients);
+        
+        return result;
     }
 
     @Override
@@ -227,7 +247,7 @@ public class ArrayPolynomial implements IPolynomial {
         checkNull(polynomial);
         checkCharacteristic(polynomial.getCharacteristic());
         checkImplementation(polynomial);
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -257,6 +277,34 @@ public class ArrayPolynomial implements IPolynomial {
             throw new UnsupportedOperationException("Calculations with implementations of "
                     + "type " + polynomial.getClass().getName() + " not yet supported.");
         }
+    }
+
+    /**
+     * Shrinks the coefficient array so there are no zeros in the end.
+     *
+     * We do this so that the last coefficient is always non-zero, and thus
+     * we may always get the degree of the polynomial straight from the
+     * size of the coefficient array.
+     * 
+     * @param coefficientArray The coefficient array
+     * @return The same array with zeros removed from the end.
+     */
+    private int[] shrinkArray(int[] coefficientArray) {
+        int currentHighestNonZeroIndex = coefficientArray.length - 1;
+        while (currentHighestNonZeroIndex >= 0 && coefficientArray[currentHighestNonZeroIndex] == 0) {
+            currentHighestNonZeroIndex--;
+        }
+        
+        // If the highest index is already non-zero, we don't need to change the array.
+        if (currentHighestNonZeroIndex == coefficientArray.length - 1) {
+            return coefficientArray;
+        }
+        
+        int[] newCoefficientArray = new int[currentHighestNonZeroIndex + 1];
+        
+        System.arraycopy(coefficientArray, 0, newCoefficientArray, 0, newCoefficientArray.length);
+        
+        return newCoefficientArray;
     }
 
 }
