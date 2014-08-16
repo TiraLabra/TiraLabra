@@ -1,6 +1,7 @@
 package com.mycompany.Tiralabra_maven;
 
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
+import com.mycompany.Tiralabra_maven.logiikka.aStar.AstarWithHeap;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
 import java.awt.Color;
@@ -50,13 +51,14 @@ public class App {
         Piste maaliPiste = new Piste(0, 2);
 //        Piste maaliPiste = new Piste(2, 1);
 
-        DijkstraWithHeap dijkstraWithHeap = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
+//        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
+        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
 
-        System.out.println(dijkstraWithHeap.ratkaise());
+        System.out.println(ratkaisija.ratkaise());
 
-        dijkstraWithHeap.shortestPath();
+        ratkaisija.shortestPath();
         
-        dijkstraWithHeap.testiTulostaReittikartta();
+        ratkaisija.testiTulostaReittikartta();
 
     }
 }

@@ -5,11 +5,11 @@ package com.mycompany.Tiralabra_maven.logiikka;
  */
 public class Piste {
 
-    public int x;
-    public int y;
+    public int i;
+    public int j;
 
-    public Piste(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Piste(int i, int j) {
+        this.i = i;
+        this.j = j;
     }
 }

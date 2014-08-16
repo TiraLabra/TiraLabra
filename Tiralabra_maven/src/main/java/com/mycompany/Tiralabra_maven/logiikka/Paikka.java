@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class Paikka implements Comparable<Paikka> {
 
-    public int i; // tarvitaan vain TESTaukseen
-    public int j; // tarvitaan vain TESTaukseen
+    public int i; // väärin: tarvitaan vain TESTaukseen
+    public int j; // väärin: tarvitaan vain TESTaukseen
     /**
      * Luokan Paikka attribuutti aikaKustannus kertoo kuinka monta aikayksikköä
      * kuluu kun ko. Paikka-luokan ilmentymään siirrytään.
@@ -32,7 +32,7 @@ public class Paikka implements Comparable<Paikka> {
         this.i = i; // tarvitaan vain TESTaukseen
         this.j = j; // tarvitaan vain TESTaukseen
         this.aikaKustannus = aikaKustannus;
-        this.etaisyysAlkuun = Integer.MAX_VALUE;
+        this.etaisyysAlkuun = Integer.MAX_VALUE/2;
         this.etaisyysLoppuun = 0;
         this.vierusPaikat = new ArrayList<Paikka>();
         this.polku = null;
@@ -40,7 +40,7 @@ public class Paikka implements Comparable<Paikka> {
 
     @Override
     public int compareTo(Paikka paikka) {
-        return this.etaisyysAlkuun - paikka.etaisyysAlkuun;
+        return (this.etaisyysAlkuun + this.etaisyysLoppuun) - (paikka.etaisyysAlkuun + paikka.etaisyysLoppuun);
     }
 
     public Paikka getPaikka(int i, int j) {

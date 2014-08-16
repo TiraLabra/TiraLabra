@@ -41,7 +41,7 @@ public class PisteTest {
         piste = new Piste(2, -3);
 //        jakolasku.setOperandi2(new KokonaisLukuOperandi(7));
 //        Tehtava jakolaskuTehtava = new Tehtava(jakolasku);
-        assertEquals(-3, piste.y);
+        assertEquals(-3, piste.j);
     }
 
 }

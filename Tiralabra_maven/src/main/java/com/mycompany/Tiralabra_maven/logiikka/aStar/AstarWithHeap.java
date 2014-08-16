@@ -1,37 +1,38 @@
-package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
+package com.mycompany.Tiralabra_maven.logiikka.aStar;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.keko.JavaKeko;
-//import com.mycompany.Tiralabra_maven.logiikka.keko.MinimiKeko;
-//import java.util.PriorityQueue;
 import java.util.Stack;
 
 /**
- * Dijkstran algoritmin apufunktiot ja varsinaisen ratkaisun sisältävä luokka.
+ *
+ * @author Hannu
  */
-public class DijkstraWithHeap {
+public class AstarWithHeap {
 
     private Piste lahtoPiste;
     private Piste maaliPiste;
     private int[][] kartta;
     private int[][] reittiKartta;
     private Paikka[][] paikat;
+    private boolean maaliPoistettuKeosta; // aStar
 
-    public DijkstraWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste) {
+    public AstarWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste) {
 
         this.lahtoPiste = lahtoPiste;
         this.maaliPiste = maaliPiste;
         this.kartta = kartta;
         this.reittiKartta = kartta;
         this.paikat = new Paikka[kartta.length][kartta[0].length];
+        this.maaliPoistettuKeosta = false; // aStar
 
     }
 
     public int ratkaise() {
-        // Dijkstra with min-heap
+        // MUUTA ASTARIKSI Dijkstra with min-heap
 
-        this.initialiseSingleSource();
+        this.initialiseAstar();
 
         JavaKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
 
@@ -41,8 +42,11 @@ public class DijkstraWithHeap {
 
         Paikka paikkaU;
 
-        while (!heap.heapIsEmpty()) {
+        while (this.maaliPoistettuKeosta == false) {
             paikkaU = heap.heapDelMin();
+            if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
+                this.maaliPoistettuKeosta = true; // aStar
+            } // aStar
             System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
             for (Paikka paikkaV : paikkaU.vierusPaikat) {
                 System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
@@ -65,14 +69,15 @@ public class DijkstraWithHeap {
         return this.paikat[this.maaliPiste.i][this.maaliPiste.j].etaisyysAlkuun;
     }
 
-    private void initialiseSingleSource() {
+    private void initialiseAstar() {
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton
                 this.paikat[i][j] = new Paikka(i, j, this.kartta[i][j]);
+                this.paikat[i][j].etaisyysLoppuun = Math.abs(this.lahtoPiste.i - this.paikat[i][j].i) + Math.abs(this.lahtoPiste.j - this.paikat[i][j].j); // ASTAR
             }
         }
-        
+
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
