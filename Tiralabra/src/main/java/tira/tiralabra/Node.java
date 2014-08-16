@@ -35,6 +35,10 @@ public class Node implements Comparable<Node> {
     public void setShortest(int value) {
         this.shortest = value;
     }
+    
+    public ArrayList<Edge> getEdges() {
+        return this.routes;
+    }
 
     @Override
     public int compareTo(Node o) {

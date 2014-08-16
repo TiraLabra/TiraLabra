@@ -12,22 +12,19 @@ public class Dijkstra {
     private String source;
     private String destination;
     private HashMap<String, ArrayList<Target>> graph;
-    private Node[] nodes;
+    private ArrayList<Node> nodes;
 
     public Dijkstra(String start, String end, Mapper grid) {
         this.source = start;
         this.destination = end;
         this.graph = grid.getGrid();
-        this.nodes = new Node[this.graph.size()];
+        this.nodes = new ArrayList<Node>();
     }
 
     public void initialize() {
-        int i = 0;
         for (String apu : this.graph.keySet()) {
             Node next = new Node(apu);
-            createEdges(next);
-            this.nodes[i] = next;
-            i++;
+            this.nodes.add(next);
         }
     }
     
@@ -35,12 +32,9 @@ public class Dijkstra {
     }
 
     private void createEdges(Node next) {
-        ArrayList<Target> connections = this.graph.get(next.toString());
-        Edge[] edges = new Edge[connections.size()];
-        int i = 0;
-        for (Target apu : connections) {
-            edges[i] = new Edge();
-        }
+        String node = next.toString();
+        ArrayList<Target> connections = this.graph.get(node);
+        
     }
     
 }
