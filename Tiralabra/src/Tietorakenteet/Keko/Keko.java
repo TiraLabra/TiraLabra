@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tietorakenteet.Keko;
+package tietorakenteet.keko;
 
-import Tietorakenteet.DiskreettiSolmu;
+import tietorakenteett.DiskreettiSolmu;
 import java.util.HashMap;
 
 /**

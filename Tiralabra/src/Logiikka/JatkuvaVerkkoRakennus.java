@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package Logiikka;
+package logiikka;
 
 /**
  *
  * @author Serafim
  */
-public class JatkuvaVerkkoRakennus {
+public class Jatkuvaverkkorakennus {
     
 }

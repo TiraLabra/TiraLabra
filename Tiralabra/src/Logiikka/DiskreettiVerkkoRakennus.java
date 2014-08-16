@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Logiikka;
+package logiikka;
 
-import Tietorakenteet.Kordinaatti;
-import Tietorakenteet.Monikulmio;
 import java.util.ArrayList;
 import java.util.Set;
+import tietorakenteett.Kordinaatti;
+import tietorakenteett.Monikulmio;
 
 /**
  *
  * @author Serafim
  */
-public class DiskreettiVerkkoRakennus {
+public class Diskreettiverkkorakennus {
 
     private Set<Monikulmio> monikulmiot;
     private double xMax;
@@ -26,7 +26,7 @@ public class DiskreettiVerkkoRakennus {
     private Kordinaatti loppu;
     private int safety;
 
-    public DiskreettiVerkkoRakennus(Set<Monikulmio> monikulmiot, double pituus, Kordinaatti alku, Kordinaatti loppu) {
+    public Diskreettiverkkorakennus(Set<Monikulmio> monikulmiot, double pituus, Kordinaatti alku, Kordinaatti loppu) {
         this.monikulmiot = monikulmiot;
         this.ruudunpituus = pituus;
         this.alku = alku;

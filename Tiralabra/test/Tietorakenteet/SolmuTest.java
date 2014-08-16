@@ -6,6 +6,7 @@
 
 package Tietorakenteet;
 
+import tietorakenteett.DiskreettiSolmu;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author Serafim
  */
-public class SolmuTest {
+public class Solmutest {
     
-    public SolmuTest() {
+    public Solmutest() {
     }
     
  

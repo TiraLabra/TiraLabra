@@ -1,10 +1,10 @@
 package Main;
 
-import Tietorakenteet.DiskreettiSolmu;
-import Tietorakenteet.Keko.Iteroitava;
-import Tietorakenteet.Keko.Keko;
-import Tietorakenteet.Kordinaatti;
 import java.util.HashMap;
+import tietorakenteet.keko.Iteroitava;
+
+import tietorakenteett.DiskreettiSolmu;
+import tietorakenteett.Kordinaatti;
 
 /*
  * 

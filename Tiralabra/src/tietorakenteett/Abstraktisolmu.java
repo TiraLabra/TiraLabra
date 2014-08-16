@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tietorakenteet;
+package tietorakenteett;
 
-import Tietorakenteet.Keko.Iteroitava;
+import tietorakenteet.keko.Iteroitava;
 
 /**
  *
