@@ -261,7 +261,12 @@ public class LinkedListPolynomial implements IPolynomial {
         int result = 0;
         Monomial current = highestDegreeTerm;
         while (current != null) {
-            int valueAtMonomial = current.coefficient * MathUtil.pow(value, current.exponent);
+            int valueAtMonomial;
+            if (characteristic == 0) {
+                valueAtMonomial = current.coefficient * MathUtil.pow(value, current.exponent);
+            } else {
+                valueAtMonomial = current.coefficient * MathUtil.powModulo(value, current.exponent, characteristic);
+            }
             result = getValueModuloCharacteristic(result + valueAtMonomial);
             current = current.lowerMonomial;
         }

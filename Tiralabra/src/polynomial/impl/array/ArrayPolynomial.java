@@ -87,9 +87,13 @@ public class ArrayPolynomial implements IPolynomial {
     public int evaluate(int value) {
         int result = 0;
 
-        for (int i = 0; i < coefficients.length; i++) {
-            if (coefficients[i] != 0) {
-                result += getValueModuloCharacteristic(coefficients[i] * MathUtil.pow(value, i));
+        for (int exponent = 0; exponent < coefficients.length; exponent++) {
+            if (coefficients[exponent] != 0) {
+                if (characteristic == 0) {
+                    result += getValueModuloCharacteristic(coefficients[exponent] * MathUtil.pow(value, exponent));
+                } else {
+                    result += getValueModuloCharacteristic(coefficients[exponent] * MathUtil.powModulo(value, exponent, characteristic));
+                }
             }
         }
 

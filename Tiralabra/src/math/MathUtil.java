@@ -24,7 +24,9 @@ public class MathUtil {
      * Returns the value of base raised to exponent.
      *
      * This method has a linear time implementation at the moment. It could
-     * easily be changed to a log time implementation.
+     * easily be changed to a log time implementation. This method also easily
+     * overflows. If you want to calculate powers modulo an integer, use the method
+     * powModulo.
      *
      * This method calculates 0^0 to be 1.
      *
@@ -45,6 +47,92 @@ public class MathUtil {
         }
 
         return result;
+    }
+
+    /**
+     * Calculates number^exponent mod modulo
+     *
+     * @param base any integer
+     * @param exponent a non-negative integer
+     * @param modulo a positive integer
+     * @return (number^exponent) mod (modulo)
+     * @exception IllegalArgumentException if modulo < 1
+     * @exception IllegalArgumentException if exponent < 0
+     */
+    public static int powModulo(int base, int exponent, int modulo) {
+        if (modulo < 1) {
+            throw new IllegalArgumentException("Modulo must be positive.");
+        }
+
+        if (exponent < 0) {
+            throw new IllegalArgumentException("Exponent must be non-negative.");
+        }
+
+        if (exponent == 0) {
+            return 1;
+        }
+
+        int indexOfHighestOneBit = log2(exponent);
+
+        long[] numberExponentiated = new long[indexOfHighestOneBit + 1];
+        numberExponentiated[0] = base % modulo;
+
+        for (int i = 1; i < numberExponentiated.length; i++) {
+            numberExponentiated[i] = (numberExponentiated[i - 1] * numberExponentiated[i - 1]) % modulo;
+        }
+
+        long result = numberExponentiated[numberExponentiated.length - 1];
+
+        for (int i = numberExponentiated.length - 2; i >= 0; i--) {
+            if (isOne(exponent, i)) {
+                result = (result * numberExponentiated[i]) % modulo;
+            }
+        }
+
+        while (result < 0) {
+            result += modulo;
+        }
+
+        return (int) result;
+    }
+
+    /**
+     * Returns the index of the highest one bit of a given number
+     *
+     * @param number a positive integer
+     * @return the index of the highest one bit of number
+     * @exception IllegalArgumentException if number <= 0
+     */
+    static int log2(int number) {
+        if (number <= 0) {
+            throw new IllegalArgumentException("Number must be positive.");
+        }
+        return 31 - Integer.numberOfLeadingZeros(number);
+    }
+
+    /**
+     * Tells if a given index of a number in binary form is one
+     *
+     * @param number a positive integer
+     * @param index the desired index, from 0 to 31.
+     * @return true if index is 1, false if index is 0
+     * @exception IllegalArgumentException if number < 0
+     * @exception IllegalArgumentException if index not in range 0...31.
+     */
+    static boolean isOne(int number, int index) {
+        if (number < 0) {
+            throw new IllegalArgumentException("Number must be positive.");
+        }
+        if (index < 0 || index > 31) {
+            throw new IllegalArgumentException("Index must be in range 0...31.");
+        }
+
+        return (number & (1 << index)) != 0;
+        /* The only index that is not zero in (1 << index) is 
+         * the index 'index'. Therefore, if number is one at the 
+         * index 'index', the method returns true, and if number 
+         * is zero at the index 'index', the method returns false.
+         */
     }
 
     /**
@@ -70,24 +158,24 @@ public class MathUtil {
 
         return new ExtendedEuclideanResult(gcd, x, y);
     }
-    
+
     /**
      * Finds the inverse of the number n modulo p.
-     * 
+     *
      * The inverse always exists if p is a prime. Otherwise it might not exist,
      * in which case the algorithm returns -1;
-     * 
+     *
      * @param n The number whose inverse is to be found.
      * @param p The modulo.
      * @return The inverse of n modulo p, -1 if the inverse doesn't exist.
      */
     public static int getInverseModP(int n, int p) {
         ExtendedEuclideanResult result = extendedEuclideanAlgorithm(n, p);
-        
+
         if (result.gcd != 1) {
             return -1;
         }
-        
+
         return result.x;
     }
 
@@ -111,7 +199,7 @@ public class MathUtil {
         if (n == 2) {
             return true;
         }
-        
+
         if (n % 2 == 0) {
             return false;
         }

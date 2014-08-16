@@ -1,5 +1,6 @@
 package math;
 
+import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -251,4 +252,130 @@ public class MathUtilTest {
         assertEquals(-1, MathUtil.getInverseModP(4, 16));
     }
 
+    // Testing log2 method:
+    @Test(expected = IllegalArgumentException.class)
+    public void log2ExpectedExceptionTest() {
+        MathUtil.log2(-1);
+    }
+
+    @Test
+    public void log2Test1() {
+        assertEquals(3, MathUtil.log2(8));
+    }
+
+    @Test
+    public void log2Test2() {
+        assertEquals(3, MathUtil.log2(13));
+    }
+
+    @Test
+    public void log2Test3() {
+        assertEquals(1, MathUtil.log2(2));
+    }
+
+    @Test
+    public void log2Test4() {
+        assertEquals(0, MathUtil.log2(1));
+    }
+
+    @Test
+    public void log2Test5() {
+        assertEquals(7, MathUtil.log2(170));
+    }
+
+    // Testing isOne method:
+    @Test(expected = IllegalArgumentException.class)
+    public void isOneExpectedExceptionTest1() {
+        MathUtil.isOne(-1, 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isOneExpectedExceptionTest2() {
+        MathUtil.isOne(3, -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isOneExpectedExceptionTest3() {
+        MathUtil.isOne(3, 32);
+    }
+
+    @Test
+    public void isOneTest1() {
+        assertEquals(false, MathUtil.isOne(0, 0));
+    }
+
+    @Test
+    public void isOneTest2() {
+        assertEquals(false, MathUtil.isOne(4, 0));
+    }
+
+    @Test
+    public void isOneTest3() {
+        assertEquals(false, MathUtil.isOne(8, 2));
+    }
+
+    @Test
+    public void isOneTest4() {
+        assertEquals(true, MathUtil.isOne(17, 0));
+    }
+
+    @Test
+    public void isOneTest5() {
+        assertEquals(true, MathUtil.isOne(32, 5));
+    }
+
+    @Test
+    public void isOneTest6() {
+        assertEquals(true, MathUtil.isOne(130, 1));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void calculatorExpectedExceptionTestModulo() {
+        MathUtil.powModulo(1, 1, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void calculatorExpectedExceptionTestExponent() {
+        MathUtil.powModulo(1, -1, 2);
+    }
+
+    @Test
+    public void calculatorModuloTest1() {
+        assertEquals(3, MathUtil.powModulo(2, 3, 5));
+    }
+
+    @Test
+    public void calculatorModuloTest2() {
+        assertEquals(3, MathUtil.powModulo(7, 3, 4));
+    }
+
+    @Test
+    public void calculatorModuloTest3() {
+        assertEquals(5, MathUtil.powModulo(170, 393, 47));
+    }
+
+    @Test
+    public void calculatorModuloTest4() {
+        assertEquals(2069, MathUtil.powModulo(6758, 3393, 8693));
+    }
+
+    @Test
+    public void calculatorModuloTest5() {
+        assertEquals(190, MathUtil.powModulo(-215, 1172, 495));
+    }
+
+    @Test
+    public void calculatorModuloTest6() {
+        assertEquals(550, MathUtil.powModulo(-25860, 55535, 1235));
+    }
+
+    @Test
+    public void calculatorModuloTest7() {
+        assertEquals(59657, MathUtil.powModulo(10, 1485, 72799));
+    }
+
+    @Test
+    public void calculatorModuloTest8() {
+        assertEquals(9855, MathUtil.powModulo(165, 4485, 32799));
+    }    
 }
