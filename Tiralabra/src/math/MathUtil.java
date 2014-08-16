@@ -1,5 +1,10 @@
 package math;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Class for mathematical methods.
  *
@@ -25,8 +30,8 @@ public class MathUtil {
      *
      * This method has a linear time implementation at the moment. It could
      * easily be changed to a log time implementation. This method also easily
-     * overflows. If you want to calculate powers modulo an integer, use the method
-     * powModulo.
+     * overflows. If you want to calculate powers modulo an integer, use the
+     * method powModulo.
      *
      * This method calculates 0^0 to be 1.
      *
@@ -127,12 +132,12 @@ public class MathUtil {
             throw new IllegalArgumentException("Index must be in range 0...31.");
         }
 
-        return (number & (1 << index)) != 0;
         /* The only index that is not zero in (1 << index) is 
          * the index 'index'. Therefore, if number is one at the 
          * index 'index', the method returns true, and if number 
          * is zero at the index 'index', the method returns false.
-         */
+         */        
+        return (number & (1 << index)) != 0;
     }
 
     /**
@@ -214,5 +219,75 @@ public class MathUtil {
         }
 
         return true;
+    }
+
+    /**
+     * Returns all prime numbers that are smaller or equal than the given
+     * number.
+     *
+     * Returns empty list if n is smaller than 2.
+     *
+     * The method used is the sieve of Eratosthenes.
+     *
+     * @param n Largest number to consider
+     * @return List of primes from smallest to largest.
+     */
+    public static List<Integer> getAllPrimesSmallerOrEqualThanN(int n) {
+        int[] numberArray = new int[n + 1];
+        boolean[] isPrime = new boolean[n + 1];
+
+        for (int i = 2; i < numberArray.length; i++) {
+            numberArray[i] = i;
+            isPrime[i] = true;
+        }
+
+        for (int i = 2; i < numberArray.length; i++) {
+            if (isPrime[i]) {
+                for (int j = 2 * i; j < numberArray.length; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        List<Integer> primeList = new ArrayList<>();
+
+        for (int i = 2; i < numberArray.length; i++) {
+            if (isPrime[i]) {
+                primeList.add(i);
+            }
+        }
+
+        return primeList;
+    }
+
+    /**
+     * Finds unique prime factors of an integer.
+     *
+     * @param n The integer to factorize
+     * @throws IllegalArgumentException if n is smaller than 2.
+     * @return A set containing the unique prime factors of n.
+     */
+    public static Set<Integer> getUniquePrimeFactors(int n) {
+        if (n < 2) {
+            throw new IllegalArgumentException("The given number n is smaller than 2");
+        }
+        
+        Set<Integer> uniqueFactors = new HashSet<>();
+        List<Integer> primes = getAllPrimesSmallerOrEqualThanN((int) Math.floor(Math.sqrt(n)));
+
+        for (Integer p : primes) {
+            if (p * p > n) {
+                break;
+            }
+            while (n % p == 0) {
+                uniqueFactors.add(p);
+                n /= p;
+            }
+        }
+        if (n > 1) {
+            uniqueFactors.add(n);
+        }
+
+        return uniqueFactors;
     }
 }
