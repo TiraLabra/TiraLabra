@@ -26,13 +26,23 @@ public final class Vector<T> {
     }
 
     /**
-     * Create a new empty vector.
+     * Create a new empty vector with default starting size.
      *
      * @param holdingType The Vector member type.
      */
     public Vector(final Class<T> holdingType) {
+        this(holdingType, 0);
+    }
+
+    /**
+     * Creates a new vector with specific starting size.
+     *
+     * @param holdingType The Vector member type.
+     * @param startingSize The starting size.
+     */
+    public Vector(final Class<T> holdingType, final int startingSize) {
         this.holdingType = holdingType;
-        this.array = arrayOfSize(0);
+        this.array = arrayOfSize(startingSize);
         this.realSize = array.length;
     }
 

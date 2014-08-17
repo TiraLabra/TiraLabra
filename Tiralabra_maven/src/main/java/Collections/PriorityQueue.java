@@ -5,7 +5,7 @@ package Collections;
  * highest value is first and lowest is last. Value is taken from the Comparable
  * interface. Provides logarithmic enqueue and dequeue operations.
  *
- * @param <T> The members of the queue. Must implement Comparable<T> interface.
+ * @param <T> The members of the queue. Must implement Comparable T interface.
  */
 public final class PriorityQueue<T extends Comparable<T>> {
 

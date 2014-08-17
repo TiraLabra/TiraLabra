@@ -101,4 +101,10 @@ public final class LinkedListTest {
         addMany();
         containsAll();
     }
+
+    @Test
+    public void testAddManySizeCorrect() {
+        addMany();
+        assertEquals(toAdd.length, list.size());
+    }
 }

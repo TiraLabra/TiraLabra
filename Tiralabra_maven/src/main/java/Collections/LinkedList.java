@@ -1,14 +1,17 @@
 package Collections;
 
+import java.util.Iterator;
+
 /**
  * Linked list, provides constant add operation and linear contain and remove
  * operations. Guaranteed to not contain null pointers.
  *
  * @param <T> Type of the objects on the list.
  */
-public final class LinkedList<T> {
+public final class LinkedList<T> implements Iterable<T> {
 
     private final Member<T> head;
+    private int count;
 
     /**
      * Creates new empty linked list.
@@ -36,6 +39,7 @@ public final class LinkedList<T> {
             } else {
                 previous.next = null;
             }
+            count--;
         }
     }
 
@@ -86,6 +90,46 @@ public final class LinkedList<T> {
             head.next.previous = added;
         }
         head.next = added;
+        count++;
+    }
+
+    /**
+     * Size of the linked list.
+     *
+     * @return Size of the linked list.
+     */
+    public int size() {
+        return count;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ListIterator<>(head);
+    }
+
+    /**
+     * The linkedlist iterator.
+     *
+     * @param <T> The list member type.
+     */
+    private final class ListIterator<T> implements Iterator<T> {
+
+        private Member<T> current;
+
+        private ListIterator(Member<T> head) {
+            this.current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current.next != null;
+        }
+
+        @Override
+        public T next() {
+            current = current.next;
+            return current.value;
+        }
     }
 
     /**
@@ -99,11 +143,11 @@ public final class LinkedList<T> {
         private Member<T> next;
         private Member<T> previous;
 
-        public Member(final T value) {
+        private Member(final T value) {
             this.value = value;
         }
 
-        public boolean hasNext() {
+        private boolean hasNext() {
             return next != null;
         }
     }
