@@ -13,7 +13,6 @@ public class UI {
     
     /**
      * UI for choosing the operation to be done.
-     *  
      */
     public Integer decideOperation() {
         System.out.println("Valitse operaatio: ");
@@ -31,37 +30,46 @@ public class UI {
     
     /**
      * Ui for creating a matrix.
-     * 
+     * @return Matrix
      */
-    public SimpleMatrix createMatrix() {
-        System.out.println("Anna matriisin rivien määrä (1-20): ");
+    public Matrix createMatrix() {        
+        System.out.println("Anna matriisin rivien määrä: ");
         int m = Integer.parseInt(s.nextLine());
-        System.out.println("Anna matriisin sarakkeiden määrä (1-20): ");
-        int n = Integer.parseInt(s.nextLine());
-        double[][] matrix = new double[m][n];
-        for(int i=0; i<m; i++) {
-            System.out.println("Luettele luvut rivillä " + (i+1));
-            for(int j=0; j<n; j++) {
-                int num = Integer.parseInt(s.nextLine());
-                matrix[i][j] = num;
-            }
+        System.out.println("Anna matriisin sarakkeiden määrä: ");
+        int n = Integer.parseInt(s.nextLine());    
+        System.out.println("Annetaanko matriisille satunnaiset luvut?");        
+        int r = 0;
+        while (r != 1 && r != 2) {
+            System.out.println("1: Kyllä");
+            System.out.println("2: Ei");
+            r = Integer.parseInt(s.nextLine());
         }
-        return new SimpleMatrix(matrix);        
+        if (r == 1) {
+            System.out.println("Anna alaraja luvuille");
+            int l = Integer.parseInt(s.nextLine());
+            System.out.println("Anna yläraja luvuille");
+            int h = Integer.parseInt(s.nextLine());
+            return new Matrix(m,n,l,h);
+        }else {
+            Matrix matrix = new Matrix(m,n);
+            for(int i=0; i<m; i++) {                
+                System.out.println("Luettele luvut rivillä " + (i+1));
+                for(int j=0; j<n; j++) {
+                    int num = Integer.parseInt(s.nextLine());
+                    matrix.setValue(i, j, num);
+                }                
+            }    
+            return matrix;
+        }        
     }
     
+    /**
+     * Asks the scalar from the user.
+     * @return Scalar as double
+     */
     public Double askScalar() {
         System.out.println("Skalaari, jolla haluat kertoa:");
         double b = Double.parseDouble(s.nextLine());
         return b;
-    }
-    
-    public void printMatrix(SimpleMatrix m) {        
-        for(int i=0; i<m.numRows(); i++) {
-            System.out.print("|");
-            for (int j=0; j<m.numCols(); j++) {
-                System.out.printf("%.2f" + " ", m.get(i, j));
-            }
-            System.out.println("|");
-        }
     }
 }
