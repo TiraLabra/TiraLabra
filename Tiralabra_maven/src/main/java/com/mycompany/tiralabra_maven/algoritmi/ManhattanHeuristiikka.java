@@ -16,10 +16,22 @@ import com.mycompany.tiralabra_maven.Koordinaatit;
  */
 public class ManhattanHeuristiikka extends Heuristiikka {
 
+    /**
+     * Konstruktorissa annetaan maalin koordinaatit.
+     *
+     * @param maali
+     */
     public ManhattanHeuristiikka(Koordinaatit maali) {
         super(maali);
     }
 
+    /**
+     * Palauttaa manhattan-etäisyyden parametrina annettujen koordinaattien ja
+     * maalin välille.
+     *
+     * @param koord
+     * @return
+     */
     @Override
     public int arvioiMatkaMaaliin(Koordinaatit koord) {
         return Math.abs(koord.getX() - maali.getX()) + Math.abs(koord.getY() - maali.getY());

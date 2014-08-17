@@ -11,20 +11,11 @@ import javax.swing.SwingUtilities;
  */
 public class App {
 
+    /**
+     * Main-metodi :)
+     * @param args argumentit
+     */
     public static void main(String[] args) {
-        
-//        PrioriteettiKeko<String> keko = new PrioriteettiKeko<>();
-//        keko.lisaa(2);
-//        keko.lisaa(7);
-//        keko.lisaa(0);
-//        keko.lisaa(12);
-//        keko.lisaa(16);
-//        keko.lisaa(3);
-//        keko.lisaa(1);
-//        
-//        for (int i = 0; i<10; i++) {
-//            System.out.println(keko.seuraava());
-//        }
         
         Simulaatio simulaatio = new Simulaatio(true);
         Kayttoliittyma gui = new Kayttoliittyma(simulaatio, 24);

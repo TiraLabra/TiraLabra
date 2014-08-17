@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.mycompany.tiralabra_maven.algoritmi;
+
 import com.mycompany.tiralabra_maven.Koordinaatit;
 
 /**
@@ -18,24 +19,49 @@ public class Solmu {
     private final int kuljettuMatka;
     private final Solmu edellinen;
 
+    /**
+     * Konstruktorissa annetaan solmun koordinaatit, tähän asti kuljettu matka
+     * ja viite edelliseen solmuun.
+     *
+     * @param koordinaatit
+     * @param kuljettuMatka
+     * @param edellinen
+     */
     public Solmu(Koordinaatit koordinaatit, int kuljettuMatka, Solmu edellinen) {
         this.koordinaatit = koordinaatit;
         this.kuljettuMatka = kuljettuMatka;
         this.edellinen = edellinen;
     }
 
+    /**
+     * Palauttaa tämän solmun koordinaatit.
+     * @return 
+     */
     public Koordinaatit getKoordinaatit() {
         return koordinaatit;
     }
 
+    /**
+     * Palauttaa tiedon tähän asti kuljetusta matkasta.
+     * @return 
+     */
     public int getKuljettuMatka() {
         return kuljettuMatka;
     }
 
+    /**
+     * Palauttaa merkkijonoesityksen solmusta.
+     * @return 
+     */
+    @Override
     public String toString() {
         return this.koordinaatit.toString() + ", kuljettu " + this.kuljettuMatka;
     }
 
+    /**
+     * Palauttaa viitteen edelliseen solmuun tai null, jos edellistä ei ole.
+     * @return 
+     */
     public Solmu getEdellinen() {
         return this.edellinen;
     }

@@ -8,6 +8,7 @@ package com.mycompany.tiralabra_maven.gui;
 import java.awt.Color;
 
 /**
+ * Ruutu, joista maailma koostuu. Voi olla LATTIA, SEINA tai VESI.
  *
  * @author mikko
  */
@@ -15,6 +16,11 @@ public enum Ruutu implements PiirrettavaRuutu {
 
     LATTIA, SEINA, VESI;
 
+    /**
+     * Palauttaa ruutua vastaavan värin.
+     *
+     * @return
+     */
     @Override
     public Color getVari() {
         switch (this) {
@@ -28,6 +34,12 @@ public enum Ruutu implements PiirrettavaRuutu {
         return null;
     }
 
+    /**
+     * Palauttaa tiedon siitä, paljonko tähän ruutuun siirtyminen "maksaa"
+     * reittialgoritmille.
+     *
+     * @return
+     */
     public int getHinta() {
         switch (this) {
             case LATTIA:

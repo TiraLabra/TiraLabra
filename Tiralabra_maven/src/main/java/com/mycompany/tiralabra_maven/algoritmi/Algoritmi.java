@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 /**
- * Simulaatio-luokka sisältää varsinaisen reittialgoritmin suoritettavana
+ * Algoritmi-luokka sisältää varsinaisen reittialgoritmin suoritettavana
  * säikeenä. Säikeen käynnistäminen (start-metodin kutsu) käynnistää algoritmin
  * suorituksen.
  *
@@ -29,7 +29,6 @@ public class Algoritmi extends Thread {
     private Simulaatio simulaatio;
     private final int leveys;
     private final int korkeus;
-    //private Paivitettava paivitettava;
     private boolean valmis;
     private int[][] parhaatReitit;
     private Ruutu[][] maailma;
@@ -37,11 +36,10 @@ public class Algoritmi extends Thread {
     private Solmu reitti;
     private Heuristiikka heuristiikka;
     private boolean vinottain;
-    //private Scanner sc;
 
     /**
-     * Konstruktorissa annetaan parametrina tieto
-     * siitä, halutaanko hidastettu vai nopea simulaatio.
+     * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
+     * vai nopea simulaatio.
      *
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
      * simulaation askeleen välillä.
@@ -66,28 +64,29 @@ public class Algoritmi extends Thread {
         //this.sc = new Scanner(System.in);
     }
 
+    /**
+     * Algoritmin asettama tila ruudulle tietyssä pisteessä. Jos ruutu on
+     * koskematon, palautetaan null. Kertoo onko ruutu tutkittu, tai lisätty
+     * tutkittavaksi, tai osa lopullista reittiä.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public RuudunTila getRuudunTila(int x, int y) {
         return this.ruutujenTilat[y][x];
     }
 
-    public void setHeuristiikka(Heuristiikka heuristiikka) {
-        this.heuristiikka = heuristiikka;
-    }
-
+//    public void setHeuristiikka(Heuristiikka heuristiikka) {
+//        this.heuristiikka = heuristiikka;
+//    }
+    
+    /**
+     * Lopettaa reittialgoritmin suorituksen.
+     */
     public void lopeta() {
         this.jatketaanko = false;
         System.out.println("lopetettiin");
-    }
-
-//    public void setRuudukko(int[][] ruudukko) {
-//        this.ruudukko = ruudukko;
-//    }
-    public void setAlkuPiste(Koordinaatit koord) {
-        this.alku = koord;
-    }
-
-    public void setMaali(Koordinaatit koord) {
-        this.maali = koord;
     }
 
     /**
@@ -110,7 +109,7 @@ public class Algoritmi extends Thread {
             if (!jatketaanko) {
                 return;
             }
-            
+
             //käydään läpi solmun naapurisolmut ja lisätään ne tutkittavien joukkoon.
             for (Koordinaatit koord : solmunNaapurit(solmu)) {
 
@@ -155,14 +154,13 @@ public class Algoritmi extends Thread {
     private ArrayList<Koordinaatit> solmunNaapurit(Solmu solmu) {
         ArrayList<Koordinaatit> palautus = new ArrayList<Koordinaatit>();
         Suunta[] lapikaytavat;
-        
+
         if (vinottain) {
             lapikaytavat = Suunta.values();
         } else {
             lapikaytavat = Suunta.kohtisuoratSuunnat();
         }
-        
-        
+
         for (Suunta suunta : lapikaytavat) {
             Koordinaatit koord = solmu.getKoordinaatit().suuntaan(suunta);
             if (koordinaatitUlkopuolella(koord)) {

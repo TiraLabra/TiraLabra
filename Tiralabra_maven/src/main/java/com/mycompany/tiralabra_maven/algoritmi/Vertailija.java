@@ -17,6 +17,10 @@ import java.util.Comparator;
 public class Vertailija implements Comparator<Solmu>{
     private Heuristiikka heuristiikka;
     
+    /**
+     * Konstruktorissa annetaan käytettävä heuristiikka.
+     * @param heuristiikka 
+     */
     public Vertailija(Heuristiikka heuristiikka) {
         this.heuristiikka = heuristiikka;
     }

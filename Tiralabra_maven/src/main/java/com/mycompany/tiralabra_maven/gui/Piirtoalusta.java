@@ -32,17 +32,12 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         this.alustettu = false;
     }
 
-//    /**
-//     * Konstruktori ottaa parametrina piirtologiikan ja sivun pituuden.
-//     *
-//     * @param piirtologiikka
-//     * @param sivunPituus
-//     */
-//    public Piirtoalusta(Piirtologiikka piirtologiikka, int sivunPituus) {
-//        this.piirtologiikka = piirtologiikka;
-//        this.sivunPituus = sivunPituus;
-//        this.alustettu = true;
-//    }
+    /**
+     * Konstruktori ottaa parametrina simulaation ja sivun pituuden.
+     *
+     * @param simulaatio
+     * @param sivunPituus
+     */
     public Piirtoalusta(Simulaatio simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
@@ -100,6 +95,10 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         }
     }
 
+    /**
+     * Palauttaa tämän halutun koon.
+     * @return 
+     */
     @Override
     public Dimension getPreferredSize() {
         if (simulaatio == null) {

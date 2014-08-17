@@ -8,13 +8,17 @@ package com.mycompany.tiralabra_maven.gui;
 import java.awt.Color;
 
 /**
- *
+ * Enum joka kertoo ruudun tilan algoritmin toimintaan liittyen.
  * @author mikko
  */
 public enum RuudunTila implements PiirrettavaRuutu {
 
     KOSKEMATON, TUTKIMATON, TUTKITTU, REITTI, KASITTELYSSA;
 
+    /**
+     * Palauttaa ruudu tilaa vastaavan värin.
+     * @return 
+     */
     @Override
     public Color getVari() {
         switch (this) {

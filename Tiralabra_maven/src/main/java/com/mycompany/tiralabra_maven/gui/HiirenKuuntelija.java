@@ -21,6 +21,11 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
     private int sivunPituus;
     private Simulaatio simulaatio;
 
+    /**
+     * Konstruktorissa annetaan sivun pituus ja simulaatio
+     * @param sivunPituus
+     * @param simulaatio 
+     */
     public HiirenKuuntelija(int sivunPituus, Simulaatio simulaatio) {
         this.sivunPituus = sivunPituus;
         this.simulaatio = simulaatio;

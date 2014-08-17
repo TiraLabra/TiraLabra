@@ -8,9 +8,14 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 import java.util.Comparator;
 
 /**
+ * Tietorakenne, jota käytetään tähän varastoitujen elementtien tallettamiseen
+ * ja ulos ottamiseen priorisoidussa järjestyksessä. Elementtien järjestämiseen
+ * voidaan käyttää konstruktorin parametrina annettua Comparator-rajapinnan
+ * toteuttavaa otusta, tai tämän puuttuessa elementtien luonnollista
+ * järjestystä.
  *
  * @author mikko
- * @param <E>
+ * @param <E> varastoitavien elementtien tyyppi
  */
 public class PrioriteettiKeko<E> {
 
@@ -20,15 +25,29 @@ public class PrioriteettiKeko<E> {
 
     private final Comparator<? super E> vertailija;
 
+    /**
+     * Parametriton konstruktori luo tyhjän prioriteettikeon, josta elementtejä
+     * saadaan ulos käyttäen niitten luonnollista järjestystä.
+     */
     public PrioriteettiKeko() {
         this(null);
     }
 
+    /**
+     * Konstruktori, jolle annetaan parametrina Comparator-rajapinnan toteuttava
+     * vertailija, jota elementtien järjestämisessä käytetään.
+     *
+     * @param vertailija
+     */
     public PrioriteettiKeko(Comparator<? super E> vertailija) {
         this.vertailija = vertailija;
         this.taulukko = new Object[100];
     }
 
+    /**
+     * Palauttaa ja poistaa keosta seuraavan elementin.
+     * @return 
+     */
     public E seuraava() {
         if (koko == 0) {
             return null;
@@ -40,6 +59,10 @@ public class PrioriteettiKeko<E> {
         return max;
     }
 
+    /**
+     * Lisää kekoon elementin
+     * @param lisattava 
+     */
     public void lisaa(E lisattava) {
         koko++;
         int i = koko - 1;

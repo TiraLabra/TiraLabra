@@ -3,26 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 
 /**
  * Käyttöliittymän ikkunan ja siihen liitettävät komponentit tekevä luokka.
+ *
  * @author mikko
  */
-public class Kayttoliittyma implements Runnable{
+public class Kayttoliittyma implements Runnable {
+
     private NewJFrame frame;
     private Simulaatio simulaatio;
     private int sivunPituus;
     private Piirtoalusta piirtoalusta;
 
+    /**
+     * Konstruktorissa annetaan sivun pituus ja simulaatio
+     *
+     * @param simulaatio
+     * @param sivunPituus
+     */
     public Kayttoliittyma(Simulaatio simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
     }
 
+    /**
+     * Palauttaa käytössä olevan piirtoalustan. Jos piirtoalustaa ei ole vielä
+     * luotu tai sitä ei muusta syystä ole, palauttaa null.
+     *
+     * @return piirtoalusta
+     */
     public Piirtoalusta getPiirtoalusta() {
         //return this.piirtoalusta;
         if (frame == null) {
@@ -31,6 +44,9 @@ public class Kayttoliittyma implements Runnable{
         return frame.getPiirtoalusta();
     }
 
+    /**
+     * Luo käyttöliittymän.
+     */
     @Override
     public void run() {
         frame = new NewJFrame(simulaatio, sivunPituus);
@@ -52,5 +68,4 @@ public class Kayttoliittyma implements Runnable{
 //        piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
 //        contentPane.add(piirtoalusta);
 //    }
-    
 }

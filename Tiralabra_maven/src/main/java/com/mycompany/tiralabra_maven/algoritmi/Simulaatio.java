@@ -35,7 +35,7 @@ public class Simulaatio {
     private Toiminto toiminto = Toiminto.SEINA;
 
     /**
-     * Konstruktorissa annetaan parametrina päivitettävä piirtologiikka ja tieto
+     * Konstruktorissa annetaan parametrina tieto
      * siitä, halutaanko hidastettu vai nopea simulaatio.
      *
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
@@ -60,6 +60,11 @@ public class Simulaatio {
         }
     }
 
+    /**
+     * Tekee uuden ruudukon ja hävittää vanhan.
+     * @param leveys uuden ruudukon leveys
+     * @param korkeus uuden ruudukon korkeus
+     */
     public void teeUusiRuudukko(int leveys, int korkeus) {
         lopetaReitinEtsiminen();
         this.leveys = leveys;
@@ -67,42 +72,76 @@ public class Simulaatio {
         alustaMaailma();
     }
 
+    /**
+     * Palauttaa ruudukon
+     * @return ruudukko
+     */
     public Ruutu[][] getRuudukko() {
         return this.maailma;
     }
 
-//    public Ruutu getRuutu(int x, int y) {
-//        return this.ruudut[y][x];
-//    }
+    /**
+     * Asettaa yksittäisen ruudun.
+     * @param x
+     * @param y
+     * @param ruutu 
+     */
     public void setRuutu(int x, int y, Ruutu ruutu) {
         this.maailma[y][x] = ruutu;
     }
 
+    /**
+     * Asettaa algoritmin suorituksessa käytettävän heuristiikan.
+     * @param heuristiikka 
+     */
     public void setHeuristiikka(Heuristiikka heuristiikka) {
         this.heuristiikka = heuristiikka;
     }
 
+    /**
+     * Asettaa algoritmin alkupisteen
+     * @param koord 
+     */
     public void setAlkuPiste(Koordinaatit koord) {
         this.alku = koord;
     }
 
+    /**
+     * Palauttaa algoritmin alkupisteen.
+     * @return 
+     */
     public Koordinaatit getAlkuPiste() {
         return this.alku;
     }
+    
+    /**
+     * Asettaa algoritmin maalipisteen.
+     * @param koord 
+     */
 
     public void setMaali(Koordinaatit koord) {
         this.maali = koord;
     }
 
+    /**
+     * Palauttaa algoritmin maalipisteen.
+     * @return 
+     */
     public Koordinaatit getMaali() {
         return this.maali;
     }
 
+    /**
+     * Käynnistää reittialgoritmin suorituksen.
+     */
     public void etsiReitti() {
         this.algoritmi = new Algoritmi(maailma, hidaste, alku, maali, vinottain);
         this.algoritmi.start();
     }
 
+    /**
+     * Lopettaa reittialgoritmin suorituksen ja pyyhkii reitin.
+     */
     public void lopetaReitinEtsiminen() {
         if (this.algoritmi == null) {
             return;
@@ -111,22 +150,42 @@ public class Simulaatio {
         this.algoritmi = null;
     }
 
+    /**
+     * Palauttaa ruudukon leveyden
+     * @return leveys
+     */
     public int getLeveys() {
         return this.leveys;
     }
 
+    /**
+     * Palauttaa ruudukon korkeuden
+     * @return korkeus
+     */
     public int getKorkeus() {
         return this.korkeus;
     }
 
+    /**
+     * Palauttaa tiedon siitä, onko simulaatio käynnissä
+     * @return onko simulaatio käynnissä
+     */
     public boolean onkoSimulaatioKaynnissa() {
         return this.algoritmi != null;
     }
 
+    /**
+     * Asettaa vinottain liikkumisen sallituksi tai kielletyksi
+     * @param sallittu 
+     */
     public void asetaVinottainLiikkuminenSallituksi(boolean sallittu) {
         this.vinottain = sallittu;
     }
 
+    /**
+     * Palauttaa tiedon siitä, onko vinottain liikkuminen sallittu.
+     * @return saako liikkua vinottain
+     */
     public boolean saakoLiikkuaVinottain() {
         return this.vinottain;
     }
@@ -223,14 +282,28 @@ public class Simulaatio {
         return this.hiiriPainettu;
     }
 
+    /**
+     * Palauttaa tiedon siitä, mikä hiiren toiminto on tällä hetkellä käytössä.
+     * @return 
+     */
     public Toiminto getValittuToiminto() {
         return this.toiminto;
     }
 
+    /**
+     * Asettaa toiminnon parametrina annetuksi toiminnoksi.
+     * @param toiminto 
+     */
     public void setToiminto(Toiminto toiminto) {
         this.toiminto = toiminto;
     }
 
+    /**
+     * Palauttaa piirrettävän ruudun parametrina annetuissa koordinaateissa.
+     * @param x
+     * @param y
+     * @return 
+     */
     public PiirrettavaRuutu getRuutu(int x, int y) {
         if (algoritmi != null) {
             RuudunTila ruuduntila = algoritmi.getRuudunTila(x, y);

@@ -15,15 +15,31 @@ public class Koordinaatit {
 
     private final int x;
     private final int y;
+    
+    /**
+     * Luo uuden koordinaatit-olion annetuilla koordinaateilla
+     * @param x
+     * @param y 
+     */
 
     public Koordinaatit(int x, int y) {
         this.x = x;
         this.y = y;
     }
+    
+    /**
+     * 
+     * @return x-koordinaatti
+     */
 
     public int getX() {
         return this.x;
     }
+    
+    /**
+     * 
+     * @return y-koordinaatti
+     */
 
     public int getY() {
         return this.y;
