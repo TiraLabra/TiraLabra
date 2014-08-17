@@ -44,5 +44,21 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node o) {
         return this.shortest - o.getShortest();
     }
+
+    public String printEdges() {
+        String adds = "";
+        for (Edge help : this.routes) {
+            adds = " " + adds + help.toString();
+        }
+        return adds;
+    }
+
+    void setPrevious(Node handle) {
+        this.previous = handle;
+    }
+
+    public Node getPrevious() {
+        return this.previous;
+    }
     
 }

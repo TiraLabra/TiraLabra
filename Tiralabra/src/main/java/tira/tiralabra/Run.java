@@ -36,7 +36,9 @@ public class Run {
         Dijkstra d = new Dijkstra(start, end, grid);
         
         d.initialize();
-        d.route();
+        d.initHelper();
+        d.route(start);
+        d.print();
         
         System.exit(0);
     }

@@ -12,4 +12,16 @@ class Edge {
         this.target = destination;
         this.weight = distance;
     }
+    
+    public String toString() {
+        return this.target.toString() + this.weight;
+    }
+    
+    public Node getTarget() {
+        return this.target;
+    }
+
+    public int getWeight() {
+        return this.weight;
+    }
 }
