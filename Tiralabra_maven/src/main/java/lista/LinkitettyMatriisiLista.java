@@ -97,9 +97,11 @@ public class LinkitettyMatriisiLista {
         while (kasiteltava.next != null) {
             kasiteltava = kasiteltava.next;
             System.out.print(", " + kasiteltava.nimi);
-            System.out.print("\n");
         }
+        System.out.print("\n");
     }
+    
+    
     
     /**
      * Onko nimi käytössä. Metodi selvittää, onko käyttäjä jo luonut matriisin jollakin nimellä

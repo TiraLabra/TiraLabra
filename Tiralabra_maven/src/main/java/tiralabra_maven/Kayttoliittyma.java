@@ -53,7 +53,7 @@ public class Kayttoliittyma {
             }
             
             catch (Exception e) {
-                System.out.println("Komentoa ei ollut kelvollinen");
+                System.out.println("Komento ei ollut kelvollinen");
             }
             
         }

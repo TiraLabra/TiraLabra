@@ -136,8 +136,7 @@ public class KomennonKasittelija {
            String[] arvot;
            String syote;
            double[][] valimatriisi;
-           
-           try {
+       
                ulottuvuudet = kaskyjono[1].split("x");
                m = Integer.parseInt(ulottuvuudet[0]);
                n = Integer.parseInt(ulottuvuudet[1]);
@@ -147,11 +146,7 @@ public class KomennonKasittelija {
                     return;
                 }               
                valimatriisi = kali.keraaMatriisinLuvut(m, n);
-           }
-           
-           catch (Exception e) {
-               throw new Exception();
-           }
+
            
            Matrix matriisi = new Matrix(valimatriisi);
            matriisilista.lisaa(matriisinNimi, matriisi);
@@ -323,13 +318,34 @@ public class KomennonKasittelija {
             tulosmatriisi = kaannettava.inverse();
             matriisilista.lisaa(tulosmatriisinnimi, tulosmatriisi);
         }
+        catch (IllegalArgumentException ie) {
+            System.out.println("Matriisi ei ole kääntyvä");
+        }
         catch (Exception e) {
-            System.out.println("Ei löytynyt sellaisia matriiseja");
+            System.out.println("Huono syöte");
+            return;
         }
     }
     
+    /**
+     * Suorita sklaarimonikerta. Metodi kertoo matriisin kaikki alkiot jollain reaaliluvulla.
+     * Tulos tallennetaan matriisilistaan.
+     */
     public void suoritaSmoni() {
+        Matrix tulosmatriisi = null;
+        String matriisinnimi = kaskyjono[3];
+        try {
+            Matrix operandi = matriisilista.hae(kaskyjono[2]);
+            double skalaari = Double.parseDouble(kaskyjono[1]);
+            
+            tulosmatriisi = operandi.times(skalaari);
+        }
+        catch (Exception e) {
+            System.out.println("Huono syöte");
+            return;
+        }
         
+        matriisilista.lisaa(matriisinnimi, tulosmatriisi);
     }
   
     /**
@@ -348,6 +364,10 @@ public class KomennonKasittelija {
         if (kasky.equals("quit")) {
             return Komento.QUIT;
         }
+        
+        if (kasky.equals("yhteenlasku")) {
+            return Komento.PLUS;
+        } 
         
         if (kasky.equals("tiedosto")) {
             return Komento.TIEDOSTO;

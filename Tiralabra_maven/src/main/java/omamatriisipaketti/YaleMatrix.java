@@ -118,8 +118,43 @@ public class YaleMatrix implements Matrix {
         
     }
     
+    /**
+     * Skalaarimonikerta. Metodi kertoo jokaisen matriisin ei-nolla-alkion 
+     * parametrina annettulla skalaarilla.
+     * @param skalaari double tyyppinen reaaliluku
+     * @return metodi palauttaa matriisin Yale-formaatissa.
+     */
     public YaleMatrix smoni(double skalaari) {
+        for (int i = 0; i < this.nonzerovalues.length;i++) {
+            nonzerovalues[i] = nonzerovalues[i]*skalaari;
+        }
+        
         return this;
     }
+
+    public Matrix plus(Matrix matrix) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public double det() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Matrix multiplication(Matrix matrix) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Matrix minus(Matrix matrix) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Matrix inv() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public double[][] getArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }
