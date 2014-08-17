@@ -120,13 +120,13 @@ public class DiceSet {
     
     public int[] asArray()
     {
-        int[] dice = new int[5];
+        int[] dicearray = new int[5];
         for (int i = 0; i<5; i++)
         {
-            dice[i] = this.dice.get(i).getNumber();
+            dicearray[i] = this.dice.get(i).getNumber();
         }
-        Arrays.sort(dice);
-        return dice;
+        Arrays.sort(dicearray);
+        return dicearray;
     }
     
     /**

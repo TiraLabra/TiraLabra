@@ -30,6 +30,16 @@ public class DecisionTree {
         return root.getValue();
     }
     
+    public TreeNode findNode(int number)
+    {
+        TreeNode child = root.getChild();
+        for (int i = 0; i < number-1; i++)
+        {
+            child = child.getSibling();
+        }
+        return child;
+    }
+    
     /**
      * Laskee puun odotusarvon.
      * 
@@ -49,7 +59,23 @@ public class DecisionTree {
         {
             return 0;
         }
-        System.out.println("ev sum: " + evs);
+
+        double ev = evs / leavesVisited;
+        return ev;
+    }
+    
+    public double getEV(TreeNode node)
+    {
+        evs = 0.0;
+        leavesVisited = 0;
+        
+        countEV(node);
+        
+        if (leavesVisited == 0)
+        {
+            return 0;
+        }
+
         double ev = evs / leavesVisited;
         return ev;
     }

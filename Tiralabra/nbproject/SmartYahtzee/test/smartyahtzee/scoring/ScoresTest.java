@@ -44,11 +44,13 @@ public class ScoresTest {
     @Test
     public void testCalculateBestScore() {
         System.out.println("calculateBestScore");
-        int[] dice = null;
-        boolean[] marked = null;
-        double expResult = 0.0;
+        int[] dice = {6, 6, 4, 4, 1};
+        boolean[] marked = new boolean[17];
+        marked[15] = true;      //not counting chance or pair
+        marked[8] = true;
+        double expResult = 3.44;
         double result = Scores.calculateBestScore(dice, marked);
-        assertEquals(expResult, result, 0.0);
+        assertEquals(expResult, result, 0.1);
     }
 
     /**
@@ -60,6 +62,17 @@ public class ScoresTest {
         int index = 14;
         int[] dice = {5, 5, 5, 2, 2};
         int expResult = 5*3 + 2*2;
+        int result = Scores.calculateScore(index, dice);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testTwoPairsScore()
+    {
+        System.out.println("twoPairsScore");
+        int index = 9;
+        int[] dice = {6, 6, 4, 4, 1};
+        int expResult = 6*2 + 4*2;
         int result = Scores.calculateScore(index, dice);
         assertEquals(expResult, result);
     }

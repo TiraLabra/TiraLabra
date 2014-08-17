@@ -59,7 +59,7 @@ public class DiceSetTest {
         }
         int difference = Math.abs(results[0]-results[2]);
         System.out.println(difference);
-        assertTrue(difference < 100); 
+        assertTrue(difference < 500); 
     }
 
     /**

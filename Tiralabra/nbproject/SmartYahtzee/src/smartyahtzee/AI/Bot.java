@@ -29,7 +29,37 @@ public class Bot extends Player {
         } else if (lock != null && lock.length == 5) {
             return;
         }
+        System.out.println(dice);
         dice.throwDice();       //todo: second turn, using already created treebuilder
+        
+        if (lock != null)
+        {
+            int[] secondLock = decisions.getSecondTurnDiceToLock(dice.asArray(), lock);
+            if (secondLock != null)
+            {
+                dice.lockMany(secondLock);
+            } else if (secondLock != null && secondLock.length == 5) {
+                return;
+            }
+        
+            System.out.println(dice);
+            dice.throwDice();
+            
+        } else {
+            decisions = new TreeBuilder(dice.asArray(), this.markedColumns);
+            lock = decisions.getDiceToLock();
+            if (lock != null)
+            {
+                dice.lockMany(lock);
+            } else if (lock != null && lock.length == 5) {
+                return;
+            }
+            System.out.println(dice);
+            dice.throwDice();
+        }
+        
+        
+        
         System.out.println(dice);
         dice.unlockAll();
         

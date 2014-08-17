@@ -59,9 +59,19 @@ public class DecisionTreeTest {
         System.out.println("getEV");
         int [] dice = {1, 2, 4, 5};
         DecisionTree instance = new DecisionTree(dice, new boolean[17]);
-        double expResult = 0.0;
         double result = instance.getEV();
-        assertEquals(expResult, result, 0.0);
+        assert(result > 0.0);
+    }
+    
+    @Test
+    public void testFindNode()
+    {
+        System.out.println("findNode");
+        int[] root = {6, 6, 5}; 
+        int[] expResult = {6, 6, 5, 3};
+        DecisionTree instance = new DecisionTree(root, new boolean[17]);
+        TreeNode foundNode = instance.findNode(3);
+        assertArrayEquals(expResult, foundNode.getValue());
     }
     
     

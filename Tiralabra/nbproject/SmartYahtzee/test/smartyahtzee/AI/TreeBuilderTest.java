@@ -56,9 +56,9 @@ public class TreeBuilderTest {
     @Test
     public void testGetDiceToLock() {
         System.out.println("getDiceToLock");
-        int[] dice = {6, 6, 5, 2, 1};
+        int[] dice = {6, 6, 3, 2, 1};
         TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
-        int[] expResult = {6, 6, 5};
+        int[] expResult = {6, 6};
         int[] result = instance.getDiceToLock();
         assertArrayEquals(expResult, result);
     }
@@ -66,9 +66,9 @@ public class TreeBuilderTest {
     @Test
     public void testGetDiceToLockKeepingAll() {
         System.out.println("getDiceToLock");
-        int[] dice = {1, 1, 1, 1, 1};
+        int[] dice = {6, 6, 6, 6, 6};
         TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
-        int[] expResult = {1, 1, 1, 1, 1};
+        int[] expResult = {6, 6, 6, 6, 6};
         int[] result = instance.getDiceToLock();
         assertArrayEquals(expResult, result);
     }

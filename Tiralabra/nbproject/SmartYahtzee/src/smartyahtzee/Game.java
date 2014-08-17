@@ -91,8 +91,13 @@ public class Game {
             for (Player player : players)
             {
                 drawScoreboard();
-                player.playTurn();
+                if (i < 15)
+                {
+                    player.playTurn();
+                }
+                
             }
+            
             System.out.println("---");
         }
     }

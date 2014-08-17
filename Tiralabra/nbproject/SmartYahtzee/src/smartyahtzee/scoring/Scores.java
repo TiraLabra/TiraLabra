@@ -40,13 +40,12 @@ public class Scores {
     public static double calculateBestScore(int[] dice, boolean[] marked)
     {
         double bestScore = 0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 17; i++)
         {
             if (!marked[i] && i != 7 && i != 6)
             {
-                Arrays.sort(dice);
-                
-                double score = calculateScore(i, dice) / maxScores[i] * expectedValues[i];
+                double x = calculateScore(i, dice);
+                double score = x / maxScores[i] * expectedValues[i];
                 if (score > bestScore)
                 {
                     bestScore = score;
@@ -67,6 +66,8 @@ public class Scores {
     
     public static int calculateScore(int index, int[] dice)
     {
+        Arrays.sort(dice);
+        
         int score = 0;
         switch (index) 
         {
