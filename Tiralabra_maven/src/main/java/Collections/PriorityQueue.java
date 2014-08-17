@@ -1,13 +1,30 @@
 package Collections;
 
+/**
+ * Priority queue with heap implementation. A queue where the member with
+ * highest value is first and lowest is last. Value is taken from the Comparable
+ * interface. Provides logarithmic enqueue and dequeue operations.
+ *
+ * @param <T> The members of the queue. Must implement Comparable<T> interface.
+ */
 public final class PriorityQueue<T extends Comparable<T>> {
 
     private final Vector<T> array;
 
+    /**
+     * Create a new, empty priority queue.
+     *
+     * @param holdingType The queue member type.
+     */
     public PriorityQueue(final Class<T> holdingType) {
         array = new Vector<>(holdingType);
     }
 
+    /**
+     * Adds a new member to the queue.
+     *
+     * @param item To add.
+     */
     public void enqueue(final T item) {
         array.add(item);
         int index = array.size() - 1;
@@ -18,6 +35,12 @@ public final class PriorityQueue<T extends Comparable<T>> {
         array.setAtt(index, item);
     }
 
+    /**
+     * Returns the member with highest value from the queue and removes it. If
+     * the queue is empty an exception is thrown.
+     *
+     * @return The member with highest value in the queue.
+     */
     public T dequeue() {
         if (array.size() == 0) {
             throw new ArrayIndexOutOfBoundsException("The priority queue is empty");
@@ -29,6 +52,11 @@ public final class PriorityQueue<T extends Comparable<T>> {
         return head;
     }
 
+    /**
+     * The amount of members in the queue.
+     *
+     * @return The amount of members in the queue.
+     */
     public int size() {
         return array.size();
     }
@@ -37,15 +65,15 @@ public final class PriorityQueue<T extends Comparable<T>> {
         return array.get(0);
     }
 
-    private int parent(final int index) {
+    private static int parent(final int index) {
         return index / 2;
     }
 
-    private int left(final int index) {
+    private static int left(final int index) {
         return 2 * index;
     }
 
-    private int right(final int index) {
+    private static int right(final int index) {
         return 2 * index + 1;
     }
 
