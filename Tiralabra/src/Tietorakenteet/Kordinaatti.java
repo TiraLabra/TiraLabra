@@ -7,26 +7,43 @@ package Tietorakenteet;
 
 /**
  *
- * @author Serafim
+ * Tämä luokka on luotu helpottamaan yleistä rakennetta ja samalla nyt on mahdollista verrata HashMappeja Kordinaatin perusteella
  */
 public class Kordinaatti {
 
     private double x;
     private double y;
+    
+    /**
+ *  Asetttaa kordinaatit
+  */
 
     public Kordinaatti(double x, double y) {
         this.x = x;
         this.y = y;
     }
+    
+     /**
+ *  Palauttaa X kordinaatin
+  */
+
 
     public double palautaX() {
         return this.x;
     }
+    
+        /**
+ *  Palauttaa Y kordinaatin
+  */
 
     public double palautaY() {
         return this.y;
     }
    
+      /**
+ *  Overraidaa hashcoden
+  */
+
 
     @Override
     public int hashCode() {
@@ -36,6 +53,10 @@ public class Kordinaatti {
         return hash;
     }
 
+     /**
+ *  Overraidaa equalsin
+  */
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

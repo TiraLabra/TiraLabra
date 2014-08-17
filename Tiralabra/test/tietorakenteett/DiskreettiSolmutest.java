@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package Tietorakenteet;
+package tietorakenteett;
 
-import tietorakenteett.DiskreettiSolmu;
+import Tietorakenteet.DiskreettiSolmu;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author Serafim
  */
-public class Solmutest {
+public class DiskreettiSolmutest {
     
-    public Solmutest() {
+    public DiskreettiSolmutest() {
     }
     
  

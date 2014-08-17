@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package tietorakenteet.keko;
+package Tietorakenteet.keko;
 
      /**
      *

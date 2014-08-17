@@ -5,7 +5,9 @@
  */
 package Tietorakenteet;
 
-import Tietorakenteet.Keko.Iteroitava;
+import Tietorakenteet.Abstraktisolmu;
+import Tietorakenteet.keko.Iteroitava;
+
 
 /**
  *
@@ -39,6 +41,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Palauttaa x kordinaatin
+     * @return double X kordinaatti
      */
     public double PalautaX() {
         return this.kordinaatti.palautaX();
@@ -47,6 +50,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Palauttaa y kordinaatin
+     * @return double y kordinaatti
      */
     public double PalautaY() {
         return this.kordinaatti.palautaY();
@@ -55,6 +59,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Palauttaa alkion arvon
+     * @return double alkionarvo
      */
     @Override
     public double KekoArvo() {
@@ -64,6 +69,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Palauttaa sijainnin keossa
+     * @return sijainti keossa
      */
     @Override
     public int SijaintiKeossa() {
@@ -82,6 +88,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Asettaa alkiolle arvon
+     * @param double asetettava arvo
      */
     @Override
     public void asetaArvo(double d) {
@@ -91,6 +98,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     /**
      *
      * Asettaa verkon
+     * @param Verkko asetettava verkko
      */
     @Override
     public void asteaVerkko(Verkko verkko) {
@@ -99,12 +107,20 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
 
     /**
      *
-     * Palauttaa verkon
+     * Palauttaa verkkon johon tämä alkio kuuluu
+     * @return Verkko
+     * 
      */
     @Override
     public Verkko palautaVerkko() {
         return this.verkko;
     }
+       /**
+     *
+     * Palauttaa tämän solmun lisärakenteen solmumuistin
+     * @return Solmumuisti
+     * 
+     */
 
     @Override
     public SolmuMuisti palautaSolmuMuisti() {

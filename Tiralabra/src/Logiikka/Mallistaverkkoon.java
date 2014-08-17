@@ -8,7 +8,7 @@ package logiikka;
 
 /**
  *
- * @author Serafim
+ * Turhaa abstraktia yleistystä
  */
 public interface Mallistaverkkoon {
     

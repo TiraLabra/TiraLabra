@@ -9,8 +9,7 @@ package Tietorakenteet.Keko;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import tietorakenteet.keko.Keko;
-import tietorakenteett.DiskreettiSolmu;
+import Tietorakenteet.DiskreettiSolmu;
 
 /**
  *

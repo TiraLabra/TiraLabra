@@ -8,7 +8,7 @@ package logiikka;
 
 /**
  *
- * @author Serafim
+ * Tämä toimii jatkuvan Verkon rakentajana. Atribuutiksi annetaan joukko monikulmiota, alku ja loppu piste ja tämä mallintaa sen verkoksi
  */
 public class Jatkuvaverkkorakennus {
     

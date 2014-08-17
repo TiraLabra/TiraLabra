@@ -5,36 +5,81 @@
  */
 package Tietorakenteet;
 
+import Tietorakenteet.DiskreettiSolmu;
+import Tietorakenteet.Abstraktisolmu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  *
- * @author Serafim
+ * DiskreettiVerkko on erikoistapaus AbstraktistaVerkosta. Tässä luokassa mallinetaan tilannetta missä R^2 on approksimoitu pikseleillä
  */
 public class DiskreettiVerkko implements Verkko {
 
     private double ruudunpituus;
     private HashMap<Kordinaatti, DiskreettiSolmu> kartta;
 
-    public DiskreettiVerkko() {
-        ruudunpituus = 1;
+   /**
+ *
+ * Luo uuden diskreetinverkon
+ * @param ruudunpituus ruudun pituus
+ */
+    
+    public DiskreettiVerkko(double ruudunpituus) {
+        this.ruudunpituus = ruudunpituus;
         this.kartta = new HashMap<Kordinaatti, DiskreettiSolmu>();
     }
+     /**
+ *
+ * Palauttaa pikseliavaruuden
+ * @return HashMap<Kordinaatti, Diskreettisolmu> kartta
+ */
+    
+    public HashMap<Kordinaatti, DiskreettiSolmu> palautaKartta()
+    {
+    return this.kartta;
+    }
 
+      /**
+ *
+ *
+ * Asettaa ruudunpituuden
+ * 
+ */
+    
     public void asetaRuudunpituus(double pituus) {
         this.ruudunpituus = pituus;
     }
+    
+     /**
+ *
+ *
+ * Palauttaa ruudu pituuden
+ * 
+ */
 
     public double palautaPituus() {
         return ruudunpituus;
     }
+    
+    /**
+ *
+ *
+ * Aettaa kertan (Lähinnä testausta varten)
+ * 
+ */
 
     public void asetaKartta(HashMap<Kordinaatti, DiskreettiSolmu> kartta) {
         this.kartta = kartta;
     }
-
+  /**
+ *
+ *
+ * Palauttaa kaikki Abstraktisolmu pikselin naapurit ArrayList muodossa
+ * @return ArrayList<Abstraktisolmu> Lista abstraktisolmuja
+ * 
+ */
     @Override
     public ArrayList<Abstraktisolmu> Naapurit(Abstraktisolmu node) {
         ArrayList<Abstraktisolmu> listasolmuja = new ArrayList<Abstraktisolmu>();
@@ -58,6 +103,12 @@ public class DiskreettiVerkko implements Verkko {
 
         return listasolmuja;
     }
+    
+    /**
+ *
+ *
+ * Tarkistaa onko kyseinen Abstraktisolmu tässä verkossa
+ */
 
     @Override
     public boolean Olemassa(Abstraktisolmu node) {
@@ -67,11 +118,24 @@ public class DiskreettiVerkko implements Verkko {
         }
         return true;
     }
+    
+        /**
+ *
+ *
+ * Palauttaa Atähtialgoritmin vaatiman heurestiikan
+ * @return double heurestiikka
+ */
 
     @Override
     public double Heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
         return Etaisyys(alku, loppu);
     }
+    
+          /**
+ *
+ * Laskee eukliidisen pituuden kahden solmun välillä
+ * @return double arvo
+ */
 
     @Override
     public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
@@ -85,5 +149,7 @@ public class DiskreettiVerkko implements Verkko {
 
         return d;
     }
+    
+
 
 }

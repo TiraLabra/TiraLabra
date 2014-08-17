@@ -7,12 +7,12 @@ package logiikka;
 
 import java.util.ArrayList;
 import java.util.Set;
-import tietorakenteett.Kordinaatti;
-import tietorakenteett.Monikulmio;
+import Tietorakenteet.Kordinaatti;
+import Tietorakenteet.Monikulmio;
 
 /**
  *
- * @author Serafim
+ * Tämä toimii Verkon rakentajana. Atribuutiksi annetaan joukko monikulmiota, alku ja loppu piste ja tämä mallintaa sen pikseliavaruudeksi
  */
 public class Diskreettiverkkorakennus {
 
@@ -25,6 +25,15 @@ public class Diskreettiverkkorakennus {
     private Kordinaatti alku;
     private Kordinaatti loppu;
     private int safety;
+    
+    /**
+ *
+ * Tekee uuden vekronrakentajan
+ * @param Set<Monikulmio> asettaa joukon monikulmiota
+ * @param double pituus asettaa pituuden
+ * @param Kordinaatti alku alkusolmu
+ * @param Kordinaatti loppu loppusolmu
+ */
 
     public Diskreettiverkkorakennus(Set<Monikulmio> monikulmiot, double pituus, Kordinaatti alku, Kordinaatti loppu) {
         this.monikulmiot = monikulmiot;
@@ -33,12 +42,22 @@ public class Diskreettiverkkorakennus {
         this.loppu = loppu;
         this.safety = 3;
     }
+    
+      /**
+ *
+ * Luo uuden
+ */
 
     public void alusta() {
         etsiRajat();
         
 
     }
+    
+      /**
+ *
+ * Testaa sisältääkö monikulmio kordinaatin
+ */
     
     public boolean sisaltaa (Kordinaatti test, Monikulmio monikulmio) {
       ArrayList<Kordinaatti> points = monikulmio.palautaKulmat();
@@ -53,6 +72,11 @@ public class Diskreettiverkkorakennus {
       }
       return result;
     }
+    
+      /**
+ *
+ * Etsii pikseliavaruuden optimaaliset rajat
+ */
 
     public void etsiRajat() {
 

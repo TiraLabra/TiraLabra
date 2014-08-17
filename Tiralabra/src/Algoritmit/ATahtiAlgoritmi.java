@@ -1,11 +1,13 @@
 package Algoritmit;
 
-import tietorakenteett.Abstraktisolmu;
-import tietorakenteett.DiskreettiSolmu;
-import tietorakenteet.keko.Iteroitava;
-import tietorakenteet.keko.Keko;
-import tietorakenteett.Verkko;
+import Tietorakenteet.Abstraktisolmu;
+import Tietorakenteet.Verkko;
+import Tietorakenteet.keko.Iteroitava;
+import Tietorakenteet.keko.Keko;
 import java.util.ArrayList;
+import java.util.Stack;
+
+
 
 /*
  * 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  * 
  */
 class Atahtialgoritmi {
-    
+
     private Verkko verkko;
     private Abstraktisolmu alku;
     private Abstraktisolmu loppu;
@@ -38,7 +40,7 @@ class Atahtialgoritmi {
      * Palauttaa verkon
      * 
      */
-    
+
     public Verkko palautaVerkko() {
         return this.verkko;
     }
@@ -54,9 +56,10 @@ class Atahtialgoritmi {
     /*
      * 
      * Asettaa alku ja loppu pisteet.
-     * 
+     * @param Abstraktisolmu alkusolmu
+     * @param Abstraktisolmu loppusolmu
      */
-    
+
     public void asetaPisteet(Abstraktisolmu alku, Abstraktisolmu loppu) {
         this.alku = alku;
         this.loppu = loppu;
@@ -66,9 +69,9 @@ class Atahtialgoritmi {
     /*
      * 
      * Laskee lyhimman polun
-     * 
+     * @return boolean palauttaa true jos reitti löytyy muuten false
      */
-    public void laske() {
+    public boolean laske() {
         this.laskentaJoukko.Lisaa(alku);
         alku.palautaSolmuMuisti().asetaKekoon(true);
         this.alku.palautaSolmuMuisti().asetaGScore(0);
@@ -78,7 +81,7 @@ class Atahtialgoritmi {
             current.palautaSolmuMuisti().asetaKekoon(false);
             if (current == loppu) {
                 this.loppu.palautaSolmuMuisti().asetaEdellinen(alku);
-                return;
+                return true;
             }
             current.palautaSolmuMuisti().Varita(1);
             ArrayList<Abstraktisolmu> naapurit = this.verkko.Naapurit(current);
@@ -109,22 +112,43 @@ class Atahtialgoritmi {
                     }
                 }
             }
-            
+
         }
-        
+        return false;
+
     }
-    
+
+     /*
+     * 
+     * Luo uuden keon
+     * 
+     */
     public void initKeko() {
         this.laskentaJoukko = new Keko();
         Iteroitava[] taulukko = new Iteroitava[this.maksimi];
         this.laskentaJoukko.asetaTaulukko(taulukko, 0);
-        
-    }
-    
-    public void rakennapolku()
-    {
 
-    
     }
+
+     /*
+     * 
+     * Rakentaa polun jolla kyseisen ongelman ratkaisu löytyy
+     * 
+     */
     
+    public void rakennapolku() {
+        Abstraktisolmu iteroiva = this.loppu;
+        Stack<Abstraktisolmu> pino = new Stack<Abstraktisolmu>();
+        while (iteroiva.palautaSolmuMuisti().palautaEdellinen() != this.alku) {
+            pino.push(iteroiva);
+            iteroiva = iteroiva.palautaSolmuMuisti().palautaEdellinen();
+        }
+        if (iteroiva == this.alku) {
+            pino.push(iteroiva);
+        }
+        while (!pino.empty()) {
+            this.polku.add(pino.pop());
+        }
+    }
+
 }
