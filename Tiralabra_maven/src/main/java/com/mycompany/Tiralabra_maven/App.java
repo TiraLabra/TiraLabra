@@ -11,12 +11,14 @@ import java.util.PriorityQueue;
 import javax.imageio.ImageIO;
 
 /**
- * Pääluokka, joka on ohjelman ajettava luokka.
- * SIISTImistä riittää vielä (ja mahdollisesti käyttöliittymän erottaminen,
- * jos sellainen tulee).
+ * Pääluokka, joka on ohjelman ajettava luokka. SIISTImistä riittää vielä (ja
+ * mahdollisesti käyttöliittymän erottaminen, jos sellainen tulee).
  */
 public class App {
 
+    /**
+     * Metodi ALUSTAVAN/KESKENRÄISEN kuvanlukijan testaamiseen.
+     */
     public static void testaaKuvanlukija() {
         XXXX kuvanlukija = new XXXX();
 
@@ -57,7 +59,7 @@ public class App {
         System.out.println(ratkaisija.ratkaise());
 
         ratkaisija.shortestPath();
-        
+
         ratkaisija.testiTulostaReittikartta();
 
     }

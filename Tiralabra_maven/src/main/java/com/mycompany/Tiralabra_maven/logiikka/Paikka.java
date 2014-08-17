@@ -4,22 +4,38 @@ import java.util.ArrayList;
 
 /**
  * Luokka kuvaa paikkaa, joiden välillä siirrytään kun nopeinta reittiä haetaan.
- * Tätä luokkaa voi käyttää sekä Dijkstralle että Astarille: Dijkstarissa ei
- * käytetä attribuuttia etaisyysLoppuun.
- *
- * @author Hannu
+ * Tätä luokkaa voi käyttää sekä Dijkstralle että Astarille: Dijkstarissa
+ * attribuutin etaisyysLoppuun arvo on aina konstruktorissa asetettu eli 0.
  */
 public class Paikka implements Comparable<Paikka> {
 
-    public int i; // väärin: tarvitaan vain TESTaukseen
-    public int j; // väärin: tarvitaan vain TESTaukseen
+    /**
+     * Paikan i-koordinaatti.
+     */
+    public int i;
+    /**
+     * Paikan j-koordinaatti.
+     */
+    public int j;
     /**
      * Luokan Paikka attribuutti aikaKustannus kertoo kuinka monta aikayksikköä
      * kuluu kun ko. Paikka-luokan ilmentymään siirrytään.
      */
     public int aikaKustannus;
+    /**
+     * Paikan etäisyys lähtöpisteeseen.
+     */
     public int etaisyysAlkuun;
+    /**
+     * Paikan etäisyys loppupisteeseen. Dijkstarissa attribuutin etaisyysLoppuun
+     * arvo on aina konstruktorissa asetettu eli 0.
+     */
     public int etaisyysLoppuun;
+    /**
+     * Paikan viereiset paikat vaaka- ja pystysuunnassa (ei siis vinottain).
+     * Keskellä karttaa olevalla Paikalla 4 vieruspaikka ja esim. nurkassa
+     * olevalla Paikalla 2 vieruspaikkaa.
+     */
     public ArrayList<Paikka> vierusPaikat;
     /**
      * Luokan Paikka attribuutti polku sisältää viitteen siihen Paikka-luokan
@@ -28,16 +44,28 @@ public class Paikka implements Comparable<Paikka> {
      */
     public Paikka polku;
 
-    public Paikka(int i, int j, int aikaKustannus) { // i ja j tarvitaan vain TESTaukseen
-        this.i = i; // tarvitaan vain TESTaukseen
-        this.j = j; // tarvitaan vain TESTaukseen
+    /**
+     * Paikan konstruktori.
+     *
+     * @param i Paikan i-koordinaatti.
+     * @param j Paikan j-koordinaatti.
+     * @param aikaKustannus kertoo kuinka monta aikayksikköä kuluu kun ko.
+     * Paikka-luokan ilmentymään siirrytään
+     */
+    public Paikka(int i, int j, int aikaKustannus) {
+        this.i = i;
+        this.j = j;
         this.aikaKustannus = aikaKustannus;
-        this.etaisyysAlkuun = Integer.MAX_VALUE/2;
+        this.etaisyysAlkuun = Integer.MAX_VALUE / 2;
         this.etaisyysLoppuun = 0;
         this.vierusPaikat = new ArrayList<Paikka>();
         this.polku = null;
     }
 
+    /**
+     * Paikan komparaattori, jota käyttäen Paikat voidaan laittaa etäisyysarvioden mukaiseen järjestykseen.
+     * @return kokonaisluku vertailua varten
+     */
     @Override
     public int compareTo(Paikka paikka) {
         return (this.etaisyysAlkuun + this.etaisyysLoppuun) - (paikka.etaisyysAlkuun + paikka.etaisyysLoppuun);

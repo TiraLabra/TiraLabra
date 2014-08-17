@@ -6,8 +6,7 @@ import com.mycompany.Tiralabra_maven.logiikka.keko.JavaKeko;
 import java.util.Stack;
 
 /**
- *
- * @author Hannu
+ * Astar-algoritmin apufunktiot ja varsinaisen ratkaisun sisältävä luokka.
  */
 public class AstarWithHeap {
 
@@ -18,6 +17,13 @@ public class AstarWithHeap {
     private Paikka[][] paikat;
     private boolean maaliPoistettuKeosta; // aStar
 
+    /**
+     * Luokan AstarWithHeap konstruktori.
+     * 
+     * @param kartta aikakustannutkartta kokonaislukutaulukkona
+     * @param lahtoPiste haettavan nopeimman reitin lähtöpiste
+     * @param maaliPiste haettavan nopeimman reitin maalipiste
+     */
     public AstarWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste) {
 
         this.lahtoPiste = lahtoPiste;
@@ -29,12 +35,16 @@ public class AstarWithHeap {
 
     }
 
+    /**
+     * Metodi suorittaa Astar-algoritmin ratkaisun.
+     * 
+     * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
+     */
     public int ratkaise() {
-        // MUUTA ASTARIKSI Dijkstra with min-heap
 
         this.initialiseAstar();
 
-        JavaKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
+        JavaKeko heap = rakennaKekoJaAsetaVieruspaikat();
 
         System.out.println(this.paikat[0][0].vierusPaikat);
 
@@ -81,8 +91,8 @@ public class AstarWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-    private JavaKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
-        JavaKeko<Paikka> heap = new JavaKeko<Paikka>();
+    private JavaKeko rakennaKekoJaAsetaVieruspaikat() {
+        JavaKeko heap = new JavaKeko();
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
@@ -118,6 +128,12 @@ public class AstarWithHeap {
         return false;
     }
 
+    /**
+     * Metodi tulostaa lähtö- ja maalipisteiden välisen lyhyimmäin polun
+     * Paikkojen i- ja j-koordinaatit (lukuunottamatta itse lähtö- ja
+     * maalipisteitä). Lisäksi metodi asettaa taulukon reittiKartta arvoksi 0,
+     * kohtiin joiden kautta lyhin polku kulkee.
+     */
     public void shortestPath() {
 
         Stack<Paikka> pino = new Stack<Paikka>();
@@ -140,6 +156,10 @@ public class AstarWithHeap {
 
     }
 
+    /**
+     * Kehityksen aikaista testitulostusta.
+     * Metodi tulostaa taulukon reittiKartta arvot.
+     */
     public void testiTulostaReittikartta() {
         System.out.println("reittikartta");
         for (int i = 0; i < this.reittiKartta.length; i++) {

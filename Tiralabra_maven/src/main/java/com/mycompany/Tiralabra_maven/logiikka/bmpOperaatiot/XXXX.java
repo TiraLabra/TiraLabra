@@ -1,3 +1,4 @@
+// ALUSTAVA TESTILUOKKA kuvanlukua varten
 package com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot;
 
 import java.awt.Color;
@@ -7,11 +8,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *
- * @author Hannu
+ * ALUSTAVA TESTILUOKKA kuvanlukua varten
  */
 public class XXXX {
 
+/**
+ * ALUSTAVA metodi avaa bmp-tiedoston ja muuttaa sen kokonaislukutaulukoksi,
+ * joka tulostetaan. Sitten kuvan ensimmäinen pikseli muutetaan siniseksi ja
+ * kuva tallennetaan uudella nimellä.
+ */
     public void seeBMPImage(String BMPFileName) throws IOException {
 //    public void seeBMPImage(String BMPFileName) {
 //        BufferedImage image = ImageIO.read(getClass().getResource(BMPFileName));
