@@ -4,6 +4,7 @@ import com.mycompany.tiralabra_maven.Nappula;
 import com.mycompany.tiralabra_maven.Peli;
 import com.mycompany.tiralabra_maven.Siirto;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -51,7 +52,7 @@ public class Ruudukko extends JPanel {
                 } else {
                     g.setColor(Color.DARK_GRAY);
                 }
-                g.fillRect(2 + x * 20, 2 + y * 20, 20, 20);
+                g.fillRect(4 + x * 40, 4 + y * 40, 40, 40);
                 piirraNappulat(y, x, g);
 
             }
@@ -70,23 +71,25 @@ public class Ruudukko extends JPanel {
             switch (nappula) {
                 case MUSTA:
                     g.setColor(Color.BLACK);
-                    g.fillOval(4 + x * 20, 4 + y * 20, 15, 15);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
                     return;
                 case VALKOINEN:
                     g.setColor(Color.WHITE);
-                    g.fillOval(4 + x * 20, 4 + y * 20, 15, 15);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
                     return;
                 case KRUUNATTU_MUSTA:
                     g.setColor(Color.BLACK);
-                    g.fillOval(4 + x * 20, 4 + y * 20, 15, 15);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
                     g.setColor(Color.WHITE);
-                    g.drawString("K", 7 + x * 20, 16 + y * 20);
+                    g.setFont(new Font("a", Font.BOLD, 25));
+                    g.drawString("K", 14 + x * 40, 32 + y * 40);
                     return;
                 case KRUUNATTU_VALKOINEN:
                     g.setColor(Color.WHITE);
-                    g.fillOval(4 + x * 20, 4 + y * 20, 15, 15);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
                     g.setColor(Color.BLACK);
-                    g.drawString("K", 7 + x * 20, 16 + y * 20);
+                    g.setFont(new Font("a", Font.BOLD, 25));
+                    g.drawString("K", 14 + x * 40, 32 + y * 40);
             }
         }
     }
@@ -96,12 +99,12 @@ public class Ruudukko extends JPanel {
      * @param g 
      */
     private void merkitseVaihtoehtoisetLiikutettavat(Graphics g) {
-        g.setColor(Color.red);
+        g.setColor(Color.BLUE);
         Siirto[] sallitut = peli.getSallitutSiirrot();
         if (sallitut.length != 0) {
             for (Siirto sallitut1 : sallitut) {
-                g.drawRect(2 + sallitut1.getAlkuSarake() * 20, 2 + sallitut1.getAlkuRivi() * 20, 19, 19);
-                g.drawRect(3 + sallitut1.getAlkuSarake() * 20, 3 + sallitut1.getAlkuRivi() * 20, 17, 17);
+                g.drawRect(4 + sallitut1.getAlkuSarake() * 40, 4 + sallitut1.getAlkuRivi() * 40, 38, 38);
+                g.drawRect(6 + sallitut1.getAlkuSarake() * 40, 6 + sallitut1.getAlkuRivi() * 40, 34, 34);
             }
         }
     }
@@ -111,9 +114,9 @@ public class Ruudukko extends JPanel {
      * @param g 
      */
     private void merkitseLiikutettavaNappula(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.drawRect(2 + peli.getValittuSarake() * 20, 2 + peli.getValittuRivi() * 20, 19, 19);
-        g.drawRect(3 + peli.getValittuSarake() * 20, 3 + peli.getValittuRivi() * 20, 17, 17);
+        g.setColor(Color.CYAN);
+        g.drawRect(4 + peli.getValittuSarake() * 40, 4 + peli.getValittuRivi() * 40, 38, 38);
+        g.drawRect(6 + peli.getValittuSarake() * 40, 6 + peli.getValittuRivi() * 40, 34, 34);
         merkitseMihinVoidaanLiikkua(g);
     }
 
@@ -127,8 +130,8 @@ public class Ruudukko extends JPanel {
         g.setColor(Color.GREEN);
         for (int i = 0; i < sallitut.length; i++) {
             if (sallitut[i].getAlkuSarake() == peli.getValittuSarake() && sallitut[i].getAlkuRivi() == peli.getValittuRivi()) {
-                g.drawRect(2 + sallitut[i].getLoppuSarake() * 20, 2 + sallitut[i].getLoppuRivi() * 20, 19, 19);
-                g.drawRect(3 + sallitut[i].getLoppuSarake() * 20, 3 + sallitut[i].getLoppuRivi() * 20, 17, 17);
+                g.drawRect(4 + sallitut[i].getLoppuSarake() * 40, 4 + sallitut[i].getLoppuRivi() * 40, 38, 38);
+                g.drawRect(6 + sallitut[i].getLoppuSarake() * 40, 6 + sallitut[i].getLoppuRivi() * 40, 34, 34);
             }
         }
     }

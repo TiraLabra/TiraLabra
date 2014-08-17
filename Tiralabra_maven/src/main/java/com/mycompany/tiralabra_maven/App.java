@@ -14,15 +14,14 @@ public class App {
 
     public static void main(String[] args) {
         Peli peli = new Peli();
+        //Tekstikayttoliittyma kayttoliittyma = new Tekstikayttoliittyma(peli);
         Kayttoliittyma kayttoliittyma = new Kayttoliittyma(peli);
         try {
             SwingUtilities.invokeAndWait(kayttoliittyma);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (InterruptedException | InvocationTargetException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
-        peli.setPiirtoalusta(kayttoliittyma.getPiirtoalusta());
+        peli.setPaivitettava(kayttoliittyma.getPaivitettava());
 
     }
 }

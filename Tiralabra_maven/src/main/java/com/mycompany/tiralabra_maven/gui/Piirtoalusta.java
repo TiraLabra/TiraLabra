@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  * Luokka tarjoaa metodit pelinäkymän piirtämiseen
  * @author noora
  */
-public class Piirtoalusta extends JPanel implements ActionListener, MouseListener {
+public class Piirtoalusta extends JPanel implements ActionListener, Paivitettava {
 
     private final Peli peli;
     private JButton uusiPeliNappi;
@@ -27,9 +27,6 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
     private JButton AINappi;
     private JLabel viestiKentta;
     private final Ruudukko ruudukko;
-    private int valittuRivi;
-    private int valittuSarake;
-    private Siirto[] sallitutSiirrot;
 
     /**
      * Konstruktorille annetaan käynnissä oleva peli.
@@ -38,7 +35,7 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
      */
     public Piirtoalusta(Peli peli) {
         this.peli = peli;
-        this.setPreferredSize(new Dimension(350, 250));
+        this.setPreferredSize(new Dimension(700, 500));
         this.ruudukko = new Ruudukko(peli);
         luoUusiPeliNappi();
         luoLuovutaPeliNappi();
@@ -57,13 +54,13 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
         add(AINappi);
         add(viestiKentta);
 
-        ruudukko.setBounds(20, 20, 164, 164);
-        uusiPeliNappi.setBounds(210, 30, 120, 30);
-        luovutaPeliNappi.setBounds(210, 90, 120, 30);
-        AINappi.setBounds(210, 150, 120, 30);
-        viestiKentta.setBounds(0, 200, 350, 30);
+        ruudukko.setBounds(20, 20, 328, 328);
+        uusiPeliNappi.setBounds(470, 120, 120, 30);
+        luovutaPeliNappi.setBounds(470, 180, 120, 30);
+        AINappi.setBounds(470, 240, 120, 30);
+        viestiKentta.setBounds(0, 400, 700, 50);
 
-        ruudukko.addMouseListener(this);
+        ruudukko.addMouseListener(new Hiirenkuuntelija(peli));
 
     }
 
@@ -82,7 +79,7 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
      * Metodi luo napin, jolla voi aloittaa uuden pelin
      */
     private void luoUusiPeliNappi() {
-        this.uusiPeliNappi = new JButton("Uusi peli");
+        this.uusiPeliNappi = new JButton("Aloita peli");
         uusiPeliNappi.addActionListener(this);
     }
 
@@ -119,19 +116,8 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
     }
 
     public void paivita() {
+        System.out.println("paivita");
         super.repaint();
-    }
-
-    public void setSallitutSiirrot(Siirto[] siirrot) {
-        this.sallitutSiirrot = siirrot;
-    }
-
-    public void setValittuRivi(int rivi) {
-        this.valittuRivi = rivi;
-    }
-
-    public void setValittuSarake(int sarake) {
-        this.valittuSarake = sarake;
     }
 
     /**
@@ -165,37 +151,4 @@ public class Piirtoalusta extends JPanel implements ActionListener, MouseListene
     public void muokkaaNapitKunEiOleAInVuoro(){
         this.AINappi.setEnabled(false);
     }
-
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    /**
-     * Metodi laskee, mitä pelilaudan ruutua pelaaja klikkaa
-     * @param e 
-     */
-    public void mousePressed(MouseEvent e) {
-        if (!this.peli.isPeliKaynnissa()) {
-            this.peli.getPiirtoalusta().naytaViesti("Aloita ensin uusi peli");
-        } else {
-            int sarake = (e.getX() - 2) / 20;
-            int rivi = (e.getY() - 2) / 20;
-            if (sarake >= 0 && sarake < 8 && rivi >= 0 && rivi < 8) {
-                peli.valitseRuudutJoissaSiirtoTapahtuu(rivi, sarake);
-            }
-        }
-    }
-
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    public void mouseExited(MouseEvent e) {
-
-    }
-
 }

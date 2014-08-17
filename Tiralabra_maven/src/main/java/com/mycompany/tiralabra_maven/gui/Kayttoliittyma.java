@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Peli;
@@ -22,7 +16,7 @@ public class Kayttoliittyma implements Runnable {
     
     /**
      * 
-     * @param peli Konstruktorille annetaan käyniissä oleva peli
+     * @param peli Konstruktorille annetaan käynnissä oleva peli
      */
     public Kayttoliittyma(Peli peli){
         this.peli = peli;
@@ -45,7 +39,7 @@ public class Kayttoliittyma implements Runnable {
         contentPane.add(piirtoalusta);
     }
     
-    public Piirtoalusta getPiirtoalusta(){
+    public Piirtoalusta getPaivitettava(){
         return this.piirtoalusta;
     }
     
