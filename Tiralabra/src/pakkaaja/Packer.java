@@ -136,7 +136,7 @@ public class Packer {
         String[] list = tree.makeDirectory();       
         for (int i = 0; i < s.length(); i++) {
             pakkaus += list[ca[i]];
-            //System.out.println(list[ca[i]]);
+            System.out.println(list[ca[i]] + "  " + ca[i]);
             
         }    
         return pakkaus;

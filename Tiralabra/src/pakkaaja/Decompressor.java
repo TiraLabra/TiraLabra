@@ -41,6 +41,7 @@ public class Decompressor {
      * @param c 
      */
     public void nextChar(Node root, Character c) {
+//        Node nod = root;
         if (root == null) {
             return;
         }
@@ -51,7 +52,11 @@ public class Decompressor {
             nextChar(root.getRight(), paketti.charAt(i++));
         }else {
             lause += root.getChar();
+            
         }
+//        while(nod.getLeft() != null && nod.getRight() != null) {
+//            if ()
+//        }
 
     }
 }
