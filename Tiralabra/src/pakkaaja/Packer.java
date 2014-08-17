@@ -11,6 +11,7 @@ package pakkaaja;
 
  // import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 
@@ -24,11 +25,12 @@ public class Packer {
      */
     public Paketti pack( String word ) {
         
-        ArrayList<Node> list = count(word);
+        int[] list = count(word);
         PriorityQueue<Node> que = makeQueue(list);
         Tree tree = makeTree(que);
-        String pakkaus = packing(word, tree);
+        String pakkaus = packing2(word, tree);
         Paketti paketti = new Paketti(tree,pakkaus);
+       
         return paketti;
         
     }
@@ -40,30 +42,48 @@ public class Packer {
      * @param s käyttäjän antama syöte
      * @return dynaaminen lista joissa jokaisen merkki esiintymistaajuiksineen.
      */
-    public static ArrayList<Node> count(String s) {
-        ArrayList<Node> list = new ArrayList<Node>();
-        for(int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            Node nod = new Node(c, 1);
-            if (list.contains(nod)) {
-                list.get(list.indexOf(nod)).increaseFrequencyByOne();
-            }
-            else {
-                list.add(nod);
-            }
-         }
-        return list;
+    public static int[] count(String s) {
+//        ArrayList<Node> list = new ArrayList<Node>();
+//        ArrayList<Character> apulist = new ArrayList<Character>();
+//        for(int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            Node nod = new Node(c, 1);
+//
+//            if (apulist.contains(c)) {
+//                list.get(apulist.indexOf(c)).increaseFrequencyByOne();
+//            }
+//            else {
+//                list.add(nod);
+//            }
+//         }
+        
+        char[] input = s.toCharArray();
+        int[] freq = new int[256];
+        for (int i = 0; i < input.length; i++) {
+            freq[input[i]]++;
+        }
+        
+//        for ( Node a : list) {
+//            System.out.println(a.getChar());
+//        }
+        return freq;
     }
     /**
      * tekee keon listasta, jossa on solmut esiintymistaajuuksineen.
      * @param list
      * @return keko
      */
-    public static PriorityQueue<Node> makeQueue(ArrayList<Node> list) {
-        PriorityQueue<Node> que = new PriorityQueue<Node>(list.size()+1);
-        for (int i = 0; i < list.size();i++) {
-            que.add(list.get(i));           
+    public static PriorityQueue<Node> makeQueue(int[] list) {
+        PriorityQueue<Node> que = new PriorityQueue<Node>(256);
+        for (char i = 0; i < 256;i++) {
+            if (list[i] > 0) {
+                que.add(new Node(i, list[i]));
+            }           
         }
+//        for (Iterator<Node> it = que.iterator(); it.hasNext();) {
+//            Node a = it.next();
+//            System.out.println(a.getChar() + "  " + a.getFrequency());
+//        }
         return que;
     }
     /**
@@ -108,6 +128,17 @@ public class Packer {
         for(int i = 0; i < s.length(); i++) {
             pakkaus = pakkaus + tree.find(s.charAt(i));
         }
+        return pakkaus;
+    }
+    public static String packing2(String s, Tree tree) {
+        String pakkaus = "";
+        char[] ca = s.toCharArray();
+        String[] list = tree.makeDirectory();       
+        for (int i = 0; i < s.length(); i++) {
+            pakkaus += list[ca[i]];
+            //System.out.println(list[ca[i]]);
+            
+        }    
         return pakkaus;
     }
     

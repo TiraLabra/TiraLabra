@@ -53,8 +53,13 @@ public class Tree {
      */
     public String find(char c) {
         String x = "";
-        x = treeWalk(c, this.root, x);
+        treeWalk(c, this.root, x);
         return x;
+    }
+    public String[] makeDirectory() {
+        String[] lista = new String[256];
+        treeWalk2(lista,root,"");
+        return lista;
     }
     
     /**
@@ -85,5 +90,14 @@ public class Tree {
 //        } 
         return x;
     }
+    public void treeWalk2(String[] list, Node n, String x) {
+        if (n.getLeft() != null && n.getRight() != null) {
+            treeWalk2(list,n.getLeft(),x+"0");
+            treeWalk2(list,n.getRight(),x+"1");
+        }else{
+            list[n.getChar()] = x;
+        }
+    }
+    
     
 }

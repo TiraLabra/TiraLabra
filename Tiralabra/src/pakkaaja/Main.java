@@ -22,7 +22,7 @@ public class Main {
 
         System.out.println(paketti.getLause());
         
-         System.out.println("----------------");
+        System.out.println("----------------");
         
         Decompressor decompressor = new Decompressor(paketti.getTree(), paketti.getLause());
         System.out.println(decompressor.unzip());
