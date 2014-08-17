@@ -127,6 +127,7 @@ public final class VectorTest {
 
     @Test
     public void testRemoveAndRealMember() {
+        removeAndRealSize();
         final Integer expected = Integer.MAX_VALUE;
         assertEquals(expected, vector.get(vector.size() - 1));
     }
