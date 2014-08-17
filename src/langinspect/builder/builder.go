@@ -98,7 +98,7 @@ type NGramStatsType [MaxDepth + 1][FreqClasses]LangTable
 var NGramStats NGramStatsType
 
 // First index - language. Second index - nth snapshot over time.
-var NGramStatsOverTime = make([][]NGramStatsType, 0, 4)
+var NGramStatsOverTime = make([][]NGramStatsType, 1, 4)
 
 var langTagToIndex *trie.Node
 var langIndexToTag [][]byte = [][]byte{nil}
@@ -137,66 +137,6 @@ Reverse function of FreqToFreqClass() (Not a true bijection, but FreqToFreqClass
 */
 func FreqClassToMinFreq(x FreqClass) int {
 	return int(math.Pow(1.59, (float64(x)-0.5)) + 1)
-}
-
-/*
-Reads recursively the contents of a directory and returns a channel of
-buffered readers of files in the directories.
-*/
-func getFileReaders(directory string) chan *bufio.Reader {
-	readerChannel := make(chan *bufio.Reader)
-	go func() {
-		filepath.Walk(directory, func(path string, f os.FileInfo, err error) error {
-			if err != nil {
-				fmt.Println("Error!", err)
-				return err
-			}
-			if f.IsDir() {
-				if ShowMessages {
-					fmt.Println("Reading from directory", f.Name())
-				}
-				return nil
-			}
-			file, err := os.Open(path)
-			if err != nil {
-				fmt.Println("Couldn't open " + f.Name() + "!")
-				return err
-			}
-			if ShowMessages {
-				fmt.Println("Opened " + f.Name())
-			}
-			reader := bufio.NewReader(file)
-			readerChannel <- reader
-			return nil
-		})
-		close(readerChannel)
-	}()
-	return readerChannel
-}
-
-/*
-Reads recursively a directory and returns a channel of bytes of all the
-files contained in the directories.
-*/
-func streamBytes(directory string) chan byte {
-	byteStream := make(chan byte)
-	readerChannel := getFileReaders(directory)
-	go func() {
-		for reader := range readerChannel {
-			for {
-				b, err := reader.ReadByte()
-				if err != nil {
-					if ShowDebug {
-						fmt.Println("EOF!")
-					}
-					break
-				}
-				byteStream <- b
-			}
-		}
-		close(byteStream)
-	}()
-	return byteStream
 }
 
 /*
@@ -240,73 +180,6 @@ func touchLangData(node *trie.Node, lang LangIndex) {
 	}
 }
 
-func printNGramStats(stats *NGramStatsType, l LangIndex, n int) {
-	for f := FreqClass(0); f < 47; f++ {
-		if stats[n][f][0] == 0 {
-			continue
-		}
-		/*
-			if n == AllGrams {
-				fmt.Print("n-grams of all lengths ")
-			} else {
-				fmt.Print(n, "-grams ")
-			}
-			fmt.Println("mentioned at least", FreqClassToMinFreq(f), "times")
-		*/
-		fmt.Print(stats[n][f][l], "\t")
-		/*if l == AllLangs {
-			fmt.Println("All languages:", stats[n][f][l])
-		} else {
-			fmt.Println("Language ", string(langIndexToTag[l]), ":", stats[n][f][l])
-		}*/
-
-	}
-	fmt.Println()
-
-}
-
-/*
-Prints statistics of the data.
-*/
-func printStats() {
-	fmt.Printf("Took %.2f seconds.\n", float32(time.Since(startTime).Seconds()))
-	fmt.Println("Max n-gram length:\t", MaxDepth)
-	fmt.Printf("Size in memory:\t\t%d MiB, %d bytes per node, %d nodes.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}), trie.NodeCount())
-	fmt.Println()
-	lang := LangTagToIndex("")
-	for n := 0; n < MaxDepth+1; n++ {
-		bytes := 1000
-		fmt.Print("Stats for ", n, "-grams, ", LangIndexToTag(lang), ".\n")
-		highestFreqClass := FreqClass(0)
-		for f := FreqClass(0); f < 47; f++ {
-			if NGramStats[n][f][AllLangs] == 0 {
-				highestFreqClass = f
-				break
-			}
-		}
-		fmt.Print("Freq at least")
-		for f := FreqClass(0); f < highestFreqClass; f++ {
-			freq := FreqClassToMinFreq(f)
-			if freq < 100000 {
-				fmt.Print("\t", freq)
-			} else {
-				fmt.Printf("\t%fk", float64(freq)/1000)
-			}
-		}
-		fmt.Println()
-		for i := range NGramStatsOverTime[lang] {
-			fmt.Print(bytes, " bytes\t")
-			bytes += 1000
-			printNGramStats(&NGramStatsOverTime[lang][i], lang, n)
-		}
-
-		fmt.Println("\nFinal stats.\n")
-		fmt.Print(bytesRead[0], " bytes\t")
-		printNGramStats(&NGramStats, lang, n)
-	}
-
-}
-
 /*
 Reads the control sequence in the data, and sets a new language, if needed.
 */
@@ -339,18 +212,13 @@ func builder(byteStream chan byte) {
 	// current language
 	langindex := LangIndex(1)
 
-	//"nodes is the ring buffer for trie nodes that represent n-grams
-	nodes := make([]*trie.Node, 0, MaxDepth)
+	//nodes is the ring buffer for trie nodes that represent n-grams
+	nodes := NewRingBuffer()
 
 	// i is a ring buffer index that is set to point to the new 1-gram on each loop
 	i := 0
 
-	// Init the stats
-	for n := range NGramStats {
-		for f := range NGramStats[n] {
-			NGramStats[n][f] = make(LangTable, AmountOfLangs+1)
-		}
-	}
+	initStats()
 
 	// The main loop
 	for b := range byteStream {
@@ -362,39 +230,20 @@ func builder(byteStream chan byte) {
 			changed, newLangIndex := setLang(byteStream)
 			if changed {
 				langindex = newLangIndex
-				nodes = nodes[:0] // Clear the nodes buffer
-				i = 0
+				nodes.Clear()
 				continue
 			}
 		}
 
 		// NOTE. The exclusion of linefeeds is UTF-8 specific and a bit unneccessary!?
 		if b == '\n' {
-			nodes = nodes[:0] // Clear the nodes buffer
-			i = 0
+			nodes.Clear()
 			continue
 		}
 
-		if ShowMessages && KeepStats {
-			incrementLang(&bytesRead, AllLangs)
-			incrementLang(&bytesRead, langindex)
-			if bytesRead[langindex]%1000 == 0 {
-				NGramStatsOverTime[langindex] = append(NGramStatsOverTime[langindex], NGramStatsType{})
-				for n := range NGramStats {
-					for f := range NGramStats[n] {
-						NGramStatsOverTime[langindex][len(NGramStatsOverTime[langindex])-1][n][f] = make(LangTable, len(NGramStats[n][f]))
-						copy(NGramStatsOverTime[langindex][len(NGramStatsOverTime[langindex])-1][n][f], NGramStats[n][f])
-					}
-				}
-			}
-		}
+		saveStats()
 
-		if len(nodes) < MaxDepth { // if ringbuffer isn't full yet, append to it
-			nodes = append(nodes, nil)
-		}
-
-		// i is the ringbuffer index that points to the 1-gram. (Here it's yet but a 0-gram / root.)
-		nodes[i] = Dict
+		nodes.Add(Dict)
 
 		// n is the "n" of n-grams
 		n := 1
@@ -427,8 +276,6 @@ func builder(byteStream chan byte) {
 			}
 			nodes[j] = child
 		}
-		i++
-		i = i % MaxDepth
 
 	}
 }
