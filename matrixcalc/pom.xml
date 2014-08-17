@@ -35,9 +35,11 @@
                 <configuration>
                     <targetClasses>
                         <param>math.*</param>
+                        <param>algorithms.*</param>
                     </targetClasses>
                     <targetTests>
                         <param>math.*</param>
+                        <param>algorithms.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

@@ -1,5 +1,7 @@
 package math;
 
+import algorithms.*;
+
 /**
  * Contains a matrix as a two-dimensional array of double precision floating point numbers,
  * and includes methods for basic matrix operations.
@@ -86,11 +88,28 @@ public class Matrix {
     }
     
     /**
+     * Returns the matrix as a string.
+     * @return Matrix as a string.
+     */
+    @Override
+    public String toString() {
+        String matrix = "";
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix += array[i][j];
+                matrix += " ";
+            }
+            matrix += "\n";
+        }
+        return matrix;
+    }
+    
+    /**
      * Adds another matrix to this matrix.
      * @param matrix Another matrix.
      * @return Sum.
      */
-    public Matrix plus(Matrix matrix) {
+    public Matrix add(Matrix matrix) {
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -105,7 +124,7 @@ public class Matrix {
      * @param matrix Another matrix.
      * @return Difference.
      */
-    public Matrix minus(Matrix matrix) {
+    public Matrix substract(Matrix matrix) {
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -120,7 +139,7 @@ public class Matrix {
      * @param number Multiplier.
      * @return Scalar product.
      */
-    public Matrix times(double number) {
+    public Matrix multiply(double number) {
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -149,7 +168,7 @@ public class Matrix {
      * @param matrix Another matrix.
      * @return Matrix product.
      */
-    public Matrix times(Matrix matrix) {
+    public Matrix multiply(Matrix matrix) {
         double[][] temp = new double[rows][matrix.getColumnDim()];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < matrix.getColumnDim(); j++) {
@@ -159,6 +178,20 @@ public class Matrix {
             }
         }
         return new Matrix(temp);
+    }
+    
+    /**
+     * Multiplies this matrix by another matrix using Strassen's algorithm.
+     * @param matrix Another matrix.
+     * @return Matrix product.
+     */
+    public Matrix strassenMultiply(Matrix matrix) {
+        double[][] temp = Strassen.multiply(this.getArray(), matrix.getArray());
+        if (temp.length != rows) {
+            return new Matrix(temp).deleteRow(rows).deleteColumn(rows);
+        } else {
+            return new Matrix(temp);
+        }
     }
     
     /**
