@@ -6,7 +6,6 @@
 package com.mycompany.tiralabra_maven.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.Piirtologiikka;
 import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
