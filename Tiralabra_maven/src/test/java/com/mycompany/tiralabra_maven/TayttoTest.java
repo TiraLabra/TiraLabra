@@ -50,11 +50,13 @@ public class TayttoTest {
         double KONTINTAYTTOASTETAVOITE = 0.95;
 
         Paketti[] paketit = new Paketti[koot.length];
+        int summa=0;
         for (int i=0; i<koot.length; i++) {
             paketit[i]=new Paketti(koot[i]);
+            summa+=koot[i];
         }
         Kontti kontti = new Kontti(KONTINVETOISUUS, KONTINTAYTTOASTETAVOITE);
-        Taytto taytto = new Taytto(paketit, kontti);
+        Taytto taytto = new Taytto(paketit, summa, kontti);
         taytto.etsiSummatKombinaatioistaRek(new ArrayList(), 0, 0);
       
         String vastaus; 

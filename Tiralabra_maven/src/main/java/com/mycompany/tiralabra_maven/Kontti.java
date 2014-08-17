@@ -24,4 +24,7 @@ public class Kontti {
     public int annaKoko(){
         return this.koko;
     }
+    public int annaTayttoTavoite(){
+        return this.tayttotavoite;
+    }
 }
