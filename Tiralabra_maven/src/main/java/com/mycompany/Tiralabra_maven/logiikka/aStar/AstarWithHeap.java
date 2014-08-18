@@ -2,7 +2,7 @@ package com.mycompany.Tiralabra_maven.logiikka.aStar;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
-import com.mycompany.Tiralabra_maven.logiikka.keko.JK;
+import com.mycompany.Tiralabra_maven.logiikka.keko.PriorityQueueKeko;
 import java.util.Stack;
 
 /**
@@ -44,7 +44,7 @@ public class AstarWithHeap {
 
         this.initialiseAstar();
 
-        JK heap = rakennaKekoJaAsetaVieruspaikat();
+        PriorityQueueKeko heap = rakennaKekoJaAsetaVieruspaikat();
 
         System.out.println(this.paikat[0][0].vierusPaikat);
 
@@ -91,8 +91,8 @@ public class AstarWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-    private JK rakennaKekoJaAsetaVieruspaikat() {
-        JK heap = new JK();
+    private PriorityQueueKeko rakennaKekoJaAsetaVieruspaikat() {
+        PriorityQueueKeko heap = new PriorityQueueKeko();
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {

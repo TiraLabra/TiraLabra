@@ -6,12 +6,12 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  *
  * @author Hannu
  */
-public class HK implements MK{
+public class OmaKeko implements MinKeko{
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
     private int heapSize;
 
-    public HK() {
+    public OmaKeko() {
         this.kekoTaulukko = new Paikka[1000000];
         this.heapSize = 0;
     }

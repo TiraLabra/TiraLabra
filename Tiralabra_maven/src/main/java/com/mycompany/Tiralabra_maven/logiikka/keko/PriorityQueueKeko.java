@@ -1,44 +1,69 @@
 package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
+import java.util.PriorityQueue;
 
 /**
  *
  * @author Hannu
  */
-public interface MK {
+public class PriorityQueueKeko implements MinKeko{
+    
+    private PriorityQueue<Paikka> q;
+    
+    public PriorityQueueKeko(){
+        this.q=new PriorityQueue<Paikka>();
+    }
+
     /**
      * Kekoon lisätään kekoalkio.
      *
      * @param kekoAlkio lisättävä kekoalkio
      */
-    public void heapInsert(Paikka kekoAlkio);
+    @Override
+    public void heapInsert(Paikka kekoAlkio) {
+        this.q.add(kekoAlkio);
+    }
 
     /**
      * Keosta poistetaan huipulla oleva pienimmän avaimen sisältävä kekoalkio.
      *
      * @return keosta poistettu pienimmän avaimen sisältänyt kekoalkio
      */
-    public Paikka heapDelMin();
+    @Override
+    public Paikka heapDelMin() {
+        return this.q.poll();
+    }
 
     /**
      * Keosta poistetaan kekoalkio.
      *
      * @param kekoAlkio poistettava kekoalkio
      */
-    public void heapDelete(Paikka kekoAlkio);
+    @Override
+    public void heapDelete(Paikka kekoAlkio) {
+        this.q.remove(kekoAlkio);
+    }
 
     /**
      * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on muuttunut.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */
-    public void heapDecreaseKey(Paikka kekoAlkio);
+    @Override
+    public void heapDecreaseKey(Paikka kekoAlkio) {
+        this.q.remove(kekoAlkio);
+        this.q.add(kekoAlkio);
+    }
 
     /**
      * Tarkastaa onko keko tyhjä.
      *
      * @return palautetaan true, jos keko on tyhjä
      */
-    public boolean heapIsEmpty();
+    @Override
+    public boolean heapIsEmpty() {
+        return this.q.isEmpty();
+    }
+    
 }
