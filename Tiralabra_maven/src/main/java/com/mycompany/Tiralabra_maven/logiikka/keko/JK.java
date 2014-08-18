@@ -4,13 +4,14 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import java.util.PriorityQueue;
 
 /**
- * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue.
+ *
+ * @author Hannu
  */
-public class JavaKeko implements MinimiKeko{
+public class JK implements MK{
     
     private PriorityQueue<Paikka> q;
     
-    public JavaKeko(){
+    public JK(){
         this.q=new PriorityQueue<Paikka>();
     }
 

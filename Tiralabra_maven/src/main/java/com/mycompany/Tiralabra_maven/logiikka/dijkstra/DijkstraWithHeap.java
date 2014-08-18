@@ -2,9 +2,7 @@ package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
-import com.mycompany.Tiralabra_maven.logiikka.keko.JavaKeko;
-//import com.mycompany.Tiralabra_maven.logiikka.keko.MinimiKeko;
-//import java.util.PriorityQueue;
+import com.mycompany.Tiralabra_maven.logiikka.keko.JK;
 import java.util.Stack;
 
 /**
@@ -45,7 +43,7 @@ public class DijkstraWithHeap {
 
         this.initialiseSingleSource();
 
-        JavaKeko heap = rakennaKekoJaAsetaVieruspaikat();
+        JK heap = rakennaKekoJaAsetaVieruspaikat();
 
         System.out.println(this.paikat[0][0].vierusPaikat);
 
@@ -88,8 +86,8 @@ public class DijkstraWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-    private JavaKeko rakennaKekoJaAsetaVieruspaikat() {
-        JavaKeko heap = new JavaKeko();
+    private JK rakennaKekoJaAsetaVieruspaikat() {
+        JK heap = new JK();
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
