@@ -1,18 +1,17 @@
-// KESKENERÄINEN LUOKKA
 package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- * KESKENERÄINEN LUOKKA
- * Oman tietorakenteen (minimikeko) toteutus.
+ *
+ * @author Hannu
  */
-public class HannunKeko implements MinimiKeko {
+public class HK implements MK{
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
     private int heapSize;
 
-    public HannunKeko() {
+    public HK() {
         this.kekoTaulukko = new Paikka[1000000];
         this.heapSize = 0;
     }

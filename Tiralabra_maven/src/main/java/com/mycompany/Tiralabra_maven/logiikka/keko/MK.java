@@ -3,12 +3,10 @@ package com.mycompany.Tiralabra_maven.logiikka.keko;
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- * Rajapinta minimikeolle. Tätä rajapintaa käyttämällä koodia ei tarvitse
- * muuttaa kun siirrytään Javan PriorityQueue:n käyttämisestä minimikeon oman
- * toteutuksen käyttämiseen.
+ *
+ * @author Hannu
  */
-public interface MinimiKeko {
-
+public interface MK {
     /**
      * Kekoon lisätään kekoalkio.
      *
