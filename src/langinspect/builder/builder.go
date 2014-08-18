@@ -17,7 +17,7 @@ const ShowMessages = true
 const KeepStats = true
 
 // Does some additional runtime checks
-const Assert = false
+const Assert = true
 
 // Maximum length of n-grams in the database. The size is in bytes.
 //The value 9 is recommended, as it is enough to record three consecutive Japanese/Chinese/Korean characters in UTF-8.
@@ -166,12 +166,12 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 			node.Value = LangIndex(AmountOfLangs + 1)
 			langIndexToTag = append(langIndexToTag, langtag)
 			AmountOfLangs++
+			stats.AddLang()
 			if ShowMessages {
 				fmt.Println("New language! ", string(langtag[:]), node.Value)
 			}
 		}
 		langindex := node.Value.(LangIndex)
-		stats.AddLang()
 		if ShowMessages {
 			fmt.Println("Changed language to:", string(langtag[:]))
 		}
@@ -179,7 +179,7 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 	}
 }
 
-var stats Stats
+var stats *Stats
 
 func builder(byteStream chan byte) {
 
@@ -234,7 +234,7 @@ Builds the database of n-grams. Takes a directory name dir as a parameter.
 Scans the dir and its subdirectories and reads all the files there.
 */
 func Build(directory string) {
-	stats := initStats()
+	stats = initStats()
 	byteStream := streamBytes(directory)
 	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
 	langTagToIndex = trie.NewNode() // "langTagToIndex" converts to langTags to langIndexes

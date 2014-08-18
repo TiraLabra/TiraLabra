@@ -79,18 +79,22 @@ func TestRingbufferClearing(t *testing.T) {
 func TestRingbufferIter(t *testing.T) {
 	rb := NewRingBuffer(5)
 	iter := rb.IterFromNewest()
-	if iter != nil {
+	if iter.Next() {
 		fmt.Println("Ringbuffer is empty and shouldn't be able to be iterated!")
 		t.Fail()
 	}
 	node := trie.NewNode()
 	rb.Add(node)
 	iter = rb.IterFromNewest()
+	if iter.Next() == false {
+		fmt.Println("There should be one value!")
+		t.Fail()
+	}
 	if iter.GetValue() != node {
 		fmt.Println("GetValue() != node")
 		t.Fail()
 	}
-	if iter.Next() != false {
+	if iter.Next() == true {
 		fmt.Println("There should be only one value!")
 		t.Fail()
 	}
@@ -99,6 +103,7 @@ func TestRingbufferIter(t *testing.T) {
 	node3 := trie.NewNode()
 	rb.Add(node3)
 	iter = rb.IterFromNewest()
+	iter.Next()
 	if iter.GetValue() != node3 {
 		fmt.Println("Iterator should start from the newest node!")
 		t.Fail()
@@ -130,6 +135,7 @@ func TestRingbufferIter(t *testing.T) {
 	node6 := trie.NewNode()
 	rb.Add(node6)
 	iter = rb.IterFromNewest()
+	iter.Next()
 	if iter.GetValue() != node6 {
 		fmt.Println("Iterator should start from the newest node!")
 		t.Fail()
@@ -151,9 +157,11 @@ func TestRingbufferIterSetValue(t *testing.T) {
 	rb.Add(node)
 	rb.Add(node)
 	iter := rb.IterFromNewest()
+	iter.Next()
 	iter.SetValue(node2)
 	iter.Next()
 	iter2 := rb.IterFromNewest()
+	iter2.Next()
 	if iter2.GetValue() != node2 {
 		fmt.Println("The value should be set again!")
 		t.Fail()

@@ -1,18 +1,17 @@
 package builder
 
-/*
 import (
 	"fmt"
 	"github.com/golddranks/TiraLabra/src/trie"
 	"reflect"
 	"testing"
-)*/
+)
 
 // First of all, there is only 4 different n-grams here. aaaa, aaa, aa and a.
-var NGramStatsShouldBe1 = [][][MaxDepth + 1][MaxFreqClasses]int{
+var NGramStatsShouldBe1 = [][]NGramStatsType{
 	// AllLanguages
-	[][MaxDepth + 1][MaxFreqClasses]int{
-		[MaxDepth + 1][MaxFreqClasses]int{
+	[]NGramStatsType{
+		NGramStatsType{
 			[MaxFreqClasses]int{ // AllGrams
 				4, // freq 1 = 1x{aaaa}
 				3, // freq 2 = 1x{aaa, aaa}
@@ -45,8 +44,8 @@ var NGramStatsShouldBe1 = [][][MaxDepth + 1][MaxFreqClasses]int{
 			}},
 	},
 	// the first language
-	[][MaxDepth + 1][MaxFreqClasses]int{
-		[MaxDepth + 1][MaxFreqClasses]int{
+	[]NGramStatsType{
+		NGramStatsType{
 			[MaxFreqClasses]int{ // AllGrams
 				4, // freq 1 = 1x{aaaa}
 				3, // freq 2 = 1x{aaa, aaa}
@@ -80,19 +79,16 @@ var NGramStatsShouldBe1 = [][][MaxDepth + 1][MaxFreqClasses]int{
 	},
 }
 
-/*
 func TestBuilderStatsA(t *testing.T) {
-	stats := initStats()
+	stats = initStats()
 	byteStream := getMockByteStream("@enaaaa")
 	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
 	langTagToIndex = trie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
 	builder(byteStream)
 	if !reflect.DeepEqual(NGramStatsShouldBe1, stats.nGramStats) {
 		fmt.Println(NGramStatsShouldBe1)
-		fmt.Println("Should be ↑ vs. actually is ↓")
+		fmt.Println("Should be ↑ vs. actually is ↓ (if they look like the same, double check the types!)")
 		fmt.Println(stats.nGramStats)
 		t.Fail()
 	}
 }
-
-*/

@@ -44,14 +44,11 @@ func (r *ringBuffer) Add(node *trie.Node) *trie.Node {
 	return oldest
 }
 
-func (r *ringBuffer) IterFromNewest() *ringIterator {
-	if len(r.buff) == 0 {
-		return nil
-	}
-	i := &ringIterator{}
+func (r *ringBuffer) IterFromNewest() ringIterator {
+	i := ringIterator{}
 	i.buff = r.buff
 	i.orig = r.index
-	i.index = r.index + len(r.buff)
+	i.index = r.index + len(r.buff) + 1
 	return i
 }
 
@@ -64,9 +61,17 @@ func (i *ringIterator) Next() bool {
 }
 
 func (r *ringIterator) GetValue() *trie.Node {
-	return r.buff[r.index%len(r.buff)]
+	if r.index >= len(r.buff) {
+		return r.buff[r.index-len(r.buff)]
+	} else {
+		return r.buff[r.index]
+	}
 }
 
 func (r *ringIterator) SetValue(node *trie.Node) {
-	r.buff[r.index%len(r.buff)] = node
+	if r.index >= len(r.buff) {
+		r.buff[r.index-len(r.buff)] = node
+	} else {
+		r.buff[r.index] = node
+	}
 }

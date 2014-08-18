@@ -36,6 +36,9 @@ type Stats struct {
 }
 
 func initStats() *Stats {
+	if ShowMessages {
+		fmt.Println("Init stats!")
+	}
 	stats := &Stats{}
 	stats.startTime = time.Now()
 	stats.nGramStats = make([][]NGramStatsType, 0, AmountOfLangs+1)
@@ -46,6 +49,14 @@ func initStats() *Stats {
 }
 
 func (s *Stats) AddLang() {
+	if Assert {
+		if s == nil {
+			panic("stats object is nil!")
+		}
+	}
+	if ShowMessages {
+		fmt.Println("Adding language to stats!")
+	}
 	s.nGramStats = append(s.nGramStats, make([]NGramStatsType, 1, 10))
 }
 
@@ -109,7 +120,9 @@ func (s *Stats) print() {
 }
 
 func (s *Stats) saveByteStats(currentLang LangIndex) {
-
+	if ShowDebug {
+		fmt.Println("saving byte stats")
+	}
 	// Increment bytes read
 	s.bytesRead.IncrementLang(AllLangs)
 	s.bytesRead.IncrementLang(currentLang)
