@@ -19,6 +19,8 @@ public class Dijkstra {
     private String destination;
     private HashMap<String, ArrayList<Target>> graph;
     private ArrayList<Node> nodes;
+    private Node startNode;
+    private Node goalNode;
 
     public Dijkstra(String start, String end, Mapper grid) {
         this.source = start;
@@ -42,16 +44,9 @@ public class Dijkstra {
                 helper.addEdge(new Edge(added, finder.getDistance()));
             }
         }
-    }
-    
-    /**
-     * Metodilla testaan onko alustus nodeiksi ja vertexeiksi onnistunut oikein
-     */
-    public void initHelper() {
-        for (Node apu : this.nodes) {
-            System.out.println("Solu " + apu.toString());
-            System.out.println("Naapurit " + apu.printEdges());          
-        }
+        
+        this.startNode = findNodeByName(this.source);
+        this.goalNode = findNodeByName(this.destination);
     }
     
     /**
@@ -60,31 +55,16 @@ public class Dijkstra {
      * @param goal 
      */
     
-    public void route(String start, String goal) {
-        Node startNode = null;
-        Node goalNode = null;
-        
-        /**
-         * Haetaan käyttäjän syötteen perusteella aloitus -ja maalisolmut. 
-         */
-        
-        for (Node looker : this.nodes) {
-            if (start.equals(looker.toString())) {
-                startNode = looker;
-            }
-            if (goal.equals(looker.toString())) {
-                goalNode = looker;
-            }
-        }
+    public void route() {
         
         /**
          * Asetetaan alkusolmun etäisyydeksi nolla ja luodaan prioriteettijono, jonne lisätään
          * alkusolmu.
          */
         
-        startNode.setShortest(0);
+        this.startNode.setShortest(0);
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        queue.add(startNode);
+        queue.add(this.startNode);
         
         /**
          * Käydään läpi prioriteettijono. 
@@ -113,14 +93,12 @@ public class Dijkstra {
      * Tulostetaan lyhyin reitti alusta määränpäähän.
      */
     
-    public void print(String start, String goal) {
-        Node target = findNodeByName(goal);
-        Node source = findNodeByName(start);
-        if (target.getShortest() == Integer.MAX_VALUE) {
+    public void print() {
+        if (this.goalNode.getShortest() == Integer.MAX_VALUE) {
             System.out.println("Reittiä ei ole kohteiden välillä");
         } else {
-            System.out.println("Lyhyin reitti solmusta " + source.toString() + " solmuun " + target.toString() + " on " + target.getShortest() + "km.");
-            List<Node> path = getShortestPath(target);
+            System.out.println("Lyhyin reitti solmusta " + this.startNode.toString() + " solmuun " + this.goalNode.toString() + " on " + this.goalNode.getShortest() + "km.");
+            List<Node> path = getShortestPath(this.goalNode);
             System.out.println("Alla reitti:\n" + path);
         }    
     }
@@ -153,4 +131,5 @@ public class Dijkstra {
         Collections.reverse(path);
         return path;
     }
+
 }

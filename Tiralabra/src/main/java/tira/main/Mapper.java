@@ -28,9 +28,13 @@ public class Mapper {
             String line = this.map.nextLine();
             String[] parts = line.split("-");
             String start = parts[0];
-            String finish = parts[1];
-            int dist = Integer.parseInt(parts[2]);
-            this.manageLine(start, finish, dist);
+            int startX = Integer.parseInt(parts[1]);
+            int startY= Integer.parseInt(parts[2]);
+            String finish = parts[3];
+            int finishX = Integer.parseInt(parts[4]);
+            int finishY = Integer.parseInt(parts[5]);
+            int dist = Integer.parseInt(parts[6]);
+            this.manageLine(start, startX, startY, finish, finishX, finishY, dist);
         }
         map.close();
     }
@@ -75,30 +79,33 @@ public class Mapper {
      * @param distance
      * Metodi luo HashMapiin avaimet ja lisää niille kohteita, joilla on tietty etäisyys lähtökaupungista.
      */
-    private void manageLine(String start, String destination, int distance) {
+    private void manageLine(String start, int sx, int sy, String destination, int dx, int dy, int distance) {
         if (!this.sources.containsKey(start) && !this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();
             ArrayList<Target> destinationTargets = new ArrayList<Target>();
-            startTargets.add(new Target(destination, distance));
-            destinationTargets.add(new Target(start, distance));
+            startTargets.add(new Target(destination, distance, sx, sy));
+            destinationTargets.add(new Target(start, distance, dx, dy));
             
             this.sources.put(start, startTargets);
             this.sources.put(destination, destinationTargets);
-        }
-        if (!this.sources.containsKey(destination)) {
+            
+        } else if (!this.sources.containsKey(destination) && this.sources.containsKey(start)) {
             ArrayList<Target> destinationTargets = new ArrayList<Target>();
-            this.sources.get(start).add(new Target(destination, distance));
-            destinationTargets.add(new Target(start, distance));
+            this.sources.get(start).add(new Target(destination, distance, dx, dy));
+            destinationTargets.add(new Target(start, distance, sx, sy));
 
             this.sources.put(destination, destinationTargets);
-        }
-        if (!this.sources.containsKey(start)) {
+            
+        } else if (!this.sources.containsKey(start) && this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();
-            startTargets.add(new Target(destination, distance));
-            this.sources.get(destination).add(new Target(start, distance));
+            startTargets.add(new Target(destination, distance, dx, dy));
+            this.sources.get(destination).add(new Target(start, distance, sx, sy));
 
             this.sources.put(start, startTargets);
-        }     
+        } else {
+            this.sources.get(start).add(new Target(destination, distance, dx, dy));
+            this.sources.get(destination).add(new Target(start, distance, sx, sy));
+        }    
         
     }
     

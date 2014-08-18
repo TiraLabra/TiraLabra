@@ -61,12 +61,27 @@ public class Run {
             Dijkstra d = new Dijkstra(start, end, grid);
         
             d.initialize();
-            d.route(start, end);
-            d.print(start, end);
+            d.route();
+            d.print();
         }
         
         if (algoritmi == 1) {
+            System.out.println("Valitse lähtöpiste ja määränpää kirjoittamalla kohde.");
+            grid.print();
             
+            /**
+             * Tarkistetaan, että käyttäjä ei sekoile vaan valitsee olemassaolevat kohteet.
+             */
+            
+            while (!grid.validKeys(start, end)) {
+                System.out.println("Lähtöpaikka:");
+                start = input.nextLine();
+
+                System.out.println("Päämäärä:");
+                end = input.nextLine();
+            }
+            
+            Astar a = new Astar(start, end, grid);
         }
 
         System.exit(0);

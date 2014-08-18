@@ -65,12 +65,12 @@ public class Node implements Comparable<Node> {
      * @return 
      */
 
-    public String printEdges() {
-        String adds = "";
-        for (Edge help : this.routes) {
-            adds = " " + adds + help.toString();
-        }
-        return adds;
-    }
+//    public String printEdges() {
+//        String adds = this.name;
+//        for (Edge help : this.routes) {
+//            adds += " - " + help.toString();
+//        }
+//        return adds;
+//    }
     
 }

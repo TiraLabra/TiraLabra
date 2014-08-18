@@ -9,10 +9,14 @@ public class Target {
     
     private String name;
     private int distance;
+    private int x;
+    private int y;
     
-    public Target(String location, int lenght) {
+    public Target(String location, int lenght, int locX, int locY) {
         this.name = location;
         this.distance = lenght;
+        this.x = locX;
+        this.y = locY;
     }
     
     public String getName() {
@@ -21,6 +25,14 @@ public class Target {
     
     public int getDistance() {
         return this.distance;
+    }
+    
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY() {
+        return this.y;
     }
 
 }
