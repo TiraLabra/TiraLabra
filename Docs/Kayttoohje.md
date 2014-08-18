@@ -16,3 +16,9 @@ vaihdoskohdassa. Merkkiyhdistelmää @@ käytetään ilmaisemaan ät-merkkiä.
 
 Ohjausmerkin @ on oltava ASCIIta tai UTF-8:aa (@-merkin tapauksessa ne ovat sama
 asia). Suosittelemme käyttämään merkistökoodauksena UTF-8:aa.
+
+
+## API
+Tsekkaa godoc osoitteesta:
+
+http://godoc.org/github.com/golddranks/TiraLabra/src

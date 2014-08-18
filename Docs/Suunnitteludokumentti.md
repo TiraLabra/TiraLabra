@@ -20,6 +20,12 @@ Muistinkäyttö
 
 ## DONE
 
+### 2014-08-18
+- Builderin refaktorointi valmis
+- Builderin testaus
+- Wrote a report about the size of the learning data
+- Godoc is now available at http://godoc.org/github.com/golddranks/TiraLabra/src
+
 ### 2014-08-10
 - Koodin sisäiset kommentit kuntoon
 
