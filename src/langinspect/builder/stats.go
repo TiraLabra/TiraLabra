@@ -90,7 +90,7 @@ func (s *Stats) print() {
 		// Search for highest freq class to print
 		highestFreqClass := FreqClass(0)
 		for f := FreqClass(0); f < 47; f++ {
-			if s.nGramStats[len(s.nGramStats)-1][AllLangs][n][f] == 0 {
+			if s.nGramStats[AllLangs][len(s.nGramStats[AllLangs])-1][n][f] == 0 {
 				highestFreqClass = f
 				break
 			}
@@ -115,6 +115,7 @@ func (s *Stats) print() {
 			bytes += 1000
 			ngram.printNGram(n)
 		}
+		fmt.Println()
 	}
 
 }

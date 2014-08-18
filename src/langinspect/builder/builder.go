@@ -53,7 +53,12 @@ func LangTagToIndex(tag string) LangIndex {
 	if tag == "" {
 		return AllLangs
 	} else {
-		return langTagToIndex.TryAndGet([]byte(tag)).(LangIndex)
+		val := langTagToIndex.TryAndGet([]byte(tag))
+		if val != nil {
+			return val.(LangIndex)
+		} else {
+			return 0
+		}
 	}
 }
 
