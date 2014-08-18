@@ -6,7 +6,7 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  *
  * @author Hannu
  */
-public interface MinKeko {
+public interface PaikkaMinKeko {
     /**
      * Kekoon lisätään kekoalkio.
      *

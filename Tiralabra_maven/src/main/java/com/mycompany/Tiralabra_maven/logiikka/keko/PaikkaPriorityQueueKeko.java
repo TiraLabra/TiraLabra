@@ -7,11 +7,11 @@ import java.util.PriorityQueue;
  *
  * @author Hannu
  */
-public class PriorityQueueKeko implements MinKeko{
+public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
     
     private PriorityQueue<Paikka> q;
     
-    public PriorityQueueKeko(){
+    public PaikkaPriorityQueueKeko(){
         this.q=new PriorityQueue<Paikka>();
     }
 
