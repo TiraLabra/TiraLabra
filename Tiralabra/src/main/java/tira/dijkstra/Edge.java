@@ -1,8 +1,10 @@
-package tira.tiralabra;
+package tira.dijkstra;
+import tira.dijkstra.Node;
 
 /**
  *
  * @author joonaslaakkonen
+ * Luokka kuvaa kartan kaarta kahden solmun välillä.
  */
 class Edge {
     public Node target;

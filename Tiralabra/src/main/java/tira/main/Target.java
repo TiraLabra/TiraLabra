@@ -1,8 +1,9 @@
-package tira.tiralabra;
+package tira.main;
 
 /**
  *
  * @author joonaslaakkonen
+ * Luokan oliot ovat tiedostosta luetun kartan kaupunkien kohteita
  */
 public class Target {
     

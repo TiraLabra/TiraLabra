@@ -1,4 +1,4 @@
-package tira.tiralabra;
+package tira.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.Scanner;
 /**
  *
  * @author joonaslaakkonen
+ * Luokka luo HashMapin, jossa on tallenettuna avaimiksi kukin kartan kaupunki kerran ja avaimeen
+ * liitetään kaupungista lähtevät Target oliot eli kohteet, joihin kaupungista pääsee.
  */
 public class Mapper {
     
@@ -18,6 +20,9 @@ public class Mapper {
         this.sources = new HashMap<String, ArrayList<Target>>();
     }
     
+    /**
+     * Metodi lukee karttatiedoston ja luo oliot.
+     */
     public void initialize() {
         while (this.map.hasNextLine()) {
             String line = this.map.nextLine();
@@ -30,11 +35,22 @@ public class Mapper {
         map.close();
     }
     
+    /**
+     * Tulostetaan kaupungit.
+     */
     public void print() {
         for (String apu : this.sources.keySet()) {
             System.out.println(apu);
         }
     }
+    
+    /**
+     * 
+     * @param start
+     * @param end
+     * @return 
+     * Metodi tarkistaa onko käyttäjän syöte kunnossa ja palauttaa tiedon siitä.
+     */
     
     public boolean validKeys(String start, String end) {
         if (this.sources.containsKey(start) && this.sources.containsKey(end)) {
@@ -43,10 +59,22 @@ public class Mapper {
         return false;
     }
     
+    /**
+     * Metodi palauttaa kartan.
+     * @return 
+     */
+    
     public HashMap getGrid() {
         return this.sources;
     }
     
+    /**
+     * 
+     * @param start
+     * @param destination
+     * @param distance
+     * Metodi luo HashMapiin avaimet ja lisää niille kohteita, joilla on tietty etäisyys lähtökaupungista.
+     */
     private void manageLine(String start, String destination, int distance) {
         if (!this.sources.containsKey(start) && !this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();

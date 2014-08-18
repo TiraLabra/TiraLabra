@@ -1,4 +1,4 @@
-package tira.tiralabra;
+package tira.astar;
 
 /**
  *

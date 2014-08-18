@@ -1,10 +1,12 @@
-package tira.tiralabra;
+package tira.dijkstra;
 
+import tira.dijkstra.Edge;
 import java.util.ArrayList;
 
 /**
  *
  * @author joonaslaakkonen
+ * Luokka kuvaa kartan solmua.
  */
 public class Node implements Comparable<Node> {
     
@@ -19,6 +21,11 @@ public class Node implements Comparable<Node> {
         this.shortest = Integer.MAX_VALUE;
         this.routes = new ArrayList<Edge>();
     }
+    
+    /**
+     * 
+     * Luokan getterit ja setterit
+     */
     
     public int getShortest() {
         return this.shortest;
@@ -36,6 +43,14 @@ public class Node implements Comparable<Node> {
         this.shortest = value;
     }
     
+    public void setPrevious(Node handle) {
+        this.previous = handle;
+    }
+
+    public Node getPrevious() {
+        return this.previous;
+    }
+    
     public ArrayList<Edge> getEdges() {
         return this.routes;
     }
@@ -44,6 +59,11 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node o) {
         return this.shortest - o.getShortest();
     }
+    
+    /**
+     * Metodi palauttaa tiedon solmun kaikista kaarista
+     * @return 
+     */
 
     public String printEdges() {
         String adds = "";
@@ -51,14 +71,6 @@ public class Node implements Comparable<Node> {
             adds = " " + adds + help.toString();
         }
         return adds;
-    }
-
-    void setPrevious(Node handle) {
-        this.previous = handle;
-    }
-
-    public Node getPrevious() {
-        return this.previous;
     }
     
 }
