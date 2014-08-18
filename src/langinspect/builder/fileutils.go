@@ -1,5 +1,12 @@
 package builder
 
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"path/filepath"
+)
+
 /*
 Reads recursively the contents of a directory and returns a channel of
 buffered readers of files in the directories.

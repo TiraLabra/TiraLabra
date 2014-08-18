@@ -68,32 +68,32 @@ func getByteStream(data string) chan byte {
 }
 
 // First of all, there is only 4 different n-grams here. aaaa, aaa, aa and a.
-var NGramStatsShouldBe1 = [MaxDepth + 1][FreqClasses]LangTable{
-	[FreqClasses]LangTable{ // AllGrams
+var NGramStatsShouldBe1 = [MaxDepth + 1][MaxFreqClasses]LangTable{
+	[MaxFreqClasses]LangTable{ // AllGrams
 		LangTable{4, 4}, // freq 1 = 1x{aaaa}
 		LangTable{3, 3}, // freq 2 = 1x{aaa, aaa}
 		LangTable{2, 2}, // freq 3 = 1x{aa, aa, aa}
 		LangTable{1, 1}, // freq 4 = 1x{a, a, a, a}
 	},
-	[FreqClasses]LangTable{ // 1-grams
+	[MaxFreqClasses]LangTable{ // 1-grams
 		LangTable{1, 1},
 		LangTable{1, 1},
 		LangTable{1, 1},
 		LangTable{1, 1}, // freq 4 = 1x{a, a, a, a}
 	},
-	[FreqClasses]LangTable{ // 2-grams
+	[MaxFreqClasses]LangTable{ // 2-grams
 		LangTable{1, 1},
 		LangTable{1, 1},
 		LangTable{1, 1}, // freq 3 =1x{aa, aa, aa}
 		LangTable{0},
 	},
-	[FreqClasses]LangTable{ // 3-grams
+	[MaxFreqClasses]LangTable{ // 3-grams
 		LangTable{1, 1},
 		LangTable{1, 1}, // freq 2 = 1x{aaa, aaa}
 		LangTable{0},
 		LangTable{0},
 	},
-	[FreqClasses]LangTable{ // 4-grams
+	[MaxFreqClasses]LangTable{ // 4-grams
 		LangTable{1, 1}, // freq 1 = 1x{aaaa}
 		LangTable{0},
 		LangTable{0},

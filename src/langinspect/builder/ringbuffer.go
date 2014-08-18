@@ -9,9 +9,11 @@ type ringBuffer struct {
 	index int
 }
 
-func NewRingBuffer() ringBuffer {
+type ringIterator ringBuffer
+
+func NewRingBuffer(length int) ringBuffer {
 	r := ringBuffer{}
-	r.buff = make([]*trie.Node, 0, MaxDepth)
+	r.buff = make([]*trie.Node, 0, length)
 	r.index = 0
 	return r
 }
@@ -32,4 +34,27 @@ func (r *ringBuffer) Add(node *trie.Node) {
 
 	// r.index is the ringbuffer index that points to the 1-gram. (Here it's yet but a 0-gram / root.)
 	r.buff[r.index] = node
+}
+
+func (r *ringBuffer) GetIter() ringIterator {
+	i := ringIterator{}
+	i.buff = r.buff
+	i.index = r.index + len(r.buff)
+	return i
+}
+
+func (r *ringIterator) Next() bool {
+	r.index--
+	if r.index > len(r.buff) {
+		return true
+	}
+	return false
+}
+
+func (r *ringIterator) Value() *trie.Node {
+	return r.buff[r.index%len(r.buff)]
+}
+
+func (r *ringIterator) Set(node *trie.Node) {
+	r.buff[r.index%len(r.buff)] = node
 }
