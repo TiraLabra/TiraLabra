@@ -61,6 +61,7 @@ public class Main {
         verkkor.asetaKartta(kartta);
         ArrayList<Abstraktisolmu> lista = verkkor.Naapurit(solmuvektori[0]);
         int i = lista.size();
+        System.out.println(i);
     }
 
 }

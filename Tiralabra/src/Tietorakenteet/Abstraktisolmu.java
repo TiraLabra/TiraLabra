@@ -5,7 +5,7 @@
  */
 package Tietorakenteet;
 
-import Tietorakenteet.keko.Iteroitava;
+import Tietorakenteet.Kekot.Iteroitava;
 
 
 

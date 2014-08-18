@@ -1,14 +1,22 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package Algoritmit;
 
 import Tietorakenteet.Abstraktisolmu;
+import Tietorakenteet.Iteroitava;
+import Tietorakenteet.Keko;
 import Tietorakenteet.Verkko;
-import Tietorakenteet.Kekot.Iteroitava;
-import Tietorakenteet.Kekot.Keko;
 import java.util.ArrayList;
 import java.util.Stack;
 
-
-
+/**
+ *
+ * @author Serafim
+ */
 /*
  * 
  * Atahtialgoritmi joka loytaa lyhimman polun kahden solmun välillä.
@@ -31,8 +39,8 @@ class Atahtialgoritmi {
      */
     public Atahtialgoritmi(Verkko verkko, int maksimi) {
         this.verkko = verkko;
-        this.maksimi = maksimi;
         this.polku = new ArrayList<Abstraktisolmu>();
+        this.maksimi = maksimi;
 
     }
     /*
@@ -152,3 +160,4 @@ class Atahtialgoritmi {
     }
 
 }
+

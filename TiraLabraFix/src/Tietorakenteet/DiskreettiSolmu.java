@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Tietorakenteet;
 
-import Tietorakenteet.Abstraktisolmu;
-import Tietorakenteet.Kekot.Iteroitava;
-
-
+/**
+ *
+ * @author Serafim
+ */
 /**
  *
  * Konkreettinen luokka, joka toteuttaa keon alkion ehdot.
@@ -36,6 +37,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
         this.kordinaatti = new Kordinaatti(x,y);
         this.muisti = new SolmuMuisti();
         this.muisti.Varita(0);
+        this.kulku = true;
     }
 
     /**
