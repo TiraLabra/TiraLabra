@@ -189,7 +189,7 @@ func builder(byteStream chan byte) {
 	//nodes is a ring buffer for trie nodes that represent n-grams
 	nodes := NewRingBuffer(MaxDepth)
 
-	// The main loop
+	// The main loop, read byte by byte
 	for b := range byteStream {
 		if ShowDebug {
 			fmt.Println("Reading new byte. It is '", string([]byte{b}))
@@ -219,12 +219,12 @@ func builder(byteStream chan byte) {
 		iter := nodes.GetIter()
 		n := 1
 		for iter.Next() {
-			node := iter.Value()
+			node := iter.GetValue()
 			child := node.GetOrCreate([]byte{b})
 			touchLangData(child, currentLang)
 			stats.saveNodeStats(child, currentLang, n)
 			n++
-			iter.Set(child)
+			iter.SetValue(child)
 		}
 	}
 }

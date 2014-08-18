@@ -26,7 +26,7 @@ func (r *ringBuffer) Clear() {
 func (r *ringBuffer) Add(node *trie.Node) {
 
 	r.index++
-	r.index = r.index % MaxDepth
+	r.index = r.index % len(r.buff)
 
 	if len(r.buff) < cap(r.buff) { // if ringbuffer isn't full yet, append to it
 		r.buff = append(r.buff, nil)
@@ -51,10 +51,10 @@ func (r *ringIterator) Next() bool {
 	return false
 }
 
-func (r *ringIterator) Value() *trie.Node {
+func (r *ringIterator) GetValue() *trie.Node {
 	return r.buff[r.index%len(r.buff)]
 }
 
-func (r *ringIterator) Set(node *trie.Node) {
+func (r *ringIterator) SetValue(node *trie.Node) {
 	r.buff[r.index%len(r.buff)] = node
 }

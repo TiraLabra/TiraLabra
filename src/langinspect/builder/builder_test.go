@@ -2,10 +2,8 @@ package builder
 
 import (
 	"fmt"
-	"github.com/golddranks/TiraLabra/src/trie"
-	"reflect"
+
 	"testing"
-	"time"
 )
 
 var freqClassValues = []struct {
@@ -35,7 +33,6 @@ var freqClassValues = []struct {
 	{21, 7},
 }
 
-// Sadly, the functions are bijective only until 5. (Because of the float -> int conversion.)
 func TestFreqClassToFreq(t *testing.T) {
 	for class := FreqClass(0); class < FreqClass(48); class++ {
 		if FreqToFreqClass(FreqClassToMinFreq(class)) != class {
@@ -56,7 +53,7 @@ func TestFreqToFreqClass(t *testing.T) {
 	}
 }
 
-func getByteStream(data string) chan byte {
+func getMockByteStream(data string) chan byte {
 	byteStream := make(chan byte)
 	go func() {
 		for i := 0; i < len(data); i++ {
@@ -65,59 +62,4 @@ func getByteStream(data string) chan byte {
 		close(byteStream)
 	}()
 	return byteStream
-}
-
-// First of all, there is only 4 different n-grams here. aaaa, aaa, aa and a.
-var NGramStatsShouldBe1 = [MaxDepth + 1][MaxFreqClasses]LangTable{
-	[MaxFreqClasses]LangTable{ // AllGrams
-		LangTable{4, 4}, // freq 1 = 1x{aaaa}
-		LangTable{3, 3}, // freq 2 = 1x{aaa, aaa}
-		LangTable{2, 2}, // freq 3 = 1x{aa, aa, aa}
-		LangTable{1, 1}, // freq 4 = 1x{a, a, a, a}
-	},
-	[MaxFreqClasses]LangTable{ // 1-grams
-		LangTable{1, 1},
-		LangTable{1, 1},
-		LangTable{1, 1},
-		LangTable{1, 1}, // freq 4 = 1x{a, a, a, a}
-	},
-	[MaxFreqClasses]LangTable{ // 2-grams
-		LangTable{1, 1},
-		LangTable{1, 1},
-		LangTable{1, 1}, // freq 3 =1x{aa, aa, aa}
-		LangTable{0},
-	},
-	[MaxFreqClasses]LangTable{ // 3-grams
-		LangTable{1, 1},
-		LangTable{1, 1}, // freq 2 = 1x{aaa, aaa}
-		LangTable{0},
-		LangTable{0},
-	},
-	[MaxFreqClasses]LangTable{ // 4-grams
-		LangTable{1, 1}, // freq 1 = 1x{aaaa}
-		LangTable{0},
-		LangTable{0},
-		LangTable{0},
-	},
-}
-
-func TestBuilderStatsA(t *testing.T) {
-	for i := 0; i < len(NGramStatsShouldBe1); i++ {
-		for j := 0; j < len(NGramStatsShouldBe1[0]); j++ {
-			if NGramStatsShouldBe1[i][j] == nil {
-				NGramStatsShouldBe1[i][j] = LangTable{0}
-			}
-		}
-	}
-	startTime = time.Now()
-	byteStream := getByteStream("@enaaaa")
-	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
-	langTagToIndex = trie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
-	builder(byteStream)
-	if !reflect.DeepEqual(NGramStatsShouldBe1, NGramStats) {
-		fmt.Println(NGramStatsShouldBe1)
-		fmt.Println("Should be ↑ vs. actually is ↓")
-		fmt.Println(NGramStats)
-		t.Fail()
-	}
 }

@@ -14,6 +14,7 @@ buffered readers of files in the directories.
 func getFileReaders(directory string) chan *bufio.Reader {
 	readerChannel := make(chan *bufio.Reader)
 	go func() {
+		defer close(readerChannel)
 		filepath.Walk(directory, func(path string, f os.FileInfo, err error) error {
 			if err != nil {
 				fmt.Println("Error!", err)
@@ -37,7 +38,6 @@ func getFileReaders(directory string) chan *bufio.Reader {
 			readerChannel <- reader
 			return nil
 		})
-		close(readerChannel)
 	}()
 	return readerChannel
 }
@@ -50,6 +50,7 @@ func streamBytes(directory string) chan byte {
 	byteStream := make(chan byte)
 	readerChannel := getFileReaders(directory)
 	go func() {
+		defer close(byteStream)
 		for reader := range readerChannel {
 			for {
 				b, err := reader.ReadByte()
@@ -62,7 +63,6 @@ func streamBytes(directory string) chan byte {
 				byteStream <- b
 			}
 		}
-		close(byteStream)
 	}()
 	return byteStream
 }
