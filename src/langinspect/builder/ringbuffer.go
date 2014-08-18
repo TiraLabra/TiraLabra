@@ -9,7 +9,11 @@ type ringBuffer struct {
 	index int
 }
 
-type ringIterator ringBuffer
+type ringIterator struct {
+	buff  []*trie.Node
+	index int
+	orig  int
+}
 
 func NewRingBuffer(length int) ringBuffer {
 	r := ringBuffer{}
@@ -23,29 +27,37 @@ func (r *ringBuffer) Clear() {
 	r.index = 0
 }
 
-func (r *ringBuffer) Add(node *trie.Node) {
-
-	r.index++
-	r.index = r.index % len(r.buff)
+// Add a new node to the buffer. If the buffer is full, replace the oldest node with the new. Return replaced one, or nil if nothing is replaced.
+func (r *ringBuffer) Add(node *trie.Node) *trie.Node {
 
 	if len(r.buff) < cap(r.buff) { // if ringbuffer isn't full yet, append to it
 		r.buff = append(r.buff, nil)
 	}
 
+	r.index++
+	r.index = r.index % len(r.buff)
+
+	oldest := r.buff[r.index]
+
 	// r.index is the ringbuffer index that points to the 1-gram. (Here it's yet but a 0-gram / root.)
 	r.buff[r.index] = node
+	return oldest
 }
 
-func (r *ringBuffer) GetIter() ringIterator {
-	i := ringIterator{}
+func (r *ringBuffer) IterFromNewest() *ringIterator {
+	if len(r.buff) == 0 {
+		return nil
+	}
+	i := &ringIterator{}
 	i.buff = r.buff
+	i.orig = r.index
 	i.index = r.index + len(r.buff)
 	return i
 }
 
-func (r *ringIterator) Next() bool {
-	r.index--
-	if r.index > len(r.buff) {
+func (i *ringIterator) Next() bool {
+	i.index--
+	if i.index > i.orig {
 		return true
 	}
 	return false

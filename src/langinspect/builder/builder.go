@@ -216,7 +216,7 @@ func builder(byteStream chan byte) {
 		// Oldest one (the 9-gram) will be thrown away if the buffer is full.
 		nodes.Add(Dict)
 
-		iter := nodes.GetIter()
+		iter := nodes.IterFromNewest()
 		n := 1
 		for iter.Next() {
 			node := iter.GetValue()
