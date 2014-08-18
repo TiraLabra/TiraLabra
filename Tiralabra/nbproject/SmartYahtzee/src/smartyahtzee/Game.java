@@ -74,6 +74,26 @@ public class Game {
         
     }
     
+    /**
+     * Testaa botin pistetuloksia
+     */
+    
+    public void testBot()
+    {
+        int iterations = 10000;
+        int scores = 0;
+        for (int i = 0; i < iterations; i++)
+        {
+            for (int j = 0; j < 16; j++)
+            {
+                players.get(0).playTurn();
+            }
+           
+            scores += players.get(0).totalPoints();
+        }
+        System.out.println("Average score: " + scores/iterations);
+    }
+    
     
     /**
      * Pyörittää peliä.

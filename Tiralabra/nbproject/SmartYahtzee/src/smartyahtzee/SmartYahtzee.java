@@ -20,7 +20,10 @@ public class SmartYahtzee {
         Game newGame = new Game(0, 1);
         newGame.runGame();
         //newGame.runTests();
+        //newGame.testBot();
         
     }
+    
+    
     
 }

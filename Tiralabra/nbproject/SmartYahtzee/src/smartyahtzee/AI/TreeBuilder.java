@@ -63,7 +63,7 @@ public class TreeBuilder {
         for (DecisionTree tree : expectedValues)
         {
             double treeEV = tree.getEV();
-            System.out.println("TreeEV: " + treeEV);
+            //System.out.println("TreeEV: " + treeEV);
             if (treeEV > biggestEV)
             {
                 biggestEV = treeEV;
@@ -73,15 +73,15 @@ public class TreeBuilder {
         
         if (keepAllEV > biggestEV)  // move straight to marking scores
         {
-            System.out.println("Keeping all dice");
+            //System.out.println("Keeping all dice");
             return dice;
         }
         
         if (biggestEVtree != null) {
-            System.out.println("Keeping biggest tree");
+            //System.out.println("Keeping biggest tree");
             return biggestEVtree.getRoot();
         }
-        System.out.println("Throwing all dice");
+        //System.out.println("Throwing all dice");
         return null;
     }
     
