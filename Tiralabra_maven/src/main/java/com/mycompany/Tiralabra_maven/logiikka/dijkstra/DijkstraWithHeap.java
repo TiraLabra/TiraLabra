@@ -3,8 +3,6 @@ package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.keko.JK;
-//import com.mycompany.Tiralabra_maven.logiikka.keko.MinimiKeko;
-//import java.util.PriorityQueue;
 import java.util.Stack;
 
 /**
