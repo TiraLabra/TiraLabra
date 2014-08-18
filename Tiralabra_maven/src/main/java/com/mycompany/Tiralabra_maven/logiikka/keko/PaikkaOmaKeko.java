@@ -1,10 +1,12 @@
+// KESKENERÄINEN LUOKKA
 package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- *
- * @author Hannu
+ * KESKENERÄINEN LUOKKA
+ * Oman tietorakenteen (minimikeko) toteutus.
+ * Keon alkiot tyyppiä Paikka.
  */
 public class PaikkaOmaKeko implements PaikkaMinKeko{
 

@@ -1,18 +1,17 @@
 package com.mycompany.Tiralabra_maven.logiikka.keko;
 
-import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import java.util.PriorityQueue;
 
 /**
  * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue.
- * Keon alkiot tyyppiä Paikka.
+ * Keon alkiot tyyppiä E.
  */
-public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
+public class PriorityQueueKeko<E> implements MinKeko<E> {
     
-    private PriorityQueue<Paikka> q;
+    private PriorityQueue<E> q;
     
-    public PaikkaPriorityQueueKeko(){
-        this.q=new PriorityQueue<Paikka>();
+    public PriorityQueueKeko(){
+        this.q=new PriorityQueue<E>();
     }
 
     /**
@@ -21,7 +20,7 @@ public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
      * @param kekoAlkio lisättävä kekoalkio
      */
     @Override
-    public void heapInsert(Paikka kekoAlkio) {
+    public void heapInsert(E kekoAlkio) {
         this.q.add(kekoAlkio);
     }
 
@@ -31,7 +30,7 @@ public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
      * @return keosta poistettu pienimmän avaimen sisältänyt kekoalkio
      */
     @Override
-    public Paikka heapDelMin() {
+    public E heapDelMin() {
         return this.q.poll();
     }
 
@@ -41,7 +40,7 @@ public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
      * @param kekoAlkio poistettava kekoalkio
      */
     @Override
-    public void heapDelete(Paikka kekoAlkio) {
+    public void heapDelete(E kekoAlkio) {
         this.q.remove(kekoAlkio);
     }
 
@@ -51,7 +50,7 @@ public class PaikkaPriorityQueueKeko implements PaikkaMinKeko{
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */
     @Override
-    public void heapDecreaseKey(Paikka kekoAlkio) {
+    public void heapDecreaseKey(E kekoAlkio) {
         this.q.remove(kekoAlkio);
         this.q.add(kekoAlkio);
     }
