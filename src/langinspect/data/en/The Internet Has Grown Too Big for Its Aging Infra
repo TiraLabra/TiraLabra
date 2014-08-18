@@ -1,0 +1,21 @@
+The Internet Has Grown Too Big for Its Aging Infrastructure
+     
+ Liquid Web
+
+Yesterday, the 20,000 customers who use a Lansing Michigan web hosting company called Liquid Web had some big internet problems. The reason: the internet grew too big for the memory chips in the company’s Cisco routers.
+
+Think of it as the internet’s latest growing pain. It’s a problem that networking geeks have seen coming for awhile now, but yesterday it finally struck. And it’s likely to cause more problems in the next few weeks. The bug doesn’t seem to have affected core internet providers—companies like AT&T and Verizon, which haul vast quantities of data over the internet’s backbone, “but certainly there are a number of people that were caught by this,” says Craig Labovitz, founder of network analysis company Deepfield Networks.
+
+Yesterday's Internet Hiccup cause a bit more trouble than usual. 
+Yesterday’s Internet Hiccup caused a bit more trouble than usual. Chart: BGPMon.net
+
+The issue affects older, but widely used, routers such as the Cisco 7,600. These machines store routing tables in their memory—directions describing the best way for packets of data to move to their ultimate destination—but some routers max out when their list of routes hits 512,000. Different routers have different total routes in memory, but most of them have been closing in on the 500,000 level for a few months now. Yesterday Verizon published an extra 15,000, kicking many routers over the 512,000 crash-point.
+
+Verizon quickly withdrew most of these routes, kicking things back to normal, but some routers had problems. Andree Toonk, a network engineer who runs a blog tracking networking issues says on a typical day there are about 1,500 network outages on the internet. Yesterday, that number spiked to 2,587. That’s not enough to quality as a major problem, but it’s noticeable.
+
+THE PROBLEM IS REAL, AND WE STILL HAVEN’T SEEN THE FULL EFFECTS.
+It’s not the first time this kind of thing has happened. Toonk says that there were similar memory problems a few years back when the internet crossed over 256,000 addresses.
+
+And Toonk and others predict that there could be more problems ahead, when we again cross that magic 512,000 threshold. “The problem is real, and we still haven’t seen the full effects, because most of the Internet hasn’t yet experienced the conditions that could cause problems for underprovisioned equipment,” wrote Jim Cowie, Chief Scientist at networking company Dyn, on his company’s blog.
+
+Still, there’s a work-around out there. And yesterday’s outage will put the issue front-and-center with most networking staff, which means that the vast majority of the internet should be unaffected when we finally hit 512,000 addresses for good.

@@ -1,0 +1,33 @@
+@enQuantum Sleeping Beauty and the Multiverse
+Posted on July 28, 2014 by Sean Carroll
+Hidden in my papers with Chip Sebens on Everettian quantum mechanics is a simple solution to a fun philosophical problem with potential implications for cosmology: the quantum version of the Sleeping Beauty Problem. It’s a classic example of self-locating uncertainty: knowing everything there is to know about the universe except where you are in it. (Skeptic’s Play beat me to the punch here, but here’s my own take.)
+
+The setup for the traditional (non-quantum) problem is the following. Some experimental philosophers enlist the help of a subject, Sleeping Beauty. She will be put to sleep, and a coin is flipped. If it comes up heads, Beauty will be awoken on Monday and interviewed; then she will (voluntarily) have all her memories of being awakened wiped out, and be put to sleep again. Then she will be awakened again on Tuesday, and interviewed once again. If the coin came up tails, on the other hand, Beauty will only be awakened on Monday. Beauty herself is fully aware ahead of time of what the experimental protocol will be.
+
+So in one possible world (heads) Beauty is awakened twice, in identical circumstances; in the other possible world (tails) she is only awakened once. Each time she is asked a question: “What is the probability you would assign that the coin came up tails?”
+
+(Some other discussions switch the roles of heads and tails from my example.)
+
+The Sleeping Beauty puzzle is still quite controversial. There are two answers one could imagine reasonably defending.
+
+“Halfer” — Before going to sleep, Beauty would have said that the probability of the coin coming up heads or tails would be one-half each. Beauty learns nothing upon waking up. She should assign a probability one-half to it having been tails.
+“Thirder” — If Beauty were told upon waking that the coin had come up heads, she would assign equal credence to it being Monday or Tuesday. But if she were told it was Monday, she would assign equal credence to the coin being heads or tails. The only consistent apportionment of credences is to assign 1/3 to each possibility, treating each possible waking-up event on an equal footing.
+The Sleeping Beauty puzzle has generated considerable interest. It’s exactly the kind of wacky thought experiment that philosophers just eat up. But it has also attracted attention from cosmologists of late, because of the measure problem in cosmology. In a multiverse, there are many classical spacetimes (analogous to the coin toss) and many observers in each spacetime (analogous to being awakened on multiple occasions). Really the SB puzzle is a test-bed for cases of “mixed” uncertainties from different sources.
+
+Chip and I argue that if we adopt Everettian quantum mechanics (EQM) and our Epistemic Separability Principle (ESP), everything becomes crystal clear. A rare case where the quantum-mechanical version of a problem is actually easier than the classical version.
+
+In the quantum version, we naturally replace the coin toss by the observation of a spin. If the spin is initially oriented along the x-axis, we have a 50/50 chance of observing it to be up or down along the z-axis. In EQM that’s because we split into two different branches of the wave function, with equal amplitudes.
+
+Our derivation of the Born Rule is actually based on the idea of self-locating uncertainty, so adding a bit more to it is no problem at all. We show that, if you accept the ESP, you are immediately led to the “thirder” position, as originally advocated by Elga. Roughly speaking, in the quantum wave function Beauty is awakened three times, and all of them are on a completely equal footing, and should be assigned equal credences. The same logic that says that probabilities are proportional to the amplitudes squared also says you should be a thirder.
+
+But! We can put a minor twist on the experiment. What if, instead of waking up Beauty twice when the spin is up, we instead observe another spin. If that second spin is also up, she is awakened on Monday, while if it is down, she is awakened on Tuesday. Again we ask what probability she would assign that the first spin was down.
+
+This new version has three branches of the wave function instead of two, as illustrated in the figure. And now the three branches don’t have equal amplitudes; the bottom one is (1/√2), while the top two are each (1/√2)2 = 1/2. In this case the ESP simply recovers the Born Rule: the bottom branch has probability 1/2, while each of the top two have probability 1/4. And Beauty wakes up precisely once on each branch, so she should assign probability 1/2 to the initial spin being down. This gives some justification for the “halfer” position, at least in this slightly modified setup.
+
+All very cute, but it does have direct implications for the measure problem in cosmology. Consider a multiverse with many branches of the cosmological wave function, and potentially many identical observers on each branch. Given that you are one of those observers, how do you assign probabilities to the different alternatives?
+
+Simple. Each observer Oi appears on a branch with amplitude ψi, and every appearance gets assigned a Born-rule weight wi = |ψi|2. The ESP instructs us to assign a probability to each observer given by
+
+It looks easy, but note that the formula is not trivial: the weights wi will not in general add up to one, since they might describe multiple observers on a single branch and perhaps even at different times. This analysis, we claim, defuses the “Born Rule crisis” pointed out by Don Page in the context of these cosmological spacetimes.
+
+Sleeping Beauty, in other words, might turn out to be very useful in helping us understand the origin of the universe. Then again, plenty of people already think that the multiverse is just a fairy tale, so perhaps we shouldn’t be handing them ammunition.
