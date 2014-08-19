@@ -45,7 +45,7 @@ public class Paikka implements Comparable<Paikka> {
     public Paikka polku;
 
     /**
-     * Paikan konstruktori.
+     * Luokan Paikka konstruktori.
      *
      * @param i Paikan i-koordinaatti.
      * @param j Paikan j-koordinaatti.
@@ -63,7 +63,17 @@ public class Paikka implements Comparable<Paikka> {
     }
 
     /**
-     * Paikan komparaattori, jota käyttäen Paikat voidaan laittaa etäisyysarvioden mukaiseen järjestykseen.
+     * Luokan Paikka toinen yksinkertaisempi konstruktori. Käytetään vain kun
+     * luodaan Paikka-olio, josta halutaan saada Class Paikka metodilla
+     * .getClass().
+     */
+    public Paikka() {
+    }
+
+    /**
+     * Paikan komparaattori, jota käyttäen Paikat voidaan laittaa
+     * etäisyysarvioden mukaiseen järjestykseen.
+     *
      * @return kokonaisluku vertailua varten
      */
     @Override

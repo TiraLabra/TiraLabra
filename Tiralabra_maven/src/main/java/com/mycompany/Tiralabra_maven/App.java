@@ -4,6 +4,7 @@ import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.aStar.AstarWithHeap;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
+import com.mycompany.Tiralabra_maven.logiikka.testausta.OmaKekoEtyyppiTestausta;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,9 +35,9 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println("main");
-        testaaKuvanlukija();
-
+//        System.out.println("main");
+//        testaaKuvanlukija();
+//
 //    E on este, jonka yli/ali/läpi ei pääse
 
         int e = Integer.MAX_VALUE / 10;
@@ -61,6 +62,9 @@ public class App {
         ratkaisija.shortestPath();
 
         ratkaisija.testiTulostaReittikartta();
+        
+//        OmaKekoEtyyppiTestausta test=new OmaKekoEtyyppiTestausta();
+//        test.testing();
 
     }
 }

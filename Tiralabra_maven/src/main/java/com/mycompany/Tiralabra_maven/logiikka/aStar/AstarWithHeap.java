@@ -2,7 +2,7 @@ package com.mycompany.Tiralabra_maven.logiikka.aStar;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
-import com.mycompany.Tiralabra_maven.logiikka.keko.PaikkaPriorityQueueKeko;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PaikkaPriorityQueueKeko;
 import java.util.Stack;
 
 /**

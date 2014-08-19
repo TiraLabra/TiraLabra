@@ -86,8 +86,8 @@ public class DijkstraWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-    private PriorityQueueKeko rakennaKekoJaAsetaVieruspaikat() {
-        PriorityQueueKeko heap = new PriorityQueueKeko();
+    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
+        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
