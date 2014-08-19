@@ -34,7 +34,7 @@ public class Scores {
     
     /** Miljoonasta heitosta laskettu keskimääräinen tulos yhdellä heitolla, bonukseen tarvittavissa kohdissa painotus */
     public static final double[] expectedValues = {           
-        0.832511*2, 1.666188*2, 2.501655*2, 3.33348*2, 4.168105*2, 5.001114*2, 0.0, 0.0, 6.986218, 3.78259, 2.233836, 0.280384, 0.23184, 0.3118, 0.690615, 17.503053, 0.04025
+        0.832511*1.5, 1.666188*1.5, 2.501655*1.5, 3.33348*1.5, 4.168105*1.5, 5.001114*1.5, 0.0, 0.0, 6.986218, 3.78259, 2.233836, 0.280384, 0.23184, 0.3118, 0.690615, 17.503053, 0.04025
     };
     
     public static double calculateBestScore(int[] dice, boolean[] marked)

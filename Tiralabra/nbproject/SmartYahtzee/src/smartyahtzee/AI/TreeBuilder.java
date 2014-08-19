@@ -17,17 +17,13 @@ import smartyahtzee.scoring.Scores;
 public class TreeBuilder {
     
     private int[] dice;
-    private ArrayList<DecisionTree> expectedValues;         //todo: arraylist-implementaatio josta voi hakea puun juuren perusteella
+    private TreeList expectedValues;         
     private boolean[] marked;
     
     public TreeBuilder(int[] dice, boolean[] marked)
     {
         this.marked = marked;
-        this.expectedValues = new ArrayList<>();
-        this.dice = groupingSort(dice);
-        createTrees(this.dice);
-        
-        
+        this.expectedValues = new TreeList(4, groupingSort(dice)); //# of combinations
     }
     
     /**
@@ -35,7 +31,7 @@ public class TreeBuilder {
      * @return 
      */
     
-    public ArrayList<DecisionTree> getEVs()
+    public TreeList getEVs()
     {
         return expectedValues;
     }
@@ -158,28 +154,7 @@ public class TreeBuilder {
      * säästää. Myöhemmin lisättävä vielä lisää kombinaatioita.
      */
     
-    private void createTrees(int[] dice)
-    {
-        int[][] combinations = new int[4][];
-        for (int j = 4; j > 0; j--)
-        {
-            int[] combination = new int[j];
-            for (int k = 0; k < j; k++)
-            {
-                combination[k] = dice[k];
-            }
-            
-            combinations[4-j] = combination;
-        }
-        System.out.println("Length: " +combinations.length);
-        for (int i = 0; i < combinations.length; i++)
-        {
-            DecisionTree tree = new DecisionTree(combinations[i], marked);
-            expectedValues.add(tree);
-        }
-        
-        
-    }
+    
     
     /**
      * Ryhmittelee nopat.
