@@ -41,10 +41,11 @@ public class TestFactory {
      */
     public void runRandomSmallArraysTestCycleForAll() {
         results.add("Random small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
             results.add(r
+                    + ":" + runner.run(new RandomNoDuplicates(r), new Bubblesort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Quicksort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Insertionsort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
@@ -60,10 +61,11 @@ public class TestFactory {
      */
     public void runRandomBigArraysTestCycleForAll() {
         results.add("Random big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
             results.add(r
+                    + ":" + runner.run(new RandomNoDuplicates(r), new Bubblesort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Quicksort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Insertionsort())
                     + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
@@ -79,10 +81,11 @@ public class TestFactory {
      */
     public void runSortedSmallArraysTestCycleForAll() {
         results.add("Allmost sorted small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
             results.add(r
+                    + ":" + runner.run(new AllmostSorted(r), new Bubblesort())
                     + ":" + runner.run(new AllmostSorted(r), new Quicksort())
                     + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
                     + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
@@ -98,10 +101,11 @@ public class TestFactory {
      */
     public void runSortedBigArraysTestCycleForAll() {
         results.add("Allmost sorted big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
             results.add(r
+                    + ":" + runner.run(new AllmostSorted(r), new Bubblesort())
                     + ":" + runner.run(new AllmostSorted(r), new Quicksort())
                     + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
                     + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
@@ -118,10 +122,11 @@ public class TestFactory {
      */
     public void runReversedSmallArraysTestCycleForAll() {
         results.add("Reversed small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
             results.add(r
+                    + ":" + runner.run(new Reversed(r), new Bubblesort())
                     + ":" + runner.run(new Reversed(r), new Quicksort())
                     + ":" + runner.run(new Reversed(r), new Insertionsort())
                     + ":" + runner.run(new Reversed(r), new Selectionsort())
@@ -137,10 +142,11 @@ public class TestFactory {
      */
     public void runReversedBigArraysTestCycleForAll() {
         results.add("Reversed big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
             results.add(r
+                    + ":" + runner.run(new Reversed(r), new Bubblesort())
                     + ":" + runner.run(new Reversed(r), new Quicksort())
                     + ":" + runner.run(new Reversed(r), new Insertionsort())
                     + ":" + runner.run(new Reversed(r), new Selectionsort())
@@ -156,17 +162,18 @@ public class TestFactory {
      * to text file.
      */
     public void runRandomFewUniquesSmallArraysTestCycleForAll() {
-        results.add("Random few Uniques small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add("Random few uniques small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : small) {
             results.add(r
+                    + ":" + runner.run(new RandomFewUnique(r), new Bubblesort())
                     + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
                     + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
                     + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
             );
         }
-        System.out.println("Random few Uniques small arrays tests completed.");
+        System.out.println("Random few uniques small arrays tests completed.");
     }
 
     /**
@@ -175,18 +182,18 @@ public class TestFactory {
      * to text file.
      */
     public void runRandomFewUniquesBigArraysTestCycleForAll() {
-        results.add("Random few Uniques big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Quick sort:Insertion sort:Selection sort");
+        results.add("Random few uniques big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
 
         for (int r : big) {
             results.add(r
+                    + ":" + runner.run(new RandomFewUnique(r), new Bubblesort())
                     + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
                     + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
                     + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
             );
         }
-        System.out.println("Random few Uniques big arrays tests completed.");
-
+        System.out.println("Random few uniques big arrays tests completed.");
     }
 
     /**
