@@ -13,19 +13,19 @@ public class Insertionsort extends Algo {
     /**
      * Sorts array with Insertion sort
      *
-     * @param a array to sort
+     * @param arr array to sort
      */
     @Override
-    public void sort(int[] a) {
+    public void sort(int[] arr) {
 
-        for (int i = 1; i < a.length; i++) {
-            int tmp = a[i];
+        for (int i = 1; i < arr.length; i++) {
+            int tmp = arr[i];
             int j = i;
-            while (j > 0 && a[j - 1] > tmp) {
-                a[j] = a[j - 1];
+            while (j > 0 && arr[j - 1] > tmp) {
+                arr[j] = arr[j - 1];
                 j--;
             }
-            a[j] = tmp;
+            arr[j] = tmp;
         }
     }
 

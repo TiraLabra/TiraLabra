@@ -4,8 +4,6 @@
  */
 package TestSuite.Arrays;
 
-import java.util.Random;
-
 /**
  * Full reversed (descending) order array
  *

@@ -13,22 +13,22 @@ public class Selectionsort extends Algo {
     /**
      * Sorts given array with selection sort
      *
-     * @param a array to sort
+     * @param arr array to sort
      */
     @Override
-    public void sort(int[] a) {
+    public void sort(int[] arr) {
 
-        for (int i = 0; i < a.length - 1; i++) {
+        for (int i = 0; i < arr.length - 1; i++) {
             int index = i;
-            for (int j = i + 1; j < a.length; j++) {
-                if (a[j] < a[index]) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[index]) {
                     index = j;
                 }
             }
 
-            int smaller = a[index];
-            a[index] = a[i];
-            a[i] = smaller;
+            int smaller = arr[index];
+            arr[index] = arr[i];
+            arr[i] = smaller;
         }
     }
 
