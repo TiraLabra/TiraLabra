@@ -6,6 +6,8 @@
 
 package smartyahtzee.AI;
 
+import java.util.Arrays;
+
 /**
  * Hassu nimi: ei siis ole puulista vaan lista puista
  * @author essalmen
@@ -22,6 +24,43 @@ class TreeList {
         createTrees(dice);
     }
     
+    public DecisionTree getTree(int[] root)
+    {
+        DecisionTree treeWithRoot = null;
+        for (DecisionTree tree : trees)
+        {
+            if (Arrays.equals(tree.getRoot(), root))
+            {
+                return tree;
+            }
+        }
+        return treeWithRoot;
+    }
+    
+        
+    public DecisionTree getBiggestEVtree()
+    {
+        DecisionTree biggestTree = null;
+        double ev = 0.0;
+        
+        for (DecisionTree tree : trees)
+        {
+            double treeEV = tree.getEV();
+            if (treeEV > ev)
+            {
+                ev = treeEV;
+            }
+        }
+        
+        return biggestTree;
+        
+    }
+    
+    /**
+     * Luo puut.
+     * 
+     * @param dice 
+     */
     private void createTrees(int[] dice)
     {
         int[][] combinations = new int[4][];
@@ -43,6 +82,8 @@ class TreeList {
         
         
     }
+    
+    
     
     
 }

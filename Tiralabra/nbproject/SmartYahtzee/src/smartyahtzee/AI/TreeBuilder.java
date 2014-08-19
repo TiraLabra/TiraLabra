@@ -6,7 +6,6 @@
 
 package smartyahtzee.AI;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import smartyahtzee.scoring.Scores;
 
@@ -22,8 +21,9 @@ public class TreeBuilder {
     
     public TreeBuilder(int[] dice, boolean[] marked)
     {
+        this.dice = dice;
         this.marked = marked;
-        this.expectedValues = new TreeList(4, groupingSort(dice)); //# of combinations
+        this.expectedValues = new TreeList(4, groupingSort(dice), marked); //# of combinations
     }
     
     /**
@@ -53,20 +53,19 @@ public class TreeBuilder {
     public int[] getDiceToLock()
     {
         double keepAllEV = Scores.calculateBestScore(dice, marked);
-        double biggestEV = 0.0;
-        DecisionTree biggestEVtree = null;
         
-        for (DecisionTree tree : expectedValues)
+        DecisionTree biggestEVtree = expectedValues.getBiggestEVtree();
+        
+        double biggestEV;
+        
+        if (biggestEVtree != null)
         {
-            double treeEV = tree.getEV();
-            //System.out.println("TreeEV: " + treeEV);
-            if (treeEV > biggestEV)
-            {
-                biggestEV = treeEV;
-                biggestEVtree = tree;
-            }
+            biggestEV = biggestEVtree.getEV();
+        } else {
+            biggestEV = 0.0;
         }
         
+                
         if (keepAllEV > biggestEV)  // move straight to marking scores
         {
             //System.out.println("Keeping all dice");
@@ -98,18 +97,21 @@ public class TreeBuilder {
         double keepAllEV = Scores.calculateBestScore(dice, marked);
         double keepSameEV = 0;
         double[] evs = null;
-        for (DecisionTree tree : expectedValues)            //todo: refactor with new arraylist implementation
+        
+        DecisionTree tree = expectedValues.getTree(lockedDice);
+        if (tree == null)
         {
-            if (Arrays.equals(tree.getRoot(), lockedDice))      //todo: more combinations
-            {
-                keepSameEV = tree.getEV();
-                evs = new double[unlockedDice.length];
-                for (int i = 0; i < unlockedDice.length; i++)
-                {
-                    evs[i] = tree.getEV(tree.findNode(i));
-                }
-            }
+            keepSameEV = 0.0;
+        } else {
+            keepSameEV = tree.getEV();
         }
+        evs = new double[unlockedDice.length];
+        for (int i = 0; i < unlockedDice.length; i++)           //todo: more combinations
+        {
+            evs[i] = tree.getEV(tree.findNode(i));
+        }
+        
+       
         
         int biggestIndex = -1;
         double biggest = 0;
