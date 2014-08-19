@@ -24,6 +24,7 @@ public class TestFactory {
     private final int[] small;
     private final int[] big;
     private final FilePrinter printer;
+    private final Algo[] sortingAlgos;
 
     public TestFactory(int repeat) {
         this.runner = new Runner(repeat);
@@ -32,6 +33,7 @@ public class TestFactory {
         this.results = new ArrayList<String>();
         this.small = new int[]{5, 10, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500};
         this.big = new int[]{500, 750, 1000, 1250, 1500, 2000, 3000, 5000, 7500, 10000};
+        this.sortingAlgos = new Algo[]{new Bubblesort(), new Quicksort(), new Insertionsort(), new Selectionsort()};
     }
 
     /**
@@ -41,16 +43,13 @@ public class TestFactory {
      */
     public void runRandomSmallArraysTestCycleForAll() {
         results.add("Random small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+
+        addAlgosToResults();
 
         for (int r : small) {
-            results.add(r
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Bubblesort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Quicksort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Insertionsort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new RandomNoDuplicates(r));
         }
+
         System.out.println("Random small arrays tests completed.");
     }
 
@@ -61,16 +60,12 @@ public class TestFactory {
      */
     public void runRandomBigArraysTestCycleForAll() {
         results.add("Random big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : big) {
-            results.add(r
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Bubblesort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Quicksort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Insertionsort())
-                    + ":" + runner.run(new RandomNoDuplicates(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new RandomNoDuplicates(r));
         }
+
         System.out.println("Random big arrays tests completed.");
     }
 
@@ -81,16 +76,12 @@ public class TestFactory {
      */
     public void runSortedSmallArraysTestCycleForAll() {
         results.add("Allmost sorted small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : small) {
-            results.add(r
-                    + ":" + runner.run(new AllmostSorted(r), new Bubblesort())
-                    + ":" + runner.run(new AllmostSorted(r), new Quicksort())
-                    + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
-                    + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new AllmostSorted(r));
         }
+
         System.out.println("Allmost sorted small arrays tests completed.");
     }
 
@@ -101,15 +92,10 @@ public class TestFactory {
      */
     public void runSortedBigArraysTestCycleForAll() {
         results.add("Allmost sorted big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : big) {
-            results.add(r
-                    + ":" + runner.run(new AllmostSorted(r), new Bubblesort())
-                    + ":" + runner.run(new AllmostSorted(r), new Quicksort())
-                    + ":" + runner.run(new AllmostSorted(r), new Insertionsort())
-                    + ":" + runner.run(new AllmostSorted(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new AllmostSorted(r));
         }
         System.out.println("Allmost sorted big arrays tests completed.");
 
@@ -122,16 +108,12 @@ public class TestFactory {
      */
     public void runReversedSmallArraysTestCycleForAll() {
         results.add("Reversed small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : small) {
-            results.add(r
-                    + ":" + runner.run(new Reversed(r), new Bubblesort())
-                    + ":" + runner.run(new Reversed(r), new Quicksort())
-                    + ":" + runner.run(new Reversed(r), new Insertionsort())
-                    + ":" + runner.run(new Reversed(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new Reversed(r));
         }
+
         System.out.println("Reversed small arrays tests completed.");
     }
 
@@ -142,16 +124,12 @@ public class TestFactory {
      */
     public void runReversedBigArraysTestCycleForAll() {
         results.add("Reversed big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : big) {
-            results.add(r
-                    + ":" + runner.run(new Reversed(r), new Bubblesort())
-                    + ":" + runner.run(new Reversed(r), new Quicksort())
-                    + ":" + runner.run(new Reversed(r), new Insertionsort())
-                    + ":" + runner.run(new Reversed(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new Reversed(r));
         }
+
         System.out.println("Reversed big arrays tests completed.");
 
     }
@@ -163,16 +141,12 @@ public class TestFactory {
      */
     public void runRandomFewUniquesSmallArraysTestCycleForAll() {
         results.add("Random few uniques small arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : small) {
-            results.add(r
-                    + ":" + runner.run(new RandomFewUnique(r), new Bubblesort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new RandomFewUnique(r));
         }
+
         System.out.println("Random few uniques small arrays tests completed.");
     }
 
@@ -183,30 +157,45 @@ public class TestFactory {
      */
     public void runRandomFewUniquesBigArraysTestCycleForAll() {
         results.add("Random few uniques big arrays test. Test cycle repeated " + repeat + " times.");
-        results.add(":Bubble sort:Quick sort:Insertion sort:Selection sort");
+        addAlgosToResults();
 
         for (int r : big) {
-            results.add(r
-                    + ":" + runner.run(new RandomFewUnique(r), new Bubblesort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Quicksort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Insertionsort())
-                    + ":" + runner.run(new RandomFewUnique(r), new Selectionsort())
-            );
+            addRunnerTimesToResults(new RandomFewUnique(r));
         }
+
         System.out.println("Random few uniques big arrays tests completed.");
     }
 
     /**
-     * Result Printer. Will Clean array
+     * Adds names of sorting algorithms to results array
+     */
+    private void addAlgosToResults() {
+        String sorts = "";
+        for (Algo a : sortingAlgos) {
+            sorts += ":" + a;
+        }
+        results.add(sorts);
+    }
+
+    /**
+     * Runs given array with all sorting algorithms. Adds results to
+     * results-array.
+     *
+     * @param array Array to sort
+     */
+    private void addRunnerTimesToResults(Arr array) {
+        String res = "";
+        for (Algo sortingAlgorithm : sortingAlgos) {
+            res += ":" + runner.run(array, sortingAlgorithm);
+        }
+        results.add(res);
+    }
+
+    /**
+     * Result Printer. Will Clean Results-array!
      */
     public void printToFileAndClean() {
         printer.printToFile("results", results);
         results.clear();
-    }
-
-    private void printResults() {
-        for (String s : results) {
-            System.out.println(s);
-        }
     }
 }
