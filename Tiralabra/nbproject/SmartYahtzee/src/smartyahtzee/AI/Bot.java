@@ -30,7 +30,7 @@ public class Bot extends Player {
             return;
         }
         System.out.println(dice);
-        dice.throwDice();       //todo: second turn, using already created treebuilder
+        dice.throwDice();       
         
         if (lock != null)
         {

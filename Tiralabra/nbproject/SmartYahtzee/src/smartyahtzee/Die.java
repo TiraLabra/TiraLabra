@@ -11,8 +11,20 @@ package smartyahtzee;
  * @author essalmen
  */
 public class Die {
+    private Die nextDie;
     private boolean locked;
     private int number;
+    
+    
+    public void setNextDie(Die die)
+    {
+        this.nextDie = die;
+    }
+    
+    public Die nextDie()
+    {
+        return nextDie;
+    }
     
     /**
      * Toggle nopan valinnalle.

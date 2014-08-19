@@ -15,7 +15,7 @@ import java.util.Random;
  * @author essalmen
  */
 public class DiceSet {
-    private ArrayList<Die> dice;
+    private Die firstDie;
     private Random random;
     
     
@@ -27,21 +27,34 @@ public class DiceSet {
     public DiceSet()
     {
         random = new Random();
-        dice = new ArrayList<Die>();
-        for (int d = 0; d < 5; d++)
+        firstDie = new Die();
+        Die prevDie = firstDie;
+        for (int d = 0; d < 4; d++)
         {
             Die newDie = new Die();
-            dice.add(newDie);
+            prevDie.setNextDie(newDie);
+            prevDie = newDie;
         }
     }
     
     public Die getDie(int index)
     {
-        return dice.get(index);
+        Die die = firstDie;
+        for (int i = 0; i < index; i++)
+        {
+            die = die.nextDie();
+        }
+        return die;
     }
     
-    public ArrayList<Die> getDice()
+    public Die[] getDice()
     {
+        Die[] dice = new Die[5];
+        dice[0] = firstDie;
+        for (int i = 1; i < 5; i++)
+        {
+            dice[i] = dice[i-1].nextDie();
+        }
         return dice;
     }
     
@@ -53,12 +66,14 @@ public class DiceSet {
     
     public void throwDice()
     {
-        for (Die d : dice)
+        Die instance = firstDie;
+        for (int i = 0; i < 5; i++)
         {
-            if (!d.isLocked())
+            if (!instance.isLocked())
             {
-                d.setNumber(random.nextInt(6) + 1);
+                instance.setNumber(random.nextInt(6) + 1);
             }
+            instance = instance.nextDie();
         }
     }
     
@@ -71,16 +86,28 @@ public class DiceSet {
     public void lockMany(int[] toLock)          //todo: optimize
     {
         unlockAll();
-        for (int d : toLock)
+        Die die = firstDie;
+        boolean matchFound = false;
+        for (int i = 0; i < 5; i++)
         {
-            for (int i = 0; i < dice.size(); i++)
+            matchFound = false;
+            for (int n = 0; n < toLock.length; n++)
             {
-                if (!dice.get(i).isLocked() && d == dice.get(i).getNumber())
+                
+                if (die.getNumber() == toLock[n])
                 {
-                    toggleLock(i);
+                    int[] newToLock = copyArray(toLock, n);
+                    toLock = newToLock;
+                    die.lock();
+                    matchFound = true;
+                    die = die.nextDie();
+                    break;
                 }
             }
-            
+            if (!matchFound)
+            {
+                die = die.nextDie();
+            }
         }
     }
     
@@ -93,7 +120,12 @@ public class DiceSet {
     
     public void toggleLock(int index)
     {
-        dice.get(index).lock();
+        Die die = firstDie;
+        for (int i = 0; i < index; i++)
+        {
+            die = die.nextDie();
+        }
+        die.lock();
     }
     
     /**
@@ -104,9 +136,11 @@ public class DiceSet {
     
     public void unlockAll()
     {
-        for (Die d : dice)
+        Die die = firstDie;
+        for (int i= 0; i < 5; i++)
         {
-            d.unlock();
+            die.unlock();
+            die = die.nextDie();
         }
     }
     
@@ -121,9 +155,11 @@ public class DiceSet {
     public int[] asArray()
     {
         int[] dicearray = new int[5];
+        Die die = firstDie;
         for (int i = 0; i<5; i++)
         {
-            dicearray[i] = this.dice.get(i).getNumber();
+            dicearray[i] = die.getNumber();
+            die = die.nextDie();
         }
         Arrays.sort(dicearray);
         return dicearray;
@@ -141,17 +177,41 @@ public class DiceSet {
     {
         
         String diceString = "";
+        Die die = firstDie;
         
-        for (Die d : dice)
+        for (int i = 0; i < 5; i++)
         {
-            if (d.isLocked())
+            if (die.isLocked())
             {
-                diceString = diceString + "(" + d.getNumber() + ") ";
+                diceString = diceString + "(" + die.getNumber() + ") ";
             } else {
-                diceString += d.getNumber() + " ";
+                diceString += die.getNumber() + " ";
             }
+            die = die.nextDie();
         }
         
         return diceString;
+    }
+    
+    private int[] copyArray(int[] array, int index)
+    {
+        int[] newArray = new int[array.length-1];
+        boolean indexReached = false;
+        
+        for (int i = 0; i < newArray.length; i++)
+        {
+            if (i == index)
+            {
+                indexReached = true;
+            }
+            if (indexReached) {
+                newArray[i] = array[i+1];
+            } else {
+                newArray[i] = array[i];
+            }
+            
+        }
+        
+        return newArray;
     }
 }
