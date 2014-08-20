@@ -70,11 +70,11 @@ public class TestFactory {
     }
 
     /**
-     * Runs tests for small size sorted arrays with all sorting algorithms.
-     * Results will be added to arraylist, which is finally printed to text
-     * file.
+     * Runs tests for small size allmost sorted arrays with all sorting
+     * algorithms. Results will be added to arraylist, which is finally printed
+     * to text file.
      */
-    public void runSortedSmallArraysTestCycleForAll() {
+    public void runAllmostSortedSmallArraysTestCycleForAll() {
         results.add("Allmost sorted small arrays test. Test cycle repeated " + repeat + " times.");
         addAlgosToResults();
 
@@ -86,11 +86,43 @@ public class TestFactory {
     }
 
     /**
+     * Runs tests for small size allmost sorted arrays with all sorting
+     * algorithms. Results will be added to arraylist, which is finally printed
+     * to text file.
+     */
+    public void runSortedBigArraysTestCycleForAll() {
+        results.add("Sorted big arrays test. Test cycle repeated " + repeat + " times.");
+        addAlgosToResults();
+
+        for (int r : big) {
+            addRunnerTimesToResults(new Sorted(r));
+        }
+        System.out.println("Sorted big arrays tests completed.");
+
+    }
+
+    /**
      * Runs tests for small size sorted arrays with all sorting algorithms.
      * Results will be added to arraylist, which is finally printed to text
      * file.
      */
-    public void runSortedBigArraysTestCycleForAll() {
+    public void runSortedSmallArraysTestCycleForAll() {
+        results.add("Sorted small arrays test. Test cycle repeated " + repeat + " times.");
+        addAlgosToResults();
+
+        for (int r : small) {
+            addRunnerTimesToResults(new Sorted(r));
+        }
+
+        System.out.println("Sorted small arrays tests completed.");
+    }
+
+    /**
+     * Runs tests for small size sorted arrays with all sorting algorithms.
+     * Results will be added to arraylist, which is finally printed to text
+     * file.
+     */
+    public void runAllmostSortedBigArraysTestCycleForAll() {
         results.add("Allmost sorted big arrays test. Test cycle repeated " + repeat + " times.");
         addAlgosToResults();
 
@@ -179,12 +211,12 @@ public class TestFactory {
 
     /**
      * Runs given array with all sorting algorithms. Adds results to
-     * results-array.
+     * results-array. First column contains lenght of the array.
      *
      * @param array Array to sort
      */
     private void addRunnerTimesToResults(Arr array) {
-        String res = "";
+        String res = "" + array.get().length;
         for (Algo sortingAlgorithm : sortingAlgos) {
             res += ":" + runner.run(array, sortingAlgorithm);
         }
