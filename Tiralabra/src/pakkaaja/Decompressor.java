@@ -27,8 +27,9 @@ public class Decompressor {
      */
     public String unzip() {
         
-        while (paketti.length() > i) {
+        while (paketti.length() -1 > i) {
             nextChar(tree.getRoot(),paketti.charAt(i));
+           // System.out.println(paketti.charAt(i));
         }        
         return lause;
     }
@@ -45,11 +46,13 @@ public class Decompressor {
         if (root == null) {
             return;
         }
-        if (c.equals('0') && root.getLeft() != null) {
-            nextChar(root.getLeft(), paketti.charAt(i++));
-        }
-        if (c.equals('1') && root.getRight() != null) {
-            nextChar(root.getRight(), paketti.charAt(i++));
+        else if (c.equals('0') && root.getLeft() != null) {
+                 nextChar(root.getLeft(), i >= paketti.length() - 1 ? 'c':paketti.charAt(++i));
+            }
+        
+        else if (c.equals('1') && root.getRight() != null) {
+                nextChar(root.getRight(),  i >= paketti.length() - 1 ? 'c':paketti.charAt(++i));
+            
         }else {
             lause += root.getChar();
             
