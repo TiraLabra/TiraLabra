@@ -109,10 +109,14 @@ public class PeruslaskuTest extends TestCase {
         laitaIsonmatriisinArvot();
         System.out.print(Taulukko.toString(isompimatriisi));
 
-        double[][] tulos = Peruslasku.strassen(isompimatriisi,isompimatriisi,8,2);
+        double[][] tulos = Peruslasku.strassen(isompimatriisi,isompimatriisi,8,4);
         Matrix m1 = new Matrix(isompimatriisi);
         Matrix m2 = new Matrix(isompimatriisi);
         double[][] tulos2 = m1.times(m2).getArray();
+        System.out.println(" \n Strassen tulos:");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("\n Jaman tulos");
+        System.out.print(Taulukko.toString(tulos2));
         boolean testi = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -121,10 +125,187 @@ public class PeruslaskuTest extends TestCase {
                 }
             }
         }
+        assertTrue(testi);
+    }
+
+    public void testAntaakoStrassen2SamanTuloksenKuinJama() {
+        laitaIsonmatriisinArvot();
+        System.out.print(Taulukko.toString(isompimatriisi));
+
+        double[][] tulos = Peruslasku.strassen2(isompimatriisi,isompimatriisi,8,4);
+        Matrix m1 = new Matrix(isompimatriisi);
+        Matrix m2 = new Matrix(isompimatriisi);
+        double[][] tulos2 = m1.times(m2).getArray();
+        System.out.println(" \n Strassen2 tulos:");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("\n Jaman tulos");
+        System.out.print(Taulukko.toString(tulos2));
+        boolean testi = true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (tulos2[i][j] != tulos[i][j]) {
+                    testi = false;
+                }
+            }
+        }
+        assertTrue(testi);
+    }    
+
+    public void testAntaakoStrassen3SamanTuloksenKuinJama() {
+        laitaIsonmatriisinArvot();
+        System.out.print(Taulukko.toString(isompimatriisi));
+
+        double[][] tulos = Peruslasku.strassen3(isompimatriisi,isompimatriisi,8,4);
+        Matrix m1 = new Matrix(isompimatriisi);
+        Matrix m2 = new Matrix(isompimatriisi);
+        double[][] tulos2 = m1.times(m2).getArray();
+        System.out.println(" \n Strassen3 tulos:");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("\n Jaman tulos");
+        System.out.print(Taulukko.toString(tulos2));
+        boolean testi = true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (tulos2[i][j] != tulos[i][j]) {
+                    testi = false;
+                }
+            }
+        }
+        assertTrue(testi);
+    }      
+    
+ 
+    public void testAntaakouusiStrassenSamanTuloksenKuinJama() {
+        laitaIsonmatriisinArvot();
+        System.out.print(Taulukko.toString(isompimatriisi));
+
+        double[][] tulos = Peruslasku.uusiStrassen(isompimatriisi,isompimatriisi,8,4);
+        Matrix m1 = new Matrix(isompimatriisi);
+        Matrix m2 = new Matrix(isompimatriisi);
+        double[][] tulos2 = m1.times(m2).getArray();
+        System.out.println(" \n uuden strassen  tulos:");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("\n Jaman tulos");
+        System.out.print(Taulukko.toString(tulos2));
+        boolean testi = true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (tulos2[i][j] != tulos[i][j]) {
+                    testi = false;
+                }
+            }
+        }
+        assertTrue(testi);
+    } 
+    
+    public void testMinusToimiiOikein() {
+        double[][] m1 = {{1,2},{3,4}};
+        double[][] m2 = {{1,1},{0,4}};
+        double[][] ratkaisu = {{0,1},{3,0}};
+        double[][] tulos = Peruslasku.minus(m1,m2);
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+
+    public void testPlusToimiiOikein() {
+        double[][] m1 = {{1,2},{3,4}};
+        double[][] m2 = {{1,1},{0,4}};
+        double[][] ratkaisu = {{2,3},{3,8}};
+        double[][] tulos = Peruslasku.plus(m1,m2);
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
     
-    public void testTestaus() {
-        assertTrue(true);
+    
+    
+    public void testMatriisienYhdistaminenToimiiOikein() {
+        double[][] ratkaisu = {{1,1,2,2},{1,1,2,2},{3,3,4,4},{3,3,4,4}};
+        double[][] m1 = {{1,1},{1,1}};
+        double[][] m2 = {{2,2},{2,2}};
+        double[][] m3 = {{3,3},{3,3}};
+        double[][] m4 = {{4,4},{4,4}};
+        double[][] tulos = Peruslasku.yhdista(m1, m2, m3, m4, 4);
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testKirjoitaOsamatriisiToimiiOikeinPisteessa00() {
+        double[][] tulos = new double[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j< 4; j++) {
+                tulos[i][j] = 0;
+            }
+        }
+        double[][] kirjoitettava = {{1,2},{3,4}};
+        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 0);
+        double[][] ratkaisu = {{1,2,0,0},{3,4,0,0},{0,0,0,0},{0,0,0,0}};
+        System.out.println("\n osamatriisin kirjoitustulos");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+
+    }
+
+    public void testKirjoitaOsamatriisiToimiiOikeinPisteessa02() {
+        double[][] tulos = new double[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j< 4; j++) {
+                tulos[i][j] = 0;
+            }
+        }
+        double[][] kirjoitettava = {{1,2},{3,4}};
+        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 2);
+        double[][] ratkaisu = {{0,0,1,2},{0,0,3,4},{0,0,0,0},{0,0,0,0}};
+        System.out.println("\n osamatriisin kirjoitustulos");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+
+    }
+    
+        public void testKirjoitaOsamatriisiToimiiOikeinPisteessaOikeaAla() {
+        double[][] tulos = new double[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j< 4; j++) {
+                tulos[i][j] = 0;
+            }
+        }
+        double[][] kirjoitettava = {{1,2},{3,4}};
+        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 2, 2);
+        double[][] ratkaisu = {{0,0,0,0},{0,0,0,0},{0,0,1,2},{0,0,3,4}};
+        System.out.println("\n osamatriisin kirjoitustulos");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+
+    }
+     
+    private double[][] luotestimatriisi(){
+        double[][] palautettava = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
+        return palautettava;
+    }    
+    public void testEnsimmainenNeljannesOnOikein() {
+        double[][] testi = luotestimatriisi();
+        double[][] neljannes = Peruslasku.ensimmainenNeljannes(testi);
+        double[][] ratkaisu = {{1,2},{5,6}};
+        assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testToinenNeljannesOnOikein() {
+        double[][] testi = luotestimatriisi();
+        double[][] neljannes = Peruslasku.toinenNeljannes(testi);
+        double[][] ratkaisu = {{3,4},{7,8}};
+        assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
+    }
+        
+    public void testKolmasNeljannesOnOikein() {
+        double[][] testi = luotestimatriisi();
+        double[][] neljannes = Peruslasku.kolmasNeljannes(testi);
+        double[][] ratkaisu = {{9,10},{13,14}};
+        System.out.println("\n kolmas neljannes:");
+        System.out.print(Taulukko.toString(neljannes));
+        assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testNeljasNeljannesOnOikein() {
+        double[][] testi = luotestimatriisi();
+        double[][] neljannes = Peruslasku.neljasNeljannes(testi);
+        double[][] ratkaisu = {{11,12},{15,16}};
+        assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
     }
     
     // TODO add test methods here. The name must begin with 'test'. For example:
