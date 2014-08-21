@@ -1,6 +1,6 @@
 
 package yleismetodeja;
-
+import omamatriisipaketti.LUPdecomposition;
 /**
  * Peruslaskutoimituksia. Tähän luokkaan on koottu staattisia metodeja, jotka 
  * operoivat kaksiulotteisilla taulukoilla ja suorittavat perusmatriisioperaatioita.
@@ -139,85 +139,11 @@ public class Peruslasku {
      * pienillä matriisella nopeampi.
      * @return 
      */
-       
-    public static double[][] strassen(double[][] a, double[][] b, int m, int minN) {
-        if (m < minN) {
-            return naivemultiply(a,b);
-        }
-        double[][] m1 = strassen(plus(ensimmainenNeljannes(a), neljasNeljannes(a)),plus(ensimmainenNeljannes(b), neljasNeljannes(b)),m/2, minN);
-        double[][] m2 = strassen(plus(kolmasNeljannes(a),neljasNeljannes(b)),ensimmainenNeljannes(b), m/2, minN); 
-        double[][] m3 = strassen(ensimmainenNeljannes(a), minus(toinenNeljannes(b),neljasNeljannes(b)), m/2, minN);
-        double[][] m4 = strassen(neljasNeljannes(a),minus(kolmasNeljannes(b),ensimmainenNeljannes(b)), m/2, minN);
-        double[][] m5 = strassen(plus(ensimmainenNeljannes(a),toinenNeljannes(a)),neljasNeljannes(b),m/2,minN);
-        double[][] m6 = strassen(minus(kolmasNeljannes(a),ensimmainenNeljannes(a)), plus(ensimmainenNeljannes(b),toinenNeljannes(b)),m/2,minN);
-        double[][] m7 = strassen(minus(toinenNeljannes(a),neljasNeljannes(a)),plus(kolmasNeljannes(b),neljasNeljannes(b)),m/2,minN);
-        double[][] c11 = minus(plus(plus(m1,m4),m7),m5);
-        double[][] c12 = plus(m3,m5);
-        double[][] c21 = plus(m2,m4);
-        double[][] c22 = minus(plus(plus(m1,m3),m6),m2);        
-        return yhdista(c11,c12,c21,c22, m);
-    }
     
-    public static double[][] strassen2(double[][] a, double[][] b, int m, int minN) {
-        if (m < minN) {
-            return naivemultiply(a,b);
-        }
-        double[][] m1 = naivemultiply(plus(ensimmainenNeljannes(a), neljasNeljannes(a)),plus(ensimmainenNeljannes(b), neljasNeljannes(b)));
-        double[][] m2 = naivemultiply(plus(kolmasNeljannes(a),neljasNeljannes(b)),ensimmainenNeljannes(b)); 
-        double[][] m3 = naivemultiply(ensimmainenNeljannes(a), minus(toinenNeljannes(b),neljasNeljannes(b)));
-        double[][] m4 = naivemultiply(neljasNeljannes(a),minus(kolmasNeljannes(b),ensimmainenNeljannes(b)));
-        double[][] m5 = naivemultiply(plus(ensimmainenNeljannes(a),toinenNeljannes(a)),neljasNeljannes(b));
-        double[][] m6 = naivemultiply(minus(kolmasNeljannes(a),ensimmainenNeljannes(a)), plus(ensimmainenNeljannes(b),toinenNeljannes(b)));
-        double[][] m7 = naivemultiply(minus(toinenNeljannes(a),neljasNeljannes(a)),plus(kolmasNeljannes(b),neljasNeljannes(b)));
-        double[][] c11 = minus(plus(plus(m1,m4),m7),m5);
-        double[][] c12 = plus(m3,m5);
-        double[][] c21 = plus(m2,m4);
-        double[][] c22 = minus(plus(plus(m1,m3),m6),m2);        
-        return yhdista(c11,c12,c21,c22, m);        
-        
-        
-    }
+  
     
-    public static double[][] strassen3(double[][] a, double[][] b, int m, int minN) {
-        if (m < minN) {
-            return naivemultiply(a,b);
-        }
-        double[][] operandi1 = plus(ensimmainenNeljannes(a), neljasNeljannes(a));
-        double[][] operandi2 = plus(ensimmainenNeljannes(b), neljasNeljannes(b));
-        double[][] m1 = strassen(operandi1,operandi2,m/2, minN);
-        
-        operandi1 = plus(kolmasNeljannes(a),neljasNeljannes(b));
-        operandi2 = ensimmainenNeljannes(b);
-        double[][] m2 = strassen(operandi1,operandi2, m/2, minN);
-        
-        operandi1 = ensimmainenNeljannes(a);
-        operandi2 = minus(toinenNeljannes(b),neljasNeljannes(b));
-        double[][] m3 = strassen(operandi1, operandi2, m/2, minN);
-        
-        operandi1 = neljasNeljannes(a);
-        operandi2 = minus(kolmasNeljannes(b),ensimmainenNeljannes(b));
-        double[][] m4 = strassen(operandi1,operandi2, m/2, minN);
-        
-        operandi1 = plus(ensimmainenNeljannes(a),toinenNeljannes(a));
-        operandi2 = neljasNeljannes(b);
-        double[][] m5 = strassen(operandi1,operandi2,m/2,minN);
-        
-        operandi1 = minus(kolmasNeljannes(a),ensimmainenNeljannes(a));
-        operandi2 = plus(ensimmainenNeljannes(b),toinenNeljannes(b));
-        double[][] m6 = strassen(operandi1, operandi2,m/2,minN);
-        
-        operandi1 = minus(toinenNeljannes(a),neljasNeljannes(a));
-        operandi2 = plus(kolmasNeljannes(b),neljasNeljannes(b));
-        double[][] m7 = strassen(operandi1,operandi2,m/2,minN);
-        
-        double[][] c11 = minus(plus(plus(m1,m4),m7),m5);
-        double[][] c12 = plus(m3,m5);
-        double[][] c21 = plus(m2,m4);
-        double[][] c22 = minus(plus(plus(m1,m3),m6),m2);        
-        return yhdista(c11,c12,c21,c22, m);
-    }
     
-    public static double[][] uusiStrassen(double[][] a, double[][] b,int m,int minN) {
+    public static double[][] strassen(double[][] a, double[][] b,int m,int minN) {
         if (m < minN) {
             return naivemultiply(a,b);
         }
@@ -242,13 +168,13 @@ public class Peruslasku {
         double[][] s9 = minus(a11,a21);
         double[][] s10 = plus(b11,b12);
         
-        double[][] p1 = uusiStrassen(a11,s1,m/2,minN);
-        double[][] p2 = uusiStrassen(s2, b22, m/2,minN);
-        double[][] p3 = uusiStrassen(s3, b11, m/2, minN);
-        double[][] p4 = uusiStrassen(a22,s4, m/2,minN);
-        double[][] p5 = uusiStrassen(s5,s6,m/2,minN);
-        double[][] p6 = uusiStrassen(s7,s8,m/2,minN);
-        double[][] p7 = uusiStrassen(s9,s10,m/2,minN);
+        double[][] p1 = strassen(a11,s1,m/2,minN);
+        double[][] p2 = strassen(s2, b22, m/2,minN);
+        double[][] p3 = strassen(s3, b11, m/2, minN);
+        double[][] p4 = strassen(a22,s4, m/2,minN);
+        double[][] p5 = strassen(s5,s6,m/2,minN);
+        double[][] p6 = strassen(s7,s8,m/2,minN);
+        double[][] p7 = strassen(s9,s10,m/2,minN);
         
         double[][] c11 = minus(plus(plus(p5,p4),p6),p2);
         double[][] c12 = plus(p1,p2);
@@ -257,6 +183,44 @@ public class Peruslasku {
         
         return yhdista(c11,c12,c21,c22, m);
     }
+    
+    /**
+     * Vaihda rivit.
+     */
+    
+    public static void vaihdaRivit(double[][] matriisi, int rivi1, int rivi2) {
+        if (rivi1==rivi2) {
+            return;
+        }
+        int n = matriisi.length;
+        double[] temp = new double[n];
+        for (int i = 0; i < n; i++) {
+            temp[i] = matriisi[rivi1][i];
+        }
+        for (int i = 0; i < n; i++) {
+            matriisi[rivi1][i] = matriisi[rivi2][i];
+        }
+        
+        for (int i = 0; i < n; i++) {
+            matriisi[rivi2][i] = temp[i];
+        }
+        
+    }
+    
+    public static void vaihdalistanAlkiot(int[] lista, int rivi1, int rivi2) {
+        if (rivi1==rivi2) {
+            return;
+        }
+        int temp = lista[rivi1];
+        lista[rivi1] = lista[rivi2];
+        lista[rivi2] = temp;
+    }
+    
+    public static void vaihdaMatriisinAlkiot(double[][] matriisi, int alkion1Rivi, int alkion1Sarake, int alkion2Rivi, int alkion2Sarake) {
+        double temp = matriisi[alkion1Rivi][alkion1Sarake];
+        matriisi[alkion1Rivi][alkion1Sarake] = matriisi[alkion2Rivi][alkion2Sarake];
+        matriisi[alkion2Rivi][alkion2Sarake] = temp;
+    } 
     
     /**
      * Muodosta kahden potenssi -matriisi. Strassen algoritmissa vaaditaan, että matriisin sivun
@@ -433,7 +397,20 @@ public class Peruslasku {
         return tulos;
     }
     
+    public static double det(LUPdecomposition lu) {
+        double[][] upper = lu.getU();
+        double tulo = laskeDiagonaaliAlkioidenTulo(upper);        
+        return tulo*Math.pow(-1, lu.getRivinvaihtojenMaara());
+    }
     
+    
+    public static double laskeDiagonaaliAlkioidenTulo(double[][] matriisi) {
+        double tulo = 1;
+        for (int i = 0; i < matriisi.length; i++) {
+            tulo = tulo*matriisi[i][i];
+        }
+        return tulo;
+    }
 }
 
 

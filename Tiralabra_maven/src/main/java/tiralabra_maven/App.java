@@ -37,7 +37,7 @@ public class App
     
     public static void main( String[] args ) throws Exception
     {
-        
+        /*
         String[][] testi = new String[2][3];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 3; j++) {
@@ -56,6 +56,11 @@ public class App
         if (Taulukko.toString(matriisi).equals(Taulukko.toString(matriisi2))) {
             System.out.println("toimii");
         }
+        */
+        
+        double[][] testi = new double[3][3];
+        System.out.print(Taulukko.toString(testi));
+        
         /*
         Kayttoliittyma kayttis = new Kayttoliittyma();
         kayttis.run();

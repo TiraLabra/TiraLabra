@@ -103,8 +103,8 @@ public class PeruslaskuTest extends TestCase {
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
     
-    
-    
+
+ 
     public void testAntaakoStrassenSamanTuloksenKuinJama() {
         laitaIsonmatriisinArvot();
         System.out.print(Taulukko.toString(isompimatriisi));
@@ -113,77 +113,7 @@ public class PeruslaskuTest extends TestCase {
         Matrix m1 = new Matrix(isompimatriisi);
         Matrix m2 = new Matrix(isompimatriisi);
         double[][] tulos2 = m1.times(m2).getArray();
-        System.out.println(" \n Strassen tulos:");
-        System.out.print(Taulukko.toString(tulos));
-        System.out.println("\n Jaman tulos");
-        System.out.print(Taulukko.toString(tulos2));
-        boolean testi = true;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (tulos2[i][j] != tulos[i][j]) {
-                    testi = false;
-                }
-            }
-        }
-        assertTrue(testi);
-    }
-
-    public void testAntaakoStrassen2SamanTuloksenKuinJama() {
-        laitaIsonmatriisinArvot();
-        System.out.print(Taulukko.toString(isompimatriisi));
-
-        double[][] tulos = Peruslasku.strassen2(isompimatriisi,isompimatriisi,8,4);
-        Matrix m1 = new Matrix(isompimatriisi);
-        Matrix m2 = new Matrix(isompimatriisi);
-        double[][] tulos2 = m1.times(m2).getArray();
-        System.out.println(" \n Strassen2 tulos:");
-        System.out.print(Taulukko.toString(tulos));
-        System.out.println("\n Jaman tulos");
-        System.out.print(Taulukko.toString(tulos2));
-        boolean testi = true;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (tulos2[i][j] != tulos[i][j]) {
-                    testi = false;
-                }
-            }
-        }
-        assertTrue(testi);
-    }    
-
-    public void testAntaakoStrassen3SamanTuloksenKuinJama() {
-        laitaIsonmatriisinArvot();
-        System.out.print(Taulukko.toString(isompimatriisi));
-
-        double[][] tulos = Peruslasku.strassen3(isompimatriisi,isompimatriisi,8,4);
-        Matrix m1 = new Matrix(isompimatriisi);
-        Matrix m2 = new Matrix(isompimatriisi);
-        double[][] tulos2 = m1.times(m2).getArray();
-        System.out.println(" \n Strassen3 tulos:");
-        System.out.print(Taulukko.toString(tulos));
-        System.out.println("\n Jaman tulos");
-        System.out.print(Taulukko.toString(tulos2));
-        boolean testi = true;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (tulos2[i][j] != tulos[i][j]) {
-                    testi = false;
-                }
-            }
-        }
-        assertTrue(testi);
-    }      
-    
- 
-    public void testAntaakouusiStrassenSamanTuloksenKuinJama() {
-        laitaIsonmatriisinArvot();
-        System.out.print(Taulukko.toString(isompimatriisi));
-
-        double[][] tulos = Peruslasku.uusiStrassen(isompimatriisi,isompimatriisi,8,4);
-        Matrix m1 = new Matrix(isompimatriisi);
-        Matrix m2 = new Matrix(isompimatriisi);
-        double[][] tulos2 = m1.times(m2).getArray();
-        System.out.println(" \n uuden strassen  tulos:");
+        System.out.println(" \n Strassen  tulos:");
         System.out.print(Taulukko.toString(tulos));
         System.out.println("\n Jaman tulos");
         System.out.print(Taulukko.toString(tulos2));
@@ -213,8 +143,6 @@ public class PeruslaskuTest extends TestCase {
         double[][] tulos = Peruslasku.plus(m1,m2);
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
-    
-    
     
     public void testMatriisienYhdistaminenToimiiOikein() {
         double[][] ratkaisu = {{1,1,2,2},{1,1,2,2},{3,3,4,4},{3,3,4,4}};
