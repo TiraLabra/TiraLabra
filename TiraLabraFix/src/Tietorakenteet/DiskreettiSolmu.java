@@ -16,7 +16,6 @@ package Tietorakenteet;
  */
 public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
 
-    private double arvo;
     private Kordinaatti kordinaatti;
     private int sijainti;
     private Verkko verkko;
@@ -65,7 +64,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
      */
     @Override
     public double KekoArvo() {
-        return this.arvo;
+        return this.muisti.palautaFScore();
     }
 
     /**
@@ -94,7 +93,7 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
      */
     @Override
     public void asetaArvo(double d) {
-        this.arvo = d;
+        this.muisti.asetaFScore(d);
     }
 
     /**

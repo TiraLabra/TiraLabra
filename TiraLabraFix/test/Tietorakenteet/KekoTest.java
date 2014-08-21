@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Tietorakenteet;
 
 import org.junit.After;
@@ -329,12 +328,67 @@ public class KekoTest {
             lisattava.asetaArvo(j);
             Iteroitava iter = lisattava;
             keko.Lisaa(iter);
-            
+
         }
 
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
         assertEquals(solmud[0].KekoArvo(), 0, 0.01);
 
     }
+     @Test
+    public void MassiivisetLisayksetTuovatTulostaTestaaPoistaMinmi() {
+        DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
+        keko.asetaTaulukko(solmut, 0);
+
+        for (int j = 98; j >= 0; j--) {
+            DiskreettiSolmu lisattava = new DiskreettiSolmu(j, j);
+            lisattava.asetaArvo(j);
+            Iteroitava iter = lisattava;
+            keko.Lisaa(iter);
+
+        }
+
+        DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
+        assertEquals(keko.PoistaMinimi().KekoArvo(), 0, 0.01);
+
+    }
+
+    @Test
+    public void TestKasvataJossJokinmuuttuu() {
+
+        DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
+        keko.asetaTaulukko(solmut, 0);
+        Iteroitava iter = new DiskreettiSolmu(0,0);
+        iter.asetaArvo(1);
+        Iteroitava iter2 = new DiskreettiSolmu(1,1);
+        iter2.asetaArvo(0);
+        keko.Lisaa(iter2);
+        keko.Lisaa(iter);
+        iter2.asetaArvo(9000);
+        keko.Kasvatettu(iter2.SijaintiKeossa());
+        assertEquals(keko.PoistaMinimi().KekoArvo(), iter.KekoArvo(), 0.01);
+
+
+    }
+      @Test
+    public void KasvataEkaSolmu() {
+        DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
+        keko.asetaTaulukko(solmut, 0);
+
+        for (int j = 98; j >= 0; j--) {
+            DiskreettiSolmu lisattava = new DiskreettiSolmu(j, j);
+            lisattava.asetaArvo(j);
+            Iteroitava iter = lisattava;
+            keko.Lisaa(iter);
+
+        }
+
+        DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
+        solmud[0].asetaArvo(9000);
+        keko.Kasvatettu(solmud[0].SijaintiKeossa());
+        assertEquals(keko.PoistaMinimi().KekoArvo(), 1, 0.01);
+
+    }
+
 
 }

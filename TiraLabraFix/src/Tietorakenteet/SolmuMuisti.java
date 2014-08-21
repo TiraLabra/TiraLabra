@@ -122,5 +122,14 @@ public class SolmuMuisti {
     public boolean Keossa() {
         return this.keossa;
     }
+    public void tyhjenna()
+    {
+    this.edellinen = null;
+    this.fscore = 0;
+    this.gscore = 0;
+    this.keossa = false;
+    this.vari = 0;
+    
+    }
 
 }

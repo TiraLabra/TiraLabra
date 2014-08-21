@@ -34,7 +34,6 @@ public class DiskreettiVerkko implements Verkko {
      *
      * @return HashMap<Kordinaatti, Diskreettisolmu> kartta
      */
-
     public HashMap<Kordinaatti, DiskreettiSolmu> palautaKartta() {
         return this.kartta;
     }
@@ -143,9 +142,27 @@ public class DiskreettiVerkko implements Verkko {
         double y1 = a.PalautaY();
         double x2 = b.PalautaX();
         double y2 = b.PalautaY();
-        double d = Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
+        double sisa = Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2);
+        double d = Math.sqrt(sisa);
 
         return d;
+    }
+
+    public void Lisaa(DiskreettiSolmu[] solmut) {
+        for (DiskreettiSolmu solmut1 : solmut) {
+            this.kartta.put(solmut1.palautaKordinaatit(), solmut1);
+        }
+
+    }
+
+    @Override
+    public void tyhjenna() {
+        for (Kordinaatti k : this.kartta.keySet()) {
+            SolmuMuisti a = this.kartta.get(k).palautaSolmuMuisti();
+            a.tyhjenna();
+
+        }
+
     }
 
 }

@@ -165,6 +165,10 @@ public class DiskreettiVerkkoTest {
      */
     @Test
     public void testEtaisyys() {
+        DiskreettiSolmu r = new DiskreettiSolmu(1,1);
+        DiskreettiSolmu r2 = new DiskreettiSolmu(4,5);
+        double d = this.verkko.Etaisyys(r, r2);
+        assertEquals(d, 5, 0.01);
 
     }
 }

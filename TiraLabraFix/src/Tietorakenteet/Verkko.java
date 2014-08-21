@@ -25,5 +25,5 @@ public interface Verkko {
 
     public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu);
     
-    
+    public void tyhjenna();
 }

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Algoritmit;
 
 import Tietorakenteet.Abstraktisolmu;
+import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Iteroitava;
 import Tietorakenteet.Keko;
 import Tietorakenteet.Verkko;
@@ -22,7 +22,7 @@ import java.util.Stack;
  * Atahtialgoritmi joka loytaa lyhimman polun kahden solmun välillä.
  * 
  */
-class Atahtialgoritmi {
+public class Atahtialgoritmi {
 
     private Verkko verkko;
     private Abstraktisolmu alku;
@@ -41,6 +41,7 @@ class Atahtialgoritmi {
         this.verkko = verkko;
         this.polku = new ArrayList<Abstraktisolmu>();
         this.maksimi = maksimi;
+        initKeko();
 
     }
     /*
@@ -71,7 +72,6 @@ class Atahtialgoritmi {
     public void asetaPisteet(Abstraktisolmu alku, Abstraktisolmu loppu) {
         this.alku = alku;
         this.loppu = loppu;
-        initKeko();
     }
 
     /*
@@ -80,6 +80,8 @@ class Atahtialgoritmi {
      * @return boolean palauttaa true jos reitti löytyy muuten false
      */
     public boolean laske() {
+        this.verkko.tyhjenna();
+
         this.laskentaJoukko.Lisaa(alku);
         alku.palautaSolmuMuisti().asetaKekoon(true);
         this.alku.palautaSolmuMuisti().asetaGScore(0);
@@ -88,7 +90,7 @@ class Atahtialgoritmi {
             Abstraktisolmu current = (Abstraktisolmu) this.laskentaJoukko.PoistaMinimi();
             current.palautaSolmuMuisti().asetaKekoon(false);
             if (current == loppu) {
-                this.loppu.palautaSolmuMuisti().asetaEdellinen(alku);
+
                 return true;
             }
             current.palautaSolmuMuisti().Varita(1);
@@ -99,7 +101,7 @@ class Atahtialgoritmi {
                     if ((naapuri.palautaSolmuMuisti().Keossa() == false) || (gscore < naapuri.palautaSolmuMuisti().palautaGScore())) {
                         naapuri.palautaSolmuMuisti().asetaEdellinen(current);
                         naapuri.palautaSolmuMuisti().asetaGScore(gscore);
-                        double d = naapuri.palautaSolmuMuisti().palautaGScore() + this.verkko.Heurestiikka(naapuri, loppu);
+                        double d = gscore + this.verkko.Heurestiikka(naapuri, loppu);
                         boolean kasvaa;
                         if (d > naapuri.palautaSolmuMuisti().palautaFScore()) {
                             kasvaa = true;
@@ -126,7 +128,7 @@ class Atahtialgoritmi {
 
     }
 
-     /*
+    /*
      * 
      * Luo uuden keon
      * 
@@ -138,26 +140,28 @@ class Atahtialgoritmi {
 
     }
 
-     /*
+    /*
      * 
      * Rakentaa polun jolla kyseisen ongelman ratkaisu löytyy
      * 
      */
-    
     public void rakennapolku() {
         Abstraktisolmu iteroiva = this.loppu;
-        Stack<Abstraktisolmu> pino = new Stack<Abstraktisolmu>();
-        while (iteroiva.palautaSolmuMuisti().palautaEdellinen() != this.alku) {
-            pino.push(iteroiva);
+        Stack<Abstraktisolmu> pino = new Stack<>();
+        while (iteroiva != this.alku) {
+            pino.add(iteroiva);
             iteroiva = iteroiva.palautaSolmuMuisti().palautaEdellinen();
         }
         if (iteroiva == this.alku) {
-            pino.push(iteroiva);
+            pino.add(iteroiva);
         }
         while (!pino.empty()) {
             this.polku.add(pino.pop());
         }
     }
 
-}
+    public ArrayList<Abstraktisolmu> palautapolku() {
+        return this.polku;
+    }
 
+}
