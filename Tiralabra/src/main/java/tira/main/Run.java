@@ -82,6 +82,8 @@ public class Run {
             }
             
             Astar a = new Astar(start, end, grid);
+            a.initialize();
+            a.test();
         }
 
         System.exit(0);

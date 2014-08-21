@@ -14,8 +14,8 @@ public class Astar {
     private HashMap<String, ArrayList<Target>> graph;
     private String destination;
     private String source;
-    private Cell startNode;
-    private Cell goalNode;
+    private Cell startCell;
+    private Cell goalCell;
 
     public Astar(String start, String end, Mapper grid) {
         this.source = start;
@@ -25,30 +25,38 @@ public class Astar {
     }
     
     public void initialize() {
-        int startX;
-        int startY;
-        int goalX;
-        int goalY;
-        
         for (String apu : this.graph.keySet()) {
-            ArrayList<Target> targets = this.graph.get(apu);
-            for (Target help : targets) {
-                if (help.getName().equals(this.source)) {
-                    startX = help.getX();
-                    startY = help.getY();
-                }
-                
-                if (help.getName().equals(this.destination)) {
-                    goalX = help.getX();
-                    goalY = help.getY();
-                }
+            Cell next = new Cell(apu);
+            this.cells.add(next);
+        }
+        
+        for (Cell helper : this.cells) {
+            for (Target finder : this.graph.get(helper.toString())) {
+                Cell added = findCellByName(finder.getName());
+                added.setCoords(finder.getX(), finder.getY());
+                helper.addPath(new Path(added, finder.getDistance()));
             }
         }
         
-        for (String name : this.graph.keySet()) {
-                Cell next = new Cell(name);
-                this.cells.add(next);
+        this.startCell = findCellByName(this.source);
+        this.goalCell = findCellByName(this.destination);
+    }
+    
+    private Cell findCellByName(String name) {
+        for (Cell helper : this.cells) {
+            if (helper.toString().equals(name)) {
+                return helper;
+            }
         }
+        return null;
+    }
+    
+    private int updateHeuristic() {
+        return 0;
+    }
+
+    public void test() {
+        System.out.println(this.cells);
     }
 
 }
