@@ -95,37 +95,14 @@ public class Peruslasku {
             return strassen(a,b,m,minN);
         }    
         
-        a = muodostaKahdenPotenssiMatriisi(a, oikeaKoko, m);
-        b = muodostaKahdenPotenssiMatriisi(b, oikeaKoko, m);
-        double[][] tulos = strassen(a,b,m,minN);
-        return poistaUloimmatNrivia(tulos,oikeaKoko-m);
+        a = Taulukko.lisaaNollaRivejaHaluttuunKokoonSaakka(a, oikeaKoko, m);
+        b = Taulukko.lisaaNollaRivejaHaluttuunKokoonSaakka(b, oikeaKoko, m);
+        double[][] tulos = strassen(a,b,oikeaKoko,minN);
+        return Taulukko.poistaUloimmatNrivia(tulos,oikeaKoko-m);
         
     }
     
     
-    /**
-     * Poista uloimmat n riviä. Metodi poistaa parametrina annetusta neliömatriisista
-     * uloimmat n riviä. 
-     * @param matriisi double[][] tyyppinen taulukko.
-     * @param n kokonaisluku, joka kertoo montako riviä poistetaan.
-     * @return double[][] tyyppinen neliömatriisi, jonka sivun pituus on n pienempi kuin
-     * parametrina saadun taulukon.
-     */
-    public static double[][] poistaUloimmatNrivia(double[][] matriisi, int n) {
-        int m = matriisi.length;
-        double[][] palautettava = new double[m-n][m-n];
-        int palautettavanIndeksiI = 0;
-        int palautettavanIndeksiJ;
-        for (int i = 0; i < m-n; i++) {
-            palautettavanIndeksiJ = 0;
-            for (int j = 0; j < m-n; j++) {
-                palautettava[palautettavanIndeksiI][palautettavanIndeksiJ] = matriisi[i][j];
-                palautettavanIndeksiJ++;
-            }
-            palautettavanIndeksiI++;
-        }
-        return palautettava;
-    }
     
     /**
      * Strassen algoritmi neliömatriisien kertomiseksi. Tässä algoritmi on implementoitu
@@ -139,24 +116,21 @@ public class Peruslasku {
      * pienillä matriisella nopeampi.
      * @return 
      */
-    
-  
-    
-    
     public static double[][] strassen(double[][] a, double[][] b,int m,int minN) {
         if (m < minN) {
             return naivemultiply(a,b);
         }
+        // ositetaan matriisit neljään osaan
+        double[][] a11 = Taulukko.ensimmainenNeljannes(a);
+        double[][] a12 = Taulukko.toinenNeljannes(a);
+        double[][] a21 = Taulukko.kolmasNeljannes(a);
+        double[][] a22 = Taulukko.neljasNeljannes(a);
+        double[][] b11 = Taulukko.ensimmainenNeljannes(b);
+        double[][] b12 = Taulukko.toinenNeljannes(b);
+        double[][] b21 = Taulukko.kolmasNeljannes(b);
+        double[][] b22 = Taulukko.neljasNeljannes(b);
         
-        double[][] a11 = ensimmainenNeljannes(a);
-        double[][] a12 = toinenNeljannes(a);
-        double[][] a21 = kolmasNeljannes(a);
-        double[][] a22 = neljasNeljannes(a);
-        double[][] b11 = ensimmainenNeljannes(b);
-        double[][] b12 = toinenNeljannes(b);
-        double[][] b21 = kolmasNeljannes(b);
-        double[][] b22 = neljasNeljannes(b);
-        
+        //välivaiheessa muodostetaan näistä apumatriiseja, jotka helpottavat notaatiota
         double[][] s1 = minus(b12,b22);
         double[][] s2 = plus(a11,a12);
         double[][] s3 = plus(a21,a22);
@@ -168,6 +142,7 @@ public class Peruslasku {
         double[][] s9 = minus(a11,a21);
         double[][] s10 = plus(b11,b12);
         
+        // lasketaan rekursiivisesti lisää apumatriiseja
         double[][] p1 = strassen(a11,s1,m/2,minN);
         double[][] p2 = strassen(s2, b22, m/2,minN);
         double[][] p3 = strassen(s3, b11, m/2, minN);
@@ -176,78 +151,15 @@ public class Peruslasku {
         double[][] p6 = strassen(s7,s8,m/2,minN);
         double[][] p7 = strassen(s9,s10,m/2,minN);
         
+        // nyt voidaan ilmaista tulosmatriisin osat edellä muodostettujen matriisien avulla
         double[][] c11 = minus(plus(plus(p5,p4),p6),p2);
         double[][] c12 = plus(p1,p2);
         double[][] c21 = plus(p3,p4);
         double[][] c22 = minus(plus(p5,p1),plus(p3,p7));
-        
-        return yhdista(c11,c12,c21,c22, m);
+        // lopuksi nämä yhdistetään yhdeksi tulosmatriisiksi.
+        return Taulukko.yhdista(c11,c12,c21,c22, m);
     }
     
-    /**
-     * Vaihda rivit.
-     */
-    
-    public static void vaihdaRivit(double[][] matriisi, int rivi1, int rivi2) {
-        if (rivi1==rivi2) {
-            return;
-        }
-        int n = matriisi.length;
-        double[] temp = new double[n];
-        for (int i = 0; i < n; i++) {
-            temp[i] = matriisi[rivi1][i];
-        }
-        for (int i = 0; i < n; i++) {
-            matriisi[rivi1][i] = matriisi[rivi2][i];
-        }
-        
-        for (int i = 0; i < n; i++) {
-            matriisi[rivi2][i] = temp[i];
-        }
-        
-    }
-    
-    public static void vaihdalistanAlkiot(int[] lista, int rivi1, int rivi2) {
-        if (rivi1==rivi2) {
-            return;
-        }
-        int temp = lista[rivi1];
-        lista[rivi1] = lista[rivi2];
-        lista[rivi2] = temp;
-    }
-    
-    public static void vaihdaMatriisinAlkiot(double[][] matriisi, int alkion1Rivi, int alkion1Sarake, int alkion2Rivi, int alkion2Sarake) {
-        double temp = matriisi[alkion1Rivi][alkion1Sarake];
-        matriisi[alkion1Rivi][alkion1Sarake] = matriisi[alkion2Rivi][alkion2Sarake];
-        matriisi[alkion2Rivi][alkion2Sarake] = temp;
-    } 
-    
-    /**
-     * Muodosta kahden potenssi -matriisi. Strassen algoritmissa vaaditaan, että matriisin sivun
-     * pituus on jokin kahden potenssi. Tämän takia matriisiin lisätään nollarivejä, jotka lopuksi
-     * poistetaan
-     * @param matriisi double[][] tyyppinen taulukko, johon lisätään rivejä. 
-     * @param oikeaKoko haluttu matriisin sivun pituus
-     * @param m nykyinen matriisin sivun pituus
-     * @return double[][] tyyppinen taulukko, jonka sivun pituus on parametrin mukainen.
-     */
-    private static double[][] muodostaKahdenPotenssiMatriisi(double[][] matriisi, int oikeaKoko, int m){
-
-        double[][] palautettava = new double[oikeaKoko][oikeaKoko];
-        kirjoitaTaulukkoonOsataulukko(palautettava,matriisi,0,0);
-        for (int i = oikeaKoko-m; i < oikeaKoko; i++) {
-            for (int j = 0; j < oikeaKoko; j++) {
-                palautettava[i][j] = 0;
-            }
-        }
-        for (int i = 0; i < oikeaKoko; i++) {
-            for (int j = oikeaKoko-m; j<oikeaKoko; j++) {
-                palautettava[i][j] = 0;
-            }
-        }
-        
-        return palautettava;
-    }
     
     /**
      * Etsi lähin suurempi kahden potenssi. Metodi etsii pienemmän muotoa 2^n olevan
@@ -266,144 +178,59 @@ public class Peruslasku {
         return (int)tulos;
     }
     
-    /**
-     * Yhdistä. Metodi yhdistää parametreina annetut neljä matriisia yhdeksi suuremmaksi
-     * matriisiksi. Kaikkien parametrina annettavien matriisien tulee olla saman kokosia neliö-
-     * matriiseja.
-     * @param c11 neliömatriisi double[][] taulukkona
-     * @param c12 neliömatriisi double[][] taulukkona
-     * @param c21 neliömatriisi double[][] taulukkona
-     * @param c22 neliömatriisi double[][] taulukkona
-     * @param m matriisien sivujen pituus
-     * @return 
-     */
-    public static double[][] yhdista(double[][] c11, double[][] c12, double[][] c21, double[][] c22,int m) {
-        double[][] tulos = new double[m][m];
-        kirjoitaTaulukkoonOsataulukko(tulos,c11,0,0);
-        kirjoitaTaulukkoonOsataulukko(tulos,c12,0,m/2);
-        kirjoitaTaulukkoonOsataulukko(tulos,c21,m/2,0);
-        kirjoitaTaulukkoonOsataulukko(tulos,c22,m/2,m/2);
-        
-        
-        return tulos;
-    }
     
-    /**
-     * Kirjoita taulukkoon osataulukko. Metodi kirjoittaa parametrina annettuun taulukkoon
-     * parametrina annetun pienemmän taulukon aloittaen annetusta pisteestä.
-     * @param tulos double[][] tyyppinen matriisi, johon kirjoitetaan toisen taulukon arvot.
-     * @param kirjoitettava double[][] tyyppinen matriisin, jonka arvot kirjoitetaan tulokseen.
-     * @param vasemmanYlakulmanRivi pienemmän matriisin sijainti suuremassa ilmoitettuna pienemmän
-     * matriisin vasemmassa yläkulmassa olevan alkion rivin sijainnilla tulosmatriisissa.
-     * @param vasemmanYlakulmanSarake pienemmän matriisin sijainti suuremassa ilmoitettuna pienemmän
-     * matriisin vasemmassa yläkulmassa olevan alkion sarakkeen sijainnilla tulosmatriisissa.
-     */
-    public static void kirjoitaTaulukkoonOsataulukko(double[][] tulos, double[][] kirjoitettava, int vasemmanYlakulmanRivi, int vasemmanYlakulmanSarake) {
-        int kirjoitettavanIndeksiI=0;
-        int kirjoitettavanIndeksiJ;
+    
+    public static double[][] gaussjordan(double[][] pmatriisi){
+        int m = pmatriisi.length;
+        int n = pmatriisi[0].length;
+        double[][] matriisi = pmatriisi;
+        /**
+         * Vaihdettavan rivin numero
+         */
+        int k1=0;
+        /**
+         * pivot
+         */
+        double p;
+        double kerroin = 0;
+        int tutkittavaSarake=0;
         
-        for (int i = vasemmanYlakulmanRivi; i < vasemmanYlakulmanRivi + kirjoitettava.length; i++) {
-            kirjoitettavanIndeksiJ = 0;
-            for (int j = vasemmanYlakulmanSarake; j < vasemmanYlakulmanSarake + kirjoitettava[0].length; j++) {
-                tulos[i][j] = kirjoitettava[kirjoitettavanIndeksiI][kirjoitettavanIndeksiJ];
-                kirjoitettavanIndeksiJ++;
+        for (int kasiteltavaRivi = 0; kasiteltavaRivi < m; kasiteltavaRivi++) {
+            
+            p = 0;
+            while (p==0 && tutkittavaSarake < n) {
+                for (int i = kasiteltavaRivi; i < m; i++) {
+                    if (Math.abs(matriisi[i][tutkittavaSarake]) > p) {
+                        p = matriisi[i][tutkittavaSarake];
+                        k1 = i;
+                    }
+                }
+            Taulukko.vaihdaRivit(matriisi,kasiteltavaRivi,k1);
+            tutkittavaSarake++;
             }
-            kirjoitettavanIndeksiI++;
-        }
-    }
-    
-    /**
-     * Ensimmäinen neljännes. Metodi kirjoittaa neliömatriisin vasemmassa yläkulmassa olevat
-     * arvot pienempään matriisiin.
-     * @param ositettava on matriisi, josta arvoja kopioidaan
-     * @return taulukko, joka on kooltaan neljännes alkuperäisestä.
-     */
-    public static double[][] ensimmainenNeljannes(double[][] ositettava) {
-        int m = ositettava[0].length;
-        double[][] tulos = new double[m/2][m/2];
-        for (int i = 0; i < m/2; i++) {
-            for (int j = 0; j < m/2; j++) {
-                tulos[i][j] = ositettava[i][j];
-            }
-        }
-        return tulos;
-        
-    }
-    
-    /**
-     * Toinen neljännes. Metodi kirjoittaa neliömatriisin oikeassa yläkulmassa olevat arvot
-     * pienempään matriisiin.
-     * @param ositettava matriisi, josta arvoja kopioidaan.
-     * @return taulukko, joka on kooltaan neljännes parametrina annetusta matriisista.
-     */
-    public static double[][] toinenNeljannes(double[][] ositettava) {
-        int m = ositettava[0].length;
-        int palautettavanIndeksiJ;
-        double[][] tulos = new double[m/2][m/2];
-        for (int i = 0; i < m/2; i++) {
-            palautettavanIndeksiJ = 0;
-            for (int j = m/2; j < m; j++) {
-                tulos[i][palautettavanIndeksiJ] = ositettava[i][j];
-                palautettavanIndeksiJ++;
-            }
-        }
-        
-        return tulos;
-    }
-    /**
-     * Kolmas neljännes. Metodi osittaa parametrina annetun taulukon poimimalla 
-     * vasemman alakulman alkiot uuteen taulukkoon.
-     * @param ositettava neliömatriisi double[][]-muodossa
-     * @return double[][] tyyppinen neliömatriisi.
-     */
-    public static double[][] kolmasNeljannes(double[][] ositettava) {
-        int m = ositettava[0].length;
-        double[][] tulos = new double[m/2][m/2];
-        int palautettavanIndeksiI=0;
-        for (int i = m/2; i < m; i++) {
-            for (int j = 0; j < m/2; j++) {
-                tulos[palautettavanIndeksiI][j] = ositettava[i][j];                
-            }
-            palautettavanIndeksiI++;
-        }
-        return tulos;
-    }
-    
-    
-    public static double[][] gaussjordan(double[][] matriisi){
-        return null;
-    }
-    
-    /**
-     * Neljäs neljännes. Metodi poimii parametrina annetusta neliömatriisista
-     * oikean alakulman alkiot uuteen matriisiin.
-     * @param ositettava neliömatriisi double[][] tyyppisenä
-     * @return double[][] taulukko.
-     */
-    public static double[][] neljasNeljannes(double[][] ositettava) {
-        int m = ositettava.length;
-        double[][] tulos = new double[m/2][m/2];
-        int palautettavanIndeksiI = 0;
-        int palautettavanIndeksiJ = 0;
-        for (int i = m/2; i < m; i++) {
-            palautettavanIndeksiJ=0;
-            for (int j = m/2; j < m; j++) {
-                tulos[palautettavanIndeksiI][palautettavanIndeksiJ] = ositettava[i][j];
+            
+            for (int i = kasiteltavaRivi+1; i < m; i++) {
+                    kerroin = matriisi[i][tutkittavaSarake-1]/p;
+                    for (int j = 0; j < n; j++) {
+                        matriisi[i][j] = matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+                    }
+                }
                 
-                palautettavanIndeksiJ++;
+            
             }
-            palautettavanIndeksiI++;
-        }
-        return tulos;
-    }
-    
-    public static double det(LUPdecomposition lu) {
-        double[][] upper = lu.getU();
-        double tulo = laskeDiagonaaliAlkioidenTulo(upper);        
-        return tulo*Math.pow(-1, lu.getRivinvaihtojenMaara());
+        
+        
+        
+        
+        return matriisi;
     }
     
     
+
+    
+    /**
+     * Laske diagonaalialkioiden tulo. Metodi laskee matriisin diagonaalilla olevien alkioiden tulon. 
+     */
     public static double laskeDiagonaaliAlkioidenTulo(double[][] matriisi) {
         double tulo = 1;
         for (int i = 0; i < matriisi.length; i++) {

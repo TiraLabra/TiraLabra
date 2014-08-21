@@ -56,10 +56,15 @@ public class App
         if (Taulukko.toString(matriisi).equals(Taulukko.toString(matriisi2))) {
             System.out.println("toimii");
         }
-        */
         
-        double[][] testi = new double[3][3];
-        System.out.print(Taulukko.toString(testi));
+        */
+        System.out.println("matriisi m1");
+        double[][] m1 = {{1,6,9},{5,7,4},{1,3,9}};
+        System.out.print(Taulukko.toString(Peruslasku.gaussjordan(m1)));
+        
+        System.out.println("Matriisi m2");
+        double[][] m2 = {{1,6,9,4},{5,7,4,4},{1,3,9,4}};
+        System.out.print(Taulukko.toString(Peruslasku.gaussjordan(m2)));
         
         /*
         Kayttoliittyma kayttis = new Kayttoliittyma();

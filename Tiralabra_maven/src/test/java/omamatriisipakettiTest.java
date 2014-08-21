@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import junit.framework.TestCase;
 import yleismetodeja.Taulukko;
@@ -63,6 +58,10 @@ public class omamatriisipakettiTest extends TestCase {
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
     
-    
+    public void testDet() throws Exception {
+        double[][] m1 = {{1,2,3},{5,9,12},{11,11,19}};
+        LUPdecomposition lu = new LUPdecomposition(m1);
+        assertTrue(lu.det()+19 < 0.000001);
+    }
     
 }

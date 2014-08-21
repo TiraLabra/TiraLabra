@@ -150,7 +150,7 @@ public class PeruslaskuTest extends TestCase {
         double[][] m2 = {{2,2},{2,2}};
         double[][] m3 = {{3,3},{3,3}};
         double[][] m4 = {{4,4},{4,4}};
-        double[][] tulos = Peruslasku.yhdista(m1, m2, m3, m4, 4);
+        double[][] tulos = Taulukko.yhdista(m1, m2, m3, m4, 4);
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
     
@@ -162,7 +162,7 @@ public class PeruslaskuTest extends TestCase {
             }
         }
         double[][] kirjoitettava = {{1,2},{3,4}};
-        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 0);
+        Taulukko.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 0);
         double[][] ratkaisu = {{1,2,0,0},{3,4,0,0},{0,0,0,0},{0,0,0,0}};
         System.out.println("\n osamatriisin kirjoitustulos");
         System.out.print(Taulukko.toString(tulos));
@@ -178,7 +178,7 @@ public class PeruslaskuTest extends TestCase {
             }
         }
         double[][] kirjoitettava = {{1,2},{3,4}};
-        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 2);
+        Taulukko.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 0, 2);
         double[][] ratkaisu = {{0,0,1,2},{0,0,3,4},{0,0,0,0},{0,0,0,0}};
         System.out.println("\n osamatriisin kirjoitustulos");
         System.out.print(Taulukko.toString(tulos));
@@ -194,7 +194,7 @@ public class PeruslaskuTest extends TestCase {
             }
         }
         double[][] kirjoitettava = {{1,2},{3,4}};
-        Peruslasku.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 2, 2);
+        Taulukko.kirjoitaTaulukkoonOsataulukko(tulos, kirjoitettava, 2, 2);
         double[][] ratkaisu = {{0,0,0,0},{0,0,0,0},{0,0,1,2},{0,0,3,4}};
         System.out.println("\n osamatriisin kirjoitustulos");
         System.out.print(Taulukko.toString(tulos));
@@ -208,21 +208,21 @@ public class PeruslaskuTest extends TestCase {
     }    
     public void testEnsimmainenNeljannesOnOikein() {
         double[][] testi = luotestimatriisi();
-        double[][] neljannes = Peruslasku.ensimmainenNeljannes(testi);
+        double[][] neljannes = Taulukko.ensimmainenNeljannes(testi);
         double[][] ratkaisu = {{1,2},{5,6}};
         assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
     }
     
     public void testToinenNeljannesOnOikein() {
         double[][] testi = luotestimatriisi();
-        double[][] neljannes = Peruslasku.toinenNeljannes(testi);
+        double[][] neljannes = Taulukko.toinenNeljannes(testi);
         double[][] ratkaisu = {{3,4},{7,8}};
         assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
     }
         
     public void testKolmasNeljannesOnOikein() {
         double[][] testi = luotestimatriisi();
-        double[][] neljannes = Peruslasku.kolmasNeljannes(testi);
+        double[][] neljannes = Taulukko.kolmasNeljannes(testi);
         double[][] ratkaisu = {{9,10},{13,14}};
         System.out.println("\n kolmas neljannes:");
         System.out.print(Taulukko.toString(neljannes));
@@ -231,11 +231,61 @@ public class PeruslaskuTest extends TestCase {
     
     public void testNeljasNeljannesOnOikein() {
         double[][] testi = luotestimatriisi();
-        double[][] neljannes = Peruslasku.neljasNeljannes(testi);
+        double[][] neljannes = Taulukko.neljasNeljannes(testi);
         double[][] ratkaisu = {{11,12},{15,16}};
         assertTrue(Taulukko.toString(neljannes).equals(Taulukko.toString(ratkaisu)));
     }
     
-    // TODO add test methods here. The name must begin with 'test'. For example:
-    // public void testHello() {}
+    
+    public void testYleistettyStrassenAntaaSamanTuloksenKuinNaiviKertolasku() {
+        double[][] m1 = new double[7][7];
+        int n = 0;
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++){
+                m1[i][j] = n;
+                n++;
+            }
+        }
+        double[][] naivetulos = Peruslasku.naivemultiply(m1,m1);
+        double[][] strassetulos = Peruslasku.yleinenStrassen(m1, m1, 7, 2);
+        System.out.println("Strassen tulos");
+        System.out.print(Taulukko.toString(strassetulos));
+        System.out.println("Naivi tulos");
+        System.out.print(Taulukko.toString(naivetulos));
+        assertTrue(Taulukko.toString(naivetulos).equals(Taulukko.toString(strassetulos)));
+        
+    }
+    
+    public void testpoistaNUlointaRiviaToimiiOikein() {
+        double[][] m1 = {{1,2,3},{4,5,6},{7,8,9}};
+        double[][] ratkaisu = {{1,2},{4,5}};
+        double[][] tulos = Taulukko.poistaUloimmatNrivia(m1, 1);
+        System.out.println("Taulukko, josta on poistettu rivejä");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(tulos)));
+    }
+    
+    public void testPoistaNUlointaRiviaToimiiHiemanIsommallaMatriisilla() {
+        double[][] m1 = {{1,2,3,4,5},{1,2,3,4,5},{1,2,3,4,5},{1,2,3,4,5},{1,2,3,4,5}};
+        double[][] ratkaisu = {{1,2},{1,2}};
+        double[][] tulos = Taulukko.poistaUloimmatNrivia(m1, 3);
+        System.out.println("Taulukko.josta on poistettu rivejä");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(tulos)));
+    }
+    
+    public void testNollaRivienLisaaminenToimii() {
+        double[][] m1 = {{1,2,3},{1,2,3},{1,2,3}};
+        double[][] tulos = Taulukko.lisaaNollaRivejaHaluttuunKokoonSaakka(m1, 4, 3);
+        double[][] ratkaisu = {{1,2,3,0},{1,2,3,0},{1,2,3,0},{0,0,0,0}};
+        System.out.println("Nollariveilla täydennetty matriisi");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testDiagonaaliAlkioidenTuloOnOikein() {
+        double[][] testi = {{2,0,0},{0,2,0},{0,0,2}};
+        double tulos = Peruslasku.laskeDiagonaaliAlkioidenTulo(testi);
+        assertEquals(tulos,(double)8);
+    }
 }

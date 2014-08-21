@@ -1,21 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package omamatriisipaketti;
 
 import yleismetodeja.Peruslasku;
+import static yleismetodeja.Peruslasku.laskeDiagonaaliAlkioidenTulo;
+import yleismetodeja.Taulukko;
 
 /**
- *
+ * Matriisin PA = LU dekompositio neliömatriiseille. 
  * @author risto
  */
 public class LUPdecomposition {
+    /**
+     * Alempi kolmiomatriisi double[][]-tyyppisenä listana.
+     */
     private double[][] l;
+    /**
+     * YLempi kolmiomatriisi double[][]-tyyppisenä listana.
+     */
     private double[][] u;
+    /**
+     * Permutaatiomatriisi esitettynä listana. Mikäli listan rivillä i on arvo j, 
+     * permutaatiomatriisissa on kohdassa (i,j) ykkönen, muut arvot ovat nollia.
+     */
     private int[] p;
+    /**
+     * Rivien vaihtojen lukumäärä. Determinantin laskemista varten on hyödyllistä pitää kirjaa dekomponointi varten
+     * tarvituista rivien swapeista. 
+     */
     private int rivinvaihtojenmaara;
     
     public LUPdecomposition() {
@@ -25,21 +36,32 @@ public class LUPdecomposition {
   
     }
     
+    /**
+     * Mikäli jostain syystä tunnetuista osista haluaa koota LUP-dekomposition, sen voi
+     * tehdä konstruktorin avulla.
+     * @param l lower triangular matrix.
+     * @param u upper triangular matrix
+     * @param p permutation matrix listana.
+     */
     public LUPdecomposition(double[][] l, double[][] u, int[] p) {
         this.l = l;
         this.u = u;
         this.p = p;
     }
     
-    public LUPdecomposition(double[][] dekomponoitava) throws Exception {
-        int n = dekomponoitava.length;
+    /**
+     * Metodi dekomponoi annetun matriisin. Metodi laskee L ja U matriisit 
+     * samaan matriisiin, joten lopussa L ja U täytyy erikseen poimia pois matriisista.
+     * @param matriisi double[][]-tyyppinen neliömatriisi.
+     * @throws Exception Metodi heittää poikkeuksen, mikäli matriisia ei voida
+     * dekomponoida.
+     */
+    public LUPdecomposition(double[][] matriisi) throws Exception {
+        int n = matriisi.length;
+        double[][] dekomponoitava = matriisi;
         double[][] u = new double[n][n];
         double[][] l = new double[n][n];
         this.rivinvaihtojenmaara=0;
-        /**
-         * Permutaatiomatriisi on talletettu listana siten, että jos permutaatiomatriisi[i] = j, niin
-         * matriisissa on rivillä i sarakkeessa j arvo 1.
-         */
         int[] permutaatiomatriisi = new int[n];
 
         /**
@@ -67,10 +89,13 @@ public class LUPdecomposition {
             if (k!=k1) {
                 rivinvaihtojenmaara++;
             }
-            Peruslasku.vaihdalistanAlkiot(permutaatiomatriisi, k, k1);
+            Taulukko.vaihdalistanAlkiot(permutaatiomatriisi, k, k1);
+            Taulukko.vaihdaRivit(dekomponoitava,k,k1);
+            /*
             for (int i = 0; i < n; i++) {
-                Peruslasku.vaihdaMatriisinAlkiot(dekomponoitava, k, i, k1, i);
+                Taulukko.vaihdaMatriisinAlkiot(dekomponoitava, k, i, k1, i);
             }
+            */
             for (int i = k+1; i < n; i++) {
                 dekomponoitava[i][k] = dekomponoitava[i][k]/dekomponoitava[k][k];
                 for (int j = k+1; j < n; j++) {
@@ -86,6 +111,12 @@ public class LUPdecomposition {
         
     }
     
+    /**
+     * Kirjoita lower triangular matrix. Apumetodi, joka kirjoittaa annetusta matriisista 
+     * diagonaalin alapuolella olevat arvot uuteen matriisiin.
+     * @param matriisi double[][]-tyyppinen neliömatriisi
+     * @return double[][] matriisi, jossa on diagonaalin yläpuolella vain nollia.
+     */
     public static double[][] kirjoitaLower(double[][] matriisi) {
         int n = matriisi.length;
         double[][] palautettava = new double[n][n];
@@ -98,6 +129,12 @@ public class LUPdecomposition {
         return palautettava;
     }
     
+    /**
+     * Kirjoita uppper triangular matrix. Apumetodi, joka kirjoittaa annetusta matriiisista 
+     * diagonaalin yläpuolella olevat arvot uuteen matriisiin. 
+     * @param matriisi double[][]-tyyppinen neliömatriisi
+     * @return double[][] matriisi, jossa on diagonaalin alapuolella vain nollia.
+     */
     public static double[][] kirjoitaUpper(double[][] matriisi) {
         int n = matriisi.length;
         double[][] palautettava = new double[n][n];
@@ -109,6 +146,10 @@ public class LUPdecomposition {
         return palautettava;
     }
     
+    /**
+     * Kirjoita ykkösiä diagonaalille. Metodi kirjoittaa annetun matriisin 
+     * diagonaalille ykkösiä.
+     */
     public static void kirjoitaYkkosiaDiagonaalille(double[][] matriisi) {
         int n = matriisi.length;
         for (int i = 0; i < n; i++) {
@@ -132,6 +173,10 @@ public class LUPdecomposition {
         return this.rivinvaihtojenmaara;
     }
     
+    /**
+     * Metodi muodostaa permutaatiomatriisilistasta taulukon ja palauttaa sen.
+     * @return double[][]-tyyppinen nxn-neliömatriisi, jossa on n ykköstä. 
+     */
     public double[][] getPermutationArray() {
         int n = this.p.length;
         double[][] permutaatioarray = new double[n][n];
@@ -139,6 +184,16 @@ public class LUPdecomposition {
             permutaatioarray[i][this.p[i]] = 1; 
         }
         return permutaatioarray;
+    }
+    
+        /**
+     * Determinantti. Metodi laskee LU-dekomposition determinantin.
+     * @param lu on lu dekompositio jostakin matriisista.
+     * @return double matriisin determinantti.
+     */
+    public double det() {
+        double tulo = laskeDiagonaaliAlkioidenTulo(this.u);        
+        return tulo*Math.pow(-1, this.rivinvaihtojenmaara);
     }
     
 }
