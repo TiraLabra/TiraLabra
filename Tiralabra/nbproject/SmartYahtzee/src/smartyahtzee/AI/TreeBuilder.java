@@ -22,7 +22,7 @@ public class TreeBuilder {
     {
         this.dice = groupingSort(dice);
         this.marked = marked;
-        this.expectedValues = new TreeList(4, dice, marked); //# of combinations
+        this.expectedValues = new TreeList(8, this.dice, marked); //# of combinations
     }
     
     /**

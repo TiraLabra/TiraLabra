@@ -19,7 +19,13 @@ import static org.junit.Assert.*;
  */
 public class GameTest {
     
+    Game instance;
+    int[] botScores;
+    
     public GameTest() {
+        instance = new Game(0, 1);
+        instance.runGame();
+        botScores = instance.getPlayers()[0].getScores();
     }
     
     @BeforeClass
@@ -52,17 +58,58 @@ public class GameTest {
 
     /**
      * Test of runGame method, of class Game.
+     * 
+     * Testaa, että kaikkiin sarakkeisiin tulee merkintä.
      */
+
     @Test
     public void testRunGameOneBot() {
         System.out.println("runGame");
-        Game instance = new Game(0, 1);
-        instance.runGame();
+
         for (boolean b : instance.getPlayers()[0].markedColumns)
         {
             assertTrue(b);
         }
     }
+        
+    @Test
+    public void testIntelligentChoices1()
+    {
+        System.out.println(botScores[15]);
+        assertTrue(botScores[15] > 17); 
+    }
+    
+    @Test
+    public void testIntelligentChoices2()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices3()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices4()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices5()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices6()
+    {
+        
+    }
+
+    
     
    
     

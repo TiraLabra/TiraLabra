@@ -19,7 +19,11 @@ import static org.junit.Assert.*;
  */
 public class BotTest {
     
+    int[] scores;
+    
     public BotTest() {
+        Bot bot = new Bot();
+        scores = bot.getScores();
     }
     
     @BeforeClass
@@ -62,4 +66,41 @@ public class BotTest {
         fail("The test case is a prototype.");
     }
     
+        
+    @Test
+    public void testIntelligentChoices1()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices2()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices3()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices4()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices5()
+    {
+        
+    }
+    
+    @Test
+    public void testIntelligentChoices6()
+    {
+        
+    }
+
 }

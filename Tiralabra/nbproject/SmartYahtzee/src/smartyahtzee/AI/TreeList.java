@@ -56,13 +56,17 @@ class TreeList {
         
         for (DecisionTree tree : trees)
         {
-            double treeEV = tree.getEV();
-            System.out.println("TreeEV: " +treeEV);
-            if (treeEV > ev)
+            if (tree != null)
             {
-                ev = treeEV;
-                biggestTree = tree;
+                double treeEV = tree.getEV();
+                System.out.println("TreeEV: " +treeEV);
+                if (treeEV > ev)
+                {
+                    ev = treeEV;
+                    biggestTree = tree;
+                }
             }
+            
         }
         
         return biggestTree;
@@ -76,8 +80,13 @@ class TreeList {
      */
     private void createTrees(int[] dice)
     {
-        int[][] combinations = new int[4][];
-        for (int j = 4; j > 0; j--)
+        System.out.println("Combinations: ");
+            for (int j = 0; j<dice.length; j++)
+            {
+                System.out.print(dice[j]);
+            }
+        int[][] combinations = new int[11][];
+        for (int j = 4; j > 0; j--)         
         {
             int[] combination = new int[j];
             for (int k = 0; k < j; k++)
@@ -87,16 +96,85 @@ class TreeList {
             
             combinations[4-j] = combination;
         }
-        for (int i = 0; i < combinations.length; i++)
+        
+        for (int j = 4; j > 0; j--) //backward combinations
         {
-            DecisionTree tree = new DecisionTree(combinations[i], marked);
-            trees[i] = tree;
+            int[] combination = new int[j];
+            for (int k = 0; k < j; k++)
+            {
+                combination[k] = dice[4-k];
+            }
+            
+            if (!duplicate(combinations, combination))
+            {
+                combinations[8-j] = combination;
+            }
+            
+        }
+        
+        for (int i = 1; i < 4; i++) //single dice
+        {
+            int[] combination = new int[1];
+            combination[0] = dice[i];
+            if (!duplicate(combinations, combination))
+            {
+                combinations[11-i] = combination;
+            }
+        }
+        
+        
+        trees = new DecisionTree[notNulls(combinations)];
+        
+        for (int i = 0; i < trees.length; i++)
+        {   
+            if (combinations[i] != null) 
+            {
+                DecisionTree tree = new DecisionTree(combinations[i], marked);
+                trees[i] = tree;
+            }
         }
         
         
     }
     
+    /**
+     * Tarkistaa sisältääkö taulukko jo arvon.
+     * 
+     * 
+     * @param arrayOfArrays
+     * @param array
+     * @return 
+     */
+    private boolean duplicate(int[][] arrayOfArrays, int [] array)
+    {
+        for (int i = 0; i < arrayOfArrays.length; i++)
+        {
+            if (Arrays.equals(arrayOfArrays[i], array))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     
+    /** Laskee taulukon ei-tyhjät paikat.
+     * 
+     */
+    
+    private int notNulls(int[][] array)
+    {
+        int count = 0;
+        for (int i = 0; i < array.length; i++)
+        {
+            if (array[i] != null)
+            {
+                count++;
+            }
+        }
+        //System.out.println("Count: "+count);
+        return count;
+    }
     
     
 }

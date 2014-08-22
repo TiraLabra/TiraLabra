@@ -16,13 +16,15 @@ import smartyahtzee.scoring.Scores;
 public class Game {
     
     private final int rows = 17;
-    private Player[] players;
+    private final Player[] players;
     
     
     /**
      * Konstruktori.
      * 
      * Luo pelaajat.
+     * @param humans # of humans
+     * @param bots # of bots
      */
     
     public Game(int humans, int bots) {
@@ -49,6 +51,7 @@ public class Game {
     {
         return players;
     }
+    
     /**
      * Simulaatio pistekeskiarvojen laskemiseksi.
      * 
@@ -84,7 +87,7 @@ public class Game {
     
     public void testBot()
     {
-        int iterations = 5000;
+        int iterations = 1000;
         int scores = 0;
         int bonuses = 0;
         int yahtzees = 0;
@@ -130,10 +133,9 @@ public class Game {
     /**
      * Pyörittää peliä.
      * 
+     * Pelaajat saavat vuorotellen ensimmäisen vuoron, sitten toisen, jne.
      * Piirtää pistetaulukon jokaisen vuoron päätteeksi.
      */
-    
-    
     
     
     public void runGame()
@@ -162,10 +164,18 @@ public class Game {
     {
         for (int i = 0; i < rows; i++)
         {
+            if (i < 9)
+            {
+                System.out.print(" ");
+            }
             System.out.print(i+1 + " | " + Scores.scoreDescriptions[i]);
             for (Player player : players)
             {
-                System.out.print(" | " + player.getScore(i));
+                if (i > 8)
+                {
+                    System.out.print(" ");
+                }
+                System.out.print("| " + player.getScore(i));
             }
             System.out.println("");
             
