@@ -58,7 +58,7 @@ public class GameTest {
         System.out.println("runGame");
         Game instance = new Game(0, 1);
         instance.runGame();
-        for (boolean b : instance.getPlayers().get(0).markedColumns)
+        for (boolean b : instance.getPlayers()[0].markedColumns)
         {
             assertTrue(b);
         }
