@@ -8,7 +8,7 @@ import yleismetodeja.Taulukko;
  * 
  * @author risto
  */
-public class PeruslaskuTest extends TestCase {
+public class YleismetodejaTest extends TestCase {
     
     double[][] matriisi = {{1,2,3},{4,5,6},{7,8,9}};
     double[][] matriisi2 = {{2,2,2},{2,2,2},{2,2,2}};
@@ -16,7 +16,7 @@ public class PeruslaskuTest extends TestCase {
     double[][] isompimatriisi;
     
     
-    public PeruslaskuTest(String testName) {
+    public YleismetodejaTest(String testName) {
         super(testName);
     }
     
@@ -103,8 +103,43 @@ public class PeruslaskuTest extends TestCase {
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
     }
     
-
+    public void testToimiikoAugmentKutenPitaa() {
+        double[][] m1 = {{1,1},{1,1}};
+        double[][] m2 = {{2,2},{2,2}};
+        double[][] tulos = Taulukko.augment(m1, m2);
+        System.out.println("Augmented matrix");
+        System.out.print(Taulukko.toString(tulos));
+        double[][] ratkaisu = {{1,1,2,2},{1,1,2,2}};
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
  
+    public void testToimiikoRivienPoistamaninenVasemmalta() {
+        double[][] m1 = {{1,1,2,2},{1,1,2,2}};
+        double[][] tulos = Taulukko.poistaNSarakettaVasemmalta(m1,2);
+        double[][] ratkaisu = {{2,2},{2,2}};
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(tulos)));
+    }
+    
+    public void testInverse() {
+        double[][] m1 = {{1,3},{2,4}};
+        double[][] tulos = Peruslasku.inv(m1);
+        double[][] ratkaisu = {{-2,1.5},{1,-0.5}};
+        System.out.println("Kääntömatriisi");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("Ratkaisu");
+        System.out.print(Taulukko.toString(ratkaisu));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    
+    
+    public void testVaihdaRivit() {
+        double[][] m1 = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        Taulukko.vaihdaRivit(m1,0,2);
+        double[][] ratkaisu = {{9,10,11,12},{5,6,7,8},{1,2,3,4}};
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(m1)));
+    }
+    
     public void testAntaakoStrassenSamanTuloksenKuinJama() {
         laitaIsonmatriisinArvot();
         System.out.print(Taulukko.toString(isompimatriisi));
@@ -152,6 +187,25 @@ public class PeruslaskuTest extends TestCase {
         double[][] m4 = {{4,4},{4,4}};
         double[][] tulos = Taulukko.yhdista(m1, m2, m3, m4, 4);
         assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testAugmentToimiiOsa2() {
+        double[][] m1 = {{111,112,113},{121,122,123}};
+        double[][] m2 = {{211,212,213},{221,222,223}};
+        double[][] tulos = Taulukko.augment(m1, m2);
+        double[][] ratkaisu = {{111,112,113,211,212,213},{121,122,123,221,222,223}};
+        System.out.println("Augmentoinnin tulos:");
+        System.out.print(Taulukko.toString(tulos));
+        System.out.println("Oikea ratkaisu augmentointiin");
+        System.out.print(Taulukko.toString(ratkaisu));
+        assertTrue(Taulukko.toString(tulos).equals(Taulukko.toString(ratkaisu)));
+    }
+    
+    public void testKirjoitaYkkosiaDiagonaalille() {
+        double[][] m1 = new double[3][3];
+        Taulukko.kirjoitaYkkosiaDiagonaalille(m1);
+        double[][] ratkaisu = {{1,0,0},{0,1,0},{0,0,1}};
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(m1)));
     }
     
     public void testKirjoitaOsamatriisiToimiiOikeinPisteessa00() {

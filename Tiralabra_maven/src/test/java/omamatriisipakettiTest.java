@@ -2,6 +2,7 @@
 import junit.framework.TestCase;
 import yleismetodeja.Taulukko;
 import omamatriisipaketti.*;
+import yleismetodeja.Peruslasku;
 /**
  *
  * @author risto
@@ -30,8 +31,25 @@ public class omamatriisipakettiTest extends TestCase {
     
     public void testLUPdekompositio() throws Exception {
         LUPdecomposition lu = new LUPdecomposition(matriisi1);
-        System.out.print(Taulukko.toString( lu.getL()));
-        assertTrue(false);
+        double[][] l = lu.getL();
+        double[][] u = lu.getU();
+        double[][] p = lu.getPermutationArray();
+        double[][] pa = Peruslasku.naivemultiply(p, matriisi1);
+        double[][] lxu = Peruslasku.naivemultiply(l, u);
+        System.out.println("PA");
+        System.out.print(Taulukko.toString(pa));
+        System.out.println("LU");
+        System.out.println(Taulukko.toString(lxu));
+        boolean testi = true;
+        int m = lxu.length;
+        int n = lxu[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (Math.abs(lxu[i][j] - pa[i][j]) > 0.001)
+                    testi = false;
+            }
+        }
+        assertTrue(testi);
     }
     
     public void testKirjoitaLower() {

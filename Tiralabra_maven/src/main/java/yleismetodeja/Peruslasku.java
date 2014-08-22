@@ -179,11 +179,16 @@ public class Peruslasku {
     }
     
     
-    
+    /**
+     * Gauss-Jordan eliminointi. Metodi suorittaa gauss-jordan eliminoinnin eli
+     * laskee reduced row echelon muodon matriisille.
+     * @param pmatriisi double[][] tyyppinen matriisi.
+     * @return double[][] tyyppinen matriisi, joka on rre-muodossa.
+     */
     public static double[][] gaussjordan(double[][] pmatriisi){
         int m = pmatriisi.length;
         int n = pmatriisi[0].length;
-        double[][] matriisi = pmatriisi;
+        double[][] matriisi = Taulukko.kopioiArray(pmatriisi);
         /**
          * Vaihdettavan rivin numero
          */
@@ -194,7 +199,7 @@ public class Peruslasku {
         double p;
         double kerroin = 0;
         int tutkittavaSarake=0;
-        
+        //gauss
         for (int kasiteltavaRivi = 0; kasiteltavaRivi < m; kasiteltavaRivi++) {
             
             p = 0;
@@ -219,10 +224,62 @@ public class Peruslasku {
             
             }
         
-        
-        
+        //jordan
+        for (int kasiteltavaRivi = m-1; kasiteltavaRivi > 0; kasiteltavaRivi--) {
+            p = 0;
+            int kasiteltavaSarake=-1;
+            while (p==0 && kasiteltavaSarake < n) {
+                kasiteltavaSarake++;
+                p = matriisi[kasiteltavaRivi][kasiteltavaSarake];
+            }
+            
+            if (p!=0) {
+                // jaetaan rivi sen pivotilla
+                for (int j = kasiteltavaSarake; j < n; j++) {
+                    matriisi[kasiteltavaRivi][j] = matriisi[kasiteltavaRivi][j]/p;                    
+                }
+                for (int i = kasiteltavaRivi-1; i >= 0; i--) {
+                    kerroin = matriisi[i][kasiteltavaSarake];
+                    for (int j = kasiteltavaSarake; j < n; j++) {
+                        matriisi[i][j] = matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+                    }
+                }
+            }
+        }
+            
+        // lopuksi jaetaan ylin rivi sen pivotilla
+        p = 0;
+        int j = -1;
+        while (p == 0 &&  j < n) {
+            j++;
+            p = matriisi[0][j];
+            }
+        for (int h = j; h < n; h++) {
+            matriisi[0][h] = matriisi[0][h]/p;
+        }
         
         return matriisi;
+    }
+    
+    
+    /**
+     * Inverse. Metodi laskee kääntömatriisin käyttäen Gauss-Jordan eliminointia apuna. 
+     * Algoritmissa matriisiin listään oikealla identiteettimatriisi ja suoritetaan Gauss-Jordan eliminointi.
+     * Tämän jälkeen oikealla olevasta matriisista saadaan kääntömatriisi. It's like magic. 
+     * @param matriisi double[][] tyyppinen neliömatriisi
+     * @return double[][] tyyppinen matriisi.
+     */
+    public static double[][] inv(double[][] matriisi) {
+        int n = matriisi.length;
+        double[][] identity = new double[n][n];
+        Taulukko.kirjoitaYkkosiaDiagonaalille(identity);
+        double[][] lisatty = Taulukko.augment(matriisi, identity);
+        System.out.println("123 augmented matrix");
+        System.out.print(Taulukko.toString(lisatty));
+        lisatty = gaussjordan(lisatty);
+        System.out.print("käännetty");
+        System.out.print(Taulukko.toString(lisatty));
+        return Taulukko.poistaNSarakettaVasemmalta(lisatty, n);
     }
     
     
@@ -238,6 +295,7 @@ public class Peruslasku {
         }
         return tulo;
     }
+
 }
 
 

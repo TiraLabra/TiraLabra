@@ -136,7 +136,7 @@ public class Taulukko {
         if (rivi1 == rivi2) {
             return;
         }
-        int n = matriisi.length;
+        int n = matriisi[0].length;
         double[] temp = new double[n];
         for (int i = 0; i < n; i++) {
             temp[i] = matriisi[rivi1][i];
@@ -149,6 +149,18 @@ public class Taulukko {
         }
     }
 
+    public static double[][] kopioiArray(double[][] matriisi){
+        int m = matriisi.length;
+        int n = matriisi[0].length;
+        double[][] palautettava = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                palautettava[i][j] = matriisi[i][j];
+            }
+        }
+        return palautettava;
+    }
+    
     /**
      * Neljäs neljännes. Metodi poimii parametrina annetusta neliömatriisista
      * oikean alakulman alkiot uuteen matriisiin.
@@ -171,7 +183,49 @@ public class Taulukko {
         }
         return tulos;
     }
-
+    
+    public static double[][] poistaNSarakettaVasemmalta(double[][] matriisi, int n) {
+        double[][] palautettava = new double[matriisi.length][matriisi[0].length-n];
+        int kirjoitettavanIndeksiI=0;
+        for (int i = 0; i < matriisi.length; i++) {
+            int kirjoitettavanIndeksiJ=n;
+            for (int j = 0; j < matriisi[0].length-n; j++) {
+                palautettava[i][j] = matriisi[kirjoitettavanIndeksiI][kirjoitettavanIndeksiJ];
+                kirjoitettavanIndeksiJ++;
+            }
+            kirjoitettavanIndeksiI++;
+        }
+        return palautettava;
+    }
+    
+    /**
+     * Augment. Metodi yhdistää riveittäin kaksi matriisia. Matriiseissa tulee
+     * siis olla sama määrä rivejä, sarakkeista ei ole väliksi.
+     * @param vasen double[][] tyyppinen mxn1 matriisi
+     * @param oikea double[][] tyyppinen mxn2 matriisi
+     * @return double[][] tyyppinen mxn1+n2 matriisi
+     */
+    public static double[][] augment(double[][] vasen, double[][] oikea) {
+        int n1 = vasen[0].length;
+        int n2 = oikea[0].length;
+        int m = vasen.length;
+        double[][] palautettava = new double[m][n1+n2];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n1; j++) {
+                palautettava[i][j] = vasen[i][j];
+            }
+        }
+        int oikeanIndeksiJ;
+        for (int i = 0; i < m; i++) {
+            oikeanIndeksiJ = 0;
+            for (int j = n1; j < n2+n1; j++) {
+                palautettava[i][j] = oikea[i][oikeanIndeksiJ];
+                oikeanIndeksiJ++;
+            }
+        }
+        return palautettava;
+    }
+    
     /**
      * Kirjoita taulukkoon osataulukko. Metodi kirjoittaa parametrina annettuun taulukkoon
      * parametrina annetun pienemmän taulukon aloittaen annetusta pisteestä.
@@ -254,6 +308,18 @@ public class Taulukko {
         double temp = matriisi[alkion1Rivi][alkion1Sarake];
         matriisi[alkion1Rivi][alkion1Sarake] = matriisi[alkion2Rivi][alkion2Sarake];
         matriisi[alkion2Rivi][alkion2Sarake] = temp;
+    }
+
+    /**
+     * Kirjoita ykkösiä diagonaalille. Metodi kirjoittaa annetun matriisin
+     * diagonaalille ykkösiä.
+     *
+     */
+    public static void kirjoitaYkkosiaDiagonaalille(double[][] matriisi) {
+        int n = matriisi.length;
+        for (int i = 0; i < n; i++) {
+            matriisi[i][i] = 1;
+        }
     }
     
 }

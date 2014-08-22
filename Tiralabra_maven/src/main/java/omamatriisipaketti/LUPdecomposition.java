@@ -58,7 +58,7 @@ public class LUPdecomposition {
      */
     public LUPdecomposition(double[][] matriisi) throws Exception {
         int n = matriisi.length;
-        double[][] dekomponoitava = matriisi;
+        double[][] dekomponoitava = Taulukko.kopioiArray(matriisi);
         double[][] u = new double[n][n];
         double[][] l = new double[n][n];
         this.rivinvaihtojenmaara=0;
@@ -120,7 +120,7 @@ public class LUPdecomposition {
     public static double[][] kirjoitaLower(double[][] matriisi) {
         int n = matriisi.length;
         double[][] palautettava = new double[n][n];
-        kirjoitaYkkosiaDiagonaalille(palautettava);
+        Taulukko.kirjoitaYkkosiaDiagonaalille(palautettava);
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < i; j++) {
                 palautettava[i][j] = matriisi[i][j];
@@ -146,16 +146,6 @@ public class LUPdecomposition {
         return palautettava;
     }
     
-    /**
-     * Kirjoita ykkösiä diagonaalille. Metodi kirjoittaa annetun matriisin 
-     * diagonaalille ykkösiä.
-     */
-    public static void kirjoitaYkkosiaDiagonaalille(double[][] matriisi) {
-        int n = matriisi.length;
-        for (int i = 0; i < n; i++) {
-            matriisi[i][i] = 1;
-        }
-    }
     
     public double[][] getL() {
         return this.l;
