@@ -100,6 +100,7 @@ public class Game {
         for (int i = 0; i < iterations; i++)
         {
             Player bot = new Bot();
+            
             for (int j = 0; j < 16; j++)
             {
                 bot.playTurn();
@@ -118,6 +119,7 @@ public class Game {
             {
                 fourofakinds++;
             }
+            
             scores += bot.totalPoints();
         }
         System.out.println(scores);

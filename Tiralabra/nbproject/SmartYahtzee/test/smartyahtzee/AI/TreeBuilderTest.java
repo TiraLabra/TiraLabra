@@ -90,7 +90,7 @@ public class TreeBuilderTest {
         System.out.println("createTrees");
         int[] dice = {6, 5, 5, 4, 4};
         TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
-        assertEquals(instance.getEVs().getLength(), 4);
+        assertEquals(instance.getEVs().getLength(), 9);
     }
     
 }
