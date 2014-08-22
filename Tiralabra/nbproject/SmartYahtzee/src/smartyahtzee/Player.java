@@ -42,6 +42,11 @@ public abstract class Player {
         checkForSum();
     }
     
+    public int[] getScores()
+    {
+        return scores;
+    }
+    
     public int totalPoints()
     {
         return totalPoints;

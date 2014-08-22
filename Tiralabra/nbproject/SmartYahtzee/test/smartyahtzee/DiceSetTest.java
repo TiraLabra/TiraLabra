@@ -124,4 +124,14 @@ public class DiceSetTest {
 
     }
     
+    @Test
+    public void testLockMany()
+    {
+        System.out.println("lockMany");
+        DiceSet instance = new DiceSet();
+        
+        int[] lock = {2, 6};
+        instance.lockMany(lock);
+    }
+    
 }

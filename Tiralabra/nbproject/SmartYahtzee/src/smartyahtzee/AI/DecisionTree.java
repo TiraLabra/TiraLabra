@@ -61,6 +61,7 @@ public class DecisionTree {
         }
 
         double ev = evs / leavesVisited;
+        //System.out.println("TreeEV: " +ev);
         return ev;
     }
     

@@ -6,7 +6,6 @@
 
 package smartyahtzee;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -192,6 +191,14 @@ public class DiceSet {
         
         return diceString;
     }
+    
+    /**
+     * Apumetodi taulukon kopioimiseen.
+     * 
+     * 
+     * @param array kopioitava taulukko
+     * @param index paikka joka jätetään kopioimatta
+     */
     
     private int[] copyArray(int[] array, int index)
     {

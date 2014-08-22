@@ -24,6 +24,12 @@ class TreeList {
         createTrees(dice);
     }
     
+    /**
+     * Etsii puun, joka rakentuu annetulle juurelle.
+     * 
+     * @param root haettavan puun juuri
+     */
+    
     public DecisionTree getTree(int[] root)
     {
         DecisionTree treeWithRoot = null;
@@ -46,9 +52,11 @@ class TreeList {
         for (DecisionTree tree : trees)
         {
             double treeEV = tree.getEV();
+            System.out.println("TreeEV: " +treeEV);
             if (treeEV > ev)
             {
                 ev = treeEV;
+                biggestTree = tree;
             }
         }
         
