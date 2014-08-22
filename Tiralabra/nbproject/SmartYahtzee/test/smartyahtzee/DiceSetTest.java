@@ -129,9 +129,32 @@ public class DiceSetTest {
     {
         System.out.println("lockMany");
         DiceSet instance = new DiceSet();
-        
+        for (int i = 0; i<5; i++)
+        {
+            instance.getDie(i).setNumber(i+2);
+        }
         int[] lock = {2, 6};
         instance.lockMany(lock);
+        String expResult = "(2) 3 4 5 (6) ";
+        assertEquals(instance.toString(), expResult);
+
+    }
+    
+    /**
+     * Testaa että konstruktori luo viisi eikä enempää toisiinsa linkitettyä noppaa
+     */
+    @Test
+    public void testConstructor()
+    {
+        System.out.println("dicesetConstructor");
+        DiceSet instance = new DiceSet();
+        Die die = instance.getDie(0);
+        for (int i = 0; i < 4; i++)
+        {
+            assertTrue(die.nextDie() != null);
+            die = die.nextDie();
+        }
+        assertTrue(die.nextDie() == null);
     }
     
 }

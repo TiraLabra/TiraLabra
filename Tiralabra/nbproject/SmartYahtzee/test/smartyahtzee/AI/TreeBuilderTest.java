@@ -41,6 +41,7 @@ public class TreeBuilderTest {
 
     @Test
     public void testGroupingSort() {
+        System.out.println("groupingSort");
         int[] dice = {1, 6, 3, 6, 3};
         TreeBuilder builder = new TreeBuilder(dice, new boolean[17]);
         int[] groupedDice = {6, 6, 3, 3, 1};
@@ -89,7 +90,7 @@ public class TreeBuilderTest {
         System.out.println("createTrees");
         int[] dice = {6, 5, 5, 4, 4};
         TreeBuilder instance = new TreeBuilder(dice, new boolean[17]);
-        assertEquals(instance.getEVs().size(), 4);
+        assertEquals(instance.getEVs().getLength(), 4);
     }
     
 }

@@ -24,6 +24,11 @@ class TreeList {
         createTrees(dice);
     }
     
+    public int getLength()
+    {
+        return trees.length;
+    }
+    
     /**
      * Etsii puun, joka rakentuu annetulle juurelle.
      * 

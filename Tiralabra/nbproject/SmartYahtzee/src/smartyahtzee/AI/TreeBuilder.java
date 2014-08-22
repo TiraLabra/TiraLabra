@@ -6,7 +6,6 @@
 
 package smartyahtzee.AI;
 
-import java.util.Arrays;
 import smartyahtzee.scoring.Scores;
 
 /**
@@ -21,9 +20,9 @@ public class TreeBuilder {
     
     public TreeBuilder(int[] dice, boolean[] marked)
     {
-        this.dice = dice;
+        this.dice = groupingSort(dice);
         this.marked = marked;
-        this.expectedValues = new TreeList(4, groupingSort(dice), marked); //# of combinations
+        this.expectedValues = new TreeList(4, dice, marked); //# of combinations
     }
     
     /**

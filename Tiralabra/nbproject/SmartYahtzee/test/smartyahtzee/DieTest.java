@@ -99,4 +99,19 @@ public class DieTest {
         
     }
     
+    
+    @Test
+    public void testGetNextDie()
+    {
+        System.out.println("nextDie");
+        DiceSet instance = new DiceSet();
+        for (int i = 0; i<5; i++)       // 23456
+        {
+            instance.getDie(i).setNumber(i+2);
+        }
+        
+        assertEquals(instance.getDie(0).nextDie().getNumber(), 3);
+        
+    }
+    
 }
