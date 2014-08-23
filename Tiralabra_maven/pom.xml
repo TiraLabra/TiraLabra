@@ -47,14 +47,14 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>0.30</version>
-    <configuration>
-        <targetClasses>
-            <param>com.mycompany.Tiralabra_maven.logiikka.*</param>
-        </targetClasses>
-        <targetTests>
-            <param>com.mycompany.Tiralabra_maven.logiikka.*</param>
-        </targetTests>
-    </configuration>
+                <configuration>
+                    <targetClasses>
+                        <param>com.mycompany.Tiralabra_maven.logiikka.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>com.mycompany.Tiralabra_maven.logiikka.*</param>
+                    </targetTests>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,6 +72,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>hannuntemppu</shadedClassifierName> <!-- Any name that makes sense -->
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.mycompany.Tiralabra_maven.App</mainClass>
