@@ -13,36 +13,47 @@ public class Paikka implements Comparable<Paikka> {
      * Paikan i-koordinaatti.
      */
     public int i;
+    
     /**
      * Paikan j-koordinaatti.
      */
     public int j;
+    
     /**
      * Luokan Paikka attribuutti aikaKustannus kertoo kuinka monta aikayksikköä
      * kuluu kun ko. Paikka-luokan ilmentymään siirrytään.
      */
     public int aikaKustannus;
+    
     /**
      * Paikan etäisyys lähtöpisteeseen.
      */
     public int etaisyysAlkuun;
+    
     /**
      * Paikan etäisyys loppupisteeseen. Dijkstarissa attribuutin etaisyysLoppuun
      * arvo on aina konstruktorissa asetettu eli 0.
      */
     public int etaisyysLoppuun;
+    
     /**
      * Paikan viereiset paikat vaaka- ja pystysuunnassa (ei siis vinottain).
      * Keskellä karttaa olevalla Paikalla 4 vieruspaikka ja esim. nurkassa
      * olevalla Paikalla 2 vieruspaikkaa.
      */
     public ArrayList<Paikka> vierusPaikat;
+    
     /**
      * Luokan Paikka attribuutti polku sisältää viitteen siihen Paikka-luokan
      * ilmentymään joka on (nopeimmalla) reitillä ennen ko. Paikka-luokan
      * ilmentymää.
      */
     public Paikka polku;
+
+    /**
+     * Paikan indeksi kekotaulukossa. Keon 1. paikan heapIndex=1.
+     */
+    public int heapIndex;
 
     /**
      * Luokan Paikka konstruktori.
@@ -60,6 +71,7 @@ public class Paikka implements Comparable<Paikka> {
         this.etaisyysLoppuun = 0;
         this.vierusPaikat = new ArrayList<Paikka>();
         this.polku = null;
+        this.heapIndex=0;
     }
 
     /**

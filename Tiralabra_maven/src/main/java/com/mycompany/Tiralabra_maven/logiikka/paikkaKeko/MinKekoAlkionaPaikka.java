@@ -8,7 +8,7 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  * Tätä rajapintaa käyttämällä koodia ei tarvitse muuttaa kun siirrytään
  * Javan PriorityQueue:n käyttämisestä minimikeon oman toteutuksen käyttämiseen.
  */
-public interface PaikkaMinKeko {
+public interface MinKekoAlkionaPaikka {
     /**
      * Kekoon lisätään kekoalkio.
      *
@@ -31,7 +31,9 @@ public interface PaikkaMinKeko {
     public void heapDelete(Paikka kekoAlkio);
 
     /**
-     * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on muuttunut.
+     * Asettaa kekoalkion oikealle paikalle keossa. Algoritmeissa tätä metodia
+     * kutsutaan VAIN kun Paikka.etaisyysAlkuun on muuttunut eli myös kekoalkion
+     * avain on muuttunut.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */

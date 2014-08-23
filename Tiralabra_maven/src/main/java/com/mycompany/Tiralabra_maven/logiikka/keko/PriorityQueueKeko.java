@@ -3,15 +3,15 @@ package com.mycompany.Tiralabra_maven.logiikka.keko;
 import java.util.PriorityQueue;
 
 /**
- * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue.
- * Keon alkiot tyyppiä E.
+ * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue. Keon
+ * alkiot tyyppiä E.
  */
 public class PriorityQueueKeko<E> implements MinKeko<E> {
-    
+
     private PriorityQueue<E> q;
-    
-    public PriorityQueueKeko(){
-        this.q=new PriorityQueue<E>();
+
+    public PriorityQueueKeko() {
+        this.q = new PriorityQueue<E>();
     }
 
     /**
@@ -45,7 +45,8 @@ public class PriorityQueueKeko<E> implements MinKeko<E> {
     }
 
     /**
-     * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on muuttunut.
+     * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on
+     * muuttunut.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */
@@ -64,5 +65,4 @@ public class PriorityQueueKeko<E> implements MinKeko<E> {
     public boolean heapIsEmpty() {
         return this.q.isEmpty();
     }
-    
 }

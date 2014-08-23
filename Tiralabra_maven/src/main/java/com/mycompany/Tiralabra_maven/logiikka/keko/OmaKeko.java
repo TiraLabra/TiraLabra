@@ -8,26 +8,26 @@ import java.lang.reflect.Array;
  */
 public class OmaKeko<E> implements MinKeko<E> {
 
-    private E[] olioTaulukko;
-    private int[] kekoTaulukko;
+    private E[] kekoTaulukko;
+//    private E[] olioTaulukko;
+//    private int[] kekoTaulukko;
     private int heapSize;
 
     public OmaKeko(Class<E> luokka) {
         // Use Array native method to create array of a type only known at run time
         int taulukonKoko = 1000000;
-        this.kekoTaulukko=new int[taulukonKoko];
         @SuppressWarnings("unchecked")
         final E[] uusiTaulukko = (E[]) Array.newInstance(luokka, taulukonKoko);
-        this.olioTaulukko = uusiTaulukko;
+        this.kekoTaulukko = uusiTaulukko;
         this.heapSize = 0;
     }
 
     public E getTest(int i) {
-        return olioTaulukko[i];
+        return kekoTaulukko[i];
     }
 
     public void setTest(E kekoAlkio, int i) {
-        olioTaulukko[i] = kekoAlkio;
+        kekoTaulukko[i] = kekoAlkio;
     }
 
     private int parent(int i) {
@@ -44,7 +44,7 @@ public class OmaKeko<E> implements MinKeko<E> {
 
     private void heapHeapify(int i) {
 
-        int left;;
+        int left;
         int right;
         int largest;
 
@@ -53,17 +53,17 @@ public class OmaKeko<E> implements MinKeko<E> {
 ////////E right = this.kekoTaulukko[right(i)];
         left = left(i);
         right = right(i);
-        if (right <= this.heapSize) {
-            if (this.kekoTaulukko[left] > this.kekoTaulukko[right]) {
-                largest = left;
-            } else {
-                largest = right;
-            }
-                    //6 if A[i] < A[largest]
-                    //7 vaihda A[i] ja A[largest]
-                    //8 heapify(A,largest)
-
-        }
+//        if (right <= this.heapSize) {
+//            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right])>0) {
+//                largest = left;
+//            } else {
+//                largest = right;
+//            }
+//                    //6 if A[i] < A[largest]
+//                    //7 vaihda A[i] ja A[largest]
+//                    //8 heapify(A,largest)
+//
+//        }
 //9 elsif l == A.heap-size and A[i]<A[l]
 //10 vaihda A[i] ja A[l]        
     }
@@ -83,8 +83,8 @@ public class OmaKeko<E> implements MinKeko<E> {
 
     @Override
     public E heapDelMin() {
-        E min = this.olioTaulukko[1];
-        this.olioTaulukko[1] = this.olioTaulukko[this.heapSize];
+        E min = this.kekoTaulukko[1];
+        this.kekoTaulukko[1] = this.kekoTaulukko[this.heapSize];
         this.heapSize--;
         this.heapHeapify(1);
         return min;
