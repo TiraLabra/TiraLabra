@@ -1,4 +1,4 @@
-// KESKENERÄINEN LUOKKA x
+// KESKENERÄINEN LUOKKA
 package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
