@@ -136,7 +136,7 @@ public class ArrayPolynomial implements IPolynomial {
                     }
                     stringRepr.append(" ");
                 }
-                if (coefficient != 1) {
+                if ((coefficient != 1 && coefficient != -1) || exponent == 0) {
                     stringRepr.append(MathUtil.abs(coefficient));
                 }
                 if (exponent >= 1) {

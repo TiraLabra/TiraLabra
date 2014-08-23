@@ -489,7 +489,8 @@ public class LinkedListPolynomial implements IPolynomial {
                 }
                 stringRepr.append(" ");
             }
-            if (current.coefficient != 1) {
+            if ((current.coefficient != 1 && current.coefficient != -1) 
+                    || current.exponent == 0) {
                 stringRepr.append(MathUtil.abs(current.coefficient));
             }
             if (current.exponent >= 1) {

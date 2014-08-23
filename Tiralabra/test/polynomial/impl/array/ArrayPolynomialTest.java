@@ -859,5 +859,16 @@ public class ArrayPolynomialTest {
 
         assertEquals("x^7 - 2x^5 + 2x^2 + 11x - 2", toString);
     }
+    
+    @Test
+    public void testToString4() {
+        IPolynomial polynomial = new ArrayPolynomial(5);
+        polynomial.addTerm(1, 3);
+        polynomial.addTerm(1, 2);
+        polynomial.addTerm(-1, 1);
+        polynomial.addTerm(-1, 0);
+        
+        assertEquals("x^3 + x^2 - x - 1", polynomial.toString());
+    }
 
 }
