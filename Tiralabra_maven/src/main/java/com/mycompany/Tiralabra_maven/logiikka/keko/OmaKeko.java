@@ -53,7 +53,6 @@ public class OmaKeko<E> implements MinKeko<E> {
 ////////E right = this.kekoTaulukko[right(i)];
         left = left(i);
         right = right(i);
-<<<<<<< HEAD
 //        if (right <= this.heapSize) {
 //            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right])>0) {
 //                largest = left;
@@ -65,19 +64,6 @@ public class OmaKeko<E> implements MinKeko<E> {
 //                    //8 heapify(A,largest)
 //
 //        }
-=======
-        if (right <= this.heapSize) {
-            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right])>0) {
-                largest = left;
-            } else {
-                largest = right;
-            }
-                    //6 if A[i] < A[largest]
-                    //7 vaihda A[i] ja A[largest]
-                    //8 heapify(A,largest)
-
-        }
->>>>>>> 6ad01009d0632d5f8c5596d88db48e65774245f5
 //9 elsif l == A.heap-size and A[i]<A[l]
 //10 vaihda A[i] ja A[l]        
     }
