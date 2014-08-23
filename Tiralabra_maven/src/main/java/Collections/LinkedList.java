@@ -116,7 +116,7 @@ public final class LinkedList<T> implements Iterable<T> {
 
         private Member<T> current;
 
-        private ListIterator(Member<T> head) {
+        private ListIterator(final Member<T> head) {
             this.current = head;
         }
 
@@ -129,6 +129,15 @@ public final class LinkedList<T> implements Iterable<T> {
         public T next() {
             current = current.next;
             return current.value;
+        }
+
+        @Override
+        public void remove() {
+            current.previous.next = current.next;
+            if (current.next != null) {
+                current.next.previous = current.previous;
+            }
+            count--;
         }
     }
 
