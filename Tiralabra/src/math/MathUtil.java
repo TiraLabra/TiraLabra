@@ -177,11 +177,13 @@ public class MathUtil {
     public static int getInverseModP(int n, int p) {
         ExtendedEuclideanResult result = extendedEuclideanAlgorithm(n, p);
 
-        if (result.gcd != 1) {
+        if (abs(result.gcd) != 1) {
             return -1;
         }
 
-        return result.x;
+        // This is needed because the extended euclidean algorithm might
+        // terminate with gcd -1 if n is negative.
+        return result.gcd*result.x;
     }
 
     /**

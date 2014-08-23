@@ -254,6 +254,16 @@ public class MathUtilTest {
         assertEquals(-1, MathUtil.getInverseModP(4, 16));
     }
 
+    @Test
+    public void testGetInverseMinus3_5() {
+        assertEquals(-2, MathUtil.getInverseModP(-3, 5));
+    }
+    
+    @Test
+    public void testGetInverseMinus4_7() {
+        assertEquals(-2, MathUtil.getInverseModP(-4, 7));
+    }
+
     // Testing log2 method:
     @Test(expected = IllegalArgumentException.class)
     public void log2ExpectedExceptionTest() {
