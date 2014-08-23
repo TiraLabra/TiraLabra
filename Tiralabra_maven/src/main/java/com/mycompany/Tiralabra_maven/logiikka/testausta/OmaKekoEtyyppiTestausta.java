@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Hannu
+ * @author Hannux
  */
 public class OmaKekoEtyyppiTestausta {
     
