@@ -1,4 +1,5 @@
-package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
+// Tämän luokan testien luomisella matala prioriteetti, koska kyse Javan valmiista tietorakenteesta.
+package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,23 +12,23 @@ import static org.junit.Assert.*;
  *
  * @author Hannu
  */
-public class OmaKekoAlkionaPaikkaTest {
-    
-    public OmaKekoAlkionaPaikkaTest() {
+public class JavaKekoTest {
+
+    public JavaKekoTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }

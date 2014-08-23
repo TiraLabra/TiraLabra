@@ -2,8 +2,8 @@ package com.mycompany.Tiralabra_maven.logiikka.aStar;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
-import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.OmaKekoAlkionaPaikka;
-import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PriorityQueueKekoAlkionaPaikka;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PaikkaOmaKeko;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PaikkaPriorityQueueKeko;
 import java.util.Stack;
 
 /**
@@ -45,9 +45,8 @@ public class AstarWithHeap {
 
         this.initialiseAstar();
 
-//        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
-        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
-//        OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
+//        PaikkaPriorityQueueKeko heap = rakennaKekoJaAsetaVieruspaikat();
+        PaikkaOmaKeko heap = rakennaKekoJaAsetaVieruspaikat();
 
         System.out.println(this.paikat[0][0].vierusPaikat);
 
@@ -94,12 +93,10 @@ public class AstarWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-//    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
-//        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
-    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
-//    private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-//        OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
+//    private PaikkaPriorityQueueKeko rakennaKekoJaAsetaVieruspaikat() {
+//        PaikkaPriorityQueueKeko heap = new PaikkaPriorityQueueKeko();
+    private PaikkaOmaKeko rakennaKekoJaAsetaVieruspaikat() {
+        PaikkaOmaKeko heap = new PaikkaOmaKeko();
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {

@@ -54,12 +54,12 @@ public class App {
         Piste maaliPiste = new Piste(0, 2);
 //        Piste maaliPiste = new Piste(2, 1);
 
-//        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
-        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
+        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
+//        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
 
         System.out.println(ratkaisija.ratkaise());
 
-        ratkaisija.shortestPath();
+//        ratkaisija.shortestPath();
 
         ratkaisija.testiTulostaReittikartta();
         

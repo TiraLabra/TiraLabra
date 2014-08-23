@@ -8,7 +8,7 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  * Tätä rajapintaa käyttämällä koodia ei tarvitse muuttaa kun siirrytään
  * Javan PriorityQueue:n käyttämisestä minimikeon oman toteutuksen käyttämiseen.
  */
-public interface MinKekoAlkionaPaikka {
+public interface PaikkaMinKeko {
     /**
      * Kekoon lisätään kekoalkio.
      *

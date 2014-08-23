@@ -7,13 +7,13 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  * KESKENERÄINEN LUOKKA Oman tietorakenteen (minimikeko) toteutus. Keon alkiot
  * tyyppiä Paikka.
  */
-public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
+public class PaikkaOmaKeko implements PaikkaMinKeko {
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
 //    private int heapSize;
     public int heapSize;
 
-    public OmaKekoAlkionaPaikka() {
+    public PaikkaOmaKeko() {
         this.kekoTaulukko = new Paikka[1000000];
         this.heapSize = 0;
     }
