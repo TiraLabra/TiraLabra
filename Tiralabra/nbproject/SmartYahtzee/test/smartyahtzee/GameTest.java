@@ -71,6 +71,14 @@ public class GameTest {
             assertTrue(b);
         }
     }
+    
+    @Test
+    public void testAIScores()
+    {
+        System.out.println("AI test");
+        instance.testBot();
+    }
+    
         
     @Test
     public void testIntelligentChoices1()

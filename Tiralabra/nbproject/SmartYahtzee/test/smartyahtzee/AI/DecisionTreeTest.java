@@ -129,7 +129,7 @@ public class DecisionTreeTest {
     @Test
     public void testPerformanceRootOfOneScoresHalfFilled()
     {
-        System.out.println("Performance, root size 1");
+        System.out.println("Performance, half filled, root size 1");
         int[] root = { 6 };
         boolean[] marked = new boolean[17];
         for (int i = 0; i < 17; i++)
@@ -151,7 +151,7 @@ public class DecisionTreeTest {
     @Test
     public void testPerformanceRootOfTwoScoresHalfFilled()
     {
-        System.out.println("Performance, root size 2");
+        System.out.println("Performance, half filled, root size 2");
         int[] root = { 6, 5 };
         boolean[] marked = new boolean[17];
         for (int i = 0; i < 17; i++)
@@ -173,7 +173,7 @@ public class DecisionTreeTest {
     @Test
     public void testPerformanceRootOfThreeScoresHalfFilled()
     {
-        System.out.println("Performance, root size 3");
+        System.out.println("Performance, half filled, root size 3");
         int[] root = { 6, 6, 5 };
         boolean[] marked = new boolean[17];
         for (int i = 0; i < 17; i++)
@@ -195,7 +195,7 @@ public class DecisionTreeTest {
     @Test
     public void testPerformanceRootOfFourScoresHalfFilled()
     {
-        System.out.println("Performance, root size 4");
+        System.out.println("Performance, half filled, root size 4");
         int[] root = { 6, 6, 5, 5 };
         boolean[] marked = new boolean[17];
         for (int i = 0; i < 17; i++)
