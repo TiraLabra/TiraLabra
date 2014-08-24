@@ -70,6 +70,11 @@ public final class Dictionary<K, V> {
         return set.size();
     }
 
+    /**
+     * Returns all the values in the dictionary.
+     *
+     * @return All the values in the dictionary.
+     */
     public LinkedList<KeyValuePair<K, V>> pairs() {
         return set.values();
     }

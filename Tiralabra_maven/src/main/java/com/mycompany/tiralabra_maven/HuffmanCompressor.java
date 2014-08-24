@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import Collections.BitImmutableCollection;
 import Collections.Dictionary;
 import Collections.Dictionary.KeyValuePair;
 import Collections.PriorityQueue;

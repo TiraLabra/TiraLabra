@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import Collections.BitImmutableCollection;
 import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;

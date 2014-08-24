@@ -135,6 +135,11 @@ public final class HashSet<T> {
         return count;
     }
 
+    /**
+     * Returns all the values in the set.
+     *
+     * @return All the values in the set.
+     */
     public LinkedList<T> values() {
         final LinkedList<T> toReturn = new LinkedList<>();
         for (int i = 0; i < array.size(); i++) {
