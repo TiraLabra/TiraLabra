@@ -57,6 +57,129 @@ public class Matrix {
         return columns;
     }
     
+    public Matrix subMatrix(int startingRow, int endingRow, int startingColumn, int endingColumn) {
+        Matrix sub = new Matrix(endingRow-startingRow+1, endingColumn-startingColumn+1);
+        for(int i=0; i<sub.numRows(); i++) {
+            for(int j=0; j<sub.numCols(); j++) {
+                sub.setValue(i, j, matrix[i+startingRow][j+startingColumn]);
+            }
+        }
+        return sub;
+    }
+    
+    /**
+     * Algorithm for matrix addition.
+     * Creates a result matrix c, and then goes through it
+     * while setting values determined by addition of the values
+     * in matrices a and b (c[i][j] = a[i][j] + b[i][j].
+     * @return Resulting matrix
+     */
+    public Matrix add(Matrix m) {
+        if (numCols() != m.numCols() || numRows() != m.numRows()) {
+            return null;
+        }
+        Matrix c = new Matrix(numRows(), numCols());
+        for (int i=0; i<numRows(); i++) {
+            for (int j=0; j<numCols(); j++) {
+                c.setValue(i, j, get(i, j) + m.get(i, j));
+            }
+        }
+        return c;
+    }
+    
+    public Matrix multiplyByScalar(Double b) {
+        Matrix c = new Matrix(numRows(), numCols());
+        for (int i=0; i<numRows(); i++) {
+            for (int j=0; j<numCols(); j++) {
+                c.setValue(i, j, get(i, j) * b);
+            }
+        }
+        return c;
+    }
+    
+    /**
+     * Algorithm for matrix substraction.     
+     * Creates a result matrix c, and then goes through it
+     * while setting values determined by substracting the value
+     * in matrix b from the value in matrix a (c[i][j] = a[i][j] - b[i][j].
+     * @return Resulting matrix
+     */
+    public Matrix subtract(Matrix m) {
+        if (numCols() != m.numCols() || numRows() != m.numRows()) {
+            return null;
+        }
+        Matrix c = new Matrix(numRows(), numCols());
+        for (int i=0; i<numRows(); i++) {
+            for (int j=0; j<numCols(); j++) {
+                c.setValue(i, j, get(i, j) - m.get(i, j));
+            }
+        }
+        return c;
+    }    
+    
+    /**
+     * Algorithm for matrix transposition.
+     * A new matrix is created. The rows of matrix A become the columns of the result matrix, 
+     * and the columns of matrix A become the rows of the result matrix.
+     * @return Transposition of the given matrix
+     */
+    public Matrix transpose() {
+        Matrix c = new Matrix(numCols(), numRows());
+        for (int i=0; i<c.numRows(); i++) {
+            for (int j=0; j<c.numCols(); j++) {
+                c.setValue(i, j, get(j, i));
+            }
+        }
+        return c;
+    }
+    
+    /**
+     * Swaps the places of row1 and row2.
+     * @param row1
+     * @param row2 
+     */
+    public void swapRows(Integer row1, Integer row2) {
+        for (int i=0; i<numCols(); i++) {
+            double temp = get(row1, i);
+            setValue(row1, i, get(row2, i));
+            setValue(row2, i, temp);
+        }
+    }
+    
+    /**
+     * Multiplies given row with the given scalar.
+     * @param row
+     * @param scalar 
+     */
+    public void multiplyRow(Integer row, double scalar) {
+        for (int i=0; i<numCols(); i++) {
+            setValue(row, i, get(row, i)*scalar);
+        }
+    }
+    
+    /**
+     * Divides given row with the given scalar.
+     * @param row
+     * @param scalar 
+     */
+    public void divideRow(Integer row, double scalar) {
+        for (int i=0; i<numCols(); i++) {
+            setValue(row, i, get(row, i)/scalar);
+        }
+    }
+    
+    /**
+     * Adds a row multiplied by given scalar to another row.
+     * @param rowToAddTo
+     * @param rowToAdd
+     * @param scalar 
+     */
+    public void addRow(Integer rowToAddTo, Integer rowToAdd, double scalar) {
+        for (int i=0; i<numCols(); i++) {
+            setValue(rowToAddTo, i, get(rowToAdd, i)*scalar);
+        }
+    }
+    
     public void print() {
         for(int i=0; i<rows; i++) {
             System.out.print("|");

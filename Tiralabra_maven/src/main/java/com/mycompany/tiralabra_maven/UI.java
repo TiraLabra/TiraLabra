@@ -2,7 +2,6 @@
 package com.mycompany.tiralabra_maven;
 
 import java.util.Scanner;
-import org.ejml.simple.SimpleMatrix;
 
 public class UI {
     Scanner s;
@@ -23,6 +22,7 @@ public class UI {
         System.out.println("5: Determinantti");
         System.out.println("6: Käänteismatriisi");
         System.out.println("7: Transpoosi");
+        System.out.println("8: Gauss-Jordan eliminaatio");
         System.out.println("0: Lopeta ohjelma");
         int op = Integer.parseInt(s.nextLine());
         return op;
