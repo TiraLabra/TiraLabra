@@ -41,7 +41,7 @@ public class Testi {
             long aikaLopussa = System.currentTimeMillis();  
             long aika=aikaLopussa-aikaAlussa;
             tulosSumma+=aika;
-            System.out.println("Suoritusaika: " + aika + taytto.annaRatkaisutMerkkijonona());
+            System.out.println("Suoritusaika: " + aika + " " + taytto.annaRatkaisutMerkkijonona());
             
         }
         long keskiarvo = tulosSumma/toistokoeLkm;

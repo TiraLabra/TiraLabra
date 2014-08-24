@@ -33,9 +33,9 @@ public class Taytto {
     /**
      * ALustaa Luokkamuuttujat täyttövaihtoehtojen ajamiselle
      * 
-     * @param summa
-     * @param paketit
-     * @param kontti
+     * @param summa: kaikkien pakettien kokonaissumma
+     * @param paketit: tiedot kaikista paketeista
+     * @param kontti: tiedot täytettävästä kontista
      */
     public Taytto (Paketti[] paketit, int summa, Kontti kontti) {
         //luodaan paketteja kokoineen
@@ -53,11 +53,11 @@ public class Taytto {
     }
 
     /**
-     * Muodostaa annetuille paketeille kaikki mahdolliset kombinaatiot. Toimii rekursiivisesti, lähtöarvot tyhjiä.
+     * EI KÄYTETÄ ENÄÄ Muodostaa annetuille paketeille kaikki mahdolliset kombinaatiot. Toimii rekursiivisesti, lähtöarvot tyhjiä.
      * @param jono Kombinaatioon kuuluvien pakettien indeksit 
      * @param kohta osoittaa missäkohtaa iteraatio kulkee eli mikä paketti (indeksi) viimeiseksi ollut käsittelyssä
      */
-    public void muodostaKombinaatioRek(ArrayList jono, int kohta) {
+/*    public void muodostaKombinaatioRek(ArrayList jono, int kohta) {
         if (this.paketit.length == kohta) {
             this.jonot[this.tayttolaskuri] = jono;
             this.tayttolaskuri = this.tayttolaskuri + 1;
@@ -70,14 +70,14 @@ public class Taytto {
             muodostaKombinaatioRek(jono, kohta);
         }
     }
-
+*/
     /**
-     * Sama kuin muodostaKombinaatioRek, mutta laskee pakettien kokojen summat kullekin jonolle
+     * EI KÄYTETÄ ENÄÄ Sama kuin muodostaKombinaatioRek, mutta laskee pakettien kokojen summat kullekin jonolle
      * @param jono
      * @param kohta
      * @param summa
      */
-    public void etsiSummatKombinaatioistaRek(ArrayList jono, int kohta, int summa) {
+/*    public void etsiSummatKombinaatioistaRek(ArrayList jono, int kohta, int summa) {
         // Tähän kohtaan tullaan kun kombinaatiopuun lehti on saavutettu. Kyseisen kombinaation jäsenet ja summa tallennetaan.
         if (this.paketit.length == kohta) {
             this.jonot[this.tayttolaskuri] = jono;
@@ -95,14 +95,14 @@ public class Taytto {
             etsiSummatKombinaatioistaRek(jono, kohta, summa);
         }
     }
+*/
     /**
      * Etsii rekursiivisesti kombinaatioista täyttöasteeseen sopivaa ratkaisua. Kun sopiva löytyy, niin kirjoittaa luokkamuuttujiin ratkaisun ja lopettaa suorituksen. Käy mobinaatioita läpi tarkistaen aina ko. lehden symmetrisen vastinparin.
-     * @param lisaysJono
-     * @param poistoJono
+     * @param jono
      * @param kohta
      * @param lisaysSumma
      * @param poistoSumma
-     * @return 
+     * @return kun ollaan puun lehdessä, palauttaa true jos löytyi ratkaisu, jolloin sulkee suorituksen purkaen rekurssion. False jos ei löytynyt, edellinen rekursio jatkaa uudella haaralla
      */
     public boolean etsiMahtuvaSummaKombinaatioistaRek(ArrayList jono, int kohta, int lisaysSumma, int poistoSumma) {
         // Tähän kohtaan tullaan kun kombinaatiopuun lehti on saavutettu. Kyseisen kombinaation jäsenet ja summa tallennetaan.
@@ -201,6 +201,9 @@ public class Taytto {
         }
     }
 
+    /**
+     *
+     */
     public void tulostaRatkaisut() {
 
         System.out.println("Vetoisuus: " + this.kontti.annaKoko());
@@ -209,8 +212,13 @@ public class Taytto {
         System.out.println("LisaysJono: " + this.ratkaisuLisaysJono);
         System.out.println("PoistoJono: " + this.ratkaisuPoistoJono);
     }
+
+    /**
+     *
+     * @return
+     */
     public String annaRatkaisutMerkkijonona() {
-        return " Vetoisuus: " + this.kontti.annaKoko() + " Täyttötavoite: " + this.kontti.annaTayttoTavoite() + " Summa: " + this.ratkaisuSumma + " LisaysJono: " + this.ratkaisuLisaysJono + " PoistoJono: " + this.ratkaisuPoistoJono;
+        return "Vetoisuus: " + this.kontti.annaKoko() + " Täyttötavoite: " + this.kontti.annaTayttoTavoite() + " Summa: " + this.ratkaisuSumma + " LisaysJono: " + this.ratkaisuLisaysJono + " PoistoJono: " + this.ratkaisuPoistoJono;
     }
 
     /**
