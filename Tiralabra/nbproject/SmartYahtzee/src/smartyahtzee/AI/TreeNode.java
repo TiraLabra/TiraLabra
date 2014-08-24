@@ -20,7 +20,13 @@ public class TreeNode {
     * 
     * Luo lapsisolmut ja linkittää ne toisiinsa.
     */
-    
+
+    /**
+     * Konstruktori.Luo myös lapsisolmut.
+     * 
+     * Luo lapsisolmut ja linkittää ne toisiinsa.
+     * @param dice nopat 
+     */
     
     public TreeNode(int[] dice)
     {
