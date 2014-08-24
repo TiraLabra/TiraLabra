@@ -13,18 +13,16 @@ import java.awt.Color;
  */
 public enum RuudunTila implements PiirrettavaRuutu {
 
-    KOSKEMATON, TUTKIMATON, TUTKITTU, REITTI, KASITTELYSSA;
+    TUTKITTAVA, TUTKITTU, REITTI, KASITTELYSSA;
 
     /**
      * Palauttaa ruudu tilaa vastaavan värin.
-     * @return 
+     * @return väri
      */
     @Override
     public Color getVari() {
         switch (this) {
-            case KOSKEMATON:
-                return Color.LIGHT_GRAY;
-            case TUTKIMATON:
+            case TUTKITTAVA:
                 return Color.PINK;
             case TUTKITTU:
                 return Color.CYAN;

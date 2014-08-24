@@ -26,7 +26,7 @@ public class Algoritmi extends Thread {
     private boolean jatketaanko;
     private Koordinaatit alku;
     private Koordinaatit maali;
-    private boolean hidaste;
+    private int hidaste;
     private Simulaatio simulaatio;
     private final int leveys;
     private final int korkeus;
@@ -45,7 +45,7 @@ public class Algoritmi extends Thread {
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
      * simulaation askeleen välillä.
      */
-    public Algoritmi(Ruutu[][] maailma, boolean hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
+    public Algoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
         if (maailma == null) {
             throw new IllegalStateException("Maailma null");
         }
@@ -72,7 +72,7 @@ public class Algoritmi extends Thread {
      *
      * @param x
      * @param y
-     * @return
+     * @return ruudun tila
      */
     public RuudunTila getRuudunTila(int x, int y) {
         return this.ruutujenTilat[y][x];
@@ -125,7 +125,7 @@ public class Algoritmi extends Thread {
                     //tutkimattomat.add(new Solmu(koord, matka, solmu));
                     tutkimattomat.lisaa(new Solmu(koord, matka, solmu));
                     //simulaatio.setRuutu(koord.getX(), koord.getY(), RuudunTila.TUTKIMATON);
-                    ruutujenTilat[koord.getY()][koord.getX()] = RuudunTila.TUTKIMATON;
+                    ruutujenTilat[koord.getY()][koord.getX()] = RuudunTila.TUTKITTAVA;
                 }
             }
             ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.TUTKITTU;
@@ -137,9 +137,9 @@ public class Algoritmi extends Thread {
             }
             ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.KASITTELYSSA;
             //simulaatio.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.KASITTELYSSA);
-            if (this.hidaste) {
+            if (this.hidaste != 0) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(hidaste);
                 } catch (InterruptedException ex) {
                 }
             }

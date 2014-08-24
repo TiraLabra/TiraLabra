@@ -23,7 +23,7 @@ public enum Suunta {
 
     /**
      * Palauttaa kohtisuorat suunnat. Siis, YLOS, ALAS, OIKEA ja VASEN.
-     * @return 
+     * @return kohtisuorat
      */
     public static Suunta[] kohtisuoratSuunnat() {
         return kohtisuoratSuunnat;

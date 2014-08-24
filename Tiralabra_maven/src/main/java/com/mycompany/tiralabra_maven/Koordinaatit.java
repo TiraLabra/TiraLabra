@@ -28,7 +28,7 @@ public class Koordinaatit {
     }
     
     /**
-     * 
+     * Palauttaa x-koordinaatin
      * @return x-koordinaatti
      */
 
@@ -37,7 +37,7 @@ public class Koordinaatit {
     }
     
     /**
-     * 
+     * Palauttaa y-koordinaatin
      * @return y-koordinaatti
      */
 
@@ -99,6 +99,10 @@ public class Koordinaatit {
         return true;
     }
 
+    /**
+     * Palauttaa hashcoden
+     * @return hash
+     */
     @Override
     public int hashCode() {
         int hash = 5;

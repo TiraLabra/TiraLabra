@@ -27,10 +27,29 @@ public class AlgoritmiTest {
         Ruutu[][] maailma = alustaMaailma();
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(7, algoritmi.getReitti().getKuljettuMatka());
 
+    }
+
+    @Test
+    public void algoritmiLoytaaReitinPerilleNopeasti() {
+        Ruutu[][] maailma = alustaMaailma(40, 40);
+        Koordinaatit alku = new Koordinaatit(38, 0);
+        Koordinaatit maali = new Koordinaatit(0, 38);
+        //Annetaan algoritmille 1 ms hidaste suorituskykytestausta varten
+        Algoritmi algoritmi = new Algoritmi(maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
+        long aikaAlussa = System.currentTimeMillis();
+        suoritaAlgoritmi(algoritmi);
+        long kulunutAika = System.currentTimeMillis()-aikaAlussa;
+        if (kulunutAika < 210) {
+            fail("Suoritukseen kului epäilyttävän vähän aikaa (" + kulunutAika + " ms), 1 ms hidaste ei toimi?");
+        }
+        if (kulunutAika > 1200) {
+            fail("Aikaa kului yli 1200 ms. aikaa kului " + kulunutAika + "ms");
+        }
+        assertEquals(76, algoritmi.getReitti().getKuljettuMatka());
     }
 
     @Test
@@ -39,7 +58,7 @@ public class AlgoritmiTest {
         teeSeina(maailma);
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(20, algoritmi.getReitti().getKuljettuMatka());
 
@@ -53,7 +72,7 @@ public class AlgoritmiTest {
         maailma[3][5] = Ruutu.SEINA;
         Koordinaatit alku = new Koordinaatit(3, 5);
         Koordinaatit maali = new Koordinaatit(4, 0);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(8, algoritmi.getReitti().getKuljettuMatka());
         assertNull(algoritmi.getRuudunTila(0, 6));
@@ -62,8 +81,10 @@ public class AlgoritmiTest {
     }
 
     private Ruutu[][] alustaMaailma() {
-        int leveys = 10;
-        int korkeus = 10;
+        return alustaMaailma(10, 10);
+    }
+
+    private Ruutu[][] alustaMaailma(int leveys, int korkeus) {
         Ruutu[][] maailma = new Ruutu[korkeus][leveys];
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
@@ -81,14 +102,15 @@ public class AlgoritmiTest {
 
     private void suoritaAlgoritmi(Algoritmi algoritmi) {
         algoritmi.start();
+        //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;
         while (!algoritmi.onkoValmis()) {
-            if (laskuri > 10) {
-                fail("Kesti liian kauan");
+            if (laskuri > 80) {
+                fail("Kesti liian kauan, jäikö algoritmi jumiin?");
             }
             laskuri++;
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException ex) {
             }
 

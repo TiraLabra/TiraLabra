@@ -71,7 +71,27 @@ public class SovellusIkkuna extends javax.swing.JFrame {
                 hiekkaButton.setSelected(true);
         }
     }
-    
+
+    private void asetaLiikkumisKustannukset() {
+        int lattiaKustannus = -1;
+        int ruohoKustannus = -1;
+        int hiekkaKustannus = -1;
+        int vesiKustannus = -1;
+        try {
+            lattiaKustannus = Integer.parseInt(lattiaKustannusField.getText());
+            ruohoKustannus = Integer.parseInt(ruohoKustannusField.getText());
+            hiekkaKustannus = Integer.parseInt(hiekkaKustannusField.getText());
+            vesiKustannus = Integer.parseInt(vesiKustannusField.getText());
+        } catch (Exception e) {
+            paivitaKustannusKentat();
+            return;
+        }
+        simulaatio.asetaRuudunKustannus(Ruutu.LATTIA, lattiaKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.RUOHO, ruohoKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
+    }
+
     private void paivitaKustannusKentat() {
         this.lattiaKustannusField.setText(Ruutu.LATTIA.getHinta() + "");
         this.ruohoKustannusField.setText(Ruutu.RUOHO.getHinta() + "");
@@ -540,6 +560,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void simulaatioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulaatioButtonActionPerformed
         // TODO add your handling code here:
+        asetaLiikkumisKustannukset();
         if (simulaatioButton.isSelected()) {
             simulaatio.etsiReitti();
         } else {
@@ -628,23 +649,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void asetaLiikkumisKustannuksetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asetaLiikkumisKustannuksetButtonActionPerformed
         // TODO add your handling code here:
-        int lattiaKustannus = -1;
-        int ruohoKustannus = -1;
-        int hiekkaKustannus = -1;
-        int vesiKustannus = -1;
-        try {
-            lattiaKustannus = Integer.parseInt(lattiaKustannusField.getText());
-            ruohoKustannus = Integer.parseInt(ruohoKustannusField.getText());
-            hiekkaKustannus = Integer.parseInt(hiekkaKustannusField.getText());
-            vesiKustannus = Integer.parseInt(vesiKustannusField.getText());
-        } catch (Exception e) {
-            paivitaKustannusKentat();
-            return;
-        }
-        simulaatio.asetaRuudunKustannus(Ruutu.LATTIA, lattiaKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.RUOHO, ruohoKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
+        asetaLiikkumisKustannukset();
         paivitaKomponentit();
 
     }//GEN-LAST:event_asetaLiikkumisKustannuksetButtonActionPerformed

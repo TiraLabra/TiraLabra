@@ -106,7 +106,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
     /**
      * Palauttaa tämän halutun koon.
      *
-     * @return
+     * @return koko
      */
     @Override
     public Dimension getPreferredSize() {

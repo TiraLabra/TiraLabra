@@ -36,7 +36,7 @@ public enum Ruutu implements PiirrettavaRuutu {
     /**
      * Palauttaa ruutua vastaavan värin.
      *
-     * @return
+     * @return väri
      */
     @Override
     public Color getVari() {
@@ -61,12 +61,17 @@ public enum Ruutu implements PiirrettavaRuutu {
      * Palauttaa tiedon siitä, paljonko tähän ruutuun siirtyminen "maksaa"
      * reittialgoritmille.
      *
-     * @return
+     * @return kustannus
      */
     public int getHinta() {
         return kustannukset.get(this);
     }
     
+    /**
+     * Asettaa kustannuksen ruudulle
+     * @param ruutu
+     * @param kustannus 
+     */
     public static void asetaKustannus(Ruutu ruutu, int kustannus) {
         kustannukset.put(ruutu, kustannus);
     }

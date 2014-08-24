@@ -48,7 +48,7 @@ public class PrioriteettiKeko<E> {
 
     /**
      * Palauttaa ja poistaa keosta seuraavan elementin.
-     * @return 
+     * @return elementti
      */
     public E seuraava() {
         if (koko == 0) {

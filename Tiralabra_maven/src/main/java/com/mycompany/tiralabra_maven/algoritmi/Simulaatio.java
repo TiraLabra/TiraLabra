@@ -18,14 +18,13 @@ public class Simulaatio {
     private Ruutu[][] maailma;
     private Koordinaatit alku;
     private Koordinaatit maali;
-    private boolean hidaste;
+    private int hidaste;
     private boolean vinottain;
     private int leveys;
     private int korkeus;
     //private Paivitettava paivitettava;
-    private boolean valmis;
+    //private boolean valmis;
     private int[][] parhaatReitit;
-    private Solmu reitti;
     private Heuristiikka heuristiikka;
 
     private KuvanLukija kuvanLukija;
@@ -42,19 +41,25 @@ public class Simulaatio {
      * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
      * vai nopea simulaatio.
      *
-     * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
-     * simulaation askeleen välillä.
      */
-    public Simulaatio(boolean hidaste) {
+    public Simulaatio() {
         this.leveys = 24;
         this.korkeus = 20;
         alustaMaailma();
-        this.hidaste = hidaste;
+        this.hidaste = 100;
         this.alku = new Koordinaatit(0, 0);
         this.maali = new Koordinaatit(9, 5);
         this.vinottain = true;
         this.kuvanLukija = new KuvanLukija();
         this.heuristiikka = new ManhattanHeuristiikka();
+    }
+    
+    /**
+     * Asettaa algoritmin suorituksessa käytetyn hidasteen. Oletus 100 ms.
+     * @param hidaste
+     */
+    public void setHidaste(int hidaste) {
+        this.hidaste = hidaste;
     }
 
     private void alustaMaailma() {
@@ -137,7 +142,7 @@ public class Simulaatio {
     /**
      * Palauttaa algoritmin alkupisteen.
      *
-     * @return
+     * @return alkupiste
      */
     public Koordinaatit getAlkuPiste() {
         return this.alku;
@@ -155,7 +160,7 @@ public class Simulaatio {
     /**
      * Palauttaa algoritmin maalipisteen.
      *
-     * @return
+     * @return maalipiste
      */
     public Koordinaatit getMaali() {
         return this.maali;
@@ -232,7 +237,7 @@ public class Simulaatio {
      * @return true, jos algoritmin suorittaminen on valmis ja false, jos ei ole
      */
     public boolean onkoValmis() {
-        return this.valmis;
+        return this.algoritmi.onkoValmis();
     }
 
     /**
@@ -243,7 +248,11 @@ public class Simulaatio {
      * @return reitin viimeinen solmu
      */
     public Solmu getReitti() {
-        return this.reitti;
+        if (algoritmi == null) {
+            return null;
+        }
+                
+        return algoritmi.getReitti();
     }
 
     /**
@@ -338,7 +347,7 @@ public class Simulaatio {
     /**
      * Palauttaa tiedon siitä, mikä hiiren toiminto on tällä hetkellä käytössä.
      *
-     * @return
+     * @return toiminto
      */
     public Toiminto getValittuToiminto() {
         return this.toiminto;
@@ -354,11 +363,11 @@ public class Simulaatio {
     }
 
     /**
-     * Palauttaa piirrettävän ruudun parametrina annetuissa koordinaateissa.
+     * Palauttaa maailman ruudun annetuissa koordinaateissa
      *
      * @param x
      * @param y
-     * @return
+     * @return piirrettava ruutu
      */
     public PiirrettavaRuutu getMaailmaRuutu(int x, int y) {
         if (maailma == null) {
@@ -368,6 +377,12 @@ public class Simulaatio {
         return maailma[y][x];
     }
 
+    /**
+     * Palauttaa ruudun tilan annetuissa koordinaateissa
+     * @param x
+     * @param y
+     * @return piirrettava ruutu
+     */
     public PiirrettavaRuutu getTilaRuutu(int x, int y) {
         if (algoritmi != null) {
             RuudunTila ruuduntila = algoritmi.getRuudunTila(x, y);

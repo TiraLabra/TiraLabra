@@ -35,7 +35,7 @@ public class Solmu {
 
     /**
      * Palauttaa tämän solmun koordinaatit.
-     * @return 
+     * @return koordinaatit
      */
     public Koordinaatit getKoordinaatit() {
         return koordinaatit;
@@ -43,7 +43,7 @@ public class Solmu {
 
     /**
      * Palauttaa tiedon tähän asti kuljetusta matkasta.
-     * @return 
+     * @return kuljettu matka
      */
     public int getKuljettuMatka() {
         return kuljettuMatka;
@@ -51,7 +51,7 @@ public class Solmu {
 
     /**
      * Palauttaa merkkijonoesityksen solmusta.
-     * @return 
+     * @return stringit
      */
     @Override
     public String toString() {
@@ -60,7 +60,7 @@ public class Solmu {
 
     /**
      * Palauttaa viitteen edelliseen solmuun tai null, jos edellistä ei ole.
-     * @return 
+     * @return edellinen solmu tai null
      */
     public Solmu getEdellinen() {
         return this.edellinen;

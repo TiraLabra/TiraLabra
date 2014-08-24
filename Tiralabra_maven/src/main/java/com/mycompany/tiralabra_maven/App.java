@@ -16,7 +16,7 @@ public class App {
      */
     public static void main(String[] args) {
         
-        Simulaatio simulaatio = new Simulaatio(true);
+        Simulaatio simulaatio = new Simulaatio();
         Kayttoliittyma gui = new Kayttoliittyma(simulaatio, 24);
         SwingUtilities.invokeLater(gui);
         while (gui.getPiirtoalusta() == null) {

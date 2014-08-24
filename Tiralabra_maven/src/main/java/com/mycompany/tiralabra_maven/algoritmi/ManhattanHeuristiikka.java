@@ -29,7 +29,7 @@ public class ManhattanHeuristiikka extends Heuristiikka {
      * maalin välille.
      *
      * @param koord
-     * @return
+     * @return arvioitu matka maaliin
      */
     @Override
     public int arvioiMatkaMaaliin(Koordinaatit koord, Koordinaatit maali) {
