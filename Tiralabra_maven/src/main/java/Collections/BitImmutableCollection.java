@@ -1,7 +1,5 @@
 package Collections;
 
-import Collections.Vector;
-
 /**
  * An immutable collection of bits. Once created, it cannot be modified.
  */
