@@ -4,15 +4,15 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import java.util.PriorityQueue;
 
 /**
- * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue.
- * Keon alkiot tyyppiä Paikka.
+ * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue. Keon
+ * alkiot tyyppiä Paikka.
  */
-public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka{
-    
+public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
+
     private PriorityQueue<Paikka> q;
-    
-    public PriorityQueueKekoAlkionaPaikka(){
-        this.q=new PriorityQueue<Paikka>();
+
+    public PriorityQueueKekoAlkionaPaikka() {
+        this.q = new PriorityQueue<Paikka>();
     }
 
     /**
@@ -46,7 +46,8 @@ public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka{
     }
 
     /**
-     * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on muuttunut.
+     * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on
+     * muuttunut.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */
@@ -65,5 +66,22 @@ public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka{
     public boolean heapIsEmpty() {
         return this.q.isEmpty();
     }
-    
+
+    /**
+     * Testausta varten.
+     */
+    public int getHeapSize() {
+        return this.q.size();
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public void tulosta() {
+        Paikka poistettavaPaikka;
+        while (!this.heapIsEmpty()) {
+            poistettavaPaikka = this.heapDelMin();
+            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun);
+        }
+    }
 }

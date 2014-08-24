@@ -1,6 +1,7 @@
 package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
+import java.util.PriorityQueue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -12,14 +13,14 @@ import static org.junit.Assert.*;
  *
  * @author Hannu
  */
-public class OmaKekoAlkionaPaikkaTest {
+public class PriorityQueueKekoAlkionaPaikkaTest {
 
     Paikka[][] paikkaTaulukko;
-    OmaKekoAlkionaPaikka keko = new OmaKekoAlkionaPaikka();
-    OmaKekoAlkionaPaikka isoKeko = new OmaKekoAlkionaPaikka();
+    PriorityQueueKekoAlkionaPaikka keko = new PriorityQueueKekoAlkionaPaikka();
+    PriorityQueueKekoAlkionaPaikka isoKeko = new PriorityQueueKekoAlkionaPaikka();
 //    Paikka paikkaP;
 
-    public OmaKekoAlkionaPaikkaTest() {
+    public PriorityQueueKekoAlkionaPaikkaTest() {
     }
 
     @BeforeClass
@@ -43,7 +44,7 @@ public class OmaKekoAlkionaPaikkaTest {
                 paikkaTaulukko[i][j].etaisyysLoppuun = j;
             }
         }
-        
+
         isoKeko.heapInsert(paikkaTaulukko[7][5]);
         isoKeko.heapInsert(paikkaTaulukko[2][7]);
         isoKeko.heapInsert(paikkaTaulukko[8][1]);
@@ -64,7 +65,8 @@ public class OmaKekoAlkionaPaikkaTest {
         isoKeko.heapInsert(paikkaTaulukko[6][3]);
         isoKeko.heapInsert(paikkaTaulukko[7][2]);
         isoKeko.heapInsert(paikkaTaulukko[8][0]);
-        
+
+
     }
 
     @After
@@ -218,10 +220,22 @@ public class OmaKekoAlkionaPaikkaTest {
         isoKeko.heapDecreaseKey(paikkaTaulukko[6][7]);
 //        ei tee mitaan koska [1][5] ei muutettu
         isoKeko.heapDecreaseKey(paikkaTaulukko[1][5]);
-        isoKeko.tulosta();
+//        isoKeko.tulosta();
         Paikka poistettavaPaikka = isoKeko.heapDelMin();
         assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
     }
-
-
+//    @Test
+//    public void t() {
+//        assertEquals(0, 0);
+//    }
+//
+//    @Test
+//    public void t() {
+//        assertEquals(0, 0);
+//    }
+//
+//    @Test
+//    public void t() {
+//        assertEquals(0, 0);
+//    }
 }

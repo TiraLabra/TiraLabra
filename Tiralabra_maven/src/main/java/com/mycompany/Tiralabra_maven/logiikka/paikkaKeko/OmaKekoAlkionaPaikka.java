@@ -10,8 +10,8 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
-//    private int heapSize;
-    public int heapSize;
+    private int heapSize;
+//    public int heapSize;
 
     public OmaKekoAlkionaPaikka() {
         this.kekoTaulukko = new Paikka[1000000];
@@ -36,14 +36,13 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         this.kekoTaulukko[i] = this.kekoTaulukko[j];
         this.kekoTaulukko[j] = apuPaikka;
     }
-    
+
 //    private void vaihda(Paikka paikka1, Paikka paikka2) {
 //        Paikka apuPaikka;
 //        apuPaikka = paikka1;
 //        paikka1 = paikka2;
 //        paikka2 = apuPaikka;
 //    }
-
     private void heapHeapify(int i) {
 
         int left;
@@ -54,17 +53,17 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         left = left(i);
         right = right(i);
         if (right <= this.heapSize) {
-            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right]) > 0) {
+            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right]) < 0) {
                 largest = left;
             } else {
                 largest = right;
             }
-            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[largest]) < 0) {
+            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[largest]) > 0) {
 //                vaihda(this.kekoTaulukko[i], this.kekoTaulukko[largest]);
-                vaihda(i,largest);
+                vaihda(i, largest);
                 heapHeapify(largest);
             }
-        } else if (left == this.heapSize && this.kekoTaulukko[i].compareTo(this.kekoTaulukko[left]) < 0) {
+        } else if (left == this.heapSize && this.kekoTaulukko[i].compareTo(this.kekoTaulukko[left]) > 0) {
 //            vaihda(this.kekoTaulukko[i], this.kekoTaulukko[left]);
             vaihda(i, left);
         }
@@ -76,7 +75,7 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         this.heapSize++;
         i = this.heapSize;
         if (i > 1) {
-            while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) < 0) {
+            while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
                 this.kekoTaulukko[i] = this.kekoTaulukko[parent(i)];
                 i = parent(i);
                 if (i == 1) {
@@ -87,7 +86,7 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
 
         kekoAlkio.heapIndex = i;
         this.kekoTaulukko[i] = kekoAlkio;
-        System.out.println("keon koko: "+this.heapSize);
+//        System.out.println("keon koko: " + this.heapSize);
 
     }
 
@@ -125,4 +124,23 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         }
         return false;
     }
+
+    /**
+     * Testausta varten.
+     */
+    public int getHeapSize() {
+        return this.heapSize;
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public void tulosta() {
+        Paikka poistettavaPaikka;
+        while (!this.heapIsEmpty()) {
+            poistettavaPaikka = this.heapDelMin();
+            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun);
+        }
+    }
+
 }
