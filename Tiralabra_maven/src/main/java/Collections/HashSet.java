@@ -52,6 +52,20 @@ public final class HashSet<T> {
         }
     }
 
+    T get(final T obj) {
+        final int hash = hash(obj);
+        final LinkedList<T> list = array.get(hash);
+        if (list == null) {
+            return null;
+        }
+        for (final T item : list) {
+            if (item.equals(obj)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     private Vector<LinkedList<T>> createList(final int size) {
         return (Vector<LinkedList<T>>) new Vector<>(new LinkedList<T>().getClass(), size);
     }
@@ -75,7 +89,7 @@ public final class HashSet<T> {
     }
 
     private int hash(final Object item) {
-        return item.hashCode() % array.size();
+        return ((item.hashCode() % array.size()) + array.size()) % array.size();
     }
 
     /**
@@ -109,12 +123,7 @@ public final class HashSet<T> {
         if (item == null) {
             return false;
         }
-        final int hash = hash(item);
-        if (array.get(hash) == null) {
-            return false;
-        }
-        final LinkedList<T> list = array.get(hash);
-        return list.contains(item);
+        return get(item) != null;
     }
 
     /**

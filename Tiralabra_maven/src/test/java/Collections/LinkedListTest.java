@@ -1,8 +1,9 @@
 package Collections;
 
+import java.util.Iterator;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public final class LinkedListTest {
 
@@ -82,15 +83,12 @@ public final class LinkedListTest {
 
     @Test
     public void testAddOne() {
-        final String toAddOne = "asdd asd";
         list.add(toAddOne);
         assertTrue(list.contains(toAddOne));
     }
 
     @Test
     public void testAddTwo() {
-        final String toAddOne = "asdd asd";
-        final String toAddMore = "asdsaer64567fg";
         list.add(toAddOne);
         list.add(toAddMore);
         assertTrue(list.contains(toAddOne));
@@ -106,5 +104,41 @@ public final class LinkedListTest {
     public void testAddManySizeCorrect() {
         addMany();
         assertEquals(toAdd.length, list.size());
+    }
+
+    private static final String toAddOne = "asdd asd";
+    private static final String toAddMore = "asdsaer64567fg";
+    private static final String toAddEvenMore = "8564?DFÅÄSÅ#%Ä";
+
+    private void addTests() {
+        list.add(toAddOne);
+        list.add(toAddMore);
+        list.add(toAddEvenMore);
+    }
+
+    @Test
+    public void testRemoveIterating() {
+        addTests();
+        Iterator<String> listIter = list.iterator();
+        while (listIter.hasNext()) {
+            String s = listIter.next();
+            if (s.equals(toAddMore)) {
+                listIter.remove();
+            }
+        }
+        assertFalse(list.contains(toAddMore));
+    }
+
+    @Test
+    public void testRemoveIteratingOne() {
+        list.add(toAddMore);
+        Iterator<String> listIter = list.iterator();
+        while (listIter.hasNext()) {
+            String s = listIter.next();
+            if (s.equals(toAddMore)) {
+                listIter.remove();
+            }
+        }
+        assertFalse(list.contains(toAddMore));
     }
 }

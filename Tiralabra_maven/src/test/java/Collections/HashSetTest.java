@@ -108,7 +108,65 @@ public final class HashSetTest {
     }
 
     @Test
+    public void testContainsNotObjectThatArentAdded() {
+        set.add("ASDDSASD");
+        assertFalse(set.contains("ASDRT%&¤%/(%"));
+    }
+
+    @Test
     public void testRemoveNullNoException() {
         set.remove(null);
+    }
+
+    @Test
+    public void testAddRemoveSameHashObjects() {
+        HashSet<hashSameButNotEquals> hs = new HashSet<>();
+        hashSameButNotEquals first = new hashSameButNotEquals(23);
+        hashSameButNotEquals second = new hashSameButNotEquals(44);
+        hs.add(first);
+        hs.add(second);
+        hs.remove(first);
+        hs.remove(second);
+    }
+
+    @Test
+    public void testAddSameHashObjectsContains() {
+        HashSet<hashSameButNotEquals> hs = new HashSet<>();
+        hashSameButNotEquals first = new hashSameButNotEquals(23);
+        hashSameButNotEquals second = new hashSameButNotEquals(44);
+        hs.add(first);
+        hs.add(second);
+        assertTrue(hs.contains(first));
+    }
+
+    @Test
+    public void testAddOneHashObjectSameHash() {
+        HashSet<hashSameButNotEquals> hs = new HashSet<>();
+        hashSameButNotEquals first = new hashSameButNotEquals(23);
+        hashSameButNotEquals second = new hashSameButNotEquals(44);
+        hs.add(first);
+        assertFalse(hs.contains(second));
+    }
+
+    private final class hashSameButNotEquals {
+
+        private final int number;
+
+        public hashSameButNotEquals(final int number) {
+            this.number = number;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null || !obj.getClass().equals(hashSameButNotEquals.class)) {
+                return false;
+            }
+            return ((hashSameButNotEquals) obj).number == number;
+        }
+
+        @Override
+        public int hashCode() {
+            return 1;
+        }
     }
 }
