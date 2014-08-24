@@ -1,3 +1,5 @@
+package pakkaaja;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -17,13 +19,15 @@ import static org.junit.Assert.*;
  *
  * @author joonaskylliainen
  */
-public class PakkaajaTest {
+public class PackerTest {
+    
+    Packer packer;
     
     String word1;
     String word2;
     String word3;
     
-    public PakkaajaTest() {
+    public PackerTest() {
         
     }
     
@@ -37,24 +41,26 @@ public class PakkaajaTest {
     
     @Before
     public void setUp() {
-        word1 = "poks";
+        word1 = "kissa";
         word2 = "j'aime aller sur le bord de l'eau les jeudis ou les jours impairs";
+        packer = new Packer();
     }
     
     @After
     public void tearDown() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-     @Test
-     public void hello() {}
 
-//     @Test
-//     public void toimiiko() {
-//         Packer packer = new Packer();
-//         String paketti = packer.pack(word1);
-//         assertEquals()
-//     }
+     /**
+     * testaa toimiiko pakkaaja
+     */
+    @Test
+     public void doesPackerWork() {
+
+         Paketti paketti = packer.pack(word1);
+         Paketti paketti2 = packer.pack(word2);
+         assertEquals(paketti.getLause(), "1011100110");
+         assertEquals(paketti2.getLause(),"10111101001001100010101011001001111011100111101000101100110100111001100101100111111101111100011110011001110101000111001110000111001101000101110111100111101000010001111111000011100110100010111111111100110101000100010101101101100110001101010");
+     }
+
     
 }

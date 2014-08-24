@@ -5,7 +5,8 @@
 package pakkaaja;
 
 /**
- * Puu
+ * Puu, joka sisältää solmu-olioita. Puu on pakkaamisen ja purkamisen ydin.
+ * 
  * @author joonaskylliainen
  */
 public class Tree {
@@ -56,6 +57,10 @@ public class Tree {
         treeWalk(c, this.root, x);
         return x;
     }
+    /**
+     * Tekee listan jossa jokainen kohta vastaa ascii-merkkiä. Kohdan sisältö on merkin binääriluku.
+     * @return
+     */
     public String[] makeDirectory() {
         String[] lista = new String[256];
         treeWalk2(lista,root,"");
@@ -83,13 +88,15 @@ public class Tree {
         if (root.getRight() != null) {
             x = treeWalk(c, root.getRight(), x + "1");
         }
-       
-//        if (root != null || root.getChar() != c) {
-//            treeWalk(c, root.getLeft(), x + "0");
-//            treeWalk(c, root.getRight(), x + "1");   
-//        } 
         return x;
     }
+    /**
+     * Käy puun läpi ja tallentaa x muuttujaan paikan mukaisen binäärikoodin.
+     * Lehteen osuessaan tallentaa sen siältämän kirjaimen kohtaan x:n sisältämän binäärikoodin.
+     * @param list merkkilista
+     * @param n solmu
+     * @param x binäärikoodi
+     */
     public void treeWalk2(String[] list, Node n, String x) {
         if (n.getLeft() != null && n.getRight() != null) {
             treeWalk2(list,n.getLeft(),x+"0");

@@ -1,3 +1,5 @@
+package pakkaaja;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -16,6 +18,8 @@ import static org.junit.Assert.*;
  */
 public class DecompressorTest {
     
+    Packer packer;
+    
     public DecompressorTest() {
     }
     
@@ -29,14 +33,17 @@ public class DecompressorTest {
     
     @Before
     public void setUp() {
+        packer = new Packer();
     }
     
     @After
     public void tearDown() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
+    @Test
+    public void doesDecompressorWork() {
+        Paketti paketti = packer.pack("kissa");
+        Decompressor dec = new Decompressor(paketti.getTree(), paketti.getLause());
+        assertEquals("kissa", dec.unzip());
+    }
 }

@@ -17,8 +17,11 @@ public class Main {
         Scanner lukija = new Scanner(System.in);
         System.out.println("Anna pakattava: ");
         String lause = lukija.nextLine();
+         System.out.println("----------------");
         Packer packer = new Packer();
         Paketti paketti = packer.pack(lause);
+        
+         System.out.println("-----------------");
 
         System.out.println(paketti.getLause());
         

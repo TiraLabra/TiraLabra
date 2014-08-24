@@ -5,7 +5,7 @@
 package pakkaaja;
 
 /**
- *
+ * Purkaa sille annetun paketin ja palauttaa sen merkkijonona.
  * @author joonaskylliainen
  */
 public class Decompressor {
@@ -41,7 +41,7 @@ public class Decompressor {
      * @param root puun juuri
      * @param c 
      */
-    public void nextChar(Node root, Character c) {
+    private void nextChar(Node root, Character c) {
 //        Node nod = root;
         if (root == null) {
             return;
@@ -57,9 +57,6 @@ public class Decompressor {
             lause += root.getChar();
             
         }
-//        while(nod.getLeft() != null && nod.getRight() != null) {
-//            if ()
-//        }
 
     }
 }

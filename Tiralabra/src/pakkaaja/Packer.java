@@ -5,7 +5,7 @@
 package pakkaaja;
 
 /**
- *
+ * Pakkaa sille annetun merkkijonon ja tekee siitä binääriluvun.
  * @author joonaskylliainen
  */
 
@@ -42,30 +42,14 @@ public class Packer {
      * @param s käyttäjän antama syöte
      * @return dynaaminen lista joissa jokaisen merkki esiintymistaajuiksineen.
      */
-    public static int[] count(String s) {
-//        ArrayList<Node> list = new ArrayList<Node>();
-//        ArrayList<Character> apulist = new ArrayList<Character>();
-//        for(int i = 0; i < s.length(); i++) {
-//            char c = s.charAt(i);
-//            Node nod = new Node(c, 1);
-//
-//            if (apulist.contains(c)) {
-//                list.get(apulist.indexOf(c)).increaseFrequencyByOne();
-//            }
-//            else {
-//                list.add(nod);
-//            }
-//         }
+    private static int[] count(String s) {
         
         char[] input = s.toCharArray();
         int[] freq = new int[256];
         for (int i = 0; i < input.length; i++) {
             freq[input[i]]++;
         }
-        
-//        for ( Node a : list) {
-//            System.out.println(a.getChar());
-//        }
+
         return freq;
     }
     /**
@@ -73,17 +57,14 @@ public class Packer {
      * @param list
      * @return keko
      */
-    public static PriorityQueue<Node> makeQueue(int[] list) {
+    private static PriorityQueue<Node> makeQueue(int[] list) {
         PriorityQueue<Node> que = new PriorityQueue<Node>(256);
         for (char i = 0; i < 256;i++) {
             if (list[i] > 0) {
                 que.add(new Node(i, list[i]));
             }           
         }
-//        for (Iterator<Node> it = que.iterator(); it.hasNext();) {
-//            Node a = it.next();
-//            System.out.println(a.getChar() + "  " + a.getFrequency());
-//        }
+
         return que;
     }
     /**
@@ -91,7 +72,7 @@ public class Packer {
      * @param que keko
      * @return puu
      */
-    public static Tree makeTree(PriorityQueue<Node> que) {
+    private static Tree makeTree(PriorityQueue<Node> que) {
         while (que.size() > 1) {
             Node a = que.poll();
             Node b = que.poll();
@@ -110,7 +91,7 @@ public class Packer {
      * @param right solmun oikea lapsi
      * @return uusi solmu
      */
-    public static Node makeNewNode(Node left, Node right) {
+    private static Node makeNewNode(Node left, Node right) {
         char c = '*';
         Node nod = new Node(c, left.getFrequency() + right.getFrequency());
         nod.setLeft(left);
@@ -123,14 +104,21 @@ public class Packer {
      * @param tree Huffmann-puu
      * @return pakkaus
      */
-    public static String packing(String s, Tree tree) {
+    private static String packing(String s, Tree tree) {
         String pakkaus = "";
         for(int i = 0; i < s.length(); i++) {
             pakkaus = pakkaus + tree.find(s.charAt(i));
         }
         return pakkaus;
     }
-    public static String packing2(String s, Tree tree) {
+    
+    /**
+     * tekee puusta ja annetusta merkkijonosta pakatun version.
+     * @param s merkkijono
+     * @param tree Huffmann-puu
+     * @return pakkaus
+     */
+    private static String packing2(String s, Tree tree) {
         String pakkaus = "";
         char[] ca = s.toCharArray();
         String[] list = tree.makeDirectory();       

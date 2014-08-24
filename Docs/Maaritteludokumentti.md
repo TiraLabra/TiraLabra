@@ -16,7 +16,7 @@ Puun generoimiseen tarvitsen myös minikeon. Kekona käytän aluksi Javan valmis
 luokkaa ennen sen itse toteuttamista.
 
 Solmu-olioita vertaillaan niiden esiintymistiheyden perusteella tekstissä, joten tarvitsen
-dynaamisen taulukon merkkien laskemista varten. Laskemisen voi totauttaa myös hajautustaulukolla.
+taulukon merkkien laskemista varten. Laskemisen voisi toteuttaa myös hajautustaulukolla.
 
 ##Ohjelman toiminta
 Ohjelma saa syötteekseen tekstin jonka haluaa pakata. Ohjelma palauttaa binäärikoodin käyttäjälle.

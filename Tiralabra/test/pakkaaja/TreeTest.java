@@ -1,3 +1,5 @@
+package pakkaaja;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -47,33 +49,17 @@ public class TreeTest {
     @After
     public void tearDown() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
     /**
-     * Testaa löytyykö oikea lapsi
+     * testaa toimiiko makeDirectory metodi. Jos toimii, niin puukin rakentuu oikein.
      */
     @Test
-    public void findRightChild() {
-        
-        assertEquals("1", tree.find('c'));
+    public void doesMakeDirectoryWork() {      
+        String[] list = tree.makeDirectory();
+        assertEquals("1", list['c']);
+        assertEquals("01", list['d']);
+        assertEquals("00", list['e']);
+        assertTrue("sisäsolmut eivät voi olla listassa", list['b']==null);
     }
-    /**
-     * löytyykö vasemman lapsen oikea lapsi
-     */
-    @Test
-    public void findLeftRightChild() {
-        
-        assertEquals("01", tree.find('d'));
-    }
-    /**
-     * löytyykö vasemman lapsen vasen lapsi
-     */
-    @Test
-    public void findLeftLeftChild() {
-        
-        assertEquals("00", tree.find('e'));
-    }
+    
+    
 }

@@ -1,3 +1,5 @@
+package pakkaaja;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -73,18 +75,27 @@ public class NodeTest {
         
         assertEquals(false, node.equals(node2));
     }
+    /**
+     * Toimiiko compareTo kun verrattava on pienempi
+     */
     @Test
     public void doesCompareToWorkWhenSmaller() {
         Node node2 = new Node('b', 4);
         
         assertEquals(1, node.compareTo(node2));
     }
+    /**
+     * Toimiiko compareTo kun verrattava isompi
+     */
     @Test
     public void doesCompareToWorkWhenBigger() {
         Node node2 = new Node('b', 6);
         
         assertEquals(-1, node.compareTo(node2));
     }
+    /**
+     * toimiiko compareTo kun verrattavat ovat samoja
+     */
     @Test
     public void doesCompareToWorkWhenSame() {
         Node node2 = new Node('b', 5);
