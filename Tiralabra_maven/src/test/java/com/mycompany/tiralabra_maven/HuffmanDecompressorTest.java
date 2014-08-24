@@ -3,7 +3,6 @@ package com.mycompany.tiralabra_maven;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,10 +31,6 @@ public final class HuffmanDecompressorTest {
         } catch (IOException ex) {
             System.err.println("Error in test: Creating temp file");
         }
-    }
-
-    @AfterClass
-    public static void downStatic() {
     }
 
     @Before
@@ -74,7 +69,6 @@ public final class HuffmanDecompressorTest {
     public void testDecompressionWorks() {
         decompressor = new HuffmanDecompressor(testFile.getAbsolutePath() + ".pkx");
         String decompressed = decompressor.decompress();
-        System.out.println(testFile.getAbsolutePath() + ".pkx" + " :  " + decompressed);
         assertEquals(testString, decompressed);
     }
 }

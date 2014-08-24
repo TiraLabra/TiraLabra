@@ -21,7 +21,7 @@ public final class BitSet {
 
     private void addBools(final byte from, final int endAt) {
         for (int i = 0; i < endAt; i++) {
-            bools.add(getBoolFromByte(from, i));
+            add(getBoolFromByte(from, i));
         }
     }
 
@@ -39,7 +39,7 @@ public final class BitSet {
         return bools.get(index);
     }
 
-    public int lenght() {
+    public int length() {
         return count;
     }
 

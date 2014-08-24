@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.BitSet;
+import Collections.BitSet;
 
 /**
  * Compressor that uses huffman encoding to compress text files.
@@ -224,7 +224,7 @@ public final class HuffmanCompressor {
             final BitImmutableCollection bitsCollection = characterEncoding.get(text.charAt(i));
             final int collectionSize = bitsCollection.size();
             for (int j = 0; j < collectionSize; j++) {
-                bits.set(j + bitsWritten, bitsCollection.at(j));
+                bits.add(bitsCollection.at(j));
             }
             bitsWritten += collectionSize;
         }

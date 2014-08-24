@@ -48,7 +48,7 @@ public final class BitSetTest {
 
     @Test
     public void testLenghtEmpty() {
-        assertEquals(0, bits.lenght());
+        assertEquals(0, bits.length());
     }
 
     @Test
@@ -57,7 +57,7 @@ public final class BitSetTest {
         for (int i = 0; i < count; i++) {
             bits.add(true);
         }
-        assertEquals(count, bits.lenght());
+        assertEquals(count, bits.length());
     }
 
     @Test
@@ -200,7 +200,7 @@ public final class BitSetTest {
         for (int i = 0; i < iters; i++) {
             bits.add(rand.nextBoolean());
         }
-        BitSet fromBytes = new BitSet(bits.toByteArray(), bits.lenght());
+        BitSet fromBytes = new BitSet(bits.toByteArray(), bits.length());
         boolean allCorrect = true;
         for (int i = 0; i < iters; i++) {
             if (bits.get(i) != fromBytes.get(i)) {

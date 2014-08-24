@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.BitSet;
+import Collections.BitSet;
 
 /**
  * Decompresses the files created by the huffman compressor.
@@ -107,7 +107,7 @@ public final class HuffmanDecompressor {
         System.out.println("bytes in file decompression " + arrayLenghtInBytes);
         final byte[] bits = new byte[arrayLenghtInBytes];
         bitReader.read(bits);
-        final BitSet bitsInSet = BitSet.valueOf(bits);// new BitSet(bits, bitsInArray);
+        final BitSet bitsInSet = new BitSet(bits, bitsInArray);
         return decode(bitsInSet, tree);
     }
 
