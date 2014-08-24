@@ -150,18 +150,6 @@ func TestBasicsD(t *testing.T) {
 	fmt.Println("TEST BASIC D PASSES.\n\n\n")
 }
 
-/*
-func TestOneAdd(t *testing.T) {
-	trie := NewTrie(10000)
-	a := trie.
-	trie.Add([]byte("a"), 33)
-	b := *trie
-	if a == b {
-		fmt.Println("Node should have changed!")
-		t.Fail()
-	}
-}
-*/
 func TestRetrieveZeroLength(t *testing.T) {
 	trie := NewTrie(10000, 256)
 	iter := trie.GetOrCreate([]byte{})
@@ -173,5 +161,16 @@ func TestRetrieveZeroLength(t *testing.T) {
 	trie.Add([]byte{}, 777)
 	if trie.TryAndGet([]byte{}).Value() != 777 {
 		t.Fail()
+	}
+}
+
+func TestPrefix(t *testing.T) {
+	trie := NewTrie(5000, 256)
+	key := []byte("durrr")
+	trie.Add(key, 5)
+	iter := trie.TryAndGet(key)
+	if string(iter.Prefix()) != string(key) {
+		t.Fail()
+		fmt.Println("Should have been: durrr. Was:", string(iter.Prefix()))
 	}
 }

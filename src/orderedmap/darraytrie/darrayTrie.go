@@ -61,8 +61,9 @@ func NewTrie(capacity int, alphabetSize int) Trie {
 Adds a key-value pair to trie.
 */
 func (t *Trie) Add(key []byte, value int) {
-	iter := t.GetOrCreate(key)
-	t.value[iter.index()] = value
+	iter := &Iterator{trie: t, indices: make([]int, 1, len(key)+1)}
+	iter2 := iter.GetOrCreate(key)
+	t.value[iter2.index()] = value
 
 	if debug {
 		fmt.Println("Value set.")
@@ -76,34 +77,55 @@ Tries to retrieve a key-value pair (as an iterator) and returns null if such a p
 doesn't exist.
 */
 func (t *Trie) TryAndGet(key []byte) *Iterator {
-	now := 0
-	next := 0
-	iter := Iterator{trie: t, indices: make([]int, 1, len(key)+1)}
-	for i := 0; i < len(key); i++ {
-		next = t.base[now] + int(key[i])
-		if t.check[next] == now {
-			now = next
-			iter.indices = append(iter.indices, now)
-		} else {
-			if debug {
-				fmt.Println("Returning from TryAndGet - NO MATCH FOUND. Traversed indices:", iter.indices)
-			}
-			return nil
-		}
-	}
-	if debug {
-		fmt.Println("Returning from TryAndGet - MATCH FOUND. Traversed indices:", iter.indices, "Value:", t.value[iter.index()])
-	}
-	return &iter
+	iter := &Iterator{trie: t, indices: make([]int, 1, len(key)+1)}
+	return iter.TryAndGet(key)
 }
 
 /*
 Returns a key-value pair as an iterator. If the pair doesn't exist, creates it.
 */
 func (t *Trie) GetOrCreate(key []byte) *Iterator {
+	iter := &Iterator{trie: t, indices: make([]int, 1, len(key)+1)}
+	return iter.GetOrCreate(key)
+}
+
+/*
+Gets the value of a key-value pair.
+*/
+func (iter *Iterator) Value() int {
+	return iter.trie.value[iter.index()]
+}
+
+/*
+Sets the value of a key-value pair.
+*/
+func (iter *Iterator) SetValue(value int) {
+	iter.trie.value[iter.index()] = value
+}
+
+/*
+Internal shorthand for the index of the node the iterator references.
+*/
+func (iter *Iterator) index() int {
+	return iter.indices[len(iter.indices)-1]
+}
+
+// Get the key of given node.
+func (iter *Iterator) Prefix() []byte {
+	t := iter.trie
+	prefix := make([]byte, len(iter.indices)-1)
+	for i := 0; i < len(iter.indices)-1; i++ {
+		now := iter.indices[i]
+		next := iter.indices[i+1]
+		prefix[i] = byte(next - t.base[now])
+	}
+	return prefix
+}
+
+func (iter *Iterator) GetOrCreate(key []byte) *Iterator {
+	t := iter.trie
 	now := 0
 	next := 0
-	iter := Iterator{trie: t, indices: make([]int, 1, len(key)+1)}
 	if debug {
 		fmt.Println("GetOrCreate - START")
 	}
@@ -140,31 +162,39 @@ func (t *Trie) GetOrCreate(key []byte) *Iterator {
 	if debug {
 		fmt.Println("GetOrCreate ends.\n")
 	}
-	return &iter
+	return iter
 }
 
-/*
-Gets the value of a key-value pair.
-*/
-func (i *Iterator) Value() int {
-	return i.trie.value[i.index()]
+func (iter *Iterator) Add(key []byte, value int) {
+	iter2 := iter.GetOrCreate(key)
+	t := iter.trie
+	t.value[iter2.index()] = value
+
+	if debug {
+		fmt.Println("Value set.")
+		fmt.Println(t.value)
+		fmt.Println("Add complete.\n")
+	}
 }
 
-/*
-Sets the value of a key-value pair.
-*/
-func (i *Iterator) SetValue(value int) {
-	i.trie.value[i.index()] = value
-}
-
-/*
-Internal shorthand for the index of the node the iterator references.
-*/
-func (i *Iterator) index() int {
-	return i.indices[len(i.indices)-1]
-}
-
-// Get the key of given node.
-func (i *Iterator) Prefix() []byte {
-	return n.prefix(0)
+func (iter *Iterator) TryAndGet(key []byte) *Iterator {
+	t := iter.trie
+	now := 0
+	next := 0
+	for i := 0; i < len(key); i++ {
+		next = t.base[now] + int(key[i])
+		if t.check[next] == now {
+			now = next
+			iter.indices = append(iter.indices, now)
+		} else {
+			if debug {
+				fmt.Println("Returning from TryAndGet - NO MATCH FOUND. Traversed indices:", iter.indices)
+			}
+			return nil
+		}
+	}
+	if debug {
+		fmt.Println("Returning from TryAndGet - MATCH FOUND. Traversed indices:", iter.indices, "Value:", t.value[iter.index()])
+	}
+	return iter
 }
