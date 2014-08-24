@@ -6,10 +6,11 @@ Samoilla heuristiikoilla, hakusyvyyksillä ja algoritmeilla toteutettuna tekoäl
 Aluksi testasin ohjelman toimintaa ilman satunnaisuutta. Laitoin eri hakusyvyyksillä varustetut minimax-algoritmia käyttävät tekoälyt pelaamaan toisiaan vastaan ja sain seuraavanlaiset tulokset:
 v= valkoinen voitti, m= musta voitti, p= pattitilanne
 
-Valkoisen syvyys Mustan syvyys-> | 1 | 3 |5 |7 |
-1 | v | p | p | m |
-3 | v | m | m | p | 
-5 | p | v | p | - |
+| Valkoisen syvyys Mustan syvyys-> | 1 | 3 |5 |7 |
+|---|---|---|---|---|
+| 1 | v | p | p | m |
+| 3 | v | m | m | p | 
+| 5 | p | v | p | - |
 
 Nyt peli näyttäisi päättyvän usein pattitilanteeseen, jossa molemmat pelaajat liikuttavat kuninkaitaan edestakaisin. Jos toinen pelaajista tekisi jotain muuta, se todennäköisesti myös häviäisi pelin. Pattitilanteita varten tekoälyyn pitäisi ehkä yrittää kehittää joku ratkaisu.
 

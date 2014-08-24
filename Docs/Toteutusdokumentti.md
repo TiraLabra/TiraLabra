@@ -9,19 +9,33 @@ Tähän voisi ehkä piirtää vaikka luokkakaavion
 Ohjelma koostuu peli-, käyttöjärjestelmä-, tietorakenne- ja algoritmiluokista. Kurssin kannalta kiinnostavimpia ovat tietorakenne- ja algoritmiluokat. Niiden avulla on toteutettu peliä pelaavat tekoälyt. Yksi tekoälyistä käyttää minimax-algoritmia. Se on toteutettu wikipedian pseudokoodin perusteella:
 
 function minimax(node, depth, maximizingPlayer)
+
     if depth = 0 or node is a terminal node
+    
         return the heuristic value of node
+        
     if maximizingPlayer
+    
         bestValue := -∞
+        
         for each child of node
+        
             val := minimax(child, depth - 1, FALSE)
+            
             bestValue := max(bestValue, val)
+            
         return bestValue
+        
     else
+    
         bestValue := +∞
+        
         for each child of node
+        
             val := minimax(child, depth - 1, TRUE)
+            
             bestValue := min(bestValue, val)
+            
         return bestValue
 
 (* Initial call for maximizing player *)
