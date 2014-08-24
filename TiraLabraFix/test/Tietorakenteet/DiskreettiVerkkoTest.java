@@ -71,7 +71,7 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.Naapurit(solmuvektori[0]);
+        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[0]);
         int i = lista.size();
         assertEquals(i, 8);
 
@@ -96,7 +96,7 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.Naapurit(solmuvektori[1]);
+        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[1]);
         int i = lista.size();
         assertEquals(i, 3);
 
@@ -121,7 +121,7 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.Naapurit(solmuvektori[5]);
+        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[5]);
         int i = lista.size();
         assertEquals(i, 5);
 
@@ -140,7 +140,7 @@ public class DiskreettiVerkkoTest {
         kartta.put(k, solmuvektori[0]);
         this.verkko.asetaKartta(kartta);
 
-        assertEquals(true, this.verkko.Olemassa(solmuvektori[0]));
+        assertEquals(true, this.verkko.olemassa(solmuvektori[0]));
 
     }
 
@@ -153,7 +153,7 @@ public class DiskreettiVerkkoTest {
         Kordinaatti k = solmuvektori[0].palautaKordinaatit();
         kartta.put(k, solmuvektori[0]);
 
-        assertEquals(false, this.verkko.Olemassa(new DiskreettiSolmu(2, 3)));
+        assertEquals(false, this.verkko.olemassa(new DiskreettiSolmu(2, 3)));
 
     }
 
@@ -167,7 +167,7 @@ public class DiskreettiVerkkoTest {
     public void testEtaisyys() {
         DiskreettiSolmu r = new DiskreettiSolmu(1,1);
         DiskreettiSolmu r2 = new DiskreettiSolmu(4,5);
-        double d = this.verkko.Etaisyys(r, r2);
+        double d = this.verkko.etaisyys(r, r2);
         assertEquals(d, 5, 0.01);
 
     }

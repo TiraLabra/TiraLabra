@@ -17,13 +17,13 @@ import java.util.ArrayList;
  */
 public interface Verkko {
 
-    public ArrayList<Abstraktisolmu> Naapurit(Abstraktisolmu node);
+    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node);
 
-    public boolean Olemassa(Abstraktisolmu node);
+    public boolean olemassa(Abstraktisolmu node);
 
-    public double Heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu);
+    public double heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu);
 
-    public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu);
+    public double etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu);
     
     public void tyhjenna();
 }

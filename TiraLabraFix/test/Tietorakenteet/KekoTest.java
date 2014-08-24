@@ -44,7 +44,7 @@ public class KekoTest {
         keko.asetaTaulukko(solmut, 2);
         keko.vaihda(0, 1);
         DiskreettiSolmu s = (DiskreettiSolmu) keko.palautaTaulukko()[0];
-        double x = s.PalautaX();
+        double x = s.palautaX();
         assertEquals(x, 2, 0.01);
 
     }
@@ -57,7 +57,7 @@ public class KekoTest {
         keko.asetaTaulukko(solmut, 2);
         keko.vaihda(0, 1);
         DiskreettiSolmu s2 = (DiskreettiSolmu) keko.palautaTaulukko()[1];
-        double x2 = s2.PalautaX();
+        double x2 = s2.palautaX();
         assertEquals(x2, 1, 0.01);
 
     }
@@ -69,7 +69,7 @@ public class KekoTest {
         lisattava.asetaArvo(1);
         solmut[0] = lisattava;
         keko.asetaTaulukko(solmut, 1);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
         assertEquals(solmut, solmud);
 
@@ -85,9 +85,9 @@ public class KekoTest {
         solmut[0] = lisattava;
         solmut[1] = lisattava2;
         keko.asetaTaulukko(solmut, 2);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].PalautaX(), 1, 0.01);
+        assertEquals(solmud[0].palautaX(), 1, 0.01);
 
     }
 
@@ -101,9 +101,9 @@ public class KekoTest {
         solmut[0] = lisattava;
         solmut[1] = lisattava2;
         keko.asetaTaulukko(solmut, 2);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 1, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
 
@@ -117,9 +117,9 @@ public class KekoTest {
         solmut[0] = lisattava;
         solmut[1] = lisattava2;
         keko.asetaTaulukko(solmut, 2);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[1].KekoArvo(), 2, 0.01);
+        assertEquals(solmud[1].palautaSolmuMuisti().palautaFScore(), 2, 0.01);
 
     }
 
@@ -136,9 +136,9 @@ public class KekoTest {
         solmut[1] = lisattava2;
         solmut[2] = lisattava3;
         keko.asetaTaulukko(solmut, 3);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 1, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
 
@@ -155,9 +155,9 @@ public class KekoTest {
         solmut[0] = lisattava2;
         solmut[2] = lisattava3;
         keko.asetaTaulukko(solmut, 3);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 1, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
 
@@ -172,9 +172,9 @@ public class KekoTest {
         }
 
         keko.asetaTaulukko(solmut, 99);
-        keko.Korjaa(0);
+        keko.korjaa(0);
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 0, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 0, 0.01);
 
     }
 
@@ -191,11 +191,11 @@ public class KekoTest {
         keko.asetaTaulukko(solmut, 99);
         keko.vaihda(0, 98);
         for (int i = 98; i >= 0; i--) {
-            keko.Korjaa(i);
+            keko.korjaa(i);
 
         }
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 0, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 0, 0.01);
 
     }
 
@@ -205,7 +205,7 @@ public class KekoTest {
         solmut[0] = new DiskreettiSolmu(1, 1);
         solmut[0].asetaArvo(1);
         keko.asetaTaulukko(solmut, 1);
-        keko.PoistaMinimi();
+        keko.poistaMinimi();
         assertEquals(keko.palautaNykyinenKoko(), 0);
 
     }
@@ -219,7 +219,7 @@ public class KekoTest {
         solmut[1].asetaArvo(2);
 
         keko.asetaTaulukko(solmut, 2);
-        keko.PoistaMinimi();
+        keko.poistaMinimi();
         assertEquals(keko.palautaNykyinenKoko(), 1);
 
     }
@@ -233,8 +233,9 @@ public class KekoTest {
         solmut[1].asetaArvo(2);
 
         keko.asetaTaulukko(solmut, 2);
-        keko.PoistaMinimi();
-        assertEquals(keko.palautaTaulukko()[0].KekoArvo(), 2, 0.01);
+        keko.poistaMinimi();
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.palautaTaulukko()[0];
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 2, 0.01);
 
     }
 
@@ -250,11 +251,11 @@ public class KekoTest {
 
         keko.asetaTaulukko(solmut, 99);
         for (int i = 98; i >= 0; i--) {
-            keko.PoistaMinimi();
+            keko.poistaMinimi();
 
         }
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 98, 0.01);
+        assertEquals(solmud[0].palautaSolmuMuisti().palautaFScore(), 98, 0.01);
 
     }
 
@@ -278,7 +279,9 @@ public class KekoTest {
         keko.asetaTaulukko(solmut, 0);
         Iteroitava iteroiva = solmu;
         keko.Lisaa(iteroiva);
-        assertEquals(keko.palautaTaulukko()[0].KekoArvo(), 1, 0.01);
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.palautaTaulukko()[0];
+
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
 
@@ -313,8 +316,9 @@ public class KekoTest {
         keko.asetaTaulukko(solmut, 0);
         keko.Lisaa(iteroiva);
         keko.Lisaa(iteroiva2);
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.palautaTaulukko()[0];
 
-        assertEquals(keko.palautaTaulukko()[0].KekoArvo(), 1, 0.01);
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
 
@@ -332,10 +336,13 @@ public class KekoTest {
         }
 
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(solmud[0].KekoArvo(), 0, 0.01);
+        DiskreettiSolmu s = (DiskreettiSolmu) solmud[0];
+
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 0, 0.01);
 
     }
-     @Test
+
+    @Test
     public void MassiivisetLisayksetTuovatTulostaTestaaPoistaMinmi() {
         DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
         keko.asetaTaulukko(solmut, 0);
@@ -349,7 +356,9 @@ public class KekoTest {
         }
 
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
-        assertEquals(keko.PoistaMinimi().KekoArvo(), 0, 0.01);
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.poistaMinimi();
+
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 0, 0.01);
 
     }
 
@@ -358,19 +367,22 @@ public class KekoTest {
 
         DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
         keko.asetaTaulukko(solmut, 0);
-        Iteroitava iter = new DiskreettiSolmu(0,0);
+        Iteroitava iter = new DiskreettiSolmu(0, 0);
         iter.asetaArvo(1);
-        Iteroitava iter2 = new DiskreettiSolmu(1,1);
+        Iteroitava iter2 = new DiskreettiSolmu(1, 1);
         iter2.asetaArvo(0);
         keko.Lisaa(iter2);
         keko.Lisaa(iter);
         iter2.asetaArvo(9000);
-        keko.Kasvatettu(iter2.SijaintiKeossa());
-        assertEquals(keko.PoistaMinimi().KekoArvo(), iter.KekoArvo(), 0.01);
+        keko.kasvatettu(iter2.sijaintiKeossa());
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.poistaMinimi();
+        DiskreettiSolmu d = (DiskreettiSolmu) iter;
 
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), d.palautaSolmuMuisti().palautaFScore(), 0.01);
 
     }
-      @Test
+
+    @Test
     public void KasvataEkaSolmu() {
         DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
         keko.asetaTaulukko(solmut, 0);
@@ -385,10 +397,11 @@ public class KekoTest {
 
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
         solmud[0].asetaArvo(9000);
-        keko.Kasvatettu(solmud[0].SijaintiKeossa());
-        assertEquals(keko.PoistaMinimi().KekoArvo(), 1, 0.01);
+        keko.kasvatettu(solmud[0].sijaintiKeossa());
+                DiskreettiSolmu s = (DiskreettiSolmu) keko.poistaMinimi();
+
+        assertEquals(s.palautaSolmuMuisti().palautaFScore(), 1, 0.01);
 
     }
-
 
 }

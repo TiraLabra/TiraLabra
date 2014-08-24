@@ -41,7 +41,6 @@ public class Atahtialgoritmi {
         this.verkko = verkko;
         this.polku = new ArrayList<Abstraktisolmu>();
         this.maksimi = maksimi;
-        initKeko();
 
     }
     /*
@@ -80,28 +79,29 @@ public class Atahtialgoritmi {
      * @return boolean palauttaa true jos reitti löytyy muuten false
      */
     public boolean laske() {
+        initKeko();
         this.verkko.tyhjenna();
 
         this.laskentaJoukko.Lisaa(alku);
         alku.palautaSolmuMuisti().asetaKekoon(true);
         this.alku.palautaSolmuMuisti().asetaGScore(0);
-        this.alku.palautaSolmuMuisti().asetaFScore(this.verkko.Etaisyys(alku, loppu));
+        this.alku.palautaSolmuMuisti().asetaFScore(this.verkko.etaisyys(alku, loppu));
         while (this.laskentaJoukko.palautaNykyinenKoko() > 0) {
-            Abstraktisolmu current = (Abstraktisolmu) this.laskentaJoukko.PoistaMinimi();
+            Abstraktisolmu current = (Abstraktisolmu) this.laskentaJoukko.poistaMinimi();
             current.palautaSolmuMuisti().asetaKekoon(false);
             if (current == loppu) {
 
                 return true;
             }
             current.palautaSolmuMuisti().Varita(1);
-            ArrayList<Abstraktisolmu> naapurit = this.verkko.Naapurit(current);
+            ArrayList<Abstraktisolmu> naapurit = this.verkko.naapurit(current);
             for (Abstraktisolmu naapuri : naapurit) {
                 if (naapuri.palautaSolmuMuisti().palautaVari() != 1) {
-                    double gscore = current.palautaSolmuMuisti().palautaGScore() + this.verkko.Etaisyys(current, naapuri);
+                    double gscore = current.palautaSolmuMuisti().palautaGScore() + this.verkko.etaisyys(current, naapuri);
                     if ((naapuri.palautaSolmuMuisti().Keossa() == false) || (gscore < naapuri.palautaSolmuMuisti().palautaGScore())) {
                         naapuri.palautaSolmuMuisti().asetaEdellinen(current);
                         naapuri.palautaSolmuMuisti().asetaGScore(gscore);
-                        double d = gscore + this.verkko.Heurestiikka(naapuri, loppu);
+                        double d = gscore + this.verkko.heurestiikka(naapuri, loppu);
                         boolean kasvaa;
                         if (d > naapuri.palautaSolmuMuisti().palautaFScore()) {
                             kasvaa = true;
@@ -114,9 +114,9 @@ public class Atahtialgoritmi {
                             naapuri.palautaSolmuMuisti().asetaKekoon(true);
                         } else {
                             if (kasvaa) {
-                                this.laskentaJoukko.Kasvatettu(naapuri.SijaintiKeossa());
+                                this.laskentaJoukko.kasvatettu(naapuri.sijaintiKeossa());
                             } else {
-                                this.laskentaJoukko.Pienennetty(naapuri.SijaintiKeossa());
+                                this.laskentaJoukko.pienennetty(naapuri.sijaintiKeossa());
                             }
                         }
                     }

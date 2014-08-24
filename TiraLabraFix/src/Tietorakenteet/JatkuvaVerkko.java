@@ -18,22 +18,22 @@ public class JatkuvaVerkko implements Verkko {
     
 
     @Override
-    public ArrayList<Abstraktisolmu> Naapurit(Abstraktisolmu node) {
+    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean Olemassa(Abstraktisolmu node) {
+    public boolean olemassa(Abstraktisolmu node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public double Heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
+    public double heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
+    public double etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -3,49 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Tietorakenteet;
 
 /**
  *
- * Tämä luokka on luotu helpottamaan yleistä rakennetta ja samalla nyt on mahdollista verrata HashMappeja Kordinaatin perusteella
+ * Tämä luokka on luotu helpottamaan yleistä rakennetta ja samalla nyt on
+ * mahdollista verrata HashMappeja Kordinaatin perusteella
  */
-public class Kordinaatti {
+public class Kordinaatti implements Comparable<Kordinaatti> {
 
     private double x;
     private double y;
-    
-    /**
- *  Asetttaa kordinaatit
-  */
 
+    /**
+     * Asetttaa kordinaatit
+     */
     public Kordinaatti(double x, double y) {
         this.x = x;
         this.y = y;
     }
-    
-     /**
- *  Palauttaa X kordinaatin
-  */
 
-
+    /**
+     * Palauttaa X kordinaatin
+     */
     public double palautaX() {
         return this.x;
     }
-    
-        /**
- *  Palauttaa Y kordinaatin
-  */
 
+    /**
+     * Palauttaa Y kordinaatin
+     */
     public double palautaY() {
         return this.y;
     }
-   
-      /**
- *  Overraidaa hashcoden
-  */
 
-
+    /**
+     * Overraidaa hashcoden
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -54,10 +48,9 @@ public class Kordinaatti {
         return hash;
     }
 
-     /**
- *  Overraidaa equalsin
-  */
-    
+    /**
+     * Overraidaa equalsin
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -75,7 +68,24 @@ public class Kordinaatti {
         }
         return true;
     }
-
-   
+    /**
+     * Vertaa kahta kordinaattia, sillä tavalla kuin sitä tarvitaan Janaleikkaus luokassa
+     */
+    @Override
+    public int compareTo(Kordinaatti o) {
+        if (this.x > o.x) {
+            return 1;
+        } else if (this.x == o.x) {
+            if (this.y > o.y) {
+                return 1;
+            } else if (this.y == o.y) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
 
 }

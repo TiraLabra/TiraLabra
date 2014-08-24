@@ -6,10 +6,13 @@
 package tiralabrafix;
 
 import Algoritmit.Atahtialgoritmi;
+import Algoritmit.Janaleikkaus;
+import Suorituskyky.ATahtiSuorituskykytestaus;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.DiskreettiVerkko;
 import Tietorakenteet.Keko;
+import Tietorakenteet.Kordinaatti;
 import Tietorakenteet.Verkko;
 import java.util.ArrayList;
 
@@ -23,7 +26,7 @@ public class TiraLabraFix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        polkurakennusdebuggaus();
+        suorituskyky();
     }
 
     public static void AtahtiTestaus() {
@@ -43,7 +46,7 @@ public class TiraLabraFix {
 
             DiskreettiSolmu solmu = (DiskreettiSolmu) solmuvektori[i].palautaSolmuMuisti().palautaEdellinen();
             if (solmu != null) {
-                System.out.println(solmu.PalautaX() + solmu.PalautaY());
+                System.out.println(solmu.palautaX() + solmu.palautaY());
                 solmuvektori[i].palautaSolmuMuisti().palautaEdellinen();
             }
 
@@ -70,7 +73,7 @@ public class TiraLabraFix {
 
             DiskreettiSolmu d = (DiskreettiSolmu) solmuvektori[i].palautaSolmuMuisti().palautaEdellinen();
             if (d != null) {
-                System.out.println(i + " : " + d.PalautaX() + "," + d.PalautaY());
+                System.out.println(i + " : " + d.palautaX() + "," + d.palautaY());
 
             }
 
@@ -91,18 +94,35 @@ public class TiraLabraFix {
         solmuvektori[7] = new DiskreettiSolmu(2, 1);
         solmuvektori[8] = new DiskreettiSolmu(2, 2);
         Atahtialgoritmi alg = new Atahtialgoritmi(verkko, 100);
-        
+
         verkko.Lisaa(solmuvektori);
         alg.asetaPisteet(solmuvektori[0], solmuvektori[8]);
         alg.laske();
         alg.rakennapolku();
         ArrayList<Abstraktisolmu> solmut = alg.palautapolku();
-        for (Abstraktisolmu s: solmut)
-        {
-        DiskreettiSolmu a = (DiskreettiSolmu) s;
-        System.out.println(a.palautaKordinaatit().palautaX() + "," + a.palautaKordinaatit().palautaY());
-        
+        for (Abstraktisolmu s : solmut) {
+            DiskreettiSolmu a = (DiskreettiSolmu) s;
+            System.out.println(a.palautaKordinaatit().palautaX() + "," + a.palautaKordinaatit().palautaY());
+
         }
+
+    }
+
+    public static void leikkausdebuggaus() {
+
+        Kordinaatti k1 = new Kordinaatti(0, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(1, 0);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Janaleikkaus leikkaaja = new Janaleikkaus();
+        System.out.println(leikkaaja.leikkaako(k1, k2, k3, k4));
+    }
+    
+    public static void suorituskyky()
+    {
+    ATahtiSuorituskykytestaus testaus = new ATahtiSuorituskykytestaus();
+    testaus.suorita(5);
+    
     }
 
 }

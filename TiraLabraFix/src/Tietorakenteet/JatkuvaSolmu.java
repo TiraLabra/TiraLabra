@@ -8,7 +8,7 @@ package Tietorakenteet;
 
 /**
  *
- * @author Serafim
+ * 
  */
 public class JatkuvaSolmu {
     

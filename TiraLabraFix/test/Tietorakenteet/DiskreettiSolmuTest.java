@@ -24,7 +24,7 @@ public class DiskreettiSolmuTest {
     @Test
     public void testPalautaX() {
      DiskreettiSolmu solmu = new DiskreettiSolmu(2,3);
-     assertEquals(2, solmu.PalautaX(), 0.01);
+     assertEquals(2, solmu.palautaX(), 0.01);
     }
 
     /**
@@ -33,7 +33,7 @@ public class DiskreettiSolmuTest {
     @Test
     public void testPalautaY() {
        DiskreettiSolmu solmu = new DiskreettiSolmu(2,3);
-     assertEquals(3, solmu.PalautaY(), 0.01);
+     assertEquals(3, solmu.palautaY(), 0.01);
     }
 
     /**
@@ -43,7 +43,7 @@ public class DiskreettiSolmuTest {
     public void testArvo() {
       DiskreettiSolmu solmu = new DiskreettiSolmu(2,3);
       solmu.asetaArvo(3.53);
-      assertEquals(3.53, solmu.KekoArvo(), 0.01);
+      assertEquals(3.53, solmu.palautaSolmuMuisti().palautaFScore(), 0.01);
 
 
     }

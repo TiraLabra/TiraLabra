@@ -8,7 +8,7 @@ package logiikka;
 
 /**
  *
- * @author Serafim
+ *
  */
 public class Jatkuvaverkkorakennus {
     

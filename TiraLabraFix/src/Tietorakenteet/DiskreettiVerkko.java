@@ -43,6 +43,7 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Asettaa ruudunpituuden
      *
+     * @param pituus asettaa ruudun pituuden
      */
     public void asetaRuudunpituus(double pituus) {
         this.ruudunpituus = pituus;
@@ -53,6 +54,7 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Palauttaa ruudu pituuden
      *
+     * @return double ruudunpituus
      */
     public double palautaPituus() {
         return ruudunpituus;
@@ -63,6 +65,7 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Aettaa kertan (Lähinnä testausta varten)
      *
+     * @param kartta asetetaan manuaalisesti hashmappi
      */
     public void asetaKartta(HashMap<Kordinaatti, DiskreettiSolmu> kartta) {
         this.kartta = kartta;
@@ -73,15 +76,16 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Palauttaa kaikki Abstraktisolmu pikselin naapurit ArrayList muodossa
      *
+     * @param node Solmu jonka naapureita etsitään
      * @return ArrayList<Abstraktisolmu> Lista abstraktisolmuja
      *
      */
     @Override
-    public ArrayList<Abstraktisolmu> Naapurit(Abstraktisolmu node) {
+    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node) {
         ArrayList<Abstraktisolmu> listasolmuja = new ArrayList<Abstraktisolmu>();
         DiskreettiSolmu s = (DiskreettiSolmu) node;
-        double x = s.PalautaX();
-        double y = s.PalautaY();
+        double x = s.palautaX();
+        double y = s.palautaY();
         Kordinaatti[] k = new Kordinaatti[8];
         k[0] = new Kordinaatti(x + this.ruudunpituus, y);
         k[1] = new Kordinaatti(x, y + this.ruudunpituus);
@@ -108,7 +112,7 @@ public class DiskreettiVerkko implements Verkko {
      * Tarkistaa onko kyseinen Abstraktisolmu tässä verkossa
      */
     @Override
-    public boolean Olemassa(Abstraktisolmu node) {
+    public boolean olemassa(Abstraktisolmu node) {
         DiskreettiSolmu s = (DiskreettiSolmu) node;
         if (this.kartta.get(s.palautaKordinaatit()) == null) {
             return false;
@@ -121,11 +125,13 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Palauttaa Atähtialgoritmin vaatiman heurestiikan
      *
+     * @param alku alkusolmu    
+     * @param loppu loppusolmui
      * @return double heurestiikka
      */
     @Override
-    public double Heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
-        return Etaisyys(alku, loppu);
+    public double heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
+        return etaisyys(alku, loppu);
     }
 
     /**
@@ -135,13 +141,13 @@ public class DiskreettiVerkko implements Verkko {
      * @return double arvo
      */
     @Override
-    public double Etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
+    public double etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
         DiskreettiSolmu a = (DiskreettiSolmu) alku;
         DiskreettiSolmu b = (DiskreettiSolmu) loppu;
-        double x1 = a.PalautaX();
-        double y1 = a.PalautaY();
-        double x2 = b.PalautaX();
-        double y2 = b.PalautaY();
+        double x1 = a.palautaX();
+        double y1 = a.palautaY();
+        double x2 = b.palautaX();
+        double y2 = b.palautaY();
         double sisa = Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2);
         double d = Math.sqrt(sisa);
 

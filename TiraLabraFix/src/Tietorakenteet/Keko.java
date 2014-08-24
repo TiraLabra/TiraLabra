@@ -56,22 +56,22 @@ public class Keko {
      * Heapify metodi, jos keon ehto on rikki taulukon kohdassa i tämä metodi
      * korjaa sen
      */
-    public void Korjaa(int i) {
+    public void korjaa(int i) {
         int vasen = vasen(i);
         int oikea = oikea(i);
         if (oikea <= this.nykyinenkoko - 1) {
             int pienempi = 0;
-            if (this.taulukko[vasen].KekoArvo() < this.taulukko[oikea].KekoArvo()) {
+            if (0 < this.taulukko[oikea].vertausoperaatio(this.taulukko[vasen])) {
                 pienempi = vasen;
             } else {
                 pienempi = oikea;
             }
-            if (this.taulukko[i].KekoArvo() > this.taulukko[pienempi].KekoArvo()) {
+            if (this.taulukko[i].vertausoperaatio(this.taulukko[pienempi]) > 0) {
                 vaihda(i, pienempi);
-                Korjaa(pienempi);
+                korjaa(pienempi);
             }
         } else if ((vasen == this.nykyinenkoko - 1)) {
-            if ((taulukko[i].KekoArvo() > taulukko[vasen].KekoArvo())) {
+            if ((taulukko[i].vertausoperaatio(this.taulukko[vasen])) > 0) {
                 vaihda(i, vasen);
             }
         }
@@ -82,7 +82,7 @@ public class Keko {
      *
      * Palauttaa minimin poistamatta sitä keosta
      */
-    public Iteroitava Minimi() {
+    public Iteroitava minimi() {
         return this.taulukko[0];
     }
 
@@ -90,11 +90,11 @@ public class Keko {
      *
      * Palauttaa minimin ja poistaa sen keosta niin että kekoehto säilyy
      */
-    public Iteroitava PoistaMinimi() {
+    public Iteroitava poistaMinimi() {
         Iteroitava min = this.taulukko[0];
         this.taulukko[0] = this.taulukko[this.nykyinenkoko - 1];
         this.nykyinenkoko = this.nykyinenkoko - 1;
-        Korjaa(0);
+        korjaa(0);
         return min;
     }
 
@@ -111,7 +111,7 @@ public class Keko {
         int i = this.nykyinenkoko - 1;
         objekti.asetaSijainti(i);
         this.taulukko[this.nykyinenkoko - 1] = objekti;
-        while ((i > 0) && (this.taulukko[this.vanhempi(i)].KekoArvo() > objekti.KekoArvo())) {
+        while ((i > 0) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) > 0)) {
             int vanhempi = this.vanhempi(i);
             vaihda(i, vanhempi);
             i = this.vanhempi(i);
@@ -123,17 +123,17 @@ public class Keko {
      *
      * Kun jotain alkion arvoa kasvatetaan, tämä metodi korjaa keon.
      */
-    public void Kasvatettu(int j) {
-        Korjaa(j);
+    public void kasvatettu(int j) {
+        korjaa(j);
     }
 
     /**
      *
      * Kun jotain alkion arvoa pienennetään , tämä metodi korjaa keon.
      */
-    public void Pienennetty(int j) {
+    public void pienennetty(int j) {
         int i = j;
-        while ((i > 0) && (this.taulukko[this.vanhempi(i)].KekoArvo() > this.taulukko[i].KekoArvo())) {
+        while ((i > 0) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(this.taulukko[i]) > 0)) {
             vaihda(i, this.vanhempi(i));
             i = this.vanhempi(i);
 
