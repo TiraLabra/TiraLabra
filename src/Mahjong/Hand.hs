@@ -20,9 +20,9 @@ data Hand = Hand
           { called :: [Mentsu]
           , concealed :: [Tile]
           , handStatus :: Shanten
-          , developments :: WaitTree
+          , developments :: [WaitTree]
           }
 
 -- | Build a @"Hand"@ from melded mentsu and concealed tiles.
 fromTiles :: [Mentsu] -> [Tile] -> Hand
-fromTiles ot ct = Hand ot ct (shanten (ot, ct)) (buildGreedyWaitTree ot ct)
+fromTiles ot ct = Hand ot ct (shanten (ot, ct)) (buildGWTs' ot ct)

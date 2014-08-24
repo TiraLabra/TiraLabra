@@ -34,7 +34,7 @@ import Mahjong.Hand.Algo.WaitTree
 main :: IO ()
 main =
     defaultMain suite
-    --let go = do print =<< rnf . buildGreedyWaitTree [] <$> randomTiles 13
+    --let go = do print =<< rnf . buildGWTs' [] <$> randomTiles 13
     --            go
     --    in go
 
@@ -61,7 +61,7 @@ suite =
         , bench "24" $ nfIO $ shanten <$> randomTiles 24
         ]
     , bgroup "buildGreedyWaitTree (random tiles)"
-        [ bench "13" $ nfIO $ buildGreedyWaitTree [] <$> randomTiles 13
+        [ bench "13" $ nfIO $ buildGWTs' [] <$> randomTiles 13
         ]
     ]
 

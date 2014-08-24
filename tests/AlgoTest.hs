@@ -26,7 +26,7 @@ algoTests = testGroup "Algorithm tests"
     [ tgSplitTests "tilesGroupL" tilesGroupL
     , tgSplitTests "tilesSplitGroupL" tilesSplitGroupL
     , shantenTests
-    , buildGreedyWaitTree'Tests
+    , gwtTests
     ]
 
 tgSplitTests :: TestName -> ([Tile] -> [[TileGroup]]) -> TestTree
@@ -89,15 +89,14 @@ shantenTests = testGroup "`shanten` properties"
         ]
     ]
 
-buildGreedyWaitTree'Tests :: TestTree
-buildGreedyWaitTree'Tests = testGroup "GWT: `buildGreedyWaitTree'`"
-
-    [ HU.testCase "testHands; depth correlates with shanten" $
-        let testDepth (d, h) = minDepth (buildGreedyWaitTree' [h]) @?= (d + 1)
+gwtTests :: TestTree
+gwtTests = testGroup "GWT: `buildGreedyWaitTree'`"
+    [ HU.testCase "gwt depth correlates with shanten" $
+        let testDepth (d, h) = minDepth (buildGWT h) @?= (d + 1)
             in mapM_ testDepth testHands
 
     , HU.testCase "testHands; No duplicate devops on one level" $
-        let test (_, h) = (\l -> hasNoDups (levels l) @? show (levels l)) (buildGreedyWaitTree' [h])
+        let test (_, h) = (\l -> hasNoDups (levels l) @? show (levels l)) (buildGWT h)
             in mapM_ test testHands
 
     -- , QC.testProperty "buildGreedyWaitTree [] <<13tiles>> .. is total?"

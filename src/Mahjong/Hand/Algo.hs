@@ -16,8 +16,7 @@ module Mahjong.Hand.Algo
     ShantenOf(..), Shanten, groupingShanten,
 
     -- * Waits
-    buildGreedyWaitTree,
-    buildGreedyWaitTree',
+    buildGWTs, buildGWTs', buildGWT,
     minDepth, levels,
 
     -- * Tile grouping
@@ -241,9 +240,9 @@ devops :: [Tile] -> [Wait] -> NE.NonEmpty DevOp'
 devops f_ts w_ts
     | []  <- f_ts, []  <- w_ts     = error "devops: called with a malformed hand (all mentsu)"
     | []  <- f_ts, [_] <- w_ts     = error "devops: called with a malformed hand (one mentsu free only)"
-    | [x] <- f_ts, []  <- w_ts     = return (Left x) -- Last pair wait
     | []  <- f_ts, twoKoutsu w_ts = tenpaiTwoKoutsu
     | []  <- f_ts                 = NE.fromList breakingWait
+    | [x] <- f_ts, []  <- w_ts     = return (Left x) -- Last pair wait
     |             []  <- w_ts     = NE.fromList leftoversOnly
     | otherwise                  = NE.fromList meldLeftovers
     where
@@ -252,7 +251,14 @@ devops f_ts w_ts
 
         tenpaiTwoKoutsu = NE.fromList $ map (\(Left t) -> Left t) w_ts
 
-        meldLeftovers = melding f_ts w_ts
+        meldLeftovers = melding f_ts w_ts ++ meldingFree
+        
+        -- discard a free tile to "meld" to another free tile a wait.
+        meldingFree = do
+            (f_t, f_ts') <- removeEach f_ts
+            (wait_target, f_ts'') <- removeEach f_ts'
+            (draw, new_wait) <- buildWaits wait_target
+            return $ Right (f_t, draw, f_ts'', new_wait : w_ts)
 
         breakingWait = do
             (w_b, w_ts') <- removeEach w_ts
@@ -278,23 +284,28 @@ devops f_ts w_ts
 --
 -- The tree is formed by splitting the tiles with @tilesSplitGroupL@ and
 -- iterating different cases of replacing @GroupLeftover@ with @DevOp@ that
--- would complete some @GroupWait@.
+-- would complete some @GroupWait@ to @GroupComplete@, or another
+-- @GroupLeftover@ to a @GroupWait@.
 --
 -- NOTE: This does /not/ check tile count changes if kantsu are found in
 -- input tiles - tree building /will/ fail if there are uncalled kantsu in
--- input tiles!
-buildGreedyWaitTree :: [Mentsu] -> [Tile] -> WaitTree
-buildGreedyWaitTree ms ts = buildGreedyWaitTree' (map (map GroupComplete ms ++) $ tilesSplitGroupL ts)
+-- the input tiles!
+buildGWTs' :: [Mentsu] -> [Tile] -> [WaitTree]
+buildGWTs' ms ts = buildGWTs (map (map GroupComplete ms ++) $ tilesSplitGroupL ts)
 
--- | @buildGreedyWaitTree' groups@ discards groupings strictly less than
--- shanten over `groups` before building the tree.
-buildGreedyWaitTree' :: [Grouping] -> WaitTree
-buildGreedyWaitTree' xs =
-    unfoldRootedTree (concatMap (concatMap tileGroupTiles) xs)
-        go (NE.toList $ devops <$> leftovers <*> waits $ head xs') -- TODO considers only head!
+-- | Build wait trees of all groupings for which shanten == min_shanten.
+buildGWTs :: [Grouping] -> [WaitTree]
+buildGWTs gs = map buildGWT $ filter ((== min_s) . shanten) gs
     where
-        xs' = filter ((== shanten xs) . shanten) xs
-        --
+        min_s = shanten gs
+
+-- | @buildGWT group@ discards groupings strictly less than shanten over
+-- `groups` before building the tree.
+buildGWT :: Grouping -> WaitTree
+buildGWT g =
+    unfoldRootedTree (concatMap tileGroupTiles g)
+        go (NE.toList $ devops <$> leftovers <*> waits $ g)
+    where
         go :: DevOp' -> Either TenpaiOp (DevOp, NE.NonEmpty DevOp')
         go = bimap (`TenpaiOp` 0)
                    (\(disc, draw, lo, wa) -> (DevOp disc draw, devops lo wa))
