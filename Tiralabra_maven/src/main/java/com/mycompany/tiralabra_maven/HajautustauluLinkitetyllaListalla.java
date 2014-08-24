@@ -56,6 +56,7 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 * @return Linkitetyn listan solmu johon avain/arvo lisättiin
 	 * 
+	 * @see HajautustauluLinkitetyllaListalla#hajautusFunktio(String)
 	 */
 	public Solmu lisaaMerkinta(String avain, String arvo) {
 		if (!tarkistaAvain(avain)) {
