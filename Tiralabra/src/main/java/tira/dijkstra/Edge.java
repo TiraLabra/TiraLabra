@@ -15,6 +15,11 @@ class Edge {
         this.weight = distance;
     }
     
+    /**
+     * 
+     * Gettereitä. 
+     */
+    
     public String toString() {
         return this.target.toString() + this.weight;
     }

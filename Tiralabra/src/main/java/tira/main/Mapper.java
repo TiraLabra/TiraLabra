@@ -12,8 +12,8 @@ import java.util.Scanner;
  */
 public class Mapper {
     
-    Scanner map;
-    HashMap<String, ArrayList<Target>> sources; 
+    private Scanner map;
+    private HashMap<String, ArrayList<Target>> sources; 
 
     public Mapper(Scanner reader) {
         this.map = reader;
@@ -21,7 +21,8 @@ public class Mapper {
     }
     
     /**
-     * Metodi lukee karttatiedoston ja luo oliot.
+     * Metodi lukee karttatiedoston ja luo oliot. Apuna käytetty javan String luokan split metodia, joka
+     * tekee taulukon merkkijonosta erottimen perusteella.
      */
     public void initialize() {
         while (this.map.hasNextLine()) {

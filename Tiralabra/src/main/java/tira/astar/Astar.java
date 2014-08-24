@@ -8,6 +8,8 @@ import tira.main.Target;
 /**
  *
  * @author joonaslaakkonen
+ * Astar olion luokka, joka vastaa reitin etsinnästä Astar algoritmilla. Käytössä heuristiikka joka vertailee
+ * solmujen etäisyyttä niiden sijainnin perusteella.
  */
 public class Astar {
     private ArrayList<Cell> cells;
@@ -23,6 +25,10 @@ public class Astar {
         this.graph = grid.getGrid();
         this.cells = new ArrayList<Cell>();
     }
+    
+    /**
+     * Alustus-metodi, joka luo Astar algoritmin tarvitsemat solmut ja polut HashMapiin tallenetun kartan perusteella.
+     */
     
     public void initialize() {
         for (String apu : this.graph.keySet()) {
@@ -42,6 +48,11 @@ public class Astar {
         this.goalCell = findCellByName(this.destination);
     }
     
+    /**
+     * 
+     * @param name
+     * @return palauttaa haetun solmun jos sellainen on olemassa.
+     */
     private Cell findCellByName(String name) {
         for (Cell helper : this.cells) {
             if (helper.toString().equals(name)) {
@@ -51,10 +62,17 @@ public class Astar {
         return null;
     }
     
+    /**
+     * Kesken
+     * @return 
+     */
     private int updateHeuristic() {
         return 0;
     }
-
+    
+    /**
+     * Alustuksen testailua.
+     */
     public void test() {
         System.out.println(this.cells);
     }

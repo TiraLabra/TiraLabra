@@ -9,7 +9,8 @@ import java.util.Scanner;
 /**
  *
  * @author joonaslaakkonen
- * Pääohjelman runko, joka ohjailee ohjelma toimintaa käyttäjän syötteen perusteella
+ * Pääohjelman runko, joka ohjailee ohjelma toimintaa käyttäjän syötteen perusteella. Luokka myös luo suurimman osan
+ * ohjelman muista olioista.
  */
 public class Run {  
     
@@ -30,12 +31,14 @@ public class Run {
         int algoritmi = 0;
         
         /**
-         * Alustetaan HashMap tiedostosta.
+         * Alustetaan HashMap karttatiedostosta.
          */
         
         grid.initialize();
         
-        
+        /**
+         * Käyttäjä valitsee kumalla algoritmilla haluaa hakea reitin.
+         */
         System.out.println("Valitse algoritmi reitin hakuun:\n 1 = A*\n 2 = Dijkstra.");
         algoritmi = Integer.parseInt(input.nextLine());
         
@@ -65,6 +68,10 @@ public class Run {
             d.print();
         }
         
+        /**
+         * Astar valittu, dijkstran ja astarin valinnan jälkeiset tapahtumat ovat vielä liikaa copyapastea.
+         * Täytyy pilkkoa omiksi private apumetodeiksi.
+         */
         if (algoritmi == 1) {
             System.out.println("Valitse lähtöpiste ja määränpää kirjoittamalla kohde.");
             grid.print();
@@ -80,6 +87,10 @@ public class Run {
                 System.out.println("Päämäärä:");
                 end = input.nextLine();
             }
+            
+            /**
+             * Etsitään reitti Astarilla, huom ei vielä valmis!
+             */
             
             Astar a = new Astar(start, end, grid);
             a.initialize();

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  *
  * @author joonaslaakkonen
- * Luokka kuvaa kartan solmua.
+ * Luokka kuvaa kartan solmua. Luokka toteuttaa Comparable rajapinnan prioriteettijonon vertailua varten.
  */
 public class Node implements Comparable<Node> {
     
@@ -54,23 +54,16 @@ public class Node implements Comparable<Node> {
     public ArrayList<Edge> getEdges() {
         return this.routes;
     }
+    
+    /**
+     * Etäisyyden vertailu.
+     * @param o
+     * @return 
+     */
 
     @Override
     public int compareTo(Node o) {
         return this.shortest - o.getShortest();
     }
-    
-    /**
-     * Metodi palauttaa tiedon solmun kaikista kaarista
-     * @return 
-     */
-
-//    public String printEdges() {
-//        String adds = this.name;
-//        for (Edge help : this.routes) {
-//            adds += " - " + help.toString();
-//        }
-//        return adds;
-//    }
     
 }

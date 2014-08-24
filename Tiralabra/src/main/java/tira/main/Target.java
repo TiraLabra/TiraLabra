@@ -19,6 +19,11 @@ public class Target {
         this.y = locY;
     }
     
+    /**
+     * 
+     * Luokan gettereitä. 
+     */
+    
     public String getName() {
         return this.name;
     }

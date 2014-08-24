@@ -51,8 +51,8 @@ public class Dijkstra {
     
     /**
      * Reitin haku algoritmilla.
-     * @param start
-     * @param goal 
+     * @param start alkupiste
+     * @param goal maali
      */
     
     public void route() {
@@ -78,6 +78,9 @@ public class Dijkstra {
                 int weight = apu.getWeight();
                 int distance = handle.getShortest() + weight;
                 
+                /**
+                 * Relaksointi tapahtuu samassa metodissa, voisi myös hajottaa omaan relax metodiin.
+                 */
                 if (distance < neighbor.getShortest()) {
                     queue.remove(neighbor);
                     neighbor.setShortest(distance);

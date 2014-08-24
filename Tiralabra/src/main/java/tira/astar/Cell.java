@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  *
  * @author joonaslaakkonen
+ * Luokka kuvaa Astar-algoritmilla tutkittavan verkon solmuja.
  */
 public class Cell implements Comparable<Cell> {
     
@@ -23,6 +24,11 @@ public class Cell implements Comparable<Cell> {
         this.node = name;
         this.routes = new ArrayList<Path>();
     }
+    
+    /**
+     * 
+     * Gettereitä ja settereitä.
+     */
     
     public void setHeuristinc(int value) {
         this.heuristic = value;
