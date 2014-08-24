@@ -1,12 +1,21 @@
 /*
-Package trie implements a trie, that is, a prefix tree.
+Package naivetrie implements a trie, that is, a prefix tree.
 
-Trie provides fast (O(1)) setting and retrieval relative to the amount of keys
-in the dataset. (O(L) where L is the length of the key.)
+Trie provides fast O(1 + K) lookup where K is the length of the key - similar
+performance charasteristics with hash tables but with the ordered property.
+
+This trie is a naive implementation: it creates a lot of linked
+objects which may slow the garbage colletion down. Additionally, there's a double
+amount of overhead on 64-bit systems, since the pointers are using 64 bits instead of
+32. A single node takes 256 pointers worth of space, even though majority
+of the space may be unused. Finally, the walking algorithms are implemented
+recursively, which may add some function calling overhead.
 */
-package trie
+package naivetrie
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Node represents a trie key-value pair. It may contain a value, which is represented
 // by the Value field. If it doesn't, Value is nil. The value is contained by an empty
