@@ -145,4 +145,21 @@ public final class VectorTest {
         } catch (ArrayIndexOutOfBoundsException ex) {
         }
     }
+
+    @Test
+    public void testToArray() {
+        Vector<String> v = new Vector<>(String.class);
+        v.add("ASDSWERWUOU(");
+        v.add("r46666666666666(");
+        v.add("*GHF^Ä&*N(");
+        v.add("#`ÄFD G*DÅV^RÅPLZ^D(");
+        String[] arrayForm = v.toArray();
+        for (int i = 0; i < v.size(); i++) {
+            String arrayString = arrayForm[i];
+            String vectorString = v.get(i);
+            if (!arrayString.equals(vectorString)) {
+                fail("Expected " + vectorString + " got " + arrayString);
+            }
+        }
+    }
 }

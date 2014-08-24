@@ -107,7 +107,7 @@ public final class HuffmanDecompressor {
         System.out.println("bytes in file decompression " + arrayLenghtInBytes);
         final byte[] bits = new byte[arrayLenghtInBytes];
         bitReader.read(bits);
-        final BitSet bitsInSet = BitSet.valueOf(bits);
+        final BitSet bitsInSet = BitSet.valueOf(bits);// new BitSet(bits, bitsInArray);
         return decode(bitsInSet, tree);
     }
 

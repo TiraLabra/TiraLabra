@@ -124,4 +124,13 @@ public final class Vector<T> {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
+
+    /**
+     * Copies the vector into an array.
+     *
+     * @return The array.
+     */
+    public T[] toArray() {
+        return Arrays.copyOf(array, array.length);
+    }
 }
