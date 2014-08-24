@@ -64,12 +64,10 @@ tgSplitTests desc fun = testGroup desc
                       ]
                     ]
 
-    , QC.testProperty "<<tiles of some mentsu>> .<-- <<the same some mentsu>>" $ \ms ->
-        length ms <= 8 ==> fun (concatMap mentsuTiles ms) .<-- [ map GroupComplete ms ]
-        -- XXX: If you don't restrict the number of mentsu, the current
-        -- tilesGroupL is inefficient enough that it explodes at exactly
-        -- 9 mentsu (8 mentsu completes in split seconds). That should not
-        -- be a problem as a hand has only 4 mentsu + pair, though.
+    , QC.testProperty "<<tiles of some mentsu>> .<-- <<the same some mentsu>>" $ do
+        ms <- replicateM 6 arbitrary
+        return $ fun (concatMap mentsuTiles ms) .<-- [ map GroupComplete ms ]
+        -- 6 mentsu runs consistently with heap limit at 90mB
 
     , QC.testProperty "<<tiles of some TileGroups>> .<-- <<the same TileGroups>>" $ \ml ->
         -- traceShow ml $

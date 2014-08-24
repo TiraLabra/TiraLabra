@@ -13,7 +13,7 @@
 module Mahjong.Hand.Algo
     (
     -- * Shanten
-    ShantenOf(..), Shanten,
+    ShantenOf(..), Shanten, groupingShanten,
 
     -- * Waits
     buildGreedyWaitTree,
@@ -133,7 +133,7 @@ tilesGroupL = go . sort
 
                 dropOne = GroupLeftover x `goWith` (y:xs)
 
-                goWith a = map (a :) . go 
+                goWith a = map (a :) . go
 
 -- | A follow-up optimization on `tilesGroupL` that first groups the input
 -- tiles by their suit or honor kind, then feeds the groups separetely
@@ -156,9 +156,12 @@ tilesSplitGroupL = combine . map tilesGroupL . groupBy compareKind . sort
 -- tenpai) from different representations.
 --
 -- Note that instances strictly assume valid input: 13 or 14 tile hands, or
--- including kan in ([Mentsu], [Tile]) instance.
+-- including kan in fst in the ([Mentsu], [Tile]) instance.
 --
--- /Technical details./ Even though the subtract algorithm gives -1 for all
+-- The return value is /strictly positive/ for shanten, /exactly zero/ for
+-- tenpai and /negative/ (-1) for complete hands.
+--
+-- /Technical notes./ Even though the subtract algorithm gives -1 for all
 -- complete hands, not all -1 indicate a complete hand. Consider for
 -- example a hand with 4x complete melds and tiles of a shuntsu wait: the
 -- algorithm thinks this is a complete hand when in fact the pair is
@@ -176,7 +179,7 @@ instance ShantenOf [Grouping] where
                       xs -> Just $ minimum xs
 
 instance ShantenOf Grouping where
-    shanten = tgShanten 8
+    shanten = groupingShanten 8
 
 -- | Uses `tilesGroupL`
 instance ShantenOf [Tile] where
@@ -184,23 +187,48 @@ instance ShantenOf [Tile] where
 
 -- | Regard the mentsu as fixed and subtract.
 instance ShantenOf ([Mentsu], [Tile]) where
-    shanten (ms, ts) = case mapMaybe (tgShanten (8 - 2 * length ms)) (tilesGroupL ts) of
+    shanten (ms, ts) = case mapMaybe (groupingShanten (8 - 2 * length ms)) (tilesGroupL ts) of
                            [] -> Nothing
                            xs -> Just $ minimum xs
 
--- | @tgShanten n tgs@ calculates shanten of `tgs` using the subtract
--- algorithm starting at `n`.
-tgShanten :: Int -> Grouping -> Shanten
-tgShanten n tgs = case foldl' (\i -> (i -) . tgval) n tgs of
-                    -1 | Nothing <- find isKoutsuWait tgs -> Nothing
-                    s                                    -> Just s
+-- | @groupingShanten n tgs@ calculates shanten of `tgs` using the subtract
+-- algorithm starting at `n`, with additional check for complete hand
+-- support (invalid (Nothing) if no pair).
+--
+--
+-- = Technical details
+--
+-- The subtract algorithm substracts from 8 2 for every complete mentsu,
+-- 1 for pairs of related tiles and adds the number of shuntsu or shuntsu
+-- waits over 4.
+--
+-- The last addition comes from the fact that with 5 complete mentsu or
+-- shuntsu waits one of them /has/ to be discarded before tenpai (because
+-- there can only be a maximum of 4 complete mentsu in a hand), thus there
+-- has to be a tile switch which won't change shanten. In the case of
+-- 6 such groups there has to be two switches not affecting shanten (thus
+-- +2).
+--
+-- 7 and more are impossible cases (2*7 = 14 > 13) except when a complete
+-- hand is encountered; in the case of 4 shuntsu and one shuntsu wait
+-- a Nothing is returned to indicate invalid or non-winning hand.
+groupingShanten :: Int -> Grouping -> Shanten
+groupingShanten n tgs = case foldl' (\i -> (i -) . tgval) n tgs of
+                    -1 | Nothing <- find isPair tgs -> Nothing
+                        -- complete (-1) only when there are 14 or more
+                        -- tiles, so without a pair it's invalid hand
+                    s -> Just $ s + max 0 (length (filter notPairable tgs) - 4)
     where
         tgval (GroupWait{})     = 1
         tgval (GroupComplete{}) = 2
         tgval (GroupLeftover{}) = 0
 
-        isKoutsuWait (GroupWait Koutsu _ _) = True
-        isKoutsuWait                      _ = False
+        isPair (GroupWait Koutsu _ _) = True
+        isPair                      _ = False
+
+        notPairable (GroupComplete _)       = True
+        notPairable (GroupWait Shuntsu _ _) = True
+        notPairable                       _ = False
 
 -- Wait trees
 
@@ -228,7 +256,7 @@ devops f_ts w_ts
 
         breakingWait = do
             (w_b, w_ts') <- removeEach w_ts
-            let f_ts' = either (\t -> [t,t]) shuntsuWaitToHandTiles w_b 
+            let f_ts' = either (\t -> [t,t]) shuntsuWaitToHandTiles w_b
                 in melding f_ts' w_ts'
 
         leftoversOnly = do
@@ -266,7 +294,7 @@ buildGreedyWaitTree' xs =
         go (NE.toList $ devops <$> leftovers <*> waits $ head xs') -- TODO considers only head!
     where
         xs' = filter ((== shanten xs) . shanten) xs
-        -- 
+        --
         go :: DevOp' -> Either TenpaiOp (DevOp, NE.NonEmpty DevOp')
         go = bimap (`TenpaiOp` 0)
                    (\(disc, draw, lo, wa) -> (DevOp disc draw, devops lo wa))
