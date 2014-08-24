@@ -91,13 +91,13 @@ public final class HuffmanDecompressor {
 
     /**
      * Returns the decompressed file. Reads the huffman tree first, then the
-     * amount of bits in the file and then the bits.s
+     * amount of bits in the file and then the bits.
      *
      * @param objectReader Reader for the huffman tree.
      * @param bitReader Reader for the bits.
-     * @return The decompressed file
+     * @return The decompressed file.
      * @throws IOException If reading fails.
-     * @throws ClassNotFoundException If huffman tree can't be read.
+     * @throws ClassNotFoundException If huffmantree can't be read.
      */
     private String readFile(final ObjectInputStream objectReader, final DataInputStream bitReader) throws IOException, ClassNotFoundException {
         final Node tree = (Node) objectReader.readObject();
@@ -117,7 +117,7 @@ public final class HuffmanDecompressor {
      * @param arrayLenghtInBits The amount of bits in the file.
      * @return The amount of bytes in the file.
      */
-    private int readArrayLenghts(final int arrayLenghtInBits) {
+    private static int readArrayLenghts(final int arrayLenghtInBits) {
         final int arrayLenghtInBytes = arrayLenghtInBits / 8;
         return arrayLenghtInBytes + 1;
     }

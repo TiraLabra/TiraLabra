@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
+import Collections.Dictionary;
+import Collections.Dictionary.KeyValuePair;
 import Collections.PriorityQueue;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -9,7 +11,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
-import java.util.HashMap;
 
 /**
  * Compressor that uses huffman encoding to compress text files.
@@ -19,8 +20,8 @@ public final class HuffmanCompressor {
     private final File pathToFile;
     private final File pathToCompressedFile;
     private final PriorityQueue<Node> nodeQueue;
-    private final HashMap<Character, Node> nodes;
-    private final HashMap<Character, BitImmutableCollection> characterEncoding;
+    private final Dictionary<Character, Node> nodes;
+    private final Dictionary<Character, BitImmutableCollection> characterEncoding;
     private final StringBuilder readText;
 
     /**
@@ -32,8 +33,8 @@ public final class HuffmanCompressor {
         pathToFile = new File(path);
         pathToCompressedFile = new File(path + ".pkx");
         nodeQueue = new PriorityQueue<>(Node.class);
-        nodes = new HashMap<>();
-        characterEncoding = new HashMap<>();
+        nodes = new Dictionary<>();
+        characterEncoding = new Dictionary<>();
         readText = new StringBuilder(100);
     }
 
@@ -119,10 +120,10 @@ public final class HuffmanCompressor {
      */
     private void readChar(final char read) {
         if (!nodes.containsKey(read)) {
-            nodes.put(read, new Node(read, 0, null, null));
+            nodes.add(read, new Node(read, 0, null, null));
         }
         final Node readNode = nodes.get(read);
-        nodes.put(read, new Node(readNode.getSymbol(), readNode.getWeight() + 1, null, null));
+        nodes.add(read, new Node(readNode.getSymbol(), readNode.getWeight() + 1, null, null));
         readText.append(read);
     }
 
@@ -130,8 +131,8 @@ public final class HuffmanCompressor {
      * Puts the nodes in to a priority queue.
      */
     private void sortNodes() {
-        for (final Node node : nodes.values()) {
-            nodeQueue.enqueue(node);
+        for (final KeyValuePair<Character, Node> kvp : nodes.pairs()) {
+            nodeQueue.enqueue(kvp.getValue());
         }
     }
 
@@ -205,7 +206,7 @@ public final class HuffmanCompressor {
             writeCharacterBits(path.add(true), rightNode);
         }
         if (node.isLeaf()) {
-            characterEncoding.put(node.getSymbol(), path);
+            characterEncoding.add(node.getSymbol(), path);
         }
     }
 
@@ -225,9 +226,6 @@ public final class HuffmanCompressor {
                 bits.set(j + bitsWritten, bitsCollection.at(j));
             }
             bitsWritten += collectionSize;
-            if (i == text.length() - 1) {
-                System.out.println(text.charAt(i));
-            }
         }
     }
 }

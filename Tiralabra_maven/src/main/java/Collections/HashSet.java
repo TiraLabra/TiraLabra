@@ -134,4 +134,17 @@ public final class HashSet<T> {
     public int size() {
         return count;
     }
+
+    public LinkedList<T> values() {
+        final LinkedList<T> toReturn = new LinkedList<>();
+        for (int i = 0; i < array.size(); i++) {
+            final LinkedList<T> list = array.get(i);
+            if (list != null) {
+                for (final T item : list) {
+                    toReturn.add(item);
+                }
+            }
+        }
+        return toReturn;
+    }
 }

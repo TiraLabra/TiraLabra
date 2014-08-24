@@ -70,7 +70,11 @@ public final class Dictionary<K, V> {
         return set.size();
     }
 
-    private final class KeyValuePair<K, V> {
+    public LinkedList<KeyValuePair<K, V>> pairs() {
+        return set.values();
+    }
+
+    public static final class KeyValuePair<K, V> {
 
         private final K key;
         private final V value;

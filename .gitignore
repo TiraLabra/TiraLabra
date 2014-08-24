@@ -1,4 +1,4 @@
 /Tiralabra_maven/target/
-/Docs
+/Docs/*
 !/Docs/*pdf
 
