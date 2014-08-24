@@ -9,6 +9,7 @@ import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Suunta;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
+import com.mycompany.tiralabra_maven.tietorakenteet.PrioriteettiKeko;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -44,7 +45,7 @@ public class Algoritmi extends Thread {
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
      * simulaation askeleen välillä.
      */
-    public Algoritmi(Ruutu[][] maailma, boolean hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain) {
+    public Algoritmi(Ruutu[][] maailma, boolean hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
         if (maailma == null) {
             throw new IllegalStateException("Maailma null");
         }
@@ -56,7 +57,7 @@ public class Algoritmi extends Thread {
         this.valmis = false;
         this.parhaatReitit = new int[korkeus][leveys];
         this.hidaste = hidaste;
-        this.heuristiikka = new ManhattanHeuristiikka(maali);
+        this.heuristiikka = heuristiikka;
         this.maailma = maailma;
         this.ruutujenTilat = new RuudunTila[korkeus][leveys];
         this.jatketaanko = true;
@@ -98,9 +99,10 @@ public class Algoritmi extends Thread {
         alustaParhaatReitit();
 
         //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
-        Vertailija vertailija = new Vertailija(this.heuristiikka);
-        PriorityQueue<Solmu> tutkimattomat = new PriorityQueue<Solmu>(100, vertailija);
-
+        Vertailija vertailija = new Vertailija(this.heuristiikka, maali);
+        //PriorityQueue<Solmu> tutkimattomat = new PriorityQueue<Solmu>(100, vertailija);
+        PrioriteettiKeko<Solmu> tutkimattomat = new PrioriteettiKeko<>(vertailija);
+        
         Solmu solmu = new Solmu(alku, 0, null);
 
         System.out.println("alkutilanne: " + solmu);
@@ -120,14 +122,16 @@ public class Algoritmi extends Thread {
                 if (parhaatReitit[koord.getY()][koord.getX()] == -1 || matka < parhaatReitit[koord.getY()][koord.getX()]) {
                     parhaatReitit[koord.getY()][koord.getX()] = matka;
                     //Lisätään tutkittaviin uusi solmu, jonka kuljetuksi matkaksi annetaan tämän solmun kuljettu matka + maaston vaikeustaso
-                    tutkimattomat.add(new Solmu(koord, matka, solmu));
+                    //tutkimattomat.add(new Solmu(koord, matka, solmu));
+                    tutkimattomat.lisaa(new Solmu(koord, matka, solmu));
                     //simulaatio.setRuutu(koord.getX(), koord.getY(), RuudunTila.TUTKIMATON);
                     ruutujenTilat[koord.getY()][koord.getX()] = RuudunTila.TUTKIMATON;
                 }
             }
             ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.TUTKITTU;
             //simulaatio.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.TUTKITTU);
-            solmu = tutkimattomat.poll();
+            //solmu = tutkimattomat.poll();
+            solmu = tutkimattomat.seuraava();
             if (solmu == null) {
                 return;
             }
@@ -185,19 +189,6 @@ public class Algoritmi extends Thread {
         }
     }
 
-//    private void alustaPiirtologiikka() {
-//        for (int x = 0; x < this.leveys; x++) {
-//            for (int y = 0; y < this.korkeus; y++) {
-//                if (this.alku.getX() == x && this.alku.getY() == y) {
-//                    this.simulaatio.setRuutu(x, y, Ruutu.ALKU);
-//                } else if (this.maali.getX() == x && this.maali.getY() == y) {
-//                    this.simulaatio.setRuutu(x, y, Ruutu.MAALI);
-//                } else if (this.ruudukko[y][x] == 0) {
-//                    this.simulaatio.setRuutu(x, y, Ruutu.SEINA);
-//                }
-//            }
-//        }
-//    }
     private boolean koordinaatitUlkopuolella(Koordinaatit koordinaatit) {
         return koordinaatit.getX() < 0 || koordinaatit.getY() < 0 || koordinaatit.getX() >= maailma[0].length || koordinaatit.getY() >= maailma.length;
 

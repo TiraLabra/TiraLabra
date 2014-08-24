@@ -11,7 +11,7 @@ import java.util.Comparator;
  * Tietorakenne, jota käytetään tähän varastoitujen elementtien tallettamiseen
  * ja ulos ottamiseen priorisoidussa järjestyksessä. Elementtien järjestämiseen
  * voidaan käyttää konstruktorin parametrina annettua Comparator-rajapinnan
- * toteuttavaa otusta, tai tämän puuttuessa elementtien luonnollista
+ * toteuttavaa oliota, tai tämän puuttuessa elementtien luonnollista
  * järjestystä.
  *
  * @author mikko
@@ -20,6 +20,7 @@ import java.util.Comparator;
 public class PrioriteettiKeko<E> {
 
     private Object[] taulukko;
+    private int taulukonKoko;
     private int koko;
     private Object temp;
 
@@ -41,7 +42,8 @@ public class PrioriteettiKeko<E> {
      */
     public PrioriteettiKeko(Comparator<? super E> vertailija) {
         this.vertailija = vertailija;
-        this.taulukko = new Object[100];
+        this.taulukonKoko = 11;
+        this.taulukko = new Object[taulukonKoko];
     }
 
     /**
@@ -65,6 +67,12 @@ public class PrioriteettiKeko<E> {
      */
     public void lisaa(E lisattava) {
         koko++;
+        if (koko == taulukonKoko) {
+            Object[] uusiTaulukko = new Object[2*taulukonKoko];
+            System.arraycopy(taulukko, 0, uusiTaulukko, 0, taulukonKoko);
+            taulukonKoko = 2*taulukonKoko;
+            taulukko = uusiTaulukko;
+        }
         int i = koko - 1;
         taulukko[i] = lisattava;
 

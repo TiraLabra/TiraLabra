@@ -19,10 +19,9 @@ public class ManhattanHeuristiikka extends Heuristiikka {
     /**
      * Konstruktorissa annetaan maalin koordinaatit.
      *
-     * @param maali
      */
-    public ManhattanHeuristiikka(Koordinaatit maali) {
-        super(maali);
+    public ManhattanHeuristiikka() {
+        super();
     }
 
     /**
@@ -33,7 +32,7 @@ public class ManhattanHeuristiikka extends Heuristiikka {
      * @return
      */
     @Override
-    public int arvioiMatkaMaaliin(Koordinaatit koord) {
+    public int arvioiMatkaMaaliin(Koordinaatit koord, Koordinaatit maali) {
         return Math.abs(koord.getX() - maali.getX()) + Math.abs(koord.getY() - maali.getY());
     }
 

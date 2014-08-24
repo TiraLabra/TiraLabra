@@ -27,7 +27,7 @@ public class AlgoritmiTest {
         Ruutu[][] maailma = alustaMaailma();
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false);
+        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(7, algoritmi.getReitti().getKuljettuMatka());
 
@@ -39,7 +39,7 @@ public class AlgoritmiTest {
         teeSeina(maailma);
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false);
+        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(20, algoritmi.getReitti().getKuljettuMatka());
 
@@ -53,7 +53,7 @@ public class AlgoritmiTest {
         maailma[3][5] = Ruutu.SEINA;
         Koordinaatit alku = new Koordinaatit(3, 5);
         Koordinaatit maali = new Koordinaatit(4, 0);
-        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false);
+        Algoritmi algoritmi = new Algoritmi(maailma, false, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(8, algoritmi.getReitti().getKuljettuMatka());
         assertNull(algoritmi.getRuudunTila(0, 6));

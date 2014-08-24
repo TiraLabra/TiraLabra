@@ -113,6 +113,7 @@ public class Koordinaatit {
      * Palauttaa merkkijonomuotoisen esityksen koordinaateista, muotoa (x, y).
      * @return merkkijonoesitys
      */
+    @Override
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }

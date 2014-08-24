@@ -7,12 +7,14 @@ package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author mikko
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class SovellusIkkuna extends javax.swing.JFrame {
 
     private Simulaatio simulaatio;
     private int sivunPituus;
@@ -21,10 +23,9 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      *
      * @param simulaatio
-     * @param piirtologiikka
      * @param sivunPituus
      */
-    public NewJFrame(Simulaatio simulaatio, int sivunPituus) {
+    public SovellusIkkuna(Simulaatio simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
         initComponents();
@@ -38,6 +39,9 @@ public class NewJFrame extends javax.swing.JFrame {
     private void poistaValinnat() {
         lattiaButton.setSelected(false);
         seinaButton.setSelected(false);
+        vesiButton.setSelected(false);
+        ruohoButton.setSelected(false);
+        hiekkaButton.setSelected(false);
         aloituspisteButton.setSelected(false);
         maaliButton.setSelected(false);
     }
@@ -57,17 +61,36 @@ public class NewJFrame extends javax.swing.JFrame {
             case MAALI:
                 maaliButton.setSelected(true);
                 break;
+            case VESI:
+                vesiButton.setSelected(true);
+                break;
+            case RUOHO:
+                ruohoButton.setSelected(true);
+                break;
+            case HIEKKA:
+                hiekkaButton.setSelected(true);
         }
+    }
+    
+    private void paivitaKustannusKentat() {
+        this.lattiaKustannusField.setText(Ruutu.LATTIA.getHinta() + "");
+        this.ruohoKustannusField.setText(Ruutu.RUOHO.getHinta() + "");
+        this.hiekkaKustannusField.setText(Ruutu.HIEKKA.getHinta() + "");
+        this.vesiKustannusField.setText(Ruutu.VESI.getHinta() + "");
+
     }
 
     private void asetaNappienTila(boolean enabled) {
         lattiaButton.setEnabled(enabled);
         seinaButton.setEnabled(enabled);
+        vesiButton.setEnabled(enabled);
+        hiekkaButton.setEnabled(enabled);
+        ruohoButton.setEnabled(enabled);
         aloituspisteButton.setEnabled(enabled);
         maaliButton.setEnabled(enabled);
         liikkuminenVinottainCheckBox.setEnabled(enabled);
     }
-    
+
     private void paivitaLeveysJaKorkeus() {
         leveysField.setText(simulaatio.getLeveys() + "");
         korkeusField.setText(simulaatio.getKorkeus() + "");
@@ -86,6 +109,7 @@ public class NewJFrame extends javax.swing.JFrame {
         }
         paivitaValinnat();
         paivitaLeveysJaKorkeus();
+        paivitaKustannusKentat();
         liikkuminenVinottainCheckBox.setSelected(simulaatio.saakoLiikkuaVinottain());
     }
 
@@ -102,6 +126,9 @@ public class NewJFrame extends javax.swing.JFrame {
         simulaatioButton = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         lattiaButton = new javax.swing.JToggleButton();
+        ruohoButton = new javax.swing.JToggleButton();
+        hiekkaButton = new javax.swing.JToggleButton();
+        vesiButton = new javax.swing.JToggleButton();
         seinaButton = new javax.swing.JToggleButton();
         aloituspisteButton = new javax.swing.JToggleButton();
         maaliButton = new javax.swing.JToggleButton();
@@ -118,11 +145,28 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         korkeusField = new javax.swing.JTextField();
         uusiRuudukkoButton = new javax.swing.JButton();
+        lataaTiedostostaButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         liikkuminenVinottainCheckBox = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lattiaKustannusField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        ruohoKustannusField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        hiekkaKustannusField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        vesiKustannusField = new javax.swing.JTextField();
+        asetaLiikkumisKustannuksetButton = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Reittialgoritmit");
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -149,6 +193,39 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(lattiaButton);
+
+        ruohoButton.setText("Ruoho");
+        ruohoButton.setFocusable(false);
+        ruohoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ruohoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ruohoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ruohoButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(ruohoButton);
+
+        hiekkaButton.setText("Hiekka");
+        hiekkaButton.setFocusable(false);
+        hiekkaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        hiekkaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        hiekkaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hiekkaButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(hiekkaButton);
+
+        vesiButton.setText("Vesi");
+        vesiButton.setFocusable(false);
+        vesiButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        vesiButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        vesiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vesiButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(vesiButton);
 
         seinaButton.setText("Seinä");
         seinaButton.setFocusable(false);
@@ -187,18 +264,18 @@ public class NewJFrame extends javax.swing.JFrame {
         piirtoalusta.setLayout(piirtoalustaLayout);
         piirtoalustaLayout.setHorizontalGroup(
             piirtoalustaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 645, Short.MAX_VALUE)
+            .addGap(0, 552, Short.MAX_VALUE)
         );
         piirtoalustaLayout.setVerticalGroup(
             piirtoalustaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 386, Short.MAX_VALUE)
+            .addGap(0, 610, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(piirtoalusta);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setText("Ruudukon koko:");
+        jLabel1.setText("Ruudukko:");
 
         leveysField.setText("jTextField1");
         leveysField.addActionListener(new java.awt.event.ActionListener() {
@@ -220,6 +297,13 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        lataaTiedostostaButton.setText("Lataa tiedostosta");
+        lataaTiedostostaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lataaTiedostostaButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -238,7 +322,8 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(leveysField)
-                            .addComponent(korkeusField))))
+                            .addComponent(korkeusField)))
+                    .addComponent(lataaTiedostostaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -255,12 +340,14 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(korkeusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uusiRuudukkoButton)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lataaTiedostostaButton)
+                .addGap(0, 38, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel4.setText("Liikkuminen");
+        jLabel4.setText("Liikkuminen:");
 
         liikkuminenVinottainCheckBox.setText("Salli liikkuminen vinottain");
         liikkuminenVinottainCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -269,25 +356,132 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Liikkumiskustannukset:");
+
+        jLabel6.setText("Lattia:");
+
+        lattiaKustannusField.setText("jTextField1");
+
+        jLabel7.setText("Ruoho:");
+
+        ruohoKustannusField.setText("jTextField2");
+
+        jLabel8.setText("Hiekka:");
+
+        hiekkaKustannusField.setText("jTextField3");
+
+        jLabel9.setText("Vesi:");
+
+        vesiKustannusField.setText("jTextField4");
+
+        asetaLiikkumisKustannuksetButton.setText("Aseta arvot");
+        asetaLiikkumisKustannuksetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asetaLiikkumisKustannuksetButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(liikkuminenVinottainCheckBox)
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(asetaLiikkumisKustannuksetButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(25, 25, 25)
+                        .addComponent(hiekkaKustannusField))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(43, 43, 43)
+                        .addComponent(vesiKustannusField))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(31, 31, 31)
+                        .addComponent(lattiaKustannusField))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(28, 28, 28)
+                        .addComponent(ruohoKustannusField))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(liikkuminenVinottainCheckBox)
+                            .addComponent(jLabel5))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(liikkuminenVinottainCheckBox)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lattiaKustannusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(ruohoKustannusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(hiekkaKustannusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(vesiKustannusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(asetaLiikkumisKustannuksetButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel10.setText("Algoritmi:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A*" }));
+
+        jLabel11.setText("Heuristiikka:");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manhattan" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel10)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -296,21 +490,24 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -389,6 +586,69 @@ public class NewJFrame extends javax.swing.JFrame {
         simulaatio.asetaVinottainLiikkuminenSallituksi(liikkuminenVinottainCheckBox.isSelected());
     }//GEN-LAST:event_liikkuminenVinottainCheckBoxActionPerformed
 
+    private void lataaTiedostostaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaTiedostostaButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser openFile = new JFileChooser();
+        openFile.setDialogTitle("Lataa kuvatiedosto");
+
+        int palautus = openFile.showOpenDialog(null);
+        if (palautus != JFileChooser.APPROVE_OPTION) {
+            System.out.println("Peruutettu");
+            return;
+        }
+        File file = openFile.getSelectedFile();
+        if (file == null) {
+            return;
+        }
+        try {
+            simulaatio.lataaRuudukkoKuvasta(file);
+            //editori.loadMap(file);
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_lataaTiedostostaButtonActionPerformed
+
+    private void hiekkaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hiekkaButtonActionPerformed
+        // TODO add your handling code here:
+        simulaatio.setToiminto(Toiminto.HIEKKA);
+        paivitaValinnat();
+    }//GEN-LAST:event_hiekkaButtonActionPerformed
+
+    private void vesiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vesiButtonActionPerformed
+        // TODO add your handling code here:
+        simulaatio.setToiminto(Toiminto.VESI);
+        paivitaValinnat();
+    }//GEN-LAST:event_vesiButtonActionPerformed
+
+    private void ruohoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruohoButtonActionPerformed
+        // TODO add your handling code here:
+        simulaatio.setToiminto(Toiminto.RUOHO);
+        paivitaValinnat();
+    }//GEN-LAST:event_ruohoButtonActionPerformed
+
+    private void asetaLiikkumisKustannuksetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asetaLiikkumisKustannuksetButtonActionPerformed
+        // TODO add your handling code here:
+        int lattiaKustannus = -1;
+        int ruohoKustannus = -1;
+        int hiekkaKustannus = -1;
+        int vesiKustannus = -1;
+        try {
+            lattiaKustannus = Integer.parseInt(lattiaKustannusField.getText());
+            ruohoKustannus = Integer.parseInt(ruohoKustannusField.getText());
+            hiekkaKustannus = Integer.parseInt(hiekkaKustannusField.getText());
+            vesiKustannus = Integer.parseInt(vesiKustannusField.getText());
+        } catch (Exception e) {
+            paivitaKustannusKentat();
+            return;
+        }
+        simulaatio.asetaRuudunKustannus(Ruutu.LATTIA, lattiaKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.RUOHO, ruohoKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
+        simulaatio.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
+        paivitaKomponentit();
+
+    }//GEN-LAST:event_asetaLiikkumisKustannuksetButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -406,13 +666,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SovellusIkkuna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SovellusIkkuna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SovellusIkkuna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SovellusIkkuna.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -426,24 +686,43 @@ public class NewJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton aloituspisteButton;
+    private javax.swing.JButton asetaLiikkumisKustannuksetButton;
+    private javax.swing.JToggleButton hiekkaButton;
+    private javax.swing.JTextField hiekkaKustannusField;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField korkeusField;
+    private javax.swing.JButton lataaTiedostostaButton;
     private javax.swing.JToggleButton lattiaButton;
+    private javax.swing.JTextField lattiaKustannusField;
     private javax.swing.JTextField leveysField;
     private javax.swing.JCheckBox liikkuminenVinottainCheckBox;
     private javax.swing.JToggleButton maaliButton;
     private com.mycompany.tiralabra_maven.gui.Piirtoalusta piirtoalusta;
+    private javax.swing.JToggleButton ruohoButton;
+    private javax.swing.JTextField ruohoKustannusField;
     private javax.swing.JToggleButton seinaButton;
     private javax.swing.JToggleButton simulaatioButton;
     private javax.swing.JButton uusiRuudukkoButton;
+    private javax.swing.JToggleButton vesiButton;
+    private javax.swing.JTextField vesiKustannusField;
     // End of variables declaration//GEN-END:variables
 }

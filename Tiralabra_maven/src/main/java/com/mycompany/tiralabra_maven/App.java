@@ -2,7 +2,6 @@ package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import com.mycompany.tiralabra_maven.gui.Kayttoliittyma;
-import com.mycompany.tiralabra_maven.tietorakenteet.PrioriteettiKeko;
 import javax.swing.SwingUtilities;
 
 /**

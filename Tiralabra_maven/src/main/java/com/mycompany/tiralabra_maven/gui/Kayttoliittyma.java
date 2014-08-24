@@ -14,10 +14,9 @@ import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
  */
 public class Kayttoliittyma implements Runnable {
 
-    private NewJFrame frame;
-    private Simulaatio simulaatio;
-    private int sivunPituus;
-    private Piirtoalusta piirtoalusta;
+    private SovellusIkkuna frame;
+    private final Simulaatio simulaatio;
+    private final int sivunPituus;
 
     /**
      * Konstruktorissa annetaan sivun pituus ja simulaatio
@@ -49,7 +48,7 @@ public class Kayttoliittyma implements Runnable {
      */
     @Override
     public void run() {
-        frame = new NewJFrame(simulaatio, sivunPituus);
+        frame = new SovellusIkkuna(simulaatio, sivunPituus);
         //frame = new JFrame("Reittialgoritmit");
         //luoKomponentit(frame.getContentPane());
         //piirtoalusta.setPreferredSize(new Dimension(640, 480));

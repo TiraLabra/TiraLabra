@@ -53,24 +53,32 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         }
         for (int x = 0; x < simulaatio.getLeveys(); x++) {
             for (int y = 0; y < simulaatio.getKorkeus(); y++) {
-                PiirrettavaRuutu r = simulaatio.getRuutu(x, y);
+                PiirrettavaRuutu r = simulaatio.getMaailmaRuutu(x, y);
                 if (r == null) {
-                    throw new IllegalStateException("Ruudukosta löytyi piirrettävä ruutu joka oli null");
+                    throw new IllegalStateException("Maailmasta löytyi piirrettävä ruutu joka oli null");
                 }
                 g.setColor(r.getVari());
                 g.fill3DRect(x * sivunPituus, y * sivunPituus, sivunPituus, sivunPituus, true);
 
+                r = simulaatio.getTilaRuutu(x, y);
+                if (r != null) {
+                    g.setColor(r.getVari());
+                    //g.draw3DRect(x * sivunPituus, y * sivunPituus, sivunPituus, sivunPituus, true);
+                    g.fill3DRect(x * sivunPituus + sivunPituus / 6, y * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
+                }
+
             }
         }
 
-        g.setColor(Color.red);
-        Koordinaatit alku = simulaatio.getAlkuPiste();
-        g.fill3DRect(alku.getX() * sivunPituus, alku.getY() * sivunPituus, sivunPituus, sivunPituus, true);
-
         g.setColor(Color.green);
-        Koordinaatit maali = simulaatio.getMaali();
-        g.fill3DRect(maali.getX() * sivunPituus, maali.getY() * sivunPituus, sivunPituus, sivunPituus, true);
+        Koordinaatit alku = simulaatio.getAlkuPiste();
+        //g.fill3DRect(alku.getX() * sivunPituus, alku.getY() * sivunPituus, sivunPituus, sivunPituus, true);
+        g.fill3DRect(alku.getX() * sivunPituus + sivunPituus / 6, alku.getY() * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
 
+        g.setColor(Color.red);
+        Koordinaatit maali = simulaatio.getMaali();
+        //g.fill3DRect(maali.getX() * sivunPituus, maali.getY() * sivunPituus, sivunPituus, sivunPituus, true);
+        g.fill3DRect(maali.getX() * sivunPituus + sivunPituus / 6, maali.getY() * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
         hiiri = simulaatio.hiirenKoordinaatit();
         if (hiiri != null) {
             g.setColor(Color.magenta);
@@ -97,7 +105,8 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
 
     /**
      * Palauttaa tämän halutun koon.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Dimension getPreferredSize() {

@@ -11,5 +11,5 @@ package com.mycompany.tiralabra_maven;
  * @author mikko
  */
 public enum Toiminto {
-    SEINA, LATTIA, ALKU, MAALI
+    SEINA, LATTIA, RUOHO, HIEKKA, VESI, ALKU, MAALI
 }

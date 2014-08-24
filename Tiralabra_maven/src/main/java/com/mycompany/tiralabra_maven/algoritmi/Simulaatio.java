@@ -10,6 +10,8 @@ import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
+import fileio.KuvanLukija;
+import java.io.File;
 
 public class Simulaatio {
 
@@ -26,6 +28,8 @@ public class Simulaatio {
     private Solmu reitti;
     private Heuristiikka heuristiikka;
 
+    private KuvanLukija kuvanLukija;
+
     //private Scanner sc;
     private Algoritmi algoritmi;
 
@@ -35,8 +39,8 @@ public class Simulaatio {
     private Toiminto toiminto = Toiminto.SEINA;
 
     /**
-     * Konstruktorissa annetaan parametrina tieto
-     * siitä, halutaanko hidastettu vai nopea simulaatio.
+     * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
+     * vai nopea simulaatio.
      *
      * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
      * simulaation askeleen välillä.
@@ -49,6 +53,8 @@ public class Simulaatio {
         this.alku = new Koordinaatit(0, 0);
         this.maali = new Koordinaatit(9, 5);
         this.vinottain = true;
+        this.kuvanLukija = new KuvanLukija();
+        this.heuristiikka = new ManhattanHeuristiikka();
     }
 
     private void alustaMaailma() {
@@ -62,6 +68,7 @@ public class Simulaatio {
 
     /**
      * Tekee uuden ruudukon ja hävittää vanhan.
+     *
      * @param leveys uuden ruudukon leveys
      * @param korkeus uuden ruudukon korkeus
      */
@@ -73,7 +80,25 @@ public class Simulaatio {
     }
 
     /**
+     * Tekee uuden ruudukon parametrina annetun kuvatiedoston perusteella ja
+     * hävittää vanhan.
+     *
+     * @param tiedosto
+     */
+    public void lataaRuudukkoKuvasta(File tiedosto) {
+        lopetaReitinEtsiminen();
+        this.maailma = kuvanLukija.lueMaailmaKuvasta(tiedosto);
+        if (maailma == null) {
+            teeUusiRuudukko(10, 10);
+            return;
+        }
+        this.korkeus = maailma.length;
+        this.leveys = maailma[0].length;
+    }
+
+    /**
      * Palauttaa ruudukon
+     *
      * @return ruudukko
      */
     public Ruutu[][] getRuudukko() {
@@ -82,9 +107,10 @@ public class Simulaatio {
 
     /**
      * Asettaa yksittäisen ruudun.
+     *
      * @param x
      * @param y
-     * @param ruutu 
+     * @param ruutu
      */
     public void setRuutu(int x, int y, Ruutu ruutu) {
         this.maailma[y][x] = ruutu;
@@ -92,7 +118,8 @@ public class Simulaatio {
 
     /**
      * Asettaa algoritmin suorituksessa käytettävän heuristiikan.
-     * @param heuristiikka 
+     *
+     * @param heuristiikka
      */
     public void setHeuristiikka(Heuristiikka heuristiikka) {
         this.heuristiikka = heuristiikka;
@@ -100,7 +127,8 @@ public class Simulaatio {
 
     /**
      * Asettaa algoritmin alkupisteen
-     * @param koord 
+     *
+     * @param koord
      */
     public void setAlkuPiste(Koordinaatit koord) {
         this.alku = koord;
@@ -108,24 +136,26 @@ public class Simulaatio {
 
     /**
      * Palauttaa algoritmin alkupisteen.
-     * @return 
+     *
+     * @return
      */
     public Koordinaatit getAlkuPiste() {
         return this.alku;
     }
-    
+
     /**
      * Asettaa algoritmin maalipisteen.
-     * @param koord 
+     *
+     * @param koord
      */
-
     public void setMaali(Koordinaatit koord) {
         this.maali = koord;
     }
 
     /**
      * Palauttaa algoritmin maalipisteen.
-     * @return 
+     *
+     * @return
      */
     public Koordinaatit getMaali() {
         return this.maali;
@@ -135,7 +165,7 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
-        this.algoritmi = new Algoritmi(maailma, hidaste, alku, maali, vinottain);
+        this.algoritmi = new Algoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
         this.algoritmi.start();
     }
 
@@ -152,6 +182,7 @@ public class Simulaatio {
 
     /**
      * Palauttaa ruudukon leveyden
+     *
      * @return leveys
      */
     public int getLeveys() {
@@ -160,6 +191,7 @@ public class Simulaatio {
 
     /**
      * Palauttaa ruudukon korkeuden
+     *
      * @return korkeus
      */
     public int getKorkeus() {
@@ -168,6 +200,7 @@ public class Simulaatio {
 
     /**
      * Palauttaa tiedon siitä, onko simulaatio käynnissä
+     *
      * @return onko simulaatio käynnissä
      */
     public boolean onkoSimulaatioKaynnissa() {
@@ -176,7 +209,8 @@ public class Simulaatio {
 
     /**
      * Asettaa vinottain liikkumisen sallituksi tai kielletyksi
-     * @param sallittu 
+     *
+     * @param sallittu
      */
     public void asetaVinottainLiikkuminenSallituksi(boolean sallittu) {
         this.vinottain = sallittu;
@@ -184,6 +218,7 @@ public class Simulaatio {
 
     /**
      * Palauttaa tiedon siitä, onko vinottain liikkuminen sallittu.
+     *
      * @return saako liikkua vinottain
      */
     public boolean saakoLiikkuaVinottain() {
@@ -233,6 +268,15 @@ public class Simulaatio {
     public void hiiriPoistunut() {
         this.hiiri = null;
     }
+    
+    /**
+     * Asettaa ruudun kustannuksen
+     * @param ruutu
+     * @param kustannus
+     */
+    public void asetaRuudunKustannus(Ruutu ruutu, int kustannus) {
+        Ruutu.asetaKustannus(ruutu, kustannus);
+    }
 
     /**
      * Palauttaa sen ruudun koordinaatit, jonka päällä hiiri on, tai null, jos
@@ -263,6 +307,15 @@ public class Simulaatio {
                 case LATTIA:
                     maailma[hiiri.getY()][hiiri.getX()] = Ruutu.LATTIA;
                     break;
+                case HIEKKA:
+                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.HIEKKA;
+                    break;
+                case RUOHO:
+                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.RUOHO;
+                    break;
+                case VESI:
+                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.VESI;
+                    break;
                 case ALKU:
                     this.alku = new Koordinaatit(hiiri.getX(), hiiri.getY());
                     break;
@@ -284,7 +337,8 @@ public class Simulaatio {
 
     /**
      * Palauttaa tiedon siitä, mikä hiiren toiminto on tällä hetkellä käytössä.
-     * @return 
+     *
+     * @return
      */
     public Toiminto getValittuToiminto() {
         return this.toiminto;
@@ -292,7 +346,8 @@ public class Simulaatio {
 
     /**
      * Asettaa toiminnon parametrina annetuksi toiminnoksi.
-     * @param toiminto 
+     *
+     * @param toiminto
      */
     public void setToiminto(Toiminto toiminto) {
         this.toiminto = toiminto;
@@ -300,18 +355,27 @@ public class Simulaatio {
 
     /**
      * Palauttaa piirrettävän ruudun parametrina annetuissa koordinaateissa.
+     *
      * @param x
      * @param y
-     * @return 
+     * @return
      */
-    public PiirrettavaRuutu getRuutu(int x, int y) {
+    public PiirrettavaRuutu getMaailmaRuutu(int x, int y) {
+        if (maailma == null) {
+            return null;
+        }
+
+        return maailma[y][x];
+    }
+
+    public PiirrettavaRuutu getTilaRuutu(int x, int y) {
         if (algoritmi != null) {
             RuudunTila ruuduntila = algoritmi.getRuudunTila(x, y);
             if (ruuduntila != null) {
                 return ruuduntila;
             }
         }
-        return maailma[y][x];
+        return null;
     }
 
 }

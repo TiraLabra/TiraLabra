@@ -23,8 +23,9 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     /**
      * Konstruktorissa annetaan sivun pituus ja simulaatio
+     *
      * @param sivunPituus
-     * @param simulaatio 
+     * @param simulaatio
      */
     public HiirenKuuntelija(int sivunPituus, Simulaatio simulaatio) {
         this.sivunPituus = sivunPituus;
@@ -38,6 +39,9 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (hiiriUlkopuolella(e)) {
+            return;
+        }
         simulaatio.hiiriPainettu(true);
     }
 
@@ -52,17 +56,28 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        simulaatio.hiiriPoistunut();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (hiiriUlkopuolella(e)) {
+            simulaatio.hiiriPoistunut();
+            return;
+        }
         simulaatio.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if (hiiriUlkopuolella(e)) {
+            simulaatio.hiiriPoistunut();
+            return;
+        }
         simulaatio.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
     }
 
+    private boolean hiiriUlkopuolella(MouseEvent e) {
+        return e.getX() < 0 || e.getX() >= simulaatio.getLeveys() * sivunPituus || e.getY() < 0 || e.getY() >= simulaatio.getKorkeus() * sivunPituus;
+    }
 }

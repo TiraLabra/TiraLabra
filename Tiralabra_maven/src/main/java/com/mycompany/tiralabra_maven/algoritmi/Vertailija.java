@@ -8,6 +8,7 @@ package com.mycompany.tiralabra_maven.algoritmi;
 
 
 
+import com.mycompany.tiralabra_maven.Koordinaatit;
 import java.util.Comparator;
 
 /**
@@ -16,13 +17,15 @@ import java.util.Comparator;
  */
 public class Vertailija implements Comparator<Solmu>{
     private Heuristiikka heuristiikka;
+    private Koordinaatit maali;
     
     /**
-     * Konstruktorissa annetaan käytettävä heuristiikka.
+     * Konstruktorissa annetaan vertailussa käytettävä heuristiikka.
      * @param heuristiikka 
      */
-    public Vertailija(Heuristiikka heuristiikka) {
+    public Vertailija(Heuristiikka heuristiikka, Koordinaatit maali) {
         this.heuristiikka = heuristiikka;
+        this.maali = maali;
     }
 
     /**
@@ -33,7 +36,7 @@ public class Vertailija implements Comparator<Solmu>{
      */
     @Override
     public int compare(Solmu s1, Solmu s2) {
-        if (s1.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s1.getKoordinaatit()) < s2.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s2.getKoordinaatit())) {
+        if (s1.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s1.getKoordinaatit(), maali) < s2.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s2.getKoordinaatit(), maali)) {
             return -1;
         }
         return 1;

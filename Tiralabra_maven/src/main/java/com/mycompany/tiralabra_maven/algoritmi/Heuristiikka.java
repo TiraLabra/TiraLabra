@@ -15,15 +15,13 @@ import com.mycompany.tiralabra_maven.Koordinaatit;
  */
 public abstract class Heuristiikka {
 
-    protected Koordinaatit maali;
     
     /**
      * Konstruktorissa annetaan maalin koordinaatit.
-     * @param maali 
      */
 
-    public Heuristiikka(Koordinaatit maali) {
-        this.maali = maali;
+    public Heuristiikka() {
+
     }
 
     /**
@@ -32,5 +30,5 @@ public abstract class Heuristiikka {
      * @return arvioitu etäisyys maaliin
      */
     
-    public abstract int arvioiMatkaMaaliin(Koordinaatit koordinaatit);
+    public abstract int arvioiMatkaMaaliin(Koordinaatit koordinaatit, Koordinaatit maali);
 }
