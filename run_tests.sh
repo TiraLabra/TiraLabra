@@ -1,5 +1,5 @@
-#!/bin/bash
-PROJECT_DIR=Tiralabra
+﻿#!/bin/bash
+PROJECT_DIR=Tiralabra_maven
 # Tätä tiedostoa käytetään automatisoituun testien ajamiseen.
 # Tiedoston ajaminen linuxilla ./run_tests.sh tulee aikaansaada
 # ohjelmasi testien suorittaminen.
