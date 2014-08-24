@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- * Enumia käytetään eri nappulatyyppien ilmaisemiseen.
+ * Enumia käytetään eri pelinappulatyyppien ilmaisemiseen.
  * @author noora
  */
 public enum Nappula {

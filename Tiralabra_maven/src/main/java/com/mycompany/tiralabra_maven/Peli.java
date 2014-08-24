@@ -1,47 +1,40 @@
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.AI.AI;
-import com.mycompany.tiralabra_maven.AI.EkaAI;
-import com.mycompany.tiralabra_maven.AI.MinimaxAI;
-import com.mycompany.tiralabra_maven.AI.SeuraavanSiirronPisteetAI;
+import com.mycompany.tiralabra_maven.AI.Pelaaja;
 import com.mycompany.tiralabra_maven.gui.Paivitettava;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Luokka sisältää metodeja peliolion käsittelyyn
  *
  * @author noora
  */
-public class Peli {
+public class Peli implements Runnable {
 
     private final Pelilauta pelilauta;
     private boolean peliKaynnissa;
-    private boolean valkoisenVuoroSiirtaa;
-    private Paivitettava piirtoalusta;
+    private Paivitettava paivitettava;
     private Siirto[] sallitutSiirrot;
-    private int valittuRivi;
-    private int valittuSarake;
-    private final AI AI;
-    private Pelaaja pelaaja;
+    private String viesti;
+    private Pelaaja musta;
+    private Pelaaja valkoinen;
+    private Pelaaja vuorossaOlevaPelaaja;
 
     /**
-     * Konstruktorissa luodaan uusi pelilauta ja tekoälyn ensimmäinen versio.
+     * Konstruktorissa luodaan uusi pelilauta, asetetaan sille nappulat ja selvitetään sallitut aloitussiirrot.
      */
     public Peli() {
         this.pelilauta = new Pelilauta();
+        this.pelilauta.asetaNappulatAlkuasetelmaan();
+        this.sallitutSiirrot = pelilauta.getSallitutSiirrot(true);
         this.peliKaynnissa = false;
-        AI = new MinimaxAI(this);
-        //AI = new EkaAI(this);
-        pelaaja = new Pelaaja(this);
     }
 
     public Pelilauta getPelilauta() {
         return pelilauta;
     }
 
-    public void setPaivitettava(Paivitettava piirtoalusta) {
-        this.piirtoalusta = piirtoalusta;
+    public void setPaivitettava(Paivitettava paivitettava) {
+        this.paivitettava = paivitettava;
     }
 
     public boolean isPeliKaynnissa() {
@@ -52,150 +45,119 @@ public class Peli {
         return sallitutSiirrot;
     }
 
-    public int getValittuRivi() {
-        return valittuRivi;
-    }
-
-    public int getValittuSarake() {
-        return valittuSarake;
-    }
-
-    public Paivitettava getPaivitettava() {
-        return piirtoalusta;
-    }
-
     public boolean isValkoisenVuoroSiirtaa() {
-        return valkoisenVuoroSiirtaa;
+        return vuorossaOlevaPelaaja == valkoinen;
     }
 
-    public Pelaaja getPelaaja() {
-        return pelaaja;
+    public void setMusta(Pelaaja pelaaja) {
+        this.musta = pelaaja;
     }
 
+    public void setValkoinen(Pelaaja pelaaja) {
+        this.valkoinen = pelaaja;
+    }
+
+    public Pelaaja getMusta() {
+        return musta;
+    }
+
+    public Pelaaja getValkoinen() {
+        return valkoinen;
+    }
+
+    
     /**
-     * Metodi aloittaa uuden pelin. Jos peli on jo käynnissä, pelaajalle
-     * näytetään virheilmoitus. Metodi käskee pelilautaa asettamaan nappulat
-     * alkuasetelmaan ja antaa siirtovuoron valkoiselle. Sen lisäksi kysytään
-     * pelilaudelta sallitut siirrot ja muokataan piirtoalustan näkymä käynnissä
-     * olevan pelin näkymäksi.
+     * Metodi käynnistää uuden pelin, antaa siirtovuoron valkoiselle ja käskee tekemään siirtoja niin kauan kuin peli on käynnissä.
+     * Jos siirto oli hyppy eli vastustajan nappulan syöminen, on vielä tarkastettava, onko hyppimistä mahdollista jatkaa samalla nappulalla.
+     * Kun mahdollisia hyppimisiä ei enää ole, siirtovuoro vaihtuu toiselle pelaajalle. Jos toisella pelaajalla ei ole ollenkaan sallittuja siirtoja, peli päättyy.
+     *
      */
-    public void uusiPeli() {
-        if (peliKaynnissa == true) {
-            piirtoalusta.naytaViesti("Peli on kesken! Luovuta ensin ja aloita uusi peli vasta sitten.");
+    @Override
+    public void run() {
+        if (musta == null || valkoinen == null) {
+            //System.out.println("PELAAJIA EI OLTU LAITETTU KUNOLLA !! >:(");
             return;
         }
-        pelilauta.asetaNappulatAlkuasetelmaan();
-        this.valkoisenVuoroSiirtaa = true;
-        this.sallitutSiirrot = pelilauta.getSallitutSiirrot(this.valkoisenVuoroSiirtaa);
-        this.valittuRivi = -1;
-        this.valittuSarake = -1;
-        piirtoalusta.naytaViesti("Valkoisen vuoro siirtää!");
-        this.peliKaynnissa = true;
+        vuorossaOlevaPelaaja = valkoinen;
+
+        peliKaynnissa = true;
+        while (peliKaynnissa) {
+            siirra();
+        }
+
+    }
+
+    private void siirra() {
+        Siirto siirto = vuorossaOlevaPelaaja.seuraavaSiirto(pelilauta.getSallitutSiirrot(vuorossaOlevaPelaaja == valkoinen));
+        siirraNappulaa(siirto);
+        this.sallitutSiirrot = pelilauta.getSallitutHypyt(vuorossaOlevaPelaaja == valkoinen, siirto.getLoppuRivi(), siirto.getLoppuSarake());
+        while (siirto.onkoSiirtoHyppy() && sallitutSiirrot != null) {
+            siirto = vuorossaOlevaPelaaja.seuraavaSiirto(sallitutSiirrot);
+            siirraNappulaa(siirto);
+            this.sallitutSiirrot = pelilauta.getSallitutHypyt(vuorossaOlevaPelaaja == valkoinen, siirto.getLoppuRivi(), siirto.getLoppuSarake());
+        }
+
+        vaihdaVuoroa();
+
+        if (!onkoSallittujaSiirtoja()) {
+            if (vuorossaOlevaPelaaja == valkoinen) {
+                peliLoppu("Valkoinen ei voi siirtää. Musta voitti");
+            } else {
+                peliLoppu("Musta ei voi siirtää. Valkoinen voitti");
+            }
+        }
+    }
+
+    private boolean onkoSallittujaSiirtoja() {
+        return pelilauta.getSallitutSiirrot(vuorossaOlevaPelaaja == valkoinen) != null;
+    }
+
+    private void vaihdaVuoroa() {
+        if (this.vuorossaOlevaPelaaja == valkoinen) {
+            this.vuorossaOlevaPelaaja = musta;
+        } else {
+            this.vuorossaOlevaPelaaja = valkoinen;
+        }
     }
 
     /**
-     * Metodia kutsutaan kun käyttäjä painaa luovuta peli -nappia. Jos peliä ei
-     * ole käynnissä, käyttäjälle näytetään virheilmoitus. Muuten peli
-     * lopetetaan siten että nappia painanut pelaaja hävisi pelin.
+     * Metodia kutsutaan kun käyttäjä painaa luovuta peli -nappia. Peli
+     * lopetetaan siten että nappia painanut pelaaja häviää pelin.
      */
     public void luovutaPeli() {
-        if (peliKaynnissa == false) {
-            piirtoalusta.naytaViesti("Aloita peli ennen luovuttamista!");
-            return;
-        }
-        if (valkoisenVuoroSiirtaa) {
+        if (vuorossaOlevaPelaaja == valkoinen) {
             peliLoppu("Valkoinen luovutti. Musta voitti!");
         } else {
             peliLoppu("Musta luovutti. Valkoinen voitti!");
         }
     }
 
-    /**
-     * Metodin avulla lopetetaan peli. Käyttäjälle näytetään viesti, joka voi
-     * sisältää esimerkiksi tiedon voittajasta. Tämän lisäksi piirtoalustan
-     * nappeja muokaan siten että käyttäjä voi aloittaa uuden pelin.
-     *
-     * @param viesti on käyttäjälle näytettava viesti
-     */
     private void peliLoppu(String viesti) {
-        piirtoalusta.naytaViesti(viesti);
+        this.setViesti(viesti);
         this.peliKaynnissa = false;
     }
 
-    /**
-     * Metodia kutsutaan kun käyttäjä painaa AI-nappia. Jos peliä ei ole
-     * käynnissä, käyttäjälle näytetään virheilmoitus. Muuten AI:ltä kysytään
-     * siirtoa, joka annetaan siirräNappulaa-metodille.
-     */
-    public void AISiirtaa() {
-        if (peliKaynnissa == false) {
-            piirtoalusta.naytaViesti("Aloita ensin uusi peli!");
-            return;
-        }
-        siirraNappulaa(this.AI.seuraavaSiirto());
-    }
-
-    /**
-     * Metodi käskee pelilautaa toteuttamaan annetun siirron. Tämän jälkeen
-     * siirtoja saatetaan vielä joutua jatkamaan, jos ensimmäinen siirto oli
-     * hyppy. Lopuksi siirtovuoro vaihtuu toiselle pelaajalle
-     *
-     * @param siirto on siirto, joka halutaan toteuttaa
-     */
-    public void siirraNappulaa(Siirto siirto) {
+    private void siirraNappulaa(Siirto siirto) {
+        //System.out.println("alku: " + siirto.getAlkuRivi() + siirto.getAlkuSarake() + " loppu: " + siirto.getLoppuRivi() + siirto.getLoppuSarake());
         pelilauta.teeSiirto(siirto);
-
-        if (jatkaSiirtamistaTarvittaessaJosHyppy(siirto)) {
-            return;
+        if (paivitettava != null) {
+            paivitettava.paivita();
         }
-        vaihdaPelaajaaJonkaVuoroSiirtaa();
     }
 
     /**
-     * Metodi vaihtaa siirtovuoron toiselle pelaajalle ja tarvittaessa lopettaa
-     * pelin, jos sallittuja siirtoja ei enää ole jäljellä
+     * Metodi asettaa annetun viestin muuttujaan, josta käyttöliittymäikkuna sitten voi sen käydä hakemassa.
+     * Viestin asettamisen jälkeen päivitetään käyttöliittymä, jolloin myös uusi viesti haetaan.
+     * @param viesti Viesti, joka haluttaa esittää käyttäjälle.
      */
-    private void vaihdaPelaajaaJonkaVuoroSiirtaa() {
-        if (valkoisenVuoroSiirtaa) {
-            valkoisenVuoroSiirtaa = false;
-            this.sallitutSiirrot = pelilauta.getSallitutSiirrot(valkoisenVuoroSiirtaa);
-            if (this.sallitutSiirrot == null) {
-                peliLoppu("Musta ei voi siirtää. Valkoinen voitti");
-            } else {
-                piirtoalusta.naytaViesti("Mustan vuoro siirtää");
-                AISiirtaa();
-            }
-        } else {
-            valkoisenVuoroSiirtaa = true;
-            this.sallitutSiirrot = pelilauta.getSallitutSiirrot(valkoisenVuoroSiirtaa);
-            if (this.sallitutSiirrot == null) {
-                peliLoppu("Valkoinen ei voi siirtää. Musta voitti");
-            } else {
-                piirtoalusta.naytaViesti("Valkoisen vuoro siirtää");
-            }
+    public void setViesti(String viesti) {
+        this.viesti = viesti;
+        if (paivitettava != null) {
+            this.paivitettava.paivita();
         }
-        this.valittuRivi = -1;
-        this.valittuSarake = -1;
-//        valitseNappulaValmiiksiJosVainYhtaNappulaaVoiSiirtaa();
     }
 
-    /**
-     * Metodi jatkaa saman pelaajan siirtovuoroa, jos ensimmäinen siirto oli
-     * hyppy ja mahdollisia hyppyjä on vielä olemassa
-     *
-     * @param siirto on ensimmäinen tehty siirto
-     * @return palauttaa tiedon siitä, onko hyppyjä vielä olemassa
-     */
-    private boolean jatkaSiirtamistaTarvittaessaJosHyppy(Siirto siirto) {
-        if (siirto.onkoSiirtoHyppy()) {
-            this.sallitutSiirrot = pelilauta.getSallitutHypyt(valkoisenVuoroSiirtaa, siirto.getLoppuRivi(), siirto.getLoppuSarake());
-            if (this.sallitutSiirrot != null) {
-                piirtoalusta.naytaViesti("Jatka hyppimistä");
-                this.valittuRivi = siirto.getLoppuRivi();
-                this.valittuSarake = siirto.getLoppuSarake();
-                return true;
-            }
-        }
-        return false;
+    public String getViesti() {
+        return this.viesti;
     }
 }

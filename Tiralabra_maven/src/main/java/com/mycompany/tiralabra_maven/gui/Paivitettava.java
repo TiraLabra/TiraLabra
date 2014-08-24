@@ -6,6 +6,5 @@ package com.mycompany.tiralabra_maven.gui;
  */
 public interface Paivitettava {
     void paivita();
-    void naytaViesti(String viesti);
     
 }

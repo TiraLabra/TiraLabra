@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.Peli;
+import com.mycompany.tiralabra_maven.PeliOhjain;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,10 +9,14 @@ import java.awt.event.MouseListener;
  * @author noora
  */
 public class Hiirenkuuntelija implements MouseListener {
-    private Peli peli;
+    private PeliOhjain peli;
+    private int reuna;
+    private int sivunPituus;
     
-    public Hiirenkuuntelija(Peli peli){
+    public Hiirenkuuntelija(PeliOhjain peli){
         this.peli = peli;
+        this.reuna = 4;
+        this.sivunPituus = 40;
     }
 
     @Override
@@ -26,15 +30,12 @@ public class Hiirenkuuntelija implements MouseListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!this.peli.isPeliKaynnissa()) {
-            this.peli.getPaivitettava().naytaViesti("Aloita ensin uusi peli");
-        } else if (this.peli.getPelaaja() != null){
-            int sarake = (e.getX() - 4) / 40;
-            int rivi = (e.getY() - 4) / 40;
+        
+            int sarake = (e.getX()-reuna) / sivunPituus;
+            int rivi = (e.getY()-reuna) / sivunPituus;
             if (sarake >= 0 && sarake < 8 && rivi >= 0 && rivi < 8) {
-                peli.getPelaaja().valitseRuudutJoissaSiirtoTapahtuu(rivi, sarake);
-            }
-        }
+                peli.valitseRuudutJoissaSiirtoTapahtuu(rivi, sarake);
+            }        
     }
 
     @Override

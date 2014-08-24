@@ -7,7 +7,7 @@ import com.mycompany.tiralabra_maven.Siirto;
  * Luokka toimii yksinkertaisena tekoälynä
  * @author noora
  */
-public class EkaAI extends AI {
+public class EkaAI extends Pelaaja {
     
     public EkaAI(Peli peli){
         super(peli);
@@ -19,9 +19,13 @@ public class EkaAI extends AI {
      * @return Palauttaa seuraavan siirron
      */
     @Override
-    public Siirto seuraavaSiirto() {
-        Siirto[] siirrot = this.peli.getSallitutSiirrot();
-        return siirrot[0];
+    public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+        
+        }
+        return sallitutSiirrot[0];
     }
     
 }

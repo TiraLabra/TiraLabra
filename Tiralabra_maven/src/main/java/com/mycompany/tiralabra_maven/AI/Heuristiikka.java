@@ -35,13 +35,22 @@ public class Heuristiikka {
                 }
                 if (ruudukko[rivi][sarake].equals(nappula)) {
                     pisteet++;
-                    if (nappula.equals(Nappula.MUSTA)){
-                        pisteet += sarake;
+                    if (sarake == 0 || sarake == 7){
+                        pisteet += 4;
+                    } else if (sarake == 1 || sarake == 6){
+                        pisteet += 3;
+                    } else if (sarake == 2 || sarake == 5){
+                        pisteet += 2;
                     } else {
-                        pisteet = pisteet + (7-sarake);
+                        pisteet += 1;
+                    }
+                    if (nappula.equals(Nappula.MUSTA)){
+                        pisteet += rivi;
+                    } else {
+                        pisteet = pisteet + (7-rivi);
                     }
                 } else if (ruudukko[rivi][sarake].equals(kruunattu)) {
-                    pisteet += 2;
+                    pisteet += 3;
                 }
                 if (lauta.voikoNappulaLiikkua(valkoisenVuoroSiirtaa, rivi, sarake, rivi + 1, sarake + 1)) {
                     pisteet++;
@@ -66,7 +75,7 @@ public class Heuristiikka {
 //                }
 //                if (lauta.voikoNappulaHypata(valkoisenVuoroSiirtaa, rivi, sarake, rivi - 1, sarake - 1, rivi - 2, sarake - 2)) {
 //                    pisteet += 2;
-//                }
+ //               }
             }
         }
 

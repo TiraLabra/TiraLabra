@@ -8,7 +8,7 @@ import com.mycompany.tiralabra_maven.Siirto;
  * Luokka toteuttaa tekoälyn, joka palauttaa sen siirron joka johtaa parhaaseen mahdolliseen tilanteeseen laudalla
  * @author noora
  */
-public class SeuraavanSiirronPisteetAI extends AI {
+public class SeuraavanSiirronPisteetAI extends Pelaaja {
     private Heuristiikka heuristiikka;
     
     public SeuraavanSiirronPisteetAI(Peli peli){
@@ -20,14 +20,13 @@ public class SeuraavanSiirronPisteetAI extends AI {
      * @return Siirto, jonka tekoäly haluaa tehdä
      */
     @Override
-    public Siirto seuraavaSiirto() {
-        Siirto[] siirrot = this.peli.getSallitutSiirrot();
+    public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
         boolean valkoisenVuoroSiirtaa = this.peli.isValkoisenVuoroSiirtaa();
         Pelilauta lauta;
-        int[] pisteet = new int[siirrot.length];
-        for (int i = 0; i < siirrot.length; i++){
+        int[] pisteet = new int[sallitutSiirrot.length];
+        for (int i = 0; i < sallitutSiirrot.length; i++){
             lauta = this.peli.getPelilauta().teeKopio();
-            lauta.teeSiirto(siirrot[i]);
+            lauta.teeSiirto(sallitutSiirrot[i]);
             heuristiikka = new Heuristiikka(lauta);
             pisteet[i] = heuristiikka.laskeTilanteenArvo(valkoisenVuoroSiirtaa);
         }
@@ -39,7 +38,7 @@ public class SeuraavanSiirronPisteetAI extends AI {
                 paikka = j;
             }
         }
-        return siirrot[paikka];
+        return sallitutSiirrot[paikka];
     }
     
 }

@@ -1,40 +1,31 @@
+
 package com.mycompany.tiralabra_maven.AI;
 
+import com.mycompany.tiralabra_maven.Lista;
 import com.mycompany.tiralabra_maven.Peli;
 import com.mycompany.tiralabra_maven.Pelilauta;
 import com.mycompany.tiralabra_maven.Siirto;
+import com.mycompany.tiralabra_maven.SolmujenVertailija;
 
 /**
- * Luokka toteuttaa minimax-algoritmia käyttävän tekoälyn
- *
+ * Luokka on vastaava kuin Minimax-luokka, mutta luokassa hyödynnetään erilaisia omia tietorakenteita
  * @author noora
  */
-public class MinimaxAI extends Pelaaja {
-
+public class MinimaxPuuAI extends Pelaaja {
     private Heuristiikka heuristiikka;
-    private int miniMaxSyvyys;
+    private int syvyys;
 
-    public MinimaxAI(Peli peli, int syvyys) {
+    public MinimaxPuuAI(Peli peli, int syvyys) {
         super(peli);
-        this.miniMaxSyvyys = syvyys;
+        this.syvyys = syvyys;
     }
 
-    /**
-     * Metodi sisältää minimax-algoritmin
-     *
-     * @param lauta Kyseisen pelitilanteen sisältävä pelilauta
-     * @param syvyys Kuinka monta siirtoa eteenpäin pelitilanteita lasketaan
-     * @param valkoisenVuoroSiirtaa Kumman pelaajan vuoro on kyseessä
-     * @param vuorossaOlevaPelaaja Lasketaanko nyt vuorossa olevan pelaajan vai
-     * vastustajan siirtoa
-     * @return Parhaan mahdollisen laudan arvon, joka voidaan saavuttaa
-     * tekemällä siirtoja kyseiselle pelilaudalle
-     */
+
     private int minimax(Pelilauta lauta, int syvyys, boolean valkoisenVuoroSiirtaa, boolean vuorossaOlevaPelaaja) {
         int parasArvo, arvo;
         Siirto[] siirrot = lauta.getSallitutSiirrot(valkoisenVuoroSiirtaa);
+        heuristiikka = new Heuristiikka(lauta);
         if (syvyys <= 0 || lauta.getSallitutSiirrot(valkoisenVuoroSiirtaa) == null) {
-            heuristiikka = new Heuristiikka(lauta);
             return heuristiikka.laskeTilanteenArvo(valkoisenVuoroSiirtaa);
         }
         if (vuorossaOlevaPelaaja) {
@@ -62,12 +53,12 @@ public class MinimaxAI extends Pelaaja {
         }
     }
 
+
     /**
-     * Metodi selvittää minkä siirron tekoäly tekee suraavaksi käyttäen apuna
-     * minimax-algoritmia. Algoritmin avulla pisteytetään mahdolliset siirrot ja
-     * valitaan niistä tehtäväksi se, jonka saama pistemäärä on suurin
-     *
-     * @return Palauttaa siirron, jonka tekoäly haluaa tehdä
+     * Metodin avulla selvitetään, mikä siirto kannattaa seuraavaksi tehdä.
+     * Selvityksessä käytetään apuna minimax-algoritmia ja heuristiikkaa
+     * @param sallitutSiirrot Lista sallituista siirroista
+     * @return Palauttaa seuraavaksi tehtävän siirron
      */
     @Override
     public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
@@ -76,21 +67,11 @@ public class MinimaxAI extends Pelaaja {
         } catch (InterruptedException ex) {
         
         }
-
-        int[] pisteet = new int[sallitutSiirrot.length];
+        Lista<Solmu> lista = new Lista(new SolmujenVertailija());
         for (int i = 0; i < sallitutSiirrot.length; i++) {
-            Pelilauta lauta = this.peli.getPelilauta().teeKopio();
-            lauta.teeSiirto(sallitutSiirrot[i]);
-            pisteet[i] = minimax(lauta, this.miniMaxSyvyys, this.peli.isValkoisenVuoroSiirtaa(), false);
+            lista.lisaa(new Solmu(minimax(this.peli.getPelilauta().teeKopio(), 1, this.peli.isValkoisenVuoroSiirtaa(), true), sallitutSiirrot[i]));
         }
-        int suurinPistemaara = 0;
-        int paikka = 0;
-        for (int j = 0; j < pisteet.length; j++) {
-            if (pisteet[j] > suurinPistemaara) {
-                suurinPistemaara = pisteet[j];
-                paikka = j;
-            }
-        }
-        return sallitutSiirrot[paikka];
+        Solmu palautus = lista.getSuurin();
+        return palautus.getSiirto();
     }
 }

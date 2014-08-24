@@ -7,16 +7,17 @@ import com.mycompany.tiralabra_maven.Siirto;
  * Abstrakti luokka, joka toimii tekoälynä eli jolta voi kysyä seuraavaa siirtoa
  * @author noora
  */
-public abstract class AI {
+public abstract class Pelaaja {
     protected Peli peli;
     
-    public AI(Peli peli){
+    public Pelaaja(Peli peli){
         this.peli = peli;
     }
     
     /**
      * Metodi palauttaa seuraavan siirron
+     * @param sallitutSiirrot
      * @return paluttaa seuraavan siirron
      */
-    public abstract Siirto seuraavaSiirto();
+    public abstract Siirto seuraavaSiirto(Siirto[] sallitutSiirrot);
 }

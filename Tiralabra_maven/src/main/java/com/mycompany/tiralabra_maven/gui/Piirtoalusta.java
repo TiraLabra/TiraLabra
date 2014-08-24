@@ -1,154 +1,173 @@
-
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.Peli;
+import com.mycompany.tiralabra_maven.Nappula;
+import com.mycompany.tiralabra_maven.PeliOhjain;
 import com.mycompany.tiralabra_maven.Siirto;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Luokka tarjoaa metodit pelinäkymän piirtämiseen
+ * Luokka tarjoaa metodit, jotka tarvitaan peliruudukon ja nappuloiden piirtämiseen
+ *
  * @author noora
  */
-public class Piirtoalusta extends JPanel implements ActionListener, Paivitettava {
+public class Piirtoalusta extends JPanel implements Runnable {
 
-    private final Peli peli;
-    private JButton uusiPeliNappi;
-    private JButton luovutaPeliNappi;
-    private JButton AINappi;
-    private JLabel viestiKentta;
-    private final Ruudukko ruudukko;
+    private PeliOhjain peli;
 
     /**
-     * Konstruktorille annetaan käynnissä oleva peli.
-     * Se asettaa ikkunan koon, luo uuden peliruudukon ja pelin napit sekä viestikentän
-     * @param peli 
+     * Konstruktori saa parametrinaan pelin
+     *
+     * @param peli Käynnissä oleva peli
      */
-    public Piirtoalusta(Peli peli) {
+    public Piirtoalusta(PeliOhjain peli) {
         this.peli = peli;
-        this.setPreferredSize(new Dimension(700, 500));
-        this.ruudukko = new Ruudukko(peli);
-        luoUusiPeliNappi();
-        luoLuovutaPeliNappi();
-        luoAINappi();
-        luoViestiKentta();
+        setBackground(Color.BLACK);
+        new Thread(this).start();
+    }
 
+    public Piirtoalusta() {
+
+    }
+
+    public void paivita() {
+        super.repaint();
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+            }
+            repaint();
+        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (this.peli == null) {
+            return;
+        }
 
-        add(ruudukko);
-        add(uusiPeliNappi);
-        add(luovutaPeliNappi);
-        add(AINappi);
-        add(viestiKentta);
-
-        ruudukko.setBounds(20, 20, 328, 328);
-        uusiPeliNappi.setBounds(470, 120, 120, 30);
-        luovutaPeliNappi.setBounds(470, 180, 120, 30);
-        AINappi.setBounds(470, 240, 120, 30);
-        viestiKentta.setBounds(0, 400, 700, 50);
-
-        ruudukko.addMouseListener(new Hiirenkuuntelija(peli));
-
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        Object o = e.getSource();
-        if (o == AINappi) {
-            peli.AISiirtaa();
-        } else if (o == uusiPeliNappi) {
-            peli.uusiPeli();
-        } else if (o == luovutaPeliNappi) {
-            peli.luovutaPeli();
+        piirraRuudut(g);
+        if (peli.isPeliKaynnissa()) {
+            merkitseVaihtoehtoisetLiikutettavat(g);
+            if (peli.getValittuRivi() >= 0) {
+                merkitseLiikutettavaNappula(g);
+            }
         }
     }
 
     /**
-     * Metodi luo napin, jolla voi aloittaa uuden pelin
+     * Metodi piirtää pelilaudan ruudut
+     *
+     * @param g
      */
-    private void luoUusiPeliNappi() {
-        this.uusiPeliNappi = new JButton("Aloita peli");
-        uusiPeliNappi.addActionListener(this);
+    private void piirraRuudut(Graphics g) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                if (y % 2 == x % 2) {
+                    g.setColor(Color.LIGHT_GRAY);
+                } else {
+                    g.setColor(Color.DARK_GRAY);
+                }
+                g.fillRect(4 + x * 40, 4 + y * 40, 40, 40);
+                piirraNappulat(y, x, g);
+
+            }
+        }
     }
 
     /**
-     * Metodi luo napin, jolla voi luovuttaa ja siten lopettaa pelin
+     * Metodi piirtää pelilaudan nappulat
+     *
+     * @param y
+     * @param x
+     * @param g
      */
-    private void luoLuovutaPeliNappi() {
-        this.luovutaPeliNappi = new JButton("Luovuta");
-        luovutaPeliNappi.addActionListener(this);
+    private void piirraNappulat(int y, int x, Graphics g) {
+        if (peli.getPelilauta() == null) {
+            return;
+        }
+        Nappula nappula = this.peli.getPelilauta().getNappula(y, x);
+        if (nappula != null) {
+            switch (nappula) {
+                case MUSTA:
+                    g.setColor(Color.BLACK);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
+                    return;
+                case VALKOINEN:
+                    g.setColor(Color.WHITE);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
+                    return;
+                case KRUUNATTU_MUSTA:
+                    g.setColor(Color.BLACK);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("a", Font.BOLD, 25));
+                    g.drawString("K", 14 + x * 40, 32 + y * 40);
+                    return;
+                case KRUUNATTU_VALKOINEN:
+                    g.setColor(Color.WHITE);
+                    g.fillOval(8 + x * 40, 8 + y * 40, 30, 30);
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("a", Font.BOLD, 25));
+                    g.drawString("K", 14 + x * 40, 32 + y * 40);
+            }
+        }
     }
 
     /**
-     * Metodi luo napin, jolla saa AIn tekemään siirron
+     * Metodi merkitsee nappulat, joita on mahdollista liikuttaa
+     *
+     * @param g
      */
-    private void luoAINappi() {
-        this.AINappi = new JButton("AI");
-        AINappi.addActionListener(this);
+    private void merkitseVaihtoehtoisetLiikutettavat(Graphics g) {
+        g.setColor(Color.BLUE);
+        Siirto[] sallitut = peli.getSallitutSiirrot();
+        if (sallitut == null) {
+            return;
+        }
+        if (sallitut.length != 0) {
+            for (Siirto sallitut1 : sallitut) {
+                g.drawRect(4 + sallitut1.getAlkuSarake() * 40, 4 + sallitut1.getAlkuRivi() * 40, 38, 38);
+                g.drawRect(6 + sallitut1.getAlkuSarake() * 40, 6 + sallitut1.getAlkuRivi() * 40, 34, 34);
+            }
+        }
     }
 
     /**
-     * Metodi luo kentän, jossa näytetään käyttäjälle viestejä
+     * Metodi merkitsee nappulan, jota pelaaja on päättänyt liikuttaa
+     *
+     * @param g
      */
-    private void luoViestiKentta() {
-        this.viestiKentta = new JLabel("Tammi", JLabel.CENTER);
-        viestiKentta.setFont(new Font("a", Font.PLAIN, 14));
+    private void merkitseLiikutettavaNappula(Graphics g) {
+        g.setColor(Color.CYAN);
+        g.drawRect(4 + peli.getValittuSarake() * 40, 4 + peli.getValittuRivi() * 40, 38, 38);
+        g.drawRect(6 + peli.getValittuSarake() * 40, 6 + peli.getValittuRivi() * 40, 34, 34);
+        merkitseMihinVoidaanLiikkua(g);
     }
 
     /**
-     * Metodi näyttää viestin käyttäjälle viestikentässä
-     * @param viesti Käyttäjälle näytettävä viesti
+     * Metodi merkitsee ruudut, joihin valittu nappula on mahdollista liikuttaa
+     *
+     * @param g
      */
-    public void naytaViesti(String viesti) {
-        this.viestiKentta.setText(viesti);
+    private void merkitseMihinVoidaanLiikkua(Graphics g) {
+        Siirto[] sallitut = peli.getSallitutSiirrot();
+
+        g.setColor(Color.GREEN);
+        for (int i = 0; i < sallitut.length; i++) {
+            if (sallitut[i].getAlkuSarake() == peli.getValittuSarake() && sallitut[i].getAlkuRivi() == peli.getValittuRivi()) {
+                g.drawRect(4 + sallitut[i].getLoppuSarake() * 40, 4 + sallitut[i].getLoppuRivi() * 40, 38, 38);
+                g.drawRect(6 + sallitut[i].getLoppuSarake() * 40, 6 + sallitut[i].getLoppuRivi() * 40, 34, 34);
+            }
+        }
     }
 
-    public void paivita() {
-        System.out.println("paivita");
-        super.repaint();
-    }
-
-    /**
-     * Metodi muokkaa nappeja siten, että uuden pelin aloittaminen ei ole mahdollista
-     */
-    public void muokkaaNapitKunPeliKaynnissa() {
-        this.uusiPeliNappi.setEnabled(false);
-        this.luovutaPeliNappi.setEnabled(true);
-        this.AINappi.setEnabled(true);
-    }
-
-    /**
-     * Metodi muokkaa nappeja sitten, että pelin luovuttaminen tai AIn käyttö ei ole mahdollista
-     */
-    public void muokkaaNapitKunPeliLoppu() {
-        this.uusiPeliNappi.setEnabled(true);
-        this.luovutaPeliNappi.setEnabled(false);
-        this.AINappi.setEnabled(false);
-    }
-    
-    /**
-     * Metodi muokkaa nappeja siten, että AIn käyttö on mahdollista
-     */
-    public void muokkaaNapitKunAInVuoro(){
-        this.AINappi.setEnabled(true);
-    }
-    
-    /**
-     * Metodi muokkaa nappeja siten että AIn käyttö ei ole mahdollista
-     */
-    public void muokkaaNapitKunEiOleAInVuoro(){
-        this.AINappi.setEnabled(false);
-    }
 }

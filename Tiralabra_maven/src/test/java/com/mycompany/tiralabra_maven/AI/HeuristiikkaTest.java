@@ -25,7 +25,7 @@ public class HeuristiikkaTest {
 
     @Test
     public void laskeTilanteenArvoToimiiAlkuasetelmassa() {
-        assertEquals(63, heuristiikka.laskeTilanteenArvo(true));
+        assertEquals(61, heuristiikka.laskeTilanteenArvo(true));
     }
     
 }
