@@ -33,9 +33,8 @@ tiilet ja testataan sisältääkö tuloste alkuperäiset setit.
 (1), tenpai (0), valmis (-1), tai reunatapaus "väärästi valmis" (4 settiä ja
 shuntsuwait) (ei mitään).
 
-Odotuspuu (`buildGreedyWaitTree`) ...
-
-(TODO: toimiikohan se edes?)
+Odotuspuut (`buildGWT`, `buildGWTs`, `buildGWTs'`) on testattu siltä
+**TODO writeme**
 
 ## Suorituskyky
 
@@ -49,4 +48,9 @@ Entäpä variaatio `tilesSplitGroupL`, joka käsittelee tiilityypit erikseen? T�
 pitäisi intuitiivisesti olla huomattavasti nopeampaa ainakin suurissa
 teennäistapauksissa.
 
-(TODO: benchmarkit on "semanttisesti rikki", korjataanpas ne ensin :)
+Odotuspuiden suorituskyvyn testaus satunnaisella kädellä criterionilla on
+vähintään humorista, koska puun koko vaihtelee todella paljon ja tuloksia ei
+pysty tulkitsemaan criterionin heuristiikkojen hajotessa. Kuitenkin puun luonti
+näyttäisi olevan yllätävän tehokasta yleisessäkin tapauksessa, alle puoli
+sekuntia. Eihän näitä puita kukaan mihinkään oikeasti tällaisena voi käyttää
+(eihän?), korkeintaan järkevämpien ratkaisuiden debuggauksen apuna.

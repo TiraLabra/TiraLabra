@@ -11,7 +11,7 @@
 module Mahjong.Hand.Algo.WaitTree
     (
     -- * WaitTree
-    WaitTree, DevOp(..), TenpaiOp(..)
+    WaitTree, DevOp(..), TenpaiOp(..), Grouping, TileGroup(..)
 
     -- * RootedTree
     , RootedTree(..), RootedBranch(..)
@@ -31,12 +31,29 @@ import Text.PrettyPrint.ANSI.Leijen (Pretty(..))
 import qualified Text.PrettyPrint.ANSI.Leijen as PP
 
 import Mahjong.Tiles
+import Mahjong.Hand.Mentsu
 import Mahjong.Hand.Value
 
 -- * WaitTree
 
 -- | A @WaitTree@ models the development options of an mahjong hand.
-type WaitTree = RootedTree [Tile] DevOp TenpaiOp
+type WaitTree = RootedTree Grouping DevOp TenpaiOp
+
+-- | A single grouping variant.
+type Grouping = [TileGroup]
+
+-- | Data type used to describe some group of tiles.
+data TileGroup = GroupWait MentsuKind [Tile] [Tile]
+                -- ^ A @MentsuWait kind Inhand waits@ describes a wait on
+                -- any of the tiles `waits` for a mentsu of kind `kind`
+                -- with tiles `inhand` already in hand.
+                | GroupComplete Mentsu
+                -- ^ Note that jantou (the pair) are viewed as koutsu
+                -- waits. It's pretty logical when you think about it.
+                | GroupLeftover Tile
+                -- ^ A leftover tile which cannot be associated with any
+                -- other tile.
+                deriving (Show, Read, Eq, Ord)
 
 -- | Development operation that waits for tile `waitFor` discarding
 -- `waitDiscard`.
@@ -100,11 +117,9 @@ instance Bifunctor RootedBranch where
     bimap f g (RootedBranch inner xs) = RootedBranch (f inner) (bimap f g <$> xs)
     bimap _ g (RootedLeaf outer)      = RootedLeaf (g outer)
 
-instance (Pretty r, Pretty i, Pretty l) => Pretty (RootedTree [r] i l) where
+instance (Pretty r, Pretty i, Pretty l) => Pretty (RootedTree r i l) where
     pretty (RootedTree root branches) =
-        foldl1 (PP.<+>) (pretty <$> root)
-        PP.<$$> prettyList branches
-        PP.<+> PP.hardline
+        pretty root PP.<$$> prettyList branches PP.<+> PP.hardline
 
 instance (Pretty inner, Pretty leaf) => Pretty (RootedBranch inner leaf) where
     pretty (RootedLeaf leaf)       = "└╼" PP.<+> pretty leaf
@@ -112,3 +127,8 @@ instance (Pretty inner, Pretty leaf) => Pretty (RootedBranch inner leaf) where
         "└┬╼" PP.<+> pretty inner PP.<$> PP.indent 1 (PP.align (prettyList (toList xs)))
 
     prettyList branches = foldl1 (PP.<$>) (pretty <$> branches)
+
+instance Pretty TileGroup where
+    pretty (GroupWait _ inh _) = foldl1 (PP.<+>) (map pretty inh)
+    pretty (GroupComplete m) = foldl1 (PP.<+>) (map pretty $ mentsuTiles m)
+    pretty (GroupLeftover t) = pretty t

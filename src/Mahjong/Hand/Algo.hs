@@ -34,6 +34,7 @@ module Mahjong.Hand.Algo
 import           Control.Monad
 import           Control.Applicative
 import           Data.Maybe
+import           Data.Either (isLeft)
 import           Data.Bifunctor
 import           Data.List (delete, sort, foldl', find, groupBy)
 import           Data.List.HT (removeEach)
@@ -48,22 +49,6 @@ import Mahjong.Tiles
 
 -- | Right for shuntsu wait, Left for koutsu wait or ready pair
 type Wait = Either Tile [Tile]
-
--- | A single grouping variant.
-type Grouping = [TileGroup]
-
--- | Data type used to describe some group of tiles.
-data TileGroup = GroupWait MentsuKind [Tile] [Tile]
-                -- ^ A @MentsuWait kind Inhand waits@ describes a wait on
-                -- any of the tiles `waits` for a mentsu of kind `kind`
-                -- with tiles `inhand` already in hand.
-                | GroupComplete Mentsu
-                -- ^ Note that jantou (the pair) are viewed as koutsu
-                -- waits. It's pretty logical when you think about it.
-                | GroupLeftover Tile
-                -- ^ A leftover tile which cannot be associated with any
-                -- other tile.
-                deriving (Show, Read, Eq, Ord)
 
 -- | A nothing result means that the hand has 14 (or more) tiles but is not
 -- complete. Thus, invalid.
@@ -240,16 +225,17 @@ devops :: [Tile] -> [Wait] -> NE.NonEmpty DevOp'
 devops f_ts w_ts
     | []  <- f_ts, []  <- w_ts     = error "devops: called with a malformed hand (all mentsu)"
     | []  <- f_ts, [_] <- w_ts     = error "devops: called with a malformed hand (one mentsu free only)"
-    | []  <- f_ts, twoKoutsu w_ts = tenpaiTwoKoutsu
+    | []  <- f_ts, tenpaiWaits    = NE.fromList tenpaiHasKoutsu
     | []  <- f_ts                 = NE.fromList breakingWait
     | [x] <- f_ts, []  <- w_ts     = return (Left x) -- Last pair wait
     |             []  <- w_ts     = NE.fromList leftoversOnly
     | otherwise                  = NE.fromList meldLeftovers
     where
-        twoKoutsu [Left _, Left _] = True
-        twoKoutsu _                = False
+        tenpaiWaits = length w_ts == 2 && any isLeft w_ts
 
-        tenpaiTwoKoutsu = NE.fromList $ map (\(Left t) -> Left t) w_ts
+        tenpaiHasKoutsu
+            | [Left x, Left y] <- w_ts = [Left x, Left y]
+            | otherwise               = concatMap (either (const []) (map Left)) w_ts
 
         meldLeftovers = melding f_ts w_ts ++ meldingFree
         
@@ -302,9 +288,7 @@ buildGWTs gs = map buildGWT $ filter ((== min_s) . shanten) gs
 -- | @buildGWT group@ discards groupings strictly less than shanten over
 -- `groups` before building the tree.
 buildGWT :: Grouping -> WaitTree
-buildGWT g =
-    unfoldRootedTree (concatMap tileGroupTiles g)
-        go (NE.toList $ devops <$> leftovers <*> waits $ g)
+buildGWT g = unfoldRootedTree g go (NE.toList $ devops <$> leftovers <*> waits $ g)
     where
         go :: DevOp' -> Either TenpaiOp (DevOp, NE.NonEmpty DevOp')
         go = bimap (`TenpaiOp` 0)

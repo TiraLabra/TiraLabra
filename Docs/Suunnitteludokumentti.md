@@ -40,8 +40,8 @@ vakiokerroin, muistivaativuus on sama.
 
 ## shanten
 
-TODO writeme
+**TODO writeme**
 
 ## buildGreedyWaitTree
 
-TODO writeme
+**TODO writeme**
