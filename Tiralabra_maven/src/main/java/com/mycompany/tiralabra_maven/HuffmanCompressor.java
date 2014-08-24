@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import Collections.BitImmutableCollection;
+import Collections.BitSet;
 import Collections.Dictionary;
 import Collections.Dictionary.KeyValuePair;
 import Collections.PriorityQueue;
@@ -11,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import Collections.BitSet;
 
 /**
  * Compressor that uses huffman encoding to compress text files.

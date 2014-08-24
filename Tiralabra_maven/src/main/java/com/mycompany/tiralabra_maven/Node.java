@@ -28,6 +28,11 @@ public final class Node implements Serializable, Comparable<Node> {
         this.right = right;
     }
 
+    /**
+     * The character attached to the node.
+     *
+     * @return The character attached to the node.
+     */
     public char getSymbol() {
         return symbol;
     }

@@ -79,6 +79,13 @@ public final class Dictionary<K, V> {
         return set.values();
     }
 
+    /**
+     * Class containing a key and a value. Equality and hashcode are determined
+     * by the key.
+     *
+     * @param <K> The Key type.
+     * @param <V> The Value type.
+     */
     public static final class KeyValuePair<K, V> {
 
         private final K key;
@@ -89,6 +96,11 @@ public final class Dictionary<K, V> {
             this.value = value;
         }
 
+        /**
+         * The value attached to the key.
+         *
+         * @return The value attached to the key.
+         */
         public V getValue() {
             return value;
         }

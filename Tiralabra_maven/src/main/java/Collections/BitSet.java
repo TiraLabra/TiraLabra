@@ -1,10 +1,19 @@
 package Collections;
 
+/**
+ * A mutable collection of bits.
+ */
 public final class BitSet {
 
     private final Vector<Boolean> bools;
     private int count;
 
+    /**
+     * Create a new BitSet from a byte array.
+     *
+     * @param byteForm The byte array to create from.
+     * @param bitCount The amount of bits the array has.
+     */
     public BitSet(final byte[] byteForm, final int bitCount) {
         this();
         final int extraBits = bitCount % 8;
@@ -25,28 +34,58 @@ public final class BitSet {
         }
     }
 
+    /**
+     * Create a new, empty BitSet.
+     */
     public BitSet() {
         this.bools = new Vector<>(Boolean.class);
         this.count = 0;
     }
 
+    /**
+     * Add a boolean value to the set.
+     *
+     * @param bool Boolean to add.
+     */
     public void add(final boolean bool) {
         bools.add(bool);
         count++;
     }
 
+    /**
+     * Get bit value at boolean.
+     *
+     * @param index The index where to get.
+     * @return The value at the index.
+     */
     public boolean get(final int index) {
         return bools.get(index);
     }
 
+    /**
+     * The amount of bits in the set.
+     *
+     * @return The amount of bits in the set.
+     */
     public int length() {
         return count;
     }
 
+    /**
+     * Set a bit at specified index to value.
+     *
+     * @param index The bit index.
+     * @param bool The new value.
+     */
     public void set(final int index, final boolean bool) {
         bools.setAtt(index, bool);
     }
 
+    /**
+     * Copy the BitSet to a byte array, with each byte holding 8 boolean values.
+     *
+     * @return The byte array.
+     */
     public byte[] toByteArray() {
         final Vector<Byte> bytes = new Vector<>(Byte.class);
         int currentByteIndex = 0;

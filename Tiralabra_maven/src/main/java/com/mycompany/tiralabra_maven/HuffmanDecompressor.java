@@ -1,11 +1,11 @@
 package com.mycompany.tiralabra_maven;
 
+import Collections.BitSet;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import Collections.BitSet;
 
 /**
  * Decompresses the files created by the huffman compressor.
