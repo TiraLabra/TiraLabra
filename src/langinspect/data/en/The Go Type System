@@ -1,0 +1,71 @@
+The Go Type System
+Recently I've become very interested in the Golang programming language. Golang, or Google Go as it's often called, is a new programming language designed by some fairly well-known systems researchers, including Rob Pike of Plan 9 fame, and Ken Thompson, one of the creators of C.
+Go has a lot "go"ing for it. Google has begun to use it for big internal projects. There is a lot of interest in Go in the web development and scripting communities. It also has a fairly mature implementation, something that's easy to overlook when considering new programming languages, but vitally important in practice.
+
+So what's the deal with Go? It's a strongly, statically typed imperative language with good concurrency support. But don't we already have a few of those? C++, Java, and .NET come to mind. Well, Go is fundamentally different than those languages. There are a lot of philosophical differences in the way Go handles errors, deals with platform-specific code, makes efficiency tradeoffs, and deals with concurrency. I could easily write an essay on each one of those philosophical excursions, and why Go's choice is the right one. However, in this post, I just want to talk about the Go type system and why it's better than the Java or C++ type system.
+
+More Java, sir?
+In Java, you have classes which contain data and instance methods. Code reuse is mostly done through inheritance.
+Let's consider InputStream. This is one of the most fundamental Java classes. It's been around since Java 1.0, and is the main method Java developers use to read files.
+
+InputStream is a class which contains some code, but it also has some "abstract" methods which are meant to be overridden.
+
+Let's say we want to some integers from a file. Well, we can't use InputStream directly, but we can use FileInputStream, a class which inherits directly from InputStream. Unfortunately, FileInputStream doesn't do any buffering. So if we want to do a lot of small reads, it may not be very efficient, because each of those reads will turn into a syscall.
+
+Well, that's no problem; we can use BufferedInputStream. BufferedInputStream extends FilterInputStream, which wraps one input stream in another input stream. In the case of BufferedInputStream, the outer stream does buffering.
+
+However, we still do have a problem. BufferedInputStream doesn't let us read integers; it only lets us read bytes and arrays of bytes. In order to get something that reads integers, we need another wrapper: DataInputStream.
+
+So far our program looks like this:
+FileInputStream fos = new FileInputStream("myfile"); 
+BufferedInputStream bos = new BufferedInputStream(fos, 16384);
+DataInputStream dos = new DataInputStream(bos);
+int foo = dos.readInt();
+Well, it might be a little verbose, but at least it's safe, right? We know that whatever operation we call on our InputStream will be well-supported.
+Well... not quite. One operation defined by InputStream, mark, is only supported by some InputStreams, and not others. It so happens that FileInputStream doesn't support it (and will misbehave at runtime if you try to use it). BufferedInputStream does. Our DataInputStream does, but only because it wraps our BufferedInputStream-- DataInputStream itself does not support mark.
+
+Incidentally, this also highlights another problem with this code-- the extreme lack of locality. In order to know what will happen when we make any given call, we have to start with the most derived class, and follow the chain of virtual method invocations, being careful to note where the subclass overrides the superclass and where it doesn't. For example, InputStream#read(byte b[], int off, int len) contains a very naive implementation of bulk reads that just reads a byte at a time in a loop. However, you don't have to worry about that here because it's overridden by FileInputStream. This is just a very simple example-- things can get hairy in the real world where you have 4 or 5 wrapper classes, and each stream is fairly far from the original base class on the inheritance tree.
+
+So anyway, this mark business is quite an omission. Wasn't Java supposed to protect us from runtime errors due to type signatures? How can we say that FileInputStream "is-an" InputStream when FileInputStream doesn't support all the methods of InputStream? If you're a Java true believer, it's a little bit like someone just farted in church. However, you'll find things like this all throughout the Java standard library-- little cases where the hierarchical inheritance-driven model of the world just did not conform to reality, and something had to give.
+
+In this particular case, in order to put the information about markability into the type system, we would have had to double the number of classes. Basically, we would have had to create MarkableInputStream, UnmarkableInputStream, followed by MarkableBufferedInputStream, UnmarkableBufferedInputStream, MarkableFilterInputStream, and UnmarkableFilterInputStream, and so forth.
+
+The basic problem is that there are a lot of traits an input stream could have: seekable versus non-seekable, buffered versus non-buffered, writable versus non-writable, position tracking versus position-oblivious, and so forth. In general, these traits are independent of one another, and we need 2^n classes to represent all the possible combinations of input stream. This kind of combinatorial explosion of pointless wrapper classes is the fundamental, algorithmic reason why Java is verbose. Even if its keywords were all abbreviated, even if Java supported a C++0x-style auto keyword, Java would still feel like Java.
+
+This may seem bad, but it gets worse. What if you want to both read and write from a file? Unfortunately, InputStream only supports reading. If you want to write to the same file, you'll have to either deal with OutputStream, RandomAccessFile, or FileChannel. None of these classes share a common base class with InputStream, so you essentially have to rewrite your code in order to use them. It gets very awkward. It's not unknown to see people passing around both an InputStream and a FileChannel that both represent the same file!
+
+A generic solution
+Java 5.0 got generics. The easiest way to think of generics is as a way of automatically generating the 2^n different implementations we talked about earlier. In C++, generics are actually implemented this way-- by generating extra copies of the templated code. Java only creates one copy of the code, though. The Java way is much more cache-friendly-- one reason why C++'s performance is actually worse than Java's sometimes.
+With generics, InputStream could be rewritten as InputStream<IOManipulator>. Then we could insert different IOManipulator classes which had different capabilities-- one might enable seeking and buffering, while another might not. We might have a Java interface named IOManipulator, implemented by BufferedIOManipulator, RandomAccessBufferedIOManipulator, and RandomAccessIOManipulator. However, we still find ourselves obsessing over the inheritance relationships between the IOManipulators-- should RandomAccessBufferedIOManipulator inherit from RandomAccessIOManipulator? Probably. Overall, though, generics make Java much more bearable by providing another "degree of freedom" in the type system. They allow you to avoid deep inheritance trees for just a little bit longer. I think this is the reason why most Java programmers can't imagine ever using a language without generics. However, generics have a steep learning curve for novice programmers, and the error messages you get with generics are extremely poor. Generics also don't fully solve the problems that we have with verbosity, overgrown hierarchies, and in many cases general awkwardness.
+
+The C++ standard library makes extensive use of templating. For example, std::string is really:
+
+namespace std {
+  template<class charT, class traits = char_traits<charT>,
+    class Allocator = allocator<charT> >
+      class basic_string;
+}
+That's right-- triply templated on the character type, the character "traits" class, and the memory allocator. This often leads to "word salad" compiler error messages.
+go-logo
+Go's solution
+After many years of real-world software engineering, the truth has become clear: inheritance is an antipattern. However, we still need some way of creating relationships between types. What are we going to do?
+Go solves this problem by deriving which types correspond to an interface automatically. So, for example, any type which has a function Read(p []byte) (n int, err error) defined for it conforms to the io.Reader interface Similarly, there is an io.ReaderAt interface for seekable streams. bufio is Go's version of BufferedInputStream.
+
+Notice that the problems we had before melt away. It's easy to have a type which conforms to both io.Reader and io.Writer. No big deal-- just implement the required functions. There's no need to think about inheritance hierarchies, type traits, or any of that. The code is also much less verbose because we avoid the "implements," "extends," and so forth. Some people call this feature "static duck typing."
+
+So far, so good. But what about if we want to extend the functionality provided for another type? For example, perhaps we want to create a buffered Reader that can also return a string describing which file is being read. In C++ or Java, if we wanted to extend the functionality through composition, we'd have to write "forwarding methods" for all the methods of the enclosed type. In Golang, we just use an anonymous field to export all of the functions of the anonymous type to the enclosing type. Later, we can override any of these auto-exported fields in the future if we want to, without breaking the API.
+
+Go's type system has one more subtle features that might surprise you if you grew up with C++ or Java, like I did. You can define methods on types other than structures. For example, I could define a method on the type []int (array of integers).
+
+Conclusion
+So there you have it. By making static typing feel more like dynamic typing, Golang eliminates the old tradeoff between the higher productivity of languages like Python, and the increased safety of languages like Java. We can have both! We also avoid the quagmire of deep inheritance hierarchies, incomprehensible error messages, and unsafe compromises like InputStream#mark.
+Go also provides tools to implement code reuse by composition, allowing us to favor composition over inheritance, as Effective C++ recommends.
+
+Will Go get generics in the future? I don't really know. The designers have left the question open. As we've seen, Go doesn't need generics as much as C++ and Java needed them. However, generics would still be useful for avoiding typecasts when implementing generic data structures. Basically when you're pulling an instance of a type out of a generic data structure using a get() method or similar, it's nice not to have to cast it back to the type that you know that it is. I think people make a much bigger deal out of this than it really is.
+
+One thing to note is that if generics were ever added to Go, they would not have to be added using type erasure. This was only done in Java to retain backwards compatibility between new Java code and old Java Virtual Machines (JVMs). Since Golang has no JVM, but compiles down to machine code, this would not be necessary.
+
+The design of Go has been influenced by decades of experience in building real-world systems. I think its type system is the best thing going out there for imperative languages, and a good candidate for replacing Python and Java with something much safer and more productive.
+
+Other stuff
+There are some other problems with Java's type system that I didn't really go into here. If you haven't read The Kingdom of Nouns, then you should check that out. Likewise, Yossi's C++ FQA ("frequently questioned answers") is a hilarious takedown of the over-inflated claims of C++ partisans. You will also learn quite a bit about the language by reading it-- Yossi knows his stuff.
