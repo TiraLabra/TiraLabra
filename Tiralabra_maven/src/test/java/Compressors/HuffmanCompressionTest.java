@@ -1,5 +1,6 @@
-package com.mycompany.tiralabra_maven;
+package Compressors;
 
+import PackerX.FileStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +10,7 @@ import java.io.PrintWriter;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public final class HuffmanDecompressorTest {
+public final class HuffmanCompressionTest {
 
     private File out;
     private File inputFile;

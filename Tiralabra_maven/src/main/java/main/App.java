@@ -1,6 +1,6 @@
 package main;
 
-import com.mycompany.tiralabra_maven.Packer;
+import PackerX.Packer;
 
 final class App {
 
