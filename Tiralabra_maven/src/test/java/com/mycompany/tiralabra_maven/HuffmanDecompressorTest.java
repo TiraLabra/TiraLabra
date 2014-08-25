@@ -1,17 +1,20 @@
 package com.mycompany.tiralabra_maven;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import org.junit.Before;
+import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public final class HuffmanDecompressorTest {
 
-    private HuffmanDecompressor decompressor;
-    private static File testFile;
+    private File out;
+    private static File inputFile;
+    private static File outputFile;
     private static final String testString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit enim, blandit a quam a, consequat rutrum eros. Pellentesque suscipit consectetur scelerisque. Curabitur at quam fermentum, tristique ligula scelerisque, accumsan augue. In arcu nulla, consectetur in tempor gravida, luctus vitae enim. Aliquam nec neque gravida, pharetra enim sed, sodales leo. Integer interdum metus quis nulla pharetra placerat. Proin et vehicula dolor. Donec gravida dolor neque, nec pretium nisl suscipit ut. Nam hendrerit augue orci, sed auctor felis tempus et. Etiam interdum tincidunt libero, ac condimentum neque volutpat accumsan.\n"
             + "\n"
             + "Vivamus fringilla lorem sit amet vestibulum porta. Donec et purus pulvinar, cursus erat sed, consectetur sapien. Praesent rhoncus nisi ut diam aliquet, a gravida mauris fringilla. Nullam adipiscing elementum lorem quis sodales. Aliquam non facilisis eros. Nullam dictum erat nec bibendum fringilla. Vivamus dapibus mattis turpis, vitae aliquam sapien luctus quis. In in massa consequat orci pharetra aliquam sit amet at quam. Donec aliquam ut nunc non sagittis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
@@ -19,56 +22,46 @@ public final class HuffmanDecompressorTest {
     @BeforeClass
     public static void setUpStatic() {
         try {
-            testFile = File.createTempFile("testHuffman", ".txt");
-            try (final PrintWriter writer = new PrintWriter(testFile)) {
+            inputFile = File.createTempFile("testHuffman", ".txt");
+            try (final PrintWriter writer = new PrintWriter(inputFile)) {
                 writer.write(testString);
             } catch (final IOException ex) {
                 System.err.println("Error writing decompressed file");
             }
-            HuffmanCompressor compressor = new HuffmanCompressor(testFile.getAbsolutePath());
-            compressor.compressFile();
-            testFile.deleteOnExit();
+            FileStream fs = new FileStream(inputFile.getAbsolutePath(), inputFile.getAbsolutePath() + ".pkx");
+            FileCompressionController controller = new HuffmanCompressor(fs);
+            controller.processFile();
+            outputFile = new File(inputFile.getAbsoluteFile() + ".pkx");
         } catch (IOException ex) {
             System.err.println("Error in test: Creating temp file");
         }
     }
 
-    @Before
-    public void setUp() {
-        decompressor = new HuffmanDecompressor("Ö://ASFOBRMIOMFKSDMFKSDFMKDS//asdas");
+    private String read() {
+        try (BufferedReader br = new BufferedReader(new FileReader(out))) {
+            StringBuilder sb = new StringBuilder();
+            while (true) {
+                int line = br.read();
+                if (line == -1) {
+                    break;
+                }
+                sb.append((char) line);
+            }
+            return sb.toString();
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
     @Test
-    public void testFileIsNotValid() {
-        assertFalse(decompressor.fileIsValid());
-    }
-
-    @Test
-    public void testFileCannotBeRead() {
-        assertFalse(decompressor.fileCanBeRead());
-    }
-
-    @Test
-    public void testInvalidDecompressionName() {
-        assertFalse(decompressor.fileExists());
-    }
-
-    @Test
-    public void testCantCreate() {
-        assertFalse(decompressor.create());
-    }
-
-    @Test
-    public void testDecompressionNotNull() {
-        decompressor = new HuffmanDecompressor(testFile.getAbsolutePath() + ".pkx");
-        String decompressed = decompressor.decompress();
-        assertNotNull(decompressed);
-    }
-
-    @Test
-    public void testDecompressionWorks() {
-        decompressor = new HuffmanDecompressor(testFile.getAbsolutePath() + ".pkx");
-        String decompressed = decompressor.decompress();
-        assertEquals(testString, decompressed);
+    public void testDecompressionWorks() throws FileNotFoundException, IOException {
+        out = new File(inputFile.getAbsolutePath() + ".decompressed");
+        out.createNewFile();
+        FileStream fs = new FileStream(outputFile.getAbsolutePath(), out.getAbsolutePath());
+        HuffmanDecompressor decompressor = new HuffmanDecompressor(fs);
+        decompressor.processFile();
+        System.out.println("Read " + read());
+        System.out.println("Expected " + testString);
+        assertEquals(testString, read());
     }
 }

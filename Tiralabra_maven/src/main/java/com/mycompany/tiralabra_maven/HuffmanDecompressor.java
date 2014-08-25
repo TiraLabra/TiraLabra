@@ -2,91 +2,40 @@ package com.mycompany.tiralabra_maven;
 
 import Collections.BitSet;
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
 
 /**
  * Decompresses the files created by the huffman compressor.
  */
-public final class HuffmanDecompressor {
+public final class HuffmanDecompressor extends FileCompressionController {
 
-    private final File path;
-    private final File decompressed;
     private int readBits = 0;
 
     /**
-     * Decompresses the file from the path.
+     * Decompresses the file from the stream.
      *
-     * @param path The compressed file.
+     * @param file The filestream containing the huffman compressed file.
      */
-    public HuffmanDecompressor(final String path) {
-        this.path = new File(path);
-        final String pathToDecompressed = removeFileEnding(path);
-        this.decompressed = new File(pathToDecompressed);
-    }
-
-    private String removeFileEnding(final String toRemoveFrom) {
-        return toRemoveFrom.substring(0, toRemoveFrom.length() - 4);
-    }
-
-    /**
-     * Has the file correct file ending?
-     *
-     * @return Has the file correct file ending?
-     */
-    public boolean fileIsValid() {
-        return path.getName().endsWith(".pkx");
-    }
-
-    /**
-     * Can the file be read?
-     *
-     * @return Can the file be read?
-     */
-    public boolean fileCanBeRead() {
-        return path.canRead();
-    }
-
-    /**
-     * Is the name for the decompressed file valid?
-     *
-     * @return Is the name for the decompressed file valid?
-     */
-    public boolean fileExists() {
-        return decompressed.exists();
-    }
-
-    /**
-     * Tries to create a file for the decompressed data.
-     *
-     * @return Was the file created.
-     */
-    public boolean create() {
-        try {
-            return decompressed.createNewFile();
-        } catch (IOException ex) {
-            return false;
-        }
+    public HuffmanDecompressor(final FileStream file) {
+        super(file);
     }
 
     /**
      * Starts the decompression process.
-     *
-     * @return The decompressed file.
      */
-    public String decompress() {
-        try (final FileInputStream file = new FileInputStream(path);
-                final ObjectInputStream objectReader = new ObjectInputStream(file);
-                final DataInputStream bitReader = new DataInputStream(file)) {
-            return readFile(objectReader, bitReader);
+    @Override
+    public void processFile() {
+        try (final ObjectInputStream objectReader = new ObjectInputStream(getFile().getInputStream());
+                final DataInputStream bitReader = new DataInputStream(getFile().getInputStream())) {
+            final String deCompressed = readFile(objectReader, bitReader);
+            writeFile(deCompressed);
         } catch (final IOException ex) {
             System.err.println("Error decompressing files");
         } catch (final ClassNotFoundException ex) {
             System.err.println("Could not read file, it may be corrupted (Missing huffman tree)");
         }
-        return null;
     }
 
     /**
@@ -156,5 +105,11 @@ public final class HuffmanDecompressor {
         readBits++;
         final Node nodeToTurn = turnRight ? node.getRight() : node.getLeft();
         return decodeChar(bits, nodeToTurn);
+    }
+
+    private void writeFile(final String text) {
+        final PrintWriter writer = new PrintWriter(getFile().getOutputStream());
+        writer.write(text);
+        writer.flush();
     }
 }

@@ -7,32 +7,28 @@ import Collections.Dictionary.KeyValuePair;
 import Collections.PriorityQueue;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
 
 /**
  * Compressor that uses huffman encoding to compress text files.
  */
-public final class HuffmanCompressor {
+public final class HuffmanCompressor extends FileCompressionController {
 
-    private final File pathToFile;
-    private final File pathToCompressedFile;
     private final PriorityQueue<Node> nodeQueue;
     private final Dictionary<Character, Node> nodes;
     private final Dictionary<Character, BitImmutableCollection> characterEncoding;
     private final StringBuilder readText;
 
     /**
-     * Creates a new compressor to compress the file at given path.
+     * Creates a new compressor to compress the stream.
      *
-     * @param path File to compress.
+     * @param file The filestream containing text file.
      */
-    public HuffmanCompressor(final String path) {
-        pathToFile = new File(path);
-        pathToCompressedFile = new File(path + ".pkx");
+    public HuffmanCompressor(final FileStream file) {
+        super(file);
         nodeQueue = new PriorityQueue<>(Node.class);
         nodes = new Dictionary<>();
         characterEncoding = new Dictionary<>();
@@ -40,53 +36,12 @@ public final class HuffmanCompressor {
     }
 
     /**
-     * Does the file, that is going to be the name for the compressed file,
-     * exist?
-     *
-     * @return Does the file, that is going to be the name for the compressed
-     * file, exist?
-     */
-    public boolean fileExists() {
-        return pathToCompressedFile.exists();
-    }
-
-    /**
-     * Try to create the file for the compression.
-     *
-     * @return Was the file created?
-     */
-    public boolean create() {
-        try {
-            return pathToCompressedFile.createNewFile();
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-
-    /**
-     * Can the file, which is going to be compressed, be read?
-     *
-     * @return Can the file, which is going to be compressed, be read?
-     */
-    public boolean canBeRead() {
-        return pathToFile.canRead();
-    }
-
-    /**
-     * Can we write to the newly created file the compressed data?
-     *
-     * @return Can we write to the newly created file the compressed data?
-     */
-    public boolean canWrite() {
-        return pathToCompressedFile.canWrite();
-    }
-
-    /**
      * Start reading and compressing the file. First you should check the file
      * permissions.
      */
-    public void compressFile() {
-        try (final FileReader fileReader = new FileReader(pathToFile); final BufferedReader bufferReader = new BufferedReader(fileReader)) {
+    @Override
+    public void processFile() {
+        try (final Reader reader = new InputStreamReader(getFile().getInputStream()); final BufferedReader bufferReader = new BufferedReader(reader)) {
             startReading(bufferReader);
             sortNodes();
             createTheHuffmanTree();
@@ -165,9 +120,8 @@ public final class HuffmanCompressor {
      * the decompressor.
      */
     private void writeHuffmanTree() {
-        try (final FileOutputStream output = new FileOutputStream(pathToCompressedFile);
-                final DataOutputStream writer = new DataOutputStream(output);
-                final ObjectOutputStream treeWriter = new ObjectOutputStream(output)) {
+        try (final DataOutputStream writer = new DataOutputStream(getFile().getOutputStream());
+                final ObjectOutputStream treeWriter = new ObjectOutputStream(getFile().getOutputStream())) {
             final Node huffmanTree = nodeQueue.dequeue();
             treeWriter.writeObject(huffmanTree);
             writeCharacterBits(new BitImmutableCollection(), huffmanTree);
@@ -219,14 +173,12 @@ public final class HuffmanCompressor {
      * @param bits The bitset where to write the bits.
      */
     private void writeDataToBitSet(final String text, final BitSet bits) {
-        int bitsWritten = 0;
         for (int i = 0; i < text.length(); i++) {
             final BitImmutableCollection bitsCollection = characterEncoding.get(text.charAt(i));
             final int collectionSize = bitsCollection.size();
             for (int j = 0; j < collectionSize; j++) {
                 bits.add(bitsCollection.at(j));
             }
-            bitsWritten += collectionSize;
         }
     }
 }
