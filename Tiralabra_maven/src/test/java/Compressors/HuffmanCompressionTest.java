@@ -26,7 +26,7 @@ public final class HuffmanCompressionTest {
             writer.write(text);
         }
         FileStream fs = new FileStream(inputFile.getAbsolutePath(), inputFile.getAbsolutePath() + ".pkx");
-        FileCompressionController controller = new HuffmanCompressor(fs);
+        FileCompressionController controller = new HuffmanCompressor(fs, System.out);
         controller.processFile();
         outputFile = new File(inputFile.getAbsoluteFile() + ".pkx");
     }
@@ -50,7 +50,7 @@ public final class HuffmanCompressionTest {
         out = new File(inputFile.getAbsolutePath() + ".decompressed");
         out.createNewFile();
         FileStream fs = new FileStream(outputFile.getAbsolutePath(), out.getAbsolutePath());
-        HuffmanDecompressor decompressor = new HuffmanDecompressor(fs);
+        HuffmanDecompressor decompressor = new HuffmanDecompressor(fs, System.out);
         decompressor.processFile();
         assertEquals(text, read());
     }

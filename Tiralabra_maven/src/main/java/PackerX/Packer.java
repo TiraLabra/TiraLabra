@@ -4,12 +4,21 @@ import Compressors.HuffmanCompressor;
 import Compressors.FileCompressionController;
 import Compressors.HuffmanDecompressor;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
+/**
+ * The main application.
+ */
 public final class Packer {
 
     private final FileCompressionController controller;
     private final FileStream fileStream;
 
+    /**
+     * Creates the main application.
+     *
+     * @param arguments The commandline arguments.
+     */
     public Packer(final String[] arguments) {
         FileStream fs = null;
         boolean packing = false;
@@ -36,13 +45,20 @@ public final class Packer {
                     throw new IllegalArgumentException();
             }
         }
-        this.controller = packing ? new HuffmanCompressor(fs) : new HuffmanDecompressor(fs);
+        this.controller = packing ? new HuffmanCompressor(fs, System.out) : new HuffmanDecompressor(fs, System.out);
         this.fileStream = fs;
     }
 
+    /**
+     * Start the program.
+     */
     public void run() {
         if (checkFileAcces(fileStream)) {
-            controller.processFile();
+            try {
+                controller.processFile();
+            } catch (final IOException ex) {
+                System.err.println("Error processing the file: " + ex.getMessage());
+            }
         }
     }
 
@@ -50,20 +66,13 @@ public final class Packer {
         if (!file.canBeRead()) {
             System.err.println("Can't access file...");
             return false;
-        } else if (file.fileExists()) {
-            System.err.println("Name for the new file already exists in the path");
-            return false;
-        } else if (!file.create()) {
-            System.err.println("Could not create file");
+        } else if (!file.fileExists()) {
+            System.err.println("Cannot create new file for output");
             return false;
         } else if (!file.canWrite()) {
             System.err.println("Cannot write to the newly created file");
             return false;
         }
         return true;
-    }
-
-    private void doActions() {
-
     }
 }

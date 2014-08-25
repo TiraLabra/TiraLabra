@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.Reader;
 
 /**
@@ -28,27 +29,22 @@ public final class HuffmanCompressor extends FileCompressionController {
      * Creates a new compressor to compress the stream.
      *
      * @param file The filestream containing text file.
+     * @param STDOUT Output stream to write info about the compression.
      */
-    public HuffmanCompressor(final FileStream file) {
-        super(file);
+    public HuffmanCompressor(final FileStream file, final PrintStream STDOUT) {
+        super(file, STDOUT);
         nodeQueue = new PriorityQueue<>(Node.class);
         nodes = new Dictionary<>();
         characterEncoding = new Dictionary<>();
         readText = new StringBuilder(100);
     }
 
-    /**
-     * Start reading and compressing the file. First you should check the file
-     * permissions.
-     */
     @Override
-    public void processFile() {
+    public void processFile() throws IOException {
         try (final Reader reader = new InputStreamReader(getFile().getInputStream()); final BufferedReader bufferReader = new BufferedReader(reader)) {
             startReading(bufferReader);
             sortNodes();
             createTheHuffmanTree();
-        } catch (final IOException ex) {
-            System.err.println("Check readability before reading!");
         }
         writeHuffmanTree();
     }
@@ -65,10 +61,8 @@ public final class HuffmanCompressor extends FileCompressionController {
             if (readChar == -1) {
                 break;
             }
-            //System.out.println((char) readChar);
             readChar((char) readChar);
         }
-        System.out.println("\n\n<-- End of File -->\n\n");
     }
 
     /**
@@ -121,7 +115,7 @@ public final class HuffmanCompressor extends FileCompressionController {
      * 3. The bits written in little-endian. They are handled as a byte array in
      * the decompressor.
      */
-    private void writeHuffmanTree() {
+    private void writeHuffmanTree() throws IOException {
         try (final DataOutputStream writer = new DataOutputStream(getFile().getOutputStream());
                 final ObjectOutputStream treeWriter = new ObjectOutputStream(getFile().getOutputStream())) {
             final Node huffmanTree = nodeQueue.dequeue();
@@ -131,12 +125,9 @@ public final class HuffmanCompressor extends FileCompressionController {
             writeDataToBitSet(readText.toString(), bits);
             final int bitCount = bits.length();
             writer.writeInt(bitCount);
-            System.out.println("bits in file compression " + bitCount);
             final byte[] bitsAsBytes = bits.toByteArray();
             writer.write(bitsAsBytes);
-            System.out.println("bytes in file compression " + bitsAsBytes.length);
-        } catch (final IOException ex) {
-            System.err.println("Check write access before writing...\n" + ex.toString());
+            print("Compressed file size: " + bitsAsBytes.length + " bytes (" + bitsAsBytes.length / 1000 + " kB");
         }
     }
 

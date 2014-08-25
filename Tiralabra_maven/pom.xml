@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mycompany</groupId>
-    <artifactId>Tiralabra_maven</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>PackerX</groupId>
+    <artifactId>PackerX</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>Tiralabra_maven</name>
@@ -12,6 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
@@ -48,8 +49,25 @@
                     <instrumentation>
                         <excludes>
                             <exclude>main/*.class</exclude>
+                        </excludes>                        
+                        <excludes>
+                            <exclude>PackerX/Packer.class</exclude>
                         </excludes>
                     </instrumentation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>main.App</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

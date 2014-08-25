@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -23,42 +22,28 @@ public final class FileStream {
     }
 
     /**
-     * Can the file, which is going to be compressed, be read?
+     * Can the file be read?
      *
-     * @return Can the file, which is going to be compressed, be read?
+     * @return Can the file be read?
      */
     public boolean canBeRead() {
         return inputFile.canRead();
     }
 
     /**
-     * Does the file, that is going to be the name for the compressed file,
-     * exist?
+     * Does the file, that is going to be the name for the output file, exist?
      *
-     * @return Does the file, that is going to be the name for the compressed
-     * file, exist?
+     * @return Does the file, that is going to be the name for the output file,
+     * exist?
      */
     public boolean fileExists() {
-        return inputFile.exists();
+        return outputFile.exists();
     }
 
     /**
-     * Try to create the file for the compression.
+     * Can we write to the newly created file?
      *
-     * @return Was the file created?
-     */
-    public boolean create() {
-        try {
-            return outputFile.createNewFile();
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-
-    /**
-     * Can we write to the newly created file the compressed data?
-     *
-     * @return Can we write to the newly created file the compressed data?
+     * @return Can we write to the newly created file?
      */
     public boolean canWrite() {
         return outputFile.canWrite();

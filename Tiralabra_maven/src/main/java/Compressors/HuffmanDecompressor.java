@@ -6,6 +6,7 @@ import PackerX.Node;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
@@ -18,25 +19,21 @@ public final class HuffmanDecompressor extends FileCompressionController {
     /**
      * Decompresses the file from the stream.
      *
-     * @param file The filestream containing the huffman compressed file.
+     * @param file The filestream containing the huffman compressed file. *
+     * @param STDOUT Output stream to write info about the compression.
      */
-    public HuffmanDecompressor(final FileStream file) {
-        super(file);
+    public HuffmanDecompressor(final FileStream file, final PrintStream STDOUT) {
+        super(file, STDOUT);
     }
 
-    /**
-     * Starts the decompression process.
-     */
     @Override
-    public void processFile() {
+    public void processFile() throws IOException {
         try (final ObjectInputStream objectReader = new ObjectInputStream(getFile().getInputStream());
                 final DataInputStream bitReader = new DataInputStream(getFile().getInputStream())) {
             final String deCompressed = readFile(objectReader, bitReader);
             writeFile(deCompressed);
-        } catch (final IOException ex) {
-            System.err.println("Error decompressing files");
         } catch (final ClassNotFoundException ex) {
-            System.err.println("Could not read file, it may be corrupted (Missing huffman tree)");
+            throw new IOException("Cannot find the huffman tree");
         }
     }
 
