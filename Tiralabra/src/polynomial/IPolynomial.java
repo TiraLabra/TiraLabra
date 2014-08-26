@@ -27,6 +27,8 @@ public interface IPolynomial {
     /**
      * Returns the degree of the polynomial.
      *  
+     * The degree means the highest exponent of the polynomial.
+     * 
      * The degree of the empty/zero polynomial is -1.
      * 
      * @return Degree as integer.
