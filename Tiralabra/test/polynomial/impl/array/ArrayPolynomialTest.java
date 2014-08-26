@@ -322,6 +322,25 @@ public class ArrayPolynomialTest {
         assertEquals(1, polynomial.evaluate(2));
     }
 
+    @Test
+    public void testEvaluateCharacteristic7() {
+        int characteristic = 7;
+        ArrayPolynomial polynomial = new ArrayPolynomial(characteristic);
+
+        polynomial.addTerm(1, 0);
+
+        polynomial.addTerm(1, 1);
+
+        polynomial.addTerm(1, 3);
+        assertTrue((1 - polynomial.evaluate(0)) % characteristic == 0);
+        assertTrue((3 - polynomial.evaluate(1)) % characteristic == 0);
+        assertTrue((-1 - polynomial.evaluate(-1)) % characteristic == 0);
+        assertTrue((4 - polynomial.evaluate(2)) % characteristic == 0);        
+        assertTrue((-2 - polynomial.evaluate(-2)) % characteristic == 0);
+        assertTrue((3 - polynomial.evaluate(3)) % characteristic == 0);
+        assertTrue((-1 - polynomial.evaluate(-3)) % characteristic == 0);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testAddWithDifferentCharacteristic() {
         int characteristic = 2;
@@ -869,6 +888,17 @@ public class ArrayPolynomialTest {
         polynomial.addTerm(-1, 0);
         
         assertEquals("x^3 + x^2 - x - 1", polynomial.toString());
+    }
+    
+    @Test
+    public void testToString5() {
+        IPolynomial polynomial = new ArrayPolynomial(7);
+        
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(2, 1);
+        polynomial.addTerm(-2, 3);     
+        
+        assertEquals("-2x^3 + 2x + 1", polynomial.toString());
     }
 
 }

@@ -465,9 +465,9 @@ public class LinkedListPolynomial implements IPolynomial {
         while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
             LinkedListPolynomial leadingTermDivisionResult = divideLeadingTerms(remainder, divisor);
             quotient.addTerm(leadingTermDivisionResult.highestDegreeTerm.coefficient, leadingTermDivisionResult.highestDegreeTerm.exponent);
-            
+
             LinkedListPolynomial removeFromRemainder = (LinkedListPolynomial) leadingTermDivisionResult.multiply(divisor);
-            
+
             remainder = (LinkedListPolynomial) remainder.subtract(removeFromRemainder);
         }
 
@@ -480,7 +480,11 @@ public class LinkedListPolynomial implements IPolynomial {
         Monomial current = highestDegreeTerm;
         boolean first = true;
         while (current != null) {
-            if (!first) {
+            if (first) {
+                if (current.coefficient < 0) {
+                    stringRepr.append("-");
+                }
+            } else {
                 stringRepr.append(" ");
                 if (current.coefficient > 0) {
                     stringRepr.append("+");
@@ -489,7 +493,7 @@ public class LinkedListPolynomial implements IPolynomial {
                 }
                 stringRepr.append(" ");
             }
-            if ((current.coefficient != 1 && current.coefficient != -1) 
+            if ((current.coefficient != 1 && current.coefficient != -1)
                     || current.exponent == 0) {
                 stringRepr.append(MathUtil.abs(current.coefficient));
             }
@@ -560,8 +564,8 @@ public class LinkedListPolynomial implements IPolynomial {
      * @throws IllegalArgumentException if the coefficient would be an
      * non-integer and it can't be represented as an integer modulo the
      * characteristic.
-     * @return LinkedListPolynomial that is the result of the division. It will contain
-     * only one monomial.
+     * @return LinkedListPolynomial that is the result of the division. It will
+     * contain only one monomial.
      */
     private LinkedListPolynomial divideLeadingTerms(LinkedListPolynomial remainder, LinkedListPolynomial divisor) {
         Monomial leadingTermRemainder = remainder.highestDegreeTerm;
@@ -583,13 +587,13 @@ public class LinkedListPolynomial implements IPolynomial {
             }
             coefficientOfResult = (inverseOfDivisorCoefficient * coefficientRemainder) % remainder.characteristic;
         }
-        
+
         int exponentOfResult = leadingTermRemainder.exponent - leadingTermDivisor.exponent;
-        
+
         LinkedListPolynomial result = new LinkedListPolynomial(remainder.characteristic);
-        
+
         result.addTerm(coefficientOfResult, exponentOfResult);
-        
+
         return result;
     }
 

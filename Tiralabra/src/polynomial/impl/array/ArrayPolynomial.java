@@ -127,7 +127,11 @@ public class ArrayPolynomial implements IPolynomial {
         while (exponent >= 0) {
             int coefficient = coefficients[exponent];
             if (coefficient != 0) {
-                if (!first) {
+                if (first) {
+                    if (coefficient < 0) {
+                        stringRepr.append("-");
+                    }
+                } else {
                     stringRepr.append(" ");
                     if (coefficient > 0) {
                         stringRepr.append("+");
