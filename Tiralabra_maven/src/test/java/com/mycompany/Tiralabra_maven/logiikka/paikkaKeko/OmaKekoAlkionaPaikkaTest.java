@@ -32,6 +32,8 @@ public class OmaKekoAlkionaPaikkaTest {
 
     @Before
     public void setUp() {
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("OmaKekoAlkionaPaikkaTest.setUp");
         paikkaTaulukko = new Paikka[10][10];
 
 //        paikkaP = new Paikka(0, 0, 0);
@@ -56,7 +58,7 @@ public class OmaKekoAlkionaPaikkaTest {
         isoKeko.heapInsert(paikkaTaulukko[2][8]);
         isoKeko.heapInsert(paikkaTaulukko[6][7]);
         isoKeko.heapInsert(paikkaTaulukko[9][6]);
-        isoKeko.heapInsert(paikkaTaulukko[7][5]);
+//        isoKeko.heapInsert(paikkaTaulukko[7][5]);
         isoKeko.heapInsert(paikkaTaulukko[2][6]);
         isoKeko.heapInsert(paikkaTaulukko[3][2]);
         isoKeko.heapInsert(paikkaTaulukko[4][6]);
@@ -64,6 +66,9 @@ public class OmaKekoAlkionaPaikkaTest {
         isoKeko.heapInsert(paikkaTaulukko[6][3]);
         isoKeko.heapInsert(paikkaTaulukko[7][2]);
         isoKeko.heapInsert(paikkaTaulukko[8][0]);
+        isoKeko.heapInsert(paikkaTaulukko[9][8]);
+        
+        isoKeko.testTulostaKekoTaulukko();
         
     }
 
@@ -176,21 +181,27 @@ public class OmaKekoAlkionaPaikkaTest {
 
     @Test
     public void lisaaJaPoistaAlkiotaJaTulosta() {
+        System.out.println("-----------------------------------------");
+        System.out.println("lisaaJaPoistaAlkiotaJaTulosta");
+        keko.testTulostaKekoTaulukko();
         Paikka poistettavaPaikka;
         keko.heapInsert(paikkaTaulukko[3][2]);
         keko.heapInsert(paikkaTaulukko[0][2]);
         keko.heapInsert(paikkaTaulukko[3][0]);
-        keko.heapInsert(paikkaTaulukko[9][9]);
+        keko.heapInsert(paikkaTaulukko[9][0]);
         System.out.println("keon koko: " + keko.getHeapSize());
+        keko.testTulostaKekoTaulukko();
         poistettavaPaikka = keko.heapDelMin();
         System.out.println("keon koko: " + keko.getHeapSize());
-        keko.heapInsert(paikkaTaulukko[9][9]);
-        keko.heapInsert(paikkaTaulukko[9][9]);
-        keko.heapInsert(paikkaTaulukko[9][9]);
-        keko.heapInsert(paikkaTaulukko[3][0]);
-        keko.heapInsert(paikkaTaulukko[9][9]);
+        keko.testTulostaKekoTaulukko();
+        keko.heapInsert(paikkaTaulukko[1][8]);
+        keko.heapInsert(paikkaTaulukko[7][2]);
+        keko.heapInsert(paikkaTaulukko[5][4]);
+        keko.heapInsert(paikkaTaulukko[3][7]);
+        keko.heapInsert(paikkaTaulukko[0][9]);
         System.out.println("keon koko: " + keko.getHeapSize());
-        keko.tulosta();
+        keko.testTulostaKekoTaulukko();
+        keko.testTulostaKeko();
         System.out.println("keon koko: " + keko.getHeapSize());
         assertEquals(paikkaTaulukko[0][2], poistettavaPaikka);
     }
@@ -202,26 +213,85 @@ public class OmaKekoAlkionaPaikkaTest {
 
     @Test
     public void isoKekoDelMinKerran() {
-        System.out.println("Test isoKeko");
+        System.out.println("-----------------------------------------");
+        System.out.println("isoKekoDelMinKerran");
+        isoKeko.testTulostaKekoTaulukko();
         Paikka poistettavaPaikka;
         poistettavaPaikka = isoKeko.heapDelMin();
         System.out.println("isoKeko yhden heapDelMin jalkeen eli 3, 2 poistettu");
-        isoKeko.tulosta();
+        isoKeko.testTulostaKekoTaulukko();
+        isoKeko.testTulostaKeko();
         assertEquals(paikkaTaulukko[3][2], poistettavaPaikka);
     }
 
-    @Test
-    public void isoKekoDecKeyKahdesti() {
-        System.out.println("Test isoKekoDecKeyKahdesti");
-        paikkaTaulukko[6][7].etaisyysAlkuun = 2;
-        paikkaTaulukko[6][7].etaisyysLoppuun = 1;
-        isoKeko.heapDecreaseKey(paikkaTaulukko[6][7]);
-//        ei tee mitaan koska [1][5] ei muutettu
-        isoKeko.heapDecreaseKey(paikkaTaulukko[1][5]);
-        isoKeko.tulosta();
-        Paikka poistettavaPaikka = isoKeko.heapDelMin();
-        assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
-    }
+//    @Test
+//    public void isoKekoDecKeyKahdesti() {
+//        System.out.println("Test isoKekoDecKeyKahdesti");
+//        paikkaTaulukko[6][7].etaisyysAlkuun = 2;
+//        paikkaTaulukko[6][7].etaisyysLoppuun = 1;
+//        isoKeko.heapDecreaseKey(paikkaTaulukko[6][7]);
+////        ei tee mitaan koska [1][5] ei muutettu
+//        isoKeko.heapDecreaseKey(paikkaTaulukko[1][5]);
+//        isoKeko.testTulostaKeko();
+//        Paikka poistettavaPaikka = isoKeko.heapDelMin();
+//        assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
+//    }
 
+
+    @Test
+    public void toimiikoHeapify() {
+        System.out.println("-----------------------------------------");
+        System.out.println("toimiikoHeapify");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka=paikkaTaulukko[6][3];
+        muutettavaPaikka.etaisyysAlkuun=4;
+        isoKeko.testHeapify();
+        System.out.println("isoKeko yhden muutoksen jalkeen eli 6, 3 -> 4, 3");
+        isoKeko.testTulostaKekoTaulukko();
+        isoKeko.testTulostaKeko();
+        assertEquals(muutettavaPaikka.heapIndex,muutettavaPaikka.heapIndex);
+    }
+    
+    
+    @Test
+    public void toimiikoParent2() {
+        int parent=keko.testParent(2);
+        assertEquals(parent,1);
+    }
+    
+    @Test
+    public void toimiikoParent3() {
+        int parent=keko.testParent(3);
+        assertEquals(parent,1);
+    }
+    
+    @Test
+    public void toimiikoParent4() {
+        int parent=keko.testParent(4);
+        assertEquals(parent,2);
+    }
+    
+    @Test
+    public void toimiikoParent5() {
+        int parent=keko.testParent(5);
+        assertEquals(parent,2);
+    }
+    
+    @Test
+    public void toimiikoParent6() {
+        int parent=keko.testParent(6);
+        assertEquals(parent,3);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

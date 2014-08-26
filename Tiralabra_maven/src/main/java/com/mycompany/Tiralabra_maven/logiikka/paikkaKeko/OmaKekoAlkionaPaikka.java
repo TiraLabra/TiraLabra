@@ -34,7 +34,9 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         Paikka apuPaikka;
         apuPaikka = this.kekoTaulukko[i];
         this.kekoTaulukko[i] = this.kekoTaulukko[j];
+        this.kekoTaulukko[i].heapIndex = i;
         this.kekoTaulukko[j] = apuPaikka;
+        this.kekoTaulukko[j].heapIndex = j;
     }
 
 //    private void vaihda(Paikka paikka1, Paikka paikka2) {
@@ -71,22 +73,27 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
 
     @Override
     public void heapInsert(Paikka kekoAlkio) {
+//        System.out.println("heapInsert");
         int i;
         this.heapSize++;
         i = this.heapSize;
-        if (i > 1) {
-            while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
-                this.kekoTaulukko[i] = this.kekoTaulukko[parent(i)];
-                i = parent(i);
-                if (i == 1) {
-                    break;
-                }
-            }
+//        if (i > 1) {
+        while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
+            this.kekoTaulukko[i] = this.kekoTaulukko[parent(i)];
+            this.kekoTaulukko[i].heapIndex=i;
+            i = parent(i);
+//                if (i == 1) {
+//                    break;
+//                }
         }
+//        }
 
         kekoAlkio.heapIndex = i;
         this.kekoTaulukko[i] = kekoAlkio;
-//        System.out.println("keon koko: " + this.heapSize);
+
+//        System.out.println("i=" + i + " " + this.kekoTaulukko[i].etaisyysAlkuun + "," + this.kekoTaulukko[i].etaisyysLoppuun);
+//
+//        this.testTulostaKekoTaulukko();
 
     }
 
@@ -94,6 +101,7 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
     public Paikka heapDelMin() {
         Paikka min = this.kekoTaulukko[1];
         this.kekoTaulukko[1] = this.kekoTaulukko[this.heapSize];
+        this.kekoTaulukko[1].heapIndex=1;
         this.heapSize--;
         this.heapHeapify(1);
         return min;
@@ -135,12 +143,55 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
     /**
      * Testausta varten.
      */
-    public void tulosta() {
+    public int testParent(int i) {
+        return this.parent(i);
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public int testRight(int i) {
+        return this.right(i);
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public int testLeft(int i) {
+        return this.left(i);
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public void testTulostaKeko() {
+        System.out.println("testTulostaKeko");
         Paikka poistettavaPaikka;
         while (!this.heapIsEmpty()) {
             poistettavaPaikka = this.heapDelMin();
-            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun);
+            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun + " ja heapIndex=" + poistettavaPaikka.heapIndex);
         }
     }
 
+    /**
+     * Testausta varten.
+     */
+    public void testTulostaKekoTaulukko() {
+        System.out.println("testTulostaKekoTaulukko");
+        System.out.println("heapSize: " + this.heapSize);
+        for (int i = 1; i <= heapSize; i++) {
+            System.out.println("i=" + i + ", etAlk=" + this.kekoTaulukko[i].etaisyysAlkuun + ", etLop=" + this.kekoTaulukko[i].etaisyysLoppuun + " ja heapIndex=" + this.kekoTaulukko[i].heapIndex);
+        }
+    }
+
+    /**
+     * Testausta varten.
+     */
+    public void testHeapify() {
+        Paikka poistettavaPaikka;
+        while (!this.heapIsEmpty()) {
+            poistettavaPaikka = this.heapDelMin();
+            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun + " ja indeksi=" + poistettavaPaikka.heapIndex);
+        }
+    }
 }

@@ -224,6 +224,7 @@ public class PriorityQueueKekoAlkionaPaikkaTest {
         Paikka poistettavaPaikka = isoKeko.heapDelMin();
         assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
     }
+    
 //    @Test
 //    public void t() {
 //        assertEquals(0, 0);
