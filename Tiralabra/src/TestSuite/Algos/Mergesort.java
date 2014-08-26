@@ -24,7 +24,7 @@ public class Mergesort extends Algo {
             int q = arr.length / 2;
 
             int[] leftArray = Arrays.copyOfRange(arr, 0, q);
-            int[] rightArray = Arrays.copyOfRange(arr,q,arr.length);
+            int[] rightArray = Arrays.copyOfRange(arr, q, arr.length);
 
             sort(leftArray);
             sort(rightArray);
@@ -35,7 +35,7 @@ public class Mergesort extends Algo {
 
     static void merge(int[] a, int[] l, int[] r) {
         int totElem = l.length + r.length;
-        //int[] a = new int[totElem];
+
         int i, li, ri;
         i = li = ri = 0;
         while (i < totElem) {
