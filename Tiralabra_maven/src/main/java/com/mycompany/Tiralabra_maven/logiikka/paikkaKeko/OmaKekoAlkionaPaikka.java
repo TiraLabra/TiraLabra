@@ -34,8 +34,8 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         Paikka apuPaikka;
         apuPaikka = this.kekoTaulukko[i];
         this.kekoTaulukko[i] = this.kekoTaulukko[j];
-        this.kekoTaulukko[i].heapIndex = i;
         this.kekoTaulukko[j] = apuPaikka;
+        this.kekoTaulukko[i].heapIndex = i;
         this.kekoTaulukko[j].heapIndex = j;
     }
 
@@ -80,7 +80,7 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
 //        if (i > 1) {
         while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
             this.kekoTaulukko[i] = this.kekoTaulukko[parent(i)];
-            this.kekoTaulukko[i].heapIndex=i;
+            this.kekoTaulukko[i].heapIndex = i;
             i = parent(i);
 //                if (i == 1) {
 //                    break;
@@ -101,7 +101,7 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
     public Paikka heapDelMin() {
         Paikka min = this.kekoTaulukko[1];
         this.kekoTaulukko[1] = this.kekoTaulukko[this.heapSize];
-        this.kekoTaulukko[1].heapIndex=1;
+        this.kekoTaulukko[1].heapIndex = 1;
         this.heapSize--;
         this.heapHeapify(1);
         return min;
@@ -122,7 +122,16 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
      */
     @Override
     public void heapDecreaseKey(Paikka kekoAlkio) {
-        this.heapHeapify(kekoAlkio.heapIndex);
+//        Dijkstrassa ja Astarissa AINA PIENENNETAAN etaisyysarvio, joten
+//        nyt ei tarvitse testata onko uusi avain pienempi kuin olemassa oleva
+        int i=kekoAlkio.heapIndex;
+        while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
+                vaihda(i, parent(i));
+            i = parent(i);
+        }
+
+
+////////        this.heapHeapify(kekoAlkio.heapIndex);
     }
 
     @Override
@@ -183,15 +192,10 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
             System.out.println("i=" + i + ", etAlk=" + this.kekoTaulukko[i].etaisyysAlkuun + ", etLop=" + this.kekoTaulukko[i].etaisyysLoppuun + " ja heapIndex=" + this.kekoTaulukko[i].heapIndex);
         }
     }
-
-    /**
-     * Testausta varten.
-     */
-    public void testHeapify() {
-        Paikka poistettavaPaikka;
-        while (!this.heapIsEmpty()) {
-            poistettavaPaikka = this.heapDelMin();
-            System.out.println(poistettavaPaikka.etaisyysAlkuun + ", " + poistettavaPaikka.etaisyysLoppuun + " ja indeksi=" + poistettavaPaikka.heapIndex);
-        }
-    }
+//    /**
+//     * Testausta varten.
+//     */
+//    public void testHeapify(int i) {
+//        this.heapHeapify(i);
+//    }
 }

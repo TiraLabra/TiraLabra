@@ -224,64 +224,69 @@ public class OmaKekoAlkionaPaikkaTest {
         assertEquals(paikkaTaulukko[3][2], poistettavaPaikka);
     }
 
-//    @Test
-//    public void isoKekoDecKeyKahdesti() {
-//        System.out.println("Test isoKekoDecKeyKahdesti");
-//        paikkaTaulukko[6][7].etaisyysAlkuun = 2;
-//        paikkaTaulukko[6][7].etaisyysLoppuun = 1;
-//        isoKeko.heapDecreaseKey(paikkaTaulukko[6][7]);
-////        ei tee mitaan koska [1][5] ei muutettu
-//        isoKeko.heapDecreaseKey(paikkaTaulukko[1][5]);
-//        isoKeko.testTulostaKeko();
-//        Paikka poistettavaPaikka = isoKeko.heapDelMin();
-//        assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
-//    }
-
-
     @Test
-    public void toimiikoHeapify() {
+    public void isoKekoDecKeyKahdesti() {
         System.out.println("-----------------------------------------");
-        System.out.println("toimiikoHeapify");
+        System.out.println("Test isoKekoDecKeyKahdesti");
+        Paikka decKeyPaikka=paikkaTaulukko[6][7];
+        System.out.println("decKeyPaikka heapIndex: "+decKeyPaikka.heapIndex);
+        decKeyPaikka.etaisyysAlkuun = 2;
+        decKeyPaikka.etaisyysLoppuun = 1;
+        isoKeko.heapDecreaseKey(decKeyPaikka);
+//        ei tee mitaan koska [1][5] ei muutettu
+//        isoKeko.heapDecreaseKey(paikkaTaulukko[1][5]);
         isoKeko.testTulostaKekoTaulukko();
-        Paikka muutettavaPaikka=paikkaTaulukko[6][3];
-        muutettavaPaikka.etaisyysAlkuun=4;
-        isoKeko.testHeapify();
-        System.out.println("isoKeko yhden muutoksen jalkeen eli 6, 3 -> 4, 3");
-        isoKeko.testTulostaKekoTaulukko();
+        Paikka poistettavaPaikka = isoKeko.heapDelMin();
         isoKeko.testTulostaKeko();
-        assertEquals(muutettavaPaikka.heapIndex,muutettavaPaikka.heapIndex);
+        assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
     }
+
+
+////////    @Test
+////////    public void toimiikoHeapify01() {
+////////        System.out.println("-----------------------------------------");
+////////        System.out.println("toimiikoHeapify01");
+////////        isoKeko.testTulostaKekoTaulukko();
+////////        Paikka muutettavaPaikka=paikkaTaulukko[1][5];
+////////        muutettavaPaikka.etaisyysLoppuun=3;
+////////        isoKeko.testHeapify(4);
+////////        System.out.println("isoKeko yhden muutoksen jalkeen eli 1, 5 -> 1, 3");
+////////        isoKeko.testTulostaKekoTaulukko();
+////////        isoKeko.testTulostaKeko();
+////////        assertEquals(1,muutettavaPaikka.heapIndex);
+////////    }
     
-    
-    @Test
-    public void toimiikoParent2() {
-        int parent=keko.testParent(2);
-        assertEquals(parent,1);
-    }
-    
-    @Test
-    public void toimiikoParent3() {
-        int parent=keko.testParent(3);
-        assertEquals(parent,1);
-    }
-    
-    @Test
-    public void toimiikoParent4() {
-        int parent=keko.testParent(4);
-        assertEquals(parent,2);
-    }
-    
-    @Test
-    public void toimiikoParent5() {
-        int parent=keko.testParent(5);
-        assertEquals(parent,2);
-    }
-    
-    @Test
-    public void toimiikoParent6() {
-        int parent=keko.testParent(6);
-        assertEquals(parent,3);
-    }
+//    kehityksen aikaista testausta tasta loppuun
+//    
+//    @Test
+//    public void toimiikoParent2() {
+//        int parent=keko.testParent(2);
+//        assertEquals(parent,1);
+//    }
+//    
+//    @Test
+//    public void toimiikoParent3() {
+//        int parent=keko.testParent(3);
+//        assertEquals(parent,1);
+//    }
+//    
+//    @Test
+//    public void toimiikoParent4() {
+//        int parent=keko.testParent(4);
+//        assertEquals(parent,2);
+//    }
+//    
+//    @Test
+//    public void toimiikoParent5() {
+//        int parent=keko.testParent(5);
+//        assertEquals(parent,2);
+//    }
+//    
+//    @Test
+//    public void toimiikoParent6() {
+//        int parent=keko.testParent(6);
+//        assertEquals(parent,3);
+//    }
     
     
     
