@@ -53,7 +53,7 @@ public class FilePrinter {
             }
 
             writer.close();
-            System.out.println("Printed to file: " + fileName + ".csv");
+            System.out.println("Printed to file: " + fileName + ".csv\n");
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);

@@ -61,14 +61,14 @@ public class Runner {
 
         // reproduce of an array
         int[] a = array.get();
-        System.out.println(Arrays.toString(a));
+//        System.out.println(Arrays.toString(a));
 
         long start = System.nanoTime();
 
         algo.sort(a);
 
         long end = System.nanoTime();
-        System.out.println(Arrays.toString(a));
+//        System.out.println(Arrays.toString(a));
 
         return end - start;
     }

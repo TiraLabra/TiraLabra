@@ -33,7 +33,7 @@ public class TestFactory {
         this.results = new ArrayList<String>();
         this.small = new int[]{5, 10, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500};
         this.big = new int[]{500, 750, 1000, 1250, 1500, 2000, 3000, 5000, 7500, 10000};
-        this.sortingAlgos = new Algo[]{new Bubblesort(), new Quicksort(), new Insertionsort(), new Selectionsort()};
+        this.sortingAlgos = new Algo[]{new Bubblesort(), new Quicksort(), new Insertionsort(), new Selectionsort(), new Mergesort()};
     }
 
     /**
@@ -225,9 +225,10 @@ public class TestFactory {
 
     /**
      * Result Printer. Will Clean Results-array!
+     * @param name Name of the output file
      */
-    public void printToFileAndClean() {
-        printer.printToFile("results", results);
+    public void printToFileAndClean(String name) {
+        printer.printToFile(name, results);
         results.clear();
     }
 }
