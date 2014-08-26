@@ -51,8 +51,6 @@ public class Dijkstra {
     
     /**
      * Reitin haku algoritmilla.
-     * @param start alkupiste
-     * @param goal maali
      */
     
     public void route() {

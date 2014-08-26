@@ -1,7 +1,10 @@
 package tira.astar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.PriorityQueue;
 import tira.main.Mapper;
 import tira.main.Target;
 
@@ -46,6 +49,54 @@ public class Astar {
         
         this.startCell = findCellByName(this.source);
         this.goalCell = findCellByName(this.destination);
+        
+        this.setHeuristics();
+    }
+    
+    /**
+     * Reitin haku algoritmilla.
+     */
+    
+    public void route() {
+        
+        /**
+         * Asetetaan alkusolmun etäisyydeksi nolla ja luodaan prioriteettijono, jonne lisätään
+         * alkusolmu.
+         */
+        
+        this.startCell.setShortest(0);
+        PriorityQueue<Cell> queue = new PriorityQueue<Cell>();
+        queue.add(this.startCell);
+        ArrayList<Cell> closed = new ArrayList<Cell>();
+        
+        /**
+         * Käydään läpi prioriteettijono. 
+         */
+        
+        while (!queue.isEmpty()) {
+            Cell handle = queue.poll();
+            closed.add(handle);
+            
+            for (Path apu : handle.getRoutes()) {
+                Cell neighbor = apu.getTarget();
+                int cost = handle.getShortest() + apu.getWeight();
+                int guess = cost + neighbor.getHeuristic();
+                
+                if (closed.contains(neighbor) && guess >= neighbor.getShortest()) {
+                    continue;
+                } else if (!queue.contains(neighbor) || guess < neighbor.getShortest()) {
+                    neighbor.setPrevious(handle);
+                    neighbor.setShortest(cost);
+                    neighbor.setHeuristic(guess);
+                    
+                    if (queue.contains(neighbor)) {
+                        queue.remove(neighbor);
+                    }
+                    
+                    queue.add(neighbor);
+                }
+            }
+        }
     }
     
     /**
@@ -62,19 +113,43 @@ public class Astar {
         return null;
     }
     
+
+    private void setHeuristics() {
+        for (Cell setter : this.cells) {
+            int xdiff = Math.abs(setter.getX() - this.goalCell.getX());
+            int ydiff = Math.abs(setter.getY() - this.goalCell.getY());
+            double heuristic = Math.sqrt((xdiff*xdiff + ydiff*ydiff));
+            int parsed = (int)heuristic;
+            setter.setHeuristic(parsed);
+        }
+    }
+
     /**
-     * Kesken
-     * @return 
+     * Tulostetaan lyhyin reitti alusta määränpäähän.
      */
-    private int updateHeuristic() {
-        return 0;
+    
+    public void print() {
+        if (this.goalCell.getShortest() == Integer.MAX_VALUE) {
+            System.out.println("Reittiä ei ole kohteiden välillä");
+        } else {
+            System.out.println("Lyhyin reitti solmusta " + this.startCell.toString() + " solmuun " + this.goalCell.toString() + " on " + this.goalCell.getShortest() + "km.");
+            List<Cell> path = getShortestPath(this.goalCell);
+            System.out.println("Alla reitti:\n" + path);
+        }    
     }
     
     /**
-     * Alustuksen testailua.
+     * Luodaan lista reitistä solmujen välillä.
+     * @param helper
+     * @return 
      */
-    public void test() {
-        System.out.println(this.cells);
+
+    private List<Cell> getShortestPath(Cell helper) {
+        List<Cell> path = new ArrayList<Cell>();
+        for (Cell vertex = helper; vertex != null; vertex = vertex.getPrevious())
+            path.add(vertex);
+        Collections.reverse(path);
+        return path;
     }
 
 }

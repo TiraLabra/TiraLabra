@@ -94,7 +94,8 @@ public class Run {
             
             Astar a = new Astar(start, end, grid);
             a.initialize();
-            a.test();
+            a.route();
+            a.print();
         }
 
         System.exit(0);

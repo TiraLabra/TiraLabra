@@ -14,7 +14,6 @@ public class Cell implements Comparable<Cell> {
     private int heuristic;
     private String node;
     private ArrayList<Path> routes;
-    private int estimation;
     private int x;
     private int y;
     
@@ -30,7 +29,7 @@ public class Cell implements Comparable<Cell> {
      * Gettereitä ja settereitä.
      */
     
-    public void setHeuristinc(int value) {
+    public void setHeuristic(int value) {
         this.heuristic = value;
     }
     
@@ -54,6 +53,34 @@ public class Cell implements Comparable<Cell> {
     public void setCoords(int xx, int yy) {
         this.x = xx;
         this.y = yy;
+    }
+    
+    public int getX() {
+        return this.x;
+    }
+    
+    public int getY() {
+        return this.y;
+    }
+
+    public void setShortest(int i) {
+        this.shortestPath = i;
+    }
+    
+    public ArrayList<Path> getRoutes() {
+        return this.routes;
+    }
+
+    public int getShortest() {
+        return this.shortestPath;
+    }
+
+    public void setPrevious(Cell cel) {
+        this.parent = cel;
+    }
+
+    public Cell getPrevious() {
+        return this.parent;
     }
     
 }
