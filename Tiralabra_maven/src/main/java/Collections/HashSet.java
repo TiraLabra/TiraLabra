@@ -43,10 +43,12 @@ public final class HashSet<T> {
             array.setAtt(hash, new LinkedList<T>());
         }
         final LinkedList<T> list = array.get(hash);
-        if (!list.contains(item)) {
-            list.add(item);
+        if (list.contains(item)) {
+            list.remove(item);
+        } else {
             count++;
         }
+        list.add(item);
         if (isOverFilled()) {
             reHash();
         }

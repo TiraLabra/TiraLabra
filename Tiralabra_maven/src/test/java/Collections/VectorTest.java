@@ -1,6 +1,7 @@
 package Collections;
 
 import java.util.Objects;
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -39,6 +40,21 @@ public final class VectorTest {
         final Integer number = 254234;
         vector.add(number);
         assertEquals(number, vector.get(0));
+    }
+
+    @Test
+    public void addAndGetMany() {
+        int[] tests = new int[]{0, 320, 54324, 34, 34, 4, 34, 5, 66, 77658, 656, 6565363, 46389034, 453405, 34500503, 5, 65, 6, 547};
+        for (int i = 0; i < tests.length; i++) {
+            vector.add(tests[i]);
+        }
+        for (int i = 0; i < vector.size(); i++) {
+            int expected = tests[i];
+            int got = vector.get(i);
+            if (expected != got) {
+                fail("Expected " + expected + " got " + got);
+            }
+        }
     }
 
     @Test
@@ -107,6 +123,15 @@ public final class VectorTest {
         assertEquals(0, vector.size());
     }
 
+    @Test
+    public void testRemoveLastMemberCorrect() {
+        final Integer expected = 34243;
+        vector.add(expected);
+        vector.add(535554);
+        vector.removeLast();
+        assertEquals(expected, vector.get(vector.size() - 1));
+    }
+
     private int removeAndRealSize() {
         final int toAdd = 10;
         final int toRemove = 3;
@@ -160,6 +185,22 @@ public final class VectorTest {
             if (!arrayString.equals(vectorString)) {
                 fail("Expected " + vectorString + " got " + arrayString);
             }
+        }
+    }
+
+    private void testArraySize(int size) {
+        Vector<String> v = new Vector<>(String.class);
+        for (int i = 0; i < size; i++) {
+            v.add("ASDSWERWUOU(");
+        }
+        assertEquals(size, v.toArray().length);
+    }
+
+    @Test
+    public void testToArraySize() {
+        Random rand = new Random();
+        for (int i = 0; i < 10; i++) {
+            testArraySize(rand.nextInt(1250));
         }
     }
 }

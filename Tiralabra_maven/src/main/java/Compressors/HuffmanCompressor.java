@@ -127,7 +127,7 @@ public final class HuffmanCompressor extends FileCompressionController {
             writer.writeInt(bitCount);
             final byte[] bitsAsBytes = bits.toByteArray();
             writer.write(bitsAsBytes);
-            print("Compressed file size: " + bitsAsBytes.length + " bytes (" + bitsAsBytes.length / 1000 + " kB");
+            print("Compressed file size: " + bitsAsBytes.length + " bytes (" + bitsAsBytes.length / 1000 + " kB)");
         }
     }
 

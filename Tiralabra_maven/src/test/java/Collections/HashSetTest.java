@@ -148,6 +148,18 @@ public final class HashSetTest {
         assertFalse(hs.contains(second));
     }
 
+    @Test
+    public void testAddReplacePrevious() {
+        HashSet<alwaysEquals> hs = new HashSet<>();
+        final int firstNumber = 1;
+        final int secondNumber = 2;
+        alwaysEquals first = new alwaysEquals(firstNumber);
+        alwaysEquals second = new alwaysEquals(secondNumber);
+        hs.add(first);
+        hs.add(second);
+        assertEquals(secondNumber, hs.get(first).getNumber());
+    }
+
     private final class hashSameButNotEquals {
 
         private final int number;
@@ -167,6 +179,29 @@ public final class HashSetTest {
         @Override
         public int hashCode() {
             return 1;
+        }
+    }
+
+    private final class alwaysEquals {
+
+        private final int number;
+
+        public alwaysEquals(final int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return 0;
         }
     }
 }

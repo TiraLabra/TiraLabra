@@ -56,13 +56,10 @@ public final class Vector<T> {
             throw new NullPointerException();
         }
         if (realSize == array.length) {
-            array = Arrays.copyOf(array, array.length + 1);
-            array[array.length - 1] = toAdd;
-            realSize = array.length;
-        } else {
-            array[realSize] = toAdd;
-            realSize++;
+            array = Arrays.copyOf(array, array.length * 2 + 1);
         }
+        array[realSize] = toAdd;
+        realSize++;
     }
 
     private T[] arrayOfSize(final int size) {
@@ -105,6 +102,7 @@ public final class Vector<T> {
      * Removes last member from the vector.
      */
     public void removeLast() {
+        array[realSize - 1] = null;
         realSize--;
     }
 
@@ -131,6 +129,6 @@ public final class Vector<T> {
      * @return The array.
      */
     public T[] toArray() {
-        return Arrays.copyOf(array, array.length);
+        return Arrays.copyOf(array, realSize);
     }
 }
