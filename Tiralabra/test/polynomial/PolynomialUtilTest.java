@@ -216,7 +216,7 @@ public class PolynomialUtilTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testIsReducibleNull() {
-        PolynomialUtil.isReducible(null);
+        PolynomialUtil.isReducible(null, false);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -225,7 +225,7 @@ public class PolynomialUtilTest {
         
         IPolynomial polynomial = new ArrayPolynomial(characteristic);
         
-        PolynomialUtil.isReducible(polynomial);
+        PolynomialUtil.isReducible(polynomial, false);
     }
     
     @Test
@@ -235,7 +235,7 @@ public class PolynomialUtilTest {
         IPolynomial polynomial = new ArrayPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         
-        assertFalse(PolynomialUtil.isReducible(polynomial));
+        assertFalse(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -246,7 +246,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 1);
         
-        assertFalse(PolynomialUtil.isReducible(polynomial));
+        assertFalse(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -258,7 +258,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(2, 1);
         polynomial.addTerm(1, 2);        
         
-        assertTrue(PolynomialUtil.isReducible(polynomial));
+        assertTrue(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -269,7 +269,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 2);        
         
-        assertTrue(PolynomialUtil.isReducible(polynomial));
+        assertTrue(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -281,7 +281,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 3);      
         
-        assertFalse(PolynomialUtil.isReducible(polynomial));
+        assertFalse(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -293,7 +293,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(2, 2);
         polynomial.addTerm(-1, 3);     
         
-        assertFalse(PolynomialUtil.isReducible(polynomial));
+        assertFalse(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -305,7 +305,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 4);     
         
-        assertFalse(PolynomialUtil.isReducible(polynomial));
+        assertFalse(PolynomialUtil.isReducible(polynomial, false));
     }
     
     @Test
@@ -317,7 +317,7 @@ public class PolynomialUtilTest {
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 5);     
         
-        assertTrue(PolynomialUtil.isReducible(polynomial));
+        assertTrue(PolynomialUtil.isReducible(polynomial, false));
     }
 
 }

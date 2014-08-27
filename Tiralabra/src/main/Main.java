@@ -1,6 +1,9 @@
 package main;
 
 import java.util.Random;
+import java.util.Scanner;
+import math.ExtendedEuclideanResult;
+import math.MathUtil;
 import polynomial.IPolynomial;
 import polynomial.PolynomialUtil;
 import polynomial.impl.array.ArrayPolynomial;
@@ -13,6 +16,26 @@ import polynomial.impl.linkedlist.LinkedListPolynomial;
 public class Main {
 
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("-- Irreducible polynomial finder --");
+        System.out.println("NOTE: This program is very slow for degrees higher than about 20 and for any characteristic larger than 3.");
+        System.out.println("");
+        System.out.print("Characteristic of polynomial: ");
+        int characteristic = Integer.parseInt(scanner.nextLine());
+        System.out.print("Degree of polynomial: ");
+        int degree = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Starting calculation...");
+        long startTime = System.currentTimeMillis();
+        IPolynomial polynomial = PolynomialUtil.findIrreduciblePolynomial(characteristic, degree, true);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Irreducible polynomial: " + polynomial);
+        System.out.println("Time elapsed: " + ((endTime - startTime) / 1000.0) + " seconds");
+    }
+
+    public static void polynomialDemo() {
 
         int characteristic = 7;
 
@@ -84,18 +107,13 @@ public class Main {
 
         System.out.println("Expected gcd: " + polynomial);
         System.out.println("Returned gcd: " + PolynomialUtil.gcd(polynomial4, polynomial5));
-
-        int degree = 25;
-        
-        System.out.println("Irreducible polynomial mod 2 of degree " + degree + ": " 
-                + findIrreduciblePolynomialOfCharacteristic2(degree));
     }
 
     public static IPolynomial findIrreduciblePolynomialOfCharacteristic2(int degree) {
         Random random = new Random();
 
         int tries = 0;
-        
+
         while (true) {
             tries++;
             System.out.println("Try " + tries);
@@ -108,7 +126,7 @@ public class Main {
                 }
             }
             candidate.addTerm(1, 0);
-            if (!PolynomialUtil.isReducible(candidate)) {
+            if (!PolynomialUtil.isReducible(candidate, true)) {
                 System.out.println("Tries: " + tries);
                 return candidate;
             }
