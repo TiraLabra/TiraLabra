@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven.AI;
 
 import com.mycompany.tiralabra_maven.Peli;
+import com.mycompany.tiralabra_maven.PeliOhjain;
 import com.mycompany.tiralabra_maven.Pelilauta;
 import com.mycompany.tiralabra_maven.Siirto;
 
@@ -9,13 +10,13 @@ import com.mycompany.tiralabra_maven.Siirto;
  *
  * @author noora
  */
-public class MinimaxAI extends Pelaaja {
+public class MinimaxAI extends AI {
 
     private Heuristiikka heuristiikka;
     private int miniMaxSyvyys;
 
-    public MinimaxAI(Peli peli, int syvyys) {
-        super(peli);
+    public MinimaxAI(Peli peli, PeliOhjain peliohjain, boolean siirraAutomaagisesti, int viive, int syvyys) {
+        super(peli, peliohjain, siirraAutomaagisesti, viive);
         this.miniMaxSyvyys = syvyys;
     }
 
@@ -71,11 +72,7 @@ public class MinimaxAI extends Pelaaja {
      */
     @Override
     public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-        
-        }
+        odota();
 
         int[] pisteet = new int[sallitutSiirrot.length];
         for (int i = 0; i < sallitutSiirrot.length; i++) {

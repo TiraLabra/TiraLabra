@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class PelaajaTest {
 
-    private IhmisPelaaja pelaaja;
+    //private IhmisPelaaja pelaaja;
     private PeliOhjain peli;
     private Paivitettava paivitettava;
     

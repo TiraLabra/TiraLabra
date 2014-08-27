@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.AI;
 
 import com.mycompany.tiralabra_maven.Lista;
 import com.mycompany.tiralabra_maven.Peli;
+import com.mycompany.tiralabra_maven.PeliOhjain;
 import com.mycompany.tiralabra_maven.Pelilauta;
 import com.mycompany.tiralabra_maven.Siirto;
 import com.mycompany.tiralabra_maven.SolmujenVertailija;
@@ -11,12 +12,12 @@ import com.mycompany.tiralabra_maven.SolmujenVertailija;
  * Luokka on vastaava kuin Minimax-luokka, mutta luokassa hyödynnetään erilaisia omia tietorakenteita
  * @author noora
  */
-public class MinimaxPuuAI extends Pelaaja {
+public class MinimaxPuuAI extends AI {
     private Heuristiikka heuristiikka;
     private int syvyys;
 
-    public MinimaxPuuAI(Peli peli, int syvyys) {
-        super(peli);
+    public MinimaxPuuAI(Peli peli, PeliOhjain peliohjain, boolean siirraAutomaagisesti, int viive, int syvyys) {
+        super(peli, peliohjain, siirraAutomaagisesti, viive);
         this.syvyys = syvyys;
     }
 
@@ -62,11 +63,8 @@ public class MinimaxPuuAI extends Pelaaja {
      */
     @Override
     public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-        
-        }
+        odota();
+
         Lista<Solmu> lista = new Lista(new SolmujenVertailija());
         for (int i = 0; i < sallitutSiirrot.length; i++) {
             lista.lisaa(new Solmu(minimax(this.peli.getPelilauta().teeKopio(), 1, this.peli.isValkoisenVuoroSiirtaa(), true), sallitutSiirrot[i]));

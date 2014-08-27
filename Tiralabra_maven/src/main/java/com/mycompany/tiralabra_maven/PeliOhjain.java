@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven;
 import com.mycompany.tiralabra_maven.AI.EkaAI;
 import com.mycompany.tiralabra_maven.AI.MinimaxAI;
 import com.mycompany.tiralabra_maven.AI.MinimaxPuuAI;
+import com.mycompany.tiralabra_maven.AI.AI;
 import com.mycompany.tiralabra_maven.AI.Pelaaja;
 import com.mycompany.tiralabra_maven.gui.Paivitettava;
 
@@ -11,7 +12,7 @@ import com.mycompany.tiralabra_maven.gui.Paivitettava;
  *
  * @author noora
  */
-public class PeliOhjain {
+public class PeliOhjain implements Pelaaja {
 
     private Peli peli;
     private boolean peliKaynnissa;
@@ -20,7 +21,12 @@ public class PeliOhjain {
     private Siirto[] sallitutSiirrot;
     private Siirto seuraavaSiirto;
     private String viesti;
-    
+
+    private int viive;
+
+    private boolean aiSiirtaaAutomaagisesti;
+    private boolean aiNappiaPainettu;
+
     private int mustaMiniMaxSyvyys;
     private int valkoinenMiniMaxSyvyys;
 
@@ -49,15 +55,30 @@ public class PeliOhjain {
         return peli;
     }
 
-    
+    public int getViive() {
+        return viive;
+    }
+
+    public void setViive(int viive) {
+        this.viive = viive;
+    }
+
+    public boolean isAiSiirtaaAutomaagisesti() {
+        return aiSiirtaaAutomaagisesti;
+    }
+
+    public void setAiSiirtaaAutomaagisesti(boolean aiSiirtaaAutomaagisesti) {
+        this.aiSiirtaaAutomaagisesti = aiSiirtaaAutomaagisesti;
+    }
+
     public void asetaMustaMinimaxSyvyys(int luku) {
         this.mustaMiniMaxSyvyys = luku;
     }
-    
-    public void asetaValkoinenMinimaxSyvyys(int luku){
+
+    public void asetaValkoinenMinimaxSyvyys(int luku) {
         this.valkoinenMiniMaxSyvyys = luku;
     }
-    
+
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
     }
@@ -90,19 +111,21 @@ public class PeliOhjain {
         Pelaaja musta;
         Pelaaja valkoinen;
         if (mustaPelaaja == PelaajaTyyppi.IHMINEN) {
-            musta = new IhmisPelaaja(peli, this);
+            //musta = new IhmisPelaaja(peli, this);
+            musta = this;
         } else if (mustaPelaaja == PelaajaTyyppi.MINIMAX) {
-            musta = new MinimaxAI(peli, this.mustaMiniMaxSyvyys);
+            musta = new MinimaxAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.mustaMiniMaxSyvyys);
         } else {
-            musta = new EkaAI(peli);
+            musta = new EkaAI(peli, this, aiSiirtaaAutomaagisesti, viive);
         }
 
         if (valkoinenPelaaja == PelaajaTyyppi.IHMINEN) {
-            valkoinen = new IhmisPelaaja(peli, this);
+            //valkoinen = new IhmisPelaaja(peli, this);
+            valkoinen = this;
         } else if (valkoinenPelaaja == PelaajaTyyppi.MINIMAX) {
-            valkoinen = new MinimaxAI(peli, this.valkoinenMiniMaxSyvyys);
+            valkoinen = new MinimaxAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.valkoinenMiniMaxSyvyys);
         } else {
-            valkoinen = new EkaAI(peli);
+            valkoinen = new EkaAI(peli, this, aiSiirtaaAutomaagisesti, viive);
         }
 
         peli.setMusta(musta);
@@ -138,8 +161,7 @@ public class PeliOhjain {
             this.setViesti("Aloita ensin uusi peli!");
             return;
         }
-        //JOS AI odottaa siirtoa
-        //ai.teeSiirto
+        this.aiNappiaPainettu=true;
     }
 
     public void setViesti(String viesti) {
@@ -221,7 +243,8 @@ public class PeliOhjain {
      * @param sallitutSiirrot Lista pelaajan sallituista siirroista
      * @return Palauttaa siirron, jonka pelaaja haluaa tehdä
      */
-    public Siirto getSeuraavaSiirto(Siirto[] sallitutSiirrot) {
+    @Override
+    public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
         this.sallitutSiirrot = sallitutSiirrot;
         seuraavaSiirto = null;
         while (seuraavaSiirto == null) {
@@ -232,6 +255,17 @@ public class PeliOhjain {
         }
         this.sallitutSiirrot = null;
         return seuraavaSiirto;
+    }
+
+    public void odotaAiNapinPainamista() {
+        while (!aiNappiaPainettu) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+            }
+        }
+        aiNappiaPainettu = false;
+        return;
     }
 
 }

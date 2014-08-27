@@ -18,6 +18,8 @@ public class Peli implements Runnable {
     private Pelaaja musta;
     private Pelaaja valkoinen;
     private Pelaaja vuorossaOlevaPelaaja;
+    private boolean valkoisenVuoroSiirtaa;
+    private int siirtojenMaara;
 
     /**
      * Konstruktorissa luodaan uusi pelilauta, asetetaan sille nappulat ja selvitetään sallitut aloitussiirrot.
@@ -27,6 +29,7 @@ public class Peli implements Runnable {
         this.pelilauta.asetaNappulatAlkuasetelmaan();
         this.sallitutSiirrot = pelilauta.getSallitutSiirrot(true);
         this.peliKaynnissa = false;
+        this.siirtojenMaara = 0;
     }
 
     public Pelilauta getPelilauta() {
@@ -46,7 +49,8 @@ public class Peli implements Runnable {
     }
 
     public boolean isValkoisenVuoroSiirtaa() {
-        return vuorossaOlevaPelaaja == valkoinen;
+        //return vuorossaOlevaPelaaja == valkoinen;
+        return valkoisenVuoroSiirtaa;
     }
 
     public void setMusta(Pelaaja pelaaja) {
@@ -79,7 +83,8 @@ public class Peli implements Runnable {
             return;
         }
         vuorossaOlevaPelaaja = valkoinen;
-
+        valkoisenVuoroSiirtaa = true;
+        
         peliKaynnissa = true;
         while (peliKaynnissa) {
             siirra();
@@ -88,19 +93,24 @@ public class Peli implements Runnable {
     }
 
     private void siirra() {
-        Siirto siirto = vuorossaOlevaPelaaja.seuraavaSiirto(pelilauta.getSallitutSiirrot(vuorossaOlevaPelaaja == valkoinen));
+        Siirto siirto = vuorossaOlevaPelaaja.seuraavaSiirto(pelilauta.getSallitutSiirrot(valkoisenVuoroSiirtaa));
         siirraNappulaa(siirto);
-        this.sallitutSiirrot = pelilauta.getSallitutHypyt(vuorossaOlevaPelaaja == valkoinen, siirto.getLoppuRivi(), siirto.getLoppuSarake());
+        this.sallitutSiirrot = pelilauta.getSallitutHypyt(valkoisenVuoroSiirtaa, siirto.getLoppuRivi(), siirto.getLoppuSarake());
         while (siirto.onkoSiirtoHyppy() && sallitutSiirrot != null) {
             siirto = vuorossaOlevaPelaaja.seuraavaSiirto(sallitutSiirrot);
             siirraNappulaa(siirto);
-            this.sallitutSiirrot = pelilauta.getSallitutHypyt(vuorossaOlevaPelaaja == valkoinen, siirto.getLoppuRivi(), siirto.getLoppuSarake());
+            this.sallitutSiirrot = pelilauta.getSallitutHypyt(valkoisenVuoroSiirtaa, siirto.getLoppuRivi(), siirto.getLoppuSarake());
         }
+        siirtojenMaara++;
 
         vaihdaVuoroa();
+        
+        if (this.siirtojenMaara > 100){
+            peliLoppu("Pattitilanne, peli loppu!");
+        }
 
         if (!onkoSallittujaSiirtoja()) {
-            if (vuorossaOlevaPelaaja == valkoinen) {
+            if (valkoisenVuoroSiirtaa) {
                 peliLoppu("Valkoinen ei voi siirtää. Musta voitti");
             } else {
                 peliLoppu("Musta ei voi siirtää. Valkoinen voitti");
@@ -109,7 +119,7 @@ public class Peli implements Runnable {
     }
 
     private boolean onkoSallittujaSiirtoja() {
-        return pelilauta.getSallitutSiirrot(vuorossaOlevaPelaaja == valkoinen) != null;
+        return pelilauta.getSallitutSiirrot(valkoisenVuoroSiirtaa) != null;
     }
 
     private void vaihdaVuoroa() {
@@ -118,6 +128,8 @@ public class Peli implements Runnable {
         } else {
             this.vuorossaOlevaPelaaja = valkoinen;
         }
+        
+        valkoisenVuoroSiirtaa = !valkoisenVuoroSiirtaa;
     }
 
     /**
@@ -125,7 +137,7 @@ public class Peli implements Runnable {
      * lopetetaan siten että nappia painanut pelaaja häviää pelin.
      */
     public void luovutaPeli() {
-        if (vuorossaOlevaPelaaja == valkoinen) {
+        if (valkoisenVuoroSiirtaa) {
             peliLoppu("Valkoinen luovutti. Musta voitti!");
         } else {
             peliLoppu("Musta luovutti. Valkoinen voitti!");

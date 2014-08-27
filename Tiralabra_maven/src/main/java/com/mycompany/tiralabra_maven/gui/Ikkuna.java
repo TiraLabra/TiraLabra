@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.PelaajaTyyppi;
@@ -14,6 +13,7 @@ import com.mycompany.tiralabra_maven.PeliOhjain;
  * @author noora
  */
 public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
+
     private PeliOhjain peli;
     private PelaajaTyyppi musta;
     private PelaajaTyyppi valkoinen;
@@ -24,12 +24,13 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
     public Ikkuna() {
         initComponents();
     }
-    
-    public Ikkuna(PeliOhjain peli){
+
+    public Ikkuna(PeliOhjain peli) {
         this.peli = peli;
         this.musta = PelaajaTyyppi.IHMINEN;
         this.valkoinen = PelaajaTyyppi.IHMINEN;
         initComponents();
+        paivitaKomponentit();
     }
 
     /**
@@ -46,21 +47,27 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
         piirtoalusta1 = new Piirtoalusta(peli);
         piirtoalusta1.addMouseListener(new Hiirenkuuntelija(peli));
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        valkoinenMinimaxAIRadioButton = new javax.swing.JRadioButton();
+        mustaSyvyysSlider = new javax.swing.JSlider();
+        mustaMinimaxAIRadioButton = new javax.swing.JRadioButton();
+        mustaIhminenRadioButton = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+        valkoinenEkaAIRadioButton = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        valkoinenSyvyysSlider = new javax.swing.JSlider();
+        mustaEkaAIRadioButton = new javax.swing.JRadioButton();
+        valkoinenIhminenRadioButton = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        viiveField = new javax.swing.JTextField();
+        aiCheckbox = new javax.swing.JCheckBox();
+        jPanel4 = new javax.swing.JPanel();
         uusiPeliButton = new javax.swing.JButton();
         luovutaButton = new javax.swing.JButton();
         aiButton = new javax.swing.JButton();
-        mustaIhminenRadioButton = new javax.swing.JRadioButton();
-        mustaEkaAIRadioButton = new javax.swing.JRadioButton();
-        mustaMinimaxAIRadioButton = new javax.swing.JRadioButton();
-        valkoinenIhminenRadioButton = new javax.swing.JRadioButton();
-        valkoinenEkaAIRadioButton = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        valkoinenMinimaxAIRadioButton = new javax.swing.JRadioButton();
-        mustaSyvyysSlider = new javax.swing.JSlider();
-        valkoinenSyvyysSlider = new javax.swing.JSlider();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         viestiKentta = new javax.swing.JTextArea();
 
@@ -77,6 +84,173 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
         piirtoalusta1Layout.setVerticalGroup(
             piirtoalusta1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 328, Short.MAX_VALUE)
+        );
+
+        buttonGroup2.add(valkoinenMinimaxAIRadioButton);
+        valkoinenMinimaxAIRadioButton.setText("Minimax");
+        valkoinenMinimaxAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valkoinenMinimaxAIRadioButtonActionPerformed(evt);
+            }
+        });
+
+        mustaSyvyysSlider.setMajorTickSpacing(1);
+        mustaSyvyysSlider.setMaximum(7);
+        mustaSyvyysSlider.setMinimum(1);
+        mustaSyvyysSlider.setPaintLabels(true);
+        mustaSyvyysSlider.setSnapToTicks(true);
+        mustaSyvyysSlider.setValue(5);
+
+        buttonGroup1.add(mustaMinimaxAIRadioButton);
+        mustaMinimaxAIRadioButton.setText("Minimax");
+        mustaMinimaxAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mustaMinimaxAIRadioButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(mustaIhminenRadioButton);
+        mustaIhminenRadioButton.setSelected(true);
+        mustaIhminenRadioButton.setText("Ihminen");
+        mustaIhminenRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mustaIhminenRadioButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Syvyys:");
+
+        buttonGroup2.add(valkoinenEkaAIRadioButton);
+        valkoinenEkaAIRadioButton.setText("EkaAI");
+        valkoinenEkaAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valkoinenEkaAIRadioButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Musta:");
+
+        jLabel3.setText("Syvyys:");
+
+        valkoinenSyvyysSlider.setMajorTickSpacing(1);
+        valkoinenSyvyysSlider.setMaximum(7);
+        valkoinenSyvyysSlider.setMinimum(1);
+        valkoinenSyvyysSlider.setPaintLabels(true);
+        valkoinenSyvyysSlider.setSnapToTicks(true);
+        valkoinenSyvyysSlider.setValue(5);
+        valkoinenSyvyysSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        buttonGroup1.add(mustaEkaAIRadioButton);
+        mustaEkaAIRadioButton.setText("EkaAI");
+        mustaEkaAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mustaEkaAIRadioButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(valkoinenIhminenRadioButton);
+        valkoinenIhminenRadioButton.setSelected(true);
+        valkoinenIhminenRadioButton.setText("Ihminen");
+        valkoinenIhminenRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valkoinenIhminenRadioButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Valkoinen:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mustaIhminenRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mustaEkaAIRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(mustaMinimaxAIRadioButton)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(valkoinenMinimaxAIRadioButton)
+                            .addComponent(jLabel2)
+                            .addComponent(valkoinenIhminenRadioButton)
+                            .addComponent(valkoinenEkaAIRadioButton)
+                            .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(112, 112, 112)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mustaIhminenRadioButton)
+                    .addComponent(valkoinenIhminenRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mustaEkaAIRadioButton)
+                    .addComponent(valkoinenEkaAIRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mustaMinimaxAIRadioButton)
+                    .addComponent(valkoinenMinimaxAIRadioButton))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jLabel5.setText("Viive (ms):");
+
+        viiveField.setText("jTextField1");
+
+        aiCheckbox.setText("AI siirtää automaagisesti");
+        aiCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aiCheckboxActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(aiCheckbox)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(viiveField)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(viiveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aiCheckbox)
+                .addContainerGap())
         );
 
         uusiPeliButton.setText("Uusi peli");
@@ -100,146 +274,50 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
             }
         });
 
-        buttonGroup1.add(mustaIhminenRadioButton);
-        mustaIhminenRadioButton.setSelected(true);
-        mustaIhminenRadioButton.setText("Ihminen");
-        mustaIhminenRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mustaIhminenRadioButtonActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(mustaEkaAIRadioButton);
-        mustaEkaAIRadioButton.setText("EkaAI");
-        mustaEkaAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mustaEkaAIRadioButtonActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(mustaMinimaxAIRadioButton);
-        mustaMinimaxAIRadioButton.setText("Minimax");
-        mustaMinimaxAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mustaMinimaxAIRadioButtonActionPerformed(evt);
-            }
-        });
-
-        buttonGroup2.add(valkoinenIhminenRadioButton);
-        valkoinenIhminenRadioButton.setSelected(true);
-        valkoinenIhminenRadioButton.setText("Ihminen");
-        valkoinenIhminenRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                valkoinenIhminenRadioButtonActionPerformed(evt);
-            }
-        });
-
-        buttonGroup2.add(valkoinenEkaAIRadioButton);
-        valkoinenEkaAIRadioButton.setText("EkaAI");
-        valkoinenEkaAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                valkoinenEkaAIRadioButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Musta:");
-
-        jLabel2.setText("Valkoinen:");
-
-        buttonGroup2.add(valkoinenMinimaxAIRadioButton);
-        valkoinenMinimaxAIRadioButton.setText("Minimax");
-        valkoinenMinimaxAIRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                valkoinenMinimaxAIRadioButtonActionPerformed(evt);
-            }
-        });
-
-        mustaSyvyysSlider.setMajorTickSpacing(1);
-        mustaSyvyysSlider.setMaximum(7);
-        mustaSyvyysSlider.setMinimum(1);
-        mustaSyvyysSlider.setPaintLabels(true);
-        mustaSyvyysSlider.setSnapToTicks(true);
-        mustaSyvyysSlider.setValue(5);
-
-        valkoinenSyvyysSlider.setMajorTickSpacing(1);
-        valkoinenSyvyysSlider.setMaximum(7);
-        valkoinenSyvyysSlider.setMinimum(1);
-        valkoinenSyvyysSlider.setPaintLabels(true);
-        valkoinenSyvyysSlider.setSnapToTicks(true);
-        valkoinenSyvyysSlider.setValue(5);
-        valkoinenSyvyysSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        jLabel3.setText("Syvyys:");
-
-        jLabel4.setText("Syvyys:");
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(uusiPeliButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(aiButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(luovutaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(uusiPeliButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aiButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(luovutaButton)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(luovutaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(uusiPeliButton)
-                                .addComponent(aiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(43, 43, 43))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(mustaIhminenRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(mustaEkaAIRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(jLabel1)
-                                .addComponent(mustaMinimaxAIRadioButton))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(valkoinenMinimaxAIRadioButton)
-                                .addComponent(jLabel2)
-                                .addComponent(valkoinenIhminenRadioButton)
-                                .addComponent(valkoinenEkaAIRadioButton)
-                                .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4))))
-                    .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mustaIhminenRadioButton)
-                    .addComponent(valkoinenIhminenRadioButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mustaEkaAIRadioButton)
-                    .addComponent(valkoinenEkaAIRadioButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mustaMinimaxAIRadioButton)
-                    .addComponent(valkoinenMinimaxAIRadioButton))
-                .addGap(8, 8, 8)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                .addComponent(uusiPeliButton)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(luovutaButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(aiButton)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(61, 61, 61))
         );
 
         viestiKentta.setColumns(20);
@@ -252,20 +330,21 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(piirtoalusta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(piirtoalusta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(181, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(piirtoalusta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -281,20 +360,30 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
         // TODO add your handling code here:
         peli.asetaMustaMinimaxSyvyys(mustaSyvyysSlider.getValue());
         peli.asetaValkoinenMinimaxSyvyys(valkoinenSyvyysSlider.getValue());
+        peli.setAiSiirtaaAutomaagisesti(aiCheckbox.isSelected());
+        int viive = peli.getViive();
+        try {
+            viive = Integer.parseInt(viiveField.getText());
+        } catch (NumberFormatException e) {
+
+        }
+        if (viive >= 0) {
+            peli.setViive(viive);
+        }
         peli.uusiPeli(this.musta, this.valkoinen);
-        this.paivita();
+        this.paivitaKomponentit();
     }//GEN-LAST:event_uusiPeliButtonActionPerformed
 
     private void luovutaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luovutaButtonActionPerformed
         // TODO add your handling code here:
         peli.luovutaPeli();
-        this.paivita();
+        this.paivitaKomponentit();
     }//GEN-LAST:event_luovutaButtonActionPerformed
 
     private void aiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiButtonActionPerformed
         // TODO add your handling code here:
-        //peli.AISiirtaa();
-        this.paivita();
+        peli.AISiirtaa();
+        this.paivitaKomponentit();
     }//GEN-LAST:event_aiButtonActionPerformed
 
     private void mustaIhminenRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mustaIhminenRadioButtonActionPerformed
@@ -326,6 +415,12 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
         // TODO add your handling code here:
         this.valkoinen = PelaajaTyyppi.MINIMAX;
     }//GEN-LAST:event_valkoinenMinimaxAIRadioButtonActionPerformed
+
+    private void aiCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiCheckboxActionPerformed
+        // TODO add your handling code here:
+        peli.setAiSiirtaaAutomaagisesti(this.aiCheckbox.isSelected());
+        paivitaKomponentit();
+    }//GEN-LAST:event_aiCheckboxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,13 +459,18 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aiButton;
+    private javax.swing.JCheckBox aiCheckbox;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton luovutaButton;
     private javax.swing.JRadioButton mustaEkaAIRadioButton;
@@ -384,12 +484,21 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
     private javax.swing.JRadioButton valkoinenMinimaxAIRadioButton;
     private javax.swing.JSlider valkoinenSyvyysSlider;
     private javax.swing.JTextArea viestiKentta;
+    private javax.swing.JTextField viiveField;
     // End of variables declaration//GEN-END:variables
+
+    private void paivitaKomponentit() {
+        this.aiCheckbox.setSelected(peli.isAiSiirtaaAutomaagisesti());
+        this.viiveField.setEnabled(peli.isAiSiirtaaAutomaagisesti());
+        this.viiveField.setText(peli.getViive() + "");
+        paivita();
+    }
 
     @Override
     public void paivita() {
         //System.out.println("PAIVITETTIIN");
         this.viestiKentta.setText(peli.getViesti());
+
         //piirtoalusta1.repaint();
         //piirtoalusta1.paivita();
     }

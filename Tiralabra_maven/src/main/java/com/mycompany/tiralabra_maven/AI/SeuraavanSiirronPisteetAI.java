@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven.AI;
 
 import com.mycompany.tiralabra_maven.Peli;
+import com.mycompany.tiralabra_maven.PeliOhjain;
 import com.mycompany.tiralabra_maven.Pelilauta;
 import com.mycompany.tiralabra_maven.Siirto;
 
@@ -8,11 +9,11 @@ import com.mycompany.tiralabra_maven.Siirto;
  * Luokka toteuttaa tekoälyn, joka palauttaa sen siirron joka johtaa parhaaseen mahdolliseen tilanteeseen laudalla
  * @author noora
  */
-public class SeuraavanSiirronPisteetAI extends Pelaaja {
+public class SeuraavanSiirronPisteetAI extends AI {
     private Heuristiikka heuristiikka;
     
-    public SeuraavanSiirronPisteetAI(Peli peli){
-        super(peli);
+    public SeuraavanSiirronPisteetAI(Peli peli, PeliOhjain peliohjain, boolean siirraAutomaagisesti, int viive){
+        super(peli, peliohjain, siirraAutomaagisesti, viive);
     }
 
     /**
@@ -21,6 +22,7 @@ public class SeuraavanSiirronPisteetAI extends Pelaaja {
      */
     @Override
     public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot) {
+        odota();
         boolean valkoisenVuoroSiirtaa = this.peli.isValkoisenVuoroSiirtaa();
         Pelilauta lauta;
         int[] pisteet = new int[sallitutSiirrot.length];
