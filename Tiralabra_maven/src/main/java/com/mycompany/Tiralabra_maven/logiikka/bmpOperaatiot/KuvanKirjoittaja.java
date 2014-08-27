@@ -10,22 +10,19 @@ import javax.imageio.ImageIO;
 /**
  * KESKENERÄINEN
  */
-public class kuvanKirjoittaja {
+public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
-    public kuvanKirjoittaja(BufferedImage image) {
-    
-    }
+    public void writeImage(String BMPFileName, int[][] kuvataulukko) {
 
-    public void writeImage(String BMPFileName,int[][] kuvataulukko) {
-        
-            try {
-                this.image = ImageIO.read(new File(BMPFileName));
-            } catch (IOException e) {
-            }
+        try {
+            this.image = ImageIO.read(new File(BMPFileName));
+        } catch (IOException e) {
+            System.out.println("virhe");
+        }
 
-        this.image=image;
+//        this.image=image;
 
 
         Color myBlue = new Color(0, 0, 255);

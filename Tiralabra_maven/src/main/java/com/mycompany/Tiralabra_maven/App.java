@@ -3,6 +3,7 @@ package com.mycompany.Tiralabra_maven;
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.aStar.AstarWithHeap;
+import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.KuvanKirjoittaja;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.KuvanLukija;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
@@ -40,24 +41,28 @@ public class App {
     /**
      * Metodi ALUSTAVAN/KESKENRÄISEN kuvanlukijan testaamiseen.
      */
-    public static void testaaKuvanLukija() {
+    public void testaaKuvanLukija() {
 
-        int[][] kuvataulukko;
-        KuvanLukija kuvanlukija = new KuvanLukija();
+        KuvanLukija kuvanLukija = new KuvanLukija();
+        KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
+        String inputFileName = "bitmaps/uusiTesti256.bmp";
+
+        int[][] kuvataulukko = new int[1][1];
+
 
 ////        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
 //        System.out.println("kukkuu");
 //        System.out.println(Integer.MAX_VALUE);
 //        System.out.println(Integer.MAX_VALUE / 2 * 2);
         try {
-            kuvataulukko = kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
+            kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
         } catch (IOException ioe) {
             System.out.println("virhe");
         }
 
         try {
-            kuvataulukko = kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
-        } catch (IOException ioe) {
+            kuvanKirjoittaja.writeImage(inputFileName,kuvataulukko);
+        } catch (Exception e) {
             System.out.println("virhe");
         }
 
@@ -93,6 +98,10 @@ public class App {
 //        Piste maaliPiste = new Piste(2, 2);
         Piste maaliPiste = new Piste(0, 2);
 //        Piste maaliPiste = new Piste(2, 1);
+
+
+
+
 
         DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
 //        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
