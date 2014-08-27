@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  *
  * @author joonaslaakkonen
- * Luokka kuvaa Astar-algoritmilla tutkittavan verkon solmuja.
+ * Luokka kuvaa Astar-algoritmilla tutkittavan verkon solmuja. Solmuilla on tiedossa sijantinsa ja sen lisäksi
+ * arvio kuinka kaukana se sijaitsee maalista.
  */
 public class Cell implements Comparable<Cell> {
     
@@ -27,8 +28,7 @@ public class Cell implements Comparable<Cell> {
     /**
      * 
      * Gettereitä ja settereitä.
-     */
-    
+     */ 
     public void setHeuristic(int value) {
         this.heuristic = value;
     }
@@ -39,15 +39,6 @@ public class Cell implements Comparable<Cell> {
     
     public String toString() {
         return this.node;
-    }
-    
-    @Override
-    public int compareTo(Cell o) {
-        return this.heuristic - o.getHeuristic();
-    }
-
-    public void addPath(Path path) {
-        this.routes.add(path);
     }
 
     public void setCoords(int xx, int yy) {
@@ -67,14 +58,18 @@ public class Cell implements Comparable<Cell> {
         this.shortestPath = i;
     }
     
-    public ArrayList<Path> getRoutes() {
-        return this.routes;
-    }
-
     public int getShortest() {
         return this.shortestPath;
     }
-
+    
+    public ArrayList<Path> getRoutes() {
+        return this.routes;
+    }
+    
+    public void addPath(Path path) {
+        this.routes.add(path);
+    }
+    
     public void setPrevious(Cell cel) {
         this.parent = cel;
     }
@@ -83,4 +78,8 @@ public class Cell implements Comparable<Cell> {
         return this.parent;
     }
     
+    @Override
+    public int compareTo(Cell o) {
+        return (this.shortestPath + this.heuristic) - (o.getShortest() + o.getHeuristic());
+    }  
 }

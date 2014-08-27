@@ -4,7 +4,7 @@ import tira.dijkstra.Node;
 /**
  *
  * @author joonaslaakkonen
- * Luokka kuvaa kartan kaarta kahden solmun välillä.
+ * Luokka kuvaa kartan kaarta kahden solmun välillä. Kaarella on pituus sekä kohdesolmu.
  */
 class Edge {
     public Node target;
@@ -18,8 +18,7 @@ class Edge {
     /**
      * 
      * Gettereitä. 
-     */
-    
+     */  
     public String toString() {
         return this.target.toString() + this.weight;
     }

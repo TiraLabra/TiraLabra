@@ -25,10 +25,13 @@ public class Node implements Comparable<Node> {
     /**
      * 
      * Luokan getterit ja setterit
-     */
-    
+     */   
     public int getShortest() {
         return this.shortest;
+    }
+    
+    public void setShortest(int value) {
+        this.shortest = value;
     }
     
     public String toString() {
@@ -39,31 +42,25 @@ public class Node implements Comparable<Node> {
         this.routes.add(e);
     }
     
-    public void setShortest(int value) {
-        this.shortest = value;
-    }
-    
-    public void setPrevious(Node handle) {
-        this.previous = handle;
-    }
-
-    public Node getPrevious() {
-        return this.previous;
-    }
-    
     public ArrayList<Edge> getEdges() {
         return this.routes;
     }
     
+    public Node getPrevious() {
+        return this.previous;
+    }
+   
+    public void setPrevious(Node handle) {
+        this.previous = handle;
+    } 
+    
     /**
-     * Etäisyyden vertailu.
+     * Etäisyyden vertailu prioriteettijonon alkion valintaan.
      * @param o
      * @return 
      */
-
     @Override
     public int compareTo(Node o) {
         return this.shortest - o.getShortest();
-    }
-    
+    }  
 }

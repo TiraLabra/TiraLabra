@@ -22,15 +22,16 @@ public class Dijkstra {
     private Node startNode;
     private Node goalNode;
 
-    public Dijkstra(String start, String end, Mapper grid) {
+    public Dijkstra(String start, String end, HashMap grid) {
         this.source = start;
         this.destination = end;
-        this.graph = grid.getGrid();
+        this.graph = grid;
         this.nodes = new ArrayList<Node>();
     }
     
     /**
      * Metodi alustaa kartasta verkon solmut ja kaaret, joita käytetään Dijkstran algoritmissa.
+     * Sen lisäksi asetetaan muistiin lähtö -ja maalisolmut.
      */
     public void initialize() {
         for (String apu : this.graph.keySet()) {
@@ -51,23 +52,20 @@ public class Dijkstra {
     
     /**
      * Reitin haku algoritmilla.
-     */
-    
+     */  
     public void route() {
         
         /**
          * Asetetaan alkusolmun etäisyydeksi nolla ja luodaan prioriteettijono, jonne lisätään
          * alkusolmu.
-         */
-        
+         */     
         this.startNode.setShortest(0);
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
         queue.add(this.startNode);
         
         /**
          * Käydään läpi prioriteettijono. 
-         */
-        
+         */      
         while (!queue.isEmpty()) {
             Node handle = queue.poll();
             
@@ -77,7 +75,7 @@ public class Dijkstra {
                 int distance = handle.getShortest() + weight;
                 
                 /**
-                 * Relaksointi tapahtuu samassa metodissa, voisi myös hajottaa omaan relax metodiin.
+                 * Relaksointi.
                  */
                 if (distance < neighbor.getShortest()) {
                     queue.remove(neighbor);
@@ -85,15 +83,13 @@ public class Dijkstra {
                     neighbor.setPrevious(handle);
                     queue.add(neighbor);
                 }
-
             }
         }
     }
 
     /**
      * Tulostetaan lyhyin reitti alusta määränpäähän.
-     */
-    
+     */   
     public void print() {
         if (this.goalNode.getShortest() == Integer.MAX_VALUE) {
             System.out.println("Reittiä ei ole kohteiden välillä");
@@ -108,8 +104,7 @@ public class Dijkstra {
      * Etsitään solmu nimen perusteella.
      * @param name
      * @return 
-     */
-    
+     */  
     private Node findNodeByName(String name) {
         for (Node helper : this.nodes) {
             if (helper.toString().equals(name)) {
@@ -124,7 +119,6 @@ public class Dijkstra {
      * @param helper
      * @return 
      */
-
     private List<Node> getShortestPath(Node helper) {
         List<Node> path = new ArrayList<Node>();
         for (Node vertex = helper; vertex != null; vertex = vertex.getPrevious())
@@ -132,5 +126,4 @@ public class Dijkstra {
         Collections.reverse(path);
         return path;
     }
-
 }

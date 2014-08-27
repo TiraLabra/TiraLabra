@@ -3,11 +3,11 @@ package tira.astar;
 /**
  *
  * @author joonaslaakkonen
- * Luokka kuvaa polkua kahden Cell -olion välillä.
+ * Luokka kuvaa polkua kahden verkon Cell -olion välillä. Polulla on etäisyys ja kohdesolmu.
  */
 public class Path {
-    public Cell target;
-    public int weight;
+    private Cell target;
+    private int weight;
     
     public Path(Cell destination, int distance){ 
         this.target = destination;
@@ -17,8 +17,7 @@ public class Path {
     /**
      * 
      * Gettereitä ja settereitä. 
-     */
-    
+     */   
     public String toString() {
         return this.target.toString() + this.weight;
     }

@@ -3,7 +3,7 @@ package tira.main;
 /**
  *
  * @author joonaslaakkonen
- * Luokan oliot ovat tiedostosta luetun kartan kaupunkien kohteita
+ * Luokan oliot ovat tiedostosta luetun kartan kaupunkien kohteita. Oliolla on nimi, sijanti ja etäisyys.
  */
 public class Target {
     
@@ -21,9 +21,8 @@ public class Target {
     
     /**
      * 
-     * Luokan gettereitä. 
-     */
-    
+     * Luokan gettereitä.
+     */   
     public String getName() {
         return this.name;
     }
@@ -39,5 +38,4 @@ public class Target {
     public int getY() {
         return this.y;
     }
-
 }

@@ -7,8 +7,9 @@ import java.util.Scanner;
 /**
  *
  * @author joonaslaakkonen
- * Luokka luo HashMapin, jossa on tallenettuna avaimiksi kukin kartan kaupunki kerran ja avaimeen
- * liitetään kaupungista lähtevät Target oliot eli kohteet, joihin kaupungista pääsee.
+ * Luokka luo HashMapin, jossa on tallenettuna avaimiksi jokainen kaupunki kerran ja avaimeen
+ * liitetään kaupungista lähtevät Target oliot eli kohteet, joihin kaupungista on suora yhteys.
+ * Oliolle annetaan pääohjelman luoma Scanner olio.
  */
 public class Mapper {
     
@@ -41,7 +42,7 @@ public class Mapper {
     }
     
     /**
-     * Tulostetaan kaupungit.
+     * Tulostetaan kaupungit käyttäjälle, joista hän valitsee lähtöpaikan ja maalin.
      */
     public void print() {
         for (String apu : this.sources.keySet()) {
@@ -51,12 +52,11 @@ public class Mapper {
     
     /**
      * 
-     * @param start
-     * @param end
+     * @param start lähtöpiste
+     * @param end maali
      * @return 
      * Metodi tarkistaa onko käyttäjän syöte kunnossa ja palauttaa tiedon siitä.
-     */
-    
+     */   
     public boolean validKeys(String start, String end) {
         if (this.sources.containsKey(start) && this.sources.containsKey(end)) {
             return true;
@@ -65,10 +65,9 @@ public class Mapper {
     }
     
     /**
-     * Metodi palauttaa kartan.
+     * Metodi palauttaa alustetun kartan.
      * @return 
-     */
-    
+     */   
     public HashMap getGrid() {
         return this.sources;
     }
@@ -79,14 +78,14 @@ public class Mapper {
      * @param destination
      * @param distance
      * Metodi luo HashMapiin avaimet ja lisää niille kohteita, joilla on tietty etäisyys lähtökaupungista.
+     * Kaupungeille annetaan myös tieto niiden x,y-sijainnista.
      */
     private void manageLine(String start, int sx, int sy, String destination, int dx, int dy, int distance) {
         if (!this.sources.containsKey(start) && !this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();
             ArrayList<Target> destinationTargets = new ArrayList<Target>();
             startTargets.add(new Target(destination, distance, sx, sy));
-            destinationTargets.add(new Target(start, distance, dx, dy));
-            
+            destinationTargets.add(new Target(start, distance, dx, dy));  
             this.sources.put(start, startTargets);
             this.sources.put(destination, destinationTargets);
             
@@ -94,20 +93,17 @@ public class Mapper {
             ArrayList<Target> destinationTargets = new ArrayList<Target>();
             this.sources.get(start).add(new Target(destination, distance, dx, dy));
             destinationTargets.add(new Target(start, distance, sx, sy));
-
             this.sources.put(destination, destinationTargets);
             
         } else if (!this.sources.containsKey(start) && this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();
             startTargets.add(new Target(destination, distance, dx, dy));
             this.sources.get(destination).add(new Target(start, distance, sx, sy));
-
             this.sources.put(start, startTargets);
+            
         } else {
             this.sources.get(start).add(new Target(destination, distance, dx, dy));
             this.sources.get(destination).add(new Target(start, distance, sx, sy));
-        }    
-        
-    }
-    
+        }      
+    }  
 }
