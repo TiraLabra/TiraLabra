@@ -165,24 +165,22 @@ public class MathUtil {
     }
 
     /**
-     * Finds the inverse of the number n modulo p.
+     * Finds the multiplicative inverse of the number n modulo p.
      *
      * The inverse always exists if p is a prime. Otherwise it might not exist,
-     * in which case the algorithm returns -1;
+     * in which case the algorithm returns 0;
      *
      * @param n The number whose inverse is to be found.
      * @param p The modulo.
-     * @return The inverse of n modulo p, -1 if the inverse doesn't exist.
+     * @return The inverse of n modulo p, 0 if the inverse doesn't exist.
      */
     public static int getInverseModP(int n, int p) {
         ExtendedEuclideanResult result = extendedEuclideanAlgorithm(n, p);
 
         if (abs(result.gcd) != 1) {
-            return -1;
+            return 0;
         }
 
-        // This is needed because the extended euclidean algorithm might
-        // terminate with gcd -1 if n is negative.
         return result.gcd*result.x;
     }
 

@@ -240,8 +240,13 @@ public class MathUtilTest {
     }
 
     @Test
+    public void testGetInverse2_3() {
+        assertTrue((2 - MathUtil.getInverseModP(2, 3)) % 3 == 0);
+    }
+
+    @Test
     public void testGetInverse2_4() {
-        assertEquals(-1, MathUtil.getInverseModP(2, 4));
+        assertEquals(0, MathUtil.getInverseModP(2, 4));
     }
 
     @Test
@@ -251,7 +256,7 @@ public class MathUtilTest {
 
     @Test
     public void testGetInverse4_16() {
-        assertEquals(-1, MathUtil.getInverseModP(4, 16));
+        assertEquals(0, MathUtil.getInverseModP(4, 16));
     }
 
     @Test

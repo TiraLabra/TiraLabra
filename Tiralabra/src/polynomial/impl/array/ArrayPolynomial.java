@@ -374,7 +374,7 @@ public class ArrayPolynomial implements IPolynomial {
             throw new UnsupportedOperationException("Cannot represent non-integer coefficients in characteristic 0");
         } else {
             int inverseOfDivisorCoefficient = MathUtil.getInverseModP(coefficientDivisor, remainder.characteristic);
-            if (inverseOfDivisorCoefficient == -1) {
+            if (inverseOfDivisorCoefficient == 0) {
                 throw new UnsupportedOperationException("Cannot represent 1/" + coefficientDivisor + " as an integer modulo " + characteristic);
             }
             coefficientOfResult = (inverseOfDivisorCoefficient * coefficientRemainder) % remainder.characteristic;
