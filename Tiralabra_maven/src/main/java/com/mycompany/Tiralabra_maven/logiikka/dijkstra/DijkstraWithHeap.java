@@ -20,7 +20,7 @@ public class DijkstraWithHeap {
 
     /**
      * Luokan DijkstraWithHeap konstruktori.
-     * 
+     *
      * @param kartta aikakustannutkartta kokonaislukutaulukkona
      * @param lahtoPiste haettavan nopeimman reitin lähtöpiste
      * @param maaliPiste haettavan nopeimman reitin maalipiste
@@ -37,7 +37,7 @@ public class DijkstraWithHeap {
 
     /**
      * Metodi suorittaa Dijkstran algoritmin ratkaisun.
-     * 
+     *
      * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
      */
     public int ratkaise() {
@@ -62,7 +62,7 @@ public class DijkstraWithHeap {
                 if (relax(paikkaU, paikkaV)) {
                     System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
-                System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
+                    System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
                 }
             }
 //        System.out.println("keon koko: "+heap.heapSize);
@@ -98,7 +98,7 @@ public class DijkstraWithHeap {
     private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
         OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
 
-    
+
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
@@ -141,7 +141,7 @@ public class DijkstraWithHeap {
      * maalipisteitä). Lisäksi metodi asettaa taulukon reittiKartta arvoksi 0,
      * kohtiin joiden kautta lyhin polku kulkee.
      */
-    public void shortestPath() {
+    public Stack<Paikka> shortestPath() {
 
         Stack<Paikka> pino = new Stack<Paikka>();
 
@@ -152,6 +152,19 @@ public class DijkstraWithHeap {
             paikkaU = paikkaU.polku;
         }
 
+        return pino;
+
+
+    }
+
+    /**
+     * Kehityksen aikaista testitulostusta. Metodi tulostaa taulukon
+     * reittiKartta arvot.
+     */
+    public void testiTulostaReittikartta(Stack<Paikka> pino) {
+
+        Paikka paikkaU;
+
         System.out.println("polku");
 
         while (!pino.empty()) {
@@ -161,13 +174,6 @@ public class DijkstraWithHeap {
         }
 
 
-    }
-
-    /**
-     * Kehityksen aikaista testitulostusta.
-     * Metodi tulostaa taulukon reittiKartta arvot.
-     */
-    public void testiTulostaReittikartta() {
         System.out.println("reittikartta");
         for (int i = 0; i < this.reittiKartta.length; i++) {
             for (int j = 0; j < this.reittiKartta[0].length; j++) {

@@ -1,7 +1,9 @@
 package com.mycompany.Tiralabra_maven;
 
+import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.aStar.AstarWithHeap;
+import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.KuvanLukija;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
 import com.mycompany.Tiralabra_maven.logiikka.testausta.OmaKekoEtyyppiTestausta;
@@ -9,6 +11,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.PriorityQueue;
+import java.util.Stack;
 import javax.imageio.ImageIO;
 
 /**
@@ -20,7 +23,7 @@ public class App {
     /**
      * Metodi ALUSTAVAN/KESKENRÄISEN kuvanlukijan testaamiseen.
      */
-    public static void testaaKuvanlukija() {
+    public static void testaaXXXX() {
         XXXX kuvanlukija = new XXXX();
 
 //        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
@@ -34,10 +37,47 @@ public class App {
         }
     }
 
+    /**
+     * Metodi ALUSTAVAN/KESKENRÄISEN kuvanlukijan testaamiseen.
+     */
+    public static void testaaKuvanLukija() {
+
+        int[][] kuvataulukko;
+        KuvanLukija kuvanlukija = new KuvanLukija();
+
+////        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
+//        System.out.println("kukkuu");
+//        System.out.println(Integer.MAX_VALUE);
+//        System.out.println(Integer.MAX_VALUE / 2 * 2);
+        try {
+            kuvataulukko = kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
+        } catch (IOException ioe) {
+            System.out.println("virhe");
+        }
+
+        try {
+            kuvataulukko = kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
+        } catch (IOException ioe) {
+            System.out.println("virhe");
+        }
+
+    }
+
     public static void main(String[] args) {
 //        System.out.println("main");
-//        testaaKuvanlukija();
+////        testaaXXXX();
 //
+//        KuvanLukija kuvanlukija = new KuvanLukija();
+//
+//        try {
+//            int[][] lahtotietoTaulukko = kuvanlukija.seeBMPImage("bitmaps/uusiTesti256.bmp");
+//        } catch (IOException ioe) {
+//            System.out.println("virhe");
+//        }
+
+
+
+
 //    E on este, jonka yli/ali/läpi ei pääse
 
         int e = Integer.MAX_VALUE / 10;
@@ -59,10 +99,10 @@ public class App {
 
         System.out.println(ratkaisija.ratkaise());
 
-        ratkaisija.shortestPath();
+        Stack<Paikka> reittiPino = ratkaisija.shortestPath();
 
-        ratkaisija.testiTulostaReittikartta();
-        
+        ratkaisija.testiTulostaReittikartta(reittiPino);
+
 //        OmaKekoEtyyppiTestausta test=new OmaKekoEtyyppiTestausta();
 //        test.testing();
 
