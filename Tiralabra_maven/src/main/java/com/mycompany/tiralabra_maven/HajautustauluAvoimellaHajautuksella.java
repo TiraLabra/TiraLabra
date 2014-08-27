@@ -1,4 +1,5 @@
 package com.mycompany.tiralabra_maven;
+
 /**
  * Luokka toteuttaa avointa hajautusta käyttävän hajautustaulun.
  * 
@@ -21,6 +22,16 @@ public class HajautustauluAvoimellaHajautuksella {
 	 */
 	private int merkintoja;
 	/**
+	 * Tayttosuhde, jonka ylittyessä tehdään uudelleenhajautus (suurennus)
+	 * 
+	 */
+	private Double maksimiTayttosuhde;
+	/**
+	 * Tayttosuhde, jonka alittuessa tehdään uudelleenhajautus (pienennys)
+	 * 
+	 */
+	private Double minimiTayttosuhde;
+	/**
 	 * Määrittelee käytetäänkö hajautustaulussa neliöistä vai lineaarista
 	 * kokeilua. False jos neliöinen, true jos lineaarinen.
 	 */
@@ -28,30 +39,32 @@ public class HajautustauluAvoimellaHajautuksella {
 
 	/**
 	 * Konstruktori luo uuden avointa hajautusta käyttävän hajautustaulun ja
-	 * asettaa sen taulukon alkuperäiseksi kooksi parametrinä annetun arvon,
-	 * merkintöjen määräksi nollan ja ottaa hajautusfunktiossa käyttöön joko
-	 * lineaarisen tai neliöisen kokeilun.
+	 * asettaa sen taulukon alustavaksi kooksi 16, maksimitäyttösuhteeksi 0.8,
+	 * minimitäyttösuhteeksi 0.3, merkintöjen määräksi nollan ja ottaa
+	 * hajautusfunktiossa käyttöön joko lineaarisen tai neliöisen kokeilun.
 	 * 
-	 * @param koko
-	 *            hajautustaulun alkuperäinen koko
 	 * @param lineaarinenKokeilu
 	 *            määrittää onko käytössä lineaarinen kokeilu (true) vai
 	 *            neliöinen kokeilu (false)
 	 */
-	public HajautustauluAvoimellaHajautuksella(int taulukonKoko,
-			Boolean lineaarinenKokeilu) {
-		this.taulukko = new TaulunMerkinta[taulukonKoko];
+	public HajautustauluAvoimellaHajautuksella(Boolean lineaarinenKokeilu) {
 		this.lineaarinenKokeilu = lineaarinenKokeilu;
 		this.merkintoja = 0;
-		this.taulukonKoko = taulukonKoko;
+		this.taulukonKoko = 16;
+		this.taulukko = new TaulunMerkinta[taulukonKoko];
+		this.maksimiTayttosuhde = 0.8;
+		this.minimiTayttosuhde = 0.3;
+
 	}
 
 	/**
 	 * Metodi lisää uuden merkinnän hajautustauluun ja asettaa sille syötteenä
 	 * saadun avaimen+arvon kun avain ei ole tyhjä. Jos avain löytyy
-	 * hajautustaulusta päivitetään sen arvo. Merkintöjen määrää
-	 * hajautustaulussa päivitetään tarpeen mukaan. Metodissa myös kutsutaan
-	 * uudelleenhajautus metodia jos kriittinen täyttösuhde on saavutettu
+	 * hajautustaulusta päivitetään sen arvo, ja jos kokeilujonosta löytyy
+	 * poistettu merkintä niin se korvataan tällä uudella merkinnällä.
+	 * Merkintöjen määrää hajautustaulussa päivitetään tarpeen mukaan. Metodissa
+	 * myös kutsutaan uudelleenhajautus metodia jos kriittinen täyttösuhde on
+	 * saavutettu
 	 * 
 	 * 
 	 * @param avain
@@ -59,48 +72,102 @@ public class HajautustauluAvoimellaHajautuksella {
 	 * @param arvo
 	 *            Uuden merkinnän arvo
 	 * 
-	 * @return Lisätty/päivitetty taulunMerkintä-olio
+	 * @return Lisätty/päivitetty taulunMerkintä-olio tai null jos epäonnistui
 	 * 
-	 * @see HajautustauluAvoimellaHajautuksella#hajautusFunktio(String)
-	 * @see HajautustauluAvoimellaHajautuksella#uudelleenHajautus()
+	 * @see HajautustauluAvoimellaHajautuksella#hajautusFunktio(String, int)
+	 * @see HajautustauluAvoimellaHajautuksella#uudelleenHajautus(Boolean)
 	 */
 	public TaulunMerkinta lisaaMerkinta(String avain, String arvo) {
 		if (!tarkistaAvain(avain)) {
 			return null;
 		}
-		if (this.merkintoja == (int) (taulukonKoko * 0.8)) { // Kun taulukko on
-																// 80% täysi
-			uudelleenHajautus();
+		// Maksimitäyttösuhteen sattuessa uudelleenhajautus
+		if (this.merkintoja == (int) (this.taulukonKoko * this.maksimiTayttosuhde)) {
+			uudelleenHajautus(true);
 		}
-		int taulukonIndeksiAvaimelle = hajautusFunktio(avain);
-		if (taulukko[taulukonIndeksiAvaimelle] == null) {
+		int poistetunIndeksi = -1; // kuvaa mahdollista poistetun merkinnän
+									// indeksiä
+		int tyhjaIndeksi = -1; // kuvaa null indeksiä
+		for (int i = 0; i <= this.taulukonKoko; i++) {
+			int kokeiltavaIndeksiAvaimelle = hajautusFunktio(avain, i);
+			if (taulukko[kokeiltavaIndeksiAvaimelle] == null) {
+				tyhjaIndeksi = kokeiltavaIndeksiAvaimelle;
+				break;
+			} else {
+				if (taulukko[kokeiltavaIndeksiAvaimelle].getAvain() == null
+						&& poistetunIndeksi == -1) {
+					poistetunIndeksi = kokeiltavaIndeksiAvaimelle;
+				} else if (taulukko[kokeiltavaIndeksiAvaimelle].getAvain()
+						.equals(avain)) {
+					taulukko[kokeiltavaIndeksiAvaimelle].setArvo(arvo);
+					return taulukko[kokeiltavaIndeksiAvaimelle];
+				}
+			}
+		}
+		if (poistetunIndeksi != -1) {
+			tyhjaIndeksi = poistetunIndeksi;
+		}
+		if (tyhjaIndeksi != -1) {
 			merkintoja = merkintoja + 1;
-			return taulukko[taulukonIndeksiAvaimelle] = new TaulunMerkinta(
-					avain, arvo);
-		} else {
-			taulukko[taulukonIndeksiAvaimelle].setArvo(arvo);
-			return taulukko[taulukonIndeksiAvaimelle];
+			return taulukko[tyhjaIndeksi] = new TaulunMerkinta(avain, arvo);
 		}
+		return null;
 	}
 
 	/**
-	 * Metodi poistaa merkinnän hajautustaulusta, jos se ylipäätänsä
-	 * hajautustaulusta löytyy. Poistamisen onnistuessa merkintöjen määrää
-	 * hajautustaulussa vähennetään.
+	 * Metodi tarkastaa onko merkintä tyhjä, ja jos ei ole, välittää sen
+	 * sisältämän avaimen toiselle poistometodille.
 	 * 
 	 * @param poistettavaMerkinta
 	 *            hajautustaulusta poistettava merkintä
+	 * @return true jos poisto onnistui, muuten false
 	 */
-	public void poistaMerkinta(TaulunMerkinta poistettavaMerkinta) {
-		if (poistettavaMerkinta != null
-				&& tarkistaAvain(poistettavaMerkinta.getAvain())) {
-			int taulukonIndeksiAvaimelle = hajautusFunktio(poistettavaMerkinta
-					.getAvain());
-			if (taulukko[taulukonIndeksiAvaimelle] != null) {
-				taulukko[taulukonIndeksiAvaimelle] = null;
+	public Boolean poistaMerkinta(TaulunMerkinta poistettavaMerkinta) {
+		if (poistettavaMerkinta != null) {
+			return poistaMerkinta(poistettavaMerkinta.getAvain());
+		}
+		return false;
+
+	}
+
+	/**
+	 * Jos avaimen sisältävä merkintä löytyy hajautustaulusta, metodi asettaa
+	 * merkinnän avaimelle erikoisarvon (tyhjä avain), jolloin merkintä voidaan
+	 * korvata uudella lisäyksessä. etsiMerkinta-metodia käytetään avaimen
+	 * sisältävän merkinnän löytämiseen. Merkintöjen määrää päivitetään poiston
+	 * mukaisesti. Metodi myös kutsuu uudelleenhajautusta jos täyttösuhde on
+	 * erittäin alhainen.
+	 * 
+	 * @param avain
+	 *            hajautustaulusta poistettava avain
+	 * 
+	 * @return true jos poisto onnistui, muuten false
+	 * @see HajautustauluAvoimellaHajautuksella#uudelleenHajautus(Boolean)
+	 */
+	public Boolean poistaMerkinta(String avain) {
+		if (!tarkistaAvain(avain)) {
+			return false;
+		}
+		// Minimitäyttösuhteen sattuessa uudelleenhajautus
+		if (this.merkintoja == (int) (this.taulukonKoko * this.minimiTayttosuhde)
+				&& this.taulukonKoko > 16) {
+			uudelleenHajautus(false);
+		}
+		for (int i = 0; i <= this.taulukonKoko; i++) {
+			int taulukonIndeksiAvaimelle = hajautusFunktio(avain, i);
+			if (taulukko[taulukonIndeksiAvaimelle] == null) {
+				return false;
+			}
+			if (taulukko[taulukonIndeksiAvaimelle].getAvain() != null
+					&& taulukko[taulukonIndeksiAvaimelle].getAvain().equals(
+							avain)) {
+				taulukko[taulukonIndeksiAvaimelle].setAvain(null);
 				merkintoja = merkintoja - 1;
+				return true;
 			}
 		}
+		return false;
+
 	}
 
 	/**
@@ -108,15 +175,22 @@ public class HajautustauluAvoimellaHajautuksella {
 	 * 
 	 * @param avain
 	 *            hajautustaulusta etsittävä avain
-	 * @return Merkintä josta avain löytyy
+	 * @return Merkintä josta avain löytyy tai null jos avainta ei löydy
 	 */
 	public TaulunMerkinta etsiMerkinta(String avain) {
 		if (!tarkistaAvain(avain)) {
 			return null;
 		}
-		int taulukonIndeksiAvaimelle = hajautusFunktio(avain);
-		if (taulukko[taulukonIndeksiAvaimelle] != null) {
-			return taulukko[taulukonIndeksiAvaimelle];
+		for (int i = 0; i <= this.taulukonKoko; i++) {
+			int taulukonIndeksiAvaimelle = hajautusFunktio(avain, i);
+			if (taulukko[taulukonIndeksiAvaimelle] == null) {
+				return null;
+			}
+			if (taulukko[taulukonIndeksiAvaimelle].getAvain() != null
+					&& taulukko[taulukonIndeksiAvaimelle].getAvain().equals(
+							avain)) {
+				return taulukko[taulukonIndeksiAvaimelle];
+			}
 		}
 		return null;
 
@@ -148,45 +222,45 @@ public class HajautustauluAvoimellaHajautuksella {
 	 * 
 	 * @param avain
 	 *            hajautusfunktioille välitettävä avain
+	 * @param laskuri
+	 *            kertoo mones etsintäkerta menossa kokeilujonolla
 	 * @return käytössä olevan hajautusfunktion avaimelle laskema indeksi
 	 *         taulukosta
 	 * 
-	 * @see HajautustauluAvoimellaHajautuksella#LineaarinenHajautusFunktio(String)
-	 * @see HajautustauluAvoimellaHajautuksella#NelioinenHajautusFunktio(String)
+	 * @see HajautustauluAvoimellaHajautuksella#LineaarinenHajautusFunktio(String,
+	 *      int)
+	 * @see HajautustauluAvoimellaHajautuksella#NelioinenHajautusFunktio(String,
+	 *      int)
 	 */
-	private int hajautusFunktio(String avain) {
+	private int hajautusFunktio(String avain, int laskuri) {
 		if (this.lineaarinenKokeilu) {
-			return LineaarinenHajautusFunktio(avain);
+			return LineaarinenHajautusFunktio(avain, laskuri);
 		}
-		return NelioinenHajautusFunktio(avain);
+		return NelioinenHajautusFunktio(avain, laskuri);
 	}
 
 	/**
 	 * Metodi laskee jakojäännösmenetelmää hyväksikäyttäen avaimelle paikan
 	 * taulukosta. Jakajana käytetään hajautustaulun kokoa. Jos paikassa on jo
-	 * toinen avain, etsitään uusi paikka lisäämällä edellisellä kerralla
-	 * saatuun arvoon laskuri-muuttujan määrä hajautusfunktiossa. Käytössä on
-	 * siis lineaarinen kokeilujono.
+	 * toinen avain, voidaan metodia kutsua uudestaan yhtä suuremmalla
+	 * laskuri-muuttujalla. Käytössä on siis lineaarinen kokeilujono.
 	 * 
 	 * @param avain
 	 *            merkkijono jolle etsitään paikka taulukosta
+	 * @param laskuri
+	 *            kuvaa monennetta kertaa paikkaa lasketaan
 	 * @return avaimelle laskettu indeksi taulukosta
 	 * @see HajautustauluAvoimellaHajautuksella#merkkijonoLuvuksi(String)
 	 */
-	private int LineaarinenHajautusFunktio(String avain) {
-		int taulukonIndeksi = merkkijonoLuvuksi(avain) % taulukonKoko;
-		int laskuri = 1; // kokeilukertojen määrän laskuri
-		while (taulukko[taulukonIndeksi] != null
-				&& !taulukko[taulukonIndeksi].getAvain().equals(avain)) {
-			taulukonIndeksi = (taulukonIndeksi + laskuri) % taulukonKoko;
-			laskuri = laskuri + 1;
-		}
-		return taulukonIndeksi;
+	private int LineaarinenHajautusFunktio(String avain, int laskuri) {
+		return ((merkkijonoLuvuksi(avain) % taulukonKoko) + laskuri)
+				% taulukonKoko;
+
 	}
 
 	/**
 	 * Metodi laskee jakojäännösmenetelmää hyväksikäyttäen avaimelle paikan
-	 * taulukosta. Jakajana käytetään hajautustaulun kokoa. Jos paikassaa on jo
+	 * taulukosta. Jakajana käytetään hajautustaulun kokoa. Jos paikassa on jo
 	 * toinen avain, etsitään uusi paikka siis lisäämällä edellisellä kerralla
 	 * saatuun arvoon laskuri-muuttujalla kerrottu vakio ja laskuri-muuttujan
 	 * neliöllä kerrottu vakio hajautusfunktiossa. Käytössä on siis neliöinen
@@ -194,21 +268,15 @@ public class HajautustauluAvoimellaHajautuksella {
 	 * 
 	 * @param avain
 	 *            merkkijono jolle etsitään paikka taulukosta
+	 * @param laskuri
+	 *            kuvaa monennetta kertaa paikkaa lasketaan
 	 * @return avaimelle laskettu indeksi taulukosta
 	 * @see HajautustauluAvoimellaHajautuksella#merkkijonoLuvuksi(String)
 	 */
-	private int NelioinenHajautusFunktio(String avain) {
-		int taulukonIndeksi = merkkijonoLuvuksi(avain) % taulukonKoko;
-		int laskuri = 1; // kokeilukertojen määrän laskuri
-		Double vakio = 0.5;
-		Double toinenVakio = 0.5;
-		while (taulukko[taulukonIndeksi] != null
-				&& !taulukko[taulukonIndeksi].getAvain().equals(avain)) {
-			taulukonIndeksi = (int) ((taulukonIndeksi + vakio * laskuri + toinenVakio
-					* Math.pow(laskuri, 2.0)) % taulukonKoko);
-			laskuri = laskuri + 1;
-		}
-		return taulukonIndeksi;
+	private int NelioinenHajautusFunktio(String avain, int laskuri) {
+		return (int) (((merkkijonoLuvuksi(avain) % taulukonKoko) + 0.5
+				* laskuri + 0.5 * Math.pow(laskuri, 2.0)) % taulukonKoko);
+
 	}
 
 	/**
@@ -228,25 +296,33 @@ public class HajautustauluAvoimellaHajautuksella {
 
 	/**
 	 * Kun hajautustaulussa saavutetaan lisäysmetodissa tarkastettava määritelty
-	 * maksimitäyttösuhde, suoritetaan tämä metodi. Metodi käy läpi
-	 * hajautustaulun merkinnät ja jakaa ne uusiin indekseihin suurempaan
-	 * taulukkoon, joka sitten asetetaan hajautustaulun käyttöön.
+	 * maksimitäyttösuhde tai poistometodissa määritelty minimitäyttösuhde,
+	 * suoritetaan tämä metodi. Metodi käy läpi hajautustaulun merkinnät ja
+	 * jakaa ne uusiin indekseihin suurempaan tai pienempään taulukkoon, joka
+	 * sitten asetetaan hajautustaulun käyttöön.
 	 * 
+	 * @param suurennusVaiPienennys
+	 *            true jos taulukkoa suurennetaan, false jos pienennetään
 	 * @see HajautustauluAvoimellaHajautuksella#lisaaMerkinta(String, String)
+	 * @see HajautustauluAvoimellaHajautuksella#poistaMerkinta(String)
 	 */
-	private void uudelleenHajautus() {
+	private void uudelleenHajautus(Boolean suurennusVaiPienennys) {
+		this.merkintoja = 0; // nollataan merkintöjen määrä
 		TaulunMerkinta[] vanhaTaulukko = this.taulukko.clone();
-		this.taulukonKoko = this.taulukonKoko * 2;
-		this.taulukko= new TaulunMerkinta[this.taulukonKoko];
-		
+		if (suurennusVaiPienennys) {
+			this.taulukonKoko = this.taulukonKoko * 2;
+		} else {
+			this.taulukonKoko = this.taulukonKoko / 2;
+		}
+		this.taulukko = new TaulunMerkinta[this.taulukonKoko];
+
 		for (TaulunMerkinta merkinta : vanhaTaulukko) {
-			if (merkinta != null)
-				this.taulukko[hajautusFunktio(merkinta.getAvain())] = new TaulunMerkinta(
-						merkinta.getAvain(), merkinta.getArvo());
+			if (merkinta != null && merkinta.getAvain() != null)
+				lisaaMerkinta(merkinta.getAvain(), merkinta.getArvo());
 		}
 	}
 
-	//GETTERIT JA SETTERIT
+	// GETTERIT JA SETTERIT
 	public TaulunMerkinta[] getTaulukko() {
 		return taulukko;
 	}
@@ -278,6 +354,8 @@ public class HajautustauluAvoimellaHajautuksella {
 	public void setLineaarinenKokeilu(Boolean lineaarinenKokeilu) {
 		this.lineaarinenKokeilu = lineaarinenKokeilu;
 	}
-	
-	
+
+	public double getTayttosuhde() {
+		return (double) merkintoja / taulukonKoko;
+	}
 }

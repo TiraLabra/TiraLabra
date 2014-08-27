@@ -22,7 +22,7 @@ public class HajautustauluLinkitetyllaListallaTest {
 	}
 	@Before
 	public void setUp() {
-	this.hajis=new HajautustauluLinkitetyllaListalla(16);
+	this.hajis=new HajautustauluLinkitetyllaListalla();
 	}
 	@After
 	public void tearDown() {

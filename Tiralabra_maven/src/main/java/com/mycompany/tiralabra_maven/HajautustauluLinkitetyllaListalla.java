@@ -27,19 +27,29 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 */
 	private int merkintoja;
+	/**
+	 * Täyttosuhde, jonka ylittyessä tehdään uudelleenhajautus (suurennus)
+	 * 
+	 */
+	private Double maksimiTayttosuhde;
+	/**
+	 * Täyttosuhde, jonka alittuessa tehdään uudelleenhajautus (pienennys)
+	 * 
+	 */
+	private Double minimiTayttosuhde;
 
 	/**
 	 * Konstruktori luo uuden linkitettyä listaa käyttävän hajautustaulun ja
-	 * asettaa sen taulukon alkuperäiseksi kooksi parametrinä annetun arvon ja
-	 * merkintöjen määräksi nollan.
+	 * asettaa sen merkintöjen määräksi nollan, alustavaksi kooksi 16,
+	 * maksimitäyttösuhteeksi 5 ja minimitäyttösuhteeksi 1.
 	 * 
-	 * @param koko
-	 *            hajautustaulun alkuperäinen koko
 	 */
-	public HajautustauluLinkitetyllaListalla(int koko) {
+	public HajautustauluLinkitetyllaListalla() {
 		this.merkintoja = 0;
-		this.taulukonKoko = koko;
+		this.taulukonKoko = 16;
 		this.taulukko = new KahteenSuuntaanLinkitettyLista[taulukonKoko];
+		this.maksimiTayttosuhde = 5.0;
+		this.minimiTayttosuhde = 1.0;
 	}
 
 	/**
@@ -61,6 +71,10 @@ public class HajautustauluLinkitetyllaListalla {
 	public Solmu lisaaMerkinta(String avain, String arvo) {
 		if (!tarkistaAvain(avain)) {
 			return null;
+		}
+		// Maksimitäyttösuhteen sattuessa uudelleenhajautus
+		if (this.merkintoja == (int) (this.taulukonKoko * this.maksimiTayttosuhde)) {
+			uudelleenHajautus(true);
 		}
 		int taulukonIndeksiAvaimelle = hajautusFunktio(avain);
 		if (taulukko[taulukonIndeksiAvaimelle] == null) {
@@ -93,6 +107,11 @@ public class HajautustauluLinkitetyllaListalla {
 	public void poistaMerkinta(Solmu poistettavaSolmu) {
 		if (poistettavaSolmu != null
 				&& tarkistaAvain(poistettavaSolmu.getAvain())) {
+			// Minimitäyttösuhteen sattuessa uudelleenhajautus
+			if (this.merkintoja == (int) (this.taulukonKoko * this.minimiTayttosuhde)
+					&& this.taulukonKoko > 16) {
+				uudelleenHajautus(false);
+			}
 			int taulukonIndeksiAvaimelle = hajautusFunktio(poistettavaSolmu
 					.getAvain());
 			if (taulukko[taulukonIndeksiAvaimelle] != null) {
@@ -114,9 +133,6 @@ public class HajautustauluLinkitetyllaListalla {
 	 * @see com.mycompany.tiralabra_maven.HajautustauluLinkitetyllaListalla#poistaMerkinta(com.mycompany.tiralabra_maven.Solmu)
 	 */
 	public void poistaMerkinta(String avain) {
-		if (!tarkistaAvain(avain)) {
-			return;
-		}
 		poistaMerkinta(etsiMerkinta(avain));
 
 	}
@@ -186,8 +202,41 @@ public class HajautustauluLinkitetyllaListalla {
 		}
 		return true;
 	}
-	
-	//GETTERIT JA SETTERIT
+
+	/**
+	 * Kun hajautustaulussa saavutetaan lisäysmetodissa tarkastettava määritelty
+	 * maksimitäyttösuhde tai poistometodissa määritelty minimitäyttösuhde,
+	 * suoritetaan tämä metodi. Metodi käy läpi hajautustaulun merkinnät ja
+	 * jakaa ne uusiin indekseihin suurempaan tai pienempään taulukkoon, joka
+	 * sitten asetetaan hajautustaulun käyttöön.
+	 * 
+	 * @param suurennusVaiPienennys
+	 *            true jos taulukkoa suurennetaan, false jos pienennetään
+	 * @see HajautustauluLinkitetyllaListalla#lisaaMerkinta(String, String)
+	 * @see HajautustauluLinkitetyllaListalla#poistaMerkinta(String)
+	 */
+	private void uudelleenHajautus(Boolean suurennusVaiPienennys) {
+		this.merkintoja = 0; // nollataan merkintöjen määrä
+		KahteenSuuntaanLinkitettyLista[] vanhaTaulukko = this.taulukko.clone();
+		if (suurennusVaiPienennys) {
+			this.taulukonKoko = this.taulukonKoko * 2;
+		} else {
+			this.taulukonKoko = this.taulukonKoko / 2;
+		}
+		this.taulukko = new KahteenSuuntaanLinkitettyLista[this.taulukonKoko];
+
+		for (KahteenSuuntaanLinkitettyLista merkinta : vanhaTaulukko) {
+			if (merkinta != null) {
+				Solmu lapikaytava = merkinta.getEnsimmainenSolmu();
+				while (lapikaytava != null) {
+					lisaaMerkinta(lapikaytava.getAvain(), lapikaytava.getArvo());
+					lapikaytava = lapikaytava.getSeuraava();
+				}
+			}
+		}
+	}
+
+	// GETTERIT JA SETTERIT
 	public KahteenSuuntaanLinkitettyLista[] getTaulukko() {
 		return taulukko;
 	}
@@ -212,4 +261,7 @@ public class HajautustauluLinkitetyllaListalla {
 		this.merkintoja = merkintoja;
 	}
 
+	public double getTayttosuhde() {
+		return (double) merkintoja / taulukonKoko;
+	}
 }

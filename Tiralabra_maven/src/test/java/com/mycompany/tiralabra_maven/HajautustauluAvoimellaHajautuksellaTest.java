@@ -23,8 +23,8 @@ public class HajautustauluAvoimellaHajautuksellaTest {
 	}
 	@Before
 	public void setUp() {
-	this.hajis=new HajautustauluAvoimellaHajautuksella(16,true);
-	this.nelioHajis=new HajautustauluAvoimellaHajautuksella(16,false);
+	this.hajis=new HajautustauluAvoimellaHajautuksella(true);
+	this.nelioHajis=new HajautustauluAvoimellaHajautuksella(false);
 	}
 	@After
 	public void tearDown() {
@@ -59,7 +59,7 @@ public class HajautustauluAvoimellaHajautuksellaTest {
 	public void testaaMerkinnanPoisto() {
 		TaulunMerkinta lisatty = hajis.lisaaMerkinta("1", "2");
 		hajis.poistaMerkinta(lisatty);
-		assertEquals(0,hajis.getMerkintoja());
+		assertEquals(0,hajis.getMerkintoja()); 
 	}
 	
 	 @Test
@@ -102,6 +102,7 @@ public class HajautustauluAvoimellaHajautuksellaTest {
 		TaulunMerkinta lisatty = nelioHajis.lisaaMerkinta("1", "2");
 		nelioHajis.poistaMerkinta(lisatty);
 		assertEquals(0,nelioHajis.getMerkintoja());
+
 	}
 	
 	 @Test
