@@ -78,6 +78,6 @@ public final class Node implements Serializable, Comparable<Node> {
 
     @Override
     public int compareTo(final Node that) {
-        return this.getWeight() - that.getWeight();
+        return that.getWeight() - this.getWeight();
     }
 }

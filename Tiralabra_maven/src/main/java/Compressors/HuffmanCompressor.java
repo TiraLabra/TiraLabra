@@ -160,7 +160,7 @@ public final class HuffmanCompressor extends FileCompressionController {
 
     /**
      * Converts a text file to a series of bits. Each character is represented
-     * by a bits series, held in the bit collection.
+     * by a bit series, held in the bit collection.
      *
      * @param text The text to convert.
      * @param bits The bitset where to write the bits.

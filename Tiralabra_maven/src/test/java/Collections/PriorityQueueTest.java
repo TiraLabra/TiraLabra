@@ -1,9 +1,10 @@
 package Collections;
 
+import PackerX.Node;
 import java.util.Random;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public final class PriorityQueueTest {
 
@@ -45,6 +46,18 @@ public final class PriorityQueueTest {
     public void testEnqueueMany() {
         enqueueMany();
         assertEquals(MANY_SIZE, queue.size());
+    }
+
+    @Test
+    public void testEnqueueNodes() {
+        PriorityQueue<Node> nodes = new PriorityQueue<>(Node.class);
+        final int lowestValue = 10;
+        final int multi = 2;
+        for (int i = lowestValue; i < lowestValue + 10; i++) {
+            nodes.enqueue(new Node('c', i * multi, null, null));
+        }
+        int result = lowestValue * multi;
+        assertEquals(result, nodes.dequeue().getWeight());
     }
 
     @Test
