@@ -46,8 +46,8 @@ public class DijkstraWithHeap {
         this.initialiseSingleSource();
 
 //        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
-        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
-//        OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
+//        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
+        OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
         System.out.println(this.paikat[0][0].vierusPaikat);
 
@@ -93,10 +93,10 @@ public class DijkstraWithHeap {
 
 //    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
-    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
-//    private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-//        OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
+//    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
+//        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
+    private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
+        OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
 
     
 

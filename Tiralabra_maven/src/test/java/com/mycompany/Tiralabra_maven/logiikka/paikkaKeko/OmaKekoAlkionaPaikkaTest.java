@@ -45,7 +45,7 @@ public class OmaKekoAlkionaPaikkaTest {
                 paikkaTaulukko[i][j].etaisyysLoppuun = j;
             }
         }
-        
+
         isoKeko.heapInsert(paikkaTaulukko[7][5]);
         isoKeko.heapInsert(paikkaTaulukko[2][7]);
         isoKeko.heapInsert(paikkaTaulukko[8][1]);
@@ -67,9 +67,8 @@ public class OmaKekoAlkionaPaikkaTest {
         isoKeko.heapInsert(paikkaTaulukko[7][2]);
         isoKeko.heapInsert(paikkaTaulukko[8][0]);
         isoKeko.heapInsert(paikkaTaulukko[9][8]);
-        
-        isoKeko.testTulostaKekoTaulukko();
-        
+
+
     }
 
     @After
@@ -209,6 +208,8 @@ public class OmaKekoAlkionaPaikkaTest {
     @Test
     public void isoKekoKoko() {
         assertEquals(20, isoKeko.getHeapSize());
+        isoKeko.testTulostaKekoTaulukko();
+        isoKeko.testTulostaKeko();
     }
 
     @Test
@@ -228,8 +229,8 @@ public class OmaKekoAlkionaPaikkaTest {
     public void isoKekoDecKeyKahdesti() {
         System.out.println("-----------------------------------------");
         System.out.println("Test isoKekoDecKeyKahdesti");
-        Paikka decKeyPaikka=paikkaTaulukko[6][7];
-        System.out.println("decKeyPaikka heapIndex: "+decKeyPaikka.heapIndex);
+        Paikka decKeyPaikka = paikkaTaulukko[6][7];
+        System.out.println("decKeyPaikka heapIndex: " + decKeyPaikka.heapIndex);
         decKeyPaikka.etaisyysAlkuun = 2;
         decKeyPaikka.etaisyysLoppuun = 1;
         isoKeko.heapDecreaseKey(decKeyPaikka);
@@ -241,62 +242,114 @@ public class OmaKekoAlkionaPaikkaTest {
         assertEquals(2 + 1, poistettavaPaikka.etaisyysAlkuun + poistettavaPaikka.etaisyysLoppuun);
     }
 
+    @Test
+    public void toimiikoHeapify01() {
+        System.out.println("-----------------------------------------");
+        System.out.println("1. toimiikoHeapify FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka = paikkaTaulukko[2][4];
+        System.out.print("Muutetaan " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        muutettavaPaikka.etaisyysAlkuun = 3;
+        isoKeko.testHeapify(muutettavaPaikka.heapIndex);
+        System.out.println(" -> " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        isoKeko.testTulostaKekoTaulukko();
+        int muistaIndex = muutettavaPaikka.heapIndex;
+        isoKeko.testTulostaKeko();
+        assertEquals(4, muistaIndex);
+    }
 
-////////    @Test
-////////    public void toimiikoHeapify01() {
-////////        System.out.println("-----------------------------------------");
-////////        System.out.println("toimiikoHeapify01");
-////////        isoKeko.testTulostaKekoTaulukko();
-////////        Paikka muutettavaPaikka=paikkaTaulukko[1][5];
-////////        muutettavaPaikka.etaisyysLoppuun=3;
-////////        isoKeko.testHeapify(4);
-////////        System.out.println("isoKeko yhden muutoksen jalkeen eli 1, 5 -> 1, 3");
-////////        isoKeko.testTulostaKekoTaulukko();
-////////        isoKeko.testTulostaKeko();
-////////        assertEquals(1,muutettavaPaikka.heapIndex);
-////////    }
-    
-//    kehityksen aikaista testausta tasta loppuun
-//    
-//    @Test
-//    public void toimiikoParent2() {
-//        int parent=keko.testParent(2);
-//        assertEquals(parent,1);
-//    }
-//    
-//    @Test
-//    public void toimiikoParent3() {
-//        int parent=keko.testParent(3);
-//        assertEquals(parent,1);
-//    }
-//    
-//    @Test
-//    public void toimiikoParent4() {
-//        int parent=keko.testParent(4);
-//        assertEquals(parent,2);
-//    }
-//    
-//    @Test
-//    public void toimiikoParent5() {
-//        int parent=keko.testParent(5);
-//        assertEquals(parent,2);
-//    }
-//    
-//    @Test
-//    public void toimiikoParent6() {
-//        int parent=keko.testParent(6);
-//        assertEquals(parent,3);
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    @Test
+    public void toimiikoHeapify02() {
+        System.out.println("-----------------------------------------");
+        System.out.println("toimiikoHeapify");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka = paikkaTaulukko[1][5];
+        System.out.print("Muutetaan " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        muutettavaPaikka.etaisyysAlkuun = 9;
+        isoKeko.testHeapify(muutettavaPaikka.heapIndex);
+        System.out.println(" -> " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        isoKeko.testTulostaKekoTaulukko();
+        int muistaIndex = muutettavaPaikka.heapIndex;
+        isoKeko.testTulostaKeko();
+        assertEquals(19, muistaIndex);
+    }
 
+    @Test
+    public void toimiikoHeapify03() {
+        System.out.println("-----------------------------------------");
+        System.out.println("toimiikoHeapify");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka = paikkaTaulukko[4][2];
+        System.out.print("Muutetaan " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        muutettavaPaikka.etaisyysAlkuun = 7;
+        isoKeko.testHeapify(muutettavaPaikka.heapIndex);
+        System.out.println(" -> " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        isoKeko.testTulostaKekoTaulukko();
+        int muistaIndex = muutettavaPaikka.heapIndex;
+        isoKeko.testTulostaKeko();
+        assertEquals(7, muistaIndex);
+    }
+
+    @Test
+    public void toimiikoHeapify04() {
+        System.out.println("-----------------------------------------");
+        System.out.println("toimiikoHeapify");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka = paikkaTaulukko[3][2];
+        System.out.print("Muutetaan " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        muutettavaPaikka.etaisyysLoppuun = 4;
+        isoKeko.testHeapify(muutettavaPaikka.heapIndex);
+        System.out.println(" -> " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        isoKeko.testTulostaKekoTaulukko();
+        int muistaIndex = muutettavaPaikka.heapIndex;
+        isoKeko.testTulostaKeko();
+        assertEquals(3, muistaIndex);
+    }
+
+    @Test
+    public void toimiikoHeapify05() {
+        System.out.println("-----------------------------------------");
+        System.out.println("toimiikoHeapify");
+        isoKeko.testTulostaKekoTaulukko();
+        Paikka muutettavaPaikka = paikkaTaulukko[2][8];
+        System.out.print("Muutetaan " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        muutettavaPaikka.etaisyysAlkuun = 0;
+        muutettavaPaikka.etaisyysLoppuun = 20;
+        isoKeko.testHeapify(muutettavaPaikka.heapIndex);
+        System.out.println(" -> " + muutettavaPaikka.etaisyysAlkuun + ", " + muutettavaPaikka.etaisyysLoppuun + "  index=" + muutettavaPaikka.heapIndex);
+        isoKeko.testTulostaKekoTaulukko();
+        int muistaIndex = muutettavaPaikka.heapIndex;
+        isoKeko.testTulostaKeko();
+        assertEquals(20, muistaIndex);
+    }
+    
+    @Test
+    public void toimiikoParent2() {
+        int parent=keko.testParent(2);
+        assertEquals(parent,1);
+    }
+    
+    @Test
+    public void toimiikoParent3() {
+        int parent=keko.testParent(3);
+        assertEquals(parent,1);
+    }
+    
+    @Test
+    public void toimiikoParent4() {
+        int parent=keko.testParent(4);
+        assertEquals(parent,2);
+    }
+    
+    @Test
+    public void toimiikoParent5() {
+        int parent=keko.testParent(5);
+        assertEquals(parent,2);
+    }
+    
+    @Test
+    public void toimiikoParent6() {
+        int parent=keko.testParent(6);
+        assertEquals(parent,3);
+    }
 }

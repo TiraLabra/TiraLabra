@@ -39,37 +39,51 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         this.kekoTaulukko[j].heapIndex = j;
     }
 
-//    private void vaihda(Paikka paikka1, Paikka paikka2) {
-//        Paikka apuPaikka;
-//        apuPaikka = paikka1;
-//        paikka1 = paikka2;
-//        paikka2 = apuPaikka;
-//    }
     private void heapHeapify(int i) {
 
         int left;
         int right;
-        int largest;
+        int smallest;
 
-        ////heapify(A,i)
         left = left(i);
         right = right(i);
         if (right <= this.heapSize) {
             if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right]) < 0) {
-                largest = left;
+                smallest = left;
             } else {
-                largest = right;
+                smallest = right;
             }
-            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[largest]) > 0) {
-//                vaihda(this.kekoTaulukko[i], this.kekoTaulukko[largest]);
-                vaihda(i, largest);
-                heapHeapify(largest);
+            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[smallest]) > 0) {
+                vaihda(i, smallest);
+                heapHeapify(smallest);
             }
         } else if (left == this.heapSize && this.kekoTaulukko[i].compareTo(this.kekoTaulukko[left]) > 0) {
-//            vaihda(this.kekoTaulukko[i], this.kekoTaulukko[left]);
             vaihda(i, left);
         }
     }
+
+//    private void heapHeapify(int i) {
+//
+//        int left;
+//        int right;
+//        int largest;
+//
+//        left = left(i);
+//        right = right(i);
+//        if (right <= this.heapSize) {
+//            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right]) < 0) {
+//                largest = left;
+//            } else {
+//                largest = right;
+//            }
+//            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[largest]) > 0) {
+//                vaihda(i, largest);
+//                heapHeapify(largest);
+//            }
+//        } else if (left == this.heapSize && this.kekoTaulukko[i].compareTo(this.kekoTaulukko[left]) > 0) {
+//            vaihda(i, left);
+//        }
+//    }
 
     @Override
     public void heapInsert(Paikka kekoAlkio) {
@@ -114,24 +128,23 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
     }
 
     /**
-     * Asettaa kekoalkion oikealle paikalle keossa. Algoritmeissa tätä metodia
-     * kutsutaan VAIN kun Paikka.etaisyysAlkuun on muuttunut eli myös kekoalkion
-     * avain on muuttunut.
+     * Pienentää minimikeon kekoalkion avainta ja asettaa kekoalkion oikealle
+     * paikalle keossa. Algoritmeissa Dijkstra ja Astar tätä metodia kutsutaan
+     * VAIN kun Paikka.etaisyysAlkuun on muuttunut (ja sitämyötä myös kekoalkion
+     * avain on muuttunut), jolloin algorotmien metodi relax palauttaa arvon
+     * true.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio
      */
     @Override
     public void heapDecreaseKey(Paikka kekoAlkio) {
-//        Dijkstrassa ja Astarissa AINA PIENENNETAAN etaisyysarvio, joten
+//        Dijkstrassa ja Astarissa AINA PIENENNETAAN etaisyysarviota, joten
 //        nyt ei tarvitse testata onko uusi avain pienempi kuin olemassa oleva
-        int i=kekoAlkio.heapIndex;
+        int i = kekoAlkio.heapIndex;
         while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
-                vaihda(i, parent(i));
+            vaihda(i, parent(i));
             i = parent(i);
         }
-
-
-////////        this.heapHeapify(kekoAlkio.heapIndex);
     }
 
     @Override
@@ -192,10 +205,12 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
             System.out.println("i=" + i + ", etAlk=" + this.kekoTaulukko[i].etaisyysAlkuun + ", etLop=" + this.kekoTaulukko[i].etaisyysLoppuun + " ja heapIndex=" + this.kekoTaulukko[i].heapIndex);
         }
     }
-//    /**
-//     * Testausta varten.
-//     */
-//    public void testHeapify(int i) {
-//        this.heapHeapify(i);
-//    }
+    
+    /**
+     * Testausta varten.
+     */
+    public void testHeapify(int i) {
+        this.heapHeapify(i);
+    }
+    
 }
