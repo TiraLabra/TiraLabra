@@ -124,5 +124,11 @@ public class TiraLabraFix {
     testaus.suorita(5);
     
     }
+    public static void matricetest()
+    {
+    int[][] matrice = new int[10][2];
+    System.out.println(matrice.length);
+    System.out.println(matrice[0].length);
+    }
 
 }

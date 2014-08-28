@@ -5,6 +5,7 @@
  */
 package Algoritmit;
 
+import Tietorakenteet.Keko;
 import Tietorakenteet.Kordinaatti;
 import Tietorakenteet.Monikulmio;
 
@@ -25,7 +26,8 @@ public class Janaleikkaus {
      * @param piste2 Ensimmäisen janan toinen päätepiste
      * @param piste3 Toisen janan päätepiste
      * @param piste4 Toisen janan toinen päätepiste
-     * @return boolean Palauttaa leikkaako janat jotka muodostuvat kyseista pistejoukosta
+     * @return boolean Palauttaa leikkaako janat jotka muodostuvat kyseista
+     * pistejoukosta
      */
     public boolean leikkaako(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
 
@@ -35,7 +37,7 @@ public class Janaleikkaus {
         }
         double ratkaisux = testi.palautaX();
         double ratkaisuy = testi.palautaY();
-        
+
         if ((testi == piste1) || (testi == piste2) || (testi == piste3) || (testi == piste4)) {
             return false;
 
@@ -55,14 +57,16 @@ public class Janaleikkaus {
         return false;
 
     }
-    /**
- *
- * Konkreettinen luokka, joka toteuttaa keon alkion ehdot.
- */
 
     /**
-     * Löytää kahden pisteen määräämien suorien leikkauspisteen (Jos sellainen on olemassa)
-    * @param piste1 Ensimmäisen janan päätepiste
+     *
+     * Konkreettinen luokka, joka toteuttaa keon alkion ehdot.
+     */
+    /**
+     * Löytää kahden pisteen määräämien suorien leikkauspisteen (Jos sellainen
+     * on olemassa)
+     *
+     * @param piste1 Ensimmäisen janan päätepiste
      * @param piste2 Ensimmäisen janan toinen päätepiste
      * @param piste3 Toisen janan päätepiste
      * @param piste4 Toisen janan toinen päätepiste
@@ -94,30 +98,29 @@ public class Janaleikkaus {
         }
 
     }
-    
-     /**
+
+    /**
      * Löytää suoran ja janan leikkauspisteen
-    * @param piste1 Ensimmäisen janan päätepiste
-     * @param piste2 Ensimmäisen janan toinen päätepiste
-     * @param piste3 Toisen janan päätepiste
-     * @param piste4 Toisen janan toinen päätepiste
+     *
+     * @param piste1 Janan päätepiste
+     * @param piste2 Toinen Janan päätepiste
+     * @param piste3 Suoran päätepiste
+     * @param piste4 Suoran toinen päätepiste
      * @return Kordinaatti leikkauspiste, jos sellaista ei ole palauttaa null
      */
-    
-    public Kordinaatti suoranjaJananleikkaus(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4)
-    {
-    Kordinaatti testi = suoraLeikkaus(piste1, piste2, piste3, piste4);
+    public Kordinaatti suoranjaJananleikkaus(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
+        Kordinaatti testi = suoraLeikkaus(piste1, piste2, piste3, piste4);
         if (testi == null) {
             return null;
         }
         double ratkaisux = testi.palautaX();
         double ratkaisuy = testi.palautaY();
-        
+
         double MaxX1 = Math.max(piste1.palautaX(), piste2.palautaX());
         double MinX1 = Math.min(piste1.palautaX(), piste2.palautaX());
         double MaxY1 = Math.max(piste1.palautaY(), piste2.palautaY());
         double MinY1 = Math.min(piste1.palautaY(), piste2.palautaY());
-         if ((ratkaisux <= MaxX1) && (ratkaisux >= MinX1) && (ratkaisuy <= MaxY1) && (ratkaisuy >= MinY1) ) {
+        if ((ratkaisux <= MaxX1) && (ratkaisux >= MinX1) && (ratkaisuy <= MaxY1) && (ratkaisuy >= MinY1)) {
             return testi;
         }
         return null;
@@ -125,9 +128,33 @@ public class Janaleikkaus {
     }
 
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
+        Keko keko = new Keko(false);
         Kordinaatti[][] janat = a.PalautaJanat();
-        
-        return true;
+        for (int i = 0; i < janat.length; i++) {
+            Kordinaatti eka = janat[i][0];
+            Kordinaatti toka = janat[i][1];
+            Kordinaatti leikkauspiste = suoranjaJananleikkaus(eka, toka, k, k2);
+            if (leikkauspiste != null) {
+                keko.Lisaa(leikkauspiste);
+
+            }
+
+        }
+        int i = 1;
+        while (keko.palautaTaulukko()[0] != k) {
+            i++;
+            keko.poistaMinimi();
+        }
+        if (i % 2 == 1) {
+            return false;
+        } else {
+            Kordinaatti seuraava = (Kordinaatti) keko.poistaMinimi();
+            if (seuraava == k2) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

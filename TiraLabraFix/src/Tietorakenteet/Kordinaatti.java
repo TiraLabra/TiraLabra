@@ -10,10 +10,11 @@ package Tietorakenteet;
  * Tämä luokka on luotu helpottamaan yleistä rakennetta ja samalla nyt on
  * mahdollista verrata HashMappeja Kordinaatin perusteella
  */
-public class Kordinaatti implements Comparable<Kordinaatti> {
+public class Kordinaatti implements Iteroitava{
 
     private double x;
     private double y;
+    private int sijaintikeossa;
 
     /**
      * Asetttaa kordinaatit
@@ -68,11 +69,18 @@ public class Kordinaatti implements Comparable<Kordinaatti> {
         }
         return true;
     }
-    /**
-     * Vertaa kahta kordinaattia, sillä tavalla kuin sitä tarvitaan Janaleikkaus luokassa
-     */
+  
+   
+
     @Override
-    public int compareTo(Kordinaatti o) {
+    public void asetaArvo(double d) {
+    }
+   
+   
+
+    @Override
+    public int vertausoperaatio(Iteroitava toinen) {
+        Kordinaatti o = (Kordinaatti) toinen;
         if (this.x > o.x) {
             return 1;
         } else if (this.x == o.x) {
@@ -86,6 +94,16 @@ public class Kordinaatti implements Comparable<Kordinaatti> {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public int sijaintiKeossa() {
+        return this.sijaintikeossa;
+    }
+
+    @Override
+    public void asetaSijainti(int i) {
+        this.sijaintikeossa = i;
     }
 
 }

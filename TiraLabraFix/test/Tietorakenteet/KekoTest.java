@@ -22,7 +22,7 @@ public class KekoTest {
 
     @Before
     public void setUp() {
-        this.keko = new Keko();
+        this.keko = new Keko(true);
 
     }
 

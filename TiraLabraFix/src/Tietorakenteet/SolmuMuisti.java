@@ -29,7 +29,6 @@ public class SolmuMuisti {
         this.edellinen = null;
         this.fscore = 0;
         this.gscore = 0;
-        this.keossa = false;
     }
     
       /**

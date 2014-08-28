@@ -51,7 +51,7 @@ public class ATahtiSuorituskykytestaus {
         int koko = k * k;
         HashMap<Kordinaatti, DiskreettiSolmu> solmukartta = new HashMap<Kordinaatti, DiskreettiSolmu>();
         solmukartta.put(new Kordinaatti(0, 0), new DiskreettiSolmu(0, 0));
-        solmukartta.put(new Kordinaatti(0, 0), new DiskreettiSolmu(k - 1, k - 1));
+        solmukartta.put(new Kordinaatti(k-1, k-1), new DiskreettiSolmu(k - 1, k - 1));
         for (DiskreettiSolmu solmut1 : solmut) {
             solmukartta.put(solmut1.palautaKordinaatit(), solmut1);
         }
@@ -61,7 +61,7 @@ public class ATahtiSuorituskykytestaus {
         for (int i = 0; i <= koko - 2; i++) {
             this.testauskartta.put(i, new Verkkoluokittelu(i, koko));
         }
-        iterointi(koko - 2, 0, 0, solmut);
+        iterointi(koko, 0, 0, solmut);
        
         for (int i = 0; i <= koko - 2; i++) {
             Verkkoluokittelu l = this.testauskartta.get(i);

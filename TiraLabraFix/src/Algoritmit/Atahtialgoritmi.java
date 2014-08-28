@@ -79,8 +79,9 @@ public class Atahtialgoritmi {
      * @return boolean palauttaa true jos reitti löytyy muuten false
      */
     public boolean laske() {
-        initKeko();
         this.verkko.tyhjenna();
+
+        initKeko();
 
         this.laskentaJoukko.Lisaa(alku);
         alku.palautaSolmuMuisti().asetaKekoon(true);
@@ -134,7 +135,7 @@ public class Atahtialgoritmi {
      * 
      */
     public void initKeko() {
-        this.laskentaJoukko = new Keko();
+        this.laskentaJoukko = new Keko(true);
         Iteroitava[] taulukko = new Iteroitava[this.maksimi];
         this.laskentaJoukko.asetaTaulukko(taulukko, 0);
 

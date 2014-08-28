@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Tietorakenteet;
 
 /**
@@ -15,12 +14,14 @@ public class Keko {
     private int nykyinenkoko;
     private int maksimikoko;
     private Iteroitava[] taulukko;
+    private boolean duplikaatit;
 
     /**
      *
+     * @param duplikaatitt sallitaanko duplikaattien lisaaminen
      */
-    public Keko() {
-
+    public Keko(boolean duplikaatitt) {
+        this.duplikaatit = duplikaatitt;
     }
 
     /**
@@ -111,7 +112,11 @@ public class Keko {
         int i = this.nykyinenkoko - 1;
         objekti.asetaSijainti(i);
         this.taulukko[this.nykyinenkoko - 1] = objekti;
-        while ((i > 0) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) > 0)) {
+        while ((i > 0) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) >= 0)) {
+            if ((this.duplikaatit == false)&&(this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) == 0))
+            {
+            return false;
+            }
             int vanhempi = this.vanhempi(i);
             vaihda(i, vanhempi);
             i = this.vanhempi(i);
