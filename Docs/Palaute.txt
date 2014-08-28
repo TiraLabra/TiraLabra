@@ -1,0 +1,6 @@
+Palaute on annettu Kello 12:00 GMT+2 24.8.2014
+
++ Koodi on cleancodea suurimmaksi osaksi muutamaa ylimääräistä metodia lukuunottamatta. Luokkien ja muuttujien nimet ovat javan nimeämisstandartien mukaiset. 
++ Testja on liian vähän. Olisi hyvä testata Taytto-luokkaa mahdolisimman monella ja erillaisella tapauksella. Esimerkiksi mitä käy jos täyttäminen on mahdotonta ja miten ohjelma käyttäytyy jos paketteja on esimerkiksi vain muutama?
++ Testi luokka antaa lisäysjonona tällä hetkellä vain paketti olioiden indeksia jotka vaihtuvat joka iteratiolla shuffleArray metodin takia. Olisi hyvä palauttaa indeksien sijasta pakettien arvoja joita lisättiin.
++ Tällä hetkellä ohjelma antaa vain yhden käyvän ratkaisun. Ohjelmaa voisi laajentaa sillä tavalla että se antaisi parhaan käyvän ratkaisun ja myös Kontteja voisi olla useita.
