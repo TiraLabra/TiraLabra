@@ -12,10 +12,14 @@ import javax.imageio.ImageIO;
  * KESKENERÄINEN
  */
 public class KuvanLukija {
-    
+
     private BufferedImage image;
-    
-    public BufferedImage getImage(){
+    private Piste lahtoPiste;
+    private Piste maaliPiste;
+//    private Piste lahtoPiste = new Piste(1, 1);
+//    private Piste maaliPiste = new Piste(22, 22);
+
+    public BufferedImage getImage() {
         return this.image;
     }
 
@@ -24,16 +28,23 @@ public class KuvanLukija {
      * joka tulostetaan. Sitten kuvan ensimmäinen pikseli muutetaan siniseksi ja
      * kuva tallennetaan uudella nimellä.
      */
-    public int[][] seeBMPImage(String BMPFileName) throws IOException {
+    public int[][] seeBMPImage(String BMPFileName) {
 //    public void seeBMPImage(String BMPFileName) {
 //        BufferedImage image = ImageIO.read(getClass().getResource(BMPFileName));
         File BMPFile = new File(BMPFileName);
-        this.image = ImageIO.read(BMPFile);
+
+
+        try {
+            this.image = ImageIO.read(BMPFile);
+        } catch (IOException ioe) {
+            System.out.println("Virhe kuvatiedoston lukemisessa.");
+        }
+
+
+
 
         int[][] array2D = new int[image.getWidth()][image.getHeight()];
 
-        Piste lahtoPiste=new Piste(0,0);
-        Piste maaliPiste=new Piste(0,0);
 
         int color;
 
@@ -47,15 +58,20 @@ public class KuvanLukija {
                 if (color == Color.WHITE.getRGB()) {
                     array2D[xPixel][yPixel] = 1;
                 } else if (color == Color.BLACK.getRGB()) {
+                    System.out.println("musta");
                     array2D[xPixel][yPixel] = este;
                 } else if (color == Color.GRAY.getRGB()) {
                     array2D[xPixel][yPixel] = vaikeaKulkuinen;
                 } else if (color == Color.RED.getRGB()) {
-                    array2D[xPixel][yPixel] = 1;
-                    lahtoPiste = new Piste(xPixel, yPixel);
-                } else if (color == Color.GREEN.getRGB()) {
-                    array2D[xPixel][yPixel] = 1;
-                    maaliPiste = new Piste(xPixel, yPixel);
+                    array2D[xPixel][yPixel] = 3;
+                    this.lahtoPiste = new Piste(xPixel, yPixel);
+                    System.out.println("punainen");
+                } else if (color == Color.BLUE.getRGB()) {
+                    System.out.println("sininen");
+                    array2D[xPixel][yPixel] = 4;
+                    this.maaliPiste = new Piste(xPixel, yPixel);
+//                } else if (color == Color.GREEN.getRGB()) {
+//                    array2D[xPixel][yPixel] = vaikeaKulkuinen;
 //                } else {
 //                    array2D[xPixel][yPixel] = 8; // ?
                 }
@@ -72,10 +88,18 @@ public class KuvanLukija {
             System.out.println("");
         }
 
-        System.out.println("lahto: " + lahtoPiste.i + ", " + lahtoPiste.j);
-        System.out.println("maali: " + maaliPiste.i + ", " + maaliPiste.j);
+        System.out.println("lahto: " + this.lahtoPiste.i + ", " + this.lahtoPiste.j);
+        System.out.println("maali: " + this.maaliPiste.i + ", " + this.maaliPiste.j);
 
 
         return array2D;
+    }
+
+    public Piste getLahtoPiste() {
+        return this.lahtoPiste;
+    }
+
+    public Piste getMaaliPiste() {
+        return this.maaliPiste;
     }
 }

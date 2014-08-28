@@ -41,30 +41,20 @@ public class App {
     /**
      * Metodi ALUSTAVAN/KESKENRÄISEN kuvanlukijan testaamiseen.
      */
-    public void testaaKuvanLukija() {
+    public static void testaaKuvanLukija() {
 
         KuvanLukija kuvanLukija = new KuvanLukija();
         KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
         String inputFileName = "bitmaps/uusiTesti256.bmp";
-
-        int[][] kuvataulukko = new int[1][1];
 
 
 ////        System.out.println(kulje(ruudukko, lahtoRuutu, maaliRuutu));
 //        System.out.println("kukkuu");
 //        System.out.println(Integer.MAX_VALUE);
 //        System.out.println(Integer.MAX_VALUE / 2 * 2);
-        try {
-            kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
-        } catch (IOException ioe) {
-            System.out.println("virhe");
-        }
+        int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
 
-        try {
-            kuvanKirjoittaja.writeImage(inputFileName,kuvataulukko);
-        } catch (Exception e) {
-            System.out.println("virhe");
-        }
+//        kuvanKirjoittaja.writeImage(inputFileName, kuvataulukko, PINO!!!!!!!!!!);
 
     }
 
@@ -80,37 +70,46 @@ public class App {
 //            System.out.println("virhe");
 //        }
 
+//        testaaKuvanLukija();
 
 
 
-//    E on este, jonka yli/ali/läpi ei pääse
-
-        int e = Integer.MAX_VALUE / 10;
-        int[][] kartta = new int[][]{
-            {1, 1, 1, 1, 1},
-            {1, e, e, e, 1},
-            {1, 1, 1, e, 1},
-            {1, 1, 1, 1, 1}
-        };
-
-        Piste lahtoPiste = new Piste(2, 1);
-//        Piste maaliPiste = new Piste(1, 4);
-//        Piste maaliPiste = new Piste(2, 2);
-        Piste maaliPiste = new Piste(0, 2);
-//        Piste maaliPiste = new Piste(2, 1);
-
-
+////    E on este, jonka yli/ali/läpi ei pääse
+//
+//        int e = Integer.MAX_VALUE / 10;
+//        int[][] kartta = new int[][]{
+//            {1, 1, 1, 1, 1},
+//            {1, e, e, e, 1},
+//            {1, 1, 1, e, 1},
+//            {1, 1, 1, 1, 1}
+//        };
+//
+//        Piste lahtoPiste = new Piste(2, 1);
+////        Piste maaliPiste = new Piste(1, 4);
+////        Piste maaliPiste = new Piste(2, 2);
+//        Piste maaliPiste = new Piste(0, 2);
+////        Piste maaliPiste = new Piste(2, 1);
 
 
+        KuvanLukija kuvanLukija = new KuvanLukija();
+        KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
+        String inputFileName = "bitmaps/uusiTesti256.bmp";
 
-        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
+
+        int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
+
+
+        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
 //        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
 
         System.out.println(ratkaisija.ratkaise());
 
         Stack<Paikka> reittiPino = ratkaisija.shortestPath();
+        
+                kuvanKirjoittaja.writeImage(inputFileName, kuvataulukko,reittiPino);
 
-        ratkaisija.testiTulostaReittikartta(reittiPino);
+
+//        ratkaisija.testiTulostaReittikartta(reittiPino);
 
 //        OmaKekoEtyyppiTestausta test=new OmaKekoEtyyppiTestausta();
 //        test.testing();

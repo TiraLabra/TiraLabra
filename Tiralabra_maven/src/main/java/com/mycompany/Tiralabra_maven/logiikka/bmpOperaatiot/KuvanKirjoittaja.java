@@ -1,10 +1,12 @@
 // KESKENERÄINEN
 package com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot;
 
+import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 import javax.imageio.ImageIO;
 
 /**
@@ -14,7 +16,7 @@ public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
-    public void writeImage(String BMPFileName, int[][] kuvataulukko) {
+    public void writeImage(String BMPFileName, int[][] kuvataulukko,Stack<Paikka> reittiPino) {
 
         try {
             this.image = ImageIO.read(new File(BMPFileName));
@@ -22,11 +24,19 @@ public class KuvanKirjoittaja {
             System.out.println("virhe");
         }
 
-//        this.image=image;
-
-
         Color myBlue = new Color(0, 0, 255);
         int blue = myBlue.getRGB();
+
+        Paikka paikkaU;
+                while (!reittiPino.empty()) {
+            paikkaU = reittiPino.pop();
+//            System.out.println(paikkaU.i + ", " + paikkaU.j);
+//            this.reittiKartta[paikkaU.i][paikkaU.j] = 0;
+                    image.setRGB(paikkaU.i, paikkaU.j, blue);
+
+        }
+
+
 
         try {
 
@@ -35,10 +45,9 @@ public class KuvanKirjoittaja {
 //            for (int i = 0; i < 100; i++) {
 //                for (int j = 0; j < 100; j++) {
 
-            File outputfile = new File("bitmaps/Kartta000Result.bmp");
+            File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 1 - 4) + "TULOS.bmp");
             ImageIO.write(image, "bmp", outputfile);
 
-            image.setRGB(0, 0, blue);
 //                }
 //            }
 
