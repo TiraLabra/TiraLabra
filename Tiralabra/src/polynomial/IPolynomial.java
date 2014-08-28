@@ -153,6 +153,15 @@ public interface IPolynomial {
      * @return The DivisionResult-tuple that contains the quotient and the remainder.
      */
     DivisionResult divide(IPolynomial polynomial);
+
+    /**
+     * Returns a copy of this polynomial.
+     * 
+     * The copy has no ties to this polynomial.
+     * 
+     * @return Copy of polynomial.
+     */
+    IPolynomial createCopyOfPolynomial();
     
     /**
      * Returns a string representation of the polynomial.

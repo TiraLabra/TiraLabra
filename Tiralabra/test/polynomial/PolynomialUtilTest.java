@@ -1,5 +1,6 @@
 package polynomial;
 
+import math.MathUtil;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import polynomial.impl.array.ArrayPolynomial;
@@ -223,7 +224,7 @@ public class PolynomialUtilTest {
     public void testIsReducibleCharacteristic0() {
         int characteristic = 0;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         
         PolynomialUtil.isReducible(polynomial, false);
     }
@@ -232,7 +233,7 @@ public class PolynomialUtilTest {
     public void testIsReducible() {
         int characteristic = 2;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         
         assertFalse(PolynomialUtil.isReducible(polynomial, false));
@@ -253,7 +254,7 @@ public class PolynomialUtilTest {
     public void testIsReducible3() {
         int characteristic = 5;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         polynomial.addTerm(2, 1);
         polynomial.addTerm(1, 2);        
@@ -265,7 +266,7 @@ public class PolynomialUtilTest {
     public void testIsReducible4() {
         int characteristic = 2;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 2);        
         
@@ -276,7 +277,7 @@ public class PolynomialUtilTest {
     public void testIsReducible5() {
         int characteristic = 7;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 3);      
@@ -300,7 +301,7 @@ public class PolynomialUtilTest {
     public void testIsReducible7() {
         int characteristic = 2;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 4);     
@@ -312,12 +313,158 @@ public class PolynomialUtilTest {
     public void testIsReducible8() {
         int characteristic = 2;
         
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
         polynomial.addTerm(1, 0);
         polynomial.addTerm(1, 1);
         polynomial.addTerm(1, 5);     
         
         assertTrue(PolynomialUtil.isReducible(polynomial, false));
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testCalculateXExponentiatedModuloFZeroBase() {
+        int base = 0;
+        int exponent = 3;
+        
+        int characteristic = 2;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(1, 5);  
+        
+        PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testCalculateXExponentiatedModuloFZeroExponent() {
+        int base = 2;
+        int exponent = 0;
+        
+        int characteristic = 2;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(1, 1);
+        
+        PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+    }
+    
+    @Test
+    public void testCalculateXExponentiatedModuloFBase2_Exp12() {
+        int base = 2;
+        int exponent = 12;
+        
+        int characteristic = 2;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(1, 1);
+        polynomial.addTerm(1, 3);
+        
+        IPolynomial dividend = new LinkedListPolynomial(characteristic);
+        dividend.addTerm(1, MathUtil.pow(base, exponent));
+        
+        IPolynomial result = PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+        IPolynomial expected = dividend.divide(polynomial).remainder;
+        assertTrue(checkPolynomialEquality(expected, result));
 
+    }
+    
+    @Test
+    public void testCalculateXExponentiatedModuloFBase2_Exp15() {
+        int base = 2;
+        int exponent = 15;
+        
+        int characteristic = 2;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(1, 2);
+        polynomial.addTerm(1, 3);
+        polynomial.addTerm(1, 5);
+        
+        IPolynomial dividend = new LinkedListPolynomial(characteristic);
+        dividend.addTerm(1, MathUtil.pow(base, exponent));
+        
+        IPolynomial result = PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+        IPolynomial expected = dividend.divide(polynomial).remainder;
+        
+        assertTrue(checkPolynomialEquality(expected, result));
+
+    }
+    
+    @Test
+    public void testCalculateXExponentiatedModuloFBase3_Exp11() {
+        int base = 3;
+        int exponent = 11;
+        
+        int characteristic = 3;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(2, 1);
+        polynomial.addTerm(2, 3);
+        polynomial.addTerm(1, 5);
+        
+        IPolynomial dividend = new LinkedListPolynomial(characteristic);
+        dividend.addTerm(1, MathUtil.pow(base, exponent));
+        
+        IPolynomial result = PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+        IPolynomial expected = dividend.divide(polynomial).remainder;
+        
+        assertTrue(checkPolynomialEquality(expected, result));
+    }
+    
+    @Test
+    public void testCalculateXExponentiatedModuloFBase5_Exp7() {
+        int base = 5;
+        int exponent = 7;
+        
+        int characteristic = 5;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(2, 1);
+        polynomial.addTerm(2, 3);
+        polynomial.addTerm(1, 5);
+        
+        IPolynomial dividend = new LinkedListPolynomial(characteristic);
+        dividend.addTerm(1, MathUtil.pow(base, exponent));
+        
+        IPolynomial result = PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+        IPolynomial expected = dividend.divide(polynomial).remainder;
+        
+        assertTrue(checkPolynomialEquality(expected, result));
+    }
+
+    /**
+     * Checks if two polynomials are equal.
+     * 
+     * This is handy because polynomials may have different coefficients
+     * and still be equal if the coefficients are the same mod characteristic.
+     * @param a
+     * @param b
+     * @return 
+     */
+    private boolean checkPolynomialEquality(IPolynomial a, IPolynomial b) {
+        if (a.getDegree() != b.getDegree()) {
+            return false;
+        }
+        if (a.getCharacteristic() != b.getCharacteristic()) {
+            return false;
+        }
+        
+        int characteristic = a.getCharacteristic();
+        
+        for (int i = 0; i <= a.getDegree(); i++) {
+            if ((a.getCoefficientAtDegree(i) - b.getCoefficientAtDegree(i)) % 
+                    characteristic != 0) {
+                return false;
+            }
+        }
+         
+        return true;
+    }
+    
 }

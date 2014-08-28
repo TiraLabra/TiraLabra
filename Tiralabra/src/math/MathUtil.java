@@ -108,7 +108,7 @@ public class MathUtil {
      * @return the index of the highest one bit of number
      * @exception IllegalArgumentException if number <= 0
      */
-    static int log2(int number) {
+    public static int log2(int number) {
         if (number <= 0) {
             throw new IllegalArgumentException("Number must be positive.");
         }
@@ -124,7 +124,7 @@ public class MathUtil {
      * @exception IllegalArgumentException if number < 0
      * @exception IllegalArgumentException if index not in range 0...31.
      */
-    static boolean isOne(int number, int index) {
+    public static boolean isOne(int number, int index) {
         if (number < 0) {
             throw new IllegalArgumentException("Number must be positive.");
         }

@@ -460,7 +460,7 @@ public class LinkedListPolynomial implements IPolynomial {
         // In the beginning, the remainder is the same as this polynomial and the
         // quotient is zero.
         LinkedListPolynomial quotient = new LinkedListPolynomial(characteristic);
-        LinkedListPolynomial remainder = createCopyOfPolynomial(this);
+        LinkedListPolynomial remainder = (LinkedListPolynomial) createCopyOfPolynomial();
 
         while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
             LinkedListPolynomial leadingTermDivisionResult = divideLeadingTerms(remainder, divisor);
@@ -539,9 +539,10 @@ public class LinkedListPolynomial implements IPolynomial {
         }
     }
 
-    private LinkedListPolynomial createCopyOfPolynomial(LinkedListPolynomial polynomial) {
-        Monomial currentToCopy = polynomial.highestDegreeTerm;
-        LinkedListPolynomial copy = new LinkedListPolynomial(polynomial.characteristic);
+    @Override
+    public IPolynomial createCopyOfPolynomial() {
+        Monomial currentToCopy = this.highestDegreeTerm;
+        LinkedListPolynomial copy = new LinkedListPolynomial(this.characteristic);
 
         while (currentToCopy != null) {
             copy.addTerm(currentToCopy.coefficient, currentToCopy.exponent);

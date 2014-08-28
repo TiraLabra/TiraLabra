@@ -265,7 +265,7 @@ public class ArrayPolynomial implements IPolynomial {
         // In the beginning, the remainder is the same as this polynomial and the
         // quotient is zero.
         ArrayPolynomial quotient = new ArrayPolynomial(characteristic);
-        ArrayPolynomial remainder = createCopyOfPolynomial(this);        
+        ArrayPolynomial remainder = (ArrayPolynomial) createCopyOfPolynomial();        
         
         while (remainder.getDegree() >= divisor.getDegree() && !isZeroPolynomial(remainder)) {
             ArrayPolynomial leadingTermDivisionResult = divideLeadingTerms(remainder, divisor);
@@ -340,12 +340,13 @@ public class ArrayPolynomial implements IPolynomial {
         return polynomial.getDegree() == -1;
     }
 
-    private ArrayPolynomial createCopyOfPolynomial(ArrayPolynomial polynomial) {
-        ArrayPolynomial copy = new ArrayPolynomial(polynomial.characteristic);
+    @Override
+    public IPolynomial createCopyOfPolynomial() {
+        ArrayPolynomial copy = new ArrayPolynomial(this.characteristic);
         
-        copy.coefficients = new int[polynomial.coefficients.length];
+        copy.coefficients = new int[this.coefficients.length];
         
-        System.arraycopy(polynomial.coefficients, 0, copy.coefficients, 0, copy.coefficients.length);
+        System.arraycopy(this.coefficients, 0, copy.coefficients, 0, copy.coefficients.length);
         
         return copy;
     }

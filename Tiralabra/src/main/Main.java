@@ -20,7 +20,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("-- Irreducible polynomial finder --");
-        System.out.println("NOTE: This program is very slow for degrees higher than about 20 and for any characteristic larger than 3.");
         System.out.println("");
         System.out.print("Characteristic of polynomial: ");
         int characteristic = Integer.parseInt(scanner.nextLine());

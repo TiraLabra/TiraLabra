@@ -96,10 +96,10 @@ public class PolynomialUtil {
             LinkedListPolynomial p = (LinkedListPolynomial) polynomial;
             return isReducible(p, debugPrint);
         }
-        if (type == ArrayPolynomial.class) {
-            ArrayPolynomial p = (ArrayPolynomial) polynomial;
-            return isReducible(p, debugPrint);
-        }        
+//        if (type == ArrayPolynomial.class) {
+//            ArrayPolynomial p = (ArrayPolynomial) polynomial;
+//            return isReducible(p, debugPrint);
+//        }        
         
         throw new UnsupportedOperationException("Unsupported polynomial type " + type);
         
@@ -111,22 +111,21 @@ public class PolynomialUtil {
 
         Set<Integer> primeFactorsOfDegree = MathUtil.getUniquePrimeFactors(degree);
 
-        System.out.println("Checking if " + polynomial + " is irreducible.");
+        if (debugPrint) {
+            System.out.println("Checking if " + polynomial + " is irreducible.");
+        }
         
         // Checking if the polynomial has a factor of degree dividing its own degree:
         for (Integer factor : primeFactorsOfDegree) {
             int exponentToCheck = degree / factor;
             
-            IPolynomial polynomialToCheck = new LinkedListPolynomial(characteristic);
-            
-            polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, exponentToCheck));
-            polynomialToCheck.addTerm(-1, 1);
-            
             if (debugPrint) {
-                System.out.println("    Checking polynomial " + polynomialToCheck);
+                System.out.println("    Checking polynomial x^" + characteristic + "^" + exponentToCheck);
             }
             
-            IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
+            IPolynomial remainder = calculateXExponentiatedModuloF(characteristic, exponentToCheck, polynomial);
+            
+            remainder.addTerm(-1, 1);
             
             IPolynomial gcd = gcd(polynomial, remainder);
             
@@ -135,18 +134,15 @@ public class PolynomialUtil {
                 return true;
             }       
         }
-        // Checking if the polynomial has a factor of degree not dividing its own degree:
-        IPolynomial polynomialToCheck = new LinkedListPolynomial(characteristic);
-            
-        polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, degree));
-        polynomialToCheck.addTerm(-1, 1);        
+            if (debugPrint) {
+                System.out.println("    Checking polynomial x^" + characteristic + "^" + degree);
+            }  
         
-        if (debugPrint) {
-            System.out.println("    Checking polynomial " + polynomialToCheck);
-        }     
+//        IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
         
-        IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
-        
+        IPolynomial remainder = calculateXExponentiatedModuloF(characteristic, degree, polynomial);
+
+        remainder.addTerm(-1, 1);   
         
         if (remainder.getDegree() == -1) {
             return false;
@@ -161,7 +157,9 @@ public class PolynomialUtil {
 
         Set<Integer> primeFactorsOfDegree = MathUtil.getUniquePrimeFactors(degree);
 
-        System.out.println("Checking if " + polynomial + " is irreducible.");        
+        if (debugPrint) {
+            System.out.println("Checking if " + polynomial + " is irreducible.");        
+        }
         
         // Checking if the polynomial has a factor of degree dividing its own degree:
         for (Integer factor : primeFactorsOfDegree) {
@@ -239,7 +237,7 @@ public class PolynomialUtil {
             for (int exponent = degree - 1; exponent > 0; exponent--) {
                 int coefficient = random.nextInt(characteristic);
                 if (coefficient != 0) {
-                    candidate.addTerm(1, exponent);
+                    candidate.addTerm(coefficient, exponent);
                 }
             }
             int constantCoefficient = random.nextInt(characteristic - 1) + 1;            
@@ -252,5 +250,43 @@ public class PolynomialUtil {
             }
         }
     }    
+    
+    /**
+     * Calculates x^base^exponent mod f using repeated squaring.
+     * 
+     * At the moment this method only supports linked list polynomials.
+     * 
+     * @param base 
+     * @param exponent
+     * @param f The polynomial for which modulo is taken.
+     * @return x^base^exponent mod f
+     * @throws IllegalArgumentException if base or exponent is non-positive.
+     */
+    
+    static IPolynomial calculateXExponentiatedModuloF(int base, int exponent, IPolynomial f) {
+        if (base <= 0) {
+            throw new IllegalArgumentException("Base is non-positive.");
+        }
+        if (exponent <= 0) {
+            throw new IllegalArgumentException("Exponent is non-positive.");
+        }
+        
+        int characteristic = f.getCharacteristic();
+        
+        
+        IPolynomial xBase = new LinkedListPolynomial(characteristic);
+        xBase.addTerm(1, base);
+        
+        
+        for (int i = 1; i < exponent; i++) {
+            IPolynomial xBaseCopy = xBase.createCopyOfPolynomial();
+            
+            for (int j = 0; j < characteristic - 1; j++) {
+                xBase = (xBase.multiply(xBaseCopy)).divide(f).remainder;
+            }
+        }
+        
+        return xBase;
+    }
 
 }
