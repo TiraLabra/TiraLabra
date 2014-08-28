@@ -222,12 +222,4 @@ public class Algoritmi extends Thread {
     public Solmu getReitti() {
         return this.reitti;
     }
-
-//    /**
-//     * 
-//     * @param paivitettava 
-//     */
-//    public void setPaivitettava(Paivitettava paivitettava) {
-//        this.paivitettava = paivitettava;
-//    }
 }

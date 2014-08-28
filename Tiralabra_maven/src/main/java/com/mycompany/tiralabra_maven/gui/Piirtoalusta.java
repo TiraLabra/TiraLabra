@@ -63,7 +63,6 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
                 r = simulaatio.getTilaRuutu(x, y);
                 if (r != null) {
                     g.setColor(r.getVari());
-                    //g.draw3DRect(x * sivunPituus, y * sivunPituus, sivunPituus, sivunPituus, true);
                     g.fill3DRect(x * sivunPituus + sivunPituus / 6, y * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
                 }
 

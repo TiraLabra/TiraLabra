@@ -55,11 +55,19 @@ public class Simulaatio {
     }
     
     /**
-     * Asettaa algoritmin suorituksessa käytetyn hidasteen. Oletus 100 ms.
+     * Asettaa algoritmin suorituksessa käytetyn hidasteen millisekunteina. Oletus 100 ms.
      * @param hidaste
      */
     public void setHidaste(int hidaste) {
         this.hidaste = hidaste;
+    }
+    
+    /**
+     * Palauttaa algoritmin suorituksessa käytetyn hidasteen millisekunteina.
+     * @return hidaste
+     */
+    public int getHidaste() {
+        return this.hidaste;
     }
 
     private void alustaMaailma() {

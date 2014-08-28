@@ -91,6 +91,16 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         simulaatio.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
         simulaatio.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
     }
+    
+    private void asetaHidaste() {
+        int hidaste = simulaatio.getHidaste();
+        try {
+            hidaste = Integer.parseInt(hidasteField.getText());
+        } catch (NumberFormatException e) {
+            
+        }
+        simulaatio.setHidaste(hidaste);
+    }
 
     private void paivitaKustannusKentat() {
         this.lattiaKustannusField.setText(Ruutu.LATTIA.getHinta() + "");
@@ -109,6 +119,19 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         aloituspisteButton.setEnabled(enabled);
         maaliButton.setEnabled(enabled);
         liikkuminenVinottainCheckBox.setEnabled(enabled);
+        leveysField.setEnabled(enabled);
+        korkeusField.setEnabled(enabled);
+        uusiRuudukkoButton.setEnabled(enabled);
+        lataaTiedostostaButton.setEnabled(enabled);
+        liikkuminenVinottainCheckBox.setEnabled(enabled);
+        lattiaKustannusField.setEnabled(enabled);
+        ruohoKustannusField.setEnabled(enabled);
+        hiekkaKustannusField.setEnabled(enabled);
+        vesiKustannusField.setEnabled(enabled);
+        asetaLiikkumisKustannuksetButton.setEnabled(enabled);
+        algoritminValintaBox.setEnabled(enabled);
+        heuristiikanValintaBox.setEnabled(enabled);
+        hidasteField.setEnabled(enabled);
     }
 
     private void paivitaLeveysJaKorkeus() {
@@ -130,6 +153,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         paivitaValinnat();
         paivitaLeveysJaKorkeus();
         paivitaKustannusKentat();
+        hidasteField.setText(simulaatio.getHidaste() + "");
         liikkuminenVinottainCheckBox.setSelected(simulaatio.saakoLiikkuaVinottain());
     }
 
@@ -181,9 +205,11 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         asetaLiikkumisKustannuksetButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        algoritminValintaBox = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        heuristiikanValintaBox = new javax.swing.JComboBox();
+        jLabel12 = new javax.swing.JLabel();
+        hidasteField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reittialgoritmit");
@@ -288,7 +314,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         );
         piirtoalustaLayout.setVerticalGroup(
             piirtoalustaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 667, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(piirtoalusta);
@@ -468,11 +494,15 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
         jLabel10.setText("Algoritmi:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A*" }));
+        algoritminValintaBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A*" }));
 
         jLabel11.setText("Heuristiikka:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manhattan" }));
+        heuristiikanValintaBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manhattan" }));
+
+        jLabel12.setText("Hidaste(ms):");
+
+        hidasteField.setText("jTextField1");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -484,11 +514,15 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(algoritminValintaBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(heuristiikanValintaBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(4, 4, 4)
+                        .addComponent(hidasteField)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -496,12 +530,16 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(algoritminValintaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(heuristiikanValintaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(hidasteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -520,7 +558,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -561,6 +599,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
     private void simulaatioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulaatioButtonActionPerformed
         // TODO add your handling code here:
         asetaLiikkumisKustannukset();
+        asetaHidaste();
         if (simulaatioButton.isSelected()) {
             simulaatio.etsiReitti();
         } else {
@@ -690,15 +729,17 @@ public class SovellusIkkuna extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox algoritminValintaBox;
     private javax.swing.JToggleButton aloituspisteButton;
     private javax.swing.JButton asetaLiikkumisKustannuksetButton;
+    private javax.swing.JComboBox heuristiikanValintaBox;
+    private javax.swing.JTextField hidasteField;
     private javax.swing.JToggleButton hiekkaButton;
     private javax.swing.JTextField hiekkaKustannusField;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
