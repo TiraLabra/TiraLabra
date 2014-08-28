@@ -177,15 +177,28 @@ public class Game {
                 {
                     System.out.print(" ");
                 }
-                System.out.print("| " + player.getScore(i));
+                System.out.print("| " + player.getScore(i) + " ");
+                if (player.getScore(i).length() == 1)
+                {
+                    System.out.print(" ");
+                }
             }
             System.out.println("");
             
         }
-        System.out.print("   | Total:           | ");
+        System.out.print("   | Total:           |");
         for (Player player : players)
         {
-            System.out.print(player.totalPoints());
+            System.out.print(" " + player.totalPoints());
+            if (player.totalPoints() < 10)
+            {
+                System.out.print(" ");
+            }
+            if (player.totalPoints() < 100)
+            {
+                System.out.print(" ");
+            }
+            System.out.print("|");
         }
         System.out.println("");
     }

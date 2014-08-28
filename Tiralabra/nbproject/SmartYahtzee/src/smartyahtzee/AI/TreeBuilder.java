@@ -92,12 +92,13 @@ public class TreeBuilder {
     
     public int[] getSecondTurnDiceToLock(int[] dice, int[] lockedDice)
     {
+        dice = groupingSort(dice);
         int[] unlockedDice = arraySubtract(dice, lockedDice);
         double keepAllEV = Scores.calculateBestScore(dice, marked);
         double keepSameEV = 0;
         double[] evs = null;
         
-        DecisionTree tree = expectedValues.getTree(lockedDice);
+        DecisionTree tree = expectedValues.getTree(lockedDice);     //ei aina toimi kun lukitut ei välttämättä ole arrayn alussa :S
         if (tree == null)
         {
             keepSameEV = 0.0;

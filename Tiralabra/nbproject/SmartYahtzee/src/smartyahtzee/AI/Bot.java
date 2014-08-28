@@ -31,15 +31,17 @@ public class Bot extends Player {
         }
         System.out.println(dice);
         dice.throwDice();       
+        dice.unlockAll();
         
         if (lock != null)
         {
             int[] secondLock = decisions.getSecondTurnDiceToLock(dice.asArray(), lock);
-            if (secondLock != null)
+            if (secondLock != null && secondLock.length == 5)
             {
-                dice.lockMany(secondLock);
-            } else if (secondLock != null && secondLock.length == 5) {
                 return;
+            } else if (secondLock != null) {
+                dice.lockMany(secondLock);
+                
             }
         
             System.out.println(dice);
