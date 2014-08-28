@@ -1,6 +1,6 @@
-package tira.dijkstra;
+package tira.common;
 
-import tira.dijkstra.Edge;
+import tira.common.Edge;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +14,9 @@ public class Node implements Comparable<Node> {
     private String name;
     private ArrayList<Edge> routes;
     private int shortest;
+    private int heuristic;
+    private int x;
+    private int y;
     
     public Node(String name) {
         this.previous = null;
@@ -25,7 +28,16 @@ public class Node implements Comparable<Node> {
     /**
      * 
      * Luokan getterit ja setterit
-     */   
+     */
+    
+    public void setHeuristic(int value) {
+        this.heuristic = value;
+    }
+    
+    public int getHeuristic() {
+        return this.heuristic;
+    }
+    
     public int getShortest() {
         return this.shortest;
     }
@@ -52,7 +64,20 @@ public class Node implements Comparable<Node> {
    
     public void setPrevious(Node handle) {
         this.previous = handle;
-    } 
+    }
+    
+    public void setCoords(int xx, int yy) {
+        this.x = xx;
+        this.y = yy;
+    }
+    
+    public int getX() {
+        return this.x;
+    }
+    
+    public int getY() {
+        return this.y;
+    }
     
     /**
      * Etäisyyden vertailu prioriteettijonon alkion valintaan.
@@ -61,6 +86,6 @@ public class Node implements Comparable<Node> {
      */
     @Override
     public int compareTo(Node o) {
-        return this.shortest - o.getShortest();
+        return (this.shortest + this.heuristic) - (o.getShortest() + o.getHeuristic());
     }  
 }

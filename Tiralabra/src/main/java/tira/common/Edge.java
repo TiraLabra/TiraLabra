@@ -1,12 +1,11 @@
-package tira.dijkstra;
-import tira.dijkstra.Node;
+package tira.common;
 
 /**
  *
  * @author joonaslaakkonen
  * Luokka kuvaa kartan kaarta kahden solmun välillä. Kaarella on pituus sekä kohdesolmu.
  */
-class Edge {
+public class Edge {
     public Node target;
     public int weight;
     

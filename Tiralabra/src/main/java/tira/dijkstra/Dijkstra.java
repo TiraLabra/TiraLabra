@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import tira.common.Helper;
+import tira.common.Edge;
+import tira.common.Node;
 import tira.main.Mapper;
 import tira.main.Target;
 
@@ -21,12 +24,14 @@ public class Dijkstra {
     private ArrayList<Node> nodes;
     private Node startNode;
     private Node goalNode;
+    private Helper path;
 
     public Dijkstra(String start, String end, HashMap grid) {
         this.source = start;
         this.destination = end;
         this.graph = grid;
         this.nodes = new ArrayList<Node>();
+        this.path = new Helper(this.nodes);
     }
     
     /**
@@ -41,13 +46,13 @@ public class Dijkstra {
         
         for (Node helper : this.nodes) {
             for (Target finder : this.graph.get(helper.toString())) {
-                Node added = findNodeByName(finder.getName());
+                Node added = this.path.search(finder.getName());
                 helper.addEdge(new Edge(added, finder.getDistance()));
             }
         }
         
-        this.startNode = findNodeByName(this.source);
-        this.goalNode = findNodeByName(this.destination);
+        this.startNode = this.path.search(this.source);
+        this.goalNode = this.path.search(this.destination);
     }
     
     /**
@@ -95,35 +100,8 @@ public class Dijkstra {
             System.out.println("Reittiä ei ole kohteiden välillä");
         } else {
             System.out.println("Lyhyin reitti solmusta " + this.startNode.toString() + " solmuun " + this.goalNode.toString() + " on " + this.goalNode.getShortest() + "km.");
-            List<Node> path = getShortestPath(this.goalNode);
+            List<Node> path = this.path.getRoute(this.goalNode);
             System.out.println("Alla reitti:\n" + path);
         }    
-    }
-    
-    /**
-     * Etsitään solmu nimen perusteella.
-     * @param name
-     * @return 
-     */  
-    private Node findNodeByName(String name) {
-        for (Node helper : this.nodes) {
-            if (helper.toString().equals(name)) {
-                return helper;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Luodaan lista reitistä solmujen välillä.
-     * @param helper
-     * @return 
-     */
-    private List<Node> getShortestPath(Node helper) {
-        List<Node> path = new ArrayList<Node>();
-        for (Node vertex = helper; vertex != null; vertex = vertex.getPrevious())
-            path.add(vertex);
-        Collections.reverse(path);
-        return path;
     }
 }
