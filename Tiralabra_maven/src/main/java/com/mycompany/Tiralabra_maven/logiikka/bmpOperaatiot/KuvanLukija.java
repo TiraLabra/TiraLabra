@@ -3,6 +3,7 @@ package com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot;
 
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,8 +49,8 @@ public class KuvanLukija {
 
         int color;
 
-//        int e = Integer.MAX_VALUE / 10;
-        int este = 9;
+        int este = Integer.MAX_VALUE / 10;
+//        int este = 9;
         int vaikeaKulkuinen = 2;
 
         for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
@@ -66,7 +67,7 @@ public class KuvanLukija {
                     array2D[xPixel][yPixel] = 3;
                     this.lahtoPiste = new Piste(xPixel, yPixel);
                     System.out.println("punainen");
-                } else if (color == Color.BLUE.getRGB()) {
+                } else if (color == Color.GREEN.getRGB()) {
                     System.out.println("sininen");
                     array2D[xPixel][yPixel] = 4;
                     this.maaliPiste = new Piste(xPixel, yPixel);
@@ -90,7 +91,7 @@ public class KuvanLukija {
 
         System.out.println("lahto: " + this.lahtoPiste.i + ", " + this.lahtoPiste.j);
         System.out.println("maali: " + this.maaliPiste.i + ", " + this.maaliPiste.j);
-
+        
 
         return array2D;
     }

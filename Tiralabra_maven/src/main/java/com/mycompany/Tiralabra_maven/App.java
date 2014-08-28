@@ -93,7 +93,7 @@ public class App {
 
         KuvanLukija kuvanLukija = new KuvanLukija();
         KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
-        String inputFileName = "bitmaps/uusiTesti256.bmp";
+        String inputFileName = "bitmaps/lahto256.bmp";
 
 
         int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);

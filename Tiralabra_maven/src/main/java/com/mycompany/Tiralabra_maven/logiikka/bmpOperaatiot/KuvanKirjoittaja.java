@@ -45,7 +45,7 @@ public class KuvanKirjoittaja {
 //            for (int i = 0; i < 100; i++) {
 //                for (int j = 0; j < 100; j++) {
 
-            File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 1 - 4) + "TULOS.bmp");
+            File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) + "tulos.bmp");
             ImageIO.write(image, "bmp", outputfile);
 
 //                }
