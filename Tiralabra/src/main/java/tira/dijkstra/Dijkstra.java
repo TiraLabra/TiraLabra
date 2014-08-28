@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
-import tira.common.Helper;
 import tira.common.Edge;
+import tira.common.Helper;
 import tira.common.Node;
+import tira.heap.Heap;
 import tira.main.Mapper;
 import tira.main.Target;
 
@@ -66,6 +67,8 @@ public class Dijkstra {
          */     
         this.startNode.setShortest(0);
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
+        Heap<Node> heap = new Heap(this.nodes.size());
+        heap.insert(this.startNode);
         queue.add(this.startNode);
         
         /**
