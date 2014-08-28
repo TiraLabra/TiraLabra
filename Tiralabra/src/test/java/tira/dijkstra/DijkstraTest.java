@@ -5,6 +5,9 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import tira.common.Edge;
+import tira.common.Helper;
+import tira.common.Node;
 import tira.main.Target;
 
 /**
@@ -31,11 +34,20 @@ public class DijkstraTest {
 
     /**
      * Test of initialize method, of class Dijkstra.
+     * Testi testaa, että Nodet ja Edget on luotu, sen lisäksi tarkistetaan, että maali ja lähtö on oikein.
      */
     @Test
     public void testInitialize() {
-        System.out.println("initialize");
-        d.initialize();      
+        d.initialize();
+        ArrayList<Node> nodes = d.getNodes();
+        ArrayList<Edge> edgesOne = nodes.get(0).getEdges();
+        ArrayList<Edge> edgesLast = nodes.get(nodes.size()-1).getEdges();
+        Helper help = d.getHelperObject();
+        assertEquals(4, nodes.size());
+        assertEquals(3, edgesOne.size());
+        assertEquals(3, edgesLast.size());
+        assertEquals(d.getGoal(), help.search(this.end));
+        assertEquals(d.getStart(), help.search(this.start));
     }
 
     /**
@@ -44,19 +56,28 @@ public class DijkstraTest {
     @Test
     public void testRoute() {
         d.initialize();
-        System.out.println("route");
         d.route();
+        Helper help = d.getHelperObject();     
+        Node goal = help.search(this.end);
+        Node previousFromGoal = help.search(this.end).getPrevious();
+        assertEquals(25, goal.getShortest());
+        assertEquals(help.search("a"), previousFromGoal);
     }
 
     /**
      * Test of print method, of class Dijkstra.
      */
     @Test
-    public void testPrint() {
+    public void testPrint() {     
         d.initialize();
         d.route();
-        System.out.println("print");
         d.print();
+        Helper help = d.getHelperObject();
+        String vastaus = d.pathToGoalString();
+        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.[c, a, d]";
+        assertEquals(vastaus, tulos);
+        
+        
     }
     
     private HashMap<String, ArrayList<Target>> doMap() {

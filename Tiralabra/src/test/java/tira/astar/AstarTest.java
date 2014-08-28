@@ -1,11 +1,17 @@
 package tira.astar;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tira.common.Edge;
+import tira.common.Helper;
+import tira.common.Node;
+import tira.main.Target;
 
 /**
  *
@@ -13,35 +19,54 @@ import static org.junit.Assert.*;
  */
 public class AstarTest {
     
+    private HashMap<String, ArrayList<Target>> grid;
+    private String start;
+    private String end;
+    private Astar a;
+    
     public AstarTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
     }
     
     @Before
     public void setUp() {
+        this.grid = this.doMap();
+        this.start = "a";
+        this.end = "b";
+        this.a = new Astar(start, end, grid);
     }
-    
-    @After
-    public void tearDown() {
-    }
+
 
     /**
      * Test of initialize method, of class Astar.
      */
     @Test
     public void testInitialize() {
-        System.out.println("initialize");
-        Astar instance = null;
-        instance.initialize();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        a.initialize();
+        ArrayList<Node> nodes = a.getNodes();
+        ArrayList<Edge> edgesOne = nodes.get(0).getEdges();
+        ArrayList<Edge> edgesLast = nodes.get(nodes.size()-1).getEdges();
+        Helper help = a.getHelperObject();
+        assertEquals(4, nodes.size());
+        assertEquals(3, edgesOne.size());
+        assertEquals(3, edgesLast.size());
+        assertEquals(a.getGoal(), help.search(this.end));
+        assertEquals(a.getStart(), help.search(this.start));
+        
+        Node a = help.search("a");
+        int xA = a.getX();
+        int yA = a.getY();
+        int heuristicA = a.getHeuristic();
+        assertEquals(29, heuristicA);
+        assertEquals(5, xA);
+        assertEquals(15, yA);
+        
+        Node d = help.search("d");
+        int xD = d.getX();
+        int yD = d.getY();
+        int heuristicD = d.getHeuristic();
+        assertEquals(31, heuristicD);
+        assertEquals(20, xD);
+        assertEquals(0, yD);
     }
 
     /**
@@ -49,11 +74,13 @@ public class AstarTest {
      */
     @Test
     public void testRoute() {
-        System.out.println("route");
-        Astar instance = null;
-        instance.route();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        a.initialize();
+        a.route();
+        Helper help = a.getHelperObject();     
+        Node goal = help.search(this.end);
+        Node previousFromGoal = help.search(this.end).getPrevious();
+        assertEquals(35, goal.getShortest());
+        assertEquals(help.search("a"), previousFromGoal);
     }
 
     /**
@@ -61,11 +88,41 @@ public class AstarTest {
      */
     @Test
     public void testPrint() {
-        System.out.println("print");
-        Astar instance = null;
-        instance.print();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        a.initialize();
+        a.route();
+        a.print();
+        Helper help = a.getHelperObject();
+        String vastaus = a.pathToGoalString();
+        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.[a, b]";
+        assertEquals(vastaus, tulos);
     }
-    
+
+    private HashMap<String, ArrayList<Target>> doMap() {
+        HashMap<String, ArrayList<Target>> graph = new HashMap<String, ArrayList<Target>>();
+        ArrayList<Target> a = new ArrayList<Target>();
+        ArrayList<Target> b = new ArrayList<Target>();
+        ArrayList<Target> c = new ArrayList<Target>();
+        ArrayList<Target> d = new ArrayList<Target>();
+        
+        a.add(new Target("b", 35, 30, 30));
+        a.add(new Target("c", 5, 10, 10));
+        a.add(new Target("d", 10, 20, 0));
+        
+        b.add(new Target("a", 35, 5, 15));
+        b.add(new Target("d", 25, 20, 0));
+        
+        c.add(new Target("a", 5, 5, 15));
+        c.add(new Target("d", 5, 20, 0));
+        
+        d.add(new Target("a", 10, 5, 15));
+        d.add(new Target("b", 25, 30, 30));
+        d.add(new Target("c", 5, 10, 10));
+        
+        graph.put("a", a);
+        graph.put("b", b);
+        graph.put("c", c);
+        graph.put("d", d);
+
+        return graph;
+    }   
 }

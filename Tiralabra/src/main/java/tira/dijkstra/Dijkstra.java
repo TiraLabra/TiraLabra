@@ -104,4 +104,30 @@ public class Dijkstra {
             System.out.println("Alla reitti:\n" + path);
         }    
     }
+    
+    /**
+     * Seuraavaksi alla on metodeja, joita käytän vain testeissä päästäkseni käsiksi luokan muuttujiin.
+     * Eivät siis vaikuta millään tavalla algoritmin tai ohjelman suoritukseen.
+     */   
+    public ArrayList<Node> getNodes() {
+        return this.nodes;
+    }
+    
+    public Node getStart() {
+        return this.startNode;
+    }
+    
+    public Node getGoal() {
+        return this.goalNode;
+    }
+    
+    public Helper getHelperObject() {
+        return this.path;
+    }
+    
+    public String pathToGoalString() {
+        List<Node> route = this.path.getRoute(this.goalNode);
+        String path = "Lyhyin reitti solmusta " + this.startNode.toString() + " solmuun " + this.goalNode.toString() + " on " + this.goalNode.getShortest() + "km.";
+        return path + route;
+    }
 }

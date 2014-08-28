@@ -123,4 +123,30 @@ public class Astar {
             setter.setHeuristic(parsed);
         }
     }
+    
+    /**
+     * Seuraavaksi alla on metodeja, joita käytän vain testeissä päästäkseni käsiksi luokan muuttujiin.
+     * Eivät siis vaikuta millään tavalla algoritmin tai ohjelman suoritukseen.
+     */   
+    public ArrayList<Node> getNodes() {
+        return this.cells;
+    }
+    
+    public Node getStart() {
+        return this.startCell;
+    }
+    
+    public Node getGoal() {
+        return this.goalCell;
+    }
+    
+    public Helper getHelperObject() {
+        return this.path;
+    }
+    
+    public String pathToGoalString() {
+        List<Node> route = this.path.getRoute(this.goalCell);
+        String path = "Lyhyin reitti solmusta " + this.startCell.toString() + " solmuun " + this.goalCell.toString() + " on " + this.goalCell.getShortest() + "km.";
+        return path + route;
+    }
 }
