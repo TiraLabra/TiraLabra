@@ -76,12 +76,10 @@ public class Astar {
         ArrayList<Node> closed = new ArrayList<Node>();
         
         /**
-         * Käydään läpi prioriteettijono. 
+         * Käydään läpi keko. 
          */     
         while (!closed.contains(this.goalCell)) {
-            heap.test();
             Node handle = heap.poll();
-            heap.test();
             closed.add(handle);
             
             for (Edge apu : handle.getEdges()) {
@@ -121,7 +119,7 @@ public class Astar {
             int ydiff = Math.abs(setter.getY() - this.goalCell.getY());
             double heuristic = Math.sqrt((xdiff*xdiff + ydiff*ydiff));
             int parsed = (int)heuristic;
-            setter.setHeuristic(parsed);
+            setter.setHeuristic(0);
         }
     }
     

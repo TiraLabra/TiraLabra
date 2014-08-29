@@ -25,17 +25,6 @@ public class Heap <T> {
         }
     }
     
-    public void delete(Node d) {
-        if (this.size==0) {
-            return;
-        } else if (this.size == 1) {
-            this.table[0] = null;
-            this.size--;             
-        } else {
-            this.heapDelete(d);
-        }
-    }
-    
     public Node poll() {
         if(this.size != 0) {
             Node smallest = this.table[0];
@@ -53,15 +42,6 @@ public class Heap <T> {
         }
         return true;
     }
-    
-    public void test() {
-        System.out.println("Heap alkaa");
-        System.out.println(this.size);
-        for (int i=0; i < this.size; i++) {
-            System.out.println(this.table[i].toString());
-        }
-        System.out.println("Heap loppuu");
-    }
 
     private void heapInsert(Node n) {
         this.size++;
@@ -73,18 +53,6 @@ public class Heap <T> {
             k = p;
         }
         this.table[k] = n;
-    } 
-
-    private void heapDelete(Node d) {
-        for (int i = 0; i < this.size; i++) {
-            if (d.equals(this.table[i])) {
-                Node swap = this.table[this.size-1];
-                this.table[i] = swap;
-                this.size--;
-                this.heapify(i);
-                break;
-            }
-        }
     }
     
     private void heapify(int paikka) {

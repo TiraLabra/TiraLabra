@@ -70,12 +70,10 @@ public class Dijkstra {
         heap.insert(this.startNode);
         
         /**
-         * Käydään läpi prioriteettijono. 
+         * Käydään läpi keko. 
          */      
         while (!heap.empty()) {
-            heap.test();
             Node handle = heap.poll();
-            heap.test();
             
             for (Edge apu : handle.getEdges()) {
                 Node neighbor = apu.getTarget();
