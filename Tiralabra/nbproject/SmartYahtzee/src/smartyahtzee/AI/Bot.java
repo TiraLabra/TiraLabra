@@ -79,6 +79,7 @@ public class Bot extends Player {
         int highestIndex = 0;
         int highestScore = 0;
 
+        
         for (int i = 0; i < 17; i++)
         {
             if (i == 15 && !Scores.onlyFreeColumn(i, markedColumns))        //not marking chance unless only available column
@@ -89,7 +90,15 @@ public class Bot extends Player {
             {
                 continue;
             }
+            
             int score = Scores.calculateScore(i, dice.asArray());
+            
+            if (i < 6 && score < 0.6*Scores.maxScores[i] && !Scores.onlyFreeColumn(i, markedColumns))       //not accepting small scores in upper columns
+            {
+                continue;
+            }
+            
+            
             
             if (i < 6 && score > 0.7*Scores.maxScores[i])       //painotus bonuksen saamiseksi
             {
@@ -104,15 +113,39 @@ public class Bot extends Player {
                 highestScore = score;
             }
         }
+
         
-        if (highestScore == 0 || (highestIndex < 6 && highestScore < 0.4*Scores.maxScores[highestIndex]))          //kannattaisiko merkitä nolla jossain muussakin tapauksessa?
+        
+        if (highestScore == 0)          //kannattaisiko merkitä nolla jossain muussakin tapauksessa?
         {
             if (!markedColumns[15])
             {
                 setScore(15, Scores.calculateScore(15, dice.asArray()));
+                return;
             } else {
-                markZero();
+                int highestScor3 = 0;
+                int highestInd = 0;
+                for (int i = 0; i < 6; i++)
+                {
+                    if (!markedColumns[i])  
+                    {
+                        int score = Scores.calculateScore(i, dice.asArray());
+                        if (score > highestScor3)
+                        {
+                            highestScor3 = score;
+                            highestInd = i;
+                        }
+                    }
+                }
+                if (highestScor3 != 0)
+                {
+                    setScore(highestInd, Scores.calculateScore(highestInd, dice.asArray()));
+                    return;
+                }
+     
             }
+            markZero();
+            
         } else {
             setScore(highestIndex, highestScore);
         }
