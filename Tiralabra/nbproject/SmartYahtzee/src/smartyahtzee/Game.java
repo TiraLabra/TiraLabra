@@ -127,7 +127,7 @@ public class Game {
         double bonuspercent = (float)bonuses/(float)iterations;
         double yahtzeepercent = (float)yahtzees/(float)iterations;
         System.out.println("Bonus percent: " + bonuspercent*100.0);
-        System.out.println("Four of a kind percent: "+(float)fourofakinds/(float)iterations);
+        System.out.println("Four of a kind percent: "+(float)fourofakinds/(float)iterations*100.0);
         System.out.println("Yahtzee percent: "+yahtzeepercent*100.0);
     }
     

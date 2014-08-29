@@ -141,6 +141,22 @@ public class DiceSetTest {
     }
     
     @Test
+    public void testLockMany2()          
+    {
+        System.out.println("lockMany");
+        DiceSet instance = new DiceSet();
+        for (int i = 0; i<5; i++)
+        {
+            instance.getDie(i).setNumber(i+1);
+        }
+        int[] lock = {3, 4};
+        instance.lockMany(lock);
+        String expResult = "1 2 (3) (4) 5 ";
+        assertEquals(instance.toString(), expResult);
+
+    }
+    
+    @Test
     public void testLockManyRepeatedDigits()          
     {
         System.out.println("lockMany");

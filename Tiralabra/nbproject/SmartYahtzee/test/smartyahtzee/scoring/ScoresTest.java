@@ -48,7 +48,7 @@ public class ScoresTest {
         boolean[] marked = new boolean[17];
         marked[15] = true;      //not counting chance or pair
         marked[8] = true;
-        double expResult = ((float)20/(float)22) * 3.78259;
+        double expResult = (20/22) * 3.78259;
         double result = Scores.calculateBestScore(dice, marked);
         assertEquals(expResult, result, 0.1);
     }

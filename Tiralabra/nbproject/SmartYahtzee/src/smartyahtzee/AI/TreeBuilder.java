@@ -96,7 +96,7 @@ public class TreeBuilder {
         int[] unlockedDice = arraySubtract(dice, lockedDice);
         double keepAllEV = Scores.calculateBestScore(dice, marked);
         double keepSameEV = 0;
-        double[] evs = null;
+        double[] evs;
         
         DecisionTree tree = expectedValues.getTree(lockedDice);     //ei aina toimi kun lukitut ei välttämättä ole arrayn alussa :S
         if (tree == null)

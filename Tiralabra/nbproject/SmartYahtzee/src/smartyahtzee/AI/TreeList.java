@@ -24,6 +24,11 @@ class TreeList {
         createTrees(dice);
     }
     
+    public DecisionTree[] getTrees()
+    {
+        return trees;
+    }
+    
     public int getLength()
     {
         return trees.length;
@@ -40,6 +45,7 @@ class TreeList {
         DecisionTree treeWithRoot = null;
         for (DecisionTree tree : trees)
         {
+            
             if (Arrays.equals(tree.getRoot(), root))
             {
                 return tree;

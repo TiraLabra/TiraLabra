@@ -17,17 +17,19 @@ public class Bot extends Player {
 
     
     @Override
-    protected void rollDice()
+    protected void rollDice()    //todo: refactor
     {
         dice.throwDice();
         System.out.println(dice);
         TreeBuilder decisions = new TreeBuilder(dice.asArray(), this.markedColumns);
         int[] lock = decisions.getDiceToLock();
-        if (lock != null)
+        if (lock != null && lock.length == 5)
         {
-            dice.lockMany(lock);
-        } else if (lock != null && lock.length == 5) {
             return;
+            
+        } else if (lock != null) {
+            
+            dice.lockMany(lock);
         }
         System.out.println(dice);
         dice.throwDice();       
@@ -60,26 +62,42 @@ public class Bot extends Player {
             dice.throwDice();
         }
         
-        
-        
         System.out.println(dice);
-        dice.unlockAll();
+        
         
         
     }
     
+    /**
+     * 
+     */
+    
     @Override
-    protected void markScore(){         //todo: refactor
+    protected void markScore() {         //todo: refactor
+        dice.unlockAll();
+        
         int highestIndex = 0;
         int highestScore = 0;
 
         for (int i = 0; i < 17; i++)
         {
+            if (i == 15 && !Scores.onlyFreeColumn(i, markedColumns))        //not marking chance unless only available column
+            {
+                continue;
+            }
             if (markedColumns[i] || i == 7 || i == 6)
             {
                 continue;
             }
             int score = Scores.calculateScore(i, dice.asArray());
+            
+            if (i < 6 && score > 0.7*Scores.maxScores[i])       //painotus bonuksen saamiseksi
+            {
+                highestIndex = i;
+                highestScore = score;
+                break;
+            }
+            
             if (score > highestScore)
             {
                 highestIndex = i;
@@ -87,14 +105,25 @@ public class Bot extends Player {
             }
         }
         
-        if (highestScore == 0)
+        if (highestScore == 0 || (highestIndex < 6 && highestScore < 0.4*Scores.maxScores[highestIndex]))          //kannattaisiko merkitä nolla jossain muussakin tapauksessa?
         {
-            markZero();
+            if (!markedColumns[15])
+            {
+                setScore(15, Scores.calculateScore(15, dice.asArray()));
+            } else {
+                markZero();
+            }
         } else {
             setScore(highestIndex, highestScore);
         }
         
     }
+    
+    /**
+     * Arvioi, mihin sarakkeeseen kannattaa laittaa 0.
+     *
+     * 0 laitetaan vapaaseen sarakkeeseen, jonka odotusarvo on huonoin.
+     */
     
     private void markZero()
     {

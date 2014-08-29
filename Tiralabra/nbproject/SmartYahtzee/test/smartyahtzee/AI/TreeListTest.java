@@ -75,7 +75,7 @@ public class TreeListTest {
         TreeList instance = new TreeList(8, dice, new boolean[17]);
         DecisionTree expResult = new DecisionTree(root, new boolean[17]);
         DecisionTree result = instance.getTree(root);
-        assertArrayEquals(expResult.getRoot(), result.getRoot());
+        assertArrayEquals(root, result.getRoot());
 
         
     }
@@ -88,7 +88,7 @@ public class TreeListTest {
         TreeList instance = new TreeList(8, dice, new boolean[17]);
         DecisionTree expResult = new DecisionTree(root, new boolean[17]);
         DecisionTree result = instance.getTree(root);
-        assertArrayEquals(expResult.getRoot(), result.getRoot());
+        assertArrayEquals(root, result.getRoot());
 
         
     }
@@ -108,6 +108,32 @@ public class TreeListTest {
         double result = resultTree.getEV();
         assertEquals(expResult, result, 0.05);
 
+    }
+    
+    @Test
+    public void testNoNullTrees() {
+        System.out.println("noNullTrees");
+        int[] dice = {6, 6, 4, 2, 1};
+        TreeList instance = new TreeList(8, dice, new boolean[17]);
+        DecisionTree[] trees = instance.getTrees();
+        for (int i = 0; i < trees.length; i++)
+        {
+            assertTrue(trees[i] != null);
+        }
+        
+    }
+    
+    @Test
+    public void testNoTreesWithNullRoot() {
+        System.out.println("noNullTrees");
+        int[] dice = {6, 6, 4, 2, 1};
+        TreeList instance = new TreeList(8, dice, new boolean[17]);
+        DecisionTree[] trees = instance.getTrees();
+        for (int i = 0; i < trees.length; i++)
+        {
+            assertTrue(trees[i].getRoot().length > 0);
+        }
+        
     }
     
 }
