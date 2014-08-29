@@ -82,6 +82,7 @@ public class Heap <T> {
                 this.table[i] = swap;
                 this.size--;
                 this.heapify(i);
+                break;
             }
         }
     }

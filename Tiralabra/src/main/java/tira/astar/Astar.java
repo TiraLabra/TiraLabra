@@ -9,6 +9,7 @@ import java.util.PriorityQueue;
 import tira.common.Edge;
 import tira.common.Node;
 import tira.common.Helper;
+import tira.heap.Heap;
 import tira.main.Mapper;
 import tira.main.Target;
 
@@ -69,15 +70,18 @@ public class Astar {
          * alkusolmu. Sen lisäksi luodaan lista, jonne käsitellyt solmut siirretään.
          */     
         this.startCell.setShortest(0);
-        PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        queue.add(this.startCell);
+        Heap<Node> heap = new Heap(this.cells.size());
+//        PriorityQueue<Node> queue = new PriorityQueue<Node>();
+        heap.insert(this.startCell);
         ArrayList<Node> closed = new ArrayList<Node>();
         
         /**
          * Käydään läpi prioriteettijono. 
          */     
         while (!closed.contains(this.goalCell)) {
-            Node handle = queue.poll();
+            heap.test();
+            Node handle = heap.poll();
+            heap.test();
             closed.add(handle);
             
             for (Edge apu : handle.getEdges()) {
@@ -88,10 +92,7 @@ public class Astar {
                     if (neighbor.getShortest() > cost) {
                         neighbor.setShortest(cost);
                         neighbor.setPrevious(handle);
-                        if (queue.contains(neighbor)) {
-                            queue.remove(neighbor);
-                        }
-                        queue.add(neighbor);
+                        heap.insert(neighbor);
                     }
                 }
             }

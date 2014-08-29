@@ -66,17 +66,16 @@ public class Dijkstra {
          * alkusolmu.
          */     
         this.startNode.setShortest(0);
-//        PriorityQueue<Node> queue = new PriorityQueue<Node>();
         Heap<Node> heap = new Heap(this.nodes.size());
         heap.insert(this.startNode);
-//        queue.add(this.startNode);
         
         /**
          * Käydään läpi prioriteettijono. 
          */      
         while (!heap.empty()) {
-//            Node handle = queue.poll();
+            heap.test();
             Node handle = heap.poll();
+            heap.test();
             
             for (Edge apu : handle.getEdges()) {
                 Node neighbor = apu.getTarget();
@@ -87,16 +86,13 @@ public class Dijkstra {
                  * Relaksointi.
                  */
                 if (distance < neighbor.getShortest()) {
-//                    queue.remove(neighbor);
-                    heap.delete(neighbor);
                     neighbor.setShortest(distance);
                     neighbor.setPrevious(handle);
-//                    queue.add(neighbor);
-                    heap.insert(neighbor);
+                    heap.insert(neighbor);                   
                 }
                 
             }
-            heap.test();
+            
         }
     }
 
