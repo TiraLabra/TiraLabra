@@ -29,7 +29,7 @@ public class TextUI {
         // Main menu
         while (true) {
             printOptions();
-            String result = reader.next();
+            String result = reader.nextLine();
 
             if (result.equals("1")) {
                 runSmallArrayTestSequence();
@@ -58,6 +58,7 @@ public class TextUI {
     private void runSmallArrayTestSequence() {
         TestSuite.Engine.TestFactory test1 = new TestFactory(askRepeat(10000));
 
+        System.out.println("Starting small array test sequence...");
         test1.runRandomSmallArraysTestCycleForAll();
         test1.runRandomFewUniquesSmallArraysTestCycleForAll();
         test1.runAllmostSortedSmallArraysTestCycleForAll();
@@ -74,6 +75,7 @@ public class TextUI {
     private void runBigArrayTestSequence() {
         TestSuite.Engine.TestFactory test2 = new TestFactory(askRepeat(1000));
 
+        System.out.println("Starting big array test sequence...");
         test2.runRandomBigArraysTestCycleForAll();
         test2.runRandomFewUniquesBigArraysTestCycleForAll();
         test2.runAllmostSortedBigArraysTestCycleForAll();
@@ -92,21 +94,27 @@ public class TextUI {
      */
     private int askRepeat(int preset) {
         System.out.println("Tests will run " + preset + " times.");
-        System.out.println("Recommended value for small arrays 1 - 100000. \n "
-                + "Recommended for big arrays 1 - 1000 (will take \n"
-                + "up to 60min with 1000 repeats).\n");
 
-        System.out.println("Set new value (give new value) or keep preset value (enter): ");
+        System.out.println(
+                "Recommended value for small arrays 1 - 100000. \n "
+                + "Recommended for big arrays 1 - 1000 (will take \n"
+                + "up to 60min with 1000 repeats).\n"
+        );
+
+        System.out.print("Set new value (give new value) or keep preset value (enter): ");
 
         while (true) {
-            String result = reader.next();
+            String result = reader.nextLine();
             if (result.equals("")) {
+                System.out.println("Keeping preset value.");
                 return preset;
             } else {
                 try {
-                    return Integer.parseInt(result);
+                    int val = Integer.parseInt(result);
+                    System.out.println("Setting new value to: " + val);
+                    return val;
                 } catch (NumberFormatException ex) {
-                    System.out.println("not numeric or (n)");
+                    System.out.println("not numeric or empty");
                 }
             }
         }
