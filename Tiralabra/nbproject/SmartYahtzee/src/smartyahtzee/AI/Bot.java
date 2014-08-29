@@ -77,7 +77,7 @@ public class Bot extends Player {
         dice.unlockAll();
         
         int highestIndex = 0;
-        int highestScore = 0;
+        double highestScore = 0;
 
         
         for (int i = 0; i < 17; i++)
@@ -98,19 +98,22 @@ public class Bot extends Player {
                 continue;
             }
             
-            
-            
-            if (i < 6 && score > 0.7*Scores.maxScores[i])       //painotus bonuksen saamiseksi
+            if (i < 6 && score >= 0.6*Scores.maxScores[i])       //painotus bonuksen saamiseksi
             {
                 highestIndex = i;
                 highestScore = score;
+                System.out.println("hey! this brings me closer to bonus");
                 break;
             }
             
-            if (score > highestScore)
+            double weightedScore = (double)score / Scores.expectedValues[i];
+            
+            
+            
+            if (weightedScore > highestScore)
             {
                 highestIndex = i;
-                highestScore = score;
+                highestScore = weightedScore;
             }
         }
 
@@ -123,7 +126,7 @@ public class Bot extends Player {
                 setScore(15, Scores.calculateScore(15, dice.asArray()));
                 return;
             } else {
-                int highestScor3 = 0;
+                int highestScor3 = 0;               //katsotaan onko ekassa kuudessa sarakkeessa huono tulos laitettavaksi
                 int highestInd = 0;
                 for (int i = 0; i < 6; i++)
                 {
@@ -147,7 +150,7 @@ public class Bot extends Player {
             markZero();
             
         } else {
-            setScore(highestIndex, highestScore);
+            setScore(highestIndex, Scores.calculateScore(highestIndex, dice.asArray()));
         }
         
     }
