@@ -81,11 +81,13 @@ class TreeList {
     private void createTrees(int[] dice)
     {
         System.out.println("Combinations: ");
-            for (int j = 0; j<dice.length; j++)
-            {
-                System.out.print(dice[j]);
-            }
+        for (int j = 0; j<dice.length; j++)
+        {
+            System.out.print(dice[j]);
+        }
+        
         int[][] combinations = new int[11][];
+        
         for (int j = 4; j > 0; j--)         
         {
             int[] combination = new int[j];

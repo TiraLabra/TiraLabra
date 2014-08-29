@@ -125,7 +125,7 @@ public class DiceSetTest {
     }
     
     @Test
-    public void testLockMany()
+    public void testLockMany()          
     {
         System.out.println("lockMany");
         DiceSet instance = new DiceSet();
@@ -139,6 +139,46 @@ public class DiceSetTest {
         assertEquals(instance.toString(), expResult);
 
     }
+    
+    @Test
+    public void testLockManyRepeatedDigits()          
+    {
+        System.out.println("lockMany");
+        DiceSet instance = new DiceSet();
+        for (int i = 0; i<5; i++)
+        {
+            if (i < 3)
+            {
+                instance.getDie(i).setNumber(6);
+            } else {
+                instance.getDie(i).setNumber(5);
+            }
+            
+        }
+        int[] lock = {6, 6};
+        instance.lockMany(lock);
+        String expResult = "5 5 (6) (6) 6 ";
+        assertEquals(instance.toString(), expResult);
+
+    }
+    
+    @Test
+    public void testLockManyRepeatedDigits2()          
+    {
+        System.out.println("lockMany");
+        DiceSet instance = new DiceSet();
+        for (int i = 0; i<5; i++)
+        {
+            instance.getDie(i).setNumber(6);
+            
+        }
+        int[] lock = {6, 6};
+        instance.lockMany(lock);
+        String expResult = "(6) (6) 6 6 6 ";
+        assertEquals(instance.toString(), expResult);
+
+    }
+    
     
     /**
      * Testaa että konstruktori luo viisi eikä enempää toisiinsa linkitettyä noppaa

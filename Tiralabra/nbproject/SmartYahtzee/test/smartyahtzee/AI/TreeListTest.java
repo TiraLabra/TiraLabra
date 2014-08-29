@@ -44,9 +44,9 @@ public class TreeListTest {
     @Test
     public void testGetLength() {
         System.out.println("getLength");
-        int[] dice = {6, 5, 4};
+        int[] dice = {6, 5, 4, 2, 1};
         TreeList instance = new TreeList(8, dice, new boolean[17]);
-        int expResult = 8;
+        int expResult = 11;
         int result = instance.getLength();
         assertEquals(expResult, result);
     }
@@ -55,14 +55,42 @@ public class TreeListTest {
      * Test of getTree method, of class TreeList.
      */
     @Test
-    public void testGetTree() {
+    public void testGetTree() {         //noppien pitää olla groupingsort-järjestyksessä :<
         System.out.println("getTree");
-        int[] root = {6, 5, 4};
-        TreeList instance = new TreeList(8, root, new boolean[17]);
+        int[] dice = {4, 4, 6, 5, 1};
+        int[] root = {4, 4, 6};
+        TreeList instance = new TreeList(8, dice, new boolean[17]);
         DecisionTree expResult = new DecisionTree(root, new boolean[17]);
         DecisionTree result = instance.getTree(root);
-        assertEquals(expResult, result);
+        assertArrayEquals(expResult.getRoot(), result.getRoot());
 
+        
+    }
+    
+    @Test
+    public void testGetTree2() {            //testataan ei-lineaarisesti generoituvan kombinaation löytymistä
+        System.out.println("getTree");
+        int[] dice = {4, 4, 6, 5, 1};
+        int[] root = {6};
+        TreeList instance = new TreeList(8, dice, new boolean[17]);
+        DecisionTree expResult = new DecisionTree(root, new boolean[17]);
+        DecisionTree result = instance.getTree(root);
+        assertArrayEquals(expResult.getRoot(), result.getRoot());
+
+        
+    }
+    
+    @Test
+    public void testGetTree3() {            //testataan ei-lineaarisesti generoituvan kombinaation löytymistä
+        System.out.println("getTree");
+        int[] dice = {5, 5, 6, 4, 3};
+        int[] root = {3, 4};
+        TreeList instance = new TreeList(8, dice, new boolean[17]);
+        DecisionTree expResult = new DecisionTree(root, new boolean[17]);
+        DecisionTree result = instance.getTree(root);
+        assertArrayEquals(expResult.getRoot(), result.getRoot());
+
+        
     }
 
     /**
@@ -71,12 +99,14 @@ public class TreeListTest {
     @Test
     public void testGetBiggestEVtree() {
         System.out.println("getBiggestEVtree");
-        int[] root = {1, 2, 3, 5, 5};
+        int[] root = {5, 5, 3, 2, 1};
         TreeList instance = new TreeList(8, root, new boolean[17]);
         int[] rootDice = {5, 5};
-        DecisionTree expResult = new DecisionTree(rootDice, new boolean[17]);
-        DecisionTree result = instance.getBiggestEVtree();
-        assertEquals(expResult, result);
+        DecisionTree expResultTree = new DecisionTree(rootDice, new boolean[17]);
+        double expResult = expResultTree.getEV();
+        DecisionTree resultTree = instance.getBiggestEVtree();
+        double result = resultTree.getEV();
+        assertEquals(expResult, result, 0.05);
 
     }
     
