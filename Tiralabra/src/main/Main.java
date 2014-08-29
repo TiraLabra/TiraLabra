@@ -26,15 +26,17 @@ public class Main {
             startCLI();
         }
         
-        System.out.println("Polynomial, Tries");
+        System.out.println("Characteristic, Degree, Polynomial, Tries");
         
         for (String arg : args) {
             String[] thisInput = arg.split(",");
-            int characteristic = Integer.parseInt(thisInput[0]);
-            int degree = Integer.parseInt(thisInput[1]);
+            int characteristic = Integer.parseInt(thisInput[0].trim());
+            int degree = Integer.parseInt(thisInput[1].trim());
             IPolynomial polynomial = PolynomialUtil.findIrreduciblePolynomial(characteristic, degree, false);
             int numberOfTries = PolynomialUtil.getNumberOfPolynomialsTriedLastTime();
-            System.out.print(polynomial);
+            System.out.print(characteristic);
+            System.out.print(", " + degree);
+            System.out.print(", " + polynomial);
             System.out.println(", " + numberOfTries);
         }
         
