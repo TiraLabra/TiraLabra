@@ -70,5 +70,21 @@ public class JanaleikkausTest {
       Kordinaatti k4 = new Kordinaatti(2,0);
       assertEquals(testaaja.leikkaako(k1, k2, k3, k4), false);
     }
+    @Test
+    public void testaaSuoranjajananleikkaus() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(2,0);
+      Kordinaatti k3 = new Kordinaatti(0,0);
+      Kordinaatti k4 = new Kordinaatti(2,0);
+      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4), null);
+    }
+     @Test
+    public void VaakasuoraPystysuorajana() {
+      Kordinaatti k1 = new Kordinaatti(0,1);
+      Kordinaatti k2 = new Kordinaatti(2,1);
+      Kordinaatti k3 = new Kordinaatti(1,0);
+      Kordinaatti k4 = new Kordinaatti(1,2);
+      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4), new Kordinaatti(1,1));
+    }
     
 }

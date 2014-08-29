@@ -8,6 +8,8 @@ package Algoritmit;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Iteroitava;
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import Tietorakenteet.Keko;
 import Tietorakenteet.Verkko;
 import java.util.ArrayList;
@@ -95,8 +97,13 @@ public class Atahtialgoritmi {
                 return true;
             }
             current.palautaSolmuMuisti().Varita(1);
-            ArrayList<Abstraktisolmu> naapurit = this.verkko.naapurit(current);
-            for (Abstraktisolmu naapuri : naapurit) {
+            Jono naapurit = this.verkko.naapurit(current);
+            Jonoiteroitava naapurid = naapurit.palautaEnsimmainen();
+            Abstraktisolmu naapuri = null;
+            if (naapurid != null) {
+                naapuri = (Abstraktisolmu) naapurid.palautaObjekti();
+            }
+            while (naapurid != null) {
                 if (naapuri.palautaSolmuMuisti().palautaVari() != 1) {
                     double gscore = current.palautaSolmuMuisti().palautaGScore() + this.verkko.etaisyys(current, naapuri);
                     if ((naapuri.palautaSolmuMuisti().Keossa() == false) || (gscore < naapuri.palautaSolmuMuisti().palautaGScore())) {
@@ -122,6 +129,11 @@ public class Atahtialgoritmi {
                         }
                     }
                 }
+                //alkionpaivitys
+                naapurid = naapurid.palauataSeuraava();
+                if (naapurid != null) {
+                    naapuri = (Abstraktisolmu) naapurid.palautaObjekti();
+                }
             }
 
         }
@@ -144,7 +156,7 @@ public class Atahtialgoritmi {
     /*
      * 
      * Rakentaa polun jolla kyseisen ongelman ratkaisu löytyy
-     * 
+     *  KORVATTAVA PIAN OMALLA JONO TIETORAKENTEELLA
      */
     public void rakennapolku() {
         Abstraktisolmu iteroiva = this.loppu;

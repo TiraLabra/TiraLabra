@@ -26,7 +26,7 @@ public class TiraLabraFix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        suorituskyky();
+       suorituskyky();
     }
 
     public static void AtahtiTestaus() {
@@ -117,18 +117,30 @@ public class TiraLabraFix {
         Janaleikkaus leikkaaja = new Janaleikkaus();
         System.out.println(leikkaaja.leikkaako(k1, k2, k3, k4));
     }
-    
-    public static void suorituskyky()
-    {
-    ATahtiSuorituskykytestaus testaus = new ATahtiSuorituskykytestaus();
-    testaus.suorita(5);
-    
+
+    public static void suorituskyky() {
+        ATahtiSuorituskykytestaus testaus = new ATahtiSuorituskykytestaus();
+        testaus.suorita(4);
+
     }
-    public static void matricetest()
-    {
-    int[][] matrice = new int[10][2];
-    System.out.println(matrice.length);
-    System.out.println(matrice[0].length);
+
+    public static void matricetest() {
+        int[][] matrice = new int[10][2];
+        System.out.println(matrice.length);
+        System.out.println(matrice[0].length);
+    }
+
+    public static void aTahtiDebuggaus() {
+        DiskreettiVerkko verkko = new DiskreettiVerkko(1);
+        DiskreettiSolmu[] solmuvektori = new DiskreettiSolmu[4];
+        solmuvektori[0] = new DiskreettiSolmu(0, 0);
+        solmuvektori[1] = new DiskreettiSolmu(0, 1);
+        solmuvektori[2] = new DiskreettiSolmu(1, 0);
+        solmuvektori[3] = new DiskreettiSolmu(1, 1);
+        Atahtialgoritmi alg = new Atahtialgoritmi(verkko, 100);
+        alg.asetaPisteet(solmuvektori[0], solmuvektori[3]);
+        verkko.Lisaa(solmuvektori);
+        alg.laske();
     }
 
 }

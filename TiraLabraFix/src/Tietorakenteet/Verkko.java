@@ -6,6 +6,8 @@
 
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import java.util.ArrayList;
 
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  */
 public interface Verkko {
 
-    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node);
+    public Jono naapurit(Abstraktisolmu node);
 
     public boolean olemassa(Abstraktisolmu node);
 

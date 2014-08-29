@@ -5,14 +5,15 @@
  */
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jono;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -71,8 +72,8 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[0]);
-        int i = lista.size();
+        Jono lista = verkkor.naapurit(solmuvektori[0]);
+        int i = lista.palautaKoko();
         assertEquals(i, 8);
 
     }
@@ -96,8 +97,8 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[1]);
-        int i = lista.size();
+        Jono lista = verkkor.naapurit(solmuvektori[1]);
+        int i = lista.palautaKoko();
         assertEquals(i, 3);
 
     }
@@ -121,8 +122,8 @@ public class DiskreettiVerkkoTest {
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
         verkkor.asetaKartta(kartta);
-        ArrayList<Abstraktisolmu> lista = verkkor.naapurit(solmuvektori[5]);
-        int i = lista.size();
+        Jono lista = verkkor.naapurit(solmuvektori[5]);
+        int i = lista.palautaKoko();
         assertEquals(i, 5);
 
     }

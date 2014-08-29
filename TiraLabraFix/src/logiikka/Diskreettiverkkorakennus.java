@@ -6,6 +6,8 @@
 
 package logiikka;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import Tietorakenteet.Kordinaatti;
 import Tietorakenteet.Monikulmio;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class Diskreettiverkkorakennus {
  */
     
     public boolean sisaltaa (Kordinaatti test, Monikulmio monikulmio) {
-      ArrayList<Kordinaatti> points = monikulmio.palautaKulmat();
+     ArrayList<Kordinaatti> points = null;
       int i;
       int j;
       boolean result = false;
@@ -85,8 +87,12 @@ public class Diskreettiverkkorakennus {
         this.xMin = Math.min(alku.palautaX(), loppu.palautaX());
         this.yMax = Math.max(alku.palautaY(), loppu.palautaY());
         this.yMin = Math.min(alku.palautaY(), loppu.palautaY());
+        
         for (Monikulmio m : this.monikulmiot) {
-            for (Kordinaatti k : m.palautaKulmat()) {
+            Jono d = m.palautaKulmat();
+            Jonoiteroitava it = d.palautaEnsimmainen(); 
+            while(it != null) {
+                Kordinaatti k = (Kordinaatti) it.palautaObjekti();
 
                 if (k.palautaX() > this.xMax) {
                     this.xMax = k.palautaX();
@@ -101,7 +107,7 @@ public class Diskreettiverkkorakennus {
                     this.yMax = k.palautaY();
 
                 }
-
+                it = it.palauataSeuraava();
             }
 
         }

@@ -5,6 +5,9 @@
  */
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
+
 /**
  *
  *
@@ -15,10 +18,13 @@ public class JatkuvaSolmu implements Iteroitava, Abstraktisolmu {
     private SolmuMuisti muisti;
     private int sijaintikeossa;
     private Verkko verkko;
+    private Jono naapurit;
+   
 
     public JatkuvaSolmu(Kordinaatti k) {
         this.k = k;
         this.muisti = new SolmuMuisti();
+        this.naapurit = new Jono();
     }
 
     @Override
@@ -69,5 +75,18 @@ public class JatkuvaSolmu implements Iteroitava, Abstraktisolmu {
     {
     return this.k;
     }
+    
+    public Jono palautaNaapurit()
+    {
+    return this.naapurit;
+    
+    }
+    public void asetaNaapurit(Jono jono)
+    {
+    this.naapurit = jono;
+    }
+
+
+    
 
 }

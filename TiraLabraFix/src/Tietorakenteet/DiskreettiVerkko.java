@@ -5,6 +5,8 @@
  */
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,8 +82,7 @@ public class DiskreettiVerkko implements Verkko {
      * @return ArrayList<Abstraktisolmu> Lista abstraktisolmuja
      *
      */
-    @Override
-    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node) {
+    public ArrayList<Abstraktisolmu> naapurid(Abstraktisolmu node) {
         ArrayList<Abstraktisolmu> listasolmuja = new ArrayList<Abstraktisolmu>();
         DiskreettiSolmu s = (DiskreettiSolmu) node;
         double x = s.palautaX();
@@ -125,7 +126,7 @@ public class DiskreettiVerkko implements Verkko {
      *
      * Palauttaa Atähtialgoritmin vaatiman heurestiikan
      *
-     * @param alku alkusolmu    
+     * @param alku alkusolmu
      * @param loppu loppusolmui
      * @return double heurestiikka
      */
@@ -168,6 +169,33 @@ public class DiskreettiVerkko implements Verkko {
             a.tyhjenna();
 
         }
+
+    }
+
+    @Override
+    public Jono naapurit(Abstraktisolmu node) {
+        Jono listasolmuja = new Jono();
+        DiskreettiSolmu s = (DiskreettiSolmu) node;
+        double x = s.palautaX();
+        double y = s.palautaY();
+        Kordinaatti[] k = new Kordinaatti[8];
+        k[0] = new Kordinaatti(x + this.ruudunpituus, y);
+        k[1] = new Kordinaatti(x, y + this.ruudunpituus);
+        k[2] = new Kordinaatti(x + this.ruudunpituus, y + this.ruudunpituus);
+        k[3] = new Kordinaatti(x - this.ruudunpituus, y);
+        k[4] = new Kordinaatti(x, y - this.ruudunpituus);
+        k[5] = new Kordinaatti(x + this.ruudunpituus, y - this.ruudunpituus);
+        k[6] = new Kordinaatti(x - this.ruudunpituus, y - this.ruudunpituus);
+        k[7] = new Kordinaatti(x - this.ruudunpituus, y + this.ruudunpituus);
+        for (int i = 0; i <= 7; i++) {
+            if (kartta.get(k[i]) != null) {
+                if (kartta.get(k[i]).palautaKulku() == true) {
+                    listasolmuja.lisaa(kartta.get(k[i]));
+                }
+            }
+        }
+
+        return listasolmuja;
 
     }
 

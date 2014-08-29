@@ -6,6 +6,8 @@
 
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jonoiteroitava;
+
 /**
  *
  * Abstraktisolmu rajapinta

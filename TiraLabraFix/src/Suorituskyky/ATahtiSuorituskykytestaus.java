@@ -50,8 +50,10 @@ public class ATahtiSuorituskykytestaus {
 
         int koko = k * k;
         HashMap<Kordinaatti, DiskreettiSolmu> solmukartta = new HashMap<Kordinaatti, DiskreettiSolmu>();
-        solmukartta.put(new Kordinaatti(0, 0), new DiskreettiSolmu(0, 0));
-        solmukartta.put(new Kordinaatti(k-1, k-1), new DiskreettiSolmu(k - 1, k - 1));
+        DiskreettiSolmu alku = new DiskreettiSolmu(0, 0);
+        DiskreettiSolmu loppu = new DiskreettiSolmu(k-1, k-1);
+        solmukartta.put(new Kordinaatti(0, 0), alku);
+        solmukartta.put(new Kordinaatti(k-1, k-1), loppu);
         for (DiskreettiSolmu solmut1 : solmut) {
             solmukartta.put(solmut1.palautaKordinaatit(), solmut1);
         }
@@ -61,15 +63,18 @@ public class ATahtiSuorituskykytestaus {
         for (int i = 0; i <= koko - 2; i++) {
             this.testauskartta.put(i, new Verkkoluokittelu(i, koko));
         }
+        algoritmi.asetaPisteet(alku, loppu);
         iterointi(koko, 0, 0, solmut);
        
         for (int i = 0; i <= koko - 2; i++) {
             Verkkoluokittelu l = this.testauskartta.get(i);
             System.out.println(i + " mustia. Aika: " + l.palautaaikakeskiarvo() + " Onnistumistod: " + l.palautaonnistumistodennakoisyys());
         }
+        
     }
 
     public void iterointi(int koko, int nyt, int mustia, ArrayList<DiskreettiSolmu> solmut) {
+        System.out.println("Iterointi: Koko: " + koko + ", nyt: " + nyt + ", mustia: " + mustia);
         if (nyt == koko - 2) {
             long aikaAlussa = System.currentTimeMillis();
             boolean k = algoritmi.laske();

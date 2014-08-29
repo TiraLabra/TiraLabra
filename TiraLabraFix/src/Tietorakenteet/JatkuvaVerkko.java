@@ -5,6 +5,8 @@
  */
 package Tietorakenteet;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,23 +16,26 @@ import java.util.HashMap;
  */
 public class JatkuvaVerkko implements Verkko {
 
-    HashMap<Kordinaatti, ArrayList<Abstraktisolmu>> solmukartta;
-    HashMap<Kordinaatti, Abstraktisolmu> tavkartta;
+    private Jono kaikkialkiot;
 
     public JatkuvaVerkko() {
-        this.solmukartta = new HashMap<Kordinaatti, ArrayList<Abstraktisolmu>>();
 
     }
-
-    @Override
-    public ArrayList<Abstraktisolmu> naapurit(Abstraktisolmu node) {
-        JatkuvaSolmu n = (JatkuvaSolmu) node;
-        return this.solmukartta.get(n.palautaKordinaatti());
+    
+    public void lisaaAlkio(JatkuvaSolmu s)
+    {
+    this.kaikkialkiot.lisaa(s);
+    s.asteaVerkko(this);
+    
     }
 
     @Override
     public boolean olemassa(Abstraktisolmu node) {
-        return solmukartta.containsKey(node);
+        JatkuvaSolmu s = (JatkuvaSolmu) node;
+        if (s.palautaVerkko() == this) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -55,11 +60,19 @@ public class JatkuvaVerkko implements Verkko {
     @Override
 
     public void tyhjenna() {
-        for (Kordinaatti k : this.tavkartta.keySet()) {
-            SolmuMuisti a = this.tavkartta.get(k).palautaSolmuMuisti();
-            a.tyhjenna();
+        Jonoiteroitava iter = kaikkialkiot.palautaEnsimmainen();
+        while (iter != null) {
+            JatkuvaSolmu s = (JatkuvaSolmu) iter.palautaObjekti();
+            s.palautaSolmuMuisti().tyhjenna();
 
+            iter = iter.palauataSeuraava();
         }
+    }
+
+    @Override
+    public Jono naapurit(Abstraktisolmu node) {
+        JatkuvaSolmu s = (JatkuvaSolmu) node;
+        return s.palautaNaapurit();
     }
 
 }
