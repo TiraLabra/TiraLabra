@@ -50,7 +50,7 @@ public class Runner {
      * @param algo Abstract sorting algorithm
      * @return (long) result in nanoseconds
      */
-    public static long timing(Arr array, Algo algo) {
+    public long timing(Arr array, Algo algo) {
 
         // reproduce of an array
         int[] a = array.get();

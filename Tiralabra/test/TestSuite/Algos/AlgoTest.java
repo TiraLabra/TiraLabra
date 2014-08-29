@@ -5,7 +5,6 @@
 package TestSuite.Algos;
 
 import TestSuite.Arrays.Arraymaker;
-import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -81,31 +80,12 @@ public class AlgoTest {
     }
 
     /**
-     * Test of toString method, of class Algo.
+     * Test of sorting method (uses arrays.sort), of class Algo.
      */
     @Test
     public void testNewAlgoArraySortMethod() {
-        int[] a = new int[]{0, 1, 0, 0,1,1,10,33,3333333,12};
+        int[] a = new int[]{0, 1, 0, 0, 1, 1, 10, 33, 3333333, 12};
         newAlgo.sort(a);
         assertArrayEquals(a, new int[]{0, 0, 0, 1, 1, 1, 10, 12, 33, 3333333});
     }
-
-    /**
-     * new Algo implementation.
-     *
-     * Sorts with Arrays.sort
-     */
-    public class AlgoImpl extends Algo {
-
-        @Override
-        public void sort(int[] a) {
-            Arrays.sort(a);
-        }
-
-        @Override
-        public String toString() {
-            return "Hogwarts School of Witchcraft and Wizardry";
-        }
-    }
-
 }

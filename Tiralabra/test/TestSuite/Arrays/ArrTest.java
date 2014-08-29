@@ -26,7 +26,7 @@ public class ArrTest {
      */
     @Test
     public void testGetMethod() {
-        assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, testArr.get());
+        assertArrayEquals(new Arraymaker().sorted(100), testArr.get());
     }
 
     /**
@@ -36,16 +36,4 @@ public class ArrTest {
     public void testToString() {
         assertEquals(testArr.toString(), "TestArr");
     }
-
-    public class ArrImpl extends Arr {
-
-        public int[] get() {
-            return new int[]{1, 2, 3, 4, 5, 6};
-        }
-
-        public String toString() {
-            return "TestArr";
-        }
-    }
-
 }
