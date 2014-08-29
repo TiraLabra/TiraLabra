@@ -6,7 +6,6 @@ package TestSuite.Engine;
 
 import TestSuite.Algos.Algo;
 import TestSuite.Arrays.Arr;
-import java.util.Arrays;
 
 /**
  * Algorithm test engine
@@ -40,12 +39,6 @@ public class Runner {
             sum += timing(array, algo);
         }
 
-        //TODO print to text file
-        /*
-        System.out.println("sorting " + array + " array ");
-        System.out.println(algo + "´s average runtime is " + (sum / repeat) + " nanoseconds");
-        System.out.println("");
-        */
         return sum / repeat;
     }
 
@@ -57,18 +50,16 @@ public class Runner {
      * @param algo Abstract sorting algorithm
      * @return (long) result in nanoseconds
      */
-    private static long timing(Arr array, Algo algo) {
+    public static long timing(Arr array, Algo algo) {
 
         // reproduce of an array
         int[] a = array.get();
-//        System.out.println(Arrays.toString(a));
 
         long start = System.nanoTime();
 
         algo.sort(a);
 
         long end = System.nanoTime();
-//        System.out.println(Arrays.toString(a));
 
         return end - start;
     }
