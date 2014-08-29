@@ -23,6 +23,7 @@ public class Node implements Comparable<Node> {
         this.name = name;
         this.shortest = Integer.MAX_VALUE;
         this.routes = new ArrayList<Edge>();
+        this.heuristic = 0;
     }
     
     /**
@@ -77,6 +78,28 @@ public class Node implements Comparable<Node> {
     
     public int getY() {
         return this.y;
+    }
+    
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        Node compared = (Node) o;
+
+        if (this.name != compared.toString()) {
+            return false;
+        }
+
+        if (this.x != compared.getX() || this.y != compared.getY()) {
+            return false;
+        }
+
+        return true;
     }
     
     /**
