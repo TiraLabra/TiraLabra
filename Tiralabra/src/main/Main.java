@@ -1,22 +1,46 @@
 package main;
 
-import java.util.Random;
 import java.util.Scanner;
-import math.ExtendedEuclideanResult;
-import math.MathUtil;
 import polynomial.IPolynomial;
 import polynomial.PolynomialUtil;
-import polynomial.impl.array.ArrayPolynomial;
-import polynomial.impl.linkedlist.LinkedListPolynomial;
 
 /**
- *
+ * Main method for irreducible polynomial finder.
+ * 
+ * Give as argument a list of characteristics and degrees separated by comma and spaces.
+ * 
+ * Example: If the input is 2,10 3,15 the program will output two irreducible polynomials:
+ * one of characteristic 2 and degree 10 which is irreducible over Z_2, and one
+ * of characteristic 3 and degree 15 which is irreducible over Z_3.
+ * 
+ * The output will be in csv-format, and the program also reports the number of
+ * polynomials it tried.
+ * 
  * @author Sebastian Björkqvist
  */
 public class Main {
 
     public static void main(String[] args) {
 
+        if (args == null || args.length == 0) {
+            startCLI();
+        }
+        
+        System.out.println("Polynomial, Tries");
+        
+        for (String arg : args) {
+            String[] thisInput = arg.split(",");
+            int characteristic = Integer.parseInt(thisInput[0]);
+            int degree = Integer.parseInt(thisInput[1]);
+            IPolynomial polynomial = PolynomialUtil.findIrreduciblePolynomial(characteristic, degree, false);
+            int numberOfTries = PolynomialUtil.getNumberOfPolynomialsTriedLastTime();
+            System.out.print(polynomial);
+            System.out.println(", " + numberOfTries);
+        }
+        
+    }
+
+    private static void startCLI() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("-- Irreducible polynomial finder --");
@@ -32,103 +56,5 @@ public class Main {
         long endTime = System.currentTimeMillis();
         System.out.println("Irreducible polynomial: " + polynomial);
         System.out.println("Time elapsed: " + ((endTime - startTime) / 1000.0) + " seconds");
-    }
-
-    public static void polynomialDemo() {
-
-        int characteristic = 7;
-
-        IPolynomial polynomial = new ArrayPolynomial(characteristic);
-
-        polynomial.addTerm(1, 0);
-        polynomial.addTerm(1, 1);
-        polynomial.addTerm(1, 3);
-
-        boolean polynomial1IsIrreducible = true;
-
-        for (int i = 0; i < characteristic; i++) {
-            if (polynomial.evaluate(i) % characteristic == 0) {
-                polynomial1IsIrreducible = false;
-            }
-        }
-
-        if (polynomial1IsIrreducible) {
-            System.out.println(polynomial + " is irreducible mod " + characteristic);
-        } else {
-            System.out.println(polynomial + " is not irreducible mod " + characteristic);
-        }
-
-        IPolynomial polynomial2 = new ArrayPolynomial(characteristic);
-
-        polynomial2.addTerm(1, 0);
-        polynomial2.addTerm(2, 2);
-        polynomial2.addTerm(1, 3);
-
-        boolean polynomial2IsIrreducible = true;
-
-        for (int i = 0; i < characteristic; i++) {
-            if (polynomial2.evaluate(i) % characteristic == 0) {
-                polynomial2IsIrreducible = false;
-            }
-        }
-
-        if (polynomial2IsIrreducible) {
-            System.out.println(polynomial2 + " is irreducible mod " + characteristic);
-        } else {
-            System.out.println(polynomial2 + " is not irreducible mod " + characteristic);
-        }
-
-        IPolynomial polynomial3 = new ArrayPolynomial(characteristic);
-
-        polynomial3.addTerm(1, 0);
-        polynomial3.addTerm(2, 2);
-        polynomial3.addTerm(-1, 3);
-
-        boolean polynomial3IsIrreducible = true;
-
-        for (int i = 0; i < characteristic; i++) {
-            if (polynomial.evaluate(i) % characteristic == 0) {
-                polynomial3IsIrreducible = false;
-            }
-        }
-
-        if (polynomial3IsIrreducible) {
-            System.out.println(polynomial3 + " is irreducible mod " + characteristic);
-        } else {
-            System.out.println(polynomial3 + " is not irreducible mod " + characteristic);
-        }
-
-        IPolynomial polynomial4 = polynomial.multiply(polynomial2);
-        IPolynomial polynomial5 = polynomial.multiply(polynomial3);
-
-        System.out.println(polynomial4);
-        System.out.println(polynomial5);
-
-        System.out.println("Expected gcd: " + polynomial);
-        System.out.println("Returned gcd: " + PolynomialUtil.gcd(polynomial4, polynomial5));
-    }
-
-    public static IPolynomial findIrreduciblePolynomialOfCharacteristic2(int degree) {
-        Random random = new Random();
-
-        int tries = 0;
-
-        while (true) {
-            tries++;
-            System.out.println("Try " + tries);
-            IPolynomial candidate = new LinkedListPolynomial(2);
-            candidate.addTerm(1, degree);
-            for (int exponent = degree - 1; exponent > 0; exponent--) {
-                int coefficient = random.nextInt(2);
-                if (coefficient != 0) {
-                    candidate.addTerm(1, exponent);
-                }
-            }
-            candidate.addTerm(1, 0);
-            if (!PolynomialUtil.isReducible(candidate, true)) {
-                System.out.println("Tries: " + tries);
-                return candidate;
-            }
-        }
     }
 }

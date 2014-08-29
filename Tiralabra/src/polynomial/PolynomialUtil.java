@@ -13,6 +13,8 @@ import polynomial.impl.linkedlist.LinkedListPolynomial;
  */
 public class PolynomialUtil {
 
+    private static int numberOfPolynomialsTriedLastTime;
+    
     /**
      * Calculates the greatest common divisor of two polynomials.
      *
@@ -246,6 +248,7 @@ public class PolynomialUtil {
                 if (debugPrint) {
                     System.out.println("Total amount of tries: " + tries);
                 }
+                numberOfPolynomialsTriedLastTime = tries;
                 return candidate;
             }
         }
@@ -289,4 +292,8 @@ public class PolynomialUtil {
         return xBase;
     }
 
+    public static int getNumberOfPolynomialsTriedLastTime() {
+        return numberOfPolynomialsTriedLastTime;
+    }
+    
 }
