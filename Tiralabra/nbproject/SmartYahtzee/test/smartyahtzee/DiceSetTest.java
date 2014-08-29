@@ -157,7 +157,7 @@ public class DiceSetTest {
         }
         int[] lock = {6, 6};
         instance.lockMany(lock);
-        String expResult = "5 5 (6) (6) 6 ";
+        String expResult = "(6) (6) 6 5 5 ";
         assertEquals(instance.toString(), expResult);
 
     }
