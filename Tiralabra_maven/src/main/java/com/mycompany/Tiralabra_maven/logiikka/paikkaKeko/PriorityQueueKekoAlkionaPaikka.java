@@ -36,16 +36,6 @@ public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
     }
 
     /**
-     * Keosta poistetaan kekoalkio.
-     *
-     * @param kekoAlkio poistettava kekoalkio
-     */
-    @Override
-    public void heapDelete(Paikka kekoAlkio) {
-        this.q.remove(kekoAlkio);
-    }
-
-    /**
      * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on
      * muuttunut.
      *

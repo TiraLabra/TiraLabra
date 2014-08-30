@@ -1,3 +1,4 @@
+//KESKENERÄINEN LUOKKA
 package com.mycompany.Tiralabra_maven.logiikka.keko;
 
 import java.lang.reflect.Array;
@@ -88,11 +89,6 @@ public class OmaKeko<E> implements MinKeko<E> {
         this.heapSize--;
         this.heapHeapify(1);
         return min;
-    }
-
-    @Override
-    public void heapDelete(E kekoAlkio) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

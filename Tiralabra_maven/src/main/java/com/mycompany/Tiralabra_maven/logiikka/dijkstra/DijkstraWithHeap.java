@@ -40,13 +40,14 @@ public class DijkstraWithHeap {
     /**
      * Metodi suorittaa Dijkstran algoritmin ratkaisun.
      *
-     * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
+     * @return Lähtö- ja maalipisteiden välisen nopeimman polun kulkemiseen
+     * käytetty aika.
      */
     public int ratkaise() {
 
         this.initialiseSingleSource();
 
-//                PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
+//        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
 
 //        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
@@ -61,7 +62,8 @@ public class DijkstraWithHeap {
         Paikka paikkaV;
 
 //        while (!heap.heapIsEmpty()) {
-        while (this.maaliPoistettuKeosta == false) {
+//        lopetetaan etsintä kun nopein polku maalipisteeseen löydetty
+        while (!this.maaliPoistettuKeosta) {
             paikkaU = heap.heapDelMin();
             paikkaU.etaisyysAlkuunLaskettu = true;
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
@@ -104,14 +106,10 @@ public class DijkstraWithHeap {
 
 //    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
-    
 //    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
-
     private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
         OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
-
-
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
@@ -149,9 +147,9 @@ public class DijkstraWithHeap {
     }
 
     /**
-     * Metodi laittaa lyhimmalla polulla olevat Paikat pinoon.
+     * Metodi laittaa nopeimmalla polulla olevat Paikat pinoon.
      *
-     * @return pino, jossa lyhimman polun paikat
+     * @return pino, jossa nopeimman polun paikat
      */
     public OmaPinoAlkionaPaikka shortestPath() {
 
@@ -169,9 +167,9 @@ public class DijkstraWithHeap {
 
     /**
      * Metodi laittaa pinoon kaikki Paikat, joissa kaydaan kun ratkaisualgoritmi
-     * suoritettiin .
+     * suoritettiin.
      *
-     * @return pino, jossa kaikki paikat, joissa etaisyysAlkuunLaskettu
+     * @return pino, jossa kaikki paikat, joissa etaisyysAlkuun laskettu
      */
     public OmaPinoAlkionaPaikka kaydytPaikat() {
 

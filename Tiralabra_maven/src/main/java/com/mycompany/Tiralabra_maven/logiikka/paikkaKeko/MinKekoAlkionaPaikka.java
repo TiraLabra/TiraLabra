@@ -24,13 +24,6 @@ public interface MinKekoAlkionaPaikka {
     public Paikka heapDelMin();
 
     /**
-     * Keosta poistetaan kekoalkio.
-     *
-     * @param kekoAlkio poistettava kekoalkio
-     */
-    public void heapDelete(Paikka kekoAlkio);
-
-    /**
      * Asettaa kekoalkion oikealle paikalle keossa. Algoritmeissa tätä metodia
      * kutsutaan VAIN kun Paikka.etaisyysAlkuun on muuttunut eli myös kekoalkion
      * avain on muuttunut.

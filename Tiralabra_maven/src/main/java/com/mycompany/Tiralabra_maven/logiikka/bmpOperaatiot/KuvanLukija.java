@@ -1,39 +1,31 @@
-// KESKENERÄINEN
 package com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot;
 
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * KESKENERÄINEN
+ * Luokka jonka avulla luetaan lähtotietokartta bmp-tiedostosta.
  */
 public class KuvanLukija {
 
     private BufferedImage image;
     private Piste lahtoPiste;
     private Piste maaliPiste;
-//    private Piste lahtoPiste = new Piste(1, 1);
-//    private Piste maaliPiste = new Piste(22, 22);
-
-    public BufferedImage getImage() {
-        return this.image;
-    }
 
     /**
-     * ALUSTAVA metodi avaa bmp-tiedoston ja muuttaa sen kokonaislukutaulukoksi,
-     * joka tulostetaan. Sitten kuvan ensimmäinen pikseli muutetaan siniseksi ja
-     * kuva tallennetaan uudella nimellä.
+     * Metodi avaa bmp-tiedoston ja muuttaa sen värit kokonaislukutaulukoksi.
+     *
+     * @return Kokonaislukutaulukko, jossa kukin luku kertoo kyseiseen paikkaan
+     * siirtymiseen kuluvan ajan.
+     *
+     * @param Luettavan bmp-tiedoston nimi.
      */
     public int[][] seeBMPImage(String BMPFileName) {
-//    public void seeBMPImage(String BMPFileName) {
-//        BufferedImage image = ImageIO.read(getClass().getResource(BMPFileName));
         File BMPFile = new File(BMPFileName);
-
 
         try {
             this.image = ImageIO.read(BMPFile);
@@ -41,11 +33,7 @@ public class KuvanLukija {
             System.out.println("Virhe kuvatiedoston lukemisessa.");
         }
 
-
-
-
         int[][] array2D = new int[image.getWidth()][image.getHeight()];
-
 
         int color;
 
@@ -74,8 +62,6 @@ public class KuvanLukija {
             }
         }
 
-
-
 //////        for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
 //////            for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
 //////                System.out.print(array2D[xPixel][yPixel]);
@@ -85,15 +71,26 @@ public class KuvanLukija {
 //////
 //////        System.out.println("lahto: " + this.lahtoPiste.i + ", " + this.lahtoPiste.j);
 //////        System.out.println("maali: " + this.maaliPiste.i + ", " + this.maaliPiste.j);
-        
 
         return array2D;
     }
 
+    /**
+     * Metodi palauttaa bmp-tiedostostosta löydetyn vihreän pikselin kohdalla
+     * olevan pisteen.
+     *
+     * @return Piste-olio, jonka koordinaatit ovat lähtöpisteen.
+     */
     public Piste getLahtoPiste() {
         return this.lahtoPiste;
     }
 
+    /**
+     * Metodi palauttaa bmp-tiedostostosta löydetyn punaisen pikselin kohdalla
+     * olevan pisteen.
+     *
+     * @return Piste-olio, jonka koordinaatit ovat maalipisteen.
+     */
     public Piste getMaaliPiste() {
         return this.maaliPiste;
     }

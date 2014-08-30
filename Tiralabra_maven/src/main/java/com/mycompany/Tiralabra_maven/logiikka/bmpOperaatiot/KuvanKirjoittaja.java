@@ -10,12 +10,30 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * KESKENERÄINEN
+ * Luokka, jonka avulla tulokset (reitti ja läpikäydyt paikat) kirjoitetaan
+ * bmp-tiedostoon.
  */
 public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
+    /**
+     * Metodi, joka kirjoittaa tulokset (reitti ja läpikäydyt paikat)
+     * bmp-tiedostoon.
+     *
+     * @param BMPFileName Lähtötietokuvan nimi. Esim. "kartta1.bmp"
+     *
+     * @param outputFileEnding Lähtötietokuvan nimen perään liitettävä teksti
+     * tulostietokuvan nimen muodostamiseksi. Esim. kun
+     * outputFileEnding="TULOS", saadaan tulostietokuvan nimeksi
+     * "kartta1TULOS.bmp"
+     *
+     * @param kaydytPaikat Pino Paikka-olioita, joissa on käyty eli joiden
+     * etäisyys lähtopisteestä on laskettu algoritmin suorittamisen aikana.
+     *
+     * @param reittiPino Pino Paikka-olioita, jotka muodostavat nopeimman reitin
+     * lähtöpisteestä maalipisteeseen.
+     */
     public void writeImage(String BMPFileName, String outputFileEnding, OmaPinoAlkionaPaikka kaydytPaikat, OmaPinoAlkionaPaikka reittiPino) {
 
         File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) + outputFileEnding + ".bmp");
@@ -42,9 +60,6 @@ public class KuvanKirjoittaja {
             image.setRGB(paikkaU.i, paikkaU.j, Color.BLUE.getRGB());
 
         }
-
-//            image.setRGB(0, 4, Color.GRAY.getRGB());
-
 
         try {
             ImageIO.write(image, "bmp", outputfile);

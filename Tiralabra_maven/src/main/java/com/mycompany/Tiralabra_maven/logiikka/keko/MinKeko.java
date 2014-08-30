@@ -25,13 +25,6 @@ public interface MinKeko<E> {
     public E heapDelMin();
 
     /**
-     * Keosta poistetaan kekoalkio.
-     *
-     * @param kekoAlkio poistettava kekoalkio
-     */
-    public void heapDelete(E kekoAlkio);
-
-    /**
      * Asettaa kekoalkion oikealle paikalle keossa, jos kekoalkion avain on muuttunut.
      *
      * @param kekoAlkio oikealle paikalle asetettava kekoalkio

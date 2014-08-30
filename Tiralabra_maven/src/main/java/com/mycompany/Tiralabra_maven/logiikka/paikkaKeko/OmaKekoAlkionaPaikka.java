@@ -1,17 +1,15 @@
-// KESKENERÄINEN LUOKKA
 package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- * KESKENERÄINEN LUOKKA Oman tietorakenteen (minimikeko) toteutus. Keon alkiot
+ * Oman tietorakenteen (minimikeko) toteutus. Keon alkiot
  * tyyppiä Paikka.
  */
 public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
     private int heapSize;
-//    public int heapSize;
 
     public OmaKekoAlkionaPaikka() {
         this.kekoTaulukko = new Paikka[1000000];
@@ -62,55 +60,37 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         }
     }
 
-//    private void heapHeapify(int i) {
-//
-//        int left;
-//        int right;
-//        int largest;
-//
-//        left = left(i);
-//        right = right(i);
-//        if (right <= this.heapSize) {
-//            if (this.kekoTaulukko[left].compareTo(this.kekoTaulukko[right]) < 0) {
-//                largest = left;
-//            } else {
-//                largest = right;
-//            }
-//            if (this.kekoTaulukko[i].compareTo(this.kekoTaulukko[largest]) > 0) {
-//                vaihda(i, largest);
-//                heapHeapify(largest);
-//            }
-//        } else if (left == this.heapSize && this.kekoTaulukko[i].compareTo(this.kekoTaulukko[left]) > 0) {
-//            vaihda(i, left);
-//        }
-//    }
-
+    /**
+     * Kekoon lisätään kekoalkio.
+     *
+     * @param kekoAlkio lisättävä kekoalkio
+     */
     @Override
     public void heapInsert(Paikka kekoAlkio) {
-//        System.out.println("heapInsert");
+//////        System.out.println("heapInsert");
         int i;
         this.heapSize++;
         i = this.heapSize;
-//        if (i > 1) {
         while (i > 1 && this.kekoTaulukko[parent(i)].compareTo(kekoAlkio) > 0) {
             this.kekoTaulukko[i] = this.kekoTaulukko[parent(i)];
             this.kekoTaulukko[i].heapIndex = i;
             i = parent(i);
-//                if (i == 1) {
-//                    break;
-//                }
         }
-//        }
 
         kekoAlkio.heapIndex = i;
         this.kekoTaulukko[i] = kekoAlkio;
 
-//        System.out.println("i=" + i + " " + this.kekoTaulukko[i].etaisyysAlkuun + "," + this.kekoTaulukko[i].etaisyysLoppuun);
-//
-//        this.testTulostaKekoTaulukko();
+//////        System.out.println("i=" + i + " " + this.kekoTaulukko[i].etaisyysAlkuun + "," + this.kekoTaulukko[i].etaisyysLoppuun);
+//////
+//////        this.testTulostaKekoTaulukko();
 
     }
 
+    /**
+     * Keosta poistetaan huipulla oleva pienimmän avaimen sisältävä kekoalkio.
+     *
+     * @return keosta poistettu pienimmän avaimen sisältänyt kekoalkio
+     */
     @Override
     public Paikka heapDelMin() {
         Paikka min = this.kekoTaulukko[1];
@@ -119,12 +99,6 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         this.heapSize--;
         this.heapHeapify(1);
         return min;
-//        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void heapDelete(Paikka kekoAlkio) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -147,6 +121,11 @@ public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
         }
     }
 
+    /**
+     * Tarkastaa onko keko tyhjä.
+     *
+     * @return palautetaan true, jos keko on tyhjä
+     */
     @Override
     public boolean heapIsEmpty() {
         if (this.heapSize == 0) {

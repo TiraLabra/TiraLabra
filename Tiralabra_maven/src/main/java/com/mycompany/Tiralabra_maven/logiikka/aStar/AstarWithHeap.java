@@ -40,16 +40,17 @@ public class AstarWithHeap {
     /**
      * Metodi suorittaa Astar-algoritmin ratkaisun.
      *
-     * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
+     * @return Lähtö- ja maalipisteiden välisen nopeimman polun kulkemiseen
+     * käytetty aika.
      */
     public int ratkaise() {
 
         this.initialiseAstar();
 
 //        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
-        
+
 //        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
-        
+
         OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
 //////        System.out.println(this.paikat[0][0].vierusPaikat);
@@ -59,7 +60,8 @@ public class AstarWithHeap {
         Paikka paikkaU;
         Paikka paikkaV;
 
-        while (this.maaliPoistettuKeosta == false) {
+//        lopetetaan etsintä kun nopein polku maalipisteeseen löydetty
+        while (!this.maaliPoistettuKeosta) {
             paikkaU = heap.heapDelMin();
             paikkaU.etaisyysAlkuunLaskettu = true;
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
@@ -103,10 +105,8 @@ public class AstarWithHeap {
 
 //    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
-    
 //    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
-    
     private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
         OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
 
@@ -145,9 +145,9 @@ public class AstarWithHeap {
     }
 
     /**
-     * Metodi laittaa lyhimmalla polulla olevat Paikat pinoon.
+     * Metodi laittaa nopeimmalla polulla olevat Paikat pinoon.
      *
-     * @return pino, jossa lyhimman polun paikat
+     * @return pino, jossa nopeimman polun paikat
      */
     public OmaPinoAlkionaPaikka shortestPath() {
 
@@ -162,12 +162,12 @@ public class AstarWithHeap {
 
         return pino;
     }
-    
-        /**
+
+    /**
      * Metodi laittaa pinoon kaikki Paikat, joissa kaydaan kun ratkaisualgoritmi
-     * suoritettiin .
+     * suoritettiin.
      *
-     * @return pino, jossa kaikki paikat, joissa etaisyysAlkuunLaskettu
+     * @return pino, jossa kaikki paikat, joissa etaisyysAlkuun laskettu
      */
     public OmaPinoAlkionaPaikka kaydytPaikat() {
 
@@ -183,7 +183,6 @@ public class AstarWithHeap {
 
         return pino;
     }
-
 
     /**
      * Kehityksen aikaista testitulostusta. Metodi tulostaa taulukon
