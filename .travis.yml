@@ -1,8 +1,4 @@
-language: java
-jdk:
-  - oraclejdk7
-  - openjdk6
+language: haskell
+ghc: 7.8
 notifications:
   email: false
-
-script: "./run_tests.sh"

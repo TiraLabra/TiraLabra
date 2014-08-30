@@ -1,0 +1,16 @@
+Mentsu Kantsu  (Honor (Kazehai Ton)) Nothing
+Mentsu Kantsu  (Suited ManTile San False) Nothing
+Mentsu Kantsu  (Suited PinTile Chuu False) Nothing
+Mentsu Kantsu  (Suited SouTile Ryan False) Nothing
+Mentsu Koutsu  (Honor (Kazehai Pei)) Nothing
+Mentsu Koutsu  (Suited PinTile Wu False) Nothing
+Mentsu Shuntsu (Suited ManTile Chii False) Nothing
+Mentsu Shuntsu (Suited ManTile Chii False) Nothing
+Mentsu Shuntsu (Suited ManTile Ii False) Nothing
+Mentsu Shuntsu (Suited ManTile Rou False) Nothing
+Mentsu Shuntsu (Suited ManTile Rou False) Nothing
+Mentsu Shuntsu (Suited PinTile Ii False) Nothing
+Mentsu Shuntsu (Suited PinTile Ryan False) Nothing
+Mentsu Shuntsu (Suited SouTile Ryan False) Nothing
+Mentsu Shuntsu (Suited SouTile Suu False) Nothing
+Mentsu Shuntsu (Suited SouTile Wu False) Nothing
