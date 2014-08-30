@@ -88,7 +88,7 @@ shantenin laskemista.
 **Bonus:** Shanten-arvojen jakauma 100000 satunnaiselle aloituskädelle.
 
 
-![Shanten-arvojen jakauma 100000 satunnaiselle aloituskädelle](shanten_distribution.svg)
+![Shanten-arvojen jakauma 100000 satunnaiselle aloituskädelle](shanten_distribution.svg?raw=1)
 
 Mielenkiintoista on, että 2- ja 3-shanten ovat vastaavasti yleisempiä kuin 6- ja
 5-shanten, mutta 1-shanten ei ole yleisempi kuin 7-shanten, ja tenpai on
