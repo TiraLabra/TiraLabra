@@ -63,13 +63,13 @@ public class KuvanLukija {
                     array2D[xPixel][yPixel] = este;
                 } else if (color == Color.GRAY.getRGB()) {
                     array2D[xPixel][yPixel] = vaikeaKulkuinen;
-                } else if (color == Color.RED.getRGB()) {
-                    array2D[xPixel][yPixel] = 3;
-                    this.lahtoPiste = new Piste(xPixel, yPixel);
-                    System.out.println("punainen");
                 } else if (color == Color.GREEN.getRGB()) {
-                    System.out.println("sininen");
-                    array2D[xPixel][yPixel] = 4;
+                    array2D[xPixel][yPixel] = 1;
+                    this.lahtoPiste = new Piste(xPixel, yPixel);
+                    System.out.println("vihrea");
+                } else if (color == Color.RED.getRGB()) {
+                    System.out.println("punainen");
+                    array2D[xPixel][yPixel] = 1;
                     this.maaliPiste = new Piste(xPixel, yPixel);
 //                } else if (color == Color.GREEN.getRGB()) {
 //                    array2D[xPixel][yPixel] = vaikeaKulkuinen;

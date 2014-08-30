@@ -18,6 +18,7 @@ public class DijkstraWithHeap {
     private int[][] kartta;
     private int[][] reittiKartta;
     private Paikka[][] paikat;
+    private boolean maaliPoistettuKeosta; // aStar
 
     /**
      * Luokan DijkstraWithHeap konstruktori.
@@ -57,11 +58,16 @@ public class DijkstraWithHeap {
         Paikka paikkaU;
         Paikka paikkaV;
 
-        while (!heap.heapIsEmpty()) {
+//        while (!heap.heapIsEmpty()) {
+        while (this.maaliPoistettuKeosta == false) {
             paikkaU = heap.heapDelMin();
+            paikkaU.kayty = true;
+            if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
+                this.maaliPoistettuKeosta = true; // aStar
+            } // aStar
             System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
             while (!paikkaU.vierusPaikat.stackIsEmpty()) {
-                paikkaV=paikkaU.vierusPaikat.stackPop();
+                paikkaV = paikkaU.vierusPaikat.stackPop();
                 if (relax(paikkaU, paikkaV)) {
                     System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
@@ -140,7 +146,7 @@ public class DijkstraWithHeap {
 
     /**
      * Metodi laittaa lyhimmalla polulla olevat Paikat pinoon.
-     * 
+     *
      * @return pino, jossa lyhimman polun paikat
      */
     public OmaPinoAlkionaPaikka shortestPath() {
@@ -155,8 +161,27 @@ public class DijkstraWithHeap {
         }
 
         return pino;
+    }
 
+    /**
+     * Metodi laittaa pinoon kaikki Paikat, joissa kaydaan kun ratkaisualgoritmi
+     * suoritettiin .
+     *
+     * @return pino, jossa kaikki paikat, joissa kayty
+     */
+    public OmaPinoAlkionaPaikka kaydytPaikat() {
 
+        OmaPinoAlkionaPaikka pino = new OmaPinoAlkionaPaikka();
+
+        for (int i = 0; i < this.paikat.length; i++) {
+            for (int j = 0; j < this.paikat[0].length; j++) {
+                if (this.paikat[i][j].kayty) {
+                    pino.stackPush(this.paikat[i][j]);
+                }
+            }
+        }
+
+        return pino;
     }
 
     /**

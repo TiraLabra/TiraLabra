@@ -59,6 +59,7 @@ public class AstarWithHeap {
 
         while (this.maaliPoistettuKeosta == false) {
             paikkaU = heap.heapDelMin();
+            paikkaU.kayty = true;
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
                 this.maaliPoistettuKeosta = true; // aStar
             } // aStar
@@ -91,7 +92,7 @@ public class AstarWithHeap {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton
                 this.paikat[i][j] = new Paikka(i, j, this.kartta[i][j]);
-                this.paikat[i][j].etaisyysLoppuun = Math.abs(this.lahtoPiste.i - this.paikat[i][j].i) + Math.abs(this.lahtoPiste.j - this.paikat[i][j].j); // ASTAR
+                this.paikat[i][j].etaisyysLoppuun = Math.abs(this.maaliPiste.i - this.paikat[i][j].i) + Math.abs(this.maaliPiste.j - this.paikat[i][j].j); // ASTAR
             }
         }
 
@@ -156,9 +157,29 @@ public class AstarWithHeap {
         }
 
         return pino;
-
-
     }
+    
+        /**
+     * Metodi laittaa pinoon kaikki Paikat, joissa kaydaan kun ratkaisualgoritmi
+     * suoritettiin .
+     *
+     * @return pino, jossa kaikki paikat, joissa kayty
+     */
+    public OmaPinoAlkionaPaikka kaydytPaikat() {
+
+        OmaPinoAlkionaPaikka pino = new OmaPinoAlkionaPaikka();
+
+        for (int i = 0; i < this.paikat.length; i++) {
+            for (int j = 0; j < this.paikat[0].length; j++) {
+                if (this.paikat[i][j].kayty) {
+                    pino.stackPush(this.paikat[i][j]);
+                }
+            }
+        }
+
+        return pino;
+    }
+
 
     /**
      * Kehityksen aikaista testitulostusta. Metodi tulostaa taulukon
