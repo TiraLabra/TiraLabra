@@ -117,9 +117,11 @@ instance Bifunctor RootedBranch where
     bimap f g (RootedBranch inner xs) = RootedBranch (f inner) (bimap f g <$> xs)
     bimap _ g (RootedLeaf outer)      = RootedLeaf (g outer)
 
-instance (Pretty r, Pretty i, Pretty l) => Pretty (RootedTree r i l) where
+instance (Pretty r, Pretty i, Pretty l) => Pretty (RootedTree [r] i l) where -- XXX [r] is artificial convenience restriction for WaitTree
     pretty (RootedTree root branches) =
-        pretty root PP.<$$> prettyList branches PP.<+> PP.hardline
+        foldl1 (\x y -> x PP.<+> ":" PP.<+> y) (map pretty root)
+        PP.<$$> prettyList branches
+        PP.<+> PP.hardline
 
 instance (Pretty inner, Pretty leaf) => Pretty (RootedBranch inner leaf) where
     pretty (RootedLeaf leaf)       = "└╼" PP.<+> pretty leaf

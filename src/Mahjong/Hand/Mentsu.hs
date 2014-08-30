@@ -62,6 +62,8 @@ mentsuTiles (Mentsu mk t _) = case mk of
                                   Kantsu  -> replicate 4 t
                                   Jantou  -> replicate 2 t
 
+-- Construct
+
 shuntsu, koutsu, kantsu, jantou :: Tile -> Mentsu
 shuntsu = Mentsu Shuntsu `flip` Nothing
 koutsu  = Mentsu Koutsu `flip` Nothing

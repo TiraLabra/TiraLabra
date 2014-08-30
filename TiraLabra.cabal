@@ -36,8 +36,8 @@ library
   default-language:    Haskell2010
 
 executable mahjong-hand
-  main-is:            main.hs
-  build-depends:      base, TiraLabra, ansi-wl-pprint
+  main-is:             main.hs
+  build-depends:       base, TiraLabra, ansi-wl-pprint
   default-language:    Haskell2010
 
 test-suite test
@@ -52,8 +52,11 @@ test-suite test
                      , tasty-hunit
   default-language:    Haskell2010
 
+flag benchmarkBuildGWT
+   description: Benchamrk only the *slow* buildGWT's
+   default:     False
 
-benchmark algorithms
+benchmark algo
    type:               exitcode-stdio-1.0
    main-is:            benchmark.hs
    hs-source-dirs:     tests
@@ -66,3 +69,6 @@ benchmark algorithms
                      , deepseq-generics
                      , semigroups
    default-language:   Haskell2010
+
+   if flag(benchmarkBuildGWT)
+      cpp-options: -DGWT_ONLY

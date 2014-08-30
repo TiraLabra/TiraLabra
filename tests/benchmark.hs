@@ -1,6 +1,7 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 ------------------------------------------------------------------------------
 -- | 
@@ -16,8 +17,9 @@
 module Main where
 
 import Data.Functor
+import Data.Maybe
 import Data.List (sort, group)
-import Data.List.NonEmpty (NonEmpty(..))
+import Data.List.NonEmpty (NonEmpty(..), toList)
 import TestImport (replicateM)
 import Criterion
 import Criterion.Main
@@ -32,11 +34,18 @@ import Mahjong.Hand.Algo
 import Mahjong.Hand.Algo.WaitTree
 
 main :: IO ()
-main =
-    defaultMain suite
-    --let go = do print =<< rnf . buildGWTs' [] <$> randomTiles 13
-    --            go
-    --    in go
+main = defaultMain
+#if GWT_ONLY
+     gwtSuite
+#else
+    suite
+#endif
+
+
+-- Bar chart of shanten distribution (feed to gnuplot)
+--    xs <- flip mapM [1..100000] $ \_ -> fromJust . shanten <$> randomTiles 13
+--    let xs' = map (\xs -> (head xs, length xs)) $ group $ sort xs
+--    mapM_ (\(sh, n) -> putStrLn $ show n ++ " " ++ show sh) xs'
 
 -- TODO: instead of supplying a single env, randomize the runs themselves
 suite :: [Benchmark]
@@ -46,23 +55,24 @@ suite =
         , bench "19" $ nfIO $ tilesGroupL <$> randomTiles 19
         , bench "22" $ nfIO $ tilesGroupL <$> randomTiles 22
         , bench "24" $ nfIO $ tilesGroupL <$> randomTiles 24
-        , bench "26" $ nfIO $ tilesGroupL <$> randomTiles 26
         ]
     , bgroup "tilesSplitGroupL (random)"
         [ bench "13" $ nfIO $ tilesSplitGroupL <$> randomTiles 13
         , bench "19" $ nfIO $ tilesSplitGroupL <$> randomTiles 19
         , bench "22" $ nfIO $ tilesSplitGroupL <$> randomTiles 22
         , bench "24" $ nfIO $ tilesSplitGroupL <$> randomTiles 24
-        , bench "26" $ nfIO $ tilesSplitGroupL <$> randomTiles 26
         ]
     , bgroup "shanten (random, tiles)"
         [ bench "13" $ nfIO $ shanten <$> randomTiles 13
         , bench "22" $ nfIO $ shanten <$> randomTiles 22
         , bench "24" $ nfIO $ shanten <$> randomTiles 24
         ]
-    , bgroup "buildGreedyWaitTree (random tiles)"
-        [ bench "13" $ nfIO $ buildGWTs' [] <$> randomTiles 13
-        ]
+    ]
+
+gwtSuite :: [Benchmark]
+gwtSuite = 
+    [ bgroup "buildGWT (random tiles)"
+        [ bench "13" $ nfIO $ buildGWTs' [undefined, undefined] <$> randomTiles 7 ]
     ]
 
 -- TODO The algos assume no uncalled kantsu - so they should be ignored
@@ -88,5 +98,5 @@ instance NFData TenpaiOp
 instance NFData MentsuKind
 instance (NFData r, NFData i, NFData l) => NFData (RootedTree r i l) where rnf = genericRnf
 instance (NFData i, NFData l) => NFData (RootedBranch i l) where rnf = genericRnf
-instance NFData a => NFData (NonEmpty a) where rnf = genericRnf
-instance NFData TileGroup where rnf = genericRnf
+instance NFData a => NFData (NonEmpty a) where rnf (x :| xs) = rnf x `seq` rnf xs
+instance NFData TileGroup where rnf _ = ()

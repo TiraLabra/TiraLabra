@@ -4,7 +4,7 @@
 
 Plärinät
 [määrittelystä](blob/master/Docs/Määrittelydokumentti.md),
-[suunnittelusta ja rakenteesta](blob/master/Docs/Suunnitteludokumentti.md) sekä
+[toteutuksesta ja rakenteesta](blob/master/Docs/Toteutusdokumentti.md) sekä
 [testauksesta](blob/master/Docs/Testausdokumentti.md) `Docs`-kansiossa.
 
 Tekninen plärinä

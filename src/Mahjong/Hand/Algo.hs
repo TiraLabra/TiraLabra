@@ -84,6 +84,13 @@ type DevOp' = Either Tile (Tile, Tile, [Tile], [Wait])
 -- over leftovers) and are placed at the head of the list /on that level of
 -- recursion/.  However, there is no guarentee that minimal groupings
 -- couldn't reside in the result's tail.
+--
+-- There are a few cases when the same grouping is considered twice or
+-- more. For instance, 223 is taken as [22, 3], [23, 2], [2, 23] and [2, 2,
+-- 3]. Notice the two duplicates. Same thing for 222: [222], [22, 2], [2,
+-- 22] and [2,2,2].  A fix for this would be rather tricky to add, but
+-- maybe if we changed the input from [Tile] to [(Tile, Int)] where second
+-- value stands for the number of those tiles it could fit well.
 tilesGroupL :: [Tile] -> [Grouping]
 tilesGroupL = go . sort
     where
@@ -104,12 +111,13 @@ tilesGroupL = go . sort
                     | otherwise                         = []
 
                 takeShuntsu = concat $ catMaybes
-                    [ ts_complete    <$> my <*> mz
-                    , ts_sequentical <$> my
-                    , ts_inbetween   <$> mz
-                    ] where
-                        my = succMay x >>= \y' -> y' <$ guard (y' `elem` y:xs)
-                        mz = succMay x >>= succMay >>= \z -> z <$ guard (z `elem` y:xs)
+                        [ ts_complete    <$> my <*> mz
+                        , ts_sequentical <$> my
+                        , ts_inbetween   <$> mz
+                        ]
+
+                my = succMay x >>= \y' -> y' <$ guard (y' `elem` y:xs)
+                mz = succMay x >>= succMay >>= \z -> z <$ guard (z `elem` y:xs)
 
                 ts_complete y' z  = GroupComplete (shuntsu x) `goWith` delete y' (delete z (y:xs))
                 ts_sequentical y' = GroupWait Shuntsu [x,y'] (catMaybes [predMay x, succMay y']) `goWith` delete y' (y:xs)
@@ -179,12 +187,11 @@ instance ShantenOf ([Mentsu], [Tile]) where
 -- algorithm starting at `n`, with additional check for complete hand
 -- support (invalid (Nothing) if no pair).
 --
---
 -- = Technical details
 --
 -- The subtract algorithm substracts from 8 2 for every complete mentsu,
--- 1 for pairs of related tiles and adds the number of shuntsu or shuntsu
--- waits over 4.
+-- 1 for pairs of related tiles and adds (max 0, number of shuntsu or
+-- shuntsu waits - 4).
 --
 -- The last addition comes from the fact that with 5 complete mentsu or
 -- shuntsu waits one of them /has/ to be discarded before tenpai (because
@@ -238,7 +245,7 @@ devops f_ts w_ts
             | otherwise               = concatMap (either (const []) (map Left)) w_ts
 
         meldLeftovers = melding f_ts w_ts ++ meldingFree
-        
+
         -- discard a free tile to "meld" to another free tile a wait.
         meldingFree = do
             (f_t, f_ts') <- removeEach f_ts
