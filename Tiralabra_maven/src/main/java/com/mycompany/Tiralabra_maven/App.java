@@ -94,14 +94,14 @@ public class App {
 
         KuvanLukija kuvanLukija = new KuvanLukija();
         KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
-        String inputFileName = "bitmaps/testikartta256.bmp";
+        String inputFileName = "bitmaps/lahto256.bmp";
 
 
         int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
 
 
-//        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
-        AstarWithHeap ratkaisija = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+//        AstarWithHeap ratkaisija = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
 
         System.out.println(ratkaisija.ratkaise());
 

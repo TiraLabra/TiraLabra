@@ -61,7 +61,7 @@ public class DijkstraWithHeap {
 //        while (!heap.heapIsEmpty()) {
         while (this.maaliPoistettuKeosta == false) {
             paikkaU = heap.heapDelMin();
-            paikkaU.kayty = true;
+            paikkaU.etaisyysAlkuunLaskettu = true;
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
                 this.maaliPoistettuKeosta = true; // aStar
             } // aStar
@@ -167,7 +167,7 @@ public class DijkstraWithHeap {
      * Metodi laittaa pinoon kaikki Paikat, joissa kaydaan kun ratkaisualgoritmi
      * suoritettiin .
      *
-     * @return pino, jossa kaikki paikat, joissa kayty
+     * @return pino, jossa kaikki paikat, joissa etaisyysAlkuunLaskettu
      */
     public OmaPinoAlkionaPaikka kaydytPaikat() {
 
@@ -175,7 +175,7 @@ public class DijkstraWithHeap {
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
-                if (this.paikat[i][j].kayty) {
+                if (this.paikat[i][j].etaisyysAlkuunLaskettu) {
                     pino.stackPush(this.paikat[i][j]);
                 }
             }

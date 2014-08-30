@@ -49,10 +49,10 @@ public class Paikka implements Comparable<Paikka> {
      */
     public int heapIndex;
     /**
-     * Alussa kayty=false. Jos ratkaisun aikana kaydaan ko. Paikassa asetetaan
-     * kayty=true.
+     * Alussa etaisyysAlkuunLaskettu=false. Jos ratkaisun aikana kaydaan ko. Paikassa asetetaan
+     * etaisyysAlkuunLaskettu=true.
      */
-    public boolean kayty;
+    public boolean etaisyysAlkuunLaskettu;
 
     /**
      * Luokan Paikka konstruktori.
@@ -71,7 +71,7 @@ public class Paikka implements Comparable<Paikka> {
         this.vierusPaikat = new OmaPinoAlkionaPaikka();
         this.polku = null;
         this.heapIndex = 0;
-        this.kayty=false;
+        this.etaisyysAlkuunLaskettu=false;
     }
 
     /**
