@@ -21,7 +21,7 @@ public class AstarWithHeap {
 
     /**
      * Luokan AstarWithHeap konstruktori.
-     * 
+     *
      * @param kartta aikakustannutkartta kokonaislukutaulukkona
      * @param lahtoPiste haettavan nopeimman reitin lähtöpiste
      * @param maaliPiste haettavan nopeimman reitin maalipiste
@@ -39,7 +39,7 @@ public class AstarWithHeap {
 
     /**
      * Metodi suorittaa Astar-algoritmin ratkaisun.
-     * 
+     *
      * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
      */
     public int ratkaise() {
@@ -55,6 +55,7 @@ public class AstarWithHeap {
         System.out.println("");
 
         Paikka paikkaU;
+        Paikka paikkaV;
 
         while (this.maaliPoistettuKeosta == false) {
             paikkaU = heap.heapDelMin();
@@ -62,7 +63,9 @@ public class AstarWithHeap {
                 this.maaliPoistettuKeosta = true; // aStar
             } // aStar
             System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
-            for (Paikka paikkaV : paikkaU.vierusPaikat) {
+
+            while (!paikkaU.vierusPaikat.stackIsEmpty()) {
+                paikkaV = paikkaU.vierusPaikat.stackPop();
                 if (relax(paikkaU, paikkaV)) {
                     System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
@@ -121,7 +124,7 @@ public class AstarWithHeap {
 
     private void asetaVieruspaikka(Paikka paikka, int iVierus, int jVierus) {
         if (iVierus >= 0 && iVierus < this.paikat.length && jVierus >= 0 && jVierus < this.paikat[0].length) {
-            paikka.vierusPaikat.add(this.paikat[iVierus][jVierus]);
+            paikka.vierusPaikat.stackPush(this.paikat[iVierus][jVierus]);
             System.out.println("i, j, iVierus, jVierus: " + paikka.i + paikka.j + " " + iVierus + jVierus);
         }
 
@@ -138,7 +141,7 @@ public class AstarWithHeap {
 
     /**
      * Metodi laittaa lyhimmalla polulla olevat Paikat pinoon.
-     * 
+     *
      * @return pino, jossa lyhimman polun paikat
      */
     public OmaPinoAlkionaPaikka shortestPath() {

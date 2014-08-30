@@ -1,5 +1,6 @@
 package com.mycompany.Tiralabra_maven.logiikka;
 
+import com.mycompany.Tiralabra_maven.logiikka.paikkaPino.OmaPinoAlkionaPaikka;
 import java.util.ArrayList;
 
 /**
@@ -41,7 +42,7 @@ public class Paikka implements Comparable<Paikka> {
      * Keskellä karttaa olevalla Paikalla 4 vieruspaikka ja esim. nurkassa
      * olevalla Paikalla 2 vieruspaikkaa.
      */
-    public ArrayList<Paikka> vierusPaikat;
+    public OmaPinoAlkionaPaikka vierusPaikat;
     
     /**
      * Luokan Paikka attribuutti polku sisältää viitteen siihen Paikka-luokan
@@ -69,7 +70,7 @@ public class Paikka implements Comparable<Paikka> {
         this.aikaKustannus = aikaKustannus;
         this.etaisyysAlkuun = Integer.MAX_VALUE / 2;
         this.etaisyysLoppuun = 0;
-        this.vierusPaikat = new ArrayList<Paikka>();
+        this.vierusPaikat = new OmaPinoAlkionaPaikka();
         this.polku = null;
         this.heapIndex=0;
     }
