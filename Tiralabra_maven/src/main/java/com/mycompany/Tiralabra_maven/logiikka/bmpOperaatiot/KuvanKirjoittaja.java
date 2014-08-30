@@ -16,9 +16,9 @@ public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
-    public void writeImage(String BMPFileName, String outputFileEnding,OmaPinoAlkionaPaikka kaydytPaikat, OmaPinoAlkionaPaikka reittiPino) {
+    public void writeImage(String BMPFileName, String outputFileEnding, OmaPinoAlkionaPaikka kaydytPaikat, OmaPinoAlkionaPaikka reittiPino) {
 
-        File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) +outputFileEnding+ ".bmp");
+        File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) + outputFileEnding + ".bmp");
 
         try {
             this.image = ImageIO.read(new File(BMPFileName));
@@ -31,36 +31,22 @@ public class KuvanKirjoittaja {
         while (!kaydytPaikat.stackIsEmpty()) {
             paikkaK = kaydytPaikat.stackPop();
             color = image.getRGB(paikkaK.i, paikkaK.j);
-//            if (paikkaK.aikaKustannus < Integer.MAX_VALUE / 10) {
-            if (!(color == Color.BLACK.getRGB() || color == Color.GREEN.getRGB() || color == Color.RED.getRGB())) {
+            if (!(color == Color.BLACK.getRGB() || color == Color.GREEN.getRGB() || color == Color.RED.getRGB() || color == Color.GRAY.getRGB())) {
                 image.setRGB(paikkaK.i, paikkaK.j, Color.YELLOW.getRGB());
             }
-//            try {
-//                ImageIO.write(image, "bmp", outputfile);
-//                
-//            } catch (IOException e) {
-//            }
         }
-
-
-        //        Color myBlue = new Color(0, 0, 255);
-//        int blue = myBlue.getRGB();
 
         Paikka paikkaU;
         while (!reittiPino.stackIsEmpty()) {
             paikkaU = reittiPino.stackPop();
-//            System.out.println(paikkaU.i + ", " + paikkaU.j);
-//            this.reittiKartta[paikkaU.i][paikkaU.j] = 0;
-//                    image.setRGB(paikkaU.i, paikkaU.j, blue);
             image.setRGB(paikkaU.i, paikkaU.j, Color.BLUE.getRGB());
-//                    image.setRGB(paikkaU.i, paikkaU.j, Color.YELLOW.getRGB());
 
         }
 
+//            image.setRGB(0, 4, Color.GRAY.getRGB());
 
 
         try {
-//            outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) + "tulos.bmp");
             ImageIO.write(image, "bmp", outputfile);
         } catch (IOException e) {
         }

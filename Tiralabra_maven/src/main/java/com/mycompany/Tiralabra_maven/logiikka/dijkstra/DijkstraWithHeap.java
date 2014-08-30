@@ -43,17 +43,19 @@ public class DijkstraWithHeap {
      * @return Lähtö- ja maalipisteiden välisen lyhimmän polun pituus.
      */
     public int ratkaise() {
-        // Dijkstra with min-heap
 
         this.initialiseSingleSource();
 
-//        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
+//                PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
+
 //        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
+
         OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
-        System.out.println(this.paikat[0][0].vierusPaikat);
 
-        System.out.println("");
+//////        System.out.println(this.paikat[0][0].vierusPaikat);
+//////
+//////        System.out.println("");
 
         Paikka paikkaU;
         Paikka paikkaV;
@@ -65,25 +67,25 @@ public class DijkstraWithHeap {
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
                 this.maaliPoistettuKeosta = true; // aStar
             } // aStar
-            System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
+//////            System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
             while (!paikkaU.vierusPaikat.stackIsEmpty()) {
                 paikkaV = paikkaU.vierusPaikat.stackPop();
                 if (relax(paikkaU, paikkaV)) {
-                    System.out.println("V muuttui");
+//////                    System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
-                    System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
+//////                    System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
                 }
             }
-//        System.out.println("keon koko: "+heap.heapSize);
+//////        System.out.println("keon koko: "+heap.heapSize);
         }
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
-                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
+//////                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
             }
         }
 
-        System.out.println("");
+//////        System.out.println("");
 
 
         return this.paikat[this.maaliPiste.i][this.maaliPiste.j].etaisyysAlkuun;
@@ -102,8 +104,10 @@ public class DijkstraWithHeap {
 
 //    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
+    
 //    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
 //        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
+
     private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
         OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
 
@@ -129,7 +133,7 @@ public class DijkstraWithHeap {
     private void asetaVieruspaikka(Paikka paikka, int iVierus, int jVierus) {
         if (iVierus >= 0 && iVierus < this.paikat.length && jVierus >= 0 && jVierus < this.paikat[0].length) {
             paikka.vierusPaikat.stackPush(this.paikat[iVierus][jVierus]);
-            System.out.println("i, j, iVierus, jVierus: " + paikka.i + paikka.j + " " + iVierus + jVierus);
+//////            System.out.println("i, j, iVierus, jVierus: " + paikka.i + paikka.j + " " + iVierus + jVierus);
         }
 
     }
@@ -138,7 +142,7 @@ public class DijkstraWithHeap {
         if (paikkaV.etaisyysAlkuun > paikkaU.etaisyysAlkuun + Math.abs(paikkaV.aikaKustannus)) {
             paikkaV.etaisyysAlkuun = paikkaU.etaisyysAlkuun + Math.abs(paikkaV.aikaKustannus);
             paikkaV.polku = paikkaU;
-            System.out.println("relax");
+//////            System.out.println("relax");
             return true;
         }
         return false;

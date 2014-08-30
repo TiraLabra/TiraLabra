@@ -50,8 +50,7 @@ public class KuvanLukija {
         int color;
 
         int este = Integer.MAX_VALUE / 10;
-//        int este = 9;
-        int vaikeaKulkuinen = 2;
+        int vaikeaKulkuinen = 5;
 
         for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
             for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
@@ -59,38 +58,33 @@ public class KuvanLukija {
                 if (color == Color.WHITE.getRGB()) {
                     array2D[xPixel][yPixel] = 1;
                 } else if (color == Color.BLACK.getRGB()) {
-                    System.out.println("musta");
+//////                    System.out.println("musta");
                     array2D[xPixel][yPixel] = este;
                 } else if (color == Color.GRAY.getRGB()) {
                     array2D[xPixel][yPixel] = vaikeaKulkuinen;
                 } else if (color == Color.GREEN.getRGB()) {
                     array2D[xPixel][yPixel] = 1;
                     this.lahtoPiste = new Piste(xPixel, yPixel);
-                    System.out.println("vihrea");
+//////                    System.out.println("vihrea");
                 } else if (color == Color.RED.getRGB()) {
-                    System.out.println("punainen");
+//////                    System.out.println("punainen");
                     array2D[xPixel][yPixel] = 1;
                     this.maaliPiste = new Piste(xPixel, yPixel);
-//                } else if (color == Color.GREEN.getRGB()) {
-//                    array2D[xPixel][yPixel] = vaikeaKulkuinen;
-//                } else {
-//                    array2D[xPixel][yPixel] = 8; // ?
                 }
             }
         }
 
-//        Color.
 
 
-        for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
-            for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
-                System.out.print(array2D[xPixel][yPixel]);
-            }
-            System.out.println("");
-        }
-
-        System.out.println("lahto: " + this.lahtoPiste.i + ", " + this.lahtoPiste.j);
-        System.out.println("maali: " + this.maaliPiste.i + ", " + this.maaliPiste.j);
+//////        for (int yPixel = 0; yPixel < image.getHeight(); yPixel++) {
+//////            for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
+//////                System.out.print(array2D[xPixel][yPixel]);
+//////            }
+//////            System.out.println("");
+//////        }
+//////
+//////        System.out.println("lahto: " + this.lahtoPiste.i + ", " + this.lahtoPiste.j);
+//////        System.out.println("maali: " + this.maaliPiste.i + ", " + this.maaliPiste.j);
         
 
         return array2D;

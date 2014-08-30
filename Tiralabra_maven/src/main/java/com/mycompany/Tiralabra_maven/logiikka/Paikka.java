@@ -92,10 +92,5 @@ public class Paikka implements Comparable<Paikka> {
     public int compareTo(Paikka paikka) {
         return (this.etaisyysAlkuun + this.etaisyysLoppuun) - (paikka.etaisyysAlkuun + paikka.etaisyysLoppuun);
     }
-    /**
-     * Ei kaytossa. POISTA.
-     */
-//    public Paikka getPaikka(int i, int j) {
-//        return this;
-//    }
+
 }
