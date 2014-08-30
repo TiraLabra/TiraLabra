@@ -7,12 +7,13 @@ import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.KuvanKirjoittaja;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.KuvanLukija;
 import com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot.XXXX;
 import com.mycompany.Tiralabra_maven.logiikka.dijkstra.DijkstraWithHeap;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaPino.OmaPinoAlkionaPaikka;
 import com.mycompany.Tiralabra_maven.logiikka.testausta.OmaKekoEtyyppiTestausta;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.PriorityQueue;
-import java.util.Stack;
+//import java.util.Stack;
 import javax.imageio.ImageIO;
 
 /**
@@ -99,14 +100,14 @@ public class App {
         int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
 
 
-        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
-//        AstarWithHeap ratkaisija = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
+//        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+        AstarWithHeap ratkaisija = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
 
         System.out.println(ratkaisija.ratkaise());
 
-        Stack<Paikka> reittiPino = ratkaisija.shortestPath();
-        
-                kuvanKirjoittaja.writeImage(inputFileName, kuvataulukko,reittiPino);
+        OmaPinoAlkionaPaikka reittiPino = ratkaisija.shortestPath();
+
+        kuvanKirjoittaja.writeImage(inputFileName, kuvataulukko, reittiPino);
 
 
 //        ratkaisija.testiTulostaReittikartta(reittiPino);

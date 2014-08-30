@@ -2,11 +2,12 @@
 package com.mycompany.Tiralabra_maven.logiikka.bmpOperaatiot;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaPino.OmaPinoAlkionaPaikka;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Stack;
+//import java.util.Stack;
 import javax.imageio.ImageIO;
 
 /**
@@ -16,7 +17,7 @@ public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
-    public void writeImage(String BMPFileName, int[][] kuvataulukko,Stack<Paikka> reittiPino) {
+    public void writeImage(String BMPFileName, int[][] kuvataulukko,OmaPinoAlkionaPaikka reittiPino) {
 
         try {
             this.image = ImageIO.read(new File(BMPFileName));
@@ -28,8 +29,8 @@ public class KuvanKirjoittaja {
         int blue = myBlue.getRGB();
 
         Paikka paikkaU;
-                while (!reittiPino.empty()) {
-            paikkaU = reittiPino.pop();
+                while (!reittiPino.stackIsEmpty()) {
+            paikkaU = reittiPino.stackPop();
 //            System.out.println(paikkaU.i + ", " + paikkaU.j);
 //            this.reittiKartta[paikkaU.i][paikkaU.j] = 0;
                     image.setRGB(paikkaU.i, paikkaU.j, blue);

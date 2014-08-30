@@ -4,7 +4,8 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.OmaKekoAlkionaPaikka;
 import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PriorityQueueKekoAlkionaPaikka;
-import java.util.Stack;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaPino.OmaPinoAlkionaPaikka;
+//import java.util.Stack;
 
 /**
  * Astar-algoritmin apufunktiot ja varsinaisen ratkaisun sisältävä luokka.
@@ -136,38 +137,43 @@ public class AstarWithHeap {
     }
 
     /**
-     * Metodi tulostaa lähtö- ja maalipisteiden välisen lyhyimmäin polun
-     * Paikkojen i- ja j-koordinaatit (lukuunottamatta itse lähtö- ja
-     * maalipisteitä). Lisäksi metodi asettaa taulukon reittiKartta arvoksi 0,
-     * kohtiin joiden kautta lyhin polku kulkee.
+     * Metodi laittaa lyhimmalla polulla olevat Paikat pinoon.
+     * 
+     * @return pino, jossa lyhimman polun paikat
      */
-    public void shortestPath() {
+    public OmaPinoAlkionaPaikka shortestPath() {
 
-        Stack<Paikka> pino = new Stack<Paikka>();
+        OmaPinoAlkionaPaikka pino = new OmaPinoAlkionaPaikka();
 
         Paikka paikkaU = this.paikat[this.maaliPiste.i][this.maaliPiste.j].polku;
 
         while (!(paikkaU.i == lahtoPiste.i && paikkaU.j == lahtoPiste.j)) {
-            pino.push(paikkaU);
+            pino.stackPush(paikkaU);
             paikkaU = paikkaU.polku;
         }
 
-        System.out.println("polku");
-
-        while (!pino.empty()) {
-            paikkaU = pino.pop();
-            System.out.println(paikkaU.i + ", " + paikkaU.j);
-            this.reittiKartta[paikkaU.i][paikkaU.j] = 0;
-        }
+        return pino;
 
 
     }
 
     /**
-     * Kehityksen aikaista testitulostusta.
-     * Metodi tulostaa taulukon reittiKartta arvot.
+     * Kehityksen aikaista testitulostusta. Metodi tulostaa taulukon
+     * reittiKartta arvot.
      */
-    public void testiTulostaReittikartta() {
+    public void testiTulostaReittikartta(OmaPinoAlkionaPaikka pino) {
+
+        Paikka paikkaU;
+
+        System.out.println("polku");
+
+        while (!pino.stackIsEmpty()) {
+            paikkaU = pino.stackPop();
+            System.out.println(paikkaU.i + ", " + paikkaU.j);
+            this.reittiKartta[paikkaU.i][paikkaU.j] = 0;
+        }
+
+
         System.out.println("reittikartta");
         for (int i = 0; i < this.reittiKartta.length; i++) {
             for (int j = 0; j < this.reittiKartta[0].length; j++) {
