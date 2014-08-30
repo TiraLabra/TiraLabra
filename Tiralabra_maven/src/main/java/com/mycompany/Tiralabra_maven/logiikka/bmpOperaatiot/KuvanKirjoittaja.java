@@ -16,9 +16,9 @@ public class KuvanKirjoittaja {
 
     private BufferedImage image;
 
-    public void writeImage(String BMPFileName, int[][] kuvataulukko, OmaPinoAlkionaPaikka kaydytPaikat, OmaPinoAlkionaPaikka reittiPino) {
+    public void writeImage(String BMPFileName, String outputFileEnding,OmaPinoAlkionaPaikka kaydytPaikat, OmaPinoAlkionaPaikka reittiPino) {
 
-        File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) + "tulos.bmp");
+        File outputfile = new File(BMPFileName.substring(0, BMPFileName.length() - 4) +outputFileEnding+ ".bmp");
 
         try {
             this.image = ImageIO.read(new File(BMPFileName));

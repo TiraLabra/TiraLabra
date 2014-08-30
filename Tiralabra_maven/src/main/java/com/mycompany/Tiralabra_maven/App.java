@@ -94,22 +94,42 @@ public class App {
 
         KuvanLukija kuvanLukija = new KuvanLukija();
         KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
-        String inputFileName = "bitmaps/lahto256.bmp";
-
+        String inputFileName = "bitmaps/pienitestikartta256.bmp";
+        OmaPinoAlkionaPaikka etaisyysAlkuunLaskettuPaikatPinoDijkstra;
+        OmaPinoAlkionaPaikka reittiPinoDijkstra;
+        OmaPinoAlkionaPaikka etaisyysAlkuunLaskettuPaikatPinoAstar;
+        OmaPinoAlkionaPaikka reittiPinoAstar;
+        long aikaAlussa;
+        long aikaLopussa;
+        long ratkaisuAikaDijkstra;
+        long ratkaisuAikaAstar;
 
         int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
 
 
-        DijkstraWithHeap ratkaisija = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
-//        AstarWithHeap ratkaisija = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+        DijkstraWithHeap ratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+        AstarWithHeap ratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
 
-        System.out.println(ratkaisija.ratkaise());
+        aikaAlussa = System.currentTimeMillis();
+        int polunPituusDijkstra = ratkaisijaDijkstra.ratkaise();
+        aikaLopussa = System.currentTimeMillis();
+        ratkaisuAikaDijkstra = aikaLopussa - aikaAlussa;
 
-        OmaPinoAlkionaPaikka kaydytPaikatPino = ratkaisija.kaydytPaikat();
-        OmaPinoAlkionaPaikka reittiPino = ratkaisija.shortestPath();
+        aikaAlussa = System.currentTimeMillis();
+        int polunPituusAstar = ratkaisijaAstar.ratkaise();
+        aikaLopussa = System.currentTimeMillis();
+        ratkaisuAikaAstar = aikaLopussa - aikaAlussa;
 
-        kuvanKirjoittaja.writeImage(inputFileName, kuvataulukko, kaydytPaikatPino,reittiPino);
+        etaisyysAlkuunLaskettuPaikatPinoDijkstra = ratkaisijaDijkstra.kaydytPaikat();
+        reittiPinoDijkstra = ratkaisijaDijkstra.shortestPath();
+        kuvanKirjoittaja.writeImage(inputFileName, "DIJKSTRA", etaisyysAlkuunLaskettuPaikatPinoDijkstra, reittiPinoDijkstra);
 
+        etaisyysAlkuunLaskettuPaikatPinoAstar = ratkaisijaAstar.kaydytPaikat();
+        reittiPinoAstar = ratkaisijaAstar.shortestPath();
+        kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", etaisyysAlkuunLaskettuPaikatPinoAstar, reittiPinoAstar);
+
+        System.out.println("Dijkstra: polun pituus=" + polunPituusDijkstra + ", ratkaisuun kului aikaa " + ratkaisuAikaDijkstra + " ms.");
+        System.out.println("Astar: polun pituus=" + polunPituusAstar + ", ratkaisuun kului aikaa " + ratkaisuAikaAstar + " ms.");
 
 //        ratkaisija.testiTulostaReittikartta(reittiPino);
 
