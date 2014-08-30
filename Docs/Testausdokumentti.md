@@ -33,8 +33,8 @@ tiilet ja testataan sisältääkö tuloste alkuperäiset setit.
 (1), tenpai (0), valmis (-1), tai reunatapaus "väärästi valmis" (4 settiä ja
 shuntsuwait) (ei mitään).
 
-Odotuspuut (`buildGWT`, `buildGWTs`, `buildGWTs'`) on testattu siltä
-**TODO writeme**
+Odotuspuiden testit (`buildGWT`, `buildGWTs`, `buildGWTs'`) varmistavat, että
+puun minimikorkeus on kaikilla testikäsillä käden shanten.
 
 ## Suorituskyky
 
@@ -49,8 +49,8 @@ pitäisi intuitiivisesti olla huomattavasti nopeampaa ainakin suurissa
 teennäistapauksissa.
 
 Odotuspuiden suorituskyvyn testaus satunnaisella kädellä criterionilla on
-vähintään humorista, koska puun koko vaihtelee todella paljon ja tuloksia ei
-pysty tulkitsemaan criterionin heuristiikkojen hajotessa. Kuitenkin puun luonti
-näyttäisi olevan yllätävän tehokasta yleisessäkin tapauksessa, alle puoli
-sekuntia. Eihän näitä puita kukaan mihinkään oikeasti tällaisena voi käyttää
-(eihän?), korkeintaan järkevämpien ratkaisuiden debuggauksen apuna.
+vähintään humoristista, koska puun koko vaihtelee todella paljon eikä tuloksissa
+ole mitään mieltä - tarpeeksi ison shantenin ja sopivalla aloituskädellä puun
+evaluointi ei valmistu edes tunneissa.  Mutta ei näitä puita kukaan mihinkään
+oikeasti tällaisena käytä (eihän?), korkeintaan järkevämpien ratkaisuiden
+debuggauksen apuna (jos siinäkään). Kiva puuharjoitus joka tapauksessa.

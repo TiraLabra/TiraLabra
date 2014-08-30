@@ -28,7 +28,7 @@ aikavaativuus lähes määritelmästä johtuen luokkaa O(n<sup>2</sup>).
 Käsiteltäviä tiiliä on kuitenkin aina <= 14 (neljä samaa (kutsumaton kantsu)
 tekevät pienen poikkeuksen), joten reaalitapauksissa neliöllisyys ei ole
 ongelma. Algot käyttävät muutamaa apumuuttujaa, jotka ovat vakiokokoisia.
-Tilavaativuus on siis vakio. Tuloslistan koko on toisaalta n<sup>2</sup>, mutta
+Tilavaativuus on siis vakio. Tuloslistan koko on toisaalta neliöllinen, mutta
 sitä ei missään vaiheessa tarvitse pitää kokonaisuudessaan muistissa (eikä ~14
 tiilellä koko ole päätä huimaava muutenkaan).
 

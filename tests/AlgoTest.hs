@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 ------------------------------------------------------------------------------
--- | 
+-- |
 -- Module         : AlgoTest
 -- Copyright      : (C) 2014 Samuli Thomasson
 -- License        : BSD-style (see the file LICENSE)
@@ -122,7 +122,7 @@ testHands =
     ]
 
 complete_1 = GroupWait Koutsu undefined ["M4"] : replicate 4 (GroupComplete undefined)
- 
+
 -- | pair wait
 tenpai_1 = GroupLeftover "S1"
          : replicate 4 men
