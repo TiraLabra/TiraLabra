@@ -46,8 +46,8 @@ public class AStarAlgoritmiTest {
         if (kulunutAika < 210) {
             fail("Suoritukseen kului epäilyttävän vähän aikaa (" + kulunutAika + " ms), 1 ms hidaste ei toimi?");
         }
-        if (kulunutAika > 1200) {
-            fail("Aikaa kului yli 1200 ms. aikaa kului " + kulunutAika + "ms");
+        if (kulunutAika > 1500) {
+            fail("Aikaa kului yli 1500 ms. aikaa kului " + kulunutAika + "ms");
         }
         assertEquals(76, algoritmi.getReitti().getKuljettuMatka());
     }
