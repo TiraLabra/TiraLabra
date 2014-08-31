@@ -1,6 +1,7 @@
 package Collections;
 
 import PackerX.Node;
+import PackerX.TreeMember;
 import java.util.Random;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public final class PriorityQueueTest {
 
     @Test
     public void testEnqueueNodes() {
-        PriorityQueue<Node> nodes = new PriorityQueue<>(Node.class);
+        PriorityQueue<TreeMember> nodes = new PriorityQueue<>(TreeMember.class);
         final int lowestValue = 10;
         final int multi = 2;
         for (int i = lowestValue; i < lowestValue + 10; i++) {

@@ -3,6 +3,7 @@ package Compressors;
 import Collections.BitSet;
 import PackerX.FileStream;
 import PackerX.Node;
+import PackerX.TreeMember;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -96,13 +97,13 @@ public final class HuffmanDecompressor extends FileCompressionController {
      * @param node The current node in the recursion.
      * @return The character from the leaf.
      */
-    private char decodeChar(final BitSet bits, final Node node) {
+    private char decodeChar(final BitSet bits, final TreeMember node) {
         if (node.isLeaf()) {
-            return node.getSymbol();
+            return ((Node)node).getSymbol();
         }
         final boolean turnRight = bits.get(readBits);
         readBits++;
-        final Node nodeToTurn = turnRight ? node.getRight() : node.getLeft();
+        final TreeMember nodeToTurn = turnRight ? node.getRight() : node.getLeft();
         return decodeChar(bits, nodeToTurn);
     }
 

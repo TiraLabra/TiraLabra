@@ -5,8 +5,10 @@ import Collections.BitSet;
 import Collections.Dictionary;
 import Collections.Dictionary.KeyValuePair;
 import Collections.PriorityQueue;
+import PackerX.Branch;
 import PackerX.FileStream;
 import PackerX.Node;
+import PackerX.TreeMember;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -20,7 +22,7 @@ import java.io.Reader;
  */
 public final class HuffmanCompressor extends FileCompressionController {
 
-    private final PriorityQueue<Node> nodeQueue;
+    private final PriorityQueue<TreeMember> nodeQueue;
     private final Dictionary<Character, Node> nodes;
     private final Dictionary<Character, BitImmutableCollection> characterEncoding;
     private final StringBuilder readText;
@@ -33,7 +35,7 @@ public final class HuffmanCompressor extends FileCompressionController {
      */
     public HuffmanCompressor(final FileStream file, final PrintStream STDOUT) {
         super(file, STDOUT);
-        nodeQueue = new PriorityQueue<>(Node.class);
+        nodeQueue = new PriorityQueue<>(TreeMember.class);
         nodes = new Dictionary<>();
         characterEncoding = new Dictionary<>();
         readText = new StringBuilder(100);
@@ -93,9 +95,9 @@ public final class HuffmanCompressor extends FileCompressionController {
      */
     private void createTheHuffmanTree() {
         while (nodeQueue.size() > 1) {
-            final Node left = nodeQueue.dequeue();
-            final Node right = nodeQueue.dequeue();
-            final Node parent = new Node('c', 0, left, right);
+            final TreeMember left = nodeQueue.dequeue();
+            final TreeMember right = nodeQueue.dequeue();
+            final TreeMember parent = new Branch(left, right);
 
             nodeQueue.enqueue(parent);
         }
@@ -118,7 +120,7 @@ public final class HuffmanCompressor extends FileCompressionController {
     private void writeHuffmanTree() throws IOException {
         try (final DataOutputStream writer = new DataOutputStream(getFile().getOutputStream());
                 final ObjectOutputStream treeWriter = new ObjectOutputStream(getFile().getOutputStream())) {
-            final Node huffmanTree = nodeQueue.dequeue();
+            final TreeMember huffmanTree = nodeQueue.dequeue();
             treeWriter.writeObject(huffmanTree);
             writeCharacterBits(new BitImmutableCollection(), huffmanTree);
             final BitSet bits = new BitSet();
@@ -141,12 +143,12 @@ public final class HuffmanCompressor extends FileCompressionController {
      * @param path The current path in the tree.
      * @param node The current node in the recursion.
      */
-    private void writeCharacterBits(final BitImmutableCollection path, final Node node) {
+    private void writeCharacterBits(final BitImmutableCollection path, final TreeMember node) {
         if (node == null) {
             return;
         }
-        final Node leftNode = node.getLeft();
-        final Node rightNode = node.getRight();
+        final TreeMember leftNode = node.getLeft();
+        final TreeMember rightNode = node.getRight();
         if (leftNode != null) {
             writeCharacterBits(path.add(false), leftNode);
         }
@@ -154,7 +156,7 @@ public final class HuffmanCompressor extends FileCompressionController {
             writeCharacterBits(path.add(true), rightNode);
         }
         if (node.isLeaf()) {
-            characterEncoding.add(node.getSymbol(), path);
+            characterEncoding.add(((Node) node).getSymbol(), path);
         }
     }
 

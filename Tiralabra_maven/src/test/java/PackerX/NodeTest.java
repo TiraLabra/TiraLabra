@@ -42,24 +42,6 @@ public final class NodeTest {
     }
 
     @Test
-    public void testIsLeafWhenNotLeaf() {
-        Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, node, node);
-        assertFalse(parentNode.isLeaf());
-    }
-
-    @Test
-    public void testIsLeafWhenNotLeafLeftNull() {
-        Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, null, node);
-        assertFalse(parentNode.isLeaf());
-    }
-
-    @Test
-    public void testIsLeafWhenNotLeafRightNull() {
-        Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, node, null);
-        assertFalse(parentNode.isLeaf());
-    }
-
-    @Test
     public void testGetLeftWhenNotNull() {
         Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, node, null);
         assertEquals(node, parentNode.getLeft());
@@ -69,14 +51,6 @@ public final class NodeTest {
     public void testGetRightWhenNotNull() {
         Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, null, node);
         assertEquals(node, parentNode.getRight());
-    }
-
-    @Test
-    public void testGetWeightWhenNotLeaf() {
-        final int rightWeigth = 945;
-        Node rightSide = new Node('3', rightWeigth, null, null);
-        Node parentNode = new Node(TEST_SYMBOL, TEST_WEIGHT, node, rightSide);
-        assertEquals(rightWeigth + TEST_WEIGHT, parentNode.getWeight());
     }
 
     @Test
