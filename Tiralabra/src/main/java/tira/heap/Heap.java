@@ -5,6 +5,8 @@ import tira.common.Node;
 /**
  *
  * @author joonaslaakkonen
+ * Keko-tietorakenteen toteutus. Kekoa käytetään algoritmien suorituksessa. Keon taulukko pidetään minimikeon
+ * mukaisessa järjestyksessä, eli paikassa 0 on aina solmu, jolla on pienin etäisyysarvo.
  */
 public class Heap <T> {
     
@@ -16,6 +18,10 @@ public class Heap <T> {
         this.size = 0;
     }
     
+    /**
+     * Lisätään kekoon uusi alkio.
+     * @param o lusättävä solmu.
+     */
     public void insert (Node o) {
         if (this.size==0) {
             this.table[0] = o;
@@ -25,6 +31,10 @@ public class Heap <T> {
         }
     }
     
+    /**
+     * Otetaan keosta alkio, joka on taulukon paikassa 0.
+     * @return pienin alkio.
+     */
     public Node poll() {
         if(this.size != 0) {
             Node smallest = this.table[0];
@@ -36,13 +46,21 @@ public class Heap <T> {
         return null;     
     }
     
+    /**
+     * Tarkistetaan onko keko tyhjä.
+     * @return 
+     */
     public boolean empty() {
         if (this.size != 0) {
             return false;
         }
         return true;
     }
-
+    
+    /**
+     * Solmun lisäys kekoon. Metodi hakee taulukosta oikean paikan lisättävälle solmulle.
+     * @param n lisättävä solmu.
+     */
     private void heapInsert(Node n) {
         this.size++;
         int k = this.size-1;
@@ -55,6 +73,10 @@ public class Heap <T> {
         this.table[k] = n;
     }
     
+    /**
+     * Metodi tarkistaa, että kekoehto ei ole rikki muutosten jälkeen.
+     * @param paikka kertoo mihin kohtaan kekoa muutos on tullus ja tarkistus alkaa tästä taulukon paikasta.
+     */
     private void heapify(int paikka) {
         int l = 2*paikka + 1;
         int r = 2*paikka + 2;
