@@ -10,6 +10,11 @@ package pakkaaja;
  */
 
  // import java.util.HashMap;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
@@ -129,5 +134,34 @@ public class Packer {
         }    
         return pakkaus;
     }
+    public byte[] stringToByte(String s) {
+        byte[] b = new byte[s.length()];
+        for(int i = 0; i < s.length();i++) {
+            if (s.charAt(i) == 0) {
+                b[i] = 0;
+            }else if (s.charAt(i) == 1) {
+                b[i] = 1;
+            }
+        }
+        return b;
+    }
+    public void write(byte[] aInput, String aOutputFileName){
     
+        try {
+            OutputStream output = null;
+            try {
+                output = new BufferedOutputStream(new FileOutputStream(aOutputFileName));
+                output.write(aInput);
+            }
+            finally {
+                output.close();
+            }
+        }
+        catch(FileNotFoundException ex){
+            System.out.println("ei löydy");
+        }
+        catch(IOException ex){
+
+        }
+    }
 }
