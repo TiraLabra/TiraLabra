@@ -21,13 +21,12 @@ import java.util.PriorityQueue;
  * @author mikko
  *
  */
-public class Algoritmi extends Thread {
+public class AStarAlgoritmi extends Thread {
 
     private boolean jatketaanko;
     private Koordinaatit alku;
     private Koordinaatit maali;
     private int hidaste;
-    private Simulaatio simulaatio;
     private final int leveys;
     private final int korkeus;
     private boolean valmis;
@@ -42,10 +41,14 @@ public class Algoritmi extends Thread {
      * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
      * vai nopea simulaatio.
      *
-     * @param hidaste jos true, odotetaan jonkin verran aikaa jokaisen
-     * simulaation askeleen välillä.
+     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon ruutujen kustannuksista
+     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin suoritusaskeleen välillä.
+     * @param alku alkupisteen koordinaatit
+     * @param maali maalipisteen koordinaatit
+     * @param vinottain sallitaanko liikkuminen vinottain
+     * @param heuristiikka käytettävä heuristiikka
      */
-    public Algoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
+    public AStarAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
         if (maailma == null) {
             throw new IllegalStateException("Maailma null");
         }
@@ -77,10 +80,6 @@ public class Algoritmi extends Thread {
     public RuudunTila getRuudunTila(int x, int y) {
         return this.ruutujenTilat[y][x];
     }
-
-//    public void setHeuristiikka(Heuristiikka heuristiikka) {
-//        this.heuristiikka = heuristiikka;
-//    }
     
     /**
      * Lopettaa reittialgoritmin suorituksen.
@@ -95,12 +94,10 @@ public class Algoritmi extends Thread {
      */
     @Override
     public void run() {
-        //alustaPiirtologiikka();
         alustaParhaatReitit();
 
         //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
         Vertailija vertailija = new Vertailija(this.heuristiikka, maali);
-        //PriorityQueue<Solmu> tutkimattomat = new PriorityQueue<Solmu>(100, vertailija);
         PrioriteettiKeko<Solmu> tutkimattomat = new PrioriteettiKeko<>(vertailija);
         
         Solmu solmu = new Solmu(alku, 0, null);
@@ -122,21 +119,16 @@ public class Algoritmi extends Thread {
                 if (parhaatReitit[koord.getY()][koord.getX()] == -1 || matka < parhaatReitit[koord.getY()][koord.getX()]) {
                     parhaatReitit[koord.getY()][koord.getX()] = matka;
                     //Lisätään tutkittaviin uusi solmu, jonka kuljetuksi matkaksi annetaan tämän solmun kuljettu matka + maaston vaikeustaso
-                    //tutkimattomat.add(new Solmu(koord, matka, solmu));
                     tutkimattomat.lisaa(new Solmu(koord, matka, solmu));
-                    //simulaatio.setRuutu(koord.getX(), koord.getY(), RuudunTila.TUTKIMATON);
                     ruutujenTilat[koord.getY()][koord.getX()] = RuudunTila.TUTKITTAVA;
                 }
             }
             ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.TUTKITTU;
-            //simulaatio.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.TUTKITTU);
-            //solmu = tutkimattomat.poll();
             solmu = tutkimattomat.seuraava();
             if (solmu == null) {
                 return;
             }
             ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.KASITTELYSSA;
-            //simulaatio.setRuutu(solmu.getKoordinaatit().getX(), solmu.getKoordinaatit().getY(), Ruutu.KASITTELYSSA);
             if (this.hidaste != 0) {
                 try {
                     Thread.sleep(hidaste);

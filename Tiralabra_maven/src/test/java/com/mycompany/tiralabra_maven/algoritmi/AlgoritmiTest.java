@@ -27,7 +27,7 @@ public class AlgoritmiTest {
         Ruutu[][] maailma = alustaMaailma();
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
-        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(7, algoritmi.getReitti().getKuljettuMatka());
 
@@ -39,7 +39,7 @@ public class AlgoritmiTest {
         Koordinaatit alku = new Koordinaatit(38, 0);
         Koordinaatit maali = new Koordinaatit(0, 38);
         //Annetaan algoritmille 1 ms hidaste suorituskykytestausta varten
-        Algoritmi algoritmi = new Algoritmi(maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
+        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
         long aikaAlussa = System.currentTimeMillis();
         suoritaAlgoritmi(algoritmi);
         long kulunutAika = System.currentTimeMillis()-aikaAlussa;
@@ -58,7 +58,7 @@ public class AlgoritmiTest {
         teeSeina(maailma);
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
-        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(20, algoritmi.getReitti().getKuljettuMatka());
 
@@ -72,7 +72,7 @@ public class AlgoritmiTest {
         maailma[3][5] = Ruutu.SEINA;
         Koordinaatit alku = new Koordinaatit(3, 5);
         Koordinaatit maali = new Koordinaatit(4, 0);
-        Algoritmi algoritmi = new Algoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(8, algoritmi.getReitti().getKuljettuMatka());
         assertNull(algoritmi.getRuudunTila(0, 6));
@@ -100,7 +100,7 @@ public class AlgoritmiTest {
         }
     }
 
-    private void suoritaAlgoritmi(Algoritmi algoritmi) {
+    private void suoritaAlgoritmi(AStarAlgoritmi algoritmi) {
         algoritmi.start();
         //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;

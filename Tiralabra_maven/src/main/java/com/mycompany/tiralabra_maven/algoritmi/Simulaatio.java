@@ -30,7 +30,7 @@ public class Simulaatio {
     private KuvanLukija kuvanLukija;
 
     //private Scanner sc;
-    private Algoritmi algoritmi;
+    private AStarAlgoritmi algoritmi;
 
     //Jonkun toisen luokan asiaa(?):
     private Koordinaatit hiiri;
@@ -178,7 +178,7 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
-        this.algoritmi = new Algoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
+        this.algoritmi = new AStarAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
         this.algoritmi.start();
     }
 
