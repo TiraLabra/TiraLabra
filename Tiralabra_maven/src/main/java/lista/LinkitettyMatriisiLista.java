@@ -1,7 +1,7 @@
 
 
 package lista;
-import jama.*;
+import omamatriisipaketti.*;
 
 /**
  * Linkitetty matriisilista. Olion tarkoitus on tarjota keino tallentaa käyttäjän
@@ -60,7 +60,7 @@ public class LinkitettyMatriisiLista {
         tutkittava = ekaSolmu;
         
         if (tutkittava == null) {
-            throw new Exception();
+            throw new Exception("Listalla ei ole yhtään matriisia");
         }
         
         if (tutkittava.nimi.equals(nimi)) {
@@ -74,7 +74,7 @@ public class LinkitettyMatriisiLista {
             }            
         }
         
-        throw new Exception();
+        throw new Exception("Matriisia nimellä " + nimi+ " ei löydetty");
         
         
     }

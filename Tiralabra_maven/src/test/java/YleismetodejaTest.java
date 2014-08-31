@@ -41,7 +41,37 @@ public class YleismetodejaTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+/*
+    public void testGauss(){
+        double[][] m1 = {{1,1,0},{3,7,8},{0,1,3}};
+        double[][] g = Peruslasku.gauss(m1);
+        double[][] ratkaisu = {{1,1,0},{0,4,8},{0,0,1}};
+        System.out.println("Gauss: ");
+        System.out.println(Taulukko.toString(g));
+        assertTrue(Taulukko.toString(g).equals(Taulukko.toString(ratkaisu)));
+    }
+  
+    
 
+    public void testJordan() {
+        double[][] m1 = {{1,1,0,1},{3,3,8,5},{0,0,3,6}};
+        double[][] tulos = Peruslasku.jordan(Peruslasku.gauss(m1));
+        System.out.println("Jordan:");
+        System.out.print(Taulukko.toString(tulos));
+        assertTrue(false);
+    
+    }
+    
+    public void testGauss2(){
+        double[][] m1 = {{1,1,0,1},{3,3,8,5},{0,0,3,6}};
+        double[][] g = Peruslasku.gauss(m1);
+        double[][] ratkaisu = {{1,1,0},{0,4,8},{0,0,1}};
+        System.out.println("Gauss: ");
+        System.out.println(Taulukko.toString(g));
+        assertTrue(Taulukko.toString(g).equals(Taulukko.toString(ratkaisu)));
+    }    
+    */
+    
     public void testOnkoPlusLaskunTulosOikeinTavallisillaMatriiseilla() {
         boolean testi = true;
         double[][] tulos = Peruslasku.plus(matriisi, matriisi2);
@@ -54,6 +84,41 @@ public class YleismetodejaTest extends TestCase {
         }
         assertTrue(testi);
     }
+    
+    public void testToimiikoInverse() throws Exception {
+        double[][] m1 = Taulukko.luoSatunnainenNelioMatriisi(10);
+        double[][] tulos = Peruslasku.inv(m1);
+        double[][] ratkaisu = new double[10][10];
+        Taulukko.kirjoitaYkkosiaDiagonaalille(ratkaisu);
+        double[][] tulos2 = Peruslasku.naivemultiply(tulos, m1);
+        boolean testi = true;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (Math.abs(tulos2[i][j] - ratkaisu[i][j]) > 0.0001) {
+                    testi = false;
+                }
+            }
+        }
+        assertTrue(testi);
+    }
+    
+    public void testToimiikoGaussJordan() throws Exception {
+        double[][] m1 = Taulukko.luoSatunnainenNelioMatriisi(10);
+        double[][] ratkaisu = new double[10][10];
+        Taulukko.kirjoitaYkkosiaDiagonaalille(ratkaisu);
+        double[][] tulos = Peruslasku.gaussjordan(m1);
+        System.out.print("GJ eliminoinnin tulos: \n" + Taulukko.toString(tulos));
+        boolean testi = true;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10 ; j++) {
+                if (Math.abs(ratkaisu[i][j]-tulos[i][j]) > 0.00001) {
+                    testi = false;
+                }
+            }
+        }
+        assertTrue(testi);
+    }
+    
     
     
     public void testAntaakoNaiiviKertominenSamanTuloksenKuinJama(){
@@ -120,7 +185,7 @@ public class YleismetodejaTest extends TestCase {
         assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(tulos)));
     }
     
-    public void testInverse() {
+    public void testInverse() throws Exception {
         double[][] m1 = {{1,3},{2,4}};
         double[][] tulos = Peruslasku.inv(m1);
         double[][] ratkaisu = {{-2,1.5},{1,-0.5}};
@@ -342,4 +407,19 @@ public class YleismetodejaTest extends TestCase {
         double tulos = Peruslasku.laskeDiagonaaliAlkioidenTulo(testi);
         assertEquals(tulos,(double)8);
     }
+    
+    
+    public void testGaussJordanToimii() {
+        double[][] testi = {{2,3},{1,9}};
+        testi = Peruslasku.gaussjordan(testi);
+        double[][] ratkaisu = {{1,0},{0,1}};
+        assertTrue(Taulukko.toString(ratkaisu).equals(Taulukko.toString(testi)));
+    }
+    /*
+    public void testGauss() {
+        double[][] testi = {{1,2,7},{8,4,6},{1,24,8}};
+        testi = Peruslasku.gaussjordan(testi);
+        System.out.print(Taulukko.toString(testi));
+        assertTrue(false);
+    }*/
 }

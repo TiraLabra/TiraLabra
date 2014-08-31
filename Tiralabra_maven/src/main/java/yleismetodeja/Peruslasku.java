@@ -178,6 +178,11 @@ public class Peruslasku {
         return (int)tulos;
     }
     
+    public static double det(double[][] matriisi) throws Exception {
+       
+        LUPdecomposition lu = new LUPdecomposition(matriisi);
+        return lu.det();
+    }
     
     /**
      * Gauss-Jordan eliminointi. Metodi suorittaa gauss-jordan eliminoinnin eli
@@ -185,7 +190,12 @@ public class Peruslasku {
      * @param pmatriisi double[][] tyyppinen matriisi.
      * @return double[][] tyyppinen matriisi, joka on rre-muodossa.
      */
+    
     public static double[][] gaussjordan(double[][] pmatriisi){
+        return Peruslasku.jordan(Peruslasku.gauss(pmatriisi));
+    }
+    
+    public static double[][] gauss(double[][] pmatriisi){
         int m = pmatriisi.length;
         int n = pmatriisi[0].length;
         double[][] matriisi = Taulukko.kopioiArray(pmatriisi);
@@ -217,49 +227,78 @@ public class Peruslasku {
             for (int i = kasiteltavaRivi+1; i < m; i++) {
                     kerroin = matriisi[i][tutkittavaSarake-1]/p;
                     for (int j = 0; j < n; j++) {
-                        matriisi[i][j] = matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+                        double tulos = matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+                        if (Math.abs(tulos)<0.00001) {
+                            matriisi[i][j] = 0;
+                        }
+                        else matriisi[i][j] = tulos;
                     }
                 }
                 
             
-            }
+            }        
         
-        //jordan
+        
+        return matriisi;
+    }
+    
+    public static double[][] jordan(double[][] pmatriisi) {
+        double[][] matriisi = pmatriisi;
+        int m = matriisi.length;
+        int n = matriisi[0].length;
+        int pivotinSarake;
+        double kerroin;
         for (int kasiteltavaRivi = m-1; kasiteltavaRivi > 0; kasiteltavaRivi--) {
-            p = 0;
-            int kasiteltavaSarake=-1;
-            while (p==0 && kasiteltavaSarake < n) {
-                kasiteltavaSarake++;
-                p = matriisi[kasiteltavaRivi][kasiteltavaSarake];
-            }
-            
-            if (p!=0) {
-                // jaetaan rivi sen pivotilla
-                for (int j = kasiteltavaSarake; j < n; j++) {
-                    matriisi[kasiteltavaRivi][j] = matriisi[kasiteltavaRivi][j]/p;                    
-                }
-                for (int i = kasiteltavaRivi-1; i >= 0; i--) {
-                    kerroin = matriisi[i][kasiteltavaSarake];
-                    for (int j = kasiteltavaSarake; j < n; j++) {
-                        matriisi[i][j] = matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+            pivotinSarake=etsiRivinPivotinSarake(matriisi,kasiteltavaRivi);
+            if (pivotinSarake!=-1) {
+                for (int i = kasiteltavaRivi-1; i >= 0; i--){    
+                    kerroin = matriisi[i][pivotinSarake]/matriisi[kasiteltavaRivi][pivotinSarake];
+                    for (int j = pivotinSarake; j < n; j++) {
+                        double tulos =matriisi[i][j] - kerroin*matriisi[kasiteltavaRivi][j];
+                        if (Math.abs(tulos)<0.00001) {
+                            matriisi[i][j] = 0;
+                        }
+                        else matriisi[i][j] = tulos;
                     }
                 }
             }
         }
-            
-        // lopuksi jaetaan ylin rivi sen pivotilla
-        p = 0;
-        int j = -1;
-        while (p == 0 &&  j < n) {
-            j++;
-            p = matriisi[0][j];
+        
+        
+        
+        return jaaKukinRiviPivotillaan(matriisi);
+    }
+    
+    public static int etsiRivinPivotinSarake(double[][] matriisi, int i) {
+        int n = matriisi[i].length;
+        for (int j = 0; j < n; j++) {
+            if (matriisi[i][j]!=0) {
+                return j;
             }
-        for (int h = j; h < n; h++) {
-            matriisi[0][h] = matriisi[0][h]/p;
+        }
+        return -1;
+        
+    }
+    
+    public static double[][] jaaKukinRiviPivotillaan(double[][] matriisi) {
+        int m = matriisi.length;
+        int n = matriisi[0].length;
+        int pivotinSarake;
+        double pivot;
+        
+        for (int i = 0; i < m; i++) {
+            pivotinSarake = etsiRivinPivotinSarake(matriisi,i);
+            if (pivotinSarake!=-1) {
+                pivot = matriisi[i][pivotinSarake];
+                for (int j = 0; j < n; j++) {
+                    matriisi[i][j] = matriisi[i][j]/pivot;
+                }
+            }
         }
         
         return matriisi;
     }
+    
     
     
     /**
@@ -269,19 +308,29 @@ public class Peruslasku {
      * @param matriisi double[][] tyyppinen neliömatriisi
      * @return double[][] tyyppinen matriisi.
      */
-    public static double[][] inv(double[][] matriisi) {
+    public static double[][] inv(double[][] matriisi) throws Exception {
         int n = matriisi.length;
         double[][] identity = new double[n][n];
         Taulukko.kirjoitaYkkosiaDiagonaalille(identity);
         double[][] lisatty = Taulukko.augment(matriisi, identity);
-        System.out.println("123 augmented matrix");
-        System.out.print(Taulukko.toString(lisatty));
         lisatty = gaussjordan(lisatty);
-        System.out.print("käännetty");
-        System.out.print(Taulukko.toString(lisatty));
+        for (int i = 0; i < n; i++) {
+            if (lisatty[i][i]-1 > 0.00001) {
+                throw new IllegalArgumentException("Matriisi ei ole kääntyvä");
+            }
+        }
         return Taulukko.poistaNSarakettaVasemmalta(lisatty, n);
     }
     
+    public static double[][] smoni(double[][] matriisi, double skalaari) {
+        double[][] palautettava = new double[matriisi.length][matriisi[0].length];
+        for (int i = 0; i < matriisi.length; i++) {
+            for (int j = 0; j < matriisi[0].length; j++) {
+                palautettava[i][j] = matriisi[i][j]*skalaari;
+            }
+        }
+        return palautettava;
+    }
     
 
     

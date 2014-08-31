@@ -24,19 +24,13 @@ public class BasicMatrix implements Matrix {
     
     
     public Matrix rref() {
-        
-        double[][] rref = this.matriisi;
-        
-        
-        
-        
-        return null;
+        return new BasicMatrix(Peruslasku.gaussjordan(this.matriisi));
     }
     
     
     
     public Matrix smoni(double skalaari) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new BasicMatrix(Peruslasku.smoni(this.getArray(),skalaari));
     }
 
     
@@ -44,42 +38,55 @@ public class BasicMatrix implements Matrix {
     
     
     
-    public Matrix plus(Matrix matrix) throws Exception {
-        double[][] lisattava = matrix.getArray();
-        double[][] tulos = new double[this.m][this.n];
-        if (this.m != lisattava[0].length || this.n != lisattava[1].length) {
-            throw new IllegalArgumentException("Ulottuvuudet eivät ole yhteensopivat");
-        }
-        for (int i = 0; i < this.m; i++) {
-            for (int j = 0; j < this.n; j++) {
-                tulos[i][j]=this.matriisi[i][j]+lisattava[i][j];
-            }
-        }
-        return new BasicMatrix(tulos);
+    public Matrix plus(Matrix matrix) {
+        return new BasicMatrix(Peruslasku.plus(this.getArray(), matrix.getArray()));
         
     }
 
     
     
+    public int getM() {
+        return this.m;
+    }
     
-    public double det() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getN() {
+        return this.n;
+    }
+    
+    public double det() throws Exception {
+        return Peruslasku.det(this.getArray());
     }
 
-    public Matrix multiplication(Matrix matrix) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Matrix kerro(Matrix matrix) throws Exception {
+        if (this.n!=matrix.getM()) {
+            throw new Exception("Matriisien ulottuvuudet eivät ole yhteensopivat");
+        }
+        if (this.n==this.m && matrix.getM()==matrix.getN()) {
+            return new BasicMatrix(Peruslasku.yleinenStrassen(this.getArray(), matrix.getArray(), this.n, 8));
+        }
+        else return new BasicMatrix(Peruslasku.naivemultiply(this.getArray(), matrix.getArray()));
     }
 
-    public Matrix minus(Matrix matrix) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Matrix minus(Matrix matrix) throws Exception {
+        if (this.n!=matrix.getN() || this.m!=matrix.getM()) {
+            throw new Exception("Matriisien ulottuvuudet eivät täsmää");
+        }
+        return new BasicMatrix(Peruslasku.minus(this.getArray(),matrix.getArray()));
     }
 
-    public Matrix inv() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Matrix inv() throws Exception {
+        return new BasicMatrix(Peruslasku.inv(this.getArray()));
     }
 
     public double[][] getArray() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.matriisi;
     }
     
+    public LUPdecomposition lup() throws Exception {
+        return new LUPdecomposition(this.getArray());
+    }
+    
+    public void print() {
+        System.out.print(Taulukko.toString(this.getArray()));
+    }
 }

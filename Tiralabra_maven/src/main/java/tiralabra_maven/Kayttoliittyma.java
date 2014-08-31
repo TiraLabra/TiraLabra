@@ -45,7 +45,10 @@ public class Kayttoliittyma {
                 kasky = scan.nextLine();
             }
             catch (Exception e) {
-                System.out.println("Anna kunnollinen komento");
+                if (e.getMessage()!=null) {
+                    System.out.println(e.getMessage());
+                }
+                else System.out.println("Anna kunnollinen komento");
             }
             
             try {

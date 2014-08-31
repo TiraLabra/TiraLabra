@@ -1,6 +1,6 @@
 
 package lista;
-import jama.*;
+import omamatriisipaketti.*;
 
 public class Solmu {
     public String nimi;

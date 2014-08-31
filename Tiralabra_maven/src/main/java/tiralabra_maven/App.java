@@ -1,5 +1,6 @@
 package tiralabra_maven;
 import yleismetodeja.*;
+import suorituskykytestaus.*;
 /**
  * Hello world!
  *
@@ -7,7 +8,24 @@ import yleismetodeja.*;
 public class App 
 {
     
-    
+    public static void main(String[] args) throws Exception {
+     
+     //   Testaus.testaaKaanto();
+//   Testaus.testaaDeterminantti();
+      // Testaus.testaaSparseDense();
+       Testaus.testaaNaiviSparseDense();
+        /*    
+        Testaus.testaaNaivi();
+        
+        
+        try{
+        Testaus.testaaStrassen();
+        }
+        catch (Exception e) {
+            System.out.println("meni tiedostonkäsittely vituiksi");
+    }
+    */
+    /*
     public static void print(char[][] printattava) {
         for (int i = 0; i < printattava[0].length;i++) {
             for (int j = 0; j < printattava[1].length; j++) {
@@ -66,10 +84,10 @@ public class App
         double[][] m2 = {{1,6,9,4,5},{5,7,4,4,8},{1,3,9,4,6},{1,1,4,19,5},{1,3,5,6,9},{1,0,0,0,0}
         ,{0,1,0,0,0},{0,0,1,0,0},{0,0,0,1,0},{0,0,0,0,1}};
         System.out.print(Taulukko.toString(Peruslasku.gaussjordan(m2)));
-        
+        */
         /*
         Kayttoliittyma kayttis = new Kayttoliittyma();
         kayttis.run();
-                */
+          */    
     }
 }

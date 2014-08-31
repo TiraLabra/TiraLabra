@@ -178,7 +178,6 @@ public class LUPdecomposition {
     
         /**
      * Determinantti. Metodi laskee LU-dekomposition determinantin.
-     * @param lu on lu dekompositio jostakin matriisista.
      * @return double matriisin determinantti.
      */
     public double det() {
@@ -186,4 +185,7 @@ public class LUPdecomposition {
         return tulo*Math.pow(-1, this.rivinvaihtojenmaara);
     }
     
+    public String toString() {
+        return ""+Taulukko.toString(l) + "\t" + Taulukko.toString(u);
+    }
 }

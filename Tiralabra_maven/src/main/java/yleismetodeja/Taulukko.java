@@ -322,4 +322,16 @@ public class Taulukko {
         }
     }
     
+    
+    
+    public static double[][] luoSatunnainenNelioMatriisi(int m) {
+        double[][] palautettava = new double[m][m];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                palautettava[i][j] = Math.floor(Math.random()*100);
+            }
+        }
+        return palautettava;
+    }
+    
 }

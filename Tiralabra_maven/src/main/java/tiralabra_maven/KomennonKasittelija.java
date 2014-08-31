@@ -3,7 +3,7 @@
 package tiralabra_maven;
 import lista.LinkitettyMatriisiLista;
 import java.util.Scanner;
-import jama.*;
+import omamatriisipaketti.*;
 import java.util.ArrayList;
 
 
@@ -133,8 +133,6 @@ public class KomennonKasittelija {
            int n;
            String[] ulottuvuudet;
            String matriisinNimi;
-           String[] arvot;
-           String syote;
            double[][] valimatriisi;
        
                ulottuvuudet = kaskyjono[1].split("x");
@@ -148,7 +146,7 @@ public class KomennonKasittelija {
                valimatriisi = kali.keraaMatriisinLuvut(m, n);
 
            
-           Matrix matriisi = new Matrix(valimatriisi);
+           BasicMatrix matriisi = new BasicMatrix(valimatriisi);
            matriisilista.lisaa(matriisinNimi, matriisi);
         }
     
@@ -182,12 +180,11 @@ public class KomennonKasittelija {
     public void suoritaTulosta() {
         String tulostettavanNimi = kaskyjono[1];
         try {
-            matriisilista.hae(tulostettavanNimi).print(10,5);
+            matriisilista.hae(tulostettavanNimi).print();
         }
         
         catch (Exception e) {
             System.out.println("Antamasi matriisin nimellä ei löytynyt mitään");
-            return;
         }
     }
     
@@ -276,12 +273,12 @@ public class KomennonKasittelija {
         
         try {
          
-            Matrix[] operandit = haeKaksiOperandia();   
-            tulos = operandit[0].times(operandit[1]);
+            Matrix[] operandit = haeKaksiOperandia();  
+            tulos = operandit[0].kerro(operandit[1]);
         }
         
         catch (Exception e) {
-            System.out.println("Matriiseja näillä nimillä ei löydetty");
+            System.out.println(e.getMessage());
             return;
         }
         
@@ -296,7 +293,7 @@ public class KomennonKasittelija {
         String matriisinnimi = kaskyjono[1];
         
         try {
-            Matrix matriisi = tk.lueTiedosto(kaskyjono[2]);
+            BasicMatrix matriisi = tk.lueTiedosto(kaskyjono[2]);
             matriisilista.lisaa(matriisinnimi, matriisi);
             }
         catch (Exception e) {
@@ -315,7 +312,7 @@ public class KomennonKasittelija {
         String tulosmatriisinnimi = kaskyjono[2];
         try {
             Matrix kaannettava = matriisilista.hae(matriisinnimi);
-            tulosmatriisi = kaannettava.inverse();
+            tulosmatriisi = kaannettava.inv();
             matriisilista.lisaa(tulosmatriisinnimi, tulosmatriisi);
         }
         catch (IllegalArgumentException ie) {
@@ -323,7 +320,6 @@ public class KomennonKasittelija {
         }
         catch (Exception e) {
             System.out.println("Huono syöte");
-            return;
         }
     }
     
@@ -338,7 +334,7 @@ public class KomennonKasittelija {
             Matrix operandi = matriisilista.hae(kaskyjono[2]);
             double skalaari = Double.parseDouble(kaskyjono[1]);
             
-            tulosmatriisi = operandi.times(skalaari);
+            tulosmatriisi = operandi.smoni(skalaari);
         }
         catch (Exception e) {
             System.out.println("Huono syöte");

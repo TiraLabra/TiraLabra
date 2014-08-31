@@ -6,7 +6,7 @@
 
 package tiralabra_maven;
 import java.io.*;
-import jama.*;
+import omamatriisipaketti.*;
 import java.util.Scanner;
 
 
@@ -29,14 +29,14 @@ public class Tiedostonkasittelija {
      * poikkeukset kutsujansa huoleksi.
      */
     
-    public Matrix lueTiedosto(String tiedostopolku) throws Exception {
+    public BasicMatrix lueTiedosto(String tiedostopolku) throws Exception {
         File tiedosto;
         String[] rivi;
         double[][] matriisi;
         Scanner scan;
         int m;
         int n;
-        Matrix palautettava = null;
+        BasicMatrix palautettava = null;
 
             tiedosto = new File(tiedostopolku);
             scan = new Scanner(tiedosto);
@@ -52,7 +52,7 @@ public class Tiedostonkasittelija {
                 j++;
             }
             scan.close();
-            palautettava = new Matrix(matriisi);
+            palautettava = new BasicMatrix(matriisi);
         
         
        
