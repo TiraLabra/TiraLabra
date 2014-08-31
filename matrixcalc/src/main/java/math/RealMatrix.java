@@ -1,8 +1,13 @@
 package math;
 
-import java.util.*;
-import java.io.*;
-import algorithms.*;
+import algorithms.real.Strassen;
+import algorithms.real.LUDecomposition;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Contains a matrix as a two-dimensional array of double precision floating point numbers,
@@ -10,7 +15,7 @@ import algorithms.*;
  * 
  * @author ydna
  */
-public class Matrix implements Serializable {
+public class RealMatrix implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -33,7 +38,7 @@ public class Matrix implements Serializable {
      * Constructs a matrix from a two-dimensional array.
      * @param array Two-dimensional double array.
      */
-    public Matrix(double[][] array) {
+    public RealMatrix(double[][] array) {
         this.array = array;
         this.rows = array.length;
         this.cols = array[0].length;
@@ -44,7 +49,7 @@ public class Matrix implements Serializable {
      * @param rows The number of rows.
      * @param cols The number of columns.
      */
-    public Matrix(int rows, int cols) {
+    public RealMatrix(int rows, int cols) {
         this.array = new double[rows][cols];
         this.rows = rows;
         this.cols = cols;
@@ -56,7 +61,7 @@ public class Matrix implements Serializable {
      * @param cols The number of columns.
      * @param val The value of matrix elements.
      */
-    public Matrix(int rows, int cols, double val) {
+    public RealMatrix(int rows, int cols, double val) {
         this.array = new double[rows][cols];
         this.rows = rows;
         this.cols = cols;
@@ -89,9 +94,9 @@ public class Matrix implements Serializable {
      * @param file File name.
      * @throws Exception 
      */
-    public Matrix(String file) throws Exception {
+    public RealMatrix(String file) throws Exception {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));   
-        Matrix matrix = (Matrix) in.readObject();
+        RealMatrix matrix = (RealMatrix) in.readObject();
         this.array = matrix.getArray();
         this.rows = matrix.getRows();
         this.cols = matrix.getCols();
@@ -160,7 +165,7 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Sum.
      */
-    public Matrix add(Matrix matrix) {
+    public RealMatrix add(RealMatrix matrix) {
         if (matrix.getRows() != rows || matrix.getCols() != cols) {
             throw new IllegalArgumentException("Matrix dimensions do not match.");
         }
@@ -170,7 +175,7 @@ public class Matrix implements Serializable {
                 temp[i][j] = array[i][j] + matrix.array[i][j];
             }
         }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
@@ -178,7 +183,7 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Difference.
      */
-    public Matrix subtract(Matrix matrix) {
+    public RealMatrix subtract(RealMatrix matrix) {
         if (matrix.getRows() != rows || matrix.getCols() != cols) {
             throw new IllegalArgumentException("Matrix dimensions do not match.");
         }
@@ -188,7 +193,7 @@ public class Matrix implements Serializable {
                 temp[i][j] = array[i][j] - matrix.array[i][j];
             }
         }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
@@ -196,28 +201,28 @@ public class Matrix implements Serializable {
      * @param number Multiplier.
      * @return Scalar product.
      */
-    public Matrix multiply(double number) {
+    public RealMatrix multiply(double number) {
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 temp[i][j] = number * array[i][j];
             }
         }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
      * Returns the transpose of this matrix.
      * @return Transpose.
      */
-    public Matrix transpose() {
+    public RealMatrix transpose() {
         double[][] temp = new double[cols][rows];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 temp[i][j] = array[j][i];
             }
         }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
@@ -225,7 +230,7 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Matrix product.
      */
-    public Matrix multiply(Matrix matrix) {
+    public RealMatrix multiply(RealMatrix matrix) {
         if (matrix.getRows() != cols) {
             throw new IllegalArgumentException("Matrix inner dimensions do not match.");
         }
@@ -237,7 +242,7 @@ public class Matrix implements Serializable {
                 }
             }
         }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
@@ -245,9 +250,9 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Matrix product.
      */
-    public Matrix strassenMultiply(Matrix matrix) {
+    public RealMatrix strassenMultiply(RealMatrix matrix) {
         double[][] temp = Strassen.strassen(this.getArray(), matrix.getArray());
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
     /**
@@ -262,14 +267,14 @@ public class Matrix implements Serializable {
      * Calculates the inverse of this matrix.
      * @return Matrix inverse.
      */
-    public Matrix inverse() {
+    public RealMatrix inverse() {
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 temp[i][j] = (i == j ? 1.0 : 0.0);
             }
         }
-        return new Matrix(new LUDecomposition(array).solve(temp));
+        return new RealMatrix(new LUDecomposition(array).solve(temp));
     }
     
     /**
@@ -280,7 +285,7 @@ public class Matrix implements Serializable {
      * @param upper Upper limit.
      * @return Random matrix.
      */
-    public static Matrix randomMatrix(int rows, int cols, int lower, int upper) {
+    public static RealMatrix randomMatrix(int rows, int cols, int lower, int upper) {
         Random rand = new Random();
         double[][] temp = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
@@ -288,26 +293,7 @@ public class Matrix implements Serializable {
                 temp[i][j] = lower + (upper - lower) * rand.nextDouble();
             }
         }
-        return new Matrix(temp);
-    }
-    
-    /**
-     * Generates a matrix with random integer elements within the given range.
-     * @param rows The number of rows.
-     * @param cols The number of columns.
-     * @param lower Lower limit.
-     * @param upper Upper limit.
-     * @return Random integer matrix.
-     */
-    public static Matrix randomIntegerMatrix(int rows, int cols, int lower, int upper) {
-        Random rand = new Random();
-        double[][] temp = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                temp[i][j] = rand.nextInt(upper - lower + 1) + lower;
-            }
-        }
-        return new Matrix(temp);
+        return new RealMatrix(temp);
     }
     
 }

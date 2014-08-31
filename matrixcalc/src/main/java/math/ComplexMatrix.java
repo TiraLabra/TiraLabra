@@ -1,7 +1,12 @@
 package math;
 
-import java.util.*;
-import java.io.*;
+import algorithms.complex.LUDecomposition;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Contains a complex matrix as a two-dimensional array of complex numbers,
@@ -61,7 +66,7 @@ public class ComplexMatrix implements Serializable {
         this.cols = cols;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                this.array[i][j] = val;
+                this.array[i][j] = new Complex(val.re(), val.im());
             }
         }
     }
@@ -76,6 +81,7 @@ public class ComplexMatrix implements Serializable {
                 if (array[i][j].im() >= 0) {
                     matrix += "+";
                 }
+                matrix += String.format("%.4fi", array[i][j].im());
             }
             matrix += "\n";
         }
@@ -121,7 +127,7 @@ public class ComplexMatrix implements Serializable {
         Complex[][] copy = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                copy[i][j] = array[i][j];
+                copy[i][j] = new Complex(array[i][j].re(), array[i][j].im());
             }
         }
         return copy;
@@ -212,7 +218,7 @@ public class ComplexMatrix implements Serializable {
         Complex[][] temp = new Complex[cols][rows];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                temp[i][j] = array[j][i];
+                temp[i][j] = new Complex(array[j][i].re(), array[j][i].im());
             }
         }
         return new ComplexMatrix(temp);
@@ -236,6 +242,28 @@ public class ComplexMatrix implements Serializable {
             }
         }
         return new ComplexMatrix(temp);
+    }
+    
+    /**
+     * Calculates the determinant of this matrix.
+     * @return Determinant.
+     */
+    public Complex determinant() {
+        return new LUDecomposition(array).determinant();
+    }
+    
+    /**
+     * Calculates the inverse of this matrix.
+     * @return Matrix inverse.
+     */
+    public ComplexMatrix inverse() {
+        Complex[][] temp = new Complex[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                temp[i][j] = new Complex(i == j ? 1.0 : 0.0);
+            }
+        }
+        return new ComplexMatrix(new LUDecomposition(array).solve(temp));
     }
     
     /**

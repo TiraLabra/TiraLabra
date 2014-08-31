@@ -10,12 +10,12 @@ public class Complex {
     /**
      * The real part.
      */
-    private final double a;
+    private double a;
     
     /**
      * The imaginary part.
      */
-    private final double b;
+    private double b;
     
     /**
      * Constructs a complex number.
@@ -27,16 +27,20 @@ public class Complex {
         this.b = imag;
     }
     
+    public Complex(double real) {
+        this(real, 0);
+    }
+    
     @Override
     public String toString() {
         if (b == 0) {
             return a + "";
         } else if (a == 0) {
             return b + "i";
-        } else if (b >= 0) {
-            return a + "+" + b + "i";
+        } else if (b < 0) {
+            return a + "" + b + "i";
         } else {
-            return a + b + "i";
+            return a + "+" + b + "i";
         }
     }
     
@@ -78,7 +82,7 @@ public class Complex {
      * @return Reciprocal.
      */
     public Complex reciprocal() {
-        return new Complex(a/(a*a + b*b), b/(a*a + b*b));
+        return new Complex(a/(a*a + b*b), -b/(a*a + b*b));
     }
     
     /**

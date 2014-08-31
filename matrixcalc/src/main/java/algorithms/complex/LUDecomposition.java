@@ -1,4 +1,6 @@
-package algorithms;
+package algorithms.complex;
+
+import math.Complex;
 
 /**
  * Implements the algorithm for computing the LU(P) decomposition of a matrix.
@@ -8,8 +10,8 @@ package algorithms;
  */
 public class LUDecomposition {
     
-    private final double[][] lu;
-    private final int[] pivot;
+    private Complex[][] lu;
+    private int[] pivot;
     private final int n;
     private int pivotSign;
     private boolean singular;
@@ -19,15 +21,15 @@ public class LUDecomposition {
      * Computes the LU decomposition.
      * @param array The matrix as a double array.
      */
-    public LUDecomposition(double[][] array) {
+    public LUDecomposition(Complex[][] array) {
         n = array.length;
         if (n != array[0].length) {
             throw new IllegalArgumentException("Matrix is not square.");
         }
-        lu = new double[n][n];
+        lu = new Complex[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                lu[i][j] = array[i][j];
+                lu[i][j] = new Complex(array[i][j].re(), array[i][j].im());
             }
         }
         pivot = new int[n];
@@ -39,29 +41,29 @@ public class LUDecomposition {
         for (int k = 0; k < n; k++) {
             int p = k;
             for (int i = k+1; i < n; i++) {
-                if (Math.abs(lu[i][k]) > Math.abs(lu[p][k])) {
+                if (lu[i][k].abs() > lu[p][k].abs()) {
                     p = i;
                 }
             }
-            if (Math.abs(lu[p][k]) < EPSILON) {
+            if (lu[p][k].abs() < EPSILON) {
                 singular = true;
                 return;
             }
             if (p != k) {
                 for (int i = 0; i < n; i++) {
-                    double temp = lu[p][i];
-                    lu[p][i] = lu[k][i];
+                    Complex temp = new Complex(lu[p][i].re(), lu[p][i].im());
+                    lu[p][i] = new Complex(lu[k][i].re(), lu[k][i].im());
                     lu[k][i] = temp;
                 }
                 int temp = pivot[p];
                 pivot[p] = pivot[k];
                 pivot[k] = temp;
                 pivotSign = -pivotSign;
-                for (int i = k+1; i < n; i++) {
-                    lu[i][k] /= lu[k][k];
-                    for (int j = k+1; j < n; j++) {
-                        lu[i][j] -= lu[i][k] * lu[k][j];
-                    }
+            }
+            for (int i = k+1; i < n; i++) {
+                lu[i][k] = lu[i][k].divide(lu[k][k]);
+                for (int j = k+1; j < n; j++) {
+                    lu[i][j] = lu[i][j].subtract(lu[i][k].multiply(lu[k][j]));
                 }
             }
         }
@@ -71,13 +73,13 @@ public class LUDecomposition {
      * Calculates the determinant of the matrix.
      * @return Determinant.
      */
-    public double determinant() {
+    public Complex determinant() {
         if (singular) {
-            return 0;
+            return new Complex(0);
         }
-        double det = (double) pivotSign;
+        Complex det = new Complex(pivotSign);
         for (int i = 0; i < n; i++) {
-            det *= lu[i][i];
+            det = det.multiply(lu[i][i]);
         }
         return det;
     }
@@ -87,7 +89,7 @@ public class LUDecomposition {
      * @param array
      * @return X
      */
-    public double[][] solve(double[][] array) {
+    public Complex[][] solve(Complex[][] array) {
         if (singular) {
             throw new IllegalArgumentException("Matrix is singular.");
         }
@@ -95,26 +97,26 @@ public class LUDecomposition {
             throw new IllegalArgumentException("Matrix row dimensions do not match.");
         }
         int m = array[0].length;
-        double[][] result = new double[n][m];
+        Complex[][] result = new Complex[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                result[i][j] = array[pivot[i]][j];
+                result[i][j] = new Complex(array[pivot[i]][j].re(), array[pivot[i]][j].im());
             }
         }
         for (int i = 0; i < n; i++) {
             for (int j = i+1; j < n; j++) {
                 for (int k = 0; k < m; k++) {
-                    result[j][k] -= result[i][k] * lu[j][i];
+                    result[j][k] = result[j][k].subtract(result[i][k].multiply(lu[j][i]));
                 }
             }
         }
         for (int i = n-1; i >= 0; i--) {
             for (int j = 0; j < array[0].length; j++) {
-                result[i][j] /= lu[i][i];
+                result[i][j] = result[i][j].divide(lu[i][i]);
             }
             for (int j = 0; j < i; j++) {
                 for (int k = 0; k < array[0].length; k++) {
-                    result[j][k] -= result[i][k] * lu[j][i];
+                    result[j][k] = result[j][k].subtract(result[i][k].multiply(lu[j][i]));
                 }
             }
         }

@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
  * 
  * @author ydna
  */
-public class MatrixTest {
+public class RealMatrixTest {
     
     private final static double EPSILON = 1e-11;
     
@@ -19,7 +19,7 @@ public class MatrixTest {
                 temp[i][j] = i+j;
             }
         }
-        Matrix test = new Matrix(temp);
+        RealMatrix test = new RealMatrix(temp);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals((double)(i+j), test.getArray()[i][j], EPSILON);
@@ -31,7 +31,7 @@ public class MatrixTest {
     
     @Test
     public void testZeroMatrixConstructor() {
-        Matrix test = new Matrix(3, 3);
+        RealMatrix test = new RealMatrix(3, 3);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(0.0, test.getArray()[i][j], EPSILON);
@@ -43,7 +43,7 @@ public class MatrixTest {
     
     @Test
     public void testConstantMatrixConstructor() {
-        Matrix test = new Matrix (3, 3, 3.14159);
+        RealMatrix test = new RealMatrix (3, 3, 3.14159);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(3.14159, test.getArray()[i][j], EPSILON);
@@ -55,9 +55,9 @@ public class MatrixTest {
     
     @Test
     public void testMatrixAddition() {
-        Matrix first = new Matrix(3, 3, 2.0);
-        Matrix second = new Matrix(3, 3, 1.6);
-        Matrix sum = first.add(second);
+        RealMatrix first = new RealMatrix(3, 3, 2.0);
+        RealMatrix second = new RealMatrix(3, 3, 1.6);
+        RealMatrix sum = first.add(second);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(3.6, sum.getArray()[i][j], EPSILON);
@@ -69,9 +69,9 @@ public class MatrixTest {
     
     @Test
     public void testMatrixSubstraction() {
-        Matrix first = new Matrix(3, 3, 2.0);
-        Matrix second = new Matrix(3, 3, 1.5);
-        Matrix sum = first.subtract(second);
+        RealMatrix first = new RealMatrix(3, 3, 2.0);
+        RealMatrix second = new RealMatrix(3, 3, 1.5);
+        RealMatrix sum = first.subtract(second);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(0.5, sum.getArray()[i][j], EPSILON);
@@ -83,8 +83,8 @@ public class MatrixTest {
     
     @Test
     public void testScalarMultiplication() {
-        Matrix test = new Matrix(3, 3, 1.5);
-        Matrix product = test.multiply(2.0);
+        RealMatrix test = new RealMatrix(3, 3, 1.5);
+        RealMatrix product = test.multiply(2.0);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(3.0, product.getArray()[i][j], EPSILON);
@@ -102,7 +102,7 @@ public class MatrixTest {
                 temp[i][j] = i+j;
             }
         }
-        Matrix test = new Matrix(temp);
+        RealMatrix test = new RealMatrix(temp);
         test = test.transpose();
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
@@ -121,8 +121,8 @@ public class MatrixTest {
                 number += 1.0;
             }
         }
-        Matrix test = new Matrix(temp);
-        Matrix result = test.multiply(test);
+        RealMatrix test = new RealMatrix(temp);
+        RealMatrix result = test.multiply(test);
         assertEquals((double)3*10, result.getArray()[0][0], EPSILON);
         assertEquals((double)3*12, result.getArray()[0][1], EPSILON);
         assertEquals((double)3*14, result.getArray()[0][2], EPSILON);
@@ -144,8 +144,8 @@ public class MatrixTest {
                 number += 1.0;
             }
         }
-        Matrix test = new Matrix(temp);
-        Matrix result = test.strassenMultiply(test);
+        RealMatrix test = new RealMatrix(temp);
+        RealMatrix result = test.strassenMultiply(test);
         assertEquals((double)3*10, result.getArray()[0][0], EPSILON);
         assertEquals((double)3*12, result.getArray()[0][1], EPSILON);
         assertEquals((double)3*14, result.getArray()[0][2], EPSILON);
@@ -165,7 +165,7 @@ public class MatrixTest {
                 temp[i][j] = i+j;
             }
         }
-        Matrix test = new Matrix(temp);
+        RealMatrix test = new RealMatrix(temp);
         double a = temp[0][0];
         double b = temp[0][1];
         double c = temp[0][2];
@@ -181,8 +181,8 @@ public class MatrixTest {
     @Test
     public void testInverse() {
         double[][] temp = {{1,2},{3,4}};
-        Matrix test = new Matrix(temp);
-        Matrix inverse = test.inverse();
+        RealMatrix test = new RealMatrix(temp);
+        RealMatrix inverse = test.inverse();
         assertEquals(-2, inverse.get(0, 0), EPSILON);
         assertEquals(1, inverse.getArray()[0][1], EPSILON);
         assertEquals(1.5, inverse.getArray()[1][0], EPSILON);

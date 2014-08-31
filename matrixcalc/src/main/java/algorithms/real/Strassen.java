@@ -1,4 +1,6 @@
-package algorithms;
+package algorithms.real;
+
+import math.*;
 
 /**
  * Implements the Strassen algorithm for fast matrix multiplication.
@@ -9,6 +11,10 @@ package algorithms;
 public class Strassen {
     
     private final static int LEAF_SIZE = 32;
+    
+    public Strassen(RealMatrix A, RealMatrix B) {
+        
+    }
     
     /**
      * Adds two matrices.

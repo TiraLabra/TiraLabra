@@ -1,7 +1,8 @@
 package cli;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Scanner;
 import math.*;
 
 /**
@@ -24,8 +25,7 @@ public class CLI {
     /**
      * TODO: Create implementation of HashMap
      */
-    HashMap<String, Matrix> memory;
-    HashMap<String, ComplexMatrix> complexMemory;
+    HashMap<String, RealMatrix> memory;
     
     /**
      * Constructor.
@@ -33,7 +33,7 @@ public class CLI {
     public CLI() {
         this.active = true;
         this.read = new Scanner(System.in);
-        this.memory = new HashMap<String, Matrix>();
+        this.memory = new HashMap<String, RealMatrix>();
     }
     
     /**
@@ -66,7 +66,7 @@ public class CLI {
             System.out.println("exit" + "\t" + "- exits the program");
         } else if (parts[0].equals("load") && parts.length > 1) {
             try {
-                Matrix matrix = new Matrix(parts[1]);
+                RealMatrix matrix = new RealMatrix(parts[1]);
                 memory.put(parts[1], matrix);
                 System.out.println(parts[1] + " = ");
                 System.out.println(matrix);
@@ -84,7 +84,7 @@ public class CLI {
         } else if (parts[0].equals("add") && parts.length > 2) {
             if (memory.containsKey(parts[1])) {
                 if (memory.containsKey(parts[2])) {
-                    System.out.println(memory.get(parts[1]).add(memory.get(parts[2])));
+                    System.out.println(((RealMatrix)memory.get(parts[1])).add((RealMatrix)memory.get(parts[2])));
                 } else {
                     System.out.println("Matrix " + parts[2] + " not loaded yet.");
                 }
@@ -114,8 +114,8 @@ public class CLI {
          } else if (parts[0].equals("mpower") && parts.length > 2) {
             if (memory.containsKey(parts[1])) {
                 if (parts[2].matches("-?\\d+(\\.\\d+)?")) {
-                    Matrix power = memory.get(parts[1]);
-                    Matrix temp = new Matrix(power.getArray());
+                    RealMatrix power = memory.get(parts[1]);
+                    RealMatrix temp = new RealMatrix(power.getArray());
                     for (int i = 1; i < Integer.valueOf(parts[2]); i++) {
                         temp = temp.multiply(temp);
                     }
