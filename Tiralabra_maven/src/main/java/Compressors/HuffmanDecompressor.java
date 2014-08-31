@@ -19,7 +19,8 @@ public final class HuffmanDecompressor extends FileCompressionController {
     /**
      * Decompresses the file from the stream.
      *
-     * @param file The filestream containing the huffman compressed file. *
+     * @param file The filestream containing the huffman compressed file.
+     *
      * @param STDOUT Output stream to write info about the compression.
      */
     public HuffmanDecompressor(final FileStream file, final PrintStream STDOUT) {
@@ -27,7 +28,7 @@ public final class HuffmanDecompressor extends FileCompressionController {
     }
 
     @Override
-    public void processFile() throws IOException {
+    protected void process() throws IOException {
         try (final ObjectInputStream objectReader = new ObjectInputStream(getFile().getInputStream());
                 final DataInputStream bitReader = new DataInputStream(getFile().getInputStream())) {
             final String deCompressed = readFile(objectReader, bitReader);
@@ -50,9 +51,8 @@ public final class HuffmanDecompressor extends FileCompressionController {
     private String readFile(final ObjectInputStream objectReader, final DataInputStream bitReader) throws IOException, ClassNotFoundException {
         final Node tree = (Node) objectReader.readObject();
         final int bitsInArray = bitReader.readInt();
-        System.out.println("bits in file decompression " + bitsInArray);
         final int arrayLenghtInBytes = readArrayLenghts(bitsInArray);
-        System.out.println("bytes in file decompression " + arrayLenghtInBytes);
+        print("Decompressed file size: " + arrayLenghtInBytes + " (" + arrayLenghtInBytes / 1000 + "kB).");
         final byte[] bits = new byte[arrayLenghtInBytes];
         bitReader.read(bits);
         final BitSet bitsInSet = new BitSet(bits, bitsInArray);

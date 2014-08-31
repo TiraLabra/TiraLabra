@@ -40,7 +40,7 @@ public final class HuffmanCompressor extends FileCompressionController {
     }
 
     @Override
-    public void processFile() throws IOException {
+    protected void process() throws IOException {
         try (final Reader reader = new InputStreamReader(getFile().getInputStream()); final BufferedReader bufferReader = new BufferedReader(reader)) {
             startReading(bufferReader);
             sortNodes();
@@ -127,7 +127,7 @@ public final class HuffmanCompressor extends FileCompressionController {
             writer.writeInt(bitCount);
             final byte[] bitsAsBytes = bits.toByteArray();
             writer.write(bitsAsBytes);
-            print("Compressed file size: " + bitsAsBytes.length + " bytes (" + bitsAsBytes.length / 1000 + " kB)");
+            print("Compressed file size: " + bitsAsBytes.length + " bytes (" + bitsAsBytes.length / 1000 + " kB).");
         }
     }
 

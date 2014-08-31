@@ -1,7 +1,7 @@
 package Collections;
 
 /**
- * A mutable collection of bits.
+ * A mutable collection of bits. Can be converted to a byte array.
  */
 public final class BitSet {
 
@@ -113,18 +113,39 @@ public final class BitSet {
         return primitives;
     }
 
+    /**
+     * Set position n in the byte to the value.
+     *
+     * @param toSet The current byte.
+     * @param index Position n.
+     * @param value The value to set the position, 1 or 0.
+     * @return The byte where the bit is set.
+     */
     private static byte setIndexTo(final int toSet, final int index, final boolean value) {
         final int mask = mask(index);
         final int maskedByte = value ? toSet | mask : toSet;
         return (byte) maskedByte;
     }
 
-    private static boolean getBoolFromByte(final int b, final int index) {
+    /**
+     * Get the boolean representation of the n:th bit in the byte.
+     *
+     * @param boolsInByte The byte where to get the boolean value.
+     * @param index The index of the boolean value in the bit.
+     * @return The boolean looked for.
+     */
+    private static boolean getBoolFromByte(final int boolsInByte, final int index) {
         final int mask = mask(index);
-        final int result = b & mask;
+        final int result = boolsInByte & mask;
         return result != 0;
     }
 
+    /**
+     * Get the correct mask for an index in a byte.
+     *
+     * @param index Which mask to get.
+     * @return The mask for the index.
+     */
     private static int mask(final int index) {
         switch (index) {
             case 0:
