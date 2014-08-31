@@ -48,9 +48,7 @@
                 <configuration>
                     <instrumentation>
                         <excludes>
-                            <exclude>main/*.class</exclude>
-                        </excludes>                        
-                        <excludes>
+                            <exclude>main/App.class</exclude>
                             <exclude>PackerX/Packer.class</exclude>
                         </excludes>
                     </instrumentation>

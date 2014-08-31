@@ -50,7 +50,7 @@ public final class HuffmanDecompressor extends FileCompressionController {
      * @throws ClassNotFoundException If huffmantree can't be read.
      */
     private String readFile(final ObjectInputStream objectReader, final DataInputStream bitReader) throws IOException, ClassNotFoundException {
-        final Node tree = (Node) objectReader.readObject();
+        final TreeMember tree = (TreeMember) objectReader.readObject();
         final int bitsInArray = bitReader.readInt();
         final int arrayLenghtInBytes = readArrayLenghts(bitsInArray);
         print("Decompressed file size: " + arrayLenghtInBytes + " (" + arrayLenghtInBytes / 1000 + "kB).");
@@ -79,7 +79,7 @@ public final class HuffmanDecompressor extends FileCompressionController {
      * @param tree The huffman tree used for decoding.
      * @return The decompressed text.
      */
-    private String decode(final BitSet bits, final Node tree) {
+    private String decode(final BitSet bits, final TreeMember tree) {
         final StringBuilder text = new StringBuilder();
         while (readBits < bits.length()) {
             text.append(decodeChar(bits, tree));
@@ -99,7 +99,7 @@ public final class HuffmanDecompressor extends FileCompressionController {
      */
     private char decodeChar(final BitSet bits, final TreeMember node) {
         if (node.isLeaf()) {
-            return ((Node)node).getSymbol();
+            return ((Node) node).getSymbol();
         }
         final boolean turnRight = bits.get(readBits);
         readBits++;
