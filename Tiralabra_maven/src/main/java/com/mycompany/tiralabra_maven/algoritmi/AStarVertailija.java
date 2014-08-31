@@ -15,15 +15,16 @@ import java.util.Comparator;
  * Comparator-rajapinnan toteuttava luokka jota käytetään solmujen vertailemiseen.
  * @author mikko
  */
-public class Vertailija implements Comparator<Solmu>{
+public class AStarVertailija implements Comparator<Solmu>{
     private Heuristiikka heuristiikka;
     private Koordinaatit maali;
     
     /**
-     * Konstruktorissa annetaan vertailussa käytettävä heuristiikka.
+     * Konstruktorissa annetaan vertailussa käytettävä heuristiikka ja maalin koordinaatit.
      * @param heuristiikka 
+     * @param maali 
      */
-    public Vertailija(Heuristiikka heuristiikka, Koordinaatit maali) {
+    public AStarVertailija(Heuristiikka heuristiikka, Koordinaatit maali) {
         this.heuristiikka = heuristiikka;
         this.maali = maali;
     }
@@ -36,7 +37,7 @@ public class Vertailija implements Comparator<Solmu>{
      */
     @Override
     public int compare(Solmu s1, Solmu s2) {
-        if (s1.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s1.getKoordinaatit(), maali) < s2.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s2.getKoordinaatit(), maali)) {
+        if (s1.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) < s2.getKuljettuMatka()+heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)) {
             return -1;
         }
         return 1;

@@ -2,6 +2,7 @@ package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import com.mycompany.tiralabra_maven.gui.Kayttoliittyma;
+import com.mycompany.tiralabra_maven.tietorakenteet.Jono;
 import javax.swing.SwingUtilities;
 
 /**
@@ -12,10 +13,11 @@ public class App {
 
     /**
      * Main-metodi :)
+     *
      * @param args argumentit
      */
     public static void main(String[] args) {
-        
+
         Simulaatio simulaatio = new Simulaatio();
         Kayttoliittyma gui = new Kayttoliittyma(simulaatio, 24);
         SwingUtilities.invokeLater(gui);
@@ -26,7 +28,7 @@ public class App {
                 System.out.println("Piirtoalustaa ei ole vielä luotu.");
             }
         }
-        
+
         Thread piirtoSaie = new Thread(gui.getPiirtoalusta());
         piirtoSaie.start();
     }

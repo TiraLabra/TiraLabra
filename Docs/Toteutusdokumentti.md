@@ -1,6 +1,6 @@
 Ohjelman yleisrakenne
 
-Ohjelmassa on pakkaukset tietorakenteet, algoritmi ja gui. Tietorakenteet-pakkaus sisältää toteutettuja tietorakenteita (tällä hetkellä prioriteettikeko), algoritmi sisältää A*-algoritmin ja siihen liittyviä luokkia ja Gui-pakkaus sisältää käyttöliittymäluokkia.
+Ohjelmassa on pakkaukset tietorakenteet, algoritmi ja gui. Tietorakenteet-pakkaus sisältää toteutettuja tietorakenteita (tällä hetkellä prioriteettikeko ja jono), algoritmi sisältää neljä eri reittialgoritmia (Breadth first, Dijkstra, Greedy Best First ja A-star) ja niihin liittyviä luokkia ja Gui-pakkaus sisältää käyttöliittymäluokkia.
 
 Prioriteettikeon aikavaativuusanalyysi:
 
@@ -50,4 +50,5 @@ Keosta seuraavan alkion poistamisen aikavaativuus on siis O(log(n))
 
 Heapify-metodi on muilta osin vakioaikainen mutta se kutsuu itseään. Rekursiivisia metodikutsuja tulee lineaarinen määrä binaaripuun korkeuteen nähden joten metodin aikavaativuus on O(log(n)).
 
+Jono
 

@@ -13,7 +13,7 @@ import com.mycompany.tiralabra_maven.Koordinaatit;
  *
  * @author mikko
  */
-public class Solmu {
+public class Solmu implements Comparable<Solmu> {
 
     private final Koordinaatit koordinaatit;
     private final int kuljettuMatka;
@@ -35,14 +35,16 @@ public class Solmu {
 
     /**
      * Palauttaa tämän solmun koordinaatit.
+     *
      * @return koordinaatit
      */
-    public Koordinaatit getKoordinaatit() {
+    public Koordinaatit getKoord() {
         return koordinaatit;
     }
 
     /**
      * Palauttaa tiedon tähän asti kuljetusta matkasta.
+     *
      * @return kuljettu matka
      */
     public int getKuljettuMatka() {
@@ -51,6 +53,7 @@ public class Solmu {
 
     /**
      * Palauttaa merkkijonoesityksen solmusta.
+     *
      * @return stringit
      */
     @Override
@@ -60,10 +63,23 @@ public class Solmu {
 
     /**
      * Palauttaa viitteen edelliseen solmuun tai null, jos edellistä ei ole.
+     *
      * @return edellinen solmu tai null
      */
     public Solmu getEdellinen() {
         return this.edellinen;
+    }
+
+    /**
+     * Vertailussa suositaan solmua, jonka kuljettu matka on pienempi
+     *
+     * @param o
+     * @return tämän solmun kuljettu matka miinus parametrina annetun solmun
+     * kuljettu matka
+     */
+    @Override
+    public int compareTo(Solmu o) {
+        return this.kuljettuMatka - o.kuljettuMatka;
     }
 
 }

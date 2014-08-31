@@ -11,7 +11,6 @@ import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
 import com.mycompany.tiralabra_maven.tietorakenteet.PrioriteettiKeko;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * Algoritmi-luokka sisältää varsinaisen reittialgoritmin suoritettavana
@@ -21,156 +20,76 @@ import java.util.PriorityQueue;
  * @author mikko
  *
  */
-public class AStarAlgoritmi extends Thread {
+public class AStarAlgoritmi extends Algoritmi {
 
-    private boolean jatketaanko;
-    private Koordinaatit alku;
-    private Koordinaatit maali;
-    private int hidaste;
-    private final int leveys;
-    private final int korkeus;
-    private boolean valmis;
     private int[][] parhaatReitit;
-    private Ruutu[][] maailma;
-    private RuudunTila[][] ruutujenTilat;
-    private Solmu reitti;
     private Heuristiikka heuristiikka;
-    private boolean vinottain;
+    private PrioriteettiKeko<Solmu> tutkittavat;
+    private Solmu tutkittavaSolmu;
 
     /**
      * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
      * vai nopea simulaatio.
      *
-     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon ruutujen kustannuksista
-     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin suoritusaskeleen välillä.
+     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon
+     * ruutujen kustannuksista
+     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin
+     * suoritusaskeleen välillä.
      * @param alku alkupisteen koordinaatit
      * @param maali maalipisteen koordinaatit
      * @param vinottain sallitaanko liikkuminen vinottain
      * @param heuristiikka käytettävä heuristiikka
      */
     public AStarAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
-        if (maailma == null) {
-            throw new IllegalStateException("Maailma null");
-        }
-
-        this.alku = alku;
-        this.maali = maali;
-        this.leveys = maailma[0].length;
-        this.korkeus = maailma.length;
-        this.valmis = false;
-        this.parhaatReitit = new int[korkeus][leveys];
-        this.hidaste = hidaste;
+        super(maailma, hidaste, alku, maali, vinottain);
         this.heuristiikka = heuristiikka;
-        this.maailma = maailma;
-        this.ruutujenTilat = new RuudunTila[korkeus][leveys];
-        this.jatketaanko = true;
-        this.vinottain = vinottain;
-        //this.sc = new Scanner(System.in);
+        this.parhaatReitit = new int[korkeus][leveys];
+        
+        alustaParhaatReitit();
+        //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
+        AStarVertailija vertailija = new AStarVertailija(this.heuristiikka, maali);
+        tutkittavat = new PrioriteettiKeko<>(vertailija);
     }
 
-    /**
-     * Algoritmin asettama tila ruudulle tietyssä pisteessä. Jos ruutu on
-     * koskematon, palautetaan null. Kertoo onko ruutu tutkittu, tai lisätty
-     * tutkittavaksi, tai osa lopullista reittiä.
-     *
-     * @param x
-     * @param y
-     * @return ruudun tila
-     */
-    public RuudunTila getRuudunTila(int x, int y) {
-        return this.ruutujenTilat[y][x];
-    }
-    
-    /**
-     * Lopettaa reittialgoritmin suorituksen.
-     */
-    public void lopeta() {
-        this.jatketaanko = false;
-        System.out.println("lopetettiin");
-    }
-
-    /**
-     * Käynnistää algoritmin suorituksen.
-     */
     @Override
     public void run() {
-        alustaParhaatReitit();
+        tutkittavat.lisaa(new Solmu(alku, 0, null));
 
-        //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
-        Vertailija vertailija = new Vertailija(this.heuristiikka, maali);
-        PrioriteettiKeko<Solmu> tutkimattomat = new PrioriteettiKeko<>(vertailija);
-        
-        Solmu solmu = new Solmu(alku, 0, null);
+        while (!tutkittavat.tyhja() && jatketaanko) {
 
-        System.out.println("alkutilanne: " + solmu);
+            //Otetaan jonosta solmu
+            tutkittavaSolmu = tutkittavat.seuraava();
 
-        while (!solmu.getKoordinaatit().equals(maali)) {
-            if (!jatketaanko) {
+            //Jos ollaan maalissa, lopetetaan tähän
+            if (tutkittavaSolmu.getKoord().equals(maali)) {
+                maaliLoytyi(tutkittavaSolmu);
                 return;
             }
 
-            //käydään läpi solmun naapurisolmut ja lisätään ne tutkittavien joukkoon.
-            for (Koordinaatit koord : solmunNaapurit(solmu)) {
+            //Muussa tapauksessa merkitään solmu nyt käsittelyssä olevaksi
+            ruutujenTilat[tutkittavaSolmu.getKoord().getY()][tutkittavaSolmu.getKoord().getX()] = RuudunTila.KASITTELYSSA;
 
-                //int matka = solmu.getKuljettuMatka() + ruudukko[koord.getY()][koord.getX()];
-                int matka = solmu.getKuljettuMatka() + maailma[koord.getY()][koord.getX()].getHinta();
+            //Odotetaan mahdollisen viiveen verran aikaa ennen jatkamista
+            super.odota();
 
-                //jos tähän solmuun ei ole päästy lyhyempää reittiä pitkin
-                if (parhaatReitit[koord.getY()][koord.getX()] == -1 || matka < parhaatReitit[koord.getY()][koord.getX()]) {
-                    parhaatReitit[koord.getY()][koord.getX()] = matka;
-                    //Lisätään tutkittaviin uusi solmu, jonka kuljetuksi matkaksi annetaan tämän solmun kuljettu matka + maaston vaikeustaso
-                    tutkimattomat.lisaa(new Solmu(koord, matka, solmu));
-                    ruutujenTilat[koord.getY()][koord.getX()] = RuudunTila.TUTKITTAVA;
+            //Käydään läpi solmun naapurit
+            for (Solmu s : solmunNaapurit(tutkittavaSolmu)) {
+
+                //Jos tähän ruutuun on jo päästy vähintään yhtä hyvää reittiä pitkin, ei käsitellä tätä enää
+                if (parhaatReitit[s.getKoord().getY()][s.getKoord().getX()] != -1 && parhaatReitit[s.getKoord().getY()][s.getKoord().getX()] <= s.getKuljettuMatka()) {
+                    continue;
                 }
+                //Muussa tapauksessa päivitetään paras reitti ja lisätään tämä tutkittaviin
+                parhaatReitit[s.getKoord().getY()][s.getKoord().getX()] = s.getKuljettuMatka();
+
+                ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] = RuudunTila.TUTKITTAVA;
+                tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka() + maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
             }
-            ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.TUTKITTU;
-            solmu = tutkimattomat.seuraava();
-            if (solmu == null) {
-                return;
-            }
-            ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.KASITTELYSSA;
-            if (this.hidaste != 0) {
-                try {
-                    Thread.sleep(hidaste);
-                } catch (InterruptedException ex) {
-                }
-            }
+
+            //Lopuksi merkitään tämä solmu tutkituksi
+            ruutujenTilat[tutkittavaSolmu.getKoord().getY()][tutkittavaSolmu.getKoord().getX()] = RuudunTila.TUTKITTU;
         }
 
-        System.out.println("REITTI (lopusta alkuun:");
-        this.reitti = solmu;
-        while (solmu != null) {
-            ruutujenTilat[solmu.getKoordinaatit().getY()][solmu.getKoordinaatit().getX()] = RuudunTila.REITTI;
-            System.out.println(solmu);
-            solmu = solmu.getEdellinen();
-        }
-        this.valmis = true;
-    }
-
-    private ArrayList<Koordinaatit> solmunNaapurit(Solmu solmu) {
-        ArrayList<Koordinaatit> palautus = new ArrayList<Koordinaatit>();
-        Suunta[] lapikaytavat;
-
-        if (vinottain) {
-            lapikaytavat = Suunta.values();
-        } else {
-            lapikaytavat = Suunta.kohtisuoratSuunnat();
-        }
-
-        for (Suunta suunta : lapikaytavat) {
-            Koordinaatit koord = solmu.getKoordinaatit().suuntaan(suunta);
-            if (koordinaatitUlkopuolella(koord)) {
-                continue;
-            }
-            if (maailma[koord.getY()][koord.getX()] == null) {
-                continue;
-            }
-            if (maailma[koord.getY()][koord.getX()].getHinta() == 0) {
-                continue;
-            }
-            palautus.add(koord);
-        }
-        return palautus;
     }
 
     private void alustaParhaatReitit() {
@@ -181,37 +100,4 @@ public class AStarAlgoritmi extends Thread {
         }
     }
 
-    private boolean koordinaatitUlkopuolella(Koordinaatit koordinaatit) {
-        return koordinaatit.getX() < 0 || koordinaatit.getY() < 0 || koordinaatit.getX() >= maailma[0].length || koordinaatit.getY() >= maailma.length;
-
-    }
-
-    public int getLeveys() {
-        return this.leveys;
-    }
-
-    public int getKorkeus() {
-        return this.korkeus;
-    }
-
-    /**
-     * Palauttaa tiedon siitä, onko algoritmin suorittaminen valmis, eli onko
-     * reitti perille jo löytynyt.
-     *
-     * @return true, jos algoritmin suorittaminen on valmis ja false, jos ei ole
-     */
-    public boolean onkoValmis() {
-        return this.valmis;
-    }
-
-    /**
-     * Jos algoritmin suoritus on valmis (onkoValmis() -metodi palauttaa true),
-     * niin tämä metodi palauttaa valmiin reitin maalisolmun, joka on linkitetty
-     * lista kohti lähtöpistettä
-     *
-     * @return reitin viimeinen solmu
-     */
-    public Solmu getReitti() {
-        return this.reitti;
-    }
 }

@@ -6,6 +6,7 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Toiminto;
+import com.mycompany.tiralabra_maven.algoritmi.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -155,6 +156,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         paivitaKustannusKentat();
         hidasteField.setText(simulaatio.getHidaste() + "");
         liikkuminenVinottainCheckBox.setSelected(simulaatio.saakoLiikkuaVinottain());
+        algoritminValintaBox.setSelectedItem(simulaatio.getAlgoritmiTyyppi());
     }
 
     /**
@@ -205,7 +207,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         asetaLiikkumisKustannuksetButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        algoritminValintaBox = new javax.swing.JComboBox();
+        algoritminValintaBox = new javax.swing.JComboBox(AlgoritmiTyyppi.values());
         jLabel11 = new javax.swing.JLabel();
         heuristiikanValintaBox = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
@@ -494,7 +496,11 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
         jLabel10.setText("Algoritmi:");
 
-        algoritminValintaBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A*" }));
+        algoritminValintaBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algoritminValintaBoxActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Heuristiikka:");
 
@@ -692,6 +698,11 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         paivitaKomponentit();
 
     }//GEN-LAST:event_asetaLiikkumisKustannuksetButtonActionPerformed
+
+    private void algoritminValintaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoritminValintaBoxActionPerformed
+        // TODO add your handling code here:
+        simulaatio.asetaAlgoritmi((AlgoritmiTyyppi)algoritminValintaBox.getSelectedItem());
+    }//GEN-LAST:event_algoritminValintaBoxActionPerformed
 
     /**
      * @param args the command line arguments

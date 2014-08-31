@@ -60,6 +60,13 @@ public class PrioriteettiKeko<E> {
         heapify(0);
         return max;
     }
+    
+    /**
+     * Palauttaa tiedon siitä onko jono tyhjä
+     */
+    public boolean tyhja() {
+        return koko == 0;
+    }
 
     /**
      * Lisää kekoon elementin

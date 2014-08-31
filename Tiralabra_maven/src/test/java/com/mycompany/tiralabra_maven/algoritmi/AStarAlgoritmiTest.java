@@ -15,7 +15,7 @@ import org.junit.*;
  *
  * @author mikko
  */
-public class AlgoritmiTest {
+public class AStarAlgoritmiTest {
 
     @Before
     public void setUp() {
@@ -101,7 +101,8 @@ public class AlgoritmiTest {
     }
 
     private void suoritaAlgoritmi(AStarAlgoritmi algoritmi) {
-        algoritmi.start();
+        new Thread(algoritmi).start();
+        //algoritmi.start();
         //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;
         while (!algoritmi.onkoValmis()) {

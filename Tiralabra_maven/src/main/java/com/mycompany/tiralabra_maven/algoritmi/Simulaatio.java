@@ -30,17 +30,17 @@ public class Simulaatio {
     private KuvanLukija kuvanLukija;
 
     //private Scanner sc;
-    private AStarAlgoritmi algoritmi;
+    private AlgoritmiTyyppi algoritmiTyyppi;
+    private Algoritmi algoritmi;
 
     //Jonkun toisen luokan asiaa(?):
     private Koordinaatit hiiri;
     private boolean hiiriPainettu;
     private Toiminto toiminto = Toiminto.SEINA;
+    
 
     /**
-     * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
-     * vai nopea simulaatio.
-     *
+     * Luo uuden simulaation.
      */
     public Simulaatio() {
         this.leveys = 24;
@@ -52,6 +52,24 @@ public class Simulaatio {
         this.vinottain = true;
         this.kuvanLukija = new KuvanLukija();
         this.heuristiikka = new ManhattanHeuristiikka();
+        this.algoritmiTyyppi = AlgoritmiTyyppi.A_STAR;
+    }
+    
+    
+    /**
+     * Asettaa simulaatiossa käytettävän algoritmin.
+     * @param algoritmi algoritmin tyyppi
+     */
+    public void asetaAlgoritmi(AlgoritmiTyyppi algoritmi) {
+        this.algoritmiTyyppi = algoritmi;
+    }
+    
+    /**
+     * Palauttaa tiedon siitä, minkä tyyppinen algoritmi on käytössä.
+     * @return algoritmin tyyppi
+     */
+    public AlgoritmiTyyppi getAlgoritmiTyyppi() {
+        return this.algoritmiTyyppi;
     }
     
     /**
@@ -178,8 +196,22 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
-        this.algoritmi = new AStarAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
-        this.algoritmi.start();
+        switch (algoritmiTyyppi) {
+            case BREADTH_FIRST:
+                this.algoritmi = new BreadthFirstAlgoritmi(maailma, hidaste, alku, maali, vinottain);
+                break;
+            case DIJKSTRA:
+                this.algoritmi = new DijkstraAlgoritmi(maailma, hidaste, alku, maali, vinottain);
+                break;
+            case GREEDY_BEST_FIRST:
+                this.algoritmi = new GreedyBestFirstAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
+                break;
+            case A_STAR:
+                this.algoritmi = new AStarAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
+                break;
+        }
+        new Thread(this.algoritmi).start();
+        //this.algoritmi.start();
     }
 
     /**
