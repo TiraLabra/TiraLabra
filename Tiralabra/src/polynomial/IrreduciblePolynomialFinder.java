@@ -34,6 +34,7 @@ public class IrreduciblePolynomialFinder {
      * @param smartChar2Generation If true and if characteristic is 2 performs a simple check 
      * to ensure that the generated polynomial doesn't have a root. If this is true and
      * the characteristic is 2, it is advisable to set checkForRoots to false since it isn't needed anymore.
+     * @param useSparsePolynomials If true, generates shorter polynomials.
      * @param debugPrint If true, prints info about number of tries.
      * @return Polynomial of given degree that is irreducible over the ring with
      * the given characteristic.
@@ -41,7 +42,8 @@ public class IrreduciblePolynomialFinder {
      * @throws IllegalArgumentException if the degree is negative.
      */
     public static IPolynomial findIrreduciblePolynomial(int characteristic, int degree, 
-            boolean checkForRoots, boolean smartChar2Generation, boolean debugPrint) {
+            boolean checkForRoots, boolean smartChar2Generation, boolean useSparsePolynomials,
+            boolean debugPrint) {
         if (characteristic < 2) {
             throw new IllegalArgumentException("Characteristic " + characteristic + " is smaller than 2.");
         }        
@@ -63,8 +65,13 @@ public class IrreduciblePolynomialFinder {
             if (debugPrint) {
                 System.out.println("Try " + totalAmountOfTries);
             }
-            IPolynomial candidate = createCandidatePolynomial(characteristic, degree, ratioOfZeros, smartChar2Generation, random);
-            if (checkForRoots && degree > 1 && hasRoot(candidate)) {
+            IPolynomial candidate;
+            if (useSparsePolynomials) {
+                candidate = createSparseCandidatePolynomial(characteristic, degree, ratioOfZeros, smartChar2Generation, random);
+            } else {
+                candidate = createEvenlyDistributedPolynomial(characteristic, degree, smartChar2Generation, random);
+            }
+            if ((!smartChar2Generation || characteristic != 2) && checkForRoots && degree > 1 && hasRoot(candidate)) {
                 if (debugPrint) {
                     System.out.println("Polynomial " + candidate + " has a root.");
                 }
@@ -100,7 +107,7 @@ public class IrreduciblePolynomialFinder {
      * @param random
      * @return 
      */
-    private static IPolynomial createCandidatePolynomial(int characteristic, int degree, 
+    private static IPolynomial createSparseCandidatePolynomial(int characteristic, int degree, 
             double ratioOfZeros, boolean smartChar2Generation, Random random) {
         IPolynomial candidate = new LinkedListPolynomial(characteristic);
         int leadingCoefficient = 1;
@@ -109,13 +116,42 @@ public class IrreduciblePolynomialFinder {
         int amountOfNonZeroCoefficients = 1;
         
         for (int exponent = degree - 1; exponent > 0; exponent--) {
-            int coefficient = getCoefficient(characteristic, false, ratioOfZeros, random);
+            int coefficient = getSparseCoefficient(characteristic, false, ratioOfZeros, random);
             if (coefficient != 0) {
                 candidate.addTerm(coefficient, exponent);
                 amountOfNonZeroCoefficients++;
             }
         }
-        int constantCoefficient = getCoefficient(characteristic, true, ratioOfZeros, random);
+        int constantCoefficient = getSparseCoefficient(characteristic, true, ratioOfZeros, random);
+        candidate.addTerm(constantCoefficient, 0);
+        amountOfNonZeroCoefficients++;
+        
+        // If the characteristic is 2 and we have an even amount of terms,
+        // the polynomial will automatically have the root 1. Thus if this
+        // is the case, we add a term to change the amount of non-zero coefficents.        
+        if (smartChar2Generation && characteristic == 2 && amountOfNonZeroCoefficients % 2 == 0) {
+            candidate.addTerm(1, 1);
+        }
+        
+        return candidate;
+    }
+    
+    private static IPolynomial createEvenlyDistributedPolynomial(int characteristic, int degree, 
+            boolean smartChar2Generation, Random random) {
+        IPolynomial candidate = new LinkedListPolynomial(characteristic);
+        int leadingCoefficient = 1;
+        candidate.addTerm(leadingCoefficient, degree);
+        
+        int amountOfNonZeroCoefficients = 1;
+        
+        for (int exponent = degree - 1; exponent > 0; exponent--) {
+            int coefficient = getEvenlyDistributedCoefficient(characteristic, false, random);
+            if (coefficient != 0) {
+                candidate.addTerm(coefficient, exponent);
+                amountOfNonZeroCoefficients++;
+            }
+        }
+        int constantCoefficient = getEvenlyDistributedCoefficient(characteristic, true, random);
         candidate.addTerm(constantCoefficient, 0);
         amountOfNonZeroCoefficients++;
         
@@ -151,7 +187,20 @@ public class IrreduciblePolynomialFinder {
         return false;
     }
 
-    private static int getCoefficient(int characteristic, boolean mustBePositive,
+
+    private static int getEvenlyDistributedCoefficient(int characteristic, boolean mustBePositive,
+            Random random) {
+        int coefficient;
+        if (mustBePositive) {
+            coefficient = random.nextInt(characteristic - 1) + 1;
+        } else {
+            coefficient = random.nextInt(characteristic);
+        }
+
+        return coefficient;
+    }    
+    
+    private static int getSparseCoefficient(int characteristic, boolean mustBePositive,
             double ratioOfZeros, Random random) {
         double randomNumber = random.nextDouble();
 
@@ -161,25 +210,12 @@ public class IrreduciblePolynomialFinder {
 
         int coefficient = random.nextInt(characteristic - 1) + 1;
 
-//        int coefficient;
-//        if (mustBePositive) {
-//            coefficient = 1;
-//        } else {
-//            coefficient = 0;
-//        }
-//        
-//        int toRemoveDivisor = 4;
-//        
-//        while (randomNumber > (1 - 1.0/toRemoveDivisor) && coefficient < characteristic - 1) {
-//            coefficient++;
-//            toRemoveDivisor*=2;
-//        }
         return coefficient;
     }
 
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++) {
-            System.out.println(getCoefficient(5, false, 0.7, new Random()));
+            System.out.println(getSparseCoefficient(5, false, 0.7, new Random()));
         }
     }
 
