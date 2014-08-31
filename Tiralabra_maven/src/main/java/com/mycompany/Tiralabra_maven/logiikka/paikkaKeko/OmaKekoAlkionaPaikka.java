@@ -6,7 +6,7 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
  * Oman tietorakenteen (minimikeko) toteutus. Keon alkiot
  * tyyppiä Paikka.
  */
-public class OmaKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
+public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
 
     private Paikka[] kekoTaulukko; //HUOM. kekotaulukko alkaa indeksistä 1 !!!
     private int heapSize;

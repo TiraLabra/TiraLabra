@@ -54,7 +54,9 @@ public class DijkstraWithHeapTest {
         maaliPiste = new Piste(0, 2);
 //        Piste maaliPiste = new Piste(2, 1);
 
-        DijkstraWithHeap dijkstraWithHeap = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste);
+        boolean minunKeko = true;
+
+        DijkstraWithHeap dijkstraWithHeap = new DijkstraWithHeap(kartta, lahtoPiste, maaliPiste, minunKeko);
 
         assertEquals(5, dijkstraWithHeap.ratkaise());
     }

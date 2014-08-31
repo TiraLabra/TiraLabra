@@ -30,8 +30,10 @@ public class App {
 
         int[][] kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
 
-        DijkstraWithHeap ratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
-        AstarWithHeap ratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste());
+        boolean minunKeko=true;
+        
+        DijkstraWithHeap ratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(),minunKeko);
+        AstarWithHeap ratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
 
         aikaAlussa = System.currentTimeMillis();
         int polunPituusDijkstra = ratkaisijaDijkstra.ratkaise();
@@ -51,8 +53,8 @@ public class App {
         reittiPinoAstar = ratkaisijaAstar.shortestPath();
         kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", etaisyysAlkuunLaskettuPaikatPinoAstar, reittiPinoAstar);
 
-        System.out.println("Dijkstra: polun pituus=" + polunPituusDijkstra + ", ratkaisuun kului aikaa " + ratkaisuAikaDijkstra + " ms.");
-        System.out.println("Astar: polun pituus=" + polunPituusAstar + ", ratkaisuun kului aikaa " + ratkaisuAikaAstar + " ms.");
+        System.out.println("Dijkstra: polun kulkemiseen käytetty aika=" + polunPituusDijkstra + " aikayksikköä, ratkaisuun kului aikaa " + ratkaisuAikaDijkstra + " ms");
+        System.out.println("Astar:    polun kulkemiseen käytetty aika=" + polunPituusAstar + " aikayksikköä, ratkaisuun kului aikaa " + ratkaisuAikaAstar + " ms");
 
     }
 }

@@ -14,25 +14,25 @@ import static org.junit.Assert.*;
  * @author Hannu
  */
 public class AstarWithHeapTest {
-    
+
     Piste lahtoPiste;
     Piste maaliPiste;
 
     public AstarWithHeapTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -55,7 +55,9 @@ public class AstarWithHeapTest {
         maaliPiste = new Piste(0, 2);
 //        Piste maaliPiste = new Piste(2, 1);
 
-        AstarWithHeap aStarWithHeap = new AstarWithHeap(kartta, lahtoPiste, maaliPiste);
+        boolean minunKeko = true;
+
+        AstarWithHeap aStarWithHeap = new AstarWithHeap(kartta, lahtoPiste, maaliPiste,minunKeko);
 
         assertEquals(5, aStarWithHeap.ratkaise());
     }

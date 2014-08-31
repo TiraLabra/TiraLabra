@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
  * Minimikeko toteutettuna Javan valmiilla tietorakenteella PriorityQueue. Keon
  * alkiot tyyppiä Paikka.
  */
-public class PriorityQueueKekoAlkionaPaikka implements MinKekoAlkionaPaikka {
+public class PriorityQueueKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
 
     private PriorityQueue<Paikka> q;
 

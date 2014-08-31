@@ -2,7 +2,7 @@ package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
 
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
-import com.mycompany.Tiralabra_maven.logiikka.keko.PriorityQueueKeko;
+import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.MinKekoAlkionaPaikka;
 import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.OmaKekoAlkionaPaikka;
 import com.mycompany.Tiralabra_maven.logiikka.paikkaKeko.PriorityQueueKekoAlkionaPaikka;
 import com.mycompany.Tiralabra_maven.logiikka.paikkaPino.OmaPinoAlkionaPaikka;
@@ -18,7 +18,8 @@ public class DijkstraWithHeap {
     private int[][] kartta;
     private int[][] reittiKartta;
     private Paikka[][] paikat;
-    private boolean maaliPoistettuKeosta; // aStar
+    private boolean maaliPoistettuKeosta;
+    private boolean omaKeko;
 
     /**
      * Luokan DijkstraWithHeap konstruktori.
@@ -26,14 +27,17 @@ public class DijkstraWithHeap {
      * @param kartta aikakustannutkartta kokonaislukutaulukkona
      * @param lahtoPiste haettavan nopeimman reitin lähtöpiste
      * @param maaliPiste haettavan nopeimman reitin maalipiste
+     * @param omaKeko jos omaKeko=true, käytetään omaa kekototeutusta
      */
-    public DijkstraWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste) {
+    public DijkstraWithHeap(int[][] kartta, Piste lahtoPiste, Piste maaliPiste, boolean omaKeko) {
 
         this.lahtoPiste = lahtoPiste;
         this.maaliPiste = maaliPiste;
         this.kartta = kartta;
         this.reittiKartta = kartta;
         this.paikat = new Paikka[kartta.length][kartta[0].length];
+        this.maaliPoistettuKeosta = false;
+        this.omaKeko = omaKeko;
 
     }
 
@@ -47,12 +51,7 @@ public class DijkstraWithHeap {
 
         this.initialiseSingleSource();
 
-//        PriorityQueueKeko<Paikka> heap = rakennaKekoJaAsetaVieruspaikat();
-
-//        PriorityQueueKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
-
-        OmaKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
-
+        MinKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
 //////        System.out.println(this.paikat[0][0].vierusPaikat);
 //////
@@ -61,14 +60,14 @@ public class DijkstraWithHeap {
         Paikka paikkaU;
         Paikka paikkaV;
 
-//        while (!heap.heapIsEmpty()) {
+//        while (!heap.heapIsEmpty()) {// EI käytetä tätä ehtoa vaan
 //        lopetetaan etsintä kun nopein polku maalipisteeseen löydetty
         while (!this.maaliPoistettuKeosta) {
             paikkaU = heap.heapDelMin();
             paikkaU.etaisyysAlkuunLaskettu = true;
-            if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) { // aStar
-                this.maaliPoistettuKeosta = true; // aStar
-            } // aStar
+            if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) {
+                this.maaliPoistettuKeosta = true;
+            }
 //////            System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
             while (!paikkaU.vierusPaikat.stackIsEmpty()) {
                 paikkaV = paikkaU.vierusPaikat.stackPop();
@@ -104,12 +103,15 @@ public class DijkstraWithHeap {
         this.paikat[this.lahtoPiste.i][this.lahtoPiste.j].etaisyysAlkuun = 0;
     }
 
-//    private PriorityQueueKeko<Paikka> rakennaKekoJaAsetaVieruspaikat() {
-//        PriorityQueueKeko<Paikka> heap = new PriorityQueueKeko();
-//    private PriorityQueueKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-//        PriorityQueueKekoAlkionaPaikka heap = new PriorityQueueKekoAlkionaPaikka();
-    private OmaKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-        OmaKekoAlkionaPaikka heap = new OmaKekoAlkionaPaikka();
+    private MinKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
+
+        MinKekoAlkionaPaikka heap = new MinKekoAlkionaPaikka();
+
+        if (this.omaKeko) {
+            heap = new OmaKekoAlkionaPaikka();
+        } else {
+            heap = new PriorityQueueKekoAlkionaPaikka();
+        }
 
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
@@ -140,7 +142,6 @@ public class DijkstraWithHeap {
         if (paikkaV.etaisyysAlkuun > paikkaU.etaisyysAlkuun + Math.abs(paikkaV.aikaKustannus)) {
             paikkaV.etaisyysAlkuun = paikkaU.etaisyysAlkuun + Math.abs(paikkaV.aikaKustannus);
             paikkaV.polku = paikkaU;
-//////            System.out.println("relax");
             return true;
         }
         return false;
