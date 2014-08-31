@@ -8,9 +8,9 @@ import java.util.Random;
  * 
  */
 public class Matrix {
-    private double[][] matrix;
-    private int rows;
-    private int columns;
+    private final double[][] matrix;
+    private final int rows;
+    private final int columns;
             
     public Matrix(int rows, int columns) {
         matrix = new double[rows][columns];
@@ -39,10 +39,26 @@ public class Matrix {
     
     public Matrix (double[][] matrix) {
         this.matrix = matrix;
+        this.rows = matrix.length;
+        this.columns = matrix[0].length;
     }
     
     public double get(int row, int column) {
         return matrix[row][column];
+    }
+    
+    public double[][] getArray() {
+        return matrix;
+    }
+    
+    public double[][] getArrayCopy() {
+        double[][] copy = new double[rows][columns];
+        for(int i=0; i<rows; i++) {
+            for(int j=0; j<columns; j++) {
+                copy[i][j] = matrix[i][j];
+            }
+        }
+        return copy;
     }
     
     public void setValue(int row, int column, double value) {
@@ -57,6 +73,14 @@ public class Matrix {
         return columns;
     }
     
+    /**
+     * Produces a submatrix of a given matrix starting and ending from the given rows and columns.
+     * @param startingRow
+     * @param endingRow
+     * @param startingColumn
+     * @param endingColumn
+     * @return 
+     */
     public Matrix subMatrix(int startingRow, int endingRow, int startingColumn, int endingColumn) {
         Matrix sub = new Matrix(endingRow-startingRow+1, endingColumn-startingColumn+1);
         for(int i=0; i<sub.numRows(); i++) {
@@ -65,6 +89,16 @@ public class Matrix {
             }
         }
         return sub;
+    }
+    
+    public Matrix subMatrix(int[] r, int startingColumn, int endingColumn) {
+      Matrix sub = new Matrix(r.length, endingColumn - startingColumn+1);      
+      for (int i = 0; i < r.length; i++) {
+        for (int j = startingColumn; j <= endingColumn; j++) {
+          sub.setValue(i, j - startingColumn, matrix[r[i]][j]);
+        }
+      }      
+      return sub;
     }
     
     /**
@@ -87,6 +121,12 @@ public class Matrix {
         return c;
     }
     
+    /**
+     * Multiply matrix by a scalar.
+     * Multiplies every value in the matrix by b.
+     * @param b
+     * @return 
+     */
     public Matrix multiplyByScalar(Double b) {
         Matrix c = new Matrix(numRows(), numCols());
         for (int i=0; i<numRows(); i++) {
@@ -178,15 +218,5 @@ public class Matrix {
         for (int i=0; i<numCols(); i++) {
             setValue(rowToAddTo, i, get(rowToAdd, i)*scalar);
         }
-    }
-    
-    public void print() {
-        for(int i=0; i<rows; i++) {
-            System.out.print("|");
-            for (int j=0; j<columns; j++) {
-                System.out.printf("%.2f" + " ", matrix[i][j]);
-            }
-            System.out.println("|");
-        }
-    }   
+    }     
 }

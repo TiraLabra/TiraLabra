@@ -7,18 +7,15 @@ package com.mycompany.tiralabra_maven;
 public class MatrixCalculator {
     
     /**
-     * Algorithm for calculating the determinant of a matrix to be done.     
-     */
-    public Double getDeterminant(Matrix a) {
-        return 0.0;
-    }
-    
-    /**
-     * Algorithm for inverting a matrix to be done.     
+     * Inverts a matrix using LU decomposition.     
      */
     public Matrix inverse(Matrix a) {
-        Matrix c = new Matrix(a.numRows(), a.numCols());
-        return c;
+        LUDecomposition lu = new LUDecomposition(a);
+        if (!lu.isNonsingular()) {
+            return null;
+        }
+        Matrix inverse = lu.inverse();    
+        return inverse;
     }    
     
     /**
@@ -30,8 +27,16 @@ public class MatrixCalculator {
     public Matrix StrassenMultiplication(Matrix a, Matrix b) {
         a = matrixSizeCheck(a);
         b = matrixSizeCheck(b);
-        int n = a.numRows();
-        Matrix c = new Matrix(n, n);  
+        if (a.numRows() != b.numRows()) {
+            if (a.numRows()>b.numRows()) {
+                b = increaseMatrixSize(b, a.numRows()-b.numRows());
+            }else {
+                a = increaseMatrixSize(a, b.numRows()-a.numRows());
+            }
+        }
+        int n = a.numCols();
+        int m = b.numRows();
+        Matrix c = new Matrix(m, n);  
         if (n==1) {
             c.setValue(0, 0, a.get(0, 0)*b.get(0, 0));            
             return c;
@@ -43,7 +48,7 @@ public class MatrixCalculator {
         Matrix b11 = b.subMatrix(0, n/2-1, 0, n/2-1);
         Matrix b12 = b.subMatrix(0, n/2-1, n/2, n-1);
         Matrix b21 = b.subMatrix(n/2, n-1, 0, n/2-1);
-        Matrix b22 = b.subMatrix(n/2, n-1, n/2, n-1);        
+        Matrix b22 = b.subMatrix(n/2, n-1, n/2, n-1);
 
         Matrix M1 = StrassenMultiplication(a11.add(a22), b11.add(b22));
         Matrix M2 = StrassenMultiplication(a21.add(a22), b11);
@@ -57,18 +62,19 @@ public class MatrixCalculator {
         Matrix c12 = M3.add(M5);
         Matrix c21 = M2.add(M4);
         Matrix c22 = M1.add(M3).subtract(M2).add(M6);
-        c = join(c11,c12,c21,c22);
+        c = joinFourMatricesIntoOne(c11,c12,c21,c22);
         return c;
     }   
     
     /**
      * Checks if the matrix size is a power of 2.
-     * If matrix is not a power of 2, zeros are added to make it so.
+     * If matrix size is not a power of 2, zeros are added to make it so.
      * @param m
      * @return 
      */
-    public Matrix matrixSizeCheck(Matrix m) {        
-        if ((m.numRows() & -m.numRows()) != m.numRows()) {  
+    private Matrix matrixSizeCheck(Matrix m) {
+        //NEEDS REFACTORING
+        if ((m.numRows() & -m.numRows()) != m.numRows() && m.numRows() > m.numCols()) {  
             int n = m.numRows();
             while((n & -n) != n) {
                 n++;
@@ -77,13 +83,54 @@ public class MatrixCalculator {
             for (int i=0; i<m.numCols(); i++) {
                 for (int j=0; j<m.numRows(); j++) {                    
                       u.setValue(i, j, m.get(i, j));
+                    }
+                }
+            return u;
+        }else if ((m.numCols() & -m.numCols()) != m.numCols() && m.numCols() > m.numRows()) {
+            int n = m.numCols();
+            while((n & -n) != n) {
+                n++;
+            }
+            Matrix u = new Matrix(n, n);
+            for (int i=0; i<m.numRows(); i++) {
+                for (int j=0; j<m.numCols(); j++) {                    
+                      u.setValue(i, j, m.get(i, j));
                     }                    
                 }     
             return u;
-        }else {
+        }else if ((m.numCols() & -m.numCols()) != m.numCols() && m.numCols() == m.numRows()) {
+            int n = m.numCols();
+            while((n & -n) != n) {
+                n++;
+            }
+            Matrix u = new Matrix(n, n);
+            for (int i=0; i<m.numRows(); i++) {
+                for (int j=0; j<m.numCols(); j++) {                    
+                      u.setValue(i, j, m.get(i, j));
+                    }                    
+                }     
+            return u;
+        }
+        else {
             return m;
         }
     }    
+    
+    /**
+     * Increases the size of a matrix by x.
+     * @param m
+     * @param x
+     * @return 
+     */
+    public Matrix increaseMatrixSize(Matrix m, int x) {
+        Matrix u = new Matrix(m.numRows()+x, m.numCols()+x);
+        for (int i=0; i<m.numRows(); i++) {
+            for (int j=0; j<m.numCols(); j++) {                    
+                  u.setValue(i, j, m.get(i, j));
+                }            
+            }     
+        return u;
+    }
     
     /**
      * Joins 4 submatrices into one matrix. 
@@ -93,7 +140,7 @@ public class MatrixCalculator {
      * @param m4
      * @return Matrix m
      */
-    public Matrix join(Matrix m1, Matrix m2, Matrix m3, Matrix m4) {
+    private Matrix joinFourMatricesIntoOne(Matrix m1, Matrix m2, Matrix m3, Matrix m4) {
         Matrix m = new Matrix(m1.numRows()+m2.numRows(), m1.numCols()+m2.numCols());
         for (int i=0; i<m1.numRows(); i++) {
             for (int j=0; j<m1.numCols(); j++) {
@@ -116,10 +163,10 @@ public class MatrixCalculator {
       int j = 0;
       while(i<m.numRows() && j<m.numCols()){
          int k = i;
-         while(k<=m.numRows() && m.get(k, j) ==0) {
+         while(k<m.numRows() && m.get(k, j) == 0) {
              k++;
          }
-         if( k<=m.numRows() ){
+         if( k<m.numRows() ){
             if(k != i) {
                m.swapRows(i, k);
             }
@@ -139,5 +186,20 @@ public class MatrixCalculator {
          }
          j++;
       }
+    }
+    
+    /**
+     * Calculates the determinant of a matrix using LU decomposition.
+     * @param m
+     * @return 
+     */
+    public double determinant(Matrix m) {
+        LUDecomposition d = new LUDecomposition(m);
+        Matrix lu = d.getLU();
+        double det = d.getPivsign();
+        for (int j = 0; j < m.numCols(); j++) {
+          det *= lu.get(j, j);
+        }
+        return det;
     }
 }
