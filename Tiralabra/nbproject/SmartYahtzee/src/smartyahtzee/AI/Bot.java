@@ -16,6 +16,12 @@ import smartyahtzee.scoring.Scores;
 public class Bot extends Player {
 
     
+    /**
+     * Tekee noppienpitämispäätökset.
+     * 
+     * Heittää nopat, tutkii mitkä kannattaa pitää, ja heittää uudelleen.
+     */
+    
     @Override
     protected void rollDice()    //todo: refactor
     {
@@ -69,7 +75,10 @@ public class Bot extends Player {
     }
     
     /**
+     * Laskee, mihin sarakkeeseen pisteet kannattaa merkitä.
      * 
+     * Valitsee isoimmat pisteet antavan kentän jättäen sattuman huomiotta ellei se ole ainoa vapaa
+     * kenttä ja painottaen ensimmäistä kuutta saraketta bonuksen saamiseksi.
      */
     
     @Override

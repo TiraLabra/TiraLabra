@@ -254,6 +254,14 @@ public class TreeBuilder {
         return reversed;
     }
     
+    /**
+     * Laskee taulukon erotuksen.
+     * 
+     * @param a isompi taulukko
+     * @param b pienempi taulukko
+     * @return taulukkojen erotus
+     */
+    
     private int[] arraySubtract(int[] a, int[] b)
     {
         int[] result = new int[a.length-b.length];

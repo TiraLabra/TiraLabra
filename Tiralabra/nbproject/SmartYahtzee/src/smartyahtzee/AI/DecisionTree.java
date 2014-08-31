@@ -65,6 +65,12 @@ public class DecisionTree {
         return ev;
     }
     
+    
+    /**
+     * Käy läpi puun.
+     * 
+     */
+    
     public double getEV(TreeNode node)
     {
         evs = 0.0;
@@ -80,6 +86,13 @@ public class DecisionTree {
         double ev = evs / leavesVisited;
         return ev;
     }
+    
+    /**
+     * Apumetodi puun läpikäyntiin.
+     * 
+     * 
+     * @param node node, josta alkaen käydään läpi
+     */
     
     private void countEV(TreeNode node)
     {        
