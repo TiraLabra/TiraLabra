@@ -37,15 +37,15 @@ public class HajautustauluLinkitetyllaListallaTest {
 	 
 	@Test
 	public void testaaMerkinnanLisays() {
-		Solmu lisatty = hajis.lisaaMerkinta("1", "2");
+		TaulunMerkinta lisatty = hajis.lisaaMerkinta("1", "2");
 		assertEquals(lisatty,hajis.etsiMerkinta("1"));
 		assertEquals(1,hajis.getMerkintoja());
 	}
 	@Test
 	public void testaaUseanMerkinnanLisays() {
-		Solmu lisatty = hajis.lisaaMerkinta("1", "2");
-		Solmu lisattymyos = hajis.lisaaMerkinta("23","32");
-		Solmu lisattymyos2 = hajis.lisaaMerkinta("3","32");
+		TaulunMerkinta lisatty = hajis.lisaaMerkinta("1", "2");
+		TaulunMerkinta lisattymyos = hajis.lisaaMerkinta("23","32");
+		TaulunMerkinta lisattymyos2 = hajis.lisaaMerkinta("3","32");
 		
 		assertEquals(lisatty,hajis.etsiMerkinta("1"));
 		assertEquals(lisattymyos,hajis.etsiMerkinta("23"));
@@ -54,16 +54,16 @@ public class HajautustauluLinkitetyllaListallaTest {
 	}
 	@Test
 	public void testaaMerkinnanPoisto() {
-		Solmu lisatty = hajis.lisaaMerkinta("1", "2");
-		hajis.poistaMerkinta(lisatty);
+		TaulunMerkinta lisatty = hajis.lisaaMerkinta("1", "2");
+		hajis.poistaMerkinta(lisatty.getAvain());
 		assertEquals(0,hajis.getMerkintoja());
 	}
 	
 	 @Test
 	 public void testaaMerkinnanHaku() {
-     Solmu lisatty = hajis.lisaaMerkinta("1", "2");
-     Solmu lisatty2 = hajis.lisaaMerkinta("2", "4");
-     Solmu lisatty3 = hajis.lisaaMerkinta("4", "2");
+     TaulunMerkinta lisatty = hajis.lisaaMerkinta("1", "2");
+     TaulunMerkinta lisatty2 = hajis.lisaaMerkinta("2", "4");
+     TaulunMerkinta lisatty3 = hajis.lisaaMerkinta("4", "2");
      assertEquals(lisatty,hajis.etsiMerkinta("1"));
 	 assertEquals(lisatty2,hajis.etsiMerkinta("2"));
 	 assertEquals(lisatty3,hajis.etsiMerkinta("4"));

@@ -32,13 +32,13 @@ public class SolmuTest {
 	
 	@Test
 	public void testaaAvaimenLisays() {
-		solmu.setAvain("123");
-		assertEquals("123",solmu.getAvain());
+		solmu.setMerkinta(new TaulunMerkinta("123",null));
+		assertEquals("123",solmu.getMerkinta().getAvain());
 	}
 	@Test
 	public void testaaArvonLisays() {
-		solmu.setArvo("123");
-		assertEquals("123",solmu.getArvo());
+		solmu.setMerkinta(new TaulunMerkinta("2","123"));
+		assertEquals("123",solmu.getMerkinta().getArvo());
 	}
 	@Test
 	public void testaaSeuraava() {

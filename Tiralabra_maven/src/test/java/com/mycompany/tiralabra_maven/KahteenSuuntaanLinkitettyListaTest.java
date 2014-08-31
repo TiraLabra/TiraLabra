@@ -38,21 +38,21 @@ public class KahteenSuuntaanLinkitettyListaTest {
 	 @Test
 	 public void testaaLisaysAvain()  {
 		 lista.lisaaSolmu("123", "");
-		 assertEquals("123",lista.getEnsimmainenSolmu().getAvain());
+		 assertEquals("123",lista.getEnsimmainenSolmu().getMerkinta().getAvain());
 	 }
 	 @Test
 	 public void testaaLisaysArvo()  {
 		 lista.lisaaSolmu("123", "321");
-		 assertEquals("321",lista.getEnsimmainenSolmu().getArvo());
+		 assertEquals("321",lista.getEnsimmainenSolmu().getMerkinta().getArvo());
 	 }
 	 @Test
 	 public void testaaMonenLisays() {
 		 lista.lisaaSolmu("123", "");
 		 lista.lisaaSolmu("231", "");
 		 lista.lisaaSolmu("312", "");
-		 assertEquals("312",lista.getEnsimmainenSolmu().getAvain());
-		 assertEquals("231",lista.getEnsimmainenSolmu().getSeuraava().getAvain());
-		 assertEquals("123",lista.getEnsimmainenSolmu().getSeuraava().getSeuraava().getAvain());
+		 assertEquals("312",lista.getEnsimmainenSolmu().getMerkinta().getAvain());
+		 assertEquals("231",lista.getEnsimmainenSolmu().getSeuraava().getMerkinta().getAvain());
+		 assertEquals("123",lista.getEnsimmainenSolmu().getSeuraava().getSeuraava().getMerkinta().getAvain());
 	 }
 	 @Test
 	 public void testaaPoisto() {

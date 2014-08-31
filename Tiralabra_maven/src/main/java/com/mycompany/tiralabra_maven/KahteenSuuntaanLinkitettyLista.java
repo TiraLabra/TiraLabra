@@ -92,7 +92,7 @@ public class KahteenSuuntaanLinkitettyLista {
 		}
 		Solmu EtsittavanAvaimenSolmu = this.ensimmainenSolmu;
 		while (EtsittavanAvaimenSolmu != null
-				&& !avain.equals(EtsittavanAvaimenSolmu.getAvain())) {
+				&& !avain.equals(EtsittavanAvaimenSolmu.getMerkinta().getAvain())) {
 			EtsittavanAvaimenSolmu = EtsittavanAvaimenSolmu.getSeuraava();
 		}
 		return EtsittavanAvaimenSolmu;

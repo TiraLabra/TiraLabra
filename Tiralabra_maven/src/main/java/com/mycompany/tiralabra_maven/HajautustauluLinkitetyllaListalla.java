@@ -9,7 +9,7 @@ package com.mycompany.tiralabra_maven;
  * 
  * @author sampox
  */
-public class HajautustauluLinkitetyllaListalla {
+public class HajautustauluLinkitetyllaListalla implements Hajautustaulu {
 
 	/**
 	 * Taulukko johon alkiot/alkiolistat tallennetaan
@@ -68,7 +68,7 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 * @see HajautustauluLinkitetyllaListalla#hajautusFunktio(String)
 	 */
-	public Solmu lisaaMerkinta(String avain, String arvo) {
+	public TaulunMerkinta lisaaMerkinta(String avain, String arvo) {
 		if (!tarkistaAvain(avain)) {
 			return null;
 		}
@@ -80,18 +80,18 @@ public class HajautustauluLinkitetyllaListalla {
 		if (taulukko[taulukonIndeksiAvaimelle] == null) {
 			merkintoja = merkintoja + 1;
 			taulukko[taulukonIndeksiAvaimelle] = new KahteenSuuntaanLinkitettyLista();
-			return taulukko[taulukonIndeksiAvaimelle].lisaaSolmu(avain, arvo);
+			return taulukko[taulukonIndeksiAvaimelle].lisaaSolmu(avain, arvo).getMerkinta();
 
 		} else {
 			Solmu avaimenSolmu = taulukko[taulukonIndeksiAvaimelle]
 					.etsiAvainListalta(avain);
 			if (avaimenSolmu != null) {
-				avaimenSolmu.setArvo(arvo);
-				return avaimenSolmu;
+				avaimenSolmu.getMerkinta().setArvo(arvo);
+				return avaimenSolmu.getMerkinta();
 			} else {
 				merkintoja = merkintoja + 1;
 				return taulukko[taulukonIndeksiAvaimelle].lisaaSolmu(avain,
-						arvo);
+						arvo).getMerkinta();
 			}
 		}
 	}
@@ -103,23 +103,26 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 * @param poistettavaSolmu
 	 *            hajautustaulusta poistettavan merkinnän solmu
+	 * @return onnistuiko poisto true/false
 	 */
-	public void poistaMerkinta(Solmu poistettavaSolmu) {
+	public Boolean poistaMerkinta(Solmu poistettavaSolmu) {
 		if (poistettavaSolmu != null
-				&& tarkistaAvain(poistettavaSolmu.getAvain())) {
+				&& tarkistaAvain(poistettavaSolmu.getMerkinta().getAvain())) {
 			// Minimitäyttösuhteen sattuessa uudelleenhajautus
 			if (this.merkintoja == (int) (this.taulukonKoko * this.minimiTayttosuhde)
 					&& this.taulukonKoko > 16) {
 				uudelleenHajautus(false);
 			}
 			int taulukonIndeksiAvaimelle = hajautusFunktio(poistettavaSolmu
-					.getAvain());
+					.getMerkinta().getAvain());
 			if (taulukko[taulukonIndeksiAvaimelle] != null) {
 				taulukko[taulukonIndeksiAvaimelle]
 						.poistaSolmu(poistettavaSolmu);
 				merkintoja = merkintoja - 1;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**
@@ -129,11 +132,12 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 * @param avain
 	 *            hajautustaulusta poistettavan solmun avain
+	 * @return onnistuiko poisto true/false
 	 * @see com.mycompany.tiralabra_maven.HajautustauluLinkitetyllaListalla#etsiMerkinta(java.lang.String)
 	 * @see com.mycompany.tiralabra_maven.HajautustauluLinkitetyllaListalla#poistaMerkinta(com.mycompany.tiralabra_maven.Solmu)
 	 */
-	public void poistaMerkinta(String avain) {
-		poistaMerkinta(etsiMerkinta(avain));
+	public Boolean poistaMerkinta(String avain) {
+		return poistaMerkinta(etsiMerkinnanSolmu(avain));
 
 	}
 
@@ -142,9 +146,29 @@ public class HajautustauluLinkitetyllaListalla {
 	 * 
 	 * @param avain
 	 *            hajautustaulusta etsittävä avain
+	 * @return Merkinta josta avain löytyy
+	 */
+	public TaulunMerkinta etsiMerkinta(String avain) {
+		if (!tarkistaAvain(avain)) {
+			return null;
+		}
+		int taulukonIndeksiAvaimelle = hajautusFunktio(avain);
+		if (taulukko[taulukonIndeksiAvaimelle] != null) {
+			Solmu loydetty = taulukko[taulukonIndeksiAvaimelle].etsiAvainListalta(avain);
+			if(loydetty!=null && loydetty.getMerkinta()!=null) {
+			return loydetty.getMerkinta(); }
+		}
+		return null;
+
+	}
+	/**
+	 * Metodi etsii avaimen hajautustaulusta.
+	 * 
+	 * @param avain
+	 *            hajautustaulusta etsittävä avain
 	 * @return Solmu josta avain löytyy
 	 */
-	public Solmu etsiMerkinta(String avain) {
+	public Solmu etsiMerkinnanSolmu(String avain) {
 		if (!tarkistaAvain(avain)) {
 			return null;
 		}
@@ -229,7 +253,7 @@ public class HajautustauluLinkitetyllaListalla {
 			if (merkinta != null) {
 				Solmu lapikaytava = merkinta.getEnsimmainenSolmu();
 				while (lapikaytava != null) {
-					lisaaMerkinta(lapikaytava.getAvain(), lapikaytava.getArvo());
+					lisaaMerkinta(lapikaytava.getMerkinta().getAvain(), lapikaytava.getMerkinta().getArvo());
 					lapikaytava = lapikaytava.getSeuraava();
 				}
 			}

@@ -5,7 +5,7 @@ package com.mycompany.tiralabra_maven;
  * 
  * @author sampox
  */
-public class HajautustauluAvoimellaHajautuksella {
+public class HajautustauluAvoimellaHajautuksella implements Hajautustaulu {
 	/**
 	 * Taulukko johon alkiot tallennetaan
 	 * 
@@ -97,7 +97,7 @@ public class HajautustauluAvoimellaHajautuksella {
 				if (taulukko[kokeiltavaIndeksiAvaimelle].getAvain() == null
 						&& poistetunIndeksi == -1) {
 					poistetunIndeksi = kokeiltavaIndeksiAvaimelle;
-				} else if (taulukko[kokeiltavaIndeksiAvaimelle].getAvain()
+				} else if (taulukko[kokeiltavaIndeksiAvaimelle].getAvain() != null && taulukko[kokeiltavaIndeksiAvaimelle].getAvain()
 						.equals(avain)) {
 					taulukko[kokeiltavaIndeksiAvaimelle].setArvo(arvo);
 					return taulukko[kokeiltavaIndeksiAvaimelle];

@@ -5,22 +5,17 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- * Luokka kuvaa yhtä solmua linkitetyllä listalle. Solmulla on avain, arvo ja 
+ * Luokka kuvaa yhtä solmua linkitetyllä listalle. Solmulla on merkintä ja 
  * linkit seuraavaan ja edelliseen solmuun.
  * 
  * @author sampox
  */
 public class Solmu {
     /**
- * Solmun avaimen arvo
+ * Solmun merkinta, avain+arvo pari
  * 
  */
-    private String avain;
-    /**
- * Solmun arvo
- * 
- */
-    private String arvo;
+    private TaulunMerkinta merkinta;
     /**
  * Solmun jälkeen listalla oleva solmu
  * 
@@ -42,31 +37,23 @@ public class Solmu {
  * 
  */
 public Solmu(String avain, String arvo, Solmu seuraava, Solmu edellinen) {
-        this.avain = avain;
-        this.arvo = arvo;
+		this.merkinta = new TaulunMerkinta(avain,arvo);
         this.seuraava = seuraava;
         this.edellinen = edellinen;
 }
     
-public String getArvo() {
-        return arvo;
-    }
 
-    public void setArvo(String arvo) {
-        this.arvo = arvo;
-    }
-   
-    
-    public String getAvain() {
-        return avain;
-    }
-
-    public void setAvain(String avain) {
-        this.avain = avain;
-    }
+    public TaulunMerkinta getMerkinta() {
+		return merkinta;
+	}
 
 
-    public Solmu getEdellinen() {
+	public void setMerkinta(TaulunMerkinta merkinta) {
+		this.merkinta = merkinta;
+	}
+
+
+	public Solmu getEdellinen() {
         return edellinen;
     }
 
