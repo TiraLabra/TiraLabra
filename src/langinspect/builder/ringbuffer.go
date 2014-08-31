@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"github.com/golddranks/TiraLabra/src/trie"
+	"github.com/golddranks/TiraLabra/src/orderedmap/naivetrie"
 )
 
 type ringBuffer struct {

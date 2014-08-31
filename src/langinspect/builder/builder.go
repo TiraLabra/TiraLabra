@@ -3,7 +3,7 @@ package builder
 
 import (
 	"fmt"
-	"github.com/golddranks/TiraLabra/src/trie"
+	"github.com/golddranks/TiraLabra/src/orderedmap/naivetrie"
 	"math"
 )
 
