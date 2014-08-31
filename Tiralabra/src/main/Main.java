@@ -2,7 +2,7 @@ package main;
 
 import java.util.Scanner;
 import polynomial.IPolynomial;
-import polynomial.PolynomialUtil;
+import polynomial.IrreduciblePolynomialFinder;
 
 /**
  * Main method for irreducible polynomial finder.
@@ -24,6 +24,7 @@ public class Main {
 
         if (args == null || args.length == 0) {
             startCLI();
+            return;
         }
         
         System.out.println("Characteristic, Degree, Polynomial, Tries");
@@ -32,8 +33,8 @@ public class Main {
             String[] thisInput = arg.split(",");
             int characteristic = Integer.parseInt(thisInput[0].trim());
             int degree = Integer.parseInt(thisInput[1].trim());
-            IPolynomial polynomial = PolynomialUtil.findIrreduciblePolynomial(characteristic, degree, false);
-            int numberOfTries = PolynomialUtil.getNumberOfPolynomialsTriedLastTime();
+            IPolynomial polynomial = IrreduciblePolynomialFinder.findIrreduciblePolynomial(characteristic, degree, true, true, false);
+            int numberOfTries = IrreduciblePolynomialFinder.getNumberOfPolynomialsGeneratedLastTime();
             System.out.print(characteristic);
             System.out.print(", " + degree);
             System.out.print(", " + polynomial);
@@ -54,7 +55,7 @@ public class Main {
 
         System.out.println("Starting calculation...");
         long startTime = System.currentTimeMillis();
-        IPolynomial polynomial = PolynomialUtil.findIrreduciblePolynomial(characteristic, degree, true);
+        IPolynomial polynomial = IrreduciblePolynomialFinder.findIrreduciblePolynomial(characteristic, degree, true, true, true);
         long endTime = System.currentTimeMillis();
         System.out.println("Irreducible polynomial: " + polynomial);
         System.out.println("Time elapsed: " + ((endTime - startTime) / 1000.0) + " seconds");

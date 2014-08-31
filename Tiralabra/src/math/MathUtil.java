@@ -1,5 +1,7 @@
 package math;
 
+import datastructures.IntegerNode;
+import datastructures.SortedIntegerList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -232,7 +234,7 @@ public class MathUtil {
      * @param n Largest number to consider
      * @return List of primes from smallest to largest.
      */
-    public static List<Integer> getAllPrimesSmallerOrEqualThanN(int n) {
+    public static SortedIntegerList getAllPrimesSmallerOrEqualThanN(int n) {
         int[] numberArray = new int[n + 1];
         boolean[] isPrime = new boolean[n + 1];
 
@@ -249,11 +251,11 @@ public class MathUtil {
             }
         }
 
-        List<Integer> primeList = new ArrayList<>();
+        SortedIntegerList primeList = new SortedIntegerList();
 
         for (int i = 2; i < numberArray.length; i++) {
             if (isPrime[i]) {
-                primeList.add(i);
+                primeList.addIntegerToList(i, false);
             }
         }
 
@@ -265,27 +267,36 @@ public class MathUtil {
      *
      * @param n The integer to factorize
      * @throws IllegalArgumentException if n is smaller than 2.
-     * @return A set containing the unique prime factors of n.
+     * @return A list containing the unique prime factors of n, sorted from smallest to
+     * largest.
      */
-    public static Set<Integer> getUniquePrimeFactors(int n) {
+    public static SortedIntegerList getUniquePrimeFactors(int n) {
         if (n < 2) {
             throw new IllegalArgumentException("The given number n is smaller than 2");
         }
         
-        Set<Integer> uniqueFactors = new HashSet<>();
-        List<Integer> primes = getAllPrimesSmallerOrEqualThanN((int) Math.floor(Math.sqrt(n)));
+        SortedIntegerList uniqueFactors = new SortedIntegerList();
+        SortedIntegerList primes = getAllPrimesSmallerOrEqualThanN((int) Math.floor(Math.sqrt(n)));
 
-        for (Integer p : primes) {
+        IntegerNode currentNode = primes.getSmallestNode();
+        
+        while (currentNode != null) {
+            int p = currentNode.getValue();
             if (p * p > n) {
                 break;
             }
+            boolean pHasBeenAdded = false;
             while (n % p == 0) {
-                uniqueFactors.add(p);
+                if (!pHasBeenAdded) {
+                    uniqueFactors.addIntegerToList(p, false);
+                    pHasBeenAdded = true;
+                }
                 n /= p;
             }
+            currentNode = currentNode.getNext();
         }
         if (n > 1) {
-            uniqueFactors.add(n);
+            uniqueFactors.addIntegerToList(n, false);
         }
 
         return uniqueFactors;

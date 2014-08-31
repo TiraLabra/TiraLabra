@@ -1,10 +1,12 @@
 package math;
 
+import datastructures.IntegerNode;
+import datastructures.SortedIntegerList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -400,89 +402,119 @@ public class MathUtilTest {
     public void testGetAllPrimesSmallerOrEqualThan1() {
         int n = 1;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(0, primes.size());
+        assertEquals(0, primes.getSize());
     }
     
     @Test
     public void testGetAllPrimesSmallerOrEqualThan2() {
         int n = 2;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(1, primes.size());
-        assertEquals(2, (int) primes.get(0));
+        assertEquals(1, primes.getSize());
+        assertEquals(2, (int) primes.getSmallestNode().getValue());
     }
     
     @Test
     public void testGetAllPrimesSmallerOrEqualThan3() {
         int n = 3;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(2, primes.size());
-        assertEquals(2, (int) primes.get(0));
-        assertEquals(3, (int) primes.get(1));        
+        assertEquals(2, primes.getSize());
+        assertEquals(2, (int) primes.getSmallestNode().getValue());
+        assertEquals(3, (int) primes.getLargestNode().getValue());        
     }  
     
     @Test
     public void testGetAllPrimesSmallerOrEqualThan4() {
         int n = 4;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(2, primes.size());
-        assertEquals(2, (int) primes.get(0));
-        assertEquals(3, (int) primes.get(1)); 
+        assertEquals(2, primes.getSize());
+        assertEquals(2, (int) primes.getSmallestNode().getValue());
+        assertEquals(3, (int) primes.getLargestNode().getValue());  
     }   
     
     @Test
     public void testGetAllPrimesSmallerOrEqualThan12() {
         int n = 12;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(5, primes.size());
-        assertEquals(2, (int) primes.get(0));
-        assertEquals(3, (int) primes.get(1)); 
-        assertEquals(5, (int) primes.get(2));         
-        assertEquals(7, (int) primes.get(3));     
-        assertEquals(11, (int) primes.get(4));        
+        assertEquals(5, primes.getSize());
+        IntegerNode current = primes.getSmallestNode();
+        assertEquals(2, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(3, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(5, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(7, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(11, (int) current.getValue());
     }   
     
     @Test
     public void testGetAllPrimesSmallerOrEqualThan100() {
         int n = 100;
         
-        List<Integer> primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
+        SortedIntegerList primes = MathUtil.getAllPrimesSmallerOrEqualThanN(n);
         
-        assertEquals(25, primes.size());
-        assertEquals(2, (int) primes.get(0));
-        assertEquals(3, (int) primes.get(1)); 
-        assertEquals(5, (int) primes.get(2));         
-        assertEquals(7, (int) primes.get(3));     
-        assertEquals(11, (int) primes.get(4));        
-        assertEquals(13, (int) primes.get(5));  
-        assertEquals(17, (int) primes.get(6));         
-        assertEquals(19, (int) primes.get(7)); 
-        assertEquals(23, (int) primes.get(8));       
-        assertEquals(29, (int) primes.get(9)); 
-        assertEquals(31, (int) primes.get(10));  
-        assertEquals(37, (int) primes.get(11)); 
-        assertEquals(41, (int) primes.get(12));         
-        assertEquals(43, (int) primes.get(13));     
-        assertEquals(47, (int) primes.get(14));        
-        assertEquals(53, (int) primes.get(15));  
-        assertEquals(59, (int) primes.get(16));         
-        assertEquals(61, (int) primes.get(17)); 
-        assertEquals(67, (int) primes.get(18));       
-        assertEquals(71, (int) primes.get(19)); 
-        assertEquals(73, (int) primes.get(20));  
-        assertEquals(79, (int) primes.get(21)); 
-        assertEquals(83, (int) primes.get(22));         
-        assertEquals(89, (int) primes.get(23));     
-        assertEquals(97, (int) primes.get(24));        
+        assertEquals(25, primes.getSize());
+        IntegerNode current = primes.getSmallestNode();
+        assertEquals(2, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(3, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(5, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(7, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(11, (int) current.getValue());        
+        current = current.getNext();
+        assertEquals(13, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(17, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(19, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(23, (int) current.getValue()); 
+        current = current.getNext();
+        assertEquals(29, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(31, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(37, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(41, (int) current.getValue()); 
+        current = current.getNext();
+        assertEquals(43, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(47, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(53, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(59, (int) current.getValue()); 
+        current = current.getNext();
+        assertEquals(61, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(67, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(71, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(73, (int) current.getValue()); 
+        current = current.getNext();
+        assertEquals(79, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(83, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(89, (int) current.getValue());
+        current = current.getNext();
+        assertEquals(97, (int) current.getValue());         
     }     
     
     @Test(expected = IllegalArgumentException.class)
@@ -494,86 +526,88 @@ public class MathUtilTest {
     @Test
     public void testGetUniquePrimeFactorsOf2() {
         int n = 2;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(1, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(2));
+        assertEquals(1, factors.getSize());
+        assertEquals(2, (int) factors.getLargestNode().getValue());
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf3() {
         int n = 3;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(1, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(3));
+        assertEquals(1, factors.getSize());
+        assertEquals(3, (int) factors.getLargestNode().getValue());
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf4() {
         int n = 4;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(1, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(2));
+        assertEquals(1, factors.getSize());
+        assertEquals(2, (int) factors.getLargestNode().getValue());
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf6() {
         int n = 6;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(2, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(2));
+        assertEquals(2, factors.getSize());
+        assertEquals(3, (int) factors.getLargestNode().getValue());
+        assertEquals(2, (int) factors.getSmallestNode().getValue());        
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf16() {
         int n = 16;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(1, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(2));
+        assertEquals(1, factors.getSize());
+        assertEquals(2, (int) factors.getLargestNode().getValue());
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf31() {
         int n = 31;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(1, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(31));
+        assertEquals(1, factors.getSize());
+        assertEquals(31, (int) factors.getLargestNode().getValue());
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf90() {
         int n = 90;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(3, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(2));
-        assertTrue(uniquePrimeFactors.contains(3));        
-        assertTrue(uniquePrimeFactors.contains(5));        
+        assertEquals(3, factors.getSize());
+        assertEquals(2, (int) factors.getSmallestNode().getValue());     
+        assertEquals(3, (int) factors.getSmallestNode().getNext().getValue());     
+        assertEquals(5, (int) factors.getSmallestNode().getNext().getNext().getValue());             
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf1183() {
         int n = 1183;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(2, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(7));
-        assertTrue(uniquePrimeFactors.contains(13));        
+        assertEquals(2, factors.getSize());
+        assertEquals(7, (int) factors.getSmallestNode().getValue());       
+        assertEquals(13, (int) factors.getSmallestNode().getNext().getValue());               
     }     
     
     @Test
     public void testGetUniquePrimeFactorsOf277211() {
         int n = 277211;
-        Set<Integer> uniquePrimeFactors = MathUtil.getUniquePrimeFactors(n);
+        SortedIntegerList factors = MathUtil.getUniquePrimeFactors(n);
         
-        assertEquals(3, uniquePrimeFactors.size());
-        assertTrue(uniquePrimeFactors.contains(11));
-        assertTrue(uniquePrimeFactors.contains(29));        
-        assertTrue(uniquePrimeFactors.contains(79));        
+        assertEquals(3, factors.getSize());
+        assertEquals(11, (int) factors.getSmallestNode().getValue());       
+        assertEquals(29, (int) factors.getSmallestNode().getNext().getValue());        
+        assertEquals(79, (int) factors.getSmallestNode().getNext().getNext().getValue()); 
+        
     }
 }
