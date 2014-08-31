@@ -13,7 +13,7 @@ import Tietorakenteet.Jono.Jonoiteroitava;
  *
  * @author Serafim
  */
-public class Naivimonikulmio {
+public class Naivimonikulmio implements Monikulmio {
       private Jono kulmat;
     private double maxX;
     private double minX;
@@ -41,6 +41,7 @@ public class Naivimonikulmio {
      *
      * @return ArrayList<Kordinaatti> kordinaatit
      */
+      @Override
     public Jono palautaKulmat() {
         return this.kulmat;
     }
@@ -48,21 +49,27 @@ public class Naivimonikulmio {
     /**
      *
      * Palauttaaa virittavannelion
+     * @return Palauttaa virittavannelion kordinaatit Kordinaatti[] oliona
      */
+      @Override
     public Kordinaatti[] palautaVirittavaNelio() {
         Kordinaatti[] k = new Kordinaatti[4];
         k[0] = new Kordinaatti(this.minX, this.maxY);
-        k[1] = new Kordinaatti(this.maxX, this.maxX);
+        k[1] = new Kordinaatti(this.maxX, this.maxY);
         k[2] = new Kordinaatti(this.minX, this.minY);
-        k[3] = new Kordinaatti(this.minX, this.maxX);
+        k[3] = new Kordinaatti(this.minX, this.maxY);
         return k;
 
     }
-
+    
+  
+    
+           
     /**
      *
      * Laskee virittavannelion
      */
+      @Override
     public void LaskeVirittavaNelio() {
         Kordinaatti k = (Kordinaatti) this.kulmat.palautaEnsimmainen().palautaObjekti();
         this.maxX = k.palautaX();
@@ -97,6 +104,7 @@ public class Naivimonikulmio {
      */
  
 
+      @Override
     public void laskeJanat() {
         this.vektori = new Kordinaatti[this.kulmat.palautaKoko()][2];
         int i = 0;
@@ -108,12 +116,19 @@ public class Naivimonikulmio {
             vektori[i][1] = k2;
 
             i++;
+            iter = iter.palauataSeuraava();
         }
         vektori[i][0] = (Kordinaatti) this.kulmat.palautaViimeinen().palautaObjekti();
         vektori[i][1] = (Kordinaatti) this.kulmat.palautaEnsimmainen().palautaObjekti();
 
     }
 
+      /**
+     *
+     * Palauttaa janat Kordinaatti[][] oliona
+     */
+    
+      @Override
     public Kordinaatti[][] PalautaJanat() {
         return this.vektori;
     }

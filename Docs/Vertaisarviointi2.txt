@@ -1,0 +1,10 @@
+Koodikatselmointi 
+Projekti on ladattu 31.08.2014 kello 14 00
+
++ Koodi näyttää selkeältä ja luokkajaottelu on hyvällä tasolla.
+
++ Jokaisesta luokkaa ja metodia on kommentoitu, niin että muutkin voivat ymmärtää mitä kyseinen ohjelma toimii.
+
++ Jokaisella luokalla löytyy testiluokka, jossa on kattavasti testattu koodia. Testit on tehty sillä tavalla että niiden avulla on helppo paikantaa bugin ja siinä on huomiotu myös tyyppilisiä virhetapauksia.
++ Suhteessa työn vaativuteen koodia ja testejä on kirjoitettu paljon. Työtä voisi laajentaa luomalla lisää Trie-tyyppisiä tietorakenteita ja vertailemalla niiden tehokkuuta. 
++ En saanu koodia ajettua

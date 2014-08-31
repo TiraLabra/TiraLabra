@@ -11,10 +11,14 @@ import Suorituskyky.ATahtiSuorituskykytestaus;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.DiskreettiVerkko;
+import Tietorakenteet.Jatkuvamonikulmio;
+import Tietorakenteet.Jono.Jono;
 import Tietorakenteet.Keko;
 import Tietorakenteet.Kordinaatti;
+import Tietorakenteet.Naivimonikulmio;
 import Tietorakenteet.Verkko;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -26,7 +30,7 @@ public class TiraLabraFix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       suorituskyky();
+       monikulmionakemisdebuggaus();
     }
 
     public static void AtahtiTestaus() {
@@ -141,6 +145,52 @@ public class TiraLabraFix {
         alg.asetaPisteet(solmuvektori[0], solmuvektori[3]);
         verkko.Lisaa(solmuvektori);
         alg.laske();
+    }
+
+    public static void monikulmiodebuggaus() {
+        Jono j = new Jono();
+        j.lisaa(new Kordinaatti(0, 0));
+        j.lisaa(new Kordinaatti(0, 1));
+        j.lisaa(new Kordinaatti(1, 1));
+        j.lisaa(new Kordinaatti(1, 0));
+        Naivimonikulmio n = new Naivimonikulmio(j);
+        Kordinaatti[][] kartta = n.PalautaJanat();
+        boolean k = false;
+        boolean d = false;
+        for (int i = 0; i < kartta.length; i++) {
+            Kordinaatti k1 = kartta[i][0];
+            Kordinaatti k2 = kartta[i][1];
+            Kordinaatti b1 = new Kordinaatti(0, 0);
+            Kordinaatti b2 = new Kordinaatti(0, 1);
+
+            if ((k1.palautaX() == b1.palautaX()) && (k2.palautaX() == b2.palautaX())&& (k2.palautaY() == b2.palautaY())&& (k1.palautaY() == b1.palautaY())) {
+                k = true;
+
+            }
+          if ((k2 == b2))
+          {
+          d = true;
+          
+          }
+
+        }
+        System.out.println(k);
+        System.out.println(d);
+
+    }
+    
+    public static void monikulmionakemisdebuggaus()
+    {
+    
+    Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(1,0);
+      Kordinaatti k3 = new Kordinaatti(1,1);
+      Kordinaatti k4 = new Kordinaatti(0,1);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      Janaleikkaus leikkaaja = new Janaleikkaus();
+      System.out.println(leikkaaja.nakeeko(k1, k2, kulmio));
     }
 
 }

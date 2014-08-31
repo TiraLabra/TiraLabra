@@ -6,13 +6,15 @@
 
 package Algoritmit;
 
+import Tietorakenteet.Jatkuvamonikulmio;
+import Tietorakenteet.Jono.Jono;
 import Tietorakenteet.Kordinaatti;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -86,5 +88,20 @@ public class JanaleikkausTest {
       Kordinaatti k4 = new Kordinaatti(1,2);
       assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4), new Kordinaatti(1,1));
     }
+      @Test
+    public void MonikulmioNakemistesti() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(1,0);
+      Kordinaatti k3 = new Kordinaatti(1,1);
+      Kordinaatti k4 = new Kordinaatti(0,1);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      
+      assertEquals(testaaja.nakeeko(k1, k2, kulmio), true);
+    }
+    
+    
+    
     
 }
