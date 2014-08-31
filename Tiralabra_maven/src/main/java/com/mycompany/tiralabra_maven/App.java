@@ -1,8 +1,5 @@
 package com.mycompany.tiralabra_maven;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -30,8 +27,10 @@ public class App {
 			tulokset[1] = "Avoin hajautus (lineearinen)";
 			tulokset[2] = "Avoin hajautus (neliöinen)";
 			tulokset[3] = "\t\t\t\tLisäys\tEtsintä(tuloksellinen)\tEtsinta(Tulokseton)\tPoisto";
+
 			Scanner lukija = new Scanner(System.in);
-			// final String sallitutMerkit ="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			// final String sallitutMerkit
+			// ="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			// Random randomi = new Random();
 
 			System.out
@@ -113,6 +112,17 @@ public class App {
 		}
 	}
 
+	/**
+	 * Metodi ottaa vastaan käyttäjän syötteen ja tarkistaa sen järkevyyden
+	 * 
+	 * @param vaihtoehtojenMaara
+	 *            vaihtoehtojen määrä
+	 * @param lukija
+	 *            Scanner-olio jonka avulla käyttäjän syöte luetaan
+	 * 
+	 * @return käyttäjän valitsema vaihtoehto
+	 * 
+	 */
 	public static int palautaValinta(int vaihtoehtojenMaara, Scanner lukija) {
 		while (true)
 			try {

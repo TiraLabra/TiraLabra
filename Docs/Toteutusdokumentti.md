@@ -23,3 +23,10 @@ HajautustauluAvoimellaHajautuksella.java
 
 
 Molemmissa hajautustauluissa siis käytetään TaulunMerkinta.java luokkaa kuvaamaan yksittäistä merkintää taulussa. Tämä on tehty, jotta metodit voisivat palauttaa samoja olioita. Se kun on erittäin hyödyllistä rajapintaa ajatellen.
+
+Saavutetut aika- ja tilavaativuudet:
+
+Suorituskyky- ja O-analyysivertailu:
+
+Lähteet:
+

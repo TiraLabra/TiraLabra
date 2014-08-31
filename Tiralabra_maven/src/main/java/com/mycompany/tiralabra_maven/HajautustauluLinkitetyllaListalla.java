@@ -103,7 +103,7 @@ public class HajautustauluLinkitetyllaListalla implements Hajautustaulu {
 	 * 
 	 * @param poistettavaSolmu
 	 *            hajautustaulusta poistettavan merkinnän solmu
-	 * @return onnistuiko poisto true/false
+	 * @return true jos poisto onnistui, muuten false
 	 */
 	public Boolean poistaMerkinta(Solmu poistettavaSolmu) {
 		if (poistettavaSolmu != null
@@ -132,7 +132,7 @@ public class HajautustauluLinkitetyllaListalla implements Hajautustaulu {
 	 * 
 	 * @param avain
 	 *            hajautustaulusta poistettavan solmun avain
-	 * @return onnistuiko poisto true/false
+	 * @return true jos poisto onnistui, muuten false
 	 * @see com.mycompany.tiralabra_maven.HajautustauluLinkitetyllaListalla#etsiMerkinta(java.lang.String)
 	 * @see com.mycompany.tiralabra_maven.HajautustauluLinkitetyllaListalla#poistaMerkinta(com.mycompany.tiralabra_maven.Solmu)
 	 */
