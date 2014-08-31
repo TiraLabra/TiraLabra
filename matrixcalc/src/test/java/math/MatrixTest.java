@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  */
 public class MatrixTest {
     
-    private final static double EPSILON = Double.MIN_VALUE;
+    private final static double EPSILON = 1e-11;
     
     @Test
     public void testArrayConstructor() {
@@ -25,8 +25,8 @@ public class MatrixTest {
                 assertEquals((double)(i+j), test.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, test.getRowDim());
-        assertEquals(3, test.getColumnDim());
+        assertEquals(3, test.getRows());
+        assertEquals(3, test.getCols());
     }
     
     @Test
@@ -37,8 +37,8 @@ public class MatrixTest {
                 assertEquals(0.0, test.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, test.getRowDim());
-        assertEquals(3, test.getColumnDim());
+        assertEquals(3, test.getRows());
+        assertEquals(3, test.getCols());
     }
     
     @Test
@@ -49,8 +49,8 @@ public class MatrixTest {
                 assertEquals(3.14159, test.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, test.getRowDim());
-        assertEquals(3, test.getColumnDim());
+        assertEquals(3, test.getRows());
+        assertEquals(3, test.getCols());
     }
     
     @Test
@@ -63,22 +63,22 @@ public class MatrixTest {
                 assertEquals(3.6, sum.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, sum.getRowDim());
-        assertEquals(3, sum.getColumnDim());
+        assertEquals(3, sum.getRows());
+        assertEquals(3, sum.getCols());
     }
     
     @Test
     public void testMatrixSubstraction() {
         Matrix first = new Matrix(3, 3, 2.0);
         Matrix second = new Matrix(3, 3, 1.5);
-        Matrix sum = first.substract(second);
+        Matrix sum = first.subtract(second);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 assertEquals(0.5, sum.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, sum.getRowDim());
-        assertEquals(3, sum.getColumnDim());
+        assertEquals(3, sum.getRows());
+        assertEquals(3, sum.getCols());
     }
     
     @Test
@@ -90,8 +90,8 @@ public class MatrixTest {
                 assertEquals(3.0, product.getArray()[i][j], EPSILON);
             }
         }
-        assertEquals(3, product.getRowDim());
-        assertEquals(3, product.getColumnDim());
+        assertEquals(3, product.getRows());
+        assertEquals(3, product.getCols());
     }
     
     @Test
@@ -158,119 +158,35 @@ public class MatrixTest {
     }
     
     @Test
-    public void testRowSwitching() {
+    public void testDeterminant() {
         double[][] temp = new double[3][3];
-        double number = 1.0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
+                temp[i][j] = i+j;
             }
         }
         Matrix test = new Matrix(temp);
-        test.rowSwitch(0, 1);
-        assertEquals(1.0, test.getArray()[1][0], EPSILON);
-        assertEquals(2.0, test.getArray()[1][1], EPSILON);
-        assertEquals(3.0, test.getArray()[1][2], EPSILON);
-        assertEquals(4.0, test.getArray()[0][0], EPSILON);
-        assertEquals(5.0, test.getArray()[0][1], EPSILON);
-        assertEquals(6.0, test.getArray()[0][2], EPSILON);
+        double a = temp[0][0];
+        double b = temp[0][1];
+        double c = temp[0][2];
+        double d = temp[1][0];
+        double e = temp[1][1];
+        double f = temp[1][2];
+        double g = temp[2][0];
+        double h = temp[2][1];
+        double i = temp[2][2];
+        assertEquals(a*e*i+b*f*g+c*d*h-c*e*g-b*d*i-a*f*h, test.determinant(), EPSILON);
     }
     
     @Test
-    public void testRowMultiplication() {
-        double[][] temp = new double[3][3];
-        double number = 1.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
-            }
-        }
+    public void testInverse() {
+        double[][] temp = {{1,2},{3,4}};
         Matrix test = new Matrix(temp);
-        test.rowMultiply(0, 2.0);
-        assertEquals(2.0, test.getArray()[0][0], EPSILON);
-        assertEquals(4.0, test.getArray()[0][1], EPSILON);
-        assertEquals(6.0, test.getArray()[0][2], EPSILON);
+        Matrix inverse = test.inverse();
+        assertEquals(-2, inverse.get(0, 0), EPSILON);
+        assertEquals(1, inverse.getArray()[0][1], EPSILON);
+        assertEquals(1.5, inverse.getArray()[1][0], EPSILON);
+        assertEquals(-0.5, inverse.getArray()[1][1], EPSILON);
     }
     
-    @Test
-    public void testRowAddition() {
-        double[][] temp = new double[3][3];
-        double number = 1.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
-            }
-        }
-        Matrix test = new Matrix(temp);
-        test.rowAdd(0, 1);
-        assertEquals(5.0, test.getArray()[0][0], EPSILON);
-        assertEquals(7.0, test.getArray()[0][1], EPSILON);
-        assertEquals(9.0, test.getArray()[0][2], EPSILON);
-    }
-    
-    @Test
-    public void testRowDelete() {
-        double[][] temp = new double[3][3];
-        double number = 1.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
-            }
-        }
-        Matrix test = new Matrix(temp);
-        test = test.deleteRow(1);
-        assertEquals(2, test.getRowDim());
-        assertEquals(3, test.getColumnDim());
-        assertEquals(1.0, test.getArray()[0][0], EPSILON);
-        assertEquals(2.0, test.getArray()[0][1], EPSILON);
-        assertEquals(3.0, test.getArray()[0][2], EPSILON);
-        assertEquals(7.0, test.getArray()[1][0], EPSILON);
-        assertEquals(8.0, test.getArray()[1][1], EPSILON);
-        assertEquals(9.0, test.getArray()[1][2], EPSILON);
-    }
-    
-    @Test
-    public void testColumnDelete() {
-        double[][] temp = new double[3][3];
-        double number = 1.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
-            }
-        }
-        Matrix test = new Matrix(temp);
-        test = test.deleteColumn(1);
-        assertEquals(3, test.getRowDim());
-        assertEquals(2, test.getColumnDim());
-        assertEquals(1.0, test.getArray()[0][0], EPSILON);
-        assertEquals(3.0, test.getArray()[0][1], EPSILON);
-        assertEquals(4.0, test.getArray()[1][0], EPSILON);
-        assertEquals(6.0, test.getArray()[1][1], EPSILON);
-        assertEquals(7.0, test.getArray()[2][0], EPSILON);
-        assertEquals(9.0, test.getArray()[2][1], EPSILON);
-    }
-    
-    @Test
-    public void testSubmatrix() {
-        double[][] temp = new double[3][3];
-        double number = 1.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                temp[i][j] = number;
-                number += 1.0;
-            }
-        }
-        Matrix test = new Matrix(temp);
-        boolean[] rows = {false, true, false};
-        boolean[] cols = {false, true, false};
-        test = test.submatrix(rows, cols);
-        assertEquals(2, test.getRowDim());
-        assertEquals(2, test.getColumnDim());
-    }
 }
-

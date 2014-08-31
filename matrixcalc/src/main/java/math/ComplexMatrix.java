@@ -2,22 +2,21 @@ package math;
 
 import java.util.*;
 import java.io.*;
-import algorithms.*;
 
 /**
- * Contains a matrix as a two-dimensional array of double precision floating point numbers,
- * and includes methods for basic matrix operations.
+ * Contains a complex matrix as a two-dimensional array of complex numbers,
+ * and includes methods for basic complex matrix operations.
  * 
  * @author ydna
  */
-public class Matrix implements Serializable {
+public class ComplexMatrix implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     /**
-     * Two-dimensional array containing the matrix elements as double values.
+     * Two-dimensional array containing the matrix elements as complex values.
      */
-    private final double[][] array;
+    private final Complex[][] array;
     
     /**
      * The row dimension, or the number of rows in the matrix.
@@ -33,7 +32,7 @@ public class Matrix implements Serializable {
      * Constructs a matrix from a two-dimensional array.
      * @param array Two-dimensional double array.
      */
-    public Matrix(double[][] array) {
+    public ComplexMatrix(Complex[][] array) {
         this.array = array;
         this.rows = array.length;
         this.cols = array[0].length;
@@ -44,8 +43,8 @@ public class Matrix implements Serializable {
      * @param rows The number of rows.
      * @param cols The number of columns.
      */
-    public Matrix(int rows, int cols) {
-        this.array = new double[rows][cols];
+    public ComplexMatrix(int rows, int cols) {
+        this.array = new Complex[rows][cols];
         this.rows = rows;
         this.cols = cols;
     }
@@ -56,8 +55,8 @@ public class Matrix implements Serializable {
      * @param cols The number of columns.
      * @param val The value of matrix elements.
      */
-    public Matrix(int rows, int cols, double val) {
-        this.array = new double[rows][cols];
+    public ComplexMatrix(int rows, int cols, Complex val) {
+        this.array = new Complex[rows][cols];
         this.rows = rows;
         this.cols = cols;
         for (int i = 0; i < rows; i++) {
@@ -67,17 +66,16 @@ public class Matrix implements Serializable {
         }
     }
     
-    /**
-     * Returns the matrix as a string.
-     * @return Matrix as a string.
-     */
     @Override
     public String toString() {
         String matrix = "";
         int length = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                matrix += String.format("%16.4f ", array[i][j]);
+                matrix += String.format("%16.4f", array[i][j].re());
+                if (array[i][j].im() >= 0) {
+                    matrix += "+";
+                }
             }
             matrix += "\n";
         }
@@ -89,9 +87,9 @@ public class Matrix implements Serializable {
      * @param file File name.
      * @throws Exception 
      */
-    public Matrix(String file) throws Exception {
+    public ComplexMatrix(String file) throws Exception {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));   
-        Matrix matrix = (Matrix) in.readObject();
+        ComplexMatrix matrix = (ComplexMatrix) in.readObject();
         this.array = matrix.getArray();
         this.rows = matrix.getRows();
         this.cols = matrix.getCols();
@@ -111,7 +109,7 @@ public class Matrix implements Serializable {
      * Accesses the two-dimensional array with the matrix elements.
      * @return Pointer to the array.
      */
-    public double[][] getArray() {
+    public Complex[][] getArray() {
         return this.array;
     }
     
@@ -119,8 +117,8 @@ public class Matrix implements Serializable {
      * Makes a duplicate of the two-dimensional array with the matrix elements.
      * @return Pointer to the copy of the array.
      */
-    public double[][] copyArray() {
-        double[][] copy = new double[rows][cols];
+    public Complex[][] copyArray() {
+        Complex[][] copy = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 copy[i][j] = array[i][j];
@@ -151,7 +149,7 @@ public class Matrix implements Serializable {
      * @param j Column number.
      * @return Matrix element.
      */
-    public double get(int i, int j) {
+    public Complex get(int i, int j) {
         return this.array[i][j];
     }
     
@@ -160,17 +158,17 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Sum.
      */
-    public Matrix add(Matrix matrix) {
+    public ComplexMatrix add(ComplexMatrix matrix) {
         if (matrix.getRows() != rows || matrix.getCols() != cols) {
             throw new IllegalArgumentException("Matrix dimensions do not match.");
         }
-        double[][] temp = new double[rows][cols];
+        Complex[][] temp = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                temp[i][j] = array[i][j] + matrix.array[i][j];
+                temp[i][j] = array[i][j].add(matrix.array[i][j]);
             }
         }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
     /**
@@ -178,17 +176,17 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Difference.
      */
-    public Matrix subtract(Matrix matrix) {
+    public ComplexMatrix subtract(ComplexMatrix matrix) {
         if (matrix.getRows() != rows || matrix.getCols() != cols) {
             throw new IllegalArgumentException("Matrix dimensions do not match.");
         }
-        double[][] temp = new double[rows][cols];
+        Complex[][] temp = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                temp[i][j] = array[i][j] - matrix.array[i][j];
+                temp[i][j] = array[i][j].subtract(matrix.array[i][j]);
             }
         }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
     /**
@@ -196,28 +194,28 @@ public class Matrix implements Serializable {
      * @param number Multiplier.
      * @return Scalar product.
      */
-    public Matrix multiply(double number) {
-        double[][] temp = new double[rows][cols];
+    public ComplexMatrix multiply(double number) {
+        Complex[][] temp = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                temp[i][j] = number * array[i][j];
+                temp[i][j] = array[i][j].multiply(number);
             }
         }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
     /**
      * Returns the transpose of this matrix.
      * @return Transpose.
      */
-    public Matrix transpose() {
-        double[][] temp = new double[cols][rows];
+    public ComplexMatrix transpose() {
+        Complex[][] temp = new Complex[cols][rows];
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 temp[i][j] = array[j][i];
             }
         }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
     /**
@@ -225,89 +223,38 @@ public class Matrix implements Serializable {
      * @param matrix Another matrix.
      * @return Matrix product.
      */
-    public Matrix multiply(Matrix matrix) {
+    public ComplexMatrix multiply(ComplexMatrix matrix) {
         if (matrix.getRows() != cols) {
             throw new IllegalArgumentException("Matrix inner dimensions do not match.");
         }
-        double[][] temp = new double[rows][matrix.getCols()];
+        Complex[][] temp = new Complex[rows][matrix.getCols()];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < matrix.getCols(); j++) {
                 for (int k = 0; k < cols; k++) {
-                    temp[i][j] += array[i][k] * matrix.array[k][j];
+                    temp[i][j] = temp[i][j].add(array[i][k].multiply(matrix.array[k][j]));
                 }
             }
         }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
     /**
-     * Multiplies this matrix by another matrix using Strassen's algorithm.
-     * @param matrix Another matrix.
-     * @return Matrix product.
-     */
-    public Matrix strassenMultiply(Matrix matrix) {
-        double[][] temp = Strassen.strassen(this.getArray(), matrix.getArray());
-        return new Matrix(temp);
-    }
-    
-    /**
-     * Calculates the determinant of this matrix.
-     * @return Determinant.
-     */
-    public double determinant() {
-        return new LUDecomposition(array).determinant();
-    }
-    
-    /**
-     * Calculates the inverse of this matrix.
-     * @return Matrix inverse.
-     */
-    public Matrix inverse() {
-        double[][] temp = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                temp[i][j] = (i == j ? 1.0 : 0.0);
-            }
-        }
-        return new Matrix(new LUDecomposition(array).solve(temp));
-    }
-    
-    /**
-     * Generates a matrix with random double elements within the given range.
+     * Generates a complex matrix with random real and imaginary parts within the given range.
      * @param rows The number of rows.
      * @param cols The number of columns.
      * @param lower Lower limit.
      * @param upper Upper limit.
-     * @return Random matrix.
+     * @return Random complex matrix.
      */
-    public static Matrix randomMatrix(int rows, int cols, int lower, int upper) {
+    public static ComplexMatrix randomComplexMatrix(int rows, int cols, double lower, double upper) {
         Random rand = new Random();
-        double[][] temp = new double[rows][cols];
+        Complex[][] temp = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                temp[i][j] = lower + (upper - lower) * rand.nextDouble();
+                temp[i][j] = new Complex(lower + (upper - lower) * rand.nextDouble(), lower + (upper - lower) * rand.nextDouble());
             }
         }
-        return new Matrix(temp);
-    }
-    
-    /**
-     * Generates a matrix with random integer elements within the given range.
-     * @param rows The number of rows.
-     * @param cols The number of columns.
-     * @param lower Lower limit.
-     * @param upper Upper limit.
-     * @return Random integer matrix.
-     */
-    public static Matrix randomIntegerMatrix(int rows, int cols, int lower, int upper) {
-        Random rand = new Random();
-        double[][] temp = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                temp[i][j] = rand.nextInt(upper - lower + 1) + lower;
-            }
-        }
-        return new Matrix(temp);
+        return new ComplexMatrix(temp);
     }
     
 }
