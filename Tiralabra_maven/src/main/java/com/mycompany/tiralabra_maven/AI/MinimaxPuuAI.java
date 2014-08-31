@@ -22,35 +22,39 @@ public class MinimaxPuuAI extends AI {
     }
 
 
-    private int minimax(Pelilauta lauta, int syvyys, boolean valkoisenVuoroSiirtaa, boolean vuorossaOlevaPelaaja) {
-        int parasArvo, arvo;
+    private int minimax(Pelilauta lauta, int syvyys, boolean valkoisenVuoroSiirtaa, boolean vuorossaOlevaPelaaja, int alfa, int beta) {
+        int arvo;
         Siirto[] siirrot = lauta.getSallitutSiirrot(valkoisenVuoroSiirtaa);
         heuristiikka = new Heuristiikka(lauta);
         if (syvyys <= 0 || lauta.getSallitutSiirrot(valkoisenVuoroSiirtaa) == null) {
             return heuristiikka.laskeTilanteenArvo(valkoisenVuoroSiirtaa);
         }
         if (vuorossaOlevaPelaaja) {
-            parasArvo = -1000000;
             for (int i = 0; i < siirrot.length; i++) {
                 Pelilauta kopio = lauta.teeKopio();
                 kopio.teeSiirto(siirrot[i]);
-                arvo = minimax(kopio, syvyys - 1, valkoisenVuoroSiirtaa, false);
-                if (arvo > parasArvo) {
-                    parasArvo = arvo;
+                arvo = minimax(kopio, syvyys - 1, valkoisenVuoroSiirtaa, false, alfa, beta);
+                if (arvo > alfa) {
+                    alfa = arvo;
+                }
+                if (beta <= alfa){
+                    break;
                 }
             }
-            return parasArvo;
+            return alfa;
         } else {
-            parasArvo = 1000000;
             for (int i = 0; i < siirrot.length; i++) {
                 Pelilauta kopio = lauta.teeKopio();
                 kopio.teeSiirto(siirrot[i]);
-                arvo = minimax(kopio, syvyys - 1, valkoisenVuoroSiirtaa, true);
-                if (arvo < parasArvo) {
-                    parasArvo = arvo;
+                arvo = minimax(kopio, syvyys - 1, valkoisenVuoroSiirtaa, true, alfa, beta);
+                if (arvo < beta) {
+                    beta = arvo;
+                }
+                if (beta <= alfa){
+                    break;
                 }
             }
-            return parasArvo;
+            return beta;
         }
     }
 
@@ -67,7 +71,9 @@ public class MinimaxPuuAI extends AI {
 
         Lista<Solmu> lista = new Lista(new SolmujenVertailija());
         for (int i = 0; i < sallitutSiirrot.length; i++) {
-            lista.lisaa(new Solmu(minimax(this.peli.getPelilauta().teeKopio(), 1, this.peli.isValkoisenVuoroSiirtaa(), true), sallitutSiirrot[i]));
+            Pelilauta lauta = this.peli.getPelilauta().teeKopio();
+            lauta.teeSiirto(sallitutSiirrot[i]);
+            lista.lisaa(new Solmu(minimax(lauta, this.syvyys, this.peli.isValkoisenVuoroSiirtaa(), false, -1000000, 1000000), sallitutSiirrot[i]));
         }
         Solmu palautus = lista.getSuurin();
         return palautus.getSiirto();

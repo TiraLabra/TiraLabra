@@ -24,6 +24,8 @@ public class SolmujenVertailija implements Comparator<Solmu> {
     public int compare(Solmu s1, Solmu s2) {
         if (s1.getArvo() < s2.getArvo()){
             return -1;
+        } else if (s1.getArvo() == s2.getArvo()) {
+            return 0;
         }
         return 1;
     }

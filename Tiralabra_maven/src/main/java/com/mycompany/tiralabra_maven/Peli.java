@@ -22,7 +22,8 @@ public class Peli implements Runnable {
     private int siirtojenMaara;
 
     /**
-     * Konstruktorissa luodaan uusi pelilauta, asetetaan sille nappulat ja selvitetään sallitut aloitussiirrot.
+     * Konstruktorissa luodaan uusi pelilauta, asetetaan sille nappulat ja
+     * selvitetään sallitut aloitussiirrot.
      */
     public Peli() {
         this.pelilauta = new Pelilauta();
@@ -69,11 +70,13 @@ public class Peli implements Runnable {
         return valkoinen;
     }
 
-    
     /**
-     * Metodi käynnistää uuden pelin, antaa siirtovuoron valkoiselle ja käskee tekemään siirtoja niin kauan kuin peli on käynnissä.
-     * Jos siirto oli hyppy eli vastustajan nappulan syöminen, on vielä tarkastettava, onko hyppimistä mahdollista jatkaa samalla nappulalla.
-     * Kun mahdollisia hyppimisiä ei enää ole, siirtovuoro vaihtuu toiselle pelaajalle. Jos toisella pelaajalla ei ole ollenkaan sallittuja siirtoja, peli päättyy.
+     * Metodi käynnistää uuden pelin, antaa siirtovuoron valkoiselle ja käskee
+     * tekemään siirtoja niin kauan kuin peli on käynnissä. Jos siirto oli hyppy
+     * eli vastustajan nappulan syöminen, on vielä tarkastettava, onko
+     * hyppimistä mahdollista jatkaa samalla nappulalla. Kun mahdollisia
+     * hyppimisiä ei enää ole, siirtovuoro vaihtuu toiselle pelaajalle. Jos
+     * toisella pelaajalla ei ole ollenkaan sallittuja siirtoja, peli päättyy.
      *
      */
     @Override
@@ -84,10 +87,13 @@ public class Peli implements Runnable {
         }
         vuorossaOlevaPelaaja = valkoinen;
         valkoisenVuoroSiirtaa = true;
-        
+
         peliKaynnissa = true;
         while (peliKaynnissa) {
+            //long aikaAlussa = System.currentTimeMillis();
             siirra();
+            //long aikaLopussa = System.currentTimeMillis();
+            //System.out.print((aikaLopussa - aikaAlussa) + "ms ");
         }
 
     }
@@ -104,9 +110,9 @@ public class Peli implements Runnable {
         siirtojenMaara++;
 
         vaihdaVuoroa();
-        
-        if (this.siirtojenMaara > 100){
-            peliLoppu("Pattitilanne, peli loppu!");
+
+        if (this.siirtojenMaara > 100) {
+            peliLoppu("Suurin sallittu siirtojen määrä tuli täyteen, peli loppui!");
         }
 
         if (!onkoSallittujaSiirtoja()) {
@@ -128,7 +134,7 @@ public class Peli implements Runnable {
         } else {
             this.vuorossaOlevaPelaaja = valkoinen;
         }
-        
+
         valkoisenVuoroSiirtaa = !valkoisenVuoroSiirtaa;
     }
 
@@ -158,8 +164,10 @@ public class Peli implements Runnable {
     }
 
     /**
-     * Metodi asettaa annetun viestin muuttujaan, josta käyttöliittymäikkuna sitten voi sen käydä hakemassa.
-     * Viestin asettamisen jälkeen päivitetään käyttöliittymä, jolloin myös uusi viesti haetaan.
+     * Metodi asettaa annetun viestin muuttujaan, josta käyttöliittymäikkuna
+     * sitten voi sen käydä hakemassa. Viestin asettamisen jälkeen päivitetään
+     * käyttöliittymä, jolloin myös uusi viesti haetaan.
+     *
      * @param viesti Viesti, joka haluttaa esittää käyttäjälle.
      */
     public void setViesti(String viesti) {

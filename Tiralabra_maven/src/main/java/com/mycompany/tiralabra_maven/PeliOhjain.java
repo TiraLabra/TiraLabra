@@ -114,7 +114,7 @@ public class PeliOhjain implements Pelaaja {
             //musta = new IhmisPelaaja(peli, this);
             musta = this;
         } else if (mustaPelaaja == PelaajaTyyppi.MINIMAX) {
-            musta = new MinimaxAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.mustaMiniMaxSyvyys);
+            musta = new MinimaxPuuAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.mustaMiniMaxSyvyys);
         } else {
             musta = new EkaAI(peli, this, aiSiirtaaAutomaagisesti, viive);
         }
@@ -123,7 +123,7 @@ public class PeliOhjain implements Pelaaja {
             //valkoinen = new IhmisPelaaja(peli, this);
             valkoinen = this;
         } else if (valkoinenPelaaja == PelaajaTyyppi.MINIMAX) {
-            valkoinen = new MinimaxAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.valkoinenMiniMaxSyvyys);
+            valkoinen = new MinimaxPuuAI(peli, this, aiSiirtaaAutomaagisesti, viive, this.valkoinenMiniMaxSyvyys);
         } else {
             valkoinen = new EkaAI(peli, this, aiSiirtaaAutomaagisesti, viive);
         }
@@ -257,6 +257,10 @@ public class PeliOhjain implements Pelaaja {
         return seuraavaSiirto;
     }
 
+    /**
+     * Metodia käytetään silloin kuin ai-pelaaja ei siirrä automaattisesti.
+     * Tällöin odotetaan kunnes käyttäjä painaa nappia ja napin painamisen jälkeen palataan edelliseen ohjelman suorituskohtaan
+     */
     public void odotaAiNapinPainamista() {
         while (!aiNappiaPainettu) {
             try {

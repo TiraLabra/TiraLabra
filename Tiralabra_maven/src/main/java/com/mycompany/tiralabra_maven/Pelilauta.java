@@ -60,7 +60,9 @@ public class Pelilauta {
     }
 
     /**
-     * Metodi tekee pelilaudasta kopion eli luo uuden pelilaudan ja sille ruudukon ja kopioi nappuloiden paikat uuteen ruudukkoon
+     * Metodi tekee pelilaudasta kopion eli luo uuden pelilaudan ja sille
+     * ruudukon ja kopioi nappuloiden paikat uuteen ruudukkoon
+     *
      * @return Palauttaa pelilaudasta tehdyn kopion
      */
     public Pelilauta teeKopio() {
@@ -183,7 +185,18 @@ public class Pelilauta {
      */
     public Siirto[] getSallitutHypyt(boolean valkoisenVuoroSiirtaa, int rivi, int sarake) {
         ArrayList<Siirto> mahdollisetSiirrot = new ArrayList<>();
-        lisaaMahdollisetHypytListaan(valkoisenVuoroSiirtaa, mahdollisetSiirrot);
+        if (voikoNappulaHypata(valkoisenVuoroSiirtaa, rivi, sarake, rivi + 1, sarake + 1, rivi + 2, sarake + 2)) {
+            mahdollisetSiirrot.add(new Siirto(rivi, sarake, rivi + 2, sarake + 2));
+        }
+        if (voikoNappulaHypata(valkoisenVuoroSiirtaa, rivi, sarake, rivi - 1, sarake + 1, rivi - 2, sarake + 2)) {
+            mahdollisetSiirrot.add(new Siirto(rivi, sarake, rivi - 2, sarake + 2));
+        }
+        if (voikoNappulaHypata(valkoisenVuoroSiirtaa, rivi, sarake, rivi + 1, sarake - 1, rivi + 2, sarake - 2)) {
+            mahdollisetSiirrot.add(new Siirto(rivi, sarake, rivi + 2, sarake - 2));
+        }
+        if (voikoNappulaHypata(valkoisenVuoroSiirtaa, rivi, sarake, rivi - 1, sarake - 1, rivi - 2, sarake - 2)) {
+            mahdollisetSiirrot.add(new Siirto(rivi, sarake, rivi - 2, sarake - 2));
+        }
         if (!mahdollisetSiirrot.isEmpty()) {
             Siirto[] siirrot = new Siirto[mahdollisetSiirrot.size()];
             for (int i = 0; i < mahdollisetSiirrot.size(); i++) {
@@ -209,7 +222,7 @@ public class Pelilauta {
         if (ruudukko[alkuRivi][alkuSarake] == null) {
             throw new IllegalStateException("Yritettiin siirtää nappulaa jota ei ole");
         }
-        
+
         this.ruudukko[loppuRivi][loppuSarake] = ruudukko[alkuRivi][alkuSarake];
         this.ruudukko[alkuRivi][alkuSarake] = null;
 

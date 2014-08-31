@@ -1,17 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mycompany.tiralabra_maven.AI;
 
 import com.mycompany.tiralabra_maven.Siirto;
 
 /**
- *
+ * Pelaajaa kuvaava rajapinta, jolta voidaan kysyä seuraavaa siirtoa pelissä.
  * @author noora
  */
 public interface Pelaaja {
+    
+    /**
+     * Palauttaa seuraavan siirron
+     * @param sallitutSiirrot lista sallituista siirroista
+     * @return seuraava siirto
+     */
     public Siirto seuraavaSiirto(Siirto[] sallitutSiirrot);
 }
