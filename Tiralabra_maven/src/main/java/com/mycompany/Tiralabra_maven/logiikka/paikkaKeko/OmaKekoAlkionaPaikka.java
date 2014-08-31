@@ -12,7 +12,7 @@ public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
     private int heapSize;
 
     public OmaKekoAlkionaPaikka() {
-        this.kekoTaulukko = new Paikka[1000000];
+        this.kekoTaulukko = new Paikka[2000000];
         this.heapSize = 0;
     }
 
