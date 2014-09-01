@@ -12,12 +12,12 @@ GetEmitProb returns a function that reads database and returns the emit probabil
 of an observed string, given language. It is supposed to be passed as a callback
 to the viterbi function.
 */
-func GetEmitProb(dict *naivetrie.Node, stats *builder.Stats) func([]byte, builder.LangIndex) float64 {
+func GetEmitProbFunction(dict *naivetrie.Node) func([]byte, int) float64 {
 
-	emit_prob := func(obs []byte, lang builder.LangIndex) float64 {
-		langTab := dict.TryAndGet(obs).(LangTable)
-		freq := langTab[lang+1]
-		total := stats.GetTotalNgrams(lang)
+	emit_prob := func(obs []byte, stateNumber int) float64 {
+		langTab := dict.TryAndGet(obs).(builder.LangTable)
+		freq := langTab[builder.LangIndex(stateNumber+1)]
+		total := dict.Value.(builder.LangTable)[builder.LangIndex(stateNumber+1)]
 		return float64(float64(freq) / float64(total))
 	}
 

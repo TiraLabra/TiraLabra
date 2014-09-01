@@ -141,7 +141,7 @@ var Dict *naivetrie.Node
 /*
 Updates the frequency data of a single n-gram (represented by naivetrie.Node).
 */
-func touchLangData(node *naivetrie.Node, lang LangIndex) {
+func TouchLangData(node *naivetrie.Node, lang LangIndex) {
 	if node.Value == nil {
 		if ShowDebug {
 			fmt.Println("Initialising8 LangTable with", AmountOfLangs+1, "slots in node: '", string((*node).Prefix()), "'")
@@ -167,11 +167,11 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 	} else {
 		langtag := LangTag{bNext, <-byteStream}
 		node := langTagToIndex.GetOrCreate(langtag)
-		if node.Value == nil {
+		if node.Value == nil { // It's a new language!
 			node.Value = LangIndex(AmountOfLangs + 1)
 			langIndexToTag = append(langIndexToTag, langtag)
 			AmountOfLangs++
-			stats.AddLang()
+			TrieStats.AddLang()
 			if ShowMessages {
 				fmt.Println("New language! ", string(langtag[:]), node.Value)
 			}
@@ -184,12 +184,12 @@ func setLang(byteStream chan byte) (bool, LangIndex) {
 	}
 }
 
-var stats *Stats
+var TrieStats *Stats
 
 func builder(byteStream chan byte) {
 
 	// current language
-	currentLang := LangIndex(1)
+	currentLang := LangIndex(0)
 
 	//nodes is a ring buffer for trie nodes that represent n-grams
 	nodes := NewRingBuffer(MaxDepth)
@@ -199,6 +199,7 @@ func builder(byteStream chan byte) {
 		if ShowDebug {
 			fmt.Println("Reading new byte. It is '", string([]byte{b}))
 		}
+
 		// Handle the control sequences for changing the language
 		if b == '@' {
 			changed, newLang := setLang(byteStream)
@@ -215,19 +216,20 @@ func builder(byteStream chan byte) {
 			continue
 		}
 
-		stats.saveByteStats(currentLang)
+		TrieStats.saveByteStats(currentLang)
 
 		// Adds a fresh node (0-gram, i.e. the rootnode) to the ringbuffer.
 		// Oldest one (the 9-gram) will be thrown away if the buffer is full.
 		nodes.Add(Dict)
+		TouchLangData(Dict, currentLang)
 
 		iter := nodes.IterFromNewest()
 		n := 1
 		for iter.Next() {
 			node := iter.GetValue()
 			child := node.GetOrCreate([]byte{b})
-			touchLangData(child, currentLang)
-			stats.saveNodeStats(child, currentLang, n)
+			TouchLangData(child, currentLang)
+			TrieStats.saveNodeStats(child, currentLang, n)
 			n++
 			iter.SetValue(child)
 		}
@@ -238,12 +240,12 @@ func builder(byteStream chan byte) {
 Builds the database of n-grams. Takes a directory name dir as a parameter.
 Scans the dir and its subdirectories and reads all the files there.
 */
-func Build(directory string) {
-	stats = initStats()
+func Build(directory string) *naivetrie.Node {
+	TrieStats = InitStats()
 	byteStream := streamBytes(directory)
 	Dict = naivetrie.NewNode()           // "dict" is the trie containing all the n-grams
 	langTagToIndex = naivetrie.NewNode() // "langTagToIndex" converts to langTags to langIndexes
 	builder(byteStream)
-	stats.print()
-
+	TrieStats.print()
+	return Dict
 }

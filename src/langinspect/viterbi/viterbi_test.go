@@ -27,7 +27,7 @@ func TestA(t *testing.T) {
 		[]float64{0.5, 0.5},
 		[]float64{0.5, 0.5},
 	}
-	probs, paths := viterbi(observations, states, trans_prob, start_prob, emit_probA)
+	probs, paths := Run(observations, states, trans_prob, start_prob, emit_probA)
 
 	expected := [][]float64{[]float64{0.16666, 0.08333}}
 
@@ -68,7 +68,7 @@ func TestB(t *testing.T) {
 		[]float64{0.7, 0.3},
 		[]float64{0.4, 0.6},
 	}
-	probs, paths := viterbi(observations, states, trans_prob, start_prob, emit_probB)
+	probs, paths := Run(observations, states, trans_prob, start_prob, emit_probB)
 
 	expected := [][]float64{
 		[]float64{0.3, 0.04},

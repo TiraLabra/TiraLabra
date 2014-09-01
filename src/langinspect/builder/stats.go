@@ -35,7 +35,7 @@ type Stats struct {
 	nGramStats [][]NGramStatsType
 }
 
-func initStats() *Stats {
+func InitStats() *Stats {
 	if ShowMessages {
 		fmt.Println("Init stats!")
 	}

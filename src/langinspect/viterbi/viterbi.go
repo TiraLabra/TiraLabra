@@ -1,6 +1,6 @@
 package viterbi
 
-func viterbi(obs [][]byte, states int, trans_prob [][]float64, start_prob []float64, emit_prob func([]byte, int) float64) ([][]float64, [][]int) {
+func Run(obs [][]byte, states int, trans_prob [][]float64, start_prob []float64, emit_prob func([]byte, int) float64) ([][]float64, [][]int) {
 
 	probs := [][]float64{make([]float64, states)}
 	paths := make([][]int, states)

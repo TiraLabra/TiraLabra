@@ -26,6 +26,12 @@ func getFileReaders(directory string) chan *bufio.Reader {
 				}
 				return nil
 			}
+			if f.Name() == ".DS_store" {
+				if ShowMessages {
+					fmt.Println("Skipping .DS_store", f.Name())
+				}
+				return nil
+			}
 			file, err := os.Open(path)
 			if err != nil {
 				fmt.Println("Couldn't open " + f.Name() + "!")
