@@ -16,6 +16,9 @@ func GetEmitProbFunction(dict *naivetrie.Node) func([]byte, int) float64 {
 
 	emit_prob := func(obs []byte, stateNumber int) float64 {
 		langTab := dict.TryAndGet(obs).(builder.LangTable)
+		if len(langTab) <= stateNumber+1 {
+			return 0
+		}
 		freq := langTab[builder.LangIndex(stateNumber+1)]
 		total := dict.Value.(builder.LangTable)[builder.LangIndex(stateNumber+1)]
 		return float64(float64(freq) / float64(total))

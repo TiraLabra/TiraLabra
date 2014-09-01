@@ -26,9 +26,9 @@ func getFileReaders(directory string) chan *bufio.Reader {
 				}
 				return nil
 			}
-			if f.Name() == ".DS_store" {
+			if f.Name() == ".DS_Store" {
 				if ShowMessages {
-					fmt.Println("Skipping .DS_store", f.Name())
+					fmt.Println("Skipping .DS_Store", f.Name())
 				}
 				return nil
 			}

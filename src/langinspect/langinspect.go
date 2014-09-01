@@ -14,6 +14,7 @@ func slice(text string) [][]byte {
 	for i := 0; i < len(text); i++ {
 		r = append(r, []byte{text[i]})
 	}
+	fmt.Println("sliced", r)
 	return r
 }
 
@@ -29,5 +30,16 @@ func main() {
 	emit_prob := viterbi.GetEmitProbFunction(db)
 	obs := slice("jooopa joo")
 	probs, paths := viterbi.Run(obs, states, trans_prob, start_prob, emit_prob)
-	fmt.Println(probs, paths)
+	max_value := 0.0
+	max_index := 0
+	for i, v := range probs[len(probs)-1] {
+		if v < max_value {
+			max_value = v
+			max_index = i
+		}
+	}
+	for _, v := range paths[max_index] {
+		fmt.Print(builder.LangIndexToTag(builder.LangIndex(v+1)), " ")
+	}
+	fmt.Println()
 }

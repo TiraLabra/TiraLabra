@@ -189,7 +189,7 @@ var TrieStats *Stats
 func builder(byteStream chan byte) {
 
 	// current language
-	currentLang := LangIndex(0)
+	currentLang := LangIndex(1)
 
 	//nodes is a ring buffer for trie nodes that represent n-grams
 	nodes := NewRingBuffer(MaxDepth)
