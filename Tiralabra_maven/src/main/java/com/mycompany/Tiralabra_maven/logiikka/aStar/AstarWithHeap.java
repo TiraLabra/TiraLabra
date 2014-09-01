@@ -79,11 +79,11 @@ public class AstarWithHeap {
             }
         }
 
-        for (int i = 0; i < this.paikat.length; i++) {
-            for (int j = 0; j < this.paikat[0].length; j++) {
+//////        for (int i = 0; i < this.paikat.length; i++) {
+//////            for (int j = 0; j < this.paikat[0].length; j++) {
 //////                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
-            }
-        }
+//////            }
+//////        }
 
 //////        System.out.println("");
 
@@ -92,6 +92,7 @@ public class AstarWithHeap {
     }
 
     private void initialiseAstar() {
+//    public void initialiseAstar() {
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton

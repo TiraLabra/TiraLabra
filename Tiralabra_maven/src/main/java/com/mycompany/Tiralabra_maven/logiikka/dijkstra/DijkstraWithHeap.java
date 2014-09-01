@@ -49,6 +49,12 @@ public class DijkstraWithHeap {
      */
     public int ratkaise() {
 
+//////        try {
+//////            Thread.sleep(5000, 1);                 //1000 milliseconds is one second.
+//////        } catch (InterruptedException ex) {
+//////            Thread.currentThread().interrupt();
+//////        }
+
         this.initialiseSingleSource();
 
         MinKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
@@ -80,11 +86,11 @@ public class DijkstraWithHeap {
 //////        System.out.println("keon koko: "+heap.heapSize);
         }
 
-        for (int i = 0; i < this.paikat.length; i++) {
-            for (int j = 0; j < this.paikat[0].length; j++) {
+//////        for (int i = 0; i < this.paikat.length; i++) {
+//////            for (int j = 0; j < this.paikat[0].length; j++) {
 //////                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
-            }
-        }
+//////            }
+//////        }
 
 //////        System.out.println("");
 
@@ -93,6 +99,7 @@ public class DijkstraWithHeap {
     }
 
     private void initialiseSingleSource() {
+//    public void initialiseSingleSource() {
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton
