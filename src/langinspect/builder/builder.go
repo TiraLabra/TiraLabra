@@ -46,7 +46,7 @@ but it's better to set up on compile-time.
 */
 var AmountOfLangs = 0
 
-var langTagToIndex *trie.Node
+var langTagToIndex *naivetrie.Node
 var langIndexToTag [][]byte = [][]byte{nil}
 
 func LangTagToIndex(tag string) LangIndex {
@@ -136,15 +136,15 @@ A trie container that contains all the n-gram frequency data. The frequency valu
 are saved in type LangTable slices found from Node.Value.(LangTable).
 See the general usage of the Node object in the trie package.
 */
-var Dict *trie.Node
+var Dict *naivetrie.Node
 
 /*
-Updates the frequency data of a single n-gram (represented by trie.Node).
+Updates the frequency data of a single n-gram (represented by naivetrie.Node).
 */
-func touchLangData(node *trie.Node, lang LangIndex) {
+func touchLangData(node *naivetrie.Node, lang LangIndex) {
 	if node.Value == nil {
 		if ShowDebug {
-			fmt.Println("Initialising LangTable with", AmountOfLangs+1, "slots in node: '", string((*node).Prefix()), "'")
+			fmt.Println("Initialising8 LangTable with", AmountOfLangs+1, "slots in node: '", string((*node).Prefix()), "'")
 		}
 		node.Value = make(LangTable, AmountOfLangs+1)
 	}
@@ -241,8 +241,8 @@ Scans the dir and its subdirectories and reads all the files there.
 func Build(directory string) {
 	stats = initStats()
 	byteStream := streamBytes(directory)
-	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
-	langTagToIndex = trie.NewNode() // "langTagToIndex" converts to langTags to langIndexes
+	Dict = naivetrie.NewNode()           // "dict" is the trie containing all the n-grams
+	langTagToIndex = naivetrie.NewNode() // "langTagToIndex" converts to langTags to langIndexes
 	builder(byteStream)
 	stats.print()
 

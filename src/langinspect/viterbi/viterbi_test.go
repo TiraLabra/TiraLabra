@@ -6,8 +6,6 @@ import (
 	"testing"
 )
 
-type LangTable []int
-
 func emit_probA(obs []byte, state int) float64 {
 	switch obs[0] {
 	case byte('a'):

@@ -8,9 +8,9 @@ import (
 
 func TestRingbufferBasics(t *testing.T) {
 	rb := NewRingBuffer(20)
-	firstNode := trie.NewNode()
-	secondNode := trie.NewNode()
-	node := trie.NewNode()
+	firstNode := naivetrie.NewNode()
+	secondNode := naivetrie.NewNode()
+	node := naivetrie.NewNode()
 	replaced := rb.Add(firstNode)
 	if len(rb.buff) != 1 {
 		fmt.Println("Wrong size?")
@@ -58,12 +58,12 @@ func TestRingbufferBasics(t *testing.T) {
 
 func TestRingbufferClearing(t *testing.T) {
 	rb := NewRingBuffer(15)
-	node := trie.NewNode()
+	node := naivetrie.NewNode()
 	for i := 0; i < 18; i++ {
 		rb.Add(node)
 	}
 	rb.Clear()
-	node2 := trie.NewNode()
+	node2 := naivetrie.NewNode()
 	replaced := rb.Add(node2)
 	if replaced != nil {
 		fmt.Println("Should have been cleared!")
@@ -83,7 +83,7 @@ func TestRingbufferIter(t *testing.T) {
 		fmt.Println("Ringbuffer is empty and shouldn't be able to be iterated!")
 		t.Fail()
 	}
-	node := trie.NewNode()
+	node := naivetrie.NewNode()
 	rb.Add(node)
 	iter = rb.IterFromNewest()
 	if iter.Next() == false {
@@ -98,9 +98,9 @@ func TestRingbufferIter(t *testing.T) {
 		fmt.Println("There should be only one value!")
 		t.Fail()
 	}
-	node2 := trie.NewNode()
+	node2 := naivetrie.NewNode()
 	rb.Add(node2)
-	node3 := trie.NewNode()
+	node3 := naivetrie.NewNode()
 	rb.Add(node3)
 	iter = rb.IterFromNewest()
 	iter.Next()
@@ -128,11 +128,11 @@ func TestRingbufferIter(t *testing.T) {
 		fmt.Println("That should have been all!")
 		t.Fail()
 	}
-	node4 := trie.NewNode()
+	node4 := naivetrie.NewNode()
 	rb.Add(node4)
-	node5 := trie.NewNode()
+	node5 := naivetrie.NewNode()
 	rb.Add(node5)
-	node6 := trie.NewNode()
+	node6 := naivetrie.NewNode()
 	rb.Add(node6)
 	iter = rb.IterFromNewest()
 	iter.Next()
@@ -152,8 +152,8 @@ func TestRingbufferIter(t *testing.T) {
 
 func TestRingbufferIterSetValue(t *testing.T) {
 	rb := NewRingBuffer(6)
-	node := trie.NewNode()
-	node2 := trie.NewNode()
+	node := naivetrie.NewNode()
+	node2 := naivetrie.NewNode()
 	rb.Add(node)
 	rb.Add(node)
 	iter := rb.IterFromNewest()

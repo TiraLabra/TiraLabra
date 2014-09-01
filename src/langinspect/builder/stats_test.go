@@ -82,8 +82,8 @@ var NGramStatsShouldBe1 = [][]NGramStatsType{
 func TestBuilderStatsA(t *testing.T) {
 	stats = initStats()
 	byteStream := getMockByteStream("@enaaaa")
-	Dict = trie.NewNode()           // "dict" is the trie containing all the n-grams
-	langTagToIndex = trie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
+	Dict = naivetrie.NewNode()           // "dict" is the trie containing all the n-grams
+	langTagToIndex = naivetrie.NewNode() // "langTagToIndex" is a trie that converts to langTags to langIndexes
 	builder(byteStream)
 	if !reflect.DeepEqual(NGramStatsShouldBe1, stats.nGramStats) {
 		fmt.Println(NGramStatsShouldBe1)

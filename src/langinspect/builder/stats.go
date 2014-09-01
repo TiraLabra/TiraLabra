@@ -79,7 +79,7 @@ Prints statistics of the data.
 func (s *Stats) print() {
 	fmt.Printf("Took %.2f seconds.\n", float32(time.Since(s.startTime).Seconds()))
 	fmt.Println("Max n-gram length:\t", MaxDepth)
-	fmt.Printf("Size in memory:\t\t%d MiB, %d bytes per node, %d nodes.\n", trie.NodeCount()*int(unsafe.Sizeof(trie.Node{}))/(1024*1024), unsafe.Sizeof(trie.Node{}), trie.NodeCount())
+	fmt.Printf("Size in memory:\t\t%d MiB, %d bytes per node, %d nodes.\n", naivetrie.NodeCount()*int(unsafe.Sizeof(naivetrie.Node{}))/(1024*1024), unsafe.Sizeof(naivetrie.Node{}), naivetrie.NodeCount())
 	fmt.Println()
 	lang := LangTagToIndex("en")
 
@@ -135,7 +135,7 @@ func (s *Stats) saveByteStats(currentLang LangIndex) {
 
 }
 
-func (s *Stats) saveNodeStats(node *trie.Node, currentLang LangIndex, n int) {
+func (s *Stats) saveNodeStats(node *naivetrie.Node, currentLang LangIndex, n int) {
 	if ShowDebug {
 		fmt.Println("incrementing NGramStats")
 	}
@@ -151,4 +151,8 @@ func (s *Stats) saveNodeStats(node *trie.Node, currentLang LangIndex, n int) {
 		s.nGramStats[currentLang][len(s.nGramStats[currentLang])-1][n][FreqToFreqClass(freq)]++
 	}
 	n++
+}
+
+func (s *Stats) GetTotalNgrams(lang LangIndex) int {
+	return s.nGramStats[lang][len(s.nGramStats[lang])-1][AllGrams][0]
 }

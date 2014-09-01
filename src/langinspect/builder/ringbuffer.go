@@ -5,19 +5,19 @@ import (
 )
 
 type ringBuffer struct {
-	buff  []*trie.Node
+	buff  []*naivetrie.Node
 	index int
 }
 
 type ringIterator struct {
-	buff  []*trie.Node
+	buff  []*naivetrie.Node
 	index int
 	orig  int
 }
 
 func NewRingBuffer(length int) ringBuffer {
 	r := ringBuffer{}
-	r.buff = make([]*trie.Node, 0, length)
+	r.buff = make([]*naivetrie.Node, 0, length)
 	r.index = 0
 	return r
 }
@@ -28,7 +28,7 @@ func (r *ringBuffer) Clear() {
 }
 
 // Add a new node to the buffer. If the buffer is full, replace the oldest node with the new. Return replaced one, or nil if nothing is replaced.
-func (r *ringBuffer) Add(node *trie.Node) *trie.Node {
+func (r *ringBuffer) Add(node *naivetrie.Node) *naivetrie.Node {
 
 	if len(r.buff) < cap(r.buff) { // if ringbuffer isn't full yet, append to it
 		r.buff = append(r.buff, nil)
@@ -60,7 +60,7 @@ func (i *ringIterator) Next() bool {
 	return false
 }
 
-func (r *ringIterator) GetValue() *trie.Node {
+func (r *ringIterator) GetValue() *naivetrie.Node {
 	if r.index >= len(r.buff) {
 		return r.buff[r.index-len(r.buff)]
 	} else {
@@ -68,7 +68,7 @@ func (r *ringIterator) GetValue() *trie.Node {
 	}
 }
 
-func (r *ringIterator) SetValue(node *trie.Node) {
+func (r *ringIterator) SetValue(node *naivetrie.Node) {
 	if r.index >= len(r.buff) {
 		r.buff[r.index-len(r.buff)] = node
 	} else {

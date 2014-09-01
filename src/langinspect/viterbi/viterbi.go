@@ -5,6 +5,7 @@ func viterbi(obs [][]byte, states int, trans_prob [][]float64, start_prob []floa
 	probs := [][]float64{make([]float64, states)}
 	paths := make([][]int, states)
 
+	// Initializing with the start probabilities
 	for s := 0; s < states; s++ {
 		var emit_p float64 = emit_prob(obs[0], s)
 		probs[0][s] = start_prob[s] * emit_p
@@ -18,7 +19,7 @@ func viterbi(obs [][]byte, states int, trans_prob [][]float64, start_prob []floa
 			var nowStateEmitProb float64 = emit_prob(obs[o], nowState)
 			var max_prob float64
 			var max_lastState int
-			for lastState := 0; lastState < states; lastState++ {
+			for lastState := 0; lastState < states; lastState++ { // Searching for the most probable state from where the process entered the current state
 				lastStateProb := probs[o-1][lastState]
 				transitionProb := trans_prob[lastState][nowState]
 				thisProb := lastStateProb * transitionProb * nowStateEmitProb
@@ -30,7 +31,7 @@ func viterbi(obs [][]byte, states int, trans_prob [][]float64, start_prob []floa
 			probs[o][nowState] = max_prob
 			newpaths[nowState] = append(paths[max_lastState], nowState)
 		}
-		paths = newpaths
+		paths = newpaths // Overwriting older paths that converge to the current ones
 	}
 
 	return probs, paths
