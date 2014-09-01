@@ -16,6 +16,7 @@ func emit_probA(obs []byte, state int) float64 {
 	return 0
 }
 
+// Test the simplest case possible
 func TestA(t *testing.T) {
 	fmt.Println("Test A")
 	a := []byte("a")
@@ -54,6 +55,7 @@ func emit_probB(obs []byte, state int) float64 {
 	return 0
 }
 
+// Test the case from wikipedia article: states: normal, fever. Observations: normal, cold, dizzy.
 func TestB(t *testing.T) {
 	fmt.Println("Test B")
 	normal := []byte("n")
@@ -87,3 +89,5 @@ func TestB(t *testing.T) {
 	fmt.Println(paths)
 
 }
+
+// TODO Test more cases - especially with viterbi_lang emit function.
