@@ -15,7 +15,11 @@ to the viterbi function.
 func GetEmitProbFunction(dict *naivetrie.Node) func([]byte, int) float64 {
 
 	emit_prob := func(obs []byte, stateNumber int) float64 {
-		langTab := dict.TryAndGet(obs).(builder.LangTable)
+		value := dict.TryAndGet(obs)
+		if value == nil {
+			return 0
+		}
+		langTab := value.(builder.LangTable)
 		if len(langTab) <= stateNumber+1 {
 			return 0
 		}

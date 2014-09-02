@@ -7,28 +7,29 @@ package main
 
 import "github.com/golddranks/TiraLabra/src/langinspect/builder"
 import "github.com/golddranks/TiraLabra/src/langinspect/viterbi"
+import "github.com/golddranks/TiraLabra/src/orderedmap/naivetrie"
 import "fmt"
+import "bufio"
+import "os"
 
-func slice(text string) [][]byte {
+func slice(text []byte) [][]byte {
 	r := make([][]byte, 0, len(text))
 	for i := 0; i < len(text); i++ {
 		r = append(r, []byte{text[i]})
 	}
-	fmt.Println("sliced", r)
 	return r
 }
 
-func main() {
-	db := builder.Build("data")
-	states := 3
+func inspect(db *naivetrie.Node, text []byte) []int {
+	states := builder.AmountOfLangs // TODO Ugly, ugly global value. Need to refactor.
 	start_prob := []float64{0.33333, 0.33333, 0.33333}
 	trans_prob := [][]float64{
-		[]float64{0.33333, 0.33333, 0.33333},
-		[]float64{0.33333, 0.33333, 0.33333},
-		[]float64{0.33333, 0.33333, 0.33333},
+		[]float64{0.8, 0.1, 0.1},
+		[]float64{0.1, 0.8, 0.1},
+		[]float64{0.1, 0.1, 0.8},
 	}
 	emit_prob := viterbi.GetEmitProbFunction(db)
-	obs := slice("jooopa joo")
+	obs := slice(text)
 	probs, paths := viterbi.Run(obs, states, trans_prob, start_prob, emit_prob)
 	max_value := 0.0
 	max_index := 0
@@ -38,8 +39,21 @@ func main() {
 			max_index = i
 		}
 	}
-	for _, v := range paths[max_index] {
-		fmt.Print(builder.LangIndexToTag(builder.LangIndex(v+1)), " ")
+	return paths[max_index]
+}
+
+func main() {
+	input := make([]byte, 0)
+	db := builder.Build("data")
+	rd := bufio.NewReader(os.Stdin)
+	for {
+		input, _ = rd.ReadBytes('\n')
+		fmt.Println(input)
+		max_path := inspect(db, input)
+		for _, v := range max_path {
+			fmt.Print(builder.LangIndexToTag(builder.LangIndex(v+1)), " ")
+		}
+		fmt.Println()
+
 	}
-	fmt.Println()
 }
