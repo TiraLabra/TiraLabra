@@ -1,10 +1,11 @@
 package tira.main;
 
+import tira.utils.Target;
+import tira.utils.Mapper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import tira.astar.Astar;
 import tira.dijkstra.Dijkstra;

@@ -1,7 +1,7 @@
 package tira.common;
 
-import tira.common.Edge;
 import java.util.ArrayList;
+import tira.list.LinkedList;
 
 /**
  *
@@ -13,6 +13,7 @@ public class Node implements Comparable<Node> {
     private Node previous;
     private String name;
     private ArrayList<Edge> routes;
+    private LinkedList<Edge> routs;
     private int shortest;
     private int heuristic;
     private int x;
@@ -23,6 +24,7 @@ public class Node implements Comparable<Node> {
         this.name = name;
         this.shortest = Integer.MAX_VALUE;
         this.routes = new ArrayList<Edge>();
+        this.routs = new LinkedList<Edge>();
         this.heuristic = 0;
     }
     
@@ -53,10 +55,12 @@ public class Node implements Comparable<Node> {
     
     public void addEdge(Edge e) {
         this.routes.add(e);
+        this.routs.add(e);
     }
     
-    public ArrayList<Edge> getEdges() {
-        return this.routes;
+    public LinkedList<Edge> getEdges() {
+//        return this.routes;
+        return this.routs;
     }
     
     public Node getPrevious() {

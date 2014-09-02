@@ -1,8 +1,10 @@
-package tira.common;
+package tira.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import tira.common.Node;
+import tira.list.LinkedList;
 
 /**
  *
@@ -11,9 +13,9 @@ import java.util.List;
  */
 public class Helper {
     
-    private ArrayList<Node> list;
+    private LinkedList<Node> list;
 
-    public Helper(ArrayList<Node> cells) {
+    public Helper(LinkedList<Node> cells) {
         this.list = cells;
     }
     /**
@@ -35,11 +37,10 @@ public class Helper {
      * @param goalCell maalisolmu.
      * @return palauttaa listan, jossa on reitti maalisolmuun lähtösolmusta.
      */
-    public List<Node> getRoute(Node goalCell) {
-        List<Node> path = new ArrayList<Node>();
-            for (Node vertex = goalCell; vertex != null; vertex = vertex.getPrevious())
-                path.add(vertex);
-            Collections.reverse(path);
-            return path;
+    public String getRoute(Node goalCell) {
+        String polku = "";
+        for (Node vertex = goalCell; vertex != null; vertex = vertex.getPrevious())
+            polku = vertex.toString() + polku;
+        return polku;
     }    
 }

@@ -51,10 +51,7 @@ public class Heap <T> {
      * @return 
      */
     public boolean empty() {
-        if (this.size != 0) {
-            return false;
-        }
-        return true;
+        return this.size == 0;
     }
     
     /**

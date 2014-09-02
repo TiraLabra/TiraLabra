@@ -1,16 +1,12 @@
 package tira.dijkstra;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.PriorityQueue;
-import tira.common.Edge;
-import tira.common.Helper;
+import java.util.HashMap;import tira.common.Edge;
 import tira.common.Node;
 import tira.heap.Heap;
-import tira.main.Mapper;
-import tira.main.Target;
+import tira.list.LinkedList;
+import tira.utils.Helper;
+import tira.utils.Target;
 
 /**
  *
@@ -22,7 +18,7 @@ public class Dijkstra {
     private String source;
     private String destination;
     private HashMap<String, ArrayList<Target>> graph;
-    private ArrayList<Node> nodes;
+    private LinkedList<Node> nodes;
     private Node startNode;
     private Node goalNode;
     private Helper path;
@@ -31,7 +27,7 @@ public class Dijkstra {
         this.source = start;
         this.destination = end;
         this.graph = grid;
-        this.nodes = new ArrayList<Node>();
+        this.nodes = new LinkedList<Node>();
         this.path = new Helper(this.nodes);
     }
     
@@ -102,8 +98,7 @@ public class Dijkstra {
             System.out.println("Reittiä ei ole kohteiden välillä");
         } else {
             System.out.println("Lyhyin reitti solmusta " + this.startNode.toString() + " solmuun " + this.goalNode.toString() + " on " + this.goalNode.getShortest() + "km.");
-            List<Node> path = this.path.getRoute(this.goalNode);
-            System.out.println("Alla reitti:\n" + path);
+            System.out.println(this.path.getRoute(this.goalNode));
         }    
     }
     
@@ -111,7 +106,7 @@ public class Dijkstra {
      * Seuraavaksi alla on metodeja, joita käytän vain testeissä päästäkseni käsiksi luokan muuttujiin.
      * Eivät siis vaikuta millään tavalla algoritmin tai ohjelman suoritukseen.
      */   
-    public ArrayList<Node> getNodes() {
+    public LinkedList<Node> getNodes() {
         return this.nodes;
     }
     
@@ -128,7 +123,7 @@ public class Dijkstra {
     }
     
     public String pathToGoalString() {
-        List<Node> route = this.path.getRoute(this.goalNode);
+        String route = this.path.getRoute(this.goalNode);
         String path = "Lyhyin reitti solmusta " + this.startNode.toString() + " solmuun " + this.goalNode.toString() + " on " + this.goalNode.getShortest() + "km.";
         return path + route;
     }

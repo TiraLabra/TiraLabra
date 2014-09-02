@@ -1,4 +1,4 @@
-package tira.main;
+package tira.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

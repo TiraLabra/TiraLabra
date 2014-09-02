@@ -44,12 +44,6 @@ public class HeapTest {
      */
     @Test
     public void testInsert() {
-        System.out.println("insert");
-        Node o = null;
-        Heap instance = null;
-        instance.insert(o);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -57,13 +51,6 @@ public class HeapTest {
      */
     @Test
     public void testPoll() {
-        System.out.println("poll");
-        Heap instance = null;
-        Node expResult = null;
-        Node result = instance.poll();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -71,13 +58,6 @@ public class HeapTest {
      */
     @Test
     public void testEmpty() {
-        System.out.println("empty");
-        Heap instance = null;
-        boolean expResult = false;
-        boolean result = instance.empty();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

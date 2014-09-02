@@ -1,17 +1,13 @@
 package tira.astar;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 import tira.common.Edge;
 import tira.common.Node;
-import tira.common.Helper;
 import tira.heap.Heap;
-import tira.main.Mapper;
-import tira.main.Target;
+import tira.list.LinkedList;
+import tira.utils.Helper;
+import tira.utils.Target;
 
 /**
  *
@@ -21,7 +17,7 @@ import tira.main.Target;
  */
 public class Astar {
     
-    private ArrayList<Node> cells;
+    private LinkedList<Node> cells;
     private HashMap<String, ArrayList<Target>> graph;
     private String destination;
     private String source;
@@ -33,7 +29,7 @@ public class Astar {
         this.source = start;
         this.destination = end;
         this.graph = grid;
-        this.cells = new ArrayList<Node>();
+        this.cells = new LinkedList<Node>();
         this.path = new Helper(this.cells);
     }
     
@@ -105,8 +101,7 @@ public class Astar {
             System.out.println("Reittiä ei ole kohteiden välillä");
         } else {
             System.out.println("Lyhyin reitti solmusta " + this.startCell.toString() + " solmuun " + this.goalCell.toString() + " on " + this.goalCell.getShortest() + "km.");         
-            List<Node> route = this.path.getRoute(this.goalCell);
-            System.out.println("Alla reitti:\n" + route);
+            System.out.println(this.path.getRoute(this.goalCell));
         }    
     }    
     
@@ -119,7 +114,7 @@ public class Astar {
             int ydiff = Math.abs(setter.getY() - this.goalCell.getY());
             double heuristic = Math.sqrt((xdiff*xdiff + ydiff*ydiff));
             int parsed = (int)heuristic;
-            setter.setHeuristic(0);
+            setter.setHeuristic(parsed);
         }
     }
     
@@ -127,7 +122,7 @@ public class Astar {
      * Seuraavaksi alla on metodeja, joita käytän vain testeissä päästäkseni käsiksi luokan muuttujiin.
      * Eivät siis vaikuta millään tavalla algoritmin tai ohjelman suoritukseen.
      */   
-    public ArrayList<Node> getNodes() {
+    public LinkedList<Node> getNodes() {
         return this.cells;
     }
     
@@ -144,7 +139,7 @@ public class Astar {
     }
     
     public String pathToGoalString() {
-        List<Node> route = this.path.getRoute(this.goalCell);
+        String route = this.path.getRoute(this.goalCell);
         String path = "Lyhyin reitti solmusta " + this.startCell.toString() + " solmuun " + this.goalCell.toString() + " on " + this.goalCell.getShortest() + "km.";
         return path + route;
     }
