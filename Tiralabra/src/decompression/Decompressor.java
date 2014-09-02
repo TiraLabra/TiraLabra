@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package pakkaaja;
+package decompression;
+
+import datastructures.Tree;
+import datastructures.Node;
 
 /**
  * Purkaa sille annetun paketin ja palauttaa sen merkkijonona.

@@ -1,11 +1,11 @@
-package pakkaaja;
+package datastructures;
 
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import pakkaaja.Tree;
-import pakkaaja.Node;
+import datastructures.Tree;
+import datastructures.Node;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

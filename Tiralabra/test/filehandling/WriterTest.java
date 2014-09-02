@@ -1,9 +1,8 @@
-package pakkaaja;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package filehandling;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,11 +15,11 @@ import static org.junit.Assert.*;
  *
  * @author joonaskylliainen
  */
-public class DecompressorTest {
+public class WriterTest {
     
-    Packer packer;
+    Writer writer;
     
-    public DecompressorTest() {
+    public WriterTest() {
     }
     
     @BeforeClass
@@ -33,7 +32,7 @@ public class DecompressorTest {
     
     @Before
     public void setUp() {
-        packer = new Packer();
+        writer = new Writer();
     }
     
     @After
@@ -41,9 +40,8 @@ public class DecompressorTest {
     }
     
     @Test
-    public void doesDecompressorWork() {
-        Paketti paketti = packer.pack("kissa");
-        Decompressor dec = new Decompressor(paketti.getTree(), paketti.getLause());
-        assertEquals("kissa", dec.unzip());
+    public void stringToCharByteTest() {
+
     }
+    
 }

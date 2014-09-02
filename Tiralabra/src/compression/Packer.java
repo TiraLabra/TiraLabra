@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package pakkaaja;
+package compression;
 
 /**
  * Pakkaa sille annetun merkkijonon ja tekee siitä binääriluvun.
@@ -10,14 +10,17 @@ package pakkaaja;
  */
 
  // import java.util.HashMap;
+import datastructures.Node;
+import datastructures.Paketti;
+import datastructures.Tree;
+import filehandling.Writer;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 
 public class Packer {
@@ -33,8 +36,12 @@ public class Packer {
         int[] list = count(word);
         PriorityQueue<Node> que = makeQueue(list);
         Tree tree = makeTree(que);
-        String pakkaus = packing2(word, tree);
+        String pakkaus = compress(word, tree);
         Paketti paketti = new Paketti(tree,pakkaus);
+        Writer writer = new Writer();
+        System.out.println("Anna tiedostolle nimi: ");
+        Scanner in = new Scanner(System.in);
+        writer.write(pakkaus, in.nextLine());
        
         return paketti;
         
@@ -103,19 +110,6 @@ public class Packer {
         nod.setRight(right);
         return nod;
     }
-    /**
-     * tekee puusta ja annetusta merkkijonosta pakatun version.
-     * @param s merkkijono
-     * @param tree Huffmann-puu
-     * @return pakkaus
-     */
-    private static String packing(String s, Tree tree) {
-        String pakkaus = "";
-        for(int i = 0; i < s.length(); i++) {
-            pakkaus = pakkaus + tree.find(s.charAt(i));
-        }
-        return pakkaus;
-    }
     
     /**
      * tekee puusta ja annetusta merkkijonosta pakatun version.
@@ -123,45 +117,17 @@ public class Packer {
      * @param tree Huffmann-puu
      * @return pakkaus
      */
-    private static String packing2(String s, Tree tree) {
+    private static String compress(String s, Tree tree) {
         String pakkaus = "";
         char[] ca = s.toCharArray();
         String[] list = tree.makeDirectory();       
         for (int i = 0; i < s.length(); i++) {
             pakkaus += list[ca[i]];
-            System.out.println(list[ca[i]] + "  " + ca[i]);
+            //System.out.println(list[ca[i]] + "  " + ca[i]);
             
         }    
         return pakkaus;
     }
-    public byte[] stringToByte(String s) {
-        byte[] b = new byte[s.length()];
-        for(int i = 0; i < s.length();i++) {
-            if (s.charAt(i) == 0) {
-                b[i] = 0;
-            }else if (s.charAt(i) == 1) {
-                b[i] = 1;
-            }
-        }
-        return b;
-    }
-    public void write(byte[] aInput, String aOutputFileName){
-    
-        try {
-            OutputStream output = null;
-            try {
-                output = new BufferedOutputStream(new FileOutputStream(aOutputFileName));
-                output.write(aInput);
-            }
-            finally {
-                output.close();
-            }
-        }
-        catch(FileNotFoundException ex){
-            System.out.println("ei löydy");
-        }
-        catch(IOException ex){
 
-        }
-    }
+    
 }

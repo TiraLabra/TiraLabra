@@ -1,12 +1,13 @@
-package pakkaaja;
+package compression;
 
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import pakkaaja.Packer;
-import pakkaaja.Node;
+import datastructures.Paketti;
+import compression.Packer;
+import datastructures.Node;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
