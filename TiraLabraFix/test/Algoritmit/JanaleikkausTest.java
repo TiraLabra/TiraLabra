@@ -78,7 +78,7 @@ public class JanaleikkausTest {
       Kordinaatti k2 = new Kordinaatti(2,0);
       Kordinaatti k3 = new Kordinaatti(0,0);
       Kordinaatti k4 = new Kordinaatti(2,0);
-      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4), null);
+      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4, false), null);
     }
      @Test
     public void VaakasuoraPystysuorajana() {
@@ -86,8 +86,10 @@ public class JanaleikkausTest {
       Kordinaatti k2 = new Kordinaatti(2,1);
       Kordinaatti k3 = new Kordinaatti(1,0);
       Kordinaatti k4 = new Kordinaatti(1,2);
-      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4), new Kordinaatti(1,1));
+      assertEquals(testaaja.suoranjaJananleikkaus(k1, k2, k3, k4, false), new Kordinaatti(1,1));
     }
+    //Nämä testit osoittavat että tämä toimii konvekseille monikulmioille
+    
       @Test
     public void MonikulmioNakemistesti() {
       Kordinaatti k1 = new Kordinaatti(0,0);
@@ -96,10 +98,80 @@ public class JanaleikkausTest {
       Kordinaatti k4 = new Kordinaatti(0,1);
       Jono kordinaattijono = new Jono();
       kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
       Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
       
       assertEquals(testaaja.nakeeko(k1, k2, kulmio), true);
     }
+    @Test
+    public void MonikulmioNakemistesti2() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(1,0);
+      Kordinaatti k3 = new Kordinaatti(1,1);
+      Kordinaatti k4 = new Kordinaatti(0,1);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      
+      assertEquals(testaaja.nakeeko(k1, k4, kulmio), true);
+    }
+    @Test
+    public void MonikulmioNakemistesti3() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(1,0);
+      Kordinaatti k3 = new Kordinaatti(1,1);
+      Kordinaatti k4 = new Kordinaatti(0,1);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      
+      assertEquals(testaaja.nakeeko(k1, k3, kulmio), false);
+    }
+    
+    @Test
+    public void Erikoistapausnakemisesta1() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(2,0);
+      Kordinaatti k3 = new Kordinaatti(2,2);
+      Kordinaatti k4 = new Kordinaatti(1,1);
+      Kordinaatti k5 = new Kordinaatti(0,2);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
+      kordinaattijono.lisaa(k5);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      
+      assertEquals(testaaja.nakeeko(k2, k3, kulmio), true);
+    }
+    @Test
+    public void Erikoistapausnakemisesta2() {
+      Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k2 = new Kordinaatti(2,0);
+      Kordinaatti k3 = new Kordinaatti(2,2);
+      Kordinaatti k4 = new Kordinaatti(1,1);
+      Kordinaatti k5 = new Kordinaatti(0,2);
+      Jono kordinaattijono = new Jono();
+      kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
+      kordinaattijono.lisaa(k5);
+      Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
+      
+      assertEquals(testaaja.nakeeko(k2, k5, kulmio), false);
+    }
+   
+    
     
     
     

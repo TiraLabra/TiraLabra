@@ -94,7 +94,7 @@ public class NaivimonikulmioTest {
             Kordinaatti b1 = new Kordinaatti(0,0);
             Kordinaatti b2 = new Kordinaatti(0,1);
 
-            if ((k1 == b1) && (k2 == b2)) {
+            if ((k2.equals(b2)) && (k1.equals(b1))) {
                 k = true;
 
             }
@@ -108,6 +108,7 @@ public class NaivimonikulmioTest {
      */
     @Test
     public void testPalautaJanat() {
+        
 
     }
 

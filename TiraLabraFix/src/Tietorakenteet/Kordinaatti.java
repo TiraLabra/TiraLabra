@@ -10,7 +10,7 @@ package Tietorakenteet;
  * Tämä luokka on luotu helpottamaan yleistä rakennetta ja samalla nyt on
  * mahdollista verrata HashMappeja Kordinaatin perusteella
  */
-public class Kordinaatti implements Iteroitava{
+public class Kordinaatti implements Iteroitava {
 
     private double x;
     private double y;
@@ -69,14 +69,10 @@ public class Kordinaatti implements Iteroitava{
         }
         return true;
     }
-  
-   
 
     @Override
     public void asetaArvo(double d) {
     }
-   
-   
 
     @Override
     public int vertausoperaatio(Iteroitava toinen) {
@@ -104,6 +100,20 @@ public class Kordinaatti implements Iteroitava{
     @Override
     public void asetaSijainti(int i) {
         this.sijaintikeossa = i;
+    }
+
+    public boolean vertaa(Kordinaatti k) {
+        if ((this.x == k.palautaX()) && (this.y == k.palautaY())) {
+            return true;
+
+        }
+        return false;
+    }
+    
+    public String tulosta()
+    {
+    String k = "X: " + this.x + ", Y: " + this.y; 
+    return k;
     }
 
 }

@@ -38,7 +38,7 @@ public class Janaleikkaus {
         double ratkaisux = testi.palautaX();
         double ratkaisuy = testi.palautaY();
 
-        if ((testi == piste1) || (testi == piste2) || (testi == piste3) || (testi == piste4)) {
+        if ((testi.equals(piste1)) || (testi.equals(piste2)) || (testi.equals(piste3)) || (testi.equals(piste4))) {
             return false;
 
         }
@@ -106,15 +106,23 @@ public class Janaleikkaus {
      * @param piste2 Toinen Janan päätepiste
      * @param piste3 Suoran päätepiste
      * @param piste4 Suoran toinen päätepiste
+     * @param paatepistecheck true jos meitakiinostaa paatepiste
      * @return Kordinaatti leikkauspiste, jos sellaista ei ole palauttaa null
      */
-    public Kordinaatti suoranjaJananleikkaus(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
+    public Kordinaatti suoranjaJananleikkaus(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4, boolean paatepistecheck) {
         Kordinaatti testi = suoraLeikkaus(piste1, piste2, piste3, piste4);
         if (testi == null) {
             return null;
         }
         double ratkaisux = testi.palautaX();
         double ratkaisuy = testi.palautaY();
+        if (paatepistecheck) {
+            if ((testi.equals(piste1)) || (testi.equals(piste2))) {
+                return null;
+
+            }
+
+        }
 
         double MaxX1 = Math.max(piste1.palautaX(), piste2.palautaX());
         double MinX1 = Math.min(piste1.palautaX(), piste2.palautaX());
@@ -128,12 +136,15 @@ public class Janaleikkaus {
     }
 
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
-        Keko keko = new Keko(false);
+
+        
+        
         Kordinaatti[][] janat = a.PalautaJanat();
+        Keko keko = new Keko(false, janat.length + 2);
         for (int i = 0; i < janat.length; i++) {
             Kordinaatti eka = janat[i][0];
             Kordinaatti toka = janat[i][1];
-            Kordinaatti leikkauspiste = suoranjaJananleikkaus(eka, toka, k, k2);
+            Kordinaatti leikkauspiste = suoranjaJananleikkaus(eka, toka, k, k2, false);
             if (leikkauspiste != null) {
                 keko.Lisaa(leikkauspiste);
 
@@ -141,20 +152,71 @@ public class Janaleikkaus {
 
         }
         int i = 1;
-        while (keko.palautaTaulukko()[0] != k) {
+        boolean abc = true;
+        while ((!keko.palautaTaulukko()[0].equals(k)) && (!keko.palautaTaulukko()[0].equals(k2))) {
             i++;
             keko.poistaMinimi();
+            System.out.println(i);
+
         }
-        if (i % 2 == 1) {
-            return false;
+        Kordinaatti alku = null;
+        Kordinaatti loppu = null;
+        Kordinaatti ekavieruspiste = null;
+        Kordinaatti tokavieruspiste = null;
+        if (keko.palautaTaulukko()[0].equals(k)) {
+            alku = k;
+            loppu = k2;
+
         } else {
-            Kordinaatti seuraava = (Kordinaatti) keko.poistaMinimi();
-            if (seuraava == k2) {
+            alku = k2;
+            loppu = k;
+
+        }
+        keko.poistaMinimi();
+
+        Kordinaatti seuraava = (Kordinaatti) keko.poistaMinimi();
+        Kordinaatti[] naapurit = etsivieruspisteet(alku, a);
+        if (seuraava.equals(loppu)) {
+            if (i % 2 == 1) {
+
+                Kordinaatti d = suoranjaJananleikkaus(naapurit[0], naapurit[1], k, k2, true);
+                if (d == null) {
+                    return true;
+                }
+                return false;
+
+            } else {
+                //tähän:
+
+                Kordinaatti d = suoranjaJananleikkaus(naapurit[0], naapurit[1], k, k2, true);
+                if (d == null) {
+                    return false;
+                }
                 return true;
             }
         }
 
         return false;
+    }
+
+    public Kordinaatti[] etsivieruspisteet(Kordinaatti k, Monikulmio a) {
+        Kordinaatti[] z = new Kordinaatti[2];
+        Kordinaatti[][] janat = a.PalautaJanat();
+        int abc = 0;
+        for (int i = 0; i < janat.length; i++) {
+            Kordinaatti eka = janat[i][0];
+            Kordinaatti toka = janat[i][1];
+            if (eka.equals(k)) {
+                z[abc] = toka;
+                abc++;
+
+            }
+            if (toka.equals(k)) {
+                z[abc] = eka;
+                abc++;
+            }
+        }
+        return z;
     }
 
 }

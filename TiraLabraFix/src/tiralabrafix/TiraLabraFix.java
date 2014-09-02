@@ -11,6 +11,7 @@ import Suorituskyky.ATahtiSuorituskykytestaus;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.DiskreettiVerkko;
+import Tietorakenteet.JatkuvaVerkko;
 import Tietorakenteet.Jatkuvamonikulmio;
 import Tietorakenteet.Jono.Jono;
 import Tietorakenteet.Keko;
@@ -19,6 +20,7 @@ import Tietorakenteet.Naivimonikulmio;
 import Tietorakenteet.Verkko;
 import java.util.ArrayList;
 import java.util.Arrays;
+import logiikka.Jatkuvaverkkorakennus;
 
 /**
  *
@@ -30,7 +32,7 @@ public class TiraLabraFix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       monikulmionakemisdebuggaus();
+       rakentajadebuggaus();
     }
 
     public static void AtahtiTestaus() {
@@ -182,15 +184,43 @@ public class TiraLabraFix {
     public static void monikulmionakemisdebuggaus()
     {
     
-    Kordinaatti k1 = new Kordinaatti(0,0);
+      Kordinaatti k1 = new Kordinaatti(0,0);
       Kordinaatti k2 = new Kordinaatti(1,0);
       Kordinaatti k3 = new Kordinaatti(1,1);
       Kordinaatti k4 = new Kordinaatti(0,1);
       Jono kordinaattijono = new Jono();
       kordinaattijono.lisaa(k1);
+      kordinaattijono.lisaa(k2);
+      kordinaattijono.lisaa(k3);
+      kordinaattijono.lisaa(k4);
       Jatkuvamonikulmio kulmio = new Jatkuvamonikulmio(kordinaattijono);
       Janaleikkaus leikkaaja = new Janaleikkaus();
       System.out.println(leikkaaja.nakeeko(k1, k2, kulmio));
+    }
+    
+    public static void rakentajadebuggaus()
+    {
+     Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti alku = new Kordinaatti(0,0);
+        Kordinaatti loppu = new Kordinaatti(3,3);
+        Jono kordinaattijono = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        Jatkuvamonikulmio monikulmio = new Jatkuvamonikulmio(kordinaattijono);
+        Jono monikulmiot = new Jono();
+        monikulmiot.lisaa(monikulmio);
+        Jatkuvaverkkorakennus rakentaja = new Jatkuvaverkkorakennus(monikulmiot);
+        rakentaja.asetaAlkujaLoppu(alku, loppu);
+        JatkuvaVerkko xD = rakentaja.laskeVerkko();
+        boolean tarkistus = (xD == null);
+        System.out.println(tarkistus);
+    
+    
     }
 
 }

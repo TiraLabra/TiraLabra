@@ -19,7 +19,7 @@ public class JatkuvaVerkko implements Verkko {
     private Jono kaikkialkiot;
 
     public JatkuvaVerkko() {
-
+        this.kaikkialkiot = new Jono();
     }
     
     public void lisaaAlkio(JatkuvaSolmu s)

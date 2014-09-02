@@ -86,6 +86,12 @@ public class JatkuvaSolmu implements Iteroitava, Abstraktisolmu {
     this.naapurit = jono;
     }
 
+    public void lisaaNaapuri(JatkuvaSolmu loppu) {
+        this.naapurit.lisaa(loppu);
+    }
+    
+    
+
 
     
 

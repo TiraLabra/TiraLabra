@@ -24,6 +24,13 @@ public class Keko {
         this.duplikaatit = duplikaatitt;
     }
 
+    public Keko(boolean duplikaatitt, int k) {
+        this.taulukko = new Iteroitava[k];
+        this.nykyinenkoko = 0;
+        this.maksimikoko = k;
+
+    }
+
     /**
      *
      *
@@ -109,18 +116,20 @@ public class Keko {
             return false;
         }
         this.nykyinenkoko = this.nykyinenkoko + 1;
+       
         int i = this.nykyinenkoko - 1;
         objekti.asetaSijainti(i);
         this.taulukko[this.nykyinenkoko - 1] = objekti;
         while ((i > 0) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) >= 0)) {
-            if ((this.duplikaatit == false)&&(this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) == 0))
-            {
-            return false;
+            if ((this.duplikaatit == false) && (this.taulukko[this.vanhempi(i)].vertausoperaatio(objekti) == 0)) {
+                this.nykyinenkoko--;
+                return false;
             }
             int vanhempi = this.vanhempi(i);
             vaihda(i, vanhempi);
             i = this.vanhempi(i);
         }
+
         return true;
     }
 
@@ -186,6 +195,11 @@ public class Keko {
      */
     public Iteroitava[] palautaTaulukko() {
         return this.taulukko;
+    }
+
+    public void generoiTaulukko(int k) {
+        this.taulukko = new Iteroitava[k];
+
     }
 
 }

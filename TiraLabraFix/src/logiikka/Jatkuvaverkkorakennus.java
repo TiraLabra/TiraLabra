@@ -32,25 +32,24 @@ public class Jatkuvaverkkorakennus {
         this.leikkaaja = new Janaleikkaus();
 
     }
-    
-      /**
+
+    /**
      *
      * Asettaa monikulmiot
      */
-
     public void asetaKordinaatit(Jono kordinaatit) {
         this.monikulmiot = kordinaatit;
     }
 
-       /**
+    /**
      *
      * Palauttaa monikulmiot
      */
-    
     public Jono palautaMonikulmiot() {
         return this.monikulmiot;
     }
-       /**
+
+    /**
      *
      * Asettaa alku ja loppu pisteen
      */
@@ -60,12 +59,11 @@ public class Jatkuvaverkkorakennus {
         this.loppu = new JatkuvaSolmu(loppur);
 
     }
-    
-     /**
-     *
-     *  Laskee verkon
-     */
 
+    /**
+     *
+     * Laskee verkon
+     */
     public JatkuvaVerkko laskeVerkko() {
         this.verkko = new JatkuvaVerkko();
         solmuAlustus();
@@ -88,12 +86,11 @@ public class Jatkuvaverkkorakennus {
 
         return this.verkko;
     }
-    
-     /**
-     *
-     *  Iteroi toisen alkion suhteen
-     */
 
+    /**
+     *
+     * Iteroi toisen alkion suhteen
+     */
     public void toinenkulma(JatkuvaSolmu k, Monikulmio d) {
         Jonoiteroitava iter = this.monikulmiot.palautaEnsimmainen();
         while (iter != null) {
@@ -105,15 +102,22 @@ public class Jatkuvaverkkorakennus {
             while (kulmaiteraattori != null) {
                 boolean kertoja = false;
                 JatkuvaSolmu k2 = (JatkuvaSolmu) kulmaiteraattori.palautaObjekti();
-                if (d == d2) {
-                    kertoja = samaMonikulmio(k.palautaKordinaatti(), k2.palautaKordinaatti(), d);
-                } else {
-                    kertoja = eriMonikulmio(k.palautaKordinaatti(), k2.palautaKordinaatti());
 
-                }
+                //Debuggaus tulostukset:
+                System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + k2.palautaKordinaatti().tulosta());
 
-                if (kertoja == true) {
-                    k.lisaaNaapuri(k2);
+                if (!k.palautaKordinaatti().equals(k2.palautaKordinaatti())) {
+
+                    if (d == d2) {
+                        kertoja = samaMonikulmio(k.palautaKordinaatti(), k2.palautaKordinaatti(), d);
+                    } else {
+                        kertoja = eriMonikulmio(k.palautaKordinaatti(), k2.palautaKordinaatti());
+
+                    }
+
+                    if (kertoja == true) {
+                        k.lisaaNaapuri(k2);
+                    }
                 }
                 //Iterointi:
                 kulmaiteraattori = kulmaiteraattori.palauataSeuraava();
@@ -127,12 +131,12 @@ public class Jatkuvaverkkorakennus {
         }
 
     }
-    
-       /**
-     *
-     *  Tämä metodi castataan jos kordinaatti k ja k2 kuuluvat samaan monikulmioon
-     */
 
+    /**
+     *
+     * Tämä metodi castataan jos kordinaatti k ja k2 kuuluvat samaan
+     * monikulmioon
+     */
     public boolean samaMonikulmio(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
         if (leikkaaja.nakeeko(k, k2, a)) {
 
@@ -143,11 +147,11 @@ public class Jatkuvaverkkorakennus {
 
     }
 
-     /**
+    /**
      *
-     *  Tarkastellaan tapausta jossa k ja k2 eivät kuulu samaan monikulmioon tai sillä ei ole väliä
+     * Tarkastellaan tapausta jossa k ja k2 eivät kuulu samaan monikulmioon tai
+     * sillä ei ole väliä
      */
-    
     public boolean eriMonikulmio(Kordinaatti k, Kordinaatti k2) {
         Jonoiteroitava j = this.monikulmiot.palautaEnsimmainen();
         while (j != null) {
@@ -169,11 +173,10 @@ public class Jatkuvaverkkorakennus {
         return true;
     }
 
-      /**
+    /**
      *
-     *  Alustetaan Jatkuvasolmu alkiot
+     * Alustetaan Jatkuvasolmu alkiot
      */
-    
     public void solmuAlustus() {
         Jonoiteroitava iter = this.monikulmiot.palautaEnsimmainen();
         while (iter != null) {

@@ -74,6 +74,13 @@ public class KordinaattiTest {
       Kordinaatti k2 = new Kordinaatti(1.09,2.010);
       assertEquals(k1, k2);
     }
+    @Test
+    public void vielayksitapaus() {
+      Kordinaatti k1 = new Kordinaatti(1,2);
+      Kordinaatti k2 = new Kordinaatti(1,2);
+      boolean d = (k1.equals(k2));
+      assertEquals(d, true);
+    }
     
 
     /**

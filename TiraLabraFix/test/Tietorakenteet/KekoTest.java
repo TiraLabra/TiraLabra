@@ -398,9 +398,41 @@ public class KekoTest {
         DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) keko.palautaTaulukko();
         solmud[0].asetaArvo(9000);
         keko.kasvatettu(solmud[0].sijaintiKeossa());
-                DiskreettiSolmu s = (DiskreettiSolmu) keko.poistaMinimi();
+        DiskreettiSolmu s = (DiskreettiSolmu) keko.poistaMinimi();
 
         assertEquals(s.palautaSolmuMuisti().palautaFScore(), 1, 0.01);
+
+    }
+
+    @Test
+    public void DuplicateModeSimpleTestLisaaminenonnistuu() {
+        Keko abc = new Keko(false);
+        DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
+        abc.asetaTaulukko(solmut, 0);
+        DiskreettiSolmu lisattava = new DiskreettiSolmu(1, 1);
+        lisattava.asetaArvo(1);
+        DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) abc.palautaTaulukko();
+        assertEquals(abc.palautaNykyinenKoko(), 1);
+
+    }
+
+    @Test
+    public void DuplikaatitonLisaaminentoimiiMassiivinentesti() {
+        Keko abc = new Keko(false);
+        DiskreettiSolmu[] solmut = new DiskreettiSolmu[200];
+        abc.asetaTaulukko(solmut, 0);
+        DiskreettiSolmu lisattava = new DiskreettiSolmu(1, 1);
+        lisattava.asetaArvo(1);
+        for (int j = 98; j >= 0; j--) {
+
+            Iteroitava iter = lisattava;
+            abc.Lisaa(iter);
+
+        }
+
+        DiskreettiSolmu[] solmud = (DiskreettiSolmu[]) abc.palautaTaulukko();
+
+        assertEquals(abc.palautaNykyinenKoko(), 1);
 
     }
 
