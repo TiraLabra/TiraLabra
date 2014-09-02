@@ -53,7 +53,6 @@ public class Jatkuvaverkkorakennus {
      *
      * Asettaa alku ja loppu pisteen
      */
-
     public void asetaAlkujaLoppu(Kordinaatti alkur, Kordinaatti loppur) {
         this.alku = new JatkuvaSolmu(alkur);
         this.loppu = new JatkuvaSolmu(loppur);
@@ -116,7 +115,10 @@ public class Jatkuvaverkkorakennus {
                     }
 
                     if (kertoja == true) {
+                        System.out.println("- Palautti true");
                         k.lisaaNaapuri(k2);
+                    } else {
+
                     }
                 }
                 //Iterointi:
@@ -126,7 +128,9 @@ public class Jatkuvaverkkorakennus {
             //Iterointi:
             iter = iter.palauataSeuraava();
         }
+         System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + loppu.palautaKordinaatti().tulosta());
         if (eriMonikulmio(k.palautaKordinaatti(), this.loppu.palautaKordinaatti())) {
+            System.out.println("- Palautti true");
             k.lisaaNaapuri(this.loppu);
         }
 
@@ -160,7 +164,7 @@ public class Jatkuvaverkkorakennus {
             for (int i = 0; i < janat.length; i++) {
                 Kordinaatti p1 = janat[i][0];
                 Kordinaatti p2 = janat[i][1];
-                boolean kertoja = this.leikkaaja.leikkaako(k, k2, p1, p2);
+                boolean kertoja = this.leikkaaja.paasekolapi(k, k2, p1, p2);
                 if (kertoja == true) {
                     return false;
                 }
@@ -193,6 +197,14 @@ public class Jatkuvaverkkorakennus {
         this.verkko.lisaaAlkio(alku);
         this.verkko.lisaaAlkio(loppu);
 
+    }
+
+    public Abstraktisolmu palautaAlku() {
+        return this.alku;
+    }
+
+    public Abstraktisolmu palautaLoppu() {
+        return this.loppu;
     }
 
 }

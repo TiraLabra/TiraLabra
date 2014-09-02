@@ -35,14 +35,33 @@ public class Janaleikkaus {
         if (testi == null) {
             return false;
         }
-        double ratkaisux = testi.palautaX();
-        double ratkaisuy = testi.palautaY();
 
         if ((testi.equals(piste1)) || (testi.equals(piste2)) || (testi.equals(piste3)) || (testi.equals(piste4))) {
             return false;
 
         }
+        return leikkausjalki(testi, piste1, piste2, piste3, piste4);
 
+    }
+
+    public boolean paasekolapi(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
+
+        Kordinaatti testi = suoraLeikkaus(piste1, piste2, piste3, piste4);
+        if (testi == null) {
+            return false;
+        }
+
+        if ((testi.equals(piste1)) || (testi.equals(piste2))) {
+            return false;
+
+        }
+        return leikkausjalki(testi, piste1, piste2, piste3, piste4);
+
+    }
+
+    private boolean leikkausjalki(Kordinaatti testi, Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
+        double ratkaisux = testi.palautaX();
+        double ratkaisuy = testi.palautaY();
         double MaxX1 = Math.max(piste1.palautaX(), piste2.palautaX());
         double MinX1 = Math.min(piste1.palautaX(), piste2.palautaX());
         double MaxY1 = Math.max(piste1.palautaY(), piste2.palautaY());
@@ -55,13 +74,8 @@ public class Janaleikkaus {
             return true;
         }
         return false;
-
     }
 
-    /**
-     *
-     * Konkreettinen luokka, joka toteuttaa keon alkion ehdot.
-     */
     /**
      * Löytää kahden pisteen määräämien suorien leikkauspisteen (Jos sellainen
      * on olemassa)
@@ -137,8 +151,6 @@ public class Janaleikkaus {
 
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
 
-        
-        
         Kordinaatti[][] janat = a.PalautaJanat();
         Keko keko = new Keko(false, janat.length + 2);
         for (int i = 0; i < janat.length; i++) {
