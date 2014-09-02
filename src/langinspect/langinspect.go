@@ -24,22 +24,15 @@ func inspect(db *naivetrie.Node, text []byte) []int {
 	states := builder.AmountOfLangs // TODO Ugly, ugly global value. Need to refactor.
 	start_prob := []float64{0.33333, 0.33333, 0.33333}
 	trans_prob := [][]float64{
-		[]float64{0.8, 0.1, 0.1},
-		[]float64{0.1, 0.8, 0.1},
-		[]float64{0.1, 0.1, 0.8},
+		[]float64{0.98, 0.01, 0.01},
+		[]float64{0.01, 0.98, 0.01},
+		[]float64{0.01, 0.01, 0.98},
 	}
 	emit_prob := viterbi.GetEmitProbFunction(db)
 	obs := slice(text)
-	probs, paths := viterbi.Run(obs, states, trans_prob, start_prob, emit_prob)
-	max_value := 0.0
-	max_index := 0
-	for i, v := range probs[len(probs)-1] {
-		if v < max_value {
-			max_value = v
-			max_index = i
-		}
-	}
-	return paths[max_index]
+	path := viterbi.Run(obs, states, trans_prob, start_prob, emit_prob)
+
+	return path
 }
 
 func main() {
@@ -48,8 +41,16 @@ func main() {
 	rd := bufio.NewReader(os.Stdin)
 	for {
 		input, _ = rd.ReadBytes('\n')
-		fmt.Println(input)
+		input := input[:len(input)-1]
+		if len(input) == 0 {
+			continue
+		}
 		max_path := inspect(db, input)
+
+		for i, _ := range max_path {
+			fmt.Printf("%c  ", input[i])
+		}
+		fmt.Println()
 		for _, v := range max_path {
 			fmt.Print(builder.LangIndexToTag(builder.LangIndex(v+1)), " ")
 		}
