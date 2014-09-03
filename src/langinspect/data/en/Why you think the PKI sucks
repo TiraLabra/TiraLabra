@@ -1,0 +1,117 @@
+Why you think the PKI sucks
+… but can’t do any better
+
+Everyone seems to agree - the public key infrastructure, that network of certificate authorities that stands between you and encrypting your website, sucks.
+
+It’s too expensive. CA’s don’t do enough for the fees they charge. It’s too big. There isn’t enough competition. It’s compromised by governments. The technology is old and crusty. We should all use PGP instead. The litany of complaints about the PKI is endless.
+
+In recent weeks, the Bitcoin payment protocol (BIP 70) has started to roll out. One of the features present in version 1 is signing of payment requests, and the mechanism chosen was the SSL PKI. Many people objected to this choice, but none managed to suggest a workable alternative. In this article I will examine the ideas that typically come up and explain why all of them are non-starters.
+
+The main justification for this design choice is usability. In the same way that security cannot be bolted on at the last minute, the reverse also holds — you can’t bolt usability on to a secure system that was designed without human beings in mind.
+
+A great way to learn about this topic is to read usability research studies. So I wrote a review of usability studies of well known crypto systems like PGP and SSL. If you aren’t familiar with the history of crypto-usability research, I suggest you take a few minutes to go read the review and then come back. I’ll be here waiting for you.
+
+Done? Great.
+
+In the following section, I will analyse many of the proposed alternatives to the SSL PKI, for both Bitcoin and SSL itself. By the end I hope you will understand why we designed BIP 70 the way we did — or at least agree that the design issues are complex matters upon which reasonable people can disagree.
+
+What is our goal?
+Before we can examine alternatives, let’s revisit the design goal of using PKI signing in BIP 70.
+
+Hardware wallets are coming to Bitcoin — in fact they’re nearly here. The Trezor device is a tiny computer that fits on a key ring, with a small OLED screen and two buttons. It holds your Bitcoin private keys and asks you to confirm payment before signing.
+
+
+A metallic Trezor.
+The Trezor is the first of a range of products and services intended to help people manage money securely even when their main computer has been entirely hacked. It’s necessary because there’s no way to make the computers people use every day secure: between features, low cost and security, you get to pick two. People choose features and low cost. The Trezor is a specialised device that aims for low cost and security by sacrificing features.
+
+
+In this image, the Trezor is showing a vanity address. But is it really owned by the Bitkey organisation? Anyone could brute force an address that started with the same string — and besides, this model requires address reuse, which hurts privacy.
+Special hardware isn’t the only way to keep your money safe. Third party watchdog services are also coming soon. These services use multi-signature coins to share control between your own device and the watchdog. The service performs a risk analysis to decide whether to allow a transaction: if you’re sending a small amount of money to a well known trusted merchant, perhaps it’s no problem if the request comes from a very insecure device. If you’re trying to empty your savings wallet to an unknown address, that might require a second factor or human-driven verification process.
+
+What both of these techniques have in common is that they need to know where you’re sending your money. The Trezor needs to know so it can show you a useful confirmation request on its screen. The watchdog services need to know so they can do the risk analysis and decide what level of additional verification they’ll ask for. Neither can work with raw Bitcoin addresses alone: a virus on your computer could swap out an address for its own and because they all look the same, you’d never know the difference!
+
+Therefore our goal is: present to the user an understandable request for confirmation, that cannot be spoofed by hackers. Users must always be sending money where they think they’re sending it.
+
+What are our constraints?
+To achieve the above goal, we work within some severe constraints:
+
+The user experience must be incredibly simple. Bitcoin needs network effects to grow and be a success; it can’t ever become great if it’s restricted to a security nerd ghetto. So it must work “out of the box” with no configuration and it must not present a complex or confusing UI.
+Bitcoin is a volunteer driven project with severe manpower shortages. We can’t do anything that involves huge amounts of work.
+Whatever we do, it must be compatible with hardware wallets like the Trezor. That means (for now) the verification process must be executable offline.
+Re-using SSL certificates allows us to satisfy our goals inside the above constraints. Now let’s examine some of the frequently proposed alternatives:
+
+The block chain
+The PGP web of trust
+Presenting multiple cert chains
+Trust on first use/KCM
+Perspectives/Convergence
+Let’s use the block chain!
+Of all proposed alternatives to the PKI, this is the one that makes the least sense. Our goal is to bind keys to names, because humans suck at memorising large numbers. But a Bitcoin address is just a large number: it has no binding to a name. Nor does the Bitcoin block chain assist us with this.
+
+NameCoin does allow users to grab names for themselves in a kind of distributed DNS. It’s not a bad idea, but it’s not practical for our needs right now because it has no users. There’s no guarantee that a name registered in NameCoin is owned by the owner of the equivalent name in DNS, yet it’s DNS that controls what service people are actually interacting with. Allowing people to present NameCoin names as identities seems like an invitation for name confusion attacks as investigated by the “Why phishing works” paper. I don’t think a user who thought they were paying overstock.com and actually saw “overstock.bit” on their Trezor would reliably stop and assume fraud, because the second name looks plausible to the untrained eye.
+
+Let’s use the web of trust!
+By far the most common objection to the SSL PKI is that it’s not the PGP web of trust. This is understandable — Bitcoin is a system that emphasises decentralisation over everything else. Is the web of trust not a philosophically perfect fit?
+
+Unfortunately, the web of trust has several problems that make it unworkable for our use case:
+
+Because the decision to show the verified identity on-screen is a binary yes/no decision, and whether to send money or not is also a binary yes/no decision, the outcome of the security algorithm should also be binary. But the WoT doesn’t work like that. It tends to give you a complex series of scores that it’s up to the user to interpret, based on their knowledge of the participants security practices.
+Out of the box, PGP starts empty and expects users to configure which keys they trust. There are no equivalent of the PKI pre-agreed certificate authorities. But this is painful — imagine if every computer or phone you bought required you to manually install certificate authorities before SSL worked. Nobody would accept such a product.
+It’s not clear how you would build a secure way to initialise the Trezor, as you’d need to use an untrusted computer to present trusted keys into the device. A virus (MITM) could intercept and rewrite the keys as they were being loaded into the device. Unless you had key fingerprints written down on paper, it’d be impossible to notice a mismatch. Pre-agreed root certs installed at the factory solve this problem.
+Nothing authenticates the web of trust. So a man in the middle can feed you an entirely fake subgraph if they are able to compromise just one well trusted key. In effect, people you transitively trust are all certificate authorities except that the private keys are most likely stored on laptops that have all manner of random programs downloaded and run on them, that are carried to conferences through airports, and which are treated in other highly risky ways.
+Usability studies have shown nobody outside of the tiny security community understands the web of trust or how to use it.
+Most WoT participants are people and not business entities. But in daily life people typically send money to businesses more often than other people.
+It doesn’t scale.
+For me, the decisive factor is that the WoT effectively makes your friends and friends of friends into certificate authorities. This can’t succeed: being a CA involves tedious, mind-numbingly repetitive yet security critical work that unpaid volunteers are ill equipped to do well. The most common incorrect assumption that leads people to the web of trust is that “corporate” must mean untrustworthy and “social” must mean trustworthy. But there’s no reason this should be the case. Consistently verifying identities and protecting private keys is an expensive yet mechanical task, which is highly suited to the structure of an audited for-profit corporation that has a lot at stake, and poorly suited to make-it-up-as-we-go-along volunteers who have nothing to lose by taking shortcuts.
+
+Regardless, BIP 70 is extensible and if someone wanted to, they could implement an OpenPGP based subprotocol.
+
+Let’s allow multiple CAs!
+Sometimes people feel that the main problem with the SSL PKI is not that certificate authorities exist — after all, they do real work to earn their living — but rather that BIP 70 and SSL only let you present a single certificate chain. This incentivises server operators to pick CAs that they can be sure their clients will trust, which in turn makes it harder to start a new CA that might give some competition to the market. If only operators could use multiple CAs, the theory goes, the market would be more competitive.
+
+We can see that logic at work in this article on TLS centralisation:
+
+The TLS architecture is the cause of this concentration of power, and changes to the architecture can permit or even encourage its dissolution …. If we were to modify the TLS protocol so that a server could offer multiple certificates at once, that would make it much easier to do a smooth transtion away from un-trustworthy big CAs, because sites and users would no longer need the massive, disruptive transition that switching certificates would entail. One year, a web site could offer certificates from Verisign and a new, politically-active CA, while explaining to their users the reason for switching away, and then the next year, the site could drop the VeriSign certificate entirely.
+This argument is predicated on two assumptions: that certificate authorities lack competition, and if sites could present multiple certs users would start switching away from “big corporate” CAs to “new, politically active” CAs.
+
+Do certificate authorities lack competition? The evidence suggests not. The Mozilla certificate authority program has over 100 authorities in it. In fact, the sheer number of trusted authorities is a frequent criticism of the architecture. How can they all be trustworthy, people say? And the market is not stagnant. New CAs are still queuing up to enter the Mozilla CA store.
+
+Indeed, the real question we should be asking is why is the CA market so competitive at all? Public key verification is a horrible business to be in. There are no reasons why you would want to be a CA. The product is a commodity in which providers compete almost exclusively on price. Because the UI outcome is binary the industry is highly regulated by the browser makers to stall a race to the bottom. The work is tedious and dull. There is no scope for innovation. Customer loyalty is non-existent. And worst of all, if you screw up and attackers find a way to steal your key or subvert your processes it can result in the immediate overnight destruction of your entire business. After it was discovered that DigiNotar’s issuance process was compromised by Iran the company was revoked. They filed for bankruptcy a short time later.
+
+The second assumption is that users would prefer to switch to “politically active CAs” if they could do the transition smoothly. But the axiom is flawed — there is no such thing as a politically active CA. CAs are heavily regulated and the procedures they must follow are spelled out in the guidelines issued by the CA/Browser Forum. There is no scope for difference between a “big corporate” CA and a “small politically active” CA because the work they do is so mechanical, auditable and predictable.
+
+SSL doesn’t allow multiple cert chains to be presented because nobody is asking for this feature. The padlock icon server operators desire is binary: it would be the same whether one, two or more certificates were presented. What’s more, if one certificate was “better” than another, this would imply that the “worse” CA was shirking their responsibilities, probably in an attempt to undercut their competitors on price. This race to the bottom is exactly what happened before the EV specification was finalised: because a “good” cert looked exactly the same to end users as a “bad” cert, and there were no rules about what exactly CA’s were meant to do, there was no incentive to do a thorough job of verifying anything except the domain name. The EV specification fixed this by spelling out precise requirements, making EV certs appear differently in browser UIs, and auditing CA’s to ensure they were following the rules.
+
+The argument for multiple cert chains boils down to an argument for the web of trust in disguise. But people have shown no desire to fine-tune their cryptographic trust graph. They make a decision to trust the software and hardware brands they know, and that’s enough mental effort!
+
+For me, the binary UI outcome is decisive. The Trezor and watchdog services must decide whether to show the user a verified human-readable identity or not. Two cert chains would have the same outcome as one, and thus any economically rational actor would present only one. The additional complexity is not worth it.
+
+Let’s trust on first use!
+The “TOFU” security model, sometimes known as key continuity management, is most widely deployed by SSH. In this model you just assume that the first time you interact with a third party, no man in the middle attack is present. Then you remember the key they use and check for it being used in future.
+
+TOFU is simple and easy to implement. Unfortunately, it has also been eviscerated by usability studies. In his paper “Security in practice: Security-Usability chasm”, Atul Prakash presents a real world study of what happens when an SSH key that was stable for over two years is rotated:
+
+We monitored SSH logs to analyze user behavior when our system adminis- trators changed the SSH host key on a popular server within our department. The server’s public key had remained static for over two years and thus expected to be installed at most user’s machines. Over 70 users attempted to login over the server after the key change during the monitored period. We found that less than 10% of the users asked the administrators if there was a key change and none verified the actual key.
+This user sample was heavily biased by being made up of computer science graduates and faculty, some of whom were actually involved in security research. Yet in practice virtually all those users would be vulnerable to a man in the middle attack.
+
+TOFU presents other problems, such as recovering from a genuine key compromise and the need to occasionally rotate keys to increase strength in line with Moore’s Law. But to me the usability results are decisive. TOFU gives too many false positives with the result that users ignore errors.
+
+Let’s use Perspectives/Convergence!
+The Perspectives Project from MIT (and one of its implementations in convergence.io) claims to be an alternative to the CA system:
+
+Instead of requiring browser users to trust an anointed group of certificate authorities, Perspectives gives users the ability to pick a group they trust (e.g., the EFF, Google, their company, their university, their group of friends, etc.) and trust no one else.
+How is this possible? Perspectives has a decentralized model that let’s anyone run one or more “network notary servers”. A network notary server is connected to the Internet and regularly monitors websites to build a history of the SSL certificate used by each site. Notary servers or groups of notary servers may be operated by public organizations, private companies, or even individuals.
+Rather than validating an SSL certificate by checking for certificate authority approval, with Perspectives the browser validates a certificate by checking for consistency with the certificates observed by the network notaries over time. With network notary servers spread around the world and keeping a history of data, it is VERY hard for an attacker to launch a man-in-the-middle attack (see our academic paper for a full security analysis).
+Just like a user picks which search engine their browser will use, they user can also choose what group(s) of network notaries they will trust. The user him/herself can choose whether they trust Comodo, the U.S government, the Chinese government, or not. And because all notary data is public, the quality of different network notaries can be measured and evaluated by anyone, creating a market for better security.
+It should be apparent from a critical reading of the above that this is really just the “let’s use multiple certificate authorities in a web of trust” idea regurgitated. CAs are renamed notaries and they are expected to constantly reverify and sign site certificates on a short term rolling basis for free, instead of the slightly longer on-demand for-pay basis currently used. The economic motivation for running a notary is left undefined. Users are expected to manually configure their trust store, which is additional work no normal people are asking for. A simple padlock/no padlock UI is replaced with a complicated multi-level timeline UI.
+
+A variant on this idea is to use Tor to obtain network perspectives. But this simply replaces the existing SSL certificate authorities with the 7 Tor directory authorities. Trusted authorities still exist in this setup, they’re just different: it must be so, otherwise a man in the middle could connect you to a simulated version of Tor. Also, this approach doesn’t have any way to make it work offline.
+
+Conclusion
+Usable security is hard. When tested, widely used systems often turn out to be nothing more than placebos.
+
+SSL is one of very few crypto systems that’s in daily usage by hundreds of millions of people. Remarkably, it seems that governments have not compromised the infrastructure. When Iran wanted fake certs it had to hack a CA to get them, an attack that was detected and repaired. When the USA wanted to spy on Edward Snowden’s email, it had to serve Lavabit with a court order to hand over the private key, instead of doing a MITM attack using a pliant CA. And once what had happened became public, Lavabit’s CA revoked the certificate, citing industry policies that forced its hand.
+
+By building on this system, a small group of volunteers can quickly and cheaply build out a secure payments infrastructure on top of Bitcoin that can survive sophisticated assaults. What’s more, the PKI is being constantly evolved. We can ride for free on top of improvements like OCSP Stapling and certificate transparency. And when we want to depart from accepted practice, the community can build its own CAs that apply different policies and satisfy different use cases.
+
+In conclusion, I think BIP 70 provides a framework that should work well and last us a long time.
