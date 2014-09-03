@@ -17,6 +17,10 @@ public class ListObject {
         this.prev = null;
     }
     
+    /**
+     * 
+     * Settereitä ja gettereitä. 
+     */
     public void setNext(ListObject n) {
         this.next = n;
     }

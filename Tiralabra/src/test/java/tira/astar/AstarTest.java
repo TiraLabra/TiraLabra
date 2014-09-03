@@ -2,11 +2,8 @@ package tira.astar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import tira.common.Edge;
 import tira.common.Node;
@@ -44,12 +41,14 @@ public class AstarTest {
     public void testInitialize() {
         a.initialize();
         LinkedList<Node> nodes = a.getNodes();
-//        LinkedList<Edge> edgesOne = nodes.get(0).getEdges();
-//        LinkedList<Edge> edgesLast = nodes.get(nodes.size()-1).getEdges();
+        Node c =(Node)nodes.get(0);
+        Node b = (Node)nodes.get(nodes.size()-1);
+        LinkedList<Edge> edgesOne = c.getEdges();
+        LinkedList<Edge> edgesLast = b.getEdges();
         Helper help = a.getHelperObject();
         assertEquals(4, nodes.size());
-//        assertEquals(3, edgesOne.size());
-//        assertEquals(3, edgesLast.size());
+        assertEquals(3, edgesOne.size());
+        assertEquals(3, edgesLast.size());
         assertEquals(a.getGoal(), help.search(this.end));
         assertEquals(a.getStart(), help.search(this.start));
         

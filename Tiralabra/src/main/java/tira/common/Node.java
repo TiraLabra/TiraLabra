@@ -1,19 +1,17 @@
 package tira.common;
 
-import java.util.ArrayList;
 import tira.list.LinkedList;
 
 /**
  *
  * @author joonaslaakkonen
- * Luokka kuvaa kartan solmua. Luokka toteuttaa Comparable rajapinnan prioriteettijonon vertailua varten.
+ * Luokka kuvaa kartan solmua. Luokka toteuttaa Comparable rajapinnan olioiden vertailua varten.
  */
 public class Node implements Comparable<Node> {
     
     private Node previous;
     private String name;
-    private ArrayList<Edge> routes;
-    private LinkedList<Edge> routs;
+    private LinkedList<Edge> routes;
     private int shortest;
     private int heuristic;
     private int x;
@@ -23,16 +21,14 @@ public class Node implements Comparable<Node> {
         this.previous = null;
         this.name = name;
         this.shortest = Integer.MAX_VALUE;
-        this.routes = new ArrayList<Edge>();
-        this.routs = new LinkedList<Edge>();
+        this.routes = new LinkedList<Edge>();
         this.heuristic = 0;
     }
     
     /**
      * 
      * Luokan getterit ja setterit
-     */
-    
+     */  
     public void setHeuristic(int value) {
         this.heuristic = value;
     }
@@ -55,12 +51,10 @@ public class Node implements Comparable<Node> {
     
     public void addEdge(Edge e) {
         this.routes.add(e);
-        this.routs.add(e);
     }
     
     public LinkedList<Edge> getEdges() {
-//        return this.routes;
-        return this.routs;
+        return this.routes;
     }
     
     public Node getPrevious() {
@@ -84,6 +78,11 @@ public class Node implements Comparable<Node> {
         return this.y;
     }
     
+    /**
+     * Metodi tutkii, ovatko oliot samat.
+     * @param o vertailtava olio.
+     * @return kertoo tiedon ovatko oliot samoja vai eivät.
+     */
     public boolean equals(Object o) {
         if (o == null) {
             return false;
@@ -95,7 +94,7 @@ public class Node implements Comparable<Node> {
 
         Node compared = (Node) o;
 
-        if (this.name != compared.toString()) {
+        if (!this.name.equals(compared.toString())) {
             return false;
         }
 
@@ -107,9 +106,9 @@ public class Node implements Comparable<Node> {
     }
     
     /**
-     * Etäisyyden vertailu prioriteettijonon alkion valintaan.
-     * @param o
-     * @return 
+     * Etäisyyden vertailu, jota tarvitaan minimikeossa.
+     * @param o Solmu johon verrataan.
+     * @return palauttaa tiedon laskutoimituksesta.
      */
     @Override
     public int compareTo(Node o) {

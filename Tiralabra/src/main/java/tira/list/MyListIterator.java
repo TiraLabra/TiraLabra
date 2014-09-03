@@ -5,6 +5,7 @@ import java.util.Iterator;
 /**
  *
  * @author joonaslaakkonen
+ * Iteraattori-luokka listan läpikäyntiin.
  */
 public class MyListIterator implements Iterator<Object> {
     
@@ -15,17 +16,24 @@ public class MyListIterator implements Iterator<Object> {
         this.current = head;
         this.last = tail;
     }
-
+    
+    /**
+     * Metodi tarkistaa onko listalla käsittelemättömiä olioita jäljellä.
+     * @return tieto onko valmista.
+     */
     @Override
     public boolean hasNext() {
         return this.current != null;
     }
-
+    
+    /**
+     * Metodi hakee seuraavan käsiteltävän olio.
+     * @return olio.
+     */
     @Override
     public Object next() {
         ListObject a = this.current;
         this.current = a.getNext();
         return a.getOlio();
-    }
-    
+    } 
 }

@@ -1,8 +1,5 @@
 package tira.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import tira.common.Node;
 import tira.list.LinkedList;
 
@@ -35,7 +32,7 @@ public class Helper {
     /**
      * 
      * @param goalCell maalisolmu.
-     * @return palauttaa listan, jossa on reitti maalisolmuun lähtösolmusta.
+     * @return palauttaa merkkijonon, jossa on reitti maalisolmuun lähtösolmusta.
      */
     public String getRoute(Node goalCell) {
         String polku = "";

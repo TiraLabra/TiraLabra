@@ -13,7 +13,7 @@ import tira.utils.Target;
  *
  * @author joonaslaakkonen
  * Astar olion luokka, joka vastaa reitin etsinnästä Astar algoritmilla. Käytössä heuristiikka joka vertailee
- * solmujen etäisyyttä niiden sijainnin perusteella.
+ * solmujen etäisyyttä niiden sijainnin perusteella (euklidinen etäisyys.
  */
 public class Astar {
     
@@ -34,7 +34,8 @@ public class Astar {
     }
     
     /**
-     * Alustus-metodi, joka luo Astar algoritmin tarvitsemat solmut ja polut HashMapiin tallenetun kartan perusteella.
+     * Alustus-metodi, joka luo Astar algoritmin tarvitsemat solmut ja polut tekstitiedostosta
+     * tallenetun kartan perusteella.
      */  
     public void initialize() {
         for (String apu : this.graph.keySet()) {
@@ -67,9 +68,8 @@ public class Astar {
          */     
         this.startCell.setShortest(0);
         Heap<Node> heap = new Heap(this.cells.size());
-//        PriorityQueue<Node> queue = new PriorityQueue<Node>();
         heap.insert(this.startCell);
-        ArrayList<Node> closed = new ArrayList<Node>();
+        LinkedList<Node> closed = new LinkedList<Node>();
         
         /**
          * Käydään läpi keko. 
@@ -82,6 +82,9 @@ public class Astar {
                 Node neighbor = apu.getTarget();
                 int cost = handle.getShortest() + apu.getWeight();
                 
+                /**
+                 * Etäisyyden päivitys mikäli ollaan löydetty parempi reitti.
+                 */
                 if (!closed.contains(neighbor)) {
                     if (neighbor.getShortest() > cost) {
                         neighbor.setShortest(cost);

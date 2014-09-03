@@ -1,7 +1,8 @@
 package tira.dijkstra;
 
 import java.util.ArrayList;
-import java.util.HashMap;import tira.common.Edge;
+import java.util.HashMap;
+import tira.common.Edge;
 import tira.common.Node;
 import tira.heap.Heap;
 import tira.list.LinkedList;

@@ -41,12 +41,14 @@ public class DijkstraTest {
     public void testInitialize() {
         d.initialize();
         LinkedList<Node> nodes = d.getNodes();
-//        LinkedList<Edge> edgesOne = nodes.get(0).getEdges();
-//        LinkedList<Edge> edgesLast = nodes.get(nodes.size()-1).getEdges();
+        Node a = (Node)nodes.get(0);
+        Node b = (Node)nodes.get(nodes.size()-1);
+        LinkedList<Edge> edgesOne = a.getEdges();
+        LinkedList<Edge> edgesLast = b.getEdges();
         Helper help = d.getHelperObject();
         assertEquals(4, nodes.size());
-//        assertEquals(3, edgesOne.size());
-//        assertEquals(3, edgesLast.size());
+        assertEquals(3, edgesOne.size());
+        assertEquals(3, edgesLast.size());
         assertEquals(d.getGoal(), help.search(this.end));
         assertEquals(d.getStart(), help.search(this.start));
     }
