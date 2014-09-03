@@ -55,6 +55,14 @@ public class Heap <T> {
     }
     
     /**
+     * Metodi kertoo keon koon.
+     * @return keon koko.
+     */
+    public int size() {
+        return this.size;
+    }
+    
+    /**
      * Solmun lisäys kekoon. Metodi hakee taulukosta oikean paikan lisättävälle solmulle.
      * @param n lisättävä solmu.
      */

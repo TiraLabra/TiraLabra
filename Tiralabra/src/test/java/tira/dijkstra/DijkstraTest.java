@@ -9,6 +9,7 @@ import tira.common.Edge;
 import tira.common.Node;
 import tira.list.LinkedList;
 import tira.utils.Helper;
+import tira.utils.Location;
 import tira.utils.Target;
 
 /**
@@ -17,7 +18,7 @@ import tira.utils.Target;
  */
 public class DijkstraTest {
     
-    private HashMap<String, ArrayList<Target>> grid;
+    private LinkedList<Location> grid;
     private String start;
     private String end;
     private Dijkstra d;
@@ -83,12 +84,12 @@ public class DijkstraTest {
         
     }
     
-    private HashMap<String, ArrayList<Target>> doMap() {
-        HashMap<String, ArrayList<Target>> graph = new HashMap<String, ArrayList<Target>>();
-        ArrayList<Target> a = new ArrayList<Target>();
-        ArrayList<Target> b = new ArrayList<Target>();
-        ArrayList<Target> c = new ArrayList<Target>();
-        ArrayList<Target> d = new ArrayList<Target>();
+    private LinkedList<Location> doMap() {
+        LinkedList<Location> graph = new LinkedList<Location>();
+        Location a = new Location("a");
+        Location b = new Location("b");
+        Location c = new Location("c");
+        Location d = new Location("d");
         
         a.add(new Target("b", 15, 0, 0));
         a.add(new Target("c", 10, 0, 0));
@@ -106,10 +107,10 @@ public class DijkstraTest {
         d.add(new Target("b", 5, 0, 0));
         d.add(new Target("c", 75, 0, 0));
         
-        graph.put("a", a);
-        graph.put("b", b);
-        graph.put("c", c);
-        graph.put("d", d);
+        graph.add(a);
+        graph.add(b);
+        graph.add(c);
+        graph.add(d);
 
         return graph;
     }  

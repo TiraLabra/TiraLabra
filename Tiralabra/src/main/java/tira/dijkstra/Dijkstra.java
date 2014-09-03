@@ -1,12 +1,11 @@
 package tira.dijkstra;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import tira.common.Edge;
 import tira.common.Node;
 import tira.heap.Heap;
 import tira.list.LinkedList;
 import tira.utils.Helper;
+import tira.utils.Location;
 import tira.utils.Target;
 
 /**
@@ -18,18 +17,18 @@ public class Dijkstra {
     
     private String source;
     private String destination;
-    private HashMap<String, ArrayList<Target>> graph;
+    private LinkedList<Location> locations;
     private LinkedList<Node> nodes;
     private Node startNode;
     private Node goalNode;
     private Helper path;
 
-    public Dijkstra(String start, String end, HashMap grid) {
+    public Dijkstra(String start, String end, LinkedList map) {
         this.source = start;
         this.destination = end;
-        this.graph = grid;
         this.nodes = new LinkedList<Node>();
         this.path = new Helper(this.nodes);
+        this.locations = map;
     }
     
     /**
@@ -37,13 +36,15 @@ public class Dijkstra {
      * Sen lisäksi asetetaan muistiin lähtö -ja maalisolmut.
      */
     public void initialize() {
-        for (String apu : this.graph.keySet()) {
-            Node next = new Node(apu);
+        for (Location loc : this.locations) {
+            Node next = new Node(loc.toString());
             this.nodes.add(next);
         }
         
         for (Node helper : this.nodes) {
-            for (Target finder : this.graph.get(helper.toString())) {
+            Location next = (Location)this.locations.searchWithString(helper.toString()).getOlio();
+            LinkedList<Target> targets = next.getTargets();
+            for (Target finder : targets) {
                 Node added = this.path.search(finder.getName());
                 helper.addEdge(new Edge(added, finder.getDistance()));
             }

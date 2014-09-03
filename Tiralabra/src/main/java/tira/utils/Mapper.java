@@ -3,6 +3,7 @@ package tira.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import tira.list.LinkedList;
 
 /**
  *
@@ -14,11 +15,13 @@ import java.util.Scanner;
 public class Mapper {
     
     private Scanner map;
-    private HashMap<String, ArrayList<Target>> sources; 
+    private HashMap<String, ArrayList<Target>> sources;
+    private LinkedList<Location> locations;
 
     public Mapper(Scanner reader) {
         this.map = reader;
         this.sources = new HashMap<String, ArrayList<Target>>();
+        this.locations = new LinkedList<Location>();
     }
     
     /**
@@ -48,6 +51,10 @@ public class Mapper {
         for (String apu : this.sources.keySet()) {
             System.out.println(apu);
         }
+        System.out.println("VAIHTUU");
+        for (Location name : this.locations) {
+            System.out.println(name.toString());
+        }
     }
     
     /**
@@ -58,7 +65,7 @@ public class Mapper {
      * Metodi tarkistaa onko käyttäjän syöte kunnossa ja palauttaa tiedon siitä.
      */   
     public boolean validKeys(String start, String end) {
-        if (this.sources.containsKey(start) && this.sources.containsKey(end)) {
+        if (this.sources.containsKey(start) && this.sources.containsKey(end) && this.locations.containsString(start) && this.locations.containsString(end)) {
             return true;
         }
         return false;
@@ -70,6 +77,10 @@ public class Mapper {
      */   
     public HashMap getGrid() {
         return this.sources;
+    }
+    
+    public LinkedList getMap() {
+        return this.locations;
     }
     
     /**
@@ -89,11 +100,25 @@ public class Mapper {
             this.sources.put(start, startTargets);
             this.sources.put(destination, destinationTargets);
             
+            Location alku = new Location(start);
+            Location maali = new Location(destination);
+            alku.add(new Target(destination, distance, sx, sy));
+            maali.add(new Target(start, distance, dx, dy));
+            this.locations.add(alku);
+            this.locations.add(maali);
+            
+            
         } else if (!this.sources.containsKey(destination) && this.sources.containsKey(start)) {
             ArrayList<Target> destinationTargets = new ArrayList<Target>();
             this.sources.get(start).add(new Target(destination, distance, dx, dy));
             destinationTargets.add(new Target(start, distance, sx, sy));
             this.sources.put(destination, destinationTargets);
+            
+            Location maali = new Location(destination);
+            maali.add(new Target(start, distance, sx, sy));
+            Location alku = (Location)this.locations.searchWithString(start).getOlio();
+            alku.add(new Target(destination, distance, dx, dy));
+            this.locations.add(maali);
             
         } else if (!this.sources.containsKey(start) && this.sources.containsKey(destination)) {
             ArrayList<Target> startTargets = new ArrayList<Target>();
@@ -101,9 +126,20 @@ public class Mapper {
             this.sources.get(destination).add(new Target(start, distance, sx, sy));
             this.sources.put(start, startTargets);
             
+            Location alku = new Location(start);
+            alku.add(new Target(destination, distance, dx, dy));
+            Location maali = (Location)this.locations.searchWithString(destination).getOlio();
+            maali.add(new Target(start, distance, sx, sy));
+            this.locations.add(alku);
+            
         } else {
             this.sources.get(start).add(new Target(destination, distance, dx, dy));
             this.sources.get(destination).add(new Target(start, distance, sx, sy));
+            
+            Location maali = (Location)this.locations.searchWithString(destination).getOlio();
+            Location alku = (Location)this.locations.searchWithString(start).getOlio();
+            maali.add(new Target(start, distance, sx, sy));
+            alku.add(new Target(destination, distance, dx, dy));
         }      
     }  
 }

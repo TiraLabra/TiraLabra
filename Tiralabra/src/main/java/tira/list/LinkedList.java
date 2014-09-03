@@ -58,6 +58,17 @@ public class LinkedList <T> implements Iterable<T> {
         return p;
     }
     
+    public ListObject searchWithString (String o) {
+        if (this.empty()) {
+            return null;
+        }
+        ListObject p = this.head;
+        while (p != null && !o.toString().equals(p.getOlio().toString())) {
+            p = p.getNext();
+        }
+        return p;
+    }
+    
     /**
      * 
      * @return kertoo listan alkioiden määrän.
@@ -105,6 +116,21 @@ public class LinkedList <T> implements Iterable<T> {
         ListObject p = this.head;
         while (p != null) {
             if (p.getOlio().equals(o)) {
+                return true;
+            } else {
+                p = p.getNext();
+            }
+        }
+        return false;
+    }
+    
+    public boolean containsString(String o) {
+        if (this.empty()) {
+            return false;
+        }
+        ListObject p = this.head;
+        while (p != null) {
+            if (p.getOlio().toString().equals(o)) {
                 return true;
             } else {
                 p = p.getNext();

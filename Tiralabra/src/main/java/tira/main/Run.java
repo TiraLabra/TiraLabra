@@ -1,7 +1,5 @@
 package tira.main;
 
-import tira.utils.Target;
-import tira.utils.Mapper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,6 +7,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import tira.astar.Astar;
 import tira.dijkstra.Dijkstra;
+import tira.list.LinkedList;
+import tira.utils.Location;
+import tira.utils.Mapper;
+import tira.utils.Target;
 
 /**
  *
@@ -39,6 +41,7 @@ public class Run {
          */        
         grid.initialize();
         HashMap<String, ArrayList<Target>> graph = grid.getGrid();
+        LinkedList<Location> mappi = grid.getMap();
         
         /**
          * Käyttäjä valitsee kumalla algoritmilla haluaa hakea reitin.
@@ -61,7 +64,7 @@ public class Run {
         }
         
         if (algoritmi == 2) {
-            doDijkstra(start, end, graph);
+            doDijkstra(start, end, mappi);
         }
         if (algoritmi == 1) {
             doAstar(start, end, graph);
@@ -83,8 +86,8 @@ public class Run {
     /**
      * Luodaan Dijsktra-olio, alustetaan verkko ja etsitään reitti.
      */
-    private static void doDijkstra(String s, String f, HashMap m) {
-        Dijkstra d = new Dijkstra(s, f, m);
+    private static void doDijkstra(String s, String f, LinkedList l) {
+        Dijkstra d = new Dijkstra(s, f, l);
         d.initialize();
         d.route();
         d.print();
