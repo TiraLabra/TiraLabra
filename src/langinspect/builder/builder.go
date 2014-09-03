@@ -246,6 +246,5 @@ func Build(directory string) *naivetrie.Node {
 	Dict = naivetrie.NewNode()           // "dict" is the trie containing all the n-grams
 	langTagToIndex = naivetrie.NewNode() // "langTagToIndex" converts to langTags to langIndexes
 	builder(byteStream)
-	TrieStats.print()
 	return Dict
 }

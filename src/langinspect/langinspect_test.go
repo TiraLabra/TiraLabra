@@ -16,23 +16,43 @@ func printLangTable(db *naivetrie.Node, ngram string) {
 }
 
 func TestInspect(t *testing.T) {
-	text := []byte("joopa joo")
 	db := builder.Build("testdata")
 	states := builder.AmountOfLangs // TODO Ugly, ugly global value. Need to refactor.
 	start_prob := []float64{0.33333, 0.33333, 0.33333}
 	trans_prob := [][]float64{
-		[]float64{0.8, 0.1, 0.1},
-		[]float64{0.1, 0.8, 0.1},
-		[]float64{0.1, 0.1, 0.8},
+		[]float64{0.96, 0.02, 0.02},
+		[]float64{0.02, 0.96, 0.02},
+		[]float64{0.02, 0.02, 0.96},
 	}
 	emit_prob := viterbi.GetEmitProbFunction(db)
-	obs := slice(text)
-	path := viterbi.Run(obs, states, trans_prob, start_prob, emit_prob)
-	fmt.Println(path)
+	var text []byte
+	var path []int
+	var expected_path []int
+	text = []byte("joopa joo")
+	path = viterbi.Run(slice(text), states, trans_prob, start_prob, emit_prob)
+	expected_path = []int{1, 1, 1, 1, 1, 1, 1, 1, 1}
+	for i, p := range path {
+		if expected_path[i] != p {
+			printPath(text, path)
+			t.Fail()
+			break
+		}
+	}
 
-	printLangTable(db, "j")
-	printLangTable(db, "o")
-	printLangTable(db, "p")
-	printLangTable(db, "a")
-	printLangTable(db, " ")
+	start_prob = []float64{0.33333, 0.33333, 0.33333}
+	trans_prob = [][]float64{
+		[]float64{0.96, 0.02, 0.02},
+		[]float64{0.02, 0.96, 0.02},
+		[]float64{0.02, 0.02, 0.96},
+	}
+	text = []byte("jack")
+	path = viterbi.Run(slice(text), states, trans_prob, start_prob, emit_prob)
+	expected_path = []int{0, 0, 0, 0}
+	for i, p := range path {
+		if expected_path[i] != p {
+			printPath(text, path)
+			t.Fail()
+			break
+		}
+	}
 }
