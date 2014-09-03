@@ -13,7 +13,7 @@ public class App
      //   Testaus.testaaKaanto();
 //   Testaus.testaaDeterminantti();
       // Testaus.testaaSparseDense();
-       Testaus.testaaNaiviSparseDense();
+      // Testaus.testaaNaiviSparseDense();
         /*    
         Testaus.testaaNaivi();
         
@@ -85,9 +85,9 @@ public class App
         ,{0,1,0,0,0},{0,0,1,0,0},{0,0,0,1,0},{0,0,0,0,1}};
         System.out.print(Taulukko.toString(Peruslasku.gaussjordan(m2)));
         */
-        /*
+        
         Kayttoliittyma kayttis = new Kayttoliittyma();
         kayttis.run();
-          */    
+              
     }
 }

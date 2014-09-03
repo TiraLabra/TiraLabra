@@ -265,6 +265,10 @@ public class YaleMatrix implements Matrix {
         return new BasicMatrix(Peruslasku.inv(this.getArray()));
     }
 
+    public Matrix rref() throws Exception {
+        return new BasicMatrix(Peruslasku.gaussjordan(this.getArray()));
+    }
+    
     public LUPdecomposition lup() throws Exception {
         return new LUPdecomposition(this.getArray());
     }
@@ -303,9 +307,7 @@ public class YaleMatrix implements Matrix {
         return palautettava;
     }
     
-    public Matrix rref(){
-        return new BasicMatrix(Peruslasku.gaussjordan(this.getArray()));
-    }
+    
 
 
     

@@ -120,6 +120,14 @@ public class KomennonKasittelija {
         if (komento == Komento.SMONI) {
             suoritaSmoni();
         }
+        
+        if (komento==Komento.SPARSE) {
+            suoritaSparse();
+        }
+        
+        if (komento==Komento.RREF) {
+            suoritaRref();
+        }
     }
 
     /**
@@ -149,6 +157,21 @@ public class KomennonKasittelija {
            BasicMatrix matriisi = new BasicMatrix(valimatriisi);
            matriisilista.lisaa(matriisinNimi, matriisi);
         }
+    
+    
+    public void suoritaRref() throws Exception {
+        Matrix m1;
+        String tuloksennimi = kaskyjono[2];
+        try {
+            m1 = matriisilista.haeMatriisi(kaskyjono[1]);
+            matriisilista.lisaa(tuloksennimi, m1.rref());
+        }
+        
+        catch (Exception e) {
+            System.out.println("Matriisia antamallasi nimellä ei löytynyt");
+            
+        }
+    }
     
     /**
      * Metodi laskee kahden matriisin summan ja tallentaa sen käyttäjän antamalla nimellä.
@@ -180,7 +203,7 @@ public class KomennonKasittelija {
     public void suoritaTulosta() {
         String tulostettavanNimi = kaskyjono[1];
         try {
-            matriisilista.hae(tulostettavanNimi).print();
+            matriisilista.haeMatriisi(tulostettavanNimi).print();
         }
         
         catch (Exception e) {
@@ -198,8 +221,8 @@ public class KomennonKasittelija {
      */
     public Matrix[] haeKaksiOperandia() throws Exception {
         Matrix[] palautettavaLista = new Matrix[2];
-        palautettavaLista[0] = matriisilista.hae(kaskyjono[1]);
-        palautettavaLista[1] = matriisilista.hae(kaskyjono[2]);
+        palautettavaLista[0] = matriisilista.haeMatriisi(kaskyjono[1]);
+        palautettavaLista[1] = matriisilista.haeMatriisi(kaskyjono[2]);
         return palautettavaLista;
         
     }
@@ -229,6 +252,22 @@ public class KomennonKasittelija {
         
     }        
     
+    public void suoritaSparse() {
+        Matrix matriisi;
+        YaleMatrix ya;
+        try {
+            ya = new YaleMatrix(matriisilista.hae(kaskyjono[1]).matriisi.getArray());
+            matriisilista.hae(kaskyjono[1]).setMatriisi(ya);
+        }
+        
+        
+        
+        catch (Exception e) {
+            System.out.println("Annetulla nimellä ei löytynyt matriisia");
+            return;
+        }
+    }
+    
        
     /**
      * Determinantti. Metodi laskee käyttäjän antaman matriisin determinantin.
@@ -244,7 +283,7 @@ public class KomennonKasittelija {
         
         try { 
             
-            laskettava = matriisilista.hae(matriisinnimi);
+            laskettava = matriisilista.haeMatriisi(matriisinnimi);
         }
         
         catch (Exception e) {
@@ -311,7 +350,7 @@ public class KomennonKasittelija {
         String matriisinnimi = kaskyjono[1];
         String tulosmatriisinnimi = kaskyjono[2];
         try {
-            Matrix kaannettava = matriisilista.hae(matriisinnimi);
+            Matrix kaannettava = matriisilista.haeMatriisi(matriisinnimi);
             tulosmatriisi = kaannettava.inv();
             matriisilista.lisaa(tulosmatriisinnimi, tulosmatriisi);
         }
@@ -331,7 +370,7 @@ public class KomennonKasittelija {
         Matrix tulosmatriisi = null;
         String matriisinnimi = kaskyjono[3];
         try {
-            Matrix operandi = matriisilista.hae(kaskyjono[2]);
+            Matrix operandi = matriisilista.haeMatriisi(kaskyjono[2]);
             double skalaari = Double.parseDouble(kaskyjono[1]);
             
             tulosmatriisi = operandi.smoni(skalaari);
@@ -399,6 +438,14 @@ public class KomennonKasittelija {
         
         if (kasky.equals("skalaarimonikerta")) {
             return Komento.SMONI;
+        }
+        
+        if (kasky.equals("sparse")) {
+            return Komento.SPARSE;
+        }
+        
+        if (kasky.equals("rref")) {
+            return Komento.RREF;
         }
         
         else throw new Exception();

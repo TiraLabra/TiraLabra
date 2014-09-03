@@ -23,7 +23,7 @@ public class BasicMatrix implements Matrix {
     
     
     
-    public Matrix rref() {
+    public Matrix rref() throws Exception {
         return new BasicMatrix(Peruslasku.gaussjordan(this.matriisi));
     }
     

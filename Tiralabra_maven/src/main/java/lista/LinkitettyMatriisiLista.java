@@ -54,8 +54,9 @@ public class LinkitettyMatriisiLista {
      * @return metodi palauttaa matriisin, jonka nimi vastaa käyttäjän syötettä.
      * @throws Exception Mikäli matriisia ei löydy, metodi heittää poikkeuksen.
      */
-    public Matrix hae(String nimi) throws Exception {
-        
+    
+    public Solmu hae(String nimi) throws Exception {
+
         Solmu tutkittava = new Solmu();
         tutkittava = ekaSolmu;
         
@@ -64,20 +65,26 @@ public class LinkitettyMatriisiLista {
         }
         
         if (tutkittava.nimi.equals(nimi)) {
-            return tutkittava.matriisi;
+            return tutkittava;
         }
         
         while(tutkittava.next != null) {
             tutkittava = tutkittava.next;
             if (tutkittava.nimi.equals(nimi)) {
-                return tutkittava.matriisi;
+                return tutkittava;
             }            
         }
         
         throw new Exception("Matriisia nimellä " + nimi+ " ei löydetty");
         
+                
+    }
+    
+    public Matrix haeMatriisi(String nimi) throws Exception {
+        return this.hae(nimi).matriisi;
         
     }
+    
     
     /**
      * Tulosta solmujen nimet. Metodi tulostaa kaikki käytössä olevat solmujen nimet.
@@ -126,5 +133,9 @@ public class LinkitettyMatriisiLista {
             }
         }
         return false;
+    }
+    
+    public void paivita(String nimi, Matrix matriisi) {
+        
     }
 }

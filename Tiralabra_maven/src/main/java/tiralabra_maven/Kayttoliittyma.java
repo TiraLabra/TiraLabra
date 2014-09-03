@@ -101,6 +101,8 @@ public class Kayttoliittyma {
         System.out.println("yhteenlasku [matriisin nimi] [matriisin nimi] [tulosmatriisin nimi]");
         System.out.println("skalaarimonikerta [skalaari] [matriisi]");
         System.out.println("tiedosto [tulosmatriisin nimi] [tiedostopolku]");
+        System.out.println("sparse [matriisinnimi]");
+        System.out.println("rref [matriisinnimi]");
         System.out.println("lista");
         
         System.out.println("komennot");

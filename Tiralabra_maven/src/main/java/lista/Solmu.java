@@ -13,6 +13,10 @@ public class Solmu {
         this.matriisi = null;
     }
     
+    public void setMatriisi(Matrix matriisi) {
+        this.matriisi = matriisi;
+    }
+    
     
     
 }
