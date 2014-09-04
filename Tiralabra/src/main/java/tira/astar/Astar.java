@@ -12,7 +12,7 @@ import tira.utils.Target;
  *
  * @author joonaslaakkonen
  * Astar olion luokka, joka vastaa reitin etsinnästä Astar algoritmilla. Käytössä heuristiikka joka vertailee
- * solmujen etäisyyttä niiden sijainnin perusteella (euklidinen etäisyys.
+ * solmujen etäisyyttä niiden sijainnin perusteella (euklidinen etäisyys).
  */
 public class Astar {
     
@@ -75,7 +75,7 @@ public class Astar {
         /**
          * Käydään läpi keko. 
          */     
-        while (!closed.contains(this.goalCell)) {
+        while (!closed.contains(this.goalCell) && !heap.empty()) {
             Node handle = heap.poll();
             closed.add(handle);
             

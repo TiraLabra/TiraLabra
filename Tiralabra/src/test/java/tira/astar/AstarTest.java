@@ -92,7 +92,7 @@ public class AstarTest {
         a.print();
         Helper help = a.getHelperObject();
         String vastaus = a.pathToGoalString();
-        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.ab";
+        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.-a--b-";
         assertEquals(vastaus, tulos);
     }
 

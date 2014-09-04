@@ -6,9 +6,9 @@ import tira.list.LinkedList;
 /**
  *
  * @author joonaslaakkonen
- * Luokka luo HashMapin, jossa on tallenettuna avaimiksi jokainen kaupunki kerran ja avaimeen
- * liitetään kaupungista lähtevät Target oliot eli kohteet, joihin kaupungista on suora yhteys.
- * Oliolle annetaan pääohjelman luoma Scanner olio.
+ * Luokka luo listan, jossa on tallenettuna jokainen kartan piste kerran Location-oliona ja jokaisella
+ * Location oliolla on lista siitä lähtevistä Target olioista, eli kohteet, joihin pisteestä on suora yhteys.
+ * Luokalle annetaan pääohjelman luoma Scanner olio.
  */
 public class Mapper {
     
@@ -27,7 +27,7 @@ public class Mapper {
     public void initialize() {
         while (this.map.hasNextLine()) {
             String line = this.map.nextLine();
-            String[] parts = line.split("-");
+            String[] parts = line.split(";");
             String start = parts[0];
             int startX = Integer.parseInt(parts[1]);
             int startY= Integer.parseInt(parts[2]);
@@ -76,8 +76,8 @@ public class Mapper {
      * @param start
      * @param destination
      * @param distance
-     * Metodi luo HashMapiin avaimet ja lisää niille kohteita, joilla on tietty etäisyys lähtökaupungista.
-     * Kaupungeille annetaan myös tieto niiden x,y-sijainnista.
+     * Metodi luo Location oliot ja lisää niille kohteita, joilla on tietty etäisyys lähtöpisteestä.
+     * Pisteille annetaan myös tieto niiden x,y-sijainnista.
      */
     private void manageLine(String start, int sx, int sy, String destination, int dx, int dy, int distance) {
         if (!this.locations.containsString(start) && !this.locations.containsString(destination)) {
@@ -87,8 +87,7 @@ public class Mapper {
             alku.add(new Target(destination, distance, sx, sy));
             maali.add(new Target(start, distance, dx, dy));
             this.locations.add(alku);
-            this.locations.add(maali);
-            
+            this.locations.add(maali);         
             
         } else if (!this.locations.containsString(destination) && this.locations.containsString(start)) {
             

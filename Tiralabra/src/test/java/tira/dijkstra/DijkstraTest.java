@@ -78,7 +78,7 @@ public class DijkstraTest {
         d.print();
         Helper help = d.getHelperObject();
         String vastaus = d.pathToGoalString();
-        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.cad";
+        String tulos = "Lyhyin reitti solmusta " + help.search(start).toString() + " solmuun " + help.search(end).toString() + " on " + help.search(end).getShortest() + "km.-c--a--d-";
         assertEquals(vastaus, tulos);
         
         

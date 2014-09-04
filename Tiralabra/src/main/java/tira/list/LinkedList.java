@@ -58,6 +58,11 @@ public class LinkedList <T> implements Iterable<T> {
         return p;
     }
     
+    /**
+     * Haetaan listalta tekstimuodon perusteella.
+     * @param o
+     * @return 
+     */
     public ListObject searchWithString (String o) {
         if (this.empty()) {
             return null;
@@ -124,6 +129,11 @@ public class LinkedList <T> implements Iterable<T> {
         return false;
     }
     
+    /**
+     * Haetaan listalta olion tekstiesityksen perusteella.
+     * @param o
+     * @return 
+     */
     public boolean containsString(String o) {
         if (this.empty()) {
             return false;

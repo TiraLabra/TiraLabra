@@ -37,7 +37,7 @@ public class Helper {
     public String getRoute(Node goalCell) {
         String polku = "";
         for (Node vertex = goalCell; vertex != null; vertex = vertex.getPrevious())
-            polku = vertex.toString() + polku;
+            polku = "-" + vertex.toString() + "-" + polku;
         return polku;
     }    
 }

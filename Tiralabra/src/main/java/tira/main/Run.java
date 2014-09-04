@@ -25,7 +25,7 @@ public class Run {
      */
     public static void main( String[] args ) throws FileNotFoundException{
 
-        File map = new File("map.txt");
+        File map = new File("kartta.csv");
         Scanner reader = new Scanner(map);
         Scanner input = new Scanner(System.in);
         Mapper grid = new Mapper(reader);
@@ -34,7 +34,7 @@ public class Run {
         int algoritmi;
         
         /**
-         * Alustetaan HashMap karttatiedostosta.
+         * Alustetaan kartta.
          */        
         grid.initialize();
         LinkedList<Location> mappi = grid.getMap();

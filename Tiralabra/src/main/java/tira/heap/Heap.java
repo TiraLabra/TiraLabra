@@ -1,5 +1,6 @@
 package tira.heap;
 
+import java.util.Arrays;
 import tira.common.Node;
 
 /**
