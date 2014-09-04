@@ -15,7 +15,7 @@ public class Heap <T> {
     private int size;
     
     public Heap (int size) {
-        this.table = new Node[size];
+        this.table = new Node[size*3];
         this.size = 0;
     }
     

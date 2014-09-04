@@ -25,7 +25,7 @@ public class Run {
      */
     public static void main( String[] args ) throws FileNotFoundException{
 
-        File map = new File("kartta.csv");
+        File map = new File("test20.csv");
         Scanner reader = new Scanner(map);
         Scanner input = new Scanner(System.in);
         Mapper grid = new Mapper(reader);
@@ -75,7 +75,11 @@ public class Run {
     private static void doAstar(String s, String f, LinkedList m) {
         Astar a = new Astar(s, f, m);
         a.initialize();
+        long start = System.nanoTime();
         a.route();
+        long end = System.nanoTime();
+        long micros = (end - start) / 1000;
+        System.out.println("Operaatioon kului aikaa: \n" + micros + "mikrosekuntia");     
         a.print();
     }
      
@@ -85,7 +89,11 @@ public class Run {
     private static void doDijkstra(String s, String f, LinkedList l) {
         Dijkstra d = new Dijkstra(s, f, l);
         d.initialize();
+        long start = System.nanoTime();
         d.route();
+        long end = System.nanoTime();
+        long micros = (end - start) / 1000;
+        System.out.println("Operaatioon kului aikaa: \n" + micros + "mikrosekuntia");
         d.print();
     }    
 }
