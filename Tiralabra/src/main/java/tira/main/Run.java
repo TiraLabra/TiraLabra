@@ -2,15 +2,12 @@ package tira.main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import tira.astar.Astar;
 import tira.dijkstra.Dijkstra;
 import tira.list.LinkedList;
 import tira.utils.Location;
 import tira.utils.Mapper;
-import tira.utils.Target;
 
 /**
  *
@@ -40,7 +37,6 @@ public class Run {
          * Alustetaan HashMap karttatiedostosta.
          */        
         grid.initialize();
-        HashMap<String, ArrayList<Target>> graph = grid.getGrid();
         LinkedList<Location> mappi = grid.getMap();
         
         /**
@@ -67,7 +63,7 @@ public class Run {
             doDijkstra(start, end, mappi);
         }
         if (algoritmi == 1) {
-            doAstar(start, end, graph);
+            doAstar(start, end, mappi);
         }    
         
         System.exit(0);
@@ -76,7 +72,7 @@ public class Run {
     /**
      * Luodaan Astar-olio, alustetaa verkko ja etsitään reitti.
      */
-    private static void doAstar(String s, String f, HashMap m) {
+    private static void doAstar(String s, String f, LinkedList m) {
         Astar a = new Astar(s, f, m);
         a.initialize();
         a.route();

@@ -1,7 +1,5 @@
 package tira.astar;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +7,7 @@ import tira.common.Edge;
 import tira.common.Node;
 import tira.list.LinkedList;
 import tira.utils.Helper;
+import tira.utils.Location;
 import tira.utils.Target;
 
 /**
@@ -17,7 +16,7 @@ import tira.utils.Target;
  */
 public class AstarTest {
     
-    private HashMap<String, ArrayList<Target>> grid;
+    private LinkedList<Location> grid;
     private String start;
     private String end;
     private Astar a;
@@ -41,14 +40,14 @@ public class AstarTest {
     public void testInitialize() {
         a.initialize();
         LinkedList<Node> nodes = a.getNodes();
-        Node c =(Node)nodes.get(0);
+        Node c =(Node)nodes.searchWithString("c").getOlio();
         Node b = (Node)nodes.get(nodes.size()-1);
         LinkedList<Edge> edgesOne = c.getEdges();
         LinkedList<Edge> edgesLast = b.getEdges();
         Helper help = a.getHelperObject();
         assertEquals(4, nodes.size());
-        assertEquals(3, edgesOne.size());
-        assertEquals(3, edgesLast.size());
+        assertEquals(1, edgesOne.size());
+        assertEquals(2, edgesLast.size());
         assertEquals(a.getGoal(), help.search(this.end));
         assertEquals(a.getStart(), help.search(this.start));
         
@@ -97,31 +96,29 @@ public class AstarTest {
         assertEquals(vastaus, tulos);
     }
 
-    private HashMap<String, ArrayList<Target>> doMap() {
-        HashMap<String, ArrayList<Target>> graph = new HashMap<String, ArrayList<Target>>();
-        ArrayList<Target> a = new ArrayList<Target>();
-        ArrayList<Target> b = new ArrayList<Target>();
-        ArrayList<Target> c = new ArrayList<Target>();
-        ArrayList<Target> d = new ArrayList<Target>();
+    private LinkedList<Location> doMap() {
+        LinkedList<Location> graph = new LinkedList<Location>();
+        Location a = new Location("a");
+        Location b = new Location("b");
+        Location c = new Location("c");
+        Location d = new Location("d");
         
         a.add(new Target("b", 35, 30, 30));
-        a.add(new Target("c", 5, 10, 10));
+        a.add(new Target("c", 5, 18, 6));
         a.add(new Target("d", 10, 20, 0));
         
         b.add(new Target("a", 35, 5, 15));
         b.add(new Target("d", 25, 20, 0));
         
         c.add(new Target("a", 5, 5, 15));
-        c.add(new Target("d", 5, 20, 0));
         
         d.add(new Target("a", 10, 5, 15));
         d.add(new Target("b", 25, 30, 30));
-        d.add(new Target("c", 5, 10, 10));
         
-        graph.put("a", a);
-        graph.put("b", b);
-        graph.put("c", c);
-        graph.put("d", d);
+        graph.add(a);
+        graph.add(b);
+        graph.add(c);
+        graph.add(d);
 
         return graph;
     }   

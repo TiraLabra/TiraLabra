@@ -1,12 +1,11 @@
 package tira.astar;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import tira.common.Edge;
 import tira.common.Node;
 import tira.heap.Heap;
 import tira.list.LinkedList;
 import tira.utils.Helper;
+import tira.utils.Location;
 import tira.utils.Target;
 
 /**
@@ -18,17 +17,17 @@ import tira.utils.Target;
 public class Astar {
     
     private LinkedList<Node> cells;
-    private HashMap<String, ArrayList<Target>> graph;
+    private LinkedList<Location> locations;
     private String destination;
     private String source;
     private Node startCell;
     private Node goalCell;
     private Helper path;
 
-    public Astar(String start, String end, HashMap grid) {
+    public Astar(String start, String end, LinkedList grid) {
         this.source = start;
         this.destination = end;
-        this.graph = grid;
+        this.locations = grid;
         this.cells = new LinkedList<Node>();
         this.path = new Helper(this.cells);
     }
@@ -38,13 +37,15 @@ public class Astar {
      * tallenetun kartan perusteella.
      */  
     public void initialize() {
-        for (String apu : this.graph.keySet()) {
-            Node next = new Node(apu);
+        for (Location apu : this.locations) {
+            Node next = new Node(apu.toString());
             this.cells.add(next);
         }
         
         for (Node helper : this.cells) {
-            for (Target finder : this.graph.get(helper.toString())) {
+            Location next = (Location)this.locations.searchWithString(helper.toString()).getOlio();
+            LinkedList<Target> targets = next.getTargets();
+            for (Target finder : targets) {
                 Node added = this.path.search(finder.getName());
                 added.setCoords(finder.getX(), finder.getY());
                 helper.addEdge(new Edge(added, finder.getDistance()));

@@ -1,7 +1,5 @@
 package tira.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import tira.list.LinkedList;
 
@@ -15,12 +13,10 @@ import tira.list.LinkedList;
 public class Mapper {
     
     private Scanner map;
-    private HashMap<String, ArrayList<Target>> sources;
     private LinkedList<Location> locations;
 
     public Mapper(Scanner reader) {
         this.map = reader;
-        this.sources = new HashMap<String, ArrayList<Target>>();
         this.locations = new LinkedList<Location>();
     }
     
@@ -48,10 +44,6 @@ public class Mapper {
      * Tulostetaan kaupungit käyttäjälle, joista hän valitsee lähtöpaikan ja maalin.
      */
     public void print() {
-        for (String apu : this.sources.keySet()) {
-            System.out.println(apu);
-        }
-        System.out.println("VAIHTUU");
         for (Location name : this.locations) {
             System.out.println(name.toString());
         }
@@ -65,7 +57,7 @@ public class Mapper {
      * Metodi tarkistaa onko käyttäjän syöte kunnossa ja palauttaa tiedon siitä.
      */   
     public boolean validKeys(String start, String end) {
-        if (this.sources.containsKey(start) && this.sources.containsKey(end) && this.locations.containsString(start) && this.locations.containsString(end)) {
+        if (this.locations.containsString(start) && this.locations.containsString(end)) {
             return true;
         }
         return false;
@@ -75,10 +67,6 @@ public class Mapper {
      * Metodi palauttaa alustetun kartan.
      * @return 
      */   
-    public HashMap getGrid() {
-        return this.sources;
-    }
-    
     public LinkedList getMap() {
         return this.locations;
     }
@@ -92,13 +80,7 @@ public class Mapper {
      * Kaupungeille annetaan myös tieto niiden x,y-sijainnista.
      */
     private void manageLine(String start, int sx, int sy, String destination, int dx, int dy, int distance) {
-        if (!this.sources.containsKey(start) && !this.sources.containsKey(destination)) {
-            ArrayList<Target> startTargets = new ArrayList<Target>();
-            ArrayList<Target> destinationTargets = new ArrayList<Target>();
-            startTargets.add(new Target(destination, distance, sx, sy));
-            destinationTargets.add(new Target(start, distance, dx, dy));  
-            this.sources.put(start, startTargets);
-            this.sources.put(destination, destinationTargets);
+        if (!this.locations.containsString(start) && !this.locations.containsString(destination)) {
             
             Location alku = new Location(start);
             Location maali = new Location(destination);
@@ -108,11 +90,7 @@ public class Mapper {
             this.locations.add(maali);
             
             
-        } else if (!this.sources.containsKey(destination) && this.sources.containsKey(start)) {
-            ArrayList<Target> destinationTargets = new ArrayList<Target>();
-            this.sources.get(start).add(new Target(destination, distance, dx, dy));
-            destinationTargets.add(new Target(start, distance, sx, sy));
-            this.sources.put(destination, destinationTargets);
+        } else if (!this.locations.containsString(destination) && this.locations.containsString(start)) {
             
             Location maali = new Location(destination);
             maali.add(new Target(start, distance, sx, sy));
@@ -120,11 +98,7 @@ public class Mapper {
             alku.add(new Target(destination, distance, dx, dy));
             this.locations.add(maali);
             
-        } else if (!this.sources.containsKey(start) && this.sources.containsKey(destination)) {
-            ArrayList<Target> startTargets = new ArrayList<Target>();
-            startTargets.add(new Target(destination, distance, dx, dy));
-            this.sources.get(destination).add(new Target(start, distance, sx, sy));
-            this.sources.put(start, startTargets);
+        } else if (!this.locations.containsString(start) && this.locations.containsString(destination)) {
             
             Location alku = new Location(start);
             alku.add(new Target(destination, distance, dx, dy));
@@ -133,8 +107,6 @@ public class Mapper {
             this.locations.add(alku);
             
         } else {
-            this.sources.get(start).add(new Target(destination, distance, dx, dy));
-            this.sources.get(destination).add(new Target(start, distance, sx, sy));
             
             Location maali = (Location)this.locations.searchWithString(destination).getOlio();
             Location alku = (Location)this.locations.searchWithString(start).getOlio();
