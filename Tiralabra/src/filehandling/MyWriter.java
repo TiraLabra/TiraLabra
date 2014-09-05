@@ -31,6 +31,8 @@ public class MyWriter {
     
     public void write(Paketti paketti, String aOutputFileName){
         
+        System.out.println("Writing...");
+        
         byte[] tree = paketti.getByteTree();
         byte[] text = stringToByteChar(divide(paketti.getText()));
         byte[] aInput = combine(tree,text);
@@ -42,11 +44,12 @@ public class MyWriter {
                 output.write(aInput);
             }
             finally {
+                System.out.println("Closing...");
                 output.close();
             }
         }
         catch(FileNotFoundException ex){
-            System.out.println("ei löydy");
+            System.out.println("Ei löydy");
         }
         catch(IOException ex){
 

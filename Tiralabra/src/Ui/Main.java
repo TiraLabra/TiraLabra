@@ -36,6 +36,7 @@ public class Main {
             System.out.println("----------------");
             Packer packer = new Packer();
             Paketti paketti = packer.pack(text);
+            System.out.println("Done!");
 
         }    
         else {
@@ -46,7 +47,7 @@ public class Main {
             Paketti paketti = reader.read(file);
             System.out.println("------------");
             Decompressor decompressor = new Decompressor(paketti.getTree(), paketti.getText());
-            System.out.println(decompressor.unzip());
+            decompressor.unzip();
         }     
 
     }

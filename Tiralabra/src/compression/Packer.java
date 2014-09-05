@@ -61,7 +61,6 @@ public class Packer {
         for (int i = 0; i < input.length; i++) {
             freq[input[i]]++;
         }
-        //System.out.println(freq[32]);
         return freq;
     }
     /**
@@ -122,10 +121,7 @@ public class Packer {
         char[] ca = s.toCharArray();
         String[] list = tree.makeDirectory();       
         for (int i = 0; i < s.length(); i++) {
-            pakkaus += list[ca[i]];
-//            System.out.println(list[ca[i]] + "  " + ca[i]);
-//            System.out.println("space: " + ca[32]);
-            
+            pakkaus += list[ca[i]];    
         }    
         return pakkaus;
     }

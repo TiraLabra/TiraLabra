@@ -109,13 +109,5 @@ public class Tree {
             treeWalkForTreeToBinary(b,node.getRight());
         }
     }
-//    
-//    public String byteToString(byte[] list) {
-//        String lause = "";
-//        for (byte b : list) {
-//            lause += Integer.toBinaryString(b);
-//        }
-//        return lause;
-//    }
-    
+  
 }

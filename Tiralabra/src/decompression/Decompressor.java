@@ -32,8 +32,7 @@ public class Decompressor {
     public String unzip() {
         
         while (paketti.length() -1 > i) {
-            nextChar(tree.getRoot(),paketti.charAt(i));
-           // System.out.println(paketti.charAt(i));    
+            nextChar(tree.getRoot(),paketti.charAt(i));   
         }
         MyWriter writer = new MyWriter();
         writer.writeAnswerToFile(lause);
@@ -48,7 +47,6 @@ public class Decompressor {
      * @param c 
      */
     private void nextChar(Node root, Character c) {
-//        Node nod = root;
         if (root == null) {
             return;
         }
