@@ -1,0 +1,78 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.tiralabra_maven.logiikka.algoritmi;
+
+import com.mycompany.tiralabra_maven.Koordinaatit;
+import com.mycompany.tiralabra_maven.gui.RuudunTila;
+import com.mycompany.tiralabra_maven.gui.Ruutu;
+import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.PrioriteettiKeko;
+import java.util.Comparator;
+
+/**
+ *
+ * @author mikko
+ */
+public class GreedyBestFirstAlgoritmi extends Algoritmi {
+
+    private Heuristiikka heuristiikka;
+    private final PrioriteettiKeko<Solmu> tutkittavat;
+    private Solmu tutkittavaSolmu;
+
+    public GreedyBestFirstAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alkuKoord, Koordinaatit maaliKoord, boolean vinottain, Heuristiikka h) {
+        super(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
+        this.heuristiikka = h;
+        
+        Comparator<Solmu> vertailija = new Comparator<Solmu>() {
+            @Override
+            public int compare(Solmu s1, Solmu s2) {
+                return heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) - heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali);
+            }
+        };
+
+        this.tutkittavat = new PrioriteettiKeko<>(vertailija);
+    }
+
+    @Override
+    public void run() {
+        tutkittavat.lisaa(new Solmu(alku, 0, null));
+
+        while (!tutkittavat.tyhja() && jatketaanko) {
+
+            //Otetaan jonosta solmu
+            tutkittavaSolmu = tutkittavat.seuraava();
+
+            //Jos ollaan maalissa, lopetetaan tähän
+            if (tutkittavaSolmu.getKoord().equals(maali)) {
+                maaliLoytyi(tutkittavaSolmu);
+                return;
+            }
+
+            //Muussa tapauksessa merkitään solmu nyt käsittelyssä olevaksi
+            ruutujenTilat[tutkittavaSolmu.getKoord().getY()][tutkittavaSolmu.getKoord().getX()] = RuudunTila.KASITTELYSSA;
+
+            //Odotetaan mahdollisen viiveen verran aikaa ennen jatkamista
+            super.odota();
+
+            //Käydään läpi solmun naapurit
+            for (Solmu s : solmunNaapurit(tutkittavaSolmu)) {
+
+                //Jos tässä ruudussa on jo käyty, ei käsitellä tätä enää
+                if (ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] != null) {
+                    continue;
+                }
+
+                //Muussa tapauksessa lisätään solmun naapuri tutkittaviin
+                ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] = RuudunTila.TUTKITTAVA;
+                tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka() + maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
+            }
+
+            //Lopuksi merkitään tämä solmu tutkituksi
+            ruutujenTilat[tutkittavaSolmu.getKoord().getY()][tutkittavaSolmu.getKoord().getX()] = RuudunTila.TUTKITTU;
+        }
+
+    }
+
+}
