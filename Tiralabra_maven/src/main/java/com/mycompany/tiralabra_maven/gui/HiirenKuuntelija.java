@@ -5,7 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;

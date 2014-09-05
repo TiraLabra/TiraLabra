@@ -6,8 +6,8 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Toiminto;
-import com.mycompany.tiralabra_maven.algoritmi.AlgoritmiTyyppi;
-import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
+import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 import java.io.File;
 import javax.swing.JFileChooser;
 

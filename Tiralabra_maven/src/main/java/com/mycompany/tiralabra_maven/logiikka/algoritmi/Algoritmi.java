@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.algoritmi;
+package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Suunta;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Lista;
 
 /**
  *
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 public abstract class Algoritmi implements Runnable {
 
     protected boolean jatketaanko;
-    protected Koordinaatit alku;
-    protected Koordinaatit maali;
+    protected final Koordinaatit alku;
+    protected final Koordinaatit maali;
     protected int hidaste;
     protected final int leveys;
     protected final int korkeus;
@@ -72,14 +72,6 @@ public abstract class Algoritmi implements Runnable {
         this.jatketaanko = false;
     }
 
-    public int getLeveys() {
-        return this.leveys;
-    }
-
-    public int getKorkeus() {
-        return this.korkeus;
-    }
-
     /**
      * Jos algoritmin suoritus on valmis (onkoValmis() -metodi palauttaa true),
      * niin tämä metodi palauttaa valmiin reitin maalisolmun, joka on linkitetty
@@ -94,8 +86,8 @@ public abstract class Algoritmi implements Runnable {
     @Override
     public abstract void run();
     
-    protected ArrayList<Solmu> solmunNaapurit(Solmu solmu) {
-        ArrayList<Solmu> palautus = new ArrayList<Solmu>();
+    protected Lista<Solmu> solmunNaapurit(Solmu solmu) {
+        Lista<Solmu> palautus = new Lista<Solmu>();
         Suunta[] lapikaytavat;
 
         if (vinottain) {
@@ -122,7 +114,6 @@ public abstract class Algoritmi implements Runnable {
 
     private boolean koordinaatitUlkopuolella(Koordinaatit koordinaatit) {
         return koordinaatit.getX() < 0 || koordinaatit.getY() < 0 || koordinaatit.getX() >= maailma[0].length || koordinaatit.getY() >= maailma.length;
-
     }
 
     protected void odota() {

@@ -6,7 +6,7 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

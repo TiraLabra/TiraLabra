@@ -3,13 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.algoritmi;
+package com.mycompany.tiralabra_maven.logiikka;
 
+import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.AStarAlgoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.Algoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.BreadthFirstAlgoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.DijkstraAlgoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.GreedyBestFirstAlgoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.Heuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.ManhattanHeuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.Solmu;
 import fileio.KuvanLukija;
 import java.io.File;
 

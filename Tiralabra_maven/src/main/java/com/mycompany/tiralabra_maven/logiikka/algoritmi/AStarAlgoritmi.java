@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.algoritmi;
+package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Suunta;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import com.mycompany.tiralabra_maven.tietorakenteet.PrioriteettiKeko;
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.PrioriteettiKeko;
+import java.util.Comparator;
 
 /**
  * Algoritmi-luokka sisältää varsinaisen reittialgoritmin suoritettavana
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class AStarAlgoritmi extends Algoritmi {
 
     private int[][] parhaatReitit;
-    private Heuristiikka heuristiikka;
+    private final Heuristiikka heuristiikka;
     private PrioriteettiKeko<Solmu> tutkittavat;
     private Solmu tutkittavaSolmu;
 
@@ -35,19 +35,27 @@ public class AStarAlgoritmi extends Algoritmi {
      * ruutujen kustannuksista
      * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin
      * suoritusaskeleen välillä.
-     * @param alku alkupisteen koordinaatit
-     * @param maali maalipisteen koordinaatit
+     * @param alkuKoord alkupisteen koordinaatit
+     * @param maaliKoord maalipisteen koordinaatit
      * @param vinottain sallitaanko liikkuminen vinottain
-     * @param heuristiikka käytettävä heuristiikka
+     * @param kaytettavaHeuristiikka käytettävä heuristiikka
      */
-    public AStarAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain, Heuristiikka heuristiikka) {
-        super(maailma, hidaste, alku, maali, vinottain);
-        this.heuristiikka = heuristiikka;
+    public AStarAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alkuKoord, Koordinaatit maaliKoord, boolean vinottain, Heuristiikka kaytettavaHeuristiikka) {
+        super(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
+        this.heuristiikka = kaytettavaHeuristiikka;
         this.parhaatReitit = new int[korkeus][leveys];
-        
+
         alustaParhaatReitit();
         //Tehdään priorityQueue joka palauttaa aina sen solmun, jolle (etäisyys alkuun + arvioitu etäisyys loppuun) on pienin
-        AStarVertailija vertailija = new AStarVertailija(this.heuristiikka, maali);
+        Comparator<Solmu> vertailija = new Comparator<Solmu>() {
+            @Override
+            public int compare(Solmu s1, Solmu s2) {
+                if (s1.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) < s2.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)) {
+                    return -1;
+                }
+                return 1;
+            }
+        };
         tutkittavat = new PrioriteettiKeko<>(vertailija);
     }
 
@@ -89,7 +97,6 @@ public class AStarAlgoritmi extends Algoritmi {
             //Lopuksi merkitään tämä solmu tutkituksi
             ruutujenTilat[tutkittavaSolmu.getKoord().getY()][tutkittavaSolmu.getKoord().getX()] = RuudunTila.TUTKITTU;
         }
-
     }
 
     private void alustaParhaatReitit() {

@@ -51,7 +51,7 @@
                 <configuration>
                     <instrumentation>
                         <includes>
-                            <include>com.mycompany.tiralabra_maven/*.class</include>
+                            <include>com.mycompany.tiralabra_maven/logiikka/*.class</include>
                         </includes>
                     </instrumentation>
                 </configuration>
@@ -63,10 +63,10 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
-                        <param>com.mycompany.tiralabra_maven.*</param>
+                        <param>com.mycompany.tiralabra_maven.logiikka.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>com.mycompany.tiralabra_maven.*</param>
+                        <param>com.mycompany.tiralabra_maven.logiikka.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

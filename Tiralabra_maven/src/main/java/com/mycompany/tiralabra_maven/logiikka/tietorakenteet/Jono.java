@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.tietorakenteet;
+package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
 /**
  *
@@ -55,13 +55,11 @@ public class Jono<E> {
     }
     
     private void kasvataTaulukkoa() {
-        System.out.println("Taulukkoa kasvatettiin, vanha koko " + taulukonKoko +", uusi koko " + taulukonKoko*2);
         //tehdään uusi taulukko joka on kaksi kertaa vanhan kokoinen, alussa head ja tail 0
         Object[] uusiTaulukko = new Object[taulukonKoko*2];
         int uusiHead = 0;
         int uusiTail = 0;
         //niin kauan kuin vanhassa taulukossa riittää tavaraa (ei ole tyhjä), otetaan sieltä tavaraa pois ja siirretään uuteen
-        //while (head != tail) {
         while (!tyhja()) {
             uusiTaulukko[uusiTail] = taulukko[head];
             uusiTail++;

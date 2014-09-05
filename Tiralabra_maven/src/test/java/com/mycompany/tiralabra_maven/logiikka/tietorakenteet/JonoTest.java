@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.tietorakenteet;
+package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
+import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Jono;
 import static junit.framework.Assert.*;
 import org.junit.*;
 

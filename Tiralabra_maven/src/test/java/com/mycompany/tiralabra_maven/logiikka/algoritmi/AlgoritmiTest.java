@@ -3,81 +3,103 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.algoritmi;
+package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
+import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import static junit.framework.Assert.*;
-import org.junit.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.fail;
 
 /**
  *
  * @author mikko
  */
-public class AStarAlgoritmiTest {
+public class AlgoritmiTest {
 
-    @Before
-    public void setUp() {
+    private AlgoritmiTyyppi algoritmiTyyppi;
 
+    public AlgoritmiTest(AlgoritmiTyyppi algoritmiTyyppi) {
+        this.algoritmiTyyppi = algoritmiTyyppi;
     }
 
-    @Test
     public void algoritmiLoytaaSuoranReitinPerille() {
         Ruutu[][] maailma = alustaMaailma();
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
-        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(7, algoritmi.getReitti().getKuljettuMatka());
 
     }
 
-    @Test
-    public void algoritmiLoytaaReitinPerilleNopeasti() {
+    public void algoritmiLoytaaReitinPerilleNopeasti(int alarajaMs, int ylarajaMs) {
         Ruutu[][] maailma = alustaMaailma(40, 40);
         Koordinaatit alku = new Koordinaatit(38, 0);
         Koordinaatit maali = new Koordinaatit(0, 38);
         //Annetaan algoritmille 1 ms hidaste suorituskykytestausta varten
-        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
         long aikaAlussa = System.currentTimeMillis();
         suoritaAlgoritmi(algoritmi);
-        long kulunutAika = System.currentTimeMillis()-aikaAlussa;
-        if (kulunutAika < 210) {
+        long kulunutAika = System.currentTimeMillis() - aikaAlussa;
+        //alaraja 210
+        if (kulunutAika < alarajaMs) {
             fail("Suoritukseen kului epäilyttävän vähän aikaa (" + kulunutAika + " ms), 1 ms hidaste ei toimi?");
         }
-        if (kulunutAika > 1500) {
-            fail("Aikaa kului yli 1500 ms. aikaa kului " + kulunutAika + "ms");
+        //ylaraja 1500
+        if (kulunutAika > ylarajaMs) {
+            fail("Aikaa kului yli " + ylarajaMs + "ms. aikaa kului " + kulunutAika + "ms");
         }
         assertEquals(76, algoritmi.getReitti().getKuljettuMatka());
     }
 
-    @Test
     public void algoritmiOsaaKiertaaSeinan() {
         Ruutu[][] maailma = alustaMaailma();
         teeSeina(maailma);
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
-        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+
         suoritaAlgoritmi(algoritmi);
         assertEquals(20, algoritmi.getReitti().getKuljettuMatka());
 
     }
 
-    @Test
-    public void algoritmiEiTutkiVaaraanSuuntaan() {
+    private void teeSeina(Ruutu[][] maailma) {
+        for (int y = 0; y < 8; y++) {
+            maailma[y][4] = Ruutu.SEINA;
+        }
+    }
+
+    public void algoritmiLoytaaLyhimmanReitinEikaTutkiVaaraanSuuntaan() {
         Ruutu[][] maailma = alustaMaailma();
         maailma[3][3] = Ruutu.SEINA;
         maailma[3][4] = Ruutu.SEINA;
         maailma[3][5] = Ruutu.SEINA;
         Koordinaatit alku = new Koordinaatit(3, 5);
         Koordinaatit maali = new Koordinaatit(4, 0);
-        AStarAlgoritmi algoritmi = new AStarAlgoritmi(maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(8, algoritmi.getReitti().getKuljettuMatka());
         assertNull(algoritmi.getRuudunTila(0, 6));
         assertNull(algoritmi.getRuudunTila(3, 8));
         assertEquals(RuudunTila.REITTI, algoritmi.getRuudunTila(2, 3));
+    }
+
+    private Algoritmi luoAlgoritmi(AlgoritmiTyyppi tyyppi, Ruutu[][] maailma, int hidaste, Koordinaatit alkuKoord, Koordinaatit maaliKoord, boolean vinottain, Heuristiikka kaytettavaHeuristiikka) {
+        switch (tyyppi) {
+            case A_STAR:
+                return new AStarAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain, kaytettavaHeuristiikka);
+            case BREADTH_FIRST:
+                return new BreadthFirstAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
+            case DIJKSTRA:
+                return new DijkstraAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
+            case GREEDY_BEST_FIRST:
+                return new GreedyBestFirstAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain, kaytettavaHeuristiikka);
+        }
+        return null;
     }
 
     private Ruutu[][] alustaMaailma() {
@@ -94,15 +116,8 @@ public class AStarAlgoritmiTest {
         return maailma;
     }
 
-    private void teeSeina(Ruutu[][] maailma) {
-        for (int y = 0; y < 8; y++) {
-            maailma[y][4] = Ruutu.SEINA;
-        }
-    }
-
-    private void suoritaAlgoritmi(AStarAlgoritmi algoritmi) {
+    private void suoritaAlgoritmi(Algoritmi algoritmi) {
         new Thread(algoritmi).start();
-        //algoritmi.start();
         //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;
         while (!algoritmi.onkoValmis()) {

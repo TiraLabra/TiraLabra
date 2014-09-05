@@ -5,7 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.algoritmi.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 
 /**
  * Käyttöliittymän ikkunan ja siihen liitettävät komponentit tekevä luokka.

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tiralabra_maven.algoritmi;
+package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
