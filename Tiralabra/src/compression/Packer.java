@@ -13,7 +13,7 @@ package compression;
 import datastructures.Node;
 import datastructures.Paketti;
 import datastructures.Tree;
-import filehandling.Writer;
+import filehandling.MyWriter;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,10 +38,10 @@ public class Packer {
         Tree tree = makeTree(que);
         String pakkaus = compress(word, tree);
         Paketti paketti = new Paketti(tree,pakkaus);
-        Writer writer = new Writer();
+        MyWriter writer = new MyWriter();
         System.out.println("Anna tiedostolle nimi: ");
         Scanner in = new Scanner(System.in);
-        writer.write(pakkaus, in.nextLine());
+        writer.write(paketti, in.nextLine());
        
         return paketti;
         
@@ -61,7 +61,7 @@ public class Packer {
         for (int i = 0; i < input.length; i++) {
             freq[input[i]]++;
         }
-
+        //System.out.println(freq[32]);
         return freq;
     }
     /**
@@ -123,7 +123,8 @@ public class Packer {
         String[] list = tree.makeDirectory();       
         for (int i = 0; i < s.length(); i++) {
             pakkaus += list[ca[i]];
-            //System.out.println(list[ca[i]] + "  " + ca[i]);
+//            System.out.println(list[ca[i]] + "  " + ca[i]);
+//            System.out.println("space: " + ca[32]);
             
         }    
         return pakkaus;

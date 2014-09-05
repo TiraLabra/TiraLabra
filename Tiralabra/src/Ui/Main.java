@@ -11,7 +11,7 @@ package Ui;
 import compression.Packer;
 import datastructures.Paketti;
 import decompression.Decompressor;
-import filehandling.Reader;
+import filehandling.MyReader;
 import java.io.File;
 import java.util.Scanner;
 
@@ -20,34 +20,34 @@ public class Main {
     public static void main( String[] args ) {
 
         Scanner lukija = new Scanner(System.in);
-        String lause = "";
         
-        System.out.println("Anna pakattava: ");
-        System.out.println("1 - kirjoita teksti");
-        System.out.println("muu - anna tiedoston nimi");
+        System.out.println("Pakkaa - 1");
+        System.out.println("Pura - 2");
         
-//        int i = lukija.nextInt();
-//        if (i == 1) {
-            lause = lukija.nextLine();
- //       }
-//        else {
-//            Reader reader = new Reader();
-//            lause = reader.readInput();
-//        }    
-        
-        System.out.println("----------------");
-        Packer packer = new Packer();
-        Paketti paketti = packer.pack(lause);
+        if(lukija.nextInt() == 1) {
+            String text = "";
 
-        System.out.println("-----------------");
+            System.out.println("Anna pakattava: ");
 
-        System.out.println(paketti.getLause());
+            MyReader reader = new MyReader();
+            text = reader.readInput();
 
-        System.out.println("----------------");
 
-        Decompressor decompressor = new Decompressor(paketti.getTree(), paketti.getLause());
-        System.out.println(decompressor.unzip());
+            System.out.println("----------------");
+            Packer packer = new Packer();
+            Paketti paketti = packer.pack(text);
 
+        }    
+        else {
+            
+            MyReader reader = new MyReader();
+            String file = reader.readStuff();
+            System.out.println("------------");
+            Paketti paketti = reader.read(file);
+            System.out.println("------------");
+            Decompressor decompressor = new Decompressor(paketti.getTree(), paketti.getText());
+            System.out.println(decompressor.unzip());
+        }     
 
     }
     

@@ -14,6 +14,8 @@ import datastructures.Node;
 public class Tree {
 
     private Node root;
+    private int size;
+    private int apu;
 
     public Tree(Node root) {
         this.root = root;
@@ -37,6 +39,20 @@ public class Tree {
      */
     public void setRoot(Node root) {
         this.root = root;
+    }
+    public int size() {
+        size = 0;
+        treeWalkForSize(root);
+        return size;        
+    }
+    public void treeWalkForSize(Node node) {
+        size++;
+        if(node.getLeft() != null) {
+            treeWalkForSize(node.getLeft());
+        }
+        if(node.getRight() != null) {
+            treeWalkForSize(node.getRight());
+        }
     }
 
     /**
@@ -75,10 +91,31 @@ public class Tree {
         }
     }
     
-    public String treeToBinary() {
-        String s = "";
-            Character.valueOf('s');
-        return s;
+    public byte[] treeToBinary() {
+        byte[] b = new byte[this.size() + 1];
+        b[0] = (byte) this.size();
+        apu = 1;
+        treeWalkForTreeToBinary(b,root);
+        return b;
     }
+    
+    public void treeWalkForTreeToBinary(byte[] b, Node node) {      
+        b[apu] = (byte) node.getChar();
+        ++apu;
+        if(node.getLeft() != null) {
+            treeWalkForTreeToBinary(b,node.getLeft());
+        }
+        if(node.getRight() != null) {
+            treeWalkForTreeToBinary(b,node.getRight());
+        }
+    }
+//    
+//    public String byteToString(byte[] list) {
+//        String lause = "";
+//        for (byte b : list) {
+//            lause += Integer.toBinaryString(b);
+//        }
+//        return lause;
+//    }
     
 }

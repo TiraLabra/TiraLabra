@@ -6,6 +6,7 @@ package datastructures;
  */
 import datastructures.Tree;
 import datastructures.Node;
+import java.util.Arrays;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,5 +62,41 @@ public class TreeTest {
         assertTrue("sisäsolmut eivät voi olla listassa", list['b']==null);
     }
     
+    @Test
+    public void doesSizeWork() {
+        assertEquals(5, tree.size());
+    }
+    
+    @Test
+    public void doesTreeToBinaryWork() {
+        byte[] kissa = new byte[8];
+        kissa[0] = 7;
+        kissa[1] = 46;
+        kissa[2] = 115;
+        kissa[3] = 46;
+        kissa[4] = 107;
+        kissa[5] = 46;
+        kissa[6] = 97;
+        kissa[7] = 105;
+        
+        Node node1 = new Node('*',1);
+        Node node2 = new Node('s',1);
+        Node node3 = new Node('*',1);
+        Node node4 = new Node('k',1);
+        Node node5 = new Node('*',1);
+        Node node6 = new Node('a',1);
+        Node node7 = new Node('i',1);
+        
+        node1.setLeft(node2);
+        node1.setRight(node3);
+        node3.setLeft(node4);
+        node3.setRight(node5);
+        node5.setLeft(node6);
+        node5.setRight(node7);
+        
+        Tree tree2 = new Tree(node1);
+        
+        assertFalse("treeToBinary ei toimi", Arrays.equals(kissa,tree.treeToBinary()));
+    }
     
 }

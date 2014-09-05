@@ -6,6 +6,7 @@ package decompression;
 
 import datastructures.Tree;
 import datastructures.Node;
+import filehandling.MyWriter;
 
 /**
  * Purkaa sille annetun paketin ja palauttaa sen merkkijonona.
@@ -32,8 +33,10 @@ public class Decompressor {
         
         while (paketti.length() -1 > i) {
             nextChar(tree.getRoot(),paketti.charAt(i));
-           // System.out.println(paketti.charAt(i));
-        }        
+           // System.out.println(paketti.charAt(i));    
+        }
+        MyWriter writer = new MyWriter();
+        writer.writeAnswerToFile(lause);
         return lause;
     }
     

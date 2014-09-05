@@ -47,7 +47,7 @@ public class DecompressorTest {
     @Test
     public void doesDecompressorWork() {
         Paketti paketti = packer.pack("kissa");
-        Decompressor dec = new Decompressor(paketti.getTree(), paketti.getLause());
+        Decompressor dec = new Decompressor(paketti.getTree(), paketti.getText());
         assertEquals("kissa", dec.unzip());
     }
 }
