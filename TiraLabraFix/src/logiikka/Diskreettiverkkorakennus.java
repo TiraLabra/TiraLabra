@@ -107,7 +107,7 @@ public class Diskreettiverkkorakennus {
                     this.yMax = k.palautaY();
 
                 }
-                it = it.palauataSeuraava();
+                it = it.palautaSeuraava();
             }
 
         }

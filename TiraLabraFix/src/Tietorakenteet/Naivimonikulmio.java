@@ -30,7 +30,7 @@ public class Naivimonikulmio implements Monikulmio {
     public Naivimonikulmio(Jono kordinaatit) {
         this.kulmat = kordinaatit;
         if ((this.kulmat != null) && (this.kulmat.palautaKoko() > 0)) {
-            LaskeVirittavaNelio();
+//            LaskeVirittavaNelio();
         }
         laskeJanat();
     }
@@ -93,7 +93,7 @@ public class Naivimonikulmio implements Monikulmio {
             if (y < minY) {
                 minY = y;
             }
-            iteroitava = iteroitava.palauataSeuraava();
+            iteroitava = iteroitava.palautaSeuraava();
         }
 
     }
@@ -111,12 +111,12 @@ public class Naivimonikulmio implements Monikulmio {
         Jonoiteroitava iter = this.kulmat.palautaEnsimmainen();
         while (iter != this.kulmat.palautaViimeinen()) {
             Kordinaatti k = (Kordinaatti) iter.palautaObjekti();
-            Kordinaatti k2 = (Kordinaatti) iter.palauataSeuraava().palautaObjekti();
+            Kordinaatti k2 = (Kordinaatti) iter.palautaSeuraava().palautaObjekti();
             vektori[i][0] = k;
             vektori[i][1] = k2;
 
             i++;
-            iter = iter.palauataSeuraava();
+            iter = iter.palautaSeuraava();
         }
         vektori[i][0] = (Kordinaatti) this.kulmat.palautaViimeinen().palautaObjekti();
         vektori[i][1] = (Kordinaatti) this.kulmat.palautaEnsimmainen().palautaObjekti();
@@ -126,11 +126,34 @@ public class Naivimonikulmio implements Monikulmio {
       /**
      *
      * Palauttaa janat Kordinaatti[][] oliona
+     * @return Palauttaa janat Kordinaatti[][] oliona
      */
     
       @Override
     public Kordinaatti[][] PalautaJanat() {
         return this.vektori;
+    }
+    
+      @Override
+    public String tulosta()
+    {
+    String k = "";
+    Jonoiteroitava iter = this.kulmat.palautaEnsimmainen();
+    while(iter != null)
+    {
+    Kordinaatti d = (Kordinaatti) iter.palautaObjekti();
+    if (iter.palautaSeuraava() == null)
+    {
+    k = k + d.palautaX() + "," + d.palautaY();
+    }
+    else
+    {
+    k = k + d.palautaX() + "," + d.palautaY() + ";";
+    }
+    iter = iter.palautaSeuraava();
+    }
+    
+    return k;
     }
 
 }

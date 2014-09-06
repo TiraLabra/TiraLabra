@@ -76,10 +76,10 @@ public class Jatkuvaverkkorakennus {
             while (kulmaiteraattori != null) {
                 JatkuvaSolmu k = (JatkuvaSolmu) kulmaiteraattori.palautaObjekti();
                 toinenkulma(k, d);
-                kulmaiteraattori = kulmaiteraattori.palauataSeuraava();
+                kulmaiteraattori = kulmaiteraattori.palautaSeuraava();
             }
             //Iterointi:
-            iter = iter.palauataSeuraava();
+            iter = iter.palautaSeuraava();
         }
         toinenkulma(this.alku, null);
 
@@ -103,7 +103,7 @@ public class Jatkuvaverkkorakennus {
                 JatkuvaSolmu k2 = (JatkuvaSolmu) kulmaiteraattori.palautaObjekti();
 
                 //Debuggaus tulostukset:
-                System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + k2.palautaKordinaatti().tulosta());
+       //         System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + k2.palautaKordinaatti().tulosta());
 
                 if (!k.palautaKordinaatti().equals(k2.palautaKordinaatti())) {
 
@@ -115,22 +115,22 @@ public class Jatkuvaverkkorakennus {
                     }
 
                     if (kertoja == true) {
-                        System.out.println("- Palautti true");
+                   //     System.out.println("- Palautti true");
                         k.lisaaNaapuri(k2);
                     } else {
 
                     }
                 }
                 //Iterointi:
-                kulmaiteraattori = kulmaiteraattori.palauataSeuraava();
+                kulmaiteraattori = kulmaiteraattori.palautaSeuraava();
 
             }
             //Iterointi:
-            iter = iter.palauataSeuraava();
+            iter = iter.palautaSeuraava();
         }
-         System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + loppu.palautaKordinaatti().tulosta());
+     //   System.out.println("It: " + k.palautaKordinaatti().tulosta() + "..:.." + loppu.palautaKordinaatti().tulosta());
         if (eriMonikulmio(k.palautaKordinaatti(), this.loppu.palautaKordinaatti())) {
-            System.out.println("- Palautti true");
+     //       System.out.println("- Palautti true");
             k.lisaaNaapuri(this.loppu);
         }
 
@@ -171,7 +171,7 @@ public class Jatkuvaverkkorakennus {
 
             }
             //Iterointi:
-            j = j.palauataSeuraava();
+            j = j.palautaSeuraava();
 
         }
         return true;
@@ -189,10 +189,10 @@ public class Jatkuvaverkkorakennus {
             while (b != null) {
                 JatkuvaSolmu abc = (JatkuvaSolmu) b.palautaObjekti();
                 this.verkko.lisaaAlkio(abc);
-                b = b.palauataSeuraava();
+                b = b.palautaSeuraava();
             }
             //Iterointi:
-            iter = iter.palauataSeuraava();
+            iter = iter.palautaSeuraava();
         }
         this.verkko.lisaaAlkio(alku);
         this.verkko.lisaaAlkio(loppu);

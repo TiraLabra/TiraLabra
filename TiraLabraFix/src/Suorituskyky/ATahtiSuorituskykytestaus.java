@@ -55,7 +55,7 @@ public class ATahtiSuorituskykytestaus {
         solmukartta.put(new Kordinaatti(0, 0), alku);
         solmukartta.put(new Kordinaatti(k-1, k-1), loppu);
         for (DiskreettiSolmu solmut1 : solmut) {
-            solmukartta.put(solmut1.palautaKordinaatit(), solmut1);
+            solmukartta.put(solmut1.palautaKordinaatti(), solmut1);
         }
         verkko.asetaKartta(solmukartta);
         algoritmi = new Atahtialgoritmi(verkko, koko + 10);

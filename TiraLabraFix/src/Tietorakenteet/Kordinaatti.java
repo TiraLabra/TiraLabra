@@ -15,6 +15,8 @@ public class Kordinaatti implements Iteroitava {
     private double x;
     private double y;
     private int sijaintikeossa;
+    private Kordinaatti vasen;
+    private Kordinaatti oikea;
 
     /**
      * Asetttaa kordinaatit
@@ -109,11 +111,26 @@ public class Kordinaatti implements Iteroitava {
         }
         return false;
     }
-    
-    public String tulosta()
+
+    public String tulosta() {
+        String k = "X: " + this.x + ", Y: " + this.y;
+        return k;
+    }
+
+    public void asetaOikea(Kordinaatti k) {
+        this.oikea = k;
+    }
+
+    public void asetaVasen(Kordinaatti k) {
+        this.vasen = k;
+    }
+    public Kordinaatti palautaOikea()
     {
-    String k = "X: " + this.x + ", Y: " + this.y; 
-    return k;
+    return this.oikea;
+    }
+    public Kordinaatti palautaVasen()
+    {
+    return this.vasen;
     }
 
 }

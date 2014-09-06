@@ -5,6 +5,8 @@
  */
 package Algoritmit;
 
+import Tietorakenteet.Jono.Jono;
+import Tietorakenteet.Jono.Jonoiteroitava;
 import Tietorakenteet.Keko;
 import Tietorakenteet.Kordinaatti;
 import Tietorakenteet.Monikulmio;
@@ -151,30 +153,40 @@ public class Janaleikkaus {
 
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
 
+    //    System.out.println("eka: " + k.tulosta() + ", toka: " + k2.tulosta());
+        Jono toistojoukko = new Jono();
         Kordinaatti[][] janat = a.PalautaJanat();
-        Keko keko = new Keko(false, janat.length + 2);
+        Keko keko = new Keko(true, janat.length + 2);
+        keko.Lisaa(k);
+        keko.Lisaa(k2);
+        toistojoukko.lisaa(k);
+        toistojoukko.lisaa(k2);
         for (int i = 0; i < janat.length; i++) {
             Kordinaatti eka = janat[i][0];
             Kordinaatti toka = janat[i][1];
             Kordinaatti leikkauspiste = suoranjaJananleikkaus(eka, toka, k, k2, false);
             if (leikkauspiste != null) {
-                keko.Lisaa(leikkauspiste);
+                if (!toistojoukko.etsi(leikkauspiste)) {
+                    keko.Lisaa(leikkauspiste);
+                    toistojoukko.lisaa(leikkauspiste);
+                }
 
             }
 
         }
         int i = 1;
         boolean abc = true;
+       
         while ((!keko.palautaTaulukko()[0].equals(k)) && (!keko.palautaTaulukko()[0].equals(k2))) {
             i++;
             keko.poistaMinimi();
-            System.out.println(i);
+            
+           
 
         }
         Kordinaatti alku = null;
         Kordinaatti loppu = null;
-        Kordinaatti ekavieruspiste = null;
-        Kordinaatti tokavieruspiste = null;
+
         if (keko.palautaTaulukko()[0].equals(k)) {
             alku = k;
             loppu = k2;
@@ -231,4 +243,68 @@ public class Janaleikkaus {
         return z;
     }
 
+    public int Suorajamonikulmioleikkaus(Kordinaatti k1, Kordinaatti k2, Monikulmio d) {
+        Jono joukko = new Jono();
+        int vasenleikkauksia = 0;
+        int oikealeikkauksia = 0;
+        Kordinaatti[][] janat = d.PalautaJanat();
+        for (int i = 0; i < janat.length; i++) {
+
+            Kordinaatti ratkaisu = suoranjaJananleikkaus(janat[i][0], janat[i][1], k1, k2, false);
+            if (ratkaisu != null) {
+                if ((ratkaisu.equals(janat[i][0])) || (ratkaisu.equals(janat[i][1]))) {
+                    Kordinaatti[] naapurit = this.etsivieruspisteet(ratkaisu, d);
+                    Kordinaatti e = suoranjaJananleikkaus(naapurit[0], naapurit[1], k1, k2, true);
+                    if (e == null) {
+                        continue;
+                    } else {
+                        if (joukko.etsi(ratkaisu)) {
+                            continue;
+                        }
+                        if (ratkaisu.vertausoperaatio(k1) < 0) {
+                            joukko.lisaa(ratkaisu);
+                            vasenleikkauksia++;
+                        }
+                        if (ratkaisu.vertausoperaatio(k1) > 0) {
+                            joukko.lisaa(ratkaisu);
+                            oikealeikkauksia++;
+                        }
+
+                    }
+                } else {
+                    if (ratkaisu.vertausoperaatio(k1) < 0) {
+                        vasenleikkauksia++;
+                    }
+                    if (ratkaisu.vertausoperaatio(k1) > 0) {
+                        oikealeikkauksia++;
+                    }
+                }
+
+            }
+
+        }
+        if ((vasenleikkauksia % 2 == 1) || (oikealeikkauksia % 2 == 1)) {
+            return 1;
+        }
+
+        return 2;
+    }
+
+    public boolean kenenkaansisalla(Kordinaatti k, Jono monikulmiota) {
+        Jonoiteroitava iter = monikulmiota.palautaEnsimmainen();
+        Kordinaatti apukordinaatti = new Kordinaatti(k.palautaX() + 1, k.palautaY() + 1);
+
+        while (iter != null) {
+            Monikulmio xD = (Monikulmio) iter.palautaObjekti();
+            int i = Suorajamonikulmioleikkaus(k, apukordinaatti, xD);
+            if (i % 2 == 1) {
+                return true;
+
+            }
+
+            iter = iter.palautaSeuraava();
+        }
+
+        return false;
+    }
 }

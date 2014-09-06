@@ -67,7 +67,7 @@ public class DiskreettiVerkkoTest {
         solmuvektori[7] = new DiskreettiSolmu(-1, 0);
         solmuvektori[8] = new DiskreettiSolmu(0, -1);
         for (int i = 0; i < 9; i++) {
-            Kordinaatti k = solmuvektori[i].palautaKordinaatit();
+            Kordinaatti k = solmuvektori[i].palautaKordinaatti();
             kartta.put(k, solmuvektori[i]);
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
@@ -92,7 +92,7 @@ public class DiskreettiVerkkoTest {
         solmuvektori[7] = new DiskreettiSolmu(-1, 0);
         solmuvektori[8] = new DiskreettiSolmu(0, -1);
         for (int i = 0; i < 9; i++) {
-            Kordinaatti k = solmuvektori[i].palautaKordinaatit();
+            Kordinaatti k = solmuvektori[i].palautaKordinaatti();
             kartta.put(k, solmuvektori[i]);
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
@@ -117,7 +117,7 @@ public class DiskreettiVerkkoTest {
         solmuvektori[7] = new DiskreettiSolmu(-1, 0);
         solmuvektori[8] = new DiskreettiSolmu(0, -1);
         for (int i = 0; i < 9; i++) {
-            Kordinaatti k = solmuvektori[i].palautaKordinaatit();
+            Kordinaatti k = solmuvektori[i].palautaKordinaatti();
             kartta.put(k, solmuvektori[i]);
         }
         DiskreettiVerkko verkkor = new DiskreettiVerkko(1);
@@ -137,7 +137,7 @@ public class DiskreettiVerkkoTest {
         DiskreettiSolmu[] solmuvektori = new DiskreettiSolmu[9];
         solmuvektori[0] = new DiskreettiSolmu(0, 0);
 
-        Kordinaatti k = solmuvektori[0].palautaKordinaatit();
+        Kordinaatti k = solmuvektori[0].palautaKordinaatti();
         kartta.put(k, solmuvektori[0]);
         this.verkko.asetaKartta(kartta);
 
@@ -151,7 +151,7 @@ public class DiskreettiVerkkoTest {
         DiskreettiSolmu[] solmuvektori = new DiskreettiSolmu[9];
         solmuvektori[0] = new DiskreettiSolmu(0, 0);
 
-        Kordinaatti k = solmuvektori[0].palautaKordinaatit();
+        Kordinaatti k = solmuvektori[0].palautaKordinaatti();
         kartta.put(k, solmuvektori[0]);
 
         assertEquals(false, this.verkko.olemassa(new DiskreettiSolmu(2, 3)));

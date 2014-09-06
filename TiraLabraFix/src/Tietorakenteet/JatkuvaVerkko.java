@@ -65,7 +65,7 @@ public class JatkuvaVerkko implements Verkko {
             JatkuvaSolmu s = (JatkuvaSolmu) iter.palautaObjekti();
             s.palautaSolmuMuisti().tyhjenna();
 
-            iter = iter.palauataSeuraava();
+            iter = iter.palautaSeuraava();
         }
     }
 

@@ -137,7 +137,8 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
         return this.kulku;
     }
 
-    public Kordinaatti palautaKordinaatit() {
+    @Override
+    public Kordinaatti palautaKordinaatti() {
         return this.kordinaatti;
     }
 

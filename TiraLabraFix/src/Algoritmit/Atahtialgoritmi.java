@@ -8,6 +8,7 @@ package Algoritmit;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.Iteroitava;
+import Tietorakenteet.JatkuvaSolmu;
 import Tietorakenteet.Jono.Jono;
 import Tietorakenteet.Jono.Jonoiteroitava;
 import Tietorakenteet.Keko;
@@ -31,7 +32,7 @@ public class Atahtialgoritmi {
     private Abstraktisolmu loppu;
     private Keko laskentaJoukko;
     private int maksimi;
-    private ArrayList<Abstraktisolmu> polku;
+    private double kokonaispituus;
 
 
     /*
@@ -41,7 +42,6 @@ public class Atahtialgoritmi {
      */
     public Atahtialgoritmi(Verkko verkko, int maksimi) {
         this.verkko = verkko;
-        this.polku = new ArrayList<Abstraktisolmu>();
         this.maksimi = maksimi;
 
     }
@@ -130,7 +130,7 @@ public class Atahtialgoritmi {
                     }
                 }
                 //alkionpaivitys
-                naapurid = naapurid.palauataSeuraava();
+                naapurid = naapurid.palautaSeuraava();
                 if (naapurid != null) {
                     naapuri = (Abstraktisolmu) naapurid.palautaObjekti();
                 }
@@ -155,26 +155,42 @@ public class Atahtialgoritmi {
 
     /*
      * 
-     * Rakentaa polun jolla kyseisen ongelman ratkaisu löytyy
-     *  KORVATTAVA PIAN OMALLA JONO TIETORAKENTEELLA
+     * Rakentaa polun jolla kyseisen ongelman ratkaisu löytyy. Palauttaa sen Kordinaatti olioiden muoddossa
+     *  
      */
-    public void rakennapolku() {
-        Abstraktisolmu iteroiva = this.loppu;
-        Stack<Abstraktisolmu> pino = new Stack<>();
-        while (iteroiva != this.alku) {
-            pino.add(iteroiva);
-            iteroiva = iteroiva.palautaSolmuMuisti().palautaEdellinen();
+    public Jono palautapolku() {
+        this.kokonaispituus = 0;
+        Jono pino = new Jono();
+        Jono palautus = new Jono();
+        Abstraktisolmu iteroitava = this.loppu;
+        while (iteroitava != this.alku) {
+            pino.lisaa(iteroitava);
+            iteroitava = iteroitava.palautaSolmuMuisti().palautaEdellinen();
+
         }
-        if (iteroiva == this.alku) {
-            pino.add(iteroiva);
+        if (iteroitava == this.alku) {
+            pino.lisaa(iteroitava);
         }
-        while (!pino.empty()) {
-            this.polku.add(pino.pop());
+        Jonoiteroitava iter = pino.palautaViimeinen();
+        while (iter != null) {
+            Abstraktisolmu s = (Abstraktisolmu) iter.palautaObjekti();
+
+            palautus.lisaa(s.palautaKordinaatti());
+            if (iter.palauataEdellinen() != null) {
+                Abstraktisolmu d = (Abstraktisolmu) iter.palauataEdellinen().palautaObjekti();
+                this.kokonaispituus = (this.kokonaispituus + this.verkko.etaisyys(s, d));
+
+            }
+            iter = iter.palauataEdellinen();
+
         }
+
+        return palautus;
+
     }
 
-    public ArrayList<Abstraktisolmu> palautapolku() {
-        return this.polku;
+    public double palautaPituus() {
+        return this.kokonaispituus;
     }
 
 }

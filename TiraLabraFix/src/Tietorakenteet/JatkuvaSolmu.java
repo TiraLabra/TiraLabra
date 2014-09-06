@@ -35,7 +35,7 @@ public class JatkuvaSolmu implements Iteroitava, Abstraktisolmu {
 
     @Override
     public int vertausoperaatio(Iteroitava toinen) {
-        DiskreettiSolmu d = (DiskreettiSolmu) toinen;
+        JatkuvaSolmu d = (JatkuvaSolmu) toinen;
         if (this.palautaSolmuMuisti().palautaFScore() - d.palautaSolmuMuisti().palautaFScore() > 0) {
             return 1;
         }
@@ -71,6 +71,7 @@ public class JatkuvaSolmu implements Iteroitava, Abstraktisolmu {
         return this.muisti;
     }
     
+    @Override
     public Kordinaatti palautaKordinaatti()
     {
     return this.k;

@@ -96,7 +96,7 @@ public class JonoTest {
         Jonoiteroitava toka = new Jonoiteroitava(2);
         jono.lisaa(eka);
         jono.lisaa(toka);
-        assertEquals(eka.palauataSeuraava(), toka);
+        assertEquals(eka.palautaSeuraava(), toka);
     }
     @Test
     public void massiivineniterointitoimii() {
@@ -111,7 +111,7 @@ public class JonoTest {
         {
         int j = (int) iter.palautaObjekti();
         sum = sum + j;
-        iter = iter.palauataSeuraava();
+        iter = iter.palautaSeuraava();
         }
         
         

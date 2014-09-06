@@ -55,4 +55,5 @@ public interface Monikulmio {
 
     public Kordinaatti[][] PalautaJanat();
 
+    public String tulosta();
 }

@@ -29,7 +29,7 @@ public class Jonoiteroitava {
         this.jonossa = k;
     }
 
-    public Jonoiteroitava palauataSeuraava() {
+    public Jonoiteroitava palautaSeuraava() {
         return this.seuraava;
     }
 

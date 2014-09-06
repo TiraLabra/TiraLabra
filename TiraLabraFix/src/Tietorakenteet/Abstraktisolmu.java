@@ -20,7 +20,7 @@ public interface Abstraktisolmu extends Iteroitava {
 
     public SolmuMuisti palautaSolmuMuisti();
     
-    
+    public Kordinaatti palautaKordinaatti();
 
 }
 

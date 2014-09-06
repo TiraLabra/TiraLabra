@@ -135,8 +135,8 @@ public class AtahtialgoritmiTest {
         alg.asetaPisteet(solmuvektori[0], solmuvektori[8]);
         this.verkko.Lisaa(this.solmuvektori);
         alg.laske();
-        alg.rakennapolku();;
-        assertEquals(alg.palautapolku().size(), 3);
+        
+        assertEquals(alg.palautapolku().palautaKoko(), 3);
 
     }
 

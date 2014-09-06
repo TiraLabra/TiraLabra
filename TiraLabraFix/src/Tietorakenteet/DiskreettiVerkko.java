@@ -115,7 +115,7 @@ public class DiskreettiVerkko implements Verkko {
     @Override
     public boolean olemassa(Abstraktisolmu node) {
         DiskreettiSolmu s = (DiskreettiSolmu) node;
-        if (this.kartta.get(s.palautaKordinaatit()) == null) {
+        if (this.kartta.get(s.palautaKordinaatti()) == null) {
             return false;
         }
         return true;
@@ -157,7 +157,7 @@ public class DiskreettiVerkko implements Verkko {
 
     public void Lisaa(DiskreettiSolmu[] solmut) {
         for (DiskreettiSolmu solmut1 : solmut) {
-            this.kartta.put(solmut1.palautaKordinaatit(), solmut1);
+            this.kartta.put(solmut1.palautaKordinaatti(), solmut1);
         }
 
     }

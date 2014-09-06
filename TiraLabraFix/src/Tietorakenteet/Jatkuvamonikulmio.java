@@ -29,7 +29,7 @@ public class Jatkuvamonikulmio extends Naivimonikulmio implements Monikulmio {
             Kordinaatti k = (Kordinaatti) iteraattori.palautaObjekti();
             JatkuvaSolmu lisattava = new JatkuvaSolmu(k);
             this.Abstraktisolmut.lisaa(lisattava);
-            iteraattori = iteraattori.palauataSeuraava();
+            iteraattori = iteraattori.palautaSeuraava();
         }
 
     }

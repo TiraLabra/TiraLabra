@@ -34,10 +34,9 @@ public class Jono {
             this.viimeinen = iter;
         } else {
             this.viimeinen.asetaSeuraava(iter);
-            if (this.viimeinen != this.ensimmainen) {
-                iter.asetaEdellinen(viimeinen);
 
-            }
+            iter.asetaEdellinen(viimeinen);
+
             this.viimeinen = iter;
 
         }
@@ -61,13 +60,13 @@ public class Jono {
 
             } else {
                 if (iter == ensimmainen) {
-                    Jonoiteroitava t2 = iter.palauataSeuraava();
+                    Jonoiteroitava t2 = iter.palautaSeuraava();
                     ensimmainen = t2;
                     t2.asetaEdellinen(null);
 
                 } else {
                     Jonoiteroitava t = iter.palauataEdellinen();
-                    Jonoiteroitava t2 = iter.palauataSeuraava();
+                    Jonoiteroitava t2 = iter.palautaSeuraava();
                     t2.asetaSeuraava(t);
                     t.asetaEdellinen(t2);
 
@@ -87,6 +86,29 @@ public class Jono {
 
     public Jonoiteroitava palautaViimeinen() {
         return this.viimeinen;
+    }
+
+    public Jonoiteroitava palautaNs(int n) {
+        if (n > this.koko) {
+            return null;
+        } else {
+            Jonoiteroitava iteroitava = this.ensimmainen;
+            for (int i = 1; i < n; i++) {
+                iteroitava = iteroitava.palautaSeuraava();
+            }
+            return iteroitava;
+        }
+    }
+
+    public boolean etsi(Object n) {
+        Jonoiteroitava iter = this.ensimmainen;
+        while (iter != null) {
+            if (iter.palautaObjekti().equals(n)) {
+                return true;
+            }
+            iter = iter.palautaSeuraava();
+        }
+        return false;
     }
 
 }
