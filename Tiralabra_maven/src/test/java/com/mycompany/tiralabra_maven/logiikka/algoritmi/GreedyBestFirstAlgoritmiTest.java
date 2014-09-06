@@ -28,7 +28,7 @@ public class GreedyBestFirstAlgoritmiTest {
 
     @Test
     public void algoritmiLoytaaReitinPerilleNopeasti() {
-        testi.algoritmiLoytaaReitinPerilleNopeasti(50, 500);
+        testi.algoritmiLoytaaReitinPerilleNopeasti(90, 500);
     }
 
     @Test

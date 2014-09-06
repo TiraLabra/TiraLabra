@@ -5,8 +5,11 @@
  */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;
+import com.mycompany.tiralabra_maven.gui.RuudunTila;
+import com.mycompany.tiralabra_maven.gui.Ruutu;
+import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static junit.framework.Assert.*;
@@ -59,5 +62,72 @@ public class SimulaatioTest {
         }
         assertTrue(simulaatio.getReitti() != null);
     }
+
+    @Test
+    public void lopetaReitinEtsiminenLopettaaAlgoritminSuorituksen() {
+        simulaatio.setHidaste(1);
+        simulaatio.etsiReitti();
+        simulaatio.lopetaReitinEtsiminen();
+        assertFalse(simulaatio.onkoSimulaatioKaynnissa());
+    }
+
+    @Test
+    public void algoritminTyypinAsettaminenToimii() {
+        simulaatio.asetaAlgoritmi(AlgoritmiTyyppi.DIJKSTRA);
+        assertEquals(AlgoritmiTyyppi.DIJKSTRA, simulaatio.getAlgoritmiTyyppi());
+    }
+
+    @Test
+    public void hidasteenAsettaminenToimii() {
+        simulaatio.setHidaste(303);
+        assertEquals(303, simulaatio.getHidaste());
+    }
+
+    @Test
+    public void alkuPisteenAsettaminenToimii() {
+        simulaatio.setAlkuPiste(new Koordinaatit(1, 1));
+        assertEquals(new Koordinaatit(1, 1), simulaatio.getAlkuPiste());
+    }
+
+    @Test
+    public void maaliPisteenAsettaminenToimii() {
+        simulaatio.setMaali(new Koordinaatit(1, 1));
+        assertEquals(new Koordinaatit(1, 1), simulaatio.getMaali());
+    }
+    
+    @Test
+    public void ruudunAsettaminenToimii() {
+        simulaatio.setRuutu(3, 5, Ruutu.RUOHO);
+        assertEquals(Ruutu.RUOHO, simulaatio.getMaailmaRuutu(3, 5));
+        assertEquals(Ruutu.RUOHO, simulaatio.getRuudukko()[5][3]);
+    }
+    
+    @Test
+    public void ruudunTilatOvatNullJosAlgoritmiEiOleKaynnissa() {
+        assertNull(simulaatio.getTilaRuutu(0, 0));
+    }
+    
+    @Test
+    public void algoritminAsettamatRuutujenTilatToimivatOikein() {
+        simulaatio.asetaAlgoritmi(AlgoritmiTyyppi.GREEDY_BEST_FIRST);
+        simulaatio.setHidaste(0);
+        simulaatio.setAlkuPiste(new Koordinaatit(3, 3));
+        simulaatio.setMaali(new Koordinaatit(6, 3));
+        simulaatio.etsiReitti();
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) {
+        }
+        assertEquals(RuudunTila.REITTI, simulaatio.getTilaRuutu(3, 3));
+    }
+    
+    @Test
+    public void vinottainLiikkumisenAsettaminenSallituksiToimii() {
+        simulaatio.asetaVinottainLiikkuminenSallituksi(true);
+        assertTrue(simulaatio.saakoLiikkuaVinottain());
+        simulaatio.asetaVinottainLiikkuminenSallituksi(false);
+        assertFalse(simulaatio.saakoLiikkuaVinottain());
+    }
+    
 
 }

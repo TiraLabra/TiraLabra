@@ -2,3 +2,4 @@ Sovelluksessa voidaan piirtää ruudukkoon seiniä, lattiaa ja muutamaa eri maas
 
 Sovelluksessa voidaan ladata maailma kuvatiedostosta. Esimerkkikuvana on labyrintti.png -niminen kuvatiedosto.
 
+Sovelluksessa voidaan valita käytettävä reittialgoritmi ja käytettävä heuristiikka.

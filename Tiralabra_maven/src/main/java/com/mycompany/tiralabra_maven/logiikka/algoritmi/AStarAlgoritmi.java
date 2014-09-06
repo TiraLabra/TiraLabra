@@ -5,6 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Suunta;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
@@ -50,10 +51,14 @@ public class AStarAlgoritmi extends Algoritmi {
         Comparator<Solmu> vertailija = new Comparator<Solmu>() {
             @Override
             public int compare(Solmu s1, Solmu s2) {
-                if (s1.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) < s2.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)) {
+                if ((s1.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali)) < (s2.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali))) {
                     return -1;
+                } else if ((s1.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali)) == (s2.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali))) {
+                    return 0;
+                } else {
+                    return 1;
                 }
-                return 1;
+                //return ((s1.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali)) - (s2.getKuljettuMatka() + heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)));
             }
         };
         tutkittavat = new PrioriteettiKeko<>(vertailija);
@@ -71,7 +76,7 @@ public class AStarAlgoritmi extends Algoritmi {
             //Jos ollaan maalissa, lopetetaan tähän
             if (tutkittavaSolmu.getKoord().equals(maali)) {
                 maaliLoytyi(tutkittavaSolmu);
-                return;
+                break;
             }
 
             //Muussa tapauksessa merkitään solmu nyt käsittelyssä olevaksi
@@ -91,7 +96,7 @@ public class AStarAlgoritmi extends Algoritmi {
                 parhaatReitit[s.getKoord().getY()][s.getKoord().getX()] = s.getKuljettuMatka();
 
                 ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] = RuudunTila.TUTKITTAVA;
-                tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka() + maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
+                tutkittavat.lisaa(s);
             }
 
             //Lopuksi merkitään tämä solmu tutkituksi

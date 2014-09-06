@@ -5,7 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,7 +19,7 @@ import java.awt.event.MouseMotionListener;
 public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
     private int sivunPituus;
-    private Simulaatio simulaatio;
+    private SovellusOhjain simulaatio;
 
     /**
      * Konstruktorissa annetaan sivun pituus ja simulaatio
@@ -27,7 +27,7 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
      * @param sivunPituus
      * @param simulaatio
      */
-    public HiirenKuuntelija(int sivunPituus, Simulaatio simulaatio) {
+    public HiirenKuuntelija(int sivunPituus, SovellusOhjain simulaatio) {
         this.sivunPituus = sivunPituus;
         this.simulaatio = simulaatio;
     }

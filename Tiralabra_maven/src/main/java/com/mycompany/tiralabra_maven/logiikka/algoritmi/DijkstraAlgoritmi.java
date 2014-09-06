@@ -39,7 +39,7 @@ public class DijkstraAlgoritmi extends Algoritmi {
             //Jos ollaan maalissa, lopetetaan tähän
             if (tutkittavaSolmu.getKoord().equals(maali)) {
                 maaliLoytyi(tutkittavaSolmu);
-                return;
+                break;
             }
 
             //Muussa tapauksessa merkitään solmu nyt käsittelyssä olevaksi
@@ -59,7 +59,9 @@ public class DijkstraAlgoritmi extends Algoritmi {
                 parhaatReitit[s.getKoord().getY()][s.getKoord().getX()] = s.getKuljettuMatka();
 
                 ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] = RuudunTila.TUTKITTAVA;
-                tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka() + maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
+                //tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka() + maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
+                tutkittavat.lisaa(s);
+
             }
 
             //Lopuksi merkitään tämä solmu tutkituksi

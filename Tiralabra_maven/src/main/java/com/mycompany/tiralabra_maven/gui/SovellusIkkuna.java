@@ -7,7 +7,8 @@ package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.HeuristiikkaTyyppi;
+import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -15,9 +16,9 @@ import javax.swing.JFileChooser;
  *
  * @author mikko
  */
-public class SovellusIkkuna extends javax.swing.JFrame {
+public class SovellusIkkuna extends javax.swing.JFrame implements Paivitettava {
 
-    private Simulaatio simulaatio;
+    private SovellusOhjain sovellusohjain;
     private int sivunPituus;
 
     /**
@@ -26,15 +27,29 @@ public class SovellusIkkuna extends javax.swing.JFrame {
      * @param simulaatio
      * @param sivunPituus
      */
-    public SovellusIkkuna(Simulaatio simulaatio, int sivunPituus) {
-        this.simulaatio = simulaatio;
+    public SovellusIkkuna(SovellusOhjain simulaatio, int sivunPituus) {
+        this.sovellusohjain = simulaatio;
         this.sivunPituus = sivunPituus;
+        this.sovellusohjain.setPaivitettava((Paivitettava)this);
         initComponents();
         paivitaKomponentit();
     }
 
     public Piirtoalusta getPiirtoalusta() {
         return this.piirtoalusta;
+    }
+
+    @Override
+    public void paivita() {
+        paivitaAlapalkinTeksti();
+    }
+
+    private void paivitaAlapalkinTeksti() {
+        if (sovellusohjain.onkoValmis()) {
+            reittiLabel.setText("Reitin pituus: " + sovellusohjain.getReitinPituus());
+        } else {
+            reittiLabel.setText("Reittiä etsitään...");
+        }
     }
 
     private void poistaValinnat() {
@@ -49,7 +64,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void paivitaValinnat() {
         poistaValinnat();
-        switch (simulaatio.getValittuToiminto()) {
+        switch (sovellusohjain.getValittuToiminto()) {
             case SEINA:
                 seinaButton.setSelected(true);
                 break;
@@ -87,20 +102,20 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             paivitaKustannusKentat();
             return;
         }
-        simulaatio.asetaRuudunKustannus(Ruutu.LATTIA, lattiaKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.RUOHO, ruohoKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
-        simulaatio.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
+        sovellusohjain.asetaRuudunKustannus(Ruutu.LATTIA, lattiaKustannus);
+        sovellusohjain.asetaRuudunKustannus(Ruutu.RUOHO, ruohoKustannus);
+        sovellusohjain.asetaRuudunKustannus(Ruutu.HIEKKA, hiekkaKustannus);
+        sovellusohjain.asetaRuudunKustannus(Ruutu.VESI, vesiKustannus);
     }
-    
+
     private void asetaHidaste() {
-        int hidaste = simulaatio.getHidaste();
+        int hidaste = sovellusohjain.getHidaste();
         try {
             hidaste = Integer.parseInt(hidasteField.getText());
         } catch (NumberFormatException e) {
-            
+
         }
-        simulaatio.setHidaste(hidaste);
+        sovellusohjain.setHidaste(hidaste);
     }
 
     private void paivitaKustannusKentat() {
@@ -132,31 +147,37 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         asetaLiikkumisKustannuksetButton.setEnabled(enabled);
         algoritminValintaBox.setEnabled(enabled);
         heuristiikanValintaBox.setEnabled(enabled);
+        heuristiikanValintaBox.setEnabled(enabled);
         hidasteField.setEnabled(enabled);
     }
 
     private void paivitaLeveysJaKorkeus() {
-        leveysField.setText(simulaatio.getLeveys() + "");
-        korkeusField.setText(simulaatio.getKorkeus() + "");
+        leveysField.setText(sovellusohjain.getLeveys() + "");
+        korkeusField.setText(sovellusohjain.getKorkeus() + "");
         jScrollPane1.revalidate();
         jScrollPane1.repaint();
     }
 
     private void paivitaKomponentit() {
-        simulaatioButton.setSelected(simulaatio.onkoSimulaatioKaynnissa());
+        simulaatioButton.setSelected(sovellusohjain.onkoSimulaatioKaynnissa());
         if (simulaatioButton.isSelected()) {
             simulaatioButton.setText("Lopeta simulaatio");
+            alaPalkki.setVisible(true);
             asetaNappienTila(false);
+            paivitaAlapalkinTeksti();
+
         } else {
             simulaatioButton.setText("Aloita simulaatio");
+            alaPalkki.setVisible(false);
             asetaNappienTila(true);
         }
         paivitaValinnat();
         paivitaLeveysJaKorkeus();
         paivitaKustannusKentat();
-        hidasteField.setText(simulaatio.getHidaste() + "");
-        liikkuminenVinottainCheckBox.setSelected(simulaatio.saakoLiikkuaVinottain());
-        algoritminValintaBox.setSelectedItem(simulaatio.getAlgoritmiTyyppi());
+        hidasteField.setText(sovellusohjain.getHidaste() + "");
+        liikkuminenVinottainCheckBox.setSelected(sovellusohjain.saakoLiikkuaVinottain());
+        algoritminValintaBox.setSelectedItem(sovellusohjain.getAlgoritmiTyyppi());
+        heuristiikanValintaBox.setSelectedItem(sovellusohjain.getHeuristiikkaTyyppi());
     }
 
     /**
@@ -179,8 +200,8 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         aloituspisteButton = new javax.swing.JToggleButton();
         maaliButton = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        piirtoalusta = new Piirtoalusta(simulaatio, sivunPituus);
-        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, simulaatio);
+        piirtoalusta = new Piirtoalusta(sovellusohjain, sivunPituus);
+        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, sovellusohjain);
         piirtoalusta.addMouseListener(hiirenkuuntelija);
         piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
         jPanel2 = new javax.swing.JPanel();
@@ -209,9 +230,11 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         algoritminValintaBox = new javax.swing.JComboBox(AlgoritmiTyyppi.values());
         jLabel11 = new javax.swing.JLabel();
-        heuristiikanValintaBox = new javax.swing.JComboBox();
+        heuristiikanValintaBox = new javax.swing.JComboBox(HeuristiikkaTyyppi.values());
         jLabel12 = new javax.swing.JLabel();
         hidasteField = new javax.swing.JTextField();
+        alaPalkki = new javax.swing.JPanel();
+        reittiLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reittialgoritmit");
@@ -316,7 +339,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         );
         piirtoalustaLayout.setVerticalGroup(
             piirtoalustaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGap(0, 652, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(piirtoalusta);
@@ -504,7 +527,11 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
         jLabel11.setText("Heuristiikka:");
 
-        heuristiikanValintaBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Manhattan" }));
+        heuristiikanValintaBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                heuristiikanValintaBoxActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Hidaste(ms):");
 
@@ -564,7 +591,23 @@ public class SovellusIkkuna extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
+        );
+
+        reittiLabel.setText("Reittiä etsitään...");
+
+        javax.swing.GroupLayout alaPalkkiLayout = new javax.swing.GroupLayout(alaPalkki);
+        alaPalkki.setLayout(alaPalkkiLayout);
+        alaPalkkiLayout.setHorizontalGroup(
+            alaPalkkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(alaPalkkiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(reittiLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        alaPalkkiLayout.setVerticalGroup(
+            alaPalkkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(reittiLabel)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -573,7 +616,9 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(alaPalkki, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -584,21 +629,25 @@ public class SovellusIkkuna extends javax.swing.JFrame {
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(alaPalkki, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void seinaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seinaButtonActionPerformed
-        simulaatio.setToiminto(Toiminto.SEINA);
+        sovellusohjain.setToiminto(Toiminto.SEINA);
         paivitaValinnat();
     }//GEN-LAST:event_seinaButtonActionPerformed
 
     private void maaliButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maaliButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.MAALI);
+        sovellusohjain.setToiminto(Toiminto.MAALI);
         paivitaValinnat();
     }//GEN-LAST:event_maaliButtonActionPerformed
 
@@ -607,9 +656,9 @@ public class SovellusIkkuna extends javax.swing.JFrame {
         asetaLiikkumisKustannukset();
         asetaHidaste();
         if (simulaatioButton.isSelected()) {
-            simulaatio.etsiReitti();
+            sovellusohjain.etsiReitti();
         } else {
-            simulaatio.lopetaReitinEtsiminen();
+            sovellusohjain.lopetaReitinEtsiminen();
         }
         paivitaKomponentit();
 
@@ -617,14 +666,14 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void lattiaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lattiaButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.LATTIA);
+        sovellusohjain.setToiminto(Toiminto.LATTIA);
         paivitaValinnat();
 
     }//GEN-LAST:event_lattiaButtonActionPerformed
 
     private void aloituspisteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aloituspisteButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.ALKU);
+        sovellusohjain.setToiminto(Toiminto.ALKU);
         paivitaValinnat();
     }//GEN-LAST:event_aloituspisteButtonActionPerformed
 
@@ -643,13 +692,13 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             paivitaKomponentit();
             return;
         }
-        simulaatio.teeUusiRuudukko(leveys, korkeus);
+        sovellusohjain.teeUusiRuudukko(leveys, korkeus);
         paivitaKomponentit();
     }//GEN-LAST:event_uusiRuudukkoButtonActionPerformed
 
     private void liikkuminenVinottainCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liikkuminenVinottainCheckBoxActionPerformed
         // TODO add your handling code here:
-        simulaatio.asetaVinottainLiikkuminenSallituksi(liikkuminenVinottainCheckBox.isSelected());
+        sovellusohjain.asetaVinottainLiikkuminenSallituksi(liikkuminenVinottainCheckBox.isSelected());
     }//GEN-LAST:event_liikkuminenVinottainCheckBoxActionPerformed
 
     private void lataaTiedostostaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lataaTiedostostaButtonActionPerformed
@@ -667,7 +716,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
             return;
         }
         try {
-            simulaatio.lataaRuudukkoKuvasta(file);
+            sovellusohjain.lataaRuudukkoKuvasta(file);
             //editori.loadMap(file);
         } catch (Exception e) {
 
@@ -676,19 +725,19 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void hiekkaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hiekkaButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.HIEKKA);
+        sovellusohjain.setToiminto(Toiminto.HIEKKA);
         paivitaValinnat();
     }//GEN-LAST:event_hiekkaButtonActionPerformed
 
     private void vesiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vesiButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.VESI);
+        sovellusohjain.setToiminto(Toiminto.VESI);
         paivitaValinnat();
     }//GEN-LAST:event_vesiButtonActionPerformed
 
     private void ruohoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruohoButtonActionPerformed
         // TODO add your handling code here:
-        simulaatio.setToiminto(Toiminto.RUOHO);
+        sovellusohjain.setToiminto(Toiminto.RUOHO);
         paivitaValinnat();
     }//GEN-LAST:event_ruohoButtonActionPerformed
 
@@ -701,8 +750,13 @@ public class SovellusIkkuna extends javax.swing.JFrame {
 
     private void algoritminValintaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoritminValintaBoxActionPerformed
         // TODO add your handling code here:
-        simulaatio.asetaAlgoritmi((AlgoritmiTyyppi)algoritminValintaBox.getSelectedItem());
+        sovellusohjain.asetaAlgoritmi((AlgoritmiTyyppi) algoritminValintaBox.getSelectedItem());
     }//GEN-LAST:event_algoritminValintaBoxActionPerformed
+
+    private void heuristiikanValintaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heuristiikanValintaBoxActionPerformed
+        // TODO add your handling code here:
+        sovellusohjain.asetaHeuristiikka((HeuristiikkaTyyppi) heuristiikanValintaBox.getSelectedItem());
+    }//GEN-LAST:event_heuristiikanValintaBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -740,6 +794,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel alaPalkki;
     private javax.swing.JComboBox algoritminValintaBox;
     private javax.swing.JToggleButton aloituspisteButton;
     private javax.swing.JButton asetaLiikkumisKustannuksetButton;
@@ -774,6 +829,7 @@ public class SovellusIkkuna extends javax.swing.JFrame {
     private javax.swing.JCheckBox liikkuminenVinottainCheckBox;
     private javax.swing.JToggleButton maaliButton;
     private com.mycompany.tiralabra_maven.gui.Piirtoalusta piirtoalusta;
+    private javax.swing.JLabel reittiLabel;
     private javax.swing.JToggleButton ruohoButton;
     private javax.swing.JTextField ruohoKustannusField;
     private javax.swing.JToggleButton seinaButton;

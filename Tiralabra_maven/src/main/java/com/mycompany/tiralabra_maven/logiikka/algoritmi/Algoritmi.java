@@ -7,6 +7,7 @@ package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.Suunta;
+import com.mycompany.tiralabra_maven.gui.Paivitettava;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
 import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Lista;
@@ -28,6 +29,7 @@ public abstract class Algoritmi implements Runnable {
     protected RuudunTila[][] ruutujenTilat;
     protected Solmu reitti;
     protected boolean vinottain;
+    private Paivitettava paivitettava;
 
     public Algoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain) {
         this.alku = alku;
@@ -40,6 +42,10 @@ public abstract class Algoritmi implements Runnable {
         this.ruutujenTilat = new RuudunTila[korkeus][leveys];
         this.jatketaanko = true;
         this.vinottain = vinottain;
+    }
+    
+    public void setPaivitettava(Paivitettava paivitettava) {
+        this.paivitettava = paivitettava;
     }
 
     /**
@@ -87,7 +93,7 @@ public abstract class Algoritmi implements Runnable {
     public abstract void run();
     
     protected Lista<Solmu> solmunNaapurit(Solmu solmu) {
-        Lista<Solmu> palautus = new Lista<Solmu>();
+        Lista<Solmu> palautus = new Lista<>();
         Suunta[] lapikaytavat;
 
         if (vinottain) {
@@ -108,6 +114,7 @@ public abstract class Algoritmi implements Runnable {
                 continue;
             }
             palautus.add(new Solmu(koord, solmu.getKuljettuMatka()+maailma[solmu.getKoord().getY()][solmu.getKoord().getX()].getHinta(), solmu));
+            
         }
         return palautus;
     }
@@ -128,14 +135,17 @@ public abstract class Algoritmi implements Runnable {
     }
 
     protected void maaliLoytyi(Solmu solmu) {
-        System.out.println("REITTI (lopusta alkuun:");
+//        System.out.println("REITTI (lopusta alkuun:");
         this.reitti = solmu;
         while (solmu != null) {
             ruutujenTilat[solmu.getKoord().getY()][solmu.getKoord().getX()] = RuudunTila.REITTI;
-            System.out.println(solmu);
+            //System.out.println(solmu);
             solmu = solmu.getEdellinen();
         }
         this.valmis = true;
+        if (this.paivitettava != null){
+            paivitettava.paivita();
+        }
     }
 
 }

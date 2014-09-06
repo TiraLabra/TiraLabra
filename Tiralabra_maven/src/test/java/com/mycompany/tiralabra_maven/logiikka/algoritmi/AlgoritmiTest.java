@@ -5,6 +5,8 @@
  */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanHeuristiikka;
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
@@ -19,7 +21,7 @@ import static junit.framework.Assert.fail;
  */
 public class AlgoritmiTest {
 
-    private AlgoritmiTyyppi algoritmiTyyppi;
+    private final AlgoritmiTyyppi algoritmiTyyppi;
 
     public AlgoritmiTest(AlgoritmiTyyppi algoritmiTyyppi) {
         this.algoritmiTyyppi = algoritmiTyyppi;
@@ -44,6 +46,7 @@ public class AlgoritmiTest {
         long aikaAlussa = System.currentTimeMillis();
         suoritaAlgoritmi(algoritmi);
         long kulunutAika = System.currentTimeMillis() - aikaAlussa;
+        assertEquals(76, algoritmi.getReitti().getKuljettuMatka());
         //alaraja 210
         if (kulunutAika < alarajaMs) {
             fail("Suoritukseen kului epäilyttävän vähän aikaa (" + kulunutAika + " ms), 1 ms hidaste ei toimi?");
@@ -52,7 +55,7 @@ public class AlgoritmiTest {
         if (kulunutAika > ylarajaMs) {
             fail("Aikaa kului yli " + ylarajaMs + "ms. aikaa kului " + kulunutAika + "ms");
         }
-        assertEquals(76, algoritmi.getReitti().getKuljettuMatka());
+        
     }
 
     public void algoritmiOsaaKiertaaSeinan() {
@@ -121,7 +124,7 @@ public class AlgoritmiTest {
         //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;
         while (!algoritmi.onkoValmis()) {
-            if (laskuri > 80) {
+            if (laskuri > 60) {
                 fail("Kesti liian kauan, jäikö algoritmi jumiin?");
             }
             laskuri++;

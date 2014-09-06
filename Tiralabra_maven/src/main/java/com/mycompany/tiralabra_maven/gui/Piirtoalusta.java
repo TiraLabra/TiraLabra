@@ -6,7 +6,7 @@
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  */
 public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
 
-    private Simulaatio simulaatio;
+    private SovellusOhjain simulaatio;
     private int sivunPituus;
     private Koordinaatit hiiri;
     boolean alustettu;
@@ -38,7 +38,7 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
      * @param simulaatio
      * @param sivunPituus
      */
-    public Piirtoalusta(Simulaatio simulaatio, int sivunPituus) {
+    public Piirtoalusta(SovellusOhjain simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
         this.alustettu = true;

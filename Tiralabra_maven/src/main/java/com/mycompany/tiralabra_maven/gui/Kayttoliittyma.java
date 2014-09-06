@@ -5,7 +5,7 @@
  */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
 
 /**
  * Käyttöliittymän ikkunan ja siihen liitettävät komponentit tekevä luokka.
@@ -15,7 +15,7 @@ import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
 public class Kayttoliittyma implements Runnable {
 
     private SovellusIkkuna frame;
-    private final Simulaatio simulaatio;
+    private final SovellusOhjain simulaatio;
     private final int sivunPituus;
 
     /**
@@ -24,7 +24,7 @@ public class Kayttoliittyma implements Runnable {
      * @param simulaatio
      * @param sivunPituus
      */
-    public Kayttoliittyma(Simulaatio simulaatio, int sivunPituus) {
+    public Kayttoliittyma(SovellusOhjain simulaatio, int sivunPituus) {
         this.simulaatio = simulaatio;
         this.sivunPituus = sivunPituus;
     }

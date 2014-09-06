@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
+import com.mycompany.tiralabra_maven.HeuristiikkaTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.Toiminto;
+import com.mycompany.tiralabra_maven.gui.Paivitettava;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
@@ -16,12 +12,19 @@ import com.mycompany.tiralabra_maven.logiikka.algoritmi.Algoritmi;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.BreadthFirstAlgoritmi;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.DijkstraAlgoritmi;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.GreedyBestFirstAlgoritmi;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.Heuristiikka;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.ManhattanHeuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanHeuristiikka;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.Solmu;
-import fileio.KuvanLukija;
-import java.io.File;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.DiagonaalinenHeuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.DiagonaalinenTieBreakingHeuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanTieBreakingHeuristiikka;
 
+/**
+ * Simulaatio tuntee ruudukon ja tiedon alku- ja maalipisteen koordinaateista ja
+ * suorituksessa mahdollisesti olevan algoritmin.
+ *
+ * @author mikko
+ */
 public class Simulaatio {
 
     private Ruutu[][] maailma;
@@ -31,22 +34,13 @@ public class Simulaatio {
     private boolean vinottain;
     private int leveys;
     private int korkeus;
-    //private Paivitettava paivitettava;
-    //private boolean valmis;
-    private int[][] parhaatReitit;
+    private Paivitettava paivitettava;
+
+    private HeuristiikkaTyyppi heuristiikkaTyyppi;
     private Heuristiikka heuristiikka;
 
-    private KuvanLukija kuvanLukija;
-
-    //private Scanner sc;
     private AlgoritmiTyyppi algoritmiTyyppi;
     private Algoritmi algoritmi;
-
-    //Jonkun toisen luokan asiaa(?):
-    private Koordinaatit hiiri;
-    private boolean hiiriPainettu;
-    private Toiminto toiminto = Toiminto.SEINA;
-    
 
     /**
      * Luo uuden simulaation.
@@ -58,43 +52,10 @@ public class Simulaatio {
         this.hidaste = 100;
         this.alku = new Koordinaatit(0, 0);
         this.maali = new Koordinaatit(9, 5);
-        this.vinottain = true;
-        this.kuvanLukija = new KuvanLukija();
-        this.heuristiikka = new ManhattanHeuristiikka();
+        this.vinottain = false;
+        this.heuristiikkaTyyppi = HeuristiikkaTyyppi.MANHATTAN;
+        //this.heuristiikka = new ManhattanHeuristiikka();
         this.algoritmiTyyppi = AlgoritmiTyyppi.A_STAR;
-    }
-    
-    
-    /**
-     * Asettaa simulaatiossa käytettävän algoritmin.
-     * @param algoritmi algoritmin tyyppi
-     */
-    public void asetaAlgoritmi(AlgoritmiTyyppi algoritmi) {
-        this.algoritmiTyyppi = algoritmi;
-    }
-    
-    /**
-     * Palauttaa tiedon siitä, minkä tyyppinen algoritmi on käytössä.
-     * @return algoritmin tyyppi
-     */
-    public AlgoritmiTyyppi getAlgoritmiTyyppi() {
-        return this.algoritmiTyyppi;
-    }
-    
-    /**
-     * Asettaa algoritmin suorituksessa käytetyn hidasteen millisekunteina. Oletus 100 ms.
-     * @param hidaste
-     */
-    public void setHidaste(int hidaste) {
-        this.hidaste = hidaste;
-    }
-    
-    /**
-     * Palauttaa algoritmin suorituksessa käytetyn hidasteen millisekunteina.
-     * @return hidaste
-     */
-    public int getHidaste() {
-        return this.hidaste;
     }
 
     private void alustaMaailma() {
@@ -104,6 +65,61 @@ public class Simulaatio {
                 maailma[y][x] = Ruutu.LATTIA;
             }
         }
+    }
+
+    /**
+     * Asettaa simulaatiossa käytettävän algoritmin.
+     *
+     * @param algoritmi algoritmin tyyppi
+     */
+    public void asetaAlgoritmi(AlgoritmiTyyppi algoritmi) {
+        this.algoritmiTyyppi = algoritmi;
+    }
+
+    /**
+     * Palauttaa tiedon siitä, minkä tyyppinen algoritmi on käytössä.
+     *
+     * @return algoritmin tyyppi
+     */
+    public AlgoritmiTyyppi getAlgoritmiTyyppi() {
+        return this.algoritmiTyyppi;
+    }
+
+    /**
+     * Asettaa simulaatiossa käytettävän heuristiikan.
+     *
+     * @param heuristiikka
+     */
+    public void asetaHeuristiikka(HeuristiikkaTyyppi heuristiikka) {
+        this.heuristiikkaTyyppi = heuristiikka;
+    }
+
+    /**
+     * Palauttaa tiedon siitä, minkä tyyppinen heuristiikka on käytössä.
+     *
+     * @return heuristiikan tyyppi
+     */
+    public HeuristiikkaTyyppi getHeuristiikkaTyyppi() {
+        return this.heuristiikkaTyyppi;
+    }
+
+    /**
+     * Asettaa algoritmin suorituksessa käytetyn hidasteen millisekunteina.
+     * Oletus 100 ms.
+     *
+     * @param hidaste
+     */
+    public void setHidaste(int hidaste) {
+        this.hidaste = hidaste;
+    }
+
+    /**
+     * Palauttaa algoritmin suorituksessa käytetyn hidasteen millisekunteina.
+     *
+     * @return hidaste
+     */
+    public int getHidaste() {
+        return this.hidaste;
     }
 
     /**
@@ -119,19 +135,9 @@ public class Simulaatio {
         alustaMaailma();
     }
 
-    /**
-     * Tekee uuden ruudukon parametrina annetun kuvatiedoston perusteella ja
-     * hävittää vanhan.
-     *
-     * @param tiedosto
-     */
-    public void lataaRuudukkoKuvasta(File tiedosto) {
+    public void setMaailma(Ruutu[][] maailma) {
         lopetaReitinEtsiminen();
-        this.maailma = kuvanLukija.lueMaailmaKuvasta(tiedosto);
-        if (maailma == null) {
-            teeUusiRuudukko(10, 10);
-            return;
-        }
+        this.maailma = maailma;
         this.korkeus = maailma.length;
         this.leveys = maailma[0].length;
     }
@@ -205,6 +211,22 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
+        switch(heuristiikkaTyyppi) {
+            case MANHATTAN:
+                this.heuristiikka = new ManhattanHeuristiikka();
+                break;
+            case MANHATTAN_TIEBREAKING:
+                this.heuristiikka = new ManhattanTieBreakingHeuristiikka();
+                break;
+            case DIAGONAALINEN:
+                this.heuristiikka = new DiagonaalinenHeuristiikka();
+                break;
+            case DIAGONAALINEN_TIEBREAKING:
+                this.heuristiikka = new DiagonaalinenTieBreakingHeuristiikka();
+                break;
+        }
+        
+        
         switch (algoritmiTyyppi) {
             case BREADTH_FIRST:
                 this.algoritmi = new BreadthFirstAlgoritmi(maailma, hidaste, alku, maali, vinottain);
@@ -219,8 +241,8 @@ public class Simulaatio {
                 this.algoritmi = new AStarAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
                 break;
         }
+        this.algoritmi.setPaivitettava(paivitettava);
         new Thread(this.algoritmi).start();
-        //this.algoritmi.start();
     }
 
     /**
@@ -300,123 +322,16 @@ public class Simulaatio {
         if (algoritmi == null) {
             return null;
         }
-                
+
         return algoritmi.getReitti();
     }
 
     /**
-     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiri on tällä
-     * hetkellä jonkun ruudukon ruudun päällä. Tätä tietoa voidaan käyttää
-     * avuksi varsinaisessa käyttöliittymäkoodissa.
+     * Palauttaa ruudun tyypin annetuissa koordinaateissa.
      *
      * @param x
      * @param y
-     */
-    public void hiiriRuudunPaalla(int x, int y) {
-        if (hiiri == null || x != hiiri.getX() || y != hiiri.getY()) {
-            this.hiiri = new Koordinaatit(x, y);
-            suoritaToimintoJosHiiriPainettu();
-        }
-    }
-
-    /**
-     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiri on
-     * poistunut ruudukon päältä.
-     */
-    public void hiiriPoistunut() {
-        this.hiiri = null;
-    }
-    
-    /**
-     * Asettaa ruudun kustannuksen
-     * @param ruutu
-     * @param kustannus
-     */
-    public void asetaRuudunKustannus(Ruutu ruutu, int kustannus) {
-        Ruutu.asetaKustannus(ruutu, kustannus);
-    }
-
-    /**
-     * Palauttaa sen ruudun koordinaatit, jonka päällä hiiri on, tai null, jos
-     * hiiri ei ole minkään ruudun päällä.
-     *
-     * @return hiiren koordinaatit
-     */
-    public Koordinaatit hiirenKoordinaatit() {
-        return this.hiiri;
-    }
-
-    /**
-     * Tämän metodin avulla piirtologiikka saa tiedon siitä, että hiiren nappi
-     * on painettu pohjaan tai päästetty irti.
-     */
-    public void hiiriPainettu(boolean painettu) {
-        //System.out.println("painettu: " + painettu);
-        this.hiiriPainettu = painettu;
-        suoritaToimintoJosHiiriPainettu();
-    }
-
-    private void suoritaToimintoJosHiiriPainettu() {
-        if (this.hiiriPainettu) {
-            switch (toiminto) {
-                case SEINA:
-                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.SEINA;
-                    break;
-                case LATTIA:
-                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.LATTIA;
-                    break;
-                case HIEKKA:
-                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.HIEKKA;
-                    break;
-                case RUOHO:
-                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.RUOHO;
-                    break;
-                case VESI:
-                    maailma[hiiri.getY()][hiiri.getX()] = Ruutu.VESI;
-                    break;
-                case ALKU:
-                    this.alku = new Koordinaatit(hiiri.getX(), hiiri.getY());
-                    break;
-                case MAALI:
-                    this.maali = new Koordinaatit(hiiri.getX(), hiiri.getY());
-            }
-
-        }
-    }
-
-    /**
-     * Palauttaa true jos hiiren nappi on painettuna pohjaan.
-     *
-     * @return onko painettu pohjaan
-     */
-    public boolean onkoHiiriPainettu() {
-        return this.hiiriPainettu;
-    }
-
-    /**
-     * Palauttaa tiedon siitä, mikä hiiren toiminto on tällä hetkellä käytössä.
-     *
-     * @return toiminto
-     */
-    public Toiminto getValittuToiminto() {
-        return this.toiminto;
-    }
-
-    /**
-     * Asettaa toiminnon parametrina annetuksi toiminnoksi.
-     *
-     * @param toiminto
-     */
-    public void setToiminto(Toiminto toiminto) {
-        this.toiminto = toiminto;
-    }
-
-    /**
-     * Palauttaa maailman ruudun annetuissa koordinaateissa
-     *
-     * @param x
-     * @param y
-     * @return piirrettava ruutu
+     * @return ruudun tyyppi
      */
     public PiirrettavaRuutu getMaailmaRuutu(int x, int y) {
         if (maailma == null) {
@@ -428,6 +343,7 @@ public class Simulaatio {
 
     /**
      * Palauttaa ruudun tilan annetuissa koordinaateissa
+     *
      * @param x
      * @param y
      * @return piirrettava ruutu
@@ -440,6 +356,10 @@ public class Simulaatio {
             }
         }
         return null;
+    }
+    
+    public void setPaivitettava(Paivitettava paivitettava) {
+        this.paivitettava = paivitettava;
     }
 
 }

@@ -1,8 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
-import com.mycompany.tiralabra_maven.logiikka.Simulaatio;
+import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
 import com.mycompany.tiralabra_maven.gui.Kayttoliittyma;
-import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Jono;
 import javax.swing.SwingUtilities;
 
 /**
@@ -18,7 +17,7 @@ public class App {
      */
     public static void main(String[] args) {
 
-        Simulaatio simulaatio = new Simulaatio();
+    SovellusOhjain simulaatio = new SovellusOhjain();
         Kayttoliittyma gui = new Kayttoliittyma(simulaatio, 24);
         SwingUtilities.invokeLater(gui);
         while (gui.getPiirtoalusta() == null) {

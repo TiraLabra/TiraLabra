@@ -24,7 +24,7 @@ public class DijkstraAlgoritmiTest {
     }
 
     @Test
-    public void algoritmiLoytaaReitinPerilleNopeasti() {
+    public void algoritmiLoytaaReitinPerilleNopeahkosti() {
         testi.algoritmiLoytaaReitinPerilleNopeasti(210, 2000);
     }
 

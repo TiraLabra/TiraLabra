@@ -35,7 +35,7 @@ public class BreadthFirstAlgoritmi extends Algoritmi{
             //Jos ollaan maalissa, lopetetaan tähän
             if (tutkittavaSolmu.getKoord().equals(maali)) {
                 maaliLoytyi(tutkittavaSolmu);
-                return;
+                break;
             }
             
             //Muussa tapauksessa merkitään solmu nyt käsittelyssä olevaksi
@@ -52,7 +52,7 @@ public class BreadthFirstAlgoritmi extends Algoritmi{
                 }
                 //Muussa tapauksessa lisätään solmun naapuri tutkittaviin
                 ruutujenTilat[s.getKoord().getY()][s.getKoord().getX()] = RuudunTila.TUTKITTAVA;
-                tutkittavat.lisaa(new Solmu(s.getKoord(), tutkittavaSolmu.getKuljettuMatka()+maailma[s.getKoord().getY()][s.getKoord().getX()].getHinta(), tutkittavaSolmu));
+                tutkittavat.lisaa(s);
             }
             
             //Lopuksi merkitään tämä solmu tutkituksi

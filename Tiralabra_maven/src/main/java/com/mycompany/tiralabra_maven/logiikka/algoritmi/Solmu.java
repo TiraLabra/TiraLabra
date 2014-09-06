@@ -52,16 +52,6 @@ public class Solmu implements Comparable<Solmu> {
     }
 
     /**
-     * Palauttaa merkkijonoesityksen solmusta.
-     *
-     * @return stringit
-     */
-    @Override
-    public String toString() {
-        return this.koordinaatit.toString() + ", kuljettu " + this.kuljettuMatka;
-    }
-
-    /**
      * Palauttaa viitteen edelliseen solmuun tai null, jos edellistä ei ole.
      *
      * @return edellinen solmu tai null
