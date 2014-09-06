@@ -25,13 +25,13 @@ public class Run {
      */
     public static void main( String[] args ) throws FileNotFoundException{
 
-        File map = new File("test20.csv");
+        File map = new File("kartta.csv");
         Scanner reader = new Scanner(map);
         Scanner input = new Scanner(System.in);
         Mapper grid = new Mapper(reader);
         String start = "";
         String end = "";
-        int algoritmi;
+        int algoritmi = 0;
         
         /**
          * Alustetaan kartta.
@@ -42,8 +42,13 @@ public class Run {
         /**
          * Käyttäjä valitsee kumalla algoritmilla haluaa hakea reitin.
          */
-        System.out.println("Valitse algoritmi reitin hakuun:\n 1 = A*\n 2 = Dijkstra.");
-        algoritmi = Integer.parseInt(input.nextLine());
+        try {
+            System.out.println("Valitse algoritmi reitin hakuun:\n 1 = A*\n 2 = Dijkstra.");
+            algoritmi = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Paina 1 tai 2..");
+            System.exit(0);
+        }
         
         /**
          * Käyttäjä valitsee alkupisteen ja loppupisteen.

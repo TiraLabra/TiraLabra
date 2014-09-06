@@ -88,9 +88,14 @@ public class Astar {
                  */
                 if (!closed.contains(neighbor)) {
                     if (neighbor.getShortest() > cost) {
+                        int oldShort = neighbor.getShortest();
                         neighbor.setShortest(cost);
                         neighbor.setPrevious(handle);
-                        heap.insert(neighbor);
+                        if (oldShort == Integer.MAX_VALUE) {
+                            heap.insert(neighbor);
+                        } else {
+                            heap.decreaseKey(neighbor);
+                        }
                     }
                 }
             }

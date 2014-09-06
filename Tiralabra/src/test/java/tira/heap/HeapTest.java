@@ -71,5 +71,31 @@ public class HeapTest {
         assertTrue(keko.empty());
         assertNull(keko.poll());
         assertEquals(0, keko.size());
-    }   
+    }
+    
+    /**
+     * Test decreaseKey methdod, of class Heap.
+     */
+    @Test
+    public void testDecreaseKey() {
+        Node eka = new Node("eka");
+        Node toka = new Node("toka");
+        assertTrue(this.keko.size()==3);
+        eka.setShortest(24);
+        toka.setShortest(35);
+        keko.insert(eka);
+        keko.insert(toka);
+        toka.setShortest(3);
+        keko.decreaseKey(toka);
+        assertTrue(this.keko.size()==5);
+        Node ekana = keko.poll();
+        assertTrue(ekana.equals(toka));
+        Node tokana = keko.poll();
+        assertTrue(tokana.equals(this.a));
+        eka.setShortest(7);
+        keko.decreaseKey(eka);
+        Node kolmas = keko.poll();
+        assertTrue(kolmas.equals(eka));
+        assertTrue(keko.size()==2);
+    }
 }

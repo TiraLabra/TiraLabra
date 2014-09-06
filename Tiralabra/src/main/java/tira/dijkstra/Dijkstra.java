@@ -82,13 +82,16 @@ public class Dijkstra {
                  * Relaksointi.
                  */
                 if (distance < neighbor.getShortest()) {
+                    int oldShort = neighbor.getShortest();
                     neighbor.setShortest(distance);
                     neighbor.setPrevious(handle);
-                    heap.insert(neighbor);                   
-                }
-                
-            }
-            
+                    if (oldShort == Integer.MAX_VALUE) {
+                        heap.insert(neighbor);
+                    } else {
+                        heap.decreaseKey(neighbor);
+                    }                                   
+                }             
+            }        
         }
     }
 
