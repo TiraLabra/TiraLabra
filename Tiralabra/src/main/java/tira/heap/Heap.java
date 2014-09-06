@@ -69,7 +69,7 @@ public class Heap <T> {
      */
     public void decreaseKey(Node neighbor) {
         int paikka = -1;
-        for (int i = 0; i < this.table.length; i++) {
+        for (int i = 0; i <= this.size; i++) {
             if (table[i].equals(neighbor)) {
                 paikka = i;
                 break;

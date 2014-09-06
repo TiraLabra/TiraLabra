@@ -66,12 +66,14 @@ public class Dijkstra {
         this.startNode.setShortest(0);
         Heap<Node> heap = new Heap(this.nodes.size());
         heap.insert(this.startNode);
+        this.startNode.addedToHeap();
         
         /**
          * Käydään läpi keko. 
          */      
         while (!heap.empty()) {
             Node handle = heap.poll();
+            handle.removedFromHeap();
             
             for (Edge apu : handle.getEdges()) {
                 Node neighbor = apu.getTarget();
@@ -82,11 +84,11 @@ public class Dijkstra {
                  * Relaksointi.
                  */
                 if (distance < neighbor.getShortest()) {
-                    int oldShort = neighbor.getShortest();
                     neighbor.setShortest(distance);
                     neighbor.setPrevious(handle);
-                    if (oldShort == Integer.MAX_VALUE) {
+                    if (!neighbor.inHeap()) {
                         heap.insert(neighbor);
+                        neighbor.addedToHeap();
                     } else {
                         heap.decreaseKey(neighbor);
                     }                                   

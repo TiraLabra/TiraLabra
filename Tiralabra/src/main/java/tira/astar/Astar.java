@@ -70,14 +70,17 @@ public class Astar {
         this.startCell.setShortest(0);
         Heap<Node> heap = new Heap(this.cells.size());
         heap.insert(this.startCell);
+        this.startCell.addedToHeap();
         LinkedList<Node> closed = new LinkedList<Node>();
         
         /**
          * Käydään läpi keko. 
          */     
-        while (!closed.contains(this.goalCell) && !heap.empty()) {
+        while (!this.goalCell.isClosed() && !heap.empty()) {
             Node handle = heap.poll();
+            handle.removedFromHeap();
             closed.add(handle);
+            handle.close();
             
             for (Edge apu : handle.getEdges()) {
                 Node neighbor = apu.getTarget();
@@ -86,13 +89,13 @@ public class Astar {
                 /**
                  * Etäisyyden päivitys mikäli ollaan löydetty parempi reitti.
                  */
-                if (!closed.contains(neighbor)) {
+                if (!neighbor.isClosed()) {
                     if (neighbor.getShortest() > cost) {
-                        int oldShort = neighbor.getShortest();
                         neighbor.setShortest(cost);
                         neighbor.setPrevious(handle);
-                        if (oldShort == Integer.MAX_VALUE) {
+                        if (!neighbor.inHeap()) {
                             heap.insert(neighbor);
+                            neighbor.addedToHeap();
                         } else {
                             heap.decreaseKey(neighbor);
                         }
