@@ -238,7 +238,7 @@ public class Logiikka {
         Jatkuvamonikulmio kulmio = this.luola.palautakulmio();
         Jono kulmiot = new Jono();
         kulmiot.lisaa(kulmio);
-       // System.out.println(kulmio.tulosta());
+       System.out.println(kulmio.tulosta());
         this.ylimrakentaja.asetaAlkujaLoppu(alku, loppu);
         this.ylimrakentaja.asetaKordinaatit(kulmiot);
         

@@ -63,7 +63,7 @@ public class Luola {
         }
         kordinaattijono.lisaa(new Kordinaatti(i, 0));
         i++;
-        double dab = i + 1 / 2;
+        double dab = i + 1 / 2 - 2;
         this.loppu = new Kordinaatti(dab, 5);
         i++;
         kordinaattijono.lisaa(new Kordinaatti(i, 0));
@@ -87,10 +87,10 @@ public class Luola {
         }
         kordinaattijono.lisaa(new Kordinaatti(j, 10));
         kordinaattijono.lisaa(new Kordinaatti(0, 10));
-        kordinaattijono.lisaa(new Kordinaatti(0, 12));
-        kordinaattijono.lisaa(new Kordinaatti(i, 12));
-        kordinaattijono.lisaa(new Kordinaatti(i, -2));
-        kordinaattijono.lisaa(new Kordinaatti(0, -2));
+        kordinaattijono.lisaa(new Kordinaatti(0, 12000));
+        kordinaattijono.lisaa(new Kordinaatti(i+2, 12));
+        kordinaattijono.lisaa(new Kordinaatti(i+2, -2));
+        kordinaattijono.lisaa(new Kordinaatti(0, -20000));
         this.d = new Jatkuvamonikulmio(kordinaattijono);
 
     }

@@ -153,14 +153,14 @@ public class Janaleikkaus {
 
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
 
-    //    System.out.println("eka: " + k.tulosta() + ", toka: " + k2.tulosta());
+        //    System.out.println("eka: " + k.tulosta() + ", toka: " + k2.tulosta());
         Jono toistojoukko = new Jono();
         Kordinaatti[][] janat = a.PalautaJanat();
         Keko keko = new Keko(true, janat.length + 2);
-        keko.Lisaa(k);
-        keko.Lisaa(k2);
-        toistojoukko.lisaa(k);
-        toistojoukko.lisaa(k2);
+        //      keko.Lisaa(k);
+        //      keko.Lisaa(k2);
+        //      toistojoukko.lisaa(k);
+        //      toistojoukko.lisaa(k2);
         for (int i = 0; i < janat.length; i++) {
             Kordinaatti eka = janat[i][0];
             Kordinaatti toka = janat[i][1];
@@ -176,12 +176,13 @@ public class Janaleikkaus {
         }
         int i = 1;
         boolean abc = true;
-       
+
         while ((!keko.palautaTaulukko()[0].equals(k)) && (!keko.palautaTaulukko()[0].equals(k2))) {
             i++;
+            if (keko.palautaNykyinenKoko() == 0) {
+                return false;
+            }
             keko.poistaMinimi();
-            
-           
 
         }
         Kordinaatti alku = null;
@@ -195,6 +196,9 @@ public class Janaleikkaus {
             alku = k2;
             loppu = k;
 
+        }
+        if (keko.palautaNykyinenKoko() == 0) {
+            return false;
         }
         keko.poistaMinimi();
 
@@ -289,6 +293,12 @@ public class Janaleikkaus {
 
         return 2;
     }
+    
+      /*
+     * 
+     * Tarkistaa onko kyseinen kordinaatti monikulmioiden sisalla
+     *  
+     */
 
     public boolean kenenkaansisalla(Kordinaatti k, Jono monikulmiota) {
         Jonoiteroitava iter = monikulmiota.palautaEnsimmainen();
