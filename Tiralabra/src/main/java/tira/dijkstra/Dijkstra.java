@@ -69,11 +69,12 @@ public class Dijkstra {
         this.startNode.addedToHeap();
         
         /**
-         * Käydään läpi keko. 
+         * Käydään läpi keko. Maalinode suljetaan ts. jokainen solmu suljetaan kun se pollataan keosta.
          */      
-        while (!heap.empty()) {
+        while (!heap.empty() && !this.goalNode.isClosed()) {
             Node handle = heap.poll();
             handle.removedFromHeap();
+            handle.close();
             
             for (Edge apu : handle.getEdges()) {
                 Node neighbor = apu.getTarget();
