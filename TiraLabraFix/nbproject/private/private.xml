@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/Jono/JonoTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Kayttoliittyma/TekstiUI.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/logiikka/Logiikka.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Monikulmio.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/logiikka/Diskreettiverkkorakennus.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/DiskreettiVerkkoTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/JatkuvamonikulmioTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Keko.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/logiikka/Asetukset.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Algoritmit/JanaleikkausTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/JatkuvaSolmu.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/SolmuMuisti.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Suorituskyky/Verkkoluokittelu.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Kordinaatti.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/tiralabrafix/TiraLabraFix.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Iteroitava.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Algoritmit/Atahtialgoritmi.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Jono/Jonoiteroitava.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/NaivimonikulmioTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Verkko.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Naivimonikulmio.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/DiskreettiSolmu.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Suorituskyky/ATahtiSuorituskykytestaus.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Jono/Jono.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Jatkuvamonikulmio.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/JatkuvaVerkko.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/Abstraktisolmu.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/logiikka/JatkuvaverkkorakennusTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/DiskreettiSolmuTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Algoritmit/AtahtialgoritmiTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/KekoTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/logiikka/Jatkuvaverkkorakennus.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/Tietorakenteet/KordinaattiTest.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Algoritmit/Janaleikkaus.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/src/Tietorakenteet/DiskreettiVerkko.java</file>
+            <file>file:/C:/Users/Serafim/Documents/GitHub/TiraLabra/TiraLabraFix/test/logiikka/LogiikkaTest.java</file>
+        </group>
+    </open-files>
+</project-private>
