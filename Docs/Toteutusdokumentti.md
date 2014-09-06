@@ -5,12 +5,12 @@ Ohjelmassa on pakkaukset tietorakenteet, algoritmi ja gui. Tietorakenteet-pakkau
 Prioriteettikeon aikavaativuusanalyysi:
 ```
 public void lisaa(E lisattava) {
-        koko++;							//vakioaikainen, suoritetaan kerran
+        koko++;	                                                //vakioaikainen, suoritetaan kerran
         int i = koko - 1;					//vakioaikainen, suoritetaan kerran
         taulukko[i] = lisattava;				//vakioaikainen, suoritetaan kerran
         while (i > 0 && (suurempi(i, vanhempi(i)) == i)) {	//suoritetaan enimmillään puun korkeuden verran eli log(n)
                 swap(i, vanhempi(i));				//vakioaikainen
-                i = vanhempi(i);					//vakioaikainen
+                i = vanhempi(i);				//vakioaikainen
         }									
         taulukko[i] = lisattava;				//vakioaikainen, suoritetaan kerran
 }
@@ -40,8 +40,8 @@ private void heapify(int i) {
         if (right <= koko) {					//vakioaikainen, suoritetaan kerran
                 int largest = suurempi(left, right);		//vakioaikainen, suoritetaan kerran
                 if (suurempi(largest, i) == largest) {		//vakioaikainen, suoritetaan kerran
-                        swap(i, largest);				//vakioaikainen, suoritetaan kerran
-                        heapify(largest);				//rekursiivinen kutsu tähän metodiin
+                        swap(i, largest);			//vakioaikainen, suoritetaan kerran
+                        heapify(largest);			//rekursiivinen kutsu tähän metodiin
                 }
         } else if (left == koko && (suurempi(left, i) == left)){//vakioaikainen, suoritetaan kerran
                 swap(i, left);					//vakioaikainen, suoritetaan kerran
