@@ -3,7 +3,7 @@ Ohjelman yleisrakenne
 Ohjelmassa on pakkaukset tietorakenteet, algoritmi ja gui. Tietorakenteet-pakkaus sisältää toteutettuja tietorakenteita (tällä hetkellä prioriteettikeko ja jono), algoritmi sisältää neljä eri reittialgoritmia (Breadth first, Dijkstra, Greedy Best First ja A-star) ja niihin liittyviä luokkia ja Gui-pakkaus sisältää käyttöliittymäluokkia.
 
 Prioriteettikeon aikavaativuusanalyysi:
-```
+```java
 public void lisaa(E lisattava) {
         koko++;	                                                //vakioaikainen, suoritetaan kerran
         int i = koko - 1;					//vakioaikainen, suoritetaan kerran
@@ -17,7 +17,7 @@ public void lisaa(E lisattava) {
 ```
 
 Kekoon lisäämisen aikavaativuus on siis O(log(n))
-```
+```java
 public E seuraava() {
         if (koko == 0) {					//vakioaikainen, suoritetaan kerran
             return null;					//vakioaikainen, suoritetaan kerran
@@ -33,7 +33,7 @@ public E seuraava() {
 
 Keosta seuraavan alkion poistamisen aikavaativuus on siis O(log(n))
 
-```
+```java
 private void heapify(int i) {
         int right = oikeaLapsi(i);				//vakioaikainen, suoritetaan kerran
         int left = vasenLapsi(i);				//vakioaikainen, suoritetaan kerran
