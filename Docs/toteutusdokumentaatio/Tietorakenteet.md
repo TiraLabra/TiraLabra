@@ -1,5 +1,45 @@
 ##Prioriteettikeko
 
+Prioriteettikeko on toteutettu puurakenteen avulla, joka on talletettu tavalliseen yksiuloitteiseen taulukkoon(array). Puurakenne on talletettu taulukkoon seuraavasti:
+
+```java
+private int vanhempi(int indeksi) {
+        return indeksi / 2;
+}
+
+private int vasenLapsi(int indeksi) {
+        return 2 * indeksi;
+}
+
+private int oikeaLapsi(int indeksi) {
+        return 2 * indeksi + 1;
+}
+```
+
+Puun alkiot pidetään järjestyksessä erityisen **kekoehdon** määräämällä tavalla: puun päällimmäisenä on aina sellainen alkio, joka on oman luonnollisen järjestyksensä tai tälle tietorakenteelle annetun vertilijan esittämän järjestyksen mielessä suosituin, "suurin".
+
+```java
+    private int suurempi(int i, int j) {
+        if (vertailija == null) {
+            if (((Comparable<? super E>) (taulukko[i])).compareTo((E) (taulukko[j])) < 0) {
+                return i;
+            } else {
+                return j;
+            }
+        } else {
+
+            if (vertailija.compare((E) taulukko[i], (E) taulukko[j]) < 0) {
+                return i;
+            } else {
+                return j;
+            }
+        }
+    }
+```
+
+Alkion lisääminen puuhun tehdään niin, että se lisätään puun alimmaiseksi alkioksi ja sen jälkeen kutsutaan kekoehdon palauttavaa **heapify()**-nimistä metodia.
+
+
 Prioriteettikeon aikavaativuusanalyysi:
 ```java
 public void lisaa(E lisattava) {
@@ -50,6 +90,31 @@ private void heapify(int i) {
 Heapify-metodi on muilta osin vakioaikainen mutta se kutsuu itseään. Rekursiivisia metodikutsuja tulee lineaarinen määrä binaaripuun korkeuteen nähden joten metodin aikavaativuus on O(log(n)).
 
 ##Jono
+
+Jono on tietorakenne, johon voidaan tallettaa alkioita ja josta saadaan alkiot ulos siinä järjestyksessä, kuin ne sinne talletettiin. Jono on toteutettu yksinkertaisen yksiuloitteisen taulukon (array) avulla, johon taulukon alkiot talletetaan samalla pitäen muistissa jonon ensimmäisen ja viimeisen alkion indeksiä.
+
+Jono on tyhjä silloin, kun ensimmäisen ja viimeisen indeksi on sama.
+```java
+    public boolean tyhja() {
+        return head == tail;
+    }
+```
+
+Jonon sisäisen taulukon tiedetään olevan täynnä silloin, kun hännän indeksistä seuraava taulukon paikka on pään indeksi. Toisin sanoen taulukkoon voidaan käytännössä tallettaa yksi alkio vähemmän kuin sinne mahtuisi, sillä muuten ei voitaisi erottaa tilannetta, jossa pino on tyhjä tilanteesta, jossa pino on täysi.
+
+```java
+    private boolean taysi() {
+        return seuraavaPaikka(tail) == head;
+    }
+```
+
+jossa seuraavaPaikka on yksinkertainen apufunktio
+
+```java
+    private int seuraavaPaikka(int n) {
+        return (n + 1) % taulukonKoko;
+    }
+```
 
 Jonoon lisättäessä taulukko tulee joskus täyteen ja sitä täytyy kasvattaa. Tarkastellaan taulukon kasvattamisen aikavaativuutta:
 
