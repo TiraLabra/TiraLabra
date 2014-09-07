@@ -5,7 +5,8 @@ Ohjelma käynnistetään komentoriviltä komennolla java -jar matrixcalc.jar sam
 Kirjoittamalla käyttöliittymään help ja painamalla enter saat näkyviin listan saatavilla olevista komennoista.
 
 Esimerkki ohjelman käytöstä:
-´´´
+
+```
 ydna@thanatos:~/matrixcalc$ java -jar matrixcalc.jar
 > load real_C
 real_C = 
@@ -45,4 +46,4 @@ inverse =
           0.0000           0.0000           0.0000           1.0000          -0.0000 
           0.0000           0.0000           0.0000           0.0000           1.0000 
 
-´´´
+```
