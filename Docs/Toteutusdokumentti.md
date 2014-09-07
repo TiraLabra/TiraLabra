@@ -100,6 +100,8 @@ Algoritmia ei ole järkevää käyttää kovin suurilla hakusyvyyksillä, koska 
 
 Helpoin ja tehokkain tapa parantaa tekoälyn toimintaa olisi kuitenkin heuristiikan kehittäminen. Heuristiikassa ei oteta huomioon läheskään kaikkia lähteenäni käyttämässä tutkimuksessa [3] mainittuja asioita. Niiden lisääminen mukaan parantaisi varmaan merkittävästi tekoälyn toimintaa. Eri asioiden painotuksissakin olisi varmasti paljon hiottavaa. Näitä varten olisi ollut kätevää, jos eri tekoälyillä olisi voinut käyttää eri heuristiikkoja ja jos heuristiikkoja olisi kätevästi voinut muokata esim. painotuskertoimia muokkaamalla.
 
+Aihevalinta ei varmasti ollut järkevin mahdollinen tälle kurssille. Ajattelin tammen muistuttvan riittävästi shakkia, jotta siitä olisi saanut hyvän tekoälyprojektin tälle kurssille. Todellisuudessa tammi oli kuitenkin ehkä turhan yksinkertainen peli tämäntyyppiselle tekoälylle. Heuristiikan merkistys tekoälyn toiminnassa oli paljon suurempi kuin osasin ajatellakaan, mutta erilaisten heuristiikoiden toteutus ja vertailu taas tuntui menevän ohi tämän kurssin aihepiiristä. En halunnut toteuttaa shakkia, koska en osaa pelata sitä, mutta tammessa oli ihan sama ongelma. En löytänyt mistään kunnollista materiaalia siitä, millaiset tilanteet tammessa ovat hyviä ja tavoiteltavia ja millaiset taas huonoja ja miten eri asioita pitäisi painottaa esimerkiksi heuristiikassa. Shakista tietoa olisi varmasti löytynyt helpommin.
+
 
 Lähteet
 -------
