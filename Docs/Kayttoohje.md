@@ -9,9 +9,10 @@ Ohjelman tekstikäyttöliittymän saa käyntiin ajamalla juurihakemistosta löyt
 Syötteen antaminen tiedostossa
 -------
 
-Ohjelman varsinainen käyttötapa on antaa sille syötteenä tiedosto joka sisältää haluttujen polynomien asteet ja karakteristikat. Syötetiedostossa annetaan jokaisella rivillä yhden polynomin aste ja karakteristika pilkulla erotettuna. Karakteristikan pitää olla alkuluku. Esimerkiksi jos halutaan generoida jaottomat polynomit karakteristikalla 3 ja astella 50 sekä karakteristikalla 2 ja asteella 98 sisältäisi syötetiedosto seuraavat rivit:
+Ohjelman varsinainen käyttötapa on antaa sille syötteenä tiedosto joka sisältää haluttujen polynomien asteet ja karakteristikat. Syötetiedostossa annetaan jokaisella rivillä yhden polynomin aste ja karakteristika pilkulla erotettuna. Karakteristikan pitää olla alkuluku. Esimerkiksi jos halutaan generoida jaottomat polynomit karakteristikalla 3 ja astella 50 sekä karakteristikalla 2 ja asteella 98 sisältäisi syötetiedosto seuraavat rivit (ilman riviä välissä):
 
 3,50
+
 2,98
 
 Esimerkkisyötetiedostoja löytyy hakemistosta test_input_files.
