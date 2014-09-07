@@ -1,3 +1,48 @@
 ## Käyttöohje
 
-Ohjelma käynnistetään komentoriviltä komennolla java -jar matrixcalc-1.0.jar samasta kansiosta, jossa kyseinen jar-tiedosto sijaitsee.
+Ohjelma käynnistetään komentoriviltä komennolla java -jar matrixcalc.jar samasta kansiosta, jossa kyseinen jar-tiedosto sijaitsee.
+
+Kirjoittamalla käyttöliittymään help ja painamalla enter saat näkyviin listan saatavilla olevista komennoista.
+
+Esimerkki ohjelman käytöstä:
+´´´
+ydna@thanatos:~/matrixcalc$ java -jar matrixcalc.jar
+> load real_C
+real_C = 
+          1.3001           3.6817           4.7052           8.2842          -0.3966 
+          7.8702          -2.0636           2.7574          -7.4234           9.3552 
+          2.9730          -1.5273           4.7942          -9.5039           2.6975 
+          1.2933          -1.2550          -7.9149          -3.9050           4.8403 
+         -4.8329           9.5115           7.0639          -6.5325          -6.0168 
+
+> load real_D
+real_D = 
+         -1.8732           0.2113           1.7727          -1.7303           8.5112 
+         -0.6414          -6.2404          -0.1398          -7.3682          -5.0144 
+          6.7821          -7.2941           4.2184          -3.3737          -3.2340 
+          7.5011           4.5469           4.3287           5.2756           0.2432 
+          5.7399           8.8618           3.7006          -8.1704           8.5947 
+
+> invert real_C
+         10.6080         -10.6980          15.5024           9.5834          -2.6734 
+          1.8330          -1.7505           2.5180           1.6861          -0.3574 
+         -3.1856           3.2657          -4.6515          -2.9852           0.8008 
+         -0.9484           1.0120          -1.4992          -0.9188           0.2247 
+         -8.3333           8.5610         -12.3048          -7.5395           2.1124 
+
+> inverse = invert real_D
+inverse = 
+         -0.2140          -0.3791           0.2695          -0.2726           0.0999 
+          0.0019           0.1413          -0.1504           0.1331           0.0202 
+          0.3552           0.6153          -0.3376           0.5502          -0.1354 
+          0.0112          -0.0771           0.0172           0.0190          -0.0501 
+         -0.0014          -0.2308           0.1369          -0.1740           0.0395 
+
+> multiply real_D inverse
+          1.0000           0.0000           0.0000           0.0000           0.0000 
+         -0.0000           1.0000          -0.0000          -0.0000           0.0000 
+         -0.0000          -0.0000           1.0000          -0.0000          -0.0000 
+          0.0000           0.0000           0.0000           1.0000          -0.0000 
+          0.0000           0.0000           0.0000           0.0000           1.0000 
+
+´´´

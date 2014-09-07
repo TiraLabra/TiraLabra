@@ -13,17 +13,17 @@ public class InverseMatrix {
 
     public InverseMatrix() {
         data = "";
-        long tmp = 0;
-        for (int size = 100; size <= 500; size += 10) {
+        long time = 0;
+        for (int size = 10; size <= 500; size += 10) {
             for (int j = 0; j < 10; j++) {
                 RealMatrix temp = RealMatrix.randomMatrix(size, size, -100, 100);
                 long begin = System.nanoTime();
                 temp.inverse();
                 long end = System.nanoTime();
-                tmp += end - begin;
+                time += end - begin;
             }
-            data += (size + "\t" + tmp / 10 + "\n");
-            tmp = 0;
+            data += (size + "\t" + time / 10 + "\n");
+            time = 0;
         }
     }
 

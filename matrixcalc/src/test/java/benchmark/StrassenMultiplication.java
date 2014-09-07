@@ -7,17 +7,17 @@ import math.RealMatrix;
  *
  * @author ydna
  */
-public class Multiplication {
+public class StrassenMultiplication {
 
     public String data;
 
-    public Multiplication() {
+    public StrassenMultiplication() {
         data = "";
         long tmp1 = 0;
         long tmp2 = 0;
-        long begin = 0;
-        long end = 0;
-        for (int size = 100; size <= 500; size += 10) {
+        long begin;
+        long end;
+        for (int size = 10; size <= 500; size += 10) {
             for (int j = 0; j < 10; j++) {
                 RealMatrix temp1 = RealMatrix.randomMatrix(size, size, -100, 100);
                 RealMatrix temp2 = RealMatrix.randomMatrix(size, size, -100, 100);
