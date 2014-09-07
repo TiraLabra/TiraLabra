@@ -1,0 +1,128 @@
+\documentclass[a4paper]{article}
+\usepackage[finnish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\DeclareUnicodeCharacter{00A0}{ }
+\usepackage{algpseudocode}
+\title{Tietorakenteiden ja algoritmien harjoitustyön toteutusdokumentti}
+\author{Risto Tuomainen}
+\begin{document}
+\maketitle
+\noindent
+\section*{}
+
+Ohjelman käyttöliittymä kerää käyttäjältä komentoja ja välittää ne komennonkäsittelijä-luokalle, joka suorittaa laskutoimitukset käyttäen BasicMatrix ja YaleMatrix-luokkia. Näistä ensimmäinen on tavallinen taulukkomatriisi ja jälkimmäinen Yale-matriisi. Molemmat toteuttavat Matrix-rajapinnan. Taulukkomuotoisten matriisien laskutoimitukset ovat BasicMatrix-luokan metodeja, mutta varsinainen laskeminen tapahtuu Peruslasku-luokan tarjoamien metodien avulla, joita BasicMatrix-luokasta kutsutaan. Lisäksi Taulukko-luokassa on taulukkojen käsittelyyn tarkoitettuja metodeja, joita tarvitaan myös algoritmien suorittamisessa. Yale-matriisien osalta sen sijaan kaikki toiminnallisuus on rehdisti yhdessä luokassa, mutta eipä sitä toiminnallisuutta toisaalta kovin paljoa olekaan. 
+
+Strassen algoritmissa matriisien osittaminen pienempiin neljään osamatriisiin on tehty kopioimalla alkioita. Tämä ei vaikuta asymptoottiseen aikavaativuuteen, mutta on käytännön kannalta katastrofi tehokkuuden kannalta. Tässä olisikin selkeä parannuskohde, mikäli vielä kehittäisin ohjelmaa. Lisäksi harvojen matriisien kanssa toimiminen jäi tällä kertaa lapsipuolen asemaan, ja näihin liittyvien algoritmien lisääminen olisi sekin luonteva lisä työhön. Myös tietyt keskeiset laskennalliset ongelmat jäivät tämän työn osalta ratkomatta, kuten esim. yhtälöryhmien PNS-ratkaisut, ominaisarvot ja niihin liittyvät sovellutukset. Eräs keskeinen toteuttamatta jäänyt ominaisuus olisi johdonmukainen toiminta pyöristämisen suhteen. Matriisilaskennassa vaikeudet pitkien desimaalilukujen kanssa ovat tavallisia, sillä pienillä virheillä on taipumus kasaantua pitkissä laskukaavoissa, ja lisäksi on hyvin tavallista, esim. Gauss-Jordan eliminoinnissa, että tuloksen pitäisi algoritmin oikean toiminnan kannalta olla täsmällinen. Tälle ei ohjelmassa tehty mitään, paitsi Gauss-Jordan eliminoinnnissa, jossa alle 0.0001 olevat luvut tulkitaan nolliksi.
+
+
+\section*{Yale-matriisin kertolasku}
+Yale-matriisin kertolaskualgoritmissa jokaisen tulosmatriisin $\textbf{T}$ alkion $\textbf{T}_{i j}$ kohdalla lasketaan kerrottavan matriisin rivin $i$ and kertovan matriisin sarakkeen $j$ pistetulo. Tämä tapahtuu käymällä läpi rivillä olevia alkioita ja kertomalla kukin niistä oikealla sarakevektorin alkiolla. Algoritmissa hyödynnetään lisäksi havaintoa, että jos kerrottavassa matriisissa on vain nollia jollain rivillä, myös tulosmatriisissa on nollarivi vastaavassa kohdassa.  
+\vspace{0.5cm}
+\begin{algorithmic}[1]
+\Procedure{Kerro} {\textbf{ia}, \textbf{ja}, \textbf{a}, $\textbf{B}$}
+
+
+\State $m\gets \textbf{ia}$.length$-1$
+\State $n\gets \textbf{B}$.sarakkaidenmäärä
+
+\For{$i = 0$ to  $m-1$}
+	\State $l_1\gets \textbf{ia}_i$
+	\If{$l_1=-1$}
+		\For{$j = 0$ to $n-1$}
+		\State $\textbf{C}_{i j}=0$
+		\EndFor
+	\Else
+		\State $c=\textbf{ia}$.length
+		\For{$h = 0$ to $m$}
+			\If{$\textbf{ia}_h \neq -1$}
+				\State $c \gets \textbf{ia}_h$
+				\State break
+			\EndIf
+		\EndFor
+		\For{$j = 0$ to $1$}
+		\State $l_2 \gets c-1$
+		\State $s \gets 0 $
+		\For{$u = l_1$ to $l_2$}
+			\State $t=\textbf{ja}_u$
+			\State $s \gets s+\textbf{a}_u\times \textbf{B}_{t j}$
+		\EndFor
+	\State $\textbf{C}_{i j} \gets s$
+	\EndFor
+
+	\EndIf
+\EndFor
+\State \textbf{Return} $\textbf{C}$
+\EndProcedure
+\end{algorithmic}
+\vspace{0.5cm}
+\noindent
+Algoritmi jäljittelee tietyllä tavalla naiivia algoritmia: siinä käydään jokainen tulosmatriisin alkio läpi ja lasketaan tälle arvo rivin ja sarakkeen pistetulona. Toisin kuin naivissa algoritmissa, jonka aikavaativuus on $O(nmp)$, tässä ei tarvitse laskea kaikki pistetulon tekijöitä läpi, vaan nollat voidaan hypätä yli. Niinpä aikavaatimus on sama kuin naiivilla, paitsi että $p$ (joka on kerrottavan sarakkeiden ja kertojan rivien lukumäärä) korvautuu kerrottavan matriisin ei-nolla-alkioiden keskimääräisellä lukumäärällä $z$, ja saadaan aikavaativuudeksi $O(nmz)$. Lisäksi algoritmi ei käytä mitään aputietorakenteita, joten aikavaatimus on vakio.
+\section*{Gauss-Jordan-eliminointi}
+Gauss-Jordan eliminointi soveltuu lineaaristen yhtälöryhmien ratkaisemiseen ja esim. kääntömatriisin laskemiseen. Toteutus oli ulkomuistista lineaarialgebran kurssin perusteella, joten erilaiset hienoudet jäivät toteuttamatta. Esimerkiksi kunnollisissa toteutuksissa voidaan käyttää sarakkeiden vaihto-operaatiota tai suhtautua täsmällisemmin pyöristysongelmiin. Varsinaisessa toteutuksessa Gauss-Jordan on pilkottu kahtia Gaussin ja Jordanin eliminointeihin lähinnä testausta helpottamaan. Tässä kuitenkin algoritmi on esitetty yhtenä kokonaisuutena. 
+
+\begin{algorithmic}[1]
+\Procedure{Gauss-Jordan}{$\textbf{A}$}
+\State $m \gets \textbf{A}$.rivienmäärä
+\State $n \gets \textbf{A}$.sarakkeidenmäärä
+\State $k_1 \gets 0$
+\State $h\gets0$
+\For{$i = 0$ to $m-1$}
+	\State $p=0$
+	\While{$p=0$ and $l<n$}
+		\For{$k = l$ to $m - 1$}
+			\If{$|\textbf{A}_{k l}| > p$}
+				\State $p \gets \textbf{A}_{k l}$ 	
+				\State $k_1 \gets k$
+			\EndIf
+		\EndFor
+	\EndWhile
+	\State vaihdaRivit($\textbf{A},i,k_1$)
+	\State $l\gets l+1$
+	\For{$h = i+1$ to $m-1$}
+		\State $c \gets \textbf{A}_{i, l-1}/p$
+		\For{$j=0$ to $n-1$}
+			\State $s \gets \textbf{A}_{h j}-c\textbf{A}_{i j}$
+			\If{$|s|<0.00001$}
+				\State $\textbf{A}_{i j} \gets 0$
+			\Else
+				\State $\textbf{A}_{i j} \gets s$
+			\EndIf
+		\EndFor
+	\EndFor
+\EndFor
+\For{$i = m-1$ to $ 0$}
+	\For{$j=0$ to $n$}
+		\If{$\textbf{A}_{i j}\ne 0$}
+			\State $l \gets \textbf{A}_{i j}$
+			\State break
+		\Else
+			\State $l \gets -1$
+		\EndIf
+	\EndFor
+	\If{$l\ne-1$}
+		\For{$h = i-1$ to $0$}
+			\State $c\gets \textbf{A}_{h l}/\textbf{A}_{i l}$
+			\For{$j=l$ to $n-1$}
+				\State $s = \textbf{A}_{i j}-c\textbf{A}_{i j}$
+				\If{$|s|<0.00001$}
+					\State $\textbf{A}_{i j} \gets 0$
+				\Else
+					\State $\textbf{A}_{i j} \gets s$
+				\EndIf
+			\EndFor
+		\EndFor
+	\EndIf
+\EndFor
+\State jaakukinRiviPivotillaan(\textbf{A})
+\EndProcedure
+\end{algorithmic}
+Algoritmin kaksi osaa ovat aikavaatimuksen kannalta olennaisesti samoja, ja ne suoritetaan peräkkäin, joten riittää tarkastella vaikka vain Gaussin eliminoinnin aikavaatimusta. Algoritmissa jokainen rivi vähennetään sen alapuolella olevista riveistä sopivalla vakiolla kerrottuna. Rivien vähentäminen toisistaan vie aikaa suhteessa rivin pituuteen. Näiden vähennysten määräksi saadaan suunnilleen $\sum_{i=1}^{m}i$, joka tunnetun kaavan nojalla on $m(m+1)/2$. Niinpä algoritmin aikavaatimus on luokkaa $O(n(m(m+1))/2)=O(nm^2)$. Algoritmissa ei käytetä aputietorakenteita, joten sen muistivaatimus on vakio.
+
+\section*{Strassen algoritmi}
+Strassen algoritmissa on seurattu tarkasti oppikirjaesitystä\cite[s.~99]{cormen}, jota ei toisteta tässä. Myöskään aikavaativuusanalyysia, jonka johtopäätöksenä algoritmin aikavaativuus on luokkaa $O(n^{lg7})$ ei toisteta. Sen sijaan algoritmin muistivaatimus on kiinnostavampi. Harjoitustyössä algoritmi toteutettiin siten, että matriisi ositettiin neljään osaan kopioimalla sen arvot neljään uuteen pienempään matriisiin. Lopussa nämä koottiin yhteen kopioimalla kaikkien arvot jälleen uuteen, suureen matriisiin. Niinpä 
+
+\bibliographystyle{plain}
+\bibliography{tira.bib}
+\end{document}
