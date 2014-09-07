@@ -1,8 +1,10 @@
 package Collections;
 
+import Collections.CollectionSpeedTest.TimeComplexity;
 import java.util.Iterator;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public final class LinkedListTest {
@@ -12,6 +14,26 @@ public final class LinkedListTest {
     private static final String someString = "dsasdadassdaast67h";
     private static final String stringAfterSomeString = "sadssoooooooooooo";
     private static final String toAdd[] = new String[]{"strrrf", "asd", "dsads#", "df9+l", "dssss", "fffff", "fffff", "sdasda", "ww32", "", stringBeforeSomeString, someString, stringAfterSomeString};
+    private static final String toAddOne = "asdd asd";
+    private static final String toAddMore = "asdsaer64567fg";
+    private static final String toAddEvenMore = "8564?DFÅÄSÅ#%Ä";
+
+    @BeforeClass
+    public static void setUpStatic() {
+        LinkedList<Integer> list = new LinkedList<>();
+        int test = 0;
+        final int iters = 10000;
+        for (int i = 0; i < iters; i++) {
+            list.add(i);
+        }
+        for (int i = 0; i < iters; i++) {
+            test += list.contains(i) ? 1 : 0;
+            list.remove(i);
+            test += list.contains(i) ? 1 : 0;
+            list.remove(i);
+        }
+        System.out.println(test);
+    }
 
     @Before
     public void setUp() {
@@ -106,10 +128,6 @@ public final class LinkedListTest {
         assertEquals(toAdd.length, list.size());
     }
 
-    private static final String toAddOne = "asdd asd";
-    private static final String toAddMore = "asdsaer64567fg";
-    private static final String toAddEvenMore = "8564?DFÅÄSÅ#%Ä";
-
     private void addTests() {
         list.add(toAddOne);
         list.add(toAddMore);
@@ -140,5 +158,15 @@ public final class LinkedListTest {
             }
         }
         assertFalse(list.contains(toAddMore));
+    }
+
+    @Test
+    public void testSpeedAdd() {
+        CollectionSpeedTest.testAdd(new LinkedList<Integer>(), new LinkedList<Integer>(), TimeComplexity.Constant);
+    }
+
+    @Test
+    public void testSpeedContains() {
+        CollectionSpeedTest.testContains(new LinkedList<Integer>(), TimeComplexity.Linear);
     }
 }
