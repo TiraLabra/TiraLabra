@@ -19,16 +19,19 @@ Solmu-olioita vertaillaan niiden esiintymistiheyden perusteella tekstissä, jote
 taulukon merkkien laskemista varten. Laskemisen voisi toteuttaa myös hajautustaulukolla.
 
 ##Ohjelman toiminta
-Ohjelma saa syötteekseen tekstin jonka haluaa pakata. Ohjelma palauttaa binäärikoodin käyttäjälle.
+Ohjelma kysyy halutaanko purkaa vai pakata tiedosto. Valinta tapahtuu valitsemalla toimintoa 
+vastaava numero. Purettavan/pakattavan tiedoston polku annetaan ohjelmalle jonka jälkeen annetaan 
+uuden tiedoston nimi.
 
-Purkamista varten käyttäjä tarvitsee binäärikoodin lisäksi puun, jolla koodi on toteutettu.
-Tätä kirjoittaessa on vielä avoinna miten puu esitetään ja tallennetaan.
 
 ##Aikavaativuus tavoite
 Kekoa käyttäen pakkaamisen voi saada toimimaan sillä aikavaativuudella, jolla kekokin toimii eli 
 O(nlogn)
 
 Purkaminen on nopeampaa ja puun läpikäyminen vie aikaa O(n)
+
+Tarkoituksena ei ole pyrkiä mahdollisimman tehokkaaseen pakkaus/purkaus aikaan, vaan pakata
+tieto mahdollisimman tiiviisti. Puun tallentaminen on avainasemassa tässä tapauksessa.
 
 ##Määrittelyvaiheen luokkakaavio
 

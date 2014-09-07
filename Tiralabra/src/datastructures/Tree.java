@@ -40,11 +40,19 @@ public class Tree {
     public void setRoot(Node root) {
         this.root = root;
     }
+    /**
+     * laskee puun koon
+     * @return
+     */
     public int size() {
         size = 0;
         treeWalkForSize(root);
         return size;        
     }
+    /**
+     * rekursio koon laskemista varten
+     * @param node
+     */
     public void treeWalkForSize(Node node) {
         size++;
         if(node.getLeft() != null) {
@@ -91,6 +99,10 @@ public class Tree {
         }
     }
     
+    /**
+     * puun kirjoittaminen  byte[] taulukkoon 
+     * @return
+     */
     public byte[] treeToBinary() {
         byte[] b = new byte[this.size() + 1];
         b[0] = (byte) this.size();
@@ -99,6 +111,11 @@ public class Tree {
         return b;
     }
     
+    /**
+     * rekursio puun käntämiseksi byte-taulukoksi
+     * @param b
+     * @param node
+     */
     public void treeWalkForTreeToBinary(byte[] b, Node node) {      
         b[apu] = (byte) node.getChar();
         ++apu;

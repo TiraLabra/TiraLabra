@@ -14,15 +14,20 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- *
+ * Luokka lukemista varten
  * @author joonaskylliainen
  */
 public class MyReader {
     
+    /**
+     * Lukee sille annetun byte-taulukon sisältävän tiedoston ja palauttaa paketti-olion
+     * @param aInputFileName
+     * @return
+     */
     public Paketti read(String aInputFileName){
-        System.out.println("Reading...");
+        System.out.println("Luetaan...");
         File file = new File(aInputFileName);
-        System.out.println("File size: " + file.length());
+        System.out.println("Tiedoston koko: " + file.length());
         byte[] result = new byte[(int)file.length()];
         try {
           InputStream input = null;
@@ -38,15 +43,15 @@ public class MyReader {
               }
             }
 
-            System.out.println("Num bytes read: " + totalBytesRead);
+            System.out.println("Luetut tavut: " + totalBytesRead);
           }
           finally {
-            System.out.println("Closing..");
+            System.out.println("Suljetaan..");
             input.close();
           }
         }
         catch (FileNotFoundException ex) {
-          System.out.println("File not found.");
+          System.out.println("Tiedostoa ei löydy.");
         }
         catch (IOException ex) {
           System.out.println(ex);
@@ -55,6 +60,10 @@ public class MyReader {
         return paketti;
     }
     
+    /**
+     * lukee käyttäjän antaman tekstitiedoston ja paluttaa stringin
+     * @return teksti
+     */
     public String readInput() {
         String lause = "";
         try {
@@ -73,17 +82,31 @@ public class MyReader {
         return lause;
     }
     
+    /**
+     * lukee käyttäjän syötettä
+     * @return
+     */
     public String readStuff() {
         Scanner lukija = new Scanner(System.in);
         System.out.println("Minkä haluat purkaa?");
         return lukija.nextLine();
     }
 
+    /**
+     * jakaa sille annetun byte taulukon alkuosan puuksi
+     * @param b
+     * @return
+     */
     public byte[] divideToTree(byte[] b) {
         byte[] tree = new byte[b[0]];
         System.arraycopy(b, 1, tree, 0, b[0]);
         return tree;
     }
+    /**
+     * jakaa sille annteun byte taulukon loppuosan tekstiksi
+     * @param b
+     * @return
+     */
     public byte[] divideToText(byte[] b) {
         byte[] text = new byte[b.length - b[0] - 1];
         System.arraycopy(b, b[0]+1, text, 0, b.length - b[0] -1);

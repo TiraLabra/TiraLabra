@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  *
  * @author joonaskylliainen
  */
-public class WriterTest {
+public class MyWriterTest {
     
     MyWriter writer;
     
-    public WriterTest() {
+    public MyWriterTest() {
     }
     
     @BeforeClass

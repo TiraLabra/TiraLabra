@@ -27,7 +27,7 @@ public class Packer {
     
     
     /**
-     * Pakkaajan päämetodi, joka pakkaa sille annetun merkkijonon.
+     * Pakkaajan päämetodi, joka pakkaa sille annetun tiedoston.
      * @param word syötetty merkkijono
      * @return pakkaus
      */

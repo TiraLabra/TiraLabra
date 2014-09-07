@@ -43,9 +43,15 @@ public class Paketti {
     public byte[] getByteText() {
         return byteText;
     }
+    /**
+     *puu käännettään binäärimuotoon tavutaulukoksi
+     */
     public void treeToByteChar() {
         byteTree = tree.treeToBinary();
     }
+    /**
+     * tavuina tallennettu puu muutetaan tällä puuksi
+     */
     public void byteTreeToTree() {
         int size = byteTree[0];
         Node node = new Node((char)byteTree[0], 1);
@@ -56,6 +62,11 @@ public class Paketti {
         treeWalk(node, "r");
         
     }
+    /**
+     * rekursio tavuina tallennetun puun saattamiseksi takaisin puuksi
+     * @param root
+     * @param side
+     */
     public void treeWalk(Node root, String side) {
         Node node = new Node((char)byteTree[apu],1);
         
@@ -73,6 +84,9 @@ public class Paketti {
         }
     }
         
+    /**
+     * muuttaa tavuina tallennetun tekstin String muotoon
+     */
     public void byteTextToString() {
         text = "";
         for (byte b : byteText) {

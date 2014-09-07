@@ -26,7 +26,7 @@ public class Decompressor {
     }
     
     /**
-     * Purkaa paketin kutsumalla nextchar metodia.
+     * Purkaa paketin kutsumalla nextchar metodia ja kirjoittaa sen tiedostoon kirjoittaja-oliolla.
      * @return purettu lause
      */
     public String unzip() {

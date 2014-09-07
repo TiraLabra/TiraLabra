@@ -31,7 +31,7 @@ public class MyWriter {
     
     public void write(Paketti paketti, String aOutputFileName){
         
-        System.out.println("Writing...");
+        System.out.println("Kirjoitetaan...");
         
         byte[] tree = paketti.getByteTree();
         byte[] text = stringToByteChar(divide(paketti.getText()));
@@ -44,7 +44,7 @@ public class MyWriter {
                 output.write(aInput);
             }
             finally {
-                System.out.println("Closing...");
+                System.out.println("Suljetaan...");
                 output.close();
             }
         }
@@ -67,7 +67,7 @@ public class MyWriter {
                   new FileOutputStream(file)));
             writer.write(text);
         } catch (IOException ex) {
-            System.out.println("Something went wrong");
+            System.out.println("Joku meni pieleen");
         } finally {
            try {writer.close();} catch (Exception ex) {}
         }
