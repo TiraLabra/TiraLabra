@@ -1,3 +1,5 @@
+##Prioriteettikeko
+
 Prioriteettikeon aikavaativuusanalyysi:
 ```java
 public void lisaa(E lisattava) {
@@ -47,4 +49,67 @@ private void heapify(int i) {
 
 Heapify-metodi on muilta osin vakioaikainen mutta se kutsuu itseään. Rekursiivisia metodikutsuja tulee lineaarinen määrä binaaripuun korkeuteen nähden joten metodin aikavaativuus on O(log(n)).
 
-Jono
+##Jono
+
+Jonoon lisättäessä taulukko tulee joskus täyteen ja sitä täytyy kasvattaa. Tarkastellaan taulukon kasvattamisen aikavaativuutta:
+
+```java
+private void kasvataTaulukkoa() {
+        //tehdään uusi taulukko joka on kaksi kertaa vanhan kokoinen, alussa head ja tail 0
+        Object[] uusiTaulukko = new Object[taulukonKoko*2];             //O(n), suoritetaan kerran
+        int uusiHead = 0;                                               //vakioaikainen, suoritetaan kerran
+        int uusiTail = 0;                                               //vakioaikainen, suoritetaan kerran
+        //niin kauan kuin vanhassa taulukossa riittää tavaraa (ei ole tyhjä), otetaan sieltä tavaraa pois ja siirretään uuteen
+        while (!tyhja()) {                                              //suoritetaan n kertaa
+            uusiTaulukko[uusiTail] = taulukko[head];                    //vakioaikainen
+            uusiTail++;                                                 //vakioaikainen
+            head = seuraavaPaikka(head);                                //vakioaikainen
+        }
+        //lopuksi korvataan vanhat head, tail, taulukko ja taulukonKoko uusilla
+        head = uusiHead;                                                //vakioaikainen
+        tail = uusiTail;                                                //vakioaikainen
+        taulukko=uusiTaulukko;                                          //vakioaikainen
+        taulukonKoko = taulukonKoko*2;                                  //vakioaikainen
+    }
+```
+
+Taulukon kasvattamisen aikavaativuus on siis O(n).
+
+Jonoon lisäämisen aikavaativuus:
+
+```java
+public void lisaa(E lisattava) {
+        if (taysi()) {                                  //vakioaikainen, suoritetaan kerran
+                kasvataTaulukkoa();                     //O(n), suoritetaan harvoin
+        }
+        taulukko[tail] = lisattava;                     //vakioaikainen, suoritetaan kerran
+        tail = seuraavaPaikka(tail);                    //vakioaikainen, suoritetaan kerran
+}
+```
+    
+Jonoon lisäämisen aikavaativuus on siis yleensä vakioaikainen, mutta joskus harvoin O(n). (nk. "Tasoitetulla analyysillä" voitaisiin selvittää formaalisti tämän operaation aikavaativuus, mutta jossain sanottiin että se on syventävien kurssien asiaa joten uskon.)
+
+Alkion ottaminen jonosta:
+```java
+    public E otaJonosta() {
+        E palautus = (E) taulukko[head];                //vakioaikainen, suoritetaan kerran
+        head = seuraavaPaikka(head);                    //vakioaikainen, suoritetaan kerran
+        return palautus;                                //vakioaikainen, suoritetaan kerran
+    }
+```
+
+Alkion ottaminen jonosta on selvästi vakioaikainen operaatio.
+##Lista
+
+Samaan tapaan kuin jonossa, tarkastellaan ensin listassa taulukon koon kasvattamisen aikavaativuutta:
+```java
+    private void kasvataTaulukkoa() {
+        Object[] uusiTaulukko = new Object[taulukonKoko * 2];           //O(n), suoritetaan kerran
+        System.arraycopy(taulukko, 0, uusiTaulukko, 0, taulukonKoko);   //O(n), suoritetaan kerran
+        this.taulukko = uusiTaulukko;                                   //vakioaikainen, suoritetaan kerran
+        this.taulukonKoko = taulukonKoko * 2;                           //vakioaikainen, suoritetaan kerran
+    }
+```
+Taulukon koon kasvattaminen on siis selvästi lineaarisen (O(n)) ajan vievä operaatio.
+
+Tarkastellaan nyt Listaan lisäämisen aikavaativuutta:
