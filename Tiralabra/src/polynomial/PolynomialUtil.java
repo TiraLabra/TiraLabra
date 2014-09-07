@@ -99,10 +99,10 @@ public class PolynomialUtil {
             LinkedListPolynomial p = (LinkedListPolynomial) polynomial;
             return isReducible(p, debugPrint);
         }
-//        if (type == ArrayPolynomial.class) {
-//            ArrayPolynomial p = (ArrayPolynomial) polynomial;
-//            return isReducible(p, debugPrint);
-//        }        
+        if (type == ArrayPolynomial.class) {
+            ArrayPolynomial p = (ArrayPolynomial) polynomial;
+            return isReducible(p, debugPrint);
+        }        
 
         throw new UnsupportedOperationException("Unsupported polynomial type " + type);
 
@@ -173,18 +173,28 @@ public class PolynomialUtil {
             int factor = factorNode.getValue();
             int exponentToCheck = degree / factor;
 
-            IPolynomial polynomialToCheck = new ArrayPolynomial(characteristic);
+//            IPolynomial polynomialToCheck = new ArrayPolynomial(characteristic);
+//
+//            polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, exponentToCheck));
+//            polynomialToCheck.addTerm(-1, 1);
 
-            polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, exponentToCheck));
-            polynomialToCheck.addTerm(-1, 1);
-
+//            if (debugPrint) {
+//                System.out.println("    Checking polynomial " + polynomialToCheck);
+//            }
+            
             if (debugPrint) {
-                System.out.println("    Checking polynomial " + polynomialToCheck);
-            }
+                System.out.println("    Checking polynomial x^" + characteristic + "^" + exponentToCheck);
+            }            
 
-            IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
+            IPolynomial remainder = calculateXExponentiatedModuloF(characteristic, exponentToCheck, polynomial);
 
-            IPolynomial gcd = gcd(polynomial, remainder);
+            remainder.addTerm(-1, 1);
+
+            IPolynomial gcd = gcd(polynomial, remainder);            
+            
+//            IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
+//
+//            IPolynomial gcd = gcd(polynomial, remainder);
 
             // If gcd is not a constant, the polynomial is reducible.
             if (gcd.getDegree() != 0) {
@@ -193,17 +203,25 @@ public class PolynomialUtil {
             factorNode = factorNode.getPrev();
         }
         // Checking if the polynomial has a factor of degree not dividing its own degree:
-        IPolynomial polynomialToCheck = new ArrayPolynomial(characteristic);
-
-        polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, degree));
-        polynomialToCheck.addTerm(-1, 1);
+//        IPolynomial polynomialToCheck = new ArrayPolynomial(characteristic);
+//
+//        polynomialToCheck.addTerm(1, MathUtil.pow(characteristic, degree));
+//        polynomialToCheck.addTerm(-1, 1);
+//
+//        if (debugPrint) {
+//            System.out.println("    Checking polynomial " + polynomialToCheck);
+//        }
+//
+//        IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
 
         if (debugPrint) {
-            System.out.println("    Checking polynomial " + polynomialToCheck);
+            System.out.println("    Checking polynomial x^" + characteristic + "^" + degree);
         }
 
-        IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
+        IPolynomial remainder = calculateXExponentiatedModuloF(characteristic, degree, polynomial);
 
+        remainder.addTerm(-1, 1);        
+        
         if (remainder.getDegree() == -1) {
             return false;
         } else {
@@ -232,7 +250,12 @@ public class PolynomialUtil {
 
         int characteristic = f.getCharacteristic();
 
-        IPolynomial xBase = new LinkedListPolynomial(characteristic);
+        IPolynomial xBase;
+        if (f.getClass() == LinkedListPolynomial.class) {
+            xBase = new LinkedListPolynomial(characteristic);
+        } else {
+            xBase = new ArrayPolynomial(characteristic);
+        }
         xBase.addTerm(1, base);
         
         xBase = xBase.divide(f).remainder;
