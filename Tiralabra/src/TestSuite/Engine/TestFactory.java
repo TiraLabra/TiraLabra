@@ -49,8 +49,6 @@ public class TestFactory {
         for (int r : small) {
             addRunnerTimesToResults(new RandomNoDuplicates(r));
         }
-
-        System.out.println("Random small arrays tests completed.");
     }
 
     /**
@@ -65,8 +63,6 @@ public class TestFactory {
         for (int r : big) {
             addRunnerTimesToResults(new RandomNoDuplicates(r));
         }
-
-        System.out.println("Random big arrays tests completed.");
     }
 
     /**
@@ -81,8 +77,6 @@ public class TestFactory {
         for (int r : small) {
             addRunnerTimesToResults(new AllmostSorted(r));
         }
-
-        System.out.println("Allmost sorted small arrays tests completed.");
     }
 
     /**
@@ -97,8 +91,6 @@ public class TestFactory {
         for (int r : big) {
             addRunnerTimesToResults(new Sorted(r));
         }
-        System.out.println("Sorted big arrays tests completed.");
-
     }
 
     /**
@@ -113,8 +105,6 @@ public class TestFactory {
         for (int r : small) {
             addRunnerTimesToResults(new Sorted(r));
         }
-
-        System.out.println("Sorted small arrays tests completed.");
     }
 
     /**
@@ -129,8 +119,6 @@ public class TestFactory {
         for (int r : big) {
             addRunnerTimesToResults(new AllmostSorted(r));
         }
-        System.out.println("Allmost sorted big arrays tests completed.");
-
     }
 
     /**
@@ -145,8 +133,6 @@ public class TestFactory {
         for (int r : small) {
             addRunnerTimesToResults(new Reversed(r));
         }
-
-        System.out.println("Reversed small arrays tests completed.");
     }
 
     /**
@@ -161,9 +147,6 @@ public class TestFactory {
         for (int r : big) {
             addRunnerTimesToResults(new Reversed(r));
         }
-
-        System.out.println("Reversed big arrays tests completed.");
-
     }
 
     /**
@@ -178,8 +161,6 @@ public class TestFactory {
         for (int r : small) {
             addRunnerTimesToResults(new RandomFewUnique(r));
         }
-
-        System.out.println("Random few uniques small arrays tests completed.");
     }
 
     /**
@@ -194,8 +175,6 @@ public class TestFactory {
         for (int r : big) {
             addRunnerTimesToResults(new RandomFewUnique(r));
         }
-
-        System.out.println("Random few uniques big arrays tests completed.");
     }
 
     /**
@@ -225,15 +204,16 @@ public class TestFactory {
 
     /**
      * Result Printer. Will Clean Results-array!
+     *
      * @param name Name of the output file
      */
     public void printToFileAndClean(String name) {
         printer.printToFile(name, results);
         results.clear();
     }
-    
-    public void setRepeat(int repeat){
-        this.repeat = repeat; 
+
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
         this.runner.setRepeat(repeat);
     }
 

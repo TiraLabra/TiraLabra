@@ -58,15 +58,20 @@ public class TextUI {
      * Runs all small array tests
      */
     private void runSmallArrayTestSequence() {
-        
+
         testFactory.setRepeat(askRepeat(testFactory.getRepeat()));
 
         System.out.println("Starting small array test sequence...");
         testFactory.runRandomSmallArraysTestCycleForAll();
+        System.out.println("Random small arrays tests completed.");
         testFactory.runRandomFewUniquesSmallArraysTestCycleForAll();
+        System.out.println("Random few uniques small arrays tests completed.");
         testFactory.runAllmostSortedSmallArraysTestCycleForAll();
+        System.out.println("Allmost sorted small arrays tests completed.");
         testFactory.runSortedSmallArraysTestCycleForAll();
+        System.out.println("Sorted small arrays tests completed.");
         testFactory.runReversedSmallArraysTestCycleForAll();
+        System.out.println("Reversed small arrays tests completed.");
 
         System.out.println("All tests completed. Printing to file 'SmallArrayTests.csv'");
         testFactory.printToFileAndClean("SmallArrayTests");
@@ -76,15 +81,20 @@ public class TextUI {
      * Runs all big array tests
      */
     private void runBigArrayTestSequence() {
-        
+
         testFactory.setRepeat(askRepeat(testFactory.getRepeat()));
 
         System.out.println("Starting big array test sequence...");
         testFactory.runRandomBigArraysTestCycleForAll();
+        System.out.println("Random big arrays tests completed.");
         testFactory.runRandomFewUniquesBigArraysTestCycleForAll();
+        System.out.println("Random few uniques big arrays tests completed.");
         testFactory.runAllmostSortedBigArraysTestCycleForAll();
+        System.out.println("Allmost sorted big arrays tests completed.");
         testFactory.runSortedBigArraysTestCycleForAll();
+        System.out.println("Sorted big arrays tests completed.");
         testFactory.runReversedBigArraysTestCycleForAll();
+        System.out.println("Reversed big arrays tests completed.");
 
         System.out.println("All tests completed. Printing to file 'BigArrayTest.csv'");
         testFactory.printToFileAndClean("BigArrayTest");
@@ -123,8 +133,10 @@ public class TextUI {
             }
         }
     }
+
     /**
      * if (f.exists() && !f.isDirectory()) will ask for overwrite
+     *
      * @return if yes returns true
      */
     public static boolean existingFile() {
@@ -132,9 +144,11 @@ public class TextUI {
         System.out.print("Overwrite file?(y/enter will add to the end)");
         return !reader.nextLine().equals("y");
     }
+
     /**
      * Print successfull message
-     * @param fileName 
+     *
+     * @param fileName
      */
     public static void printSuccessfull(String fileName) {
         System.out.println("Printed to file: " + fileName + ".csv\n");
