@@ -67,4 +67,8 @@ public class Runner {
     public void setRepeat(int repeat) {
         this.repeat = repeat;
     }
+
+    public int getRepeat() {
+        return repeat;
+    }
 }

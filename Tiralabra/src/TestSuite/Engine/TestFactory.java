@@ -20,7 +20,6 @@ public class TestFactory {
 
     private final Runner runner;
     private final ArrayList<String> results;
-    private int repeat;
     private final int[] small;
     private final int[] big;
     private final FilePrinter printer;
@@ -29,7 +28,6 @@ public class TestFactory {
     public TestFactory(int repeat) {
         this.runner = new Runner(repeat);
         this.printer = new FilePrinter();
-        this.repeat = repeat;
         this.results = new ArrayList<String>();
         this.small = new int[]{5, 10, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400, 500};
         this.big = new int[]{500, 750, 1000, 1250, 1500, 2000, 3000, 5000, 7500, 10000};
@@ -42,7 +40,7 @@ public class TestFactory {
      * file.
      */
     public void runRandomSmallArraysTestCycleForAll() {
-        results.add("Random small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Random small arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
 
         addAlgosToResults();
 
@@ -57,7 +55,7 @@ public class TestFactory {
      * file.
      */
     public void runRandomBigArraysTestCycleForAll() {
-        results.add("Random big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Random big arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : big) {
@@ -71,7 +69,7 @@ public class TestFactory {
      * to text file.
      */
     public void runAllmostSortedSmallArraysTestCycleForAll() {
-        results.add("Allmost sorted small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Allmost sorted small arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : small) {
@@ -85,7 +83,7 @@ public class TestFactory {
      * to text file.
      */
     public void runSortedBigArraysTestCycleForAll() {
-        results.add("Sorted big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Sorted big arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : big) {
@@ -99,7 +97,7 @@ public class TestFactory {
      * file.
      */
     public void runSortedSmallArraysTestCycleForAll() {
-        results.add("Sorted small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Sorted small arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : small) {
@@ -113,7 +111,7 @@ public class TestFactory {
      * file.
      */
     public void runAllmostSortedBigArraysTestCycleForAll() {
-        results.add("Allmost sorted big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Allmost sorted big arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : big) {
@@ -127,7 +125,7 @@ public class TestFactory {
      * file.
      */
     public void runReversedSmallArraysTestCycleForAll() {
-        results.add("Reversed small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Reversed small arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : small) {
@@ -141,7 +139,7 @@ public class TestFactory {
      * file.
      */
     public void runReversedBigArraysTestCycleForAll() {
-        results.add("Reversed big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Reversed big arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : big) {
@@ -155,7 +153,7 @@ public class TestFactory {
      * to text file.
      */
     public void runRandomFewUniquesSmallArraysTestCycleForAll() {
-        results.add("Random few uniques small arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Random few uniques small arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : small) {
@@ -169,7 +167,7 @@ public class TestFactory {
      * to text file.
      */
     public void runRandomFewUniquesBigArraysTestCycleForAll() {
-        results.add("Random few uniques big arrays test. Test cycle repeated " + repeat + " times.");
+        results.add("Random few uniques big arrays test. Test cycle repeated " + runner.getRepeat() + " times.");
         addAlgosToResults();
 
         for (int r : big) {
@@ -213,11 +211,10 @@ public class TestFactory {
     }
 
     public void setRepeat(int repeat) {
-        this.repeat = repeat;
         this.runner.setRepeat(repeat);
     }
 
     public int getRepeat() {
-        return repeat;
+        return runner.getRepeat();
     }
 }
