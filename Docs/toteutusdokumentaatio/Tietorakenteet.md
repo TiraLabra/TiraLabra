@@ -113,3 +113,51 @@ Samaan tapaan kuin jonossa, tarkastellaan ensin listassa taulukon koon kasvattam
 Taulukon koon kasvattaminen on siis selvästi lineaarisen (O(n)) ajan vievä operaatio.
 
 Tarkastellaan nyt Listaan lisäämisen aikavaativuutta:
+```java
+    public void add(E lisattava) {
+        if (this.koko == this.taulukonKoko) {                           //vakioaikainen, suoritetaan kerran
+            kasvataTaulukkoa();                                         //O(n), suoritetaan harvoin
+        }
+        this.taulukko[koko] = lisattava;                                //vakioaikainen, suoritetaan kerran
+        koko++;                                                         //vakioaikainen, suoritetaan kerran
+    }
+```
+
+Kuten Jonon tapauksessa, myös listan tapauksessa listaan lisääminen on yleensä vakioaikainen operaatio, mutta joskus harvoin vie aikaa O(n). 
+
+Listasta poistaminen indeksin perusteella:
+
+```java
+    public void remove(int i) {
+        //siirretään taulukon loppu-osaa yhdellä vasemmalle
+        int siirrettavia = koko - i - 1;                                        //vakioaikainen, suoritetaan kerran
+        if (siirrettavia > 0) {                                                 //vakioaikainen, suoritetaan kerran
+            System.arraycopy(taulukko, i + 1, taulukko, i, siirrettavia);       //O(n), suoritetaan kerran
+        }
+        koko--;                                                                 //vakioaikainen, suoritetaan kerran
+        taulukko[koko] = null; //roskienkerääjä kerää poistetun pois            //vakioaikainen, suoritetaan kerran
+    }
+```
+
+Listasta poistamisen aikavaativuus on selvästi O(n).
+
+Contains-metodi, eli tarkistus sille sisältääkö lista annettua alkiota:
+
+```java
+    public boolean contains(Object o) {
+        E otus;                                         //vakioaikainen, suoritetaan kerran
+        try {  
+            otus = (E) o;                               //vakioaikainen, suoritetaan kerran
+        } catch (Exception e) {
+            return false;
+        }
+        for (int i = 0; i < koko; i++) {                //suoritetaan n kertaa
+            if (((E) taulukko[i]).equals(otus)) {       //vakioaikainen
+                return true;                            //vakioaikainen
+            }
+        }
+        return false;                                   //vakioaikainen
+    }
+```
+Tarkistuksessa käydään pahimmassa tapauksessa kaikki listan alkiot läpi, jolloin operaation aikavaativuus on O(n)
+
