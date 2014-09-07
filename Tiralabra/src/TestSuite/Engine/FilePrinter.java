@@ -4,6 +4,7 @@
  */
 package TestSuite.Engine;
 
+import TestSuite.UI.TextUI;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,20 +32,15 @@ public class FilePrinter {
     public void printToFile(String fileName, ArrayList<String> results) {
 
         boolean writeToFile = true;
+        TextUI t = new TextUI();
 
         try {
 
             File f = new File(fileName + ".csv");
 
             if (f.exists() && !f.isDirectory()) {
-                System.out.println("Existing file found. ");
-                System.out.print("Overwrite file?(y/n/enter will add to the end)");
-                String s = new Scanner(System.in).nextLine();
-                if (s.equals("y")) {
-                    writeToFile = false;
-                } else if (s.equals("n")) {
-                    return;
-                }
+
+             writeToFile = t.existingFile();
             }
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(f, writeToFile)));
 

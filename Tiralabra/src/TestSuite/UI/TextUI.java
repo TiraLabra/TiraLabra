@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class TextUI {
 
-    private final Scanner reader;
+    private static Scanner reader;
 
     public TextUI() {
         this.reader = new Scanner(System.in);
@@ -118,5 +118,11 @@ public class TextUI {
                 }
             }
         }
+    }
+
+    public static boolean existingFile() {
+        System.out.println("Existing file found. ");
+        System.out.print("Overwrite file?(y/enter will add to the end)");
+        return !reader.nextLine().equals("y");
     }
 }
