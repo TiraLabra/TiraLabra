@@ -21,6 +21,10 @@ public final class Packer {
      * @param arguments The commandline arguments.
      */
     public Packer(final String[] arguments) {
+        if (arguments.length != 2) {
+            System.err.println("PackerX requires 2 arguments\n1. pack/unpack\n2. target_file_name");
+            throw new IllegalArgumentException();
+        }
         FileStream fs = null;
         boolean packing = false;
         for (final String arg : arguments) {
@@ -38,11 +42,12 @@ public final class Packer {
                         } else if (arg.endsWith(".pkx")) {
                             fs = new FileStream(arg, arg.substring(0, arg.length() - 4));
                             break;
+                        } else {
+                            System.err.println("Invalid argument " + arg);
                         }
                     } catch (final FileNotFoundException ex) {
-                        System.err.println("Cannot find file");
+                        System.err.println("Cannot find file " + arg);
                     }
-                    System.err.println("Invalid argument " + arg);
                     throw new IllegalArgumentException();
             }
         }
