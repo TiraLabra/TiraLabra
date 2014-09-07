@@ -26,6 +26,13 @@ public class Luola {
     public Luola() {
         rand = new Random();
     }
+    
+    /**
+     *
+     * Konstruoi luolan.
+     * @param luolan pituus
+     * @param pienin vaativuus
+     */
 
     public void konstruoi(int luolansuuruus, int pienin) {
 
@@ -40,6 +47,11 @@ public class Luola {
         generoi(ala, yla);
 
     }
+    
+    /**
+     *
+     * Generoi luolan käyttäen ala ja yla jonoja
+     */
 
     public void generoi(Jono ala, Jono yla) {
         
@@ -94,6 +106,10 @@ public class Luola {
         this.d = new Jatkuvamonikulmio(kordinaattijono);
 
     }
+    /**
+     *
+     * Arpoo randomintegerin välillä [min, max]
+     */
 
     public int randInt(int min, int max) {
 
@@ -101,14 +117,28 @@ public class Luola {
 
         return randomNum;
     }
+    /**
+     *
+     * Palauttaa monikulmion, jonka kyseinen algoritmi on generoinu
+     */
 
     public Jatkuvamonikulmio palautakulmio() {
         return this.d;
     }
+    
+    /**
+     *
+     * Palauttaa alun
+     */
 
     public Kordinaatti palautaalku() {
         return this.alku;
     }
+    
+    /**
+     *
+     * Palauttaa lopun
+     */
 
     public Kordinaatti palautaloppu() {
         return this.loppu;

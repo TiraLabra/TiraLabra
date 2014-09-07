@@ -189,6 +189,11 @@ public class Atahtialgoritmi {
 
     }
 
+      /*
+     * 
+     * Palauttaa koko pituuden
+     *  
+     */
     public double palautaPituus() {
         return this.kokonaispituus;
     }

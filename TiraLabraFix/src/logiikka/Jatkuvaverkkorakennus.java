@@ -198,10 +198,20 @@ public class Jatkuvaverkkorakennus {
         this.verkko.lisaaAlkio(loppu);
 
     }
+    
+      /**
+     * Palautta alkupisteen
+     * @return Abstraktisolmu alkupiste
+     */
 
     public Abstraktisolmu palautaAlku() {
         return this.alku;
     }
+    
+    /**
+     * Palautta alkupisteen
+     * @return Abstraktisolmu loppupiste
+     */
 
     public Abstraktisolmu palautaLoppu() {
         return this.loppu;

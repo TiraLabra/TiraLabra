@@ -16,7 +16,7 @@ import Tietorakenteet.Kordinaatti;
 
 /**
  *
- * @author Serafim
+ * Tämä Luokka vastaa käyttöliittymän logiikasta
  */
 public class Logiikka {
 
@@ -35,20 +35,37 @@ public class Logiikka {
     private Luola luola;
     private Jatkuvaverkkorakennus ylimrakentaja;
 
+    
+    /**
+ *
+ * Alustaa muuttujat
+ */
+    
     public Logiikka() {
         this.monikulmiot = new Jono();
         this.leikkaaja = new Janaleikkaus();
         this.rakentaja = new Jatkuvaverkkorakennus(this.monikulmiot);
-        this.algoritmi = new Atahtialgoritmi(null, 200);
+        this.algoritmi = new Atahtialgoritmi(null, 100000);
         this.safemode = true;
         this.luola = new Luola();
         this.ylimrakentaja = new Jatkuvaverkkorakennus(null);
 
     }
+     /**
+ *
+ * Aseta safemoden 
+ * True, jos tarkistetaan käyttäjän syöttämä syöte
+ * False, jos luotetaan käyttäjän kykyihin syöttämään sellaista mikä ei bugaa tai crashaa tätä algoritmia
+ */
 
     public void asetaSafemode(boolean k) {
         this.safemode = k;
     }
+        /**
+ *
+ * Asettaa alkupisteen
+ */
+    
 
     public int asetaAlku(Kordinaatti alku) {
         if (safemode) {
@@ -61,6 +78,11 @@ public class Logiikka {
         alkupiste = alku;
         return 0;
     }
+    
+         /**
+ *
+ * Asettaa loppupisteen
+ */
 
     public int asetaLoppu(Kordinaatti loppu) {
         if (safemode) {
@@ -73,6 +95,12 @@ public class Logiikka {
         loppupiste = loppu;
         return 0;
     }
+    
+        /**
+ *
+ * Lisaa uuden monikulmion monikulmioiden joukkoon
+ */
+
 
     public int lisaaMonikulmio(Jono kordinaatti) {
         Jatkuvamonikulmio d = new Jatkuvamonikulmio(kordinaatti);
@@ -99,6 +127,11 @@ public class Logiikka {
             return 2;
         }
     }
+    
+      /**
+ *
+ * Tarkistaa leikkaako monikulmio itseään
+ */
 
     public boolean leikkaakoitseaan(Jatkuvamonikulmio d) {
         Kordinaatti[][] janat = d.PalautaJanat();
@@ -113,6 +146,11 @@ public class Logiikka {
         }
         return false;
     }
+    
+       /**
+ *
+ * Tarkistaa leikkaako uusi monikulmio muita monikulmioita
+ */
 
     public boolean sallitaanko(Jatkuvamonikulmio d) {
         Kordinaatti[][] janat = d.PalautaJanat();
@@ -130,6 +168,15 @@ public class Logiikka {
         }
         return true;
     }
+    
+       /**
+ * Tarkistaa leikkaako Jatkuvamonikulmio a janan joka muodostuu pisteistä k1 ja k2
+ * 
+     * @param k1 kordinaatti k1
+     * @param k2 kordinaatti k2
+     * @param a monikulmio a
+     * @return true jos leikkaa, muuten false
+ */
 
     public boolean leikkaako(Kordinaatti k1, Kordinaatti k2, Jatkuvamonikulmio a) {
         Kordinaatti[][] janat = a.PalautaJanat();
@@ -145,22 +192,35 @@ public class Logiikka {
         }
         return false;
     }
+    
+     /**
+ *
+ * Laskee verkon käyttäen dataa
+ */
 
     public void laskeVerkko() {
 
         this.verkko = this.rakentaja.laskeVerkko();
 
     }
+    
+     /**
+ *
+ * Laskee reitin käyttäen määriteltyjä monikulmioita, alku ja loppupistettä
+ */
 
     public int laskeReitti() {
-        if (this.safemode) {
-            boolean d123 = this.leikkaaja.kenenkaansisalla(alkupiste, monikulmiot);
-            if (d123) {
-                return 4;
-            }
-            boolean d256 = this.leikkaaja.kenenkaansisalla(loppupiste, monikulmiot);
-            if (d256) {
-                return 5;
+        if (this.monikulmiot.palautaKoko() != 0) {
+            if (this.safemode) {
+                boolean d123 = this.leikkaaja.kenenkaansisalla(alkupiste, monikulmiot);
+                if (d123) {
+                    return 4;
+                }
+                boolean d256 = this.leikkaaja.kenenkaansisalla(loppupiste, monikulmiot);
+                if (d256) {
+                    return 5;
+                }
+
             }
         }
 
@@ -189,36 +249,65 @@ public class Logiikka {
         return 0;
 
     }
-
+  /**
+ *
+ * Palauttaa reitin pituuden
+     * @return double pituus
+ */
     public double palautaPituus() {
         return this.algoritmi.palautaPituus();
     }
+    /**
+ *
+ * Palauttaa monikulmiot
+ */
 
-    public boolean solmuMonikulmiossa(Kordinaatti tarkasteltava) {
-
-        return false;
-
-    }
-
+    /**
+     * Palauttaa monikulmiot
+     * @return Jono monikulmiota
+     */
     public Jono palautaMonikulmio() {
         return this.monikulmiot;
     }
+    
+     /**
+ *
+ * Palauttaa reitin Jono alkiona
+     * @return Jono reitti
+ */
 
     public Jono palautaReitti() {
         return this.reitti;
     }
+     /**
+ *
+ * Tyhjentää monikulmion jonon
+ */
 
     public void clear() {
         this.monikulmiot = new Jono();
     }
-
+ /**
+ *
+ * Palauttaa koko laskemisajan
+     * @return long aika
+ */
     public long palautaLaskemisaika() {
         return this.laskemisaika;
     }
-
+ /**
+ * Palauttaa Atahtialgoritmin ajan
+ * 
+     * @return long aika
+ */
     public long palautaAlgoritmiaika() {
         return this.atahtiaika;
     }
+    
+     /**
+ *
+ * Poistaa N:n elementin monikulmioiden joukosta
+ */
 
     public int poistaNs(int n) {
         Jonoiteroitava iter = this.monikulmiot.palautaNs(n);
@@ -230,6 +319,11 @@ public class Logiikka {
         }
 
     }
+    
+     /**
+ * Suorittaa suorituskyky testausken käyttäen luola-rakennetta
+ * 
+ */
 
     public int luolasuorituskyky(int koko, int pienin) {
         this.luola.konstruoi(koko, pienin);
@@ -238,10 +332,10 @@ public class Logiikka {
         Jatkuvamonikulmio kulmio = this.luola.palautakulmio();
         Jono kulmiot = new Jono();
         kulmiot.lisaa(kulmio);
-       System.out.println(kulmio.tulosta());
+ 
         this.ylimrakentaja.asetaAlkujaLoppu(alku, loppu);
         this.ylimrakentaja.asetaKordinaatit(kulmiot);
-        
+
         long aikaAlussa = System.currentTimeMillis();
         this.verkko = this.ylimrakentaja.laskeVerkko();
         this.algoritmi.asetaVerkko(verkko);
@@ -258,6 +352,19 @@ public class Logiikka {
         laskemisaika = aikaLopussa - aikaAlussa;
         this.atahtiaika = aikaLopussa2 - aikaAlussa2;
         return 0;
+
+    }
+     /**
+ * Tetsaa massiivisesti suorituskykyä
+ * 
+ */
+
+    public void massiivinensuorituskykytestaus(int i) {
+        for (int z = 0; z < i; z++) {
+            luolasuorituskyky(z, 3);
+            System.out.println("Iterointi " + z + " kokoaika: " + laskemisaika + " atahti: " + atahtiaika);
+
+        }
 
     }
 

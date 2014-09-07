@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package logiikka;
 
 import Tietorakenteet.Jatkuvamonikulmio;
@@ -16,63 +15,298 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Serafim
- */
+
 public class LogiikkaTest {
-    
+
+    private Logiikka logiikka;
+
     public LogiikkaTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        this.logiikka = new Logiikka();
     }
-    
+
     @After
     public void tearDown() {
     }
 
-
-
-    /**
-     * Test of sallitaanko method, of class Logiikka.
-     */
     @Test
-    public void testSallitaanko() {
-        System.out.println("sallitaanko");
-        Jatkuvamonikulmio d = null;
-        Logiikka instance = new Logiikka();
-        boolean expResult = false;
-        boolean result = instance.sallitaanko(d);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSallitaankoTapausJossaPitaisisallia() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        int i = this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        assertEquals(i, 0);
+
     }
 
-    /**
-     * Test of leikkaako method, of class Logiikka.
-     */
     @Test
-    public void testLeikkaako() {
-        System.out.println("leikkaako");
-        Kordinaatti k1 = null;
-        Kordinaatti k2 = null;
-        Jatkuvamonikulmio a = null;
-        Logiikka instance = new Logiikka();
-        boolean expResult = false;
-        boolean result = instance.leikkaako(k1, k2, a);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testTapausjossaeipitaisisallia() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, 1.5);
+        Kordinaatti b3 = new Kordinaatti(1.5, 1.5);
+        Kordinaatti b4 = new Kordinaatti(1.5, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        int i = this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        assertEquals(i, 2);
+
     }
+
     
+    @Test
+    public void testAsetaAlku() {
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        int i = this.logiikka.asetaAlku(alku);
+        assertEquals(i, 0);
+    }
+
+    @Test
+    public void testtapausjokaleikkaa() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 2);
+        Kordinaatti k3 = new Kordinaatti(2, 1);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+
+        Jono kordinaattijono = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        boolean k = this.logiikka.leikkaakoitseaan(new Jatkuvamonikulmio(kordinaattijono));
+        assertEquals(k, true);
+    }
+
+  
+    @Test
+    public void testLaskeVerkkoTAvallisessatapauksessatoimiii() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        this.logiikka.asetaAlku(alku);
+        this.logiikka.asetaLoppu(loppu);
+        int i = this.logiikka.laskeReitti();
+        assertEquals(i, 0);
+    }
+
+    @Test
+    public void testLaskeReitti() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(1.5, 1.5);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        this.logiikka.asetaAlku(alku);
+        this.logiikka.asetaLoppu(loppu);
+        int i = this.logiikka.laskeReitti();
+        assertEquals(i, 4);
+    }
+
+  
+    @Test
+    public void testPalautaMonikulmio() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(1.5, 1.5);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        Jono d = this.logiikka.palautaMonikulmio();
+        int i = d.palautaKoko();
+        assertEquals(i, 2);
+    }
+
+    
+    @Test
+    public void testPalautaReitti() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        this.logiikka.asetaAlku(alku);
+        this.logiikka.asetaLoppu(loppu);
+        int i = this.logiikka.laskeReitti();
+        Jono a = this.logiikka.palautaReitti();
+        
+        int j = a.palautaKoko();
+        assertEquals(j, 3);
+    }
+
+   
+    @Test
+    public void testClear() {
+        Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        this.logiikka.clear();
+        Jono d = this.logiikka.palautaMonikulmio();
+        int a = d.palautaKoko();
+        assertEquals(a,0);
+    }
+
+  
+    @Test
+    public void testPoistaNs() {
+       Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti b1 = new Kordinaatti(-1, -1);
+        Kordinaatti b2 = new Kordinaatti(-1, -2);
+        Kordinaatti b3 = new Kordinaatti(-2, -2);
+        Kordinaatti b4 = new Kordinaatti(-2, -1);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        Jono kordinaattijono2 = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        kordinaattijono2.lisaa(b1);
+        kordinaattijono2.lisaa(b2);
+        kordinaattijono2.lisaa(b3);
+        kordinaattijono2.lisaa(b4);
+        this.logiikka.lisaaMonikulmio(kordinaattijono);
+        this.logiikka.lisaaMonikulmio(kordinaattijono2);
+        this.logiikka.poistaNs(2);
+        assertEquals(this.logiikka.palautaMonikulmio().palautaKoko(), 1);
+    }
+
+  
+
 }

@@ -14,7 +14,7 @@ import logiikka.Logiikka;
 
 /**
  *
- * @author Serafim
+ * Tämä luokka toimii tekstikäyttöliittymänä
  */
 public class TekstiUI {
 
@@ -26,6 +26,10 @@ public class TekstiUI {
         this.scanneri = new Scanner(System.in);
 
     }
+    /**
+ *
+ * Suorittaa
+ */
 
     public void run() {
         System.out.println("Voit tehdä seuraavai asioita:");
@@ -37,6 +41,7 @@ public class TekstiUI {
         System.out.println("[6] poistakaikki");
         System.out.println("[7] safemode");
         System.out.println("[8] suorituskyky");
+        System.out.println("[9] msuoritus");
         System.out.println("[n] poistu");
         while (true) {
             System.out.print("Komento: ");
@@ -68,13 +73,38 @@ public class TekstiUI {
             if (k.equals("poista")) {
                 poista();
             }
-            if (k.equals("suorituskyky"))
-            {
-            luolatest();
+            if (k.equals("suorituskyky")) {
+                luolatest();
+            }
+            if (k.equals("msuoritus")) {
+                mass();
             }
         }
 
     }
+     /**
+ *
+ * Suorittaa massiivisen testauksen
+ */
+
+    public void mass() {
+        String k = scanneri.next();
+        int i = 0;
+        try {
+            i = Integer.parseInt(k);
+
+        } catch (Exception e) {
+            System.out.println("Virhe Syntaksissa");
+            return;
+
+        }
+        this.logiikka.massiivinensuorituskykytestaus(100);
+    }
+    
+     /**
+ *
+ * Suorittaa luolatestin
+ */
 
     public void luolatest() {
         System.out.println("Muodossa maksimi,vaativuus");
@@ -122,6 +152,11 @@ public class TekstiUI {
         }
 
     }
+    
+     /**
+ *
+ * Poistaa monikulmion
+ */
 
     public void poista() {
         System.out.println("Laita monikulmion numero jonka haluaisit poistaa");
@@ -144,6 +179,12 @@ public class TekstiUI {
             System.out.println("Ei löytyny");
         }
     }
+    
+     /**
+ *
+ * Asettaa safemoden
+ */
+    
 
     public void safemode() {
         System.out.println("y ON, n Off");
@@ -156,11 +197,21 @@ public class TekstiUI {
             this.logiikka.asetaSafemode(false);
         }
     }
+    
+     /**
+ *
+ * Poistaa kaikki
+ */
 
     public void poistakaikki() {
         this.logiikka.clear();
     }
 
+     /**
+ *
+ * lisaa monikulmion joukkoon
+ */
+    
     public void lisaamonikulmio() {
         System.out.print("Lisaa monikulmion: ");
         String k = scanneri.next();
@@ -210,9 +261,10 @@ public class TekstiUI {
 
     }
 
-    public void poistamonilumio() {
-
-    }
+   /**
+ *
+ * Asettaa alkupisteen
+ */
 
     public void asetaAlku() {
         System.out.print("alkupiste: ");
@@ -242,6 +294,11 @@ public class TekstiUI {
         }
 
     }
+    
+     /**
+ *
+ * asettaa loppupisteen
+ */
 
     public void asetaLoppu() {
         System.out.print("loppupiste: ");
@@ -271,7 +328,10 @@ public class TekstiUI {
         }
 
     }
-
+  /**
+ *
+ * laksee lyhimmän reitin analyyttisesti
+ */
     public void laskeLyhinAnalyyttisesti() {
         int i = this.logiikka.laskeReitti();
         if (i == 1) {
@@ -316,9 +376,12 @@ public class TekstiUI {
 
     }
 
-    public void piirratiedostoon() {
-
-    }
+  
+    
+     /**
+     *
+     * listaa kaikki monikulmiot
+     */
 
     public void listaaMonikulmiot() {
         Jono j = this.logiikka.palautaMonikulmio();

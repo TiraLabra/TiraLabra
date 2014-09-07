@@ -8,7 +8,7 @@ package Tietorakenteet;
 
    /**
      *
-     * Tämä metodi toimii Keon alkioiden rajapintana. Tässä on lueteltu ne asiat jotka alkiolta vaaditaan, jotta se pystyisi olemaan Keossa.
+     * Tämä luokka toimii Keon alkioiden rajapintana. Tässä on lueteltu ne asiat jotka alkiolta vaaditaan, jotta se pystyisi olemaan Keossa.
      */
 public interface Iteroitava {
   

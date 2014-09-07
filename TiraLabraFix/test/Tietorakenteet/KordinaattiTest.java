@@ -12,10 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Serafim
- */
+
 public class KordinaattiTest {
 
     public KordinaattiTest() {
@@ -37,12 +34,7 @@ public class KordinaattiTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of palautaX method, of class Kordinaatti.
-     */
-    /**
-     * Test of equals method, of class Kordinaatti.
-     */
+    
     @Test
     public void yksinkertainenEqualsTestaus() {
       Kordinaatti k1 = new Kordinaatti(0,0);
@@ -83,7 +75,5 @@ public class KordinaattiTest {
     }
     
 
-    /**
-     * Test of asetaArvo method, of class Kordinaatti.
-     */
+   
 }

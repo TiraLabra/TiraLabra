@@ -7,7 +7,7 @@ package Tietorakenteet.Jono;
 
 /**
  *
- * @author Serafim
+ * Jono luokka
  */
 public class Jono {
 
@@ -15,17 +15,37 @@ public class Jono {
     private Jonoiteroitava viimeinen;
     private int koko;
 
+    
+    /**
+ *
+ * Konstruoi uuden jonon ja laittaa sen kooksi 0
+ */
     public Jono() {
         this.koko = 0;
     }
-
+  /**
+ *
+ *Palauttaa koon
+ */
     public int palautaKoko() {
         return this.koko;
     }
+    
+      /**
+ *
+ * Lisää objektin jonoon
+     * @param objekti mikä tahansa objekti
+ */
 
     public void lisaa(Object objekti) {
         lisaa(new Jonoiteroitava(objekti));
     }
+    
+      /**
+ *
+ * Lisää Jonoiteroitva alkion jonoon
+     * @param iter Jonoiteroitava alkio
+ */
 
     public void lisaa(Jonoiteroitava iter) {
         iter.asetaJonossa(true);
@@ -43,6 +63,11 @@ public class Jono {
         this.koko++;
 
     }
+    
+      /**
+ *
+ * Poistaa Jonoiteroitava alkion
+ */
 
     public void poista(Jonoiteroitava iter) {
         if (iter.onkoJonossa() == false) {
@@ -79,14 +104,29 @@ public class Jono {
         this.koko--;
 
     }
+    
+     /**
+ *
+ * Palauttaa ensimmaisen
+     * @return Jonoiteroitava ensimmainen
+ */
 
     public Jonoiteroitava palautaEnsimmainen() {
         return this.ensimmainen;
     }
-
+ /**
+ *
+ * Palauttaa viimeisen
+     * @return Jonoiteroitava viimeinen
+ */
     public Jonoiteroitava palautaViimeinen() {
         return this.viimeinen;
     }
+    
+     /**
+ *
+ * Palauttaa n:n
+ */
 
     public Jonoiteroitava palautaNs(int n) {
         if (n > this.koko) {
@@ -99,6 +139,13 @@ public class Jono {
             return iteroitava;
         }
     }
+    
+     /**
+ *
+ * Etsii Objektin n
+     * @param n
+     * @return palauttaa true jos se on jonossa, muuten falsen
+ */
 
     public boolean etsi(Object n) {
         Jonoiteroitava iter = this.ensimmainen;

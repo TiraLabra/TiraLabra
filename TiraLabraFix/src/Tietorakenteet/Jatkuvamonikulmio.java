@@ -10,7 +10,7 @@ import Tietorakenteet.Jono.Jonoiteroitava;
 
 /**
  *
- * @author Serafim
+ * Jatkuvamonikulmio on laajennos Naivimonikulmiosta
  */
 public class Jatkuvamonikulmio extends Naivimonikulmio implements Monikulmio {
 
@@ -21,7 +21,12 @@ public class Jatkuvamonikulmio extends Naivimonikulmio implements Monikulmio {
         luoAbstraktiSolmut(kordinaatit);
 
     }
+    
 
+    /**
+     * Tekee kordinaateista AbstraktiSolmuja
+     * @param kordinaatit Jono kordinaatteja
+     */
     public void luoAbstraktiSolmut(Jono kordinaatit) {
         this.Abstraktisolmut = new Jono();
         Jonoiteroitava iteraattori = kordinaatit.palautaEnsimmainen();
@@ -33,6 +38,10 @@ public class Jatkuvamonikulmio extends Naivimonikulmio implements Monikulmio {
         }
 
     }
+     /**
+ *
+ *  Palauttaa jatkuvasolmut
+ */
 
     public Jono palautaJatkuvasolmut() {
         return this.Abstraktisolmut;

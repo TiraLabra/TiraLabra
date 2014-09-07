@@ -38,12 +38,7 @@ public class NaivimonikulmioTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of palautaKulmat method, of class Naivimonikulmio.
-     */
-    /**
-     * Test of palautaVirittavaNelio method, of class Naivimonikulmio.
-     */
+   
     @Test
     public void NelionVirittavaNelioOnNelio() {
         Jono j = new Jono();
@@ -55,17 +50,8 @@ public class NaivimonikulmioTest {
         assertEquals(n.palautaVirittavaNelio()[1], new Kordinaatti(1, 1));
     }
 
-    /**
-     * Test of LaskeVirittavaNelio method, of class Naivimonikulmio.
-     */
-    @Test
-    public void Monimutkikkaampitapausvirittavastineliosta() {
+   
 
-    }
-
-    /**
-     * Test of laskeJanat method, of class Naivimonikulmio.
-     */
     @Test
     public void testJanojenpalautus() {
         Jono j = new Jono();
@@ -103,13 +89,5 @@ public class NaivimonikulmioTest {
         assertEquals(k, true);
     }
 
-    /**
-     * Test of PalautaJanat method, of class Naivimonikulmio.
-     */
-    @Test
-    public void testPalautaJanat() {
-        
-
-    }
 
 }

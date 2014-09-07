@@ -128,19 +128,39 @@ public class DiskreettiSolmu implements Iteroitava, Abstraktisolmu {
     public SolmuMuisti palautaSolmuMuisti() {
         return this.muisti;
     }
+      /**
+     *
+     * asettaa kulun eli sen, voiko tästä solmusta mennä
+     */
 
     public void asetaKulku(boolean k) {
         this.kulku = k;
     }
+    
+      /**
+     *
+     * palauttaa kulun
+     */
 
     public boolean palautaKulku() {
         return this.kulku;
     }
+    
+      /**
+     *
+     * Palauttaa kordinaatit
+     */
 
     @Override
     public Kordinaatti palautaKordinaatti() {
         return this.kordinaatti;
     }
+    
+      
+      /**
+     *
+     * Vertaa tätä solmua toiseen (kekoa varten)
+     */
 
     @Override
     public int vertausoperaatio(Iteroitava toinen) {

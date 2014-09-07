@@ -27,13 +27,21 @@ public class Verkkoluokittelu {
     this.onnistumiset = 0;
     
     }
+    
+     /**
+     *
+     * lisää havainnon
+     */
     public void lisaahavainto(long aika, int onnistuiko)
     {
     summa = summa + aika;
     alkioita = alkioita + 1;
     onnistumiset = onnistumiset + onnistuiko;
          
-    
+     /**
+     *
+     * Palauttaa aikakeskiarvon
+     */
     }
     public double palautaaikakeskiarvo()
     {
@@ -42,6 +50,11 @@ public class Verkkoluokittelu {
     return sum/alk;
     
     }
+    
+      /**
+     *
+     * Palauttaa onnistumistodennkäöisyyden
+     */
     public double palautaonnistumistodennakoisyys()
     {
     double sum = onnistumiset;

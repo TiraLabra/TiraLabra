@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Tietorakenteet;
 
 import Tietorakenteet.Jono.Jono;
@@ -11,10 +10,11 @@ import Tietorakenteet.Jono.Jonoiteroitava;
 
 /**
  *
- * @author Serafim
+ * Tämä on Naivinmonikulmion luokka
  */
 public class Naivimonikulmio implements Monikulmio {
-      private Jono kulmat;
+
+    private Jono kulmat;
     private double maxX;
     private double minX;
     private double maxY;
@@ -30,7 +30,7 @@ public class Naivimonikulmio implements Monikulmio {
     public Naivimonikulmio(Jono kordinaatit) {
         this.kulmat = kordinaatit;
         if ((this.kulmat != null) && (this.kulmat.palautaKoko() > 0)) {
-//            LaskeVirittavaNelio();
+         LaskeVirittavaNelio();
         }
         laskeJanat();
     }
@@ -41,7 +41,7 @@ public class Naivimonikulmio implements Monikulmio {
      *
      * @return ArrayList<Kordinaatti> kordinaatit
      */
-      @Override
+    @Override
     public Jono palautaKulmat() {
         return this.kulmat;
     }
@@ -49,9 +49,10 @@ public class Naivimonikulmio implements Monikulmio {
     /**
      *
      * Palauttaaa virittavannelion
+     *
      * @return Palauttaa virittavannelion kordinaatit Kordinaatti[] oliona
      */
-      @Override
+    @Override
     public Kordinaatti[] palautaVirittavaNelio() {
         Kordinaatti[] k = new Kordinaatti[4];
         k[0] = new Kordinaatti(this.minX, this.maxY);
@@ -61,15 +62,12 @@ public class Naivimonikulmio implements Monikulmio {
         return k;
 
     }
-    
-  
-    
-           
+
     /**
      *
      * Laskee virittavannelion
      */
-      @Override
+    @Override
     public void LaskeVirittavaNelio() {
         Kordinaatti k = (Kordinaatti) this.kulmat.palautaEnsimmainen().palautaObjekti();
         this.maxX = k.palautaX();
@@ -102,9 +100,7 @@ public class Naivimonikulmio implements Monikulmio {
      *
      * Laskee janat
      */
- 
-
-      @Override
+    @Override
     public void laskeJanat() {
         this.vektori = new Kordinaatti[this.kulmat.palautaKoko()][2];
         int i = 0;
@@ -123,38 +119,39 @@ public class Naivimonikulmio implements Monikulmio {
 
     }
 
-      /**
+    /**
      *
      * Palauttaa janat Kordinaatti[][] oliona
+     *
      * @return Palauttaa janat Kordinaatti[][] oliona
      */
-    
-      @Override
+    @Override
     public Kordinaatti[][] PalautaJanat() {
         return this.vektori;
     }
-    
-      @Override
-    public String tulosta()
-    {
-    String k = "";
-    Jonoiteroitava iter = this.kulmat.palautaEnsimmainen();
-    while(iter != null)
-    {
-    Kordinaatti d = (Kordinaatti) iter.palautaObjekti();
-    if (iter.palautaSeuraava() == null)
-    {
-    k = k + d.palautaX() + "," + d.palautaY();
-    }
-    else
-    {
-    k = k + d.palautaX() + "," + d.palautaY() + ";";
-    }
-    iter = iter.palautaSeuraava();
-    }
-    
-    return k;
+
+    /**
+     *
+     * Tulostaa monikulmion String muodossa
+     *
+     * @return String tulostus
+     */
+
+    @Override
+    public String tulosta() {
+        String k = "";
+        Jonoiteroitava iter = this.kulmat.palautaEnsimmainen();
+        while (iter != null) {
+            Kordinaatti d = (Kordinaatti) iter.palautaObjekti();
+            if (iter.palautaSeuraava() == null) {
+                k = k + d.palautaX() + "," + d.palautaY();
+            } else {
+                k = k + d.palautaX() + "," + d.palautaY() + ";";
+            }
+            iter = iter.palautaSeuraava();
+        }
+
+        return k;
     }
 
 }
-

@@ -12,12 +12,17 @@ import java.util.HashMap;
 
 /**
  *
- * @author Serafim
+ * Tämä toimii JatkuvaVerkko luokkana
  */
 public class JatkuvaVerkko implements Verkko {
 
     private Jono kaikkialkiot;
 
+    
+    /**
+ *
+ * Generoi uuden JatkuvaVerkon ja alustaa kaikkialkiot jonon
+ */
     public JatkuvaVerkko() {
         this.kaikkialkiot = new Jono();
     }
@@ -28,6 +33,13 @@ public class JatkuvaVerkko implements Verkko {
     s.asteaVerkko(this);
     
     }
+    
+    /**
+ *
+ * Tarkistaa onko kyseinen solmu tässä verkossa
+     * @param node
+     * @return true jos on, false muuten
+ */
 
     @Override
     public boolean olemassa(Abstraktisolmu node) {
@@ -37,11 +49,26 @@ public class JatkuvaVerkko implements Verkko {
         }
         return false;
     }
+    
+     /**
+ *
+ * Laskee heurestiikan
+     * @param alku
+     * @param loppu
+     * @return 
+ */
 
     @Override
     public double heurestiikka(Abstraktisolmu alku, Abstraktisolmu loppu) {
         return etaisyys(alku, loppu);
     }
+       /**
+ *
+ * Laskee solmujen välisen eukliidisen etäisyyden (R^2 tavallinen metriikka)
+     * @param alku
+     * @param loppu
+     * @return double etäisyys
+ */
 
     @Override
     public double etaisyys(Abstraktisolmu alku, Abstraktisolmu loppu) {
@@ -56,6 +83,10 @@ public class JatkuvaVerkko implements Verkko {
 
         return d;
     }
+        /**
+ *
+ *  Tyhjentää Verkon ja sen solmujen sisältämän informaation
+ */
 
     @Override
 
@@ -68,6 +99,13 @@ public class JatkuvaVerkko implements Verkko {
             iter = iter.palautaSeuraava();
         }
     }
+    
+     /**
+ *
+ *  Palauttaa kyseisen solmun kaikki naapurit Jono muodossa
+     * @param node
+     * @return Jono naapureita
+ */
 
     @Override
     public Jono naapurit(Abstraktisolmu node) {

@@ -71,10 +71,18 @@ public class Kordinaatti implements Iteroitava {
         }
         return true;
     }
-
+ /**
+ *
+ * Asettaa arvon, tässä tapauksessa ei tee mitään
+ */
     @Override
     public void asetaArvo(double d) {
     }
+    
+     /**
+ *
+ * Vertaa tätä kordinaattia toiseen, niin että se voisi toimia Janaleikkaus luokassa oikein
+ */
 
     @Override
     public int vertausoperaatio(Iteroitava toinen) {
@@ -94,43 +102,37 @@ public class Kordinaatti implements Iteroitava {
         }
     }
 
+     /**
+ *
+ * Palauttaa sijainnin keossa
+ */
+    
     @Override
     public int sijaintiKeossa() {
         return this.sijaintikeossa;
     }
+    
+     /**
+ *
+ * Asettaa sijainnin
+ */
 
     @Override
     public void asetaSijainti(int i) {
         this.sijaintikeossa = i;
     }
-
-    public boolean vertaa(Kordinaatti k) {
-        if ((this.x == k.palautaX()) && (this.y == k.palautaY())) {
-            return true;
-
-        }
-        return false;
-    }
+    
+   /**
+ *
+ * Tulostaa kordinaatin String muodossa
+     * @return String tulostus
+ */
 
     public String tulosta() {
         String k = "X: " + this.x + ", Y: " + this.y;
         return k;
     }
 
-    public void asetaOikea(Kordinaatti k) {
-        this.oikea = k;
-    }
-
-    public void asetaVasen(Kordinaatti k) {
-        this.vasen = k;
-    }
-    public Kordinaatti palautaOikea()
-    {
-    return this.oikea;
-    }
-    public Kordinaatti palautaVasen()
-    {
-    return this.vasen;
-    }
+   
 
 }

@@ -14,10 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author elkyur
- */
+
 public class JatkuvamonikulmioTest {
     
     public JatkuvamonikulmioTest() {
@@ -39,20 +36,22 @@ public class JatkuvamonikulmioTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of luoAbstraktiSolmut method, of class Jatkuvamonikulmio.
-     */
-    @Test
-    public void testLuoAbstraktiSolmut() {
-
-    }
+ 
 
     /**
      * Test of palautaJatkuvasolmut method, of class Jatkuvamonikulmio.
      */
     @Test
     public void testPalautaJatkuvasolmut() {
-    
+        
+        Jono f = new Jono();
+        f.lisaa(new Kordinaatti(0,0));
+        f.lisaa(new Kordinaatti(1,0));
+        f.lisaa(new Kordinaatti(1,1));
+        f.lisaa(new Kordinaatti(0,1));
+        Jatkuvamonikulmio d = new Jatkuvamonikulmio(f);
+        int i = d.palautaJatkuvasolmut().palautaKoko();
+        assertEquals(i, 4);
     }
     
 }

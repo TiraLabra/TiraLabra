@@ -72,6 +72,11 @@ public class ATahtiSuorituskykytestaus {
         }
         
     }
+    /**
+     *
+     * Iteroi
+     */
+    
 
     public void iterointi(int koko, int nyt, int mustia, ArrayList<DiskreettiSolmu> solmut) {
         System.out.println("Iterointi: Koko: " + koko + ", nyt: " + nyt + ", mustia: " + mustia);

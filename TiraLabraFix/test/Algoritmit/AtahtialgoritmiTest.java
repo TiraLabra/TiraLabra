@@ -8,10 +8,15 @@ package Algoritmit;
 import Tietorakenteet.Abstraktisolmu;
 import Tietorakenteet.DiskreettiSolmu;
 import Tietorakenteet.DiskreettiVerkko;
+import Tietorakenteet.JatkuvaSolmu;
+import Tietorakenteet.JatkuvaVerkko;
+import Tietorakenteet.Jatkuvamonikulmio;
+import Tietorakenteet.Jono.Jono;
 import Tietorakenteet.Kordinaatti;
 import Tietorakenteet.Verkko;
 import java.util.ArrayList;
 import java.util.HashMap;
+import logiikka.Jatkuvaverkkorakennus;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -19,10 +24,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author Serafim
- */
 public class AtahtialgoritmiTest {
 
     /**
@@ -190,6 +191,68 @@ public class AtahtialgoritmiTest {
 
         assertEquals(alg.laske(), true);
 
+    }
+    @Test
+    public void tavallinentapaus()
+    {
+     Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        Jatkuvamonikulmio monikulmio = new Jatkuvamonikulmio(kordinaattijono);
+        Jono monikulmiot = new Jono();
+        monikulmiot.lisaa(monikulmio);
+        Jatkuvaverkkorakennus rakentaja = new Jatkuvaverkkorakennus(monikulmiot);
+        rakentaja.asetaAlkujaLoppu(alku, loppu);
+        JatkuvaVerkko xD = rakentaja.laskeVerkko();
+        boolean tarkistus = (xD == null);
+        System.out.println(tarkistus);
+        JatkuvaSolmu alkus = (JatkuvaSolmu) rakentaja.palautaAlku();
+        JatkuvaSolmu loppus = (JatkuvaSolmu) rakentaja.palautaLoppu();
+        Atahtialgoritmi algoritmi = new Atahtialgoritmi(xD, 20);
+        algoritmi.asetaPisteet(alkus, loppus);
+        boolean d = algoritmi.laske();
+        assertEquals(d, true);
+    }
+     @Test
+    public void tavallinentapauspituus()
+    {
+     Kordinaatti k1 = new Kordinaatti(1, 1);
+        Kordinaatti k2 = new Kordinaatti(2, 1);
+        Kordinaatti k3 = new Kordinaatti(2, 2);
+        Kordinaatti k4 = new Kordinaatti(1, 2);
+        Kordinaatti alku = new Kordinaatti(0, 0);
+        Kordinaatti loppu = new Kordinaatti(3, 3);
+        Jono kordinaattijono = new Jono();
+        kordinaattijono.lisaa(k1);
+        kordinaattijono.lisaa(k2);
+        kordinaattijono.lisaa(k3);
+        kordinaattijono.lisaa(k4);
+        Jatkuvamonikulmio monikulmio = new Jatkuvamonikulmio(kordinaattijono);
+        Jono monikulmiot = new Jono();
+        monikulmiot.lisaa(monikulmio);
+        Jatkuvaverkkorakennus rakentaja = new Jatkuvaverkkorakennus(monikulmiot);
+        rakentaja.asetaAlkujaLoppu(alku, loppu);
+        JatkuvaVerkko xD = rakentaja.laskeVerkko();
+        boolean tarkistus = (xD == null);
+        System.out.println(tarkistus);
+        JatkuvaSolmu alkus = (JatkuvaSolmu) rakentaja.palautaAlku();
+        JatkuvaSolmu loppus = (JatkuvaSolmu) rakentaja.palautaLoppu();
+        Atahtialgoritmi algoritmi = new Atahtialgoritmi(xD, 20);
+        algoritmi.asetaVerkko(xD);
+        algoritmi.asetaPisteet(alkus, loppus);
+        algoritmi.laske();
+        algoritmi.palautapolku();
+        double abcd = algoritmi.palautaPituus();
+        double zad = 2*Math.sqrt(5);
+        assertEquals(abcd, zad, 0.01 );
     }
 
 }

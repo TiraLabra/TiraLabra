@@ -12,10 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Serafim
- */
+
 public class JonoTest {
 
     private Jono jono;
@@ -29,17 +26,12 @@ public class JonoTest {
 
     }
 
-    /**
-     * Test of palautaKoko method, of class Jono.
-     */
     @Test
     public void testPalautaKokoAlussanolla() {
         assertEquals(jono.palautaKoko(), 0);
     }
 
-    /**
-     * Test of lisaa method, of class Jono.
-     */
+   
     @Test
     public void testYhdenalkionlisaaminenkoko() {
         jono.lisaa(2);
@@ -47,9 +39,7 @@ public class JonoTest {
 
     }
 
-    /**
-     * Test of lisaa method, of class Jono.
-     */
+   
     @Test
     public void testKolmentoistaalkionlisaaminentoimii() {
         for (int i = 1; i < 14; i++) {
@@ -119,20 +109,33 @@ public class JonoTest {
         assertEquals(sum, 55);
     }
 
-    /**
-     * Test of poista method, of class Jono.
-     */
+   
     @Test
     public void testPoista() {
-
+        Jono j = new Jono();
+        j.lisaa(1);
+        j.lisaa(2);
+        j.poista(j.palautaNs(1));
+        assertEquals(j.palautaKoko(), 1);
     }
 
-    /**
-     * Test of palautaEnsimmainen method, of class Jono.
-     */
     @Test
     public void testPalautaEnsimmainen() {
+        
+        Jono j = new Jono();
+        j.lisaa(1);
+        j.lisaa(2);
+ 
+        assertEquals(j.palautaEnsimmainen().palautaObjekti(),1);
 
+    }
+     @Test
+    public void testPalautaViimeinen() {
+         Jono j = new Jono();
+        j.lisaa(1);
+        j.lisaa(2);
+       
+        assertEquals(j.palautaViimeinen().palautaObjekti(),2);
     }
 
 }

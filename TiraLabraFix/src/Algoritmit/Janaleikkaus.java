@@ -46,6 +46,19 @@ public class Janaleikkaus {
 
     }
 
+    /**
+     *
+     * Palauttaa true vain jos janoilla on vain yksi leikkauspiste, muuten
+     * false.
+     *
+     *
+     * @param piste1 Ensimmäisen janan päätepiste
+     * @param piste2 Ensimmäisen janan toinen päätepiste
+     * @param piste3 Toisen janan päätepiste
+     * @param piste4 Toisen janan toinen päätepiste
+     * @return boolean Palauttaa leikkaako janat jotka muodostuvat kyseista
+     * pistejoukosta
+     */
     public boolean paasekolapi(Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
 
         Kordinaatti testi = suoraLeikkaus(piste1, piste2, piste3, piste4);
@@ -61,6 +74,19 @@ public class Janaleikkaus {
 
     }
 
+    /**
+     *
+     * Palauttaa true vain jos janoilla on vain yksi leikkauspiste, muuten
+     * false.
+     *
+     *
+     * @param piste1 Ensimmäisen janan päätepiste
+     * @param piste2 Ensimmäisen janan toinen päätepiste
+     * @param piste3 Toisen janan päätepiste
+     * @param piste4 Toisen janan toinen päätepiste
+     * @return boolean Palauttaa leikkaako janat jotka muodostuvat kyseista
+     * pistejoukosta
+     */
     private boolean leikkausjalki(Kordinaatti testi, Kordinaatti piste1, Kordinaatti piste2, Kordinaatti piste3, Kordinaatti piste4) {
         double ratkaisux = testi.palautaX();
         double ratkaisuy = testi.palautaY();
@@ -151,16 +177,21 @@ public class Janaleikkaus {
 
     }
 
+    /**
+     *
+     *
+     *
+     *
+     * @param k1 Ensimmäisen janan päätepiste
+     * @param k2 Ensimmäisen janan toinen päätepiste
+     * @return boolean palauttaa sen nakeeko k k2:n
+     */
     public boolean nakeeko(Kordinaatti k, Kordinaatti k2, Monikulmio a) {
 
-        //    System.out.println("eka: " + k.tulosta() + ", toka: " + k2.tulosta());
         Jono toistojoukko = new Jono();
         Kordinaatti[][] janat = a.PalautaJanat();
         Keko keko = new Keko(true, janat.length + 2);
-        //      keko.Lisaa(k);
-        //      keko.Lisaa(k2);
-        //      toistojoukko.lisaa(k);
-        //      toistojoukko.lisaa(k2);
+
         for (int i = 0; i < janat.length; i++) {
             Kordinaatti eka = janat[i][0];
             Kordinaatti toka = janat[i][1];
@@ -202,6 +233,10 @@ public class Janaleikkaus {
         }
         keko.poistaMinimi();
 
+        if (keko.palautaNykyinenKoko() == 0) {
+            return false;
+        }
+
         Kordinaatti seuraava = (Kordinaatti) keko.poistaMinimi();
         Kordinaatti[] naapurit = etsivieruspisteet(alku, a);
         if (seuraava.equals(loppu)) {
@@ -227,6 +262,10 @@ public class Janaleikkaus {
         return false;
     }
 
+    /**
+     *
+     * Etsi k:n vieruspisteet monikulmiossa a
+     */
     public Kordinaatti[] etsivieruspisteet(Kordinaatti k, Monikulmio a) {
         Kordinaatti[] z = new Kordinaatti[2];
         Kordinaatti[][] janat = a.PalautaJanat();
@@ -247,6 +286,14 @@ public class Janaleikkaus {
         return z;
     }
 
+    /**
+     * Apumetodi, joka tarkistaa onko piste k1 monikulmion d sisällä
+     *
+     * @param k1 tarkistettava
+     * @param k2 apupiste tarkistettavalle
+     * @param d monikulmio d
+     * @return
+     */
     public int Suorajamonikulmioleikkaus(Kordinaatti k1, Kordinaatti k2, Monikulmio d) {
         Jono joukko = new Jono();
         int vasenleikkauksia = 0;
@@ -293,13 +340,14 @@ public class Janaleikkaus {
 
         return 2;
     }
-    
-      /*
+
+    /*
      * 
      * Tarkistaa onko kyseinen kordinaatti monikulmioiden sisalla
-     *  
+     @param Kordinaatti k , tarkistettava kordinaatti
+     @param Jono monikulmioita, monikulmiot
+     *  @return palauttaa true jos on jonkin sisällä, muuten falsen 
      */
-
     public boolean kenenkaansisalla(Kordinaatti k, Jono monikulmiota) {
         Jonoiteroitava iter = monikulmiota.palautaEnsimmainen();
         Kordinaatti apukordinaatti = new Kordinaatti(k.palautaX() + 1, k.palautaY() + 1);

@@ -154,6 +154,13 @@ public class DiskreettiVerkko implements Verkko {
 
         return d;
     }
+    
+     /**
+     *
+     * Lisaa solmun
+     *
+     *
+     */
 
     public void Lisaa(DiskreettiSolmu[] solmut) {
         for (DiskreettiSolmu solmut1 : solmut) {
@@ -161,6 +168,13 @@ public class DiskreettiVerkko implements Verkko {
         }
 
     }
+    
+      /**
+     *
+     * Tyhjentää solmut
+     *
+     *
+     */
 
     @Override
     public void tyhjenna() {
@@ -171,6 +185,13 @@ public class DiskreettiVerkko implements Verkko {
         }
 
     }
+    
+      /**
+     *
+     * Palauttaa naapurit
+     *
+     *
+     */
 
     @Override
     public Jono naapurit(Abstraktisolmu node) {
