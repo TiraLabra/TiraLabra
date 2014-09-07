@@ -1,13 +1,27 @@
 package com.mycompany.tiralabra_maven;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println("MATRIISILASKIN");
+        run();
+    }    
+    
+    /**
+     * Program loop.
+     */
+    public static void run() {        
+        UI ui = new UI();
+        while (true) {
+            int op = ui.decideOperation();
+            if (op == 0) {
+                break;
+            }else if (op < 9) {
+                ui.doOperation(op);
+            }else {
+                
+            }
+        }
     }
 }
