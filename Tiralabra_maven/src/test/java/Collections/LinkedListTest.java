@@ -1,6 +1,5 @@
 package Collections;
 
-import Collections.CollectionSpeedTest.TimeComplexity;
 import java.util.Iterator;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -158,15 +157,5 @@ public final class LinkedListTest {
             }
         }
         assertFalse(list.contains(toAddMore));
-    }
-
-    @Test
-    public void testSpeedAdd() {
-        CollectionSpeedTest.testAdd(new LinkedList<Integer>(), new LinkedList<Integer>(), TimeComplexity.Constant);
-    }
-
-    @Test
-    public void testSpeedContains() {
-        CollectionSpeedTest.testContains(new LinkedList<Integer>(), TimeComplexity.Linear);
     }
 }

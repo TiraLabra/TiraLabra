@@ -1,9 +1,9 @@
 package Compressors;
 
 import Collections.BitSet;
-import PackerX.FileStream;
-import PackerX.Node;
-import PackerX.TreeMember;
+import DataRepresentation.FileStream;
+import DataRepresentation.Node;
+import DataRepresentation.TreeMember;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @param <T> Type of the objects on the list.
  */
 public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
-    
+
     private final Member<T> head;
     private int count;
 
@@ -20,11 +20,6 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
         this.head = new Member<>(null);
     }
 
-    /**
-     * Removes the item from the list.
-     *
-     * @param item The item to remove.
-     */
     @Override
     public void remove(final T item) {
         if (item == null) {
@@ -62,12 +57,6 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
         return null;
     }
 
-    /**
-     * Does to list contain the item?
-     *
-     * @param item Item to search.
-     * @return Does to list contain the item.
-     */
     @Override
     public boolean contains(final T item) {
         if (item == null) {
@@ -76,11 +65,6 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
         return get(item) != null;
     }
 
-    /**
-     * Adds a new item to the list.
-     *
-     * @param item To be added.
-     */
     @Override
     public void add(final T item) {
         if (item == null) {
@@ -96,16 +80,11 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
         count++;
     }
 
-    /**
-     * Size of the linked list.
-     *
-     * @return Size of the linked list.
-     */
     @Override
     public int size() {
         return count;
     }
-    
+
     @Override
     public Iterator<T> iterator() {
         return new ListIterator<>(head);
@@ -117,24 +96,24 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
      * @param <T> The list member type.
      */
     private final class ListIterator<T> implements Iterator<T> {
-        
+
         private Member<T> current;
-        
+
         private ListIterator(final Member<T> head) {
             this.current = head;
         }
-        
+
         @Override
         public boolean hasNext() {
             return current.next != null;
         }
-        
+
         @Override
         public T next() {
             current = current.next;
             return current.value;
         }
-        
+
         @Override
         public void remove() {
             current.previous.next = current.next;
@@ -151,15 +130,15 @@ public final class LinkedList<T> implements Iterable<T>, ICollection<T> {
      * @param <T> Linked list type.
      */
     private final class Member<T> {
-        
+
         private final T value;
         private Member<T> next;
         private Member<T> previous;
-        
+
         private Member(final T value) {
             this.value = value;
         }
-        
+
         private boolean hasNext() {
             return next != null;
         }

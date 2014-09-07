@@ -1,6 +1,6 @@
 package Compressors;
 
-import PackerX.FileStream;
+import DataRepresentation.FileStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

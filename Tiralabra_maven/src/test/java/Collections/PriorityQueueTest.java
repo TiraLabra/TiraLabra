@@ -1,7 +1,7 @@
 package Collections;
 
-import PackerX.Node;
-import PackerX.TreeMember;
+import DataRepresentation.Node;
+import DataRepresentation.TreeMember;
 import java.util.Random;
 import static org.junit.Assert.*;
 import org.junit.Before;

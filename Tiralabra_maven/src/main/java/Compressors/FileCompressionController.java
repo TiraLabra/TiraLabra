@@ -1,6 +1,6 @@
 package Compressors;
 
-import PackerX.FileStream;
+import DataRepresentation.FileStream;
 import java.io.IOException;
 import java.io.PrintStream;
 

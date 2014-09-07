@@ -7,7 +7,7 @@ package Collections;
  * @param <T> The member type.
  */
 public final class HashSet<T> implements ICollection<T> {
-    
+
     private static final float fillRation = 0.5f;
     private static final int vectorMultiplier = 2;
     private Vector<LinkedList<T>> array;
@@ -29,11 +29,6 @@ public final class HashSet<T> implements ICollection<T> {
         this(25);
     }
 
-    /**
-     * Adds a new item to the set.
-     *
-     * @param item The item to add.
-     */
     @Override
     public void add(final T item) {
         if (item == null) {
@@ -54,7 +49,7 @@ public final class HashSet<T> implements ICollection<T> {
             reHash();
         }
     }
-    
+
     T get(final T obj) {
         final int hash = hash(obj);
         final LinkedList<T> list = array.get(hash);
@@ -68,15 +63,15 @@ public final class HashSet<T> implements ICollection<T> {
         }
         return null;
     }
-    
+
     private Vector<LinkedList<T>> createList(final int size) {
         return (Vector<LinkedList<T>>) new Vector<>(new LinkedList<T>().getClass(), size);
     }
-    
+
     private boolean isOverFilled() {
         return count * 1f / array.size() > fillRation;
     }
-    
+
     private void reHash() {
         final HashSet<T> newSet = new HashSet<>(array.size() * vectorMultiplier);
         for (int i = 0; i < array.size(); i++) {
@@ -90,16 +85,11 @@ public final class HashSet<T> implements ICollection<T> {
         array = newSet.array;
         count = newSet.count;
     }
-    
+
     private int hash(final Object item) {
         return ((item.hashCode() % array.size()) + array.size()) % array.size();
     }
 
-    /**
-     * Removes an item from the set.
-     *
-     * @param item Item to remove.
-     */
     @Override
     public void remove(final T item) {
         if (item == null) {
@@ -117,12 +107,6 @@ public final class HashSet<T> implements ICollection<T> {
         count--;
     }
 
-    /**
-     * Does the item exist in the set?
-     *
-     * @param item The item to look.
-     * @return Does the item exits.
-     */
     @Override
     public boolean contains(final T item) {
         if (item == null) {
@@ -131,11 +115,6 @@ public final class HashSet<T> implements ICollection<T> {
         return get(item) != null;
     }
 
-    /**
-     * The size of the set.
-     *
-     * @return The size of the set.
-     */
     @Override
     public int size() {
         return count;

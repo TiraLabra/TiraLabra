@@ -1,5 +1,6 @@
 package PackerX;
 
+import DataRepresentation.FileStream;
 import Compressors.HuffmanCompressor;
 import Compressors.FileCompressionController;
 import Compressors.HuffmanDecompressor;

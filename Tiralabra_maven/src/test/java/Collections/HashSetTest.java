@@ -1,6 +1,5 @@
 package Collections;
 
-import Collections.CollectionSpeedTest.TimeComplexity;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -175,60 +174,6 @@ public final class HashSetTest {
         hs.add(first);
         hs.add(second);
         assertEquals(secondNumber, hs.get(first).getNumber());
-    }
-
-    @Test
-    public void testSpeedAdd() {
-        CollectionSpeedTest.testAdd(new HashSet<Integer>(), new HashSet<Integer>(), TimeComplexity.AverageConstant);
-    }
-
-    @Test
-    public void testSpeedContains() {
-        CollectionSpeedTest.testContains(new HashSet<Integer>(), TimeComplexity.AverageConstant);
-        /*HashSet<Integer> set = new HashSet<>();
-         final int itersAdded = 1000;
-         for (int i = 0; i < itersAdded; i++) {
-         set.add(i);
-         }
-         final int singleIters = 10;
-         long singleContain;
-         long timeStart = System.nanoTime();
-         for (int i = 0; i < singleIters; i++) {
-         set.contains(i);
-         }
-         singleContain = (System.nanoTime() - timeStart) / singleIters;
-
-         timeStart = System.nanoTime();
-         final int iters = 100000;
-         for (int i = 0; i < iters; i++) {
-         set.contains(i);
-         }
-         long singleManyContains = (System.nanoTime() - timeStart) / iters;
-         assertTrue("Many contains (" + singleManyContains + ") must be lower than single contains (" + singleContain + ")", singleContain > singleManyContains);*/
-    }
-
-    @Test
-    public void testSpeedRemove() {
-        HashSet<Integer> set = new HashSet<>();
-        final int itersAdded = 1000;
-        for (int i = 0; i < itersAdded; i++) {
-            set.add(i);
-        }
-        final int singleIters = 10;
-        long singleRemove;
-        long timeStart = System.nanoTime();
-        for (int i = 0; i < singleIters; i++) {
-            set.remove(i);
-        }
-        singleRemove = (System.nanoTime() - timeStart) / singleIters;
-
-        timeStart = System.nanoTime();
-        final int iters = itersAdded + 100;
-        for (int i = 0; i < iters; i++) {
-            set.contains(i);
-        }
-        long singleManyRemove = (System.nanoTime() - timeStart) / iters;
-        assertTrue("Many remove (" + singleManyRemove + ") must be lower than single remove (" + singleRemove + ")", singleRemove > singleManyRemove);
     }
 
     private final class hashSameButNotEquals {
