@@ -16,11 +16,9 @@ public class SmartYahtzee {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int bots;
-        int humans;
-        bots = 1;
-        humans = 0;
-        //(int) args[0].charAt(0), (int) args[1].charAt(0)
+        int bots = 1;
+        int humans = 0;
+
         Game newGame = new Game(humans, bots);
         newGame.runGame();
         //newGame.runTests();

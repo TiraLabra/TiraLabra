@@ -65,7 +65,7 @@ class TreeList {
             if (tree != null)
             {
                 double treeEV = tree.getEV();
-                System.out.println("TreeEV: " +treeEV);
+                //System.out.println("TreeEV: " +treeEV);
                 if (treeEV > ev)
                 {
                     ev = treeEV;
@@ -86,11 +86,11 @@ class TreeList {
      */
     private void createTrees(int[] dice)
     {
-        System.out.println("Combinations: ");
-        for (int j = 0; j<dice.length; j++)
-        {
-            System.out.print(dice[j]);
-        }
+        //System.out.println("Combinations: ");
+//        for (int j = 0; j<dice.length; j++)
+//        {
+//            System.out.print(dice[j]);
+//        }
         
         int[][] combinations = new int[11][];
         

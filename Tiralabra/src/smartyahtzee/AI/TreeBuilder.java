@@ -67,15 +67,15 @@ public class TreeBuilder {
                 
         if (keepAllEV > biggestEV)  // move straight to marking scores
         {
-            System.out.println("Keeping all dice");
+            //System.out.println("Keeping all dice");
             return dice;
         }
         
         if (biggestEVtree != null) {
-            System.out.println("Keeping biggest tree");
+            //System.out.println("Keeping biggest tree");
             return biggestEVtree.getRoot();
         }
-        System.out.println("Throwing all dice");
+        //System.out.println("Throwing all dice");
         return null;
     }
     
@@ -92,17 +92,14 @@ public class TreeBuilder {
     
     public int[] getSecondTurnDiceToLock(int[] dice, int[] lockedDice)
     {
-        long time = System.currentTimeMillis();
+
         dice = groupingSort(dice);
-        System.out.println(System.currentTimeMillis()-time +" ms");
         int[] unlockedDice = arraySubtract(dice, lockedDice);
-        System.out.println(System.currentTimeMillis()-time +" ms");
         double keepAllEV = Scores.calculateBestScore(dice, marked);
         double keepSameEV;
         double[] evs;
         
         DecisionTree tree = expectedValues.getTree(lockedDice); 
-        System.out.println(System.currentTimeMillis()-time +" ms");
         if (tree == null)
         {
             keepSameEV = 0.0;
@@ -110,7 +107,7 @@ public class TreeBuilder {
             keepSameEV = tree.getEV();
         }
         evs = new double[unlockedDice.length];
-        for (int i = 0; i < unlockedDice.length; i++)           //todo: more combinations
+        for (int i = 0; i < unlockedDice.length; i++)           
         {
             evs[i] = tree.getEV(tree.findNode(i));
         }
@@ -149,7 +146,6 @@ public class TreeBuilder {
             diceToLock[i] = lockedDice[i];
         }
         diceToLock[lockedDice.length] = unlockedDice[biggestIndex];
-        System.out.println(System.currentTimeMillis()-time +" ms");
         return diceToLock;
         
     }
@@ -203,10 +199,10 @@ public class TreeBuilder {
                 
         if (greatestFreq == 1)          //if no pairs 
         {
-            for (int i = 0; i < 5; i++)
-            {
-                System.out.print(dice[i]);
-            }
+//            for (int i = 0; i < 5; i++)
+//            {
+//                System.out.print(dice[i]);
+//            }
             return dice;
         }
         
@@ -237,10 +233,10 @@ public class TreeBuilder {
         }
         
         
-        for (int i = 0; i < 5; i++)
-        {
-            System.out.print(sortedDice[i]);
-        }
+//        for (int i = 0; i < 5; i++)
+//        {
+//            System.out.print(sortedDice[i]);
+//        }
         
         return sortedDice;
     }

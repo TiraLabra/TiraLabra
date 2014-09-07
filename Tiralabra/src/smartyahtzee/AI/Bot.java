@@ -111,7 +111,7 @@ public class Bot extends Player {
             {
                 highestIndex = i;
                 highestScore = score;
-                System.out.println("hey! this brings me closer to bonus");
+                //System.out.println("hey! this brings me closer to bonus");
                 break;
             }
             
