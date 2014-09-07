@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
@@ -18,8 +13,8 @@ import java.awt.event.MouseMotionListener;
  */
 public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
 
-    private int sivunPituus;
-    private SovellusOhjain simulaatio;
+    private final int sivunPituus;
+    private final SovellusOhjain simulaatio;
 
     /**
      * Konstruktorissa annetaan sivun pituus ja simulaatio
@@ -32,11 +27,19 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
         this.simulaatio = simulaatio;
     }
 
+    /**
+     * Hiirtä klikattiin
+     * @param e event
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
 
+    /**
+     * Hiirtä painettiin
+     * @param e event
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (hiiriUlkopuolella(e)) {
@@ -45,20 +48,36 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
         simulaatio.hiiriPainettu(true);
     }
 
+    /**
+     * Hiiri irti
+     * @param e event
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         simulaatio.hiiriPainettu(false);
     }
 
+    /**
+     * Hiiri tuli alueelle
+     * @param e event
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    /**
+     * Hiiri lähti pois
+     * @param e event
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         simulaatio.hiiriPoistunut();
     }
 
+    /**
+     * Hiirtä raahattiin
+     * @param e event
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         if (hiiriUlkopuolella(e)) {
@@ -68,6 +87,10 @@ public class HiirenKuuntelija implements MouseListener, MouseMotionListener {
         simulaatio.hiiriRuudunPaalla(e.getX() / sivunPituus, e.getY() / sivunPituus);
     }
 
+    /**
+     * Hiirtä liikutettiin
+     * @param e event
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         if (hiiriUlkopuolella(e)) {

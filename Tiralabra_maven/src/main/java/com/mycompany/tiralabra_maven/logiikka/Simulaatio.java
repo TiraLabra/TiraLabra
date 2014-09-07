@@ -202,7 +202,7 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
-        this.heuristiikka = heuristiikkaTehdas.getHeuristiikka(heuristiikkaTyyppi);       
+        this.heuristiikka = heuristiikkaTehdas.getHeuristiikka(heuristiikkaTyyppi);
         this.algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, hidaste, alku, maali, vinottain, heuristiikka);
 
         this.algoritmi.setPaivitettava(paivitettava);
@@ -318,6 +318,13 @@ public class Simulaatio {
         return null;
     }
 
+    /**
+     * Asettaa päivitettävän. Tämä päivitettävä annetaan edelleen algoritmille.
+     * Algoritmi kutsuu tämän otuksen paivita()-metodia kun algoritmin suoritus
+     * on valmis.
+     *
+     * @param paivitettava
+     */
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
     }

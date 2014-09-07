@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
 /**
@@ -17,6 +12,9 @@ public class Jono<E> {
     private int head;
     private int tail;
 
+    /**
+     * Luo uuden tyhjän jonon.
+     */
     public Jono() {
         taulukonKoko = 11;
         taulukko = new Object[taulukonKoko];
@@ -24,6 +22,10 @@ public class Jono<E> {
         tail = 0;
     }
 
+    /**
+     * Lisää jonon perälle elementin.
+     * @param lisattava 
+     */
     public void lisaa(E lisattava) {
         if (taysi()) {
             kasvataTaulukkoa();
@@ -32,6 +34,10 @@ public class Jono<E> {
         tail = seuraavaPaikka(tail);
     }
 
+    /**
+     * Kertoo onko jono tyhjä.
+     * @return onko jono tyhjä vai eikö ole
+     */
     public boolean tyhja() {
         return head == tail;
     }
@@ -40,6 +46,10 @@ public class Jono<E> {
         return seuraavaPaikka(tail) == head;
     }
 
+    /**
+     * Palauttaa jonosta seuraavan alkion.
+     * @return seuraava
+     */
     public E otaJonosta() {
         E palautus = (E) taulukko[head];
         head = seuraavaPaikka(head);
@@ -50,6 +60,10 @@ public class Jono<E> {
         return (n + 1) % taulukonKoko;
     }
     
+    /**
+     * Palauttaa tiedon siitä, montako elementtiä jonoon on talletettu.
+     * @return koko
+     */
     public int koko() {
         return (tail-head+taulukonKoko)%taulukonKoko;
     }

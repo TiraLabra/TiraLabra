@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
@@ -288,9 +283,9 @@ public class SovellusOhjainTest {
     @Test
     public void asetaRuudunKustannusAsettaaRuudunKustannuksen() {
         sovellusOhjain.asetaRuudunKustannus(Ruutu.RUOHO, 135);
-        assertEquals(135, Ruutu.RUOHO.getHinta());
+        assertEquals(135, Ruutu.RUOHO.getKustannus());
         sovellusOhjain.asetaRuudunKustannus(Ruutu.RUOHO, 2);
-        assertEquals(2, Ruutu.RUOHO.getHinta());
+        assertEquals(2, Ruutu.RUOHO.getKustannus());
     }
 
     @Test

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka;
 
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
@@ -12,7 +7,6 @@ import com.mycompany.tiralabra_maven.Toiminto;
 import com.mycompany.tiralabra_maven.gui.Paivitettava;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
 import fileio.KuvanLukija;
 import java.io.File;
 
@@ -344,7 +338,10 @@ public class SovellusOhjain {
     }
 
     /**
-     * Asettaa päivitettävän otuksen
+     * Asettaa päivitettävän otuksen. paivita() -metodia kutsutaan siinä
+     * vaiheessa, kun suorituksessa oleva algoritmi on löytänyt reitin perille.
+     *
+     * @param paivitettava
      */
     public void setPaivitettava(Paivitettava paivitettava) {
         simulaatio.setPaivitettava(paivitettava);

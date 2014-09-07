@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
@@ -15,7 +10,15 @@ public class ManhattanTieBreakingHeuristiikka implements Heuristiikka{
     /**
      * Palauttaa manhattan-etäisyyden parametrina annettujen koordinaattien ja
      * maalin välille.
-     *
+     * 
+     * Tämä heuristiikka on lisäksi ns. "tie breaking" eli "tasapelin rikkova"
+     * heuristiikka. Tämä tarkoittaa sitä että heuristiikka arvioi etäisyyden
+     * aavistuksen verran yläkanttiin, jolloin reittialgoritmissa suositaan
+     * niitä solmuja joissa ollaan edetty vähän maalia kohti (sen sijaan että
+     * kaikkien mahdollisten eri reittien välille syntyisi tasapeli, joka
+     * johtaisi siihen että algoritmi tutkisi kaikki mahdolliset keskenään yhtä
+     * hyvät reittivaihtoehdot).
+     * 
      * @param koord
      * @param maali
      * @return arvioitu matka maaliin

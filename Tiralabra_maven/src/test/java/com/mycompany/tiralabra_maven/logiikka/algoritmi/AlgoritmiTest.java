@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanHeuristiikka;
 import com.mycompany.tiralabra_maven.AlgoritmiTyyppi;
 import com.mycompany.tiralabra_maven.Koordinaatit;

@@ -1,36 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
 import com.mycompany.tiralabra_maven.Koordinaatit;
-import com.mycompany.tiralabra_maven.Suunta;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
 import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.PrioriteettiKeko;
 import java.util.Comparator;
 
 /**
- * Algoritmi-luokka sisältää varsinaisen reittialgoritmin suoritettavana
- * säikeenä. Säikeen käynnistäminen (start-metodin kutsu) käynnistää algoritmin
- * suorituksen.
- *
- * @author mikko
+ * AStarAlgoritmi on A*-haun tekevä algoritmi.
  *
  */
 public class AStarAlgoritmi extends Algoritmi {
 
     private int[][] parhaatReitit;
     private final Heuristiikka heuristiikka;
-    private PrioriteettiKeko<Solmu> tutkittavat;
+    private final PrioriteettiKeko<Solmu> tutkittavat;
     private Solmu tutkittavaSolmu;
 
     /**
-     * Konstruktorissa annetaan parametrina tieto siitä, halutaanko hidastettu
-     * vai nopea simulaatio.
+     * Luo uuden algoritmin instanssin. Yksi luotu algotitmiolio voidaan
+     * suorittaa vain kerran.
      *
      * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon
      * ruutujen kustannuksista

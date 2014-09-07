@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.logiikka.SovellusOhjain;
@@ -21,11 +16,11 @@ public class Kayttoliittyma implements Runnable {
     /**
      * Konstruktorissa annetaan sivun pituus ja simulaatio
      *
-     * @param simulaatio
+     * @param sovellusOhjain
      * @param sivunPituus
      */
-    public Kayttoliittyma(SovellusOhjain simulaatio, int sivunPituus) {
-        this.simulaatio = simulaatio;
+    public Kayttoliittyma(SovellusOhjain sovellusOhjain, int sivunPituus) {
+        this.simulaatio = sovellusOhjain;
         this.sivunPituus = sivunPituus;
     }
 
@@ -36,7 +31,6 @@ public class Kayttoliittyma implements Runnable {
      * @return piirtoalusta
      */
     public Piirtoalusta getPiirtoalusta() {
-        //return this.piirtoalusta;
         if (frame == null) {
             return null;
         }
@@ -49,22 +43,6 @@ public class Kayttoliittyma implements Runnable {
     @Override
     public void run() {
         frame = new SovellusIkkuna(simulaatio, sivunPituus);
-        //frame = new JFrame("Reittialgoritmit");
-        //luoKomponentit(frame.getContentPane());
-        //piirtoalusta.setPreferredSize(new Dimension(640, 480));
-        //frame.pack();
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        //frame.setResizable(false);
     }
-
-//    private void luoKomponentit(Container contentPane) {
-//        //Luodaan ensin piirtoalusta, lisätään se container-olioon
-//        //Sitten luodaan näppäimistönkuuntelija ja annetaan se framelle
-//        piirtoalusta = new Piirtoalusta(piirtologiikka, sivunPituus);
-//        HiirenKuuntelija hiirenkuuntelija = new HiirenKuuntelija(sivunPituus, piirtologiikka);
-//        piirtoalusta.addMouseListener(hiirenkuuntelija);
-//        piirtoalusta.addMouseMotionListener(hiirenkuuntelija);
-//        contentPane.add(piirtoalusta);
-//    }
 }

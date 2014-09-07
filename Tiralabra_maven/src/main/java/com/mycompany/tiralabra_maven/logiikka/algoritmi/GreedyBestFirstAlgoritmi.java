@@ -13,6 +13,7 @@ import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.PrioriteettiKeko;
 import java.util.Comparator;
 
 /**
+ * Luokka, joka toteuttaa ahneen "paras ensin" -haun.
  *
  * @author mikko
  */
@@ -22,16 +23,29 @@ public class GreedyBestFirstAlgoritmi extends Algoritmi {
     private final PrioriteettiKeko<Solmu> tutkittavat;
     private Solmu tutkittavaSolmu;
 
+    /**
+     * Luo uuden algoritmin instanssin. Yksi luotu algotitmiolio voidaan
+     * suorittaa vain kerran.
+     *
+     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon
+     * ruutujen kustannuksista
+     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin
+     * suoritusaskeleen välillä.
+     * @param alkuKoord alkupisteen koordinaatit
+     * @param maaliKoord maalipisteen koordinaatit
+     * @param vinottain sallitaanko liikkuminen vinottain
+     * @param h käytettävä heuristiikka
+     */
     public GreedyBestFirstAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alkuKoord, Koordinaatit maaliKoord, boolean vinottain, Heuristiikka h) {
         super(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
         this.heuristiikka = h;
-        
+
         Comparator<Solmu> vertailija = new Comparator<Solmu>() {
             @Override
             public int compare(Solmu s1, Solmu s2) {
                 if (heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) < heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)) {
                     return -1;
-                } else if (heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) == heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)){
+                } else if (heuristiikka.arvioiMatkaMaaliin(s1.getKoord(), maali) == heuristiikka.arvioiMatkaMaaliin(s2.getKoord(), maali)) {
                     return 0;
                 }
                 return 1;
@@ -42,6 +56,9 @@ public class GreedyBestFirstAlgoritmi extends Algoritmi {
         this.tutkittavat = new PrioriteettiKeko<>(vertailija);
     }
 
+    /**
+     * Käynnistää hakualgoritmin suorituksen.
+     */
     @Override
     public void run() {
         tutkittavat.lisaa(new Solmu(alku, 0, null));

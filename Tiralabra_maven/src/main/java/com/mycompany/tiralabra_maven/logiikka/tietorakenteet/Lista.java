@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
+ * Dynaamisesti kokoaan kasvattava lista. Listaan voi lisätä elementtejä,
+ * elementtejä voidaan noutaa ja poistaa indeksin perusteella ja niiden läpi
+ * voidaan iteroida iteraattorin avulla.
  *
  * @author mikko
  * @param <E>
@@ -19,6 +17,9 @@ public class Lista<E> implements Iterable<E> {
     private int taulukonKoko;
     private int koko;
 
+    /**
+     * Luo uuden tyhjän listan.
+     */
     public Lista() {
         this.taulukonKoko = 11;
         this.taulukko = new Object[taulukonKoko];
@@ -32,14 +33,30 @@ public class Lista<E> implements Iterable<E> {
         this.taulukonKoko = taulukonKoko * 2;
     }
 
+    /**
+     * Palauttaa tiedon siitä, montako alkiota listaan on talletettu.
+     *
+     * @return alkioiden lkm
+     */
     public int size() {
         return koko;
     }
 
+    /**
+     * Palauttaa tiedon siitä, onko lista tyhjä.
+     *
+     * @return onko lista tyhjä vai eikö ole.
+     */
     public boolean isEmpty() {
         return koko == 0;
     }
 
+    /**
+     * Palauttaa tiedon siitä, sisältääkö lista parametrina annetun olion.
+     *
+     * @param o
+     * @return onko olio listassa vai eikö ole
+     */
     public boolean contains(Object o) {
         E otus;
         try {
@@ -47,7 +64,7 @@ public class Lista<E> implements Iterable<E> {
         } catch (Exception e) {
             return false;
         }
-        for (int i = 0; i<koko; i++) {
+        for (int i = 0; i < koko; i++) {
             if (((E) taulukko[i]).equals(otus)) {
                 return true;
             }
@@ -55,11 +72,21 @@ public class Lista<E> implements Iterable<E> {
         return false;
     }
 
+    /**
+     * Palauttaa iteraattorin, jonka avulla listaa voidaan käydä läpi.
+     *
+     * @return iteraattori
+     */
     @Override
     public Iterator<E> iterator() {
         return new Sormi();
     }
 
+    /**
+     * Lisää listan perälle alkion.
+     *
+     * @param lisattava
+     */
     public void add(E lisattava) {
 
         if (this.koko == this.taulukonKoko) {
@@ -68,11 +95,23 @@ public class Lista<E> implements Iterable<E> {
         this.taulukko[koko] = lisattava;
         koko++;
     }
-    
+
+    /**
+     * Palauttaa listasta alkion indeksin perusteella.
+     *
+     * @param i
+     * @return alkio numero i
+     */
     public E get(int i) {
-        return (E)(taulukko[i]);
+        return (E) (taulukko[i]);
     }
 
+    /**
+     * Poistaa listasta alkion indeksin perusteella. Poistettavan alkion
+     * jälkeisten alkioiden indeksit pienenevät samalla yhdellä.
+     *
+     * @param i
+     */
     public void remove(int i) {
         //siirretään taulukon loppu-osaa yhdellä vasemmalle
         int siirrettavia = koko - i - 1;

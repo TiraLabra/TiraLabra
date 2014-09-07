@@ -119,10 +119,10 @@ public class SovellusIkkuna extends javax.swing.JFrame implements Paivitettava {
     }
 
     private void paivitaKustannusKentat() {
-        this.lattiaKustannusField.setText(Ruutu.LATTIA.getHinta() + "");
-        this.ruohoKustannusField.setText(Ruutu.RUOHO.getHinta() + "");
-        this.hiekkaKustannusField.setText(Ruutu.HIEKKA.getHinta() + "");
-        this.vesiKustannusField.setText(Ruutu.VESI.getHinta() + "");
+        this.lattiaKustannusField.setText(Ruutu.LATTIA.getKustannus() + "");
+        this.ruohoKustannusField.setText(Ruutu.RUOHO.getKustannus() + "");
+        this.hiekkaKustannusField.setText(Ruutu.HIEKKA.getKustannus() + "");
+        this.vesiKustannusField.setText(Ruutu.VESI.getKustannus() + "");
 
     }
 

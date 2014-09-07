@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
@@ -11,15 +6,28 @@ import com.mycompany.tiralabra_maven.gui.Ruutu;
 import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.PrioriteettiKeko;
 
 /**
+ * Luokka, joka toteuttaa Dijkstran hakualgoritmin.
  *
  * @author mikko
  */
 public class DijkstraAlgoritmi extends Algoritmi {
 
-    private PrioriteettiKeko<Solmu> tutkittavat;
-    private int[][] parhaatReitit;
+    private final PrioriteettiKeko<Solmu> tutkittavat;
+    private final int[][] parhaatReitit;
     private Solmu tutkittavaSolmu;
 
+    /**
+     * Luo uuden algoritmin instanssin. Yksi luotu algotitmiolio voidaan
+     * suorittaa vain kerran.
+     *
+     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon
+     * ruutujen kustannuksista
+     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin
+     * suoritusaskeleen välillä.
+     * @param alku alkupisteen koordinaatit
+     * @param maali maalipisteen koordinaatit
+     * @param vinottain sallitaanko liikkuminen vinottain
+     */
     public DijkstraAlgoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain) {
         super(maailma, hidaste, alku, maali, vinottain);
         this.parhaatReitit = new int[korkeus][leveys];
@@ -27,6 +35,9 @@ public class DijkstraAlgoritmi extends Algoritmi {
         alustaParhaatReitit();
     }
 
+    /**
+     * Käynnistää hakualgoritmin suorituksen.
+     */
     @Override
     public void run() {
         tutkittavat.lisaa(new Solmu(alku, 0, null));

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.gui;
 
 import java.awt.Color;
@@ -44,11 +39,9 @@ public enum Ruutu implements PiirrettavaRuutu {
             case LATTIA:
                 return Color.LIGHT_GRAY;
             case RUOHO:
-                //return Color.GREEN;
                 return vihreaVari;
             case HIEKKA:
                 return keltainenVari;
-                //return Color.YELLOW;
             case SEINA:
                 return Color.DARK_GRAY;
             case VESI:
@@ -63,7 +56,7 @@ public enum Ruutu implements PiirrettavaRuutu {
      *
      * @return kustannus
      */
-    public int getHinta() {
+    public int getKustannus() {
         return kustannukset.get(this);
     }
     

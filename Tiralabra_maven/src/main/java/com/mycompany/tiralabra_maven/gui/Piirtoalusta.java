@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.gui;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
@@ -25,8 +20,8 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
     boolean alustettu;
 
     /**
-     * Konstruktori, joka ei ota parametrejä. Käytetään jos yritetään tehdä
-     * parempi gui Netbeansin Gui Builderin avulla.
+     * Konstruktori, joka ei ota parametrejä. Netbeansin Gui builder käyttää
+     * tätä toisinaan.
      */
     public Piirtoalusta() {
         this.alustettu = false;
@@ -44,6 +39,11 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
         this.alustettu = true;
     }
 
+    /**
+     * Piirtää ruudukon
+     *
+     * @param g grafiikka
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -71,12 +71,10 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
 
         g.setColor(Color.green);
         Koordinaatit alku = simulaatio.getAlkuPiste();
-        //g.fill3DRect(alku.getX() * sivunPituus, alku.getY() * sivunPituus, sivunPituus, sivunPituus, true);
         g.fill3DRect(alku.getX() * sivunPituus + sivunPituus / 6, alku.getY() * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
 
         g.setColor(Color.red);
         Koordinaatit maali = simulaatio.getMaali();
-        //g.fill3DRect(maali.getX() * sivunPituus, maali.getY() * sivunPituus, sivunPituus, sivunPituus, true);
         g.fill3DRect(maali.getX() * sivunPituus + sivunPituus / 6, maali.getY() * sivunPituus + sivunPituus / 6, 2 * sivunPituus / 3, 2 * sivunPituus / 3, true);
         hiiri = simulaatio.hiirenKoordinaatit();
         if (hiiri != null) {
@@ -86,11 +84,17 @@ public class Piirtoalusta extends JPanel implements Paivitettava, Runnable {
 
     }
 
+    /**
+     * Päivittää ruudukon
+     */
     @Override
     public void paivita() {
         super.repaint();
     }
 
+    /**
+     * Käynnistää ruudukon automaagisen päivityksen
+     */
     @Override
     public void run() {
         while (true) {

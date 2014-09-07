@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.algoritmi;
 
 import com.mycompany.tiralabra_maven.Koordinaatit;
@@ -13,8 +8,12 @@ import com.mycompany.tiralabra_maven.gui.Ruutu;
 import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Lista;
 
 /**
+ * Algoritmi-luokka sisältää varsinaisen reittialgoritmin suoritettavana
+ * säikeenä. Säikeen käynnistäminen (start-metodin kutsu) käynnistää algoritmin
+ * suorituksen.
  *
  * @author mikko
+ *
  */
 public abstract class Algoritmi implements Runnable {
 
@@ -31,6 +30,18 @@ public abstract class Algoritmi implements Runnable {
     protected boolean vinottain;
     private Paivitettava paivitettava;
 
+    /**
+     * Luo uuden algoritmin instanssin. Yksi luotu algotitmiolio voidaan
+     * suorittaa vain kerran.
+     *
+     * @param maailma algoritmin toimintaympäristö, joka sisältää tiedon
+     * ruutujen kustannuksista
+     * @param hidaste odotetaan näin monta millisekuntia jokaisen algoritmin
+     * suoritusaskeleen välillä.
+     * @param alku alkupisteen koordinaatit
+     * @param maali maalipisteen koordinaatit
+     * @param vinottain sallitaanko liikkuminen vinottain
+     */
     public Algoritmi(Ruutu[][] maailma, int hidaste, Koordinaatit alku, Koordinaatit maali, boolean vinottain) {
         this.alku = alku;
         this.maali = maali;
@@ -43,7 +54,14 @@ public abstract class Algoritmi implements Runnable {
         this.jatketaanko = true;
         this.vinottain = vinottain;
     }
-    
+
+    /**
+     * Asettaa algoritmille päivitettävän otuksen. paivita()-metodia kutsutaan
+     * silloin, kun algoritmin suoritus on valmistunut eli se on löytänyt tien
+     * maaliin.
+     *
+     * @param paivitettava
+     */
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
     }
@@ -89,9 +107,13 @@ public abstract class Algoritmi implements Runnable {
         return this.reitti;
     }
 
+    /**
+     * Käynnistää algoritmin suorituksen. Algoritmi kannattaa laittaa omaan
+     * säikeeseensä ja kutsua säikeelle start()-metodia.
+     */
     @Override
     public abstract void run();
-    
+
     protected Lista<Solmu> solmunNaapurit(Solmu solmu) {
         Lista<Solmu> palautus = new Lista<>();
         Suunta[] lapikaytavat;
@@ -110,11 +132,11 @@ public abstract class Algoritmi implements Runnable {
             if (maailma[koord.getY()][koord.getX()] == null) {
                 continue;
             }
-            if (maailma[koord.getY()][koord.getX()].getHinta() == 0) {
+            if (maailma[koord.getY()][koord.getX()].getKustannus() == 0) {
                 continue;
             }
-            palautus.add(new Solmu(koord, solmu.getKuljettuMatka()+maailma[solmu.getKoord().getY()][solmu.getKoord().getX()].getHinta(), solmu));
-            
+            palautus.add(new Solmu(koord, solmu.getKuljettuMatka() + maailma[solmu.getKoord().getY()][solmu.getKoord().getX()].getKustannus(), solmu));
+
         }
         return palautus;
     }
@@ -141,7 +163,7 @@ public abstract class Algoritmi implements Runnable {
             solmu = solmu.getEdellinen();
         }
         this.valmis = true;
-        if (this.paivitettava != null){
+        if (this.paivitettava != null) {
             paivitettava.paivita();
         }
     }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
 import java.util.Comparator;
@@ -63,6 +58,7 @@ public class PrioriteettiKeko<E> {
     
     /**
      * Palauttaa tiedon siitä onko jono tyhjä
+     * @return onko tyhjä vai eikö ole
      */
     public boolean tyhja() {
         return koko == 0;
