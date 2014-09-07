@@ -11,11 +11,34 @@ import math.Complex;
  */
 public class LUDecomposition {
 
+    /**
+     * Array containing the lower and upper triangular matrices.
+     */
     private Complex[][] lu;
+
+    /**
+     * Array containing the pivot values.
+     */
     private int[] pivot;
+    
+    /**
+     * Dimension of the square matrix, or the number of rows and columns.
+     */
     private final int n;
+    
+    /**
+     * Pivot sign, positive or negative.
+     */
     private int pivotSign;
+    
+    /**
+     * True if matrix is singular, or non-invertible.
+     */
     private boolean singular;
+    
+    /**
+     * Singularity threshold.
+     */
     private final static double EPSILON = 1e-11;
 
     /**
@@ -90,8 +113,8 @@ public class LUDecomposition {
     /**
      * Solves A*X=B using forward and back substitution.
      *
-     * @param array
-     * @return X
+     * @param array Matrix B
+     * @return Matrix X
      */
     public Complex[][] solve(Complex[][] array) {
         if (singular) {

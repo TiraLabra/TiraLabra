@@ -17,8 +17,6 @@ import java.util.Random;
  */
 public class RealMatrix implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * Two-dimensional array containing the matrix elements as double values.
      */
@@ -97,7 +95,7 @@ public class RealMatrix implements Serializable {
      * Constructs a matrix from the given file.
      *
      * @param file File name.
-     * @throws Exception
+     * @throws Exception In case of error.
      */
     public RealMatrix(String file) throws Exception {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
@@ -111,7 +109,7 @@ public class RealMatrix implements Serializable {
      * Saves this matrix into the given file.
      *
      * @param file File name.
-     * @throws Exception
+     * @throws Exception In case of error.
      */
     public void saveMatrix(String file) throws Exception {
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));

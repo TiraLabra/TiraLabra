@@ -8,6 +8,9 @@ package algorithms.real;
  */
 public class Strassen {
 
+    /**
+     * If matrix is smaller than this value, use normal matrix multiplication.
+     */
     private final static int LEAF_SIZE = 64;
 
     /**

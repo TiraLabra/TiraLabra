@@ -1,11 +1,13 @@
 package math;
 
+import java.io.Serializable;
+
 /**
  * Contains a complex number z = a + bi, where a = Re(z) and b = Im(z).
  *
  * @author ydna
  */
-public class Complex {
+public class Complex implements Serializable {
 
     /**
      * The real part.
@@ -27,7 +29,12 @@ public class Complex {
         this.a = real;
         this.b = imag;
     }
-
+    
+    /**
+     * Constructs a complex number with no imaginary part.
+     * 
+     * @param real Real part.
+     */
     public Complex(double real) {
         this(real, 0);
     }

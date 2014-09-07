@@ -16,8 +16,6 @@ import java.util.Random;
  */
 public class ComplexMatrix implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * Two-dimensional array containing the matrix elements as complex values.
      */
@@ -100,7 +98,7 @@ public class ComplexMatrix implements Serializable {
      * Constructs a matrix from the given file.
      *
      * @param file File name.
-     * @throws Exception
+     * @throws Exception In case of error.
      */
     public ComplexMatrix(String file) throws Exception {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
@@ -112,9 +110,9 @@ public class ComplexMatrix implements Serializable {
 
     /**
      * Saves this matrix into the given file.
-     *
+     * 
      * @param file File name.
-     * @throws Exception
+     * @throws Exception In case of error.
      */
     public void saveMatrix(String file) throws Exception {
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
