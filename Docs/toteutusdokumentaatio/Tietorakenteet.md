@@ -166,6 +166,8 @@ Alkion ottaminen jonosta:
 Alkion ottaminen jonosta on selvästi vakioaikainen operaatio.
 ##Lista
 
+Lista on javan valmiin ArrayList-tietorakenteen tyyppinen tietorakenne, joka on itseään dynaamisesti kasvattava taulukko hienoilla ominaisuuksilla, kuten iteraattorilla varustettuna.
+
 Samaan tapaan kuin jonossa, tarkastellaan ensin listassa taulukon koon kasvattamisen aikavaativuutta:
 ```java
     private void kasvataTaulukkoa() {
