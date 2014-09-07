@@ -122,10 +122,24 @@ public class UI {
      * @return Matrix
      */
     public Matrix createMatrix() {        
-        System.out.println("Anna matriisin rivien määrä: ");
-        int m = Integer.parseInt(s.nextLine());
-        System.out.println("Anna matriisin sarakkeiden määrä: ");
-        int n = Integer.parseInt(s.nextLine());   
+        int m = -1;
+        int n = -1;
+        while (m < 1) {
+            System.out.println("Anna matriisin rivien määrä: ");
+            try {
+                m = Integer.parseInt(s.nextLine());
+            }catch (Exception e) {
+                System.out.println("Merkki ei kelpaa");
+            }
+        } 
+        while (n < 1) {
+            System.out.println("Anna matriisin sarakkeiden määrä: ");
+            try {
+                n = Integer.parseInt(s.nextLine());
+            }catch (Exception e) {
+                System.out.println("Merkki ei kelpaa");
+            }
+        }          
         return createMatrix(m,n);
              
     }
@@ -134,9 +148,16 @@ public class UI {
      * Creates a square matrix.
      * @return 
      */
-    public Matrix createSquareMatrix() {        
-        System.out.println("Anna matriisin rivien/sarakkeiden määrä: ");
-        int n = Integer.parseInt(s.nextLine());    
+    public Matrix createSquareMatrix() {   
+        int n = -1;
+        while (n < 1) {
+            System.out.println("Anna matriisin rivien/sarakkeiden määrä: ");
+            try {
+                n = Integer.parseInt(s.nextLine());
+            }catch (Exception e) {
+                System.out.println("Merkki ei kelpaa");
+            }
+        }     
         return createMatrix(n,n);
     }
     
@@ -158,7 +179,7 @@ public class UI {
             Matrix matrix = new Matrix(m,n);
             for(int i=0; i<n; i++) {                
                 System.out.println("Luettele luvut rivillä " + (i+1));
-                for(int j=0; j<n; j++) {
+                for(int j=0; j<n; j++) {                    
                     int num = Integer.parseInt(s.nextLine());
                     matrix.setValue(i, j, num);
                 }                

@@ -60,6 +60,10 @@ public class LUDecomposition {
     }
   }
   
+  /**
+   * Returns the LU Decomposition of a matrix.
+   * @return 
+   */
   public Matrix getLU() {
       Matrix lu = new Matrix(LU);
       return lu;

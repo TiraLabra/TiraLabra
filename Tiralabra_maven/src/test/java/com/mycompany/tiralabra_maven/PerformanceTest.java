@@ -37,6 +37,7 @@ public class PerformanceTest extends TestCase {
         long startTime2 = System.currentTimeMillis(); 
         sm5.add(sm6);
         long endTime2 = System.currentTimeMillis();
+        System.out.println("add:");
         System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         System.out.println("Operaatioon 2 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         long a = endTime1 - startTime1;
@@ -51,6 +52,7 @@ public class PerformanceTest extends TestCase {
         long startTime2 = System.currentTimeMillis(); 
         mc.StrassenMultiplication(sm3, sm4);
         long endTime2 = System.currentTimeMillis();
+        System.out.println("multi:");
         System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 
         long a = endTime1 - startTime1;
@@ -65,6 +67,7 @@ public class PerformanceTest extends TestCase {
         long startTime2 = System.currentTimeMillis(); 
         mc.inverse(sm3);
         long endTime2 = System.currentTimeMillis();
+        System.out.println("inverse:");
         System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 
         long a = endTime1 - startTime1;
@@ -74,11 +77,27 @@ public class PerformanceTest extends TestCase {
     
     public void testDeterminantSpeedDecreasesWithMatrixSize() {
         long startTime1 = System.currentTimeMillis();
-        mc.determinant(sm1);
+        mc.determinant(sm4);
         long endTime1 = System.currentTimeMillis(); 
         long startTime2 = System.currentTimeMillis(); 
-        mc.determinant(sm3);
+        mc.determinant(sm5);
         long endTime2 = System.currentTimeMillis();
+        System.out.println("det:");
+        System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
+        System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 
+        long a = endTime1 - startTime1;
+        long b = endTime2 - startTime2;
+        assertTrue(a<b);
+    }
+    
+    public void testTransposeSpeedDecreasesWithMatrixSize() {
+        long startTime1 = System.currentTimeMillis();
+        sm4.transpose();
+        long endTime1 = System.currentTimeMillis(); 
+        long startTime2 = System.currentTimeMillis(); 
+        sm5.transpose();
+        long endTime2 = System.currentTimeMillis();
+        System.out.println("transpose:");
         System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 
         long a = endTime1 - startTime1;
@@ -92,6 +111,20 @@ public class PerformanceTest extends TestCase {
         long endTime1 = System.currentTimeMillis(); 
         long startTime2 = System.currentTimeMillis(); 
         mc.inverse(sm3);
+        long endTime2 = System.currentTimeMillis();
+        System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
+        System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 
+        long a = endTime1 - startTime1;
+        long b = endTime2 - startTime2;
+        assertTrue((a*1000)>b || a==0);
+    }
+    
+    public void testDeterminantTimeIsNotTooLongWithBiggerMatrix() {
+        long startTime1 = System.currentTimeMillis();
+        mc.determinant(sm1);
+        long endTime1 = System.currentTimeMillis(); 
+        long startTime2 = System.currentTimeMillis(); 
+        mc.determinant(sm3);
         long endTime2 = System.currentTimeMillis();
         System.out.println("Operaatioon 1 kului aikaa: " + (endTime1 - startTime1) + "ms."); 
         System.out.println("Operaatioon 2 kului aikaa: " + (endTime2 - startTime2) + "ms."); 

@@ -9,7 +9,7 @@ public class App
     }    
     
     /**
-     * Program loop, may need some refactoring.
+     * Program loop.
      */
     public static void run() {        
         UI ui = new UI();

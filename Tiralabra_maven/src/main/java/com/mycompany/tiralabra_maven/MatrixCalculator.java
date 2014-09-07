@@ -25,8 +25,8 @@ public class MatrixCalculator {
      * @return Result Matrix
      */
     public Matrix StrassenMultiplication(Matrix a, Matrix b) {
-        a = matrixSizeCheck(a);
-        b = matrixSizeCheck(b);
+        a = matrixSizeCorrection(a);
+        b = matrixSizeCorrection(b);
         if (a.numRows() != b.numRows()) {
             if (a.numRows()>b.numRows()) {
                 b = increaseMatrixSize(b, a.numRows()-b.numRows());
@@ -72,8 +72,7 @@ public class MatrixCalculator {
      * @param m
      * @return 
      */
-    private Matrix matrixSizeCheck(Matrix m) {
-        //NEEDS REFACTORING
+    private Matrix matrixSizeCorrection(Matrix m) {
         if ((m.numRows() & -m.numRows()) != m.numRows() && m.numRows() > m.numCols()) {  
             int n = m.numRows();
             while((n & -n) != n) {
@@ -114,7 +113,7 @@ public class MatrixCalculator {
         else {
             return m;
         }
-    }    
+    }
     
     /**
      * Increases the size of a matrix by x.

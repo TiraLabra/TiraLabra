@@ -51,6 +51,10 @@ public class Matrix {
         return matrix;
     }
     
+    /**
+     * Return a new matrix array that is a copy of the array of this matrix.
+     * @return 
+     */
     public double[][] getArrayCopy() {
         double[][] copy = new double[rows][columns];
         for(int i=0; i<rows; i++) {
