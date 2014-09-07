@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 /**
- * Luokka kuvaa yksittäistä merkintää avoimella hajautuksella toteutetussa
+ * Luokka kuvaa yksittäistä merkintää 
  * hajautustaulussa. Merkinnällä on avain ja arvo.
  * 
  * @author sampox

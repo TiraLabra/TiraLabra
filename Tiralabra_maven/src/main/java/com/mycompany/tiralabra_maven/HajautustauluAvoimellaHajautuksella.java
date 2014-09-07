@@ -358,4 +358,6 @@ public class HajautustauluAvoimellaHajautuksella implements Hajautustaulu {
 	public double getTayttosuhde() {
 		return (double) merkintoja / taulukonKoko;
 	}
+	
+
 }

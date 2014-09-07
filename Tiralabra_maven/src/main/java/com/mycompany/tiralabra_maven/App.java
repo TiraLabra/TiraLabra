@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -27,11 +28,19 @@ public class App {
 			tulokset[1] = "Avoin hajautus (lineearinen)";
 			tulokset[2] = "Avoin hajautus (neliöinen)";
 			tulokset[3] = "\t\t\t\tLisäys\tEtsintä(tuloksellinen)\tEtsinta(Tulokseton)\tPoisto";
-
+			
+			/**
+			 * Scanner olio, jolla luetaan käyttäjän syöte
+			 */
 			Scanner lukija = new Scanner(System.in);
-			// final String sallitutMerkit
-			// ="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			// Random randomi = new Random();
+			/**
+			 * Testisyötteessä sallitut merkit
+			 */
+			final String sallitutMerkit = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+			/**
+			 * Testisyötteen generoimisessa apuna toimiva Random-olio
+			 */
+			Random randomi = new Random(); 
 
 			System.out
 					.println("Ohjelma testaa erilaisten hajautustaulujen suorituskykyä erikokoisilla alphanumeerisilla syötteillä.");
@@ -43,7 +52,10 @@ public class App {
 			System.out.println("3	5000 alkiota");
 			System.out.println("4	10000 alkiota");
 			System.out.println("5	exit");
-
+			
+			/**
+			 * testisyötteen koko
+			 */
 			int testisyotteenKoko = palautaValinta(5, lukija);
 
 			if (testisyotteenKoko == 1) {
@@ -58,11 +70,19 @@ public class App {
 				break;
 			}
 
+			/**
+			 * hajautustaulujen testauksessa käytettävä testisyöte
+			 */
+			String[] testiSyote = new String[testisyotteenKoko]; 
+			for (int i = 0; i < testisyotteenKoko; i++) {
+				testiSyote[i] = luoMerkkijono(10, sallitutMerkit, randomi);
+			}
+
 			// LISÄYS
 			for (int k = 0; k < 3; k++) {
 				long aikaAlussa = System.currentTimeMillis();
 				for (int i = 0; i < testisyotteenKoko; i++) {
-					hajikset[k].lisaaMerkinta("b" + i, "b" + i);
+					hajikset[k].lisaaMerkinta(testiSyote[i], "b" + i);
 				}
 				long aikaLopussa = System.currentTimeMillis();
 				tulokset[k] = tulokset[k] + "\t" + (aikaLopussa - aikaAlussa)
@@ -73,7 +93,7 @@ public class App {
 			for (int k = 0; k < 3; k++) {
 				long aikaAlussa = System.currentTimeMillis();
 				for (int i = 0; i < testisyotteenKoko; i++) {
-					hajikset[k].etsiMerkinta("b" + i);
+					hajikset[k].etsiMerkinta(testiSyote[i]);
 				}
 				long aikaLopussa = System.currentTimeMillis();
 				tulokset[k] = tulokset[k] + "\t\t" + (aikaLopussa - aikaAlussa)
@@ -85,7 +105,7 @@ public class App {
 			for (int k = 0; k < 3; k++) {
 				long aikaAlussa = System.currentTimeMillis();
 				for (int i = 0; i < testisyotteenKoko; i++) {
-					hajikset[k].etsiMerkinta("" + i);
+					hajikset[k].etsiMerkinta(testiSyote[i]+"kgkas");
 				}
 				long aikaLopussa = System.currentTimeMillis();
 				tulokset[k] = tulokset[k] + "\t\t\t"
@@ -97,7 +117,7 @@ public class App {
 			for (int k = 0; k < 3; k++) {
 				long aikaAlussa = System.currentTimeMillis();
 				for (int i = 0; i < testisyotteenKoko; i++) {
-					hajikset[k].poistaMerkinta("b" + i);
+					hajikset[k].poistaMerkinta(testiSyote[i]);
 				}
 				long aikaLopussa = System.currentTimeMillis();
 				tulokset[k] = tulokset[k] + "\t\t" + (aikaLopussa - aikaAlussa)
@@ -139,11 +159,30 @@ public class App {
 			}
 	}
 
-	/*
-	 * public static String luoMerkkijono(int pituus, String sallitutMerkit,
-	 * Random randomi) { StringBuilder builderi = new StringBuilder(pituus); for
-	 * (int i = 0; i < pituus; i++)
-	 * builderi.append(sallitutMerkit.charAt(randomi
-	 * .nextInt(sallitutMerkit.length()))); return builderi.toString(); }
+	/**
+	 * Metodi luo pseudorandomeja merkkijonoja hajautustaulujen syötteiksi.
+	 * 
+	 * @param pituus
+	 *            generoitavan merkkijonon pituus
+	 * @param sallitutMerkit
+	 *            merkit joiden joukosta palautettavaan merkkijonoon valitaan
+	 *            merkkejä
+	 * @param randomi
+	 *            Random-luokan olio, jota käytämme apuna pseudosatunnaisten
+	 *            merkkijonojen luomiseen
+	 * 
+	 * @return luotu uusi merkkijono
+	 * 
 	 */
+	public static String luoMerkkijono(int pituus, String sallitutMerkit,
+			Random randomi) {
+		String uusiMerkkijono = "";
+		for (int i = 0; i < pituus; i++) {
+			uusiMerkkijono = uusiMerkkijono
+					+ sallitutMerkit.charAt(randomi.nextInt(sallitutMerkit
+							.length()));
+		}
+		return uusiMerkkijono;
+	}
+
 }

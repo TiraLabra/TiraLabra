@@ -288,4 +288,6 @@ public class HajautustauluLinkitetyllaListalla implements Hajautustaulu {
 	public double getTayttosuhde() {
 		return (double) merkintoja / taulukonKoko;
 	}
+	
+
 }
