@@ -107,6 +107,8 @@ Lähteet
 -------
 
 [1] http://en.wikipedia.org/wiki/Minimax (24.8.2014)
+
 [2] http://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning (31.8.2014)
+
 [3] http://www.mini.pw.edu.pl/~kwaledzik/legacy/research/papers/ExpSys07-Checkers.pdf (6.9.2014)
 
