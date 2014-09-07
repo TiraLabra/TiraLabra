@@ -437,6 +437,27 @@ public class PolynomialUtilTest {
         
         assertTrue(checkPolynomialEquality(expected, result));
     }
+    
+    @Test
+    public void testCalculateXExponentiatedModuloFBase3_Exp7_Char5() {
+        int base = 3;
+        int exponent = 7;
+        
+        int characteristic = 5;
+        
+        IPolynomial polynomial = new LinkedListPolynomial(characteristic);
+        polynomial.addTerm(1, 0);
+        polynomial.addTerm(2, 3);
+        polynomial.addTerm(1, 5);
+        
+        IPolynomial dividend = new LinkedListPolynomial(characteristic);
+        dividend.addTerm(1, MathUtil.pow(base, exponent));
+        
+        IPolynomial result = PolynomialUtil.calculateXExponentiatedModuloF(base, exponent, polynomial);
+        IPolynomial expected = dividend.divide(polynomial).remainder;
+        
+        assertTrue(checkPolynomialEquality(expected, result));
+    }
 
     /**
      * Checks if two polynomials are equal.

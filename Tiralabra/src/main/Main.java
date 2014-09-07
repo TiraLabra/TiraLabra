@@ -55,11 +55,11 @@ public class Main {
         } else {
             heuristic = "naive";
         }
-        
+
         boolean useSparsePolynomials;
         boolean checkForRoots;
         boolean smartChar2Generation;
-        
+
         switch (heuristic) {
             case "naive":
                 useSparsePolynomials = false;
@@ -70,52 +70,52 @@ public class Main {
                 useSparsePolynomials = true;
                 checkForRoots = false;
                 smartChar2Generation = false;
-                break;          
+                break;
             case "smartchar2":
                 useSparsePolynomials = false;
                 checkForRoots = false;
                 smartChar2Generation = true;
-                break;      
+                break;
             case "checkroots":
                 useSparsePolynomials = false;
                 checkForRoots = true;
                 smartChar2Generation = false;
-                break;          
+                break;
             case "sparse_smartchar2":
                 useSparsePolynomials = true;
                 checkForRoots = false;
                 smartChar2Generation = true;
-                break;                  
+                break;
             case "sparse_checkroots":
                 useSparsePolynomials = true;
                 checkForRoots = true;
                 smartChar2Generation = false;
-                break;  
+                break;
             case "sparse_smartchar2_checkroots":
                 useSparsePolynomials = true;
                 checkForRoots = true;
                 smartChar2Generation = true;
-                break;                  
+                break;
             default:
                 System.out.println("Could not parse given heuristic command line argument: " + heuristic);
                 return;
         }
-        
+
         while (fileReader.hasNextLine()) {
             String line = fileReader.nextLine();
             String[] lineSplit = line.split(",");
             int characteristic;
             int degree;
-            
+
             try {
                 characteristic = Integer.parseInt(lineSplit[0].trim());
-                degree = Integer.parseInt(lineSplit[1].trim());            
+                degree = Integer.parseInt(lineSplit[1].trim());
             } catch (Exception e) {
                 System.err.println("Could not parse characteristic " + lineSplit[0]
                         + " or degree " + lineSplit[1]);
                 continue;
             }
-                    
+
             if (!MathUtil.isPrime(characteristic)) {
                 System.err.println("Characteristic " + characteristic + " is not prime. "
                         + "Ignoring row " + line);
@@ -123,31 +123,18 @@ public class Main {
             }
             if (degree < 2) {
                 System.err.println("Degree " + degree + " is smaller than 2. "
-                        + "Ignoring row " + line);                
+                        + "Ignoring row " + line);
                 continue;
-            }          
-            
+            }
+
             IPolynomial polynomial = IrreduciblePolynomialFinder.findIrreduciblePolynomial(
-                    characteristic, degree, checkForRoots, smartChar2Generation, 
-                    useSparsePolynomials, false);   
+                    characteristic, degree, checkForRoots, smartChar2Generation,
+                    useSparsePolynomials, false);
             int generated = IrreduciblePolynomialFinder.getNumberOfPolynomialsGeneratedLastTime();
             int checkedWithRabin = IrreduciblePolynomialFinder.getNumberOfPolynomialsCheckedUsingRabinsAlgorithmLastTime();
-            System.out.println(characteristic + ", " + degree + ", " + polynomial 
-            + ", " + generated + ", " + checkedWithRabin);
+            System.out.println(characteristic + ", " + degree + ", " + polynomial
+                    + ", " + generated + ", " + checkedWithRabin);
         }
-        
-        
-//        for (String arg : args) {
-//            String[] thisInput = arg.split(",");
-//            int characteristic = Integer.parseInt(thisInput[0].trim());
-//            int degree = Integer.parseInt(thisInput[1].trim());
-//            IPolynomial polynomial = IrreduciblePolynomialFinder.findIrreduciblePolynomial(characteristic, degree, true, true, false);
-//            int numberOfTries = IrreduciblePolynomialFinder.getNumberOfPolynomialsGeneratedLastTime();
-//            System.out.print(characteristic);
-//            System.out.print(", " + degree);
-//            System.out.print(", " + polynomial);
-//            System.out.println(", " + numberOfTries);
-//        }
 
     }
 
@@ -156,6 +143,8 @@ public class Main {
         System.out.println("");
         System.out.println("To start the command line interface, give 'cli' "
                 + "(without quotes) as the only command line argument.");
+        System.out.println("The command line interface automatically uses the"
+                + " most efficient heuristic for finding polynomials.");
         System.out.println("");
         System.out.println("To read data from a file, give the file name as the first argument.");
         System.out.println("The file must contain one characteristic-degree pair "
@@ -188,11 +177,41 @@ public class Main {
 
         System.out.println("-- Irreducible polynomial finder --");
         System.out.println("");
-        System.out.print("Characteristic of polynomial: ");
-        int characteristic = Integer.parseInt(scanner.nextLine());
-        System.out.print("Degree of polynomial: ");
-        int degree = Integer.parseInt(scanner.nextLine());
 
+        int characteristic;
+        int degree;
+        String input = null;
+        while (true) {
+            try {
+                System.out.print("Characteristic of polynomial: ");
+                input = scanner.nextLine();
+                characteristic = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number " + input);
+                continue;
+            }
+            if (!MathUtil.isPrime(characteristic)) {
+                System.out.println("The characteristic " + characteristic + " is not prime!");
+            } else {
+                break;
+            }
+        }
+        while (true) {
+            try {
+                System.out.print("Degree of polynomial: ");
+                input = scanner.nextLine();
+                degree = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number " + input);
+                continue;
+            }
+            if (degree < 1) {
+                System.out.println("The degree must be positive!");
+            } else {
+                break;
+            }
+        }        
+        
         System.out.println("Starting calculation...");
         long startTime = System.currentTimeMillis();
         IPolynomial polynomial = IrreduciblePolynomialFinder.findIrreduciblePolynomial(characteristic, degree, true, true, true, true);

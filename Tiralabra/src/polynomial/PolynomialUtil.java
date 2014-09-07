@@ -66,7 +66,9 @@ public class PolynomialUtil {
     /**
      * Checks if a polynomial of positive characteristic is reducible.
      *
-     * This method uses Rabin's test of irreducibility.
+     * This method uses Rabin's test of irreducibility. The time complexity of
+     * this method is O(c*(d^3)*log(log d)), where c is the characteristic and d is the
+     * degree of the polynomial to be tested.
      *
      * @param polynomial The polynomial to test.
      * @param debugPrint If true, prints some info when the algorithm is
@@ -137,13 +139,12 @@ public class PolynomialUtil {
             if (gcd.getDegree() != 0) {
                 return true;
             }
-            factorNode = factorNode.getPrev();            
+            factorNode = factorNode.getPrev();
         }
         if (debugPrint) {
             System.out.println("    Checking polynomial x^" + characteristic + "^" + degree);
         }
 
-//        IPolynomial remainder = polynomialToCheck.divide(polynomial).remainder;
         IPolynomial remainder = calculateXExponentiatedModuloF(characteristic, degree, polynomial);
 
         remainder.addTerm(-1, 1);
@@ -233,11 +234,13 @@ public class PolynomialUtil {
 
         IPolynomial xBase = new LinkedListPolynomial(characteristic);
         xBase.addTerm(1, base);
+        
+        xBase = xBase.divide(f).remainder;
 
         for (int i = 1; i < exponent; i++) {
             IPolynomial xBaseCopy = xBase.createCopyOfPolynomial();
 
-            for (int j = 0; j < characteristic - 1; j++) {
+            for (int j = 0; j < base - 1; j++) {
                 xBase = (xBase.multiply(xBaseCopy)).divide(f).remainder;
             }
         }

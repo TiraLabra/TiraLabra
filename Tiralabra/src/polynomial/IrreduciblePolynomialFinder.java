@@ -6,7 +6,9 @@ import math.MathUtil;
 import polynomial.impl.linkedlist.LinkedListPolynomial;
 
 /**
- *
+ * The method findIrreduciblePolynomial of this class finds irreducible
+ * polynomials over finite fields.
+ * 
  * @author Sebastian Björkqvist
  */
 public class IrreduciblePolynomialFinder {
@@ -21,8 +23,9 @@ public class IrreduciblePolynomialFinder {
      * This method generates polynomials randomly and uses Rabin's irreducibility
      * test to check if the generated polynomial is irreducible.
      * 
-     * The time complexity of this method is about O(c*(d^3)), where c is the degree
-     * and d is the characteristic.
+     * The expected time complexity of this method is O(c*(d^4)*log(log d)), 
+     * where c is the degree and d is the characteristic. Since the method
+     * uses randomness, the actual time used may vary considerably.
      * 
      * Note that the method starts becoming increasingly slow if the product of
      * the degree and the characteristic exceeds about 500.
@@ -211,12 +214,6 @@ public class IrreduciblePolynomialFinder {
         int coefficient = random.nextInt(characteristic - 1) + 1;
 
         return coefficient;
-    }
-
-    public static void main(String[] args) {
-        for (int i = 0; i < 100; i++) {
-            System.out.println(getSparseCoefficient(5, false, 0.7, new Random()));
-        }
     }
 
     /**
