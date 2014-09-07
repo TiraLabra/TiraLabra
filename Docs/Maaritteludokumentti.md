@@ -9,12 +9,12 @@ Dijkstran algoritmin saa toimimaan tehokkaasta käyttämällä aputietorakenteena mi
 Vertailtavaksi algoritmiksi valitsin A* -algoritmin koska sen voi ajatella olevan Dijkstran algoritmin laajennus, jolla voi päästää ongelman nopeampaan ratkaisuun. Heurestiikkafunktiona tulen ainakin kokeilemaan Manhattan-etäisyyttä, jonka on helppo osoittaa olevan monotoninen, mikä on edellytyksenä sille että A* löytää varmasti (lyhimmän/)nopeimman reitin.
 
 Mahdollisia laajennuksia:
-- vaikeakulkuinen alue: kustannus enemmän kuin 1 aikayksikkö
+- vaikeakulkuinen alue: kustannus enemmän kuin 1 aikayksikkö (TOTEUTETTU: harmaaseen ruutuun siirtymiseen kuluu 5 aikayksikköä)
 - lentokentät joiden välillä voi lentää käyttäen tietyn määrän aikayksiköitä
 - tunnelit, joita pitkin pystyy siirtymään esteiden läpi
 - joki jota pitkin pääsee liikkumaan vain tiettyyn suuntaan... ??
 
-Ohjelman saa lähtötietona 2-ulotteisen taulukon. Vierekkäisten "ruutujen" välillä voi siirtyä pysty- ja vaakasuuntaan siten että ruutuun (taulukon kohtaan) siirtyminen vie ruudun arvon verran aikaa. Esim. esteiden arvoksi asetetaan integermax.
+Ohjelman saa lähtötietona bmp-kuvatiedoston, joka muutetaan 2-ulotteiseksi kokonaislukutaulukoksi. Vierekkäisten "ruutujen" välillä voi siirtyä pysty- ja vaakasuuntaan siten että ruutuun (taulukon kohtaan) siirtyminen vie ruudun arvon verran aikaa. Esim. esteiden arvoksi asetetaan integermax.
 
 Molemmilla algoritmeilla tavoitellaan aikavaativuutta O ( (n+m) * log n ). Tilavaatimus on O (n).
 
