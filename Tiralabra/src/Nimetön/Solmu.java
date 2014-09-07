@@ -15,6 +15,8 @@ public class Solmu {
     public int Heurestiikaarvo;
     public int Liikkumisarvo;
     public int Yhteisarvo;
+    public int pääsemisarvo;
+    
     public Solmu Edeltävä;
     
     public int koordinaattiX;
@@ -28,6 +30,7 @@ public class Solmu {
         Liikkumisarvo=lArvo;
         Heurestiikaarvo=hArvo;
         Yhteisarvo=lArvo+hArvo;
+        pääsemisarvo=Integer.MAX_VALUE;
 
         Edeltävä=null;
     }

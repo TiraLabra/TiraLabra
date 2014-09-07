@@ -19,14 +19,14 @@ public class Reitinhaku {
     
     public Verkko verkko;
     
-    public ArrayList<Solmu> KäytyLista;
+    public ArrayList<Solmu> KäytyListaeiTarpeen;
     public PriorityQueue<Solmu> AvoinLista;
     
     public Reitinhaku(){
         
         verkko=new Verkko(6, 6);
         
-        KäytyLista=new ArrayList<Solmu>();
+        KäytyListaeiTarpeen=new ArrayList<Solmu>();
         
         Comparator<Solmu> comparator = new LukuVertaaja();
         AvoinLista=new PriorityQueue<Solmu>((PriorityQueue<? extends Solmu>) comparator);
@@ -40,32 +40,43 @@ public class Reitinhaku {
         while(true){
             Solmu käsittelyssä=AvoinLista.poll();
             
+            TarkistaViereiset(käsittelyssä);
+            
+            KäytyListaeiTarpeen.add(käsittelyssä);
         }
         
     }
     
-    public void TarkistaViereiset(Solmu Rusetti){
+    public void Vertaile(Solmu Käsittelyssä){
         
-        if(Rusetti.koordinaattiX>=0){
-            Lisää(Rusetti.koordinaattiX+1, Rusetti.koordinaattiY, Rusetti);
+        if(Käsittelyssä.pääsemisarvo>(Käsittelyssä.Edeltävä.pääsemisarvo+Käsittelyssä.Liikkumisarvo)){
+            
         }
-        if(Rusetti.koordinaattiY>=0){
-            Lisää(Rusetti.koordinaattiX, Rusetti.koordinaattiY+1, Rusetti);
+        
+    }
+    
+    public void TarkistaViereiset(Solmu Käsittelyssä){
+        
+        if(Käsittelyssä.koordinaattiX>=0){
+            Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä);
         }
-        if(Rusetti.koordinaattiX<=verkko.taulukko.length){
-            Lisää(Rusetti.koordinaattiX-1, Rusetti.koordinaattiY, Rusetti);
+        if(Käsittelyssä.koordinaattiY>=0){
+            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä);
         }
-        if(Rusetti.koordinaattiY<=verkko.taulukko[0].length){
-            Lisää(Rusetti.koordinaattiX, Rusetti.koordinaattiY-1, Rusetti);
+        if(Käsittelyssä.koordinaattiX<=verkko.taulukko.length){
+            Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä);
+        }
+        if(Käsittelyssä.koordinaattiY<=verkko.taulukko[0].length){
+            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
         }
         
         
     }
    
-    public void Lisää(int x, int y, Solmu Rusetti){
+    public void Lisää(int x, int y, Solmu Käsittelyssä){
         
         if(verkko.taulukko[x][y].Edeltävä==null){
-            verkko.taulukko[x][y].Edeltävä=Rusetti;
+            verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
             AvoinLista.add(verkko.taulukko[x][y]);
         }
         
