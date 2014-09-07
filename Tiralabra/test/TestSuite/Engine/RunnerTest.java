@@ -35,7 +35,7 @@ public class RunnerTest {
     @Test
     public void testTiming() {
         long time = runner.timing(new ArrImpl(), testAlgo);
-        assertTrue(time < 400000);
+        assertTrue(time < 500000);
         assertTrue(time > 100);
     }
 }
