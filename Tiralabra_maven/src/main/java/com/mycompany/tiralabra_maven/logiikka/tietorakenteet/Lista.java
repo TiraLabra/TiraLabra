@@ -88,7 +88,6 @@ public class Lista<E> implements Iterable<E> {
      * @param lisattava
      */
     public void add(E lisattava) {
-
         if (this.koko == this.taulukonKoko) {
             kasvataTaulukkoa();
         }
