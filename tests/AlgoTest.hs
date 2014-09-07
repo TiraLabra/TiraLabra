@@ -111,7 +111,7 @@ hasNoDups xs = S.size (S.fromList xs) == length xs
 men = GroupComplete (Mentsu Koutsu "W!" Nothing)
 
 -- |
-invalid_1 = GroupWait Shuntsu undefined undefined : replicate 4 (GroupComplete undefined)
+invalid_1 = GroupWait Shuntsu ["M1", "M2"] ["M3"] : replicate 4 men
 
 testHands =
     [ (0, tenpai_1)
@@ -121,7 +121,7 @@ testHands =
     , (2, ryanshanten_1)
     ]
 
-complete_1 = GroupWait Koutsu undefined ["M4"] : replicate 4 (GroupComplete undefined)
+complete_1 = GroupWait Koutsu ["M4", "M4"] ["M4"] : replicate 4 men
 
 -- | pair wait
 tenpai_1 = GroupLeftover "S1"
@@ -140,10 +140,10 @@ iishanten_1 = GroupLeftover "S1"
 
 -- | 2x koutsu wait, one stray
 iishanten_2 = GroupLeftover "P1"
-            : GroupWait Koutsu undefined ["M3"]
-            : GroupWait Koutsu undefined ["S3"]
-            : GroupWait Shuntsu undefined ["S1", "S4"]
-            : replicate 2 (GroupComplete undefined)
+            : GroupWait Koutsu ["M3"] ["M3"]
+            : GroupWait Koutsu ["S3"] ["S3"]
+            : GroupWait Shuntsu ["S2", "S3"] ["S1", "S4"]
+            : replicate 2 men
 
 -- | four stray
 ryanshanten_1 = GroupLeftover "P1"

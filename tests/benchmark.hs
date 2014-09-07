@@ -1,6 +1,7 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 ------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ suite =
 gwtSuite :: [Benchmark]
 gwtSuite = 
     [ bgroup "buildGWT (random tiles)"
-        [ bench "13" $ nfIO $ buildGWTs' [undefined, undefined] <$> randomTiles 7 ]
+        [ bench "13" $ nfIO $ buildGWTs' [koutsu "M1", shuntsu "P1"] <$> randomTiles 7 ]
     ]
 
 -- TODO The algos assume no uncalled kantsu - so they should be ignored

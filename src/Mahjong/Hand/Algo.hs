@@ -36,7 +36,7 @@ import           Control.Applicative
 import           Data.Maybe
 import           Data.Either (isLeft)
 import           Data.Bifunctor
-import           Data.List (delete, sort, foldl', find, groupBy)
+import           Data.List (delete, sort, foldl', find, groupBy, nub)
 import           Data.List.HT (removeEach)
 import qualified Data.List.NonEmpty as NE
 
@@ -171,7 +171,11 @@ instance ShantenOf [Grouping] where
                       xs -> Just $ minimum xs
 
 instance ShantenOf Grouping where
-    shanten = groupingShanten 8
+    shanten = liftM (fmap minimum . sequence) $ sequence
+        [ groupingShanten 8
+        , chiitoitsuShanten
+        , kokushiShanten
+        ]
 
 -- | Uses `tilesGroupL`
 instance ShantenOf [Tile] where
@@ -214,20 +218,39 @@ groupingShanten n tgs = case foldl' (\i -> (i -) . tgval) n tgs of
         tgval (GroupComplete{}) = 2
         tgval (GroupLeftover{}) = 0
 
-        isPair (GroupWait Koutsu _ _) = True
-        isPair                      _ = False
-
         notPairable (GroupComplete _)       = True
         notPairable (GroupWait Shuntsu _ _) = True
         notPairable                       _ = False
 
+kokushiShanten :: Grouping -> Shanten
+kokushiShanten = Just . (13 -) . length . nub . filter ((||) <$> not . suited <*> isTerminal) . concatMap tileGroupTiles
+
+isTerminal :: Tile -> Bool
+isTerminal t = Just minBound == tileNumber t || tileNumber t == Just maxBound
+
+chiitoitsuShanten :: Grouping -> Shanten
+chiitoitsuShanten = Just . (6 -) . length . filter isPair
+
+isPair :: TileGroup -> Bool
+isPair (GroupWait Koutsu _ _) = True
+isPair                      _ = False
+
 -- Wait trees
 
--- | @devops free_discards waits@
+-- | @devops free_discards waits@ returns all greedy development options
+-- ("@DevOp@") where a tile from @free_discards@ is discarded to draw
+-- some tile to complete a meld in @waits@.
 --
 -- = Algorithm description
 --
--- TODO Write me
+-- 1.  if no free and one or less waits: error "malformed hand".
+-- 2.  if two waits of which at least one is a koutsu wait (a pair): a tenpai
+--     wait.
+-- 3.  if no free: break up a wait.
+-- 4.  if one free and no waits: pair wait tenpai.
+-- 5.  if no waits: leftovers only: build waits from free tiles.
+-- 6.  otherwise meld by discarding free to complete waits.
+--
 devops :: [Tile] -> [Wait] -> NE.NonEmpty DevOp'
 devops f_ts w_ts
     | []  <- f_ts, []  <- w_ts     = error "devops: called with a malformed hand (all mentsu)"
