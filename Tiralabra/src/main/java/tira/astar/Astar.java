@@ -55,6 +55,9 @@ public class Astar {
         this.startCell = this.path.search(this.source);
         this.goalCell = this.path.search(this.destination);
         
+        /**
+         * Kun lähtö ja maali on asetettu, voidaan laskea jokaiselle solmulle arvio etäisyydestä maaliin.
+         */
         this.setHeuristics();
     }
     
@@ -88,6 +91,7 @@ public class Astar {
                 
                 /**
                  * Etäisyyden päivitys mikäli ollaan löydetty parempi reitti.
+                 * Ei kuitenkaan tehdä muutosta, mikäli solmu on jo aiemmin käsitelty.
                  */
                 if (!neighbor.isClosed()) {
                     if (neighbor.getShortest() > cost) {

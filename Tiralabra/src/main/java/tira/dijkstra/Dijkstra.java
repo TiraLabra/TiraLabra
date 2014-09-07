@@ -33,7 +33,7 @@ public class Dijkstra {
     
     /**
      * Metodi alustaa kartasta verkon solmut ja kaaret, joita käytetään Dijkstran algoritmissa.
-     * Sen lisäksi asetetaan muistiin lähtö -ja maalisolmut.
+     * Sen lisäksi asetetaan muistiin lähtö- ja maalisolmut.
      */
     public void initialize() {
         for (Location loc : this.locations) {
@@ -69,7 +69,7 @@ public class Dijkstra {
         this.startNode.addedToHeap();
         
         /**
-         * Käydään läpi keko. Maalinode suljetaan ts. jokainen solmu suljetaan kun se pollataan keosta.
+         * Käydään läpi keko. Jokainen solmu suljetaan kun se otetaan keosta.
          */      
         while (!heap.empty() && !this.goalNode.isClosed()) {
             Node handle = heap.poll();

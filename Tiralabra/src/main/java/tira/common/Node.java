@@ -82,10 +82,16 @@ public class Node implements Comparable<Node> {
         return this.y;
     }
     
+    /**
+     * Talletetaan tieto, että solmu on keossa.
+     */
     public void addedToHeap() {
         this.inHeap = true;
     }
     
+    /**
+     * Solmu pois keosta.
+     */
     public void removedFromHeap() {
         this.inHeap = false;
     }
@@ -94,10 +100,17 @@ public class Node implements Comparable<Node> {
         return this.inHeap;
     }
     
+    /**
+     * 
+     * @return tieto onko solmu käsitelty.
+     */
     public boolean isClosed() {
         return this.closed;
     }
     
+    /**
+     * Merkitään solmu käsitellyksi.
+     */
     public void close() {
         this.closed = true;
     }

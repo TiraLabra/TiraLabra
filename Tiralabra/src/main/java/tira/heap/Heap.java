@@ -21,7 +21,7 @@ public class Heap <T> {
     
     /**
      * Lisätään kekoon uusi alkio.
-     * @param o lusättävä solmu.
+     * @param o lisättävä solmu.
      */
     public void insert (Node o) {
         if (this.size==0) {
