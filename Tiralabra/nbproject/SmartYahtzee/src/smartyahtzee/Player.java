@@ -47,6 +47,11 @@ public abstract class Player {
         return scores;
     }
     
+    public boolean[] getMarked()
+    {
+        return markedColumns;
+    }
+    
     public int totalPoints()
     {
         return totalPoints;

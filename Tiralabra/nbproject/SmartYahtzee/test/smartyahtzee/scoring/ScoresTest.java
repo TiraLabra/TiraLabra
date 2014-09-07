@@ -59,7 +59,7 @@ public class ScoresTest {
     @Test
     public void testSmallStraightScore() {
         System.out.println("calculateScore");
-        int index = 14;
+        int index = 12;
         int[] dice = {5, 4, 3, 2, 1};
         int expResult = 15;
         int result = Scores.calculateScore(index, dice);
@@ -69,9 +69,9 @@ public class ScoresTest {
     @Test
     public void testLargeStraightScore() {
         System.out.println("calculateScore");
-        int index = 14;
+        int index = 13;
         int[] dice = {6, 5, 4, 3, 2};
-        int expResult = 15;
+        int expResult = 20;
         int result = Scores.calculateScore(index, dice);
         assertEquals(expResult, result);
     }

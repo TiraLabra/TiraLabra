@@ -20,10 +20,13 @@ import static org.junit.Assert.*;
 public class BotTest {
     
     int[] scores;
+    Bot bot;
+    boolean[] marked;
     
     public BotTest() {
-        Bot bot = new Bot();
+        bot = new Bot();
         scores = bot.getScores();
+        marked = bot.getMarked();
     }
     
     @BeforeClass
@@ -42,65 +45,40 @@ public class BotTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of rollDice method, of class Bot.
-     */
-    @Test
-    public void testRollDice() {
-        System.out.println("rollDice");
-        Bot instance = new Bot();
-        instance.rollDice();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
     /**
      * Test of markScore method, of class Bot.
+     * Tests that one column is marked every time markScore is called.
      */
     @Test
-    public void testMarkScore() {
+    public void testRolDiceAndMarkScore() {
         System.out.println("markScore");
-        Bot instance = new Bot();
-        instance.markScore();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int columnsMarked = getMarkedColumns();
+        for (int i = 0; i < 15; i++)
+        {
+            bot.rollDice();
+            bot.markScore();
+            int columnsMarkedNow = getMarkedColumns();
+            assertTrue(columnsMarkedNow == columnsMarked +1);
+            columnsMarked = columnsMarkedNow;
+        }
+        
+
+    }
+    
+    private int getMarkedColumns()
+    {
+        int sum = 0;
+        for (int i = 0; i < 17; i++)
+        {
+            if (marked[i] && i != 6 && i != 7)      //not counting sum and bonus
+            {
+                sum++;
+            }
+        }
+        return sum;
     }
     
         
-    @Test
-    public void testIntelligentChoices1()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices2()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices3()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices4()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices5()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices6()
-    {
-        
-    }
 
 }

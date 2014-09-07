@@ -92,13 +92,17 @@ public class TreeBuilder {
     
     public int[] getSecondTurnDiceToLock(int[] dice, int[] lockedDice)
     {
+        long time = System.currentTimeMillis();
         dice = groupingSort(dice);
+        System.out.println(System.currentTimeMillis()-time +" ms");
         int[] unlockedDice = arraySubtract(dice, lockedDice);
+        System.out.println(System.currentTimeMillis()-time +" ms");
         double keepAllEV = Scores.calculateBestScore(dice, marked);
-        double keepSameEV = 0;
+        double keepSameEV;
         double[] evs;
         
-        DecisionTree tree = expectedValues.getTree(lockedDice);     //ei aina toimi kun lukitut ei välttämättä ole arrayn alussa :S
+        DecisionTree tree = expectedValues.getTree(lockedDice); 
+        System.out.println(System.currentTimeMillis()-time +" ms");
         if (tree == null)
         {
             keepSameEV = 0.0;
@@ -145,6 +149,7 @@ public class TreeBuilder {
             diceToLock[i] = lockedDice[i];
         }
         diceToLock[lockedDice.length] = unlockedDice[biggestIndex];
+        System.out.println(System.currentTimeMillis()-time +" ms");
         return diceToLock;
         
     }

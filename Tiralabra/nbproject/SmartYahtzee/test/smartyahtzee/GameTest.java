@@ -81,44 +81,12 @@ public class GameTest {
     
         
     @Test
-    public void testIntelligentChoices1()
+    public void testIntelligentChoices1()       //chance should never be under 15
     {
         System.out.println(botScores[15]);
-        assertTrue(botScores[15] > 17); 
+        assertTrue(botScores[15] > 14); 
     }
     
-    @Test
-    public void testIntelligentChoices2()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices3()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices4()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices5()
-    {
-        
-    }
-    
-    @Test
-    public void testIntelligentChoices6()
-    {
-        
-    }
-
-    
-    
-   
+  
     
 }

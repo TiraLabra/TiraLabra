@@ -101,7 +101,7 @@ public class TreeListTest {
         System.out.println("getBiggestEVtree");
         int[] root = {5, 5, 3, 2, 1};
         TreeList instance = new TreeList(8, root, new boolean[17]);
-        int[] rootDice = {5, 5};
+        int[] rootDice = {5, 3, 2, 1};
         DecisionTree expResultTree = new DecisionTree(rootDice, new boolean[17]);
         double expResult = expResultTree.getEV();
         DecisionTree resultTree = instance.getBiggestEVtree();
