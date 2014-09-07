@@ -32,15 +32,13 @@ public class FilePrinter {
     public void printToFile(String fileName, ArrayList<String> results) {
 
         boolean writeToFile = true;
-        TextUI t = new TextUI();
-
+        
         try {
 
             File f = new File(fileName + ".csv");
 
             if (f.exists() && !f.isDirectory()) {
-
-             writeToFile = t.existingFile();
+             writeToFile = TextUI.existingFile();
             }
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(f, writeToFile)));
 
@@ -49,7 +47,8 @@ public class FilePrinter {
             }
 
             writer.close();
-            System.out.println("Printed to file: " + fileName + ".csv\n");
+            
+            TextUI.printSuccessfull(fileName);
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TestFactory.class.getName()).log(Level.SEVERE, null, ex);

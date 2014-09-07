@@ -119,10 +119,20 @@ public class TextUI {
             }
         }
     }
-
+    /**
+     * if (f.exists() && !f.isDirectory()) will ask for overwrite
+     * @return if yes returns true
+     */
     public static boolean existingFile() {
         System.out.println("Existing file found. ");
         System.out.print("Overwrite file?(y/enter will add to the end)");
         return !reader.nextLine().equals("y");
+    }
+    /**
+     * Print successfull message
+     * @param fileName 
+     */
+    public static void printSuccessfull(String fileName) {
+        System.out.println("Printed to file: " + fileName + ".csv\n");
     }
 }
