@@ -2,4 +2,4 @@
 
 
 
-YahtzeeBot is a AI for the popular dice game, yahtzee.
+YahtzeeBot is an AI implementation with EV trees for the popular dice game, yahtzee.
