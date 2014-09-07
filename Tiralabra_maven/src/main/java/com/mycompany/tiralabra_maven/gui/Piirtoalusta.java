@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.Nappula;
-import com.mycompany.tiralabra_maven.PeliOhjain;
-import com.mycompany.tiralabra_maven.Siirto;
+import com.mycompany.tiralabra_maven.peli.Nappula;
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
+import com.mycompany.tiralabra_maven.peli.Siirto;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -36,6 +36,9 @@ public class Piirtoalusta extends JPanel implements Runnable {
         super.repaint();
     }
 
+    /**
+     * Piirtoalusta piirretään omassa säikeessään tietyn ajan välein uudestaan
+     */
     @Override
     public void run() {
         while (true) {
@@ -47,6 +50,11 @@ public class Piirtoalusta extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Piirtoalustan piirtäminen piirtää aina pelilaudan ruudut ja nappulat sekä pelin ollessa käynnissä myös
+     * merkitsee ne nappulat joiden liikuttaminen on mahdollista ja ruudut, joihin valitun nappulan voi liikuttaa
+     * @param g 
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -63,11 +71,6 @@ public class Piirtoalusta extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Metodi piirtää pelilaudan ruudut
-     *
-     * @param g
-     */
     private void piirraRuudut(Graphics g) {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -83,13 +86,6 @@ public class Piirtoalusta extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Metodi piirtää pelilaudan nappulat
-     *
-     * @param y
-     * @param x
-     * @param g
-     */
     private void piirraNappulat(int y, int x, Graphics g) {
         if (peli.getPelilauta() == null) {
             return;
@@ -122,11 +118,6 @@ public class Piirtoalusta extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Metodi merkitsee nappulat, joita on mahdollista liikuttaa
-     *
-     * @param g
-     */
     private void merkitseVaihtoehtoisetLiikutettavat(Graphics g) {
         g.setColor(Color.BLUE);
         Siirto[] sallitut = peli.getSallitutSiirrot();
@@ -141,11 +132,6 @@ public class Piirtoalusta extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Metodi merkitsee nappulan, jota pelaaja on päättänyt liikuttaa
-     *
-     * @param g
-     */
     private void merkitseLiikutettavaNappula(Graphics g) {
         g.setColor(Color.CYAN);
         g.drawRect(4 + peli.getValittuSarake() * 40, 4 + peli.getValittuRivi() * 40, 38, 38);
@@ -153,11 +139,6 @@ public class Piirtoalusta extends JPanel implements Runnable {
         merkitseMihinVoidaanLiikkua(g);
     }
 
-    /**
-     * Metodi merkitsee ruudut, joihin valittu nappula on mahdollista liikuttaa
-     *
-     * @param g
-     */
     private void merkitseMihinVoidaanLiikkua(Graphics g) {
         Siirto[] sallitut = peli.getSallitutSiirrot();
 

@@ -1,5 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
 import com.mycompany.tiralabra_maven.gui.Kayttoliittyma;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;

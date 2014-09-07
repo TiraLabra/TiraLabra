@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.PelaajaTyyppi;
-import com.mycompany.tiralabra_maven.PeliOhjain;
+import com.mycompany.tiralabra_maven.peli.PelaajaTyyppi;
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
 
 /**
+ * Käyttöliittymäikkunaluokka, joka välittää peliohjaimelle tiedon käyttäjän
+ * painamista napeista
  *
  * @author noora
  */
@@ -19,7 +16,7 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
     private PelaajaTyyppi valkoinen;
 
     /**
-     * Creates new form Ikkuna
+     * Konstruktorit käyttöliittymäikkunan luomiseen
      */
     public Ikkuna() {
         initComponents();
@@ -165,26 +162,26 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mustaIhminenRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                    .addComponent(mustaEkaAIRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(mustaMinimaxAIRadioButton)
+                    .addComponent(jLabel3)
+                    .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(mustaIhminenRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(mustaEkaAIRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(mustaMinimaxAIRadioButton)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(valkoinenMinimaxAIRadioButton)
                             .addComponent(jLabel2)
                             .addComponent(valkoinenIhminenRadioButton)
                             .addComponent(valkoinenEkaAIRadioButton)
-                            .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
+                            .addComponent(jLabel4))
+                        .addGap(15, 15, 15))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(mustaSyvyysSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(112, 112, 112)))
-                .addContainerGap())
+                        .addComponent(valkoinenSyvyysSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,7 +354,6 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uusiPeliButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiPeliButtonActionPerformed
-        // TODO add your handling code here:
         peli.asetaMustaMinimaxSyvyys(mustaSyvyysSlider.getValue());
         peli.asetaValkoinenMinimaxSyvyys(valkoinenSyvyysSlider.getValue());
         peli.setAiSiirtaaAutomaagisesti(aiCheckbox.isSelected());
@@ -375,49 +371,40 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
     }//GEN-LAST:event_uusiPeliButtonActionPerformed
 
     private void luovutaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luovutaButtonActionPerformed
-        // TODO add your handling code here:
         peli.luovutaPeli();
         this.paivitaKomponentit();
     }//GEN-LAST:event_luovutaButtonActionPerformed
 
     private void aiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiButtonActionPerformed
-        // TODO add your handling code here:
         peli.AISiirtaa();
         this.paivitaKomponentit();
     }//GEN-LAST:event_aiButtonActionPerformed
 
     private void mustaIhminenRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mustaIhminenRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.musta = PelaajaTyyppi.IHMINEN;
     }//GEN-LAST:event_mustaIhminenRadioButtonActionPerformed
 
     private void mustaEkaAIRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mustaEkaAIRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.musta = PelaajaTyyppi.EKAAI;
     }//GEN-LAST:event_mustaEkaAIRadioButtonActionPerformed
 
     private void valkoinenIhminenRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valkoinenIhminenRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.valkoinen = PelaajaTyyppi.IHMINEN;
     }//GEN-LAST:event_valkoinenIhminenRadioButtonActionPerformed
 
     private void valkoinenEkaAIRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valkoinenEkaAIRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.valkoinen = PelaajaTyyppi.EKAAI;
     }//GEN-LAST:event_valkoinenEkaAIRadioButtonActionPerformed
 
     private void mustaMinimaxAIRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mustaMinimaxAIRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.musta = PelaajaTyyppi.MINIMAX;
     }//GEN-LAST:event_mustaMinimaxAIRadioButtonActionPerformed
 
     private void valkoinenMinimaxAIRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valkoinenMinimaxAIRadioButtonActionPerformed
-        // TODO add your handling code here:
         this.valkoinen = PelaajaTyyppi.MINIMAX;
     }//GEN-LAST:event_valkoinenMinimaxAIRadioButtonActionPerformed
 
     private void aiCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aiCheckboxActionPerformed
-        // TODO add your handling code here:
         peli.setAiSiirtaaAutomaagisesti(this.aiCheckbox.isSelected());
         paivitaKomponentit();
     }//GEN-LAST:event_aiCheckboxActionPerformed
@@ -494,12 +481,11 @@ public class Ikkuna extends javax.swing.JFrame implements Paivitettava {
         paivita();
     }
 
+    /**
+     * Metodi päivittää käyttöliittymäikkunan, mikä tarvittaessa asettaa uuden viestin viestikenttään
+     */
     @Override
     public void paivita() {
-        //System.out.println("PAIVITETTIIN");
         this.viestiKentta.setText(peli.getViesti());
-
-        //piirtoalusta1.repaint();
-        //piirtoalusta1.paivita();
     }
 }

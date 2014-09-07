@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.PeliOhjain;
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
 
 
 /**
@@ -10,7 +10,7 @@ import com.mycompany.tiralabra_maven.PeliOhjain;
  */
 public class Kayttoliittyma implements Runnable {
 
-    private PeliOhjain peli;
+    private final PeliOhjain peli;
     private Ikkuna frame3;
 
     /**
@@ -21,8 +21,11 @@ public class Kayttoliittyma implements Runnable {
         this.peli = peli;
     }
 
+    /**
+     * Käyttöliittymän suorittaminen luo uuden käyttöliittymäikkunan
+     */
+    @Override
     public void run() {
-    
         frame3 = new Ikkuna(peli);
         frame3.setVisible(true);
     }

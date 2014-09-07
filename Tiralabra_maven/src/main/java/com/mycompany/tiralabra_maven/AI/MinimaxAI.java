@@ -1,9 +1,9 @@
 package com.mycompany.tiralabra_maven.AI;
 
-import com.mycompany.tiralabra_maven.Peli;
-import com.mycompany.tiralabra_maven.PeliOhjain;
-import com.mycompany.tiralabra_maven.Pelilauta;
-import com.mycompany.tiralabra_maven.Siirto;
+import com.mycompany.tiralabra_maven.peli.Peli;
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
+import com.mycompany.tiralabra_maven.peli.Pelilauta;
+import com.mycompany.tiralabra_maven.peli.Siirto;
 
 /**
  * Luokka toteuttaa minimax-algoritmia käyttävän tekoälyn
@@ -13,24 +13,13 @@ import com.mycompany.tiralabra_maven.Siirto;
 public class MinimaxAI extends AI {
 
     private Heuristiikka heuristiikka;
-    private int miniMaxSyvyys;
+    private final int miniMaxSyvyys;
 
     public MinimaxAI(Peli peli, PeliOhjain peliohjain, boolean siirraAutomaagisesti, int viive, int syvyys) {
         super(peli, peliohjain, siirraAutomaagisesti, viive);
         this.miniMaxSyvyys = syvyys;
     }
 
-    /**
-     * Metodi sisältää minimax-algoritmin
-     *
-     * @param lauta Kyseisen pelitilanteen sisältävä pelilauta
-     * @param syvyys Kuinka monta siirtoa eteenpäin pelitilanteita lasketaan
-     * @param valkoisenVuoroSiirtaa Kumman pelaajan vuoro on kyseessä
-     * @param vuorossaOlevaPelaaja Lasketaanko nyt vuorossa olevan pelaajan vai
-     * vastustajan siirtoa
-     * @return Parhaan mahdollisen laudan arvon, joka voidaan saavuttaa
-     * tekemällä siirtoja kyseiselle pelilaudalle
-     */
     private int minimax(Pelilauta lauta, int syvyys, boolean valkoisenVuoroSiirtaa, boolean vuorossaOlevaPelaaja) {
         int parasArvo, arvo;
         Siirto[] siirrot = lauta.getSallitutSiirrot(valkoisenVuoroSiirtaa);
@@ -66,7 +55,7 @@ public class MinimaxAI extends AI {
     /**
      * Metodi selvittää minkä siirron tekoäly tekee suraavaksi käyttäen apuna
      * minimax-algoritmia. Algoritmin avulla pisteytetään mahdolliset siirrot ja
-     * valitaan niistä tehtäväksi se, jonka saama pistemäärä on suurin
+     * valitaan niistä tehtäväksi se, jonka saama pistemäärä on suurin. Siirtoja lasketaan käyttäjän antaman syvyyden verran eteenpäin.
      *
      * @return Palauttaa siirron, jonka tekoäly haluaa tehdä
      */

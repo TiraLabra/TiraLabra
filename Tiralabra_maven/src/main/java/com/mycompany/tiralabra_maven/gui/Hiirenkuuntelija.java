@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven.gui;
 
-import com.mycompany.tiralabra_maven.PeliOhjain;
+import com.mycompany.tiralabra_maven.peli.PeliOhjain;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,9 +9,9 @@ import java.awt.event.MouseListener;
  * @author noora
  */
 public class Hiirenkuuntelija implements MouseListener {
-    private PeliOhjain peli;
-    private int reuna;
-    private int sivunPituus;
+    private final PeliOhjain peli;
+    private final int reuna;
+    private final int sivunPituus;
     
     public Hiirenkuuntelija(PeliOhjain peli){
         this.peli = peli;

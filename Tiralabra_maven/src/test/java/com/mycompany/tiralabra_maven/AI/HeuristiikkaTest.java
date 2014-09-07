@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven.AI;
 
-import com.mycompany.tiralabra_maven.Pelilauta;
+import com.mycompany.tiralabra_maven.peli.Pelilauta;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,7 +25,7 @@ public class HeuristiikkaTest {
 
     @Test
     public void laskeTilanteenArvoToimiiAlkuasetelmassa() {
-        assertEquals(61, heuristiikka.laskeTilanteenArvo(true));
+        assertEquals(1691, heuristiikka.laskeTilanteenArvo(true));
     }
     
 }
