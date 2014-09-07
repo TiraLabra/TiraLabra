@@ -38,8 +38,8 @@ public class CLI {
     public CLI() {
         this.active = true;
         this.read = new Scanner(System.in);
-        this.realMatrices = new HashMap<>();
-        this.complexMatrices = new HashMap<>();
+        this.realMatrices = new HashMap<String, RealMatrix>();
+        this.complexMatrices = new HashMap<String, ComplexMatrix>();
     }
 
     /**
