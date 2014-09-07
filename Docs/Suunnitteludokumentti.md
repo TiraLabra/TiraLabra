@@ -28,4 +28,6 @@ kuitenkin jo valmiiksi 256 indeksiä pitkä.
 Myös ohjelman rakennetta ja metodien paikkaa luokissa voisi muokata hyvinkin paljon.
 Rakenne muuten on suhteellisen hyvä.
 
+Huomattavaa on, että omaa kekoa ei ole keretty käyttämään ohjelmassa!
+
 ##Lähteet
