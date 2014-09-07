@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tiralabra_maven.logiikka.tietorakenteet;
 
-import com.mycompany.tiralabra_maven.logiikka.tietorakenteet.Lista;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import static junit.framework.Assert.*;

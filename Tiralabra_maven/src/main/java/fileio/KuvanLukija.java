@@ -22,7 +22,7 @@ public class KuvanLukija {
      * @return maailma
      */
     public Ruutu[][] lueMaailmaKuvasta(File tiedosto) {
-        BufferedImage img = null;
+        BufferedImage img;
         try {
             img = ImageIO.read(tiedosto);
         } catch (IOException e) {
