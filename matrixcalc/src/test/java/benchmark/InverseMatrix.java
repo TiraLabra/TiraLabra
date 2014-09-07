@@ -8,9 +8,9 @@ import math.RealMatrix;
  * @author ydna
  */
 public class InverseMatrix {
-    
+
     public String data;
-    
+
     public InverseMatrix() {
         data = "";
         long tmp = 0;
@@ -22,9 +22,9 @@ public class InverseMatrix {
                 long end = System.nanoTime();
                 tmp += end - begin;
             }
-            data += (size + "\t" + tmp/10 + "\n");
+            data += (size + "\t" + tmp / 10 + "\n");
             tmp = 0;
         }
     }
-    
+
 }

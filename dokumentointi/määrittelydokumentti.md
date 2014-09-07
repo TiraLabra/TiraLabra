@@ -1,22 +1,9 @@
 ## Määrittelydokumentti
 
-**Aihe:** Matriisilaskin
+Toteutan harjoitustyössäni yksinkertaisen matriisilaskimen, jonka toimintoihin kuuluvat peruslaskutoimitukset, eli matriisien yhteen-, vähennys-, ja kertolasku, matriisin transpoosi, skalaarikertolasku sekä neliömatriisin determinantin ja käänteismatriisin määrittäminen. Nämä toiminnot toteutetaan sekä reaaliluku- että kompleksilukumatriiseille. Lisäksi ohjelmoidaan laskimelle yksinkertainen, hieman MATLAB:ia muistuttava komentorivikäyttöliittymä.
 
-**Toiminnot:**
-- Matriisien yhteenlasku ja kertolasku
-- Matriisin skalaarikertolasku ja transpoosi
-- Neliömatriisin käänteismatriisi ja determinantti
+Matriiseille valitaan tietorakenteeksi kaksiulotteinen taulukko, jonka alkiot ovat liukulukuja tai kompleksilukuja. Kompleksiluvuille toteutetaan oma luokka, joka sisältää kompleksiluvun reaali- ja imaginääriosat liukulukuina ja määrittelee näille laskutoimitukset. Matriisien peruslaskutoimitusten algoritmit toteutetaan naiivilla tavalla, joka opitaan lineaarialgebran kurssilla. Sen sijaan työn kannalta mielenkiintoiset algoritmit ovat Strassenin algoritmi ja LU-hajotelma. Strassenin algoritmilla lasketaan neliömatriisien kertolasku hajota ja hallitse -menetelmällä, ja LU-hajotelmaa käytetään neliömatriisin kääntämiseen ja determinantin laskemiseen tehokkaasti.
 
-**Algoritmit ja tietorakenteet:**
-- Matriisit kaksiulotteisia liukulukutaulukoita
-- Matriisien peruslaskutoimitukset naiivilla tavalla
-- Neliömatriisien kertolasku Strassenin algoritmilla
-- Neliömatriisin kääntäminen ja determinantin laskeminen LUP-hajotelman avulla
+Matriisien yhteen-, vähennys-, ja skalaarikertolaskun sekä transpoosin aikavaativuuden tavoite on luonnollisesti O(mn), missä m on matriisin rivien ja n matriisin sarakkeiden määrä. Kun kerrotaan m x n- ja n x p-matriiseja, kertolaskun aikavaativuudeksi pyritään saamaan O(mnp). Sen sijaan neliömatriisien kertolasku pitäisi saada Strassenin algoritmilla luokkaan O(n^(log_2(7)))=O(n^2.8074), missä n on neliömatriisin dimensio. Neliömatriisin determinantin laskeminen ja käänteismatriisin määrittäminen pyritään saamaan LU-hajotelmalla aikavaativuusluokkaan O(n^3), missä n on edelleen neliömatriisin rivien tai sarakkeiden määrä.
 
-**Aika- ja tilavaativuudet:**
-- m*n-matriisien yhteenlaskun, skalaarikertolaskun sekä transpoosin aika- ja tilavaativuus O(mn)
-- m*n- ja n*p-matriisin kertolaskun aikavaativuus O(mnp)
-- n*n-matriisien kertolaskun, kääntämisen sekä determinantin laskemisen aikavaativuus O(n^2.8074)
-
-**Lähteet:**
-- Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (Third Edition)
+**Lähteet:** Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (Third Edition)

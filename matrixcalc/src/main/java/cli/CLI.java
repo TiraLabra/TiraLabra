@@ -7,26 +7,26 @@ import math.*;
 
 /**
  * Command line interface for the matrix calculator.
- * 
+ *
  * @author ydna
  */
 public class CLI {
-    
+
     /**
      * True if program is active.
      */
     private boolean active;
-    
+
     /**
      * Reads user input.
      */
     private final Scanner read;
-    
+
     /**
-     * TODO: Create implementation of HashMap
+     * Container for matrices.
      */
     HashMap<String, RealMatrix> memory;
-    
+
     /**
      * Constructor.
      */
@@ -35,9 +35,10 @@ public class CLI {
         this.read = new Scanner(System.in);
         this.memory = new HashMap<String, RealMatrix>();
     }
-    
+
     /**
      * Parser.
+     *
      * @param line String to parse.
      */
     public void parse(String line) {
@@ -59,7 +60,7 @@ public class CLI {
             System.out.println("mmultiply [matrix1] [matrix2]" + "\t" + "- multiplies matrix1 and matrix2 and prints the result");
             System.out.println("multiply [matrix] [int]" + "\t" + "- multiplies matrix with int and prints the result");
             System.out.println("mpower [matrix] [n]" + "\t" + "- calculates the n:th power of matrix and prints the result");
-            System.out.println("tranpose [matrix]" + "\t" + "- prints the transpose of matrix");
+            System.out.println("transpose [matrix]" + "\t" + "- prints the transpose of matrix");
             System.out.println("determinant [matrix]" + "\t" + "- calculates the determinant and prints the result");
             System.out.println("invert [matrix]" + "\t" + "- calculates the inverse of matrix and prints the result");
             System.out.println("help" + "\t" + "- displays this help text");
@@ -84,7 +85,7 @@ public class CLI {
         } else if (parts[0].equals("add") && parts.length > 2) {
             if (memory.containsKey(parts[1])) {
                 if (memory.containsKey(parts[2])) {
-                    System.out.println(((RealMatrix)memory.get(parts[1])).add((RealMatrix)memory.get(parts[2])));
+                    System.out.println(((RealMatrix) memory.get(parts[1])).add((RealMatrix) memory.get(parts[2])));
                 } else {
                     System.out.println("Matrix " + parts[2] + " not loaded yet.");
                 }
@@ -111,7 +112,7 @@ public class CLI {
             } else {
                 System.out.println("Matrix " + parts[1] + " not loaded yet.");
             }
-         } else if (parts[0].equals("mpower") && parts.length > 2) {
+        } else if (parts[0].equals("mpower") && parts.length > 2) {
             if (memory.containsKey(parts[1])) {
                 if (parts[2].matches("-?\\d+(\\.\\d+)?")) {
                     RealMatrix power = memory.get(parts[1]);
@@ -124,7 +125,7 @@ public class CLI {
                     System.out.println(parts[2] + " is not a number.");
                 }
             } else {
-                System.out.println("Matrix "+ parts[1] + " not loaded yet.");
+                System.out.println("Matrix " + parts[1] + " not loaded yet.");
             }
         } else if (parts[0].equals("multiply") && parts.length > 2) {
             if (memory.containsKey(parts[1])) {
@@ -134,7 +135,7 @@ public class CLI {
                     System.out.println(parts[2] + " is not a number.");
                 }
             } else {
-                System.out.println("Matrix "+ parts[1] + " not loaded yet.");
+                System.out.println("Matrix " + parts[1] + " not loaded yet.");
             }
         } else if (parts[0].equals("transpose") && parts.length > 1) {
             if (memory.containsKey(parts[1])) {
@@ -156,16 +157,15 @@ public class CLI {
             }
         }
     }
-    
+
     /**
      * Runs the program until user ends it.
      */
     public void run() {
-        while(active) {
+        while (active) {
             System.out.print("> ");
-            String line = read.nextLine();
-            parse(line);
+            parse(read.nextLine());
         }
     }
-    
+
 }

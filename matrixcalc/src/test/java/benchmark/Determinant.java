@@ -4,13 +4,13 @@ import math.RealMatrix;
 
 /**
  * Benchmark class for calculating the determinant of a real square matrix.
- * 
+ *
  * @author ydna
  */
 public class Determinant {
-    
+
     public String data;
-    
+
     public Determinant() {
         data = "";
         long tmp = 0;
@@ -22,9 +22,9 @@ public class Determinant {
                 long end = System.nanoTime();
                 tmp += end - begin;
             }
-            data += (size + "\t" + tmp/10 + "\n");
+            data += (size + "\t" + tmp / 10 + "\n");
             tmp = 0;
         }
     }
-    
+
 }

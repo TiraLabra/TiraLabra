@@ -8,24 +8,32 @@ import math.RealMatrix;
  * @author ydna
  */
 public class Multiplication {
-    
+
     public String data;
-    
+
     public Multiplication() {
         data = "";
-        long tmp = 0;
+        long tmp1 = 0;
+        long tmp2 = 0;
+        long begin = 0;
+        long end = 0;
         for (int size = 100; size <= 500; size += 10) {
             for (int j = 0; j < 10; j++) {
                 RealMatrix temp1 = RealMatrix.randomMatrix(size, size, -100, 100);
                 RealMatrix temp2 = RealMatrix.randomMatrix(size, size, -100, 100);
-                long begin = System.nanoTime();
+                begin = System.nanoTime();
                 temp1.multiply(temp2);
-                long end = System.nanoTime();
-                tmp += end - begin;
+                end = System.nanoTime();
+                tmp1 += end - begin;
+                begin = System.nanoTime();
+                temp1.strassenMultiply(temp2);
+                end = System.nanoTime();
+                tmp2 += end - begin;
             }
-            data += (size + "\t" + tmp/10 + "\n");
-            tmp = 0;
+            data += (size + "\t" + tmp1 / 10 + "\t" + tmp2 / 10 + "\n");
+            tmp1 = 0;
+            tmp2 = 0;
         }
     }
-    
+
 }

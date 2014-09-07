@@ -10,32 +10,33 @@ import java.io.Serializable;
 import java.util.Random;
 
 /**
- * Contains a matrix as a two-dimensional array of double precision floating point numbers,
- * and includes methods for basic matrix operations.
- * 
+ * Contains a matrix as a two-dimensional array of double precision floating
+ * point numbers, and includes methods for basic matrix operations.
+ *
  * @author ydna
  */
 public class RealMatrix implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Two-dimensional array containing the matrix elements as double values.
      */
     private final double[][] array;
-    
+
     /**
      * The row dimension, or the number of rows in the matrix.
      */
     private final int rows;
-    
+
     /**
      * The column dimension, or the number of columns in the matrix.
      */
     private final int cols;
-    
+
     /**
      * Constructs a matrix from a two-dimensional array.
+     *
      * @param array Two-dimensional double array.
      */
     public RealMatrix(double[][] array) {
@@ -43,9 +44,10 @@ public class RealMatrix implements Serializable {
         this.rows = array.length;
         this.cols = array[0].length;
     }
-    
+
     /**
      * Constructs a zero matrix with the given number of rows and columns.
+     *
      * @param rows The number of rows.
      * @param cols The number of columns.
      */
@@ -54,9 +56,10 @@ public class RealMatrix implements Serializable {
         this.rows = rows;
         this.cols = cols;
     }
-    
+
     /**
      * Constructs a constant matrix with the given number of rows and columns.
+     *
      * @param rows The number of rows.
      * @param cols The number of columns.
      * @param val The value of matrix elements.
@@ -71,9 +74,10 @@ public class RealMatrix implements Serializable {
             }
         }
     }
-    
+
     /**
      * Returns the matrix as a string.
+     *
      * @return Matrix as a string.
      */
     @Override
@@ -88,70 +92,62 @@ public class RealMatrix implements Serializable {
         }
         return matrix;
     }
-    
+
     /**
      * Constructs a matrix from the given file.
+     *
      * @param file File name.
-     * @throws Exception 
+     * @throws Exception
      */
     public RealMatrix(String file) throws Exception {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));   
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
         RealMatrix matrix = (RealMatrix) in.readObject();
         this.array = matrix.getArray();
         this.rows = matrix.getRows();
         this.cols = matrix.getCols();
     }
-    
+
     /**
      * Saves this matrix into the given file.
+     *
      * @param file File name.
-     * @throws Exception 
+     * @throws Exception
      */
     public void saveMatrix(String file) throws Exception {
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
         out.writeObject(this);
     }
-    
+
     /**
      * Accesses the two-dimensional array with the matrix elements.
+     *
      * @return Pointer to the array.
      */
     public double[][] getArray() {
         return this.array;
     }
-    
-    /**
-     * Makes a duplicate of the two-dimensional array with the matrix elements.
-     * @return Pointer to the copy of the array.
-     */
-    public double[][] copyArray() {
-        double[][] copy = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                copy[i][j] = array[i][j];
-            }
-        }
-        return copy;
-    }
-    
+
     /**
      * Returns the row dimension of the matrix.
+     *
      * @return Number of rows.
      */
     public int getRows() {
         return this.rows;
     }
-    
+
     /**
      * Returns the column dimension of the matrix.
+     *
      * @return Number of columns.
      */
     public int getCols() {
         return this.cols;
     }
-    
+
     /**
      * Returns an element from the given row and column of the matrix.
+     *
      * @param i Row number.
      * @param j Column number.
      * @return Matrix element.
@@ -159,9 +155,10 @@ public class RealMatrix implements Serializable {
     public double get(int i, int j) {
         return this.array[i][j];
     }
-    
+
     /**
      * Adds another matrix to this matrix.
+     *
      * @param matrix Another matrix.
      * @return Sum.
      */
@@ -177,9 +174,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Subtracts another matrix from this matrix.
+     *
      * @param matrix Another matrix.
      * @return Difference.
      */
@@ -195,9 +193,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Multiplies this matrix with a scalar number.
+     *
      * @param number Multiplier.
      * @return Scalar product.
      */
@@ -210,9 +209,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Returns the transpose of this matrix.
+     *
      * @return Transpose.
      */
     public RealMatrix transpose() {
@@ -224,9 +224,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Multiplies this matrix by another matrix.
+     *
      * @param matrix Another matrix.
      * @return Matrix product.
      */
@@ -244,9 +245,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Multiplies this matrix by another matrix using Strassen's algorithm.
+     *
      * @param matrix Another matrix.
      * @return Matrix product.
      */
@@ -254,17 +256,19 @@ public class RealMatrix implements Serializable {
         double[][] temp = Strassen.strassen(this.getArray(), matrix.getArray());
         return new RealMatrix(temp);
     }
-    
+
     /**
      * Calculates the determinant of this matrix.
+     *
      * @return Determinant.
      */
     public double determinant() {
         return new LUDecomposition(array).determinant();
     }
-    
+
     /**
      * Calculates the inverse of this matrix.
+     *
      * @return Matrix inverse.
      */
     public RealMatrix inverse() {
@@ -276,9 +280,10 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(new LUDecomposition(array).solve(temp));
     }
-    
+
     /**
      * Generates a matrix with random double elements within the given range.
+     *
      * @param rows The number of rows.
      * @param cols The number of columns.
      * @param lower Lower limit.
@@ -295,5 +300,5 @@ public class RealMatrix implements Serializable {
         }
         return new RealMatrix(temp);
     }
-    
+
 }

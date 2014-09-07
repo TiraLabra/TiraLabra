@@ -1,23 +1,18 @@
 package algorithms.real;
 
-import math.*;
-
 /**
- * Implements the Strassen algorithm for fast matrix multiplication.
- * Source: Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (3rd edition)
- * 
+ * Implements the Strassen algorithm for fast matrix multiplication. Source:
+ * Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (3rd edition)
+ *
  * @author ydna
  */
 public class Strassen {
-    
-    private final static int LEAF_SIZE = 32;
-    
-    public Strassen(RealMatrix A, RealMatrix B) {
-        
-    }
-    
+
+    private final static int LEAF_SIZE = 64;
+
     /**
      * Adds two matrices.
+     *
      * @param A First matrix.
      * @param B Second matrix.
      * @return Sum of the first and second matrix.
@@ -32,9 +27,10 @@ public class Strassen {
         }
         return C;
     }
-    
+
     /**
      * Subtracts two matrices.
+     *
      * @param A First matrix.
      * @param B Second matrix.
      * @return Difference between the first and second matrix.
@@ -49,9 +45,10 @@ public class Strassen {
         }
         return C;
     }
-    
+
     /**
      * Multiplies two matrices using the naïve algorithm.
+     *
      * @param A First matrix.
      * @param B Second matrix.
      * @return Product of the first and second matrix.
@@ -68,20 +65,22 @@ public class Strassen {
         }
         return C;
     }
-    
+
     /**
      * Multiplies two matrices using Strassen's algorithm.
+     *
      * @param first First matrix.
      * @param second Second matrix.
      * @return Product of the first and second matrix.
      */
     public static double[][] strassen(double[][] first, double[][] second) {
-        int n = (int)Math.pow(2, Math.ceil(Math.log(first.length)/Math.log(2)));
+        int length = first.length;
+        int n = (int) Math.pow(2, Math.ceil(Math.log(length) / Math.log(2)));
         double[][] A = new double[n][n];
         double[][] B = new double[n][n];
         double[][] C = new double[n][n];
-        for (int i = 0; i < first.length; i++) {
-            for (int j = 0; j < first.length; j++) {
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
                 A[i][j] = first[i][j];
                 B[i][j] = second[i][j];
             }
@@ -90,7 +89,7 @@ public class Strassen {
             return multiply(A, B);
         } else {
             /* 1. Divide the input matrices A and B into n/2 x n/2 submatrices */
-            int size = n/2;
+            int size = n / 2;
             double[][] A11 = new double[size][size];
             double[][] A12 = new double[size][size];
             double[][] A21 = new double[size][size];
@@ -102,13 +101,13 @@ public class Strassen {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     A11[i][j] = A[i][j];
-                    A12[i][j] = A[i][j+size];
-                    A21[i][j] = A[i+size][j];
-                    A22[i][j] = A[i+size][j+size];
+                    A12[i][j] = A[i][j + size];
+                    A21[i][j] = A[i + size][j];
+                    A22[i][j] = A[i + size][j + size];
                     B11[i][j] = B[i][j];
-                    B12[i][j] = B[i][j+size];
-                    B21[i][j] = B[i+size][j];
-                    B22[i][j] = B[i+size][j+size];
+                    B12[i][j] = B[i][j + size];
+                    B21[i][j] = B[i + size][j];
+                    B22[i][j] = B[i + size][j + size];
                 }
             }
             /* 2. Create 10 matrices, each of which is the sum or difference of two matrices created in step 1 */
@@ -138,13 +137,19 @@ public class Strassen {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     C[i][j] = C11[i][j];
-                    C[i][j+size] = C12[i][j];
-                    C[i+size][j] = C21[i][j];
-                    C[i+size][j+size] = C22[i][j];
+                    C[i][j + size] = C12[i][j];
+                    C[i + size][j] = C21[i][j];
+                    C[i + size][j + size] = C22[i][j];
                 }
             }
         }
-        return C;
+        double[][] temp = new double[length][length];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                temp[i][j] = C[i][j];
+            }
+        }
+        return temp;
     }
-    
+
 }

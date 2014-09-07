@@ -4,21 +4,23 @@ import math.Complex;
 
 /**
  * Implements the algorithm for computing the LU(P) decomposition of a matrix.
- * Source: Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (3rd edition)
- * 
+ * Source: Cormen, Leiserson, Rivest, Stein: Introduction to Algorithms (3rd
+ * edition)
+ *
  * @author ydna
  */
 public class LUDecomposition {
-    
+
     private Complex[][] lu;
     private int[] pivot;
     private final int n;
     private int pivotSign;
     private boolean singular;
     private final static double EPSILON = 1e-11;
-    
+
     /**
      * Computes the LU decomposition.
+     *
      * @param array The matrix as a double array.
      */
     public LUDecomposition(Complex[][] array) {
@@ -40,7 +42,7 @@ public class LUDecomposition {
         singular = false;
         for (int k = 0; k < n; k++) {
             int p = k;
-            for (int i = k+1; i < n; i++) {
+            for (int i = k + 1; i < n; i++) {
                 if (lu[i][k].abs() > lu[p][k].abs()) {
                     p = i;
                 }
@@ -60,17 +62,18 @@ public class LUDecomposition {
                 pivot[k] = temp;
                 pivotSign = -pivotSign;
             }
-            for (int i = k+1; i < n; i++) {
+            for (int i = k + 1; i < n; i++) {
                 lu[i][k] = lu[i][k].divide(lu[k][k]);
-                for (int j = k+1; j < n; j++) {
+                for (int j = k + 1; j < n; j++) {
                     lu[i][j] = lu[i][j].subtract(lu[i][k].multiply(lu[k][j]));
                 }
             }
         }
     }
-    
+
     /**
      * Calculates the determinant of the matrix.
+     *
      * @return Determinant.
      */
     public Complex determinant() {
@@ -83,18 +86,16 @@ public class LUDecomposition {
         }
         return det;
     }
-    
+
     /**
      * Solves A*X=B using forward and back substitution.
+     *
      * @param array
      * @return X
      */
     public Complex[][] solve(Complex[][] array) {
         if (singular) {
             throw new IllegalArgumentException("Matrix is singular.");
-        }
-        if (n != array.length) {
-            throw new IllegalArgumentException("Matrix row dimensions do not match.");
         }
         int m = array[0].length;
         Complex[][] result = new Complex[n][m];
@@ -104,13 +105,13 @@ public class LUDecomposition {
             }
         }
         for (int i = 0; i < n; i++) {
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 for (int k = 0; k < m; k++) {
                     result[j][k] = result[j][k].subtract(result[i][k].multiply(lu[j][i]));
                 }
             }
         }
-        for (int i = n-1; i >= 0; i--) {
+        for (int i = n - 1; i >= 0; i--) {
             for (int j = 0; j < array[0].length; j++) {
                 result[i][j] = result[i][j].divide(lu[i][i]);
             }
@@ -122,5 +123,5 @@ public class LUDecomposition {
         }
         return result;
     }
-    
+
 }
