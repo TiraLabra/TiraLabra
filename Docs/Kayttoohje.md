@@ -24,12 +24,12 @@ java -jar Tiralabra.jar tiedoston_nimi heuristiikan_nimi > tuloste_tiedosto.csv
 Ensimmäinen argumentti on siis syötetiedoston nimi. Toisena argumenttina annetaan haluttu heuristiikka, joka voi olla yksi seuraavista:
 
 - naive : Generoi polynomeja tasaisen jakauman avulla, kuitenkin siten että polynomilla on aina vakiokerroin.
-- sparse : Generoi lyhyempiä polynomeja laskennan nopeuttamiseksi
-- checkroots : Tarkistaa onko polynomilla juuria ennen kuin se annetaan Rabinin jaottomuusalgoritmille
-- smartchar2 : Mikäli karakteristika on 2, varmistaa vakioajassa että generoidulla polynomilla ei ole juuria
-- sparse_checkroots : Yhdistelmä heuristiikoista sparse ja checkroots
-- sparse_smartchar2 : Yhdistelmä heuristiikoista sparse ja smartchar2
-- sparse_checkroots_smartchar2 : Yhdistelmä heuristiikoista sparse, checkroots ja smartchar2
+- sparse : Generoi lyhyempiä polynomeja laskennan nopeuttamiseksi.
+- checkroots : Tarkistaa onko polynomilla juuria ennen kuin se annetaan Rabinin jaottomuusalgoritmille.
+- smartchar2 : Mikäli karakteristika on 2, varmistaa vakioajassa että generoidulla polynomilla ei ole juuria.
+- sparse_checkroots : Yhdistelmä heuristiikoista sparse ja checkroots.
+- sparse_smartchar2 : Yhdistelmä heuristiikoista sparse ja smartchar2.
+- sparse_checkroots_smartchar2 : Yhdistelmä heuristiikoista sparse, checkroots ja smartchar2.
 
 Testien nojalla heuristiikoista nopein on sparse_checkroots_smartchar2.
 
