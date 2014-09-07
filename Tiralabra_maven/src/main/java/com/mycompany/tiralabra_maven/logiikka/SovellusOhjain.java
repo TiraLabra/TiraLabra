@@ -31,11 +31,43 @@ public class SovellusOhjain {
     private Toiminto toiminto = Toiminto.SEINA;
 
     /**
-     * Luo uuden simulaation.
+     * Luo uuden sovellusohjaimen.
      */
     public SovellusOhjain() {
-        this.simulaatio = new Simulaatio();
-        this.kuvanLukija = new KuvanLukija();
+        this(new Simulaatio(), new KuvanLukija());
+    }
+
+    /**
+     * Luo uuden sovellusohjaimen. Konstruktorille voidaan antaa parametreina
+     * käytettävä simulaatio ja kuvanlukija.
+     *
+     * @param simulaatio
+     * @param kuvanlukija
+     */
+    public SovellusOhjain(Simulaatio simulaatio, KuvanLukija kuvanlukija) {
+        this.simulaatio = simulaatio;
+        this.kuvanLukija = kuvanlukija;
+    }
+
+    /**
+     * Tätä metodia tulee kutsua silloin, kun hiiri on jonkun ruudukon ruudun
+     * päällä.
+     *
+     * @param x
+     * @param y
+     */
+    public void hiiriRuudunPaalla(int x, int y) {
+        if (hiiri == null || x != hiiri.getX() || y != hiiri.getY()) {
+            this.hiiri = new Koordinaatit(x, y);
+            suoritaToimintoJosHiiriPainettu();
+        }
+    }
+
+    /**
+     * Tätä metodia tulee kutsua, kun hiiri on poistunut ruudukon alueelta.
+     */
+    public void hiiriPoistunut() {
+        this.hiiri = null;
     }
 
     /**
@@ -215,39 +247,12 @@ public class SovellusOhjain {
     }
 
     /**
-     * Asettaa algoritmin suorituksessa käytettävän heuristiikan.
-     *
-     * @param heuristiikka
-     */
-    public void setHeuristiikka(Heuristiikka heuristiikka) {
-        this.simulaatio.setHeuristiikka(heuristiikka);
-    }
-
-    /**
-     * Asettaa algoritmin alkupisteen
-     *
-     * @param koord
-     */
-    public void setAlkuPiste(Koordinaatit koord) {
-        this.simulaatio.setAlkuPiste(koord);
-    }
-
-    /**
      * Palauttaa algoritmin alkupisteen.
      *
      * @return alkupiste
      */
     public Koordinaatit getAlkuPiste() {
         return this.simulaatio.getAlkuPiste();
-    }
-
-    /**
-     * Asettaa algoritmin maalipisteen.
-     *
-     * @param koord
-     */
-    public void setMaali(Koordinaatit koord) {
-        this.simulaatio.setMaali(koord);
     }
 
     /**
@@ -329,27 +334,6 @@ public class SovellusOhjain {
     }
 
     /**
-     * Tätä metodia tulee kutsua silloin, kun hiiri on jonkun ruudukon ruudun
-     * päällä.
-     *
-     * @param x
-     * @param y
-     */
-    public void hiiriRuudunPaalla(int x, int y) {
-        if (hiiri == null || x != hiiri.getX() || y != hiiri.getY()) {
-            this.hiiri = new Koordinaatit(x, y);
-            suoritaToimintoJosHiiriPainettu();
-        }
-    }
-
-    /**
-     * Tätä metodia tulee kutsua, kun hiiri on poistunut ruudukon alueelta.
-     */
-    public void hiiriPoistunut() {
-        this.hiiri = null;
-    }
-
-    /**
      * Asettaa ruudun kustannuksen
      *
      * @param ruutu
@@ -358,7 +342,7 @@ public class SovellusOhjain {
     public void asetaRuudunKustannus(Ruutu ruutu, int kustannus) {
         Ruutu.asetaKustannus(ruutu, kustannus);
     }
-    
+
     /**
      * Asettaa päivitettävän otuksen
      */
@@ -388,9 +372,10 @@ public class SovellusOhjain {
     public PiirrettavaRuutu getTilaRuutu(int x, int y) {
         return simulaatio.getTilaRuutu(x, y);
     }
-    
+
     /**
      * Palauttaa reitin pituuden, jos reitti on löytynyt
+     *
      * @return reitin pituus
      */
     public int getReitinPituus() {

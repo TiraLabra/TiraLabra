@@ -135,11 +135,9 @@ public abstract class Algoritmi implements Runnable {
     }
 
     protected void maaliLoytyi(Solmu solmu) {
-//        System.out.println("REITTI (lopusta alkuun:");
         this.reitti = solmu;
         while (solmu != null) {
             ruutujenTilat[solmu.getKoord().getY()][solmu.getKoord().getX()] = RuudunTila.REITTI;
-            //System.out.println(solmu);
             solmu = solmu.getEdellinen();
         }
         this.valmis = true;

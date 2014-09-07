@@ -22,16 +22,18 @@ import static junit.framework.Assert.fail;
 public class AlgoritmiTest {
 
     private final AlgoritmiTyyppi algoritmiTyyppi;
+    private final AlgoritmiTehdas algoritmiTehdas;
 
     public AlgoritmiTest(AlgoritmiTyyppi algoritmiTyyppi) {
         this.algoritmiTyyppi = algoritmiTyyppi;
+        this.algoritmiTehdas = new AlgoritmiTehdas();
     }
 
     public void algoritmiLoytaaSuoranReitinPerille() {
         Ruutu[][] maailma = alustaMaailma();
         Koordinaatit alku = new Koordinaatit(1, 4);
         Koordinaatit maali = new Koordinaatit(8, 4);
-        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(7, algoritmi.getReitti().getKuljettuMatka());
 
@@ -42,7 +44,7 @@ public class AlgoritmiTest {
         Koordinaatit alku = new Koordinaatit(38, 0);
         Koordinaatit maali = new Koordinaatit(0, 38);
         //Annetaan algoritmille 1 ms hidaste suorituskykytestausta varten
-        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, 1, alku, maali, false, new ManhattanHeuristiikka());
         long aikaAlussa = System.currentTimeMillis();
         suoritaAlgoritmi(algoritmi);
         long kulunutAika = System.currentTimeMillis() - aikaAlussa;
@@ -63,7 +65,7 @@ public class AlgoritmiTest {
         teeSeina(maailma);
         Koordinaatit alku = new Koordinaatit(0, 0);
         Koordinaatit maali = new Koordinaatit(9, 5);
-        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
 
         suoritaAlgoritmi(algoritmi);
         assertEquals(20, algoritmi.getReitti().getKuljettuMatka());
@@ -83,7 +85,7 @@ public class AlgoritmiTest {
         maailma[3][5] = Ruutu.SEINA;
         Koordinaatit alku = new Koordinaatit(3, 5);
         Koordinaatit maali = new Koordinaatit(4, 0);
-        Algoritmi algoritmi = luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
+        Algoritmi algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, 0, alku, maali, false, new ManhattanHeuristiikka());
         suoritaAlgoritmi(algoritmi);
         assertEquals(8, algoritmi.getReitti().getKuljettuMatka());
         assertNull(algoritmi.getRuudunTila(0, 6));
@@ -91,25 +93,11 @@ public class AlgoritmiTest {
         assertEquals(RuudunTila.REITTI, algoritmi.getRuudunTila(2, 3));
     }
 
-    private Algoritmi luoAlgoritmi(AlgoritmiTyyppi tyyppi, Ruutu[][] maailma, int hidaste, Koordinaatit alkuKoord, Koordinaatit maaliKoord, boolean vinottain, Heuristiikka kaytettavaHeuristiikka) {
-        switch (tyyppi) {
-            case A_STAR:
-                return new AStarAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain, kaytettavaHeuristiikka);
-            case BREADTH_FIRST:
-                return new BreadthFirstAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
-            case DIJKSTRA:
-                return new DijkstraAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain);
-            case GREEDY_BEST_FIRST:
-                return new GreedyBestFirstAlgoritmi(maailma, hidaste, alkuKoord, maaliKoord, vinottain, kaytettavaHeuristiikka);
-        }
-        return null;
-    }
-
-    private Ruutu[][] alustaMaailma() {
+    public Ruutu[][] alustaMaailma() {
         return alustaMaailma(10, 10);
     }
 
-    private Ruutu[][] alustaMaailma(int leveys, int korkeus) {
+    public Ruutu[][] alustaMaailma(int leveys, int korkeus) {
         Ruutu[][] maailma = new Ruutu[korkeus][leveys];
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
@@ -119,7 +107,7 @@ public class AlgoritmiTest {
         return maailma;
     }
 
-    private void suoritaAlgoritmi(Algoritmi algoritmi) {
+    public void suoritaAlgoritmi(Algoritmi algoritmi) {
         new Thread(algoritmi).start();
         //Koodi tarkkailee jääkö algoritmi jumiin
         int laskuri = 0;

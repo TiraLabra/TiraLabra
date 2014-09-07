@@ -7,17 +7,11 @@ import com.mycompany.tiralabra_maven.gui.Paivitettava;
 import com.mycompany.tiralabra_maven.gui.PiirrettavaRuutu;
 import com.mycompany.tiralabra_maven.gui.RuudunTila;
 import com.mycompany.tiralabra_maven.gui.Ruutu;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.AStarAlgoritmi;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.Algoritmi;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.BreadthFirstAlgoritmi;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.DijkstraAlgoritmi;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.GreedyBestFirstAlgoritmi;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.AlgoritmiTehdas;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.Heuristiikka;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanHeuristiikka;
 import com.mycompany.tiralabra_maven.logiikka.algoritmi.Solmu;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.DiagonaalinenHeuristiikka;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.DiagonaalinenTieBreakingHeuristiikka;
-import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.ManhattanTieBreakingHeuristiikka;
+import com.mycompany.tiralabra_maven.logiikka.algoritmi.heuristiikka.HeuristiikkaTehdas;
 
 /**
  * Simulaatio tuntee ruudukon ja tiedon alku- ja maalipisteen koordinaateista ja
@@ -36,9 +30,11 @@ public class Simulaatio {
     private int korkeus;
     private Paivitettava paivitettava;
 
+    private final HeuristiikkaTehdas heuristiikkaTehdas;
     private HeuristiikkaTyyppi heuristiikkaTyyppi;
     private Heuristiikka heuristiikka;
 
+    private final AlgoritmiTehdas algoritmiTehdas;
     private AlgoritmiTyyppi algoritmiTyyppi;
     private Algoritmi algoritmi;
 
@@ -54,8 +50,9 @@ public class Simulaatio {
         this.maali = new Koordinaatit(9, 5);
         this.vinottain = false;
         this.heuristiikkaTyyppi = HeuristiikkaTyyppi.MANHATTAN;
-        //this.heuristiikka = new ManhattanHeuristiikka();
-        this.algoritmiTyyppi = AlgoritmiTyyppi.A_STAR;
+        this.algoritmiTyyppi = AlgoritmiTyyppi.BREADTH_FIRST;
+        this.algoritmiTehdas = new AlgoritmiTehdas();
+        this.heuristiikkaTehdas = new HeuristiikkaTehdas();
     }
 
     private void alustaMaailma() {
@@ -136,6 +133,9 @@ public class Simulaatio {
     }
 
     public void setMaailma(Ruutu[][] maailma) {
+        if (maailma == null) {
+            return;
+        }
         lopetaReitinEtsiminen();
         this.maailma = maailma;
         this.korkeus = maailma.length;
@@ -160,15 +160,6 @@ public class Simulaatio {
      */
     public void setRuutu(int x, int y, Ruutu ruutu) {
         this.maailma[y][x] = ruutu;
-    }
-
-    /**
-     * Asettaa algoritmin suorituksessa käytettävän heuristiikan.
-     *
-     * @param heuristiikka
-     */
-    public void setHeuristiikka(Heuristiikka heuristiikka) {
-        this.heuristiikka = heuristiikka;
     }
 
     /**
@@ -211,36 +202,9 @@ public class Simulaatio {
      * Käynnistää reittialgoritmin suorituksen.
      */
     public void etsiReitti() {
-        switch(heuristiikkaTyyppi) {
-            case MANHATTAN:
-                this.heuristiikka = new ManhattanHeuristiikka();
-                break;
-            case MANHATTAN_TIEBREAKING:
-                this.heuristiikka = new ManhattanTieBreakingHeuristiikka();
-                break;
-            case DIAGONAALINEN:
-                this.heuristiikka = new DiagonaalinenHeuristiikka();
-                break;
-            case DIAGONAALINEN_TIEBREAKING:
-                this.heuristiikka = new DiagonaalinenTieBreakingHeuristiikka();
-                break;
-        }
-        
-        
-        switch (algoritmiTyyppi) {
-            case BREADTH_FIRST:
-                this.algoritmi = new BreadthFirstAlgoritmi(maailma, hidaste, alku, maali, vinottain);
-                break;
-            case DIJKSTRA:
-                this.algoritmi = new DijkstraAlgoritmi(maailma, hidaste, alku, maali, vinottain);
-                break;
-            case GREEDY_BEST_FIRST:
-                this.algoritmi = new GreedyBestFirstAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
-                break;
-            case A_STAR:
-                this.algoritmi = new AStarAlgoritmi(maailma, hidaste, alku, maali, vinottain, heuristiikka);
-                break;
-        }
+        this.heuristiikka = heuristiikkaTehdas.getHeuristiikka(heuristiikkaTyyppi);       
+        this.algoritmi = algoritmiTehdas.luoAlgoritmi(algoritmiTyyppi, maailma, hidaste, alku, maali, vinottain, heuristiikka);
+
         this.algoritmi.setPaivitettava(paivitettava);
         new Thread(this.algoritmi).start();
     }
@@ -334,10 +298,6 @@ public class Simulaatio {
      * @return ruudun tyyppi
      */
     public PiirrettavaRuutu getMaailmaRuutu(int x, int y) {
-        if (maailma == null) {
-            return null;
-        }
-
         return maailma[y][x];
     }
 
@@ -357,7 +317,7 @@ public class Simulaatio {
         }
         return null;
     }
-    
+
     public void setPaivitettava(Paivitettava paivitettava) {
         this.paivitettava = paivitettava;
     }
