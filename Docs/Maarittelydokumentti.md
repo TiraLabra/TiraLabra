@@ -1,8 +1,8 @@
-Reittialgoritmien visualisointi
+##Reittialgoritmien visualisointi
 
-Harjoitustyön aiheena on toteuttaa A* -reitinetsintäalgoritmi ja sille jollain tavalla sukua olevat Breadth first search (Leveyssuuntainen haku), Dijkstram algoritmi ja Greedy Best First (Ahne paras ensin) algoritmi. Lisäksi toteutetaan graafinen sovellus, jossa käyttäjä voi määritellä maailman (ruudukkona) ja tarkastella ja vertailla reittialgoritmien toimintaa tässä ympäristössä.
+Harjoitustyön aiheena on toteuttaa graafinen sovellus, jossa voidaan visualisoida ja vertailla eri reittialgoritmien käyttäytymistä ja toimintaa. Sovelluksessa on toteutettu A\* -reitinetsintäalgoritmi ja sille jollain tavalla sukua olevat Breadth first search (Leveyssuuntainen haku), Dijkstram algoritmi ja Greedy Best First (Ahne paras ensin) algoritmi. Graafisessa sovelluksessa käyttäjä voi määritellä maailman (ruudukkona), tai ladata sellaisen jostain valmiista kuvatiedostosta, ja tarkastella ja vertailla reittialgoritmien toimintaa tässä ympäristössä.
 
-A* on eräänlainen yhdistelmä Dijkstran reittialgoritmista ja Greedy Best First -algoritmista: Siinä missä Dijkstran algoritmissa haku laajenee joka suuntaan, eli valitaan aina solmu johon jo kuljettu matka on mahdollisimman pieni, kunnes lyhin reitti löydetään, ja Greedy Best first-haussa valitaan solmu josta arvioitu etäisyys maaliin on pienin, A* -haussa hyödynnetään näitä molempia: Seuraavaksi käsittelyyn valitaan solmu, jolle jo kuljetun matkan ja arvioidun etäisyyden maaliin summa on mahdollisimman pieni.
+A\* on eräänlainen yhdistelmä Dijkstran reittialgoritmista ja Greedy Best First -algoritmista: Siinä missä Dijkstran algoritmissa haku laajenee joka suuntaan, eli valitaan aina solmu johon jo kuljettu matka on mahdollisimman pieni, kunnes lyhin reitti löydetään, ja Greedy Best first-haussa valitaan solmu josta arvioitu etäisyys maaliin on pienin, A\* -haussa hyödynnetään näitä molempia: Seuraavaksi käsittelyyn valitaan solmu, jolle jo kuljetun matkan ja arvioidun etäisyyden maaliin summa on mahdollisimman pieni.
 
 Syötteenä hakualgoritmi saa siis ruudukon (2-ulotteisen taulukon) ennalta määritettyjä ruutuja, joilla on oma liikkumiskustannus (esimerkiksi lattiaa pitkin kulkemisen kustannus voi olla 1, kun taas vaikkapa vettä pitkin kulkemisen kustannus voi olla 20), ja tiedon lähtö- ja maalipisteiden koordinaateista. 
 
