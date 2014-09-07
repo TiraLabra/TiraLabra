@@ -3,9 +3,9 @@
 > Mahjong-käsiin liittyviä algoritmeja Haskelliksi
 
 Plärinät
-[määrittelystä](blob/master/Docs/Määrittelydokumentti.md),
-[toteutuksesta ja rakenteesta](blob/master/Docs/Toteutusdokumentti.md) sekä
-[testauksesta](blob/master/Docs/Testausdokumentti.md) `Docs`-kansiossa.
+[määrittelystä](Docs/Määrittelydokumentti.md),
+[toteutuksesta ja rakenteesta](Docs/Toteutusdokumentti.md) sekä
+[testauksesta](Docs/Testausdokumentti.md) `Docs`-kansiossa.
 
 Tekninen plärinä
 [haddock-dokkareissa](http://simsaladin.users.paivola.fi/TiraLabra/).
