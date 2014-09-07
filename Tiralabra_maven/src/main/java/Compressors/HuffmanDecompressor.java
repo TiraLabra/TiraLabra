@@ -53,11 +53,13 @@ public final class HuffmanDecompressor extends FileCompressionController {
         final TreeMember tree = (TreeMember) objectReader.readObject();
         final int bitsInArray = bitReader.readInt();
         final int arrayLenghtInBytes = readArrayLenghts(bitsInArray);
-        print("Decompressed file size: " + arrayLenghtInBytes + " (" + arrayLenghtInBytes / 1000 + "kB).");
         final byte[] bits = new byte[arrayLenghtInBytes];
         bitReader.read(bits);
         final BitSet bitsInSet = new BitSet(bits, bitsInArray);
-        return decode(bitsInSet, tree);
+        final String decoded = decode(bitsInSet, tree);
+        final int bytesInDecompressedFile = decoded.length();
+        print("Decompressed file size: " + bytesInDecompressedFile + " (" + bytesInDecompressedFile / 1000 + "kB).");
+        return decoded;
     }
 
     /**
