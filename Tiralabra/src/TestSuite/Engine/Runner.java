@@ -14,7 +14,7 @@ import TestSuite.Arrays.Arr;
  */
 public class Runner {
 
-    private final int repeat;
+    private int repeat;
 
     /**
      *
@@ -62,5 +62,9 @@ public class Runner {
         long end = System.nanoTime();
 
         return end - start;
+    }
+
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
     }
 }

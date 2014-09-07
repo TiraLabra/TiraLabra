@@ -4,6 +4,7 @@
  */
 package TestSuite;
 
+import TestSuite.Engine.TestFactory;
 import TestSuite.UI.TextUI;
 
 /**
@@ -13,7 +14,8 @@ import TestSuite.UI.TextUI;
 public class main {
 
     public static void main(String[] args) {
-        TextUI ui = new TextUI();
+        TestSuite.Engine.TestFactory testFactory = new TestFactory(1000);
+        TextUI ui = new TextUI(testFactory);
         ui.run();
     }
 }

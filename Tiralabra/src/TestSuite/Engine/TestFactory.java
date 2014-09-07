@@ -20,7 +20,7 @@ public class TestFactory {
 
     private final Runner runner;
     private final ArrayList<String> results;
-    private final int repeat;
+    private int repeat;
     private final int[] small;
     private final int[] big;
     private final FilePrinter printer;
@@ -230,5 +230,14 @@ public class TestFactory {
     public void printToFileAndClean(String name) {
         printer.printToFile(name, results);
         results.clear();
+    }
+    
+    public void setRepeat(int repeat){
+        this.repeat = repeat; 
+        this.runner.setRepeat(repeat);
+    }
+
+    public int getRepeat() {
+        return repeat;
     }
 }

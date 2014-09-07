@@ -15,9 +15,11 @@ import java.util.Scanner;
 public class TextUI {
 
     private static Scanner reader;
+    private final TestFactory testFactory;
 
-    public TextUI() {
-        this.reader = new Scanner(System.in);
+    public TextUI(TestFactory testFactory) {
+        this.testFactory = testFactory;
+        TextUI.reader = new Scanner(System.in);
     }
 
     /**
@@ -56,34 +58,36 @@ public class TextUI {
      * Runs all small array tests
      */
     private void runSmallArrayTestSequence() {
-        TestSuite.Engine.TestFactory test1 = new TestFactory(askRepeat(10000));
+        
+        testFactory.setRepeat(askRepeat(testFactory.getRepeat()));
 
         System.out.println("Starting small array test sequence...");
-        test1.runRandomSmallArraysTestCycleForAll();
-        test1.runRandomFewUniquesSmallArraysTestCycleForAll();
-        test1.runAllmostSortedSmallArraysTestCycleForAll();
-        test1.runSortedSmallArraysTestCycleForAll();
-        test1.runReversedSmallArraysTestCycleForAll();
+        testFactory.runRandomSmallArraysTestCycleForAll();
+        testFactory.runRandomFewUniquesSmallArraysTestCycleForAll();
+        testFactory.runAllmostSortedSmallArraysTestCycleForAll();
+        testFactory.runSortedSmallArraysTestCycleForAll();
+        testFactory.runReversedSmallArraysTestCycleForAll();
 
         System.out.println("All tests completed. Printing to file 'SmallArrayTests.csv'");
-        test1.printToFileAndClean("SmallArrayTests");
+        testFactory.printToFileAndClean("SmallArrayTests");
     }
 
     /**
      * Runs all big array tests
      */
     private void runBigArrayTestSequence() {
-        TestSuite.Engine.TestFactory test2 = new TestFactory(askRepeat(1000));
+        
+        testFactory.setRepeat(askRepeat(testFactory.getRepeat()));
 
         System.out.println("Starting big array test sequence...");
-        test2.runRandomBigArraysTestCycleForAll();
-        test2.runRandomFewUniquesBigArraysTestCycleForAll();
-        test2.runAllmostSortedBigArraysTestCycleForAll();
-        test2.runSortedBigArraysTestCycleForAll();
-        test2.runReversedBigArraysTestCycleForAll();
+        testFactory.runRandomBigArraysTestCycleForAll();
+        testFactory.runRandomFewUniquesBigArraysTestCycleForAll();
+        testFactory.runAllmostSortedBigArraysTestCycleForAll();
+        testFactory.runSortedBigArraysTestCycleForAll();
+        testFactory.runReversedBigArraysTestCycleForAll();
 
         System.out.println("All tests completed. Printing to file 'BigArrayTest.csv'");
-        test2.printToFileAndClean("BigArrayTest");
+        testFactory.printToFileAndClean("BigArrayTest");
     }
 
     /**
