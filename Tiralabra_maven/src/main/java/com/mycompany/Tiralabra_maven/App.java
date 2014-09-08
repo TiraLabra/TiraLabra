@@ -16,6 +16,7 @@ public class App {
 
 //        String fileNameBegining = args[0];
 //        int lahtotiedostojenLkm = Integer.parseInt(args[1]);
+//        int iteraatioidenLkm = Integer.parseInt(args[2]);
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\monimutkaisuus00";
 //        int lahtotiedostojenLkm = 1;
@@ -25,6 +26,7 @@ public class App {
 
         String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
         int lahtotiedostojenLkm = 3;
+        int iteraatioidenLkm = 20;
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\1000x625kartta00";
 //        int lahtotiedostojenLkm = 1;
@@ -42,23 +44,39 @@ public class App {
         String inputFileName = "NOfile";
         KuvanLukija kuvanLukija = new KuvanLukija();
         KuvanKirjoittaja kuvanKirjoittaja = new KuvanKirjoittaja();
-        OmaPinoAlkionaPaikka etaisyysAlkuunLaskettuPaikatPinoDijkstra;
-        OmaPinoAlkionaPaikka reittiPinoDijkstra;
-        OmaPinoAlkionaPaikka etaisyysAlkuunLaskettuPaikatPinoAstar;
-        OmaPinoAlkionaPaikka reittiPinoAstar;
+
+        OmaPinoAlkionaPaikka kaydytPaikatAstar;
+        OmaPinoAlkionaPaikka reittiAstar;
+        OmaPinoAlkionaPaikka kaydytPaikatDijkstra;
+        OmaPinoAlkionaPaikka reittiDijkstra;
+
         long aikaAlussa;
         long aikaLopussa;
-        long aikaAlustus;
+
+        /**
+         * kun minunKeko=true käytetään omaa tietorakenteen minimikeko
+         * toteutusta
+         */
         boolean minunKeko;
         int[][] kuvataulukko;
-        DijkstraWithHeap ratkaisijaDijkstra;
+
         AstarWithHeap ratkaisijaAstar;
-        long ratkaisuAikaDijkstra = 1000000;
+        DijkstraWithHeap ratkaisijaDijkstra;
+
         long ratkaisuAikaAstar = 1000000;
-        long pieninRatkaisuAikaDijkstra = 1000000;
+        long ratkaisuAikaDijkstra = 1000000;
+
         long pieninRatkaisuAikaAstar = 1000000;
-        int polunPituusDijkstra = 1000000;
+        long pieninRatkaisuAikaDijkstra = 1000000;
+
         int polunPituusAstar = 1000000;
+        int polunPituusDijkstra = 1000000;
+
+        long ratkaisuAikojenSummaAstar;
+        long ratkaisuAikojenSummaDijkstra;
+
+        int iteraatioitaKeskiarvossaAstar;
+        int iteraatioitaKeskiarvossaDijkstra;
 
 //        DijkstraWithHeap FIRSTratkaisijaDijkstra;
 //        AstarWithHeap FIRSTratkaisijaAstar;
@@ -67,16 +85,39 @@ public class App {
 //        int FIRSTpolunPituusDijkstra = -10;
 //        int FIRSTpolunPituusAstar = -10;
 
+        System.out.print(String.format("%-100s", "Lahtotoedosto"));
+        System.out.print(String.format("%-60s", "KESKIMAARAINEN ratkaisuaika (ms)"));
+        System.out.print(String.format("%-30s", "PIENIN ratkaisuaika (ms)"));
+        System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
+        System.out.println("");
+
+        System.out.print(String.format("%-100s", ""));
+        System.out.print(String.format("%-15s", "Astar/aika"));
+        System.out.print(String.format("%-15s", "Astar/n "));
+        System.out.print(String.format("%-15s", "Dijkstra/aika"));
+        System.out.print(String.format("%-15s", "Dijkstra/n"));
+        System.out.print(String.format("%-15s", "Astar"));
+        System.out.print(String.format("%-15s", "Dijkstra"));
+        System.out.print(String.format("%-15s", "Astar"));
+        System.out.print(String.format("%-15s", "Dijkstra"));
+        System.out.println("");
+
 
 //        int i = 2;
 
         for (Integer i = 1; i <= lahtotiedostojenLkm; i++) {
 
 
-            System.out.println("");
+//            System.out.println("");
 
-            pieninRatkaisuAikaDijkstra = 1000000;
             pieninRatkaisuAikaAstar = 1000000;
+            pieninRatkaisuAikaDijkstra = 1000000;
+
+            iteraatioitaKeskiarvossaAstar = 0;
+            iteraatioitaKeskiarvossaDijkstra = 0;
+
+            ratkaisuAikojenSummaAstar = 0;
+            ratkaisuAikojenSummaDijkstra = 0;
 
 
             inputFileName = fileNameBegining + Integer.toString(i) + ".bmp";
@@ -85,7 +126,7 @@ public class App {
 
             minunKeko = true;
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < iteraatioidenLkm; j++) {
 
 
 //            FIRSTratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
@@ -116,10 +157,11 @@ public class App {
                 if (ratkaisuAikaAstar < pieninRatkaisuAikaAstar) {
                     pieninRatkaisuAikaAstar = ratkaisuAikaAstar;
                 }
+                if (j > iteraatioidenLkm / 5) {
+                    iteraatioitaKeskiarvossaAstar++;
+                    ratkaisuAikojenSummaAstar += ratkaisuAikaAstar;
 
-                etaisyysAlkuunLaskettuPaikatPinoAstar = ratkaisijaAstar.kaydytPaikat();
-                reittiPinoAstar = ratkaisijaAstar.shortestPath();
-                kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", etaisyysAlkuunLaskettuPaikatPinoAstar, reittiPinoAstar);
+                }
 
 //            ratkaisijaDijkstra.initialiseSingleSource();
                 aikaAlussa = System.currentTimeMillis();
@@ -129,10 +171,22 @@ public class App {
                 if (ratkaisuAikaDijkstra < pieninRatkaisuAikaDijkstra) {
                     pieninRatkaisuAikaDijkstra = ratkaisuAikaDijkstra;
                 }
+                if (j > iteraatioidenLkm / 5) {
+                    iteraatioitaKeskiarvossaDijkstra++;
+                    ratkaisuAikojenSummaDijkstra += ratkaisuAikaDijkstra;
 
-                etaisyysAlkuunLaskettuPaikatPinoDijkstra = ratkaisijaDijkstra.kaydytPaikat();
-                reittiPinoDijkstra = ratkaisijaDijkstra.shortestPath();
-                kuvanKirjoittaja.writeImage(inputFileName, "DIJKSTRA", etaisyysAlkuunLaskettuPaikatPinoDijkstra, reittiPinoDijkstra);
+                }
+
+                if (j == iteraatioidenLkm - 1) {
+                    kaydytPaikatAstar = ratkaisijaAstar.kaydytPaikat();
+                    reittiAstar = ratkaisijaAstar.shortestPath();
+                    kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", kaydytPaikatAstar, reittiAstar);
+
+                    kaydytPaikatDijkstra = ratkaisijaDijkstra.kaydytPaikat();
+                    reittiDijkstra = ratkaisijaDijkstra.shortestPath();
+                    kuvanKirjoittaja.writeImage(inputFileName, "DIJKSTRA", kaydytPaikatDijkstra, reittiDijkstra);
+                }
+
 
 ////            System.out.println("");
 ////            System.out.println("ratkaisu=algoritmien ratkaise() metodin suoritusaika (ms)");
@@ -160,23 +214,25 @@ public class App {
 
             }
 
-            System.out.println("");
-            System.out.println("-------------------------------------------------------------------------------------------");
+//            System.out.println("");
+//            System.out.println("-------------------------------------------------------------------------------------------");
 
-
-            System.out.print(String.format("%-100s", "Lahtotoedosto"));
-            System.out.print(String.format("%-30s", "PIENIN ratkaisuaika (ms)"));
-            System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
-            System.out.println("");
-
-            System.out.print(String.format("%-100s", ""));
-            System.out.print(String.format("%-15s", "Astar"));
-            System.out.print(String.format("%-15s", "Dijkstra"));
-            System.out.print(String.format("%-15s", "Astar"));
-            System.out.print(String.format("%-15s", "Dijkstra"));
-            System.out.println("");
 
             System.out.print(String.format("%-100s", inputFileName));
+            if (iteraatioitaKeskiarvossaAstar > 0) {
+                System.out.print(String.format("%-15d", ratkaisuAikojenSummaAstar / iteraatioitaKeskiarvossaAstar));
+                System.out.print(String.format("%-15d", iteraatioitaKeskiarvossaAstar));
+            } else {
+                System.out.print(String.format("%-15s", "-"));
+                System.out.print(String.format("%-15s", "-"));
+            }
+            if (iteraatioitaKeskiarvossaDijkstra > 0) {
+                System.out.print(String.format("%-15d", ratkaisuAikojenSummaDijkstra / iteraatioitaKeskiarvossaDijkstra));
+                System.out.print(String.format("%-15d", iteraatioitaKeskiarvossaDijkstra));
+            } else {
+                System.out.print(String.format("%-15s", "-"));
+                System.out.print(String.format("%-15s", "-"));
+            }
             System.out.print(String.format("%-15d", pieninRatkaisuAikaAstar));
             System.out.print(String.format("%-15d", pieninRatkaisuAikaDijkstra));
             System.out.print(String.format("%-15d", polunPituusAstar));
