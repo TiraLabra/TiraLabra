@@ -19,10 +19,7 @@ Ohjelman saa lähtötietona bmp-kuvatiedoston, joka muutetaan 2-ulotteiseksi kokon
 
 Molemmilla algoritmeilla tavoitellaan aikavaativuutta O ( (n+m) * log n ). Tilavaatimus on O (n).
 
-Lähteet:
-Kurssin "58131 Tietorakenteet ja algoritmit" luentomateriaali
-Kevät 2014
-Patrik Floréen
+Lähteet: Kurssin "58131 Tietorakenteet ja algoritmit" luentomateriaali, Kevät 2014, Patrik Floréen
 
 
 
