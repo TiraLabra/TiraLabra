@@ -23,11 +23,11 @@ public class App {
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\400x250kartta00";
 //        int lahtotiedostojenLkm = 1;
 
-//        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
-//        int lahtotiedostojenLkm = 1;
+        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
+        int lahtotiedostojenLkm = 3;
 
-        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\1000x625kartta00";
-        int lahtotiedostojenLkm = 1;
+//        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\1000x625kartta00";
+//        int lahtotiedostojenLkm = 1;
 
 
 
@@ -68,13 +68,16 @@ public class App {
 //        int FIRSTpolunPituusAstar = -10;
 
 
-        for (int j = 0; j < 20; j++) {
+//        int i = 2;
+
+        for (Integer i = 1; i <= lahtotiedostojenLkm; i++) {
+
 
             System.out.println("");
 
-            int i = 1;
+            pieninRatkaisuAikaDijkstra = 1000000;
+            pieninRatkaisuAikaAstar = 1000000;
 
-//            for (Integer i = 1; i <= lahtotiedostojenLkm; i++) {
 
             inputFileName = fileNameBegining + Integer.toString(i) + ".bmp";
 
@@ -82,11 +85,14 @@ public class App {
 
             minunKeko = true;
 
+            for (int j = 0; j < 5; j++) {
+
+
 //            FIRSTratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
 //            FIRSTratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
 
-            ratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
-            ratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
+                ratkaisijaDijkstra = new DijkstraWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
+                ratkaisijaAstar = new AstarWithHeap(kuvataulukko, kuvanLukija.getLahtoPiste(), kuvanLukija.getMaaliPiste(), minunKeko);
 
 //            for (int k = 0; k < 1000000; k++) {
 //                aikaAlustus = System.currentTimeMillis();
@@ -103,38 +109,63 @@ public class App {
 //            FIRSTratkaisuAikaDijkstra = aikaLopussa - aikaAlussa;
 
 //            ratkaisijaAstar.initialiseAstar();
-            aikaAlussa = System.currentTimeMillis();
-            polunPituusAstar = ratkaisijaAstar.ratkaise();
-            aikaLopussa = System.currentTimeMillis();
-            ratkaisuAikaAstar = aikaLopussa - aikaAlussa;
-            if (ratkaisuAikaAstar < pieninRatkaisuAikaAstar) {
-                pieninRatkaisuAikaAstar = ratkaisuAikaAstar;
-            }
+                aikaAlussa = System.currentTimeMillis();
+                polunPituusAstar = ratkaisijaAstar.ratkaise();
+                aikaLopussa = System.currentTimeMillis();
+                ratkaisuAikaAstar = aikaLopussa - aikaAlussa;
+                if (ratkaisuAikaAstar < pieninRatkaisuAikaAstar) {
+                    pieninRatkaisuAikaAstar = ratkaisuAikaAstar;
+                }
 
-            etaisyysAlkuunLaskettuPaikatPinoAstar = ratkaisijaAstar.kaydytPaikat();
-            reittiPinoAstar = ratkaisijaAstar.shortestPath();
-            kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", etaisyysAlkuunLaskettuPaikatPinoAstar, reittiPinoAstar);
+                etaisyysAlkuunLaskettuPaikatPinoAstar = ratkaisijaAstar.kaydytPaikat();
+                reittiPinoAstar = ratkaisijaAstar.shortestPath();
+                kuvanKirjoittaja.writeImage(inputFileName, "ASTAR", etaisyysAlkuunLaskettuPaikatPinoAstar, reittiPinoAstar);
 
 //            ratkaisijaDijkstra.initialiseSingleSource();
-            aikaAlussa = System.currentTimeMillis();
-            polunPituusDijkstra = ratkaisijaDijkstra.ratkaise();
-            aikaLopussa = System.currentTimeMillis();
-            ratkaisuAikaDijkstra = aikaLopussa - aikaAlussa;
-            if (ratkaisuAikaDijkstra < pieninRatkaisuAikaDijkstra) {
-                pieninRatkaisuAikaDijkstra = ratkaisuAikaDijkstra;
+                aikaAlussa = System.currentTimeMillis();
+                polunPituusDijkstra = ratkaisijaDijkstra.ratkaise();
+                aikaLopussa = System.currentTimeMillis();
+                ratkaisuAikaDijkstra = aikaLopussa - aikaAlussa;
+                if (ratkaisuAikaDijkstra < pieninRatkaisuAikaDijkstra) {
+                    pieninRatkaisuAikaDijkstra = ratkaisuAikaDijkstra;
+                }
+
+                etaisyysAlkuunLaskettuPaikatPinoDijkstra = ratkaisijaDijkstra.kaydytPaikat();
+                reittiPinoDijkstra = ratkaisijaDijkstra.shortestPath();
+                kuvanKirjoittaja.writeImage(inputFileName, "DIJKSTRA", etaisyysAlkuunLaskettuPaikatPinoDijkstra, reittiPinoDijkstra);
+
+////            System.out.println("");
+////            System.out.println("ratkaisu=algoritmien ratkaise() metodin suoritusaika (ms)");
+////            System.out.println("polunpituus=polun kulkemiseen kaytetty aika (aikayksikkoa)");
+////            System.out.println("");
+////
+//                System.out.print(String.format("%-100s", "Lahtotoedosto"));
+//                System.out.print(String.format("%-30s", "ratkaisu (ms)"));
+//                System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
+//                System.out.println("");
+//
+//                System.out.print(String.format("%-100s", ""));
+//                System.out.print(String.format("%-15s", "Astar"));
+//                System.out.print(String.format("%-15s", "Dijkstra"));
+//                System.out.print(String.format("%-15s", "Astar"));
+//                System.out.print(String.format("%-15s", "Dijkstra"));
+//                System.out.println("");
+//
+//                System.out.print(String.format("%-100s", inputFileName));
+//                System.out.print(String.format("%-15d", ratkaisuAikaAstar));
+//                System.out.print(String.format("%-15d", ratkaisuAikaDijkstra));
+//                System.out.print(String.format("%-15d", polunPituusAstar));
+//                System.out.print(String.format("%-15d", polunPituusDijkstra));
+//                System.out.println("");
+
             }
 
-            etaisyysAlkuunLaskettuPaikatPinoDijkstra = ratkaisijaDijkstra.kaydytPaikat();
-            reittiPinoDijkstra = ratkaisijaDijkstra.shortestPath();
-            kuvanKirjoittaja.writeImage(inputFileName, "DIJKSTRA", etaisyysAlkuunLaskettuPaikatPinoDijkstra, reittiPinoDijkstra);
+            System.out.println("");
+            System.out.println("-------------------------------------------------------------------------------------------");
 
-//            System.out.println("");
-//            System.out.println("ratkaisu=algoritmien ratkaise() metodin suoritusaika (ms)");
-//            System.out.println("polunpituus=polun kulkemiseen kaytetty aika (aikayksikkoa)");
-//            System.out.println("");
-//
+
             System.out.print(String.format("%-100s", "Lahtotoedosto"));
-            System.out.print(String.format("%-30s", "ratkaisu (ms)"));
+            System.out.print(String.format("%-30s", "PIENIN ratkaisuaika (ms)"));
             System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
             System.out.println("");
 
@@ -146,38 +177,14 @@ public class App {
             System.out.println("");
 
             System.out.print(String.format("%-100s", inputFileName));
-            System.out.print(String.format("%-15d", ratkaisuAikaAstar));
-            System.out.print(String.format("%-15d", ratkaisuAikaDijkstra));
+            System.out.print(String.format("%-15d", pieninRatkaisuAikaAstar));
+            System.out.print(String.format("%-15d", pieninRatkaisuAikaDijkstra));
             System.out.print(String.format("%-15d", polunPituusAstar));
             System.out.print(String.format("%-15d", polunPituusDijkstra));
             System.out.println("");
 
-//            }
-
         }
 
-        System.out.println("");
-        System.out.println("-------------------------------------------------------------------------------------------");
-
-
-        System.out.print(String.format("%-100s", "Lahtotoedosto"));
-        System.out.print(String.format("%-30s", "PIENIN ratkaisuaika (ms)"));
-        System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
-        System.out.println("");
-
-        System.out.print(String.format("%-100s", ""));
-        System.out.print(String.format("%-15s", "Astar"));
-        System.out.print(String.format("%-15s", "Dijkstra"));
-        System.out.print(String.format("%-15s", "Astar"));
-        System.out.print(String.format("%-15s", "Dijkstra"));
-        System.out.println("");
-
-        System.out.print(String.format("%-100s", inputFileName));
-        System.out.print(String.format("%-15d", pieninRatkaisuAikaAstar));
-        System.out.print(String.format("%-15d", pieninRatkaisuAikaDijkstra));
-        System.out.print(String.format("%-15d", polunPituusAstar));
-        System.out.print(String.format("%-15d", polunPituusDijkstra));
-        System.out.println("");
 
 
 
