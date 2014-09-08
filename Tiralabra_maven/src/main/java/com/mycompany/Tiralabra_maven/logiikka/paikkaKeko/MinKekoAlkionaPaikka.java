@@ -3,7 +3,7 @@ package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- * Rajapinta minimikeolle. Keon alkiot tyyppiä Paikka. Tätä rajapintaa
+ * Perittävä luokka (rajapinta) minimikeolle. Keon alkiot tyyppiä Paikka. Tätä rajapintaa
  * käyttämällä koodia ei tarvitse muuttaa kun siirrytään Javan PriorityQueue:n
  * käyttämisestä minimikeon oman toteutuksen käyttämiseen.
  */

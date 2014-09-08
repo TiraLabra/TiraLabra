@@ -1,4 +1,7 @@
-##Aihe: Nopein reitti verkossa kahden pisteen välillä
+## Tiralabra / Hannu Honkanen, periodi 6/2014
+
+## Määrittelydokumentti
+**Aihe:** Nopein reitti verkossa kahden pisteen välillä
 
 Harjoitustyössäni toteutan tietorakenteina minimikeon ja pinon sekä algoritmeina Dijkstran algoritmin ja A* -algoritmin.
 
@@ -17,7 +20,7 @@ Mahdollisia laajennuksia:
 
 Ohjelman saa lähtötietona bmp-kuvatiedoston, joka muutetaan 2-ulotteiseksi kokonaislukutaulukoksi. Vierekkäisten "ruutujen" välillä voi siirtyä pysty- ja vaakasuuntaan siten että ruutuun (taulukon kohtaan) siirtyminen vie ruudun arvon verran aikaa. Esim. esteiden arvoksi asetetaan integermax/10.
 
-Molemmilla algoritmeilla tavoitellaan aikavaativuutta O ( (n+m) * log n ). Tilavaatimus on O (n).
+Molemmilla algoritmeilla tavoitellaan aikavaativuutta O ( (n+m) * log n ). Tilavaativuus on O (n).
 
 Lähteet: Kurssin "58131 Tietorakenteet ja algoritmit" luentomateriaali, Kevät 2014, Patrik Floréen
 
