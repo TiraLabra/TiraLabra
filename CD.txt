@@ -1,1 +1,0 @@
-cd /d/Hannun_tiedot/opinnot/2014_kesa/TietorakenteidenJaAlgoritmienHarjoitustyo/TiraLabra

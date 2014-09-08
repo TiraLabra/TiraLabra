@@ -14,9 +14,9 @@ public class App {
 
     public static void main(String[] args) {
 
-//        String fileNameBegining = args[0];
-//        int lahtotiedostojenLkm = Integer.parseInt(args[1]);
-//        int iteraatioidenLkm = Integer.parseInt(args[2]);
+        String fileNameBegining = args[0];
+        int lahtotiedostojenLkm = Integer.parseInt(args[1]);
+        int iteraatioidenLkm = Integer.parseInt(args[2]);
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\monimutkaisuus00";
 //        int lahtotiedostojenLkm = 1;
@@ -24,12 +24,13 @@ public class App {
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\400x250kartta00";
 //        int lahtotiedostojenLkm = 1;
 
-        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
-        int lahtotiedostojenLkm = 3;
-        int iteraatioidenLkm = 20;
+//        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
+//        int lahtotiedostojenLkm = 3;
+//        int iteraatioidenLkm = 2;
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\1000x625kartta00";
 //        int lahtotiedostojenLkm = 1;
+//        int iteraatioidenLkm = 2;
 
 
 
@@ -78,6 +79,9 @@ public class App {
         int iteraatioitaKeskiarvossaAstar;
         int iteraatioitaKeskiarvossaDijkstra;
 
+        int vaakaResoluutio;
+        int pystyResoluutio;
+
 //        DijkstraWithHeap FIRSTratkaisijaDijkstra;
 //        AstarWithHeap FIRSTratkaisijaAstar;
 //        long FIRSTratkaisuAikaDijkstra = -10;
@@ -85,13 +89,17 @@ public class App {
 //        int FIRSTpolunPituusDijkstra = -10;
 //        int FIRSTpolunPituusAstar = -10;
 
-        System.out.print(String.format("%-100s", "Lahtotoedosto"));
+        System.out.println("");
+        System.out.print(String.format("%-30s", "Lahtotiedosto"));
+        System.out.print(String.format("%-20s", "Kuvan koko"));
         System.out.print(String.format("%-60s", "KESKIMAARAINEN ratkaisuaika (ms)"));
         System.out.print(String.format("%-30s", "PIENIN ratkaisuaika (ms)"));
         System.out.print(String.format("%-30s", "polunpituus (aikayksikkoa)"));
         System.out.println("");
 
-        System.out.print(String.format("%-100s", ""));
+        System.out.print(String.format("%-30s", ""));
+        System.out.print(String.format("%-10s", "vaaka"));
+        System.out.print(String.format("%-10s", "pysty"));
         System.out.print(String.format("%-15s", "Astar/aika"));
         System.out.print(String.format("%-15s", "Astar/n "));
         System.out.print(String.format("%-15s", "Dijkstra/aika"));
@@ -123,6 +131,9 @@ public class App {
             inputFileName = fileNameBegining + Integer.toString(i) + ".bmp";
 
             kuvataulukko = kuvanLukija.seeBMPImage(inputFileName);
+
+            vaakaResoluutio = kuvataulukko.length;
+            pystyResoluutio = kuvataulukko[0].length;
 
             minunKeko = true;
 
@@ -218,7 +229,9 @@ public class App {
 //            System.out.println("-------------------------------------------------------------------------------------------");
 
 
-            System.out.print(String.format("%-100s", inputFileName));
+            System.out.print(String.format("%-30s", inputFileName));
+            System.out.print(String.format("%-10d", vaakaResoluutio));
+            System.out.print(String.format("%-10d", pystyResoluutio));
             if (iteraatioitaKeskiarvossaAstar > 0) {
                 System.out.print(String.format("%-15d", ratkaisuAikojenSummaAstar / iteraatioitaKeskiarvossaAstar));
                 System.out.print(String.format("%-15d", iteraatioitaKeskiarvossaAstar));
