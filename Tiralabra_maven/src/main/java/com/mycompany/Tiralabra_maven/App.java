@@ -14,9 +14,9 @@ public class App {
 
     public static void main(String[] args) {
 
-//        String fileNameBegining = args[0];
-//        int lahtotiedostojenLkm = Integer.parseInt(args[1]);
-//        int iteraatioidenLkm = Integer.parseInt(args[2]);
+        String fileNameBegining = args[0];
+        int lahtotiedostojenLkm = Integer.parseInt(args[1]);
+        int iteraatioidenLkm = Integer.parseInt(args[2]);
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\monimutkaisuus00";
 //        int lahtotiedostojenLkm = 1;
@@ -24,9 +24,9 @@ public class App {
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\400x250kartta00";
 //        int lahtotiedostojenLkm = 1;
 
-        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
-        int lahtotiedostojenLkm = 3;
-        int iteraatioidenLkm = 2;
+//        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\800x500kartta00";
+//        int lahtotiedostojenLkm = 3;
+//        int iteraatioidenLkm = 2;
 
 //        String fileNameBegining = "D:\\Hannun_tiedot\\opinnot\\2014_kesa\\TiraHT\\testing\\1000x625kartta00";
 //        int lahtotiedostojenLkm = 1;
