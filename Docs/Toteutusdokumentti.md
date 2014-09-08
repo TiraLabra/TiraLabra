@@ -36,7 +36,8 @@ Algoritmi on ahne algoritmi. Ahneus tässä tapauksessa tarkoittaa sitä että seura
 Algoritmi on toteutettu hyvin pitkälle kuten lähteessä. Pääalgoritmi on metodissa ratkaise. Myös lähteestä tutut metodit initialiseSingleSource ja relax löytyvät ratkaisusta. Seuraavassa eroja lähteen ratkaisuun:
 - Metodi relax on tyyppiä boolean.
 - Minimikeolla heap kutsutaan metodia heapDecreaseKey VAIN kun relaxoidaan (metodi relax palauttaa arvon true).
-Lisäksi mainittakoon että käsiteltävän paikan paikkaU vieruspaikat paikkaV on talletettu omaan pinon toteutukseen (1. versiossa ne olivat vielä muistaakseni ArrayList:ssä).
+
+Lisäksi mainittakoon että käsiteltävän paikan (paikkaU) vieruspaikat (paikkaV) on talletettu omaan pinon toteutukseen (1. versiossa ne olivat vielä muistaakseni ArrayList:ssä). Omaa pinon toteutusta käytetään nopeimman reitin tallentamiseen.
 
 **Astar**
 
@@ -57,6 +58,8 @@ xxx...
 **Puutteet ja parannusehdotukset**
 
 Nyt ohjelmassa ei ole erillistä käyttöliittymäluokkaa vaan kaikki on App-luokan main-metodissa, joka on turhan pitkä. Erillinen käyttöliittymäluokka olisi hyvä olla, ja siellä lyhyitä yhden asian hoitavia metodeja.
+
+Jonkin verran jäi julkisia oliomuuttujia. Parempi olisi käyttää gettereitä ja settereitä.
 
 **Lähteet:**
 
