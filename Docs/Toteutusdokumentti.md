@@ -53,13 +53,15 @@ Molemmilla algoritmeilla tunnetut (ja myös lähteessä esitetyt) vaativuudet ovat:
 
 **Suorituskyky- ja aikavaativuusanalyysivertailu**
 
-xxx...
+Tämä on esitetty testausdokumentissa. Siellä näkyvät kuvaajissa myös numeroarvot.
 
 **Puutteet ja parannusehdotukset**
 
 Nyt ohjelmassa ei ole erillistä käyttöliittymäluokkaa vaan kaikki on App-luokan main-metodissa, joka on turhan pitkä. Erillinen käyttöliittymäluokka olisi hyvä olla, ja siellä lyhyitä yhden asian hoitavia metodeja.
 
 Jonkin verran jäi julkisia oliomuuttujia. Parempi olisi käyttää gettereitä ja settereitä.
+
+Virhetarkistuksia aivan liian vähän.
 
 **Lähteet:**
 

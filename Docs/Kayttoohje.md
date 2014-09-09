@@ -53,4 +53,4 @@ Eli ohjelman voi ajaa vain yhdelle lähtötiedostolle mutta sen nimen on loputtava
 
 Tuloksissa Astar/n (ja Dijkstra/n) tarkoittaa kuinka monesta viimeisestä iteraatiosta KESKIMAARAINEN ratkaisuaika on laskettu (ensimmäiset karkeasti n. 20 % iteraatioista ei vaikuta keskiarvoon).
 
-Tulokset kuvina löytyvät tiedostoista, joissa lähtötiedoston nimeen lisätty ASTAR tai DIJKSTRA.
+Tulokset kuvina löytyvät tiedostoista, joissa lähtötiedoston nimeen lisätty ASTAR tai DIJKSTRA. TUloskuvissa paikat/solmut joissa on käyty, on merkitty KELTAISELLA jos paikan väri oli alunperin valkoinen ja ORANSSILLA jos paikan väri oli alunperin harmaa. Nopein reitti on merkitty SINISILLÄ pikseleillä.

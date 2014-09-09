@@ -1,4 +1,4 @@
-package com.mycompany.Tiralabra_maven.logiikka.dijkstra;
+package com.mycompany.Tiralabra_maven.logiikka.aStar;
 
 import com.mycompany.Tiralabra_maven.logiikka.Piste;
 import com.mycompany.Tiralabra_maven.logiikka.aStar.AstarWithHeap;
