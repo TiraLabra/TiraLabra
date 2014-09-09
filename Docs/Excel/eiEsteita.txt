@@ -1,9 +1,10 @@
-Lahtotiedosto	Kuvan koko		KESKIMAARAINEN	ratkaisuaika	(ms)		PIENIN	ratkaisuaika (ms)	polunpituus	(aikayksikkoa)				0,00025
-	vaaka	pysty	Astar/aika	Astar/n	Dijkstra/aika	Dijkstra/n	Astar	Dijkstra	Astar	Dijkstra	n	m		
-eiEsteita001.bmp	300	200	14	7	89	7	10	30	170	170	60000	119500	630989,0744	157,7472686
-eiEsteita002.bmp	450	300	40	7	82	7	20	70	255	255	135000	269250	1516342,367	379,0855918
-eiEsteita003.bmp	600	400	59	7	333	7	40	140	340	340	240000	479000	2817121,185	704,2802962
-eiEsteita004.bmp	750	500	167	7	524	7	80	220	425	425	375000	748750	4548555,912	1137,138978
-eiEsteita005.bmp	900	600	590	7	1109	7	100	380	510	510	540000	1078500	6722386,67	1680,596667
-eiEsteita006.bmp	1050	700	692	7	1569	7	298	760	595	595	735000	1468250	9348176,386	2337,044096
-eiEsteita007.bmp	1200	800	741	7	2551	7	437	1267	680	680	960000	1918000	12433996,22	3108,499056
+eiEsteita001.bmp              300       200       10             7              76             7              2              20             170            170
+eiEsteita002.bmp              300       200       14             7              30             7              10             20             170            170
+eiEsteita003.bmp              300       200       14             7              30             7              10             20             170            170
+eiEsteita004.bmp              450       300       27             7              78             7              10             50             255            255
+eiEsteita005.bmp              600       400       98             7              218            7              30             110            340            340
+eiEsteita006.bmp              750       500       79             7              480            7              50             180            425            425
+eiEsteita007.bmp              900       600       264            7              947            7              70             512            510            510
+eiEsteita008.bmp              1050      700       431            7              1831           7              282            602            595            595
+eiEsteita009.bmp              1200      800       959            7              1472           7              312            777            680            680
+eiEsteita0010.bmp             1350      900       671            7              5087           7              492            1122           765            765

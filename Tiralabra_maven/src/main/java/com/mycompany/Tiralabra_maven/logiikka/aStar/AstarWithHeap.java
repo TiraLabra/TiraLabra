@@ -53,10 +53,6 @@ public class AstarWithHeap {
 
         MinKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
-//////        System.out.println(this.paikat[0][0].vierusPaikat);
-//////
-//////        System.out.println("");
-
         Paikka paikkaU;
         Paikka paikkaV;
 
@@ -67,32 +63,19 @@ public class AstarWithHeap {
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) {
                 this.maaliPoistettuKeosta = true;
             }
-//////            System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
 
             while (!paikkaU.vierusPaikat.stackIsEmpty()) {
                 paikkaV = paikkaU.vierusPaikat.stackPop();
                 if (relax(paikkaU, paikkaV)) {
-//////                    System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
                 }
-//////                System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
             }
         }
-
-//////        for (int i = 0; i < this.paikat.length; i++) {
-//////            for (int j = 0; j < this.paikat[0].length; j++) {
-//////                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
-//////            }
-//////        }
-
-//////        System.out.println("");
-
 
         return this.paikat[this.maaliPiste.i][this.maaliPiste.j].etaisyysAlkuun;
     }
 
     private void initialiseAstar() {
-//    public void initialiseAstar() {
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton
@@ -105,7 +88,7 @@ public class AstarWithHeap {
     }
 
     private MinKekoAlkionaPaikka rakennaKekoJaAsetaVieruspaikat() {
-        
+
         MinKekoAlkionaPaikka heap = new MinKekoAlkionaPaikka();
 
         if (this.omaKeko) {
@@ -134,7 +117,6 @@ public class AstarWithHeap {
     private void asetaVieruspaikka(Paikka paikka, int iVierus, int jVierus) {
         if (iVierus >= 0 && iVierus < this.paikat.length && jVierus >= 0 && jVierus < this.paikat[0].length) {
             paikka.vierusPaikat.stackPush(this.paikat[iVierus][jVierus]);
-//////            System.out.println("i, j, iVierus, jVierus: " + paikka.i + paikka.j + " " + iVierus + jVierus);
         }
 
     }

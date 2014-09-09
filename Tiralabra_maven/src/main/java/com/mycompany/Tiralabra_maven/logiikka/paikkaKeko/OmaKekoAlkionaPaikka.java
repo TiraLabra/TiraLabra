@@ -3,8 +3,7 @@ package com.mycompany.Tiralabra_maven.logiikka.paikkaKeko;
 import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 
 /**
- * Oman tietorakenteen (minimikeko) toteutus. Keon alkiot
- * tyyppiä Paikka.
+ * Oman tietorakenteen (minimikeko) toteutus. Keon alkiot tyyppiä Paikka.
  */
 public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
 
@@ -67,7 +66,6 @@ public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
      */
     @Override
     public void heapInsert(Paikka kekoAlkio) {
-//////        System.out.println("heapInsert");
         int i;
         this.heapSize++;
         i = this.heapSize;
@@ -79,11 +77,6 @@ public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
 
         kekoAlkio.heapIndex = i;
         this.kekoTaulukko[i] = kekoAlkio;
-
-//////        System.out.println("i=" + i + " " + this.kekoTaulukko[i].etaisyysAlkuun + "," + this.kekoTaulukko[i].etaisyysLoppuun);
-//////
-//////        this.testTulostaKekoTaulukko();
-
     }
 
     /**
@@ -184,12 +177,11 @@ public class OmaKekoAlkionaPaikka extends MinKekoAlkionaPaikka {
             System.out.println("i=" + i + ", etAlk=" + this.kekoTaulukko[i].etaisyysAlkuun + ", etLop=" + this.kekoTaulukko[i].etaisyysLoppuun + " ja heapIndex=" + this.kekoTaulukko[i].heapIndex);
         }
     }
-    
+
     /**
      * Testausta varten.
      */
     public void testHeapify(int i) {
         this.heapHeapify(i);
     }
-    
 }

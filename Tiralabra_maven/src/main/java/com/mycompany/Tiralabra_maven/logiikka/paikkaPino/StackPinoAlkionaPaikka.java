@@ -4,8 +4,8 @@ import com.mycompany.Tiralabra_maven.logiikka.Paikka;
 import java.util.Stack;
 
 /**
- * Pino toteutettuna Javan valmiilla tietorakenteella Stack. Pinon
- * alkiot tyyppiä Paikka.
+ * Pino toteutettuna Javan valmiilla tietorakenteella Stack. Pinon alkiot
+ * tyyppiä Paikka.
  */
 public class StackPinoAlkionaPaikka implements PinoAlkionaPaikka {
 

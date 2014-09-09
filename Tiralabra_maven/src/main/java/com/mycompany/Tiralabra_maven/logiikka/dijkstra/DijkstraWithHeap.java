@@ -49,24 +49,13 @@ public class DijkstraWithHeap {
      */
     public int ratkaise() {
 
-//////        try {
-//////            Thread.sleep(5000, 1);                 //1000 milliseconds is one second.
-//////        } catch (InterruptedException ex) {
-//////            Thread.currentThread().interrupt();
-//////        }
-
         this.initialiseSingleSource();
 
         MinKekoAlkionaPaikka heap = rakennaKekoJaAsetaVieruspaikat();
 
-//////        System.out.println(this.paikat[0][0].vierusPaikat);
-//////
-//////        System.out.println("");
-
         Paikka paikkaU;
         Paikka paikkaV;
 
-//        while (!heap.heapIsEmpty()) {// EI käytetä tätä ehtoa vaan
 //        lopetetaan etsintä kun nopein polku maalipisteeseen löydetty
         while (!this.maaliPoistettuKeosta) {
             paikkaU = heap.heapDelMin();
@@ -74,32 +63,18 @@ public class DijkstraWithHeap {
             if (paikkaU.i == maaliPiste.i && paikkaU.j == maaliPiste.j) {
                 this.maaliPoistettuKeosta = true;
             }
-//////            System.out.println("paikkaU " + paikkaU.i + paikkaU.j + " " + paikkaU.etaisyysAlkuun);
             while (!paikkaU.vierusPaikat.stackIsEmpty()) {
                 paikkaV = paikkaU.vierusPaikat.stackPop();
                 if (relax(paikkaU, paikkaV)) {
-//////                    System.out.println("V muuttui");
                     heap.heapDecreaseKey(paikkaV);
-//////                    System.out.println("paikkaV " + paikkaV.i + paikkaV.j + " " + paikkaV.etaisyysAlkuun);
                 }
             }
-//////        System.out.println("keon koko: "+heap.heapSize);
         }
-
-//////        for (int i = 0; i < this.paikat.length; i++) {
-//////            for (int j = 0; j < this.paikat[0].length; j++) {
-//////                System.out.println("i=" + i + " j=" + j + ": " + this.paikat[i][j].etaisyysAlkuun);
-//////            }
-//////        }
-
-//////        System.out.println("");
-
 
         return this.paikat[this.maaliPiste.i][this.maaliPiste.j].etaisyysAlkuun;
     }
 
     private void initialiseSingleSource() {
-//    public void initialiseSingleSource() {
         for (int i = 0; i < this.paikat.length; i++) {
             for (int j = 0; j < this.paikat[0].length; j++) {
                 // luokan Paikka konstruktori asettaa Paikan julkisen muuttujan etaisyysAlkuun arvoksi noin aareton
@@ -140,7 +115,6 @@ public class DijkstraWithHeap {
     private void asetaVieruspaikka(Paikka paikka, int iVierus, int jVierus) {
         if (iVierus >= 0 && iVierus < this.paikat.length && jVierus >= 0 && jVierus < this.paikat[0].length) {
             paikka.vierusPaikat.stackPush(this.paikat[iVierus][jVierus]);
-//////            System.out.println("i, j, iVierus, jVierus: " + paikka.i + paikka.j + " " + iVierus + jVierus);
         }
 
     }

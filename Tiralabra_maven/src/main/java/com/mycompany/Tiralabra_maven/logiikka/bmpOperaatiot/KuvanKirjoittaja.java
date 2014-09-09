@@ -49,10 +49,9 @@ public class KuvanKirjoittaja {
         while (!kaydytPaikat.stackIsEmpty()) {
             paikkaK = kaydytPaikat.stackPop();
             color = image.getRGB(paikkaK.i, paikkaK.j);
-//            if (!(color == Color.BLACK.getRGB() || color == Color.GREEN.getRGB() || color == Color.RED.getRGB() || color == Color.GRAY.getRGB())) {
             if (color == Color.WHITE.getRGB()) { //helppokulkuinen maasto (valkoinen) jossa on käyty
                 image.setRGB(paikkaK.i, paikkaK.j, Color.YELLOW.getRGB());
-            } else if (color == Color.GRAY.getRGB()){ //vaikeakulkuinen maasto (harmaa) jossa kuitenkin on käyty
+            } else if (color == Color.GRAY.getRGB()) { //vaikeakulkuinen maasto (harmaa) jossa kuitenkin on käyty
                 image.setRGB(paikkaK.i, paikkaK.j, Color.ORANGE.getRGB());
             }
         }
