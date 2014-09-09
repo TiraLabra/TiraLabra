@@ -1,0 +1,8 @@
+eiEsteita001.bmp                                  20             1              112            1              20             112            170            170
+eiEsteita002.bmp                                  20             1              210            1              20             210            255            255
+eiEsteita003.bmp                                  70             1              155            1              70             155            340            340
+eiEsteita004.bmp                                  240            1              2080           1              240            268            425            425
+eiEsteita005.bmp                                  430            1              3137           1              210            755            510            510
+eiEsteita006.bmp                                  370            1              3830           1              370            3830           680            680
+eiEsteita007.bmp                                  3609           1              2085           1              710            2085           765            765
+eiEsteita008.bmp                                  1285           1              5815           1              1285           5815           850            850
