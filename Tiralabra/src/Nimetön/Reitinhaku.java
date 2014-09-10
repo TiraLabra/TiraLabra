@@ -16,18 +16,15 @@ import java.util.PriorityQueue;
  */
 
 public class Reitinhaku {
-    
+  
     public Verkko verkko;
     
-    public ArrayList<Solmu> KäytyListaeiTarpeen;
     public PriorityQueue<Solmu> AvoinLista;
     
     public Reitinhaku(){
         
         verkko=new Verkko(6, 6);
-        
-        KäytyListaeiTarpeen=new ArrayList<Solmu>();
-        
+
         Comparator<Solmu> comparator = new LukuVertaaja();
         AvoinLista=new PriorityQueue<Solmu>((PriorityQueue<? extends Solmu>) comparator);
         
@@ -37,12 +34,14 @@ public class Reitinhaku {
     
     public void Haku(){
         
-        while(true){
-            Solmu käsittelyssä=AvoinLista.poll();
+        Solmu käsittelyssä=AvoinLista.poll();
+        
+        while(käsittelyssä.Heurestiikaarvo!=0){
             
             TarkistaViereiset(käsittelyssä);
             
-            KäytyListaeiTarpeen.add(käsittelyssä);
+            käsittelyssä=AvoinLista.poll();
+
         }
         
     }
@@ -70,8 +69,8 @@ public class Reitinhaku {
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
         }
         
-        
     }
+    
    
     public void Lisää(int x, int y, Solmu Käsittelyssä){
         

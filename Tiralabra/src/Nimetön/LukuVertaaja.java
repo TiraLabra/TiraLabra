@@ -20,15 +20,15 @@ class LukuVertaaja implements Comparator<Solmu> {
     @Override
     public int compare(Solmu x, Solmu y) {
         
-        if (x.Yhteisarvo < y.Yhteisarvo){
+        if (x.Yhteisarvo+x.Edeltävä.pääsemisarvo < y.Yhteisarvo+y.Edeltävä.pääsemisarvo){
             return -1;
         }
         
-        if (x.Yhteisarvo > y.Yhteisarvo){
+        if (x.Yhteisarvo+x.Edeltävä.pääsemisarvo > y.Yhteisarvo+y.Edeltävä.pääsemisarvo){
             return 1;
         }
         
-        return 0;        
+        return 0;
         
     }
 
