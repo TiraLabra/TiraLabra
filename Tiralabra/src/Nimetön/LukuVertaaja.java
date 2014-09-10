@@ -12,7 +12,7 @@ import java.util.Comparator;
  *
  * @author Jaakko
  */
-class LukuVertaaja implements Comparator<Solmu> {
+public class LukuVertaaja implements Comparator<Solmu> {
 
     public LukuVertaaja() {
     }
@@ -20,11 +20,11 @@ class LukuVertaaja implements Comparator<Solmu> {
     @Override
     public int compare(Solmu x, Solmu y) {
         
-        if (x.Yhteisarvo+x.Edeltävä.pääsemisarvo < y.Yhteisarvo+y.Edeltävä.pääsemisarvo){
+        if (x.Heurestiikaarvo < y.Heurestiikaarvo){
             return -1;
         }
         
-        if (x.Yhteisarvo+x.Edeltävä.pääsemisarvo > y.Yhteisarvo+y.Edeltävä.pääsemisarvo){
+        if (x.Heurestiikaarvo > y.Heurestiikaarvo){
             return 1;
         }
         

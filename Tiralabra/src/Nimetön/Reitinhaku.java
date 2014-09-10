@@ -26,13 +26,21 @@ public class Reitinhaku {
         verkko=new Verkko(6, 6);
 
         Comparator<Solmu> comparator = new LukuVertaaja();
-        AvoinLista=new PriorityQueue<Solmu>((PriorityQueue<? extends Solmu>) comparator);
+        AvoinLista=new PriorityQueue<Solmu>(12, comparator);
         
-        TarkistaViereiset(verkko.taulukko[0][0]);
-        AvoinLista.add(verkko.taulukko[0][0]);
+        
+        AvoinLista.add(verkko.taulukko[1][1]);
+        verkko.taulukko[0][0].Edeltävä=verkko.taulukko[0][0];
+        
+        Haku();
     }
     
+    
+    
+    
     public void Haku(){
+        
+        tulosta(verkko.taulukko);
         
         Solmu käsittelyssä=AvoinLista.poll();
         
@@ -44,30 +52,29 @@ public class Reitinhaku {
 
         }
         
+        
+        
     }
     
-    public void Vertaile(Solmu Käsittelyssä){
-        
-        if(Käsittelyssä.pääsemisarvo>(Käsittelyssä.Edeltävä.pääsemisarvo+Käsittelyssä.Liikkumisarvo)){
-            
-        }
-        
-    }
     
     public void TarkistaViereiset(Solmu Käsittelyssä){
         
-        if(Käsittelyssä.koordinaattiX>=0){
+        System.out.println("muumimaailma  "+Käsittelyssä.koordinaattiX+"  "+Käsittelyssä.koordinaattiY);              
+        
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX+1].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä);
         }
-        if(Käsittelyssä.koordinaattiY>=0){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY+1][Käsittelyssä.koordinaattiX].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä);
         }
-        if(Käsittelyssä.koordinaattiX<=verkko.taulukko.length){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX-1].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä);
         }
-        if(Käsittelyssä.koordinaattiY<=verkko.taulukko[0].length){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY-1][Käsittelyssä.koordinaattiX].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
         }
+        
+
         
     }
     
@@ -77,6 +84,18 @@ public class Reitinhaku {
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
             AvoinLista.add(verkko.taulukko[x][y]);
+        }
+        
+    }
+    
+    
+    public void tulosta(Solmu[][] asd){
+        
+        for (int i = 0; i < asd.length; i++) {
+            for (int j = 0; j < asd[0].length; j++) {
+                System.out.print(" "+asd[i][j].Heurestiikaarvo);
+            }
+            System.out.println("");
         }
         
     }

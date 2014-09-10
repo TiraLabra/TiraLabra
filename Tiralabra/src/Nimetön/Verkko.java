@@ -25,10 +25,12 @@ public class Verkko {
         
         taulukko=new Solmu[y][x];
         
-        lähtöX=0;
-        lähtöY=0;
+        lähtöX=1;
+        lähtöY=1;
         maaliX=5;
-        maaliY=5;        
+        maaliY=5;
+        
+        Täytätaulukko();
         
     }
     
@@ -37,7 +39,10 @@ public class Verkko {
         
         for (int y = 0; y < taulukko.length; y++) {
             for (int x = 0; x < taulukko[0].length; x++) {
-                taulukko[y][x]=new Solmu(x, y, ArvoLuku(), HeuristiikkaArvo(y, x));
+                taulukko[y][x]=new Solmu(x, y, HeuristiikkaArvo(y, x));
+                if(y==0 || x==0 || y==taulukko.length-1 || x==taulukko[0].length-1){
+                    taulukko[y][x].seinä=true;
+                }
             }
             
         }
@@ -45,15 +50,16 @@ public class Verkko {
     }
     
     
-    public int ArvoLuku(){
-        
-        Random arvo = new Random();
-
-        int palautus = arvo.nextInt(10) + 0;
-        
-        return palautus;
-    }
+//    public int ArvoLuku(){
+//        
+//        Random arvo = new Random();
+//
+//        int palautus = arvo.nextInt(10) + 0;
+//        
+//        return palautus;
+//    }
     
+
     
     public int HeuristiikkaArvo(int y, int x){
 

@@ -13,25 +13,21 @@ package Nimetön;
 public class Solmu {
     
     public int Heurestiikaarvo;
-    public int Liikkumisarvo;
-    public int Yhteisarvo;
-    public int pääsemisarvo;
-    
+
     public Solmu Edeltävä;
     
     public int koordinaattiX;
     public int koordinaattiY;
     
+    public boolean seinä;
     
-    public Solmu (int x, int y, int lArvo, int hArvo){
+    
+    public Solmu (int x, int y, int hArvo){
         
         koordinaattiX=x;
         koordinaattiY=y;
-        Liikkumisarvo=lArvo;
         Heurestiikaarvo=hArvo;
-        Yhteisarvo=lArvo+hArvo;
-        pääsemisarvo=Integer.MAX_VALUE;
-
         Edeltävä=null;
+        seinä=false;
     }
 }
