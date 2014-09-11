@@ -38,7 +38,7 @@ public class App
         solmu2.lisaaVierus(solmu5);
         
         solmu3.lisaaVierus(solmu2);
-        solmu3.lisaaVierus(solmu6);
+        //solmu3.lisaaVierus(solmu6);
         
         solmu4.lisaaVierus(solmu1);
         solmu4.lisaaVierus(solmu5);
@@ -46,12 +46,12 @@ public class App
         
         solmu5.lisaaVierus(solmu2);
         solmu5.lisaaVierus(solmu4);
-        solmu5.lisaaVierus(solmu6);
+        //solmu5.lisaaVierus(solmu6);
         solmu5.lisaaVierus(solmu8);
         
-        solmu6.lisaaVierus(solmu3);
-        solmu6.lisaaVierus(solmu5);
-        solmu6.lisaaVierus(solmu9);
+        //solmu6.lisaaVierus(solmu3);
+        //solmu6.lisaaVierus(solmu5);
+        //solmu6.lisaaVierus(solmu9);
         
         solmu7.lisaaVierus(solmu4);
         solmu7.lisaaVierus(solmu8);
@@ -61,7 +61,7 @@ public class App
         solmu8.lisaaVierus(solmu9);
         
         solmu9.lisaaVierus(solmu8);
-        solmu9.lisaaVierus(solmu6);
+        //solmu9.lisaaVierus(solmu6);
         
         //Lisää solmut verkkoon
         verkko2.lisaaSolmu(solmu1);
@@ -73,47 +73,13 @@ public class App
         verkko2.lisaaSolmu(solmu7);
         verkko2.lisaaSolmu(solmu8);
         verkko2.lisaaSolmu(solmu9);
-        
-        //Listataan kaaripainot
-        /*
-        000
-        08#
-        000
-        */
-        int[][][][] kaaripainot = new int[9][9][9][9];
-        kaaripainot[0][0][1][0] = 0;
-        kaaripainot[0][0][0][1] = 0;
-        kaaripainot[1][0][0][0] = 0;
-        kaaripainot[1][0][0][0] = 0;
-        kaaripainot[1][0][1][1] = 8;
-        kaaripainot[2][0][1][0] = 0;
-        kaaripainot[2][0][2][1] = 1000000;
-        
-        kaaripainot[0][1][0][0] = 0;
-        kaaripainot[0][1][1][1] = 8;
-        kaaripainot[0][1][0][2] = 0;
-        kaaripainot[1][1][0][1] = 0;
-        kaaripainot[1][1][1][0] = 0;
-        kaaripainot[1][1][2][1] = 1000000;
-        kaaripainot[1][1][1][2] = 0;
-        kaaripainot[2][1][2][0] = 0;
-        kaaripainot[2][1][1][1] = 8;
-        kaaripainot[2][1][2][2] = 0;
-        
-        kaaripainot[0][2][0][1] = 0;
-        kaaripainot[0][2][1][2] = 0;
-        kaaripainot[1][2][0][2] = 0;
-        kaaripainot[1][2][1][1] = 8;
-        kaaripainot[1][2][2][2] = 0;
-        kaaripainot[2][2][1][2] = 0;
-        kaaripainot[2][2][2][1] = 1000000;
-        
+             
         
         System.out.println("Tästä lähtee");
-        Astar(verkko2, kaaripainot, solmu3, solmu9);
+        Astar(verkko2, solmu3, solmu9);
     }
     
-    public static void Astar(Verkko verkko, int[][][][] kaaripainot, Solmu aloitus, Solmu kohde) {
+    public static void Astar(Verkko verkko, Solmu aloitus, Solmu kohde) {
         /*
         Astar(G,w,a,b) 
         // G tutkittava verkko, a lähtösolmu, b kohdesolmu ja w kaaripainot kertova funktio
@@ -161,12 +127,12 @@ public class App
                         alkuun[v] = alkuun[u]+w(u,v)
                         polku[v] = u */
             
-            ArrayList<Solmu> vierussolmut = pienin.getVierus();
+            ArrayList<Vierussolmu> vierussolmut = pienin.getVierus();
             
-            for(Solmu vierussolmu : vierussolmut) {
-                if(vierussolmu.getAlkuun() > (pienin.getAlkuun() + kaaripainot[pienin.getX()][pienin.getY()][vierussolmu.getX()][vierussolmu.getY()]) ) { 
-                    vierussolmu.setAlkuun((pienin.getAlkuun() + kaaripainot[pienin.getX()][pienin.getY()][vierussolmu.getX()][vierussolmu.getY()]));
-                    vierussolmu.setPolku(pienin);
+            for(Vierussolmu vierussolmu : vierussolmut) {
+                if(vierussolmu.getSolmu().getAlkuun() > (pienin.getAlkuun() + pienin.getKaaripaino(vierussolmu.getSolmu())) ) { 
+                    vierussolmu.getSolmu().setAlkuun((pienin.getAlkuun() + pienin.getKaaripaino(vierussolmu.getSolmu())));
+                    vierussolmu.getSolmu().setPolku(pienin);
                 }
             }
         }

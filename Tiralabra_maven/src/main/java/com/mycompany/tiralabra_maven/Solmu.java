@@ -13,13 +13,13 @@ public class Solmu {
     private int alkuun; //Astarin tiedossa oleva lyhin etäisyys alusta tähän solmuun
     private int loppuun; //Astarin etäisyysarvio tästä solmusta loppuun
     private Solmu polku; //solmu, josta lyhin polku saapui
-    private ArrayList<Solmu> vierus; //vierussolmut
+    private ArrayList<Vierussolmu> vierus; //vierussolmut
 
     public Solmu(int x, int y, int paino) {
         this.x = x;
         this.y = y;
         this.paino = paino;
-        this.vierus = new ArrayList<Solmu>();
+        this.vierus = new ArrayList<Vierussolmu>();
     }
 
     public int getX() {
@@ -75,6 +75,19 @@ public class Solmu {
     }
 
     public void lisaaVierus(Solmu solmu) {
-        this.vierus.add(solmu);
+        this.vierus.add(new Vierussolmu(solmu, solmu.getPaino()));
+    }
+    
+    public int getKaaripaino(Solmu solmu) {
+        //palauttaa kaaripainon tästä solmusta parametrin solmuun
+        
+        for(Vierussolmu vierussolmu : vierus) {
+            if(vierussolmu.getSolmu() == solmu) {
+                return vierussolmu.getPaino();
+            }
+        }
+        
+        //jos ei kaarta (ei tarvitse tehdä kaarta # välille)
+        return 1000000;
     }
 }
