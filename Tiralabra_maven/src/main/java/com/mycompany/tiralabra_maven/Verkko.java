@@ -26,4 +26,13 @@ public class Verkko {
     public ArrayList<Solmu> getSolmut() {
         return solmut;
     }
+    
+    public Solmu getSolmu(int x, int y) {
+        for(Solmu solmu : solmut) {
+            if(solmu.getX() == x && solmu.getY() == y) {
+                return solmu;
+            }
+        }
+        return null;
+    }
 }

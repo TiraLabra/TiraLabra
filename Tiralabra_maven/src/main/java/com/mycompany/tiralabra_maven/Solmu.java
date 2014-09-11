@@ -75,6 +75,10 @@ public class Solmu {
     }
 
     public void lisaaVierus(Solmu solmu) {
+        //Vierussolmu on seinää, ei siis ole kaarta
+        if(solmu.getPaino() == -1) {
+            return;
+        }
         this.vierus.add(new Vierussolmu(solmu, solmu.getPaino()));
     }
     

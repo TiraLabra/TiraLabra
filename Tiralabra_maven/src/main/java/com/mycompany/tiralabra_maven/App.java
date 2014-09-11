@@ -19,64 +19,38 @@ public class App
         Verkko verkko2 = new Verkko();
         
         //Luo solmut
-        Solmu solmu1 = new Solmu(0, 0, 0);
-        Solmu solmu2 = new Solmu(1, 0, 0);
-        Solmu solmu3 = new Solmu(2, 0, 0);
-        Solmu solmu4 = new Solmu(0, 1, 0);
-        Solmu solmu5 = new Solmu(1, 1, 8);
-        Solmu solmu6 = new Solmu(2, 1, -1);
-        Solmu solmu7 = new Solmu(0, 2, 0);
-        Solmu solmu8 = new Solmu(1, 2, 0);
-        Solmu solmu9 = new Solmu(2, 2, 0);
+        verkko2.lisaaSolmu( new Solmu(0, 0, 0) );
+        verkko2.lisaaSolmu( new Solmu(1, 0, 0) );
+        verkko2.lisaaSolmu( new Solmu(2, 0, 0) );
+        verkko2.lisaaSolmu( new Solmu(0, 1, 0) );
+        verkko2.lisaaSolmu( new Solmu(1, 1, 8) );
+        verkko2.lisaaSolmu( new Solmu(2, 1, -1) );
+        verkko2.lisaaSolmu( new Solmu(0, 2, 0) );
+        verkko2.lisaaSolmu( new Solmu(1, 2, 0) );
+        verkko2.lisaaSolmu( new Solmu(2, 2, 0) );
         
-        //Lisää solmujen vierussolmut vieruslistalle
-        solmu1.lisaaVierus(solmu2);
-        solmu1.lisaaVierus(solmu4);
+        //jokaiselle solmulle etsitään vieruksiksi solmut delta x-1 ja delta y-0 jne
         
-        solmu2.lisaaVierus(solmu1);
-        solmu2.lisaaVierus(solmu3);
-        solmu2.lisaaVierus(solmu5);
+        ArrayList<Solmu> solmut = verkko2.getSolmut();
         
-        solmu3.lisaaVierus(solmu2);
-        //solmu3.lisaaVierus(solmu6);
-        
-        solmu4.lisaaVierus(solmu1);
-        solmu4.lisaaVierus(solmu5);
-        solmu4.lisaaVierus(solmu7);
-        
-        solmu5.lisaaVierus(solmu2);
-        solmu5.lisaaVierus(solmu4);
-        //solmu5.lisaaVierus(solmu6);
-        solmu5.lisaaVierus(solmu8);
-        
-        //solmu6.lisaaVierus(solmu3);
-        //solmu6.lisaaVierus(solmu5);
-        //solmu6.lisaaVierus(solmu9);
-        
-        solmu7.lisaaVierus(solmu4);
-        solmu7.lisaaVierus(solmu8);
-        
-        solmu8.lisaaVierus(solmu7);
-        solmu8.lisaaVierus(solmu5);
-        solmu8.lisaaVierus(solmu9);
-        
-        solmu9.lisaaVierus(solmu8);
-        //solmu9.lisaaVierus(solmu6);
-        
-        //Lisää solmut verkkoon
-        verkko2.lisaaSolmu(solmu1);
-        verkko2.lisaaSolmu(solmu2);
-        verkko2.lisaaSolmu(solmu3);
-        verkko2.lisaaSolmu(solmu4);
-        verkko2.lisaaSolmu(solmu5);
-        verkko2.lisaaSolmu(solmu6);
-        verkko2.lisaaSolmu(solmu7);
-        verkko2.lisaaSolmu(solmu8);
-        verkko2.lisaaSolmu(solmu9);
-             
+        for(Solmu solmu : solmut) {
+            if(verkko2.getSolmu(solmu.getX() - 1, solmu.getY()) != null) {
+                solmu.lisaaVierus(verkko2.getSolmu(solmu.getX() - 1, solmu.getY()));
+            }
+            if(verkko2.getSolmu(solmu.getX() + 1, solmu.getY()) != null) {
+                solmu.lisaaVierus(verkko2.getSolmu(solmu.getX() + 1, solmu.getY()));
+            }
+            if(verkko2.getSolmu(solmu.getX(), solmu.getY() - 1) != null) {
+                solmu.lisaaVierus(verkko2.getSolmu(solmu.getX(), solmu.getY() - 1));
+            }
+            if(verkko2.getSolmu(solmu.getX(), solmu.getY() + 1) != null) {
+                solmu.lisaaVierus(verkko2.getSolmu(solmu.getX(), solmu.getY() + 1));
+            }
+        }
+       
         
         System.out.println("Tästä lähtee");
-        Astar(verkko2, solmu3, solmu9);
+        Astar(verkko2, verkko2.getSolmu(2, 0), verkko2.getSolmu(2, 2));
     }
     
     public static void Astar(Verkko verkko, Solmu aloitus, Solmu kohde) {
