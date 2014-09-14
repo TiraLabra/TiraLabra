@@ -23,7 +23,7 @@ public class Solmu {
         this.x = x;
         this.y = y;
         this.paino = paino;
-        this.vierus = new ArrayList<>();
+        this.vierus = new ArrayList<Solmu>();
     }
 
     public int getX() {

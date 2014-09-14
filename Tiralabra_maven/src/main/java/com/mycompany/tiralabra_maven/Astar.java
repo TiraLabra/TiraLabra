@@ -55,7 +55,7 @@ public class Astar {
             S = ∅ */
         
         aloitus.setAlkuun(0);
-        this.lapikaydyt = new ArrayList<>();
+        this.lapikaydyt = new ArrayList<Solmu>();
     }
     
     /**
