@@ -3,8 +3,7 @@ package com.mycompany.tiralabra_maven;
 import java.util.ArrayList;
 
 /**
- *
- * @author iivo
+ * Solmu-luokka sisältää verkon yksittäisen solmun tiedot
  */
 public class Solmu {
     private int x; //X- ja Y -koordinaatit eräisyysarviota ja tulostusta varten
@@ -13,13 +12,18 @@ public class Solmu {
     private int alkuun; //Astarin tiedossa oleva lyhin etäisyys alusta tähän solmuun
     private int loppuun; //Astarin etäisyysarvio tästä solmusta loppuun
     private Solmu polku; //solmu, josta lyhin polku saapui
-    private ArrayList<Vierussolmu> vierus; //vierussolmut
+    private ArrayList<Solmu> vierus; //vierussolmut
 
+    /**
+     * @param    x       solmun vaakakoordinaatti 2D-esityksessä
+     * @param    y       solmun pystykoordinaatti 2D-esityksessä
+     * @param    paino   solmun vaikeakulkuisuus (0 = helpoin, 9 = vaikein, -1 = läpäisemätön)
+     */
     public Solmu(int x, int y, int paino) {
         this.x = x;
         this.y = y;
         this.paino = paino;
-        this.vierus = new ArrayList<Vierussolmu>();
+        this.vierus = new ArrayList<>();
     }
 
     public int getX() {
@@ -74,19 +78,29 @@ public class Solmu {
         return vierus;
     }
 
+    /**
+     * Lisää solmulle vieruslistaan solmun. Jos lisättävän solmun paino on -1,
+     * sitä ei lisätä.
+     * 
+     * @param    solmu  tälle solmulle vierukseksi lisättävä solmu
+    */
     public void lisaaVierus(Solmu solmu) {
-        //Vierussolmu on seinää, ei siis ole kaarta
-        if(solmu.getPaino() == -1) {
+        if(solmu.getPaino() == -1) { //Vierussolmu on seinää, ei siis ole kaarta
             return;
         }
-        this.vierus.add(new Vierussolmu(solmu, solmu.getPaino()));
+        this.vierus.add(solmu);
     }
     
+    /**
+     * Etsii parametrina annetun solmun vieruslistalta ja palauttaa kaaripainon
+     * tältä solmulta parametrin solmulle
+     * 
+     * @param    solmu  kohdesolmu, jonka kaaripaino halutaan tietää
+     * @return kaaripaino tältä solmulta parametrin solmulle
+    */
     public int getKaaripaino(Solmu solmu) {
-        //palauttaa kaaripainon tästä solmusta parametrin solmuun
-        
-        for(Vierussolmu vierussolmu : vierus) {
-            if(vierussolmu.getSolmu() == solmu) {
+        for(Solmu vierussolmu : vierus) {
+            if(vierussolmu == solmu) {
                 return vierussolmu.getPaino();
             }
         }
