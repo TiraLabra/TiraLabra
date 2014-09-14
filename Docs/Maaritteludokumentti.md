@@ -1,12 +1,12 @@
 # Määrittely #
 
-Aiheenani on parhaimman polun etsiminen matriisissa. Paras polku määritellään reitiksi alku- ja loppupisteen välillä, jossa polulla olevien lukujen summa on mahdollisimman pieni. Ohjelma toteutetaan javalla.
+Aiheenani on parhaimman polun etsiminen kuvassa. Paras polku lyhyimmäksi reitiksi alku- ja loppupisteen välillä. Ohjelma toteutetaan javalla.
 
 
 Polun etsimiseen käytän A* algoritmia ja A* toteuttamista varten tarvitsen prioriteettijonon.
 
 
-Ohjelman syötteenä on tarkoitus olla jonkinlainen matriisi, tai jos aika ja motivaatio riittää niin kuva josta tehdään matriisi, jonka arvot määräytyvät pikseleiden tummuuden perusteella. Tästä matriisista ohjelma sitten etsii parhaimman reitin käyttäjän määrittelemien alku- ja loppupisteiden välillä. Tulosteena olisi visuaalinen representaatio polun reitistä.
+Ohjelman syötteenä on tarkoitus olla tyhjä kuva johon käyttäjä voi piirtää esteitä, tai jos aika ja motivaatio riittää niin mikä tahansa kuva josta etsitään vähiten tummia pikseleitä ylittävä reitti. Tästä kuvasta ohjelma sitten etsii parhaimman reitin käyttäjän määrittelemien alku- ja loppupisteiden välillä. Tulosteena olisi visuaalinen representaatio polun reitistä.
 
 Tavoite aikavaativuus: O(n log n)
 

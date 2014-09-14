@@ -11,6 +11,8 @@ import java.util.Random;
 /**
  *
  * @author Jaakko
+ * 
+ * Luokka verkko on väliaikainen ja sen voisi melkeimpä poistaa.
  */
 public class Verkko {
     
@@ -27,8 +29,8 @@ public class Verkko {
         
         lähtöX=1;
         lähtöY=1;
-        maaliX=5;
-        maaliY=5;
+        maaliX=4;
+        maaliY=4;
         
         Täytätaulukko();
         
@@ -50,14 +52,6 @@ public class Verkko {
     }
     
     
-//    public int ArvoLuku(){
-//        
-//        Random arvo = new Random();
-//
-//        int palautus = arvo.nextInt(10) + 0;
-//        
-//        return palautus;
-//    }
     
 
     

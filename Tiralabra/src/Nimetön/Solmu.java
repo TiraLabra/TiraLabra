@@ -7,8 +7,9 @@
 package Nimetön;
 
 /**
- *
  * @author Jaakko
+ * 
+ * Luokka solmu kuvaa solmua.
  */
 public class Solmu {
     
@@ -21,6 +22,13 @@ public class Solmu {
     
     public boolean seinä;
     
+/**
+ *Konstruktori
+ * 
+ * @param x koordinaatti X
+ * @param y koordinaatti Y
+ * @param hArvo Heurestiika arvo
+ */        
     
     public Solmu (int x, int y, int hArvo){
         

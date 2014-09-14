@@ -9,8 +9,9 @@ package Nimetön;
 import java.util.Comparator;
 
 /**
- *
  * @author Jaakko
+ * 
+ * Vertaa kahden solmun heurestiikka-arvoja.
  */
 public class LukuVertaaja implements Comparator<Solmu> {
 

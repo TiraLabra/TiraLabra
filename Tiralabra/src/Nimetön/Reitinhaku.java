@@ -13,6 +13,9 @@ import java.util.PriorityQueue;
 /**
  *
  * @author Jaakko
+ * 
+ * Luokka reitinhaku etsii lyhyimmän reitin verkosta lähtö ja maali pisteiden välillä.
+ * 
  */
 
 public class Reitinhaku {
@@ -20,6 +23,14 @@ public class Reitinhaku {
     public Verkko verkko;
     
     public PriorityQueue<Solmu> AvoinLista;
+    
+    
+/**
+ * Konstruktori luo verkon sekä AvoinListan jossa on somut joihin voidaan mennä. 
+ * Konstruktori lisää tähän prioriteettijonoon aloituspisteen ja laittaa sen 
+ * edeltäväksi solmuksi itsensä.
+ * 
+ */          
     
     public Reitinhaku(){
         
@@ -30,55 +41,75 @@ public class Reitinhaku {
         
         
         AvoinLista.add(verkko.taulukko[1][1]);
-        verkko.taulukko[0][0].Edeltävä=verkko.taulukko[0][0];
+        verkko.taulukko[1][1].Edeltävä=verkko.taulukko[1][1];
         
         Haku();
     }
     
-    
-    
+/**
+ * Haku metodin looppi ottaa AvoinListasta solmun jolla on pienin heurestiikka-arvo, 
+ * ja antaa sen parametrinä TarkistaViereiset metodille. Looppi loppuu kun maalipiste on
+ * käsittelyssä.
+ * 
+ */        
     
     public void Haku(){
         
-        tulosta(verkko.taulukko);
+//        tulosta(verkko.taulukko);
         
-        Solmu käsittelyssä=AvoinLista.poll();
+        Solmu käsittelyssä=new Solmu(6, 6, 6);
         
         while(käsittelyssä.Heurestiikaarvo!=0){
             
+            käsittelyssä=AvoinLista.poll();
+            
             TarkistaViereiset(käsittelyssä);
             
-            käsittelyssä=AvoinLista.poll();
-
         }
         
-        
-        
+               
     }
     
+/**
+ * Tarkistaa jokaisen viereisen solmun sen varalta että se on seinä, jos ei ole 
+ * niin kutsuu metodia Lisää sille solmulle.
+ * 
+ * 
+ *  @param Käsittelyssä Käsittelyssä oleva solmu
+ */   
     
     public void TarkistaViereiset(Solmu Käsittelyssä){
-        
-        System.out.println("muumimaailma  "+Käsittelyssä.koordinaattiX+"  "+Käsittelyssä.koordinaattiY);              
+                
         
         if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX+1].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä);
+
         }
         if(verkko.taulukko[Käsittelyssä.koordinaattiY+1][Käsittelyssä.koordinaattiX].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä);
+
         }
         if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX-1].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä);
+
         }
         if(verkko.taulukko[Käsittelyssä.koordinaattiY-1][Käsittelyssä.koordinaattiX].seinä==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
+
         }
         
-
         
     }
     
-   
+/**
+ * Jos solmu ei ole ollet avoimessa listassa aikaisemmin niin metodi laittaa 
+ * sen sinne ja samalla asettaa sen Edeltavä solmuksi solmun "Käsittelyssä".
+ * 
+ * 
+ * @param x Koordinaatti x
+ * @param y Koordinaatti y
+ * @param Käsittelyssä Käsittelyssä oleva solmu
+ */   
     public void Lisää(int x, int y, Solmu Käsittelyssä){
         
         if(verkko.taulukko[x][y].Edeltävä==null){
@@ -89,15 +120,15 @@ public class Reitinhaku {
     }
     
     
-    public void tulosta(Solmu[][] asd){
-        
-        for (int i = 0; i < asd.length; i++) {
-            for (int j = 0; j < asd[0].length; j++) {
-                System.out.print(" "+asd[i][j].Heurestiikaarvo);
-            }
-            System.out.println("");
-        }
-        
-    }
+//    public void tulosta(Solmu[][] asd){
+//        
+//        for (int i = 0; i < asd.length; i++) {
+//            for (int j = 0; j < asd[0].length; j++) {
+//                System.out.print(" "+asd[i][j].Heurestiikaarvo);
+//            }
+//            System.out.println("");
+//        }
+//        
+//    }
     
 }
