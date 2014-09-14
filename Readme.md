@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/TiraLabra/TiraLabra.svg?branch=master)](https://travis-ci.org/TiraLabra/TiraLabra)
 ## Kommentteja vasta lauantaina! 
 ryhmäteknisistä syistä
 
