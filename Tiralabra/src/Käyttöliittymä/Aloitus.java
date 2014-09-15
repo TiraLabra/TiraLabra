@@ -6,8 +6,14 @@
 
 package Käyttöliittymä;
 
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -23,17 +29,34 @@ public class Aloitus extends JFrame {
         
         Aloitus käyttis = new Aloitus();
         
+
+ 
+        luoKomponentit(käyttis);
+        käyttis.setSize(700, 700);        
         käyttis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         käyttis.setVisible(true);
         käyttis.pack();
         käyttis.setTitle("asdasd");
-        
-        Kuva ikkunan = new Kuva();
-        
-        käyttis.add(ikkunan);
-        
-        käyttis.setSize(ikkunan.kuva.getHeight()+30, ikkunan.kuva.getWidth()+30);
+
 
     }
-    
-}
+
+    public static void luoKomponentit(Container container) throws IOException, URISyntaxException {
+ 
+        
+
+        Kuva ikkunan = new Kuva();
+
+        JButton AloitaNappi = new JButton("Aloita peli!");
+        AloitaNappi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                    
+                }
+            });
+
+        
+        container.add(ikkunan);
+        container.add(AloitaNappi);
+        
+        }    
+    }

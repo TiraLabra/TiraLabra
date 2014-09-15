@@ -3,7 +3,10 @@
 package Käyttöliittymä;
 
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -27,7 +30,7 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
     private Point p1, p2;
  
     public Kuva() throws IOException, URISyntaxException {
-        this.kuva =  ImageIO.read(new File(getClass().getResource("untitled.jpg").toURI()));
+        this.kuva =  ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
 
         addMouseListener(this);
         addMouseMotionListener(this);        
@@ -43,11 +46,8 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
  */  
     @Override
     protected void paintComponent(Graphics grafiikka) {
-        grafiikka.drawImage(kuva, 0, 0, this);
-        if (p1 != null && p2 != null){
-            grafiikka.drawLine(p1.x, p1.y, p2.x, p2.y);
-            
-        }
+        grafiikka.drawImage(this.kuva, 0, 0, this);
+
     }
     
 /**
@@ -60,15 +60,6 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
         p1 = me.getPoint();
     }
     
-/**
- *Kutsuu metodia mouseReleased niin kauan kuin hiirtä pidetään pohjassa.
- * 
- * @param me hiirieventti
- */       
-    @Override
-    public void mouseDragged(MouseEvent me) {
-        mouseReleased(me);
-    }
 
 /**
  *Asettaa p2:een hiiren klikkaaman pisteen ja repainttaa.
@@ -78,7 +69,19 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
     @Override
     public void mouseReleased(MouseEvent me) {
         p2 = me.getPoint();
+        Graphics2D kuvagrafiikka = (Graphics2D)this.kuva.getGraphics();
+        kuvagrafiikka.setStroke(new BasicStroke(5));
+        kuvagrafiikka.setColor(Color.BLACK);
+
+          if (p1 != null && p2 != null){
+            kuvagrafiikka.drawLine(p1.x, p1.y, p2.x, p2.y);
+            
+        }
         repaint();
+    }
+    
+    @Override
+    public void mouseDragged(MouseEvent me) {
     }
     
     @Override
