@@ -55,7 +55,7 @@ public class Reitinhaku {
     public void Haku(){
         
         
-        Solmu käsittelyssä=new Solmu(6, 6, 6);
+        Solmu käsittelyssä=new Solmu(6, 6, 6, 6);
         
         while(käsittelyssä.Heurestiikaarvo!=0){
             
