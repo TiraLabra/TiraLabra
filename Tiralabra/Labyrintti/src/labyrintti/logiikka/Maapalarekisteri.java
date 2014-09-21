@@ -148,4 +148,12 @@ public class Maapalarekisteri {
     public Maapala[][] getLabyrintti(){
         return this.labyrintti;
     }
+    
+    /**
+     * @return this.koko, eli labyrintin sivun pituus.
+     */
+    
+    public int getKoko(){
+        return this.koko;
+    }
 }

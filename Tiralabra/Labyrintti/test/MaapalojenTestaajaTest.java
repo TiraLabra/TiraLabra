@@ -45,7 +45,7 @@ public class MaapalojenTestaajaTest {
     public void maapalallaOikeaHeuristinenArvo() {
         Maapala maapala = new Maapala(1, 1, 2);
 
-        assertTrue(maapala.getHValue() == 2);
+        assertTrue(maapala.getHArvo() == 2);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class MaapalojenTestaajaTest {
         Maapala maapala = new Maapala(1, 1, 0);
         maapala.setHValue(1000);
 
-        assertTrue(maapala.getHValue() == 1000);
+        assertTrue(maapala.getHArvo() == 1000);
     }
     @Test
     public void maapalaMuuttuuSeinaksi(){
@@ -64,13 +64,13 @@ public class MaapalojenTestaajaTest {
     }
     
     @Test
-    public void maapalaMuuttuuTakaisinNormaaliksi(){
+    public void maapalaMuuttuuLapaistavaksi(){
         Maapala maapala = new Maapala (0, 0, 0);
         
         maapala.asetaSeinaksi();
         assertTrue(maapala.onkoSeina());
         
-        maapala.asetaNormaaliksi();
+        maapala.asetaLapaistavaksi();
         assertFalse(maapala.onkoSeina());
     }
     
@@ -86,5 +86,72 @@ public class MaapalojenTestaajaTest {
          Maapala maapala = new Maapala (1, 3, 0);
         
          assertTrue(maapala.getY() == 3);
-    } 
+    }
+    
+    @Test
+    public void maapalaEiKuuluAluksiAvoimeenListaan(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        
+        assertFalse(maapala.onkoAvoimellaListalla());
+    }
+    
+    @Test
+    public void maapalaSiirtyyOikeinAvoimeenListaan(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        assertFalse(maapala.onkoAvoimellaListalla());
+    
+        maapala.siirraAvoimelleListalle();
+        assertTrue(maapala.onkoAvoimellaListalla());
+        
+    }
+    
+    @Test
+    public void maapalaPoistuuAvoimeltaListalta(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        
+        maapala.siirraAvoimelleListalle();
+        assertTrue(maapala.onkoAvoimellaListalla());
+    
+        maapala.poistaAvoimeltaListalta();
+        assertFalse(maapala.onkoAvoimellaListalla());
+    }
+    
+    @Test
+    public void maapalaEiKuuluAluksiSuljettuunListaan(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        
+        assertFalse(maapala.onkoSuljetullaListalla());
+    }
+    
+    @Test
+    public void maapalaSiirtyyOikeinSuljettuunListaan(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        assertFalse(maapala.onkoSuljetullaListalla());
+    
+        maapala.siirraSuljetulleListalle();
+        assertTrue(maapala.onkoSuljetullaListalla());
+    }
+    
+    @Test
+    public void maapalaPoistuuSuljetultaListaltaOikein(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        maapala.siirraSuljetulleListalle();
+        assertTrue(maapala.onkoSuljetullaListalla());
+    
+        maapala.poistaSuljetultaListalta();
+        assertFalse(maapala.onkoSuljetullaListalla());
+    }
+    
+    @Test
+    public void oikeaVanhempi(){
+        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala1 = new Maapala (1, 2, 5);
+        
+        maapala.setVanhempi(maapala1);
+        
+        assertTrue(maapala.getVanhempi().getHArvo() == 5);
+        assertTrue(maapala.getVanhempi().getX() == 1);
+        assertTrue(maapala.getVanhempi().getY() == 2);
+    }
+    
 }

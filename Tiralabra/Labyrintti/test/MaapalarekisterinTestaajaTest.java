@@ -80,7 +80,7 @@ public class MaapalarekisterinTestaajaTest {
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
         
-        assertTrue(maapalarekisteri.getAlku().getHValue() == 2);
+        assertTrue(maapalarekisteri.getAlku().getHArvo() == 2);
     }
     
     @Test
@@ -88,7 +88,7 @@ public class MaapalarekisterinTestaajaTest {
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 1, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
         
-        assertTrue(maapalarekisteri.getAlku().getHValue() == 1);
+        assertTrue(maapalarekisteri.getAlku().getHArvo() == 1);
     }
     
     @Test
@@ -97,6 +97,12 @@ public class MaapalarekisterinTestaajaTest {
         maapalarekisteri.luoMaapalat();
         Maapala maapala = maapalarekisteri.getMaapala(0, 0);
         
-        assertTrue(maapala.getHValue() == 2);
+        assertTrue(maapala.getHArvo() == 2);
+    }
+    
+    @Test
+    public void palauttaaOikeanKoon(){
+        Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
+        assertTrue(maapalarekisteri.getKoko() == 2);
     }
 }
