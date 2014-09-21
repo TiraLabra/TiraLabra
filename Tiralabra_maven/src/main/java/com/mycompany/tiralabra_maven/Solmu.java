@@ -6,13 +6,15 @@ import java.util.ArrayList;
  * Solmu-luokka sisältää verkon yksittäisen solmun tiedot
  */
 public class Solmu {
+    
+    private final int SEINAPAINO = -1;
     private int x; //X- ja Y -koordinaatit eräisyysarviota ja tulostusta varten
     private int y;
     private int paino;
     private int alkuun; //Astarin tiedossa oleva lyhin etäisyys alusta tähän solmuun
     private int loppuun; //Astarin etäisyysarvio tästä solmusta loppuun
     private Solmu polku; //solmu, josta lyhin polku saapui
-    private ArrayList<Solmu> vierus; //vierussolmut
+    private LinkitettyLista vierus; //vierussolmut
 
     /**
      * @param    x       solmun vaakakoordinaatti 2D-esityksessä
@@ -23,7 +25,7 @@ public class Solmu {
         this.x = x;
         this.y = y;
         this.paino = paino;
-        this.vierus = new ArrayList<Solmu>();
+        this.vierus = new LinkitettyLista();
     }
 
     public int getX() {
@@ -74,7 +76,7 @@ public class Solmu {
         this.polku = polku;
     }
 
-    public ArrayList getVierus() {
+    public LinkitettyLista getVierus() {
         return vierus;
     }
 
@@ -85,10 +87,10 @@ public class Solmu {
      * @param    solmu  tälle solmulle vierukseksi lisättävä solmu
     */
     public void lisaaVierus(Solmu solmu) {
-        if(solmu.getPaino() == -1) { //Vierussolmu on seinää, ei siis ole kaarta
+        if(solmu.getPaino() == SEINAPAINO) { //Vierussolmu on seinää, ei siis ole kaarta
             return;
         }
-        this.vierus.add(solmu);
+        this.vierus.lisaa(solmu);
     }
     
     /**
@@ -99,13 +101,25 @@ public class Solmu {
      * @return kaaripaino tältä solmulta parametrin solmulle
     */
     public int getKaaripaino(Solmu solmu) {
-        for(Solmu vierussolmu : vierus) {
-            if(vierussolmu == solmu) {
-                return vierussolmu.getPaino();
+        Pinosolmu vieruspinosolmu = vierus.getYlin();
+        
+        while (vieruspinosolmu != null) {
+            if(vieruspinosolmu.getSisalto() == solmu) {
+                return vieruspinosolmu.getSisalto().getPaino();
             }
+            vieruspinosolmu = vieruspinosolmu.getSeuraava();
         }
         
-        //jos ei kaarta (ei tarvitse tehdä kaarta # välille)
-        return 1000000;
+        //jos ei kaarta
+        return SEINAPAINO;
+    }
+    
+    /**
+     * Palauttaa alkuun- ja loppuun-arvojen summan, jota käytetään useasti
+     * 
+     * @return alkuun- ja loppuun-arvojen summa
+    */
+    public int getAlkuunLoppuunSumma() {
+        return alkuun + loppuun;
     }
 }

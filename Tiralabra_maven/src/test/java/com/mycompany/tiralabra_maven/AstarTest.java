@@ -67,8 +67,14 @@ public class AstarTest {
         
         int alkuunsumma = 0;
         
-        for (Solmu solmu : verkko2.getSolmut()) {
+        Pinosolmu pinosolmu = verkko2.getSolmut().getYlin();
+        
+        while (pinosolmu != null) {
+            Solmu solmu = pinosolmu.getSisalto();
+            
             alkuunsumma += solmu.getAlkuun();
+            
+            pinosolmu = pinosolmu.getSeuraava();
         }
         
         assertEquals(0, verkko2.getSolmu(2, 0).getAlkuun()); //aloitussolmun alkuun

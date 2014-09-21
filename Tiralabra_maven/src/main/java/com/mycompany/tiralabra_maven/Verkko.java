@@ -6,17 +6,17 @@ import java.util.ArrayList;
  * Verkko sisältää kokoelman solmuja 
  */
 public class Verkko {
-    private ArrayList<Solmu> solmut;
+    private LinkitettyLista solmut;
 
     public Verkko() {
-        solmut = new ArrayList<Solmu>();
+        solmut = new LinkitettyLista();
     }
     
     public void lisaaSolmu(Solmu solmu) {
-        solmut.add(solmu);
+        solmut.lisaa(solmu);
     }
 
-    public ArrayList<Solmu> getSolmut() {
+    public LinkitettyLista getSolmut() {
         return solmut;
     }
     
@@ -28,11 +28,17 @@ public class Verkko {
      * @return etsitty solmu tai null, jos solmua ei löytynyt
     */    
     public Solmu getSolmu(int x, int y) {
-        for(Solmu solmu : solmut) {
+        Pinosolmu pinosolmu = solmut.getYlin();
+        
+        while (pinosolmu != null) {
+            Solmu solmu = pinosolmu.getSisalto();
+            
             if(solmu.getX() == x && solmu.getY() == y) {
                 return solmu;
             }
+            pinosolmu = pinosolmu.getSeuraava();
         }
+        
         return null;
     }
     
@@ -42,7 +48,11 @@ public class Verkko {
      * sijaitsevat solmut
     */ 
     public void luoVieruslistat() {
-        for(Solmu solmu : solmut) {
+        Pinosolmu pinosolmu = solmut.getYlin();
+        
+        while (pinosolmu != null) {
+            Solmu solmu = pinosolmu.getSisalto();
+            
             if(this.getSolmu(solmu.getX() - 1, solmu.getY()) != null) {
                 solmu.lisaaVierus(this.getSolmu(solmu.getX() - 1, solmu.getY()));
             }
@@ -55,6 +65,8 @@ public class Verkko {
             if(this.getSolmu(solmu.getX(), solmu.getY() + 1) != null) {
                 solmu.lisaaVierus(this.getSolmu(solmu.getX(), solmu.getY() + 1));
             }
+            
+            pinosolmu = pinosolmu.getSeuraava();
         }
     }
 }

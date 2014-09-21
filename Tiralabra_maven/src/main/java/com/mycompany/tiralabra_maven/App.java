@@ -1,12 +1,11 @@
 package com.mycompany.tiralabra_maven;
 
-import static java.lang.Math.abs;
-import java.util.ArrayList;
-
 public class App 
 {
     public static void main( String[] args )
     {
+        final int SEINAPAINO = -1;
+        
         //Esitetään verkko vieruslistana
         
         /*
@@ -24,7 +23,7 @@ public class App
         verkko2.lisaaSolmu( new Solmu(2, 0, 0) );
         verkko2.lisaaSolmu( new Solmu(0, 1, 0) );
         verkko2.lisaaSolmu( new Solmu(1, 1, 8) );
-        verkko2.lisaaSolmu( new Solmu(2, 1, -1) );
+        verkko2.lisaaSolmu( new Solmu(2, 1, SEINAPAINO) );
         verkko2.lisaaSolmu( new Solmu(0, 2, 0) );
         verkko2.lisaaSolmu( new Solmu(1, 2, 0) );
         verkko2.lisaaSolmu( new Solmu(2, 2, 0) );

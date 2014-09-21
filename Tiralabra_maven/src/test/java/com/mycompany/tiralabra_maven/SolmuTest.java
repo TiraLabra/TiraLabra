@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
  */
 public class SolmuTest {
     
+    private final int SEINAPAINO = -1;
+    
     public SolmuTest() {
     }
     
@@ -44,7 +46,7 @@ public class SolmuTest {
         assertEquals(3, solmu.getX());
         assertEquals(4, solmu.getY());
         assertEquals(5, solmu.getPaino());
-        assertEquals(0, solmu.getVierus().size());
+        assertEquals(true, solmu.getVierus().onkoTyhja());
     }
     
     @Test
@@ -69,12 +71,12 @@ public class SolmuTest {
     public void vierussolmunLisays() {
         Solmu solmu1 = new Solmu(0, 0, 0);
         Solmu solmu2 = new Solmu(1, 0, 1);
-        Solmu solmu3 = new Solmu(0, 1, -1); //läpäisemätön
+        Solmu solmu3 = new Solmu(0, 1, SEINAPAINO); //läpäisemätön
         
         solmu1.lisaaVierus(solmu2);
         solmu1.lisaaVierus(solmu3);
         
         assertEquals(1, solmu1.getKaaripaino(solmu2));
-        assertEquals(1000000, solmu1.getKaaripaino(solmu3));
+        assertEquals(SEINAPAINO, solmu1.getKaaripaino(solmu3));
     }
 }

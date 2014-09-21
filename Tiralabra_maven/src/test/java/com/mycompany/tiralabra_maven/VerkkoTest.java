@@ -42,7 +42,7 @@ public class VerkkoTest {
     @Test
     public void konstruktori() {
         Verkko verkko = new Verkko();
-        assertEquals(0, verkko.getSolmut().size());
+        assertTrue(verkko.getSolmut().onkoTyhja());
     }
     
     @Test
@@ -51,7 +51,8 @@ public class VerkkoTest {
         Solmu solmu = new Solmu(0, 0, 0);
         
         verkko.lisaaSolmu(solmu);
-        assertEquals(1, verkko.getSolmut().size());
+        assertFalse(verkko.getSolmut().onkoTyhja());
+        assertEquals(1, verkko.getSolmut().koko());
     }
     
     @Test
@@ -91,8 +92,8 @@ public class VerkkoTest {
         
         verkko2.luoVieruslistat();
         
-        assertEquals(2, solmu1.getVierus().size());
-        assertEquals(4, solmu5.getVierus().size());
-        assertEquals(2, solmu8.getVierus().size());
+        assertEquals(2, solmu1.getVierus().koko());
+        assertEquals(4, solmu5.getVierus().koko());
+        assertEquals(2, solmu8.getVierus().koko());
     }
 }
