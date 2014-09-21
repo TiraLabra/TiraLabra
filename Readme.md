@@ -5,3 +5,5 @@
 * Solmu luokan ja sen testien korjauksia/täydennyksiä
 * Uusi rajapinta: HakupuuRajapinta
 * Uusi luokka: BinaarinenHakupuu
+* Testit Binääriselle hakupuulle
+* Asennettu cobertura testikattavuutta varte: mvn cobertura:cobertura
