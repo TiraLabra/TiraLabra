@@ -6,6 +6,8 @@
 
 package Nimetön;
 
+import Algoritmi.Solmu;
+import Algoritmi.Reitinhaku;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

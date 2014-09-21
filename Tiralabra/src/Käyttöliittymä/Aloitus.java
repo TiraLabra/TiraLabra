@@ -6,6 +6,7 @@
 
 package Käyttöliittymä;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,9 @@ public class Aloitus extends JFrame {
  
         
 
-        Kuva ikkunan = new Kuva();
+        Kuva ikkuna = new Kuva();
+        
+        ikkuna.setSize(700, 700);
 
         JButton AloitaNappi = new JButton("Aloita peli!");
         AloitaNappi.addActionListener(new ActionListener() {
@@ -55,8 +58,8 @@ public class Aloitus extends JFrame {
             });
 
         
-        container.add(ikkunan);
-        container.add(AloitaNappi);
+        container.add(ikkuna, BorderLayout.CENTER);
+        container.add(AloitaNappi, BorderLayout.PAGE_END);
         
         }    
     }
