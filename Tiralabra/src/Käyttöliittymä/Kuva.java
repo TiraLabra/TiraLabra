@@ -78,6 +78,7 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
             
         }
         repaint();
+        
     }
     
     @Override

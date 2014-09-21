@@ -32,9 +32,8 @@ public class Reitinhaku {
  * 
  */          
     
-    public Reitinhaku(){
-        
-        verkko=new Verkko(6, 6);
+    public Reitinhaku(Verkko syöte){
+        verkko=syöte;
 
         Comparator<Solmu> comparator = new LukuVertaaja();
         AvoinLista=new PriorityQueue<Solmu>(12, comparator);
@@ -55,7 +54,6 @@ public class Reitinhaku {
     
     public void Haku(){
         
-//        tulosta(verkko.taulukko);
         
         Solmu käsittelyssä=new Solmu(6, 6, 6);
         
@@ -120,15 +118,5 @@ public class Reitinhaku {
     }
     
     
-//    public void tulosta(Solmu[][] asd){
-//        
-//        for (int i = 0; i < asd.length; i++) {
-//            for (int j = 0; j < asd[0].length; j++) {
-//                System.out.print(" "+asd[i][j].Heurestiikaarvo);
-//            }
-//            System.out.println("");
-//        }
-//        
-//    }
     
 }

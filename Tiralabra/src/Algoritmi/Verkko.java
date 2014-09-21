@@ -6,6 +6,8 @@
 
 package Algoritmi;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
@@ -17,43 +19,36 @@ import java.util.Random;
 public class Verkko {
     
     public Solmu [][] taulukko;
+    public BufferedImage kuva;
     
-    public int lähtöX;
-    public int lähtöY;
-    public int maaliX;
-    public int maaliY;
+    public int maaliX = 500;
+    public int maaliY = 500;
+
     
-    public Verkko(int x, int y){
-        
-        taulukko=new Solmu[y][x];
-        
-        lähtöX=1;
-        lähtöY=1;
-        maaliX=4;
-        maaliY=4;
+    public Verkko(BufferedImage kuva){
+        taulukko=new Solmu [kuva.getHeight()][kuva.getWidth()];
+        this.kuva=kuva;
         
         Täytätaulukko();
+
         
     }
     
     
     public void Täytätaulukko(){
         
-        for (int y = 0; y < taulukko.length; y++) {
-            for (int x = 0; x < taulukko[0].length; x++) {
-                taulukko[y][x]=new Solmu(x, y, HeuristiikkaArvo(y, x));
-                if(y==0 || x==0 || y==taulukko.length-1 || x==taulukko[0].length-1){
-                    taulukko[y][x].seinä=true;
-                }
+        for (int i = 0; i < kuva.getHeight(); i++) {
+            for (int j = 0; j < kuva.getWidth(); j++) {
+                Color c = new Color(kuva.getRGB(j, i));
+                
+                taulukko[i][j]=new Solmu(i, j, HeuristiikkaArvo(i, j), c.getBlue());
+                
             }
-            
         }
         
     }
     
     
-    
-
     
     public int HeuristiikkaArvo(int y, int x){
 

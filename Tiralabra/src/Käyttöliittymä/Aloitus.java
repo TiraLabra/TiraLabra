@@ -6,6 +6,7 @@
 
 package Käyttöliittymä;
 
+import Algoritmi.Verkko;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -46,14 +47,16 @@ public class Aloitus extends JFrame {
  
         
 
-        Kuva ikkuna = new Kuva();
+        final Kuva ikkuna = new Kuva();
         
         ikkuna.setSize(700, 700);
 
         JButton AloitaNappi = new JButton("Aloita peli!");
         AloitaNappi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    
+                    Verkko verkko = new Verkko(ikkuna.kuva);
+                
+                
                 }
             });
 

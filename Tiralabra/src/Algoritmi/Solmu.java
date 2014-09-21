@@ -30,12 +30,17 @@ public class Solmu {
  * @param hArvo Heurestiika arvo
  */        
     
-    public Solmu (int x, int y, int hArvo){
+    public Solmu (int x, int y, int hArvo, int väri ){
         
         koordinaattiX=x;
         koordinaattiY=y;
         Heurestiikaarvo=hArvo;
         Edeltävä=null;
-        seinä=false;
+        if(väri==255){
+            seinä=true;
+        }else{
+            seinä=false;
+        }
+        
     }
 }
