@@ -29,20 +29,14 @@ public class MittaustulosTest {
     
     @Before
     public void setUp() {
-        t = new Mittaustulos("testi");
+        t = new Mittaustulos();
     }
     
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of getNimi method, of class Mittaustulos.
-     */
-    @Test
-    public void testGetNimi() {    
-        assertEquals("testi", t.getNimi());
-    }
+
 
     /**
      * Test of getPienin method, of class Mittaustulos.

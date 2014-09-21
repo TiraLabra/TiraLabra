@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven.tyokalut;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.Hakupuu;
+
 /**
  * Luokka johon talletetaan mitattuja aikoja.
  *
@@ -9,20 +11,18 @@ public class Mittaustulos {
 
     private long pienin, suurin, summa;
     private int lkm;
-    private String nimi;
+    private final Hakupuu puu;
+    private final String nimi;
+
+
 
     /**
-     *  Luo uuden mittaustulosolion ilman nimeä.
+     *  Luo uuden mittastulos olion ja asettaa olio-muuttujille asianmukaiset alkuarvot.
+     * @param nimi  Mittaustulokselle annettava nimi.
+     * @param puu  Hakupuu, jota tulokset koskevat
      */
-    public Mittaustulos() {
-        this("");
-    }
-
-    /**
-     *  Luo uuden mittastulos olion nimellä.
-     * @param nimi  Tuloksille annettava nimi
-     */
-    public Mittaustulos(String nimi) {
+    public Mittaustulos(String nimi, Hakupuu puu) {
+        this.puu = puu;
         this.nimi = nimi;
         suurin = Long.MIN_VALUE;
         pienin = Long.MAX_VALUE;
@@ -30,12 +30,18 @@ public class Mittaustulos {
         summa = 0;
     }
 
+    public Mittaustulos() {
+        this(null,null);
+    }
+    
+    
+
     /**
      *  Palauttaa mittaustulosten nimen, mikäli niille annetiin sellainen luomisen yhteydessä.
      * @return  Mittaustulosten nimi
      */
-    public String getNimi() {
-        return nimi;
+    public Hakupuu getPuu() {
+        return puu;
     }
 
     /**
@@ -83,4 +89,12 @@ public class Mittaustulos {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        //TODO lisää jokin tulostuasu
+        return super.toString();
+    }
+    
+    
 }

@@ -26,6 +26,5 @@ public class Testipuu extends TreeMap<Integer, Integer> implements Hakupuu{
         for (int i : arvot) {
             super.put(i, i);
         }
-    }
-    
+    }    
 }

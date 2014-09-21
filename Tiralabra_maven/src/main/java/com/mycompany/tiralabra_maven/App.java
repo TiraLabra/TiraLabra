@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.kayttoliittyma.Tekstikayttoliittyma;
+import com.mycompany.tiralabra_maven.tyokalut.PuunTutkija;
 
 /**
  * Pääohjelma joka ei toistaiseksi tee käytännössä mitään
