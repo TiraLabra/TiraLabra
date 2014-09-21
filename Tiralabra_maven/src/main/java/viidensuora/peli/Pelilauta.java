@@ -73,6 +73,12 @@ public class Pelilauta {
         return pelilauta[i][j] instanceof Nolla;
     }
 
+    /**
+     * Palauttaa Pelimerkin koordinaatista.
+     * @param i Rivi.
+     * @param j Sarake.
+     * @return Pelimerkki. NULL jos koordinaatti ei ole ok.
+     */
     public Pelimerkki getPelimerkki(int i, int j) {
         if (!koordinaattiLaudalla(i, j)) {
             return null;
