@@ -21,11 +21,11 @@ public class LukuVertaaja implements Comparator<Solmu> {
     @Override
     public int compare(Solmu x, Solmu y) {
         
-        if (x.Heurestiikaarvo < y.Heurestiikaarvo){
+        if (x.Heurestiikaarvo+x.Reittipituus < y.Heurestiikaarvo+y.Reittipituus){
             return -1;
         }
         
-        if (x.Heurestiikaarvo > y.Heurestiikaarvo){
+        if (x.Heurestiikaarvo+x.Reittipituus > y.Heurestiikaarvo+y.Reittipituus){
             return 1;
         }
         

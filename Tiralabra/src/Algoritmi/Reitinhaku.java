@@ -39,10 +39,11 @@ public class Reitinhaku {
         AvoinLista=new PriorityQueue<Solmu>(12, comparator);
         
         
-        AvoinLista.add(verkko.taulukko[1][1]);
-        verkko.taulukko[1][1].Edeltävä=verkko.taulukko[1][1];
+        AvoinLista.add(verkko.taulukko[51][51]);
+        verkko.taulukko[51][51].Edeltävä=verkko.taulukko[51][51];
         
-        Haku();
+        
+
     }
     
 /**
@@ -65,7 +66,8 @@ public class Reitinhaku {
             
         }
         
-               
+        PiirräReitti(käsittelyssä);
+         
     }
     
 /**
@@ -112,11 +114,30 @@ public class Reitinhaku {
         
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
+            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
             AvoinLista.add(verkko.taulukko[x][y]);
         }
         
     }
     
+    public void PiirräReitti(Solmu syöte){
+        
+        Solmu käsittelyssä=syöte;
+        
+        while(true){
+            
+            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, 255);
+            
+            if(käsittelyssä==käsittelyssä.Edeltävä){
+                break;
+            }else{
+                käsittelyssä=käsittelyssä.Edeltävä;
+            }
+            
+        }
+        
+        
+    }
     
     
 }

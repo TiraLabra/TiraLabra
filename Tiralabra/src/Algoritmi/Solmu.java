@@ -14,6 +14,7 @@ package Algoritmi;
 public class Solmu {
     
     public int Heurestiikaarvo;
+    public int Reittipituus;
 
     public Solmu Edeltävä;
     
@@ -35,11 +36,12 @@ public class Solmu {
         koordinaattiX=x;
         koordinaattiY=y;
         Heurestiikaarvo=hArvo;
+        Reittipituus=0;
         Edeltävä=null;
         if(väri==255){
-            seinä=true;
-        }else{
             seinä=false;
+        }else{
+            seinä=true;
         }
         
     }

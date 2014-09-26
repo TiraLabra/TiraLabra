@@ -7,6 +7,7 @@
 package Käyttöliittymä;
 
 import Algoritmi.Verkko;
+import Algoritmi.Reitinhaku;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -56,7 +57,11 @@ public class Aloitus extends JFrame {
             public void actionPerformed(ActionEvent e) {
                     Verkko verkko = new Verkko(ikkuna.kuva);
                 
-                
+                    Reitinhaku reitti = new Reitinhaku(verkko);
+                    reitti.Haku();
+                    
+                    Piirrä(ikkuna);
+                    
                 }
             });
 
@@ -64,5 +69,12 @@ public class Aloitus extends JFrame {
         container.add(ikkuna, BorderLayout.CENTER);
         container.add(AloitaNappi, BorderLayout.PAGE_END);
         
-        }    
     }
+    
+    
+    public static void Piirrä(Kuva ikkuna){
+        
+    } 
+    
+    
+}
