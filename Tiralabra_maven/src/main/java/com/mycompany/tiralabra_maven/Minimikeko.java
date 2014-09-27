@@ -26,6 +26,8 @@ public class Minimikeko {
     /**
      * Palauttaa kysytyn kohdan vanhemman (parent) indeksin taulukossa
      * 
+     * Aikavaativuus: vakio
+     * 
      * @param    kohta  indeksi, jonka vanhempi halutaan tietää
      * @return vanhemman indeksi
     */
@@ -37,6 +39,8 @@ public class Minimikeko {
     /**
      * Palauttaa kysytyn kohdan vasemman lapsen indeksin taulukossa
      * 
+     * Aikavaativuus: vakio
+     * 
      * @param    kohta  indeksi, jonka vasen lapsi halutaan tietää
      * @return vasemman lapsen indeksi
     */
@@ -46,6 +50,8 @@ public class Minimikeko {
     
     /**
      * Palauttaa kysytyn kohdan oikean lapsen indeksin taulukossa
+     * 
+     * Aikavaativuus: vakio
      * 
      * @param    kohta  indeksi, jonka oikea lapsi halutaan tietää
      * @return oikean lapsen indeksi
@@ -57,6 +63,14 @@ public class Minimikeko {
     /**
      * Heapify korjaa keon, jos se on sekaisin parametrina annetusta kohdasta.
      * Oletuksena parametrin kohdan lapset ovat ehjiä.
+     * 
+     * Pahin tapaus: kekoehto rikki ensimmäisessä solmussa ja solmu siirretään
+     * puun viimeiseksi alkioksi. 
+     * Solmu siirretään joko vasemman tai oikean lapsen tilalle ja jokaisella 
+     * siirrolla valitsemattoman lapsen alkiot jätetään käsittelemättä. Täten 
+     * käsiteltäviä alkioita on vain log(2, kekokoko).
+     * Aikavaativuus: logaritminen keon alkioiden lukumäärän suhteen
+     * Tilavaativuus: rekursion vuoksi logaritminen
      * 
      * @param    kohta  indeksi, josta keko korjataan
     */
@@ -84,6 +98,8 @@ public class Minimikeko {
     /**
      * Vaihtaa kahden solmun paikkaa keskenään taulukossa
      * 
+     * Aikavaativuus: vakio
+     * 
      * @param    kohta1  ensimmäisen kohdan indeksi
      * @param    kohta2  toisen kohdan indeksi
     */
@@ -91,10 +107,18 @@ public class Minimikeko {
         Solmu vanha = solmut[kohta1];
         solmut[kohta1] = solmut[kohta2];
         solmut[kohta2] = vanha;
+        if(solmut[kohta1] != null) {
+            solmut[kohta1].setIndeksi(kohta1);
+        }
+        if(solmut[kohta2] != null) {
+            solmut[kohta2].setIndeksi(kohta2);
+        }
     }
     
     /**
      * Palauttaa keon pienimmän solmun poistamatta sitä keosta
+     * 
+     * Aikavaativuus: vakio
      * 
      * @return keon pienin solmu
     */
@@ -105,11 +129,13 @@ public class Minimikeko {
     /**
      * Palauttaa keon pienimmän solmun ja poistaa sen keosta
      * 
+     * Aikavaativuus: logaritminen keon alkioiden suhteen (heapify:n vuoksi)
+     * 
      * @return keon pienin solmu
     */
     public Solmu poistaPienin() {
         Solmu pienin = solmut[0];
-        solmut[0] = solmut[kekokoko];
+        vaihdaKeskenaan(0, kekokoko); //solmut[0] = solmut[kekokoko];
         kekokoko--;
         heapify(0);
         return pienin;
@@ -118,21 +144,33 @@ public class Minimikeko {
     /**
      * Lisää solmun kekoon sellaiseen paikkaan, että keko ei mene sekaisin
      * 
+     * Pahin tapaus: lisättävä solmu on keon pienin solmu ja se täytyy kuljettaa
+     * puun alhaalta ylös asti. Koska keko on binääripuu, käsiteltäviä alkioita 
+     * on vain log(2, kekokoko) kuten heapify:ssä.
+     * Aikavaativuus: logaritminen keon alkioiden lukumäärän suhteen
+     * 
      * @param    lisattava  kekoon lisättävä solmu
     */
     public void lisaa(Solmu lisattava) {
         kekokoko++;
         int i = kekokoko;
         while(i>0 && solmut[vanhempi(i)] == null || i>0 && solmut[vanhempi(i)].getAlkuunLoppuunSumma() > lisattava.getAlkuunLoppuunSumma()) {
-            solmut[i] = solmut[vanhempi(i)];
+            vaihdaKeskenaan(i, vanhempi(i)); //solmut[i] = solmut[vanhempi(i)];
             i = vanhempi(i);
         }
         solmut[i] = lisattava;
+        lisattava.setIndeksi(i);
     }
     
     /**
      * Pienentää keossa olevan solmun arvoa (Astar-etäisyysarvio) ja nostaa sen 
      * oikealle paikalle
+     * 
+     * Pahin tapaus: solmu on muutoksen jälkeen keon pienin solmu ja se täytyy 
+     * kuljettaa puun alhaalta ylös asti. Koska keko on binääripuu, käsiteltäviä
+     * alkioita on vain log(2, kekokoko) kuten heapify:ssä. Valitettavasti
+     * solmun etsintään kuluu aikaa lineaarinen määrä
+     * Aikavaativuus: n log n, missä n = keon alkioiden lukumäärä
      * 
      * @param    solmu  solmu, jonka arvoa pienennetään
     */
@@ -145,19 +183,20 @@ public class Minimikeko {
     }
     
     /**
-     * Etsii solmun indeksin taulukossa
+     * Palauttaa solmun indeksin taulukossa
+     * 
+     * Aikavaativuus: vakio
      * 
      * @param    etsittava  solmu, jonka indeksi taulukossa halutaan tietää
      * @return etsittävän solmun indeksi taulukossa
     */
     public int etsiSolmunIndeksi(Solmu etsittava) { 
-        int indeksi = -1;
-        for(Solmu solmu : solmut) { //vie hirveästi aikaa
-            indeksi++;
-            if(solmu == etsittava) {
-                return indeksi;
-            }
+
+        if(etsittava == null) {
+            return -1;
         }
-        return -1;
+        
+        return etsittava.getIndeksi();
+
     }
 }

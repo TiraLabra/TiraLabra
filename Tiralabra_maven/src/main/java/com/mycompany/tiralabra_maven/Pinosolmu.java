@@ -4,6 +4,8 @@ package com.mycompany.tiralabra_maven;
 * Pinosolmu on linkitetyn listan alkio. Se sisältää solmu-olion ja viitteen
 * seuraavaan pinosolmuun.
 * 
+* Kaikkien metodit ovat vakioaikaisia.
+* 
 */
 public class Pinosolmu {
     private Solmu sisalto;

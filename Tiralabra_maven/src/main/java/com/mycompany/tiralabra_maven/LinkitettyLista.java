@@ -15,6 +15,8 @@ public class LinkitettyLista {
     /**
      * Palauttaa listan ylimmän (ensimmäisen) pinosolmun
      * 
+     * Aikavaativuus: vakio
+     * 
      * @return listan ensimmäinen pinosolmu
     */
     public Pinosolmu getYlin() {
@@ -23,6 +25,8 @@ public class LinkitettyLista {
     
     /**
      * Lisää solmun listan viimeiseksi
+     * 
+     * Aikavaativuus: vakio
      * 
      * @param    solmu  listaan lisättävä solmu
     */
@@ -42,6 +46,8 @@ public class LinkitettyLista {
     /**
      * Kertoo onko lista tyhjä vai ei
      * 
+     * Aikavaativuus: vakio
+     * 
      * @return onko lista tyhjä vai ei
     */
     public boolean onkoTyhja() {
@@ -50,6 +56,9 @@ public class LinkitettyLista {
     
     /**
      * Laskee listassa olevien pinosolmujen lukumäärän.
+     * 
+     * Pahin tapaus: kaikki pinosolmut käydään läpi (myös paras tapaus)
+     * Aikavaativuus: lineaarinen pinosolmujen lukumäärän suhteen
      * 
      * @return listan pinosolmujen lukumäärä
     */

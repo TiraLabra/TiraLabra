@@ -23,6 +23,9 @@ public class Verkko {
     /**
      * Etsii ja palauttaa solmun verkosta annetuilla koordinaateilla
      * 
+     * Pahin tapaus: etsittävää solmua ei ole linkitetyssä listassa
+     * Aikavaativuus: lineaarinen solmujen lukumäärän suhteen
+     * 
      * @param    x       solmun vaakakoordinaatti 2D-esityksessä
      * @param    y       solmun pystykoordinaatti 2D-esityksessä
      * @return etsitty solmu tai null, jos solmua ei löytynyt
@@ -46,6 +49,9 @@ public class Verkko {
      * Luo verkon jokaiselle solmulle vieruslistan, johon kuuluu 2D-esityksessä
      * solmun ylä- ja alapuolella sekä vasemmalla ja oikealla puolella 
      * sijaitsevat solmut
+     * 
+     * Pahin tapaus: kaikki solmut käydään läpi (myös paras tapaus)
+     * Aikavaativuus: lineaarinen solmujen lukumäärän suhteen
     */ 
     public void luoVieruslistat() {
         Pinosolmu pinosolmu = solmut.getYlin();

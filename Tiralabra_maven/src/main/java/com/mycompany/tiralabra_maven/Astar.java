@@ -27,6 +27,11 @@ public class Astar {
      * alkuarvon alkuun-muuttujaan ja laskemalla Manhattan-etäisyysarvion 
      * loppuun-muuttujaan 
      * 
+     * Aikavaativuus: |V| log |V| - jokaiselle solmulle V tehdään
+     * vakioaikaisia operaatioita sekä lisätään kekoon (log |V|) ja lopuksi
+     * aloitussolmun arvoa pienennetään (|V| log |V|). 
+     * O(|V| log |V| + |V| log |V|) = O(|V| log |V|)
+     * 
      * @param    verkko     Verkko-olio, jossa on solmuja
      * @param    aloitus    Solmu-olio, josta polunetsintä alkaa
      * @param    kohde      Solmu-olio, johon polunetsintä tähtää

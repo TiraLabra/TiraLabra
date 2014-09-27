@@ -15,6 +15,7 @@ public class Solmu {
     private int loppuun; //Astarin etäisyysarvio tästä solmusta loppuun
     private Solmu polku; //solmu, josta lyhin polku saapui
     private LinkitettyLista vierus; //vierussolmut
+    private int indeksi;
 
     /**
      * @param    x       solmun vaakakoordinaatti 2D-esityksessä
@@ -26,6 +27,7 @@ public class Solmu {
         this.y = y;
         this.paino = paino;
         this.vierus = new LinkitettyLista();
+        this.indeksi = -1;
     }
 
     public int getX() {
@@ -80,9 +82,19 @@ public class Solmu {
         return vierus;
     }
 
+    public int getIndeksi() {
+        return indeksi;
+    }
+
+    public void setIndeksi(int indeksi) {
+        this.indeksi = indeksi;
+    }
+
     /**
      * Lisää solmulle vieruslistaan solmun. Jos lisättävän solmun paino on -1,
      * sitä ei lisätä.
+     * 
+     * Aikavaativuus: vakio
      * 
      * @param    solmu  tälle solmulle vierukseksi lisättävä solmu
     */
@@ -96,6 +108,9 @@ public class Solmu {
     /**
      * Etsii parametrina annetun solmun vieruslistalta ja palauttaa kaaripainon
      * tältä solmulta parametrin solmulle
+     * 
+     * Pahin tapaus: parametrina annettu solmu ei ole ilmentymän vierussolmu
+     * Aikavaativuus: lineaarinen vierussolmujen lukumäärän suhteen
      * 
      * @param    solmu  kohdesolmu, jonka kaaripaino halutaan tietää
      * @return kaaripaino tältä solmulta parametrin solmulle
@@ -116,6 +131,8 @@ public class Solmu {
     
     /**
      * Palauttaa alkuun- ja loppuun-arvojen summan, jota käytetään useasti
+     * 
+     * Aikavaativuus: vakio
      * 
      * @return alkuun- ja loppuun-arvojen summa
     */
