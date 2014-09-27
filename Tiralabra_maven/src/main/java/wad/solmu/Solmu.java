@@ -15,6 +15,7 @@ public class Solmu {
     private Solmu oikea;
     private Solmu vasen;
     private Solmu vanhempi;
+    private int korkeus; // AVL-puuta varten
 
     public Solmu(Object uusiArvo) {
         this.avain = uusiArvo.hashCode();
@@ -56,6 +57,14 @@ public class Solmu {
 
     public Solmu getVanhempi() {
         return this.vanhempi;
+    }
+    
+    public void setKorkeus(int uusiKorkeus) {
+        this.korkeus = uusiKorkeus;
+    }
+    
+    public int getKorkeus() {
+        return this.korkeus;
     }
 
     /**

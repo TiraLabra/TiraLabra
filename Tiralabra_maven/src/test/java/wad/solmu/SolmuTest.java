@@ -65,4 +65,10 @@ public class SolmuTest {
         solmuA.setVanhempi(solmuB);
         assertEquals(solmuB, solmuA.getVanhempi());
     }
+    
+    @Test
+    public void solmunKorkeus() {
+        solmuA.setKorkeus(2);
+        assertEquals(2, solmuA.getKorkeus());
+    }
 }

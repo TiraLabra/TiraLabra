@@ -11,7 +11,7 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
     /**
      * Puun juurisolmu, joka määritellään ensimmäisen lisäyksen yhteydessä
      */
-    private Solmu juuri;
+    Solmu juuri;
 
     /**
      * Puusta haettava data
@@ -37,12 +37,13 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      * Puun lisäysoperaatio
      *
      * @param lisattava puuhun lisättävä data.
+     * @return palauttaa lisätyn solmun.
      */
-    public void lisaa(Object lisattava) {
+    public Solmu lisaa(Object lisattava) {
         Solmu uusiSolmu = new Solmu(lisattava);
         if (juuri == null) {
             juuri = uusiSolmu;
-            return;
+            return uusiSolmu;
         }
         Solmu x = juuri;
         Solmu p = juuri;
@@ -60,26 +61,29 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
         } else {
             p.setOikea(uusiSolmu);
         }
+        return uusiSolmu;
     }
 
     /**
      * Puun poisto-operaatio.
      *
      * @param poistettava Poistettavan solmun arvo
-     * @return palauttaa totuusarvon riippuen operaation onnistumisesta
+     * @return palauttaa poistetun solmun. Jos solmua ei ole, palauttaa null.
      */
-    public boolean poista(Object poistettava) {
+    public Solmu poista(Object poistettava) {
         Solmu poistettavaSolmu;
         if ((poistettavaSolmu = hae(poistettava)) == null) {
-            return false;
+            return null;
         }
 
         //1. Poistettavalla solmulla ei ole lapsia
         if (poistettavaSolmu.lapseton()) {
-            return poistettavallaEiLapsia(poistettavaSolmu);
+            poistettavallaEiLapsia(poistettavaSolmu);
+            return poistettavaSolmu;
         } //2. Poistettavalla solmulla on yksi lapsi
         else if (poistettavaSolmu.getOikea() == null || poistettavaSolmu.getVasen() == null) {
-            return poistettavallaOnYksiLapsi(poistettavaSolmu);
+            poistettavallaOnYksiLapsi(poistettavaSolmu);
+            return poistettavaSolmu;
         } //3. Poistettavalla solmulla on kaksi lasta
         else {
             return poistettavallaKaksiLasta(poistettavaSolmu);
@@ -92,10 +96,10 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      * @param poistettavaSolmu on solmu joka poistetaan
      * @return palauttaa true jos poisto onnistuu.
      */
-    private boolean poistettavallaEiLapsia(Solmu poistettavaSolmu) {
+    private void poistettavallaEiLapsia(Solmu poistettavaSolmu) {
         if (poistettavaSolmu.getVanhempi() == null) {
             this.juuri = null;
-            return true;
+            return;
         }
 
         Solmu vanhempi = poistettavaSolmu.getVanhempi();
@@ -105,7 +109,6 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
         } else {
             vanhempi.setOikea(null);
         }
-        return true;
     }
 
     /**
@@ -114,7 +117,7 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      * @param poistettavaSolmu on solmu joka poistetaan
      * @return palauttaa true jos poisto onnistuu.
      */
-    private boolean poistettavallaOnYksiLapsi(Solmu poistettavaSolmu) {
+    private void poistettavallaOnYksiLapsi(Solmu poistettavaSolmu) {
         Solmu lapsi = null;
         if (poistettavaSolmu.getOikea() != null) {
             lapsi = poistettavaSolmu.getOikea();
@@ -126,7 +129,7 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
 
         if (vanhempi == null) {
             juuri = lapsi;
-            return true;
+            return;
         }
 
         if (vanhempi.getVasen() == poistettavaSolmu) {
@@ -134,7 +137,6 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
         } else {
             vanhempi.setOikea(lapsi);
         }
-        return true;
     }
 
     /**
@@ -143,7 +145,7 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      * @param poistettavaSolmu on solmu joka poistetaan
      * @return palauttaa true jos poisto onnistuu.
      */
-    private boolean poistettavallaKaksiLasta(Solmu poistettavaSolmu) {
+    private Solmu poistettavallaKaksiLasta(Solmu poistettavaSolmu) {
         Solmu vanhempi, lapsi;
         Solmu seuraaja = min(poistettavaSolmu.getOikea());
         poistettavaSolmu.setArvo(seuraaja.getArvo());
@@ -159,14 +161,14 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
         if (lapsi != null) {
             lapsi.setVanhempi(vanhempi);
         }
-        return true;
+        return seuraaja;
     }
 
     /**
      * Hakee pyydetyn solmun alipuiden minimi arvon.
      *
      * @param solmu, kohta puuta, josta minimi halutaan selvittää
-     * @return palauttaa pienimmän alkio puusta.
+     * @return palauttaa pienimmän alkion puusta.
      */
     public Solmu min(Solmu solmu) {
         Solmu min = solmu;

@@ -19,13 +19,14 @@ public interface HakupuuRajapinta {
     /**
      * Lisaa haluttua dataa puuhun.
      * @param lisattava lisättävä data puuhun
+     * @return palauttaa lisätyn solmun.
      */
-    public void lisaa(Object lisattava);
+    public Solmu lisaa(Object lisattava);
     
     /**
-     * Poistaa halutun solmun puusta ja palauttaa totuusarvon poiston toteutumisesta.
+     * Poistaa halutun solmun puusta.
      * @param poistettava poistettava solmu
-     * @return Palauttaa true, jos poisto onnistui.
+     * @return Palauttaa poistetun solmun.
      */
-    public boolean poista(Object poistettava);
+    public Solmu poista(Object poistettava);
 }

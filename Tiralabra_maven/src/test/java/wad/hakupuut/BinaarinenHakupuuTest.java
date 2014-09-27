@@ -37,7 +37,7 @@ public class BinaarinenHakupuuTest {
     @Test
     public void tyhjaanPuuhunLisätäänJaPoistetaan() {
         puu.lisaa(1234);
-        assertTrue(puu.poista(1234));
+        puu.poista(1234);
         assertNull(puu.hae(1234));
     }
     
@@ -46,7 +46,7 @@ public class BinaarinenHakupuuTest {
         BinaarinenHakupuu puu = new BinaarinenHakupuu();
         Solmu juuri = new Solmu("moi");
         puu.lisaa(juuri); // juuri: Solmu( Solmu( "moi" ) )
-        assertTrue(puu.poista(juuri)); // tarkoitus osoittaa, että puuhun ei lisätä staattista dataa
+        puu.poista(juuri); // tarkoitus osoittaa, että puuhun ei lisätä staattista dataa
         assertNull(puu.hae(juuri)); // vaan käyttäjä voi itse valita datatyypin
     }
     
@@ -73,7 +73,7 @@ public class BinaarinenHakupuuTest {
     
     @Test
     public void puussaOlemmattomanDatanPoisto() {
-        assertFalse(bst.poista("en ole täällä"));
+        assertNull(bst.poista("en ole täällä"));
     }
     
     @Test
