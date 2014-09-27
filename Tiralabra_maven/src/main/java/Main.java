@@ -15,9 +15,9 @@ public class Main {
         bst.lisaa(10);
         bst.lisaa(6);*/
         System.out.println(bst);
-        bst.poista(15);
+        bst.poista(4);
         System.out.println(bst);
-        bst.poista(15);
+        bst.poista(5);
         System.out.println(bst);
     }        
 }
