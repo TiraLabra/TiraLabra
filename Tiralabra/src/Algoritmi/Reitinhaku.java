@@ -6,6 +6,8 @@
 
 package Algoritmi;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -26,21 +28,26 @@ public class Reitinhaku {
     
     
 /**
- * Konstruktori luo verkon sekä AvoinListan jossa on somut joihin voidaan mennä. 
+ * Konstruktori luo verkon sekä AvoinListan jossa on solmut joihin voidaan mennä. 
  * Konstruktori lisää tähän prioriteettijonoon aloituspisteen ja laittaa sen 
  * edeltäväksi solmuksi itsensä.
  * 
+ * @param syöte verkko jossa reitti etsitään.
+ * @param Lähtö reitin lähtöpiste.
+ * 
  */          
     
-    public Reitinhaku(Verkko syöte){
+    public Reitinhaku(Verkko syöte, Point Lähtö){
         verkko=syöte;
 
         Comparator<Solmu> comparator = new LukuVertaaja();
         AvoinLista=new PriorityQueue<Solmu>(12, comparator);
         
         
-        AvoinLista.add(verkko.taulukko[51][51]);
-        verkko.taulukko[51][51].Edeltävä=verkko.taulukko[51][51];
+        Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
+        
+        AvoinLista.add(lähtösolmu);
+        lähtösolmu.Edeltävä=lähtösolmu;
         
         
 
@@ -49,18 +56,20 @@ public class Reitinhaku {
 /**
  * Haku metodin looppi ottaa AvoinListasta solmun jolla on pienin heurestiikka-arvo, 
  * ja antaa sen parametrinä TarkistaViereiset metodille. Looppi loppuu kun maalipiste on
- * käsittelyssä.
+ * käsittelyssä. Metodi myös maalaa kaikki käydyt pisteet.
  * 
  */        
     
     public void Haku(){
-        
+
         
         Solmu käsittelyssä=new Solmu(6, 6, 6, 6);
         
         while(käsittelyssä.Heurestiikaarvo!=0){
             
             käsittelyssä=AvoinLista.poll();
+            
+            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(100,100,100).getRGB());
             
             TarkistaViereiset(käsittelyssä);
             
@@ -81,19 +90,19 @@ public class Reitinhaku {
     public void TarkistaViereiset(Solmu Käsittelyssä){
                 
         
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX+1].seinä==false){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX+1].haeSeina()==false){
             Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY+1][Käsittelyssä.koordinaattiX].seinä==false){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY+1][Käsittelyssä.koordinaattiX].haeSeina()==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX-1].seinä==false){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX-1].haeSeina()==false){
             Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY-1][Käsittelyssä.koordinaattiX].seinä==false){
+        if(verkko.taulukko[Käsittelyssä.koordinaattiY-1][Käsittelyssä.koordinaattiX].haeSeina()==false){
             Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
 
         }
@@ -119,6 +128,16 @@ public class Reitinhaku {
         }
         
     }
+    
+/**
+ * Looppi maalaa aina käsittelyssä olevan solmun/pisteen ja siirtyy sitten 
+ * kyseisen solmun edeltävä solmuun. Lähtöpisteeseen saavuttaessa looppi loppuu.
+ * 
+ * 
+ * @param syöte Maalipiste josta reitin piirtäminen alkaa.
+ */     
+    
+    
     
     public void PiirräReitti(Solmu syöte){
         

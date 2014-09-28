@@ -26,8 +26,13 @@ import javax.swing.JComponent;
  */
 
 public class Kuva extends JComponent implements MouseListener, MouseMotionListener{
-    BufferedImage kuva;
+    public BufferedImage kuva;
     private Point p1, p2;
+    
+    private Point LahtoPiste;
+
+    private Point MaaliPiste;
+
  
     public Kuva() throws IOException, URISyntaxException {
         this.kuva =  ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
@@ -36,10 +41,20 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
         addMouseMotionListener(this);        
 
     }
+    
+    public Point haeLahto(){
+        return LahtoPiste;
+        
+    }
+    
+    public Point haeMaali(){
+        return MaaliPiste;
+        
+    }    
  
 /**
  *
- * Maalaa BufferedImagen ja pisteiden p1 ja p2 välille viivan.
+ * Maalaa BufferedImagen.
  * 
  * @param grafiikka grafiikka
  * 
@@ -57,30 +72,48 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
  */   
     @Override
     public void mousePressed(MouseEvent me) {
+        
+
+        
         p1 = me.getPoint();
     }
     
 
 /**
- *Asettaa p2:een hiiren klikkaaman pisteen ja repainttaa.
+ * Asettaa haettavan reitin alku ja loppupisteen. 
+ * Lisäksi piirtää viivoja.
  * 
  * @param me hiirieventti
  */         
     @Override
     public void mouseReleased(MouseEvent me) {
-        p2 = me.getPoint();
-        Graphics2D kuvagrafiikka = (Graphics2D)this.kuva.getGraphics();
-        kuvagrafiikka.setStroke(new BasicStroke(5));
-        kuvagrafiikka.setColor(Color.BLACK);
+        if(me.isShiftDown()){
+            LahtoPiste=p1;
+            
+            
+        }else if(me.isControlDown()){
+            MaaliPiste=p1;
+            
+            
+        }else{
+            
+            p2 = me.getPoint();
+            Graphics2D kuvagrafiikka = (Graphics2D)this.kuva.getGraphics();
+            kuvagrafiikka.setStroke(new BasicStroke(10));
+            kuvagrafiikka.setColor(Color.BLACK);
 
-          if (p1 != null && p2 != null){
-            kuvagrafiikka.drawLine(p1.x, p1.y, p2.x, p2.y);
+              if (p1 != null && p2 != null){
+                kuvagrafiikka.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            }
+            repaint(); 
             
         }
-        repaint();
+        
+
         
     }
-    
+
     @Override
     public void mouseDragged(MouseEvent me) {
     }

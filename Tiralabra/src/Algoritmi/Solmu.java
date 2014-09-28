@@ -21,7 +21,7 @@ public class Solmu {
     public int koordinaattiX;
     public int koordinaattiY;
     
-    public boolean seinä;
+    private boolean seinä;
     
 /**
  *Konstruktori
@@ -45,4 +45,12 @@ public class Solmu {
         }
         
     }
+    
+    public boolean haeSeina(){
+        
+        
+        return seinä;
+        
+    }
+    
 }

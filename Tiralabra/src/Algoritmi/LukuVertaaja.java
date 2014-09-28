@@ -11,7 +11,7 @@ import java.util.Comparator;
 /**
  * @author Jaakko
  * 
- * Vertaa kahden solmun heurestiikka-arvoja.
+ * Vertaa kahden solmun heurestiikka- ja reittiarvoja.
  */
 public class LukuVertaaja implements Comparator<Solmu> {
 

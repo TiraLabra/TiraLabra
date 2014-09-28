@@ -35,7 +35,7 @@ public class Aloitus extends JFrame {
 
  
         luoKomponentit(käyttis);
-        käyttis.setSize(700, 700);        
+//        käyttis.setSize(700, 700);        
         käyttis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         käyttis.setVisible(true);
         käyttis.pack();
@@ -44,23 +44,30 @@ public class Aloitus extends JFrame {
 
     }
 
+    /**
+    *
+    * Luo ikkunan ja siinä olevan napin jota painamalla voi aloittaa reitinhaun.
+    * 
+    * @param grafiikka grafiikka
+    * 
+    */  
+    
     public static void luoKomponentit(Container container) throws IOException, URISyntaxException {
  
         
 
         final Kuva ikkuna = new Kuva();
         
-        ikkuna.setSize(700, 700);
+//        container.setSize(700, 700);
 
-        JButton AloitaNappi = new JButton("Aloita peli!");
+        JButton AloitaNappi = new JButton("PIIRRETÄÄN!!!");
         AloitaNappi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    Verkko verkko = new Verkko(ikkuna.kuva);
+                    Verkko verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
                 
-                    Reitinhaku reitti = new Reitinhaku(verkko);
+                    Reitinhaku reitti = new Reitinhaku(verkko, ikkuna.haeLahto());
                     reitti.Haku();
                     
-                    Piirrä(ikkuna);
                     
                 }
             });
@@ -72,9 +79,7 @@ public class Aloitus extends JFrame {
     }
     
     
-    public static void Piirrä(Kuva ikkuna){
-        
-    } 
+
     
     
 }
