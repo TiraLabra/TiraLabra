@@ -2,8 +2,9 @@
 
 ##Tiralabra
 * Projektin rakenne muutettu
-* Solmu luokan ja sen testien korjauksia/täydennyksiä
-* Uusi rajapinta: HakupuuRajapinta
-* Uusi luokka: BinaarinenHakupuu
-* Testit Binääriselle hakupuulle
-* Asennettu cobertura testikattavuutta varte: mvn cobertura:cobertura
+* Solmu luokan ja sen testien korjauksia/täydennyksiä. Korkeus lisätty
+* BinaarisenHakupuu luokan ja sen testien korjauksia/täydennyksiä. Palautusarvot
+* Uusi luokka: AVLpuu
+* Uusi luokka: SplayPuu
+* Testit AVLpuulle ja SplayPuulle
+* Toteutus- ja Testausdokumentaatio aloitettu
