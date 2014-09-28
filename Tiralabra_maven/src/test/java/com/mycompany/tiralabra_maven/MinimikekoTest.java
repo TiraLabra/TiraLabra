@@ -370,8 +370,8 @@ public class MinimikekoTest {
         keko.lisaa(solmu3);
         keko.lisaa(solmu1);
         
-        assertEquals(0, keko.etsiSolmunIndeksi(solmu1));
-        assertEquals(1, keko.etsiSolmunIndeksi(solmu3));
-        assertEquals(-1, keko.etsiSolmunIndeksi(solmu2)); //ei lisätty kekoon
+        assertEquals(0, solmu1.getIndeksi());
+        assertEquals(1, solmu3.getIndeksi());
+        assertEquals(-1, solmu2.getIndeksi()); //ei lisätty kekoon
     }
 }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mycompany.tiralabra_maven;
 
 import static java.lang.Math.abs;
@@ -29,8 +23,8 @@ public class Astar {
      * 
      * Aikavaativuus: |V| log |V| - jokaiselle solmulle V tehdään
      * vakioaikaisia operaatioita sekä lisätään kekoon (log |V|) ja lopuksi
-     * aloitussolmun arvoa pienennetään (|V| log |V|). 
-     * O(|V| log |V| + |V| log |V|) = O(|V| log |V|)
+     * aloitussolmun arvoa pienennetään (log |V|). 
+     * O(|V| log |V| + log |V|) = O(|V| log |V|)
      * 
      * @param    verkko     Verkko-olio, jossa on solmuja
      * @param    aloitus    Solmu-olio, josta polunetsintä alkaa
@@ -74,6 +68,12 @@ public class Astar {
     
     /**
     * Etsii lyhimmän polun verkosta kahden solmun välillä.
+    * 
+    * Pahin tapaus: verkko on suora viiva, jonka eri päissä ovat alku- ja
+    * kohdesolmu, jolloin kaikki solmut käydään läpi
+    * Aikavaativuus: O((|E| + |V|) log |V|), sillä jokaiselle solmulle V
+    * pienimmän valitseminen (|V| log |V|) ja jokaiselle vierussolmulle E 
+    * pienennetään arvoa (|E| log |V|)
     * 
     * @return kohdesolmu, jonka polku vie aloitussolmuun asti
     */

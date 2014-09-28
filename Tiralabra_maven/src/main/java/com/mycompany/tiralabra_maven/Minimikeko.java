@@ -135,7 +135,7 @@ public class Minimikeko {
     */
     public Solmu poistaPienin() {
         Solmu pienin = solmut[0];
-        vaihdaKeskenaan(0, kekokoko); //solmut[0] = solmut[kekokoko];
+        vaihdaKeskenaan(0, kekokoko);
         kekokoko--;
         heapify(0);
         return pienin;
@@ -155,7 +155,7 @@ public class Minimikeko {
         kekokoko++;
         int i = kekokoko;
         while(i>0 && solmut[vanhempi(i)] == null || i>0 && solmut[vanhempi(i)].getAlkuunLoppuunSumma() > lisattava.getAlkuunLoppuunSumma()) {
-            vaihdaKeskenaan(i, vanhempi(i)); //solmut[i] = solmut[vanhempi(i)];
+            vaihdaKeskenaan(i, vanhempi(i));
             i = vanhempi(i);
         }
         solmut[i] = lisattava;
@@ -166,37 +166,20 @@ public class Minimikeko {
      * Pienentää keossa olevan solmun arvoa (Astar-etäisyysarvio) ja nostaa sen 
      * oikealle paikalle
      * 
-     * Pahin tapaus: solmu on muutoksen jälkeen keon pienin solmu ja se täytyy 
-     * kuljettaa puun alhaalta ylös asti. Koska keko on binääripuu, käsiteltäviä
-     * alkioita on vain log(2, kekokoko) kuten heapify:ssä. Valitettavasti
-     * solmun etsintään kuluu aikaa lineaarinen määrä
-     * Aikavaativuus: n log n, missä n = keon alkioiden lukumäärä
+     * Pahin tapaus: solmu on muutoksen jälkeen keon pienin solmu, se on keon
+     * viimeinen alkio ja se täytyy kuljettaa keon pohjalta ylimmäksi. Koska 
+     * keko on binääripuu, käsiteltäviä alkioita on vain log(2, kekokoko) kuten 
+     * heapify:ssä
+     * Aikavaativuus: logaritminen keon alkioiden lukumäärän suhteen
      * 
      * @param    solmu  solmu, jonka arvoa pienennetään
     */
     public void pienennaArvoa(Solmu solmu) {
-        int kohta = etsiSolmunIndeksi(solmu);
+        int kohta = solmu.getIndeksi();
         while(kohta>0 && solmut[vanhempi(kohta)].getAlkuunLoppuunSumma() > solmut[kohta].getAlkuunLoppuunSumma()) {
             vaihdaKeskenaan(kohta, vanhempi(kohta));
             kohta = vanhempi(kohta);
         }
     }
     
-    /**
-     * Palauttaa solmun indeksin taulukossa
-     * 
-     * Aikavaativuus: vakio
-     * 
-     * @param    etsittava  solmu, jonka indeksi taulukossa halutaan tietää
-     * @return etsittävän solmun indeksi taulukossa
-    */
-    public int etsiSolmunIndeksi(Solmu etsittava) { 
-
-        if(etsittava == null) {
-            return -1;
-        }
-        
-        return etsittava.getIndeksi();
-
-    }
 }
