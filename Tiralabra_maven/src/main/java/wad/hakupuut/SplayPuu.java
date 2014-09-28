@@ -10,18 +10,12 @@ import wad.solmu.Solmu;
  */
 public class SplayPuu extends BinaarinenHakupuu {
     
-    /**
-     * Toteuttaa BinaarinenHakupuu-luokan hae-metodin, mutta "splayjaa" solmun.
-     * @param haettava data
-     * @return palauttaa haettua dataa vastaavan solmun.
-     */
     @Override
     public Solmu hae(Object haettava) {
         Solmu haettu = super.hae(haettava);
-        splay(haettu);
+        if(haettu != null) splay(haettu);
         return haettu;
     }
-    
     /**
      * Toteuttaa BinaarinenHakupuu-luokan lisaa-metodin, mutta "splayjaa" solmun.
      * @param lisattava data
@@ -29,8 +23,8 @@ public class SplayPuu extends BinaarinenHakupuu {
      */
     @Override
     public Solmu lisaa(Object lisattava) {
-        Solmu lisatty;
-        if( (lisatty = super.lisaa(lisattava)) != null ) splay(lisatty);
+        Solmu lisatty = super.lisaa(lisattava);
+        splay(lisatty);
         return lisatty;
     }
     
@@ -42,8 +36,8 @@ public class SplayPuu extends BinaarinenHakupuu {
      */
     @Override
     public Solmu poista(Object poistettava) {
-        Solmu poistettu;
-        if( (poistettu = super.poista(poistettava)) == null) return null;
+        Solmu poistettu = super.hae(poistettava);
+        if( poistettu == null) return null;
         
         splay(poistettu);
         
@@ -69,54 +63,70 @@ public class SplayPuu extends BinaarinenHakupuu {
      */
     public void splay(Solmu solmu) {
         while(solmu.getVanhempi() != null) {
-            if(solmu.getVanhempi().getVanhempi() == null) {
-                if( solmu.getVanhempi().getVasen() == solmu) oikeaKaanto(solmu.getVanhempi());
-                else vasenKaanto(solmu.getVanhempi());
-            } else if( solmu.getVanhempi().getVasen() == solmu && solmu.getVanhempi().getVanhempi().getVasen() == solmu.getVanhempi()) {
-               oikeaKaanto(solmu.getVanhempi().getVanhempi());
-               oikeaKaanto(solmu.getVanhempi());
-            } else if( solmu.getVanhempi().getOikea() == solmu && solmu.getVanhempi().getVanhempi().getOikea() == solmu.getVanhempi()) {
-                vasenKaanto(solmu.getVanhempi().getVanhempi());
-                vasenKaanto(solmu.getVanhempi());
-            } else if( solmu.getVanhempi().getVasen() == solmu && solmu.getVanhempi().getVanhempi().getOikea() == solmu.getVanhempi()) {
-                oikeaKaanto(solmu.getVanhempi());
-                vasenKaanto(solmu.getVanhempi());   
+            Solmu vanhempi = solmu.getVanhempi();
+            Solmu isovanhempi = solmu.getVanhempi().getVanhempi();   
+            if( isovanhempi == null ) {
+                if( solmu == vanhempi.getVasen() ){
+                    oikeaKaanto(vanhempi);
+                } else {
+                    vasenKaanto(vanhempi);
+                }
+            } else if( vanhempi.getVasen() == solmu && isovanhempi.getVasen() == vanhempi ) {
+               oikeaKaanto(isovanhempi);
+               oikeaKaanto(vanhempi);
+            } else if( vanhempi.getOikea() == solmu && isovanhempi.getOikea() == vanhempi ) {
+                vasenKaanto(isovanhempi);
+                vasenKaanto(vanhempi);
+            } else if( vanhempi.getVasen() == solmu && isovanhempi.getOikea() == vanhempi ) {
+                oikeaKaanto(vanhempi);
+                vasenKaanto(vanhempi);   
             } else {
-                vasenKaanto(solmu.getVanhempi());
-                oikeaKaanto(solmu.getVanhempi());
+                vasenKaanto(vanhempi);
+                oikeaKaanto(vanhempi);
             }
         }
     }
     
-    private void vasenKaanto(Solmu solmu) {
-        Solmu apu = solmu.getOikea();
-        if(apu != null) {
-            solmu.setOikea(apu.getVasen());
-            if(apu.getVasen() != null) apu.getVasen().setVanhempi(solmu);
-            apu.setVanhempi(solmu.getVanhempi());
+    private void vasenKaanto(Solmu x) {
+        if (x.getOikea() == null) {
+            return;
         }
-        
-        apuKaanto(solmu,apu);
-        if(apu != null) apu.setVasen(solmu);
-        solmu.setVanhempi(apu);
+        Solmu y = x.getOikea();
+        x.setOikea(y.getVasen());
+        if (y.getVasen() != null) {
+            y.getVasen().setVanhempi(x);
+        }
+        y.setVanhempi(x.getVanhempi());
+        if (x.getVanhempi() == null) {
+            juuri = y;
+        } else if (x == x.getVanhempi().getVasen()) {
+            x.getVanhempi().setVasen(y);
+        } else {
+            x.getVanhempi().setOikea(y);
+        }
+        y.setVasen(x);
+        x.setVanhempi(y);
     }
     
-    private void oikeaKaanto(Solmu solmu) {
-        Solmu apu = solmu.getVasen();
-        if(apu != null) {
-            solmu.setVasen(apu.getOikea());
-            if(solmu.getOikea() != null) apu.getOikea().setVanhempi(solmu);
-            apu.setVanhempi(solmu.getVanhempi());
+    private void oikeaKaanto(Solmu x) {
+        if (x.getVasen() == null) {
+            return;
         }
-        
-        apuKaanto(solmu,apu);
-        solmu.setVanhempi(apu);
-    }
-    
-    private void apuKaanto(Solmu solmu, Solmu apu) {
-        if(solmu.getVanhempi() == null) juuri = apu;
-        else if(solmu == solmu.getVanhempi().getVasen()) solmu.getVanhempi().setVasen(apu);
-        else solmu.getVanhempi().setOikea(apu);
+        Solmu y = x.getVasen();
+        x.setVasen(y.getOikea());
+        if (y.getOikea() != null) {
+            y.getOikea().setVanhempi(x);
+        }
+        y.setVanhempi(x.getVanhempi());
+        if (x.getVanhempi() == null) {
+            juuri = y;
+        } else if (x == x.getVanhempi().getVasen()) {
+            x.getVanhempi().setVasen(y);
+        } else {
+            x.getVanhempi().setOikea(y);
+        }
+        y.setOikea(x);
+        x.setVanhempi(y);
     }
     
     /**
@@ -125,9 +135,15 @@ public class SplayPuu extends BinaarinenHakupuu {
      * @param v korvaava solmu
      */
     public void korvaa(Solmu u, Solmu v) {
-        if(u.getVanhempi() == null) juuri = v;
-        else if(u == u.getVanhempi().getVasen()) u.getVanhempi().setVasen(v);
-        else u.getVanhempi().setOikea(v);
-        if(v != null) v.setVanhempi(u.getVanhempi());
+        if(u.getVanhempi() == null) {
+            juuri = v;
+        } else if(u == u.getVanhempi().getVasen()) {
+            u.getVanhempi().setVasen(v);
+        } else {
+            u.getVanhempi().setOikea(v);
+        }
+        if(v != null) {
+            v.setVanhempi(u.getVanhempi());
+        }
     }
 }
