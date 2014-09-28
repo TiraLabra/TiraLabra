@@ -30,4 +30,5 @@ public class Sekuntikello {
     public long lopeta() {
         return System.nanoTime() - alkuaika;
     }
+
 }

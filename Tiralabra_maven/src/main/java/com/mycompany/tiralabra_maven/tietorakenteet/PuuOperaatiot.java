@@ -89,6 +89,29 @@ public class PuuOperaatiot {
         }
         return vanhempi;
     }
+    
+    /**
+     * Palauttaa parametrina saadun solmun edeltäjän puussa, mikäli sellainen on
+     * olemassa.
+     *
+     * @param solmu Solmu, jonka edeltäjä halutaan selvittää
+     * @return Parametrina saadun solmun edeltäjä tai null, mikäli sellaista ei
+     * löydy.
+     */
+    public static Puusolmu edeltaja(Puusolmu solmu) {
+        if (solmu == null) {
+            return null;
+        }
+        if (solmu.getVasen() != null) {
+            return suurin(solmu.getVasen());
+        }
+        Puusolmu vanhempi = solmu.getVanhempi();
+        while (vanhempi != null && solmu == vanhempi.getVasen()) {
+            solmu = vanhempi;
+            vanhempi = solmu.getVanhempi();
+        }
+        return vanhempi;
+    }
 
     /**
      * Tulostaa annetusta juuresta alkavan puun esijärjestyksessä.

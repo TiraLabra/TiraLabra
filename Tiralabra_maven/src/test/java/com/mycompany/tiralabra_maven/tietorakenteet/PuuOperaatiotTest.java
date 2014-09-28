@@ -74,6 +74,13 @@ public class PuuOperaatiotTest {
         assertEquals(p, PuuOperaatiot.seuraaja(p3));
     }
 
+    
+    @Test
+    public void testEdeltaja() {
+        assertEquals(p3, PuuOperaatiot.edeltaja(p));
+        assertEquals(null, PuuOperaatiot.edeltaja(p1));
+        assertEquals(p1, PuuOperaatiot.edeltaja(p2));
+    }
     //Pitää selvittää miten näille saa hyvät testit...
     // toistaiseksi silmämääräinen testaus
     /**
