@@ -4,7 +4,8 @@ import wad.solmu.Solmu;
 
 /**
  *
- * AVL-puu, joka käyttää HakupuuRajapintaa.
+ * AVL-puu on itseääntasapainottava binäärinen hakupuu. 
+ * Tämä AVL on Binäärisen hakupuun laajennus.
  */
 public class AVLpuu extends BinaarinenHakupuu {
 
@@ -38,7 +39,8 @@ public class AVLpuu extends BinaarinenHakupuu {
      * AVL-poisto, hyödyntää binäärisen hakupuun poistoa.
      * Varmistaa, että tasapaino säilyy.
      * @param poistettava data joka halutaan poistaa puusta
-     * @return palauttaa true jos poisto onnistui, muussa tapauksessa false.
+     * @return palauttaa poistettavan solmun, paitsi jos poistettavalla solmulla on kaksilasta.
+     * Silloin palautetaan poistettavan solmun oikean alipuun minimi.
      */
     @Override
     public Solmu poista(Object poistettava) {
@@ -71,7 +73,6 @@ public class AVLpuu extends BinaarinenHakupuu {
     /**
      * Puun sisäinen järjestyksen palautus.
      *
-     * 
      * @param solmu korjattava solmu
      * @param vanhempi korjattavan solmun vanhempi
      * @param alipuu alipuun solmun juuri
@@ -164,6 +165,7 @@ public class AVLpuu extends BinaarinenHakupuu {
      * @param x int arvo
      * @param y int arvo
      * @return palauttaa suuremman arvoista x ja y.
+     * 
      */
     public int max(int x, int y) {
         return (x > y) ? x : y;

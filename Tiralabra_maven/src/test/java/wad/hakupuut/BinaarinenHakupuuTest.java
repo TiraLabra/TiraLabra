@@ -52,18 +52,18 @@ public class BinaarinenHakupuuTest {
     
     @Test
     public void pieninArvoAlustetustaPuusta() {
-        assertEquals(2, bst.min(bst.hae(4)).getArvo());
+        assertEquals(2, bst.alipuunMin(bst.hae(4)).getArvo());
     }
     
     @Test
     public void pienimmänArvonLisäysJaEtsintä() {      //        4
         bst.lisaa(1);                                  //    3       5
-        assertEquals(1, bst.min(bst.hae(4)).getArvo());//  2
+        assertEquals(1, bst.alipuunMin(bst.hae(4)).getArvo());//  2
     }                                                  //1
     
     @Test
     public void pieninArvoJuurenOikeastaAlipuusta() {
-        assertEquals(5, bst.min(bst.hae(5)).getArvo());
+        assertEquals(5, bst.alipuunMin(bst.hae(5)).getArvo());
     }
     
     @Test

@@ -147,7 +147,7 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      */
     private Solmu poistettavallaKaksiLasta(Solmu poistettavaSolmu) {
         Solmu vanhempi, lapsi;
-        Solmu seuraaja = min(poistettavaSolmu.getOikea());
+        Solmu seuraaja = alipuunMin(poistettavaSolmu.getOikea());
         poistettavaSolmu.setArvo(seuraaja.getArvo());
         lapsi = seuraaja.getOikea();
         vanhempi = seuraaja.getVanhempi();
@@ -170,12 +170,26 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
      * @param solmu, kohta puuta, josta minimi halutaan selvittää
      * @return palauttaa pienimmän alkion puusta.
      */
-    public Solmu min(Solmu solmu) {
+    public Solmu alipuunMin(Solmu solmu) {
         Solmu min = solmu;
         while (min.getVasen() != null) {
             min = min.getVasen();
         }
         return min;
+    }
+    
+    /**
+     * Hakee pyydetyn solmun alipuiden minimi arvon.
+     *
+     * @param solmu, kohta puuta, josta minimi halutaan selvittää
+     * @return palauttaa pienimmän alkion puusta.
+     */
+    public Solmu alipuunMax(Solmu solmu) {
+        Solmu max = solmu;
+        while (max.getOikea() != null) {
+            max = max.getOikea();
+        }
+        return max;
     }
 
     /**
