@@ -58,6 +58,7 @@ public class SolmuTest {
         solmu.setAlkuun(3);
         solmu.setLoppuun(9);
         solmu.setPolku(solmu);
+        solmu.setIndeksi(11);
         
         assertEquals(6, solmu.getX());
         assertEquals(7, solmu.getY());
@@ -65,6 +66,7 @@ public class SolmuTest {
         assertEquals(3, solmu.getAlkuun());
         assertEquals(9, solmu.getLoppuun());
         assertSame(solmu, solmu.getPolku());
+        assertEquals(11, solmu.getIndeksi());
     }
     
     @Test

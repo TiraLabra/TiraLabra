@@ -185,6 +185,41 @@ public class MinimikekoTest {
     }
     
     @Test
+    public void vainVasenLapsiVaihto() {
+        /*
+        Tehdään minimikeko
+        
+            4      poistetaan 4 --> 6    heapify --> 5
+          5  6                     5                6
+        */
+    
+        Minimikeko keko = new Minimikeko(3);
+        
+        Solmu solmu4 = new Solmu(0, 0, 0);
+        solmu4.setAlkuun(4);
+        
+        Solmu solmu5 = new Solmu(0, 0, 0);
+        solmu5.setAlkuun(5);
+        
+        Solmu solmu6 = new Solmu(0, 0, 0);
+        solmu6.setAlkuun(6);
+        
+        
+        keko.lisaa(solmu4);
+        keko.lisaa(solmu5);
+        keko.lisaa(solmu6);
+        
+        assertEquals(0, solmu4.getIndeksi());
+        assertEquals(1, solmu5.getIndeksi());
+        assertEquals(2, solmu6.getIndeksi());
+        
+        keko.poistaPienin();
+        
+        assertEquals(0, solmu5.getIndeksi());
+        assertEquals(1, solmu6.getIndeksi());
+    }
+    
+    @Test
     public void samojaArvoja() {
         /*
         Tehdään minimikeko
@@ -348,30 +383,43 @@ public class MinimikekoTest {
         Tehdään minimikeko
         
                 1
-             3  
-        taulukkomuodossa |1|3|
-                         0. 1.
+             3    6
+           5   7
+        taulukkomuodossa |1|3|6|5|7|
+                          0 1 2 3 4
         */
     
-        Minimikeko keko = new Minimikeko(2);
+        Minimikeko keko = new Minimikeko(5);
         
         Solmu solmu1 = new Solmu(0, 0, 0);
         solmu1.setAlkuun(1);
-        solmu1.setLoppuun(0);
+        
+        Solmu solmu3 = new Solmu(0, 0, 0);
+        solmu3.setAlkuun(3);
+        
+        Solmu solmu5 = new Solmu(0, 0, 0);
+        solmu5.setAlkuun(5);
+        
+        Solmu solmu6 = new Solmu(0, 0, 0);
+        solmu6.setAlkuun(6);
+        
+        Solmu solmu7 = new Solmu(0, 0, 0);
+        solmu7.setAlkuun(7);
         
         Solmu solmu2 = new Solmu(0, 0, 0);
         solmu2.setAlkuun(2);
-        solmu2.setLoppuun(0);
-        
-        Solmu solmu3 = new Solmu(0, 0, 0);
-        solmu3.setAlkuun(2);
-        solmu3.setLoppuun(1);
 
+        keko.lisaa(solmu7);
         keko.lisaa(solmu3);
         keko.lisaa(solmu1);
+        keko.lisaa(solmu5);
+        keko.lisaa(solmu6);
         
         assertEquals(0, solmu1.getIndeksi());
         assertEquals(1, solmu3.getIndeksi());
+        assertEquals(2, solmu6.getIndeksi());
+        assertEquals(3, solmu5.getIndeksi());
+        assertEquals(4, solmu7.getIndeksi());
         assertEquals(-1, solmu2.getIndeksi()); //ei lisätty kekoon
     }
 }

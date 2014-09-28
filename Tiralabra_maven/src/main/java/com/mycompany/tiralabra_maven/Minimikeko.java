@@ -129,7 +129,7 @@ public class Minimikeko {
     /**
      * Palauttaa keon pienimmän solmun ja poistaa sen keosta
      * 
-     * Aikavaativuus: logaritminen keon alkioiden suhteen (heapify:n vuoksi)
+     * Aika- ja tilavaativuus: logaritminen keon alkioiden suhteen (heapify:n vuoksi)
      * 
      * @return keon pienin solmu
     */
@@ -148,6 +148,7 @@ public class Minimikeko {
      * puun alhaalta ylös asti. Koska keko on binääripuu, käsiteltäviä alkioita 
      * on vain log(2, kekokoko) kuten heapify:ssä.
      * Aikavaativuus: logaritminen keon alkioiden lukumäärän suhteen
+     * Tilavaativuus: vakio
      * 
      * @param    lisattava  kekoon lisättävä solmu
     */
@@ -171,6 +172,7 @@ public class Minimikeko {
      * keko on binääripuu, käsiteltäviä alkioita on vain log(2, kekokoko) kuten 
      * heapify:ssä
      * Aikavaativuus: logaritminen keon alkioiden lukumäärän suhteen
+     * Tilavaativuus: vakio
      * 
      * @param    solmu  solmu, jonka arvoa pienennetään
     */

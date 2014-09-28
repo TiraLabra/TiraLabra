@@ -46,6 +46,12 @@ public class VerkkoTest {
     }
     
     @Test
+    public void listanPalautus() {
+        Verkko verkko = new Verkko();
+        assertTrue(verkko.getSolmut() instanceof LinkitettyLista);
+    }
+    
+    @Test
     public void solmunLisays() {
         Verkko verkko = new Verkko();
         Solmu solmu = new Solmu(0, 0, 0);

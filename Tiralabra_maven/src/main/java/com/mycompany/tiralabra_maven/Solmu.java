@@ -15,7 +15,7 @@ public class Solmu {
     private int loppuun; //Astarin etäisyysarvio tästä solmusta loppuun
     private Solmu polku; //solmu, josta lyhin polku saapui
     private LinkitettyLista vierus; //vierussolmut
-    private int indeksi;
+    private int indeksi; //indeksi kekotaulukossa
 
     /**
      * @param    x       solmun vaakakoordinaatti 2D-esityksessä
@@ -116,7 +116,7 @@ public class Solmu {
      * @return kaaripaino tältä solmulta parametrin solmulle
     */
     public int getKaaripaino(Solmu solmu) {
-        Pinosolmu vieruspinosolmu = vierus.getYlin();
+        Listasolmu vieruspinosolmu = vierus.getYlin();
         
         while (vieruspinosolmu != null) {
             if(vieruspinosolmu.getSisalto() == solmu) {

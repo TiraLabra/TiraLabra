@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
  */
 public class AstarTest {
     
+    private final int AARETONPAINO = 1000000;
+    
     public AstarTest() {
     }
     
@@ -67,7 +69,7 @@ public class AstarTest {
         
         int alkuunsumma = 0;
         
-        Pinosolmu pinosolmu = verkko2.getSolmut().getYlin();
+        Listasolmu pinosolmu = verkko2.getSolmut().getYlin();
         
         while (pinosolmu != null) {
             Solmu solmu = pinosolmu.getSisalto();
@@ -78,8 +80,8 @@ public class AstarTest {
         }
         
         assertEquals(0, verkko2.getSolmu(2, 0).getAlkuun()); //aloitussolmun alkuun
-        assertEquals(1000000, verkko2.getSolmu(2, 2).getAlkuun()); //kohdesolmun alkuun
-        assertEquals( (1000000 * 8), alkuunsumma); //äärettömäksi alustettuja solmuja n-1 kpl
+        assertEquals(AARETONPAINO, verkko2.getSolmu(2, 2).getAlkuun()); //kohdesolmun alkuun
+        assertEquals( (AARETONPAINO * 8), alkuunsumma); //äärettömäksi alustettuja solmuja n-1 kpl
         assertEquals(2, verkko2.getSolmu(2, 0).getLoppuun()); //kohdesolmu on kahden siirron päässä aloitussolmusta
         assertEquals(1, verkko2.getSolmu(2, 1).getLoppuun());
         assertEquals(0, verkko2.getSolmu(2, 2).getLoppuun());

@@ -31,7 +31,7 @@ public class Verkko {
      * @return etsitty solmu tai null, jos solmua ei löytynyt
     */    
     public Solmu getSolmu(int x, int y) {
-        Pinosolmu pinosolmu = solmut.getYlin();
+        Listasolmu pinosolmu = solmut.getYlin();
         
         while (pinosolmu != null) {
             Solmu solmu = pinosolmu.getSisalto();
@@ -54,7 +54,7 @@ public class Verkko {
      * Aikavaativuus: lineaarinen solmujen lukumäärän suhteen
     */ 
     public void luoVieruslistat() {
-        Pinosolmu pinosolmu = solmut.getYlin();
+        Listasolmu pinosolmu = solmut.getYlin();
         
         while (pinosolmu != null) {
             Solmu solmu = pinosolmu.getSisalto();

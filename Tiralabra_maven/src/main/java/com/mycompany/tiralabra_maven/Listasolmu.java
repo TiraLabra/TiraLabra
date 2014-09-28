@@ -1,15 +1,15 @@
 package com.mycompany.tiralabra_maven;
 
 /**
-* Pinosolmu on linkitetyn listan alkio. Se sisältää solmu-olion ja viitteen
+* Listasolmu on linkitetyn listan alkio. Se sisältää viitteet solmu-olioon ja
 * seuraavaan pinosolmuun.
 * 
 * Kaikkien metodit ovat vakioaikaisia.
 * 
 */
-public class Pinosolmu {
+public class Listasolmu {
     private Solmu sisalto;
-    private Pinosolmu seuraava;
+    private Listasolmu seuraava;
 
     public Solmu getSisalto() {
         return sisalto;
@@ -19,11 +19,11 @@ public class Pinosolmu {
         this.sisalto = sisalto;
     }
 
-    public Pinosolmu getSeuraava() {
+    public Listasolmu getSeuraava() {
         return seuraava;
     }
 
-    public void setSeuraava(Pinosolmu seuraava) {
+    public void setSeuraava(Listasolmu seuraava) {
         this.seuraava = seuraava;
     }
     

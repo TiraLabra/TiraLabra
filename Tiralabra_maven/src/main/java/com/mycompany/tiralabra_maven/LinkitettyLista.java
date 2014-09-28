@@ -2,43 +2,43 @@
 package com.mycompany.tiralabra_maven;
 
 /**
-* Linkitetty lista -tietorakenne. Toimii kuin jono. Kokoa ei tarvitse ennalta
+* Linkitetty lista -tietorakenne. Toimii kuin pino. Kokoa ei tarvitse ennalta
 * määrittää.
 * 
-* Linkitetty lista koostuu pinosolmuista. Lista käydään läpi aloittamalla
-* ensimmäisestä pinosolmusta ja jatketaan sen seuraajaan kunnes viimeinen
-* pinosolmu tulee vastaan.
+* Linkitetty lista koostuu listasolmuista. Lista käydään läpi aloittamalla
+* ensimmäisestä listasolmusta ja jatketaan sen seuraajaan kunnes viimeinen
+* listasolmu tulee vastaan.
 */
 public class LinkitettyLista {
-    private Pinosolmu ylin;
+    private Listasolmu ylin;
 
     /**
-     * Palauttaa listan ylimmän (ensimmäisen) pinosolmun
+     * Palauttaa listan ylimmän (ensimmäisen) listasolmun
      * 
      * Aikavaativuus: vakio
      * 
-     * @return listan ensimmäinen pinosolmu
+     * @return listan ensimmäinen listasolmu
     */
-    public Pinosolmu getYlin() {
+    public Listasolmu getYlin() {
         return ylin;
     }
     
     /**
-     * Lisää solmun listan viimeiseksi
+     * Lisää solmun listan ensimmäiseksi
      * 
      * Aikavaativuus: vakio
      * 
      * @param    solmu  listaan lisättävä solmu
     */
     public void lisaa(Solmu solmu) {
-        Pinosolmu uusi = new Pinosolmu();
+        Listasolmu uusi = new Listasolmu();
         uusi.setSisalto(solmu);
         uusi.setSeuraava(this.ylin);
         this.ylin = uusi;
     }
     
 //    public Solmu poista() {
-//        Pinosolmu poistettava = this.ylin;
+//        Listasolmu poistettava = this.ylin;
 //        this.ylin = poistettava.getSeuraava();
 //        return poistettava.getSisalto();
 //    }
@@ -55,20 +55,20 @@ public class LinkitettyLista {
     }
     
     /**
-     * Laskee listassa olevien pinosolmujen lukumäärän.
+     * Laskee listassa olevien listasolmujen lukumäärän.
      * 
-     * Pahin tapaus: kaikki pinosolmut käydään läpi (myös paras tapaus)
-     * Aikavaativuus: lineaarinen pinosolmujen lukumäärän suhteen
+     * Pahin tapaus: kaikki listasolmut käydään läpi (myös paras tapaus)
+     * Aikavaativuus: lineaarinen listasolmujen lukumäärän suhteen
      * 
-     * @return listan pinosolmujen lukumäärä
+     * @return listan solmujen lukumäärä
     */
     public int koko() {
-        Pinosolmu pinosolmu = ylin;
+        Listasolmu listasolmu = ylin;
         int koko = 0;
         
-        while (pinosolmu != null) {
+        while (listasolmu != null) {
             koko++;
-            pinosolmu = pinosolmu.getSeuraava();
+            listasolmu = listasolmu.getSeuraava();
         }
         
         return koko;

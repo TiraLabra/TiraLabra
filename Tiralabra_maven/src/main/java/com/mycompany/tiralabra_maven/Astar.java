@@ -11,6 +11,7 @@ import static java.lang.Math.abs;
 public class Astar {
     
     private final int SEINAPAINO = -1;
+    private final int AARETONPAINO = 1000000;
     private Verkko verkko;
     private Solmu aloitus;
     private Solmu kohde;
@@ -47,12 +48,12 @@ public class Astar {
                 polku[v] = NIL [tässä toteutuksessa polku on jo valmiiksi NIL] 
                 [tässä toteutuksessa lisätään solmu läpikäymättömien kekoon] */
         
-        Pinosolmu pinosolmu = verkko.getSolmut().getYlin();
+        Listasolmu pinosolmu = verkko.getSolmut().getYlin();
         
         while (pinosolmu != null) {
             Solmu solmu = pinosolmu.getSisalto();
             
-            solmu.setAlkuun(1000000);
+            solmu.setAlkuun(AARETONPAINO);
             solmu.setLoppuun( abs( (solmu.getX() - kohde.getX()) + (solmu.getY() - kohde.getY()) ) );
             this.lapikaymattomat.lisaa(solmu);
             
@@ -73,7 +74,7 @@ public class Astar {
     * kohdesolmu, jolloin kaikki solmut käydään läpi
     * Aikavaativuus: O((|E| + |V|) log |V|), sillä jokaiselle solmulle V
     * pienimmän valitseminen (|V| log |V|) ja jokaiselle vierussolmulle E 
-    * pienennetään arvoa (|E| log |V|)
+    * haetaan kaaripaino (|E|) pienennetään arvoa (|E| log |V|)
     * 
     * @return kohdesolmu, jonka polku vie aloitussolmuun asti
     */
@@ -98,7 +99,7 @@ public class Astar {
                         alkuun[v] = alkuun[u]+w(u,v)
                         polku[v] = u */
             
-            Pinosolmu vieruspinosolmu = pienin.getVierus().getYlin();
+            Listasolmu vieruspinosolmu = pienin.getVierus().getYlin();
         
             while (vieruspinosolmu != null) {
                 Solmu vierussolmu = vieruspinosolmu.getSisalto();
