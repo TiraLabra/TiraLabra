@@ -1,8 +1,6 @@
 package viidensuora.gui;
 
-import viidensuora.ai.MinMax;
-import viidensuora.ai.Tekoaly;
-import viidensuora.peli.Peli;
+import javax.swing.SwingUtilities;
 
 /**
  * Ohjelman käynnistävä luokka. ToDo..
@@ -12,8 +10,8 @@ import viidensuora.peli.Peli;
 public class Main {
 
     public static void main(String[] args) {
-        Peli p = new Peli(3, 3, 3);
-        Tekoaly ai = new Tekoaly(p, new MinMax(), 4);
+        Kayttoliittyma kali = new Kayttoliittyma();
+        SwingUtilities.invokeLater(kali);
     }
 
 }

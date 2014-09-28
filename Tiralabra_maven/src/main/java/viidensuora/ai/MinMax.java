@@ -1,8 +1,11 @@
 package viidensuora.ai;
 
 import viidensuora.peli.Koordinaatti;
+import viidensuora.peli.Nolla;
 import viidensuora.peli.Peli;
 import viidensuora.peli.Pelilauta;
+import viidensuora.peli.Pelimerkki;
+import viidensuora.peli.Risti;
 
 /**
  * Tekoälylle annettava Etsintämetodi, jota käytetään etsimään paras siirto.
@@ -31,8 +34,9 @@ public class MinMax implements Etsintametodi {
      *
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasRistinSiirto() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Koordinaatti etsiParasRistinSiirto(int syvyys) {
+        Siirto paras = maxArvo(syvyys, null);
+        return new Koordinaatti(paras.getI(), paras.getJ());
     }
 
     /**
@@ -40,8 +44,9 @@ public class MinMax implements Etsintametodi {
      *
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasNollanSiirto() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Koordinaatti etsiParasNollanSiirto(int syvyys) {
+        Siirto paras = minArvo(syvyys, null);
+        return new Koordinaatti(paras.getI(), paras.getJ());
     }
 
     /**
@@ -50,22 +55,30 @@ public class MinMax implements Etsintametodi {
      * @param syvyys Kuinka syvältä pelipuusta siirtoa etsitään.
      * @return Paras arvo joka loydettiin Ristille.
      */
-    private int maxArvo(int syvyys) {
-        if (syvyys == 0) {
-            // Todo
+    private Siirto maxArvo(int syvyys, Pelimerkki viimeisin) {
+        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
+            return new Siirto(Integer.MIN_VALUE, -1, -1);
+        } else if (pelilauta.taynna()) {
+            return new Siirto(0, -1, -1);
+        } else if (syvyys == 0) {
+            return new Siirto(evaluoiPelitilanne(), -1, -1);
         }
-        int arvo = Integer.MIN_VALUE;
+        Siirto parasSiirto = new Siirto(Integer.MIN_VALUE, -1, -1);
         for (int i = 0; i < pelilauta.getKorkeus(); i++) {
             for (int j = 0; j < pelilauta.getLeveys(); j++) {
                 if (!pelilauta.ruutuVapaa(i, j)) {
                     continue;
                 }
-                pelilauta.asetaRisti(i, j);
-                arvo = Math.max(arvo, minArvo(syvyys - 1));
+                Pelimerkki uusi = new Risti(i, j);
+                pelilauta.lisaaMerkki(uusi);
+                Siirto s = minArvo(syvyys - 1, uusi);                
                 pelilauta.poistaMerkki(i, j);
+                if (s.getArvo() >= parasSiirto.getArvo()) {
+                    parasSiirto = new Siirto(s.getArvo(), i, j);
+                }
             }
         }
-        return arvo;
+        return parasSiirto;
     }
 
     /**
@@ -74,49 +87,33 @@ public class MinMax implements Etsintametodi {
      * @param Kuinka syvältä pelipuusta siirtoa etsitään.
      * @return Paras arvo joka loydettiin Nollalle.
      */
-    private int minArvo(int syvyys) {
-        if (syvyys == 0) {
-            // ToDo
+    private Siirto minArvo(int syvyys, Pelimerkki viimeisin) {
+        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
+            return new Siirto(Integer.MAX_VALUE, -1, -1);
+        } else if (pelilauta.taynna()) {
+            return new Siirto(0, -1, -1);
+        } else if (syvyys == 0) {
+            return new Siirto(evaluoiPelitilanne(), -1, -1);
         }
-        int arvo = Integer.MAX_VALUE;
+        Siirto parasSiirto = new Siirto(Integer.MAX_VALUE, -1, -1);
         for (int i = 0; i < pelilauta.getKorkeus(); i++) {
             for (int j = 0; j < pelilauta.getLeveys(); j++) {
                 if (!pelilauta.ruutuVapaa(i, j)) {
                     continue;
                 }
-                pelilauta.asetaNolla(i, j);
-                arvo = Math.min(arvo, maxArvo(syvyys - 1));
+                Pelimerkki uusi = new Nolla(i, j);
+                pelilauta.lisaaMerkki(uusi);
+                Siirto s = maxArvo(syvyys - 1, uusi);
                 pelilauta.poistaMerkki(i, j);
+                if (s.getArvo() <= parasSiirto.getArvo()) {
+                    parasSiirto = new Siirto(s.getArvo(), i, j);
+                }
             }
         }
-        return arvo;
+        return parasSiirto;
     }
 
-    /*
-     public int minmax(int syvyys, boolean maksimoi, Pelimerkki edellinen) {
-     int pisinSuora = peli.pisinSuora(edellinen);
-     int parasArvo = maksimoi ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-     if (pisinSuora >= peli.getVoittavaPituus()) {
-     return parasArvo;
-     } else if (pelilauta.taynna()) {
-     return 0;
-     } else if (syvyys == 0) {
-     return heuristiikka();
-     }
-     for (int i = 0; i < pelilauta.getKorkeus(); i++) {
-     for (int j = 0; j < pelilauta.getLeveys(); j++) {
-     if (pelilauta.ruutuVapaa(i, j)) {
-     Pelimerkki uusi = maksimoi
-     ? new Risti(i, j)
-     : new Nolla(i, j);
-     pelilauta.lisaaMerkki(uusi);
-     int arvo = minmax(syvyys - 1, !maksimoi, uusi);
-     parasArvo = maksimoi ? Math.max(parasArvo, arvo) : Math.min(parasArvo, arvo);
-     pelilauta.poistaMerkki(i, j);
-     }
-     }
-     }
-     return parasArvo;
-     }
-     */
+    private int evaluoiPelitilanne() {
+        return 0;
+    }
 }

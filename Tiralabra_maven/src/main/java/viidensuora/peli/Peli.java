@@ -7,6 +7,9 @@ package viidensuora.peli;
  */
 public class Peli {
 
+    public static final int TYHJA = 0;
+    public static final int RISTI = 1;
+    public static final int NOLLA = 2;
     /**
      * Pelilauta, jolla pelimerkit sijaitsevat.
      */
@@ -22,10 +25,13 @@ public class Peli {
      */
     private boolean ristinVuoro;
 
+    private int voittaja;
+
     public Peli(int korkeus, int leveys, int voittavaPituus) {
         this.pelilauta = new Pelilauta(korkeus, leveys);
         this.voittavaPituus = voittavaPituus;
         this.ristinVuoro = true;
+        this.voittaja = 0;
     }
 
     public Peli(Pelilauta pelilauta, int voittavaPituus) {
@@ -38,9 +44,19 @@ public class Peli {
         return pelilauta;
     }
 
+    public int getVoittaja() {
+        return voittaja;
+    }
+
     public int getVoittavaPituus() {
         return voittavaPituus;
     }
+
+    public boolean onRistinVuoro() {
+        return ristinVuoro;
+    }
+    
+    
 
     /**
      * Lisää uuden pelimerkin pelilaudalle ja vaihtaa pelivuoroa. Asetettava
@@ -51,10 +67,10 @@ public class Peli {
      */
     public void lisaaMerkki(int i, int j) {
         if (pelilauta.ruutuVapaa(i, j)) {
-            if (ristinVuoro) {
-                pelilauta.asetaRisti(i, j);
-            } else {
-                pelilauta.asetaNolla(i, j);
+            Pelimerkki pm = ristinVuoro ? new Risti(i, j) : new Nolla(i, j);
+            pelilauta.lisaaMerkki(pm);
+            if (siirtoVoitti(pm)) {
+                this.voittaja = ristinVuoro ? RISTI : NOLLA;
             }
             ristinVuoro = !ristinVuoro;
         }
@@ -83,10 +99,10 @@ public class Peli {
         if (pm == null) {
             return 0;
         }
-        int hor = (laske(pm, 0, -1) + laske(pm, 0, 1)) - 1;
-        int ver = (laske(pm, -1, 0) + laske(pm, 1, 0)) - 1;
-        int diag1 = (laske(pm, -1, -1) + laske(pm, 1, 1)) - 1;
-        int diag2 = (laske(pm, 1, -1) + laske(pm, -1, 1)) - 1;
+        int hor = (laskePituus(pm, 0, -1) + laskePituus(pm, 0, 1)) - 1;
+        int ver = (laskePituus(pm, -1, 0) + laskePituus(pm, 1, 0)) - 1;
+        int diag1 = (laskePituus(pm, -1, -1) + laskePituus(pm, 1, 1)) - 1;
+        int diag2 = (laskePituus(pm, 1, -1) + laskePituus(pm, -1, 1)) - 1;
         return Math.max(hor, Math.max(ver, Math.max(diag1, diag2)));
     }
 
@@ -98,7 +114,7 @@ public class Peli {
      * @param dj Delta j, eli missä suunnassa liikutaan horisontaalisesti.
      * @return Suoran pituus.
      */
-    private int laske(Pelimerkki pm, int di, int dj) {
+    private int laskePituus(Pelimerkki pm, int di, int dj) {
         if (pm == null) {
             return 0;
         }
@@ -108,23 +124,4 @@ public class Peli {
         }
         return n;
     }
-
-    /*
-     public int pisinSuora2(Pelimerkki alku) {
-     int v = 0, o = 0, y = 0, a = 0, vy = 0, oy = 0, oa = 0, va = 0;
-     for (int delta = 1; delta <= voittavaPituus; delta++) {
-     v += pelilauta.getPelimerkki(i, j - delta) == pm ? 1 : 0;
-     o += pelilauta.getPelimerkki(i, j + delta) == pm ? 1 : 0;
-
-     y += pelilauta.getPelimerkki(i - delta, j) == pm ? 1 : 0;
-     a += pelilauta.getPelimerkki(i + delta, j) == pm ? 1 : 0;
-
-     vy += pelilauta.getPelimerkki(i - delta, j - delta) == pm ? 1 : 0;
-     oa += pelilauta.getPelimerkki(i + delta, j + delta) == pm ? 1 : 0;
-
-     va += pelilauta.getPelimerkki(i + delta, j - delta) == pm ? 1 : 0;
-     oy += pelilauta.getPelimerkki(i - delta, j + delta) == pm ? 1 : 0;
-     }
-     return 0;
-     }*/
 }

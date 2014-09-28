@@ -75,6 +75,7 @@ public class Pelilauta {
 
     /**
      * Palauttaa Pelimerkin koordinaatista.
+     *
      * @param i Rivi.
      * @param j Sarake.
      * @return Pelimerkki. NULL jos koordinaatti ei ole ok.

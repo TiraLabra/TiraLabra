@@ -20,15 +20,17 @@ public interface Etsintametodi {
     /**
      * Etsii parhaan Ristin siirron. ToDo
      *
+     * @param syvyys
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasRistinSiirto();
+    public Koordinaatti etsiParasRistinSiirto(int syvyys);
 
     /**
      * Etsii parhaan Nollan siirron. ToDo
      *
+     * @param syvyys
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasNollanSiirto();
+    public Koordinaatti etsiParasNollanSiirto(int syvyys);
 
 }

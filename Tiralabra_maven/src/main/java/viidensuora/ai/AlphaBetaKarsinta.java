@@ -1,8 +1,12 @@
 package viidensuora.ai;
 
+import java.util.Random;
 import viidensuora.peli.Koordinaatti;
+import viidensuora.peli.Nolla;
 import viidensuora.peli.Peli;
 import viidensuora.peli.Pelilauta;
+import viidensuora.peli.Pelimerkki;
+import viidensuora.peli.Risti;
 
 /**
  * Tekoälylle annettava Etsintämetodi, jota käytetään etsimään paras siirto.
@@ -26,8 +30,9 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      *
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasRistinSiirto() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Koordinaatti etsiParasRistinSiirto(int syvyys) {
+        Siirto paras = maxArvo(syvyys, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+        return new Koordinaatti(paras.getI(), paras.getJ());
     }
 
     /**
@@ -35,8 +40,9 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      *
      * @return Parhaan siirron koordinaatti.
      */
-    public Koordinaatti etsiParasNollanSiirto() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Koordinaatti etsiParasNollanSiirto(int syvyys) {
+        Siirto paras = minArvo(syvyys, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+        return new Koordinaatti(paras.getI(), paras.getJ());
     }
 
     public void setPeli(Peli peli) {
@@ -51,27 +57,34 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      * @param syvyys Kuinka syvältä pelipuusta siirtoa etsitään.
      * @return Paras arvo joka loydettiin Ristille.
      */
-    private int maxArvo(int syvyys, int a, int b) {
-        if (syvyys == 0) {
-            //heuristiikka ToDo
+    private Siirto maxArvo(int syvyys, int a, int b, Pelimerkki viimeisin) {
+        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
+            return new Siirto(Integer.MIN_VALUE, -1, -1);
+        } else if (pelilauta.taynna()) {
+            return new Siirto(0, -1, -1);
+        } else if (syvyys == 0) {
+            return new Siirto(evaluoiPelitilanne(), -1, -1);
         }
-        int arvo = Integer.MIN_VALUE;
+        Siirto parasSiirto = new Siirto(Integer.MIN_VALUE, -1, -1);
         for (int i = 0; i < pelilauta.getKorkeus(); i++) {
             for (int j = 0; j < pelilauta.getLeveys(); j++) {
                 if (!pelilauta.ruutuVapaa(i, j)) {
                     continue;
                 }
-                pelilauta.asetaRisti(i, j);
-                arvo = Math.max(arvo, minArvo(syvyys - 1, a, b));
+                Pelimerkki uusi = new Risti(i, j);
+                pelilauta.lisaaMerkki(uusi);
+                Siirto s = minArvo(syvyys - 1, a, b, uusi);
                 pelilauta.poistaMerkki(i, j);
-                if (arvo >= b) {
-                    return arvo;
+                if (s.getArvo() >= parasSiirto.getArvo()) {
+                    parasSiirto = new Siirto(s.getArvo(), i, j);
                 }
-                a = Math.max(a, arvo);
-
+                if (parasSiirto.getArvo() >= b) {
+                    return parasSiirto;
+                }
+                a = Math.max(a, parasSiirto.getArvo());
             }
         }
-        return arvo;
+        return parasSiirto;
     }
 
     /**
@@ -81,26 +94,37 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      * @param syvyys Kuinka syvältä pelipuusta siirtoa etsitään.
      * @return Paras arvo joka loydettiin Ristille.
      */
-    private int minArvo(int syvyys, int a, int b) {
-        if (syvyys == 0) {
-
+    private Siirto minArvo(int syvyys, int a, int b, Pelimerkki viimeisin) {
+        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
+            return new Siirto(Integer.MAX_VALUE, -1, -1);
+        } else if (pelilauta.taynna()) {
+            return new Siirto(0, -1, -1);
+        } else if (syvyys == 0) {
+            return new Siirto(evaluoiPelitilanne(), -1, -1);
         }
-        int arvo = Integer.MAX_VALUE;
+        Siirto parasSiirto = new Siirto(Integer.MAX_VALUE, -1, -1);
         for (int i = 0; i < pelilauta.getKorkeus(); i++) {
             for (int j = 0; j < pelilauta.getLeveys(); j++) {
                 if (!pelilauta.ruutuVapaa(i, j)) {
                     continue;
                 }
-                pelilauta.asetaNolla(i, j);
-                arvo = Math.min(arvo, maxArvo(syvyys - 1, a, b));
+                Pelimerkki uusi = new Nolla(i, j);
+                pelilauta.lisaaMerkki(uusi);
+                Siirto s = maxArvo(syvyys - 1, a, b, uusi);
                 pelilauta.poistaMerkki(i, j);
-                if (arvo <= a) {
-                    return arvo;
+                if (s.getArvo() <= parasSiirto.getArvo()) {
+                    parasSiirto = new Siirto(s.getArvo(), i, j);
                 }
-                b = Math.min(b, arvo);
+                if (parasSiirto.getArvo() <= a) {
+                    return parasSiirto;
+                }
+                b = Math.min(b, parasSiirto.getArvo());
             }
         }
-        return arvo;
+        return parasSiirto;
     }
 
+    private int evaluoiPelitilanne() {
+        return new Random().nextInt();
+    }
 }

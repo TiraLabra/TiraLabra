@@ -2,7 +2,6 @@ package viidensuora.ai;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import viidensuora.peli.Peli;
 
 public class TekoalyTest {
@@ -18,10 +17,5 @@ public class TekoalyTest {
 
     @Test
     public void test1() {
-        p.getPelilauta().asetaRisti(0, 0);
-        p.getPelilauta().asetaNolla(1, 0);
-        p.getPelilauta().asetaRisti(0, 1);
-        p.getPelilauta().asetaNolla(1, 1);
-        // assertEquals(Integer.MAX_VALUE, ai.minmax(3, true, null));
     }
 }

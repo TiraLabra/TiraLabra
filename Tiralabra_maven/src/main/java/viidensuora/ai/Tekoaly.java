@@ -26,16 +26,23 @@ public class Tekoaly {
      */
     private int syvyys;
 
+    private boolean miettii;
+
     public Tekoaly(Peli peli, Etsintametodi metodi, int syvyys) {
         this.peli = peli;
         this.metodi = metodi;
         this.metodi.setPeli(peli);
         this.syvyys = syvyys;
+        this.miettii = false;
     }
 
     public void setMetodi(Etsintametodi metodi) {
         this.metodi = metodi;
         this.metodi.setPeli(peli);
+    }
+
+    public boolean miettii() {
+        return miettii;
     }
 
     /**
@@ -44,7 +51,10 @@ public class Tekoaly {
      * @return Parhaan siirron koordinaatti.
      */
     public Koordinaatti etsiParasRistinSiirto() {
-        return metodi.etsiParasRistinSiirto();
+        miettii = true;
+        Koordinaatti k = metodi.etsiParasRistinSiirto(syvyys);
+        miettii = false;
+        return k;
     }
 
     /**
@@ -53,13 +63,16 @@ public class Tekoaly {
      * @return
      */
     public Koordinaatti etsiParasNollanSiirto() {
-        return metodi.etsiParasRistinSiirto();
+        miettii = true;
+        Koordinaatti k = metodi.etsiParasNollanSiirto(syvyys);
+        miettii = false;
+        return k;
     }
 
     /**
      * Asettaa syvyyden josta siirtoa etsitään pelipuusta.
      *
-     * @param syvyys Uusi syvyys. 
+     * @param syvyys Uusi syvyys.
      */
     public void setSyvyys(int syvyys) {
         if (syvyys > 0) {
