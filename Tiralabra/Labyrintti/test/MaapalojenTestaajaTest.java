@@ -43,21 +43,23 @@ public class MaapalojenTestaajaTest {
 
     @Test
     public void maapalallaOikeaHeuristinenArvo() {
-        Maapala maapala = new Maapala(1, 1, 2);
+        Maapala maapala = new Maapala(1, 1);
+        
+        maapala.setHValue(2);
 
         assertTrue(maapala.getHArvo() == 2);
     }
 
     @Test
     public void maapalallaOikeaHeuristinenArvo1() {
-        Maapala maapala = new Maapala(1, 1, 0);
+        Maapala maapala = new Maapala(1, 1);
         maapala.setHValue(1000);
 
         assertTrue(maapala.getHArvo() == 1000);
     }
     @Test
     public void maapalaMuuttuuSeinaksi(){
-        Maapala maapala = new Maapala(0, 0, 0);
+        Maapala maapala = new Maapala(0, 0);
         maapala.asetaSeinaksi();
         
         assertTrue(maapala.onkoSeina());
@@ -65,7 +67,7 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void maapalaMuuttuuLapaistavaksi(){
-        Maapala maapala = new Maapala (0, 0, 0);
+        Maapala maapala = new Maapala (0, 0);
         
         maapala.asetaSeinaksi();
         assertTrue(maapala.onkoSeina());
@@ -76,28 +78,28 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void maapalallaOikeaXKoordinaatti(){
-        Maapala maapala = new Maapala (0, 2, 0);
+        Maapala maapala = new Maapala (0, 2);
         
         assertTrue(maapala.getX() == 0);
     }
     
     @Test
     public void maapalallaOikeaYKoordinaatti(){
-         Maapala maapala = new Maapala (1, 3, 0);
+         Maapala maapala = new Maapala (1, 3);
         
          assertTrue(maapala.getY() == 3);
     }
     
     @Test
     public void maapalaEiKuuluAluksiAvoimeenListaan(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         
         assertFalse(maapala.onkoAvoimellaListalla());
     }
     
     @Test
     public void maapalaSiirtyyOikeinAvoimeenListaan(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         assertFalse(maapala.onkoAvoimellaListalla());
     
         maapala.siirraAvoimelleListalle();
@@ -107,7 +109,7 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void maapalaPoistuuAvoimeltaListalta(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         
         maapala.siirraAvoimelleListalle();
         assertTrue(maapala.onkoAvoimellaListalla());
@@ -118,14 +120,14 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void maapalaEiKuuluAluksiSuljettuunListaan(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         
         assertFalse(maapala.onkoSuljetullaListalla());
     }
     
     @Test
     public void maapalaSiirtyyOikeinSuljettuunListaan(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         assertFalse(maapala.onkoSuljetullaListalla());
     
         maapala.siirraSuljetulleListalle();
@@ -134,7 +136,7 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void maapalaPoistuuSuljetultaListaltaOikein(){
-        Maapala maapala = new Maapala (1, 3, 0);
+        Maapala maapala = new Maapala (1, 3);
         maapala.siirraSuljetulleListalle();
         assertTrue(maapala.onkoSuljetullaListalla());
     
@@ -144,12 +146,11 @@ public class MaapalojenTestaajaTest {
     
     @Test
     public void oikeaVanhempi(){
-        Maapala maapala = new Maapala (1, 3, 0);
-        Maapala maapala1 = new Maapala (1, 2, 5);
+        Maapala maapala = new Maapala (1, 3);
+        Maapala maapala1 = new Maapala (1, 2);
         
         maapala.setVanhempi(maapala1);
         
-        assertTrue(maapala.getVanhempi().getHArvo() == 5);
         assertTrue(maapala.getVanhempi().getX() == 1);
         assertTrue(maapala.getVanhempi().getY() == 2);
     }

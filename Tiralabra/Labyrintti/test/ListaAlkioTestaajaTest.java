@@ -45,15 +45,15 @@ public class ListaAlkioTestaajaTest {
     @Test
     public void seuraavaOnAluksiNull(){
         
-        ListaAlkio listaAlkio = new Maapala (1, 3, 0);
+        ListaAlkio listaAlkio = new Maapala (1, 3);
         
         assertTrue(listaAlkio.getSeuraava() == null);
     }
     
     @Test
     public void oikeaSeuraavaAlkio(){
-        ListaAlkio listaAlkio = new Maapala (1, 3, 0);
-        ListaAlkio listaAlkio1 = new Maapala (2, 5, 8);
+        ListaAlkio listaAlkio = new Maapala (1, 3);
+        ListaAlkio listaAlkio1 = new Maapala (2, 5);
         listaAlkio.setSeuraava(listaAlkio1);
         
         assertTrue(listaAlkio.getSeuraava().equals(listaAlkio1));

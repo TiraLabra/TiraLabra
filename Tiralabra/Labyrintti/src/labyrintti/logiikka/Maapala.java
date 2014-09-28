@@ -24,10 +24,10 @@ public class Maapala extends ListaAlkio {
     private boolean suljetullaListalla;
     private Maapala vanhempi;
 
-    public Maapala(int x, int y, int hArvo) {
+    public Maapala(int x, int y) {
         this.x = x;
         this.y = y;
-        this.hArvo = hArvo;
+        this.hArvo = 0;
         this.seina = false;
         this.avoimellaListalla = false;
         this.suljetullaListalla = false;
@@ -148,8 +148,10 @@ public class Maapala extends ListaAlkio {
 
     @Override
     public String toString() {
-
-        return "" + this.hArvo;
-
+        if (this.onkoSeina()) {
+            return "X";
+        } else {
+            return "" + this.hArvo;
+        }
     }
 }

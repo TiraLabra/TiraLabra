@@ -45,7 +45,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void palauttaaOikeanAloitusnodenXKoordinaatin(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(3, 1, 0, 2, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getAlkuX() == 1);
         
@@ -54,7 +54,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void palauttaaOikeanAloitusnodenYkoordinaatin(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(3, 1, 0, 2, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getAlkuY() == 0);
     }
@@ -62,7 +62,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void palauttaaOikeanLopetusnodenXKoordinaatin(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(3, 1, 0, 2, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getLoppuX() == 2);
     }
@@ -70,7 +70,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void palauttaaOikeanLopetusnodenYKoordinaatin(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(3, 1, 0, 2, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getLoppuY() == 1);
     }
@@ -78,7 +78,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void asettaaOikeanHeuristisenArvon(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getAlku().getHArvo() == 2);
     }
@@ -86,7 +86,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void asettaaOikeanHeuristisenArvon1(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 1, 0, 1, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         
         assertTrue(maapalarekisteri.getAlku().getHArvo() == 1);
     }
@@ -94,7 +94,7 @@ public class MaapalarekisterinTestaajaTest {
     @Test
     public void asettaaOikeanMaapalan(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
-        maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         Maapala maapala = maapalarekisteri.getMaapala(0, 0);
         
         assertTrue(maapala.getHArvo() == 2);

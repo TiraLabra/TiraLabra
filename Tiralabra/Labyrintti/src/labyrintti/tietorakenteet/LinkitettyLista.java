@@ -70,10 +70,13 @@ public class LinkitettyLista {
                     alkio1.setSeuraava(alkio1.getSeuraava().getSeuraava());
                     this.koko--;
                 }
+                alkio1 = alkio1.getSeuraava();
 
                 i++;
 
             }
+            ListaAlkio seuraava = null;
+            alkio.setSeuraava(seuraava);
         }
     }
     

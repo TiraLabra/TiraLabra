@@ -5,6 +5,7 @@
 package labyrintti.logiikka;
 
 import java.util.ArrayList;
+import labyrintti.tietorakenteet.LinkitettyLista;
 
 /**
  * Tämä luokka edustaa itse labyrintin lyhimmän reitin etsimiseen käytettävää
@@ -26,8 +27,8 @@ public class LyhinReitti {
     private int avoimenListanKoko;
     private boolean loppuLoytynyt;
     private Maapala[][] labyrintti;
-    private ArrayList<Maapala> avoinLista;
-    private ArrayList<Maapala> suljettuLista;
+    private LinkitettyLista avoinLista1;
+    private LinkitettyLista suljettuLista1;
 
     public LyhinReitti(Maapalarekisteri maapalaRekisteri) {
         this.loppuLoytynyt = false;
@@ -37,9 +38,9 @@ public class LyhinReitti {
         this.loppuX = maapalaRekisteri.getLoppuX();
         this.loppuY = maapalaRekisteri.getLoppuY();
         this.labyrintti = maapalaRekisteri.getLabyrintti();
-        this.avoinLista = new ArrayList<>();
-        this.suljettuLista = new ArrayList<>();
-        this.avoinLista.add(this.labyrintti[alkuX][alkuY]);
+        this.avoinLista1 = new LinkitettyLista();
+        this.suljettuLista1 = new LinkitettyLista();
+        this.avoinLista1.lisaaListaan(this.labyrintti[alkuX][alkuY]);
         this.labyrintti[alkuX][alkuY].siirraAvoimelleListalle();
         this.avoimenListanKoko = 1;
     }
@@ -57,7 +58,7 @@ public class LyhinReitti {
 
         if (x > 0) {
             if (!this.labyrintti[x - 1][y].onkoAvoimellaListalla() && !this.labyrintti[x - 1][y].onkoSuljetullaListalla() && !this.labyrintti[x - 1][y].onkoSeina()) {
-                avoinLista.add(this.labyrintti[x - 1][y]);
+                avoinLista1.lisaaListaan(this.labyrintti[x - 1][y]);
                 this.labyrintti[x - 1][y].siirraAvoimelleListalle();
                 this.labyrintti[x - 1][y].setVanhempi(maapala);
                 this.avoimenListanKoko++;
@@ -66,7 +67,7 @@ public class LyhinReitti {
         
         if (x < this.maapalaRekisteri.getKoko() - 1){
             if(!this.labyrintti[x + 1][y].onkoAvoimellaListalla() && !this.labyrintti[x + 1][y].onkoSuljetullaListalla() && !this.labyrintti[x + 1][y].onkoSeina()){
-                avoinLista.add(this.labyrintti[x + 1][y]);
+                avoinLista1.lisaaListaan(this.labyrintti[x + 1][y]);
                 this.labyrintti[x + 1][y].siirraAvoimelleListalle();
                 this.labyrintti[x + 1][y].setVanhempi(maapala);
                 this.avoimenListanKoko++;
@@ -74,7 +75,7 @@ public class LyhinReitti {
         }
         if (y > 0){
             if (!this.labyrintti[x][y - 1].onkoAvoimellaListalla() && !this.labyrintti[x][y - 1].onkoSuljetullaListalla() && !this.labyrintti[x][y - 1].onkoSeina()) {
-                avoinLista.add(this.labyrintti[x][y - 1]);
+                avoinLista1.lisaaListaan(this.labyrintti[x][y - 1]);
                 this.labyrintti[x][y - 1].siirraAvoimelleListalle();
                 this.labyrintti[x][y - 1].setVanhempi(maapala);
                 this.avoimenListanKoko++;
@@ -83,7 +84,7 @@ public class LyhinReitti {
         
         if (y < this.maapalaRekisteri.getKoko() - 1){
             if (!this.labyrintti[x][y + 1].onkoAvoimellaListalla() && !this.labyrintti[x][y + 1].onkoSuljetullaListalla() && !this.labyrintti[x][y + 1].onkoSeina()) {
-                avoinLista.add(this.labyrintti[x][y + 1]);
+                avoinLista1.lisaaListaan(this.labyrintti[x][y + 1]);
                 this.labyrintti[x][y + 1].siirraAvoimelleListalle();
                 this.labyrintti[x][y + 1].setVanhempi(maapala);
                 this.avoimenListanKoko++;
@@ -98,9 +99,9 @@ public class LyhinReitti {
      */
     
     public void siirraMaapalaSuljetulleListalle(Maapala maapala){
-        suljettuLista.add(maapala);
+        avoinLista1.poistaListasta(maapala);
+        suljettuLista1.lisaaListaan(maapala);
         this.labyrintti[maapala.getX()][maapala.getY()].siirraSuljetulleListalle();
-        avoinLista.remove(maapala);
         this.labyrintti[maapala.getX()][maapala.getY()].poistaAvoimeltaListalta();
         this.avoimenListanKoko--;
     }
@@ -113,19 +114,22 @@ public class LyhinReitti {
      */
     
     public Maapala etsiMaapalaJollaPieninHArvo(){
-        int pieninHArvo = avoinLista.get(0).getHArvo();
-        Maapala maapala = avoinLista.get(0);
+        Maapala pieninMaapala = (Maapala)avoinLista1.getPaa();
+        Maapala maapala = (Maapala)avoinLista1.getPaa();
+        int pieninHArvo = maapala.getHArvo();
         
-        for (Maapala maapala1: avoinLista) {
-            if(maapala1.getHArvo() < pieninHArvo){
-                pieninHArvo = maapala1.getHArvo();
-                maapala = maapala1;
+        while(maapala != null && avoimenListanKoko > 0){
+            if(maapala.getHArvo() < pieninHArvo){
+                pieninHArvo = maapala.getHArvo();
+                pieninMaapala = maapala;
             }
+            maapala = (Maapala)maapala.getSeuraava();
         }
-        if (maapala.getHArvo() == 0){
+        
+        if (pieninHArvo == 0){
             this.loppuLoytynyt = true;
         }
-        return maapala;
+        return pieninMaapala;
     }
     
     /**
@@ -159,17 +163,12 @@ public class LyhinReitti {
     }
     
     /**
-     * Metodi kutsuu kierroksia, kunnes lyhin reitti on löytynyt tai
-     * avoimella listalla ei ole uusia käsiteltäviä alkioita jäljellä.
-     * Jos reitti on löytynyt, metodi tulostaa sen.
+     * Jos reitti on löytynyt, metodi tulostaa sen. Muuten metodi ilmoittaa,
+     * että reittiä ei ole.
      */
     
     public void tulostaLyhinReitti(){
-        while(avoimenListanKoko > 0 && !this.loppuLoytynyt){
-            kierros();
-        }
-        
-        if(avoimenListanKoko == 0){
+        if(avoimenListanKoko == 0 && !this.loppuLoytynyt){
             System.out.println("Labyrintista ei ole reittiä ulos");
         }
         else{
@@ -181,6 +180,17 @@ public class LyhinReitti {
                     break;
                 }
             }
+        }
+    }
+    
+    /**
+     * Metodi kutsuu kierroksia, kunnes lyhin reitti on löytynyt tai
+     * avoimella listalla ei ole uusia käsiteltäviä alkioita jäljellä.
+     */
+    
+    public void etsiLyhinReitti(){
+        while(avoimenListanKoko > 0 && !this.loppuLoytynyt){
+            kierros();
         }
     }
 }

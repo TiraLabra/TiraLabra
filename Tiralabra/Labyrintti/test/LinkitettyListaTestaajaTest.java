@@ -53,7 +53,7 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaKokoAlkioitaLisattaessa(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,1);
+        Maapala maapala = new Maapala (0,0);
         
         linkitettyLista.lisaaListaan(maapala);
         
@@ -64,8 +64,8 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaKokoAlkioitaLisattaessa1(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,0);
-        Maapala maapala1 = new Maapala (0,0,1);
+        Maapala maapala = new Maapala (0,0);
+        Maapala maapala1 = new Maapala (0,0);
         
         linkitettyLista.lisaaListaan(maapala);
         linkitettyLista.lisaaListaan(maapala1);
@@ -77,7 +77,7 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaKokoAlkioitaPoistettaessa(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,0);
+        Maapala maapala = new Maapala (0,0);
         
         linkitettyLista.lisaaListaan(maapala);
         
@@ -92,8 +92,8 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaKokoAlkioitaPoistettaessa1(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,0);
-        Maapala maapala1 = new Maapala (0,0,1);
+        Maapala maapala = new Maapala (0,0);
+        Maapala maapala1 = new Maapala (0,0);
         
         linkitettyLista.lisaaListaan(maapala);
         linkitettyLista.poistaListasta(maapala1);
@@ -105,7 +105,8 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaPaa(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,8);
+        Maapala maapala = new Maapala (0,0);
+        maapala.setHValue(8);
         linkitettyLista.lisaaListaan(maapala);
         
         Maapala maapala1 = (Maapala)linkitettyLista.getPaa();
@@ -118,10 +119,12 @@ public class LinkitettyListaTestaajaTest {
     public void oikeaPaa1(){
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
-        Maapala maapala = new Maapala (0,0,8);
+        Maapala maapala = new Maapala (0,0);
+        maapala.setHValue(8);
         linkitettyLista.lisaaListaan(maapala);
         
-        Maapala maapala1 = new Maapala(3,2,5);
+        Maapala maapala1 = new Maapala(3,2);
+        maapala1.setHValue(5);
         
         linkitettyLista.lisaaListaan(maapala1);
         

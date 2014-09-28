@@ -47,6 +47,7 @@ public class LyhinReitinTestaajaTest {
     public void palauttaaOikeanNaapurin(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(3, 1, 1, 2, 2);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         lyhinReitti.siirraNaapuritAvoimelleListalle(lyhinReitti.etsiMaapalaJollaPieninHArvo());
@@ -58,6 +59,7 @@ public class LyhinReitinTestaajaTest {
     public void palauttaaOikeanNaapurin1(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(4, 1, 1, 3, 3);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         lyhinReitti.siirraNaapuritAvoimelleListalle(lyhinReitti.etsiMaapalaJollaPieninHArvo());
@@ -69,6 +71,7 @@ public class LyhinReitinTestaajaTest {
     public void aluksiLoppuaEiOleLoytynyt(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(4, 1, 1, 3, 3);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         assertFalse(lyhinReitti.onkoLoppuLoytynyt());
@@ -78,9 +81,11 @@ public class LyhinReitinTestaajaTest {
     public void oikeaArvoKunLoppuLoytyy(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(4, 1, 1, 3, 3);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
-        lyhinReitti.siirraNaapuritAvoimelleListalle(new Maapala (3,2,1));
+        
+        lyhinReitti.siirraNaapuritAvoimelleListalle(new Maapala (3,2));
         lyhinReitti.etsiMaapalaJollaPieninHArvo();
         
         
@@ -91,6 +96,7 @@ public class LyhinReitinTestaajaTest {
     public void oikeaMaaraNaapureitaSiirtyyAvoimelleListalle(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
@@ -102,6 +108,7 @@ public class LyhinReitinTestaajaTest {
     public void oikeaMaaraNaapureitaSiirtyyAvoimelleListalle1(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         Maapala maapala = maapalarekisteri.getMaapala(1, 0);
         maapala.asetaSeinaksi();
@@ -115,6 +122,7 @@ public class LyhinReitinTestaajaTest {
     public void maapalaSiirtyySuljetulleListalleOikein(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         Maapala maapala = maapalarekisteri.getAlku();
@@ -135,6 +143,7 @@ public class LyhinReitinTestaajaTest {
     public void maapalaJollaPieninHArvoPalautuuOikein(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 1, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         Maapala maapala = lyhinReitti.etsiMaapalaJollaPieninHArvo();
@@ -148,6 +157,7 @@ public class LyhinReitinTestaajaTest {
     public void maapalaJollaPieninHArvoPalautuuOikein1(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 0, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
@@ -161,6 +171,7 @@ public class LyhinReitinTestaajaTest {
     public void avoimenListanKokoOnAluksiOikea(){
         Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 0, 0, 1);
         maapalarekisteri.luoMaapalat();
+        maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         assertTrue(lyhinReitti.getAvoimenListanKoko() == 1);
