@@ -35,6 +35,8 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
 
  
     public Kuva() throws IOException, URISyntaxException {
+        
+
         this.kuva =  ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
 
         addMouseListener(this);
@@ -72,9 +74,7 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
  */   
     @Override
     public void mousePressed(MouseEvent me) {
-        
 
-        
         p1 = me.getPoint();
     }
     

@@ -25,17 +25,22 @@ import javax.swing.JFrame;
  * 
  * Aloitus on pääluokka joka luo ikkunan jossa olevaan kuvaan voi piirtää.
  */
-public class Aloitus extends JFrame {
+public class Aloitus {
 
+    static private JFrame käyttis;
+    
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         
-        Aloitus käyttis = new Aloitus();
-        
+        käyttis=new JFrame();
 
+        
+        käyttis.setVisible(true);
+        käyttis.setSize(900, 900);
+  
  
         luoKomponentit(käyttis);
-//        käyttis.setSize(700, 700);        
+           
         käyttis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         käyttis.setVisible(true);
         käyttis.pack();
@@ -58,7 +63,7 @@ public class Aloitus extends JFrame {
 
         final Kuva ikkuna = new Kuva();
         
-//        container.setSize(700, 700);
+        
 
         JButton AloitaNappi = new JButton("PIIRRETÄÄN!!!");
         AloitaNappi.addActionListener(new ActionListener() {
@@ -75,7 +80,6 @@ public class Aloitus extends JFrame {
         
         container.add(ikkuna, BorderLayout.CENTER);
         container.add(AloitaNappi, BorderLayout.PAGE_END);
-        
     }
     
     

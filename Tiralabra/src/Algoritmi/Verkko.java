@@ -27,7 +27,7 @@ public class Verkko {
 
     
     public Verkko(BufferedImage kuva, Point maali){
-        taulukko=new Solmu [kuva.getHeight()][kuva.getWidth()];
+        taulukko=new Solmu [kuva.getWidth()][kuva.getHeight()];
         this.kuva=kuva;
         
         maaliX=maali.y;
