@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
@@ -34,14 +36,26 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
     private Point MaaliPiste;
 
  
-    public Kuva() throws IOException, URISyntaxException {
+    public Kuva(){
         
 
-        this.kuva =  ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
+        haeKuva();
 
         addMouseListener(this);
         addMouseMotionListener(this);        
 
+    }
+    
+    public void haeKuva() {
+        
+        try {
+            this.kuva=ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
+        } catch (IOException ex) {
+            Logger.getLogger(Aloitus.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Aloitus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public Point haeLahto(){
@@ -109,19 +123,16 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
             repaint(); 
             
         }
-        
 
-        
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent me) {
     }
     
-    @Override
-    public void mouseClicked(MouseEvent klik) {
-    }
+
     
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+    }
+
     @Override
     public void mouseEntered(MouseEvent me) {
     }
@@ -130,9 +141,14 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
     public void mouseExited(MouseEvent me) {
     }
 
+    @Override
+    public void mouseDragged(MouseEvent me) {
+    }
 
     @Override
     public void mouseMoved(MouseEvent me) {
     }
+
+
     
 }

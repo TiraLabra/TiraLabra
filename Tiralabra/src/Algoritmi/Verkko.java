@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import javax.swing.JLabel;
 
 /**
  *
@@ -30,8 +31,11 @@ public class Verkko {
         taulukko=new Solmu [kuva.getWidth()][kuva.getHeight()];
         this.kuva=kuva;
         
+
         maaliX=maali.y;
         maaliY=maali.x;
+
+        
         
         
         
@@ -70,4 +74,6 @@ public class Verkko {
         return Math.abs(y-maaliY)+Math.abs(x-maaliX);
     }
     
+    
+
 }
