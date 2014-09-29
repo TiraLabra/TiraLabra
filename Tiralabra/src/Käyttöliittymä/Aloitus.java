@@ -6,10 +6,11 @@
 
 package Käyttöliittymä;
 
-import Algoritmi.Verkko;
 import Algoritmi.Reitinhaku;
+import Algoritmi.Verkko;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,15 +37,15 @@ public class Aloitus {
 
         
         käyttis.setVisible(true);
-        käyttis.setSize(900, 900);
+
   
  
-        luoKomponentit(käyttis);
+        luoKomponentit();
            
         käyttis.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         käyttis.setVisible(true);
         käyttis.pack();
-        käyttis.setTitle("asdasd");
+        käyttis.setTitle("Title");
 
 
     }
@@ -53,16 +54,16 @@ public class Aloitus {
     *
     * Luo ikkunan ja siinä olevan napin jota painamalla voi aloittaa reitinhaun.
     * 
-    * @param grafiikka grafiikka
+    * 
     * 
     */  
     
-    public static void luoKomponentit(Container container) throws IOException, URISyntaxException {
+    public static void luoKomponentit() throws IOException, URISyntaxException {
  
         
 
         final Kuva ikkuna = new Kuva();
-        
+
         
 
         JButton AloitaNappi = new JButton("PIIRRETÄÄN!!!");
@@ -78,8 +79,9 @@ public class Aloitus {
             });
 
         
-        container.add(ikkuna, BorderLayout.CENTER);
-        container.add(AloitaNappi, BorderLayout.PAGE_END);
+        käyttis.add(ikkuna);
+        käyttis.add(AloitaNappi, BorderLayout.PAGE_END);
+        käyttis.setSize(new Dimension(900, 900));
     }
     
     
