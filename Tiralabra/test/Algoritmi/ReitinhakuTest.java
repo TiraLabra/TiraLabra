@@ -6,8 +6,7 @@
 
 package Algoritmi;
 
-import Algoritmi.Solmu;
-import Algoritmi.Reitinhaku;
+
 import Käyttöliittymä.Kuva;
 import java.awt.Point;
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class ReitinhakuTest {
         Point lähtö = new Point(50,50);
         
         Verkko testiverkko=new Verkko(ikkuna.kuva, maali);
-        testi = new Reitinhaku(testiverkko, lähtö);
+        testi = new Reitinhaku(testiverkko, lähtö, 60000);
         
         
     }

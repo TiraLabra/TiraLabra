@@ -46,6 +46,11 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
 
     }
     
+    /**
+     * 
+     * Hakee kuvan "Untitled.jpg" ja asettaa sen BufferedImage kuvaksi.
+     * 
+     */    
     public void haeKuva() {
         
         try {

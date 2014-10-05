@@ -18,13 +18,17 @@ public class Aloitus extends JPanel implements ActionListener {
     
 
     private static String Piirrä = "Piirrä";
+    private static String Tyhjennä = "Tyhjennä";
     private static String Puhdista = "Puhdista";
-    private static String Viivat_pois = "Viivat pois";
      
     private Kuva ikkuna;
     private Verkko verkko;
     private Reitinhaku reitti;
- 
+    
+    /**
+     * Konstruktori luo tarvittavat komponentit ja asettaa ne paikoilleen.
+     */ 
+    
     public Aloitus() {
         super(new BorderLayout());
          
@@ -35,25 +39,31 @@ public class Aloitus extends JPanel implements ActionListener {
         Piirränappi.setActionCommand(Piirrä);
         Piirränappi.addActionListener(this);
          
+        JButton Tyhjennänappi = new JButton("Tyhjennä");
+        Tyhjennänappi.setActionCommand(Tyhjennä);
+        Tyhjennänappi.addActionListener(this);
+         
         JButton Puhdistanappi = new JButton("Puhdista");
         Puhdistanappi.setActionCommand(Puhdista);
         Puhdistanappi.addActionListener(this);
-         
-        JButton Viivat_poisnappi = new JButton("Viivat pois");
-        Viivat_poisnappi.setActionCommand(Viivat_pois);
-        Viivat_poisnappi.addActionListener(this);
  
         ikkuna.setPreferredSize(new Dimension(800, 800));
         add(ikkuna, BorderLayout.CENTER);
  
         JPanel panel = new JPanel(new GridLayout(0,3));
         panel.add(Piirränappi);
+        panel.add(Tyhjennänappi);
         panel.add(Puhdistanappi);
-        panel.add(Viivat_poisnappi);
         add(panel, BorderLayout.SOUTH);
     }
  
-     
+    /**
+     * Sisältää eri nappien painamisten seuraukset.
+     * Nappi piirrä: etsii reitin ja piirtää sen.
+     * Nappi Tyhjennä: poistaa kaiken mitä kuvaan on piirretty.
+     * Nappi Puhdista: poistaa kaiken mitä kuvaan on piirretty paitsi seinäviivat.
+     * 
+     */     
     public void actionPerformed(ActionEvent e) {
         String komento = e.getActionCommand();
          
@@ -61,19 +71,19 @@ public class Aloitus extends JPanel implements ActionListener {
             
             try{
                 verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
-                reitti = new Reitinhaku(verkko, ikkuna.haeLahto());
+                reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
                 
                 reitti.Haku();   
                 ikkuna.repaint();
             }catch(NullPointerException ex){
             }
             
-        } else if (Puhdista.equals(komento)) {
+        } else if (Tyhjennä.equals(komento)) {
             
             ikkuna.haeKuva();
             ikkuna.repaint();
             
-        } else if (Viivat_pois.equals(komento)) {
+        } else if (Puhdista.equals(komento)) {
             
             try{
                 putsaa();
@@ -85,7 +95,7 @@ public class Aloitus extends JPanel implements ActionListener {
     }
  
     /**
-     * 
+     * Luo ikkunan.
      */
     private static void LuoIkkuna() {
 
@@ -98,7 +108,8 @@ public class Aloitus extends JPanel implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
- 
+
+    
     public static void main(String[] args) {
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -110,6 +121,9 @@ public class Aloitus extends JPanel implements ActionListener {
         });
     }
     
+    /**
+     * Poistaa kaiken mitä kuvaan on piirretty paitsi seinäviivat.
+     */    
     public void putsaa(){
         
         int rgb=new Color(255,255,255).getRGB();

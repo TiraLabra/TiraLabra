@@ -25,28 +25,29 @@ public class Reitinhaku {
     public Verkko verkko;
     
     public PriorityQueue<Solmu> AvoinLista;
+    public Keko minimikeko;
     
     
 /**
- * Konstruktori luo verkon sekä AvoinListan jossa on solmut joihin voidaan mennä. 
- * Konstruktori lisää tähän prioriteettijonoon aloituspisteen ja laittaa sen 
+ * Konstruktori luo verkon sekä minimikeon jossa on solmut joihin voidaan mennä. 
+ * Konstruktori lisää tähän kekoon aloituspisteen ja laittaa sen 
  * edeltäväksi solmuksi itsensä.
  * 
  * @param syöte verkko jossa reitti etsitään.
  * @param Lähtö reitin lähtöpiste.
+ * @param laajuus keon maksimikoko
  * 
  */          
     
-    public Reitinhaku(Verkko syöte, Point Lähtö){
+    public Reitinhaku(Verkko syöte, Point Lähtö, int laajuus){
         verkko=syöte;
+        minimikeko=new Keko(laajuus);
 
-        Comparator<Solmu> comparator = new LukuVertaaja();
-        AvoinLista=new PriorityQueue<Solmu>(12, comparator);
         
         
         Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
         
-        AvoinLista.add(lähtösolmu);
+        minimikeko.lisää(lähtösolmu);
         lähtösolmu.Edeltävä=lähtösolmu;
         
         
@@ -54,7 +55,7 @@ public class Reitinhaku {
     }
     
 /**
- * Haku metodin looppi ottaa AvoinListasta solmun jolla on pienin heurestiikka-arvo, 
+ * Haku metodin looppi ottaa minimikeosta solmun jolla on pienin heurestiikka-arvo, 
  * ja antaa sen parametrinä TarkistaViereiset metodille. Looppi loppuu kun maalipiste on
  * käsittelyssä. Metodi myös maalaa kaikki käydyt pisteet.
  * 
@@ -67,9 +68,9 @@ public class Reitinhaku {
         
         while(käsittelyssä.Heurestiikaarvo!=0){
             
-            käsittelyssä=AvoinLista.poll();
+            käsittelyssä=minimikeko.poista();
             
-            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(100,100,100).getRGB());
+            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(200,200,0).getRGB());
             
             TarkistaViereiset(käsittelyssä);
             
@@ -111,7 +112,7 @@ public class Reitinhaku {
     }
     
 /**
- * Jos solmu ei ole ollet avoimessa listassa aikaisemmin niin metodi laittaa 
+ * Jos solmu ei ole ollut minimikeossa aikaisemmin niin metodi laittaa 
  * sen sinne ja samalla asettaa sen Edeltavä solmuksi solmun "Käsittelyssä".
  * 
  * 
@@ -124,14 +125,15 @@ public class Reitinhaku {
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
             verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
-            AvoinLista.add(verkko.taulukko[x][y]);
+            minimikeko.lisää(verkko.taulukko[x][y]);
         }
         
     }
     
 /**
  * Looppi maalaa aina käsittelyssä olevan solmun/pisteen ja siirtyy sitten 
- * kyseisen solmun edeltävä solmuun. Lähtöpisteeseen saavuttaessa looppi loppuu.
+ * kyseisen solmun edeltävä solmuun, täten piirtäen reitin lopusta alkuun. 
+ * Lähtöpisteeseen saavuttaessa looppi loppuu.
  * 
  * 
  * @param syöte Maalipiste josta reitin piirtäminen alkaa.

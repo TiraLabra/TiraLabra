@@ -9,14 +9,12 @@ package Algoritmi;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-import javax.swing.JLabel;
+
 
 /**
- *
- * @author Jaakko
+
  * 
- * Luokka verkko on väliaikainen ja sen voisi melkeimpä poistaa.
+ * Luokka verkko sisältää solmuista koostuvan taulukon joka toimii verkkona.
  */
 public class Verkko {
     
@@ -26,29 +24,29 @@ public class Verkko {
     public int maaliX;
     public int maaliY;
 
+    /**
+     * Konstruktori konstruktoroi ja kutsuu metodia Täytätaulukko.
+     * 
+     * @param kuva BufferedImage jonka pohjalta taulukko täytetään.
+     * @param maali haettavan reitin maalipiste
+    */ 
     
     public Verkko(BufferedImage kuva, Point maali){
         taulukko=new Solmu [kuva.getWidth()][kuva.getHeight()];
         this.kuva=kuva;
-        
 
         maaliX=maali.y;
         maaliY=maali.x;
 
-        
-        
-        
-        
         Täytätaulukko();
 
-        
     }
     
 /**
  * Käy läpi kuvan ja muuttaa sen Solmuista koostuvaksi taulukoksi.
  * 
  */      
-    public void Täytätaulukko(){
+    private void Täytätaulukko(){
         
         for (int i = 0; i < kuva.getHeight(); i++) {
             for (int j = 0; j < kuva.getWidth(); j++) {
@@ -69,7 +67,7 @@ public class Verkko {
  * @param y kyseisen solmun y koordinaatti.
  */       
     
-    public int HeuristiikkaArvo(int x, int y){
+    int HeuristiikkaArvo(int x, int y){
 
         return Math.abs(y-maaliY)+Math.abs(x-maaliX);
     }

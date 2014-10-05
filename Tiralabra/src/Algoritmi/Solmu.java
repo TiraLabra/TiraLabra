@@ -23,13 +23,15 @@ public class Solmu {
     
     private boolean seinä;
     
-/**
- *Konstruktori
- * 
- * @param x koordinaatti X
- * @param y koordinaatti Y
- * @param hArvo Heurestiika arvo
- */        
+    /**
+     *Konstruktori
+     * 
+     * @param x koordinaatti X
+     * @param y koordinaatti Y
+     * @param hArvo Heurestiika arvo
+     * @param väri kertoo onko piste kuvassa jota solmu kuvaa seinä.
+     * 
+    */        
     
     public Solmu (int x, int y, int hArvo, int väri ){
         
@@ -47,9 +49,26 @@ public class Solmu {
     }
     
     public boolean haeSeina(){
-        
-        
+
         return seinä;
+        
+    }
+    
+    /**
+     *Vertaa tämän ja annetun solmun Heurestiikaarvoja ja Reittipituuksia.
+     * 
+     * @param verrattava verrattava solmu
+    */
+    
+    public int vertaa(Solmu verrattava) {
+        
+        if (Heurestiikaarvo+Reittipituus < verrattava.Heurestiikaarvo+verrattava.Reittipituus){
+            return 1;
+        }else if (Heurestiikaarvo+Reittipituus > verrattava.Heurestiikaarvo+verrattava.Reittipituus){
+            return -1;
+        }
+        
+        return 0;
         
     }
     
