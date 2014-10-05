@@ -74,7 +74,7 @@ public class Astar {
     * kohdesolmu, jolloin kaikki solmut käydään läpi
     * Aikavaativuus: O((|E| + |V|) log |V|), sillä jokaiselle solmulle V
     * pienimmän valitseminen (|V| log |V|) ja jokaiselle vierussolmulle E 
-    * haetaan kaaripaino (|E|) pienennetään arvoa (|E| log |V|)
+    * haetaan kaaripaino (|E|) sekä pienennetään arvoa (|E| log |V|)
     * 
     * @return kohdesolmu, jonka polku vie aloitussolmuun asti
     */

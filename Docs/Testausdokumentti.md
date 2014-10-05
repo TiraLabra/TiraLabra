@@ -1,6 +1,10 @@
 Testaukseen käytetään JUnit-testejä sekä PIT-mutaatiotestausta ongelma-
 kohtien löytämiseen.
 
+Suorituskykymitauksia.xlsx -tiedostossa on testituloksia eri osa-alueiden
+suorituskyvystä 200 - 24320 solmun tapauksissa. Käytetyt karttatiedostot
+löytyvät Tiralabra_maven-hakemistosta nimillä suorituskykykartta[1-5].txt.
+
 Astar-algoritmin testaus
 
 Algoritmia testataan antamalla syötteeksi ennalta määritetty verkko, jonka
@@ -48,3 +52,10 @@ Minimikeko
 	Yksittäiset toiminnot testataan erikseen, kuten arvon pienennys ja
 	keon alkioiden luku taulukon indeksien avulla. Solmun indeksin
 	palautus testataan keon yhteydessä.
+
+Kartanlukija-apuohjelman testaus
+
+Kartanlukijaa testataan samoilla kolmella testillä kuin Astar-algoritmiakin,
+mutta verkot on talletettu kartanlukijaTesti(1 - 4).txt -tiedostoihin. Näiden
+lisäksi on yksi testi, jossa tiedostosta luetaan kaikilla numeroarvoilla
+varustettu kartta.

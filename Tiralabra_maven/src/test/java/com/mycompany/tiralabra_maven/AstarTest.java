@@ -133,6 +133,7 @@ public class AstarTest {
         assertEquals("x2y0", "x" + solmu.getX() + 'y' + solmu.getY()); //aloitussolmu (A)
     }
     
+    @Test
     public void lyhinPolku2() {
     
         /*    
@@ -175,6 +176,7 @@ public class AstarTest {
         assertEquals("x0y1", "x" + solmu.getX() + 'y' + solmu.getY()); //aloitussolmu (A)
     }
     
+    @Test
     public void lyhinPolku3() {
     
         /*    
@@ -182,8 +184,8 @@ public class AstarTest {
         000B       000B
         ###0       ###.
         00#0       00#.
-        A0#0       A.#.
-        0000       0...
+        A0#0       A0#.
+        0000       ....
         */
         
         //Luo verkko
@@ -231,7 +233,7 @@ public class AstarTest {
         solmu = solmu.getPolku();
         assertEquals("x1y4", "x" + solmu.getX() + 'y' + solmu.getY()); 
         solmu = solmu.getPolku();
-        assertEquals("x1y3", "x" + solmu.getX() + 'y' + solmu.getY()); 
+        assertEquals("x0y4", "x" + solmu.getX() + 'y' + solmu.getY()); 
         solmu = solmu.getPolku();
         assertEquals("x0y3", "x" + solmu.getX() + 'y' + solmu.getY()); //aloitussolmu (A)
     }

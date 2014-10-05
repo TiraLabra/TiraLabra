@@ -1,43 +1,139 @@
 package com.mycompany.tiralabra_maven;
 
+import java.io.File;
+
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws Exception
     {
-        final int SEINAPAINO = -1;
+        long aikaAlussa = System.currentTimeMillis();
         
-        //Esitetään verkko vieruslistana
+        File kartta = new File("suorituskykykartta5.txt");
+        Kartanlukija kartanlukija = new Kartanlukija();
+        Verkko verkko = kartanlukija.luoVerkko(kartta);
         
-        /*
-        000
-        08#
-        000
-        */
+        Astar astar = new Astar(verkko, kartanlukija.getLahtosolmu(), kartanlukija.getKohdesolmu());
         
-        //Luo verkko
-        Verkko verkko2 = new Verkko();
+        //tulostaPolku(astar.haeLyhinPolku());
         
-        //Luo solmut
-        verkko2.lisaaSolmu( new Solmu(0, 0, 0) );
-        verkko2.lisaaSolmu( new Solmu(1, 0, 0) );
-        verkko2.lisaaSolmu( new Solmu(2, 0, 0) );
-        verkko2.lisaaSolmu( new Solmu(0, 1, 0) );
-        verkko2.lisaaSolmu( new Solmu(1, 1, 8) );
-        verkko2.lisaaSolmu( new Solmu(2, 1, SEINAPAINO) );
-        verkko2.lisaaSolmu( new Solmu(0, 2, 0) );
-        verkko2.lisaaSolmu( new Solmu(1, 2, 0) );
-        verkko2.lisaaSolmu( new Solmu(2, 2, 0) );
+        Solmu kohdesolmu = astar.haeLyhinPolku();
+
+        tulostaVerkko(verkko, kohdesolmu);
         
-        verkko2.luoVieruslistat();
-       
-        Astar astar = new Astar(verkko2, verkko2.getSolmu(2, 0), verkko2.getSolmu(2, 2));
-        tulostaPolku(astar.haeLyhinPolku());
+        long aikaLopussa = System.currentTimeMillis();  
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+        
     }
     
+    /**
+     * Tulostaa polun koordinaatit tekstimuotoisena esityksenä 
+     * 
+     * Aikavaativuus: lineaarinen polun solmujen lukumäärän suhteen
+     * 
+     * @param solmu tulostettavan polun pää
+    */
     public static void tulostaPolku(Solmu solmu) {
         while(solmu != null) {
             System.out.println("X" + solmu.getX() + ", Y" + solmu.getY());
             solmu = solmu.getPolku();
+        }
+    }
+    
+    /**
+     * Tulostaa verkon ja polun graafisen esityksen. Algoritmi olettaa, että
+     * verkko on tehty Kartanlukijalla tai vastaavassa järjestyksessä.
+     * 
+     * Aikavaativuus: n^2 - jokaiselle solmulle O(n) tarkistetaan, kuuluuko
+     * solmu kohdesolmuun vievälle polulle O(n)
+     * 
+     * @param verkko     tulostettava verkko
+     * @param kohdesolmu tulostettavan polun pää
+    */
+    public static void tulostaVerkko(Verkko verkko, Solmu kohdesolmu) {
+        //kuljetaan polun päähän, josta löytyy lähtösolmu
+        Solmu lahtosolmu = kohdesolmu;
+        while(lahtosolmu.getPolku() != null) {
+            lahtosolmu = lahtosolmu.getPolku();
+        }
+        
+        //Käännetään pinon järjestys, jotta tuloste näytetään oikein päin
+        LinkitettyLista lista2 = new LinkitettyLista();
+        Listasolmu pinosolmu = verkko.getSolmut().getYlin();
+  
+        while (pinosolmu != null) {
+            lista2.lisaa(pinosolmu.getSisalto());
+            pinosolmu = pinosolmu.getSeuraava();
+        }
+        
+        tulostaSeinaa(verkko.getSolmut().getYlin().getSisalto().getX() + 3);
+        System.out.print("\n#");
+        
+        //käydään kaikki solmut läpi
+        pinosolmu = lista2.getYlin();
+        int rivinumero = 0;
+        
+        while (pinosolmu != null) {
+            Solmu solmu = pinosolmu.getSisalto();
+            
+            //tehdään rivinvaihdot
+            if(solmu.getY() > rivinumero) {
+                System.out.println("#");
+                System.out.print("#");
+                rivinumero++;
+            }
+            
+            if(solmu.getPaino() == -1) {
+                System.out.print("#");
+            } else if(solmu == lahtosolmu) {
+                System.out.print("A");
+            } else if(solmu == kohdesolmu) {
+                System.out.print("B");
+            } else if(onkoPolulla(kohdesolmu, solmu)) {
+                System.out.print(".");
+            } else if(solmu.getPaino() == 0) {
+                System.out.print(" ");
+            } else {
+                System.out.print(solmu.getPaino());
+            }
+
+            pinosolmu = pinosolmu.getSeuraava();
+        }
+        
+        System.out.println("#");
+        tulostaSeinaa(verkko.getSolmut().getYlin().getSisalto().getX() + 3);
+        System.out.println("");
+    }
+    
+    /**
+     * Tarkistaa, onko etsittävä solmu kohdesolmuun johtavalla polulla
+     * 
+     * Pahin tapaus: etsittävä solmu ei ole polulla
+     * Aikavaativuus: lineaarinen polun solmujen lukumäärän suhteen
+     * 
+     * @param kohdesolmu kohdesolmu
+     * @param etsittava  polulta etsittävä solmu
+     * @return onko solmu polulla (true) vaiko eikö (false)
+    */
+    public static boolean onkoPolulla(Solmu kohdesolmu, Solmu etsittava) {
+        while(kohdesolmu != null) {
+            if(kohdesolmu == etsittava) {
+                return true;
+            }
+            kohdesolmu = kohdesolmu.getPolku();
+        }
+        return false;
+    }
+    
+    /**
+     * Tulostaa vaakasuoraa seinää graafiseen esitykseen
+     * 
+     * Aikavaativuus: lineaarinen seinän pituuden suhteen
+     * 
+     * @param pituus kuinka pitkä seinä tulostetaan
+    */
+    public static void tulostaSeinaa(int pituus) {
+        for(int i = 0; i < pituus; i++) {
+            System.out.print("#");
         }
     }
 }

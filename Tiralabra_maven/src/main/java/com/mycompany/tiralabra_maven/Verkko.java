@@ -1,7 +1,5 @@
 package com.mycompany.tiralabra_maven;
 
-import java.util.ArrayList;
-
 /**
  * Verkko sisältää kokoelman solmuja 
  */
