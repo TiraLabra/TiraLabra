@@ -16,6 +16,7 @@ public class Solmu {
     private Solmu vasen;
     private Solmu vanhempi;
     private int korkeus; // AVL-puuta varten
+    private boolean onMusta; //Puna-mustapuuta varten
 
     public Solmu(Object uusiArvo) {
         this.avain = uusiArvo.hashCode();
@@ -66,6 +67,20 @@ public class Solmu {
     public int getKorkeus() {
         return this.korkeus;
     }
+    
+    //Asettaa solmun väriarvoksi musta(onMusta totuusarvo true)
+    public void setMusta() {
+        this.onMusta = true;
+    }
+    
+    //Asettaa solmun väriarvoksi punainen(onMusta totuusarvo false)
+    public void setPunainen() {
+        this.onMusta = false;
+    }
+    
+    public boolean getVari() {
+        return this.onMusta;
+    }
 
     /**
      * Metodi tutkii onko solmulla lapsia.
@@ -74,25 +89,5 @@ public class Solmu {
      */
     public boolean lapseton() {
         return (oikea == null && vasen == null);
-    }
-
-    /**
-     * Palauttaa merkkijonona tietoa solmun rakenteesta.
-     *
-     * @return merkkijono
-     */
-    public String toString() {
-        if (lapseton()) {
-            return "" + arvo;
-        }
-        else if (vasen != null && oikea != null) {
-            return arvo + "{" + vasen + "," + oikea + "}";
-        }
-        else if (vasen != null) {
-            return arvo + "{" + vasen + ",[]}";
-        }
-        else {
-            return arvo + "{[]," + oikea + "}";
-        }
     }
 }

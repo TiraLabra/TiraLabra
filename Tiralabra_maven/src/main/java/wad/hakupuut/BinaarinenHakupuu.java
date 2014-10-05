@@ -193,11 +193,34 @@ public class BinaarinenHakupuu implements HakupuuRajapinta {
     }
 
     /**
+     * Palauttaa puun juuren.
+     * 
+     * @return Palauttaa puun juuren. Jos sitä ei ole, niin null.
+     */
+    public Solmu getJuuri() {
+        return this.juuri;
+    }
+        
+    /**
      * Palauttaa puun merkkijono esityksen esijärjestyksessä.
+     * Merkkijonossa ilmoitetaan solmujen avaimet. Arvojen tarkistus jää käyttäjän vastuulle.
+     * Jos solmulla on lapsia, merkitään vanhempi{vasen_lapsi,oikea_lapsi}.
+     * Jos sisaruksia ei ole, mutta on vanhempi, merkitään olematon sisar [].
      *
      * @return merkkijono
      */
-    public String toString() {
-        return juuri.toString();
+    public String tulosta(Solmu solmu) {
+        if (solmu.lapseton()) {
+            return new Integer(solmu.getAvain()).toString();
+        }
+        else if (solmu.getVasen() != null && solmu.getOikea() != null) {
+            return solmu.getAvain() + "{" + tulosta(solmu.getVasen()) + "," + tulosta(solmu.getOikea()) + "}";
+        }
+        else if (solmu.getVasen() != null) {
+            return solmu.getAvain() + "{" + tulosta(solmu.getVasen()) + ",[]}";
+        }
+        else {
+            return solmu.getAvain() + "{[]," + tulosta(solmu.getOikea()) + "}";
+        }
     }
 }

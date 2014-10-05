@@ -1,6 +1,7 @@
 
 import wad.hakupuut.AVLpuu;
 import wad.hakupuut.BinaarinenHakupuu;
+import wad.hakupuut.PunaMustaPuu;
 import wad.hakupuut.SplayPuu;
 import wad.solmu.Solmu;
 
@@ -8,7 +9,7 @@ import wad.solmu.Solmu;
 public class Main {
     public static void main(String[] args) {
         // BST käsitestausta
-        /*
+        /* 
         BinaarinenHakupuu bst = new BinaarinenHakupuu();
         bst.lisaa(4);
         bst.lisaa(3);
@@ -18,11 +19,12 @@ public class Main {
         bst.lisaa(13);
         bst.lisaa(10);
         bst.lisaa(6);
-        System.out.println(bst);
+        System.out.println(
+        bst.tulosta(bst.getJuuri()));
         bst.poista(4);
         //System.out.println(bst);
         bst.poista(5);
-        //System.out.println(bst); */
+        //System.out.println(bst); */ 
     
         //AVL käsitestausta
         /*
@@ -63,13 +65,23 @@ public class Main {
         System.out.println(avl);*/
 
         //Splay-puu käsitestausta
-        /* ONPA OMITUINEN */
+        /* ONPA OMITUINEN 
         SplayPuu splay = new SplayPuu();
         for(int i = 1; i<7; i++) splay.lisaa(i);
         //splay.hae(1);
         //splay.poista(1);
         splay.poista(4);
-        System.out.println(splay);
+        System.out.println(splay.tulosta(splay.getJuuri())); 
+        // */
         
+        //Puna-mustapuu käsitestaus
+        /*Let's see */
+        PunaMustaPuu rbt = new PunaMustaPuu();
+        for(int i = 1; i<9; i++) rbt.lisaa(i);
+        if(rbt.hae(5).getVari()) System.out.println("Musta");
+        System.out.println(rbt.tulosta(rbt.getJuuri()));
+        rbt.poista(4);
+        System.out.println(rbt.tulosta(rbt.getJuuri()));
+        // */
     }        
 }
