@@ -38,7 +38,7 @@ public class Maapalarekisteri {
 
                 int hValue = xMatka + yMatka;
 
-                labyrintti[j][i].setHValue(hValue);
+                labyrintti[j][i].alustaArvot(hValue);
             }
         }
     }

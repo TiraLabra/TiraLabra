@@ -7,10 +7,10 @@ import labyrintti.logiikka.Maapala;
 import labyrintti.tietorakenteet.LinkitettyLista;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -106,7 +106,7 @@ public class LinkitettyListaTestaajaTest {
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
         Maapala maapala = new Maapala (0,0);
-        maapala.setHValue(8);
+        maapala.alustaArvot(8);
         linkitettyLista.lisaaListaan(maapala);
         
         Maapala maapala1 = (Maapala)linkitettyLista.getPaa();
@@ -120,11 +120,11 @@ public class LinkitettyListaTestaajaTest {
         LinkitettyLista linkitettyLista = new LinkitettyLista();
         
         Maapala maapala = new Maapala (0,0);
-        maapala.setHValue(8);
+        maapala.alustaArvot(8);
         linkitettyLista.lisaaListaan(maapala);
         
         Maapala maapala1 = new Maapala(3,2);
-        maapala1.setHValue(5);
+        maapala1.alustaArvot(5);
         
         linkitettyLista.lisaaListaan(maapala1);
         

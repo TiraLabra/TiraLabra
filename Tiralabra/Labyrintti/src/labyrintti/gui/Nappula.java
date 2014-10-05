@@ -16,10 +16,12 @@ import javax.swing.JButton;
 public class Nappula extends JButton{
     private int x;
     private int y;
+    private boolean avattu;
     
     public Nappula(int x, int y){
         this.x = x;
         this.y = y;
+        this.avattu = false;
     }
     
     /**
@@ -35,5 +37,21 @@ public class Nappula extends JButton{
     */
     public int getYKoordinaatti(){
         return this.y;
+    }
+    
+    /**
+     * Labyrintin etsintä on loppunut ja nappula asetetaan pois päältä.
+     */
+    
+    public void avaa(){
+        this.avattu = true;
+    }
+    
+    /**
+     * @return this.avattu;
+     */
+    
+    public boolean getAvattu(){
+        return this.avattu;
     }
 }

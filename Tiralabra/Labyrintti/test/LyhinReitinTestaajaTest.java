@@ -50,9 +50,10 @@ public class LyhinReitinTestaajaTest {
         maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
-        lyhinReitti.siirraNaapuritAvoimelleListalle(lyhinReitti.etsiMaapalaJollaPieninHArvo());
+        lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapalarekisteri.getAlku());
         
-        assertTrue(lyhinReitti.etsiMaapalaJollaPieninHArvo().getHArvo() == 1);
+        assertTrue(lyhinReitti.etsiMaapalaJollaPieninKokonaisArvo().getHArvo() == 1);
     }
     
     @Test
@@ -62,9 +63,10 @@ public class LyhinReitinTestaajaTest {
         maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
-        lyhinReitti.siirraNaapuritAvoimelleListalle(lyhinReitti.etsiMaapalaJollaPieninHArvo());
+        lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapalarekisteri.getAlku());
         
-        assertTrue(lyhinReitti.etsiMaapalaJollaPieninHArvo().getHArvo() == 3);
+        assertTrue(lyhinReitti.etsiMaapalaJollaPieninKokonaisArvo().getHArvo() == 3);
     }
     
     @Test
@@ -79,14 +81,14 @@ public class LyhinReitinTestaajaTest {
     
     @Test
     public void oikeaArvoKunLoppuLoytyy(){
-        Maapalarekisteri maapalarekisteri = new Maapalarekisteri(4, 1, 1, 3, 3);
+        Maapalarekisteri maapalarekisteri = new Maapalarekisteri(2, 0, 1, 1, 1);
         maapalarekisteri.luoMaapalat();
         maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
-        
-        lyhinReitti.siirraNaapuritAvoimelleListalle(new Maapala (3,2));
-        lyhinReitti.etsiMaapalaJollaPieninHArvo();
+        lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.etsiMaapalaJollaPieninKokonaisArvo();
         
         
         assertTrue(lyhinReitti.onkoLoppuLoytynyt());
@@ -131,7 +133,7 @@ public class LyhinReitinTestaajaTest {
         assertTrue(maapala.onkoAvoimellaListalla());
         assertFalse(maapala.onkoSuljetullaListalla());
         
-        lyhinReitti.siirraMaapalaSuljetulleListalle(maapala);
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapala);
         
         assertTrue(lyhinReitti.getAvoimenListanKoko() == 0);
         assertTrue(maapala.onkoSuljetullaListalla());
@@ -146,7 +148,7 @@ public class LyhinReitinTestaajaTest {
         maapalarekisteri.alustaMaapalat();
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
-        Maapala maapala = lyhinReitti.etsiMaapalaJollaPieninHArvo();
+        Maapala maapala = lyhinReitti.etsiMaapalaJollaPieninKokonaisArvo();
         
         assertTrue(maapala.getHArvo() == maapalarekisteri.getAlku().getHArvo());
         
@@ -161,8 +163,9 @@ public class LyhinReitinTestaajaTest {
         LyhinReitti lyhinReitti = new LyhinReitti(maapalarekisteri);
         
         lyhinReitti.siirraNaapuritAvoimelleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapalarekisteri.getAlku());
         
-        assertTrue(lyhinReitti.etsiMaapalaJollaPieninHArvo().getHArvo() == 0);
+        assertTrue(lyhinReitti.etsiMaapalaJollaPieninKokonaisArvo().getHArvo() == 0);
         
         
     }
@@ -176,7 +179,7 @@ public class LyhinReitinTestaajaTest {
         
         assertTrue(lyhinReitti.getAvoimenListanKoko() == 1);
         
-        lyhinReitti.siirraMaapalaSuljetulleListalle(maapalarekisteri.getAlku());
+        lyhinReitti.siirraMaapalatSuljetulleListalle(maapalarekisteri.getAlku());
         
         assertTrue(lyhinReitti.getAvoimenListanKoko() == 0);
     }

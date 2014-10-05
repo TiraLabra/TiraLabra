@@ -45,7 +45,7 @@ public class MaapalojenTestaajaTest {
     public void maapalallaOikeaHeuristinenArvo() {
         Maapala maapala = new Maapala(1, 1);
         
-        maapala.setHValue(2);
+        maapala.alustaArvot(2);
 
         assertTrue(maapala.getHArvo() == 2);
     }
@@ -53,7 +53,7 @@ public class MaapalojenTestaajaTest {
     @Test
     public void maapalallaOikeaHeuristinenArvo1() {
         Maapala maapala = new Maapala(1, 1);
-        maapala.setHValue(1000);
+        maapala.alustaArvot(1000);
 
         assertTrue(maapala.getHArvo() == 1000);
     }

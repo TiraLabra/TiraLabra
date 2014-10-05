@@ -48,7 +48,6 @@ public class LabyrinthGUI {
         int korkeus = 1000;
 
         frame.setPreferredSize(new Dimension(leveys, korkeus));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         luoKomponentit(frame.getContentPane());
         frame.pack();
@@ -70,13 +69,9 @@ public class LabyrinthGUI {
         JLabel ohjeet = new JLabel("Aseta labyrintin seinät hiiren vasemmalla, sekä aloitus- ja päätepiste hiiren oikealla.");
         JButton kaynnistys = new JButton("Käynnistä");
 
-
         JPanel instructions = new JPanel(new GridLayout(1, 2));
         instructions.add(ohjeet);
         instructions.add(kaynnistys);
-
-
-
 
         for (int i = 0; i < this.koko; i++) {
             for (int j = 0; j < this.koko; j++) {
@@ -94,7 +89,6 @@ public class LabyrinthGUI {
                 nappuloita.add(nappulat[j][i]);
                 nappulat[j][i].addMouseListener(kuuntelija);
             }
-
         }
         container.add(instructions, BorderLayout.NORTH);
         container.add(nappuloita, BorderLayout.CENTER);

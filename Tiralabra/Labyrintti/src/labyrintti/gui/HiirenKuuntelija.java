@@ -13,8 +13,8 @@ import labyrintti.logiikka.Maapala;
 import labyrintti.logiikka.Maapalarekisteri;
 
 /**
- * HiirenKuuntelija eli MouseListener, joka vastaa labyrintissa
- * tehtävistä komennoista.
+ * HiirenKuuntelija eli MouseListener, joka vastaa labyrintissa tehtävistä
+ * komennoista.
  *
  * @author Mikael Parvamo
  */
@@ -45,14 +45,14 @@ public class HiirenKuuntelija implements MouseListener {
         this.loppuja = 0;
         this.lyhinReitti = lyhinReitti;
     }
+
     /**
-     * Tämä metodi kattaa hiiren kuuntelun, kun sitä klikataan kerran.
-     * Metodissa käydään läpi, mikä komponentti kutsun tekee, ja millä hiiren näppäimellä.
+     * Tämä metodi kattaa hiiren kuuntelun, kun sitä klikataan kerran. Metodissa
+     * käydään läpi, mikä komponentti kutsun tekee, ja millä hiiren näppäimellä.
      * Nämä kertovat, mikä toimenpide labyrintille pitää tehdä.
-     * 
+     *
      * @param MouseEvent e
      */
-    
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == kaynnistys) {
@@ -62,33 +62,81 @@ public class HiirenKuuntelija implements MouseListener {
             lyhinReitti.etsiLyhinReitti();
 
             if (lyhinReitti.onkoLoppuLoytynyt()) {
-                for (int i = 0; i < koko; i++) {
-                    for (int j = 0; j < koko; j++) {
-                        nappulat[j][i].setEnabled(false);
-                    }
-                }
-                Maapala maapala = maapalarekisteri.getLoppu();
-
-                while (true) {
-                    nappulat[maapala.getX()][maapala.getY()].setBackground(Color.GREEN);
-                    maapala = maapala.getVanhempi();
-                    if (maapala == null) {
-                        break;
-                    }
-                }
+                naytaReitti();
             } else {
-                for (int i = 0; i < koko; i++) {
-                    for (int j = 0; j < koko; j++) {
-                        nappulat[j][i].setEnabled(false);
-                        if (!maapalat[j][i].onkoSeina()) {
-                            nappulat[j][i].setBackground(Color.LIGHT_GRAY);
-                        }
-                    }
+                eiReittia();
+            }
+        } else if (e.getButton() == MouseEvent.BUTTON1) {
+            seinanAlustus(e);
+
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            alustaAlkuJaLoppu(e);
+        }
+    }
+
+    /**
+     * Metodi tarkistaa, että aloitus- ja lopetuspisteitä on vain yksi.
+     *
+     * @return boolean true/false
+     */
+    public boolean voikoKaynnistaa() {
+        return (alkuja == 1 && loppuja == 1);
+    }
+    
+    /**
+     * Loppu on löytynyt, joten lyhin reitti näytetään värittämällä se vihreäksi
+     * ja kaikki nappulat kytketään pois päältä.
+     */
+
+    public void naytaReitti() {
+        for (int i = 0; i < koko; i++) {
+            for (int j = 0; j < koko; j++) {
+                nappulat[j][i].setEnabled(false);
+                nappulat[j][i].avaa();
+            }
+        }
+        Maapala maapala = maapalarekisteri.getLoppu().getVanhempi();
+
+        while (true) {
+            nappulat[maapala.getX()][maapala.getY()].setBackground(Color.GREEN);
+            maapala = maapala.getVanhempi();
+            if (maapala == null) {
+                break;
+            }
+        }
+    }
+    
+    /**
+     * Labyrintistä ei ole reittiä loppuun, joten palat väritetään harmaiksi
+     * ja kytketään pois päältä.
+     */
+
+    public void eiReittia() {
+        for (int i = 0; i < koko; i++) {
+            for (int j = 0; j < koko; j++) {
+                nappulat[j][i].setEnabled(false);
+                nappulat[j][i].avaa();
+                if (!(maapalat[j][i].onkoSeina() || maapalat[j][i].equals(maapalarekisteri.getAlku()) || maapalat[j][i].equals(maapalarekisteri.getLoppu()))) {
+                    nappulat[j][i].setBackground(Color.LIGHT_GRAY);
                 }
             }
         }
-        if (e.getSource() != kaynnistys && e.getButton() == MouseEvent.BUTTON1) {
-            Nappula nappula = (Nappula) e.getSource();
+    }
+    
+    /**
+     * Nappulaa on painettu hiiren vasemmalla.
+     * Jos nappulan koordinaateissa ei ole aloitus- tai loppupistettä, asetetaan
+     * nappulan koordinaateissa oleva maapala seinäksi.
+     * 
+     * @param MouseEvent e 
+     */
+
+    public void seinanAlustus(MouseEvent e) {
+        Nappula nappula = (Nappula) e.getSource();
+        int x = nappula.getXKoordinaatti();
+        int y = nappula.getYKoordinaatti();
+        if (maapalat[x][y].equals(maapalarekisteri.getAlku()) || maapalat[x][y].equals(maapalarekisteri.getLoppu())) {
+        } else if (!nappula.getAvattu()) {
             if (!maapalat[nappula.getXKoordinaatti()][nappula.getYKoordinaatti()].onkoSeina()) {
                 maapalat[nappula.getXKoordinaatti()][nappula.getYKoordinaatti()].asetaSeinaksi();
                 nappula.setBackground(Color.BLACK);
@@ -96,53 +144,48 @@ public class HiirenKuuntelija implements MouseListener {
                 maapalat[nappula.getXKoordinaatti()][nappula.getYKoordinaatti()].asetaLapaistavaksi();
                 nappula.setBackground(null);
             }
-
         }
-        if (e.getSource() != kaynnistys && e.getButton() == MouseEvent.BUTTON3) {
-            Nappula nappula = (Nappula) e.getSource();
-            if (nappula.getText().isEmpty() && !alkuAsetettu) {
-                maapalarekisteri.setAlkuX(nappula.getXKoordinaatti());
+    }
+    /**
+     * Nappulaa on painettu hiiren oikealla näppäimellä.
+     * Metodi asettaa maapalasta alun tai lopun, riippuen nappulan toteuttamista ehdoista.
+     * 
+     * @param MouseEvent e 
+     */
+
+    public void alustaAlkuJaLoppu(MouseEvent e) {
+        Nappula nappula = (Nappula) e.getSource();
+        int x = nappula.getXKoordinaatti();
+        int y = nappula.getYKoordinaatti();
+
+        if (!nappula.getAvattu()) {
+            if (!(maapalat[x][y].onkoSeina()) && alkuja == 0 && nappula.getBackground() != Color.red) {  // maapala ei ole seinä eikä loppu eikä alkua ole vielä alustettu, joten
+                maapalarekisteri.setAlkuX(nappula.getXKoordinaatti());                                   // alku alustetaan
                 maapalarekisteri.setAlkuY(nappula.getYKoordinaatti());
-                nappula.setText("A");
+                nappula.setBackground(Color.green);
                 alkuja++;
                 this.alkuAsetettu = true;
                 kaynnistys.setEnabled(voikoKaynnistaa());
-            } else if (nappula.getText().equals("A")) {
-                nappula.setText("");
+            } else if (nappula.getBackground() == Color.GREEN) {               //nappula on jo asetettu seinäksi, joten aloituspala alustetaan
+                nappula.setBackground(null);
                 alkuAsetettu = false;
                 alkuja--;
                 kaynnistys.setEnabled(voikoKaynnistaa());
-            } else if (nappula.getText().isEmpty() && alkuAsetettu && !loppuAsetettu) {
-                maapalarekisteri.setLoppuX(nappula.getXKoordinaatti());
-                maapalarekisteri.setLoppuY(nappula.getYKoordinaatti());
-                nappula.setText("L");
+            } else if (!(maapalat[x][y].onkoSeina()) && loppuja == 0 && alkuja == 1) {       //maapala ei ole seinä, aloituspala on jo määritelty ja
+                maapalarekisteri.setLoppuX(nappula.getXKoordinaatti());                      //loppupistettä ei ole vielä määritelty
+                maapalarekisteri.setLoppuY(nappula.getYKoordinaatti());       
+                nappula.setBackground(Color.red);
                 loppuja++;
                 this.loppuAsetettu = true;
                 kaynnistys.setEnabled(voikoKaynnistaa());
-            } else if (nappula.getText().equals("L")) {
-                nappula.setText("");
+            } else if (nappula.getBackground() == Color.red) {                //maapala on jo alustettu lopetuspisteeksi, joten lopetus alustetaan
+                nappula.setBackground(null);
                 loppuAsetettu = false;
                 loppuja--;
                 kaynnistys.setEnabled(voikoKaynnistaa());
             }
-
-
-
-
         }
 
-    }
-    
-    /**
-     * Metodi tarkistaa, että aloitus ja lopetus pisteitä on vain yksi.
-     * @return boolean true/false
-     */
-
-    public boolean voikoKaynnistaa() {
-        if (alkuja == 1 && loppuja == 1) {
-            return true;
-        }
-        return false;
     }
 
     @Override

@@ -56,17 +56,17 @@ public class LinkitettyLista {
             ListaAlkio alkio1 = this.paa;
             int i = 0;
 
-            while (i < koko) {
-                if (alkio1.equals(alkio) && i == 0) {
+            while (i < koko) {                          
+                if (alkio1.equals(alkio) && i == 0) {                 //poistetaan paa
                     this.paa = alkio1.getSeuraava();
                     this.koko--;
                     break;
                 }
-                if (alkio1.getSeuraava()!= null && alkio1.getSeuraava().equals(alkio) && this.viimeinen.equals(alkio)) {
+                if (alkio1.getSeuraava()!= null && alkio1.getSeuraava().equals(alkio) && this.viimeinen.equals(alkio)) {           //poistetaan viimeinen
                     alkio1.setSeuraava(null);
                     this.koko--;
                 }
-                if (alkio1.getSeuraava() != null && alkio1.getSeuraava().equals(alkio)) {
+                if (alkio1.getSeuraava() != null && alkio1.getSeuraava().equals(alkio)) {             //poistetaan "keskeltä" listaa
                     alkio1.setSeuraava(alkio1.getSeuraava().getSeuraava());
                     this.koko--;
                 }
@@ -75,13 +75,12 @@ public class LinkitettyLista {
                 i++;
 
             }
-            ListaAlkio seuraava = null;
+            ListaAlkio seuraava = null;       //alustetaan poistettavan alkion seuraaja
             alkio.setSeuraava(seuraava);
         }
     }
     
     /**
-     * 
      * @return this.koko 
      */
     

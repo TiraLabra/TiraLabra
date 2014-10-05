@@ -19,10 +19,12 @@ public class Maapala extends ListaAlkio {
     private int x;
     private int y;
     private int hArvo;
+    private int liikkumisArvo;
     private boolean seina;
     private boolean avoimellaListalla;
     private boolean suljetullaListalla;
     private Maapala vanhempi;
+    private int kokonaisarvo;
 
     public Maapala(int x, int y) {
         this.x = x;
@@ -32,6 +34,8 @@ public class Maapala extends ListaAlkio {
         this.avoimellaListalla = false;
         this.suljetullaListalla = false;
         this.vanhempi = null;
+        this.kokonaisarvo = 0;
+        this.liikkumisArvo = 10;
     }
 
     /**
@@ -60,8 +64,9 @@ public class Maapala extends ListaAlkio {
      *
      * @param int hValue, joka on maapalalle asetettava uusi arvo.
      */
-    public void setHValue(int hValue) {
+    public void alustaArvot(int hValue) {
         this.hArvo = hValue;
+        this.kokonaisarvo = hValue;
     }
 
     /**
@@ -153,5 +158,21 @@ public class Maapala extends ListaAlkio {
         } else {
             return "" + this.hArvo;
         }
+    }
+    
+    /**
+     * Metodi asettaa maapalalle kokonaisarvon.
+     */
+    
+    public void setKokonaisArvo(){
+        this.kokonaisarvo = this.vanhempi.kokonaisarvo + this.hArvo + this.liikkumisArvo;
+    }
+    
+    /**
+     * @return this.kokonaisarvo
+     */
+    
+    public int getKokonaisArvo(){
+        return this.kokonaisarvo;
     }
 }
