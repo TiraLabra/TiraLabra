@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
+ * Punamustan puun käyttämä solmu
  *
  * @author Markus
  */
@@ -20,7 +21,7 @@ public class PunamustaPuusolmu implements Puusolmu {
         vasen = null;
         oikea = null;
         vanhempi = null;
-        vari = Vari.MUSTA;
+        vari = Vari.PUNAINEN;
     }
 
     /**
@@ -30,7 +31,7 @@ public class PunamustaPuusolmu implements Puusolmu {
      */
     @Override
     public void setOikea(Puusolmu oikea) {
-        this.oikea = (PunamustaPuusolmu)oikea;
+        this.oikea = (PunamustaPuusolmu) oikea;
     }
 
     /**
@@ -40,7 +41,7 @@ public class PunamustaPuusolmu implements Puusolmu {
      */
     @Override
     public void setVasen(Puusolmu vasen) {
-        this.vasen = (PunamustaPuusolmu)vasen;
+        this.vasen = (PunamustaPuusolmu) vasen;
     }
 
     /**
@@ -50,7 +51,7 @@ public class PunamustaPuusolmu implements Puusolmu {
      */
     @Override
     public void setVanhempi(Puusolmu vanhempi) {
-        this.vanhempi = (PunamustaPuusolmu)vanhempi;
+        this.vanhempi = (PunamustaPuusolmu) vanhempi;
     }
 
     /**
@@ -104,15 +105,17 @@ public class PunamustaPuusolmu implements Puusolmu {
     }
 
     /**
-     *  Palauttaa solmun värin.
-     * @return  Vari PUNAINEN tai MUSTA riippuen solmun väristä.
+     * Palauttaa solmun värin.
+     *
+     * @return Vari PUNAINEN tai MUSTA riippuen solmun väristä.
      */
     public Vari getVari() {
         return vari;
     }
 
     /**
-     *  Asettaa solmun värin
+     * Asettaa solmun värin
+     *
      * @param vari Uusi väri
      */
     public void setVari(Vari vari) {
@@ -120,19 +123,24 @@ public class PunamustaPuusolmu implements Puusolmu {
     }
 
     /**
-     *  Palauttaa solmun isovanhemman mikäli sellainen on.
-     * @return  Tämän solmun isovanhempi tai NULL mikäli sellaista ei ole.
+     * Palauttaa solmun isovanhemman mikäli sellainen on.
+     *
+     * @return Tämän solmun isovanhempi tai NULL mikäli sellaista ei ole.
      */
-    public PunamustaPuusolmu getIsovanhempi(){
-        return this.vanhempi == null ? null :this.vanhempi.getVanhempi();
+    public PunamustaPuusolmu getIsovanhempi() {
+        return this.vanhempi == null ? null : this.vanhempi.getVanhempi();
     }
-    
+
     /**
-     *  Palautaa solmun sisaruksen mikäli sellainen on.
-     * @return  Tämän solmun sisarus tai NULL mikäli sellaista ei ole.
+     * Palautaa solmun sisaruksen mikäli sellainen on.
+     *
+     * @return Tämän solmun sisarus tai NULL mikäli sellaista ei ole.
      */
-    public PunamustaPuusolmu getSisarus(){
+    public PunamustaPuusolmu getSisarus() {
         return this.vanhempi == null ? null : this == vanhempi.getVasen() ? vanhempi.getOikea() : vanhempi.getVasen();
     }
-    
+
+    public PunamustaPuusolmu getSeta() {
+        return this.vanhempi == null ? null : this.vanhempi.getSisarus();
+    }
 }

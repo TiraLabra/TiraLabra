@@ -52,22 +52,19 @@ public class PunamustaPuusolmuTest {
         assertEquals(arvo, s.getAvain());
     }
 
-    
     @Test
     public void testGetVari() {
         assertEquals(true, s.getVari() instanceof Vari);
-        assertEquals(Vari.MUSTA, s.getVari());     
+        assertEquals(Vari.PUNAINEN, s.getVari());
     }
 
-   
     @Test
     public void testSetVari() {
-        assertEquals(Vari.MUSTA, s.getVari());     
-        s.setVari(Vari.PUNAINEN);
-        assertEquals(Vari.PUNAINEN, s.getVari());     
+        assertEquals(Vari.PUNAINEN, s.getVari());
+        s.setVari(Vari.MUSTA);
+        assertEquals(Vari.MUSTA, s.getVari());
     }
 
-    
     @Test
     public void testGetIsovanhempi() {
         PunamustaPuusolmu a = new PunamustaPuusolmu(1);
@@ -76,10 +73,9 @@ public class PunamustaPuusolmuTest {
         a.setVanhempi(b);
         assertEquals(b, s.getIsovanhempi());
         assertEquals(null, a.getIsovanhempi());
-        
+
     }
 
-    
     @Test
     public void testGetSisarus() {
         PunamustaPuusolmu a = new PunamustaPuusolmu(1);
@@ -90,6 +86,25 @@ public class PunamustaPuusolmuTest {
         s.setOikea(b);
         assertEquals(a, b.getSisarus());
         assertEquals(b, a.getSisarus());
+    }
+
+    @Test
+    public void testGetSeta() {
+        PunamustaPuusolmu a = new PunamustaPuusolmu(1);
+        PunamustaPuusolmu b = new PunamustaPuusolmu(2);
+        PunamustaPuusolmu c = new PunamustaPuusolmu(3);
+        PunamustaPuusolmu d = new PunamustaPuusolmu(4);
+        a.setVanhempi(s);
+        b.setVanhempi(a);
+        c.setVanhempi(s);
+        d.setVanhempi(c);
+        s.setVasen(a);
+        a.setVasen(b);
+        s.setOikea(c);
+        c.setOikea(d);
+        assertEquals(a, d.getSeta());
+        assertEquals(c, b.getSeta());
+
     }
 
 }

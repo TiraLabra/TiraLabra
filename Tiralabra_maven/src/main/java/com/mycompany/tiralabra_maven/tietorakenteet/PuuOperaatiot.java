@@ -83,7 +83,7 @@ public class PuuOperaatiot {
             return pienin(solmu.getOikea());
         }
         Puusolmu vanhempi = solmu.getVanhempi();
-        while (vanhempi != null && solmu == vanhempi.getOikea()) {
+        while (onOikea(solmu)) {
             solmu = vanhempi;
             vanhempi = solmu.getVanhempi();
         }
@@ -106,7 +106,7 @@ public class PuuOperaatiot {
             return suurin(solmu.getVasen());
         }
         Puusolmu vanhempi = solmu.getVanhempi();
-        while (vanhempi != null && solmu == vanhempi.getVasen()) {
+        while (onVasen(solmu)) {
             solmu = vanhempi;
             vanhempi = solmu.getVanhempi();
         }
@@ -151,5 +151,93 @@ public class PuuOperaatiot {
             System.out.print(juuri.getAvain() + " ");
         }
     }
-
+    
+    /**
+     * Palauttaa solmun isovanhemman mikäli sellainen on.
+     * 
+     * @param solmu Solmu jonka isovanhempi halutaan selvittää
+     * @return Löydetty solmu tai null mikäli parametrina saadulla solmulla ei ole isovanhempaa
+     */
+    public static Puusolmu isovanhempi(Puusolmu solmu){
+        return solmu.getVanhempi() == null ? null : solmu.getVanhempi().getVanhempi();
+    }
+    
+    
+    /**
+     * Vaihtaa solmun ja sen vasemman lapsen paikkaa sekä korjaa näihin liittyvät viittaukset vastaamaan uutta tilannetta.
+     * @param solmu Solmu jonka suhteen vaihto suoritetaan
+     */
+    public static void oikeaKierto(Puusolmu solmu){
+         if(solmu == null ? true : solmu.getVasen() == null){
+            return;
+        }
+        Puusolmu solmu2 = solmu.getVasen();
+        if(solmu.getVanhempi() != null){
+            if(onOikea(solmu)){
+                solmu.getVanhempi().setOikea(solmu2);
+            } else {
+                solmu.getVanhempi().setVasen(solmu2);
+            }
+        }
+        if(solmu2.getOikea() != null){
+            solmu2.getOikea().setVanhempi(solmu);
+        }
+        solmu2.setVanhempi(solmu.getVanhempi());
+        solmu.setVanhempi(solmu2);
+        solmu.setVasen(solmu2.getOikea());
+        solmu2.setOikea(solmu);
+    }
+    
+    
+    /**
+     * Vaihtaa solmun ja sen oikean lapsen paikkaa sekä korjaa näihin liittyvät viittaukset vastaamaan uutta tilannetta.
+     * @param solmu Solmu jonka suhteen vaihto suoritetaan
+     */
+    public static void vasenKierto(Puusolmu solmu){
+        if(solmu == null ? true : solmu.getOikea() == null){
+            return;
+        }
+        Puusolmu solmu2 = solmu.getOikea();
+        if(solmu.getVanhempi() != null){
+            if(onVasen(solmu)){
+                solmu.getVanhempi().setVasen(solmu2);
+            } else {
+                solmu.getVanhempi().setOikea(solmu2);
+            }
+        }
+        if(solmu2.getVasen() != null){
+            solmu2.getVasen().setVanhempi(solmu);
+        }
+        solmu2.setVanhempi(solmu.getVanhempi());
+        solmu.setVanhempi(solmu2);
+        solmu.setOikea(solmu2.getVasen());
+        solmu2.setVasen(solmu);
+    }
+    
+    /**
+     * Kertoo onko parametrin solmu jonkin solmun vasen lapsi
+     * @param solmu Solmu josta jonka suhde vanhempaan halutaan selvittää
+     * @return True mikäli solmu on vasen lapsi jollekin solmulle, muulloin false
+     */
+    public static boolean onVasen(Puusolmu solmu){
+        return solmu == null ? false : solmu.getVanhempi() == null ? false : solmu.getVanhempi().getVasen() == solmu;
+    }
+    
+    /**
+     * Kertoo onko parametrin solmu jonkin solmun oikea lapsi
+     * @param solmu Solmu josta jonka suhde vanhempaan halutaan selvittää
+     * @return True mikäli solmu on oikea lapsi jollekin solmulle, muulloin false
+     */
+    public static boolean onOikea(Puusolmu solmu){
+        return solmu == null ? false : solmu.getVanhempi() == null ? false : solmu.getVanhempi().getOikea() == solmu;
+    }
+    
+    /**
+     *  Palautaa solmun sisaruksen mikäli sellainen on.
+     * @param solmu Solmu jonka sisarus selvitetään
+     * @return  Tämän solmun sisarus tai NULL mikäli sellaista ei ole.
+     */
+    public static Puusolmu sisarus(Puusolmu solmu){
+        return solmu == null ? null : solmu.getVanhempi() == null ? null : solmu == solmu.getVanhempi().getVasen() ? solmu.getVanhempi().getOikea() : solmu.getVanhempi().getVasen();
+    }
 }

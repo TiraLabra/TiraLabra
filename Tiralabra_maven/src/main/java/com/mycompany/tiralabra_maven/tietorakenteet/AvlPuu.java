@@ -58,7 +58,7 @@ public class AvlPuu implements Hakupuu {
                     vanhempi.setOikea(alipuu);
                 }
                 if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()),this.korkeus(vanhempi.getVasen()) + 1));
+                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()), this.korkeus(vanhempi.getOikea())) + 1);
                 }
                 return;
             }
@@ -77,11 +77,11 @@ public class AvlPuu implements Hakupuu {
                     vanhempi.setOikea(alipuu);
                 }
                 if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()),this.korkeus(vanhempi.getVasen()) + 1));
+                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()), this.korkeus(vanhempi.getOikea())) + 1);
                 }
                 return;
             }
-            solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()),this.korkeus(solmu.getVasen()) + 1));
+            solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()), this.korkeus(solmu.getOikea())) + 1);
             solmu = solmu.getVanhempi();
         }
     }
@@ -193,9 +193,9 @@ public class AvlPuu implements Hakupuu {
         AvlPuusolmu solmu = pois.getVanhempi();
         AvlPuusolmu vanhempi, alipuu;
         while (solmu != null) {
-            if (solmu.getVasen().getKorkeus() > (solmu.getOikea().getKorkeus() + 1)) { // Vasen lapsi aiheuttaa epätasapainon
+            if (korkeus(solmu.getVasen()) > (korkeus(solmu.getOikea()) + 1)) { // Vasen lapsi aiheuttaa epätasapainon
                 vanhempi = solmu.getVanhempi();
-                if (solmu.getVasen().getVasen().getKorkeus() > solmu.getVasen().getOikea().getKorkeus()) {
+                if (korkeus(solmu.getVasen().getVasen()) > korkeus(solmu.getVasen().getOikea())) {
                     alipuu = oikeaKierto(solmu);
                 } else {
                     alipuu = vasenOikeaKierto(solmu);
@@ -208,13 +208,13 @@ public class AvlPuu implements Hakupuu {
                     vanhempi.setOikea(alipuu);
                 }
                 if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(vanhempi.getVasen().getKorkeus(), vanhempi.getOikea().getKorkeus()) + 1);
+                    vanhempi.setKorkeus(Math.max(korkeus(vanhempi.getVasen()), korkeus(vanhempi.getOikea())) + 1);
                 }
                 return;
             }
-            if (solmu.getOikea().getKorkeus() > (solmu.getVasen().getKorkeus() + 1)) { // Oikean lapsi aiheuttaa epätasapainon
+            if (korkeus(solmu.getOikea()) > (korkeus(solmu.getVasen()) + 1)) { // Oikean lapsi aiheuttaa epätasapainon
                 vanhempi = solmu.getVanhempi();
-                if (solmu.getOikea().getOikea().getKorkeus() > solmu.getOikea().getVasen().getKorkeus()) {
+                if (korkeus(solmu.getOikea().getOikea()) > korkeus(solmu.getOikea().getVasen())) {
                     alipuu = vasenKierto(solmu);
                 } else {
                     alipuu = oikeaVasenKierto(solmu);
@@ -227,11 +227,11 @@ public class AvlPuu implements Hakupuu {
                     vanhempi.setOikea(alipuu);
                 }
                 if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(vanhempi.getVasen().getKorkeus(), vanhempi.getOikea().getKorkeus()) + 1);
+                    vanhempi.setKorkeus(Math.max(korkeus(vanhempi.getVasen()), korkeus(vanhempi.getOikea())) + 1);
                 }
                 return;
             }
-            solmu.setKorkeus(Math.max(solmu.getVasen().getKorkeus(), solmu.getOikea().getKorkeus()) + 1);
+            solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()), this.korkeus(solmu.getOikea())) + 1);
             solmu = solmu.getVanhempi();
         }
     }
@@ -252,8 +252,8 @@ public class AvlPuu implements Hakupuu {
         if (solmu.getVasen() != null) {
             solmu.getVasen().setVanhempi(solmu);
         }
-        solmu.setKorkeus(Math.max(solmu.getVasen().getKorkeus(), solmu.getOikea().getKorkeus()) + 1);
-        solmu2.setKorkeus(Math.max(solmu2.getVasen().getKorkeus(), solmu2.getOikea().getKorkeus()) + 1);
+        solmu.setKorkeus(Math.max(korkeus(solmu.getVasen()), korkeus(solmu.getOikea())) + 1);
+        solmu2.setKorkeus(Math.max(korkeus(solmu2.getVasen()), korkeus(solmu2.getOikea())) + 1);
         return solmu2;
     }
 
@@ -273,8 +273,8 @@ public class AvlPuu implements Hakupuu {
         if (solmu.getOikea() != null) {
             solmu.getOikea().setVanhempi(solmu);
         }
-        solmu.setKorkeus(Math.max(solmu.getVasen().getKorkeus(), solmu.getOikea().getKorkeus()) + 1);
-        solmu2.setKorkeus(Math.max(solmu2.getVasen().getKorkeus(), solmu2.getOikea().getKorkeus()) + 1);
+        solmu.setKorkeus(Math.max(korkeus(solmu.getVasen()), korkeus(solmu.getOikea())) + 1);
+        solmu2.setKorkeus(Math.max(korkeus(solmu2.getVasen()), korkeus(solmu2.getOikea())) + 1);
         return solmu2;
     }
 
@@ -314,13 +314,31 @@ public class AvlPuu implements Hakupuu {
     public boolean onTyhja() {
         return juuri == null;
     }
-    
-    private int korkeus(AvlPuusolmu solmu){
-        if(solmu == null){
+
+    /**
+     * Palauttaa parametrina saatavan solmun korkeus-muuttujan arvon tai -1 mikäli annetaan null
+     * 
+     * @param solmu Solmu jonka korkeus halutaan tarkistaa
+     * @return -1 mikäli solmu on null, muulloin solmun korkeus-muuttujan arvo
+     */
+    private int korkeus(AvlPuusolmu solmu) {
+        if (solmu == null) {
             return -1;
-        } else{
+        } else {
             return solmu.getKorkeus();
         }
+    }
+
+    public Puusolmu getJuuri() {
+        return this.juuri;
+    }
+
+    public void tyhjenna() {
+        juuri = null;
+    }
+
+    public String getNimi() {
+        return "AVL-Puu";
     }
 
 }

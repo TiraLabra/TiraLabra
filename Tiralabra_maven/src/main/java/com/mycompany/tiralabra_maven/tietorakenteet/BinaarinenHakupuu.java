@@ -153,5 +153,15 @@ public class BinaarinenHakupuu implements Hakupuu {
     public boolean onTyhja() {
         return juuri == null;
     }
+    
+     public void tyhjenna() {
+        juuri = null;
+    }
+
+    public String getNimi() {
+        return "Binäärinen hakupuu";
+    }
+     
+    
 
 }

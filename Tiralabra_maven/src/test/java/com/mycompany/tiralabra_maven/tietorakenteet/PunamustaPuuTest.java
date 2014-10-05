@@ -80,5 +80,4 @@ public class PunamustaPuuTest {
         p.lisaa(0);
         assertEquals(false, p.onTyhja());
     }
-
 }

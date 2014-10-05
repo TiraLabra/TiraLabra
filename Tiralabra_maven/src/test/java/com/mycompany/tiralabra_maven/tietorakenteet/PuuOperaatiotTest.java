@@ -28,45 +28,35 @@ public class PuuOperaatiotTest {
         p3.setVanhempi(p2);
     }
 
-    /**
-     * Test of koko method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testKoko() {
         assertEquals(4, PuuOperaatiot.koko(p));
         assertEquals(1, PuuOperaatiot.koko(p3));
     }
 
-    /**
-     * Test of korkeus method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testKorkeus() {
         assertEquals(4, PuuOperaatiot.korkeus(p));
         assertEquals(1, PuuOperaatiot.korkeus(p3));
     }
 
-    /**
-     * Test of pienin method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testPienin() {
         assertEquals(p1, PuuOperaatiot.pienin(p));
         assertEquals(p2, PuuOperaatiot.pienin(p2));
     }
 
-    /**
-     * Test of suurin method, of class PuuOperaatiot.
-     */
+ 
     @Test
     public void testSuurin() {
         assertEquals(p, PuuOperaatiot.suurin(p));
         assertEquals(p3, PuuOperaatiot.suurin(p1));
     }
 
-    /**
-     * Test of seuraaja method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testSeuraaja() {
         assertEquals(null, PuuOperaatiot.seuraaja(p));
@@ -74,18 +64,16 @@ public class PuuOperaatiotTest {
         assertEquals(p, PuuOperaatiot.seuraaja(p3));
     }
 
-    
     @Test
     public void testEdeltaja() {
         assertEquals(p3, PuuOperaatiot.edeltaja(p));
         assertEquals(null, PuuOperaatiot.edeltaja(p1));
         assertEquals(p1, PuuOperaatiot.edeltaja(p2));
     }
+    
     //Pitää selvittää miten näille saa hyvät testit...
     // toistaiseksi silmämääräinen testaus
-    /**
-     * Test of esijarjestys method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testEsijarjestys() {
         System.out.print("Esi:\n");
@@ -93,9 +81,7 @@ public class PuuOperaatiotTest {
         System.out.println("");
     }
 
-    /**
-     * Test of sisajarjestys method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testSisajarjestys() {
         System.out.print("Sisa:\n");
@@ -103,9 +89,7 @@ public class PuuOperaatiotTest {
         System.out.println("");
     }
 
-    /**
-     * Test of jalkijarjestys method, of class PuuOperaatiot.
-     */
+
     @Test
     public void testJalkijarjestys() {
         System.out.print("Jälki:\n");
@@ -113,4 +97,47 @@ public class PuuOperaatiotTest {
         System.out.println("");
     }
 
+    @Test
+    public void testIsovanhempi() {
+        assertEquals(p1, PuuOperaatiot.isovanhempi(p3));
+        assertEquals(null, PuuOperaatiot.isovanhempi(p1));
+        assertEquals(null, PuuOperaatiot.isovanhempi(p));
+    }
+
+    @Test
+    public void testOnOikea() {
+        assertTrue(PuuOperaatiot.onOikea(p2));
+        assertFalse(PuuOperaatiot.onOikea(p));
+        assertFalse(PuuOperaatiot.onOikea(p1));
+    }
+
+    @Test
+    public void testOnVasen() {
+        assertTrue(PuuOperaatiot.onVasen(p1));
+        assertFalse(PuuOperaatiot.onVasen(p));
+        assertFalse(PuuOperaatiot.onVasen(p2));
+    }
+    
+    @Test
+    public void testVasenKierto(){
+        PuuOperaatiot.vasenKierto(p1);
+        assertTrue(PuuOperaatiot.onVasen(p1));
+        assertTrue(PuuOperaatiot.onVasen(p2));
+        assertTrue(PuuOperaatiot.onOikea(p3));
+        assertEquals(p, p2.getVanhempi());
+        assertEquals(p2, p1.getVanhempi());
+        assertEquals(p3, p2.getOikea());
+    }
+    
+    @Test
+    public void testOikeaKierto(){
+        PuuOperaatiot.oikeaKierto(p);
+        assertTrue(PuuOperaatiot.onOikea(p));
+        assertTrue(PuuOperaatiot.onVasen(p2));
+        assertTrue(PuuOperaatiot.onOikea(p3));
+        assertEquals(p1, p.getVanhempi());
+        assertEquals(p, p2.getVanhempi());
+        assertEquals(p3, p2.getOikea());
+        assertEquals(null, p1.getVasen());
+    }
 }

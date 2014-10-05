@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven.tyokalut;
 
 import com.mycompany.tiralabra_maven.tietorakenteet.Hakupuu;
-import com.mycompany.tiralabra_maven.tietorakenteet.Testipuu;
+import com.mycompany.tiralabra_maven.tietorakenteet.SplayPuu;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class PuunTutkijaTest {
 
     PuunTutkija pt;
-    Hakupuu puu = new Testipuu();
+    Hakupuu puu = new SplayPuu();
 
     public PuunTutkijaTest() {
     }

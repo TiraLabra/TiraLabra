@@ -14,12 +14,12 @@ public class Mittaustulos {
     private final Hakupuu puu;
     private final String nimi;
 
-
-
     /**
-     *  Luo uuden mittastulos olion ja asettaa olio-muuttujille asianmukaiset alkuarvot.
-     * @param nimi  Mittaustulokselle annettava nimi.
-     * @param puu  Hakupuu, jota tulokset koskevat
+     * Luo uuden mittastulos olion ja asettaa olio-muuttujille asianmukaiset
+     * alkuarvot.
+     *
+     * @param nimi Mittaustulokselle annettava nimi.
+     * @param puu Hakupuu, jota tulokset koskevat
      */
     public Mittaustulos(String nimi, Hakupuu puu) {
         this.puu = puu;
@@ -30,22 +30,27 @@ public class Mittaustulos {
         summa = 0;
     }
 
-    public Mittaustulos() {
-        this(null,null);
+    public Mittaustulos(Hakupuu puu) {
+        this(null, puu);
     }
-    
-    
+
+    public Mittaustulos() {
+        this(null, null);
+    }
 
     /**
-     *  Palauttaa mittaustulosten nimen, mikäli niille annetiin sellainen luomisen yhteydessä.
-     * @return  Mittaustulosten nimi
+     * Palauttaa mittaustulosten nimen, mikäli niille annetiin sellainen
+     * luomisen yhteydessä.
+     *
+     * @return Mittaustulosten nimi
      */
     public Hakupuu getPuu() {
         return puu;
     }
 
     /**
-     *  Palauttaa pienimmän mitatun ajan.
+     * Palauttaa pienimmän mitatun ajan.
+     *
      * @return Pienin mitattu aika
      */
     public long getPienin() {
@@ -53,8 +58,9 @@ public class Mittaustulos {
     }
 
     /**
-     *  Palauttaa suurimman mitatun ajan.
-     * @return  Suurin mitattu aika
+     * Palauttaa suurimman mitatun ajan.
+     *
+     * @return Suurin mitattu aika
      */
     public long getSuurin() {
         return suurin;
@@ -95,6 +101,5 @@ public class Mittaustulos {
         //TODO lisää jokin tulostuasu
         return super.toString();
     }
-    
-    
+
 }

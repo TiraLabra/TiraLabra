@@ -84,7 +84,7 @@ public class PuunTutkija {
     public Vertailu lisaysVertailu(String kuvaus, int[] data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
-            Mittaustulos tulos = new Mittaustulos();
+            Mittaustulos tulos = new Mittaustulos(puut[i]);
             for (int j : data) {
                 tulos.lisaaAika(lisaysaika(puut[i], j));
             }
@@ -94,8 +94,9 @@ public class PuunTutkija {
     }
 
     /**
-     *  Laskee ja palauttaa keskimääräisen ajan mittaamisessa tapahtuvan virheen.
-     * @return  Keskimääräinen virhe nanosekunteina.
+     * Laskee ja palauttaa keskimääräisen ajan mittaamisessa tapahtuvan virheen.
+     *
+     * @return Keskimääräinen virhe nanosekunteina.
      */
     public long virhemarginaali() {
         long sum = 0;

@@ -19,76 +19,103 @@ public class PunamustaPuu implements Hakupuu {
         } else {
             //Puu ei ollut tyhjä
             Puusolmu solmu = this.juuri;
-            Puusolmu vanhempi = null;
             //Etsitään oikea paikka uudelle solmulle.
-            while (solmu != null) {
-                vanhempi = solmu;
-                if (avain < solmu.getAvain()) {
-                    solmu = solmu.getVasen();
+            while (true) {
+                if (avain == solmu.getAvain()) {
+                    return;
+                } else if (avain < solmu.getAvain()) {
+                    if (solmu.getVasen() == null) {
+                        solmu.setVasen(uusi);
+                        break;
+                    } else {
+                        solmu = solmu.getVasen();
+                    }
                 } else {
-                    solmu = solmu.getOikea();
+                    if (solmu.getOikea() == null) {
+                        solmu.setOikea(uusi);
+                        break;
+                    } else {
+                        solmu = solmu.getOikea();
+                    }
                 }
             }
-            //Asetetaan uusi solmu oikealle paikalleen ja tasapainotetaan puu.
-            uusi.setVanhempi(vanhempi);
-            if (avain < vanhempi.getAvain()) {
-                vanhempi.setVasen(uusi);
-                tasapainotaLisäys(uusi);
-            } else {
-                vanhempi.setOikea(uusi);
-                tasapainotaLisäys(uusi);
-            }
+            uusi.setVanhempi(solmu);
+        }
+        //Tutkitaan vaiheittain tarvitaanko tasapainotsta
+        lisaaTapaus1(uusi);
+    }
+
+    /**
+     * Lisäys mikäli uusi solmu on juuri
+     *
+     * @param solmu Uusi solmu
+     */
+    private void lisaaTapaus1(PunamustaPuusolmu solmu) {
+        if (solmu.getVanhempi() == null) {
+            solmu.setVari(Vari.MUSTA);
+        } else {
+            lisaaTapaus2(solmu);
         }
     }
 
     /**
-     * Tasapainottaa puun lisäyksen jälkeen tarvittaessa
+     * Lisäys mikäli uuden solmun vanhempi on musta
      *
-     * @param solmu Puuhun lisätty solmu.
+     * @param solmu Uusi solmu
      */
-    private void tasapainotaLisäys(PunamustaPuusolmu solmu) {
-        if (solmu == null) {
+    private void lisaaTapaus2(PunamustaPuusolmu solmu) {
+        if (vari(solmu.getVanhempi()) == Vari.MUSTA) {
             return;
+        } else {
+            lisaaTapaus3(solmu);
         }
-        //Asetetaan solmu punaiseksi
-        solmu.setVari(Vari.PUNAINEN);
+    }
 
-        //Tutkitaan onko 2 punaista peräkkäin
-        if (solmu != juuri && solmu.getVanhempi().getVari() == Vari.PUNAINEN) {
-            //Vaihdetaan värit ja jatketaan ylöspäin puuta
-            if (solmu.getVanhempi().getSisarus() == null ? false : solmu.getVanhempi().getSisarus().getVari() == Vari.PUNAINEN) {
-                solmu.getVanhempi().setVari(Vari.MUSTA);
-                solmu.getVanhempi().getSisarus().setVari(Vari.MUSTA);
-                solmu.getIsovanhempi().setVari(Vari.PUNAINEN);
-                tasapainotaLisäys(solmu.getIsovanhempi());
-                // Tehdään joko oikea tai vasen - oikea kierto tarpeen mukaan.
-            } else if (solmu.getVanhempi() == solmu.getIsovanhempi().getVasen()) {
-                if (solmu == solmu.getVanhempi().getOikea()) {
-                    solmu = solmu.getVanhempi();
-                    vasenKierto(solmu);
-                }
-                solmu.getVanhempi().setVari(Vari.MUSTA);
-                solmu.getIsovanhempi().setVari(Vari.PUNAINEN);
-                solmu = oikeaKierto(solmu.getIsovanhempi());
-                if (solmu.getVanhempi() == null) {
-                    juuri = solmu;
-                }
-                // Tehdään joko vasen tai oikea - vasen kierto tarpeen mukaan.
-            } else if (solmu.getVanhempi() == solmu.getIsovanhempi().getOikea()) {
-                if (solmu == solmu.getVanhempi().getVasen()) {
-                    solmu = solmu.getVanhempi();
-                    oikeaKierto(solmu);
-                }
-                solmu.getVanhempi().setVari(Vari.MUSTA);
-                solmu.getIsovanhempi().setVari(Vari.PUNAINEN);
-                solmu = vasenKierto(solmu.getIsovanhempi());
-                if (solmu.getVanhempi() == null) {
-                    juuri = solmu;
-                }
-            }
+    /**
+     * Lisäys mikäli solmun setä punainen
+     *
+     * @param solmu Uusi solmu
+     */
+    private void lisaaTapaus3(PunamustaPuusolmu solmu) {
+        if (vari(solmu.getSeta()) == Vari.PUNAINEN) {
+            solmu.getVanhempi().setVari(Vari.MUSTA);
+            solmu.getSeta().setVari(Vari.MUSTA);
+            solmu.getIsovanhempi().setVari(Vari.PUNAINEN);
+            lisaaTapaus1(solmu.getIsovanhempi());
+        } else {
+            lisaaTapaus4(solmu);
         }
-        //Asetetaan juuri mustaksi
-        juuri.setVari(Vari.MUSTA);
+    }
+
+    /**
+     * Tehdään valmistelevat kierrot kaksoiskiertoa vaativissa tapauksissa
+     *
+     * @param solmu Uusi solmu
+     */
+    private void lisaaTapaus4(PunamustaPuusolmu solmu) {
+        if (PuuOperaatiot.onOikea(solmu) && PuuOperaatiot.onVasen(solmu.getVanhempi())) {
+            vasenKierto2(solmu.getVanhempi());
+            solmu = solmu.getVasen();
+        } else if (PuuOperaatiot.onVasen(solmu) && PuuOperaatiot.onOikea(solmu.getVanhempi())) {
+            oikeaKierto2(solmu.getVanhempi());
+            solmu = solmu.getOikea();
+        }
+        lisaaTapaus5(solmu);
+    }
+
+    /**
+     * Suoritetaan kierto tasapainon korjaamiseksi
+     *
+     * @param solmu Uusi solmu
+     */
+    private void lisaaTapaus5(PunamustaPuusolmu solmu) {
+        solmu.getVanhempi().setVari(Vari.MUSTA);
+        solmu.getIsovanhempi().setVari(Vari.PUNAINEN);
+        if (PuuOperaatiot.onVasen(solmu) && PuuOperaatiot.onVasen(solmu.getVanhempi())) {
+            oikeaKierto2(solmu.getIsovanhempi());
+        } else if (PuuOperaatiot.onOikea(solmu) && PuuOperaatiot.onOikea(solmu.getVanhempi())) {
+            vasenKierto2(solmu.getIsovanhempi());
+        }
     }
 
     public void lisaaKaikki(int[] avaimet) {
@@ -108,7 +135,7 @@ public class PunamustaPuu implements Hakupuu {
      * @param avain Haettavan solmun avain.
      * @return Avainta vastaava solmu.
      */
-    public PunamustaPuusolmu haeSolmu(int avain) {
+    private PunamustaPuusolmu haeSolmu(int avain) {
         PunamustaPuusolmu solmu = null;
         if (!onTyhja()) {
             solmu = this.juuri;
@@ -134,136 +161,123 @@ public class PunamustaPuu implements Hakupuu {
             solmu = edeltaja;
         }
         //Ny solmulla 0 tai 1 lasta.
-        PunamustaPuusolmu alipuu = solmu.getVasen() == null ? solmu.getOikea() : solmu.getVasen();
+        PunamustaPuusolmu lapsi = solmu.getVasen() == null ? solmu.getOikea() : solmu.getVasen();
 
         //Nostetaan poistettavaa seuraavaa alipuuta, mikäli sellainen on
-        if (alipuu != null) {
-            if (solmu == juuri) {
-                juuri = alipuu;
-            } else if (solmu == solmu.getVanhempi().getVasen()) {
-                solmu.getVanhempi().setVasen(alipuu);
-            } else {
-                solmu.getVanhempi().setOikea(alipuu);
-            }
-            if (solmu.getVari() == Vari.MUSTA) {
-                tasapainotaPoisto(alipuu);
-            }
-            //Alipuuta ei ole
-        } else if (solmu == juuri) {
-            juuri = null;
+        if (vari(solmu) == Vari.MUSTA) {
+            solmu.setVari(vari(lapsi));
+            //Korjataan tasapainoehto
+            poistaTapaus1(solmu);
+        }
+        //Korvataan poistettava lapsella
+        korvaaSolmu(solmu, lapsi);
+    }
+
+    /**
+     * Tapaus jossa poistettava on juuri
+     *
+     * @param solmu Poistettava solmu
+     */
+    private void poistaTapaus1(PunamustaPuusolmu solmu) {
+        if (solmu.getVanhempi() == null) {
+            return;
         } else {
-            if (solmu.getVari() == Vari.MUSTA) {
-                tasapainotaPoisto(solmu);
-            }
-            //Poistetaan solmu sen vanhemmalta
-            if (solmu.getVanhempi() != null) {
-                if (solmu == solmu.getVanhempi().getOikea()) {
-                    solmu.getVanhempi().setOikea(null);
-                } else {
-                    solmu.getVanhempi().setVasen(null);
-                }
-            }
+            poistaTapaus2(solmu);
         }
     }
 
     /**
-     * Tasapainottaa puun poisto-operaation jälkeen.
+     * Tapaus jossa poistettavalla on punainen sisarus
      *
-     * @param solmu Solmu jonka suhteen tasapainotus tehdään
+     * @param solmu Poistettava solmu
      */
-    private void tasapainotaPoisto(PunamustaPuusolmu solmu) {
-        while (solmu != juuri && solmu.getVari() == Vari.MUSTA) {
-            if (solmu == solmu.getVanhempi().getVasen()) {
-                //Solmu on vasen lapsi
-                PunamustaPuusolmu sisarus = solmu.getVanhempi().getOikea();
-                if (sisarus.getVari() == Vari.PUNAINEN) {
-                    sisarus.setVari(Vari.MUSTA);
-                    solmu.getVanhempi().setVari(Vari.PUNAINEN);
-                    vasenKierto(solmu.getVanhempi());
-                    sisarus = solmu.getVanhempi().getOikea();
-                }
-                if (sisarus.getVasen().getVari() == Vari.MUSTA && sisarus.getOikea().getVari() == Vari.MUSTA) {
-                    sisarus.setVari(Vari.PUNAINEN);
-                    solmu = solmu.getVanhempi();
-                } else {
-                    if (sisarus.getOikea().getVari() == Vari.MUSTA) {
-                        sisarus.getVasen().setVari(Vari.MUSTA);
-                        sisarus.setVari(Vari.PUNAINEN);
-                        oikeaKierto(sisarus);
-                        sisarus = solmu.getVanhempi().getOikea();
-                    }
-                    sisarus.setVari(solmu.getVanhempi().getVari());
-                    solmu.getVanhempi().setVari(Vari.MUSTA);
-                    sisarus.getOikea().setVari(Vari.MUSTA);
-                    vasenKierto(solmu.getVanhempi());
-                    solmu = juuri;
-                }
+    private void poistaTapaus2(PunamustaPuusolmu solmu) {
+        if (vari(solmu.getSisarus()) == Vari.PUNAINEN) {
+            solmu.getVanhempi().setVari(Vari.PUNAINEN);
+            solmu.getSisarus().setVari(Vari.MUSTA);
+            if (PuuOperaatiot.onVasen(solmu)) {
+                vasenKierto2(solmu.getVanhempi());
             } else {
-                //Solmu on oikea lapsi
-                PunamustaPuusolmu sisarus = solmu.getVanhempi().getVasen();
-                if (sisarus.getVari() == Vari.PUNAINEN) {
-                    sisarus.setVari(Vari.MUSTA);
-                    solmu.getVanhempi().setVari(Vari.PUNAINEN);
-                    oikeaKierto(solmu.getVanhempi());
-                    sisarus = solmu.getVanhempi().getVasen();
-                }
-                if (sisarus.getVasen().getVari() == Vari.MUSTA && sisarus.getOikea().getVari() == Vari.MUSTA) {
-                    sisarus.setVari(Vari.PUNAINEN);
-                    solmu = solmu.getVanhempi();
-                } else {
-                    if (sisarus.getVasen().getVari() == Vari.MUSTA) {
-                        sisarus.getOikea().setVari(Vari.MUSTA);
-                        sisarus.setVari(Vari.PUNAINEN);
-                        vasenKierto(sisarus);
-                        sisarus = solmu.getVanhempi().getVasen();
-                    }
-                    sisarus.setVari(solmu.getVanhempi().getVari());
-                    solmu.getVanhempi().setVari(Vari.MUSTA);
-                    sisarus.getVasen().setVari(Vari.MUSTA);
-                    oikeaKierto(solmu.getVanhempi());
-                    solmu = juuri;
-                }
+                oikeaKierto2(solmu.getVanhempi());
             }
         }
-        solmu.setVari(Vari.MUSTA);
+        poistaTapaus3(solmu);
     }
 
     /**
-     * Puun tasapainotukseen käytettävä operaatio, joka vaihtaa parametrina
-     * saadun solmun ja sen vasemman lapsen paikan puussa.
+     * Tapaus jossa solmun vanhempi, sisar ja sisarusken lapset mustia
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään.
-     * @return Alkuperäisen solmun paikalle siirretty solmu.
+     * @param solmu Poistettava solmu
      */
-    private PunamustaPuusolmu oikeaKierto(PunamustaPuusolmu solmu) {
-        PunamustaPuusolmu solmu2 = solmu.getVasen();
-        solmu2.setVanhempi(solmu.getVanhempi());
-        solmu.setVanhempi(solmu2);
-        solmu.setVasen(solmu2.getOikea());
-        solmu2.setOikea(solmu);
-        if (solmu.getVasen() != null) {
-            solmu.getVasen().setVanhempi(solmu);
+    private void poistaTapaus3(PunamustaPuusolmu solmu) {
+        if (vari(solmu.getVanhempi()) == Vari.MUSTA
+                && vari(solmu.getSisarus()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getVasen()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getOikea()) == Vari.MUSTA) {
+            solmu.getSisarus().setVari(Vari.PUNAINEN);
+            poistaTapaus1(solmu.getVanhempi());
+        } else {
+            poistaTapaus4(solmu);
         }
-        return solmu2;
     }
 
     /**
-     * Puun tasapainotukseen käytettävä operaatio, joka vaihtaa parametrina
-     * saadun solmun ja sen oikean lapsen paikan puussa.
+     * Tapaus jossa sisarus ja sen lapset mustia mutta vanhempi punainen
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään.
-     * @return Alkuperäisen solmun paikalle siirretty solmu.
+     * @param solmu Poistettava solmu
      */
-    private PunamustaPuusolmu vasenKierto(PunamustaPuusolmu solmu) {
-        PunamustaPuusolmu solmu2 = solmu.getOikea();
-        solmu2.setVanhempi(solmu.getVanhempi());
-        solmu.setVanhempi(solmu2);
-        solmu.setOikea(solmu2.getVasen());
-        solmu2.setVasen(solmu);
-        if (solmu.getOikea() != null) {
-            solmu.getOikea().setVanhempi(solmu);
+    private void poistaTapaus4(PunamustaPuusolmu solmu) {
+        if (vari(solmu.getVanhempi()) == Vari.PUNAINEN
+                && vari(solmu.getSisarus()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getVasen()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getOikea()) == Vari.MUSTA) {
+            solmu.getSisarus().setVari(Vari.PUNAINEN);
+            solmu.getVanhempi().setVari(Vari.MUSTA);
         }
-        return solmu2;
+        poistaTapaus5(solmu);
+    }
+
+    /**
+     * Tapaus jossa solmun sisarus on musta ja sisaruksella on punainen lapsi
+     * solmun puolella
+     *
+     * @param solmu Poistettava solmu
+     */
+    private void poistaTapaus5(PunamustaPuusolmu solmu) {
+        if (PuuOperaatiot.onVasen(solmu)
+                && vari(solmu.getSisarus()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getVasen()) == Vari.PUNAINEN
+                && vari(solmu.getSisarus().getOikea()) == Vari.MUSTA) {
+            solmu.getSisarus().setVari(Vari.PUNAINEN);
+            solmu.getSisarus().getVasen().setVari(Vari.MUSTA);
+            oikeaKierto2(solmu.getSisarus());
+        } else if (PuuOperaatiot.onOikea(solmu)
+                && vari(solmu.getSisarus()) == Vari.MUSTA
+                && vari(solmu.getSisarus().getOikea()) == Vari.PUNAINEN
+                && vari(solmu.getSisarus().getVasen()) == Vari.MUSTA) {
+            solmu.getSisarus().setVari(Vari.PUNAINEN);
+            solmu.getSisarus().getOikea().setVari(Vari.MUSTA);
+            vasenKierto2(solmu.getSisarus());
+        }
+        poistaTapaus6(solmu);
+    }
+
+    /**
+     * Tapaus jossa Solmun sisarus on musta mutta sen lapsi joka on solmusta
+     * vastakkaisella puolella on punainen.
+     *
+     * @param solmu Poistettava solmu
+     */
+    private void poistaTapaus6(PunamustaPuusolmu solmu) {
+        solmu.getSisarus().setVari(vari(solmu.getVanhempi()));
+        solmu.getVanhempi().setVari(Vari.MUSTA);
+        if (PuuOperaatiot.onVasen(solmu)) {
+            solmu.getSisarus().getOikea().setVari(Vari.MUSTA);
+            vasenKierto2(solmu.getVanhempi());
+        } else {
+            solmu.getSisarus().getVasen().setVari(Vari.MUSTA);
+            oikeaKierto2(solmu.getVanhempi());
+        }
     }
 
     /**
@@ -274,4 +288,86 @@ public class PunamustaPuu implements Hakupuu {
     public boolean onTyhja() {
         return juuri == null;
     }
+
+    /**
+     * Palauttaa puun juuren
+     *
+     * @return Puun juuri-solmu
+     */
+    public Puusolmu getJuuri() {
+        return this.juuri;
+    }
+
+    public void tyhjenna() {
+        juuri = null;
+    }
+
+    public String getNimi() {
+        return "Punamusta puu";
+    }
+
+    //APUTOIMINNOT
+    /**
+     * Parannettu kiertotoiminto vasempaan joka myös vaihtaa juuren
+     *
+     * @param solmu Solmu jonka suhteen kierto tehdään
+     */
+    private void vasenKierto2(PunamustaPuusolmu solmu) {
+        PunamustaPuusolmu oikea = solmu.getOikea();
+        korvaaSolmu(solmu, oikea);
+        solmu.setOikea(oikea.getVasen());
+        if (oikea.getVasen() != null) {
+            oikea.getVasen().setVanhempi(solmu);
+        }
+        oikea.setVasen(solmu);
+        solmu.setVanhempi(oikea);
+    }
+
+    /**
+     * Parannettu kiertotoiminto oikeaan joka myös vaihtaa juuren
+     *
+     * @param solmu Solmu jonka suhteen kierto tehdään
+     */
+    private void oikeaKierto2(PunamustaPuusolmu solmu) {
+        PunamustaPuusolmu vasen = solmu.getVasen();
+        korvaaSolmu(solmu, vasen);
+        solmu.setVasen(vasen.getOikea());
+        if (vasen.getOikea() != null) {
+            vasen.getOikea().setVanhempi(solmu);
+        }
+        vasen.setOikea(solmu);
+        solmu.setVanhempi(vasen);
+    }
+
+    /**
+     * Apumetodi jokavaihtaa viitaukset solmuihin päittäin
+     *
+     * @param vanha
+     * @param uusi
+     */
+    private void korvaaSolmu(PunamustaPuusolmu vanha, PunamustaPuusolmu uusi) {
+        if (vanha.getVanhempi() == null) {
+            juuri = uusi;
+        } else {
+            if (PuuOperaatiot.onVasen(vanha)) {
+                vanha.getVanhempi().setVasen(uusi);
+            } else {
+                vanha.getVanhempi().setOikea(uusi);
+            }
+        }
+        if (uusi != null) {
+            uusi.setVanhempi(vanha.getVanhempi());
+        }
+    }
+
+    /**
+     * Apumetodi joka tarkistaa solmun värin
+     *
+     * @param solmu Tarkistettavasolmu
+     * @return Solmun väri tai Vari.MUSTA jossolmu null
+     */
+    private Vari vari(PunamustaPuusolmu solmu) {
+        return solmu == null ? Vari.MUSTA : solmu.getVari();
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven.tyokalut;
 
+import com.mycompany.tiralabra_maven.tietorakenteet.PuuOperaatiot;
+
 /**
  * Luokka jonka tarkoitus on helpottaa mittaustulosten käsittelyä.
  *
@@ -27,8 +29,13 @@ public class Vertailu {
         int i = 1;
         tuloste += kuvaus + "\n";
         for (Mittaustulos tulos : tulokset) {
-
-            tuloste += "Puu nro." + i + "\tKeskimääräinen aika: " + tulos.getKeskiarvo() + " ns\tPienin aika: " + tulos.getPienin() + " ns\tSuurin aika: " + tulos.getSuurin() + " ns\n";
+            String puu = tulos.getPuu() != null ? tulos.getPuu().getNimi() : i + "";
+            String korkeus = tulos.getPuu() != null ? PuuOperaatiot.korkeus(tulos.getPuu().getJuuri()) + "" : " - ";
+            tuloste += puu + "\t"
+                    + "Keskimääräinen aika:" + tulos.getKeskiarvo() + " ns\t"
+                    + "Pienin aika: " + tulos.getPienin() + " ns\t"
+                    + "Suurin aika: " + tulos.getSuurin() + " ns\t"
+                    + "Puun korkeus: " + korkeus + "\n";
             i++;
         }
         return tuloste;
