@@ -64,8 +64,8 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         Solmu lapsi = x.getOikea() == null ? x.getVasen() : x.getOikea();
         Solmu vanhempi = x.getVanhempi();
         korvaa(x, lapsi);
-        if(x.getVari()) {
-            if(lapsi != null && !lapsi.getVari()) {
+        if(x.onMusta()) {
+            if(lapsi != null && !lapsi.onMusta()) {
                 lapsi.setMusta();
             } else {
                 poistoTapaus1(lapsi, vanhempi);
@@ -81,7 +81,7 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     
     private void poistoTapaus2(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
-        if(!sisar.getVari()) {
+        if(!sisar.onMusta()) {
             vanhempi.setPunainen();
             sisar.setMusta();
             if(s == vanhempi.getVasen()) { 
@@ -95,10 +95,10 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     
     private void poistoTapaus3(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
-        if((vanhempi.getVari())
-            && (sisar.getVari())
-            && ( sisar.getVasen() == null || sisar.getVasen().getVari())
-            && ( sisar.getOikea() == null || sisar.getOikea().getVari())) {
+        if((vanhempi.onMusta())
+            && (sisar.onMusta())
+            && ( sisar.getVasen() == null || sisar.getVasen().onMusta())
+            && ( sisar.getOikea() == null || sisar.getOikea().onMusta())) {
             sisar.setPunainen();
             poistoTapaus1(vanhempi, vanhempi.getVanhempi());
         } else {
@@ -108,10 +108,10 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     
     private void poistoTapaus4(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
-        if((!vanhempi.getVari())
-            && (sisar.getVari())
-            && ( sisar.getVasen() == null || sisar.getVasen().getVari())
-            && ( sisar.getOikea() == null || sisar.getOikea().getVari())) {
+        if((!vanhempi.onMusta())
+            && (sisar.onMusta())
+            && ( sisar.getVasen() == null || sisar.getVasen().onMusta())
+            && ( sisar.getOikea() == null || sisar.getOikea().onMusta())) {
             sisar.setPunainen();
             vanhempi.setMusta();
         } else {
@@ -121,16 +121,16 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     
     private void poistoTapaus5(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
-        if(sisar != null && sisar.getVari()) {
+        if(sisar != null && sisar.onMusta()) {
             if((s == vanhempi.getVasen())
-                    && (sisar.getOikea().getVari())
-                    && (!sisar.getVasen().getVari())) {
+                    && (sisar.getOikea().onMusta())
+                    && (!sisar.getVasen().onMusta())) {
                sisar.setPunainen();
                sisar.getVasen().setMusta();
                oikeaKaanto(sisar);
             } else if((s == vanhempi.getOikea())
-                    && (sisar.getVasen().getVari())
-                    && (!sisar.getOikea().getVari())) {
+                    && (sisar.getVasen().onMusta())
+                    && (!sisar.getOikea().onMusta())) {
                sisar.setPunainen();
                sisar.getOikea().setMusta();
                vasenKaanto(sisar); 
@@ -141,7 +141,7 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     
     private void poistoTapaus6(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
-        if(vanhempi.getVari()) sisar.setMusta();
+        if(vanhempi.onMusta()) sisar.setMusta();
         else sisar.setPunainen();
         vanhempi.setMusta();
         
@@ -224,10 +224,10 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
      * @param x lisätty solmu
      */
     private void lisaysKorjaus(Solmu x) {
-        while (x.getVanhempi() != null && !x.getVanhempi().getVari()) {
+        while (x.getVanhempi() != null && !x.getVanhempi().onMusta()) {
             if (x.getVanhempi() == x.getVanhempi().getVanhempi().getVasen()) {
                     Solmu y = x.getVanhempi().getVanhempi().getOikea();
-                    if (!y.getVari()) {
+                    if (y != null && !y.onMusta()) {
                         x.getVanhempi().setMusta();
                         y.setMusta();
                         x.getVanhempi().getVanhempi().setPunainen();
@@ -244,7 +244,7 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
             
             else {
                     Solmu y = x.getVanhempi().getVanhempi().getVasen();
-                    if (y != null && !y.getVari()) {
+                    if (y != null && !y.onMusta()) {
                         x.getVanhempi().setMusta();
                         y.setMusta();
                         x.getVanhempi().getVanhempi().setPunainen();

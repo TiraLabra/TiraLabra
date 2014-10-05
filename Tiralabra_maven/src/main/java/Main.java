@@ -75,10 +75,10 @@ public class Main {
         // */
         
         //Puna-mustapuu käsitestaus
-        /*Let's see */
+        /*Let's see 
         PunaMustaPuu rbt = new PunaMustaPuu();
         for(int i = 1; i<9; i++) rbt.lisaa(i);
-        if(rbt.hae(5).getVari()) System.out.println("Musta");
+        if(rbt.hae(5).onMusta()) System.out.println("Musta");
         System.out.println(rbt.tulosta(rbt.getJuuri()));
         rbt.poista(4);
         System.out.println(rbt.tulosta(rbt.getJuuri()));

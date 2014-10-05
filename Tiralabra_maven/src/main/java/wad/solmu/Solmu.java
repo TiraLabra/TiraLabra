@@ -78,7 +78,7 @@ public class Solmu {
         this.onMusta = false;
     }
     
-    public boolean getVari() {
+    public boolean onMusta() {
         return this.onMusta;
     }
 

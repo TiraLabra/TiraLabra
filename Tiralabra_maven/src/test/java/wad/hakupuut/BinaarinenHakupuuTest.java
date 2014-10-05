@@ -30,7 +30,7 @@ public class BinaarinenHakupuuTest {
     @Test
     public void tyhjaanPuuhunLisäys() {
         puu.lisaa("olen juuri");
-        assertEquals("olen juuri", puu.toString());
+        assertEquals("olen juuri", puu.hae("olen juuri").getArvo());
     }
     
     @Test
@@ -67,7 +67,7 @@ public class BinaarinenHakupuuTest {
     
     @Test
     public void puunTulostus() {
-        assertEquals("4{3{2,[]},5}", bst.toString());
+        assertEquals("4{3{2,[]},5}", bst.tulosta(bst.getJuuri()));
     }
     
     @Test
@@ -78,25 +78,25 @@ public class BinaarinenHakupuuTest {
     @Test
     public void lehdenPoistoOikealtaJaTulostus() {
         bst.poista(5);
-        assertEquals("4{3{2,[]},[]}", bst.toString());
+        assertEquals("4{3{2,[]},[]}", bst.tulosta(bst.getJuuri()));
     }
     
     @Test
     public void lehdenPoistoVasemmaltaJaTulostus() {
         bst.poista(2);
-        assertEquals("4{3,5}", bst.toString());
+        assertEquals("4{3,5}", bst.tulosta(bst.getJuuri()));
     }
     
     @Test
     public void yksilapsisenPoistoJaTulostus() {
         bst.poista(3);
-        assertEquals("4{2,5}", bst.toString());
+        assertEquals("4{2,5}", bst.tulosta(bst.getJuuri()));
     }
     
     @Test
     public void juurenPoistoJaTulostus() {
         bst.poista(4);
-        assertEquals("5{3{2,[]},[]}", bst.toString());
+        assertEquals("5{3{2,[]},[]}", bst.tulosta(bst.getJuuri()));
     }
     
     @Test
@@ -104,6 +104,11 @@ public class BinaarinenHakupuuTest {
         bst.poista(4);
         bst.poista(5);
         bst.poista(2);
-        assertEquals("3", bst.toString());
+        assertEquals("3", bst.tulosta(bst.getJuuri()));
+    }
+    
+    @Test
+    public void juurenHaku() {
+        assertEquals(bst.hae(4), bst.getJuuri());
     }
 }

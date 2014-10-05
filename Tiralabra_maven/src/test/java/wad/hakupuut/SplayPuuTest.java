@@ -20,20 +20,20 @@ public class SplayPuuTest {
     @Test
     public void pieniLisays() {
         for(int i = 1; i<7; i++) puu.lisaa(i);
-        assertEquals("6{5{4{3{2{1,[]},[]},[]},[]},[]}", puu.toString());
+        assertEquals("6{5{4{3{2{1,[]},[]},[]},[]},[]}", puu.tulosta(puu.getJuuri()));
     }
     
     @Test
     public void suurempiLisays() {
         for(int i = 12; i>0; i--) puu.lisaa(i);
-        assertEquals("1{[],2{[],3{[],4{[],5{[],6{[],7{[],8{[],9{[],10{[],11{[],12}}}}}}}}}}}", puu.toString());
+        assertEquals("1{[],2{[],3{[],4{[],5{[],6{[],7{[],8{[],9{[],10{[],11{[],12}}}}}}}}}}}", puu.tulosta(puu.getJuuri()));
     }
     
     @Test
     public void hakuMuuttaaJarjestysta() {
         for(int i = 1; i<7; i++) puu.lisaa(i);
         puu.hae(1);
-        assertEquals("1{[],6{4{2{[],3},5},[]}}", puu.toString());
+        assertEquals("1{[],6{4{2{[],3},5},[]}}", puu.tulosta(puu.getJuuri()));
     }
     
     @Test
@@ -52,14 +52,14 @@ public class SplayPuuTest {
     public void lehdenPoisto() {
         for(int i = 1; i<7; i++) puu.lisaa(i);
         puu.poista(1);
-        assertEquals("6{4{2{[],3},5},[]}", puu.toString());
+        assertEquals("6{4{2{[],3},5},[]}", puu.tulosta(puu.getJuuri()));
     }
     
     @Test
     public void yksilapsisenPoisto() {
         for(int i = 1; i<7; i++) puu.lisaa(i);
         puu.poista(4);
-        assertEquals("5{3{2{1,[]},[]},6}", puu.toString());    
+        assertEquals("5{3{2{1,[]},[]},6}", puu.tulosta(puu.getJuuri()));    
     }
     
     @Test
@@ -67,7 +67,7 @@ public class SplayPuuTest {
         for(int i = 1; i<7; i++) puu.lisaa(i);
         puu.poista(1);
         puu.poista(4);
-        assertEquals("5{2{[],3},6}", puu.toString());
+        assertEquals("5{2{[],3},6}", puu.tulosta(puu.getJuuri()));
     }
     
     @Test
@@ -76,6 +76,6 @@ public class SplayPuuTest {
         for(int i = 1; i<7; i++) puu.hae(i);
         for(int i = 1; i<6; i++) puu.poista(i);
         assertEquals(6, puu.hae(6).getArvo());
-        assertEquals("6", puu.toString());
+        assertEquals("6", puu.tulosta(puu.getJuuri()));
     }
 }

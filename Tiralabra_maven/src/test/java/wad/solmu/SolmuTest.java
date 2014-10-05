@@ -71,4 +71,16 @@ public class SolmuTest {
         solmuA.setKorkeus(2);
         assertEquals(2, solmuA.getKorkeus());
     }
+    
+    @Test
+    public void solmuOnMusta() {
+        solmuA.setMusta();
+        assertTrue(solmuA.onMusta());
+    }
+    
+    @Test
+    public void solmuOnPunainen() {
+        solmuA.setPunainen();
+        assertTrue(solmuA.onMusta());
+    }
 }
