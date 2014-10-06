@@ -1,36 +1,27 @@
 package viidensuora.ai;
 
-import viidensuora.peli.Koordinaatti;
-import viidensuora.peli.Peli;
+import viidensuora.logiikka.Koordinaatti;
 
 /**
- * Rajapinta Tekoälyn etsintämetodeille.
+ * Rajapinta Tekoälyn käyttämille Etsintämetodeille.
  *
  * @author juha
  */
 public interface Etsintametodi {
 
     /**
-     * Aseta uusi pelitilanne. (tarve..?)
-     * 
-     * @param peli 
+     * Etsii parhaan ristin siirron.
+     *
+     * @param syvyys Syvyys, jolta pelipuusta etsitään.
+     * @return Parhaan siirron koordinaatti
      */
-    public void setPeli(Peli peli);
+    public Koordinaatti etsiRistinSiirto(int syvyys);
 
     /**
-     * Etsii parhaan Ristin siirron. ToDo
+     * Etsii parhaan nollan siirron.
      *
-     * @param syvyys
-     * @return Parhaan siirron koordinaatti.
+     * @param syvyys Syvyys, jolta pelipuusta etsitään.
+     * @return Parhaan siirron koordinaatti
      */
-    public Koordinaatti etsiParasRistinSiirto(int syvyys);
-
-    /**
-     * Etsii parhaan Nollan siirron. ToDo
-     *
-     * @param syvyys
-     * @return Parhaan siirron koordinaatti.
-     */
-    public Koordinaatti etsiParasNollanSiirto(int syvyys);
-
+    public Koordinaatti etsiNollanSiirto(int syvyys);
 }

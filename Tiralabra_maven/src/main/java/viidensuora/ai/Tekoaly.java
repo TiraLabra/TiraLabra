@@ -1,83 +1,63 @@
 package viidensuora.ai;
 
-import viidensuora.peli.Koordinaatti;
-import viidensuora.peli.Peli;
+import viidensuora.logiikka.Koordinaatti;
+import viidensuora.logiikka.Ristinolla;
 
 /**
- * Tietokonepelaajan käyttämä tekoäly. Tekoälyllä voi olla erilaisia
- * Etsintämetodeja.
+ * Tietokonepelaajan tekoälyä kuvaava luokka.
  *
  * @author juha
  */
 public class Tekoaly {
 
     /**
-     * Pelitilanne/logiikka.
+     * Pelitilanne.
      */
-    private final Peli peli;
+    private final Ristinolla rn;
 
     /**
-     * Etsintämetodi, jolla paras siirto etsitään.
+     * Metodi, jolla paras siirto etsitään.
      */
-    private Etsintametodi metodi;
+    private final Etsintametodi metodi;
 
     /**
-     * Kuinka syvältä siirtoa maksimissaan etsitään pelipuusta.
+     * Käyttöliittymää/Hiirikuuntelijaa varten?
      */
-    private int syvyys;
-
     private boolean miettii;
 
-    public Tekoaly(Peli peli, Etsintametodi metodi, int syvyys) {
-        this.peli = peli;
-        this.metodi = metodi;
-        this.metodi.setPeli(peli);
-        this.syvyys = syvyys;
+    /**
+     * metodi parametrina?
+     *
+     * @param rn
+     */
+    public Tekoaly(Ristinolla rn) {
+        this.rn = rn;
+        this.metodi = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        //this.metodi = new MinMax(rn, new MunEvaluoija());
         this.miettii = false;
     }
 
-    public void setMetodi(Etsintametodi metodi) {
-        this.metodi = metodi;
-        this.metodi.setPeli(peli);
+    /**
+     * Etsii parhaan siirron käyttäen omaa Etsintämetodiaan.
+     *
+     * @param syvyys syvyys, jolta etsitään
+     * @param ristinVuoro kumman pelaajan siirto
+     * @return parhaan löydetyn siirron koordinaati
+     */
+    public Koordinaatti etsiParasSiirto(int syvyys, boolean ristinVuoro) {
+        miettii = true;
+        Koordinaatti k = ristinVuoro ? metodi.etsiRistinSiirto(syvyys)
+                : metodi.etsiNollanSiirto(syvyys);
+        miettii = false;
+        return k;
     }
 
+    /**
+     * Hiirikuuntelijaa varten??
+     * @return 
+     */
     public boolean miettii() {
         return miettii;
-    }
-
-    /**
-     * Etsii parhaan siirron käyttäen Etsintämetodia. ToDo
-     *
-     * @return Parhaan siirron koordinaatti.
-     */
-    public Koordinaatti etsiParasRistinSiirto() {
-        miettii = true;
-        Koordinaatti k = metodi.etsiParasRistinSiirto(syvyys);
-        miettii = false;
-        return k;
-    }
-
-    /**
-     * Etsii parhaan siirron käyttäen Etsintämetodia. ToDo
-     *
-     * @return
-     */
-    public Koordinaatti etsiParasNollanSiirto() {
-        miettii = true;
-        Koordinaatti k = metodi.etsiParasNollanSiirto(syvyys);
-        miettii = false;
-        return k;
-    }
-
-    /**
-     * Asettaa syvyyden josta siirtoa etsitään pelipuusta.
-     *
-     * @param syvyys Uusi syvyys.
-     */
-    public void setSyvyys(int syvyys) {
-        if (syvyys > 0) {
-            this.syvyys = syvyys;
-        }
     }
 
 }

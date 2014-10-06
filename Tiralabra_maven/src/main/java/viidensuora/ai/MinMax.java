@@ -1,119 +1,136 @@
 package viidensuora.ai;
 
-import viidensuora.peli.Koordinaatti;
-import viidensuora.peli.Nolla;
-import viidensuora.peli.Peli;
-import viidensuora.peli.Pelilauta;
-import viidensuora.peli.Pelimerkki;
-import viidensuora.peli.Risti;
+import viidensuora.logiikka.Koordinaatti;
+import viidensuora.logiikka.Ristinolla;
 
 /**
- * Tekoälylle annettava Etsintämetodi, jota käytetään etsimään paras siirto.
+ * Tekoälyn käyttämä etsintämetodi, jolla etsitään paras seuraava siirto.
+ * Toiminta perustuu MinMax-algoritmiin.
  *
  * @author juha
  */
 public class MinMax implements Etsintametodi {
 
     /**
-     * Pelilogiikka
+     * Pelitilanne.
      */
-    private Peli peli;
+    private final Ristinolla ristinolla;
 
     /**
-     * Pelilauta, josta siirrot etsitään.
+     * Metodi, jota käytetään evaluoimaan keskeneräinen pelitilanne.
      */
-    private Pelilauta pelilauta;
+    private final Evaluointimetodi evaluoija;
 
-    public void setPeli(Peli peli) {
-        this.peli = peli;
-        this.pelilauta = peli.getPelilauta();
+    /**
+     * Apumuuttuja, johon talletetaan parhaan siirron koordinaatti.
+     */
+    private Koordinaatti parasSiirto;
+
+    /**
+     * Kuinka syvältä haku suoritetaan.
+     */
+    private int hakusyvyys;
+
+    public MinMax(Ristinolla ristinolla, Evaluointimetodi e) {
+        this.ristinolla = ristinolla;
+        this.evaluoija = e;
     }
 
     /**
-     * Etsii parhaan Ristin siirron. ToDo
+     * Etsii parhaan Ristin siirron tietyltä syvyydeltä.
      *
-     * @return Parhaan siirron koordinaatti.
+     * @param syvyys Syvyys jolta etsitään
+     * @return Parhaan löydetyn siirron koordinaatti
      */
-    public Koordinaatti etsiParasRistinSiirto(int syvyys) {
-        Siirto paras = maxArvo(syvyys, null);
-        return new Koordinaatti(paras.getI(), paras.getJ());
-    }
-
-    /**
-     * Etsii parhaan Nollan siirron. ToDo
-     *
-     * @return Parhaan siirron koordinaatti.
-     */
-    public Koordinaatti etsiParasNollanSiirto(int syvyys) {
-        Siirto paras = minArvo(syvyys, null);
-        return new Koordinaatti(paras.getI(), paras.getJ());
-    }
-
-    /**
-     * MinMax-algoritmin MAX-osa, joka palauttaa pelipuun suurimman arvon. ToDo
-     *
-     * @param syvyys Kuinka syvältä pelipuusta siirtoa etsitään.
-     * @return Paras arvo joka loydettiin Ristille.
-     */
-    private Siirto maxArvo(int syvyys, Pelimerkki viimeisin) {
-        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
-            return new Siirto(Integer.MIN_VALUE, -1, -1);
-        } else if (pelilauta.taynna()) {
-            return new Siirto(0, -1, -1);
-        } else if (syvyys == 0) {
-            return new Siirto(evaluoiPelitilanne(), -1, -1);
-        }
-        Siirto parasSiirto = new Siirto(Integer.MIN_VALUE, -1, -1);
-        for (int i = 0; i < pelilauta.getKorkeus(); i++) {
-            for (int j = 0; j < pelilauta.getLeveys(); j++) {
-                if (!pelilauta.ruutuVapaa(i, j)) {
-                    continue;
-                }
-                Pelimerkki uusi = new Risti(i, j);
-                pelilauta.lisaaMerkki(uusi);
-                Siirto s = minArvo(syvyys - 1, uusi);                
-                pelilauta.poistaMerkki(i, j);
-                if (s.getArvo() >= parasSiirto.getArvo()) {
-                    parasSiirto = new Siirto(s.getArvo(), i, j);
-                }
-            }
-        }
+    public Koordinaatti etsiRistinSiirto(int syvyys) {
+        parasSiirto = null;
+        hakusyvyys = syvyys;
+        maxArvo(syvyys, null);
         return parasSiirto;
     }
 
     /**
-     * MinMax-algoritmin MIN-osa, joka palauttaa pelipuun pienimmän arvon. ToDo
+     * Etsii parhaan Nollan siirron tietyltä syvyydeltä.
      *
-     * @param Kuinka syvältä pelipuusta siirtoa etsitään.
-     * @return Paras arvo joka loydettiin Nollalle.
+     * @param syvyys Syvyys jolta etsitään
+     * @return Parhaan löydetyn siirron koordinaatti
      */
-    private Siirto minArvo(int syvyys, Pelimerkki viimeisin) {
-        if (viimeisin != null && peli.siirtoVoitti(viimeisin)) {
-            return new Siirto(Integer.MAX_VALUE, -1, -1);
-        } else if (pelilauta.taynna()) {
-            return new Siirto(0, -1, -1);
-        } else if (syvyys == 0) {
-            return new Siirto(evaluoiPelitilanne(), -1, -1);
-        }
-        Siirto parasSiirto = new Siirto(Integer.MAX_VALUE, -1, -1);
-        for (int i = 0; i < pelilauta.getKorkeus(); i++) {
-            for (int j = 0; j < pelilauta.getLeveys(); j++) {
-                if (!pelilauta.ruutuVapaa(i, j)) {
-                    continue;
-                }
-                Pelimerkki uusi = new Nolla(i, j);
-                pelilauta.lisaaMerkki(uusi);
-                Siirto s = maxArvo(syvyys - 1, uusi);
-                pelilauta.poistaMerkki(i, j);
-                if (s.getArvo() <= parasSiirto.getArvo()) {
-                    parasSiirto = new Siirto(s.getArvo(), i, j);
-                }
-            }
-        }
+    public Koordinaatti etsiNollanSiirto(int syvyys) {
+        parasSiirto = null;
+        hakusyvyys = syvyys;
+        minArvo(syvyys, null);
         return parasSiirto;
     }
 
-    private int evaluoiPelitilanne() {
-        return 0;
+    /**
+     * MinMax-algoritmin MAX-osa, jossa etsitään suurinta arvoa Ristille.
+     *
+     * @param syvyys syvyys jolta etsitään
+     * @param siirto edellisen siirron koordinaatti
+     * @return suurin löydetty arvo
+     */
+    private int maxArvo(int syvyys, Koordinaatti siirto) {
+        // Edellinen siirto, eli Nolla voitti.
+        if (siirto != null && ristinolla.siirtoVoitti(siirto.x, siirto.y)) {
+            return Integer.MIN_VALUE;
+        } else if (ristinolla.lautaTaynna()) {
+            return 0;
+        } else if (syvyys == 0) {
+            return evaluoija.evaluoiPelitilanne(ristinolla);
+        }
+
+        int parasArvo = Integer.MIN_VALUE;
+        for (int y = 0; y < ristinolla.korkeus; y++) {
+            for (int x = 0; x < ristinolla.leveys; x++) {
+                if (ristinolla.ruutuOnTyhja(x, y)) {
+                    ristinolla.lisaaRisti(x, y);
+                    int arvo = minArvo(syvyys - 1, new Koordinaatti(x, y));
+                    if (arvo >= parasArvo) {
+                        parasArvo = arvo;
+                        if (syvyys == hakusyvyys) {
+                            parasSiirto = new Koordinaatti(x, y);
+                        }
+                    }
+                    ristinolla.poistaMerkki(x, y);
+                }
+            }
+        }
+        return parasArvo;
+    }
+
+    /**
+     * MinMax-algoritmin MIN-osa, jossa etsitään pienintä arvoa Nollalle.
+     *
+     * @param syvyys syvyys jolta etsitään
+     * @param siirto edellisen siirron koordinaatti
+     * @return suurin löydetty arvo
+     */
+    private int minArvo(int syvyys, Koordinaatti siirto) {
+        // Edellinen siirto, eli Risti voitti.
+        if (siirto != null && ristinolla.siirtoVoitti(siirto.x, siirto.y)) {
+            return Integer.MAX_VALUE;
+        } else if (ristinolla.lautaTaynna()) {
+            return 0;
+        } else if (syvyys == 0) {
+            return evaluoija.evaluoiPelitilanne(ristinolla);
+        }
+
+        int parasArvo = Integer.MAX_VALUE;
+        for (int y = 0; y < ristinolla.korkeus; y++) {
+            for (int x = 0; x < ristinolla.leveys; x++) {
+                if (ristinolla.ruutuOnTyhja(x, y)) {
+                    ristinolla.lisaaNolla(x, y);
+                    int arvo = maxArvo(syvyys - 1, new Koordinaatti(x, y));
+                    if (arvo <= parasArvo) {
+                        parasArvo = arvo;
+                        if (syvyys == hakusyvyys) {
+                            parasSiirto = new Koordinaatti(x, y);
+                        }
+                    }
+                    ristinolla.poistaMerkki(x, y);
+                }
+            }
+        }
+        return parasArvo;
     }
 }
