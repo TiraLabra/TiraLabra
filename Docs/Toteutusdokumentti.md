@@ -17,4 +17,4 @@ Puihin voi säilöä Javan Object olioita, eli käytännössä ihan mitä vain d
 ###Lähteet
 wikipedia.org
 Tietorakenteet ja algoritmit -kurssin materiaali
-
+https://noppa.oulu.fi/noppa/kurssi/811312a/luennot/811312A_opiskelumateriaali_-_perustietorakenteet.pdf
