@@ -81,6 +81,6 @@ public class SolmuTest {
     @Test
     public void solmuOnPunainen() {
         solmuA.setPunainen();
-        assertTrue(solmuA.onMusta());
+        assertFalse(solmuA.onMusta());
     }
 }
