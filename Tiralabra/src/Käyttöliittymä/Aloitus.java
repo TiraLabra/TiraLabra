@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
  
 public class Aloitus extends JPanel implements ActionListener {
@@ -73,8 +74,14 @@ public class Aloitus extends JPanel implements ActionListener {
                 verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
                 reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
                 
-                reitti.Haku();   
-                ikkuna.repaint();
+                if(reitti.Haku()){
+                    ikkuna.repaint();
+                }else{
+                    putsaa();
+                    JOptionPane.showMessageDialog(new JFrame(), "Reittiä ei löytynyt");
+                }   
+                
+                
             }catch(NullPointerException ex){
             }
             

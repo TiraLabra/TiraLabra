@@ -55,4 +55,15 @@ public class SolmuTest {
         
     }
     
+    @Test
+    public void testVertaa() {
+        
+        Solmu testi = new Solmu(500, 500, 20, 255);
+        Solmu testi2 = new Solmu(505, 505, 15, 255);
+        
+        assertEquals(testi.vertaa(testi2), -1);
+        assertEquals(testi2.vertaa(testi), 1);
+        assertEquals(testi2.vertaa(testi2), 0);
+    }
+
 }

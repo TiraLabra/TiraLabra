@@ -55,7 +55,9 @@ public class Solmu {
     }
     
     /**
-     *Vertaa tämän ja annetun solmun Heurestiikaarvoja ja Reittipituuksia.
+     * Vertaa tämän ja annetun solmun Heurestiikaarvoja ja Reittipituuksia.
+     * Jos tämän solmun Heurestiikka ja Reittipituusarvojen yhteisarvo on pienempi
+     * kuin verrattavan solmun niin palautetaan 1 ja jos toisin päin niin palautetaan -1.
      * 
      * @param verrattava verrattava solmu
     */

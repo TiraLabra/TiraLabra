@@ -107,6 +107,7 @@ public class Keko {
     public Solmu poista() {
         
         if (viimeinen == 0) {
+            return null;
         }
         
         if (viimeinen == 1) {
@@ -123,4 +124,8 @@ public class Keko {
         return palautus;
     }
     
+    
+    public Solmu haeEka() {
+        return solmut[0];
+    }
 }

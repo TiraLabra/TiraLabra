@@ -6,7 +6,6 @@
 
 package Algoritmi;
 
-import Algoritmi.Verkko;
 import Käyttöliittymä.Kuva;
 import java.awt.Point;
 import java.io.IOException;
@@ -58,6 +57,7 @@ public class VerkkoTest {
         
         assertEquals(testi.taulukko.length, testi.kuva.getHeight());
         assertEquals(testi.taulukko[0].length, testi.kuva.getWidth());
+        
     }
     
     /**
@@ -68,7 +68,9 @@ public class VerkkoTest {
 
         assertTrue(testi.taulukko[3][3].haeSeina());
         assertFalse(testi.taulukko[400][400].haeSeina());
-
+        
+        assertTrue(testi.taulukko[4][300].haeSeina());
+        assertFalse(testi.taulukko[5][300].haeSeina());
     }
 
     /**
