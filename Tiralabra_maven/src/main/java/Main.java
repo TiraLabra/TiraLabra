@@ -75,7 +75,7 @@ public class Main {
         // */
         
         //Puna-mustapuu käsitestaus
-        /*Let's see 
+        /*Let's see */ 
         PunaMustaPuu rbt = new PunaMustaPuu();
         for(int i = 1; i<9; i++) rbt.lisaa(i);
         if(rbt.hae(5).onMusta()) System.out.println("Musta");
