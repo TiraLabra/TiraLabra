@@ -26,34 +26,32 @@ Kun perusteet on testattu, tehdään polunetsintä kolmesta verkosta:
 ## Tietorakenteiden testaus
 
 ### Verkko
-	Testeissä käydään läpi solmun lisäys ja haku. Vieruslistojen luonti
-	testataan 2D-esimerkkiverkolla.
+Testeissä käydään läpi solmun lisäys ja haku. Vieruslistojen luonti 
+testataan 2D-esimerkkiverkolla.
 
 ### Solmu
-	Solmusta testataan konstruktori, getterit, setterit ja vierussolmun
-	lisäys. Vierussolmun lisäyksen yhteydessä testataan kaaripainojen
-	haku myös siinä erikoistapauksessa, että annettu solmu ei ole tämän
-	solmun vieruslistalla.
+Solmusta testataan konstruktori, getterit, setterit ja vierussolmun lisäys. 
+Vierussolmun lisäyksen yhteydessä testataan kaaripainojen haku myös siinä 
+erikoistapauksessa, että annettu solmu ei ole tämän solmun vieruslistalla.
 
 ### Linkitetty lista
-	Tietorakenteelle ei ole erikseen omia testejä, vaan testaus sisältyy
-	muiden luokkien testeihin. Luokat ja niiden testit tehtiin ensin
-	ArrayList:eillä. ArrayList:it korvattiin linkitetyllä listalla ja
-	PIT kertoo, että jokainen rivi on katettu ja kaikki mutaatiot
-	tapettu.
+Tietorakenteelle ei ole erikseen omia testejä, vaan testaus sisältyy muiden
+luokkien testeihin. Luokat ja niiden testit tehtiin ensin ArrayList:eillä. 
+ArrayList:it korvattiin linkitetyllä listalla ja PIT kertoo, että jokainen 
+rivi on katettu ja kaikki mutaatiot tapettu.
 
 ### Minimikeko
-	Kekoa testataan ensin luomalla pari kekoa, joista on piirretty puu
-	testin kommentteihin. Keosta poistetaan solmuja, joiden pitäisi
-	poistua oikeassa järjestyksessä.
+Kekoa testataan ensin luomalla pari kekoa, joista on piirretty puu testin 
+kommentteihin. Keosta poistetaan solmuja, joiden pitäisi poistua oikeassa 
+järjestyksessä.
 
-	Erikoistapauksiakin testataan, kuten tapaus, jossa heapify käsittelee
-	vain vasenta lasta, sekä erittäin todennäköinen tilanne, jossa samoja
-	arvoja on puussa useampia. 
+Erikoistapauksiakin testataan, kuten tapaus, jossa heapify käsittelee vain 
+vasenta lasta, sekä erittäin todennäköinen tilanne, jossa samoja arvoja on 
+puussa useampia. 
 
-	Yksittäiset toiminnot testataan erikseen, kuten arvon pienennys ja
-	keon alkioiden luku taulukon indeksien avulla. Solmun indeksin
-	palautus testataan keon yhteydessä.
+Yksittäiset toiminnot testataan erikseen, kuten arvon pienennys ja keon 
+alkioiden luku taulukon indeksien avulla. Solmun indeksin palautus testataan
+keon yhteydessä.
 
 ## Kartanlukija-apuohjelman testaus
 

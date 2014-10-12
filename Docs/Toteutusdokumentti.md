@@ -1,4 +1,6 @@
-Yleisrakenne:
+# Toteutus
+
+## Yleisrakenne
 
 Suorituksen aluksi Kartanlukija-apuohjelma luo verkon tekstitiedostosta.
 Luotu verkko annetaan parametrina Astar-oliolle aloitus- ja kohdesolmujen
@@ -12,11 +14,11 @@ sis‰lt‰‰ viitteen edelliseen solmuun aloitussolmuun asti. T‰m‰ polku
 tulostetaan tulostaVerkko-metodilla.
 
 
-Astar-toteutus:
+## Astar-toteutus
 
 Astar-luokan konstruktorille annetaan verkko sek‰ aloitus- ja kohdesolmu.
-Konstruktorissa verkon solmuille lasketaan et‰isyysarvio kohdesolmuun ja
-solmut lis‰t‰‰n l‰pik‰ym‰ttˆmien solmujen minimikekoon. L‰pik‰ym‰ttˆmien
+Konstruktorissa verkon solmuille lasketaan et‰isyysarvio kohdesolmuun.
+Aloitussolmu lis‰t‰‰n l‰pik‰ym‰ttˆmien minimikekoon. L‰pik‰ym‰ttˆmien
 solmujen et‰isyys alkuun on miljoona, joka vastaa ‰‰retˆnt‰ arvoa t‰ss‰
 yhteydess‰.
 
@@ -26,10 +28,11 @@ solmu on k‰sitelty.
 
 Valitun solmun vieruslista k‰yd‰‰n l‰pi ja muutetaan niiden solmujen
 et‰isyysarvioita ja polkua, joihin k‰sittelyss‰ olevasta solmusta 
-p‰‰st‰‰n lyhyemp‰‰ reitti‰ kuin aiemmin oli tiedossa.
+p‰‰st‰‰n lyhyemp‰‰ reitti‰ kuin aiemmin oli tiedossa. Vierussolmut
+lis‰t‰‰n l‰pik‰ym‰ttˆmien minimikekoon, ellei solmua ole jo k‰sitelty.
 
 Algoritmin aikavaativuudeltaan haastavin osa on et‰isyysarvioltaan
-pienimm‰n solmun valitseminen jokaisella solmulla, joka on minimikeon
+pienimm‰n solmun valitseminen jokaisella solmulla, mik‰ on minimikeon
 kera |V| log |V|. Jokaisen solmun kohdalla sen vieruslistat k‰sitell‰‰n,
 joissa vaativinta on minimikeon pienennysoperaatio |E| log |V|. 
 Summattuna aikavaativuudeksi saadaan O((|E| + |V|) log |V|), miss‰ |V| on
@@ -38,7 +41,7 @@ solmujen ja |E| kaarten lukum‰‰r‰.
 L‰hteen‰ on k‰ytetty Tira kev‰t 2014 -materiaalin pseudokoodiesityst‰.
 
 
-Kartanlukija-apuohjelma:
+## Kartanlukija-apuohjelma
 
 Kartanlukijalle annetaan Javan File-oliona tekstitiedostossa sijaitseva
 kartta. Kartta luetaan Javan Scannerilla riveitt‰in, jotka taas luetaan
@@ -54,7 +57,7 @@ l‰pi vieruslistoja tehdess‰. Tekstitiedoston muutto verkoksi on aika-
 vaativuudeltaan lineaarinen kartan koon suhteen.
 
 
-tulostaVerkko-apumetodi:
+## tulostaVerkko-apumetodi
 
 tulostaVerkko-metodi yhdist‰‰ verkon ja polun graafiseksi esitykseksi.
 Verkko tulostuu System.out.print -komennoilla tekstipohjaisena, jossa
@@ -64,65 +67,69 @@ Metodin aikavaativuus on neliˆllinen solmujen lukum‰‰r‰n suhteen, sill‰
 se k‰y jokaisen l‰pi verkon jokaisen solmun ja tarkistaa jokaisen solmun
 kohdalla, kuuluuko solmu lyhimp‰‰n polkuun.
 
+## Tietorakenteet
 
 Ohjelmassa on itsetehtyin‰ linkitetty lista ja minimikeko -tietorakenteet
 sek‰ verkko:
 
-Minimikeko
-	Keon pienin alkio s‰ilytet‰‰n taulukon ensimm‰isess‰ paikassa.
-	Keon koko t‰ytyy tiet‰‰ etuk‰teen, sill‰ tietorakenne k‰ytt‰‰
-	taulukkoa, jonka koko on m‰‰ritelt‰v‰ aluksi.
+### Minimikeko
 
-	Toteutin tietorakenteen muokkaamalla maksimikeon pseudokoodia
-	Tira kev‰t 2014 -materiaalista. Suurimmat erot materiaaliin n‰hden
-	ovat vaihdaKeskenaan-metodi, joka vaihtaa siististi kahden 
-	taulukon paikan solmut kesken‰‰n, sek‰ metodiin liittyv‰ indeksin-
-	pyˆritys. "Indeksinpyˆritys" tarkoittaa sit‰, ett‰ keon alkio
-	tiet‰‰ paikkansa keon taulukossa, jolloin haku voidaan toteuttaa
-	vakioaikaisena.
+Keon pienin alkio s‰ilytet‰‰n taulukon ensimm‰isess‰ paikassa.
+Keon koko t‰ytyy tiet‰‰ etuk‰teen, sill‰ tietorakenne k‰ytt‰‰
+taulukkoa, jonka koko on m‰‰ritelt‰v‰ aluksi.
 
-	Kekoehdon korjausmetodi (heapify), pienimm‰n alkion poisto, alkion
-	lis‰ys ja alkion arvon pienennys ovat aikavaativuudeltaan
-	logaritmisia keon alkioiden lukum‰‰r‰n suhteen. Muut metodit ovat
-	vakioaikaisia. Heapify on toteutettu rekursiivisesti, joten sen
-	tilavaativuus on logaritminen alkioiden lukum‰‰r‰n suhteen, kuten
-	on myˆs pienimm‰n alkion poisto, sill‰ se kutsuu heapify-metodia.
-	Muut metodit ovat vakiotilaisia.
+Toteutin tietorakenteen muokkaamalla maksimikeon pseudokoodia
+Tira kev‰t 2014 -materiaalista. Suurimmat erot materiaaliin n‰hden
+ovat vaihdaKeskenaan-metodi, joka vaihtaa siististi kahden 
+taulukon paikan solmut kesken‰‰n, sek‰ metodiin liittyv‰ indeksin-
+pyˆritys. "Indeksinpyˆritys" tarkoittaa sit‰, ett‰ keon alkio
+tiet‰‰ paikkansa keon taulukossa, jolloin haku voidaan toteuttaa
+vakioaikaisena.
 
-Linkitetty lista
-	Linkitetty lista toimii kuin pino. Kokoa ei tarvitse ennalta 
-	m‰‰ritt‰‰. Tietorakenne koostuu kahdesta luokasta: listasta ja sen
-	alkioista, listasolmuista. Lista tiet‰‰ ensimm‰isen listasolmun ja
-	listasolmu tiet‰‰ sit‰ seuraavan listasolmun.
+Kekoehdon korjausmetodi (heapify), pienimm‰n alkion poisto, alkion
+lis‰ys ja alkion arvon pienennys ovat aikavaativuudeltaan
+logaritmisia keon alkioiden lukum‰‰r‰n suhteen. Muut metodit ovat
+vakioaikaisia. Heapify on toteutettu rekursiivisesti, joten sen
+tilavaativuus on logaritminen alkioiden lukum‰‰r‰n suhteen, kuten
+on myˆs pienimm‰n alkion poisto, sill‰ se kutsuu heapify-metodia.
+Muut metodit ovat vakiotilaisia.
 
-	Toteutin tietorakenteen Tira kev‰t 2014 -materiaalista saamani
-	intuitiivisen k‰sityksen mukaan. Suurin ero materiaaliin n‰hden on
-	koko-metodi, joka laskee listan sis‰lt‰mien alkioiden lukum‰‰r‰n.
+### Linkitetty lista
+
+Linkitetty lista toimii kuin pino. Kokoa ei tarvitse ennalta 
+m‰‰ritt‰‰. Tietorakenne koostuu kahdesta luokasta: listasta ja sen
+alkioista, listasolmuista. Lista tiet‰‰ ensimm‰isen listasolmun ja
+listasolmu tiet‰‰ sit‰ seuraavan listasolmun.
+
+Toteutin tietorakenteen Tira kev‰t 2014 -materiaalista saamani
+intuitiivisen k‰sityksen mukaan. Suurin ero materiaaliin n‰hden on
+koko-metodi, joka laskee listan sis‰lt‰mien alkioiden lukum‰‰r‰n.
 	
-	Aikavaativuudeltaan alkioiden lukum‰‰r‰n suhteen lineaarista koko-
-	metodia lukuunottamatta kaikki metodit ovat vakioiaikaisia.
+Aikavaativuudeltaan alkioiden lukum‰‰r‰n suhteen lineaarista koko-
+metodia lukuunottamatta kaikki metodit ovat vakioiaikaisia.
 
-Verkko
-	Verkko sis‰lt‰‰ kokoelman solmuja. Tietorakenne koostuu kahdesta
-	luokasta: verkosta ja sen alkioista, solmuista. Verkko tiet‰‰
-	kaikki solmut ja solmut tiet‰v‰t kaaret toisiin solmuihin. Verkkoon
-	liittyen solmu tiet‰‰ paikkansa verkon 2D-esityksess‰ (X ja Y 
-	-koordinaatit) ja painonsa. Astariin liittyen solmu tiet‰‰
-	et‰isyyden alkuun, arvion loppuun ja polun, josta lyhin polku
-	saapui. Kun Astar ottaa solmuja k‰sittelyyn, k‰sittelem‰ttˆmi‰
-	solmuja pidet‰‰n minimikeossa, jonka toiminnan nopeuttamiseksi 
-	solmu tiet‰‰ indeksins‰ t‰ss‰ keossa.
+### Verkko
+
+Verkko sis‰lt‰‰ kokoelman solmuja. Tietorakenne koostuu kahdesta
+luokasta: verkosta ja sen alkioista, solmuista. Verkko tiet‰‰
+kaikki solmut ja solmut tiet‰v‰t kaaret toisiin solmuihin. Verkkoon
+liittyen solmu tiet‰‰ paikkansa verkon 2D-esityksess‰ (X ja Y 
+-koordinaatit) ja painonsa. Astariin liittyen solmu tiet‰‰
+et‰isyyden alkuun, arvion loppuun ja polun, josta lyhin polku
+saapui. Kun Astar ottaa solmuja k‰sittelyyn, k‰sittelem‰ttˆmi‰
+solmuja pidet‰‰n minimikeossa, jonka toiminnan nopeuttamiseksi 
+solmu tiet‰‰ indeksins‰ t‰ss‰ keossa.
 	
-	Toteutin tietorakenteen Tira kev‰t 2014 -materiaalin oppien mukaan
-	siten, ett‰ verkko talletetaan vieruslistaesityksen‰. Verkko-
-	luokka sis‰lt‰‰ luoVieruslistat-metodin, joka luo vieruslistat
-	verkon solmuille Manhattan-tyylisesti.
+Toteutin tietorakenteen Tira kev‰t 2014 -materiaalin oppien mukaan
+siten, ett‰ verkko talletetaan vieruslistaesityksen‰. Verkko-
+luokka sis‰lt‰‰ luoVieruslistat-metodin, joka luo vieruslistat
+verkon solmuille Manhattan-tyylisesti.
 
-	Aikavaativuudeltaan vieruslistojen luonti ja solmun haku verkosta
-	ovat lineaarisia. Astar ei k‰yt‰ solmun hakua. Verkon l‰pik‰ynti
-	on aikavaativuudeltaan myˆs lineaarinen, mutta verkkoon ei ole
-	toteutettu t‰h‰n toiminnallisuutta. Solmun lis‰‰minen verkkoon on
-	vakioaikaista, sill‰ verkko k‰ytt‰‰ solmujen tallettamiseen
-	linkitettyn‰ listana toteutettua pinoa.
+Aikavaativuudeltaan vieruslistojen luonti ja solmun haku verkosta
+ovat lineaarisia. Astar ei k‰yt‰ solmun hakua. Verkon l‰pik‰ynti
+on aikavaativuudeltaan myˆs lineaarinen, mutta verkkoon ei ole
+toteutettu t‰h‰n toiminnallisuutta. Solmun lis‰‰minen verkkoon on
+vakioaikaista, sill‰ verkko k‰ytt‰‰ solmujen tallettamiseen
+linkitettyn‰ listana toteutettua pinoa.
 
 

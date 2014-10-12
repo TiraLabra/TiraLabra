@@ -45,8 +45,7 @@ public class Astar {
         /* for kaikille solmuille v ∈ V
                 alkuun[v] = ∞
                 loppuun[v] = arvioi suora etäisyys v ; b
-                polku[v] = NIL [tässä toteutuksessa polku on jo valmiiksi NIL] 
-                [tässä toteutuksessa lisätään solmu läpikäymättömien kekoon] */
+                polku[v] = NIL [tässä toteutuksessa polku on jo valmiiksi NIL] */
         
         Listasolmu pinosolmu = verkko.getSolmut().getYlin();
         
@@ -54,17 +53,18 @@ public class Astar {
             Solmu solmu = pinosolmu.getSisalto();
             
             solmu.setAlkuun(AARETONPAINO);
+            //Dijkstran algoritmi: setLoppuun = 0
+            //solmu.setLoppuun(0);
             solmu.setLoppuun( abs( (solmu.getX() - kohde.getX()) + (solmu.getY() - kohde.getY()) ) );
-            this.lapikaymattomat.lisaa(solmu);
             
             pinosolmu = pinosolmu.getSeuraava();
         }
         
         /*  alkuun[a] = 0
-            S = ∅ */
+            S = ∅ [tässä toteutuksessa S = {aloitus}]*/
         
         aloitus.setAlkuun(0);
-        lapikaymattomat.pienennaArvoa(aloitus);
+        lapikaymattomat.lisaa(aloitus);
     }
     
     /**
@@ -95,6 +95,7 @@ public class Astar {
             }
             
             /* for jokaiselle solmulle v ∈ Adj[u] // kaikille u:n vierussolmuille v [tässä toteutuksessa jotka eivät ole seinää]
+                    [tässä toteutuksessa jos solmua ei ole vielä käsitelty, lisätään se läpikäymättömien kekoon]
                     if alkuun[v] > alkuun[u] + w(u,v)
                         alkuun[v] = alkuun[u]+w(u,v)
                         polku[v] = u */
@@ -104,6 +105,10 @@ public class Astar {
             while (vieruspinosolmu != null) {
                 Solmu vierussolmu = vieruspinosolmu.getSisalto();
                 
+                if(vierussolmu.getAlkuun() == AARETONPAINO) {
+                    this.lapikaymattomat.lisaa(vierussolmu);
+                }
+                
                 if(vierussolmu.getAlkuun() > (pienin.getAlkuun() + pienin.getKaaripaino(vierussolmu)) && pienin.getKaaripaino(vierussolmu) != SEINAPAINO ) { 
                     vierussolmu.setAlkuun((pienin.getAlkuun() + pienin.getKaaripaino(vierussolmu)));
                     lapikaymattomat.pienennaArvoa(vierussolmu);
@@ -112,7 +117,7 @@ public class Astar {
                 vieruspinosolmu = vieruspinosolmu.getSeuraava();
             }
         }
-        
+
         return kohde;
     }
 }

@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class App 
 {
@@ -8,21 +9,23 @@ public class App
     {
         long aikaAlussa = System.currentTimeMillis();
         
-        File kartta = new File("suorituskykykartta5.txt");
+        File kartta = new File("suorituskykykartta1.txt");
         Kartanlukija kartanlukija = new Kartanlukija();
         Verkko verkko = kartanlukija.luoVerkko(kartta);
-        
+  
         Astar astar = new Astar(verkko, kartanlukija.getLahtosolmu(), kartanlukija.getKohdesolmu());
-        
-        //tulostaPolku(astar.haeLyhinPolku());
-        
         Solmu kohdesolmu = astar.haeLyhinPolku();
+
+        /* Leveyssuuntaisen läpikäynnin suoritus
+        bfs2(verkko, kartanlukija.getLahtosolmu());
+        Solmu kohdesolmu = kartanlukija.getKohdesolmu();
+        */
 
         tulostaVerkko(verkko, kohdesolmu);
         
-        long aikaLopussa = System.currentTimeMillis();  
+        long aikaLopussa = System.currentTimeMillis();
         System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-        
+
     }
     
     /**
@@ -135,5 +138,65 @@ public class App
         for(int i = 0; i < pituus; i++) {
             System.out.print("#");
         }
+    }
+    
+    /**
+     * Leveyssuuntainen läpikäynti (vain suorituskykyvertailua varten)
+     * Tira-moniste kevät 2014 s.460
+    */
+    public static void bfs2(Verkko verkko, Solmu aloitussolmu) {
+        
+        /*
+        for jokaiselle solmulle u ∈ V
+            color[u] = white [merk. alkuun = 0]
+            distance[u] = ∞ [ei kinosta]
+            tree[u] = NIL [valmiiksi NIL]
+        */
+        
+        Listasolmu pinosolmu = verkko.getSolmut().getYlin();
+        while (pinosolmu != null) {
+            Solmu solmu = pinosolmu.getSisalto();
+            solmu.setAlkuun(0);
+            pinosolmu = pinosolmu.getSeuraava();
+        }
+        
+        //color[s] = black
+        aloitussolmu.setAlkuun(1); 
+        
+        /*
+        distance[s] = 0 [ei kinosta]
+        enqueue(Q,s)
+        */
+        LinkedList jono = new LinkedList();
+        jono.add(aloitussolmu);
+        int solmuja = 0;
+        //while ( not empty(Q) )
+        while(jono.size()>0) {
+            //u = dequeue(Q)
+            Solmu u = (Solmu) jono.pop();
+            solmuja++;
+            /*
+            for jokaiselle solmulle v ∈ vierus[u]
+                if color[v]==white
+                    color[v] = black
+                    distance[v] = distance[u]+1
+                    tree[v] = u
+                    enqueue(Q,v)
+            */
+            
+            Listasolmu vieruspinosolmu = u.getVierus().getYlin();
+            while (vieruspinosolmu != null) {
+                Solmu vierussolmu = vieruspinosolmu.getSisalto();
+                
+                if(vierussolmu.getAlkuun() == 0) {
+                    vierussolmu.setAlkuun(1);
+                    vierussolmu.setPolku(u);
+                    jono.add(vierussolmu);  
+                }
+
+                vieruspinosolmu = vieruspinosolmu.getSeuraava();
+            }
+        }
+        System.out.println("Solmuja: " + solmuja);
     }
 }
