@@ -22,8 +22,8 @@ public class LinkitettyLista {
     }
 
     /**
-     * Metodi lisaa alkion linkitettyyn listaan.
-     * @param ListaAlkio alkio, lisättävä alkio.
+     * Metodi lisää alkion linkitettyyn listaan.
+     * @param ListaAlkio alkio
      * 
      */
     
@@ -33,12 +33,7 @@ public class LinkitettyLista {
             this.viimeinen = alkio;
             this.koko++;
         } else {
-            ListaAlkio alkio1 = paa;
-
-            while (alkio1.getSeuraava() != null) {
-                alkio1 = alkio1.getSeuraava();
-            }
-            alkio1.setSeuraava(alkio);
+            this.viimeinen.setSeuraava(alkio);
             this.viimeinen = alkio;
             this.koko++;
         }
@@ -46,7 +41,7 @@ public class LinkitettyLista {
     
     /**
      * Metodi poistaa parametrina saadun alkion listasta.
-     * @param ListaAlkio alkio, lisättävä alkio.
+     * @param ListaAlkio alkio
      */ 
 
     public void poistaListasta(ListaAlkio alkio) {
@@ -65,10 +60,12 @@ public class LinkitettyLista {
                 if (alkio1.getSeuraava()!= null && alkio1.getSeuraava().equals(alkio) && this.viimeinen.equals(alkio)) {           //poistetaan viimeinen
                     alkio1.setSeuraava(null);
                     this.koko--;
+                    break;
                 }
                 if (alkio1.getSeuraava() != null && alkio1.getSeuraava().equals(alkio)) {             //poistetaan "keskeltä" listaa
                     alkio1.setSeuraava(alkio1.getSeuraava().getSeuraava());
                     this.koko--;
+                    break;
                 }
                 alkio1 = alkio1.getSeuraava();
 

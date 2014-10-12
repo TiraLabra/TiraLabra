@@ -21,12 +21,9 @@ public class LyhinReitti {
     private Maapalarekisteri maapalaRekisteri;
     private int alkuX;
     private int alkuY;
-    private int loppuX;
-    private int loppuY;
-    private int avoimenListanKoko;
     private boolean loppuLoytynyt;
     private Maapala[][] labyrintti;
-    private LinkitettyLista avoinLista1;
+    private LinkitettyLista avoinLista;
     private LinkitettyLista suljettuLista1;
 
     public LyhinReitti(Maapalarekisteri maapalaRekisteri) {
@@ -34,14 +31,12 @@ public class LyhinReitti {
         this.maapalaRekisteri = maapalaRekisteri;
         this.alkuX = maapalaRekisteri.getAlkuX();
         this.alkuY = maapalaRekisteri.getAlkuY();
-        this.loppuX = maapalaRekisteri.getLoppuX();
-        this.loppuY = maapalaRekisteri.getLoppuY();
         this.labyrintti = maapalaRekisteri.getLabyrintti();
-        this.avoinLista1 = new LinkitettyLista();
+        this.avoinLista = new LinkitettyLista();
         this.suljettuLista1 = new LinkitettyLista();
-        this.avoinLista1.lisaaListaan(this.labyrintti[alkuX][alkuY]);
+        this.avoinLista.lisaaListaan(this.labyrintti[alkuX][alkuY]);
         this.labyrintti[alkuX][alkuY].siirraAvoimelleListalle();
-        this.avoimenListanKoko = 1;
+
     }
 
     /**
@@ -71,45 +66,52 @@ public class LyhinReitti {
             this.siirraNaapuriAvoimelleListalle(x, y + 1, maapala);
         }
     }
+    
+    /**
+     * Metodi siirtää parametrina saadussa koordinaatissa sijaitsevan maapalan
+     * avoimelle listalle ja asettaa prametrina saandun maapalan sen vanhemmaksi.
+     * 
+     * @param x
+     * @param y
+     * @param maapala 
+     */
 
     private void siirraNaapuriAvoimelleListalle(int x, int y, Maapala maapala) {
         if (!this.labyrintti[x][y].onkoAvoimellaListalla() && !this.labyrintti[x][y].onkoSuljetullaListalla() && !this.labyrintti[x][y].onkoSeina()) {
-            avoinLista1.lisaaListaan(this.labyrintti[x][y]);
+            avoinLista.lisaaListaan(this.labyrintti[x][y]);
             this.labyrintti[x][y].siirraAvoimelleListalle();
             this.labyrintti[x][y].setVanhempi(maapala);
             this.labyrintti[x][y].setKokonaisArvo();
-            this.avoimenListanKoko++;
         }
     }
 
     /**
-     * Metodi siirtaa parametrina saadun maapalan avoimelta listalta
+     * Metodi siirtää parametrina saadun maapalan avoimelta listalta
      * suljettuLista:lle, sekä asettaa oikeat arvot maapalan muuttujille ja
      * pienentää avoinLista:n kokoa.
      */
-    public void siirraMaapalatSuljetulleListalle(Maapala poistettava) {
+    public void siirraMaapalaSuljetulleListalle(Maapala poistettava) {
         Maapala maapala = poistettava;
 
-        avoinLista1.poistaListasta(maapala);
+        avoinLista.poistaListasta(maapala);
         suljettuLista1.lisaaListaan(maapala);
         this.labyrintti[maapala.getX()][maapala.getY()].siirraSuljetulleListalle();
         this.labyrintti[maapala.getX()][maapala.getY()].poistaAvoimeltaListalta();
-        this.avoimenListanKoko--;
     }
 
     /**
      * Metodi käy läpi avoinLista:n ja etsii sieltä alkion, jolla on pienin
-     * kokonaisarvo eli (liikkumiskustannus + heuristinenarvo + vanhemman kokonaisarvo). 
+     * kokonaisarvo eli (liikkumiskustannus + heuristinenarvo). 
      * Kun lista on käyty loppuun, palauttaa metodi
      * kyseisen maapalan. Jos jollain listan maapaloista on heuristinen arvo 0,
      * asettaa metodi luokan muuttujalle loppuLoytynyt arvon true.
      */
     public Maapala etsiMaapalaJollaPieninKokonaisArvo() {
-        Maapala pieninMaapala = (Maapala) avoinLista1.getPaa();
-        Maapala maapala = (Maapala) avoinLista1.getPaa();
+        Maapala pieninMaapala = (Maapala) avoinLista.getPaa();
+        Maapala maapala = (Maapala) avoinLista.getPaa();
         int pieninKokArvo = maapala.getKokonaisArvo();
 
-        while (maapala != null && avoimenListanKoko > 0) {
+        while (maapala != null) {
             if (maapala.getKokonaisArvo() < pieninKokArvo) {
                 pieninKokArvo = maapala.getKokonaisArvo();
                 pieninMaapala = maapala;
@@ -117,7 +119,7 @@ public class LyhinReitti {
             maapala = (Maapala) maapala.getSeuraava();
         }
 
-        if (pieninMaapala.getHArvo() == 0) {
+        if (pieninMaapala.getHArvo() == 1) {
             this.loppuLoytynyt = true;
         }
 
@@ -132,13 +134,6 @@ public class LyhinReitti {
     }
 
     /**
-     * @return this.avoimenListanKoko
-     */
-    public int getAvoimenListanKoko() {
-        return this.avoimenListanKoko;
-    }
-
-    /**
      * Metodi suorittaa kierroksen labyrintin lyhimmän reitin etsinnässä. Eli
      * metodi kutsuu metodeja etsiMaapalaJollaPieninKokonaisArvo(),
      * siirraNaapuritAvoimelleListalle(maapala) ja
@@ -147,8 +142,7 @@ public class LyhinReitti {
     public void kierros() {
         Maapala pieninMaapala = etsiMaapalaJollaPieninKokonaisArvo();
         siirraNaapuritAvoimelleListalle(pieninMaapala);
-        siirraMaapalatSuljetulleListalle(pieninMaapala);
-
+        siirraMaapalaSuljetulleListalle(pieninMaapala);
     }
 
     /**
@@ -156,7 +150,7 @@ public class LyhinReitti {
      * että reittiä ei ole.
      */
     public void tulostaLyhinReitti() {
-        if (avoimenListanKoko == 0 && !this.loppuLoytynyt) {
+        if (avoinLista.getKoko() == 0 && !this.loppuLoytynyt) {
             System.out.println("Labyrintista ei ole reittiä ulos");
         } else {
             Maapala maapala = maapalaRekisteri.getLoppu();
@@ -175,8 +169,17 @@ public class LyhinReitti {
      * listalla ei ole uusia käsiteltäviä alkioita jäljellä.
      */
     public void etsiLyhinReitti() {
-        while (avoimenListanKoko > 0 && !this.loppuLoytynyt) {
+        while (avoinLista.getKoko() > 0 && !this.loppuLoytynyt) {
             kierros();
         }
+    }
+    
+    /**
+     * 
+     * @return avoinLista 
+     */
+    
+    public LinkitettyLista getAvoinLista(){
+        return this.avoinLista;
     }
 }

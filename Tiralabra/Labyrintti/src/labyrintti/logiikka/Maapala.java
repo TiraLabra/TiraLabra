@@ -70,7 +70,7 @@ public class Maapala extends ListaAlkio {
     }
 
     /**
-     * Metodin tehtävänä on palauttaa boolean arvo (true/false) riippuen siitä,
+     * Metodin tehtävänä on palauttaa boolean arvon (true/false) riippuen siitä,
      * onko maapala seinä eli läpäisemätön, vai ei.
      *
      * @return this.seina, joka on boolean arvo.
@@ -110,14 +110,14 @@ public class Maapala extends ListaAlkio {
     }
 
     /**
-     * Metodi "kertoo" maapalalle, että se on suljetulla listalla.
+     * Metodi antaa maapalalle tiedon, että se on suljetulla listalla.
      */
     public void siirraSuljetulleListalle() {
         this.suljetullaListalla = true;
     }
 
     /**
-     * Metodi "kertoo" maapalalle, että se ei enää kuulu suljettuun listaan.
+     * Metodi kertoo maapalalle, että se ei enää kuulu suljettuun listaan.
      */
     public void poistaSuljetultaListalta() {
         this.suljetullaListalla = false;
@@ -155,8 +155,13 @@ public class Maapala extends ListaAlkio {
     public String toString() {
         if (this.onkoSeina()) {
             return "X";
-        } else {
+        } else if(avoimellaListalla){
             return "" + this.hArvo;
+        } else if (suljetullaListalla){
+            return "S";
+        }
+        else {
+            return "" + this.kokonaisarvo;
         }
     }
     
@@ -165,7 +170,7 @@ public class Maapala extends ListaAlkio {
      */
     
     public void setKokonaisArvo(){
-        this.kokonaisarvo = this.vanhempi.kokonaisarvo + this.hArvo + this.liikkumisArvo;
+        this.kokonaisarvo = (this.vanhempi.kokonaisarvo - this.vanhempi.hArvo) + this.hArvo + this.liikkumisArvo;
     }
     
     /**

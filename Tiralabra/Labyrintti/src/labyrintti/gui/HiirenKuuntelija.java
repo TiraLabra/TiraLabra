@@ -24,8 +24,6 @@ public class HiirenKuuntelija implements MouseListener {
     private Nappula[][] nappulat;
     private Maapala[][] maapalat;
     private JButton kaynnistys;
-    private boolean alkuAsetettu;
-    private boolean loppuAsetettu;
     private Maapalarekisteri maapalarekisteri;
     private int alkuja;
     private int loppuja;
@@ -39,8 +37,6 @@ public class HiirenKuuntelija implements MouseListener {
         this.maapalat = maapalarekisteri.getLabyrintti();
         this.kaynnistys = kaynnistys;
         kaynnistys.setEnabled(false);
-        this.alkuAsetettu = false;
-        this.loppuAsetettu = false;
         this.alkuja = 0;
         this.loppuja = 0;
         this.lyhinReitti = lyhinReitti;
@@ -89,12 +85,6 @@ public class HiirenKuuntelija implements MouseListener {
      */
 
     public void naytaReitti() {
-        for (int i = 0; i < koko; i++) {
-            for (int j = 0; j < koko; j++) {
-                nappulat[j][i].setEnabled(false);
-                nappulat[j][i].avaa();
-            }
-        }
         Maapala maapala = maapalarekisteri.getLoppu().getVanhempi();
 
         while (true) {
@@ -102,6 +92,12 @@ public class HiirenKuuntelija implements MouseListener {
             maapala = maapala.getVanhempi();
             if (maapala == null) {
                 break;
+            }
+        }
+        for (int i = 0; i < koko; i++) {
+            for (int j = 0; j < koko; j++) {
+                nappulat[j][i].setEnabled(false);
+                nappulat[j][i].avaa();
             }
         }
     }
@@ -164,11 +160,9 @@ public class HiirenKuuntelija implements MouseListener {
                 maapalarekisteri.setAlkuY(nappula.getYKoordinaatti());
                 nappula.setBackground(Color.green);
                 alkuja++;
-                this.alkuAsetettu = true;
                 kaynnistys.setEnabled(voikoKaynnistaa());
             } else if (nappula.getBackground() == Color.GREEN) {               //nappula on jo asetettu seinäksi, joten aloituspala alustetaan
                 nappula.setBackground(null);
-                alkuAsetettu = false;
                 alkuja--;
                 kaynnistys.setEnabled(voikoKaynnistaa());
             } else if (!(maapalat[x][y].onkoSeina()) && loppuja == 0 && alkuja == 1) {       //maapala ei ole seinä, aloituspala on jo määritelty ja
@@ -176,11 +170,9 @@ public class HiirenKuuntelija implements MouseListener {
                 maapalarekisteri.setLoppuY(nappula.getYKoordinaatti());       
                 nappula.setBackground(Color.red);
                 loppuja++;
-                this.loppuAsetettu = true;
                 kaynnistys.setEnabled(voikoKaynnistaa());
             } else if (nappula.getBackground() == Color.red) {                //maapala on jo alustettu lopetuspisteeksi, joten lopetus alustetaan
                 nappula.setBackground(null);
-                loppuAsetettu = false;
                 loppuja--;
                 kaynnistys.setEnabled(voikoKaynnistaa());
             }
