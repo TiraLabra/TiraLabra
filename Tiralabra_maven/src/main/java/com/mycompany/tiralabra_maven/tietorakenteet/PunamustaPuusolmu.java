@@ -137,9 +137,15 @@ public class PunamustaPuusolmu implements Puusolmu {
      * @return Tämän solmun sisarus tai NULL mikäli sellaista ei ole.
      */
     public PunamustaPuusolmu getSisarus() {
-        return this.vanhempi == null ? null : this == vanhempi.getVasen() ? vanhempi.getOikea() : vanhempi.getVasen();
+        return this.vanhempi == null ? null : (this == vanhempi.getVasen() ? vanhempi.getOikea() : vanhempi.getVasen());
     }
 
+    /**
+     * Palauttaa solmun joka on tämän solmun vanhemman sisarus, mikäli sellainen
+     * on.
+     *
+     * @return Tämän solmun setä-solmu tai null mikäli sitä ei ole.
+     */
     public PunamustaPuusolmu getSeta() {
         return this.vanhempi == null ? null : this.vanhempi.getSisarus();
     }

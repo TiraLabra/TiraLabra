@@ -45,7 +45,7 @@ public class PuunTutkija {
         }
         return tulokset;
     }
-
+    
     /**
      * Palauttaa puun hakuoperaatioon kuluvan ajan
      *
@@ -60,16 +60,48 @@ public class PuunTutkija {
     }
 
     /**
+     * Mittaa kaikkien haettaviaen arvojen hakuajat ja palauttaa näistä
+     * tilastoja sisältävän olion
+     *
+     * @param puu Puu josta arvoja haetaan
+     * @param haettavat Haettavat arvot sisältävä taulukko
+     * @return Mittaustulos -olio, joka sisältää tietoa mitatuista ajoista
+     */
+    public Mittaustulos hakuaikaTulokset(Hakupuu puu, int[] haettavat) {
+        Mittaustulos tulokset = new Mittaustulos(puu);
+        for (int i : haettavat) {
+            tulokset.lisaaAika(hakuaika(puu, i));
+        }
+        return tulokset;
+    }
+
+    /**
      * Palauttaa puun poisto-operaatioon kuluvan ajan
      *
-     * @param puu
-     * @param poistettava
-     * @return
+     * @param puu Puu josta arvo poistetaan
+     * @param poistettava Poistettavan alkion arvo
+     * @return Poistoon kulunut aika
      */
     public long poistoaika(Hakupuu puu, int poistettava) {
         kello.aloita();
         puu.poista(poistettava);
         return kello.lopeta();
+    }
+
+    /**
+     * Mittaa kaikkien poistettavien arvojen poistoajat ja palauttaa näistä
+     * tilastoja sisältävän olion
+     *
+     * @param puu Puu josta arvot poistetaan
+     * @param poistettavat Poistettavat arvot sisältävä taulukko
+     * @return Mittaustulos -olio, joka sisältää tietoa mitatuista ajoista
+     */
+    public Mittaustulos poistoaikaTulokset(Hakupuu puu, int[] poistettavat) {
+        Mittaustulos tulokset = new Mittaustulos(puu);
+        for (int i : poistettavat) {
+            tulokset.lisaaAika(poistoaika(puu, i));
+        }
+        return tulokset;
     }
 
     /**
@@ -84,11 +116,41 @@ public class PuunTutkija {
     public Vertailu lisaysVertailu(String kuvaus, int[] data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
-            Mittaustulos tulos = new Mittaustulos(puut[i]);
-            for (int j : data) {
-                tulos.lisaaAika(lisaysaika(puut[i], j));
-            }
-            tulokset[i] = tulos;
+            tulokset[i] = lisaysaikaTulokset(puut[i], data);
+        }
+        return new Vertailu(kuvaus, tulokset);
+    }
+
+    /**
+     * Vertaa puuntutkijalle annettujen hakupuiden hakuaikoja annetulla
+     * tietojoukolla ja palauttaa saadun vertailu-olion.
+     *
+     * @param kuvaus Kuvaus, annetaan vertailulle
+     * @param data Tietojoukko jolla mittaukset suoritetaan
+     * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
+     * Mittaustulos-olion.
+     */
+    public Vertailu hakuVertailu(String kuvaus, int[] data) {
+        Mittaustulos[] tulokset = new Mittaustulos[puut.length];
+        for (int i = 0; i < puut.length; i++) {
+            tulokset[i] = hakuaikaTulokset(puut[i], data);
+        }
+        return new Vertailu(kuvaus, tulokset);
+    }
+
+    /**
+     * Vertaa puuntutkijalle annettujen hakupuiden hakuaikoja annetulla
+     * tietojoukolla ja palauttaa saadun vertailu-olion.
+     *
+     * @param kuvaus Kuvaus, annetaan vertailulle
+     * @param data Tietojoukko jolla mittaukset suoritetaan
+     * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
+     * Mittaustulos-olion.
+     */
+    public Vertailu poistoVertailu(String kuvaus, int[] data) {
+        Mittaustulos[] tulokset = new Mittaustulos[puut.length];
+        for (int i = 0; i < puut.length; i++) {
+            tulokset[i] = poistoaikaTulokset(puut[i], data);
         }
         return new Vertailu(kuvaus, tulokset);
     }
@@ -112,8 +174,27 @@ public class PuunTutkija {
         }
         return errsum / lkm;
     }
-}
 
+    
+  /**
+   * Rakentaa kaikki tutkittavat puut annetulla tietojoukolla.
+   * @param arvot Puihin sijoitettavat arvot
+   */
+    public void rakennaPuut(int[] arvot) {
+        for (Hakupuu hakupuu : puut) {
+            hakupuu.lisaaKaikki(arvot);
+        }
+    }
+    
+    /**
+     * Tyhjentää kaikki tutkittavat puut
+     */
+    public void tyhjennaPuut(){
+        for (Hakupuu hakupuu : puut) {
+            hakupuu.tyhjenna();
+        }
+    }
+}
 
 /*
  //Pohjat

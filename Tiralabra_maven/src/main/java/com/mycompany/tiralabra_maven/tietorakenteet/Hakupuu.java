@@ -56,7 +56,7 @@ public interface Hakupuu {
     public void tyhjenna();
     
     /**
-     * Puu kertoo nimensä!
+     * Palauttaa puun tyypin / nimen.
      * @return Puun tyyppi
      */
     public String getNimi();

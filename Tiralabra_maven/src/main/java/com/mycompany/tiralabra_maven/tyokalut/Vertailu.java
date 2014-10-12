@@ -23,6 +23,24 @@ public class Vertailu {
         this.kuvaus = kuvaus;
     }
 
+    /**
+     * Palauttaa vertailulle annetun kuvauksen
+     *
+     * @return Vertailulle annettu kuvaus
+     */
+    public String getKuvaus() {
+        return kuvaus;
+    }
+
+    /**
+     * Palauttaa vertailuun lisätyt tulokset arraynä.
+     *
+     * @return vertailuun lisätyt Mittaustulos oliot sisältävä array
+     */
+    public Mittaustulos[] getTulokset() {
+        return tulokset;
+    }
+
     @Override
     public String toString() {
         String tuloste = "";

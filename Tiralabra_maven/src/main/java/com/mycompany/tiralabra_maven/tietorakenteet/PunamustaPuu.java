@@ -233,8 +233,9 @@ public class PunamustaPuu implements Hakupuu {
                 && vari(solmu.getSisarus().getOikea()) == Vari.MUSTA) {
             solmu.getSisarus().setVari(Vari.PUNAINEN);
             solmu.getVanhempi().setVari(Vari.MUSTA);
+        } else {
+            poistaTapaus5(solmu);
         }
-        poistaTapaus5(solmu);
     }
 
     /**
@@ -340,10 +341,11 @@ public class PunamustaPuu implements Hakupuu {
     }
 
     /**
-     * Apumetodi jokavaihtaa viitaukset solmuihin päittäin
+     * Apumetodi jokavaihtaa viitaukset solmuihin päittäin. Parametrina saadut
+     * solmut siis vaihtavat keskenään paikkaa puussa.
      *
-     * @param vanha
-     * @param uusi
+     * @param vanha Alipuun juurena toiminut solmu.
+     * @param uusi Solmu joka tulee olemaan uusi alipuun juuri.
      */
     private void korvaaSolmu(PunamustaPuusolmu vanha, PunamustaPuusolmu uusi) {
         if (vanha.getVanhempi() == null) {
@@ -361,7 +363,8 @@ public class PunamustaPuu implements Hakupuu {
     }
 
     /**
-     * Apumetodi joka tarkistaa solmun värin
+     * Apumetodi joka tarkistaa solmun värin. Mikäli solmu on null palautetaan
+     * musta.
      *
      * @param solmu Tarkistettavasolmu
      * @return Solmun väri tai Vari.MUSTA jossolmu null

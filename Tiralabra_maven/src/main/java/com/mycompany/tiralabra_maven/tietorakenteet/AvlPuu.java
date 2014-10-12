@@ -190,6 +190,9 @@ public class AvlPuu implements Hakupuu {
      */
     private void avlPoista(AvlPuusolmu poistettava) {
         AvlPuusolmu pois = poista(poistettava);
+        if (pois == null) {
+            return;
+        }
         AvlPuusolmu solmu = pois.getVanhempi();
         AvlPuusolmu vanhempi, alipuu;
         while (solmu != null) {
@@ -316,8 +319,9 @@ public class AvlPuu implements Hakupuu {
     }
 
     /**
-     * Palauttaa parametrina saatavan solmun korkeus-muuttujan arvon tai -1 mikäli annetaan null
-     * 
+     * Palauttaa parametrina saatavan solmun korkeus-muuttujan arvon tai -1
+     * mikäli annetaan null
+     *
      * @param solmu Solmu jonka korkeus halutaan tarkistaa
      * @return -1 mikäli solmu on null, muulloin solmun korkeus-muuttujan arvo
      */

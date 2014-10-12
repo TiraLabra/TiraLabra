@@ -72,10 +72,18 @@ public class Mittaustulos {
      * @return Laskettu keskiarvo tai 0 mikäli tietoja ei ole.
      */
     public long getKeskiarvo() {
-        if (lkm > 0L) {
+        if (lkm > 0) {
             return summa / lkm;
         }
         return 0L;
+    }
+    
+    /**
+     * Palauttaa kaikkien lisättyjen aikojen summan
+     * @return 
+     */
+    public long getKokonaisaika(){
+        return summa;
     }
 
     /**
