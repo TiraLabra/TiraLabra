@@ -32,6 +32,13 @@ public class PunaMustaPuuTest {
     }
     
     @Test
+    public void kysytäänVanhempaaJaVäärääLasta() {
+        puu.lisaa(1);
+        puu.lisaa(2);
+        assertNull(puu.getSisar(puu.hae(2), puu.hae(1)));
+    }
+    
+    @Test
     public void poistoOnnistuu() {
         puu.lisaa(1);
         puu.poista(1);

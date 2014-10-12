@@ -16,10 +16,10 @@ public class BinaarinenHakupuuTest {
     public void setUp() {
         puu = new BinaarinenHakupuu();
         bst = new BinaarinenHakupuu();
-        bst.lisaa(4);//Alustettu puu:
-        bst.lisaa(3);//      4
-        bst.lisaa(2);//  3       5 
-        bst.lisaa(5);//2
+        bst.lisaa(4);
+        bst.lisaa(3);
+        bst.lisaa(2); 
+        bst.lisaa(5);
     }
     
     @Test
@@ -55,10 +55,10 @@ public class BinaarinenHakupuuTest {
     }
     
     @Test
-    public void pienimmänArvonLisäysJaEtsintä() {      //        4
-        bst.lisaa(1);                                  //    3       5
-        assertEquals(1, bst.alipuunMin(bst.hae(4)).getArvo());//  2
-    }                                                  //1
+    public void pienimmänArvonLisäysJaEtsintä() {
+        bst.lisaa(1);     
+        assertEquals(1, bst.alipuunMin(bst.hae(4)).getArvo());
+    }                                          
     
     @Test
     public void pieninArvoJuurenOikeastaAlipuusta() {

@@ -264,15 +264,17 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     }
     
     /**
-     * Palauttaa solmun s sisaren 
+     * Palauttaa solmun s sisaren. Mikäli vanhempi ei ole s:n vanhempi, niin palautetaan null. 
      * @param s kysytty solmu
      * @param vanhempi solmun vanhempi
-     * @return palautetaan s:n sisar
+     * @return palautetaan s:n sisar tai null
      */
     public Solmu getSisar(Solmu s, Solmu vanhempi) {
         if(s == vanhempi.getVasen())
             return vanhempi.getOikea();
-        else
+        else if(s == vanhempi.getOikea())
             return vanhempi.getVasen();
+        else
+            return null;
     }
 }
