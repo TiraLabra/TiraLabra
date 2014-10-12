@@ -8,6 +8,11 @@ import wad.solmu.Solmu;
 //käsitestailua
 public class Main {
     public static void main(String[] args) {
+        new SuorituskyvynTestaus().testaaPuita();
+    }
+    
+    //Metodi käsitestaamiselle... ei tulla säilyttämään
+    public static void testi() {
         // BST käsitestausta
         /* 
         BinaarinenHakupuu bst = new BinaarinenHakupuu();
@@ -75,7 +80,7 @@ public class Main {
         // */
         
         //Puna-mustapuu käsitestaus
-        /*Let's see */ 
+        /*Let's see  
         PunaMustaPuu rbt = new PunaMustaPuu();
         for(int i = 1; i<9; i++) rbt.lisaa(i);
         if(rbt.hae(5).onMusta()) System.out.println("Musta");
