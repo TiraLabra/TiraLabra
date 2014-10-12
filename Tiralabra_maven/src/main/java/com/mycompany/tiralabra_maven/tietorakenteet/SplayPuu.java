@@ -107,6 +107,9 @@ public class SplayPuu implements Hakupuu {
                 }
             }
         }
+        if (solmu != null) {
+            splay(solmu);
+        }
         return solmu;
     }
 
@@ -124,16 +127,16 @@ public class SplayPuu implements Hakupuu {
             return;
         }
         splay(poistettava);
-        if(poistettava.getVasen() != null && poistettava.getOikea() != null){
+        if (poistettava.getVasen() != null && poistettava.getOikea() != null) {
             Puusolmu edeltaja = PuuOperaatiot.edeltaja(poistettava);
             edeltaja.setOikea(poistettava.getOikea());
             poistettava.getOikea().setVanhempi(edeltaja);
             poistettava.getVasen().setVanhempi(null);
             juuri = poistettava.getVasen();
-        } else if (poistettava.getOikea() != null){
+        } else if (poistettava.getOikea() != null) {
             poistettava.getOikea().setVanhempi(null);
             juuri = poistettava.getOikea();
-        } else if(poistettava.getVasen() != null){
+        } else if (poistettava.getVasen() != null) {
             poistettava.getVasen().setVanhempi(null);
             juuri = poistettava.getVasen();
         } else {
