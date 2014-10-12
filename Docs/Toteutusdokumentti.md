@@ -13,6 +13,8 @@ Puihin voi säilöä Javan Object olioita, eli käytännössä ihan mitä vain d
 ###Suorituskyky ja O-analyysivertailu
 
 ###Puutteet ja parannusehdotukset
+Perintä ei välttämättä ole paras mahdollinen tapa ratkaista ongelmaa. Toinen lähestysmistapa olisi ollut lähteä liikkeelle "yleishyödyllisistä metodeista" ja rakentaa kaikki puut implementoimaan suoraan rajapintaa ja
+hyödyntämällä "yleishyödyllisiä metodeja" jonkin muun luokan kautta. Koodissa on myös toistoa, mitä tulisi karsia, jotta koodi olisi mahdollisimman yksinkertaista luettavaa ulkopuoliselle.
 
 ###Lähteet
 wikipedia.org
