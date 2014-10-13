@@ -3,32 +3,54 @@ package viidensuora.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import viidensuora.logiikka.Ristinolla;
 
 /**
-* Paneeli, jossa pelitilanne näytetään.
-*
+ * Paneeli, jossa pelitilanne näytetään.
+ * 
 * @author juha
-*/
+ */
 public class Peliruutu extends JPanel {
 
-    public static final int RUUDUN_KOKO = 20;
+    public static final int RUUDUN_KOKO = 25;
     private final Ristinolla ristinolla;
     private final int leveys;
     private final int korkeus;
+
+    /**
+     * Kuva joka piirretään ristin merkeille.
+     */
+    private BufferedImage ristinKuva;
+    
+    
+    /**
+     * Kuva joka piirretään nollan merkeille.
+     */
+    private BufferedImage nollanKuva;
 
     public Peliruutu(Ristinolla ristinolla) {
         this.ristinolla = ristinolla;
         this.leveys = ristinolla.leveys * RUUDUN_KOKO;
         this.korkeus = ristinolla.korkeus * RUUDUN_KOKO;
+
+        try {
+            this.ristinKuva = ImageIO.read(this.getClass().getResource("/risti.png"));
+            this.nollanKuva = ImageIO.read(this.getClass().getResource("/nolla.png"));
+        } catch (IOException ex) {
+        }
+
         setPreferredSize(new Dimension(leveys, korkeus));
         addMouseListener(new Hiirikuuntelija(ristinolla, this));
     }
 
     /**
      * Piirtää pelimerkit ja ruudukon.
-     * @param g 
+     *
+     * @param g
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -39,7 +61,8 @@ public class Peliruutu extends JPanel {
 
     /**
      * Piirtää peliruudulle vaaka- ja pystyviivat.
-     * @param g 
+     *
+     * @param g
      */
     private void piirraRuudukko(Graphics g) {
         g.setColor(Color.BLACK);
@@ -57,18 +80,16 @@ public class Peliruutu extends JPanel {
 
     /**
      * Piirtää ruudulle Ristit ja Nollat.
-     * @param g 
+     *
+     * @param g
      */
     private void piirraPelimerkit(Graphics g) {
         for (int y = 0; y < ristinolla.korkeus; y++) {
             for (int x = 0; x < ristinolla.leveys; x++) {
                 if (ristinolla.onRisti(x, y)) {
-                    g.setColor(Color.BLUE);
-                    g.drawLine(x * RUUDUN_KOKO, y * RUUDUN_KOKO, (x + 1) * RUUDUN_KOKO, (y + 1) * RUUDUN_KOKO);
-                    g.drawLine(x * RUUDUN_KOKO, (y + 1) * RUUDUN_KOKO, (x + 1) * RUUDUN_KOKO, y * RUUDUN_KOKO);
+                    g.drawImage(ristinKuva, x * RUUDUN_KOKO, y * RUUDUN_KOKO, this);
                 } else if (ristinolla.onNolla(x, y)) {
-                    g.setColor(Color.RED);
-                    g.drawOval(x * RUUDUN_KOKO + 1, y * RUUDUN_KOKO + 1, RUUDUN_KOKO - 4, RUUDUN_KOKO - 4);
+                    g.drawImage(nollanKuva, x * RUUDUN_KOKO, y * RUUDUN_KOKO, this);
                 }
             }
         }

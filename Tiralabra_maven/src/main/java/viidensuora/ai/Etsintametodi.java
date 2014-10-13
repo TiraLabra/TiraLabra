@@ -1,7 +1,5 @@
 package viidensuora.ai;
 
-import viidensuora.logiikka.Koordinaatti;
-
 /**
  * Rajapinta Tekoälyn käyttämille Etsintämetodeille.
  *
@@ -13,15 +11,15 @@ public interface Etsintametodi {
      * Etsii parhaan ristin siirron.
      *
      * @param syvyys Syvyys, jolta pelipuusta etsitään.
-     * @return Parhaan siirron koordinaatti
+     * @return Parhaan siirron Hakutulos
      */
-    public Koordinaatti etsiRistinSiirto(int syvyys);
+    public Hakutulos etsiRistinSiirto(int syvyys);
 
     /**
      * Etsii parhaan nollan siirron.
      *
      * @param syvyys Syvyys, jolta pelipuusta etsitään.
-     * @return Parhaan siirron koordinaatti
+     * @return Parhaan siirron Hakutulos
      */
-    public Koordinaatti etsiNollanSiirto(int syvyys);
+    public Hakutulos etsiNollanSiirto(int syvyys);
 }

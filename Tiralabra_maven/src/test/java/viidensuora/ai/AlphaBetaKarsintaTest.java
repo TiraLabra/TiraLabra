@@ -3,7 +3,6 @@ package viidensuora.ai;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import viidensuora.logiikka.Koordinaatti;
 import viidensuora.logiikka.Pelimerkki;
 import viidensuora.logiikka.Ristinolla;
 
@@ -15,24 +14,116 @@ public class AlphaBetaKarsintaTest {
 
     private AlphaBetaKarsinta abKarsinta;
 
-    
     @Before
     public void setUp() {
     }
 
     @Test
-    public void voitto() {        
+    public void tunnistaaYhdenSiirronPaassaOlevanVoiton() {
         Pelimerkki[][] pmArr = {
             {x, o, o},
             {t, x, x},
             {o, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 3);
         abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        //assertEquals(Integer.MAX_VALUE, ai.alphaBeta(9, Integer.MIN_VALUE, Integer.MAX_VALUE, true, null));
-        //assertTrue(ai.alphaBeta(9, Integer.MIN_VALUE, Integer.MAX_VALUE, true, null) > 0);
-        Koordinaatti k = abKarsinta.etsiRistinSiirto(99);
-        System.out.println(k.x + ", " + k.y);
-        assertTrue((k.x == 0 && k.y == 1) || (k.x == 2 && k.y == 2));
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        assertTrue((tulos.parasSiirto.x == 0 && tulos.parasSiirto.y == 1)
+                || (tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2));
+    }
+
+    @Test
+    public void estaaVastustajanVarmanVoiton() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t, t, t, o, t, t, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, x, x, x, t, t, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, t, t, t, t, o, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 5);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiNollanSiirto(4);
+        assertTrue((tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2)
+                || (tulos.parasSiirto.x == 6 && tulos.parasSiirto.y == 2));
+    }
+
+    @Test
+    public void valitseePisimmanSuoranEriVaihtoehdoista() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t, x, x, t, t, t, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, x, x, x, t, t, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, x, x, t, t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 5);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(4);
+        assertTrue((tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2)
+                || (tulos.parasSiirto.x == 6 && tulos.parasSiirto.y == 2));
+    }
+
+    @Test
+    public void eiKasvataTurhaanPitkaaSuoraaJostaEiVoiSyntyaVoittavaa() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, t, o, x, x, x, t},
+            {t, t, t, t, t, t, t, t, t},
+            {t, t, t, t, t, t, t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 5);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(4);
+        assertTrue(!(tulos.parasSiirto.x == 8 && tulos.parasSiirto.y == 2));
+    }
+
+    @Test
+    public void laskeeTyhjan3x3pelinTaydellisenArvonOikein() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t},
+            {t, t, t},
+            {t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 3);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        assertEquals(0, tulos.siirronArvo);
+    }
+
+    @Test
+    public void aloittaaTyhjallaLaudallaKeskelta() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t},
+            {t, t, t},
+            {t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 3);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        assertEquals(1, tulos.parasSiirto.x);
+        assertEquals(1, tulos.parasSiirto.y);
+    }
+
+    @Test
+    public void karsiiHakupuuta() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t},
+            {t, t, t},
+            {t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 3);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        // koko hakupuun nodet: 9! = 362880
+        assertTrue(tulos.avattujaNodeja < 362880);
+    }
+    
+    @Test
+    public void ratkaiseeTicTacToenAlleSekunnissa() {
+        Pelimerkki[][] pmArr = {
+            {t, t, t},
+            {t, t, t},
+            {t, t, t}};
+        Ristinolla rn = luoRistinolla(pmArr, 3);
+        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        // koko hakupuun nodet: 9! = 362880
+        assertTrue(tulos.hakuaika < 1000);
     }
 
     private Ristinolla luoRistinolla(Pelimerkki[][] pmArr, int voittavaPituus) {

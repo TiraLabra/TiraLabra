@@ -5,7 +5,7 @@ import viidensuora.logiikka.Ristinolla;
 
 /**
  * Tekoälyn käyttämä etsintämetodi, jolla etsitään paras seuraava siirto.
- * Toiminta perustuu MinMax-algoritmiin.
+ * Toiminta perustuu MinMax-algoritmiin. Blaah pois pois, ihan liian hidas
  *
  * @author juha
  */
@@ -42,11 +42,12 @@ public class MinMax implements Etsintametodi {
      * @param syvyys Syvyys jolta etsitään
      * @return Parhaan löydetyn siirron koordinaatti
      */
-    public Koordinaatti etsiRistinSiirto(int syvyys) {
+    public Hakutulos etsiRistinSiirto(int syvyys) {
         parasSiirto = null;
         hakusyvyys = syvyys;
         maxArvo(syvyys, null);
-        return parasSiirto;
+        //return parasSiirto;
+        return null;
     }
 
     /**
@@ -55,11 +56,12 @@ public class MinMax implements Etsintametodi {
      * @param syvyys Syvyys jolta etsitään
      * @return Parhaan löydetyn siirron koordinaatti
      */
-    public Koordinaatti etsiNollanSiirto(int syvyys) {
+    public Hakutulos etsiNollanSiirto(int syvyys) {
         parasSiirto = null;
         hakusyvyys = syvyys;
         minArvo(syvyys, null);
-        return parasSiirto;
+        //return parasSiirto;
+        return null;
     }
 
     /**

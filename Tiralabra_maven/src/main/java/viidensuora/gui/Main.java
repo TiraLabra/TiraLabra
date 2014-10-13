@@ -1,8 +1,9 @@
 package viidensuora.gui;
 
 import javax.swing.SwingUtilities;
-import viidensuora.ai.Tekoaly;
-import viidensuora.logiikka.Koordinaatti;
+import viidensuora.ai.AlphaBetaKarsinta;
+import viidensuora.ai.Hakutulos;
+import viidensuora.ai.MunEvaluoija;
 import viidensuora.logiikka.Pelimerkki;
 import viidensuora.logiikka.Ristinolla;
 
@@ -21,17 +22,24 @@ public class Main {
     }
 
     /**
-     * Demoa tekstillä.
+     * Testailua tekstillä. Omaksi avuksi, ei jää lopulliseen versioon..
      */
     private static void teksti() {
         Ristinolla rn = new Ristinolla(8, 8, 5);
-        Tekoaly ai = new Tekoaly(rn);
+        AlphaBetaKarsinta ristinAI = new AlphaBetaKarsinta(rn, new MunEvaluoija());
+        AlphaBetaKarsinta nollanAI = new AlphaBetaKarsinta(rn, new MunEvaluoija());
         Pelimerkki voittaja = null;
-
+        System.out.println(rn);
         while (!rn.lautaTaynna()) {
-            Koordinaatti k = ai.etsiParasSiirto(4, rn.onRistinVuoro());
-            rn.pelaaVuoro(k.x, k.y);
-            System.out.println(rn);
+            Hakutulos tulos;
+            if (rn.onRistinVuoro()) {
+                tulos = ristinAI.etsiRistinSiirto(5);
+            } else {
+                tulos = nollanAI.etsiNollanSiirto(5);
+            }
+            rn.pelaaVuoro(tulos.parasSiirto.x, tulos.parasSiirto.y);
+            System.out.println(rn.toString());
+            System.out.println(tulos);
             if (rn.getVoittaja() != null) {
                 voittaja = rn.getVoittaja();
                 break;
