@@ -138,7 +138,7 @@ public class Aloitus extends JPanel implements ActionListener {
             for (int j = 0; j < verkko.taulukko.length; j++) {
                 if(verkko.taulukko[i][j].haeSeina()==false){
                     
-                    ikkuna.kuva.setRGB(j, i, rgb);
+                    ikkuna.kuva.setRGB(i, j, rgb);
                 }
             }
         }

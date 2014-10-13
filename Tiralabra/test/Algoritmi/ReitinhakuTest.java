@@ -102,8 +102,9 @@ public class ReitinhakuTest {
     public void testLisää() {
         
         Solmu sss=new Solmu(600, 600, 15, 255);
+        sss.suunta=1;
         
-        testi.Lisää(600, 601, sss);
+        testi.Lisää(600, 601, sss, 1);
         
         assertEquals(testi.verkko.taulukko[600][601].Reittipituus, 1);
         assertEquals(testi.verkko.taulukko[600][601].Edeltävä, sss);

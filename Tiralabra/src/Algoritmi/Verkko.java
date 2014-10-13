@@ -50,7 +50,7 @@ public class Verkko {
         
         for (int i = 0; i < kuva.getHeight(); i++) {
             for (int j = 0; j < kuva.getWidth(); j++) {
-                Color c = new Color(kuva.getRGB(j, i));
+                Color c = new Color(kuva.getRGB(i, j));
                 
                 taulukko[i][j]=new Solmu(i, j, HeuristiikkaArvo(j, i), c.getBlue());
                 

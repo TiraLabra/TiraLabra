@@ -97,20 +97,20 @@ public class Reitinhaku {
     public void TarkistaViereiset(Solmu Käsittelyssä){
                 
         
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX+1].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä);
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX+1][Käsittelyssä.koordinaattiY].haeSeina()==false){
+            Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä, 1);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY+1][Käsittelyssä.koordinaattiX].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä);
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY+1].haeSeina()==false){
+            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä, 2);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY][Käsittelyssä.koordinaattiX-1].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä);
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX-1][Käsittelyssä.koordinaattiY].haeSeina()==false){
+            Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä, 3);
 
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiY-1][Käsittelyssä.koordinaattiX].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä);
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY-1].haeSeina()==false){
+            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä, 4);
 
         }
         
@@ -126,11 +126,16 @@ public class Reitinhaku {
  * @param y Koordinaatti y
  * @param Käsittelyssä Käsittelyssä oleva solmu
  */   
-    public void Lisää(int x, int y, Solmu Käsittelyssä){
+    public void Lisää(int x, int y, Solmu Käsittelyssä, int asd){
         
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
             verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
+            verkko.taulukko[x][y].suunta=asd;
+            
+            if(verkko.taulukko[x][y].suunta!=Käsittelyssä.suunta){
+                verkko.taulukko[x][y].Reittipituus++;
+            }
             keko.lisää(verkko.taulukko[x][y]);
         }
         

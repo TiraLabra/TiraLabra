@@ -17,6 +17,7 @@ public class Solmu {
     public int Reittipituus;
 
     public Solmu Edeltävä;
+    public int suunta;
     
     public int koordinaattiX;
     public int koordinaattiY;
@@ -35,6 +36,8 @@ public class Solmu {
     
     public Solmu (int x, int y, int hArvo, int väri ){
         
+        
+        suunta=0;
         koordinaattiX=x;
         koordinaattiY=y;
         Heurestiikaarvo=hArvo;
