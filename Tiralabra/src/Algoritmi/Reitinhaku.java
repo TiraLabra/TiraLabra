@@ -130,7 +130,7 @@ public class Reitinhaku {
         
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
-            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
+            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+2;
             verkko.taulukko[x][y].suunta=asd;
             
             if(verkko.taulukko[x][y].suunta!=Käsittelyssä.suunta){

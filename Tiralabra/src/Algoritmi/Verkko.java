@@ -69,7 +69,7 @@ public class Verkko {
     
     int HeuristiikkaArvo(int x, int y){
 
-        return Math.abs(y-maaliY)+Math.abs(x-maaliX);
+        return (Math.abs(y-maaliY)+Math.abs(x-maaliX))*2;
     }
     
     
