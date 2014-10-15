@@ -38,7 +38,9 @@ public class Verkko {
         maaliX=maali.y;
         maaliY=maali.x;
 
-        Täytätaulukko();
+        
+        System.out.println(""+taulukko[5][5]);
+//        Täytätaulukko();
 
     }
     
@@ -58,6 +60,19 @@ public class Verkko {
         }
         
     }
+    
+    
+    public void LuoSolmu(int x, int y, Solmu Käsittelyssä, int suunta){
+        Color c = new Color(kuva.getRGB(x, y));
+        
+        taulukko[x][y]=new Solmu(x, y, HeuristiikkaArvo(x, y), c.getBlue());
+        
+        if(suunta!=Käsittelyssä.suunta){
+                taulukko[x][y].Reittipituus++;
+            }
+    }
+    
+    
     
 /**
  * Laskee solmun etäisyyden maalista.

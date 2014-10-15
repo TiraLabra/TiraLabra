@@ -44,6 +44,7 @@ public class Reitinhaku {
         
         
         Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
+        LuoVierusSolmut(lähtösolmu);
         
         keko.lisää(lähtösolmu);
         lähtösolmu.Edeltävä=lähtösolmu;
@@ -65,8 +66,9 @@ public class Reitinhaku {
         
         Solmu käsittelyssä=new Solmu(6, 6, 6, 6);
         
+        
         while(käsittelyssä.Heurestiikaarvo!=0){
-            
+            System.out.println("wut");
             käsittelyssä=keko.poista();
             
             if(käsittelyssä==null){
@@ -76,6 +78,7 @@ public class Reitinhaku {
             
             verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(200,200,0).getRGB());
             
+            LuoVierusSolmut(käsittelyssä);
             TarkistaViereiset(käsittelyssä);
             
             
@@ -133,9 +136,9 @@ public class Reitinhaku {
             verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+2;
             verkko.taulukko[x][y].suunta=asd;
             
-            if(verkko.taulukko[x][y].suunta!=Käsittelyssä.suunta){
-                verkko.taulukko[x][y].Reittipituus++;
-            }
+//            if(verkko.taulukko[x][y].suunta!=Käsittelyssä.suunta){
+//                verkko.taulukko[x][y].Reittipituus++;
+//            }
             keko.lisää(verkko.taulukko[x][y]);
         }
         
@@ -168,6 +171,30 @@ public class Reitinhaku {
             
         }
         
+        
+    }
+    
+    
+    public void LuoVierusSolmut(Solmu Käsittelyssä){
+        System.out.println(""+verkko.taulukko[Käsittelyssä.koordinaattiX+1][Käsittelyssä.koordinaattiY]);
+        System.out.println("asdasd");
+        
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX+1][Käsittelyssä.koordinaattiY]==null){
+            verkko.LuoSolmu(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä, 1);
+            System.out.println("asd");
+        }
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY+1]==null){
+            verkko.LuoSolmu(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä, 2);
+
+        }
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX-1][Käsittelyssä.koordinaattiY]==null){
+            verkko.LuoSolmu(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä, 3);
+
+        }
+        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY-1]==null){
+            verkko.LuoSolmu(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä, 4);
+
+        }        
         
     }
     
