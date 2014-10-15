@@ -46,7 +46,7 @@ public class SolmuTest {
         Solmu testi2 = new Solmu(1, 2, 3, 0);
         
         assertEquals(testi.Edeltävä, null);
-        assertEquals(testi.Heurestiikaarvo, 3);
+        assertEquals(testi.heurestiikaArvo, 3);
         assertEquals(testi.koordinaattiX, 1);
         assertEquals(testi.koordinaattiY, 2);
         

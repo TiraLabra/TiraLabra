@@ -95,6 +95,7 @@ public class Aloitus extends JPanel implements ActionListener {
         } else if (Puhdista.equals(komento)) {
             
             try{
+                
                 putsaa();
                 ikkuna.repaint();
             }catch(NullPointerException ex){
@@ -131,14 +132,14 @@ public class Aloitus extends JPanel implements ActionListener {
     }
     
     /**
-     * Poistaa kaiken mitä kuvaan on piirretty paitsi seinäviivat.
+     * Poistaa kaiken mitä kuvaan on piirretty paitsi seinät ja mustat viivat.
      */    
     public void putsaa(){
         
         int rgb=new Color(255,255,255).getRGB();
-        for (int i = 0; i < verkko.taulukko[0].length; i++) {
-            for (int j = 0; j < verkko.taulukko.length; j++) {
-                if(verkko.taulukko[i][j].haeSeina()==false){
+        for (int i = 4; i < verkko.taulukko[0].length-4; i++) {
+            for (int j = 4; j < verkko.taulukko.length-4; j++) {
+                if(ikkuna.kuva.getRGB(i, j)!=-16777216){
                     
                     ikkuna.kuva.setRGB(i, j, rgb);
                 }

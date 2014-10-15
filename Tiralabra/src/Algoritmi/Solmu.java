@@ -13,11 +13,10 @@ package Algoritmi;
  */
 public class Solmu {
     
-    public int Heurestiikaarvo;
+    public int heurestiikaArvo;
     public int Reittipituus;
 
     public Solmu Edeltävä;
-    public int suunta;
     
     public int koordinaattiX;
     public int koordinaattiY;
@@ -36,11 +35,9 @@ public class Solmu {
     
     public Solmu (int x, int y, int hArvo, int väri ){
         
-        
-        suunta=0;
         koordinaattiX=x;
         koordinaattiY=y;
-        Heurestiikaarvo=hArvo;
+        heurestiikaArvo=hArvo;
         Reittipituus=0;
         Edeltävä=null;
         if(väri==255){
@@ -67,14 +64,15 @@ public class Solmu {
     
     public int vertaa(Solmu verrattava) {
         
-        if (Heurestiikaarvo+Reittipituus < verrattava.Heurestiikaarvo+verrattava.Reittipituus){
+        if (heurestiikaArvo+Reittipituus < verrattava.heurestiikaArvo+verrattava.Reittipituus){
             return 1;
-        }else if (Heurestiikaarvo+Reittipituus > verrattava.Heurestiikaarvo+verrattava.Reittipituus){
+        }else if (heurestiikaArvo+Reittipituus > verrattava.heurestiikaArvo+verrattava.Reittipituus){
             return -1;
         }
         
         return 0;
         
     }
+    
     
 }

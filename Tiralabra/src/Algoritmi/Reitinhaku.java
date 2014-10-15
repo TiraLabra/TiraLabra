@@ -8,7 +8,6 @@ package Algoritmi;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.PriorityQueue;
 
 /**
  *
@@ -22,7 +21,6 @@ public class Reitinhaku {
   
     public Verkko verkko;
     
-    public PriorityQueue<Solmu> AvoinLista;
     public Keko keko;
     
     
@@ -45,7 +43,7 @@ public class Reitinhaku {
 
         
         Solmu ÄläVälitäTästäSolmusta=new Solmu(6, 6, 6, 6);
-        verkko.LuoSolmu(Lähtö.x, Lähtö.y, ÄläVälitäTästäSolmusta, 666);
+        verkko.LuoSolmu(Lähtö.x, Lähtö.y, ÄläVälitäTästäSolmusta);
         Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
 
 
@@ -71,7 +69,7 @@ public class Reitinhaku {
         Solmu käsittelyssä=new Solmu(6, 6, 6, 6);
         
         
-        while(käsittelyssä.Heurestiikaarvo!=0){
+        while(käsittelyssä.heurestiikaArvo!=0){
 
             käsittelyssä=keko.poista();
             
@@ -80,10 +78,9 @@ public class Reitinhaku {
                 return false;
             }
             
-            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(200,200,0).getRGB());
+            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(200,0,200).getRGB());
             
-            LuoVierusSolmut(käsittelyssä);
-            TarkistaViereiset(käsittelyssä);
+            VierusSolmut(käsittelyssä);
             
             
         }
@@ -92,37 +89,35 @@ public class Reitinhaku {
         return true;
          
     }
-    
+
 /**
  * Tarkistaa jokaisen viereisen solmun sen varalta että se on seinä, jos ei ole 
  * niin kutsuu metodia Lisää sille solmulle.
  * 
  * 
  *  @param Käsittelyssä Käsittelyssä oleva solmu
- */   
+ */       
     
-    public void TarkistaViereiset(Solmu Käsittelyssä){
-                
+    public void VierusSolmut(Solmu Käsittelyssä){
         
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX+1][Käsittelyssä.koordinaattiY].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä, 1);
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
 
+                if(verkko.taulukko[Käsittelyssä.koordinaattiX+x][Käsittelyssä.koordinaattiY+y]==null){
+                    verkko.LuoSolmu(Käsittelyssä.koordinaattiX+x, Käsittelyssä.koordinaattiY+y, Käsittelyssä);
+                }                
+                if(verkko.taulukko[Käsittelyssä.koordinaattiX+x][Käsittelyssä.koordinaattiY+y].haeSeina()==false){
+                    Lisää(Käsittelyssä.koordinaattiX+x, Käsittelyssä.koordinaattiY+y, Käsittelyssä);
+                    
+                }                   
+            }
         }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY+1].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä, 2);
-
-        }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX-1][Käsittelyssä.koordinaattiY].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä, 3);
-
-        }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY-1].haeSeina()==false){
-            Lisää(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä, 4);
-
-        }
-        
         
     }
+    
+
+    
+
     
 /**
  * Jos solmu ei ole ollut keossa aikaisemmin niin metodi laittaa 
@@ -133,12 +128,11 @@ public class Reitinhaku {
  * @param y Koordinaatti y
  * @param Käsittelyssä Käsittelyssä oleva solmu
  */   
-    public void Lisää(int x, int y, Solmu Käsittelyssä, int asd){
+    public void Lisää(int x, int y, Solmu Käsittelyssä){
         
         if(verkko.taulukko[x][y].Edeltävä==null){
             verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
-            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+3;
-            verkko.taulukko[x][y].suunta=asd;
+            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
             
 
             keko.lisää(verkko.taulukko[x][y]);
@@ -176,29 +170,5 @@ public class Reitinhaku {
         
     }
     
-    
-    public void LuoVierusSolmut(Solmu Käsittelyssä){
 
-
-        
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX+1][Käsittelyssä.koordinaattiY]==null){
-            verkko.LuoSolmu(Käsittelyssä.koordinaattiX+1, Käsittelyssä.koordinaattiY, Käsittelyssä, 1);
-
-        }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY+1]==null){
-            verkko.LuoSolmu(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY+1, Käsittelyssä, 2);
-
-        }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX-1][Käsittelyssä.koordinaattiY]==null){
-            verkko.LuoSolmu(Käsittelyssä.koordinaattiX-1, Käsittelyssä.koordinaattiY, Käsittelyssä, 3);
-
-        }
-        if(verkko.taulukko[Käsittelyssä.koordinaattiX][Käsittelyssä.koordinaattiY-1]==null){
-            verkko.LuoSolmu(Käsittelyssä.koordinaattiX, Käsittelyssä.koordinaattiY-1, Käsittelyssä, 4);
-
-        }        
-        
-    }
-    
-    
 }

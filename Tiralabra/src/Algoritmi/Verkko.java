@@ -39,8 +39,6 @@ public class Verkko {
         maaliY=maali.y;
 
 
-        
-        System.out.println(""+taulukko[5][5]);
 //        Täytätaulukko();
 
     }
@@ -49,28 +47,25 @@ public class Verkko {
  * Käy läpi kuvan ja muuttaa sen Solmuista koostuvaksi taulukoksi.
  * 
  */      
-    private void Täytätaulukko(){
-        
-        for (int i = 0; i < kuva.getHeight(); i++) {
-            for (int j = 0; j < kuva.getWidth(); j++) {
-                Color c = new Color(kuva.getRGB(i, j));
-                
-                taulukko[i][j]=new Solmu(i, j, HeuristiikkaArvo(j, i), c.getBlue());
-                
-            }
-        }
-        
-    }
+//    private void Täytätaulukko(){
+//        
+//        for (int i = 0; i < kuva.getHeight(); i++) {
+//            for (int j = 0; j < kuva.getWidth(); j++) {
+//                Color c = new Color(kuva.getRGB(i, j));
+//                
+//                taulukko[i][j]=new Solmu(i, j, HeuristiikkaArvo(j, i), c.getBlue());
+//                
+//            }
+//        }
+//        
+//    }
     
     
-    public void LuoSolmu(int x, int y, Solmu Käsittelyssä, int suunta){
+    public void LuoSolmu(int x, int y, Solmu Käsittelyssä){
         Color c = new Color(kuva.getRGB(x, y));
         
         taulukko[x][y]=new Solmu(x, y, HeuristiikkaArvo(x, y), c.getBlue());
         
-        if(suunta!=Käsittelyssä.suunta){
-                taulukko[x][y].Reittipituus++;
-            }
     }
     
     
@@ -84,8 +79,14 @@ public class Verkko {
  */       
     
     int HeuristiikkaArvo(int x, int y){
+        
+        if(Math.abs(y-maaliY)>Math.abs(x-maaliX)){
+            return Math.abs(y-maaliY);
+        }else{
+            return Math.abs(x-maaliX);
+        }
 
-        return (Math.abs(y-maaliY)+Math.abs(x-maaliX))*3;
+        
     }
     
     
