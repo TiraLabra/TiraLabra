@@ -71,7 +71,9 @@ public class Aloitus extends JPanel implements ActionListener {
         if (Piirrä.equals(komento)) {
             
             try{
+
                 verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
+
                 reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
                 
                 if(reitti.Haku()){

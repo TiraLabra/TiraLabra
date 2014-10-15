@@ -35,8 +35,9 @@ public class Verkko {
         taulukko=new Solmu [kuva.getWidth()][kuva.getHeight()];
         this.kuva=kuva;
 
-        maaliX=maali.y;
-        maaliY=maali.x;
+        maaliX=maali.x;
+        maaliY=maali.y;
+
 
         
         System.out.println(""+taulukko[5][5]);
@@ -84,7 +85,7 @@ public class Verkko {
     
     int HeuristiikkaArvo(int x, int y){
 
-        return (Math.abs(y-maaliY)+Math.abs(x-maaliX))*2;
+        return (Math.abs(y-maaliY)+Math.abs(x-maaliX))*3;
     }
     
     
