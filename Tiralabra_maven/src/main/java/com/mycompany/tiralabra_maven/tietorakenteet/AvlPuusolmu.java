@@ -13,7 +13,7 @@ public class AvlPuusolmu implements Puusolmu {
     /**
      * Luo uuden solmun ja asettaa asianmukaiset olio-muuttujien alkuarvot.
      *
-     * @param avain Avaimen alkuarvo
+     * @param avain Avaimen alkuarvo.
      */
     public AvlPuusolmu(int avain) {
         this.avain = avain;
@@ -56,18 +56,18 @@ public class AvlPuusolmu implements Puusolmu {
     }
 
     /**
-     * Palauttaa solmun korkeuden
+     * Palauttaa solmun korkeuden.
      *
-     * @return Solmun korkeus kokonaislukuna
+     * @return Solmun korkeus kokonaislukuna.
      */
     public int getKorkeus() {
         return korkeus;
     }
 
     /**
-     * Asettaa solmulle korkeuden
+     * Asettaa solmulle korkeuden.
      *
-     * @param korkeus Uusi korkeuden arvo
+     * @param korkeus Uusi korkeuden arvo.
      */
     public void setKorkeus(int korkeus) {
         this.korkeus = korkeus;

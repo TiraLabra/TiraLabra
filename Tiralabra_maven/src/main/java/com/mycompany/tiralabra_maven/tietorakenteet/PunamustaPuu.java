@@ -1,8 +1,9 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
- * Punamustan puun implementaatio
+ * Punamustan puun implementaatio. Perii Ylihakupuun.
  *
+ * @see YliHakupuu
  * @see http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
  * @author Markus
  */
@@ -11,10 +12,12 @@ public class PunamustaPuu extends YliHakupuu {
     public void lisaa(int avain) {
         //Tehdään uusi solmu.
         PunamustaPuusolmu uusi = new PunamustaPuusolmu(avain);
-        //Asetetaan solmu oikealle paikalle
-        lisaa(uusi);
-        //Tutkitaan vaiheittain tarvitaanko tasapainotusta.
-        lisaaTapaus1(uusi);
+        if (lisaa(uusi)) {
+            lisaaTapaus1(uusi);
+        }
+        if (juuri != null) {
+            ((PunamustaPuusolmu) juuri).setVari(Vari.MUSTA);
+        }
     }
 
     /**
@@ -99,9 +102,15 @@ public class PunamustaPuu extends YliHakupuu {
         }
     }
 
+    /**
+     * Poistaa avainta vastaavan arvon puusta, tekee tarvittavat
+     * tasapainotustoimenpiteet ja asettaa juuren mustaksi.
+     *
+     * @param avain Puusta poistettava arvo.
+     */
     @Override
     public void poista(int avain) {
-        PunamustaPuusolmu solmu = haeSolmu(avain);
+        PunamustaPuusolmu solmu = (PunamustaPuusolmu) haeSolmu(avain);
         if (solmu == null) {
             return;
             // Jos solmulla 2 lasta vaihdetaan se itsensä edeltäjään.
@@ -121,10 +130,14 @@ public class PunamustaPuu extends YliHakupuu {
         }
         //Korvataan poistettava lapsella
         korvaaSolmu(solmu, lapsi);
+        if (juuri != null) {
+            ((PunamustaPuusolmu) juuri).setVari(Vari.MUSTA);
+        }
     }
 
     /**
-     * Tapaus jossa poistettava on juuri
+     * Tapaus jossa poistettava on juuri. Nyt mitään toimenpiteitä ei tarvita.
+     * Muuten jatketaan häntärekursiolla.
      *
      * @param solmu Poistettava solmu
      */
@@ -137,7 +150,9 @@ public class PunamustaPuu extends YliHakupuu {
     }
 
     /**
-     * Tapaus jossa poistettavalla on punainen sisarus
+     * Tapaus jossa poistettavalla on punainen sisarus. Tällöin vaihdetaan
+     * solmun vanhemman ja sisaren väri ja suoritetaan kierto. Kaikissa
+     * tapauksissa jatketaan häntärekursiolla.
      *
      * @param solmu Poistettava solmu
      */
@@ -155,7 +170,9 @@ public class PunamustaPuu extends YliHakupuu {
     }
 
     /**
-     * Tapaus jossa solmun vanhempi, sisar ja sisarusken lapset mustia
+     * Tapaus jossa solmun vanhempi, sisar ja sisaruksen lapset mustia. Tällöin
+     * vaihdetaan sisaren väri mustaksi ja palataan rekursiolla tapaukseen 1
+     * käsitellen solmun vanhempaa. Muuten jatketaan häntärekursiolla.
      *
      * @param solmu Poistettava solmu
      */
@@ -172,7 +189,9 @@ public class PunamustaPuu extends YliHakupuu {
     }
 
     /**
-     * Tapaus jossa sisarus ja sen lapset mustia mutta vanhempi punainen
+     * Tapaus jossa sisarus ja sen lapset mustia mutta vanhempi punainen.
+     * Tällöin aihdetaan sisaren ja vanhemman väri. Muuten jatketaan
+     * häntärekursiolla.
      *
      * @param solmu Poistettava solmu
      */
@@ -190,7 +209,9 @@ public class PunamustaPuu extends YliHakupuu {
 
     /**
      * Tapaus jossa solmun sisarus on musta ja sisaruksella on punainen lapsi
-     * solmun puolella
+     * solmun puolella. Esim jos solmu on vasen lapsi ja sisaksen lapsi on oikea
+     * lapsi. Tällöin vaihdetaan sisaren ja sen lapsen väri ja suoritetaan
+     * kierto sen suhteen. Kaikissa tapauksissa jatketaan häntärekursiolla.
      *
      * @param solmu Poistettava solmu
      */
@@ -215,7 +236,9 @@ public class PunamustaPuu extends YliHakupuu {
 
     /**
      * Tapaus jossa Solmun sisarus on musta mutta sen lapsi joka on solmusta
-     * vastakkaisella puolella on punainen.
+     * vastakkaisella puolella on punainen. Esim jos solmu on vasen lapsi ja
+     * sisaksen lapsi on myös vasen lapsi. Tällöin asetetaan sisaren lapsi
+     * mustaksi ja kierretään solmun vanhemman suhteen.
      *
      * @param solmu Poistettava solmu
      */

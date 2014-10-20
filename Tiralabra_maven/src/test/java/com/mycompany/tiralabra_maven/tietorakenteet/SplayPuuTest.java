@@ -10,140 +10,147 @@ import static org.junit.Assert.*;
  */
 public class SplayPuuTest {
 
-    SplayPuu p;
+    SplayPuu t;
 
     public SplayPuuTest() {
     }
 
     @Before
     public void setUp() {
-        p = new SplayPuu();
+        t = new SplayPuu();
     }
 
-    /**
-     * Test of lisaa method, of class SplayPuu.
-     */
     @Test
     public void testLisaa() {
         try {
-            p.lisaa(5);
-            p.lisaa(1);
-            p.lisaa(100);
-            p.lisaa(5);
-
+            t.lisaa(5);
         } catch (Exception e) {
-            fail("Lisäys kaataa ohjelman");
+            fail("Jokin meni pieleen");
         }
-
+        assertEquals(5, t.getJuuri().getAvain());
+        assertEquals(1, t.getKoko());
+        assertEquals(true, t.hae(5));
     }
 
-    /**
-     * Test of lisaaKaikki method, of class SplayPuu.
-     */
     @Test
     public void testLisaaKaikki() {
+        int[] a = {1, 2, 3, 0};
         try {
-            int[] a = {1, 2, 3};
-            p.lisaaKaikki(a);
+            t.lisaaKaikki(a);
         } catch (Exception e) {
-            fail("arrayn lisäys kaataa ohjelman!");
+            fail("Jokin meni pieleen");
         }
-
+        assertEquals(a.length, t.getKoko());
+        for (int i : a) {
+            assertEquals(true, t.hae(i));
+        }
     }
 
-    /**
-     * Test of hae method, of class SplayPuu.
-     */
     @Test
     public void testHae() {
-        assertFalse("Haku löytää olemattomia!", p.hae(1));
-        assertFalse("Haku löytää olemattomia!", p.hae(100));
-        assertFalse("Haku löytää olemattomia!", p.hae(-11));
+        assertEquals(false, t.hae(5));
+        t.lisaa(5);
+        assertEquals(true, t.hae(5));
         int[] a = {1, 2, 3, 4, 5, 6};
-        p.lisaaKaikki(a);
-        for (int i : a) {
-            assertTrue("Kaikkea lisättyä ei löydy", p.hae(i));
-        }
-        p.poista(3);
-        p.poista(1);
-        for (int i : a) {
-            if (i != 1 && i != 3) {
-                assertTrue("Kaikkea lisättyä ei löydy", p.hae(i));
-            } else {
-                assertFalse("Haku löytää olemattomia!", p.hae(i));
-            }
-        }
+        t.lisaaKaikki(a);
+        assertTrue(t.hae(6));
+        assertEquals(6, t.getJuuri().getAvain());
+        assertTrue(t.hae(1));
+        assertEquals(1, t.getJuuri().getAvain());
+        assertEquals(true, t.hae(2));
+        assertEquals(true, t.hae(3));
+        assertEquals(false, t.hae(8));
+        assertEquals(false, t.hae(0));
+
     }
 
-    /**
-     * Test of poista method, of class SplayPuu.
-     */
+    @Test
+    public void testHaeSolmu() {
+        assertEquals(null, t.haeSolmu(5));
+        t.lisaa(5);
+        assertEquals(true, t.haeSolmu(5) instanceof BinaarinenPuusolmu);
+        assertEquals(5, t.haeSolmu(5).getAvain());
+        t.lisaa(3);
+        assertEquals(3, t.getJuuri().getAvain());
+        t.hae(5);
+        assertEquals(5, t.getJuuri().getAvain());
+    }
+
     @Test
     public void testPoista() {
-        int a[] = {5, 2, 6, 1, 7};
-        p.lisaaKaikki(a);
-        p.poista(5);
+        assertEquals(false, t.hae(5));
+        t.lisaa(1);
+        t.lisaa(2);
+        t.poista(1);
+        assertEquals(2, t.getJuuri().getAvain());
+        int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        t.lisaaKaikki(a);
+        assertEquals(true, t.hae(5));
+        t.poista(5);
+        assertEquals(false, t.hae(5));
+        assertEquals(a.length - 1, t.getKoko());
         for (int i : a) {
             if (i != 5) {
-                assertTrue("Monilapsisen poistossa vikaa", p.hae(i));
-            } else {
-                assertFalse("Monilapsisen poistossa vikaa", p.hae(5));
+                assertEquals(true, t.hae(i));
             }
         }
-        p.tyhjenna();
 
-        int b[] = {1, 2};
-        p.lisaaKaikki(b);
-        p.poista(2);
-        assertFalse("Yksilapsisen alkion poistossa vikaa", p.hae(2));
-        assertTrue("Yksilapsisen alkion poistossa vikaa", p.hae(1));
-        p.tyhjenna();
-
-        p.lisaa(1);
-        p.poista(1);
-        assertTrue("Puu ei tyhjene poistolla", p.onTyhja());
+        t.poista(1);
+        t.poista(9);
+        assertEquals(a.length - 3, t.getKoko());
+        for (int i : a) {
+            if ((i != 5 && i != 1) && i != 9) {
+                assertEquals(true, t.hae(i));
+            }
+        }
     }
 
-    /**
-     * Test of onTyhja method, of class SplayPuu.
-     */
-    @Test
-    public void testOnTyhja() {
-        assertTrue("Uusi puu ei ole tyhjä!", p.onTyhja());
-        p.lisaa(1);
-        assertFalse("Puu on tyhjä lisäyksen jälkeen!", p.onTyhja());
-        p.poista(1);
-        assertTrue("Uusi puu ei ole tyhjä poiston jälkeen!", p.onTyhja());
-        p.poista(1);
-        p.tyhjenna();
-        assertTrue("Uusi puu ei ole tyhjä tyhjenna-toiminnon jälkeen!", p.onTyhja());
-    }
-
-    /**
-     * Test of getJuuri method, of class SplayPuu.
-     */
     @Test
     public void testGetJuuri() {
-        assertEquals("Juuri ei oletuksena null!", null, p.getJuuri());
-        p.lisaa(1);
-        assertFalse("Juuri ei vaihdu lisäyksen jälkeen!", p.getJuuri() == null);
-        p.tyhjenna();
-        assertTrue("Tyjenna ei vaihda juurta nulliksi!", p.getJuuri() == null);
-        p.lisaa(1);
-        p.poista(1);
-        assertTrue("Juuri ei vaihdu poiston jälkeen!", p.getJuuri() == null);
+        assertEquals(null, t.getJuuri());
+        t.lisaa(5);
+        assertEquals(true, t.getJuuri() instanceof BinaarinenPuusolmu);
     }
 
-    /**
-     * Test of tyhjenna method, of class SplayPuu.
-     */
+    @Test
+    public void testOnTyhja() {
+        assertEquals(true, t.onTyhja());
+        t.lisaa(5);
+        assertEquals(false, t.onTyhja());
+        t.poista(5);
+        assertEquals(true, t.onTyhja());
+    }
+
     @Test
     public void testTyhjenna() {
-        assertTrue("Juuri ei ole olkujaan null!", p.getJuuri() == null);
-        p.lisaa(1);
-        p.tyhjenna();
-        assertFalse("Haku löytää alkion tyjennetystä puusta!", p.hae(1));
-        assertTrue("Tyjenna ei vaihda juurta nulliksi!", p.getJuuri() == null);
+        assertEquals(true, t.onTyhja());
+        t.lisaa(5);
+        assertEquals(false, t.onTyhja());
+        t.tyhjenna();
+        assertEquals(true, t.onTyhja());
     }
 
+    @Test
+    public void testGetKorkeus() {
+        assertEquals(0, t.getKorkeus());
+        t.lisaa(0);
+        assertTrue(1 == t.getKorkeus());
+        int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        t.lisaaKaikki(a);
+        assertTrue(a.length >= t.getKorkeus());
+    }
+
+    @Test
+    public void testGetKoko() {
+        assertEquals(0, t.getKoko());
+        int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        t.lisaaKaikki(a);
+        assertEquals(a.length, t.getKoko());
+    }
+
+    @Test
+    public void testGetNimi() {
+        assertTrue(t.getNimi() instanceof String);
+        assertFalse(t.getNimi().equalsIgnoreCase(""));
+    }
 }

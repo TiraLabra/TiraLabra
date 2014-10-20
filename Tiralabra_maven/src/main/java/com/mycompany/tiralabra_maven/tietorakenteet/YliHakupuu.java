@@ -8,9 +8,11 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  */
 public abstract class YliHakupuu implements Hakupuu {
 
+    /**
+     * Puun juurisolmu. Mikäli juuri on null, puu on tyhjä.
+     */
     protected Puusolmu juuri;
 
-    //ULOSPÄIN NÄKYVÄT
     public Puusolmu getJuuri() {
         return juuri;
     }
@@ -23,19 +25,6 @@ public abstract class YliHakupuu implements Hakupuu {
         return getKorkeus(juuri);
     }
 
-    public Puusolmu haeSuurin() {
-        return getSuurin(juuri);
-    }
-
-    public Puusolmu haePienin() {
-        return getPienin(juuri);
-    }
-
-    /**
-     * Palauttaa totuusarvon puun tyhjyydestä.
-     *
-     * @return True jos puu tyhjä, muulloin false.
-     */
     public boolean onTyhja() {
         return juuri == null;
     }
@@ -55,16 +44,21 @@ public abstract class YliHakupuu implements Hakupuu {
         }
     }
 
+    public void poista(int avain) {
+        poistaSolmu(avain);
+    }
+
     /**
-     * Etsii ja palauttaa puusta avainta vastaavan solmun
+     * Etsii ja palauttaa puusta avainta vastaavan solmun.
      *
      * @param avain Haettavan solmun avain.
-     * @return Avainta vastaava solmu.
+     * @return Avainta vastaava solmu. Tai null mikäli avaimen arvoa ei löydy
+     * puusta.
      */
-    protected PunamustaPuusolmu haeSolmu(int avain) {
-        PunamustaPuusolmu solmu = null;
+    protected Puusolmu haeSolmu(int avain) {
+        Puusolmu solmu = null;
         if (!onTyhja()) {
-            solmu = (PunamustaPuusolmu) juuri;
+            solmu = juuri;
             while (solmu != null && solmu.getAvain() != avain) {
                 if (avain < solmu.getAvain()) {
                     solmu = solmu.getVasen();
@@ -76,24 +70,37 @@ public abstract class YliHakupuu implements Hakupuu {
         return solmu;
     }
 
-    public void poista(int avain) {
-        PunamustaPuusolmu solmu = haeSolmu(avain);
+    /**
+     * Poistaa avainta vastaavan solmun puusta ja palauttaa sen.
+     *
+     * @param avain Puusta poistettavan solmun avaimen arvo.
+     * @return Puusta poistettu solmu tai null, mikäli mitään ei poistettu.
+     */
+    protected Puusolmu poistaSolmu(int avain) {
+        Puusolmu solmu = haeSolmu(avain);
         if (solmu == null) {
-            return;
+            return null;
             // Jos solmulla 2 lasta vaihdetaan se itsensä edeltäjään.
         } else if (solmu.getVasen() != null && solmu.getOikea() != null) {
-            PunamustaPuusolmu edeltaja = (PunamustaPuusolmu) edeltaja(solmu);
+            Puusolmu edeltaja = edeltaja(solmu);
             solmu.setAvain(edeltaja.getAvain());
             solmu = edeltaja;
         }
         //Ny solmulla 0 tai 1 lasta.
-        PunamustaPuusolmu lapsi = solmu.getVasen() == null ? solmu.getOikea() : solmu.getVasen();
+        Puusolmu lapsi = solmu.getVasen() == null ? solmu.getOikea() : solmu.getVasen();
 
         //Korvataan poistettava lapsella
         korvaaSolmu(solmu, lapsi);
+        return solmu;
     }
 
-    // SOLMUJEN KÄSITTELYÄ
+    /**
+     * Laskee annetusta solmusta alkavan alipuun koon rekursiivisesti ja
+     * palauttaa saadun arvon kokonaislukuna.
+     *
+     * @param solmu Solmu jonka alipuun koko lasketaan.
+     * @return Alipuun solmujen määrä tai 0, mikäli annettu solmu on null.
+     */
     protected int getKoko(Puusolmu solmu) {
         if (solmu == null) {
             return 0;
@@ -102,6 +109,14 @@ public abstract class YliHakupuu implements Hakupuu {
         }
     }
 
+    /**
+     * Laskee annetusta solmusta alkavan alipuun korkeuden rekursiivisesti ja
+     * palauttaa saadun arvon kokonaislukuna.
+     *
+     * @param solmu Solmu jonka alipuun korkeus lasketaan.
+     * @return Alipuun tasojen määrä eli korkeus tai 0, mikäli annettu solmu on
+     * null.
+     */
     protected int getKorkeus(Puusolmu solmu) {
         if (solmu == null) {
             return 0;
@@ -111,11 +126,16 @@ public abstract class YliHakupuu implements Hakupuu {
     }
 
     /**
-     * Parannettu kiertotoiminto vasempaan joka myös vaihtaa juuren
+     * Vaihtaa solmun ja sen oikean lapsen paikkaa puussa. Lisäksi päivittää
+     * asianmukaisten solmujen viitemuuttujien arvot vastaamaan uutta
+     * tilannetta.
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään
+     * @param solmu Solmu joka vaihtaa paikkaa oikean lapsensa kanssa.
      */
     protected void vasenKierto(Puusolmu solmu) {
+        if (solmu == null ? true : solmu.getOikea() == null) {
+            return;
+        }
         Puusolmu oikea = solmu.getOikea();
         korvaaSolmu(solmu, oikea);
         solmu.setOikea(oikea.getVasen());
@@ -127,11 +147,16 @@ public abstract class YliHakupuu implements Hakupuu {
     }
 
     /**
-     * Parannettu kiertotoiminto oikeaan joka myös vaihtaa juuren
+     * Vaihtaa solmun ja sen vasemman lapsen paikkaa puussa. Lisäksi päivittää
+     * asianmukaisten solmujen viitemuuttujien arvot vastaamaan uutta
+     * tilannetta.
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään
+     * @param solmu Solmu joka vaihtaa paikkaa vasemman lapsensa kanssa.
      */
     protected void oikeaKierto(Puusolmu solmu) {
+        if (solmu == null ? true : solmu.getVasen() == null) {
+            return;
+        }
         Puusolmu vasen = solmu.getVasen();
         korvaaSolmu(solmu, vasen);
         solmu.setVasen(vasen.getOikea());
@@ -143,17 +168,18 @@ public abstract class YliHakupuu implements Hakupuu {
     }
 
     /**
-     * Apumetodi jokavaihtaa viitaukset solmuihin päittäin. Parametrina saadut
-     * solmut siis vaihtavat keskenään paikkaa puussa.
+     * Apumetodi joka korvaa parametrina saadun solmun puussa toisella
+     * parametrina saadulla solmulla. Päivittää puun juuren arvon, mikäli
+     * tarpeen.
      *
-     * @param vanha Alipuun juurena toiminut solmu.
-     * @param uusi Solmu joka tulee olemaan uusi alipuun juuri.
+     * @param vanha Solmu joka korvataan.
+     * @param uusi Solmu joka tulee korvattavan solmun paikalle.
      */
     protected void korvaaSolmu(Puusolmu vanha, Puusolmu uusi) {
         if (vanha.getVanhempi() == null) {
             juuri = uusi;
         } else {
-            if (PuuOperaatiot.onVasen(vanha)) {
+            if (onVasen(vanha)) {
                 vanha.getVanhempi().setVasen(uusi);
             } else {
                 vanha.getVanhempi().setOikea(uusi);
@@ -165,11 +191,11 @@ public abstract class YliHakupuu implements Hakupuu {
     }
 
     /**
-     * Kertoo onko parametrin solmu jonkin solmun vasen lapsi
+     * Kertoo onko parametrin solmu jonkin solmun vasen lapsi.
      *
-     * @param solmu Solmu josta jonka suhde vanhempaan halutaan selvittää
+     * @param solmu Solmu jonka suhde vanhempaan halutaan selvittää
      * @return True mikäli solmu on vasen lapsi jollekin solmulle, muulloin
-     * false
+     * false.
      */
     protected boolean onVasen(Puusolmu solmu) {
         return solmu == null ? false : solmu.getVanhempi() == null ? false : solmu.getVanhempi().getVasen() == solmu;
@@ -178,17 +204,17 @@ public abstract class YliHakupuu implements Hakupuu {
     /**
      * Kertoo onko parametrin solmu jonkin solmun oikea lapsi
      *
-     * @param solmu Solmu josta jonka suhde vanhempaan halutaan selvittää
+     * @param solmu Solmu jonka suhde vanhempaan halutaan selvittää
      * @return True mikäli solmu on oikea lapsi jollekin solmulle, muulloin
-     * false
+     * false.
      */
     protected boolean onOikea(Puusolmu solmu) {
         return solmu == null ? false : solmu.getVanhempi() == null ? false : solmu.getVanhempi().getOikea() == solmu;
     }
 
     /**
-     * Palauttaa avaimeltaan pienimmän parametrina saadusta solmusta alkavasta
-     * alipuusta löytyvän solmun.
+     * Palauttaa avaimeltaan avaimeltaan pienimmän parametrina saadusta solmusta
+     * alkavasta alipuusta löytyvän solmun.
      *
      * @param solmu Puusolmu, jonka alipuusta arvoa etsitään.
      * @return Pienimmän avaimen omaava solmu.
@@ -285,7 +311,14 @@ public abstract class YliHakupuu implements Hakupuu {
         return solmu == null ? null : solmu.getVanhempi() == null ? null : solmu == solmu.getVanhempi().getVasen() ? solmu.getVanhempi().getOikea() : solmu.getVanhempi().getVasen();
     }
 
-    protected void lisaa(Puusolmu uusi) {
+    /**
+     * Asettaa parametrina saadun solmun oikealle paikalle puussa. Asettaa myös
+     * asianmukaiset viitemuuttujien arvot asianmukaisissa solmuissa.
+     *
+     * @param uusi Puuhun lisättävä solmu.
+     * @return True jos solmu lisätään, muulloin false.
+     */
+    protected boolean lisaa(Puusolmu uusi) {
         if (onTyhja()) {
             juuri = uusi;
         } else {
@@ -294,7 +327,7 @@ public abstract class YliHakupuu implements Hakupuu {
             //Etsitään oikea paikka uudelle solmulle.
             while (true) {
                 if (uusi.getAvain() == solmu.getAvain()) {
-                    return;
+                    return false;
                 } else if (uusi.getAvain() < solmu.getAvain()) {
                     if (solmu.getVasen() == null) {
                         solmu.setVasen(uusi);
@@ -313,17 +346,27 @@ public abstract class YliHakupuu implements Hakupuu {
             }
             uusi.setVanhempi(solmu);
         }
+        return true;
     }
 
     //TULOSTUSTOIMINTOJA
+    /**
+     * Tulostaa puun solmujen avainten arvot esijärjestyksessä
+     */
     public void tulostaEsijarjestys() {
         esijarjestys(juuri);
     }
 
+    /**
+     * Tulostaa puun solmujen avainten arvot sisäjärjestyksessä
+     */
     public void tulostaSisajarjestys() {
         sisajarjestys(juuri);
     }
 
+    /**
+     * Tulostaa puun solmujen avainten arvot jälkijärjestyksessä
+     */
     public void tulostaJalkijarjestys() {
         jalkijarjestys(juuri);
     }

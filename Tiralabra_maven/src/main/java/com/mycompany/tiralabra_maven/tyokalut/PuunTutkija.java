@@ -108,51 +108,48 @@ public class PuunTutkija {
      * Vertaa puuntutkijalle annettujen hakupuiden lisäysaikoja annetulla
      * tietojoukolla ja palauttaa saadun vertailu-olion.
      *
-     * @param kuvaus Kuvaus, annetaan vertailulle
      * @param data Tietojoukko jolla mittaukset suoritetaan
      * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
      * Mittaustulos-olion.
      */
-    public Vertailu lisaysVertailu(String kuvaus, int[] data) {
+    public Vertailu lisaysVertailu(int[] data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
             tulokset[i] = lisaysaikaTulokset(puut[i], data);
         }
-        return new Vertailu(kuvaus, tulokset);
+        return new Vertailu(tulokset);
     }
 
     /**
      * Vertaa puuntutkijalle annettujen hakupuiden hakuaikoja annetulla
      * tietojoukolla ja palauttaa saadun vertailu-olion.
      *
-     * @param kuvaus Kuvaus, annetaan vertailulle
      * @param data Tietojoukko jolla mittaukset suoritetaan
      * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
      * Mittaustulos-olion.
      */
-    public Vertailu hakuVertailu(String kuvaus, int[] data) {
+    public Vertailu hakuVertailu(int[] data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
             tulokset[i] = hakuaikaTulokset(puut[i], data);
         }
-        return new Vertailu(kuvaus, tulokset);
+        return new Vertailu(tulokset);
     }
 
     /**
      * Vertaa puuntutkijalle annettujen hakupuiden hakuaikoja annetulla
      * tietojoukolla ja palauttaa saadun vertailu-olion.
      *
-     * @param kuvaus Kuvaus, annetaan vertailulle
      * @param data Tietojoukko jolla mittaukset suoritetaan
      * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
      * Mittaustulos-olion.
      */
-    public Vertailu poistoVertailu(String kuvaus, int[] data) {
+    public Vertailu poistoVertailu(int[] data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
             tulokset[i] = poistoaikaTulokset(puut[i], data);
         }
-        return new Vertailu(kuvaus, tulokset);
+        return new Vertailu(tulokset);
     }
 
     /**

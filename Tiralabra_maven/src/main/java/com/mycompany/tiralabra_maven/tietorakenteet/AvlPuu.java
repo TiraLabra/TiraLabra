@@ -6,279 +6,87 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
  * @see http://en.wikipedia.org/wiki/AVL_tree
  * @author Markus
  */
-public class AvlPuu implements Hakupuu {
-
-    AvlPuusolmu juuri;
-
-    public AvlPuu() {
-        juuri = null;
-    }
+public class AvlPuu extends YliHakupuu {
 
     public void lisaa(int avain) {
         //Lisäys
         AvlPuusolmu uusi = new AvlPuusolmu(avain);
-        AvlPuusolmu vanhempi;
-        AvlPuusolmu solmu;
-        if (onTyhja()) {
-            juuri = uusi;
-        } else {
-            solmu = this.juuri;
-            vanhempi = null;
-            while (solmu != null) {
-                vanhempi = solmu;
-                if (avain < solmu.getAvain()) {
-                    solmu = solmu.getVasen();
-                } else {
-                    solmu = solmu.getOikea();
-                }
-            }
-            uusi.setVanhempi(vanhempi);
-            if (avain < vanhempi.getAvain()) {
-                vanhempi.setVasen(uusi);
-            } else {
-                vanhempi.setOikea(uusi);
-            }
+        if (lisaa(uusi)) {
+            tasapainota(uusi);
         }
-        //Tasapainotus
-        solmu = uusi.getVanhempi();
-        AvlPuusolmu alipuu;
+    }
+
+    /**
+     * Tasapainottaa puun alkaen parametrina saadusta solmusta. Etenee kohti
+     * puun juurta ja suorittaa tarvittavat kierto-operaatiot puun tasapainon
+     * palauttamiseksi.
+     *
+     * @param alku Solmu, josta tasapainotus aloitetaan.
+     */
+    private void tasapainota(AvlPuusolmu alku) {
+        AvlPuusolmu solmu = alku.getVanhempi();
+        AvlPuusolmu vanhempi;
         while (solmu != null) {
-            if (this.korkeus(solmu.getVasen()) > this.korkeus(solmu.getOikea()) + 1) { // Vasen lapsi aiheuttaa epätasapainon
+            if (this.korkeus(solmu.getVasen()) > this.korkeus(solmu.getOikea()) + 1) { // Vasen lapsi aiheuttaa epätasapainon.
                 vanhempi = solmu.getVanhempi();
-                if (this.korkeus(solmu.getVasen().getVasen()) > this.korkeus(solmu.getVasen().getOikea())) {
-                    alipuu = oikeaKierto(solmu);
-                } else {
-                    alipuu = vasenOikeaKierto(solmu);
+                if (this.korkeus(solmu.getVasen().getVasen()) > this.korkeus(solmu.getVasen().getOikea())) { // Vasemman lapsen vasen lapsi syyllinen.
+                    oikeaKierto(solmu);
+                } else {    // Vasemman lapsen oikea lapsi syyllinen.
+                    vasenOikeaKierto(solmu);
                 }
-                if (vanhempi == null) {
-                    juuri = alipuu;
-                } else if (vanhempi.getVasen() == solmu) {
-                    vanhempi.setVasen(alipuu);
-                } else {
-                    vanhempi.setOikea(alipuu);
-                }
-                if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()), this.korkeus(vanhempi.getOikea())) + 1);
-                }
+                korjaaKorkeus(vanhempi);
                 return;
             }
-            if (this.korkeus(solmu.getOikea()) > this.korkeus(solmu.getVasen()) + 1) { // Oikean lapsi aiheuttaa epätasapainon
+            if (this.korkeus(solmu.getOikea()) > this.korkeus(solmu.getVasen()) + 1) { // Oikean lapsi aiheuttaa epätasapainon.
                 vanhempi = solmu.getVanhempi();
-                if (this.korkeus(solmu.getOikea().getOikea()) > this.korkeus(solmu.getOikea().getVasen())) {
-                    alipuu = vasenKierto(solmu);
-                } else {
-                    alipuu = oikeaVasenKierto(solmu);
+                if (this.korkeus(solmu.getOikea().getOikea()) > this.korkeus(solmu.getOikea().getVasen())) { // Oikean lapsen oikea lapsi syyllinen.
+                    vasenKierto(solmu);
+                } else {    // Oikean lapsen oikea lapsi syyllinen.
+                    oikeaVasenKierto(solmu);
                 }
-                if (vanhempi == null) {
-                    juuri = alipuu;
-                } else if (vanhempi.getVasen() == solmu) {
-                    vanhempi.setVasen(alipuu);
-                } else {
-                    vanhempi.setOikea(alipuu);
-                }
-                if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(this.korkeus(vanhempi.getVasen()), this.korkeus(vanhempi.getOikea())) + 1);
-                }
+                korjaaKorkeus(vanhempi);
                 return;
             }
-            solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()), this.korkeus(solmu.getOikea())) + 1);
+            korjaaKorkeus(solmu);
             solmu = solmu.getVanhempi();
         }
     }
 
-    public void lisaaKaikki(int[] avaimet) {
-        for (int i : avaimet) {
-            this.lisaa(i);
-        }
-    }
-
-    public boolean hae(int avain) {
-        Puusolmu solmu = haeSolmu(avain);
-        return solmu != null;
-    }
-
-    /**
-     * Etsii ja palauttaa puusta avainta vastaavan solmun
-     *
-     * @param avain Haettavan solmun avain.
-     * @return Avainta vastaava solmu.
-     */
-    public AvlPuusolmu haeSolmu(int avain) {
-        AvlPuusolmu solmu = null;
-        if (!onTyhja()) {
-            solmu = this.juuri;
-            while (solmu != null && solmu.getAvain() != avain) {
-                if (avain < solmu.getAvain()) {
-                    solmu = solmu.getVasen();
-                } else {
-                    solmu = solmu.getOikea();
-                }
-            }
-        }
-        return solmu;
-    }
-
+    @Override
     public void poista(int avain) {
-        avlPoista(haeSolmu(avain));
-    }
-
-    /**
-     * Poistaa parametrina saadun solmun puusta
-     *
-     * @param poistettava Puusta poistettava solmu
-     */
-    private AvlPuusolmu poista(AvlPuusolmu poistettava) {
-        if (poistettava == null) {
-            return null;
-        }
-        //Poistaminen
-        //Poistettavalla ei lapsia
-        if (poistettava.getVasen() == null && poistettava.getOikea() == null) {
-            AvlPuusolmu vanhempi = poistettava.getVanhempi();
-            if (vanhempi == null) {
-                juuri = null;
-                return poistettava;
-            }
-            if (poistettava == vanhempi.getVasen()) {
-                vanhempi.setVasen(null);
-            } else {
-                vanhempi.setOikea(null);
-            }
-            return poistettava;
-        }
-        //Poistettavalla yksi lapsi
-        if (poistettava.getVasen() == null || poistettava.getOikea() == null) {
-            AvlPuusolmu lapsi;
-            if (poistettava.getVasen() != null) {
-                lapsi = poistettava.getVasen();
-            } else {
-                lapsi = poistettava.getOikea();
-            }
-            AvlPuusolmu vanhempi = poistettava.getVanhempi();
-            if (vanhempi == null) {
-                juuri = lapsi;
-                return poistettava;
-            }
-            if (poistettava == vanhempi.getVasen()) {
-                vanhempi.setVasen(lapsi);
-            } else {
-                vanhempi.setOikea(lapsi);
-            }
-            return poistettava;
-        }
-        //Poistettavalla 2 lasta
-        AvlPuusolmu seuraaja = (AvlPuusolmu) PuuOperaatiot.seuraaja(poistettava);
-        poistettava.setAvain(seuraaja.getAvain());
-        AvlPuusolmu lapsi = seuraaja.getOikea();
-        AvlPuusolmu vanhempi = seuraaja.getVanhempi();
-        if (vanhempi.getVasen() == seuraaja) {
-            vanhempi.setVasen(lapsi);
-        } else {
-            vanhempi.setOikea(lapsi);
-        }
-        if (lapsi != null) {
-            lapsi.setVanhempi(vanhempi);
-        }
-        return seuraaja;
-    }
-
-    /**
-     * Suorittaa ensin perus poistamisoperaation, jonkä jälkeen tasapainottaa
-     * puun tarvittaessa.
-     *
-     * @param poistettava Puusta poistettava solmu.
-     */
-    private void avlPoista(AvlPuusolmu poistettava) {
-        AvlPuusolmu pois = poista(poistettava);
+        AvlPuusolmu pois = (AvlPuusolmu) poistaSolmu(avain);
         if (pois == null) {
             return;
         }
-        AvlPuusolmu solmu = pois.getVanhempi();
-        AvlPuusolmu vanhempi, alipuu;
-        while (solmu != null) {
-            if (korkeus(solmu.getVasen()) > (korkeus(solmu.getOikea()) + 1)) { // Vasen lapsi aiheuttaa epätasapainon
-                vanhempi = solmu.getVanhempi();
-                if (korkeus(solmu.getVasen().getVasen()) > korkeus(solmu.getVasen().getOikea())) {
-                    alipuu = oikeaKierto(solmu);
-                } else {
-                    alipuu = vasenOikeaKierto(solmu);
-                }
-                if (vanhempi == null) {
-                    juuri = alipuu;
-                } else if (vanhempi.getVasen() == solmu) {
-                    vanhempi.setVasen(alipuu);
-                } else {
-                    vanhempi.setOikea(alipuu);
-                }
-                if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(korkeus(vanhempi.getVasen()), korkeus(vanhempi.getOikea())) + 1);
-                }
-                return;
-            }
-            if (korkeus(solmu.getOikea()) > (korkeus(solmu.getVasen()) + 1)) { // Oikean lapsi aiheuttaa epätasapainon
-                vanhempi = solmu.getVanhempi();
-                if (korkeus(solmu.getOikea().getOikea()) > korkeus(solmu.getOikea().getVasen())) {
-                    alipuu = vasenKierto(solmu);
-                } else {
-                    alipuu = oikeaVasenKierto(solmu);
-                }
-                if (vanhempi == null) {
-                    juuri = alipuu;
-                } else if (vanhempi.getVasen() == solmu) {
-                    vanhempi.setVasen(alipuu);
-                } else {
-                    vanhempi.setOikea(alipuu);
-                }
-                if (vanhempi != null) {
-                    vanhempi.setKorkeus(Math.max(korkeus(vanhempi.getVasen()), korkeus(vanhempi.getOikea())) + 1);
-                }
-                return;
-            }
-            solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()), this.korkeus(solmu.getOikea())) + 1);
-            solmu = solmu.getVanhempi();
-        }
+        tasapainota(pois);
     }
 
     /**
-     * Puun tasapainotukseen käytettävä operaatio, joka vaihtaa parametrina
-     * saadun solmun ja sen vasemman lapsen paikan puussa.
+     * Suorittaa yliluokan määrittämän vasemman kierron ja korjaa kierrossa
+     * mukana olevien solmujen korkeudet
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään.
-     * @return Alkuperäisen solmun paikalle siirretty solmu.
+     * @see YliHakupuu
+     * @param solmu Solmu jonka suhteen kierto tehdään
      */
-    private AvlPuusolmu oikeaKierto(AvlPuusolmu solmu) {
-        AvlPuusolmu solmu2 = solmu.getVasen();
-        solmu2.setVanhempi(solmu.getVanhempi());
-        solmu.setVanhempi(solmu2);
-        solmu.setVasen(solmu2.getOikea());
-        solmu2.setOikea(solmu);
-        if (solmu.getVasen() != null) {
-            solmu.getVasen().setVanhempi(solmu);
-        }
-        solmu.setKorkeus(Math.max(korkeus(solmu.getVasen()), korkeus(solmu.getOikea())) + 1);
-        solmu2.setKorkeus(Math.max(korkeus(solmu2.getVasen()), korkeus(solmu2.getOikea())) + 1);
-        return solmu2;
+    private void vasenKierto(AvlPuusolmu solmu) {
+        AvlPuusolmu oikea = solmu.getOikea();
+        super.vasenKierto(solmu);
+        korjaaKorkeus(solmu);
+        korjaaKorkeus(oikea);
     }
 
     /**
-     * Puun tasapainotukseen käytettävä operaatio, joka vaihtaa parametrina
-     * saadun solmun ja sen oikean lapsen paikan puussa.
+     * Suorittaa yliluokan määrittämän oikean kierron ja korjaa kierrossa mukana
+     * olevien solmujen korkeudet
      *
-     * @param solmu Solmu jonka suhteen kierto tehdään.
-     * @return Alkuperäisen solmun paikalle siirretty solmu.
+     * @see YliHakupuu
+     * @param solmu Solmu jonka suhteen kierto tehdään
      */
-    private AvlPuusolmu vasenKierto(AvlPuusolmu solmu) {
-        AvlPuusolmu solmu2 = solmu.getOikea();
-        solmu2.setVanhempi(solmu.getVanhempi());
-        solmu.setVanhempi(solmu2);
-        solmu.setOikea(solmu2.getVasen());
-        solmu2.setVasen(solmu);
-        if (solmu.getOikea() != null) {
-            solmu.getOikea().setVanhempi(solmu);
-        }
-        solmu.setKorkeus(Math.max(korkeus(solmu.getVasen()), korkeus(solmu.getOikea())) + 1);
-        solmu2.setKorkeus(Math.max(korkeus(solmu2.getVasen()), korkeus(solmu2.getOikea())) + 1);
-        return solmu2;
+    private void oikeaKierto(AvlPuusolmu solmu) {
+        AvlPuusolmu vasen = solmu.getVasen();
+        super.oikeaKierto(solmu);
+        korjaaKorkeus(solmu);
+        korjaaKorkeus(vasen);
     }
 
     /**
@@ -289,10 +97,9 @@ public class AvlPuu implements Hakupuu {
      * @param solmu Solmu jonka suhteen kierto tehdään.
      * @return Alkuperäisen solmun paikalle siirretty solmu.
      */
-    private AvlPuusolmu oikeaVasenKierto(AvlPuusolmu solmu) {
-        AvlPuusolmu solmu2 = solmu.getOikea();
-        solmu.setOikea(oikeaKierto(solmu2));
-        return vasenKierto(solmu);
+    private void oikeaVasenKierto(AvlPuusolmu solmu) {
+        this.oikeaKierto(solmu.getOikea());
+        this.vasenKierto(solmu);
     }
 
     /**
@@ -303,19 +110,9 @@ public class AvlPuu implements Hakupuu {
      * @param solmu Solmu jonka suhteen kierto tehdään.
      * @return Alkuperäisen solmun paikalle siirretty solmu.
      */
-    private AvlPuusolmu vasenOikeaKierto(AvlPuusolmu solmu) {
-        AvlPuusolmu solmu2 = solmu.getVasen();
-        solmu.setVasen(vasenKierto(solmu2));
-        return oikeaKierto(solmu);
-    }
-
-    /**
-     * Palauttaa totuusarvon, joka kertoo onko puu tyhjä
-     *
-     * @return True, jos puu tyhjä; muulloin false.
-     */
-    public boolean onTyhja() {
-        return juuri == null;
+    private void vasenOikeaKierto(AvlPuusolmu solmu) {
+        this.vasenKierto(solmu.getVasen());
+        this.oikeaKierto(solmu);
     }
 
     /**
@@ -333,12 +130,17 @@ public class AvlPuu implements Hakupuu {
         }
     }
 
-    public Puusolmu getJuuri() {
-        return this.juuri;
-    }
-
-    public void tyhjenna() {
-        juuri = null;
+    /**
+     * Laskee uudelleen ja asettaa parametrina saadun solmun korkeuden. Jos
+     * solmu on null, ei tee mitään.
+     *
+     * @param solmu Solmu jonka korkeus halutaan laskea ja asettaa.
+     */
+    private void korjaaKorkeus(AvlPuusolmu solmu) {
+        if (solmu == null) {
+            return;
+        }
+        solmu.setKorkeus(Math.max(this.korkeus(solmu.getVasen()), this.korkeus(solmu.getOikea())) + 1);
     }
 
     public String getNimi() {

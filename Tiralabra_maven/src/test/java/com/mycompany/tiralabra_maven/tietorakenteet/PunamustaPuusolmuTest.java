@@ -86,6 +86,7 @@ public class PunamustaPuusolmuTest {
         s.setOikea(b);
         assertEquals(a, b.getSisarus());
         assertEquals(b, a.getSisarus());
+        assertEquals(null, s.getSisarus());
     }
 
     @Test
@@ -104,6 +105,7 @@ public class PunamustaPuusolmuTest {
         c.setOikea(d);
         assertEquals(a, d.getSeta());
         assertEquals(c, b.getSeta());
+        assertEquals(null, s.getSeta());
 
     }
 
