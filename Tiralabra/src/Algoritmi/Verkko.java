@@ -39,29 +39,14 @@ public class Verkko {
         maaliY=maali.y;
 
 
-//        Täytätaulukko();
+
 
     }
     
-/**
- * Käy läpi kuvan ja muuttaa sen Solmuista koostuvaksi taulukoksi.
- * 
- */      
-//    private void Täytätaulukko(){
-//        
-//        for (int i = 0; i < kuva.getHeight(); i++) {
-//            for (int j = 0; j < kuva.getWidth(); j++) {
-//                Color c = new Color(kuva.getRGB(i, j));
-//                
-//                taulukko[i][j]=new Solmu(i, j, HeuristiikkaArvo(j, i), c.getBlue());
-//                
-//            }
-//        }
-//        
-//    }
+
     
     
-    public void LuoSolmu(int x, int y, Solmu Käsittelyssä){
+    public void LuoSolmu(int x, int y){
         Color c = new Color(kuva.getRGB(x, y));
         
         taulukko[x][y]=new Solmu(x, y, HeuristiikkaArvo(x, y), c.getBlue());
@@ -80,10 +65,14 @@ public class Verkko {
     
     int HeuristiikkaArvo(int x, int y){
         
-        if(Math.abs(y-maaliY)>Math.abs(x-maaliX)){
-            return Math.abs(y-maaliY);
+
+        int xPituus=Math.abs(x-maaliX);
+        int yPituus=Math.abs(y-maaliY);
+        
+        if(xPituus > yPituus){
+            return (xPituus-yPituus)*10+(yPituus*14);
         }else{
-            return Math.abs(x-maaliX);
+            return (yPituus-xPituus)*10+(xPituus*14);
         }
 
         

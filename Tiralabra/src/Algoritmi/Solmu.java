@@ -22,6 +22,7 @@ public class Solmu {
     public int koordinaattiY;
     
     private boolean seinä;
+    public boolean käyty;
     
     /**
      *Konstruktori
@@ -40,11 +41,14 @@ public class Solmu {
         heurestiikaArvo=hArvo;
         Reittipituus=0;
         Edeltävä=null;
+        
         if(väri==255){
             seinä=false;
         }else{
             seinä=true;
         }
+        
+        käyty=false;
         
     }
     
@@ -66,11 +70,11 @@ public class Solmu {
         
         if (heurestiikaArvo+Reittipituus < verrattava.heurestiikaArvo+verrattava.Reittipituus){
             return 1;
-        }else if (heurestiikaArvo+Reittipituus > verrattava.heurestiikaArvo+verrattava.Reittipituus){
+        }else{
             return -1;
         }
         
-        return 0;
+        
         
     }
     

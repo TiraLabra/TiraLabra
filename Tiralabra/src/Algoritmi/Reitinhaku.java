@@ -25,7 +25,7 @@ public class Reitinhaku {
     
     
 /**
- * Konstruktori luo verkon sekä keon jossa on solmut joihin voidaan mennä. 
+ * Konstruktori keon jossa on solmut joihin voidaan mennä (open set). 
  * Konstruktori lisää tähän kekoon aloituspisteen ja laittaa sen 
  * edeltäväksi solmuksi itsensä.
  * 
@@ -40,37 +40,31 @@ public class Reitinhaku {
         verkko=syöte;
 
         keko=new Keko(laajuus);
-
         
-        Solmu ÄläVälitäTästäSolmusta=new Solmu(6, 6, 6, 6);
-        verkko.LuoSolmu(Lähtö.x, Lähtö.y, ÄläVälitäTästäSolmusta);
+        verkko.LuoSolmu(Lähtö.x, Lähtö.y);
+        
         Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
-
 
         keko.lisää(lähtösolmu);
 
         lähtösolmu.Edeltävä=lähtösolmu;
-
         
-
     }
     
 /**
- * Haku metodin looppi ottaa keosta solmun jolla on pienin heurestiikka-arvo, 
- * ja antaa sen parametrinä TarkistaViereiset metodille. Looppi loppuu kun maalipiste on
+ * Haku metodin looppi ottaa keosta solmun jolla on pienin heurestiikan ja reittipituuden yhteisarvo, 
+ * ja antaa sen parametrinä VierusSolmut metodille. Looppi loppuu kun maalipiste on
  * käsittelyssä. Metodi myös maalaa kaikki käydyt pisteet.
  * 
  * @return Palauttaa true jos reitti lyötyy false jos ei
  */        
     
     public boolean Haku(){
-
         
         Solmu käsittelyssä=new Solmu(6, 6, 6, 6);
         
         
         while(käsittelyssä.heurestiikaArvo!=0){
-
             käsittelyssä=keko.poista();
             
             if(käsittelyssä==null){
@@ -78,10 +72,10 @@ public class Reitinhaku {
                 return false;
             }
             
-            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(200,0,200).getRGB());
+            verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, new Color(230,0,230).getRGB());
             
             VierusSolmut(käsittelyssä);
-            
+            käsittelyssä.käyty=true;
             
         }
         
@@ -89,10 +83,16 @@ public class Reitinhaku {
         return true;
          
     }
+    
+    
+    
+    
 
 /**
- * Tarkistaa jokaisen viereisen solmun sen varalta että se on seinä, jos ei ole 
- * niin kutsuu metodia Lisää sille solmulle.
+ * Tarkistaa jokaisen viereisen solmun. Jos Vierus solmua ei vielä ole luotu niin se luodaan.
+ * Jokaisen vierussolmun reittipituutta verrataan käsittelyssä solmun kautta saatavaan reittipituuteen ja jos sen lyhyempi
+ * niin vierussolmulle annetaan edeltävä arvoksi käsittelyssä oleva solmu ja reittiarvoksi kokeiluReittipituus.
+ * Lisäksi naapuri solmut lisätää kekoon.
  * 
  * 
  *  @param Käsittelyssä Käsittelyssä oleva solmu
@@ -100,22 +100,41 @@ public class Reitinhaku {
     
     public void VierusSolmut(Solmu Käsittelyssä){
         
+        Solmu naapuri;
+        
         for (int x = -1; x < 2; x++) {
             for (int y = -1; y < 2; y++) {
-
+                
                 if(verkko.taulukko[Käsittelyssä.koordinaattiX+x][Käsittelyssä.koordinaattiY+y]==null){
-                    verkko.LuoSolmu(Käsittelyssä.koordinaattiX+x, Käsittelyssä.koordinaattiY+y, Käsittelyssä);
-                }                
-                if(verkko.taulukko[Käsittelyssä.koordinaattiX+x][Käsittelyssä.koordinaattiY+y].haeSeina()==false){
-                    Lisää(Käsittelyssä.koordinaattiX+x, Käsittelyssä.koordinaattiY+y, Käsittelyssä);
-                    
-                }                   
+                    verkko.LuoSolmu(Käsittelyssä.koordinaattiX+x, Käsittelyssä.koordinaattiY+y);
+                }
+                
+                naapuri=verkko.taulukko[Käsittelyssä.koordinaattiX+x][Käsittelyssä.koordinaattiY+y];
+                
+                if(naapuri.haeSeina()){
+                    continue;
+                }
+                
+                int kokeiluReittipituus = Käsittelyssä.Reittipituus + Kumpi(Käsittelyssä, naapuri);
+                
+                if(naapuri.käyty && kokeiluReittipituus>=naapuri.Reittipituus){
+                    continue;
+                }
+                
+                if(naapuri.Edeltävä==null || kokeiluReittipituus<naapuri.Reittipituus){
+                    naapuri.Edeltävä=Käsittelyssä;
+                    naapuri.Reittipituus=kokeiluReittipituus;
+                     
+                    if(kokeiluReittipituus>=naapuri.Reittipituus){
+                        keko.lisää(naapuri);
+                    }
+                }
+                
+                  
             }
         }
         
     }
-    
-
     
 
     
@@ -128,15 +147,38 @@ public class Reitinhaku {
  * @param y Koordinaatti y
  * @param Käsittelyssä Käsittelyssä oleva solmu
  */   
-    public void Lisää(int x, int y, Solmu Käsittelyssä){
+//    public void Lisää(Solmu naapuri, Solmu Käsittelyssä){
+//        
+//        if(naapuri.haeSeina()==false){
+//            naapuri.Edeltävä=Käsittelyssä;
+//            
+//            
+//            naapuri.Reittipituus=Käsittelyssä.Reittipituus+Kumpi(Käsittelyssä, naapuri);
+//            
+//
+//            keko.lisää(naapuri);
+//        }
+//        
+//    }
+    
+    /**
+     * Selvittää ovatko kaksi solmua vierekkäin näin *X vai näin XX
+     *                                               X*          **  
+     * 
+     * @param edeltävä verrattava solmu
+     * @param nykyinen verrattava solmu
+     * @return palauttaa 14 jos vinottain 10 jos suoraan
+    */         
+    
+    public int Kumpi(Solmu edeltävä, Solmu nykyinen){
         
-        if(verkko.taulukko[x][y].Edeltävä==null){
-            verkko.taulukko[x][y].Edeltävä=Käsittelyssä;
-            verkko.taulukko[x][y].Reittipituus=Käsittelyssä.Reittipituus+1;
-            
-
-            keko.lisää(verkko.taulukko[x][y]);
+        if(edeltävä.koordinaattiX!=nykyinen.koordinaattiX && edeltävä.koordinaattiY!=nykyinen.koordinaattiY){
+            return 14;
+        }else{
+            return 10;
         }
+        
+        
         
     }
     
