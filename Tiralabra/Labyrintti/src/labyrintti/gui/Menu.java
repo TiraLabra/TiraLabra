@@ -34,7 +34,7 @@ public class Menu {
      */
 
     public void run() {
-        frame = new JFrame("Minesweeper");
+        frame = new JFrame("Labyrinth");
         int leveys = 400;
         int korkeus = 150;
 

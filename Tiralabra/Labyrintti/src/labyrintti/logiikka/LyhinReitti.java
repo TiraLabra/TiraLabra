@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package labyrintti.logiikka;
 
+import labyrintti.tietorakenteet.Keko;
 import labyrintti.tietorakenteet.LinkitettyLista;
 
 /**
@@ -23,8 +20,8 @@ public class LyhinReitti {
     private int alkuY;
     private boolean loppuLoytynyt;
     private Maapala[][] labyrintti;
-    private LinkitettyLista avoinLista;
-    private LinkitettyLista suljettuLista1;
+    private LinkitettyLista suljettuLista;
+    private Keko avoinLista;
 
     public LyhinReitti(Maapalarekisteri maapalaRekisteri) {
         this.loppuLoytynyt = false;
@@ -32,10 +29,11 @@ public class LyhinReitti {
         this.alkuX = maapalaRekisteri.getAlkuX();
         this.alkuY = maapalaRekisteri.getAlkuY();
         this.labyrintti = maapalaRekisteri.getLabyrintti();
-        this.avoinLista = new LinkitettyLista();
-        this.suljettuLista1 = new LinkitettyLista();
-        this.avoinLista.lisaaListaan(this.labyrintti[alkuX][alkuY]);
+        this.avoinLista = new Keko((maapalaRekisteri.getKoko())* maapalaRekisteri.getKoko());
+        avoinLista.lisaaAlkio(this.labyrintti[alkuX][alkuY]);
+        this.suljettuLista = new LinkitettyLista();
         this.labyrintti[alkuX][alkuY].siirraAvoimelleListalle();
+        
 
     }
 
@@ -69,19 +67,19 @@ public class LyhinReitti {
     
     /**
      * Metodi siirtää parametrina saadussa koordinaatissa sijaitsevan maapalan
-     * avoimelle listalle ja asettaa prametrina saandun maapalan sen vanhemmaksi.
+     * avoimelle listalle ja asettaa prametrina saadun maapalan sen vanhemmaksi.
      * 
      * @param x
      * @param y
      * @param maapala 
      */
-
     private void siirraNaapuriAvoimelleListalle(int x, int y, Maapala maapala) {
         if (!this.labyrintti[x][y].onkoAvoimellaListalla() && !this.labyrintti[x][y].onkoSuljetullaListalla() && !this.labyrintti[x][y].onkoSeina()) {
-            avoinLista.lisaaListaan(this.labyrintti[x][y]);
-            this.labyrintti[x][y].siirraAvoimelleListalle();
             this.labyrintti[x][y].setVanhempi(maapala);
             this.labyrintti[x][y].setKokonaisArvo();
+            this.labyrintti[x][y].siirraAvoimelleListalle();
+            avoinLista.lisaaAlkio(this.labyrintti[x][y]);
+            
         }
     }
 
@@ -93,8 +91,7 @@ public class LyhinReitti {
     public void siirraMaapalaSuljetulleListalle(Maapala poistettava) {
         Maapala maapala = poistettava;
 
-        avoinLista.poistaListasta(maapala);
-        suljettuLista1.lisaaListaan(maapala);
+        suljettuLista.lisaaListaan(maapala);
         this.labyrintti[maapala.getX()][maapala.getY()].siirraSuljetulleListalle();
         this.labyrintti[maapala.getX()][maapala.getY()].poistaAvoimeltaListalta();
     }
@@ -107,22 +104,10 @@ public class LyhinReitti {
      * asettaa metodi luokan muuttujalle loppuLoytynyt arvon true.
      */
     public Maapala etsiMaapalaJollaPieninKokonaisArvo() {
-        Maapala pieninMaapala = (Maapala) avoinLista.getPaa();
-        Maapala maapala = (Maapala) avoinLista.getPaa();
-        int pieninKokArvo = maapala.getKokonaisArvo();
-
-        while (maapala != null) {
-            if (maapala.getKokonaisArvo() < pieninKokArvo) {
-                pieninKokArvo = maapala.getKokonaisArvo();
-                pieninMaapala = maapala;
-            }
-            maapala = (Maapala) maapala.getSeuraava();
-        }
-
-        if (pieninMaapala.getHArvo() == 1) {
+        Maapala pieninMaapala = avoinLista.poistaAlkio();
+        if(pieninMaapala.getHArvo() == 1){
             this.loppuLoytynyt = true;
         }
-
         return pieninMaapala;
     }
 
@@ -140,9 +125,10 @@ public class LyhinReitti {
      * siirraMaapalaSuljetulleListalle(maapala).
      */
     public void kierros() {
-        Maapala pieninMaapala = etsiMaapalaJollaPieninKokonaisArvo();
+        Maapala pieninMaapala = etsiMaapalaJollaPieninKokonaisArvo();      
         siirraNaapuritAvoimelleListalle(pieninMaapala);
         siirraMaapalaSuljetulleListalle(pieninMaapala);
+        this.avoinLista.minKeko();
     }
 
     /**
@@ -177,9 +163,8 @@ public class LyhinReitti {
     /**
      * 
      * @return avoinLista 
-     */
-    
-    public LinkitettyLista getAvoinLista(){
+     */   
+    public Keko getAvoinLista(){
         return this.avoinLista;
     }
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package labyrintti.logiikka;
 
 import labyrintti.tietorakenteet.ListaAlkio;
@@ -179,5 +175,14 @@ public class Maapala extends ListaAlkio {
     
     public int getKokonaisArvo(){
         return this.kokonaisarvo;
+    }
+    
+    /**
+     * Asettaa halutun kokonaisarvon maapalalle,
+     * 
+     * @param uusiKokArvo
+     */
+    public void setKokonaisArvo1(int uusiKokArvo) {
+        this.kokonaisarvo = uusiKokArvo;
     }
 }
