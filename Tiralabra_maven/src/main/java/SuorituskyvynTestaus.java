@@ -42,7 +42,7 @@ public class SuorituskyvynTestaus {
         System.out.println(s);
         try {
             Scanner sc = new Scanner(System.in);
-            return sc.nextInt();
+            return new Integer(sc.nextLine().replaceAll("\\s+", ""));
         } catch (Exception e) {
             return kysyMaara(s);
         }
@@ -160,7 +160,7 @@ public class SuorituskyvynTestaus {
      */
     private HakupuuRajapinta puuPoisto(int maara, HakupuuRajapinta puu) {
         long aikaAlussa = System.currentTimeMillis(); 
-        for(int i = maara; i>0; i--) puu.poista(i);
+        for(int i = 1; i<maara+1; i++) puu.poista(i);
         long aikaLopussa = System.currentTimeMillis();  
         System.out.println("Poistossa kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
         return puu;
