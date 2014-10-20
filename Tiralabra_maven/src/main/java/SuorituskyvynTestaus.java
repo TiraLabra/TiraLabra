@@ -3,7 +3,7 @@ import wad.hakupuut.*;
 import java.util.Scanner;
 
 public class SuorituskyvynTestaus {
-    HakupuuRajapinta bst, avl, rbt, splay;
+    private HakupuuRajapinta bst, avl, rbt, splay;
     
     public SuorituskyvynTestaus() {
         bst = new BinaarinenHakupuu();
@@ -19,11 +19,7 @@ public class SuorituskyvynTestaus {
     public void testaaPuita() {
         liirumlaarum();
         int maara = kysyMaara("Kuinka monella syötteellä testataan?");
-        
-        testataanBst(maara);
-        testataanAVL(maara);
-        testataanRbt(maara);
-        testataanSplay(maara);
+        valitaanTestattavatPuut(maara);
     }
     
     /**
@@ -50,6 +46,39 @@ public class SuorituskyvynTestaus {
         } catch (Exception e) {
             return kysyMaara(s);
         }
+    }
+    
+    /**
+     * Palauttaa totuusarvon. String s sisältää kysymyksen, johon odotetaan
+     * vastausta k. Jos saadaan jokin muu syöte kuin k, palautetaan false.
+     * @param s Kysymys merkkijono.
+     * @return palauttaa true, syötteelle k ja kaikille muille syötteille false.
+     */
+    private boolean testataanko(String s) {
+        System.out.println(s);
+        try {
+            Scanner sc = new Scanner(System.in);
+            if(sc.nextLine().equals("k")) return true;
+            else return false;
+        } catch (Exception e) {
+            return testataanko(s);
+        }
+    }
+    
+    
+    /**
+     * Erottelee testattavat puut. Käyttäjän päätettäväksi jää, mitkä puista testataan. Metodi luotiin sitä varten, 
+     * että voidaan testata monimutkaisempia puita jouhevammin. Tämä mahdollistaa etsimään yksittäiselle puulle
+     * rajoja syötteen suhteen ilman, että muut tietorakenteet hidastavat testaamista.
+     * @param maara Kaikkia puita testataan samalla syötteellä, jotta puiden suoritusta voidaan vertailla
+     * keskenään.
+     */
+    private void valitaanTestattavatPuut(int maara) {
+        System.out.println("\nSyötä k seuraaviin kysymyksiin testataksesi puita.");
+        if(testataanko("Testataanko BST?"))testataanBst(maara);
+        if(testataanko("Testataanko AVL?"))testataanAVL(maara);
+        if(testataanko("Testataanko RBT?"))testataanRbt(maara);
+        if(testataanko("Testataanko SPLAY?"))testataanSplay(maara);
     }
     
     /**
