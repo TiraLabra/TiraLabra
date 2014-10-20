@@ -12,7 +12,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        Tekstikayttoliittyma ui = new Tekstikayttoliittyma(new PuunTutkija(new BinaarinenHakupuu(),new AvlPuu(), new PunamustaPuu(), new SplayPuu()));
+        Tekstikayttoliittyma ui = new Tekstikayttoliittyma(new PuunTutkija(new BinaarinenHakupuu(), new AvlPuu(), new PunamustaPuu(), new SplayPuu()));
         ui.kaynnista();
     }
 }

@@ -88,11 +88,4 @@ public class PuunTutkijaTest {
         assertEquals(true, aika > 0L);
         assertEquals(true, aika < System.nanoTime());
     }
-    
-    @Test
-    public void testVirheMarginaali(){
-        assertEquals(true, pt.virhemarginaali()>0);
-        assertEquals(true, pt.virhemarginaali()<100000);
-    }
-
 }

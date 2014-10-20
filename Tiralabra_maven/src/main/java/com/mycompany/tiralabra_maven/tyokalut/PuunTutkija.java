@@ -45,7 +45,7 @@ public class PuunTutkija {
         }
         return tulokset;
     }
-    
+
     /**
      * Palauttaa puun hakuoperaatioon kuluvan ajan
      *
@@ -64,13 +64,13 @@ public class PuunTutkija {
      * tilastoja sisältävän olion
      *
      * @param puu Puu josta arvoja haetaan
-     * @param haettavat Haettavat arvot sisältävä taulukko
+     * @param haettava arvo jota haetaan
      * @return Mittaustulos -olio, joka sisältää tietoa mitatuista ajoista
      */
-    public Mittaustulos hakuaikaTulokset(Hakupuu puu, int[] haettavat) {
+    public Mittaustulos hakuaikaTulokset(Hakupuu puu, int haettava) {
         Mittaustulos tulokset = new Mittaustulos(puu);
-        for (int i : haettavat) {
-            tulokset.lisaaAika(hakuaika(puu, i));
+        for (int i = 0; i < 10; i++) {
+            tulokset.lisaaAika(hakuaika(puu, haettava));
         }
         return tulokset;
     }
@@ -124,11 +124,11 @@ public class PuunTutkija {
      * Vertaa puuntutkijalle annettujen hakupuiden hakuaikoja annetulla
      * tietojoukolla ja palauttaa saadun vertailu-olion.
      *
-     * @param data Tietojoukko jolla mittaukset suoritetaan
+     * @param data arvo jolla mittaukset suoritetaan
      * @return Vertailu olio, joka sisältää kutakin puuta vastaavan
      * Mittaustulos-olion.
      */
-    public Vertailu hakuVertailu(int[] data) {
+    public Vertailu hakuVertailu(int data) {
         Mittaustulos[] tulokset = new Mittaustulos[puut.length];
         for (int i = 0; i < puut.length; i++) {
             tulokset[i] = hakuaikaTulokset(puut[i], data);
@@ -153,40 +153,20 @@ public class PuunTutkija {
     }
 
     /**
-     * Laskee ja palauttaa keskimääräisen ajan mittaamisessa tapahtuvan virheen.
+     * Rakentaa kaikki tutkittavat puut annetulla tietojoukolla.
      *
-     * @return Keskimääräinen virhe nanosekunteina.
+     * @param arvot Puihin sijoitettavat arvot
      */
-    public long virhemarginaali() {
-        long sum = 0;
-        long errsum = 0;
-        long lkm = 0;
-        long aika;
-        for (int i = 0; i < 1000; i++) {
-            kello.aloita();
-            aika = kello.lopeta();
-            lkm++;
-            sum += aika;
-            errsum += Math.abs(sum / lkm - aika);
-        }
-        return errsum / lkm;
-    }
-
-    
-  /**
-   * Rakentaa kaikki tutkittavat puut annetulla tietojoukolla.
-   * @param arvot Puihin sijoitettavat arvot
-   */
     public void rakennaPuut(int[] arvot) {
         for (Hakupuu hakupuu : puut) {
             hakupuu.lisaaKaikki(arvot);
         }
     }
-    
+
     /**
      * Tyhjentää kaikki tutkittavat puut
      */
-    public void tyhjennaPuut(){
+    public void tyhjennaPuut() {
         for (Hakupuu hakupuu : puut) {
             hakupuu.tyhjenna();
         }

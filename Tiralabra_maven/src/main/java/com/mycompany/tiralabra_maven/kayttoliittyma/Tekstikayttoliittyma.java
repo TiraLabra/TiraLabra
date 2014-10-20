@@ -15,23 +15,15 @@ public class Tekstikayttoliittyma {
 
     public Tekstikayttoliittyma(PuunTutkija tutkija) {
         this.tutkija = tutkija;
-        datajoukot = new LinkitettyLista[2];
-        alustaTietojoukot();
     }
 
     /**
      * Käynnistää tekstipohjaisen käyttöliittymän
      */
     public void kaynnista() {
-        tulostaSekuntikellonTiedot();
+        datajoukot = new LinkitettyLista[2];
+        alustaTietojoukot();
         tulostaVertailut();
-    }
-
-    /**
-     * Tulostaa yleisen mittaustarkkuuden virheen.
-     */
-    private void tulostaSekuntikellonTiedot() {
-        System.out.println("Keskimääräinen mittausvirhe: " + tutkija.virhemarginaali());
     }
 
     /**
@@ -39,7 +31,8 @@ public class Tekstikayttoliittyma {
      */
     private void tulostaVertailut() {
         tulostaLisaysVertailut();
-
+//        tulostaHakuvertailut();
+//        tulostaPoistovertailut();
     }
 
     private void tulostaLisaysVertailut() {
@@ -65,7 +58,51 @@ public class Tekstikayttoliittyma {
      */
     private void tulostaLisaysvertailu(Vertailu vertailu) {
         for (Mittaustulos mittaustulos : vertailu.getTulokset()) {
-            System.out.printf("%20s%7d%10s%12s%12d%7s", mittaustulos.getPuu().getNimi(), mittaustulos.getPuu().getKoko(), mittaustulos.getSuurin(), mittaustulos.getKeskiarvo(), mittaustulos.getKokonaisaika(), mittaustulos.getPuu().getKorkeus());
+            System.out.printf("%20s%7d%10d%12d%12d%7d", mittaustulos.getPuu().getNimi(), mittaustulos.getPuu().getKoko(), mittaustulos.getSuurin(), mittaustulos.getKeskiarvo(), mittaustulos.getKokonaisaika(), mittaustulos.getPuu().getKorkeus());
+        }
+    }
+
+    private void tulostaHakuvertailut() {
+        System.out.println("HAKUAJAT:\n");
+        for (int i = 0; i < datajoukot.length; i++) {
+            LinkitettyLista joukot = datajoukot[i];
+            System.out.println(joukot.getKuvaus() + " Tietyn alkion hakuajat");
+            System.out.printf("%-20s%-7s%-10s%-12s%-12s%-7s\n", "Puu:", "koko:", "suurin:", "Keskiarvo:", "Yhteensä:", "Korkeus:");
+            for (Solmu solmu : joukot) {
+                tutkija.rakennaPuut(solmu.getData());
+                tulostaHakuvertailu(tutkija.hakuVertailu(0));
+                System.out.println("");
+                tutkija.tyhjennaPuut();
+            }
+            System.out.println("");
+        }
+    }
+
+    private void tulostaHakuvertailu(Vertailu vertailu) {
+        for (Mittaustulos mittaustulos : vertailu.getTulokset()) {
+            System.out.printf("%20s%7d%10d%12d%12d%7d", mittaustulos.getPuu().getNimi(), mittaustulos.getPuu().getKoko(), mittaustulos.getSuurin(), mittaustulos.getKeskiarvo(), mittaustulos.getKokonaisaika(), mittaustulos.getPuu().getKorkeus());
+        }
+    }
+
+    private void tulostaPoistovertailut() {
+        System.out.println("POISTOAJAT:\n");
+        for (int i = 0; i < datajoukot.length; i++) {
+            LinkitettyLista joukot = datajoukot[i];
+            System.out.println(joukot.getKuvaus() + " Joukon tyhjennys poistooperaatioilla");
+            System.out.printf("%-20s%-7s%-10s%-12s%-12s%-7s\n", "Puu:", "koko:", "suurin:", "Keskiarvo:", "Yhteensä:", "Korkeus:");
+            for (Solmu solmu : joukot) {
+                tutkija.rakennaPuut(solmu.getData());
+                tulostaPoistovertailu(tutkija.poistoVertailu(solmu.getData()));
+                System.out.println("");
+                tutkija.tyhjennaPuut();
+            }
+            System.out.println("");
+        }
+    }
+
+    private void tulostaPoistovertailu(Vertailu vertailu) {
+        for (Mittaustulos mittaustulos : vertailu.getTulokset()) {
+            System.out.printf("%20s%7d%10d%12d%12d%7d", mittaustulos.getPuu().getNimi(), mittaustulos.getPuu().getKoko(), mittaustulos.getSuurin(), mittaustulos.getKeskiarvo(), mittaustulos.getKokonaisaika(), mittaustulos.getPuu().getKorkeus());
         }
     }
 
@@ -73,7 +110,7 @@ public class Tekstikayttoliittyma {
      * Alustaa kuvaukset ja vastaavat tietojoukot
      */
     private void alustaTietojoukot() {
-        int[] koot = {100, 200, 400, 800};
+        int[] koot = {100, 200, 400};
 
         datajoukot[0] = new LinkitettyLista();
         datajoukot[0].setKuvaus("Alkiota kasvavassa järjestyksessä:");
@@ -94,11 +131,11 @@ public class Tekstikayttoliittyma {
             for (int j = 0; j < i; j++) {
                 data[j] = j;
             }
-            for (int j = 0; j<i-1; j++) {
-                int index = rnd.nextInt(i-j-1);
+            for (int j = 0; j < i - 1; j++) {
+                int index = rnd.nextInt(i - j - 1);
                 int a = data[j];
-                data[j] = data[j+index];
-                data[j+index] = a;
+                data[j] = data[j + index];
+                data[j + index] = a;
             }
             datajoukot[1].lisaa(data);
         }

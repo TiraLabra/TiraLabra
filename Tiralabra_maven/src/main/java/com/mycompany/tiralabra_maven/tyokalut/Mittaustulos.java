@@ -103,11 +103,4 @@ public class Mittaustulos {
             }
         }
     }
-
-    @Override
-    public String toString() {
-        //TODO lisää jokin tulostuasu
-        return super.toString();
-    }
-
 }

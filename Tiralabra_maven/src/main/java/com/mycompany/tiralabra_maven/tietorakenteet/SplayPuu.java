@@ -84,7 +84,7 @@ public class SplayPuu extends YliHakupuu {
         if (poistettava == null) {
             return;
         }
-        splay(poistettava);
+//        splay(poistettava); // Turha nykyisessä implementaatiossa. Metodi saa parametrina hakutoiminnon palauttaman arvon ja hakumetodi sisältää splay kutsun.
         if (poistettava.getVasen() != null && poistettava.getOikea() != null) {
             Puusolmu edeltaja = edeltaja(poistettava);
             edeltaja.setOikea(poistettava.getOikea());
