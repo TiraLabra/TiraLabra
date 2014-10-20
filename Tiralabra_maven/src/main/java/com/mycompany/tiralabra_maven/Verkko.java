@@ -10,6 +10,13 @@ public class Verkko {
         solmut = new LinkitettyLista();
     }
     
+    /**
+     * Lisää tähän verkkoon solmun
+     * 
+     * Aikavaativuus: vakio
+     * 
+     * @param    solmu  verkkoon lisättävä solmu
+    */    
     public void lisaaSolmu(Solmu solmu) {
         solmut.lisaa(solmu);
     }
