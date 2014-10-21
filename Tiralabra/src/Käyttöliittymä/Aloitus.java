@@ -76,7 +76,12 @@ public class Aloitus extends JPanel implements ActionListener {
 
                 reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
                 
+                long aikaAlussa = System.currentTimeMillis();  
                 if(reitti.Haku()){
+                    long aikaLopussa = System.currentTimeMillis();  
+                    System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
+                
+                
                     ikkuna.repaint();
                 }else{
                     putsaa();
