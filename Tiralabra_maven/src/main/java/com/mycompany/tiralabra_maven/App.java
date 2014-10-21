@@ -9,7 +9,15 @@ public class App
     {
         long aikaAlussa = System.currentTimeMillis();
         
-        File kartta = new File("suorituskykykartta1.txt");
+        String tiedostonimi;
+        
+        try {
+            tiedostonimi = args[0]; //annettu parametrina ohjelmalle: java -jar ohjelma.jar tiedostonimi.txt
+        } catch (Exception e) {
+            tiedostonimi = "suorituskykykartta1.txt";
+        }
+        
+        File kartta = new File(tiedostonimi);
         Kartanlukija kartanlukija = new Kartanlukija();
         Verkko verkko = kartanlukija.luoVerkko(kartta);
   
