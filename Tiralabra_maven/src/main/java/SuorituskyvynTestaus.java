@@ -34,7 +34,7 @@ public class SuorituskyvynTestaus {
     }
     
     /**
-     * Kysytään käyttäjältä int arvoa, jonka metodi palauttaa
+     * Kysytään käyttäjältä int arvoa, jonka metodi palauttaa. Vain luonnolliset luvut sallitaan syötteinä.
      * @param s kysymys string
      * @return käyttäjän syöttämä int arvo.
      */
@@ -42,7 +42,9 @@ public class SuorituskyvynTestaus {
         System.out.println(s);
         try {
             Scanner sc = new Scanner(System.in);
-            return new Integer(sc.nextLine().replaceAll("\\s+", ""));
+            Integer i = new Integer(sc.nextLine().replaceAll("\\s+", ""));
+            if(i >= 0) return i;
+            else throw new Exception();
         } catch (Exception e) {
             return kysyMaara(s);
         }
@@ -74,7 +76,7 @@ public class SuorituskyvynTestaus {
      * keskenään.
      */
     private void valitaanTestattavatPuut(int maara) {
-        System.out.println("\nSyötä k seuraaviin kysymyksiin testataksesi puita.");
+        System.out.println("\nSyötä k seuraaviin kysymyksiin testataksesi puita. Muut syötteet ohittavat puun.");
         if(testataanko("Testataanko BST?"))testataanBst(maara);
         if(testataanko("Testataanko AVL?"))testataanAVL(maara);
         if(testataanko("Testataanko RBT?"))testataanRbt(maara);

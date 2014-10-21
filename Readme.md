@@ -1,11 +1,10 @@
 [![Build Status](https://travis-ci.org/TiraLabra/TiraLabra.svg?branch=master)](https://travis-ci.org/TiraLabra/TiraLabra)
 
-##Tiralabra
-* pom.xml:ään jar määrittely
-* run_tiralabra.sh skripti
-* Suorituskyky testaukselle oma luokka
-* PunaMustaPuu: getSisar, korjattu bugi, jossa palautetaan muuta kuin null, jos vanhempi ei ole s:n vanhempi.
-* Testien korjauksia
-* Testausdokumentaatio
-* Käyttöohje aloitettu
-* Toteutusdokumentaatiota jatkettu
+##Tiralabra - Binääriset hakupuut
+Lopullinen palautus!
+
+Työssä toteutetut binääriset hakupuut:
+* [Binäärinen hakupuu](http://en.wikipedia.org/wiki/Binary_search_tree)
+* [AVL puu](http://en.wikipedia.org/wiki/AVL_tree)
+* [Puna mustapuu](http://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
+* [Splay-puu](http://en.wikipedia.org/wiki/Splay_tree)
