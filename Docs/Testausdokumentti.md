@@ -37,10 +37,10 @@ Erikoisuus puussa on sisarsolmun päättelevä metodi, minkä toiminnallisuutta 
 
 ###Minkälaisilla syötteillä testaus tehtiin.
 Käsitestauksessa on hyödynnetty erilaisia syötteitä. Yksikkötesteissä lähinnä String olioita ja int datatyyppejä yksinkertaisuuden vuoksi.
-Erikois syötteet myös huomioitu tapauskohtaisesti. Rasitustestauksessa lähinnä keskitetty
+Erikoissyötteet myös huomioitu tapauskohtaisesti. Rasitustestauksessa lähinnä keskitetty
 määrään eikä sisältöön.
 
 ###Miten testit voidaan toistaa?
-Ensin on edettävä projektin juureen "Tiralabra_maven".
-Komento "mvn test" testaa projektin. Coberturan saa komennolla "mvn cobertura:cobertura".
-Pit saadaan komennolla "mvn org.pitest:pitest-maven:mutationCoverage".
+Ensin on edettävä projektin juureen ```Tiralabra_maven```.
+Komento ```mvn test``` testaa projektin. Cobertura-raportti saadaan komennolla ```mvn cobertura:cobertura```.
+Pit-raportti saadaan komennolla ```mvn org.pitest:pitest-maven:mutationCoverage```.
