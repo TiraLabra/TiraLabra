@@ -29,7 +29,7 @@ public class Keko {
 
     /**
      * Siirtää vimeisintä lisättyä solmua ylöspäin puussa
-     * niin kauan ylöspäin kunnes sen parent solmu on sitä suurempi.
+     * niin kauan ylöspäin kunnes sen parent solmu on sitä pienempi.
      * 
     */     
     private void siirräylös(){
@@ -54,7 +54,7 @@ public class Keko {
     
     /**
      * Siirtää puun ylintä solmua alaspäin
-     * kunnes sen lapsi solmut ovat sitä pienempiä.
+     * kunnes sen lapsi solmut ovat sitä suurempia.
      * 
     */  
      
@@ -110,12 +110,7 @@ public class Keko {
             return null;
         }
         
-        if (viimeinen == 1) {
-            viimeinen--;
-            Solmu palautus = solmut[0];
-            solmut[0]=null;
-            return palautus;
-        }
+
         Solmu palautus = solmut[0];
         solmut[0]=solmut[viimeinen-1];
         solmut[viimeinen-1]=null;
