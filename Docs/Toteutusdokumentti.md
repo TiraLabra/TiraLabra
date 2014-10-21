@@ -91,8 +91,9 @@ Splay-puu             | Sp
  ![SPLAY](https://github.com/mihassin/TiraLabra/blob/master/Docs/pics/splay.jpg)
  
 ##Suorituskyky ja O-analyysivertailu
+Yllä olevista taulukoista ja kaavioista nähdään, että teoreettisiin aikavaativuksiin on lähes päästy. Tosin binäärisen hakupuun kaavion kuvaaja ei ole suora vaan loivasti kasvava käyrä. Punamustan puun kaavio muistuttaa eniten aikavaativuutensa vastaavaa käyrää. Alle on lisätty kuva käyristä O(n) ja O(log n) kaaviossa, mihin voi verrata saatujen tulosten käyriä.
 
-Yllä olevista taulukoista ja kaavioista nähdään, että teoreettisiin aikavaativuksiin on lähes päästy. Tosin binäärisen hakupuun kaavion kuvaaja ei ole suora vaan loivasti kasvava käyrä. Punamustan puun kaavio muistuttaa eniten aikavaativuutensa vastaavaa käyrää.
+![oanalyysi](https://github.com/mihassin/TiraLabra/blob/master/Docs/pics/oanalyysi.gif)
 
 ##Puutteet ja parannusehdotukset
 Perintä ei välttämättä ole paras mahdollinen tapa välttää toistuvan koodin kirjoittamista. Jos työssäni tulisi muutos binäärisen hakupuun koodiin, niin se vaikuttaisi kaikkiin sen periviin luokkiin. Tämä voi muuttaa perivän olion koodin käyttäytymisen vääränlaiseksi. Pahimmassa tapauksessa tulee korjata kaikki oliot, jotka perivät binäärisen hakupuun. Toinen lähestysmistapa olisi ollut kirjoittaa toistuvat metodit erilliseen luokkaan ja asettaa kaikki hakupuut suoraan implementoimaan rajapintaa.
