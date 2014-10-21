@@ -101,3 +101,4 @@ Perintä ei välttämättä ole paras mahdollinen tapa välttää toistuvan kood
 * wikipedia.org
 * Tietorakenteet ja algoritmit -kurssin materiaali
 * https://noppa.oulu.fi/noppa/kurssi/811312a/luennot/811312A_opiskelumateriaali_-_perustietorakenteet.pdf
+* http://archive.gamedev.net/archive/reference/programming/features/trees2/log.gif
