@@ -17,6 +17,6 @@ Perintä ei välttämättä ole paras mahdollinen tapa ratkaista ongelmaa. Toine
 hyödyntämällä "yleishyödyllisiä metodeja" jonkin muun luokan kautta. Koodissa on myös toistoa, mitä tulisi karsia, jotta koodi olisi mahdollisimman yksinkertaista luettavaa ulkopuoliselle.
 
 ###Lähteet
-wikipedia.org
-Tietorakenteet ja algoritmit -kurssin materiaali
-https://noppa.oulu.fi/noppa/kurssi/811312a/luennot/811312A_opiskelumateriaali_-_perustietorakenteet.pdf
+* wikipedia.org
+* Tietorakenteet ja algoritmit -kurssin materiaali
+* https://noppa.oulu.fi/noppa/kurssi/811312a/luennot/811312A_opiskelumateriaali_-_perustietorakenteet.pdf
