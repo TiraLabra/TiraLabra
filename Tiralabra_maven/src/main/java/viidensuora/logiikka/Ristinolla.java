@@ -1,8 +1,9 @@
 package viidensuora.logiikka;
 
+import java.util.Observable;
 import viidensuora.ai.Suunta;
 
-public class Ristinolla {
+public class Ristinolla extends Observable {
 
     /**
      * Pelilautana toimiva 2D-taulukko, johon Pelimerkit sijoitetaan.
@@ -167,13 +168,14 @@ public class Ristinolla {
 
     /**
      * Lisää pelivuorossa olevan pelaajan merkin laudalle, tarkistaa oliko
-     * siirto voittava ja vaihtaa pelivuoron toiselle.
+     * siirto voittava, vaihtaa pelivuoron toiselle ja ilmoittaa muutoksesta
+     * mahdollisille Observereille.
      *
      * @param x uuden merkin x-koordinaatti
      * @param y uuden merkin y-koordinaatti
      */
     public void pelaaVuoro(int x, int y) {
-        if (ruutuOnTyhja(x, y)) {
+        if (voittaja == null && ruutuOnTyhja(x, y)) {
             if (ristinVuoro) {
                 lisaaRisti(x, y);
             } else {
@@ -183,6 +185,8 @@ public class Ristinolla {
                 voittaja = ristinVuoro ? Pelimerkki.RISTI : Pelimerkki.NOLLA;
             }
             ristinVuoro = !ristinVuoro;
+            setChanged();
+            notifyObservers();
         }
     }
 

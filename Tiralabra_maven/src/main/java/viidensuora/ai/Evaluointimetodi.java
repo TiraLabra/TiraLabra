@@ -14,7 +14,7 @@ public interface Evaluointimetodi {
      *
      * @param rn pelitilanne
      * @return Mitä suurempi arvo, sitä todennäköisemmin Risti voittaa. Mitä
-     * pieniempi, Nolla voitta. 0 jos pelitilannne vaikuttaa tasapeliltä.
+     * pieniempi, Nolla voittaa. 0 jos pelitilannne vaikuttaa tasapeliltä.
      */
     public int evaluoiPelitilanne(Ristinolla rn);
 }

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import viidensuora.logiikka.Ristinolla;
 
@@ -16,17 +17,31 @@ import viidensuora.logiikka.Ristinolla;
  */
 public class Peliruutu extends JPanel {
 
+    /**
+     * Yksittäisen ruudun koko pikseleinä
+     */
     public static final int RUUDUN_KOKO = 25;
+
+    /**
+     * Pelitilanne
+     */
     private final Ristinolla ristinolla;
+
+    /**
+     * Paneelin leveys
+     */
     private final int leveys;
+
+    /**
+     * Paneelin korkeus
+     */
     private final int korkeus;
 
     /**
      * Kuva joka piirretään ristin merkeille.
      */
     private BufferedImage ristinKuva;
-    
-    
+
     /**
      * Kuva joka piirretään nollan merkeille.
      */
@@ -37,6 +52,7 @@ public class Peliruutu extends JPanel {
         this.leveys = ristinolla.leveys * RUUDUN_KOKO;
         this.korkeus = ristinolla.korkeus * RUUDUN_KOKO;
 
+        // ladataan Ristin ja Nollan kuvat
         try {
             this.ristinKuva = ImageIO.read(this.getClass().getResource("/risti.png"));
             this.nollanKuva = ImageIO.read(this.getClass().getResource("/nolla.png"));
@@ -44,7 +60,7 @@ public class Peliruutu extends JPanel {
         }
 
         setPreferredSize(new Dimension(leveys, korkeus));
-        addMouseListener(new Hiirikuuntelija(ristinolla, this));
+        setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     /**

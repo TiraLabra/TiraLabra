@@ -13,9 +13,7 @@ public class AlphaBetaKarsinta implements Etsintametodi {
 
     /**
      * Kuinka etäällä tyhjä ruutu saa olla pelimerkistä, jotta se katsotaan
-     * olevan aktiivinen ruutu. Kaukana olevia ruutuja ei kannata liittää
-     * hakuun. Käytännössä 1 tuntuu riittävän. 2 olisi parempi, mutta hyöty haun
-     * hidastumiseen nähden pieni.
+     * olevan aktiivinen ruutu.
      */
     private final int AKTIIVISTEN_ETAISYYS = 1;
 
@@ -50,15 +48,15 @@ public class AlphaBetaKarsinta implements Etsintametodi {
     private int hakusyvyys;
 
     /**
-     * Apumuuttuja, johon lasketaan vierailtujen solmujen lukumäärä.
+     * Apumuuttuja, johon lasketaan evaluoitujen solmujen lukumäärä.
      */
-    private int avattujaNodeja;
+    private int evaluoitujaTilanteita;
 
     /**
      * Konstruktori.
      *
-     * @param rn
-     * @param e
+     * @param rn Pelitilanne
+     * @param e Evaluointimetodi
      */
     public AlphaBetaKarsinta(Ristinolla rn, Evaluointimetodi e) {
         this.ristinolla = rn;
@@ -99,22 +97,15 @@ public class AlphaBetaKarsinta implements Etsintametodi {
         aktiivinenAlue.alusta(AKTIIVISTEN_ETAISYYS);
         parasSiirto = null;
         hakusyvyys = syvyys;
-        avattujaNodeja = -1;
+        evaluoitujaTilanteita = 0;
         if (ristinSiirto) {
             maxArvo(syvyys, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
         } else {
             minArvo(syvyys, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
         }
-        long hakuaika = System.currentTimeMillis() - aloitusaika;
-        
-        // TODo
-        int hakupuussaNodeja = ristinolla.vapaitaRuutuja()
-                * (ristinolla.vapaitaRuutuja() - 1)
-                * (ristinolla.vapaitaRuutuja() - 2)
-                * (ristinolla.vapaitaRuutuja() - 3);
-
-        return new Hakutulos(parasSiirto, parhaanSiirronArvo, syvyys, hakuaika,
-                avattujaNodeja, hakupuussaNodeja);
+        return new Hakutulos(parasSiirto, parhaanSiirronArvo,
+                System.currentTimeMillis() - aloitusaika,
+                evaluoitujaTilanteita, syvyys, ristinolla.vapaitaRuutuja());
     }
 
     /**
@@ -123,19 +114,22 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      * @param syvyys syvyys jolta etsitään
      * @param alpha karsinnassa käytettävä alpha-arvo
      * @param beta karsinnassa käytettävä beta-arvo
-     * @param siirto edellisen siirron koordinaatti
+     * @param edel edellisen siirron koordinaatti
      * @return suurin löydetty arvo
      */
-    private int maxArvo(int syvyys, int alpha, int beta, Koordinaatti siirto) {
-        avattujaNodeja++;
+    private int maxArvo(int syvyys, int alpha, int beta, Koordinaatti edel) {
         // Edellinen siirto, eli Nolla voitti.
-        if (siirto != null && ristinolla.siirtoVoitti(siirto.x, siirto.y)) {
+        if (edel != null && ristinolla.siirtoVoitti(edel.x, edel.y)) {
+            evaluoitujaTilanteita++;
             return Integer.MIN_VALUE + (hakusyvyys - syvyys);
         } else if (ristinolla.lautaTaynna()) {
+            evaluoitujaTilanteita++;
             return 0;
         } else if (syvyys == 0) {
+            evaluoitujaTilanteita++;
             return evaluoija.evaluoiPelitilanne(ristinolla);
         }
+
         muodostaSiirrot:
         for (int y = 0; y < ristinolla.korkeus; y++) {
             for (int x = 0; x < ristinolla.leveys; x++) {
@@ -167,19 +161,22 @@ public class AlphaBetaKarsinta implements Etsintametodi {
      * @param syvyys syvyys jolta etsitään
      * @param alpha karsinnassa käytettävä alpha-arvo
      * @param beta karsinnassa käytettävä beta-arvo
-     * @param siirto edellisen siirron koordinaatti
+     * @param edel edellisen siirron koordinaatti
      * @return suurin löydetty arvo
      */
-    private int minArvo(int syvyys, int alpha, int beta, Koordinaatti siirto) {
-        avattujaNodeja++;
+    private int minArvo(int syvyys, int alpha, int beta, Koordinaatti edel) {
         // Edellinen siirto, eli Risti voitti.
-        if (siirto != null && ristinolla.siirtoVoitti(siirto.x, siirto.y)) {
+        if (edel != null && ristinolla.siirtoVoitti(edel.x, edel.y)) {
+            evaluoitujaTilanteita++;
             return Integer.MAX_VALUE - (hakusyvyys - syvyys);
         } else if (ristinolla.lautaTaynna()) {
+            evaluoitujaTilanteita++;
             return 0;
         } else if (syvyys == 0) {
+            evaluoitujaTilanteita++;
             return evaluoija.evaluoiPelitilanne(ristinolla);
         }
+
         muodostaSiirrot:
         for (int y = 0; y < ristinolla.korkeus; y++) {
             for (int x = 0; x < ristinolla.leveys; x++) {

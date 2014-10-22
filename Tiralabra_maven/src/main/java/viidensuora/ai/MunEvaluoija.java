@@ -30,8 +30,8 @@ public class MunEvaluoija implements Evaluointimetodi {
      */
     public int evaluoiPelitilanne(Ristinolla rn) {
         this.rn = rn;
-        return evaluoiRivit() + evaluoiSarakkeet()
-                + evaluoiDiagonaalit1() + evaluoiDiagonaalit2();
+        return (evaluoiRivit() + evaluoiSarakkeet()
+                + evaluoiDiagonaalit1() + evaluoiDiagonaalit2());
     }
 
     /**
@@ -61,7 +61,7 @@ public class MunEvaluoija implements Evaluointimetodi {
     }
 
     /**
-     * Laskee kaikkien "laskevien" diagonaalien arvot. Ohittaa ne kulmat, joissa
+     * Laskee kaikkien laskevien diagonaalien arvot. Ohittaa ne kulmat, joissa
      * ei voi muodostua voittavaa suoraa.
      *
      * @return Laskevien diagonaalien yhteenlaskettu arvo.
@@ -78,7 +78,7 @@ public class MunEvaluoija implements Evaluointimetodi {
     }
 
     /**
-     * Laskee kaikkien "nousevien" diagonaalien arvot. Ohittaa ne kulmat, joissa
+     * Laskee kaikkien nousevien diagonaalien arvot. Ohittaa ne kulmat, joissa
      * ei voi muodostua voittavaa suoraa.
      *
      * @return Nousevien diagonaalien yhteenlaskettu arvo.
@@ -98,7 +98,7 @@ public class MunEvaluoija implements Evaluointimetodi {
     /**
      * Laskee yhden linjan arvon tietyssä suunnassa. Käytännössä rivi, sarake
      * tai diagonaali. Pelaaja kasvattaa arvoaan jokaisesta linjalla olevasta
-     * n:n pituisesta suorasta 4^n "pistettä". Siis mitä pitempi suora, sitä
+     * n:n pituisesta suorasta 4^n pistettä. Siis mitä pitempi suora, sitä
      * enemmän pisteitä. Suoria, jotka eivät voi enää muodostaa voittavaa suoraa
      * ei huomioida lainkaan.
      *

@@ -54,7 +54,7 @@ public class AktiivinenAlue {
      * @param x Ruudun x-koordinaaatti.
      * @param y Ruudun y-koordinaatti.
      * @return TRUE jos ruutu on tyhjä ja aktiivinen, FALSE jos ruudussa on jo
-     * merkki tai ruutu on tyhjä muttei aktiivinen.
+     * merkki tai ruutu on tyhjä, muttei aktiivinen.
      */
     public boolean onAktiivinenTyhja(int x, int y) {
         return aktiivinenAlue[y][x] > 0 && ristinolla.ruutuOnTyhja(x, y);
@@ -99,5 +99,4 @@ public class AktiivinenAlue {
         }
         return sb.toString();
     }
-
 }

@@ -1,21 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package viidensuora.ai;
 
-import static org.junit.Assert.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import viidensuora.logiikka.Pelimerkki;
 import viidensuora.logiikka.Ristinolla;
 
-public class AlphaBetaKarsintaTest {
+/**
+ *
+ * @author juha
+ */
+public class MinMaxTest {
 
     private final Pelimerkki t = null;
     private final Pelimerkki x = Pelimerkki.RISTI;
     private final Pelimerkki o = Pelimerkki.NOLLA;
 
-    private AlphaBetaKarsinta abKarsinta;
+    private MinMax minmax;
 
     @Before
     public void setUp() {
+    }
+
+    @After
+    public void tearDown() {
     }
 
     @Test
@@ -25,8 +39,8 @@ public class AlphaBetaKarsintaTest {
             {t, x, x},
             {o, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 3);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiRistinSiirto(99);
         assertTrue((tulos.parasSiirto.x == 0 && tulos.parasSiirto.y == 1)
                 || (tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2));
     }
@@ -40,8 +54,8 @@ public class AlphaBetaKarsintaTest {
             {t, t, t, t, t, t, t, t, t},
             {t, t, t, t, t, t, t, o, t}};
         Ristinolla rn = luoRistinolla(pmArr, 5);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiNollanSiirto(4);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiNollanSiirto(4);
         assertTrue((tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2)
                 || (tulos.parasSiirto.x == 6 && tulos.parasSiirto.y == 2));
     }
@@ -55,8 +69,8 @@ public class AlphaBetaKarsintaTest {
             {t, t, t, t, t, t, t, t, t},
             {t, t, t, x, x, t, t, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 5);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(4);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiRistinSiirto(4);
         assertTrue((tulos.parasSiirto.x == 2 && tulos.parasSiirto.y == 2)
                 || (tulos.parasSiirto.x == 6 && tulos.parasSiirto.y == 2));
     }
@@ -70,8 +84,8 @@ public class AlphaBetaKarsintaTest {
             {t, t, t, t, t, t, t, t, t},
             {t, t, t, t, t, t, t, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 5);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(4);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiRistinSiirto(4);
         assertTrue(!(tulos.parasSiirto.x == 8 && tulos.parasSiirto.y == 2));
     }
 
@@ -82,8 +96,8 @@ public class AlphaBetaKarsintaTest {
             {t, t, t},
             {t, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 3);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiRistinSiirto(99);
         assertEquals(0, tulos.siirronArvo);
     }
 
@@ -94,35 +108,10 @@ public class AlphaBetaKarsintaTest {
             {t, t, t},
             {t, t, t}};
         Ristinolla rn = luoRistinolla(pmArr, 3);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
+        minmax = new MinMax(rn, new MunEvaluoija());
+        Hakutulos tulos = minmax.etsiRistinSiirto(99);
         assertEquals(1, tulos.parasSiirto.x);
         assertEquals(1, tulos.parasSiirto.y);
-    }
-
-    @Test
-    public void karsiiHakupuuta() {
-        Pelimerkki[][] pmArr = {
-            {t, t, t},
-            {t, t, t},
-            {t, t, t}};
-        Ristinolla rn = luoRistinolla(pmArr, 3);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
-        assertTrue(tulos.evaluoitujaTilanteita < 10000);
-    }
-    
-    @Test
-    public void ratkaiseeTicTacToenAlleSekunnissa() {
-        Pelimerkki[][] pmArr = {
-            {t, t, t},
-            {t, t, t},
-            {t, t, t}};
-        Ristinolla rn = luoRistinolla(pmArr, 3);
-        abKarsinta = new AlphaBetaKarsinta(rn, new MunEvaluoija());
-        Hakutulos tulos = abKarsinta.etsiRistinSiirto(99);
-        // koko hakupuun nodet: 9! = 362880
-        assertTrue(tulos.hakuaika < 1000);
     }
 
     private Ristinolla luoRistinolla(Pelimerkki[][] pmArr, int voittavaPituus) {
