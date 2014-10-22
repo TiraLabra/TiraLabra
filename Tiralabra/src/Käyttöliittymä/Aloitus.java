@@ -71,10 +71,21 @@ public class Aloitus extends JPanel implements ActionListener {
         if (Piirrä.equals(komento)) {
             
             try{
+                
+                if(ikkuna.haeLahto()==null){
+                    JOptionPane.showMessageDialog(new JFrame(), "Anna alkupiste");
+                }else if(ikkuna.haeMaali()==null){
+                    JOptionPane.showMessageDialog(new JFrame(), "Anna loppupiste");
+                }
 
                 verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
 
                 reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
+<<<<<<< HEAD
+
+                if(reitti.Haku()){
+
+=======
                 
                 long aikaAlussa = System.currentTimeMillis();  
                 if(reitti.Haku()){
@@ -82,6 +93,7 @@ public class Aloitus extends JPanel implements ActionListener {
                     System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
                 
                 
+>>>>>>> origin/master
                     ikkuna.repaint();
                 }else{
                     putsaa();

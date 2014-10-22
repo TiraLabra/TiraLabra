@@ -73,7 +73,7 @@ public class KekoTest {
     }
 
     /**
-     * Test of poista method, of class Keko.
+     * Test of Poista method, of class Keko.
      */
     @Test
     public void testPoista() {
@@ -82,10 +82,10 @@ public class KekoTest {
         testikeko.lisää(c);
         testikeko.lisää(a);
         
-        assertEquals(testikeko.poista(), a);
-        assertEquals(testikeko.poista(), b);
-        assertEquals(testikeko.poista(), c);
-        assertEquals(testikeko.poista(), null);
+        assertEquals(testikeko.Poista(), a);
+        assertEquals(testikeko.Poista(), b);
+        assertEquals(testikeko.Poista(), c);
+        assertEquals(testikeko.Poista(), null);
         
     }
     

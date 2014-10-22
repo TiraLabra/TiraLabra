@@ -39,12 +39,16 @@ public class Verkko {
         maaliY=maali.y;
 
 
-
-
     }
     
 
     
+    /**
+     * LuoSolmu metodi luo solmun ja asettaa sen taulukkoon annettuihin koordinaatteihin.
+     * 
+     * @param x
+     * @param y
+     */
     
     public void LuoSolmu(int x, int y){
         Color c = new Color(kuva.getRGB(x, y));

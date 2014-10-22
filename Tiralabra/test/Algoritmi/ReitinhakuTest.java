@@ -10,8 +10,7 @@ package Algoritmi;
 import Käyttöliittymä.Kuva;
 import java.awt.Color;
 import java.awt.Point;
-import java.io.IOException;
-import java.net.URISyntaxException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -82,34 +81,24 @@ public class ReitinhakuTest {
      * Test of Lisää method, of class Reitinhaku.
      */
     @Test
-    public void testTarkistaViereisetlaLisää() {
+    public void VierusSolmut() {
         
-        Solmu sss=new Solmu(501, 6, 15, 255);
-        
-        testi.TarkistaViereiset(sss);
-        
-        assertEquals(testi.verkko.taulukko[500][5].Edeltävä, testi.verkko.taulukko[500][5]);
-        assertEquals(testi.verkko.taulukko[501][4].Edeltävä, null);
 
-        assertEquals(testi.verkko.taulukko[502][6].Edeltävä, sss);
+        
+        testi.verkko.LuoSolmu(501, 6);
+        
+        testi.VierusSolmut(testi.verkko.taulukko[501][6]);
+        
+        
+        
+        assertEquals(testi.verkko.taulukko[500][5].edeltävä, testi.verkko.taulukko[500][5]);
+
+
+        assertEquals(testi.verkko.taulukko[502][6].edeltävä, testi.verkko.taulukko[501][6]);
         
     }
 
-    /**
-     * Test of Lisää method, of class Reitinhaku.
-     */
-    @Test
-    public void testLisää() {
-        
-        Solmu sss=new Solmu(600, 600, 15, 255);
-        sss.suunta=1;
-        
-        testi.Lisää(600, 601, sss, 1);
-        
-        assertEquals(testi.verkko.taulukko[600][601].Reittipituus, 1);
-        assertEquals(testi.verkko.taulukko[600][601].Edeltävä, sss);
 
-    }
 
     /**
      * Test of PiirräReitti method, of class Reitinhaku.

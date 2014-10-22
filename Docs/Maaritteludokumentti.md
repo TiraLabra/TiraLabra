@@ -1,17 +1,16 @@
 # Määrittely #
 
-Aiheenani on parhaimman polun etsiminen kuvassa. Paras polku lyhyimmäksi reitiksi alku- ja loppupisteen välillä. Ohjelma toteutetaan javalla.
+Aiheenani on parhaimman polun etsiminen A* algoritmillä itse piirretyssä labyrintissa. Paras polku tarkoittaa lyhyintä mahdollista reittiä alku- ja loppupisteen välillä.
 
 
-Polun etsimiseen käytän A* algoritmia ja A* toteuttamista varten tarvitsen prioriteettijonon.
+Ohjelma antaa tyhjän 800*800 pikselin suuruisen kuvan johon voi piirtää esteitä vapaati ja josta valitaan alku- ja loppupiste. Kun käyttäjän sitten aloittaa reitinhaun niin tästä kuvasta ohjelma laati taulukon jossa jokaista pikseliä edustaa solmu. Tästä taulukosta/verkosta algoritmi etsii parhaimman reitin käyttäjän määrittelemien alku- ja loppupisteiden välillä. Pikseleiden välillä voi liikkua diagonaalisesti. Tulosteena on visuaalinen representaatio (viiva) polun reitistä.
 
 
-Ohjelman syötteenä on tarkoitus olla tyhjä kuva johon käyttäjä voi piirtää esteitä, tai jos aika ja motivaatio riittää niin mikä tahansa kuva josta etsitään vähiten tummia pikseleitä ylittävä reitti. Tästä kuvasta ohjelma sitten etsii parhaimman reitin käyttäjän määrittelemien alku- ja loppupisteiden välillä. Tulosteena olisi visuaalinen representaatio polun reitistä.
+Ohjelmassa on avoinlista(openset) joka on toteutettu minimikeolla. Suljettulista(closedset) on yksinkertaisesti boolean arvo solmussa.
 
-Tavoite aikavaativuus: O(n log n)
 
-Tavoite tilavaativuus: O(n)
 
 Lähteet:
 http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
 http://en.wikipedia.org/wiki/A*_search_algorithm
+

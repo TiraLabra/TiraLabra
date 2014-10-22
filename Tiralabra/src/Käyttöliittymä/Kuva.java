@@ -53,6 +53,7 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
      */    
     public void haeKuva() {
         
+        
         try {
             this.kuva=ImageIO.read(new File(getClass().getResource("Untitled.jpg").toURI()));
         } catch (IOException ex) {

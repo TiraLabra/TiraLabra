@@ -64,7 +64,13 @@ public class VerkkoTest {
      * Test of Täytätaulukko method, of class Verkko.
      */
     @Test
-    public void testTäytätaulukko() {
+    public void testLuoSolmu() {
+        
+        testi.LuoSolmu(3, 3);
+        testi.LuoSolmu(400, 400);
+        testi.LuoSolmu(4, 300);
+        testi.LuoSolmu(5, 300);
+        
 
         assertTrue(testi.taulukko[3][3].haeSeina());
         assertFalse(testi.taulukko[400][400].haeSeina());
@@ -84,7 +90,15 @@ public class VerkkoTest {
         testi.maaliX=10;
         testi.maaliY=10;
 
-        assertEquals(10, testi.HeuristiikkaArvo(y, x));
+        assertEquals(70, testi.HeuristiikkaArvo(y, x));
+        
+        y = 50;
+        x = 50;
+        testi.maaliX=50;
+        testi.maaliY=80;        
+        
+        assertEquals(300, testi.HeuristiikkaArvo(y, x));
+        
 
     }
     

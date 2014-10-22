@@ -8,6 +8,8 @@ package Algoritmi;
 
 import java.awt.Color;
 import java.awt.Point;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +23,7 @@ public class Reitinhaku {
   
     public Verkko verkko;
     
-    public Keko keko;
+    public Keko avoinlista;
     
     
 /**
@@ -30,24 +32,28 @@ public class Reitinhaku {
  * edeltäväksi solmuksi itsensä.
  * 
  * @param syöte verkko jossa reitti etsitään.
- * @param Lähtö reitin lähtöpiste.
+ * @param lähtö reitin lähtöpiste.
  * @param laajuus keon maksimikoko
  * 
  */          
     
-    public Reitinhaku(Verkko syöte, Point Lähtö, int laajuus){
+    public Reitinhaku(Verkko syöte, Point lähtö, int laajuus){
+        
+        if(lähtö==null){
+            JOptionPane.showMessageDialog(new JFrame(), "Anna alkupiste");
+        }
 
         verkko=syöte;
 
-        keko=new Keko(laajuus);
+        avoinlista=new Keko(laajuus);
         
-        verkko.LuoSolmu(Lähtö.x, Lähtö.y);
+        verkko.LuoSolmu(lähtö.x, lähtö.y);
         
-        Solmu lähtösolmu=verkko.taulukko[Lähtö.x][Lähtö.y];
+        Solmu lähtösolmu=verkko.taulukko[lähtö.x][lähtö.y];
 
-        keko.lisää(lähtösolmu);
+        avoinlista.lisää(lähtösolmu);
 
-        lähtösolmu.Edeltävä=lähtösolmu;
+        lähtösolmu.edeltävä=lähtösolmu;
         
     }
     
@@ -65,7 +71,7 @@ public class Reitinhaku {
         
         
         while(käsittelyssä.heurestiikaArvo!=0){
-            käsittelyssä=keko.poista();
+            käsittelyssä=avoinlista.Poista();
             
             if(käsittelyssä==null){
                 
@@ -115,18 +121,18 @@ public class Reitinhaku {
                     continue;
                 }
                 
-                int kokeiluReittipituus = Käsittelyssä.Reittipituus + Kumpi(Käsittelyssä, naapuri);
+                int kokeiluReittipituus = Käsittelyssä.reittipituus + Kumpi(Käsittelyssä, naapuri);
                 
-                if(naapuri.käyty && kokeiluReittipituus>=naapuri.Reittipituus){
+                if(naapuri.käyty && kokeiluReittipituus>=naapuri.reittipituus){
                     continue;
                 }
                 
-                if(naapuri.Edeltävä==null || kokeiluReittipituus<naapuri.Reittipituus){
-                    naapuri.Edeltävä=Käsittelyssä;
-                    naapuri.Reittipituus=kokeiluReittipituus;
+                if(naapuri.edeltävä==null || kokeiluReittipituus<naapuri.reittipituus){
+                    naapuri.edeltävä=Käsittelyssä;
+                    naapuri.reittipituus=kokeiluReittipituus;
                      
-                    if(kokeiluReittipituus>=naapuri.Reittipituus){
-                        keko.lisää(naapuri);
+                    if(kokeiluReittipituus>=naapuri.reittipituus){
+                        avoinlista.lisää(naapuri);
                     }
                 }
                 
@@ -150,13 +156,13 @@ public class Reitinhaku {
 //    public void Lisää(Solmu naapuri, Solmu Käsittelyssä){
 //        
 //        if(naapuri.haeSeina()==false){
-//            naapuri.Edeltävä=Käsittelyssä;
+//            naapuri.edeltävä=Käsittelyssä;
 //            
 //            
-//            naapuri.Reittipituus=Käsittelyssä.Reittipituus+Kumpi(Käsittelyssä, naapuri);
+//            naapuri.reittipituus=Käsittelyssä.reittipituus+Kumpi(Käsittelyssä, naapuri);
 //            
 //
-//            keko.lisää(naapuri);
+//            avoinlista.lisää(naapuri);
 //        }
 //        
 //    }
@@ -201,10 +207,10 @@ public class Reitinhaku {
             
             verkko.kuva.setRGB(käsittelyssä.koordinaattiX, käsittelyssä.koordinaattiY, 255);
             
-            if(käsittelyssä==käsittelyssä.Edeltävä){
+            if(käsittelyssä==käsittelyssä.edeltävä){
                 break;
             }else{
-                käsittelyssä=käsittelyssä.Edeltävä;
+                käsittelyssä=käsittelyssä.edeltävä;
             }
             
         }

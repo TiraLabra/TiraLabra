@@ -29,27 +29,32 @@ public class Keko {
 
     /**
      * Siirtää vimeisintä lisättyä solmua ylöspäin puussa
+<<<<<<< HEAD
+     * niin kauan kunnes sen parent solmu on sitä pienempi.
+=======
      * niin kauan ylöspäin kunnes sen parent solmu on sitä pienempi.
+>>>>>>> origin/master
      * 
-    */     
-    private void siirräylös(){
+    */
+    private void SiirräYlös(){
         
-        int lapsi = viimeinen-1;
-        while (lapsi > 0) {
-            int vanhem = (lapsi-1)/2;
-            Solmu käsittelyssä = solmut[lapsi];
-            Solmu vanhempi = solmut[vanhem];
-            if (käsittelyssä.vertaa(vanhempi) > 0) {
+        int lapsenpaikka = viimeinen-1;
+        while (lapsenpaikka > 0) {
+            
+            int vanhemmanpaikka = (lapsenpaikka-1)/2;
+            Solmu lapsi = solmut[lapsenpaikka];
+            Solmu vanhempi = solmut[vanhemmanpaikka];
+            
+            if (lapsi.Vertaa(vanhempi) > 0) {
 
-                solmut[lapsi]=vanhempi;
-                solmut[vanhem]=käsittelyssä;
+                solmut[lapsenpaikka]=vanhempi;
+                solmut[vanhemmanpaikka]=lapsi;
                  
-                lapsi = vanhem;
+                lapsenpaikka = vanhemmanpaikka;
             } else {
                 break;
             }
         }
-    
     }
     
     /**
@@ -58,24 +63,27 @@ public class Keko {
      * 
     */  
      
-    private void siirräalas() {
-        int vanhem = 0;
-        int vasenlapsi = 2*vanhem+1;
+    private void SiirräAlas() {
+        int vanhemmanpaikka = 0;
+        int vasenlapsi = 2*vanhemmanpaikka+1;
+        
         while (vasenlapsi < viimeinen-1) {
-            int suurempi=vasenlapsi;
+            
+            int pienempiilapsi=vasenlapsi;
             int oikealapsi=vasenlapsi+1;
+            
             if (oikealapsi < viimeinen-1) {
-                if (solmut[oikealapsi].vertaa(solmut[vasenlapsi]) > 0) {
-                    suurempi++;
+                if (solmut[oikealapsi].Vertaa(solmut[vasenlapsi]) > 0) {
+                    pienempiilapsi++; //eli oikealapsesta tulee suurempi
                 }
             }
-            if (solmut[vanhem].vertaa(solmut[suurempi]) < 0) {
+            if (solmut[vanhemmanpaikka].Vertaa(solmut[pienempiilapsi]) < 0) {
 
-                    Solmu käsittelyssä = solmut[vanhem];
-                    solmut[vanhem] = solmut[suurempi];
-                    solmut[suurempi] = käsittelyssä;
-                    vanhem = suurempi;
-                    vasenlapsi = 2*vanhem+1;
+                    Solmu käsittelyssä = solmut[vanhemmanpaikka];
+                    solmut[vanhemmanpaikka] = solmut[pienempiilapsi];
+                    solmut[pienempiilapsi] = käsittelyssä;
+                    vanhemmanpaikka = pienempiilapsi;
+                    vasenlapsi = 2*vanhemmanpaikka+1;
             } else {
                 break;
             }
@@ -92,7 +100,7 @@ public class Keko {
         
         solmut[viimeinen]=lisättävä;
         viimeinen++;
-        siirräylös();
+        SiirräYlös();
     }    
     
      /**
@@ -104,7 +112,7 @@ public class Keko {
      * @return poistettava solmu
     */      
 
-    public Solmu poista() {
+    public Solmu Poista() {
         
         if (viimeinen == 0) {
             return null;
@@ -115,7 +123,7 @@ public class Keko {
         solmut[0]=solmut[viimeinen-1];
         solmut[viimeinen-1]=null;
         viimeinen--;
-        siirräalas();
+        SiirräAlas();
         return palautus;
     }
     

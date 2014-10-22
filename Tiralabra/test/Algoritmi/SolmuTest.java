@@ -45,7 +45,7 @@ public class SolmuTest {
         Solmu testi = new Solmu(1, 2, 3, 255);
         Solmu testi2 = new Solmu(1, 2, 3, 0);
         
-        assertEquals(testi.Edeltävä, null);
+        assertEquals(testi.edeltävä, null);
         assertEquals(testi.heurestiikaArvo, 3);
         assertEquals(testi.koordinaattiX, 1);
         assertEquals(testi.koordinaattiY, 2);
@@ -61,9 +61,9 @@ public class SolmuTest {
         Solmu testi = new Solmu(500, 500, 20, 255);
         Solmu testi2 = new Solmu(505, 505, 15, 255);
         
-        assertEquals(testi.vertaa(testi2), -1);
-        assertEquals(testi2.vertaa(testi), 1);
-        assertEquals(testi2.vertaa(testi2), 0);
+        assertEquals(testi.Vertaa(testi2), -1);
+        assertEquals(testi2.Vertaa(testi), 1);
+        assertEquals(testi2.Vertaa(testi2), -1);
     }
 
 }

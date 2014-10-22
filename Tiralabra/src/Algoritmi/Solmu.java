@@ -14,9 +14,9 @@ package Algoritmi;
 public class Solmu {
     
     public int heurestiikaArvo;
-    public int Reittipituus;
+    public int reittipituus;
 
-    public Solmu Edeltävä;
+    public Solmu edeltävä;
     
     public int koordinaattiX;
     public int koordinaattiY;
@@ -39,8 +39,8 @@ public class Solmu {
         koordinaattiX=x;
         koordinaattiY=y;
         heurestiikaArvo=hArvo;
-        Reittipituus=0;
-        Edeltävä=null;
+        reittipituus=0;
+        edeltävä=null;
         
         if(väri==255){
             seinä=false;
@@ -66,9 +66,9 @@ public class Solmu {
      * @param verrattava verrattava solmu
     */
     
-    public int vertaa(Solmu verrattava) {
+    public int Vertaa(Solmu verrattava) {
         
-        if (heurestiikaArvo+Reittipituus < verrattava.heurestiikaArvo+verrattava.Reittipituus){
+        if (heurestiikaArvo+reittipituus < verrattava.heurestiikaArvo+verrattava.reittipituus){
             return 1;
         }else{
             return -1;
