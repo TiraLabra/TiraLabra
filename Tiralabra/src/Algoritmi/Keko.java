@@ -29,11 +29,7 @@ public class Keko {
 
     /**
      * Siirtää vimeisintä lisättyä solmua ylöspäin puussa
-<<<<<<< HEAD
-     * niin kauan kunnes sen parent solmu on sitä pienempi.
-=======
      * niin kauan ylöspäin kunnes sen parent solmu on sitä pienempi.
->>>>>>> origin/master
      * 
     */
     private void SiirräYlös(){

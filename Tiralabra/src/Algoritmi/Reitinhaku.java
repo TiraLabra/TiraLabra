@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 public class Reitinhaku {
   
     public Verkko verkko;
-    
     public Keko avoinlista;
     
     

@@ -42,7 +42,11 @@ public class Kuva extends JComponent implements MouseListener, MouseMotionListen
         haeKuva();
 
         addMouseListener(this);
-        addMouseMotionListener(this);        
+        addMouseMotionListener(this);  
+        
+
+        
+
 
     }
     

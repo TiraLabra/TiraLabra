@@ -81,19 +81,13 @@ public class Aloitus extends JPanel implements ActionListener {
                 verkko = new Verkko(ikkuna.kuva, ikkuna.haeMaali());
 
                 reitti = new Reitinhaku(verkko, ikkuna.haeLahto(), (ikkuna.kuva.getHeight()*ikkuna.kuva.getWidth()));
-<<<<<<< HEAD
 
-                if(reitti.Haku()){
-
-=======
-                
                 long aikaAlussa = System.currentTimeMillis();  
                 if(reitti.Haku()){
-                    long aikaLopussa = System.currentTimeMillis();  
-                    System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
+                long aikaLopussa = System.currentTimeMillis();  
+                System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");  
                 
                 
->>>>>>> origin/master
                     ikkuna.repaint();
                 }else{
                     putsaa();
@@ -101,9 +95,12 @@ public class Aloitus extends JPanel implements ActionListener {
                 }   
                 
                 
+            
             }catch(NullPointerException ex){
             }
             
+
+    
         } else if (Tyhjennä.equals(komento)) {
             
             ikkuna.haeKuva();
