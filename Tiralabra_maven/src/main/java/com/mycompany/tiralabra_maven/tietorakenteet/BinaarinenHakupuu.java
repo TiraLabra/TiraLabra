@@ -1,8 +1,9 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
- * Binäärisen hakupuun implementaatio. Perii Ylihakupuun.
+ * Binäärisen hakupuun implementaatio. Perii Ylihakupuun. Käyttää solmuinaan luokan BinaarinenPuusolmu olioita. 
  *
+ * @see BinaarinenPuusolmu
  * @see YliHakupuu
  * @see http://en.wikipedia.org/wiki/Binary_search_tree
  * @author Markus

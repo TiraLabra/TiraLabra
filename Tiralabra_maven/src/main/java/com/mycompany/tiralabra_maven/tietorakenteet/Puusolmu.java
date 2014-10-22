@@ -1,7 +1,7 @@
-
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
+ * Rajapinta yleiselle binäärihakupuun solmulle.
  *
  * @author Markus
  */
@@ -36,7 +36,8 @@ public interface Puusolmu {
     Puusolmu getVasen();
 
     /**
-     *  Asettaa parametrina saadun arvon solmun avaimeksi
+     * Asettaa parametrina saadun arvon solmun avaimeksi
+     *
      * @param avain Uuden avaimen arvo
      */
     void setAvain(int avain);
@@ -61,5 +62,5 @@ public interface Puusolmu {
      * @param vasen Uusi vasen lapsi
      */
     void setVasen(Puusolmu vasen);
-    
+
 }

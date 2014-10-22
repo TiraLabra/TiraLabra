@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 /**
  * Punamustan puun käyttämä solmu.
  *
+ * @see PunamustaPuu
  * @author Markus
  */
 public class PunamustaPuusolmu implements Puusolmu {

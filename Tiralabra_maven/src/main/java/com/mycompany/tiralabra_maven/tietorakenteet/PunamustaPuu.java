@@ -1,16 +1,24 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
- * Punamustan puun implementaatio. Perii Ylihakupuun.
+ * Punamustan puun implementaatio. Perii Ylihakupuun. Käyttää solmuinaan luokan
+ * PunamustaPuusolmu.
  *
+ * @see PunamustaPuusolmu
  * @see YliHakupuu
  * @see http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
  * @author Markus
  */
 public class PunamustaPuu extends YliHakupuu {
 
+    /**
+     * {@inheritDoc} Lisäykseen jälkeen tutkitaan tarvitseeko puun rakennetta
+     * korjata ja suoritetaan tarvittavat korjaukset tasapainoehdon
+     * säilyttämiseksi.
+     *
+     * @param avain {@inheritDoc}
+     */
     public void lisaa(int avain) {
-        //Tehdään uusi solmu.
         PunamustaPuusolmu uusi = new PunamustaPuusolmu(avain);
         if (lisaa(uusi)) {
             lisaaTapaus1(uusi);
@@ -51,7 +59,7 @@ public class PunamustaPuu extends YliHakupuu {
     /**
      * Lisäys mikäli solmun setä punainen. Vaihdetaan solmun vanhemman sekä
      * vanhemman sisaren sekä vanhemman väri ja palataan rekursiolla tapaukseen
-     * 1. Muuten jatketaan häntärekursiolla.
+     * 1 solmun isovanhemmalla. Muuten jatketaan häntärekursiolla.
      *
      * @param solmu Uusi solmu
      */
@@ -260,7 +268,7 @@ public class PunamustaPuu extends YliHakupuu {
 
     /**
      * Apumetodi joka tarkistaa solmun värin. Mikäli solmu on null palautetaan
-     * musta.
+     * MUSTA.
      *
      * @param solmu Tarkistettavasolmu
      * @return Solmun väri tai Vari.MUSTA jossolmu null

@@ -1,15 +1,22 @@
 package com.mycompany.tiralabra_maven.tietorakenteet;
 
 /**
- * AVL-puun implementaatio
+ * AVL-puun implementaatio. Käyttää solmuinaan AvlPuusolmu luokan olioita. Perii
+ * ylihakupun.
  *
+ * @see YliHakupuu
+ * @see AvlPuusolmu
  * @see http://en.wikipedia.org/wiki/AVL_tree
  * @author Markus
  */
 public class AvlPuu extends YliHakupuu {
 
+    /**
+     * {@inheritDoc} Lisäyksen jälkeen tekee tarvittavat tasapainotusoperaatiot.
+     *
+     * @param avain {@inheritDoc}
+     */
     public void lisaa(int avain) {
-        //Lisäys
         AvlPuusolmu uusi = new AvlPuusolmu(avain);
         if (lisaa(uusi)) {
             tasapainota(uusi);
@@ -21,7 +28,7 @@ public class AvlPuu extends YliHakupuu {
      * puun juurta ja suorittaa tarvittavat kierto-operaatiot puun tasapainon
      * palauttamiseksi.
      *
-     * @param alku Solmu, josta tasapainotus aloitetaan.
+     * @param alku Solmu, josta ylöpäin tasapainotus suoritetaan..
      */
     private void tasapainota(AvlPuusolmu alku) {
         AvlPuusolmu solmu = alku.getVanhempi();
@@ -52,6 +59,11 @@ public class AvlPuu extends YliHakupuu {
         }
     }
 
+    /**
+     * {@inheritDoc} Lisäksi tasapainottaa puun tarvittaessa.
+     *
+     * @param avain {@inheritDoc}
+     */
     @Override
     public void poista(int avain) {
         AvlPuusolmu pois = (AvlPuusolmu) poistaSolmu(avain);

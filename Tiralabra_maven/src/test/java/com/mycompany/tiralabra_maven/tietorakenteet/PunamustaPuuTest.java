@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 public class PunamustaPuuTest {
 
     PunamustaPuu t;
+    int[] a;
 
     public PunamustaPuuTest() {
     }
@@ -18,6 +19,10 @@ public class PunamustaPuuTest {
     @Before
     public void setUp() {
         t = new PunamustaPuu();
+        a = new int[100];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = i;
+        }
     }
 
     @Test
@@ -34,7 +39,10 @@ public class PunamustaPuuTest {
 
     @Test
     public void testLisaaKaikki() {
-        int[] a = {1, 2, 3, 0};
+        int[] a = new int[100];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = i;
+        }
         try {
             t.lisaaKaikki(a);
         } catch (Exception e) {
@@ -44,6 +52,7 @@ public class PunamustaPuuTest {
         for (int i : a) {
             assertEquals(true, t.hae(i));
         }
+        assertTrue(t.getKorkeus() <= 2 * (Math.log(a.length) / Math.log(2)));
     }
 
     @Test
@@ -75,26 +84,15 @@ public class PunamustaPuuTest {
         t.lisaa(2);
         t.poista(1);
         assertEquals(2, t.getJuuri().getAvain());
-        int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         t.lisaaKaikki(a);
         assertEquals(true, t.hae(5));
         t.poista(5);
         assertEquals(false, t.hae(5));
-        assertEquals(a.length - 1, t.getKoko());
-        for (int i : a) {
-            if (i != 5) {
-                assertEquals(true, t.hae(i));
-            }
+        for (int i = 0; i < a.length / 2; i++) {
+            t.poista(i);
         }
-
-        t.poista(1);
-        t.poista(9);
-        assertEquals(a.length - 3, t.getKoko());
-        for (int i : a) {
-            if ((i != 5 && i != 1) && i != 9) {
-                assertEquals(true, t.hae(i));
-            }
-        }
+        assertTrue(t.getKoko() == a.length - (a.length / 2));
+        assertTrue(t.getKorkeus() <= 2 * (Math.log(t.getKoko()) / Math.log(2)));
     }
 
     @Test

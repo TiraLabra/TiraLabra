@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 /**
  * Binäärihakupuiden käyttämä solmu.
  *
+ * @see BinaarinenHakupuu
  * @author Markus
  */
 public class BinaarinenPuusolmu implements Puusolmu {

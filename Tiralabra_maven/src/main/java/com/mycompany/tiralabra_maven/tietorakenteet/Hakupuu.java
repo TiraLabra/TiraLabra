@@ -15,7 +15,7 @@ public interface Hakupuu {
     public void lisaa(int avain);
 
     /**
-     * Lisää kaikki parametrina saadun arrayn arvot puuhun.
+     * Lisää kaikki parametrina saadun taulukon arvot puuhun.
      *
      * @param avaimet Lisättävät arvot.
      */

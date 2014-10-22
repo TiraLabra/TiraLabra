@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven.tietorakenteet;
 /**
  * AVL-Puun käyttämä solmu
  *
+ * @see AvlPuu
  * @author Markus
  */
 public class AvlPuusolmu implements Puusolmu {

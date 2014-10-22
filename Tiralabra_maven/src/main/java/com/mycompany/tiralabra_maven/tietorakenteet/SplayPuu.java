@@ -39,12 +39,12 @@ public class SplayPuu extends YliHakupuu {
                         oikeaKierto(vanhempi);
                     } else {
                         oikeaKierto(vanhempi);
-                        vasenKierto(isovanhempi);
+                        vasenKierto(vanhempi);
                     }
                 } else {
                     if (onVasen(vanhempi)) {
                         vasenKierto(vanhempi);
-                        oikeaKierto(isovanhempi);
+                        oikeaKierto(vanhempi);
                     } else {
                         vasenKierto(isovanhempi);
                         vasenKierto(vanhempi);

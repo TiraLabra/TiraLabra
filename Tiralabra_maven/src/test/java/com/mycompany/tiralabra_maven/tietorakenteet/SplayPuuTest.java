@@ -34,12 +34,13 @@ public class SplayPuuTest {
 
     @Test
     public void testLisaaKaikki() {
-        int[] a = {1, 2, 3, 0};
+        int[] a = {1, 2, 3, 4, 5};
         try {
             t.lisaaKaikki(a);
         } catch (Exception e) {
             fail("Jokin meni pieleen");
         }
+        assertEquals(5, t.getJuuri().getAvain());
         assertEquals(a.length, t.getKoko());
         for (int i : a) {
             assertEquals(true, t.hae(i));
@@ -51,16 +52,16 @@ public class SplayPuuTest {
         assertEquals(false, t.hae(5));
         t.lisaa(5);
         assertEquals(true, t.hae(5));
-        int[] a = {1, 2, 3, 4, 5, 6};
+        int[] a = {1, 2, 3, 4, 5};
         t.lisaaKaikki(a);
-        assertTrue(t.hae(6));
-        assertEquals(6, t.getJuuri().getAvain());
+        assertTrue(t.hae(3));
+        assertEquals(3, t.getJuuri().getAvain());
+        assertEquals(4, t.getJuuri().getOikea().getAvain());
+        assertEquals(2, t.getJuuri().getVasen().getAvain());
         assertTrue(t.hae(1));
         assertEquals(1, t.getJuuri().getAvain());
-        assertEquals(true, t.hae(2));
-        assertEquals(true, t.hae(3));
-        assertEquals(false, t.hae(8));
-        assertEquals(false, t.hae(0));
+        assertEquals(2, t.getJuuri().getOikea().getAvain());
+        assertEquals(null, t.getJuuri().getVasen());
 
     }
 
@@ -85,24 +86,13 @@ public class SplayPuuTest {
         assertEquals(2, t.getJuuri().getAvain());
         int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         t.lisaaKaikki(a);
-        assertEquals(true, t.hae(5));
         t.poista(5);
         assertEquals(false, t.hae(5));
         assertEquals(a.length - 1, t.getKoko());
-        for (int i : a) {
-            if (i != 5) {
-                assertEquals(true, t.hae(i));
-            }
-        }
-
-        t.poista(1);
-        t.poista(9);
-        assertEquals(a.length - 3, t.getKoko());
-        for (int i : a) {
-            if ((i != 5 && i != 1) && i != 9) {
-                assertEquals(true, t.hae(i));
-            }
-        }
+        assertEquals(4, t.getJuuri().getAvain());
+        assertEquals(8, t.getJuuri().getOikea().getAvain());
+        assertEquals(6, t.getJuuri().getOikea().getVasen().getAvain());
+        assertEquals(3, t.getJuuri().getVasen().getAvain());
     }
 
     @Test
