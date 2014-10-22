@@ -6,7 +6,8 @@ package wad.solmu;
  * joka halutaan tallentaa tietorakenteeseen. Solmun avaimella erotetaan solmut
  * toisistaan ja arvo muuttujaan säilötään haluttu tieto. Solmuun kirjataan myös
  * tieto sen oikean ja vasemman alipuun juuri solmuista.
- *
+ * Gettereille ja Settereille ei ole kommentteja. Yleisesti get-metodit palauttavat
+ * olion attribuuttia vastaavan arvon ja set-metodi asettaa attribuutille arvon.
  */
 public class Solmu {
 
@@ -78,6 +79,10 @@ public class Solmu {
         this.onMusta = false;
     }
     
+    /**
+     * Metodi palauttaa boolean arvon, joka ilmaisee solmun väriä.
+     * @return true, jos solmu on musta. Jos solmu on punainen, palautetaan false.
+     */
     public boolean onMusta() {
         return this.onMusta;
     }

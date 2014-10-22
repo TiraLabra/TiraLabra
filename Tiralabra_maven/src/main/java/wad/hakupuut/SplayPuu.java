@@ -9,7 +9,12 @@ import wad.solmu.Solmu;
  * -luokan vastaamaan splay-puu toteutusta.
  */
 public class SplayPuu extends BinaarinenHakupuu {
-    
+    /**
+     * Haku metodi splay-puulle. Toimii muuten kuten binäärisen hakupuun haku, mutta
+     * splayaa puun.
+     * @param haettava data, jota haetaan puusta
+     * @return palauttaa haetun solmun. Null jos solmua ei löydy.
+     */
     @Override
     public Solmu hae(Object haettava) {
         Solmu haettu = super.hae(haettava);
@@ -87,6 +92,10 @@ public class SplayPuu extends BinaarinenHakupuu {
         }
     }
     
+    /**
+     * Kääntää solmua puussa vasemmalle.
+     * @param x käännettävä solmu
+     */
     private void vasenKaanto(Solmu x) {
         if (x.getOikea() == null) {
             return;
@@ -108,6 +117,10 @@ public class SplayPuu extends BinaarinenHakupuu {
         x.setVanhempi(y);
     }
     
+    /**
+     * Kääntää solmua puussa oikealle.
+     * @param x käännettävä solmu
+     */
     private void oikeaKaanto(Solmu x) {
         if (x.getVasen() == null) {
             return;

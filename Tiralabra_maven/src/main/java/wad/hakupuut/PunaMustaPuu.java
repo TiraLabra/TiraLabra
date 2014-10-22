@@ -40,7 +40,7 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
     /**
      * Poistaa puusta dataa ja selvitää onko solmujen värit oikein.
      * Mikäli värit eivät noudata puna-mustapuun ehtoja, ohjataan puu korjattavaksi.
-     * 
+     * Poista metodi on toteutettu häntärekursiolla.
      * @param poistettava data, joka halutaan poistaa puusta
      * @return poistettu solmu.
      */
@@ -60,6 +60,11 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         return poistettu;
     }
     
+    /**
+     * Häntärekursion ensimmäinen metodi. Tänne edetään aina, jos solmu halutaan poistaa.
+     * Poisto tapaus 1 edetään vain, jos x on musta ja sillä on vähintään yksi musta lapsi.
+     * @param x poistettu solmu
+     */
     private void poistaYksiLapsi(Solmu x) {
         Solmu lapsi = x.getOikea() == null ? x.getVasen() : x.getOikea();
         Solmu vanhempi = x.getVanhempi();
@@ -73,12 +78,23 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         }
     }
     
+    /**
+     * Häntärekursion toinen metodi. Edetään poistoTapaus2 jos x ei ollut juuri.
+     * @param s poistaYksiLapsi metodin x lapsi
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus1(Solmu s, Solmu vanhempi) {
         if(vanhempi != null) {
             poistoTapaus2(s, vanhempi);
         }
     }
     
+    /**
+     * Kun s korvattiin poistaYksiLapsessa x:llä vaihdettiin sille vanhemmaksi x:n vanhempi.
+     * nyt tutkitaan s:n sisarien vaikutusta puun tasapainoon. PoistoTapaus3 jatketaan aina.
+     * @param s x:n korvaava lapsi
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus2(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
         if(!sisar.onMusta()) {
@@ -93,6 +109,12 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         poistoTapaus3(s, vanhempi);
     }
     
+    /**
+     * Jos vanhempi on musta ja s:n sisar on musta ja sillä ei ole lapsia
+     * saatetaan palata tapaukseen 1, muuten edetään tapaukseen 4.
+     * @param s x:n korvaava lapsi
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus3(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
         if((vanhempi.onMusta())
@@ -106,6 +128,12 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         }
     }
     
+    /**
+     * Jos vanhempi on musta tai s:n sisar on punainen tai s:n sisarella ei ole vähintään yhtä lasta
+     * edetään tapaukseen 5. Muuten vaihdetaan sisaren ja vanhemman värejä.
+     * @param s x:n korvaava lapsi
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus4(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
         if((!vanhempi.onMusta())
@@ -119,6 +147,12 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         }
     }
     
+    /**
+     * Jos s:llä on musta sisar, muutetaan se punaiseksi ja tilanteesta riippuen sen lapsi mustaksi.
+     * Sisar solmua myös käännetään tilanteesta riippuen. Poisto tapaukseen 6 edetään kaikissa tapauksissa.
+     * @param s x:n korvaava solmu
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus5(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
         if(sisar != null && sisar.onMusta()) {
@@ -139,6 +173,12 @@ public class PunaMustaPuu extends BinaarinenHakupuu {
         poistoTapaus6(s, vanhempi);
     }
     
+    /**
+     * Metodi antaa s:n sisarelle saman värin kuin mikä vanhemmalla on. Vanhempi muutetaan mustaksi.
+     * Riippuen kumman puoleinen lapsi s:n vanhemmalleen, käännetään vanhempaa.
+     * @param s x:n korvaava solmu
+     * @param vanhempi x:n vanhempi
+     */
     private void poistoTapaus6(Solmu s, Solmu vanhempi) {
         Solmu sisar = getSisar(s, vanhempi);
         if(vanhempi.onMusta()) sisar.setMusta();

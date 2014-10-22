@@ -1,10 +1,12 @@
-
-import wad.hakupuut.*;
 import java.util.Scanner;
+import wad.hakupuut.*;
 
 public class SuorituskyvynTestaus {
     private HakupuuRajapinta bst, avl, rbt, splay;
     
+    /**
+     * Konstruktori luo puut.
+     */
     public SuorituskyvynTestaus() {
         bst = new BinaarinenHakupuu();
         avl = new AVLpuu();
@@ -23,7 +25,7 @@ public class SuorituskyvynTestaus {
     }
     
     /**
-     * Alku höpinöitä. 
+     * Ohjelman tulostusta.
      */
     private void liirumlaarum() {
         System.out.println("Testataan binäärisiä hakupuita:\n"
@@ -34,7 +36,7 @@ public class SuorituskyvynTestaus {
     }
     
     /**
-     * Kysytään käyttäjältä int arvoa, jonka metodi palauttaa. Vain luonnolliset luvut sallitaan syötteinä.
+     * Kysytään käyttäjältä int arvoa, jonka metodi palauttaa. Vain positiiviset luvut sallitaan syötteinä.
      * @param s kysymys string
      * @return käyttäjän syöttämä int arvo.
      */

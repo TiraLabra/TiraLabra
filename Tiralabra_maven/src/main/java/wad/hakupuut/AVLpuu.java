@@ -112,7 +112,12 @@ public class AVLpuu extends BinaarinenHakupuu {
         }
         return null;
     }
-
+    
+    /**
+     * Käännetään solmua vasemmalle puussa.
+     * @param k1 käännettävä solmu
+     * @return palautetaan k1 korvaava solmu, jos sellainen on.
+     */
     private Solmu vasenKaanto(Solmu k1) {
         if (k1.getOikea() == null) {
             return null;
@@ -130,6 +135,11 @@ public class AVLpuu extends BinaarinenHakupuu {
         return k2;
     }
 
+    /**
+     * Käännetään solmua oikealle puussa.
+     * @param k1 käännettävä solmu
+     * @return palautetaan k1 korvaava solmu, jos sellainen on.
+     */
     private Solmu oikeaKaanto(Solmu k1) {
         if (k1.getVasen() == null) {
             return null;
@@ -146,13 +156,25 @@ public class AVLpuu extends BinaarinenHakupuu {
         k2.setKorkeus(max(korkeus(k2.getVasen()), korkeus(k2.getOikea())) + 1);
         return k2;
     }
-
+    
+    /**
+     * Käännetään solmua k1 oikealle ja sen vasenta lasta vasemmalle.
+     * k1 vasemmaksi lapseksi korvataan k2 tilalle käännetty solmu.
+     * @param k1 käännettävä solmu
+     * @return tilalle käännetty solmu
+     */
     private Solmu vasenOikeaKaanto(Solmu k1) {
         Solmu k2 = k1.getVasen();
         k1.setVasen(vasenKaanto(k2));
         return oikeaKaanto(k1);
     }
 
+    /**
+     * Käännetään solmua k1 vasemmalle ja sen oikeaa lasta oikealle.
+     * k1 oikeaksi lapseksi korvataan k2 tilalle käännetty solmu.
+     * @param k1 käännettävä solmu
+     * @return tilalle käännetty solmu
+     */
     private Solmu oikeaVasenKaanto(Solmu k1) {
         Solmu k2 = k1.getOikea();
         k1.setOikea(oikeaKaanto(k2));
