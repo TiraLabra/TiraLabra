@@ -83,7 +83,6 @@ public class HiirenKuuntelija implements MouseListener {
      * Loppu on löytynyt, joten lyhin reitti näytetään värittämällä se vihreäksi
      * ja kaikki nappulat kytketään pois päältä.
      */
-
     public void naytaReitti() {
         Maapala maapala = maapalarekisteri.getLoppu().getVanhempi();
 
@@ -106,7 +105,6 @@ public class HiirenKuuntelija implements MouseListener {
      * Labyrintistä ei ole reittiä loppuun, joten palat väritetään harmaiksi
      * ja kytketään pois päältä.
      */
-
     public void eiReittia() {
         for (int i = 0; i < koko; i++) {
             for (int j = 0; j < koko; j++) {
@@ -126,7 +124,6 @@ public class HiirenKuuntelija implements MouseListener {
      * 
      * @param MouseEvent e 
      */
-
     public void seinanAlustus(MouseEvent e) {
         Nappula nappula = (Nappula) e.getSource();
         int x = nappula.getXKoordinaatti();
@@ -148,7 +145,6 @@ public class HiirenKuuntelija implements MouseListener {
      * 
      * @param MouseEvent e 
      */
-
     public void alustaAlkuJaLoppu(MouseEvent e) {
         Nappula nappula = (Nappula) e.getSource();
         int x = nappula.getXKoordinaatti();

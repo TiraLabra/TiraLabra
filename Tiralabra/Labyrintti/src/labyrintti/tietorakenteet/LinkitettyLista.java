@@ -25,8 +25,7 @@ public class LinkitettyLista {
      * Metodi lisää alkion linkitettyyn listaan.
      * @param ListaAlkio alkio
      * 
-     */
-    
+     */  
     public void lisaaListaan(ListaAlkio alkio) {
         if (this.koko == 0) {
             this.paa = alkio;
@@ -43,7 +42,6 @@ public class LinkitettyLista {
      * Metodi poistaa parametrina saadun alkion listasta.
      * @param ListaAlkio alkio
      */ 
-
     public void poistaListasta(ListaAlkio alkio) {
         if (this.koko == 0) {
         } else {
@@ -79,8 +77,7 @@ public class LinkitettyLista {
     
     /**
      * @return this.koko 
-     */
-    
+     */   
     public int getKoko(){
         return this.koko;
     }
@@ -88,8 +85,7 @@ public class LinkitettyLista {
     /**
      * 
      * @return this.paa
-     */
-    
+     */   
     public ListaAlkio getPaa(){
         return this.paa;
     }

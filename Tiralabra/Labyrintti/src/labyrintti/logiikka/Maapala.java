@@ -163,16 +163,14 @@ public class Maapala extends ListaAlkio {
     
     /**
      * Metodi asettaa maapalalle kokonaisarvon.
-     */
-    
+     */  
     public void setKokonaisArvo(){
         this.kokonaisarvo = (this.vanhempi.kokonaisarvo - this.vanhempi.hArvo) + this.hArvo + this.liikkumisArvo;
     }
     
     /**
      * @return this.kokonaisarvo
-     */
-    
+     */   
     public int getKokonaisArvo(){
         return this.kokonaisarvo;
     }

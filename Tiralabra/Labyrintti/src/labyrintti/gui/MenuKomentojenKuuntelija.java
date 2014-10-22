@@ -33,7 +33,6 @@ public class MenuKomentojenKuuntelija implements ActionListener {
      * 
      * @param ActionEvent ae
      */
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == kaynnista) {

@@ -12,7 +12,6 @@ import javax.swing.JButton;
  * 
  * @author Mikael Parvamo
  */
-
 public class Nappula extends JButton{
     private int x;
     private int y;
@@ -27,7 +26,6 @@ public class Nappula extends JButton{
     /**
     *@return this.x 
     */
-    
     public int getXKoordinaatti(){
         return this.x;
     }
@@ -41,16 +39,14 @@ public class Nappula extends JButton{
     
     /**
      * Labyrintin etsintä on loppunut ja nappula asetetaan pois päältä.
-     */
-    
+     */   
     public void avaa(){
         this.avattu = true;
     }
     
     /**
      * @return this.avattu;
-     */
-    
+     */    
     public boolean getAvattu(){
         return this.avattu;
     }

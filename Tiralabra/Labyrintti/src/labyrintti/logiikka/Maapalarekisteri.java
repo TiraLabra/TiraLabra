@@ -46,7 +46,6 @@ public class Maapalarekisteri {
     /**
      * Metodi luo kaikki maapalat ja asettaa ne 2D- taulukkoon omille paikoilleen.
      */
-
     public void luoMaapalat() {
         for (int i = 0; i < koko; i++) {
             for (int j = 0; j < koko; j++) {
@@ -72,7 +71,8 @@ public class Maapalarekisteri {
      * Tämä metodi palauttaa aloitusmaapalan X-koordinaatin, joka kertoo missä
      * maapala on labyrintin X-akselilla.
      *
-     * @return this.alkuX, joka on aloitusmaapalan X-koordinaatti
+     * @return this.alkuX
+     * joka on aloitusmaapalan X-koordinaatti
      */
     public int getAlkuX() {
         return this.alkuX;
@@ -82,7 +82,8 @@ public class Maapalarekisteri {
      * Tämä metodi palauttaa aloitusmaapalan Y-koordinaatin, joka kertoo missä
      * maapala on labyrintin Y-akselilla.
      *
-     * @return this.alkuY, joka on aloitusmaapalan Y-koordinaatti
+     * @return this.alkuY
+     * joka on aloitusmaapalan Y-koordinaatti
      */
     public int getAlkuY() {
         return this.alkuY;
@@ -92,7 +93,8 @@ public class Maapalarekisteri {
      * Tämä metodi palauttaa lopetusmaapalan X-koordinaatin, joka kertoo missä
      * maapala on labyrintin X-akselilla.
      *
-     * @return this.loppuX, joka on lopetusmaapalan X-koordinaatti
+     * @return this.loppuX
+     * joka on lopetusmaapalan X-koordinaatti
      */
     public int getLoppuX() {
         return this.loppuX;
@@ -102,7 +104,8 @@ public class Maapalarekisteri {
      * Tämä metodi palauttaa lopetusmaapalan Y-koordinaatin, joka kertoo missä
      * maapala on labyrintin Y-akselilla.
      *
-     * @return this.loppuY, joka on lopetusmaapalan Y-koordinaatti
+     * @return this.loppuY
+     * joka on lopetusmaapalan Y-koordinaatti
      */
     public int getLoppuY() {
         return this.loppuY;
@@ -111,8 +114,8 @@ public class Maapalarekisteri {
     /**
      * Tämä metodi palauttaa labyrintin aloitusmaapalan.
      *
-     * @return labyrintti[this.alkuX][this.alkuY], eli palauttaa maapalan, joka
-     * on aloitusmaapalan koordinaateissa.
+     * @return labyrintti[this.alkuX][this.alkuY]
+     * eli palauttaa maapalan, joka on aloitusmaapalan koordinaateissa.
      */
     public Maapala getAlku() {
         return labyrintti[this.alkuX][this.alkuY];
@@ -121,8 +124,8 @@ public class Maapalarekisteri {
     /**
      * Tämä metodi palauttaa lopetusmaapalan.
      *
-     * @return labyrintti[this.loppuX][this.loppuY], eli metodi palauttaa
-     * maapalan, joka on lopetusmaapalan (uloskäynnin) koordinaateissa.
+     * @return labyrintti[this.loppuX][this.loppuY]
+     * eli metodi palauttaa maapalan, joka on lopetusmaapalan (uloskäynnin) koordinaateissa.
      */
     public Maapala getLoppu() {
         return labyrintti[this.loppuX][this.loppuY];
@@ -131,8 +134,8 @@ public class Maapalarekisteri {
     /**
      * Tämän metodin tehtävänä on palauttaa koordinaattien mukainen maapala.
      *
-     * @param x, haetun maapalan X-koordinaatti
-     * @param y, haetun maapalan Y-koordinaatti
+     * @param x haetun maapalan X-koordinaatti
+     * @param y haetun maapalan Y-koordinaatti
      * @return annettujen koordinaattien perusteella haettu maapala.
      */
     public Maapala getMaapala(int x, int y) {
@@ -142,7 +145,7 @@ public class Maapalarekisteri {
     /**
      * Tämän metodin tarkoituksena on palauttaa koko labyrintti eli 2D-taulukko
      *
-     * @return this.labyrintti, eli 2D- taulukko, jossa on kaikki labyrintin
+     * @return this.labyrintti eli 2D- taulukko, jossa on kaikki labyrintin
      * maapalat.
      */
     public Maapala[][] getLabyrintti() {
@@ -150,7 +153,7 @@ public class Maapalarekisteri {
     }
 
     /**
-     * @return this.koko, eli labyrintin sivun pituus.
+     * @return this.koko eli labyrintin sivun pituus.
      */
     public int getKoko() {
         return this.koko;
@@ -158,8 +161,7 @@ public class Maapalarekisteri {
     
     /**
      * @param int alkuX
-     */
-    
+     */   
     public void setAlkuX(int alkuX) {
         this.alkuX = alkuX;
     }
@@ -167,23 +169,20 @@ public class Maapalarekisteri {
      /**
      * @param int alkuY
      */
-
     public void setAlkuY(int alkuY) {
         this.alkuY = alkuY;
     }
     
      /**
      * @param int loppuX
-     */
-    
+     */ 
     public void setLoppuX(int loppuX){
         this.loppuX = loppuX;     
     }
     
      /**
      * @param int loppuY
-     */
-    
+     */ 
     public void setLoppuY(int loppuY){
         this.loppuY = loppuY;
     }

@@ -29,6 +29,7 @@ public class Keko {
         avoinLista[0] = dummy;
 
     }
+    
     /**
      * Saa parametrina tarkasteltavan alkion sijainnin ja laskee sen avulla alkion
      * vasemman lapsen sijainnin

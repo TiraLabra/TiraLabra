@@ -37,7 +37,6 @@ public class LabyrinthGUI {
      * Metodi luo ikkunan, jonka sisältämät komponentit luodaan
      * kutsumalla luoKomponentit- metodia
      */
-
     public void run() {
         frame = new JFrame("Labyrinth");
 
@@ -58,7 +57,6 @@ public class LabyrinthGUI {
      * 
      * @param container 
      */
-
     public void luoKomponentit(Container container) {
         BorderLayout layout = new BorderLayout();
         container.setLayout(layout);

@@ -32,7 +32,6 @@ public class Menu {
     /**
      * Metodi luo ikkunan, johon komponentit sijoitetaan.
      */
-
     public void run() {
         frame = new JFrame("Labyrinth");
         int leveys = 400;
@@ -53,7 +52,6 @@ public class Menu {
      * 
      * @param container 
      */
-
     private void luoKomponentit(Container container) {
         GridLayout layout = new GridLayout(3, 1, 20, 20);
         container.setLayout(layout);

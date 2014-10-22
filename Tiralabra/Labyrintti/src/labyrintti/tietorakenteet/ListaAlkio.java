@@ -19,16 +19,14 @@ public class ListaAlkio {
     
     /**
     * @param seuraava, eli alkiota seuraava jäsen listassa.
-    */
-      
+    */     
     public void setSeuraava(ListaAlkio seuraava){
         this.seuraava = seuraava;
     }
     
     /**
     * @return this.seuraava
-    */
-    
+    */  
     public ListaAlkio getSeuraava(){
         return this.seuraava;
     }
