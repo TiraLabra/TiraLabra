@@ -21,4 +21,26 @@ Ohjelmointikielenä käytetään Javaa.
 
 * Arvo olio (kivi/paperi/sakset/(spock/lisko))
 
+**Komentokehoitteen syöte ja tuloste:**
+
+* Ohjelman käynnistys
+Käynnistyksessä joko tyhjä argumentti tai "plus". Ilman argumenttia peli käynnistyy perinteiseen kivi-paperi-sakset-peliin ja argumentin kanssa lisätään mukaan spock ja lisko. 
+
+* Ohjelma näyttää jatkuvasti syötteiden lyhenteet:
+K = Kivi
+P = Paperi
+S = Sakset
+O = Spock
+L = Lisko
+T = Statistiikka
+X = Lopeta
+
+* Käyttäjän syöttäessä muun kuin T tai X kone tulostaa oman valintansa
+
+* Komennolla T kone tulostaa statistiikan
+
+* Komento X lopettaa pelin
+
+* Pelin lataaminen ja tallentaminen implementoidaan graafiseen käyttöliittymään
+
 
