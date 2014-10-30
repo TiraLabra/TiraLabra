@@ -6,7 +6,7 @@
 package haku;
 
 import verkko.Kaari;
-import verkko.Solmu;
+import verkko.Pysakki;
 
 /**
  * Verkossa eteneminen: pidetään kirjaa reitistä, kuljetuista kaarista, kuljetusta etäisyydestä, heuristinen arvio jäljellä olevasta matkasta sekä nykyisestä solmusta
@@ -25,7 +25,7 @@ public class Reitti {
     /**
      * Nykyinen solmu
      */
-    private Solmu   solmu;
+    private Pysakki   solmu;
     /**
      * Verkon kaarista luettu tähän solmuun johtanut kustannus
      */
@@ -35,9 +35,14 @@ public class Reitti {
      */
     private double arvioituKustannus;
     
+    /*
+    Pidettävä kirjaa: kuljettu matka, käytetty aika ( & tämänhetkinen aika)
+    */
+    private double aika;
+    private double matka;
+    
     
     // automaattiset setterit & getterit
-
     public Reitti getPrevious() {
         return previous;
     }
@@ -55,11 +60,11 @@ public class Reitti {
     }
 
     
-    public Solmu getSolmu() {
+    public Pysakki getSolmu() {
         return solmu;
     }
 
-    public void setSolmu(Solmu solmu) {
+    public void setSolmu(Pysakki solmu) {
         this.solmu = solmu;
     }
 
@@ -78,5 +83,33 @@ public class Reitti {
     public void setArvioituKustannus(double arvioituKustannus) {
         this.arvioituKustannus = arvioituKustannus;
     }
+
+    public double getAika() {
+        return aika;
+    }
+
+    public void setAika(double aika) {
+        this.aika = aika;
+    }
+
+    public double getMatka() {
+        return matka;
+    }
+
+    public void setMatka(double matka) {
+        this.matka = matka;
+    }
+
+    @Override
+    public String toString() {
+        String tuloste = "Reitti{" + "kuljettuKaari=" + kuljettuKaari 
+                + ", solmu=" + solmu.getNimi() + ", kustannus=" + kustannus 
+                + ", arvioituKustannus=" + arvioituKustannus + ", aika=" + aika 
+                + ", matka=" + matka + '}';
+        if ( this.getPrevious()!=null )
+            tuloste = this.getPrevious().toString()+"\n"+tuloste;
+        return tuloste;
+    }
+    
     
 }
