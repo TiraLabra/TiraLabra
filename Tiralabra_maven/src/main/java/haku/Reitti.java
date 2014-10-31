@@ -35,10 +35,13 @@ public class Reitti {
      */
     private double arvioituKustannus;
     
-    /*
-    Pidettävä kirjaa: kuljettu matka, käytetty aika ( & tämänhetkinen aika)
-    */
+    /**
+     * Kuljettu aika
+     */
     private double aika;
+    /**
+     * Kuljettu matka
+     */
     private double matka;
     
     
@@ -109,6 +112,28 @@ public class Reitti {
         if ( this.getPrevious()!=null )
             tuloste = this.getPrevious().toString()+"\n"+tuloste;
         return tuloste;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (this.solmu != null ? this.solmu.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Reitti other = (Reitti) obj;
+        if (this.solmu != other.solmu && (this.solmu == null || !this.solmu.equals(other.solmu))) {
+            return false;
+        }
+        return true;
     }
     
     

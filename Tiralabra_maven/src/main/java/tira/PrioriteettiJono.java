@@ -5,6 +5,8 @@
  */
 package tira;
 
+import java.util.Comparator;
+
 /**
  * A*-haku käyttää prioriteettijonoa solmujen käsittelyjärjestyksessä
  * 
@@ -13,10 +15,11 @@ package tira;
  * @param <E> Jonon tyyppi
  */
 public class PrioriteettiJono<E> {
-    private Vertailija<E> vertailija;
+    private Comparator<E> vertailija;
     /*
-    TOTEUTUS: minimikeko, fibonacci-keko
+    TOTEUTUS: minimikeko, fibonacci-keko yms yms
     */
+    
     
     
     /**
@@ -25,7 +28,7 @@ public class PrioriteettiJono<E> {
      * 
      * @param e Lisättävä arvo
      */
-    public void enqueue( E e ) {
+    public void add( E e ) {
         // WIP
         
         // oikea paikka arvolle etsitään käyttämällä vertailijaa
@@ -49,11 +52,11 @@ public class PrioriteettiJono<E> {
     
     // automaattiset setterit&getterit
 
-    public Vertailija getVertailija() {
+    public Comparator<E> getVertailija() {
         return vertailija;
     }
 
-    public void setVertailija(Vertailija vertailija) {
+    public void setVertailija(Comparator<E> vertailija) {
         this.vertailija = vertailija;
     }
     

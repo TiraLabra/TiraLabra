@@ -22,8 +22,7 @@ public class Verkko {
      HUOM! useaan paikkaan tallennettu data nopeuttaa hakuja, mutta hidastaa verkon luomista ja varsinkin muokkaamista
      Kannattanee kuitenkin, jotta haut mahd. nopeita
      */
-
-
+    
     private Pysakki[] pysakit;
     private Linja[] linjat;
     // hakuja nopeuttamaan
@@ -33,13 +32,14 @@ public class Verkko {
     // Tarvitseeko tässä olioviitteitä 
     // WIP KATSO MITEN VAIKUTTAA SUORITUSAIKAAN JOS AVAIMET STRING
     private HashMap<Pysakki, List<Linja>> pysakiltaKulkevatLinjat;
-    private HashMap<Pysakki, List<Pysakki>> naapurit;   // max E*E
-    private HashMap<Pysakki, HashMap<Pysakki, List<Kaari>>> reititNaapureihin; // max E*E*V
+    private HashMap<Pysakki, List<Pysakki>> naapurit;   // max V*V
+    private HashMap<Pysakki, HashMap<Pysakki, List<Kaari>>> reititNaapureihin; // max V*V*E
     // Kannattaako ennemmin kävellä pysäkiltä toiselle? Saattaa jäädä pois lopullisesta versiosta
     // private double[][]  pysakkienValisetEtaisyydet;
 
     /**
-     * Pysäkkien ohitusajat. ( Tieto vuorojen tiheydestä linjassa ), pysakin koodi-linjan koodi-ohitusaika
+     * Pysäkkien ohitusajat. ( Tieto vuorojen tiheydestä linjassa ), pysakin
+     * koodi-linjan koodi-ohitusaika
      */
     private HashMap<String, HashMap<String, Double>> pysakkiAikataulut;
 
@@ -47,16 +47,17 @@ public class Verkko {
      * Luo verkon käyttäen apuna pysäkkiverkko-oliota
      */
     public Verkko() {
-        Pysakkiverkko pysakkiverkko = new Pysakkiverkko();
-        pysakkiverkko.create("verkko.json", "linjat.json");
-        // rakennetaan JSON-olioista tarkoituksenmukainen verkko
         // apuolioita hakujen nopeuttamiseen
         linjanKoodit = new HashMap();
         pysakinKoodit = new HashMap();
         naapurit = new HashMap();
         reititNaapureihin = new HashMap();
         pysakiltaKulkevatLinjat = new HashMap();
-        pysakkiAikataulut=  new HashMap();        
+        pysakkiAikataulut = new HashMap();
+        // luetaan JSON-datasta pysäkit ja linjat
+        Pysakkiverkko pysakkiverkko = new Pysakkiverkko();
+        pysakkiverkko.create("verkko.json", "linjat.json");
+        // rakennetaan JSON-olioista tarkoituksenmukainen verkko
         // pysakit
         pysakit = new Pysakki[pysakkiverkko.getPysakit().length];
         for (int i = 0; i < pysakit.length; i++) {
@@ -71,7 +72,13 @@ public class Verkko {
             linjat[i].setTyyppi(Linja.TYYPPI_RATIKKA);
             // linjan reitin tallentaminen: kaaret linkitettyyn listaan
             LinkedList<Kaari> linjanReitti = new LinkedList();
-            for (int j = 0; j < linja.getPsKoodit().length - 1; j++) {
+            for (int j = 0; j < linja.getPsKoodit().length; j++) {
+                // lisätään pysähtymistieto pysäkkiaikatauluun
+                this.lisaaPysakkiAikataulut(linja.getPsKoodit()[j], linja.getPsAjat()[j], linja.getKoodi());
+                if (j >= linja.getPsKoodit().length - 1) {
+                    break;
+                }
+                // luodaan kaaret ja niiden määräämät yhteydet
                 Kaari kaari = new Kaari();
                 kaari.setAlkuSolmu(linja.getPsKoodit()[j]);
                 kaari.setLoppuSolmu(linja.getPsKoodit()[j + 1]);
@@ -89,25 +96,30 @@ public class Verkko {
                 this.lisaaReittiNaapuriin(kaari);
                 // lisätään linja pysäkin kautta kulkeviin kulkeviin
                 this.lisaaPysakille(kaari);
-                // lisätään pysähtymistieto pysäkkiaikatauluun
-                this.lisaaPysakkiAikataulut(linja.getPsKoodit()[j], linja.getPsAjat()[j], linja.getKoodi() );
+                
             }
             linjat[i].setReitti(linjanReitti);
             linjanKoodit.put(linjat[i].getKoodi(), linjat[i]);
-
+            
         }
-
+        
     }
+    /*
+     Konstruktorin apumetodit
+     */
+
     /**
      * Päivittää pysäkkiaikatauluja
+     *
      * @param pysakki
      * @param aika
-     * @param linja 
+     * @param linja
      */
-    private void lisaaPysakkiAikataulut( String p, double aika, String l ) {
-
-        if ( !pysakkiAikataulut.containsKey(p) )
-            pysakkiAikataulut.put(p, new HashMap() );
+    private void lisaaPysakkiAikataulut(String p, double aika, String l) {
+        
+        if (!pysakkiAikataulut.containsKey(p)) {
+            pysakkiAikataulut.put(p, new HashMap());
+        }
         pysakkiAikataulut.get(p).put(l, aika);
     }
 
@@ -133,9 +145,6 @@ public class Verkko {
             pysakiltaKulkevatLinjat.get(loppu).add(linja);
         }
     }
-    /*
-     Konstruktorin apumetodit
-     */
 
     /**
      * Verkon luomisessa käytetty apumetodi. Luo yhteyden solmujen välille.
@@ -150,7 +159,9 @@ public class Verkko {
             pysakinNaapurit.add(loppu);
             this.naapurit.put(alku, pysakinNaapurit);
         } else {
-            this.naapurit.get(alku).add(loppu);
+            if (!this.naapurit.get(alku).contains(loppu)) {
+                this.naapurit.get(alku).add(loppu);
+            }
         }
     }
 
@@ -172,12 +183,15 @@ public class Verkko {
     }
 
     // JULKISET METODIT
+    /**
+     * Pysäkkien ja linjojen tulostaminen
+     */
     public void debugPrint() {
-        for (int i = 0; i < this.getPysakit().length; i++) {
-            System.out.println("" + this.getPysakit()[i]);
+        for (Pysakki pysakki : this.getPysakit()) {
+            System.out.println("" + pysakki);
         }
-        for (int i = 0; i < this.getLinjat().length; i++) {
-            System.out.println("" + this.getLinjat()[i]);
+        for (Linja linja : this.getLinjat()) {
+            System.out.println("" + linja);
         }
     }
 
@@ -211,34 +225,26 @@ public class Verkko {
      * @return
      */
     public double getOdotusAika(double aika, String pysakki, String linja) {
- 
+        
         double ohitusAika = pysakkiAikataulut.get(pysakki).get(linja);
         // WIP: vuorovälit linjojen ominaisuutena
         // WIP: ajan esitys toisenlaisena
-        double vuorovali  = 10; // = l.getVuoroVali( aika );
-                
-        double odotusaika = ohitusAika%vuorovali - aika%vuorovali;
-        if ( odotusaika<0 )
-            odotusaika+=vuorovali;
+        double vuorovali = 10; // = l.getVuoroVali( aika );
+
+        double odotusaika = ohitusAika % vuorovali - aika % vuorovali;
+        if (odotusaika < 0) {
+            odotusaika += vuorovali;
+        }
         return odotusaika;
     }
 
-    // JULKISET METODIT
-    // automaattiset setterit&getterit
+    
+    // automaattiset getterit
     public Pysakki[] getPysakit() {
         return pysakit;
     }
-
-    public void setPysakit(Pysakki[] pysakit) {
-        this.pysakit = pysakit;
-    }
-
     public Linja[] getLinjat() {
         return linjat;
     }
-
-    public void setLinjat(Linja[] linjat) {
-        this.linjat = linjat;
-    }
-
+    
 }
