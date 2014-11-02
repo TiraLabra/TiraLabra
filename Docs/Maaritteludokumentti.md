@@ -15,8 +15,8 @@ tai
 	lähtö ja maali alkiot alkoioiden verkosta ja heuristiikka esim. toEnd(alkio), toStart(alkio).
 
 
-Tavoitteellinen TilaVaativuus: Pahimmassa tapauksessa sama kuin taulukon tai verkon koko eli O(V). Parhaimmassa reitin pituus. Yleisessä tapauksessa lähempänä reitin pituutta kuin taulukon kokoa.
+Tavoitteellinen TilaVaativuus: Pahimmassa tapauksessa sama kuin taulukon tai verkon koko eli O(V) , missä V on kaikki mahdolliset alkiot. Parhaimmassa reitin pituus. Yleisessä tapauksessa lähempänä reitin pituutta kuin taulukon kokoa.
 
-Tavoitteellinen Aikavaativuus: O(E*sqrt(V)) , missä V on kaikki mahdolliset alkiot ja E yhteydet. Osa-aikavaativuus 'n' tulee kaikkien alkioiden läpikäymisestä ja  'sqrt(n)' niiden lisäämisestä keko tietorakenteeseen, joka toimii aikavaativuudella o(sqrt(n)).
+Tavoitteellinen Aikavaativuus: O(V*sqrt(V)+E) , missä V on kaikki mahdolliset alkiot. Osa-aikavaativuus 'E' tulee kaikkien alkioiden yhteyksien läpikäymisestä ja  'V*sqrt(V)' kaikkien alkioiden lisäämisestä keko tietorakenteeseen, joka toimii aikavaativuudella O(sqrt(n)).
 
 Lähteet: http://en.wikipedia.org/wiki/A*_search_algorithm (tarviiko jonkun paremman lähteen?)
