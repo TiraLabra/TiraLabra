@@ -23,10 +23,12 @@ tilanteen, ja kysyy pelaajalta siirtoa. Pelaaja syöttää siirron koordinaatit
 
 Minimax algoritmin aikavaativuus on O(b^m), jossa b on solmun lapsisolmujen
 määrä (haarautumiskerroin) ja m haun syvyys. Tilavaativuus on O(bm). Alfa-beta
-karsinnalla aikavaativuus voi parhaassa tapauksessa olla O( b^(m/2) ). [4]
+karsinnalla aikavaativuus voi parhaassa tapauksessa olla O( b^(m/2) ). [3]
 
 ## Lähteet
 
 [1] http://en.wikipedia.org/wiki/Minimax
+
 [2] http://en.wikipedia.org/wiki/Alpha-beta_pruning
+
 [3] http://courses.cs.washington.edu/courses/cse573/12au/slides/04-minmax.pdf
