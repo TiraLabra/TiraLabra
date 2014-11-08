@@ -13,6 +13,7 @@ public class Statistiikka {
     private int pelaajanVoittoja;
     private int tasapeleja;
     private Logiikka logiikka;
+    private boolean pelaajaVoittiViimeksi;
     
     /**
      * Konstruktori alustaa luokkamuuttuja
@@ -30,7 +31,7 @@ public class Statistiikka {
      * 
      * @return pelaajan kädet 
      */
-    public List getPelatutKadet() {
+    public List<Kasi> getPelatutKadet() {
         return this.pelaajanPelaamatKadet;
     }
     
@@ -46,9 +47,20 @@ public class Statistiikka {
         int apu = this.logiikka.voittaako(k1, k2);
         if (apu == 0) {
             this.tasapeleja++;
+            this.pelaajaVoittiViimeksi = false;
         } else if (apu == 1) {
             this.pelaajanVoittoja++;
+            this.pelaajaVoittiViimeksi = true;
         }
+    }
+    
+    /**
+     * Kertoo, jos pelaaja voitti viimeisimmäin kierroksen
+     * 
+     * @return true, jos pelaaja voitti 
+     */
+    public boolean voittikoPelaajaViimeksi() {
+        return this.pelaajaVoittiViimeksi;
     }
     
     /**
