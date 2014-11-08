@@ -9,21 +9,50 @@ import verkko.esimerkki.PysakkiJSON;
 
 /**
  * Verkon solmu.
- * 
+ *
  * @author E
  */
 public class Pysakki {
 
+    /**
+     * Pysäkin yksilöivä koodi
+     */
     private String koodi;
+    /**
+     * Pysäkin osoite
+     */
     private String osoite;
+    /**
+     * Pysäkin nimi
+     */
     private String nimi;
+    /**
+     * Pysäkin x-koordinaatti
+     */
     private int x;
+    /**
+     * Pysäkin y-koordinaatti
+     */
     private int y;
 
-    public Pysakki( PysakkiJSON pysakki ) {
-        this( pysakki.getKoodi(), pysakki.getOsoite(), pysakki.getNimi(), pysakki.getX(), pysakki.getY() );
+    /**
+     * Konstruktori JSON-muotoista dataa varten
+     *
+     * @param pysakki
+     */
+    public Pysakki(PysakkiJSON pysakki) {
+        this(pysakki.getKoodi(), pysakki.getOsoite(), pysakki.getNimi(), pysakki.getX(), pysakki.getY());
     }
-    
+
+    /**
+     * Yleinen konstruktori.
+     *
+     * @param koodi
+     * @param osoite
+     * @param nimi
+     * @param x
+     * @param y
+     */
     public Pysakki(String koodi, String osoite, String nimi, int x, int y) {
         this.koodi = koodi;
         this.osoite = osoite;
@@ -32,8 +61,9 @@ public class Pysakki {
         this.y = y;
     }
 
-    
-    
+    /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////    
     public String getKoodi() {
         return koodi;
     }
@@ -79,6 +109,15 @@ public class Pysakki {
         return "Pysakki{" + "koodi=" + koodi + ", osoite=" + osoite + ", nimi=" + nimi + ", x=" + x + ", y=" + y + '}';
     }
 
+    /////////////////////////////////////////////
+    ///// automaattinen hashcode&equals     /////
+    /////////////////////////////////////////////
+
+    /**
+     * Hashcode luodaan yksikäsitteisen koodin perusteella
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -86,6 +125,12 @@ public class Pysakki {
         return hash;
     }
 
+    /**
+     * Pysäkkien yhtäsuuruus selviää yksikäsitteisellä koodilla.
+     * 
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -100,7 +145,5 @@ public class Pysakki {
         }
         return true;
     }
-    
-    
-    
+
 }

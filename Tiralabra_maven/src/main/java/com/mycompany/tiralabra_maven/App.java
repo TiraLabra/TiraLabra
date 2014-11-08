@@ -15,7 +15,7 @@ public class App
     public static void main( String[] args )
     {
         /*
-        TESTAAMISTA TÄSSÄ
+        TESTAAMISTA (toistaiseksi) TÄSSÄ
         */
         long start = System.currentTimeMillis();
         System.out.println( "Hello World!" );

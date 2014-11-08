@@ -42,10 +42,12 @@ public class ReittiLaskin {
      */
     private double heurAikaPaino;
     /**
-     * Matka metreinä, aika minuutteina. Yksikkönä m/min
+     * Matka metreinä, aika minuutteina. Yksikkönä m/min (tai karttapistettä/min)
      */
     private double heurKulkunopeus;
 
+    // WIP: parametrien tarkistukset
+    
     /**
      * Konstruktori omien arvojen asettamiseen
      *
@@ -85,10 +87,9 @@ public class ReittiLaskin {
 
     /**
      * Palauttaa annetussa verkossa solmun ja maalin välisen etäisyyden arvion.
-     * Jotta toimisi, tulee olla h(n)<=d(n,k)+h(k). Painojen kanssa siis pitää
+     * Jotta toimisi, tulee olla h(n) loq d(n,k)+h(k). Painojen kanssa siis pitää
      * olla tarkkana.
      *
-     * @param verkko
      * @param solmu
      * @param maali
      * @return
@@ -103,7 +104,6 @@ public class ReittiLaskin {
      * Laskee kaaren kulkemisen kustannuksen ottaen huomioon valitut
      * preferenssit
      *
-     * @param verkko
      * @param kuljettu Reitti jota pitkin on edetty tähän
      * @param uusi Seuraavaksi kuljettava kaari
      * @return
@@ -171,7 +171,10 @@ public class ReittiLaskin {
         return 0;
     }
 
-    // automaattiset metodit
+     /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    ///////////////////////////////////////////// 
+    
     public Verkko getVerkko() {
         return verkko;
     }

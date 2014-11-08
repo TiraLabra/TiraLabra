@@ -9,23 +9,27 @@ import verkko.Kaari;
 import verkko.Pysakki;
 
 /**
- * Verkossa eteneminen: pidetään kirjaa reitistä, kuljetuista kaarista, kuljetusta etäisyydestä, heuristinen arvio jäljellä olevasta matkasta sekä nykyisestä solmusta
- * Toteutus: tunnussolmuton yhteen suuntaan linkitetty lista (olioviitteillä tässä)
+ * Verkossa eteneminen: pidetään kirjaa reitistä, kuljetuista kaarista,
+ * kuljetusta etäisyydestä, heuristinen arvio jäljellä olevasta matkasta sekä
+ * nykyisestä solmusta Toteutus: tunnussolmuton yhteen suuntaan linkitetty lista
+ * (olioviitteillä tässä)
+ *
  * @author E
  */
 public class Reitti {
+
     /**
      * Edellinen tila olioviittenä. Lista voidaan kääntää tätä käyttäen
      */
-    private Reitti    previous;
+    private Reitti previous;
     /**
      * Kaari, jota pitkin solmuun saavuttiin
      */
-    private Kaari  kuljettuKaari;
+    private Kaari kuljettuKaari;
     /**
      * Nykyinen solmu
      */
-    private Pysakki   solmu;
+    private Pysakki solmu;
     /**
      * Verkon kaarista luettu tähän solmuun johtanut kustannus
      */
@@ -34,7 +38,7 @@ public class Reitti {
      * Heuristiikan arvioima loppumatka
      */
     private double arvioituKustannus;
-    
+
     /**
      * Kuljettu aika
      */
@@ -43,9 +47,10 @@ public class Reitti {
      * Kuljettu matka
      */
     private double matka;
-    
-    
-    // automaattiset setterit & getterit
+
+    /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////  
     public Reitti getPrevious() {
         return previous;
     }
@@ -62,7 +67,6 @@ public class Reitti {
         this.kuljettuKaari = kuljettuKaari;
     }
 
-    
     public Pysakki getSolmu() {
         return solmu;
     }
@@ -105,15 +109,25 @@ public class Reitti {
 
     @Override
     public String toString() {
-        String tuloste = "Reitti{" + "kuljettuKaari=" + kuljettuKaari 
-                + ", solmu=" + solmu.getNimi() + ", kustannus=" + kustannus 
-                + ", arvioituKustannus=" + arvioituKustannus + ", aika=" + aika 
+        String tuloste = "Reitti{" + "kuljettuKaari=" + kuljettuKaari
+                + ", solmu=" + solmu.getNimi() + ", kustannus=" + kustannus
+                + ", arvioituKustannus=" + arvioituKustannus + ", aika=" + aika
                 + ", matka=" + matka + '}';
-        if ( this.getPrevious()!=null )
-            tuloste = this.getPrevious().toString()+"\n"+tuloste;
+        if (this.getPrevious() != null) {
+            tuloste = this.getPrevious().toString() + "\n" + tuloste;
+        }
         return tuloste;
     }
-
+    ///////////////////////////////////
+    // AUTOMAATTINEN HASHCODE&EQUALS //
+    ///////////////////////////////////
+    // WIP: ovatko tarpeen, parempi toteutus näille
+    
+    /**
+     * Hashcode lasketaan tämänhetkisestä solmusta.
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -121,6 +135,11 @@ public class Reitti {
         return hash;
     }
 
+    /**
+     * WIP: Reitit ovat samoja, jos ollaan samassa solmussa
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -135,6 +154,5 @@ public class Reitti {
         }
         return true;
     }
-    
-    
+
 }

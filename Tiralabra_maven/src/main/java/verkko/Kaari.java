@@ -33,8 +33,10 @@ public class Kaari {
     private String loppuSolmu;
     
     
+    /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////
     
-    // automaattiset setterit & getterit
     public double getKustannus() {
         return kustannus;
     }

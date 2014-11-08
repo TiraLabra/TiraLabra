@@ -6,20 +6,26 @@ import java.util.List;
 
 
 /**
- *
+ * Pysäkki-JSON-datan kentät sisältävä luokka. Apuluokka pysakkidatan lukemiseksi
  * @author E
  */
 public class PysakkiJSON  {
 
-     //JSON-data
+    // JSON-datasta luettavat kentät: nimet samat kuin JSONissa
     private String koodi;
     private String koodiLyhyt;
     private String osoite;
     private String nimi;
     private int x;
     private int y;
-    private HashMap<String, String[]> naapurit;   // pysäkki-[millä linjoilla pääsee]
+    /**
+     * Avain:pysäkin naapuri-arvo: lista [millä linjoilla pääsee naapuriin]
+     */
+    private HashMap<String, String[]> naapurit; // tämä ei käytössä verkko-oliossa
     
+     /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////  
     
     public String getKoodi() {
         return koodi;

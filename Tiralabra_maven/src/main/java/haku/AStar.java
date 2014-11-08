@@ -29,9 +29,17 @@ public class AStar {
      */
     private boolean debugPrint = true;
 
+    /**
+     * Verkko, jossa hakuja suoritetaan
+     */
     private Verkko verkko;
+    /**
+     * Apuolio reittien kustannusten ja jäljelläolevan kustannuksen arviointiin
+     */
     private ReittiLaskin laskin;
-
+    ///////////////////
+    // KONSTRUKTORIT //
+    ///////////////////
     public AStar(Verkko verkko, ReittiLaskin laskin) {
         this.verkko = verkko;
         this.laskin = laskin;
@@ -47,10 +55,13 @@ public class AStar {
     }
 
     /*
+    WIP:
      -Entä jos alkutila/lopputila ei ole verkossa: esim. pysäkkiverkkoon päästään kävelemällä pysäkille?
+     -Epäyhtenäiset verkot
      -Entä jos on nopeampaa kävellä viereiselle pysäkille
      -Alkuajan esitys, ajan esitys
      */
+    
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
      *
@@ -72,7 +83,6 @@ public class AStar {
             }
         });
         kasittelyJarjestys.add(alkuTila);
-        // kuljetut kaaret talteen, ettei samaa reittiä käydä läpi useasti
 
         ArrayList<Reitti> parhaatReitit = new ArrayList();
         double lowestCost = Integer.MAX_VALUE;
@@ -172,6 +182,58 @@ public class AStar {
      //////////////////////////////////////////////////
      */
 
+    // haun tilasta ja toiminnasta kertovia kenttiä:
+    /**
+     * Kaaret, joita pitkin on jo kuljettu. Kaaren tallennusmuoto kaaren toString
+     */
+    private ArrayList<String> kasitellytKaaret = new ArrayList();
+    /**
+     * Taulussa pysäkki ja pienin kustannus jolla sinne päästään
+     */
+    private HashMap<Pysakki, Double> nopeimmatSiirtymatPysakille = new HashMap();
+    /**
+     * Jos heuristiikka toimii, tämä kasvaa (h(x) loq d(x,y)+h(y))
+     */
+    private double heuristiikanOnnistumiset = 0;    
+    /** 
+     * Käsitellyt reitit (jonosta pihalle)
+     */
+    private double kasiteltyja = 0;
+    /**
+     * Prioriteettijonon koko
+     */
+    private double keskimaarainenJononKoko = 0;
+    /**
+     * Toistuuko kaari haun aikana
+     */
+    private double toistuvaKaari = 0;
+    /**
+     * Kaaret joita kuljetaan ensimmäistä kertaa
+     */
+    private double uusiKaari = 0;
+    /**
+     * Kerrat joilla nopeimmatSiirtymatPysakille-taulu sisältää pysäkille pienemmän kustannuksen
+     */
+    private double solmussaHitaammin = 0;
+    /**
+     * Kerrat joilla nopeimmatSiirtymatPysakille-tauluun päivitetään pienempi kustannus pysäkille
+     */
+    private double solmussaNopeammin = 0;
+    /**
+     * Apumuuttuja, jossa on viimeksi käsitellyn solmun kokonaiskustannus
+     */
+    private double totalCostLast = 0;
+    /**
+     * Kokonaiskustannusten muutosten summa suorituksen aikana
+     */
+    private double totalCostDiffSum = 0;    
+    /**
+     * Merkkijonoesitys haun vastauksesta tallennetaan tähän
+     */
+    private String ratkaisu;    
+    
+    //DEBUG-setterit ja getterit//
+    
     public boolean isDebugMode() {
         return debugMode;
     }
@@ -187,16 +249,23 @@ public class AStar {
     public void setDebugPrint(boolean debugPrint) {
         this.debugPrint = debugPrint;
     }
-
+    /**
+     * Kun haku on valmis, ratkaisu-kenttään tallennetaan merkkijonoesitys ratkaisusta ja algoritmin toiminnasta
+     * 
+     * @return 
+     */
     public String getRatkaisu() {
         return ratkaisu;
     }
     
     
-    
-    private ArrayList<String> kasitellytKaaret = new ArrayList();
-    private HashMap<Pysakki, Double> nopeimmatSiirtymatPysakille = new HashMap();
-
+    /**
+     * Kaaren käsittelystä tallennetaan tietoa
+     * 
+     * @param kaari
+     * @param seuraava
+     * @param naapuri 
+     */
     private void debugKaari(Kaari kaari, Reitti seuraava, Pysakki naapuri) {
         if (kasitellytKaaret.contains(kaari.toString())) {
             this.toistuvaKaari++;
@@ -213,14 +282,11 @@ public class AStar {
         }
     }
 
-    private double heuristiikanOnnistumiset = 0;
+
 
     /**
-     * Heuristiikalla tulle olla h(x) <= d(x,y)+h(y) kaikilla x, y @param
-     * kasiteltava
-     *
-     * @
-     * param seuraava
+     * Heuristiikalla tulle olla h(x) loq d(x,y)+h(y) kaikilla x, y. Tallennetaan onnistumisesta tieto
+     * @param seuraava Käsittelyvuorossa oleva reitti
      */
     private void debugHeuristiikka(Reitti seuraava) {
         Reitti kasiteltava = seuraava.getPrevious();
@@ -235,15 +301,13 @@ public class AStar {
         }
     }
 
-    private double kasiteltyja = 0;
-    private double keskimaarainenJononKoko = 0;
-    private double toistuvaKaari = 0;
-    private double uusiKaari = 0;
-    private double solmussaHitaammin = 0;
-    private double solmussaNopeammin = 0;
-    private double totalCostLast = 0;
-    private double totalCostDiffSum = 0;
 
+    /**
+     * Tietoja käsittelyvuorossa olevasta reitistä
+     * @param pq Käsittelyjärjestys
+     * @param kasiteltava
+     * @return 
+     */
     private String debugKasittelytieto(PriorityQueue pq, Reitti kasiteltava) {
         String tieto = "";
         kasiteltyja++;
@@ -264,7 +328,13 @@ public class AStar {
         }
         return tieto;
     }
-    private String ratkaisu;
+
+    /**
+     * A*-algoritmin lopuksi löydetyistä reiteistä ja toimintatiedosta tehdään esitys
+     * 
+     * @param parhaatReitit
+     * @return 
+     */
     private String debugRatkaisu(ArrayList<Reitti> parhaatReitit) {
 
         String ratkaisut = "";
@@ -294,6 +364,12 @@ public class AStar {
         return ratkaisut;
     }
 
+    /**
+     * Tulostaa pysäkin naapurit ja kaaret niihin
+     * 
+     * @param verkko
+     * @param alku 
+     */
     private void debugPrint(Verkko verkko, Pysakki alku) {
         System.out.println("" + alku);
         for (Pysakki p : verkko.getNaapurit(alku)) {

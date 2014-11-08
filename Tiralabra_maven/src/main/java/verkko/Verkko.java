@@ -21,20 +21,47 @@ public class Verkko {
     /*
      HUOM! useaan paikkaan tallennettu data nopeuttaa hakuja, mutta hidastaa verkon luomista ja varsinkin muokkaamista
      Kannattanee kuitenkin, jotta haut mahd. nopeita
+     WIP: valmiit tietorakenteet käytössä
      */
     
+    /**
+     * Pysäkit taulukossa
+     */
     private Pysakki[] pysakit;
+    /**
+     * Linjat taulukossa
+     */
     private Linja[] linjat;
-    // hakuja nopeuttamaan
+    
+    ////////////////////////
+    // hakuja nopeuttamaan//
+    ////////////////////////
+    
+    /**
+     * Hajautustaulu: avaimina pysäkkien koodit, arvoina pysäkki-oliot
+     */
     private HashMap<String, Pysakki> pysakinKoodit;
+    /**
+     * Hajautustaulu: avaimina linjojen koodit, arvoina linja-oliot
+     */    
     private HashMap<String, Linja> linjanKoodit;
-    // WIP: valmiita tietorakenteita käytössä tässä
-    // Tarvitseeko tässä olioviitteitä 
-    // WIP KATSO MITEN VAIKUTTAA SUORITUSAIKAAN JOS AVAIMET STRING
+    
+    // WIP: KATSO MITEN VAIKUTTAA SUORITUSAIKAAN JOS AVAIMET STRING
+    
+    /**
+     * Avaimina pysäkit, arvoina lista linjoista jotka kulkevat pysäkiltä
+     */
     private HashMap<Pysakki, List<Linja>> pysakiltaKulkevatLinjat;
-    private HashMap<Pysakki, List<Pysakki>> naapurit;   // max V*V
+    /**
+     * Avaimina pysäkit, arvoina lista pysäkeistä joihin pysäkiltä pääsee jollain linjalla
+     */
+    private HashMap<Pysakki, List<Pysakki>> pysakinNaapurit;   // max V*V
+    /**
+     * Avaimena pysäkit, arvoina hajautustaulu pysäkin naapureista ja lista linjojen kaarista, joilla naapureihin pääsee
+     */
     private HashMap<Pysakki, HashMap<Pysakki, List<Kaari>>> reititNaapureihin; // max V*V*E
-    // Kannattaako ennemmin kävellä pysäkiltä toiselle? Saattaa jäädä pois lopullisesta versiosta
+    
+    // WIP: Kannattaako ennemmin kävellä pysäkiltä toiselle?
     // private double[][]  pysakkienValisetEtaisyydet;
 
     /**
@@ -44,13 +71,18 @@ public class Verkko {
     private HashMap<String, HashMap<String, Double>> pysakkiAikataulut;
 
     /**
+     * Hivenen pitkä konstruktori. Osa toiminnallisuudesta siirretty yksityisiin metodeihin
      * Luo verkon käyttäen apuna pysäkkiverkko-oliota
+     * - JSON-data luetaan Pysakkiverkko-oliolla
+     * - JSON-data muokataan verkko-paketin olioiksi ja tallennetaan taulukoihin
+     * - Luodaan apukentiksi hakuihin hajautustaulut, käyetään apumetodeja
+     * 
      */
     public Verkko() {
         // apuolioita hakujen nopeuttamiseen
         linjanKoodit = new HashMap();
         pysakinKoodit = new HashMap();
-        naapurit = new HashMap();
+        pysakinNaapurit = new HashMap();
         reititNaapureihin = new HashMap();
         pysakiltaKulkevatLinjat = new HashMap();
         pysakkiAikataulut = new HashMap();
@@ -104,9 +136,9 @@ public class Verkko {
         }
         
     }
-    /*
-     Konstruktorin apumetodit
-     */
+    //////////////////////////////////////
+    //Konstruktorin apumetodit (private)//
+    /////////////////////////////////////
 
     /**
      * Päivittää pysäkkiaikatauluja
@@ -124,7 +156,7 @@ public class Verkko {
     }
 
     /**
-     * Verkon luomisessa käytetty apumetodi. Luo yhteyden solmujen välille.
+     * Verkon luomisessa käytetty apumetodi. Luo yhteyden solmujen(pysäkkien) välille.
      *
      * @param kaari Parametrin välittämien solmuihin lisätään yhteys
      */
@@ -154,13 +186,13 @@ public class Verkko {
     private void lisaaNaapuri(Kaari kaari) {
         Pysakki alku = pysakinKoodit.get(kaari.getAlkuSolmu());
         Pysakki loppu = pysakinKoodit.get(kaari.getLoppuSolmu());
-        if (!this.naapurit.containsKey(alku)) {
+        if (!this.pysakinNaapurit.containsKey(alku)) {
             List<Pysakki> pysakinNaapurit = new ArrayList();
             pysakinNaapurit.add(loppu);
-            this.naapurit.put(alku, pysakinNaapurit);
+            this.pysakinNaapurit.put(alku, pysakinNaapurit);
         } else {
-            if (!this.naapurit.get(alku).contains(loppu)) {
-                this.naapurit.get(alku).add(loppu);
+            if (!this.pysakinNaapurit.get(alku).contains(loppu)) {
+                this.pysakinNaapurit.get(alku).add(loppu);
             }
         }
     }
@@ -181,8 +213,10 @@ public class Verkko {
         }
         this.reititNaapureihin.get(alku).get(loppu).add(kaari);
     }
-
-    // JULKISET METODIT
+    //////////////////////
+    ////JULKISET METODIT//
+    //////////////////////
+    
     /**
      * Pysäkkien ja linjojen tulostaminen
      */
@@ -213,7 +247,7 @@ public class Verkko {
      * @return
      */
     public List<Pysakki> getNaapurit(Pysakki solmu) {
-        return this.naapurit.get(solmu);
+        return this.pysakinNaapurit.get(solmu);
     }
 
     /**
@@ -239,7 +273,9 @@ public class Verkko {
     }
 
     
-    // automaattiset getterit
+    /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////  
     public Pysakki[] getPysakit() {
         return pysakit;
     }

@@ -5,11 +5,15 @@
  */
 package tira;
 
+import java.util.Comparator;
+
 /**
- * Prioriteettijonon järjestämiseen
+ * Prioriteettijonon järjestämiseen vertailija (Comparator)
  * 
  * @author E
+ * @param <E>
  */
-public interface Vertailija<E> {
-    public double vertaa( E e1, E e2 );
+public interface Vertailija<E> extends Comparator<E> {
+    
+
 }

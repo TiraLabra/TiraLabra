@@ -1,30 +1,27 @@
 package verkko.esimerkki;
 
-import java.util.List;
 
-
-
+/**
+ * Linja-JSON-datan kentät sisältävä luokka. Apuluokka linjadatan lukemiseksi
+ * 
+ * @author E
+ */
 public class LinjaJSON  {
     
-    private List<PysakkiJSON> pysakit;
-
-    // JSON-datasta luettavat kentät
+    // JSON-datasta luettavat kentät: nimet samat kuin JSONissa
     private String koodi;
     private String koodiLyhyt;
     private String nimi;
+    // linjan pysäkit:
     private int[] x;
     private int[] y;
     private String[] psKoodit;
     private int[] psAjat;   
     
-    public List<PysakkiJSON> getPysakit() {
-        return pysakit;
-    }
-
-    public void setPysakit(List<PysakkiJSON> pysakit) {
-        this.pysakit = pysakit;
-    }
-
+    /////////////////////////////////////////////
+    ///// automaattiset setterit & getterit /////
+    /////////////////////////////////////////////  
+    
     public String getKoodi() {
         return koodi;
     }

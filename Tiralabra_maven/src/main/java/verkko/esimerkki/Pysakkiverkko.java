@@ -15,18 +15,30 @@ import java.util.Map;
 
 
 /**
- * Luokka pysäkkiverkon lukemiseen JSON-datasta (Johdatus tekoälyyn)
+ * Luokka pysäkkiverkon lukemiseen JSON-datasta
  */
 public class Pysakkiverkko {   
    
-    
+    /**
+     * JSON-muotoiset pysäkit taulukossa
+     */
     private PysakkiJSON[]   pysakit;
+    /**
+     * JSON-muotoiset linjat taulukossa
+     */    
     private LinjaJSON[]     linjat;    
           
     /*
     Rakennetaan pysäkkiverkko annetuista tiedoista
     Toimii vain ratikkaverkon kanssa nykyisellään
     */
+    
+    /**
+     * Lukee JSON-dataa pysäkkiverkosta ja tallentaa sen taulukkoon
+     * 
+     * @param verkkoPolku
+     * @param linjaPolku 
+     */
     public void create(String verkkoPolku, String linjaPolku) {
         JsonArray psArr = readJSON(verkkoPolku);
         Gson gson = new Gson();
@@ -57,7 +69,13 @@ public class Pysakkiverkko {
 
     /*
     Tiedostojen lukemiseen (JSON)
-    */    
+    */   
+    /**
+     * Tiedoston lukeminen merkkijonona
+     * 
+     * @param filePath Tiedoston osoite
+     * @return Tiedoston sisältö merkkijonona
+     */
     private String readFileAsString(String filePath) {
 
         File tiedosto = new File(this.getClass().getClassLoader().getResource(filePath).getFile());
@@ -72,6 +90,12 @@ public class Pysakkiverkko {
         return new String(buffer);
     }
 
+    /**
+     * Lukee JSON-dataa
+     * 
+     * @param filePath Tiedoston osoite
+     * @return JSON-taulukko luetusta tiedostosta
+     */
     private JsonArray readJSON(String filePath) {
 
         JsonParser parser = new JsonParser();
