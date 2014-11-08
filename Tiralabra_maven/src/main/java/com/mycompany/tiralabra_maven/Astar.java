@@ -1,8 +1,15 @@
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * Implementation of A* algorithm. Algorithm's purpose is to find the most optimal path in a given map or maze.
+ * The Map consists of coordinates called Nodes. @see Node
+ *
+ *
+ */
 public class Astar {
     public static void main(String[] args) {
 
@@ -15,7 +22,7 @@ public class Astar {
 
         //TODO: set walls
         //TODO: node creation based on map
-        //analyze map character by character, creating nodes and add !iswalkable is character is not _
+        //analyze map character by character, creating nodes and add !iswalkable if character is not _
         //also set start & end according to map
 
         Node start = new Node(0,0);
@@ -48,9 +55,6 @@ public class Astar {
             //find neighbors of the start node which are walkable
             //find out all possible directions of the current node
             //remove walls + unwalkable squares + create a list of them
-
-
-
 
 
             //for neighbours of the current:
@@ -109,8 +113,6 @@ public class Astar {
         //save each node's parent
         //find the neighbor which has the lowest F value (cost = g(current) + movementcost(current, neighbor))
         //remove parent node from open list and add it to closed
-
-        
     }
 
 
@@ -137,13 +139,12 @@ public class Astar {
      * @return returns cost calculated by distance
      */
     public static double calculateHeuristic(Node end, Node current) {
-        double targetX = end.getX();
-        double currentX = current.getX();
-        double targetY = end.getY();
-        double currentY = current.getY();
-
-        double dx = Math.abs(targetX - currentX);
-        double dy = Math.abs(targetY - currentY);
+        /** dx is an approximation of the distance between the two nodes' x coordinates */
+        double dx = Math.abs(end.getX() - current.getX());
+        /** dy is an approximation of the distance between the two nodes' y coordinates */
+        double dy = Math.abs(end.getY() - current.getY());
+        /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
+         *  hence it's very fast */
         double heuristic;
         heuristic = dx+dy;
         return heuristic;

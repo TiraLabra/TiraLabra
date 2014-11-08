@@ -1,7 +1,6 @@
 /**
  * Node is a coordinate within the Map. Node can be a start node, end node, wall or path.
  *
- * @author Riina Väisänen
  */
 
 public class Node {
