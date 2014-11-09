@@ -84,6 +84,7 @@ public class HuffmanCompressor {
     
     public static void main(String[] args) {
         
+        //pääasiassa testijuttuja vielä tässä vaiheessa
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
         
