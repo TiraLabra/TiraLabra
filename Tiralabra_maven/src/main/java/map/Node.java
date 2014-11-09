@@ -1,5 +1,9 @@
 package map;
 
+/**Node class for holding position, g() and f() data.
+ * 
+ */
+
 public class Node {
     private int x;
     private int y;
