@@ -1,4 +1,4 @@
-
+package com.mycompany.tiralabra_maven;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +138,7 @@ public class Astar {
      * @param current Current Node where the algorithm is
      * @return returns cost calculated by distance
      */
+
     public static double calculateHeuristic(Node end, Node current) {
         /** dx is an approximation of the distance between the two nodes' x coordinates */
         double dx = Math.abs(end.getX() - current.getX());

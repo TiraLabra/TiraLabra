@@ -1,3 +1,5 @@
+package com.mycompany.tiralabra_maven;
+
 /**
  * Node is a coordinate within the Map. Node can be a start node, end node, wall or path.
  *
