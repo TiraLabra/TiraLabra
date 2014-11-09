@@ -7,28 +7,20 @@ import java.util.PriorityQueue;
 /**
  * Implementation of A* algorithm. Algorithm's purpose is to find the most optimal path in a given map or maze.
  * The Map consists of coordinates called Nodes. @see Node
- *
- *
+ * The implementation is currently a rough draft and missing some intended features, like reading and interpreting
+ * the map, creating nodes, setting map size, finding neighbors of current node, chopping the main method into
+ * multiple methods and refactoring it to become more readable.
  */
 public class Astar {
     public static void main(String[] args) {
-
-        //current map for testing purposes:
-        //  o______ start: 0,0
-        //  _______ end: 3,3
-        //  __x____ maxX: 5
-        //  _______ maxY: 5
-        //  _______
-
-        //TODO: set walls
         //TODO: node creation based on map
-        //analyze map character by character, creating nodes and add !iswalkable if character is not _
+        //analyze map character by character, creating nodes and add !iswalkable if character is not
         //also set start & end according to map
 
         Node start = new Node(0,0);
         Node end = new Node(4,1);
         Node current = start;
-        Node neighbor;
+        Node neighbor = new Node(0,0);
 
         int maxX = 5;
         int maxY = 5;
@@ -39,7 +31,7 @@ public class Astar {
         open.add(start);
 
         //cost of the movement so far
-        double cost = 0;
+        double cost;
         cost = calculateHeuristic(end, current);
 
 
@@ -79,7 +71,7 @@ public class Astar {
             //if neighbor not in OPEN and neighbor not in CLOSED:
             if (!(open.contains(neighbor)) && !(closed.contains(neighbor))) {
                 //set g(neighbor) to cost
-                cost = 1;
+                //cost = 1;
                 //add neighbor to OPEN
                 open.add(neighbor);
                 //set priority queue rank to g(neighbor) + h(neighbor)
@@ -97,8 +89,9 @@ public class Astar {
         //reconstruct reverse path from goal to start
         //by following parent pointers
 
-        ArrayList path = new ArrayList();
-        Node help = new Node;
+        //ArrayList path = new ArrayList();
+        /*
+        Node help = new Node();
 
         while (current.getParent() != null) {
             path.add(current);
@@ -109,10 +102,7 @@ public class Astar {
         for (int i = 0; i < path.size(); i++) {
             System.out.print(path.get(i));
         }
-        //add neighbor squares to open list
-        //save each node's parent
-        //find the neighbor which has the lowest F value (cost = g(current) + movementcost(current, neighbor))
-        //remove parent node from open list and add it to closed
+        */
     }
 
 
@@ -123,7 +113,7 @@ public class Astar {
      * @param maxY Maximum height of the map
      * @return True, if Node is within the boundaries of map
      */
-    public boolean isWalkable(Node node, int maxX, int maxY) {
+    public static boolean isWalkable(Node node, int maxX, int maxY) {
         if (node.getX() >= 0 && node.getX() <= maxX) {
             if (node.getY() >= 0 && node.getY() <= maxY) {
                 return true;
