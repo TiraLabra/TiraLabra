@@ -3,7 +3,7 @@ package superpakkaussofta;
 /**
  * Node object for Huffman trees.
  * A node may have left and/or right nodes. If it doesn't,
- * it has a byte value to represent. A node also has a frequensy value
+ * it has a byte value to represent. A node also has a frequency value
  * to tell how many times it's represented byte or it's child nodes are
  * found in data.
  *
@@ -17,7 +17,7 @@ public class HuffmanNode {
     private byte b;
     private int freq;
     
-    /**
+    /** Creates a new HuffmanNode for given byte with given frequency
      * 
      * @param b as byte this node represents
      * @param freq as byte's or child nodes' combined frequency
@@ -26,12 +26,16 @@ public class HuffmanNode {
         this.b = b;
         this.freq = freq;
     }
-    /**
+    /** Creates a new HuffmanNode with given frequency and child nodes
      * 
+     * @param left left child
+     * @param right right child
      * @param freq as byte's or child nodes' combined frequency
      */
-    public HuffmanNode(int freq){
+    public HuffmanNode(int freq, HuffmanNode left, HuffmanNode right){
         this.freq = freq;
+        this.left = left;
+        this.right = right;
     }
     /**
      * @return the left
