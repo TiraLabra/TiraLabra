@@ -13,70 +13,78 @@ import java.util.PriorityQueue;
  */
 public class Astar {
     public static void main(String[] args) {
-        //TODO: node creation based on map
-        //analyze map character by character, creating nodes and add !iswalkable if character is not
-        //also set start & end according to map
+        /** @todo: node creation based on map
+        * analyze map character by character, creating nodes and add !iswalkable if character is not
+        * also set start & end according to map
+         * */
 
+        /** starting point of the map */
         Node start = new Node(0,0);
+        /** ending point of the map */
         Node end = new Node(4,1);
+        /** current point of the map */
         Node current = start;
+        /** neighbor of the node */
         Node neighbor = new Node(0,0);
-
+        /** map width */
         int maxX = 5;
+        /** map height */
         int maxY = 5;
-        //list of unchecked nodes
-        //List open = new ArrayList();
+
+        /** list of unchecked nodes */
         PriorityQueue<Node> open = new PriorityQueue();
 
         open.add(start);
 
-        //cost of the movement so far
+        /** cost of the movement */
         double cost;
         cost = calculateHeuristic(end, current);
 
 
-        //list of nodes that have been checked
+        /** list of nodes that have been checked */
         List closed = new ArrayList();
 
+        /**
+         * find neighbors of the start node which are walkable
+         * find out all possible directions of the current node
+         * remove walls + unwalkable squares + create a list of them
+         */
         while (!(open.contains(end))) {
-            //current = remove lowest rank item from OPEN
+            /** current = remove lowest rank item from OPEN */
             current = open.poll();
             closed.add(current);
 
 
-            //find neighbors of the start node which are walkable
-            //find out all possible directions of the current node
-            //remove walls + unwalkable squares + create a list of them
+            /** for neighbours of the current:
+            * set node which we are going through now as neighbor
+            * F = G+H
+            * cost = g(current) + movementcost(current, neighbor)
+            * terrain cost is 1 because no terrain difference
+            * cost = 1 + calculateHeuristic(end, neighbor); */
 
-
-            //for neighbours of the current:
-            //set node which we are going through now as neighbor
-            //F = G+H
-            //cost = g(current) + movementcost(current, neighbor)
-            //terrain cost is 1 because no terrain difference
-            cost = 1 + calculateHeuristic(end, neighbor);
-
-            //    if neighbor in OPEN and cost less than g(neighbor):
+            /**  if neighbor in OPEN and cost less than g(neighbor): */
             if (open.contains(neighbor) && cost<1) {
-                //remove neighbor from OPEN, because new path is better
+                /** remove neighbor from OPEN, because new path is better */
                 open.remove(neighbor);
             }
 
-            //if neighbor in CLOSED and cost less than g(neighbor): **
+            /** if neighbor in CLOSED and cost less than g(neighbor): */
             if (closed.contains(neighbor) && cost<1 ) {
-                //remove neighbor from CLOSED
+                /** remove neighbor from CLOSED */
                 closed.remove(neighbor);
             }
 
-            //if neighbor not in OPEN and neighbor not in CLOSED:
+            /** if neighbor not in OPEN and neighbor not in CLOSED: */
             if (!(open.contains(neighbor)) && !(closed.contains(neighbor))) {
-                //set g(neighbor) to cost
-                //cost = 1;
-                //add neighbor to OPEN
+               /**
+                * set g(neighbor) to cost
+                * cost = 1;
+                * add neighbor to OPEN
+                */
                 open.add(neighbor);
-                //set priority queue rank to g(neighbor) + h(neighbor)
+                /** set priority queue rank to g(neighbor) + h(neighbor) */
 
-                //set neighbor's parent to current
+                /** set neighbor's parent to current */
                 neighbor.setParent(current);
 
             }
@@ -85,12 +93,12 @@ public class Astar {
 
         end.setParent(current);
 
-
-        //reconstruct reverse path from goal to start
-        //by following parent pointers
+        /**
+        * reconstruct reverse path from goal to start
+        * by following parent pointers
 
         //ArrayList path = new ArrayList();
-        /*
+
         Node help = new Node();
 
         while (current.getParent() != null) {
