@@ -11,9 +11,11 @@ Tavoitteena on päästä optimiaikavaatimukseen, joka A*:llä on O((|V| + |E|) l
 # Tietorakenteet
 
 Labyrintin teossa tullaan todennäköisesti käyttämään seuraavia tietorakenteita:
-Pino: Tila- ja aikavaativuus ovat molemmat O(1) eli vakio
-Jono: Tila- ja aikavaativuus ovat molemmat O(1)
-Keko: Aikavaativuus on useimmiten O(log n), tilavaativuus voi olla O(log n) tai O(1) riippuen käytetäänkö operaatioissa rekursiota.
+
+* Pino: Tila- ja aikavaativuus ovat molemmat O(1) eli vakio
+* Jono: Tila- ja aikavaativuus ovat molemmat O(1)
+* Keko: Aikavaativuus on useimmiten O(log n), tilavaativuus voi olla O(log n) tai O(1) riippuen käytetäänkö operaatioissa rekursiota.
+
 
 
 # Lähteet
