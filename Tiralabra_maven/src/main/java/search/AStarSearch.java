@@ -1,0 +1,227 @@
+package search;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import map.Node;
+
+/**The A* search class.
+ * 
+ */
+public class AStarSearch {
+   
+   /**A 2d integer array for holding the map data.
+    * 
+    */
+   private int[][] map;
+   private Scanner scanner;
+   
+   public AStarSearch(int[][] map) {
+       this.map = map;
+       this.scanner = new Scanner(System.in);
+   }
+   
+   /**Prints the menu for the search.
+    * 
+    */
+   public void menu() {
+       System.out.println(printMap());
+       System.out.println("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,3,5)");
+       String input = scanner.nextLine();
+       int[] searchCoordinates = parseInput(input);
+       System.out.println(search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]));
+   }
+   
+   /**Parses the input into an array of the search coordinates
+    * 
+    * @param input 
+    */
+   private int[] parseInput(String input) {
+       String[] splittedInput = input.split(",");
+       int[] searchValues = new int[4];
+       searchValues[0] = Integer.parseInt(splittedInput[0]);
+       searchValues[1] = Integer.parseInt(splittedInput[1]);
+       searchValues[2] = Integer.parseInt(splittedInput[2]);
+       searchValues[3] = Integer.parseInt(splittedInput[3]);
+       return searchValues;
+   }
+   
+   /**The A* search loop.
+    * 
+    * @param startX route's start X value
+    * @param startY route's start Y value
+    * @param endX route's end X value
+    * @param endY route's end Y value
+    * 
+    * @return The route in a string format
+    */
+   public String search(int startX, int startY, int endX, int endY) {
+       if (startX < 0 || startX >= map[0].length || startY < 0 || startY >= map.length || 
+           endX < 0 || endX >= map[0].length || endY < 0 || endY >= map.length) {
+           return "Search value(s) out of map range";
+       }
+       ArrayList<Node> closedSet = new ArrayList<Node>();
+       ArrayList<Node> openSet = new ArrayList<Node>();
+       Node start = new Node(startX, startY);
+       openSet.add(start);
+       
+       start.setG(0);
+       start.setF(start.getG() + heuristicEstimate(start.getX(), start.getY(), endX, endY));
+       
+       while (!openSet.isEmpty()) {
+           Node current = openSet.get(0);
+           int bestF = current.getF();
+           for (Node node : openSet) {
+               int nodeF = node.getF();
+               if (nodeF < bestF) {
+                   bestF = nodeF;
+                   current = node;
+               }
+           }
+           
+           if (current.getX() == endX && current.getY() == endY) {
+               return formPath(startX, startY, current);
+           }
+           
+           openSet.remove(current);
+           closedSet.add(current);
+           
+           //neighbors
+           handleNeighbor(new Node(current.getX() - 1, current.getY()), current, closedSet, openSet, endX, endY); //left
+           handleNeighbor(new Node(current.getX() + 1, current.getY()), current, closedSet, openSet, endX, endY); //right
+           handleNeighbor(new Node(current.getX(), current.getY() - 1), current, closedSet, openSet, endX, endY); //up
+           handleNeighbor(new Node(current.getX(), current.getY() + 1), current, closedSet, openSet, endX, endY); //down
+       }
+       
+       return "Search failed.";
+   }
+   
+   /**Adds neighboring node to the openset and sets F and G values for it if it meets the requirements.
+    * 
+    * @param neighbor The neighboring node
+    * @param current The node currently in search loop
+    * @param closedSet closed set of the search
+    * @param openSet open set of the search
+    * @param endX search route's end X value
+    * @param endY search route's end Y value
+    */
+   private void handleNeighbor(Node neighbor, Node current, ArrayList<Node> closedSet, ArrayList<Node> openSet, int endX, int endY) {
+       if (neighbor.getX() < 0 || neighbor.getX() >= map[0].length || neighbor.getY() < 0 || neighbor.getY() >= map.length) {
+           return;
+       }
+       for (Node node : closedSet) {
+           if (node.getX() == neighbor.getX() && node.getY() == neighbor.getY()) {
+               return;
+           }
+       }
+       
+       int tentativeGScore = current.getG() + map[neighbor.getY()][neighbor.getX()];
+       
+       boolean neighborInOpenSet = false;
+       
+       for (Node node : openSet) {
+           if (node.getX() == neighbor.getX() && node.getY() == neighbor.getY()) {
+               neighborInOpenSet = true;
+               neighbor = node;
+           }
+       }
+       if (!neighborInOpenSet || tentativeGScore < neighbor.getG()) {
+           neighbor.setCameFrom(current);
+           neighbor.setG(tentativeGScore);
+           neighbor.setF(neighbor.getG() + heuristicEstimate(neighbor.getX(), neighbor.getY(), endX, endY));
+           openSet.add(neighbor);
+       }
+   }
+   
+   /**Creates a string of the route
+    * 
+    * @param startX
+    * @param startY
+    * @param end 
+    */
+   private String formPath(int startX, int startY, Node end) {
+       String path = addToPath(end, "", true);
+       Node current = end.getCameFrom();
+       
+       while (true) {
+           path = addToPath(current, path, false);
+           current = current.getCameFrom();
+           if (current.getX() == startX && current.getY() == startY) {
+               break;
+           }
+       }
+       
+       path = addToPath(current, path, false);
+       return path;
+   }
+   
+   /**Adds a node to the path string
+    * 
+    * @param node node to be added to the path string
+    * @param path path string already formed
+    * @return path string with the added node
+    */
+   private String addToPath(Node node, String path, boolean endNode) {
+       String tempPath = "(" + node.getX() + ", " + node.getY() + ": time: " + node.getG() + ")";
+       if (!endNode) {
+           tempPath = tempPath + " -> ";
+       }
+       tempPath = tempPath + path;
+       return tempPath;
+   }
+   
+   /**Calculates the heuristic estimate f() from the current position to the end of the route
+    * 
+    * @param currentX x value of the current position
+    * @param currentY y value of the current position
+    * @param goalX x value of the end position
+    * @param goalY y value of the end position
+    * @return The heuristic value
+    */
+   private int heuristicEstimate(int currentX, int currentY, int goalX, int goalY) {
+       int result = Math.abs(goalX - currentX) + Math.abs(goalY - currentY);
+       return result;
+   }
+   
+   /**
+    * Sets the map the searches are performed on.
+    * @param map 
+    */
+   public void setMap(int[][] map) {
+       this.map = map;
+   }
+   
+   /**
+    * Prints the map in a readable format
+    */
+   public String printMap() {
+       String output = "";
+       for (int y = 0; y < map.length; y++) {
+           if (y == 0) {
+               output += "  ";
+               for (int xCoord = 0; xCoord < map[0].length; xCoord++) {
+                   if (xCoord >= 10) {
+                       output += xCoord;
+                   }
+                   else {
+                       output += " " + xCoord;
+                   }
+               }
+               output += "\n";
+           }
+           if (y >= 10) {
+               output += y;
+           }
+           else {
+               output += " " + y;
+           }
+           for (int x = 0; x < map[0].length; x++) {
+               if (map[y][x] >= 10) {
+                   output += map[y][x];
+               } else {
+                  output += " " + map[y][x];
+               }
+           }
+           output += "\n";
+       }
+       return output;
+   }
