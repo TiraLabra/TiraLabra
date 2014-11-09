@@ -43,4 +43,10 @@ X = Lopeta
 
 * Pelin lataaminen ja tallentaminen implementoidaan graafiseen k‰yttˆliittym‰‰n
 
+**Algoritmit ja tietorakenteet**
 
+* Ohjelma pit‰‰ yll‰ pelaajan pelaamia k‰si‰ ja ne talletetaan linkitettyyn listaan. Listaan lis‰‰minen tapahtuu vakioajassa ja listan l‰pik‰yminen vaatii O(n) ajan. Luonnollisesti tilavaatimuksena on O(n). 
+
+* Luokat sis‰lt‰v‰t yksitt‰isi‰ muuttujia mm. kierrosten, tasapelien ja pelaajan voittojen m‰‰r‰st‰. Muuttujat p‰ivitet‰‰n kierroksittain, joten niiden tila- ja aikavaatimus on vakio.
+
+* Teko‰ly tulee yll‰pit‰m‰‰n tilastoa pelaajan v‰hiten pelaamasta k‰dest‰ ja kyseisen k‰den esiintymistiheydest‰. P‰ivitett‰ess‰ em. tietoja tulee k‰yd‰ l‰pi pelaajan pelaamat k‰det, joten kummankin teht‰v‰n aikavaativuus tulee olemaan O(n). Tilavaativuus on kummallakin vakio, sill‰ pelaajan pelaamat k‰det pidet‰‰n yhdess‰ linkitetyss‰ listassa, jota k‰yd‰‰n l‰pi. Listan kokoon ei tehd‰ muutoksia em. tilanteissa ja lista saadaan argumenttina.
