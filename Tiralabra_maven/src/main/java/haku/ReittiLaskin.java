@@ -87,7 +87,7 @@ public class ReittiLaskin {
 
     /**
      * Palauttaa annetussa verkossa solmun ja maalin välisen etäisyyden arvion.
-     * Jotta toimisi, tulee olla h(n) loq d(n,k)+h(k). Painojen kanssa siis pitää
+     * Jotta toimisi, tulee olla h(n) pienempi/yhtäsuuri kuin d(n,k)+h(k). Painojen kanssa siis pitää
      * olla tarkkana.
      *
      * @param solmu

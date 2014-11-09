@@ -192,11 +192,11 @@ public class AStar {
      */
     private HashMap<Pysakki, Double> nopeimmatSiirtymatPysakille = new HashMap();
     /**
-     * Jos heuristiikka toimii, tämä kasvaa (h(x) loq d(x,y)+h(y))
+     * Jos heuristiikka toimii, tämä kasvaa (h(x) pienempi/yhtäsuuri kuin d(x,y)+h(y))
      */
     private double heuristiikanOnnistumiset = 0;    
     /** 
-     * Käsitellyt reitit (jonosta pihalle)
+     * Käsitellyt reitit (jonosta pois käsiteltäväksi)
      */
     private double kasiteltyja = 0;
     /**
@@ -257,7 +257,14 @@ public class AStar {
     public String getRatkaisu() {
         return ratkaisu;
     }
-    
+    /**
+     * Laskee heuristiikan onnistumisten osuuden.
+     * 
+     * @return Heuristiikan onnistumisten osuus käsitellyistä reiteistä (0-1)
+     */
+    public double getHeuristiikanOnnistumiset() {
+        return heuristiikanOnnistumiset/kasiteltyja;
+    }
     
     /**
      * Kaaren käsittelystä tallennetaan tietoa
@@ -285,7 +292,7 @@ public class AStar {
 
 
     /**
-     * Heuristiikalla tulle olla h(x) loq d(x,y)+h(y) kaikilla x, y. Tallennetaan onnistumisesta tieto
+     * Heuristiikalla tulle olla h(x) pienempi/yhtäsuuri kuin d(x,y)+h(y) kaikilla x, y. Tallennetaan onnistumisesta tieto
      * @param seuraava Käsittelyvuorossa oleva reitti
      */
     private void debugHeuristiikka(Reitti seuraava) {
