@@ -22,9 +22,10 @@ public class HuffmanCompressor {
      */
     public HuffmanNode createHuffmanTree(byte[] data){
         
-        byte[] sorted = copyAndSortByteArray(data);
-        PriorityQueue<HuffmanNode> pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
+        //byte[] sorted = copyAndSortByteArray(data);
+        PriorityQueue<HuffmanNode> pque = createNodeHeap(data);
         
+        /*
         byte cur;
         byte prev = sorted[0];
         int amount = 1;
@@ -41,7 +42,7 @@ public class HuffmanCompressor {
         }
         //vimppa
         pque.add(new HuffmanNode(prev, amount));
-        
+        */
         
         while(pque.peek() != null){
             HuffmanNode n = pque.poll();
@@ -49,7 +50,17 @@ public class HuffmanCompressor {
         }
         
         
-        return null;
+        while(pque.size() > 1){
+            HuffmanNode n1 = pque.poll();
+            HuffmanNode n2 = pque.poll();
+            pque.add(new HuffmanNode(n1.getFreq()+n2.getFreq(), n1, n2));
+            //System.out.println(n.getByte() + ": " + n.getFreq());
+        }
+        
+        
+        
+        
+        return pque.poll();
     }
     /**
      * Copies a byte array and sorts it.
@@ -68,6 +79,49 @@ public class HuffmanCompressor {
         Arrays.sort(sorted);
         
         return sorted;
+    }
+    /**
+     * Returns a min heap (PriorityQueue) of HuffmanNodes for each different
+     * byte found in data.
+     * 
+     * @param data
+     * @return PriorityQueue<HuffmanNode>
+     */
+    private PriorityQueue<HuffmanNode> createNodeHeap(byte[] data){
+        
+        PriorityQueue<HuffmanNode> pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
+        int[] counts = countBytes(data);
+        
+        for(int i = 0; i < counts.length; i++){
+            if(counts[i] > 0){
+                pque.add(new HuffmanNode((byte) (i - 128), counts[i]));
+            }
+        }
+        
+        
+        return pque;
+    }
+    /**
+     * Counts and returns the amount of each different byte found in data.
+     * 
+     * @param data
+     * @return Amount of different bytes in int array (256 size)
+     */
+    private int[] countBytes(byte[] data){
+        
+        int[] bytes = new int[256];
+        
+        for(int i = 0; i < data.length; i++){
+            for(int a = 0; a < 256; a++){
+                if(data[i] == a - 128){
+                    bytes[a]++;
+                    break;
+                }
+            }
+        }
+        
+        
+        return bytes;
     }
     /**
      * Comparator for PriorityQueue.

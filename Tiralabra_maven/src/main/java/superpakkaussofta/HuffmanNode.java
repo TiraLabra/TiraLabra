@@ -92,5 +92,54 @@ public class HuffmanNode {
     public void setFreq(int freq) {
         this.freq = freq;
     }
+    /**
+     * Node is equal to another node if they both:
+     *  - represent the same byte
+     *  - have same frequensy value
+     *  - have equal child nodes
+     * 
+     * @param o as another Object
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object o){
+        HuffmanNode node = null;
+        
+        try {
+            node = (HuffmanNode) o;
+        } catch (Exception e) {
+            return false;
+        }
+        if(node == null){
+            return false;
+        }
+        
+        if(node.getLeft() == null && node.getRight() != null){
+            if(node.getByte() != b || node.getFreq() != freq){
+                return false;
+            }
+        }
+        
+        if(node.getLeft() != null){
+            if(!node.getLeft().equals(left)){
+                return false;
+            }
+        }else{
+            if(left == null){
+                return false;
+            }
+        }
+        
+        if(node.getRight() != null){
+            if(!node.getRight().equals(right)){
+                return false;
+            }
+        }else{
+            if(right == null){
+                return false;
+            }
+        }
+        return true;
+    }
     
 }
