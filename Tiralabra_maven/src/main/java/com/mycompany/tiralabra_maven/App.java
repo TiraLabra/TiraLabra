@@ -3,6 +3,9 @@ package com.mycompany.tiralabra_maven;
 import haku.AStar;
 import haku.Reitti;
 import haku.ReittiLaskin;
+import java.util.Arrays;
+import tira.LinkitettyLista;
+import tira.DynaaminenLista;
 import verkko.Pysakki;
 import verkko.Verkko;
 
@@ -14,7 +17,10 @@ public class App {
 
     public static void main(String[] args) {
 
-        debugAStar();
+        // debugAStar();
+        // debugLinkitettyLista();
+        debugLista();
+
     }
 
     /**
@@ -47,5 +53,105 @@ public class App {
         stop = System.currentTimeMillis();
         System.out.println("Etsintä: " + (stop - start) + "ms");
         System.out.println("" + aStar.getHeuristiikanOnnistumiset());
+    }
+
+    /**
+     * LinkitettyLista debuggaus
+     */
+    private static void debugLinkitettyLista() {
+        LinkitettyLista<String> lista = new LinkitettyLista(8);
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitäisi siis kasvattaa
+        for ( String s : lista ) {
+            System.out.println(""+s);
+        } 
+        System.out.println(""+lista.size());
+        for (String s : e) {
+            lista.add(s);
+        }        
+        lista.add("huu");
+        lista.add("haa");
+        for ( String s : lista ) {
+            System.out.println(""+s);
+        }        
+        System.out.println(""+lista.size());
+        lista.remove(0);
+        System.out.println("" + lista.getHead());
+        System.out.println("" + lista.getTail());
+        System.out.println("" + lista.size());
+        System.out.println("" + Arrays.toString(lista.getValues()));
+        // System.out.println(""+lista.seuraavaTyhja());
+        System.out.println("" + lista.contains(e[1]));
+        System.out.println("" + lista.contains("huu"));
+        System.out.println("" + lista.indexOf("huu"));
+        System.out.println("" + lista.indexOf(e[1]));
+        System.out.println("");
+        lista.add("Moro");
+        System.out.println("" + lista.getHead());
+        System.out.println("" + lista.getTail());
+        System.out.println("" + lista.size());
+        System.out.println("" + Arrays.toString(lista.getValues()));
+        // System.out.println(""+lista.seuraavaTyhja());
+        System.out.println("" + lista.contains(e[1]));
+        System.out.println("" + lista.contains("Moro"));
+        System.out.println("" + lista.indexOf("Moro"));
+        System.out.println("" + lista.indexOf(e[1]));
+        System.out.println("");
+
+        lista.remove("Moro");
+        lista.remove(5);
+        lista.remove(lista.size() - 1);
+        System.out.println("" + lista.getHead());
+        System.out.println("" + lista.getTail());
+        System.out.println("" + lista.size());
+        System.out.println("" + Arrays.toString(lista.getValues()));
+        // System.out.println(""+lista.seuraavaTyhja());
+        System.out.println("" + lista.contains(e[1]));
+        System.out.println("" + lista.contains("Moro"));
+        System.out.println("" + lista.indexOf("Moro"));
+        System.out.println("" + lista.indexOf(e[1]));
+        System.out.println("");
+
+        while (!lista.isEmpty()) {
+            String string = lista.poll();
+            System.out.println("" + string);
+        }
+        System.out.println("" + lista.getHead());
+        System.out.println("" + lista.getTail());
+        System.out.println("" + lista.size());
+        System.out.println("" + Arrays.toString(lista.getValues()));
+        // System.out.println(""+lista.seuraavaTyhja());
+        System.out.println("" + lista.contains(e[1]));
+        System.out.println("" + lista.contains("Moro"));
+        System.out.println("" + lista.indexOf("Moro"));
+        System.out.println("" + lista.indexOf(e[1]));
+        System.out.println("");
+        
+
+    }
+    /**
+     * Dynaamisen listan debuggaus
+     */
+    private static void debugLista() {
+        DynaaminenLista<String> lista = new DynaaminenLista(5);
+        System.out.println(""+lista.size());
+        for ( String s : lista ) {
+            System.out.println(""+s);
+        }        
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitäisi siis kasvattaa
+        for (String s : e) {
+            lista.add(s);
+        }
+        
+        //System.out.println(""+Arrays.toString(lista.getValues()));
+        
+        for ( String s : lista ) {
+            System.out.println(""+s);
+        }
+        System.out.println(""+lista.size());
+        lista.remove(2);
+        for ( String s : lista ) {
+            System.out.println(""+s);
+        }        
+        System.out.println(""+lista.size());
     }
 }
