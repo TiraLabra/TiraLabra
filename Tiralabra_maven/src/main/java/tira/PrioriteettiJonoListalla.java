@@ -10,7 +10,7 @@ import haku.Reitti;
 
 /**
  *
- * Reittioppaaseen erikoistunut prioriteettijono. Lisäys & poll pitäisi olla lähellä O(1):tä
+ * Reittioppaaseen erikoistunut prioriteettijono. Lisäys & poll pitäisi olla lähellä O(1):tä 
  * Tehokkuus riippuu jonon tiheydestä. Tilavaatimus saattaa olla huomattava
  * Toteutus mukaelma tästä: http://en.wikipedia.org/wiki/Priority_queue#Specialized_heaps
  *
@@ -22,6 +22,7 @@ public class PrioriteettiJonoListalla {
     // (WIP) TOIMII? -> EHKÄ
     // aikavaatimus vaikuttaisi olevan samalla tasolla kuin javan omassa priorityqueuessa
     // ainakin siis tässä asiayhteydessä (ei siis yleinen ratkaisu)
+    // O((?????)) ?? ??
     ////////////////////////////
 
     /**
@@ -59,6 +60,9 @@ public class PrioriteettiJonoListalla {
     // Konstruktorit //
     ///////////////////
     
+    /**
+     * Oletuskonstruktori
+     */
     public PrioriteettiJonoListalla() {
         head = Integer.MAX_VALUE;
         size = 0;
@@ -153,7 +157,10 @@ public class PrioriteettiJonoListalla {
         System.arraycopy(this.jono, 0, uusiValues, 0, this.size);
         this.jono = uusiValues;
     }
-
+    /**
+     * Seuraava arvon (epätyhjä lista) sisältävän taulukon indeksi
+     * @return 
+     */
     private int seuraava() {
         int index = this.head;        
         for (int i = index; i < maxSize; i++) {
