@@ -1,13 +1,12 @@
 package com.mycompany.tiralabra_maven;
 
-/**
- * Hello world!
- *
- */
+import com.mycompany.ui.Cli;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-    }
+        Cli c = new Cli(1);
+        c.run();
+     }
 }
