@@ -37,7 +37,7 @@ public class App {
         ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, 400); // A*-hausta saadaan leveyssuuntainen haku: heuristiikan arvo == 0 aina
         ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, 400); // Tavallinen, vain matka-aikaa laskeva haku
         ReittiLaskin vaihdoton = new ReittiLaskin(1, 0, 3, 1, 0, 400); // Minimoi vaihtojen määrää
-        ReittiLaskin reittiLaskin = vaihdoton;
+        ReittiLaskin reittiLaskin = bfs;
 
         Pysakki alku = verkko.getPysakit()[5];
         Pysakki loppu = verkko.getPysakit()[17];
@@ -45,7 +45,7 @@ public class App {
         start = System.currentTimeMillis();
         System.out.println("Etsitään ratkaisua ");
         AStar aStar = new AStar(verkko, reittiLaskin);
-        aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
+        aStar.setDebugMode(true);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
         Reitti reitti = aStar.etsiReitti(alku, loppu);
         System.out.println("" + reitti);

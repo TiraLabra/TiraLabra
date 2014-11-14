@@ -33,7 +33,7 @@ public class PrioriteettiJonoListalla {
      * Toteutustapana taulukko, jossa prioriteetilla p on vastaava linkitetty
      * lista
      */
-    private LinkitettyLista<Reitti>[] jono; // WIP: tästä taitaa tulla melko harva taulukko
+    private Jono<Reitti>[] jono; // WIP: tästä taitaa tulla melko harva taulukko
     /**
      * Pienimmän prioriteetin tunnus
      */
@@ -66,10 +66,10 @@ public class PrioriteettiJonoListalla {
     public PrioriteettiJonoListalla() {
         head = Integer.MAX_VALUE;
         size = 0;
-        tarkkuus = 100; // tarkkuus desimaalina 1/tarkkuus
+        tarkkuus = 100; // tarkkuus desimaalina 1/tarkkuus --> vaikuttaa suoritusaikaan
         growFactor = 2;
         maxSize    = 60*tarkkuus; // vastaa 60 minuuttia, jos reitti laskee kustannukset minuuteissa
-        jono       = new LinkitettyLista[maxSize];
+        jono       = new Jono[maxSize];
     }
 
     /**
@@ -91,7 +91,7 @@ public class PrioriteettiJonoListalla {
         }
 
         if (this.jono[prioriteetti] == null) {
-            this.jono[prioriteetti] = new LinkitettyLista<Reitti>();
+            this.jono[prioriteetti] = new Jono<Reitti>();
         }
         this.jono[prioriteetti].add(e); // oikeaan listaan O(1)
         size++;
@@ -153,7 +153,7 @@ public class PrioriteettiJonoListalla {
         } else {
             this.maxSize = factor * this.maxSize;
         }
-        LinkitettyLista<Reitti>[] uusiValues = new LinkitettyLista[this.maxSize];
+        Jono<Reitti>[] uusiValues = new Jono[this.maxSize];
         System.arraycopy(this.jono, 0, uusiValues, 0, this.size);
         this.jono = uusiValues;
     }
@@ -164,7 +164,7 @@ public class PrioriteettiJonoListalla {
     private int seuraava() {
         int index = this.head;        
         for (int i = index; i < maxSize; i++) {
-            LinkitettyLista<Reitti> lista = this.jono[i];
+            Jono<Reitti> lista = this.jono[i];
             if (lista != null && !lista.isEmpty()) {
                 return i;
             }

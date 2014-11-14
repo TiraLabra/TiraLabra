@@ -6,6 +6,7 @@
 package haku;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import tira.PrioriteettiJonoListalla;
@@ -82,6 +83,20 @@ public class AStar {
      -Alkuajan esitys, ajan esitys
      */
     
+    // WIP
+    /**
+     * Käytettävä prioriteettijonon tunnus.
+     */
+    private int mode=0;
+    /**
+     * Valitaan käytettävä prioriteettijono
+     * 
+     * @param mode 0: javan priorityqueue, 1: oma prioriteettijonolistalla
+     */
+    public void setMode( int mode ) {
+        this.mode=mode;
+    }
+    
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
      *
@@ -95,9 +110,9 @@ public class AStar {
         alkuTila.setKustannus(0);
         alkuTila.setSolmu(alku);
         alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
-        // WIP: jono kentäksi
-        /*
-        kasittelyJarjestys = new PriorityQueue(new Comparator<Reitti>() {
+        // poista kommenttimerkit: toiminta
+        /*        
+        PriorityQueue<Reitti> kasittelyJarjestys = new PriorityQueue(new Comparator<Reitti>() {
 
             public int compare(Reitti t1, Reitti t2) {
                 return (int) (t1.getArvioituKustannus() + t1.getKustannus() - t2.getArvioituKustannus() - t2.getKustannus());
