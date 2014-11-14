@@ -1,25 +1,18 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
-
-
-
-
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
-
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
+## Palautus 3 notes
 
 * * *
 
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
+Done so far:
+* koodin javadoc poislukien UI-luokat
+* JUnit-testit poislukien UI-luokat
+* ei valmiita tietorakenteita
+* luokkakaavio update v.1
+* alustava vuokaavio omaan käyttöön
+* OHJELMA ON JO AJETTAVISSA!!!
 
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
+To-do:
+* tekoälyä paljon lisää
+* graafinen käyttöliittymä (low-prio)
+* voisiko osan switch-case vaihtaa esim. linkitettyyn listaan?
 
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
-
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
-
+* * *
