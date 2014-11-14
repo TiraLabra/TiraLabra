@@ -2,6 +2,10 @@ package com.mycompany.logiikka;
 
 import com.mycompany.domain.Kasi;
 
+/**
+ * Luokka yrittää ennustaa pelaajan seuraavan käden ja 
+ * vastata siihen
+ */
 public class Tekoaly {
 
     private Statistiikka statistiikka;
@@ -9,6 +13,15 @@ public class Tekoaly {
     private Logiikka logiikka;
     private Kasi viimeisinTekoalynKasi;
 
+    /**
+     * Konstruktori alustaa luokan muuttujat. Luokka tarvitsee
+     * viitteen pelin käyttämiin Statistiikka, ja Logiikka-
+     * olioihin
+     * 
+     * @param moodi Pelimoodi(1 tai 2)
+     * @param s Statistiikkaolio
+     * @param l Logiikkaolio
+     */
     public Tekoaly(int moodi, Statistiikka s, Logiikka l) {
         this.statistiikka = s;
         this.moodi = moodi;
@@ -16,6 +29,16 @@ public class Tekoaly {
         this.viimeisinTekoalynKasi = null;
     }
 
+    /**
+     * Sisäinen metodi joka laskee palauttaa argumenttina
+     * annettun käden seuraavan käden rotaatiossa
+     * <p>
+     * Rotaatio:
+     * Kivi-Paperi-Sakset-Lisko-Spock
+     * 
+     * @param k Käsi jonka seuraava käsi rotaatiossa halutaan
+     * @return Rotaatiossa seuraava käsi
+     */
     private Kasi paivitaSeuraavaRotaationKasi(Kasi k) {
         if (this.moodi == 1) {
             if (k.getNimi().equals("KIVI")) {
@@ -40,17 +63,25 @@ public class Tekoaly {
         }
     }
 
-    
+    /**
+     * Tekoäly yrittää ennustaa seuraavalle vuorolle parhaan käden.
+     * 
+     * @return Paras käsi tekoälyn mukaan
+     */
     public Kasi tekoalynTarjoamaKasi() {
+//        Tekoälyn kehitetään vielä eteenpäin. Tarkoitus on saada
+//        tekoäly voittamaan yli 80% peleistä!!!
+        
         Kasi palauta = new Kasi("PAPERI");
         
-        // ensimmäinen kierros
+        // pelin ensimmäinen kierros
+        // TOISTAISEKSI palauttaa AINA paperin
         if (this.statistiikka.getKierrokset() == 0) {
             this.viimeisinTekoalynKasi = palauta;
             return palauta;
         }
         
-        // tarkista edellisen kierroksen tilanne
+        // tarkista kuka voitti edellisellä kierroksella
         Kasi edellinen = this.logiikka.pelaajanViimeisinKasi();
         this.logiikka.setPelaajanKasi(edellinen);
         this.logiikka.setTekoalynKasi(this.viimeisinTekoalynKasi);
@@ -59,7 +90,10 @@ public class Tekoaly {
         // jos pelaaja voitti, käytä pelaajan voittanutta kättä
         if (pelitilanne == 1) {
             palauta = edellinen;
-        } else { // oleta pelaajan seuraavan rotaatiota
+        } else if (pelitilanne == 0) { // tasapeli
+            palauta = edellinen;
+        } else {
+         // oleta pelaajan seuraavan rotaatiota
             Kasi oletus = paivitaSeuraavaRotaationKasi(edellinen);
             this.logiikka.setPelaajanKasi(oletus);
             for (int i=0; i<4; i++) {
