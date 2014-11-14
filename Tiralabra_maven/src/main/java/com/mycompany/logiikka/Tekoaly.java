@@ -1,191 +1,79 @@
 package com.mycompany.logiikka;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mycompany.domain.Kasi;
 
-/**
- * Luokka selvittää tietokoneelle seuraavan käden
- */
 public class Tekoaly {
 
     private Statistiikka statistiikka;
-    private Kasi vahitenPelattuKasi;
-    private int vahitenPelattuProsentit;
-    private Kasi seuraavaKasiRotaatiossa;
     private int moodi;
+    private Logiikka logiikka;
+    private Kasi viimeisinTekoalynKasi;
 
-    /**
-     * Konstruktori alustaa luokkamuuttujat
-     *
-     * @param s Pelin Statistiikka-olio
-     * @param m Pelin moodi (1=normaali, 2=laajennettu)
-     */
-    public Tekoaly(Statistiikka s, int m) {
+    public Tekoaly(int moodi, Statistiikka s, Logiikka l) {
         this.statistiikka = s;
-        this.vahitenPelattuKasi = null;
-        this.vahitenPelattuProsentit = 0;
-        this.moodi = m;
+        this.moodi = moodi;
+        this.logiikka = l;
+        this.viimeisinTekoalynKasi = null;
     }
 
-    /**
-     * Päivittää luokkamuuttujaan pelaajan vähiten pelaaman käden
-     */
-    private void paivitaVahitenPelattuKasi() {
-        // 0=Kivi, 1=Paperi, ... 3=Lisko, 4=Spock
-        int kadet[] = new int[5];
-        for (int i = 0; i < 5; i++) {
-            kadet[i] = 0;
-        }
-
-        if (!this.statistiikka.getPelatutKadet().isEmpty()) {
-            for (Kasi k : this.statistiikka.getPelatutKadet()) {
-                if (k.getNimi().equals("KIVI")) {
-                    kadet[0]++;
-                } else if (k.getNimi().equals("PAPERI")) {
-                    kadet[1]++;
-                } else if (k.getNimi().equals("SAKSET")) {
-                    kadet[2]++;
-                } else if (k.getNimi().equals("LISKO")) {
-                    kadet[3]++;
-                } else {
-                    kadet[4]++;
-                }
-            }
-        }
-
-        int pienin = Integer.MAX_VALUE;
-
-        // moodin tarkistus
-        if (this.moodi == 1) {
-            for (int i = 0; i < 3; i++) {
-                if (kadet[i] < pienin) {
-                    pienin = kadet[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                if (kadet[i] < pienin) {
-                    pienin = kadet[i];
-                }
-            }
-        }
-
-        if (pienin == 0) {
-            this.vahitenPelattuKasi = new Kasi("KIVI");
-        } else if (pienin == 1) {
-            this.vahitenPelattuKasi = new Kasi("PAPERI");
-        } else if (pienin == 2) {
-            this.vahitenPelattuKasi = new Kasi("SAKSET");
-        } else if (pienin == 3) {
-            this.vahitenPelattuKasi = new Kasi("LISKO");
-        } else {
-            this.vahitenPelattuKasi = new Kasi("SPOCK");
-        }
-    }
-
-    /**
-     * Päivittää luokkamuuttujaan vähiten pelatun käden prosentit. Esim. jos 10
-     * kierroksen aikana on pelattu kättä x vain yksi kerta, päivitetään
-     * prosenteiksi 10. Laskenta pyöristää prosentit alaspäin.
-     */
-    private void paivitaVahitenPelatunKadenProsentit() {
-        int maara = 0;
-
-        for (Kasi k : this.statistiikka.getPelatutKadet()) {
-            if (k.getNimi().equals(this.vahitenPelattuKasi.getNimi())) {
-                maara++;
-            }
-        }
-        double prosentit = maara / this.statistiikka.getKierrokset();
-        prosentit = prosentit * 100;
-        prosentit = Math.ceil(prosentit);
-        this.vahitenPelattuProsentit = (int) prosentit;
-    }
-
-    /**
-     * Päivittää luokkamuuttujaan seuraavan käden argumenttina annetusta kädestä
-     * logiikalla kivi-paperi-sakset-lisko-spock
-     *
-     * @param k Käsi josta tehdään rotaatio
-     */
-    private void paivitaSeuraavaRotaationKasi(Kasi k) {
-
+    private Kasi paivitaSeuraavaRotaationKasi(Kasi k) {
         if (this.moodi == 1) {
             if (k.getNimi().equals("KIVI")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("PAPERI");
+                return new Kasi("PAPERI");
             } else if (k.getNimi().equals("PAPERI")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("SAKSET");
+                return new Kasi("SAKSET");
             } else {
-                this.seuraavaKasiRotaatiossa = new Kasi("KIVI");
+                return new Kasi("KIVI");
             }
         } else {
             if (k.getNimi().equals("KIVI")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("PAPERI");
+                return new Kasi("PAPERI");
             } else if (k.getNimi().equals("PAPERI")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("SAKSET");
+                return new Kasi("SAKSET");
             } else if (k.getNimi().equals("SAKSET")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("LISKO");
+                return new Kasi("LISKO");
             } else if (k.getNimi().equals("LISKO")) {
-                this.seuraavaKasiRotaatiossa = new Kasi("SPOCK");
+                return new Kasi("SPOCK");
             } else {
-                this.seuraavaKasiRotaatiossa = new Kasi("KIVI");
+                return new Kasi("KIVI");
             }
         }
     }
+
     
-    /**
-     * Palauttaa tekoälyn mielestä parhaimman käden
-     * 
-     * @return Käsi 
-     */
-    public Kasi annaKasi() {
+    public Kasi tekoalynTarjoamaKasi() {
+        Kasi palauta = new Kasi("PAPERI");
+        
         // ensimmäinen kierros
-        if (this.statistiikka.getPelatutKadet().isEmpty()) {
-            return new Kasi("PAPERI");
+        if (this.statistiikka.getKierrokset() == 0) {
+            this.viimeisinTekoalynKasi = palauta;
+            return palauta;
         }
-        // tallenna pelaajan viimeisin käsi
-        Kasi edellinen = this.statistiikka.getPelatutKadet().get(this.statistiikka.getKierrokset() - 1);
+        
+        // tarkista edellisen kierroksen tilanne
+        Kasi edellinen = this.logiikka.pelaajanViimeisinKasi();
+        this.logiikka.setPelaajanKasi(edellinen);
+        this.logiikka.setTekoalynKasi(this.viimeisinTekoalynKasi);
+        int pelitilanne = this.logiikka.pelaajaVoittaaKierroksen();
+        
         // jos pelaaja voitti, käytä pelaajan voittanutta kättä
-        if (this.statistiikka.voittikoPelaajaViimeksi()) {
-            return edellinen;
-        }
-
-        // jos pelaaja hävisi, oleta pelaajan seuraavan rotaatiota
-        paivitaSeuraavaRotaationKasi(edellinen);
-
-        return voittavaKasi(this.seuraavaKasiRotaatiossa);
-    }
-
-    /**
-     * Palauttaa käden joka voittaa argumenttina annetun käden
-     * 
-     * @param voitettava Käsi joka tulee voittaa
-     * @return Käsi jolla voitto tapahtuu
-     */
-    private Kasi voittavaKasi(Kasi voitettava) {
-        Kasi ulos = null;
-
-        if (this.moodi == 1) {
-            if (voitettava.getNimi().equals("KIVI")) {
-                ulos = new Kasi("PAPERI");
-            } else if (voitettava.getNimi().equals(("PAPERI"))) {
-                ulos = new Kasi("SAKSET");
-            } else {
-                ulos = new Kasi("KIVI");
-            }
-        } else {
-            if (voitettava.getNimi().equals("KIVI")) {
-                ulos = new Kasi("SPOCK");
-            } else if (voitettava.getNimi().equals("PAPERI")) {
-                ulos = new Kasi("LISKO");
-            } else if (voitettava.getNimi().equals("SAKSET")) {
-                ulos = new Kasi("SPOCK");
-            } else if (voitettava.getNimi().equals("LISKO")) {
-                ulos = new Kasi("KIVI");
-            } else {
-                ulos = new Kasi("PAPERI");
+        if (pelitilanne == 1) {
+            palauta = edellinen;
+        } else { // oleta pelaajan seuraavan rotaatiota
+            Kasi oletus = paivitaSeuraavaRotaationKasi(edellinen);
+            this.logiikka.setPelaajanKasi(oletus);
+            for (int i=0; i<4; i++) {
+                if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
+                    palauta = paivitaSeuraavaRotaationKasi(palauta);
+                } else {
+                    break;
+                }
             }
         }
-        return ulos;
+
+        this.viimeisinTekoalynKasi = palauta;
+        return palauta;
     }
+
+   
 }

@@ -1,5 +1,6 @@
 package com.mycompany.logiikka;
 
+import com.mycompany.domain.Kasi;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -20,19 +21,19 @@ public class KasiTest {
         assertEquals("asdf", k.getNimi());
     }
     
-    @Test
-    public void kasiHaviaaOikein() {
-        Kasi k = new Kasi("KIVI");
-        Kasi p = new Kasi("PAPERI");
-        k.lisaaVoittavaKasiYksi(p);
-        assertEquals(false, k.voittaako(p));
-    }
-    
-    @Test
-    public void kasiVoittaaOikein() {
-        Kasi k = new Kasi("KIVI");
-        Kasi p = new Kasi("PAPERI");
-        k.lisaaVoittavaKasiYksi(p);
-        assertEquals(true, p.voittaako(k));
-    }
+//    @Test
+//    public void kasiHaviaaOikein() {
+//        Kasi k = new Kasi("KIVI");
+//        Kasi p = new Kasi("PAPERI");
+//        k.lisaaVoittavaKasiYksi(p);
+//        assertEquals(false, k.voittaako(p));
+//    }
+//    
+//    @Test
+//    public void kasiVoittaaOikein() {
+//        Kasi k = new Kasi("KIVI");
+//        Kasi p = new Kasi("PAPERI");
+//        k.lisaaVoittavaKasiYksi(p);
+//        assertEquals(true, p.voittaako(k));
+//    }
 }

@@ -1,98 +1,95 @@
 package com.mycompany.logiikka;
 
-/**
- * Luokkaa huolehtii pelimekaniikasta
- */
+import com.mycompany.domain.Kasi;
 
 public class Logiikka {
     
+    private Kasi pelaaja;
+    private Kasi tekoAly;
+    //private Kasi pelaajanViimeisinKasi;
+    
     public Logiikka() {
+        this.pelaaja = null;
+        this.tekoAly = null;
+    }
+    
+    public Kasi pelaajanViimeisinKasi() {
+        return this.pelaaja;
+    }
+    
+    public void setPelaajanKasi(Kasi k) {
+        this.pelaaja = k;
+    }
+    
+    public Kasi getPelaajanKasi() {
+        return this.pelaaja;
+    }
+    
+    public void setTekoalynKasi(Kasi k) {
+        this.tekoAly = k;
+    }
         
-    }
-    
-    
-    /**
-     * Metodi palauttaa kokonaislukuarvon, joka kuvaa
-     * voittaako pelaajan käsi tekoälyn
-     * 
-     * @param pelaaja Pelaajan käsi
-     * @param tekoaly Tietokoneen käsi
-     * 
-     * @return 
-     * 1=voitto, -1=häviö, 0=tasapeli
-     */
-    public int voittaako(Kasi pelaaja, Kasi tekoaly) {
-        if (pelaaja.getNimi().equals(tekoaly.getNimi())) {
-            return 0;
-        }
-        if (pelaaja.voittaako(tekoaly)) {
-            return 1;
+    public int pelaajaVoittaaKierroksen() {
+        if(this.pelaaja.getNimi().equals("KIVI")) {
+            if (this.tekoAly.getNimi().equals("KIVI")) {
+                return 0;
+            } else if (this.tekoAly.getNimi().equals("PAPERI")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("SAKSET")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("LISKO")) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (this.pelaaja.getNimi().equals("PAPERI")) {
+            if (this.tekoAly.getNimi().equals("KIVI")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("PAPERI")) {
+                return 0;
+            } else if (this.tekoAly.getNimi().equals("SAKSET")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("LISKO")) {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else if (this.pelaaja.getNimi().equals("SAKSET")) {
+            if (this.tekoAly.getNimi().equals("KIVI")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("PAPERI")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("SAKSET")) {
+                return 0;
+            } else if (this.tekoAly.getNimi().equals("LISKO")) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (this.pelaaja.getNimi().equals("LISKO")) {
+            if (this.tekoAly.getNimi().equals("KIVI")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("PAPERI")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("SAKSET")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("LISKO")) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return -1;
+            if (this.tekoAly.getNimi().equals("KIVI")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("PAPERI")) {
+                return -1;
+            } else if (this.tekoAly.getNimi().equals("SAKSET")) {
+                return 1;
+            } else if (this.tekoAly.getNimi().equals("LISKO")) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
     }
-    
-//    public int voittaako(Kasi kasi1, Kasi kasi2) {
-//        if(kasi1.getNimi().equals("KIVI")) {
-//            if (kasi2.getNimi().equals("KIVI")) {
-//                return 0;
-//            } else if (kasi2.getNimi().equals("PAPERI")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("SAKSET")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("LISKO")) {
-//                return 1;
-//            } else {
-//                return -1;
-//            }
-//        } else if (kasi1.getNimi().equals("PAPERI")) {
-//            if (kasi2.getNimi().equals("KIVI")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("PAPERI")) {
-//                return 0;
-//            } else if (kasi2.getNimi().equals("SAKSET")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("LISKO")) {
-//                return -1;
-//            } else {
-//                return 1;
-//            }
-//        } else if (kasi1.getNimi().equals("SAKSET")) {
-//            if (kasi2.getNimi().equals("KIVI")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("PAPERI")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("SAKSET")) {
-//                return 0;
-//            } else if (kasi2.getNimi().equals("LISKO")) {
-//                return 1;
-//            } else {
-//                return -1;
-//            }
-//        } else if (kasi1.getNimi().equals("LISKO")) {
-//            if (kasi2.getNimi().equals("KIVI")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("PAPERI")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("SAKSET")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("LISKO")) {
-//                return 0;
-//            } else {
-//                return 1;
-//            }
-//        } else {
-//            if (kasi2.getNimi().equals("KIVI")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("PAPERI")) {
-//                return -1;
-//            } else if (kasi2.getNimi().equals("SAKSET")) {
-//                return 1;
-//            } else if (kasi2.getNimi().equals("LISKO")) {
-//                return -1;
-//            } else {
-//                return 0;
-//            }
-//        }
-//    }
 }
