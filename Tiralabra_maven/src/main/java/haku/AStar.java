@@ -6,9 +6,9 @@
 package haku;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import tira.PrioriteettiJonoListalla;
 import verkko.Kaari;
 import verkko.Pysakki;
 import verkko.Verkko;
@@ -37,19 +37,39 @@ public class AStar {
      * Apuolio reittien kustannusten ja jäljelläolevan kustannuksen arviointiin
      */
     private ReittiLaskin laskin;
+    
+    
+    //////////////////////
+    // PRIORITEETTIJONO //
+    //////////////////////
+    /**
+     * 
+     */
+    private /* PriorityQueue<Reitti> */ PrioriteettiJonoListalla kasittelyJarjestys;
+    
     ///////////////////
     // KONSTRUKTORIT //
     ///////////////////
+    /**
+     * 
+     * @param verkko
+     * @param laskin 
+     */
     public AStar(Verkko verkko, ReittiLaskin laskin) {
         this.verkko = verkko;
         this.laskin = laskin;
         this.laskin.setVerkko(verkko);
     }
-
+    /**
+     * 
+     * @param verkko Verkko, jossa haut suoritetaan
+     */
     public AStar(Verkko verkko) {
         this(verkko, new ReittiLaskin());
     }
-
+    /**
+     * Oletuskonstruktori
+     */
     public AStar() {
         this(new Verkko(), new ReittiLaskin());
     }
@@ -75,13 +95,19 @@ public class AStar {
         alkuTila.setKustannus(0);
         alkuTila.setSolmu(alku);
         alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
-
-        PriorityQueue<Reitti> kasittelyJarjestys = new PriorityQueue(new Comparator<Reitti>() {
+        // WIP: jono kentäksi
+        /*
+        kasittelyJarjestys = new PriorityQueue(new Comparator<Reitti>() {
 
             public int compare(Reitti t1, Reitti t2) {
                 return (int) (t1.getArvioituKustannus() + t1.getKustannus() - t2.getArvioituKustannus() - t2.getKustannus());
             }
         });
+        */
+        // käytetään omaa prioriteettijonoa:
+        kasittelyJarjestys = new PrioriteettiJonoListalla(); // toteutustapana taulukko linkitetyistä listoista
+        // suorituskyky jotakuinkin sama kuin valmiilla kalustolla
+        // nopeammat linkitetyt listat / dequet avuksi?
         kasittelyJarjestys.add(alkuTila);
 
         ArrayList<Reitti> parhaatReitit = new ArrayList();
@@ -94,7 +120,7 @@ public class AStar {
             Reitti kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois käsiteltäväksi
             Pysakki solmu = kasiteltava.getSolmu();
             // DEBUG: tietoa käsittelystä ja heuristiikan toiminnasta
-            debugKasittelytieto(kasittelyJarjestys, kasiteltava);
+            debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             /*
              LOPPUEHDOT
@@ -311,14 +337,14 @@ public class AStar {
 
     /**
      * Tietoja käsittelyvuorossa olevasta reitistä
-     * @param pq Käsittelyjärjestys
+     * @param jononKoko Käsittelyjärjestys-jonon koko
      * @param kasiteltava
      * @return 
      */
-    private String debugKasittelytieto(PriorityQueue pq, Reitti kasiteltava) {
+    private String debugKasittelytieto( int jononKoko , Reitti kasiteltava) {
         String tieto = "";
         kasiteltyja++;
-        keskimaarainenJononKoko += pq.size();
+        keskimaarainenJononKoko += jononKoko;
         double totalCost = kasiteltava.getArvioituKustannus() + kasiteltava.getKustannus();
         double totalCostDiff = -totalCostLast + totalCost;
         tieto += ("{ Solmu=" + kasiteltava.getSolmu().getKoodi() + ", travelTime=" + kasiteltava.getAika()
@@ -327,7 +353,7 @@ public class AStar {
                 + ", estCost=" + kasiteltava.getArvioituKustannus()
                 + ", kuljettuKaari=" + kasiteltava.getKuljettuKaari()
                 + ", tcDiff=" + (-totalCostLast + totalCost) + " }"
-                + ", in queue=" + pq.size() + " }");
+                + ", in queue=" + jononKoko + " }");
         totalCostLast = totalCost;
         totalCostDiffSum += totalCostDiff;
         if (this.debugPrint) {
