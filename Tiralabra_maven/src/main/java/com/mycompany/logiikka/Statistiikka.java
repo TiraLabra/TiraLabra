@@ -1,9 +1,18 @@
 package com.mycompany.logiikka;
 
 import com.mycompany.domain.Kasi;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Luokka pitää yllä pelin statistiikkaa:
+ * <ul>
+ * <li> Pelatut kierrokset
+ * <li> Pelaajan voittojen määrä
+ * <li> Tasapelien määrä
+ * <li> Pelaajan vähiten pelaama käsi
+ * <li> Vähiten pelatun käden osuus kaikista pelatuista käsistä
+ * </ul>
+ * 
+ */
 public class Statistiikka {
 
     private int kierrokset;
@@ -12,6 +21,17 @@ public class Statistiikka {
     private int[] kadet;
     private int moodi;
 
+    /**
+     * Konstruktori asettaa luokkamuuttujat
+     * <p>
+     * Moodit
+     * <ul>
+     * <li> 1 = Perinteinen Kivi-Paperi-Sakset
+     * <li> 2 = Laajennettu Kivi-Paperi-Sakset-Lisko-Spock
+     * </ul>
+     * 
+     * @param moodi Moodi 
+     */
     public Statistiikka(int moodi) {
         this.moodi = moodi;
         this.kierrokset = 0;
@@ -21,14 +41,28 @@ public class Statistiikka {
         alustaKadet();
     }
 
+    /**
+     * Palauttaa tasapelien määrän
+     * 
+     * @return tasapelien määrä 
+     */
     public int getTasapelit() {
         return this.tasapelit;
     }
     
+    /**
+     * Kasvattaa tasapelien laskuria yhdellä
+     * 
+     * @see #getTasapelit() 
+     */
     public void asetaTasapeli() {
         this.tasapelit++;
     }
     
+    /**
+     * Sisäinen metodi. Alustaa int[5] listan nollilla. Mikäli vallitseva
+     * moodi on 2, asetetaan int[3] ja int[4] Integer.MAX_VALUE
+     */
     private void alustaKadet() {
         for (int i = 0; i < 5; i++) {
             this.kadet[i] = 0;
@@ -39,15 +73,31 @@ public class Statistiikka {
         }
     }
 
+    /**
+     * Kasvattaa kierrosten määrää yhdellä ja päivittää pelaajan käden
+     * int[5]-tyyppiseen muuttujaan.
+     * 
+     * @see #paivitakadet(com.mycompany.domain.Kasi) 
+     * 
+     * @param pelaaja Pelaajan käsi
+     */
     public void paivitaKierros(Kasi pelaaja) {
         this.kierrokset++;
         paivitakadet(pelaaja);
     }
     
+    /**
+     * Kasvattaa pelaajan voittojen määrää yhdellä
+     */
     public void lisaaPelaajanVoitto() {
         this.pelaajanVoitot++;
     }
 
+    /**
+     * Sisäinen metodi kasvattaa int[5] listaa kättä vastaavalla indeksillä
+     * 
+     * @param kasi Käsi jonka mukaan listaa kasvatetaan 
+     */
     private void paivitakadet(Kasi kasi) {
         if (kasi.getNimi().equals("KIVI")) {
             this.kadet[0]++;
@@ -62,6 +112,11 @@ public class Statistiikka {
         }
     }
 
+    /**
+     * Palauttaa pelaajan vähiten pelaaman käden
+     * 
+     * @return Vähiten pelattu käsi 
+     */
     public Kasi pelaajanVahitenPelattuKasi() {
         int pienin = Integer.MAX_VALUE;
         int kasiIndeksi = -1;
@@ -93,6 +148,15 @@ public class Statistiikka {
         }
     }
 
+    /**
+     * Palauttaa pelaajan vähiten pelaaman käden <b>prosenttiosuuden</b>
+     * kaikista käsistä.
+     * <p>
+     * Esim. jos pelaaja on pelannut 10 pelin aikana kerran saksi-kättä,
+     *  metodi palauttaa "10", ei 0.1!
+     * 
+     * @return prosenttiosuus
+     */
     public long vahitenPelattuKasiProsentit() {
         int maara = -1;
         Kasi vahiten = pelaajanVahitenPelattuKasi();
@@ -111,10 +175,22 @@ public class Statistiikka {
         return (long) Math.floor(pros + 0.5d);
     }
     
+    /**
+     * Palauttaa pelattujen kierrosten kokonaismäärän
+     * 
+     * @return Kierrosten määrä 
+     */
     public int getKierrokset() {
         return this.kierrokset;
     }
     
+    /**
+     * Tulostaa statistiikan kuluneesta pelistä.
+     * <p>
+     * Tarkoitettu lähinnä CLI:n käyttöön
+     * 
+     * @return Statistiikka
+     */
     @Override
     public String toString() {
         return "Kierroksia : " + this.kierrokset +
