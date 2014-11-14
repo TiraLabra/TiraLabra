@@ -157,7 +157,7 @@ public class Statistiikka {
      * 
      * @return prosenttiosuus
      */
-    public long vahitenPelattuKasiProsentit() {
+    public int vahitenPelattuKasiProsentit() {
         int maara = -1;
         Kasi vahiten = pelaajanVahitenPelattuKasi();
         if (vahiten.getNimi().equals("KIVI")) {
@@ -171,8 +171,7 @@ public class Statistiikka {
         } else {
             maara = this.kadet[4];
         }
-        double pros = maara / this.kierrokset;
-        return (long) Math.floor(pros + 0.5d);
+        return 100*maara/this.kierrokset;
     }
     
     /**

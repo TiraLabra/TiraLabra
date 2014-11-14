@@ -54,7 +54,8 @@ public class Cli {
             if (validoiKomento(komento)) {
                 char c = komento.charAt(0);
                 if (c == 't') {
-                    System.out.println(this.statistiikka);
+                    //System.out.println(this.statistiikka);
+                    System.out.println(this.statistiikka.vahitenPelattuKasiProsentit());
                 } else {
                     
                     asetaTekoalynKasi();
