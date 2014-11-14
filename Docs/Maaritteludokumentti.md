@@ -21,6 +21,8 @@ Ohjelmointikielenä käytetään Javaa.
 
 * Arvo olio (kivi/paperi/sakset/(spock/lisko))
 
+* * *
+
 **Komentokehoitteen syöte ja tuloste:**
 
 * Ohjelman käynnistys
@@ -43,10 +45,12 @@ X = Lopeta
 
 * Pelin lataaminen ja tallentaminen implementoidaan graafiseen käyttöliittymään
 
+* * *
+
 **Algoritmit ja tietorakenteet**
 
-* Ohjelma pitää yllä pelaajan pelaamia käsiä ja ne talletetaan linkitettyyn listaan. Listaan lisääminen tapahtuu vakioajassa ja listan läpikäyminen vaatii O(n) ajan. Luonnollisesti tilavaatimuksena on O(n). 
+* Ohjelma pitää listaa pelaajan käsistä viiden alkion kokoisen kokonaislukutaulukon avulla. Kädet numeroidaan järjestyksessä ja jokaisen kierroksen jälkeen pelaajan kättä vastaavan alkion arvoa korotetaan yhdellä. Tällöin aika- ja tilavaativuus ovat O(1).
 
-* Luokat sisältävät yksittäisiä muuttujia mm. kierrosten, tasapelien ja pelaajan voittojen määrästä. Muuttujat päivitetään kierroksittain, joten niiden tila- ja aikavaatimus on vakio.
+* Haluttaessa tietää pelaajan vähiten pelaama käsi, käydään edellä mainittu viiden alkion taulu läpi ja sen alkion indeksi jolla on pienin arvo on vähiten pelattu käsi. Indeksit noudattavat pelin nimeä (KIVI[=0]-PAPERI[=1]-SAKSET[=2]-LISKO[=3]-SPOCK[=4]). Vähiten pelatun käden etsiminen vie aikaa O(5) eli aikavaativuus on O(1).
 
-* Tekoäly tulee ylläpitämään tilastoa pelaajan vähiten pelaamasta kädestä ja kyseisen käden esiintymistiheydestä. Päivitettäessä em. tietoja tulee käydä läpi pelaajan pelaamat kädet, joten kummankin tehtävän aikavaativuus tulee olemaan O(n). Tilavaativuus on kummallakin vakio, sillä pelaajan pelaamat kädet pidetään yhdessä linkitetyssä listassa, jota käydään läpi. Listan kokoon ei tehdä muutoksia em. tilanteissa ja lista saadaan argumenttina.
+* Tekoälyn täytyy selvittää vähiten pelatun käden prosenttiosuus kaikista käsistä. Selvittämällä edellä mainitulla metodilla vähiten pelattu käsi, saadaan samalla myös tietoon käden esiintymien määrä. Statistiikka tarjoaa luokkamuuttujan joka kertoo pelattujen kierrosten määrän. Esiintymien määrän selvitys tapahtuu ajassa O(5) = O(1), luokkamuuttuja O(1) ja laskutoimitus O(1) -> vakioaikaista. 
