@@ -171,6 +171,47 @@ public class ReittiLaskin {
         return 0;
     }
 
+    /**
+     * Testataan, toimiiko heuristiikka: heuristinen arvio saa olla korkeintaan
+     * kahden verkon solmun välinen kustannus
+     * 
+     * @return Heuristiikan onnistumisprosentti
+     */
+    public double toimiikoHeuristiikka() {
+        double succ=0, fail=0;
+        double all=0;
+        double maksVirhe = 0, virheSumma=0;
+        if (verkko==null) return 1;
+        for ( Pysakki p : verkko.getPysakit() ) {
+            for ( Pysakki c: verkko.getNaapurit(p) ) {
+                for ( Kaari k : verkko.getKaaret(p, c) ) {
+                    // mukana ei vaihto tai odotusaika: saadaan pienin kustannus
+                    double kustannus = this.aikaPaino*k.getKustannus()+this.matkaPaino*k.getEtaisyys();
+                    double arvio     = this.heuristiikka(p, c);
+                    
+                    if ( arvio<=kustannus ) {
+                        succ++;
+                    }
+                    else {
+                        System.out.println("C:"+kustannus+", H:"+arvio);
+                        double virhe = arvio-kustannus;
+                        virheSumma+=virhe;
+                        if ( virhe > maksVirhe ) {
+                            maksVirhe=virhe;
+                        }
+                    }
+                    all++;
+                }
+            }
+        }
+        double succP = succ/all;
+        System.out.println("Onnistumiset: "+succP);
+        System.out.println("Suurin virhe: "+maksVirhe);
+        if ( fail>0 ) System.out.println("Keskivirhe: "+(virheSumma/fail) );
+        
+        return succP;
+    }
+    
      /////////////////////////////////////////////
     ///// automaattiset setterit & getterit /////
     ///////////////////////////////////////////// 

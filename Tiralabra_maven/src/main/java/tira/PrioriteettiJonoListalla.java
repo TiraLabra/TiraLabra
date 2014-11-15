@@ -7,24 +7,29 @@ package tira;
 
 import haku.Reitti;
 
-
 /**
  *
- * Reittioppaaseen erikoistunut prioriteettijono. Lisäys & poll pitäisi olla lähellä O(1):tä 
- * Tehokkuus riippuu jonon tiheydestä. Tilavaatimus saattaa olla huomattava
- * Toteutus mukaelma tästä: http://en.wikipedia.org/wiki/Priority_queue#Specialized_heaps
+ * Reittioppaaseen erikoistunut prioriteettijono. Lisäys & poll pitäisi olla
+ * lähellä O(1):tä Tehokkuus riippuu jonon tiheydestä. Tilavaatimus saattaa olla
+ * huomattava.
+ * Toteutus mukaelma tästä:
+ * http://en.wikipedia.org/wiki/Priority_queue#Specialized_heaps
  *
  * @author E
  */
 public class PrioriteettiJonoListalla {
-    
+
     /////////////////////////
     // (WIP) TOIMII? -> EHKÄ
     // aikavaatimus vaikuttaisi olevan samalla tasolla kuin javan omassa priorityqueuessa
-    // ainakin siis tässä asiayhteydessä (ei siis yleinen ratkaisu)
+    // toimii ainakin tässä asiayhteydessä (ei siis yleinen ratkaisu)
+    // reittiLaskimen palauttamat kustannukset ja arvioidut kustannukset 
+    // vaikuttavat toimintaan huomattavasti: mitä enemmän desimaaleja kustannuksissa, sitä enemmän
+    // tarvittaisiin tarkkuutta
     // O((?????)) ?? ??
+    //
     ////////////////////////////
-
+    
     /**
      * Taulukon maksimikoko 2^31-1
      */
@@ -35,9 +40,13 @@ public class PrioriteettiJonoListalla {
      */
     private Jono<Reitti>[] jono; // WIP: tästä taitaa tulla melko harva taulukko
     /**
-     * Pienimmän prioriteetin tunnus
+     * Parhaan prioriteetin osoitin
      */
     private int head;
+    /** Paras prioriteetti
+     * 
+     */
+    private int headPrioriteetti;
     /**
      * Jäsenten lkm
      */
@@ -45,16 +54,22 @@ public class PrioriteettiJonoListalla {
     /**
      * Taulukon koko
      */
-    private int maxSize;
+    public int maxSize;
     /**
      * Kasvatuskerroin taulukolle
      */
     private int growFactor;
     /**
-     * Tarkkuus: reitin kustannus on double, kustannus kerrotaan tällä;
-     * saatu kokonaisluku on saman arvioidun prioriteetin paikkana jonossa
+     * Tarkkuus: reitin kustannus on double, kustannus kerrotaan tällä; saatu
+     * kokonaisluku on saman arvioidun prioriteetin paikkana jonossa
      */
-    private int tarkkuus;
+    private final int TARKKUUS;
+    /**
+     * Aloituskerroin tarkkuudelle: saadaan taulukon koko
+     */
+    private final int N;
+    
+    
 
     ///////////////////
     // Konstruktorit //
@@ -64,29 +79,52 @@ public class PrioriteettiJonoListalla {
      * Oletuskonstruktori
      */
     public PrioriteettiJonoListalla() {
-        head = Integer.MAX_VALUE;
-        size = 0;
-        tarkkuus = 100; // tarkkuus desimaalina 1/tarkkuus --> vaikuttaa suoritusaikaan
-        growFactor = 2;
-        maxSize    = 60*tarkkuus; // vastaa 60 minuuttia, jos reitti laskee kustannukset minuuteissa
-        jono       = new Jono[maxSize];
-    }
+        TARKKUUS = 100; // tarkkuus desimaalina 1/tarkkuus --> vaikuttaa suoritusaikaan
+        N = 45;   // esim: jos kustannus aika minuuteissa, N on maksimiminuuttimäärä... 
+        // (yli ensimmäisen heuristisen arvion, johon normalisoidaan)
 
+        head = 0;
+        headPrioriteetti = Integer.MAX_VALUE;
+        size = 0;
+        growFactor = 2;
+        maxSize = N * TARKKUUS; // vastaa N minuuttia, jos reitti laskee kustannukset minuuteissa
+        jono = new Jono[maxSize];
+    }
+    // WIP: debug
+    
+    /**
+     * Kuinka monta kertaa tallennetaan reitti kustannuksella joka on alle jonon ensimmäisen
+     */
+    private int count = 0;
+    public int lastIndexInUse = 0;
     /**
      * Lisätään oikealle paikalle arvo
      *
      * @param e Lisättävä arvo
      */
     public void add(Reitti e) {
-        int prioriteetti = (int) (this.tarkkuus * (e.getArvioituKustannus() + e.getKustannus())); // erottelutarkkuus 0.01
-        if (prioriteetti < head) {
-            head = prioriteetti;
+        int prioriteetti = (int) (this.TARKKUUS * (e.getArvioituKustannus() + e.getKustannus())); // erottelutarkkuus 1/tarkkuus
+        if (prioriteetti < headPrioriteetti) {
+            headPrioriteetti = prioriteetti;
+            // JOS heuristiikka toimii, ei pitäisi tapahtua kuin alussa
+            if ( count>=1 ) {
+                System.out.println("ERRORERROR!!!!");
+                System.out.println("g="+e.getKustannus()+"+h="+e.getArvioituKustannus());
+            }
+            count++;
+            
         }
+        // TÄSSÄ (ei yleisesti!) voi tehdä näin: reittien kustannukset ovat kasvavia jos heuristiikka toimii
+        prioriteetti-=headPrioriteetti; // normalisoidaan päähän
+        if ( lastIndexInUse < prioriteetti ) {
+            lastIndexInUse = prioriteetti;
+        }
+        // prioriteetti-=headPrioriteetti; // normalisoidaan päähän
         if (prioriteetti >= ARRAY_MAXSIZE) {
             System.out.println("HUPS! Kurja prioriteetti");
-            prioriteetti = ARRAY_MAXSIZE-1; // sinne vaan!
+            prioriteetti = ARRAY_MAXSIZE - 1; // sinne vaan!
         }
-        if (prioriteetti >= maxSize) { // O(maxSize) <- kopioidaan arvot uuteen
+        if (prioriteetti >= maxSize-1) { // O(maxSize) <- kopioidaan arvot uuteen
             kasvata(prioriteetti);
         }
 
@@ -106,11 +144,13 @@ public class PrioriteettiJonoListalla {
         if (head < 0 || head >= maxSize || this.isEmpty()) {
             return null;
         }
-        int prioriteetti = head;
-        if (this.jono[prioriteetti] == null || this.jono[prioriteetti].isEmpty()) {
-            prioriteetti = seuraava(); // max O(N), paljon tihemmässä pitäisi olla kuitenkin
+        // int prioriteetti = head;
+        if (this.jono[head] == null || this.jono[head].isEmpty()) {
+            head = seuraava(); // max O(N), paljon tihemmässä pitäisi olla kuitenkin
+            // headPrioriteetti += head;
+            // headPrioriteetti = headPrioriteetti+head;
         }
-        Reitti reitti = this.jono[prioriteetti].poll(); // O(1)
+        Reitti reitti = this.jono[head].poll(); // O(1)
         size--;
         return reitti;
     }
@@ -143,26 +183,29 @@ public class PrioriteettiJonoListalla {
      */
     private void kasvata(int lisattavaPrioriteetti) {
         int factor = this.growFactor;
+        int oldSize = this.maxSize;
         while (maxSize * factor < lisattavaPrioriteetti) {
             factor *= 2;
         }
         if (factor * this.maxSize >= ARRAY_MAXSIZE) {
             // HUPS!
             System.out.println("HUHHUH, ei pyde");
-            this.maxSize=ARRAY_MAXSIZE;
+            this.maxSize = ARRAY_MAXSIZE;
         } else {
             this.maxSize = factor * this.maxSize;
         }
         Jono<Reitti>[] uusiValues = new Jono[this.maxSize];
-        System.arraycopy(this.jono, 0, uusiValues, 0, this.size);
+        System.arraycopy(this.jono, 0, uusiValues, 0, oldSize);
         this.jono = uusiValues;
     }
+
     /**
      * Seuraava arvon (epätyhjä lista) sisältävän taulukon indeksi
-     * @return 
+     *
+     * @return
      */
     private int seuraava() {
-        int index = this.head;        
+        int index = this.head;
         for (int i = index; i < maxSize; i++) {
             Jono<Reitti> lista = this.jono[i];
             if (lista != null && !lista.isEmpty()) {

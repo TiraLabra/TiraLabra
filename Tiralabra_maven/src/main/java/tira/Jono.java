@@ -33,6 +33,12 @@ public class Jono<E> {
         head = 0;
         tail = 0;
     }
+    public Jono( int aloitusKoko ) {
+        maxSize = aloitusKoko;
+        values = new Object[maxSize];
+        head = 0;
+        tail = 0;
+    }    
     /**
      * Lisää jonon viimeiseksi jäseneksi
      * 
