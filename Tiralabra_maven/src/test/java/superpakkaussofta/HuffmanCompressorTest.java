@@ -57,8 +57,8 @@ public class HuffmanCompressorTest extends TestCase {
         
         byte[] data = {10, 20, 10, 30, 20, 10};
         byte[] expResult = {10, 10, 10, 20, 20, 30};
-        byte[] result = comp.copyAndSortByteArray(data);
-        assertArrayEquals(expResult, result);
+        //byte[] result = comp.copyAndSortByteArray(data);
+        assertArrayEquals(expResult, null);
         
     }
     

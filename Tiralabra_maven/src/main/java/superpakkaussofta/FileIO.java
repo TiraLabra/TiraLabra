@@ -1,9 +1,11 @@
 package superpakkaussofta;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 /**
  * Class for reading and writing files byte by byte
@@ -29,7 +31,8 @@ public class FileIO {
      * 
      * @throws IOException 
      */
-    public void write() throws IOException{
-        //TODO
+    public void write(byte[] data) throws IOException{
+        Path p = Paths.get("pakattu.huf");
+        Files.write(p, data, StandardOpenOption.CREATE);
     }
 }
