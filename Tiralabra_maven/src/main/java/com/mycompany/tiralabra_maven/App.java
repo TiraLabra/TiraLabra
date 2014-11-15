@@ -1,6 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import search.AStarSearch;
+import UI.CLI;
 
 /**
  * Hello world!
@@ -14,8 +15,8 @@ public class App
                         {2, 6, 2, 1, 1},
                         {1, 2, 9, 2, 2},
                         {2, 1, 1, 2, 1}};
-        System.out.println( "Hello World!" );
         AStarSearch search = new AStarSearch(map);
-        search.menu();
+        CLI cli = new CLI(search);
+        cli.menu();
     }
 }

@@ -1,7 +1,6 @@
 package search;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import map.Node;
 
 /**The A* search class.
@@ -13,37 +12,11 @@ public class AStarSearch {
     * 
     */
    private int[][] map;
-   private Scanner scanner;
    
    public AStarSearch(int[][] map) {
        this.map = map;
-       this.scanner = new Scanner(System.in);
    }
    
-   /**Prints the menu for the search.
-    * 
-    */
-   public void menu() {
-       System.out.println(printMap());
-       System.out.println("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,3,5)");
-       String input = scanner.nextLine();
-       int[] searchCoordinates = parseInput(input);
-       System.out.println(search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]));
-   }
-   
-   /**Parses the input into an array of the search coordinates
-    * 
-    * @param input 
-    */
-   private int[] parseInput(String input) {
-       String[] splittedInput = input.split(",");
-       int[] searchValues = new int[4];
-       searchValues[0] = Integer.parseInt(splittedInput[0]);
-       searchValues[1] = Integer.parseInt(splittedInput[1]);
-       searchValues[2] = Integer.parseInt(splittedInput[2]);
-       searchValues[3] = Integer.parseInt(splittedInput[3]);
-       return searchValues;
-   }
    
    /**The A* search loop.
     * 
@@ -206,7 +179,7 @@ public class AStarSearch {
                        output += " " + xCoord;
                    }
                }
-               output += "\n";
+               output += " X \n";
            }
            if (y >= 10) {
                output += y;
@@ -223,5 +196,6 @@ public class AStarSearch {
            }
            output += "\n";
        }
+       output += " Y";
        return output;
    }
