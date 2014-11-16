@@ -23,7 +23,7 @@ public class Main {
         HuffmanCompressor compressor = new HuffmanCompressor();
         TreeOperator toperator = new TreeOperator();
         
-        String path = "testifilu.txt";
+        String path = "testifilu2.txt";
         
         byte[] data = null;
         try {
