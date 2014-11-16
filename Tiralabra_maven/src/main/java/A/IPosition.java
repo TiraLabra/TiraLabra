@@ -1,4 +1,4 @@
-package A_Star;
+package A;
 
 /**
  * N-dimensional position

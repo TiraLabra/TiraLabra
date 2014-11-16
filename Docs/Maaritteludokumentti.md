@@ -14,9 +14,15 @@ Syöte:	Syötteenä n ulotteinen taulukko alueesta jonka läpi reitti tulee etsiä se
 tai
 	lähtö ja maali alkiot alkoioiden verkosta ja heuristiikka esim. toEnd(alkio), toStart(alkio).
 
+Keon tilavaativuus: O(n),missä on n elementtien määrä. Tämä on selkeä, sillä jokaiseen alkioon liittyy vain vaiko määrä muuttujia, jotka tarvitaan alkion kekoon liittämiseen.
 
-Tavoitteellinen TilaVaativuus: Pahimmassa tapauksessa sama kuin taulukon tai verkon koko eli O(V) , missä V on kaikki mahdolliset alkiot. Parhaimmassa reitin pituus. Yleisessä tapauksessa lähempänä reitin pituutta kuin taulukon kokoa.
+Keon operaatioiden tilavaativuus: Keossa käytettävät operaatiot insert, delete, find-min ja delete-min, joita A* tunnetusti käyttää, voidaan tehdä sillä tavalla, että niiden tilavaativuus on vakiollinen O(1).
 
-Tavoitteellinen Aikavaativuus: O(V*sqrt(V)+E) , missä V on kaikki mahdolliset alkiot. Osa-aikavaativuus 'E' tulee kaikkien alkioiden yhteyksien läpikäymisestä ja  'V*sqrt(V)' kaikkien alkioiden lisäämisestä keko tietorakenteeseen, joka toimii aikavaativuudella O(sqrt(n)).
+Keon operaatioiden aikavaativuudet: Insert O(log(n)), delete O(log(n)), find-min O(1) ja delete-min O(log(n)) olettaen että kyseessä on min-heap, missä n on keossa olevien elementtien määrä.
+
+Algoritmin Tavoitteellinen TilaVaativuus: Pahimmassa tapauksessa sama kuin taulukon tai verkon koko eli O(V) , missä V on kaikki mahdolliset alkiot. Parhaimmassa reitin pituus. Yleisessä tapauksessa lähempänä reitin pituutta kuin taulukon kokoa.
+
+Algoritmin Tavoitteellinen Aikavaativuus: O((|V|+|E|)*log(|V|)) , missä 'V' on kaikki mahdolliset alkiot.
+(V+E)*log(V) kaikkien alkioiden lisäämisestä keko tietorakenteeseen, jokaisen yhteyden E kohdalla, joka toimii aikavaativuudella O(log(n)).
 
 Lähteet: http://en.wikipedia.org/wiki/A*_search_algorithm (tarviiko jonkun paremman lähteen?)
