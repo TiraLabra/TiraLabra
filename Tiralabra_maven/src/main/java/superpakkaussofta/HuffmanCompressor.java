@@ -36,8 +36,13 @@ public class HuffmanCompressor {
         for(int i = 0; i < data.length; i++){
             bits.append(codes[data[i]+128]);
         }
+        /*
+        System.out.println("data: " + bits.toString());
+        System.out.println("datan pituus: " + bits.length());
+        System.out.println("lisättävät nollat: " + (8 - (bits.length() % 8)));
+        */
+        int dummybits = 8 - (bits.length() % 8);
         
-        int dummybits = bits.length() % 8;
         for(int i = 0; i < dummybits; i++){
             bits.insert(0, '0');
         }

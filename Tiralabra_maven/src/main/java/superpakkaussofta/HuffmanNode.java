@@ -19,8 +19,8 @@ public class HuffmanNode {
     
     /** Creates a new HuffmanNode for given byte with given frequency
      * 
-     * @param b as byte this node represents
-     * @param freq as byte's or child nodes' combined frequency
+     * @param b byte this node represents
+     * @param freq byte's or child nodes' combined frequency
      */
     public HuffmanNode(byte b, int freq){
         this.b = b;
@@ -30,10 +30,10 @@ public class HuffmanNode {
      * 
      * @param left left child
      * @param right right child
-     * @param freq as byte's or child nodes' combined frequency
+     * @param freq byte's or child nodes' combined frequency
      */
-    public HuffmanNode(int freq, HuffmanNode left, HuffmanNode right){
-        this.freq = freq;
+    public HuffmanNode(HuffmanNode left, HuffmanNode right){
+        this.freq = left.getFreq() + right.getFreq();
         this.left = left;
         this.right = right;
     }
@@ -95,7 +95,7 @@ public class HuffmanNode {
     /**
      * Node is equal to another node if they both:
      *  - represent the same byte
-     *  - have same frequensy value
+     *  - have same frequency value
      *  - have equal child nodes
      * 
      * @param o as another Object
@@ -103,44 +103,36 @@ public class HuffmanNode {
      */
     @Override
     public boolean equals(Object o){
-        HuffmanNode node = null;
         
-        try {
-            node = (HuffmanNode) o;
-        } catch (Exception e) {
-            return false;
-        }
-        if(node == null){
+        if(!(o instanceof HuffmanNode)){
             return false;
         }
         
-        if(node.getLeft() == null && node.getRight() != null){
-            if(node.getByte() != b || node.getFreq() != freq){
+        HuffmanNode node = (HuffmanNode) o;
+        
+        
+        if(node.getLeft() == null && node.getRight() == null){
+            if(node.getByte() != this.getByte() || node.getFreq() != this.getFreq()){
                 return false;
             }
         }
         
         if(node.getLeft() != null){
-            if(!node.getLeft().equals(left)){
+            if(!node.getLeft().equals(this.getLeft())){
                 return false;
             }
-        }else{
-            if(left == null){
-                return false;
-            }
-        }
-        
-        if(node.getRight() != null){
-            if(!node.getRight().equals(right)){
-                return false;
-            }
-        }else{
-            if(right == null){
+            if(!node.getRight().equals(this.getRight())){
                 return false;
             }
         }
         return true;
     }
+    /**
+     * Constructs and returns a String that contains each leaf node's byte and
+     * frequancy.
+     * 
+     * @return 
+     */
     @Override
     public String toString(){
         
@@ -149,6 +141,12 @@ public class HuffmanNode {
         
         return sb.toString();
     }
+    /**
+     * Used to recursively build String representation of HuffmanNode.
+     * 
+     * @param sb StringBuffer
+     * @param n root HuffmanNode
+     */
     public void reqToString(StringBuffer sb, HuffmanNode n){
         
         if(n.getLeft() == null){

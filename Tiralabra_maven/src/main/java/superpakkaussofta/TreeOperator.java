@@ -27,7 +27,7 @@ public class TreeOperator {
         while(pque.size() > 1){
             HuffmanNode n1 = pque.poll();
             HuffmanNode n2 = pque.poll();
-            pque.add(new HuffmanNode(n1.getFreq()+n2.getFreq(), n1, n2));
+            pque.add(new HuffmanNode(n1, n2));
             System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
         }
         

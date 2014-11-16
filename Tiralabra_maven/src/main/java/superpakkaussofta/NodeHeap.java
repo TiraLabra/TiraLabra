@@ -89,4 +89,8 @@ public class NodeHeap {
             return a.getFreq() - b.getFreq();
         }
     }
+    @Override
+    public boolean equals(Object o){
+        return false;
+    }
 }

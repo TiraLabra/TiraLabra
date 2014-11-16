@@ -7,6 +7,7 @@
 package superpakkaussofta;
 
 /**
+ * Main class.
  *
  * @author Jouko
  */
@@ -16,13 +17,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
         //pääasiassa testijuttuja vielä tässä vaiheessa
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
         TreeOperator toperator = new TreeOperator();
         
-        String path = "testifilu2.txt";
+        String path = "testifilu.txt";
         
         byte[] data = null;
         try {
@@ -30,12 +31,12 @@ public class Main {
         } catch (Exception e) {
             System.out.println("luku feilas");
         }
-        /*
+        
         System.out.println("Alkuperäinen:");
         for(int i = 0; i < data.length; i++){
             System.out.println(data[i]);
         }
-        */
+        
         HuffmanNode tree = toperator.constructTree(data);
         
         
