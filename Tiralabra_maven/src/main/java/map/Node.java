@@ -5,10 +5,29 @@ package map;
  */
 
 public class Node {
+    /** 
+     * value of the node on the x axis of the map.
+     */
     private int x;
+    /** 
+     * value of the node on the y axis of the map.
+     */
     private int y;
+    /**
+     * how long it takes to reach the node in the map.
+     */
     private int g;
+    /**
+     * estimate for reaching the goal in the map.
+     */
     private int f;
+    /**
+     * the node in the same stack with the next biggest f value.
+     */
+    private Node next;
+    /**
+     * which node the route came from to this node.
+     */
     private Node cameFrom;
     
     public Node(int x, int y) {
@@ -63,6 +82,14 @@ public class Node {
      */
     public int getF() {
         return f;
+    }
+    
+    public void setNext(Node next) {
+        this.next = next;
+    }
+    
+    public Node getNext() {
+        return next;
     }
 
     /**

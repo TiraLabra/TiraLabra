@@ -20,10 +20,18 @@ public class CLI {
        System.out.println(AStarSearch.printMap());
        System.out.println("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,2,3)");
        String input = scanner.nextLine();
-       int[] searchCoordinates = parseInput(input);
-       System.out.println(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]));
+       if (validInput(input)) {
+           int[] searchCoordinates = parseInput(input);
+           System.out.println(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]));
+       }
+       else {
+           System.out.println("bad input, please use the x1,y1,x2,y2 format");
+       }
    }
    
+   private boolean validInput(String input) {
+       return input.matches("\\d+[,]\\d+[,]\\d+[,]\\d+");
+   }
    
    /**Parses the input into an array of the search coordinates
     * 

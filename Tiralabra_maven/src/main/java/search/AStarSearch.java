@@ -1,7 +1,7 @@
 package search;
 
-import java.util.ArrayList;
 import map.Node;
+import stack.OrderedStack;
 
 /**The A* search class.
  * 
@@ -30,10 +30,10 @@ public class AStarSearch {
    public String search(int startX, int startY, int endX, int endY) {
        if (startX < 0 || startX >= map[0].length || startY < 0 || startY >= map.length || 
            endX < 0 || endX >= map[0].length || endY < 0 || endY >= map.length) {
-           return "Search value(s) out of map range";
+           return "Search value(s) out of map range. Max X: " + map[0].length + ", max Y: " + map.length + ".";
        }
-       ArrayList<Node> closedSet = new ArrayList<Node>();
-       ArrayList<Node> openSet = new ArrayList<Node>();
+       OrderedStack closedSet = new OrderedStack();
+       OrderedStack openSet = new OrderedStack();
        Node start = new Node(startX, startY);
        openSet.add(start);
        
@@ -41,21 +41,13 @@ public class AStarSearch {
        start.setF(start.getG() + heuristicEstimate(start.getX(), start.getY(), endX, endY));
        
        while (!openSet.isEmpty()) {
-           Node current = openSet.get(0);
-           int bestF = current.getF();
-           for (Node node : openSet) {
-               int nodeF = node.getF();
-               if (nodeF < bestF) {
-                   bestF = nodeF;
-                   current = node;
-               }
-           }
+           Node current = openSet.pop();
+           System.out.println("Status: X: " + current.getX() + ", Y: " + current.getY());
            
            if (current.getX() == endX && current.getY() == endY) {
                return formPath(startX, startY, current);
            }
            
-           openSet.remove(current);
            closedSet.add(current);
            
            //neighbors
@@ -77,31 +69,30 @@ public class AStarSearch {
     * @param endX search route's end X value
     * @param endY search route's end Y value
     */
-   private void handleNeighbor(Node neighbor, Node current, ArrayList<Node> closedSet, ArrayList<Node> openSet, int endX, int endY) {
+   private void handleNeighbor(Node neighbor, Node current, OrderedStack closedSet, OrderedStack openSet, int endX, int endY) {
        if (neighbor.getX() < 0 || neighbor.getX() >= map[0].length || neighbor.getY() < 0 || neighbor.getY() >= map.length) {
            return;
        }
-       for (Node node : closedSet) {
-           if (node.getX() == neighbor.getX() && node.getY() == neighbor.getY()) {
-               return;
-           }
+       if (closedSet.nodeInStack(neighbor.getX(), neighbor.getY())) {
+           return;
        }
        
        int tentativeGScore = current.getG() + map[neighbor.getY()][neighbor.getX()];
        
        boolean neighborInOpenSet = false;
        
-       for (Node node : openSet) {
-           if (node.getX() == neighbor.getX() && node.getY() == neighbor.getY()) {
-               neighborInOpenSet = true;
-               neighbor = node;
-           }
+       if (openSet.nodeInStack(neighbor.getX(), neighbor.getY())) {
+           neighbor = openSet.get(neighbor.getX(), neighbor.getY());
+           neighborInOpenSet = true;
        }
+       
        if (!neighborInOpenSet || tentativeGScore < neighbor.getG()) {
            neighbor.setCameFrom(current);
            neighbor.setG(tentativeGScore);
            neighbor.setF(neighbor.getG() + heuristicEstimate(neighbor.getX(), neighbor.getY(), endX, endY));
-           openSet.add(neighbor);
+           if (!neighborInOpenSet) {
+               openSet.add(neighbor);
+           }
        }
    }
    
@@ -199,3 +190,4 @@ public class AStarSearch {
        output += " Y";
        return output;
    }
+}
