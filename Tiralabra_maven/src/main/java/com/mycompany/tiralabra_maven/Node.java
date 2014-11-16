@@ -10,10 +10,32 @@ public class Node {
     private int x;
     /** Node's y coordinate */
     private int y;
-    /** A property to check if Node is path, end or start point */
-    private boolean walkable;
+    /** A property to check if Node is a wall */
+    private boolean wall;
     /** Contains info if the Node has a parent Node (ie previous step) */
     private Node parent;
+    /** Node's cost */
+    private int cost;
+    /** Node's char in map */
+    private Character character;
+
+    /** Returns the character assigned to the node */
+    public Character getCharacter() {
+        return character;
+    }
+    /** Assigns a certain character to the node */
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
+
+    /** Returns cost of the node */
+    public int getCost() {
+        return cost;
+    }
+    /** Sets cost of the node */
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
 
 
     /**
@@ -59,20 +81,19 @@ public class Node {
     }
 
     /**
-     * Get the walkability of the node:
-     * if node is start, end or path walkable is true
-     * @return whether the node is walkable
+     * Get if the node is a wall
+     * @return whether the node is a wall
      */
-    public boolean isWalkable() {
-        return walkable;
+    public boolean isWall() {
+        return wall;
     }
 
 
     /**
-     * Set if the node is walkable
+     * Set the Node as a wall
      */
-    public void setWalkable(boolean walkable) {
-        this.walkable = walkable;
+    public void setWall() {
+        this.wall = true;
     }
 
     /**

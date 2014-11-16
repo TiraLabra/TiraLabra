@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven;
 
-import junit.framework.Test;
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -70,5 +69,13 @@ public class AstarTest {
         Node end2 = new Node(4,4);
         assertTrue(Astar.calculateHeuristic(node, end2) == 8);
     }
+
+    /** Tests that the calculateEuclidean-method gives correct results */
+    @org.junit.Test
+    public void testCalculateEuclidean() {
+        Node test1 = new Node(2,-1);
+        assertTrue(Astar.calculateEuclidean(-2,2, test1) == 5);
+    }
+
 
 }
