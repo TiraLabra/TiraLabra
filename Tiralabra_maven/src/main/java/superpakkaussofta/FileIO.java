@@ -31,8 +31,8 @@ public class FileIO {
      * 
      * @throws IOException 
      */
-    public void write(byte[] data) throws IOException{
-        Path p = Paths.get("pakattu.huf");
+    public void write(byte[] data, String path) throws IOException{
+        Path p = Paths.get(path + ".huf");
         Files.write(p, data, StandardOpenOption.CREATE);
     }
 }

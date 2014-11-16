@@ -6,7 +6,6 @@
 
 package superpakkaussofta;
 
-import com.sun.net.httpserver.Authenticator;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,10 +35,13 @@ public class FileIOTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         Files.delete(Paths.get(filepath));
+        
+        if(Files.exists(Paths.get("testwrite.huf")))
+            Files.delete(Paths.get("testwrite.huf"));
     }
 
     /**
-     * Test of read method, of class FileIO.
+     * Test for reading
      */
     public void testRead() throws Exception {
         byte[] expResult = {10, 20};
@@ -47,6 +49,16 @@ public class FileIOTest extends TestCase {
         Assert.assertArrayEquals(expResult, result);
         
     }
+    /**
+     *  Test for writing
+     */
+    public void testWrite() throws Exception{
+        byte[] data = {97, 98};
+        fio.write(data, "testwrite");
+        
+        byte[] expData = fio.read("testwrite.huf");
 
+        Assert.assertArrayEquals(data, expData);
+    }
     
 }

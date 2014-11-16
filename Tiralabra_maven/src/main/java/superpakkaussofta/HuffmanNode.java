@@ -141,5 +141,24 @@ public class HuffmanNode {
         }
         return true;
     }
-    
+    @Override
+    public String toString(){
+        
+        StringBuffer sb = new StringBuffer();
+        reqToString(sb, this);
+        
+        return sb.toString();
+    }
+    public void reqToString(StringBuffer sb, HuffmanNode n){
+        
+        if(n.getLeft() == null){
+            sb.append(n.getByte());
+            sb.append("a");
+            sb.append(n.getFreq());
+            sb.append("b");
+        }else{
+            reqToString(sb, n.getLeft());
+            reqToString(sb, n.getRight());
+        }
+    }
 }

@@ -1,28 +1,35 @@
 package superpakkaussofta;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 /**
- * Main class that contains the compression algorithms.
+ * Compressor class that uses Huffman coding.
+ * 
  *
  * @author Jouko
  */
 public class HuffmanCompressor {
     
-    public byte[] compress(byte[] data){
-        
-        HuffmanNode tree = createHuffmanTree(data);
+    
+    /**
+     * Compresses given byte array using Huffman compression with given huffman tree.
+     * Compression may result an amount of bits that isn't divisible by eight.
+     * 0-7 dummybits (and a byte to tell the amount) are inserted in front of the bit String to fix that.
+     * 
+     * @param data
+     * @param tree
+     * @return 
+     */
+    public byte[] compress(byte[] data, HuffmanNode tree){
         
         String codes[] = countNewCodes(tree);
-        
+        /*
         System.out.println("koodit: ");
         for(int i = 0; i < 256; i++){
             if(!codes[i].equals(""))
                 System.out.println(i-128 + ": " + codes[i]);
         }
+        */
         
         StringBuilder bits = new StringBuilder();
         
@@ -48,76 +55,6 @@ public class HuffmanCompressor {
         
         
         return comprWithDummyNumber;
-    }
-    
-    /**
-     * Generates a Huffman (binary) tree from given byte array.
-     * 
-     * @param data data as byte array
-     * @return root HuffmanNode
-     */
-    public HuffmanNode createHuffmanTree(byte[] data){
-        
-        PriorityQueue<HuffmanNode> pque = createNodeHeap(data);
-        
-        while(pque.size() > 1){
-            HuffmanNode n1 = pque.poll();
-            HuffmanNode n2 = pque.poll();
-            pque.add(new HuffmanNode(n1.getFreq()+n2.getFreq(), n1, n2));
-            System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
-        }
-        
-        if(pque.peek() != null){
-            System.out.println("Ei tyhjä: " + pque.peek());
-        }else{
-            System.out.println("Tyhjä");
-        }
-        
-        
-        return pque.poll();
-    }
-    
-    /**
-     * Returns a min heap (PriorityQueue) of HuffmanNodes for each different
-     * byte found in data.
-     * 
-     * @param data
-     * @return PriorityQueue<HuffmanNode>
-     */
-    private PriorityQueue<HuffmanNode> createNodeHeap(byte[] data){
-        
-        PriorityQueue<HuffmanNode> pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
-        int[] counts = countBytes(data);
-        
-        for(int i = 0; i < counts.length; i++){
-            if(counts[i] > 0){
-                pque.add(new HuffmanNode((byte) (i - 128), counts[i]));
-            }
-        }
-        
-        
-        return pque;
-    }
-    /**
-     * Counts and returns the amount of each different byte found in data.
-     * 
-     * @param data
-     * @return Amount of different bytes in int array (256 size)
-     */
-    private int[] countBytes(byte[] data){
-        
-        int[] bytes = new int[256];
-        
-        for(int i = 0; i < data.length; i++){
-            for(int a = 0; a < 256; a++){
-                if(data[i] == a - 128){
-                    bytes[a]++;
-                    break;
-                }
-            }
-        }
-        
-        return bytes;
     }
     
     /**
@@ -155,50 +92,30 @@ public class HuffmanCompressor {
         
     }
     /**
-     * Comparator for PriorityQueue.
-     * TO BE REMOVED at some point.
+     * Concatenates Huffman tree with byte array.
      * 
+     * @param cdata
+     * @param tree
+     * @return 
      */
-    public class NodeComparator implements Comparator<HuffmanNode>{
+    public byte[] concatTreeWithByteArray(byte[] cdata, HuffmanNode tree){
         
-        @Override
-        public int compare(HuffmanNode a, HuffmanNode b){
-            return a.getFreq() - b.getFreq();
-        }
-    }
-    
-    public static void main(String[] args) {
+        String treeString = tree.toString() + "c";  //lopetusmerkki
+        byte[] bytesTree = treeString.getBytes();
+        int treeLength = bytesTree.length;
+        int dataLength = cdata.length;
+        byte[] compWithTree = new byte[dataLength + treeLength];
         
-        //pääasiassa testijuttuja vielä tässä vaiheessa
-        FileIO fio = new FileIO();
-        HuffmanCompressor compressor = new HuffmanCompressor();
+        System.out.println("puu: " + treeString);
+        System.out.println("puun pituus tavuina: " + treeLength);
         
-        byte[] data = null;
-        try {
-            data = fio.read("testifilu.txt");
-        } catch (Exception e) {
-            System.out.println("luku feilas");
-        }
+        System.arraycopy(bytesTree, 0, compWithTree, 0, treeLength);
+        System.arraycopy(cdata, 0, compWithTree, treeLength, dataLength);
         
-        System.out.println("Alkuperäinen:");
-        for(int i = 0; i < data.length; i++){
-            System.out.println(data[i]);
-        }
-        /*
-        byte[] sort = compressor.copyAndSortByteArray(data);
-        System.out.println("Sortattu:");
-        for(int i = 0; i < sort.length; i++){
-            System.out.println(sort[i]);
-        }
-        */
+        System.out.println("lopullinen data stringinä: " + new String(compWithTree));
         
-        byte[] compr = compressor.compress(data);
-        try {
-            fio.write(compr);
-        } catch (Exception e) {
-            System.out.println("Tallentamienn feilas:");
-            System.out.println(e);
-        }
+        return compWithTree;
         
     }
+
 }
