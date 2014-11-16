@@ -408,39 +408,5 @@ public class LinkitettyLista<E> implements Lista<E> {
         }
     }
 
-    //////////////////////////
-    // automaattiset metodit//
-    //////////////////////////
-    
-    // WIP: poisteaan lopulta, testaamista varten
-    // getterit
-
-    public int getMaksimiKoko() {
-        return maksimiKoko;
-    }
-
-    public int getKoko() {
-        return koko;
-    }
-
-    public Object[] getValues() {
-        return values;
-    }
-
-    public int[] getNext() {
-        return next;
-    }
-
-    public int[] getPrev() {
-        return prev;
-    }
-
-    public int getHead() {
-        return head;
-    }
-
-    public int getTail() {
-        return tail;
-    }
 
 }

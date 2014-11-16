@@ -26,6 +26,10 @@ public class App {
      */
     public static ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, sporanNopeus); 
     /**
+     * Leveyssuuntainen haku, vaihdoton
+     */
+    public static ReittiLaskin bfsVaihdoton = new ReittiLaskin(1, 0, 3, 0, 0, sporanNopeus);     
+    /**
      * Matka-aikaa mininmoiva laskin
      */
     public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus); 
@@ -66,7 +70,7 @@ public class App {
 
     private static void debugAStarVertailu() {
 
-        ReittiLaskin reittiLaskin = vaihdotonMatkaaMinimoiva;
+        ReittiLaskin reittiLaskin = vaihdoton;
         Verkko verkko = new Verkko();
 
         AStar aOma = new AStar(verkko, reittiLaskin); // omalla prioriteettijonolla
@@ -78,7 +82,7 @@ public class App {
 
         Pysakki alku = verkko.getPysakit()[5];
         Pysakki loppu = verkko.getPysakit()[66];
-        int testSize = 100;
+        int testSize = 10;
         long timeOma = 0, timeJava = 0, start, stop;
         for (int i = 0; i < testSize; i++) {
             start = System.currentTimeMillis();
@@ -147,10 +151,7 @@ public class App {
         }
         System.out.println("" + lista.size());
         lista.remove(0);
-        System.out.println("" + lista.getHead());
-        System.out.println("" + lista.getTail());
         System.out.println("" + lista.size());
-        System.out.println("" + Arrays.toString(lista.getValues()));
         // System.out.println(""+lista.seuraavaTyhja());
         System.out.println("" + lista.contains(e[1]));
         System.out.println("" + lista.contains("huu"));
@@ -158,10 +159,7 @@ public class App {
         System.out.println("" + lista.indexOf(e[1]));
         System.out.println("");
         lista.add("Moro");
-        System.out.println("" + lista.getHead());
-        System.out.println("" + lista.getTail());
         System.out.println("" + lista.size());
-        System.out.println("" + Arrays.toString(lista.getValues()));
         // System.out.println(""+lista.seuraavaTyhja());
         System.out.println("" + lista.contains(e[1]));
         System.out.println("" + lista.contains("Moro"));
@@ -172,10 +170,7 @@ public class App {
         lista.remove("Moro");
         lista.remove(5);
         lista.remove(lista.size() - 1);
-        System.out.println("" + lista.getHead());
-        System.out.println("" + lista.getTail());
         System.out.println("" + lista.size());
-        System.out.println("" + Arrays.toString(lista.getValues()));
         // System.out.println(""+lista.seuraavaTyhja());
         System.out.println("" + lista.contains(e[1]));
         System.out.println("" + lista.contains("Moro"));
@@ -187,10 +182,7 @@ public class App {
             String string = lista.poll();
             System.out.println("" + string);
         }
-        System.out.println("" + lista.getHead());
-        System.out.println("" + lista.getTail());
         System.out.println("" + lista.size());
-        System.out.println("" + Arrays.toString(lista.getValues()));
         // System.out.println(""+lista.seuraavaTyhja());
         System.out.println("" + lista.contains(e[1]));
         System.out.println("" + lista.contains("Moro"));

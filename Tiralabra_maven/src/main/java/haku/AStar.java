@@ -82,6 +82,15 @@ public class AStar {
      -Entä jos on nopeampaa kävellä viereiselle pysäkille
      -Alkuajan esitys, ajan esitys
      */
+    
+    /**
+     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
+     * 
+     *
+     * @param maali
+     * @param alku
+     * @return
+     */    
     public Reitti etsiReitti(Pysakki alku, Pysakki maali) {
         return this.etsiReitti(alku, maali, 0);
     }    
@@ -101,8 +110,8 @@ public class AStar {
         alkuTila.setSolmu(alku);
         alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
         
-        int   aika         = 40; 
-        final int tarkkuus = 100;
+        int   aika         = 40; // vaikuttaa prioriteettijonon oletuskokoon
+        final int tarkkuus = 1; // comparator-oliolle tarkkuus
         Comparator<Reitti> comparator = new Comparator<Reitti>() {
 
             public int compare(Reitti t1, Reitti t2) {
