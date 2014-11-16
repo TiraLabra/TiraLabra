@@ -265,7 +265,7 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      *
      * @param e Pienimmän prioriteetin arvo
      */
-    public void setEnsimmainen(E e) {
+    private void setEnsimmainen(E e) {
         this.ensimmainen = e;
     }
 }

@@ -5,6 +5,7 @@
  */
 package haku;
 
+import com.mycompany.tiralabra_maven.App;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
@@ -20,27 +21,20 @@ import verkko.Verkko;
 public class AStarTest extends TestCase {
 
     private Verkko verkko;
-    private ReittiLaskin bfs, normaali, vaihdoton;
     private AStar aStar;
+    private List<ReittiLaskin> testattavatLaskimet;
     private Pysakki oletusAlku, oletusMaali;
 
     @Before
     public void setUp() {
         verkko = new Verkko();
-        // A*-hausta saadaan leveyssuuntainen haku: heuristiikan arvo == 0 aina
-        bfs = new ReittiLaskin(1, 0, 0, 0, 0, 400);
-        // Tavallinen, vain matka-aikaa laskeva haku
-        normaali = new ReittiLaskin(1, 0, 0, 1, 0, 400);
-        // Minimoi vaihtojen määrää
-        vaihdoton = new ReittiLaskin(1, 0, 3, 1, 0, 400);
+        testattavatLaskimet = new ArrayList();
+        testattavatLaskimet.add(App.bfs); testattavatLaskimet.add(App.bfsVaihdoton);
+        testattavatLaskimet.add(App.normaali); testattavatLaskimet.add(App.normaaliMatkaaMinimoiva);
+        testattavatLaskimet.add(App.vaihdoton); testattavatLaskimet.add(App.vaihdotonMatkaaMinimoiva);      
         oletusAlku = verkko.getPysakit()[5];
         oletusMaali = verkko.getPysakit()[17];
     }
-
-    /*
-    WIP: Verkon luomisen testaus omaan testiluokkaansa
-    */
-    
    
     @Test
     public void testVerkkoOk() {
@@ -51,7 +45,7 @@ public class AStarTest extends TestCase {
     
     @Test
     public void testReittiLoytyy() {
-        ReittiLaskin reittiLaskin = vaihdoton;
+        ReittiLaskin reittiLaskin = testattavatLaskimet.get(testattavatLaskimet.size()-1);
         aStar = new AStar(verkko, reittiLaskin);
         aStar.setDebugMode(false);
         aStar.setDebugPrint(false);
@@ -62,20 +56,34 @@ public class AStarTest extends TestCase {
     @Test
     public void testHeuristiikkaVaikuttaa() {
         
-        long bfsAika = laskeEtsintaAika(oletusAlku,oletusMaali,bfs);
-        long heurAika = laskeEtsintaAika(oletusAlku,oletusMaali,vaihdoton);
+        long bfsAika = laskeEtsintaAika(oletusAlku,oletusMaali, testattavatLaskimet.get(0), 0);
+        long heurAika = laskeEtsintaAika(oletusAlku,oletusMaali, testattavatLaskimet.get(testattavatLaskimet.size()-1), 0);
         assertTrue( heurAika<=bfsAika );                
     }
     
     @Test
     public void testHeuristiikkaOnnistuu() {
-        List<ReittiLaskin> testattavatLaskimet = new ArrayList();
-        testattavatLaskimet.add(bfs); testattavatLaskimet.add(normaali);
-        testattavatLaskimet.add(vaihdoton);
+
         for ( ReittiLaskin reittiLaskin : testattavatLaskimet ) {
             double onnistumistenOsuus = laskeHeuristiikanToimivuus(oletusAlku, oletusMaali, reittiLaskin );
-            assertTrue( Double.compare(onnistumistenOsuus, 0.99) > 0 );
-            // WIP: pitäisi toimia 100%. Heuristiikan kulkunopeutta pitää säätää
+            assertTrue( Double.compare(onnistumistenOsuus, 1) >= 0 );            
+        }
+    }
+    /**
+     * Testataan oman prioriteettijonon suorituskyky javan pq:ta vastaan
+     */
+    @Test
+    public void testSpeed() {
+        long omaSumma=0, javaSumma=0; // oma vs java prioriteettijono
+        // parametri mode
+        int n = 5;
+        for ( ReittiLaskin reittiLaskin : testattavatLaskimet ) {
+            for ( int i = 0; i < n; i++ ) {
+                javaSumma+=laskeEtsintaAika(oletusAlku,oletusMaali,reittiLaskin,0); // javan pq
+                omaSumma +=laskeEtsintaAika(oletusAlku,oletusMaali,reittiLaskin,1); // oma pq
+            }
+            assertTrue( omaSumma<=javaSumma );
+            omaSumma=0; javaSumma=0;
         }
     }
     
@@ -94,12 +102,12 @@ public class AStarTest extends TestCase {
               
     }
     
-    private Long laskeEtsintaAika( Pysakki alku, Pysakki maali, ReittiLaskin reittiLaskin ) {
+    private Long laskeEtsintaAika( Pysakki alku, Pysakki maali, ReittiLaskin reittiLaskin, int mode ) {
         long start = System.currentTimeMillis();        
         AStar aStar = new AStar( verkko, reittiLaskin );
         aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
-        Reitti reitti = aStar.etsiReitti(alku, maali);
+        Reitti reitti = aStar.etsiReitti(alku, maali, mode );
         long stop = System.currentTimeMillis();
         return stop-start;        
     }

@@ -70,7 +70,7 @@ public class App {
 
     private static void debugAStarVertailu() {
 
-        ReittiLaskin reittiLaskin = vaihdoton;
+        ReittiLaskin reittiLaskin = vaihdotonMatkaaMinimoiva;
         Verkko verkko = new Verkko();
 
         AStar aOma = new AStar(verkko, reittiLaskin); // omalla prioriteettijonolla
@@ -85,14 +85,15 @@ public class App {
         int testSize = 10;
         long timeOma = 0, timeJava = 0, start, stop;
         for (int i = 0; i < testSize; i++) {
-            start = System.currentTimeMillis();
-            aOma.etsiReitti(alku, loppu, 1);
-            stop = System.currentTimeMillis();
-            timeOma += stop - start;
+
             start = System.currentTimeMillis();
             aJava.etsiReitti(alku, loppu, 0);
             stop = System.currentTimeMillis();
             timeJava += stop - start;
+            start = System.currentTimeMillis();
+            aOma.etsiReitti(alku, loppu, 1);
+            stop = System.currentTimeMillis();
+            timeOma += stop - start;            
         }
         timeJava /= testSize;
         timeOma /= testSize;
@@ -113,7 +114,7 @@ public class App {
         long stop = System.currentTimeMillis();
         System.out.println("Verkko luotu: " + (stop - start) + "ms");
 
-        ReittiLaskin reittiLaskin = vaihdoton;
+        ReittiLaskin reittiLaskin = vaihdotonMatkaaMinimoiva;
 
         Pysakki alku = verkko.getPysakit()[5];
         Pysakki loppu = verkko.getPysakit()[17];

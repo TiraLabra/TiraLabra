@@ -110,8 +110,8 @@ public class AStar {
         alkuTila.setSolmu(alku);
         alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
         
-        int   aika         = 40; // vaikuttaa prioriteettijonon oletuskokoon
-        final int tarkkuus = 1; // comparator-oliolle tarkkuus
+        int   aika         = 45; // vaikuttaa prioriteettijonon oletuskokoon
+        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettä
         Comparator<Reitti> comparator = new Comparator<Reitti>() {
 
             public int compare(Reitti t1, Reitti t2) {
@@ -120,7 +120,8 @@ public class AStar {
         };
         
         PriorityQueue<Reitti> kasittelyJarjestys;
-        if (mode==1) kasittelyJarjestys = new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
+        if (mode==1) 
+            kasittelyJarjestys = new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
         else kasittelyJarjestys= new PriorityQueue(aika*tarkkuus, comparator);
         
         kasittelyJarjestys.add(alkuTila);
