@@ -82,11 +82,11 @@ public class App {
         long timeOma = 0, timeJava = 0, start, stop;
         for (int i = 0; i < testSize; i++) {
             start = System.currentTimeMillis();
-            aOma.etsiReitti(alku, loppu);
+            aOma.etsiReitti(alku, loppu, 1);
             stop = System.currentTimeMillis();
             timeOma += stop - start;
             start = System.currentTimeMillis();
-            aJava.etsiReittiJavanPQ(alku, loppu);
+            aJava.etsiReitti(alku, loppu, 0);
             stop = System.currentTimeMillis();
             timeJava += stop - start;
         }

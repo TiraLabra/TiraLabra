@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import tira.PrioriteettiJonoListalla;
+import tira.PrioriteettiJonoListalla;
 import verkko.Kaari;
 import verkko.Pysakki;
 import verkko.Verkko;
@@ -81,114 +82,40 @@ public class AStar {
      -Entä jos on nopeampaa kävellä viereiselle pysäkille
      -Alkuajan esitys, ajan esitys
      */
-    /**
-     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
-     * Käyttää omaa prioriteettijonoa
-     *
-     * @param maali
-     * @param alku
-     * @return
-     */
     public Reitti etsiReitti(Pysakki alku, Pysakki maali) {
-
-        Reitti alkuTila = new Reitti();
-        alkuTila.setKustannus(0);
-        alkuTila.setSolmu(alku);
-        alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
-
-        // käytetään omaa prioriteettijonoa:
-        PrioriteettiJonoListalla kasittelyJarjestys = new PrioriteettiJonoListalla(); // toteutustapana taulukko linkitetyistä listoista
-        // suorituskyky jotakuinkin sama kuin valmiilla kalustolla
-        // nopeammat linkitetyt listat / dequet avuksi?
-        kasittelyJarjestys.add(alkuTila);
-
-        ArrayList<Reitti> parhaatReitit = new ArrayList();
-        double lowestCost = Integer.MAX_VALUE;
-
-        if (this.debugPrint) {
-            debugPrint(verkko, alku);
-        }
-
-        while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
-
-            Reitti kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois käsiteltäväksi
-            Pysakki solmu = kasiteltava.getSolmu();
-            // DEBUG: tietoa käsittelystä ja heuristiikan toiminnasta
-            debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
-            debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
-            /*
-             LOPPUEHDOT
-             */
-            if (solmu.equals(maali)) {
-                if (!this.debugMode) {
-                    parhaatReitit.add(kasiteltava); // palautetaan vain paras
-                    break;
-                } else {
-                    if (kasiteltava.getKustannus() < lowestCost) {
-                        // pienempi kuin, pitäisi tapahtua vain kerran
-                        lowestCost = kasiteltava.getKustannus();
-                    } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                        break; // parempi ratkaisu löytynyt, on yli tietyn rajan verran huonompi kuin paras ratkaisu
-                    }
-                    parhaatReitit.add(kasiteltava);
-                    continue;
-
-                }
-            }
-            /*
-             JATKAMISEHTOJA
-             WIP
-             */
-            if (kasiteltava.getKustannus() + kasiteltava.getArvioituKustannus() > lowestCost) {
-                continue;   // ratkaisu löytynyt, kaikki jonossa olevat huonompia
-                // JOS heuristiikka toimii
-            }
-
-            /*
-             LÄPIKÄYNTI
-             */
-            for (Pysakki naapuri : verkko.getNaapurit(solmu)) {
-                for (Kaari kaari : verkko.getKaaret(solmu, naapuri)) {
-                    /*
-                     JATKAMISEHTOJA, WIP DEBUG
-                     */
-                    Reitti seuraava = this.laskeSeuraava(kasiteltava, kaari, naapuri, maali);
-                    // DEBUG: tietoa kaarten ja solmujen käsittelystä
-                    debugKaari(kaari, seuraava, naapuri);
-                    //
-                    kasittelyJarjestys.add(seuraava);
-                }
-            }
-        }
-
-        debugRatkaisu(parhaatReitit);
-        // System.out.println(""+kasittelyJarjestys.lastIndexInUse+" / "+kasittelyJarjestys.maxSize);
-        return parhaatReitit.get(0);
-    }
-
+        return this.etsiReitti(alku, maali, 0);
+    }    
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
-     * Käyttää valmista priorityqueuea
+     * 
      *
      * @param maali
      * @param alku
+     * @param mode Valinta: mitä prioriteettijonoa käytetään. 0=javan, 1=oma prioriteettijono listalla
      * @return
      */
-    public Reitti etsiReittiJavanPQ(Pysakki alku, Pysakki maali) {
+    public Reitti etsiReitti(Pysakki alku, Pysakki maali, int mode ) {
 
         Reitti alkuTila = new Reitti();
         alkuTila.setKustannus(0);
         alkuTila.setSolmu(alku);
         alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
-
-        PriorityQueue<Reitti> kasittelyJarjestys = new PriorityQueue(new Comparator<Reitti>() {
+        
+        int   aika         = 40; 
+        final int tarkkuus = 100;
+        Comparator<Reitti> comparator = new Comparator<Reitti>() {
 
             public int compare(Reitti t1, Reitti t2) {
-                return (int) (t1.getArvioituKustannus() + t1.getKustannus() - t2.getArvioituKustannus() - t2.getKustannus());
+                return (int) ( tarkkuus*(t1.getArvioituKustannus() + t1.getKustannus() - t2.getArvioituKustannus() - t2.getKustannus()));
             }
-        });
+        };
+        
+        PriorityQueue<Reitti> kasittelyJarjestys;
+        if (mode==1) kasittelyJarjestys = new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
+        else kasittelyJarjestys= new PriorityQueue(aika*tarkkuus, comparator);
+        
         kasittelyJarjestys.add(alkuTila);
-
+        
         ArrayList<Reitti> parhaatReitit = new ArrayList();
         double lowestCost = Integer.MAX_VALUE;
 
@@ -208,7 +135,7 @@ public class AStar {
                         // pienempi kuin, pitäisi tapahtua vain kerran
                         lowestCost = kasiteltava.getKustannus();
                     } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                        break; // parempi ratkaisu löytynyt, on yli tietyn rajan verran huonompi kuin paras ratkaisu
+                        break;  // parempi ratkaisu löytynyt, tämä on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                     }
                     parhaatReitit.add(kasiteltava);
                     continue;
