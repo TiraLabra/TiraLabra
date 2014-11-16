@@ -24,12 +24,4 @@ public class NodeTest extends TestCase {
         node.setParent(parent);
         assertTrue(node.getParent().equals(parent));
     }
-
-
-
-
-
-
-
-
 }

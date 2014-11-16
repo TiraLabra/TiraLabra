@@ -70,7 +70,12 @@ public class AstarTest {
         assertTrue(Astar.calculateHeuristic(node, end2) == 8);
     }
 
-
+    /** Tests that the calculateEuclidean-method gives correct results */
+    @org.junit.Test
+    public void testCalculateEuclidean() {
+        Node test1 = new Node(2,-1);
+        assertTrue(Astar.calculateEuclidean(-2,2, test1) == 5);
+    }
 
 
 }
