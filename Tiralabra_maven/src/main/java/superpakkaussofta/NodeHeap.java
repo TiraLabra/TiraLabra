@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
+ * A min heap for HuffmanNodes. At the moment using PriorityQueue, but will
+ * be later implemented form scratch.
  * 
  *
  * @author Jouko
@@ -18,6 +20,11 @@ public class NodeHeap {
     
     PriorityQueue<HuffmanNode> pque;
     
+    /**
+     * Constructs a min heap based on frequancy of bytes in data.
+     * 
+     * @param data 
+     */
     public NodeHeap(byte[] data){
         pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         int[] counts = countBytes(data);
@@ -91,6 +98,7 @@ public class NodeHeap {
     }
     @Override
     public boolean equals(Object o){
+        //TODO
         return false;
     }
 }

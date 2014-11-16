@@ -27,7 +27,7 @@ public class FileIO {
         return Files.readAllBytes(p);
     }
     /**
-     * Not yet implemented
+     * Writes given byte array to disk
      * 
      * @throws IOException 
      */

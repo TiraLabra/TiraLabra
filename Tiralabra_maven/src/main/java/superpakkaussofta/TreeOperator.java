@@ -7,6 +7,7 @@
 package superpakkaussofta;
 
 /**
+ * Operations for Huffman trees.
  *
  * @author Jouko
  */
