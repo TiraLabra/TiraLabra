@@ -1,6 +1,5 @@
 package com.mycompany.tiralabra_maven;
 
-import junit.framework.Test;
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -70,5 +69,8 @@ public class AstarTest {
         Node end2 = new Node(4,4);
         assertTrue(Astar.calculateHeuristic(node, end2) == 8);
     }
+
+
+
 
 }
