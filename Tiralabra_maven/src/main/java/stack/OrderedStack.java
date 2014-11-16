@@ -9,6 +9,9 @@ import map.Node;
  */
 public class OrderedStack {
 
+    /**
+     * The first node in the stack.
+     */
     private Node head;
     
     public OrderedStack(Node first) {
@@ -95,6 +98,10 @@ public class OrderedStack {
         return null;
     }
     
+    /**
+     * Returns true if the stack is empty.
+     * @return 
+     */
     public boolean isEmpty() {
         if (head == null) {
             return true;

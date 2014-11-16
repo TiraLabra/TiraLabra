@@ -2,33 +2,45 @@ package UI;
 
 import java.util.Scanner;
 import search.AStarSearch;
+import java.io.PrintStream;
 
+/**
+ * Command line interface for using the search class.
+ */
 public class CLI {
 
     private AStarSearch AStarSearch;
-    private Scanner scanner;
+    private Scanner in;
+    private PrintStream out;
     
-    public CLI(AStarSearch AStarSearch) {
+    public CLI(AStarSearch AStarSearch, Scanner in, PrintStream out) {
         this.AStarSearch = AStarSearch;
-        this.scanner = new Scanner(System.in);
+        this.in = in;
+        this.out = out;
     }
     
    /**Prints the menu for the search.
     * 
     */
    public void menu() {
-       System.out.println(AStarSearch.printMap());
-       System.out.println("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,2,3)");
-       String input = scanner.nextLine();
+       out.print(AStarSearch.printMap() + "\n");
+       out.print("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,2,3)\n");
+       String input = in.nextLine();
        if (validInput(input)) {
            int[] searchCoordinates = parseInput(input);
-           System.out.println(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]));
+           out.print("Search result: \n");
+           out.print(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]) + "\n");
        }
        else {
-           System.out.println("bad input, please use the x1,y1,x2,y2 format");
+           out.print("bad input, please use the x1,y1,x2,y2 format");
        }
    }
    
+   /**
+    * Checks if the input is in the x1,y1,x2,y2 format.
+    * @param input
+    * @return 
+    */
    private boolean validInput(String input) {
        return input.matches("\\d+[,]\\d+[,]\\d+[,]\\d+");
    }

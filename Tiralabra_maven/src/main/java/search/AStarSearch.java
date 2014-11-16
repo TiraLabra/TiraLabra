@@ -3,12 +3,13 @@ package search;
 import map.Node;
 import stack.OrderedStack;
 
-/**The A* search class.
+/**The A* search class does route searches on a 2d integer arrays. 
  * 
  */
 public class AStarSearch {
    
-   /**A 2d integer array for holding the map data.
+   /**A 2d integer array for holding the map data. The integers tell how much
+    * time/effort/etc it will take to move in to the map coordinate.
     * 
     */
    private int[][] map;
@@ -42,7 +43,6 @@ public class AStarSearch {
        
        while (!openSet.isEmpty()) {
            Node current = openSet.pop();
-           System.out.println("Status: X: " + current.getX() + ", Y: " + current.getY());
            
            if (current.getX() == endX && current.getY() == endY) {
                return formPath(startX, startY, current);
@@ -106,15 +106,16 @@ public class AStarSearch {
        String path = addToPath(end, "", true);
        Node current = end.getCameFrom();
        
-       while (true) {
-           path = addToPath(current, path, false);
-           current = current.getCameFrom();
-           if (current.getX() == startX && current.getY() == startY) {
-               break;
+       if (end.getX() != startX && end.getY() != startY) {
+           while (true) {
+               path = addToPath(current, path, false);
+               current = current.getCameFrom();
+               if (current.getX() == startX && current.getY() == startY) {
+                   break;
+               }
            }
+           path = addToPath(current, path, false);
        }
-       
-       path = addToPath(current, path, false);
        return path;
    }
    
@@ -170,7 +171,7 @@ public class AStarSearch {
                        output += " " + xCoord;
                    }
                }
-               output += " X \n";
+               output += " X\n";
            }
            if (y >= 10) {
                output += y;
