@@ -90,8 +90,9 @@ public class Tekoaly {
         // jos pelaaja voitti, käytä pelaajan voittanutta kättä
         if (pelitilanne == 1) {
             palauta = edellinen;
-        } else if (pelitilanne == 0) { // tasapeli
-            palauta = edellinen;
+        } else if (pelitilanne == 0) { // tasapeli, pelaa tätä kättä voittava
+            //palauta = edellinen;
+            
         } else {
          // oleta pelaajan seuraavan rotaatiota
             Kasi oletus = paivitaSeuraavaRotaationKasi(edellinen);

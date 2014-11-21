@@ -28,7 +28,7 @@ public class Cli {
         this.statistiikka = new Statistiikka(this.moodi);
         this.logiikka = new Logiikka();
         this.tekoAly = new Tekoaly(this.moodi, this.statistiikka, this.logiikka);
-        
+
     }
 
     /**
@@ -54,11 +54,9 @@ public class Cli {
             if (validoiKomento(komento)) {
                 char c = komento.charAt(0);
                 if (c == 't') {
-                    //System.out.println(this.statistiikka);
-                    System.out.println(this.statistiikka.vahitenPelattuKasiProsentit());
+                    System.out.println(this.statistiikka);
                 } else {
-                    
-                    asetaTekoalynKasi();
+                    this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
                     asetaKasi(c);
                     pelaaKierros();
                 }
@@ -67,7 +65,7 @@ public class Cli {
             komento = this.scanner.nextLine();
 
         }
-        System.out.println("loppu");
+//        System.out.println("Loppu");
     }
 
     private void pelaaKierros() {
@@ -77,16 +75,12 @@ public class Cli {
             System.out.println("Pelaaja voitti!");
         } else if (apu == 0) {
             this.statistiikka.asetaTasapeli();
-            System.out.println("tasapeli");
+            System.out.println("Tasapeli");
         } else if (apu == -1) {
-            System.out.println("tekoäly voitti");
+            System.out.println("Tekoäly voitti");
         } else {
             System.out.println("should not get here!");
         }
-    }
-
-    private void asetaTekoalynKasi() {
-        this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
     }
 
     private void asetaKasi(char KasiKomento) {
@@ -168,13 +162,20 @@ public class Cli {
         komento = this.scanner.nextLine();
         while (!komento.equals("x")) {
             if (validoiKomento(komento)) {
-                break;
+                char c = komento.charAt(0);
+                if (c == 't') {
+                    System.out.println(this.statistiikka);
+                } else {
+                    this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
+                    asetaKasi(c);
+                    pelaaKierros();
+                }
+                nautaMoodiKaksiPaavalikko();
+                komento = this.scanner.nextLine();
             }
-            nautaMoodiKaksiPaavalikko();
-            komento = this.scanner.nextLine();
         }
     }
-
+    
     private void nautaMoodiKaksiPaavalikko() {
         System.out.println("Kivi-paperi-sakset BETA");
         System.out.println("Valitse kätesi:");
