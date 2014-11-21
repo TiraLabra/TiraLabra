@@ -3,6 +3,7 @@ package com.mycompany.logiikka;
 import com.mycompany.domain.Kasi;
 import com.mycompany.tira.KasiLista;
 import com.mycompany.tira.Kasipari;
+import com.mycompany.tira.ListaSolmu;
 
 public class Heuristiikka {
 
@@ -12,7 +13,7 @@ public class Heuristiikka {
     private int kone;
     private int voitto;
 
-    public Heuristiikka() {
+    public Heuristiikka(Statistiikka s) {
         this.kasiLista = new KasiLista(KASILISTANKOKO);
     }
 
@@ -44,6 +45,53 @@ public class Heuristiikka {
             return 3;
         } else {
             return 4;
+        }
+    }
+    
+    public Kasi pelaajaTuleePelaamaan() {
+        // Käy lista läpi ja etsi tilanteet, joissa samat kädet kuin
+        // luokkamuuttujat
+        int pelaajanKadet[] = new int[5];
+        ListaSolmu s = this.kasiLista.getEnsimmainenSolmu();
+        while (true) {
+            Kasipari k = s.getKasipari();
+            if (k.getPelaajanKasi() == this.pelaaja) {
+                if (k.getKoneenKasi() == this.kone) {
+                    // kädet ovat samat, päivitä taulukko
+                    pelaajanKadet[s.getSeuraavaListaSolmu().getKasipari().getPelaajanKasi()]++;
+                }
+            }
+            if (s.getSeuraavaListaSolmu() == null) {
+                break;
+            } else {
+                s = s.getSeuraavaListaSolmu();
+            }
+        }
+        //Kasi todennakoisin = pelaajanTodennakoisinKasi(pelaajanKadet);
+        
+        return pelaajanTodennakoisinKasi(pelaajanKadet);
+    }
+    
+    private Kasi pelaajanTodennakoisinKasi(int[] kadet) {
+        int suurin = Integer.MIN_VALUE;
+        int kasiIndeksi = -1;
+        for (int i = 0; i < 4; i++) {
+            if (kadet[i] > suurin) {
+                kasiIndeksi = i;
+                suurin = kadet[i];
+            }
+        }
+
+        if (kasiIndeksi == 0) {
+            return new Kasi("KIVI");
+        } else if (kasiIndeksi == 1) {
+            return new Kasi("PAPERI");
+        } else if (kasiIndeksi == 2) {
+            return new Kasi("SAKSET");
+        } else if (kasiIndeksi == 3) {
+            return new Kasi("LISKO");
+        } else {
+            return new Kasi("SPOCK");
         }
     }
 }
