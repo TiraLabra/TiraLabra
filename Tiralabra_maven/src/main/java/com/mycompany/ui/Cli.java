@@ -176,6 +176,9 @@ public class Cli {
         }
     }
     
+    /**
+     * Moodin kaksi päävalikon tulostus
+     */
     private void nautaMoodiKaksiPaavalikko() {
         System.out.println("Kivi-paperi-sakset BETA");
         System.out.println("Valitse kätesi:");
@@ -188,19 +191,4 @@ public class Cli {
         System.out.println("[x] = Lopeta");
         System.out.print("?: ");
     }
-
-//    /**
-//     * Laajennetun pelin päävalikon käskyn validointi
-//     *
-//     * @param komento validoitava käsky
-//     * @return true, jos käsky validi
-//     */
-//    private boolean validoiMoodiKaksi(String komento) {
-//        if (komento.equals("k") || komento.equals("p")
-//                || komento.equals("s") || komento.equals("t")
-//                || komento.equals("l") || komento.equals("o")) {
-//            return true;
-//        }
-//        return false;
-//    }
 }
