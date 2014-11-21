@@ -5,6 +5,12 @@ import java.util.Scanner;
 
 public class App {
 
+    /**
+     * Ohjelman aloitus ja päävalikko. Valikossa kysytään pelimoodi, jonka
+     * jälkeen ohjelman suoritus alkaa valitulla moodilla.
+     * 
+     * @param args Ei käsittele argumentteja 
+     */
     public static void main(String[] args) {
         while (true) {
             System.out.println("Pelimoodit:");
