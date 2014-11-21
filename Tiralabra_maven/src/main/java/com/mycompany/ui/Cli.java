@@ -65,9 +65,11 @@ public class Cli {
             komento = this.scanner.nextLine();
 
         }
-//        System.out.println("Loppu");
     }
 
+    /**
+     * Kertoo kumpi voittaa. Päivittää samalla statistiikkaan käsiparin
+     */
     private void pelaaKierros() {
         int apu = this.logiikka.pelaajaVoittaaKierroksen();
         if (apu == 1) {
