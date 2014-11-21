@@ -22,9 +22,6 @@ public class Statistiikka {
     private int tasapelit;
     private int[] kadet;
     private int moodi;
-    private KasiLista lista;
-    
-    private static final int LISTANKOKO = 20;
 
     /**
      * Konstruktori asettaa luokkamuuttujat
@@ -43,7 +40,6 @@ public class Statistiikka {
         this.pelaajanVoitot = 0;
         this.tasapelit = 0;
         this.kadet = new int[5];
-        this.lista = new KasiLista(LISTANKOKO);
         alustaKadet();
     }
 
@@ -79,10 +75,6 @@ public class Statistiikka {
         }
     }
     
-    public void lisaaKadetStatistiikkaan(Kasi pelaaja, Kasi tekoaly) {
-        
-    }
-
     /**
      * Kasvattaa kierrosten määrää yhdellä ja päivittää pelaajan käden
      * int[5]-tyyppiseen muuttujaan.
