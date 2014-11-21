@@ -3,7 +3,7 @@
 **Aihe:**
 Tietokonetta vastaan pelattava kivi-paperi-sakset peli, jossa voidaan valita lisäksi pelattavaksi myös laajennus kivi-paperi-sakset-spock-lisko. 
 
-Pelaaja voi pelaa peliä joko komentokehoitteesta tai graafisen käyttöliittymän kautta. Peli on mahdollista tallentaa, jolloin sitä voi jatkaa myöhemmin. Tietokone pitää yllä pelin statistiikkaa (voitot/tasapelit). 
+Peliä pelataan tekstikäyttöliittymän kautta. Käyttöliittymä tulostaa jokaisen komennon jälkeen valikon, josta näkyy komennot. Pelin tekoäly yrittää voittaa pelaajan muutaman yleisen käyttäytymissäännön ja heuristiikan turvin. 
 
 Ohjelmointikielenä käytetään Javaa. 
 
@@ -11,11 +11,10 @@ Ohjelmointikielenä käytetään Javaa.
 
 **Pelaajan toiminnot:**
 
-* Aloita uusi peli
-* Lataa vanha peli
-* Tallenna peli
+* Valitse pelimoodi
 * Valitse olio (kivi/paperi/sakset/(spock/lisko))
 * Pelaa kierros
+* Kysy statistiikkaa
 
 **Pelin toiminnot:**
 
@@ -26,7 +25,7 @@ Ohjelmointikielenä käytetään Javaa.
 **Komentokehoitteen syöte ja tuloste:**
 
 * Ohjelman käynnistys
-Käynnistyksessä joko tyhjä argumentti tai "plus". Ilman argumenttia peli käynnistyy perinteiseen kivi-paperi-sakset-peliin ja argumentin kanssa lisätään mukaan spock ja lisko. 
+Ohjelma kysyy käynnistyessään pelin moodia. Moodeina ovat perinteinen peli ja laajennettu peli, jossa lisähahmoina ovat lisko ja spock.
 
 * Ohjelma näyttää jatkuvasti syötteiden lyhenteet:
 K = Kivi
