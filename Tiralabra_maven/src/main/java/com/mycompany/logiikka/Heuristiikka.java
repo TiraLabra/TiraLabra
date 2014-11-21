@@ -5,6 +5,10 @@ import com.mycompany.tira.KasiLista;
 import com.mycompany.tira.Kasipari;
 import com.mycompany.tira.ListaSolmu;
 
+/**
+ * Luokka pitää yllä pelattuja pelikierroksia ja yrittää sen tiedon
+ * avulla selvittää pelaajan seuraavaksi pelaaman käden
+ */
 public class Heuristiikka {
 
     private KasiLista kasiLista;
@@ -13,41 +17,88 @@ public class Heuristiikka {
     private int kone;
     private int voitto;
 
-    public Heuristiikka(Statistiikka s) {
+    /**
+     * Konstruktori alustaa luokkamuuttujat
+     */
+    public Heuristiikka() {
         this.kasiLista = new KasiLista(KASILISTANKOKO);
     }
 
-    public void setPelaajanKasi(Kasi k) {
-        this.pelaaja = muunnaKasiNumeroksi(k);
+    /**
+     * Asettaa pelaajan käden heuristiikkaa varten
+     * 
+     * @param pelaajanKasi Pelaajan pelaama käsi 
+     */
+    public void setPelaajanKasi(Kasi pelaajanKasi) {
+        this.pelaaja = muunnaKasiNumeroksi(pelaajanKasi);
     }
 
-    public void setTietokoneenKasi(Kasi k) {
-        this.kone = muunnaKasiNumeroksi(k);
+    /**
+     * Asettaa tekoälyn käden heuristiikkaa varten
+     * 
+     * @param koneenKasi Tekoälyn pelaama käsi 
+     */
+    public void setTietokoneenKasi(Kasi koneenKasi) {
+        this.kone = muunnaKasiNumeroksi(koneenKasi);
     }
 
-    public void setVoitto(int v) {
-        this.voitto = v;
+    /**
+     * Asettaa voittotilanteen heuristiikkaa varten
+     * Voittoa kuvaa kokonaisluku:
+     * <ul>
+     * <li> 1 = Pelaaja voitti
+     * <li> 0 = Tasapeli
+     * <li> -1 = Pelaaja hävisi
+     * </ul>
+     * 
+     * @param voitto Voittoa kuvaava kokonaisluku 
+     */
+    public void setVoitto(int voitto) {
+        this.voitto = voitto;
     }
 
+    /**
+     * Päivittää heuristiikan settereissä annettujen käsien perusteella
+     */
     public void updateKasilista() {
         Kasipari pari = new Kasipari(this.pelaaja, this.kone, this.voitto);
         this.kasiLista.lisaaKasipari(pari);
     }
 
-    private int muunnaKasiNumeroksi(Kasi k) {
-        if (k.getNimi().equals("KIVI")) {
+    /**
+     * Muuntaa paramentrina annetun käden kokonaisluvuksi.
+     * Luvut kuvaavat käsiä:
+     * <ul>
+     * <li> 0 = Kivi
+     * <li> 1 = Paperi
+     * <li> 2 = Sakset
+     * <li> 3 = Lisko
+     * <li> 4 = Spock
+     * </ul>
+     * 
+     * @param muunnettavaKasi Käsi joka muunnetaan luvuksi
+     * @return Kättä vastaava kokonaisluku
+     */
+    private int muunnaKasiNumeroksi(Kasi muunnettavaKasi) {
+        if (muunnettavaKasi.getNimi().equals("KIVI")) {
             return 0;
-        } else if (k.getNimi().equals("PAPERI")) {
+        } else if (muunnettavaKasi.getNimi().equals("PAPERI")) {
             return 1;
-        } else if (k.getNimi().equals("SAKSET")) {
+        } else if (muunnettavaKasi.getNimi().equals("SAKSET")) {
             return 2;
-        } else if (k.getNimi().equals("LISKO")) {
+        } else if (muunnettavaKasi.getNimi().equals("LISKO")) {
             return 3;
         } else {
             return 4;
         }
     }
     
+    /**
+     * Heuristiikka seuraa pelin historiaa ja yrittää sen perusteella
+     * määritellä minkä käden pelaaja tulee seuraavana pelaamaan
+     * 
+     * @return Käsi jonka pelaaja todennäköisimmin pelaa 
+     */
     public Kasi pelaajaTuleePelaamaan() {
         // Käy lista läpi ja etsi tilanteet, joissa samat kädet kuin
         // luokkamuuttujat
@@ -67,11 +118,16 @@ public class Heuristiikka {
                 s = s.getSeuraavaListaSolmu();
             }
         }
-        //Kasi todennakoisin = pelaajanTodennakoisinKasi(pelaajanKadet);
-        
         return pelaajanTodennakoisinKasi(pelaajanKadet);
     }
-    
+
+    /**
+     * Laskee annetusta taulukosta suurimman arvon saaneen solun arvoa
+     * vastaavan käden ja palauttaa sen
+     * 
+     * @param kadet int[] tyyppinen taulukko käsistä
+     * @return Käsi joka vastaa suurinta argumentin taulukon alkiota
+     */
     private Kasi pelaajanTodennakoisinKasi(int[] kadet) {
         int suurin = Integer.MIN_VALUE;
         int kasiIndeksi = -1;
