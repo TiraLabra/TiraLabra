@@ -1,6 +1,7 @@
 package com.mycompany.logiikka;
 
 import com.mycompany.domain.Kasi;
+import com.mycompany.tira.KasiLista;
 
 /**
  * Luokka pitää yllä pelin statistiikkaa:
@@ -10,6 +11,7 @@ import com.mycompany.domain.Kasi;
  * <li> Tasapelien määrä
  * <li> Pelaajan vähiten pelaama käsi
  * <li> Vähiten pelatun käden osuus kaikista pelatuista käsistä
+ * <li> Pelissä pelatuista käsipareista
  * </ul>
  * 
  */
@@ -20,6 +22,9 @@ public class Statistiikka {
     private int tasapelit;
     private int[] kadet;
     private int moodi;
+    private KasiLista lista;
+    
+    private static final int LISTANKOKO = 20;
 
     /**
      * Konstruktori asettaa luokkamuuttujat
@@ -38,6 +43,7 @@ public class Statistiikka {
         this.pelaajanVoitot = 0;
         this.tasapelit = 0;
         this.kadet = new int[5];
+        this.lista = new KasiLista(LISTANKOKO);
         alustaKadet();
     }
 
@@ -71,6 +77,10 @@ public class Statistiikka {
             this.kadet[3] = Integer.MAX_VALUE;
             this.kadet[4] = Integer.MAX_VALUE;
         }
+    }
+    
+    public void lisaaKadetStatistiikkaan(Kasi pelaaja, Kasi tekoaly) {
+        
     }
 
     /**
