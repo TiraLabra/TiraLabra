@@ -131,6 +131,9 @@ public class HuffmanNode {
      * Constructs and returns a String that contains each leaf node's byte and
      * frequancy.
      * 
+     * Each node is separated with character 'b' and
+     * byte is separated from it's frequency with character 'a'.
+     * 
      * @return 
      */
     @Override

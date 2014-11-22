@@ -25,21 +25,46 @@ public class TreeOperator {
     public HuffmanNode constructTree(byte[] data){
         NodeHeap pque = new NodeHeap(data);
         
-        while(pque.size() > 1){
-            HuffmanNode n1 = pque.poll();
-            HuffmanNode n2 = pque.poll();
-            pque.add(new HuffmanNode(n1, n2));
+        HuffmanNode tree = createTreeFromHeap(pque);
+        
+        return tree;
+    }
+    /**
+     * Generates a Huffman tree from a String (well formed)
+     * 
+     * @param st well formed String that contains the bytes and frequencies
+     * @return root HuffmanNode
+     */
+    public HuffmanNode constructTree(String st){
+        
+        NodeHeap pque = new NodeHeap(st);
+        
+        HuffmanNode tree = createTreeFromHeap(pque);
+        
+        return tree;
+    }
+    /**
+     * Constructs a Huffman tree from a NodeHeap
+     * 
+     * @param heap
+     * @return root HuffmanNode
+     */
+    private HuffmanNode createTreeFromHeap(NodeHeap heap){
+        while(heap.size() > 1){
+            HuffmanNode n1 = heap.poll();
+            HuffmanNode n2 = heap.poll();
+            heap.add(new HuffmanNode(n1, n2));
             System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
         }
         
-        if(pque.peek() != null){
-            System.out.println("Ei tyhjä: " + pque.peek());
+        if(heap.peek() != null){
+            System.out.println("Ei tyhjä: " + heap.peek());
         }else{
             System.out.println("Tyhjä");
         }
         
         
-        return pque.poll();
+        return heap.poll();
     }
     
 }

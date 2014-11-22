@@ -36,10 +36,34 @@ public class NodeHeap {
         }
     }
     /**
+     * Constructs a min heap from a Huffman tree String representation.
+     * 
+     * @param tree 
+     */
+    public NodeHeap(String tree){
+        pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
+        
+        int ia = 0;
+        int ib = -1;
+        byte b;
+        int counts;
+        
+        while(ib + 1 < tree.length()){
+            tree = tree.substring(ib + 1);
+            ia = tree.indexOf('a');
+            ib = tree.indexOf('b');
+            b = (byte) Integer.parseInt(tree.substring(0, ia));
+            counts = Integer.parseInt(tree.substring(ia + 1, ib));
+            
+            pque.add(new HuffmanNode(b, counts));
+        }
+        
+    }
+    /**
      * Counts and returns the amount of each different byte found in data.
      * 
      * @param data
-     * @return Amount of different bytes in int array (256 size)
+     * @return Amount of different bytes as int array (256 size)
      */
     private int[] countBytes(byte[] data){
         

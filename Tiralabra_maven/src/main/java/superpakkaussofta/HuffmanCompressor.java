@@ -61,6 +61,79 @@ public class HuffmanCompressor {
         
         return comprWithDummyNumber;
     }
+    /**
+     * Decompresses data array (which includes a generated huffman tree)
+     * and passes it as a new data array
+     * 
+     * @param data byte array (huffman tree included)
+     * @return decompressed data as byte array
+     */
+    public byte[] decompress(byte[] data, TreeOperator oper){
+        
+        System.out.println("Alkuperäinen data stringinä: " + new String(data));
+        
+        int cp = getTreeCutPoint(data);
+        String stree = parseTreeString(data, cp);
+        System.out.println("Puu stringinä: " + stree);
+        byte[] pureData = parseOnlyData(data, cp);
+        System.out.println("Vain data stringinä: " + new String(pureData));
+        
+        HuffmanNode tree = oper.constructTree(stree);
+        
+        System.out.println("Uudelleen koottu puu: " + tree);
+        
+        return null;
+    }
+    /**
+     * Parses and converts to String a Huffman tree information from
+     * given byte array.
+     * 
+     * @param data byte array
+     * @param cutPoint index that separates compressed data and tree
+     * @return Huffman tree information as String
+     */
+    private String parseTreeString(byte[] data, int cutPoint){
+        
+        byte[] treeBytes = new byte[cutPoint];
+        System.arraycopy(data, 0, treeBytes, 0, cutPoint);
+        
+        return new String(treeBytes);
+    }
+    /**
+     * Parses compressed data from byte array that includes both data and
+     * a Huffman tree
+     * 
+     * @param data byte array
+     * @param cutPoint index that separates compressed data and tree
+     * @return compressed data as byte array
+     */
+    private byte[] parseOnlyData(byte[] data, int cutPoint){
+        
+        int dataLength = data.length - (cutPoint + 1);
+        byte[] onlyData = new byte[dataLength];
+        
+        System.arraycopy(data, cutPoint + 1, onlyData, 0, dataLength);
+        //System.out.println("Vain data stringinä" + new String(onlyData));
+        
+        return onlyData;
+    }
+    /**
+     * Searches and returns an index that separates Huffman tree and compressed
+     * data from given byte array.
+     * 
+     * @param data byte array
+     * @return index separating tree and data as int
+     */
+    private int getTreeCutPoint(byte[] data){
+        
+        int cp = 0;
+        
+        while(cp < data.length && data[cp] != 99){  //99 = c
+            cp++;
+        }
+        
+        return cp;
+    }
     
     /**
      * Uses a Huffman tree to calculate a new code for each

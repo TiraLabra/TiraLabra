@@ -23,6 +23,12 @@ public class Main {
         HuffmanCompressor compressor = new HuffmanCompressor();
         TreeOperator toperator = new TreeOperator();
         
+        uncompress(fio, compressor, toperator);
+        
+    }
+    private static void compress(FileIO fio, HuffmanCompressor compressor, TreeOperator toperator){
+        
+        
         String path = "testifilu2.txt";
         
         byte[] data = null;
@@ -49,6 +55,18 @@ public class Main {
             System.out.println("Tallentaminen feilas:");
             System.out.println(e);
         }
+    }
+    private static void uncompress(FileIO fio, HuffmanCompressor compressor, TreeOperator toperator){
+        String path = "testifilu.txt.huf";
+        
+        byte[] data = null;
+        try {
+            data = fio.read(path);
+        } catch (Exception e) {
+            System.out.println("luku feilas");
+        }
+        
+        compressor.decompress(data, toperator);
     }
     
 }
