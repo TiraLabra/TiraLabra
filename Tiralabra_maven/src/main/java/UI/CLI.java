@@ -24,15 +24,24 @@ public class CLI {
     */
    public void menu() {
        out.print(AStarSearch.printMap() + "\n");
-       out.print("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,2,3)\n");
-       String input = in.nextLine();
-       if (validInput(input)) {
-           int[] searchCoordinates = parseInput(input);
-           out.print("Search result: \n");
-           out.print(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]) + "\n");
-       }
-       else {
-           out.print("bad input, please use the x1,y1,x2,y2 format");
+       while (true) {
+           out.print("Please give the route's start and end x and y values separated by commas in x1,y1,x2,y2 format (eg. 1,1,2,3). Write q to quit.\n");
+           String input = in.nextLine();
+           if (input.equals("q")) {
+               System.out.println("exiting AStarSearch...");
+               break;
+           }
+           long aikaAlussa = System.currentTimeMillis();
+           if (validInput(input)) {
+               int[] searchCoordinates = parseInput(input);
+               out.print("Search result: \n");
+               out.print(AStarSearch.search(searchCoordinates[0], searchCoordinates[1], searchCoordinates[2], searchCoordinates[3]) + "\n");
+               long aikaLopussa = System.currentTimeMillis();
+               System.out.println("Search took " + (aikaLopussa - aikaAlussa) + " ms.");
+           }
+           else {
+               out.print("bad input, please use the x1,y1,x2,y2 format\n");
+           }
        }
    }
    

@@ -59,7 +59,7 @@ public class CLITest {
     
     @Test
     public void invalidInputDoesNotWork() {
-        setupTest("2,3,,4,2");
+        setupTest("2,3,,4,2\nq");
         startCapture();
         cli.menu();
         String[] output = out.toString().split("\n");
@@ -70,7 +70,7 @@ public class CLITest {
     
     @Test
     public void validInputStartsASearch() {
-        setupTest("2,3,4,2");
+        setupTest("2,3,4,2\nq");
         startCapture();
         cli.menu();
         String[] output = out.toString().split("\n");

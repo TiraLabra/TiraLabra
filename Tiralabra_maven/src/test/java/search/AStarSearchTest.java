@@ -8,6 +8,7 @@ package search;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import java.util.Random;
 
 /**
  *
@@ -15,6 +16,7 @@ import org.junit.Test;
 public class AStarSearchTest {
     
     AStarSearch search;
+    Random rand;
     int [][] validMap = {{1, 1, 2, 3, 2},
                          {2, 6, 2, 1, 1},
                          {1, 2, 9, 2, 2},
@@ -23,6 +25,17 @@ public class AStarSearchTest {
     @Before
     public void setUp() {
         search = new AStarSearch(validMap);
+        rand = new Random();
+    }
+    
+    public int[][] createRandomMap(int width, int height, int range) {
+        int[][] map = new int[width][height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                map[x][y] = rand.nextInt(range) + 1;
+            }
+        }
+        return map;
     }
     
     @Test
@@ -55,5 +68,51 @@ public class AStarSearchTest {
                      " Y", search.printMap());
     }
     
+    @Test
+    public void searchTimeOnASmallMapUnder10ms() {
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            search.search(0, 0, 4, 4);
+        }
+        long endTime = System.currentTimeMillis();
+        long finalTime = endTime - startTime;
+        finalTime = finalTime / 10;
+        assertTrue(finalTime < 10);
+    }
     
+    @Test
+    public void randomized10x10MapTimeUnder10ms() {
+        int[][] randomMap = createRandomMap(10, 10, 10);
+        AStarSearch randMapSearch = new AStarSearch(randomMap);
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            randMapSearch.search(0, 0, 9, 9);
+        }
+        long endTime = System.currentTimeMillis();
+        assertTrue((endTime - startTime) / 10 < 10);
+    }
+    
+    @Test
+    public void random10x10MapRandomRoutes() {
+        int[][] randomMap = createRandomMap(10, 10, 10);
+        AStarSearch randMapSearch = new AStarSearch(randomMap);
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            randMapSearch.search(rand.nextInt(10), rand.nextInt(10), rand.nextInt(10), rand.nextInt(10));
+        }
+        long endTime = System.currentTimeMillis();
+        assertTrue((endTime - startTime) / 10 < 10);
+    }
+    
+    @Test
+    public void randomized100x100MapTimeUnder2500ms() {
+        int[][] randomMap = createRandomMap(100, 100, 10);
+        AStarSearch randMapSearch = new AStarSearch(randomMap);
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            randMapSearch.search(0, 0, 99, 99);
+        }
+        long endTime = System.currentTimeMillis();
+        assertTrue((endTime - startTime) / 10 < 2500);
+    }
 }

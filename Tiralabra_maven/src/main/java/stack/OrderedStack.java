@@ -116,6 +116,10 @@ public class OrderedStack {
         this.head = first;
     }
     
+    /**Prints the nodes in the stack in the order they're in the stack.
+     * 
+     * @return 
+     */
     public String printStack() {
         String output = "";
         Node temp = head;
