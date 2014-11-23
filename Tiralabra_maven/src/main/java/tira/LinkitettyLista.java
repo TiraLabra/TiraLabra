@@ -431,7 +431,7 @@ public class LinkitettyLista<E> implements Lista<E> {
         }
 
         public T next() {
-            T t = (T)get(i);
+            T t = (T)values[i];//(T)get(i);
             if (t == null) {
                 // hmm!
             }

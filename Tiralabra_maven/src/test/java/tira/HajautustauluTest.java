@@ -100,7 +100,7 @@ public class HajautustauluTest {
     @Test
     public void testGet() {
         System.out.println("get");
-        
+
         Hajautustaulu<String, String> instance = new Hajautustaulu();
 
         for (int i = 0; i < n; i++) {
@@ -108,8 +108,8 @@ public class HajautustauluTest {
 
         }
         int i = 15;
-        String k = stringsK[i];      
-        String expResult = stringsV[i];  
+        String k = stringsK[i];
+        String expResult = stringsV[i];
         String result = instance.get(k);
         assertEquals(expResult, result);
 
@@ -127,11 +127,11 @@ public class HajautustauluTest {
             instance.put(stringsK[i], stringsV[i]);
         }
         int i = 15;
-        String k = stringsK[i];      
-        String expResult = stringsV[i];  
+        String k = stringsK[i];
+        String expResult = stringsV[i];
         String result = instance.remove(k);
         assertEquals(expResult, result);
-        assertEquals(false,instance.contains(k));// poistettu oikeasti?
+        assertEquals(false, instance.contains(k));// poistettu oikeasti?
     }
 
     /**
@@ -140,12 +140,27 @@ public class HajautustauluTest {
     @Test
     public void testKeySet() {
         System.out.println("keySet");
-        Hajautustaulu instance = new Hajautustaulu();
-        Lista expResult = null;
-        Lista result = instance.keySet();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Hajautustaulu<String, String> instance = new Hajautustaulu();
+        for (int i = 0; i < n; i++) {
+            instance.put(stringsK[i], stringsV[i]);
+        }
+        Lista<String> lista;
+        lista = instance.keySet();
+
+        for (String s : stringsK) {
+            assertTrue(lista.contains(s));
+        }
+        /*
+        int i = 15;
+        String val;
+
+        val = stringsK[i];
+        assertTrue(lista.contains(val));
+
+        lista = instance.values();
+        val = stringsV[i];
+        assertTrue(lista.contains(val));
+        */
     }
 
     /**
@@ -155,11 +170,19 @@ public class HajautustauluTest {
     public void testIsEmpty() {
         System.out.println("isEmpty");
         Hajautustaulu instance = new Hajautustaulu();
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.isEmpty();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        instance.put("laama", "sade");
+        expResult = false;
+        result = instance.isEmpty();
+        assertEquals(expResult, result);
+
+        instance.remove("laama");
+        expResult = true;
+        result = instance.isEmpty();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -172,8 +195,25 @@ public class HajautustauluTest {
         int expResult = 0;
         int result = instance.size();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        instance.put("kuu", "maa");
+        instance.put("maa", "kuu");
+
+        expResult = 2;
+        result = instance.size();
+        assertEquals(expResult, result);
+
+        instance.put("maa", "kuu");
+
+        expResult = 2;
+        result = instance.size();
+        assertEquals(expResult, result);
+
+        instance.remove("maa");
+
+        expResult = 1;
+        result = instance.size();
+        assertEquals(expResult, result);
     }
 
 }

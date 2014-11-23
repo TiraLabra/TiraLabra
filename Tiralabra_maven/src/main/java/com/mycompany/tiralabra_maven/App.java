@@ -6,7 +6,8 @@ import haku.ReittiLaskin;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
 import tira.Hajautustaulu;
-import tira.Pari;
+import tira.Lista;
+import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
 
@@ -17,23 +18,23 @@ import verkko.Verkko;
 public class App {
 
     /**
-     * Heuristiikan käyttämä tieto keskinopeudesta. Jos arvo on liian pieni, 
-     * heuristiikka yliarvioi matkojen aikakustannuksia. Jos arvo liian suuri, 
+     * Heuristiikan käyttämä tieto keskinopeudesta. Jos arvo on liian pieni,
+     * heuristiikka yliarvioi matkojen aikakustannuksia. Jos arvo liian suuri,
      * aliarvioidaan & joudutaan laskemaan ylimääräisiä reittejä
      */
     public static double sporanNopeus = 526; // pistettä/min
     /**
      * Leveyssuuntainen haku tällä laskimella: heuristiikan arvo aina nolla
      */
-    public static ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, sporanNopeus); 
+    public static ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, sporanNopeus);
     /**
      * Leveyssuuntainen haku, vaihdoton
      */
-    public static ReittiLaskin bfsVaihdoton = new ReittiLaskin(1, 0, 3, 0, 0, sporanNopeus);     
+    public static ReittiLaskin bfsVaihdoton = new ReittiLaskin(1, 0, 3, 0, 0, sporanNopeus);
     /**
      * Matka-aikaa mininmoiva laskin
      */
-    public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus); 
+    public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus);
     /**
      * Vaihtoja välttelevä laskin
      */
@@ -46,7 +47,7 @@ public class App {
      * Matkaa ja matka-aikaa minimoiva laskin
      */
     public static ReittiLaskin vaihdotonMatkaaMinimoiva = new ReittiLaskin(1, 0.001, 3, 1, 0, sporanNopeus);
-    
+
     public static void main(String[] args) {
 
         // debugAStar();
@@ -54,7 +55,8 @@ public class App {
         // debugAStarHeuristiikka();
         // debugLinkitettyLista();
         // debugLista();
-        debugHajautustaulu();
+        // debugHajautustaulu();
+        App.debugHajautustauluPysakit();
 
     }
 
@@ -62,12 +64,12 @@ public class App {
         Verkko verkko = new Verkko();
         ReittiLaskin reittiLaskin = normaali;
         reittiLaskin.setVerkko(verkko);
-        
+
         long start, stop;
         start = System.currentTimeMillis();
-        System.out.println("Heuristiikan onnistumisprosentti: "+reittiLaskin.toimiikoHeuristiikka());
-        stop  = System.currentTimeMillis();
-        System.out.println("Aika "+(stop-start)+" ms");
+        System.out.println("Heuristiikan onnistumisprosentti: " + reittiLaskin.toimiikoHeuristiikka());
+        stop = System.currentTimeMillis();
+        System.out.println("Aika " + (stop - start) + " ms");
     }
 
     private static void debugAStarVertailu() {
@@ -91,13 +93,13 @@ public class App {
             start = System.currentTimeMillis();
             aOma.etsiReitti(alku, loppu, 1);
             stop = System.currentTimeMillis();
-            timeOma += stop - start;  
+            timeOma += stop - start;
 
             start = System.currentTimeMillis();
             aJava.etsiReitti(alku, loppu, 0);
             stop = System.currentTimeMillis();
-            timeJava += stop - start;    
-             
+            timeJava += stop - start;
+
         }
         timeJava /= testSize;
         timeOma /= testSize;
@@ -222,53 +224,57 @@ public class App {
         }
         System.out.println("" + lista.size());
     }
-    
+
     private static void debugHajautustaulu() {
-        Hajautustaulu<String,String> ht = new Hajautustaulu();
-        LinkitettyLista<Pari<String,String>> ll = new LinkitettyLista();
+        Hajautustaulu<String, String> ht = new Hajautustaulu();
+
         String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"};
         int n = e.length;
         System.out.println("put");
-        for ( int i = 0; i<n;i++) {
-            String k = e[i], v=e[n-1-i];
-            Pari<String,String> pari;
-            pari = new Pari(k, v);
-            ll.add(pari);
-            System.out.println(""+ht.put(e[i], e[n-1-i]));
+        for (int i = 0; i < n; i++) {
+            String k = e[i], v = e[n - 1 - i];
+            System.out.println("" + ht.put(e[i], e[n - 1 - i]));
         }
         System.out.println("get");
-        for (int i = 0; i<n;i++ ) {
-            String k = e[i], v=e[n-1-i];
-            System.out.println(""+ht.get(k)+" == "+v);
+        for (int i = 0; i < n; i++) {
+            String k = e[i], v = e[n - 1 - i];
+            System.out.println("" + ht.get(k) + " == " + v);
         }
+        System.out.println("contains");
+        System.out.println("??? " + ht.contains("kukkia"));
+        System.out.println("??? " + ht.contains("Koira"));
+        Lista<String> keySet = ht.keySet();
+        for (String s : e) {
+            System.out.println("ht==ks <-> " + ht.contains(s) + "==" + keySet.contains(s));
+        }
+        System.out.println("" + keySet.size());
         System.out.println("remove");
-        for (int i = 0; i<n;i++ ) {
-            String k = e[i], v=e[n-1-i];
-            System.out.println(""+ht.remove(k)+" == "+v);
-        }    
-        System.out.println("hmm");
-        for (int i = 0; i<n;i++ ) {
-            String k = e[i], v=e[n-1-i];
-            System.out.println(""+ht.get(k)+" == "+v);
+        for (int i = 0; i < n; i++) {
+            String k = e[i], v = e[n - 1 - i];
+            System.out.println("" + ht.remove(k) + " == " + v);
+            // ht.remove(k);
         }
-        System.out.println("??? "+ht.contains("kukkia"));
-        System.out.println("??? "+ht.contains("Koira"));
-        
-        
-        System.out.println(""+ll);
-        Pari np = new Pari("Kissa",null);
-        // System.out.println(""+ll.indexOf(np));
-        Pari p = ll.remove(0);// ll.remove(np);
-        System.out.println(""+p.toString());
-        System.out.println("FOKIT");
-        // while ( !ll.isEmpty() ) System.out.println(""+ll.poll());
-        for ( int i=0; i< ll.size(); i++ ) System.out.println(""+ll.get(i));
-        System.out.println("???");
-        for ( Pari p2 : ll ) {
-            System.out.println(""+p2);
+
+    }
+
+    private static void debugHajautustauluPysakit() {
+        Verkko verkko = new Verkko();
+        Hajautustaulu<String, Pysakki> pysakit = new Hajautustaulu(290);
+        for (Pysakki p : verkko.getPysakit()) {
+            pysakit.put(p.getKoodi(), p);
         }
-        //System.out.println(""+ll.peek());
-        System.out.println(""+ll+", size "+ll.size());
-        
+        // pysakit.debugPrint();
+        Hajautustaulu<String, Linja> linjat = new Hajautustaulu(17);
+        for (Linja l : verkko.getLinjat()) {
+            linjat.put(l.getKoodi(), l);
+        }
+        // linjat.debugPrint();
+        /*
+         Lista<String> lista = linjat.keySet();
+         for (String s : lista) {
+         System.out.println("" + s);
+         }
+         System.out.println("" + lista.size());
+         */
     }
 }

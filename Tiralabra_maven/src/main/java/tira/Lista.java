@@ -17,5 +17,6 @@ public interface Lista<E> extends Iterable<E> {
     public int     size();
     public E       remove( int index );
     public E       get( int index );
+    public boolean contains( E e);
     public Iterator<E> iterator();
 }

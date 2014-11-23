@@ -24,29 +24,45 @@ public class Hajautustaulu<K, V> {
     /**
      * Taulun koko
      */
-    private int maksimiKoko;
+    private int taulunKoko;
     /**
      * Taulun avainten lukumäärä
      */
     private int koko;
 
     /**
-     * Tallennetaan arvo-avain -parit linkitettyihin listoihin taulukkoon
+     * Tallennetaan arvo-avain -parit, pari on samalla yhteen suuntaan
+     * linkitetty lista
      */
-    private LinkitettyLista<Pari<K, V>>[] taulu;
+    private Pari<K, V>[] taulu;
 
     /**
      * Pidetään kirjaa törmäysten määrästä: saadaan tietoa toimintanopeudesta &
      * uudellenhajautuksen tarpeesta
      */
     private int tormaykset;
-    
+
     /**
-     * Pidetään kirjaa täyttöasteesta: kuinka moni taulun indekseistä sisältään vähintään yhden avain-arvo -parin
+     * Pidetään kirjaa täyttöasteesta: kuinka moni taulun indekseistä sisältään
+     * vähintään yhden avain-arvo -parin
      */
     private int tayttoAste;
 
-    // WIP keySet --> iteraatiota varten, values
+    /**
+     * Pidetäään kirjaa siitä jos taulukon arvo korvataan
+     */
+    private int korvaukset;
+
+    /**
+     * Pidetään kirjaa poistettujen arvojen lukumäärästä
+     */
+    private int poistot;
+
+    /**
+     * Pidetään kirjaa uudelleenhajautusten lukumäärästä
+     */
+    private int uudelleenHajautukset;
+
     ///////////////////
     // KONSTRUKTORIT //
     ///////////////////
@@ -55,56 +71,67 @@ public class Hajautustaulu<K, V> {
     }
 
     public Hajautustaulu(int aloitusKoko) {
-        maksimiKoko = aloitusKoko;
-        if (maksimiKoko <= 1) {
-            maksimiKoko = DEFAULTSIZE;
+        taulunKoko = aloitusKoko;
+        if (taulunKoko <= 1) {
+            taulunKoko = DEFAULTSIZE;
         }
         koko = 0;
-        // WIP keyset=new juttu; values=new juttu;
         tormaykset = 0;
         tayttoAste = 0;
-        taulu = new LinkitettyLista[maksimiKoko];
+        poistot = 0;
+        uudelleenHajautukset = 0;
+        taulu = new Pari[taulunKoko];
     }
 
     ////////////////////////
     // JULKISET   METODIT //
     ////////////////////////
+    /**
+     * Asettaa tauluun uuden avain-arvo parin
+     *
+     * @param k Avain
+     * @param v Arvo
+     * @return Jos avain oli jo taulussa, palautetaan edellinen arvo
+     */
     public V put(K k, V v) {
         int key = this.hashKey(k);
-        if (this.taulu[key] == null) {
-            this.taulu[key] = new LinkitettyLista(); // oletuskoko
-            tayttoAste++;
-        }
-        if (!this.taulu[key].isEmpty()) { // jos listassa on jo arvo, on kyseessä törmäys
-            this.tormaykset++;
-        }
         Pari pari = new Pari(k, v);
-        // tupla-arvoja? fiksumpi tapa tarkistaa?
-        Pari alku = this.taulu[key].get(pari);
-        V edellinenArvo = null;
-        if (alku != null) {
-            edellinenArvo = (V) alku.getV();
+        V value = null; // edellinen arvo tällä avaimella?
+        if (this.taulu[key] == null) {
+            this.taulu[key] = pari;
+            tayttoAste++;
+            this.koko++;
         } else {
-            this.taulu[key].add(pari);
+            value = (V) this.taulu[key].replace(pari);
+            if (value == null) { // kyseessä on kyseessä törmäys (ei korvata)
+                this.tormaykset++;
+                this.koko++;
+            } else { // muutoin korvataan olemassaoleva arvo
+                this.korvaukset++;
+            }
         }
-        // ...
-        this.taulu[key].add(pari);
-        // WIP lisäys keySettiin, valuesiin myös?
-        this.koko++;
-        return edellinenArvo;
+        return value;
     }
 
+    /**
+     * Onko avain taulussa
+     *
+     * @param k Avain
+     * @return
+     */
     public boolean contains(K k) {
         int key = this.hashKey(k);
         if (this.taulu[key] == null) {
             return false;
         }
-        Pari pari = new Pari(k, null);
-        return this.taulu[key].contains(pari);
+
+        return this.taulu[key].contains(k);
 
     }
+
     /**
      * Palauttaa avaimen arvon
+     *
      * @param k Avain
      * @return Arvo
      */
@@ -113,16 +140,14 @@ public class Hajautustaulu<K, V> {
         if (this.taulu[key] == null) {
             return null;
         }
-        Pari pari = new Pari(k, null);
-        Pari arvo = this.taulu[key].get(pari);
-        if (arvo == null) {
-            return null;
-        } else {
-            return (V) arvo.getV();
-        }
+
+        V arvo = (V) this.taulu[key].get(k);
+        return arvo;
     }
+
     /**
-     * Poistaa avaimella löytyvän arvon ja palauttaa sen
+     * Poistaa avaimella löytyvän arvon
+     *
      * @param k Poistettava avain
      * @return Avaimen arvo
      */
@@ -131,24 +156,51 @@ public class Hajautustaulu<K, V> {
         if (this.taulu[key] == null) {
             return null;
         }
-        Pari pari = new Pari(k, null);
-        Pari arvo = this.taulu[key].remove(pari); // jmm
-        if (arvo == null) {
-            return null;
-        } else {
+        V v = this.taulu[key].get(k);
+        if (v != null) {
+            this.taulu[key] = this.taulu[key].remove(k);
+            if (this.taulu[key] == null) {
+                this.tayttoAste--;
+            } else {
+                this.tormaykset--;
+            }
             this.koko--;
-            return (V) arvo.getV();
         }
+        return v;
     }
 
     /**
      * Palauttaa listan avaimista
      *
-     * @return Avaimet listassa
+     * @return Taulun avaimet
      */
     public Lista<K> keySet() {
-        // WIP
-        return null;
+        Lista<K> lista = new DynaaminenLista();
+        for (int i = 0; i < this.taulunKoko; i++) {
+            Pari p = this.taulu[i];
+            while (p != null) {
+                lista.add((K) p.getK());
+                p = p.getNext();
+            }
+        }
+        return lista;
+    }
+
+    /**
+     * Palauttaa lista taulun arvoista
+     *
+     * @return Taulun arvot
+     */
+    public Lista<V> values() {
+        Lista<V> lista = new DynaaminenLista();
+        for (int i = 0; i < this.taulunKoko; i++) {
+            Pari p = this.taulu[i];
+            while (p != null) {
+                lista.add((V) p.getV());
+                p = p.getNext();
+            }
+        }
+        return lista;
     }
 
     /**
@@ -171,14 +223,14 @@ public class Hajautustaulu<K, V> {
     ////////////////////////
     // YKSITYISET METODIT //
     ////////////////////////
-
     /**
      * Uudelleenhajautus: jos törmäyksiä on tullut liikaa, luodaan uusi
      * hajatustaulu tämän taulun pareista
      *
      */
     private void rehash() {
-
+        // WIP
+        this.uudelleenHajautukset++;
     }
 
     /**
@@ -188,11 +240,74 @@ public class Hajautustaulu<K, V> {
      * @return Taulun indeksi
      */
     private int hashKey(K k) {
-        int i = k.hashCode() % this.maksimiKoko;
+        // WIP tänne jotain
+        int i = k.hashCode() % this.taulunKoko;
         // System.out.println(""+i+"="+k.hashCode()+" mod "+this.maksimiKoko);
-        if ( i<0) i=-i; // negatiiviset hashCodet käsitellään näin
+        if (i < 0) {
+            i = -i; // negatiiviset hashCodet käsitellään näin
+        }
         return i; // h(k)=hash(k)%n
     }
 
+    //////////////////////
+    // DEBUG YMS  ////////
+    //////////////////////
+    /**
+     * Tulostaa & palauttaa tietoa toiminnasta
+     *
+     * @return Tietoja merkkijonossa
+     */
+    public String debugPrint() {
+        String s = "Hajautustaulu{"
+                + "maksimiKoko=" + taulunKoko
+                + ", koko=" + koko
+                + ", tormaykset=" + tormaykset
+                + ", tayttoAste=" + tayttoAste
+                + ", korvaukset=" + korvaukset
+                + ", poistot=" + poistot
+                + ", uudelleenHajautukset=" + uudelleenHajautukset
+                + this.debugTormaysListat()
+                + '}';
+        System.out.println("" + s);
+        System.out.println("CONTENTS={");
+        System.out.println(debugContents()+"}");
+        
+        return s;
+    }
+
+    public String debugTormaysListat() {
+        if (this.isEmpty()) {
+            return "";
+        }
+        double max = 0;
+        double sum = 0;
+        double n = 0;
+        for (Pari p : this.taulu) {
+            if (p == null) {
+                continue;
+            }
+            double s = p.size();
+            if (s > max) {
+                max = s;
+            }
+            sum += s;
+            n++;
+        }
+        String s = "tormaysListat{"
+                + "keskimaarainenKoko=" + (sum / n)
+                + "suurinKoko=" + max
+                + "}";
+        return s;
+    }
+    
+    public String debugContents() {
+        String s = "";
+        
+        for ( Pari p : taulu ) {
+            s+=""+p+"\n";
+        }
+        
+        return s;
+    }
 
 }
