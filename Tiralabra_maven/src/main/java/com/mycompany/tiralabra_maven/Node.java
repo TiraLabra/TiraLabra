@@ -1,5 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * Node is a coordinate within the Map. Node can be a start node, end node, wall or path.
  *
@@ -104,7 +106,7 @@ public class Node implements Comparable<Node> {
 
     /** Compares the two nodes and returns which one is cheaper: */
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(@NotNull Node o) {
         if (this.getCost() > o.getCost()) {
             return 1;
         } else if (this.getCost() == o.getCost()) {
@@ -113,7 +115,7 @@ public class Node implements Comparable<Node> {
         return -1;
     }
 
-    /** */
+    /** Test if two nodes are in the same coordinate */
     public boolean isSameNode(Node compare) {
         return compare.getX() == this.getX() && compare.getY() == this.getY();
     }

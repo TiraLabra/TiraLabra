@@ -3,7 +3,8 @@ package com.mycompany.tiralabra_maven.DataStructures;
 import com.mycompany.tiralabra_maven.Node;
 
 /**
- * Minimum heap for the implementation of priority queue
+ * Minimum heap for the implementation of priority queue:
+ * methods are added but is not currently working properly.
  * Minimikeko
  *
  */
@@ -19,21 +20,22 @@ public class MyMinHeap {
         this.table = new Node[size+1];
     }
 
-    /** Insert item into the heap */
+    /**
+     * Inserts item into the heap
+     * @param insert the node to be inserted into heap
+     */
     public void insert(Node insert) {
-        if (size == table.length) {
-            return;
-        }
-
+        //if (size == table.length) {
+        //    return;
+        //}
+        size += 1;
         int i = size;
-
-        while ((i > 0) && table[parent(i)].compareTo(insert) > 0) {
+        //parent[i] < insert
+        while ((i > 0) && table[parent(i)].compareTo(insert) == 0) {
             table[i] = table[parent(i)];
             i = parent(i);
-            table[i] = insert;
         }
-
-        size += 1;
+        table[i] = insert;
 
     }
 
@@ -42,11 +44,14 @@ public class MyMinHeap {
         return table[0];
     }
 
-    /** Deletes the smallest item from the heap */
+    /** Removes and returns the smallest item from the heap */
     public Node deleteMinimum() {
         Node min = min();
-        table[0] = table[size-1];
-        size -= 1;
+        if (!isEmpty()) {
+            System.out.println(size);
+            table[0] = table[size-1];
+            size -= 1;
+        }
         if (size > 0) {
             heapify(size);
         }
@@ -98,22 +103,49 @@ public class MyMinHeap {
         i = j;
         j = help;
     }
+    private void swap(int i, int j) {
+        int help = i;
+        i = j;
+        j = help;
+    }
 
 
     /** Tests if the table is empty */
     public boolean isEmpty() {
-        return table.length == 0;
+        return size == 0;
     }
 
-    /** Checks if the queue contains a node: */
+    /**
+     * Decreases the key value of the node
+     * @param node to be decreased
+     */
+    public void heapDecKey(Node node) {
+        int i = indexOf(node);
+
+        if (i == -1) {
+            return;
+        }
+
+        while(i > 0 && table[parent(i)].compareTo(table[i])>0) {
+            swap(i, parent(i));
+            i = parent(i);
+        }
+    }
+
+
+    /** Checks if the heap contains the element */
     public boolean contains(Node node) {
-
-
-
-        return false;
+        return indexOf(node) != -1;
     }
 
 
-
-
+    /** Finds the node's index in heap */
+    private int indexOf(Object o) {
+        if (o != null) {
+            for (int i = 0; i < size; i++)
+                if (o.equals(table[i]))
+                    return i;
+        }
+        return -1;
+    }
 }

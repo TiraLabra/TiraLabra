@@ -1,17 +1,13 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.DataStructures.MyList;
-
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
  * Implementation of A* algorithm. Algorithm's purpose is to find the most optimal path in a given map or maze.
  * The Map consists of coordinates called Nodes. @see Node
- * The implementation is currently a rough draft and missing some intended features, like reading and interpreting
- * the map, creating nodes, setting map size, finding neighbors of current node, chopping the main method into
- * multiple methods and refactoring it to become more readable. Some of the current methods are redundant and need
- * to be cleaned.
+ * 
  */
 public class Astar {
     public static void main(String[] args) {
@@ -44,7 +40,9 @@ public class Astar {
         });
 
         open.add(start);
-        //MyMinHeap open = new MyMinHeap(nodes.length);
+        /*
+        MyMinHeap open = new MyMinHeap(nodes.length);
+        open.insert(start); */
 
         /** list of nodes that have been checked */
         //List closed = new ArrayList();
@@ -103,6 +101,8 @@ public class Astar {
                         if (open.contains(neighbor) && nextStepCost < neighbor.getCost()) {
                             /** remove neighbor from OPEN, because new path is better */
                             open.remove(neighbor);
+                            //open.heapDecKey(neighbor);
+
                         }
 
                         /** if neighbor in CLOSED and cost less than g(neighbor): */
@@ -146,7 +146,6 @@ public class Astar {
         current = help;
         /** Go through all the nodes in the path and mark them with character P: */
         while (current.getParent() != null) {
-            //path.add(current);
             help.setCharacter('P');
             help = current.getParent();
             current = help;
