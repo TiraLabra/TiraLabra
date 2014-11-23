@@ -1,6 +1,8 @@
 package superpakkaussofta;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * Compressor class that uses Huffman coding.
@@ -17,11 +19,12 @@ public class HuffmanCompressor {
      * 0-7 dummybits (and a byte to tell the amount) are inserted in front of the bit String to fix that.
      * 
      * @param data
-     * @param tree
      * @return 
      */
-    public byte[] compress(byte[] data, HuffmanNode tree){
+    public byte[] compress(byte[] data){
         
+        TreeOperator toperator = new TreeOperator();
+        HuffmanNode tree = toperator.constructTree(data);
         String codes[] = countNewCodes(tree);
         /*
         System.out.println("koodit: ");
@@ -36,11 +39,11 @@ public class HuffmanCompressor {
         for(int i = 0; i < data.length; i++){
             bits.append(codes[data[i]+128]);
         }
-        /*
+        
         System.out.println("data: " + bits.toString());
         System.out.println("datan pituus: " + bits.length());
         System.out.println("lisättävät nollat: " + (8 - (bits.length() % 8)));
-        */
+        
         int dummybits = 8 - (bits.length() % 8);
         
         for(int i = 0; i < dummybits; i++){
@@ -58,31 +61,101 @@ public class HuffmanCompressor {
         }
         comprWithDummyNumber[0] = (byte) dummybits;
         
+        byte[] finalComprData = concatTreeWithByteArray(comprWithDummyNumber, tree);
         
-        return comprWithDummyNumber;
+        return finalComprData;
     }
     /**
      * Decompresses data array (which includes a generated huffman tree)
-     * and passes it as a new data array
+     * and passes it as a new data array.
      * 
      * @param data byte array (huffman tree included)
      * @return decompressed data as byte array
      */
-    public byte[] decompress(byte[] data, TreeOperator oper){
+    public byte[] decompress(byte[] data){
         
         System.out.println("Alkuperäinen data stringinä: " + new String(data));
+        TreeOperator toperator = new TreeOperator();
         
         int cp = getTreeCutPoint(data);
         String stree = parseTreeString(data, cp);
         System.out.println("Puu stringinä: " + stree);
         byte[] pureData = parseOnlyData(data, cp);
         System.out.println("Vain data stringinä: " + new String(pureData));
+        String binaryString = toBinaryString(pureData);
+        System.out.println("Binääristringinä: " + binaryString);
         
-        HuffmanNode tree = oper.constructTree(stree);
-        
+        HuffmanNode tree = toperator.constructTree(stree);
         System.out.println("Uudelleen koottu puu: " + tree);
         
-        return null;
+        HuffmanNode node = tree;
+        char c;
+        
+        //ArrayList<Byte> bytes = new ArrayList<Byte>();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        
+        
+        
+        for(int i = 0; i < binaryString.length(); i++){
+            c = binaryString.charAt(i);
+            if(c == '0'){
+                node = node.getLeft();
+                if(node.getLeft() == null){ //riittää tarkistaa vain toinen (molemmat joko nulleja tai ei)
+                    bytes.write(node.getByte());
+                    node = tree;
+                }
+            }else{
+                node = node.getRight();
+                if(node.getLeft() == null){ //riittää tarkistaa vain toinen (molemmat joko nulleja tai ei)
+                    bytes.write(node.getByte());
+                    node = tree;
+                }
+            }
+        }
+        
+        
+        
+        return bytes.toByteArray();
+    }
+    /**
+     * Converts given byte array to binary String.
+     * 
+     * Cuts the first byte of array that tells how many dummybits
+     * were added during compressing the data. Then converts the rest of
+     * the data to binary String that ALWAYS starts with 1 (due to conversion
+     * technique used). The real data may start with one or (in some rare cases)
+     * more zeros. Number of the real zeros is calculated and then they are
+     * added into the front of the binary String.
+     * 
+     * @param data byte array
+     * @return compressed data in binary String
+     */
+    private String toBinaryString(byte[] data){
+        
+        int l = data.length;
+        int dummybits = data[0];
+        
+        System.out.println("Dummybits: " + dummybits);
+        
+        byte[] dataWithDummys = new byte[l - 1];
+        
+        System.arraycopy(data, 1, dataWithDummys, 0, dataWithDummys.length);
+        
+        BigInteger bintData = new BigInteger(dataWithDummys);
+        String rawStringData = bintData.toString(2);
+        
+        int realZeroCount = l * 8 - (8 + dummybits + rawStringData.length());
+        
+        System.out.println("Lisättävät aidot nollat: " + realZeroCount);
+        
+        StringBuilder realDataSB = new StringBuilder(l);
+        
+        for(int i = 0; i < realZeroCount; i++){
+            realDataSB.append('0');
+        }
+        realDataSB.append(rawStringData);
+        
+        return realDataSB.toString();
     }
     /**
      * Parses and converts to String a Huffman tree information from
@@ -101,7 +174,7 @@ public class HuffmanCompressor {
     }
     /**
      * Parses compressed data from byte array that includes both data and
-     * a Huffman tree
+     * a Huffman tree.
      * 
      * @param data byte array
      * @param cutPoint index that separates compressed data and tree
@@ -153,7 +226,7 @@ public class HuffmanCompressor {
         return codes;
     }
     /**
-     * Calculates new binary codes recursively
+     * Calculates new binary codes recursively.
      * 
      * @param codes a String array
      * @param code starting binary code as String

@@ -21,12 +21,12 @@ public class Main {
         //pääasiassa testijuttuja vielä tässä vaiheessa
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
-        TreeOperator toperator = new TreeOperator();
         
-        uncompress(fio, compressor, toperator);
+        uncompress(fio, compressor);
+        //compress(fio, compressor);
         
     }
-    private static void compress(FileIO fio, HuffmanCompressor compressor, TreeOperator toperator){
+    private static void compress(FileIO fio, HuffmanCompressor compressor){
         
         
         String path = "testifilu2.txt";
@@ -43,21 +43,21 @@ public class Main {
             System.out.println(data[i]);
         }
         
-        HuffmanNode tree = toperator.constructTree(data);
         
         
-        byte[] compr = compressor.compress(data, tree);
-        byte[] finalComprData = compressor.concatTreeWithByteArray(compr, tree);
+        
+        byte[] compr = compressor.compress(data);
+        
         
         try {
-            fio.write(finalComprData, path);
+            fio.write(compr, path + ".huf");
         } catch (Exception e) {
             System.out.println("Tallentaminen feilas:");
             System.out.println(e);
         }
     }
-    private static void uncompress(FileIO fio, HuffmanCompressor compressor, TreeOperator toperator){
-        String path = "testifilu.txt.huf";
+    private static void uncompress(FileIO fio, HuffmanCompressor compressor){
+        String path = "testifilu2.txt.huf";
         
         byte[] data = null;
         try {
@@ -66,7 +66,14 @@ public class Main {
             System.out.println("luku feilas");
         }
         
-        compressor.decompress(data, toperator);
+        byte[] uncompr = compressor.decompress(data);
+        
+        try {
+            fio.write(uncompr, path + ".ava");
+        } catch (Exception e) {
+            System.out.println("Tallentaminen feilas:");
+            System.out.println(e);
+        }
     }
     
 }

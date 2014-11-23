@@ -54,7 +54,7 @@ public class FileIOTest extends TestCase {
      */
     public void testWrite() throws Exception{
         byte[] data = {97, 98};
-        fio.write(data, "testwrite");
+        fio.write(data, "testwrite.huf");
         
         byte[] expData = fio.read("testwrite.huf");
 

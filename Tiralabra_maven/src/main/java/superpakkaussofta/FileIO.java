@@ -32,7 +32,7 @@ public class FileIO {
      * @throws IOException 
      */
     public void write(byte[] data, String path) throws IOException{
-        Path p = Paths.get(path + ".huf");
+        Path p = Paths.get(path);
         Files.write(p, data, StandardOpenOption.CREATE);
     }
 }

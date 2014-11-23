@@ -38,6 +38,17 @@ public class HuffmanNode {
         this.right = right;
     }
     /**
+     * Searches through the tree to find the real byte counterpart for
+     * given binary code.
+     * 
+     * @param bin binary String
+     * @return corresponding byte
+     */
+    public byte getByteFromBinary(String bin){
+        
+        return 0;
+    }
+    /**
      * @return the left
      */
     public HuffmanNode getLeft() {

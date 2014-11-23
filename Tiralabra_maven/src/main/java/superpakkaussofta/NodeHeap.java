@@ -29,11 +29,7 @@ public class NodeHeap {
         pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         int[] counts = countBytes(data);
         
-        for(int i = 0; i < counts.length; i++){
-            if(counts[i] > 0){
-                pque.add(new HuffmanNode((byte) (i - 128), counts[i]));
-            }
-        }
+        constructHeapFromByteCounts(counts);
     }
     /**
      * Constructs a min heap from a Huffman tree String representation.
@@ -43,21 +39,37 @@ public class NodeHeap {
     public NodeHeap(String tree){
         pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         
+        int[] counts = new int[256];
+        
         int ia = 0;
         int ib = -1;
-        byte b;
-        int counts;
+        int bytee;
+        int count;
         
         while(ib + 1 < tree.length()){
             tree = tree.substring(ib + 1);
             ia = tree.indexOf('a');
             ib = tree.indexOf('b');
-            b = (byte) Integer.parseInt(tree.substring(0, ia));
-            counts = Integer.parseInt(tree.substring(ia + 1, ib));
+            bytee = Integer.parseInt(tree.substring(0, ia));
+            count = Integer.parseInt(tree.substring(ia + 1, ib));
             
-            pque.add(new HuffmanNode(b, counts));
+            counts[bytee + 128] = count;
         }
         
+        constructHeapFromByteCounts(counts);
+        
+    }
+    /**
+     * Construct a heap based on bytes' counts
+     * 
+     * @param counts 
+     */
+    private void constructHeapFromByteCounts(int[] counts){
+        for(int i = 0; i < counts.length; i++){
+            if(counts[i] > 0){
+                pque.add(new HuffmanNode((byte) (i - 128), counts[i]));
+            }
+        }
     }
     /**
      * Counts and returns the amount of each different byte found in data.

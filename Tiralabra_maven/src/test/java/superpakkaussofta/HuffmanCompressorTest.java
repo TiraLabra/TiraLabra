@@ -59,7 +59,7 @@ public class HuffmanCompressorTest {
     @Test
     public void testCompress() {
         byte[] expd = {5, 5};
-        byte[] resd = comp.compress(data, n);
+        byte[] resd = comp.compress(data);
         
         assertArrayEquals(expd, resd);
     }
