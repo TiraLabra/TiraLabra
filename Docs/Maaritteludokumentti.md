@@ -15,10 +15,10 @@ Labyrintin teossa tullaan todennäköisesti käyttämään seuraavia tietorakent
 * Pino: Tila- ja aikavaativuus ovat molemmat O(1) eli vakio
 * Jono: Tila- ja aikavaativuus ovat molemmat O(1)
 * Keko: Aikavaativuus on useimmiten O(log n), tilavaativuus voi olla O(log n) tai O(1) riippuen käytetäänkö operaatioissa rekursiota.
-
-
+* Lista: Labyrintin toteutuksessa käytetään linkitettyä listaa poissuljettujen solmujen merkitsemiseksi.
 
 # Lähteet
 http://www.policyalmanac.org/Finnish/astar_fin.pdf
 http://www.redblobgames.com/pathfinding/a-star/introduction.html
 http://en.wikipedia.org/wiki/A*_search_algorithm
+Tietorakenteet ja algoritmit-kurssin luentomateriaali
