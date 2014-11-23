@@ -27,8 +27,6 @@ public class Main {
         
     }
     private static void compress(FileIO fio, HuffmanCompressor compressor){
-        
-        
         String path = "testifilu2.txt";
         
         byte[] data = null;
@@ -42,9 +40,6 @@ public class Main {
         for(int i = 0; i < data.length; i++){
             System.out.println(data[i]);
         }
-        
-        
-        
         
         byte[] compr = compressor.compress(data);
         

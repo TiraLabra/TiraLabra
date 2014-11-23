@@ -30,23 +30,11 @@ public class HuffmanNode {
      * 
      * @param left left child
      * @param right right child
-     * @param freq byte's or child nodes' combined frequency
      */
     public HuffmanNode(HuffmanNode left, HuffmanNode right){
         this.freq = left.getFreq() + right.getFreq();
         this.left = left;
         this.right = right;
-    }
-    /**
-     * Searches through the tree to find the real byte counterpart for
-     * given binary code.
-     * 
-     * @param bin binary String
-     * @return corresponding byte
-     */
-    public byte getByteFromBinary(String bin){
-        
-        return 0;
     }
     /**
      * @return the left

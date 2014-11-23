@@ -20,6 +20,9 @@ public class NodeHeap {
     
     PriorityQueue<HuffmanNode> pque;
     
+    public NodeHeap(){
+        pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
+    }
     /**
      * Constructs a min heap based on frequancy of bytes in data.
      * 
@@ -135,6 +138,15 @@ public class NodeHeap {
     @Override
     public boolean equals(Object o){
         //TODO
+        /*
+        if(!(o instanceof NodeHeap)){
+            return false;
+        }
+        
+        NodeHeap ob = (NodeHeap) o;
+        
+        return pque.equals(ob.pque);
+        */
         return false;
     }
 }

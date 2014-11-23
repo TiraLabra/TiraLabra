@@ -55,10 +55,14 @@ public class HuffmanCompressorTest {
 
     /**
      * Test of compress method, of class HuffmanCompressor.
+     * 
+     * Bytes 49, 48, 97, 49, 98, 50, 48, 97, 50, 98, 99 are the Huffman tree.
+     * Bytes 5 and 5 are compressed data: 0000010100000101
+     * 
      */
     @Test
     public void testCompress() {
-        byte[] expd = {5, 5};
+        byte[] expd = {49, 48, 97, 49, 98, 50, 48, 97, 50, 98, 99, 5, 5};
         byte[] resd = comp.compress(data);
         
         assertArrayEquals(expd, resd);
@@ -81,6 +85,18 @@ public class HuffmanCompressorTest {
     public void testConcatTreeWithByteArray() {
         byte[] expd = {49, 48, 97, 49, 98, 50, 48, 97, 50, 98, 99, 20, 10, 20};
         byte[] resd = comp.concatTreeWithByteArray(data, n);
+        
+        assertArrayEquals(expd, resd);
+    }
+    /**
+     * Test decompression.
+     * 
+     */
+    @Test
+    public void testDecompress(){
+        byte[] expd = {20, 10, 20};
+        byte[] dataa = {49, 48, 97, 49, 98, 50, 48, 97, 50, 98, 99, 5, 5};
+        byte[] resd = comp.decompress(dataa);
         
         assertArrayEquals(expd, resd);
     }

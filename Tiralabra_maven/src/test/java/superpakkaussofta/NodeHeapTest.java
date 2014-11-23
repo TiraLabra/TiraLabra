@@ -6,7 +6,6 @@
 
 package superpakkaussofta;
 
-import com.sun.net.httpserver.Authenticator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +41,36 @@ public class NodeHeapTest {
     @After
     public void tearDown() {
     }
-
+    
+    /**
+     * Tests building a heap from a byte array
+     */
+    @Test
+    public void testBuildHeapFromData(){
+        byte[] b = {20, 10, 20};
+        
+        NodeHeap res = new NodeHeap(b);
+        NodeHeap exp = new NodeHeap();
+        exp.add(new HuffmanNode((byte) 20, 2));
+        exp.add(new HuffmanNode((byte) 10, 1));
+        
+        assertEquals(exp, res);
+    }
+    
+    /**
+     * Tests building a heap from a String
+     */
+    @Test
+    public void testBuildHeapFromString(){
+        
+        NodeHeap res = new NodeHeap("20a2b10a1b");
+        NodeHeap exp = new NodeHeap();
+        exp.add(new HuffmanNode((byte) 20, 2));
+        exp.add(new HuffmanNode((byte) 10, 1));
+        
+        assertEquals(exp, res);
+    }
+    
     /**
      * Test of add method, of class NodeHeap.
      */
@@ -53,7 +81,6 @@ public class NodeHeapTest {
         
         assertEquals(new HuffmanNode((byte) 30, 1), heap.poll());
     }
-
     /**
      * Test of poll method, of class NodeHeap.
      */
