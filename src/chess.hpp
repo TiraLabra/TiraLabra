@@ -18,6 +18,12 @@ enum pieceType {
 
 enum pieceColor { PC_Empty, PC_White, PC_Black };
 
+class chessPiece;
+class chessBoard;
+class moveTree;
+#include "structures.hpp"
+
+
 class chessPiece {
 public:
     chessPiece() {}
@@ -116,12 +122,26 @@ public:
 
     /**
      * Evaluates the worth of a given game state for the current player or the opponent.
-     * @param bmax true if evaluating for the current player (AI), false if for opponent
+     * @param color which player to evaluate position for
      * @return value of position
      */
     int evaluate(bool bmax) {
-        // TODO implement!
-        return 0;
+        pieceColor color;
+        if (bmax) color = currentPlayer;
+        else color = currentPlayer == PC_White ? PC_Black : PC_White;
+        int score = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                chessPiece &piece = gameState[i][j];
+                int pieceValue = piece.type * 10;
+                if (piece.color == color)
+                    score += pieceValue;
+                else
+                    score -= pieceValue;
+                
+            }
+        }
+        return score;
     }
 
     /**
@@ -147,77 +167,112 @@ public:
             return false;
 
         switch (p1.type) {
-            case PT_Pawn: {
-                int ydiff = y2 - y1;
+        case PT_Pawn: {
+            int ydiff = y2 - y1;
 
-                // make sure the pawn does not move backwards 
-                if ((p1.color == PC_White && ydiff <  1) ||
-                    (p1.color == PC_Black && ydiff > -1 ))
+            // make sure the pawn does not move backwards 
+            if ((p1.color == PC_White && ydiff <  1) ||
+                (p1.color == PC_Black && ydiff > -1 ))
+                return false;
+                
+            // pawn can't move more than two squares
+            if ((p1.color == PC_White && ydiff >  2) ||
+                (p1.color == PC_Black && ydiff < -2 ))
+                return false;
+
+            int xdiff = abs(x2 - x1);
+            if (xdiff > 1) return false;
+
+            // trying to attack another piece
+            if (xdiff == 1 && p2.type == PT_Empty) 
+                return false;
+
+            break;
+        }
+
+        case PT_Bishop: {
+            if (abs(x2 - x1) != abs(y2 - y1))
+                return false;
+            int xd = x2 > x1 ? 1 : -1,
+                yd = y2 > y1 ? 1 : -1;
+
+            // see if we have another piece in the way
+            int nsteps = abs(x2 - x1);
+            for (int x=x1, y=y1, n=0; n < nsteps; n++, x+=xd, y+=yd)
+                // return false if we hit a pawn before the intended destination
+                if (gameState[x][y].type != PT_Empty && x != x2 && y != y2)
+                    return false;
+
+            break;
+        }
+
+        case PT_Knight: {
+            if ( ! ((abs(x2 - x1) == 1 && abs(y2 - y1) == 2) ||
+                    (abs(x2 - x1) == 2 && abs(y2 - y1) == 1)) )
+                return false;
+            break;
+        }
+
+        case PT_Rook: {
+            if ( ((x1 == x2 && y1 != y2) || (x1 != x2 && y1 != y2)) == false )
+                return false;
+                
+            int xd = 0, yd = 0;
+            if (x1 != x2) xd = x2 > x1 ? 1 : -1;
+            if (y1 != y2) yd = y2 > y1 ? 1 : -1;
+
+            // see if we have another piece in the way
+            int nsteps = 0;
+            if (x2 != x1) nsteps = abs(x2 - x1);
+            else nsteps = abs(y2 - y1);
+
+            for (int x=x1, y=y1, n=0; n < nsteps; n++, x+=xd, y+=yd)
+                // return false if we hit a pawn before the intended destination
+                if (gameState[x][y].type != PT_Empty && x != x2 && y != y2)
+                    return false;
+            break;
+        }
+
+        case PT_Queen: 
+        {
+            // TODO should be refactored
+
+            int xd = 0, yd = 0, nsteps = 0;
+                
+            if (abs(x2 - x1) == abs(y2 - y1))  {
+                // diagonal move (like Bishop)
+                xd = x2 > x1 ? 1 : -1;
+                yd = y2 > y1 ? 1 : -1;
+
+                nsteps = abs(x2 - x1);
+            }
+            else if ( (x1 == x2 && y1 != y2) || (x1 != x2 && y1 != y2) ) {
+                // straight move (like Rook)
+                    
+                if (x1 != x2) xd = x2 > x1 ? 1 : -1;
+                if (y1 != y2) yd = y2 > y1 ? 1 : -1;
+
+                if (x2 != x1) nsteps = abs(x2 - x1);
+                else nsteps = abs(y2 - y1);
+            }
+            else
+                return false;
+                
+            // see if we have another piece in the way
+            for (int x=x1, y=y1, n=0; n < nsteps; n++, x+=xd, y+=yd)
+                // return false if we hit a pawn before the intended destination
+                if (gameState[x][y].type != PT_Empty && x != x2 && y != y2)
                     return false;
                 
-                // pawn can't move more than two squares
-                if ((p1.color == PC_White && ydiff >  2) ||
-                    (p1.color == PC_Black && ydiff < -2 ))
-                    return false;
+            break;
+        }
 
-                int xdiff = abs(x2 - x1);
-                if (xdiff > 1) return false;
+        case PT_King:
+            if (abs(y2 - y1) > 1 || abs(x2 - x1) > 1)
+                return false;
+            break;
 
-                // trying to attack another piece
-                if (xdiff == 1 && p2.type == PT_Empty) 
-                    return false;
-
-                break;
-            }
-
-            case PT_Bishop: {
-                if (abs(x2 - x1) != abs(y2 - y1))
-                    return false;
-                int xd = x2 > x1 ? 1 : -1,
-                    yd = y2 > y1 ? 1 : -1;
-
-                // see if we have another piece in the way
-                int nsteps = abs(x2 - x1);
-                for (int x=x1, y=y1, n=0; n < nsteps; n++, x+=xd, y+=yd)
-                    // return false if we hit a pawn before the intended destination
-                    if (gameState[x][y].type != PT_Empty && x != x2 && y != y2)
-                        return false;
-
-                break;
-            }
-
-            case PT_Knight: {
-                if (x1 != x2 && y1 != y2)
-                    return false;
-
-                int xd = x2 > x1 ? 1 : -1,
-                    yd = y2 > y1 ? 1 : -1;
-
-                // see if we have another piece in the way
-                int nsteps = abs(x2 - x1);
-                for (int x=x1, y=y1, n=0; n < nsteps; n++, x+=xd, y+=yd)
-                    // return false if we hit a pawn before the intended destination
-                    if (gameState[x][y].type != PT_Empty && x != x2 && y != y2)
-                        return false;
-
-                break;
-            }
-
-            case PT_Rook: {
-                // TODO implement!
-                break;
-            }
-
-            case PT_Queen:
-                // TODO implement!
-                break;
-
-            case PT_King:
-                if (abs(y2 - y1) > 1 || abs(x2 - x1) > 1)
-                    return false;
-                break;
-
-            default: break;
+        default: break;
         }
 
         return true;
@@ -269,6 +324,7 @@ public:
     };
 
     gameState_t gameState;
+    pieceColor currentPlayer;
 };
 
 /**
