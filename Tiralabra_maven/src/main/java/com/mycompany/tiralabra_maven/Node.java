@@ -5,13 +5,11 @@ package com.mycompany.tiralabra_maven;
  *
  */
 
-public class Node {
+public class Node implements Comparable<Node> {
     /** Node's x coordinate */
     private int x;
     /** Node's y coordinate */
     private int y;
-    /** A property to check if Node is a wall */
-    private boolean wall;
     /** Contains info if the Node has a parent Node (ie previous step) */
     private Node parent;
     /** Node's cost */
@@ -85,15 +83,7 @@ public class Node {
      * @return whether the node is a wall
      */
     public boolean isWall() {
-        return wall;
-    }
-
-
-    /**
-     * Set the Node as a wall
-     */
-    public void setWall() {
-        this.wall = true;
+        return this.character.equals('#');
     }
 
     /**
@@ -112,4 +102,19 @@ public class Node {
     }
 
 
+    /** Compares the two nodes and returns which one is cheaper: */
+    @Override
+    public int compareTo(Node o) {
+        if (this.getCost() > o.getCost()) {
+            return 1;
+        } else if (this.getCost() == o.getCost()) {
+            return 0;
+        }
+        return -1;
+    }
+
+    /** */
+    public boolean isSameNode(Node compare) {
+        return compare.getX() == this.getX() && compare.getY() == this.getY();
+    }
 }

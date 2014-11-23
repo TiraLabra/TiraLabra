@@ -1,8 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
-import java.util.ArrayList;
+import com.mycompany.tiralabra_maven.DataStructures.MyList;
+
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -10,10 +10,13 @@ import java.util.PriorityQueue;
  * The Map consists of coordinates called Nodes. @see Node
  * The implementation is currently a rough draft and missing some intended features, like reading and interpreting
  * the map, creating nodes, setting map size, finding neighbors of current node, chopping the main method into
- * multiple methods and refactoring it to become more readable.
+ * multiple methods and refactoring it to become more readable. Some of the current methods are redundant and need
+ * to be cleaned.
  */
 public class Astar {
     public static void main(String[] args) {
+        /** Temporarily here for timing purposes */
+        long aikaAlussa = System.currentTimeMillis();
         /** starting point of the map */
         Node start = new Node(1, 2);
         /** ending point of the map */
@@ -31,6 +34,7 @@ public class Astar {
         Node[][] nodes = kartta.getMap();
 
         /** list of unchecked nodes */
+
         PriorityQueue<Node> open = new PriorityQueue<Node>(100, new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
@@ -40,10 +44,11 @@ public class Astar {
         });
 
         open.add(start);
+        //MyMinHeap open = new MyMinHeap(nodes.length);
 
         /** list of nodes that have been checked */
-        List closed = new ArrayList();
-
+        //List closed = new ArrayList();
+        MyList closed = new MyList();
         /**
          * find neighbors of the start node which are walkable
          * find out all possible directions of the current node
@@ -62,9 +67,10 @@ public class Astar {
                 end.setParent(current.getParent());
                 break;
             }
-            //System.out.println("while");
+
             /** current = remove lowest rank item from OPEN */
             current = open.poll();
+            //current = open.deleteMinimum();
             //System.out.println("current x y " + current.getX() + " " +  current.getY());
             /** add current to the searched list */
             closed.add(current);
@@ -114,7 +120,8 @@ public class Astar {
                              * add neighbor to OPEN
                              */
                             neighbor.setCost((int) (nextStepCost));
-                                open.add(neighbor);
+                            open.add(neighbor);
+                            //open.insert(neighbor);
 
                             //System.out.print("Add to open " + neighbor.getX() + " "+ neighbor.getY());
                             //System.out.println("cost " + neighbor.getCost());
@@ -131,28 +138,26 @@ public class Astar {
         }
 
         /**
-         * reconstruct reverse path from goal to start
+         * Reconstruct reverse path from goal to start
          * by following parent pointers */
-
-        ArrayList<Node> path = new ArrayList();
-
         Node help;
-        /** Skip through the end node */
+        /** Skip the end node */
         help = current.getParent();
         current = help;
-        /** Go through all the nodes in the path: */
+        /** Go through all the nodes in the path and mark them with character P: */
         while (current.getParent() != null) {
-            path.add(current);
+            //path.add(current);
+            help.setCharacter('P');
             help = current.getParent();
             current = help;
         }
 
-        /** Mark the character of the path nodes as 'P' */
-        for(Node n : path) {
-            n.setCharacter('P');
-        }
         /** Print the final map! */
         kartta.printMap();
+
+        /** Tells us how long it took to run the algorithm: */
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
 
@@ -199,8 +204,7 @@ public class Astar {
          double dx = end.getX() - xp;
          double dy = end.getY() - yp;
          /** Calculate Euclidean distance */
-         double heuristic = Math.sqrt((dx * dx) + (dy * dy));
-         return heuristic;
+         return Math.sqrt((dx * dx) + (dy * dy));
     }
 
 
@@ -211,17 +215,18 @@ public class Astar {
      * @param end The end Node at the map
      * @return returns cost calculated by distance
      */
-    public static double calculateHeuristicXY(int xp, int yp, Node end) {
+
+    //public static double calculateHeuristicXY(int xp, int yp, Node end) {
         /** dx is an approximation of the distance between the two nodes' x coordinates */
-        double dx = Math.abs(end.getX() - xp);
+        //double dx = Math.abs(end.getX() - xp);
         /** dy is an approximation of the distance between the two nodes' y coordinates */
-        double dy = Math.abs(end.getY() - yp);
+        //double dy = Math.abs(end.getY() - yp);
         /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
          *  hence it's very fast */
-        double heuristic;
-        heuristic = dx+dy;
-        return heuristic;
-    }
+        //double heuristic;
+        //heuristic = dx+dy;
+        //return heuristic;
+    //}
 
     /**
      * Same as previous method but it is comparing two Nodes instead of points, might scrap later

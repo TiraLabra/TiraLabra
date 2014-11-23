@@ -31,8 +31,7 @@ public class Kartta {
                 this.map[y][x] = new Node(x, y);
                 this.map[y][x].setCost(2000);
                 //set wall manually
-                if ((x == 2 && y == 1||(x == 2 && y == 2) || (x == 2 && y == 3)) || (x == 2 & y == 4) ){
-                    this.map[y][x].setWall();
+                if ((x == 2 && y == 1||(x == 2 && y == 2) || (x == 2 && y == 3) ||  (x == 3 && y == 1) ||  (x == 4 && y == 1))){
                     this.map[y][x].setCharacter('#');
                 } else if (isSamePointOnMap(x, y, start)) {
                     this.map[y][x].setCharacter('o');
