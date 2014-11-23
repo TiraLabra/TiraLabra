@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import tira.PrioriteettiJonoListalla;
-import tira.PrioriteettiJonoListalla;
 import verkko.Kaari;
 import verkko.Pysakki;
 import verkko.Verkko;
@@ -85,15 +84,72 @@ public class AStar {
      */
     
     /**
-     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
+     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun. Käyttää omaa prioriteettijonoa
      * 
      *
      * @param maali
      * @param alku
      * @return
      */    
-    public Reitti etsiReitti(Pysakki alku, Pysakki maali) {
-        return this.etsiReitti(alku, maali, 0);
+    public Reitti etsiReittiOma(Pysakki alku, Pysakki maali) {
+        Reitti alkuTila = new Reitti();
+        alkuTila.setKustannus(0);
+        alkuTila.setSolmu(alku);
+        alkuTila.setArvioituKustannus(laskin.heuristiikka(alku, maali));
+        
+        int   aika         = 45; // vaikuttaa prioriteettijonon oletuskokoon
+        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettä
+        Comparator<Reitti> comparator = new Comparator<Reitti>() {
+
+            public int compare(Reitti t1, Reitti t2) {
+                return (int) ( tarkkuus*(t1.getArvioituKustannus() + t1.getKustannus() - t2.getArvioituKustannus() - t2.getKustannus()));
+            }
+        };
+        
+        PrioriteettiJonoListalla<Reitti> kasittelyJarjestys;
+        kasittelyJarjestys= new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
+        
+        kasittelyJarjestys.add(alkuTila);
+        
+        ArrayList<Reitti> parhaatReitit = new ArrayList();
+        double lowestCost = Integer.MAX_VALUE;
+
+        while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
+
+            Reitti kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois käsiteltäväksi
+            Pysakki solmu = kasiteltava.getSolmu();
+            // DEBUG: tietoa käsittelystä ja heuristiikan toiminnasta
+            debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
+            debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
+            if (solmu.equals(maali)) {
+                if (!this.debugMode) {
+                    parhaatReitit.add(kasiteltava); // palautetaan vain paras
+                    break;
+                } else {
+                    if (kasiteltava.getKustannus() < lowestCost) {
+                        // pienempi kuin, pitäisi tapahtua vain kerran
+                        lowestCost = kasiteltava.getKustannus();
+                    } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
+                        break;  // parempi ratkaisu löytynyt, tämä on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
+                    }
+                    parhaatReitit.add(kasiteltava);
+                    continue;
+                }
+            }
+            if (kasiteltava.getKustannus() + kasiteltava.getArvioituKustannus() > lowestCost) {
+                continue;
+            }
+            for (Pysakki naapuri : verkko.getNaapurit(solmu)) {
+                for (Kaari kaari : verkko.getKaaret(solmu, naapuri)) {
+                    Reitti seuraava = this.laskeSeuraava(kasiteltava, kaari, naapuri, maali);
+                    debugKaari(kaari, seuraava, naapuri);
+                    kasittelyJarjestys.add(seuraava);
+                }
+            }
+        }
+
+        debugRatkaisu(parhaatReitit);
+        return parhaatReitit.get(0);
     }    
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
@@ -101,10 +157,9 @@ public class AStar {
      *
      * @param maali
      * @param alku
-     * @param mode Valinta: mitä prioriteettijonoa käytetään. 0=javan, 1=oma prioriteettijono listalla
      * @return
      */
-    public Reitti etsiReitti(Pysakki alku, Pysakki maali, int mode ) {
+    public Reitti etsiReitti(Pysakki alku, Pysakki maali) {
 
         Reitti alkuTila = new Reitti();
         alkuTila.setKustannus(0);
@@ -121,9 +176,7 @@ public class AStar {
         };
         
         Queue<Reitti> kasittelyJarjestys;
-        if (mode==1) 
-            kasittelyJarjestys = new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
-        else kasittelyJarjestys= new PriorityQueue(aika*tarkkuus, comparator);
+        kasittelyJarjestys= new PriorityQueue(aika*tarkkuus, comparator);
         
         kasittelyJarjestys.add(alkuTila);
         

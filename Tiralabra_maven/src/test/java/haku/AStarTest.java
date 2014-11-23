@@ -107,7 +107,10 @@ public class AStarTest extends TestCase {
         AStar aStar = new AStar( verkko, reittiLaskin );
         aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
-        Reitti reitti = aStar.etsiReitti(alku, maali, mode );
+        Reitti reitti;
+        if ( mode == 0)  reitti = aStar.etsiReitti(alku, maali);
+        else reitti = aStar.etsiReittiOma(alku, maali);
+        
         long stop = System.currentTimeMillis();
         return stop-start;        
     }

@@ -15,11 +15,10 @@ import java.util.PriorityQueue;
  * http://en.wikipedia.org/wiki/Priority_queue#Specialized_heaps
  *
  * Lisävaatimus: lisäykset ovat prioriteetiltaan suurempia kuin ensimmäinen
- * Perii PriorityQueue:n jotta testaaminen on helpompaa
  *
  * @author E
  */
-public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
+public class PrioriteettiJonoListalla<E> /*extends PriorityQueue<E>*/ {
 
     /**
      * Taulukon maksimikoko 2^31-1
@@ -122,7 +121,7 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      * @param e Lisättävä arvo
      * @return True
      */
-    @Override
+    // @Override
     public boolean add(E e) {
         if (this.ensimmainen == null) {
             this.setEnsimmainen(e);
@@ -164,7 +163,7 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      *
      * @return
      */
-    @Override
+    // @Override
     public E peek() {
         if (isEmpty()) {
             return null;
@@ -184,7 +183,6 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      *
      * @return
      */
-    @Override
     public E poll() {
         if (head < 0 || head >= maxSize || this.isEmpty()) {
             return null;
@@ -202,7 +200,6 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      *
      * @return true, jos tyhjä
      */
-    @Override
     public boolean isEmpty() {
         return size <= 0;
     }
@@ -212,7 +209,6 @@ public class PrioriteettiJonoListalla<E> extends PriorityQueue<E> {
      *
      * @return Jonon koko
      */
-    @Override
     public int size() {
         return size;
     }

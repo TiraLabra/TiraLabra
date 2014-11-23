@@ -35,7 +35,7 @@ public class App {
      */
     public static ReittiLaskin bfsVaihdoton = new ReittiLaskin(1, 0, 3, 0, 0, sporanNopeus);
     /**
-     * Matka-aikaa mininmoiva laskin
+     * Matka-aikaa minimoiva laskin
      */
     public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus);
     /**
@@ -96,12 +96,12 @@ public class App {
         for (int i = 0; i < testSize; i++) {
 
             start = System.currentTimeMillis();
-            aOma.etsiReitti(alku, loppu, 1);
+            aOma.etsiReittiOma(alku, loppu);
             stop = System.currentTimeMillis();
             timeOma += stop - start;
 
             start = System.currentTimeMillis();
-            aJava.etsiReitti(alku, loppu, 0);
+            aJava.etsiReitti(alku, loppu);
             stop = System.currentTimeMillis();
             timeJava += stop - start;
 
