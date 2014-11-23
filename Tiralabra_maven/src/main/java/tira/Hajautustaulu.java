@@ -243,8 +243,9 @@ public class Hajautustaulu<K, V> {
      * @return Taulun indeksi
      */
     private int hashKey(K k) {
-        // WIP tänne jotain
-        int i = k.hashCode() % this.taulunKoko;
+        // WIP tänne jotain fiksumpaa
+        // int p = 763; // h=k%p%n
+        int i = k.hashCode()  % this.taulunKoko;
         // System.out.println(""+i+"="+k.hashCode()+" mod "+this.maksimiKoko);
         if (i < 0) {
             i = -i; // negatiiviset hashCodet käsitellään näin
@@ -269,11 +270,11 @@ public class Hajautustaulu<K, V> {
                 + ", korvaukset=" + korvaukset
                 + ", poistot=" + poistot
                 + ", uudelleenHajautukset=" + uudelleenHajautukset
-                + this.debugTormaysListat()
+                + ", "+this.debugTormaysListat()
                 + '}';
         System.out.println("" + s);
-        System.out.println("CONTENTS={");
-        System.out.println(debugContents()+"}");
+        // System.out.println("CONTENTS={");
+        // System.out.println(debugContents()+"}");
         
         return s;
     }
@@ -296,9 +297,9 @@ public class Hajautustaulu<K, V> {
             sum += s;
             n++;
         }
-        String s = "tormaysListat{"
-                + "keskimaarainenKoko=" + (sum / n)
-                + "suurinKoko=" + max
+        String s = "tormaysLista{"
+                + ", keskimaarainenKoko=" + (sum / n)
+                + ", suurinKoko=" + max
                 + "}";
         return s;
     }

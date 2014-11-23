@@ -54,13 +54,13 @@ public class App {
     public static void main(String[] args) {
 
         // debugAStar();
-        debugAStarVertailu();
+        // debugAStarVertailu();
         // debugAStarHeuristiikka();
         // debugLinkitettyLista();
         // debugLista();
         // debugHajautustaulu();
-        App.debugHajautustauluPysakit();
-        debugVerkkoOmilla();
+        // debugHajautustauluPysakit();
+        // debugVerkkoOmilla();
         debugOmia();
 
     }
@@ -268,11 +268,12 @@ public class App {
         for (Pysakki p : verkko.getPysakit()) {
             pysakit.put(p.getKoodi(), p);
         }
-        // pysakit.debugPrint();
+        pysakit.debugPrint();
         Hajautustaulu<String, Linja> linjat = new Hajautustaulu(17);
         for (Linja l : verkko.getLinjat()) {
             linjat.put(l.getKoodi(), l);
         }
+        linjat.debugPrint();
     }
 
     private static void debugVerkkoOmilla() {
@@ -295,7 +296,7 @@ public class App {
     
     private static void debugOmia() {
         System.out.println("Omat vs javan tietorakenteet käytännössä");
-        long a, b, j = 0, o = 0;
+        long a, b, j = 0, o = 0, jOma = 0;
         int n = 10;
         Verkko verkko = new Verkko();
         VerkkoOmallaTietorakenteella verkkoX = new VerkkoOmallaTietorakenteella();
@@ -306,26 +307,33 @@ public class App {
         ReittiLaskinOmallaTietorakenteella r2= new ReittiLaskinOmallaTietorakenteella(r1.getAikaPaino(),r1.getMatkaPaino(),r1.getVaihtoPaino()
                 ,r1.getHeurAikaPaino(),r1.getHeurMatkaPaino(),r1.getHeurKulkunopeus()); 
         AStar aJava = new AStar(verkko,r1);
+        AStar aJavaOmaPrioriteettijono = new AStar(verkko,r1);
         AStarOmallaTietorakenteella aOma =new AStarOmallaTietorakenteella(verkkoX,r2);
         
         aJava.setDebugMode(true);   
         aJava.setDebugPrint(false);
         aOma.setDebugMode(true);  
         aOma.setDebugPrint(false);
+        aJavaOmaPrioriteettijono.setDebugMode(true);  
+        aJavaOmaPrioriteettijono.setDebugPrint(false);        
         
         for (int i = 0; i < n; i++) {
             a = System.currentTimeMillis();
             aJava.etsiReitti(alku, loppu);
             b = System.currentTimeMillis();
             j += b - a;
-
+            a = System.currentTimeMillis();
+            aJavaOmaPrioriteettijono.etsiReittiOma(alku, loppu);
+            b = System.currentTimeMillis();
+            jOma += b - a;
             a = System.currentTimeMillis();
             aOma.etsiReitti(alku, loppu);
             b = System.currentTimeMillis();
             o += b - a;
         }
-        System.out.println("Javan aika " + (j/(n)) + " vs omilla tietorakenteilla " + (o/(n)));  
+        System.out.println("Javan aika " + (j/(n)) + " vs omilla tietorakenteilla " + (o/(n))+ " vs omalla pq:lla " + (jOma/(n)) );  
         System.out.println(""+aJava.getRatkaisu());
         System.out.println(""+aOma .getRatkaisu());
+        System.out.println(""+aJavaOmaPrioriteettijono .getRatkaisu());
     }
 }
