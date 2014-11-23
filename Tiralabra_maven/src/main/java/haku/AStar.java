@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import tira.PrioriteettiJonoListalla;
 import tira.PrioriteettiJonoListalla;
 import verkko.Kaari;
@@ -119,7 +120,7 @@ public class AStar {
             }
         };
         
-        PriorityQueue<Reitti> kasittelyJarjestys;
+        Queue<Reitti> kasittelyJarjestys;
         if (mode==1) 
             kasittelyJarjestys = new PrioriteettiJonoListalla(aika*tarkkuus, comparator);
         else kasittelyJarjestys= new PriorityQueue(aika*tarkkuus, comparator);

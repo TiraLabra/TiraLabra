@@ -3,9 +3,10 @@ package com.mycompany.tiralabra_maven;
 import haku.AStar;
 import haku.Reitti;
 import haku.ReittiLaskin;
-import java.util.Arrays;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
+import tira.Hajautustaulu;
+import tira.Pari;
 import verkko.Pysakki;
 import verkko.Verkko;
 
@@ -49,10 +50,11 @@ public class App {
     public static void main(String[] args) {
 
         // debugAStar();
-        debugAStarVertailu();
+        // debugAStarVertailu();
         // debugAStarHeuristiikka();
         // debugLinkitettyLista();
         // debugLista();
+        debugHajautustaulu();
 
     }
 
@@ -82,18 +84,20 @@ public class App {
 
         Pysakki alku = verkko.getPysakit()[5];
         Pysakki loppu = verkko.getPysakit()[66];
-        int testSize = 10;
+        int testSize = 100;
         long timeOma = 0, timeJava = 0, start, stop;
         for (int i = 0; i < testSize; i++) {
 
             start = System.currentTimeMillis();
-            aJava.etsiReitti(alku, loppu, 0);
-            stop = System.currentTimeMillis();
-            timeJava += stop - start;
-            start = System.currentTimeMillis();
             aOma.etsiReitti(alku, loppu, 1);
             stop = System.currentTimeMillis();
-            timeOma += stop - start;            
+            timeOma += stop - start;  
+
+            start = System.currentTimeMillis();
+            aJava.etsiReitti(alku, loppu, 0);
+            stop = System.currentTimeMillis();
+            timeJava += stop - start;    
+             
         }
         timeJava /= testSize;
         timeOma /= testSize;
@@ -217,5 +221,54 @@ public class App {
             System.out.println("" + s);
         }
         System.out.println("" + lista.size());
+    }
+    
+    private static void debugHajautustaulu() {
+        Hajautustaulu<String,String> ht = new Hajautustaulu();
+        LinkitettyLista<Pari<String,String>> ll = new LinkitettyLista();
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"};
+        int n = e.length;
+        System.out.println("put");
+        for ( int i = 0; i<n;i++) {
+            String k = e[i], v=e[n-1-i];
+            Pari<String,String> pari;
+            pari = new Pari(k, v);
+            ll.add(pari);
+            System.out.println(""+ht.put(e[i], e[n-1-i]));
+        }
+        System.out.println("get");
+        for (int i = 0; i<n;i++ ) {
+            String k = e[i], v=e[n-1-i];
+            System.out.println(""+ht.get(k)+" == "+v);
+        }
+        System.out.println("remove");
+        for (int i = 0; i<n;i++ ) {
+            String k = e[i], v=e[n-1-i];
+            System.out.println(""+ht.remove(k)+" == "+v);
+        }    
+        System.out.println("hmm");
+        for (int i = 0; i<n;i++ ) {
+            String k = e[i], v=e[n-1-i];
+            System.out.println(""+ht.get(k)+" == "+v);
+        }
+        System.out.println("??? "+ht.contains("kukkia"));
+        System.out.println("??? "+ht.contains("Koira"));
+        
+        
+        System.out.println(""+ll);
+        Pari np = new Pari("Kissa",null);
+        // System.out.println(""+ll.indexOf(np));
+        Pari p = ll.remove(0);// ll.remove(np);
+        System.out.println(""+p.toString());
+        System.out.println("FOKIT");
+        // while ( !ll.isEmpty() ) System.out.println(""+ll.poll());
+        for ( int i=0; i< ll.size(); i++ ) System.out.println(""+ll.get(i));
+        System.out.println("???");
+        for ( Pari p2 : ll ) {
+            System.out.println(""+p2);
+        }
+        //System.out.println(""+ll.peek());
+        System.out.println(""+ll+", size "+ll.size());
+        
     }
 }

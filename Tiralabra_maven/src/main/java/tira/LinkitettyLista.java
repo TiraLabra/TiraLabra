@@ -138,7 +138,17 @@ public class LinkitettyLista<E> implements Lista<E> {
         }
         return (E) e;
     }
-
+    /**
+     * Palauttaa olion jos se on listan jäsen
+     * 
+     * @param e
+     * @return 
+     */
+    public E get(E e) {
+        int index = this.indexOf(e);
+        if ( index<0 ) return null;
+        else return this.get(index);
+    }
     /**
      * Palauttaa listan index:n jäsenen paikan
      *
@@ -189,7 +199,7 @@ public class LinkitettyLista<E> implements Lista<E> {
         if (this.isEmpty() || index < 0 || index >= this.koko) {
             return null;
         } // head==tail <-> koko == 1
-        else if (head == tail) {
+        else if ( /*head == tail*/ koko==1 ) {
             e = (E) this.values[this.head];
             this.values[this.head] = null;
             this.head = 0;
@@ -197,7 +207,14 @@ public class LinkitettyLista<E> implements Lista<E> {
         } else if (index == 0) { // head
             e = (E) this.values[this.head];
             this.values[this.head] = null;
-            this.head = this.next[this.head];
+            System.out.println("WWW");
+            // debug
+            int uusiHead=this.next[head];
+            System.out.println(""+uusiHead);
+            this.next[head]=-1;
+            head = uusiHead;
+            
+            // this.head = this.next[this.head];
             this.prev[this.head] = -1;
         } else if (index == this.koko - 1) { // tail
             e = (E) this.values[this.tail];
@@ -244,6 +261,7 @@ public class LinkitettyLista<E> implements Lista<E> {
      * @return True, jos sisältää, muutoin false
      */
     public boolean contains(E e) {
+        /* // BUGI???
         for (Object value : this.values) {
             if (value == null) {
                 continue;
@@ -253,7 +271,8 @@ public class LinkitettyLista<E> implements Lista<E> {
             }
         }
         return false;
-        // return indexOf(e)>=0;
+        */
+        return indexOf(e)>=0;
     }
 
     /**
@@ -295,6 +314,19 @@ public class LinkitettyLista<E> implements Lista<E> {
         return this.koko;
     }
 
+    /**
+     * Merkkijononesitys
+     * 
+     * @return 
+     */
+    @Override
+    public String toString() {
+        String s  = "";
+        for ( E e : this ) {
+            s+=""+e;//.toString();
+        }
+        return s;        
+    }
     //////////////////////
     //yksityiset metodit//
     //////////////////////
