@@ -164,6 +164,11 @@ public class Pari<K, V> {
         this.next = next;
     }
 
+    /**
+     * Hashcode lasketaan vain avaimesta
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -171,6 +176,12 @@ public class Pari<K, V> {
         return hash;
     }
 
+    /**
+     * Yhtäsuuruutta vertaillaan avaimilla
+     * 
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

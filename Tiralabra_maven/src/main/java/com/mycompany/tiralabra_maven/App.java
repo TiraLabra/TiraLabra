@@ -1,8 +1,10 @@
 package com.mycompany.tiralabra_maven;
 
 import haku.AStar;
+import haku.AStarOmallaTietorakenteella;
 import haku.Reitti;
 import haku.ReittiLaskin;
+import haku.ReittiLaskinOmallaTietorakenteella;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
 import tira.Hajautustaulu;
@@ -10,6 +12,7 @@ import tira.Lista;
 import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
+import verkko.VerkkoOmallaTietorakenteella;
 
 /**
  * Hello world!
@@ -51,12 +54,14 @@ public class App {
     public static void main(String[] args) {
 
         // debugAStar();
-        // debugAStarVertailu();
+        debugAStarVertailu();
         // debugAStarHeuristiikka();
         // debugLinkitettyLista();
         // debugLista();
         // debugHajautustaulu();
         App.debugHajautustauluPysakit();
+        debugVerkkoOmilla();
+        debugOmia();
 
     }
 
@@ -268,13 +273,59 @@ public class App {
         for (Linja l : verkko.getLinjat()) {
             linjat.put(l.getKoodi(), l);
         }
-        // linjat.debugPrint();
-        /*
-         Lista<String> lista = linjat.keySet();
-         for (String s : lista) {
-         System.out.println("" + s);
-         }
-         System.out.println("" + lista.size());
-         */
+    }
+
+    private static void debugVerkkoOmilla() {
+        System.out.println("Verkon luonti omilla tietorakenteilla vs javan");
+        long a, b, j = 0, o = 0;
+        int n = 1;
+        for (int i = 0; i < n; i++) {
+            a = System.currentTimeMillis();
+            Verkko verkko = new Verkko();
+            b = System.currentTimeMillis();
+            j += b - a;
+
+            a = System.currentTimeMillis();
+            VerkkoOmallaTietorakenteella verkkoX = new VerkkoOmallaTietorakenteella();
+            b = System.currentTimeMillis();
+            o += b - a;
+        }
+        System.out.println("Javan aika " + j + " vs omilla tietorakenteilla " + o);
+    }
+    
+    private static void debugOmia() {
+        System.out.println("Omat vs javan tietorakenteet käytännössä");
+        long a, b, j = 0, o = 0;
+        int n = 10;
+        Verkko verkko = new Verkko();
+        VerkkoOmallaTietorakenteella verkkoX = new VerkkoOmallaTietorakenteella();
+        
+        Pysakki alku = verkko.getPysakit()[10],loppu=verkko.getPysakit()[56];
+        
+        ReittiLaskin r1 = App.vaihdotonMatkaaMinimoiva;
+        ReittiLaskinOmallaTietorakenteella r2= new ReittiLaskinOmallaTietorakenteella(r1.getAikaPaino(),r1.getMatkaPaino(),r1.getVaihtoPaino()
+                ,r1.getHeurAikaPaino(),r1.getHeurMatkaPaino(),r1.getHeurKulkunopeus()); 
+        AStar aJava = new AStar(verkko,r1);
+        AStarOmallaTietorakenteella aOma =new AStarOmallaTietorakenteella(verkkoX,r2);
+        
+        aJava.setDebugMode(true);   
+        aJava.setDebugPrint(false);
+        aOma.setDebugMode(true);  
+        aOma.setDebugPrint(false);
+        
+        for (int i = 0; i < n; i++) {
+            a = System.currentTimeMillis();
+            aJava.etsiReitti(alku, loppu);
+            b = System.currentTimeMillis();
+            j += b - a;
+
+            a = System.currentTimeMillis();
+            aOma.etsiReitti(alku, loppu);
+            b = System.currentTimeMillis();
+            o += b - a;
+        }
+        System.out.println("Javan aika " + (j/(n)) + " vs omilla tietorakenteilla " + (o/(n)));  
+        System.out.println(""+aJava.getRatkaisu());
+        System.out.println(""+aOma .getRatkaisu());
     }
 }

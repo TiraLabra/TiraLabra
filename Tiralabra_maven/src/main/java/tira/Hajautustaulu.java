@@ -129,6 +129,9 @@ public class Hajautustaulu<K, V> {
 
     }
 
+    public boolean containsKey( K k ) {
+        return contains(k);
+    }
     /**
      * Palauttaa avaimen arvon
      *
