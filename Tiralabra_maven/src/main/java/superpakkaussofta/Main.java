@@ -24,6 +24,26 @@ public class Main {
         
         uncompress(fio, compressor);
         //compress(fio, compressor);
+        /*
+        NodeHeap h = new NodeHeap();
+        h.add(new HuffmanNode((byte) 3, 3));
+        h.add(new HuffmanNode((byte) 4, 4));
+        h.add(new HuffmanNode((byte) 2, 2));
+        h.add(new HuffmanNode((byte) 5, 5));
+        h.add(new HuffmanNode((byte) 27, 27));
+        h.add(new HuffmanNode((byte) 5, 5));
+        h.add(new HuffmanNode((byte) 20, 20));
+        h.add(new HuffmanNode((byte) 1, 1));
+        h.add(new HuffmanNode((byte) 8, 8));
+        h.add(new HuffmanNode((byte) 11, 11));
+        h.add(new HuffmanNode((byte) 22, 22));
+        h.add(new HuffmanNode((byte) 13, 13));
+        h.add(new HuffmanNode((byte) 15, 15));
+        
+        System.out.println("Nodeja pukkaa:");
+        while(h.size() > 0)
+            System.out.println(h.poll() + ", koko: " + h.size());
+        */
         
     }
     private static void compress(FileIO fio, HuffmanCompressor compressor){
