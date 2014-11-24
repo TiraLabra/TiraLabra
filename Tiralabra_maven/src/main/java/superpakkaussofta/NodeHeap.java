@@ -18,10 +18,57 @@ import java.util.PriorityQueue;
  */
 public class NodeHeap {
     
+    HuffmanNode[] nodes;
+    int size;
     PriorityQueue<HuffmanNode> pque;
     
     public NodeHeap(){
         pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
+        nodes = new HuffmanNode[10];
+    }
+    private void heapify(int n){
+        boolean done = false;
+        int nfreq;
+        int lfreq;
+        int rfreq;
+        HuffmanNode res;
+        
+        while(done == false){
+            nfreq = nodes[n].getFreq();
+            
+            if(2*n + 1 <= size){
+                lfreq = nodes[2*n].getFreq();
+                rfreq = nodes[2*n + 1].getFreq();
+                if(lfreq < nfreq || rfreq < nfreq){
+                    if(lfreq < rfreq){
+                        res = nodes[n];
+                        nodes[n] = nodes[2*n];
+                        nodes[2*n] = res;
+                        n = 2*n;
+                    }else{
+                        res = nodes[n];
+                        nodes[n] = nodes[2*n + 1];
+                        nodes[2*n + 1] = res;
+                        n = 2*n + 1;
+                    }
+                }else{
+                    done = true;
+                }
+            }else if(2*n == size){
+                lfreq = nodes[2*n].getFreq();
+                if(lfreq < nfreq){
+                    res = nodes[n];
+                    nodes[n] = nodes[2*n];
+                    nodes[2*n] = res;
+                    n = 2*n;
+                }else{
+                    done = true;
+                }
+            }else{
+                done = true;
+            }
+            
+        }
     }
     /**
      * Constructs a min heap based on frequancy of bytes in data.
