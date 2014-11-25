@@ -6,9 +6,16 @@
 package verkko.rajapinnat;
 
 /**
- *
+ * Verkon solmu
+ * 
  * @author E
  */
 public interface Value {
+    /**
+     * Kahden solmun välinen etäisyys
+     * 
+     * @param s Vertailtava solmu
+     * @return 
+     */
     double etaisyys( Value s );
 }

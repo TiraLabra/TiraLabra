@@ -8,7 +8,8 @@ package verkko.rajapinnat;
 import java.util.Comparator;
 
 /**
- *
+ * Polku/Reitti verkossa
+ * 
  * @author E
  */
 public interface Node {

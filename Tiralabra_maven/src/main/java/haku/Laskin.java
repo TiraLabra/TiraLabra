@@ -11,7 +11,9 @@ import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 
 /**
- *
+ * AStar-haun käyttämä laskin. Laskee kaarien kulkemisen kustannuksen verkossa 
+ * ja arvioi jäljelläolevaa matkaa.
+ * 
  * @author E
  */
 public interface Laskin {
@@ -20,6 +22,15 @@ public interface Laskin {
         return current.etaisyys( maali );
     }
     */
+    /**
+     * Seuraavan polun vaiheen laskeminen
+     * 
+     * @param current Polku, jota pitkin uuteen tullaan
+     * @param kuljettuKaari Kaari, jota pitkin edellisestä solmusta tullaan tähän
+     * @param seuraava Seuraava solmu
+     * @param maali Kohdesolmu
+     * @return 
+     */
     public Node laskeSeuraava( Node current, Edge kuljettuKaari, Value seuraava, Value maali ); /* {
         Node uusi = null;  // = new Tila();
         
@@ -32,5 +43,10 @@ public interface Laskin {
         return uusi;
     }
     */
+    /**
+     * Asetetaan laskimelle verkko
+     * 
+     * @param verkko 
+     */
     public void setVerkko( Graph verkko );
 }

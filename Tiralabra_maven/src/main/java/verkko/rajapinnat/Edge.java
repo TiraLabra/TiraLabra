@@ -6,9 +6,15 @@
 package verkko.rajapinnat;
 
 /**
- *
+ * Verkon kaari.
+ * 
  * @author E
  */
 public interface Edge {
+    /**
+     * Kaaren kulkemisen kustannus
+     * 
+     * @return 
+     */
     double getKustannus();
 }
