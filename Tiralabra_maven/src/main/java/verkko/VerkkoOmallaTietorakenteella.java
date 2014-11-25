@@ -14,7 +14,7 @@ import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Value;
 
 /**
- * Tähän on vaihdettu omat tietorakenteet
+ * Verkko. Tähän on vaihdettu omat tietorakenteet javan valmiiden sijalle.
  * 
  * @author E
  */
@@ -32,6 +32,10 @@ public class VerkkoOmallaTietorakenteella extends Verkko implements Graph {
     ////////////////////////
     // hakuja nopeuttamaan//
     ////////////////////////
+    
+    /*
+    WIP: aloituskoot hajautustauluille, konstruktorin selkeyttäminen
+    */
     
     /**
      * Hajautustaulu: avaimina pysäkkien koodit, arvoina pysäkki-oliot

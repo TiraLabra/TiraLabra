@@ -210,7 +210,7 @@ public class DebugTieto {
                         + " getKustannus=" + r.getKustannus()
                         + "}")
                         + "\n";
-                //ratkaisut +=  r.toString();
+                // ratkaisut +=  r.toString();
             }
         } catch (Exception e) {
 

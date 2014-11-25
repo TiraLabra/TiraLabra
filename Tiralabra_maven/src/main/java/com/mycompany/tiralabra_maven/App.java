@@ -309,11 +309,11 @@ public class App {
         AStar aJavaOmaPrioriteettijono = new AStar(verkko, new ReittiLaskin(laskin));
         AStar aOma = new AStar(verkkoX, new ReittiLaskin(laskin));
 
-        // aJava.setDebugMode(false);   
+        aJava.setDebugMode(true);   
         // aJava.setDebugPrint(false);
-        // aOma.setDebugMode(false);  
+        aOma.setDebugMode(true);  
         // aOma.setDebugPrint(false);
-        // aJavaOmaPrioriteettijono.setDebugMode(false);  
+        aJavaOmaPrioriteettijono.setDebugMode(true);  
         // aJavaOmaPrioriteettijono.setDebugPrint(false);        
         for (int i = 0; i < n; i++) {
             a = System.currentTimeMillis();

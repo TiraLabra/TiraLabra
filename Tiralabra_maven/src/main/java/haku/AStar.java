@@ -5,16 +5,14 @@
  */
 package haku;
 
-import verkko.Reitti;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import tira.DynaaminenLista;
+import tira.Hajautuslista;
 import tira.Lista;
 import tira.PrioriteettiJonoListalla;
-import verkko.Kaari;
 import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.rajapinnat.Edge;
@@ -44,7 +42,7 @@ public class AStar {
     /**
      * haun katkaisua varten
      */
-    private final double EPSILON = 0.25;
+    private final double EPSILON = 1;
 
     ///////////////////
     // KONSTRUKTORIT //
@@ -105,6 +103,8 @@ public class AStar {
 
         Lista<Node> parhaatReitit = new DynaaminenLista();
         double lowestCost = Integer.MAX_VALUE;
+        
+        Hajautuslista<Edge> kuljetutKaaret = new Hajautuslista();
 
         while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
 
@@ -114,11 +114,6 @@ public class AStar {
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
-                // if (!this.debugMode) {
-                //    parhaatReitit.add(kasiteltava); // palautetaan vain paras
-                //    break;
-                //} 
-                // else {
                 if (kasiteltava.getKustannus() < lowestCost) {
                     // pienempi kuin, pitäisi tapahtua vain kerran
                     lowestCost = kasiteltava.getKustannus();
@@ -130,13 +125,15 @@ public class AStar {
                 // }
             }
             if (kasiteltava.getKustannus() + kasiteltava.getArvioituKustannus() > lowestCost) {
-                continue;
+                // continue;
             }
             for (Value naapuri : verkko.getNaapurit(solmu)) {
                 for (Edge kaari : verkko.getKaaret(solmu, naapuri)) {
+                    if ( kuljetutKaaret.contains(kaari)) continue;
                     Node seuraava = laskin.laskeSeuraava(kasiteltava, kaari, naapuri, maali);
                     debugTieto.debugKaari(kaari, seuraava, naapuri);
                     kasittelyJarjestys.add(seuraava);
+                    kuljetutKaaret.add(kaari);
                 }
             }
         }
