@@ -5,10 +5,15 @@
  */
 package haku;
 
+import verkko.Reitti;
 import verkko.Kaari;
-import verkko.Linja;
+//import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
+import verkko.rajapinnat.Edge;
+import verkko.rajapinnat.Graph;
+import verkko.rajapinnat.Node;
+import verkko.rajapinnat.Value;
 
 /**
  * A*-haun apuolio. Arvioi jäljellä olevaa kustannusta ja laskee kustannuksen
@@ -16,7 +21,8 @@ import verkko.Verkko;
  *
  * @author E
  */
-public class ReittiLaskin {
+public class ReittiLaskin implements Laskin {
+
     /**
      * Verkko, jossa laskentaa suoritetaan
      */
@@ -42,12 +48,12 @@ public class ReittiLaskin {
      */
     private double heurAikaPaino;
     /**
-     * Matka metreinä, aika minuutteina. Yksikkönä m/min (tai karttapistettä/min)
+     * Matka metreinä, aika minuutteina. Yksikkönä m/min (tai
+     * karttapistettä/min)
      */
     private double heurKulkunopeus;
 
     // WIP: parametrien tarkistukset
-    
     /**
      * Konstruktori omien arvojen asettamiseen
      *
@@ -87,16 +93,17 @@ public class ReittiLaskin {
 
     /**
      * Palauttaa annetussa verkossa solmun ja maalin välisen etäisyyden arvion.
-     * Jotta toimisi, tulee olla h(n) pienempi/yhtäsuuri kuin d(n,k)+h(k). Painojen kanssa siis pitää
-     * olla tarkkana.
+     * Jotta toimisi, tulee olla h(n) pienempi/yhtäsuuri kuin d(n,k)+h(k).
+     * Painojen kanssa siis pitää olla tarkkana.
      *
      * @param solmu
      * @param maali
      * @return
      */
     public double heuristiikka(Pysakki solmu, Pysakki maali) {
-        double etaisyys = Math.pow(solmu.getX() - maali.getX(), 2) + Math.pow(solmu.getY() - maali.getY(), 2);
-        etaisyys = Math.pow(etaisyys, 0.5);
+        // double etaisyys = Math.pow(solmu.getX() - maali.getX(), 2) + Math.pow(solmu.getY() - maali.getY(), 2);
+        // etaisyys = Math.pow(etaisyys, 0.5);
+        double etaisyys = maali.etaisyys(solmu);
         return heurAikaPaino * etaisyys / heurKulkunopeus + heurMatkaPaino * etaisyys;
     }
 
@@ -174,48 +181,107 @@ public class ReittiLaskin {
     /**
      * Testataan, toimiiko heuristiikka: heuristinen arvio saa olla korkeintaan
      * kahden verkon solmun välinen kustannus
-     * 
+     *
      * @return Heuristiikan onnistumisprosentti
      */
     public double toimiikoHeuristiikka() {
-        double succ=0, fail=0;
-        double all=0;
-        double maksVirhe = 0, virheSumma=0;
-        if (verkko==null) return 1;
-        for ( Pysakki p : verkko.getPysakit() ) {
-            for ( Pysakki c: verkko.getNaapurit(p) ) {
-                for ( Kaari k : verkko.getKaaret(p, c) ) {
+        double succ = 0, fail = 0;
+        double all = 0;
+        double maksVirhe = 0, virheSumma = 0;
+        if (verkko == null) {
+            return 1;
+        }
+        for (Pysakki p : verkko.getPysakit()) {
+            for (Pysakki c : verkko.getNaapurit(p)) {
+                for (Kaari k : verkko.getKaaret(p, c)) {
                     // mukana ei vaihto tai odotusaika: saadaan pienin kustannus
-                    double kustannus = this.aikaPaino*k.getKustannus()+this.matkaPaino*k.getEtaisyys();
-                    double arvio     = this.heuristiikka(p, c);
-                    
-                    if ( arvio<=kustannus ) {
+                    double kustannus = this.aikaPaino * k.getKustannus() + this.matkaPaino * k.getEtaisyys();
+                    double arvio = this.heuristiikka(p, c);
+
+                    if (arvio <= kustannus) {
                         succ++;
-                    }
-                    else {
-                        System.out.println("C:"+kustannus+", H:"+arvio);
-                        double virhe = arvio-kustannus;
-                        virheSumma+=virhe;
-                        if ( virhe > maksVirhe ) {
-                            maksVirhe=virhe;
+                    } else {
+                        System.out.println("C:" + kustannus + ", H:" + arvio);
+                        double virhe = arvio - kustannus;
+                        virheSumma += virhe;
+                        if (virhe > maksVirhe) {
+                            maksVirhe = virhe;
                         }
                     }
                     all++;
                 }
             }
         }
-        double succP = succ/all;
-        System.out.println("Onnistumiset: "+succP);
-        System.out.println("Suurin virhe: "+maksVirhe);
-        if ( fail>0 ) System.out.println("Keskivirhe: "+(virheSumma/fail) );
-        
+        double succP = succ / all;
+        System.out.println("Onnistumiset: " + succP);
+        System.out.println("Suurin virhe: " + maksVirhe);
+        if (fail > 0) {
+            System.out.println("Keskivirhe: " + (virheSumma / fail));
+        }
+
         return succP;
     }
-    
-     /////////////////////////////////////////////
+
+    /**
+     * Tuottaa uuden reitti-olion, jossa kuljettava kaari on käsitelty.
+     *
+     * @param kuljettu Mistä tullaan
+     * @param kaariNaapuriin Uusi kaari
+     * @param seuraavaSolmu Mihin mennään
+     * @param maali
+     * @return
+     */
+    public Reitti laskeSeuraava(Reitti kuljettu, Kaari kaariNaapuriin, Pysakki seuraavaSolmu, Pysakki maali) {
+        /*
+         Kaarten käsittely: 
+         * voi olla useita mahdollisia kaaria: esim. tien yli voi mennä, tai alikulun kautta, pysäkiltä toiselle pääsee monella bussilla
+         -> Kaaret listana OK!
+         * entä jos kustannus vaihtuu sen mukaan, milloin mennään (esim. bussipysäkillä odotusaika)
+         -> Tilaan aika-muuttuja, kaareen tieto siitä miten vaihtelee ajan mukaan OK!
+         * entä jos edellinen kaari vaikuttaa kustannukseen ( esim. ollaan jo bussissa matkalla eteenpäin, esim2. autolla suoraan: ei tarvitse u-käännöstä yms)
+         -> Kaareen tieto tyypistä OK!               
+         */
+        Reitti seuraava = new Reitti();
+        if (kuljettu == null) {
+            seuraava.setKustannus(0);
+            seuraava.setPrevious(null);
+            seuraava.setAika(0);
+            seuraava.setMatka(0);
+        } else {
+            seuraava.setKustannus(kuljettu.getKustannus() + kustannus(kuljettu, kaariNaapuriin));
+            seuraava.setPrevious(kuljettu);
+            seuraava.setAika(kuljettu.getAika() + kaariNaapuriin.getKustannus() + getOdotusAika(kuljettu, kaariNaapuriin));
+            seuraava.setMatka(kuljettu.getMatka() + kaariNaapuriin.getEtaisyys());
+        }
+
+        seuraava.setArvioituKustannus(heuristiikka(seuraavaSolmu, maali));
+        seuraava.setKuljettuKaari(kaariNaapuriin);
+        seuraava.setSolmu(seuraavaSolmu);
+        return seuraava;
+    }
+    /**
+     * Laskin-rajapinnan toteutus.
+     * 
+     * @param current
+     * @param kuljettuKaari
+     * @param seuraava
+     * @param maali
+     * @return 
+     */
+    public Node laskeSeuraava(Node current, Edge kuljettuKaari, Value seuraava, Value maali) {
+        return this.laskeSeuraava((Reitti)current, (Kaari)kuljettuKaari, (Pysakki)seuraava, (Pysakki)maali);
+    }
+    /**
+     * Laskin-rajapinnan toteutus
+     * 
+     * @param verkko 
+     */
+    public void setVerkko(Graph verkko) {
+        this.setVerkko((Verkko)verkko);
+    }    
+    /////////////////////////////////////////////
     ///// automaattiset setterit & getterit /////
     ///////////////////////////////////////////// 
-    
     public Verkko getVerkko() {
         return verkko;
     }
@@ -276,5 +342,9 @@ public class ReittiLaskin {
     public String toString() {
         return "ReittiLaskin{" + "aikaPaino=" + aikaPaino + ", matkaPaino=" + matkaPaino + ", vaihtoPaino=" + this.vaihtoPaino + ", heurMatkaPaino=" + heurMatkaPaino + ", heurAikaPaino=" + heurAikaPaino + ", heurKulkunopeus=" + heurKulkunopeus + '}';
     }
+
+
+
+
 
 }

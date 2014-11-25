@@ -6,13 +6,14 @@
 package verkko;
 
 import verkko.esimerkki.PysakkiJSON;
+import verkko.rajapinnat.Value;
 
 /**
  * Verkon solmu.
  *
  * @author E
  */
-public class Pysakki {
+public class Pysakki implements Value {
 
     /**
      * Pysäkin yksilöivä koodi
@@ -59,6 +60,22 @@ public class Pysakki {
         this.nimi = nimi;
         this.x = x;
         this.y = y;
+    }
+    
+    /**
+     * Kahden solmun välisen etäisyyden laskeminen tässä
+     * 
+     * @param s
+     * @return 
+     */
+    public double etaisyys(Value s) {
+        try {
+            Pysakki p = (Pysakki) s;
+            return Math.sqrt( Math.pow(this.x-p.x, 2)+Math.pow(this.y-p.y, 2) );
+        }
+        catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
     }
 
     /////////////////////////////////////////////
@@ -145,5 +162,6 @@ public class Pysakki {
         }
         return true;
     }
+
 
 }

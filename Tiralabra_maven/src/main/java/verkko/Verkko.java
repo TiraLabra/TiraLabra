@@ -9,15 +9,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import tira.DynaaminenLista;
+import tira.Lista;
 import verkko.esimerkki.LinjaJSON;
 import verkko.esimerkki.Pysakkiverkko;
+import verkko.rajapinnat.Edge;
+import verkko.rajapinnat.Graph;
+import verkko.rajapinnat.Value;
 
 /**
  * Verkko pitää kirjaa solmujen naapureista ja niiden välisistä kaarista
  *
  * @author E
  */
-public class Verkko {
+public class Verkko implements Graph {
     /*
      HUOM! useaan paikkaan tallennettu data nopeuttaa hakuja, mutta hidastaa verkon luomista ja varsinkin muokkaamista
      Kannattanee kuitenkin, jotta haut mahd. nopeita
@@ -236,7 +241,7 @@ public class Verkko {
      * @param loppu
      * @return Kaaret alku- ja loppusolmun välillä
      */
-    public List<Kaari> getKaaret(Pysakki alku, Pysakki loppu) {
+    public Iterable<Kaari> getKaaret(Pysakki alku, Pysakki loppu) {
         return this.reititNaapureihin.get(alku).get(loppu);
     }
 
@@ -246,7 +251,7 @@ public class Verkko {
      * @param solmu
      * @return
      */
-    public List<Pysakki> getNaapurit(Pysakki solmu) {
+    public Iterable<Pysakki> getNaapurit(Pysakki solmu) {
         return this.pysakinNaapurit.get(solmu);
     }
 
@@ -282,5 +287,26 @@ public class Verkko {
     public Linja[] getLinjat() {
         return linjat;
     }
+
+    public Iterable<Edge> getKaaret(Value alku, Value loppu) {
+        Iterable<Kaari> ip =  this.getKaaret((Pysakki)alku, (Pysakki)loppu);
+        
+        Lista<Edge> ledge  = new DynaaminenLista();
+        for ( Kaari kaari : ip ) {
+            ledge.add(kaari);
+        }
+        return ledge;
+    }
+
+    public Iterable<Value> getNaapurit(Value alku) {
+        Iterable<Pysakki> ip =  this.getNaapurit((Pysakki)alku);
+        
+        Lista<Value>  lvalue  = new DynaaminenLista();
+        for ( Pysakki pysakki : ip ) {
+            lvalue.add(pysakki);
+        }
+        return lvalue;
+    }
+
     
 }

@@ -5,6 +5,7 @@
  */
 package haku;
 
+import verkko.Reitti;
 import com.mycompany.tiralabra_maven.App;
 import java.util.ArrayList;
 import java.util.List;

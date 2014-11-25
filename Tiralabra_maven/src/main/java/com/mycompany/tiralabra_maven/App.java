@@ -1,10 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
 import haku.AStar;
-import haku.AStarOmallaTietorakenteella;
-import haku.Reitti;
+import verkko.Reitti;
 import haku.ReittiLaskin;
-import haku.ReittiLaskinOmallaTietorakenteella;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
 import tira.Hajautustaulu;
@@ -135,12 +133,12 @@ public class App {
         AStar aStar = new AStar(verkko, reittiLaskin);
         aStar.setDebugMode(true);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
-        Reitti reitti = aStar.etsiReitti(alku, loppu);
+        Reitti reitti = (Reitti)aStar.etsiReitti(alku, loppu);
         System.out.println("" + reitti);
         System.out.println("" + aStar.getRatkaisu());
         stop = System.currentTimeMillis();
         System.out.println("Etsintä: " + (stop - start) + "ms");
-        System.out.println("" + aStar.getHeuristiikanOnnistumiset());
+        // System.out.println("" + aStar.getHeuristiikanOnnistumiset());
     }
 
     /**
@@ -303,12 +301,11 @@ public class App {
         
         Pysakki alku = verkko.getPysakit()[10],loppu=verkko.getPysakit()[56];
         
-        ReittiLaskin r1 = App.vaihdotonMatkaaMinimoiva;
-        ReittiLaskinOmallaTietorakenteella r2= new ReittiLaskinOmallaTietorakenteella(r1.getAikaPaino(),r1.getMatkaPaino(),r1.getVaihtoPaino()
-                ,r1.getHeurAikaPaino(),r1.getHeurMatkaPaino(),r1.getHeurKulkunopeus()); 
-        AStar aJava = new AStar(verkko,r1);
-        AStar aJavaOmaPrioriteettijono = new AStar(verkko,r1);
-        AStarOmallaTietorakenteella aOma =new AStarOmallaTietorakenteella(verkkoX,r2);
+        ReittiLaskin laskin = App.vaihdotonMatkaaMinimoiva;
+
+        AStar aJava = new AStar(verkko,laskin);
+        AStar aJavaOmaPrioriteettijono = new AStar(verkko,laskin);
+        AStar aOma =new AStar(verkkoX,laskin);
         
         aJava.setDebugMode(true);   
         aJava.setDebugPrint(false);

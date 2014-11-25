@@ -9,13 +9,16 @@ import tira.Hajautustaulu;
 import tira.Lista;
 import verkko.esimerkki.LinjaJSON;
 import verkko.esimerkki.Pysakkiverkko;
+import verkko.rajapinnat.Edge;
+import verkko.rajapinnat.Graph;
+import verkko.rajapinnat.Value;
 
 /**
  * Tähän on vaihdettu omat tietorakenteet
  * 
  * @author E
  */
-public class VerkkoOmallaTietorakenteella  {
+public class VerkkoOmallaTietorakenteella extends Verkko implements Graph {
     
     /**
      * Pysäkit taulukossa
@@ -227,7 +230,7 @@ public class VerkkoOmallaTietorakenteella  {
      * @param loppu
      * @return Kaaret alku- ja loppusolmun välillä
      */
-    public Lista<Kaari> getKaaret(Pysakki alku, Pysakki loppu) { 
+    public Iterable<Kaari> getKaaret(Pysakki alku, Pysakki loppu) { 
         return this.reititNaapureihin.get(alku).get(loppu);
     }
 
@@ -237,7 +240,7 @@ public class VerkkoOmallaTietorakenteella  {
      * @param solmu
      * @return
      */
-    public Lista<Pysakki> getNaapurit(Pysakki solmu) { 
+    public Iterable<Pysakki> getNaapurit(Pysakki solmu) { 
         return this.pysakinNaapurit.get(solmu);
     }
 
@@ -272,6 +275,27 @@ public class VerkkoOmallaTietorakenteella  {
     }
     public Linja[] getLinjat() {
         return linjat;
+    }
+   
+    
+    public Iterable<Edge> getKaaret(Value alku, Value loppu) {
+        Iterable<Kaari> ip =  this.getKaaret((Pysakki)alku, (Pysakki)loppu);
+        
+        Lista<Edge> ledge  = new DynaaminenLista();
+        for ( Kaari kaari : ip ) {
+            ledge.add(kaari);
+        }
+        return ledge;
+    }
+
+    public Iterable<Value> getNaapurit(Value alku) {
+        Iterable<Pysakki> ip =  this.getNaapurit((Pysakki)alku);
+        
+        Lista<Value>  lvalue  = new DynaaminenLista();
+        for ( Pysakki pysakki : ip ) {
+            lvalue.add(pysakki);
+        }
+        return lvalue;
     }
     
 }

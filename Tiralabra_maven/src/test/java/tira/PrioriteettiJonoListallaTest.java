@@ -5,7 +5,7 @@
  */
 package tira;
 
-import haku.Reitti;
+import verkko.Reitti;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import org.junit.After;

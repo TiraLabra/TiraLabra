@@ -5,12 +5,14 @@
  */
 package verkko;
 
+import verkko.rajapinnat.Edge;
+
 /**
  * Verkossa solmujen välinen kaari
  * 
  * @author E
  */
-public class Kaari {
+public class Kaari implements Edge {
     /**
      * Kaaren kulkemisen kustannus
      */
