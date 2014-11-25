@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import verkko.Pysakki;
 import verkko.Verkko;
+import verkko.rajapinnat.Node;
 
 /**
  *
@@ -51,7 +52,7 @@ public class AStarTest extends TestCase {
         aStar.setDebugMode(false);
         aStar.setDebugPrint(false);
         
-        Reitti reitti =  aStar.etsiReitti(oletusAlku, oletusMaali);
+        Node reitti =  aStar.etsiReitti(oletusAlku, oletusMaali);
         assertTrue( reitti!=null );
     }
     @Test
@@ -98,7 +99,7 @@ public class AStarTest extends TestCase {
         aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
         /*Reitti reitti = */aStar.etsiReitti(alku, maali); // lasketaan reitti
-        return aStar.getHeuristiikanOnnistumiset();
+        return aStar.getDebugTieto().getHeuristiikanOnnistumiset();
         
               
     }
@@ -108,7 +109,7 @@ public class AStarTest extends TestCase {
         AStar aStar = new AStar( verkko, reittiLaskin );
         aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
-        Reitti reitti;
+        Node reitti;
         if ( mode == 0)  reitti = aStar.etsiReitti(alku, maali);
         else reitti = aStar.etsiReittiOma(alku, maali);
         
