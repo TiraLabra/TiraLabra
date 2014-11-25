@@ -74,7 +74,9 @@ public class ReittiLaskin implements Laskin {
         this.heurAikaPaino = heurAikaPaino;
         this.heurKulkunopeus = heurKulkunopeus;
     }
-
+    public ReittiLaskin( ReittiLaskin x )  {
+        this( x.aikaPaino, x.matkaPaino, x.vaihtoPaino, x.heurAikaPaino, x.heurMatkaPaino, x.heurKulkunopeus );
+    }
     /**
      * Oletuskonstruktorilla painotetaan vain matka-aikaa
      */

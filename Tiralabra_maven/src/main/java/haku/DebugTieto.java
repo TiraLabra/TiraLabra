@@ -30,13 +30,13 @@ public class DebugTieto {
     
     // haun tilasta ja toiminnasta kertovia kenttiä:
     /**
-     * Debug: Käydäänkö koko jono läpi vai lopetetaanko parhaaseen ratkaisuun
+     * Kerätäänkö debug-tietoa
      */
-    private boolean debugMode = true;
+    private boolean debugMode = false;
     /**
      * Debug-tulosteet
      */
-    private boolean debugPrint = true;    
+    private boolean debugPrint = false;    
     /**
      * Kaaret, joita pitkin on jo kuljettu. Kaaren tallennusmuoto kaaren
      * toString
@@ -199,7 +199,7 @@ public class DebugTieto {
     public String debugRatkaisu(Iterable<Node> parhaatReitit) {
         
         String ratkaisut = "";
-        if (!debugMode) return ratkaisut;
+        // if (!debugMode) return ratkaisut;
         // ratkaisut += ("Yhtä hyviä ratkaisuja " + parhaatReitit.size()) + "\n";
         try {
             for (Node n : parhaatReitit) {
@@ -215,7 +215,7 @@ public class DebugTieto {
         } catch (Exception e) {
 
         }
-        ratkaisut += ("Tiedot={ kasiteltyja=" + kasiteltyja
+        if (this.debugMode) ratkaisut += ("Tiedot={ kasiteltyja=" + kasiteltyja
                 + ", keskimaarainenJononKoko=" + (keskimaarainenJononKoko / kasiteltyja)
                 + ", toistuvaKaari=" + toistuvaKaari
                 + ", uusiKaari=" + uusiKaari

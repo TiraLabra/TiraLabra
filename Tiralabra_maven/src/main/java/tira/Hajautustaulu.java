@@ -278,7 +278,11 @@ public class Hajautustaulu<K, V> {
         
         return s;
     }
-
+    /**
+     * Tietoja törmäyksistä
+     * 
+     * @return Merkkijonoesitys törmäyksistä
+     */
     public String debugTormaysListat() {
         if (this.isEmpty()) {
             return "";
@@ -303,7 +307,11 @@ public class Hajautustaulu<K, V> {
                 + "}";
         return s;
     }
-    
+    /**
+     * Merkkijonoesitys hajautustaulun sisällöstä
+     * 
+     * @return 
+     */
     public String debugContents() {
         String s = "";
         

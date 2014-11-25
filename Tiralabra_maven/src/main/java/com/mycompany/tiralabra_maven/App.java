@@ -5,6 +5,7 @@ import verkko.Reitti;
 import haku.ReittiLaskin;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
+import tira.Hajautuslista;
 import tira.Hajautustaulu;
 import tira.Lista;
 import verkko.Linja;
@@ -60,6 +61,7 @@ public class App {
         // debugHajautustauluPysakit();
         // debugVerkkoOmilla();
         debugOmia();
+        // debugHajautuslista();
 
     }
 
@@ -133,7 +135,7 @@ public class App {
         AStar aStar = new AStar(verkko, reittiLaskin);
         aStar.setDebugMode(true);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
-        Reitti reitti = (Reitti)aStar.etsiReitti(alku, loppu);
+        Reitti reitti = (Reitti) aStar.etsiReitti(alku, loppu);
         System.out.println("" + reitti);
         System.out.println("" + aStar.getRatkaisu());
         stop = System.currentTimeMillis();
@@ -291,29 +293,28 @@ public class App {
         }
         System.out.println("Javan aika " + j + " vs omilla tietorakenteilla " + o);
     }
-    
+
     private static void debugOmia() {
-        System.out.println("Omat vs javan tietorakenteet käytännössä");
+        System.out.println("Omat vs javan tietorakenteet käytössä");
         long a, b, j = 0, o = 0, jOma = 0;
-        int n = 10;
+        int n = 20;
         Verkko verkko = new Verkko();
         VerkkoOmallaTietorakenteella verkkoX = new VerkkoOmallaTietorakenteella();
-        
-        Pysakki alku = verkko.getPysakit()[10],loppu=verkko.getPysakit()[56];
-        
+
+        Pysakki alku = verkko.getPysakit()[10], loppu = verkko.getPysakit()[56];
+
         ReittiLaskin laskin = App.vaihdotonMatkaaMinimoiva;
 
-        AStar aJava = new AStar(verkko,laskin);
-        AStar aJavaOmaPrioriteettijono = new AStar(verkko,laskin);
-        AStar aOma =new AStar(verkkoX,laskin);
-        
-        aJava.setDebugMode(true);   
-        aJava.setDebugPrint(false);
-        aOma.setDebugMode(true);  
-        aOma.setDebugPrint(false);
-        aJavaOmaPrioriteettijono.setDebugMode(true);  
-        aJavaOmaPrioriteettijono.setDebugPrint(false);        
-        
+        AStar aJava = new AStar(verkko, new ReittiLaskin(laskin));
+        AStar aJavaOmaPrioriteettijono = new AStar(verkko, new ReittiLaskin(laskin));
+        AStar aOma = new AStar(verkkoX, new ReittiLaskin(laskin));
+
+        // aJava.setDebugMode(false);   
+        // aJava.setDebugPrint(false);
+        // aOma.setDebugMode(false);  
+        // aOma.setDebugPrint(false);
+        // aJavaOmaPrioriteettijono.setDebugMode(false);  
+        // aJavaOmaPrioriteettijono.setDebugPrint(false);        
         for (int i = 0; i < n; i++) {
             a = System.currentTimeMillis();
             aJava.etsiReitti(alku, loppu);
@@ -324,13 +325,54 @@ public class App {
             b = System.currentTimeMillis();
             jOma += b - a;
             a = System.currentTimeMillis();
-            aOma.etsiReitti(alku, loppu);
+            aOma.etsiReittiOma(alku, loppu);
             b = System.currentTimeMillis();
             o += b - a;
         }
-        System.out.println("Javan aika " + (j/(n)) + " vs omilla tietorakenteilla " + (o/(n))+ " vs omalla pq:lla " + (jOma/(n)) );  
-        System.out.println(""+aJava.getRatkaisu());
-        System.out.println(""+aOma .getRatkaisu());
-        System.out.println(""+aJavaOmaPrioriteettijono .getRatkaisu());
+        System.out.println("Javan aika " + (j / (n)) + " vs omilla tietorakenteilla " + (o / (n)) + " vs omalla pq:lla " + (jOma / (n)));
+        System.out.println("" + aJava.getRatkaisu());
+        System.out.println("" + aOma.getRatkaisu());
+        System.out.println("" + aJavaOmaPrioriteettijono.getRatkaisu());
+    }
+
+    private static void debugHajautuslista() {
+        System.out.println("Debug hajautuslista");
+        Hajautuslista<String> ht = new Hajautuslista();
+
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"};
+        int n = e.length;
+        System.out.println("put");
+        for (int i = 0; i < n; i++) {
+            String k = e[i], v = e[n - 1 - i];
+            System.out.println("" + ht.add(e[i]));
+        }
+        System.out.println("get");
+        for (int i = 0; i < n; i++) {
+            String k = e[i]; //, v = e[n - 1 - i];
+            System.out.println("" + ht.get(k) + " == " + k);
+        }
+        System.out.println("contains");
+        System.out.println("??? " + ht.contains("kukkia"));
+        System.out.println("??? " + ht.contains("Koira"));
+        Lista<String> keySet = ht.keySet();
+        for (String s : e) {
+            System.out.println("ht==ks <-> " + ht.contains(s) + "==" + keySet.contains(s));
+        }
+        System.out.println("" + keySet.size());
+        System.out.println("remove");
+        for (int i = 0; i < n; i++) {
+            String k = e[i];
+            System.out.println("" + ht.remove(k) + " == " + k);
+            // ht.remove(k);
+        }
+        for (int i = 0; i < n; i++) {
+            String k = e[i];
+            System.out.println("" + ht.remove(k) + " == " + k);
+            // ht.remove(k);
+        }
+        keySet = ht.keySet();
+        for (String s : e) {
+            System.out.println("ht==ks <-> " + ht.contains(s) + "==" + keySet.contains(s));
+        }
     }
 }
