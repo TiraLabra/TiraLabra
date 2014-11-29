@@ -109,7 +109,9 @@ public class Heuristiikka {
             if (k.getPelaajanKasi() == this.pelaaja) {
                 if (k.getKoneenKasi() == this.kone) {
                     // kädet ovat samat, päivitä taulukko
-                    pelaajanKadet[s.getKasipari().getPelaajanKasi()]++;
+                    if (s.getSeuraavaListaSolmu() != null) {
+                        pelaajanKadet[s.getSeuraavaListaSolmu().getKasipari().getPelaajanKasi()]++;
+                    }
                 }
             }
             if (s.getSeuraavaListaSolmu() == null) {
