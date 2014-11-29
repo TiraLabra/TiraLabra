@@ -22,8 +22,8 @@ public class SatunnainenVerkko implements Graph {
     private Value[][] verkko;
     private Edge[][][] kaaret;
     private double[][] painot;
-    private double minimiPaino=1, kerroinPaino=2;
-    private int rivit,sarakkeet;
+    private double minimiPaino = 1, kerroinPaino = 20;
+    private int rivit, sarakkeet;
 
     /**
      * Luo verkon, jonka koko on nxn
@@ -31,8 +31,12 @@ public class SatunnainenVerkko implements Graph {
      * @param koko
      */
     public SatunnainenVerkko(int koko) {
-        rivit=koko;
-        sarakkeet=koko;
+        this(koko, koko);
+    }
+
+    public SatunnainenVerkko(int rivit, int sarakkeet) {
+        this.rivit = rivit;
+        this.sarakkeet = sarakkeet;
         painot = new double[rivit][sarakkeet];
         verkko = new V[rivit][sarakkeet];
         kaaret = new E[rivit][sarakkeet][1];
@@ -46,9 +50,13 @@ public class SatunnainenVerkko implements Graph {
         Random random = new Random();
         for (int i = 0; i < rivit; i++) {
             for (int j = 0; j < sarakkeet; j++) {
+                double x = random.nextDouble();
+                //if ( x > 0.5 )
                 painot[i][j] = minimiPaino + kerroinPaino * random.nextDouble(); // satunnainen paino tähän solmuun kulkemiselle
+                //else 
+                //    painot[i][j] = minimiPaino;
                 verkko[i][j] = new V(i, j);
-                kaaret[i][j][0] = new E( /*verkko[i][j],*/ painot[i][j] );
+                kaaret[i][j][0] = new E( /*verkko[i][j],*/painot[i][j]);
             }
         }
 
@@ -57,7 +65,7 @@ public class SatunnainenVerkko implements Graph {
     public Value getSolmu(int i, int j) {
         return verkko[i][j];
     }
-    
+
     public Node getNode() {
         return new Polku();
     }
@@ -74,12 +82,12 @@ public class SatunnainenVerkko implements Graph {
      */
     public Iterable<Edge> getKaaret(Value alku, Value loppu) {
         V l = (V) loppu;
-        Lista<Edge> returnvalue = new DynaaminenLista(/* kaaret[l.getX()][l.getY()].length*/ 1);
-        
+        Lista<Edge> returnvalue = new DynaaminenLista(/* kaaret[l.getX()][l.getY()].length*/1);
+
         for (Edge e : kaaret[l.getX()][l.getY()]) {
             returnvalue.add(e);
         }
-        
+
         // returnvalue.add( new E((V)alku,(V)loppu,painot[l.getX()][l.getY()]) );
         return returnvalue;
     }
@@ -118,18 +126,19 @@ public class SatunnainenVerkko implements Graph {
     private class E implements Edge {
 
         private double kustannus;
-        private V alku,loppu;
-        private int x1,x2,y1,y2;
+        private V alku, loppu;
+        private int x1, x2, y1, y2;
 
         public E(double kustannus) {
-            this.kustannus=kustannus;
-        }
-        public E(V alku, V loppu,double kustannus) {
             this.kustannus = kustannus;
-            this.x1=alku.getX(); //this.alku = alku;
-            this.x2=loppu.getX();
-            this.y1=alku.getY();
-            this.y2=loppu.getY(); //this.loppu = loppu;
+        }
+
+        public E(V alku, V loppu, double kustannus) {
+            this.kustannus = kustannus;
+            this.x1 = alku.getX(); //this.alku = alku;
+            this.x2 = loppu.getX();
+            this.y1 = alku.getY();
+            this.y2 = loppu.getY(); //this.loppu = loppu;
         }
 
         public void setKustannus(double kustannus) {
@@ -140,54 +149,50 @@ public class SatunnainenVerkko implements Graph {
             return kustannus;
         }
         /*
-        @Override
-        public int hashCode() {
-            int hash = 3;
-            hash = 79 * hash + (int) (Double.doubleToLongBits(this.kustannus) ^ (Double.doubleToLongBits(this.kustannus) >>> 32));
-            hash = 79 * hash + this.x1;
-            hash = 79 * hash + this.x2;
-            hash = 79 * hash + this.y1;
-            hash = 79 * hash + this.y2;
-            return hash;
-        }
+         @Override
+         public int hashCode() {
+         int hash = 3;
+         hash = 79 * hash + (int) (Double.doubleToLongBits(this.kustannus) ^ (Double.doubleToLongBits(this.kustannus) >>> 32));
+         hash = 79 * hash + this.x1;
+         hash = 79 * hash + this.x2;
+         hash = 79 * hash + this.y1;
+         hash = 79 * hash + this.y2;
+         return hash;
+         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final E other = (E) obj;
-            if (Double.doubleToLongBits(this.kustannus) != Double.doubleToLongBits(other.kustannus)) {
-                return false;
-            }
-            if (this.x1 != other.x1) {
-                return false;
-            }
-            if (this.x2 != other.x2) {
-                return false;
-            }
-            if (this.y1 != other.y1) {
-                return false;
-            }
-            if (this.y2 != other.y2) {
-                return false;
-            }
-            return true;
-        }
-        */
+         @Override
+         public boolean equals(Object obj) {
+         if (obj == null) {
+         return false;
+         }
+         if (getClass() != obj.getClass()) {
+         return false;
+         }
+         final E other = (E) obj;
+         if (Double.doubleToLongBits(this.kustannus) != Double.doubleToLongBits(other.kustannus)) {
+         return false;
+         }
+         if (this.x1 != other.x1) {
+         return false;
+         }
+         if (this.x2 != other.x2) {
+         return false;
+         }
+         if (this.y1 != other.y1) {
+         return false;
+         }
+         if (this.y2 != other.y2) {
+         return false;
+         }
+         return true;
+         }
+         */
 
         @Override
         public String toString() {
             return "E{" + "kustannus=" + kustannus + '}';
         }
 
-
-
-        
-        
     }
 
     /**
@@ -247,8 +252,6 @@ public class SatunnainenVerkko implements Graph {
         public String toString() {
             return "V{" + "x=" + x + ", y=" + y + '}';
         }
-        
-        
 
     }
 
@@ -264,6 +267,9 @@ public class SatunnainenVerkko implements Graph {
         private Edge kuljettuKaari;
         private Polku previous;
 
+        /////////////////
+        // RAJAPINNAT ///
+        /////////////////
         public double getArvioituKustannus() {
             return arvioituKustannus;
         }
@@ -321,6 +327,25 @@ public class SatunnainenVerkko implements Graph {
             };
         }
 
+        //////////////////////
+        // JULKISET METODIT //
+        //////////////////////
+        /**
+         * Polun pituus saadaan kulkemalla alkuun asti
+         *
+         * @return
+         */
+        public int size() {
+            if (this.getPrevious() == null) {
+                return 1;
+            } else {
+                return 1 + this.getPrevious().size();
+            }
+        }
+
+        ///////////////////////////
+        // AUTOMAATTISET METODIT //
+        ///////////////////////////
         @Override
         public int hashCode() {
             int hash = 3;
@@ -342,14 +367,23 @@ public class SatunnainenVerkko implements Graph {
             }
             return true;
         }
-        
+
+        /**
+         * Kuljetaan yhteen suuntaan linkitetty lista taaksepäin
+         *
+         * @return
+         */
         public String toString() {
-            String s = ""+this.getKuljettuKaari()+"->"+this.getSolmu();
-            if ( this.previous!=null ) s=this.getPrevious().toString()+"->"+s;
+
+            String s = "" + this.getKuljettuKaari() + "->" + this.getSolmu();
+            if (this.previous != null) {
+                s = this.getPrevious().toString() + "->" + s;
+            }
             return s;
+
+            // return ""+this.size();
         }
-        
-        
+
     }
 
 }

@@ -105,6 +105,7 @@ public class AStar {
         double lowestCost = Integer.MAX_VALUE;
         
         Hajautuslista<Edge> kuljetutKaaret = new Hajautuslista();
+        Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(10000);
 
         while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
 
@@ -121,21 +122,27 @@ public class AStar {
                     break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                 }
                 parhaatReitit.add(kasiteltava);
-                continue;
+                continue; // break;
                 // }
             }
-            if (kasiteltava.getKustannus() + kasiteltava.getArvioituKustannus() > lowestCost) {
+            if (kasiteltava.getKustannus() /*+ kasiteltava.getArvioituKustannus()*/ > lowestCost+ EPSILON) {
                 // continue;
+                break;
             }
+            
+            if ( kasitellytSolmut.contains(solmu) ) continue;
+            
             for (Value naapuri : verkko.getNaapurit(solmu)) {
                 for (Edge kaari : verkko.getKaaret(solmu, naapuri)) {
-                    if ( kuljetutKaaret.contains(kaari)) continue;
+                    // if ( kuljetutKaaret.contains(kaari)) continue;
+                    // else kuljetutKaaret.add(kaari);
                     Node seuraava = laskin.laskeSeuraava(kasiteltava, kaari, naapuri, maali);
                     debugTieto.debugKaari(kaari, seuraava, naapuri);
-                    kasittelyJarjestys.add(seuraava);
-                    kuljetutKaaret.add(kaari);
+                    kasittelyJarjestys.add(seuraava);                    
                 }
             }
+            
+            kasitellytSolmut.add(solmu);
         }
 
         debugTieto.debugRatkaisu(parhaatReitit);

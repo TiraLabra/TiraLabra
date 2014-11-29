@@ -64,7 +64,7 @@ public class App {
         // debugHajautustaulu();
         // debugHajautustauluPysakit();
         // debugVerkkoOmilla();
-        // debugOmia();
+        debugOmia();
         // debugHajautuslista();
         debugSatunnainenVerkko();
 
@@ -382,14 +382,15 @@ public class App {
     }
     
     /**
-     * Debugataa satunnaista verkkoa
+     * Debugataan satunnaista verkkoa
      */
     private static void debugSatunnainenVerkko() {
         System.out.println("SATUNNAINEN VERKKO...");
         SatunnainenLaskin laskin = new SatunnainenLaskin();
         int n = 100;
-        SatunnainenVerkko verkko = new SatunnainenVerkko(n);
-        Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(n-1, n-1);  
+        int rivit = n,sarakkeet=n;
+        SatunnainenVerkko verkko = new SatunnainenVerkko(rivit,sarakkeet);
+        Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(rivit-1, sarakkeet-1);  
         long a,b,summa=0,min=Long.MAX_VALUE,max=0,otos=10;
         AStar aStar = new AStar( verkko, laskin );
         
@@ -404,7 +405,7 @@ public class App {
             if ( x < min ) min=x;
             summa+=x;
         }
-        System.out.println("Verkon koko="+n+"X"+n
+        System.out.println("Verkon koko="+rivit+"X"+sarakkeet
                 +", Keskiaika="+(summa/otos)
                 +", Otos="+(otos)
                 +", Min="+(min)
@@ -412,5 +413,6 @@ public class App {
                 +""
         );
         System.out.println(""+reitti);
+        // System.out.println(""+reitti);
     }
 }
