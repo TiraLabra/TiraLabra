@@ -146,8 +146,10 @@ public class Heuristiikka {
             return new Kasi("SAKSET");
         } else if (kasiIndeksi == 3) {
             return new Kasi("LISKO");
-        } else {
+        } else if (kasiIndeksi == 4) {
             return new Kasi("SPOCK");
+        } else {
+            return null;
         }
     }
 }
