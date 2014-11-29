@@ -15,6 +15,7 @@ import verkko.esimerkki.LinjaJSON;
 import verkko.esimerkki.Pysakkiverkko;
 import verkko.rajapinnat.Edge;
 import verkko.rajapinnat.Graph;
+import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 
 /**
@@ -288,6 +289,10 @@ public class Verkko implements Graph {
         return linjat;
     }
 
+    ////////////////////
+    // RAJAPINNAT //////
+    ////////////////////
+    
     public Iterable<Edge> getKaaret(Value alku, Value loppu) {
         Iterable<Kaari> ip =  this.getKaaret((Pysakki)alku, (Pysakki)loppu);
         
@@ -308,5 +313,12 @@ public class Verkko implements Graph {
         return lvalue;
     }
 
-    
+    /**
+     * Graph-rajapinnan toteutus
+     * 
+     * @return Tyhjä Reitti-olio
+     */
+    public Node getNode() {
+        return new Reitti();
+    }
 }

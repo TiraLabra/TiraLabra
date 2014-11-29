@@ -3,6 +3,7 @@ package com.mycompany.tiralabra_maven;
 import haku.AStar;
 import verkko.Reitti;
 import haku.ReittiLaskin;
+import haku.SatunnainenLaskin;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
 import tira.Hajautuslista;
@@ -12,6 +13,8 @@ import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
+import verkko.rajapinnat.Value;
+import verkko.satunnainen.SatunnainenVerkko;
 
 /**
  * Hello world!
@@ -374,5 +377,23 @@ public class App {
         for (String s : e) {
             System.out.println("ht==ks <-> " + ht.contains(s) + "==" + keySet.contains(s));
         }
+    }
+    
+    /**
+     * Debugataa satunnaista verkkoa
+     */
+    private static void debugSatunnainenVerkko() {
+        SatunnainenLaskin laskin = new SatunnainenLaskin();
+        int n = 10;
+        SatunnainenVerkko verkko = new SatunnainenVerkko(10);
+        Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(n-1, n-1);  
+        long a,b,summa=0,min=Long.MAX_VALUE,max=0,otos=10;
+        AStar aStar = new AStar( verkko, laskin );
+        
+        for (  int i = 0; i < otos;i++ ) {
+            a=System.currentTimeMillis();
+            aStar.etsiReitti(null, null);
+        }
+        
     }
 }

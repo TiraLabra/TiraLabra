@@ -28,6 +28,13 @@ public interface Graph {
      * @return Solmut, joihin alkusolmusta on kaari
      */
     Iterable<Value> getNaapurit( Value alku );
+    
+    /**
+     * Palauttaa uuden tyhjän olion. Käytetään reittihaussa.
+     * 
+     * @return Uusi tyhjä Node-olio
+     */
+    Node getNode();
 }
 
 

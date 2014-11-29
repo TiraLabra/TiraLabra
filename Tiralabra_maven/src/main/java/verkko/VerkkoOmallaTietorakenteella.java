@@ -11,6 +11,7 @@ import verkko.esimerkki.LinjaJSON;
 import verkko.esimerkki.Pysakkiverkko;
 import verkko.rajapinnat.Edge;
 import verkko.rajapinnat.Graph;
+import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 
 /**
@@ -18,7 +19,7 @@ import verkko.rajapinnat.Value;
  * 
  * @author E
  */
-public class VerkkoOmallaTietorakenteella extends Verkko implements Graph {
+public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
     
     /**
      * Pysäkit taulukossa
@@ -274,6 +275,7 @@ public class VerkkoOmallaTietorakenteella extends Verkko implements Graph {
     /////////////////////////////////////////////
     ///// automaattiset setterit & getterit /////
     /////////////////////////////////////////////  
+    /*
     public Pysakki[] getPysakit() {
         return pysakit;
     }
@@ -301,5 +303,9 @@ public class VerkkoOmallaTietorakenteella extends Verkko implements Graph {
         }
         return lvalue;
     }
-    
+
+    public Node getNode() {
+        return new Reitti();
+    }
+    */
 }

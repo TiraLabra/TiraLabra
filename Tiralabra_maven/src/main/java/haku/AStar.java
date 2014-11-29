@@ -32,7 +32,7 @@ public class AStar {
      */
     private Graph verkko;
     /**
-     * Apuolio reittien kustannusten ja jäljelläolevan kustannuksen arviointiin
+     * Apuolio reittien kustannusten ja jÃ¤ljellÃ¤olevan kustannuksen arviointiin
      */
     private Laskin laskin;
 
@@ -52,7 +52,7 @@ public class AStar {
      * @param verkko
      * @param laskin
      */
-    public AStar(Verkko verkko, ReittiLaskin laskin) {
+    public AStar(Graph verkko, Laskin laskin) {
         this.verkko = verkko;
         this.laskin = laskin;
         this.laskin.setVerkko(verkko);
@@ -63,7 +63,7 @@ public class AStar {
      *
      * @param verkko Verkko, jossa haut suoritetaan
      */
-    public AStar(Verkko verkko) {
+    public AStar(Graph verkko) {
         this(verkko, new ReittiLaskin());
     }
 
@@ -76,14 +76,14 @@ public class AStar {
 
     /*
      WIP:
-     -Entä jos alkutila/lopputila ei ole verkossa: esim. pysäkkiverkkoon päästään kävelemällä pysäkille?
-     -Epäyhtenäiset verkot
-     -Entä jos on nopeampaa kävellä viereiselle pysäkille
+     -EntÃ¤ jos alkutila/lopputila ei ole verkossa: esim. pysÃ¤kkiverkkoon pÃ¤Ã¤stÃ¤Ã¤n kÃ¤velemÃ¤llÃ¤ pysÃ¤kille?
+     -EpÃ¤yhtenÃ¤iset verkot
+     -EntÃ¤ jos on nopeampaa kÃ¤vellÃ¤ viereiselle pysÃ¤kille
      -Alkuajan esitys, ajan esitys
      */
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
-     * Käyttää omaa prioriteettijonoa
+     * KÃ¤yttÃ¤Ã¤ omaa prioriteettijonoa
      *
      *
      * @param maali
@@ -93,7 +93,7 @@ public class AStar {
     public Node etsiReittiOma(Pysakki alku, Pysakki maali) {
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
         int aika = 45; // vaikuttaa prioriteettijonon oletuskokoon
-        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettä
+        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
         Comparator<Node> comparator = alkuTila.vertailija(tarkkuus);
 
         PrioriteettiJonoListalla<Node> kasittelyJarjestys;
@@ -108,17 +108,17 @@ public class AStar {
 
         while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
 
-            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois käsiteltäväksi
+            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois kÃ¤siteltÃ¤vÃ¤ksi
             Value solmu = kasiteltava.getSolmu();
-            // DEBUG: tietoa käsittelystä ja heuristiikan toiminnasta
+            // DEBUG: tietoa kÃ¤sittelystÃ¤ ja heuristiikan toiminnasta
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
                 if (kasiteltava.getKustannus() < lowestCost) {
-                    // pienempi kuin, pitäisi tapahtua vain kerran
+                    // pienempi kuin, pitÃ¤isi tapahtua vain kerran
                     lowestCost = kasiteltava.getKustannus();
                 } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                    break;  // parempi ratkaisu löytynyt, tämä on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
+                    break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                 }
                 parhaatReitit.add(kasiteltava);
                 continue;
@@ -155,7 +155,7 @@ public class AStar {
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
 
         int aika = 45; // vaikuttaa prioriteettijonon oletuskokoon
-        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettä
+        final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
         Comparator<Node> comparator = alkuTila.vertailija(tarkkuus);
 
         Queue<Node> kasittelyJarjestys;
@@ -168,9 +168,9 @@ public class AStar {
 
         while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
 
-            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois käsiteltäväksi
+            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois kÃ¤siteltÃ¤vÃ¤ksi
             Value solmu = kasiteltava.getSolmu();
-            // DEBUG: tietoa käsittelystä ja heuristiikan toiminnasta
+            // DEBUG: tietoa kÃ¤sittelystÃ¤ ja heuristiikan toiminnasta
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
@@ -179,10 +179,10 @@ public class AStar {
                 //    break;
                 //} else {
                 if (kasiteltava.getKustannus() < lowestCost) {
-                    // pienempi kuin, pitäisi tapahtua vain kerran
+                    // pienempi kuin, pitÃ¤isi tapahtua vain kerran
                     lowestCost = kasiteltava.getKustannus();
                 } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                    break;  // parempi ratkaisu löytynyt, tämä on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
+                    break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                 }
                 parhaatReitit.add(kasiteltava);
                 continue;
