@@ -11,13 +11,15 @@ public class Logiikka {
     
     private Kasi pelaaja;
     private Kasi tekoAly;
+    private Heuristiikka heuristiikka;
     
     /**
      * Konstruktori alustaa luokkamuuttujat
      */
-    public Logiikka() {
+    public Logiikka(Heuristiikka h) {
         this.pelaaja = null;
         this.tekoAly = null;
+        this.heuristiikka = h;
     }
     
     /**
@@ -34,6 +36,7 @@ public class Logiikka {
      */
     public void setPelaajanKasi(Kasi pelaajanKasi) {
         this.pelaaja = pelaajanKasi;
+        this.heuristiikka.setPelaajanKasi(pelaajanKasi);
     }
     
     /**
@@ -42,6 +45,7 @@ public class Logiikka {
      */
     public void setTekoalynKasi(Kasi tekoalynKasi) {
         this.tekoAly = tekoalynKasi;
+        this.heuristiikka.setTietokoneenKasi(tekoalynKasi);
     }
     
     /**

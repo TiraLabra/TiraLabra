@@ -11,6 +11,7 @@ public class Tekoaly {
     private int moodi;
     private Logiikka logiikka;
     private Kasi viimeisinTekoalynKasi;
+    private Heuristiikka Heuristiikka;
 
     /**
      * Konstruktori alustaa luokan muuttujat. Luokka tarvitsee viitteen pelin
@@ -20,11 +21,12 @@ public class Tekoaly {
      * @param s Statistiikkaolio
      * @param l Logiikkaolio
      */
-    public Tekoaly(int moodi, Statistiikka s, Logiikka l) {
+    public Tekoaly(int moodi, Statistiikka s, Logiikka l, Heuristiikka h) {
         this.statistiikka = s;
         this.moodi = moodi;
         this.logiikka = l;
         this.viimeisinTekoalynKasi = null;
+        this.Heuristiikka = h;
     }
 
     /**
@@ -70,43 +72,55 @@ public class Tekoaly {
 //        tekoäly voittamaan yli 80% peleistä!!!
 
         Kasi palautettavaKasi = new Kasi("PAPERI");
-
         // pelin ensimmäinen kierros
         // TOISTAISEKSI palauttaa AINA paperin
         if (this.statistiikka.getKierrokset() == 0) {
-            this.viimeisinTekoalynKasi = palautettavaKasi;
-            return palautettavaKasi;
-        }
-
-        // tarkista kuka voitti edellisellä kierroksella
-        Kasi pelaajanEdellinenKasi = this.logiikka.pelaajanViimeisinKasi();
-        this.logiikka.setPelaajanKasi(pelaajanEdellinenKasi);
-        this.logiikka.setTekoalynKasi(this.viimeisinTekoalynKasi);
-        int viimeisinVoitto = this.logiikka.pelaajaVoittaaKierroksen();
-
-        // jos pelaaja voitti, käytä pelaajan pelaamaa kättä
-        if (viimeisinVoitto == 1) {
-            palautettavaKasi = pelaajanEdellinenKasi;
-        } else if (viimeisinVoitto == 0) { // tasapeli, pelaa tätä kättä voittava
-            //palauta = edellinen;
+//            this.viimeisinTekoalynKasi = palautettavaKasi;
+//            return palautettavaKasi;
+            palautettavaKasi = new Kasi("PAPERI");
+        } else if (this.statistiikka.getKierrokset() < 5) {
+            // tarkista kuka voitti edellisellä kierroksella
+            Kasi pelaajanEdellinenKasi = this.logiikka.pelaajanViimeisinKasi();
             this.logiikka.setPelaajanKasi(pelaajanEdellinenKasi);
+            this.logiikka.setTekoalynKasi(this.viimeisinTekoalynKasi);
+            int viimeisinVoitto = this.logiikka.pelaajaVoittaaKierroksen();
+            // jos pelaaja voitti, käytä pelaajan pelaamaa kättä
+            if (viimeisinVoitto == 1) {
+                palautettavaKasi = pelaajanEdellinenKasi;
+            } else if (viimeisinVoitto == 0) { // tasapeli, pelaa tätä kättä voittava
+                //palauta = edellinen;
+                this.logiikka.setPelaajanKasi(pelaajanEdellinenKasi);
+                for (int i = 0; i < 4; i++) {
+                    if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
+                        palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
+                        this.logiikka.setTekoalynKasi(palautettavaKasi);
+                    }
+                }
+            } else {
+                // oleta pelaajan seuraavan rotaatiota
+                Kasi pelaajanOletusKasi = paivitaSeuraavaRotaationKasi(pelaajanEdellinenKasi);
+                this.logiikka.setPelaajanKasi(pelaajanOletusKasi);
+                for (int i = 0; i < 4; i++) {
+                    if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
+                        palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
+                        this.logiikka.setTekoalynKasi(palautettavaKasi);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            Kasi pelaajanOletus = this.Heuristiikka.pelaajaTuleePelaamaan();
+            this.logiikka.setPelaajanKasi(pelaajanOletus);
             for (int i = 0; i < 4; i++) {
                 if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
                     palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
                     this.logiikka.setTekoalynKasi(palautettavaKasi);
-                }
-            }
-        } else {
-            // oleta pelaajan seuraavan rotaatiota
-            Kasi pelaajanOletusKasi = paivitaSeuraavaRotaationKasi(pelaajanEdellinenKasi);
-            this.logiikka.setPelaajanKasi(pelaajanOletusKasi);
-            for (int i = 0; i < 4; i++) {
-                if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
-                    palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
                 } else {
                     break;
                 }
             }
+
         }
 
         this.viimeisinTekoalynKasi = palautettavaKasi;

@@ -1,6 +1,7 @@
 package com.mycompany.ui;
 
 import com.mycompany.domain.Kasi;
+import com.mycompany.logiikka.Heuristiikka;
 import com.mycompany.logiikka.Logiikka;
 import com.mycompany.logiikka.Statistiikka;
 import com.mycompany.logiikka.Tekoaly;
@@ -16,6 +17,7 @@ public class Cli {
     private Statistiikka statistiikka;
     private Tekoaly tekoAly;
     private Logiikka logiikka;
+    private Heuristiikka heuristiikka;
 
     /**
      * Konstruktori alustaa luokkamuuttujat ja määrittelee pelin tyypin.
@@ -26,8 +28,10 @@ public class Cli {
         this.moodi = mode;
         this.scanner = new Scanner(System.in);
         this.statistiikka = new Statistiikka(this.moodi);
-        this.logiikka = new Logiikka();
-        this.tekoAly = new Tekoaly(this.moodi, this.statistiikka, this.logiikka);
+        this.heuristiikka = new Heuristiikka();
+        this.logiikka = new Logiikka(this.heuristiikka);
+        this.tekoAly = new Tekoaly(this.moodi, this.statistiikka, 
+                this.logiikka, this.heuristiikka);
 
     }
 
@@ -72,6 +76,8 @@ public class Cli {
      */
     private void pelaaKierros() {
         int apu = this.logiikka.pelaajaVoittaaKierroksen();
+        this.heuristiikka.setVoitto(apu);
+        this.heuristiikka.updateKasilista();
         if (apu == 1) {
             this.statistiikka.lisaaPelaajanVoitto();
             System.out.println("Pelaaja voitti!");
