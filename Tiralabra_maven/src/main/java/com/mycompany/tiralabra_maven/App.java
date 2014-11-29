@@ -13,6 +13,7 @@ import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
+import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 import verkko.satunnainen.SatunnainenVerkko;
 
@@ -63,8 +64,9 @@ public class App {
         // debugHajautustaulu();
         // debugHajautustauluPysakit();
         // debugVerkkoOmilla();
-        debugOmia();
+        // debugOmia();
         // debugHajautuslista();
+        debugSatunnainenVerkko();
 
     }
 
@@ -383,17 +385,32 @@ public class App {
      * Debugataa satunnaista verkkoa
      */
     private static void debugSatunnainenVerkko() {
+        System.out.println("SATUNNAINEN VERKKO...");
         SatunnainenLaskin laskin = new SatunnainenLaskin();
-        int n = 10;
-        SatunnainenVerkko verkko = new SatunnainenVerkko(10);
+        int n = 100;
+        SatunnainenVerkko verkko = new SatunnainenVerkko(n);
         Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(n-1, n-1);  
         long a,b,summa=0,min=Long.MAX_VALUE,max=0,otos=10;
         AStar aStar = new AStar( verkko, laskin );
         
+        Node reitti=null;
         for (  int i = 0; i < otos;i++ ) {
             a=System.currentTimeMillis();
-            aStar.etsiReitti(null, null);
+            reitti = aStar.etsiReittiOma(alku, loppu);
+            b=System.currentTimeMillis();
+            
+            long x = b-a;
+            if ( x > max ) max=x;
+            if ( x < min ) min=x;
+            summa+=x;
         }
-        
+        System.out.println("Verkon koko="+n+"X"+n
+                +", Keskiaika="+(summa/otos)
+                +", Otos="+(otos)
+                +", Min="+(min)
+                +", Max="+(max)
+                +""
+        );
+        System.out.println(""+reitti);
     }
 }

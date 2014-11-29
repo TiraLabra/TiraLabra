@@ -90,7 +90,7 @@ public class AStar {
      * @param alku
      * @return
      */
-    public Node etsiReittiOma(Pysakki alku, Pysakki maali) {
+    public Node etsiReittiOma(Value alku, Value maali) {
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
         int aika = 45; // vaikuttaa prioriteettijonon oletuskokoon
         final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
@@ -150,7 +150,7 @@ public class AStar {
      * @param alku
      * @return
      */
-    public Node etsiReitti(Pysakki alku, Pysakki maali) {
+    public Node etsiReitti(Value alku, Value maali) {
 
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
 
