@@ -28,8 +28,8 @@ public class TekoalyTest {
     @Before
     public void setUp() {
         s = new Statistiikka(1);
-        l = new Logiikka();
-        t = new Tekoaly(1, s, l);
+        l = new Logiikka(new Heuristiikka());
+        t = new Tekoaly(1, s, l, new Heuristiikka());
     }
 
     @After

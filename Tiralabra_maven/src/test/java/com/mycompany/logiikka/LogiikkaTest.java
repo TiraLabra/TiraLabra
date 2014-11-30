@@ -25,7 +25,7 @@ public class LogiikkaTest {
     
     @Before
     public void setUp() {
-        this.l = new Logiikka();
+        this.l = new Logiikka(new Heuristiikka());
     }
     
     @After
