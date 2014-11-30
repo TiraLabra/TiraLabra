@@ -93,7 +93,7 @@ public class HuffmanCompressor {
         System.out.println("Decompressing data..");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         
-        
+        long aikaAlussa = System.currentTimeMillis();
         
         for(int i = 0; i < binaryString.length(); i++){
             c = binaryString.charAt(i);
@@ -112,7 +112,8 @@ public class HuffmanCompressor {
             }
         }
         
-        
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("DEKOODAUS: " + (aikaLopussa - aikaAlussa) + " ms.");
         
         return bytes.toByteArray();
     }
@@ -121,40 +122,33 @@ public class HuffmanCompressor {
      * 
      * Cuts the first byte of array that tells how many dummybits
      * were added during compressing the data. Then converts the rest of
-     * the data to binary String that ALWAYS starts with 1 (due to conversion
-     * technique used). The real data may start with one or (in some rare cases)
-     * more zeros. Number of the real zeros is calculated and then they are
-     * added into the front of the binary String.
+     * the data to binary String and removes the dummybits.
      * 
      * @param data byte array
      * @return compressed data in binary String
      */
     private String toBinaryString(byte[] data){
         
+        
         int l = data.length;
         int dummybits = data[0];
-        
-        //System.out.println("Dummybits: " + dummybits);
         
         byte[] dataWithDummys = new byte[l - 1];
         
         System.arraycopy(data, 1, dataWithDummys, 0, dataWithDummys.length);
         
-        BigInteger bintData = new BigInteger(dataWithDummys);
-        String rawStringData = bintData.toString(2);
         
-        int realZeroCount = l * 8 - (8 + dummybits + rawStringData.length());
+        StringBuilder sbbin = new StringBuilder();
         
-        //System.out.println("Lisättävät aidot nollat: " + realZeroCount);
-        
-        StringBuilder realDataSB = new StringBuilder(l);
-        
-        for(int i = 0; i < realZeroCount; i++){
-            realDataSB.append('0');
+        for (byte b : dataWithDummys) {
+            sbbin.append(Integer.toBinaryString(b & 255 | 256).substring(1));
         }
-        realDataSB.append(rawStringData);
+        if(dummybits < 8)
+            sbbin.delete(0, dummybits);
+        String rawStringData = sbbin.toString();
+
         
-        return realDataSB.toString();
+        return rawStringData;
     }
     /**
      * Parses and converts to String a Huffman tree information from

@@ -6,6 +6,8 @@
 
 package superpakkaussofta;
 
+import java.math.BigInteger;
+
 /**
  * Main class.
  *
@@ -17,17 +19,21 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        long aikaAlussa = System.currentTimeMillis();
         
-        //pääasiassa testijuttuja vielä tässä vaiheessa
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
         
         uncompress(fio, compressor);
         //compress(fio, compressor);
         
+        
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("AIKA: " + (aikaLopussa - aikaAlussa) + " ms.");
+        
     }
     private static void compress(FileIO fio, HuffmanCompressor compressor){
-        String path = "testifilu3.txt";
+        String path = "testifilu.txt";
         
         byte[] data = null;
         System.out.println("Reading file..");
@@ -54,7 +60,7 @@ public class Main {
         }
     }
     private static void uncompress(FileIO fio, HuffmanCompressor compressor){
-        String path = "testifilu3.txt.huf";
+        String path = "aika1000.txt.huf";
         
         byte[] data = null;
         System.out.println("Reading file..");
