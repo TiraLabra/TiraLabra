@@ -21,14 +21,6 @@ import verkko.rajapinnat.Value;
  * @author E
  */
 public class DebugTieto {
-   
-    /*
-     //////////////////////////////////////////////////
-     //Testaaminen toistaiseksi täällä: debug-metodit//
-     //////////////////////////////////////////////////
-     */
-    
-    // haun tilasta ja toiminnasta kertovia kenttiä:
     /**
      * Kerätäänkö debug-tietoa
      */

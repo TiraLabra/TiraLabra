@@ -232,6 +232,7 @@ public class Hajautustaulu<K, V> {
      *
      */
     private void rehash() {
+        // loadFactor
         // WIP
         this.uudelleenHajautukset++;
     }

@@ -1,9 +1,11 @@
 package com.mycompany.tiralabra_maven;
 
 import haku.AStar;
+import haku.Laskin;
 import verkko.Reitti;
 import haku.ReittiLaskin;
 import haku.SatunnainenLaskin;
+import java.util.Scanner;
 import tira.LinkitettyLista;
 import tira.DynaaminenLista;
 import tira.Hajautuslista;
@@ -13,6 +15,7 @@ import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
+import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 import verkko.satunnainen.SatunnainenVerkko;
@@ -64,10 +67,206 @@ public class App {
         // debugHajautustaulu();
         // debugHajautustauluPysakit();
         // debugVerkkoOmilla();
-        debugOmia();
+        // debugOmia();
         // debugHajautuslista();
-        debugSatunnainenVerkko();
+        // debugSatunnainenVerkko();
+        // yksinkertainenTestiUI();
+        // Verkko verkko = new Verkko();
+        // System.out.println("" + verkko.getPysakit().length);
+        valitseTyyppi();
+    }
+    /**
+     * Käyttöliittymän valinta
+     */
+    public static void valitseTyyppi() {
+        System.out.println("TESTATTAVAN VERKON TYYPPI");
+        System.out.println("p - Pysäkkiverkko");
+        System.out.println("s - Satunnainen verkko");
+        Scanner scanner = new Scanner(System.in);
+        String komento  = scanner.nextLine();
+        if ( komento.contains("p")) yksinkertainenTestiUIPysakit();
+        else if ( komento.contains("s")) yksinkertainenTestiUI();
+    }
+    /**
+     * Yksinkertainen testikäyttöliittymä hauille pysäkkiverkosta
+     */
+    public static void yksinkertainenTestiUIPysakit() {
+        System.out.println("REITTIHAKU");
+        System.out.println("HSL RAITIOVAUNUVERKKO");
+        System.out.println("alku:loppu - REITTIHAKU PYSÄKILTÄ ALKU PYSÄKILLE LOPPU. KOKONAISLUVUT 0...137");
+        System.out.println("laskin:valinta - VALITAAN LASKIN. KOKONAISLUKU 1...6");
+        Scanner scanner = new Scanner(System.in);
+        Verkko verkko = new Verkko();
+        Laskin laskin = normaali;
+        AStar aStar = new AStar(verkko, laskin);
+        do {
+            String komento = scanner.nextLine();
+            if (komento.contains("exit")) {
+                break;
+            } else if (komento.contains("laskin")) {
+                if (komento.contains("1")) {
+                    laskin = bfs;
+                } else if (komento.contains("2")) {
+                    laskin = bfsVaihdoton;
+                } else if (komento.contains("3")) {
+                    laskin = normaali;
+                } else if (komento.contains("4")) {
+                    laskin = vaihdoton;
+                } else if (komento.contains("5")) {
+                    laskin = normaaliMatkaaMinimoiva;
+                } else if (komento.contains("6")) {
+                    laskin = vaihdotonMatkaaMinimoiva;
+                } else {
+                    continue;
+                }
+                aStar = new AStar(verkko, laskin);
+            } else if (komento.contains(":")) {
+                String[] koordinaatit = komento.split(":");
+                try {
+                    Value alku = verkko.getPysakit()[Integer.parseInt(koordinaatit[0])], loppu = verkko.getPysakit()[Integer.parseInt(koordinaatit[1])];
+                    long a, b, summa = 0, otos = 10, min = Integer.MAX_VALUE, max = 0;
 
+                    Node reitti = null;
+                    for (int i = 0; i < otos; i++) {
+                        a = System.currentTimeMillis();
+                        reitti = aStar.etsiReittiOma(alku, loppu);
+                        b = System.currentTimeMillis();
+
+                        long x = b - a;
+                        if (x > max) {
+                            max = x;
+                        }
+                        if (x < min) {
+                            min = x;
+                        }
+                        summa += x;
+                    }
+                    System.out.println("Reitti=" + reitti + ", Keskiaika=" + (summa / otos)
+                            + ", Otos=" + (otos)
+                            + ", Min=" + (min)
+                            + ", Max=" + (max));
+
+                } catch (Exception ex) {
+                    System.out.println("Haut muodossa alku:loppu");
+                    // System.out.println("");
+                }
+            } else {
+                System.out.println("Haut muodossa alku:loppu");
+            }
+        } while (true);
+    }
+
+    /**
+     * Yksinkertainen komentorivipohjainen testikäyttöliittymä
+     * satunnaisgeneroiduille verkoille
+     *
+     */
+    public static void yksinkertainenTestiUI() {
+
+        System.out.println("REITTIHAKU");
+        System.out.println("SATUNNAINEN VERKKO");
+        System.out.println("Verkossa voi kulkea diagonaalisesti");
+        System.out.println("Oletuskoko 10x10");
+        System.out.println("KOMENNOT");
+        System.out.println("exit - LOPETUS");
+        System.out.println("verkko:koko");
+        System.out.println("verkko:rivit:sarakkeet");
+        System.out.println("verkko:rivit:sarakkeet:minimiPaino:kerroinPaino");
+        System.out.println("laskin:0 - LEVEYSSUUNTAINEN HAKU");
+        System.out.println("laskin:1 - NORMAALI HEURISTIIKKA");
+        System.out.println("print - TULOSTAA VERKON");
+        System.out.println("x1:y1:x2:y2 - REITTIHAKU");
+        Scanner scanner = new Scanner(System.in);
+        SatunnainenVerkko verkko = new SatunnainenVerkko(10);
+        Laskin laskin = new SatunnainenLaskin(1);
+        AStar aStar = new AStar(verkko, laskin);
+        do {
+            String komento = scanner.nextLine();
+
+            if (komento.contains("exit")) {
+                break;
+            } else if (komento.contains("verkko")) {
+                verkko = prosessoiVerkko(komento);
+                if (verkko != null) {
+                    aStar = new AStar(verkko, laskin);
+                }
+            } else if (komento.contains("laskin")) {
+                if (komento.contains("1")) {
+                    laskin = new SatunnainenLaskin(1);
+                } else {
+                    laskin = new SatunnainenLaskin(0);
+                }
+                aStar = new AStar(verkko, laskin);
+            } else if (komento.contains("print")) {
+                System.out.println("VERKKO: ");
+                System.out.println("" + verkko.toString());
+            } else {
+                String[] koordinaatit = komento.split(":");
+
+                try {
+                    int x1 = Integer.parseInt(koordinaatit[0]), y1 = Integer.parseInt(koordinaatit[1]), x2 = Integer.parseInt(koordinaatit[2]), y2 = Integer.parseInt(koordinaatit[3]);
+                    Value alku = verkko.getSolmu(x1, y1), loppu = verkko.getSolmu(x2, y2);
+                    long a, b, summa = 0, otos = 10, min = Integer.MAX_VALUE, max = 0;
+
+                    Node reitti = null;
+                    for (int i = 0; i < otos; i++) {
+                        a = System.currentTimeMillis();
+                        reitti = aStar.etsiReittiOma(alku, loppu);
+                        b = System.currentTimeMillis();
+
+                        long x = b - a;
+                        if (x > max) {
+                            max = x;
+                        }
+                        if (x < min) {
+                            min = x;
+                        }
+                        summa += x;
+                    }
+                    System.out.println("Reitti=" + reitti + ", Keskiaika=" + (summa / otos)
+                            + ", Otos=" + (otos)
+                            + ", Min=" + (min)
+                            + ", Max=" + (max));
+
+                } catch (Exception ex) {
+                    System.out.println("Haut muodossa x1:y1:x2:y2");
+                    // System.out.println("");
+                }
+            }
+
+        } while (true);
+
+    }
+    /**
+     * Generoi syötteestä satunnaisen verkon
+     * 
+     * @param komento
+     * @return 
+     */
+    private static SatunnainenVerkko prosessoiVerkko(String komento) {
+        String[] komennot = komento.split(":");
+        try {
+            SatunnainenVerkko verkko = null;
+            if (komennot.length == 2) {
+                int koko = Integer.parseInt(komennot[1]);
+                verkko = new SatunnainenVerkko(koko);
+            }
+            if (komennot.length == 3) {
+                int rivit = Integer.parseInt(komennot[1]), sarakkeet = Integer.parseInt(komennot[2]);
+                verkko = new SatunnainenVerkko(rivit, sarakkeet);
+            }
+            if (komennot.length == 5) {
+                int rivit = Integer.parseInt(komennot[1]), sarakkeet = Integer.parseInt(komennot[2]), minimiPaino = Integer.parseInt(komennot[3]), kerroinPaino = Integer.parseInt(komennot[4]);
+                verkko = new SatunnainenVerkko(rivit, sarakkeet, minimiPaino, kerroinPaino);
+            }
+            if (verkko != null) {
+                return verkko;
+            }
+        } catch (Exception ex) {
+
+        }
+        System.out.println("Huono syöte");
+        return null;
     }
 
     private static void debugAStarHeuristiikka() {
@@ -314,11 +513,11 @@ public class App {
         AStar aJavaOmaPrioriteettijono = new AStar(verkko, new ReittiLaskin(laskin));
         AStar aOma = new AStar(verkkoX, new ReittiLaskin(laskin));
 
-        aJava.setDebugMode(true);   
+        aJava.setDebugMode(true);
         // aJava.setDebugPrint(false);
-        aOma.setDebugMode(true);  
+        aOma.setDebugMode(true);
         // aOma.setDebugPrint(false);
-        aJavaOmaPrioriteettijono.setDebugMode(true);  
+        aJavaOmaPrioriteettijono.setDebugMode(true);
         // aJavaOmaPrioriteettijono.setDebugPrint(false);        
         for (int i = 0; i < n; i++) {
             a = System.currentTimeMillis();
@@ -380,7 +579,7 @@ public class App {
             System.out.println("ht==ks <-> " + ht.contains(s) + "==" + keySet.contains(s));
         }
     }
-    
+
     /**
      * Debugataan satunnaista verkkoa
      */
@@ -388,31 +587,37 @@ public class App {
         System.out.println("SATUNNAINEN VERKKO...");
         SatunnainenLaskin laskin = new SatunnainenLaskin();
         int n = 100;
-        int rivit = n,sarakkeet=n;
-        SatunnainenVerkko verkko = new SatunnainenVerkko(rivit,sarakkeet);
-        Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(rivit-1, sarakkeet-1);  
-        long a,b,summa=0,min=Long.MAX_VALUE,max=0,otos=10;
-        AStar aStar = new AStar( verkko, laskin );
-        
-        Node reitti=null;
-        for (  int i = 0; i < otos;i++ ) {
-            a=System.currentTimeMillis();
+        int rivit = n, sarakkeet = n;
+        SatunnainenVerkko verkko = new SatunnainenVerkko(rivit, sarakkeet, 1, 10);
+        Value alku = verkko.getSolmu(0, 0), loppu = verkko.getSolmu(rivit - 1, sarakkeet - 1);
+        long a, b, summa = 0, min = Long.MAX_VALUE, max = 0, otos = 10;
+        AStar aStar = new AStar(verkko, laskin);
+        // aStar.setDebugMode(true);
+
+        Node reitti = null;
+        for (int i = 0; i < otos; i++) {
+            a = System.currentTimeMillis();
             reitti = aStar.etsiReittiOma(alku, loppu);
-            b=System.currentTimeMillis();
-            
-            long x = b-a;
-            if ( x > max ) max=x;
-            if ( x < min ) min=x;
-            summa+=x;
+            b = System.currentTimeMillis();
+
+            long x = b - a;
+            if (x > max) {
+                max = x;
+            }
+            if (x < min) {
+                min = x;
+            }
+            summa += x;
         }
-        System.out.println("Verkon koko="+rivit+"X"+sarakkeet
-                +", Keskiaika="+(summa/otos)
-                +", Otos="+(otos)
-                +", Min="+(min)
-                +", Max="+(max)
-                +""
+        System.out.println("Verkon koko=" + rivit + "X" + sarakkeet
+                + ", Keskiaika=" + (summa / otos)
+                + ", Otos=" + (otos)
+                + ", Min=" + (min)
+                + ", Max=" + (max)
+                + ""
         );
-        System.out.println(""+reitti);
+        System.out.println("" + reitti);
         // System.out.println(""+reitti);
+        System.out.println("" + aStar.getRatkaisu());
     }
 }

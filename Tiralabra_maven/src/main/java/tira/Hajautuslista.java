@@ -15,7 +15,7 @@ import java.util.Iterator;
  * @author E
  * @param <K> Hajautettavien avainten tyyppi
  */
-public class Hajautuslista <K> {
+public class Hajautuslista <K> implements Iterable {
     /**
      * Käyttää hajautustaulua avainten tallennukseen. 
      * Avain-arvo -parina K K jotta get-metodi toimii;

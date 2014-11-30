@@ -5,6 +5,7 @@
  */
 package verkko.satunnainen;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import tira.DynaaminenLista;
@@ -22,7 +23,7 @@ public class SatunnainenVerkko implements Graph {
     private Value[][] verkko;
     private Edge[][][] kaaret;
     private double[][] painot;
-    private double minimiPaino = 1, kerroinPaino = 20;
+    private double minimiPaino, kerroinPaino;
     private int rivit, sarakkeet;
 
     /**
@@ -35,14 +36,21 @@ public class SatunnainenVerkko implements Graph {
     }
 
     public SatunnainenVerkko(int rivit, int sarakkeet) {
+        this(rivit, sarakkeet, 1, 20);
+
+    }
+
+    public SatunnainenVerkko(int rivit, int sarakkeet,double minimiPaino, double kerroinPaino) {
+        this.minimiPaino = minimiPaino;
+        this.kerroinPaino = kerroinPaino;
         this.rivit = rivit;
         this.sarakkeet = sarakkeet;
         painot = new double[rivit][sarakkeet];
         verkko = new V[rivit][sarakkeet];
         kaaret = new E[rivit][sarakkeet][1];
-        generoiSatunnainen();
+        generoiSatunnainen();        
     }
-
+    
     /**
      * Verkon generointi
      */
@@ -50,9 +58,9 @@ public class SatunnainenVerkko implements Graph {
         Random random = new Random();
         for (int i = 0; i < rivit; i++) {
             for (int j = 0; j < sarakkeet; j++) {
-                double x = random.nextDouble();
+                //double x = random.nextDouble();
                 //if ( x > 0.5 )
-                painot[i][j] = minimiPaino + kerroinPaino * random.nextDouble(); // satunnainen paino tähän solmuun kulkemiselle
+                painot[i][j] = minimiPaino + (int)(kerroinPaino * random.nextDouble()) /* + random.nextInt((int) kerroinPaino)*/; // satunnainen paino tähän solmuun kulkemiselle
                 //else 
                 //    painot[i][j] = minimiPaino;
                 verkko[i][j] = new V(i, j);
@@ -66,9 +74,7 @@ public class SatunnainenVerkko implements Graph {
         return verkko[i][j];
     }
 
-    public Node getNode() {
-        return new Polku();
-    }
+
     ///////////////////////
     /// GRAPH-RAJAPINTA ///
     ///////////////////////
@@ -102,6 +108,7 @@ public class SatunnainenVerkko implements Graph {
         V l = (V) alku;
         int x = l.getX();
         int y = l.getY();
+        // ylös-alas, vasen-oikea
         Lista<Value> returnvalue = new DynaaminenLista(4);
         if (x > 0) {
             returnvalue.add(verkko[x - 1][y]);
@@ -117,7 +124,26 @@ public class SatunnainenVerkko implements Graph {
         }
         return returnvalue;
     }
+    /**
+     * Uusi Polku-olio
+     * 
+     * @return 
+     */
+    public Node getNode() {
+        return new Polku();
+    }    
 
+    @Override
+    public String toString() {
+        String s = "";
+        for ( double[] d  : painot ) {
+            s+=""+Arrays.toString(d)+"\n";
+        }
+        return s;
+    }
+
+    
+    
     /**
      * Verkon kaari
      *
@@ -126,13 +152,14 @@ public class SatunnainenVerkko implements Graph {
     private class E implements Edge {
 
         private double kustannus;
+        /*
         private V alku, loppu;
         private int x1, x2, y1, y2;
-
+        */
         public E(double kustannus) {
             this.kustannus = kustannus;
         }
-
+        /*
         public E(V alku, V loppu, double kustannus) {
             this.kustannus = kustannus;
             this.x1 = alku.getX(); //this.alku = alku;
@@ -140,7 +167,7 @@ public class SatunnainenVerkko implements Graph {
             this.y1 = alku.getY();
             this.y2 = loppu.getY(); //this.loppu = loppu;
         }
-
+        */
         public void setKustannus(double kustannus) {
             this.kustannus = kustannus;
         }
@@ -262,14 +289,27 @@ public class SatunnainenVerkko implements Graph {
      */
     private class Polku implements Node {
 
+        /**
+         * AStar-haussa käytetyt kuljetun matkan pituus ja arvioitu loppumatkan pituus
+         */
         private double arvioituKustannus, kustannus;
+        /**
+         * Tämänhetkinen solmu
+         */
         private Value solmu;
+        /**
+         * Viimeisin kuljettu kaari
+         */
         private Edge kuljettuKaari;
+        /**
+         * Polku, jolta tähän solmuun on tultu
+         */
         private Polku previous;
 
         /////////////////
         // RAJAPINNAT ///
         /////////////////
+        
         public double getArvioituKustannus() {
             return arvioituKustannus;
         }
@@ -327,6 +367,22 @@ public class SatunnainenVerkko implements Graph {
             };
         }
 
+        ///////////////////////
+        // YKSITYISET METODIT//
+        ///////////////////////
+        /**
+         * Esitys polusta
+         * 
+         * @return 
+         */
+        private String tuloste() {
+            String s = "" + this.getKuljettuKaari() + "->" + this.getSolmu();
+            if (this.previous != null) {
+                s = this.getPrevious().tuloste() + "->" + s;
+            }
+            return s;
+        }
+        
         //////////////////////
         // JULKISET METODIT //
         //////////////////////
@@ -342,7 +398,18 @@ public class SatunnainenVerkko implements Graph {
                 return 1 + this.getPrevious().size();
             }
         }
-
+        /**
+         * Polun kulkemisen kokonaiskustannus
+         * 
+         * @return 
+         */
+        public double totalCost() {
+            double cost =0; // = this.getKustannus();
+            if (this.getKuljettuKaari()!= null) {
+                cost=this.getKuljettuKaari().getKustannus()+this.getPrevious().totalCost();
+            }
+            return cost;
+        }
         ///////////////////////////
         // AUTOMAATTISET METODIT //
         ///////////////////////////
@@ -369,19 +436,19 @@ public class SatunnainenVerkko implements Graph {
         }
 
         /**
-         * Kuljetaan yhteen suuntaan linkitetty lista taaksepäin
+         * Merkkijonoesitys polusta
          *
          * @return
          */
         public String toString() {
-
+            /*
             String s = "" + this.getKuljettuKaari() + "->" + this.getSolmu();
             if (this.previous != null) {
                 s = this.getPrevious().toString() + "->" + s;
             }
             return s;
-
-            // return ""+this.size();
+            */
+            return "Polku{reitti=" +this.tuloste()+ " ,pituus="+this.size()+", kustannus="+this.totalCost()+"}";
         }
 
     }

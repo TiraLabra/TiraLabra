@@ -292,7 +292,13 @@ public class Verkko implements Graph {
     ////////////////////
     // RAJAPINNAT //////
     ////////////////////
-    
+    /**
+     * Palauttaa alku- ja loppusolmujen väliset kaaret (voi olla useita)
+     *
+     * @param alku
+     * @param loppu
+     * @return Kaaret alku- ja loppusolmun välillä
+     */
     public Iterable<Edge> getKaaret(Value alku, Value loppu) {
         Iterable<Kaari> ip =  this.getKaaret((Pysakki)alku, (Pysakki)loppu);
         
@@ -302,7 +308,12 @@ public class Verkko implements Graph {
         }
         return ledge;
     }
-
+    /**
+     * Palauttaa solmun naapurit
+     *
+     * @param solmu
+     * @return
+     */
     public Iterable<Value> getNaapurit(Value alku) {
         Iterable<Pysakki> ip =  this.getNaapurit((Pysakki)alku);
         
