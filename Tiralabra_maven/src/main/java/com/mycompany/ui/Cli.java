@@ -60,9 +60,13 @@ public class Cli {
                 if (c == 't') {
                     System.out.println(this.statistiikka);
                 } else {
+                    // suorituskykylaskenta, nanos koska millis = 0
+                    long aikaAlussa = System.nanoTime();  
                     this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
                     asetaKasi(c);
                     pelaaKierros();
+                    long aikaLopussa = System.nanoTime();
+                    System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ns.");
                 }
             }
             nautaMoodiYksiPaavalikko();

@@ -1,4 +1,4 @@
-# Testausdokumentti
+# Toteutusdokumentti
 
 **Ohjelman yleisrakenne**
 Ohjelma yrittää voittaa pelajaan käden kivi-paperi-sakset(-lisko-spock) -pelissä. Toteutus on hyvin suoraviivainen:
@@ -15,3 +15,7 @@ Ohjelma toimii vakioajassa ja -tilassa.
 * Tekoäly valitsee alussa rotaation perusteella koneen pelaaman käden. Maksimimäärä rotaatiota on 4 (kivi-paperi-sakset-lisko-spock) jonka jälkeen ollaan samassa kädessä mistä rotaatio aloitettiin -> aika O(4) = O(1), tila O(5) = O(1)
 * Heuristiikka tallentaa linkitettyyn listaan pelejä. Kun pelien määrä on saavuttanut 20 alkiota, seuraava talletettava peli laitetaan listan loppuun ja lista ensimmäinen alkio poistetaan (lista koko siis on maksimissaan 20). Sijoitusoperaatiot ovat vakioaikaisia -> aika O(1), tila O(20) = O(1)
 
+**Mahdolliset puutteet ja parannusehdotukset**
+Ohjelma käsittelee pelin käsiä sekä käsi-olioina, joilla on tekstimuotoinen kenttä nimi, että numeroina (heuristiikkassa). Selvyyden vuoksi yritän saada koko ohjelman käsittelemään käsiä ainoastaan numeraalisessa muodossa ja itse käyttöliittymä hoitaa numeroiden muuttamisen tekstiksi. 
+
+Heuristiikan laajentaminen parantaisi koneen voittosuhdetta joten talletettavien käsien määrän nostaminen voi tulla kyseeseen. 
