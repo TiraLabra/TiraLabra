@@ -1,9 +1,6 @@
 
 #pragma once
 
-#include <list>
-#include <map>
-#include <utility>
 using namespace std;
 
 enum pieceType {
@@ -284,8 +281,8 @@ public:
      * @param y column 
      * @return list of moves
      */
-    list< pair<int, int> > findMoves(int x, int y) {
-        list< pair<int, int> > moves;
+    linkedList< coordinate > findMoves(int x, int y) {
+        linkedList< coordinate > moves;
         switch (gameState[x][y].type) {
             case PT_Pawn:
                 
@@ -335,5 +332,5 @@ class moveTree {
 public:
     pieceColor playerColor;
     chessBoard &board;
-    list<moveTree> childNodes;
+    linkedList<moveTree> childNodes;
 };
