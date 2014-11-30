@@ -126,7 +126,12 @@ public class Jono<E> {
     public int size() {
         return size;
     }
-
+    /**
+     * Sisältääkö jono olion e
+     * 
+     * @param e
+     * @return 
+     */
     public boolean contains(E e) {
         int i = head;
         while (i != tail) {
