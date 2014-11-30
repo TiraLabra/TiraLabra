@@ -2,7 +2,6 @@ package search;
 
 import map.Node;
 import structures.ClosedSet;
-import structures.OrderedStack;
 import structures.MinHeap;
 
 /**The A* search class does route searches on a 2d integer arrays. 
