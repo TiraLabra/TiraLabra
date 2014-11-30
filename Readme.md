@@ -5,7 +5,7 @@ http://fi.wikipedia.org/wiki/Huffmanin_koodaus
 
 Tilannekatsaus:
 * Pakkaus- ja purkuominaisuudet toiminnassa
-* Tietorakenteista toteuttamatta enää keko
-* Koodi sisältää paljon sysoja, jotka tulevat poistumaan lopullisesta versiosta
+* Pakkausominaisuudessa vielä paljon aikaa syövä "vika"
+* Koodi sisältää vielä jonkun verran sysoja, jotka tulevat poistumaan lopullisesta versiosta
 * Käyttöliittymä puuttuu vielä
 
