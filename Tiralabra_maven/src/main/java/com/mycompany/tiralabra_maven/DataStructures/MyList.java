@@ -13,7 +13,6 @@ public class MyList {
     public MyList() {
     }
 
-
     /** Removes the ListNode from the list
      *
      * @param node item to be removed

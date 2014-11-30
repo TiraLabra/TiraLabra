@@ -104,7 +104,11 @@ public class Node implements Comparable<Node> {
     }
 
 
-    /** Compares the two nodes and returns which one is cheaper: */
+    /** Compares the two nodes and returns which one is cheaper:
+     * @return 1 if the cost is bigger (this > compare)
+     *         0 if the cost is equal
+     *         -1 if the cost is smaller (this < compare)
+     * */
     @Override
     public int compareTo(@NotNull Node o) {
         if (this.getCost() > o.getCost()) {

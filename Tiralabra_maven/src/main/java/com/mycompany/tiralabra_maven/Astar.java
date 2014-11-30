@@ -1,6 +1,8 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.DataStructures.MyList;
+import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -10,23 +12,31 @@ import java.util.PriorityQueue;
  * 
  */
 public class Astar {
-    public static void main(String[] args) {
+    public void run() {
         /** Temporarily here for timing purposes */
-        long aikaAlussa = System.currentTimeMillis();
+        //long aikaAlussa = System.currentTimeMillis();
         /** starting point of the map */
-        Node start = new Node(1, 2);
+        //Node start = new Node(1, 2);
         /** ending point of the map */
-        Node end = new Node(3, 2);
+        //Node end = new Node(3, 2);
         /** current point of the map */
-        Node current = start;
+        //Node current = start;
         /** map width */
-        int maxX = 5;
+        //int maxX = 5;
         /** map height */
-        int maxY = 5;
+        //int maxY = 5;
 
         /** create the game map */
-        Kartta kartta = new Kartta(start, end, maxX, maxY);
-        kartta.createMap();
+        //Kartta kartta = new Kartta(start, end, maxX, maxY);
+        //kartta.createMap();
+        Kartta kartta = new Kartta();
+        kartta.createMap2();
+        Node start = kartta.getStart();
+        Node end = kartta.getEnd();
+        Node current = start;
+        int maxX = kartta.getMaxX();
+        int maxY = kartta.getMaxY();
+
         Node[][] nodes = kartta.getMap();
 
         /** list of unchecked nodes */
@@ -41,7 +51,7 @@ public class Astar {
 
         open.add(start);
         /*
-        MyMinHeap open = new MyMinHeap(nodes.length);
+        MyPriorityQueue open = new MyPriorityQueue(nodes.length);
         open.insert(start); */
 
         /** list of nodes that have been checked */
@@ -57,7 +67,7 @@ public class Astar {
 
         while (!(closed.contains(end)) && (steps < 1000)) {
             /** If there is no path to be found, return */
-            if (steps == 100) {
+            if (steps == 999) {
                 break;
             }
             /** Break the loop if current node is end node */
@@ -101,7 +111,7 @@ public class Astar {
                         if (open.contains(neighbor) && nextStepCost < neighbor.getCost()) {
                             /** remove neighbor from OPEN, because new path is better */
                             open.remove(neighbor);
-                            //open.heapDecKey(neighbor);
+                            //open.removeNode(neighbor);
 
                         }
 
@@ -155,8 +165,8 @@ public class Astar {
         kartta.printMap();
 
         /** Tells us how long it took to run the algorithm: */
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+        //long aikaLopussa = System.currentTimeMillis();
+        //System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
 
