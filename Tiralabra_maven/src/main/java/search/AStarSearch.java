@@ -1,7 +1,9 @@
 package search;
 
 import map.Node;
-import stack.OrderedStack;
+import structures.ClosedSet;
+import structures.OrderedStack;
+import structures.MinHeap;
 
 /**The A* search class does route searches on a 2d integer arrays. 
  * 
@@ -33,8 +35,8 @@ public class AStarSearch {
            endX < 0 || endX >= map[0].length || endY < 0 || endY >= map.length) {
            return "Search value(s) out of map range. Max X: " + map[0].length + ", max Y: " + map.length + ".";
        }
-       OrderedStack closedSet = new OrderedStack();
-       OrderedStack openSet = new OrderedStack();
+       ClosedSet closedSet = new ClosedSet(map[0].length, map.length);
+       MinHeap openSet = new MinHeap(map[0].length, map.length);
        Node start = new Node(startX, startY);
        openSet.add(start);
        
@@ -69,11 +71,11 @@ public class AStarSearch {
     * @param endX search route's end X value
     * @param endY search route's end Y value
     */
-   private void handleNeighbor(Node neighbor, Node current, OrderedStack closedSet, OrderedStack openSet, int endX, int endY) {
+   private void handleNeighbor(Node neighbor, Node current, ClosedSet closedSet, MinHeap openSet, int endX, int endY) {
        if (neighbor.getX() < 0 || neighbor.getX() >= map[0].length || neighbor.getY() < 0 || neighbor.getY() >= map.length) {
            return;
        }
-       if (closedSet.nodeInStack(neighbor.getX(), neighbor.getY())) {
+       if (closedSet.contains(neighbor)) {
            return;
        }
        
@@ -81,7 +83,7 @@ public class AStarSearch {
        
        boolean neighborInOpenSet = false;
        
-       if (openSet.nodeInStack(neighbor.getX(), neighbor.getY())) {
+       if (openSet.contains(neighbor.getX(), neighbor.getY())) {
            neighbor = openSet.get(neighbor.getX(), neighbor.getY());
            neighborInOpenSet = true;
        }

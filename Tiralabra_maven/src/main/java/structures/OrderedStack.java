@@ -1,4 +1,4 @@
-package stack;
+package structures;
 
 import map.Node;
 

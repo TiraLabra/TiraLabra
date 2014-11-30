@@ -19,7 +19,7 @@ public class AStarSearchTest {
     Random rand;
     int [][] validMap = {{1, 1, 2, 3, 2},
                          {2, 6, 2, 1, 1},
-                         {1, 2, 9, 2, 2},
+                         {1, 3, 9, 2, 2},
                          {2, 1, 1, 2, 1}};
     
     @Before
@@ -45,7 +45,7 @@ public class AStarSearchTest {
     
     @Test
     public void searchWorksWithCorrectInput() {
-        assertEquals("(0, 0: time: 0) -> (0, 1: time: 2) -> (0, 2: time: 3) -> (1, 2: time: 5) -> (1, 3: time: 6) -> (2, 3: time: 7) -> (3, 3: time: 9)", search.search(0, 0, 3, 3));
+        assertEquals("(0, 0: time: 0) -> (0, 1: time: 2) -> (0, 2: time: 3) -> (0, 3: time: 5) -> (1, 3: time: 6) -> (2, 3: time: 7) -> (3, 3: time: 9)", search.search(0, 0, 3, 3));
     }
     
     @Test
@@ -63,7 +63,7 @@ public class AStarSearchTest {
         assertEquals("   0 1 2 3 4 X\n" + 
                      " 0 1 1 2 3 2\n" + 
                      " 1 2 6 2 1 1\n" + 
-                     " 2 1 2 9 2 2\n" + 
+                     " 2 1 3 9 2 2\n" + 
                      " 3 2 1 1 2 1\n" +
                      " Y", search.printMap());
     }
@@ -105,7 +105,7 @@ public class AStarSearchTest {
     }
     
     @Test
-    public void randomized100x100MapTimeUnder2500ms() {
+    public void randomized100x100MapTimeUnder100ms() {
         int[][] randomMap = createRandomMap(100, 100, 10);
         AStarSearch randMapSearch = new AStarSearch(randomMap);
         long startTime = System.currentTimeMillis();
@@ -113,6 +113,6 @@ public class AStarSearchTest {
             randMapSearch.search(0, 0, 99, 99);
         }
         long endTime = System.currentTimeMillis();
-        assertTrue((endTime - startTime) / 10 < 2500);
+        assertTrue((endTime - startTime) / 10 < 100);
     }
 }
