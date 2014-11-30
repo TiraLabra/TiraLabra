@@ -2,7 +2,6 @@ package superpakkaussofta;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 /**
  * Compressor class that uses Huffman coding.
@@ -16,7 +15,7 @@ public class HuffmanCompressor {
     /**
      * Compresses given byte array using Huffman compression with given huffman tree.
      * Compression may result an amount of bits that isn't divisible by eight.
-     * 0-7 dummybits (and a byte to tell the amount) are inserted in front of the bit String to fix that.
+     * 1-8 dummybits (and a byte to tell the amount) are inserted in front of the bit String to fix that.
      * 
      * @param data
      * @return 
@@ -26,39 +25,36 @@ public class HuffmanCompressor {
         TreeOperator toperator = new TreeOperator();
         HuffmanNode tree = toperator.constructTree(data);
         String codes[] = countNewCodes(tree);
-        /*
-        System.out.println("koodit: ");
-        for(int i = 0; i < 256; i++){
-            if(!codes[i].equals(""))
-                System.out.println(i-128 + ": " + codes[i]);
-        }
-        */
         
         StringBuilder bits = new StringBuilder();
         
+        System.out.println("Compressing data..");
         for(int i = 0; i < data.length; i++){
             bits.append(codes[data[i]+128]);
         }
-        
+        /*
         System.out.println("data: " + bits.toString());
         System.out.println("datan pituus: " + bits.length());
         System.out.println("lisättävät nollat: " + (8 - (bits.length() % 8)));
-        
+        */
         int dummybits = 8 - (bits.length() % 8);
         
         for(int i = 0; i < dummybits; i++){
             bits.insert(0, '0');
         }
-        
+        /*
         System.out.println("Pakattu data: " + bits.toString());
         System.out.println("Pakattu biginttinä: " +  new BigInteger(bits.toString(), 2));
-        
+        */
         byte[] compressed = new BigInteger(bits.toString(), 2).toByteArray();
         byte[] comprWithDummyNumber = new byte[compressed.length + 1];
-        
+        /*
         for(int i = 1; i < comprWithDummyNumber.length; i++){
             comprWithDummyNumber[i] = compressed[i - 1];
         }
+        */
+        System.arraycopy(compressed, 0, comprWithDummyNumber, 1, compressed.length);
+        
         comprWithDummyNumber[0] = (byte) dummybits;
         
         byte[] finalComprData = concatTreeWithByteArray(comprWithDummyNumber, tree);
@@ -74,24 +70,27 @@ public class HuffmanCompressor {
      */
     public byte[] decompress(byte[] data){
         
-        System.out.println("Alkuperäinen data stringinä: " + new String(data));
+        //System.out.println("Alkuperäinen data stringinä: " + new String(data));
         TreeOperator toperator = new TreeOperator();
         
         int cp = getTreeCutPoint(data);
+        System.out.println("Parsing and recreating tree..");
         String stree = parseTreeString(data, cp);
-        System.out.println("Puu stringinä: " + stree);
+        //System.out.println("Puu stringinä: " + stree);
+        System.out.println("Parsing data..");
         byte[] pureData = parseOnlyData(data, cp);
-        System.out.println("Vain data stringinä: " + new String(pureData));
+        //System.out.println("Vain data stringinä: " + new String(pureData));
+        System.out.println("Converting data to bits..");
         String binaryString = toBinaryString(pureData);
-        System.out.println("Binääristringinä: " + binaryString);
+        //System.out.println("Binääristringinä: " + binaryString);
         
         HuffmanNode tree = toperator.constructTree(stree);
-        System.out.println("Uudelleen koottu puu: " + tree);
+        //System.out.println("Uudelleen koottu puu: " + tree);
         
         HuffmanNode node = tree;
         char c;
         
-        //ArrayList<Byte> bytes = new ArrayList<Byte>();
+        System.out.println("Decompressing data..");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         
         
@@ -135,7 +134,7 @@ public class HuffmanCompressor {
         int l = data.length;
         int dummybits = data[0];
         
-        System.out.println("Dummybits: " + dummybits);
+        //System.out.println("Dummybits: " + dummybits);
         
         byte[] dataWithDummys = new byte[l - 1];
         
@@ -146,7 +145,7 @@ public class HuffmanCompressor {
         
         int realZeroCount = l * 8 - (8 + dummybits + rawStringData.length());
         
-        System.out.println("Lisättävät aidot nollat: " + realZeroCount);
+        //System.out.println("Lisättävät aidot nollat: " + realZeroCount);
         
         StringBuilder realDataSB = new StringBuilder(l);
         
@@ -216,7 +215,7 @@ public class HuffmanCompressor {
      * @return String array with binary code for each byte
      */
     private String[] countNewCodes(HuffmanNode tree){
-        
+        System.out.println("Generating new byte codes..");
         String[] codes = new String[256];
         for(int i = 0; i < codes.length; i++){
             codes[i] = "";
@@ -250,20 +249,20 @@ public class HuffmanCompressor {
      * @return 
      */
     public byte[] concatTreeWithByteArray(byte[] cdata, HuffmanNode tree){
-        
+        System.out.println("Saving tree..");
         String treeString = tree.toString() + "c";  //lopetusmerkki
         byte[] bytesTree = treeString.getBytes();
         int treeLength = bytesTree.length;
         int dataLength = cdata.length;
         byte[] compWithTree = new byte[dataLength + treeLength];
-        
+        /*
         System.out.println("puu: " + treeString);
         System.out.println("puun pituus tavuina: " + treeLength);
-        
+        */
         System.arraycopy(bytesTree, 0, compWithTree, 0, treeLength);
         System.arraycopy(cdata, 0, compWithTree, treeLength, dataLength);
         
-        System.out.println("lopullinen data stringinä: " + new String(compWithTree));
+        //System.out.println("lopullinen data stringinä: " + new String(compWithTree));
         
         return compWithTree;
         

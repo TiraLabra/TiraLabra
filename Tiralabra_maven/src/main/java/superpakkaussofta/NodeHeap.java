@@ -6,8 +6,6 @@
 
 package superpakkaussofta;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 /**
  * A min heap for HuffmanNodes. At the moment using PriorityQueue, but will
@@ -20,14 +18,12 @@ public class NodeHeap {
     
     HuffmanNode[] nodes;
     int size;
-    //PriorityQueue<HuffmanNode> pque;
     
     /**
      * Creates an empty NodeHeap
      * 
      */
     public NodeHeap(){
-        //pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         nodes = new HuffmanNode[10];
     }
     
@@ -37,7 +33,6 @@ public class NodeHeap {
      * @param data 
      */
     public NodeHeap(byte[] data){
-        //pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         nodes = new HuffmanNode[10];
         
         int[] counts = countBytes(data);
@@ -50,8 +45,9 @@ public class NodeHeap {
      * @param tree 
      */
     public NodeHeap(String tree){
-        //pque = new PriorityQueue<HuffmanNode>(20, new NodeComparator());
         nodes = new HuffmanNode[10];
+        
+        System.out.println("Parsing byte counts..");
         
         int[] counts = new int[256];
         
@@ -79,6 +75,7 @@ public class NodeHeap {
      * @param counts 
      */
     private void constructHeapFromByteCounts(int[] counts){
+        System.out.println("Building heap..");
         for(int i = 0; i < counts.length; i++){
             if(counts[i] > 0){
                 this.add(new HuffmanNode((byte) (i - 128), counts[i]));
@@ -92,7 +89,7 @@ public class NodeHeap {
      * @return Amount of different bytes as int array (256 size)
      */
     private int[] countBytes(byte[] data){
-        
+        System.out.println("Counting bytes..");
         int[] bytes = new int[256];
         
         for(int i = 0; i < data.length; i++){
@@ -126,8 +123,6 @@ public class NodeHeap {
             i = i/2;
         }
         nodes[i] = n;
-        
-        //pque.add(n);
     }
     /**
      * Deletes (from this heap) and returns the HuffmanNode with least
@@ -150,7 +145,6 @@ public class NodeHeap {
         
         
         return n;
-        //return pque.poll();
     }
     /**
      * Returns HuffmanNode with least frequency (or null if empty).
@@ -163,7 +157,6 @@ public class NodeHeap {
         }else{
             return null;
         }
-        //return pque.peek();
     }
     /**
      * 
@@ -171,7 +164,6 @@ public class NodeHeap {
      */
     public int size(){
         return size;
-        //return pque.size();
     }
     /**
      * Heapify operation
@@ -185,10 +177,7 @@ public class NodeHeap {
         int rfreq;
         HuffmanNode res;
         
-        //printHeap();
-        //System.out.print("Heapify: ");
         while(done == false){
-            //System.out.print(n + ",");
             nfreq = nodes[n].getFreq();
             
             if(2*n + 1 <= size){
@@ -224,32 +213,5 @@ public class NodeHeap {
             }
             
         }
-        //System.out.println();
-    }
-    /**
-     * Comparator for PriorityQueue.
-     * TO BE REMOVED at some point.
-     * 
-     */
-    public class NodeComparator implements Comparator<HuffmanNode>{
-        
-        @Override
-        public int compare(HuffmanNode a, HuffmanNode b){
-            return a.getFreq() - b.getFreq();
-        }
-    }
-    @Override
-    public boolean equals(Object o){
-        //TODO
-        /*
-        if(!(o instanceof NodeHeap)){
-            return false;
-        }
-        
-        NodeHeap ob = (NodeHeap) o;
-        
-        return pque.equals(ob.pque);
-        */
-        return false;
     }
 }

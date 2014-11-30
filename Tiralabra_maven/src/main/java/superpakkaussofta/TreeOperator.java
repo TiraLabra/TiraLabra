@@ -50,17 +50,17 @@ public class TreeOperator {
      * @return root HuffmanNode
      */
     private HuffmanNode createTreeFromHeap(NodeHeap heap){
+        System.out.println("Creating Huffman tree..");
         while(heap.size() > 1){
             HuffmanNode n1 = heap.poll();
             HuffmanNode n2 = heap.poll();
             heap.add(new HuffmanNode(n1, n2));
-            System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
+            //System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
         }
         
-        if(heap.peek() != null){
-            System.out.println("Ei tyhjä: " + heap.peek());
-        }else{
-            System.out.println("Tyhjä");
+        //TODO
+        if(heap.peek() == null){
+            System.out.println("Error: Empty tree!");
         }
         
         

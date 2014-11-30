@@ -24,69 +24,53 @@ public class Main {
         
         uncompress(fio, compressor);
         //compress(fio, compressor);
-        /*
-        NodeHeap h = new NodeHeap();
-        h.add(new HuffmanNode((byte) 3, 3));
-        h.add(new HuffmanNode((byte) 4, 4));
-        h.add(new HuffmanNode((byte) 2, 2));
-        h.add(new HuffmanNode((byte) 5, 5));
-        h.add(new HuffmanNode((byte) 27, 27));
-        h.add(new HuffmanNode((byte) 5, 5));
-        h.add(new HuffmanNode((byte) 20, 20));
-        h.add(new HuffmanNode((byte) 1, 1));
-        h.add(new HuffmanNode((byte) 8, 8));
-        h.add(new HuffmanNode((byte) 11, 11));
-        h.add(new HuffmanNode((byte) 22, 22));
-        h.add(new HuffmanNode((byte) 13, 13));
-        h.add(new HuffmanNode((byte) 15, 15));
-        
-        System.out.println("Nodeja pukkaa:");
-        while(h.size() > 0)
-            System.out.println(h.poll() + ", koko: " + h.size());
-        */
         
     }
     private static void compress(FileIO fio, HuffmanCompressor compressor){
-        String path = "testifilu2.txt";
+        String path = "testifilu3.txt";
         
         byte[] data = null;
+        System.out.println("Reading file..");
         try {
             data = fio.read(path);
         } catch (Exception e) {
-            System.out.println("luku feilas");
+            System.out.println("Error: Reading failed!");
         }
-        
+        /*
         System.out.println("Alkuperäinen:");
         for(int i = 0; i < data.length; i++){
             System.out.println(data[i]);
         }
-        
+        */
         byte[] compr = compressor.compress(data);
         
-        
+        System.out.println("Saving compressed file..");
         try {
             fio.write(compr, path + ".huf");
+            System.out.println("Compressing complete!");
         } catch (Exception e) {
-            System.out.println("Tallentaminen feilas:");
+            System.out.println("Saving to disk failed!");
             System.out.println(e);
         }
     }
     private static void uncompress(FileIO fio, HuffmanCompressor compressor){
-        String path = "testifilu2.txt.huf";
+        String path = "testifilu3.txt.huf";
         
         byte[] data = null;
+        System.out.println("Reading file..");
         try {
             data = fio.read(path);
         } catch (Exception e) {
-            System.out.println("luku feilas");
+            System.out.println("Error: Reading failed!");
         }
         
         byte[] uncompr = compressor.decompress(data);
         
         try {
             fio.write(uncompr, path + ".ava");
+            System.out.println("Decompressing complete!");
         } catch (Exception e) {
-            System.out.println("Tallentaminen feilas:");
+            System.out.println("Saving to disk failed!");
             System.out.println(e);
         }
     }
