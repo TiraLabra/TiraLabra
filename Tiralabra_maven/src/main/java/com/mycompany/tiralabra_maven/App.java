@@ -73,8 +73,10 @@ public class App {
         // yksinkertainenTestiUI();
         // Verkko verkko = new Verkko();
         // System.out.println("" + verkko.getPysakit().length);
-        valitseTyyppi();
+        // valitseTyyppi();
+        new Gui();
     }
+
     /**
      * Käyttöliittymän valinta
      */
@@ -83,10 +85,14 @@ public class App {
         System.out.println("p - Pysäkkiverkko");
         System.out.println("s - Satunnainen verkko");
         Scanner scanner = new Scanner(System.in);
-        String komento  = scanner.nextLine();
-        if ( komento.contains("p")) yksinkertainenTestiUIPysakit();
-        else if ( komento.contains("s")) yksinkertainenTestiUI();
+        String komento = scanner.nextLine();
+        if (komento.contains("p")) {
+            yksinkertainenTestiUIPysakit();
+        } else if (komento.contains("s")) {
+            yksinkertainenTestiUI();
+        }
     }
+
     /**
      * Yksinkertainen testikäyttöliittymä hauille pysäkkiverkosta
      */
@@ -180,6 +186,7 @@ public class App {
         SatunnainenVerkko verkko = new SatunnainenVerkko(10);
         Laskin laskin = new SatunnainenLaskin(1);
         AStar aStar = new AStar(verkko, laskin);
+        long otos=10;
         do {
             String komento = scanner.nextLine();
 
@@ -206,6 +213,8 @@ public class App {
                 try {
                     int x1 = Integer.parseInt(koordinaatit[0]), y1 = Integer.parseInt(koordinaatit[1]), x2 = Integer.parseInt(koordinaatit[2]), y2 = Integer.parseInt(koordinaatit[3]);
                     Value alku = verkko.getSolmu(x1, y1), loppu = verkko.getSolmu(x2, y2);
+                    hakuOtos(aStar,alku,loppu,otos,true);
+                    /*
                     long a, b, summa = 0, otos = 10, min = Integer.MAX_VALUE, max = 0;
 
                     Node reitti = null;
@@ -227,6 +236,7 @@ public class App {
                             + ", Otos=" + (otos)
                             + ", Min=" + (min)
                             + ", Max=" + (max));
+                    */
 
                 } catch (Exception ex) {
                     System.out.println("Haut muodossa x1:y1:x2:y2");
@@ -237,11 +247,12 @@ public class App {
         } while (true);
 
     }
+
     /**
      * Generoi syötteestä satunnaisen verkon
-     * 
+     *
      * @param komento
-     * @return 
+     * @return
      */
     private static SatunnainenVerkko prosessoiVerkko(String komento) {
         String[] komennot = komento.split(":");
@@ -267,6 +278,42 @@ public class App {
         }
         System.out.println("Huono syöte");
         return null;
+    }
+
+    /**
+     * Suorittaa reittihaun ja palauttaa kuluneen ajan keskiarvon
+     *
+     * @param aStar Haku
+     * @param alku Alkusolmu
+     * @param loppu Loppusolmu
+     * @param otos Otoskoko
+     * @param print Tulostetaanko tulokset
+     * @return
+     */
+    private static long hakuOtos(AStar aStar, Value alku, Value loppu, long otos, boolean print) {
+        long a, b, summa = 0, min = Integer.MAX_VALUE, max = 0;
+
+        Node reitti = null;
+        for (int i = 0; i < otos; i++) {
+            a = System.currentTimeMillis();
+            reitti = aStar.etsiReittiOma(alku, loppu);
+            b = System.currentTimeMillis();
+
+            long x = b - a;
+            if (x > max) {
+                max = x;
+            }
+            if (x < min) {
+                min = x;
+            }
+            summa += x;
+        }
+        long keskiaika = (summa / otos);
+        if (print) System.out.println("Reitti=" + reitti + ", Keskiaika=" + (keskiaika)
+                + ", Otos=" + (otos)
+                + ", Min=" + (min)
+                + ", Max=" + (max));
+        return keskiaika;
     }
 
     private static void debugAStarHeuristiikka() {
@@ -617,6 +664,9 @@ public class App {
                 + ""
         );
         System.out.println("" + reitti);
+        
+        // Polku p = (Polku) reitti;
+        
         // System.out.println(""+reitti);
         System.out.println("" + aStar.getRatkaisu());
     }
