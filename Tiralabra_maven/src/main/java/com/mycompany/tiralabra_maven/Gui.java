@@ -17,11 +17,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import tira.Hajautustaulu;
 import tira.Lista;
 import verkko.Pysakki;
+import verkko.Reitti;
 import verkko.Verkko;
 import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Node;
@@ -64,10 +66,10 @@ public class Gui extends JFrame {
      * Testiprofiilin asetukset
      */
     private void dev() {
-        SatunnainenVerkko satunnainenVerkko = new SatunnainenVerkko(300, 300, 1, 9);
+        SatunnainenVerkko satunnainenVerkko = new SatunnainenVerkko(300, 300, 1, 2, 2);
         SatunnainenLaskin satunnainenLaskin = new SatunnainenLaskin(1);
-        verkko = satunnainenVerkko; // new Verkko();
-        laskin = satunnainenLaskin;
+        verkko = new Verkko(); //  satunnainenVerkko; //
+        laskin = App.normaali;//;satunnainenLaskin;
         aStar = new AStar(verkko, laskin);
         // alku = satunnainenVerkko.getSolmu(0, 0);
         // loppu = satunnainenVerkko.getSolmu(7, 6);
@@ -80,8 +82,10 @@ public class Gui extends JFrame {
      * @return
      */
     private JMenuBar teeMenu() {
-        JMenuBar menu = new JMenuBar();
-        return menu;
+        JMenuBar menubar = new JMenuBar();
+        JMenu menu = new JMenu();
+        menubar.add(menu);
+        return menubar;
     }
 
     /**
@@ -91,21 +95,24 @@ public class Gui extends JFrame {
         if (alku != null && loppu != null) {
             reitti = aStar.etsiReittiOma(alku, loppu);
             piirto.repaint();
+            System.out.println("" + reitti);
         }
     }
 
     /**
      * Vaihdetaan laskinta
      */
-    private void toggleLaskin(Laskin laskin) {
-
+    private void setLaskin(Laskin laskin) {
+        this.laskin = laskin;
+        this.aStar = new AStar(verkko, laskin);
     }
 
     /**
      * Vaihdetaan verkkoa
      */
-    private void toggleVerkko(Verkko verkko) {
-
+    private void setVerkko(Verkko verkko) {
+        this.verkko = verkko;
+        this.aStar = new AStar(verkko, laskin);
     }
 
     /**
@@ -128,7 +135,7 @@ public class Gui extends JFrame {
         /**
          * Satunnaisen verkon piirtäminen
          */
-        private int blockW = 14, blockH = 10;
+        private int blockW = 18, blockH = 11;
 
         /**
          * Pysäkkiverkon piirtäminen
@@ -147,12 +154,15 @@ public class Gui extends JFrame {
         public void paint(Graphics g) {
             super.paint(g);
             // int blocksize=10;
+            // g.setFont(null);
             if (verkko != null) {
                 try {
                     piirraSatunnainen(g);
+                    hitboksit = null;
+                    drawboksit = null;
                 } catch (Exception e) {
                     alustaPysakkiverkko();
-                    piirraPysakki(g);
+                    piirraPysakkiverkko(g);
                 }
             }
 
@@ -207,8 +217,20 @@ public class Gui extends JFrame {
             g.setColor(Color.BLACK);
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
-                    g.drawString("" + (int) painot[i][j], blockW * i, blockH * (j + 1));
+                    String merkki = "" + painot[i][j];
+                    if (merkki.length() > 3) {
+                        merkki = merkki.substring(0, 3);
+                    }
+                    g.drawString("" + merkki, blockW * i, blockH * (j + 1));
                 }
+            }
+            // piirretään gridi
+            for (int i = 0; i <= x; i++) {
+                g.drawLine(i * blockW, 0, i * blockW, y * blockH);
+            }
+
+            for (int i = 0; i <= y; i++) {
+                g.drawLine(0, i * blockH, x * blockW, i * blockH);
             }
         }
 
@@ -217,7 +239,7 @@ public class Gui extends JFrame {
          *
          * @param g
          */
-        public void piirraPysakki(Graphics g) {
+        public void piirraPysakkiverkko(Graphics g) {
 
             BufferedImage img = null;
             // huhhuh, huh
@@ -232,39 +254,88 @@ public class Gui extends JFrame {
             g.setColor(Color.red);
             if (drawboksit != null) {
                 for (Pysakki p : drawboksit.keySet()) {
+                    Color k;
                     if (p == alku) {
-                        piirraPysakki(g,Color.YELLOW,p);
+                        k = Color.YELLOW;
                     } else if (p == loppu) {
-                        piirraPysakki(g,Color.GREEN,p);
+                        k = Color.GREEN;
                     } else {
-                        piirraPysakki(g,Color.red,p);
+                        k = Color.RED;
                     }
+                    int avain = drawboksit.get(p);
+                    g.setColor(k);
+                    g.drawRect(avain % isoLuku, avain / isoLuku, pW, pH);
                 }
             }
+            
+            if ( aStar != null && aStar.getKaydytSolmut() != null ) {
+                for ( Value v : aStar.getKaydytSolmut() ) {
+                    Pysakki p = (Pysakki) v;
+                    int avain = drawboksit.get(p);
+                    g.setColor( Color.PINK );
+                    g.fillRect(avain % isoLuku, avain / isoLuku, pW, pH);
+                }
+            }
+            if ( reitti != null ) {
+                Reitti r = (Reitti) reitti;
+                for ( Value v : r.solmut() ) {
+                    Pysakki p = (Pysakki) v;
+                    int avain = drawboksit.get(p);
+                    g.setColor( Color.RED );
+                    g.fillRect(avain % isoLuku, avain / isoLuku, pW, pH);
+                }
+            }            
+            
 
         }
 
         /**
-         * Piirtää pysäkin paneeliin annetulla värillä
+         * Muuttaa pysäkin koordinaatit (ruudun x,y) sellaisiksi, että
+         * yksilöivät pysäkin
          *
-         * @param g
-         * @param k
-         * @param pysakki
+         * @param x
+         * @param y
+         * @return
          */
-        private void piirraPysakki(Graphics g, Color k, Pysakki pysakki) {
-            int avain = drawboksit.get(pysakki);
-            g.setColor(k);
-            g.drawRect(avain % isoLuku, avain / isoLuku, pW, pH);
-
+        private int avain(int x, int y) {
+            x /= pW;
+            y /= pH;
+            x *= pW;
+            y *= pH;
+            int avain = y * isoLuku + x;
+            return avain;
         }
 
-        private Pysakki haePysakki() {
-            return null;
+        /**
+         * Etsii ruutukoordinaattien perusteella pysäkin
+         *
+         * @param x
+         * @param y
+         * @return
+         */
+        private Pysakki haePysakki(int x, int y) {
+            Pysakki p = null;
+
+            p = hitboksit.get(avain(x, y));
+
+            return p;
         }
 
+        /**
+         * Alustetaan pysäkkiverkko: luodaan jotakuinkin ruudulle ja karttaan
+         * sopivat koordinaatit, täytetään hitboksit-taulu
+         */
         private void alustaPysakkiverkko() {
-            if ( hitboksit == null ) hitboksit = new Hajautustaulu(140);
-            if ( drawboksit == null ) drawboksit = new Hajautustaulu(140);
+            if (hitboksit == null) {
+                hitboksit = new Hajautustaulu(140);
+            } else {
+                return;
+            }
+            if (drawboksit == null) {
+                drawboksit = new Hajautustaulu(140);
+            } else {
+                return;
+            }
             Verkko v = (Verkko) verkko;
 
             Pysakki[] pysakit = v.getPysakit();
@@ -293,21 +364,10 @@ public class Gui extends JFrame {
                 y /= skaala;
                 y += modY;
 
-                int avain = y * isoLuku + x;
+                hitboksit.put(avain(x, y), p);
+                drawboksit.put(p, avain(x, y));
 
-                hitboksit.put(avain, p);
-                drawboksit.put(p, avain);
-
-                if (p.getKoodi().equals("1230407")) {
-                    // g.setColor(Color.BLACK);
-                    //piirraPysakki(g, Color.BLACK, p);
-                } else {
-                    // g.setColor(Color.red);
-                }
-
-                // g.drawRect(x, y, pW, pH);
             }
-            // System.out.println("Range X:" + (maxX - minX) + ", Range Y:" + (maxY - minY));
         }
 
         /**
@@ -327,13 +387,17 @@ public class Gui extends JFrame {
                     alku = ((SatunnainenVerkko) verkko).getSolmu(x, y);
                 } catch (Exception ex) {
 
-                    System.out.println("" + e.getX() + " - " + e.getY());
+                    Value value = this.haePysakki(e.getX(), e.getY());
+                    alku = (value != null) ? value : alku;
+
                 }
 
             } else if (e.getButton() == 3) { // left click
                 try {
                     loppu = ((SatunnainenVerkko) verkko).getSolmu(x, y);
                 } catch (Exception ex) {
+                    Value value = this.haePysakki(e.getX(), e.getY());
+                    loppu = (value != null) ? value : loppu;
                 }
             } else {
 

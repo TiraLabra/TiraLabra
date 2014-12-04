@@ -6,9 +6,12 @@
 package verkko;
 
 import java.util.Comparator;
+import tira.DynaaminenLista;
+import tira.Lista;
 import verkko.rajapinnat.Edge;
 import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
+import verkko.satunnainen.Polku;
 
 /**
  * Verkossa eteneminen: pidetään kirjaa reitistä, kuljetuista kaarista,
@@ -109,6 +112,39 @@ public class Reitti implements Node {
         this.matka = matka;
     }
 
+    /**
+     * Reitin solmut järjestyksessä
+     * 
+     * @return 
+     */
+    public Lista<Value> solmut(  ) {
+        Lista<Value> seuraajat = new DynaaminenLista();
+        
+        Reitti p = this;
+        while ( p!=null ) {
+            seuraajat.add(p.getSolmu());
+            p = p.getPrevious();
+        }
+   
+   
+        return seuraajat;
+    }
+    /**
+     * Reitin pituus.
+     * 
+     * @return 
+     */
+    public int size() {
+        Reitti p = this;
+        int i =0;
+        while ( p!=null ) {
+            i++;
+            p = p.getPrevious();
+        } 
+        return i;
+    }
+    
+    
     @Override
     public String toString() {
         String tuloste = "Reitti{" + "kuljettuKaari=" + kuljettuKaari

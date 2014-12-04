@@ -6,6 +6,7 @@
 package verkko.rajapinnat;
 
 import java.util.Comparator;
+import tira.Lista;
 
 /**
  * Polku/Reitti verkossa
@@ -35,4 +36,18 @@ public interface Node {
     void setPrevious(Node edellinen);
     
     Comparator<Node> vertailija( int tarkkuus );
+    
+    /**
+     * Gui:ta varten.
+     * 
+     * @return 
+     */
+    Lista<Value> solmut(); 
+    
+    /**
+     * Tuloksien esittämistä varten.
+     * 
+     * @return Reitin pituus
+     */
+    int size();
 }
