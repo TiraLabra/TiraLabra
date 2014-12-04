@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import tira.DynaaminenLista;
 import tira.Hajautustaulu;
 import tira.Lista;
 import verkko.Pysakki;
@@ -42,6 +43,7 @@ import verkko.satunnainen.V;
  * @author E
  */
 public class Gui extends JFrame {
+
     /**
      * Heuristiikan käyttämä tieto keskinopeudesta. Jos arvo on liian pieni,
      * heuristiikka yliarvioi matkojen aikakustannuksia. Jos arvo liian suuri,
@@ -72,18 +74,18 @@ public class Gui extends JFrame {
      * Matkaa ja matka-aikaa minimoiva laskin
      */
     public static ReittiLaskin vaihdotonMatkaaMinimoiva = new ReittiLaskin(1, 0.001, 3, 1, 0, sporanNopeus);
-    
+
     /**
      * Satunnaisen verkon BFS
      */
-    public static SatunnainenLaskin satunnainenBFS      = new SatunnainenLaskin(0);
+    public static SatunnainenLaskin satunnainenBFS = new SatunnainenLaskin(0);
     /**
      * Satunnaisen verkon heuristinen laskin
      */
-    public static SatunnainenLaskin satunnainen         = new SatunnainenLaskin(1);
+    public static SatunnainenLaskin satunnainen = new SatunnainenLaskin(1);
     /**
      * Verkon graafinen esitys
-     */    
+     */
     private Piirto piirto;
 
     private Graph verkko;
@@ -91,6 +93,11 @@ public class Gui extends JFrame {
     private Laskin laskin;
     private Node reitti;
     private Value alku, loppu;
+
+    /**
+     *
+     */
+    private boolean valittuPysakki, valittuSatunnainen;
     /**
      * Menukomponentit
      */
@@ -118,10 +125,10 @@ public class Gui extends JFrame {
         this.setJMenuBar(teeMenu());
         JScrollPane jsp = new JScrollPane(piirto);
         piirto.setAutoscrolls(true);
-        jsp.setPreferredSize( piirto.getPreferredSize() );
+        jsp.setPreferredSize(piirto.getPreferredSize());
         // jsp.add(piirto);
         this.add(jsp);
-        
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("AStar");
 
@@ -137,6 +144,8 @@ public class Gui extends JFrame {
     private void dev() {
         SatunnainenVerkko satunnainenVerkko = new SatunnainenVerkko(20, 40, 1, 2, 2);
         SatunnainenLaskin satunnainenLaskin = new SatunnainenLaskin(1);
+        valittuPysakki = false;
+        valittuSatunnainen = true;
         verkko = satunnainenVerkko; //
         laskin = satunnainenLaskin;
         aStar = new AStar(verkko, laskin);
@@ -192,6 +201,8 @@ public class Gui extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 pysakkiVerkko.setSelected(false);
                 reittiLaskin.clearSelection();
+                valittuPysakki = false;
+                valittuSatunnainen = true;
                 uusiSatunnainenVerkko();
             }
         });
@@ -200,63 +211,79 @@ public class Gui extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 satunnainenVerkko.setSelected(false);
                 satunnainenLaskin.clearSelection();
-                
+                valittuPysakki = true;
+                valittuSatunnainen = false;
                 p3.setSelected(true);
-                
-                setVerkko( new Verkko() );
+
+                setVerkko(new Verkko());
                 setLaskin(normaali);
             }
         });
         l1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( satunnainenVerkko.isSelected() ) setLaskin( satunnainenBFS );
+                if (valittuSatunnainen) {
+                    setLaskin(satunnainenBFS);
+                }
             }
         });
         l2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( satunnainenVerkko.isSelected() ) setLaskin( satunnainen );
+                if (valittuSatunnainen) {
+                    setLaskin(satunnainen);
+                }
             }
-        }); 
-        
-        
+        });
+
         p1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 reittiLaskin.clearSelection();
-                if ( pysakkiVerkko.isSelected() ) setLaskin( bfs );
+                if (valittuPysakki) {
+                    setLaskin(bfs);
+                }
             }
         });
         p2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( pysakkiVerkko.isSelected() ) setLaskin( bfsVaihdoton );
+                if (valittuPysakki) {
+                    setLaskin(bfsVaihdoton);
+                }
             }
         });
         p3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( pysakkiVerkko.isSelected() ) setLaskin( normaali );
+                if (valittuPysakki) {
+                    setLaskin(normaali);
+                }
             }
         });
         p4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( pysakkiVerkko.isSelected() ) setLaskin( vaihdoton );
+                if (valittuPysakki) {
+                    setLaskin(vaihdoton);
+                }
             }
         });
         p5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( pysakkiVerkko.isSelected() ) setLaskin( normaaliMatkaaMinimoiva );
+                if (valittuPysakki) {
+                    setLaskin(normaaliMatkaaMinimoiva);
+                }
             }
         });
         p6.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( pysakkiVerkko.isSelected() ) setLaskin( vaihdotonMatkaaMinimoiva );
+                if (valittuPysakki) {
+                    setLaskin(vaihdotonMatkaaMinimoiva);
+                }
             }
-        }); 
-        
+        });
+
         testaus.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 laskeToimintaa();
             }
-            
+
         });
         menubar.setVisible(true);
         return menubar;
@@ -267,9 +294,11 @@ public class Gui extends JFrame {
      */
     private void uusiSatunnainenVerkko() {
         String options = JOptionPane.showInputDialog("rivit:sarakkeet:minimipaino:kerroinpaino:tyyppi");
-        String[] opt={};
-        try { opt = options.split(":"); }
-        catch (Exception ex) {}
+        String[] opt = {};
+        try {
+            opt = options.split(":");
+        } catch (Exception ex) {
+        }
 
         int r = 200, s = 200, moodi = 1;
         double minimi = 1, kerroin = 2;
@@ -339,10 +368,29 @@ public class Gui extends JFrame {
      * Tekee Tulokset-paneelista uuden ikkunan
      */
     private void laskeToimintaa() {
+
+        String options = JOptionPane.showInputDialog("otosKoko:testienLkm");
+        String[] opt = {};
+        int otosKoko=20, testienLkm=10;
+        try {
+            opt = options.split(":");
+        } catch (Exception ex) {
+        }
+        try {
+            otosKoko = Integer.parseInt(opt[0]);
+        } catch (Exception ex) {
+        }
+        try {
+            testienLkm = Integer.parseInt(opt[1]);
+        } catch (Exception ex) {
+        }
         JFrame jframe = new JFrame();
-        jframe.setSize(this.getSize());
+        
         jframe.setTitle("Reitinhaun tehokkuus");
-        jframe.add(new Tulokset());
+        Tulokset tulokset = new Tulokset(otosKoko, testienLkm);
+        jframe.add(tulokset);
+        jframe.setSize(tulokset.getPreferredSize());
+        tulokset.testaa();
         jframe.setVisible(true);
 
     }
@@ -376,13 +424,13 @@ public class Gui extends JFrame {
             // int blocksize=10;
             // g.setFont(null);
             if (verkko != null) {
-                if (satunnainenVerkko.isSelected()) {
+                if (valittuSatunnainen) {
                     piirraSatunnainen(g);
                     hitboksit = null;
                     drawboksit = null;
-                } else if ( pysakkiVerkko.isSelected() ) {
-                    this.setPreferredSize(new Dimension(800,800));
-                    this.setMaximumSize(new Dimension(800,800));
+                } else if (valittuPysakki) {
+                    this.setPreferredSize(new Dimension(800, 800));
+                    this.setMaximumSize(new Dimension(800, 800));
                     alustaPysakkiverkko();
                     piirraPysakkiverkko(g);
                 }
@@ -398,11 +446,11 @@ public class Gui extends JFrame {
          */
         public void piirraSatunnainen(Graphics g) {
             SatunnainenVerkko v = (SatunnainenVerkko) verkko;
-            int rivit     = v.getRivit();
+            int rivit = v.getRivit();
             int sarakkeet = v.getSarakkeet();
-            this.setPreferredSize(new Dimension(sarakkeet*blockW,rivit*blockH));
-            this.setMaximumSize(new Dimension(sarakkeet*blockW,rivit*blockH));
-            
+            this.setPreferredSize(new Dimension(sarakkeet * blockW, rivit * blockH));
+            this.setMaximumSize(new Dimension(sarakkeet * blockW, rivit * blockH));
+
             double[][] painot = v.getPainot();
 
             // piirretään solmut, joissa on käyty
@@ -454,7 +502,7 @@ public class Gui extends JFrame {
             }
 
             for (int i = 0; i <= sarakkeet; i++) {
-                
+
                 g.drawLine(i * blockW, 0, i * blockW, rivit * blockH);
             }
         }
@@ -610,22 +658,20 @@ public class Gui extends JFrame {
             // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             // System.out.println("bttn: " + e.getButton() + ", x:" + e.getX() + ", y:" + e.getY());
             int sarake = (e.getX() - this.getX()) / blockW; // sarake
-            int rivi =   (e.getY() - this.getY()) / blockH; // rivi
+            int rivi = (e.getY() - this.getY()) / blockH; // rivi
 
             if (e.getButton() == 1) { // left click
-                if ( satunnainenVerkko.isSelected() ) {
-                    alku = ((SatunnainenVerkko) verkko).getSolmu(rivi,sarake);
-                }
-                else if ( pysakkiVerkko.isSelected() ) {
+                if (valittuSatunnainen) {
+                    alku = ((SatunnainenVerkko) verkko).getSolmu(rivi, sarake);
+                } else if (valittuPysakki) {
                     Value value = this.haePysakki(e.getX(), e.getY());
                     alku = (value != null) ? value : alku;
                 }
 
             } else if (e.getButton() == 3) { // left click
-                if ( satunnainenVerkko.isSelected() ) {
-                    loppu = ((SatunnainenVerkko) verkko).getSolmu(rivi,sarake);
-                }
-                else if ( pysakkiVerkko.isSelected() ) {
+                if (valittuSatunnainen) {
+                    loppu = ((SatunnainenVerkko) verkko).getSolmu(rivi, sarake);
+                } else if (valittuPysakki) {
                     Value value = this.haePysakki(e.getX(), e.getY());
                     loppu = (value != null) ? value : loppu;
                 }
@@ -661,19 +707,85 @@ public class Gui extends JFrame {
      */
     private class Tulokset extends JPanel {
 
+        private int otosKoko,testienLkm;
+        private int w,h;
+        private int blockW=3,blockH=3, pituusBlokki=3,starttiBlokki=50,aikaBlokki=3;
+        
+        private Lista<Lista<Long>> tulokset;
+        private Lista<Integer>     pituudet;
+        
         public Tulokset() {
             this.setPreferredSize(new Dimension(500, 500));
         }
 
+        public Tulokset(int otosKoko, int testienLkm) {
+            w=500;h=900;
+            this.setPreferredSize( new Dimension(w,h));
+            this.otosKoko = otosKoko;
+            this.testienLkm = testienLkm;
+        }
+
+        /**
+         * Testaa reitinhakua satunnaisesti valituilla alku- ja loppusolmuilla
+         */
+        public void testaa() {
+            tulokset = new DynaaminenLista();
+            pituudet = new DynaaminenLista();
+            for ( int i = 0; i < otosKoko; i++ ) {
+                Lista<Long> testinAjat = new DynaaminenLista();
+                Value a=null, b=null;
+                if ( valittuSatunnainen ) {
+                    SatunnainenVerkko v = (SatunnainenVerkko) verkko;
+                    int r = v.getRivit(), s = v.getSarakkeet();
+                    
+                    a = v.getSolmu( (int)(r*Math.random()), (int)(s*Math.random()));
+                    b = v.getSolmu( (int)(r*Math.random()), (int)(s*Math.random()));
+                }
+                else if ( valittuPysakki ) {
+                    Verkko v = (Verkko) verkko;
+                    Pysakki[] pysakit    = v.getPysakit();
+                    int r   = pysakit.length;
+                    a = pysakit[ (int)(r*Math.random()) ];
+                }
+                if ( a==b ) continue;
+                Node polku = null;
+                long start,stop,summa=0;
+                for ( int j = 0; j < testienLkm; j++ ) {
+                    // ajastus
+                    start=System.currentTimeMillis();
+                    polku = aStar.etsiReittiOma(a, b);
+                    stop=System.currentTimeMillis();
+                    summa+=((stop-start));
+                }
+                System.out.println("Keskiarvo: "+summa/testienLkm+" Reitin pituus: "+polku.size());
+                testinAjat.add(summa/testienLkm);
+                pituudet.add( polku.size() );
+                tulokset.add(testinAjat);
+            }
+            repaint();
+        }
+        
+
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-
-            if (verkko != null) {
-                g.fillRect(33, 66, 555, 333);
+ 
+            if ( tulokset== null ) return;
+            
+            for ( int i = 0; i < tulokset.size(); i++ ) {
+                g.setColor(Color.BLUE);
+                int x  = (pituusBlokki)*pituudet.get(i)+starttiBlokki;
+                for ( int j = 0; j < tulokset.get(i).size(); j++ ) {
+                    double y = h-aikaBlokki*tulokset.get(i).get(j); // keskiajat
+                    g.drawRect(x-pituusBlokki,  (int)(y) - aikaBlokki, blockW, blockH);
+                }
             }
-
+            g.setColor(Color.BLACK);
+            g.drawLine(starttiBlokki, h, starttiBlokki, 0);
+            g.drawLine(starttiBlokki, h,(int)this.getParent().getSize().getWidth(), h);
         }
+        
+        
     }
 
 }
