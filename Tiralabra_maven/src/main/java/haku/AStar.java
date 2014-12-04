@@ -35,10 +35,15 @@ public class AStar {
      * Apuolio reittien kustannusten ja jÃ¤ljellÃ¤olevan kustannuksen arviointiin
      */
     private Laskin laskin;
-
+    /**
+     * Haun toiminnasta tietoa DebugTieto-oliossa
+     */
     private DebugTieto debugTieto;
 
-    //WIP
+    /**
+     * Esitys solmuista, joissa on käyty. Guita varten
+     */
+    private Lista<Value> kaydytSolmut;
     /**
      * haun katkaisua varten
      */
@@ -145,10 +150,24 @@ public class AStar {
             kasitellytSolmut.add(solmu);
         }
 
+        // GUI tulostusta varten talteen
+        kaydytSolmut = kasitellytSolmut.keySet();
+        
         debugTieto.debugRatkaisu(parhaatReitit);
         return parhaatReitit.get(0);
     }
 
+    /**
+     * Palauttaa listan solmuista, joissa on käyty
+     * 
+     * @return 
+     */
+    public Lista<Value> getKaydytSolmut() {
+        return kaydytSolmut;
+    }
+
+    
+    
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
      *
