@@ -1,6 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
-public class Kartta {
+public class MyMap {
 
     /** Width of the map */
     private int maxX;
@@ -13,35 +13,43 @@ public class Kartta {
     /** The Map itself */
     private Node[][] map;
 
-    public Kartta(Node start, Node end, int maxX, int maxY) {
+    public MyMap(Node start, Node end, int maxX, int maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
         this.start = start;
         this.end = end;
     }
 
+    /**
+     * Constructor
+     */
+    public MyMap() {
 
-    public int getMaxX() {
-        return maxX;
-    }
-    public int getMaxY() {
-        return maxY;
-    }
-
-    public Node getStart() {
-        return start;
-    }
-
-    public Node getEnd() {
-        return end;
     }
 
     /**
-     *
-     * Create map automatically
+     * @return Maximum width of the map
      */
-    public Kartta() {
-
+    public int getMaxX() {
+        return maxX;
+    }
+    /**
+     * @return Maximum height of the map
+     */
+    public int getMaxY() {
+        return maxY;
+    }
+    /**
+     * @return Start node
+     */
+    public Node getStart() {
+        return start;
+    }
+    /**
+     * @return End node
+     */
+    public Node getEnd() {
+        return end;
     }
 
     /** Creates the map according to the items:
@@ -94,22 +102,13 @@ public class Kartta {
         return (this.map[y][x].getX() == comparable.getX()) && (this.map[y][x].getY() == comparable.getY());
     }
 
-    public String Map1() {
-        return "##############################\n" +
-                "#o#_______________________##_#\n" +
-                "#_#_######################_#_#\n" +
-                "#_#_#______________________#_#\n" +
-                "#_#_#_##################_#_#_#\n" +
-                "#_#_#_#__________________#_#_#\n" +
-                "#_#_#_##################_#_#_#\n" +
-                "#_#_#__________________#_#_#_#\n" +
-                "#_#_#_##################_#_#_#\n" +
-                "#________________________#x__#\n" +
-                "##############################";
-    }
+    /** Creates a map according to the inserted String.
+     * Reads the map size, creates the nodes, creates a start and end point.
+     *
+     * @param mapString The wanted map.
+     */
 
-    public void createMap2() {
-        String mapString = Map1();
+    public void createMap2(String mapString) {
         String [] mapLines = mapString.split("\n");
         this.maxX = mapLines[0].length();
         this.maxY = mapLines.length-1;

@@ -63,11 +63,11 @@ public class AstarTest {
     @org.junit.Test
     public void testCalculateHeuristic() {
         Node end = new Node(2,2);
-        assertTrue(Astar.calculateHeuristic(node, end) == 4);
+        assertTrue(Astar.calculateManhattan(node, end) == 4);
 
 
         Node end2 = new Node(4,4);
-        assertTrue(Astar.calculateHeuristic(node, end2) == 8);
+        assertTrue(Astar.calculateManhattan(node, end2) == 8);
     }
 
     /** Tests that the calculateEuclidean-method gives correct results */

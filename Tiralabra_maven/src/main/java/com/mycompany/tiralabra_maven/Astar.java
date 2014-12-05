@@ -1,7 +1,6 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.DataStructures.MyList;
-import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -12,7 +11,7 @@ import java.util.PriorityQueue;
  * 
  */
 public class Astar {
-    public void run() {
+    public void run(String map) {
         /** Temporarily here for timing purposes */
         //long aikaAlussa = System.currentTimeMillis();
         /** starting point of the map */
@@ -27,17 +26,19 @@ public class Astar {
         //int maxY = 5;
 
         /** create the game map */
-        //Kartta kartta = new Kartta(start, end, maxX, maxY);
-        //kartta.createMap();
-        Kartta kartta = new Kartta();
-        kartta.createMap2();
-        Node start = kartta.getStart();
-        Node end = kartta.getEnd();
-        Node current = start;
-        int maxX = kartta.getMaxX();
-        int maxY = kartta.getMaxY();
+        //MyMap myMap = new MyMap(start, end, maxX, maxY);
+        //myMap.createMap();
 
-        Node[][] nodes = kartta.getMap();
+        /** Create map */
+        MyMap myMap = new MyMap();
+        myMap.createMap2(map);
+        Node start = myMap.getStart();
+        Node end = myMap.getEnd();
+        Node current = start;
+        int maxX = myMap.getMaxX();
+        int maxY = myMap.getMaxY();
+
+        Node[][] nodes = myMap.getMap();
 
         /** list of unchecked nodes */
 
@@ -55,12 +56,13 @@ public class Astar {
         open.insert(start); */
 
         /** list of nodes that have been checked */
-        //List closed = new ArrayList();
         MyList closed = new MyList();
         /**
-         * find neighbors of the start node which are walkable
-         * find out all possible directions of the current node
-         * remove walls + unwalkable squares + create a list of them
+         *
+         * Find neighbors of the start node which are walkable,
+         * find out all possible directions of the current node,
+         * remove walls + unwalkable squares + create a list of the walkable items.
+         * Then it calculates which of the available nodes is the best one cost-wise.
          */
         /** Max steps to get to the end of path: */
         int steps = 0;
@@ -154,16 +156,19 @@ public class Astar {
         /** Skip the end node */
         help = current.getParent();
         current = help;
+        int pathLength = 0;
         /** Go through all the nodes in the path and mark them with character P: */
         while (current.getParent() != null) {
             help.setCharacter('P');
             help = current.getParent();
             current = help;
+            pathLength++;
         }
 
         /** Print the final map! */
-        kartta.printMap();
-
+        myMap.printMap();
+        /** Tell us how long the path was: */
+        System.out.println("Path length was " + pathLength + " steps.");
         /** Tells us how long it took to run the algorithm: */
         //long aikaLopussa = System.currentTimeMillis();
         //System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
@@ -236,18 +241,17 @@ public class Astar {
         //heuristic = dx+dy;
         //return heuristic;
     //}
-
     /**
-     * Same as previous method but it is comparing two Nodes instead of points, might scrap later
-     * Creates the heuristic used for this A* algorithm, current heuristic for testing purposes is Manhattan distance.
+     * Heuristic calculation using Manhattan distance
+     *
      * @param end The end Node at the map
      * @param current Current Node where the algorithm is
      * @return returns cost calculated by distance
      */
-    public static double calculateHeuristic(Node end, Node current) {
+    public static double calculateManhattan(Node end, Node current) {
         /** dx is an approximation of the distance between the two nodes' x coordinates */
         double dx = Math.abs(end.getX() - current.getX());
-        /** dy is an approximation of the distance between tif (webmRepository.getOne(id) != null) {he two nodes' y coordinates */
+        /** dy is an approximation of the distance between the two nodes' y coordinates */
         double dy = Math.abs(end.getY() - current.getY());
         /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
          *  hence it's very fast */
@@ -255,5 +259,6 @@ public class Astar {
         heuristic = dx+dy;
         return heuristic;
     }
+
 
 }
