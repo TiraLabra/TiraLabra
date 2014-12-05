@@ -214,4 +214,25 @@ public class NodeHeap {
             
         }
     }
+    @Override
+    public boolean equals(Object o){
+        
+        if(!(o instanceof NodeHeap)){
+            return false;
+        }
+        NodeHeap n = (NodeHeap) o;
+        
+        if(this.size() != n.size()){
+            return false;
+        }
+        
+        int l = this.size();
+        for(int i = 1; i <= l; i++){
+            if(!this.nodes[i].equals(n.nodes[i])){
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }

@@ -24,16 +24,24 @@ public class Main {
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
         
-        uncompress(fio, compressor);
+        
+        if(args.length != 2 || !(args[0].equals("pakkaa") || args[0].equals("pura"))){
+            System.out.println("Kayta ohjelmaa parametrein:\n\npakkaa *pakattava tiedosto*\npura *purettava tiedosto*\n");
+        }else if(args[0].equals("pakkaa")){
+            compress(fio, compressor, args[1]);
+        }else if(args[0].equals("pura")){
+            uncompress(fio, compressor, args[1]);
+        }
+        
         //compress(fio, compressor);
+        //uncompress(fio, compressor);
         
         
         long aikaLopussa = System.currentTimeMillis();
         System.out.println("AIKA: " + (aikaLopussa - aikaAlussa) + " ms.");
         
     }
-    private static void compress(FileIO fio, HuffmanCompressor compressor){
-        String path = "testifilu.txt";
+    private static void compress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
         System.out.println("Reading file..");
@@ -59,8 +67,7 @@ public class Main {
             System.out.println(e);
         }
     }
-    private static void uncompress(FileIO fio, HuffmanCompressor compressor){
-        String path = "aika1000.txt.huf";
+    private static void uncompress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
         System.out.println("Reading file..");

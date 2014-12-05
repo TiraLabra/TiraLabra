@@ -42,29 +42,29 @@ public class HuffmanCompressor {
         for(int i = 0; i < dummybits; i++){
             bits.insert(0, '0');
         }
-        /*
-        System.out.println("Pakattu data: " + bits.toString());
-        System.out.println("Pakattu biginttinä: " +  new BigInteger(bits.toString(), 2));
-        */
+        
+        //System.out.println("Pakattu data: " + bits.toString());
+        //System.out.println("Pakattu biginttinä: " +  new BigInteger(bits.toString(), 2));
+        
         //byte[] compressed = new BigInteger(bits.toString(), 2).toByteArray();
-        int dl = bits.length()/8;
-        byte[] compressed = new byte[dl];
-        for(int i = 0; i < dl; i++){
-            
+        
+        int datal = 1 + bits.length()/8;
+        byte[] compressed = new byte[datal];
+        for(int i = 1; i < datal; i++){
+            compressed[i] = (byte) Integer.parseInt(bits.substring((i-1)*8, i*8), 2);
         }
         
-        
-        byte[] comprWithDummyNumber = new byte[compressed.length + 1];
+        //byte[] comprWithDummyNumber = new byte[compressed.length + 1];
         /*
         for(int i = 1; i < comprWithDummyNumber.length; i++){
             comprWithDummyNumber[i] = compressed[i - 1];
         }
         */
-        System.arraycopy(compressed, 0, comprWithDummyNumber, 1, compressed.length);
+        //System.arraycopy(compressed, 0, comprWithDummyNumber, 1, compressed.length);
         
-        comprWithDummyNumber[0] = (byte) dummybits;
+        compressed[0] = (byte) dummybits;
         
-        byte[] finalComprData = concatTreeWithByteArray(comprWithDummyNumber, tree);
+        byte[] finalComprData = concatTreeWithByteArray(compressed, tree);
         
         return finalComprData;
     }
@@ -140,6 +140,8 @@ public class HuffmanCompressor {
         int l = data.length;
         int dummybits = data[0];
         
+        System.out.println("Poistettavat nollat: " + dummybits);
+        
         byte[] dataWithDummys = new byte[l - 1];
         
         System.arraycopy(data, 1, dataWithDummys, 0, dataWithDummys.length);
@@ -147,11 +149,11 @@ public class HuffmanCompressor {
         
         StringBuilder sbbin = new StringBuilder();
         
-        for (byte b : dataWithDummys) {
-            sbbin.append(Integer.toBinaryString(b & 255 | 256).substring(1));
+        for (int i = 0; i < dataWithDummys.length; i++) {
+            sbbin.append(Integer.toBinaryString(dataWithDummys[i] & 255 | 256).substring(1));
         }
-        if(dummybits < 8)
-            sbbin.delete(0, dummybits);
+        
+        sbbin.delete(0, dummybits);
         String rawStringData = sbbin.toString();
 
         
