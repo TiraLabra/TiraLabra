@@ -46,7 +46,14 @@ public class HuffmanCompressor {
         System.out.println("Pakattu data: " + bits.toString());
         System.out.println("Pakattu biginttinä: " +  new BigInteger(bits.toString(), 2));
         */
-        byte[] compressed = new BigInteger(bits.toString(), 2).toByteArray();
+        //byte[] compressed = new BigInteger(bits.toString(), 2).toByteArray();
+        int dl = bits.length()/8;
+        byte[] compressed = new byte[dl];
+        for(int i = 0; i < dl; i++){
+            
+        }
+        
+        
         byte[] comprWithDummyNumber = new byte[compressed.length + 1];
         /*
         for(int i = 1; i < comprWithDummyNumber.length; i++){
