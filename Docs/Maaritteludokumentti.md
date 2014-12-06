@@ -46,10 +46,8 @@ X = Lopeta
 
 * * *
 
-**Algoritmit ja tietorakenteet**
+**Käytetävät tietorakenteet ja algoritmit**
 
-* Ohjelma pitää listaa pelaajan käsistä viiden alkion kokoisen kokonaislukutaulukon avulla. Kädet numeroidaan järjestyksessä ja jokaisen kierroksen jälkeen pelaajan kättä vastaavan alkion arvoa korotetaan yhdellä. Tällöin aika- ja tilavaativuus ovat O(1).
+* Ohjelma tallentaa pelatut kädet linkitettyyn listaan jonka koko on etukäteen määritelty. Lista toimii pinon mukaisesti siten, että viimeisimmän kierroksen käsiparit tallennetaan listan alkuun. Mikäli listan koko saavuttaa ennalta määritellyn koon, lisäyksen yhteydessä listan vanhin (=viimeinen) olio poistetaan listalta. Lista pääsee käsiksi ensimmäiseen solmuun ja sisältää tiedon listan nykyisestä koosta mikäli enimmäiskokoa ei ole saavutettu. Listalle lisääminen aiheuttaa vakiomäärän operaatioita, joten lisäys on vakioaikainen operaatio (aikavaatimus O(1), tilavaatimus O(1)). Mikäli listan lopussa oleva alkio tulee poistaa listalta (enimmäiskoko saavutettu) liikutaan listalla ensimmäisestä alkiosta viimeiseen alkioon ja hyppyjä tulee listan ennalta määrätyn koon verran. Koska lista koko on suhteellisen pieni (muutamia kymmeniä) on operaatio myös aika- ja tilavaativuudeltaa vakio (O(1)).
 
-* Haluttaessa tietää pelaajan vähiten pelaama käsi, käydään edellä mainittu viiden alkion taulu läpi ja sen alkion indeksi jolla on pienin arvo on vähiten pelattu käsi. Indeksit noudattavat pelin nimeä (KIVI[=0]-PAPERI[=1]-SAKSET[=2]-LISKO[=3]-SPOCK[=4]). Vähiten pelatun käden etsiminen vie aikaa O(5) eli aikavaativuus on O(1).
-
-* Tekoälyn täytyy selvittää vähiten pelatun käden prosenttiosuus kaikista käsistä. Selvittämällä edellä mainitulla metodilla vähiten pelattu käsi, saadaan samalla myös tietoon käden esiintymien määrä. Statistiikka tarjoaa luokkamuuttujan joka kertoo pelattujen kierrosten määrän. Esiintymien määrän selvitys tapahtuu ajassa O(5) = O(1), luokkamuuttuja O(1) ja laskutoimitus O(1) -> vakioaikaista. 
+* Selvitettäessä em. listan avulla pelaajan todennäköisintä kättä, käytetään apurakenteena viiden alkion kokonaislukutaulukkoa (int[5]). Pelissä pelattavia käsiä kuvataan koodissa numeroilla 0-4. Apurakenteen rakentaminen ja läpikäyminen on suoraviivaista koska ennalta määrättyjen alkioiden (5kpl) arvoa muutetaan tai luetaan. Aika- ja tilavaativuudet ovat pahimmassa tapauksessa O(5), eli siis vakioaikaisia ja -tilaisia (O(1))
