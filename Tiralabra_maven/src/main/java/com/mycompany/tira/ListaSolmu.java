@@ -1,14 +1,13 @@
 package com.mycompany.tira;
 
 /**
- * Käsilista käyttä listasolmu. Solmu tietää datakenttänään käsipari-olion sekä 
+ * Käsilista käyttää listasolmua. Solmu tietää datakenttänään käsipari-olion sekä 
  * seuraavan listasolmun
- * 
  */
-public class ListaSolmu {
+public class Listasolmu {
     
     private Kasipari kasiPari;
-    private ListaSolmu seuraava;
+    private Listasolmu seuraava;
 
     /**
      * Asettaa luokkamuuttujat
@@ -16,7 +15,7 @@ public class ListaSolmu {
      * @param lisattava Listasolmuun liitettävä käsipari-olio
      * @param seuraava solmua seuraava listasolmu
      */
-    public ListaSolmu(Kasipari lisattava, ListaSolmu seuraava) {
+    public Listasolmu(Kasipari lisattava, Listasolmu seuraava) {
         this.kasiPari = lisattava;
         this.seuraava = seuraava;
     }
@@ -35,7 +34,7 @@ public class ListaSolmu {
      * 
      * @return Listasolmu 
      */
-    public ListaSolmu getSeuraavaListaSolmu() {
+    public Listasolmu getSeuraavaListaSolmu() {
         return this.seuraava;
     }
     
@@ -44,7 +43,7 @@ public class ListaSolmu {
      * 
      * @param seuraavaSolmu Listasolmu joka seuraa tätä listasolmua
      */
-    public void setSeuraavaListaSolmu(ListaSolmu seuraavaSolmu) {
+    public void setSeuraavaListaSolmu(Listasolmu seuraavaSolmu) {
         this.seuraava = seuraavaSolmu;
     }
 }
