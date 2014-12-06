@@ -2,40 +2,22 @@ package com.mycompany.tira;
 
 /**
  * Dataelementti joka pitää sisällään kokonaislukumuodossa pelaajan ja
- * koneen kädet sekä kumpi voitti em. käsillä
- * 
+ * koneen kädet 
  */
 public class Kasipari {
     
     private int pelaajanKasi;
     private int koneenKasi;
-    private int voittaja;
 
     /**
-     * Alustaa luokkamuuttujat
-     * Käsien kokonaislukuarvot
-     * <ul>
-     * <li>0 = Kivi
-     * <li>1 = Paperi
-     * <li>2 = Sakset
-     * <li>3 = Lisko
-     * <li>4 = Spock
-     * </ul>
-     * Voittoa kuvaava kokonaisluku
-     * <ul>
-     * <li> 1 = Pelaaja voitti
-     * <li> 0 = Tasapeli
-     * <li> -1 = Tekoäly voitti
-     * </ul>
+     * Alustaa käsiparin
      * 
-     * @param pelaaja Pelaajan kättä vastaava kokonaisluku
-     * @param kone Tekoälyn kättä vastaava kokonaisluku
-     * @param voittaja voittoa kuvaava kokonaisluku
+     * @param pelaaja pelaajan käsi
+     * @param kone tietokoneen käsi
      */
-    public Kasipari(int pelaaja, int kone, int voittaja) {
+    public Kasipari(int pelaaja, int kone) {
         this.koneenKasi = kone;
         this.pelaajanKasi = pelaaja;
-        this.voittaja = voittaja;
     }
 
     /**
@@ -54,14 +36,5 @@ public class Kasipari {
      */
     public int getKoneenKasi() {
         return koneenKasi;
-    }
-
-    /**
-     * Palauttaa voittotilannetta vastaavan kokonaisluvun
-     * 
-     * @return Voittoa kuvaava kokonaisluku 
-     */
-    public int getVoittaja() {
-        return voittaja;
     }
 }
