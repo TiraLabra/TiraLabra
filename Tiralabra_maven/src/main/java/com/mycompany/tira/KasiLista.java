@@ -7,7 +7,7 @@ package com.mycompany.tira;
  */
 public class KasiLista {
 
-    private Listasolmu eka;
+    private ListaSolmu eka;
     private int listanKoko;
     private int maara;
 
@@ -36,7 +36,7 @@ public class KasiLista {
      * 
      * @return ensimmäinen listasolmu
      */
-    public Listasolmu getEkaSolmu() {
+    public ListaSolmu getEkaSolmu() {
         return this.eka;
     }
     
@@ -47,8 +47,8 @@ public class KasiLista {
      * @param lisattavaPari listaan lisättävä käsipari
      */
     public void lisaaKasipari(Kasipari lisattavaPari) {
-        Listasolmu lisattava = new Listasolmu(lisattavaPari, null);
-        Listasolmu viimeinen = this.eka;
+        ListaSolmu lisattava = new ListaSolmu(lisattavaPari, null);
+        ListaSolmu viimeinen = this.eka;
 
         if (this.maara == 0) {
             this.eka = lisattava;

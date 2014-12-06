@@ -47,7 +47,7 @@ public class KasiListaTest {
     public void ekaSolmuOikein() {
         Kasipari pari = new Kasipari(0,1);
         this.l.lisaaKasipari(pari);
-        Listasolmu s = new Listasolmu(pari, null);
+        ListaSolmu s = new ListaSolmu(pari, null);
         assertEquals(s.getKasipari(), this.l.getEkaSolmu().getKasipari());
     }
     
@@ -68,7 +68,7 @@ public class KasiListaTest {
         }
         Kasipari pari = new Kasipari(1,1);
         this.l.lisaaKasipari(pari);
-        Listasolmu s = new Listasolmu(pari, null);
+        ListaSolmu s = new ListaSolmu(pari, null);
         assertEquals(s.getKasipari(), this.l.getEkaSolmu().getKasipari());
     }
 }

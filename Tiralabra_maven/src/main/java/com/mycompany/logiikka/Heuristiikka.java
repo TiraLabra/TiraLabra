@@ -2,7 +2,7 @@ package com.mycompany.logiikka;
 
 import com.mycompany.tira.KasiLista;
 import com.mycompany.tira.Kasipari;
-import com.mycompany.tira.Listasolmu;
+import com.mycompany.tira.ListaSolmu;
 
 /**
  * Luokka pitää yllä pelattuja pelikierroksia ja yrittää sen tiedon avulla
@@ -51,9 +51,9 @@ public class Heuristiikka {
      */
     public int pelaajaTuleePelaamaan() {
         int pelaajanKadet[] = new int[5];
-        Listasolmu seuraaja = this.kasiLista.getEkaSolmu();
-        Listasolmu edeltaja = seuraaja.getSeuraavaListaSolmu();
-        Listasolmu verrattava = this.kasiLista.getEkaSolmu();
+        ListaSolmu seuraaja = this.kasiLista.getEkaSolmu();
+        ListaSolmu edeltaja = seuraaja.getSeuraavaListaSolmu();
+        ListaSolmu verrattava = this.kasiLista.getEkaSolmu();
         while (edeltaja != null) {
             Kasipari kseur = seuraaja.getKasipari();
             Kasipari kedel = edeltaja.getKasipari();
