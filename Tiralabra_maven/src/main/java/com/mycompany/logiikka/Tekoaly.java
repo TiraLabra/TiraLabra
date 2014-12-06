@@ -1,130 +1,97 @@
 package com.mycompany.logiikka;
 
-import com.mycompany.domain.Kasi;
-
 /**
- * Luokka yrittää ennustaa pelaajan seuraavan käden ja vastata siihen
+ * Luokka toimii tekoälynä ja antaa koneen seuraavan käden peliin
  */
 public class Tekoaly {
 
-    private Statistiikka statistiikka;
     private int moodi;
-    private Logiikka logiikka;
-    private Kasi viimeisinTekoalynKasi;
-    private Heuristiikka Heuristiikka;
+    private Heuristiikka heuristiikka;
+    private int kierroksia;
 
     /**
-     * Konstruktori alustaa luokan muuttujat. Luokka tarvitsee viitteen pelin
-     * käyttämiin Statistiikka, ja Logiikka- olioihin
-     *
-     * @param moodi Pelimoodi(1 tai 2)
-     * @param s Statistiikkaolio
-     * @param l Logiikkaolio
+     * Konstruktori alustaa luokkamuuttujat
+     * 
+     * @param moodi pelimoodi (1=normaali, 2=laajennus) 
      */
-    public Tekoaly(int moodi, Statistiikka s, Logiikka l, Heuristiikka h) {
-        this.statistiikka = s;
+    public Tekoaly(int moodi) {
         this.moodi = moodi;
-        this.logiikka = l;
-        this.viimeisinTekoalynKasi = null;
-        this.Heuristiikka = h;
+        this.heuristiikka = new Heuristiikka();
+        this.kierroksia = -1;
     }
 
     /**
-     * Sisäinen metodi joka laskee palauttaa argumenttina annettun käden
-     * seuraavan käden rotaatiossa
-     * <p>
-     * Rotaatio: Kivi-Paperi-Sakset-Lisko-Spock
-     *
-     * @param k Käsi jonka seuraava käsi rotaatiossa halutaan
-     * @return Rotaatiossa seuraava käsi
+     * Palauttaa tekoälyn mielestä parhaimman käden joka koneen tulisi
+     * pelata seuraavaksi
+     * 
+     * @return paras koneen käsi 
      */
-    private Kasi paivitaSeuraavaRotaationKasi(Kasi k) {
+    public int getKoneenKasi() {
+        this.kierroksia++;
+        if (this.kierroksia == 0) {
+            return 1;
+        }
+        if (this.kierroksia < 5) {
+            return valitseVoittaja(pelaajanSeuraavaKasiRotaatiossa(this.moodi));
+        }
+        
+        return valitseVoittaja(this.heuristiikka.pelaajaTuleePelaamaan());
+    }
+    
+    /**
+     * Päivittää heuristiikan (historiatiedot)
+     * 
+     * @param pKasi pelaajan käsi
+     * @param kKasi tietokoneen käsi
+     */
+    public void paivitaHeuristiikka(int pKasi, int kKasi) {
+        this.heuristiikka.paivitaHeuristiikka(pKasi, kKasi);
+    }
+
+    /**
+     * Luokan sisäinen metodi. Palauttaa rotaatiossa annettua kättä
+     * seuraavan käden.
+     * 
+     * @param kasi mistä rotaatiota haetaan
+     * @return parametria seuraava käsi
+     */
+    private int pelaajanSeuraavaKasiRotaatiossa(int kasi) {
+        int pelaaja = this.heuristiikka.getViimeisinKasipari().getPelaajanKasi();
         if (this.moodi == 1) {
-            if (k.getNimi().equals("KIVI")) {
-                return new Kasi("PAPERI");
-            } else if (k.getNimi().equals("PAPERI")) {
-                return new Kasi("SAKSET");
+            if (pelaaja < 2) {
+                pelaaja++;
             } else {
-                return new Kasi("KIVI");
+                pelaaja = 0;
             }
         } else {
-            if (k.getNimi().equals("KIVI")) {
-                return new Kasi("PAPERI");
-            } else if (k.getNimi().equals("PAPERI")) {
-                return new Kasi("SAKSET");
-            } else if (k.getNimi().equals("SAKSET")) {
-                return new Kasi("LISKO");
-            } else if (k.getNimi().equals("LISKO")) {
-                return new Kasi("SPOCK");
+            if (pelaaja < 4) {
+                pelaaja++;
             } else {
-                return new Kasi("KIVI");
+                pelaaja = 0;
             }
         }
+        return pelaaja;
     }
-
+    
     /**
-     * Tekoäly yrittää ennustaa seuraavalle vuorolle parhaan käden.
-     *
-     * @return Paras käsi tekoälyn mukaan
+     * Luokan sisäinen metodi. Palauttaa annettun käden voittavan käden
+     * 
+     * @param pelaajanOletettuKasi pelaajan oletettu käsi
+     * @return käsi joka voittaa annetun käden
      */
-    public Kasi tekoalynTarjoamaKasi() {
-//        Tekoälyn kehitetään vielä eteenpäin. Tarkoitus on saada
-//        tekoäly voittamaan yli 80% peleistä!!!
-
-        Kasi palautettavaKasi = new Kasi("PAPERI");
-        // pelin ensimmäinen kierros
-        // TOISTAISEKSI palauttaa AINA paperin
-        if (this.statistiikka.getKierrokset() == 0) {
-//            this.viimeisinTekoalynKasi = palautettavaKasi;
-//            return palautettavaKasi;
-            palautettavaKasi = new Kasi("PAPERI");
-        } else if (this.statistiikka.getKierrokset() < 5) {
-            // tarkista kuka voitti edellisellä kierroksella
-            Kasi pelaajanEdellinenKasi = this.logiikka.pelaajanViimeisinKasi();
-            this.logiikka.setPelaajanKasi(pelaajanEdellinenKasi);
-            this.logiikka.setTekoalynKasi(this.viimeisinTekoalynKasi);
-            int viimeisinVoitto = this.logiikka.pelaajaVoittaaKierroksen();
-            // jos pelaaja voitti, käytä pelaajan pelaamaa kättä
-            if (viimeisinVoitto == 1) {
-                palautettavaKasi = pelaajanEdellinenKasi;
-            } else if (viimeisinVoitto == 0) { // tasapeli, pelaa tätä kättä voittava
-                //palauta = edellinen;
-                this.logiikka.setPelaajanKasi(pelaajanEdellinenKasi);
-                for (int i = 0; i < 4; i++) {
-                    if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
-                        palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
-                        this.logiikka.setTekoalynKasi(palautettavaKasi);
-                    }
-                }
-            } else {
-                // oleta pelaajan seuraavan rotaatiota
-                Kasi pelaajanOletusKasi = paivitaSeuraavaRotaationKasi(pelaajanEdellinenKasi);
-                this.logiikka.setPelaajanKasi(pelaajanOletusKasi);
-                for (int i = 0; i < 4; i++) {
-                    if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
-                        palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
-                        this.logiikka.setTekoalynKasi(palautettavaKasi);
-                    } else {
-                        break;
-                    }
-                }
-            }
-        } else {
-            Kasi pelaajanOletus = this.Heuristiikka.pelaajaTuleePelaamaan();
-            this.logiikka.setPelaajanKasi(pelaajanOletus);
-            for (int i = 0; i < 4; i++) {
-                if (this.logiikka.pelaajaVoittaaKierroksen() >= 0) {
-                    palautettavaKasi = paivitaSeuraavaRotaationKasi(palautettavaKasi);
-                    this.logiikka.setTekoalynKasi(palautettavaKasi);
-                } else {
-                    break;
-                }
-            }
-
+    private int valitseVoittaja(int pelaajanOletettuKasi) {
+        switch(pelaajanOletettuKasi) {
+            case 0:
+                return 1;
+            case 1:
+                return 2;
+            case 2:
+                return 0;
+            case 3:
+                return 0;
+            case 4:
+                return 3;
         }
-
-        this.viimeisinTekoalynKasi = palautettavaKasi;
-        return palautettavaKasi;
+        return -2; // should not get here!
     }
-
 }
