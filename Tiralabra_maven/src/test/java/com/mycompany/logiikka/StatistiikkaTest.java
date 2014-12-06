@@ -24,99 +24,61 @@ public class StatistiikkaTest {
 
     @Before
     public void setUp() {
-//        this.s = new Statistiikka(1);
+        this.s = new Statistiikka();
     }
 
     @After
     public void tearDown() {
     }
 
-//    @Test
-//    public void tasapelitNollaAlussa() {
-//        assertEquals(0, this.s.getTasapelit());
-//    }
-//    
-//    @Test
-//    public void tasapelitKasvaaOikein() {
-//        this.s.asetaTasapeli();
-//        this.s.asetaTasapeli();
-//        assertEquals(2, this.s.getTasapelit());
-//    }
-//    
-//    @Test
-//    public void kierrostenMaaraKasvaa() {
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        assertEquals(1, this.s.getKierrokset());
-//    }
-//    
-//    @Test
-//    public void kierrostenMaaraAlussaNolla() {
-//        assertEquals(0, this.s.getKierrokset());
-//    }
-//    
-//    @Test
-//    public void pelaajallaAlussaNollaVoittoa() {
-//        String s = "Kierroksia : " + this.s.getKierrokset() +
-//                ", pelaajan voittoja: 0" +
-//                ", tasapelejä: " + this.s.getTasapelit() + "";
-//        assertEquals(s, this.s.toString());
-//    }
-//    
-//    @Test
-//    public void pelaajanVoittojenMaaraKasvaaOikein() {
-//        this.s.lisaaPelaajanVoitto();
-//        this.s.lisaaPelaajanVoitto();
-//        this.s.lisaaPelaajanVoitto();
-//        String s = "Kierroksia : " + this.s.getKierrokset() +
-//                ", pelaajan voittoja: 3" +
-//                ", tasapelejä: " + this.s.getTasapelit() + "";
-//        assertEquals(s, this.s.toString());
-//    }
-//    
-//    @Test
-//    public void vahitenPelattuKasiToimiiOikein() {
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        this.s.paivitaKierros(new Kasi("PAPERI"));
-//        Kasi k = new Kasi("SAKSET");
-//        assertEquals(k.getNimi(), this.s.pelaajanVahitenPelattuKasi().getNimi());
-//    }
-//    
-//    @Test
-//    public void vahitenPelattuKasiToimiiMoodiKaksi() {
-//        Statistiikka s2 = new Statistiikka(2);
-//        s2.paivitaKierros(new Kasi("LISKO"));
-//        s2.paivitaKierros(new Kasi("PAPERI"));
-//        s2.paivitaKierros(new Kasi("KIVI"));
-//        s2.paivitaKierros(new Kasi("SAKSET"));
-//        Kasi k = new Kasi("SPOCK");
-//        assertEquals(k.getNimi(), s2.pelaajanVahitenPelattuKasi().getNimi());
-//    }
-//    
-//    @Test
-//    public void vahitenPelattuKasiProsentitToimii() {
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        this.s.paivitaKierros(new Kasi("PAPERI"));
-//        assertEquals(0, this.s.vahitenPelattuKasiProsentit());
-//    }
-//    
-//    @Test
-//    public void vahitenPelattuKasiProsentitToimiiKaksi() {
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        this.s.paivitaKierros(new Kasi("PAPERI"));
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        this.s.paivitaKierros(new Kasi("PAPERI"));
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        this.s.paivitaKierros(new Kasi("SAKSET"));
-//        // total 6
-//        // floor 1/6 * 100 = 16
-//        assertEquals(16, s.vahitenPelattuKasiProsentit());
-//    }
-//    
-//    @Test
-//    public void toStringToimiiOikein() {
-//        this.s.paivitaKierros(new Kasi("KIVI"));
-//        assertEquals("Kierroksia : 1, pelaajan voittoja: 0" + 
-//                ", tasapelejä: 0", this.s.toString());
-//    }
-
+    @Test
+    public void toStringOikeinAlussa() {
+        String oletus = "Kierroksia : 0, pelaajan voittoja: 0, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void updateToimiiOikein() {
+        this.s.update(0);
+        String oletus = "Kierroksia : 1, pelaajan voittoja: 1, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void updateToimiiOikeinKaksi() {
+        this.s.update(-1);
+        String oletus = "Kierroksia : 1, pelaajan voittoja: 0, tasapelejä: 1";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void updateToimiiOikeinKolme() {
+        this.s.update(1);
+        String oletus = "Kierroksia : 1, pelaajan voittoja: 0, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void toStringToimiiOikeinMontaKierrosta() {
+        for (int i=0; i<5; i++) {
+            this.s.update(0);
+        }
+        String oletus = "Kierroksia : 5, pelaajan voittoja: 5, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void toStringToimiiSekalainen() {
+        for (int i=0; i<5; i++) {
+            this.s.update(0);
+        }
+        for (int i=0; i<3; i++) {
+            this.s.update(1);
+        }
+        for (int i=0; i<6; i++) {
+            this.s.update(-1);
+        }
+        String oletus = "Kierroksia : 14, pelaajan voittoja: 5, tasapelejä: 6";
+        assertEquals(oletus, this.s.toString());
+    }
 }
