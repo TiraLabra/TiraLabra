@@ -1,23 +1,18 @@
 package com.mycompany.ui;
 
-import com.mycompany.domain.Kasi;
-import com.mycompany.logiikka.Heuristiikka;
 import com.mycompany.logiikka.Logiikka;
 import com.mycompany.logiikka.Statistiikka;
-import com.mycompany.logiikka.Tekoaly;
 import java.util.Scanner;
 
 /**
- * Pelin tekstikäyttöliittymä
+ * Pelin käyttöliittymä
  */
 public class Cli {
 
     private int moodi;
     private Scanner scanner;
     private Statistiikka statistiikka;
-    private Tekoaly tekoAly;
     private Logiikka logiikka;
-    private Heuristiikka heuristiikka;
 
     /**
      * Konstruktori alustaa luokkamuuttujat ja määrittelee pelin tyypin.
@@ -27,119 +22,62 @@ public class Cli {
     public Cli(int mode) {
         this.moodi = mode;
         this.scanner = new Scanner(System.in);
-        this.statistiikka = new Statistiikka(this.moodi);
-        this.heuristiikka = new Heuristiikka();
-        this.logiikka = new Logiikka(this.heuristiikka);
-        this.tekoAly = new Tekoaly(this.moodi, this.statistiikka, 
-                this.logiikka, this.heuristiikka);
-
+        this.statistiikka = new Statistiikka();
+        this.logiikka = new Logiikka(this.statistiikka, this.moodi);
     }
 
     /**
      * Pelin käynnistys
      */
     public void run() {
+        System.out.println("Kivi-paperi-sakset v.2.0");
         String komento = "";
-        if (this.moodi == 1) {
-            moodiYksiPaavalikko();
-        } else {
-            moodiKaksiPaavalikko();
-        }
-    }
-
-    /**
-     * Normaalin pelin päävalikko
-     */
-    private void moodiYksiPaavalikko() {
-        String komento;
-        nautaMoodiYksiPaavalikko();
-        komento = this.scanner.nextLine();
-        while (!komento.equals("x")) {
+        while (true) {
+            nautaMoodiYksi();
+            if (this.moodi == 1) {
+                nautaLoput();
+            } else {
+                nautaMoodiKaksi();
+                nautaLoput();
+            }
+            komento = this.scanner.nextLine();
+            if (komento.equals("x")) {
+                break;
+            }
             if (validoiKomento(komento)) {
                 char c = komento.charAt(0);
                 if (c == 't') {
                     System.out.println(this.statistiikka);
                 } else {
-                    // suorituskykylaskenta, nanos koska millis = 0
-                    long aikaAlussa = System.nanoTime();  
-                    this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
-                    asetaKasi(c);
-                    pelaaKierros();
-                    long aikaLopussa = System.nanoTime();
-                    System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ns.");
+                    this.logiikka.asetaPelaajanKasi(asetaKasi(c));
+                    this.logiikka.pelaaKierros();
                 }
             }
-            nautaMoodiYksiPaavalikko();
-            komento = this.scanner.nextLine();
-
         }
     }
 
     /**
-     * Kertoo kumpi voittaa. Päivittää samalla statistiikkaan käsiparin
+     * Muuttaa kättä kuvaavan kirjaimen numeroksi
+     * 
+     * @param KasiKomento kättä kuvaava kirjain
+     * @return kättä vastaava numero
      */
-    private void pelaaKierros() {
-        int apu = this.logiikka.pelaajaVoittaaKierroksen();
-        this.heuristiikka.setVoitto(apu);
-        this.heuristiikka.updateKasilista();
-        if (apu == 1) {
-            this.statistiikka.lisaaPelaajanVoitto();
-            System.out.println("Pelaaja voitti!");
-        } else if (apu == 0) {
-            this.statistiikka.asetaTasapeli();
-            System.out.println("Tasapeli");
-        } else if (apu == -1) {
-            System.out.println("Tekoäly voitti");
-        } else {
-            System.out.println("should not get here!");
-        }
-    }
-
-    private void asetaKasi(char KasiKomento) {
+    private int asetaKasi(char KasiKomento) {
         switch (KasiKomento) {
             case 'k':
-                Kasi k = new Kasi("KIVI");
-                this.logiikka.setPelaajanKasi(k);
-                this.statistiikka.paivitaKierros(k);
-                break;
+                return 0;
             case 'p':
-                Kasi p = new Kasi("PAPERI");
-                this.logiikka.setPelaajanKasi(p);
-                this.statistiikka.paivitaKierros(p);
-                break;
+                return 1;
             case 's':
-                Kasi s = new Kasi("SAKSET");
-                this.logiikka.setPelaajanKasi(s);
-                this.statistiikka.paivitaKierros(s);
-                break;
+                return 2;
             case 'l':
-                Kasi l = new Kasi("LISKO");
-                this.logiikka.setPelaajanKasi(l);
-                this.statistiikka.paivitaKierros(l);
-                break;
+                return 3;
             case 'o':
-                Kasi o = new Kasi("SPOCK");
-                this.logiikka.setPelaajanKasi(o);
-                this.statistiikka.paivitaKierros(o);
-                break;
+                return 4;
         }
-
+        return -1; // should not get here!!!
     }
-
-    /**
-     * Moodin yksi päävalikkon tulostus
-     */
-    private void nautaMoodiYksiPaavalikko() {
-        System.out.println("Kivi-paperi-sakset BETA");
-        System.out.println("Valitse kätesi:");
-        System.out.println("[k] = Kivi");
-        System.out.println("[p] = Paperi");
-        System.out.println("[s] = Sakset");
-        System.out.println("[t] = Statistiikka");
-        System.out.println("[x] = Lopeta");
-        System.out.print("?: ");
-    }
-
+    
     /**
      * Pelin päävalikon käskyjen validointi
      *
@@ -166,39 +104,28 @@ public class Cli {
     }
 
     /**
-     * Laajennetun pelin päävalikko
+     * Moodin yksi päävalikkon käsien tulostus
      */
-    private void moodiKaksiPaavalikko() {
-        String komento;
-        nautaMoodiKaksiPaavalikko();
-        komento = this.scanner.nextLine();
-        while (!komento.equals("x")) {
-            if (validoiKomento(komento)) {
-                char c = komento.charAt(0);
-                if (c == 't') {
-                    System.out.println(this.statistiikka);
-                } else {
-                    this.logiikka.setTekoalynKasi(this.tekoAly.tekoalynTarjoamaKasi());
-                    asetaKasi(c);
-                    pelaaKierros();
-                }
-                nautaMoodiKaksiPaavalikko();
-                komento = this.scanner.nextLine();
-            }
-        }
-    }
-    
-    /**
-     * Moodin kaksi päävalikon tulostus
-     */
-    private void nautaMoodiKaksiPaavalikko() {
-        System.out.println("Kivi-paperi-sakset BETA");
+    private void nautaMoodiYksi() {
+        System.out.println("");
         System.out.println("Valitse kätesi:");
         System.out.println("[k] = Kivi");
         System.out.println("[p] = Paperi");
         System.out.println("[s] = Sakset");
+    }
+    
+    /**
+     * Moodin kaksi päävalikon käsien lisätulostus
+     */
+    private void nautaMoodiKaksi() {
         System.out.println("[l] = Lisko");
         System.out.println("[o] = Spock");
+    }
+    
+    /**
+     * Päävalikon lopun tulostus käsien jälkeen
+     */
+    private void nautaLoput() {
         System.out.println("[t] = Statistiikka");
         System.out.println("[x] = Lopeta");
         System.out.print("?: ");
