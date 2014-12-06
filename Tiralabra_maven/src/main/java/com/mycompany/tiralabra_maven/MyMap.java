@@ -13,18 +13,10 @@ public class MyMap {
     /** The Map itself */
     private Node[][] map;
 
-    public MyMap(Node start, Node end, int maxX, int maxY) {
-        this.maxX = maxX;
-        this.maxY = maxY;
-        this.start = start;
-        this.end = end;
-    }
-
     /**
      * Constructor
      */
     public MyMap() {
-
     }
 
     /**
@@ -52,68 +44,26 @@ public class MyMap {
         return end;
     }
 
-    /** Creates the map according to the items:
-     * Creates the map with the spesifics, sets cost for each node, sets walls and characters for each node
-     * representing visually each point on the map
-     * */
-    public void createMap() {
-        this.map = new Node[maxX][maxY];
-        for (int y = 0; y < maxY; y++) {
-            for (int x = 0; x < maxX; x++) {
-                this.map[y][x] = new Node(x, y);
-                this.map[y][x].setCost(2000);
-                //set wall manually
-                if ((x == 2 && y == 1||(x == 2 && y == 2) || (x == 2 && y == 3))){
-                    this.map[y][x].setCharacter('#');
-                } else if (isSamePointOnMap(x, y, start)) {
-                    this.map[y][x].setCharacter('o');
-                } else if (isSamePointOnMap(x, y, end)) {
-                    this.map[y][x].setCharacter('x');
-                } else {
-                    this.map[y][x].setCharacter('_');
-                }
-
-            }
-        }
-    }
-
     /** returns the map */
     public Node[][] getMap() {
         return this.map;
     }
 
-    /** Prints the map */
-    public void printMap() {
-        for (int y = 0; y < maxY; y++) {
-            for (int x = 0; x < maxX; x++) {
-                System.out.print(map[y][x].getCharacter());
-            }
-            System.out.println("");
-        }
-    }
-
-    /** Compares two points on the map
-     * @param x X coordinate of the point on the map
-     * @param y Y coordinate of the point on the map
-     * @param comparable Node which it is being compared to
-     * return true if two points are the same
-     * */
-    public boolean isSamePointOnMap(int x, int y, Node comparable) {
-        return (this.map[y][x].getX() == comparable.getX()) && (this.map[y][x].getY() == comparable.getY());
-    }
 
     /** Creates a map according to the inserted String.
-     * Reads the map size, creates the nodes, creates a start and end point.
+     * Reads the map size, creates the nodes, creates a start and end point
+     * by reading each character of the string.
      *
      * @param mapString The wanted map.
      */
 
-    public void createMap2(String mapString) {
+    public void createMap(String mapString) {
         String [] mapLines = mapString.split("\n");
         this.maxX = mapLines[0].length();
-        this.maxY = mapLines.length-1;
+        this.maxY = mapLines.length;
 
         this.map = new Node[maxY][maxX];
+        /** Read the string stored line by line, creating nodes: */
         for (int y = 0; y < maxY; y++) {
             String _y = mapLines[y];
             for (int x = 0; x < maxX; x++) {
@@ -132,5 +82,53 @@ public class MyMap {
 
     }
 
+
+
+    /** Prints the map */
+    public void printMap() {
+        for (int y = 0; y < maxY; y++) {
+            for (int x = 0; x < maxX; x++) {
+                characterColor(map[y][x].getCharacter());
+                //System.out.print(map[y][x].getCharacter());
+            }
+            System.out.println("");
+        }
+    }
+
+    /**
+     * Prints the character and adds colors to it.
+     * After being printed, resets the color to terminal default.
+     *
+     * @param c character which is being printed
+     */
+    public void characterColor(char c) {
+        String resetColor = "\u001B[0m";
+        String out = "";
+        if (c == '#') {
+            out = "" + c;
+        } else if (c == '_') {
+           out = "\u001B[02;37m" + c;
+        } else if (c == 'P') {
+            out = "\u001B[34m" + c;
+        } else if (c == 'o') {
+            out = "\u001B[31m" + c;
+        } else if (c == 'x') {
+            out = "\u001B[01;31m" + c;
+        }
+        System.out.print(out += resetColor);
+    }
+
+
+
+
+    /** Compares two points on the map
+     * @param x X coordinate of the point on the map
+     * @param y Y coordinate of the point on the map
+     * @param comparable Node which it is being compared to
+     * return true if two points are the same
+     * */
+    public boolean isSamePointOnMap(int x, int y, Node comparable) {
+        return (this.map[y][x].getX() == comparable.getX()) && (this.map[y][x].getY() == comparable.getY());
+    }
 
 }

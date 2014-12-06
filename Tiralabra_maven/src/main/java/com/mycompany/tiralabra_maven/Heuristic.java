@@ -19,14 +19,14 @@ public class Heuristic {
         this.heuristic = heuristic;
     }
 
-    /**
+    /** Returns the heuristic cost of the distance between two points on map
      *
      * @param xp x coordinate of node where cost is being calculated
      * @param yp y coordinate of the node
      * @param end End node for comparison
      * @return cost according to the wanted heuristic
      */
-    public double call(int xp, int yp, Node end) {
+    public double cost(int xp, int yp, Node end) {
         double result = 0;
         if (heuristic == 1) {
             result = calculateEuclidean(xp, yp, end);
@@ -38,8 +38,6 @@ public class Heuristic {
             result = 0;
         }
         return result;
-
-
     }
 
 
@@ -53,8 +51,8 @@ public class Heuristic {
      * */
     public static double calculateEuclidean(int xp, int yp, Node end) {
         /** dx and dy are the distances between the nodes */
-        double dx = end.getX() - xp;
-        double dy = end.getY() - yp;
+        double dx = xp - end.getX();
+        double dy = yp - end.getY();
         /** Calculate Euclidean distance */
         return Math.sqrt((dx * dx) + (dy * dy));
     }

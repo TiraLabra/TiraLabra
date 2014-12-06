@@ -4,21 +4,18 @@ import com.mycompany.tiralabra_maven.Node;
 
 
 /** Implementation of priority queue
- *  Used for the open queue in the Astar algorithm.
+ *  Used for the open queue in the A-star algorithm.
  */
 public class MyPriorityQueue {
     /** Table where entries are saved */
     private Node[] table;
     /** Maximum heap size of the minimum heap */
     private int heapsize;
-    /** Checker for the first item */
-    private boolean first;
 
     /** Constructor for the minimum heap */
     public MyPriorityQueue(int heapsize) {
         this.heapsize = 0;
         this.table = new Node[heapsize +1];
-        this.first = true;
     }
 
     /**
@@ -27,14 +24,8 @@ public class MyPriorityQueue {
      * @param insert the node to be inserted into heap
      */
     public void insert(Node insert) {
-        if (first) {
-            table[0] = insert;
-            first = false;
-        }
-
         heapsize += 1;
-        int i = heapsize;
-        //table[parent(i)] > insert
+        int i = heapsize-1;
         while ((i > 0) && table[parent(i)].compareTo(insert) == 1) {
             table[i] = table[parent(i)];
             i = parent(i);
@@ -50,7 +41,6 @@ public class MyPriorityQueue {
 
     /** Removes and returns the smallest item from the heap */
     public Node deleteMinimum() {
-        System.out.println("minimum" + table[0].getX() + " nextmin" + table[1].getX());
         Node min = table[0];
         if (!isEmpty()) {
             table[0] = table[heapsize-1];
@@ -61,7 +51,8 @@ public class MyPriorityQueue {
     }
 
 
-    /** Returns the parent of the current node */
+    /** Returns the parent of the current node
+     * */
     public int parent(int i) {
         return (i-1)/2;
     }
@@ -82,40 +73,23 @@ public class MyPriorityQueue {
         int left = left(i);
         int right = right(i);
         int smallest;
-        if (right <= heapsize-1) {
-            //table[left] < table[right]
-            if (table[right].compareTo(table[left]) == 1) {
-                smallest = left;
-            } else {
-                smallest = right;
-            }
-            //table[i] > table[smallest]
-            if (table[i].compareTo(table[smallest]) == 1 ) {
-                /** manual swap: */
-                Node help = table[i];
-                table[i] = table[smallest];
-                table[smallest] = help;
-                heapify(smallest);
-            }
-        //table[i] < table[left]
-        } else if (left == heapsize-1 && table[left].compareTo(table[i]) == 1) {
-            /** manual swap: */
-            Node help = table[i];
-            table[i] = table[left];
-            table[left] = help;
+        /** If left < i */
+        if (left <= heapsize-1 && table[left].compareTo(table[i]) < 0) {
+            smallest = left;
+        /** If right < i */
+        } else if (right <= heapsize-1 && table[right].compareTo(table[i]) < 0) {
+            smallest = right;
+        } else {
+            smallest = i;
         }
 
-    }
-    /** A method which decreases cost of a specific item in the heap
-     *
-     * */
-    public void decreaseCost(int i, int newCost) {
-        if (newCost < table[i].getCost()) {
-            table[i].setCost(newCost);
-            //System.out.println("new cost " + table[i].getCost());
-            //print();
-            heapify(0);
+        if (smallest != i) {
+            Node help = table[i];
+            table[i] = table[smallest];
+            table[smallest] = help;
+            heapify(smallest);
         }
+
     }
 
     /** Tests if the table is empty */
@@ -134,7 +108,7 @@ public class MyPriorityQueue {
      * */
     private int indexOf(Object o) {
         if (o != null) {
-            for (int i = 0; i <= heapsize; i++)
+            for (int i = 0; i < heapsize; i++)
                 if (o.equals(table[i]))
                     return i;
         }
@@ -156,14 +130,33 @@ public class MyPriorityQueue {
      */
     public void removeNode(Node node) {
         int i = indexOf(node);
-        //System.out.println("indexof node " + i );
-        //print();
         decreaseCost(i, 0);
-        //print();
-        //Node min = deleteMinimum();
-        //print();
-        //System.out.println("deleted node " + min.getX());
+        Node min = deleteMinimum();
+        heapify(0);
+    }
 
+
+    /** A method which decreases cost of a specific item in the heap
+     *
+     * */
+    public void decreaseCost(int i, int newCost) {
+        if (newCost < table[i].getCost()) {
+            table[i].setCost(newCost);
+            bubbleUp(i);
+        }
+    }
+
+
+
+
+    public void bubbleUp(int i) {
+        /** Parent > i */
+        while (i > 0 && table[parent(i)].compareTo(table[i]) > 0) {
+            Node help = table[i];
+            table[i] = table[parent(i)];
+            table[parent(i)] = help;
+            i = parent(i);
+        }
     }
 
     /**
@@ -176,7 +169,7 @@ public class MyPriorityQueue {
 
     /**
      * Visual representation of the priority queue
-     */
+
     public void print() {
         for (int i = 0; i < heapsize; i++) {
             System.out.print(table[i].getCost() + " ");
@@ -184,5 +177,6 @@ public class MyPriorityQueue {
         System.out.println("");
 
     }
+    */
 
 }

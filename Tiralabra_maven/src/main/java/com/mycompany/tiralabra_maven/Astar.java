@@ -1,47 +1,36 @@
 package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.DataStructures.MyList;
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
 
 /**
  * Implementation of A* algorithm. Algorithm's purpose is to find the most optimal path in a given map or maze.
- * The Map consists of coordinates called Nodes. @see Node
- * 
+ * The Map MyMap consists of coordinates called Nodes. @see Node
+ * A-star uses Heuristic-class to calculate which of the neighbor Nodes is the most optimal for the path.
+ *
  */
 public class Astar {
-    public void run(String map) {
+    public void run(String map, int heuristicId) {
         /** Temporarily here for timing purposes */
-        //long aikaAlussa = System.currentTimeMillis();
-        /** starting point of the map */
-        //Node start = new Node(1, 2);
-        /** ending point of the map */
-        //Node end = new Node(3, 2);
-        /** current point of the map */
-        //Node current = start;
-        /** map width */
-        //int maxX = 5;
-        /** map height */
-        //int maxY = 5;
-
-        /** create the game map */
-        //MyMap myMap = new MyMap(start, end, maxX, maxY);
-        //myMap.createMap();
+        long aikaAlussa = System.currentTimeMillis();
 
         /** Create map */
         MyMap myMap = new MyMap();
-        myMap.createMap2(map);
+        myMap.createMap(map);
         Node start = myMap.getStart();
         Node end = myMap.getEnd();
         Node current = start;
         int maxX = myMap.getMaxX();
         int maxY = myMap.getMaxY();
 
+        /** Insert the wanted heuristic: */
+        Heuristic heuristic = new Heuristic(heuristicId);
+
+        /** get nodes */
         Node[][] nodes = myMap.getMap();
 
         /** list of unchecked nodes */
-
+        /*
         PriorityQueue<Node> open = new PriorityQueue<Node>(100, new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
@@ -51,27 +40,33 @@ public class Astar {
         });
 
         open.add(start);
-        /*
-        MyPriorityQueue open = new MyPriorityQueue(nodes.length);
-        open.insert(start); */
+        */
+
+
+        MyPriorityQueue open = new MyPriorityQueue(20000);
+        open.insert(start);
 
         /** list of nodes that have been checked */
         MyList closed = new MyList();
+
+
+
+
+        /** Max steps to get to the end of path: */
+        //int steps = 0;
+
         /**
-         *
          * Find neighbors of the start node which are walkable,
          * find out all possible directions of the current node,
-         * remove walls + unwalkable squares + create a list of the walkable items.
+         * remove walls + unwalkable spaces + create a list of the walkable items.
          * Then it calculates which of the available nodes is the best one cost-wise.
          */
-        /** Max steps to get to the end of path: */
-        int steps = 0;
-
-        while (!(closed.contains(end)) && (steps < 1000)) {
+        while (!(closed.contains(end))) {
+            // && (steps < 1000)
             /** If there is no path to be found, return */
-            if (steps == 999) {
-                break;
-            }
+            //if (steps == 999) {
+            //   break;
+            //}
             /** Break the loop if current node is end node */
             if (current.getX() == end.getX() && current.getY() == end.getY()) {
                 end.setParent(current.getParent());
@@ -79,8 +74,8 @@ public class Astar {
             }
 
             /** current = remove lowest rank item from OPEN */
-            current = open.poll();
-            //current = open.deleteMinimum();
+            //current = open.poll();
+            current = open.deleteMinimum();
             //System.out.println("current x y " + current.getX() + " " +  current.getY());
             /** add current to the searched list */
             closed.add(current);
@@ -96,7 +91,7 @@ public class Astar {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    steps++;
+                    //steps++;
                     if (isWalkableXY(xp, yp, maxX, maxY) && !nodes[yp][xp].isWall()) {
 
                         /** for neighbours of the current:
@@ -105,15 +100,15 @@ public class Astar {
                          * cost = g(current) + movementcost(current, neighbor)
                          * terrain cost is 1 because no terrain difference
                          * cost = 1 + calculateHeuristic(end, neighbor); */
-                        double nextStepCost = current.getCost() + calculateEuclidean(xp, yp, end);
+                        double nextStepCost = current.getCost() + heuristic.cost(xp, yp, end);
 
                         Node neighbor = nodes[yp][xp];
 
                         /**  if neighbor in OPEN and cost less than g(neighbor): */
                         if (open.contains(neighbor) && nextStepCost < neighbor.getCost()) {
                             /** remove neighbor from OPEN, because new path is better */
-                            open.remove(neighbor);
-                            //open.removeNode(neighbor);
+                            //open.remove(neighbor);
+                            open.removeNode(neighbor);
 
                         }
 
@@ -132,8 +127,8 @@ public class Astar {
                              * add neighbor to OPEN
                              */
                             neighbor.setCost((int) (nextStepCost));
-                            open.add(neighbor);
-                            //open.insert(neighbor);
+                            //open.add(neighbor);
+                            open.insert(neighbor);
 
                             //System.out.print("Add to open " + neighbor.getX() + " "+ neighbor.getY());
                             //System.out.println("cost " + neighbor.getCost());
@@ -170,8 +165,8 @@ public class Astar {
         /** Tell us how long the path was: */
         System.out.println("Path length was " + pathLength + " steps.");
         /** Tells us how long it took to run the algorithm: */
-        //long aikaLopussa = System.currentTimeMillis();
-        //System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
 
@@ -207,58 +202,5 @@ public class Astar {
         }
         return false;
     }
-
-    /** Heuristic calculation using Euclidean Distance
-     * @param xp x coordinate of node where cost is being calculated
-     * @param yp y coordinate of the node
-     * @param end End node for comparison
-     * */
-     public static double calculateEuclidean(int xp, int yp, Node end) {
-         /** dx and dy are the distances between the nodes */
-         double dx = end.getX() - xp;
-         double dy = end.getY() - yp;
-         /** Calculate Euclidean distance */
-         return Math.sqrt((dx * dx) + (dy * dy));
-    }
-
-
-    /**
-     * Heuristic calculation using Manhattan distance
-     * @param xp x coordinate of node where cost is being calculated
-     * @param yp y coordinate of the node
-     * @param end The end Node at the map
-     * @return returns cost calculated by distance
-     */
-
-    //public static double calculateHeuristicXY(int xp, int yp, Node end) {
-        /** dx is an approximation of the distance between the two nodes' x coordinates */
-        //double dx = Math.abs(end.getX() - xp);
-        /** dy is an approximation of the distance between the two nodes' y coordinates */
-        //double dy = Math.abs(end.getY() - yp);
-        /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
-         *  hence it's very fast */
-        //double heuristic;
-        //heuristic = dx+dy;
-        //return heuristic;
-    //}
-    /**
-     * Heuristic calculation using Manhattan distance
-     *
-     * @param end The end Node at the map
-     * @param current Current Node where the algorithm is
-     * @return returns cost calculated by distance
-     */
-    public static double calculateManhattan(Node end, Node current) {
-        /** dx is an approximation of the distance between the two nodes' x coordinates */
-        double dx = Math.abs(end.getX() - current.getX());
-        /** dy is an approximation of the distance between the two nodes' y coordinates */
-        double dy = Math.abs(end.getY() - current.getY());
-        /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
-         *  hence it's very fast */
-        double heuristic;
-        heuristic = dx+dy;
-        return heuristic;
-    }
-
 
 }
