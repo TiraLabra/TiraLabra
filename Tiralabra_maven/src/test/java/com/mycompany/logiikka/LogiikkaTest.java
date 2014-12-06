@@ -2,14 +2,15 @@ package com.mycompany.logiikka;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class LogiikkaTest {
     
     private Logiikka l;
+    private Statistiikka s;
     
     public LogiikkaTest() {
     }
@@ -24,37 +25,28 @@ public class LogiikkaTest {
     
     @Before
     public void setUp() {
-//        this.l = new Logiikka(new Heuristiikka());
+        s = new Statistiikka();
+        this.l = new Logiikka(this.s, 1);
     }
     
     @After
     public void tearDown() {
     }
 
-//    @Test
-//    public void alussaPelaajanKasiOnNull() {
-//        assertEquals(null, this.l.pelaajanViimeisinKasi());
-//    }
-//    
-//    @Test
-//    public void kiviVoittaaSakset() {
-//        this.l.setPelaajanKasi(new Kasi("KIVI"));
-//        this.l.setTekoalynKasi(new Kasi("SAKSET"));
-//        assertEquals(1, this.l.pelaajaVoittaaKierroksen());
-//    }
-//    
-//    @Test
-//    public void saksetHaviaaKivelle() {
-//        this.l.setPelaajanKasi(new Kasi("SAKSET"));
-//        this.l.setTekoalynKasi(new Kasi("KIVI"));
-//        assertEquals(-1, this.l.pelaajaVoittaaKierroksen());
-//    }
-//    
-//    @Test
-//    public void tasapeliToimii() {
-//        Kasi k = new Kasi("SPOCK");
-//        this.l.setPelaajanKasi(k);
-//        this.l.setTekoalynKasi(k);
-//        assertEquals(0, this.l.pelaajaVoittaaKierroksen());
-//    }
+    @Test
+    public void kierrosToimiiOikein() {
+        this.l.asetaPelaajanKasi(0);
+        this.l.pelaaKierros();
+        String oletus = "Kierroksia : 1, pelaajan voittoja: 0, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
+    
+    @Test
+    public void kierrosToimiiOikeinKaksi() {
+        this.l.asetaPelaajanKasi(0);
+        this.l.pelaaKierros();
+        this.l.pelaaKierros();
+        String oletus = "Kierroksia : 2, pelaajan voittoja: 1, tasapelejä: 0";
+        assertEquals(oletus, this.s.toString());
+    }
 }
