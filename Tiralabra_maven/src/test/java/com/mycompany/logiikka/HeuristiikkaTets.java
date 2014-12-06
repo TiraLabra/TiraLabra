@@ -1,12 +1,12 @@
 package com.mycompany.logiikka;
 
-import com.mycompany.domain.Kasi;
+import com.mycompany.tira.Kasipari;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class HeuristiikkaTets {
 
@@ -33,35 +33,41 @@ public class HeuristiikkaTets {
     }
 
     @Test
-    public void antaaNullKunEiStatistiikkaaKasista() {
-        assertEquals(null, h.pelaajaTuleePelaamaan());
-    }
+    public void paivitysToimii() {
+        this.h.paivitaHeuristiikka(1, 0);
+        Kasipari k = new Kasipari(1, 0);
 
-    @Test
-    public void antaaOikeanKadenYksiSyotto() {
-        h.setPelaajanKasi(new Kasi("KIVI"));
-        h.setTietokoneenKasi(new Kasi("SAKSET"));
-        h.setVoitto(1);
-        h.updateKasilista();
-        assertEquals(new Kasi("KIVI"), h.pelaajaTuleePelaamaan());
-    }
-
-    @Test
-    public void antaaOikeanKadenMontaSyottoa() {
-        for (int i = 0; i < 5; i++) {
-            h.setPelaajanKasi(new Kasi("KIVI"));
-            h.setTietokoneenKasi(new Kasi("SAKSET"));
-            h.setVoitto(1);
-            h.updateKasilista();
-        }
-        for (int i=0; i<3; i++) {
-            h.setPelaajanKasi(new Kasi("SAKSET"));
-            h.setTietokoneenKasi(new Kasi("KIVI"));
-            h.setVoitto(-1);
-            h.updateKasilista();
-        }
-        assertEquals(new Kasi("KIVI"), h.pelaajaTuleePelaamaan());
-        assertNotEquals(new Kasi("SAKSET"), h.pelaajaTuleePelaamaan());
+        assertEquals(k, this.h.getViimeisinKasipari());
     }
     
+    @Test
+    public void getViimeisinToimiiOikein() {
+        this.h.paivitaHeuristiikka(1, 2);
+        this.h.paivitaHeuristiikka(2, 1);
+        this.h.paivitaHeuristiikka(0, 0);
+        Kasipari k = new Kasipari(0,0);
+        assertEquals(k, this.h.getViimeisinKasipari());
+    }
+    
+    @Test
+    public void pelaajaTuleePelaamaanToimiiOikeinYksi() {
+        for (int i=0; i<4; i++) {
+            this.h.paivitaHeuristiikka(1, 1);
+        }
+        assertEquals(1, this.h.pelaajaTuleePelaamaan());
+    }
+    
+    @Test
+    public void pelaajaTuleePelaamaanToimiiOikeinKaksi() {
+        for (int i=0; i<5; i++) {
+            this.h.paivitaHeuristiikka(1, 0);
+        }
+        for (int j=0; j<3; j++) {
+            this.h.paivitaHeuristiikka(3, 1);
+        }
+        assertEquals(1, this.h.pelaajaTuleePelaamaan());
+    }
+    
+    
+
 }
