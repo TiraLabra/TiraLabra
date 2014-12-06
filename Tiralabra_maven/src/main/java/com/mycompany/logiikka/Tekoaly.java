@@ -32,7 +32,7 @@ public class Tekoaly {
             return 1;
         }
         if (this.kierroksia < 5) {
-            return valitseVoittaja(pelaajanSeuraavaKasiRotaatiossa(this.moodi));
+            return valitseVoittaja(pelaajanSeuraavaKasiRotaatiossa());
         }
         
         return valitseVoittaja(this.heuristiikka.pelaajaTuleePelaamaan());
@@ -55,7 +55,7 @@ public class Tekoaly {
      * @param kasi mistä rotaatiota haetaan
      * @return parametria seuraava käsi
      */
-    private int pelaajanSeuraavaKasiRotaatiossa(int kasi) {
+    private int pelaajanSeuraavaKasiRotaatiossa() {
         int pelaaja = this.heuristiikka.getViimeisinKasipari().getPelaajanKasi();
         if (this.moodi == 1) {
             if (pelaaja < 2) {

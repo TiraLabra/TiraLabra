@@ -43,5 +43,5 @@ public class TekoalyTest {
     public void koneenKasiOikeinAlussaMoodiKaksi() {
         assertEquals(1, this.t.getKoneenKasi());
     }
-
+    
 }
