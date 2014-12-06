@@ -1,18 +1,9 @@
-## Palautus 3 notes
+## Ohjelman tila
 
 * * *
 
-Done so far:
-* koodin javadoc poislukien UI-luokat
-* JUnit-testit poislukien UI-luokat
-* ei valmiita tietorakenteita
-* luokkakaavio update v.1
-* alustava vuokaavio omaan käyttöön
-* OHJELMA ON JO AJETTAVISSA!!!
+Ohjelmakoodi on valmis ja yksikkötestit tehty. Ohjelma on ajettavassa kunnossa eikä siihen tule enää lisäyksiä. Koodissa on javadoc:it.
 
-To-do:
-* tekoälyä paljon lisää
-* graafinen käyttöliittymä (low-prio)
-* voisiko osan switch-case vaihtaa esim. linkitettyyn listaan?
+Dokumentaatiota täydennetään vielä ja suorituskykytestejä tehdään lisää algoritmeille.
 
 * * *
