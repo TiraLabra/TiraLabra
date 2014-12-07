@@ -99,7 +99,6 @@ Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartas
 | Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
 | 7915               | 7101               | 7228              | 754
-| ------------------ | ------------------ | ----------------- | --------
 
 ### Yhteensä
 
