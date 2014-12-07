@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package search;
+    package search;
 
 
 import static org.junit.Assert.*;
@@ -40,7 +36,7 @@ public class AStarSearchTest {
     
     @Test
     public void badSearchTermDoesNotWork() {
-        assertEquals("Search value(s) out of map range. Max X: 5, max Y: 4.", search.search(0, 0, 10, 10));
+        assertEquals("Search value(s) out of map range. Max X: 4, max Y: 3.", search.search(0, 0, 10, 10));
     }
     
     @Test

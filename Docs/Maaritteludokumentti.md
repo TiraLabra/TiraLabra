@@ -19,3 +19,4 @@ Tavoitteenani on A*-haulle määritelty aikavaativuus O(|E|) = O(b^d) ja tilavaa
 # Lähteet
 http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
 Vanhat JohTek-kurssin materiaalit
+Tietorakenteet ja algoritmit -kurssin materiaalit

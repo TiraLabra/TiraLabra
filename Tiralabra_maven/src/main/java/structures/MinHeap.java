@@ -4,7 +4,6 @@ import map.Node;
 
 /**A min-heap designed to work with the AStarSearch class.
  * 
- * @author ghaas
  */
 public class MinHeap {
 

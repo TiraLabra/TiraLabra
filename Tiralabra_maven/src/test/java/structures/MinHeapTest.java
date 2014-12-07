@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package structures;
 
 import map.Node;
@@ -14,7 +10,6 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author ghaas
  */
 public class MinHeapTest {
     

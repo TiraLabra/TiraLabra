@@ -4,7 +4,7 @@ import map.Node;
 import structures.ClosedSet;
 import structures.MinHeap;
 
-/**The A* search class does route searches on a 2d integer arrays. 
+/**The A* search class does route searches on a 2d integer array. 
  * 
  */
 public class AStarSearch {
@@ -32,7 +32,7 @@ public class AStarSearch {
    public String search(int startX, int startY, int endX, int endY) {
        if (startX < 0 || startX >= map[0].length || startY < 0 || startY >= map.length || 
            endX < 0 || endX >= map[0].length || endY < 0 || endY >= map.length) {
-           return "Search value(s) out of map range. Max X: " + map[0].length + ", max Y: " + map.length + ".";
+           return "Search value(s) out of map range. Max X: " + (map[0].length - 1) + ", max Y: " + (map.length - 1)+ ".";
        }
        ClosedSet closedSet = new ClosedSet(map[0].length, map.length);
        MinHeap openSet = new MinHeap(map[0].length, map.length);

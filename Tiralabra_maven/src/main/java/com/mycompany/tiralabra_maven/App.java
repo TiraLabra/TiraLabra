@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.Random;
 
 /**
- * Hello world!
+ * The main class, starts the search program with a random generated 30x30 map.
  *
  */
 public class App 
