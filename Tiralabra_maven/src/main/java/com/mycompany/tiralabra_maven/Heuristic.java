@@ -102,34 +102,4 @@ public class Heuristic {
 
     }
 
-
-
-
-
-    //probably unneeded items, to be scrapped later:
-
-    /**
-     * Heuristic calculation using Manhattan distance
-     *
-     * @param end The end Node at the map
-     * @param current Current Node where the algorithm is
-     * @return returns cost calculated by distance
-     */
-
-/*
-    public static double calculateManhattan(Node end, Node current) {
-        *//** dx is an approximation of the distance between the two nodes' x coordinates *//*
-        double dx = Math.abs(end.getX() - current.getX());
-        *//** dy is an approximation of the distance between the two nodes' y coordinates *//*
-        double dy = Math.abs(end.getY() - current.getY());
-        *//** heuristic calculates the distance quickly by approximation instead of offering exact numbers
-     *  hence it's very fast *//*
-        double heuristic;
-        heuristic = dx+dy;
-        return heuristic;
-    }*/
-
-
-
-
 }

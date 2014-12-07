@@ -30,19 +30,6 @@ public class Astar {
         Node[][] nodes = myMap.getMap();
 
         /** list of unchecked nodes */
-        /*
-        PriorityQueue<Node> open = new PriorityQueue<Node>(100, new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-
-                return (Integer.valueOf(o1.getCost()).compareTo(o2.getCost()));
-            }
-        });
-
-        open.add(start);
-        */
-
-
         MyPriorityQueue open = new MyPriorityQueue(20000);
         open.insert(start);
 
@@ -76,7 +63,6 @@ public class Astar {
             /** current = remove lowest rank item from OPEN */
             //current = open.poll();
             current = open.deleteMinimum();
-            //System.out.println("current x y " + current.getX() + " " +  current.getY());
             /** add current to the searched list */
             closed.add(current);
 
@@ -97,7 +83,7 @@ public class Astar {
                         /** for neighbours of the current:
                          * set node which we are going through now as neighbor
                          * F = G+H
-                         * cost = g(current) + movementcost(current, neighbor)
+                         * cost = g(current) + movement cost(current, neighbor)
                          * terrain cost is 1 because no terrain difference
                          * cost = 1 + calculateHeuristic(end, neighbor); */
                         double nextStepCost = current.getCost() + heuristic.cost(xp, yp, end);
@@ -129,9 +115,6 @@ public class Astar {
                             neighbor.setCost((int) (nextStepCost));
                             //open.add(neighbor);
                             open.insert(neighbor);
-
-                            //System.out.print("Add to open " + neighbor.getX() + " "+ neighbor.getY());
-                            //System.out.println("cost " + neighbor.getCost());
                             /** set priority queue rank to g(neighbor) + h(neighbor) */
 
                             /** set neighbor's parent to current */
@@ -161,12 +144,12 @@ public class Astar {
         }
 
         /** Print the final map! */
-        myMap.printMap();
+        //myMap.printMap();
         /** Tell us how long the path was: */
-        System.out.println("Path length was " + pathLength + " steps.");
+        //System.out.println("Path length was " + pathLength + " steps.");
         /** Tells us how long it took to run the algorithm: */
         long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
+        //System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
 

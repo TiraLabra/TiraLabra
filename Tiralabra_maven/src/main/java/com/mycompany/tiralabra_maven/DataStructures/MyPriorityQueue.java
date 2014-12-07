@@ -39,7 +39,10 @@ public class MyPriorityQueue {
         return table[0];
     }
 
-    /** Removes and returns the smallest item from the heap */
+    /** Removes and returns the smallest item from the heap
+     *
+     * @return Smallest item from the heap
+     */
     public Node deleteMinimum() {
         Node min = table[0];
         if (!isEmpty()) {
@@ -50,24 +53,37 @@ public class MyPriorityQueue {
         return min;
     }
 
-
     /** Returns the parent of the current node
-     * */
+     *
+     * @param i index of the node
+     * @return index of the parent node
+     */
     public int parent(int i) {
         return (i-1)/2;
     }
 
-    /** Returns the left child of the current node */
+    /** Returns the left child of the current node
+     *
+     * @param i index of the node
+     * @return the index of the left child of the node
+     */
     public int left(int i) {
         return 2*i+1;
     }
     /** Returns the right child of the current node */
+
+    /** Returns the right child of the current node
+     *
+     * @param i index of the node
+     * @return the index of the right child of the node
+     */
     public int right(int i) {
         return 2*i+2;
     }
 
     /** A recursive method to heapify the heap: corrects the binary tree formation
      *  until there is nothing to be corrected
+     *
      *  @param i index of the table */
     public void heapify(int i) {
         int left = left(i);
@@ -123,8 +139,9 @@ public class MyPriorityQueue {
         return table;
     }
 
-    /** Remove a specific node from the heap by decreasing it's cost and then removing it as the minimum item on the heap
-     *
+    /** Remove a specific node from the heap by decreasing it's cost and then removing it as the minimum item on the heap.
+     * Fetches an index related to a specific node, decreases it's cost, bubbles it up the heap and at the end corrects
+     * the heap with the heapify method.
      *
      * @param node Node to be removed
      */
@@ -147,8 +164,10 @@ public class MyPriorityQueue {
     }
 
 
-
-
+    /** Bubbles up a node in the tree by swapping it's place with it's parent.
+     *
+     * @param i Index of the node
+     */
     public void bubbleUp(int i) {
         /** Parent > i */
         while (i > 0 && table[parent(i)].compareTo(table[i]) > 0) {
@@ -160,23 +179,10 @@ public class MyPriorityQueue {
     }
 
     /**
-     *
      * @return Size of the heap
      */
     public int getHeapSize() {
         return heapsize;
     }
-
-    /**
-     * Visual representation of the priority queue
-
-    public void print() {
-        for (int i = 0; i < heapsize; i++) {
-            System.out.print(table[i].getCost() + " ");
-        }
-        System.out.println("");
-
-    }
-    */
 
 }
