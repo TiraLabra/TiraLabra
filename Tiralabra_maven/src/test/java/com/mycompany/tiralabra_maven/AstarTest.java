@@ -57,25 +57,4 @@ public class AstarTest {
 
     }
 
-    /** Tests that calculateHeuristic-method gives correct results
-     *
-     */
-    @org.junit.Test
-    public void testCalculateHeuristic() {
-        Node end = new Node(2,2);
-        assertTrue(Astar.calculateManhattan(node, end) == 4);
-
-
-        Node end2 = new Node(4,4);
-        assertTrue(Astar.calculateManhattan(node, end2) == 8);
-    }
-
-    /** Tests that the calculateEuclidean-method gives correct results */
-    @org.junit.Test
-    public void testCalculateEuclidean() {
-        Node test1 = new Node(2,-1);
-        assertTrue(Astar.calculateEuclidean(-2,2, test1) == 5);
-    }
-
-
 }
