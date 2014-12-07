@@ -48,7 +48,9 @@ Törmäyslistan pituus n.
 
 
 
--Listat... 
+-DynaaminenLista
+Tavallinen kokoaan kasvattava taulukko-muotoinen lista. 
+* Lisäys, arvon hakeminen O(1), poisto, sisältääkö, koon kasvatus O(n)
 
 Verkko... & Kaari, Solmu, (Linja)
 
@@ -58,11 +60,18 @@ Verkko... & Kaari, Solmu, (Linja)
 
 Haku
 
-Toteutuksessani ReittiLaskin-oliot vastaavat verkossa kuljetun reitin (Reitti-oliot) kustannuksen ja arvioidun jäljellä olevan kustannuksen laskemisesta. Käyttämällä erilaisia laskimia voidaan AStar-hausta tehdä myös leveyssuuntainen haku.
+Toteutuksessani ReittiLaskin-oliot vastaavat verkossa kuljetun reitin (Reitti-oliot) kustannuksen ja arvioidun jäljellä olevan kustannuksen laskemisesta. Käyttämällä erilaisia laskimia voidaan AStar-hausta tehdä myös leveyssuuntainen haku Dijikstran algoritmin mallisesti. 
 
--Aikavaatimus
-* todo
+Aikavaatimus kasvaa eksponentiaalisesti reitin pituuden mukaan, samoin tilavaatimus. Suurin tilavaatimus on O(V), suurin aikavaatimus O(E) jos kaikissa solmuissa joudutaan käymään. 
 
--Tilavaatimus
-* todo
+Pseudokoodi:
+solmu = käsittelyjärjestyksessä seuraavan reitin solmu
+jos ollaan maalissa, palautetaan reitti
+jos solmu on jo käsitelty, siirrytään seuraavaan
+kaikille solmun naapureille:
+	lisätään reitti naapuriin käsittelyjärjestykseen
+lisätään solmu käsiteltyihin
 
+Jos jokaisella solmulla on k naapuria, käsittelyvuorossa olevasta solmusta lisätään käsittelyjärjestykseen k uutta arvoa. Kukin lisäys on parhaimmillaan O(1) käyttäen omaa prioriteettijonoa. Tarkastus onko solmu jo käsitelty on parhaimmillaan O(1), samoin solmun lisääminen käsiteltyihin.
+
+Parhaimmillaan haku lähtee suoraan kohti maalia ja käsitellyksi tulee solmuja reitin pituuden d verran. Tällöin aika- ja tilavaatimus on O(k^d). 

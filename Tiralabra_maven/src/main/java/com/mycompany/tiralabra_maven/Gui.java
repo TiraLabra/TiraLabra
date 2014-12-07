@@ -293,15 +293,16 @@ public class Gui extends JFrame {
      * Luo syötteen pohjalta uuden satunnaisen verkon
      */
     private void uusiSatunnainenVerkko() {
-        String options = JOptionPane.showInputDialog("rivit:sarakkeet:minimipaino:kerroinpaino:tyyppi");
+        String options = JOptionPane.showInputDialog("rivit:sarakkeet:minimipaino:kerroinpaino:tyyppi:liikkuminen");
         String[] opt = {};
         try {
             opt = options.split(":");
         } catch (Exception ex) {
         }
 
-        int r = 200, s = 200, moodi = 1;
+        int r = 300, s = 300, moodi = 1;
         double minimi = 1, kerroin = 2;
+        boolean liikkuminen = true;
 
         try {
             r = Integer.parseInt(opt[0]);
@@ -323,9 +324,18 @@ public class Gui extends JFrame {
             moodi = Integer.parseInt(opt[4]);
         } catch (Exception ex) {
         }
+        try {
+            int valinta = Integer.parseInt(opt[5]);
+            if (valinta == 1) {
+                liikkuminen = true;
+            } else {
+                liikkuminen = false;
+            }
+        } catch (Exception ex) {
+        }
 
         try {
-            SatunnainenVerkko v = new SatunnainenVerkko(r, s, minimi, kerroin, moodi);
+            SatunnainenVerkko v = new SatunnainenVerkko(r, s, minimi, kerroin, moodi, liikkuminen);
             l2.setSelected(true);
             setLaskin(new SatunnainenLaskin());
             setVerkko(v);
@@ -371,7 +381,7 @@ public class Gui extends JFrame {
 
         String options = JOptionPane.showInputDialog("otosKoko:testienLkm");
         String[] opt = {};
-        int otosKoko=20, testienLkm=10;
+        int otosKoko = 20, testienLkm = 10;
         try {
             opt = options.split(":");
         } catch (Exception ex) {
@@ -385,7 +395,7 @@ public class Gui extends JFrame {
         } catch (Exception ex) {
         }
         JFrame jframe = new JFrame();
-        
+
         jframe.setTitle("Reitinhaun tehokkuus");
         Tulokset tulokset = new Tulokset(otosKoko, testienLkm);
         jframe.add(tulokset);
@@ -707,20 +717,21 @@ public class Gui extends JFrame {
      */
     private class Tulokset extends JPanel {
 
-        private int otosKoko,testienLkm;
-        private int w,h;
-        private int blockW=3,blockH=3, pituusBlokki=3,starttiBlokki=50,aikaBlokki=3;
-        
+        private int otosKoko, testienLkm;
+        private int w, h;
+        private int blockW = 3, blockH = 3, pituusBlokki = 3, starttiBlokki = 50, aikaBlokki = 3;
+
         private Lista<Lista<Long>> tulokset;
-        private Lista<Integer>     pituudet;
-        
+        private Lista<Integer> pituudet;
+
         public Tulokset() {
             this.setPreferredSize(new Dimension(500, 500));
         }
 
         public Tulokset(int otosKoko, int testienLkm) {
-            w=500;h=900;
-            this.setPreferredSize( new Dimension(w,h));
+            w = 500;
+            h = 900;
+            this.setPreferredSize(new Dimension(w, h));
             this.otosKoko = otosKoko;
             this.testienLkm = testienLkm;
         }
@@ -729,63 +740,103 @@ public class Gui extends JFrame {
          * Testaa reitinhakua satunnaisesti valituilla alku- ja loppusolmuilla
          */
         public void testaa() {
+
+            AStar aStar = new AStar(verkko, laskin);
+
             tulokset = new DynaaminenLista();
             pituudet = new DynaaminenLista();
-            for ( int i = 0; i < otosKoko; i++ ) {
+            loop:
+            for (int i = 0; i < otosKoko; i++) {
                 Lista<Long> testinAjat = new DynaaminenLista();
-                Value a=null, b=null;
-                if ( valittuSatunnainen ) {
+                Value a = null, b = null;
+                if (valittuSatunnainen) {
                     SatunnainenVerkko v = (SatunnainenVerkko) verkko;
                     int r = v.getRivit(), s = v.getSarakkeet();
-                    
-                    a = v.getSolmu( (int)(r*Math.random()), (int)(s*Math.random()));
-                    b = v.getSolmu( (int)(r*Math.random()), (int)(s*Math.random()));
-                }
-                else if ( valittuPysakki ) {
+
+                    try {
+                        a = v.getSolmu((int) (r * Math.random()), (int) (s * Math.random()));
+                        b = v.getSolmu((int) (r * Math.random()), (int) (s * Math.random()));
+                    } catch (Exception ex) {
+                    };
+                } else if (valittuPysakki) {
                     Verkko v = (Verkko) verkko;
-                    Pysakki[] pysakit    = v.getPysakit();
-                    int r   = pysakit.length;
-                    a = pysakit[ (int)(r*Math.random()) ];
+                    Pysakki[] pysakit = v.getPysakit();
+                    int r = pysakit.length;
+                    a = pysakit[(int) (r * Math.random())];
                 }
-                if ( a==b ) continue;
+                if (a == b || a == null || b == null) {
+                    continue;
+                }
                 Node polku = null;
-                long start,stop,summa=0;
-                for ( int j = 0; j < testienLkm; j++ ) {
+                long start, stop, summa = 0;
+                for (int j = 0; j < testienLkm; j++) {
                     // ajastus
-                    start=System.currentTimeMillis();
-                    polku = aStar.etsiReittiOma(a, b);
-                    stop=System.currentTimeMillis();
-                    summa+=((stop-start));
+                    start = System.currentTimeMillis();
+                    try {
+                        polku = aStar.etsiReittiOma(a, b);
+                    } catch (Exception ex) {
+                        System.out.println("Error, continue loop");
+                        continue loop;
+                    }
+                    stop = System.currentTimeMillis();
+                    summa += ((stop - start));
                 }
-                System.out.println("Keskiarvo: "+summa/testienLkm+" Reitin pituus: "+polku.size());
-                testinAjat.add(summa/testienLkm);
-                pituudet.add( polku.size() );
+
+                if (polku == null) {
+                    System.out.println("Error, reitti tyhjä");
+                    continue;
+                }
+                
+
+                System.out.println("" + summa / testienLkm + "\t" + polku.size());
+                testinAjat.add(summa / testienLkm);
+                pituudet.add(polku.size());
                 tulokset.add(testinAjat);
             }
             repaint();
         }
-        
 
         @Override
         public void paint(Graphics g) {
             super.paint(g);
- 
-            if ( tulokset== null ) return;
-            
-            for ( int i = 0; i < tulokset.size(); i++ ) {
+
+            if (tulokset == null) {
+                return;
+            }
+
+            for (int i = 0; i < tulokset.size(); i++) {
                 g.setColor(Color.BLUE);
-                int x  = (pituusBlokki)*pituudet.get(i)+starttiBlokki;
-                for ( int j = 0; j < tulokset.get(i).size(); j++ ) {
-                    double y = h-aikaBlokki*tulokset.get(i).get(j); // keskiajat
-                    g.drawRect(x-pituusBlokki,  (int)(y) - aikaBlokki, blockW, blockH);
+                int x = (pituusBlokki) * pituudet.get(i) + starttiBlokki;
+                for (int j = 0; j < tulokset.get(i).size(); j++) {
+                    double y = h - aikaBlokki * tulokset.get(i).get(j); // keskiajat
+                    g.drawRect(x - pituusBlokki, (int) (y) - aikaBlokki, blockW, blockH);
                 }
             }
+            int screenWidth = (int) this.getParent().getSize().getWidth();
+
             g.setColor(Color.BLACK);
             g.drawLine(starttiBlokki, h, starttiBlokki, 0);
-            g.drawLine(starttiBlokki, h,(int)this.getParent().getSize().getWidth(), h);
+            g.drawLine(starttiBlokki, h, screenWidth, h);
+
+            g.setColor(Color.GREEN);
+
+            int ms = 10;
+            for (int i = ms * aikaBlokki; i < h; i = i + aikaBlokki * ms) {
+                g.setColor(Color.GREEN);
+                g.drawLine(starttiBlokki, h - i, screenWidth, h - i);
+                g.setColor(Color.BLACK);
+                g.drawString("" + i / aikaBlokki + " ms", starttiBlokki - 50, h - i);
+            }
+
+            int pituus = 10;
+            for (int i = starttiBlokki + pituus * pituusBlokki; i < screenWidth; i = i + pituusBlokki * pituus) {
+                g.setColor(Color.GREEN);
+                g.drawLine(i, 0, i, h);
+                g.setColor(Color.BLACK);
+                g.drawString("" + (i - starttiBlokki) / pituusBlokki + "", i, h + 15);
+            }
         }
-        
-        
+
     }
 
 }

@@ -45,7 +45,7 @@ public class AStar {
      */
     private Lista<Value> kaydytSolmut;
     /**
-     * haun katkaisua varten
+     * Haun katkaisua varten
      */
     private final double EPSILON = 1;
 
@@ -97,7 +97,7 @@ public class AStar {
      */
     public Node etsiReittiOma(Value alku, Value maali) {
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
-        int aika = 45; // vaikuttaa prioriteettijonon oletuskokoon
+        int aika = 100; // vaikuttaa prioriteettijonon oletuskokoon
         final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
         Comparator<Node> comparator = alkuTila.vertailija(tarkkuus);
 
@@ -109,8 +109,8 @@ public class AStar {
         Lista<Node> parhaatReitit = new DynaaminenLista();
         double lowestCost = Integer.MAX_VALUE;
         
-        Hajautuslista<Edge> kuljetutKaaret = new Hajautuslista();
-        Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(10000);
+        // Hajautuslista<Edge> kuljetutKaaret = new Hajautuslista();
+        Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(10000); // koko?
 
         while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
 
@@ -127,7 +127,7 @@ public class AStar {
                     break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                 }
                 parhaatReitit.add(kasiteltava);
-                continue; // break;
+                break; // break;
                 // }
             }
             if (kasiteltava.getKustannus() /*+ kasiteltava.getArvioituKustannus()*/ > lowestCost+ EPSILON) {
@@ -229,6 +229,7 @@ public class AStar {
         debugTieto.debugRatkaisu(parhaatReitit);
         return parhaatReitit.get(0);
     }
+    
     //////////////////////////////
     //DEBUG-setterit ja getterit//
     //////////////////////////////

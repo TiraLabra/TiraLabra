@@ -27,13 +27,13 @@ import verkko.satunnainen.SatunnainenVerkko;
 public class App {
 
     /**
-     * Heuristiikan käyttämä tieto keskinopeudesta. Jos arvo on liian pieni,
+     * Heuristiikan kÃ¤yttÃ¤mÃ¤ tieto keskinopeudesta. Jos arvo on liian pieni,
      * heuristiikka yliarvioi matkojen aikakustannuksia. Jos arvo liian suuri,
-     * aliarvioidaan & joudutaan laskemaan ylimääräisiä reittejä
+     * aliarvioidaan & joudutaan laskemaan ylimÃ¤Ã¤rÃ¤isiÃ¤ reittejÃ¤
      */
-    public static double sporanNopeus = 526; // pistettä/min
+    public static double sporanNopeus = 526; // pistettÃ¤/min
     /**
-     * Leveyssuuntainen haku tällä laskimella: heuristiikan arvo aina nolla
+     * Leveyssuuntainen haku tÃ¤llÃ¤ laskimella: heuristiikan arvo aina nolla
      */
     public static ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, sporanNopeus);
     /**
@@ -45,7 +45,7 @@ public class App {
      */
     public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus);
     /**
-     * Vaihtoja välttelevä laskin
+     * Vaihtoja vÃ¤lttelevÃ¤ laskin
      */
     public static ReittiLaskin vaihdoton = new ReittiLaskin(1, 0, 3, 1, 0, sporanNopeus);
     /**
@@ -78,11 +78,11 @@ public class App {
     }
 
     /**
-     * Käyttöliittymän valinta
+     * KÃ¤yttÃ¶liittymÃ¤n valinta
      */
     public static void valitseTyyppi() {
         System.out.println("TESTATTAVAN VERKON TYYPPI");
-        System.out.println("p - Pysäkkiverkko");
+        System.out.println("p - PysÃ¤kkiverkko");
         System.out.println("s - Satunnainen verkko");
         Scanner scanner = new Scanner(System.in);
         String komento = scanner.nextLine();
@@ -94,12 +94,12 @@ public class App {
     }
 
     /**
-     * Yksinkertainen testikäyttöliittymä hauille pysäkkiverkosta
+     * Yksinkertainen testikÃ¤yttÃ¶liittymÃ¤ hauille pysÃ¤kkiverkosta
      */
     public static void yksinkertainenTestiUIPysakit() {
         System.out.println("REITTIHAKU");
         System.out.println("HSL RAITIOVAUNUVERKKO");
-        System.out.println("alku:loppu - REITTIHAKU PYSÄKILTÄ ALKU PYSÄKILLE LOPPU. KOKONAISLUVUT 0...137");
+        System.out.println("alku:loppu - REITTIHAKU PYSÃ„KILTÃ„ ALKU PYSÃ„KILLE LOPPU. KOKONAISLUVUT 0...137");
         System.out.println("laskin:valinta - VALITAAN LASKIN. KOKONAISLUKU 1...6");
         Scanner scanner = new Scanner(System.in);
         Verkko verkko = new Verkko();
@@ -163,7 +163,7 @@ public class App {
     }
 
     /**
-     * Yksinkertainen komentorivipohjainen testikäyttöliittymä
+     * Yksinkertainen komentorivipohjainen testikÃ¤yttÃ¶liittymÃ¤
      * satunnaisgeneroiduille verkoille
      *
      */
@@ -214,29 +214,6 @@ public class App {
                     int x1 = Integer.parseInt(koordinaatit[0]), y1 = Integer.parseInt(koordinaatit[1]), x2 = Integer.parseInt(koordinaatit[2]), y2 = Integer.parseInt(koordinaatit[3]);
                     Value alku = verkko.getSolmu(x1, y1), loppu = verkko.getSolmu(x2, y2);
                     hakuOtos(aStar,alku,loppu,otos,true);
-                    /*
-                    long a, b, summa = 0, otos = 10, min = Integer.MAX_VALUE, max = 0;
-
-                    Node reitti = null;
-                    for (int i = 0; i < otos; i++) {
-                        a = System.currentTimeMillis();
-                        reitti = aStar.etsiReittiOma(alku, loppu);
-                        b = System.currentTimeMillis();
-
-                        long x = b - a;
-                        if (x > max) {
-                            max = x;
-                        }
-                        if (x < min) {
-                            min = x;
-                        }
-                        summa += x;
-                    }
-                    System.out.println("Reitti=" + reitti + ", Keskiaika=" + (summa / otos)
-                            + ", Otos=" + (otos)
-                            + ", Min=" + (min)
-                            + ", Max=" + (max));
-                    */
 
                 } catch (Exception ex) {
                     System.out.println("Haut muodossa x1:y1:x2:y2");
@@ -249,7 +226,7 @@ public class App {
     }
 
     /**
-     * Generoi syötteestä satunnaisen verkon
+     * Generoi syÃ¶tteestÃ¤ satunnaisen verkon
      *
      * @param komento
      * @return
@@ -276,7 +253,7 @@ public class App {
         } catch (Exception ex) {
 
         }
-        System.out.println("Huono syöte");
+        System.out.println("Huono syÃ¶te");
         return null;
     }
 
@@ -316,6 +293,9 @@ public class App {
         return keskiaika;
     }
 
+    /**
+     * AStar-heuristiikan debuggaus
+     */
     private static void debugAStarHeuristiikka() {
         Verkko verkko = new Verkko();
         ReittiLaskin reittiLaskin = normaali;
@@ -327,7 +307,9 @@ public class App {
         stop = System.currentTimeMillis();
         System.out.println("Aika " + (stop - start) + " ms");
     }
-
+    /**
+     * Vertailee oman ja javan prioriteettijonojen toimintaa
+     */
     private static void debugAStarVertailu() {
 
         ReittiLaskin reittiLaskin = vaihdotonMatkaaMinimoiva;
@@ -382,7 +364,7 @@ public class App {
         Pysakki loppu = verkko.getPysakit()[17];
 
         start = System.currentTimeMillis();
-        System.out.println("Etsitään ratkaisua ");
+        System.out.println("EtsitÃ¤Ã¤n ratkaisua ");
         AStar aStar = new AStar(verkko, reittiLaskin);
         aStar.setDebugMode(true);   // koko jono: true, vain ratkaisuun asti: false
         aStar.setDebugPrint(false);
@@ -390,7 +372,7 @@ public class App {
         System.out.println("" + reitti);
         System.out.println("" + aStar.getRatkaisu());
         stop = System.currentTimeMillis();
-        System.out.println("Etsintä: " + (stop - start) + "ms");
+        System.out.println("EtsintÃ¤: " + (stop - start) + "ms");
         // System.out.println("" + aStar.getHeuristiikanOnnistumiset());
     }
 
@@ -399,7 +381,7 @@ public class App {
      */
     private static void debugLinkitettyLista() {
         LinkitettyLista<String> lista = new LinkitettyLista(8);
-        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitäisi siis kasvattaa
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitÃ¤isi siis kasvattaa
         for (String s : lista) {
             System.out.println("" + s);
         }
@@ -464,7 +446,7 @@ public class App {
         for (String s : lista) {
             System.out.println("" + s);
         }
-        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitäisi siis kasvattaa
+        String[] e = {"Kissa", "Koira", "Lassi", "Leevi", "Mimmi", "Mummi"}; // koko: 6, pitÃ¤isi siis kasvattaa
         for (String s : e) {
             lista.add(s);
         }
@@ -546,7 +528,7 @@ public class App {
     }
 
     private static void debugOmia() {
-        System.out.println("Omat vs javan tietorakenteet käytössä");
+        System.out.println("Omat vs javan tietorakenteet kÃ¤ytÃ¶ssÃ¤");
         long a, b, j = 0, o = 0, jOma = 0;
         int n = 20;
         Verkko verkko = new Verkko();

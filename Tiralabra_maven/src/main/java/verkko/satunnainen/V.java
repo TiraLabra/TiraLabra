@@ -14,24 +14,40 @@ import verkko.rajapinnat.Value;
  */
 public class V implements Value {
 
+    /**
+     * Solmun koordinaatit
+     */
     private int x, y;
+    /**
+     * Etäisyyden laskemisessa käytettävä
+     */
+    private boolean liikkumisSaanto;
 
     public int getX() {
         return x;
     }
 
-    public V(int x, int y) {
+    /**
+     * 
+     * 
+     * @param x Solmun koordinaatit
+     * @param y Solmun koordinaatit
+     * @param saanto Liikkumissääntö: saako liikkua vain koordinaattiakselien suuntaan
+     */
+    public V(int x, int y, boolean saanto ) {
         this.x = x;
         this.y = y;
+        liikkumisSaanto=saanto;
     }
-
+    
     public int getY() {
         return y;
     }
 
     public double etaisyys(Value s) {
         V v = (V) s;
-        return Math.abs(v.getX() - this.getX()) + Math.abs(v.getY() - this.getY());
+        if (liikkumisSaanto) return Math.abs(v.getX() - this.getX()) + Math.abs(v.getY() - this.getY());
+        return Math.max(Math.abs(v.getX() - this.getX()) , Math.abs(v.getY() - this.getY()));
     }
 
     @Override
