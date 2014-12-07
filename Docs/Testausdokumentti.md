@@ -84,6 +84,7 @@ Javan prioriteettijonoa käyttämällä suoritusnopeus on huomattavasti parempi.
 
 Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map2, joka on avoin kartta kahden pisteen välillä.
 
+### Yksittäiset testit
 
 | Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
@@ -93,12 +94,16 @@ Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartas
 | 7893               | 7106               | 7112              | 725
 | 7741               | 7147               | 7313              | 754
 
-| Keskiarvo:
+### Keskiarvo
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
 | 7915               | 7101               | 7228              | 754
 | ------------------ | ------------------ | ----------------- | --------
 
-| Yhteensä:
+### Yhteensä
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
 | 39575              | 35506              | 36142             | 3774
 
@@ -108,14 +113,15 @@ Nopein algoritmeistä oli odotetusti dijkstran algoritmi, jossa laskentaa ei tar
 
 Tässä testissä ajettiin ohjelman map3-karttaa joka ajettiin 10000 kertaa, ja toistettiin tämä viisi kertaa. Kartassa aloituspiste on ympyröity seinillä.
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
-| ------------------ | ------------------ | ----------------- | --------
+### Keskiarvo
 
-| Keskiarvo:
+| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
 | 4477               | 5621               | 5623              | 1884
 
-| Yhteensä:
+### Yhteensä
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
 | ------------------ | ------------------ | ----------------- | --------
 | 22388              | 28109              | 28116             | 9421
 
