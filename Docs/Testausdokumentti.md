@@ -32,10 +32,13 @@ Asetetaan aluksi käyttöön uusi satunnainen verkko syötteellä 300:300:1:2:2:1. Va
 Solmujen käsittelyjärjestyksen määrää niiden hyvyys g(n): reitin kustannus f(alku,n) ja arvioitu jäljellä oleva kustannus h(n).
 
 Heuristisen funktion h(n) arvo vaikuttaa haun toimintaan. Jos h(n)=0, saadaan leveyssuuntainen haku: 
+ 
 
  
 Sama haku suoritettuna siten, että h(n)=|n.x-maali.x|+|n.y-maali.y|:
  
+ 
+
 Solmuja ei ole siis käsitelty niin paljoa turhaan. 
 
 Mitä paremmin h(n) vastaa oikeaa jäljellä olevaa kustannusta f(n,maali), sitä tehokkaammin haku toimii. Tätä voi kokeilla valitsemalla verkon siten, että minimiPaino on hyvin suuri.
@@ -51,13 +54,18 @@ Oletusarvona verkossa voi kulkea vain koordinaattiakselien suuntaisesti. Valinna
 Minimiaikavaatimus verkossa kulkemiseen on O(k^d), jossa k on naapureiden lukumäärä kullekkin solmulle ja d on reitin pituus. Sivuttaisen liikkumisen sallivassa verkossa naapureita on 8, vain akselien suuntaisen liikkumisen sallivassa verkossa 4. Annetulla reitin pituudella d minimiaikavaatimuksien suhde on siis 2^d. Jos sivuttaisuuntainen kulkeminen sallitaan, lyhyin mahdollinen reitti on puolet siitä jos kulkeminen estetään. Kuitenkin suoritusajassa näkyy selvä ero.
 
 Vain akselien suuntaan:  
+ 
+
 Myös sivusuunnassa:
+ 
  
  
 500x500 verkossa 500 näytteellä ero korostuu entisestään. Vain akselien suuntaan:
+ 
 
  
 Myös sivusuunnassa:
+ 
  
 
 3. Verkon ja polun koko
@@ -65,5 +73,6 @@ Myös sivusuunnassa:
 Toistaminen: luodaan syötteellä 1000:1000:1:2:2:1 verkko, jonka koko on 1000x1000. Nyt ohjelman piirtämään kuvaajaan ei mahdu kaikki pisteet. Myös kokonaissuoritusaika on melkoinen.
 
 Suurilla verkoilla ja siten myös pitkillä poluilla aikavaatimus kasvaa eksponentiaalisesti:
+ 
 
  
