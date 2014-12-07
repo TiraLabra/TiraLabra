@@ -33,7 +33,7 @@ public class Main {
             uncompress(fio, compressor, args[1]);
         }
         
-        compress(fio, compressor, "kuvajpeg.jpg");
+        //compress(fio, compressor, "kuvajpeg.jpg");
         //uncompress(fio, compressor, "kuvapieni.bmp.huf");
         
         
