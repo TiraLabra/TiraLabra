@@ -56,7 +56,7 @@ public class SatunnainenVerkko implements Graph {
             double x = random.nextDouble();
 
             if (x < a) {
-                return (kerroin * random.nextDouble());
+                return 0; // (kerroin * random.nextDouble());
             } else if (x > b) {
                 return maxArvo*kerroin;
             } else {
@@ -64,6 +64,10 @@ public class SatunnainenVerkko implements Graph {
             }
         }
     };
+    /**
+     * Vieruslistat tallennettuna taulukkoon. Kasvattaa tilavaatimusta mutta nopeuttaa hakuja.
+     */
+    private Lista<Value>[][] naapurit; // WIP hajautustaulu tähän?
     /**
      * Verkko tallennetaan taulukkoon
      */
@@ -160,6 +164,7 @@ public class SatunnainenVerkko implements Graph {
         painot = new double[rivit][sarakkeet];
         verkko = new V[rivit][sarakkeet];
         kaaret = new E[rivit][sarakkeet][1];
+        naapurit = new Lista[rivit][sarakkeet];
         liikkumisSaanto = liikkuminen;
         generoiSatunnainen();
     }
@@ -177,9 +182,16 @@ public class SatunnainenVerkko implements Graph {
                 //    painot[i][j] = minimiPaino;
                 verkko[i][j] = new V(i, j, liikkumisSaanto);
                 kaaret[i][j][0] = new E( /*verkko[i][j],*/painot[i][j]);
+                
+                
             }
         }
-
+        for (int i = 0; i < rivit; i++) {
+            for (int j = 0; j < sarakkeet; j++) {
+                naapurit[i][j]=getNaapurit(i,j);
+            }
+        }
+        
     }
 
     /**
@@ -218,14 +230,11 @@ public class SatunnainenVerkko implements Graph {
     /**
      * Solmun naapurit
      *
-     * @param alku
-     * @return
+     * @param x Rivi
+     * @param y Sarake
+     * @return Naapurit listassa
      */
-    public Iterable<Value> getNaapurit(Value alku) {
-        V l = (V) alku;
-        int x = l.getX();
-        int y = l.getY();
-        // ylös-alas, vasen-oikea
+    public Lista<Value> getNaapurit(int x, int y) {
         Lista<Value> returnvalue = new DynaaminenLista(8);
         if (x > 0) {
             returnvalue.add(verkko[x - 1][y]);
@@ -254,7 +263,18 @@ public class SatunnainenVerkko implements Graph {
         }         
         return returnvalue;
     }
-
+    /**
+     * Graph-rajapinnan toteutus
+     * 
+     * @param alku
+     * @return 
+     */
+    public Iterable<Value> getNaapurit( Value alku ) {
+        V l = (V) alku;
+        int x = l.getX();
+        int y = l.getY();    
+        return naapurit[x][y];
+    }
     /**
      * Uusi Polku-olio
      *

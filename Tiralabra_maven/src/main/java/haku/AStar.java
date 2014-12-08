@@ -116,6 +116,8 @@ public class AStar {
 
             Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois kÃ¤siteltÃ¤vÃ¤ksi
             Value solmu = kasiteltava.getSolmu();
+            
+            
             // DEBUG: tietoa kÃ¤sittelystÃ¤ ja heuristiikan toiminnasta
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta

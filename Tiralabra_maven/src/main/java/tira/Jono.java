@@ -88,7 +88,7 @@ public class Jono<E> {
     public E dequeue() {
 
         if (this.size <= 0) {
-            return null; // buginkorjaus
+            return null;
         }
         E e = (E) this.values[head];
         head++;
@@ -165,7 +165,22 @@ public class Jono<E> {
     private void kasvata(int factor) {
         this.maxSize = factor * this.maxSize;
         Object[] uusiValues = new Object[this.maxSize];
-        System.arraycopy(this.values, 0, uusiValues, 0, this.size);
+        
+        // debug
+        int i=0;
+        int j=head;
+        while ( j!=tail ) {
+            uusiValues[i]=values[j];
+            i++;
+            j++;
+            if ( j >= values.length ) j = 0;
+        }
+        head = 0;
+        tail = i;
+        // System.arraycopy(this.values, 0, uusiValues, 0, this.size);
+        
+        
+        
         this.values = uusiValues;
     }
 
