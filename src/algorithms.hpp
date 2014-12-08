@@ -7,20 +7,25 @@
  * @param depth depth of the search
  * @param max are we searching of max player or min player
  */
-int minimax(chessBoard &board, int depth, bool max) {
-    if (depth == 0) return board.evaluate(max);
-    vector<chessBoard> moves;
-    // TODO get possible moves...
-    // board.possibleMoves(player)
+int minimax(tree< moveNode* > *gameTree, int depth, bool max) {
+    linkedList< tree<moveNode*>* > *ch = gameTree->children;
+    if (depth == 0 || ch->size == 0)
+        return gameTree->item->value;
+
     if (max) {
         int bestValue = INT_MIN;
-        for (chessBoard b : moves)
-            bestValue = std::max(bestValue, minimax(b, depth - 1, false));
+        for (int i = 0; i < ch->size; i++) {
+            tree<moveNode*>* n = (*ch)[i];
+            bestValue = std::max(bestValue, minimax(n, depth - 1, false));
+        }
         return bestValue;
     } else {
         int bestValue = INT_MAX;
-        for (chessBoard b : moves)
-            bestValue = std::min(bestValue, minimax(b, depth - 1, true));
+        for (int i = 0; i < ch->size; i++) {
+            tree<moveNode*>* n = (*ch)[i];
+            bestValue = std::min(bestValue, minimax(n, depth - 1, true));
+        }
+        
         return bestValue;
     }
 }
