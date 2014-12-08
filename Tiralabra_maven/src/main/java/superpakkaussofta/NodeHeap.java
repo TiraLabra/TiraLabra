@@ -47,7 +47,7 @@ public class NodeHeap {
     public NodeHeap(String tree){
         nodes = new HuffmanNode[10];
         
-        System.out.println("Parsing byte counts..");
+        System.out.println("Parsitaan tavumääriä..");
         
         int[] counts = new int[256];
         
@@ -75,7 +75,7 @@ public class NodeHeap {
      * @param counts 
      */
     private void constructHeapFromByteCounts(int[] counts){
-        System.out.println("Building heap..");
+        System.out.println("Kootaan kekoa..");
         for(int i = 0; i < counts.length; i++){
             if(counts[i] > 0){
                 this.add(new HuffmanNode((byte) (i - 128), counts[i]));
@@ -89,7 +89,7 @@ public class NodeHeap {
      * @return Amount of different bytes as int array (256 size)
      */
     private int[] countBytes(byte[] data){
-        System.out.println("Counting bytes..");
+        System.out.println("Lasketaan tavujen määriä..");
         int[] bytes = new int[256];
         
         for(int i = 0; i < data.length; i++){

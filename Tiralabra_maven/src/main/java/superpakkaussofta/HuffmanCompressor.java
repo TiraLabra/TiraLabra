@@ -28,7 +28,7 @@ public class HuffmanCompressor {
         
         StringBuilder bits = new StringBuilder();
         
-        System.out.println("Compressing data..");
+        System.out.println("Pakataan dataa..");
         for(int i = 0; i < data.length; i++){
             bits.append(codes[data[i]+128]);
         }
@@ -81,13 +81,13 @@ public class HuffmanCompressor {
         TreeOperator toperator = new TreeOperator();
         
         int cp = getTreeCutPoint(data);
-        System.out.println("Parsing and recreating tree..");
+        System.out.println("Parsitaan ja uudelleenrakennetaan puu..");
         String stree = parseTreeString(data, cp);
         //System.out.println("Puu stringinä: " + stree);
-        System.out.println("Parsing data..");
+        System.out.println("Parsitaan dataa..");
         byte[] pureData = parseOnlyData(data, cp);
         //System.out.println("Vain data stringinä: " + new String(pureData));
-        System.out.println("Converting data to bits..");
+        System.out.println("Muutetaan data biteiksi..");
         String binaryString = toBinaryString(pureData);
         //System.out.println("Binääristringinä: " + binaryString);
         
@@ -97,10 +97,10 @@ public class HuffmanCompressor {
         HuffmanNode node = tree;
         char c;
         
-        System.out.println("Decompressing data..");
+        System.out.println("Puretaan data..");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         
-        long aikaAlussa = System.currentTimeMillis();
+        //long aikaAlussa = System.currentTimeMillis();
         
         for(int i = 0; i < binaryString.length(); i++){
             c = binaryString.charAt(i);
@@ -119,8 +119,8 @@ public class HuffmanCompressor {
             }
         }
         
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("DEKOODAUS: " + (aikaLopussa - aikaAlussa) + " ms.");
+        //long aikaLopussa = System.currentTimeMillis();
+        //System.out.println("DEKOODAUS: " + (aikaLopussa - aikaAlussa) + " ms.");
         
         return bytes.toByteArray();
     }
@@ -140,7 +140,7 @@ public class HuffmanCompressor {
         int l = data.length;
         int dummybits = data[0];
         
-        System.out.println("Poistettavat nollat: " + dummybits);
+        //System.out.println("Poistettavat nollat: " + dummybits);
         
         byte[] dataWithDummys = new byte[l - 1];
         
@@ -218,7 +218,7 @@ public class HuffmanCompressor {
      * @return String array with binary code for each byte
      */
     private String[] countNewCodes(HuffmanNode tree){
-        System.out.println("Generating new byte codes..");
+        System.out.println("Luodaan uudet koodit tavuille..");
         String[] codes = new String[256];
         for(int i = 0; i < codes.length; i++){
             codes[i] = "";
@@ -252,7 +252,7 @@ public class HuffmanCompressor {
      * @return 
      */
     public byte[] concatTreeWithByteArray(byte[] cdata, HuffmanNode tree){
-        System.out.println("Saving tree..");
+        System.out.println("Tallennetaan puu..");
         String treeString = tree.toString() + "c";  //lopetusmerkki
         byte[] bytesTree = treeString.getBytes();
         int treeLength = bytesTree.length;

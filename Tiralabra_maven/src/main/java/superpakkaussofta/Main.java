@@ -44,11 +44,11 @@ public class Main {
     private static void compress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
-        System.out.println("Reading file..");
+        System.out.println("Luetaan tiedostoa..");
         try {
             data = fio.read(path);
         } catch (Exception e) {
-            System.out.println("Error: Reading failed!");
+            System.out.println("Virhe tiedostoa luettaessa!");
         }
         /*
         System.out.println("Alkuperäinen:");
@@ -58,32 +58,32 @@ public class Main {
         */
         byte[] compr = compressor.compress(data);
         
-        System.out.println("Saving compressed file..");
+        System.out.println("Tallennetaan pakattu tiedosto levylle..");
         try {
             fio.write(compr, path + ".huf");
-            System.out.println("Compressing complete!");
+            System.out.println("Pakkaus valmis!");
         } catch (Exception e) {
-            System.out.println("Saving to disk failed!");
-            System.out.println(e);
+            System.out.println("Levylle tallennus epäonnistui!");
+            //System.out.println(e);
         }
     }
     private static void uncompress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
-        System.out.println("Reading file..");
+        System.out.println("Luetaan tiedostoa..");
         try {
             data = fio.read(path);
         } catch (Exception e) {
-            System.out.println("Error: Reading failed!");
+            System.out.println("Virhe tiedostoa luettaessa!");
         }
         
         byte[] uncompr = compressor.decompress(data);
         
         try {
             fio.write(uncompr, path + ".ava");
-            System.out.println("Decompressing complete!");
+            System.out.println("Tiedoston purkaminen valmis!");
         } catch (Exception e) {
-            System.out.println("Saving to disk failed!");
+            System.out.println("Tiedoston tallennus epäonnistui!");
             System.out.println(e);
         }
     }
