@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <limits.h>
+
 /**
  * Minimax algorithm according to http://www.wikiwand.com/en/Minimax
  * @param board current state of the game
