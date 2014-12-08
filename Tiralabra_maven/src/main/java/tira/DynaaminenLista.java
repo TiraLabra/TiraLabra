@@ -212,6 +212,8 @@ public class DynaaminenLista<E> implements Lista<E> {
             i++;
             return t;
         }
+        @Override
+        public void remove() { return; }        
     }
 
 }

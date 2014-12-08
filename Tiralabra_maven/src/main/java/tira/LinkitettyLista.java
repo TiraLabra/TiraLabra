@@ -438,6 +438,9 @@ public class LinkitettyLista<E> implements Lista<E> {
             i = next[i]; // private-tyyppinen, mutta tässä menee
             return t;
         }
+        
+        @Override
+        public void remove() { return; }
     }
 
 
