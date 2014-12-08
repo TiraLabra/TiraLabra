@@ -99,7 +99,7 @@ public class PrioriteettiJonoListallaTest {
     public void testPoll() {
         System.out.println("poll");
         PrioriteettiJonoListalla<Reitti> instance = new PrioriteettiJonoListalla( comparator );
-        pq = new PriorityQueue( comparator );
+        pq = new PriorityQueue( 100,comparator );
         for ( Reitti r : reitit ) {
             instance.add(r);
             pq.add(r);
