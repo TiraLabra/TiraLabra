@@ -168,7 +168,7 @@ public class Jono<E> {
         
         // debug
         int i=0;
-        int j=head;
+        int j=head;    
         while ( j!=tail ) {
             uusiValues[i]=values[j];
             i++;

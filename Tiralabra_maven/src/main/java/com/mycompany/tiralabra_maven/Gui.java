@@ -45,13 +45,13 @@ import verkko.satunnainen.V;
 public class Gui extends JFrame {
 
     /**
-     * Heuristiikan käyttämä tieto keskinopeudesta. Jos arvo on liian pieni,
+     * Heuristiikan kÃ¤yttÃ¤mÃ¤ tieto keskinopeudesta. Jos arvo on liian pieni,
      * heuristiikka yliarvioi matkojen aikakustannuksia. Jos arvo liian suuri,
-     * aliarvioidaan & joudutaan laskemaan ylimääräisiä reittejä
+     * aliarvioidaan & joudutaan laskemaan ylimÃ¤Ã¤rÃ¤isiÃ¤ reittejÃ¤
      */
-    public static double sporanNopeus = 526; // pistettä/min
+    public static double sporanNopeus = 526; // pistettÃ¤/min
     /**
-     * Leveyssuuntainen haku tällä laskimella: heuristiikan arvo aina nolla
+     * Leveyssuuntainen haku tÃ¤llÃ¤ laskimella: heuristiikan arvo aina nolla
      */
     public static ReittiLaskin bfs = new ReittiLaskin(1, 0, 0, 0, 0, sporanNopeus);
     /**
@@ -63,7 +63,7 @@ public class Gui extends JFrame {
      */
     public static ReittiLaskin normaali = new ReittiLaskin(1, 0, 0, 1, 0, sporanNopeus);
     /**
-     * Vaihtoja välttelevä laskin
+     * Vaihtoja vÃ¤lttelevÃ¤ laskin
      */
     public static ReittiLaskin vaihdoton = new ReittiLaskin(1, 0, 3, 1, 0, sporanNopeus);
     /**
@@ -105,7 +105,7 @@ public class Gui extends JFrame {
     final JCheckBoxMenuItem l1 = new JCheckBoxMenuItem("BFS");
     final JCheckBoxMenuItem l2 = new JCheckBoxMenuItem("Heuristinen");
     final ButtonGroup satunnainenLaskin = new ButtonGroup();
-    final JRadioButton pysakkiVerkko = new JRadioButton("Pysäkkiverkko");
+    final JRadioButton pysakkiVerkko = new JRadioButton("PysÃ¤kkiverkko");
     final JCheckBoxMenuItem p1 = new JCheckBoxMenuItem("BFS");
     final JCheckBoxMenuItem p2 = new JCheckBoxMenuItem("Vaihdoton BFS");
     final JCheckBoxMenuItem p3 = new JCheckBoxMenuItem("Normaali");
@@ -113,7 +113,7 @@ public class Gui extends JFrame {
     final JCheckBoxMenuItem p5 = new JCheckBoxMenuItem("Normaali matkaa minimoiva");
     final JCheckBoxMenuItem p6 = new JCheckBoxMenuItem("Vaihdoton matkaa minimoiva");
     final ButtonGroup reittiLaskin = new ButtonGroup();
-    final JMenuItem testaus = new JMenuItem("Testejä");
+    final JMenuItem testaus = new JMenuItem("TestejÃ¤");
 
     public Gui() {
 
@@ -157,7 +157,7 @@ public class Gui extends JFrame {
     }
 
     /**
-     * Luo käyttöliittymän valikon
+     * Luo kÃ¤yttÃ¶liittymÃ¤n valikon
      *
      * @return
      */
@@ -290,7 +290,7 @@ public class Gui extends JFrame {
     }
 
     /**
-     * Luo syötteen pohjalta uuden satunnaisen verkon
+     * Luo syÃ¶tteen pohjalta uuden satunnaisen verkon
      */
     private void uusiSatunnainenVerkko() {
         String options = JOptionPane.showInputDialog("rivit:sarakkeet:minimipaino:kerroinpaino:tyyppi:liikkuminen");
@@ -345,7 +345,7 @@ public class Gui extends JFrame {
     }
 
     /**
-     * Etsii reitin alku- ja loppusolmujen välille
+     * Etsii reitin alku- ja loppusolmujen vÃ¤lille
      */
     private void etsiReitti() {
         if (alku != null && loppu != null) {
@@ -411,20 +411,20 @@ public class Gui extends JFrame {
     private class Piirto extends JPanel implements MouseListener {
 
         /**
-         * Satunnaisen verkon piirtäminen
+         * Satunnaisen verkon piirtÃ¤minen
          */
         private int blockW = 18, blockH = 11;
 
         /**
-         * Pysäkkiverkon piirtäminen
+         * PysÃ¤kkiverkon piirtÃ¤minen
          */
         private int pW = 10, pH = 10, modX = 20, modY = 15, skaala = 8, isoLuku = 2000;
         /**
-         * Pysäkkiverkon koordinaatit-pysäkit
+         * PysÃ¤kkiverkon koordinaatit-pysÃ¤kit
          */
         private Hajautustaulu<Integer, Pysakki> hitboksit; // = new Hajautustaulu(140);
         /**
-         * Pysäkkiverkon pysäkit-koordinaatit
+         * PysÃ¤kkiverkon pysÃ¤kit-koordinaatit
          */
         private Hajautustaulu<Pysakki, Integer> drawboksit; // = new Hajautustaulu(140);
 
@@ -463,7 +463,7 @@ public class Gui extends JFrame {
 
             double[][] painot = v.getPainot();
 
-            // piirretään solmut, joissa on käyty
+            // piirretÃ¤Ã¤n solmut, joissa on kÃ¤yty
             g.setColor(Color.PINK);
             if (aStar.getKaydytSolmut() != null) {
                 for (Value value : aStar.getKaydytSolmut()) {
@@ -471,7 +471,7 @@ public class Gui extends JFrame {
                     g.fillRect(blockW * solmu.getY(), blockH * (solmu.getX()), blockW, blockH);
                 }
             }
-            // piirretään reitti
+            // piirretÃ¤Ã¤n reitti
             g.setColor(Color.red);
             if (reitti != null) {
                 Polku polku = (Polku) reitti;
@@ -483,19 +483,19 @@ public class Gui extends JFrame {
 
                 }
             }
-            // piirretään alkusolmu
+            // piirretÃ¤Ã¤n alkusolmu
             g.setColor(Color.YELLOW);
             if (alku != null) {
                 V solmu = (V) alku;
                 g.fillRect(blockW * solmu.getY(), blockH * (solmu.getX()), blockW, blockH);
             }
-            // piirretään loppusolmu
+            // piirretÃ¤Ã¤n loppusolmu
             g.setColor(Color.GREEN);
             if (loppu != null) {
                 V solmu = (V) loppu;
                 g.fillRect(blockW * solmu.getY(), blockH * (solmu.getX()), blockW, blockH);
             }
-            // piirretään verkon painot
+            // piirretÃ¤Ã¤n verkon painot
             g.setColor(Color.BLACK);
             for (int i = 0; i < rivit; i++) {
                 for (int j = 0; j < sarakkeet; j++) {
@@ -506,7 +506,7 @@ public class Gui extends JFrame {
                     g.drawString("" + merkki, blockW * j, blockH * (i + 1));
                 }
             }
-            // piirretään gridi
+            // piirretÃ¤Ã¤n gridi
             for (int i = 0; i <= rivit; i++) {
                 g.drawLine(0, i * blockH, sarakkeet * blockW, i * blockH);
             }
@@ -518,7 +518,7 @@ public class Gui extends JFrame {
         }
 
         /**
-         * Esitys pysäkkiverkolle
+         * Esitys pysÃ¤kkiverkolle
          *
          * @param g
          */
@@ -578,8 +578,8 @@ public class Gui extends JFrame {
         }
 
         /**
-         * Muuttaa pysäkin koordinaatit (ruudun x,y) sellaisiksi, että
-         * yksilöivät pysäkin
+         * Muuttaa pysÃ¤kin koordinaatit (ruudun x,y) sellaisiksi, ettÃ¤
+         * yksilÃ¶ivÃ¤t pysÃ¤kin
          *
          * @param x
          * @param y
@@ -595,7 +595,7 @@ public class Gui extends JFrame {
         }
 
         /**
-         * Etsii ruutukoordinaattien perusteella pysäkin
+         * Etsii ruutukoordinaattien perusteella pysÃ¤kin
          *
          * @param x
          * @param y
@@ -610,8 +610,8 @@ public class Gui extends JFrame {
         }
 
         /**
-         * Alustetaan pysäkkiverkko: luodaan jotakuinkin ruudulle ja karttaan
-         * sopivat koordinaatit, täytetään hitboksit-taulu
+         * Alustetaan pysÃ¤kkiverkko: luodaan jotakuinkin ruudulle ja karttaan
+         * sopivat koordinaatit, tÃ¤ytetÃ¤Ã¤n hitboksit-taulu
          */
         private void alustaPysakkiverkko() {
             if (hitboksit == null) {
@@ -627,7 +627,7 @@ public class Gui extends JFrame {
             Verkko v = (Verkko) verkko;
 
             Pysakki[] pysakit = v.getPysakit();
-            // normalisoidaan nämä
+            // normalisoidaan nÃ¤mÃ¤
             int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
             for (Pysakki p : pysakit) {
                 int x = p.getX(), y = p.getY();
@@ -659,7 +659,7 @@ public class Gui extends JFrame {
         }
 
         /**
-         * Hiirikuuntelija. Vaihtaa vasemmalla klikkauksella lähtösolmua,
+         * Hiirikuuntelija. Vaihtaa vasemmalla klikkauksella lÃ¤htÃ¶solmua,
          * oikealla klikkauksella maalisolmua
          *
          * @param e
@@ -763,6 +763,7 @@ public class Gui extends JFrame {
                     Pysakki[] pysakit = v.getPysakit();
                     int r = pysakit.length;
                     a = pysakit[(int) (r * Math.random())];
+                    b = pysakit[(int) (r * Math.random())];
                 }
                 if (a == b || a == null || b == null) {
                     continue;
@@ -783,12 +784,12 @@ public class Gui extends JFrame {
                 }
 
                 if (polku == null) {
-                    System.out.println("Error, reitti tyhjä");
+                    System.out.println("Error, reitti tyhjÃ¤");
                     continue;
                 }
                 
 
-                System.out.println("" + summa / testienLkm + "\t" + polku.size());
+                System.out.println("" + polku.size() + "\t" + summa / testienLkm);
                 testinAjat.add(summa / testienLkm);
                 pituudet.add(polku.size());
                 tulokset.add(testinAjat);
