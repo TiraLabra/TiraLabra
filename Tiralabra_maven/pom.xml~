@@ -32,7 +32,7 @@
 			  <archive>
 		            <manifest>
 			    <!-- Jar file entry point -->
-			      <mainClass>com.mycompany.tiralabra_maven.App</mainClass>
+			      <mainClass>com.mkyong.core.utils.App</mainClass>
 			    </manifest>
 			  </archive>
 			</configuration>
