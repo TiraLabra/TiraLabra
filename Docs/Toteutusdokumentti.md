@@ -62,8 +62,6 @@ Haku
 
 Toteutuksessani ReittiLaskin-oliot vastaavat verkossa kuljetun reitin (Reitti-oliot) kustannuksen ja arvioidun jäljellä olevan kustannuksen laskemisesta. Käyttämällä erilaisia laskimia voidaan AStar-hausta tehdä myös leveyssuuntainen haku Dijikstran algoritmin mallisesti. 
 
-Aikavaatimus kasvaa eksponentiaalisesti reitin pituuden mukaan, samoin tilavaatimus. Suurin tilavaatimus on O(V), suurin aikavaatimus O(E) jos kaikissa solmuissa joudutaan käymään. 
-
 Pseudokoodi:
 solmu = käsittelyjärjestyksessä seuraavan reitin solmu
 jos ollaan maalissa, palautetaan reitti
@@ -74,4 +72,10 @@ lisätään solmu käsiteltyihin
 
 Jos jokaisella solmulla on k naapuria, käsittelyvuorossa olevasta solmusta lisätään käsittelyjärjestykseen k uutta arvoa. Kukin lisäys on parhaimmillaan O(1) käyttäen omaa prioriteettijonoa. Tarkastus onko solmu jo käsitelty on parhaimmillaan O(1), samoin solmun lisääminen käsiteltyihin.
 
-Parhaimmillaan haku lähtee suoraan kohti maalia ja käsitellyksi tulee solmuja reitin pituuden d verran. Tällöin aika- ja tilavaatimus on O(k^d). 
+Parhaimmillaan haku lähtee suoraan kohti maalia ja käsitellyksi tulee solmuja reitin pituuden d verran. Tällöin käsittelyjärjestykseen lisätään jokaisen käsitellyn solmun naapurit: yhteensä k*d lisäystä, joten saadaan O(k*d). Käytännössä kuitenkin käsiteltyjen solmujen määrä n on suurempi kuin reitin pituus. Tällöin saadaan suoritusaika O(k*n). 
+
+Käsittelyjärjestys saattaa sisältää saman solmun monta kertaa: jos solmuun päästään jokaisesta sen naapurista k kpl, vain nopeimmin sinne saapuneesta jatketaan reittiä. Enimmillään jokainen solmu n tulee k kertaa käsiteltäväksi, mutta sen naapurit lisätään käsittelyjärjestykseen vain ensimmäisellä kerralla.
+
+Pahimmassa tilanteessa alkusolmun jälkeen käsitellään sen k naapuria. Jokaisesta naapurista käsitellään taas niiden naapurit k*k kappaletta. Näin jatkettaessa saadaan eksponentiaalinen aikavaatimus reitin pituuden suhteen O(k^d). Tilavaatimus tässä tilanteessa on käsittelyjärjestykselle O(k*n) ja käsitellyille solmuille O(n).
+
+Käytännön ylärajana aikavaatimukselle on O(E), eli verkon kaarien lukumäärä. Tilavaatimuksen yläraja on O(V): jokaisessa solmussa on käyty ja ne on tallennettu käsiteltyihin.
