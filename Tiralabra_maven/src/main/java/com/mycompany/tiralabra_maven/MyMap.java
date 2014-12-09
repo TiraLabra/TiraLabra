@@ -101,7 +101,7 @@ public class MyMap {
      *
      * @param c character which is being printed
      */
-    public void characterColor(char c) {
+    public void characterColor(Character c) {
         String resetColor = "\u001B[0m";
         String out = "";
         if (c == '#') {

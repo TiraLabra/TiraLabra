@@ -144,12 +144,12 @@ public class Astar {
         }
 
         /** Print the final map! */
-        //myMap.printMap();
+        myMap.printMap();
         /** Tell us how long the path was: */
-        //System.out.println("Path length was " + pathLength + " steps.");
+        System.out.println("Path length was " + pathLength + " steps.");
         /** Tells us how long it took to run the algorithm: */
         long aikaLopussa = System.currentTimeMillis();
-        //System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
+        System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
     }
 
 
