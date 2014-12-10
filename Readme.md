@@ -3,4 +3,4 @@
 * * *
 
 Ohjelma ajettavissa:
-java -jar ~root/Tiralabra_maven-2.0 
+java -jar ~root/KPS.jar
