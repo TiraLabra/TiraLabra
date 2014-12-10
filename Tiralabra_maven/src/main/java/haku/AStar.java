@@ -108,13 +108,12 @@ public class AStar {
 
         Lista<Node> parhaatReitit = new DynaaminenLista();
         double lowestCost = Integer.MAX_VALUE;
-        
-        // Hajautuslista<Edge> kuljetutKaaret = new Hajautuslista();
-        Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(10000); // koko?
 
-        while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
+        Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(1000);
 
-            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois kÃ¤siteltÃ¤vÃ¤ksi
+        while (!kasittelyJarjestys.isEmpty()) {           
+
+            Node kasiteltava = kasittelyJarjestys.poll(); 
             Value solmu = kasiteltava.getSolmu();
             
             

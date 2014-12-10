@@ -789,7 +789,7 @@ public class Gui extends JFrame {
                 }
                 
 
-                System.out.println("" + polku.size() + "\t" + summa / testienLkm);
+                System.out.println("" + polku.size() + "\t" + summa / testienLkm+"\t"+aStar.getKaydytSolmut().size());
                 testinAjat.add(summa / testienLkm);
                 pituudet.add(polku.size());
                 tulokset.add(testinAjat);

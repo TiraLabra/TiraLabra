@@ -119,7 +119,7 @@ public class PrioriteettiJonoListalla<E> /*extends PriorityQueue<E>*/ {
      * ensimmäisestä lisäyksestä alkaen
      *
      * @param e Lisättävä arvo
-     * @return True
+     * @return True, False jos joudutaan luomaan uusi jono
      */
     // @Override
     public boolean add(E e) {
@@ -133,18 +133,31 @@ public class PrioriteettiJonoListalla<E> /*extends PriorityQueue<E>*/ {
             prioriteetti = comparator.compare(e, this.ensimmainen);
         }
         if (prioriteetti < 0) {
-            // nyt ei toiminut!
-            // ei tehdä tässä mitään, antaa kaatua
-            System.out.println("HUPS");
-            // WIP voidaan kopioida arvot uuteen taulukkoon & asettaa tämä ensimmäiseksi
+            // nyt ei toiminut heuristiikka
+            // luodaan uusi prioriteettijono tästä
+            PrioriteettiJonoListalla<E> p = new PrioriteettiJonoListalla( this.maxSize, this.comparator );
+            p.add(e);
+            
+            while ( !this.isEmpty() ) p.add( this.poll() );
+            
+            
+            this.jono = p.jono;
+            this.setEnsimmainen(e);
+            this.head = p.head;
+            this.size=p.size;
+            this.maxSize=p.maxSize;          
+                        
+            return false;
+
+            
         } else if (prioriteetti < head) {
             // näin ei kuuluisi käydä reittioppaan yhteydessä: reittien kokonaiskustannukset kasvavia
             // tästä ei kyllä ole niin haittaakaan
-            System.out.println("OHHOH");
+            // System.out.println("OHHOH");
             head = prioriteetti;
         }
         if (prioriteetti >= ARRAY_MAXSIZE) {
-            System.out.println("HUPS! Kurja prioriteetti");
+            // System.out.println("HUPS! Kurja prioriteetti");
             prioriteetti = ARRAY_MAXSIZE - 1; // sinne vaan!
         }
         if (prioriteetti >= maxSize - 1) { // O(maxSize) <- kopioidaan arvot uuteen

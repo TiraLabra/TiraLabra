@@ -32,16 +32,16 @@ tietorakenteet, http://bigocheatsheet.com/
 Verkko rakennetaan suorituksen alussa, jonka jälkeen A*-haku suorittaa siihen useita kyselyitä. Verkko koostuu solmuista ja niiden välisistä kaarista. Jos solmusta a on kaari solmuun b, on b a:n naapuri. 
 Verkon paras toteutustapa riippuu siitä, miten tiheä verkko on (kaarien määrä suhteessa solmujen neliöön).
 
-3)	Hajautustaulu
+3)	Hajautustaulu, hajautuslista
 
 Verkon esityksessä tarvittava. Tässä tarvittavat lisäys ja etsintä O(1). Solmuille (kaarille) tarvitaan sopivat hajautusavaimet.
 
-4)	Linkitetty lista (yhteen suuntaan, taaksepäin)
+4)	Yhteen suuntaan linkitetty lista 
 
 Reitin tallentamista varten. Solmut tallennetaan yksitellen listan eteen (O(1)), ensimmäistä tarvitaan suorituksessa (O(1)). Vasta lopuksi reitti käännetään (maali-alku --> alku-maali) (O(n)).
 
 http://en.wikipedia.org/wiki/Linked_list#Singly_linked_lists
 
-5)	(Dynaaminen/linkitetty) Lista, taulukko
+5)	Dynaaminen lista, taulukko
 
 Verkon vieruslistaan tarvittavat. Tavoitteena lisäys O(1) (, läpikäynti O(n)).

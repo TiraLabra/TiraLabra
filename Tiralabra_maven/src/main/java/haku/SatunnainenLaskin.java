@@ -23,6 +23,9 @@ public class SatunnainenLaskin implements Laskin {
      */
     private Graph verkko;
     
+    /**
+     * Oletuslaskin, heuristiikan paino == 1
+     */
     public SatunnainenLaskin() {
         this(1);
     }

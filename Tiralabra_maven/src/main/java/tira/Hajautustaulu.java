@@ -22,6 +22,14 @@ public class Hajautustaulu<K, V> {
      */
     public static final int DEFAULTGROWFACTOR = 2;
     /**
+     * Oletustäyttötavoite
+     */
+    public static final double LOADFACTOR = 0.75;
+    /**
+     * Oletustörmäystavoite
+     */
+    public static final double CRASHFACTOR = 0.25;
+    /**
      * Taulun koko
      */
     private int taulunKoko;
@@ -110,6 +118,9 @@ public class Hajautustaulu<K, V> {
                 this.korvaukset++;
             }
         }
+
+        rehash(); // tarvittessa
+
         return value;
     }
 
@@ -129,9 +140,10 @@ public class Hajautustaulu<K, V> {
 
     }
 
-    public boolean containsKey( K k ) {
+    public boolean containsKey(K k) {
         return contains(k);
     }
+
     /**
      * Palauttaa avaimen arvon
      *
@@ -169,6 +181,7 @@ public class Hajautustaulu<K, V> {
             }
             this.koko--;
         }
+        this.poistot++;
         return v;
     }
 
@@ -232,9 +245,42 @@ public class Hajautustaulu<K, V> {
      *
      */
     private void rehash() {
-        // loadFactor
-        // WIP
+
+        // kannattaako uudelleenhajauttaa
+        if  (tayttoAste < LOADFACTOR * taulunKoko || tormaykset < CRASHFACTOR * taulunKoko) {
+            return;
+        }
+
+        Jono<Pari<K, V>> parit = getParit();
+        this.taulunKoko = Math.min(DEFAULTGROWFACTOR * koko, 2147483639);
+        this.taulu = new Pari[taulunKoko];
+        koko = 0;
+        tormaykset = 0;
+        tayttoAste = 0;
+        while (!parit.isEmpty()) {
+            Pari<K, V> p = parit.poll();
+            this.put(p.getK(), p.getV());
+        }
         this.uudelleenHajautukset++;
+    }
+
+    /**
+     * Palauttaa hajautustaulun avain-arvo -parit jonossa
+     *
+     * @return
+     */
+    private Jono<Pari<K, V>> getParit() {
+        Jono<Pari<K, V>> jono = new Jono(this.size());
+        for (Pari<K, V> pari : this.taulu) {
+            Pari<K, V> p = pari;
+            while (p != null) {
+                Pari<K, V> v = p;
+                p = v.getNext();
+                v.setNext(null);
+                jono.add(v);
+            }
+        }
+        return jono;
     }
 
     /**
@@ -246,7 +292,7 @@ public class Hajautustaulu<K, V> {
     private int hashKey(K k) {
         // WIP tänne jotain fiksumpaa
         // int p = 763; // h=k%p%n
-        int i = k.hashCode()  % this.taulunKoko;
+        int i = k.hashCode() % this.taulunKoko;
         // System.out.println(""+i+"="+k.hashCode()+" mod "+this.maksimiKoko);
         if (i < 0) {
             i = -i; // negatiiviset hashCodet käsitellään näin
@@ -271,17 +317,18 @@ public class Hajautustaulu<K, V> {
                 + ", korvaukset=" + korvaukset
                 + ", poistot=" + poistot
                 + ", uudelleenHajautukset=" + uudelleenHajautukset
-                + ", "+this.debugTormaysListat()
+                + ", " + this.debugTormaysListat()
                 + '}';
         System.out.println("" + s);
         // System.out.println("CONTENTS={");
         // System.out.println(debugContents()+"}");
-        
+
         return s;
     }
+
     /**
      * Tietoja törmäyksistä
-     * 
+     *
      * @return Merkkijonoesitys törmäyksistä
      */
     public String debugTormaysListat() {
@@ -308,18 +355,19 @@ public class Hajautustaulu<K, V> {
                 + "}";
         return s;
     }
+
     /**
      * Merkkijonoesitys hajautustaulun sisällöstä
-     * 
-     * @return 
+     *
+     * @return
      */
     public String debugContents() {
         String s = "";
-        
-        for ( Pari p : taulu ) {
-            s+=""+p+"\n";
+
+        for (Pari p : taulu) {
+            s += "" + p + "\n";
         }
-        
+
         return s;
     }
 
