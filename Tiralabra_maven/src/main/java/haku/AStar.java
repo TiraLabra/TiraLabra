@@ -5,15 +5,13 @@
  */
 package haku;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import tira.DynaaminenLista;
 import tira.Hajautuslista;
 import tira.Lista;
 import tira.PrioriteettiJonoListalla;
-import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.rajapinnat.Edge;
 import verkko.rajapinnat.Graph;
@@ -178,33 +176,31 @@ public class AStar {
      * @return
      */
     public Node etsiReitti(Value alku, Value maali) {
-
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
-
-        int aika = 45; // vaikuttaa prioriteettijonon oletuskokoon
+        int aika = 100; // vaikuttaa prioriteettijonon oletuskokoon
         final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
         Comparator<Node> comparator = alkuTila.vertailija(tarkkuus);
 
-        Queue<Node> kasittelyJarjestys;
+        PriorityQueue<Node> kasittelyJarjestys;
         kasittelyJarjestys = new PriorityQueue(aika * tarkkuus, comparator);
 
         kasittelyJarjestys.add(alkuTila);
 
-        ArrayList<Node> parhaatReitit = new ArrayList();
+        Lista<Node> parhaatReitit = new DynaaminenLista();
         double lowestCost = Integer.MAX_VALUE;
 
-        while (!kasittelyJarjestys.isEmpty()) {           // kaivannee katkaisun joho
+        HashSet<Value> kasitellytSolmut = new HashSet(1000);
 
-            Node kasiteltava = kasittelyJarjestys.poll(); // otetaan jonon 1. pois kÃ¤siteltÃ¤vÃ¤ksi
+        while (!kasittelyJarjestys.isEmpty()) {           
+
+            Node kasiteltava = kasittelyJarjestys.poll(); 
             Value solmu = kasiteltava.getSolmu();
+            
+            
             // DEBUG: tietoa kÃ¤sittelystÃ¤ ja heuristiikan toiminnasta
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
-                // if (!this.debugMode) {
-                //    parhaatReitit.add(kasiteltava); // palautetaan vain paras
-                //    break;
-                //} else {
                 if (kasiteltava.getKustannus() < lowestCost) {
                     // pienempi kuin, pitÃ¤isi tapahtua vain kerran
                     lowestCost = kasiteltava.getKustannus();
@@ -212,21 +208,32 @@ public class AStar {
                     break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
                 }
                 parhaatReitit.add(kasiteltava);
-                continue;
+                break; // break;
                 // }
             }
-            if (kasiteltava.getKustannus() + kasiteltava.getArvioituKustannus() > lowestCost) {
-                continue;
+            if (kasiteltava.getKustannus() /*+ kasiteltava.getArvioituKustannus()*/ > lowestCost+ EPSILON) {
+                // continue;
+                break;
             }
+            
+            if ( kasitellytSolmut.contains(solmu) ) continue;
+            
             for (Value naapuri : verkko.getNaapurit(solmu)) {
                 for (Edge kaari : verkko.getKaaret(solmu, naapuri)) {
+                    // if ( kuljetutKaaret.contains(kaari)) continue;
+                    // else kuljetutKaaret.add(kaari);
                     Node seuraava = laskin.laskeSeuraava(kasiteltava, kaari, naapuri, maali);
                     debugTieto.debugKaari(kaari, seuraava, naapuri);
-                    kasittelyJarjestys.add(seuraava);
+                    kasittelyJarjestys.add(seuraava);                    
                 }
             }
+            
+            kasitellytSolmut.add(solmu);
         }
 
+        // GUI tulostusta varten talteen
+        kaydytSolmut = new DynaaminenLista();
+        
         debugTieto.debugRatkaisu(parhaatReitit);
         return parhaatReitit.get(0);
     }

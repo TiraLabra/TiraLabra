@@ -1,6 +1,6 @@
 Graafinen k‰yttˆliittym‰
 
-Huom! K‰yttˆliittym‰ on v‰h‰n sekava, mutta jokseenkin toimiva. Koodi el‰‰ viel‰, ja kommentointi ei ole kovin kattavaa t‰ss‰ vaiheessa.
+Huom! K‰yttˆliittym‰ on v‰h‰n sekava, mutta jokseenkin toimiva. Ei toimi v‰ltt‰m‰tt‰ oikein muilla kuin Windows-koneilla.
 
 Satunnainen verkko
 
@@ -30,4 +30,4 @@ otosKoko:testienLkm
 
 Valinta otosKoko m‰‰r‰‰, kuinka monta satunnaista reittihakua tehd‰‰n. Valinta testienLkm m‰‰r‰‰, kuinka monta  kertaa kukin haku suoritetaan. Valinnat voi j‰tt‰‰ tyhj‰ksi, jolloin suoritetaan 20 satunnaista hakua, jokainen 10 kertaa. T‰m‰ vastaa syˆtett‰ 20:10.
  
-Suoritusajat lasketaan, jonka j‰lkeen ohjelma piirt‰‰ kuvan: vaaka-akselilla on kuljetun reitin pituus, pystyakselilla kulunut aika millisekunteina. Isoilla verkoilla ja otoskoolla t‰ss‰ saattaa kest‰‰ huomattavan pitk‰‰n: samoin voi olla, ett‰ ruutuun ei mahdu kaikkia pisteit‰. Komentoriville tulostuu lis‰ksi tabulaattorilla eroteltuna aika ja reitin pituus, jonka voi kopioida sielt‰ vaikkapa taulukkolaskimeen analyysi‰ varten.
+Suoritusajat lasketaan, jonka j‰lkeen ohjelma piirt‰‰ kuvan: vaaka-akselilla on kuljetun reitin pituus, pystyakselilla kulunut aika millisekunteina. Isoilla verkoilla ja otoskoolla t‰ss‰ saattaa kest‰‰ huomattavan pitk‰‰n: samoin voi olla, ett‰ ruutuun ei mahdu kaikkia pisteit‰. Komentoriville tulostuu lis‰ksi tabulaattorilla reitin pituus, eroteltuna aika ja k‰siteltyjen solmujen lukum‰‰r‰ jonka voi kopioida sielt‰ vaikkapa taulukkolaskimeen analyysi‰ varten.
