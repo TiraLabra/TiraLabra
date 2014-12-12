@@ -34,7 +34,7 @@ public class Tekoaly {
             // pelaaja pelaa yleensä ensimmäisenä kiven
             return valitseVoittaja(0);
         }
-        if (this.kierroksia < 5) {
+        if (this.kierroksia < 6) {
             return valitseVoittaja(pelaajanSeuraavaKasiRotaatiossa());
         }
 
