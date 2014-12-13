@@ -31,7 +31,6 @@ import tira.Hajautustaulu;
 import tira.Lista;
 import verkko.Pysakki;
 import verkko.Reitti;
-import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
 import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Node;
@@ -638,7 +637,7 @@ public class Gui extends JFrame {
             } else {
                 return;
             }
-            Verkko v = (Verkko) verkko;
+            VerkkoOmallaTietorakenteella v = (VerkkoOmallaTietorakenteella) verkko;
 
             Pysakki[] pysakit = v.getPysakit();
             // normalisoidaan nÃ¤mÃ¤
@@ -787,7 +786,7 @@ public class Gui extends JFrame {
                     } catch (Exception ex) {
                     };
                 } else if (valittuPysakki) {
-                    Verkko v = (Verkko) verkko;
+                    VerkkoOmallaTietorakenteella v = (VerkkoOmallaTietorakenteella) verkko;
                     Pysakki[] pysakit = v.getPysakit();
                     int r = pysakit.length;
                     a = pysakit[(int) (r * Math.random())];

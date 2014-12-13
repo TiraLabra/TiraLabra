@@ -7,33 +7,29 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-
-
-
 /**
  * Luokka pysäkkiverkon lukemiseen JSON-datasta
  */
-public class Pysakkiverkko {   
-   
+public class Pysakkiverkko {
+
     /**
      * JSON-muotoiset pysäkit taulukossa
      */
-    private PysakkiJSON[]   pysakit;
+    private PysakkiJSON[] pysakit;
     /**
      * JSON-muotoiset linjat taulukossa
-     */    
-    private LinjaJSON[]     linjat;    
-          
+     */
+    private LinjaJSON[] linjat;
+
     /*
-    Rakennetaan pysäkkiverkko annetuista tiedoista
-    Toimii vain ratikkaverkon kanssa nykyisellään
-    */
-    
+     Rakennetaan pysäkkiverkko annetuista tiedoista
+     Toimii vain ratikkaverkon kanssa nykyisellään
+     */
     /**
      * Lukee JSON-dataa pysäkkiverkosta ja tallentaa sen taulukkoon
-     * 
+     *
      * @param verkkoPolku
-     * @param linjaPolku 
+     * @param linjaPolku
      */
     public void create(String verkkoPolku, String linjaPolku) {
         JsonArray psArr = readJSON(verkkoPolku);
@@ -42,7 +38,7 @@ public class Pysakkiverkko {
         for (int i = 0; i < psArr.size(); i++) {
             this.pysakit[i] = gson.fromJson(psArr.get(i), PysakkiJSON.class);
         }
-          
+
         // Luetaan raitiovaunulinjat linjat.json tiedostosta.
         JsonArray lnArr = readJSON(linjaPolku);
         this.linjat = new LinjaJSON[lnArr.size()];
@@ -51,9 +47,8 @@ public class Pysakkiverkko {
             this.linjat[i] = gson.fromJson(lnArr.get(i), LinjaJSON.class);
         }
 
-        
     }
-    
+
     // automaattiset metodit : getterit
     public LinjaJSON[] getLinjat() {
         return linjat;
@@ -63,12 +58,9 @@ public class Pysakkiverkko {
         return pysakit;
     }
 
-    /*
-    Tiedostojen lukemiseen (JSON)
-    */   
     /**
      * Tiedoston lukeminen merkkijonona
-     * 
+     *
      * @param filePath Tiedoston osoite
      * @return Tiedoston sisältö merkkijonona
      */
@@ -88,7 +80,7 @@ public class Pysakkiverkko {
 
     /**
      * Lukee JSON-dataa
-     * 
+     *
      * @param filePath Tiedoston osoite
      * @return JSON-taulukko luetusta tiedostosta
      */
@@ -97,8 +89,13 @@ public class Pysakkiverkko {
         JsonParser parser = new JsonParser();
         String json = "";
 
-        json = readFileAsString(filePath);
+        try {
+            json = readFileAsString(filePath);
 
+        } catch (Exception ex) {
+            System.out.println("" + ex.getMessage());
+        }
+        // System.out.println(""+json);
         JsonArray arr = parser.parse(json).getAsJsonArray();
         return arr;
     }

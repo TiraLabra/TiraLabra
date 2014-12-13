@@ -12,7 +12,6 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import verkko.Pysakki;
-import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
 import verkko.rajapinnat.Node;
 
@@ -55,6 +54,7 @@ public class AStarTest extends TestCase {
         Node reitti =  aStar.etsiReitti(oletusAlku, oletusMaali);
         assertTrue( reitti!=null );
     }
+    
     @Test
     public void testHeuristiikkaVaikuttaa() {
         
