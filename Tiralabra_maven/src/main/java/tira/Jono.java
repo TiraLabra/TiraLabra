@@ -6,7 +6,7 @@
 package tira;
 
 /**
- * Jono
+ * Jono. Toteutustapana taulukko.
  *
  * @author E
  */
@@ -20,20 +20,41 @@ public class Jono<E> {
      * Oletuskasvatuskerroin
      */
     public static final int DEFAULTGROWFACTOR = 2;
-
+    /**
+     * Taulukon koko.
+     */
     private int maxSize;
+    /**
+     * Jonon pään indeksi taulukossa
+     */
     private int head;
+    /**
+     * Jonon hännän indeksi taulukossa. Ensimmäinen vapaa indeksi. Tähän tallennetaan lisäys.
+     */
     private int tail;
+    /**
+     * Arvojen määrä jonossa.
+     */
     private int size;
+    /**
+     * Arvot sisältävä taulukko
+     */
     private Object[] values;
 
+    /**
+     * Oletuskokoinen jono
+     */
     public Jono() {
         maxSize = 10;
         values = new Object[maxSize];
         head = 0;
         tail = 0;
     }
-
+    /**
+     * Annetun kokoinen jono
+     * 
+     * @param aloitusKoko 
+     */
     public Jono(int aloitusKoko) {
         maxSize = aloitusKoko;
         values = new Object[maxSize];
@@ -166,7 +187,6 @@ public class Jono<E> {
         this.maxSize = factor * this.maxSize;
         Object[] uusiValues = new Object[this.maxSize];
         
-        // debug
         int i=0;
         int j=head;    
         while ( j!=tail ) {
@@ -176,11 +196,7 @@ public class Jono<E> {
             if ( j >= values.length ) j = 0;
         }
         head = 0;
-        tail = i;
-        // System.arraycopy(this.values, 0, uusiValues, 0, this.size);
-        
-        
-        
+        tail = i;        
         this.values = uusiValues;
     }
 

@@ -14,6 +14,9 @@ import verkko.rajapinnat.Edge;
  */
 public class E implements Edge {
 
+    /**
+     * Kaaren kulkemisen kustannus
+     */
     private double kustannus;
 
     public E(double kustannus) {

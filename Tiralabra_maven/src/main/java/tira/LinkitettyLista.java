@@ -54,10 +54,17 @@ public class LinkitettyLista<E> implements Lista<E> {
     /////////////////
     //KONSTRUKTORIT//
     /////////////////
+    /**
+     * Oletuskokoinen lista
+     */
     public LinkitettyLista() {
         this(DEFAULTSIZE);
     }
-
+    /**
+     * Annetun kokoinen lista
+     * 
+     * @param aloitusKoko 
+     */
     public LinkitettyLista(int aloitusKoko) {
         if (aloitusKoko <= 0) { // tai error
             aloitusKoko = 1;
@@ -194,7 +201,6 @@ public class LinkitettyLista<E> implements Lista<E> {
      * @return Poistettava arvo
      */
     public E remove(int index) {
-        // WIP
         E e = null;
         if (this.isEmpty() || index < 0 || index >= this.koko) {
             return null;
@@ -213,8 +219,6 @@ public class LinkitettyLista<E> implements Lista<E> {
             System.out.println(""+uusiHead);
             this.next[head]=-1;
             head = uusiHead;
-            
-            // this.head = this.next[this.head];
             this.prev[this.head] = -1;
         } else if (index == this.koko - 1) { // tail
             e = (E) this.values[this.tail];
@@ -261,17 +265,6 @@ public class LinkitettyLista<E> implements Lista<E> {
      * @return True, jos sisältää, muutoin false
      */
     public boolean contains(E e) {
-        /* // BUGI???
-        for (Object value : this.values) {
-            if (value == null) {
-                continue;
-            }
-            if (e == value || e.equals((E) value)) {
-                return true;
-            }
-        }
-        return false;
-        */
         return indexOf(e)>=0;
     }
 
@@ -331,7 +324,6 @@ public class LinkitettyLista<E> implements Lista<E> {
     //yksityiset metodit//
     //////////////////////
     
-    // WIP: metodi, joka järjestää uudestaan listan: jarjesta()
     
     /**
      * Kasvattaa listan maksimikokoa oletusparametrin verran
@@ -387,11 +379,7 @@ public class LinkitettyLista<E> implements Lista<E> {
             if (curr >= this.maksimiKoko) {
                 curr = 0;
             }
-            if (curr == this.tail) { // pyörähti ympäri, tyhjää ei löytynyt
-                // ei pitäisi tapahtua
-                // voidaan esim. kasvattaa kokoa ja palauttaa siitä seuraava tyhjä
-                // nyt näin: (WIP)
-                // System.out.println("WOOT");
+            if (curr == this.tail) {
                 return -1;
             }
             e = this.values[curr];

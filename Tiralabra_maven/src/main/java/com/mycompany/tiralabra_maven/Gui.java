@@ -7,6 +7,7 @@ import haku.SatunnainenLaskin;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -31,6 +32,7 @@ import tira.Lista;
 import verkko.Pysakki;
 import verkko.Reitti;
 import verkko.Verkko;
+import verkko.VerkkoOmallaTietorakenteella;
 import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
@@ -91,7 +93,13 @@ public class Gui extends JFrame {
     private Graph verkko;
     private AStar aStar;
     private Laskin laskin;
+    /**
+     * Haun tuloksena saatu reitti. Piirretään Piirto-oliolla
+     */
     private Node reitti;
+    /**
+     * Reittihaun alku- ja loppupisteet
+     */
     private Value alku, loppu;
 
     /**
@@ -114,7 +122,7 @@ public class Gui extends JFrame {
     final JCheckBoxMenuItem p6 = new JCheckBoxMenuItem("Vaihdoton matkaa minimoiva");
     final ButtonGroup reittiLaskin = new ButtonGroup();
     final JMenuItem testaus = new JMenuItem("TestejÃ¤");
-
+    
     public Gui() {
 
         dev(); // oletusarvot
@@ -126,7 +134,6 @@ public class Gui extends JFrame {
         JScrollPane jsp = new JScrollPane(piirto);
         piirto.setAutoscrolls(true);
         jsp.setPreferredSize(piirto.getPreferredSize());
-        // jsp.add(piirto);
         this.add(jsp);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,7 +164,7 @@ public class Gui extends JFrame {
     }
 
     /**
-     * Luo kÃ¤yttÃ¶liittymÃ¤n valikon
+     * Luo kÃ¤yttÃ¶liittymÃ¤n valikon. Lisää tapahtumakuuntelijat elementteihin.
      *
      * @return
      */
@@ -215,7 +222,7 @@ public class Gui extends JFrame {
                 valittuSatunnainen = false;
                 p3.setSelected(true);
 
-                setVerkko(new Verkko());
+                setVerkko(new VerkkoOmallaTietorakenteella());
                 setLaskin(normaali);
             }
         });
@@ -372,6 +379,7 @@ public class Gui extends JFrame {
         this.alku = null;
         this.loppu = null;
         this.aStar = new AStar(verkko, laskin);
+        piirto.repaint();
     }
 
     /**
@@ -427,7 +435,13 @@ public class Gui extends JFrame {
          * PysÃ¤kkiverkon pysÃ¤kit-koordinaatit
          */
         private Hajautustaulu<Pysakki, Integer> drawboksit; // = new Hajautustaulu(140);
-
+        /**
+         * Verkon piirtäminen. Molemmat verkkotyypit piirretään tällä samalla 
+         * metodilla, valinta tapahtuu Gui-luokan valittuSatunnainen ja 
+         * valittuPysakki -kenttien perusteella.
+         * 
+         * @param g 
+         */
         @Override
         public void paint(Graphics g) {
             super.paint(g);
@@ -678,7 +692,7 @@ public class Gui extends JFrame {
                     alku = (value != null) ? value : alku;
                 }
 
-            } else if (e.getButton() == 3) { // left click
+            } else if (e.getButton() == 3) { // right click
                 if (valittuSatunnainen) {
                     loppu = ((SatunnainenVerkko) verkko).getSolmu(rivi, sarake);
                 } else if (valittuPysakki) {
@@ -716,12 +730,25 @@ public class Gui extends JFrame {
      * Tulosten visualisointi
      */
     private class Tulokset extends JPanel {
-
+        /**
+         * Testien ajon parametrit.
+         */
         private int otosKoko, testienLkm;
+        /**
+         * Oletetut ruudun leveys ja korkeus
+         */
         private int w, h;
-        private int blockW = 3, blockH = 3, pituusBlokki = 3, starttiBlokki = 50, aikaBlokki = 3;
-
+        /**
+         * Piirtämiseen liittyvät kentät
+         */
+        private int blockW = 3, blockH = 3, pituusBlokki = 2, starttiBlokki = 50, aikaBlokki = 1;
+        /**
+         * Testien ajon tulokset
+         */
         private Lista<Lista<Long>> tulokset;
+        /**
+         * Testien reittien pituudet
+         */
         private Lista<Integer> pituudet;
 
         public Tulokset() {
@@ -729,15 +756,16 @@ public class Gui extends JFrame {
         }
 
         public Tulokset(int otosKoko, int testienLkm) {
-            w = 500;
-            h = 900;
+            w = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100;
+            h = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100;
             this.setPreferredSize(new Dimension(w, h));
             this.otosKoko = otosKoko;
             this.testienLkm = testienLkm;
         }
 
         /**
-         * Testaa reitinhakua satunnaisesti valituilla alku- ja loppusolmuilla
+         * Testaa reitinhakua satunnaisesti valituilla alku- ja loppusolmuilla. Tulostaa haun tuloksia samalla:
+         * polun pituus, käytetty aika -keskiarvo, käsiteltyjen solmujen määrä
          */
         public void testaa() {
 
@@ -797,6 +825,11 @@ public class Gui extends JFrame {
             repaint();
         }
 
+        /**
+         * Piirretään tulokset kun testit on ajettu
+         * 
+         * @param g 
+         */
         @Override
         public void paint(Graphics g) {
             super.paint(g);
@@ -830,11 +863,15 @@ public class Gui extends JFrame {
             }
 
             int pituus = 10;
+            boolean printti=true;
             for (int i = starttiBlokki + pituus * pituusBlokki; i < screenWidth; i = i + pituusBlokki * pituus) {
                 g.setColor(Color.GREEN);
                 g.drawLine(i, 0, i, h);
                 g.setColor(Color.BLACK);
-                g.drawString("" + (i - starttiBlokki) / pituusBlokki + "", i, h + 15);
+                int kohta = h+15;
+                if (!printti) kohta+=10;
+                printti = !printti;
+                g.drawString("" + (i - starttiBlokki) / pituusBlokki + "", i, kohta);
             }
         }
 

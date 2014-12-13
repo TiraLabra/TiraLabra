@@ -17,11 +17,6 @@ import verkko.rajapinnat.Value;
  * @author E
  */
 public interface Laskin {
-    /*
-    double heuristinenArvio( Value current, Value maali ) {
-        return current.etaisyys( maali );
-    }
-    */
     /**
      * Seuraavan polun vaiheen laskeminen
      * 
@@ -31,18 +26,7 @@ public interface Laskin {
      * @param maali Kohdesolmu
      * @return 
      */
-    public Node laskeSeuraava( Node current, Edge kuljettuKaari, Value seuraava, Value maali ); /* {
-        Node uusi = null;  // = new Tila();
-        
-        uusi.setArvioituKustannus(seuraava.etaisyys(maali) );
-        uusi.setKustannus( current.getKustannus() + kuljettuKaari.getKustannus() );
-        uusi.setPrevious(current);
-        uusi.setKuljettuKaari(kuljettuKaari);
-        uusi.setSolmu(seuraava);
-        
-        return uusi;
-    }
-    */
+    public Node laskeSeuraava( Node current, Edge kuljettuKaari, Value seuraava, Value maali );
     /**
      * Asetetaan laskimelle verkko
      * 

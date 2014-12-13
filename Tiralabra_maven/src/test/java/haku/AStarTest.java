@@ -5,7 +5,6 @@
  */
 package haku;
 
-import verkko.Reitti;
 import com.mycompany.tiralabra_maven.App;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import verkko.Pysakki;
 import verkko.Verkko;
+import verkko.VerkkoOmallaTietorakenteella;
 import verkko.rajapinnat.Node;
 
 /**
@@ -22,14 +22,14 @@ import verkko.rajapinnat.Node;
  */
 public class AStarTest extends TestCase {
 
-    private Verkko verkko;
+    private VerkkoOmallaTietorakenteella verkko;
     private AStar aStar;
     private List<ReittiLaskin> testattavatLaskimet;
     private Pysakki oletusAlku, oletusMaali;
 
     @Before
     public void setUp() {
-        verkko = new Verkko();
+        verkko = new VerkkoOmallaTietorakenteella();
         testattavatLaskimet = new ArrayList();
         testattavatLaskimet.add(App.bfs); testattavatLaskimet.add(App.bfsVaihdoton);
         testattavatLaskimet.add(App.normaali); testattavatLaskimet.add(App.normaaliMatkaaMinimoiva);
@@ -71,23 +71,7 @@ public class AStarTest extends TestCase {
             assertTrue( Double.compare(onnistumistenOsuus, 1) >= 0 );            
         }
     }
-    /**
-     * Testataan oman prioriteettijonon suorituskyky javan pq:ta vastaan
-     */
-    @Test
-    public void testSpeed() {
-        long omaSumma=0, javaSumma=0; // oma vs java prioriteettijono
-        // parametri mode
-        int n = 5;
-        for ( ReittiLaskin reittiLaskin : testattavatLaskimet ) {
-            for ( int i = 0; i < n; i++ ) {
-                javaSumma+=laskeEtsintaAika(oletusAlku,oletusMaali,reittiLaskin,0); // javan pq
-                omaSumma +=laskeEtsintaAika(oletusAlku,oletusMaali,reittiLaskin,1); // oma pq
-            }
-            assertTrue( omaSumma<=javaSumma );
-            omaSumma=0; javaSumma=0;
-        }
-    }
+
     
     //////////////
     //APUMETODIT//
@@ -107,7 +91,7 @@ public class AStarTest extends TestCase {
     private Long laskeEtsintaAika( Pysakki alku, Pysakki maali, ReittiLaskin reittiLaskin, int mode ) {
         long start = System.currentTimeMillis();        
         AStar aStar = new AStar( verkko, reittiLaskin );
-        aStar.setDebugMode(false);   // koko jono: true, vain ratkaisuun asti: false
+        aStar.setDebugMode(false);  
         aStar.setDebugPrint(false);
         Node reitti;
         if ( mode == 0)  reitti = aStar.etsiReitti(alku, maali);
@@ -116,9 +100,5 @@ public class AStarTest extends TestCase {
         long stop = System.currentTimeMillis();
         return stop-start;        
     }
-    
-    /*
-    WIP: Suorituskykytestaus, vertailu
-    */
-    
+        
 }

@@ -11,7 +11,7 @@ import tira.Lista;
 import verkko.rajapinnat.Edge;
 import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
-import verkko.satunnainen.Polku;
+
 
 /**
  * Verkossa eteneminen: pidetään kirjaa reitistä, kuljetuista kaarista,
@@ -159,8 +159,7 @@ public class Reitti implements Node {
     ///////////////////////////////////
     // AUTOMAATTINEN HASHCODE&EQUALS //
     ///////////////////////////////////
-    // WIP: ovatko tarpeen, parempi toteutus näille
-    
+
     /**
      * Hashcode lasketaan tämänhetkisestä solmusta.
      *
@@ -174,7 +173,9 @@ public class Reitti implements Node {
     }
 
     /**
-     * WIP: Reitit ovat samoja, jos ollaan samassa solmussa
+     * Reitit ovat samoja, jos ollaan samassa solmussa.
+     * Metodia ei käytetä missään
+     * 
      * @param obj
      * @return
      */

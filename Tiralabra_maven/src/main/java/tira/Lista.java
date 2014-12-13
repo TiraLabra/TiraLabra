@@ -8,7 +8,8 @@ package tira;
 import java.util.Iterator;
 
 /**
- *
+ * Lista-rajapinta. Mukailee Javan List-abstraktiota
+ * 
  * @author E
  */
 public interface Lista<E> extends Iterable<E> {

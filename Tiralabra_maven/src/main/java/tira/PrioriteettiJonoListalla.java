@@ -13,8 +13,11 @@ import java.util.PriorityQueue;
  * Erikoistunut prioriteettijono. Lisäys & poll pitäisi olla lähellä O(1):tä.
  * Tilavaatimus saattaa olla huomattava. Toteutus mukaelma tästä:
  * http://en.wikipedia.org/wiki/Priority_queue#Specialized_heaps
+ * 
+ * Arvot tallennetaan taulukkoon prioriteettien mukaan. 
  *
- * Lisävaatimus: lisäykset ovat prioriteetiltaan suurempia kuin ensimmäinen
+ * Lisävaatimus: lisäykset ovat prioriteetiltaan suurempia kuin ensimmäinen vaaditaan vakioaikaiseen toimintaan.
+ * Jos näin ei ole, on aikavaatimus lineearinen.
  *
  * @author E
  */

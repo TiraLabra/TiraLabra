@@ -17,7 +17,7 @@ import verkko.rajapinnat.Value;
 
 /**
  * A*-haun apuolio. Arvioi jäljellä olevaa kustannusta ja laskee kustannuksen
- * kustakin siirtymästä
+ * kustakin siirtymästä. Toimii Verkko- ja VerkkoOmallaTietorakenteella -tyyppisten verkkojen kanssa.
  *
  * @author E
  */
@@ -53,7 +53,6 @@ public class ReittiLaskin implements Laskin {
      */
     private double heurKulkunopeus;
 
-    // WIP: parametrien tarkistukset
     /**
      * Konstruktori omien arvojen asettamiseen
      *
@@ -67,12 +66,12 @@ public class ReittiLaskin implements Laskin {
      * positiivisia
      */
     public ReittiLaskin(double aikaPaino, double matkaPaino, double vaihtoPaino, double heurAikaPaino, double heurMatkaPaino, double heurKulkunopeus) {
-        this.aikaPaino = aikaPaino;
-        this.matkaPaino = matkaPaino;
-        this.vaihtoPaino = vaihtoPaino;
-        this.heurMatkaPaino = heurMatkaPaino;
-        this.heurAikaPaino = heurAikaPaino;
-        this.heurKulkunopeus = heurKulkunopeus;
+        this.aikaPaino = (aikaPaino>0) ? aikaPaino : 0;
+        this.matkaPaino = (matkaPaino>0) ? matkaPaino : 0;
+        this.vaihtoPaino = (vaihtoPaino>0) ? vaihtoPaino : 0;
+        this.heurMatkaPaino = (heurMatkaPaino>0) ? heurMatkaPaino : 0;
+        this.heurAikaPaino = (heurAikaPaino>0) ? heurAikaPaino : 0;
+        this.heurKulkunopeus = (heurKulkunopeus>0) ? heurKulkunopeus : 1;
     }
     public ReittiLaskin( ReittiLaskin x )  {
         this( x.aikaPaino, x.matkaPaino, x.vaihtoPaino, x.heurAikaPaino, x.heurMatkaPaino, x.heurKulkunopeus );
@@ -126,14 +125,14 @@ public class ReittiLaskin implements Laskin {
     }
 
     /**
-     * Voidaan asettaa vältettäväksi tietyn tyyppiset linjat
+     * Voidaan asettaa vältettäväksi tietyn tyyppiset linjat. Ei toteutettu
      *
      * @param uusi Seuraavaksi kuljettava kaari
      * @return
      */
     public double getSopivuus(Kaari uusi) {
         double sopivuus = 0;
-        /* // WIP
+        /* 
          Linja linja = verkko.getLinja( uusi.getLinjanNimi() );
          if ( linja!=null && linja.getTyyppi()!=null ) {
          if ( sopivuudet.hasKey(linja.getTyyppi()) )

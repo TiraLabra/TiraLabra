@@ -6,6 +6,7 @@
 package verkko;
 
 import java.util.List;
+import tira.Lista;
 import verkko.esimerkki.LinjaJSON;
 
 /**
@@ -38,11 +39,8 @@ public class Linja {
     /**
      * Linjan reitti järjestettynä listana kaarista: ensimmäinen on lähtöpysäkki, viimeinen päätepysäkki
      */
-    private List<Kaari> reitti;
+    private Lista<Kaari> reitti;
     
-    /*
-    WIP: LÄHTÖAJAT
-    */
 
     /**
      * Konstruktori JSON-muotoista dataa varten
@@ -93,11 +91,11 @@ public class Linja {
         this.nimi = nimi;
     }
 
-    public List<Kaari> getReitti() {
+    public Lista<Kaari> getReitti() {
         return reitti;
     }
 
-    public void setReitti(List<Kaari> reitti) {
+    public void setReitti(Lista<Kaari> reitti) {
         this.reitti = reitti;
     }
 

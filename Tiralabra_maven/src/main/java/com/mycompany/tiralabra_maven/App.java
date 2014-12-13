@@ -15,7 +15,6 @@ import verkko.Linja;
 import verkko.Pysakki;
 import verkko.Verkko;
 import verkko.VerkkoOmallaTietorakenteella;
-import verkko.rajapinnat.Graph;
 import verkko.rajapinnat.Node;
 import verkko.rajapinnat.Value;
 import verkko.satunnainen.SatunnainenVerkko;
@@ -73,14 +72,19 @@ public class App {
         // yksinkertainenTestiUI();
         // Verkko verkko = new Verkko();
         // System.out.println("" + verkko.getPysakit().length);
-        // valitseTyyppi();
+        // ui();
         new Gui();
+        
     }
 
+    //////////////
+    // TESTI-UI //
+    //////////////
+    
     /**
      * KÃ¤yttÃ¶liittymÃ¤n valinta
      */
-    public static void valitseTyyppi() {
+    public static void ui() {
         System.out.println("TESTATTAVAN VERKON TYYPPI");
         System.out.println("p - PysÃ¤kkiverkko");
         System.out.println("s - Satunnainen verkko");
@@ -102,7 +106,7 @@ public class App {
         System.out.println("alku:loppu - REITTIHAKU PYSÃ„KILTÃ„ ALKU PYSÃ„KILLE LOPPU. KOKONAISLUVUT 0...137");
         System.out.println("laskin:valinta - VALITAAN LASKIN. KOKONAISLUKU 1...6");
         Scanner scanner = new Scanner(System.in);
-        Verkko verkko = new Verkko();
+        Verkko verkko = new VerkkoOmallaTietorakenteella();
         Laskin laskin = normaali;
         AStar aStar = new AStar(verkko, laskin);
         do {
@@ -292,9 +296,14 @@ public class App {
                 + ", Max=" + (max));
         return keskiaika;
     }
+    
+    
+    ///////////////////
+    // DEBUG-METODIT //
+    ///////////////////
 
     /**
-     * AStar-heuristiikan debuggaus
+     * AStar-heuristiikan debuggaus pysäkkiverkossa
      */
     private static void debugAStarHeuristiikka() {
         Verkko verkko = new Verkko();
@@ -526,7 +535,9 @@ public class App {
         }
         System.out.println("Javan aika " + j + " vs omilla tietorakenteilla " + o);
     }
-
+    /**
+     * Omilla tietorakenteilla tehdyn pysäkkiverkon hakutuloksia 
+     */
     private static void debugOmia() {
         System.out.println("Omat vs javan tietorakenteet kÃ¤ytÃ¶ssÃ¤");
         long a, b, j = 0, o = 0, jOma = 0;
@@ -567,7 +578,9 @@ public class App {
         System.out.println("" + aOma.getRatkaisu());
         System.out.println("" + aJavaOmaPrioriteettijono.getRatkaisu());
     }
-
+    /**
+     * Hajautuslistan debuggausta
+     */
     private static void debugHajautuslista() {
         System.out.println("Debug hajautuslista");
         Hajautuslista<String> ht = new Hajautuslista();

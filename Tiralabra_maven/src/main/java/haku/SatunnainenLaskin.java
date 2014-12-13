@@ -9,7 +9,9 @@ import verkko.rajapinnat.*;
 
 
 /**
- *
+ * Laskin SatunnainenVerkko-verkkoa varten. 
+ * Sopivalla heuristiikan painolla toimii myös muilla verkoilla.
+ * 
  * @author E
  */
 public class SatunnainenLaskin implements Laskin {
@@ -29,6 +31,11 @@ public class SatunnainenLaskin implements Laskin {
     public SatunnainenLaskin() {
         this(1);
     }
+    /**
+     * Laskin, jossa heuristiikan painon voi päättää
+     * 
+     * @param heuristiikanPaino 
+     */
     public SatunnainenLaskin(double heuristiikanPaino) {
         this.heuristiikanPaino = heuristiikanPaino;
     }
@@ -59,10 +66,7 @@ public class SatunnainenLaskin implements Laskin {
      * @return 
      */
     public Node laskeSeuraava(Node current, Edge kuljettuKaari, Value seuraava, Value maali) {
-        // Polku polku = new Polku();
-
-        Node node = verkko.getNode();
-        
+        Node node = verkko.getNode(); // tyhjä polku-olio     
         node.setPrevious(current);
         node.setKuljettuKaari(kuljettuKaari);
         node.setSolmu(seuraava);
@@ -78,7 +82,7 @@ public class SatunnainenLaskin implements Laskin {
      * @param verkko 
      */
     public void setVerkko(Graph verkko) {
-        /*SatunnainenVerkko*/this.verkko = verkko;
+        this.verkko = verkko;
     }
     
 }

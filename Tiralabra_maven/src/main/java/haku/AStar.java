@@ -42,10 +42,6 @@ public class AStar {
      * Esitys solmuista, joissa on käyty. Guita varten
      */
     private Lista<Value> kaydytSolmut;
-    /**
-     * Haun katkaisua varten
-     */
-    private final double EPSILON = 1;
 
     ///////////////////
     // KONSTRUKTORIT //
@@ -77,16 +73,9 @@ public class AStar {
         this(new Verkko(), new ReittiLaskin());
     }
 
-    /*
-     WIP:
-     -EntÃ¤ jos alkutila/lopputila ei ole verkossa: esim. pysÃ¤kkiverkkoon pÃ¤Ã¤stÃ¤Ã¤n kÃ¤velemÃ¤llÃ¤ pysÃ¤kille?
-     -EpÃ¤yhtenÃ¤iset verkot
-     -EntÃ¤ jos on nopeampaa kÃ¤vellÃ¤ viereiselle pysÃ¤kille
-     -Alkuajan esitys, ajan esitys
-     */
     /**
      * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
-     * KÃ¤yttÃ¤Ã¤ omaa prioriteettijonoa
+     * KÃ¤yttÃ¤Ã¤ omaa prioriteettijonoa ja hajautuslistaa
      *
      *
      * @param maali
@@ -94,6 +83,11 @@ public class AStar {
      * @return
      */
     public Node etsiReittiOma(Value alku, Value maali) {
+        boolean dbg = this.isDebugMode();
+        boolean dbgPrint = this.isDebugPrint();
+        this.debugTieto = new DebugTieto();
+        this.setDebugMode(dbg);
+        this.setDebugPrint(dbgPrint);
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
         int aika = 100; // vaikuttaa prioriteettijonon oletuskokoon
         final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
@@ -105,6 +99,7 @@ public class AStar {
         kasittelyJarjestys.add(alkuTila);
 
         Lista<Node> parhaatReitit = new DynaaminenLista();
+
         double lowestCost = Integer.MAX_VALUE;
 
         Hajautuslista<Value> kasitellytSolmut = new Hajautuslista(1000);
@@ -119,17 +114,11 @@ public class AStar {
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
-                if (kasiteltava.getKustannus() < lowestCost) {
-                    // pienempi kuin, pitÃ¤isi tapahtua vain kerran
-                    lowestCost = kasiteltava.getKustannus();
-                } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                    break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
-                }
+                if ( lowestCost > kasiteltava.getKustannus() ) lowestCost = kasiteltava.getKustannus();
                 parhaatReitit.add(kasiteltava);
-                break; // break;
-                // }
+                break;
             }
-            if (kasiteltava.getKustannus() /*+ kasiteltava.getArvioituKustannus()*/ > lowestCost+ EPSILON) {
+            if (kasiteltava.getKustannus() > lowestCost) {
                 // continue;
                 break;
             }
@@ -168,7 +157,8 @@ public class AStar {
     
     
     /**
-     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun.
+     * Etsii a*-haulla verkosta parhaan reitin alkusolmusta loppusolmuun. 
+     * Käyttää Javan PriorityQueuea ja HashSettiä
      *
      *
      * @param maali
@@ -176,6 +166,11 @@ public class AStar {
      * @return
      */
     public Node etsiReitti(Value alku, Value maali) {
+        boolean dbg = this.isDebugMode();
+        boolean dbgPrint = this.isDebugPrint();
+        this.debugTieto = new DebugTieto();
+        this.setDebugMode(dbg);
+        this.setDebugPrint(dbgPrint);
         Node alkuTila = laskin.laskeSeuraava(null, null, alku, maali);
         int aika = 100; // vaikuttaa prioriteettijonon oletuskokoon
         final int tarkkuus = 100; // comparator-oliolle tarkkuus (1/tarkkuus), esim arvo 100 -> tarkkuus 0.01 kustannuspistettÃ¤
@@ -201,18 +196,11 @@ public class AStar {
             debugTieto.debugKasittelytieto(kasittelyJarjestys.size(), kasiteltava);
             debugTieto.debugHeuristiikka(kasiteltava);  // heuristiikan toiminta
             if (solmu.equals(maali)) {
-                if (kasiteltava.getKustannus() < lowestCost) {
-                    // pienempi kuin, pitÃ¤isi tapahtua vain kerran
-                    lowestCost = kasiteltava.getKustannus();
-                } else if (kasiteltava.getKustannus() > lowestCost + EPSILON) {
-                    break;  // parempi ratkaisu lÃ¶ytynyt, tÃ¤mÃ¤ on yli tietyn rajan verran huonompi kuin paras ratkaisu: voidaan lopettaa
-                }
+                if ( lowestCost > kasiteltava.getKustannus() ) lowestCost = kasiteltava.getKustannus();
                 parhaatReitit.add(kasiteltava);
-                break; // break;
-                // }
+                break;
             }
-            if (kasiteltava.getKustannus() /*+ kasiteltava.getArvioituKustannus()*/ > lowestCost+ EPSILON) {
-                // continue;
+            if (kasiteltava.getKustannus()  > lowestCost ) {
                 break;
             }
             

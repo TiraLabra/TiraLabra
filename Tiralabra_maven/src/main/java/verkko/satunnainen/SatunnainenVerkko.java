@@ -20,6 +20,9 @@ import verkko.rajapinnat.*;
  */
 public class SatunnainenVerkko implements Graph {
 
+    ///////////////////////////////////////
+    // SATUNNAISTEN PAINOJEN LASKEMINEN ///
+    ///////////////////////////////////////
     /**
      * Verkon painoiksi kokonaislukuja
      */
@@ -49,7 +52,7 @@ public class SatunnainenVerkko implements Graph {
          * Katkaisut
          */
         private double a = 0.5, b = 0.90;
-        private double maxArvo=20;
+        private double maxArvo = 20;
 
         public double laskeSatunnaisluku(double kerroin) {
 
@@ -58,16 +61,17 @@ public class SatunnainenVerkko implements Graph {
             if (x < a) {
                 return 0; // (kerroin * random.nextDouble());
             } else if (x > b) {
-                return maxArvo*kerroin;
+                return maxArvo * kerroin;
             } else {
                 return (kerroin * random.nextDouble());
             }
         }
     };
     /**
-     * Vieruslistat tallennettuna taulukkoon. Kasvattaa tilavaatimusta mutta nopeuttaa hakuja.
+     * Vieruslistat tallennettuna taulukkoon. Kasvattaa tilavaatimusta mutta
+     * nopeuttaa hakuja.
      */
-    private Lista<Value>[][] naapurit; // WIP hajautustaulu tähän?
+    private Lista<Value>[][] naapurit;
     /**
      * Verkko tallennetaan taulukkoon
      */
@@ -96,6 +100,7 @@ public class SatunnainenVerkko implements Graph {
      * Saako verkossa kulkea vain akselien suuntaan
      */
     private boolean liikkumisSaanto;
+
     /**
      * Luo verkon, jonka koko on nxn
      *
@@ -125,7 +130,7 @@ public class SatunnainenVerkko implements Graph {
      * @param kerroinPaino Satunnaisluvun painotus kaarien kustannuksiin
      */
     public SatunnainenVerkko(int rivit, int sarakkeet, double minimiPaino, double kerroinPaino) {
-        this(rivit,sarakkeet,minimiPaino,kerroinPaino,1);
+        this(rivit, sarakkeet, minimiPaino, kerroinPaino, 1);
     }
 
     /**
@@ -135,13 +140,15 @@ public class SatunnainenVerkko implements Graph {
      * @param sarakkeet
      * @param minimiPaino Kaaren kulkemisen minimipaino
      * @param kerroinPaino Satunnaisluvun painotus kaarien kustannuksiin
-     * @param funktio Valitaan painojen generointitapa. 0=kokonaislukuja, 1=desimaalilukuja, 2=esteitä
+     * @param funktio Valitaan painojen generointitapa. 0=kokonaislukuja,
+     * 1=desimaalilukuja, 2=esteitä
      */
     public SatunnainenVerkko(int rivit, int sarakkeet, double minimiPaino, double kerroinPaino, int funktio) {
-         this(rivit,sarakkeet,minimiPaino,kerroinPaino,1,true);
+        this(rivit, sarakkeet, minimiPaino, kerroinPaino, 1, true);
     }
+
     /**
-     * 
+     *
      * @param rivit
      * @param sarakkeet
      * @param minimiPaino
@@ -149,7 +156,7 @@ public class SatunnainenVerkko implements Graph {
      * @param funktio
      * @param liikkuminen True: liikkuminen vain koordinaattiakselien suuntaan
      */
-    public SatunnainenVerkko(int rivit, int sarakkeet, double minimiPaino, double kerroinPaino, int funktio, boolean liikkuminen ) {
+    public SatunnainenVerkko(int rivit, int sarakkeet, double minimiPaino, double kerroinPaino, int funktio, boolean liikkuminen) {
         if (funktio == 0) {
             this.funktio = KOKONAISLUKU;
         } else if (funktio == 1) {
@@ -168,6 +175,7 @@ public class SatunnainenVerkko implements Graph {
         liikkumisSaanto = liikkuminen;
         generoiSatunnainen();
     }
+
     /**
      * Verkon generointi
      */
@@ -175,23 +183,18 @@ public class SatunnainenVerkko implements Graph {
         // Random random = new Random();
         for (int i = 0; i < rivit; i++) {
             for (int j = 0; j < sarakkeet; j++) {
-                //double x = random.nextDouble();
-                //if ( x > 0.5 )
-                painot[i][j] = minimiPaino + funktio.laskeSatunnaisluku(kerroinPaino); //(kerroinPaino * random.nextDouble()) /* + random.nextInt((int) kerroinPaino)*/; // satunnainen paino tähän solmuun kulkemiselle
-                //else 
-                //    painot[i][j] = minimiPaino;
+                painot[i][j] = minimiPaino + funktio.laskeSatunnaisluku(kerroinPaino); // satunnainen paino tähän solmuun kulkemiselle
                 verkko[i][j] = new V(i, j, liikkumisSaanto);
-                kaaret[i][j][0] = new E( /*verkko[i][j],*/painot[i][j]);
-                
-                
+                kaaret[i][j][0] = new E(painot[i][j]);
+
             }
         }
         for (int i = 0; i < rivit; i++) {
             for (int j = 0; j < sarakkeet; j++) {
-                naapurit[i][j]=getNaapurit(i,j);
+                naapurit[i][j] = getNaapurit(i, j);
             }
         }
-        
+
     }
 
     /**
@@ -248,33 +251,37 @@ public class SatunnainenVerkko implements Graph {
         if (y < sarakkeet - 1) {
             returnvalue.add(verkko[x][y + 1]);
         }
-        if (liikkumisSaanto) return returnvalue;
+        if (liikkumisSaanto) {
+            return returnvalue;
+        }
         if (x < rivit - 1 && y < sarakkeet - 1) {
-            returnvalue.add(verkko[x + 1][y +1]);
-        } 
+            returnvalue.add(verkko[x + 1][y + 1]);
+        }
         if (x < rivit - 1 && y > 0) {
-            returnvalue.add(verkko[x + 1][y -1]);
-        } 
-        if ( x > 0&& y < sarakkeet - 1) {
-            returnvalue.add(verkko[x - 1][y +1]);
-        } 
-        if ( x > 0 && y > 0) {
-            returnvalue.add(verkko[x - 1][y -1]);
-        }         
+            returnvalue.add(verkko[x + 1][y - 1]);
+        }
+        if (x > 0 && y < sarakkeet - 1) {
+            returnvalue.add(verkko[x - 1][y + 1]);
+        }
+        if (x > 0 && y > 0) {
+            returnvalue.add(verkko[x - 1][y - 1]);
+        }
         return returnvalue;
     }
+
     /**
      * Graph-rajapinnan toteutus
-     * 
+     *
      * @param alku
-     * @return 
+     * @return
      */
-    public Iterable<Value> getNaapurit( Value alku ) {
+    public Iterable<Value> getNaapurit(Value alku) {
         V l = (V) alku;
         int x = l.getX();
-        int y = l.getY();    
+        int y = l.getY();
         return naapurit[x][y];
     }
+
     /**
      * Uusi Polku-olio
      *
@@ -297,9 +304,11 @@ public class SatunnainenVerkko implements Graph {
     // AUTOMAATTISET METODIT //
     ///////////////////////////
     // lisätty GUI:ta varten
+
     public int getRivit() {
         return rivit;
     }
+
 
     public int getSarakkeet() {
         return sarakkeet;

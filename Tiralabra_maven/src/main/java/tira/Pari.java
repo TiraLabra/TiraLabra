@@ -2,7 +2,8 @@ package tira;
 
 /**
  * Hajautustaulun alkiot ovat pareja. Törmäykset hoidetaan tällä luokalla:
- * Pari-oliot ovat samalla yhteen suuntaan linkitettyjä listoja
+ * Pari-oliot ovat samalla yhteen suuntaan linkitettyjä listoja. Lisäykset
+ * lisätään listan loppuun.
  *
  * @param <K> Avain
  * @param <V> Arvo
@@ -22,6 +23,12 @@ public class Pari<K, V> {
      */
     private Pari<K, V> next;
 
+    /**
+     * Uusi pari
+     * 
+     * @param k Avain
+     * @param v Arvo
+     */
     public Pari(K k, V v) {
         this.k = k;
         this.v = v;
@@ -128,10 +135,11 @@ public class Pari<K, V> {
             return 1 + this.next.size();
         }
     }
+
     /**
      * Onko parilla seuraajaa
-     * 
-     * @return 
+     *
+     * @return
      */
     public boolean hasNext() {
         return this.next != null;
@@ -166,8 +174,8 @@ public class Pari<K, V> {
 
     /**
      * Hashcode lasketaan vain avaimesta
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int hashCode() {
@@ -178,9 +186,9 @@ public class Pari<K, V> {
 
     /**
      * Yhtäsuuruutta vertaillaan avaimilla
-     * 
+     *
      * @param obj
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(Object obj) {
@@ -197,7 +205,9 @@ public class Pari<K, V> {
     @Override
     public String toString() {
         String s = "Pari{" + "k=" + k + ", v=" + v + '}';
-        if ( hasNext() ) s+="->"+getNext().toString();
+        if (hasNext()) {
+            s += "->" + getNext().toString();
+        }
         return s;
     }
 

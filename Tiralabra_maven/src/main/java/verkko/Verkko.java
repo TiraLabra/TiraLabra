@@ -23,13 +23,7 @@ import verkko.rajapinnat.Value;
  *
  * @author E
  */
-public class Verkko implements Graph {
-    /*
-     HUOM! useaan paikkaan tallennettu data nopeuttaa hakuja, mutta hidastaa verkon luomista ja varsinkin muokkaamista
-     Kannattanee kuitenkin, jotta haut mahd. nopeita
-     WIP: valmiit tietorakenteet käytössä
-     */
-    
+public class Verkko implements Graph {    
     /**
      * Pysäkit taulukossa
      */
@@ -52,7 +46,6 @@ public class Verkko implements Graph {
      */    
     private HashMap<String, Linja> linjanKoodit;
     
-    // WIP: KATSO MITEN VAIKUTTAA SUORITUSAIKAAN JOS AVAIMET STRING
     
     /**
      * Avaimina pysäkit, arvoina lista linjoista jotka kulkevat pysäkiltä
@@ -67,9 +60,6 @@ public class Verkko implements Graph {
      */
     private HashMap<Pysakki, HashMap<Pysakki, List<Kaari>>> reititNaapureihin; // max V*V*E
     
-    // WIP: Kannattaako ennemmin kävellä pysäkiltä toiselle?
-    // private double[][]  pysakkienValisetEtaisyydet;
-
     /**
      * Pysäkkien ohitusajat. ( Tieto vuorojen tiheydestä linjassa ), pysakin
      * koodi-linjan koodi-ohitusaika
@@ -109,7 +99,7 @@ public class Verkko implements Graph {
             linjat[i] = new Linja(linja);
             linjat[i].setTyyppi(Linja.TYYPPI_RATIKKA);
             // linjan reitin tallentaminen: kaaret linkitettyyn listaan
-            LinkedList<Kaari> linjanReitti = new LinkedList();
+            DynaaminenLista<Kaari> linjanReitti = new DynaaminenLista();
             for (int j = 0; j < linja.getPsKoodit().length; j++) {
                 // lisätään pysähtymistieto pysäkkiaikatauluun
                 this.lisaaPysakkiAikataulut(linja.getPsKoodit()[j], linja.getPsAjat()[j], linja.getKoodi());
@@ -267,8 +257,6 @@ public class Verkko implements Graph {
     public double getOdotusAika(double aika, String pysakki, String linja) {
         
         double ohitusAika = pysakkiAikataulut.get(pysakki).get(linja);
-        // WIP: vuorovälit linjojen ominaisuutena
-        // WIP: ajan esitys toisenlaisena
         double vuorovali = 10; // = l.getVuoroVali( aika );
 
         double odotusaika = ohitusAika % vuorovali - aika % vuorovali;

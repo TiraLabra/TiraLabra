@@ -34,10 +34,6 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
     // hakuja nopeuttamaan//
     ////////////////////////
     
-    /*
-    WIP: aloituskoot hajautustauluille, konstruktorin selkeyttäminen
-    */
-    
     /**
      * Hajautustaulu: avaimina pysäkkien koodit, arvoina pysäkki-oliot
      */
@@ -60,9 +56,6 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
      */
     private Hajautustaulu<Pysakki, Hajautustaulu<Pysakki, Lista<Kaari>>> reititNaapureihin; // max V*V*E
     
-    // WIP: Kannattaako ennemmin kävellä pysäkiltä toiselle?
-    // private double[][]  pysakkienValisetEtaisyydet;
-
     /**
      * Pysäkkien ohitusajat. ( Tieto vuorojen tiheydestä linjassa ), pysakin
      * koodi-linjan koodi-ohitusaika
@@ -219,6 +212,7 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
     /**
      * Pysäkkien ja linjojen tulostaminen
      */
+    @Override
     public void debugPrint() {
         for (Pysakki pysakki : this.getPysakit()) {
             System.out.println("" + pysakki);
@@ -235,6 +229,7 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
      * @param loppu
      * @return Kaaret alku- ja loppusolmun välillä
      */
+    @Override
     public Iterable<Kaari> getKaaret(Pysakki alku, Pysakki loppu) { 
         return this.reititNaapureihin.get(alku).get(loppu);
     }
@@ -245,6 +240,7 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
      * @param solmu
      * @return
      */
+    @Override
     public Iterable<Pysakki> getNaapurit(Pysakki solmu) { 
         return this.pysakinNaapurit.get(solmu);
     }
@@ -257,11 +253,10 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
      * @param linja
      * @return
      */
+    @Override
     public double getOdotusAika(double aika, String pysakki, String linja) {
         
         double ohitusAika = pysakkiAikataulut.get(pysakki).get(linja);
-        // WIP: vuorovälit linjojen ominaisuutena
-        // WIP: ajan esitys toisenlaisena
         double vuorovali = 10; // = l.getVuoroVali( aika );
 
         double odotusaika = ohitusAika % vuorovali - aika % vuorovali;
@@ -271,41 +266,4 @@ public class VerkkoOmallaTietorakenteella extends Verkko /*implements Graph*/ {
         return odotusaika;
     }
 
-    
-    /////////////////////////////////////////////
-    ///// automaattiset setterit & getterit /////
-    /////////////////////////////////////////////  
-    /*
-    public Pysakki[] getPysakit() {
-        return pysakit;
-    }
-    public Linja[] getLinjat() {
-        return linjat;
-    }
-   
-    
-    public Iterable<Edge> getKaaret(Value alku, Value loppu) {
-        Iterable<Kaari> ip =  this.getKaaret((Pysakki)alku, (Pysakki)loppu);
-        
-        Lista<Edge> ledge  = new DynaaminenLista();
-        for ( Kaari kaari : ip ) {
-            ledge.add(kaari);
-        }
-        return ledge;
-    }
-
-    public Iterable<Value> getNaapurit(Value alku) {
-        Iterable<Pysakki> ip =  this.getNaapurit((Pysakki)alku);
-        
-        Lista<Value>  lvalue  = new DynaaminenLista();
-        for ( Pysakki pysakki : ip ) {
-            lvalue.add(pysakki);
-        }
-        return lvalue;
-    }
-
-    public Node getNode() {
-        return new Reitti();
-    }
-    */
 }

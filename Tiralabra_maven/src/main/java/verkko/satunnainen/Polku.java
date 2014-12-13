@@ -37,7 +37,7 @@ public class Polku implements Node {
      */
     private Polku previous;
 
-        /////////////////
+    /////////////////
     // RAJAPINNAT ///
     /////////////////
     public double getArvioituKustannus() {
@@ -97,7 +97,7 @@ public class Polku implements Node {
         };
     }
 
-        ///////////////////////
+    ///////////////////////
     // YKSITYISET METODIT//
     ///////////////////////
     /**
@@ -113,7 +113,7 @@ public class Polku implements Node {
         return s;
     }
 
-        //////////////////////
+    //////////////////////
     // JULKISET METODIT //
     //////////////////////
     /**
@@ -141,31 +141,28 @@ public class Polku implements Node {
         }
         return cost;
     }
-    
+
     /**
      * Polun solmut järjestyksessä
-     * 
+     *
      * @param seuraajat
-     * @return 
+     * @return
      */
-    public Lista<Value> solmut(  ) {
+    public Lista<Value> solmut() {
         Lista<Value> seuraajat = new DynaaminenLista();
-        
+
         Polku p = this;
-        while ( p!=null ) {
+        while (p != null) {
             seuraajat.add(p.getSolmu());
             p = p.getPrevious();
         }
-   
-   
+
         return seuraajat;
     }
-    
-    
+
         ///////////////////////////
     // AUTOMAATTISET METODIT //
     ///////////////////////////
-
     @Override
     public int hashCode() {
         int hash = 3;

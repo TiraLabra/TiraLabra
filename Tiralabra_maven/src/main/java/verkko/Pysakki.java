@@ -9,7 +9,7 @@ import verkko.esimerkki.PysakkiJSON;
 import verkko.rajapinnat.Value;
 
 /**
- * Verkon solmu.
+ * Verkon solmu.Pysäkkiverkon pysäkki.
  *
  * @author E
  */
@@ -64,6 +64,7 @@ public class Pysakki implements Value {
     
     /**
      * Kahden solmun välisen etäisyyden laskeminen tässä
+     *  - Euklidinen etäisyys
      * 
      * @param s
      * @return 

@@ -74,10 +74,17 @@ public class Hajautustaulu<K, V> {
     ///////////////////
     // KONSTRUKTORIT //
     ///////////////////
+    /**
+     * Oletuskokoinen taulu
+     */
     public Hajautustaulu() {
         this(DEFAULTSIZE);
     }
-
+    /**
+     * Annetun kokoinen taulu
+     * 
+     * @param aloitusKoko 
+     */
     public Hajautustaulu(int aloitusKoko) {
         taulunKoko = aloitusKoko;
         if (taulunKoko <= 1) {
@@ -245,6 +252,9 @@ public class Hajautustaulu<K, V> {
      *
      */
     private void rehash() {
+        // jos taulukon koko on jo maksimi, ei kannata yrittää uudelleenhajautusta
+        if (taulunKoko>=2147483639 - 1)
+            return;
 
         // kannattaako uudelleenhajauttaa
         if  (tayttoAste < LOADFACTOR * taulunKoko || tormaykset < CRASHFACTOR * taulunKoko) {
@@ -252,7 +262,7 @@ public class Hajautustaulu<K, V> {
         }
 
         Jono<Pari<K, V>> parit = getParit();
-        this.taulunKoko = Math.min(DEFAULTGROWFACTOR * koko, 2147483639);
+        this.taulunKoko = Math.min(DEFAULTGROWFACTOR * koko, 2147483639 - 1);
         this.taulu = new Pari[taulunKoko];
         koko = 0;
         tormaykset = 0;
@@ -284,20 +294,17 @@ public class Hajautustaulu<K, V> {
     }
 
     /**
-     * Taulun hajautusfunktio
+     * Taulun hajautusfunktio. Hashcode mod taulunKoko.
      *
      * @param k Hajautettava avain
      * @return Taulun indeksi
      */
     private int hashKey(K k) {
-        // WIP tänne jotain fiksumpaa
-        // int p = 763; // h=k%p%n
         int i = k.hashCode() % this.taulunKoko;
-        // System.out.println(""+i+"="+k.hashCode()+" mod "+this.maksimiKoko);
         if (i < 0) {
-            i = -i; // negatiiviset hashCodet käsitellään näin
+            i = -i;
         }
-        return i; // h(k)=hash(k)%n
+        return i;
     }
 
     //////////////////////

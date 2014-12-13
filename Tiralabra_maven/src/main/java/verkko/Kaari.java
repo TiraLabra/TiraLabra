@@ -8,7 +8,7 @@ package verkko;
 import verkko.rajapinnat.Edge;
 
 /**
- * Verkossa solmujen välinen kaari
+ * Verkossa solmujen välinen kaari. Vastaa raitiovaunulla kuljettua pysäkin väliä.
  * 
  * @author E
  */

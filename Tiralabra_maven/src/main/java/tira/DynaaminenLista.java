@@ -114,12 +114,6 @@ public class DynaaminenLista<E> implements Lista<E> {
      * @return True, jos löytyi
      */
     public boolean contains(E e) {
-        /*for (int i = 0; i < this.koko; i++) {
-            if (e == this.values[i] || e.equals(this.values[i])) {
-                return true;
-            }
-        }
-        return false;*/
         return indexOf(e)>=0;
     }
 
@@ -162,7 +156,7 @@ public class DynaaminenLista<E> implements Lista<E> {
     //YKSITYISET METODIT//
     //////////////////////
     /**
-     * Kasvattaa listan kokoa oletuskasvatuskertoimen verran
+     * Kasvattaa listan kokoa oletuskasvatuskertoimen verran.
      */
     private void kasvata() {
         this.kasvata(DynaaminenLista.DEFAULTGROWFACTOR);
