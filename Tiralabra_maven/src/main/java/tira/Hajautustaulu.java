@@ -8,8 +8,11 @@ package tira;
 import java.util.Set;
 
 /**
- *
+ * Hajautustaulu (HashMap). Avainten hajautusarvojen mukaan arvot sijoitetaan taulukkoon.
+ * 
  * @author E
+ * @param <K> Avain
+ * @param <V> Arvo
  */
 public class Hajautustaulu<K, V> {
 

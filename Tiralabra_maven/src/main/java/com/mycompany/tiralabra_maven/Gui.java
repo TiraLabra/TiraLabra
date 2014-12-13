@@ -41,7 +41,7 @@ import verkko.satunnainen.SatunnainenVerkko;
 import verkko.satunnainen.V;
 
 /**
- *
+ * Graafinen käyttöliittymä. Yksityisinä luokkina Piirto- ja Tulokset-paneelit graafista esitystä varten.
  * @author E
  */
 public class Gui extends JFrame {

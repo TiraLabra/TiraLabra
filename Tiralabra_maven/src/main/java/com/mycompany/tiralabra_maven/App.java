@@ -20,7 +20,8 @@ import verkko.rajapinnat.Value;
 import verkko.satunnainen.SatunnainenVerkko;
 
 /**
- * Hello world!
+ * Käynnistysluokka, tässä luokassa myös staattinen merkkipohjainen käyttöliittymä. 
+ * Debug-metodeja myös.
  *
  */
 public class App {
