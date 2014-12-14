@@ -2,7 +2,7 @@
 EXE = chess.exe
 SRCS = main.cpp
 OBJS = $(subst .cpp,.o,$(SRCS))
-CXXFLAGS = -g -std=gnu++11 -I. -fpermissive
+CXXFLAGS = -O3 -std=gnu++11 -I. -fpermissive
 CPPFLAGS = $(CXXFLAGS)
 LIBS = -pthread
 
@@ -20,11 +20,9 @@ test:
 
 # automatic dependency generation
 
-# DEPDIR = .depends
-# df = $(DEPDIR)/$(*F)
 df = $(*F)
 
-MAKEDEPEND = gcc -M -I. $(CPPFLAGS) -o $(DEPDIR)/$*.d $<
+MAKEDEPEND = gcc -M -I. $(CPPFLAGS) -o $*.d $<
 %.o : %.cpp
 	@$(MAKEDEPEND); \
 		cp $(df).d $(df).P; \
@@ -33,4 +31,4 @@ MAKEDEPEND = gcc -M -I. $(CPPFLAGS) -o $(DEPDIR)/$*.d $<
 		rm -f $(df).d
 	$(COMPILE.cpp) -o $@ $<
 
--include $(SRCS:%.cpp=$(DEPDIR)/%.P)
+-include $(SRCS:%.cpp=%.P)
