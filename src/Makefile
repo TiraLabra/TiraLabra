@@ -2,7 +2,7 @@
 EXE = chess.exe
 SRCS = main.cpp
 OBJS = $(subst .cpp,.o,$(SRCS))
-CXXFLAGS = -O3 -std=gnu++11 -I. -fpermissive
+CXXFLAGS = -O3 -std=gnu++11 -I. -fpermissive -Wno-deprecated-declarations
 CPPFLAGS = $(CXXFLAGS)
 LIBS = -pthread
 

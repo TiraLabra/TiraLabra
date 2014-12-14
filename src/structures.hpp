@@ -42,7 +42,7 @@ template <class T> struct listItem {
  * Implement a linked list of the given type
  */
 template <class T> struct linkedList {
-    listItem<T> *root;
+    listItem<T> *root, *last;
     int size;
 
     linkedList() : root(0), size(0) {
@@ -109,7 +109,7 @@ template <class T> struct linkedList {
     }
 
     /**
-     * Add new listItem to list
+     * Add new listItem to the end of the list
      * 
      * @param newItem 
      */
@@ -119,11 +119,10 @@ template <class T> struct linkedList {
             root = newItem;
         }
         else {
-            // find last item on list and append new item there
-            listItem<T> *last = findLast();
             last->next = newItem;
             newItem->prev = last;
         }
+        last = newItem;
         size++;
     }
 
@@ -175,6 +174,8 @@ template <class T> struct tree {
         if (!children) return;
         for (int i = 0; i < children->size; i++)
             (*children)[i]->freeTree();
+        for (int i = 0; i < children->size; i++)
+            delete (*children)[i];
         delete children;
         children = 0;
     }

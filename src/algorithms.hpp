@@ -13,7 +13,7 @@
  */
 int minimax(tree< moveNode* > *gameTree, int depth, bool max) {
     linkedList< tree<moveNode*>* > *ch = gameTree->children;
-    if (depth == 0 || ch->size == 0)
+    if (depth == 0)
         return gameTree->item->value;
 
     if (max) {
@@ -48,7 +48,7 @@ int minimax(tree< moveNode* > *gameTree, int depth, bool max) {
  */
 int alphabeta(tree< moveNode* > *gameTree, int depth, int a, int b, bool max) {
     linkedList< tree<moveNode*>* > *ch = gameTree->children;
-    if (depth == 0 || ch->size == 0)
+    if (depth <= 0)
         return gameTree->item->value;
 
     if (max) {

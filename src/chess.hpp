@@ -252,8 +252,8 @@ public:
                 else
                     score -= pieceValue;
 
-                if (color == PC_White && j <= 2) score -= 1;
-                else if (color == PC_Black && j >= 6) score -= 1;
+                // if (color == PC_White && j <= 2) score -= 1;
+                // else if (color == PC_Black && j >= 6) score -= 1;
             }
         }
 

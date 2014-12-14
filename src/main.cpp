@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     chessBoard board;
-    chessAI ai;
+	chessAI ai;
 
     int depth = 4;
     if (argc >= 2) {
@@ -30,7 +30,8 @@ int main(int argc, char *argv[]) {
         int score = ai.findMove(board, depth, aimove);
         clock_t end = clock();
 
-        printf("\nFound a move in %f seconds.\n", ((float)end - start) / CLOCKS_PER_SEC);
+        printf("\nFound a move in %f seconds.\n", 
+			   ((float)end - (float)start) / CLOCKS_PER_SEC);
 
         printf("AI chose move %c%d %c%d with score %d\n",
                aimove.from.x + 'a', aimove.from.y + 1,
@@ -97,12 +98,13 @@ void test_moves()
     moveTree mt;
     chessAI ai;
     
-    mt.buildTree(board, mt.gameTree, 4);
+    mt.buildTree(board, mt.gameTree, 5);
 
     BOOST_REQUIRE( mt.gameTree->item->nmoves == 20 );
     BOOST_REQUIRE( ai.sumMoves(mt.gameTree, 0) == 400 );
     BOOST_REQUIRE( ai.sumMoves(mt.gameTree, 1) == 8902 );
     BOOST_REQUIRE( ai.sumMoves(mt.gameTree, 2) == 197281 );
+	// printf("moves for depth 5: %d\n", ai.sumMoves(mt.gameTree, 3));
     // BOOST_REQUIRE( ai.sumMoves(mt.gameTree, 3) == 4865609 );
 }
 
@@ -133,6 +135,9 @@ void test_structures()
     testList2.del(item2);
     BOOST_REQUIRE( item1->prev == 0     && item1->next == item3 );
     BOOST_REQUIRE( item3->prev == item1 && item3->next == 0 );
+
+	// note: tree structure gets tested well enough with the 
+	// moveTree tests in test_moves() so there are no additional tests here
 }
 
 int test_main( int, char *[] )

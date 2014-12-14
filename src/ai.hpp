@@ -12,15 +12,10 @@
 class moveNode {
 public:
     int value;
-    cmove prev_move;
     int nmoves;
-
     moveNode()  {}
-    
-    moveNode(int v, cmove m) :
-        value(v), prev_move(m) {
-    }
-
+    moveNode(int v) : value(v) { }
+    // moveNode(int v, cmove m) : value(v), prev_move(m) { }
     // ~moveNode() {}
 };
     
@@ -31,9 +26,10 @@ public:
 class moveTree {
 public:
     tree< moveNode* > *gameTree;
+    linkedList<cmove> *moveList;
 
     moveTree() {
-        moveNode *rootNode = new moveNode(0, cmove(-1,-1,-1,-1));
+        moveNode *rootNode = new moveNode(0);
         gameTree = new tree< moveNode* >(rootNode);
     }
 
@@ -48,6 +44,8 @@ public:
             freeNodes(gameTree);
             delete gameTree;
         }
+        if (moveList)
+            delete moveList;
     }
 
     /**
@@ -58,11 +56,16 @@ public:
      * @param root root of game tree
      * @param depth depth of tree
      */
-    void buildTree(chessBoard &board, tree< moveNode* > *root, int depth) {
+    void buildTree(chessBoard &board, tree< moveNode* > *root, int depth, bool first = true) {
         if (depth <= 0) return;
         
         linkedList<cmove> *moves = board.findMoves();
         root->item->nmoves = moves->size;
+
+        // we only need to know what the next move is that we should make,
+        // so in order to save memory we only store move list on the first call
+        if (first) 
+            moveList = moves;
 
         for (int i = 0; i < moves->size; i++) {
             chessBoard nb = board;
@@ -73,16 +76,17 @@ public:
             // we only use the values calculated at the last nodes, so evaluation is
             // skipped for all other depths
             if (depth == 1)
-                nn = new moveNode(nb.evaluate(nb.currentPlayer), m);
+                // nn = new moveNode(nb.evaluate(nb.currentPlayer));
+                nn = new moveNode(nb.evaluate(PC_Black));
             else
-                nn = new moveNode(0, m);
+                nn = new moveNode(0);
             tree< moveNode* > *newnode = new tree< moveNode* >(nn);
-            buildTree(nb, newnode, depth-1);
-
+            buildTree(nb, newnode, depth-1, false);
             root->insert(newnode);
         }
 
-        delete moves;
+        if (!first)
+            delete moves;
     }
 };
 
@@ -161,25 +165,36 @@ public:
      */
     int findMove(chessBoard &board, int treeDepth, cmove &aimove) {
         moveTree mt;
+        clock_t start = clock();
         mt.buildTree(board, mt.gameTree, treeDepth);
+        clock_t end = clock();
+        printf("Built move tree with depth %d in %f seconds.\n", 
+               treeDepth,
+               ((float)end - (float)start) / CLOCKS_PER_SEC);
+
         // printf("current player is %d\n", board.currentPlayer);
         
         linkedList< tree<moveNode*>* > *ch = mt.gameTree->children;
+        linkedList< cmove > *moves = mt.moveList;
+
+        if (moves->size != ch->size ) {
+            cout << "ERROR: move numbers do not match" << endl;
+        }
+
         // printf("moves depth 1: %d\n", sumMoves(mt.gameTree, 0));
         // printf("moves depth 2: %d\n", sumMoves(mt.gameTree, 1));
         // printf("moves depth 3: %d\n", sumMoves(mt.gameTree, 2));
         
         int bestValue = INT_MIN;
         
+        start = clock();
         for (int i = 0; i < ch->size; i++) {
             tree<moveNode*> *n = (*ch)[i];
 
             // start with min value (bmax = false) because in the situation we
             // are evaluating it is the opponent's turn!
-            
-            // int value = minimax(n, treeDepth-1, false);
             int value = alphabeta(n, treeDepth-1, INT_MIN, INT_MAX, false);
-
+            // int value = minimax(n, treeDepth-1, false);
 
 #if 0
             cmove move = (*ch)[i]->item->prev_move;
@@ -189,10 +204,15 @@ public:
 #endif
 
             if (value > bestValue) {
-                aimove = (*ch)[i]->item->prev_move;
+                // aimove = (*ch)[i]->item->prev_move;
+                aimove = (*moves)[i];
                 bestValue = value;
             }
         }
+        end = clock();
+
+        printf("Minimax search with alpha-beta took %f seconds.\n", 
+               ((float)end - (float)start) / CLOCKS_PER_SEC);
 
         return bestValue;
     }
