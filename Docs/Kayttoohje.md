@@ -5,4 +5,4 @@ Käynnistyttyään ohjelma tulostaa kuvan kartasta, jolle se voi suorittaa A*-ha
 
 Annettuasi toimivan hakusyötteen ohjelma etsii nopeimman reitin haun aloitus- ja lopetuspisteiden välillä. Kun haku on tehty loppuun, ohjelma tulostaa reitin ja sen kulkemiseen kuluvan ajan.
 
-Anna ohjelmalle syöte "q" lopettaaksesi.
+Anna ohjelmalle syöte "q" lopettaaksesi. Syötteellä "n" voit luoda uuden kartan, kartta luodaan x,y,range-muotoisesta syötteestä, esim. syöte "5,10,15" luo kartan, jonka x-arvo on 5, y-arvo 10 ja kaarien paino vaihtelee välillä 1-15.
