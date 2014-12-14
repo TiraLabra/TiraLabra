@@ -1,25 +1,30 @@
-## Kommentteja vasta lauantaina! 
-ryhmäteknisistä syistä
+# Labyrinth
+
+## How to run the program:
+
+Download the zip from the repository and execute following commands in the program folder(Tiralabra_maven):
+
+        mvn compile
+
+        mvn exec:java -Dexec.mainClass="com.mycompany.tiralabra_maven.App"
+
+## How to change the settings
+
+To change settings, you need to modify App.java. By default the program prints all the maps using the following command:
+
+        printAll(map);
+
+You can select one map with one heuristic with the following command:
+
+        printOne(map, heuristic);
 
 
+Heuristics are:
 
+ * 1 = Euclidean distance
+ * 2 = Manhattan distance
+ * 3 = Diagonal distance
+ * 0 = Dijkstra's algorithm
 
-Tämä on tehtäväpohja, jonka forkkasit Tietorakenteiden harjoitustyön suorittamista varten.
-
-Pohja tukee valmiiksi ant ja maven pohjaisia java-projekteja.
-Ant on tuttu ohjelmoinnen perusteista ja jatkokurssilta, mutta maven on suositellumpi ja laajemmin käytetty heti kun projekti alkaa olla isompi.
-
-* * *
-
-Muokkaa tiedostoa run_tests.sh tehtäväpohjan ohjeiden mukaisesti, mikäli et käytä tehtäväpohjien mukana tulevaa pohjaa.
-
-Kuitenkin on tärkeää poistaa turha kansio!
-* Ant:ia käyttäessäsi poista kansio Tiralabra_maven
-* Mavenia käyttäessäsi poista kansio Tiralabra
-
-Pull requestien yhteydessä ohjelman testit ajetaan Travis-ci:ssä, ja sen vuoksi on tärkeää, että run_tests.sh sisältää projektikansiosi nimen oikein!
-
-Docs kansioon tulee laittaa kaikki muut dokumentit, paitsi javadoc, joka voi olla projektikansiossasi.
-
-Viikottainen "palautus" tehdään luomalla Pull Request forkattuun repoon.
+There are five different maps from map1() through map5().
 
