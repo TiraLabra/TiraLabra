@@ -136,8 +136,8 @@ public class App
 
     public static String map4() {
         return
-                "x___o__\n" +
-                "_______";
+                "x___#__\n" +
+                "______o";
     }
 
     public static String map5() {

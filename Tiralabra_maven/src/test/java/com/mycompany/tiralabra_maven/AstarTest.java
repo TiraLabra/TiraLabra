@@ -57,4 +57,15 @@ public class AstarTest {
 
     }
 
+    /** Tests that Astar runs on small map */
+    @org.junit.Test
+    public void testAstarPathLength() {
+        Astar astar = new Astar();
+        String map = "o_____x";
+        astar.run(map, 0);
+
+        assertTrue(astar.getPathLength() == 5);
+        //assertTrue(astar.getRunTime() < 15);
+    }
+
 }

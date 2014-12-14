@@ -122,7 +122,7 @@ public class MyPriorityQueue {
     /** Finds the node's index in heap
      * @return index of the node
      * */
-    private int indexOf(Object o) {
+    public int indexOf(Object o) {
         if (o != null) {
             for (int i = 0; i < heapsize; i++)
                 if (o.equals(table[i]))
@@ -148,7 +148,7 @@ public class MyPriorityQueue {
     public void removeNode(Node node) {
         int i = indexOf(node);
         decreaseCost(i, 0);
-        Node min = deleteMinimum();
+        deleteMinimum();
         heapify(0);
     }
 

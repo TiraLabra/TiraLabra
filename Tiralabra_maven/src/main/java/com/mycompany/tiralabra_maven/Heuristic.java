@@ -10,7 +10,7 @@ public class Heuristic {
      *  1 = Euclidean distance
      *  2 = Manhattan distance
      *  3 = Diagonal distance
-     *  0 = Djiksta's algorithm (no heuristic)
+     *  0 = Dijkstra's algorithm (no heuristic)
      */
     private int heuristic;
 
@@ -71,9 +71,9 @@ public class Heuristic {
 
     public static double calculateManhattan(int xp, int yp, Node end) {
     /** dx is an approximation of the distance between the two nodes' x coordinates */
-    double dx = Math.abs(end.getX() - xp);
+    double dx = Math.abs(xp - end.getX());
     /** dy is an approximation of the distance between the two nodes' y coordinates */
-    double dy = Math.abs(end.getY() - yp);
+    double dy = Math.abs(yp - end.getY());
     /** heuristic calculates the distance quickly by approximation instead of offering exact numbers
      *  hence it's very fast */
     double heuristic;

@@ -10,6 +10,10 @@ import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
  *
  */
 public class Astar {
+    /** Pathlenght for testing purposes */
+    private int pathLength;
+    private long runTime;
+
     public void run(String map, int heuristicId) {
         /** Temporarily here for timing purposes */
         long aikaAlussa = System.currentTimeMillis();
@@ -142,14 +146,15 @@ public class Astar {
             current = help;
             pathLength++;
         }
-
+        this.pathLength = pathLength;
         /** Print the final map! */
         myMap.printMap();
         /** Tell us how long the path was: */
         System.out.println("Path length was " + pathLength + " steps.");
         /** Tells us how long it took to run the algorithm: */
         long aikaLopussa = System.currentTimeMillis();
-        System.out.println("Runtime was " + (aikaLopussa - aikaAlussa) + "ms.");
+        this.runTime = aikaLopussa - aikaAlussa;
+        System.out.println("Runtime was " + getRunTime() + "ms.");
     }
 
 
@@ -184,6 +189,15 @@ public class Astar {
             }
         }
         return false;
+    }
+
+    /** Return path lenght */
+    public int getPathLength() {
+        return pathLength;
+    }
+    /** Return runtime */
+    public long getRunTime() {
+        return runTime;
     }
 
 }
