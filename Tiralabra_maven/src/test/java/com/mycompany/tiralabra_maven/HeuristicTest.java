@@ -1,7 +1,7 @@
 package com.mycompany.tiralabra_maven;
 
 import junit.framework.TestCase;
-
+/** Tests for the Heuristic-class */
 public class HeuristicTest extends TestCase {
 
     /** Test that euclidean distance is counted right

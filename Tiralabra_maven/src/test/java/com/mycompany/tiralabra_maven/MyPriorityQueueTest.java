@@ -2,6 +2,7 @@ package com.mycompany.tiralabra_maven;
 
 import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
 import junit.framework.TestCase;
+/** Tests for the MyPriorityQueue-class */
 
 public class MyPriorityQueueTest extends TestCase {
     protected Node node1;

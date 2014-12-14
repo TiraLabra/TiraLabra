@@ -27,6 +27,12 @@ Algoritmin toimintaa testattiin myös suuremmilla labyrinteilla:
 
 Pienillä muutoksilla labyrinttiin polku muuttuu ja optimointi toimii: oikopolun tekemällä reitti on 4 askelta lyhyempi.
 
+# Yksikkötestit
+
+Yksikkötestaus toteutettiin jUnitilla. Jokaisen luokan (paitsi App-luokan) toimintaa testattiin jUnit-testeillä joilla pyrin testaamaan jokaisen luokan ydintoiminnallisuutta. En testannut lainkaan itsestäänselviä metodeja kuten gettereitä ja setteritä. Testasin myös enemmän sitä, että metodit toimivat kuten piti, ja jätin pienemmälle huomiolle esimerkiksi vialliset syötteet ja muut epäonnistumistapaukset. ListNode-luokalla ei ollut gettereiden ja settereiden lisäksi ollenkaan omaa toiminnallisuutta, joten en testannut luokan toimintaa.
+
+Parannuksena yksikkötesteihin olisi voinut toteuttaa myös enemmän viallisilla syötteillä olevia testejä sekä jUnit-testejä, joissa myös suoritusaikaa olisi mitattu. Toteutin suorituskykytestauksen tosin erikseen.
+
 
 # Suorituskykytestaus
 
@@ -84,8 +90,8 @@ Javan prioriteettijonoa käyttämällä suoritusnopeus on huomattavasti parempi.
 
 Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map2, joka on avoin kahden pisteen välillä.
 
-### Huom! Näistä testeistä löytyi bugi, joka vaikutti suoritusaikoihin joten ajat eivät välttämättä olleet korrektit.
-### Yksittäiset testit
+## Huom! Näistä testeistä löytyi bugi, joka vaikutti suoritusaikoihin joten ajat eivät välttämättä olleet korrektit.
+## Yksittäiset testit
 
 
 | Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
@@ -129,13 +135,13 @@ Tässä testissä ajettiin ohjelman map3-karttaa joka ajettiin 10000 kertaa, ja 
 Edelliseen karttaan verrattuna muiden algoritmien suoritusajat nopeutuivat, mutta dijkstran nopeus oli noin kolme kertaa hitaampi. Tämä johtuu siitä, ettei noodeja pisteytetä vaan haetaan niin kauan, kunnes sopiva löytyy. Euclidean distance oli myös hieman nopeampi kuin muut algoritmit.
 
 
-## Suorituskykytestaus 2 toimivilla heuristiikoilla
+## Suorituskykytestaus 2:
 
 Edellisten testien jälkeen huomasin koodissa ilmenneen bugin, jonka takia heuristiikkojen laskeminen ei toiminut täysin oikein. Tein siis uudet suorituskykytestit, joiden tulokset ovat seuraavat:
 
 Testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map3) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map3:
 
-
+```java
 
         public static String map3() { 
         return "##############################\n" + 
@@ -149,6 +155,8 @@ Testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map3) ja 
                "#____________________________#\n" + 
                "#____________________________#\n" + 
                "##############################"; }
+
+```
 
 
 ### Suoritusajan keskiarvo
@@ -170,23 +178,29 @@ Tämä selittyy sillä, että Dijkstran algoritmi joutuu käymään paljon suure
 
 Muiden tulokset ovat odotettavat: Euclidean distance on Manhattan- ja Diagonal distancea hieman hitaampi kalliimman laskuoperaationsa takia. Manhattan ja Diagonal ovat tässä toteutuksessa periaatteessa sama algoritmi.
 
+
+![Kuva7](https://raw.githubusercontent.com/manuligit/TiraLabra/master/Docs/kuvat/pic7.png)
+
 ***
 
 Testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa.
 
-            public static String map2() {
-                return "##############################\n" +
-                        "#o___________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#____________________________#\n" +
-                        "#__________________________x_#\n" +
-                        "##############################";
-            }
+```java
+
+public static String map2() {
+    return "##############################\n" +
+            "#o___________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#____________________________#\n" +
+            "#__________________________x_#\n" +
+            "##############################";
+}
+```
 
 
 
@@ -208,7 +222,12 @@ Avoimessa kartassa Manhattan ja Diagonal distance ovat jälleen nopeimmat. Dijks
 Euclidean distancen ja Manhattan/Diagonalin ero: Heuristiikkojen välillä on lähes kymmenkertainen nopeusero.
 Jokaisessa suorituksessa polun pituus oli sama, 25 askelta.
 
+
+
+
 Seuraavan testin ajoin suurella kartalla map4, samoilla spekseillä kuin aiemmin:
+
+```java
 
             public static String map4() {
                          return "##########################################################################\n" +
@@ -227,7 +246,7 @@ Seuraavan testin ajoin suurella kartalla map4, samoilla spekseillä kuin aiemmin
                                 "#______________________________________________________________#_____#__x#\n" +
                                 "##########################################################################\n";
             }
-
+```
 
 ### Suoritusajan keskiarvo
 
@@ -241,4 +260,6 @@ Seuraavan testin ajoin suurella kartalla map4, samoilla spekseillä kuin aiemmin
 | ------------------ | ------------------ | ----------------- | --------
 | 208591              | 185300              | 186177            | 183650
 
-Suurella kartalla suoritusajat olivat jo huomattavasti pidemmät (Euclideanilla n. 3ms/suorituskerta, muilla n. 4ms/suoritus). Jokainen heuristiikka laski optimaalisen polun pituudeksi 101 askelta. Yllättäen nopeimmiten suoriutui Dijkstran algoritmi, vaikka sokkeloimaisessa rakenteessa on paljon "vapaita" nodeja mitä käydä läpi. Ei-niin-yllättävästi Euclidean distance oli taas hitain.
+Suurella kartalla suoritusajat olivat jo huomattavasti hitaammat (Euclideanilla n. 4ms/suorituskerta, muilla n. 3ms/suoritus). Jokainen heuristiikka laski optimaalisen polun pituudeksi 101 askelta. Yllättäen nopeimmiten suoriutui Dijkstran algoritmi, vaikka sokkeloimaisessa rakenteessa on paljon "vapaita" nodeja mitä käydä läpi. Ei-niin-yllättävästi Euclidean distance oli taas hitain. Mitä enemmän algoritmilla on läpikäytäviä Nodeja, sitä pidemmän ajan suoritus vie.
+
+![Kuva6](https://raw.githubusercontent.com/manuligit/TiraLabra/master/Docs/kuvat/pic6.png)

@@ -3,7 +3,7 @@ package com.mycompany.tiralabra_maven;
 import junit.framework.TestCase;
 
 /**
- * Unit test for simple App.
+ * Tests for the MyMap-class
  */
 public class MyMapTest extends TestCase
 {

@@ -1,11 +1,7 @@
 package com.mycompany.tiralabra_maven;
-
-import com.sun.istack.internal.NotNull;
-
 /**
  * Node is a coordinate within the Map. Node can be a start node, end node, wall or path.
- *
- */
+ * */
 
 public class Node implements Comparable<Node> {
     /** Node's x coordinate */
@@ -121,7 +117,7 @@ public class Node implements Comparable<Node> {
      *         -1 if the cost is smaller (this < compare)
      * */
     @Override
-    public int compareTo(@NotNull Node o) {
+    public int compareTo(Node o) {
         if (this.getHeuristic() > o.getHeuristic()) {
             return 1;
         } else if (this.getHeuristic() == o.getHeuristic()) {

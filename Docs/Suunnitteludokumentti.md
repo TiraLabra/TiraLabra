@@ -139,25 +139,28 @@ Ohjelmasta puuttuu myös tarkistus, että alku- ja loppupisteet varmasti aseteta
 
 Linkitettyä listaa voisi muokata niin, että hakuoperaatiota search `O(n)` ei lainkaan tarvitsisi käyttää poistossa, jolloin listan aikavaatimus olisi vakio `O(1). Tämä voitaisiin toteuttaa esimerkiksi sillä, että (kartta)Nodelle tallennettaisiin sen indeksi listassa, jolloin hakuoperaatiota ei tarvittaisi lainkaan. Poisto-operaation aikana noden previous voitaisiin asettaa nextiksi ja päinvastoin, jolloin aikavaativuus ei olisi lainkaan riippuvainen listan läpikäynnistä.
 
-Prioriteettijonosta muualta kuin keon huipulta poistaminen on todella hidasta. Kekoehdon ylläpitämisen vuoksi poistoa ei voi suorittaa suoraan: aluksi pitää hakea noden indeksi, sen jälkeen vähentää sen arvoa, käyttää bubbleUp-metodia sen nostattamiseksi kunnes se on keon huipulla ja vasta sitten Noden poistaminen onnistuu. Tätä voitaisiin optimoida esimerkiksi tutkimalla, olisiko Fibonaccin keko parempi toteutusvaihtoehto binäärihakupuun sijaan.
+Prioriteettijonosta muualta kuin keon huipulta poistaminen on hidasta. Kekoehdon ylläpitämisen vuoksi poistoa ei voi toteuttaa suoraan: aluksi pitää hakea noden indeksi, sen jälkeen vähentää sen arvoa, käyttää bubbleUp-metodia sen nostattamiseksi kunnes se on keon huipulla ja vasta sitten Noden poistaminen onnistuu. Tätä voitaisiin optimoida esimerkiksi tutkimalla, olisiko Fibonaccin keko parempi toteutusvaihtoehto.
+
+Lisäksi esimerkiksi Node voisi säilyttää tietoa indeksistään Prioriteettijonossa, jolloin hakuoperaatiota search ei tarvittaisi, vaan arvon vähentäminen, bubbleUp jne toimisivat suoraan. Toisaalta indeksi pitäisi silloin muistaa tallentaa aina jokaisen operaation yhteydessä, jossa Nodejen paikka vaihtuu(insert, delete, heapify, bubbleUp jne). Tämä voisi olla kova refaktoroinnin paikka.
 
 ## Testaa ja raportoi muutaman optimoinnin/muutoksen tuoma vaihtelu ohjelman suorituskykyyn.
 Testausdokumentista lopusta löytyy jonkin verran tietoa, miten ohjelma käyttyy eri heuristiikoilla. Eri kartoissa eri heuristiikkoja käyttämällä voidaan saada optimoitua hyvinkin paljon ohjelman suoritusaikaa. Yleensäottaen voidaan sanoa että tässä toteutuksessa Diagonal/Manhattan distance toimii heuristiikoista nopeiten, sillä liikkeet joka suuntaan ovat kustannuksiltaan samat. Dijkstra on yleensä hitain, sillä se käy kaikki Nodet läpi ottamatta huomioimatta heuristiikkaa lainkaan.
 
 Testasin suorituskykyraportissani aiemmin myös Javan omaa priorityqueue-luokkaa ja vertasin suoritusaikoja omaan toteutukseeni prioriteettijonosta, ja totesin että oman toteutukseni ajat olivat heikommat. Yksittäisissä suorituksissa erot eivät olleet huimat, mutta suuremmalla laskennalla ero on kuitenkin huomattava.
 
-Suurilla kartoilla suoritusaika moninkertaistuu, sillä mitä enemmän Nodeja on, sitä hitaampaa open-prioriteettijonon käsittely on puun kasvaessa kokoaan.
+Suurilla kartoilla suoritusaika moninkertaistuu, sillä mitä enemmän Nodeja on, sitä hitaampaa open-prioriteettijonon käsittely on puun kasvattassa kokoaan.
+
 
 
 ## Voiko algoritmin aikavaativuutta parantaa lisäämällä tilavaativuutta? Miten?
-Ei, sillä Astarin tilavaativuus on huonoimmassa tapauksessa eksponentiaalinen, ja täten se tarkoittaa myös että aikavaativuuskin on myös eksponentiaalinen.
+Ei oikeastaan, sillä Astarin tilavaativuus on huonoimmassa tapauksessa eksponentiaalinen, ja täten se tarkoittaa myös että aikavaativuuskin on myös eksponentiaalinen.
 Toisaalta jos heuristiikkalaskentaa ei oteta huomioon, A\* voi parhaassa mahdollisessa tapauksessa optimiheuristiikalla olla aika- ja tilavaativuudeltaan `O(n)`, jossa n on polun pituus.
 
 ## Työn mahdolliset puutteet ja parannusehdotukset
 Työn voisi toteuttaa niin, että ohjelmaan voisi lisätä omia karttoja sekä alun App.java on tällä hetkellä toteutukseltaan hieman huono,
 sillä kartan tai heuristiikan vaihtaminen onnistuu pelkästään muokkaamalla App.java-tiedostoa.
 
-Lisäksi voisi lisätä asetuksen, jossa väli-ilmansuuntiin liikkuminen poistettaisiin, jolloin Manhattan distancella ja Diagonal distancen eroja voisi tutkia.
+Lisäksi voisi lisätä asetuksen, jossa väli-ilmansuuntiin liikkuminen poistettaisiin, jolloin Manhattan distancella ja Diagonal distancen eroja voisi tutkia. Algoritmi ei myöskään ole täydellinen, sillä vaikka optimaaliset polut löytyvätkin ohjelma tekee jostain syystä liian mutkikkaita polkuja. Tämä pitäisi tutkia ja korjata.
 
 
 ## Lähteet
