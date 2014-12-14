@@ -20,8 +20,9 @@ test:
 
 # automatic dependency generation
 
-DEPDIR = .depends
-df = $(DEPDIR)/$(*F)
+# DEPDIR = .depends
+# df = $(DEPDIR)/$(*F)
+df = $(*F)
 
 MAKEDEPEND = gcc -M -I. $(CPPFLAGS) -o $(DEPDIR)/$*.d $<
 %.o : %.cpp

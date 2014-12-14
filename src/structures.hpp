@@ -15,17 +15,15 @@ struct coordinate {
     }
 };
 
+/**
+ * Structure representing a move from one coordinate to another
+ */
 struct cmove {
     coordinate from, to;
 
     cmove() {}
     cmove(int x1, int y1, int x2, int y2) :
         from(x1,y1), to(x2,y2) {}
-
-    // cmove(coordinate &c, int x2, int y2) :
-    //     from(c), to(x2,y2) {}
-    // cmove(coordinate &c1, coordinate &c2) :
-    //     from(c1), to(c2) {}
 };
 
 /**
@@ -51,10 +49,10 @@ template <class T> struct linkedList {
     }
 
     ~linkedList() {
-        free();
+        freeList();
     }
     
-    void free() {
+    void freeList() {
         if (!root || !size) return;
         
         listItem<T> *next = root;
@@ -66,6 +64,13 @@ template <class T> struct linkedList {
         }
     }
 
+    /**
+     * Return item at the given index from the list
+     * 
+     * @param idx index of item
+     * 
+     * @return T 
+     */
     T operator [](int idx) {
         listItem<T> *ptr = root; 
         while (idx-- > 0 && ptr != NULL)
@@ -92,13 +97,20 @@ template <class T> struct linkedList {
     }
 
     /**
-     * Add item to list
+     * Add new item to list
+     *  
+     * @param item 
      */
     void add(T item) {
         listItem<T> *newItem = new listItem<T>(item);
         add(newItem);
     }
 
+    /**
+     * Add new listItem to list
+     * 
+     * @param newItem 
+     */
     void add(listItem<T> *newItem) {
         if (root == NULL) {
             // if we don't have a root, initialize list
@@ -130,6 +142,9 @@ template <class T> struct linkedList {
 
 };
 
+/**
+ * Tree structure that stores child nodes in a linked list
+ */ 
 template <class T> struct tree {
     T item;
     tree<T> *parent;
@@ -148,27 +163,45 @@ template <class T> struct tree {
     }
 
     ~tree() {
-        free();
+        freeTree();
     }
 
-    free() {
+    /**
+     * Free up the tree and all its nodes
+     */
+    void freeTree() {
         for (int i = 0; i < children->size; i++) {
-            (*children)[i]->free();
+            (*children)[i]->freeTree();
         }
-        children->free();
+        children->freeList();
         delete children;
     }
 
+    /**
+     * insert new item into tree
+     * 
+     * @param newItem 
+     */
     void insert(T newItem) {
         tree<T>* newNode = new tree<T>(newItem);
         insert(newNode);
     }
 
+    /**
+     * insert new node item into tree
+     * 
+     * @param newNode 
+     */
     void insert(tree<T> *newNode) {
         newNode->parent = this;
         children->add(newNode);
     }
 
+    /**
+     * remove node from tree
+     * 
+     * @param node 
+     */
     void removeNode(tree<T> *node) {
         children->del(node);
     }

@@ -108,6 +108,9 @@ public:
 
     }
 
+    /**
+     * Prints out the current board state in FEN notation 
+     */
     void printFEN() {
         for (int y = 7; y >= 0; y--) {
             int e = 0;
@@ -144,6 +147,11 @@ public:
         return empty;
     }
 
+    /**
+     * Read in a FEN formatted string describing the board state.
+     * 
+     * @param fen FEN string
+     */
     void readFEN(char *fen) {
         if (strstr(fen, " w ")) currentPlayer = PC_White;
         else if (strstr(fen, " b ")) currentPlayer = PC_Black;
@@ -189,11 +197,17 @@ public:
         cout << "    a   b   c   d   e   f   g   h  \n";
     }
 
+    /**
+     * Read in player's move from standard input
+     * 
+     * @return bool true if the move is valid, false if not
+     */
     bool readMove() {
         string movestr;
         int x1, y1, x2, y2;
         
         for (;;) {
+            cout << "Enter move (example: a2a4 moves piece from a2 to a4): " << endl;
             cin >> movestr;
             if (movestr.length() != 4) {
                 cout << "Invalid move \"" + movestr + "\"" << endl;
@@ -209,9 +223,12 @@ public:
             if (doMove(x1,y1,x2,y2)) {
                 break;
             }
-            else
-                cout << "Invalid move \"" + movestr + "\"" << endl;
-            
+            else {
+                cout << "Invalid move \"" + movestr + "\"" 
+                if (beingChecked(currentPlayer))
+                    cout << " King is in check!";
+                cout << endl;
+            }
         } 
         
     }
@@ -235,15 +252,32 @@ public:
                 else
                     score -= pieceValue;
 
-                // if (color == PC_White && j <= 2) score -= 10;
-                // else if (color == PC_Black && j >= 6) score -= 10;
+                if (color == PC_White && j <= 2) score -= 1;
+                else if (color == PC_Black && j >= 6) score -= 1;
             }
         }
 
         if (beingChecked(color))
-            score -= 10000;
-        if (beingChecked(PC_OTHER(color)))
-            score += 10000;
+            score -= 10;
+        if (beingChecked(PC_OTHER(color))) {
+            
+            score += 10;
+
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    if (gameState[x][y].type == PT_King &&
+                        gameState[x][y].color == PC_OTHER(color)) {
+                        linkedList<cmove> *moves = findMoves(x, y);
+                        int nmoves = moves->size;
+                        delete moves;
+
+                        // opponent's king in check and cannot move, we win!
+                        if (nmoves == 0) score += 10000;
+                    }
+                }
+            }
+        }
+        
         
         return score;
     }
@@ -255,6 +289,46 @@ public:
         return (x >= 0 && x < 8 && y >= 0 && y < 8);
     }
 
+    /**
+     * Checks if there is a winner and prints it out if there is 
+     * @return bool 
+     */
+    bool checkWin() {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (gameState[x][y].type == PT_King &&
+                    beingChecked(gameState[x][y].color)) {
+
+                    linkedList<cmove> *moves = findMoves(x, y);
+                    int nmoves = moves->size;
+                    delete moves;
+
+                    if (nmoves == 0) {
+                        print();
+                        // checkmate
+                        const char *winner = gameState[x][y].color == PC_White ?
+                            "Black" : "White";
+                        cout << winner << " wins!" << endl;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Check if the given move is valid and if yes, change the board 
+     * and give turn to other player. 
+     * 
+     * @param x1 starting x coordinate
+     * @param y1 starting y coordinate
+     * @param x2 end x coordinate
+     * @param y2 end y coordinate
+     * @param assumeLegal true if we don't need to check if move is legal
+     * 
+     * @return bool true if move is valid, false if not
+     */
     bool doMove(int x1, int y1, int x2, int y2, bool assumeLegal=false) {
         if (!assumeLegal && !moveLegal(x1, y1, x2, y2))
             return false;
@@ -277,7 +351,7 @@ public:
             }
             else return false;
         }
-        
+
         gameState[x2][y2] = gameState[x1][y1];
         gameState[x1][y1] = empty;
 
@@ -285,6 +359,13 @@ public:
         return true;
     }
 
+    /**
+     * Test if the given player's king is currently in check
+     * 
+     * @param player player to check for
+     * 
+     * @return bool true if king in check
+     */
     bool beingChecked(pieceColor player) {
         int kx=-1, ky=-1;
         for (int x = 0; x < 8; x++) {
@@ -300,8 +381,10 @@ public:
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (gameState[x][y].color == PC_OTHER(player) &&
-                    moveLegal(x, y, kx, ky, true)) 
+                    moveLegal(x, y, kx, ky, true)) {
                     return true;
+                }
+                
             }
         }
         
@@ -513,7 +596,16 @@ public:
     }
 
     /**
+     * Find ALL moves for the current player
+     * @return list of moves
+     */
+    linkedList< cmove >* findMoves() {
+        return findMoves(currentPlayer);
+    }
+
+    /**
      * Find ALL moves for the given player
+     * @param player player whos moves to search for
      * @return list of moves
      */
     linkedList< cmove >* findMoves(pieceColor player) {
@@ -543,6 +635,16 @@ public:
         return moves;
     }
     
+    /**
+     * Find possible moves for the piece in given coordinates
+     * 
+     * @param moves linked list of possible moves
+     * @param player player we search moves for
+     * @param x x coordinate of piece
+     * @param y y coordinate of piece
+     * 
+     * @return int number of moves
+     */
     int findMoves(linkedList< cmove > &moves, pieceColor player, int x, int y) {
 
         if (gameState[x][y].color != player) return 0;
@@ -687,6 +789,7 @@ public:
         {RookW,   PawnW, empty, empty, empty, empty, PawnB, RookB},
     };
 
+#if 0
     chessPiece testState2[8][8] = {
         {RookW, PawnW,   empty,   empty, empty,   BishopB, PawnB,   RookB},
         // {RookW, empty,   empty,   empty, empty,   BishopB, PawnB,   RookB},
@@ -709,89 +812,9 @@ public:
         { empty,  empty, empty, empty, RookB,   empty, empty, empty, },
         { empty,  empty, empty, empty, empty,   empty, empty, empty, },
     };
+#endif
 
     gameState_t gameState;
     pieceColor currentPlayer;
 };
 
-
-class moveNode {
-public:
-    pieceColor playerColor;
-    chessBoard board;
-    int value;
-    cmove prev_move;
-    // linkedList<cmove> *moves;
-
-    // moveNode() : moves(0) {}
-    moveNode()  {}
-    
-    moveNode(pieceColor c, chessBoard b, cmove m) :
-        playerColor(c), board(b), prev_move(m) {
-
-        value = b.evaluate(c);
-        // moves = b.findMoves(c);
-    }
-
-    ~moveNode() {
-        // if (moves) delete moves;
-    }
-
-    moveNode(pieceColor c, chessBoard b, int val) :
-        playerColor(c), board(b), value(val) {
-        // moves = b.findMoves(c);
-    }
-};
-    
-/**
- * Class containing the tree of possible moves, and the value of each
- * game state for the given player.
- */
-class moveTree {
-public:
-    tree< moveNode* > *gameTree;
-
-    moveTree(chessBoard &b, pieceColor color) {
-        // static moveNode rootNode (color, b, cmove(-1,-1,-1,-1));
-        // gameTree = new tree< moveNode >(rootNode);
-        moveNode *rootNode = new moveNode(color, b, cmove(-1,-1,-1,-1));
-        gameTree = new tree< moveNode* >(rootNode);
-    }
-
-    #if 1
-    void freeNodes(tree< moveNode* > *ptr) {
-        delete ptr->item;
-        for (int i = 0; i < ptr->children->size; i++) {
-            freeNodes((* ptr->children)[i]);
-        }
-    }
-    
-    ~moveTree() {
-        if (gameTree) {
-            freeNodes(gameTree);
-            gameTree->free();
-        }
-    }
-    #endif
-
-    void buildTree(tree< moveNode* > *root, int depth) {
-        if (depth <= 0) return;
-        
-        // linkedList<cmove> *moves = root->item->moves;
-        linkedList<cmove> *moves = root->item->board.findMoves(root->item->board.currentPlayer);
-
-        for (int i = 0; i < moves->size; i++) {
-            chessBoard nb = root->item->board;
-            cmove m = (*moves)[i];
-            nb.doMove(m.from.x, m.from.y, m.to.x, m.to.y);
-
-            moveNode *nn = new moveNode(PC_OTHER(nb.currentPlayer), nb, m);
-            tree< moveNode* > *newnode = new tree< moveNode* >(nn);
-            buildTree(newnode, depth-1);
-            
-            root->insert(newnode);
-        }
-
-        delete moves;
-    }
-};
