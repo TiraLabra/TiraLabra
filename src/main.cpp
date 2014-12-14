@@ -25,9 +25,9 @@ int main(int argc, char *argv[]) {
         board.print();
         board.readMove();
 
-        int score=0;
         clock_t start = clock();
-        cmove aimove = ai.findMove(board, depth, &score);
+        cmove aimove;
+        int score = ai.findMove(board, depth, aimove);
         clock_t end = clock();
 
         printf("\nFound a move in %f seconds.\n", ((float)end - start) / CLOCKS_PER_SEC);

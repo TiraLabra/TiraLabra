@@ -21,8 +21,7 @@ public:
         value(v), prev_move(m) {
     }
 
-    ~moveNode() {
-    }
+    // ~moveNode() {}
 };
     
 /**
@@ -39,16 +38,15 @@ public:
     }
 
     void freeNodes(tree< moveNode* > *ptr) {
+        for (int i = 0; i < ptr->children->size; i++)
+            freeNodes((*ptr->children)[i]);
         delete ptr->item;
-        for (int i = 0; i < ptr->children->size; i++) {
-            freeNodes((* ptr->children)[i]);
-        }
     }
     
     ~moveTree() {
         if (gameTree) {
             freeNodes(gameTree);
-            gameTree->freeTree();
+            delete gameTree;
         }
     }
 
@@ -74,10 +72,10 @@ public:
             moveNode *nn = 0;
             // we only use the values calculated at the last nodes, so evaluation is
             // skipped for all other depths
-            if (depth > 1)
-                nn = new moveNode(0, m);
-            else
+            if (depth == 1)
                 nn = new moveNode(nb.evaluate(nb.currentPlayer), m);
+            else
+                nn = new moveNode(0, m);
             tree< moveNode* > *newnode = new tree< moveNode* >(nn);
             buildTree(nb, newnode, depth-1);
 
@@ -161,7 +159,7 @@ public:
      *  
      * @return cmove move chosen by the AI 
      */
-    cmove findMove(chessBoard &board, int treeDepth, int *score_out=0) {
+    int findMove(chessBoard &board, int treeDepth, cmove &aimove) {
         moveTree mt;
         mt.buildTree(board, mt.gameTree, treeDepth);
         // printf("current player is %d\n", board.currentPlayer);
@@ -173,7 +171,6 @@ public:
         
         int bestValue = INT_MIN;
         
-        cmove aimove;
         for (int i = 0; i < ch->size; i++) {
             tree<moveNode*> *n = (*ch)[i];
 
@@ -183,21 +180,20 @@ public:
             // int value = minimax(n, treeDepth-1, false);
             int value = alphabeta(n, treeDepth-1, INT_MIN, INT_MAX, false);
 
-            cmove move = (*ch)[i]->item->prev_move;
 
 #if 0
+            cmove move = (*ch)[i]->item->prev_move;
             printf("Move %c%d %c%d, score %d\n",
                    move.from.x + 'a', move.from.y + 1,
                    move.to.x + 'a', move.to.y + 1, value);
 #endif
 
             if (value > bestValue) {
-                aimove = move;
+                aimove = (*ch)[i]->item->prev_move;
                 bestValue = value;
             }
         }
 
-        if (score_out) *score_out = bestValue;
-        return aimove;
+        return bestValue;
     }
 };

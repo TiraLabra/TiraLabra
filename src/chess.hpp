@@ -224,9 +224,9 @@ public:
                 break;
             }
             else {
-                cout << "Invalid move \"" + movestr + "\"" 
+                cout << "Invalid move \"" + movestr + "\"";
                 if (beingChecked(currentPlayer))
-                    cout << " King is in check!";
+                    cout << ", King is in check!";
                 cout << endl;
             }
         } 

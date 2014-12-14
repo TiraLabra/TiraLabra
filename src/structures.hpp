@@ -62,7 +62,9 @@ template <class T> struct linkedList {
             root = next;
             delete item;
         }
+        size = 0;
     }
+
 
     /**
      * Return item at the given index from the list
@@ -170,11 +172,11 @@ template <class T> struct tree {
      * Free up the tree and all its nodes
      */
     void freeTree() {
-        for (int i = 0; i < children->size; i++) {
+        if (!children) return;
+        for (int i = 0; i < children->size; i++)
             (*children)[i]->freeTree();
-        }
-        children->freeList();
         delete children;
+        children = 0;
     }
 
     /**
