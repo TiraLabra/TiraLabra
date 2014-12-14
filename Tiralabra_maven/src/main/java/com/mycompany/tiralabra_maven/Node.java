@@ -18,7 +18,7 @@ public class Node implements Comparable<Node> {
     private int cost;
     /** Node's char in map */
     private Character character;
-    /** Heuristic cost of the node */
+    /** Heuristic cost of the node; Priority rank in the queue */
     private int heuristic;
 
     /** Returns the character assigned to the node */

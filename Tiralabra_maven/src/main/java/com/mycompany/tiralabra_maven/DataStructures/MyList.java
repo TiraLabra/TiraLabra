@@ -31,7 +31,6 @@ public class MyList {
 
     }
 
-
     /** Adds the node in the list: the new insert is always in the beginning of the list
      *
      * @param node node to be added

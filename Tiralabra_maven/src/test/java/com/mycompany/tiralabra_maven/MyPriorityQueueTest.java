@@ -9,10 +9,6 @@ public class MyPriorityQueueTest extends TestCase {
     protected Node node3;
     protected Node node4;
     protected Node node5;
-    protected Node node6;
-    protected Node node7;
-    protected Node node8;
-    protected Node node9;
     protected MyPriorityQueue queue;
 
 
@@ -23,19 +19,16 @@ public class MyPriorityQueueTest extends TestCase {
         node3 = new Node(3, 3);
         node4 = new Node(4, 4);
         node5 = new Node(5, 5);
-        node6 = new Node(6, 6);
-        node7 = new Node(7, 7);
-        node8 = new Node(8, 8);
-        node9 = new Node(9, 9);
         node1.setCost(1);
         node2.setCost(2);
         node3.setCost(3);
         node4.setCost(4);
         node5.setCost(5);
-        node6.setCost(6);
-        node7.setCost(7);
-        node8.setCost(8);
-        node9.setCost(9);
+        node1.setHeuristic(1);
+        node2.setHeuristic(2);
+        node3.setHeuristic(3);
+        node4.setHeuristic(4);
+        node5.setHeuristic(5);
     }
 
 
@@ -78,7 +71,7 @@ public class MyPriorityQueueTest extends TestCase {
         queue.insert(node1);
         queue.decreaseCost(queue.indexOf(node1), 0);
 
-        assertTrue(queue.min().getCost() == 0);
+        assertTrue(queue.min().getHeuristic() == 0);
     }
 
 

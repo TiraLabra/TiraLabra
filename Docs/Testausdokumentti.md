@@ -82,11 +82,13 @@ Javan prioriteettijonoa käyttämällä suoritusnopeus on huomattavasti parempi.
 
 ***
 
-Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map2, joka on avoin kartta kahden pisteen välillä.
+Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map2, joka on avoin kahden pisteen välillä.
 
+### Huom! Näistä testeistä löytyi bugi, joka vaikutti suoritusaikoihin joten ajat eivät välttämättä olleet korrektit.
 ### Yksittäiset testit
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
 | ------------------ | ------------------ | ----------------- | --------
 | 8153               | 7045               | 7204              | 739
 | 7897               | 7123               | 7188              | 754
@@ -96,13 +98,13 @@ Seuraavassa testissä käytettiin jokaista heuristiikkaa erikseen samassa kartas
 
 ### Keskiarvo
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
 | ------------------ | ------------------ | ----------------- | --------
 | 7915               | 7101               | 7228              | 754
 
 ### Yhteensä
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
 | ------------------ | ------------------ | ----------------- | --------
 | 39575              | 35506              | 36142             | 3774
 
@@ -114,14 +116,129 @@ Tässä testissä ajettiin ohjelman map3-karttaa joka ajettiin 10000 kertaa, ja 
 
 ### Keskiarvo
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
 | ------------------ | ------------------ | ----------------- | --------
 | 4477               | 5621               | 5623              | 1884
 
 ### Yhteensä
 
-| Euclidean distance | Manhattan distance | Diagonal distance | Djikstra
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
 | ------------------ | ------------------ | ----------------- | --------
 | 22388              | 28109              | 28116             | 9421
 
 Edelliseen karttaan verrattuna muiden algoritmien suoritusajat nopeutuivat, mutta dijkstran nopeus oli noin kolme kertaa hitaampi. Tämä johtuu siitä, ettei noodeja pisteytetä vaan haetaan niin kauan, kunnes sopiva löytyy. Euclidean distance oli myös hieman nopeampi kuin muut algoritmit.
+
+
+## Suorituskykytestaus 2 toimivilla heuristiikoilla
+
+Edellisten testien jälkeen huomasin koodissa ilmenneen bugin, jonka takia heuristiikkojen laskeminen ei toiminut täysin oikein. Tein siis uudet suorituskykytestit, joiden tulokset ovat seuraavat:
+
+Testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map3) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa. Karttana toimi map3:
+
+
+
+        public static String map3() { 
+        return "##############################\n" + 
+               "#____________________________#\n" + 
+               "#_________##############_____#\n" + 
+               "#______________________#_____#\n" + 
+               "#___________o__________#__x__#\n" + 
+               "#______________________#_____#\n" + 
+               "#______________________#_____#\n" + 
+               "#_________##############_____#\n" + 
+               "#____________________________#\n" + 
+               "#____________________________#\n" + 
+               "##############################"; }
+
+
+### Suoritusajan keskiarvo
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 1567               | 1176               | 1176              | 4378
+| 1414 | 1165 | 1184 | 4293
+
+### Yhteensä
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 7836              | 5881              | 5880             | 21892
+| 7071 | 5825 | 5921 | 21465
+
+Edellisiin testeihin verrattuna suoritusajat ovat muilla heuristiikoilla huomattavasti nopeammat, paitsi Dijkstran.
+Tämä selittyy sillä, että Dijkstran algoritmi joutuu käymään paljon suuremman määrän nodeja.
+
+Muiden tulokset ovat odotettavat: Euclidean distance on Manhattan- ja Diagonal distancea hieman hitaampi kalliimman laskuoperaationsa takia. Manhattan ja Diagonal ovat tässä toteutuksessa periaatteessa sama algoritmi.
+
+***
+
+Testissä käytettiin jokaista heuristiikkaa erikseen samassa kartassa(map2) ja ajettiin ne 10000 kertaa, ja toistettiin tämä viisi kertaa.
+
+            public static String map2() {
+                return "##############################\n" +
+                        "#o___________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#____________________________#\n" +
+                        "#__________________________x_#\n" +
+                        "##############################";
+            }
+
+
+
+### Suoritusajan keskiarvo
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 2141               | 273            | 267             | 6035
+| 2175 | 261 | 260 | 5841
+
+### Yhteensä
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 10706              | 1368              | 1338             | 30177
+| 10879 | 1309 | 1302 | 29209
+
+Avoimessa kartassa Manhattan ja Diagonal distance ovat jälleen nopeimmat. Dijkstra on edelleen hitain, sillä sen pitää käydä läpi eniten nodeja päästäkseen maaliin. Erityisen huomioitavaa on
+Euclidean distancen ja Manhattan/Diagonalin ero: Heuristiikkojen välillä on lähes kymmenkertainen nopeusero.
+Jokaisessa suorituksessa polun pituus oli sama, 25 askelta.
+
+Seuraavan testin ajoin suurella kartalla map4, samoilla spekseillä kuin aiemmin:
+
+            public static String map4() {
+                         return "##########################################################################\n" +
+                                "#o____#________________________________________________________#_________#\n" +
+                                "#_____#_####################################################_###_#___###_#\n" +
+                                "#_____#_#___________#________________________________________#_#_#___#___#\n" +
+                                "#_______#___________#________________________________________#_#_#___#_###\n" +
+                                "#######_#___________#_########################################_#_#___#_###\n" +
+                                "#_______#___________#____________________________________________#___#___#\n" +
+                                "#_#######________________________________________________________#___###_#\n" +
+                                "#_______#___________#____________________________________________#_______#\n" +
+                                "#######_#___________#____________________________________________#___###_#\n" +
+                                "#_______#___________#________________________________________#_#_#___#___#\n" +
+                                "#_#######___________#________________________________________#_#_#___#___#\n" +
+                                "#_______#_####################################################_#_#___#___#\n" +
+                                "#______________________________________________________________#_____#__x#\n" +
+                                "##########################################################################\n";
+            }
+
+
+### Suoritusajan keskiarvo
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 41718               | 37060            | 37235             | 36730
+
+### Yhteensä
+
+| Euclidean distance | Manhattan distance | Diagonal distance | Dijkstra
+| ------------------ | ------------------ | ----------------- | --------
+| 208591              | 185300              | 186177            | 183650
+
+Suurella kartalla suoritusajat olivat jo huomattavasti pidemmät (Euclideanilla n. 3ms/suorituskerta, muilla n. 4ms/suoritus). Jokainen heuristiikka laski optimaalisen polun pituudeksi 101 askelta. Yllättäen nopeimmiten suoriutui Dijkstran algoritmi, vaikka sokkeloimaisessa rakenteessa on paljon "vapaita" nodeja mitä käydä läpi. Ei-niin-yllättävästi Euclidean distance oli taas hitain.

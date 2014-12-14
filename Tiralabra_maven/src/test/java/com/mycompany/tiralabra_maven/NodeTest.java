@@ -32,11 +32,11 @@ public class NodeTest extends TestCase {
     public void testCompareToWorks()
     {
         Node cheaper = new Node(1,0);
-        cheaper.setCost(1);
+        cheaper.setHeuristic(1);
         Node same = new Node(1,1);
-        same.setCost(1);
+        same.setHeuristic(1);
         Node expensive = new Node(0,0);
-        expensive.setCost(10);
+        expensive.setHeuristic(10);
         assertTrue(cheaper.compareTo(expensive) == -1);
         assertTrue(expensive.compareTo(cheaper) == 1);
         assertTrue(cheaper.compareTo(same) == 0);
