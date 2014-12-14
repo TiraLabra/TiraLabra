@@ -10,8 +10,9 @@ import com.mycompany.tiralabra_maven.DataStructures.MyPriorityQueue;
  *
  */
 public class Astar {
-    /** Pathlenght for testing purposes */
+    /** Path length for testing purposes */
     private int pathLength;
+    /** Runtime for testing purposes */
     private long runTime;
 
     public void run(String map, int heuristicId) {
@@ -40,12 +41,6 @@ public class Astar {
         /** list of nodes that have been checked */
         MyList closed = new MyList();
 
-
-
-
-        /** Max steps to get to the end of path: */
-        //int steps = 0;
-
         /**
          * Find neighbors of the start node which are walkable,
          * find out all possible directions of the current node,
@@ -53,11 +48,6 @@ public class Astar {
          * Then it calculates which of the available nodes is the best one cost-wise.
          */
         while (!(closed.contains(end))) {
-            // && (steps < 1000)
-            /** If there is no path to be found, return */
-            //if (steps == 999) {
-            //   break;
-            //}
             /** Break the loop if current node is end node */
             if (current.getX() == end.getX() && current.getY() == end.getY()) {
                 end.setParent(current.getParent());
@@ -65,12 +55,11 @@ public class Astar {
             }
 
             /** current = remove lowest rank item from OPEN */
-            //current = open.poll();
             current = open.deleteMinimum();
             /** add current to the searched list */
             closed.add(current);
 
-
+            /** Start by checking all the neighbors of the current: */
             for (int x = -1; x < 2; x++) {
                 for (int y = -1; y < 2; y++) {
                     if ((x == 0) && (y == 0)) {
@@ -81,46 +70,37 @@ public class Astar {
                     int xp = x + current.getX();
                     int yp = y + current.getY();
 
-                    //steps++;
+                    /** check if the neighbour node is a valid point in a map and that it isn't a wall: */
                     if (isWalkableXY(xp, yp, maxX, maxY) && !nodes[yp][xp].isWall()) {
-
                         /** for neighbours of the current:
                          * set node which we are going through now as neighbor
-                         * F = G+H
-                         * cost = g(current) + movement cost(current, neighbor)
-                         * terrain cost is 1 because no terrain difference
-                         * cost = 1 + calculateHeuristic(end, neighbor); */
-                        double nextStepCost = current.getCost() + heuristic.cost(xp, yp, end);
-
+                         * cost = cost of current node + movement cost between current and neighbor
+                         * Since there are no differences in movement costs(terrains etc), the value is currently 1.
+                         * */
                         Node neighbor = nodes[yp][xp];
+                        double nextStepCost = current.getCost() + 1;
 
-                        /**  if neighbor in OPEN and cost less than g(neighbor): */
+                        /** if neighbor is in open and costs less than neighbor node */
                         if (open.contains(neighbor) && nextStepCost < neighbor.getCost()) {
-                            /** remove neighbor from OPEN, because new path is better */
-                            //open.remove(neighbor);
+                            /** remove neighbor from open because new path is better: */
                             open.removeNode(neighbor);
 
                         }
 
-                        /** if neighbor in CLOSED and cost less than g(neighbor): */
+                        /** if neighbor is in closed and next step costs less than neighbor: */
                         if (closed.contains(neighbor) && nextStepCost < neighbor.getCost()) {
-                            /** remove neighbor from CLOSED */
+                            /** remove neighbor from closed */
                             closed.remove(neighbor);
                         }
 
-                        /** if neighbor not in OPEN and neighbor not in CLOSED: */
+                        /** if neighbor if not in open or closed: */
                         if (!(open.contains(neighbor)) && !(closed.contains(neighbor))) {
 
-                            /**
-                             * set g(neighbor) to cost
-                             * cost = 1;
-                             * add neighbor to OPEN
-                             */
                             neighbor.setCost((int) (nextStepCost));
-                            //open.add(neighbor);
+                            /** set priority queue rank to cost of neighbor plus heuristic cost: */
+                            neighbor.setHeuristic(neighbor.getCost() + (int) heuristic.cost(xp, yp, end));
+                            /** add neighbor to open: */
                             open.insert(neighbor);
-                            /** set priority queue rank to g(neighbor) + h(neighbor) */
-
                             /** set neighbor's parent to current */
                             neighbor.setParent(current);
 
@@ -191,7 +171,7 @@ public class Astar {
         return false;
     }
 
-    /** Return path lenght */
+    /** Return path length */
     public int getPathLength() {
         return pathLength;
     }

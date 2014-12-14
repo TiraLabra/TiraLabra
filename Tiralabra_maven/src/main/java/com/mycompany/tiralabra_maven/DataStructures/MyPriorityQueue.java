@@ -157,8 +157,8 @@ public class MyPriorityQueue {
      *
      * */
     public void decreaseCost(int i, int newCost) {
-        if (newCost < table[i].getCost()) {
-            table[i].setCost(newCost);
+        if (newCost < table[i].getHeuristic()) {
+            table[i].setHeuristic(newCost);
             bubbleUp(i);
         }
     }

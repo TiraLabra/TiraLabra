@@ -11,8 +11,6 @@ public class App
 {
     public static void main( String[] args )
     {
-
-
         System.out.println(logo());
 
         /** @param i A checker for which heuristic to use;
@@ -22,28 +20,13 @@ public class App
          *  0 = Dijkstra's algorithm (no heuristic)
          */
         //int i = 0;
-        String map = map1();
+        String map = map3();
         //printOne(map, i);
 
         printAll(map);
+        printAll(map2());
+        printAll(map1());
 
-
-        /** For performance testing: */
-        /*
-        long aikaAlussa2 = System.currentTimeMillis();
-        for (int j = 0; j < 5; j++) {
-            long aikaAlussa = System.currentTimeMillis();
-            for (int i = 0; i < 100000; i++) {
-                astar.run();
-            }
-            long aikaLopussa = System.currentTimeMillis();
-            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-            System.out.println("Aikaa keskimäärin per operaatio: " + (aikaLopussa - aikaAlussa)/100000 + "ms.");
-        }
-        long aikaLopussa2 = System.currentTimeMillis();
-        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa2 - aikaAlussa2) + "ms.");
-        System.out.println("Aikaa keskimäärin per operaatio: " + (aikaLopussa2 - aikaAlussa2)/5 + "ms.");
-        */
     }
 
 
@@ -97,9 +80,9 @@ public class App
                 "#o#_______________________##x#\n" +
                 "#_#_######################_#_#\n" +
                 "#_#_#______________________#_#\n" +
-                "#_#_#_##################_#_#_#\n" +
-                "#_#_#_#__________________#_#_#\n" +
-                "#_#_#_##################_#_#_#\n" +
+                "#_#_#_______######_______#_#_#\n" +
+                "#_#_#__####________####__#_#_#\n" +
+                "#_#_#____________________#_#_#\n" +
                 "#_#_#__________________#_#_#_#\n" +
                 "#_#_#_##################_#_#_#\n" +
                 "#________________________#___#\n" +

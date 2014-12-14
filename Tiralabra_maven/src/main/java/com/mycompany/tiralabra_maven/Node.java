@@ -18,6 +18,8 @@ public class Node implements Comparable<Node> {
     private int cost;
     /** Node's char in map */
     private Character character;
+    /** Heuristic cost of the node */
+    private int heuristic;
 
     /** Returns the character assigned to the node */
     public Character getCharacter() {
@@ -35,6 +37,15 @@ public class Node implements Comparable<Node> {
     /** Sets cost of the node */
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    /** Returns heuristic cost of the node */
+    public int getHeuristic() {
+        return heuristic;
+    }
+    /** Sets heuristic cost of the node */
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
     }
 
 
@@ -111,9 +122,9 @@ public class Node implements Comparable<Node> {
      * */
     @Override
     public int compareTo(@NotNull Node o) {
-        if (this.getCost() > o.getCost()) {
+        if (this.getHeuristic() > o.getHeuristic()) {
             return 1;
-        } else if (this.getCost() == o.getCost()) {
+        } else if (this.getHeuristic() == o.getHeuristic()) {
             return 0;
         }
         return -1;
