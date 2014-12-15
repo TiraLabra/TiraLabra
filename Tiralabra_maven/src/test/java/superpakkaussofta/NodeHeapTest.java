@@ -35,7 +35,7 @@ public class NodeHeapTest {
     @Before
     public void setUp() {
         byte[] data = {10, 10, 10, 20, 20};
-        heap = new NodeHeap(data);
+        heap = new NodeHeap(data, 10);
     }
     
     @After
@@ -49,8 +49,8 @@ public class NodeHeapTest {
     public void testBuildHeapFromData(){
         byte[] b = {20, 10, 20};
         
-        NodeHeap res = new NodeHeap(b);
-        NodeHeap exp = new NodeHeap();
+        NodeHeap res = new NodeHeap(b, 10);
+        NodeHeap exp = new NodeHeap(10);
         exp.add(new HuffmanNode((byte) 20, 2));
         exp.add(new HuffmanNode((byte) 10, 1));
         
@@ -63,8 +63,8 @@ public class NodeHeapTest {
     @Test
     public void testBuildHeapFromString(){
         
-        NodeHeap res = new NodeHeap("20a2b10a1b");
-        NodeHeap exp = new NodeHeap();
+        NodeHeap res = new NodeHeap("20a2b10a1b", 10);
+        NodeHeap exp = new NodeHeap(10);
         exp.add(new HuffmanNode((byte) 20, 2));
         exp.add(new HuffmanNode((byte) 10, 1));
         

@@ -11,7 +11,6 @@ package superpakkaussofta;
  */
 public class HuffmanNode {
     
-    //voinee laittaa finaleiksi
     private HuffmanNode left;
     private HuffmanNode right;
     private byte b;

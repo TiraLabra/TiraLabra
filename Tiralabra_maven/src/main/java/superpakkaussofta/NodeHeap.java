@@ -22,18 +22,21 @@ public class NodeHeap {
     /**
      * Creates an empty NodeHeap
      * 
+     * 
+     * @param initSize initial size of the heap
      */
-    public NodeHeap(){
-        nodes = new HuffmanNode[10];
+    public NodeHeap(int initSize){
+        nodes = new HuffmanNode[initSize];
     }
     
     /**
      * Constructs a min heap based on frequancy of bytes in data.
      * 
-     * @param data 
+     * @param data byte array
+     * @param initSize initial size of the heap
      */
-    public NodeHeap(byte[] data){
-        nodes = new HuffmanNode[10];
+    public NodeHeap(byte[] data, int initSize){
+        nodes = new HuffmanNode[initSize];
         
         int[] counts = countBytes(data);
         
@@ -42,10 +45,11 @@ public class NodeHeap {
     /**
      * Constructs a min heap from a Huffman tree String representation.
      * 
-     * @param tree 
+     * @param tree String representation of a HuffmanTree
+     * @param initSize initial size of the heap
      */
-    public NodeHeap(String tree){
-        nodes = new HuffmanNode[10];
+    public NodeHeap(String tree, int initSize) throws NumberFormatException{
+        nodes = new HuffmanNode[initSize];
         
         System.out.println("Parsitaan tavumääriä..");
         

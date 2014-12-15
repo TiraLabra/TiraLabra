@@ -6,7 +6,7 @@
 
 package superpakkaussofta;
 
-import java.math.BigInteger;
+import java.io.IOException;
 
 /**
  * Main class.
@@ -19,7 +19,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        long aikaAlussa = System.currentTimeMillis();
+        //long aikaAlussa = System.currentTimeMillis();
         
         FileIO fio = new FileIO();
         HuffmanCompressor compressor = new HuffmanCompressor();
@@ -33,58 +33,90 @@ public class Main {
             uncompress(fio, compressor, args[1]);
         }
         
-        //compress(fio, compressor, "kuvajpeg.jpg");
-        //uncompress(fio, compressor, "kuvapieni.bmp.huf");
+        //compress(fio, compressor, "lorem1M.txt");
+        //uncompress(fio, compressor, "lorem1M.txt.huf");
         
         
-        long aikaLopussa = System.currentTimeMillis();
-        System.out.println("AIKA: " + (aikaLopussa - aikaAlussa) + " ms.");
+        //long aikaLopussa = System.currentTimeMillis();
+        //System.out.println("AIKA: " + (aikaLopussa - aikaAlussa) + " ms.");
         
     }
+    /**
+     * Compresses given file.
+     * 
+     * @param fio FileIO
+     * @param compressor HuffmanCompressor
+     * @param path file path
+     */
     private static void compress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
         System.out.println("Luetaan tiedostoa..");
         try {
             data = fio.read(path);
-        } catch (Exception e) {
-            System.out.println("Virhe tiedostoa luettaessa!");
+        } catch (IOException e) {
+            System.out.println("Virhe tiedostoa luettaessa! Onko se olemassa?");
+            return;
         }
-        /*
-        System.out.println("Alkuperäinen:");
-        for(int i = 0; i < data.length; i++){
-            System.out.println(data[i]);
-        }
-        */
+        
         byte[] compr = compressor.compress(data);
         
         System.out.println("Tallennetaan pakattu tiedosto levylle..");
         try {
             fio.write(compr, path + ".huf");
             System.out.println("Pakkaus valmis!");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Levylle tallennus epäonnistui!");
-            //System.out.println(e);
         }
     }
+    /**
+     * Uncompresses given file.
+     * 
+     * @param fio FileIO
+     * @param compressor HuffmanCompressor
+     * @param path file path
+     */
     private static void uncompress(FileIO fio, HuffmanCompressor compressor, String path){
         
         byte[] data = null;
         System.out.println("Luetaan tiedostoa..");
         try {
             data = fio.read(path);
-        } catch (Exception e) {
-            System.out.println("Virhe tiedostoa luettaessa!");
+        } catch (IOException e) {
+            System.out.println("Virhe tiedostoa luettaessa! Onko se olemassa?");
+            return;
         }
         
-        byte[] uncompr = compressor.decompress(data);
+        byte[] uncompr = null;
         
         try {
-            fio.write(uncompr, path + ".ava");
+            uncompr = compressor.decompress(data);
+        } catch (NumberFormatException e) {
+            System.out.println("Virheellinen tiedostotyyppi! Purku keskeytetty.");
+            return;
+        } catch (NullPointerException e) {
+            System.out.println("Virheellinen tiedostotyyppi! Purku keskeytetty.");
+            return;
+        }
+        
+        
+        int cut = path.lastIndexOf(".huf");
+        if(cut >= 0){
+            path = path.substring(0, cut);
+        }
+        int dot = path.lastIndexOf(".");
+        int lastdir = path.lastIndexOf("/");
+        if(dot > lastdir){
+            path = path.substring(0, dot) + "_purettu" + path.substring(dot);
+        }else{
+            path = path + "_purettu";
+        }
+        
+        try {
+            fio.write(uncompr, path);
             System.out.println("Tiedoston purkaminen valmis!");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Tiedoston tallennus epäonnistui!");
-            System.out.println(e);
         }
     }
     

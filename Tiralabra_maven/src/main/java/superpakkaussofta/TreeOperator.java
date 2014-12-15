@@ -23,7 +23,7 @@ public class TreeOperator {
      * @return root HuffmanNode
      */
     public HuffmanNode constructTree(byte[] data){
-        NodeHeap pque = new NodeHeap(data);
+        NodeHeap pque = new NodeHeap(data, 10);
         
         HuffmanNode tree = createTreeFromHeap(pque);
         
@@ -35,9 +35,9 @@ public class TreeOperator {
      * @param st well formed String that contains the bytes and frequencies
      * @return root HuffmanNode
      */
-    public HuffmanNode constructTree(String st){
+    public HuffmanNode constructTree(String st) throws NumberFormatException{
         
-        NodeHeap pque = new NodeHeap(st);
+        NodeHeap pque = new NodeHeap(st, 10);
         
         HuffmanNode tree = createTreeFromHeap(pque);
         
@@ -55,7 +55,6 @@ public class TreeOperator {
             HuffmanNode n1 = heap.poll();
             HuffmanNode n2 = heap.poll();
             heap.add(new HuffmanNode(n1, n2));
-            //System.out.println(n1.getByte() + ": " + n1.getFreq() + ", " + n2.getByte() + ": " + n2.getFreq());
         }
         
         //TODO
