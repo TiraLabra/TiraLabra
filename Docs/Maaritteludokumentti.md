@@ -21,4 +21,4 @@ yleisyyden mukaan.
 
 Huffmanin puun rakentamiseen kuluu aikaa O(n log n), missä n on eri tavujen lukumäärä.
 Tiedoston pakkaukseen ja purkuun kuluu O(m log n), missä n on eri tavujen lukumäärä ja
-m tavujen kokonaismäärä tiedostossa.
+m tavujen kokonaismäärä tiedostossa. Koska tavuja on maksimissaan 256, on siis kokonaisaikavaativuus O(m).
