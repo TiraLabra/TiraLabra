@@ -1,10 +1,11 @@
 package com.mycompany.navi;
 
-/**
- * Hello world!
- *
- */
-public class App 
+/*
+  * Get stuff done.
+  * Fail fast.
+  * Iterate.
+  */
+public class Main 
 {
     public static void main( String[] args )
     {
