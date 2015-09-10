@@ -80,14 +80,21 @@ public class Solmu {
         return matkaAlusta;
     }
 
-    public void setHeuristinenMatka(int heuristinen) {
-        this.heuristinenMatka = heuristinen;
-    }
-
-    public int getHeuristinenMatka() {
-        return heuristinenMatka;
-    }
-
+//    public void setHeuristinenMatka(int heuristinen) {
+//        this.heuristinenMatka = heuristinen;
+//    }
+//
+//    public int getHeuristinenMatka() {
+//        return heuristinenMatka;
+//    }
+    
+    
+/**
+ * hakee solmun naapurit ja lisää ne listan ja palauttaa listan.
+ * @param x
+ * @param y
+ * @return 
+ */
     public List<Solmu> solmunNaapurit(int x, int y) {
         List<Solmu> naapurit = new ArrayList<Solmu>();
 

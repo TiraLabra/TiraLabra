@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Karttarakenne Astar algoritmia varten, kartta muodostuu solmuista joilla on
+ * koordinaatit.
  *
  * @author sasumaki
  */
@@ -32,6 +34,12 @@ public class Kartta {
 
     }
 
+    /**
+     * Luo kaksiulotteisen taulukkokartan, taulukon alkioina on solmuja, jotka
+     * kuvastavat koordinaatteja.
+     *
+     * @return
+     */
     public ArrayList<ArrayList<Solmu>> luoKartta() {
         Solmu solmu;
         for (int x = 0; x < leveys; x++) {
@@ -47,7 +55,10 @@ public class Kartta {
     public ArrayList<ArrayList<Solmu>> getKartta() {
         return kartta;
     }
-
+/**
+ * määrittää tietytn solmun koordinaateissa x ja y maalipisteeksi.
+ * @return 
+ */
     public void setMaali(int x, int y) {
         this.maalipisteX = x;
         this.maalipisteY = y;
@@ -61,11 +72,19 @@ public class Kartta {
     public int getMaaliY() {
         return maalipisteY;
     }
-
+/** 
+ * määrittää tietyn solmun koordinaateissa x ja y esteeksi
+ * @param x
+ * @param y 
+ */
     public void setEste(int x, int y) {
         kartta.get(x).get(y).setEste(true);
     }
-
+/**
+ * määrittää tietyn solmun koordinaateissa x ja y alkupisteeksi.
+ * @param x
+ * @param y 
+ */
     public void setAlku(int x, int y) {
         this.alkupisteX = x;
         this.alkupisteY = y;
@@ -91,7 +110,12 @@ public class Kartta {
     public Solmu getSolmu(int x, int y) {
         return kartta.get(x).get(y);
     }
-
+/**
+ * laskee matkan arvon. 1 jos normaali ja 100000 jos seinä.
+ * @param nykyinen
+ * @param seuraava
+ * @return 
+ */
     public int matkaArvo(Solmu nykyinen, Solmu seuraava) {
         if (seuraava.onkoEste == true) {
             return 1000000;
@@ -100,37 +124,37 @@ public class Kartta {
         }
     }
 
-    public List<Solmu> naapurit(Solmu solmu) {
-        ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
-        int x = solmu.getX();
-        int y = solmu.getY();
-
-        if (getSolmu(x + 1, y + 1).onkoEste == false) {
-            naapurit.add(getSolmu(x + 1, y + 1));
-        }
-        if (getSolmu(x + 1, y).onkoEste == false) {
-            naapurit.add(getSolmu(x + 1, y));
-        }
-        if (getSolmu(x + 1, y - 1).onkoEste == false) {
-            naapurit.add(getSolmu(x + 1, y - 1));
-        }
-        if (getSolmu(x, y + 1).onkoEste == false) {
-            naapurit.add(getSolmu(x, y + 1));
-        }
-        if (getSolmu(x - 1, y + 1).onkoEste == false) {
-            naapurit.add(getSolmu(x - 1, y + 1));
-        }
-        if (getSolmu(x - 1, y).onkoEste == false) {
-            naapurit.add(getSolmu(x - 1, y));
-        }
-        if (getSolmu(x - 1, y - 1).onkoEste == false) {
-            naapurit.add(getSolmu(x - 1, y - 1));
-        }
-        if (getSolmu(x, y - 1).onkoEste == false) {
-            naapurit.add(getSolmu(x, y - 1));
-        }
-
-        return naapurit;
-    }
+//    public List<Solmu> naapurit(Solmu solmu) {
+//        ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
+//        int x = solmu.getX();
+//        int y = solmu.getY();
+//
+//        if (getSolmu(x + 1, y + 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x + 1, y + 1));
+//        }
+//        if (getSolmu(x + 1, y).onkoEste == false) {
+//            naapurit.add(getSolmu(x + 1, y));
+//        }
+//        if (getSolmu(x + 1, y - 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x + 1, y - 1));
+//        }
+//        if (getSolmu(x, y + 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x, y + 1));
+//        }
+//        if (getSolmu(x - 1, y + 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x - 1, y + 1));
+//        }
+//        if (getSolmu(x - 1, y).onkoEste == false) {
+//            naapurit.add(getSolmu(x - 1, y));
+//        }
+//        if (getSolmu(x - 1, y - 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x - 1, y - 1));
+//        }
+//        if (getSolmu(x, y - 1).onkoEste == false) {
+//            naapurit.add(getSolmu(x, y - 1));
+//        }
+//
+//        return naapurit;
+//    }
 
 }
