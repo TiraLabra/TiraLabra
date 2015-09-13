@@ -13,7 +13,6 @@
 
 *.swp
 
-#
 # *.lock - this is used and abused by many editors for many different things.
 #    For the main ones I use (e.g. Eclipse), it should be excluded 
 #    from source-control, but YMMV.
@@ -21,10 +20,10 @@
 # c.f. the "OPTIONAL" section at bottom though, for tool-specific variations!
 #
 # In particular, if you're using CocoaPods, you'll want to comment-out this line:
-*.lock
 
-#
-# profile - REMOVED temporarily (on double-checking, I can't find it in OS X docs?)
-#profile
+.lock
 
+# Java directories
 
+/Java/Navi/nbproject/private/
+/Java/Navi/build/

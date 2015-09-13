@@ -15,7 +15,7 @@ PROJECT_DIR=Tiralabra
 # Mikäli käytät muun nimistä kansiota, korvaa <kansiosi_nimi>
 # alla olevalta riviltä kansiosi nimeksi, ja poista sen rivin
 # kommentti
-# PROJECT_DIR=<kansiosi_nimi>
+PROJECT_DIR=<Java>
 
 if [ -d Tiralabra_maven ]
 	then
