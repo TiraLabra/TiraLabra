@@ -29,13 +29,12 @@ public class Karttatesti {
 
     @Before
     public void setUp() {
-        this.kartta = new Kartta(10, 10);
+        this.kartta = new Kartta(10, 10,1,1,9,9);
     }
 
     @Test
     public void luoKarttaTesti() {
         ArrayList<ArrayList<Solmu>> testikartta = new ArrayList<ArrayList<Solmu>>();
-        testikartta = kartta.luoKartta();
         Solmu solmu;
         for (int x = 0; x < 10; x++) {
             karttanen.add(new ArrayList<Solmu>());

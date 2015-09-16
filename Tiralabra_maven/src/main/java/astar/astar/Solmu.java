@@ -31,6 +31,10 @@ public class Solmu {
         this.onkoMaali = onMaali;
         this.onkoAlku = onAlku;
     }
+    public Solmu(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 
     public int getX() {
         return x;

@@ -24,13 +24,14 @@ public class Kartta {
     int maalipisteX;
     int maalipisteY;
 
-    public Kartta(int leveys, int korkeus) {
+    public Kartta(int leveys, int korkeus, int alkupisteX, int alkupisteY, int maalipisteX, int maalipisteY) {
         this.leveys = leveys;
         this.korkeus = korkeus;
-        this.alkupisteX = 0;
-        this.alkupisteY = 0;
-        this.maalipisteX = 0;
-        this.maalipisteY = 0;
+        this.alkupisteX = alkupisteX;
+        this.alkupisteY = alkupisteY;
+        this.maalipisteX = maalipisteX;
+        this.maalipisteY = maalipisteY;
+        luoKartta();
 
     }
 
@@ -40,16 +41,23 @@ public class Kartta {
      *
      * @return
      */
-    public ArrayList<ArrayList<Solmu>> luoKartta() {
+    public void luoKartta() {
         Solmu solmu;
+        kartta = new ArrayList<ArrayList<Solmu>>();
+
         for (int x = 0; x < leveys; x++) {
             kartta.add(new ArrayList<Solmu>());
             for (int y = 0; y < korkeus; y++) {
-                solmu = new Solmu(x, y, false, false, false);
+                if (x == alkupisteX && y == alkupisteY) {
+                    solmu = new Solmu(x, y, false, true, false);
+                } else if (x == maalipisteX && y == maalipisteY) {
+                    solmu = new Solmu(x, y, false, false, true);
+                } else {
+                    solmu = new Solmu(x, y, false, false, false);
+                }
                 kartta.get(x).add(solmu);
             }
         }
-        return kartta;
     }
 
     public ArrayList<ArrayList<Solmu>> getKartta() {
@@ -99,11 +107,11 @@ public class Kartta {
      * @param x
      * @param y
      */
-//    public void setAlku(int x, int y) {
-//        this.alkupisteX = x;
-//        this.alkupisteY = y;
-//        getSolmu(x, y).setAlku(true);
-//    }
+    public void setAlku(int x, int y) {
+        this.alkupisteX = x;
+        this.alkupisteY = y;
+        kartta.get(x).get(y).setAlku(true);
+    }
 
     public int getAlkuX() {
         return alkupisteX;
@@ -121,9 +129,9 @@ public class Kartta {
         return kartta.get(maalipisteX).get(maalipisteY);
     }
 
-//    public Solmu getSolmu(int x, int y) {
-//        return kartta.get(x).get(y);
-//    }
+    public Solmu getSolmu(int x, int y) {
+        return kartta.get(x).get(y);
+    }
 
     /**
      * laskee matkan arvon. 1 jos normaali ja 100000 jos seinä.

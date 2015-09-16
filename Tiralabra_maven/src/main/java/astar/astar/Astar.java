@@ -33,8 +33,7 @@ public class Astar {
             }
         });
 
-        kartta.setAlku(alkuX, alkuY);
-        kartta.setMaali(maaliX, maaliY);
+        
         kartta.getAlkuSolmu().setMatkaAlusta(0);
 
         rintama.add(kartta.getAlkuSolmu());
