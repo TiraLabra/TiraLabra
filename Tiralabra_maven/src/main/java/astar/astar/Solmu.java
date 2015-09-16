@@ -56,7 +56,7 @@ public class Solmu {
         this.onkoEste = esteys;
     }
 
-    public boolean getAlku() {
+    public boolean getAlkeus() {
         return onkoAlku;
     }
 

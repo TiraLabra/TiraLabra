@@ -35,7 +35,7 @@ public class Solmutesti {
     @Test
     public void testaaAlku() {
         solmu.setAlku(true);
-        assertEquals(true, solmu.getAlku());
+        assertEquals(true, solmu.getAlkeus());
     }
     @Test
     public void testaaMatkaAlusta(){

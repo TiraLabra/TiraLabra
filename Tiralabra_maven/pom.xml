@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>astar.astar</groupId>
-    <artifactId>Tiralabra_maven</artifactId>
+    <artifactId>astar</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

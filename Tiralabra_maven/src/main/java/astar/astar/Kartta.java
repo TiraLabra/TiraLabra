@@ -55,14 +55,24 @@ public class Kartta {
     public ArrayList<ArrayList<Solmu>> getKartta() {
         return kartta;
     }
-/**
- * määrittää tietytn solmun koordinaateissa x ja y maalipisteeksi.
- * @return 
- */
+
+    /**
+     * määrittää tietytn solmun koordinaateissa x ja y maalipisteeksi.
+     *
+     * @return
+     */
     public void setMaali(int x, int y) {
         this.maalipisteX = x;
         this.maalipisteY = y;
         kartta.get(x).get(y).setMaali(true);
+    }
+
+    public int getLeveys() {
+        return leveys;
+    }
+
+    public int getKorkeus() {
+        return korkeus;
     }
 
     public int getMaaliX() {
@@ -72,24 +82,28 @@ public class Kartta {
     public int getMaaliY() {
         return maalipisteY;
     }
-/** 
- * määrittää tietyn solmun koordinaateissa x ja y esteeksi
- * @param x
- * @param y 
- */
+
+    /**
+     * määrittää tietyn solmun koordinaateissa x ja y esteeksi
+     *
+     * @param x
+     * @param y
+     */
     public void setEste(int x, int y) {
         kartta.get(x).get(y).setEste(true);
     }
-/**
- * määrittää tietyn solmun koordinaateissa x ja y alkupisteeksi.
- * @param x
- * @param y 
- */
-    public void setAlku(int x, int y) {
-        this.alkupisteX = x;
-        this.alkupisteY = y;
-        kartta.get(x).get(y).setAlku(true);
-    }
+
+    /**
+     * määrittää tietyn solmun koordinaateissa x ja y alkupisteeksi.
+     *
+     * @param x
+     * @param y
+     */
+//    public void setAlku(int x, int y) {
+//        this.alkupisteX = x;
+//        this.alkupisteY = y;
+//        getSolmu(x, y).setAlku(true);
+//    }
 
     public int getAlkuX() {
         return alkupisteX;
@@ -107,15 +121,17 @@ public class Kartta {
         return kartta.get(maalipisteX).get(maalipisteY);
     }
 
-    public Solmu getSolmu(int x, int y) {
-        return kartta.get(x).get(y);
-    }
-/**
- * laskee matkan arvon. 1 jos normaali ja 100000 jos seinä.
- * @param nykyinen
- * @param seuraava
- * @return 
- */
+//    public Solmu getSolmu(int x, int y) {
+//        return kartta.get(x).get(y);
+//    }
+
+    /**
+     * laskee matkan arvon. 1 jos normaali ja 100000 jos seinä.
+     *
+     * @param nykyinen
+     * @param seuraava
+     * @return
+     */
     public int matkaArvo(Solmu nykyinen, Solmu seuraava) {
         if (seuraava.onkoEste == true) {
             return 1000000;
@@ -156,5 +172,4 @@ public class Kartta {
 //
 //        return naapurit;
 //    }
-
 }
