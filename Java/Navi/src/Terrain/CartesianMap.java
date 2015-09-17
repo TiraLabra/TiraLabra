@@ -22,7 +22,26 @@ public class CartesianMap {
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
                 Random rand = new Random();
-                int tileValue = rand.nextInt(3 + 1);
+                int tileValue;
+                if (!hasRoughTerrain) {
+                    tileValue = rand.nextInt(38 + 1);
+                }
+                else {
+                    tileValue = rand.nextInt(18 + 1);
+                }
+                
+                if (tileValue < 7) {
+                    tileValue = 0; // Dirtroad
+                }
+                else if (tileValue < 10) {
+                    tileValue = 1; // Traffic
+                }
+                else if (tileValue < 18) {
+                    tileValue = 2; // Road
+                }
+                else {
+                    tileValue = 3; // Highway
+                }
                 map[x][y] = tileValue;
             }
         }
@@ -39,7 +58,7 @@ public class CartesianMap {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) == 0) { // Forest
+                if (getSingleTile(x, y) == 0) { // Dirtroad
                     System.out.print(" * ");
                 }
                 else if (getSingleTile(x, y) == 1) { // Traffic

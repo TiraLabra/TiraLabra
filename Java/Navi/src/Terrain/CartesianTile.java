@@ -3,8 +3,8 @@ package Terrain;
 // @author Leevi
 public enum CartesianTile {
 
-    HIGHWAY, // Movement = 3     
-    ROAD, // Movement = 2 
-    TRAFFIC, // Movement = 1   
-    FOREST; // Movement = 0
+    HIGHWAY, // Movement = 4     
+    ROAD, // Movement = 3
+    TRAFFIC, // Movement = 2  
+    DIRTROAD; // Movement = 1
 }

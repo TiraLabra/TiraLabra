@@ -10,5 +10,10 @@ public class Navi {
         map.generateTerrain(false);
         map.displayMap();
         
+        System.out.println("");
+        
+        map.generateTerrain(true);
+        map.displayMap();
+        
     }
 }
