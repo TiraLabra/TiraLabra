@@ -41,18 +41,21 @@ public class Astar {
         ArrayList<Solmu> kayty = new ArrayList<>();
 
         while (!rintama.isEmpty()) {
-            
+
             nykyinen = rintama.poll();
             kayty.add(nykyinen);
             tulostaPolku(kayty.get(kayty.size() - 1));
 
             if (nykyinen.getY() == kartta.getMaaliY() && nykyinen.getX() == kartta.getMaaliX()) {
+                kayty.add(nykyinen);
                 break;
             }
             for (Solmu n : kartta.naapurit(nykyinen.getY(), nykyinen.getX(), nykyinen, nykyinen.getMatkaAlusta())) {
-                if (!kayty.contains(n) || !(rintama.contains(n))) {
-                    rintama.add(n);
-                    
+                for (Solmu s : kayty) {
+                    if (!s.equals(n)) {
+                        rintama.add(n);
+
+                    }
                 }
             }
         }

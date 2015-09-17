@@ -31,6 +31,20 @@ public class Solmu {
         return x;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        final Solmu toinen = (Solmu) o;
+        if (this.x == toinen.getX() && this.y == toinen.getY()) {
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
     public int getY() {
         return y;
     }
@@ -42,7 +56,5 @@ public class Solmu {
     public Solmu getEdellinen() {
         return edellinen;
     }
-    
-    
 
 }
