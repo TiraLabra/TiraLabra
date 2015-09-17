@@ -28,7 +28,7 @@ public class Astar {
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
 
-        PriorityQueue<Solmu> rintama = new PriorityQueue<>(100, new Comparator<Solmu>() {
+        PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
 
             @Override
             public int compare(Solmu t, Solmu t1) {
@@ -36,14 +36,15 @@ public class Astar {
             }
 
         });
-
+        Solmu nykyinen;
         rintama.add(new Solmu(alkuY, alkuX, null, 0));
         ArrayList<Solmu> kayty = new ArrayList<>();
 
         while (!rintama.isEmpty()) {
-
-            Solmu nykyinen = rintama.poll();
+            
+            nykyinen = rintama.poll();
             kayty.add(nykyinen);
+            tulostaPolku(kayty.get(kayty.size() - 1));
 
             if (nykyinen.getY() == kartta.getMaaliY() && nykyinen.getX() == kartta.getMaaliX()) {
                 break;
@@ -51,6 +52,7 @@ public class Astar {
             for (Solmu n : kartta.naapurit(nykyinen.getY(), nykyinen.getX(), nykyinen, nykyinen.getMatkaAlusta())) {
                 if (!kayty.contains(n) || !(rintama.contains(n))) {
                     rintama.add(n);
+                    
                 }
             }
         }
