@@ -68,7 +68,7 @@ public class Astar {
     private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
         int heuristinen = 0;
         
-        heuristinen = Math.abs((maaliY - s.getY()) + (maaliX - s.getX()));
+        heuristinen = Math.abs(maaliY - s.getY()) + Math.abs(maaliX - s.getX());
         return heuristinen;
     }
 
@@ -81,10 +81,12 @@ public class Astar {
         ArrayList<Solmu> ruudut = new ArrayList<>();
         ruudut.add(polku);
         Solmu d = polku.getEdellinen();
+        
         while (d != null) {
             ruudut.add(d);
             d = d.getEdellinen();
         }
+        
         
         for (int y = 0; y < kartta.getKorkeus(); y++) {
             for (int x = 0; x < kartta.getLeveys(); x++) {

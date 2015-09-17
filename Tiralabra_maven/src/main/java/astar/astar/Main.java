@@ -6,9 +6,9 @@ public class Main {
         Solmu s;
         
         
-        Kartta kartta = new Kartta(25, 25,3,22,24,2);
+        Kartta kartta = new Kartta(20, 20,2,2,22,19);
         Astar astar = new Astar(kartta);
-        s = astar.haku(3, 22, 24, 2);
+        s = astar.haku(2, 2, 22, 19);
         astar.tulostaPolku(s);
     }
 
