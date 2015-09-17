@@ -147,30 +147,31 @@ public class Kartta {
 
     //
     //TODO: tsekkaa ettei listaan laiteta maailman ulkopuolelle osoittavia ruutuja
-    public ArrayList<Ruutu> naapurit(int x, int y) {
-        ArrayList<Ruutu> naapurit = new ArrayList<Ruutu>();
+    public ArrayList<Solmu> naapurit(int x, int y, Solmu nykyinen, int matka) {
+        ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
 
         if (!(y - 1 < 0)) {
-            naapurit.add(ruudukko[x][y - 1]);
+            naapurit.add(new Solmu(x, y - 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
             if (!(x + 1 > leveys)) {
-                naapurit.add(ruudukko[x + 1][y - 1]);
+                naapurit.add(new Solmu(x + 1, y - 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
             }
             if (!(x - 1 < 0)) {
-                naapurit.add(ruudukko[x - 1][y - 1]);
+                naapurit.add(new Solmu(x - 1, y - 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
             }
         }
         if (!(y + 1 > korkeus)) {
-            naapurit.add(ruudukko[x][y + 1]);
+            naapurit.add(new Solmu(x, y + 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
+
             if (!(x + 1 > leveys)) {
-                naapurit.add(ruudukko[x + 1][y + 1]);
+                naapurit.add(new Solmu(x + 1, y + 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
             }
             if (!(x - 1 < 0)) {
-                naapurit.add(ruudukko[x - 1][y + 1]);
+                naapurit.add(new Solmu(x - 1, y + 1, nykyinen, matka + ruudukko[y][x].liikeHinta()));
             }
         }
         if (!(x + 1 > leveys) && !(x - 1 < 0)) {
-            naapurit.add(ruudukko[x + 1][y]);
-            naapurit.add(ruudukko[x - 1][y]);
+            naapurit.add(new Solmu(x + 1, y, nykyinen, matka + ruudukko[y][x].liikeHinta()));
+            naapurit.add(new Solmu(x - 1, y, nykyinen, matka + ruudukko[y][x].liikeHinta()));
         }
 
         return naapurit;
