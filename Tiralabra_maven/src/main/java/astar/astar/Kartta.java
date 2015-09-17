@@ -151,27 +151,27 @@ public class Kartta {
         ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
 
         if (!(y - 1 < 0)) {
-            naapurit.add(new Solmu(x, y - 1, nykyinen, matka + ruudukko[y - 1][x].liikeHinta()));
+            naapurit.add(new Solmu(x, y - 1, nykyinen, matka + ruudukko[x][y-1].liikeHinta()));
             if (!(x + 1 >= leveys)) {
-                naapurit.add(new Solmu(x + 1, y - 1, nykyinen, matka + ruudukko[y - 1][x + 1].liikeHinta()));
+                naapurit.add(new Solmu(x + 1, y - 1, nykyinen, matka + ruudukko[x+1][y- 1].liikeHinta()));
             }
             if (!(x - 1 < 0)) {
-                naapurit.add(new Solmu(x - 1, y - 1, nykyinen, matka + ruudukko[y - 1][x - 1].liikeHinta()));
+                naapurit.add(new Solmu(x - 1, y - 1, nykyinen, matka + ruudukko[x-1][y - 1].liikeHinta()));
             }
         }
         if (!(y + 1 >= korkeus)) {
-            naapurit.add(new Solmu(x, y + 1, nykyinen, matka + ruudukko[y + 1][x].liikeHinta()));
+            naapurit.add(new Solmu(x, y + 1, nykyinen, matka + ruudukko[x][y+1].liikeHinta()));
 
             if (!(x + 1 >= leveys)) {
-                naapurit.add(new Solmu(x + 1, y + 1, nykyinen, matka + ruudukko[y + 1][x + 1].liikeHinta()));
+                naapurit.add(new Solmu(x + 1, y + 1, nykyinen, matka + ruudukko[x+1][y+1].liikeHinta()));
             }
             if (!(x - 1 < 0)) {
-                naapurit.add(new Solmu(x - 1, y + 1, nykyinen, matka + ruudukko[y + 1][x - 1].liikeHinta()));
+                naapurit.add(new Solmu(x - 1, y + 1, nykyinen, matka + ruudukko[x-1][y+1].liikeHinta()));
             }
         }
         if (!(x + 1 >= leveys) && !(x - 1 < 0)) {
-            naapurit.add(new Solmu(x + 1, y, nykyinen, matka + ruudukko[y][x + 1].liikeHinta()));
-            naapurit.add(new Solmu(x - 1, y, nykyinen, matka + ruudukko[y][x - 1].liikeHinta()));
+            naapurit.add(new Solmu(x + 1, y, nykyinen, matka + ruudukko[x+1][y].liikeHinta()));
+            naapurit.add(new Solmu(x - 1, y, nykyinen, matka + ruudukko[x-1][y].liikeHinta()));
         }
 
         return naapurit;

@@ -28,8 +28,9 @@ public class Astar {
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
         
-        PriorityQueue<Solmu> rintama = new PriorityQueue<Solmu>(10000, new Comparator<Solmu>() {
+        PriorityQueue<Solmu> rintama = new PriorityQueue<>(100, new Comparator<Solmu>() {
             
+            @Override
             public int compare(Solmu t, Solmu t1) {
                 return (t.getMatkaAlusta() + heuristinenMatka(t, maaliX, maaliY)) - (t1.getMatkaAlusta() + heuristinenMatka(t1, maaliX, maaliY));
             }
