@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class Karttatesti {
 
     Kartta kartta;
-    private ArrayList<ArrayList<Solmu>> karttanen;
+     
 
     public Karttatesti() {
     }

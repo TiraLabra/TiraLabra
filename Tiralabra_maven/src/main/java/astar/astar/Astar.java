@@ -50,14 +50,14 @@ public class Astar {
                 kayty.add(nykyinen);
                 break;
             }
-            for (Solmu n : kartta.naapurit(nykyinen.getY(), nykyinen.getX(), nykyinen, nykyinen.getMatkaAlusta())) {
-                for (Solmu s : kayty) {
-                    if (!s.equals(n)) {
+            for (Solmu n : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {
+                
+                    if (!kayty.contains(n) || !rintama.contains(n)) {
                         rintama.add(n);
 
                     }
                 }
-            }
+            
         }
         return kayty.get(kayty.size() - 1);
     }
@@ -72,10 +72,14 @@ public class Astar {
      * @return
      */
     private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
-        int heuristinen = 0;
-
+        double heuristinen = 0;
+        if(s.getX() == maaliX || s.getY() == maaliY){
         heuristinen = Math.abs(maaliY - s.getY()) + Math.abs(maaliX - s.getX());
-        return heuristinen;
+        }
+        else{
+            heuristinen = Math.sqrt(Math.abs(maaliY - s.getY()) + Math.abs(maaliX - s.getX()));
+        }
+        return (int) heuristinen;
     }
 
     /**

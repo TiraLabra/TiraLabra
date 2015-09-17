@@ -36,6 +36,7 @@ public class Solmu {
         if (o == null) {
             return false;
         }
+
         final Solmu toinen = (Solmu) o;
         if (this.x == toinen.getX() && this.y == toinen.getY()) {
             return true;
