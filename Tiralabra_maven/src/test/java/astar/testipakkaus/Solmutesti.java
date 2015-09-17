@@ -9,39 +9,31 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-//public class Solmutesti {
-//
-//    Solmu solmu;
-//
-//    public Solmutesti() {
-//
-//    }
-//
-//    @Before
-//    public void setUp() {
-//        solmu = new Solmu(0, 0, false, false, false);
-//    }
-//
-//    @Test
-//    public void testaaEsteys() {
-//        solmu.setEste(true);
-//        assertEquals(true, solmu.getEsteys());
-//    }
-//    @Test
-//    public void testaaMaaleus() {
-//        solmu.setMaali(true);
-//        assertEquals(true, solmu.getMaaleus());
-//    }
-//    @Test
-//    public void testaaAlku() {
-//        solmu.setAlku(true);
-//        assertEquals(true, solmu.getAlkeus());
-//    }
-//    @Test
-//    public void testaaMatkaAlusta(){
-//        solmu.setMatkaAlusta(25);
-//        assertEquals(25, solmu.getMatkaAlusta());
-//    }
-//    
-//
-//}
+public class Solmutesti {
+
+    Solmu solmu;
+    Solmu solmu2;
+
+    public Solmutesti() {
+
+    }
+
+    @Before
+    public void setUp() {
+        solmu = new Solmu(0, 0, null, 0);
+        solmu2 = new Solmu(1, 0, solmu, 1);
+    }
+
+
+    @Test
+    public void testaaMatkaAlusta(){
+       
+        assertEquals(1, solmu2.getMatkaAlusta());
+    }
+    @Test
+    public void testaaEdellinen(){
+        assertEquals(solmu, solmu2.getEdellinen());
+    }
+    
+
+}
