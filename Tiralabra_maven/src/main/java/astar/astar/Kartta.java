@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class Kartta {
 
-    int leveys;
-    int korkeus;
-    private ArrayList<ArrayList<Solmu>> kartta;
-    int alkupisteX;
-    int alkupisteY;
-    int maalipisteX;
-    int maalipisteY;
+    private int leveys;
+    private int korkeus;
+    private Ruutu[][] ruudukko;
+    private int alkupisteX;
+    private int alkupisteY;
+    private int maalipisteX;
+    private int maalipisteY;
 
     public Kartta(int leveys, int korkeus, int alkupisteX, int alkupisteY, int maalipisteX, int maalipisteY) {
         this.leveys = leveys;
@@ -42,39 +42,24 @@ public class Kartta {
      * @return
      */
     public void luoKartta() {
-        Solmu solmu;
-        kartta = new ArrayList<ArrayList<Solmu>>();
-
-        for (int x = 0; x < leveys; x++) {
-            kartta.add(new ArrayList<Solmu>());
-            for (int y = 0; y < korkeus; y++) {
-                if (x == alkupisteX && y == alkupisteY) {
-                    solmu = new Solmu(x, y, false, true, false);
-                } else if (x == maalipisteX && y == maalipisteY) {
-                    solmu = new Solmu(x, y, false, false, true);
-                } else {
-                    solmu = new Solmu(x, y, false, false, false);
-                }
-                kartta.get(x).add(solmu);
+        ruudukko = new Ruutu[korkeus][leveys];
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                ruudukko[y][x] = Ruutu.LATTIA;
             }
         }
     }
 
-    public ArrayList<ArrayList<Solmu>> getKartta() {
-        return kartta;
-    }
-
     /**
-     * määrittää tietytn solmun koordinaateissa x ja y maalipisteeksi.
+     * määrittää tietyn solmun koordinaateissa x ja y maalipisteeksi.
      *
      * @return
      */
-    public void setMaali(int x, int y) {
-        this.maalipisteX = x;
-        this.maalipisteY = y;
-        kartta.get(x).get(y).setMaali(true);
-    }
-
+//    public void setMaali(int x, int y) {
+//        this.maalipisteX = x;
+//        this.maalipisteY = y;
+//        kartta.get(x).get(y).setMaali(true);
+//    }
     public int getLeveys() {
         return leveys;
     }
@@ -98,7 +83,37 @@ public class Kartta {
      * @param y
      */
     public void setEste(int x, int y) {
-        kartta.get(x).get(y).setEste(true);
+        ruudukko[y][x] = Ruutu.SEINÄ;
+    }
+
+    /**
+     * määrittää tietyn solmun koordinaateissa x ja y lattiaksi
+     *
+     * @param x
+     * @param y
+     */
+    public void setLattia(int x, int y) {
+        ruudukko[y][x] = Ruutu.LATTIA;
+    }
+
+    /**
+     * määrittää tietyn solmun koordinaateissa x ja y metsäksi
+     *
+     * @param x
+     * @param y
+     */
+    public void setMetsa(int x, int y) {
+        ruudukko[y][x] = Ruutu.METSÄ;
+    }
+
+    /**
+     * määrittää tietyn solmun koordinaateissa x ja y vedeksi
+     *
+     * @param x
+     * @param y
+     */
+    public void setVesi(int x, int y) {
+        ruudukko[y][x] = Ruutu.VESI;
     }
 
     /**
@@ -107,12 +122,9 @@ public class Kartta {
      * @param x
      * @param y
      */
-    public void setAlku(int x, int y) {
-        this.alkupisteX = x;
-        this.alkupisteY = y;
-        kartta.get(x).get(y).setAlku(true);
-    }
-
+//    public void setAlku(int x, int y) {
+//        
+//    }
     public int getAlkuX() {
         return alkupisteX;
     }
@@ -121,63 +133,47 @@ public class Kartta {
         return alkupisteY;
     }
 
-    public Solmu getAlkuSolmu() {
-        return kartta.get(alkupisteX).get(alkupisteY);
+    public Ruutu getAlkuRuutu() {
+        return ruudukko[alkupisteY][alkupisteX];
     }
 
-    public Solmu getMaaliSolmu() {
-        return kartta.get(maalipisteX).get(maalipisteY);
+    public Ruutu getMaaliRuutu() {
+        return ruudukko[maalipisteY][maalipisteX];
     }
 
-    public Solmu getSolmu(int x, int y) {
-        return kartta.get(x).get(y);
+    public Ruutu getRuutu(int x, int y) {
+        return ruudukko[y][x];
     }
 
-    /**
-     * laskee matkan arvon. 1 jos normaali ja 100000 jos seinä.
-     *
-     * @param nykyinen
-     * @param seuraava
-     * @return
-     */
-    public int matkaArvo(Solmu nykyinen, Solmu seuraava) {
-        if (seuraava.onkoEste == true) {
-            return 1000000;
-        } else {
-            return 1;
+    //
+    //TODO: tsekkaa ettei listaan laiteta maailman ulkopuolelle osoittavia ruutuja
+    public ArrayList<Ruutu> naapurit(int x, int y) {
+        ArrayList<Ruutu> naapurit = new ArrayList<Ruutu>();
+
+        if (!(y - 1 < 0)) {
+            naapurit.add(ruudukko[x][y - 1]);
+            if (!(x + 1 > leveys)) {
+                naapurit.add(ruudukko[x + 1][y - 1]);
+            }
+            if (!(x - 1 < 0)) {
+                naapurit.add(ruudukko[x - 1][y - 1]);
+            }
         }
+        if (!(y + 1 > korkeus)) {
+            naapurit.add(ruudukko[x][y + 1]);
+            if (!(x + 1 > leveys)) {
+                naapurit.add(ruudukko[x + 1][y + 1]);
+            }
+            if (!(x - 1 < 0)) {
+                naapurit.add(ruudukko[x - 1][y + 1]);
+            }
+        }
+        if (!(x + 1 > leveys) && !(x - 1 < 0)) {
+            naapurit.add(ruudukko[x + 1][y]);
+            naapurit.add(ruudukko[x - 1][y]);
+        }
+
+        return naapurit;
     }
 
-//    public List<Solmu> naapurit(Solmu solmu) {
-//        ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
-//        int x = solmu.getX();
-//        int y = solmu.getY();
-//
-//        if (getSolmu(x + 1, y + 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x + 1, y + 1));
-//        }
-//        if (getSolmu(x + 1, y).onkoEste == false) {
-//            naapurit.add(getSolmu(x + 1, y));
-//        }
-//        if (getSolmu(x + 1, y - 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x + 1, y - 1));
-//        }
-//        if (getSolmu(x, y + 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x, y + 1));
-//        }
-//        if (getSolmu(x - 1, y + 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x - 1, y + 1));
-//        }
-//        if (getSolmu(x - 1, y).onkoEste == false) {
-//            naapurit.add(getSolmu(x - 1, y));
-//        }
-//        if (getSolmu(x - 1, y - 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x - 1, y - 1));
-//        }
-//        if (getSolmu(x, y - 1).onkoEste == false) {
-//            naapurit.add(getSolmu(x, y - 1));
-//        }
-//
-//        return naapurit;
-//    }
 }

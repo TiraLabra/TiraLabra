@@ -5,6 +5,7 @@
  */
 package astar.astar;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -17,84 +18,71 @@ public class Astar {
 
     private Kartta kartta;
 
+//    private enum Ruutu {
+//
+//        LATTIA, VESI, METSÄ, SEINÄ
+//    }
+//    private static final int LATTIA = 1;
+//    private static final int VESI = 10;
+//    private static final int METSÄ = 3;
+//    private static final int SEINÄ = 10000;
     public Astar(Kartta kartta) {
         this.kartta = kartta;
+
     }
 
     /**
      * Hakee nopeimman reitin kahden solmun välillä, toiminta keskeneräinen.
      */
-    public Solmu[] haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
+    public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
 
         PriorityQueue<Solmu> rintama = new PriorityQueue<Solmu>(10, new Comparator<Solmu>() {
 
             public int compare(Solmu t, Solmu t1) {
                 return (t.getMatkaAlusta() + heuristinenMatka(t, maaliX, maaliY)) - (t1.getMatkaAlusta() + heuristinenMatka(t1, maaliX, maaliY));
             }
+
+          
         });
 
-        
-        kartta.getAlkuSolmu().setMatkaAlusta(0);
-
-        rintama.add(kartta.getAlkuSolmu());
-        int matka = 0;
-        Solmu[] camefrom = null;
+        rintama.add(new Solmu(alkuY, alkuX, null, 0));
 
         while (!rintama.isEmpty()) {
             Solmu nykyinen = rintama.poll();
 
-            if (nykyinen.onkoMaali == true) {
+            if (nykyinen.getY() == kartta.getMaaliY() && nykyinen.getX() == kartta.getMaaliX()) {
                 break;
             }
-            for (Solmu n : nykyinen.solmunNaapurit(nykyinen.getX(), nykyinen.getY())) {
-                int uusiMatka = matka + kartta.matkaArvo(nykyinen, n);
-                boolean sisaltyy = false;
-
-                for (int i = 0; i < camefrom.length; i++) {
-                    if (n == camefrom[i]) {
-                        sisaltyy = true;
-                    }
-                    if (!sisaltyy || matka < uusiMatka) {
-
-                        rintama.add(n);
-                        int a = 0;
-
-                        for (int i1 = 0; i1 < camefrom.length; i1++) {
-                            if (n == camefrom[i]) {
-                                a = i;
-                            }
-                        }
-                        matka = uusiMatka;
-                        camefrom[a] = nykyinen; // eihä täs ooo mitää järkee. kai?
-
-                    }
-                }
+            for (Ruutu n : kartta.naapurit(nykyinen.getY(), nykyinen.getX())) {
+                rintama.add(new Solmu(1, 1, nykyinen, nykyinen.getMatkaAlusta() + n.liikeHinta()));
             }
         }
-        return camefrom;
-
+        return null;
     }
 
-    /**
-     * laskee kahden solmun välisen heuristisen matkan ns. manhattanmatkana eli
-     * ensin horisontaalitasossa ja sitten vertikaalitasossa
-     *
-     * @param s
-     * @param maaliX
-     * @param maaliY
-     * @return
-     */
-    private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
+
+
+/**
+ * laskee kahden solmun välisen heuristisen matkan ns. manhattanmatkana eli
+ * ensin horisontaalitasossa ja sitten vertikaalitasossa
+ *
+ * @param s
+ * @param maaliX
+ * @param maaliY
+ * @return
+ */
+private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
         int heuristinen = 0;
 
         heuristinen = Math.abs((maaliY - s.getY()) + (maaliX - s.getX()));
         return heuristinen;
     }
-/**
- * tulostaa kartan ja nopeimman polun kartalla (toivottavasti)
- * @param polku 
- */
- 
+
+    /**
+     * tulostaa kartan ja nopeimman polun kartalla (toivottavasti)
+     *
+     * @param polku
+     */
     public void tulostaPolku(Solmu[] polku) {
         Solmu solmu;
         boolean skip = false;
