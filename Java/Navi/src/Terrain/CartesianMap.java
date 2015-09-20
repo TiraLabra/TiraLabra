@@ -30,7 +30,10 @@ public class CartesianMap {
                     tileValue = rand.nextInt(18 + 1);
                 }
                 
-                if (tileValue < 7) {
+                if (tileValue < 3) {
+                    tileValue = -1;
+                }
+                else if (tileValue < 7) {
                     tileValue = 0; // Dirtroad
                 }
                 else if (tileValue < 10) {
@@ -58,7 +61,10 @@ public class CartesianMap {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) == 0) { // Dirtroad
+                if (getSingleTile(x, y) < 0) {
+                    System.out.print(" 0 ");
+                }
+                else if (getSingleTile(x, y) == 0) { // Dirtroad
                     System.out.print(" * ");
                 }
                 else if (getSingleTile(x, y) == 1) { // Traffic
