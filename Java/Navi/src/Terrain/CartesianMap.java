@@ -5,9 +5,9 @@ import java.util.Random;
 // @author Leevi
 public class CartesianMap {
 
-    int xLim;
-    int yLim;
-    int[][] map;
+    private final int xLim;
+    private final int yLim;
+    private int[][] map;
 
     public CartesianMap(int x, int y) {
 
@@ -56,13 +56,19 @@ public class CartesianMap {
         return map[xPos][yPos];
 
     }
+    
+    public int[][] getMap() {
+        
+        return map;
+        
+    }
 
     public void displayMap() {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
                 if (getSingleTile(x, y) < 0) {
-                    System.out.print(" 0 ");
+                    System.out.print(" 0 "); // Void
                 }
                 else if (getSingleTile(x, y) == 0) { // Dirtroad
                     System.out.print(" * ");
