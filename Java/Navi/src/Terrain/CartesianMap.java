@@ -1,13 +1,22 @@
 package Terrain;
 
 import java.util.Random;
+import CoreLogic.Pathfinder;
 
 // @author Leevi
 public class CartesianMap {
+    
+    //================================================================================
+    // Parameters
+    //================================================================================
 
     private final int xLim;
     private final int yLim;
     private int[][] map;
+    
+    //================================================================================
+    // Constructors
+    //================================================================================
 
     public CartesianMap(int x, int y) {
 
@@ -16,6 +25,10 @@ public class CartesianMap {
         this.map = new int[x][y];
 
     }
+    
+    //================================================================================
+    // Map generation
+    //================================================================================
 
     public void generateTerrain(boolean hasRoughTerrain) {
 
@@ -50,6 +63,16 @@ public class CartesianMap {
         }
 
     }
+    
+    public void generateTerrainWithObstacles() {
+        
+        // TODO: Implementation
+        
+    }
+    
+    //================================================================================
+    // Getters
+    //================================================================================
 
     public int getSingleTile(int xPos, int yPos) {
 
@@ -62,6 +85,10 @@ public class CartesianMap {
         return map;
         
     }
+    
+    //================================================================================
+    // Map drawing
+    //================================================================================
 
     public void displayMap() {
 
@@ -86,6 +113,12 @@ public class CartesianMap {
             System.out.println("");
         }
 
+    }
+    
+    public void displayMapWithRoute(int [][] route) {
+        
+        // TODO: Implementation
+        
     }
 
 }
