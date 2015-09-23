@@ -16,7 +16,7 @@ import java.util.PriorityQueue;
  */
 public class Astar {
 
-    private Kartta kartta;
+    private final Kartta kartta;
     private Integer[][] parasreitti;
 
     public Astar(Kartta kartta) {
@@ -26,47 +26,43 @@ public class Astar {
 
     /**
      * Hakee nopeimman reitin kahden solmun välillä, toiminta keskeneräinen.
+     *
      * @param alkuX
      * @param alkuY
      * @param maaliX
      * @param maaliY
-     * @return 
+     * @return
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
-
-        PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
+        //        PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
+        PrioKeko<Solmu> rintama = new PrioKeko<>(new Comparator<Solmu>() {
 
             @Override
             public int compare(Solmu t, Solmu t1) {
                 return (t.getMatkaAlusta() + heuristinenMatka(t, maaliX, maaliY)) - (t1.getMatkaAlusta() + heuristinenMatka(t1, maaliX, maaliY));
             }
-
         });
         Solmu nykyinen;
-        rintama.add(new Solmu(alkuX, alkuY, null, 0));
-        
+        rintama.heapInsert(new Solmu(alkuX, alkuY, null, 0));
+
         parasreitti = new Integer[kartta.getKorkeus()][kartta.getLeveys()];
-        
-        
 
         while (!rintama.isEmpty()) {
 
-            nykyinen = rintama.poll();
-            
+            nykyinen = (Solmu) rintama.pull();
+            tulostaPolku(nykyinen);
 
             if (nykyinen.getY() == maaliY && nykyinen.getX() == maaliX) {
-                
+
                 return nykyinen;
             }
             for (Solmu n : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {
-                
-                
-                
+
                 if (parasreitti[n.getY()][n.getX()] != null && parasreitti[n.getY()][n.getX()] <= n.getMatkaAlusta()) {
                     continue;
                 }
                 parasreitti[n.getY()][n.getX()] = n.getMatkaAlusta();
-                rintama.add(n);
+                rintama.heapInsert(n);
 
             }
 
@@ -85,19 +81,20 @@ public class Astar {
      */
     private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
         double heuristinen = 0;
-        heuristinen = Math.sqrt(Math.pow(s.getX() - maaliX, 2) + Math.pow(s.getY() - maaliY,2));
-        
-        System.out.println("solmu (" + s.getX() +", " + s.getY() + "): " + heuristinen);
+        heuristinen = Math.sqrt(Math.pow(s.getX() - maaliX, 2) + Math.pow(s.getY() - maaliY, 2));
+
+//        System.out.println("solmu (" + s.getX() +", " + s.getY() + "): " + heuristinen);
         return (int) heuristinen;
     }
 
     /**
-     * tulostaa kartan ja nopeimman polun kartalla (toivottavasti)
+     * tulostaa kartan ja nopeimman polun kartalla
      *
      * @param polku
      */
     public void tulostaPolku(Solmu polku) {
-        ArrayList<Solmu> ruudut = new ArrayList<>();
+        Lista<Solmu> ruudut = new Lista<>();
+//        ArrayList<Solmu> ruudut = new ArrayList<>();
         ruudut.add(polku);
         Solmu d = polku.getEdellinen();
         boolean printattu;
@@ -114,8 +111,8 @@ public class Astar {
                     if (s.getY() == y && s.getX() == x) {
 //                        if (s.getY() != kartta.alkuY() && s.getX() != kartta.getAlkuX()) {
 //                            if (s.getY() != kartta.getMaaliY() && s.getX() != kartta.getMaaliX()) {
-                                System.out.print("+");
-                                printattu = true;
+                        System.out.print("+");
+                        printattu = true;
 //                            }
 //                        }
 
