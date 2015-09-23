@@ -17,6 +17,7 @@ import java.util.PriorityQueue;
 public class Astar {
 
     private Kartta kartta;
+    private Integer[][] parasreitti;
 
     public Astar(Kartta kartta) {
         this.kartta = kartta;
@@ -25,6 +26,11 @@ public class Astar {
 
     /**
      * Hakee nopeimman reitin kahden solmun välillä, toiminta keskeneräinen.
+     * @param alkuX
+     * @param alkuY
+     * @param maaliX
+     * @param maaliY
+     * @return 
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
 
@@ -37,29 +43,35 @@ public class Astar {
 
         });
         Solmu nykyinen;
-        rintama.add(new Solmu(alkuY, alkuX, null, 0));
-        ArrayList<Solmu> kayty = new ArrayList<>();
+        rintama.add(new Solmu(alkuX, alkuY, null, 0));
+        
+        parasreitti = new Integer[kartta.getKorkeus()][kartta.getLeveys()];
+        
+        
 
         while (!rintama.isEmpty()) {
 
             nykyinen = rintama.poll();
-            kayty.add(nykyinen);
-            tulostaPolku(kayty.get(kayty.size() - 1));
+            
 
-            if (nykyinen.getY() == kartta.getMaaliY() && nykyinen.getX() == kartta.getMaaliX()) {
-                kayty.add(nykyinen);
-                break;
+            if (nykyinen.getY() == maaliY && nykyinen.getX() == maaliX) {
+                
+                return nykyinen;
             }
             for (Solmu n : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {
                 
-                    if (!kayty.contains(n) || !rintama.contains(n)) {
-                        rintama.add(n);
-
-                    }
+                
+                
+                if (parasreitti[n.getY()][n.getX()] != null && parasreitti[n.getY()][n.getX()] <= n.getMatkaAlusta()) {
+                    continue;
                 }
-            
+                parasreitti[n.getY()][n.getX()] = n.getMatkaAlusta();
+                rintama.add(n);
+
+            }
+
         }
-        return kayty.get(kayty.size() - 1);
+        return null;
     }
 
     /**
@@ -73,12 +85,9 @@ public class Astar {
      */
     private int heuristinenMatka(Solmu s, int maaliX, int maaliY) {
         double heuristinen = 0;
-        if(s.getX() == maaliX || s.getY() == maaliY){
-        heuristinen = Math.abs(maaliY - s.getY()) + Math.abs(maaliX - s.getX());
-        }
-        else{
-            heuristinen = Math.sqrt(Math.abs(maaliY - s.getY()) + Math.abs(maaliX - s.getX()));
-        }
+        heuristinen = Math.sqrt(Math.pow(s.getX() - maaliX, 2) + Math.pow(s.getY() - maaliY,2));
+        
+        System.out.println("solmu (" + s.getX() +", " + s.getY() + "): " + heuristinen);
         return (int) heuristinen;
     }
 
@@ -103,22 +112,24 @@ public class Astar {
                 printattu = false;
                 for (Solmu s : ruudut) {
                     if (s.getY() == y && s.getX() == x) {
-                        if (s.getY() != kartta.getAlkuY() && s.getX() != kartta.getAlkuX()) {
-                            if (s.getY() != kartta.getMaaliY() && s.getX() != kartta.getMaaliX()) {
+//                        if (s.getY() != kartta.alkuY() && s.getX() != kartta.getAlkuX()) {
+//                            if (s.getY() != kartta.getMaaliY() && s.getX() != kartta.getMaaliX()) {
                                 System.out.print("+");
                                 printattu = true;
-                            }
-                        }
+//                            }
+//                        }
 
                     }
                 }
-                if (x == kartta.getAlkuX() && y == kartta.getAlkuY() && !printattu) {
-                    System.out.print("O");
-                    printattu = true;
-                } else if (x == kartta.getMaaliX() && y == kartta.getMaaliY() && !printattu) {
-                    System.out.print("X");
-                    printattu = true;
-                } else if (kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {
+//                if (x == kartta.getAlkuX() && y == kartta.getAlkuY() && !printattu) {
+//                    System.out.print("O");
+//                    printattu = true;
+//                } else if (x == kartta.getMaaliX() && y == kartta.getMaaliY() && !printattu) {
+//                    System.out.print("X");
+//                    printattu = true;
+//                } else 
+//                    
+                if (kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {
                     System.out.print("-");
                     printattu = true;
                 }

@@ -24,13 +24,13 @@ public class Kartta {
     private int maalipisteX;
     private int maalipisteY;
 
-    public Kartta(int leveys, int korkeus, int alkupisteX, int alkupisteY, int maalipisteX, int maalipisteY) {
+    public Kartta(int leveys, int korkeus) {
         this.leveys = leveys;
         this.korkeus = korkeus;
-        this.alkupisteX = alkupisteX;
-        this.alkupisteY = alkupisteY;
-        this.maalipisteX = maalipisteX;
-        this.maalipisteY = maalipisteY;
+//        this.alkupisteX = alkupisteX;
+//        this.alkupisteY = alkupisteY;
+//        this.maalipisteX = maalipisteX;
+//        this.maalipisteY = maalipisteY;
         luoKartta();
 
     }
@@ -68,14 +68,13 @@ public class Kartta {
         return korkeus;
     }
 
-    public int getMaaliX() {
-        return maalipisteX;
-    }
-
-    public int getMaaliY() {
-        return maalipisteY;
-    }
-
+//    public int getMaaliX() {
+//        return maalipisteX;
+//    }
+//
+//    public int getMaaliY() {
+//        return maalipisteY;
+//    }
     /**
      * määrittää tietyn solmun koordinaateissa x ja y esteeksi
      *
@@ -125,14 +124,13 @@ public class Kartta {
 //    public void setAlku(int x, int y) {
 //        
 //    }
-    public int getAlkuX() {
-        return alkupisteX;
-    }
-
-    public int getAlkuY() {
-        return alkupisteY;
-    }
-
+//    public int getAlkuX() {
+//        return alkupisteX;
+//    }
+//
+//    public int getAlkuY() {
+//        return alkupisteY;
+//    }
     public Ruutu getAlkuRuutu() {
         return ruudukko[alkupisteY][alkupisteX];
     }
@@ -149,37 +147,41 @@ public class Kartta {
     //pitääköhän solmun x ja y kääntää?
     /**
      * hakee solmun naapurisolmut. EI TOIMI (KAI)
+     *
      * @param x
      * @param y
      * @param nykyinen
      * @param matka
-     * @return 
+     * @return
      */
     public ArrayList<Solmu> naapurit(int x, int y, Solmu nykyinen, int matka) {
-        ArrayList<Solmu> naapurit = new ArrayList<Solmu>();
+        ArrayList<Solmu> naapurit = new ArrayList<>();
 
-        if (!(y - 1 < 0)) {
+        if (y >= 1) {
             naapurit.add(new Solmu(x, y - 1, nykyinen, matka + ruudukko[y - 1][x].liikeHinta()));
-            if (!(x + 1 >= leveys)) {
-                naapurit.add(new Solmu(x + 1, y - 1, nykyinen, matka + ruudukko[y - 1][x + 1].liikeHinta()));
-            }
-            if (!(x - 1 < 0)) {
-                naapurit.add(new Solmu(x - 1, y - 1, nykyinen, matka + ruudukko[y - 1][x - 1].liikeHinta()));
-            }
+//            if (!(x + 1 >= leveys)) {
+//                naapurit.add(new Solmu(x + 1, y - 1, nykyinen, matka + ruudukko[y - 1][x + 1].liikeHinta()));
+//            }
+//            if (!(x - 1 < 0)) {
+//                naapurit.add(new Solmu(x - 1, y - 1, nykyinen, matka + ruudukko[y - 1][x - 1].liikeHinta()));
+//            }
         }
         if (!(y + 1 >= korkeus)) {
             naapurit.add(new Solmu(x, y + 1, nykyinen, matka + ruudukko[y + 1][x].liikeHinta()));
 
-            if (!(x + 1 >= leveys)) {
-                naapurit.add(new Solmu(x + 1, y + 1, nykyinen, matka + ruudukko[y + 1][x + 1].liikeHinta()));
-            }
-            if (!(x - 1 < 0)) {
-                naapurit.add(new Solmu(x - 1, y + 1, nykyinen, matka + ruudukko[y + 1][x - 1].liikeHinta()));
-            }
+//            if (!(x + 1 >= leveys)) {
+//                naapurit.add(new Solmu(x + 1, y + 1, nykyinen, matka + ruudukko[y + 1][x + 1].liikeHinta()));
+//            }
+//            if (!(x - 1 < 0)) {
+//                naapurit.add(new Solmu(x - 1, y + 1, nykyinen, matka + ruudukko[y + 1][x - 1].liikeHinta()));
+//            }
         }
-        if (!(x + 1 >= leveys) && !(x - 1 < 0)) {
+        if (!(x + 1 >= leveys)) {
             naapurit.add(new Solmu(x + 1, y, nykyinen, matka + ruudukko[y][x + 1].liikeHinta()));
+        }
+        if (!(x - 1 < 0)) {
             naapurit.add(new Solmu(x - 1, y, nykyinen, matka + ruudukko[y][x - 1].liikeHinta()));
+
         }
 
         return naapurit;
