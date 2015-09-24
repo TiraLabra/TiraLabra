@@ -6,7 +6,6 @@
 package astar.astar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Karttarakenne Astar algoritmia varten, kartta muodostuu solmuista joilla on
@@ -14,10 +13,10 @@ import java.util.List;
  *
  * @author sasumaki
  */
-public class Kartta {
+public final class Kartta {
 
-    private int leveys;
-    private int korkeus;
+    private final int leveys;
+    private final int korkeus;
     private Ruutu[][] ruudukko;
     private int alkupisteX;
     private int alkupisteY;
@@ -27,10 +26,7 @@ public class Kartta {
     public Kartta(int leveys, int korkeus) {
         this.leveys = leveys;
         this.korkeus = korkeus;
-//        this.alkupisteX = alkupisteX;
-//        this.alkupisteY = alkupisteY;
-//        this.maalipisteX = maalipisteX;
-//        this.maalipisteY = maalipisteY;
+
         luoKartta();
 
     }
@@ -39,7 +35,6 @@ public class Kartta {
      * Luo kaksiulotteisen taulukkokartan, taulukon alkioina on solmuja, jotka
      * kuvastavat koordinaatteja.
      *
-     * @return
      */
     public void luoKartta() {
         ruudukko = new Ruutu[korkeus][leveys];
@@ -48,18 +43,29 @@ public class Kartta {
                 ruudukko[y][x] = Ruutu.LATTIA;
             }
         }
+        boolean haluatkoSeinan = false;
+        if (haluatkoSeinan) {
+            ruudukko[3][4] = Ruutu.SEINÄ;
+            ruudukko[3][5] = Ruutu.SEINÄ;
+
+            ruudukko[3][6] = Ruutu.SEINÄ;
+
+            ruudukko[3][7] = Ruutu.SEINÄ;
+            ruudukko[3][8] = Ruutu.SEINÄ;
+            ruudukko[9][3] = Ruutu.SEINÄ;
+            
+            ruudukko[4][3] = Ruutu.SEINÄ;
+
+            ruudukko[5][3] = Ruutu.SEINÄ;
+            ruudukko[6][3] = Ruutu.SEINÄ;
+
+            ruudukko[7][3] = Ruutu.SEINÄ;
+            ruudukko[8][3] = Ruutu.SEINÄ;
+
+        }
+
     }
 
-    /**
-     * määrittää tietyn solmun koordinaateissa x ja y maalipisteeksi.
-     *
-     * @return
-     */
-//    public void setMaali(int x, int y) {
-//        this.maalipisteX = x;
-//        this.maalipisteY = y;
-//        kartta.get(x).get(y).setMaali(true);
-//    }
     public int getLeveys() {
         return leveys;
     }
@@ -68,13 +74,6 @@ public class Kartta {
         return korkeus;
     }
 
-//    public int getMaaliX() {
-//        return maalipisteX;
-//    }
-//
-//    public int getMaaliY() {
-//        return maalipisteY;
-//    }
     /**
      * määrittää tietyn solmun koordinaateissa x ja y esteeksi
      *
@@ -120,17 +119,8 @@ public class Kartta {
      *
      * @param x
      * @param y
+     * @return
      */
-//    public void setAlku(int x, int y) {
-//        
-//    }
-//    public int getAlkuX() {
-//        return alkupisteX;
-//    }
-//
-//    public int getAlkuY() {
-//        return alkupisteY;
-//    }
     public Ruutu getAlkuRuutu() {
         return ruudukko[alkupisteY][alkupisteX];
     }

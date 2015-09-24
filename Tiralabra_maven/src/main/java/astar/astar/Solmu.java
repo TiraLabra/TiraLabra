@@ -5,9 +5,6 @@
  */
 package astar.astar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author sasumaki
@@ -31,6 +28,11 @@ public class Solmu {
         return x;
     }
 
+    /** Jos solmun X ja Y koordinaatit ovat samat ne ovat sama solmu
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) {
@@ -38,12 +40,15 @@ public class Solmu {
         }
 
         final Solmu toinen = (Solmu) o;
-        if (this.x == toinen.getX() && this.y == toinen.getY()) {
-            return true;
-        } else {
+        return this.x == toinen.getX() && this.y == toinen.getY();
+    }
 
-            return false;
-        }
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + this.x;
+        hash = 97 * hash + this.y;
+        return hash;
     }
 
     public int getY() {

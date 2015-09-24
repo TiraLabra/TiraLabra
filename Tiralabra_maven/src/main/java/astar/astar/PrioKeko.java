@@ -10,15 +10,16 @@ import java.util.Comparator;
 /**
  *
  * @author sasumaki
+ * @param <E>
  */
 public class PrioKeko<E> {
 
     private int size;
     private int heapsize;
     private Object[] heap;
-    private Object temp;
+    private Object temporary;
 
-    private Comparator<? super E> comparator;
+    private final Comparator<? super E>comparator;
 
     public PrioKeko(Comparator comparator) {
         this.comparator = comparator;
@@ -48,10 +49,7 @@ public class PrioKeko<E> {
     }
 
     public boolean isEmpty() {
-        if (heapsize == 0) {
-            return true;
-        }
-        return false;
+        return heapsize == 0;
     }
 
     public Object pull() {
@@ -62,11 +60,12 @@ public class PrioKeko<E> {
         if (size == 0) {
             return null;
         }
-        E paras = (E) (heap[0]);
+        E best = (E) (heap[0]);
         heap[0] = heap[size - 1];
         size--;
         heapify(0);
-        return paras;
+        
+        return best;
     }
 
     public int parent(int i) {
@@ -104,9 +103,9 @@ public class PrioKeko<E> {
     }
 
     public void vaihda(int a, int b) {
-        this.temp = heap[a];
+        this.temporary = heap[a];
         heap[a] = heap[b];
-        heap[b] = this.temp;
+        heap[b] = this.temporary;
     }
 
 }

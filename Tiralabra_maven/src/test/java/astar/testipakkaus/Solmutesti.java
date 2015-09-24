@@ -34,6 +34,28 @@ public class Solmutesti {
     public void testaaEdellinen(){
         assertEquals(solmu, solmu2.getEdellinen());
     }
+    @Test
+    public void equalstesti(){
+        boolean onkoSama;
+        onkoSama = solmu.equals(this.solmu);
+        assertEquals(onkoSama, true);
+    }
+    @Test
+    public void equalstesti2(){
+        Solmu solmu3 = new Solmu(0,0,null,0);
+        boolean onkoSama;
+        onkoSama = solmu.equals(solmu3);
+        
+        assertEquals(onkoSama, true);
+    }
+      @Test
+    public void equalstesti3(){
+        Solmu solmu3 = new Solmu(0,0,null,0);
+        boolean onkoSama;
+        onkoSama = solmu.equals(solmu2);
+        
+        assertEquals(onkoSama, false);
+    }
     
 
 }
