@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.verkko;
 
 /**
- *
+ *Kuvaavat nimet ja kustannukset ruudulla liikkumiselle
  * @author sasumaki
  */
 public enum Ruutu {

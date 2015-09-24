@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.verkko;
 
 /**
  *
@@ -28,7 +28,7 @@ public class Solmu {
         return x;
     }
 
-    /** Jos solmun X ja Y koordinaatit ovat samat ne ovat sama solmu
+    /** Jos solmujen X ja Y koordinaatit ovat samat ne ovat sama solmu
      *
      * @param o
      * @return

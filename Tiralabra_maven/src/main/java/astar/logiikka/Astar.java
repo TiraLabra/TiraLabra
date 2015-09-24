@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.logiikka;
 
+import astar.verkko.Kartta;
+import astar.verkko.PolkuTulostin;
+import astar.verkko.Ruutu;
+import astar.verkko.Solmu;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -16,7 +20,7 @@ import java.util.PriorityQueue;
  */
 public class Astar {
 
-    private final Kartta kartta;
+    public final Kartta kartta;
     private Integer[][] parasreitti;
 
     public Astar(Kartta kartta) {
@@ -42,6 +46,7 @@ public class Astar {
                 return (t.getMatkaAlusta() + heuristinenMatka(t, maaliX, maaliY)) - (t1.getMatkaAlusta() + heuristinenMatka(t1, maaliX, maaliY));
             }
         });
+        PolkuTulostin tulostin = new PolkuTulostin();
         Solmu nykyinen;
         rintama.add(new Solmu(alkuX, alkuY, null, 0));
 
@@ -52,7 +57,7 @@ public class Astar {
             nykyinen = (Solmu) rintama.poll();
 
             if (nykyinen.getY() == maaliY && nykyinen.getX() == maaliX) {
-
+                tulostin.tulostaPolku(nykyinen, this);
                 return nykyinen;
             }
             for (Solmu n : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())) {
@@ -66,6 +71,8 @@ public class Astar {
             }
 
         }
+        
+        
         return null;
     }
 
@@ -86,63 +93,4 @@ public class Astar {
         return (int) heuristinen;
     }
 
-    /**
-     * Tulostaa kartan ja nopeimman polun kartalla
-     *
-     * @param polku
-     */
-    public void tulostaPolku(Solmu polku) {
-        //    Lista<Solmu> ruudut = new Lista<>();
-        ArrayList<Solmu> ruudut = new ArrayList<>();
-        ruudut.add(polku);
-        Solmu d = polku.getEdellinen();
-        boolean printattu;
-
-        while (d != null) {
-            ruudut.add(d);
-
-            d = d.getEdellinen();
-        }
-
-        for (int y = 0; y < kartta.getKorkeus(); y++) {
-            for (int x = 0; x < kartta.getLeveys(); x++) {
-                printattu = false;
-                for (Solmu s : ruudut) {
-                    if (s.getY() == y && s.getX() == x) {
-//                        if (kartta.getRuutu(x, y) == (kartta.getAlkuRuutu())) {
-//                            System.out.print("O");
-//                            printattu = true;
-//                        }
-//                        if (kartta.getRuutu(x, y) == (kartta.getMaaliRuutu()) && !printattu) {
-//                            System.out.print("X");
-//                            printattu = true;
-//                        }
-                        if(!printattu){
-                        System.out.print("+");
-                        printattu = true;
-                        }
-//                            }
-//                        }
-
-                    }
-                }
-//                if (x == kartta.getAlkuX() && y == kartta.getAlkuY() && !printattu) {
-//                    System.out.print("O");
-//                    printattu = true;
-//                } else if (x == kartta.getMaaliX() && y == kartta.getMaaliY() && !printattu) {
-//                    System.out.print("X");
-//                    printattu = true;
-//                } else 
-                if (kartta.getRuutu(x, y) == Ruutu.SEINÄ && !printattu) {
-                    System.out.print("@");
-                    printattu = true;
-                }
-                if (kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {
-                    System.out.print("-");
-                }
-            }
-            System.out.println("");
-
-        }
-    }
 }

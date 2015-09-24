@@ -5,9 +5,9 @@
  */
 package astar.testipakkaus;
 
-import astar.astar.Astar;
-import astar.astar.Kartta;
-import astar.astar.Solmu;
+import astar.logiikka.Astar;
+import astar.verkko.Kartta;
+import astar.verkko.Solmu;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.tietorakenteet;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *
+ *Lista tietorakenne. Lisätään tavaraa ja poistetaan tavaraa
  * @author sasumaki
  * @param <E>
  */
@@ -22,7 +22,10 @@ public class Lista<E> implements Iterable<E> {
         this.size = 0;
         this.taulu = new Object[10];
     }
-
+/**
+ * Lisätään taulukkoon tavaraa, jos ei mahdu niin kopioidaan taulukko uuteen tuplasti isompaan taulukkoon
+ * @param kama 
+ */
     public void add(Object kama) {
         if (size == taulu.length) {
             Object[] taulu2 = new Object[size * 2];
@@ -33,20 +36,33 @@ public class Lista<E> implements Iterable<E> {
         taulu[size] = kama;
         size = size + 1;
     }
-
+/**
+ * palauttaa indeksissä i olevan elementin taulukosta
+ * @param i
+ * @return 
+ */
     public E get(int i) {
 
         return (E) taulu[i];
     }
-
+/**
+ * taulukon koko
+ * @return 
+ */
     public int size() {
         return size;
     }
-
+/**
+ * tarkistaa onko taulukko tyhjä
+ * @return 
+ */
     public boolean isEmpty() {
         return size == 0;
     }
-
+/**
+ * poistaa taulukosta indeksissä i olevan alkion
+ * @param i 
+ */
     public void remove(int i) {
         int siirrettavat = size - i - 1;
         if (siirrettavat > 0) {
@@ -55,7 +71,10 @@ public class Lista<E> implements Iterable<E> {
         size--;
         taulu[size] = null;
     }
-
+/**
+ * Iteraattori, for toimintoa varten luotu
+ * @return 
+ */
     @Override
     public Iterator<E> iterator() {
         return new iteraattori();

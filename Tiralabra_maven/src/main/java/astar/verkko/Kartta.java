@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.verkko;
 
+import astar.verkko.Solmu;
+import astar.verkko.Ruutu;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +45,7 @@ public final class Kartta {
                 ruudukko[y][x] = Ruutu.LATTIA;
             }
         }
-        boolean haluatkoSeinan = false;
+        boolean haluatkoSeinan = true;
         if (haluatkoSeinan) {
             ruudukko[3][4] = Ruutu.SEINÄ;
             ruudukko[3][5] = Ruutu.SEINÄ;
@@ -53,7 +55,7 @@ public final class Kartta {
             ruudukko[3][7] = Ruutu.SEINÄ;
             ruudukko[3][8] = Ruutu.SEINÄ;
             ruudukko[9][3] = Ruutu.SEINÄ;
-            
+
             ruudukko[4][3] = Ruutu.SEINÄ;
 
             ruudukko[5][3] = Ruutu.SEINÄ;
@@ -115,7 +117,7 @@ public final class Kartta {
     }
 
     /**
-     * määrittää tietyn solmun koordinaateissa x ja y alkupisteeksi.
+     * Palauttaa alkusolmun
      *
      * @param x
      * @param y
@@ -125,18 +127,29 @@ public final class Kartta {
         return ruudukko[alkupisteY][alkupisteX];
     }
 
+    /**
+     * palauttaa maalisolmun
+     *
+     * @return
+     */
     public Ruutu getMaaliRuutu() {
         return ruudukko[maalipisteY][maalipisteX];
     }
 
+    /**
+     * palauttaa ruudun x,y koordinaateissa
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Ruutu getRuutu(int x, int y) {
         return ruudukko[y][x];
     }
 
     //
-    //pitääköhän solmun x ja y kääntää?
     /**
-     * hakee solmun naapurisolmut. EI TOIMI (KAI)
+     * hakee solmun naapurisolmut. Kulmasolmut kommentoituna toistaiseksi
      *
      * @param x
      * @param y

@@ -1,6 +1,6 @@
 package astar.testipakkaus;
 
-import astar.astar.Solmu;
+import astar.verkko.Solmu;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;

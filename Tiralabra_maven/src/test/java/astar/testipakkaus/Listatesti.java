@@ -5,8 +5,8 @@
  */
 package astar.testipakkaus;
 
-import astar.astar.Lista;
-import astar.astar.Solmu;
+import astar.tietorakenteet.Lista;
+import astar.verkko.Solmu;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;

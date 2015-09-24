@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package astar.astar;
+package astar.tietorakenteet;
 
 import java.util.Comparator;
 
 /**
- *
+ * PriorityQueuen toiminnan korvaava keko
  * @author sasumaki
  * @param <E>
  */
@@ -27,7 +27,10 @@ public class PrioKeko<E> {
         this.heapsize = 0;
         this.heap = new Object[size];
     }
-
+/**
+ * lisää kekoon tavaraa ylläpitäen keko-ominaisuutta
+ * @param lisays 
+ */
     public void heapInsert(Object lisays) {
         heapsize = +1;
         if (size == heapsize) {
@@ -55,7 +58,10 @@ public class PrioKeko<E> {
     public Object pull() {
         return null;
     }
-
+/**
+ * Ottaaa keosta ensimmäisen alkion (suurin prioriteetti) ja poistaa sen keosta ylläpitäen keko-ominaisuuden
+ * @return 
+ */
     public Object pullDelete() {
         if (size == 0) {
             return null;
@@ -67,19 +73,34 @@ public class PrioKeko<E> {
         
         return best;
     }
-
+/**
+ * kekonavigointia varten luotu
+ * @param i
+ * @return 
+ */
     public int parent(int i) {
         return i / 2;
     }
-
+/**
+ * kekonavigointia varten luotu
+ * @param i
+ * @return 
+ */
     public int left(int i) {
         return 2 * i;
     }
-
+/**
+ * kekonavigointia varten luotu
+ * @param i
+ * @return 
+ */
     public int right(int i) {
         return (2 * i) + 1;
     }
-
+/**
+ * "Valuttaa" alkioita keossa keko-ominaisuuden korjaamiseksi.
+ * @param i 
+ */
     public void heapify(int i) {
         int l = left(i);
         int r = right(i);
@@ -94,14 +115,23 @@ public class PrioKeko<E> {
             vaihda(i, l);
         }
     }
-
+/**
+ * palauttaa suuremman prioriteetin heuristisen haun arviolla
+ * @param a
+ * @param b
+ * @return 
+ */
     private int suurempi(int a, int b) {
         if (comparator.compare((E) heap[a], (E) heap[b]) < 0) {
             return a;
         }
         return b;
     }
-
+/**
+ * vaihtaa alkioiden paikkaa keossa-
+ * @param a
+ * @param b 
+ */
     public void vaihda(int a, int b) {
         this.temporary = heap[a];
         heap[a] = heap[b];

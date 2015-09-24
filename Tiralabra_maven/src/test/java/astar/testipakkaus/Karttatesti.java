@@ -5,8 +5,8 @@
  */
 package astar.testipakkaus;
 
-import astar.astar.Kartta;
-import astar.astar.Solmu;
+import astar.verkko.Kartta;
+import astar.verkko.Solmu;
 import java.util.ArrayList;
 
 import org.junit.Test;
