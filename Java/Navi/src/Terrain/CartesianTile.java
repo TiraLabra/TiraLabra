@@ -3,9 +3,28 @@ package Terrain;
 // @author Leevi
 public enum CartesianTile {
 
-    HIGHWAY, // Movement = 4     
-    ROAD, // Movement = 3
-    TRAFFIC, // Movement = 2  
-    DIRTROAD, // Movement = 1
-    VOID; // Movement = 0
+    HIGHWAY,     
+    ROAD,
+    TRAFFIC,  
+    DIRTROAD,
+    VOID;
+    
+    public int movementCost() {
+        
+        switch (this) {
+            case HIGHWAY:
+                return 1;
+            case ROAD:
+                return 3;
+            case TRAFFIC:
+                return 6;
+            case DIRTROAD:
+                return 7;
+            case VOID:
+                return 20;
+        }
+        return -1;
+        
+    }
+    
 }
