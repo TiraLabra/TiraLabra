@@ -10,4 +10,4 @@ Lähteet:
 http://www.boost.org/doc/libs/1_44_0/libs/graph/doc/dag_shortest_paths.html
 http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/dijkstraAlgor.htm
 http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
-http://stackoverflow.com/
+http://stackoverflow.com/ http://en.literateprograms.org/Dijkstra's_algorithm_%28Java%29
