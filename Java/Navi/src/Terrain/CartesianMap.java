@@ -1,7 +1,7 @@
 package Terrain;
 
 import java.util.Random;
-import CoreLogic.Pathfinder;
+import CoreLogic.AStarPathfinder;
 
 // @author Leevi
 public class CartesianMap {

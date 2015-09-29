@@ -1,6 +1,8 @@
 package Main;
 
+import CoreLogic.Dijkstra;
 import UI.TestUserInterface;
+import java.util.List;
 
 // @author Leevi
 public class Navi {
@@ -13,5 +15,9 @@ public class Navi {
         TestUserInterface ui = new TestUserInterface();
         ui.startUI();
         
+        // Dijkstra a = new Dijkstra();
+        // a.test();
+        
     }
+        
 }

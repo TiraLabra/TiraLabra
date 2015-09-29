@@ -4,7 +4,7 @@ package UI;
 
 import Main.Navi;
 import Terrain.CartesianMap;
-import CoreLogic.Pathfinder;
+import CoreLogic.AStarPathfinder;
 import java.util.Scanner;
 
 public class TestUserInterface {
@@ -112,7 +112,7 @@ public class TestUserInterface {
             map.generateTerrainPreset1();
         }
         
-        Pathfinder finder = new Pathfinder();
+        AStarPathfinder finder = new AStarPathfinder();
         int[][] route = finder.determineRoute(Navi.xLim, Navi.yLim, map.getMap(), startX, startY, goalX, goalY);
         
         System.out.println("\nMap:\n");
