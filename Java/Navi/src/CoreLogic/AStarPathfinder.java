@@ -2,6 +2,7 @@ package CoreLogic;
 
 // @author Leevi
 
+import Terrain.CartesianTile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,13 @@ public class AStarPathfinder {
     
     public int[][] determineRoute(int xLim, int yLim, int[][] map, int startX, int startY, int goalX, int goalY) {
         
+        if (startX == goalX && startY == goalY) {
+            return null; // No distance to travel!
+        }
+        else if (map[goalX][goalY] == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
+            return null; // No valid goal!
+        }
+        
         List<String> open = new ArrayList<>();
         int currentX = startX;
         int currentY = startY;
@@ -28,7 +36,6 @@ public class AStarPathfinder {
         
         int heuristicDistance = Math.abs((startX - goalX)) + Math.abs((startY - goalY));
 
-        // TODO: Implementation
         return new int[1][1];
 
     }
