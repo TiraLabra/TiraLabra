@@ -23,8 +23,8 @@ public class CartesianMap {
     
     /**
      *
-     * @param x
-     * @param y
+     * @param x, limit of width.
+     * @param y, limit of height.
      */
     public CartesianMap(int x, int y) {
 
@@ -39,8 +39,9 @@ public class CartesianMap {
     //================================================================================
     
     /**
-     *
-     * @param hasRoughTerrain
+     * Generates a random grid map, with a certain level of obstacles.
+     * 
+     * @param hasRoughTerrain, determines if the terrain has more obstacles or not.
      */
     public void generateTerrain(boolean hasRoughTerrain) {
 
@@ -55,15 +56,15 @@ public class CartesianMap {
                 }
 
                 if (tileValue < 3) {
-                    tileValue = -1; // Void
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID);
                 } else if (tileValue < 7) {
-                    tileValue = 0; // Dirtroad
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD);
                 } else if (tileValue < 10) {
-                    tileValue = 1; // Traffic
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.TRAFFIC);
                 } else if (tileValue < 18) {
-                    tileValue = 2; // Road
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.ROAD);
                 } else {
-                    tileValue = 3; // Highway
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.HIGHWAY);
                 }
                 map[x][y] = tileValue;
             }
@@ -72,7 +73,7 @@ public class CartesianMap {
     }
 
     /**
-     *
+     * Generates a semi-random grid map with fixed obstacles.
      */
     public void generateTerrainPreset1() {
 
@@ -83,22 +84,22 @@ public class CartesianMap {
                 tileValue = rand.nextInt(30 + 1);
 
                 if (x > 2 && x < xLim - 5 && y == 5) {
-                    tileValue = -1;
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID);
                 } else if (y > 5 && y < yLim - 8 && x == 3) {
-                    tileValue = -1;
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID);
                 } else if (y > 5 && y < yLim - 8 && x == 15) {
-                    tileValue = -1;
+                    tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID);
                 } else {
                     if (tileValue < 3) {
-                        tileValue = -1; // Void
+                        tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID);
                     } else if (tileValue < 7) {
-                        tileValue = 0; // Dirtroad
+                        tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD);
                     } else if (tileValue < 10) {
-                        tileValue = 1; // Traffic
+                        tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.TRAFFIC);
                     } else if (tileValue < 18) {
-                        tileValue = 2; // Road
+                        tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.ROAD);
                     } else {
-                        tileValue = 3; // Highway
+                        tileValue = CartesianTile.getMovementCostFromNodeName(CartesianTile.HIGHWAY);
                     }
                 }
                 map[x][y] = tileValue;
@@ -115,7 +116,8 @@ public class CartesianMap {
      *
      * @param xPos
      * @param yPos
-     * @return
+     * @return int xy, convertible to a node.
+     * @see CartesianTile
      */
     public int getSingleTile(int xPos, int yPos) {
 
@@ -125,7 +127,7 @@ public class CartesianMap {
 
     /**
      *
-     * @return
+     * @return 2d array, contains integers.
      */
     public int[][] getMap() {
 
@@ -138,21 +140,21 @@ public class CartesianMap {
     //================================================================================
     
     /**
-     *
+     * Render the map to a textual representation.
      */
     public void displayMap() {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) < 0) {
-                    System.out.print(" 0 "); // Void
-                } else if (getSingleTile(x, y) == 0) { // Dirtroad
+                if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
+                    System.out.print(" 0 ");
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD)) {
                     System.out.print(" * ");
-                } else if (getSingleTile(x, y) == 1) { // Traffic
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.TRAFFIC)) {
                     System.out.print(" / ");
-                } else if (getSingleTile(x, y) == 2) { // Road
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.ROAD)) {
                     System.out.print(" - ");
-                } else if (getSingleTile(x, y) == 3) { // Highway
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.HIGHWAY)) {
                     System.out.print(" = ");
                 }
             }
