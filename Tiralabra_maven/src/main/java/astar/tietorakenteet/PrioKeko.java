@@ -9,39 +9,43 @@ import java.util.Comparator;
 
 /**
  * PriorityQueuen toiminnan korvaava keko
+ *
  * @author sasumaki
  * @param <E>
  */
 public class PrioKeko<E> {
 
     private int size;
-    private int heapsize;
     private Object[] heap;
     private Object temporary;
 
-    private final Comparator<? super E>comparator;
+    private final Comparator<? super E> comparator;
 
     public PrioKeko(Comparator comparator) {
         this.comparator = comparator;
-        this.size = 10;
-        this.heapsize = 0;
-        this.heap = new Object[size];
+        this.size = 0;
+        this.heap = new Object[11];
     }
-/**
- * lisää kekoon tavaraa ylläpitäen keko-ominaisuutta
- * @param lisays 
- */
+
+    public PrioKeko() {
+        this(null);
+    }
+
+    /**
+     * lisää kekoon tavaraa ylläpitäen keko-ominaisuutta
+     *
+     * @param lisays
+     */
     public void heapInsert(Object lisays) {
-        heapsize = +1;
-        if (size == heapsize) {
-            Object[] uusiheap = new Object[2 * heapsize];
-            System.arraycopy(heap, 0, uusiheap, 0, heapsize);
-            heapsize = 2 * heapsize;
+
+        if (size == heap.length) {
+            Object[] uusiheap = new Object[2 * size];
+            System.arraycopy(heap, 0, uusiheap, 0, size);
+
             heap = uusiheap;
         }
 
-        int i = heapsize;
-
+        int i = size;
         heap[i] = lisays;
 
         while (i > 1 && suurempi(i, parent(i)) == i) {
@@ -49,90 +53,116 @@ public class PrioKeko<E> {
             i = parent(i);
         }
         heap[i] = lisays;
+
+        size++;
     }
 
     public boolean isEmpty() {
-        return heapsize == 0;
+        return size == 0;
     }
 
-    public Object pull() {
-        return null;
-    }
-/**
- * Ottaaa keosta ensimmäisen alkion (suurin prioriteetti) ja poistaa sen keosta ylläpitäen keko-ominaisuuden
- * @return 
- */
-    public Object pullDelete() {
-        if (size == 0) {
+    /**
+     * Ottaaa keosta ensimmäisen alkion (suurin prioriteetti) ja poistaa sen
+     * keosta ylläpitäen keko-ominaisuuden
+     *
+     * @return
+     */
+    public E pullDelete() {
+        if (isEmpty()) {
             return null;
         }
         E best = (E) (heap[0]);
         heap[0] = heap[size - 1];
         size--;
-        heapify(0);
-        
+
+        if (size > 0) {
+            heapify(0);
+        }
+
         return best;
     }
-/**
- * kekonavigointia varten luotu
- * @param i
- * @return 
- */
-    public int parent(int i) {
+
+    /**
+     * kekonavigointia varten luotu
+     *
+     * @param i
+     * @return
+     */
+    private int parent(int i) {
         return i / 2;
     }
-/**
- * kekonavigointia varten luotu
- * @param i
- * @return 
- */
-    public int left(int i) {
+
+    /**
+     * kekonavigointia varten luotu
+     *
+     * @param i
+     * @return
+     */
+    private int left(int i) {
         return 2 * i;
     }
-/**
- * kekonavigointia varten luotu
- * @param i
- * @return 
- */
-    public int right(int i) {
+
+    /**
+     * kekonavigointia varten luotu
+     *
+     * @param i
+     * @return
+     */
+    private int right(int i) {
         return (2 * i) + 1;
     }
-/**
- * "Valuttaa" alkioita keossa keko-ominaisuuden korjaamiseksi.
- * @param i 
- */
-    public void heapify(int i) {
+
+    /**
+     * "Valuttaa" alkioita keossa keko-ominaisuuden korjaamiseksi.
+     *
+     * @param i
+     */
+    private void heapify(int i) {
         int l = left(i);
         int r = right(i);
-        if (r <= heapsize) {
+        if (r < size) {
             int largest = suurempi(l, r);
 
             if (suurempi(largest, i) == largest) {
                 vaihda(i, largest);
                 heapify(largest);
             }
-        } else if (l == size && suurempi(l, i) == l) {
+        } else if (l == size - 1 && suurempi(l, i) == l) {
             vaihda(i, l);
         }
     }
-/**
- * palauttaa suuremman prioriteetin heuristisen haun arviolla
- * @param a
- * @param b
- * @return 
- */
+
+    /**
+     * palauttaa suuremman prioriteetin heuristisen haun arviolla
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     private int suurempi(int a, int b) {
-        if (comparator.compare((E) heap[a], (E) heap[b]) < 0) {
-            return a;
+        if (comparator == null) {
+            Comparable<? super E> eka = (Comparable<? super E>) heap[a];
+            E toka = (E) heap[b];
+            if (eka.compareTo(toka) < 0) {
+                return a;
+            }
+
+            return b;
+        } else {
+            if (comparator.compare((E) heap[a], (E) heap[b]) < 0) {
+                return a;
+            }
+            return b;
         }
-        return b;
     }
-/**
- * vaihtaa alkioiden paikkaa keossa-
- * @param a
- * @param b 
- */
-    public void vaihda(int a, int b) {
+
+    /**
+     * vaihtaa alkioiden paikkaa keossa-
+     *
+     * @param a
+     * @param b
+     */
+    private void vaihda(int a, int b) {
         this.temporary = heap[a];
         heap[a] = heap[b];
         heap[b] = this.temporary;

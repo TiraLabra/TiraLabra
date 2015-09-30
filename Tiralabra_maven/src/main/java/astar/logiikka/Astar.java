@@ -5,13 +5,11 @@
  */
 package astar.logiikka;
 
+import astar.tietorakenteet.PrioKeko;
 import astar.verkko.Kartta;
 import astar.verkko.PolkuTulostin;
-import astar.verkko.Ruutu;
 import astar.verkko.Solmu;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.PriorityQueue;
 
 /**
  * Reitinhaku algoritmi
@@ -38,8 +36,8 @@ public class Astar {
      * @return
      */
     public Solmu haku(int alkuX, int alkuY, final int maaliX, final int maaliY) {
-        PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
-            // PrioKeko<Solmu> rintama = new PrioKeko<>(new Comparator<Solmu>() {
+       // PriorityQueue<Solmu> rintama = new PriorityQueue<>(10000, new Comparator<Solmu>() {
+             PrioKeko<Solmu> rintama = new PrioKeko<>(new Comparator<Solmu>() {
 
             @Override
             public int compare(Solmu t, Solmu t1) {
@@ -48,13 +46,13 @@ public class Astar {
         });
         PolkuTulostin tulostin = new PolkuTulostin();
         Solmu nykyinen;
-        rintama.add(new Solmu(alkuX, alkuY, null, 0));
+        rintama.heapInsert(new Solmu(alkuX, alkuY, null, 0));
 
         parasreitti = new Integer[kartta.getKorkeus()][kartta.getLeveys()];
 
         while (!rintama.isEmpty()) {
 
-            nykyinen = (Solmu) rintama.poll();
+            nykyinen = (Solmu) rintama.pullDelete();
 
             if (nykyinen.getY() == maaliY && nykyinen.getX() == maaliX) {
                 tulostin.tulostaPolku(nykyinen, this);
@@ -66,7 +64,7 @@ public class Astar {
                     continue;
                 }
                 parasreitti[n.getY()][n.getX()] = n.getMatkaAlusta();
-                rintama.add(n);
+                rintama.heapInsert(n);
 
             }
 

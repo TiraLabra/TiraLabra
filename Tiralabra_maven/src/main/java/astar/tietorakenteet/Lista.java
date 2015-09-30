@@ -95,7 +95,7 @@ public class Lista<E> implements Iterable<E> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return (E) taulu[edellinen = (indeksi + 1)];
+            return (E) taulu[edellinen = indeksi++];
         }
 
         @Override

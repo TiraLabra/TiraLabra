@@ -6,6 +6,7 @@
 package astar.verkko;
 
 import astar.logiikka.Astar;
+import astar.tietorakenteet.Lista;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +21,8 @@ public class PolkuTulostin {
      * @param polku
      */
     public void tulostaPolku(Solmu polku, Astar astar) {
-        ArrayList<Solmu> ruudut = new ArrayList<>();
+       // ArrayList<Solmu> ruudut = new ArrayList<>();
+        Lista<Solmu> ruudut = new Lista<>();
         ruudut.add(polku);
         Solmu d = polku.getEdellinen();
         boolean printattu;

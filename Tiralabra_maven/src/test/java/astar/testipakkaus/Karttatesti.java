@@ -5,6 +5,7 @@
  */
 package astar.testipakkaus;
 
+import astar.tietorakenteet.Lista;
 import astar.verkko.Kartta;
 import astar.verkko.Solmu;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Karttatesti {
 
     @Test
     public void karttaNaapuriTestiKulmassa() {
-        ArrayList<Solmu> napsut;
+        Lista<Solmu> napsut;
 
         napsut = kartta.naapurit(0, 0, null, 0);
 
@@ -38,7 +39,7 @@ public class Karttatesti {
 
     @Test
     public void karttaNaapuriTestiKeskella() {
-        ArrayList<Solmu> napsut;
+        Lista<Solmu> napsut;
 
         napsut = kartta.naapurit(5, 5, null, 0);
 
@@ -48,13 +49,14 @@ public class Karttatesti {
 
     @Test
     public void karttaNaapuriKoordinaattiTesti() {
-        ArrayList<Solmu> napsut;
+        Lista<Solmu> napsut;
         Solmu s = new Solmu(5, 5, null, 0);
         napsut = kartta.naapurit(s.getX(), s.getY(), s.getEdellinen(), 0);
 
-        assertEquals(napsut.get(0).getEdellinen().getX(), s.getX());
-        assertEquals(napsut.get(0).getEdellinen().getY(), s.getY());
+        assertEquals(napsut.get(0).getX(), 5);
+        assertEquals(napsut.get(0).getY(), 4);
 
     }
+    
 
 }

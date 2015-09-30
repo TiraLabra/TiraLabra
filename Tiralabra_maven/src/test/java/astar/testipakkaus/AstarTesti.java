@@ -8,10 +8,6 @@ package astar.testipakkaus;
 import astar.logiikka.Astar;
 import astar.verkko.Kartta;
 import astar.verkko.Solmu;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,17 +16,21 @@ import static org.junit.Assert.*;
  * @author sasumaki
  */
 public class AstarTesti {
-    private Kartta kartta;
-    private Astar astar;
+    private final Kartta kartta;
+    private final Astar astar;
     public AstarTesti() {
-        this.kartta = new Kartta(3,1);
+        this.kartta = new Kartta(4,2);
         kartta.luoKartta();
         this.astar = new Astar(kartta);
         
     }
     @Test
     public void testaaReittiossi(){
-        Solmu s = astar.haku(0, 0, 2, 0);
+        Solmu s; 
+        
+        String o = "-+++";
+        
+        assertEquals(s = astar.haku(1, 0, 3, 0), o);
         
     }
     

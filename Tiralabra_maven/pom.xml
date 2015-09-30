@@ -14,14 +14,46 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.10</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+    <groupId>org.pitest</groupId>
+    <artifactId>pitest-maven</artifactId>
+    <version>1.1.4</version>
+    <configuration>
+        <targetClasses>
+            <param>astar.astar.*</param>
+            <param>astar.logiikka.*</param>
+            <param>astar.tietorakenteet.*</param>
+            <param>astar.verkko.*</param>
+        </targetClasses>
+        <targetTests>
+            <param>astar.astar.*</param>
+            <param>astar.logiikka.*</param>
+            <param>astar.tietorakenteet.*</param>
+            <param>astar.verkko.*</param>
+        </targetTests>
+    </configuration>
+</plugin>
+        </plugins>
+    </build>
 </project>

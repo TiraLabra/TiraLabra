@@ -3,7 +3,6 @@ package astar.astar;
 import astar.verkko.Kartta;
 import astar.verkko.Solmu;
 import astar.logiikka.Astar;
-import astar.verkko.PolkuTulostin;
 
 public class Main {
 
@@ -11,9 +10,9 @@ public class Main {
         long aikaAlussa = System.currentTimeMillis();
         Solmu s;
 
-        Kartta kartta = new Kartta(1000, 1000);
+        Kartta kartta = new Kartta(10, 10);
         Astar astar = new Astar(kartta);
-        s = astar.haku(0, 1, 970, 980);
+        s = astar.haku(9, 8, 0,1);
         long aikaLopussa = System.currentTimeMillis();
         System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
 

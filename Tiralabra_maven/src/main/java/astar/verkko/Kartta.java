@@ -5,8 +5,8 @@
  */
 package astar.verkko;
 
-import astar.verkko.Solmu;
-import astar.verkko.Ruutu;
+
+import astar.tietorakenteet.Lista;
 import java.util.ArrayList;
 
 /**
@@ -45,7 +45,7 @@ public final class Kartta {
                 ruudukko[y][x] = Ruutu.LATTIA;
             }
         }
-        boolean haluatkoSeinan = true;
+        boolean haluatkoSeinan = false;
         if (haluatkoSeinan) {
             ruudukko[3][4] = Ruutu.SEINÄ;
             ruudukko[3][5] = Ruutu.SEINÄ;
@@ -119,8 +119,6 @@ public final class Kartta {
     /**
      * Palauttaa alkusolmun
      *
-     * @param x
-     * @param y
      * @return
      */
     public Ruutu getAlkuRuutu() {
@@ -157,8 +155,8 @@ public final class Kartta {
      * @param matka
      * @return
      */
-    public ArrayList<Solmu> naapurit(int x, int y, Solmu nykyinen, int matka) {
-        ArrayList<Solmu> naapurit = new ArrayList<>();
+    public Lista<Solmu> naapurit(int x, int y, Solmu nykyinen, int matka) {
+        Lista<Solmu> naapurit = new Lista<>();
 
         if (y >= 1) {
             naapurit.add(new Solmu(x, y - 1, nykyinen, matka + ruudukko[y - 1][x].liikeHinta()));
