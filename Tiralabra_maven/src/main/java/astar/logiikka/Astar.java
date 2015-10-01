@@ -87,7 +87,6 @@ public class Astar {
         double heuristinen;
         heuristinen = Math.sqrt(Math.pow(s.getX() - maaliX, 2) + Math.pow(s.getY() - maaliY, 2));
 
-//        System.out.println("solmu (" + s.getX() +", " + s.getY() + "): " + heuristinen);
         return (int) heuristinen;
     }
 

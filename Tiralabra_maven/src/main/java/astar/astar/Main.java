@@ -24,27 +24,15 @@ public class Main {
         int maaliX = Integer.parseInt(lukija.nextLine());
         System.out.println("Anna maalipiste Y: ");
         int maaliY = Integer.parseInt(lukija.nextLine());
-        System.out.println("Random kartta? (y/n): ");
 
-        if (lukija.nextLine().equals("y")) {
-            Random random = new Random();
-            System.out.println("Kartta: ");
-            long aikaAlussa = System.currentTimeMillis();
+        Random random = new Random();
+        System.out.println("Kartta: ");
+        long aikaAlussa = System.currentTimeMillis();
 
-            toiminta(leveys, korkeus, alkuX, alkuY, maaliX, maaliY, random);
+        toiminta(leveys, korkeus, alkuX, alkuY, maaliX, maaliY, random);
 
-            long aikaLopussa = System.currentTimeMillis();
-            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-
-        } else {
-            System.out.println("Kartta: ");
-            long aikaAlussa = System.currentTimeMillis();
-
-            toiminta(leveys, korkeus, alkuX, alkuY, maaliX, maaliY, null);
-
-            long aikaLopussa = System.currentTimeMillis();
-            System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
-        }
+        long aikaLopussa = System.currentTimeMillis();
+        System.out.println("Operaatioon kului aikaa: " + (aikaLopussa - aikaAlussa) + "ms.");
 
     }
 

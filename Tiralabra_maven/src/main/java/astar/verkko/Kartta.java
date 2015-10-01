@@ -5,6 +5,7 @@
  */
 package astar.verkko;
 
+import astar.logiikka.Bestfirst;
 import astar.tietorakenteet.Lista;
 import java.util.Random;
 
@@ -30,13 +31,15 @@ public final class Kartta {
         this.korkeus = korkeus;
         this.random = random;
 
-        luoKartta(random);
+        luoPseudoKartta(random);
     }
-/**
- * Luo kaksiulotteisen taulukkokartan.
- * @param leveys
- * @param korkeus 
- */
+
+    /**
+     * Luo kaksiulotteisen taulukkokartan.
+     *
+     * @param leveys
+     * @param korkeus
+     */
     public Kartta(int leveys, int korkeus) {
 
         this(leveys, korkeus, null);
@@ -46,8 +49,8 @@ public final class Kartta {
     }
 
     /**
-     * Luo satunnaisen kaksiulotteisen taulukkokartan, taulukon alkioina on solmuja, jotka
-     * kuvastavat koordinaatteja.
+     * Luo satunnaisen kaksiulotteisen taulukkokartan, taulukon alkioina on
+     * solmuja, jotka kuvastavat koordinaatteja.
      *
      */
     private void luoKartta() {
@@ -63,22 +66,220 @@ public final class Kartta {
     private void luoKartta(Random random) {
         ruudukko = new Ruutu[korkeus][leveys];
         int i;
+
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
                 i = random.nextInt(100);
                 if (i < 5) {
                     ruudukko[y][x] = Ruutu.SEINÄ;
-                }
-                else if (i >= 5 && i < 15) {
+                } else if (i >= 5 && i < 15) {
                     ruudukko[y][x] = Ruutu.VESI;
-                }
-                else if (i >= 15 && i < 25) {
+                } else if (i >= 15 && i < 25) {
                     ruudukko[y][x] = Ruutu.METSÄ;
                 } else {
                     ruudukko[y][x] = Ruutu.LATTIA;
                 }
             }
         }
+    }
+
+    private void luoPseudoKartta(Random random) {
+        ruudukko = new Ruutu[korkeus][leveys];
+        Lista<Solmu> lista = new Lista<>();
+        int i;
+        int vesikerroin = 1;
+        int seinatsanssi;
+        boolean vieressaseina;
+        boolean vieressatoinenseina;
+
+        boolean ekavesi = false;
+
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                i = random.nextInt(100);
+
+                if (i == 15) {
+                    ruudukko[y][x] = Ruutu.METSÄ;
+                } else {
+                    ruudukko[y][x] = Ruutu.LATTIA;
+                }
+            }
+
+        }
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                i = random.nextInt(1000);
+                if (x - 1 > 0) {
+                    if (ruudukko[y][x - 1] == Ruutu.VESI) {
+                        if (!ekavesi) {
+                            vesikerroin = vesikerroin + 175;
+                            ekavesi = true;
+                        } else {
+                            vesikerroin = vesikerroin + 175;
+                        }
+                    }
+
+                    if (x + 1 < leveys && !(y - 1 < 0)) {
+                        if (ruudukko[y - 1][x + 1] == Ruutu.VESI) {
+                            if (!ekavesi) {
+                                vesikerroin = vesikerroin + 100;
+                                ekavesi = true;
+                            } else {
+                                vesikerroin = vesikerroin + 100;
+                            }
+                        }
+                    }
+
+                    if (!(y - 1 < 0)) {
+                        if (ruudukko[y - 1][x] == Ruutu.VESI) {
+                            if (!ekavesi) {
+                                vesikerroin = vesikerroin + 100;
+
+                            } else {
+                                vesikerroin = vesikerroin + 100;
+                            }
+                        }
+                        if (x - 1 > 0) {
+                            if (ruudukko[y - 1][x - 1] == Ruutu.VESI) {
+                                if (!ekavesi) {
+                                    vesikerroin = vesikerroin + 100;
+
+                                } else {
+                                    vesikerroin = vesikerroin + 100;
+                                }
+                            }
+                        }
+
+                        if (i < 2 * vesikerroin) {
+                            ruudukko[y][x] = Ruutu.VESI;
+                        }
+                        vesikerroin = 1;
+                        ekavesi = false;
+
+                        if (ruudukko[y][x] == Ruutu.LATTIA) {
+                            seinatsanssi = random.nextInt(1000);
+                            if (seinatsanssi == 666) {
+                                ruudukko[y][x] = Ruutu.SEINÄ;
+                                lista.add(new Solmu(x, y, null, 0));
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                i = random.nextInt(1000);
+                if (ruudukko[y][x] != Ruutu.VESI) {
+                    if (x + 1 < leveys) {
+                        if (ruudukko[y][x + 1] == Ruutu.VESI) {
+                            vesikerroin += 175;
+                        }
+                    }
+                    if (y + 1 < korkeus) {
+                        if (ruudukko[y + 1][x] == Ruutu.VESI) {
+                            vesikerroin += 100;
+                        }
+                        if (x + 1 < leveys) {
+                            if (ruudukko[y + 1][x + 1] == Ruutu.VESI) {
+                                vesikerroin += 100;
+                            }
+
+                        }
+                        if (x - 1 > 0) {
+                            if (ruudukko[y + 1][x - 1] == Ruutu.VESI) {
+                                vesikerroin += 100;
+                            }
+                        }
+                    }
+                    if (i < 2 * vesikerroin) {
+                        ruudukko[y][x] = Ruutu.VESI;
+                        vesikerroin = 1;
+                    }
+
+                }
+
+                if (ruudukko[y][x] == Ruutu.LATTIA) {
+                    seinatsanssi = random.nextInt(1000);
+
+                    vieressaseina = false;
+                    vieressatoinenseina = false;
+
+                    if (x - 1 > 0) {
+                        if (ruudukko[y][x - 1] == Ruutu.SEINÄ) {
+                            vieressaseina = true;
+                        }
+
+                    }
+                    if (x + 1 < leveys && !(y - 1 < 0)) {
+                        if (ruudukko[y - 1][x + 1] == Ruutu.SEINÄ) {
+                            if (vieressaseina) {
+                                vieressatoinenseina = true;
+                            }
+                            vieressaseina = true;
+                        }
+                    }
+
+                    if (!(y - 1 < 0)) {
+                        if (ruudukko[y - 1][x] == Ruutu.SEINÄ) {
+                            if (vieressaseina) {
+                                vieressatoinenseina = true;
+                            }
+                            vieressaseina = true;
+                        }
+                    }
+                    if (x + 1 < leveys) {
+                        if (ruudukko[y][x + 1] == Ruutu.SEINÄ) {
+                            vieressaseina = true;
+                        }
+
+                    }
+                    if (x + 1 < leveys && y + 1 < korkeus) {
+                        if (ruudukko[y + 1][x + 1] == Ruutu.SEINÄ) {
+                            if (vieressaseina) {
+                                vieressatoinenseina = true;
+                            }
+                            vieressaseina = true;
+                        }
+                    }
+
+                    if (y + 1 < korkeus) {
+                        if (ruudukko[y + 1][x] == Ruutu.SEINÄ) {
+                            if (vieressaseina) {
+                                vieressatoinenseina = true;
+                            }
+                            vieressaseina = true;
+                        }
+                    }
+
+                    if (vieressaseina && !vieressatoinenseina && seinatsanssi < 500) {
+                        ruudukko[y][x] = Ruutu.SEINÄ;
+                    }
+                    //luoSeinat(lista);
+                }
+            }
+        }
+    }
+
+    private void luoSeinat(Lista<Solmu> lista) {
+        Bestfirst bestfirst = new Bestfirst(lista, this);
+        lista = bestfirst.haku();
+
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+
+                for (Solmu s : lista) {
+                    if (s.getX() == x && s.getY() == y) {
+                        ruudukko[y][x] = Ruutu.SEINÄ;
+                    }
+                }
+
+            }
+        }
+
     }
 
     public int getLeveys() {
