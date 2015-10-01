@@ -30,9 +30,15 @@ public class Solmutesti {
        
         assertEquals(1, solmu2.getMatkaAlusta());
     }
+    
     @Test
     public void testaaEdellinen(){
         assertEquals(solmu, solmu2.getEdellinen());
+    }
+    @Test
+    public void testaaEdellinen2(){
+        Solmu s = new Solmu(0,0,null,0);
+        assertEquals(s.getEdellinen(), null);
     }
     @Test
     public void equalstesti(){

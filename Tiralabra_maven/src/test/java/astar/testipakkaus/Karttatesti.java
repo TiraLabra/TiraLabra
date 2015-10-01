@@ -23,7 +23,7 @@ public class Karttatesti {
 
     public Karttatesti() {
         this.kartta = new Kartta(10, 10);
-        kartta.luoKartta();
+        
 
     }
 

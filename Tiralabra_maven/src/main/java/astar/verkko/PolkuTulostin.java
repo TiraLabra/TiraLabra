@@ -7,7 +7,6 @@ package astar.verkko;
 
 import astar.logiikka.Astar;
 import astar.tietorakenteet.Lista;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +18,7 @@ public class PolkuTulostin {
      * Tulostaa kartan ja nopeimman polun kartalla
      *
      * @param polku
+     * @param astar
      */
     public void tulostaPolku(Solmu polku, Astar astar) {
        // ArrayList<Solmu> ruudut = new ArrayList<>();
@@ -43,6 +43,14 @@ public class PolkuTulostin {
                 }
                 if (astar.kartta.getRuutu(x, y) == Ruutu.SEINÄ && !printattu) {
                     System.out.print("@");
+                    printattu = true;
+                }
+                if (astar.kartta.getRuutu(x, y) == Ruutu.METSÄ && !printattu) {
+                    System.out.print("^");
+                    printattu = true;
+                }
+                if (astar.kartta.getRuutu(x, y) == Ruutu.VESI && !printattu) {
+                    System.out.print("?");
                     printattu = true;
                 }
                 if (astar.kartta.getRuutu(x, y) == Ruutu.LATTIA && !printattu) {

@@ -7,10 +7,6 @@ package astar.testipakkaus;
 
 import astar.tietorakenteet.PrioKeko;
 import java.util.Comparator;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,7 +25,16 @@ public class PrioKekotesti {
 
             @Override
             public int compare(String t, String t1) {
-                return t.length() - t1.length();
+                if (t.length() > t1.length()) {
+                    return 1;
+
+                }
+                if (t.length() < t1.length()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+
             }
         });
     }
@@ -100,22 +105,23 @@ public class PrioKekotesti {
 
     @Test
     public void comparatorTesti() {
-        String s ="aasi";
+        String s = "aasi";
         String s1 = "mäpäntuhooja666ultrabot";
         String s2 = "Kappa";
-        
-        stringkeko.heapInsert(s1);
+
         stringkeko.heapInsert(s);
+        stringkeko.heapInsert(s1);
         stringkeko.heapInsert(s2);
-        
+
         assertEquals(stringkeko.pullDelete(), s1);
     }
+
     @Test
     public void heapInsertTest() {
         for (int i = 0; i < 10000; i++) {
             intkeko.heapInsert(i);
         }
-        for(int i =0;i< 5000; i++){
+        for (int i = 0; i < 5000; i++) {
             intkeko.pullDelete();
         }
         assertEquals((int) intkeko.pullDelete(), 5000);

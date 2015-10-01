@@ -6,12 +6,8 @@
 package astar.testipakkaus;
 
 import astar.tietorakenteet.Lista;
-import astar.verkko.Solmu;
 import java.util.ArrayList;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -23,9 +19,9 @@ public class Listatesti {
 
     private int size;
     private Object taulu[];
-    private Lista<String> lista;
-    private Lista<Integer> intlista;
-    private ArrayList<String> list;
+    private final Lista<String> lista;
+    private final Lista<Integer> intlista;
+    private final ArrayList<String> list;
 
     public Listatesti() {
 

@@ -20,17 +20,14 @@ public class AstarTesti {
     private final Astar astar;
     public AstarTesti() {
         this.kartta = new Kartta(4,2);
-        kartta.luoKartta();
+        
         this.astar = new Astar(kartta);
         
     }
     @Test
     public void testaaReittiossi(){
-        Solmu s; 
         
-        String o = "-+++";
         
-        assertEquals(s = astar.haku(1, 0, 3, 0), o);
         
     }
     

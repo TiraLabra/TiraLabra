@@ -5,9 +5,8 @@
  */
 package astar.verkko;
 
-
 import astar.tietorakenteet.Lista;
-import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Karttarakenne Astar algoritmia varten, kartta muodostuu solmuista joilla on
@@ -24,48 +23,62 @@ public final class Kartta {
     private int alkupisteY;
     private int maalipisteX;
     private int maalipisteY;
+    private Random random;
 
-    public Kartta(int leveys, int korkeus) {
+    public Kartta(int leveys, int korkeus, Random random) {
         this.leveys = leveys;
         this.korkeus = korkeus;
+        this.random = random;
+
+        luoKartta(random);
+    }
+/**
+ * Luo kaksiulotteisen taulukkokartan.
+ * @param leveys
+ * @param korkeus 
+ */
+    public Kartta(int leveys, int korkeus) {
+
+        this(leveys, korkeus, null);
 
         luoKartta();
 
     }
 
     /**
-     * Luo kaksiulotteisen taulukkokartan, taulukon alkioina on solmuja, jotka
+     * Luo satunnaisen kaksiulotteisen taulukkokartan, taulukon alkioina on solmuja, jotka
      * kuvastavat koordinaatteja.
      *
      */
-    public void luoKartta() {
+    private void luoKartta() {
         ruudukko = new Ruutu[korkeus][leveys];
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
                 ruudukko[y][x] = Ruutu.LATTIA;
             }
         }
-        boolean haluatkoSeinan = false;
-        if (haluatkoSeinan) {
-            ruudukko[3][4] = Ruutu.SEINÄ;
-            ruudukko[3][5] = Ruutu.SEINÄ;
 
-            ruudukko[3][6] = Ruutu.SEINÄ;
+    }
 
-            ruudukko[3][7] = Ruutu.SEINÄ;
-            ruudukko[3][8] = Ruutu.SEINÄ;
-            ruudukko[9][3] = Ruutu.SEINÄ;
-
-            ruudukko[4][3] = Ruutu.SEINÄ;
-
-            ruudukko[5][3] = Ruutu.SEINÄ;
-            ruudukko[6][3] = Ruutu.SEINÄ;
-
-            ruudukko[7][3] = Ruutu.SEINÄ;
-            ruudukko[8][3] = Ruutu.SEINÄ;
-
+    private void luoKartta(Random random) {
+        ruudukko = new Ruutu[korkeus][leveys];
+        int i;
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                i = random.nextInt(100);
+                if (i < 5) {
+                    ruudukko[y][x] = Ruutu.SEINÄ;
+                }
+                else if (i >= 5 && i < 15) {
+                    ruudukko[y][x] = Ruutu.VESI;
+                }
+                else if (i >= 15 && i < 25) {
+                    ruudukko[y][x] = Ruutu.METSÄ;
+                } else {
+                    ruudukko[y][x] = Ruutu.LATTIA;
+                }
+            }
         }
-
     }
 
     public int getLeveys() {

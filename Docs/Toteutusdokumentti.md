@@ -2,7 +2,12 @@ Aikavaativuudet: Astar = eksponentiaalinen
 		 Keko = n
 		 Lista = n
 
-Suorituskykytestaus (ei vielä omia tietorakenteita):
+
+
+
+Suorituskykytestaus:
+
+Javan valmiilla tietorakenneluokilla:
 
 10x10 kokoisessa kartassa menee 19 solmun pituisen reitin etsimisessä noin 10 ms. 
 
@@ -10,3 +15,14 @@ Suorituskykytestaus (ei vielä omia tietorakenteita):
 
 1000x1000 kokoisessa kartassa n. 25000ms
 
+
+
+
+
+Omatekemillä tietorakenteilla:
+
+10x10 kokoisessa kartassa menee 19 solmun pituisen reitin etsimisessä noin 10 ms. 
+
+100x100 kokoisessa kartassa n. 250ms 
+
+1000x1000 kokoisessa kartassa n. 18000ms
