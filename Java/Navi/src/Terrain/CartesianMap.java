@@ -2,6 +2,8 @@ package Terrain;
 
 import java.util.Random;
 import CoreLogic.AStarPathfinder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -133,6 +135,34 @@ public class CartesianMap {
 
         return map;
 
+    }
+    
+    /**
+     * Determines the neighbours of a node.
+     *
+     * @param xPos
+     * @param yPos
+     * @return list of nodes adjacent to a given node.
+     */
+    public List<Integer> getAdjacentNodes(int xPos, int yPos) {
+        
+        List<Integer> neighbours = new ArrayList<Integer>();
+        
+        if (xPos > 0) {
+            neighbours.add(getSingleTile(xPos - 1, yPos));
+        }
+        if (yPos > 0) {
+            neighbours.add(getSingleTile(xPos, yPos - 1));
+        }
+        if (xPos < xLim - 1) {
+            neighbours.add(getSingleTile(xPos + 1, yPos));
+        }
+        if (yPos < yLim - 1) {
+            neighbours.add(getSingleTile(xPos, yPos + 1));
+        }
+        
+        return neighbours;
+        
     }
 
     //================================================================================
