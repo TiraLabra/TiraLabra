@@ -3,6 +3,6 @@ jdk:
   - oraclejdk7
   - openjdk6
 notifications:
-  email: false
+  email: leeviheino@live.fi
 
 script: "./run_tests.sh"
