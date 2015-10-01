@@ -1,2 +1,2 @@
 Tällä viikolla tein dokumentaatiota, ja logiikkaa reitinhakuun ja kartan toimintaan.
-Seuraavaksi toteutan A*-algoritmilla toimivan hakusysteemin.
+Seuraavaksi toteutan A*-algoritmilla toimivan hakusysteemin, sekä yksikkötestit.
