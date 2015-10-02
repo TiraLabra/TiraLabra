@@ -100,7 +100,7 @@ public class TestUserInterface {
     
     void run(int terrainType, int startX, int startY, int goalX, int goalY) {
         
-        CartesianMap map = new CartesianMap(Navi.xLim, Navi.yLim);
+        CartesianMap map = new CartesianMap();
         
         if (terrainType == 1) {
             map.generateTerrain(false);
@@ -112,14 +112,20 @@ public class TestUserInterface {
             map.generateTerrainPreset1();
         }
         
-        AStarPathfinder finder = new AStarPathfinder();
-        int[][] route = finder.determineRoute(Navi.xLim, Navi.yLim, map.getMap(), startX, startY, goalX, goalY);
-        
         System.out.println("\nMap:\n");
         map.displayMap();
         
+        System.out.print("\nType any key to start.\n> ");
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        System.out.println("");
+        
+        AStarPathfinder finder = new AStarPathfinder(map);
+        Integer[][] route = finder.determineRoute(startX, startY, goalX, goalY);
+        
         System.out.println("\nRoute:\n");
-        map.displayMapWithRoute(route);
+        map.setMap(route);
+        map.displayMapWithRoute();
         
         System.out.println("\nLegend:\n");
         System.out.println("  '0' = Void");

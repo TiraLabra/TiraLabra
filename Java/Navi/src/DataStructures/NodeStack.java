@@ -4,20 +4,20 @@ package DataStructures;
  *
  * @author Leevi
  */
-public class StringStack {
+public class NodeStack {
 
     private int capacity;
-    private String[] stackArray;
+    private Node[] stackArray;
     private int top;
 
     /**
      *
      * @param capacity of the stack.
      */
-    public StringStack(int capacity) {
+    public NodeStack(int capacity) {
 
         this.capacity = capacity;
-        stackArray = new String[capacity];
+        stackArray = new Node[capacity];
         top = -1;
 
     }
@@ -27,7 +27,7 @@ public class StringStack {
      *
      * @param s, the position of a node on a map.
      */
-    public void push(String s) {
+    public void push(Node s) {
 
         stackArray[++top] = s;
 
@@ -38,7 +38,7 @@ public class StringStack {
      *
      * @return Item that was most recently pushed to stack.
      */
-    public String pop() {
+    public Node pop() {
 
         return stackArray[top--];
 
@@ -48,7 +48,7 @@ public class StringStack {
      *
      * @return Most recently added item.
      */
-    public String peek() {
+    public Node peek() {
 
         return stackArray[top];
 

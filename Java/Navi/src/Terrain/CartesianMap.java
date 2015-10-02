@@ -1,7 +1,8 @@
 package Terrain;
 
 import java.util.Random;
-import CoreLogic.AStarPathfinder;
+import DataStructures.Node;
+import Main.Navi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class CartesianMap {
     
     private final int xLim;
     private final int yLim;
-    private int[][] map;
+    private Integer[][] map;
 
     //================================================================================
     // Constructors
@@ -25,14 +26,12 @@ public class CartesianMap {
     
     /**
      *
-     * @param x, limit of width.
-     * @param y, limit of height.
      */
-    public CartesianMap(int x, int y) {
+    public CartesianMap() {
 
-        this.xLim = x;
-        this.yLim = y;
-        this.map = new int[x][y];
+        this.xLim = Navi.xLim;
+        this.yLim = Navi.yLim;
+        this.map = new Integer[Navi.xLim][Navi.yLim];
 
     }
 
@@ -121,7 +120,7 @@ public class CartesianMap {
      * @return int xy, convertible to a node.
      * @see CartesianTile
      */
-    public int getSingleTile(int xPos, int yPos) {
+    public Integer getSingleTile(int xPos, int yPos) {
 
         return map[xPos][yPos];
 
@@ -131,7 +130,7 @@ public class CartesianMap {
      *
      * @return 2d array, contains integers.
      */
-    public int[][] getMap() {
+    public Integer[][] getMap() {
 
         return map;
 
@@ -144,24 +143,38 @@ public class CartesianMap {
      * @param yPos
      * @return list of nodes adjacent to a given node.
      */
-    public List<Integer> getAdjacentNodes(int xPos, int yPos) {
+    public List<Node> getAdjacentNodes(int xPos, int yPos) {
         
-        List<Integer> neighbours = new ArrayList<Integer>();
+        List<Node> neighbours = new ArrayList<>();
         
         if (xPos > 0) {
-            neighbours.add(getSingleTile(xPos - 1, yPos));
+            Node node = new Node(xPos - 1, yPos, CartesianTile.getTypeFromMovementCost(getSingleTile(xPos - 1, yPos)));
+            neighbours.add(node);
         }
         if (yPos > 0) {
-            neighbours.add(getSingleTile(xPos, yPos - 1));
+            Node node = new Node(xPos, yPos - 1, CartesianTile.getTypeFromMovementCost(getSingleTile(xPos, yPos - 1)));
+            neighbours.add(node);
         }
         if (xPos < xLim - 1) {
-            neighbours.add(getSingleTile(xPos + 1, yPos));
+            Node node = new Node(xPos + 1, yPos, CartesianTile.getTypeFromMovementCost(getSingleTile(xPos + 1, yPos)));
+            neighbours.add(node);
         }
         if (yPos < yLim - 1) {
-            neighbours.add(getSingleTile(xPos, yPos + 1));
+            Node node = new Node(xPos, yPos + 1, CartesianTile.getTypeFromMovementCost(getSingleTile(xPos, yPos + 1)));
+            neighbours.add(node);
         }
         
         return neighbours;
+        
+    }
+    
+    //================================================================================
+    // Setters
+    //================================================================================
+    
+    public void setMap(Integer[][] newMap) {
+        
+        this.map = newMap;
         
     }
 
@@ -176,7 +189,10 @@ public class CartesianMap {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
+                if (getSingleTile(x, y) == 999) {
+                    System.out.println("X");
+                }
+                else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
                     System.out.print(" 0 ");
                 } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD)) {
                     System.out.print(" * ");
@@ -197,9 +213,27 @@ public class CartesianMap {
      *
      * @param route
      */
-    public void displayMapWithRoute(int[][] route) {
+    public void displayMapWithRoute() {
 
-        // TODO: Implementation
+        for (int y = 0; y < yLim; y++) {
+            for (int x = 0; x < xLim; x++) {
+                if (getSingleTile(x, y) == 999) {
+                    System.out.println("X");
+                }
+                else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
+                    System.out.print(" 0 ");
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD)) {
+                    System.out.print(" * ");
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.TRAFFIC)) {
+                    System.out.print(" / ");
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.ROAD)) {
+                    System.out.print(" - ");
+                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.HIGHWAY)) {
+                    System.out.print(" = ");
+                }
+            }
+            System.out.println("");
+        }
         
     }
 

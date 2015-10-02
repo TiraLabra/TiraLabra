@@ -27,6 +27,24 @@ public enum CartesianTile {
         
     }
     
+    public static int getMovementCostFromType(CartesianTile type) {
+        
+        switch (type) {
+            case HIGHWAY:
+                return 1;
+            case ROAD:
+                return 3;
+            case TRAFFIC:
+                return 6;
+            case DIRTROAD:
+                return 7;
+            case VOID:
+                return 99;
+        }
+        return -1;
+        
+    }
+    
     public static int getMovementCostFromNode(String node) {
         switch (node) {
             case "=":
@@ -57,6 +75,22 @@ public enum CartesianTile {
                 return 99;
         }
         return -1;
+    }
+    
+    public static CartesianTile getTypeFromMovementCost(int cost) {
+        switch (cost) {
+            case 1:
+                return HIGHWAY;
+            case 3:
+                return ROAD;
+            case 6:
+                return TRAFFIC;
+            case 7:
+                return DIRTROAD;
+            case 99:
+                return VOID;
+        }
+        return null;
     }
     
 }
