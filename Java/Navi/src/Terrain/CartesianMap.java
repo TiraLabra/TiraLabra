@@ -18,7 +18,7 @@ public class CartesianMap {
     
     private final int xLim;
     private final int yLim;
-    private Integer[][] map;
+    private int[][] map;
 
     //================================================================================
     // Constructors
@@ -31,7 +31,7 @@ public class CartesianMap {
 
         this.xLim = Navi.xLim;
         this.yLim = Navi.yLim;
-        this.map = new Integer[Navi.xLim][Navi.yLim];
+        this.map = new int[Navi.xLim][Navi.yLim];
 
     }
 
@@ -120,7 +120,7 @@ public class CartesianMap {
      * @return int xy, convertible to a node.
      * @see CartesianTile
      */
-    public Integer getSingleTile(int xPos, int yPos) {
+    public int getSingleTile(int xPos, int yPos) {
 
         return map[xPos][yPos];
 
@@ -130,7 +130,7 @@ public class CartesianMap {
      *
      * @return 2d array, contains integers.
      */
-    public Integer[][] getMap() {
+    public int[][] getMap() {
 
         return map;
 
@@ -172,7 +172,7 @@ public class CartesianMap {
     // Setters
     //================================================================================
     
-    public void setMap(Integer[][] newMap) {
+    public void setMap(int[][] newMap) {
         
         this.map = newMap;
         
@@ -189,8 +189,14 @@ public class CartesianMap {
 
         for (int y = 0; y < yLim; y++) {
             for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) == 999) {
-                    System.out.println("X");
+                if (getSingleTile(x, y) == 100) {
+                    System.out.print(" S ");
+                }
+                else if (getSingleTile(x, y) == 200) {
+                    System.out.print(" X ");
+                }
+                if (getSingleTile(x, y) == 300) {
+                    System.out.print(" G ");
                 }
                 else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
                     System.out.print(" 0 ");
@@ -207,34 +213,6 @@ public class CartesianMap {
             System.out.println("");
         }
 
-    }
-
-    /**
-     *
-     * @param route
-     */
-    public void displayMapWithRoute() {
-
-        for (int y = 0; y < yLim; y++) {
-            for (int x = 0; x < xLim; x++) {
-                if (getSingleTile(x, y) == 999) {
-                    System.out.println("X");
-                }
-                else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
-                    System.out.print(" 0 ");
-                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.DIRTROAD)) {
-                    System.out.print(" * ");
-                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.TRAFFIC)) {
-                    System.out.print(" / ");
-                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.ROAD)) {
-                    System.out.print(" - ");
-                } else if (getSingleTile(x, y) == CartesianTile.getMovementCostFromNodeName(CartesianTile.HIGHWAY)) {
-                    System.out.print(" = ");
-                }
-            }
-            System.out.println("");
-        }
-        
     }
 
 }

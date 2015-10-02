@@ -1,14 +1,12 @@
 package Main;
 
-import CoreLogic.Dijkstra;
 import UI.TestUserInterface;
-import java.util.List;
 
 // @author Leevi
 public class Navi {
     
-    final public static int xLim = 8;
-    final public static int yLim = 10;
+    final public static int xLim = 20;
+    final public static int yLim = 28;
 
     public static void main(String[] args) {
         

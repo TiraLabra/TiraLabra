@@ -21,7 +21,8 @@ public class AStarPathfinder {
 
     //================================================================================
     // Constructors
-    //================================================================================
+    //================================================================================'
+    
     public AStarPathfinder(CartesianMap map) {
 
         open = new ArrayList<>();
@@ -34,46 +35,49 @@ public class AStarPathfinder {
     // Route calculation
     //================================================================================
     
-    public Integer[][] determineRoute(int startX, int startY, int goalX, int goalY) {
-
-        Integer[][] gridMap = map.getMap();
-
+    public int[][] determineRoute(int startX, int startY, int goalX, int goalY) {
+        
         if (startX == goalX && startY == goalY) {
             return null; // No distance to travel!
-        } else if (gridMap[goalX][goalY] == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
+        } 
+        else if (map.getMap()[goalX][goalY] == CartesianTile.getMovementCostFromNodeName(CartesianTile.VOID)) {
             return null; // No valid goal!
         }
 
-        CartesianTile type = CartesianTile.getTypeFromMovementCost(gridMap[startX][startY]);
+        CartesianTile type = CartesianTile.getTypeFromMovementCost(map.getMap()[startX][startY]);
         Node current = new Node(startX, startY, type);
+        open.add(current);
 
         while (true) {
-
-            // closed.add(current);
-
+            
             if (current.x == goalX && current.y == goalY) {
-
-                open.add(current);
                 break; // Finished.
-
             }
 
-            int index = 0;
-
+            int index = 1;
+            
             for (Node node : map.getAdjacentNodes(current.x, current.y)) { // Check node's neighbours.
 
                 if (closed.contains(node) || node.type == CartesianTile.VOID) {
+                    index++;
+                    if (index > map.getAdjacentNodes(current.x, current.y).size()) { // Dead end.
+                        current = new Node(startX, startY, type);
+                        open.clear();
+                        open.add(current);
+                        break;
+                    }
                     continue; // Node was checked already or is inaccessible.
                 }
-
-                int heuristicDistance = Math.abs((node.x - goalX)) + Math.abs((node.y - goalY)); // Approximate the distance.
-
-                if (index == 0) {
+                
+                if (index == 1 || open.isEmpty()) {
                     open.add(node);
                 } 
                 else {
-                    int previousHeuristicDistance = Math.abs((open.get(open.size() - 1).x - goalX)) + Math.abs((open.get(open.size() - 1).y - goalY));
-                    if (previousHeuristicDistance < heuristicDistance) {
+                    int heuristicDistance = Math.abs((node.x - goalX)) + Math.abs((node.y - goalY)); // Approximate the distance.
+                    int movementCost = map.getSingleTile(node.x, node.y);
+                    int previousHeuristicDistance = Math.abs(current.x - goalX) + Math.abs(current.y - goalY);
+                    int previousMovementCost = map.getSingleTile(current.x, current.y);
+                    if (previousHeuristicDistance > heuristicDistance) {
                         open.remove(open.size() - 1);
                         open.add(node);
                     }
@@ -83,15 +87,33 @@ public class AStarPathfinder {
 
             }
             
+            closed.add(current);
             current = open.get(open.size() - 1);
 
         }
         
-        Integer[][] returnMap = new Integer[Navi.xLim][Navi.yLim];
+        int[][] returnMap = new int[Navi.xLim][Navi.yLim];
         
         for (int y = 0; y < Navi.yLim; y++) {
             for (int x = 0; x < Navi.xLim; x++) {
                 returnMap[x][y] = map.getSingleTile(x, y);
+                if (x == startX && y == startY) {
+                    returnMap[x][y] = 100;
+                    continue;
+                }
+                else if (x == goalX && y == goalY) {
+                    returnMap[x][y] = 300;
+                    continue;
+                }
+                else {
+                    returnMap[x][y] = map.getSingleTile(x, y);
+                }
+                for (Node node : open) {
+                    if (node.x == x && node.y == y) {
+                        returnMap[x][y] = 200;
+                        break;
+                    }
+                }
             }
         }
 
