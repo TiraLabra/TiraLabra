@@ -202,76 +202,29 @@ public final class Kartta {
 
                 }
 
-                if (ruudukko[y][x] == Ruutu.LATTIA) {
-                    seinatsanssi = random.nextInt(1000);
-
-                    vieressaseina = false;
-                    vieressatoinenseina = false;
-
-                    if (x - 1 > 0) {
-                        if (ruudukko[y][x - 1] == Ruutu.SEINÄ) {
-                            vieressaseina = true;
-                        }
-
-                    }
-                    if (x + 1 < leveys && !(y - 1 < 0)) {
-                        if (ruudukko[y - 1][x + 1] == Ruutu.SEINÄ) {
-                            if (vieressaseina) {
-                                vieressatoinenseina = true;
-                            }
-                            vieressaseina = true;
-                        }
-                    }
-
-                    if (!(y - 1 < 0)) {
-                        if (ruudukko[y - 1][x] == Ruutu.SEINÄ) {
-                            if (vieressaseina) {
-                                vieressatoinenseina = true;
-                            }
-                            vieressaseina = true;
-                        }
-                    }
-                    if (x + 1 < leveys) {
-                        if (ruudukko[y][x + 1] == Ruutu.SEINÄ) {
-                            vieressaseina = true;
-                        }
-
-                    }
-                    if (x + 1 < leveys && y + 1 < korkeus) {
-                        if (ruudukko[y + 1][x + 1] == Ruutu.SEINÄ) {
-                            if (vieressaseina) {
-                                vieressatoinenseina = true;
-                            }
-                            vieressaseina = true;
-                        }
-                    }
-
-                    if (y + 1 < korkeus) {
-                        if (ruudukko[y + 1][x] == Ruutu.SEINÄ) {
-                            if (vieressaseina) {
-                                vieressatoinenseina = true;
-                            }
-                            vieressaseina = true;
-                        }
-                    }
-
-                    if (vieressaseina && !vieressatoinenseina && seinatsanssi < 500) {
-                        ruudukko[y][x] = Ruutu.SEINÄ;
-                    }
-                    //luoSeinat(lista);
-                }
             }
+
         }
+        luoSeinat(lista);
     }
 
     private void luoSeinat(Lista<Solmu> lista) {
-        Bestfirst bestfirst = new Bestfirst(lista, this);
-        lista = bestfirst.haku();
+        Lista<Solmu> uusilista = new Lista<>();
+        for (int i = 0; i < lista.size()-1; i++) {
+            while (lista.size() > 1) {
+                Bestfirst bestfirst = new Bestfirst(lista, this);
 
+                Lista<Solmu> templista = bestfirst.haku();
+                for (int y = 0; y < templista.size()-1; y++) {
+                    uusilista.add(templista.get(y));
+                }
+                lista.remove(0);
+            }
+        }
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
 
-                for (Solmu s : lista) {
+                for (Solmu s : uusilista) {
                     if (s.getX() == x && s.getY() == y) {
                         ruudukko[y][x] = Ruutu.SEINÄ;
                     }

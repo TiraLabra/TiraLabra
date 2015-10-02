@@ -50,13 +50,13 @@ public class Bestfirst {
             if(nykyinen.getX() == maaliX && nykyinen.getY() == maaliY){
                 
                 polku.add(nykyinen);
-                
+               
                 break;
             }
             
             for(Solmu s : kartta.naapurit(nykyinen.getX(), nykyinen.getY(), nykyinen, nykyinen.getMatkaAlusta())){
                 
-                if(kayty != null){
+                if(kayty[s.getY()][s.getX()] != null){
                     continue;
                 }
                 kayty[s.getY()][s.getX()] = s.getMatkaAlusta();
@@ -65,7 +65,7 @@ public class Bestfirst {
             
         }
         int i= 0;
-        while(polku.get(polku.size()).getEdellinen() != null){
+        while(polku.get(i).getEdellinen() != null){
             polku.add(polku.get(i).getEdellinen());
             i++;
         }
